@@ -2,252 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EDC1783BB5
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 10:26:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1DEA783BB7
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 10:27:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233806AbjHVI0V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 04:26:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33212 "EHLO
+        id S233807AbjHVI1P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 04:27:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233805AbjHVI0U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 04:26:20 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 676A312C
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 01:26:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692692778; x=1724228778;
-  h=from:to:cc:subject:in-reply-to:references:date:
-   message-id:mime-version;
-  bh=ukxWEQDcswTMt5U9VoQOGWaI6SRrWYlyXQho7RiB3hA=;
-  b=F/kjklq38YCLAb9FPMQiB5JdjXE6iON/Iq1YL++ESVDOgqYS12w9tgOe
-   Q5e4ThM5jNvYUJ7dvWPCevPcyHQp4YQICTuBk6Qzj7GgmtrqqFAH6nbkV
-   +DURR461NvCvkti4MYX+KEImV97SIlGEnwTal3/iA0yUu6WZEKOUSU7YF
-   jz/vfiL20wqTBCLXY+vqZhuK0vNq4IEbKtgiYp7DX3G2QUxdDRdEnIog7
-   n8jmqJez4+ZFu0h6UobjI13uSeH9P5KqBTua5wEBZMI7KcbPnYibvVbAP
-   gofurnEwrOVoIkpc/f3s3sqiXme/rrR+hG47ibR6Ir36HbOj1Jj8xuz8d
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="376553160"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="376553160"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by orsmga102.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 01:26:17 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="739226195"
-X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
-   d="scan'208";a="739226195"
-Received: from kainaats-mobl1.ger.corp.intel.com (HELO localhost) ([10.252.42.230])
-  by fmsmga007-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 01:26:15 -0700
-From:   Jani Nikula <jani.nikula@intel.com>
-To:     gregkh@linuxfoundation.org, andrzej.hajda@intel.com,
-        luciano.coelho@intel.com, matthew.d.roper@intel.com,
-        rodrigo.vivi@intel.com
-Cc:     stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] drm/i915: fix display probe for IVB Q
- and IVB D GT2 server" failed to apply to 6.4-stable tree
-In-Reply-To: <2023082143-rummage-chasing-3ff3@gregkh>
-Organization: Intel Finland Oy - BIC 0357606-4 - Westendinkatu 7, 02160 Espoo
-References: <2023082143-rummage-chasing-3ff3@gregkh>
-Date:   Tue, 22 Aug 2023 11:26:13 +0300
-Message-ID: <87cyzf7aai.fsf@intel.com>
+        with ESMTP id S233701AbjHVI1M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 04:27:12 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 134E112C;
+        Tue, 22 Aug 2023 01:27:11 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-68a41035828so1472066b3a.1;
+        Tue, 22 Aug 2023 01:27:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692692830; x=1693297630;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=H82FZhA87NjWkAJ0bEHD1nwjofTts9jm2ulKk5lEn4E=;
+        b=ce7P2hHuUgkiy/b8Enzv2RaqGVDa5yzrtEDXS+0SHcMqmTrG7uRwoYn1So+9ZR+v0E
+         mXy2fvE99FiPdsbjQR1eanuoGn+n5ot09lZT9pXQQXIT8v04oSTAni3HPGPGwhvacNpM
+         OOwGvVbX/kgEps/OMILigQBiYrqqIbvWfCbxx62tLAmOZ7VXHR70R2wp5hjxg/GhhS8/
+         hW7F9+qY1e9aPZh5fTAfFwew+kbq+yeq8OwklkeFHNGdVc2sinIYbzq3h1dX4//ffK3q
+         TQxDOa67lxyvkSR6n+1KH+t7HrNdSjp4MfbzfZn1M4zHMZy0mb3hsy57xaxa568vGPFY
+         QiLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692692830; x=1693297630;
+        h=content-transfer-encoding:in-reply-to:mime-version:user-agent:date
+         :message-id:from:cc:references:to:subject:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=H82FZhA87NjWkAJ0bEHD1nwjofTts9jm2ulKk5lEn4E=;
+        b=KvMLiWS4RRLvsUexuOpFySW0EqRSBhIjsD9rpiGTjGqKP1sdXOc+JjHHvvTZcthlsm
+         1mlR/BFSdkGIfjxf+7XgrZ5lAZafCXBIa17AKs71f77F/c01lK/yfbb+ZEQtK/xtVXsE
+         KXMpmWWDubcPwMerUMmNyMQDJY0xEx25+2gA5vDGHE7f202fUyUFqVGP89MjQ49FWKNd
+         ztXB4uMC3R+1Pg9uCED0Y7XrYGntM1AVvc+U3+6ZYNN/DSixV3QTSe8ZWPuE42zFtHFn
+         pJHjE3RVvBd0IFUiBiZ4u7VjQzasO7vo6ewLMg+bkpQTqBb7xFhtfvseFXVcPXZ+DpbH
+         b7cA==
+X-Gm-Message-State: AOJu0YyBnAC/matArrLVrKWrANuztrkkA5eaLMnIX9P7PNdj27fp7Yp4
+        JwvSOizOLrnRvsPXpj1Em2U=
+X-Google-Smtp-Source: AGHT+IEsZKxfoPvVjUvPkJkMGeGj5E+PYJoqV5HNe4uUc3NTWUUueL5Sid2GDg/7YQ+uuF+JY8VI/A==
+X-Received: by 2002:a05:6a20:3943:b0:138:92ef:78f9 with SMTP id r3-20020a056a20394300b0013892ef78f9mr8576589pzg.6.1692692830378;
+        Tue, 22 Aug 2023 01:27:10 -0700 (PDT)
+Received: from [10.1.1.24] (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.gmail.com with ESMTPSA id w6-20020a170902d3c600b001bdb0483e65sm8425540plb.265.2023.08.22.01.27.05
+        (version=TLS1_2 cipher=ECDHE-ECDSA-AES128-GCM-SHA256 bits=128/128);
+        Tue, 22 Aug 2023 01:27:09 -0700 (PDT)
+Subject: Re: [PATCH v3 1/2] ata: pata_falcon: fix IO base selection for Q40
+To:     Geert Uytterhoeven <geert@linux-m68k.org>
+References: <20230818234903.9226-1-schmitzmic@gmail.com>
+ <20230818234903.9226-2-schmitzmic@gmail.com>
+ <CAMuHMdUdqRZcwHnWCb0SJ34JM3BqEyejsgWajwsbe_F+6xZMjg@mail.gmail.com>
+Cc:     dlemoal@kernel.org, linux-ide@vger.kernel.org,
+        linux-m68k@vger.kernel.org, will@sowerbutts.com, rz@linux-m68k.org,
+        stable@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>
+From:   Michael Schmitz <schmitzmic@gmail.com>
+Message-ID: <fd0b71fa-783e-41c0-ab2b-02656286d2ab@gmail.com>
+Date:   Tue, 22 Aug 2023 20:27:03 +1200
+User-Agent: Mozilla/5.0 (X11; Linux ppc; rv:45.0) Gecko/20100101
+ Icedove/45.4.0
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <CAMuHMdUdqRZcwHnWCb0SJ34JM3BqEyejsgWajwsbe_F+6xZMjg@mail.gmail.com>
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 21 Aug 2023, <gregkh@linuxfoundation.org> wrote:
-> The patch below does not apply to the 6.4-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->
-> To reproduce the conflict and resubmit, you may use the following commands:
->
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x 423ffe62c06ae241ad460f4629dddb9dcf55e060
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082143-rummage-chasing-3ff3@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
->
-> Possible dependencies:
+Hi Geert,
 
-I think it should work to cherry-pick this as the dependency:
+Am 21.08.2023 um 19:50 schrieb Geert Uytterhoeven:
+>> +       ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
+>> +
+>> +       if (base_res) {         /* only Q40 has IO resources */
+>> +               io_offset = 0x10000;
+>> +               reg_scale = 1;
+>> +               base = (void __iomem *)base_res->start;
+>> +               ctl_base = (void __iomem *)ctl_res->start;
+>> +
+>> +               ata_port_desc(ap, "cmd %pa ctl %pa",
+>> +                             &base_res->start,
+>> +                             &ctl_res->start);
+>
+> This can be  moved outside the else, using %px to format base and
+> ctl_base.
 
-12e6f6dc78e4 ("drm/i915/display: Handle GMD_ID identification in display code")
+I get a checkpatch warning for %px, but not for %pa (used for . 
+&ap->ioaddr.data_addr). What gives?
 
 
-BR,
-Jani.
+WARNING: Using vsprintf specifier '%px' potentially exposes the kernel 
+memory layout, if you don't really need the address please consider 
+using '%p'.
+#148: FILE: drivers/ata/pata_falcon.c:194:
++	ata_port_desc(ap, "cmd %px ctl %px data %pa",
++		      base, ctl_base, &ap->ioaddr.data_addr);
+
+Using %pa and &base, &ctl_base just to shut that up seems a little silly ...
+
+Cheers,
+
+	Michael
 
 >
+>> +       } else {
+>> +               base = (void __iomem *)base_mem_res->start;
+>> +               ctl_base = (void __iomem *)ctl_mem_res->start;
+>> +
+>> +               ata_port_desc(ap, "cmd %pa ctl %pa",
+>> +                             &base_mem_res->start,
+>> +                             &ctl_mem_res->start);
+>> +       }
 >
+> Gr{oetje,eeting}s,
 >
-> thanks,
+>                         Geert
 >
-> greg k-h
->
-> ------------------ original commit in Linus's tree ------------------
->
-> From 423ffe62c06ae241ad460f4629dddb9dcf55e060 Mon Sep 17 00:00:00 2001
-> From: Jani Nikula <jani.nikula@intel.com>
-> Date: Fri, 4 Aug 2023 11:45:59 +0300
-> Subject: [PATCH] drm/i915: fix display probe for IVB Q and IVB D GT2 server
->
-> The current display probe is unable to differentiate between IVB Q and
-> IVB D GT2 server, as they both have the same device id, but different
-> subvendor and subdevice. This leads to the latter being misidentified as
-> the former, and should just end up not having a display. However, the no
-> display case returns a NULL as the display device info, and promptly
-> oopses.
->
-> As the IVB Q case is rare, and we're anyway moving towards GMD ID,
-> handle the identification requiring subvendor and subdevice as a special
-> case first, instead of unnecessarily growing the intel_display_ids[]
-> array with subvendor and subdevice.
->
-> [    5.425298] BUG: kernel NULL pointer dereference, address: 0000000000000000
-> [    5.426059] #PF: supervisor read access in kernel mode
-> [    5.426810] #PF: error_code(0x0000) - not-present page
-> [    5.427570] PGD 0 P4D 0
-> [    5.428285] Oops: 0000 [#1] PREEMPT SMP PTI
-> [    5.429035] CPU: 0 PID: 137 Comm: (udev-worker) Not tainted 6.4.0-1-amd64 #1  Debian 6.4.4-1
-> [    5.429759] Hardware name: HP HP Z220 SFF Workstation/HP Z220 SFF Workstation, BIOS 4.19-218-gb184e6e0a1 02/02/2023
-> [    5.430485] RIP: 0010:intel_device_info_driver_create+0xf1/0x120 [i915]
-> [    5.431338] Code: 48 8b 97 80 1b 00 00 89 8f c0 1b 00 00 48 89 b7 b0 1b 00 00 48 89 97 b8 1b 00 00 0f b7 fd e8 76 e8 14 00 48 89 83 50 1b 00 00 <48> 8b 08 48 89 8b c4 1b 00 00 48 8b 48 08 48 89 8b cc 1b 00 00 8b
-> [    5.432920] RSP: 0018:ffffb8254044fb98 EFLAGS: 00010206
-> [    5.433707] RAX: 0000000000000000 RBX: ffff923076e80000 RCX: 0000000000000000
-> [    5.434494] RDX: 0000000000000260 RSI: 0000000100001000 RDI: 000000000000016a
-> [    5.435277] RBP: 000000000000016a R08: ffffb8254044fb00 R09: 0000000000000000
-> [    5.436055] R10: ffff922d02761de8 R11: 00657361656c6572 R12: ffffffffc0e5d140
-> [    5.436867] R13: ffff922d00b720d0 R14: 0000000076e80000 R15: ffff923078c0cae8
-> [    5.437646] FS:  00007febd19a18c0(0000) GS:ffff92307c000000(0000) knlGS:0000000000000000
-> [    5.438434] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    5.439218] CR2: 0000000000000000 CR3: 000000010256e002 CR4: 00000000001706f0
-> [    5.440009] Call Trace:
-> [    5.440824]  <TASK>
-> [    5.441611]  ? __die+0x23/0x70
-> [    5.442394]  ? page_fault_oops+0x17d/0x4c0
-> [    5.443173]  ? exc_page_fault+0x7f/0x180
-> [    5.443949]  ? asm_exc_page_fault+0x26/0x30
-> [    5.444756]  ? intel_device_info_driver_create+0xf1/0x120 [i915]
-> [    5.445652]  ? intel_device_info_driver_create+0xea/0x120 [i915]
-> [    5.446545]  i915_driver_probe+0x7f/0xb60 [i915]
-> [    5.447431]  ? drm_privacy_screen_get+0x15c/0x1a0 [drm]
-> [    5.448240]  local_pci_probe+0x45/0xa0
-> [    5.449013]  pci_device_probe+0xc7/0x240
-> [    5.449748]  really_probe+0x19e/0x3e0
-> [    5.450464]  ? __pfx___driver_attach+0x10/0x10
-> [    5.451172]  __driver_probe_device+0x78/0x160
-> [    5.451870]  driver_probe_device+0x1f/0x90
-> [    5.452601]  __driver_attach+0xd2/0x1c0
-> [    5.453293]  bus_for_each_dev+0x88/0xd0
-> [    5.453989]  bus_add_driver+0x116/0x220
-> [    5.454672]  driver_register+0x59/0x100
-> [    5.455336]  i915_init+0x25/0xc0 [i915]
-> [    5.456104]  ? __pfx_i915_init+0x10/0x10 [i915]
-> [    5.456882]  do_one_initcall+0x5d/0x240
-> [    5.457511]  do_init_module+0x60/0x250
-> [    5.458126]  __do_sys_finit_module+0xac/0x120
-> [    5.458721]  do_syscall_64+0x60/0xc0
-> [    5.459314]  ? syscall_exit_to_user_mode+0x1b/0x40
-> [    5.459897]  ? do_syscall_64+0x6c/0xc0
-> [    5.460510]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-> [    5.461082] RIP: 0033:0x7febd20b0eb9
-> [    5.461648] Code: 08 89 e8 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 2f 1f 0d 00 f7 d8 64 89 01 48
-> [    5.462905] RSP: 002b:00007fffabb1ba78 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-> [    5.463554] RAX: ffffffffffffffda RBX: 0000561e6304f410 RCX: 00007febd20b0eb9
-> [    5.464201] RDX: 0000000000000000 RSI: 00007febd2244f0d RDI: 0000000000000015
-> [    5.464869] RBP: 00007febd2244f0d R08: 0000000000000000 R09: 000000000000000a
-> [    5.465512] R10: 0000000000000015 R11: 0000000000000246 R12: 0000000000020000
-> [    5.466124] R13: 0000000000000000 R14: 0000561e63032b60 R15: 000000000000000a
-> [    5.466700]  </TASK>
-> [    5.467271] Modules linked in: i915(+) drm_buddy video crc32_pclmul sr_mod hid_generic wmi crc32c_intel i2c_algo_bit sd_mod cdrom drm_display_helper cec usbhid rc_core ghash_clmulni_intel hid sha512_ssse3 ttm sha512_generic xhci_pci ehci_pci xhci_hcd ehci_hcd nvme ahci drm_kms_helper nvme_core libahci t10_pi libata psmouse aesni_intel scsi_mod crypto_simd i2c_i801 scsi_common crc64_rocksoft_generic cryptd i2c_smbus drm lpc_ich crc64_rocksoft crc_t10dif e1000e usbcore crct10dif_generic usb_common crct10dif_pclmul crc64 crct10dif_common button
-> [    5.469750] CR2: 0000000000000000
-> [    5.470364] ---[ end trace 0000000000000000 ]---
-> [    5.470971] RIP: 0010:intel_device_info_driver_create+0xf1/0x120 [i915]
-> [    5.471699] Code: 48 8b 97 80 1b 00 00 89 8f c0 1b 00 00 48 89 b7 b0 1b 00 00 48 89 97 b8 1b 00 00 0f b7 fd e8 76 e8 14 00 48 89 83 50 1b 00 00 <48> 8b 08 48 89 8b c4 1b 00 00 48 8b 48 08 48 89 8b cc 1b 00 00 8b
-> [    5.473034] RSP: 0018:ffffb8254044fb98 EFLAGS: 00010206
-> [    5.473698] RAX: 0000000000000000 RBX: ffff923076e80000 RCX: 0000000000000000
-> [    5.474371] RDX: 0000000000000260 RSI: 0000000100001000 RDI: 000000000000016a
-> [    5.475045] RBP: 000000000000016a R08: ffffb8254044fb00 R09: 0000000000000000
-> [    5.475725] R10: ffff922d02761de8 R11: 00657361656c6572 R12: ffffffffc0e5d140
-> [    5.476405] R13: ffff922d00b720d0 R14: 0000000076e80000 R15: ffff923078c0cae8
-> [    5.477124] FS:  00007febd19a18c0(0000) GS:ffff92307c000000(0000) knlGS:0000000000000000
-> [    5.477811] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-> [    5.478499] CR2: 0000000000000000 CR3: 000000010256e002 CR4: 00000000001706f0
->
-> Fixes: 69d439818fe5 ("drm/i915/display: Make display responsible for probing its own IP")
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8991
-> Cc: Matt Roper <matthew.d.roper@intel.com>
-> Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-> Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
-> Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-> Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20230804084600.1005818-1-jani.nikula@intel.com
-> (cherry picked from commit 1435188307d128671f677eb908e165666dd83652)
-> Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
->
-> diff --git a/drivers/gpu/drm/i915/display/intel_display_device.c b/drivers/gpu/drm/i915/display/intel_display_device.c
-> index f0ee9bcf661d..b0c6a2a86f2f 100644
-> --- a/drivers/gpu/drm/i915/display/intel_display_device.c
-> +++ b/drivers/gpu/drm/i915/display/intel_display_device.c
-> @@ -662,10 +662,24 @@ static const struct intel_display_device_info xe_lpdp_display = {
->  		BIT(TRANSCODER_C) | BIT(TRANSCODER_D),
->  };
->  
-> +/*
-> + * Separate detection for no display cases to keep the display id array simple.
-> + *
-> + * IVB Q requires subvendor and subdevice matching to differentiate from IVB D
-> + * GT2 server.
-> + */
-> +static bool has_no_display(struct pci_dev *pdev)
-> +{
-> +	static const struct pci_device_id ids[] = {
-> +		INTEL_IVB_Q_IDS(0),
-> +		{}
-> +	};
-> +
-> +	return pci_match_id(ids, pdev);
-> +}
-> +
->  #undef INTEL_VGA_DEVICE
-> -#undef INTEL_QUANTA_VGA_DEVICE
->  #define INTEL_VGA_DEVICE(id, info) { id, info }
-> -#define INTEL_QUANTA_VGA_DEVICE(info) { 0x16a, info }
->  
->  static const struct {
->  	u32 devid;
-> @@ -690,7 +704,6 @@ static const struct {
->  	INTEL_IRONLAKE_M_IDS(&ilk_m_display),
->  	INTEL_SNB_D_IDS(&snb_display),
->  	INTEL_SNB_M_IDS(&snb_display),
-> -	INTEL_IVB_Q_IDS(NULL),		/* must be first IVB in list */
->  	INTEL_IVB_M_IDS(&ivb_display),
->  	INTEL_IVB_D_IDS(&ivb_display),
->  	INTEL_HSW_IDS(&hsw_display),
-> @@ -775,6 +788,11 @@ intel_display_device_probe(struct drm_i915_private *i915, bool has_gmdid,
->  	if (has_gmdid)
->  		return probe_gmdid_display(i915, gmdid_ver, gmdid_rel, gmdid_step);
->  
-> +	if (has_no_display(pdev)) {
-> +		drm_dbg_kms(&i915->drm, "Device doesn't have display\n");
-> +		return &no_display;
-> +	}
-> +
->  	for (i = 0; i < ARRAY_SIZE(intel_display_ids); i++) {
->  		if (intel_display_ids[i].devid == pdev->device)
->  			return intel_display_ids[i].info;
->
-
--- 
-Jani Nikula, Intel Open Source Graphics Center
