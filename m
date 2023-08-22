@@ -2,57 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8F52783F98
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:38:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9455F784014
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:51:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235248AbjHVLiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 07:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49390 "EHLO
+        id S235453AbjHVLvw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 07:51:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55698 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235288AbjHVLiR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:38:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56DA0E6C;
-        Tue, 22 Aug 2023 04:37:45 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E38C36538F;
-        Tue, 22 Aug 2023 11:37:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18E44C433CB;
-        Tue, 22 Aug 2023 11:37:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692704259;
-        bh=28dopH/9gA+1tqzVakq4FVJFAhk5Y4JfAi/XUlsF/f4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YZJiZW76yiG6O11M/20YrhCJtBh65jOcAYC8EyR/iX2GDRTQp2DiYs5jGP7+RgY5y
-         BEC0tQ8xxqASqF7tVeakntMR/Xd7q7JmvIYZOMH4r+kSFOIEEe2jut3l3QzwM0P5lw
-         SKa9cw9UTKQoyU6OQ5rtBi7h959oM7eokLPQdxy7kz9DnSQRw8wmFTM+XGuN6Wlpsk
-         oUH8PMngulhOXU2Wqyk+2Uwj62eyLRJtnp6abPr8A8DmzeYMZjctH9jtLvnoGXPPwX
-         eas+rZeMXzv9QjeDM9RO0p6SOSfavdwLV0Rmp9rei63i0WxHiHCrl83jOdBhmc2gHb
-         rIVceH0ie6XQw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Chengfeng Ye <dg573847474@gmail.com>,
-        Manish Rangankar <mrangankar@marvell.com>,
-        "Martin K . Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>, njavali@marvell.com,
-        GR-QLogic-Storage-Upstream@marvell.com, jejb@linux.ibm.com,
-        linux-scsi@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 2/2] scsi: qedi: Fix potential deadlock on &qedi_percpu->p_work_lock
-Date:   Tue, 22 Aug 2023 07:37:34 -0400
-Message-Id: <20230822113735.3551762-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230822113735.3551762-1-sashal@kernel.org>
-References: <20230822113735.3551762-1-sashal@kernel.org>
+        with ESMTP id S235452AbjHVLvw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:51:52 -0400
+Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19BA5CD1;
+        Tue, 22 Aug 2023 04:51:29 -0700 (PDT)
+Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1bba48b0bd2so27912115ad.3;
+        Tue, 22 Aug 2023 04:51:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692705088; x=1693309888;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=TR2xuLZfSkQwU3fKeNoiqzMS9NnHXyWCvWXVgRfiJxk=;
+        b=gX0e9f8eyApzuUOec0VlM2bKlg31sXYKwP/LdvdrejRsMYqW1/kd6JnE/8csnm8C+Q
+         TA8daDK/S/dGZpp00bFveZPul5lkptKaJbK4qxaOmfQxddS03+HtX8RWhpx9cem/+WEq
+         9vz66XbG2kgOMaGxzGRo9G0FeTRSUI34dcd0nLExJptlquujPP11HrFm562OMKvqI/lU
+         k8pVzK+mVEMrKJ2lngny1x4t1GtIiDsyINSNF7IpQrFSqzXdiorplxggcuRz8C1B3v0x
+         6gtXB7qMV4sJWqYJYvr5BRjiC6E5i9eGYXTnDsCQEWNmII+K2+Px2//9dhCy9lpPjdhQ
+         Gi0Q==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692705088; x=1693309888;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=TR2xuLZfSkQwU3fKeNoiqzMS9NnHXyWCvWXVgRfiJxk=;
+        b=E9RykIn6bMVFpuegoN4HP51GrJoDUZ24zeBvdqjBVLaGq10P429mW4KoTdbWVdYahm
+         czj8ZWnAYuHpUOfW1UeuEq9xKd5jBlpq2kyTP6WsoU2y28w10jsn6NuokGO6WoQgjHon
+         eytxthwcw79Ji2AwrhnoPfoTY7lpHy154SVdClqFnlqva5ee9/sAHyNSOKDpp2ht/Rrz
+         8nFWojXdpO+9b+xuL8IxhXdHnDo3pXNX6VrphyPgUWRnKfeNR1aSJMzdiXCpfNsbNn+q
+         U6/CNjMOeBGcmuTKU/0fCMJvWmT40eyAWa4tzG3+i5gMp8ni3KxjRnO/AN2BGxVAFyco
+         R2Cg==
+X-Gm-Message-State: AOJu0YzPely84/F8A2BHTOFOPH/TF0yD/MCwBUgpDPqrpN5IfMzNTpgD
+        BSSpeAp61X/i2+RvHEQ4x2U=
+X-Google-Smtp-Source: AGHT+IFou1M3WdOt6QED19FVN7h633yC1gfrkYv2Z0aullsB01KfCUrX7NzPPWXluJahGeiT+0GyXA==
+X-Received: by 2002:a17:903:228a:b0:1bb:2ccc:c321 with SMTP id b10-20020a170903228a00b001bb2cccc321mr8116500plh.48.1692705088074;
+        Tue, 22 Aug 2023 04:51:28 -0700 (PDT)
+Received: from raven-lpc.lan (li1452-23.members.linode.com. [139.162.39.23])
+        by smtp.gmail.com with ESMTPSA id jj4-20020a170903048400b001b9f7bc3e77sm5082611plb.189.2023.08.22.04.51.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 04:51:27 -0700 (PDT)
+From:   Raymond Jay Golo <rjgolo@gmail.com>
+To:     ronan@rjp.ie
+Cc:     jarkko@kernel.org, linux-integrity@vger.kernel.org,
+        linux-kernel@vger.kernel.org, mario.limonciello@amd.com, ps@pks.im,
+        rjgolo@gmail.com, stable@vger.kernel.org, todd.e.brandt@intel.com
+Subject: Re: [PATCH v2] tpm: Don't make vendor check required for probe
+Date:   Tue, 22 Aug 2023 19:50:49 +0800
+Message-ID: <20230822115049.6276-1-rjgolo@gmail.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <5c5de3dee5e5fcc4fbdf80226f0697f6269c585f@rjp.ie>
+References: <5c5de3dee5e5fcc4fbdf80226f0697f6269c585f@rjp.ie>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.323
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,65 +72,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
+> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
+> reported systems the TPM doesn't reply at bootup and returns back the
+> command code. This makes the TPM fail probe.
+> 
+> As this isn't crucial for anything but AMD fTPM and AMD fTPM works, check
+> the chip vendor and if it's not AMD don't run the checks.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> Reported-by: Patrick Steinhardt <ps@pks.im>
+> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
+> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> ---
+> v1->v2:
+>  * Check x86 vendor for AMD
+> ---
+>  drivers/char/tpm/tpm_crb.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+> index 9eb1a18590123..7faf670201ccc 100644
+> --- a/drivers/char/tpm/tpm_crb.c
+> +++ b/drivers/char/tpm/tpm_crb.c
+> @@ -465,8 +465,12 @@ static bool crb_req_canceled(struct tpm_chip *chip, u8 status)
+>  
+>  static int crb_check_flags(struct tpm_chip *chip)
+>  {
+> +	int ret = 0;
+> +#ifdef CONFIG_X86
+>  	u32 val;
+> -	int ret;
+> +
+> +	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
+> +		return ret;
+>  
+>  	ret = crb_request_locality(chip, 0);
+>  	if (ret)
+> @@ -481,6 +485,7 @@ static int crb_check_flags(struct tpm_chip *chip)
+>  
+>  release:
+>  	crb_relinquish_locality(chip, 0);
+> +#endif
+>  
+>  	return ret;
+>  }
+> -- 
+> 2.34.1
 
-[ Upstream commit dd64f80587190265ca8a0f4be6c64c2fda6d3ac2 ]
+Fixes problem on my machine.
 
-As &qedi_percpu->p_work_lock is acquired by hard IRQ qedi_msix_handler(),
-other acquisitions of the same lock under process context should disable
-IRQ, otherwise deadlock could happen if the IRQ preempts the execution
-while the lock is held in process context on the same CPU.
-
-qedi_cpu_offline() is one such function which acquires the lock in process
-context.
-
-[Deadlock Scenario]
-qedi_cpu_offline()
-    ->spin_lock(&p->p_work_lock)
-        <irq>
-        ->qedi_msix_handler()
-        ->edi_process_completions()
-        ->spin_lock_irqsave(&p->p_work_lock, flags); (deadlock here)
-
-This flaw was found by an experimental static analysis tool I am developing
-for IRQ-related deadlocks.
-
-The tentative patch fix the potential deadlock by spin_lock_irqsave()
-under process context.
-
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230726125655.4197-1-dg573847474@gmail.com
-Acked-by: Manish Rangankar <mrangankar@marvell.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- drivers/scsi/qedi/qedi_main.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
-index 09f57ef35990c..b8b177018031c 100644
---- a/drivers/scsi/qedi/qedi_main.c
-+++ b/drivers/scsi/qedi/qedi_main.c
-@@ -1669,8 +1669,9 @@ static int qedi_cpu_offline(unsigned int cpu)
- 	struct qedi_percpu_s *p = this_cpu_ptr(&qedi_percpu);
- 	struct qedi_work *work, *tmp;
- 	struct task_struct *thread;
-+	unsigned long flags;
- 
--	spin_lock_bh(&p->p_work_lock);
-+	spin_lock_irqsave(&p->p_work_lock, flags);
- 	thread = p->iothread;
- 	p->iothread = NULL;
- 
-@@ -1681,7 +1682,7 @@ static int qedi_cpu_offline(unsigned int cpu)
- 			kfree(work);
- 	}
- 
--	spin_unlock_bh(&p->p_work_lock);
-+	spin_unlock_irqrestore(&p->p_work_lock, flags);
- 	if (thread)
- 		kthread_stop(thread);
- 	return 0;
--- 
-2.40.1
-
+Tested-by: Raymond Jay Golo <rjgolo@gmail.com>
