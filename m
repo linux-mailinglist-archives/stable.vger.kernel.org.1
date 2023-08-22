@@ -2,135 +2,164 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05DDB78456F
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 17:27:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4D8F7845A3
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 17:34:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233532AbjHVP1I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 11:27:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40198 "EHLO
+        id S237163AbjHVPeU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 11:34:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232678AbjHVP1I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 11:27:08 -0400
-Received: from mail-wm1-x334.google.com (mail-wm1-x334.google.com [IPv6:2a00:1450:4864:20::334])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 254311B0;
-        Tue, 22 Aug 2023 08:27:06 -0700 (PDT)
-Received: by mail-wm1-x334.google.com with SMTP id 5b1f17b1804b1-3fef56f7223so14557885e9.3;
-        Tue, 22 Aug 2023 08:27:06 -0700 (PDT)
+        with ESMTP id S235936AbjHVPeU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 11:34:20 -0400
+Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45556113
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 08:34:18 -0700 (PDT)
+Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-79244dd2e49so34362039f.1
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 08:34:18 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692718024; x=1693322824;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=P8Gu3e55JmS9M6j7VGf0BGDN5maX8MZT1jBCyJ1KpJs=;
-        b=pTS5glFP09xWkddToRrsvw+rzji+JZnjxa/vXdk6ubi1lRuxH7pU3SAek6mu4kfyX7
-         NoBwTFX9hkU3AtN7X+p887Z3xoDwu/Hns1wxrS08Ixhox9mA1BOpU23XxAU3tzNV7lHO
-         52xd6+JParNxxT1zFLgBVu+NmOs6N9DtaUTmil7UBpWknQbM4ZqciGLo4UElvurwhG+a
-         fc49p18gEc2PwyIcojYpmaiLFJjf+YhtPrIL49CIa8y4RnFiXU+EyFPauNKow4NNjX1l
-         Xx46IUt49eqEh/NusZQn934tksJlhqkgZMoDSWvwitGxCvYINv+vnS17WkLeN4uyZx4W
-         rpOA==
+        d=joelfernandes.org; s=google; t=1692718457; x=1693323257;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=23HZEtSy74oKRHG4dRJMMnNxq2Nhz1/Vw/8CyykmCFA=;
+        b=sy4v8ZilSundFmjh1wetcR8Cq484nYree/rTTCQXHX1HbVxrtmaDT+XSjMzjOsx7Ip
+         03VhBqHfzRlt7wI8RITAWh3v2kxBml8XLfjbBkObFoqrUSaux5+qwJ26bM2YiO54yiFu
+         vbj51a8T39bvpCTKbhZOI34cKH/I1j2PkfeEs=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692718024; x=1693322824;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:sender
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=P8Gu3e55JmS9M6j7VGf0BGDN5maX8MZT1jBCyJ1KpJs=;
-        b=Wu5UlMFbgaxfEicYqZv9vNlOa/l4owYJLSB4go6xDfuWQh2QlRMhq0qVBuTdISsCsF
-         Z0wJ62ngCTTRnzz42CwsJlUEDqCuawkvq1RmJzJ48rbxmuL6IAz6ATqkhME9Df8M7ZXU
-         CY1Fq92IqLdZxstr/vYuFlGz8opI15SC5WvmbxPaDUfMw6McCOfHwbuBp3vpWt1DL4O7
-         ETVy9svMFdeWV9IaF1MKqyYyuRiY4AB3lfqf2g/2rvEfhPIbFDLHEdQnqqyTfxRaPRLw
-         0Z6iupNJM6eEHioHb7tiDfcrl7R/4fqtlviVsy1ha3nRBw4OgtqS2nP9QawxJ4p1P5XP
-         YFjg==
-X-Gm-Message-State: AOJu0YwwrDYCYvGUWPkP5QfPbYHhj9pt0X5M6HrYe5soIwXSJTTkX/dq
-        ZYvO6LoP8Xuw2hGMQckeatc=
-X-Google-Smtp-Source: AGHT+IGyrQGqEFG9EGxeiNZupgIw8uPE0bXsgKS9m9DzgYCB57XrzUgOv60079WGh4qOE2pgnuBMYg==
-X-Received: by 2002:adf:fed1:0:b0:319:7421:fde with SMTP id q17-20020adffed1000000b0031974210fdemr7888446wrs.32.1692718024302;
-        Tue, 22 Aug 2023 08:27:04 -0700 (PDT)
-Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
-        by smtp.gmail.com with ESMTPSA id c10-20020adffb4a000000b00317a29af4b2sm16022296wrs.68.2023.08.22.08.27.03
+        d=1e100.net; s=20221208; t=1692718457; x=1693323257;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=23HZEtSy74oKRHG4dRJMMnNxq2Nhz1/Vw/8CyykmCFA=;
+        b=EldSj8u3hNVz+kjT/+F60aOAj1obgPry6uSfU37xsxqpSZyGfU2QCDxutE4bbt5Nfe
+         WOay+9mUKQeAmgUx+StmpQBxNGTCTH+xFrGI6uRWYUMvVQ3+EV7DWAcR5BKnebauX7ig
+         nWK3i+2OoFZIIGONUx06flH3Wm5aiDX7AgH5zzpNXE3bUu+bQUj+fgKaeDj7N+wBgYac
+         aFnScAEZfMC2LsE+s54ifQBv19/aKJgvOOLoZG63xPAVkkYjsT8gvOd5X0NKco/64Shw
+         krpStbeEqvsYBjNlHtpXdmMrqhkHnJlrSkctx/QadHgxXCOh/v56Z41pwM7V9OBhnz/l
+         6t1A==
+X-Gm-Message-State: AOJu0YxKv27YvYmMKpfjf7Y76tdD7mAOuR+xfA89axCriA475RrqiWv0
+        vYys9g4BKtUK32TnK6haKAon7Q==
+X-Google-Smtp-Source: AGHT+IHGD5ggcRJRfTk5XATu8k1Uz0pBZJzm3JpEKzEMirIhJduTlwj54ThHlo9nj2B2EDZdQpso8g==
+X-Received: by 2002:a5d:8550:0:b0:783:6272:afbb with SMTP id b16-20020a5d8550000000b007836272afbbmr63912ios.9.1692718457609;
+        Tue, 22 Aug 2023 08:34:17 -0700 (PDT)
+Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id g4-20020a02c544000000b0042b3ad1656bsm3163204jaj.45.2023.08.22.08.34.16
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 08:27:03 -0700 (PDT)
-Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
-Received: by eldamar.lan (Postfix, from userid 1000)
-        id A90CABE2DE0; Tue, 22 Aug 2023 17:27:02 +0200 (CEST)
-Date:   Tue, 22 Aug 2023 17:27:02 +0200
-From:   Salvatore Bonaccorso <carnil@debian.org>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
-Message-ID: <ZOTTxsW5IGhOO8IW@eldamar.lan>
-References: <20230821194122.695845670@linuxfoundation.org>
- <CA+G9fYvkBSb-i_6unB3bRLwRibVtZ3snYDe_gG+bsZehu3Hv3w@mail.gmail.com>
+        Tue, 22 Aug 2023 08:34:16 -0700 (PDT)
+Date:   Tue, 22 Aug 2023 15:34:16 +0000
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Huacai Chen <chenhuacai@loongson.cn>
+Cc:     "Paul E . McKenney" <paulmck@kernel.org>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Zqiang <qiang.zhang1211@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        chenhuacai@kernel.org, rcu@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: Re: [PATCH V3] rcu: Update jiffies locally in rcu_cpu_stall_reset()
+Message-ID: <20230822153416.GA72567@google.com>
+References: <20230822040248.329442-1-chenhuacai@loongson.cn>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+G9fYvkBSb-i_6unB3bRLwRibVtZ3snYDe_gG+bsZehu3Hv3w@mail.gmail.com>
-X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+In-Reply-To: <20230822040248.329442-1-chenhuacai@loongson.cn>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
-
-[Adding Peter Zijlstra to CC]
-
-On Tue, Aug 22, 2023 at 04:25:22PM +0530, Naresh Kamboju wrote:
-> On Tue, 22 Aug 2023 at 01:21, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > This is the start of the stable review cycle for the 6.1.47 release.
-> > There are 194 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> >
-> > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> > Anything received after that time might be too late.
-> >
-> > The whole patch series can be found in one patch at:
-> >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.47-rc1.gz
-> > or in the git tree and branch at:
-> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > and the diffstat can be found below.
-> >
-> > thanks,
-> >
-> > greg k-h
+On Tue, Aug 22, 2023 at 12:02:48PM +0800, Huacai Chen wrote:
+> The KGDB initial breakpoint gets an rcu stall warning after commit
+> a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in
+> rcu_cpu_stall_reset()").
 > 
-> Results from Linaro’s test farm.
-> No regressions on arm64, arm, x86_64, and i386.
+> [   53.452051] rcu: INFO: rcu_preempt self-detected stall on CPU
+[...]
 > 
-> Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+> [1] https://lore.kernel.org/rcu/20230814020045.51950-1-chenhuacai@loongson.cn/T/#t
 > 
+> Cc: stable@vger.kernel.org
+> Fixes: a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall detection in rcu_cpu_stall_reset()")
+> Reported-off-by: Binbin Zhou <zhoubinbin@loongson.cn>
+> Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> ---
+> V2: Use NMI safe functions.
+> V3: Add comments to explain why.
 > 
-> NOTE:
-> Kernel warnings noticed on x86_64 while booting the kernel.
-> Paul E. McKenney reported this last week [1] and discussions email
-> thread provided here.
+>  kernel/rcu/tree_stall.h | 17 ++++++++++++++++-
+>  1 file changed, 16 insertions(+), 1 deletion(-)
 > 
->  [1] https://lore.kernel.org/lkml/4dc3d0ec-b827-4bce-8927-cfa5d837fd03@paulmck-laptop/T/
+> diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+> index b10b8349bb2a..e4e53113d062 100644
+> --- a/kernel/rcu/tree_stall.h
+> +++ b/kernel/rcu/tree_stall.h
+> @@ -150,11 +150,26 @@ static void panic_on_rcu_stall(void)
+>   * rcu_cpu_stall_reset - restart stall-warning timeout for current grace period
+>   *
+>   * The caller must disable hard irqs.
+> + *
+> + * The jiffies updating may be delayed for a very long time due to tickless and
+> + * irq disabled, especially in the KGDB case, so we need to add the delayed time
+> + * (delta) to rcu_state.jiffies_stall.
+> + *
+> + * This function may be called in NMI context, so we cannot use ktime_get_ns()
+> + * and ktime_get_coarse_ns(). Instead, we use their inaccurate but safe friends
+> + * ktime_get_mono_fast_ns() and ktime_get_seconds() which will cause rcu_state.
+> + * jiffies_stall to be a little large than expected (harmless and safer).
+>   */
+>  void rcu_cpu_stall_reset(void)
+>  {
+> +	u64 curr, last, delta;
+> +
+> +	curr = ktime_get_mono_fast_ns();
+> +	last = ktime_get_seconds() * NSEC_PER_SEC;
+> +	delta = nsecs_to_jiffies(curr - last);
+> +
+>  	WRITE_ONCE(rcu_state.jiffies_stall,
+> -		   jiffies + rcu_jiffies_till_stall_check());
+> +		   jiffies + delta + rcu_jiffies_till_stall_check());
+>  }
 
-Seeing the same warning for the 6.1.47-rc1, which is missing
-4ae68b26c3ab ("objtool/x86: Fix SRSO mess"). Unfortunately the commit
-will not apply cleanly to 6.1.y. 
+I prefer the following diff on top of your patch to take advantage of UBSAN
+detecting overflows.
 
-I guess we need at least as well dbcdbdfdf137 ("objtool: Rework
-instruction -> symbol mapping"), but not sure this is enough.
+If you take my diff, feel free to add:
+Reviewed-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 
-Peter, is this correct?
+---8<-----------------------
 
-Regards,
-Salvatore
+diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
+index 5e9e4779bdf1..3398cf2d19c5 100644
+--- a/kernel/rcu/tree_stall.h
++++ b/kernel/rcu/tree_stall.h
+@@ -162,14 +162,15 @@ static void panic_on_rcu_stall(void)
+  */
+ void rcu_cpu_stall_reset(void)
+ {
+-	u64 curr, last, delta;
++	ktime_t last, delta_ns;
++	u64 delta_jiff;
+ 
+-	curr = ktime_get_mono_fast_ns();
+ 	last = ktime_get_seconds() * NSEC_PER_SEC;
+-	delta = nsecs_to_jiffies(curr - last);
++	delta_ns = ktime_sub(ktime_get_mono_fast_ns(), last);
++	delta_jiff = nsecs_to_jiffies(delta_ns);
+ 
+ 	WRITE_ONCE(rcu_state.jiffies_stall,
+-		   jiffies + delta + rcu_jiffies_till_stall_check());
++		   jiffies + delta_jiff + rcu_jiffies_till_stall_check());
+ }
+ 
+ //////////////////////////////////////////////////////////////////////////////
