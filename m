@@ -2,113 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95DA3783BEC
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 10:39:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 920D9783C20
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 10:52:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233903AbjHVIj5 convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Tue, 22 Aug 2023 04:39:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40034 "EHLO
+        id S233279AbjHVIwn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 04:52:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231584AbjHVIj4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 04:39:56 -0400
-Received: from mail-vs1-f53.google.com (mail-vs1-f53.google.com [209.85.217.53])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27B7019C;
-        Tue, 22 Aug 2023 01:39:55 -0700 (PDT)
-Received: by mail-vs1-f53.google.com with SMTP id ada2fe7eead31-44d48168e2cso749129137.2;
-        Tue, 22 Aug 2023 01:39:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692693594; x=1693298394;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ffUMKIz9ZLdaXCPPtKWL3jgimu+Ma0fYS9zNnJUWmm8=;
-        b=fdy3R3os0kgX36XlZsm3lhVlkOQZL30L+CGQYsljUhH7q6BWH/vfzznIIFrN+pMHeU
-         jcAR9tJz1mXLA+nMCdCZSIi9HYIEb+SOW5edz6SoHY2JVfmcj4i4nY0kw6YCkz0Ipt6E
-         Rx+3MmJ8LF7Mfvz23KQRPPTa5eftUdbDh6WKAsASZ0xZKNfLSA2g4zh8BVcnBV6XrB1s
-         kkadG/55s/0qbS51/VL9FrePBTqy1dCUdSQzdbCstG+8KdWSTf1GringNVH1d+HyHlxK
-         IRhvNgrzZYdpFf1hpp+gbWdOzRcGVyzbO2GYaA77xyVi6FSESD2vxDYjc8/FOkdLmAKq
-         RV+A==
-X-Gm-Message-State: AOJu0Yx8ShGCOrfuK41dWVTVTIa3hFyOunpHW+InpDDaTXq+CJeGqM3j
-        6nOZvBttYsYIBaKeNUW7icRW5ouBjboGww==
-X-Google-Smtp-Source: AGHT+IGgpfgoMkmg5I9ySgax7fR+rmDlspAMEf7ropcByzcKvErM4SgMrxr3gU2ccAA1ZrX4D3gO2A==
-X-Received: by 2002:a67:d08a:0:b0:447:ad77:f034 with SMTP id s10-20020a67d08a000000b00447ad77f034mr7567719vsi.7.1692693593995;
-        Tue, 22 Aug 2023 01:39:53 -0700 (PDT)
-Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
-        by smtp.gmail.com with ESMTPSA id u184-20020a8147c1000000b005832ca42ba6sm2677321ywa.3.2023.08.22.01.39.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Aug 2023 01:39:53 -0700 (PDT)
-Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d6fcffce486so4104362276.3;
-        Tue, 22 Aug 2023 01:39:53 -0700 (PDT)
-X-Received: by 2002:a5b:64a:0:b0:c47:56c9:a9bd with SMTP id
- o10-20020a5b064a000000b00c4756c9a9bdmr7427832ybq.6.1692693592514; Tue, 22 Aug
- 2023 01:39:52 -0700 (PDT)
+        with ESMTP id S232330AbjHVIwm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 04:52:42 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC48ECE;
+        Tue, 22 Aug 2023 01:52:40 -0700 (PDT)
+Received: from localhost.localdomain (unknown [39.45.215.81])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: usama.anjum)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id EB99D66071F4;
+        Tue, 22 Aug 2023 09:52:36 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1692694359;
+        bh=NGdGyOxLJtlnYFKmnZVtWI/rXq95i4OikjQx7fOm8Ls=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ImK/YbGqOs3zVZ4bLjzr+ehQ9VcISLRyIUKyI3aYHrysIzK3idPwjhnXTy0EhchmC
+         /qUAIIGLrfxdX3+E2wmfZPNxtBd1SFiiI3opX9X7afDeZl/ehbyVo0aTuzknwtcbdj
+         8rnefvKwV/99Bz3ncGpMWjMnzdqOJVHL0ttjN4FNqX63EgSDsgK5BZ5NXTL58MK172
+         4pWOE7TJgSNUJBDJUm8Zx6FDhIslAWwVt7DYBbvAm8oLv8AlyExsngxG2AHl8JoXyC
+         WDiIl2l6kyvo3Z3X4HHUciLiKQy1i7de34w2OkIYnHOWrYLa3sREQfnW7D8pzjiHZZ
+         L02PLQSjl0s2A==
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@elte.hu>
+Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        kernel@collabora.com, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+Subject: [PATCH v2] tty/sysrq: replace smp_processor_id() with get_cpu()
+Date:   Tue, 22 Aug 2023 13:52:03 +0500
+Message-Id: <20230822085204.2575767-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230818234903.9226-1-schmitzmic@gmail.com> <20230818234903.9226-2-schmitzmic@gmail.com>
- <CAMuHMdUdqRZcwHnWCb0SJ34JM3BqEyejsgWajwsbe_F+6xZMjg@mail.gmail.com> <fd0b71fa-783e-41c0-ab2b-02656286d2ab@gmail.com>
-In-Reply-To: <fd0b71fa-783e-41c0-ab2b-02656286d2ab@gmail.com>
-From:   Geert Uytterhoeven <geert@linux-m68k.org>
-Date:   Tue, 22 Aug 2023 10:39:40 +0200
-X-Gmail-Original-Message-ID: <CAMuHMdUokks=1Z9vDkzYdqTXEWyhT5WZk8w5FgmppZBeGP2nrg@mail.gmail.com>
-Message-ID: <CAMuHMdUokks=1Z9vDkzYdqTXEWyhT5WZk8w5FgmppZBeGP2nrg@mail.gmail.com>
-Subject: Re: [PATCH v3 1/2] ata: pata_falcon: fix IO base selection for Q40
-To:     Michael Schmitz <schmitzmic@gmail.com>
-Cc:     dlemoal@kernel.org, linux-ide@vger.kernel.org,
-        linux-m68k@vger.kernel.org, will@sowerbutts.com, rz@linux-m68k.org,
-        stable@vger.kernel.org, Finn Thain <fthain@linux-m68k.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Michael,
+The smp_processor_id() shouldn't be called from preemptible code.
+Instead use get_cpu() and put_cpu() which disables preemption in
+addition to getting the processor id. This fixes the following bug:
 
-On Tue, Aug 22, 2023 at 10:27 AM Michael Schmitz <schmitzmic@gmail.com> wrote:
-> Am 21.08.2023 um 19:50 schrieb Geert Uytterhoeven:
-> >> +       ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
-> >> +
-> >> +       if (base_res) {         /* only Q40 has IO resources */
-> >> +               io_offset = 0x10000;
-> >> +               reg_scale = 1;
-> >> +               base = (void __iomem *)base_res->start;
-> >> +               ctl_base = (void __iomem *)ctl_res->start;
-> >> +
-> >> +               ata_port_desc(ap, "cmd %pa ctl %pa",
-> >> +                             &base_res->start,
-> >> +                             &ctl_res->start);
-> >
-> > This can be  moved outside the else, using %px to format base and
-> > ctl_base.
->
-> I get a checkpatch warning for %px, but not for %pa (used for .
-> &ap->ioaddr.data_addr). What gives?
->
-> WARNING: Using vsprintf specifier '%px' potentially exposes the kernel
-> memory layout, if you don't really need the address please consider
-> using '%p'.
-> #148: FILE: drivers/ata/pata_falcon.c:194:
-> +       ata_port_desc(ap, "cmd %px ctl %px data %pa",
-> +                     base, ctl_base, &ap->ioaddr.data_addr);
+[  119.143590] sysrq: Show backtrace of all active CPUs
+[  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
+[  119.144586] caller is debug_smp_processor_id+0x20/0x30
+[  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
+[  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
+[  119.145053] Call trace:
+[  119.145093]  dump_backtrace+0x0/0x1a0
+[  119.145122]  show_stack+0x18/0x70
+[  119.145141]  dump_stack+0xc4/0x11c
+[  119.145159]  check_preemption_disabled+0x100/0x110
+[  119.145175]  debug_smp_processor_id+0x20/0x30
+[  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
+[  119.145211]  __handle_sysrq+0x8c/0x1a0
+[  119.145227]  write_sysrq_trigger+0x94/0x12c
+[  119.145247]  proc_reg_write+0xa8/0xe4
+[  119.145266]  vfs_write+0xec/0x280
+[  119.145282]  ksys_write+0x6c/0x100
+[  119.145298]  __arm64_sys_write+0x20/0x30
+[  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
+[  119.145332]  do_el0_svc+0x24/0x8c
+[  119.145348]  el0_svc+0x10/0x20
+[  119.145364]  el0_sync_handler+0x134/0x140
+[  119.145381]  el0_sync+0x180/0x1c0
 
-You can ignore this.
-%p prints obfuscated pointer values, so they are useless here.
-%px prints an unobfuscated pointer value, which is fine here, as it's
-not a pointer to kernel memory that an attacker can use, but just the
-virtual address of an I/O device mapped one-to-one.
+Cc: stable@vger.kernel.org
+Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+---
+ drivers/tty/sysrq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Gr{oetje,eeting}s,
-
-                        Geert
-
+diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
+index 23198e3f1461a..6b4a28bcf2f5f 100644
+--- a/drivers/tty/sysrq.c
++++ b/drivers/tty/sysrq.c
+@@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
+ 		if (in_hardirq())
+ 			regs = get_irq_regs();
+ 
+-		pr_info("CPU%d:\n", smp_processor_id());
++		pr_info("CPU%d:\n", get_cpu());
+ 		if (regs)
+ 			show_regs(regs);
+ 		else
+ 			show_stack(NULL, NULL, KERN_INFO);
+ 
+ 		schedule_work(&sysrq_showallcpus);
++		put_cpu();
+ 	}
+ }
+ 
 -- 
-Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+2.40.1
 
-In personal conversations with technical people, I call myself a hacker. But
-when I'm talking to journalists I just say "programmer" or something like that.
-                                -- Linus Torvalds
