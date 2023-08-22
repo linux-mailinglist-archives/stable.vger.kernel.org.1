@@ -2,58 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22AE6783C73
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 11:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA7B783C81
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 11:07:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233174AbjHVJFH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 05:05:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51690 "EHLO
+        id S229663AbjHVJHk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 05:07:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232203AbjHVJFG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 05:05:06 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CE2BCE
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 02:05:03 -0700 (PDT)
-Received: from [IPv6:2a00:23c8:b70a:ae01:f948:d864:621d:4c96] (unknown [IPv6:2a00:23c8:b70a:ae01:f948:d864:621d:4c96])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-256) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: obbardc)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 48033660723E;
-        Tue, 22 Aug 2023 10:05:02 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1692695102;
-        bh=3bJQrDmqmXC8YyqK341ofGRp+uMO8KhwC8wGTc0wclE=;
-        h=Subject:From:To:Cc:Date:In-Reply-To:References:From;
-        b=UYVP/Jm6sM7fR8HtN+NXJ4H7O91if9WculPUkFaqwK5P0FggMboxoDTKfWJAsuKNK
-         1e62bodp79mlmosAB44tdw7s2m7GoHxuIva1aZ/Uufch6hsUlwDOwyzSs1p6XRC7TS
-         /AjT32CYYeesvhJ8HT8lwxKKQG73eqa9jFSENiSnMVKWngT6JJJwztCwA+k5rbnDQd
-         33kml1fOMEgDoEf/ys9MddDYwhcuKk75kmYLzniC8gBolXnHGpdnXJ8JxrnKmva80b
-         6mDVzvAiCDn39Zx8yg5qoGulSMLFx9yjQ55hQu6CsnCjW/YIuUvNaSp0PKmLTA3VaO
-         nvuSVMISeb3MQ==
-Message-ID: <69bffdd6106795aae9d2278c90281e952302fe86.camel@collabora.com>
-Subject: Re: FAILED: patch "[PATCH] arm64: dts: rockchip: Disable HS400 for
- eMMC on ROCK Pi 4" failed to apply to 5.4-stable tree
-From:   Christopher Obbard <chris.obbard@collabora.com>
-To:     gregkh@linuxfoundation.org, dev@folker-schwesinger.de,
-        heiko@sntech.de
-Cc:     stable@vger.kernel.org
-Date:   Tue, 22 Aug 2023 10:04:44 +0100
-In-Reply-To: <2023082156-capped-subtext-c4e2@gregkh>
-References: <2023082156-capped-subtext-c4e2@gregkh>
-Autocrypt: addr=chris.obbard@collabora.com; prefer-encrypt=mutual;
- keydata=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
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.49.2-3 
+        with ESMTP id S234230AbjHVJHi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 05:07:38 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A884CE
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 02:07:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692695254; x=1724231254;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=GS94H8wBWk8mJ93PlyebEM7v+Rlu9Dlo6pqFEg1EblE=;
+  b=BrS7Bpr5dIvBjqXW6k5+mjgbG4V1D85sn+9hz1opTXJaXwCPicjsqdAR
+   jE0sy4hQJB+htjldhuFD4uSluGkuC5E2hDT+5Ku4SVFBVcFm/w0VClHo9
+   PyMSgfXcbCZDMQSqvuLV3gXPn74RYplpg1tbUXFpmPvwMDZ0r6C49OfK0
+   NYgiF9pfjJUBcHxH9g5rV7Xbj90q1gYxWBoZh+BzUt3TXrlu9T9aWO+MK
+   EhdwmwMwB8PpFV6uUF566y6q3by5o6PEsKpmCVQ4TJISW8y8yn7NBG7d9
+   fl+u5fPDZ023HiifFxb1YQwh6zjHx6jQdbQyf/doJ63JYJlhq4KUecIM2
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="460192042"
+X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
+   d="scan'208";a="460192042"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 02:07:32 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10809"; a="982803498"
+X-IronPort-AV: E=Sophos;i="6.01,192,1684825200"; 
+   d="scan'208";a="982803498"
+Received: from jkrzyszt-mobl2.ger.corp.intel.com ([10.213.11.91])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 02:07:31 -0700
+From:   Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+To:     stable@vger.kernel.org
+Cc:     Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Subject: [PATCH 5.10.y] drm/i915: Fix premature release of request's reusable memory
+Date:   Tue, 22 Aug 2023 11:05:43 +0200
+Message-ID: <20230822090542.44189-2-janusz.krzysztofik@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <2023080742-ion-implement-ceb1@gregkh>
+References: <2023080742-ion-implement-ceb1@gregkh>
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,138 +59,248 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-For reference, I don't think it's worth carrying this patch to 5.4-stable.
-@Heiko, please correct me if you think I am wrong.
+Infinite waits for completion of GPU activity have been observed in CI,
+mostly inside __i915_active_wait(), triggered by igt@gem_barrier_race or
+igt@perf@stress-open-close.  Root cause analysis, based of ftrace dumps
+generated with a lot of extra trace_printk() calls added to the code,
+revealed loops of request dependencies being accidentally built,
+preventing the requests from being processed, each waiting for completion
+of another one's activity.
 
-On Mon, 2023-08-21 at 19:09 +0200, gregkh@linuxfoundation.org wrote:
->=20
-> The patch below does not apply to the 5.4-stable tree.
-> If someone wants it applied there, or to any other stable or longterm
-> tree, then please email the backport, including the original git commit
-> id to <stable@vger.kernel.org>.
->=20
-> To reproduce the conflict and resubmit, you may use the following command=
-s:
->=20
-> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.gi=
-t/=C2=A0linux-5.4.y
-> git checkout FETCH_HEAD
-> git cherry-pick -x cee572756aa2cb46e959e9797ad4b730b78a050b
-> # <resolve conflicts, build, test, etc.>
-> git commit -s
-> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082156-=
-capped-subtext-c4e2@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
->=20
-> Possible dependencies:
->=20
-> cee572756aa2 ("arm64: dts: rockchip: Disable HS400 for eMMC on ROCK Pi 4"=
-)
-> 06c5b5690a57 ("arm64: dts: rockchip: sort nodes/properties on rk3399-rock=
--4")
-> 69448624b770 ("arm64: dts: rockchip: fix regulator name on rk3399-rock-4"=
-)
-> 8240e87f16d1 ("arm64: dts: rockchip: fix audio-supply for Rock Pi 4")
-> 697dd494cb1c ("arm64: dts: rockchip: add SPDIF node for ROCK Pi 4")
-> 65bd2b8bdb3b ("arm64: dts: rockchip: add ES8316 codec for ROCK Pi 4")
-> 328c6112787b ("arm64: dts: rockchip: fix supplies on rk3399-rock-pi-4")
-> b5edb0467370 ("arm64: dts: rockchip: Mark rock-pi-4 as rock-pi-4a dts")
-> 2bc65fef4fe4 ("arm64: dts: rockchip: rename label and nodename pinctrl su=
-bnodes that end with gpio")
-> 7a87adbc4afe ("arm64: dts: rockchip: enable DC charger detection pullup o=
-n Pinebook Pro")
-> 40df91a894e9 ("arm64: dts: rockchip: fix inverted headphone detection on =
-Pinebook Pro")
-> 5a65505a6988 ("arm64: dts: rockchip: Add initial support for Pinebook Pro=
-")
-> c2753d15d2b3 ("arm64: dts: rockchip: split rk3399-rockpro64 for v2 and v2=
-.1 boards")
-> cfd66c682e8b ("arm64: dts: rockchip: Add regulators for PCIe for Radxa Ro=
-ck Pi 4 board")
-> 023115cdea26 ("arm64: dts: rockchip: add thermal infrastructure to px30")
-> 526ba2e2cf61 ("arm64: dts: rockchip: Enable PCIe for Radxa Rock Pi 4 boar=
-d")
-> eb275167d186 ("Merge tag 'armsoc-dt' of git://git.kernel.org/pub/scm/linu=
-x/kernel/git/soc/soc")
->=20
-> thanks,
->=20
-> greg k-h
->=20
-> ------------------ original commit in Linus's tree ------------------
->=20
-> From cee572756aa2cb46e959e9797ad4b730b78a050b Mon Sep 17 00:00:00 2001
-> From: Christopher Obbard <chris.obbard@collabora.com>
-> Date: Wed, 5 Jul 2023 15:42:54 +0100
-> Subject: [PATCH] arm64: dts: rockchip: Disable HS400 for eMMC on ROCK Pi =
-4
->=20
-> There is some instablity with some eMMC modules on ROCK Pi 4 SBCs running
-> in HS400 mode. This ends up resulting in some block errors after a while
-> or after a "heavy" operation utilising the eMMC (e.g. resizing a
-> filesystem). An example of these errors is as follows:
->=20
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 289.171014] mmc1: running CQE recovery
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.048972] mmc1: running CQE recovery
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.054834] mmc1: running CQE recovery
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.060817] mmc1: running CQE recovery
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061337] blk_update_request: I/O error, dev=
- mmcblk1, sector 1411072 op 0x1:(WRITE) flags 0x800 phys_seg 36 prio class =
-0
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061370] EXT4-fs warning (device mmcblk1p1)=
-: ext4_end_bio:348: I/O error 10 writing to inode 29547 starting block 1764=
-66)
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061484] Buffer I/O error on device mmcblk1=
-p1, logical block 172288
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061531] Buffer I/O error on device mmcblk1=
-p1, logical block 172289
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061551] Buffer I/O error on device mmcblk1=
-p1, logical block 172290
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061574] Buffer I/O error on device mmcblk1=
-p1, logical block 172291
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061592] Buffer I/O error on device mmcblk1=
-p1, logical block 172292
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061615] Buffer I/O error on device mmcblk1=
-p1, logical block 172293
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061632] Buffer I/O error on device mmcblk1=
-p1, logical block 172294
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061654] Buffer I/O error on device mmcblk1=
-p1, logical block 172295
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061673] Buffer I/O error on device mmcblk1=
-p1, logical block 172296
-> =C2=A0=C2=A0=C2=A0 [=C2=A0 290.061695] Buffer I/O error on device mmcblk1=
-p1, logical block 172297
->=20
-> Disabling the Command Queue seems to stop the CQE recovery from running,
-> but doesn't seem to improve the I/O errors. Until this can be investigate=
-d
-> further, disable HS400 mode on the ROCK Pi 4 SBCs to at least stop I/O
-> errors from occurring.
->=20
-> While we are here, set the eMMC maximum clock frequency to 1.5MHz to
-> follow the ROCK 4C+.
->=20
-> Fixes: 1b5715c602fd ("arm64: dts: rockchip: add ROCK Pi 4 DTS support")
-> Signed-off-by: Christopher Obbard <chris.obbard@collabora.com>
-> Tested-By: Folker Schwesinger <dev@folker-schwesinger.de>
-> Link: https://lore.kernel.org/r/20230705144255.115299-2-chris.obbard@coll=
-abora.com
-> Signed-off-by: Heiko Stuebner <heiko@sntech.de>
->=20
-> diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/ar=
-m64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-> index 907071d4fe80..95efee311ece 100644
-> --- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-> +++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-> @@ -645,9 +645,9 @@ &saradc {
-> =C2=A0};
-> =C2=A0
-> =C2=A0&sdhci {
-> +	max-frequency =3D <150000000>;
-> =C2=A0	bus-width =3D <8>;
-> -	mmc-hs400-1_8v;
-> -	mmc-hs400-enhanced-strobe;
-> +	mmc-hs200-1_8v;
-> =C2=A0	non-removable;
-> =C2=A0	status =3D "okay";
-> =C2=A0};
->=20
+After we substitute a new request for a last active one tracked on a
+timeline, we set up a dependency of our new request to wait on completion
+of current activity of that previous one.  While doing that, we must take
+care of keeping the old request still in memory until we use its
+attributes for setting up that await dependency, or we can happen to set
+up the await dependency on an unrelated request that already reuses the
+memory previously allocated to the old one, already released.  Combined
+with perf adding consecutive kernel context remote requests to different
+user context timelines, unresolvable loops of await dependencies can be
+built, leading do infinite waits.
+
+We obtain a pointer to the previous request to wait upon when we
+substitute it with a pointer to our new request in an active tracker,
+e.g. in intel_timeline.last_request.  In some processing paths we protect
+that old request from being freed before we use it by getting a reference
+to it under RCU protection, but in others, e.g.  __i915_request_commit()
+-> __i915_request_add_to_timeline() -> __i915_request_ensure_ordering(),
+we don't.  But anyway, since the requests' memory is SLAB_FAILSAFE_BY_RCU,
+that RCU protection is not sufficient against reuse of memory.
+
+We could protect i915_request's memory from being prematurely reused by
+calling its release function via call_rcu() and using rcu_read_lock()
+consequently, as proposed in v1.  However, that approach leads to
+significant (up to 10 times) increase of SLAB utilization by i915_request
+SLAB cache.  Another potential approach is to take a reference to the
+previous active fence.
+
+When updating an active fence tracker, we first lock the new fence,
+substitute a pointer of the current active fence with the new one, then we
+lock the substituted fence.  With this approach, there is a time window
+after the substitution and before the lock when the request can be
+concurrently released by an interrupt handler and its memory reused, then
+we may happen to lock and return a new, unrelated request.
+
+Always get a reference to the current active fence first, before
+replacing it with a new one.  Having it protected from premature release
+and reuse, lock it and then replace with the new one but only if not
+yet signalled via a potential concurrent interrupt nor replaced with
+another one by a potential concurrent thread, otherwise retry, starting
+from getting a reference to the new current one.  Adjust users to not
+get a reference to the previous active fence themselves and always put the
+reference got by __i915_active_fence_set() when no longer needed.
+
+v3: Fix lockdep splat reports and other issues caused by incorrect use of
+    try_cmpxchg() (use (cmpxchg() != prev) instead)
+v2: Protect request's memory by getting a reference to it in favor of
+    delegating its release to call_rcu() (Chris)
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8211
+Fixes: df9f85d8582e ("drm/i915: Serialise i915_active_fence_set() with itself")
+Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.6+
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230720093543.832147-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 946e047a3d88d46d15b5c5af0414098e12b243f7)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+(cherry picked from commit a337b64f0d5717248a0c894e2618e658e6a9de9f)
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+---
+ drivers/gpu/drm/i915/i915_active.c  | 99 ++++++++++++++++++++---------
+ drivers/gpu/drm/i915/i915_request.c |  2 +
+ 2 files changed, 72 insertions(+), 29 deletions(-)
+
+diff --git a/drivers/gpu/drm/i915/i915_active.c b/drivers/gpu/drm/i915/i915_active.c
+index cae9ac6379a5d..aba811c6aa0d6 100644
+--- a/drivers/gpu/drm/i915/i915_active.c
++++ b/drivers/gpu/drm/i915/i915_active.c
+@@ -457,8 +457,11 @@ int i915_active_ref(struct i915_active *ref, u64 idx, struct dma_fence *fence)
+ 		}
+ 	} while (unlikely(is_barrier(active)));
+ 
+-	if (!__i915_active_fence_set(active, fence))
++	fence = __i915_active_fence_set(active, fence);
++	if (!fence)
+ 		__i915_active_acquire(ref);
++	else
++		dma_fence_put(fence);
+ 
+ out:
+ 	i915_active_release(ref);
+@@ -477,13 +480,9 @@ __i915_active_set_fence(struct i915_active *ref,
+ 		return NULL;
+ 	}
+ 
+-	rcu_read_lock();
+ 	prev = __i915_active_fence_set(active, fence);
+-	if (prev)
+-		prev = dma_fence_get_rcu(prev);
+-	else
++	if (!prev)
+ 		__i915_active_acquire(ref);
+-	rcu_read_unlock();
+ 
+ 	return prev;
+ }
+@@ -1050,10 +1049,11 @@ void i915_request_add_active_barriers(struct i915_request *rq)
+  *
+  * Records the new @fence as the last active fence along its timeline in
+  * this active tracker, moving the tracking callbacks from the previous
+- * fence onto this one. Returns the previous fence (if not already completed),
+- * which the caller must ensure is executed before the new fence. To ensure
+- * that the order of fences within the timeline of the i915_active_fence is
+- * understood, it should be locked by the caller.
++ * fence onto this one. Gets and returns a reference to the previous fence
++ * (if not already completed), which the caller must put after making sure
++ * that it is executed before the new fence. To ensure that the order of
++ * fences within the timeline of the i915_active_fence is understood, it
++ * should be locked by the caller.
+  */
+ struct dma_fence *
+ __i915_active_fence_set(struct i915_active_fence *active,
+@@ -1062,7 +1062,23 @@ __i915_active_fence_set(struct i915_active_fence *active,
+ 	struct dma_fence *prev;
+ 	unsigned long flags;
+ 
+-	if (fence == rcu_access_pointer(active->fence))
++	/*
++	 * In case of fences embedded in i915_requests, their memory is
++	 * SLAB_FAILSAFE_BY_RCU, then it can be reused right after release
++	 * by new requests.  Then, there is a risk of passing back a pointer
++	 * to a new, completely unrelated fence that reuses the same memory
++	 * while tracked under a different active tracker.  Combined with i915
++	 * perf open/close operations that build await dependencies between
++	 * engine kernel context requests and user requests from different
++	 * timelines, this can lead to dependency loops and infinite waits.
++	 *
++	 * As a countermeasure, we try to get a reference to the active->fence
++	 * first, so if we succeed and pass it back to our user then it is not
++	 * released and potentially reused by an unrelated request before the
++	 * user has a chance to set up an await dependency on it.
++	 */
++	prev = i915_active_fence_get(active);
++	if (fence == prev)
+ 		return fence;
+ 
+ 	GEM_BUG_ON(test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags));
+@@ -1071,27 +1087,56 @@ __i915_active_fence_set(struct i915_active_fence *active,
+ 	 * Consider that we have two threads arriving (A and B), with
+ 	 * C already resident as the active->fence.
+ 	 *
+-	 * A does the xchg first, and so it sees C or NULL depending
+-	 * on the timing of the interrupt handler. If it is NULL, the
+-	 * previous fence must have been signaled and we know that
+-	 * we are first on the timeline. If it is still present,
+-	 * we acquire the lock on that fence and serialise with the interrupt
+-	 * handler, in the process removing it from any future interrupt
+-	 * callback. A will then wait on C before executing (if present).
+-	 *
+-	 * As B is second, it sees A as the previous fence and so waits for
+-	 * it to complete its transition and takes over the occupancy for
+-	 * itself -- remembering that it needs to wait on A before executing.
++	 * Both A and B have got a reference to C or NULL, depending on the
++	 * timing of the interrupt handler.  Let's assume that if A has got C
++	 * then it has locked C first (before B).
+ 	 *
+ 	 * Note the strong ordering of the timeline also provides consistent
+ 	 * nesting rules for the fence->lock; the inner lock is always the
+ 	 * older lock.
+ 	 */
+ 	spin_lock_irqsave(fence->lock, flags);
+-	prev = xchg(__active_fence_slot(active), fence);
+-	if (prev) {
+-		GEM_BUG_ON(prev == fence);
++	if (prev)
+ 		spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
++
++	/*
++	 * A does the cmpxchg first, and so it sees C or NULL, as before, or
++	 * something else, depending on the timing of other threads and/or
++	 * interrupt handler.  If not the same as before then A unlocks C if
++	 * applicable and retries, starting from an attempt to get a new
++	 * active->fence.  Meanwhile, B follows the same path as A.
++	 * Once A succeeds with cmpxch, B fails again, retires, gets A from
++	 * active->fence, locks it as soon as A completes, and possibly
++	 * succeeds with cmpxchg.
++	 */
++	while (cmpxchg(__active_fence_slot(active), prev, fence) != prev) {
++		if (prev) {
++			spin_unlock(prev->lock);
++			dma_fence_put(prev);
++		}
++		spin_unlock_irqrestore(fence->lock, flags);
++
++		prev = i915_active_fence_get(active);
++		GEM_BUG_ON(prev == fence);
++
++		spin_lock_irqsave(fence->lock, flags);
++		if (prev)
++			spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
++	}
++
++	/*
++	 * If prev is NULL then the previous fence must have been signaled
++	 * and we know that we are first on the timeline.  If it is still
++	 * present then, having the lock on that fence already acquired, we
++	 * serialise with the interrupt handler, in the process of removing it
++	 * from any future interrupt callback.  A will then wait on C before
++	 * executing (if present).
++	 *
++	 * As B is second, it sees A as the previous fence and so waits for
++	 * it to complete its transition and takes over the occupancy for
++	 * itself -- remembering that it needs to wait on A before executing.
++	 */
++	if (prev) {
+ 		__list_del_entry(&active->cb.node);
+ 		spin_unlock(prev->lock); /* serialise with prev->cb_list */
+ 	}
+@@ -1108,11 +1153,7 @@ int i915_active_fence_set(struct i915_active_fence *active,
+ 	int err = 0;
+ 
+ 	/* Must maintain timeline ordering wrt previous active requests */
+-	rcu_read_lock();
+ 	fence = __i915_active_fence_set(active, &rq->fence);
+-	if (fence) /* but the previous fence may not belong to that timeline! */
+-		fence = dma_fence_get_rcu(fence);
+-	rcu_read_unlock();
+ 	if (fence) {
+ 		err = i915_request_await_dma_fence(rq, fence);
+ 		dma_fence_put(fence);
+diff --git a/drivers/gpu/drm/i915/i915_request.c b/drivers/gpu/drm/i915/i915_request.c
+index 896389f930294..eda56b2fdc68d 100644
+--- a/drivers/gpu/drm/i915/i915_request.c
++++ b/drivers/gpu/drm/i915/i915_request.c
+@@ -1525,6 +1525,8 @@ __i915_request_add_to_timeline(struct i915_request *rq)
+ 							 &rq->dep,
+ 							 0);
+ 	}
++	if (prev)
++		i915_request_put(prev);
+ 
+ 	/*
+ 	 * Make sure that no request gazumped us - if it was allocated after
+-- 
+2.41.0
+
