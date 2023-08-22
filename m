@@ -2,61 +2,133 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BEFC784865
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 19:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5395784873
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 19:36:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230038AbjHVR16 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 13:27:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34786 "EHLO
+        id S229708AbjHVRgB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 13:36:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbjHVR15 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 13:27:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F34B15CF90;
-        Tue, 22 Aug 2023 10:27:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 804E46573E;
-        Tue, 22 Aug 2023 17:27:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62979C433C7;
-        Tue, 22 Aug 2023 17:27:53 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692725273;
-        bh=IJT1zIifrckYwbgRixaFTijgqcJoxHtvhdNrCRkTsB0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wvrJoyPZ0Viq76vNJjsLiICj6oJjxCqTfy1rzCVww9XJTNEoVibiXhg5U+eXOmaQS
-         LabZ1W6tnLC8UOIqk9N3Zrkw1Z98yA7tGnXSV6hnNx8yb0W7mvfOJA4UzC9hiKisaW
-         bAAH+OzRilfvc2hYJp+RUDHAJv+RgNjOHdJP1Iuw=
-Date:   Tue, 22 Aug 2023 19:27:51 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Salvatore Bonaccorso <carnil@debian.org>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Borislav Petkov <bp@alien8.de>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Peter Zijlstra <peterz@infradead.org>
-Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
-Message-ID: <2023082212-pregnant-lizard-80e0@gregkh>
-References: <20230821194122.695845670@linuxfoundation.org>
- <CA+G9fYvkBSb-i_6unB3bRLwRibVtZ3snYDe_gG+bsZehu3Hv3w@mail.gmail.com>
- <ZOTTxsW5IGhOO8IW@eldamar.lan>
- <2023082241-extradite-overpay-1754@gregkh>
+        with ESMTP id S229599AbjHVRgA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 13:36:00 -0400
+Received: from NAM12-BN8-obe.outbound.protection.outlook.com (mail-bn8nam12on2067.outbound.protection.outlook.com [40.107.237.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5606D5CA;
+        Tue, 22 Aug 2023 10:35:57 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=IeryVAyumu7wFVuTuymN5sNy10HieC8e4hv5CJRQc1XIMyds0evWlRSElh4E9ctuYL+dgN9gPIGFH+bt6yMv/i5msWXYkUVrKKJ3Hr2eUf8Vie61IJaAca5p5ztpLYcXYzSBxql5+lUzRrD9un8/0kkmFhEcT18sfA+1KkthbfCnt4V7EjBSj9JWVxxsd0r0u1nPUDc5ZQIB1bgQIQPbJ25HKlPey4LLlQadVvU84bUgWGPUEZEGa8CaocuKXwa4j9JL2XjadIO9irK6NB8Gs4pz6tbRdPV0pv0WfcPt+rvxlDD3P+r5JmjSa0KomhymYqAE2oHw3gLBhTgcRVZH2g==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=o23fC0Wia3kV6z8KEDFYbSrzdOvG+XfeOpbNyGOM/hs=;
+ b=NwE93TcDQuKQXq+qIYdZHLo5CvAOsmKEY4EnbmlwerJAnyTTgTKnUqtp4tPXpZZNksqf+TlmBlNgrV6nRQSZ5pPS36eWTTJ9kw/nAYpYuOw/7pyCsIu0q3nA2JNc/afxvXFPpJgpvuLfmPWaX87BY1lewYi4jWgT+PnRVKz5qqwn9S6swTDD9wsxpOSEuXlI8qD54SCEDAFY2+J0XMOSn2QslercFJWcWQXgxiDcpXYXu0tP4bESPwmwMvYGWIyVeFxkgDjJYTO7dJhB/8Best5O44rgNBON3y+LhQFNN2h9MHLAC2j1hqg0793Tkk5tbEVedwWHZH4+b5HIy5Q+Cw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
+ smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
+ header.d=amd.com; arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=o23fC0Wia3kV6z8KEDFYbSrzdOvG+XfeOpbNyGOM/hs=;
+ b=wC8H9Q8EGpltrBusVm6pvDJqYFf5h/+7lhRZj1FDMDOIm5xf3Py8iPv1MpthlzR75aOPMDvmJoS+begIRxz+VJ+DYr1ijQ5MyHFVaIzA4ebvP76wyP1UgJhur9E55HatgxUd+fRbe6nC3N/JmI5a8WcWtYPrSgKicIJ35z5i7Jk=
+Authentication-Results: dkim=none (message not signed)
+ header.d=none;dmarc=none action=none header.from=amd.com;
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
+ by PH7PR12MB8795.namprd12.prod.outlook.com (2603:10b6:510:275::22) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.24; Tue, 22 Aug
+ 2023 17:35:55 +0000
+Received: from CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::236b:d4e2:6fbf:6c2b]) by CO6PR12MB5427.namprd12.prod.outlook.com
+ ([fe80::236b:d4e2:6fbf:6c2b%5]) with mapi id 15.20.6699.025; Tue, 22 Aug 2023
+ 17:35:55 +0000
+Message-ID: <2d7e2d96-69a8-4e7d-b914-8780343344ff@amd.com>
+Date:   Tue, 22 Aug 2023 13:35:49 -0400
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH] drm/amd/display: register edp_backlight_control() for
+ DCN301
+To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        amd-gfx@lists.freedesktop.org
+Cc:     stable@vger.kernel.org, Swapnil Patel <swapnil.patel@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>, Jun Lei <jun.lei@amd.com>,
+        Wayne Lin <wayne.lin@amd.com>,
+        Wenjing Liu <wenjing.liu@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        "Leo (Hanghong) Ma" <hanghong.ma@amd.com>,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
+References: <20230822170343.137958-1-hamza.mahfooz@amd.com>
+Content-Language: en-US
+From:   Harry Wentland <harry.wentland@amd.com>
+In-Reply-To: <20230822170343.137958-1-hamza.mahfooz@amd.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-ClientProxiedBy: YQBPR0101CA0280.CANPRD01.PROD.OUTLOOK.COM
+ (2603:10b6:c01:68::29) To CO6PR12MB5427.namprd12.prod.outlook.com
+ (2603:10b6:5:358::13)
 MIME-Version: 1.0
-Content-Type: multipart/mixed; boundary="dDmVdOkUVxWYHBPk"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2023082241-extradite-overpay-1754@gregkh>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|PH7PR12MB8795:EE_
+X-MS-Office365-Filtering-Correlation-Id: b90e3551-f1ed-4051-695a-08dba3363cfa
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: cHtWTZPTMrx3igfc5L8FxSVp0QEBKa0zccaA1z9wFfurjLA7VUzt4d/iLJZkHcwlWIZaDKdOb2OJZeuyJ4EFr7JrZXb40+w3jH8adrD8OOkBAOCx6XHRNaQb0bMDPzTBLE4sKg0PGr31y/GOEC7T4btHbtCP61P5ZewU585wqabjD+DQ4+Di5HZOH7yU7Ju4HNvDpPEd9t4rPLTGl/ckAHEjYiQm71yRKZR/9yc6lV2lvCrtG0CCzznkDyKsiiTvTkP0vzVuyH0UfjwRMtFdqomDVxHQtIYUwBmMFFqShN8KqpM/IJb9ufEEslTNQ2QI9TKPoBDAa8wopcIEYAIIhDQTWw+EZBzC99e/n1j42YALlPHlrZXkqMTx40gJrB5nRldkTcUNdLWbVsYzUwoh4Vom9ABLEy6+Rr5jBSVBILz7r04xEdc5fcTmOjnZ+M2SeFa6KgExChTVWww5geNjZ4+qD9aLIWZjZ9JzJdCjbeMcF1wsMVGENjMF/nzIIBkWPlg3WbWbQQ8wXh60FyGvEKBC3ACi8o/fnApnt/i/6hqhJh4XEGKmvflHFYQ4uCVrTGilUqSTPu9RmvBEfvyanvxEu8dTzZWD4to8eh01rPsKnprbOlIctZIkbdwkZLCIWjYF/t0V2cLl9AZDWzS3nQ==
+X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5427.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(136003)(396003)(39860400002)(451199024)(186009)(1800799009)(2906002)(38100700002)(6506007)(53546011)(6486002)(83380400001)(5660300002)(44832011)(26005)(31696002)(31686004)(86362001)(8676002)(2616005)(8936002)(4326008)(966005)(316002)(66946007)(6512007)(54906003)(66556008)(66476007)(478600001)(6666004)(36756003)(41300700001)(45980500001)(43740500002);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?M1QycGVYcFdzekJpOXRnSURmMVVwaGZkRWg1SXUwZm56bTM5OXFHejk0MEZO?=
+ =?utf-8?B?UUpWUjJ1YzUreVpHVFd3N1g2MCt0NWQvdlZsaXJDSXIzbmFzMUpzRFVmSlJZ?=
+ =?utf-8?B?TGJndWJ4ZkRvQ3ZMTG9yWWZ2dW5TNEFYaE52U1NPa1B5cE1oVmQ5WDl4b2VF?=
+ =?utf-8?B?b1NmVHlucUlsRzlxTVNlZ2Z0SnRJS0ZVamJPaVRiKyttWk9VQStjeHdsS29z?=
+ =?utf-8?B?K0IwN05TSEIzMWZubnd6SDQ3bTVhNVpmVFMzUTJKdmR1dlhjS2xWa282Y0xy?=
+ =?utf-8?B?WjZpTUl2YmVHUitjTnRNR0NMNHJFYW1DR29RMWxoeFNiL24rU1J5T2QzTlEw?=
+ =?utf-8?B?MldJS0xVcytaY0Yva0RPeldGUytYeTl3a0FQQ3VoUFFZeU10UEp6M2xXQzNj?=
+ =?utf-8?B?QVRZWFEyL3FzR3J0d09jb0cxWFdvMXpURnU0NkFQMXpJRmFwak1VenNmei9V?=
+ =?utf-8?B?dWxkS09VK3dDK3JTeVZIcUt0QWVON3AxZkRsRlhFcWNFQmZRTUpGTVE0clYy?=
+ =?utf-8?B?eGIxZjJFaFF1MjRTeEhmZmxKUzVMOFF4aU1RTTJ0SFRLOHdlOEJWbko0OHJE?=
+ =?utf-8?B?dnd0eUlSc3RJelNFUUg2RzhhUlhBeGFQa1NUcUh3S041RDQzbkpjemhHaUhk?=
+ =?utf-8?B?Rm1yMC8yUTlKbzNHVEdqNTRoQTJEZ3Yzdk1CZzJZbFZnQnRVbk9pWllRNTM0?=
+ =?utf-8?B?ZmRVTWVJZ1IveTQxZTd6bER6Ryt2WjBZb0VsWWJhdDFoVmRDS2g2eHBrZWow?=
+ =?utf-8?B?RmpBbFMxbjNNRXdzOFcwQlQ3VFBHdjlzOHVZOGdXZlA1OUpiaDc3dzJLYlBR?=
+ =?utf-8?B?YkZTOU9DQllsWC9TZ3dxOUY3ZFZsSmdnSHdvQy9ETVNKTFpDaWZ4UkNHbHdn?=
+ =?utf-8?B?Qm96YlF5WUEwNFZoUDUwQXpYNTd0R29XQ0RvMUVEY211ZExGcUdoSUh4RnA2?=
+ =?utf-8?B?MytmVE5aVTNKVEtkVVF2TCtsZG9YK0NHMDczL1BaQk02Ry91c3docWNRY2hi?=
+ =?utf-8?B?eHdtSll3bTMwT2dha3hTaXgwUUVvNSsvdVN1ZGR0UnBoUnlzMUlvMHNyTmdI?=
+ =?utf-8?B?cWdQUm1ISVAremhQM09oVUFtRFVWclNGaitjdTdERTAzV0F4Wnk1VER1TzFJ?=
+ =?utf-8?B?V3NvUVU4alJtbGhyR3h4TzNFUnQxZWpUZmQxbVhkWHQ3SGQ2UFFWUFpKeEJa?=
+ =?utf-8?B?c0hQUXFacEdPaWlOTExlb0k0Yk9uT0s0cEx1aHNxNCtwN3QwQWhyQzNqaVJy?=
+ =?utf-8?B?NzVMSVBJeWJOZkxDcE5DMXEzMytVbWZ0dVBUVmFyUzVPRFp6S001NVBETm5p?=
+ =?utf-8?B?SUltUzVzMTlmU3lGc1c0Ym0wYmQ1TktZTzRIVWpLUk9vYWU5TnROQXQ0UGY5?=
+ =?utf-8?B?QmRBSHZOTU9QNlluRjB1N3dIbENObjEwK2w1UHEvTURhTFk0RG1pVCtQblBv?=
+ =?utf-8?B?VU1VaTJrRWRBWWVsWFdIYVZVcE4xZDg4SEdxTlR1UVYxYzFoaHVtRDBOR3hV?=
+ =?utf-8?B?alFsMEdJMWljTTU1Nkd6UVk1eTFpdFpYdWpWNHpBelJqWWdVeEthUFUxVEs5?=
+ =?utf-8?B?WTBPTnk0ZHZRMzljcDZ1dExqdTJyN2hKdWNwN0FqRlpCLys4bGdKNFYvK1M0?=
+ =?utf-8?B?RWwrbEFxd1g0S3JPd0VDRzJnZXBaZ2pubG5QQlE5dlBlQWxRYjVkWTBDM0ds?=
+ =?utf-8?B?RHhZejBDT2hvZzNFY3B3amJEakVJbnFFTmN1QnBGQTc2emNraFdRaWtKekFh?=
+ =?utf-8?B?MGM2cHdzZGM5MUpwK0JmNWUzdE9QVGlpZVRoMDgxT0VRS1hKbEY4bmU2SE91?=
+ =?utf-8?B?alE5d241ampZdSt4TFFPeU8rWGhVQzZ1UStsT2NKQ3BXYjNVQmJlWm13T0Zv?=
+ =?utf-8?B?T3dCcXNoR2Z0bVVHNCtLZm92S0VzOG5INGc3U3ZlUlorb0c1N09pYXBlVE9n?=
+ =?utf-8?B?WiszR1VJdmJZUjB1cTVSeE5rVnViWng1T0Z6c09xMHhhSHZCRkFPc3RWTm8w?=
+ =?utf-8?B?SjdRVjREVndIWVFzNENzME4vUTVLYjFrTDRJNnp1V3dFYjd2VzRoR2MyYkNa?=
+ =?utf-8?B?cTIxajVOM2lvV0xZTU5pM1JMVGI1QzgySEF1NzFsYm91Rng1RDhFN3F5RmxQ?=
+ =?utf-8?Q?+gc+so7XtwcMhyP9esB/v4d9s?=
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-Network-Message-Id: b90e3551-f1ed-4051-695a-08dba3363cfa
+X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Internal
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 22 Aug 2023 17:35:55.2049
+ (UTC)
+X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-MailboxType: HOSTED
+X-MS-Exchange-CrossTenant-UserPrincipalName: tT1RnLcVtYTGnJoPisWra8roBvKh5Wujo4X2s9YfdMnqc6COjqBn75I5BLdCPvXfZNVC+H5DbhVbyGTTq7OoYw==
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB8795
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE,
+        URIBL_BLOCKED autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -64,235 +136,39 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---dDmVdOkUVxWYHBPk
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
 
-On Tue, Aug 22, 2023 at 05:51:27PM +0200, Greg Kroah-Hartman wrote:
-> On Tue, Aug 22, 2023 at 05:27:02PM +0200, Salvatore Bonaccorso wrote:
-> > Hi,
-> > 
-> > [Adding Peter Zijlstra to CC]
-> > 
-> > On Tue, Aug 22, 2023 at 04:25:22PM +0530, Naresh Kamboju wrote:
-> > > On Tue, 22 Aug 2023 at 01:21, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > This is the start of the stable review cycle for the 6.1.47 release.
-> > > > There are 194 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > >
-> > > > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> > > > Anything received after that time might be too late.
-> > > >
-> > > > The whole patch series can be found in one patch at:
-> > > >         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.47-rc1.gz
-> > > > or in the git tree and branch at:
-> > > >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> > > > and the diffstat can be found below.
-> > > >
-> > > > thanks,
-> > > >
-> > > > greg k-h
-> > > 
-> > > Results from Linaro’s test farm.
-> > > No regressions on arm64, arm, x86_64, and i386.
-> > > 
-> > > Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-> > > 
-> > > 
-> > > NOTE:
-> > > Kernel warnings noticed on x86_64 while booting the kernel.
-> > > Paul E. McKenney reported this last week [1] and discussions email
-> > > thread provided here.
-> > > 
-> > >  [1] https://lore.kernel.org/lkml/4dc3d0ec-b827-4bce-8927-cfa5d837fd03@paulmck-laptop/T/
-> > 
-> > Seeing the same warning for the 6.1.47-rc1, which is missing
-> > 4ae68b26c3ab ("objtool/x86: Fix SRSO mess"). Unfortunately the commit
-> > will not apply cleanly to 6.1.y. 
+On 2023-08-22 13:03, Hamza Mahfooz wrote:
+> As made mention of in commit 099303e9a9bd ("drm/amd/display: eDP
+> intermittent black screen during PnP"), we need to turn off the
+> display's backlight before powering off an eDP display. Not doing so
+> will result in undefined behaviour according to the eDP spec. So, set
+> DCN301's edp_backlight_control() function pointer to
+> dce110_edp_backlight_control().
 > 
-> I tried, and failed, let me try again...
+> Cc: stable@vger.kernel.org
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
+> Fixes: 9c75891feef0 ("drm/amd/display: rework recent update PHY state commit")
+> Suggested-by: Swapnil Patel <swapnil.patel@amd.com>
+> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+
+Harry
+
+> ---
+>  drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c | 1 +
+>  1 file changed, 1 insertion(+)
 > 
-> > I guess we need at least as well dbcdbdfdf137 ("objtool: Rework
-> > instruction -> symbol mapping"), but not sure this is enough.
-> 
-> That gets messy fast, I tried to backport all of the 6.4 objtool changes
-> to 6.1, but ugh, the changes were highly intertwined with many other
-> things.
+> diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
+> index 257df8660b4c..61205cdbe2d5 100644
+> --- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
+> +++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
+> @@ -75,6 +75,7 @@ static const struct hw_sequencer_funcs dcn301_funcs = {
+>  	.get_hw_state = dcn10_get_hw_state,
+>  	.clear_status_bits = dcn10_clear_status_bits,
+>  	.wait_for_mpcc_disconnect = dcn10_wait_for_mpcc_disconnect,
+> +	.edp_backlight_control = dce110_edp_backlight_control,
+>  	.edp_power_control = dce110_edp_power_control,
+>  	.edp_wait_for_hpd_ready = dce110_edp_wait_for_hpd_ready,
+>  	.set_cursor_position = dcn10_set_cursor_position,
 
-Hm, I applied that, but now I get build errors:
-
-vmlinux.o: warning: objtool: retbleed_return_thunk(): can't find starting instruction
-
-and
-
-incomplete ORC unwind tables in file: vmlinux
-Failed to sort kernel tables
-
-Attached below is my backport, what did I get wrong?
-
-thanks,
-
-greg k-h
-
---dDmVdOkUVxWYHBPk
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: attachment; filename="objtool-x86-fix-srso-mess.patch"
-
-From 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40 Mon Sep 17 00:00:00 2001
-From: Peter Zijlstra <peterz@infradead.org>
-Date: Mon, 14 Aug 2023 13:44:29 +0200
-Subject: objtool/x86: Fix SRSO mess
-
-From: Peter Zijlstra <peterz@infradead.org>
-
-commit 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40 upstream.
-
-Objtool --rethunk does two things:
-
- - it collects all (tail) call's of __x86_return_thunk and places them
-   into .return_sites. These are typically compiler generated, but
-   RET also emits this same.
-
- - it fudges the validation of the __x86_return_thunk symbol; because
-   this symbol is inside another instruction, it can't actually find
-   the instruction pointed to by the symbol offset and gets upset.
-
-Because these two things pertained to the same symbol, there was no
-pressing need to separate these two separate things.
-
-However, alas, along comes SRSO and more crazy things to deal with
-appeared.
-
-The SRSO patch itself added the following symbol names to identify as
-rethunk:
-
-  'srso_untrain_ret', 'srso_safe_ret' and '__ret'
-
-Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
-new similarly embedded return thunk, and 'srso_untrain_ret' is
-completely unrelated to anything the above does (and was only included
-because of that INT3 vs UD2 issue fixed previous).
-
-Clear things up by adding a second category for the embedded instruction
-thing.
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- tools/objtool/arch/x86/decode.c      |   11 +++++++----
- tools/objtool/check.c                |   24 ++++++++++++++++++++++--
- tools/objtool/include/objtool/arch.h |    1 +
- tools/objtool/include/objtool/elf.h  |    1 +
- 4 files changed, 31 insertions(+), 6 deletions(-)
-
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -796,8 +796,11 @@ bool arch_is_retpoline(struct symbol *sy
- 
- bool arch_is_rethunk(struct symbol *sym)
- {
--	return !strcmp(sym->name, "__x86_return_thunk") ||
--	       !strcmp(sym->name, "srso_untrain_ret") ||
--	       !strcmp(sym->name, "srso_safe_ret") ||
--	       !strcmp(sym->name, "retbleed_return_thunk");
-+	return !strcmp(sym->name, "__x86_return_thunk");
-+}
-+
-+bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return !strcmp(sym->name, "retbleed_return_thunk") ||
-+	       !strcmp(sym->name, "srso_safe_ret");
- }
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -418,7 +418,7 @@ static int decode_instructions(struct ob
- 		}
- 
- 		list_for_each_entry(func, &sec->symbol_list, list) {
--			if (func->type != STT_FUNC || func->alias != func)
-+			if (func->embedded_insn || func->alias != func)
- 				continue;
- 
- 			if (!find_insn(file, sec, func->offset)) {
-@@ -1164,16 +1164,33 @@ static int add_ignore_alternatives(struc
- 	return 0;
- }
- 
-+/*
-+ * Symbols that replace INSN_CALL_DYNAMIC, every (tail) call to such a symbol
-+ * will be added to the .retpoline_sites section.
-+ */
- __weak bool arch_is_retpoline(struct symbol *sym)
- {
- 	return false;
- }
- 
-+/*
-+ * Symbols that replace INSN_RETURN, every (tail) call to such a symbol
-+ * will be added to the .return_sites section.
-+ */
- __weak bool arch_is_rethunk(struct symbol *sym)
- {
- 	return false;
- }
- 
-+/*
-+ * Symbols that are embedded inside other instructions, because sometimes crazy
-+ * code exists. These are mostly ignored for validation purposes.
-+ */
-+__weak bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return false;
-+}
-+
- #define NEGATIVE_RELOC	((void *)-1L)
- 
- static struct reloc *insn_reloc(struct objtool_file *file, struct instruction *insn)
-@@ -1437,7 +1454,7 @@ static int add_jump_destinations(struct
- 			 * middle of another instruction.  Objtool only
- 			 * knows about the outer instruction.
- 			 */
--			if (sym && sym->return_thunk) {
-+			if (sym && sym->embedded_insn) {
- 				add_return_call(file, insn, false);
- 				continue;
- 			}
-@@ -2327,6 +2344,9 @@ static int classify_symbols(struct objto
- 			if (arch_is_rethunk(func))
- 				func->return_thunk = true;
- 
-+			if (arch_is_embedded_insn(func))
-+				func->embedded_insn = true;
-+
- 			if (!strcmp(func->name, "__fentry__"))
- 				func->fentry = true;
- 
---- a/tools/objtool/include/objtool/arch.h
-+++ b/tools/objtool/include/objtool/arch.h
-@@ -90,6 +90,7 @@ int arch_decode_hint_reg(u8 sp_reg, int
- 
- bool arch_is_retpoline(struct symbol *sym);
- bool arch_is_rethunk(struct symbol *sym);
-+bool arch_is_embedded_insn(struct symbol *sym);
- 
- int arch_rewrite_retpolines(struct objtool_file *file);
- 
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -60,6 +60,7 @@ struct symbol {
- 	u8 return_thunk      : 1;
- 	u8 fentry            : 1;
- 	u8 profiling_func    : 1;
-+	u8 embedded_insn     : 1;
- 	struct list_head pv_target;
- };
- 
-
---dDmVdOkUVxWYHBPk--
