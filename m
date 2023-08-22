@@ -2,163 +2,167 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BB1A97849EE
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 21:07:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 266E6784AD8
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 21:50:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbjHVTHe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 15:07:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36096 "EHLO
+        id S230308AbjHVTu5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 15:50:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33816 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229544AbjHVTHd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 15:07:33 -0400
-Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C375DCF1
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 12:07:28 -0700 (PDT)
-Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-319559fd67dso4449397f8f.3
-        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 12:07:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692731247; x=1693336047;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=obssRPZea66XUVKQdWwZ33dXszmaEL2LdLWjJbTk+Gw=;
-        b=KUnAO4SW42IhcDBvVHqom6OK4Iq7p0gYwp5mGFxDT9egzI1LbAQcHqCtW0SstRVDeb
-         1zbVVW5zPY+apawMt76dvbhZDZ8W8bKio0pkKSrqC5d7b79XY31RkYuocEX6QwBSYcC5
-         l3ef6vUPSNCCP22pAytGYiQ/igsmjE8o5c3mH8RO5+0pZroLCqjZfZsVNORm8Z7LpSNi
-         /QWEPTR80zllG1jA7pkcm+wXLNCTi/qXoFUgHMagt5Zv9qB8xeDwmLUDBYHsxCm9udlM
-         +p7UVlLPYkR7KBGMASVpFEKAr81Vwuok63CqaS+lkOWiF1mghRCcQb+YcikrbTpgPdbc
-         bKdA==
+        with ESMTP id S230305AbjHVTu4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 15:50:56 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5081BCFE
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 12:50:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692733809;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=5uIJYLeugTPKBtvMobwrsQt5z9ywutDVYoAznOGuvDE=;
+        b=YfSi/jPFvZWwK1x/1s1ouIlZgbIUsccpKAgeKAhJjBdb3IkU0IGE0mskGTE1r/qRr0zUW9
+        NgCzHjenxtrn4JDo8tQEV28M5DpIBWai61Bnc0bGNNcNloHLqY4ZTe4Y1y+09zAidcS1NZ
+        sVBXZJPLnC1MrpzAtrLeRT5gMbhXzbs=
+Received: from mail-qt1-f200.google.com (mail-qt1-f200.google.com
+ [209.85.160.200]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-324-TBrrV5HTPv6-xG2mZp015g-1; Tue, 22 Aug 2023 15:50:08 -0400
+X-MC-Unique: TBrrV5HTPv6-xG2mZp015g-1
+Received: by mail-qt1-f200.google.com with SMTP id d75a77b69052e-40fb76bd50aso50693231cf.0
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 12:50:08 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692731247; x=1693336047;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=obssRPZea66XUVKQdWwZ33dXszmaEL2LdLWjJbTk+Gw=;
-        b=ZJafxuWJqIKPn4CznhyBe2KkI8MZ34BFu9cKf3CCS9igvEf+I95w+rXttStWPjxxUk
-         X5aUwsPhQSWZNAhqPJcSpllZFKxCNL90A1X2+ePHeiEIRJnfGJAqNbFkcSTstb8NvUSF
-         0L4U1WVjes10WWnFwQQ6tyKAhvaPZOjqSPMq8ChqEbCnr17CHmLppCsliquL6KopF//Y
-         wUEN1HHsghxHJDGlN6JXssRUFBmVh2avxgQwyGWdKCNQXfgXShYdh732Fl67UQJf6c7Q
-         N7giiNe6g68UUKO12ne8pej7BVobv5KZO6KtHo9VGB2orBoATFw/cIrwyDJa1y4jD0PN
-         /QCQ==
-X-Gm-Message-State: AOJu0Yzqe5t+VLjcZOgh2NM2BEIkTysWKya2ucK4raECaDhj4ATjkT4X
-        +mQVSEw6cbhXFKQ9nA9Slu7fSQ==
-X-Google-Smtp-Source: AGHT+IFM0hpeI/IXnPxfPzo186m7+lcVFbqtZnZp2Y5HLgb7U3nyZZ7vpWSmoR0OU/Yvxo01LBxECA==
-X-Received: by 2002:a5d:65c5:0:b0:319:76a2:36e9 with SMTP id e5-20020a5d65c5000000b0031976a236e9mr8064149wrw.56.1692731246769;
-        Tue, 22 Aug 2023 12:07:26 -0700 (PDT)
-Received: from [192.168.0.162] (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id k12-20020adfe3cc000000b0031ad5470f89sm16738544wrm.18.2023.08.22.12.07.25
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 22 Aug 2023 12:07:26 -0700 (PDT)
-Message-ID: <8a4db962-423a-16c1-5756-66878b50b264@linaro.org>
-Date:   Tue, 22 Aug 2023 20:07:25 +0100
+        d=1e100.net; s=20221208; t=1692733807; x=1693338607;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5uIJYLeugTPKBtvMobwrsQt5z9ywutDVYoAznOGuvDE=;
+        b=L9tCWEO4j5lVXTJ4ltwVVajYFGv1S74uI62ZFcLu0jD9Ni+V7Qp/C1M1L7ncnx0G1S
+         7yWmtKaVfmf9NBdo3GSFbJGej4TtU1omzrAqTkLxFcfdpMMoeIyDgM2m2iXfpmspjlvO
+         F/9kNO5FQnoV1C8L0f4w6Bu32kb0QMHPzwsmxufzMz8qrL+26f4UZLp8JET7DScEeJCc
+         GHhDQ1wwk/ModssEedipGzuL+yg1siBnZIIcTbMJ+ueGEq8yp5QB5+f2mRBMfDrOHz7E
+         gTqjjY5g4mqGnnHMDVh7/xpBktpges/8s/bN3uNsxGpDut5YvYsF4jfjuCb25Ngl/3Sf
+         r4+w==
+X-Gm-Message-State: AOJu0YzhCahdB1qVNu0TStuTR3IiO5utV9gD1QXKMYfAWdBrrGPaKQjD
+        SETMJ+Znvf4hT+dM7BXHP0RzB9tZmQGbcMJAY4d/P2y86sVsBTJWOd5Ese5s2Yduaj6AZaEj7vb
+        UGnVpZJ3MGZFPlnvN
+X-Received: by 2002:a05:622a:1704:b0:410:9836:8066 with SMTP id h4-20020a05622a170400b0041098368066mr7470576qtk.43.1692733807710;
+        Tue, 22 Aug 2023 12:50:07 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEeetPG2YXy4IAFns4Qfu2Vlw4IKcTAsHPQ8h2GvWhs0XnPN5M9EabaXvPVn2sLq0CDGJtCKg==
+X-Received: by 2002:a05:622a:1704:b0:410:9836:8066 with SMTP id h4-20020a05622a170400b0041098368066mr7470566qtk.43.1692733807407;
+        Tue, 22 Aug 2023 12:50:07 -0700 (PDT)
+Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
+        by smtp.gmail.com with ESMTPSA id jk9-20020a05622a748900b00403c1a19a2bsm3220849qtb.92.2023.08.22.12.50.06
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 22 Aug 2023 12:50:06 -0700 (PDT)
+Date:   Tue, 22 Aug 2023 12:50:05 -0700
+From:   Jerry Snitselaar <jsnitsel@redhat.com>
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     Mario Limonciello <mario.limonciello@amd.com>,
+        linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Todd Brandt <todd.e.brandt@intel.com>,
+        Patrick Steinhardt <ps@pks.im>, Ronan Pigott <ronan@rjp.ie>,
+        Raymond Jay Golo <rjgolo@gmail.com>
+Subject: Re: [PATCH v2] tpm: Don't make vendor check required for probe
+Message-ID: <lpt7tqahlsekfyfh7qwlznxpitpcqjxwmeps7lljnuzdygkaqp@xcqfenucomie>
+References: <20230821140230.1168-1-mario.limonciello@amd.com>
+ <CUZ3T3G99JG2.29X1G67HRO9QT@suppilovahvero>
+ <b7d45df7-3d1c-4b31-9da1-5f81d3e5b279@amd.com>
+ <CUZ5SUEX8IUC.2LBS3FZP9XUTA@suppilovahvero>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.8.0
-Subject: Re: [PATCH v1 9/9] media: qcom: camss: Fix csid-gen2 for test pattern
- generator
-Content-Language: en-US
-To:     Konrad Dybcio <konrad.dybcio@linaro.org>, rfoss@kernel.org,
-        todor.too@gmail.com, agross@kernel.org, andersson@kernel.org,
-        mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-        laurent.pinchart@ideasonboard.com, sakari.ailus@linux.intel.com,
-        andrey.konovalov@linaro.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-References: <20230822161620.1915110-1-bryan.odonoghue@linaro.org>
- <20230822161620.1915110-10-bryan.odonoghue@linaro.org>
- <4f271226-c45a-42a8-95ff-8ec008ce7e72@linaro.org>
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-In-Reply-To: <4f271226-c45a-42a8-95ff-8ec008ce7e72@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CUZ5SUEX8IUC.2LBS3FZP9XUTA@suppilovahvero>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 22/08/2023 17:38, Konrad Dybcio wrote:
-> On 22.08.2023 18:16, Bryan O'Donoghue wrote:
->> From: Andrey Konovalov <andrey.konovalov@linaro.org>
->>
->> In the current driver csid Test Pattern Generator (TPG) doesn't work.
->> This change:
->> - fixes writing frame width and height values into CSID_TPG_DT_n_CFG_0
->> - fixes the shift by one between test_pattern control value and the
->>    actual pattern.
->> So that TPG starts working, but with the below limitations:
->> - only test_pattern=9 works as it should
->> - test_pattern=8 and test_pattern=7 produce black frame (all zeroes)
->> - the rest of test_pattern's don't work (yavta doesn't get the data)
->> - regardless of the CFA pattern set by 'media-ctl -V' the actual pixel
->>    order is always the same (RGGB for any RAW8 or RAW10P format in
->>    4608x2592 resolution).
->>
->> Tested with:
->>
->> RAW10P format, VC0:
->>   media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4608x2592 field:none]'
->>   media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4608x2592 field:none]'
->>   media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
->>   v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
->>   yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video0
->>
->> RAW10P format, VC1:
->>   media-ctl -V '"msm_csid0":2[fmt:SRGGB10/4608x2592 field:none]'
->>   media-ctl -V '"msm_vfe0_rdi1":0[fmt:SRGGB10/4608x2592 field:none]'
->>   media-ctl -l '"msm_csid0":2->"msm_vfe0_rdi1":0[1]'
->>   v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
->>   yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video1
->>
->> RAW8 format, VC0:
->>   media-ctl --reset
->>   media-ctl -V '"msm_csid0":0[fmt:SRGGB8/4608x2592 field:none]'
->>   media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB8/4608x2592 field:none]'
->>   media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
->>   yavta -B capture-mplane --capture=3 -n 3 -f SRGGB8 -s 4608x2592 /dev/video0
->>
->> Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
->> Cc: stable@vger.kernel.org
->> Signed-off-by: Andrey Konovalov <andrey.konovalov@linaro.org>
->> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
->> ---
-> That's a whole lot to unroll..
+On Tue, Aug 22, 2023 at 05:56:03PM +0300, Jarkko Sakkinen wrote:
+> On Tue Aug 22, 2023 at 5:05 PM EEST, Mario Limonciello wrote:
+> > On 8/22/2023 08:22, Jarkko Sakkinen wrote:
+> > > On Mon Aug 21, 2023 at 5:02 PM EEST, Mario Limonciello wrote:
+> > >> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
+> > >> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
+> > >> reported systems the TPM doesn't reply at bootup and returns back the
+> > >> command code. This makes the TPM fail probe.
+> > >>
+> > >> As this isn't crucial for anything but AMD fTPM and AMD fTPM works, check
+> > >> the chip vendor and if it's not AMD don't run the checks.
+> > >>
+> > >> Cc: stable@vger.kernel.org
+> > >> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> > >> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> > >> Reported-by: Patrick Steinhardt <ps@pks.im>
+> > >> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> > >> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> > >> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
+> > >> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+> > >> ---
+> > >> v1->v2:
+> > >>   * Check x86 vendor for AMD
+> > >> ---
+> > >>   drivers/char/tpm/tpm_crb.c | 7 ++++++-
+> > >>   1 file changed, 6 insertions(+), 1 deletion(-)
+> > >>
+> > >> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+> > >> index 9eb1a18590123..7faf670201ccc 100644
+> > >> --- a/drivers/char/tpm/tpm_crb.c
+> > >> +++ b/drivers/char/tpm/tpm_crb.c
+> > >> @@ -465,8 +465,12 @@ static bool crb_req_canceled(struct tpm_chip *chip, u8 status)
+> > >>   
+> > >>   static int crb_check_flags(struct tpm_chip *chip)
+> > >>   {
+> > >> +	int ret = 0;
+> > >> +#ifdef CONFIG_X86
+> > >>   	u32 val;
+> > >> -	int ret;
+> > >> +
+> > >> +	if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD)
+> > >> +		return ret;
+> > >>   
+> > >>   	ret = crb_request_locality(chip, 0);
+> > >>   	if (ret)
+> > >> @@ -481,6 +485,7 @@ static int crb_check_flags(struct tpm_chip *chip)
+> > >>   
+> > >>   release:
+> > >>   	crb_relinquish_locality(chip, 0);
+> > >> +#endif
+> > > 
+> > > Looks much better but the main question here is that is this combination
+> > > possible:
+> > > 
+> > > 1. AMD CPU
+> > > 2. Non-AMD fTPM (i.e. manufacturer property differs)
+> > > 
+> > > BR, Jarkko
+> >
+> > Yes that combination is possible.
+> >
+> > Pluton TPM uses the tpm_crb driver.
 > 
-> [...]
->>   		if (tg->enabled) {
->> -			/* Config Test Generator */
->> -			vc = 0xa;
->> -
-> Which part does this hunk correlate to?
+> Then I guess we'll go with this for now. Thanks for the effort.
 > 
->>   			/* configure one DT, infinite frames */
->>   			val = vc << TPG_VC_CFG0_VC_NUM;
->>   			val |= INTELEAVING_MODE_ONE_SHOT << TPG_VC_CFG0_LINE_INTERLEAVING_MODE;
->> @@ -370,14 +367,14 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
->>   
->>   			writel_relaxed(0x12345678, csid->base + CSID_TPG_LFSR_SEED);
->>   
->> -			val = input_format->height & 0x1fff << TPG_DT_n_CFG_0_FRAME_HEIGHT;
->> -			val |= input_format->width & 0x1fff << TPG_DT_n_CFG_0_FRAME_WIDTH;
->> +			val = (input_format->height & 0x1fff) << TPG_DT_n_CFG_0_FRAME_HEIGHT;
->> +			val |= (input_format->width & 0x1fff) << TPG_DT_n_CFG_0_FRAME_WIDTH;
->>   			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_0(0));
-> This screams necessity for FIELD_PREP/GET! Could you please convert
-> it in another series if you have time for it?
+> Tested-by: Jarkko Sakkinen <jarkko@kernel.org> # QEMU + swtpm
+> Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+> 
+> I'm planning to send a pull request right after this with the fix so it
+> will land to v6.6-rc1 or v6.6-rc2:
+> https://lore.kernel.org/linux-integrity/20230817201935.31399-1-jarkko@kernel.org/
+> 
+> BR, Jarkko
 
-I mean yes I want to or want it done. To me 1 << somevalue is just silly 
-when you can say BIT(somevalue).
 
-There will be a "make it pretty series".
+Super minor nit that isn't this patch in particular so don't hold this
+up, but it seems like the function name for the earlier attempt to
+solve this issue that mentioned amd and ftpm was a clearer description
+of what was happening than crb_check_flags.
 
-I'll do a V2 of this series and explain in the commit log what's 
-happening with the removal of vc = 0xa; since if someone has to ask, its 
-not obvious whats going on.
-
----
-bod
+Regards,
+Jerry
 
