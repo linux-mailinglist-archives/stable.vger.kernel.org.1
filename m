@@ -2,51 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CF680783F6E
-	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:37:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EFB3783F6B
+	for <lists+stable@lfdr.de>; Tue, 22 Aug 2023 13:37:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235051AbjHVLhe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S235034AbjHVLhe (ORCPT <rfc822;lists+stable@lfdr.de>);
         Tue, 22 Aug 2023 07:37:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36442 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235043AbjHVLhe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:37:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D6CFE4B;
-        Tue, 22 Aug 2023 04:37:09 -0700 (PDT)
+        with ESMTP id S235039AbjHVLhd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 07:37:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47666CE5;
+        Tue, 22 Aug 2023 04:37:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B86F6212D;
-        Tue, 22 Aug 2023 11:36:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D89CC433C7;
-        Tue, 22 Aug 2023 11:36:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 971EA63A54;
+        Tue, 22 Aug 2023 11:36:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDE3BC433CB;
+        Tue, 22 Aug 2023 11:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692704171;
-        bh=ZkOI0vHAbL8yg8J/lSkhogxr/YsGHIdzDmCBNEPtcnM=;
+        s=k20201202; t=1692704172;
+        bh=m1o0jXed7BnewlHKG+1vCqtrmwRS0IPm7ZfcZTswWms=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Vy1vDjE45VHXuXThIHIuW3N3Wu275zYIFjRNd0vebDOjjcTfdBKlOC8dYC8gw4/rJ
-         0yrNs6HYFmmWyqcIdM6IApyHO7HPV+tZF/AvnlA2PgQhfsJaBpvCttY9XCp9G5z+bg
-         d+oUWpwsAu33TeuAoqsqpMLAijpNYGfWjda46363FaL+JGSYG3miCF/vCPe6MELeZU
-         Rpr4yjRm8mvVTvdNnsocMkKRHnh4n0fB/4Pc+LPn3Iv1Xhjk90fn4Nd3C3oBHWzSf5
-         8whEZPvX191zMb3q0DWnY31kyTVQ0QU2FixUzJKCJXRNopeYvmQlawf1CI0oCanZy5
-         Fke6CV/v7K0CA==
+        b=IrdYlZZaWqM3fQQ0NJZafwAu1OL695GbZndRx3hQf5zRk7iEndCWn4NvUZNMeiyxB
+         pv7g/X3WcItoae5jC4aG1ydhvIm4MHngcMdkbYNei/4rydcfm01ef2uPpTWKBWI/b7
+         jtsV2C/WsPOBDvE/vRooAtVx3WfBIjTewkF6Q/ENDXipbzdcwiXHMoZGX5X6gGOiuS
+         kEbdKGW1PhUN4X6iEwDujtXmH0EA488QHaoreoVM4chme3YuAatq1rtn4I6XK6bl5K
+         O7n+oCm/S32gLduTZ2o9O9w9/mL5hwh91MWehm0EvbbUN647voxBgJIgXy+sPqVX2F
+         Ypjx9gBGtnWRg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Jian Shen <shenjian15@huawei.com>,
-        Peiyang Wang <wangpeiyang1@huawei.com>,
-        Jijie Shao <shaojijie@huawei.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, yisen.zhuang@huawei.com,
-        salil.mehta@huawei.com, davem@davemloft.net, edumazet@google.com,
-        pabeni@redhat.com, huangguangbin2@huawei.com, lanhao@huawei.com,
-        wangjie125@huawei.com, chenhao418@huawei.com,
-        netdev@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.4 05/11] net: hns3: restore user pause configure when disable autoneg
-Date:   Tue, 22 Aug 2023 07:35:47 -0400
-Message-Id: <20230822113553.3551206-5-sashal@kernel.org>
+Cc:     Wen Gong <quic_wgong@quicinc.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Sasha Levin <sashal@kernel.org>, kvalo@kernel.org,
+        quic_jjohnson@quicinc.com, ath12k@lists.infradead.org,
+        linux-wireless@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.4 06/11] wifi: ath12k: Fix buffer overflow when scanning with extraie
+Date:   Tue, 22 Aug 2023 07:35:48 -0400
+Message-Id: <20230822113553.3551206-6-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <20230822113553.3551206-1-sashal@kernel.org>
 References: <20230822113553.3551206-1-sashal@kernel.org>
@@ -65,68 +60,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jian Shen <shenjian15@huawei.com>
+From: Wen Gong <quic_wgong@quicinc.com>
 
-[ Upstream commit 15159ec0c831b565820c2de05114ea1b4cf07681 ]
+[ Upstream commit 06f2ab86a5b6ed55f013258de4be9319841853ea ]
 
-Restore the mac pause state to user configuration when autoneg is disabled
+If cfg80211 is providing extraie's for a scanning process then ath12k will
+copy that over to the firmware. The extraie.len is a 32 bit value in struct
+element_info and describes the amount of bytes for the vendor information
+elements.
 
-Signed-off-by: Jian Shen <shenjian15@huawei.com>
-Signed-off-by: Peiyang Wang <wangpeiyang1@huawei.com>
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230807113452.474224-2-shaojijie@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The problem is the allocation of the buffer. It has to align the TLV
+sections by 4 bytes. But the code was using an u8 to store the newly
+calculated length of this section (with alignment). And the new
+calculated length was then used to allocate the skbuff. But the actual
+code to copy in the data is using the extraie.len and not the calculated
+"aligned" length.
+
+The length of extraie with IEEE80211_HW_SINGLE_SCAN_ON_ALL_BANDS enabled
+was 264 bytes during tests with a wifi card. But it only allocated 8
+bytes (264 bytes % 256) for it. As consequence, the code to memcpy the
+extraie into the skb was then just overwriting data after skb->end. Things
+like shinfo were therefore corrupted. This could usually be seen by a crash
+in skb_zcopy_clear which tried to call a ubuf_info callback (using a bogus
+address).
+
+Tested-on: WCN7850 hw2.0 PCI WLAN.HMT.1.0-03427-QCAHMTSWPL_V1.0_V2.0_SILICONZ-1.15378.4
+
+Signed-off-by: Wen Gong <quic_wgong@quicinc.com>
+Link: https://lore.kernel.org/r/20230809081241.32765-1-quic_wgong@quicinc.com
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c | 5 ++++-
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c   | 2 +-
- drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h   | 1 +
- 3 files changed, 6 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath12k/wmi.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index c3e94598f3983..0876890798ba4 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -10936,9 +10936,12 @@ int hclge_cfg_flowctrl(struct hclge_dev *hdev)
- 	u32 rx_pause, tx_pause;
- 	u8 flowctl;
+diff --git a/drivers/net/wireless/ath/ath12k/wmi.c b/drivers/net/wireless/ath/ath12k/wmi.c
+index 7ae0bb78b2b53..1e65e35b5f3a6 100644
+--- a/drivers/net/wireless/ath/ath12k/wmi.c
++++ b/drivers/net/wireless/ath/ath12k/wmi.c
+@@ -2144,8 +2144,7 @@ int ath12k_wmi_send_scan_start_cmd(struct ath12k *ar,
+ 	struct wmi_tlv *tlv;
+ 	void *ptr;
+ 	int i, ret, len;
+-	u32 *tmp_ptr;
+-	u8 extraie_len_with_pad = 0;
++	u32 *tmp_ptr, extraie_len_with_pad = 0;
+ 	struct ath12k_wmi_hint_short_ssid_arg *s_ssid = NULL;
+ 	struct ath12k_wmi_hint_bssid_arg *hint_bssid = NULL;
  
--	if (!phydev->link || !phydev->autoneg)
-+	if (!phydev->link)
- 		return 0;
- 
-+	if (!phydev->autoneg)
-+		return hclge_mac_pause_setup_hw(hdev);
-+
- 	local_advertising = linkmode_adv_to_lcl_adv_t(phydev->advertising);
- 
- 	if (phydev->pause)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-index 150f146fa24fb..8b40c6b4ee53e 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.c
-@@ -1549,7 +1549,7 @@ static int hclge_bp_setup_hw(struct hclge_dev *hdev, u8 tc)
- 	return 0;
- }
- 
--static int hclge_mac_pause_setup_hw(struct hclge_dev *hdev)
-+int hclge_mac_pause_setup_hw(struct hclge_dev *hdev)
- {
- 	bool tx_en, rx_en;
- 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-index dd6f1fd486cf2..251e808456208 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_tm.h
-@@ -242,6 +242,7 @@ int hclge_pfc_pause_en_cfg(struct hclge_dev *hdev, u8 tx_rx_bitmap,
- 			   u8 pfc_bitmap);
- int hclge_mac_pause_en_cfg(struct hclge_dev *hdev, bool tx, bool rx);
- int hclge_pause_addr_cfg(struct hclge_dev *hdev, const u8 *mac_addr);
-+int hclge_mac_pause_setup_hw(struct hclge_dev *hdev);
- void hclge_pfc_rx_stats_get(struct hclge_dev *hdev, u64 *stats);
- void hclge_pfc_tx_stats_get(struct hclge_dev *hdev, u64 *stats);
- int hclge_tm_qs_shaper_cfg(struct hclge_vport *vport, int max_tx_rate);
 -- 
 2.40.1
 
