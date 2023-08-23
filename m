@@ -2,126 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6B7D7786095
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 21:27:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18E8B7860C1
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 21:39:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233485AbjHWT0b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 15:26:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58020 "EHLO
+        id S238317AbjHWTi2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 15:38:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237409AbjHWT0I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 15:26:08 -0400
-Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C3F210C8;
-        Wed, 23 Aug 2023 12:26:06 -0700 (PDT)
-Received: from [192.168.0.2] (ip5f5ae831.dynamic.kabel-deutschland.de [95.90.232.49])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: pmenzel)
-        by mx.molgen.mpg.de (Postfix) with ESMTPSA id DDABA61E5FE01;
-        Wed, 23 Aug 2023 21:25:02 +0200 (CEST)
-Message-ID: <3a9bf7a1-1664-401d-8cff-3a5d553bdd77@molgen.mpg.de>
-Date:   Wed, 23 Aug 2023 21:24:50 +0200
+        with ESMTP id S238391AbjHWTiY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 15:38:24 -0400
+Received: from mail-wr1-x431.google.com (mail-wr1-x431.google.com [IPv6:2a00:1450:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 030E010CC
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 12:38:19 -0700 (PDT)
+Received: by mail-wr1-x431.google.com with SMTP id ffacd0b85a97d-317f1c480eeso5263479f8f.2
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 12:38:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692819497; x=1693424297;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :reply-to:mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=FkdYMeXA9dTi+jYrtJK1AER7q3RbWwnPY/aiY/XaIWw=;
+        b=bO+BGNzMMtfXnc3J8MO3m08yfLTOR8Tf1oZlXYthCQquaVAwSUoJsI0Cx2G/fwd7ji
+         8tmHURQnv75GK6B5vnVExfom+rJRHFRGU3EV+OwaWqztXhN4Gd9gWxzayqzh6Dq8+2bO
+         YIzq7D74rUBvntQV7nUvC7SavFJEDrCwYzIluKwRVajzR61+RoHfggmz0D5PlRF1XeiO
+         JYfhtsoDSz7MAb/eQ945wOxqpn/iSGCQq71ICqluOHX/PLmw6FKD2AGFKjenrDsuB+TJ
+         VVz0v0K+8hlZtwL3AO7xF9B89HD/+l9/m0bKjz3jIKUR7x9gahMZMwf9Zent2C2Q9xqU
+         B65A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692819497; x=1693424297;
+        h=content-transfer-encoding:to:subject:message-id:date:from:sender
+         :reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=FkdYMeXA9dTi+jYrtJK1AER7q3RbWwnPY/aiY/XaIWw=;
+        b=UufekJ3cQTsICUCtlMpGKF3lAW24tNrORlopameC/UiDjMMnitss94Ikhi66Gu9lpu
+         KiTWln32JcZ1zc9nSImzDQDBGPVrYETba5UpKVw3YNzzNIaK4jtQjkP1A17HJyryz5zI
+         NpsnilR44P6yefb2UbM4klQV6LLUr6kNmfFV20yDugHH8/5Pd2Rcly3ebLETUuqzlRL7
+         Khgki32CE+zzbijJHKdXawB3gpuEL3YGsqtu4XNCfvFfcOzm8nRcaj7tjbuorQq+umM6
+         efsE+y/DbkaeGJmPhql8TCeXpGij4y2YrxN8eUOgh/iwA6IP4sJjKYQNI9/VNFBm/GLx
+         +Enw==
+X-Gm-Message-State: AOJu0YyUSyVB4xOC1zsrFFCUnQYoUkKbiTtnSX3LU3McE8rPzY4UuaWc
+        84v2xU6UqNlZKlZg80is/xK0v1e520rmnq5CdT0=
+X-Google-Smtp-Source: AGHT+IHD15Zhei2n5QVUIeyL6YizKp8fWevSHSxiGekm0f2F7dMYwMhIb/ZKuuwcPwUg2AnKj+kJ2JiPbzdxVUy2Igk=
+X-Received: by 2002:a5d:618c:0:b0:314:21b:1ea2 with SMTP id
+ j12-20020a5d618c000000b00314021b1ea2mr10329353wru.39.1692819496734; Wed, 23
+ Aug 2023 12:38:16 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: checkpatch complains about Reported-by block (was: [PATCH v3] tpm:
- Enable hwrng only for Pluton on AMD CPUs)
-To:     Jarkko Sakkinen <jarkko@kernel.org>,
-        Andy Whitcroft <apw@canonical.com>,
-        Joe Perches <joe@perches.com>
-Cc:     linux-integrity@vger.kernel.org,
-        Jerry Snitselaar <jsnitsel@redhat.com>, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-kernel@vger.kernel.org, Patrick Steinhardt <ps@pks.im>,
-        Ronan Pigott <ronan@rjp.ie>,
-        Raymond Jay Golo <rjgolo@gmail.com>
-References: <20230822231510.2263255-1-jarkko@kernel.org>
- <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
- <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
-Content-Language: en-US
-From:   Paul Menzel <pmenzel@molgen.mpg.de>
-In-Reply-To: <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: unitednatiusa389@gmail.com
+Sender: harritakipkalya@gmail.com
+Received: by 2002:adf:cf09:0:b0:31a:eca9:e08 with HTTP; Wed, 23 Aug 2023
+ 12:38:16 -0700 (PDT)
+From:   UNITED NATIONS HEADQUARTER OFFICE AMERICA 
+        <unitednatiusa389@gmail.com>
+Date:   Wed, 23 Aug 2023 12:38:16 -0700
+X-Google-Sender-Auth: QEThN7z96Yyig_w6llebUdoScQA
+Message-ID: <CA+ugitz3yVq=oZEU=VgiojSjMixtxZ9e_5muCfuZ+oWj1bLSJg@mail.gmail.com>
+Subject: UNITED NATIONS HEADQUARTER OFFICE FROM NEW-YORK AMERICA
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=4.8 required=5.0 tests=ADVANCE_FEE_5_NEW,BAYES_50,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        FREEMAIL_REPLYTO_END_DIGIT,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS,SUBJ_ALL_CAPS,UNDISC_MONEY,URG_BIZ autolearn=no
+        autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[Cc: +Andy, +Joe]
+Official Name:United States of America
+Capitol:Washington
+Population:318,814,000
+Languages:English, Spanish, numerous others
+Geographic Region:Americas Northern America
+Geographic Size (km sq):9,526,468
+Year of UN Membership:1945
+Year of Present State Formation:1787
+Current UN Representative:Mr.Dennis Francis
 
+Greetings
 
-Dear Jarkko, dear Andy, dear Joe,
+This message is converting to you from united nation Headquarter from
+New-York America to know what is exactly the reason of being
+ungrateful to the received compensation fund, meanwhile you have to
+explain to us how the fund was divided to each and every needful one
+in your country because united nation compersated you with (=E2=82=AC
+2,500,000.00 Million EUR ) to use part of the money and help orphan
+and widowers including the people covid19 affected in your country for
+our proper  documentary.
 
+It had been officially known that out of the (150) lucky winners that
+has received their compensation fund out there worldwide sum of (=E2=82=AC
+2,500,000.00 Million EUR ) per each of the lucky winner as it was
+listed in our list files and individuals, that was offered by United
+Nations compensation in last year 2022,(149) has all returned back
+with appreciation letter to united nation office remainder
+you.Woodforest National Bank reported to united nation that they has
+paid all the lucky winners,after we checked our file we saw that
+(149)has come and thanked united nation and explained how they used
+there money remaining you to complete the total number(150).we need
+your urgent response for our proper documentry.
 
-Am 23.08.23 um 19:40 schrieb Jarkko Sakkinen:
-> On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
+You are adviced to explain in details how the fund was divided to the
+needful as the purpose on your reply mail.
 
->> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
->>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
->>> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
->>> reported systems the TPM doesn't reply at bootup and returns back the
->>> command code. This makes the TPM fail probe.
->>>
->>> Since only Microsoft Pluton is the only known combination of AMD CPU and
->>> fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
->>> aware of this, print also info message to the klog.
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
->>> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
->>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
->>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->>
->> Mario’s patch also had the three reporters below listed:
->>
->> Reported-by: Patrick Steinhardt <ps@pks.im>
->> Reported-by: Ronan Pigott <ronan@rjp.ie>
->> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> 
-> The problem here is that checkpatch throws three warnings:
-> 
-> WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
-> #19:
-> Reported-by: Patrick Steinhardt <ps@pks.im>
-> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> 
-> WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
-> #20:
-> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> 
-> WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
-> #21:
-> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> 
-> Since bugzilla is not part of the documented process afaik, I used this
-> field as the guideline:
-> 
-> Reported:	2023-08-17 20:59 UTC by Todd Brandt
-> 
-> How otherwise I should interpret kernel bugzilla?
-
-How is the proper process to add more than one reporter (so they are 
-noted and also added to CC), so that checkpatch.pl does not complain?
-
-
-Kind regards,
-
-Paul
-
-
-> In any case new version is still needed as the commit message must
-> contain a mention of "Lenovo Legion Y540" as the stimulus for doing
-> this code change in the first place.
-> 
-> BR, Jarkko
+Thank you in advance
+Mr.Dennis Francis
+PRESIDENT OF THE UNITED NATIONS GENERAL ASSEMBLY
