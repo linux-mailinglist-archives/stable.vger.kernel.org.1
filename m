@@ -2,121 +2,339 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBD817861D6
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 22:57:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16D767861E3
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 23:01:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235804AbjHWU4i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 16:56:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53786 "EHLO
+        id S236874AbjHWVAv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 17:00:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237202AbjHWU4e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 16:56:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E69A10E4;
-        Wed, 23 Aug 2023 13:56:27 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04A7563E13;
-        Wed, 23 Aug 2023 20:56:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F097C433C8;
-        Wed, 23 Aug 2023 20:56:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1692824186;
-        bh=bhFYpfKk75jlAQtGqCHkABcacvg/A4w783AVs8GoWcM=;
-        h=Date:To:From:Subject:From;
-        b=g9mWYOt5bLNCLmZuCpSLVq0XVjO59ANlH0A9QhE0MgQPtw4kekZTMafdrEODnnXe4
-         HIP7ZNRAAFfQMVJvDWuXzKLK3eioLQVRsL/kgFxW667BO2LiS7oPFrK5lPV3S2QS2+
-         ENIHn0SiJkEsHOXfhlXdlDwscwlWiuenO81vHHZk=
-Date:   Wed, 23 Aug 2023 13:56:25 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        peterx@redhat.com, hughd@google.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: + shmem-fix-smaps-bug-sleeping-while-atomic.patch added to mm-hotfixes-unstable branch
-Message-Id: <20230823205626.2F097C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S236936AbjHWVAf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 17:00:35 -0400
+Received: from mail-qt1-x830.google.com (mail-qt1-x830.google.com [IPv6:2607:f8b0:4864:20::830])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0BD810DB
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 14:00:32 -0700 (PDT)
+Received: by mail-qt1-x830.google.com with SMTP id d75a77b69052e-4036bd4fff1so93281cf.0
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 14:00:32 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692824432; x=1693429232;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WQrhj/+Y96nHQ14b/kycbaBODT3rA3gKxR4BG9eSutI=;
+        b=USgwMiS/nrvDGYn501P6BwN3MxhM4LCljwR/wi+wv9CmX3ffy9QKtZNFn7A3n1ojKA
+         cL28mlAaaTqPCvzBsxk0a1XD2QvMHetOnJBHXZHc+K2LGDKczZEwJvFxEa3q14Q9Q2V4
+         ml0cUTofigPDi5Hneyv957GkskMHoCU3jxLUVIT+bfV4P00xjCg4cGnWokeJq7utuxn7
+         fbsq3Fv+LBy/5T9XgSc/STnqmTAc778bBuSVfsIM1WrYgQVeOU+c6cctpTcIXg+q3SLi
+         /3KFgI/gxDGanLReUkKlZoSArR49vssiCEsSaaRq7ecLxtCn5k98eYHJEg0b3SthJIJl
+         k2lw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692824432; x=1693429232;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WQrhj/+Y96nHQ14b/kycbaBODT3rA3gKxR4BG9eSutI=;
+        b=dlgQAg+PReoF9ufgQC3Xfp08i0mJsU3MpweL9ZuJlM6ol0cNyoB7QwjDbNZs1Ukv54
+         5mJ4WG+XvAUf/Bds1geuAVu8js0GoLGC3ehEPoToTp3ZW8u1VN4lsxlLPslZESEcOPJU
+         z8CFK9iz2PoQV5SKQBsIC+VFHwIp2BfY3WZKnvdiUnYQ+tz5NM820LTk1f0xPQ/9DCnO
+         QxNTZ1JgRO6O40ezuMBWomca8b8JboaGfSqJGXXgszNRIEDB/ylF1k1ktOCzX7NVfSPw
+         AGCAsndZKjcQc6s85lN20ed58qsZD6ajshDzzNpCm/kgugdvhK0175ysua2JaEHbMGpU
+         /o9A==
+X-Gm-Message-State: AOJu0YzpenTazp0hhcwCvBWWXd8nVODuK8xcDVnnRXNUGWZ4ULIXlq/F
+        OZCpM/ESNYnoi/ASjByeEkKFcJ38oNW/RSs039WAkQ==
+X-Google-Smtp-Source: AGHT+IHYBHEweokA6LehFN+tkdk4U5tNCeiUd6qvdu53QwtrxRdjLi1VdG6C0KzaKMrz0FRQx/MDBOCW+qMRTM+0Aj4=
+X-Received: by 2002:ac8:4e43:0:b0:410:385c:d1e0 with SMTP id
+ e3-20020ac84e43000000b00410385cd1e0mr559508qtw.25.1692824431906; Wed, 23 Aug
+ 2023 14:00:31 -0700 (PDT)
+MIME-Version: 1.0
+References: <20220613094924.913340374@linuxfoundation.org> <20220613094928.793712131@linuxfoundation.org>
+ <6283c4b1-2513-207d-4ed6-fdabf3f3880e@collabora.com> <2023081619-slapping-congrats-8e85@gregkh>
+ <471bf84d-9d58-befc-8224-359a62e29786@collabora.com> <CAGETcx-NVoN7b8XCV09ouof81XxZk4wtGhEcqcFAt6Gs=JWKdw@mail.gmail.com>
+ <d8f8ddf6-8063-fb3a-7dad-4064a47c5fe8@collabora.com> <CAGETcx-DUm417mM-Nmyqj-e_rKUw69m=rTe5R6_Vxd_rsKMmGg@mail.gmail.com>
+ <97b06c78-da3c-d8ab-ca72-ff37b9976f2a@collabora.com> <6d7a7ecc-1364-5cbe-0485-01d693dbdc6c@arm.com>
+ <e42b78a2-2b0f-1934-b71d-21bb94a01eed@collabora.com>
+In-Reply-To: <e42b78a2-2b0f-1934-b71d-21bb94a01eed@collabora.com>
+From:   Saravana Kannan <saravanak@google.com>
+Date:   Wed, 23 Aug 2023 13:59:55 -0700
+Message-ID: <CAGETcx87NcKb=dJOFE3vWG_gyPR+w88Kh8ueAgRc_PX=g_uPiA@mail.gmail.com>
+Subject: Re: [PATCH 5.17 127/298] driver core: Fix wait_for_device_probe() &
+ deferred_probe_timeout interaction
+To:     Shreeya Patel <shreeya.patel@collabora.com>
+Cc:     Robin Murphy <robin.murphy@arm.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org, John Stultz <jstultz@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Alexey Kuznetsov <kuznet@ms2.inr.ac.ru>,
+        Hideaki YOSHIFUJI <yoshfuji@linux-ipv6.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Yoshihiro Shimoda <yoshihiro.shimoda.uh@renesas.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Naresh Kamboju <naresh.kamboju@linaro.org>,
+        Basil Eljuse <Basil.Eljuse@arm.com>,
+        Ferry Toth <fntoth@gmail.com>, Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>,
+        linux-pm@vger.kernel.org, Nathan Chancellor <nathan@kernel.org>,
+        Sebastian Andrzej Siewior <bigeasy@linutronix.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        "gustavo.padovan@collabora.com" <gustavo.padovan@collabora.com>,
+        =?UTF-8?Q?Ricardo_Ca=C3=B1uelo_Navarro?= 
+        <ricardo.canuelo@collabora.com>,
+        Guillaume Charles Tucker <guillaume.tucker@collabora.com>,
+        usama.anjum@collabora.com, kernelci@lists.linux.dev
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        URIBL_BLOCKED,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Tue, Aug 22, 2023 at 7:10=E2=80=AFAM Shreeya Patel
+<shreeya.patel@collabora.com> wrote:
+>
+> Hi Robin,
+>
+> On 21/08/23 18:09, Robin Murphy wrote:
+> > On 2023-08-21 12:35, Shreeya Patel wrote:
+> >>
+> >> On 19/08/23 01:49, Saravana Kannan wrote:
+> >>> On Thu, Aug 17, 2023 at 4:13=E2=80=AFPM Shreeya Patel
+> >>> <shreeya.patel@collabora.com> wrote:
+> >>>> Hi Geert, Saravana,
+> >>>>
+> >>>> On 18/08/23 00:03, Saravana Kannan wrote:
+> >>>>> On Thu, Aug 17, 2023 at 4:37=E2=80=AFAM Shreeya Patel
+> >>>>> <shreeya.patel@collabora.com> wrote:
+> >>>>>> Hi Greg,
+> >>>>>>
+> >>>>>> On 16/08/23 20:33, Greg Kroah-Hartman wrote:
+> >>>>>>> On Wed, Aug 16, 2023 at 03:09:27PM +0530, Shreeya Patel wrote:
+> >>>>>>>> On 13/06/22 15:40, Greg Kroah-Hartman wrote:
+> >>>>>>>>> From: Saravana Kannan<saravanak@google.com>
+> >>>>>>>>>
+> >>>>>>>>> [ Upstream commit 5ee76c256e928455212ab759c51d198fedbe7523 ]
+> >>>>>>>>>
+> >>>>>>>>> Mounting NFS rootfs was timing out when deferred_probe_timeout
+> >>>>>>>>> was
+> >>>>>>>>> non-zero [1].  This was because ip_auto_config() initcall
+> >>>>>>>>> times out
+> >>>>>>>>> waiting for the network interfaces to show up when
+> >>>>>>>>> deferred_probe_timeout was non-zero. While ip_auto_config() cal=
+ls
+> >>>>>>>>> wait_for_device_probe() to make sure any currently running
+> >>>>>>>>> deferred
+> >>>>>>>>> probe work or asynchronous probe finishes, that wasn't
+> >>>>>>>>> sufficient to
+> >>>>>>>>> account for devices being deferred until deferred_probe_timeout=
+.
+> >>>>>>>>>
+> >>>>>>>>> Commit 35a672363ab3 ("driver core: Ensure
+> >>>>>>>>> wait_for_device_probe() waits
+> >>>>>>>>> until the deferred_probe_timeout fires") tried to fix that by
+> >>>>>>>>> making
+> >>>>>>>>> sure wait_for_device_probe() waits for deferred_probe_timeout
+> >>>>>>>>> to expire
+> >>>>>>>>> before returning.
+> >>>>>>>>>
+> >>>>>>>>> However, if wait_for_device_probe() is called from the
+> >>>>>>>>> kernel_init()
+> >>>>>>>>> context:
+> >>>>>>>>>
+> >>>>>>>>> - Before deferred_probe_initcall() [2], it causes the boot
+> >>>>>>>>> process to
+> >>>>>>>>>       hang due to a deadlock.
+> >>>>>>>>>
+> >>>>>>>>> - After deferred_probe_initcall() [3], it blocks kernel_init()
+> >>>>>>>>> from
+> >>>>>>>>>       continuing till deferred_probe_timeout expires and beats
+> >>>>>>>>> the point of
+> >>>>>>>>>       deferred_probe_timeout that's trying to wait for
+> >>>>>>>>> userspace to load
+> >>>>>>>>>       modules.
+> >>>>>>>>>
+> >>>>>>>>> Neither of this is good. So revert the changes to
+> >>>>>>>>> wait_for_device_probe().
+> >>>>>>>>>
+> >>>>>>>>> [1]
+> >>>>>>>>> -https://lore.kernel.org/lkml/TYAPR01MB45443DF63B9EF29054F7C41F=
+D8C60@TYAPR01MB4544.jpnprd01.prod.outlook.com/
+> >>>>>>>>> [2]
+> >>>>>>>>> -https://lore.kernel.org/lkml/YowHNo4sBjr9ijZr@dev-arch.thelio-=
+3990X/
+> >>>>>>>>>
+> >>>>>>>>> [3] -https://lore.kernel.org/lkml/Yo3WvGnNk3LvLb7R@linutronix.d=
+e/
+> >>>>>>>> Hi Saravana, Greg,
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> KernelCI found this patch causes the
+> >>>>>>>> baseline.bootrr.deferred-probe-empty test to fail on
+> >>>>>>>> r8a77960-ulcb,
+> >>>>>>>> see the following details for more information.
+> >>>>>>>>
+> >>>>>>>> KernelCI dashboard link:
+> >>>>>>>> https://linux.kernelci.org/test/plan/id/64d2a6be8c1a8435e535b264=
+/
+> >>>>>>>>
+> >>>>>>>> Error messages from the logs :-
+> >>>>>>>>
+> >>>>>>>> + UUID=3D11236495_1.5.2.4.5
+> >>>>>>>> + set +x
+> >>>>>>>> + export
+> >>>>>>>> 'PATH=3D/opt/bootrr/libexec/bootrr/helpers:/lava-11236495/1/../b=
+in:/sbin:/usr/sbin:/bin:/usr/bin'
+> >>>>>>>> + cd /opt/bootrr/libexec/bootrr
+> >>>>>>>> + sh helpers/bootrr-auto
+> >>>>>>>> e6800000.ethernet
+> >>>>>>>> e6700000.dma-controller
+> >>>>>>>> e7300000.dma-controller
+> >>>>>>>> e7310000.dma-controller
+> >>>>>>>> ec700000.dma-controller
+> >>>>>>>> ec720000.dma-controller
+> >>>>>>>> fea20000.vsp
+> >>>>>>>> feb00000.display
+> >>>>>>>> fea28000.vsp
+> >>>>>>>> fea30000.vsp
+> >>>>>>>> fe9a0000.vsp
+> >>>>>>>> fe9af000.fcp
+> >>>>>>>> fea27000.fcp
+> >>>>>>>> fea2f000.fcp
+> >>>>>>>> fea37000.fcp
+> >>>>>>>> sound
+> >>>>>>>> ee100000.mmc
+> >>>>>>>> ee140000.mmc
+> >>>>>>>> ec500000.sound
+> >>>>>>>> /lava-11236495/1/../bin/lava-test-case
+> >>>>>>>> <8>[   17.476741] <LAVA_SIGNAL_TESTCASE
+> >>>>>>>> TEST_CASE_ID=3Ddeferred-probe-empty RESULT=3Dfail>
+> >>>>>>>>
+> >>>>>>>> Test case failing :-
+> >>>>>>>> Baseline Bootrr deferred-probe-empty test
+> >>>>>>>> -https://github.com/kernelci/bootrr/blob/main/helpers/bootrr-gen=
+eric-tests
+> >>>>>>>>
+> >>>>>>>> Regression Reproduced :-
+> >>>>>>>>
+> >>>>>>>> Lava job after reverting the commit 5ee76c256e92
+> >>>>>>>> https://lava.collabora.dev/scheduler/job/11292890
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> Bisection report from KernelCI can be found at the bottom of
+> >>>>>>>> the email.
+> >>>>>>>>
+> >>>>>>>> Thanks,
+> >>>>>>>> Shreeya Patel
+> >>>>>>>>
+> >>>>>>>> #regzbot introduced: 5ee76c256e92
+> >>>>>>>> #regzbot title: KernelCI: Multiple devices deferring on
+> >>>>>>>> r8a77960-ulcb
+> >>>>>>>>
+> >>>>>>>> ----------------------------------------------------------------=
+---------------------------------------------------------------------------=
+--------
+> >>>>>>>>
+> >>>>>>>>
+> >>>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * =
+**
+> >>>>>>>> * If you do send a fix, please include this trailer: *
+> >>>>>>>> * Reported-by: "kernelci.org bot" <bot@...> *
+> >>>>>>>> * *
+> >>>>>>>> * Hope this helps! *
+> >>>>>>>> * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * =
+*
+> >>>>>>>>
+> >>>>>>>> stable-rc/linux-5.10.y bisection:
+> >>>>>>>> baseline.bootrr.deferred-probe-empty on
+> >>>>>>>> r8a77960-ulcb
+> >>>>>>> You are testing 5.10.y, yet the subject says 5.17?
+> >>>>>>>
+> >>>>>>> Which is it here?
+> >>>>>> Sorry, I accidentally used the lore link for 5.17 while reporting
+> >>>>>> this
+> >>>>>> issue,
+> >>>>>> but this test does fail on all the stable releases from 5.10
+> >>>>>> onwards.
+> >>>>>>
+> >>>>>> stable 5.15 :-
+> >>>>>> https://linux.kernelci.org/test/case/id/64dd156a5ac58d0cf335b1ea/
+> >>>>>> mainline :-
+> >>>>>> https://linux.kernelci.org/test/case/id/64dc13d55cb51357a135b209/
+> >>>>>>
+> >>>>> Shreeya, can you try the patch Geert suggested and let us know if i=
+t
+> >>>>> helps? If not, then I can try to take a closer look.
+> >>>> I tried to test the kernel with 9be4cbd09da8 but it didn't change th=
+e
+> >>>> result.
+> >>>> https://lava.collabora.dev/scheduler/job/11311615
+> >>>>
+> >>>> Also, I am not sure if this can change things but just FYI, KernelCI
+> >>>> adds some kernel parameters when running these tests and one of the
+> >>>> parameter is deferred_probe_timeout=3D60.
+> >>> Ah this is good to know.
+> >>>
+> >>>> You can check this in the definition details given in the Lava job. =
+I
+> >>>> also tried to remove this parameter and rerun the test but again I g=
+ot
+> >>>> the same result.
+> >>> How long does the test wait after boot before checking for the
+> >>> deferred devices list?
+> >>>
+> >>
+> >> AFAIK, script for running the tests is immediately ran after the boot
+> >> process is complete so there is no wait time.
+> >
+> > Regardless of what the kernel is doing, it seems like a fundamentally
+> > dumb test to specifically ask deferred probe to wait for up to a
+> > minute then complain that it hasn't finished after 11 seconds :/
+> >
+> > If anything, it seems plausible that the "regression" might actually
+> > be the correct behaviour, and it was wrong before. I can't manage to
+> > pull up a boot log for a pre-5.10 kernel since all the async stuff on
+> > the KernelCI dashboard always just times out for me with a helpful
+> > "Error while loading data from the server (error code: 0)", but what
+> > would be interesting is whether those devices on the list are expected
+> > to successfully probe anyway - the mainline log below also shows other
+> > stuff failing to probe and CPUs failing to come online, so it's
+> > clearly not a very happy platform to begin with.
+> >
+>
+> Sorry about the dashboard issues you are facing, KernelCI team is
+> working on a new dashboard which will fix all of these issues. But we
+> need to wait for it be ready for some more time.
+>
+>
+> Your point makes sense and that is why we did a test to add some sleep
+> time of 60-65 seconds before running the tests and it actually fixed the
+> problem. There are no more deferred devices as you can see in the
+> following job.
+> https://lava.collabora.dev/scheduler/job/11330931
+>
+> This change, to add deferred_probe_timeout=3D60 as kernel parameter was
+> recently added in KernelCI since there were number of devices failing to
+> probe on different platforms, specifically for chromebooks.
+> Unfortunately, no one realized to change the start of the test time and
+> hence these issues are seen now on different platforms.
+>
+> Thanks for pointing it out, it will help us to eliminate quite many
+> deferred probe test failures that we are seeing.
+>
+> Saravana, thanks to you as well for asking the valid questions about
+> when the test starts running.
 
-The patch titled
-     Subject: shmem: fix smaps BUG sleeping while atomic
-has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
-     shmem-fix-smaps-bug-sleeping-while-atomic.patch
+Glad we sorted this out. Thanks for maintaining the tests.
 
-This patch will shortly appear at
-     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/shmem-fix-smaps-bug-sleeping-while-atomic.patch
-
-This patch will later appear in the mm-hotfixes-unstable branch at
-    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-
-Before you just go and hit "reply", please:
-   a) Consider who else should be cc'ed
-   b) Prefer to cc a suitable mailing list as well
-   c) Ideally: find the original patch on the mailing list and do a
-      reply-to-all to that, adding suitable additional cc's
-
-*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
-
-The -mm tree is included into linux-next via the mm-everything
-branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
-and is updated there every 2-3 working days
-
-------------------------------------------------------
-From: Hugh Dickins <hughd@google.com>
-Subject: shmem: fix smaps BUG sleeping while atomic
-Date: Tue, 22 Aug 2023 22:14:47 -0700 (PDT)
-
-smaps_pte_hole_lookup() is calling shmem_partial_swap_usage() with page
-table lock held: but shmem_partial_swap_usage() does cond_resched_rcu() if
-need_resched(): "BUG: sleeping function called from invalid context".
-
-Since shmem_partial_swap_usage() is designed to count across a range, but
-smaps_pte_hole_lookup() only calls it for a single page slot, just break
-out of the loop on the last or only page, before checking need_resched().
-
-Link: https://lkml.kernel.org/r/6fe3b3ec-abdf-332f-5c23-6a3b3a3b11a9@google.com
-Fixes: 230100321518 ("mm/smaps: simplify shmem handling of pte holes")
-Signed-off-by: Hugh Dickins <hughd@google.com>
-Acked-by: Peter Xu <peterx@redhat.com>
-Cc: <stable@vger.kernel.org>	[5.16+]
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/shmem.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
-
---- a/mm/shmem.c~shmem-fix-smaps-bug-sleeping-while-atomic
-+++ a/mm/shmem.c
-@@ -806,14 +806,16 @@ unsigned long shmem_partial_swap_usage(s
- 	XA_STATE(xas, &mapping->i_pages, start);
- 	struct page *page;
- 	unsigned long swapped = 0;
-+	unsigned long max = end - 1;
- 
- 	rcu_read_lock();
--	xas_for_each(&xas, page, end - 1) {
-+	xas_for_each(&xas, page, max) {
- 		if (xas_retry(&xas, page))
- 			continue;
- 		if (xa_is_value(page))
- 			swapped++;
--
-+		if (xas.xa_index == max)
-+			break;
- 		if (need_resched()) {
- 			xas_pause(&xas);
- 			cond_resched_rcu();
-_
-
-Patches currently in -mm which might be from hughd@google.com are
-
-shmem-fix-smaps-bug-sleeping-while-atomic.patch
-
+-Saravana
