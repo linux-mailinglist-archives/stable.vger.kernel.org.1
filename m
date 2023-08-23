@@ -2,102 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E446C785112
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 09:03:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C0C877851F5
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 09:49:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233106AbjHWHDz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 03:03:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43904 "EHLO
+        id S233572AbjHWHtu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 03:49:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233079AbjHWHDz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 03:03:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AC3185;
-        Wed, 23 Aug 2023 00:03:53 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D7C9564A86;
-        Wed, 23 Aug 2023 07:03:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDF0C433C7;
-        Wed, 23 Aug 2023 07:03:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692774232;
-        bh=CREXmtSVm3ElNVCBgi60/kP4BfR2bXJzoUJvCekaTJE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VGbhFAKGEzEoNxcW4EtllY/OrEfRIxobd2x5V0x80KncOeqwWe4hbtwrj07BQvtMJ
-         tVhaOqLyIo63cKtluc/YZW4nYqVAOaN2bF9zeotw9BrKXIy1SWdflrx34jVLW4mmlT
-         ejXL8m4yqtOBfvfTTgoW/Oh1c8DyswxkwVs+ZZgw=
-Date:   Wed, 23 Aug 2023 09:03:49 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
-Message-ID: <2023082309-veggie-unwoven-a7df@gregkh>
-References: <20230821194122.695845670@linuxfoundation.org>
- <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
+        with ESMTP id S233131AbjHWHtt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 03:49:49 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.65])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03ABDCD0;
+        Wed, 23 Aug 2023 00:49:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692776987; x=1724312987;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=r2zRQXntKmFL8qUgE3kxpQRyrW02PDNql8A7IwbR+Ao=;
+  b=BOc8QqmIHN5P5gpv4WGUbi98S6ii4GNXvlt0/VjO1861dkNn40mMpfOl
+   JURibwCorbeGX6ShvKbPSCR6xEkWgTZOXw9BUP1cqlRItoN+72SNRsr5J
+   lAN7iz/7A+2Ma693qoxjrEk6DN1vW/kTnMCfpliRDJQixXfqMD840kvvh
+   SPq49Mx6UJCcKRIS7axJwwHk8yZoCpmArRjafI47u4W9B6E+0+f0J2++K
+   wqhPqXDVygOHeWsSf5QJLU+gGkMvF6XJeYiDPdhQLbbvLzAh8IFXDyZyS
+   ozrVlNYlBClNignRS9vd4KXJxB0mGh311Lu5v/Km7cXNgoG4njnjUsWsG
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="377855100"
+X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
+   d="scan'208";a="377855100"
+Received: from fmsmga001.fm.intel.com ([10.253.24.23])
+  by orsmga103.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 23 Aug 2023 00:49:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
+   d="scan'208";a="880308309"
+Received: from kuha.fi.intel.com ([10.237.72.185])
+  by fmsmga001.fm.intel.com with SMTP; 23 Aug 2023 00:49:48 -0700
+Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 23 Aug 2023 10:49:42 +0300
+Date:   Wed, 23 Aug 2023 10:49:42 +0300
+From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
+To:     RD Babiera <rdbabiera@google.com>
+Cc:     linux@roeck-us.net, gregkh@linuxfoundation.org, kyletso@google.com,
+        badhri@google.com, linux-usb@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH v2] usb: typec: tcpm: set initial svdm version based on
+ pd revision
+Message-ID: <ZOW6FoLZ7ZUzVz85@kuha.fi.intel.com>
+References: <20230731165926.1815338-1-rdbabiera@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230731165926.1815338-1-rdbabiera@google.com>
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 05:49:54PM -0700, Guenter Roeck wrote:
-> On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
-> > This is the start of the stable review cycle for the 6.1.47 release.
-> > There are 194 patches in this series, all will be posted as a response
-> > to this one.  If anyone has any issues with these being applied, please
-> > let me know.
-> > 
-> > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> > Anything received after that time might be too late.
-> > 
+On Mon, Jul 31, 2023 at 04:59:23PM +0000, RD Babiera wrote:
+> When sending Discover Identity messages to a Port Partner that uses Power
+> Delivery v2 and SVDM v1, we currently send PD v2 messages with SVDM v2.0,
+> expecting the port partner to respond with its highest supported SVDM
+> version as stated in Section 6.4.4.2.3 in the Power Delivery v3
+> specification. However, sending SVDM v2 to some Power Delivery v2 port
+> partners results in a NAK whereas sending SVDM v1 does not.
 > 
-> Build results:
-> 	total: 157 pass: 156 fail: 1
-> Failed builds:
-> 	m68k:sun3_defconfig
-> Qemu test results:
-> 	total: 521 pass: 519 fail: 2
-> Failed tests:
-> 	arm:fuji-bmc:aspeed_g5_defconfig:notests:mem1G:mtd128,0,8,1:net,nic:aspeed-bmc-facebook-fuji:f2fs
-> 	arm:bletchley-bmc,fmc-model=mt25qu02g,spi-model=mt25qu02g:aspeed_g5_defconfig:notests:mem1G:mtd256:net,nic:aspeed-bmc-facebook-bletchley:f2fs
+> NAK messages can be handled by the initiator (PD v3 section 6.4.4.2.5.1),
+> and one solution could be to resend Discover Identity on a lower SVDM
+> version if possible. But, Section 6.4.4.3 of PD v2 states that "A NAK
+> response Should be taken as an indication not to retry that particular
+> Command."
 > 
-> The m68k build failure is
+> Instead, we can set the SVDM version to the maximum one supported by the
+> negotiated PD revision. When operating in PD v2, this obeys Section
+> 6.4.4.2.3, which states the SVDM field "Shall be set to zero to indicate
+> Version 1.0." In PD v3, the SVDM field "Shall be set to 01b to indicate
+> Version 2.0."
 > 
-> Inconsistent kallsyms data
-> Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+> Fixes: c34e85fa69b9 ("usb: typec: tcpm: Send DISCOVER_IDENTITY from dedicated work")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: RD Babiera <rdbabiera@google.com>
+
+Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+
+> ---
+> Changes since v1:
+> * Fixed styling errors.
+> ---
+>  drivers/usb/typec/tcpm/tcpm.c | 35 +++++++++++++++++++++++++++++++----
+>  1 file changed, 31 insertions(+), 4 deletions(-)
 > 
-> I already have KALLSYMS_EXTRA_PASS=1 enabled, so that doesn't help.
-> Nothing to worry about. The f2fs crashes are still seen. They
-> also happen for other architectures, so it is not just an arm problem.
-> I'll probably just disable all f2fs testing going forward. If so I'll
-> send a note clarifying that the lack of reported test failures doesn't
-> mean that it works.
+> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
+> index 829d75ebab42..5024354a0fe0 100644
+> --- a/drivers/usb/typec/tcpm/tcpm.c
+> +++ b/drivers/usb/typec/tcpm/tcpm.c
+> @@ -3928,6 +3928,29 @@ static enum typec_cc_status tcpm_pwr_opmode_to_rp(enum typec_pwr_opmode opmode)
+>  	}
+>  }
+>  
+> +static void tcpm_set_initial_svdm_version(struct tcpm_port *port)
+> +{
+> +	switch (port->negotiated_rev) {
+> +	case PD_REV30:
+> +		break;
+> +	/*
+> +	 * 6.4.4.2.3 Structured VDM Version
+> +	 * 2.0 states "At this time, there is only one version (1.0) defined.
+> +	 * This field Shall be set to zero to indicate Version 1.0."
+> +	 * 3.0 states "This field Shall be set to 01b to indicate Version 2.0."
+> +	 * To ensure that we follow the Power Delivery revision we are currently
+> +	 * operating on, downgrade the SVDM version to the highest one supported
+> +	 * by the Power Delivery revision.
+> +	 */
+> +	case PD_REV20:
+> +		typec_partner_set_svdm_version(port->partner, SVDM_VER_1_0);
+> +		break;
+> +	default:
+> +		typec_partner_set_svdm_version(port->partner, SVDM_VER_1_0);
+> +		break;
+> +	}
+> +}
+> +
+>  static void run_state_machine(struct tcpm_port *port)
+>  {
+>  	int ret;
+> @@ -4165,10 +4188,12 @@ static void run_state_machine(struct tcpm_port *port)
+>  		 * For now, this driver only supports SOP for DISCOVER_IDENTITY, thus using
+>  		 * port->explicit_contract to decide whether to send the command.
+>  		 */
+> -		if (port->explicit_contract)
+> +		if (port->explicit_contract) {
+> +			tcpm_set_initial_svdm_version(port);
+>  			mod_send_discover_delayed_work(port, 0);
+> -		else
+> +		} else {
+>  			port->send_discover = false;
+> +		}
+>  
+>  		/*
+>  		 * 6.3.5
+> @@ -4455,10 +4480,12 @@ static void run_state_machine(struct tcpm_port *port)
+>  		 * For now, this driver only supports SOP for DISCOVER_IDENTITY, thus using
+>  		 * port->explicit_contract.
+>  		 */
+> -		if (port->explicit_contract)
+> +		if (port->explicit_contract) {
+> +			tcpm_set_initial_svdm_version(port);
+>  			mod_send_discover_delayed_work(port, 0);
+> -		else
+> +		} else {
+>  			port->send_discover = false;
+> +		}
+>  
+>  		power_supply_changed(port->psy);
+>  		break;
+> 
+> base-commit: fdf0eaf11452d72945af31804e2a1048ee1b574c
+> -- 
+> 2.41.0.585.gd2178a4bd4-goog
 
-I'll look into this later this week, next week to resolve the f2fs
-stuff.  I wanted to get to the other known bug fixes first.
-
-> For x86 I get the same runtime warning as everyone else.
-
-Yeah, this is troubling...
-
-Is it clang only?  I'll dig into this today...
-
-thanks,
-
-greg k-h
+-- 
+heikki
