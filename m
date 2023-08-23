@@ -2,72 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DE7D279E8B1
-	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:08:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FDA879E8AE
+	for <lists+stable@lfdr.de>; Wed, 13 Sep 2023 15:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240728AbjIMNII (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 13 Sep 2023 09:08:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37064 "EHLO
+        id S240774AbjIMNIF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 13 Sep 2023 09:08:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36962 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240761AbjIMNIH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:08:07 -0400
+        with ESMTP id S240761AbjIMNID (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 13 Sep 2023 09:08:03 -0400
 Received: from www.linuxtv.org (www.linuxtv.org [130.149.80.248])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B0E19B6
-        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:08:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28B019B9
+        for <stable@vger.kernel.org>; Wed, 13 Sep 2023 06:07:58 -0700 (PDT)
 Received: from mchehab by www.linuxtv.org with local (Exim 4.92)
         (envelope-from <mchehab@linuxtv.org>)
-        id 1qgPb7-003itD-FC; Wed, 13 Sep 2023 13:08:01 +0000
-From:   Mauro Carvalho Chehab <mchehab@kernel.org>
-Date:   Fri, 28 Jul 2023 08:20:10 +0000
-Subject: [git:media_stage/master] media: uvcvideo: Fix menu count handling for userspace XU mappings
+        id 1qgPb2-003iXm-PK; Wed, 13 Sep 2023 13:07:56 +0000
+From:   Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Date:   Wed, 23 Aug 2023 07:56:08 +0000
+Subject: [git:media_stage/master] media: vcodec: Fix potential array out-of-bounds in encoder queue_setup
 To:     linuxtv-commits@linuxtv.org
-Cc:     Ricardo Ribalda <ribalda@chromium.org>,
-        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
-        stable@vger.kernel.org
+Cc:     stable@vger.kernel.org, Chen-Yu Tsai <wenst@chromium.org>,
+        Wei Chen <harperchen1110@gmail.com>
 Mail-followup-to: linux-media@vger.kernel.org
 Forward-to: linux-media@vger.kernel.org
 Reply-to: linux-media@vger.kernel.org
-Message-Id: <E1qgPb7-003itD-FC@www.linuxtv.org>
+Message-Id: <E1qgPb2-003iXm-PK@www.linuxtv.org>
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 This is an automatic generated email to let you know that the following patch were queued:
 
-Subject: media: uvcvideo: Fix menu count handling for userspace XU mappings
-Author:  Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Date:    Tue Jun 6 18:55:30 2023 +0200
+Subject: media: vcodec: Fix potential array out-of-bounds in encoder queue_setup
+Author:  Wei Chen <harperchen1110@gmail.com>
+Date:    Thu Aug 10 08:23:33 2023 +0000
 
-When commit 716c330433e3 ("media: uvcvideo: Use standard names for
-menus") reworked the handling of menu controls, it inadvertently
-replaced a GENMASK(n - 1, 0) with a BIT_MASK(n). The latter isn't
-equivalent to the former, which broke adding XU mappings from userspace.
-Fix it.
+variable *nplanes is provided by user via system call argument. The
+possible value of q_data->fmt->num_planes is 1-3, while the value
+of *nplanes can be 1-8. The array access by index i can cause array
+out-of-bounds.
 
-Link: https://lore.kernel.org/linux-media/468a36ec-c3ac-cb47-e12f-5906239ae3cd@spahan.ch/
+Fix this bug by checking *nplanes against the array size.
 
+Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
 Cc: stable@vger.kernel.org
-Reported-by: Poncho <poncho@spahan.ch>
-Fixes: 716c330433e3 ("media: uvcvideo: Use standard names for menus")
-Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-Reviewed-by: Ricardo Ribalda <ribalda@chromium.org>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
- drivers/media/usb/uvc/uvc_v4l2.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
 ---
 
-diff --git a/drivers/media/usb/uvc/uvc_v4l2.c b/drivers/media/usb/uvc/uvc_v4l2.c
-index 5ac2a424b13d..f4988f03640a 100644
---- a/drivers/media/usb/uvc/uvc_v4l2.c
-+++ b/drivers/media/usb/uvc/uvc_v4l2.c
-@@ -45,7 +45,7 @@ static int uvc_control_add_xu_mapping(struct uvc_video_chain *chain,
- 	map->menu_names = NULL;
- 	map->menu_mapping = NULL;
+diff --git a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
+index 9ff439a50f53..315e97a2450e 100644
+--- a/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
++++ b/drivers/media/platform/mediatek/vcodec/mtk_vcodec_enc.c
+@@ -821,6 +821,8 @@ static int vb2ops_venc_queue_setup(struct vb2_queue *vq,
+ 		return -EINVAL;
  
--	map->menu_mask = BIT_MASK(xmap->menu_count);
-+	map->menu_mask = GENMASK(xmap->menu_count - 1, 0);
- 
- 	size = xmap->menu_count * sizeof(*map->menu_mapping);
- 	map->menu_mapping = kzalloc(size, GFP_KERNEL);
+ 	if (*nplanes) {
++		if (*nplanes != q_data->fmt->num_planes)
++			return -EINVAL;
+ 		for (i = 0; i < *nplanes; i++)
+ 			if (sizes[i] < q_data->sizeimage[i])
+ 				return -EINVAL;
