@@ -2,137 +2,99 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 845F5785962
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 15:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3B19A785973
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 15:37:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230380AbjHWNcS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 09:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37408 "EHLO
+        id S233141AbjHWNh1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 09:37:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229635AbjHWNcS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 09:32:18 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D518E69;
-        Wed, 23 Aug 2023 06:31:52 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-68a56401c12so2283949b3a.2;
-        Wed, 23 Aug 2023 06:31:52 -0700 (PDT)
+        with ESMTP id S231805AbjHWNh0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 09:37:26 -0400
+Received: from mail-pf1-x433.google.com (mail-pf1-x433.google.com [IPv6:2607:f8b0:4864:20::433])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14695FB;
+        Wed, 23 Aug 2023 06:37:23 -0700 (PDT)
+Received: by mail-pf1-x433.google.com with SMTP id d2e1a72fcca58-68a3082c771so2672542b3a.0;
+        Wed, 23 Aug 2023 06:37:23 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692797461; x=1693402261;
+        d=gmail.com; s=20221208; t=1692797842; x=1693402642;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=+D0W/16BoY62R/hiThUj2ugSOF40Kj3HdGJGIhUmYhc=;
-        b=nvZeCsp///OZbBne2fiRgEgHTTWKM7LWvd09xMTBGY4NmiQFPK7KqdDLsYyOQGh9LG
-         2xhQk6Ie/vraLN43k8FOk9aO7/0oD/xAwPcF4ORDKK0schgRNzcS50N7sM7juwzpeNR1
-         9lxR18ZrKDNj1L0iLpso6gIbJat5XDVV4wScTKN5fJpshRHzx+nb04rryFIofO5Lhq0+
-         M8QOBi8MdXRn8TDDOlTPXVHh19WDoxANN7IQdYjA3oX1LmdE1CEKXUn2rzVxMSDV2I2i
-         GNVc/IxEEhQyFIfZYWEQgeBHXPQi8iLEIez5Z+OgfnIQnqnmRF7ybRva0/e2o5DOnxsU
-         nEQQ==
+        bh=RBV4mVZycvazG00CEeCMMgbKdtVlMwGoxgal96JOqm8=;
+        b=c5uK2/yEVgheGwNDxvDtN9jont/mVokfXSQiVzZsDZ27m1nzBvGUCs+OVscEqOk3y4
+         GFO/q/ceygMb1VUrgLAamTQfIVn7X2mmsK2G6DR/mPuFrLUF2OVEygUcEJ9U7RGb+OH4
+         SxoO1xo5KsdCkF9FpFI5dA6r8gdHzJEsO/9XRuqw/CEDzeZa1a64ApkZMfwybtZpuSt4
+         AF2B4aloPftmiD9Bwt1mixTNBmjRCop9z/nykfBrMwu9NeywqOWxSv3OE1FqJyj7kuAu
+         dcGsFbCkVUtzMP7LxZ3uUikwkF5tUBEhX+YFinaQbW6HbzmIhT/RHDH175AZkzkhUDdU
+         FqdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692797461; x=1693402261;
+        d=1e100.net; s=20221208; t=1692797842; x=1693402642;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=+D0W/16BoY62R/hiThUj2ugSOF40Kj3HdGJGIhUmYhc=;
-        b=Evc1jPmqgpA8kl0uJaSfY4MsHuxVOEqyWI+sYZV+fccgWTpU/RTuluwq8GgCFKAf1/
-         jQNdhMyYBAfHWkoDme8iGaIQIvYquWrWmQiEDq/SV93ncfGshBYmkAziVgFhNhWm5idn
-         rEnBYeUFRDMOP9nmCVISV6wJy4DTpjFFc42LCgcksWbuoDEXHUOVMyNhXV6tT8MBXq9H
-         Uc3jmCwEV8IElyGUuW8BZ4DqB13uDmBu9yCSQ2omrinZtwOk9imo9MI0tihhXfEqILY9
-         /hoatRZVsNLMPAWZ9HTnYpKU601oUk0ZO99XWCbP9ncumysBUHw3tbzu3+wfl5ed1xQf
-         8RPg==
-X-Gm-Message-State: AOJu0YxbvtIB8EB/P5B7Qobzt4tXubwdCOWdlziTddsuhbmRhAq5k5Mf
-        9MYz5kgXzvGcb2NDFCviccDSrCze3UU=
-X-Google-Smtp-Source: AGHT+IHxqIWYvGpO5p0maI7SBmqebnAHzyXG74P2UQdnr44NQ7qsDllqd4gy2UgfiycK38B8l5N+0w==
-X-Received: by 2002:a05:6a20:748b:b0:136:42c8:693c with SMTP id p11-20020a056a20748b00b0013642c8693cmr11821998pzd.6.1692797460787;
-        Wed, 23 Aug 2023 06:31:00 -0700 (PDT)
+        bh=RBV4mVZycvazG00CEeCMMgbKdtVlMwGoxgal96JOqm8=;
+        b=C5nk+Q8fPskSbKZRt3kubB++cmXUFb6cKwgr/5EuhyXbRbvcpWYdJkCTFoNVR26cXJ
+         6NVaHwzZZ3nNKfyaAXOacA977YhxPsKBBttePiqGc/op6HfhoE8emgcddzxGZT4EH9v1
+         LrAwrr6wDH6yozntKOH/+2vHBLBBe15cNkhfy0Ly8mwxowgWC1C+jNvEIQYVtt37DXFo
+         cgJqN9Ol0E467lGDxPk776djnTlXJ/5lq10b7a4qmTpeSBagkCPMsrpNNOQ5ZzPwjdaT
+         aXrgN2NgvRu5MGQPyJXNLrzJlK+D5AwY5yzQckJ0hmv7S2YO6VhL1JirLV+FF+Hd1xwa
+         1zLw==
+X-Gm-Message-State: AOJu0YxpkKK2t5NcRVO3NK4c3RNozWbdsCRtM6+uJ884DdUgEYaliIvu
+        pSouape2zqONQk55miVHN98=
+X-Google-Smtp-Source: AGHT+IHwfzJtIZvvvhyk9RroOV8k3n3HK7klBFMpH4M6Jg/WjJb12HaE3OAFIlpqdFIcmdhuwkwPfQ==
+X-Received: by 2002:a05:6a20:8e13:b0:141:2cb:2954 with SMTP id y19-20020a056a208e1300b0014102cb2954mr19555782pzj.3.1692797842480;
+        Wed, 23 Aug 2023 06:37:22 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id a2-20020aa780c2000000b00688214cff65sm9477564pfn.44.2023.08.23.06.31.00
+        by smtp.gmail.com with ESMTPSA id u3-20020a637903000000b00565d82769d1sm9826613pgc.77.2023.08.23.06.37.21
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Aug 2023 06:31:00 -0700 (PDT)
+        Wed, 23 Aug 2023 06:37:21 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 23 Aug 2023 06:30:59 -0700
+Date:   Wed, 23 Aug 2023 06:37:20 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
-To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+To:     Conor Dooley <conor.dooley@microchip.com>
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>,
         stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
 Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
-Message-ID: <8ecc1785-2e12-4a66-b567-b4d50b4d2892@roeck-us.net>
+Message-ID: <fcd08630-6ef5-46fb-bcf9-2be5233226d1@roeck-us.net>
 References: <20230821194122.695845670@linuxfoundation.org>
- <ZOXJVamgYV1Mb+7S@debian>
- <2023082303-musky-plastic-335f@gregkh>
- <CA+G9fYvm-7DPuA9kAF3784DpW4BmAXa_+_NW3AP_919_UND5-Q@mail.gmail.com>
+ <20230823-washer-reemerge-a412d55f8214@wendy>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CA+G9fYvm-7DPuA9kAF3784DpW4BmAXa_+_NW3AP_919_UND5-Q@mail.gmail.com>
+In-Reply-To: <20230823-washer-reemerge-a412d55f8214@wendy>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=no autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 04:02:14PM +0530, Naresh Kamboju wrote:
-> On Wed, 23 Aug 2023 at 14:56, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
-> >
-> > On Wed, Aug 23, 2023 at 09:54:45AM +0100, Sudip Mukherjee (Codethink) wrote:
-> > > Hi Greg,
-> > >
-> > > On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
-> > > > This is the start of the stable review cycle for the 6.1.47 release.
-> > > > There are 194 patches in this series, all will be posted as a response
-> > > > to this one.  If anyone has any issues with these being applied, please
-> > > > let me know.
-> > > >
-> > > > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> > > > Anything received after that time might be too late.
-> > >
-> > > Build test (gcc version 12.3.1 20230625):
-> > > mips: 52 configs -> no failure
-> > > arm: 100 configs -> no failure
-> > > arm64: 3 configs -> no failure
-> > > x86_64: 4 configs -> no failure
-> > > alpha allmodconfig -> no failure
-> > > csky allmodconfig -> no failure
-> > > powerpc allmodconfig -> no failure
-> > > riscv allmodconfig -> no failure
-> > > s390 allmodconfig -> no failure
-> > > xtensa allmodconfig -> no failure
-> > >
-> > > Boot test:
-> > > x86_64: Booted on my test laptop. Warning on boot, already reported by others.
-> > > x86_64: Booted on qemu. Warning on boot, already reported by others. [1]
-> > > arm64: Booted on rpi4b (4GB model). No regression. [2]
-> > > mips: Booted on ci20 board. No regression. [3]
-> > >
-> > > [1]. https://openqa.qa.codethink.co.uk/tests/4765
-> > > [2]. https://openqa.qa.codethink.co.uk/tests/4773
-> > > [3]. https://openqa.qa.codethink.co.uk/tests/4772
-> > >
-> > > Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-> > >
-> > > --
-> > > Regards
-> > > Sudip
-> >
-> > One question about the warning on boot, all still works afterward,
-> > right?  Or does the system not work?
+On Wed, Aug 23, 2023 at 10:35:54AM +0100, Conor Dooley wrote:
+> On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.47 release.
+> > There are 194 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
 > 
-> The warning while booting and root login successful and
-> LTP and other test runs are successful.
+> Fails to build for me with gcc-11/binutils 2.37 on RISC-V. The problematic
+> patch is "riscv: Handle zicsr/zifencei issue between gcc and binutils".
+> Can you drop that please, probably from all of your branches. It
+> certainly affects 6.4 too & I don't personally test anything older than
+> 6.1.
 > 
-
-Same here.
+If I recall correctly, I had to be careful with combining gcc versions 
+and binutils versions. gcc 11.4.0 combined with binutils 2.40 works fine
+for me. Note that this doesn't just affect riscv. loongarch and ppc are
+quite notorious for that as well.
 
 Guenter
