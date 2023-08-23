@@ -2,101 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F849785491
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 11:49:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F01AF785500
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 12:11:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231617AbjHWJtL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 05:49:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54792 "EHLO
+        id S231205AbjHWKLe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 06:11:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236146AbjHWJsi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 05:48:38 -0400
-Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.153.233])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7070010DA;
-        Wed, 23 Aug 2023 02:40:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
-  t=1692783656; x=1724319656;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=oFCFuVDKxNca05E5fCXqRQ9kJDwM/9xD9jy6ThOYG54=;
-  b=meMqM65sHkXk13h5vQuoRBgnD5m2bYjcmxEY55m8ofg3CeoAIXPrwAN+
-   1vmYH1JOUek4aikxY2slupTLrKSIPE6igAnHHLJzoxgeN1Wl4MnMkYXbR
-   YEe549+WAbpevPbr6m2HU2ostt1yHRfvsNMzShQaNWuiDPb9kllInNI6y
-   KI/8+/Rvuz2Jav6ROP8nLNoC86tB0t/pZk3M4BPzHUhW3p+0xOsbef3T+
-   X8weoa8j4kVCoHmsqp++Dnu8e8eMT5PsNuZEkD6q62u1yKwTfYM1mbHT8
-   ymBWFrQOsT9RzCOIcOsDITBndtfLwDMKBDX5YQjDp8l5+0yVuXmLpp0r3
-   g==;
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="asc'?scan'208";a="862761"
-X-Amp-Result: UNKNOWN
-X-Amp-Original-Verdict: FILE UNKNOWN
-Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
-  by esa1.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 23 Aug 2023 02:40:55 -0700
-Received: from chn-vm-ex04.mchp-main.com (10.10.85.152) by
- chn-vm-ex02.mchp-main.com (10.10.85.144) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.21; Wed, 23 Aug 2023 02:40:44 -0700
-Received: from wendy (10.10.85.11) by chn-vm-ex04.mchp-main.com (10.10.85.152)
- with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
- Transport; Wed, 23 Aug 2023 02:40:41 -0700
-Date:   Wed, 23 Aug 2023 10:40:00 +0100
-From:   Conor Dooley <conor.dooley@microchip.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
-        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
-        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
-        <shuah@kernel.org>, <patches@kernelci.org>,
-        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
-        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
-        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
-        <rwarsow@gmx.de>, <conor@kernel.org>
-Subject: Re: [PATCH 6.4 000/234] 6.4.12-rc1 review
-Message-ID: <20230823-raft-cupcake-08b8629de8ef@wendy>
-References: <20230821194128.754601642@linuxfoundation.org>
+        with ESMTP id S234559AbjHWIV0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 04:21:26 -0400
+X-Greylist: delayed 568 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 23 Aug 2023 01:15:55 PDT
+Received: from mail.withamteme.com (mail.withamteme.com [141.95.17.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA912210E
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 01:15:48 -0700 (PDT)
+Received: by mail.withamteme.com (Postfix, from userid 1002)
+        id 2CB12A2477; Wed, 23 Aug 2023 08:05:29 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=withamteme.com;
+        s=mail; t=1692777938;
+        bh=bUdYbIn2UeyWxc3No0O4EnsUymOhpJlpZbJ98aksnPY=;
+        h=Date:From:To:Subject:From;
+        b=LBeXHKgp8IXBGH1RTLUbhWBg7fvWOcbw3AJB+OEw42Qv92h6tUzyugaMO3ZlGX1xA
+         a8SM7LEYo6iPckL8HfJqMOYhZNL4Qg5NjUkccucCUQJs60I3000zcaHiV6vfbvS7eU
+         jaqgTSId9FRbMuPKxStrBoJlFNCl0BzcN33K6lSnUG3oWJWaMBq2E0oueXYgtnqAEM
+         h+uagOTH86zry4/vzoMdj+3FFSsiLiH0ApzQtrgjvD+EenO0qaYHHNtQYNXa5Oc7rP
+         P8Fl6sIV6i6DliAZxAA5ZnEsoae662CHd5v1cN+rTkoXOGTzBfoimAudaE27ubPgcj
+         9xHNFNWvuwLHQ==
+Received: by mail.withamteme.com for <stable@vger.kernel.org>; Wed, 23 Aug 2023 08:05:15 GMT
+Message-ID: <20230823064500-0.1.8v.kbxo.0.7ko112mngb@withamteme.com>
+Date:   Wed, 23 Aug 2023 08:05:15 GMT
+From:   "Grzegorz Frycz" <grzegorz.frycz@withamteme.com>
+To:     <stable@vger.kernel.org>
+Subject: =?UTF-8?Q?Bezp=C5=82atna_konsultacja?=
+X-Mailer: mail.withamteme.com
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Zd6sdzXlo28Qd3yK"
-Content-Disposition: inline
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS,URIBL_ABUSE_SURBL,URIBL_BLOCKED autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
---Zd6sdzXlo28Qd3yK
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Dzie=C5=84 dobry,
 
-On Mon, Aug 21, 2023 at 09:39:23PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.12 release.
-> There are 234 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+czy konsultowali Pa=C5=84stwo swoj=C4=85 umow=C4=99 ubezpieczeniow=C4=85 =
+z niezale=C5=BCnym doradc=C4=85?
 
-> Mingzheng Xing <xingmingzheng@iscas.ac.cn>
->     riscv: Handle zicsr/zifencei issue between gcc and binutils
+Wi=C4=99kszo=C5=9B=C4=87 moich Klient=C3=B3w, dotychczas nie by=C5=82a =C5=
+=9Bwiadoma, jak bardzo przep=C5=82acaj=C4=85 za polisy.
 
-Fails to build w/ gcc-11 & binutils 2.37. Can you drop this please?
-I'll go try to fix this in mainline because it is probably broken there
-too.
+Jako specjalista niepowi=C4=85zany z =C5=BCadn=C4=85 organizacja ubezpiec=
+zeniow=C4=85 bezp=C5=82atnie przeanalizuj=C4=99 Pa=C5=84stwa rozwi=C4=85z=
+ania finansowe i zarekomenduj=C4=99 najkorzystniejsze na rynku alternatyw=
+y, kt=C3=B3re pozwol=C4=85 zmniejszy=C4=87 dotychczasowe koszty przy jedn=
+ocze=C5=9Bnie zwi=C4=99kszonej ochronie.
 
---Zd6sdzXlo28Qd3yK
-Content-Type: application/pgp-signature; name="signature.asc"
+Byliby Pa=C5=84stwo zainteresowani?
 
------BEGIN PGP SIGNATURE-----
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZOXT8AAKCRB4tDGHoIJi
-0q5TAP9wonJfGHAO4QB04iFwvbmbLDeiZyrQ9jtTc7T/AcejeQEA08j9E4v1wjcz
-fNTUuWFH8slRszJvbiG8TeyY0LvDEA8=
-=1KH7
------END PGP SIGNATURE-----
-
---Zd6sdzXlo28Qd3yK--
+Pozdrawiam
+Grzegorz Frycz
