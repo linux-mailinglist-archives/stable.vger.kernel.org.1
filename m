@@ -2,74 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE146784DF3
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 02:50:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DEBE784E84
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 04:07:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230156AbjHWAuu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 20:50:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48024 "EHLO
+        id S232163AbjHWCHL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 22:07:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231909AbjHWAut (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 20:50:49 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A72F5E63;
-        Tue, 22 Aug 2023 17:50:27 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-565403bda57so2909846a12.3;
-        Tue, 22 Aug 2023 17:50:27 -0700 (PDT)
+        with ESMTP id S231438AbjHWCHK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 22:07:10 -0400
+Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88408E4A;
+        Tue, 22 Aug 2023 19:07:08 -0700 (PDT)
+Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-570c51530e5so2077997eaf.3;
+        Tue, 22 Aug 2023 19:07:08 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692751827; x=1693356627;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=VM43A4/DK/17xUvga8Gmv1Q0UBVziYLS6+8xmcTLaUI=;
-        b=CodYmXiWIj+5nfcp0Fcj7nsBX3UzYQo43LtC7Cyn0wioHPrSAgEXdL1Eizd5bFEmK9
-         HRW09Ntbny+l4MiMT2PB/KEq10DP6qYr2OP88OA6STJSrTvii/HQuJsvcCNKB7sYPcBe
-         ZoZt06eCosFPqKp+/U+iP1I6vLL1fiifEy2ZzFI0f41t6SeK7VP7sO5noevJc1aGOU8U
-         YOGZiL1HLpjpmjWHRGoRo1UzQziBkl+vrdRRbZdnibDj8lcl+a3h894tCHriSxlzNxZX
-         da38wSrsqFhdnay3MHrsaDXC+CRz3h0Y+EQHKVFWtwq4vKsaap8Yj/LKpJOy89+Wa+XW
-         L7tA==
+        d=gmail.com; s=20221208; t=1692756428; x=1693361228;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=mU5FNyFto872iS/tgMcoUPNuBwmFiNSaWS6P6+DDA0A=;
+        b=bqPT7KEGvEt18ZuX9+5swBL7588zuwbuMEViBE41KMRQ6MdDCO0QThdph7lElc9zNZ
+         3Ymtv4PjGYjWE42q4cLbs4SCuRKlxUN4kle+V0k2jEh/yxkck+re40e7ob0uDCON8Smw
+         oWUObyw22V2bAFc+Yc9RCKpq63fbmfkQk6mLaN57sAO64ZPsvhLHWzS9ucZuwtPC5efi
+         SQ8E0qzMfrAVEskFvIFUJIPByQNbAL5L/XxXWM+fwcuGrtWB14jUYTPyRn4Z6AWVM2WI
+         +CeFdaGw87X+O4l3CU9yaQ3qzr7PCPEDqBEZVklu+WpGHlHAajedKjClKH3fz4sIi3Xd
+         pUdQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692751827; x=1693356627;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1692756428; x=1693361228;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=VM43A4/DK/17xUvga8Gmv1Q0UBVziYLS6+8xmcTLaUI=;
-        b=KRwZK1CzKvC/vMozvh3H6zQiuJpQOb4BpMBD26yEPcrKS4o0XGtL07flQEhrBrKNhF
-         MLJXuu4NYzEe0Qq4Irm7Te1OhwJ8a12euHdwDWKYgHsTF7ADGm75VeF4hCuwaRZ+EVzR
-         phJvABPG+MqqP1j+su387b3V4otg9HnCJkjoyoEVAUhWCE6ej3tuyVlVjvQr4PWefseW
-         OTyNX7zdF+RVeQrynMN0AHSpUL+tH5LaDM9QmpZbiw5dm0uQU7ZkYnVmiEGRpYiDVPl4
-         r2GMoVHE2+Zuq8i78kNJ6BMXaD/wDkOxzDqpVPbij32uLON/PSG3E028vvN5UDpCFjCr
-         n2Qg==
-X-Gm-Message-State: AOJu0Yy1gXIMVZSBwBgsbJgNhsasFeZx0Z9SKhi09bQasZBxYGlZvtx2
-        VoV45s2MBQlJ/axG+JjGvsQ=
-X-Google-Smtp-Source: AGHT+IH5TO05VVkBG2tZH5Ys414AcYHnwfJRxTfvVCLNNLXlabNNJweDWr7XIxo6v4GYqVcbnx0d9Q==
-X-Received: by 2002:a17:90a:ca16:b0:263:fc45:4091 with SMTP id x22-20020a17090aca1600b00263fc454091mr8151185pjt.15.1692751826886;
-        Tue, 22 Aug 2023 17:50:26 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id fu4-20020a17090ad18400b002694da8a9cdsm8398306pjb.48.2023.08.22.17.50.26
+        bh=mU5FNyFto872iS/tgMcoUPNuBwmFiNSaWS6P6+DDA0A=;
+        b=RVOEL2VppRh4TcQXOk+pHyzcYj/R5iS9Wi+4r+PrR6RDl7BJTzIV3f0mlaas6LUPN/
+         yVaNDk4BHyjdMfzXPdrI9KLerFl4Qw17+l5C//zc5b7f/0CdGkR+oz1/0RAXJwOLLJi0
+         ZxJWxr1n2o5ceVYxjBccQ6iyduVYDLjB++6p0BBUaPDENZLSVCQ+ArY6P2MhV77XbFqE
+         YbN2abK1Vi6rCGgMSLp1KX1ZNpMqvhhg2lXaoFuI3sUmb1FQ2Q5NcrOO9DdVlo/61hqb
+         iWxsWtJ8ruLd8lO05lFnNCTExT2CamL4jeH42q7EZ5JwLMoqimEyQgnRIniUw7bu8+Xg
+         /Ihg==
+X-Gm-Message-State: AOJu0YyOWGk2siv3AX8IUsY7Qkrc9TRz4M773iCgBipZCksS0Eg9zLo8
+        3tq6MWE2bBdEu/usG3t7tPMwtn7xOqYcNg+0
+X-Google-Smtp-Source: AGHT+IEeK3Vu67X8WCCYwtmrQ+ZC4f647aPpKtj9+3HlQa7BuPidkBfHgPUcMNKxzbhjH7bgJmpn9A==
+X-Received: by 2002:a05:6358:2608:b0:134:c785:5932 with SMTP id l8-20020a056358260800b00134c7855932mr10335787rwc.32.1692756427789;
+        Tue, 22 Aug 2023 19:07:07 -0700 (PDT)
+Received: from vultr.guest ([149.28.193.116])
+        by smtp.gmail.com with ESMTPSA id y15-20020aa7804f000000b0064f7c56d8b7sm8313627pfm.219.2023.08.22.19.07.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 17:50:26 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 22 Aug 2023 17:50:25 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 000/234] 6.4.12-rc1 review
-Message-ID: <5ffac837-e992-4ed0-b2a3-7324ff1a8489@roeck-us.net>
-References: <20230821194128.754601642@linuxfoundation.org>
+        Tue, 22 Aug 2023 19:07:07 -0700 (PDT)
+From:   Yafang Shao <laoar.shao@gmail.com>
+To:     ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
+        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
+        yonghong.song@linux.dev, kpsingh@kernel.org, sdf@google.com,
+        haoluo@google.com, jolsa@kernel.org, eddyz87@gmail.com
+Cc:     bpf@vger.kernel.org, Yafang Shao <laoar.shao@gmail.com>,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        stable@vger.kernel.org
+Subject: [PATCH v2 bpf-next 1/2] bpf: Fix issue in verifying allow_ptr_leaks
+Date:   Wed, 23 Aug 2023 02:07:02 +0000
+Message-Id: <20230823020703.3790-2-laoar.shao@gmail.com>
+X-Mailer: git-send-email 2.39.3
+In-Reply-To: <20230823020703.3790-1-laoar.shao@gmail.com>
+References: <20230823020703.3790-1-laoar.shao@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230821194128.754601642@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,21 +75,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 09:39:23PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.12 release.
-> There are 234 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> Anything received after that time might be too late.
-> 
+After we converted the capabilities of our networking-bpf program from
+cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
+failed to start. Because it failed the bpf verifier, and the error log
+is "R3 pointer comparison prohibited".
 
-Build results:
-	total: 157 pass: 157 fail: 0
-Qemu test results:
-	total: 522 pass: 522 fail: 0
+A simple reproducer as follows,
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+SEC("cls-ingress")
+int ingress(struct __sk_buff *skb)
+{
+	struct iphdr *iph = (void *)(long)skb->data + sizeof(struct ethhdr);
 
-Guenter
+	if ((long)(iph + 1) > (long)skb->data_end)
+		return TC_ACT_STOLEN;
+	return TC_ACT_OK;
+}
+
+Per discussion with Yonghong and Alexei [1], comparison of two packet
+pointers is not a pointer leak. This patch fixes it.
+
+Our local kernel is 6.1.y and we expect this fix to be backported to
+6.1.y, so stable is CCed.
+
+[1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94aXSy4uQ9vBg@mail.gmail.com/
+
+Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Cc: stable@vger.kernel.org
+---
+ kernel/bpf/verifier.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
+
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 4ccca1f..b6b60cd 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -14047,6 +14047,12 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 		return -EINVAL;
+ 	}
+ 
++	/* check src2 operand */
++	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
++	if (err)
++		return err;
++
++	dst_reg = &regs[insn->dst_reg];
+ 	if (BPF_SRC(insn->code) == BPF_X) {
+ 		if (insn->imm != 0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -14058,12 +14064,13 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 		if (err)
+ 			return err;
+ 
+-		if (is_pointer_value(env, insn->src_reg)) {
++		src_reg = &regs[insn->src_reg];
++		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_reg)) &&
++		    is_pointer_value(env, insn->src_reg)) {
+ 			verbose(env, "R%d pointer comparison prohibited\n",
+ 				insn->src_reg);
+ 			return -EACCES;
+ 		}
+-		src_reg = &regs[insn->src_reg];
+ 	} else {
+ 		if (insn->src_reg != BPF_REG_0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -14071,12 +14078,6 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
+ 		}
+ 	}
+ 
+-	/* check src2 operand */
+-	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
+-	if (err)
+-		return err;
+-
+-	dst_reg = &regs[insn->dst_reg];
+ 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
+ 
+ 	if (BPF_SRC(insn->code) == BPF_K) {
+-- 
+1.8.3.1
+
