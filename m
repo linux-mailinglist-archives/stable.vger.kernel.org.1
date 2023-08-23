@@ -2,159 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DEBE784E84
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 04:07:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92956784FC9
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 07:05:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232163AbjHWCHL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 22:07:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52326 "EHLO
+        id S232621AbjHWFFH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 01:05:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231438AbjHWCHK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 22:07:10 -0400
-Received: from mail-oo1-xc35.google.com (mail-oo1-xc35.google.com [IPv6:2607:f8b0:4864:20::c35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88408E4A;
-        Tue, 22 Aug 2023 19:07:08 -0700 (PDT)
-Received: by mail-oo1-xc35.google.com with SMTP id 006d021491bc7-570c51530e5so2077997eaf.3;
-        Tue, 22 Aug 2023 19:07:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692756428; x=1693361228;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=mU5FNyFto872iS/tgMcoUPNuBwmFiNSaWS6P6+DDA0A=;
-        b=bqPT7KEGvEt18ZuX9+5swBL7588zuwbuMEViBE41KMRQ6MdDCO0QThdph7lElc9zNZ
-         3Ymtv4PjGYjWE42q4cLbs4SCuRKlxUN4kle+V0k2jEh/yxkck+re40e7ob0uDCON8Smw
-         oWUObyw22V2bAFc+Yc9RCKpq63fbmfkQk6mLaN57sAO64ZPsvhLHWzS9ucZuwtPC5efi
-         SQ8E0qzMfrAVEskFvIFUJIPByQNbAL5L/XxXWM+fwcuGrtWB14jUYTPyRn4Z6AWVM2WI
-         +CeFdaGw87X+O4l3CU9yaQ3qzr7PCPEDqBEZVklu+WpGHlHAajedKjClKH3fz4sIi3Xd
-         pUdQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692756428; x=1693361228;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=mU5FNyFto872iS/tgMcoUPNuBwmFiNSaWS6P6+DDA0A=;
-        b=RVOEL2VppRh4TcQXOk+pHyzcYj/R5iS9Wi+4r+PrR6RDl7BJTzIV3f0mlaas6LUPN/
-         yVaNDk4BHyjdMfzXPdrI9KLerFl4Qw17+l5C//zc5b7f/0CdGkR+oz1/0RAXJwOLLJi0
-         ZxJWxr1n2o5ceVYxjBccQ6iyduVYDLjB++6p0BBUaPDENZLSVCQ+ArY6P2MhV77XbFqE
-         YbN2abK1Vi6rCGgMSLp1KX1ZNpMqvhhg2lXaoFuI3sUmb1FQ2Q5NcrOO9DdVlo/61hqb
-         iWxsWtJ8ruLd8lO05lFnNCTExT2CamL4jeH42q7EZ5JwLMoqimEyQgnRIniUw7bu8+Xg
-         /Ihg==
-X-Gm-Message-State: AOJu0YyOWGk2siv3AX8IUsY7Qkrc9TRz4M773iCgBipZCksS0Eg9zLo8
-        3tq6MWE2bBdEu/usG3t7tPMwtn7xOqYcNg+0
-X-Google-Smtp-Source: AGHT+IEeK3Vu67X8WCCYwtmrQ+ZC4f647aPpKtj9+3HlQa7BuPidkBfHgPUcMNKxzbhjH7bgJmpn9A==
-X-Received: by 2002:a05:6358:2608:b0:134:c785:5932 with SMTP id l8-20020a056358260800b00134c7855932mr10335787rwc.32.1692756427789;
-        Tue, 22 Aug 2023 19:07:07 -0700 (PDT)
-Received: from vultr.guest ([149.28.193.116])
-        by smtp.gmail.com with ESMTPSA id y15-20020aa7804f000000b0064f7c56d8b7sm8313627pfm.219.2023.08.22.19.07.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 22 Aug 2023 19:07:07 -0700 (PDT)
-From:   Yafang Shao <laoar.shao@gmail.com>
-To:     ast@kernel.org, daniel@iogearbox.net, john.fastabend@gmail.com,
-        andrii@kernel.org, martin.lau@linux.dev, song@kernel.org,
-        yonghong.song@linux.dev, kpsingh@kernel.org, sdf@google.com,
-        haoluo@google.com, jolsa@kernel.org, eddyz87@gmail.com
-Cc:     bpf@vger.kernel.org, Yafang Shao <laoar.shao@gmail.com>,
-        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        with ESMTP id S231563AbjHWFFH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 01:05:07 -0400
+Received: from bmailout1.hostsharing.net (bmailout1.hostsharing.net [IPv6:2a01:37:1000::53df:5f64:0])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE026E4A;
+        Tue, 22 Aug 2023 22:05:02 -0700 (PDT)
+Received: from h08.hostsharing.net (h08.hostsharing.net [83.223.95.28])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256
+         client-signature RSA-PSS (4096 bits) client-digest SHA256)
+        (Client CN "*.hostsharing.net", Issuer "RapidSSL Global TLS RSA4096 SHA256 2022 CA1" (verified OK))
+        by bmailout1.hostsharing.net (Postfix) with ESMTPS id 7A49B30000D25;
+        Wed, 23 Aug 2023 07:04:53 +0200 (CEST)
+Received: by h08.hostsharing.net (Postfix, from userid 100393)
+        id 6C9A6316BE2; Wed, 23 Aug 2023 07:04:53 +0200 (CEST)
+Date:   Wed, 23 Aug 2023 07:04:53 +0200
+From:   Lukas Wunner <lukas@wunner.de>
+To:     Bjorn Helgaas <helgaas@kernel.org>
+Cc:     "Rafael J. Wysocki" <rafael@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Mika Westerberg <mika.westerberg@linux.intel.com>,
+        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Kuppuswamy Sathyanarayanan 
+        <sathyanarayanan.kuppuswamy@linux.intel.com>,
         stable@vger.kernel.org
-Subject: [PATCH v2 bpf-next 1/2] bpf: Fix issue in verifying allow_ptr_leaks
-Date:   Wed, 23 Aug 2023 02:07:02 +0000
-Message-Id: <20230823020703.3790-2-laoar.shao@gmail.com>
-X-Mailer: git-send-email 2.39.3
-In-Reply-To: <20230823020703.3790-1-laoar.shao@gmail.com>
-References: <20230823020703.3790-1-laoar.shao@gmail.com>
+Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
+Message-ID: <20230823050453.GA9103@wunner.de>
+References: <CAJZ5v0hU3mWFaaujWozHnPw8+A=bf2OwzcendXjpP35wCv_B6g@mail.gmail.com>
+ <20230823000243.GA391238@bhelgaas>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230823000243.GA391238@bhelgaas>
+User-Agent: Mutt/1.10.1 (2018-07-13)
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_NONE autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-After we converted the capabilities of our networking-bpf program from
-cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
-failed to start. Because it failed the bpf verifier, and the error log
-is "R3 pointer comparison prohibited".
+On Tue, Aug 22, 2023 at 07:02:43PM -0500, Bjorn Helgaas wrote:
+> On Tue, Aug 22, 2023 at 12:11:10PM +0200, Rafael J. Wysocki wrote:
+> > What we need to deal with here is basically non-compliant systems and
+> > so we have to catch the various forms of non-compliance.
+> 
+> Thanks for this, that helps.  If pci_bridge_d3_possible() is a list of
+> quirks for systems that are known to be broken (or at least not known
+> to work correctly and avoiding D3 is acceptable), then we should
+> document and use it that way.
+> 
+> The current documentation ("checks if it is possible to move to D3")
+> frames it as "does the bridge have the required features?" instead of
+> "do we know about something broken in this bridge or this platform?"
+> 
+> If something is broken, I would expect tests based on the device or
+> DMI check.  But several some are not obvious defects.  E.g.,
+> "bridge->is_hotplug_bridge && !pciehp_is_native(bridge)" -- what
+> defect are we finding there?  What does the spec require that isn't
+> happening?
 
-A simple reproducer as follows,
+This particular check doesn't pertain to a defect, but indeed
+follows from the spec:
 
-SEC("cls-ingress")
-int ingress(struct __sk_buff *skb)
-{
-	struct iphdr *iph = (void *)(long)skb->data + sizeof(struct ethhdr);
+If hotplug control wasn't granted to the OS, the OS shall not put
+the hotplug port in D3 behind firmware's back because the power state
+affects accessibility of devices downstream of the hotplug port.
 
-	if ((long)(iph + 1) > (long)skb->data_end)
-		return TC_ACT_STOLEN;
-	return TC_ACT_OK;
-}
+Put another way, the firmware expects to have control of hotplug
+and hotplug may break if the OS fiddles with the power state of the
+hotplug port.
 
-Per discussion with Yonghong and Alexei [1], comparison of two packet
-pointers is not a pointer leak. This patch fixes it.
+Here's a bugzilla where this caused issues:
+https://bugzilla.kernel.org/show_bug.cgi?id=53811
 
-Our local kernel is 6.1.y and we expect this fix to be backported to
-6.1.y, so stable is CCed.
+On the other hand Thunderbolt hotplug ports are required to runtime
+suspend to D3 in order to save power.  On Macs they're always handled
+natively by the OS.  Hence the code comment.
 
-[1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94aXSy4uQ9vBg@mail.gmail.com/
+A somewhat longer explanation I gave in 2016:
+https://lore.kernel.org/all/20160617213209.GA1927@wunner.de/
 
-Suggested-by: Yonghong Song <yonghong.song@linux.dev>
-Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Eduard Zingerman <eddyz87@gmail.com>
-Cc: stable@vger.kernel.org
----
- kernel/bpf/verifier.c | 17 +++++++++--------
- 1 file changed, 9 insertions(+), 8 deletions(-)
+Perhaps the code comment preceding that check can be rephrased to
+convey its meaning more clearly...
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 4ccca1f..b6b60cd 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -14047,6 +14047,12 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 		return -EINVAL;
- 	}
- 
-+	/* check src2 operand */
-+	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
-+	if (err)
-+		return err;
-+
-+	dst_reg = &regs[insn->dst_reg];
- 	if (BPF_SRC(insn->code) == BPF_X) {
- 		if (insn->imm != 0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -14058,12 +14064,13 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 		if (err)
- 			return err;
- 
--		if (is_pointer_value(env, insn->src_reg)) {
-+		src_reg = &regs[insn->src_reg];
-+		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_reg)) &&
-+		    is_pointer_value(env, insn->src_reg)) {
- 			verbose(env, "R%d pointer comparison prohibited\n",
- 				insn->src_reg);
- 			return -EACCES;
- 		}
--		src_reg = &regs[insn->src_reg];
- 	} else {
- 		if (insn->src_reg != BPF_REG_0) {
- 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
-@@ -14071,12 +14078,6 @@ static int check_cond_jmp_op(struct bpf_verifier_env *env,
- 		}
- 	}
- 
--	/* check src2 operand */
--	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
--	if (err)
--		return err;
--
--	dst_reg = &regs[insn->dst_reg];
- 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
- 
- 	if (BPF_SRC(insn->code) == BPF_K) {
--- 
-1.8.3.1
+Thanks,
 
+Lukas
