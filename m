@@ -2,103 +2,152 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B27407852A0
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 10:25:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E2A887852CE
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 10:36:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233079AbjHWIY7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 04:24:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39978 "EHLO
+        id S234849AbjHWIgv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 04:36:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54566 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234857AbjHWIWF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 04:22:05 -0400
-Received: from mail-yb1-xb2a.google.com (mail-yb1-xb2a.google.com [IPv6:2607:f8b0:4864:20::b2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9658C10FA
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 01:21:40 -0700 (PDT)
-Received: by mail-yb1-xb2a.google.com with SMTP id 3f1490d57ef6-d7766072ba4so3096514276.1
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 01:21:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692778900; x=1693383700;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=y222BThDVSxyqkoGfji35At4mqYeveBf4/raWzmbcc8=;
-        b=v2n6Ms6P++6QbUOA/76+zOpL07UxZ6ZCnB5fIjdcXHBr0UMFVDE6/Ueo6P0QMByXiL
-         9+wDjWgwsQLR+QcwWK/5Mh0Atwuqjc9OtFMNynu3pFjFq+qhyx6tl7AOZL2hgCgOkzGl
-         hJ2WtJer1o83BxoNX+JJTo7dMfNG3SKfkdqmYZDmVnR4K2cIBKZn/EBjdXSGrG9Ab53v
-         NPZA3Wvn977BowLWMGV4f5PsuJu8vDnjhhS//uEdbIs4q93XgVHrI/VCZe9w0ax0Uqdx
-         yrVixHzVUj2XAx7thXubHTbXoTouHO4pPh7PcPGG2BXQyq8a/2pyIlQpzmSSLWzIR2lR
-         YKFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692778900; x=1693383700;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=y222BThDVSxyqkoGfji35At4mqYeveBf4/raWzmbcc8=;
-        b=SrhFeXXr2Jqypc8pu5boSnN8Wj29rS9gOCT0qOyh0GwNLQh1CPWLBty4u+fkWYrLHI
-         3a3lLuCeA1CHSf2SGZNqDRFmEA27Mc24gZbk2WGKBhv2dlHSBwwuJPoOe2IR1+G5giIY
-         d8fU4YVz4SLMJ++DCxn3/iI/HckLY8qzBynK0pvF+srNYe3eSTZ1UHQcazC6vCIQW4rB
-         F0P54mNEuJ/MYnY63gOa532qCGZeAJK/sqBmwXqv5MNt6eYTzAb6NGu3T8BWWNqeNmHw
-         LcuNYhegd5hpDlt6cAgCZrqxOIR2feWj0YjqNpAPIkH5Rg2qRQrdntWNQNdEZfb7NcUk
-         IZFg==
-X-Gm-Message-State: AOJu0YzFQ42Ifs3bNXFZsyFV3xJr+57o79OcVfKH3nNQyMxSiBpExMiK
-        cLSGe7YttwQuuVWe/Uj883BbXeVkdlLWUtx/RsD5hO3H2iW6Gitj
-X-Google-Smtp-Source: AGHT+IFDodyVNIJNslU9P09zAg46Uy7BmDyBYA2BSlASenUz+xhthPKPXOROiZL7YNSTM75xV4cH7PX6AWiMgLtRtu4=
-X-Received: by 2002:a25:ad4f:0:b0:d72:8ebc:6497 with SMTP id
- l15-20020a25ad4f000000b00d728ebc6497mr11354257ybe.14.1692778899807; Wed, 23
- Aug 2023 01:21:39 -0700 (PDT)
+        with ESMTP id S234887AbjHWIdy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 04:33:54 -0400
+Received: from mx3.molgen.mpg.de (mx3.molgen.mpg.de [141.14.17.11])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F36B10DA;
+        Wed, 23 Aug 2023 01:24:12 -0700 (PDT)
+Received: from [192.168.0.185] (ip5f5ae831.dynamic.kabel-deutschland.de [95.90.232.49])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: pmenzel)
+        by mx.molgen.mpg.de (Postfix) with ESMTPSA id 0A28361E5FE01;
+        Wed, 23 Aug 2023 10:23:14 +0200 (CEST)
+Message-ID: <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+Date:   Wed, 23 Aug 2023 10:23:13 +0200
 MIME-Version: 1.0
-References: <CACRpkdah22hgM6VruErJedWM7apAuO7BGdFeSz4Hz0c2Nx3kjg@mail.gmail.com>
- <20230821164509.45-1-bavishimithil@gmail.com>
-In-Reply-To: <20230821164509.45-1-bavishimithil@gmail.com>
-From:   Linus Walleij <linus.walleij@linaro.org>
-Date:   Wed, 23 Aug 2023 10:21:28 +0200
-Message-ID: <CACRpkdZn3MePSohFU7AzVtzdaKW=edsw14Y42xbScXNBVZDOjA@mail.gmail.com>
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-To:     Mighty <bavishimithil@gmail.com>
-Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
-        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=0.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SORTED_RECIPS,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
+Content-Language: en-US
+To:     Jarkko Sakkinen <jarkko@kernel.org>
+Cc:     linux-integrity@vger.kernel.org,
+        Jerry Snitselaar <jsnitsel@redhat.com>, stable@vger.kernel.org,
+        Todd Brandt <todd.e.brandt@intel.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-kernel@vger.kernel.org, Patrick Steinhardt <ps@pks.im>,
+        Ronan Pigott <ronan@rjp.ie>,
+        Raymond Jay Golo <rjgolo@gmail.com>
+References: <20230822231510.2263255-1-jarkko@kernel.org>
+From:   Paul Menzel <pmenzel@molgen.mpg.de>
+In-Reply-To: <20230822231510.2263255-1-jarkko@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 21, 2023 at 6:45=E2=80=AFPM Mighty <bavishimithil@gmail.com> wr=
-ote:
->
-> > How does it break it?
-> >
-> > It's a change to the AFE rescaler driver so it can't really "break"
-> > twl6030-gpadc.
->
-> Not necessarily the gpadc, but it breaks my current-sense-shunt which req=
-uires an
-> adc channel for it to work, since the iio-rescale driver wont recognise t=
-he channel
-> (as it only is IIO_CHAN_INFO_RAW, so the && breaks)
+Dear Jarkko,
 
-OK so twl6030 is providing some channels with IIO_CHAN_INFO_RAW
-without IIO_CHAN_INFO_SCALE.
 
-How is the rescaler supposed to rescale the raw value without any
-scale?
+Thank you for your patch.
 
-Say the raw value is 100, then 100 what? Microvolts? Certainly the
-twl6030 has to provide a scale or a processed channel to be used
-with the rescaler. If the rescaler would assume "no scale means
-scale 1:1" then that is equivalent to a processed channel, and you
-can just patch the twl6030 driver to convert all
-IIO_CHAN_INFO_RAW to IIO_CHAN_INFO_PROCESSED.
 
-Either the datasheet has the right scale for the channels, or it is
-something design (board) specific and then it should be a parameter
-to the driver e.g. through the device tree or similar mechanism.
+Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
+> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
+> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
+> reported systems the TPM doesn't reply at bootup and returns back the
+> command code. This makes the TPM fail probe.
+> 
+> Since only Microsoft Pluton is the only known combination of AMD CPU and
+> fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
+> aware of this, print also info message to the klog.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Yours,
-Linus Walleij
+Mario’s patch also had the three reporters below listed:
+
+Reported-by: Patrick Steinhardt <ps@pks.im>
+Reported-by: Ronan Pigott <ronan@rjp.ie>
+Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+
+> ---
+> v3:
+> * Forgot to amend config flags.
+> v2:
+> * CONFIG_X86
+> * Removed "Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>"
+> * Removed "Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>"
+> ---
+>   drivers/char/tpm/tpm_crb.c | 33 ++++++++-------------------------
+>   1 file changed, 8 insertions(+), 25 deletions(-)
+> 
+> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+> index 65ff4d2fbe8d..ea085b14ab7c 100644
+> --- a/drivers/char/tpm/tpm_crb.c
+> +++ b/drivers/char/tpm/tpm_crb.c
+> @@ -463,28 +463,6 @@ static bool crb_req_canceled(struct tpm_chip *chip, u8 status)
+>   	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
+>   }
+>   
+> -static int crb_check_flags(struct tpm_chip *chip)
+> -{
+> -	u32 val;
+> -	int ret;
+> -
+> -	ret = crb_request_locality(chip, 0);
+> -	if (ret)
+> -		return ret;
+> -
+> -	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
+> -	if (ret)
+> -		goto release;
+> -
+> -	if (val == 0x414D4400U /* AMD */)
+> -		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
+> -
+> -release:
+> -	crb_relinquish_locality(chip, 0);
+> -
+> -	return ret;
+> -}
+> -
+>   static const struct tpm_class_ops tpm_crb = {
+>   	.flags = TPM_OPS_AUTO_STARTUP,
+>   	.status = crb_status,
+> @@ -827,9 +805,14 @@ static int crb_acpi_add(struct acpi_device *device)
+>   	if (rc)
+>   		goto out;
+>   
+> -	rc = crb_check_flags(chip);
+> -	if (rc)
+> -		goto out;
+> +#ifdef CONFIG_X86
+> +	/* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
+> +	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
+> +	    priv->sm != ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
+> +		dev_info(dev, "Disabling hwrng\n");
+
+A more elaborate log message would be helpful for the user. Maybe:
+
+Disabling hwrng in AMD's fTPM to avoid stutter (AMD article PA 410)
+
+> +		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
+> +	}
+> +#endif /* CONFIG_X86 */
+>   
+>   	rc = tpm_chip_register(chip);
+>   
+
+
+Kind regards,
+
+Paul
