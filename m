@@ -2,183 +2,377 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3D6B784D94
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 02:02:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7358F784D9E
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 02:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231841AbjHWACs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 22 Aug 2023 20:02:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40332 "EHLO
+        id S231216AbjHWAHd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 22 Aug 2023 20:07:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229796AbjHWACs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 20:02:48 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B801FB;
-        Tue, 22 Aug 2023 17:02:46 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28DD46151A;
-        Wed, 23 Aug 2023 00:02:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A7FDC433C8;
-        Wed, 23 Aug 2023 00:02:45 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692748965;
-        bh=ctdCJfL67RtKCkpOnTUgVh2uDuaL/GwwnDDhyi3PCTw=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:From;
-        b=UhnLUUvfdySw2w4ijgC9BvYkVmDrTPblB96PrgJsVG3X15mtylUcjS0Ae5EWiMRfv
-         8gwnSXsSF9JCVnID8g8bA2bU9XJwPCvebqxHcsc5gPCPZ0BJCDPKeO62J4vJJ16Ows
-         znxOdJtpbnG8uOFU5A8bSDRpe3NRaDYCmIairamVNGfGJKHHqg9zTxZ20wxBVO+PH6
-         NMe4TI+NyZh/9v+3GRrSP3pZLM5xWwJsPJr+CUYEAk5CdXzEvDLn9UddZqR5qw10pp
-         o7c3d64FFGIty7NaSO2YoBImNopsUpy4xocQ4qRGwofyBFWGVYk5rXjqjDD9T82Xpw
-         OnI91RwI/hJWQ==
-Date:   Tue, 22 Aug 2023 19:02:43 -0500
-From:   Bjorn Helgaas <helgaas@kernel.org>
-To:     "Rafael J. Wysocki" <rafael@kernel.org>
-Cc:     Mario Limonciello <mario.limonciello@amd.com>,
-        Mika Westerberg <mika.westerberg@linux.intel.com>,
-        linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-acpi@vger.kernel.org, Iain Lane <iain@orangesquash.org.uk>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
-        Kuppuswamy Sathyanarayanan 
-        <sathyanarayanan.kuppuswamy@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v14.a 1/1] PCI: Only put Intel PCIe ports >= 2015 into D3
-Message-ID: <20230823000243.GA391238@bhelgaas>
+        with ESMTP id S230484AbjHWAHc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 22 Aug 2023 20:07:32 -0400
+Received: from mail-pl1-x633.google.com (mail-pl1-x633.google.com [IPv6:2607:f8b0:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5501A133
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 17:07:30 -0700 (PDT)
+Received: by mail-pl1-x633.google.com with SMTP id d9443c01a7336-1bf095e1becso9122265ad.1
+        for <stable@vger.kernel.org>; Tue, 22 Aug 2023 17:07:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernel-dk.20221208.gappssmtp.com; s=20221208; t=1692749249; x=1693354049;
+        h=subject:from:to:content-language:user-agent:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=oJF5Wf32PpLMVj/HYbsU1GwUJyS0e8j/yH/mkIB08e4=;
+        b=eVv1xo4F8daWAOr3raIguPubH48wUHgApGgrUH7ZBxnPBV09q8wus2Mki6NgV0tcQJ
+         AQkLoLb0pSm3XNutel3kZdqdxC9IlXOpzCSAeuXscY5jiBqlhRSmhuJVDFwC74cbct+z
+         UUMn3aNNrikR1zjqjWFa9vQrZm5rLqXYsnw3o/gCGGbb1jYjysRBD0EiqZeGidtNOex1
+         XpC7/doLw0aIiI0lNSHmipy54qFiQl12DhbRCpOvtbmZQMdlwJ+AS8sRCdBflCPFyliy
+         Dd9nhUgqiyfwtcNOzXlVJr7u03wQYJS3B/j+XbWCV5WKow36XSIA2YsPNloFTrIGgTqp
+         PzIw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692749249; x=1693354049;
+        h=subject:from:to:content-language:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=oJF5Wf32PpLMVj/HYbsU1GwUJyS0e8j/yH/mkIB08e4=;
+        b=NqTS/7FABoDe6GKErppMCw1YDj+AOn7Ip7J0ncrqAh/3MVq5AOvhnAcf4lvGq6XS7Z
+         q6Cj/ZWqebrhtATEfLD5WGarGI6aJ8Ae08ftdml34Im3pao3kIXvftTqQ8m4XOwwTsS/
+         DnWL68Kbc9V73/6LRKTtgGfgYb9kxIEubIUb4cxhxsXDtpZ8p6v5PGOpiGg6GMjwEdpB
+         4xJjfXW6cy8Q7gOWxmlU2iKWmhzKUBR4hu3QwWlkUqqqE//aw2KS8idUZ9IQmlNlWyUk
+         z8WaOJBP1cFSxKrRLH5uEv8psNtl8baO8R6cl76JIbxmD+1CPerFVtN6RWIS8d2nx6aW
+         /gOw==
+X-Gm-Message-State: AOJu0YwcqzmhIsSW3yozrn2NLlllNKrFD1purpTf+lH7b7F0oYdP3Pu4
+        tUXZqZufvrDuNT4nBWm2TXYsc8NNBf3XTae7fP8=
+X-Google-Smtp-Source: AGHT+IF+xDAytqYHU5Hted19cxl47DQBLmAkUGeJsH8Wnt3ZimHgSrdupoiJQTWS6ENdJW6oAluAkw==
+X-Received: by 2002:a17:902:ea04:b0:1b8:811:b079 with SMTP id s4-20020a170902ea0400b001b80811b079mr12522428plg.0.1692749249297;
+        Tue, 22 Aug 2023 17:07:29 -0700 (PDT)
+Received: from [192.168.1.136] ([198.8.77.157])
+        by smtp.gmail.com with ESMTPSA id jj4-20020a170903048400b001b9f7bc3e77sm5770545plb.189.2023.08.22.17.07.28
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 22 Aug 2023 17:07:28 -0700 (PDT)
+Content-Type: multipart/mixed; boundary="------------SPGhCdK4obosgWjIzsD9eXZL"
+Message-ID: <7bebe361-e33f-42e7-b4d7-00efd024a986@kernel.dk>
+Date:   Tue, 22 Aug 2023 18:07:28 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CAJZ5v0hU3mWFaaujWozHnPw8+A=bf2OwzcendXjpP35wCv_B6g@mail.gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Content-Language: en-US
+To:     stable <stable@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From:   Jens Axboe <axboe@kernel.dk>
+Subject: Patches for 6.1-stable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 12:11:10PM +0200, Rafael J. Wysocki wrote:
-> On Tue, Aug 22, 2023 at 12:42 AM Bjorn Helgaas <helgaas@kernel.org> wrote:
-> > On Fri, Aug 18, 2023 at 02:39:32PM -0500, Mario Limonciello wrote:
-> > > commit 9d26d3a8f1b0 ("PCI: Put PCIe ports into D3 during suspend")
-> > > changed pci_bridge_d3_possible() so that any vendor's PCIe ports
-> > > from modern machines (>=2015) are allowed to be put into D3.
-> > >
-> > > Iain reports that USB devices can't be used to wake a Lenovo Z13
-> > > from suspend. This is because the PCIe root port has been put
-> > > into D3 and AMD's platform can't handle USB devices waking in this
-> > > case.
-> > >
-> > > This behavior is only reported on Linux. Comparing the behavior
-> > > on Windows and Linux, Windows doesn't put the root ports into D3.
-> > >
-> > > To fix the issue without regressing existing Intel systems,
-> > > limit the >=2015 check to only apply to Intel PCIe ports.
+This is a multi-part message in MIME format.
+--------------SPGhCdK4obosgWjIzsD9eXZL
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 
-> > > @@ -3037,10 +3037,15 @@ bool pci_bridge_d3_possible(struct pci_dev *bridge)
-> > >                       return false;
-> > >
-> > >               /*
-> > > -              * It should be safe to put PCIe ports from 2015 or newer
-> > > -              * to D3.
-> > > +              * Allow Intel PCIe ports from 2015 onward to go into D3 to
-> > > +              * achieve additional energy conservation on some platforms.
-> > > +              *
-> > > +              * This is only set for Intel PCIe ports as it causes problems
-> > > +              * on both AMD Rembrandt and Phoenix platforms where USB keyboards
-> > > +              * can not be used to wake the system from suspend.
-> > >                */
-> > > -             if (dmi_get_bios_year() >= 2015)
-> > > +             if (bridge->vendor == PCI_VENDOR_ID_INTEL &&
-> > > +                 dmi_get_bios_year() >= 2015)
-> > >                       return true;
-> >
-> > Hmm.  I'm really not a fan of checks like this that aren't connected
-> > to an actual property of the platform.  The Intel Vendor ID tells us
-> > nothing about what the actual problem is, which makes it really hard
-> > to maintain in the future.  It's also very AMD- and Intel-centric,
-> > when this code is ostensibly arch-agnostic, so this potentially
-> > regresses ARM64, RISC-V, powerpc, etc.
-> 
-> That's a fair point.
-> 
-> Would it be better to reverse this and filter out AMD systems as they
-> are affected by the existing check?
+Hi,
 
-Since we're trying to avoid an issue on AMD systems, I would
-definitely prefer to have the code change mention AMD instead of
-Intel.
+Looks like we missed a few backports related to MSG_RING, most likely
+because they required a bit of hand massaging. Can you queue these up?
+Thanks!
 
-> > It's bad enough that we check for 2015.  A BIOS security update to a
-> > 2014 platform will break things,
-> 
-> Well, not necessarily.  Pre-2015 systems already worked and the check
-> was added as "surely, everything 2015 or newer should work either".
-> While it is true that putting PCIe Root Ports into D3hot was necessary
-> for extra energy conservation on Intel systems, it actually has been
-> expected to work everywhere.
+-- 
+Jens Axboe
 
-This is a tangent; I was just trying to make the point that the date
-check means a BIOS update may change Linux behavior even if the update
-has nothing to do with PM, and I think that's a bad thing even if the
-new behavior is not a failure.  But this is water under the bridge and
-is probably not going to cause problems in the future.
+--------------SPGhCdK4obosgWjIzsD9eXZL
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0004-io_uring-msg_ring-fix-missing-lock-on-overflow-for-I.patch"
+Content-Disposition: attachment;
+ filename*0="0004-io_uring-msg_ring-fix-missing-lock-on-overflow-for-I.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
 
-> > even though the update has nothing to do with D3.  We're stuck
-> > with that one, and it's old enough that maybe it won't bite us any
-> > more, but I hate to add more.
-> 
-> Well, how would you like to deal with the systems that don't work
-> today, because they expect a different behavior?
->
-> Effectively, the current behavior for all modern systems is to allow
-> bridge D3 if there are no indications that it shouldn't be allowed.
-> The platforms in question assume the reverse, so what else can be
-> done?
-> 
-> > The list of conditions in pci_bridge_d3_possible() is a pretty good
-> > clue that we don't really know what we're doing, and all we can do is
-> > find configurations that happen to work.
-> 
-> Yes, because by the spec it all should work just fine.  The PCI PM 1.2
-> specification defines the expected behavior for bridges and the PCIe
-> specification claims to be a superset of that.
-> 
-> What we need to deal with here is basically non-compliant systems and
-> so we have to catch the various forms of non-compliance.
+RnJvbSBjNDdkYjljYTkzN2UyMzI2MDYwNjAwNzdiYjA5Y2ZmNDllNzVkYmI3IE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFR1ZSwgMjIgQXVnIDIwMjMgMTg6MDA6MDIgLTA2MDAKU3ViamVjdDogW1BBVENIIDQv
+NF0gaW9fdXJpbmcvbXNnX3Jpbmc6IGZpeCBtaXNzaW5nIGxvY2sgb24gb3ZlcmZsb3cgZm9y
+CiBJT1BPTEwKCkNvbW1pdCBlMTJkN2E0NmY2NWFlNGI3ZDU4YTVlMGMxY2JmYTgyNWNmOGQ4
+MzBkIHVwc3RyZWFtLgoKSWYgdGhlIHRhcmdldCByaW5nIGlzIGNvbmZpZ3VyZWQgd2l0aCBJ
+T1BPTEwsIHRoZW4gd2UgYWx3YXlzIG5lZWQgdG8gaG9sZAp0aGUgdGFyZ2V0IHJpbmcgdXJp
+bmdfbG9jayBiZWZvcmUgcG9zdGluZyBDUUVzLiBXZSBjb3VsZCBqdXN0IGdyYWIgaXQKdW5j
+b25kaXRpb25hbGx5LCBidXQgc2luY2Ugd2UgZG9uJ3QgZXhwZWN0IG1hbnkgdGFyZ2V0IHJp
+bmdzIHRvIGJlIG9mIHRoaXMKdHlwZSwgbWFrZSBncmFiYmluZyB0aGUgdXJpbmdfbG9jayBj
+b25kaXRpb25hbCBvbiB0aGUgcmluZyB0eXBlLgoKTGluazogaHR0cHM6Ly9sb3JlLmtlcm5l
+bC5vcmcvaW8tdXJpbmcvWThrcmxZYTUyJTJGMFlHcWtnQGlwLTE3Mi0zMS04NS0xOTkuZWMy
+LmludGVybmFsLwpSZXBvcnRlZC1ieTogWGluZ3l1YW4gTW8gPGhkdGhreTBAZ21haWwuY29t
+PgpTaWduZWQtb2ZmLWJ5OiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+Ci0tLQogaW9f
+dXJpbmcvbXNnX3JpbmcuYyB8IDIwICsrKysrKysrKysrKysrKy0tLS0tCiAxIGZpbGUgY2hh
+bmdlZCwgMTUgaW5zZXJ0aW9ucygrKSwgNSBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQgYS9p
+b191cmluZy9tc2dfcmluZy5jIGIvaW9fdXJpbmcvbXNnX3JpbmcuYwppbmRleCA4MjVkOGM1
+NzlmZDMuLmNkOTIyZDJiZWY1ZiAxMDA2NDQKLS0tIGEvaW9fdXJpbmcvbXNnX3JpbmcuYwor
+KysgYi9pb191cmluZy9tc2dfcmluZy5jCkBAIC01NywyMCArNTcsMzAgQEAgdm9pZCBpb19t
+c2dfcmluZ19jbGVhbnVwKHN0cnVjdCBpb19raW9jYiAqcmVxKQogCW1zZy0+c3JjX2ZpbGUg
+PSBOVUxMOwogfQogCi1zdGF0aWMgaW50IGlvX21zZ19yaW5nX2RhdGEoc3RydWN0IGlvX2tp
+b2NiICpyZXEpCitzdGF0aWMgaW50IGlvX21zZ19yaW5nX2RhdGEoc3RydWN0IGlvX2tpb2Ni
+ICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykKIHsKIAlzdHJ1Y3QgaW9fcmluZ19j
+dHggKnRhcmdldF9jdHggPSByZXEtPmZpbGUtPnByaXZhdGVfZGF0YTsKIAlzdHJ1Y3QgaW9f
+bXNnICptc2cgPSBpb19raW9jYl90b19jbWQocmVxLCBzdHJ1Y3QgaW9fbXNnKTsKKwlpbnQg
+cmV0OwogCiAJaWYgKG1zZy0+c3JjX2ZkIHx8IG1zZy0+ZHN0X2ZkIHx8IG1zZy0+ZmxhZ3Mp
+CiAJCXJldHVybiAtRUlOVkFMOwogCWlmICh0YXJnZXRfY3R4LT5mbGFncyAmIElPUklOR19T
+RVRVUF9SX0RJU0FCTEVEKQogCQlyZXR1cm4gLUVCQURGRDsKIAotCWlmIChpb19wb3N0X2F1
+eF9jcWUodGFyZ2V0X2N0eCwgbXNnLT51c2VyX2RhdGEsIG1zZy0+bGVuLCAwLCB0cnVlKSkK
+LQkJcmV0dXJuIDA7CisJcmV0ID0gLUVPVkVSRkxPVzsKKwlpZiAodGFyZ2V0X2N0eC0+Zmxh
+Z3MgJiBJT1JJTkdfU0VUVVBfSU9QT0xMKSB7CisJCWlmICh1bmxpa2VseShpb19kb3VibGVf
+bG9ja19jdHgodGFyZ2V0X2N0eCwgaXNzdWVfZmxhZ3MpKSkKKwkJCXJldHVybiAtRUFHQUlO
+OworCQlpZiAoaW9fcG9zdF9hdXhfY3FlKHRhcmdldF9jdHgsIG1zZy0+dXNlcl9kYXRhLCBt
+c2ctPmxlbiwgMCwgdHJ1ZSkpCisJCQlyZXQgPSAwOworCQlpb19kb3VibGVfdW5sb2NrX2N0
+eCh0YXJnZXRfY3R4KTsKKwl9IGVsc2UgeworCQlpZiAoaW9fcG9zdF9hdXhfY3FlKHRhcmdl
+dF9jdHgsIG1zZy0+dXNlcl9kYXRhLCBtc2ctPmxlbiwgMCwgdHJ1ZSkpCisJCQlyZXQgPSAw
+OworCX0KIAotCXJldHVybiAtRU9WRVJGTE9XOworCXJldHVybiByZXQ7CiB9CiAKIHN0YXRp
+YyBzdHJ1Y3QgZmlsZSAqaW9fbXNnX2dyYWJfZmlsZShzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwg
+dW5zaWduZWQgaW50IGlzc3VlX2ZsYWdzKQpAQCAtMTc1LDcgKzE4NSw3IEBAIGludCBpb19t
+c2dfcmluZyhzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5zaWduZWQgaW50IGlzc3VlX2ZsYWdz
+KQogCiAJc3dpdGNoIChtc2ctPmNtZCkgewogCWNhc2UgSU9SSU5HX01TR19EQVRBOgotCQly
+ZXQgPSBpb19tc2dfcmluZ19kYXRhKHJlcSk7CisJCXJldCA9IGlvX21zZ19yaW5nX2RhdGEo
+cmVxLCBpc3N1ZV9mbGFncyk7CiAJCWJyZWFrOwogCWNhc2UgSU9SSU5HX01TR19TRU5EX0ZE
+OgogCQlyZXQgPSBpb19tc2dfc2VuZF9mZChyZXEsIGlzc3VlX2ZsYWdzKTsKLS0gCjIuNDAu
+MQoK
+--------------SPGhCdK4obosgWjIzsD9eXZL
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0003-io_uring-msg_ring-move-double-lock-unlock-helpers-hi.patch"
+Content-Disposition: attachment;
+ filename*0="0003-io_uring-msg_ring-move-double-lock-unlock-helpers-hi.pa";
+ filename*1="tch"
+Content-Transfer-Encoding: base64
 
-Thanks for this, that helps.  If pci_bridge_d3_possible() is a list of
-quirks for systems that are known to be broken (or at least not known
-to work correctly and avoiding D3 is acceptable), then we should
-document and use it that way.
+RnJvbSA1YzNmZmE4ZWM2NGUwNzI2ZGNiZmUzN2I1ZDEyNjcwMTMwMTAxMWVkIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBKZW5zIEF4Ym9lIDxheGJvZUBrZXJuZWwuZGs+CkRh
+dGU6IFRodSwgMTkgSmFuIDIwMjMgMDk6MDE6MjcgLTA3MDAKU3ViamVjdDogW1BBVENIIDMv
+NF0gaW9fdXJpbmcvbXNnX3Jpbmc6IG1vdmUgZG91YmxlIGxvY2svdW5sb2NrIGhlbHBlcnMg
+aGlnaGVyCiB1cAoKQ29tbWl0IDQyM2Q1MDgxZDA0NTFmYWE1OWE3MDdlNTczNzM4MDFkYTVi
+NDAxNDEgdXBzdHJlYW0uCgpJbiBwcmVwYXJhdGlvbiBmb3IgbmVlZGluZyB0aGVtIHNvbWV3
+aGVyZSBlbHNlLCBtb3ZlIHRoZW0gYW5kIGdldCByaWQgb2YKdGhlIHVudXNlZCAnaXNzdWVf
+ZmxhZ3MnIGZvciB0aGUgdW5sb2NrIHNpZGUuCgpObyBmdW5jdGlvbmFsIGNoYW5nZXMgaW4g
+dGhpcyBwYXRjaC4KClNpZ25lZC1vZmYtYnk6IEplbnMgQXhib2UgPGF4Ym9lQGtlcm5lbC5k
+az4KLS0tCiBpb191cmluZy9tc2dfcmluZy5jIHwgNDcgKysrKysrKysrKysrKysrKysrKysr
+Ky0tLS0tLS0tLS0tLS0tLS0tLS0tLS0tCiAxIGZpbGUgY2hhbmdlZCwgMjMgaW5zZXJ0aW9u
+cygrKSwgMjQgZGVsZXRpb25zKC0pCgpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcvbXNnX3Jpbmcu
+YyBiL2lvX3VyaW5nL21zZ19yaW5nLmMKaW5kZXggZmQ5NmEwY2Q4NWYwLi44MjVkOGM1Nzlm
+ZDMgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL21zZ19yaW5nLmMKKysrIGIvaW9fdXJpbmcvbXNn
+X3JpbmcuYwpAQCAtMjQsNiArMjQsMjggQEAgc3RydWN0IGlvX21zZyB7CiAJdTMyIGZsYWdz
+OwogfTsKIAorc3RhdGljIHZvaWQgaW9fZG91YmxlX3VubG9ja19jdHgoc3RydWN0IGlvX3Jp
+bmdfY3R4ICpvY3R4KQoreworCW11dGV4X3VubG9jaygmb2N0eC0+dXJpbmdfbG9jayk7Cit9
+CisKK3N0YXRpYyBpbnQgaW9fZG91YmxlX2xvY2tfY3R4KHN0cnVjdCBpb19yaW5nX2N0eCAq
+b2N0eCwKKwkJCSAgICAgIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykKK3sKKwkvKgorCSAq
+IFRvIGVuc3VyZSBwcm9wZXIgb3JkZXJpbmcgYmV0d2VlbiB0aGUgdHdvIGN0eHMsIHdlIGNh
+biBvbmx5CisJICogYXR0ZW1wdCBhIHRyeWxvY2sgb24gdGhlIHRhcmdldC4gSWYgdGhhdCBm
+YWlscyBhbmQgd2UgYWxyZWFkeSBoYXZlCisJICogdGhlIHNvdXJjZSBjdHggbG9jaywgcHVu
+dCB0byBpby13cS4KKwkgKi8KKwlpZiAoIShpc3N1ZV9mbGFncyAmIElPX1VSSU5HX0ZfVU5M
+T0NLRUQpKSB7CisJCWlmICghbXV0ZXhfdHJ5bG9jaygmb2N0eC0+dXJpbmdfbG9jaykpCisJ
+CQlyZXR1cm4gLUVBR0FJTjsKKwkJcmV0dXJuIDA7CisJfQorCW11dGV4X2xvY2soJm9jdHgt
+PnVyaW5nX2xvY2spOworCXJldHVybiAwOworfQorCiB2b2lkIGlvX21zZ19yaW5nX2NsZWFu
+dXAoc3RydWN0IGlvX2tpb2NiICpyZXEpCiB7CiAJc3RydWN0IGlvX21zZyAqbXNnID0gaW9f
+a2lvY2JfdG9fY21kKHJlcSwgc3RydWN0IGlvX21zZyk7CkBAIC01MSwyOSArNzMsNiBAQCBz
+dGF0aWMgaW50IGlvX21zZ19yaW5nX2RhdGEoc3RydWN0IGlvX2tpb2NiICpyZXEpCiAJcmV0
+dXJuIC1FT1ZFUkZMT1c7CiB9CiAKLXN0YXRpYyB2b2lkIGlvX2RvdWJsZV91bmxvY2tfY3R4
+KHN0cnVjdCBpb19yaW5nX2N0eCAqb2N0eCwKLQkJCQkgdW5zaWduZWQgaW50IGlzc3VlX2Zs
+YWdzKQotewotCW11dGV4X3VubG9jaygmb2N0eC0+dXJpbmdfbG9jayk7Ci19Ci0KLXN0YXRp
+YyBpbnQgaW9fZG91YmxlX2xvY2tfY3R4KHN0cnVjdCBpb19yaW5nX2N0eCAqb2N0eCwKLQkJ
+CSAgICAgIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykKLXsKLQkvKgotCSAqIFRvIGVuc3Vy
+ZSBwcm9wZXIgb3JkZXJpbmcgYmV0d2VlbiB0aGUgdHdvIGN0eHMsIHdlIGNhbiBvbmx5Ci0J
+ICogYXR0ZW1wdCBhIHRyeWxvY2sgb24gdGhlIHRhcmdldC4gSWYgdGhhdCBmYWlscyBhbmQg
+d2UgYWxyZWFkeSBoYXZlCi0JICogdGhlIHNvdXJjZSBjdHggbG9jaywgcHVudCB0byBpby13
+cS4KLQkgKi8KLQlpZiAoIShpc3N1ZV9mbGFncyAmIElPX1VSSU5HX0ZfVU5MT0NLRUQpKSB7
+Ci0JCWlmICghbXV0ZXhfdHJ5bG9jaygmb2N0eC0+dXJpbmdfbG9jaykpCi0JCQlyZXR1cm4g
+LUVBR0FJTjsKLQkJcmV0dXJuIDA7Ci0JfQotCW11dGV4X2xvY2soJm9jdHgtPnVyaW5nX2xv
+Y2spOwotCXJldHVybiAwOwotfQotCiBzdGF0aWMgc3RydWN0IGZpbGUgKmlvX21zZ19ncmFi
+X2ZpbGUoc3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykK
+IHsKIAlzdHJ1Y3QgaW9fbXNnICptc2cgPSBpb19raW9jYl90b19jbWQocmVxLCBzdHJ1Y3Qg
+aW9fbXNnKTsKQEAgLTEyMiw3ICsxMjEsNyBAQCBzdGF0aWMgaW50IGlvX21zZ19pbnN0YWxs
+X2NvbXBsZXRlKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBpbnQgaXNzdWVfZmxh
+ZwogCWlmICghaW9fcG9zdF9hdXhfY3FlKHRhcmdldF9jdHgsIG1zZy0+dXNlcl9kYXRhLCBy
+ZXQsIDAsIHRydWUpKQogCQlyZXQgPSAtRU9WRVJGTE9XOwogb3V0X3VubG9jazoKLQlpb19k
+b3VibGVfdW5sb2NrX2N0eCh0YXJnZXRfY3R4LCBpc3N1ZV9mbGFncyk7CisJaW9fZG91Ymxl
+X3VubG9ja19jdHgodGFyZ2V0X2N0eCk7CiAJcmV0dXJuIHJldDsKIH0KIAotLSAKMi40MC4x
+Cgo=
+--------------SPGhCdK4obosgWjIzsD9eXZL
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0002-io_uring-extract-a-io_msg_install_complete-helper.patch"
+Content-Disposition: attachment;
+ filename*0="0002-io_uring-extract-a-io_msg_install_complete-helper.patch"
+Content-Transfer-Encoding: base64
 
-The current documentation ("checks if it is possible to move to D3")
-frames it as "does the bridge have the required features?" instead of
-"do we know about something broken in this bridge or this platform?"
+RnJvbSBlZjdiNzgyNDY1YmQ2OTQzZmJjYWNiNGFmNGZiZTc5MDEzN2E1ODIwIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBQYXZlbCBCZWd1bmtvdiA8YXNtbC5zaWxlbmNlQGdt
+YWlsLmNvbT4KRGF0ZTogV2VkLCA3IERlYyAyMDIyIDAzOjUzOjM1ICswMDAwClN1YmplY3Q6
+IFtQQVRDSCAyLzRdIGlvX3VyaW5nOiBleHRyYWN0IGEgaW9fbXNnX2luc3RhbGxfY29tcGxl
+dGUgaGVscGVyCgpDb21taXQgMTcyMTEzMTAxNjQxY2YxZjk2MjhjNTI4ZWM3OTBjYjgwOWYy
+YjcwNCB1cHN0cmVhbS4KCkV4dHJhY3QgYSBoZWxwZXIgY2FsbGVkIGlvX21zZ19pbnN0YWxs
+X2NvbXBsZXRlKCkgZnJvbSBpb19tc2dfc2VuZF9mZCgpLAp3aWxsIGJlIHVzZWQgbGF0ZXIu
+CgpTaWduZWQtb2ZmLWJ5OiBQYXZlbCBCZWd1bmtvdiA8YXNtbC5zaWxlbmNlQGdtYWlsLmNv
+bT4KTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5vcmcvci8xNTAwY2ExMDU0Y2M0Mjg2YTNl
+ZTFjNjBhYWNlYWQ1N2ZjZGZhMDJhLjE2NzAzODQ4OTMuZ2l0LmFzbWwuc2lsZW5jZUBnbWFp
+bC5jb20KU2lnbmVkLW9mZi1ieTogSmVucyBBeGJvZSA8YXhib2VAa2VybmVsLmRrPgotLS0K
+IGlvX3VyaW5nL21zZ19yaW5nLmMgfCAzOCArKysrKysrKysrKysrKysrKysrKystLS0tLS0t
+LS0tLS0tLS0tLQogMSBmaWxlIGNoYW5nZWQsIDIxIGluc2VydGlvbnMoKyksIDE3IGRlbGV0
+aW9ucygtKQoKZGlmZiAtLWdpdCBhL2lvX3VyaW5nL21zZ19yaW5nLmMgYi9pb191cmluZy9t
+c2dfcmluZy5jCmluZGV4IGVlOGU3YWM4YzU4Mi4uZmQ5NmEwY2Q4NWYwIDEwMDY0NAotLS0g
+YS9pb191cmluZy9tc2dfcmluZy5jCisrKyBiL2lvX3VyaW5nL21zZ19yaW5nLmMKQEAgLTk0
+LDQwICs5NCwyNSBAQCBzdGF0aWMgc3RydWN0IGZpbGUgKmlvX21zZ19ncmFiX2ZpbGUoc3Ry
+dWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbAogCXJldHVybiBmaWxl
+OwogfQogCi1zdGF0aWMgaW50IGlvX21zZ19zZW5kX2ZkKHN0cnVjdCBpb19raW9jYiAqcmVx
+LCB1bnNpZ25lZCBpbnQgaXNzdWVfZmxhZ3MpCitzdGF0aWMgaW50IGlvX21zZ19pbnN0YWxs
+X2NvbXBsZXRlKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBpbnQgaXNzdWVfZmxh
+Z3MpCiB7CiAJc3RydWN0IGlvX3JpbmdfY3R4ICp0YXJnZXRfY3R4ID0gcmVxLT5maWxlLT5w
+cml2YXRlX2RhdGE7CiAJc3RydWN0IGlvX21zZyAqbXNnID0gaW9fa2lvY2JfdG9fY21kKHJl
+cSwgc3RydWN0IGlvX21zZyk7Ci0Jc3RydWN0IGlvX3JpbmdfY3R4ICpjdHggPSByZXEtPmN0
+eDsKIAlzdHJ1Y3QgZmlsZSAqc3JjX2ZpbGUgPSBtc2ctPnNyY19maWxlOwogCWludCByZXQ7
+CiAKLQlpZiAobXNnLT5sZW4pCi0JCXJldHVybiAtRUlOVkFMOwotCWlmICh0YXJnZXRfY3R4
+ID09IGN0eCkKLQkJcmV0dXJuIC1FSU5WQUw7Ci0JaWYgKHRhcmdldF9jdHgtPmZsYWdzICYg
+SU9SSU5HX1NFVFVQX1JfRElTQUJMRUQpCi0JCXJldHVybiAtRUJBREZEOwotCWlmICghc3Jj
+X2ZpbGUpIHsKLQkJc3JjX2ZpbGUgPSBpb19tc2dfZ3JhYl9maWxlKHJlcSwgaXNzdWVfZmxh
+Z3MpOwotCQlpZiAoIXNyY19maWxlKQotCQkJcmV0dXJuIC1FQkFERjsKLQkJbXNnLT5zcmNf
+ZmlsZSA9IHNyY19maWxlOwotCQlyZXEtPmZsYWdzIHw9IFJFUV9GX05FRURfQ0xFQU5VUDsK
+LQl9Ci0KIAlpZiAodW5saWtlbHkoaW9fZG91YmxlX2xvY2tfY3R4KHRhcmdldF9jdHgsIGlz
+c3VlX2ZsYWdzKSkpCiAJCXJldHVybiAtRUFHQUlOOwogCiAJcmV0ID0gX19pb19maXhlZF9m
+ZF9pbnN0YWxsKHRhcmdldF9jdHgsIHNyY19maWxlLCBtc2ctPmRzdF9mZCk7CiAJaWYgKHJl
+dCA8IDApCiAJCWdvdG8gb3V0X3VubG9jazsKKwogCW1zZy0+c3JjX2ZpbGUgPSBOVUxMOwog
+CXJlcS0+ZmxhZ3MgJj0gflJFUV9GX05FRURfQ0xFQU5VUDsKIAogCWlmIChtc2ctPmZsYWdz
+ICYgSU9SSU5HX01TR19SSU5HX0NRRV9TS0lQKQogCQlnb3RvIG91dF91bmxvY2s7Ci0KIAkv
+KgogCSAqIElmIHRoaXMgZmFpbHMsIHRoZSB0YXJnZXQgc3RpbGwgcmVjZWl2ZWQgdGhlIGZp
+bGUgZGVzY3JpcHRvciBidXQKIAkgKiB3YXNuJ3Qgbm90aWZpZWQgb2YgdGhlIGZhY3QuIFRo
+aXMgbWVhbnMgdGhhdCBpZiB0aGlzIHJlcXVlc3QKQEAgLTE0MSw2ICsxMjYsMjUgQEAgc3Rh
+dGljIGludCBpb19tc2dfc2VuZF9mZChzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5zaWduZWQg
+aW50IGlzc3VlX2ZsYWdzKQogCXJldHVybiByZXQ7CiB9CiAKK3N0YXRpYyBpbnQgaW9fbXNn
+X3NlbmRfZmQoc3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFn
+cykKK3sKKwlzdHJ1Y3QgaW9fcmluZ19jdHggKnRhcmdldF9jdHggPSByZXEtPmZpbGUtPnBy
+aXZhdGVfZGF0YTsKKwlzdHJ1Y3QgaW9fbXNnICptc2cgPSBpb19raW9jYl90b19jbWQocmVx
+LCBzdHJ1Y3QgaW9fbXNnKTsKKwlzdHJ1Y3QgaW9fcmluZ19jdHggKmN0eCA9IHJlcS0+Y3R4
+OworCXN0cnVjdCBmaWxlICpzcmNfZmlsZSA9IG1zZy0+c3JjX2ZpbGU7CisKKwlpZiAodGFy
+Z2V0X2N0eCA9PSBjdHgpCisJCXJldHVybiAtRUlOVkFMOworCWlmICghc3JjX2ZpbGUpIHsK
+KwkJc3JjX2ZpbGUgPSBpb19tc2dfZ3JhYl9maWxlKHJlcSwgaXNzdWVfZmxhZ3MpOworCQlp
+ZiAoIXNyY19maWxlKQorCQkJcmV0dXJuIC1FQkFERjsKKwkJbXNnLT5zcmNfZmlsZSA9IHNy
+Y19maWxlOworCQlyZXEtPmZsYWdzIHw9IFJFUV9GX05FRURfQ0xFQU5VUDsKKwl9CisJcmV0
+dXJuIGlvX21zZ19pbnN0YWxsX2NvbXBsZXRlKHJlcSwgaXNzdWVfZmxhZ3MpOworfQorCiBp
+bnQgaW9fbXNnX3JpbmdfcHJlcChzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgY29uc3Qgc3RydWN0
+IGlvX3VyaW5nX3NxZSAqc3FlKQogewogCXN0cnVjdCBpb19tc2cgKm1zZyA9IGlvX2tpb2Ni
+X3RvX2NtZChyZXEsIHN0cnVjdCBpb19tc2cpOwotLSAKMi40MC4xCgo=
+--------------SPGhCdK4obosgWjIzsD9eXZL
+Content-Type: text/x-patch; charset=UTF-8;
+ name="0001-io_uring-get-rid-of-double-locking.patch"
+Content-Disposition: attachment;
+ filename="0001-io_uring-get-rid-of-double-locking.patch"
+Content-Transfer-Encoding: base64
 
-If something is broken, I would expect tests based on the device or
-DMI check.  But several some are not obvious defects.  E.g.,
-"bridge->is_hotplug_bridge && !pciehp_is_native(bridge)" -- what
-defect are we finding there?  What does the spec require that isn't
-happening?
+RnJvbSBmMTBiYTQ4M2JlY2FlMGI4YzdkZTBlOWZlM2UwZjZkMDdhNDA1YjdhIE1vbiBTZXAg
+MTcgMDA6MDA6MDAgMjAwMQpGcm9tOiBQYXZlbCBCZWd1bmtvdiA8YXNtbC5zaWxlbmNlQGdt
+YWlsLmNvbT4KRGF0ZTogV2VkLCA3IERlYyAyMDIyIDAzOjUzOjM0ICswMDAwClN1YmplY3Q6
+IFtQQVRDSCAxLzRdIGlvX3VyaW5nOiBnZXQgcmlkIG9mIGRvdWJsZSBsb2NraW5nCgpDb21t
+aXQgMTEzNzMwMjZmMjk2MDM5MGQ1ZTMzMGRmNGU5MjczNWM0MjY1YzQ0MCB1cHN0cmVhbS4K
+CldlIGRvbid0IG5lZWQgdG8gdGFrZSBib3RoIHVyaW5nX2xvY2tzIGF0IG9uY2UsIG1zZ19y
+aW5nIGNhbiBiZSBzcGxpdCBpbgp0d28gcGFydHMsIGZpcnN0IGdldHRpbmcgYSBmaWxlIGZy
+b20gdGhlIGZpbGV0YWJsZSBvZiB0aGUgZmlyc3QgcmluZyBhbmQKdGhlbiBpbnN0YWxsaW5n
+IGl0IGludG8gdGhlIHNlY29uZCBvbmUuCgpTaWduZWQtb2ZmLWJ5OiBQYXZlbCBCZWd1bmtv
+diA8YXNtbC5zaWxlbmNlQGdtYWlsLmNvbT4KTGluazogaHR0cHM6Ly9sb3JlLmtlcm5lbC5v
+cmcvci9hODBlY2MyYmM5OWMzYjNmMmNmMjAwMTVkNjE4YjdjNTE0MTlhNzk3LjE2NzAzODQ4
+OTMuZ2l0LmFzbWwuc2lsZW5jZUBnbWFpbC5jb20KU2lnbmVkLW9mZi1ieTogSmVucyBBeGJv
+ZSA8YXhib2VAa2VybmVsLmRrPgotLS0KIGlvX3VyaW5nL21zZ19yaW5nLmMgfCA4NSArKysr
+KysrKysrKysrKysrKysrKysrKysrKy0tLS0tLS0tLS0tLS0tLS0tLS0KIGlvX3VyaW5nL21z
+Z19yaW5nLmggfCAgMSArCiBpb191cmluZy9vcGRlZi5jICAgIHwgIDEgKwogMyBmaWxlcyBj
+aGFuZ2VkLCA1MSBpbnNlcnRpb25zKCspLCAzNiBkZWxldGlvbnMoLSkKCmRpZmYgLS1naXQg
+YS9pb191cmluZy9tc2dfcmluZy5jIGIvaW9fdXJpbmcvbXNnX3JpbmcuYwppbmRleCAzNTI2
+Mzg5YWMyMTguLmVlOGU3YWM4YzU4MiAxMDA2NDQKLS0tIGEvaW9fdXJpbmcvbXNnX3Jpbmcu
+YworKysgYi9pb191cmluZy9tc2dfcmluZy5jCkBAIC0xNSw2ICsxNSw3IEBACiAKIHN0cnVj
+dCBpb19tc2cgewogCXN0cnVjdCBmaWxlCQkJKmZpbGU7CisJc3RydWN0IGZpbGUJCQkqc3Jj
+X2ZpbGU7CiAJdTY0IHVzZXJfZGF0YTsKIAl1MzIgbGVuOwogCXUzMiBjbWQ7CkBAIC0yMyw2
+ICsyNCwxNyBAQCBzdHJ1Y3QgaW9fbXNnIHsKIAl1MzIgZmxhZ3M7CiB9OwogCit2b2lkIGlv
+X21zZ19yaW5nX2NsZWFudXAoc3RydWN0IGlvX2tpb2NiICpyZXEpCit7CisJc3RydWN0IGlv
+X21zZyAqbXNnID0gaW9fa2lvY2JfdG9fY21kKHJlcSwgc3RydWN0IGlvX21zZyk7CisKKwlp
+ZiAoV0FSTl9PTl9PTkNFKCFtc2ctPnNyY19maWxlKSkKKwkJcmV0dXJuOworCisJZnB1dCht
+c2ctPnNyY19maWxlKTsKKwltc2ctPnNyY19maWxlID0gTlVMTDsKK30KKwogc3RhdGljIGlu
+dCBpb19tc2dfcmluZ19kYXRhKHN0cnVjdCBpb19raW9jYiAqcmVxKQogewogCXN0cnVjdCBp
+b19yaW5nX2N0eCAqdGFyZ2V0X2N0eCA9IHJlcS0+ZmlsZS0+cHJpdmF0ZV9kYXRhOwpAQCAt
+MzksMTcgKzUxLDEzIEBAIHN0YXRpYyBpbnQgaW9fbXNnX3JpbmdfZGF0YShzdHJ1Y3QgaW9f
+a2lvY2IgKnJlcSkKIAlyZXR1cm4gLUVPVkVSRkxPVzsKIH0KIAotc3RhdGljIHZvaWQgaW9f
+ZG91YmxlX3VubG9ja19jdHgoc3RydWN0IGlvX3JpbmdfY3R4ICpjdHgsCi0JCQkJIHN0cnVj
+dCBpb19yaW5nX2N0eCAqb2N0eCwKK3N0YXRpYyB2b2lkIGlvX2RvdWJsZV91bmxvY2tfY3R4
+KHN0cnVjdCBpb19yaW5nX2N0eCAqb2N0eCwKIAkJCQkgdW5zaWduZWQgaW50IGlzc3VlX2Zs
+YWdzKQogewotCWlmIChpc3N1ZV9mbGFncyAmIElPX1VSSU5HX0ZfVU5MT0NLRUQpCi0JCW11
+dGV4X3VubG9jaygmY3R4LT51cmluZ19sb2NrKTsKIAltdXRleF91bmxvY2soJm9jdHgtPnVy
+aW5nX2xvY2spOwogfQogCi1zdGF0aWMgaW50IGlvX2RvdWJsZV9sb2NrX2N0eChzdHJ1Y3Qg
+aW9fcmluZ19jdHggKmN0eCwKLQkJCSAgICAgIHN0cnVjdCBpb19yaW5nX2N0eCAqb2N0eCwK
+K3N0YXRpYyBpbnQgaW9fZG91YmxlX2xvY2tfY3R4KHN0cnVjdCBpb19yaW5nX2N0eCAqb2N0
+eCwKIAkJCSAgICAgIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykKIHsKIAkvKgpAQCAtNjIs
+MTcgKzcwLDI4IEBAIHN0YXRpYyBpbnQgaW9fZG91YmxlX2xvY2tfY3R4KHN0cnVjdCBpb19y
+aW5nX2N0eCAqY3R4LAogCQkJcmV0dXJuIC1FQUdBSU47CiAJCXJldHVybiAwOwogCX0KKwlt
+dXRleF9sb2NrKCZvY3R4LT51cmluZ19sb2NrKTsKKwlyZXR1cm4gMDsKK30KIAotCS8qIEFs
+d2F5cyBncmFiIHNtYWxsZXN0IHZhbHVlIGN0eCBmaXJzdC4gV2Uga25vdyBjdHggIT0gb2N0
+eC4gKi8KLQlpZiAoY3R4IDwgb2N0eCkgewotCQltdXRleF9sb2NrKCZjdHgtPnVyaW5nX2xv
+Y2spOwotCQltdXRleF9sb2NrKCZvY3R4LT51cmluZ19sb2NrKTsKLQl9IGVsc2UgewotCQlt
+dXRleF9sb2NrKCZvY3R4LT51cmluZ19sb2NrKTsKLQkJbXV0ZXhfbG9jaygmY3R4LT51cmlu
+Z19sb2NrKTsKK3N0YXRpYyBzdHJ1Y3QgZmlsZSAqaW9fbXNnX2dyYWJfZmlsZShzdHJ1Y3Qg
+aW9fa2lvY2IgKnJlcSwgdW5zaWduZWQgaW50IGlzc3VlX2ZsYWdzKQoreworCXN0cnVjdCBp
+b19tc2cgKm1zZyA9IGlvX2tpb2NiX3RvX2NtZChyZXEsIHN0cnVjdCBpb19tc2cpOworCXN0
+cnVjdCBpb19yaW5nX2N0eCAqY3R4ID0gcmVxLT5jdHg7CisJc3RydWN0IGZpbGUgKmZpbGUg
+PSBOVUxMOworCXVuc2lnbmVkIGxvbmcgZmlsZV9wdHI7CisJaW50IGlkeCA9IG1zZy0+c3Jj
+X2ZkOworCisJaW9fcmluZ19zdWJtaXRfbG9jayhjdHgsIGlzc3VlX2ZsYWdzKTsKKwlpZiAo
+bGlrZWx5KGlkeCA8IGN0eC0+bnJfdXNlcl9maWxlcykpIHsKKwkJaWR4ID0gYXJyYXlfaW5k
+ZXhfbm9zcGVjKGlkeCwgY3R4LT5ucl91c2VyX2ZpbGVzKTsKKwkJZmlsZV9wdHIgPSBpb19m
+aXhlZF9maWxlX3Nsb3QoJmN0eC0+ZmlsZV90YWJsZSwgaWR4KS0+ZmlsZV9wdHI7CisJCWZp
+bGUgPSAoc3RydWN0IGZpbGUgKikgKGZpbGVfcHRyICYgRkZTX01BU0spOworCQlpZiAoZmls
+ZSkKKwkJCWdldF9maWxlKGZpbGUpOwogCX0KLQotCXJldHVybiAwOworCWlvX3Jpbmdfc3Vi
+bWl0X3VubG9jayhjdHgsIGlzc3VlX2ZsYWdzKTsKKwlyZXR1cm4gZmlsZTsKIH0KIAogc3Rh
+dGljIGludCBpb19tc2dfc2VuZF9mZChzdHJ1Y3QgaW9fa2lvY2IgKnJlcSwgdW5zaWduZWQg
+aW50IGlzc3VlX2ZsYWdzKQpAQCAtODAsOCArOTksNyBAQCBzdGF0aWMgaW50IGlvX21zZ19z
+ZW5kX2ZkKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBpbnQgaXNzdWVfZmxhZ3Mp
+CiAJc3RydWN0IGlvX3JpbmdfY3R4ICp0YXJnZXRfY3R4ID0gcmVxLT5maWxlLT5wcml2YXRl
+X2RhdGE7CiAJc3RydWN0IGlvX21zZyAqbXNnID0gaW9fa2lvY2JfdG9fY21kKHJlcSwgc3Ry
+dWN0IGlvX21zZyk7CiAJc3RydWN0IGlvX3JpbmdfY3R4ICpjdHggPSByZXEtPmN0eDsKLQl1
+bnNpZ25lZCBsb25nIGZpbGVfcHRyOwotCXN0cnVjdCBmaWxlICpzcmNfZmlsZTsKKwlzdHJ1
+Y3QgZmlsZSAqc3JjX2ZpbGUgPSBtc2ctPnNyY19maWxlOwogCWludCByZXQ7CiAKIAlpZiAo
+bXNnLT5sZW4pCkBAIC05MCwyOCArMTA4LDIyIEBAIHN0YXRpYyBpbnQgaW9fbXNnX3NlbmRf
+ZmQoc3RydWN0IGlvX2tpb2NiICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncykKIAkJ
+cmV0dXJuIC1FSU5WQUw7CiAJaWYgKHRhcmdldF9jdHgtPmZsYWdzICYgSU9SSU5HX1NFVFVQ
+X1JfRElTQUJMRUQpCiAJCXJldHVybiAtRUJBREZEOworCWlmICghc3JjX2ZpbGUpIHsKKwkJ
+c3JjX2ZpbGUgPSBpb19tc2dfZ3JhYl9maWxlKHJlcSwgaXNzdWVfZmxhZ3MpOworCQlpZiAo
+IXNyY19maWxlKQorCQkJcmV0dXJuIC1FQkFERjsKKwkJbXNnLT5zcmNfZmlsZSA9IHNyY19m
+aWxlOworCQlyZXEtPmZsYWdzIHw9IFJFUV9GX05FRURfQ0xFQU5VUDsKKwl9CiAKLQlyZXQg
+PSBpb19kb3VibGVfbG9ja19jdHgoY3R4LCB0YXJnZXRfY3R4LCBpc3N1ZV9mbGFncyk7Ci0J
+aWYgKHVubGlrZWx5KHJldCkpCi0JCXJldHVybiByZXQ7Ci0KLQlyZXQgPSAtRUJBREY7Ci0J
+aWYgKHVubGlrZWx5KG1zZy0+c3JjX2ZkID49IGN0eC0+bnJfdXNlcl9maWxlcykpCi0JCWdv
+dG8gb3V0X3VubG9jazsKLQotCW1zZy0+c3JjX2ZkID0gYXJyYXlfaW5kZXhfbm9zcGVjKG1z
+Zy0+c3JjX2ZkLCBjdHgtPm5yX3VzZXJfZmlsZXMpOwotCWZpbGVfcHRyID0gaW9fZml4ZWRf
+ZmlsZV9zbG90KCZjdHgtPmZpbGVfdGFibGUsIG1zZy0+c3JjX2ZkKS0+ZmlsZV9wdHI7Ci0J
+aWYgKCFmaWxlX3B0cikKLQkJZ290byBvdXRfdW5sb2NrOwotCi0Jc3JjX2ZpbGUgPSAoc3Ry
+dWN0IGZpbGUgKikgKGZpbGVfcHRyICYgRkZTX01BU0spOwotCWdldF9maWxlKHNyY19maWxl
+KTsKKwlpZiAodW5saWtlbHkoaW9fZG91YmxlX2xvY2tfY3R4KHRhcmdldF9jdHgsIGlzc3Vl
+X2ZsYWdzKSkpCisJCXJldHVybiAtRUFHQUlOOwogCiAJcmV0ID0gX19pb19maXhlZF9mZF9p
+bnN0YWxsKHRhcmdldF9jdHgsIHNyY19maWxlLCBtc2ctPmRzdF9mZCk7Ci0JaWYgKHJldCA8
+IDApIHsKLQkJZnB1dChzcmNfZmlsZSk7CisJaWYgKHJldCA8IDApCiAJCWdvdG8gb3V0X3Vu
+bG9jazsKLQl9CisJbXNnLT5zcmNfZmlsZSA9IE5VTEw7CisJcmVxLT5mbGFncyAmPSB+UkVR
+X0ZfTkVFRF9DTEVBTlVQOwogCiAJaWYgKG1zZy0+ZmxhZ3MgJiBJT1JJTkdfTVNHX1JJTkdf
+Q1FFX1NLSVApCiAJCWdvdG8gb3V0X3VubG9jazsKQEAgLTEyNSw3ICsxMzcsNyBAQCBzdGF0
+aWMgaW50IGlvX21zZ19zZW5kX2ZkKHN0cnVjdCBpb19raW9jYiAqcmVxLCB1bnNpZ25lZCBp
+bnQgaXNzdWVfZmxhZ3MpCiAJaWYgKCFpb19wb3N0X2F1eF9jcWUodGFyZ2V0X2N0eCwgbXNn
+LT51c2VyX2RhdGEsIHJldCwgMCwgdHJ1ZSkpCiAJCXJldCA9IC1FT1ZFUkZMT1c7CiBvdXRf
+dW5sb2NrOgotCWlvX2RvdWJsZV91bmxvY2tfY3R4KGN0eCwgdGFyZ2V0X2N0eCwgaXNzdWVf
+ZmxhZ3MpOworCWlvX2RvdWJsZV91bmxvY2tfY3R4KHRhcmdldF9jdHgsIGlzc3VlX2ZsYWdz
+KTsKIAlyZXR1cm4gcmV0OwogfQogCkBAIC0xMzYsNiArMTQ4LDcgQEAgaW50IGlvX21zZ19y
+aW5nX3ByZXAoc3RydWN0IGlvX2tpb2NiICpyZXEsIGNvbnN0IHN0cnVjdCBpb191cmluZ19z
+cWUgKnNxZSkKIAlpZiAodW5saWtlbHkoc3FlLT5idWZfaW5kZXggfHwgc3FlLT5wZXJzb25h
+bGl0eSkpCiAJCXJldHVybiAtRUlOVkFMOwogCisJbXNnLT5zcmNfZmlsZSA9IE5VTEw7CiAJ
+bXNnLT51c2VyX2RhdGEgPSBSRUFEX09OQ0Uoc3FlLT5vZmYpOwogCW1zZy0+bGVuID0gUkVB
+RF9PTkNFKHNxZS0+bGVuKTsKIAltc2ctPmNtZCA9IFJFQURfT05DRShzcWUtPmFkZHIpOwpk
+aWZmIC0tZ2l0IGEvaW9fdXJpbmcvbXNnX3JpbmcuaCBiL2lvX3VyaW5nL21zZ19yaW5nLmgK
+aW5kZXggZmI5NjAxZjIwMmQwLi4zOTg3ZWU2YzBlNWYgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5n
+L21zZ19yaW5nLmgKKysrIGIvaW9fdXJpbmcvbXNnX3JpbmcuaApAQCAtMiwzICsyLDQgQEAK
+IAogaW50IGlvX21zZ19yaW5nX3ByZXAoc3RydWN0IGlvX2tpb2NiICpyZXEsIGNvbnN0IHN0
+cnVjdCBpb191cmluZ19zcWUgKnNxZSk7CiBpbnQgaW9fbXNnX3Jpbmcoc3RydWN0IGlvX2tp
+b2NiICpyZXEsIHVuc2lnbmVkIGludCBpc3N1ZV9mbGFncyk7Cit2b2lkIGlvX21zZ19yaW5n
+X2NsZWFudXAoc3RydWN0IGlvX2tpb2NiICpyZXEpOwpkaWZmIC0tZ2l0IGEvaW9fdXJpbmcv
+b3BkZWYuYyBiL2lvX3VyaW5nL29wZGVmLmMKaW5kZXggMDRkZDJjOTgzZmNlLi4zYWEwZDY1
+YzUwZTMgMTAwNjQ0Ci0tLSBhL2lvX3VyaW5nL29wZGVmLmMKKysrIGIvaW9fdXJpbmcvb3Bk
+ZWYuYwpAQCAtNDQ1LDYgKzQ0NSw3IEBAIGNvbnN0IHN0cnVjdCBpb19vcF9kZWYgaW9fb3Bf
+ZGVmc1tdID0gewogCQkubmFtZQkJCT0gIk1TR19SSU5HIiwKIAkJLnByZXAJCQk9IGlvX21z
+Z19yaW5nX3ByZXAsCiAJCS5pc3N1ZQkJCT0gaW9fbXNnX3JpbmcsCisJCS5jbGVhbnVwCQk9
+IGlvX21zZ19yaW5nX2NsZWFudXAsCiAJfSwKIAlbSU9SSU5HX09QX0ZTRVRYQVRUUl0gPSB7
+CiAJCS5uZWVkc19maWxlID0gMSwKLS0gCjIuNDAuMQoK
 
-In this particular patch, apparently we assume any non-Intel port or
-any BIOS before 2015 is broken.  Obviously way too general.  We know
-"USB keyboards don't wake from suspend," but I think we need something
-at the PCI level like "PME interrupt doesn't happen when bridge is in
-state X" (i.e., the part that is non-compliant), and "one consequence
-is that downstream devices can't wake from suspend."
-
-> > I don't have any better suggestions, other than that this should be
-> > described somehow via ACPI (and not in vendor-specific stuff like
-> > PNP0D80).
-> 
-> Well, it isn't in practice.
-
-If this is basically quirks and we treat it that way (comments about
-the breakage and references to what the spec violations are), maybe
-this is the best we can do.
-
-Bjorn
+--------------SPGhCdK4obosgWjIzsD9eXZL--
