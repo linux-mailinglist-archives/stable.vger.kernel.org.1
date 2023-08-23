@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D59D8786279
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 23:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CD317862B1
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 23:42:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238088AbjHWVgy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 17:36:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51750 "EHLO
+        id S237967AbjHWVmP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 17:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238348AbjHWVgr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 17:36:47 -0400
+        with ESMTP id S238600AbjHWVl5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 17:41:57 -0400
 Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66F49CEE;
-        Wed, 23 Aug 2023 14:36:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A697510F1;
+        Wed, 23 Aug 2023 14:41:52 -0700 (PDT)
 From:   Thomas Gleixner <tglx@linutronix.de>
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1692826605;
+        s=2020; t=1692826911;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rtsxkwGtRkAmOuDbF4foPUA+AgAwg49723n1s+jEHk0=;
-        b=tBvQH3iWzoLnJl5d6KXcCRwbsT5gP7zMmgb9l+7f84HhvkCymIyY1rqEWTux8uShn075vs
-        GzXa8KUY3nNbOyV+iajEina6MhS2VEnb8GSYg63cjGfcr/lNXkcPN/6GZpAPdCg+2H22Be
-        olmM0m9Rk7Tg4D399QC9Vv71tfxJaYyYPmIvGBDyCMoFkfb3ducV3wtEIE4Rc/wYWzyVor
-        LSx5rU5C11tI/tbzVoBnP6YFGoXtit4Aa7VgU6ZvewBRmyLmXavN4Yx9Qs37GCan3zCADw
-        aOHyTm1X13UzPA5sWsoHycH3DA+tLZIyESFnsncTrYHmphRPlkv1D9Zg0TxUrg==
+        bh=PK5b0ivuEa/PS4x9NzJ6KdYooqZ+f0W8WnndXaZS2Pg=;
+        b=0sG4P5mw38zKQGTymLeRst1lf6lhNxBsE3iDIVkNr+37BtKsIfFQFM+CopGywwCD3xUQJ4
+        1PIv/plA79QOLO8n7mazzHjACREs6aQKFhnyjh8sLXl34RS00aBq0MlCF8re3fC9lDhTOp
+        mC3XrB8xF7EThDVKic9Z/NaH235RYOHTAuV+RqHIz3ilmlsTXFsJuxR0t941n1L8arv+fA
+        aPj2C0W189rQWyWYS1KL3wl4Fp8aWwbe1bt0y7543vJsJG819KxLac0gFDBBjcBi2YVqRU
+        PsHsfSiA2pEj6YzKy8kikGbs4JrRKg1IMufIBLjx3n/n93XB67w9MKPW2Jikow==
 DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1692826605;
+        s=2020e; t=1692826911;
         h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
          to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
          in-reply-to:in-reply-to:references:references;
-        bh=rtsxkwGtRkAmOuDbF4foPUA+AgAwg49723n1s+jEHk0=;
-        b=XTMqosZGH4WzSVs1ls3ih8XgKu25/HPqldJMApBQYV1KTgZC02V9vUfOm3SXrhS+MFl0V6
-        js2D5Z3Ac0G8N0BA==
-To:     Z qiang <qiang.zhang1211@gmail.com>,
+        bh=PK5b0ivuEa/PS4x9NzJ6KdYooqZ+f0W8WnndXaZS2Pg=;
+        b=d1l8+UuwBMa5UJJnhQuKOSVTgAefBI82ymLBTZhWjY1QwSv1QJfAy/qBxbL/niYnxwN6Iw
+        dw6MFIaRJIqGUMBA==
+To:     Alan Huang <mmpgouride@gmail.com>,
         Huacai Chen <chenhuacai@kernel.org>
-Cc:     paulmck@kernel.org, Huacai Chen <chenhuacai@loongson.cn>,
+Cc:     Z qiang <qiang.zhang1211@gmail.com>,
+        "Paul E . McKenney" <paulmck@kernel.org>,
+        Huacai Chen <chenhuacai@loongson.cn>,
         Frederic Weisbecker <frederic@kernel.org>,
         Neeraj Upadhyay <quic_neeraju@quicinc.com>,
         Joel Fernandes <joel@joelfernandes.org>,
@@ -54,7 +54,7 @@ Cc:     paulmck@kernel.org, Huacai Chen <chenhuacai@loongson.cn>,
         rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
 Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
-In-Reply-To: <CALm+0cVdaXn5+4veu2NDwdi7htm=KY4ca+Eh54TwnN_6Xjs8TA@mail.gmail.com>
+In-Reply-To: <D3AFC0E7-9E6C-43F2-B9F5-3AC498B14F0F@gmail.com>
 References: <20230814020045.51950-1-chenhuacai@loongson.cn>
  <20230814020045.51950-2-chenhuacai@loongson.cn>
  <18b9119c-cbc8-42a1-a313-9154d73c9841@paulmck-laptop>
@@ -64,11 +64,12 @@ References: <20230814020045.51950-1-chenhuacai@loongson.cn>
  <CALm+0cUpqONZOEHbc85d-Z5cC=P5LSeOAGuCCOukpTagLxnXWw@mail.gmail.com>
  <CAAhV-H7J6Rj99M6rxoFCEKu4G6NQPX9-N0a3-2GjEwbr+tbwQw@mail.gmail.com>
  <CALm+0cVdaXn5+4veu2NDwdi7htm=KY4ca+Eh54TwnN_6Xjs8TA@mail.gmail.com>
-Date:   Wed, 23 Aug 2023 23:36:44 +0200
-Message-ID: <87zg2hcufn.ffs@tglx>
+ <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
+ <D3AFC0E7-9E6C-43F2-B9F5-3AC498B14F0F@gmail.com>
+Date:   Wed, 23 Aug 2023 23:41:50 +0200
+Message-ID: <87wmxlcu75.ffs@tglx>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -79,26 +80,16 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 16 2023 at 18:06, Z. qiang wrote:
->> On Wed, Aug 16, 2023 at 1:09=E2=80=AFPM Z qiang <qiang.zhang1211@gmail.c=
-om> wrote:
->> > You can replace rcu_state.jiffies_stall update by setting rcu_cpu_stal=
-l_suppress
->> > in rcu_cpu_stall_reset(),  and reset rcu_cpu_stall_suppress in rcu_gp_=
-init() and
->> > rcu_gp_cleanup().
->> What's the advantage compared with updating jiffies? Updating jiffies
->> seems more straight forward.
->>
+On Wed, Aug 16 2023 at 23:56, Alan Huang wrote:
+>> If  do_update_jiffies_64() cannot be used in NMI context, can we
 >
-> In do_update_jiffies_64(), need to acquire jiffies_lock raw spinlock,
-> like you said, kgdb is not the only caller of rcu_cpu_stall_reset(),
-> the rcu_cpu_stall_reset() maybe invoke in NMI  (arch/x86/platform/uv/uv_n=
-mi.c)
+> What about updating jiffies in dbg_touch_watchdogs or adding a wrapper which updates
+> both jiffies and jiffies_stall?
 
-What's worse is that KGDB can set breakpoints pretty much everywhere and
-there is no guarantee that the jiffies lock is not held when a
-breakpoint hits.
+What makes dbg_touch_watchdogs() any different?
+
+KGDB can pretty much have a breakpoint everywhere and therefore also
+within the jiffies lock held region.
 
 Thanks,
 
