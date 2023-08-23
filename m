@@ -2,66 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E621778556C
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 12:32:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1FD2785662
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 13:07:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233805AbjHWKca (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 06:32:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52246 "EHLO
+        id S234095AbjHWLHB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 07:07:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233799AbjHWKc2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 06:32:28 -0400
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2FFBCD1
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 03:32:26 -0700 (PDT)
-Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-44d4d997dcfso1335467137.0
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 03:32:26 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692786746; x=1693391546;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ThXAIByqVCkfjwracUVqooFzKpe/zsTo3REPCd68fCI=;
-        b=IVnpF8gxq8Txsumh4crzwz78XaQgk13drDB1Yzp+MPPMJlAC7Lo8gprin2HuS7yhv/
-         5gpJJClDCKpZxseorxCy/Zo0imkzlGpiC7iXWuXlh2xqfhRp53DIEx4MECW34K37XzRi
-         zxxbEt+02rGrTCyG6cf8ztdL7DplQP7qodl2LfANPkLvCnHW6pbgl8ppv2f4GMnB4Ljy
-         mpRtF86GyF0l7IOD8GXxWkuC8XVXK7bObya7XA+OVCKpiFy+hcEaTtD14RfjCXXZf1FG
-         YLFeIi/09zIyuVrLditZbbOBX1hT88Eu2rY5azMlXzIdPdTNswARSpeBNVM9exV2L7Xa
-         fVsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692786746; x=1693391546;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ThXAIByqVCkfjwracUVqooFzKpe/zsTo3REPCd68fCI=;
-        b=jzRHLGsvD7TdB0AU6Xej86JESrRjqC5eB7o+YrKywxSsncaUoQfMrbGkdc+Bo5ETTa
-         lnPrlNbWCNBfYvjgScthLBKvw2RnGK82l8JFTy9srwONLhCOwpV3Qf766ca89MMPauJe
-         K0qpU8NgkqKxzM4wunUsSkJ3VinEqLvmKjQ4jaSUcEejw/jlXAOiU/jf6lsp/qRCpm8n
-         8+C+lNXLLrVx5gVeJoG8EeMYdzB8pHGqN/q7hnbKFCmlXNXOxd5h4eawtDGEq0mK/N1Y
-         /MLbjWSoBsl6eLEy7QlHry/XxOS2j9wxxwnXJfc2PSRVaSCn+MdhJ1G1nyEv00ouQBa5
-         eVDw==
-X-Gm-Message-State: AOJu0YzHcdgRh2lLy3VfVLrzvVu13+mNnAE9E41J+24RZgYjSGOr+B1f
-        370Qo4yJuTl5/wSVwB52rd1B/AlHSVLZJlEaw777i6LMlNPajjgw
-X-Google-Smtp-Source: AGHT+IFXiNEHNeIm0I6eRoH5Vo6bgJn8WN/p5jAXu3EpULJukA2e8vxhilxq9z+tgd0mxAZLPhg27qavDJr0SIbrQWI=
-X-Received: by 2002:a67:fb0a:0:b0:443:4e7d:c8db with SMTP id
- d10-20020a67fb0a000000b004434e7dc8dbmr10239104vsr.2.1692786745997; Wed, 23
- Aug 2023 03:32:25 -0700 (PDT)
+        with ESMTP id S234136AbjHWLHA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 07:07:00 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE20FCFE;
+        Wed, 23 Aug 2023 04:06:58 -0700 (PDT)
+Received: from [192.168.244.158] (unknown [116.71.178.151])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: usama.anjum)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id ADBBD6606E9D;
+        Wed, 23 Aug 2023 12:06:53 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1692788817;
+        bh=2ZFtjP1O/M7nfoq2JMfGTRDqLLzYwDLMxZn6zTjwfzE=;
+        h=Date:From:Subject:To:Cc:References:In-Reply-To:From;
+        b=FNq0vmtH1Q+gedSnmHTXX7Avuj8CI4fdYVqkJFlxdhs351BIDGSal2U25JZi93Q/M
+         a27skTSZ7g5yaAjOvINKdcEnFKJGUaD6UQnbqgLzcFIJBynmIla2XBwtIacsFFV5QK
+         s53a//F80MY4SIXdVrLAZt6ix+s0KaiZO7wwJZBjOWX6n9qcI61GVTMLIog3shSpWv
+         e5lPXdkkMgLmqgT+vnmmy68zp+uWUdDy7SfFoAr7kCUHHMeofQPd5H+Q3CE0vVHEmQ
+         sh2WH3n7Rh1l5Wyb6/62vmF53foNitdgHUDbljSg/fb7/nsImw39zOQw4/+xeEzaut
+         LwVNRIT/F5a+A==
+Message-ID: <deab26bd-7db4-422a-8e58-6ea56ed0b200@collabora.com>
+Date:   Wed, 23 Aug 2023 16:06:47 +0500
 MIME-Version: 1.0
-References: <20230821194122.695845670@linuxfoundation.org> <ZOXJVamgYV1Mb+7S@debian>
- <2023082303-musky-plastic-335f@gregkh>
-In-Reply-To: <2023082303-musky-plastic-335f@gregkh>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Wed, 23 Aug 2023 16:02:14 +0530
-Message-ID: <CA+G9fYvm-7DPuA9kAF3784DpW4BmAXa_+_NW3AP_919_UND5-Q@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+User-Agent: Mozilla Thunderbird
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+Subject: Re: [PATCH v3] tty/sysrq: replace smp_processor_id() with get_cpu()
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>,
-        stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        Jiri Slaby <jirislaby@kernel.org>, Ingo Molnar <mingo@elte.hu>,
+        kernel@collabora.com, stable@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org
+References: <20230822102606.2821311-1-usama.anjum@collabora.com>
+ <2023082258-lethargic-hazily-5c7e@gregkh>
+Content-Language: en-US
+In-Reply-To: <2023082258-lethargic-hazily-5c7e@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
@@ -72,53 +58,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 23 Aug 2023 at 14:56, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Aug 23, 2023 at 09:54:45AM +0100, Sudip Mukherjee (Codethink) wrote:
-> > Hi Greg,
-> >
-> > On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.1.47 release.
-> > > There are 194 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> > > Anything received after that time might be too late.
-> >
-> > Build test (gcc version 12.3.1 20230625):
-> > mips: 52 configs -> no failure
-> > arm: 100 configs -> no failure
-> > arm64: 3 configs -> no failure
-> > x86_64: 4 configs -> no failure
-> > alpha allmodconfig -> no failure
-> > csky allmodconfig -> no failure
-> > powerpc allmodconfig -> no failure
-> > riscv allmodconfig -> no failure
-> > s390 allmodconfig -> no failure
-> > xtensa allmodconfig -> no failure
-> >
-> > Boot test:
-> > x86_64: Booted on my test laptop. Warning on boot, already reported by others.
-> > x86_64: Booted on qemu. Warning on boot, already reported by others. [1]
-> > arm64: Booted on rpi4b (4GB model). No regression. [2]
-> > mips: Booted on ci20 board. No regression. [3]
-> >
-> > [1]. https://openqa.qa.codethink.co.uk/tests/4765
-> > [2]. https://openqa.qa.codethink.co.uk/tests/4773
-> > [3]. https://openqa.qa.codethink.co.uk/tests/4772
-> >
-> > Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-> >
-> > --
-> > Regards
-> > Sudip
->
-> One question about the warning on boot, all still works afterward,
-> right?  Or does the system not work?
+On 8/22/23 6:24 PM, Greg Kroah-Hartman wrote:
+> On Tue, Aug 22, 2023 at 03:26:06PM +0500, Muhammad Usama Anjum wrote:
+>> The smp_processor_id() shouldn't be called from preemptible code.
+>> Instead use get_cpu() and put_cpu() which disables preemption in
+>> addition to getting the processor id. This fixes the following bug:
+>>
+>> [  119.143590] sysrq: Show backtrace of all active CPUs
+>> [  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
+>> [  119.144586] caller is debug_smp_processor_id+0x20/0x30
+>> [  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
+>> [  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
+>> [  119.145053] Call trace:
+>> [  119.145093]  dump_backtrace+0x0/0x1a0
+>> [  119.145122]  show_stack+0x18/0x70
+>> [  119.145141]  dump_stack+0xc4/0x11c
+>> [  119.145159]  check_preemption_disabled+0x100/0x110
+>> [  119.145175]  debug_smp_processor_id+0x20/0x30
+>> [  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
+>> [  119.145211]  __handle_sysrq+0x8c/0x1a0
+>> [  119.145227]  write_sysrq_trigger+0x94/0x12c
+>> [  119.145247]  proc_reg_write+0xa8/0xe4
+>> [  119.145266]  vfs_write+0xec/0x280
+>> [  119.145282]  ksys_write+0x6c/0x100
+>> [  119.145298]  __arm64_sys_write+0x20/0x30
+>> [  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
+>> [  119.145332]  do_el0_svc+0x24/0x8c
+>> [  119.145348]  el0_svc+0x10/0x20
+>> [  119.145364]  el0_sync_handler+0x134/0x140
+>> [  119.145381]  el0_sync+0x180/0x1c0
+>>
+>> Cc: stable@vger.kernel.org
+>> Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")This commit had introduced the smp_processor_id() function in
+sysrq_handle_showallcpus().
 
-The warning while booting and root login successful and
-LTP and other test runs are successful.
+> 
+> How has this never shown up before now?  What changed to cause this to
+> now be triggered?  This feels odd that no one has seen this in the past
+> 20+ years :(
+Not sure. Probably the combination of reproduction has happened now. The
+following three conditions are needed for the warning to appear:
+* Enable CONFIG_DEBUG_PREEMPT
+* Arch which doesn't define arch_trigger_all_cpu_backtrace such as arm64
+* Trigger showallcpu's stack sysrq
 
-- Naresh
+> 
+> 
+>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>> ---
+>> Changes since v2:
+>> - Add changelog and resend
+>>
+>> Changes since v1:
+>> - Add "Cc: stable@vger.kernel.org" tag
+>> ---
+>>  drivers/tty/sysrq.c | 3 ++-
+>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>
+>> diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
+>> index 23198e3f1461a..6b4a28bcf2f5f 100644
+>> --- a/drivers/tty/sysrq.c
+>> +++ b/drivers/tty/sysrq.c
+>> @@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
+>>  		if (in_hardirq())
+>>  			regs = get_irq_regs();
+>>  
+>> -		pr_info("CPU%d:\n", smp_processor_id());
+>> +		pr_info("CPU%d:\n", get_cpu());
+>>  		if (regs)
+>>  			show_regs(regs);
+>>  		else
+>>  			show_stack(NULL, NULL, KERN_INFO);
+>>  
+>>  		schedule_work(&sysrq_showallcpus);
+>> +		put_cpu();
+> 
+> Why are you putting the cpu _after_ you schedule the work?
+The sysrq_showallcpus work prints stack traces on all CPUs other than the
+current CPU. So we are re-enabling preemption after scheduling work from
+current CPU. So that it doesn't get changed.
+> 
+> thanks,
+> 
+> greg k-h
+
+-- 
+BR,
+Muhammad Usama Anjum
