@@ -2,126 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41C437850CC
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 08:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E446C785112
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 09:03:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233016AbjHWGus (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 02:50:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44108 "EHLO
+        id S233106AbjHWHDz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 03:03:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233013AbjHWGus (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 02:50:48 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FB5E5A;
-        Tue, 22 Aug 2023 23:50:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692773444; x=1724309444;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=TREB1LHq6cZ6inH86OPR1ocARs1m7G9NR39QZcMNDvo=;
-  b=Q3DpbdvfPnHY2rJMFSdUs39SQbvfQeYF4JYlYOqZ+zBlm2bGUm5W19c7
-   iRQ5VkGmy8J4rUxorxSCIsGzNysu0phE1mvSg8A2R5x2JoY19CH46C7Vu
-   jNvIXuGQ36F9ka0qHQHbVl9ao1+kVeTbNbayIrzkpcgiC9E3NicOQ1Rtm
-   4SoYKA98O+V5cKx0eSAtNFuqbAn0DGfDLdaG76HveNDMEqMA9HT5f2WEz
-   9wE0pdpk33ymJ69WscpykOUe9FUPIA5sKAuxL+eOGm+8bIJHouaEV9bY8
-   LzswboY8Q/hXy9nBHp0FC3DXzyEnI3i8AptcKnHuyXpLAhJwal/o7eLeW
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10810"; a="359068084"
-X-IronPort-AV: E=Sophos;i="6.01,195,1684825200"; 
-   d="scan'208";a="359068084"
-Received: from fmsmga001.fm.intel.com ([10.253.24.23])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 22 Aug 2023 23:49:12 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=Sophos;i="6.01,202,1684825200"; 
-   d="scan'208";a="880288241"
-Received: from kuha.fi.intel.com ([10.237.72.185])
-  by fmsmga001.fm.intel.com with SMTP; 22 Aug 2023 23:49:13 -0700
-Received: by kuha.fi.intel.com (sSMTP sendmail emulation); Wed, 23 Aug 2023 09:49:07 +0300
-Date:   Wed, 23 Aug 2023 09:49:07 +0300
-From:   Heikki Krogerus <heikki.krogerus@linux.intel.com>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, linux@roeck-us.net, kyletso@google.com,
-        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v1] tcpm: Avoid soft reset when partner does not support
- get_status
-Message-ID: <ZOWr42vfSexOFDjq@kuha.fi.intel.com>
-References: <20230820044449.1005889-1-badhri@google.com>
+        with ESMTP id S233079AbjHWHDz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 03:03:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55AC3185;
+        Wed, 23 Aug 2023 00:03:53 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D7C9564A86;
+        Wed, 23 Aug 2023 07:03:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DDF0C433C7;
+        Wed, 23 Aug 2023 07:03:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692774232;
+        bh=CREXmtSVm3ElNVCBgi60/kP4BfR2bXJzoUJvCekaTJE=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VGbhFAKGEzEoNxcW4EtllY/OrEfRIxobd2x5V0x80KncOeqwWe4hbtwrj07BQvtMJ
+         tVhaOqLyIo63cKtluc/YZW4nYqVAOaN2bF9zeotw9BrKXIy1SWdflrx34jVLW4mmlT
+         ejXL8m4yqtOBfvfTTgoW/Oh1c8DyswxkwVs+ZZgw=
+Date:   Wed, 23 Aug 2023 09:03:49 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+Message-ID: <2023082309-veggie-unwoven-a7df@gregkh>
+References: <20230821194122.695845670@linuxfoundation.org>
+ <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230820044449.1005889-1-badhri@google.com>
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED autolearn=ham autolearn_force=no
-        version=3.4.6
+In-Reply-To: <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Aug 20, 2023 at 04:44:48AM +0000, Badhri Jagan Sridharan wrote:
-> When partner does not support get_status message, tcpm right now
-> responds with soft reset message. This causes PD renegotiation to
-> happen and resets PPS link. Avoid soft resetting the link when
-> partner does not support get_status message to mitigate PPS resets.
+On Tue, Aug 22, 2023 at 05:49:54PM -0700, Guenter Roeck wrote:
+> On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.47 release.
+> > There are 194 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> > Anything received after that time might be too late.
+> > 
 > 
-> [  208.926752] Setting voltage/current limit 9500 mV 2450 mA
-> [  208.930407] set_auto_vbus_discharge_threshold mode:3 pps_active:y vbus:9500 ret:0
-> [  208.930418] state change SNK_TRANSITION_SINK -> SNK_READY [rev3 POWER_NEGOTIATION]
-> [  208.930455] AMS POWER_NEGOTIATION finished
+> Build results:
+> 	total: 157 pass: 156 fail: 1
+> Failed builds:
+> 	m68k:sun3_defconfig
+> Qemu test results:
+> 	total: 521 pass: 519 fail: 2
+> Failed tests:
+> 	arm:fuji-bmc:aspeed_g5_defconfig:notests:mem1G:mtd128,0,8,1:net,nic:aspeed-bmc-facebook-fuji:f2fs
+> 	arm:bletchley-bmc,fmc-model=mt25qu02g,spi-model=mt25qu02g:aspeed_g5_defconfig:notests:mem1G:mtd256:net,nic:aspeed-bmc-facebook-bletchley:f2fs
 > 
-> // ALERT message from the Source
-> [  213.948442] PD RX, header: 0x19a6 [1]
-> [  213.948451] state change SNK_READY -> GET_STATUS_SEND [rev3 GETTING_SOURCE_SINK_STATUS]
-> [  213.948457] PD TX, header: 0x492
-> [  213.950402] PD TX complete, status: 0
-> [  213.950427] pending state change GET_STATUS_SEND -> GET_STATUS_SEND_TIMEOUT @ 60 ms [rev3 GETTING_SOURCE_SINK_STATUS]
+> The m68k build failure is
 > 
-> // NOT_SUPPORTED from the Source
-> [  213.959954] PD RX, header: 0xbb0 [1]
+> Inconsistent kallsyms data
+> Try make KALLSYMS_EXTRA_PASS=1 as a workaround
 > 
-> // sink sends SOFT_RESET
-> [  213.959958] state change GET_STATUS_SEND -> SNK_SOFT_RESET [rev3 GETTING_SOURCE_SINK_STATUS]
-> [  213.959962] AMS GETTING_SOURCE_SINK_STATUS finished
-> [  213.959964] AMS SOFT_RESET_AMS start
-> [  213.959966] state change SNK_SOFT_RESET -> AMS_START [rev3 SOFT_RESET_AMS]
-> [  213.959969] state change AMS_START -> SOFT_RESET_SEND [rev3 SOFT_RESET_AMS]
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 8dea75e11380 ("usb: typec: tcpm: Protocol Error handling")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+> I already have KALLSYMS_EXTRA_PASS=1 enabled, so that doesn't help.
+> Nothing to worry about. The f2fs crashes are still seen. They
+> also happen for other architectures, so it is not just an arm problem.
+> I'll probably just disable all f2fs testing going forward. If so I'll
+> send a note clarifying that the lack of reported test failures doesn't
+> mean that it works.
 
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+I'll look into this later this week, next week to resolve the f2fs
+stuff.  I wanted to get to the other known bug fixes first.
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 5639b9a1e0bf..280ce1bd7b53 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -2753,6 +2753,13 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
->  			port->sink_cap_done = true;
->  			tcpm_set_state(port, ready_state(port), 0);
->  			break;
-> +		/*
-> +		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
-> +		 * prevent redundant power re-negotiation
-> +		 */
-> +		case GET_STATUS_SEND:
-> +			tcpm_set_state(port, ready_state(port), 0);
-> +			break;
->  		case SRC_READY:
->  		case SNK_READY:
->  			if (port->vdm_state > VDM_STATE_READY) {
-> 
-> base-commit: bbb9e06d2c6435af9c62074ad7048910eeb2e7bc
-> -- 
-> 2.42.0.rc1.204.g551eb34607-goog
+> For x86 I get the same runtime warning as everyone else.
 
--- 
-heikki
+Yeah, this is troubling...
+
+Is it clang only?  I'll dig into this today...
+
+thanks,
+
+greg k-h
