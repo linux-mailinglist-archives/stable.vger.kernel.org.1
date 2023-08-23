@@ -2,76 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 068FC7861C1
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 22:52:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E6C07861D5
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 22:56:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236660AbjHWUvt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 16:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59086 "EHLO
+        id S234817AbjHWU4G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 16:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229816AbjHWUvp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 16:51:45 -0400
-Received: from mail-ot1-x331.google.com (mail-ot1-x331.google.com [IPv6:2607:f8b0:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8039410C8;
-        Wed, 23 Aug 2023 13:51:43 -0700 (PDT)
-Received: by mail-ot1-x331.google.com with SMTP id 46e09a7af769-6bcac140aaaso4625559a34.2;
-        Wed, 23 Aug 2023 13:51:43 -0700 (PDT)
+        with ESMTP id S236867AbjHWU4A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 16:56:00 -0400
+Received: from mail-ot1-x32e.google.com (mail-ot1-x32e.google.com [IPv6:2607:f8b0:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25BE610C8
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 13:55:58 -0700 (PDT)
+Received: by mail-ot1-x32e.google.com with SMTP id 46e09a7af769-6b9a2416b1cso4722163a34.2
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 13:55:58 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692823903; x=1693428703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eMgBXJyz4j+4W1iINiCAeqRriHTkzDpdbP8epuCcQ+c=;
-        b=eozVk7W5leBAIZAjir3gI8REAZD8JCcPkc/M3KQhYESTaDkMUhGQDiSxOEPEK8UM6S
-         QBVLEjB8cFtzrlG3JpOzs9WHPI0EvMf0WIahjkoZSTWCyL2GUEH/6Mezg90NtJhGIrvQ
-         eBPKe8aveZvFRN15TGEaVA1rgkLsnveNweUtsnML5Ia5IEm2bQX1GROzmYft1v91mIPG
-         D6tlS5DTv1Yn6jV/Hyt4NPH/leowXHZCgoGIqgoqFC6uvzqlN+i1Zhm78AVUDpt0B69X
-         zarKS/XGC8q15mK6yGP+XRMWe3L1Ah7X5yAQEbWraTrTvFLQdbuiTVRiWmOVovKWwAUU
-         QsKQ==
+        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692824157; x=1693428957;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=2+KPxKSo43nnGajKdOLG1dm/A8z2jtm/ALskYt+7+rQ=;
+        b=iMlWr90b0wyzCztNR1L/CWsMREObF5h0yB3mp7CbWX8I0Ar4KpyIZJGxE1grMI/ixi
+         p0JQZ4fHHyfH2TLtrdGPIphybmQaNQ6DiUBC8ViJpmdXKgTbS7AtmLhphHmLVbJjU2ak
+         tUSshAqzuxjNiT12vO1vnuKaOOLRHuu6Gc/IdOKnzQBcxoZbWRadirI/wDGp5mfvEUvq
+         rR9zETQwYVdU9FjgiLjPGTLwshFFdgxvMUE/nZ7q4YJzl2NUvIgmpc2TW5lV3dBeQJSr
+         PSV9Rxfp7zd0K+ELgPo5BwQMxjvflW2j4kfJ/zZ+NaUsrFunE51ql3d//y5/JTkM7ncA
+         l9Hg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692823903; x=1693428703;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eMgBXJyz4j+4W1iINiCAeqRriHTkzDpdbP8epuCcQ+c=;
-        b=kyGEaVP0yI6F/EBlpuwi3uUj+Rr5/9+ouPhK0rvBwGJFOImC8i9A6BjLjSFv0PA0e+
-         mH7xRUZ+ds3Nuk3me2AJc7fcBOd5d+sx96/ZkRl7qzMX+0neV4bRpF++mJhNCNRPApDn
-         F1ykusoZIMarLtrj4ykGi3fmsZURa2X1Vc0uLr2FWyiFNhiYfnFRI8xjd8o9BtMvrIpb
-         At/qzk+X245PUJSuqeFAx9YNI6bjDvozx8S+rcF7zMjq5wx/19kUzuitLwobXOr/h+v9
-         qnndPcZb6vAK05bWaUHapoxjsnQ0w1Ul77yo3jdGyG6TQPK4q6UqXYaHCORXhstc4DBF
-         Hkyw==
-X-Gm-Message-State: AOJu0Yy6hksvAlW+GOO1N9fpBjYl2m0r4U2bN0pbe37HiD3mi7ejRKQR
-        bfQHuIMiD/OJbYoZx8sZvbWWlw+7bul83ng8C/0irgtC
-X-Google-Smtp-Source: AGHT+IHgdmrbaLNqEUvEuYL9VRV0cTrFvNWgv5pxAYyjKRmaS85alJv6VNGoQ4yzx1Q6YlEJslEijFtTWsqHFGbHGcI=
-X-Received: by 2002:a05:6870:700e:b0:1bf:dc25:a5aa with SMTP id
- u14-20020a056870700e00b001bfdc25a5aamr16861010oae.39.1692823902696; Wed, 23
- Aug 2023 13:51:42 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1692824157; x=1693428957;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2+KPxKSo43nnGajKdOLG1dm/A8z2jtm/ALskYt+7+rQ=;
+        b=Cvei+EOwQsvfixmxyihAeOJys9lIvSDhyAkxMmXLJwMklcVLzgZ3fmtKi/z189zu8X
+         hNbx4PPzFso5Spmhp5+PAbkqJzY5nvVq+LNLZ/DJRunCFXOW/G+6PeKeKWdECAoQZTWb
+         DAFGdyZJjGVhxiW2P8DEPlG7Xd1bQlxvlxeZeCcw9A8GfKexv1Qfr0pu8PBGwGXZ4lSH
+         v4PQSC1Rtjngn7P6h55GFaTCy2NeDXZFrIXc1MajvBBSIHZ1uY7AubyGSNe9sNwyOBFd
+         mldDoG+aHCVWYoytTug//lhbqOGdovN+w3cMs52Exd3NxRxQpiKkL+iJQvxPq9POgIh+
+         Vufw==
+X-Gm-Message-State: AOJu0YwWfDbCO5SkVAZ84MHW1zxnzr+tFC2ezOmXaDASdUXb8cgVe/Jf
+        AeU8+yvvbMHghnH9XC7DwUH3V/inseydEG+tPxQ=
+X-Google-Smtp-Source: AGHT+IHEYKkgJ+fmR8dPIVu2cDTn+BurAQ6p6YhrPWIF/iBRnz2NrkXO6t1Yd63A1MaI3ZRvYJDMrQ==
+X-Received: by 2002:a05:6870:d149:b0:1b0:3cd4:76d5 with SMTP id f9-20020a056870d14900b001b03cd476d5mr16881677oac.37.1692824157102;
+        Wed, 23 Aug 2023 13:55:57 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id e11-20020a63aa0b000000b00566095dac12sm10012103pgf.19.2023.08.23.13.55.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Aug 2023 13:55:56 -0700 (PDT)
+Message-ID: <64e6725c.630a0220.910e5.36f0@mx.google.com>
+Date:   Wed, 23 Aug 2023 13:55:56 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230815172700.255596-1-hamza.mahfooz@amd.com>
- <d1831afd-9e02-fbc9-69f7-e8f044f35ee0@gmail.com> <855aeab8-13e1-4dc4-841e-24d298c9c072@amd.com>
- <9855fa7a-dd9d-27b8-171e-b662d417b902@amd.com>
-In-Reply-To: <9855fa7a-dd9d-27b8-171e-b662d417b902@amd.com>
-From:   Alex Deucher <alexdeucher@gmail.com>
-Date:   Wed, 23 Aug 2023 16:51:31 -0400
-Message-ID: <CADnq5_OZiTtWLMS-hh56c8KZj1eEHQGVKh6pah-qct74e4Nabw@mail.gmail.com>
-Subject: Re: [PATCH v2] drm/amdgpu: register a dirty framebuffer callback for fbcon
-To:     =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
-        "Mahfooz, Hamza" <Hamza.Mahfooz@amd.com>
-Cc:     amd-gfx@lists.freedesktop.org,
-        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-        Guchun Chen <guchun.chen@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        stable@vger.kernel.org, Thomas Zimmermann <tzimmermann@suse.de>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.4.254
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Branch: linux-5.4.y
+Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
+ 26 warnings (v5.4.254)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,124 +71,232 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-@Mahfooz, Hamza
- can you respin with the NULL check?
+stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
+5.4.254)
 
-Alex
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
+/kernel/v5.4.254/
 
-On Wed, Aug 16, 2023 at 10:25=E2=80=AFAM Christian K=C3=B6nig
-<christian.koenig@amd.com> wrote:
->
-> Am 16.08.23 um 15:41 schrieb Hamza Mahfooz:
-> >
-> > On 8/16/23 01:55, Christian K=C3=B6nig wrote:
-> >>
-> >>
-> >> Am 15.08.23 um 19:26 schrieb Hamza Mahfooz:
-> >>> fbcon requires that we implement &drm_framebuffer_funcs.dirty.
-> >>> Otherwise, the framebuffer might take a while to flush (which would
-> >>> manifest as noticeable lag). However, we can't enable this callback f=
-or
-> >>> non-fbcon cases since it might cause too many atomic commits to be ma=
-de
-> >>> at once. So, implement amdgpu_dirtyfb() and only enable it for fbcon
-> >>> framebuffers on devices that support atomic KMS.
-> >>>
-> >>> Cc: Aurabindo Pillai <aurabindo.pillai@amd.com>
-> >>> Cc: Mario Limonciello <mario.limonciello@amd.com>
-> >>> Cc: stable@vger.kernel.org # 6.1+
-> >>> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2519
-> >>> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-> >>> ---
-> >>> v2: update variable names
-> >>> ---
-> >>>   drivers/gpu/drm/amd/amdgpu/amdgpu_display.c | 26
-> >>> ++++++++++++++++++++-
-> >>>   1 file changed, 25 insertions(+), 1 deletion(-)
-> >>>
-> >>> diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> >>> b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> >>> index d20dd3f852fc..d3b59f99cb7c 100644
-> >>> --- a/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> >>> +++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_display.c
-> >>> @@ -38,6 +38,8 @@
-> >>>   #include <linux/pci.h>
-> >>>   #include <linux/pm_runtime.h>
-> >>>   #include <drm/drm_crtc_helper.h>
-> >>> +#include <drm/drm_damage_helper.h>
-> >>> +#include <drm/drm_drv.h>
-> >>>   #include <drm/drm_edid.h>
-> >>>   #include <drm/drm_fb_helper.h>
-> >>>   #include <drm/drm_gem_framebuffer_helper.h>
-> >>> @@ -532,11 +534,29 @@ bool amdgpu_display_ddc_probe(struct
-> >>> amdgpu_connector *amdgpu_connector,
-> >>>       return true;
-> >>>   }
-> >>> +static int amdgpu_dirtyfb(struct drm_framebuffer *fb, struct
-> >>> drm_file *file,
-> >>> +              unsigned int flags, unsigned int color,
-> >>> +              struct drm_clip_rect *clips, unsigned int num_clips)
-> >>> +{
-> >>> +
-> >>> +    if (strcmp(fb->comm, "[fbcon]"))
-> >>> +        return -ENOSYS;
-> >>
-> >> Once more to the v2 of this patch: Tests like those are a pretty big
-> >> NO-GO for upstreaming.
-> >
-> > On closer inspection it is actually sufficient to check if `file` is
-> > NULL here (since it means that the request isn't from userspace). So, d=
-o
-> > you think that would be palatable for upstream?
->
-> That's certainly better than doing a string compare, but I'm not sure if
-> that's sufficient.
->
-> In general drivers shouldn't have any special handling for fdcon.
->
-> You should probably have Thomas Zimmermann <tzimmermann@suse.de> take a
-> look at this.
->
-> Regards,
-> Christian.
->
-> >
-> >>
-> >> Regards,
-> >> Christian.
-> >>
-> >>> +
-> >>> +    return drm_atomic_helper_dirtyfb(fb, file, flags, color, clips,
-> >>> +                     num_clips);
-> >>> +}
-> >>> +
-> >>>   static const struct drm_framebuffer_funcs amdgpu_fb_funcs =3D {
-> >>>       .destroy =3D drm_gem_fb_destroy,
-> >>>       .create_handle =3D drm_gem_fb_create_handle,
-> >>>   };
-> >>> +static const struct drm_framebuffer_funcs amdgpu_fb_funcs_atomic =3D=
- {
-> >>> +    .destroy =3D drm_gem_fb_destroy,
-> >>> +    .create_handle =3D drm_gem_fb_create_handle,
-> >>> +    .dirty =3D amdgpu_dirtyfb
-> >>> +};
-> >>> +
-> >>>   uint32_t amdgpu_display_supported_domains(struct amdgpu_device *ade=
-v,
-> >>>                         uint64_t bo_flags)
-> >>>   {
-> >>> @@ -1139,7 +1159,11 @@ static int
-> >>> amdgpu_display_gem_fb_verify_and_init(struct drm_device *dev,
-> >>>       if (ret)
-> >>>           goto err;
-> >>> -    ret =3D drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_funcs);
-> >>> +    if (drm_drv_uses_atomic_modeset(dev))
-> >>> +        ret =3D drm_framebuffer_init(dev, &rfb->base,
-> >>> +                       &amdgpu_fb_funcs_atomic);
-> >>> +    else
-> >>> +        ret =3D drm_framebuffer_init(dev, &rfb->base, &amdgpu_fb_fun=
-cs);
-> >>>       if (ret)
-> >>>           goto err;
-> >>
->
+Tree: stable-rc
+Branch: linux-5.4.y
+Git Describe: v5.4.254
+Git Commit: fd2a1d1f32ea37c57a8b46a0857f06fd7274dd2c
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+    defconfig (gcc-10): 2 warnings
+    defconfig+arm64-chromebook (gcc-10): 2 warnings
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+
+mips:
+
+riscv:
+
+x86_64:
+    allnoconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 4 warnings
+    x86_64_defconfig (gcc-10): 4 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
+
+
+Warnings summary:
+
+    14   ld: warning: creating DT_TEXTREL in a PIE
+    8    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    8    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
+ to integer of different size [-Wpointer-to-int-cast]
+    6    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
+e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
+C_ALTERNATIVE.
+    4    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
+supported intra-function call
+    4    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
+supported intra-function call
+    4    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
+uffix given and no register operands; using default for `sysret'
+
+Section mismatches summary:
+
+    2    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
+mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
+function .init.text:vic_init_cascaded()
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
+ings, 0 section mismatches
+
+Warnings:
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
+nteger of different size [-Wpointer-to-int-cast]
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
+tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
+ion .init.text:vic_init_cascaded()
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
+ mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
+ given and no register operands; using default for `sysret'
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
+rted intra-function call
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+4 warnings, 0 section mismatches
+
+Warnings:
+    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
+rted intra-function call
+    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
+ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
+ERNATIVE.
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
