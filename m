@@ -2,68 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5F8D778591D
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 15:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B6ACA78594A
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 15:29:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235304AbjHWNZ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 09:25:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34946 "EHLO
+        id S236077AbjHWN3G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 09:29:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52592 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234330AbjHWNZ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 09:25:27 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C00A10DB;
-        Wed, 23 Aug 2023 06:25:03 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-68a5457b930so2182823b3a.2;
-        Wed, 23 Aug 2023 06:25:03 -0700 (PDT)
+        with ESMTP id S236000AbjHWN25 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 09:28:57 -0400
+Received: from mail-il1-x12f.google.com (mail-il1-x12f.google.com [IPv6:2607:f8b0:4864:20::12f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE92170F;
+        Wed, 23 Aug 2023 06:28:36 -0700 (PDT)
+Received: by mail-il1-x12f.google.com with SMTP id e9e14a558f8ab-34ca63f6a27so11312825ab.1;
+        Wed, 23 Aug 2023 06:28:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692797102; x=1693401902;
+        d=gmail.com; s=20221208; t=1692797287; x=1693402087;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jFIWzJPis1mfey+szFArc1kyDCfuN66o9aTmELpPLx8=;
-        b=gP2CurR6oOivsDl6kiCnuEgYpEqRe1FUSVuFn/lN21ABeWjAPuOxLc+GimaALzIh52
-         kVq6Cv8vfiMNwxfe7ef+y45PmFAPiqf5Qn74ZwSKHJiktHPGSbNcMmo7YgdNocTr8QIG
-         oGghtjRh5NYwYqgu7tuUem1txaIhJnh0U9dvTx3Y3Rknjd1lV3yV1+TKOVi6xllbX65/
-         +q5j+LjA0yVYMjoM+/wfo2iAl9c3gqw9B3MLsU8WNiuwNUxbkuNkDrbYwhBAC6IIOW7v
-         XtI+f1QtpV+9PwFVp9H3WMDdPUvued/fZ1vVF8kQBvZoO96n32wXCTjVKUoaeBEg6YDS
-         w05g==
+        bh=b1k7Fnb+QkSpaEkMrTKWq52o4HXWXKwP+S+nMyf/GHw=;
+        b=gzAKzbTbV8dOIOXlhh8uGXW9cIpX8TpD6AB4yVvOahUMcyAkJS7hiOePSaKyUcAAcs
+         mio8ENCnFmO/GgAUK5iq/MdVKNHQby/yLBw3LNIYnbRLrsluxFIMew+MLhOgNqc/VyuW
+         CMv7svmImwWGB/1NJZV28kxHac+fEJvVyUhVAEyIwrThD8UXluu4tL4aLTAIk2yObS8v
+         +7bZPEIR39G8yF+cIUXylMTFZJ8qc0AikgEt0iAg1lh5OxYmOWhF3tVeVo5K5Rw9vOlM
+         Ha3Pgfa1sKKmQItyYY9dESAxUziPEgrjvhr8GhgSOujL0marCWH9FknF5HEl+PK+3yLt
+         i0jQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692797102; x=1693401902;
+        d=1e100.net; s=20221208; t=1692797287; x=1693402087;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=jFIWzJPis1mfey+szFArc1kyDCfuN66o9aTmELpPLx8=;
-        b=MbyihtWXyNH00jjqqLVjvElsvTC1kZevBxFIiEQxL5+zV3RHtldYeIvCnPS/Ar62lU
-         tOlkMMP592LbL0eiPX954Jqh4K4piDMYmdO1jARUA7URuhh9rSHVUa4+T9ujpSyjKbdD
-         8pja5bZ73Y/Y+G/JNaEmnyaS7a1kVpYQoHc5lvpM1/Nj4JBL6nIbPwmmZ0wQ+BZWAyDG
-         S4aO9Wzoln9o2kKIQAl0suKT1fBrRAtRUHSWkwC1jn+58dg5zyOOUJ1AwsfYb91IQcLE
-         FQeAiCeMoCn9TCNOhzonu4EHp6kH5U/DNFoxynqOZvQqlsxtkTCHkPPtbLT2pzBu/FWS
-         FO4w==
-X-Gm-Message-State: AOJu0YyRxu2VLoQm2EfNIwqTd5+CS+FXMzPAElS1eYgqAl5dELIwJALj
-        9MStwiGSbD1G3nbuqQczJP551suiLvM=
-X-Google-Smtp-Source: AGHT+IFtT56ctITF2oXrv0/w1V2zUxggd05/jJW4eV5No+LgFqJcm5qo2/RU+ROhh4qqY9Q2b4bTjw==
-X-Received: by 2002:a05:6a00:1501:b0:66a:2ff1:dee2 with SMTP id q1-20020a056a00150100b0066a2ff1dee2mr11415588pfu.10.1692797102175;
-        Wed, 23 Aug 2023 06:25:02 -0700 (PDT)
+        bh=b1k7Fnb+QkSpaEkMrTKWq52o4HXWXKwP+S+nMyf/GHw=;
+        b=UZymoAP+KJ4GnrDYy+jGYiTaxX7NturdEANQB/dM5c2RqqEPEHiACxbrGLslzAcxDu
+         UDBA622kA5zf+3k+B5nuBmEf35V3BBqNFZJma/SO2xuNib5obVm/qYw9kh2vn7Hh8VnK
+         0hHs3Nhvyp6hdBBW2zOoTXx1Vnn9Q8qJuKGvpDp9E9eNjZ7EKh+7WJtc+Im5fQcPu+EC
+         9aJyidj15ulSD1yWmiZdMCl1MlZ5n2pHm1IgH/qB+7y9Q1uB/Sz+m3uZLM/en2oEZt3u
+         X6N2LaZBNejaQowxhdiANnv+qypnsbH/gN5UkOgrYMBjuGy9ltYu1D4HAIDnFkZ4ApVd
+         0cWg==
+X-Gm-Message-State: AOJu0Yy3AmjV2Ac6+c+8528olh1WoR7LQ7mMuixnVi7EBdhWu8pm3nzy
+        S9yDZgIkynXU0sIRYRCcPpfZu9aqjaA=
+X-Google-Smtp-Source: AGHT+IG0ENLXwnyM65ixhgaL9IR4YqAghb/lD07OIOdsWY7rDdauhYn3KJbcJB5ldSNReZWiQQ433g==
+X-Received: by 2002:a05:6e02:1a0b:b0:348:d78d:a1a2 with SMTP id s11-20020a056e021a0b00b00348d78da1a2mr3192080ild.21.1692797286832;
+        Wed, 23 Aug 2023 06:28:06 -0700 (PDT)
 Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 7-20020aa79207000000b00689f8dc26bdsm4117042pfo.109.2023.08.23.06.25.01
+        by smtp.gmail.com with ESMTPSA id i25-20020a633c59000000b00564aee22f33sm9690768pgn.14.2023.08.23.06.28.06
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Aug 2023 06:25:01 -0700 (PDT)
+        Wed, 23 Aug 2023 06:28:06 -0700 (PDT)
 Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Wed, 23 Aug 2023 06:25:00 -0700
+Date:   Wed, 23 Aug 2023 06:28:05 -0700
 From:   Guenter Roeck <linux@roeck-us.net>
-To:     Badhri Jagan Sridharan <badhri@google.com>
-Cc:     gregkh@linuxfoundation.org, heikki.krogerus@linux.intel.com,
-        kyletso@google.com, linux-usb@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH v1] tcpm: Avoid soft reset when partner does not support
- get_status
-Message-ID: <77194753-902e-4ef5-82c7-8b2428a59aec@roeck-us.net>
-References: <20230820044449.1005889-1-badhri@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+Message-ID: <a47e9615-aabf-4cc4-a479-430c309c3c8a@roeck-us.net>
+References: <20230821194122.695845670@linuxfoundation.org>
+ <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
+ <2023082309-veggie-unwoven-a7df@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230820044449.1005889-1-badhri@google.com>
+In-Reply-To: <2023082309-veggie-unwoven-a7df@gregkh>
 X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
         FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
@@ -75,64 +79,15 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Aug 20, 2023 at 04:44:48AM +0000, Badhri Jagan Sridharan wrote:
-> When partner does not support get_status message, tcpm right now
-> responds with soft reset message. This causes PD renegotiation to
-> happen and resets PPS link. Avoid soft resetting the link when
-> partner does not support get_status message to mitigate PPS resets.
+On Wed, Aug 23, 2023 at 09:03:49AM +0200, Greg Kroah-Hartman wrote:
 > 
-> [  208.926752] Setting voltage/current limit 9500 mV 2450 mA
-> [  208.930407] set_auto_vbus_discharge_threshold mode:3 pps_active:y vbus:9500 ret:0
-> [  208.930418] state change SNK_TRANSITION_SINK -> SNK_READY [rev3 POWER_NEGOTIATION]
-> [  208.930455] AMS POWER_NEGOTIATION finished
+> > For x86 I get the same runtime warning as everyone else.
 > 
-> // ALERT message from the Source
-> [  213.948442] PD RX, header: 0x19a6 [1]
-> [  213.948451] state change SNK_READY -> GET_STATUS_SEND [rev3 GETTING_SOURCE_SINK_STATUS]
-> [  213.948457] PD TX, header: 0x492
-> [  213.950402] PD TX complete, status: 0
-> [  213.950427] pending state change GET_STATUS_SEND -> GET_STATUS_SEND_TIMEOUT @ 60 ms [rev3 GETTING_SOURCE_SINK_STATUS]
+> Yeah, this is troubling...
 > 
-> // NOT_SUPPORTED from the Source
-> [  213.959954] PD RX, header: 0xbb0 [1]
+> Is it clang only?  I'll dig into this today...
 > 
-> // sink sends SOFT_RESET
-> [  213.959958] state change GET_STATUS_SEND -> SNK_SOFT_RESET [rev3 GETTING_SOURCE_SINK_STATUS]
-> [  213.959962] AMS GETTING_SOURCE_SINK_STATUS finished
-> [  213.959964] AMS SOFT_RESET_AMS start
-> [  213.959966] state change SNK_SOFT_RESET -> AMS_START [rev3 SOFT_RESET_AMS]
-> [  213.959969] state change AMS_START -> SOFT_RESET_SEND [rev3 SOFT_RESET_AMS]
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 8dea75e11380 ("usb: typec: tcpm: Protocol Error handling")
-> Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
 
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+No, I build with gcc. More specifically, gcc 11.4.0 and binutils 2.40.
 
-> ---
->  drivers/usb/typec/tcpm/tcpm.c | 7 +++++++
->  1 file changed, 7 insertions(+)
-> 
-> diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-> index 5639b9a1e0bf..280ce1bd7b53 100644
-> --- a/drivers/usb/typec/tcpm/tcpm.c
-> +++ b/drivers/usb/typec/tcpm/tcpm.c
-> @@ -2753,6 +2753,13 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
->  			port->sink_cap_done = true;
->  			tcpm_set_state(port, ready_state(port), 0);
->  			break;
-> +		/*
-> +		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
-> +		 * prevent redundant power re-negotiation
-> +		 */
-> +		case GET_STATUS_SEND:
-> +			tcpm_set_state(port, ready_state(port), 0);
-> +			break;
->  		case SRC_READY:
->  		case SNK_READY:
->  			if (port->vdm_state > VDM_STATE_READY) {
-> 
-> base-commit: bbb9e06d2c6435af9c62074ad7048910eeb2e7bc
-> -- 
-> 2.42.0.rc1.204.g551eb34607-goog
-> 
+Guenter
