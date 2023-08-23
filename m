@@ -2,124 +2,127 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 61201785AE9
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 16:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77DA1785B21
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 16:52:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236569AbjHWOiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 10:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41114 "EHLO
+        id S235178AbjHWOw1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 10:52:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236573AbjHWOiV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 10:38:21 -0400
-Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05CEAE67;
-        Wed, 23 Aug 2023 07:38:12 -0700 (PDT)
-Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b9b904bb04so89629091fa.1;
-        Wed, 23 Aug 2023 07:38:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692801490; x=1693406290;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=f1+ZllnE3NbofBa3yUXNVhhtAoB7pOoNIr9xPlAL2nQ=;
-        b=F9Zz1Q+FMq1u5azSJ78JrOh/du6sYU23KN/am58NG3uX8jVDJvqJjviC+cKhkemZCO
-         1M83BojLnh/YGm/VTde+j+ZwzKgYbthMKufFSf8gbcMCYplecIOyKrII4aYMDwPMoY+4
-         r2SAukydHxtAnGhBSDAreBzt6odrH9XKeWLqna4we1ja3ij1+aoOtnQoEKiKopD5JOn+
-         ZIsU9kQgL7OaOfb2VEOWOonR+5BQvKnQYmjTQK8hUQnYJm6j4FoithtSzTOxrkgUrhP6
-         fEH+ZAWjTzXZgu9VANl5mE8Tg7i1AotWQvfCh0oD8QHTh3AJOdRU/bBifC3W7wvgAyVG
-         rDVA==
+        with ESMTP id S236697AbjHWOw1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 10:52:27 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E02C7E6C
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 07:51:47 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692802307;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=Ui6+MdQPBHClMUzt17Gxb4m37Amorx/TKujWGiY52KY=;
+        b=blhen4WNWI9yf9U4FAra/gvRsZZT9eTnzlIK214su0rKtdvGJp59gGFLVwcepjm5tGfz/c
+        Cj0EcMf1JCByjXv+GyWu+fjq2r690QNKA6QQwwo4uu5lROCz+tiLBGBeipCWwp0EQRMknp
+        VXkP/h+3admA+WNYbvKlUKuebXdCecQ=
+Received: from mail-wm1-f72.google.com (mail-wm1-f72.google.com
+ [209.85.128.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-644-pLXLSRWjPI6ye7cPlC5tjw-1; Wed, 23 Aug 2023 10:51:45 -0400
+X-MC-Unique: pLXLSRWjPI6ye7cPlC5tjw-1
+Received: by mail-wm1-f72.google.com with SMTP id 5b1f17b1804b1-3fe1cdf2024so36395365e9.3
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 07:51:45 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692801490; x=1693406290;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=f1+ZllnE3NbofBa3yUXNVhhtAoB7pOoNIr9xPlAL2nQ=;
-        b=kvQV8Fpu2659yHDSJKcBmJ2po6qiyyeOPgYkCQxBiMQTHDoUzL7ZTqBWO42e5JI9TG
-         TQTqMuz1jNgR6sORoM5h9+Ss3t/ePNl/102j/jYQID5cVwJa3+RnhX1fJ5G0M2BLy861
-         TJ1W7HqX2lOZxn1y2Z22M7f9zmnDvVNuUEc70CyZO45FPixwJADNJp3r/i6sFu1oO2Sj
-         aG63epo3ktkp43Yiek4YM668Xl5ipLR4GHQlTzgnuKSCUlGaCIB+LvIKj3apZPdh1X51
-         S0nV1pC9nDwpfASUG7M5zLPSmtsHnoVhG6Yl5wnGwmqArskYZIKE38/8S829LTPAOanc
-         Q7bA==
-X-Gm-Message-State: AOJu0YwHNnArpRKNEZWw9c+fxbvL4tXszCS4q0tY0IRVgFeJfLQM7rdZ
-        ZLTBPM1p6KttdIokMbtGVrJdcDIV9J3kABvBsCQ=
-X-Google-Smtp-Source: AGHT+IHpt8TANhM2/9N/N8ppybLLJeWThUz4SEZ2Rh9Ro03P5XDBnf0PiL904TERN7Cywz4PqqO/arp4oPjTXdlgXGc=
-X-Received: by 2002:a2e:9649:0:b0:2bc:c28c:a2b8 with SMTP id
- z9-20020a2e9649000000b002bcc28ca2b8mr5711315ljh.27.1692801489970; Wed, 23 Aug
- 2023 07:38:09 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1692802304; x=1693407104;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Ui6+MdQPBHClMUzt17Gxb4m37Amorx/TKujWGiY52KY=;
+        b=TuxxCO5pcOzcBnG92P8yhRMuzv2YXiuyLgv6tKv9lVoXvLZ8B5tXQHBnzMvy/gpQkn
+         X6KsYMzmzy9Pz8V9ludcG22WCDZZHcmRsS6u9Cf1sF/F+2jctMIOuJFEdOKmuNDcY+hQ
+         NWEPyLCvnCX9h5Ao4xvF7riahoGyy93u/HFi5hxsiVIxH2a7BOHFnf5wmI1nY9LCEZfR
+         pmyTWfRwxID/1VqULQxiLRFsNUuxe9suLluQsw0PDnsO9i+OWwtJmkSlhTCAQ5kbKB6J
+         qyufzNYFNtJBHwpjGPH5/yMMkZTomDuXQi5CDlXUQ1qLo3JjnETpZuWEOkksDHpOkZXk
+         JFDw==
+X-Gm-Message-State: AOJu0YyMJpASUfEnvA1iPVjjmwa4M98r26NC9GRxbjSCn9ZLVzVah8RX
+        rI9Y8Q9Nzy59Tezgx8nacapv7dZXP57Sz+COqO3TOJ+EKgYUu/nCwYiIZys6V5mSUGEcYRUdY6t
+        hzkUlH40JYwGm6Q3m
+X-Received: by 2002:a7b:c84d:0:b0:3fe:e8b4:436f with SMTP id c13-20020a7bc84d000000b003fee8b4436fmr8627002wml.14.1692802304777;
+        Wed, 23 Aug 2023 07:51:44 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEnVRBi8PK6/x0AzFBEPxF4kWcVG572OSwM5kYFDDA4dIEo8xQwVJCkjQc8s2Db/MeOg5WnoA==
+X-Received: by 2002:a7b:c84d:0:b0:3fe:e8b4:436f with SMTP id c13-20020a7bc84d000000b003fee8b4436fmr8626984wml.14.1692802304433;
+        Wed, 23 Aug 2023 07:51:44 -0700 (PDT)
+Received: from debian (2a01cb058d23d6007d3729c79874bf87.ipv6.abo.wanadoo.fr. [2a01:cb05:8d23:d600:7d37:29c7:9874:bf87])
+        by smtp.gmail.com with ESMTPSA id l20-20020a7bc454000000b003feee8d8011sm11525804wmi.41.2023.08.23.07.51.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Aug 2023 07:51:43 -0700 (PDT)
+Date:   Wed, 23 Aug 2023 16:51:41 +0200
+From:   Guillaume Nault <gnault@redhat.com>
+To:     Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc:     "David S . Miller" <davem@davemloft.net>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Alexei Starovoitov <ast@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        stable@vger.kernel.org, Siwar Zitouni <siwar.zitouni@6wind.com>
+Subject: Re: [PATCH net v3] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+Message-ID: <ZOYc/Uhb0RSUvi47@debian>
+References: <20230823134102.1848881-1-nicolas.dichtel@6wind.com>
 MIME-Version: 1.0
-References: <20230821194122.695845670@linuxfoundation.org> <ZOXJVamgYV1Mb+7S@debian>
- <2023082303-musky-plastic-335f@gregkh>
-In-Reply-To: <2023082303-musky-plastic-335f@gregkh>
-From:   Sudip Mukherjee <sudipm.mukherjee@gmail.com>
-Date:   Wed, 23 Aug 2023 15:37:33 +0100
-Message-ID: <CADVatmMDcbkeo3DLog8TRQ2BNbgN=DzK6=OgfB-eL-Ruchu_jQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230823134102.1848881-1-nicolas.dichtel@6wind.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 23 Aug 2023 at 10:26, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> On Wed, Aug 23, 2023 at 09:54:45AM +0100, Sudip Mukherjee (Codethink) wrote:
-> > Hi Greg,
-> >
-> > On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.1.47 release.
-> > > There are 194 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > >
-> > > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> > > Anything received after that time might be too late.
-> >
-> > Build test (gcc version 12.3.1 20230625):
-> > mips: 52 configs -> no failure
-> > arm: 100 configs -> no failure
-> > arm64: 3 configs -> no failure
-> > x86_64: 4 configs -> no failure
-> > alpha allmodconfig -> no failure
-> > csky allmodconfig -> no failure
-> > powerpc allmodconfig -> no failure
-> > riscv allmodconfig -> no failure
-> > s390 allmodconfig -> no failure
-> > xtensa allmodconfig -> no failure
-> >
-> > Boot test:
-> > x86_64: Booted on my test laptop. Warning on boot, already reported by others.
-> > x86_64: Booted on qemu. Warning on boot, already reported by others. [1]
-> > arm64: Booted on rpi4b (4GB model). No regression. [2]
-> > mips: Booted on ci20 board. No regression. [3]
-> >
-> > [1]. https://openqa.qa.codethink.co.uk/tests/4765
-> > [2]. https://openqa.qa.codethink.co.uk/tests/4773
-> > [3]. https://openqa.qa.codethink.co.uk/tests/4772
-> >
-> > Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-> >
-> > --
-> > Regards
-> > Sudip
->
-> One question about the warning on boot, all still works afterward,
-> right?  Or does the system not work?
+On Wed, Aug 23, 2023 at 03:41:02PM +0200, Nicolas Dichtel wrote:
+> The goal is to support a bpf_redirect() from an ethernet device (ingress)
+> to a ppp device (egress).
+> The l2 header is added automatically by the ppp driver, thus the ethernet
+> header should be removed.
 
-I did not notice any problem in testing after boot. Only the warning.
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
 
+> CC: stable@vger.kernel.org
+> Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+> Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
+> ---
+> 
+> v2 -> v3:
+>  - add a comment in the code
+>  - rework the commit log
+> 
+> v1 -> v2:
+>  - I forgot the 'Tested-by' tag in the v1 :/
+> 
+>  include/linux/if_arp.h | 4 ++++
+>  1 file changed, 4 insertions(+)
+> 
+> diff --git a/include/linux/if_arp.h b/include/linux/if_arp.h
+> index 1ed52441972f..10a1e81434cb 100644
+> --- a/include/linux/if_arp.h
+> +++ b/include/linux/if_arp.h
+> @@ -53,6 +53,10 @@ static inline bool dev_is_mac_header_xmit(const struct net_device *dev)
+>  	case ARPHRD_NONE:
+>  	case ARPHRD_RAWIP:
+>  	case ARPHRD_PIMREG:
+> +	/* PPP adds its l2 header automatically in ppp_start_xmit().
+> +	 * This makes it look like an l3 device to __bpf_redirect() and tcf_mirred_init().
+> +	 */
+> +	case ARPHRD_PPP:
+>  		return false;
+>  	default:
+>  		return true;
+> -- 
+> 2.39.2
+> 
 
--- 
-Regards
-Sudip
