@@ -2,129 +2,232 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A4A1785ED0
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 19:40:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FA72785EE1
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 19:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237878AbjHWRkW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 13:40:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
+        id S236223AbjHWRlx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 13:41:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237856AbjHWRkW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 13:40:22 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D52EE77;
-        Wed, 23 Aug 2023 10:40:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DFD165409;
-        Wed, 23 Aug 2023 17:40:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F1AC433C8;
-        Wed, 23 Aug 2023 17:40:16 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692812419;
-        bh=wYPeUBIR8U5c0sY0KlBDc33ytZlaiav6dZ/libZukws=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=vD5UN8kbnq7CzAYumPHUyk0rhZ1XntR/UQu/+v+EuvPL3+gou6yWnV2DYIsGYvSXl
-         GsejHONZE4EHIv3QZLgDcb21Z1/Sw8EyFX2XS5BEpDzNcDb/BZeI7vfHwDMRWqIwrB
-         Gfq+b7yQ4oP4jL8clB6k9lLL8IeMv066/t9LKvfhKhT9P5kkE26mVqvFSiMqri5Bln
-         AWA4XH6GNV5xKzVt0ycW3YQ6X+5L4q57BmZt/quBwWGTVoUNuKjbPdteI7yuUCHxTg
-         ZCxAGyDyD/kEyS0OXhRv7ihAyT7MlbgKl1Dul1UIP3rKFPmstpwNo8UY0cofkOgxrR
-         0oCV7QwPNBK+Q==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Wed, 23 Aug 2023 20:40:15 +0300
-Message-Id: <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
-Cc:     <linux-integrity@vger.kernel.org>,
-        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
-        "Todd Brandt" <todd.e.brandt@intel.com>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>,
-        "Mario Limonciello" <mario.limonciello@amd.com>,
-        <linux-kernel@vger.kernel.org>, "Patrick Steinhardt" <ps@pks.im>,
-        "Ronan Pigott" <ronan@rjp.ie>,
-        "Raymond Jay Golo" <rjgolo@gmail.com>
-Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Paul Menzel" <pmenzel@molgen.mpg.de>
-X-Mailer: aerc 0.14.0
-References: <20230822231510.2263255-1-jarkko@kernel.org>
- <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
-In-Reply-To: <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+        with ESMTP id S234366AbjHWRlw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 13:41:52 -0400
+Received: from mail-qk1-x733.google.com (mail-qk1-x733.google.com [IPv6:2607:f8b0:4864:20::733])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD9C170C
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 10:41:44 -0700 (PDT)
+Received: by mail-qk1-x733.google.com with SMTP id af79cd13be357-76dbd877cd9so68016085a.0
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 10:41:44 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1692812504; x=1693417304;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=LC8K7Zo5Yoep5L4Vza1MxS3+pDLFt90cGnt8c4fzq10=;
+        b=XWck+c/7bHleK3gsrqMcOEIXt/w2hvtSHEeVubKC7x6lWa8PJHrgAjubQFR3csMQ80
+         0DqyQeGdd09TmMbB7F6nz19mGkJuQrDNAVSjG0l5SE+FFc/RNWp98wjRoyh2HfwN6r+d
+         1msWnsM50jEFIaCJQIdE8BY2D9BDPigxwafTs=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692812504; x=1693417304;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=LC8K7Zo5Yoep5L4Vza1MxS3+pDLFt90cGnt8c4fzq10=;
+        b=P9nrgfRaOPX/QCOaZs7RkF/MUzU9JkWrRFtJSeCGvME3ZZirsqbjilqOOQvmGUjN7r
+         m8PWvcHYr6GxIiNyKwVfOpyMBXVFiTK82hCUxpTXcRShysQdCdFtcMP0Pk261lRJ9yoj
+         tgAlvas2yXXoKZhnqXOuKOisxhnNUcfyMD1mq2ZsnSDZimNUm0O6qR6JTmIJ8aO/IJQ/
+         1O4Koshpdl/AdqY7aa5nNRpUTcX3u2BdrXwlKuyN6jTflC/PUCT6fHbSKRO6OiGDJ0t5
+         AEXfciCIzWPD8nhlCs2mODgDX2DdevkuYSuKlH19UcSJEGah4YdoEPgz1719BxhsFl8K
+         1Gug==
+X-Gm-Message-State: AOJu0Yxgj0CzJAbyyC32rE6hE4XxJDlROtHTWfVKmh6MAnqPP+lFLXNE
+        esngAK3KLSJk+YF69vROTIM/mw==
+X-Google-Smtp-Source: AGHT+IE4G7DcP/ZKzpAetu3BmuHK3JUhWkuBndpmZRLLtP6S2DUuoWp3zw4r7o5ir5HH3JjOmCwCSg==
+X-Received: by 2002:a05:620a:4042:b0:76c:ea00:e5d7 with SMTP id i2-20020a05620a404200b0076cea00e5d7mr16606914qko.12.1692812504023;
+        Wed, 23 Aug 2023 10:41:44 -0700 (PDT)
+Received: from trappist.c.googlers.com.com (129.239.188.35.bc.googleusercontent.com. [35.188.239.129])
+        by smtp.gmail.com with ESMTPSA id g23-20020a37e217000000b00767dba7a4d3sm4069919qki.109.2023.08.23.10.41.43
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 23 Aug 2023 10:41:43 -0700 (PDT)
+From:   Sven van Ashbrook <svenva@chromium.org>
+To:     LKML <linux-kernel@vger.kernel.org>, ulf.hansson@linaro.org,
+        adrian.hunter@intel.com
+Cc:     jason.lai@genesyslogic.com.tw, skardach@google.com,
+        Renius Chen <reniuschengl@gmail.com>,
+        linux-mmc@vger.kernel.org, greg.tu@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, SeanHY.chen@genesyslogic.com.tw,
+        ben.chuang@genesyslogic.com.tw, victor.shih@genesyslogic.com.tw,
+        stable@vger.kernel.org, Sven van Ashbrook <svenva@chromium.org>
+Subject: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix SoCs can suspend
+Date:   Wed, 23 Aug 2023 17:41:34 +0000
+Message-ID: <20230823174134.v2.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
-> Dear Jarkko,
->
->
-> Thank you for your patch.
->
->
-> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
-> > The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG f=
-or
-> > all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On t=
-he
-> > reported systems the TPM doesn't reply at bootup and returns back the
-> > command code. This makes the TPM fail probe.
-> >=20
-> > Since only Microsoft Pluton is the only known combination of AMD CPU an=
-d
-> > fTPM from other vendor, disable hwrng otherwise. In order to make sysad=
-min
-> > aware of this, print also info message to the klog.
-> >=20
-> > Cc: stable@vger.kernel.org
-> > Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> > Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->
-> Mario=E2=80=99s patch also had the three reporters below listed:
->
-> Reported-by: Patrick Steinhardt <ps@pks.im>
-> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+To improve the r/w performance of GL9763E, the current driver inhibits LPM
+negotiation while the device is active.
 
-The problem here is that checkpatch throws three warnings:
+This prevents a large number of SoCs from suspending, notably x86 systems
+which use S0ix as the suspend mechanism:
+1. Userspace initiates s2idle suspend (e.g. via writing to
+   /sys/power/state)
+2. This switches the runtime_pm device state to active, which disables
+   LPM negotiation, then calls the "regular" suspend callback
+3. With LPM negotiation disabled, the bus cannot enter low-power state
+4. On a large number of SoCs, if the bus not in a low-power state, S0ix
+   cannot be entered, which in turn prevents the SoC from entering
+   suspend.
 
-WARNING: Reported-by: should be immediately followed by Closes: with a URL =
-to the report
-#19:
-Reported-by: Patrick Steinhardt <ps@pks.im>
-Reported-by: Ronan Pigott <ronan@rjp.ie>
+Fix by re-enabling LPM negotiation in the device's suspend callback.
 
-WARNING: Reported-by: should be immediately followed by Closes: with a URL =
-to the report
-#20:
-Reported-by: Ronan Pigott <ronan@rjp.ie>
-Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+Suggested-by: Stanislaw Kardach <skardach@google.com>
+Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sven van Ashbrook <svenva@chromium.org>
+     # on gladios device
+     # on 15590.0.0 with v5.10 and upstream (v6.4) kernels
 
-WARNING: Reported-by: should be immediately followed by Closes: with a URL =
-to the report
-#21:
-Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+---
 
-Since bugzilla is not part of the documented process afaik, I used this
-field as the guideline:
+Changes in v2:
+- improved symmetry and error path in s2idle suspend callback (internal review)
 
-Reported:	2023-08-17 20:59 UTC by Todd Brandt
+ drivers/mmc/host/sdhci-pci-gli.c | 102 +++++++++++++++++++------------
+ 1 file changed, 64 insertions(+), 38 deletions(-)
 
-How otherwise I should interpret kernel bugzilla?
+diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+index 1792665c9494a..19f577cc8bceb 100644
+--- a/drivers/mmc/host/sdhci-pci-gli.c
++++ b/drivers/mmc/host/sdhci-pci-gli.c
+@@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+ 	return value;
+ }
+ 
+-#ifdef CONFIG_PM_SLEEP
+-static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+-{
+-	struct sdhci_pci_slot *slot = chip->slots[0];
+-
+-	pci_free_irq_vectors(slot->chip->pdev);
+-	gli_pcie_enable_msi(slot);
+-
+-	return sdhci_pci_resume_host(chip);
+-}
+-
+-static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
+-{
+-	struct sdhci_pci_slot *slot = chip->slots[0];
+-	int ret;
+-
+-	ret = sdhci_pci_gli_resume(chip);
+-	if (ret)
+-		return ret;
+-
+-	return cqhci_resume(slot->host->mmc);
+-}
+-
+-static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
+-{
+-	struct sdhci_pci_slot *slot = chip->slots[0];
+-	int ret;
+-
+-	ret = cqhci_suspend(slot->host->mmc);
+-	if (ret)
+-		return ret;
+-
+-	return sdhci_suspend_host(slot->host);
+-}
+-#endif
+-
+ static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
+ 					  struct mmc_ios *ios)
+ {
+@@ -1029,6 +993,68 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
+ }
+ #endif
+ 
++#ifdef CONFIG_PM_SLEEP
++static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
++{
++	struct sdhci_pci_slot *slot = chip->slots[0];
++
++	pci_free_irq_vectors(slot->chip->pdev);
++	gli_pcie_enable_msi(slot);
++
++	return sdhci_pci_resume_host(chip);
++}
++
++static int gl9763e_resume(struct sdhci_pci_chip *chip)
++{
++	struct sdhci_pci_slot *slot = chip->slots[0];
++	int ret;
++
++	ret = sdhci_pci_gli_resume(chip);
++	if (ret)
++		return ret;
++
++	ret = cqhci_resume(slot->host->mmc);
++	if (ret)
++		return ret;
++
++	/* Disable LPM negotiation to bring device back in sync
++	 * with its runtime_pm state.
++	 */
++	gl9763e_set_low_power_negotiation(slot, false);
++
++	return 0;
++}
++
++static int gl9763e_suspend(struct sdhci_pci_chip *chip)
++{
++	struct sdhci_pci_slot *slot = chip->slots[0];
++	int ret;
++
++	/* Certain SoCs can suspend only with the bus in low-
++	 * power state, notably x86 SoCs when using S0ix.
++	 * Re-enable LPM negotiation to allow entering L1 state
++	 * and entering system suspend.
++	 */
++	gl9763e_set_low_power_negotiation(slot, true);
++
++	ret = cqhci_suspend(slot->host->mmc);
++	if (ret)
++		goto err_suspend;
++
++	ret = sdhci_suspend_host(slot->host);
++	if (ret)
++		goto err_suspend_host;
++
++	return 0;
++
++err_suspend_host:
++	cqhci_resume(slot->host->mmc);
++err_suspend:
++	gl9763e_set_low_power_negotiation(slot, false);
++	return ret;
++}
++#endif
++
+ static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
+ {
+ 	struct pci_dev *pdev = slot->chip->pdev;
+@@ -1113,8 +1139,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
+ 	.probe_slot	= gli_probe_slot_gl9763e,
+ 	.ops            = &sdhci_gl9763e_ops,
+ #ifdef CONFIG_PM_SLEEP
+-	.resume		= sdhci_cqhci_gli_resume,
+-	.suspend	= sdhci_cqhci_gli_suspend,
++	.resume		= gl9763e_resume,
++	.suspend	= gl9763e_suspend,
+ #endif
+ #ifdef CONFIG_PM
+ 	.runtime_suspend = gl9763e_runtime_suspend,
+-- 
+2.42.0.rc1.204.g551eb34607-goog
 
-In any case new version is still needed as the commit message must=20
-contain a mention of "Lenovo Legion Y540" as the stimulus for doing
-this code change in the first place.
-
-BR, Jarkko
