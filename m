@@ -2,271 +2,129 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3603785EB1
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 19:34:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A4A1785ED0
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 19:40:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237844AbjHWReq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 13:34:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42964 "EHLO
+        id S237878AbjHWRkW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 13:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237843AbjHWRep (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 13:34:45 -0400
-Received: from mail-pl1-x629.google.com (mail-pl1-x629.google.com [IPv6:2607:f8b0:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56893E7E
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 10:34:43 -0700 (PDT)
-Received: by mail-pl1-x629.google.com with SMTP id d9443c01a7336-1c06f6f98c0so26759315ad.3
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 10:34:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692812082; x=1693416882;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=gI8XHl3n7JZ17gv5aIQQsTkpCoUYSytUtTtUULb1Qs4=;
-        b=WZDhn8zNJKxrcqDn5K5BbLtPSbzIb1mtFOCC9G0VWk/z3LPhIcch8u+dtSdIXdW6qL
-         BWl+UwIv28w0HAT6qQikCmMQsWW4b1ojaAyBa/tqZMKb66HeDWXv3IBvHNCM+HJePwI5
-         0iRODBq6dEy0njiwJqzZJ1mJp5EJR3AueGF/8hAjxuNPSWi05+M3NRvuvzdFesOcLt0d
-         KIZ1XgJH5eMkS8SXOIF+6U/o7uX7/9mnWHLDKdlFA34ZgIF48VZatmPliA05bRn5l5/h
-         ZSnI0oHk1oQUoTfCEtNMFUIcyTVRc+Hn1FjqGqcNorMgOFVxcFJDC2zBMr9Eog2fvA5V
-         rwPA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692812082; x=1693416882;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=gI8XHl3n7JZ17gv5aIQQsTkpCoUYSytUtTtUULb1Qs4=;
-        b=hqHB2UxyVaem3VxUTW0oyeI/SUKwBnBvmQNNTBn1HLdYLLw6KRNDS5tkHecJOjYgUp
-         1reAzkH6zX974GYtLPCi/l6y9JTCfk+TmBQBsfKT76xLz2pP/uT8e/UJqXaN2ElGNmwu
-         sw+HiTBDStgL1NT2+ReVj7agjAmexSCG6sE2uIR52xz254sYsKSgDmauwIVuvmHKD0oO
-         N44vHlKlA/TWgavcKviZzwdqAyA1muPSJc5f+I0dekdeetnX1fYM9XBM6J6rDsGSuziK
-         CNytNnx8EoCmuqkMOre4TKmJSuHuyvU58bHUKn2yZYYxEWv49jya2h028eElxwO91MMu
-         4fnw==
-X-Gm-Message-State: AOJu0YyTfwP9P/lvky5qbAh0pKZ+kziOsDTXwLM3GSJ9gQ94PcU/HeC5
-        xO/FBksDvZcm5tXN7QzZP0wkKm29++ugWQV7elM=
-X-Google-Smtp-Source: AGHT+IHo+kKZGY56Wv5xesIn4l6C3VwYgLTJsVbLAmfS65HBK7FzVzh9HWt+W/JDNkpwC03SvZUgDA==
-X-Received: by 2002:a17:903:2344:b0:1bc:8394:daf with SMTP id c4-20020a170903234400b001bc83940dafmr17292463plh.19.1692812081455;
-        Wed, 23 Aug 2023 10:34:41 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id p12-20020a170902eacc00b001bdc6e13665sm11234340pld.275.2023.08.23.10.34.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 23 Aug 2023 10:34:40 -0700 (PDT)
-Message-ID: <64e64330.170a0220.add5f.5af0@mx.google.com>
-Date:   Wed, 23 Aug 2023 10:34:40 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
+        with ESMTP id S237856AbjHWRkW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 13:40:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D52EE77;
+        Wed, 23 Aug 2023 10:40:20 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2DFD165409;
+        Wed, 23 Aug 2023 17:40:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18F1AC433C8;
+        Wed, 23 Aug 2023 17:40:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692812419;
+        bh=wYPeUBIR8U5c0sY0KlBDc33ytZlaiav6dZ/libZukws=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=vD5UN8kbnq7CzAYumPHUyk0rhZ1XntR/UQu/+v+EuvPL3+gou6yWnV2DYIsGYvSXl
+         GsejHONZE4EHIv3QZLgDcb21Z1/Sw8EyFX2XS5BEpDzNcDb/BZeI7vfHwDMRWqIwrB
+         Gfq+b7yQ4oP4jL8clB6k9lLL8IeMv066/t9LKvfhKhT9P5kkE26mVqvFSiMqri5Bln
+         AWA4XH6GNV5xKzVt0ycW3YQ6X+5L4q57BmZt/quBwWGTVoUNuKjbPdteI7yuUCHxTg
+         ZCxAGyDyD/kEyS0OXhRv7ihAyT7MlbgKl1Dul1UIP3rKFPmstpwNo8UY0cofkOgxrR
+         0oCV7QwPNBK+Q==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.323
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Branch: linux-4.14.y
-Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.323)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE,URIBL_BLOCKED
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Date:   Wed, 23 Aug 2023 20:40:15 +0300
+Message-Id: <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
+Cc:     <linux-integrity@vger.kernel.org>,
+        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
+        "Todd Brandt" <todd.e.brandt@intel.com>,
+        "Peter Huewe" <peterhuewe@gmx.de>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>,
+        "Mario Limonciello" <mario.limonciello@amd.com>,
+        <linux-kernel@vger.kernel.org>, "Patrick Steinhardt" <ps@pks.im>,
+        "Ronan Pigott" <ronan@rjp.ie>,
+        "Raymond Jay Golo" <rjgolo@gmail.com>
+Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Paul Menzel" <pmenzel@molgen.mpg.de>
+X-Mailer: aerc 0.14.0
+References: <20230822231510.2263255-1-jarkko@kernel.org>
+ <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+In-Reply-To: <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
-v4.14.323)
+On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
+> Dear Jarkko,
+>
+>
+> Thank you for your patch.
+>
+>
+> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
+> > The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG f=
+or
+> > all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On t=
+he
+> > reported systems the TPM doesn't reply at bootup and returns back the
+> > command code. This makes the TPM fail probe.
+> >=20
+> > Since only Microsoft Pluton is the only known combination of AMD CPU an=
+d
+> > fTPM from other vendor, disable hwrng otherwise. In order to make sysad=
+min
+> > aware of this, print also info message to the klog.
+> >=20
+> > Cc: stable@vger.kernel.org
+> > Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> > Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+>
+> Mario=E2=80=99s patch also had the three reporters below listed:
+>
+> Reported-by: Patrick Steinhardt <ps@pks.im>
+> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
-y/kernel/v4.14.323/
+The problem here is that checkpatch throws three warnings:
 
-Tree: stable-rc
-Branch: linux-4.14.y
-Git Describe: v4.14.323
-Git Commit: 80b73c056d2076d12f9e50c753bb440fc79f30c9
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
+WARNING: Reported-by: should be immediately followed by Closes: with a URL =
+to the report
+#19:
+Reported-by: Patrick Steinhardt <ps@pks.im>
+Reported-by: Ronan Pigott <ronan@rjp.ie>
 
-Warnings Detected:
+WARNING: Reported-by: should be immediately followed by Closes: with a URL =
+to the report
+#20:
+Reported-by: Ronan Pigott <ronan@rjp.ie>
+Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
 
-arc:
+WARNING: Reported-by: should be immediately followed by Closes: with a URL =
+to the report
+#21:
+Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-arm64:
+Since bugzilla is not part of the documented process afaik, I used this
+field as the guideline:
 
-arm:
+Reported:	2023-08-17 20:59 UTC by Todd Brandt
 
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
+How otherwise I should interpret kernel bugzilla?
 
-mips:
+In any case new version is still needed as the commit message must=20
+contain a mention of "Lenovo Legion Y540" as the stimulus for doing
+this code change in the first place.
 
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    14   ld: warning: creating DT_TEXTREL in a PIE
-    8    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    8    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    6    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    6    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
-
-Section mismatches summary:
-
-    6    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-3 warnings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+BR, Jarkko
