@@ -2,67 +2,103 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F01AF785500
-	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 12:11:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17B157854E8
+	for <lists+stable@lfdr.de>; Wed, 23 Aug 2023 12:09:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231205AbjHWKLe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 06:11:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36022 "EHLO
+        id S231400AbjHWKI4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 06:08:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234559AbjHWIV0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 04:21:26 -0400
-X-Greylist: delayed 568 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 23 Aug 2023 01:15:55 PDT
-Received: from mail.withamteme.com (mail.withamteme.com [141.95.17.171])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA912210E
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 01:15:48 -0700 (PDT)
-Received: by mail.withamteme.com (Postfix, from userid 1002)
-        id 2CB12A2477; Wed, 23 Aug 2023 08:05:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=withamteme.com;
-        s=mail; t=1692777938;
-        bh=bUdYbIn2UeyWxc3No0O4EnsUymOhpJlpZbJ98aksnPY=;
-        h=Date:From:To:Subject:From;
-        b=LBeXHKgp8IXBGH1RTLUbhWBg7fvWOcbw3AJB+OEw42Qv92h6tUzyugaMO3ZlGX1xA
-         a8SM7LEYo6iPckL8HfJqMOYhZNL4Qg5NjUkccucCUQJs60I3000zcaHiV6vfbvS7eU
-         jaqgTSId9FRbMuPKxStrBoJlFNCl0BzcN33K6lSnUG3oWJWaMBq2E0oueXYgtnqAEM
-         h+uagOTH86zry4/vzoMdj+3FFSsiLiH0ApzQtrgjvD+EenO0qaYHHNtQYNXa5Oc7rP
-         P8Fl6sIV6i6DliAZxAA5ZnEsoae662CHd5v1cN+rTkoXOGTzBfoimAudaE27ubPgcj
-         9xHNFNWvuwLHQ==
-Received: by mail.withamteme.com for <stable@vger.kernel.org>; Wed, 23 Aug 2023 08:05:15 GMT
-Message-ID: <20230823064500-0.1.8v.kbxo.0.7ko112mngb@withamteme.com>
-Date:   Wed, 23 Aug 2023 08:05:15 GMT
-From:   "Grzegorz Frycz" <grzegorz.frycz@withamteme.com>
-To:     <stable@vger.kernel.org>
-Subject: =?UTF-8?Q?Bezp=C5=82atna_konsultacja?=
-X-Mailer: mail.withamteme.com
+        with ESMTP id S235652AbjHWJft (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 05:35:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 473D8171A;
+        Wed, 23 Aug 2023 02:26:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2210963E5F;
+        Wed, 23 Aug 2023 09:26:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CABE1C433C7;
+        Wed, 23 Aug 2023 09:26:25 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692782786;
+        bh=ITHYbCSa8xC05AhgVVAUPq+ran6o4m6ijJRCtqyDnaw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=19arubAMz5JMa7tD64e+VmEucN4mlbKn4q1cPGDyJhN/7esJfQK1t6Ke8snvHrPfO
+         RWssWDdFjrz8xrCedGg3agVoWv6o0vCV7P8gBSwZuTWJCu+h5dRj18lAwTPdwiR0tt
+         O9kYIF86By6hESVzoIC8dtSJNhqe7ShOhGoOhlOA=
+Date:   Wed, 23 Aug 2023 11:26:23 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+Message-ID: <2023082303-musky-plastic-335f@gregkh>
+References: <20230821194122.695845670@linuxfoundation.org>
+ <ZOXJVamgYV1Mb+7S@debian>
 MIME-Version: 1.0
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS,URIBL_ABUSE_SURBL,URIBL_BLOCKED autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZOXJVamgYV1Mb+7S@debian>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS,URIBL_BLOCKED autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dzie=C5=84 dobry,
+On Wed, Aug 23, 2023 at 09:54:45AM +0100, Sudip Mukherjee (Codethink) wrote:
+> Hi Greg,
+> 
+> On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.47 release.
+> > There are 194 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> > Anything received after that time might be too late.
+> 
+> Build test (gcc version 12.3.1 20230625):
+> mips: 52 configs -> no failure
+> arm: 100 configs -> no failure
+> arm64: 3 configs -> no failure
+> x86_64: 4 configs -> no failure
+> alpha allmodconfig -> no failure
+> csky allmodconfig -> no failure
+> powerpc allmodconfig -> no failure
+> riscv allmodconfig -> no failure
+> s390 allmodconfig -> no failure
+> xtensa allmodconfig -> no failure
+> 
+> Boot test:
+> x86_64: Booted on my test laptop. Warning on boot, already reported by others.
+> x86_64: Booted on qemu. Warning on boot, already reported by others. [1]
+> arm64: Booted on rpi4b (4GB model). No regression. [2]
+> mips: Booted on ci20 board. No regression. [3]
+> 
+> [1]. https://openqa.qa.codethink.co.uk/tests/4765
+> [2]. https://openqa.qa.codethink.co.uk/tests/4773
+> [3]. https://openqa.qa.codethink.co.uk/tests/4772
+> 
+> Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+> 
+> -- 
+> Regards
+> Sudip
 
-czy konsultowali Pa=C5=84stwo swoj=C4=85 umow=C4=99 ubezpieczeniow=C4=85 =
-z niezale=C5=BCnym doradc=C4=85?
+One question about the warning on boot, all still works afterward,
+right?  Or does the system not work?
 
-Wi=C4=99kszo=C5=9B=C4=87 moich Klient=C3=B3w, dotychczas nie by=C5=82a =C5=
-=9Bwiadoma, jak bardzo przep=C5=82acaj=C4=85 za polisy.
+thanks,
 
-Jako specjalista niepowi=C4=85zany z =C5=BCadn=C4=85 organizacja ubezpiec=
-zeniow=C4=85 bezp=C5=82atnie przeanalizuj=C4=99 Pa=C5=84stwa rozwi=C4=85z=
-ania finansowe i zarekomenduj=C4=99 najkorzystniejsze na rynku alternatyw=
-y, kt=C3=B3re pozwol=C4=85 zmniejszy=C4=87 dotychczasowe koszty przy jedn=
-ocze=C5=9Bnie zwi=C4=99kszonej ochronie.
-
-Byliby Pa=C5=84stwo zainteresowani?
-
-
-Pozdrawiam
-Grzegorz Frycz
+greg k-h
