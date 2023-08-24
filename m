@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84085787B19
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 00:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E999B787B1C
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 00:01:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243788AbjHXWA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 18:00:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54012 "EHLO
+        id S243790AbjHXWA7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 18:00:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54074 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243845AbjHXWAX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 18:00:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D90381BE6;
-        Thu, 24 Aug 2023 15:00:20 -0700 (PDT)
+        with ESMTP id S243797AbjHXWA2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 18:00:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83B871BE9;
+        Thu, 24 Aug 2023 15:00:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78C836361B;
-        Thu, 24 Aug 2023 22:00:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C80C433C8;
-        Thu, 24 Aug 2023 22:00:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19FA56342E;
+        Thu, 24 Aug 2023 22:00:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 726F4C433C8;
+        Thu, 24 Aug 2023 22:00:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1692914419;
-        bh=QzZ3B29ZpeIXP1Docmt+R6yug/vu3LqFJ4ZpavpYzEQ=;
+        s=korg; t=1692914425;
+        bh=Xz9nbXaPHAk0Ju9Hwdy/98Qadbv1cBQrtpctvLEvbfs=;
         h=Date:To:From:Subject:From;
-        b=nWWWb+2rntfE78hzbASEWc2PagaaZnnF833484ysXFgdn6pjrZ/Z9+Ctswc7+NDYb
-         KoC/NBpVx132j49d41Pw8VLg/xv6nuY+ZyNnGzGG/uHUfcx7xY7pOodSf7eg4td6Sa
-         CgKRPqGNMp8eZyboxpu42vP85gSr3vKwauDtUcyg=
-Date:   Thu, 24 Aug 2023 15:00:19 -0700
+        b=J2TGMip7ilbrrlYOAFfKCLzAA2JOYyroLKX+IW7bWGa47GToDbxU+JtgbH3glRXcc
+         Rfn5zKdLtZEYSOtt0KPhMujr1Pr+l/fU+U+ytsLBrGBryI/G3BgDr2wf6x/8djBen1
+         eTJmrAqOtYRTfcmVVKkZ/JgHrKlw7ncP9z+WoBas=
+Date:   Thu, 24 Aug 2023 15:00:24 -0700
 To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        Liam.Howlett@oracle.com, akpm@linux-foundation.org
+        peterx@redhat.com, hughd@google.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch removed from -mm tree
-Message-Id: <20230824220019.D2C80C433C8@smtp.kernel.org>
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Subject: [merged mm-hotfixes-stable] shmem-fix-smaps-bug-sleeping-while-atomic.patch removed from -mm tree
+Message-Id: <20230824220025.726F4C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -46,96 +46,61 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: maple_tree: disable mas_wr_append() when other readers are possible
+     Subject: shmem: fix smaps BUG sleeping while atomic
 has been removed from the -mm tree.  Its filename was
-     maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch
+     shmem-fix-smaps-bug-sleeping-while-atomic.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Subject: maple_tree: disable mas_wr_append() when other readers are possible
-Date: Fri, 18 Aug 2023 20:43:55 -0400
+From: Hugh Dickins <hughd@google.com>
+Subject: shmem: fix smaps BUG sleeping while atomic
+Date: Tue, 22 Aug 2023 22:14:47 -0700 (PDT)
 
-The current implementation of append may cause duplicate data and/or
-incorrect ranges to be returned to a reader during an update.  Although
-this has not been reported or seen, disable the append write operation
-while the tree is in rcu mode out of an abundance of caution.
+smaps_pte_hole_lookup() is calling shmem_partial_swap_usage() with page
+table lock held: but shmem_partial_swap_usage() does cond_resched_rcu() if
+need_resched(): "BUG: sleeping function called from invalid context".
 
-During the analysis of the mas_next_slot() the following was
-artificially created by separating the writer and reader code:
+Since shmem_partial_swap_usage() is designed to count across a range, but
+smaps_pte_hole_lookup() only calls it for a single page slot, just break
+out of the loop on the last or only page, before checking need_resched().
 
-Writer:                                 reader:
-mas_wr_append
-    set end pivot
-    updates end metata
-    Detects write to last slot
-    last slot write is to start of slot
-    store current contents in slot
-    overwrite old end pivot
-                                        mas_next_slot():
-                                                read end metadata
-                                                read old end pivot
-                                                return with incorrect range
-    store new value
-
-Alternatively:
-
-Writer:                                 reader:
-mas_wr_append
-    set end pivot
-    updates end metata
-    Detects write to last slot
-    last lost write to end of slot
-    store value
-                                        mas_next_slot():
-                                                read end metadata
-                                                read old end pivot
-                                                read new end pivot
-                                                return with incorrect range
-    set old end pivot
-
-There may be other accesses that are not safe since we are now updating
-both metadata and pointers, so disabling append if there could be rcu
-readers is the safest action.
-
-Link: https://lkml.kernel.org/r/20230819004356.1454718-2-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
+Link: https://lkml.kernel.org/r/6fe3b3ec-abdf-332f-5c23-6a3b3a3b11a9@google.com
+Fixes: 230100321518 ("mm/smaps: simplify shmem handling of pte holes")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>	[5.16+]
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- lib/maple_tree.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ mm/shmem.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/lib/maple_tree.c~maple_tree-disable-mas_wr_append-when-other-readers-are-possible
-+++ a/lib/maple_tree.c
-@@ -4265,6 +4265,10 @@ static inline unsigned char mas_wr_new_e
-  * mas_wr_append: Attempt to append
-  * @wr_mas: the maple write state
-  *
-+ * This is currently unsafe in rcu mode since the end of the node may be cached
-+ * by readers while the node contents may be updated which could result in
-+ * inaccurate information.
-+ *
-  * Return: True if appended, false otherwise
-  */
- static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
-@@ -4274,6 +4278,9 @@ static inline bool mas_wr_append(struct
- 	struct ma_state *mas = wr_mas->mas;
- 	unsigned char node_pivots = mt_pivots[wr_mas->type];
+--- a/mm/shmem.c~shmem-fix-smaps-bug-sleeping-while-atomic
++++ a/mm/shmem.c
+@@ -806,14 +806,16 @@ unsigned long shmem_partial_swap_usage(s
+ 	XA_STATE(xas, &mapping->i_pages, start);
+ 	struct page *page;
+ 	unsigned long swapped = 0;
++	unsigned long max = end - 1;
  
-+	if (mt_in_rcu(mas->tree))
-+		return false;
-+
- 	if (mas->offset != wr_mas->node_end)
- 		return false;
- 
+ 	rcu_read_lock();
+-	xas_for_each(&xas, page, end - 1) {
++	xas_for_each(&xas, page, max) {
+ 		if (xas_retry(&xas, page))
+ 			continue;
+ 		if (xa_is_value(page))
+ 			swapped++;
+-
++		if (xas.xa_index == max)
++			break;
+ 		if (need_resched()) {
+ 			xas_pause(&xas);
+ 			cond_resched_rcu();
 _
 
-Patches currently in -mm which might be from Liam.Howlett@oracle.com are
+Patches currently in -mm which might be from hughd@google.com are
 
-maple_tree-clean-up-mas_wr_append.patch
+mm-khugepaged-fix-collapse_pte_mapped_thp-versus-uffd.patch
 
