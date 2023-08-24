@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2B8F7872AC
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4E6178734C
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241908AbjHXOzq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:55:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33932 "EHLO
+        id S241991AbjHXPCF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:02:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241959AbjHXOzh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:37 -0400
+        with ESMTP id S242017AbjHXPBh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A063F19AA
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F09B719B2
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 250F9623F7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3837AC433C7;
-        Thu, 24 Aug 2023 14:55:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 85D736714D
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:35 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 953D0C433C7;
+        Thu, 24 Aug 2023 15:01:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888934;
-        bh=ZqXMqSGFTK4y2HZnHJYay9/4BD3AFpaWThPFUV+6aUw=;
+        s=korg; t=1692889295;
+        bh=8zZfZTJDBN05/JCraAi4ueKVVkoUoJPjBayRVrDi1ZE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Eezabayfg+vDshjM3NrYGbrsQ9BgCICgj2Mvn0f0eGZSl69IqwXhuZ7ebbTPQtTtd
-         7xvXeLHx/S2VssqIavVqWA6TqiyGhO5s7tIWuODlLErbxlU3hV0r8cSlLyE0H4JqC/
-         Qg92wqrQq8FHFICaH5qfgzsWkBnhIqsH3vtlV/Yg=
+        b=fMYD1qL2F/IAl8h4ULW1BptE9fzHgUfqsCnzjIptgMP1uvvu77e/TngqExatWxukJ
+         wU1y+6iTH3IWgTo2HvZW/dauUb+spCsTGDI1Bv+dyfcHX2xbXVLCV7LWhGl1poYAWq
+         XjMy07ZPES3O5wvfxUPo9UfnZf0UtSS5KnT0q7mY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
-        Quan Nguyen <quan@os.amperecomputing.com>,
-        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.15 077/139] i2c: designware: Correct length byte validation logic
+        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 057/135] usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM
 Date:   Thu, 24 Aug 2023 16:50:00 +0200
-Message-ID: <20230824145027.001473015@linuxfoundation.org>
+Message-ID: <20230824145029.357185259@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -57,48 +53,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Quan Nguyen <quan@os.amperecomputing.com>
+From: Frank Li <Frank.Li@nxp.com>
 
-commit 49d4db3953cb9004ff94efc0c176e026c820af5a upstream.
+[ Upstream commit dbe678f6192f27879ac9ff6bc7a1036aad85aae9 ]
 
-Commit 0daede80f870 ("i2c: designware: Convert driver to using regmap API")
-changes the logic to validate the whole 32-bit return value of
-DW_IC_DATA_CMD register instead of 8-bit LSB without reason.
+At iMX8QM platform, enable NCM gadget and run 'iperf3 -s'.
+At host, run 'iperf3 -V -c fe80::6863:98ff:feef:3e0%enxc6e147509498'
 
-Later, commit f53f15ba5a85 ("i2c: designware: Get right data length"),
-introduced partial fix but not enough because the "tmp > 0" still test
-tmp as 32-bit value and is wrong in case the IC_DATA_CMD[11] is set.
+[  5]   0.00-1.00   sec  1.55 MBytes  13.0 Mbits/sec   90   4.18 KBytes
+[  5]   1.00-2.00   sec  1.44 MBytes  12.0 Mbits/sec   75   4.18 KBytes
+[  5]   2.00-3.00   sec  1.48 MBytes  12.4 Mbits/sec   75   4.18 KBytes
 
-Revert the logic to just before commit 0daede80f870
-("i2c: designware: Convert driver to using regmap API").
+Expected speed should be bigger than 300Mbits/sec.
 
-Fixes: f53f15ba5a85 ("i2c: designware: Get right data length")
-Fixes: 0daede80f870 ("i2c: designware: Convert driver to using regmap API")
+The root cause of this performance drop was found to be data corruption
+happening at 4K borders in some Ethernet packets, leading to TCP
+checksum errors. This corruption occurs from the position
+(4K - (address & 0x7F)) to 4K. The u_ether function's allocation of
+skb_buff reserves 64B, meaning all RX addresses resemble 0xXXXX0040.
+
+Force trb_burst_size to 16 can fix this problem.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
-Signed-off-by: Quan Nguyen <quan@os.amperecomputing.com>
-Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
-Link: https://lore.kernel.org/r/20230726080001.337353-2-tamnguyenchi@os.amperecomputing.com
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
+Fixes: 7733f6c32e36 ("usb: cdns3: Add Cadence USB3 DRD Driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Link: https://lore.kernel.org/r/20230518154946.3666662-1-Frank.Li@nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-designware-master.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/cdns3/gadget.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/drivers/i2c/busses/i2c-designware-master.c
-+++ b/drivers/i2c/busses/i2c-designware-master.c
-@@ -525,9 +525,10 @@ i2c_dw_read(struct dw_i2c_dev *dev)
- 			u32 flags = msgs[dev->msg_read_idx].flags;
+diff --git a/drivers/usb/cdns3/gadget.c b/drivers/usb/cdns3/gadget.c
+index 24dab7006b823..210c1d6150825 100644
+--- a/drivers/usb/cdns3/gadget.c
++++ b/drivers/usb/cdns3/gadget.c
+@@ -2098,6 +2098,19 @@ int cdns3_ep_config(struct cdns3_endpoint *priv_ep, bool enable)
+ 	else
+ 		priv_ep->trb_burst_size = 16;
  
- 			regmap_read(dev->map, DW_IC_DATA_CMD, &tmp);
-+			tmp &= DW_IC_DATA_CMD_DAT;
- 			/* Ensure length byte is a valid value */
- 			if (flags & I2C_M_RECV_LEN &&
--			    (tmp & DW_IC_DATA_CMD_DAT) <= I2C_SMBUS_BLOCK_MAX && tmp > 0) {
-+			    tmp <= I2C_SMBUS_BLOCK_MAX && tmp > 0) {
- 				len = i2c_dw_recv_len(dev, tmp);
- 			}
- 			*buf++ = tmp;
++	/*
++	 * In versions preceding DEV_VER_V2, for example, iMX8QM, there exit the bugs
++	 * in the DMA. These bugs occur when the trb_burst_size exceeds 16 and the
++	 * address is not aligned to 128 Bytes (which is a product of the 64-bit AXI
++	 * and AXI maximum burst length of 16 or 0xF+1, dma_axi_ctrl0[3:0]). This
++	 * results in data corruption when it crosses the 4K border. The corruption
++	 * specifically occurs from the position (4K - (address & 0x7F)) to 4K.
++	 *
++	 * So force trb_burst_size to 16 at such platform.
++	 */
++	if (priv_dev->dev_ver < DEV_VER_V2)
++		priv_ep->trb_burst_size = 16;
++
+ 	mult = min_t(u8, mult, EP_CFG_MULT_MAX);
+ 	buffering = min_t(u8, buffering, EP_CFG_BUFFERING_MAX);
+ 	maxburst = min_t(u8, maxburst, EP_CFG_MAXBURST_MAX);
+-- 
+2.40.1
+
 
 
