@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 532837872F5
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B98C787263
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:54:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241900AbjHXO6z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:58:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60308 "EHLO
+        id S237043AbjHXOxc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:53:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241969AbjHXO6b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:31 -0400
+        with ESMTP id S241586AbjHXOxC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:53:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3F3CC
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 133A710D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:53:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D19756706C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E33FCC433C7;
-        Thu, 24 Aug 2023 14:58:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F30F66EB2
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:53:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54B5C433CC;
+        Thu, 24 Aug 2023 14:52:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889109;
-        bh=o2IqFnUcWgwXaNrTe6YVXa6Uxkksg/fyQ6w2Ge9kjdg=;
+        s=korg; t=1692888780;
+        bh=fgdLDtvzoKvEDHXTifVWTZq8tUrzSmN4jtEK5Hxiclo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PpteXMJqGLZ2XVnTZrpS4HYcmV9DxvwIadD9MMeySuNN8Rf+f8CSKb/0Gnm6c7ISA
-         zVEG6Pj9/Lf/93D9y6mLaPx9caNof7N8fiJmLOeCPa5CFhB++SdaqIPh70G+ynaZ6f
-         KmGQ5EsAnIFV/CpDCdoZtwG6xHNfP1xyB1Zj+f7Q=
+        b=kK2HQbSMEbFpqkZacxBooOeAP+dym4lUVdN5k4BT3VoKSUjMwFgtRzOkaCz9Sbayz
+         wwqJzUr5PSg8Im/MzqOJcUbRq1UpVi9Mr7ETtavplYfZnCpWe1v3hziDtToqZvkTJK
+         3bAI+vDQa5mmSZAZ9IgOZvUeiZy5E9mrUDHqtcJ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Lang Yu <Lang.Yu@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Benjamin Gray <bgray@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 018/135] drm/amdgpu: install stub fence into potential unused fence pointers
+Subject: [PATCH 5.15 038/139] powerpc/kasan: Disable KCOV in KASAN code
 Date:   Thu, 24 Aug 2023 16:49:21 +0200
-Message-ID: <20230824145027.741846128@linuxfoundation.org>
+Message-ID: <20230824145025.269569680@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,54 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Lang Yu <Lang.Yu@amd.com>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 ]
+[ Upstream commit ccb381e1af1ace292153c88eb1fffa5683d16a20 ]
 
-When using cpu to update page tables, vm update fences are unused.
-Install stub fence into these fence pointers instead of NULL
-to avoid NULL dereference when calling dma_fence_wait() on them.
+As per the generic KASAN code in mm/kasan, disable KCOV with
+KCOV_INSTRUMENT := n in the makefile.
 
-Suggested-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+This fixes a ppc64 boot hang when KCOV and KASAN are enabled.
+kasan_early_init() gets called before a PACA is initialised, but the
+KCOV hook expects a valid PACA.
+
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230710044143.146840-1-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/powerpc/mm/kasan/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-index 8445bb7ae06ab..3b4724d60868f 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
-@@ -2155,6 +2155,7 @@ struct amdgpu_bo_va *amdgpu_vm_bo_add(struct amdgpu_device *adev,
- 	amdgpu_vm_bo_base_init(&bo_va->base, vm, bo);
+diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
+index bb1a5408b86b2..8636b17c6a20f 100644
+--- a/arch/powerpc/mm/kasan/Makefile
++++ b/arch/powerpc/mm/kasan/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
  
- 	bo_va->ref_count = 1;
-+	bo_va->last_pt_update = dma_fence_get_stub();
- 	INIT_LIST_HEAD(&bo_va->valids);
- 	INIT_LIST_HEAD(&bo_va->invalids);
+ KASAN_SANITIZE := n
++KCOV_INSTRUMENT := n
  
-@@ -2867,7 +2868,8 @@ int amdgpu_vm_init(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- 		vm->update_funcs = &amdgpu_vm_cpu_funcs;
- 	else
- 		vm->update_funcs = &amdgpu_vm_sdma_funcs;
--	vm->last_update = NULL;
-+
-+	vm->last_update = dma_fence_get_stub();
- 	vm->last_unlocked = dma_fence_get_stub();
- 
- 	mutex_init(&vm->eviction_lock);
-@@ -3042,7 +3044,7 @@ int amdgpu_vm_make_compute(struct amdgpu_device *adev, struct amdgpu_vm *vm,
- 		vm->update_funcs = &amdgpu_vm_sdma_funcs;
- 	}
- 	dma_fence_put(vm->last_update);
--	vm->last_update = NULL;
-+	vm->last_update = dma_fence_get_stub();
- 	vm->is_compute_context = true;
- 
- 	if (vm->pasid) {
+ obj-$(CONFIG_PPC32)           += kasan_init_32.o
+ obj-$(CONFIG_PPC_8xx)		+= 8xx.o
 -- 
 2.40.1
 
