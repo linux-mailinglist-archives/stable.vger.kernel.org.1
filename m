@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E95AF787310
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B5B8787312
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:00:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241929AbjHXO76 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:59:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43150 "EHLO
+        id S241632AbjHXO77 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:59:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241632AbjHXO7f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:59:35 -0400
+        with ESMTP id S241990AbjHXO7i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:59:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03C17C7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:59:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8E6FC7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:59:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8EA1F670B4
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:59:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BEFBC433C8;
-        Thu, 24 Aug 2023 14:59:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D71C670BD
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:59:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CC1BC433C8;
+        Thu, 24 Aug 2023 14:59:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889173;
-        bh=k6411vEO3brMjtxLTcIcUhC6mnJOvBevGOrd58b2qKc=;
+        s=korg; t=1692889175;
+        bh=scpoDsskJBjpzmv+nREDDSF+ygVy5JLq9+0UJSdLCAQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xfpWgo/pQAenWacikZ1QmpcRWsS2lTcQQ8YiqPMyRdc8t2kZAiTZuX7tyAILYotQD
-         R+/XZGbiB6bxS5d+PE/X4c7tZx5PA0xMqVCoWIXHANrkLBbjNkdhIjOzplzvOphbMI
-         hmRNjy4QPoceHiua6IDfPUp2YfdQHVl2JE8vnsuY=
+        b=JjqewvOTgoGIeSHYN/T2omV17Qlf0WXudqywMYZIlb2J4byUSqPAcMVlzWTVK27Pf
+         2THv78sAI8jcPjWSIWfXhmU2CFviK4VaVgZJK9IIogakAPsQKFTUd1r+ozM/fePJ2H
+         IB02pN5Z3meud5LZfe5vWgf9Be6rDx8Iy9pq1W68=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Fabio Estevam <festevam@gmail.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Mimi Zohar <zohar@linux.ibm.com>,
+        patches@lists.linux.dev,
+        Cosmin Tanislav <cosmin.tanislav@analog.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 041/135] IMA: allow/fix UML builds
-Date:   Thu, 24 Aug 2023 16:49:44 +0200
-Message-ID: <20230824145028.726534694@linuxfoundation.org>
+Subject: [PATCH 5.10 042/135] iio: add addac subdirectory
+Date:   Thu, 24 Aug 2023 16:49:45 +0200
+Message-ID: <20230824145028.775267055@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
 References: <20230824145027.008282920@linuxfoundation.org>
@@ -58,54 +55,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Cosmin Tanislav <demonsingur@gmail.com>
 
-[ Upstream commit 644f17412f5acf01a19af9d04a921937a2bc86c6 ]
+[ Upstream commit b62e2e1763cda3a6c494ed754317f19be1249297 ]
 
-UML supports HAS_IOMEM since 0bbadafdc49d (um: allow disabling
-NO_IOMEM).
+For IIO devices that expose both ADC and DAC functionality.
 
-Current IMA build on UML fails on allmodconfig (with TCG_TPM=m):
-
-ld: security/integrity/ima/ima_queue.o: in function `ima_add_template_entry':
-ima_queue.c:(.text+0x2d9): undefined reference to `tpm_pcr_extend'
-ld: security/integrity/ima/ima_init.o: in function `ima_init':
-ima_init.c:(.init.text+0x43f): undefined reference to `tpm_default_chip'
-ld: security/integrity/ima/ima_crypto.o: in function `ima_calc_boot_aggregate_tfm':
-ima_crypto.c:(.text+0x1044): undefined reference to `tpm_pcr_read'
-ld: ima_crypto.c:(.text+0x10d8): undefined reference to `tpm_pcr_read'
-
-Modify the IMA Kconfig entry so that it selects TCG_TPM if HAS_IOMEM
-is set, regardless of the UML Kconfig setting.
-This updates TCG_TPM from =m to =y and fixes the linker errors.
-
-Fixes: f4a0391dfa91 ("ima: fix Kconfig dependencies")
-Cc: Stable <stable@vger.kernel.org> # v5.14+
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Fabio Estevam <festevam@gmail.com>
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
+Link: https://lore.kernel.org/r/20211205114045.173612-2-cosmin.tanislav@analog.com
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/Kconfig | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iio/Kconfig        | 1 +
+ drivers/iio/Makefile       | 1 +
+ drivers/iio/addac/Kconfig  | 8 ++++++++
+ drivers/iio/addac/Makefile | 6 ++++++
+ 4 files changed, 16 insertions(+)
+ create mode 100644 drivers/iio/addac/Kconfig
+ create mode 100644 drivers/iio/addac/Makefile
 
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 755af0b29e755..0a5ae1e8da47a 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -8,7 +8,7 @@ config IMA
- 	select CRYPTO_HMAC
- 	select CRYPTO_SHA1
- 	select CRYPTO_HASH_INFO
--	select TCG_TPM if HAS_IOMEM && !UML
-+	select TCG_TPM if HAS_IOMEM
- 	select TCG_TIS if TCG_TPM && X86
- 	select TCG_CRB if TCG_TPM && ACPI
- 	select TCG_IBMVTPM if TCG_TPM && PPC_PSERIES
+diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
+index 267553386c710..2ed303aa7de3c 100644
+--- a/drivers/iio/Kconfig
++++ b/drivers/iio/Kconfig
+@@ -70,6 +70,7 @@ config IIO_TRIGGERED_EVENT
+ 
+ source "drivers/iio/accel/Kconfig"
+ source "drivers/iio/adc/Kconfig"
++source "drivers/iio/addac/Kconfig"
+ source "drivers/iio/afe/Kconfig"
+ source "drivers/iio/amplifiers/Kconfig"
+ source "drivers/iio/chemical/Kconfig"
+diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
+index 1712011c0f4a1..d6690e449ccec 100644
+--- a/drivers/iio/Makefile
++++ b/drivers/iio/Makefile
+@@ -15,6 +15,7 @@ obj-$(CONFIG_IIO_TRIGGERED_EVENT) += industrialio-triggered-event.o
+ 
+ obj-y += accel/
+ obj-y += adc/
++obj-y += addac/
+ obj-y += afe/
+ obj-y += amplifiers/
+ obj-y += buffer/
+diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
+new file mode 100644
+index 0000000000000..2e64d7755d5ea
+--- /dev/null
++++ b/drivers/iio/addac/Kconfig
+@@ -0,0 +1,8 @@
++#
++# ADC DAC drivers
++#
++# When adding new entries keep the list in alphabetical order
++
++menu "Analog to digital and digital to analog converters"
++
++endmenu
+diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
+new file mode 100644
+index 0000000000000..b888b9ee12da0
+--- /dev/null
++++ b/drivers/iio/addac/Makefile
+@@ -0,0 +1,6 @@
++# SPDX-License-Identifier: GPL-2.0
++#
++# Makefile for industrial I/O ADDAC drivers
++#
++
++# When adding new entries keep the list in alphabetical order
 -- 
 2.40.1
 
