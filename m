@@ -2,71 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44F46787042
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:30:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECA50787056
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:36:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241118AbjHXN3v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 09:29:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57090 "EHLO
+        id S240056AbjHXNgS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 09:36:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241316AbjHXN31 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:29:27 -0400
+        with ESMTP id S241234AbjHXNgB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:36:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1909D1BC9;
-        Thu, 24 Aug 2023 06:29:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD02A19A5;
+        Thu, 24 Aug 2023 06:35:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F1D166C60;
-        Thu, 24 Aug 2023 13:29:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0AEA6C433C8;
-        Thu, 24 Aug 2023 13:29:23 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692883763;
-        bh=iwcXjSdbGezaOQR1+gpNxwK0d5wA+Qb9bpVfk7qBDBQ=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=j1tRe8tMsySMG8JSTDKzR9flI36NpVyzZCQrrdX/cCVWZi5C9S3NLxMhbm4AQb5jb
-         dawOtFWOgdwgoMhroGlbdnz3Uwnc1OCDjPN/4fCTiSX7y1p2ecwmgxktAJeDi1dG5g
-         PKCXDnRbKkaGf+2Moee3zd6haq3pdXFz6PaXAIjmSeMp9MjSavWiW7hWdVDRaR7t+u
-         laN/h18iG+/Ns7Nko4Szx6NYwgkrUxzlkHzgj55+6qcaFt0lWBPlBOdHqK5/WPTX7h
-         i+XhYqptSwRt+i2LuqrnCW4HawML1yEaV0ILfg2qRzaaVjgjYhZ81wPvqH98d6U7a1
-         /ULnUtHMzbj1A==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id AEB93CE035E; Thu, 24 Aug 2023 06:29:22 -0700 (PDT)
-Date:   Thu, 24 Aug 2023 06:29:22 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        Z qiang <qiang.zhang1211@gmail.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
-Message-ID: <e3e4fa67-17d0-42ac-aab4-a4b83a652ee7@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
- <5777BD82-2C8D-4BAB-BDD3-C2C003DC57FB@joelfernandes.org>
- <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
- <87ttspct76.ffs@tglx>
- <20230824132155.GB3810470@google.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62AC46313F;
+        Thu, 24 Aug 2023 13:35:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFECC433C7;
+        Thu, 24 Aug 2023 13:35:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692884158;
+        bh=FoeW5Vf0WqDwd9w8w9n1OLSBxvLkKSrUFjawAzxgK5Q=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=wO6K+J4gYSmVIxvG6AJs8XWztSAYYUx6KQlp04BrJNZZr50PFkHGPYaiuKgByK+hr
+         ZnZFVK6yk+oQHLDfGQh+uUl3vm8vFVWVeVf5Hj0Astq+d2hzxFMjmSEy54+dBheQso
+         RdCozM1P21Cs3h2gvuYXQV0+cvVz271OM+5Zqu0g=
+Date:   Thu, 24 Aug 2023 15:35:55 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+Message-ID: <2023082401-arrange-bulk-d42a@gregkh>
+References: <20230821194122.695845670@linuxfoundation.org>
+ <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
+ <2023082309-veggie-unwoven-a7df@gregkh>
+ <CA+G9fYvwxuVpSn24YvtdNXaofg2JtZDREatOpDsKTVJX+nFN3Q@mail.gmail.com>
+ <2d8a5f48-6c50-4c12-8a3d-23e621c6b722@roeck-us.net>
+ <2023082325-expansion-revoke-1f3a@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230824132155.GB3810470@google.com>
+In-Reply-To: <2023082325-expansion-revoke-1f3a@gregkh>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -76,87 +60,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 01:21:55PM +0000, Joel Fernandes wrote:
-> Hello Thomas,
+On Wed, Aug 23, 2023 at 05:50:42PM +0200, Greg Kroah-Hartman wrote:
+> On Wed, Aug 23, 2023 at 06:30:13AM -0700, Guenter Roeck wrote:
+> > On Wed, Aug 23, 2023 at 01:47:39PM +0530, Naresh Kamboju wrote:
+> > > On Wed, 23 Aug 2023 at 12:33, Greg Kroah-Hartman
+> > > <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Tue, Aug 22, 2023 at 05:49:54PM -0700, Guenter Roeck wrote:
+> > > > > On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > This is the start of the stable review cycle for the 6.1.47 release.
+> > > > > > There are 194 patches in this series, all will be posted as a response
+> > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > let me know.
+> > > > > >
+> > > > > > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> > > > > > Anything received after that time might be too late.
+> > > > > >
+> > > > >
+> > > > > Build results:
+> > > > >       total: 157 pass: 156 fail: 1
+> > > > > Failed builds:
+> > > > >       m68k:sun3_defconfig
+> > > > > Qemu test results:
+> > > > >       total: 521 pass: 519 fail: 2
+> > > > > Failed tests:
+> > > > >       arm:fuji-bmc:aspeed_g5_defconfig:notests:mem1G:mtd128,0,8,1:net,nic:aspeed-bmc-facebook-fuji:f2fs
+> > > > >       arm:bletchley-bmc,fmc-model=mt25qu02g,spi-model=mt25qu02g:aspeed_g5_defconfig:notests:mem1G:mtd256:net,nic:aspeed-bmc-facebook-bletchley:f2fs
+> > > > >
+> > > > > The m68k build failure is
+> > > > >
+> > > > > Inconsistent kallsyms data
+> > > > > Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+> > > > >
+> > > > > I already have KALLSYMS_EXTRA_PASS=1 enabled, so that doesn't help.
+> > > > > Nothing to worry about. The f2fs crashes are still seen. They
+> > > > > also happen for other architectures, so it is not just an arm problem.
+> > > > > I'll probably just disable all f2fs testing going forward. If so I'll
+> > > > > send a note clarifying that the lack of reported test failures doesn't
+> > > > > mean that it works.
+> > > >
+> > > > I'll look into this later this week, next week to resolve the f2fs
+> > > > stuff.  I wanted to get to the other known bug fixes first.
+> > > >
+> > > > > For x86 I get the same runtime warning as everyone else.
+> > > >
+> > > > Yeah, this is troubling...
+> > > >
+> > > > Is it clang only?  I'll dig into this today...
+> > > 
+> > > It is seen with gcc-13 and clang-17 with few extra configs.
+> > > We are not booting defconfig.
+> > > 
+> > > The Kconfigs are enabled with KFENCE.
+> > > 
+> > I have KFENCE enabled as well, so it may well be that this triggers
+> > the warning. I don't see it in 6.4.y or upstream, though.
 > 
-> On Thu, Aug 24, 2023 at 12:03:25AM +0200, Thomas Gleixner wrote:
-> > On Thu, Aug 17 2023 at 16:06, Huacai Chen wrote:
-> > > On Thu, Aug 17, 2023 at 3:27 AM Joel Fernandes <joel@joelfernandes.org> wrote:
-> > >> > If  do_update_jiffies_64() cannot be used in NMI context,
-> > >>
-> > >> Can you not make the jiffies update conditional on whether it is
-> > >> called within NMI context?
-> > 
-> > Which solves what? If KGDB has a breakpoint in the jiffies lock held
-> > region then you still dead lock.
+> Ok, let me rip out all the x86 and objtool patches from this release,
+> get it out the door with the good things in there that everyone else
+> needs, and then we can focus on this mess...
 > 
-> Yes, we had already discussed this that jiffies update is not possible from
-> here. There are too many threads since different patch revisions were being
-> reviewed in different threads.
+> Maybe I'll just backport _all_ objtool changes to sync things up better,
+> last time I tried that it was a maze of twisty passages, all coated in
+> assembly...
 
-One of the nice properties of the jiffies counter is its trivially
-provable NMI safety  ;-)
+I got lost in the maze again today, ick.
 
-							Thanx, Paul
+Anyway, I give up.  I'm just going to push out a -rc1 with just these
+changes in it today, and if people are upset about the runtime warning,
+then they can provide a working backport of this objtool patch.
 
-> > >> I dislike that..
-> > > Is this acceptable?
-> > >
-> > > void rcu_cpu_stall_reset(void)
-> > > {
-> > >         unsigned long delta;
-> > >
-> > >         delta = nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_ns());
-> > >
-> > >         WRITE_ONCE(rcu_state.jiffies_stall,
-> > >                    jiffies + delta + rcu_jiffies_till_stall_check());
-> > > }
-> > >
-> > > This can update jiffies_stall without updating jiffies (but has the
-> > > same effect).
-> > 
-> > Now you traded the potential dead lock on jiffies lock for a potential
-> > live lock vs. tk_core.seq. Not really an improvement, right?
-> > 
-> > The only way you can do the above is something like the incomplete and
-> > uncompiled below. NMI safe and therefore livelock proof time interfaces
-> > exist for a reason.
-> 
-> Yes, I had already mentioned exactly this issue here of not using an NMI-safe
-> interface:
-> https://lore.kernel.org/all/CAEXW_YT+uw5JodtrqjY0B2xx0J8ukF=FAB9-p5rxgWobSU2P2A@mail.gmail.com/
-> I like your suggestion of using last_jiffies_update though (which as you
-> mentioned needs to be explored more).
-> 
-> There are too many threads which makes the discussion hard to follow. Huacai,
-> it would be great if we can keep the discussions in the same thread (Say for
-> example by passing options like --in-reply-to to "git send-email" command).
-> 
-> thanks,
-> 
->  - Joel
-> 
-> 
-> > 
-> > Thanks,
-> > 
-> >         tglx
-> > ---
-> > --- a/kernel/time/tick-sched.c
-> > +++ b/kernel/time/tick-sched.c
-> > @@ -51,6 +51,13 @@ struct tick_sched *tick_get_tick_sched(i
-> >   */
-> >  static ktime_t last_jiffies_update;
-> >  
-> > +unsigned long tick_estimate_stale_jiffies(void)
-> > +{
-> > +	ktime_t delta = ktime_get_mono_fast_ns() - READ_ONCE(last_jiffies_update);
-> > +
-> > +	return delta < 0 ? 0 : div_s64(delta, TICK_NSEC);
-> > +}
-> > +
-> >  /*
-> >   * Must be called with interrupts disabled !
-> >   */
-> > 
-> > 
+Ideally, the CPU vendor who is causing this mess will do that, as it's
+their issue we are spending all of this time on, not Linux's issue.
+
+Also, oddly, I can not reproduce this problem here on my hardware at
+all.  Maybe because it's an AMD processor?  If so, makes sense, as the
+SRSO issue is only for Intel chips.
+
+thanks,
+
+greg k-h
