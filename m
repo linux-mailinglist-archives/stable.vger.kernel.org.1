@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D52D78737B
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 58D847872E0
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242045AbjHXPDr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42704 "EHLO
+        id S237382AbjHXO5v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242077AbjHXPDW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:22 -0400
+        with ESMTP id S241960AbjHXO5g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0EC3E1BF7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:03:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FBF10D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A0A896719C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:03:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1C3AC433C8;
-        Thu, 24 Aug 2023 15:03:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 622CF6701C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76DBBC433C9;
+        Thu, 24 Aug 2023 14:57:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889386;
-        bh=ijZPhSiu9xwE8Nz8twZXX4P/hWJE9ckA84NXuEdf33U=;
+        s=korg; t=1692889053;
+        bh=I9F1+4aPrNCfVDeUTuyJ+5OdRTlw1yyRI4FOml5T7rY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nlpoF6H09LmhZ9MXMucH1EtEiFE7IWR5mLhY9l+sOlvInIPEBgCfgN84YRahIkjmI
-         WmEgQDGP2cFIBg/dkcGPMirjqEAo4GE7UES9xr3t8xbQTTPNI9O/KLgQy8nQu/rI35
-         BhRfXjtwL6+0ih4t9WjLtTkiKlKGWRKA2GI2Q6TI=
+        b=iiZq920TT1yUsbS4zLTP71dagMfj3/JvoprgJIBWbLDbGsMg16AapHC9YHjLL+j0w
+         NGfPK5Z5SQqo/YQwwFdE4CDlHp4c+3d6CCWxseJmRNFJL61ICMZUQm7cV/rgHFVvsB
+         TGKOYa9pGNYitAaM/ewD8EG/+4UVVu334C/e/9bw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 116/135] virtio-net: set queues after driver_ok
+        patches@lists.linux.dev, "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 136/139] x86/srso: Disable the mitigation on unaffected configurations
 Date:   Thu, 24 Aug 2023 16:50:59 +0200
-Message-ID: <20230824145031.986299399@linuxfoundation.org>
+Message-ID: <20230824145029.328447509@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,47 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Wang <jasowang@redhat.com>
+From: Borislav Petkov (AMD) <bp@alien8.de>
 
-commit 51b813176f098ff61bd2833f627f5319ead098a5 upstream.
+commit e9fbc47b818b964ddff5df5b2d5c0f5f32f4a147 upstream.
 
-Commit 25266128fe16 ("virtio-net: fix race between set queues and
-probe") tries to fix the race between set queues and probe by calling
-_virtnet_set_queues() before DRIVER_OK is set. This violates virtio
-spec. Fixing this by setting queues after virtio_device_ready().
+Skip the srso cmd line parsing which is not needed on Zen1/2 with SMT
+disabled and with the proper microcode applied (latter should be the
+case anyway) as those are not affected.
 
-Note that rtnl needs to be held for userspace requests to change the
-number of queues. So we are serialized in this way.
-
-Fixes: 25266128fe16 ("virtio-net: fix race between set queues and probe")
-Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 5a15d8348881 ("x86/srso: Tie SBPB bit setting to microcode patch detection")
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230813104517.3346-1-bp@alien8.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/virtio_net.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/bugs.c |    7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
---- a/drivers/net/virtio_net.c
-+++ b/drivers/net/virtio_net.c
-@@ -3220,8 +3220,6 @@ static int virtnet_probe(struct virtio_d
- 		}
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2399,8 +2399,10 @@ static void __init srso_select_mitigatio
+ 		 * IBPB microcode has been applied.
+ 		 */
+ 		if ((boot_cpu_data.x86 < 0x19) &&
+-		    (!cpu_smt_possible() || (cpu_smt_control == CPU_SMT_DISABLED)))
++		    (!cpu_smt_possible() || (cpu_smt_control == CPU_SMT_DISABLED))) {
+ 			setup_force_cpu_cap(X86_FEATURE_SRSO_NO);
++			return;
++		}
  	}
  
--	_virtnet_set_queues(vi, vi->curr_queue_pairs);
--
- 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
- 	rtnl_lock();
+ 	if (retbleed_mitigation == RETBLEED_MITIGATION_IBPB) {
+@@ -2686,6 +2688,9 @@ static ssize_t gds_show_state(char *buf)
  
-@@ -3234,6 +3232,8 @@ static int virtnet_probe(struct virtio_d
- 
- 	virtio_device_ready(vdev);
- 
-+	_virtnet_set_queues(vi, vi->curr_queue_pairs);
+ static ssize_t srso_show_state(char *buf)
+ {
++	if (boot_cpu_has(X86_FEATURE_SRSO_NO))
++		return sysfs_emit(buf, "Not affected\n");
 +
- 	rtnl_unlock();
- 
- 	err = virtnet_cpu_notif_add(vi);
+ 	return sysfs_emit(buf, "%s%s\n",
+ 			  srso_strings[srso_mitigation],
+ 			  (cpu_has_ibpb_brtype_microcode() ? "" : ", no microcode"));
 
 
