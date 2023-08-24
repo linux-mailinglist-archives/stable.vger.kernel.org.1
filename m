@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B9C8787380
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:04:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7FDE7872E2
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242056AbjHXPDs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42914 "EHLO
+        id S241921AbjHXO5x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242109AbjHXPDa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:30 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A8111FCA
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:03:15 -0700 (PDT)
+        with ESMTP id S241690AbjHXO5o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF6F6FD
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 13DB666EDF
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:03:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 25CAEC433C7;
-        Thu, 24 Aug 2023 15:03:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 84CB16701C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 983BCC433C7;
+        Thu, 24 Aug 2023 14:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889394;
-        bh=vvsCS+im+4xEVqRgOfRhj3vrH5FrB5XkwcebMJSmBd0=;
+        s=korg; t=1692889062;
+        bh=ZAmFEG4kQZA5Vk/bnuOU5mMuBzzwJ3+pXYTjc/oioSs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y2nArh/PSagWrFDBxs6rI5GppTVc0FF5QXnyPIwjnqJQOLOebzCE5BDEDkwoBdwyr
-         LMGps6Pu8Tvma/iMHgP6V0D1TFjx+SJWkavQ3cJ8jbV6CNQqbXRQPJCcj5D6YfTu6O
-         lBz1pM26eHViE3YdgbHPmZ2GYY78a7vrlkVxAkjo=
+        b=dRXJntRje24bhFo6I2Ckn5BKmU8XjMz2bZWbanrLE1B2HtQaKgH9PVdpRmvWMNvY4
+         7PJ5HJCqYUOzQlcPqya/kF9D73+1z23fUdEUtfn1LczS58334QxUO6kSm7VN5rynGf
+         DSNVmET34F4iHYEIyISombwELylxB1fPXm82EJXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alfred Lee <l00g33k@gmail.com>,
-        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 091/135] net: dsa: mv88e6xxx: Wait for EEPROM done before HW reset
+        patches@lists.linux.dev, Russell Harmon <russ@har.mn>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        David Howells <dhowells@redhat.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 111/139] cifs: Release folio lock on fscache read hit.
 Date:   Thu, 24 Aug 2023 16:50:34 +0200
-Message-ID: <20230824145030.846329254@linuxfoundation.org>
+Message-ID: <20230824145028.342695124@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,49 +55,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alfred Lee <l00g33k@gmail.com>
+From: Russell Harmon via samba-technical <samba-technical@lists.samba.org>
 
-[ Upstream commit 23d775f12dcd23d052a4927195f15e970e27ab26 ]
+commit 69513dd669e243928f7450893190915a88f84a2b upstream.
 
-If the switch is reset during active EEPROM transactions, as in
-just after an SoC reset after power up, the I2C bus transaction
-may be cut short leaving the EEPROM internal I2C state machine
-in the wrong state.  When the switch is reset again, the bad
-state machine state may result in data being read from the wrong
-memory location causing the switch to enter unexpected mode
-rendering it inoperational.
+Under the current code, when cifs_readpage_worker is called, the call
+contract is that the callee should unlock the page. This is documented
+in the read_folio section of Documentation/filesystems/vfs.rst as:
 
-Fixes: a3dcb3e7e70c ("net: dsa: mv88e6xxx: Wait for EEPROM done after HW reset")
-Signed-off-by: Alfred Lee <l00g33k@gmail.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Link: https://lore.kernel.org/r/20230815001323.24739-1-l00g33k@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+> The filesystem should unlock the folio once the read has completed,
+> whether it was successful or not.
+
+Without this change, when fscache is in use and cache hit occurs during
+a read, the page lock is leaked, producing the following stack on
+subsequent reads (via mmap) to the page:
+
+$ cat /proc/3890/task/12864/stack
+[<0>] folio_wait_bit_common+0x124/0x350
+[<0>] filemap_read_folio+0xad/0xf0
+[<0>] filemap_fault+0x8b1/0xab0
+[<0>] __do_fault+0x39/0x150
+[<0>] do_fault+0x25c/0x3e0
+[<0>] __handle_mm_fault+0x6ca/0xc70
+[<0>] handle_mm_fault+0xe9/0x350
+[<0>] do_user_addr_fault+0x225/0x6c0
+[<0>] exc_page_fault+0x84/0x1b0
+[<0>] asm_exc_page_fault+0x27/0x30
+
+This requires a reboot to resolve; it is a deadlock.
+
+Note however that the call to cifs_readpage_from_fscache does mark the
+page clean, but does not free the folio lock. This happens in
+__cifs_readpage_from_fscache on success. Releasing the lock at that
+point however is not appropriate as cifs_readahead also calls
+cifs_readpage_from_fscache and *does* unconditionally release the lock
+after its return. This change therefore effectively makes
+cifs_readpage_worker work like cifs_readahead.
+
+Signed-off-by: Russell Harmon <russ@har.mn>
+Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/dsa/mv88e6xxx/chip.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ fs/cifs/file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
-index 8b2c8546f4c99..177151298d72a 100644
---- a/drivers/net/dsa/mv88e6xxx/chip.c
-+++ b/drivers/net/dsa/mv88e6xxx/chip.c
-@@ -2310,6 +2310,14 @@ static void mv88e6xxx_hardware_reset(struct mv88e6xxx_chip *chip)
+--- a/fs/cifs/file.c
++++ b/fs/cifs/file.c
+@@ -4671,9 +4671,9 @@ static int cifs_readpage_worker(struct f
  
- 	/* If there is a GPIO connected to the reset pin, toggle it */
- 	if (gpiod) {
-+		/* If the switch has just been reset and not yet completed
-+		 * loading EEPROM, the reset may interrupt the I2C transaction
-+		 * mid-byte, causing the first EEPROM read after the reset
-+		 * from the wrong location resulting in the switch booting
-+		 * to wrong mode and inoperable.
-+		 */
-+		mv88e6xxx_g1_wait_eeprom_done(chip);
-+
- 		gpiod_set_value_cansleep(gpiod, 1);
- 		usleep_range(10000, 20000);
- 		gpiod_set_value_cansleep(gpiod, 0);
--- 
-2.40.1
-
+ io_error:
+ 	kunmap(page);
+-	unlock_page(page);
+ 
+ read_complete:
++	unlock_page(page);
+ 	return rc;
+ }
+ 
 
 
