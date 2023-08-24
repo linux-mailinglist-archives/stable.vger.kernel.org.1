@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F12DD7876FB
+	by mail.lfdr.de (Postfix) with ESMTP id A89D27876FA
 	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242818AbjHXRVp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S242826AbjHXRVp (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 24 Aug 2023 13:21:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53380 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242848AbjHXRVY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:24 -0400
+        with ESMTP id S241519AbjHXRV1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12EF112C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E10F12C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BCC467100
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9ADA9C433C7;
-        Thu, 24 Aug 2023 17:21:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7BA667579
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCA82C433C7;
+        Thu, 24 Aug 2023 17:21:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897682;
-        bh=gpMiQFWcheAnh0vf0Zv3lHGNRlc5K2WYt+xUhmKKS/Q=;
+        s=korg; t=1692897685;
+        bh=sDpy3mXSTzQjgNptsb9uDstJpqCkKS+6ooPNqMI2jkI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tmvhfVKrGbhPXvcgJM6RsIqafqMPmYS6hBIGHGK13izZULqJePrsg/kG7Dk87DC1v
-         7KvNWAlGi3+3w19pv5q2n/w2uCSRLY8eiR/jLpVTTIMM5u+25oMuVp7QZQ5O3/X7UY
-         sf1XcOqjexWBOEtmZ6zgxOds5X6ccj+zmrLcdcZo=
+        b=1bOKBF5TbIyvEenP65p3y/WnFUwWzFaSxkbIGfPVjZYtBL25ysc64EYOhbL9pgODU
+         5UPAYOeO/k2j6WGGpgVTTeKLoBGtgRz0Adp8WsmEc41y5buXCVmuQbYL3l2vRdDimy
+         HWX9CTkKbPfaMJsgUyZmgajnkPqlqaJE8GcoHIMQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Vicente Bergas <vicencb@gmail.com>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 094/135] bus: ti-sysc: Flush posted write on enable before reset
-Date:   Thu, 24 Aug 2023 19:09:26 +0200
-Message-ID: <20230824170621.340119517@linuxfoundation.org>
+Subject: [PATCH 5.10 095/135] arm64: dts: rockchip: fix supplies on rk3399-rock-pi-4
+Date:   Thu, 24 Aug 2023 19:09:27 +0200
+Message-ID: <20230824170621.387799395@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -59,46 +59,63 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Vicente Bergas <vicencb@gmail.com>
 
-[ Upstream commit 34539b442b3bc7d5bf10164750302b60b91f18a7 ]
+[ Upstream commit 328c6112787bf7562dbea638840366cd197868d6 ]
 
-The am335x devices started producing boot errors for resetting musb module
-in because of subtle timing changes:
+Based on the board schematics at
+https://dl.radxa.com/rockpi4/docs/hw/rockpi4/rockpi_4c_v12_sch_20200620.pdf
+on page 18:
+vcc_lan is not controllable by software, it is just an analog LC filter.
+Because of this, it can not be turned off-in-suspend.
 
-Unhandled fault: external abort on non-linefetch (0x1008)
-...
-sysc_poll_reset_sysconfig from sysc_reset+0x109/0x12
-sysc_reset from sysc_probe+0xa99/0xeb0
-...
+and on page 17:
+vcc_cam and vcc_mipi are not voltage regulators, they are just switches.
+So, the voltage range is not applicable.
+This silences an error message about not being able to adjust the voltage.
 
-The fix is to flush posted write after enable before reset during
-probe. Note that some devices also need to specify the delay after enable
-with ti,sysc-delay-us, but this is not needed for musb on am335x based on
-my tests.
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Closes: https://storage.kernelci.org/next/master/next-20230614/arm/multi_v7_defconfig+CONFIG_THUMB2_KERNEL=y/gcc-10/lab-cip/baseline-beaglebone-black.html
-Fixes: 596e7955692b ("bus: ti-sysc: Add support for software reset")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Signed-off-by: Vicente Bergas <vicencb@gmail.com>
+Link: https://lore.kernel.org/r/20201201154132.1286-2-vicencb@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: cee572756aa2 ("arm64: dts: rockchip: Disable HS400 for eMMC on ROCK Pi 4")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi | 8 --------
+ 1 file changed, 8 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 4b1641fe30dba..fcfe4d16cc149 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -2078,6 +2078,8 @@ static int sysc_reset(struct sysc *ddata)
- 		sysc_val = sysc_read_sysconfig(ddata);
- 		sysc_val |= sysc_mask;
- 		sysc_write(ddata, sysc_offset, sysc_val);
-+		/* Flush posted write */
-+		sysc_val = sysc_read_sysconfig(ddata);
- 	}
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+index 64df643391194..98f52fac13535 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+@@ -111,10 +111,6 @@
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
+-
+-		regulator-state-mem {
+-			regulator-off-in-suspend;
+-		};
+ 	};
  
- 	if (ddata->cfg.srst_udelay)
+ 	vdd_log: vdd-log {
+@@ -362,8 +358,6 @@
+ 				regulator-name = "vcc_cam";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+-				regulator-min-microvolt = <3300000>;
+-				regulator-max-microvolt = <3300000>;
+ 				regulator-state-mem {
+ 					regulator-off-in-suspend;
+ 				};
+@@ -373,8 +367,6 @@
+ 				regulator-name = "vcc_mipi";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+-				regulator-min-microvolt = <3300000>;
+-				regulator-max-microvolt = <3300000>;
+ 				regulator-state-mem {
+ 					regulator-off-in-suspend;
+ 				};
 -- 
 2.40.1
 
