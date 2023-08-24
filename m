@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF2DA7872DB
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C0D5787378
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:04:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241917AbjHXO5v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:57:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45394 "EHLO
+        id S242051AbjHXPDs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:03:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241949AbjHXO5e (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:34 -0400
+        with ESMTP id S242096AbjHXPD1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CE019AD
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AE721FCE
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:03:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A48B161642
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E11C433C8;
-        Thu, 24 Aug 2023 14:57:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AE87671C7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:03:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 65BD3C433C8;
+        Thu, 24 Aug 2023 15:03:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889051;
-        bh=kn5U04wt/x+mdGTzL3UCnk/p0FmMVh3g1zG1KIj1CBY=;
+        s=korg; t=1692889391;
+        bh=JYcLdYP0HEIdDbUGRelkowdWF1aeGL84qJNIKGHYmiE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oVuCBrxgNQuC2xfWs/EoShhcWENGbQtKqkAtDpVIvUME9YTg09OgVjT5yTDQecoQG
-         WokuhWwmHigtIl+QcgEts34u6bqfXeVJ6dxasmz+72Mc+s6asKYbFaVyuFacLihwoo
-         PXN7QTfnFE9YCSrMpoujTDnKAqsJNwJGijWiLG+s=
+        b=f5MiOo7ZVv/5eueijEDFZmyvXbYIR2R2Ww6zmOh74zPzMFcSWqBxQar1+KvrS3UGJ
+         ZZ3BE2vxBUMtQKfQ2I+I7x4S9iNXyenae9TiyM1lDVVLl9kmsBsZPv3inu+ylqPmZt
+         oyPHZocXGQrv0F/ryo7ta+t0a6s+O0dBBUi91ucg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev,
+        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
+        Andrii Staikov <andrii.staikov@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 109/139] serial: 8250: Fix oops for port->pm on uart_change_pm()
-Date:   Thu, 24 Aug 2023 16:50:32 +0200
-Message-ID: <20230824145028.259796631@linuxfoundation.org>
+Subject: [PATCH 5.10 090/135] i40e: fix misleading debug logs
+Date:   Thu, 24 Aug 2023 16:50:33 +0200
+Message-ID: <20230824145030.793823501@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,42 +56,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Andrii Staikov <andrii.staikov@intel.com>
 
-[ Upstream commit dfe2aeb226fd5e19b0ee795f4f6ed8bc494c1534 ]
+[ Upstream commit 2f2beb8874cb0844e84ad26e990f05f4f13ff63f ]
 
-Unloading a hardware specific 8250 driver can produce error "Unable to
-handle kernel paging request at virtual address" about ten seconds after
-unloading the driver. This happens on uart_hangup() calling
-uart_change_pm().
+Change "write" into the actual "read" word.
+Change parameters description.
 
-Turns out commit 04e82793f068 ("serial: 8250: Reinit port->pm on port
-specific driver unbind") was only a partial fix. If the hardware specific
-driver has initialized port->pm function, we need to clear port->pm too.
-Just reinitializing port->ops does not do this. Otherwise serial8250_pm()
-will call port->pm() instead of serial8250_do_pm().
-
-Fixes: 04e82793f068 ("serial: 8250: Reinit port->pm on port specific driver unbind")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20230804131553.52927-1-tony@atomide.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7073f46e443e ("i40e: Add AQ commands for NVM Update for X722")
+Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
+Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/ethernet/intel/i40e/i40e_nvm.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index ad5b742a68cd0..74e477016f255 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -3274,6 +3274,7 @@ void serial8250_init_port(struct uart_8250_port *up)
- 	struct uart_port *port = &up->port;
- 
- 	spin_lock_init(&port->lock);
-+	port->pm = NULL;
- 	port->ops = &serial8250_pops;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
- 
+diff --git a/drivers/net/ethernet/intel/i40e/i40e_nvm.c b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
+index 7164f4ad81202..6b1996451a4bd 100644
+--- a/drivers/net/ethernet/intel/i40e/i40e_nvm.c
++++ b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
+@@ -210,11 +210,11 @@ static i40e_status i40e_read_nvm_word_srctl(struct i40e_hw *hw, u16 offset,
+  * @hw: pointer to the HW structure.
+  * @module_pointer: module pointer location in words from the NVM beginning
+  * @offset: offset in words from module start
+- * @words: number of words to write
+- * @data: buffer with words to write to the Shadow RAM
++ * @words: number of words to read
++ * @data: buffer with words to read to the Shadow RAM
+  * @last_command: tells the AdminQ that this is the last command
+  *
+- * Writes a 16 bit words buffer to the Shadow RAM using the admin command.
++ * Reads a 16 bit words buffer to the Shadow RAM using the admin command.
+  **/
+ static i40e_status i40e_read_nvm_aq(struct i40e_hw *hw,
+ 				    u8 module_pointer, u32 offset,
+@@ -234,18 +234,18 @@ static i40e_status i40e_read_nvm_aq(struct i40e_hw *hw,
+ 	 */
+ 	if ((offset + words) > hw->nvm.sr_size)
+ 		i40e_debug(hw, I40E_DEBUG_NVM,
+-			   "NVM write error: offset %d beyond Shadow RAM limit %d\n",
++			   "NVM read error: offset %d beyond Shadow RAM limit %d\n",
+ 			   (offset + words), hw->nvm.sr_size);
+ 	else if (words > I40E_SR_SECTOR_SIZE_IN_WORDS)
+-		/* We can write only up to 4KB (one sector), in one AQ write */
++		/* We can read only up to 4KB (one sector), in one AQ write */
+ 		i40e_debug(hw, I40E_DEBUG_NVM,
+-			   "NVM write fail error: tried to write %d words, limit is %d.\n",
++			   "NVM read fail error: tried to read %d words, limit is %d.\n",
+ 			   words, I40E_SR_SECTOR_SIZE_IN_WORDS);
+ 	else if (((offset + (words - 1)) / I40E_SR_SECTOR_SIZE_IN_WORDS)
+ 		 != (offset / I40E_SR_SECTOR_SIZE_IN_WORDS))
+-		/* A single write cannot spread over two sectors */
++		/* A single read cannot spread over two sectors */
+ 		i40e_debug(hw, I40E_DEBUG_NVM,
+-			   "NVM write error: cannot spread over two sectors in a single write offset=%d words=%d\n",
++			   "NVM read error: cannot spread over two sectors in a single read offset=%d words=%d\n",
+ 			   offset, words);
+ 	else
+ 		ret_code = i40e_aq_read_nvm(hw, module_pointer,
 -- 
 2.40.1
 
