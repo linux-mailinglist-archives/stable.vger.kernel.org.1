@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4308378734E
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B4027872E6
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242003AbjHXPCH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:02:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
+        id S241924AbjHXO6W (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:58:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242033AbjHXPBn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 641271BC5
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:41 -0700 (PDT)
+        with ESMTP id S241950AbjHXO56 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B56F9C7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E87EE624B7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DA9C433C7;
-        Thu, 24 Aug 2023 15:01:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 527C566FBA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BCA3C433C7;
+        Thu, 24 Aug 2023 14:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889300;
-        bh=8b9ucScws4hp3uNwv4Ms+1DZBrRPXIDIr+1UVZfdkLg=;
+        s=korg; t=1692889075;
+        bh=6pqmm8jqOqfxen75NH+tVBsm7a1n6zaAlPEIKgYbxKE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KdK/zdJYQJ9wBxTdSOn/DRHs96OD22SF81P26MF+w0PFru5RgDu4wc54Z9PKAenoD
-         +vEV9s0xY8FFSqK8VIInPv0B9GzUgBNn1yxd1YDVvne+M1bKtEAGZn09IoW/tIr1wn
-         /MIt/D0W0RlxZsnSa3pAqEPargrKMX0TT49NCtC4=
+        b=jEsTmJSvqOQiow1muZo8HUtpGH91KpT+Zxl4XWnjJ/1eqgxctsVwp8ITj6P3j+vDA
+         82J7PH1fL0lrVCbVYxra2A+eLEktKRL+dLDxeK2zIVXu5a0OKHvJTeccSc/+GhgNF+
+         +c8zU5e+mVAQMCPICAmTI9t6H/YN7/Z9qXrzJr7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luca Ceresoli <luca.ceresoli@bootlin.com>,
-        Neil Armstrong <neil.armstrong@linaro.org>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Joel Stanley <joel@jms.id.au>, Arnd Bergmann <arnd@arndb.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 085/135] drm/panel: simple: Fix AUO G121EAN01 panel timings according to the docs
-Date:   Thu, 24 Aug 2023 16:50:28 +0200
-Message-ID: <20230824145030.575445553@linuxfoundation.org>
+Subject: [PATCH 5.15 106/139] soc: aspeed: socinfo: Add kfree for kstrdup
+Date:   Thu, 24 Aug 2023 16:50:29 +0200
+Message-ID: <20230824145028.145688308@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,75 +54,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Luca Ceresoli <luca.ceresoli@bootlin.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit e8470c0a7bcaa82f78ad34282d662dd7bd9630c2 ]
+[ Upstream commit 6e6d847a8ce18ab2fbec4f579f682486a82d2c6b ]
 
-Commit 03e909acd95a ("drm/panel: simple: Add support for AUO G121EAN01.4
-panel") added support for this panel model, but the timings it implements
-are very different from what the datasheet describes. I checked both the
-G121EAN01.0 datasheet from [0] and the G121EAN01.4 one from [1] and they
-all have the same timings: for example the LVDS clock typical value is 74.4
-MHz, not 66.7 MHz as implemented.
+Add kfree() in the later error handling in order to avoid memory leak.
 
-Replace the timings with the ones from the documentation. These timings
-have been tested and the clock frequencies verified with an oscilloscope to
-ensure they are correct.
-
-Also use struct display_timing instead of struct drm_display_mode in order
-to also specify the minimum and maximum values.
-
-[0] https://embedded.avnet.com/product/g121ean01-0/
-[1] https://embedded.avnet.com/product/g121ean01-4/
-
-Fixes: 03e909acd95a ("drm/panel: simple: Add support for AUO G121EAN01.4 panel")
-Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
-Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
-Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804151239.835216-1-luca.ceresoli@bootlin.com
+Fixes: e0218dca5787 ("soc: aspeed: Add soc info driver")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230707021625.7727-1-jiasheng@iscas.ac.cn
+Signed-off-by: Joel Stanley <joel@jms.id.au>
+Link: https://lore.kernel.org/r/20230810123104.231167-1-joel@jms.id.au
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/panel/panel-simple.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/soc/aspeed/aspeed-socinfo.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
-index 7b69f81444ebd..e40321d798981 100644
---- a/drivers/gpu/drm/panel/panel-simple.c
-+++ b/drivers/gpu/drm/panel/panel-simple.c
-@@ -1010,21 +1010,21 @@ static const struct panel_desc auo_g104sn02 = {
- 	},
- };
+diff --git a/drivers/soc/aspeed/aspeed-socinfo.c b/drivers/soc/aspeed/aspeed-socinfo.c
+index 1ca140356a084..3f759121dc00a 100644
+--- a/drivers/soc/aspeed/aspeed-socinfo.c
++++ b/drivers/soc/aspeed/aspeed-socinfo.c
+@@ -137,6 +137,7 @@ static int __init aspeed_socinfo_init(void)
  
--static const struct drm_display_mode auo_g121ean01_mode = {
--	.clock = 66700,
--	.hdisplay = 1280,
--	.hsync_start = 1280 + 58,
--	.hsync_end = 1280 + 58 + 8,
--	.htotal = 1280 + 58 + 8 + 70,
--	.vdisplay = 800,
--	.vsync_start = 800 + 6,
--	.vsync_end = 800 + 6 + 4,
--	.vtotal = 800 + 6 + 4 + 10,
-+static const struct display_timing auo_g121ean01_timing = {
-+	.pixelclock = { 60000000, 74400000, 90000000 },
-+	.hactive = { 1280, 1280, 1280 },
-+	.hfront_porch = { 20, 50, 100 },
-+	.hback_porch = { 20, 50, 100 },
-+	.hsync_len = { 30, 100, 200 },
-+	.vactive = { 800, 800, 800 },
-+	.vfront_porch = { 2, 10, 25 },
-+	.vback_porch = { 2, 10, 25 },
-+	.vsync_len = { 4, 18, 50 },
- };
- 
- static const struct panel_desc auo_g121ean01 = {
--	.modes = &auo_g121ean01_mode,
--	.num_modes = 1,
-+	.timings = &auo_g121ean01_timing,
-+	.num_timings = 1,
- 	.bpc = 8,
- 	.size = {
- 		.width = 261,
+ 	soc_dev = soc_device_register(attrs);
+ 	if (IS_ERR(soc_dev)) {
++		kfree(attrs->machine);
+ 		kfree(attrs->soc_id);
+ 		kfree(attrs->serial_number);
+ 		kfree(attrs);
 -- 
 2.40.1
 
