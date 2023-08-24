@@ -2,138 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A724F786C97
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 12:12:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 086FE786DE8
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 13:34:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233219AbjHXKLv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 06:11:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40816 "EHLO
+        id S241010AbjHXLdz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 07:33:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238407AbjHXKLp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 06:11:45 -0400
-Received: from linux.microsoft.com (linux.microsoft.com [13.77.154.182])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 1BC381985;
-        Thu, 24 Aug 2023 03:11:43 -0700 (PDT)
-Received: from [192.168.2.41] (77-166-152-30.fixed.kpn.net [77.166.152.30])
-        by linux.microsoft.com (Postfix) with ESMTPSA id 4D11C2127C7C;
-        Thu, 24 Aug 2023 03:11:41 -0700 (PDT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 linux.microsoft.com 4D11C2127C7C
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linux.microsoft.com;
-        s=default; t=1692871902;
-        bh=wTL4n6RO/pSWsfS18SzRvJJMqeO2s4ooiItSpkg0MWQ=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=EizwWg/LJoesLN5ikB/qxJIqjQ/Rce8ZK1aEeTK1iZUhDOJrgvZwzjDSPhmeljdXS
-         x16eJuz2y9rq+c8IpzQRmrlag1YECBsIPgqlzzkuqtc33gCMgfonlhkLWfJrxvEg/R
-         fY0cY+aBpI6cSCPtVOO3UHrFj1sDY7J5nC1TSJQM=
-Message-ID: <06070c5d-c236-46a6-a2c1-f6d6c332b06d@linux.microsoft.com>
-Date:   Thu, 24 Aug 2023 12:11:39 +0200
+        with ESMTP id S240980AbjHXLda (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 07:33:30 -0400
+Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B2B51987;
+        Thu, 24 Aug 2023 04:33:27 -0700 (PDT)
+Received: from [192.168.0.107] (unknown [111.197.209.91])
+        by APP-05 (Coremail) with SMTP id zQCowABHTPzXP+dkeCOzBA--.28393S2;
+        Thu, 24 Aug 2023 19:32:39 +0800 (CST)
+Message-ID: <4677fc33-6e76-21e6-2a7f-f12670bc1ce2@iscas.ac.cn>
+Date:   Thu, 24 Aug 2023 19:32:39 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 5.15] Revert "KVM: x86: enable TDP MMU by default"
-To:     Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        linux-kernel@vger.kernel.org
-Cc:     Mathias Krause <minipli@grsecurity.net>
-References: <20230824010512.2714931-1-seanjc@google.com>
- <ZOavFlKo2/sixUTk@google.com>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v5] riscv: Handle zicsr/zifencei issue between gcc and
+ binutils
 Content-Language: en-US
-From:   Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-In-Reply-To: <ZOavFlKo2/sixUTk@google.com>
-Content-Type: text/plain; charset=UTF-8
+To:     Conor Dooley <conor@kernel.org>,
+        Conor Dooley <conor.dooley@microchip.com>
+Cc:     patchwork-bot+linux-riscv@kernel.org,
+        linux-riscv@lists.infradead.org, paul.walmsley@sifive.com,
+        palmer@dabbelt.com, aou@eecs.berkeley.edu, nathan@kernel.org,
+        ndesaulniers@google.com, trix@redhat.com, bmeng@tinylab.org,
+        guoren@kernel.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, stable@vger.kernel.org
+References: <20230809165648.21071-1-xingmingzheng@iscas.ac.cn>
+ <169228562484.20811.14246462375671910714.git-patchwork-notify@kernel.org>
+ <20230823-captive-abdomen-befd942a4a73@wendy>
+ <20230823-facelift-ovary-41f2eb4d9eac@spud>
+From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Organization: ISCAS
+In-Reply-To: <20230823-facelift-ovary-41f2eb4d9eac@spud>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-17.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-CM-TRANSID: zQCowABHTPzXP+dkeCOzBA--.28393S2
+X-Coremail-Antispam: 1UD129KBjvJXoW7AF1kKF48ZFy8uryxZrW5Jrb_yoW8ur45pa
+        yfKF9FkF4kXw48J3s7tr1jq3WYvw4ftryrXr1qyryjy3s8uF90qF92krWa9FyDZFWfCr40
+        kr4ruasxuw1qyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUvCb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
+        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
+        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
+        jxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4
+        vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
+        F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
+        4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xK
+        xwCYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
+        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
+        b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
+        vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
+        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
+        nxnUUI43ZEXa7IU56c_DUUUUU==
+X-Originating-IP: [111.197.209.91]
+X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiAxANCmTnMS822AAAsn
+X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/24/2023 3:15 AM, Sean Christopherson wrote:
-> +Jeremi and Mathias, my scripts for sending patches to stable don't auto-cc :-/
-> 
-> On Wed, Aug 23, 2023, Sean Christopherson wrote:
->> Disable the TDP MMU by default in v5.15 kernels to "fix" several severe
->> performance bugs that have since been found and fixed in the TDP MMU, but
->> are unsuitable for backporting to v5.15.
+On 8/23/23 21:31, Conor Dooley wrote:
+> On Wed, Aug 23, 2023 at 12:51:13PM +0100, Conor Dooley wrote:
+>> On Thu, Aug 17, 2023 at 03:20:24PM +0000, patchwork-bot+linux-riscv@kernel.org wrote:
+>>> Hello:
+>>>
+>>> This patch was applied to riscv/linux.git (fixes)
+>>> by Palmer Dabbelt <palmer@rivosinc.com>:
+>>>
+>>> On Thu, 10 Aug 2023 00:56:48 +0800 you wrote:
+>>>> Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
+>>>> 20191213 version which moves some instructions from the I extension to the
+>>>> Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
+>>>> that version, we should explicitly specifying Zicsr and Zifencei via -march
+>>>> to cope with the new changes. but this only occurs when binutils >= 2.36
+>>>> and GCC >= 11.1.0. It's a different story when binutils < 2.36.
+>>>>
+>>>> [...]
+>>> Here is the summary with links:
+>>>    - [v5] riscv: Handle zicsr/zifencei issue between gcc and binutils
+>>>      https://git.kernel.org/riscv/c/ca09f772ccca
+>> *sigh* so this breaks the build for gcc-11 & binutils 2.37 w/
+>> 	Assembler messages:
+>> 	Error: cannot find default versions of the ISA extension `zicsr'
+>> 	Error: cannot find default versions of the ISA extension `zifencei'
 >>
->> The problematic bugs are fixed by upstream commit edbdb43fc96b ("KVM:
->> x86: Preserve TDP MMU roots until they are explicitly invalidated") and
->> commit 01b31714bd90 ("KVM: x86: Do not unload MMU roots when only toggling
->> CR0.WP with TDP enabled").  Both commits fix scenarios where KVM will
->> rebuild all TDP MMU page tables in paths that are frequently hit by
->> certain guest workloads.  While not exactly common, the guest workloads
->> are far from rare.  The fallout of rebuilding TDP MMU page tables can be
->> so severe in some cases that it induces soft lockups in the guest.
->>
->> Commit edbdb43fc96b would require _significant_ effort and churn to
->> backport due it depending on a major rework that was done in v5.18.
->>
->> Commit 01b31714bd90 has far fewer direct conflicts, but has several subtle
->> _known_ dependencies, and it's unclear whether or not there are more
->> unknown dependencies that have been missed.
->>
->> Lastly, disabling the TDP MMU in v5.15 kernels also fixes a lurking train
->> wreck started by upstream commit a955cad84cda ("KVM: x86/mmu: Retry page
->> fault if root is invalidated by memslot update").  That commit was tagged
->> for stable to fix a memory leak, but didn't cherry-pick cleanly and was
->> never backported to v5.15.  Which is extremely fortunate, as it introduced
->> not one but two bugs, one of which was fixed by upstream commit
->> 18c841e1f411 ("KVM: x86: Retry page fault if MMU reload is pending and
->> root has no sp"), while the other was unknowingly fixed by upstream
->> commit ba6e3fe25543 ("KVM: x86/mmu: Grab mmu_invalidate_seq in
->> kvm_faultin_pfn()") in v6.3 (a one-off fix will be made for v6.1 kernels,
->> which did receive a backport for a955cad84cda).  Disabling the TDP MMU
->> by default reduces the probability of breaking v5.15 kernels by
->> backporting only a subset of the fixes.
->>
->> As far as what is lost by disabling the TDP MMU, the main selling point of
->> the TDP MMU is its ability to service page fault VM-Exits in parallel,
->> i.e. the main benefactors of the TDP MMU are deployments of large VMs
->> (hundreds of vCPUs), and in particular delployments that live-migrate such
->> VMs and thus need to fault-in huge amounts of memory on many vCPUs after
->> restarting the VM after migration.
->>
->> Smaller VMs can see performance improvements, but nowhere enough to make
->> up for the TDP MMU (in v5.15) absolutely cratering performance for some
->> workloads.  And practically speaking, anyone that is deploying and
->> migrating VMs with hundreds of vCPUs is likely rolling their own kernel,
->> not using a stock v5.15 series kernel.
->>
->> This reverts commit 71ba3f3189c78f756a659568fb473600fd78f207.
->>
->> Link: https://lore.kernel.org/all/ZDmEGM+CgYpvDLh6@google.com
->> Link: https://lore.kernel.org/all/f023d927-52aa-7e08-2ee5-59a2fbc65953@gameservers.com
->> Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
->> Cc: Mathias Krause <minipli@grsecurity.net>
->> Signed-off-by: Sean Christopherson <seanjc@google.com>
->> ---
->>  arch/x86/kvm/mmu/tdp_mmu.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
->> index 6c2bb60ccd88..7a64fb238044 100644
->> --- a/arch/x86/kvm/mmu/tdp_mmu.c
->> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
->> @@ -10,7 +10,7 @@
->>  #include <asm/cmpxchg.h>
->>  #include <trace/events/kvm.h>
->>  
->> -static bool __read_mostly tdp_mmu_enabled = true;
->> +static bool __read_mostly tdp_mmu_enabled = false;
->>  module_param_named(tdp_mmu, tdp_mmu_enabled, bool, 0644);
->>  
->>  /* Initializes the TDP MMU for the VM, if enabled. */
->>
->> base-commit: f6f7927ac664ba23447f8dd3c3dfe2f4ee39272f
->> -- 
->> 2.42.0.rc2.253.gd59a3bf2b4-goog
->>
+>> I'll have a poke later.
+> So uh, are we sure that this should not be:
+> -       depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
+> +       depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION <= 110100)
+>
+> My gcc-11.1 + binutils 2.37 toolchain built from riscv-gnu-toolchain
+> doesn't have the default versions & the above diff fixes the build.
 
-Thanks, I've been meaning to poke you about this again but things got in the way.
-Have my ack:
+I reproduced the error, the combination of gcc-11.1 and
+binutils 2.37 does cause errors. What a surprise, since binutils
+2.36 and 2.38 are fine.
 
-Acked-by: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+I used git bisect to locate this commit[1] for binutils.
+I'll test this diff in more detail later. Thanks!
+
+[1] 
+https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f0bae2552db1dd4f1995608fbf6648fcee4e9e0c
+
+Best Regards,
+Mingzheng.
+
+>
+> Thanks,
+> Conor.
+
