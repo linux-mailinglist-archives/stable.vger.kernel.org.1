@@ -2,47 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E4B778731C
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:01:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D811787287
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236099AbjHXPA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49538 "EHLO
+        id S241872AbjHXOyk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:54:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241958AbjHXPAH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:00:07 -0400
+        with ESMTP id S241897AbjHXOy2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:54:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A46EE1BC5
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:59:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D5D510D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:54:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 43B16670B7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:59:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57630C433C9;
-        Thu, 24 Aug 2023 14:59:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1797466F14
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:54:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22EECC433C7;
+        Thu, 24 Aug 2023 14:54:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889197;
-        bh=Bbv5zzSAXIIhz94OBhqvRsU8lM74FzkGBoPDJOW51Yk=;
+        s=korg; t=1692888865;
+        bh=6MWdwX7iCyNW+hHBq44rFA8lzf7iFe4fQJakWeGfrE8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ldD646i7TUO9aPf5dynel1OhlPAgmzDZHy7/uJUvp5y3SQ9LFB1/YP4yaWK20vXu2
-         DEZMO+ACJRf8qPkmU/TtneXsSYLUTooXKlqXVH2IbaAiXbFBhCOfVOpbVBDQfcrMjR
-         2rpz8vxJ8g9TwHrPQ2G4sBso0BNw4upf/nMbNCgc=
+        b=YTX3SoNsJrNJHS4ayL0Z0mJqE8criN6ls2gaFtyI5uHK9I6sWEJwPRZGx14JReFlm
+         nSNj6IHkuS98FG7ZJpL+Cd6G+8eCLQXltyuJsWfEA48+QqS2mG9FYleNB1F7l6Wam0
+         HiDiOcPHDZstiGL7k5V41i4rSudPa6wh+3FoD2+o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Hemant Kumar <hemantk@codeaurora.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bhaumik Bhatt <bbhatt@codeaurora.org>,
+        patches@lists.linux.dev, Bharath SM <bharathsm@microsoft.com>,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 049/135] bus: mhi: Add MMIO region length to controller structure
+Subject: [PATCH 5.15 069/139] cifs: fix potential oops in cifs_oplock_break
 Date:   Thu, 24 Aug 2023 16:49:52 +0200
-Message-ID: <20230824145029.043784759@linuxfoundation.org>
+Message-ID: <20230824145026.656526489@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,49 +56,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bhaumik Bhatt <bbhatt@codeaurora.org>
+From: Steve French <stfrench@microsoft.com>
 
-[ Upstream commit baa7a08569358d9d16e71ce36f287c39a665d776 ]
+[ Upstream commit e8f5f849ffce24490eb9449e98312b66c0dba76f ]
 
-Make controller driver specify the MMIO register region length
-for range checking of BHI or BHIe space. This can help validate
-that offsets are in acceptable memory region or not and avoid any
-boot-up issues due to BHI or BHIe memory accesses.
+With deferred close we can have closes that race with lease breaks,
+and so with the current checks for whether to send the lease response,
+oplock_response(), this can mean that an unmount (kill_sb) can occur
+just before we were checking if the tcon->ses is valid.  See below:
 
-Link: https://lore.kernel.org/r/1620330705-40192-4-git-send-email-bbhatt@codeaurora.org
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Reviewed-by: Hemant Kumar <hemantk@codeaurora.org>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Bhaumik Bhatt <bbhatt@codeaurora.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20210802051255.5771-6-manivannan.sadhasivam@linaro.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Stable-dep-of: 6a0c637bfee6 ("bus: mhi: host: Range check CHDBOFF and ERDBOFF")
+[Fri Aug  4 04:12:50 2023] RIP: 0010:cifs_oplock_break+0x1f7/0x5b0 [cifs]
+[Fri Aug  4 04:12:50 2023] Code: 7d a8 48 8b 7d c0 c0 e9 02 48 89 45 b8 41 89 cf e8 3e f5 ff ff 4c 89 f7 41 83 e7 01 e8 82 b3 03 f2 49 8b 45 50 48 85 c0 74 5e <48> 83 78 60 00 74 57 45 84 ff 75 52 48 8b 43 98 48 83 eb 68 48 39
+[Fri Aug  4 04:12:50 2023] RSP: 0018:ffffb30607ddbdf8 EFLAGS: 00010206
+[Fri Aug  4 04:12:50 2023] RAX: 632d223d32612022 RBX: ffff97136944b1e0 RCX: 0000000080100009
+[Fri Aug  4 04:12:50 2023] RDX: 0000000000000001 RSI: 0000000080100009 RDI: ffff97136944b188
+[Fri Aug  4 04:12:50 2023] RBP: ffffb30607ddbe58 R08: 0000000000000001 R09: ffffffffc08e0900
+[Fri Aug  4 04:12:50 2023] R10: 0000000000000001 R11: 000000000000000f R12: ffff97136944b138
+[Fri Aug  4 04:12:50 2023] R13: ffff97149147c000 R14: ffff97136944b188 R15: 0000000000000000
+[Fri Aug  4 04:12:50 2023] FS:  0000000000000000(0000) GS:ffff9714f7c00000(0000) knlGS:0000000000000000
+[Fri Aug  4 04:12:50 2023] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[Fri Aug  4 04:12:50 2023] CR2: 00007fd8de9c7590 CR3: 000000011228e000 CR4: 0000000000350ef0
+[Fri Aug  4 04:12:50 2023] Call Trace:
+[Fri Aug  4 04:12:50 2023]  <TASK>
+[Fri Aug  4 04:12:50 2023]  process_one_work+0x225/0x3d0
+[Fri Aug  4 04:12:50 2023]  worker_thread+0x4d/0x3e0
+[Fri Aug  4 04:12:50 2023]  ? process_one_work+0x3d0/0x3d0
+[Fri Aug  4 04:12:50 2023]  kthread+0x12a/0x150
+[Fri Aug  4 04:12:50 2023]  ? set_kthread_struct+0x50/0x50
+[Fri Aug  4 04:12:50 2023]  ret_from_fork+0x22/0x30
+[Fri Aug  4 04:12:50 2023]  </TASK>
+
+To fix this change the ordering of the checks before sending the oplock_response
+to first check if the openFileList is empty.
+
+Fixes: da787d5b7498 ("SMB3: Do not send lease break acknowledgment if all file handles have been closed")
+Suggested-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+Reviewed-by: Shyam Prasad N <sprasad@microsoft.com>
+Signed-off-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mhi.h | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/cifs/file.c | 23 ++++++++++++++++-------
+ 1 file changed, 16 insertions(+), 7 deletions(-)
 
-diff --git a/include/linux/mhi.h b/include/linux/mhi.h
-index d4841e5a5f458..5d9f8c6f3d40f 100644
---- a/include/linux/mhi.h
-+++ b/include/linux/mhi.h
-@@ -303,6 +303,7 @@ struct mhi_controller_config {
-  * @rddm_size: RAM dump size that host should allocate for debugging purpose
-  * @sbl_size: SBL image size downloaded through BHIe (optional)
-  * @seg_len: BHIe vector size (optional)
-+ * @reg_len: Length of the MHI MMIO region (required)
-  * @fbc_image: Points to firmware image buffer
-  * @rddm_image: Points to RAM dump buffer
-  * @mhi_chan: Points to the channel configuration table
-@@ -383,6 +384,7 @@ struct mhi_controller {
- 	size_t rddm_size;
- 	size_t sbl_size;
- 	size_t seg_len;
-+	size_t reg_len;
- 	struct image_info *fbc_image;
- 	struct image_info *rddm_image;
- 	struct mhi_chan *mhi_chan;
+diff --git a/fs/cifs/file.c b/fs/cifs/file.c
+index e65fbae9e804b..369620e82b84d 100644
+--- a/fs/cifs/file.c
++++ b/fs/cifs/file.c
+@@ -4865,9 +4865,11 @@ void cifs_oplock_break(struct work_struct *work)
+ 	struct cifsFileInfo *cfile = container_of(work, struct cifsFileInfo,
+ 						  oplock_break);
+ 	struct inode *inode = d_inode(cfile->dentry);
++	struct cifs_sb_info *cifs_sb = CIFS_SB(inode->i_sb);
+ 	struct cifsInodeInfo *cinode = CIFS_I(inode);
+-	struct cifs_tcon *tcon = tlink_tcon(cfile->tlink);
+-	struct TCP_Server_Info *server = tcon->ses->server;
++	struct cifs_tcon *tcon;
++	struct TCP_Server_Info *server;
++	struct tcon_link *tlink;
+ 	int rc = 0;
+ 	bool purge_cache = false, oplock_break_cancelled;
+ 	__u64 persistent_fid, volatile_fid;
+@@ -4876,6 +4878,12 @@ void cifs_oplock_break(struct work_struct *work)
+ 	wait_on_bit(&cinode->flags, CIFS_INODE_PENDING_WRITERS,
+ 			TASK_UNINTERRUPTIBLE);
+ 
++	tlink = cifs_sb_tlink(cifs_sb);
++	if (IS_ERR(tlink))
++		goto out;
++	tcon = tlink_tcon(tlink);
++	server = tcon->ses->server;
++
+ 	server->ops->downgrade_oplock(server, cinode, cfile->oplock_level,
+ 				      cfile->oplock_epoch, &purge_cache);
+ 
+@@ -4925,18 +4933,19 @@ void cifs_oplock_break(struct work_struct *work)
+ 	/*
+ 	 * MS-SMB2 3.2.5.19.1 and 3.2.5.19.2 (and MS-CIFS 3.2.5.42) do not require
+ 	 * an acknowledgment to be sent when the file has already been closed.
+-	 * check for server null, since can race with kill_sb calling tree disconnect.
+ 	 */
+ 	spin_lock(&cinode->open_file_lock);
+-	if (tcon->ses && tcon->ses->server && !oplock_break_cancelled &&
+-					!list_empty(&cinode->openFileList)) {
++	/* check list empty since can race with kill_sb calling tree disconnect */
++	if (!oplock_break_cancelled && !list_empty(&cinode->openFileList)) {
+ 		spin_unlock(&cinode->open_file_lock);
+-		rc = tcon->ses->server->ops->oplock_response(tcon, persistent_fid,
+-						volatile_fid, net_fid, cinode);
++		rc = server->ops->oplock_response(tcon, persistent_fid,
++						  volatile_fid, net_fid, cinode);
+ 		cifs_dbg(FYI, "Oplock release rc = %d\n", rc);
+ 	} else
+ 		spin_unlock(&cinode->open_file_lock);
+ 
++	cifs_put_tlink(tlink);
++out:
+ 	cifs_done_oplock_break(cinode);
+ }
+ 
 -- 
 2.40.1
 
