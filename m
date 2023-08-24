@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1EC11787331
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24F6B7872AA
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241987AbjHXPBE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:01:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44562 "EHLO
+        id S241896AbjHXOzp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:55:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242076AbjHXPA6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:00:58 -0400
+        with ESMTP id S241921AbjHXOz3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 116F4CC
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:00:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52DE019A9
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A4E9C61027
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:00:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2B3DC433C8;
-        Thu, 24 Aug 2023 15:00:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5DA162248
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06325C433C8;
+        Thu, 24 Aug 2023 14:55:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889256;
-        bh=IT8kB5BnyrDfvarCDq+u4PXJSeWtUWSd8zd3heqFeuY=;
+        s=korg; t=1692888926;
+        bh=LBkaizgmm2RtNipaDqLm+mQ5VnhF3NnL/vmqwX9QbAw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fkA8qKk8d+n8ktqNE4RDGZ5npofth48d0BilkLcbJHZ4mMzGZZrAdhdta7WucDDlf
-         jkZ6FVOid56IpLAmVljlPEZ+XzgvotEv+hFYYI2DnuJmJU+sYa4kyGkM5d+6RJCqNW
-         6yHsTolVg4tq5MoMmXDDhU6hHM/GlzYv4j94Y+1k=
+        b=N1O4daiaQnJCl3bPmDBXgCajsRUnvJ/zVkrSDDqK9DhYjis+Uy1mJpc1DEclDymtd
+         u8Y/x6k60KT2nQzEIVW4wMuMv1WNKvmYPinOmeWtsWHgB8XJ/seo0/EtdDrlTteS+0
+         1hk16UgCSaNOTkLIosuF3V7OegZnvRXEM9OvdoeE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.10 071/135] powerpc/rtas_flash: allow user copy to flash block cache objects
-Date:   Thu, 24 Aug 2023 16:50:14 +0200
-Message-ID: <20230824145029.921640361@linuxfoundation.org>
+        patches@lists.linux.dev, Sishuai Gong <sishuai.system@gmail.com>,
+        Simon Horman <horms@kernel.org>, Julian Anastasov <ja@ssi.bg>,
+        Florian Westphal <fw@strlen.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 092/139] ipvs: fix racy memcpy in proc_do_sync_threshold
+Date:   Thu, 24 Aug 2023 16:50:15 +0200
+Message-ID: <20230824145027.605352585@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,68 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Sishuai Gong <sishuai.system@gmail.com>
 
-commit 4f3175979e62de3b929bfa54a0db4b87d36257a7 upstream.
+[ Upstream commit 5310760af1d4fbea1452bfc77db5f9a680f7ae47 ]
 
-With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
-/proc/powerpc/rtas/firmware_update interface to prepare a system
-firmware update yields a BUG():
+When two threads run proc_do_sync_threshold() in parallel,
+data races could happen between the two memcpy():
 
-  kernel BUG at mm/usercopy.c:102!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in:
-  CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
-  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
-  NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
-  REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
-  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
-  CFAR: c0000000001fbd34 IRQMASK: 0
-  [ ... GPRs omitted ... ]
-  NIP usercopy_abort+0xa0/0xb0
-  LR  usercopy_abort+0x9c/0xb0
-  Call Trace:
-    usercopy_abort+0x9c/0xb0 (unreliable)
-    __check_heap_object+0x1b4/0x1d0
-    __check_object_size+0x2d0/0x380
-    rtas_flash_write+0xe4/0x250
-    proc_reg_write+0xfc/0x160
-    vfs_write+0xfc/0x4e0
-    ksys_write+0x90/0x160
-    system_call_exception+0x178/0x320
-    system_call_common+0x160/0x2c4
+Thread-1			Thread-2
+memcpy(val, valp, sizeof(val));
+				memcpy(valp, val, sizeof(val));
 
-The blocks of the firmware image are copied directly from user memory
-to objects allocated from flash_block_cache, so flash_block_cache must
-be created using kmem_cache_create_usercopy() to mark it safe for user
-access.
+This race might mess up the (struct ctl_table *) table->data,
+so we add a mutex lock to serialize them.
 
-Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-[mpe: Trim and indent oops]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/netdev/B6988E90-0A1E-4B85-BF26-2DAF6D482433@gmail.com/
+Signed-off-by: Sishuai Gong <sishuai.system@gmail.com>
+Acked-by: Simon Horman <horms@kernel.org>
+Acked-by: Julian Anastasov <ja@ssi.bg>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas_flash.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/netfilter/ipvs/ip_vs_ctl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/arch/powerpc/kernel/rtas_flash.c
-+++ b/arch/powerpc/kernel/rtas_flash.c
-@@ -710,9 +710,9 @@ static int __init rtas_flash_init(void)
- 	if (!rtas_validate_flash_data.buf)
- 		return -ENOMEM;
+diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
+index 29ec3ef63edc7..d0b64c36471d5 100644
+--- a/net/netfilter/ipvs/ip_vs_ctl.c
++++ b/net/netfilter/ipvs/ip_vs_ctl.c
+@@ -1802,6 +1802,7 @@ static int
+ proc_do_sync_threshold(struct ctl_table *table, int write,
+ 		       void *buffer, size_t *lenp, loff_t *ppos)
+ {
++	struct netns_ipvs *ipvs = table->extra2;
+ 	int *valp = table->data;
+ 	int val[2];
+ 	int rc;
+@@ -1811,6 +1812,7 @@ proc_do_sync_threshold(struct ctl_table *table, int write,
+ 		.mode = table->mode,
+ 	};
  
--	flash_block_cache = kmem_cache_create("rtas_flash_cache",
--					      RTAS_BLK_SIZE, RTAS_BLK_SIZE, 0,
--					      NULL);
-+	flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
-+						       RTAS_BLK_SIZE, RTAS_BLK_SIZE,
-+						       0, 0, RTAS_BLK_SIZE, NULL);
- 	if (!flash_block_cache) {
- 		printk(KERN_ERR "%s: failed to create block cache\n",
- 				__func__);
++	mutex_lock(&ipvs->sync_mutex);
+ 	memcpy(val, valp, sizeof(val));
+ 	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
+ 	if (write) {
+@@ -1820,6 +1822,7 @@ proc_do_sync_threshold(struct ctl_table *table, int write,
+ 		else
+ 			memcpy(valp, val, sizeof(val));
+ 	}
++	mutex_unlock(&ipvs->sync_mutex);
+ 	return rc;
+ }
+ 
+@@ -4077,6 +4080,7 @@ static int __net_init ip_vs_control_net_init_sysctl(struct netns_ipvs *ipvs)
+ 	ipvs->sysctl_sync_threshold[0] = DEFAULT_SYNC_THRESHOLD;
+ 	ipvs->sysctl_sync_threshold[1] = DEFAULT_SYNC_PERIOD;
+ 	tbl[idx].data = &ipvs->sysctl_sync_threshold;
++	tbl[idx].extra2 = ipvs;
+ 	tbl[idx++].maxlen = sizeof(ipvs->sysctl_sync_threshold);
+ 	ipvs->sysctl_sync_refresh_period = DEFAULT_SYNC_REFRESH_PERIOD;
+ 	tbl[idx++].data = &ipvs->sysctl_sync_refresh_period;
+-- 
+2.40.1
+
 
 
