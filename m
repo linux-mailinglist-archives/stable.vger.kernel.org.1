@@ -2,71 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A9670786EE3
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 14:19:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4154B786F4A
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 14:40:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241330AbjHXMSj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 08:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56602 "EHLO
+        id S238067AbjHXMkW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 08:40:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241329AbjHXMSd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 08:18:33 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.31])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A054D10EF;
-        Thu, 24 Aug 2023 05:18:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692879511; x=1724415511;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=BI0e4xgTMuP0vJIr6AvvWn1zdIhqDFSz5JPSyTyMEcI=;
-  b=eaCBFrSKe48JkSWRIkpEJDCMVXnEmPDKOzhqhrOEFnVP3THm9W9y3gAD
-   HESoWpwgpny2sVT9AObwp1cfb/PuGJpboANQ1d+AWtOuf4joexLBjINwe
-   E47xHDhQdyD4I0VTDm/3nWhZ+BcUHPW/r9DSxl8zoSSM/Rige7u2ju61F
-   D9TKRHF8HITaorgPIY3DmirJR7QNZ580jtVHA/nUbJjbUxq/q2zdr08kz
-   nb+bZgEp4TD2WCogzQSr2TTLs5P2WqBQ5xMxPnSQ5fl8fo3LXmJrbks8d
-   tT/5+MzEk1U97tHkctuduPGFEPmWvlqL4ZPX7oH2lfpDYJLFsoTEG9ipV
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="438356173"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="438356173"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga104.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 05:18:31 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10811"; a="737027321"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="737027321"
-Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.251.212.187])
-  by orsmga002-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 05:18:27 -0700
-Message-ID: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
-Date:   Thu, 24 Aug 2023 15:18:23 +0300
+        with ESMTP id S238650AbjHXMkS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 08:40:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A01B9170C;
+        Thu, 24 Aug 2023 05:40:16 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3DB4B66B62;
+        Thu, 24 Aug 2023 12:40:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95707C433D9;
+        Thu, 24 Aug 2023 12:40:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692880815;
+        bh=ryDYW0LzOBrD95Hy4ZEBBtPqH/wFUCd7OudL+3q37nI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=uFZhOFrMxhO/eYxzTV94NL0uhM2DB2Fl4ofapaV2kdWeX0lb+/2IjhImjuQhzKkhV
+         W67iKpj78X246u/kLd1TOrTvtA5WQA62whYiMNmp7faUzhblM0gKoPLPuFDSXlWnrN
+         j8hX1qqz9bMN3uc7WkpwSB9Fk44CV5zgC7y8j7mowb1TScf1yMjbgwleBZsMqIK/2V
+         NvT7EtYQjAQjHDj92l/5xQ8EDHOvJ+nADs/FOVw7NVekFv0lI1c9YDLeePZqRzAJmd
+         CyW6LiDnXd4Dg2mFOWBUU++TlK3hu4rgV1moDZfDZWiPIzO6dlLAT/VvoLlWdE2+p9
+         v1Om2oqEbILGA==
+Received: by mail-ej1-f51.google.com with SMTP id a640c23a62f3a-99c4923195dso873564966b.2;
+        Thu, 24 Aug 2023 05:40:15 -0700 (PDT)
+X-Gm-Message-State: AOJu0YzdDGrnSZ+DrLVOjODpYuTfr05mpdvPOmX4Me4mMGc5zS1TT3gt
+        lma9sBRwJ09NbycJhwBFuCvGCZgY5hiqLQI7Vr4=
+X-Google-Smtp-Source: AGHT+IElKj/clT4Aum1r6elXY/CkiZY8wt6TZCTkqa5tNb9EBX3Rct2Wjs+Z7REiMeEma7VXLp86Ufzgy4j7lsUDsaw=
+X-Received: by 2002:a17:906:8a70:b0:99c:d05d:4b2 with SMTP id
+ hy16-20020a1709068a7000b0099cd05d04b2mr12014148ejc.10.1692880813749; Thu, 24
+ Aug 2023 05:40:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Firefox/102.0 Thunderbird/102.14.0
-Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
- SoCs can suspend
-Content-Language: en-US
-To:     =?UTF-8?Q?Stanis=c5=82aw_Kardach?= <skardach@google.com>
-Cc:     Sven van Ashbrook <svenva@chromium.org>,
-        LKML <linux-kernel@vger.kernel.org>, ulf.hansson@linaro.org,
-        jason.lai@genesyslogic.com.tw,
-        Renius Chen <reniuschengl@gmail.com>,
-        linux-mmc@vger.kernel.org, greg.tu@genesyslogic.com.tw,
-        jasonlai.genesyslogic@gmail.com, SeanHY.chen@genesyslogic.com.tw,
-        ben.chuang@genesyslogic.com.tw, victor.shih@genesyslogic.com.tw,
-        stable@vger.kernel.org
-References: <20230823174134.v2.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
- <e22c4a5f-c592-7121-7173-eef669ebdf89@intel.com>
- <CADj_en4p8MsfSsuzgpNU22FV7W_ME=g04coXfk4+e_-Jk11yrA@mail.gmail.com>
-From:   Adrian Hunter <adrian.hunter@intel.com>
-Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
- Business Identity Code: 0357606 - 4, Domiciled in Helsinki
-In-Reply-To: <CADj_en4p8MsfSsuzgpNU22FV7W_ME=g04coXfk4+e_-Jk11yrA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+References: <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
+ <5777BD82-2C8D-4BAB-BDD3-C2C003DC57FB@joelfernandes.org> <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
+ <87ttspct76.ffs@tglx> <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
+ <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com> <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop>
+In-Reply-To: <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Thu, 24 Aug 2023 20:40:00 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
+Message-ID: <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     paulmck@kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,212 +81,130 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 24/08/23 14:50, Stanisław Kardach wrote:
-> Hi Adrian,
-> 
-> Thanks for reviewing our patches.
-> 
-> On Thu, Aug 24, 2023 at 1:47 PM Adrian Hunter <adrian.hunter@intel.com <mailto:adrian.hunter@intel.com>> wrote:
-> 
->     Hi
-> 
->     Looks OK - a few minor comments below
-> 
->     On 23/08/23 20:41, Sven van Ashbrook wrote:
->     > To improve the r/w performance of GL9763E, the current driver inhibits LPM
->     > negotiation while the device is active.
->     >
->     > This prevents a large number of SoCs from suspending, notably x86 systems
-> 
->     If possible, can you give example of which SoCs / products
-> 
->     > which use S0ix as the suspend mechanism:
->     > 1. Userspace initiates s2idle suspend (e.g. via writing to
->     >    /sys/power/state)
->     > 2. This switches the runtime_pm device state to active, which disables
->     >    LPM negotiation, then calls the "regular" suspend callback
->     > 3. With LPM negotiation disabled, the bus cannot enter low-power state
->     > 4. On a large number of SoCs, if the bus not in a low-power state, S0ix
->     >    cannot be entered, which in turn prevents the SoC from entering
->     >    suspend.
->     >
->     > Fix by re-enabling LPM negotiation in the device's suspend callback.
->     >
->     > Suggested-by: Stanislaw Kardach <skardach@google.com <mailto:skardach@google.com>>
->     > Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
->     > Cc: stable@vger.kernel.org <mailto:stable@vger.kernel.org>
->     > Signed-off-by: Sven van Ashbrook <svenva@chromium.org <mailto:svenva@chromium.org>>
->     >      # on gladios device
->     >      # on 15590.0.0 with v5.10 and upstream (v6.4) kernels
->     >
-> 
->     3 extraneous lines here - please remove
-> 
->     > ---
->     >
->     > Changes in v2:
->     > - improved symmetry and error path in s2idle suspend callback (internal review)
->     >
->     >  drivers/mmc/host/sdhci-pci-gli.c | 102 +++++++++++++++++++------------
->     >  1 file changed, 64 insertions(+), 38 deletions(-)
->     >
->     > diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
->     > index 1792665c9494a..19f577cc8bceb 100644
->     > --- a/drivers/mmc/host/sdhci-pci-gli.c
->     > +++ b/drivers/mmc/host/sdhci-pci-gli.c
->     > @@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
->     >       return value;
->     >  }
->     > 
->     > -#ifdef CONFIG_PM_SLEEP
->     > -static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
->     > -{
->     > -     struct sdhci_pci_slot *slot = chip->slots[0];
->     > -
->     > -     pci_free_irq_vectors(slot->chip->pdev);
->     > -     gli_pcie_enable_msi(slot);
->     > -
->     > -     return sdhci_pci_resume_host(chip);
->     > -}
->     > -
->     > -static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
->     > -{
->     > -     struct sdhci_pci_slot *slot = chip->slots[0];
->     > -     int ret;
->     > -
->     > -     ret = sdhci_pci_gli_resume(chip);
->     > -     if (ret)
->     > -             return ret;
->     > -
->     > -     return cqhci_resume(slot->host->mmc);
->     > -}
->     > -
->     > -static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
->     > -{
->     > -     struct sdhci_pci_slot *slot = chip->slots[0];
->     > -     int ret;
->     > -
->     > -     ret = cqhci_suspend(slot->host->mmc);
->     > -     if (ret)
->     > -             return ret;
->     > -
->     > -     return sdhci_suspend_host(slot->host);
->     > -}
->     > -#endif
->     > -
->     >  static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
->     >                                         struct mmc_ios *ios)
->     >  {
->     > @@ -1029,6 +993,68 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
->     >  }
->     >  #endif
->     > 
->     > +#ifdef CONFIG_PM_SLEEP
->     > +static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
->     > +{
->     > +     struct sdhci_pci_slot *slot = chip->slots[0];
->     > +
->     > +     pci_free_irq_vectors(slot->chip->pdev);
->     > +     gli_pcie_enable_msi(slot);
->     > +
->     > +     return sdhci_pci_resume_host(chip);
->     > +}
->     > +
->     > +static int gl9763e_resume(struct sdhci_pci_chip *chip)
->     > +{
->     > +     struct sdhci_pci_slot *slot = chip->slots[0];
->     > +     int ret;
->     > +
->     > +     ret = sdhci_pci_gli_resume(chip);
->     > +     if (ret)
->     > +             return ret;
->     > +
->     > +     ret = cqhci_resume(slot->host->mmc);
->     > +     if (ret)
->     > +             return ret;
->     > +
->     > +     /* Disable LPM negotiation to bring device back in sync
->     > +      * with its runtime_pm state.
->     > +      */
-> 
->     I would prefer the comment style:
-> 
->             /*
->              * Blah, blah ...
->              * Blah, blah, blah.
->              */
-> 
->     > +     gl9763e_set_low_power_negotiation(slot, false);
->     > +
->     > +     return 0;
->     > +}
->     > +
->     > +static int gl9763e_suspend(struct sdhci_pci_chip *chip)
->     > +{
->     > +     struct sdhci_pci_slot *slot = chip->slots[0];
->     > +     int ret;
->     > +
->     > +     /* Certain SoCs can suspend only with the bus in low-
-> 
->     Ditto re comment style
-> 
->     > +      * power state, notably x86 SoCs when using S0ix.
->     > +      * Re-enable LPM negotiation to allow entering L1 state
->     > +      * and entering system suspend.
->     > +      */
->     > +     gl9763e_set_low_power_negotiation(slot, true);
-> 
->     Couldn't this be at the end of the function, save
->     an error path
-> 
-> Please correct me if I'm wrong but writing to device config
-> space could trigger a side effect, so it's probably better to
-> do it before calling functions suspending the device?
+Hi, Paul,
 
-sdhci doesn't know anything about the bus.  It is independent
-of PCI, so I can't see how it would make any difference.
-One of the people cc'ed might know more.  Jason Lai (cc'ed)
-added it for runtime PM.
+On Thu, Aug 24, 2023 at 7:40=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
+g> wrote:
+>
+> On Thu, Aug 24, 2023 at 10:50:41AM +0800, Huacai Chen wrote:
+> > Hi, Paul,
+> >
+> > On Thu, Aug 24, 2023 at 6:41=E2=80=AFAM Paul E. McKenney <paulmck@kerne=
+l.org> wrote:
+> > >
+> > > On Thu, Aug 24, 2023 at 12:03:25AM +0200, Thomas Gleixner wrote:
+> > > > On Thu, Aug 17 2023 at 16:06, Huacai Chen wrote:
+> > > > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernandes <joel@joel=
+fernandes.org> wrote:
+> > > > >> > If  do_update_jiffies_64() cannot be used in NMI context,
+> > > > >>
+> > > > >> Can you not make the jiffies update conditional on whether it is
+> > > > >> called within NMI context?
+> > > >
+> > > > Which solves what? If KGDB has a breakpoint in the jiffies lock hel=
+d
+> > > > region then you still dead lock.
+> > > >
+> > > > >> I dislike that..
+> > > > > Is this acceptable?
+> > > > >
+> > > > > void rcu_cpu_stall_reset(void)
+> > > > > {
+> > > > >         unsigned long delta;
+> > > > >
+> > > > >         delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get_coa=
+rse_ns());
+> > > > >
+> > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
+> > > > >                    jiffies + delta + rcu_jiffies_till_stall_check=
+());
+> > > > > }
+> > > > >
+> > > > > This can update jiffies_stall without updating jiffies (but has t=
+he
+> > > > > same effect).
+> > > >
+> > > > Now you traded the potential dead lock on jiffies lock for a potent=
+ial
+> > > > live lock vs. tk_core.seq. Not really an improvement, right?
+> > > >
+> > > > The only way you can do the above is something like the incomplete =
+and
+> > > > uncompiled below. NMI safe and therefore livelock proof time interf=
+aces
+> > > > exist for a reason.
+> > >
+> > > Just for completeness, another approach, with its own advantages
+> > > and disadvantage, is to add something like ULONG_MAX/4 to
+> > > rcu_state.jiffies_stall, but also set a counter indicating that this
+> > > has been done.  Then RCU's force-quiescent processing could decrement
+> > > that counter (if non-zero) and reset rcu_state.jiffies_stall when it
+> > > does reach zero.
+> > >
+> > > Setting the counter to three should cover most cases, but "live by th=
+e
+> > > heuristic, die by the heuristic".  ;-)
+> > >
+> > > It would be good to have some indication when gdb exited, but things
+> > > like the gdb "next" command can make that "interesting" when applied =
+to
+> > > a long-running function.
+> >
+> > The original code is adding ULONG_MAX/2, so adding ULONG_MAX/4 may
+> > make no much difference? The simplest way is adding 300*HZ, but Joel
+> > dislikes that.
+>
+> I am not seeing the ULONG_MAX/2, so could you please point me to that
+> original code?
+Maybe I misunderstand something, I say the original code means code
+before commit a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall
+detection in rcu_cpu_stall_reset()").
 
-> 
-> 
->     > +
->     > +     ret = cqhci_suspend(slot->host->mmc);
->     > +     if (ret)
->     > +             goto err_suspend;
->     > +
->     > +     ret = sdhci_suspend_host(slot->host);
->     > +     if (ret)
->     > +             goto err_suspend_host;
->     > +
->     > +     return 0;
->     > +
->     > +err_suspend_host:
->     > +     cqhci_resume(slot->host->mmc);
->     > +err_suspend:
->     > +     gl9763e_set_low_power_negotiation(slot, false);
->     > +     return ret;
->     > +}
->     > +#endif
->     > +
->     >  static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
->     >  {
->     >       struct pci_dev *pdev = slot->chip->pdev;
->     > @@ -1113,8 +1139,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
->     >       .probe_slot     = gli_probe_slot_gl9763e,
->     >       .ops            = &sdhci_gl9763e_ops,
->     >  #ifdef CONFIG_PM_SLEEP
->     > -     .resume         = sdhci_cqhci_gli_resume,
->     > -     .suspend        = sdhci_cqhci_gli_suspend,
->     > +     .resume         = gl9763e_resume,
->     > +     .suspend        = gl9763e_suspend,
->     >  #endif
->     >  #ifdef CONFIG_PM
->     >       .runtime_suspend = gl9763e_runtime_suspend,
-> 
-> 
-> 
-> -- 
-> Best Regards,
-> Stanisław Kardach
-
+Huacai
+>
+> The advantage of ULONG_MAX/4 over ULONG_MAX/2 is that the time_after()
+> and time_before() macros have ULONG_MAX/4 slop in either direction
+> before giving you the wrong answer.  You can get nearly the same result
+> using ULONG_MAX/2, but it requires a bit more care.  And even on 32-bit
+> HZ=3D1000 systems, ULONG_MAX/4 gets you more than 12 days of gdb session
+> or jiffies-update delay before you start getting false positives.
+>
+> Then things can be reset after (say) 3 calls to rcu_gp_fqs() and
+> also the current reset at the beginning of a grace period, which
+> is in record_gp_stall_check_time().
+>
+> It would be better if RCU could get notified at both ends of the debug
+> session, but given gdb commands such as "next", along with Thomas's
+> point about gdb breakpoints being pretty much anywhere, this might or
+> might not be so helpful in real life.  But worth looking into.
+>
+>                                                         Thanx, Paul
+>
+> > Huacai
+> >
+> > >
+> > >                                                         Thanx, Paul
+> > >
+> > > > Thanks,
+> > > >
+> > > >         tglx
+> > > > ---
+> > > > --- a/kernel/time/tick-sched.c
+> > > > +++ b/kernel/time/tick-sched.c
+> > > > @@ -51,6 +51,13 @@ struct tick_sched *tick_get_tick_sched(i
+> > > >   */
+> > > >  static ktime_t last_jiffies_update;
+> > > >
+> > > > +unsigned long tick_estimate_stale_jiffies(void)
+> > > > +{
+> > > > +     ktime_t delta =3D ktime_get_mono_fast_ns() - READ_ONCE(last_j=
+iffies_update);
+> > > > +
+> > > > +     return delta < 0 ? 0 : div_s64(delta, TICK_NSEC);
+> > > > +}
+> > > > +
+> > > >  /*
+> > > >   * Must be called with interrupts disabled !
+> > > >   */
+> > > >
+> > > >
