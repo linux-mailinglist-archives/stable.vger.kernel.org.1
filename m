@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B17F78732E
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B24878729A
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:55:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240770AbjHXPBB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:01:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44792 "EHLO
+        id S241880AbjHXOzM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:55:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241990AbjHXPAg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:00:36 -0400
+        with ESMTP id S235318AbjHXOy7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:54:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7001BC6
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:00:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5191995
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:54:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CA9D161DB2
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:00:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7EB1C433CB;
-        Thu, 24 Aug 2023 15:00:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F92D66F12
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:54:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 646C6C433C8;
+        Thu, 24 Aug 2023 14:54:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889228;
-        bh=WnD/NyQGROt95QQ9H0NBvCBV7J/ybkP0Rgue35oAqHo=;
+        s=korg; t=1692888895;
+        bh=yJOsphVYCeuY2KrfiocFcuc5+ZJOsxVcBfNFO3RLtFE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IA33t4I4A99VK8+pCrD29PWHs1K57tbXbmnTJtSzYT4G8Mz1nU+jdOO7GvAjcywGw
-         q4hsiettBdnrsNq9nbP/c2eA1YnrQ7rOphlnpHHRdYB8C2pR1lfX3u25VLxJuIbOJ/
-         CqzuHob75RpMTWJsDHaY0mW8KUPRCAmAyOvuZZDI=
+        b=LugEFlgfaUoJK+Yj+209TSINStuJx5j5dMca215HE/AB2k7eWPGjF2j6ZcKJnNLbU
+         ejbmuDBUuZFZhw9Aoe20n8QQDXiEjrMYrGQafQYsiCX4JvVQ01jYqoU6kUgCMIPpgl
+         KzwMeIczNmQrhljAi54urrw5Z312WHZCCFqp/Glw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
+        patches@lists.linux.dev, Wesley Cheng <quic_wcheng@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 032/135] gfs2: Fix possible data races in gfs2_show_options()
+Subject: [PATCH 5.15 052/139] usb: dwc3: Remove DWC3 locking during gadget suspend/resume
 Date:   Thu, 24 Aug 2023 16:49:35 +0200
-Message-ID: <20230824145028.307215728@linuxfoundation.org>
+Message-ID: <20230824145025.882975731@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,84 +53,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tuo Li <islituo@gmail.com>
+From: Wesley Cheng <quic_wcheng@quicinc.com>
 
-[ Upstream commit 6fa0a72cbbe45db4ed967a51f9e6f4e3afe61d20 ]
+[ Upstream commit 5265397f94424eaea596026fd34dc7acf474dcec ]
 
-Some fields such as gt_logd_secs of the struct gfs2_tune are accessed
-without holding the lock gt_spin in gfs2_show_options():
+Remove the need for making dwc3_gadget_suspend() and dwc3_gadget_resume()
+to be called in a spinlock, as dwc3_gadget_run_stop() could potentially
+take some time to complete.
 
-  val = sdp->sd_tune.gt_logd_secs;
-  if (val != 30)
-    seq_printf(s, ",commit=%d", val);
-
-And thus can cause data races when gfs2_show_options() and other functions
-such as gfs2_reconfigure() are concurrently executed:
-
-  spin_lock(&gt->gt_spin);
-  gt->gt_logd_secs = newargs->ar_commit;
-
-To fix these possible data races, the lock sdp->sd_tune.gt_spin is
-acquired before accessing the fields of gfs2_tune and released after these
-accesses.
-
-Further changes by Andreas:
-
-- Don't hold the spin lock over the seq_printf operations.
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Signed-off-by: Wesley Cheng <quic_wcheng@quicinc.com>
+Link: https://lore.kernel.org/r/20220901193625.8727-3-quic_wcheng@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: c8540870af4c ("usb: dwc3: gadget: Improve dwc3_gadget_suspend() and dwc3_gadget_resume()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/usb/dwc3/core.c   | 4 ----
+ drivers/usb/dwc3/gadget.c | 5 +++++
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index e01b6a2d12d30..b61de8dab51a0 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1017,7 +1017,14 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
- {
- 	struct gfs2_sbd *sdp = root->d_sb->s_fs_info;
- 	struct gfs2_args *args = &sdp->sd_args;
--	int val;
-+	unsigned int logd_secs, statfs_slow, statfs_quantum, quota_quantum;
-+
-+	spin_lock(&sdp->sd_tune.gt_spin);
-+	logd_secs = sdp->sd_tune.gt_logd_secs;
-+	quota_quantum = sdp->sd_tune.gt_quota_quantum;
-+	statfs_quantum = sdp->sd_tune.gt_statfs_quantum;
-+	statfs_slow = sdp->sd_tune.gt_statfs_slow;
-+	spin_unlock(&sdp->sd_tune.gt_spin);
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index f2e841bc05c70..ac119a88e6c76 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -1766,9 +1766,7 @@ static int dwc3_suspend_common(struct dwc3 *dwc, pm_message_t msg)
+ 	case DWC3_GCTL_PRTCAP_DEVICE:
+ 		if (pm_runtime_suspended(dwc->dev))
+ 			break;
+-		spin_lock_irqsave(&dwc->lock, flags);
+ 		dwc3_gadget_suspend(dwc);
+-		spin_unlock_irqrestore(&dwc->lock, flags);
+ 		synchronize_irq(dwc->irq_gadget);
+ 		dwc3_core_exit(dwc);
+ 		break;
+@@ -1829,9 +1827,7 @@ static int dwc3_resume_common(struct dwc3 *dwc, pm_message_t msg)
+ 			return ret;
  
- 	if (is_ancestor(root, sdp->sd_master_dir))
- 		seq_puts(s, ",meta");
-@@ -1072,17 +1079,14 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
- 	}
- 	if (args->ar_discard)
- 		seq_puts(s, ",discard");
--	val = sdp->sd_tune.gt_logd_secs;
--	if (val != 30)
--		seq_printf(s, ",commit=%d", val);
--	val = sdp->sd_tune.gt_statfs_quantum;
--	if (val != 30)
--		seq_printf(s, ",statfs_quantum=%d", val);
--	else if (sdp->sd_tune.gt_statfs_slow)
-+	if (logd_secs != 30)
-+		seq_printf(s, ",commit=%d", logd_secs);
-+	if (statfs_quantum != 30)
-+		seq_printf(s, ",statfs_quantum=%d", statfs_quantum);
-+	else if (statfs_slow)
- 		seq_puts(s, ",statfs_quantum=0");
--	val = sdp->sd_tune.gt_quota_quantum;
--	if (val != 60)
--		seq_printf(s, ",quota_quantum=%d", val);
-+	if (quota_quantum != 60)
-+		seq_printf(s, ",quota_quantum=%d", quota_quantum);
- 	if (args->ar_statfs_percent)
- 		seq_printf(s, ",statfs_percent=%d", args->ar_statfs_percent);
- 	if (args->ar_errors != GFS2_ERRORS_DEFAULT) {
+ 		dwc3_set_prtcap(dwc, DWC3_GCTL_PRTCAP_DEVICE);
+-		spin_lock_irqsave(&dwc->lock, flags);
+ 		dwc3_gadget_resume(dwc);
+-		spin_unlock_irqrestore(&dwc->lock, flags);
+ 		break;
+ 	case DWC3_GCTL_PRTCAP_HOST:
+ 		if (!PMSG_IS_AUTO(msg)) {
+diff --git a/drivers/usb/dwc3/gadget.c b/drivers/usb/dwc3/gadget.c
+index b2ffc98c9e747..e0c67a256c214 100644
+--- a/drivers/usb/dwc3/gadget.c
++++ b/drivers/usb/dwc3/gadget.c
+@@ -4439,12 +4439,17 @@ void dwc3_gadget_exit(struct dwc3 *dwc)
+ 
+ int dwc3_gadget_suspend(struct dwc3 *dwc)
+ {
++	unsigned long flags;
++
+ 	if (!dwc->gadget_driver)
+ 		return 0;
+ 
+ 	dwc3_gadget_run_stop(dwc, false, false);
++
++	spin_lock_irqsave(&dwc->lock, flags);
+ 	dwc3_disconnect_gadget(dwc);
+ 	__dwc3_gadget_stop(dwc);
++	spin_unlock_irqrestore(&dwc->lock, flags);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
