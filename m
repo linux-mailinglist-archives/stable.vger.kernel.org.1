@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9C2D7872C9
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B2D578735B
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233738AbjHXO5Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46564 "EHLO
+        id S241939AbjHXPCj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:02:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241662AbjHXO4q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:46 -0400
+        with ESMTP id S242054AbjHXPCR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:02:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D39F21995
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F93EC7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6CE0A66FB2
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FAA7C433C8;
-        Thu, 24 Aug 2023 14:56:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EC0567156
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 523B3C433C8;
+        Thu, 24 Aug 2023 15:02:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889000;
-        bh=oEHmr+M9z61/VoFG3CYAaHNCXp4B39fQsPkfH+WwwxY=;
+        s=korg; t=1692889333;
+        bh=K4eedfp1deSXNzNfh9HfdrhJ/xQ028wb+E8REO0y+gs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J7mHkJ5kkjBkx9LO9jt8fy7Aw/FqaScKFUf3WIZ4Y1cpP3IfYKyUAk5jcBqKVKUx9
-         ePFWFHElu6it3NcJSNcWwO8D1NMkKWUQiGz2/DK/uOANwKebXF8T+xra2LZqb0W+8p
-         4ueskPq+uOAxyPnrZiQSOYUxv2Ka/Fvy4csiolPY=
+        b=Xk3oN0RgeZrbpuPslkdxPQFQxKeAgrnpWtmX5plqcMYpAwrheD3JU7rz7BuAqEDMg
+         HBFNfuuVRZk54AbJ/LXLYh4SV+4QJrydi+ndQRJ9qsu+zLhLdRltFlNjooShjzV8Qe
+         +04wSxs2o4zBLsP0QIDSboJOED7MQ6Tyd2qyRmWo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bing-Jhong Billy Jheng <billy@starlabs.sg>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>
-Subject: [PATCH 5.15 119/139] af_unix: Fix null-ptr-deref in unix_stream_sendpage().
+        patches@lists.linux.dev, FUKAUMI Naoki <naoki@radxa.com>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 099/135] arm64: dts: rockchip: fix regulator name on rk3399-rock-4
 Date:   Thu, 24 Aug 2023 16:50:42 +0200
-Message-ID: <20230824145028.682896720@linuxfoundation.org>
+Message-ID: <20230824145031.233689700@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,134 +54,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-Bing-Jhong Billy Jheng reported null-ptr-deref in unix_stream_sendpage()
-with detailed analysis and a nice repro.
+[ Upstream commit 69448624b770aa88a71536a16900dd3cc6002919 ]
 
-unix_stream_sendpage() tries to add data to the last skb in the peer's
-recv queue without locking the queue.
+fix regulator name
 
-If the peer's FD is passed to another socket and the socket's FD is
-passed to the peer, there is a loop between them.  If we close both
-sockets without receiving FD, the sockets will be cleaned up by garbage
-collection.
+ref:
+ https://dl.radxa.com/rockpi4/docs/hw/rockpi4/rockpi4_v13_sch_20181112.pdf
 
-The garbage collection iterates such sockets and unlinks skb with
-FD from the socket's receive queue under the queue's lock.
-
-So, there is a race where unix_stream_sendpage() could access an skb
-locklessly that is being released by garbage collection, resulting in
-use-after-free.
-
-To avoid the issue, unix_stream_sendpage() must lock the peer's recv
-queue.
-
-Note the issue does not exist in 6.5+ thanks to the recent sendpage()
-refactoring.
-
-This patch is originally written by Linus Torvalds.
-
-BUG: unable to handle page fault for address: ffff988004dd6870
-PF: supervisor read access in kernel mode
-PF: error_code(0x0000) - not-present page
-PGD 0 P4D 0
-PREEMPT SMP PTI
-CPU: 4 PID: 297 Comm: garbage_uaf Not tainted 6.1.46 #1
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.org 04/01/2014
-RIP: 0010:kmem_cache_alloc_node+0xa2/0x1e0
-Code: c0 0f 84 32 01 00 00 41 83 fd ff 74 10 48 8b 00 48 c1 e8 3a 41 39 c5 0f 85 1c 01 00 00 41 8b 44 24 28 49 8b 3c 24 48 8d 4a 40 <49> 8b 1c 06 4c 89 f0 65 48 0f c7 0f 0f 94 c0 84 c0 74 a1 41 8b 44
-RSP: 0018:ffffc9000079fac0 EFLAGS: 00000246
-RAX: 0000000000000070 RBX: 0000000000000005 RCX: 000000000001a284
-RDX: 000000000001a244 RSI: 0000000000400cc0 RDI: 000000000002eee0
-RBP: 0000000000400cc0 R08: 0000000000400cc0 R09: 0000000000000003
-R10: 0000000000000001 R11: 0000000000000000 R12: ffff888003970f00
-R13: 00000000ffffffff R14: ffff988004dd6800 R15: 00000000000000e8
-FS:  00007f174d6f3600(0000) GS:ffff88807db00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: ffff988004dd6870 CR3: 00000000092be000 CR4: 00000000007506e0
-PKRU: 55555554
-Call Trace:
- <TASK>
- ? __die_body.cold+0x1a/0x1f
- ? page_fault_oops+0xa9/0x1e0
- ? fixup_exception+0x1d/0x310
- ? exc_page_fault+0xa8/0x150
- ? asm_exc_page_fault+0x22/0x30
- ? kmem_cache_alloc_node+0xa2/0x1e0
- ? __alloc_skb+0x16c/0x1e0
- __alloc_skb+0x16c/0x1e0
- alloc_skb_with_frags+0x48/0x1e0
- sock_alloc_send_pskb+0x234/0x270
- unix_stream_sendmsg+0x1f5/0x690
- sock_sendmsg+0x5d/0x60
- ____sys_sendmsg+0x210/0x260
- ___sys_sendmsg+0x83/0xd0
- ? kmem_cache_alloc+0xc6/0x1c0
- ? avc_disable+0x20/0x20
- ? percpu_counter_add_batch+0x53/0xc0
- ? alloc_empty_file+0x5d/0xb0
- ? alloc_file+0x91/0x170
- ? alloc_file_pseudo+0x94/0x100
- ? __fget_light+0x9f/0x120
- __sys_sendmsg+0x54/0xa0
- do_syscall_64+0x3b/0x90
- entry_SYSCALL_64_after_hwframe+0x69/0xd3
-RIP: 0033:0x7f174d639a7d
-Code: 28 89 54 24 1c 48 89 74 24 10 89 7c 24 08 e8 8a c1 f4 ff 8b 54 24 1c 48 8b 74 24 10 41 89 c0 8b 7c 24 08 b8 2e 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 44 24 08 e8 de c1 f4 ff 48
-RSP: 002b:00007ffcb563ea50 EFLAGS: 00000293 ORIG_RAX: 000000000000002e
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f174d639a7d
-RDX: 0000000000000000 RSI: 00007ffcb563eab0 RDI: 0000000000000007
-RBP: 00007ffcb563eb10 R08: 0000000000000000 R09: 00000000ffffffff
-R10: 00000000004040a0 R11: 0000000000000293 R12: 00007ffcb563ec28
-R13: 0000000000401398 R14: 0000000000403e00 R15: 00007f174d72c000
- </TASK>
-
-Fixes: 869e7c62486e ("net: af_unix: implement stream sendpage support")
-Reported-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Reviewed-by: Bing-Jhong Billy Jheng <billy@starlabs.sg>
-Co-developed-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20220909195006.127957-4-naoki@radxa.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Stable-dep-of: cee572756aa2 ("arm64: dts: rockchip: Disable HS400 for eMMC on ROCK Pi 4")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/unix/af_unix.c |    9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ .../boot/dts/rockchip/rk3399-rock-pi-4.dtsi   | 25 ++++++++++---------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
---- a/net/unix/af_unix.c
-+++ b/net/unix/af_unix.c
-@@ -2156,6 +2156,7 @@ static ssize_t unix_stream_sendpage(stru
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+index fcd8eeabf53b6..4e1c1f970aba1 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+@@ -116,24 +116,25 @@
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
  
- 	if (false) {
- alloc_skb:
-+		spin_unlock(&other->sk_receive_queue.lock);
- 		unix_state_unlock(other);
- 		mutex_unlock(&unix_sk(other)->iolock);
- 		newskb = sock_alloc_send_pskb(sk, 0, 0, flags & MSG_DONTWAIT,
-@@ -2195,6 +2196,7 @@ alloc_skb:
- 		init_scm = false;
- 	}
+-	vcc5v0_typec: vcc5v0-typec-regulator {
++	vbus_typec: vbus-typec-regulator {
+ 		compatible = "regulator-fixed";
+ 		enable-active-high;
+ 		gpio = <&gpio1 RK_PA3 GPIO_ACTIVE_HIGH>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vcc5v0_typec_en>;
+-		regulator-name = "vcc5v0_typec";
++		regulator-name = "vbus_typec";
+ 		regulator-always-on;
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
  
-+	spin_lock(&other->sk_receive_queue.lock);
- 	skb = skb_peek_tail(&other->sk_receive_queue);
- 	if (tail && tail == skb) {
- 		skb = newskb;
-@@ -2225,14 +2227,11 @@ alloc_skb:
- 	refcount_add(size, &sk->sk_wmem_alloc);
+-	vcc_lan: vcc3v3-phy-regulator {
++	vcc3v3_lan: vcc3v3-lan-regulator {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "vcc_lan";
++		regulator-name = "vcc3v3_lan";
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc3v3_sys>;
+ 	};
  
- 	if (newskb) {
--		err = unix_scm_to_skb(&scm, skb, false);
--		if (err)
--			goto err_state_unlock;
--		spin_lock(&other->sk_receive_queue.lock);
-+		unix_scm_to_skb(&scm, skb, false);
- 		__skb_queue_tail(&other->sk_receive_queue, newskb);
--		spin_unlock(&other->sk_receive_queue.lock);
- 	}
+ 	vdd_log: vdd-log {
+@@ -180,7 +181,7 @@
+ 	assigned-clocks = <&cru SCLK_RMII_SRC>;
+ 	assigned-clock-parents = <&clkin_gmac>;
+ 	clock_in_out = "input";
+-	phy-supply = <&vcc_lan>;
++	phy-supply = <&vcc3v3_lan>;
+ 	phy-mode = "rgmii";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&rgmii_pins>;
+@@ -285,8 +286,8 @@
+ 				};
+ 			};
  
-+	spin_unlock(&other->sk_receive_queue.lock);
- 	unix_state_unlock(other);
- 	mutex_unlock(&unix_sk(other)->iolock);
+-			vcc1v8_codec: LDO_REG1 {
+-				regulator-name = "vcc1v8_codec";
++			vcca1v8_codec: LDO_REG1 {
++				regulator-name = "vcca1v8_codec";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <1800000>;
+@@ -296,8 +297,8 @@
+ 				};
+ 			};
  
+-			vcc1v8_hdmi: LDO_REG2 {
+-				regulator-name = "vcc1v8_hdmi";
++			vcca1v8_hdmi: LDO_REG2 {
++				regulator-name = "vcca1v8_hdmi";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <1800000>;
+@@ -354,8 +355,8 @@
+ 				};
+ 			};
+ 
+-			vcc0v9_hdmi: LDO_REG7 {
+-				regulator-name = "vcc0v9_hdmi";
++			vcca0v9_hdmi: LDO_REG7 {
++				regulator-name = "vcca0v9_hdmi";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <900000>;
+@@ -495,7 +496,7 @@
+ 	status = "okay";
+ 
+ 	bt656-supply = <&vcc_3v0>;
+-	audio-supply = <&vcc1v8_codec>;
++	audio-supply = <&vcca1v8_codec>;
+ 	sdmmc-supply = <&vcc_sdio>;
+ 	gpio1830-supply = <&vcc_3v0>;
+ };
+-- 
+2.40.1
+
 
 
