@@ -2,50 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6242B78735F
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:03:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 793A37872D1
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242017AbjHXPCl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:02:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46102 "EHLO
+        id S241894AbjHXO5R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242107AbjHXPCg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:02:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DD091BCE
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:28 -0700 (PDT)
+        with ESMTP id S241951AbjHXO45 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BEAC110D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF0D4615C7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1778C433C7;
-        Thu, 24 Aug 2023 15:02:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 54FDD66FBA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68A17C433C8;
+        Thu, 24 Aug 2023 14:56:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889347;
-        bh=cEYBMdT5eky+hxFtIVJee5tOmn7/ubLaNtWTulZgBnQ=;
+        s=korg; t=1692889014;
+        bh=ChIbArcAj5E7noHZigSqHCKzRsTOgC7DzP1k8iIKzqQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CLnRRWE4+KoDtx7YrC9+sUrhB8j/h2HMz4kehHTP1qveSXeUD7+OvXE51hOVpm/S5
-         3dzD9BMeYrmxjx1cx717wsXpjAoLC2NUnioM/f6F42r8qCxP4ePuY5lsR3HE3zzhEj
-         mulAueRWpztWSN7zc35cJZDvVcYZ1RH7c2tGPkzc=
+        b=S9Qli9k7ArtmUPC7yMgx9JaT0l2NfBU6Y2OsWEqAFedXc4UXSgl4C4cTeeTqdQuox
+         jZEkDudIXyxVvNf1//pDOMT4SNkCTaTiOe86PxGpCr34DP5RiqYHFZATjR4t3BJv9Z
+         iKCX2RoOY9iE8kQHlbwjKTqS76dIlT0aYmnEoYEE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kailang Yang <kailang@realtek.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 104/135] ALSA: hda/realtek - Remodified 3k pull low procedure
+        patches@lists.linux.dev,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 124/139] x86/cpu: Fix up srso_safe_ret() and __x86_return_thunk()
 Date:   Thu, 24 Aug 2023 16:50:47 +0200
-Message-ID: <20230824145031.471313769@linuxfoundation.org>
+Message-ID: <20230824145028.868237694@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,63 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Kailang Yang <kailang@realtek.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit 46cdff2369cbdf8d78081a22526e77bd1323f563 ]
+commit af023ef335f13c8b579298fc432daeef609a9e60 upstream.
 
-Set spec->en_3kpull_low default to true.
-Then fillback ALC236 and ALC257 to false.
+  vmlinux.o: warning: objtool: srso_untrain_ret() falls through to next function __x86_return_skl()
+  vmlinux.o: warning: objtool: __x86_return_thunk() falls through to next function __x86_return_skl()
 
-Additional note: this addresses a regression caused by the previous
-fix 69ea4c9d02b7 ("ALSA: hda/realtek - remove 3k pull low procedure").
-The previous workaround was applied too widely without necessity,
-which resulted in the pop noise at PM again.  This patch corrects the
-condition and restores the old behavior for the devices that don't
-suffer from the original problem.
+This is because these functions (can) end with CALL, which objtool
+does not consider a terminating instruction. Therefore, replace the
+INT3 instruction (which is a non-fatal trap) with UD2 (which is a
+fatal-trap).
 
-Fixes: 69ea4c9d02b7 ("ALSA: hda/realtek - remove 3k pull low procedure")
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217732
-Link: https://lore.kernel.org/r/01e212a538fc407ca6edd10b81ff7b05@realtek.com
-Signed-off-by: Kailang Yang <kailang@realtek.com>
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+This indicates execution will not continue past this point.
+
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121148.637802730@infradead.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/pci/hda/patch_realtek.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ arch/x86/lib/retpoline.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index 09a9e21675341..adfab80b8189d 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10006,6 +10006,7 @@ static int patch_alc269(struct hda_codec *codec)
- 	spec = codec->spec;
- 	spec->gen.shared_mic_vref_pin = 0x18;
- 	codec->power_save_node = 0;
-+	spec->en_3kpull_low = true;
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -199,7 +199,7 @@ SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLO
+ 	int3
+ 	lfence
+ 	call srso_safe_ret
+-	int3
++	ud2
+ SYM_CODE_END(srso_safe_ret)
+ SYM_FUNC_END(srso_untrain_ret)
+ __EXPORT_THUNK(srso_untrain_ret)
+@@ -209,7 +209,7 @@ SYM_CODE_START(__x86_return_thunk)
+ 	ANNOTATE_NOENDBR
+ 	ALTERNATIVE_2 "jmp __ret", "call srso_safe_ret", X86_FEATURE_SRSO, \
+ 			"call srso_safe_ret_alias", X86_FEATURE_SRSO_ALIAS
+-	int3
++	ud2
+ SYM_CODE_END(__x86_return_thunk)
+ EXPORT_SYMBOL(__x86_return_thunk)
  
- #ifdef CONFIG_PM
- 	codec->patch_ops.suspend = alc269_suspend;
-@@ -10088,14 +10089,16 @@ static int patch_alc269(struct hda_codec *codec)
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0; /* ALC256 does not have any loopback mixer path */
--		if (codec->bus->pci->vendor == PCI_VENDOR_ID_AMD)
--			spec->en_3kpull_low = true;
-+		if (codec->core.vendor_id == 0x10ec0236 &&
-+		    codec->bus->pci->vendor != PCI_VENDOR_ID_AMD)
-+			spec->en_3kpull_low = false;
- 		break;
- 	case 0x10ec0257:
- 		spec->codec_variant = ALC269_TYPE_ALC257;
- 		spec->shutup = alc256_shutup;
- 		spec->init_hook = alc256_init;
- 		spec->gen.mixer_nid = 0;
-+		spec->en_3kpull_low = false;
- 		break;
- 	case 0x10ec0215:
- 	case 0x10ec0245:
--- 
-2.40.1
-
 
 
