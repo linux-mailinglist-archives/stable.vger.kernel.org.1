@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88B3F787318
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9B73787289
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:55:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241956AbjHXPAF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:00:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52878 "EHLO
+        id S241865AbjHXOyj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:54:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242024AbjHXO7y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:59:54 -0400
+        with ESMTP id S241888AbjHXOyW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:54:22 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2043BC7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:59:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF701995
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:54:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B3AF5670C1
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:59:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C548BC433C8;
-        Thu, 24 Aug 2023 14:59:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CCB966EB8
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:54:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D9B2C433C8;
+        Thu, 24 Aug 2023 14:54:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889192;
-        bh=jtzxm85/7FGHSl1UcsSqflXZbGwlIKrqYPKTjC4haQY=;
+        s=korg; t=1692888860;
+        bh=jltj/H5xCx1bUjyJEiFAiQ+aEbwSGHQMsOAppHVkWqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XgnyhdqKCaUXi4aty3A2cMw79+pWTltOAxQAHTkkvL1ARe3p8nW9Zic8RyIkymQQz
-         1rvVogWMC1K9tKRQPTsXzcyuZR4MFmODbnpnR7iTratJDSAuFOlGMcmCBxisjlz53Z
-         xgjQXb8Oco5/Tuw53IjLPeV3be+gAtkR+NKgmQxA=
+        b=DlkYOtsgY8ZBo7fSawvLZlYmZnP6uiiuJDBU3N0vghHpgOZPKQ49JE1w3N56FVF3b
+         rak5ThVs0tZ+g/JqjwnyTXMNo8M512ouIvSA+jEYEIh7IxclosEdsakqBZNI/0gaDF
+         qGbFKgge7EuwrEh30Vn9M73acBnEofYilK+ubwA0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 047/135] iio: addac: stx104: Fix race condition when converting analog-to-digital
+Subject: [PATCH 5.15 067/139] virtio-mmio: dont break lifecycle of vm_dev
 Date:   Thu, 24 Aug 2023 16:49:50 +0200
-Message-ID: <20230824145028.972189144@linuxfoundation.org>
+Message-ID: <20230824145026.568164294@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,47 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: William Breathitt Gray <william.gray@linaro.org>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 4f9b80aefb9e2f542a49d9ec087cf5919730e1dd ]
+[ Upstream commit 55c91fedd03d7b9cf0c5199b2eb12b9b8e95281a ]
 
-The ADC conversion procedure requires several device I/O operations
-performed in a particular sequence. If stx104_read_raw() is called
-concurrently, the ADC conversion procedure could be clobbered. Prevent
-such a race condition by utilizing a mutex.
+vm_dev has a separate lifecycle because it has a 'struct device'
+embedded. Thus, having a release callback for it is correct.
 
-Fixes: 4075a283ae83 ("iio: stx104: Add IIO support for the ADC channels")
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Link: https://lore.kernel.org/r/2ae5e40eed5006ca735e4c12181a9ff5ced65547.1680790580.git.william.gray@linaro.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Allocating the vm_dev struct with devres totally breaks this protection,
+though. Instead of waiting for the vm_dev release callback, the memory
+is freed when the platform_device is removed. Resulting in a
+use-after-free when finally the callback is to be called.
+
+To easily see the problem, compile the kernel with
+CONFIG_DEBUG_KOBJECT_RELEASE and unbind with sysfs.
+
+The fix is easy, don't use devres in this case.
+
+Found during my research about object lifetime problems.
+
+Fixes: 7eb781b1bbb7 ("virtio_mmio: add cleanup for virtio_mmio_probe")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Message-Id: <20230629120526.7184-1-wsa+renesas@sang-engineering.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stx104.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/virtio/virtio_mmio.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
-index e110a910235ff..b658a75d4e3a8 100644
---- a/drivers/iio/adc/stx104.c
-+++ b/drivers/iio/adc/stx104.c
-@@ -117,6 +117,8 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 			return IIO_VAL_INT;
- 		}
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index fe696aafaed86..f4d43d60d710f 100644
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -572,9 +572,8 @@ static void virtio_mmio_release_dev(struct device *_d)
+ 	struct virtio_device *vdev =
+ 			container_of(_d, struct virtio_device, dev);
+ 	struct virtio_mmio_device *vm_dev = to_virtio_mmio_device(vdev);
+-	struct platform_device *pdev = vm_dev->pdev;
  
-+		mutex_lock(&priv->lock);
-+
- 		/* select ADC channel */
- 		iowrite8(chan->channel | (chan->channel << 4), &reg->achan);
+-	devm_kfree(&pdev->dev, vm_dev);
++	kfree(vm_dev);
+ }
  
-@@ -127,6 +129,8 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 		while (ioread8(&reg->cir_asr) & BIT(7));
+ /* Platform device */
+@@ -585,7 +584,7 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 	unsigned long magic;
+ 	int rc;
  
- 		*val = ioread16(&reg->ssr_ad);
-+
-+		mutex_unlock(&priv->lock);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_OFFSET:
- 		/* get ADC bipolar/unipolar configuration */
+-	vm_dev = devm_kzalloc(&pdev->dev, sizeof(*vm_dev), GFP_KERNEL);
++	vm_dev = kzalloc(sizeof(*vm_dev), GFP_KERNEL);
+ 	if (!vm_dev)
+ 		return -ENOMEM;
+ 
 -- 
 2.40.1
 
