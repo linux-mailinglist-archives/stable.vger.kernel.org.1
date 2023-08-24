@@ -2,242 +2,200 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 992D578776C
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 20:05:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A02B78777C
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 20:09:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232433AbjHXSF0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 14:05:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54632 "EHLO
+        id S235484AbjHXSIk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 14:08:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242977AbjHXSFL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 14:05:11 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A40A19BF
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 11:05:07 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-68a410316a2so139955b3a.0
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 11:05:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692900306; x=1693505106;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=NBWkQ51LqM4Z/h+OxwOtyQTC69J11rjgBE16J+Duxak=;
-        b=UXQQuVrnhxDQh+fNcmgaAAZGoEMO14HrDB2sKp930eEjRJMDJLKj22afXRKOKtiZDd
-         Gh9vg9I7T1iTlR4lcjHkerzyVI3q5vXpb3w20FMwq3Nf2qwfTvNgfYH3UrFizdNnayyw
-         kb26lZwcuKOCKvuEDe7ad6mOZtZtoP4reT3MZiSMiML4Ok3cOd34qNfHZxTtmx6BRQhx
-         1YDSC2o1+HTSVyJuLZPcj0pS7Mt1TR5mVvKG1GH6QWgX7x1AFhiq83X5Pef5cDaykfhC
-         WqETw0H1J5P3Xs5i5fEcM17RuGw7vQPkzAqYoQf5N1LiQjyQogmNaWo4NAEyjXGh7ysP
-         kKNw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692900306; x=1693505106;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=NBWkQ51LqM4Z/h+OxwOtyQTC69J11rjgBE16J+Duxak=;
-        b=LslM2xOnK99Y6MQAV3MuMzRiwU6hffxh/eC/Uv0rjlR92eZOwtITlIz3Sx+Rk5u8am
-         PC0ub5zKdN6T7Zha7ltPPV2foLUYLP8U4rtZyOBIsSXHRImM0IAuDVtbS3/kzXmHu1zF
-         JMnoDDfY83VER4cmTqBMcfBqb0w3o1qZWg+IdSuVki+wA9ScBDe+4vyY4J4PNAfiqDW2
-         XB77KZwQRrsZR6q3l/uiyz/HRCrNCH2KPSOi5X10RRl9ewZSWlsXRXyy7wxlc9RAyOpb
-         yLI3+Kg0lcYSBO5BST6PvCuwqtwNsxex/7//XKRuobdMbEdlVflpP/N7Fb2BiQXmJZUV
-         DEkQ==
-X-Gm-Message-State: AOJu0YxN+ovJvXX8hAW1ko9LaLRmJcLwC1lPgZxINcYve7t98KilFHJ8
-        IYxN48WJIwHLh9mKAf1uQgV9JbPYjFijO2IVh28=
-X-Google-Smtp-Source: AGHT+IFLu24/yW8jl4bgR5riBEkKx1/n5qIkJm0yxtjAmWI0qLp9FWpzceyRDR9YU/3f487dPihNKQ==
-X-Received: by 2002:a05:6a20:8428:b0:13d:a903:88e6 with SMTP id c40-20020a056a20842800b0013da90388e6mr17807849pzd.48.1692900306108;
-        Thu, 24 Aug 2023 11:05:06 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id a19-20020a62e213000000b00686bef984e2sm35198pfi.80.2023.08.24.11.05.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Aug 2023 11:05:05 -0700 (PDT)
-Message-ID: <64e79bd1.620a0220.a3db5.029b@mx.google.com>
-Date:   Thu, 24 Aug 2023 11:05:05 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
-MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.191-136-g78bdf347b3429
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 7 warnings (v5.10.191-136-g78bdf347b3429)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S242995AbjHXSIS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 14:08:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 370A51BEF;
+        Thu, 24 Aug 2023 11:08:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C0F0064187;
+        Thu, 24 Aug 2023 18:08:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23DBDC433C8;
+        Thu, 24 Aug 2023 18:08:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1692900494;
+        bh=9rS9M9WTqhJQ8N+hpQkZUFGzGNsVLlhKE/XIIKNFvbE=;
+        h=Date:To:From:Subject:From;
+        b=X/am+cIyki7w5qPGjSBRNkTIqqYmN1SViwzIoUDfRxJaBy2lxindkQQmaFcytiXGR
+         z9gdMLTJxqBJcoqqlt7TNVBd/7vn9GuKK36Rg6MCuCvWZCIF5TC7tHejNQ4EvvOpzh
+         o87vMI6quycQdhwgJCuH60Ipij0kOZyRT9KeTPO0=
+Date:   Thu, 24 Aug 2023 11:08:13 -0700
+To:     mm-commits@vger.kernel.org, yosryahmed@google.com,
+        stable@vger.kernel.org, nphamcs@gmail.com, hannes@cmpxchg.org,
+        akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230824180814.23DBDC433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 7 warnings (v=
-5.10.191-136-g78bdf347b3429)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.191-136-g78bdf347b3429/
+The patch titled
+     Subject: memcontrol: ensure memcg acquired by id is properly set up
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up.patch
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.191-136-g78bdf347b3429
-Git Commit: 78bdf347b342992291284fd060ee34dbccf570a8
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up.patch
 
-Warnings Detected:
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-arc:
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-arm64:
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-arm:
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
 
-i386:
+------------------------------------------------------
+From: Johannes Weiner <hannes@cmpxchg.org>
+Subject: memcontrol: ensure memcg acquired by id is properly set up
+Date: Wed, 23 Aug 2023 15:54:30 -0700
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+In the eviction recency check, we attempt to retrieve the memcg to which
+the folio belonged when it was evicted, by the memcg id stored in the
+shadow entry.  However, there is a chance that the retrieved memcg is not
+the original memcg that has been killed, but a new one which happens to
+have the same id.
 
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
+This is a somewhat unfortunate, but acceptable and rare inaccuracy in the
+heuristics.  However, if we retrieve this new memcg between its allocation
+and when it is properly attached to the memcg hierarchy, we could run into
+the following NULL pointer exception during the memcg hierarchy traversal
+done in mem_cgroup_get_nr_swap_pages():
 
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+[ 155757.793456] BUG: kernel NULL pointer dereference, address: 00000000000000c0
+[ 155757.807568] #PF: supervisor read access in kernel mode
+[ 155757.818024] #PF: error_code(0x0000) - not-present page
+[ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
+[ 155757.839985] Oops: 0000 [#1] SMP
+[ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
+[ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00 00 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1 74 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
+[ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
+[ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: ffff888280183000
+[ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: ffff888bbc2d1000
+[ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: ffff888ad9cedba0
+[ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: ffff888b23a7b000
+[ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 000007ffffc71354
+[ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(0000) knlGS:0000000000000000
+[ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 00000000007706e0
+[ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+[ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+[ 155758.091376] PKRU: 55555554
+[ 155758.096957] Call Trace:
+[ 155758.102016]  <TASK>
+[ 155758.106502]  ? __die+0x78/0xc0
+[ 155758.112793]  ? page_fault_oops+0x286/0x380
+[ 155758.121175]  ? exc_page_fault+0x5d/0x110
+[ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
+[ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
+[ 155758.148060]  workingset_test_recent+0xda/0x1b0
+[ 155758.157133]  workingset_refault+0xca/0x1e0
+[ 155758.165508]  filemap_add_folio+0x4d/0x70
+[ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
+[ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
+[ 155758.191738]  filemap_read+0x68d/0xdf0
+[ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
+[ 155758.207981]  ? __napi_schedule+0x55/0x90
+[ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
+[ 155758.224601]  do_syscall_64+0x3d/0x80
+[ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
+[ 155758.242473] RIP: 0033:0x7f62c29153b5
+[ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6 f7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
+[ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_RAX: 0000000000000011
+[ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 00007f62c29153b5
+[ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 0000000000000076
+[ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 0000000064d5230c
+[ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 000000000003c041
+[ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 000000000027d450
+[ 155758.376661]  </TASK>
 
+This patch fixes the issue by moving the memcg's id publication from the
+alloc stage to online stage, ensuring that any memcg acquired via id must
+be connected to the memcg tree.
 
-Warnings summary:
-
-    2    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement+=
-0x90: unsupported relocation in alternatives section
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement+0x90:=
- unsupported relocation in alternatives section
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/lib/retpoline.o: warning: objtool: .altinstr_replacement+0x90:=
- unsupported relocation in alternatives section
-
+Link: https://lkml.kernel.org/r/20230823225430.166925-1-nphamcs@gmail.com
+Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs refault container")
+Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
+Co-developed-by: Nhat Pham <nphamcs@gmail.com>
+Signed-off-by: Nhat Pham <nphamcs@gmail.com>
+Cc: Yosry Ahmed <yosryahmed@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-For more info write to <info@kernelci.org>
+
+ mm/memcontrol.c |   22 +++++++++++++++++-----
+ 1 file changed, 17 insertions(+), 5 deletions(-)
+
+--- a/mm/memcontrol.c~memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up
++++ a/mm/memcontrol.c
+@@ -5339,7 +5339,6 @@ static struct mem_cgroup *mem_cgroup_all
+ 	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
+ 	memcg->deferred_split_queue.split_queue_len = 0;
+ #endif
+-	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
+ 	lru_gen_init_memcg(memcg);
+ 	return memcg;
+ fail:
+@@ -5411,14 +5410,27 @@ static int mem_cgroup_css_online(struct
+ 	if (alloc_shrinker_info(memcg))
+ 		goto offline_kmem;
+ 
+-	/* Online state pins memcg ID, memcg ID pins CSS */
+-	refcount_set(&memcg->id.ref, 1);
+-	css_get(css);
+-
+ 	if (unlikely(mem_cgroup_is_root(memcg)))
+ 		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
+ 				   FLUSH_TIME);
+ 	lru_gen_online_memcg(memcg);
++
++	/* Online state pins memcg ID, memcg ID pins CSS */
++	refcount_set(&memcg->id.ref, 1);
++	css_get(css);
++
++	/*
++	 * Ensure mem_cgroup_from_id() works once we're fully online.
++	 *
++	 * We could do this earlier and require callers to filter with
++	 * css_tryget_online(). But right now there are no users that
++	 * need earlier access, and the workingset code relies on the
++	 * cgroup tree linkage (mem_cgroup_get_nr_swap_pages()). So
++	 * publish it here at the end of onlining. This matches the
++	 * regular ID destruction during offlining.
++	 */
++	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
++
+ 	return 0;
+ offline_kmem:
+ 	memcg_offline_kmem(memcg);
+_
+
+Patches currently in -mm which might be from hannes@cmpxchg.org are
+
+memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up.patch
+mm-page_alloc-remove-stale-cma-guard-code.patch
+
