@@ -2,167 +2,154 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1934E786591
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 04:51:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5CA0F7866D3
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 06:44:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229710AbjHXCvX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 22:51:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42646 "EHLO
+        id S239026AbjHXEnu convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 24 Aug 2023 00:43:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230119AbjHXCu6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 22:50:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC841198;
-        Wed, 23 Aug 2023 19:50:56 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BB25614AC;
-        Thu, 24 Aug 2023 02:50:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CBC6CC433CD;
-        Thu, 24 Aug 2023 02:50:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692845455;
-        bh=FBVROIY3T0LPqE0Yehq9z3S9IR6oyeROYOJKahC5BwI=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=GrZ+jz76BK/FKydLtTKBa/2pRoj8lrN0ZhE8cm0OLfSflLsnE+EyK/3nChEmd3PNY
-         mIFXusZKQXkOZ3b9yO3DNYsKxIJ+b7uHMlPYxCjqArfH4Dc0ZftVm7viWVsU6DqlCR
-         4QivCfu8ifC+PdQSiVCJm/lstus+XGNbqniQ/acrEs0wLuiqpMq1OOS1T6Ybv0j4p/
-         Gs5uX/EVmpSa7IcJaw/f1bSQrG1f6BGl2NB4XVD4Y696IHhSOg7bfEbEDs0kQ+ZiPV
-         uxRsEKMi6wdwvA8Oj3KB7jIogLSH89uCGQDKJwtT/45xhfKD5dl9VnfZGaYwANTq6V
-         oeUfD4BnQW9vQ==
-Received: by mail-ed1-f54.google.com with SMTP id 4fb4d7f45d1cf-52557cc5e7bso7963855a12.0;
-        Wed, 23 Aug 2023 19:50:55 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yx6s6pj7ZsROxkiiHpSOyOfwvX50715Dsxd+jKbBgacituLxBSo
-        aG5fa+qPn3/4RTLpgqeTLuV+WVzCQP2XNbNFkZo=
-X-Google-Smtp-Source: AGHT+IHuAT/HHaO7PbS/Lnv8anDjI1svcaYN3BAi+vFAImYXE2KPZWi2P92E6Z3aZUUIZ3I+NjCawhawUb4xAgzbLeI=
-X-Received: by 2002:aa7:d058:0:b0:523:d1ab:b2ed with SMTP id
- n24-20020aa7d058000000b00523d1abb2edmr11344547edo.29.1692845453993; Wed, 23
- Aug 2023 19:50:53 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
- <5777BD82-2C8D-4BAB-BDD3-C2C003DC57FB@joelfernandes.org> <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
- <87ttspct76.ffs@tglx> <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
-In-Reply-To: <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Thu, 24 Aug 2023 10:50:41 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
-Message-ID: <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
-Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
-To:     paulmck@kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Z qiang <qiang.zhang1211@gmail.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+        with ESMTP id S239003AbjHXEn0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 00:43:26 -0400
+Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6788810E4;
+        Wed, 23 Aug 2023 21:43:24 -0700 (PDT)
+Received: from omf11.hostedemail.com (a10.router.float.18 [10.200.18.1])
+        by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F25FC0199;
+        Thu, 24 Aug 2023 04:43:22 +0000 (UTC)
+Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf11.hostedemail.com (Postfix) with ESMTPA id BF3892002C;
+        Thu, 24 Aug 2023 04:43:18 +0000 (UTC)
+Message-ID: <0155a718388cf598d2171795c129a93f04a1ddfd.camel@perches.com>
+Subject: Re: checkpatch complains about Reported-by block (was: [PATCH v3]
+ tpm: Enable hwrng only for Pluton on AMD CPUs)
+From:   Joe Perches <joe@perches.com>
+To:     Paul Menzel <pmenzel@molgen.mpg.de>,
+        Jarkko Sakkinen <jarkko@kernel.org>,
+        Andy Whitcroft <apw@canonical.com>
+Cc:     linux-integrity@vger.kernel.org,
+        Jerry Snitselaar <jsnitsel@redhat.com>, stable@vger.kernel.org,
+        Todd Brandt <todd.e.brandt@intel.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-kernel@vger.kernel.org, Patrick Steinhardt <ps@pks.im>,
+        Ronan Pigott <ronan@rjp.ie>,
+        Raymond Jay Golo <rjgolo@gmail.com>
+Date:   Wed, 23 Aug 2023 21:43:17 -0700
+In-Reply-To: <3a9bf7a1-1664-401d-8cff-3a5d553bdd77@molgen.mpg.de>
+References: <20230822231510.2263255-1-jarkko@kernel.org>
+         <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+         <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
+         <3a9bf7a1-1664-401d-8cff-3a5d553bdd77@molgen.mpg.de>
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+MIME-Version: 1.0
+X-Rspamd-Queue-Id: BF3892002C
+X-Stat-Signature: 1xjjsce6i7jma615t5qrayscjq57i77b
+X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
+        SPF_NONE,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
+        version=3.4.6
+X-Rspamd-Server: rspamout01
+X-Session-Marker: 6A6F6540706572636865732E636F6D
+X-Session-ID: U2FsdGVkX19JYEiz5PLpsLuruTuFz2VoiXh0OmEylcQ=
+X-HE-Tag: 1692852198-257671
+X-HE-Meta: U2FsdGVkX18dUYFgPAQ9ALE34cDSU20UTVW4v+/WfftjxcVwLDAO/iYlu2p9HTFx2nbunLChkhEy99hDhbsGyAVSwMlubZAymz5tXIdTjWR1KOLAi+hcDAkoRxwl3Ui+y3rfUF3WhAQivGMqptjwN9+Q8HMfHLirF6cxXKFdz7pSJO1aqFRGXLRq8EbDxCDmDma3KYVzhscvWv3cHFdLVS5sOef75KM+fs0vu73ins+f0XmsSj8yp97NsS4VVU/dp2hIOLvsW8tiwj1N7j2hcoHlh9c7AzajKKzDTCoyWHTULdcJketAj9AdxAOVdsqw7QrSd8zg29bJDWxfXfKx3mPvDKp5fzp+EsDgmds6MsLhHPjHgP1mpOZdZWAGNJiV//p8dWLuQkNxyXKBNi+TxAbB/I6qrzc7+iXM+rEIi9o=
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Paul,
+On Wed, 2023-08-23 at 21:24 +0200, Paul Menzel wrote:
+> [Cc: +Andy, +Joe]
+> 
+> 
+> Dear Jarkko, dear Andy, dear Joe,
+> 
+> 
+> Am 23.08.23 um 19:40 schrieb Jarkko Sakkinen:
+> > On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
+> 
+> > > Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
+> > > > The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
+> > > > all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
+> > > > reported systems the TPM doesn't reply at bootup and returns back the
+> > > > command code. This makes the TPM fail probe.
+> > > > 
+> > > > Since only Microsoft Pluton is the only known combination of AMD CPU and
+> > > > fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
+> > > > aware of this, print also info message to the klog.
+> > > > 
+> > > > Cc: stable@vger.kernel.org
+> > > > Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> > > > Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> > > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
+> > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > > 
+> > > Mario’s patch also had the three reporters below listed:
+> > > 
+> > > Reported-by: Patrick Steinhardt <ps@pks.im>
+> > > Reported-by: Ronan Pigott <ronan@rjp.ie>
+> > > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> > 
+> > The problem here is that checkpatch throws three warnings:
+> > 
+> > WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
+> > #19:
+> > Reported-by: Patrick Steinhardt <ps@pks.im>
+> > Reported-by: Ronan Pigott <ronan@rjp.ie>
+> > 
+> > WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
+> > #20:
+> > Reported-by: Ronan Pigott <ronan@rjp.ie>
+> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> > 
+> > WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
+> > #21:
+> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> > 
+> > Since bugzilla is not part of the documented process afaik, I used this
+> > field as the guideline:
+> > 
+> > Reported:	2023-08-17 20:59 UTC by Todd Brandt
+> > 
+> > How otherwise I should interpret kernel bugzilla?
+> 
+> How is the proper process to add more than one reporter (so they are 
+> noted and also added to CC), so that checkpatch.pl does not complain?
+> 
+> 
+> Kind regards,
+> 
+> Paul
+> 
+> 
+> > In any case new version is still needed as the commit message must
+> > contain a mention of "Lenovo Legion Y540" as the stimulus for doing
+> > this code change in the first place.
+> > 
+> > BR, Jarkko
 
-On Thu, Aug 24, 2023 at 6:41=E2=80=AFAM Paul E. McKenney <paulmck@kernel.or=
-g> wrote:
->
-> On Thu, Aug 24, 2023 at 12:03:25AM +0200, Thomas Gleixner wrote:
-> > On Thu, Aug 17 2023 at 16:06, Huacai Chen wrote:
-> > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernandes <joel@joelfern=
-andes.org> wrote:
-> > >> > If  do_update_jiffies_64() cannot be used in NMI context,
-> > >>
-> > >> Can you not make the jiffies update conditional on whether it is
-> > >> called within NMI context?
-> >
-> > Which solves what? If KGDB has a breakpoint in the jiffies lock held
-> > region then you still dead lock.
-> >
-> > >> I dislike that..
-> > > Is this acceptable?
-> > >
-> > > void rcu_cpu_stall_reset(void)
-> > > {
-> > >         unsigned long delta;
-> > >
-> > >         delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_=
-ns());
-> > >
-> > >         WRITE_ONCE(rcu_state.jiffies_stall,
-> > >                    jiffies + delta + rcu_jiffies_till_stall_check());
-> > > }
-> > >
-> > > This can update jiffies_stall without updating jiffies (but has the
-> > > same effect).
-> >
-> > Now you traded the potential dead lock on jiffies lock for a potential
-> > live lock vs. tk_core.seq. Not really an improvement, right?
-> >
-> > The only way you can do the above is something like the incomplete and
-> > uncompiled below. NMI safe and therefore livelock proof time interfaces
-> > exist for a reason.
->
-> Just for completeness, another approach, with its own advantages
-> and disadvantage, is to add something like ULONG_MAX/4 to
-> rcu_state.jiffies_stall, but also set a counter indicating that this
-> has been done.  Then RCU's force-quiescent processing could decrement
-> that counter (if non-zero) and reset rcu_state.jiffies_stall when it
-> does reach zero.
->
-> Setting the counter to three should cover most cases, but "live by the
-> heuristic, die by the heuristic".  ;-)
->
-> It would be good to have some indication when gdb exited, but things
-> like the gdb "next" command can make that "interesting" when applied to
-> a long-running function.
-The original code is adding ULONG_MAX/2, so adding ULONG_MAX/4 may
-make no much difference? The simplest way is adding 300*HZ, but Joel
-dislikes that.
+Well, if it's really desired to allow multiple consecutive reported-by:
+lines, maybe:
+---
+ scripts/checkpatch.pl | 2 ++
+ 1 file changed, 2 insertions(+)
 
-Huacai
+diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
+index 528f619520eb9..5b5c11ad04087 100755
+--- a/scripts/checkpatch.pl
++++ b/scripts/checkpatch.pl
+@@ -3179,6 +3179,8 @@ sub process {
+ 				if (!defined $lines[$linenr]) {
+ 					WARN("BAD_REPORTED_BY_LINK",
+ 					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . "\n");
++				} elsif ($rawlines[$linenr] =~ /^\s*reported(?:|-and-tested)-by:/i) {
++					;
+ 				} elsif ($rawlines[$linenr] !~ /^closes:\s*/i) {
+ 					WARN("BAD_REPORTED_BY_LINK",
+ 					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
 
->
->                                                         Thanx, Paul
->
-> > Thanks,
-> >
-> >         tglx
-> > ---
-> > --- a/kernel/time/tick-sched.c
-> > +++ b/kernel/time/tick-sched.c
-> > @@ -51,6 +51,13 @@ struct tick_sched *tick_get_tick_sched(i
-> >   */
-> >  static ktime_t last_jiffies_update;
-> >
-> > +unsigned long tick_estimate_stale_jiffies(void)
-> > +{
-> > +     ktime_t delta =3D ktime_get_mono_fast_ns() - READ_ONCE(last_jiffi=
-es_update);
-> > +
-> > +     return delta < 0 ? 0 : div_s64(delta, TICK_NSEC);
-> > +}
-> > +
-> >  /*
-> >   * Must be called with interrupts disabled !
-> >   */
-> >
-> >
