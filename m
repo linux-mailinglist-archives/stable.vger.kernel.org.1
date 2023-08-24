@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2ED63787258
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:53:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D18027872EE
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241829AbjHXOxC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:53:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54894 "EHLO
+        id S241940AbjHXO6X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241846AbjHXOwh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:52:37 -0400
+        with ESMTP id S241979AbjHXO6J (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 576651995
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:52:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBE8FFD
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9FDB66EA5
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:52:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEBFC433C8;
-        Thu, 24 Aug 2023 14:52:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 568BC66ECA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69CD6C433C7;
+        Thu, 24 Aug 2023 14:58:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888755;
-        bh=ymNz4Leb7uXzUfhr/Hrk24EFr9SkXoKddzvCbd6ygW4=;
+        s=korg; t=1692889086;
+        bh=4HdijJ9Q3HCliIK+Bwwgxr5Usnqzgivxd35EpUaUKis=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zIntzxOYZmRqUjDvz0JXrmErCxQ1OMy5ZwOKisDclNKX2iLGrzVSnDjpm9vl21chg
-         nLRG1HcAODMrOywIRhLdAlDDpwbAkK1rSadHs4vSyruq78GGOOil7cE8BYvm22xWFP
-         qa1TeaJCn4yjIhPjgIKNRsWY7foqDoxmGcq/11MY=
+        b=KJG4X3M4zGzbSP0eTYoZlWGwdyXcXzN88xzxYv2zvuviNNLB51odQLrfoqs0XegZc
+         adTCpEM+oeK9zrdEVdhP+TdM75SsM4GtAX8nvjoQqsKy1VGKe7soXOs4N/SE+gL4lC
+         667uHPNWDuw9TpPkjh7p7InfICaHUbRp+bRXaoWE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengping Jiang <jiangzp@google.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 030/139] Bluetooth: L2CAP: Fix use-after-free
+        patches@lists.linux.dev, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 010/135] ASoC: Intel: sof_sdw: add quirk for LNL RVP
 Date:   Thu, 24 Aug 2023 16:49:13 +0200
-Message-ID: <20230824145024.901019639@linuxfoundation.org>
+Message-ID: <20230824145027.422355823@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,39 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengping Jiang <jiangzp@google.com>
+From: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
 
-[ Upstream commit f752a0b334bb95fe9b42ecb511e0864e2768046f ]
+[ Upstream commit dfe25fea968dc4884e12d471c8263f0f611b380a ]
 
-Fix potential use-after-free in l2cap_le_command_rej.
+We should use RT711_JD2_100K for on board rt711
 
-Signed-off-by: Zhengping Jiang <jiangzp@google.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com
+Signed-off-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com
+Link: https://lore.kernel.org/r/20230512173305.65399-9-pierre-louis.bossart@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/l2cap_core.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ sound/soc/intel/boards/sof_sdw.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
-index 9dd54247029a8..0770286ecf0bc 100644
---- a/net/bluetooth/l2cap_core.c
-+++ b/net/bluetooth/l2cap_core.c
-@@ -6375,9 +6375,14 @@ static inline int l2cap_le_command_rej(struct l2cap_conn *conn,
- 	if (!chan)
- 		goto done;
+diff --git a/sound/soc/intel/boards/sof_sdw.c b/sound/soc/intel/boards/sof_sdw.c
+index 91a7cb33042d8..30cc8bbceb79b 100644
+--- a/sound/soc/intel/boards/sof_sdw.c
++++ b/sound/soc/intel/boards/sof_sdw.c
+@@ -207,6 +207,15 @@ static const struct dmi_system_id sof_sdw_quirk_table[] = {
+ 		},
+ 		.driver_data = (void *)(RT711_JD2_100K),
+ 	},
++	/* LunarLake devices */
++	{
++		.callback = sof_sdw_quirk_cb,
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "Intel Corporation"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "Lunar Lake Client Platform"),
++		},
++		.driver_data = (void *)(RT711_JD2_100K),
++	},
+ 	{}
+ };
  
-+	chan = l2cap_chan_hold_unless_zero(chan);
-+	if (!chan)
-+		goto done;
-+
- 	l2cap_chan_lock(chan);
- 	l2cap_chan_del(chan, ECONNREFUSED);
- 	l2cap_chan_unlock(chan);
-+	l2cap_chan_put(chan);
- 
- done:
- 	mutex_unlock(&conn->chan_lock);
 -- 
 2.40.1
 
