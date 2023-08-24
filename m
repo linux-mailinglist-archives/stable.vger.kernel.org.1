@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B022787366
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:03:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3F9F7872D5
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236244AbjHXPDK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:03:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34138 "EHLO
+        id S241899AbjHXO5S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242040AbjHXPCv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:02:51 -0400
+        with ESMTP id S241980AbjHXO5G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4956C1BDC
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 174551BC5
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B78B61027
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D5F3C433C7;
-        Thu, 24 Aug 2023 15:02:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A850D63B14
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B989FC433C7;
+        Thu, 24 Aug 2023 14:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889355;
-        bh=xSVVkuCK4fYucYXZiOV4TUrXc84XqKOLG1Z9nJHDiMc=;
+        s=korg; t=1692889023;
+        bh=NbEfo0EWIyQ/tXUk+FKMuyRDeCXsxoTt1h88Tc60jM8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yVhEvApasLFu1OQpCa7RThzBNNr4brvcKcJMw5aJ/vIQS7Prr6d4mR3FEPX+Pz9ZO
-         cRpDSL2fXXl01TuPrwij0F+OR5yw1ZkM4ScvtIwZ9q3xlucUNsXOneBQY1uGOsGGga
-         Ea/jTJ8h6affCOvM/TZ0UvJgjA7jY1DZr6Kv3/3Q=
+        b=ELkEwi1J0/hsmmC+PY3rA3XY+FcI8tqfuyaUjwOS6TqIIsdDmKAPuH8EluAFREA9T
+         toNrrZ64/EI0Xd7If4Mm5g9Bh/0MQRkfH0tKAnjhj1yg6lquqm3+kmfHu30ddH0P6d
+         DCOp0a5l2ennd3jcQpQp5XR6hDBdIZWdmCt/yZpw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jisheng Zhang <jszhang@kernel.org>,
-        Palmer Dabbelt <palmer@rivosinc.com>,
+        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@redhat.com>,
+        Masami Hiramatsu <mhiramat@kernel.org>,
+        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 106/135] riscv: lib: uaccess: fold fixups into body
+Subject: [PATCH 5.15 126/139] objtool: Add frame-pointer-specific function ignore
 Date:   Thu, 24 Aug 2023 16:50:49 +0200
-Message-ID: <20230824145031.541342473@linuxfoundation.org>
+Message-ID: <20230824145028.935904558@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,69 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jisheng Zhang <jszhang@kernel.org>
+From: Josh Poimboeuf <jpoimboe@redhat.com>
 
-[ Upstream commit 9d504f9aa5c1b76673018da9503e76b351a24b8c ]
+[ Upstream commit e028c4f7ac7ca8c96126fe46c54ab3d56ffe6a66 ]
 
-uaccess functions such __asm_copy_to_user(),  __arch_copy_from_user()
-and __clear_user() place their exception fixups in the `.fixup` section
-without any clear association with themselves. If we backtrace the
-fixup code, it will be symbolized as an offset from the nearest prior
-symbol.
+Add a CONFIG_FRAME_POINTER-specific version of
+STACK_FRAME_NON_STANDARD() for the case where a function is
+intentionally missing frame pointer setup, but otherwise needs
+objtool/ORC coverage when frame pointers are disabled.
 
-Similar as arm64 does, we must move fixups into the body of the
-functions themselves, after the usual fast-path returns.
+Link: https://lkml.kernel.org/r/163163047364.489837.17377799909553689661.stgit@devnote2
 
-Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Stable-dep-of: 4b05b993900d ("riscv: uaccess: Return the number of bytes effectively not copied")
+Signed-off-by: Josh Poimboeuf <jpoimboe@redhat.com>
+Reviewed-by: Masami Hiramatsu <mhiramat@kernel.org>
+Tested-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Masami Hiramatsu <mhiramat@kernel.org>
+Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
+Stable-dep-of: c8c301abeae5 ("x86/ibt: Add ANNOTATE_NOENDBR")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/lib/uaccess.S | 22 +++++++++++-----------
- 1 file changed, 11 insertions(+), 11 deletions(-)
+ include/linux/objtool.h       | 12 ++++++++++++
+ tools/include/linux/objtool.h | 12 ++++++++++++
+ 2 files changed, 24 insertions(+)
 
-diff --git a/arch/riscv/lib/uaccess.S b/arch/riscv/lib/uaccess.S
-index bceb0629e440e..baddd6a0d0229 100644
---- a/arch/riscv/lib/uaccess.S
-+++ b/arch/riscv/lib/uaccess.S
-@@ -174,6 +174,13 @@ ENTRY(__asm_copy_from_user)
- 	csrc CSR_STATUS, t6
- 	li	a0, 0
- 	ret
-+
-+	/* Exception fixup code */
-+10:
-+	/* Disable access to user memory */
-+	csrs CSR_STATUS, t6
-+	mv a0, t5
-+	ret
- ENDPROC(__asm_copy_to_user)
- ENDPROC(__asm_copy_from_user)
- EXPORT_SYMBOL(__asm_copy_to_user)
-@@ -219,19 +226,12 @@ ENTRY(__clear_user)
- 	addi a0, a0, 1
- 	bltu a0, a3, 5b
- 	j 3b
--ENDPROC(__clear_user)
--EXPORT_SYMBOL(__clear_user)
+diff --git a/include/linux/objtool.h b/include/linux/objtool.h
+index a2042c4186864..d59e69df821eb 100644
+--- a/include/linux/objtool.h
++++ b/include/linux/objtool.h
+@@ -71,6 +71,17 @@ struct unwind_hint {
+ 	static void __used __section(".discard.func_stack_frame_non_standard") \
+ 		*__func_stack_frame_non_standard_##func = func
  
--	.section .fixup,"ax"
--	.balign 4
--	/* Fixup code for __copy_user(10) and __clear_user(11) */
--10:
--	/* Disable access to user memory */
--	csrs CSR_STATUS, t6
--	mv a0, t5
--	ret
-+	/* Exception fixup code */
- 11:
-+	/* Disable access to user memory */
- 	csrs CSR_STATUS, t6
- 	mv a0, a1
- 	ret
--	.previous
-+ENDPROC(__clear_user)
-+EXPORT_SYMBOL(__clear_user)
++/*
++ * STACK_FRAME_NON_STANDARD_FP() is a frame-pointer-specific function ignore
++ * for the case where a function is intentionally missing frame pointer setup,
++ * but otherwise needs objtool/ORC coverage when frame pointers are disabled.
++ */
++#ifdef CONFIG_FRAME_POINTER
++#define STACK_FRAME_NON_STANDARD_FP(func) STACK_FRAME_NON_STANDARD(func)
++#else
++#define STACK_FRAME_NON_STANDARD_FP(func)
++#endif
++
+ #else /* __ASSEMBLY__ */
+ 
+ /*
+@@ -132,6 +143,7 @@ struct unwind_hint {
+ #define UNWIND_HINT(sp_reg, sp_offset, type, end)	\
+ 	"\n\t"
+ #define STACK_FRAME_NON_STANDARD(func)
++#define STACK_FRAME_NON_STANDARD_FP(func)
+ #else
+ #define ANNOTATE_INTRA_FUNCTION_CALL
+ .macro UNWIND_HINT type:req sp_reg=0 sp_offset=0 end=0
+diff --git a/tools/include/linux/objtool.h b/tools/include/linux/objtool.h
+index a2042c4186864..d59e69df821eb 100644
+--- a/tools/include/linux/objtool.h
++++ b/tools/include/linux/objtool.h
+@@ -71,6 +71,17 @@ struct unwind_hint {
+ 	static void __used __section(".discard.func_stack_frame_non_standard") \
+ 		*__func_stack_frame_non_standard_##func = func
+ 
++/*
++ * STACK_FRAME_NON_STANDARD_FP() is a frame-pointer-specific function ignore
++ * for the case where a function is intentionally missing frame pointer setup,
++ * but otherwise needs objtool/ORC coverage when frame pointers are disabled.
++ */
++#ifdef CONFIG_FRAME_POINTER
++#define STACK_FRAME_NON_STANDARD_FP(func) STACK_FRAME_NON_STANDARD(func)
++#else
++#define STACK_FRAME_NON_STANDARD_FP(func)
++#endif
++
+ #else /* __ASSEMBLY__ */
+ 
+ /*
+@@ -132,6 +143,7 @@ struct unwind_hint {
+ #define UNWIND_HINT(sp_reg, sp_offset, type, end)	\
+ 	"\n\t"
+ #define STACK_FRAME_NON_STANDARD(func)
++#define STACK_FRAME_NON_STANDARD_FP(func)
+ #else
+ #define ANNOTATE_INTRA_FUNCTION_CALL
+ .macro UNWIND_HINT type:req sp_reg=0 sp_offset=0 end=0
 -- 
 2.40.1
 
