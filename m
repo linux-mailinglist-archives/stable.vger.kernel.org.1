@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 322B6787303
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 858D5787256
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241938AbjHXO70 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60544 "EHLO
+        id S240932AbjHXOxB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:53:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241958AbjHXO67 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:59 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7641BCE
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:57 -0700 (PDT)
+        with ESMTP id S241829AbjHXOwc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:52:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB5F61BE
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:52:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4032E67077
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51ED2C433C7;
-        Thu, 24 Aug 2023 14:58:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 59DAE66E9D
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:52:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B8ECC433CD;
+        Thu, 24 Aug 2023 14:52:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889136;
-        bh=Y/rBKoF67ZBdhVir07/4ijAUCMOK2y9829sMvNmYMXY=;
+        s=korg; t=1692888749;
+        bh=9BgpmCh2TK37oz++8FSQEYQRTmmRj4XvsahykOaevLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D75RE9GxbVScDw2zv35PhE0UwH/w+/ihc2xOgJ5vvoFTzy72mCwz4DFX6Iz183jEE
-         AYSZ/BneLnLw8Sj4DCQ7dRzcWridCBHagghFn+a1F/bHlSByZSmjljfEzZ+cu7CzFt
-         OPo13OsZLyJpFgtZrWizggQD34BY+fMhwqlMx70U=
+        b=RoaVIMVcaNTXMTo11ngGE9tBsMKV+sQ2Fm9GI+KIhwN/Km6TC1YyIj4Zifxszyj9Z
+         LvOhwCLsxW0xPuBCrYKK10fxQDAsoOHIGSa1FKe6jN90owR6yfhr08meoYHTNLX4Sa
+         wADSW6jXj9U8Y+61KjuLDCc+/Ez6sowjnX3kl4Dk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        hackyzh002 <hackyzh002@gmail.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Takashi Sakamoto <o-takashi@sakamocchi.jp>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 007/135] drm/radeon: Fix integer overflow in radeon_cs_parser_init
-Date:   Thu, 24 Aug 2023 16:49:10 +0200
-Message-ID: <20230824145027.321684302@linuxfoundation.org>
+Subject: [PATCH 5.15 028/139] firewire: net: fix use after free in fwnet_finish_incoming_packet()
+Date:   Thu, 24 Aug 2023 16:49:11 +0200
+Message-ID: <20230824145024.809784960@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,36 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: hackyzh002 <hackyzh002@gmail.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit f828b681d0cd566f86351c0b913e6cb6ed8c7b9c ]
+[ Upstream commit 3ff256751a2853e1ffaa36958ff933ccc98c6cb5 ]
 
-The type of size is unsigned, if size is 0x40000000, there will be an
-integer overflow, size will be zero after size *= sizeof(uint32_t),
-will cause uninitialized memory to be referenced later
+The netif_rx() function frees the skb so we can't dereference it to
+save the skb->len.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: hackyzh002 <hackyzh002@gmail.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_3B3D24B66ED66A6BB73CC0E63C6A14E45109@qq.com
+Signed-off-by: Takashi Sakamoto <o-takashi@sakamocchi.jp>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/radeon/radeon_cs.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/firewire/net.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/radeon/radeon_cs.c b/drivers/gpu/drm/radeon/radeon_cs.c
-index a78b60b62caf2..87a57e5588a28 100644
---- a/drivers/gpu/drm/radeon/radeon_cs.c
-+++ b/drivers/gpu/drm/radeon/radeon_cs.c
-@@ -271,7 +271,8 @@ int radeon_cs_parser_init(struct radeon_cs_parser *p, void *data)
+diff --git a/drivers/firewire/net.c b/drivers/firewire/net.c
+index 4c3fd2eed1da4..beba0a56bb9ae 100644
+--- a/drivers/firewire/net.c
++++ b/drivers/firewire/net.c
+@@ -488,7 +488,7 @@ static int fwnet_finish_incoming_packet(struct net_device *net,
+ 					struct sk_buff *skb, u16 source_node_id,
+ 					bool is_broadcast, u16 ether_type)
  {
- 	struct drm_radeon_cs *cs = data;
- 	uint64_t *chunk_array_ptr;
--	unsigned size, i;
-+	u64 size;
-+	unsigned i;
- 	u32 ring = RADEON_CS_RING_GFX;
- 	s32 priority = 0;
+-	int status;
++	int status, len;
  
+ 	switch (ether_type) {
+ 	case ETH_P_ARP:
+@@ -542,13 +542,15 @@ static int fwnet_finish_incoming_packet(struct net_device *net,
+ 		}
+ 		skb->protocol = protocol;
+ 	}
++
++	len = skb->len;
+ 	status = netif_rx(skb);
+ 	if (status == NET_RX_DROP) {
+ 		net->stats.rx_errors++;
+ 		net->stats.rx_dropped++;
+ 	} else {
+ 		net->stats.rx_packets++;
+-		net->stats.rx_bytes += skb->len;
++		net->stats.rx_bytes += len;
+ 	}
+ 
+ 	return 0;
 -- 
 2.40.1
 
