@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D13787363
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD54B7872D8
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242012AbjHXPDL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:03:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
+        id S231429AbjHXO5s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242076AbjHXPDF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44B5124
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:44 -0700 (PDT)
+        with ESMTP id S241881AbjHXO5R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3476C1995
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CECA6719C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03C8C433C8;
-        Thu, 24 Aug 2023 15:02:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C805A66F07
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D83CBC433C8;
+        Thu, 24 Aug 2023 14:57:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889364;
-        bh=+Xy8nYP3pURNFq4RCmIqccSjrQnQNkmrb3DbD8+4wM4=;
+        s=korg; t=1692889034;
+        bh=oteSiFrCHEUH2vybh7C73upbdkfjD7Actn6GBPtodcc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0N3aTIW+wlUVxoqOc0uz1B0QeAI3P5iTi+u2N2EGAmqHlglRkoji6UY17BRpndjke
-         v6J5CmZQGnjn83sgOdsGt6bZdbaBrkPUAflXPxFaUmHwqoO40zZqpUlO3XZvwk+xRC
-         /CrfWonYETVHe5dsCqYFMCezizbUqFyCxzatXRdA=
+        b=nqrYUBhrJvpByUQI4C0WDypbb9sbsVmGtkmV8sg9CuRthdyFh5ZTgBzC89fNF0oxY
+         nmT27P1b9X31OkkIwmgnDggywYzjWznEV1hrb8W0ljaKyoYpl5nfRUcpfw+y1Kfv/E
+         jLwrdXA7sni/xJ1H03M4C9WiPfWlZGMN25x9wg4k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 109/135] serial: 8250: Fix oops for port->pm on uart_change_pm()
-Date:   Thu, 24 Aug 2023 16:50:52 +0200
-Message-ID: <20230824145031.669940195@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 130/139] x86/cpu: Rename srso_(.*)_alias to srso_alias_\1
+Date:   Thu, 24 Aug 2023 16:50:53 +0200
+Message-ID: <20230824145029.095374103@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,44 +54,154 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Lindgren <tony@atomide.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-[ Upstream commit dfe2aeb226fd5e19b0ee795f4f6ed8bc494c1534 ]
+commit 42be649dd1f2eee6b1fb185f1a231b9494cf095f upstream.
 
-Unloading a hardware specific 8250 driver can produce error "Unable to
-handle kernel paging request at virtual address" about ten seconds after
-unloading the driver. This happens on uart_hangup() calling
-uart_change_pm().
+For a more consistent namespace.
 
-Turns out commit 04e82793f068 ("serial: 8250: Reinit port->pm on port
-specific driver unbind") was only a partial fix. If the hardware specific
-driver has initialized port->pm function, we need to clear port->pm too.
-Just reinitializing port->ops does not do this. Otherwise serial8250_pm()
-will call port->pm() instead of serial8250_do_pm().
+  [ bp: Fixup names in the doc too. ]
 
-Fixes: 04e82793f068 ("serial: 8250: Reinit port->pm on port specific driver unbind")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Link: https://lore.kernel.org/r/20230804131553.52927-1-tony@atomide.com
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121148.976236447@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/8250/8250_port.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/admin-guide/hw-vuln/srso.rst |    4 ++--
+ arch/x86/include/asm/nospec-branch.h       |    4 ++--
+ arch/x86/kernel/vmlinux.lds.S              |    8 ++++----
+ arch/x86/lib/retpoline.S                   |   26 +++++++++++++-------------
+ 4 files changed, 21 insertions(+), 21 deletions(-)
 
-diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
-index 432a438929e64..7499954c9aa76 100644
---- a/drivers/tty/serial/8250/8250_port.c
-+++ b/drivers/tty/serial/8250/8250_port.c
-@@ -3231,6 +3231,7 @@ void serial8250_init_port(struct uart_8250_port *up)
- 	struct uart_port *port = &up->port;
+--- a/Documentation/admin-guide/hw-vuln/srso.rst
++++ b/Documentation/admin-guide/hw-vuln/srso.rst
+@@ -124,8 +124,8 @@ sequence.
+ To ensure the safety of this mitigation, the kernel must ensure that the
+ safe return sequence is itself free from attacker interference.  In Zen3
+ and Zen4, this is accomplished by creating a BTB alias between the
+-untraining function srso_untrain_ret_alias() and the safe return
+-function srso_safe_ret_alias() which results in evicting a potentially
++untraining function srso_alias_untrain_ret() and the safe return
++function srso_alias_safe_ret() which results in evicting a potentially
+ poisoned BTB entry and using that safe one for all function returns.
  
- 	spin_lock_init(&port->lock);
-+	port->pm = NULL;
- 	port->ops = &serial8250_pops;
- 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
+ In older Zen1 and Zen2, this is accomplished using a reinterpretation
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -183,7 +183,7 @@
  
--- 
-2.40.1
-
+ #ifdef CONFIG_CPU_SRSO
+ 	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
+-			  "call srso_untrain_ret_alias", X86_FEATURE_SRSO_ALIAS
++			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+ #endif
+ .endm
+ 
+@@ -207,7 +207,7 @@ extern void srso_alias_return_thunk(void
+ 
+ extern void retbleed_untrain_ret(void);
+ extern void srso_untrain_ret(void);
+-extern void srso_untrain_ret_alias(void);
++extern void srso_alias_untrain_ret(void);
+ 
+ extern void entry_ibpb(void);
+ 
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -141,10 +141,10 @@ SECTIONS
+ 
+ #ifdef CONFIG_CPU_SRSO
+ 		/*
+-		 * See the comment above srso_untrain_ret_alias()'s
++		 * See the comment above srso_alias_untrain_ret()'s
+ 		 * definition.
+ 		 */
+-		. = srso_untrain_ret_alias | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
++		. = srso_alias_untrain_ret | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
+ 		*(.text.__x86.rethunk_safe)
+ #endif
+ 		ALIGN_ENTRY_TEXT_END
+@@ -527,8 +527,8 @@ INIT_PER_CPU(irq_stack_backing_store);
+  * Instead do: (A | B) - (A & B) in order to compute the XOR
+  * of the two function addresses:
+  */
+-. = ASSERT(((ABSOLUTE(srso_untrain_ret_alias) | srso_safe_ret_alias) -
+-		(ABSOLUTE(srso_untrain_ret_alias) & srso_safe_ret_alias)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
++. = ASSERT(((ABSOLUTE(srso_alias_untrain_ret) | srso_alias_safe_ret) -
++		(ABSOLUTE(srso_alias_untrain_ret) & srso_alias_safe_ret)) == ((1 << 2) | (1 << 8) | (1 << 14) | (1 << 20)),
+ 		"SRSO function pair won't alias");
+ #endif
+ 
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -75,55 +75,55 @@ SYM_CODE_END(__x86_indirect_thunk_array)
+ #ifdef CONFIG_RETHUNK
+ 
+ /*
+- * srso_untrain_ret_alias() and srso_safe_ret_alias() are placed at
++ * srso_alias_untrain_ret() and srso_alias_safe_ret() are placed at
+  * special addresses:
+  *
+- * - srso_untrain_ret_alias() is 2M aligned
+- * - srso_safe_ret_alias() is also in the same 2M page but bits 2, 8, 14
++ * - srso_alias_untrain_ret() is 2M aligned
++ * - srso_alias_safe_ret() is also in the same 2M page but bits 2, 8, 14
+  * and 20 in its virtual address are set (while those bits in the
+- * srso_untrain_ret_alias() function are cleared).
++ * srso_alias_untrain_ret() function are cleared).
+  *
+  * This guarantees that those two addresses will alias in the branch
+  * target buffer of Zen3/4 generations, leading to any potential
+  * poisoned entries at that BTB slot to get evicted.
+  *
+- * As a result, srso_safe_ret_alias() becomes a safe return.
++ * As a result, srso_alias_safe_ret() becomes a safe return.
+  */
+ #ifdef CONFIG_CPU_SRSO
+ 	.section .text.__x86.rethunk_untrain
+ 
+-SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
++SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	UNWIND_HINT_FUNC
+ 	ASM_NOP2
+ 	lfence
+ 	jmp srso_alias_return_thunk
+-SYM_FUNC_END(srso_untrain_ret_alias)
+-__EXPORT_THUNK(srso_untrain_ret_alias)
++SYM_FUNC_END(srso_alias_untrain_ret)
++__EXPORT_THUNK(srso_alias_untrain_ret)
+ 
+ 	.section .text.__x86.rethunk_safe
+ #else
+ /* dummy definition for alternatives */
+-SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
++SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	ANNOTATE_UNRET_SAFE
+ 	ret
+ 	int3
+-SYM_FUNC_END(srso_untrain_ret_alias)
++SYM_FUNC_END(srso_alias_untrain_ret)
+ #endif
+ 
+-SYM_START(srso_safe_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
++SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	add $8, %_ASM_SP
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_UNRET_SAFE
+ 	ret
+ 	int3
+-SYM_FUNC_END(srso_safe_ret_alias)
++SYM_FUNC_END(srso_alias_safe_ret)
+ 
+ 	.section .text.__x86.return_thunk
+ 
+ SYM_CODE_START(srso_alias_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
+-	call srso_safe_ret_alias
++	call srso_alias_safe_ret
+ 	ud2
+ SYM_CODE_END(srso_alias_return_thunk)
+ 
 
 
