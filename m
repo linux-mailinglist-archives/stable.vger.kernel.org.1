@@ -2,51 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67AF0787328
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D743787295
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:55:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238085AbjHXPBA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:01:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44770 "EHLO
+        id S241873AbjHXOzL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:55:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241982AbjHXPAe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:00:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C8941BD3
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:00:23 -0700 (PDT)
+        with ESMTP id S241927AbjHXOyx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:54:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC10C10D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:54:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 36D2567069
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:00:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D19C433C8;
-        Thu, 24 Aug 2023 15:00:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF39366F55
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:54:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5F79C433D9;
+        Thu, 24 Aug 2023 14:54:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889222;
-        bh=fE8v17R7Cz48+IyHzU7vZ5xYz0pQbuwPhfnjguHkWrA=;
+        s=korg; t=1692888890;
+        bh=841cMNAblnzgYJrEjqAoDGP2vKgsmCxumObfdkJ1oQ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U22D5Vq7mGwWCcP9dI6qzSYWLRtCeYj/spE/Ep+mWORke/rU66T1G/R6tf5hLH0CH
-         sL4wD4qzkqqU0xZV/gmhY4/xlNX2BSd0hhlvWq0Bs/bg5+gvNrbanYHI9xldZS3U5f
-         M2CvqxygA6DNzENssuTAIhPVVijiXPaJ8ymIe6Qc=
+        b=lN8pabvtCJnQ8ZDdhClWKZleN4EeKbo865ZdfQl50fy8HTBZY6ecPZJ8yvOlAY/BN
+         LtaWM8u/5fCeEojnx0yUZI6TbDum+/1a0gT2lMhYflELPJu5kx6CGuwpyDR21Pks7P
+         y4ET/RZ1Y4iAIdPytwNg2IWAzQwwBo3sNFhikyhw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Li Jun <jun.li@nxp.com>, Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev,
+        Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>,
+        Qingqing Zhuo <qingqing.zhuo@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>,
+        Daniel Wheeler <daniel.wheeler@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 030/135] usb: chipidea: imx: dont request QoS for imx8ulp
+Subject: [PATCH 5.15 050/139] drm/amd/display: fix access hdcp_workqueue assert
 Date:   Thu, 24 Aug 2023 16:49:33 +0200
-Message-ID: <20230824145028.235818251@linuxfoundation.org>
+Message-ID: <20230824145025.784019258@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,47 +58,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Hersen Wu <hersenxs.wu@amd.com>
 
-[ Upstream commit 9a070e8e208995a9d638b538ed7abf28bd6ea6f0 ]
+[ Upstream commit cdff36a0217aadf5cbc167893ad1c0da869619cb ]
 
-Use dedicated imx8ulp usb compatible to remove QoS request
-since imx8ulp has no such limitation of imx7ulp: DMA will
-not work if system enters idle.
+[Why] hdcp are enabled for asics from raven. for old asics
+which hdcp are not enabled, hdcp_workqueue are null. some
+access to hdcp work queue are not guarded with pointer check.
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Message-ID: <20230530104007.1294702-2-xu.yang_2@nxp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+[How] add hdcp_workqueue pointer check before access workqueue.
+
+Reviewed-by: Bhawanpreet Lakha <Bhawanpreet.Lakha@amd.com>
+Acked-by: Qingqing Zhuo <qingqing.zhuo@amd.com>
+Signed-off-by: Hersen Wu <hersenxs.wu@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ .../gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c    |  6 ++++++
+ .../amd/display/amdgpu_dm/amdgpu_dm_mst_types.c  | 16 ++++++++++------
+ 2 files changed, 16 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index f798455942844..4d47fe89864d9 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -70,6 +70,10 @@ static const struct ci_hdrc_imx_platform_flag imx7ulp_usb_data = {
- 		CI_HDRC_PMQOS,
- };
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 65f9e7012f6c4..4cf33abfb7cca 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -9634,6 +9634,9 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
+ 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
  
-+static const struct ci_hdrc_imx_platform_flag imx8ulp_usb_data = {
-+	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM,
-+};
++		if (!adev->dm.hdcp_workqueue)
++			continue;
 +
- static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
- 	{ .compatible = "fsl,imx23-usb", .data = &imx23_usb_data},
- 	{ .compatible = "fsl,imx28-usb", .data = &imx28_usb_data},
-@@ -80,6 +84,7 @@ static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
- 	{ .compatible = "fsl,imx6ul-usb", .data = &imx6ul_usb_data},
- 	{ .compatible = "fsl,imx7d-usb", .data = &imx7d_usb_data},
- 	{ .compatible = "fsl,imx7ulp-usb", .data = &imx7ulp_usb_data},
-+	{ .compatible = "fsl,imx8ulp-usb", .data = &imx8ulp_usb_data},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, ci_hdrc_imx_dt_ids);
+ 		pr_debug("[HDCP_DM] -------------- i : %x ----------\n", i);
+ 
+ 		if (!connector)
+@@ -9682,6 +9685,9 @@ static void amdgpu_dm_atomic_commit_tail(struct drm_atomic_state *state)
+ 		struct amdgpu_crtc *acrtc = to_amdgpu_crtc(dm_new_con_state->base.crtc);
+ 		struct amdgpu_dm_connector *aconnector = to_amdgpu_dm_connector(connector);
+ 
++		if (!adev->dm.hdcp_workqueue)
++			continue;
++
+ 		new_crtc_state = NULL;
+ 		old_crtc_state = NULL;
+ 
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+index e1e0be6dd22ca..0b58a93864490 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_mst_types.c
+@@ -331,13 +331,17 @@ static int dm_dp_mst_get_modes(struct drm_connector *connector)
+ 		if (aconnector->dc_sink && connector->state) {
+ 			struct drm_device *dev = connector->dev;
+ 			struct amdgpu_device *adev = drm_to_adev(dev);
+-			struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
+-			struct hdcp_workqueue *hdcp_w = &hdcp_work[aconnector->dc_link->link_index];
+ 
+-			connector->state->hdcp_content_type =
+-			hdcp_w->hdcp_content_type[connector->index];
+-			connector->state->content_protection =
+-			hdcp_w->content_protection[connector->index];
++			if (adev->dm.hdcp_workqueue) {
++				struct hdcp_workqueue *hdcp_work = adev->dm.hdcp_workqueue;
++				struct hdcp_workqueue *hdcp_w =
++					&hdcp_work[aconnector->dc_link->link_index];
++
++				connector->state->hdcp_content_type =
++				hdcp_w->hdcp_content_type[connector->index];
++				connector->state->content_protection =
++				hdcp_w->content_protection[connector->index];
++			}
+ 		}
+ #endif
+ 
 -- 
 2.40.1
 
