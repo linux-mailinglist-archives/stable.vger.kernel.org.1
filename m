@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3501787359
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2E507872C4
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238054AbjHXPCi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:02:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36438 "EHLO
+        id S241893AbjHXO4r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:56:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242030AbjHXPCM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:02:12 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 297011BD4
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:09 -0700 (PDT)
+        with ESMTP id S241978AbjHXO4i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73C191995
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA12E615C7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA085C433C7;
-        Thu, 24 Aug 2023 15:02:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 08945612C4
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BBA8C433C7;
+        Thu, 24 Aug 2023 14:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889328;
-        bh=uWRKON8yIK2DblxC9jvFEh+CxgSoMwpPfELcFO6R2Ss=;
+        s=korg; t=1692888995;
+        bh=1dO6tuPTmhp1VGa1InoeoViU2iS31kF3itFd3LFyfAs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q2S3sVgWLNPBBnCQ+9uLZU1YjXdWqm8bZPluEdfEyQ8vBVBMnIbJ1ZZsb3AwdUS9+
-         n4G/P3lyZq3zdHvaz8s1ohl2Qgg6XXi0jUlzLf/GYZFLnvW+AIIitOSlRojiVXxnEW
-         kCRzAJFRNH61H5qPSddcNH+cJ6zQ1qJEkPGOyWDA=
+        b=D+tJVDLkedOVadM7zto5xt7Hmx7vkI+obh5htFUGfTKkIxICxvRwV8n9P6QQQF2xG
+         AE+88YHqirHg/j20uvbYP8/+IFHwW9F3poo9Gt3oFaU5syu1DYzsSMP2V3jrwMwyHH
+         4chTOAPlBtNfJHC6PNbanNEur0z3cP++NqOvsup8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Bee <knaerzche@gmail.com>,
-        Heiko Stuebner <heiko@sntech.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 097/135] arm64: dts: rockchip: add ES8316 codec for ROCK Pi 4
+        patches@lists.linux.dev, Yuezhang Mo <Yuezhang.Mo@sony.com>,
+        Maxim Suhanov <dfirblog@gmail.com>,
+        Sungjong Seo <sj1557.seo@samsung.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 5.15 117/139] exfat: check if filename entries exceeds max filename length
 Date:   Thu, 24 Aug 2023 16:50:40 +0200
-Message-ID: <20230824145031.136536875@linuxfoundation.org>
+Message-ID: <20230824145028.582929000@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,78 +57,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Alex Bee <knaerzche@gmail.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 65bd2b8bdb3bddc37bea695789713916327e1c1f ]
+commit d42334578eba1390859012ebb91e1e556d51db49 upstream.
 
-ROCK Pi 4 boards have the codec connected to i2s0 and it is accessible
-via i2c1 address 0x11.
-Add an audio-graph-card for it.
+exfat_extract_uni_name copies characters from a given file name entry into
+the 'uniname' variable. This variable is actually defined on the stack of
+the exfat_readdir() function. According to the definition of
+the 'exfat_uni_name' type, the file name should be limited 255 characters
+(+ null teminator space), but the exfat_get_uniname_from_ext_entry()
+function can write more characters because there is no check if filename
+entries exceeds max filename length. This patch add the check not to copy
+filename characters when exceeding max filename length.
 
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Link: https://lore.kernel.org/r/20210618181256.27992-5-knaerzche@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
-Stable-dep-of: cee572756aa2 ("arm64: dts: rockchip: Disable HS400 for eMMC on ROCK Pi 4")
+Cc: stable@vger.kernel.org
+Cc: Yuezhang Mo <Yuezhang.Mo@sony.com>
+Reported-by: Maxim Suhanov <dfirblog@gmail.com>
+Reviewed-by: Sungjong Seo <sj1557.seo@samsung.com>
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
+[Harshit: backport to 5.15.y]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../boot/dts/rockchip/rk3399-rock-pi-4.dtsi   | 28 +++++++++++++++++++
- 1 file changed, 28 insertions(+)
+ fs/exfat/dir.c |    9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-index 6dc6dee6c13e2..f80cdb021f7fc 100644
---- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-+++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-@@ -31,6 +31,12 @@
- 		reset-gpios = <&gpio0 RK_PB2 GPIO_ACTIVE_LOW>;
- 	};
+--- a/fs/exfat/dir.c
++++ b/fs/exfat/dir.c
+@@ -34,6 +34,7 @@ static void exfat_get_uniname_from_ext_e
+ {
+ 	int i;
+ 	struct exfat_entry_set_cache *es;
++	unsigned int uni_len = 0, len;
  
-+	sound {
-+		compatible = "audio-graph-card";
-+		label = "Analog";
-+		dais = <&i2s0_p0>;
-+	};
-+
- 	vcc12v_dcin: dc-12v {
- 		compatible = "regulator-fixed";
- 		regulator-name = "vcc12v_dcin";
-@@ -417,6 +423,20 @@
- 	i2c-scl-rising-time-ns = <300>;
- 	i2c-scl-falling-time-ns = <15>;
- 	status = "okay";
-+
-+	es8316: codec@11 {
-+		compatible = "everest,es8316";
-+		reg = <0x11>;
-+		clocks = <&cru SCLK_I2S_8CH_OUT>;
-+		clock-names = "mclk";
-+		#sound-dai-cells = <0>;
-+
-+		port {
-+			es8316_p0_0: endpoint {
-+				remote-endpoint = <&i2s0_p0_0>;
-+			};
-+		};
-+	};
- };
+ 	es = exfat_get_dentry_set(sb, p_dir, entry, ES_ALL_ENTRIES);
+ 	if (!es)
+@@ -52,7 +53,10 @@ static void exfat_get_uniname_from_ext_e
+ 		if (exfat_get_entry_type(ep) != TYPE_EXTEND)
+ 			break;
  
- &i2c3 {
-@@ -435,6 +455,14 @@
- 	rockchip,playback-channels = <8>;
- 	rockchip,capture-channels = <8>;
- 	status = "okay";
-+
-+	i2s0_p0: port {
-+		i2s0_p0_0: endpoint {
-+			dai-format = "i2s";
-+			mclk-fs = <256>;
-+			remote-endpoint = <&es8316_p0_0>;
-+		};
-+	};
- };
+-		exfat_extract_uni_name(ep, uniname);
++		len = exfat_extract_uni_name(ep, uniname);
++		uni_len += len;
++		if (len != EXFAT_FILE_NAME_LEN || uni_len >= MAX_NAME_LENGTH)
++			break;
+ 		uniname += EXFAT_FILE_NAME_LEN;
+ 	}
  
- &i2s1 {
--- 
-2.40.1
-
+@@ -1032,7 +1036,8 @@ rewind:
+ 			if (entry_type == TYPE_EXTEND) {
+ 				unsigned short entry_uniname[16], unichar;
+ 
+-				if (step != DIRENT_STEP_NAME) {
++				if (step != DIRENT_STEP_NAME ||
++				    name_len >= MAX_NAME_LENGTH) {
+ 					step = DIRENT_STEP_FILE;
+ 					continue;
+ 				}
 
 
