@@ -2,220 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E44D787BA8
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 00:49:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 523E3787BF7
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 01:26:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243958AbjHXWtH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 18:49:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55216 "EHLO
+        id S235591AbjHXXZa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 19:25:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243963AbjHXWse (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 18:48:34 -0400
-Received: from mail-qt1-x835.google.com (mail-qt1-x835.google.com [IPv6:2607:f8b0:4864:20::835])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E8851BFA
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:48:31 -0700 (PDT)
-Received: by mail-qt1-x835.google.com with SMTP id d75a77b69052e-40c72caec5cso122551cf.0
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:48:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692917310; x=1693522110; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=vb9AfcF55mcoZGPO2dmvc9+6EX0/259C9jrBF6CbU4o=;
-        b=JrE8u60dB1+q08qf9STEKBtPPddw8AVaiN5Biq1SOcxcDB6xhDH+oOnhHGGAZ/QRDN
-         +NlQdqx10TEw72SSdBzj66XIrV1sLpJCGjS8eGB60Hy/ZKVVcmreSfedkCvbte+PRw3V
-         SePlMjrc6+JY4QjjfG1iOk6CMMxn54xgflkZUbSC3Ys2v7reEJ+NnqaOR/M9cELzVZFp
-         2DgDaqVBMyhmbUuDLrva8f+kkUSIA1H6tiuQi0qq46YyqG/i/J8mVR9fM9aSTRAyEV3J
-         C7Ui23tvA/x5nXXKnrLSMPr2NVSKqNnJ/j9s0gVSItWG4L5R05jahzHxY/Erz7qWYDuY
-         jJew==
+        with ESMTP id S238067AbjHXXYu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 19:24:50 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CBC80210C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 16:23:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692919385;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=4oo63TkSrkUX+Z3NHo9KF69Jc5ETG4Wg8FbWNIW5HOw=;
+        b=DpbC3YI9ERtuNO5V1hVzTW6kdJfQuH8mFmo2uVdRMXx52a7yMYOZOeAfgOl45XhJb/ERDC
+        zTGgJt2x9OPMaMVEsXZJWrIFANZnIeew/RFuNNH6N7h80pkwyI95SFOkqXrYC/iFZZMiwq
+        +Dembwyf1SxyYN5kJvEA06nIuaxyxFE=
+Received: from mail-ed1-f72.google.com (mail-ed1-f72.google.com
+ [209.85.208.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-225-zOVKg1LiNhyWVX456xdRdw-1; Thu, 24 Aug 2023 19:23:02 -0400
+X-MC-Unique: zOVKg1LiNhyWVX456xdRdw-1
+Received: by mail-ed1-f72.google.com with SMTP id 4fb4d7f45d1cf-529f8ef2db5so340712a12.0
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 16:23:02 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692917310; x=1693522110;
+        d=1e100.net; s=20221208; t=1692919381; x=1693524181;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=vb9AfcF55mcoZGPO2dmvc9+6EX0/259C9jrBF6CbU4o=;
-        b=kTaVQyrfG+KaLWCWYVuKCXJybYtTGX1M0ud3n7PPOFsoU1RbxgqBcZ8YsdVHv7pJR2
-         AhaTSwBCyg1KnP1+FSuz2bew+2w20T1TT2nGyGSVtIpgqOBITV+RKBIaxnfRr/Kwl3hT
-         2TMQIJrYNvD/hThlpDmPh4Yj4Z8xQacFk0v+cJV+yhU02H5X1xOuQ5U4Yv+Iu3JGrSOT
-         tuXmSnOVJb7JmbsS2zxOeHN/ZEx47BHfl/VUX9LiJCt/ZSrxtX1IKBp0AMWMAvAhaDYA
-         BOdpz4YHKCw695V2RRUXkLSX5MbZ/IA0F5u11yniZVezYrDSfsWN4M4ahwz/6RJDm8aS
-         XSrA==
-X-Gm-Message-State: AOJu0Yymm+s++h3CebgTuYx5IsjZlBiCHjTM7mzwU4eKGhCRtxY2tHWN
-        dypjlBBLa0yFRGHqvkVOwmL/d735xIzt+koBnN4txg==
-X-Google-Smtp-Source: AGHT+IGUi2btJyqhZwjI0swl1m7dj321OGKdIIYEKxQYvbRMpMhGCU304BgGWP9IHvXqT69giR0E0fo1t3jC1JH77mg=
-X-Received: by 2002:a05:622a:24f:b0:403:b6ff:c0b with SMTP id
- c15-20020a05622a024f00b00403b6ff0c0bmr112968qtx.6.1692917310180; Thu, 24 Aug
- 2023 15:48:30 -0700 (PDT)
+        bh=4oo63TkSrkUX+Z3NHo9KF69Jc5ETG4Wg8FbWNIW5HOw=;
+        b=EXgUbksMQKlyg9DfUQFG7mBBDpw+sdDaPJeqWASXL2p3aPnFw4E/fbWX9JZYKqfBRX
+         80CVWq0LTKcwaxtbr5g359hBvEkxXkedBwY02PRAD3HQN4Wx57N8Ts4LB1lWbg3ZLqFn
+         6a59agN/8ktw9/8irtbkR6eSjOy1ph3QNj2B+2pzba4QRo+w8VuVPgLXY1855cDdBl4d
+         5+MTwdaqRO8/R0fNLMfYHvweWo3wqqFwbjTQynq+byajnq2Uz7flJrOahXSvYBkCf4Z1
+         dtQ1aDQjGQi4RAtecWwWWS115ztnv2ydOKiRp1jWN+4PeqH/rVm+3QrN2KOUpWYcMc2q
+         mRtw==
+X-Gm-Message-State: AOJu0Ywvp7uYnjMKvT2BoeNTBueqKWuVybwlFtsUKKP+NKxwbNo3aMEF
+        AIUPwlMQeAxl41ZGTr3u4uocUmccmXedX19+/8ztgRV2u7c8Tp2Kkgsq4T+DL33oNHyc4fUNMg8
+        rJNZ5oaqQJZnAFkwn8PElVbeCNi65dYRy
+X-Received: by 2002:aa7:d058:0:b0:522:1d23:a1f8 with SMTP id n24-20020aa7d058000000b005221d23a1f8mr13107656edo.26.1692919381647;
+        Thu, 24 Aug 2023 16:23:01 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEyonal6KJXOHQzqJw6u6txpCMUSkvPsWd2+q/9hdd4MMAPVBbG6Dzlwj9iMdQ6wjV/yHRkcNpT8c3m1nQB+Vg=
+X-Received: by 2002:aa7:d058:0:b0:522:1d23:a1f8 with SMTP id
+ n24-20020aa7d058000000b005221d23a1f8mr13107650edo.26.1692919381376; Thu, 24
+ Aug 2023 16:23:01 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230824223731.2055016-1-srutherford@google.com>
-In-Reply-To: <20230824223731.2055016-1-srutherford@google.com>
-From:   Ben Hillier <bhillier@google.com>
-Date:   Thu, 24 Aug 2023 15:48:18 -0700
-Message-ID: <CAFn7gfRibD3YCBdXgtHuR0hMzJb+MYBNWHN5h+KJ1wJGzfL1sg@mail.gmail.com>
-Subject: Re: [PATCH v3] x86/sev: Make enc_dec_hypercall() accept a size
- instead of npages
-To:     Steve Rutherford <srutherford@google.com>
-Cc:     Borislav Petkov <bp@alien8.de>,
-        Thomas Gleixner <tglx@linutronix.de>, thomas.lendacky@amd.com,
-        pankaj.gupta@amd.com, Paolo Bonzini <pbonzini@redhat.com>,
-        Wanpeng Li <wanpengli@tencent.com>,
-        Vitaly Kuznetsov <vkuznets@redhat.com>,
-        Ingo Molnar <mingo@redhat.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H . Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, David.Kaplan@amd.com,
-        jacobhxu@google.com, patelsvishal@google.com,
-        stable@vger.kernel.org
+References: <20230824205142.2732984-1-aahringo@redhat.com>
+In-Reply-To: <20230824205142.2732984-1-aahringo@redhat.com>
+From:   Alexander Aring <aahringo@redhat.com>
+Date:   Thu, 24 Aug 2023 19:22:49 -0400
+Message-ID: <CAK-6q+iUe1=68LFv=BVd4MxVhtPf=jGPRFfXXNopEB2J+gjWqg@mail.gmail.com>
+Subject: Re: [PATCH dlm/next] dlm: fix plock lookup when using multiple lockspaces
+To:     teigland@redhat.com
+Cc:     cluster-devel@redhat.com, stable@vger.kernel.org,
+        bmarson@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 3:37=E2=80=AFPM Steve Rutherford <srutherford@googl=
-e.com> wrote:
+Hi,
+
+On Thu, Aug 24, 2023 at 4:51=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+m> wrote:
 >
-> enc_dec_hypercall() accepted a page count instead of a size, which
-> forced its callers to round up. As a result, non-page aligned
-> vaddrs caused pages to be spuriously marked as decrypted via the
-> encryption status hypercall, which in turn caused consistent
-> corruption of pages during live migration. Live migration requires
-> accurate encryption status information to avoid migrating pages
-> from the wrong perspective.
+> This patch fixes an issues when concurrent fcntl() syscalls are
+> executing on two different gfs2 filesystems. Each gfs2 filesystem
+> creates an DLM lockspace, it seems that VFS only allows fcntl() syscalls
+> at one time on a per filesystem basis. However if there are two
+> filesystems and we executing fcntl() syscalls our lookup mechanism on the
+> global plock op list does not work anymore.
+>
+> It can be reproduced with two mounted gfs2 filesystems using DLM
+> locking. Then call stress-ng --fcntl 32 on each mount point. The kernel
+> log will show several:
+>
+> WARNING: CPU: 4 PID: 943 at fs/dlm/plock.c:574 dev_write+0x15c/0x590
+>
+> because we have a sanity check if it's was really the meant original
+> plock op when dev_write() does a lookup. This patch adds just a
+> additional check for fsid to find the right plock op which is an
+> indicator that the recv_list should be on a per lockspace basis and not
+> globally defined. After this patch the sanity check never warned again
+> that the wrong plock op was being looked up.
 >
 > Cc: stable@vger.kernel.org
-> Fixes: 064ce6c550a0 ("mm: x86: Invoke hypercall when page encryption stat=
-us is changed")
-> Signed-off-by: Steve Rutherford <srutherford@google.com>
-> Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
-> Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Ran test comparing the c-bit status in the guest page tables to the
-host perspective. Before the patch, there was a c-bit status mismatch.
-Adding the patch fixed these mismatched c-bits.
-Tested-by: Ben Hillier <bhillier@google.com>
+> Reported-by: Barry Marson <bmarson@redhat.com>
+> Fixes: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspa=
+ce")
+> Signed-off-by: Alexander Aring <aahringo@redhat.com>
 > ---
->  arch/x86/include/asm/mem_encrypt.h |  6 +++---
->  arch/x86/kernel/kvm.c              |  4 +---
->  arch/x86/mm/mem_encrypt_amd.c      | 13 ++++++-------
->  3 files changed, 10 insertions(+), 13 deletions(-)
+>  fs/dlm/plock.c | 6 +++---
+>  1 file changed, 3 insertions(+), 3 deletions(-)
 >
-> diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/me=
-m_encrypt.h
-> index 7f97a8a97e24..473b16d73b47 100644
-> --- a/arch/x86/include/asm/mem_encrypt.h
-> +++ b/arch/x86/include/asm/mem_encrypt.h
-> @@ -50,8 +50,8 @@ void __init sme_enable(struct boot_params *bp);
->
->  int __init early_set_memory_decrypted(unsigned long vaddr, unsigned long=
- size);
->  int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long=
- size);
-> -void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npa=
-ges,
-> -                                           bool enc);
-> +void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr,
-> +                                           unsigned long size, bool enc)=
-;
->
->  void __init mem_encrypt_free_decrypted_mem(void);
->
-> @@ -85,7 +85,7 @@ early_set_memory_decrypted(unsigned long vaddr, unsigne=
-d long size) { return 0;
->  static inline int __init
->  early_set_memory_encrypted(unsigned long vaddr, unsigned long size) { re=
-turn 0; }
->  static inline void __init
-> -early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool en=
-c) {}
-> +early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size,=
- bool enc) {}
->
->  static inline void mem_encrypt_free_decrypted_mem(void) { }
->
-> diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
-> index 6a36db4f79fd..b8ab9ee5896c 100644
-> --- a/arch/x86/kernel/kvm.c
-> +++ b/arch/x86/kernel/kvm.c
-> @@ -966,10 +966,8 @@ static void __init kvm_init_platform(void)
->                  * Ensure that _bss_decrypted section is marked as decryp=
-ted in the
->                  * shared pages list.
->                  */
-> -               nr_pages =3D DIV_ROUND_UP(__end_bss_decrypted - __start_b=
-ss_decrypted,
-> -                                       PAGE_SIZE);
->                 early_set_mem_enc_dec_hypercall((unsigned long)__start_bs=
-s_decrypted,
-> -                                               nr_pages, 0);
-> +                                               __end_bss_decrypted - __s=
-tart_bss_decrypted, 0);
->
->                 /*
->                  * If not booted using EFI, enable Live migration support=
-.
-> diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.=
-c
-> index 54bbd5163e8d..6faea41e99b6 100644
-> --- a/arch/x86/mm/mem_encrypt_amd.c
-> +++ b/arch/x86/mm/mem_encrypt_amd.c
-> @@ -288,11 +288,10 @@ static bool amd_enc_cache_flush_required(void)
->         return !cpu_feature_enabled(X86_FEATURE_SME_COHERENT);
->  }
->
-> -static void enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
-> +static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, b=
-ool enc)
->  {
->  #ifdef CONFIG_PARAVIRT
-> -       unsigned long sz =3D npages << PAGE_SHIFT;
-> -       unsigned long vaddr_end =3D vaddr + sz;
-> +       unsigned long vaddr_end =3D vaddr + size;
->
->         while (vaddr < vaddr_end) {
->                 int psize, pmask, level;
-> @@ -342,7 +341,7 @@ static bool amd_enc_status_change_finish(unsigned lon=
-g vaddr, int npages, bool e
->                 snp_set_memory_private(vaddr, npages);
->
->         if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
-> -               enc_dec_hypercall(vaddr, npages, enc);
-> +               enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
->
->         return true;
->  }
-> @@ -466,7 +465,7 @@ static int __init early_set_memory_enc_dec(unsigned l=
-ong vaddr,
->
->         ret =3D 0;
->
-> -       early_set_mem_enc_dec_hypercall(start, PAGE_ALIGN(size) >> PAGE_S=
-HIFT, enc);
-> +       early_set_mem_enc_dec_hypercall(start, size, enc);
->  out:
->         __flush_tlb_all();
->         return ret;
-> @@ -482,9 +481,9 @@ int __init early_set_memory_encrypted(unsigned long v=
-addr, unsigned long size)
->         return early_set_memory_enc_dec(vaddr, size, true);
->  }
->
-> -void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npa=
-ges, bool enc)
-> +void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigne=
-d long size, bool enc)
->  {
-> -       enc_dec_hypercall(vaddr, npages, enc);
-> +       enc_dec_hypercall(vaddr, size, enc);
->  }
->
->  void __init sme_early_init(void)
-> --
-> 2.42.0.rc1.204.g551eb34607-goog
->
+> diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+> index 00e1d802a81c..e6b4c1a21446 100644
+> --- a/fs/dlm/plock.c
+> +++ b/fs/dlm/plock.c
+> @@ -556,7 +556,8 @@ static ssize_t dev_write(struct file *file, const cha=
+r __user *u, size_t count,
+>                 op =3D plock_lookup_waiter(&info);
+>         } else {
+>                 list_for_each_entry(iter, &recv_list, list) {
+> -                       if (!iter->info.wait) {
+> +                       if (!iter->info.wait &&
+> +                           iter->info.fsid =3D=3D info.fsid) {
+>                                 op =3D iter;
+>                                 break;
+>                         }
+> @@ -568,8 +569,7 @@ static ssize_t dev_write(struct file *file, const cha=
+r __user *u, size_t count,
+>                 if (info.wait)
+>                         WARN_ON(op->info.optype !=3D DLM_PLOCK_OP_LOCK);
+>                 else
+> -                       WARN_ON(op->info.fsid !=3D info.fsid ||
+> -                               op->info.number !=3D info.number ||
+> +                       WARN_ON(op->info.number !=3D info.number ||
+
+Please drop this patch as I was curious where the per
+lockspace/filesystem locking is for fcntl(). The answer is, it does
+not exist... I added here also checks to compare start and end fields.
+The lookup does not work, even with this patch applied.  It's because
+several fcntl() races to put something into send_list and it gets out
+of order and we can't assume that recv_list contains the order of
+fcntl() calls. We need to compare all fields to match a correct one
+which needs to be granted.
+
+The reason why I probably never saw it is because those fields in my
+tests are always the same and we simply don't compare all fields on
+the sanity check.
+
+- Alex
+
