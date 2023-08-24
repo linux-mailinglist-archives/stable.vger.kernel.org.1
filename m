@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8766B787352
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD28A7872C0
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242013AbjHXPCL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:02:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55158 "EHLO
+        id S235523AbjHXO4p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:56:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36214 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242063AbjHXPBy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:54 -0400
+        with ESMTP id S241915AbjHXO4T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:19 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510E719AA
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 653431BC5
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF778615C7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2637C433C7;
-        Thu, 24 Aug 2023 15:01:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED68066FAC
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EA57C433C7;
+        Thu, 24 Aug 2023 14:56:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889311;
-        bh=o3ufGvVJJyvgpyBSE/Ss9rK216MCI99hBP1QRL7br8Q=;
+        s=korg; t=1692888976;
+        bh=irYhPsMeHsJbXG4ZgRMk9r/gTkSEcoZoZ/UJFbg7kSE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wm8wfFASMTeAEDzM0SFVfWSrc58wvvOUOyb++s8UGc90ZzFvnsq1ajJHEnlGX8SgW
-         2OBLXUUZY8X51ZqpRkEZJu0EGG+G9MwMIVZBJK86ogJLKzJlxUbuWgal056VADoDzO
-         yD88WSajzn66s0N3BiOwVt+uVevzMCpwU1pLMPZ0=
+        b=X9HbZ616hczK2o5EgXkDIbrdpqvW5XZDP2iKz+zc0c7n+jKZiq67RIrGYBPI4F9rf
+         VSLHeqoTBANqgZ0yVel6+SiqBaZofm/3VE4XHxfkWYv4iwlAmwU8flplL4JNlDfr6y
+         K237hTZvf9klsuEHqbruOD/VgbHBNNgW853W7ms0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 061/135] mmc: core: add devm_mmc_alloc_host
+Subject: [PATCH 5.15 081/139] net: xfrm: Amend XFRMA_SEC_CTX nla_policy structure
 Date:   Thu, 24 Aug 2023 16:50:04 +0200
-Message-ID: <20230824145029.536882212@linuxfoundation.org>
+Message-ID: <20230824145027.168440449@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,74 +54,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Heiner Kallweit <hkallweit1@gmail.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 80df83c2c57e75cb482ccf0c639ce84703ab41a2 ]
+[ Upstream commit d1e0e61d617ba17aa516db707aa871387566bbf7 ]
 
-Add a device-managed version of mmc_alloc_host().
+According to all consumers code of attrs[XFRMA_SEC_CTX], like
 
-The argument order is reversed compared to mmc_alloc_host() because
-device-managed functions typically have the device argument first.
+* verify_sec_ctx_len(), convert to xfrm_user_sec_ctx*
+* xfrm_state_construct(), call security_xfrm_state_alloc whose prototype
+is int security_xfrm_state_alloc(.., struct xfrm_user_sec_ctx *sec_ctx);
+* copy_from_user_sec_ctx(), convert to xfrm_user_sec_ctx *
+...
 
-Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
-Link: https://lore.kernel.org/r/6d8f9fdc-7c9e-8e4f-e6ef-5470b971c74e@gmail.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: b8ada54fa1b8 ("mmc: meson-gx: fix deferred probing")
+It seems that the expected parsing result for XFRMA_SEC_CTX should be
+structure xfrm_user_sec_ctx, and the current xfrm_sec_ctx is confusing
+and misleading (Luckily, they happen to have same size 8 bytes).
+
+This commit amend the policy structure to xfrm_user_sec_ctx to avoid
+ambiguity.
+
+Fixes: cf5cb79f6946 ("[XFRM] netlink: Establish an attribute policy")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/core/host.c  | 26 ++++++++++++++++++++++++++
- include/linux/mmc/host.h |  1 +
- 2 files changed, 27 insertions(+)
+ net/xfrm/xfrm_compat.c | 2 +-
+ net/xfrm/xfrm_user.c   | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/core/host.c b/drivers/mmc/core/host.c
-index 03e2f965a96a8..1f46694b2e531 100644
---- a/drivers/mmc/core/host.c
-+++ b/drivers/mmc/core/host.c
-@@ -513,6 +513,32 @@ struct mmc_host *mmc_alloc_host(int extra, struct device *dev)
- 
- EXPORT_SYMBOL(mmc_alloc_host);
- 
-+static void devm_mmc_host_release(struct device *dev, void *res)
-+{
-+	mmc_free_host(*(struct mmc_host **)res);
-+}
-+
-+struct mmc_host *devm_mmc_alloc_host(struct device *dev, int extra)
-+{
-+	struct mmc_host **dr, *host;
-+
-+	dr = devres_alloc(devm_mmc_host_release, sizeof(*dr), GFP_KERNEL);
-+	if (!dr)
-+		return ERR_PTR(-ENOMEM);
-+
-+	host = mmc_alloc_host(extra, dev);
-+	if (IS_ERR(host)) {
-+		devres_free(dr);
-+		return host;
-+	}
-+
-+	*dr = host;
-+	devres_add(dev, dr);
-+
-+	return host;
-+}
-+EXPORT_SYMBOL(devm_mmc_alloc_host);
-+
- static int mmc_validate_host_caps(struct mmc_host *host)
- {
- 	if (host->caps & MMC_CAP_SDIO_IRQ && !host->ops->enable_sdio_irq) {
-diff --git a/include/linux/mmc/host.h b/include/linux/mmc/host.h
-index 40d7e98fc9902..fb294cbb9081d 100644
---- a/include/linux/mmc/host.h
-+++ b/include/linux/mmc/host.h
-@@ -477,6 +477,7 @@ struct mmc_host {
- struct device_node;
- 
- struct mmc_host *mmc_alloc_host(int extra, struct device *);
-+struct mmc_host *devm_mmc_alloc_host(struct device *dev, int extra);
- int mmc_add_host(struct mmc_host *);
- void mmc_remove_host(struct mmc_host *);
- void mmc_free_host(struct mmc_host *);
+diff --git a/net/xfrm/xfrm_compat.c b/net/xfrm/xfrm_compat.c
+index 8cbf45a8bcdc2..655fe4ff86212 100644
+--- a/net/xfrm/xfrm_compat.c
++++ b/net/xfrm/xfrm_compat.c
+@@ -108,7 +108,7 @@ static const struct nla_policy compat_policy[XFRMA_MAX+1] = {
+ 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
+ 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
+ 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
+-	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
++	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
+ 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
+ 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
+ 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index b2065f69c3d2c..f36fd1379effc 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2834,7 +2834,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
+ 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
+ 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
+ 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
+-	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
++	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
+ 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
+ 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
+ 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
 -- 
 2.40.1
 
