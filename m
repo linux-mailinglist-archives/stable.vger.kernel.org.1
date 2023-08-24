@@ -2,162 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3277B786764
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 08:20:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AC5A77867E5
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 08:54:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240028AbjHXGU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 02:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
+        id S237774AbjHXGyP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 02:54:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239994AbjHXGUK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 02:20:10 -0400
-Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FA710F9
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 23:20:07 -0700 (PDT)
-Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-52683da3f5cso7929929a12.3
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 23:20:07 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=grsecurity.net; s=grsec; t=1692858005; x=1693462805;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9ZTMp7fSbHFRbvTgphA7lDpRJ/hhLv6otAO2ZJDpDK8=;
-        b=OJJGvOM3gwU2+NVLAra05qN3U43KBkg9pxcpRR7+/JhRPxol7coNYQmdghA25qiuH3
-         hD6JV16rZCiy4VXBEFpL8Fsu0shAJPEcaMb0TMyyzGC9arVi/lsh8e9UBERAVb0O7sHq
-         IYX14B4Ku9CtCQy2zIpXHHGen6D9eGQgcqcomeg6ZmtZw9zh5LuS27yNPl0jk94I8ABb
-         u5p7cbZaUBs42ArIZ90LEftzSwTvhnOb9E/DhNptuH7V+IzWgOFBUjpNyFHySBWRT2mb
-         E1j03rjv7/QlDXnXnYsYDfAGKkzpCtOFAqKtzPKLbk7W3JuDXWyXxftiPMBsmvONUYtj
-         D2GQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692858005; x=1693462805;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9ZTMp7fSbHFRbvTgphA7lDpRJ/hhLv6otAO2ZJDpDK8=;
-        b=OKAcgIzlMq4/OOiUseP5RXV85t+fTx/UvR1cA9LQVqZQ6PfKaY8G1POoIQ6z+vKKL7
-         lEfwhpNaIuDCwjG/I80zrxuFY7kDochjl/VYXchdSltcCRuHcK5q8lcXLYyvgrotCXPt
-         YOLcH2kc1ZbbdZLmSP0IAzVygBx5yVSwVDutuELZfYr7pu4coLlTi7uEs9E985zZT1pm
-         SsAUUWlfpQsBiz5j61wEybbvFqnAqCBoJh3iSejcqlBw8QmpogpXLOqVhSaSM+6cen0Y
-         jrNKIF8wOCABpB1Ipu0S1+gADGg5khdhBhl66Glkjni6BykT9H8BMokImKkiUJZUOXnt
-         dtmg==
-X-Gm-Message-State: AOJu0YxZUCWm/RrYgu+iPkNFHgVxHdUWUjjEaQs2soI8E7eYj5Q0sjrz
-        gXSFUCALGlKfKLuZxSI0M/JvbA==
-X-Google-Smtp-Source: AGHT+IH6iRI1yyQ2Fh18V+FP5a/x2wOOzbATCEm5kD/EDvAecZIVxBVXcoqA/cTUAQCXsQIx6KENmA==
-X-Received: by 2002:aa7:c58f:0:b0:52a:1d6c:3127 with SMTP id g15-20020aa7c58f000000b0052a1d6c3127mr4404263edq.17.1692858005469;
-        Wed, 23 Aug 2023 23:20:05 -0700 (PDT)
-Received: from ?IPV6:2003:f6:af16:3400:a83f:7d2a:e2bc:49e1? (p200300f6af163400a83f7d2ae2bc49e1.dip0.t-ipconnect.de. [2003:f6:af16:3400:a83f:7d2a:e2bc:49e1])
-        by smtp.gmail.com with ESMTPSA id c14-20020aa7d60e000000b0052333e5237esm10051908edr.88.2023.08.23.23.20.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 23 Aug 2023 23:20:05 -0700 (PDT)
-Message-ID: <7f9587ed-36af-4cfe-3699-45ceb63b15c6@grsecurity.net>
-Date:   Thu, 24 Aug 2023 08:20:07 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 5.15] Revert "KVM: x86: enable TDP MMU by default"
-Content-Language: en-US, de-DE
-To:     Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Paolo Bonzini <pbonzini@redhat.com>,
+        with ESMTP id S240365AbjHXGxz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 02:53:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2805410FD;
+        Wed, 23 Aug 2023 23:53:44 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B959A64F10;
+        Thu, 24 Aug 2023 06:53:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3B34C433C7;
+        Thu, 24 Aug 2023 06:53:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692860023;
+        bh=oe4g+ZM7mSjfay+6G9vESARCsbmWufAd4nTqJCySwpM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=fclIG5U0yO/AmakgZZKzCJggJk18rRX3+RDdtGnWTGCvl7EYl2xxDNoGNOQOEK3uk
+         2FFQulbZAnJqVMvky9MvnJ+TC7L2iTLAzbQ1BJ7jfFgmBr9Oyerhqz2oI5Ro9rHf/E
+         U8/BHmIvtd4Fu2vgGfrvlMcGgM7EHAMhPInTch+g=
+Date:   Thu, 24 Aug 2023 08:53:40 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Sean Christopherson <seanjc@google.com>
+Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
         linux-kernel@vger.kernel.org
-Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
-References: <20230824010512.2714931-1-seanjc@google.com>
- <ZOavFlKo2/sixUTk@google.com>
-From:   Mathias Krause <minipli@grsecurity.net>
-In-Reply-To: <ZOavFlKo2/sixUTk@google.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+Subject: Re: [PATCH 6.1] KVM: x86/mmu: Fix an sign-extension bug with mmu_seq
+ that hangs vCPUs
+Message-ID: <2023082423-ninetieth-hamlet-54dc@gregkh>
+References: <20230824010104.2714198-1-seanjc@google.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <20230824010104.2714198-1-seanjc@google.com>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 24.08.23 03:15, Sean Christopherson wrote:
-> +Jeremi and Mathias, my scripts for sending patches to stable don't auto-cc :-/
+On Wed, Aug 23, 2023 at 06:01:04PM -0700, Sean Christopherson wrote:
+> Take the vCPU's mmu_seq snapshot as an "unsigned long" instead of an "int"
+> when checking to see if a page fault is stale, as the sequence count is
+> stored as an "unsigned long" everywhere else in KVM.  This fixes a bug
+> where KVM will effectively hang vCPUs due to always thinking page faults
+> are stale, which results in KVM refusing to "fix" faults.
 > 
-> On Wed, Aug 23, 2023, Sean Christopherson wrote:
->> Disable the TDP MMU by default in v5.15 kernels to "fix" several severe
->> performance bugs that have since been found and fixed in the TDP MMU, but
->> are unsuitable for backporting to v5.15.
->>
->> The problematic bugs are fixed by upstream commit edbdb43fc96b ("KVM:
->> x86: Preserve TDP MMU roots until they are explicitly invalidated") and
->> commit 01b31714bd90 ("KVM: x86: Do not unload MMU roots when only toggling
->> CR0.WP with TDP enabled").  Both commits fix scenarios where KVM will
->> rebuild all TDP MMU page tables in paths that are frequently hit by
->> certain guest workloads.  While not exactly common, the guest workloads
->> are far from rare.  The fallout of rebuilding TDP MMU page tables can be
->> so severe in some cases that it induces soft lockups in the guest.
->>
->> Commit edbdb43fc96b would require _significant_ effort and churn to
->> backport due it depending on a major rework that was done in v5.18.
->>
->> Commit 01b31714bd90 has far fewer direct conflicts, but has several subtle
->> _known_ dependencies, and it's unclear whether or not there are more
->> unknown dependencies that have been missed.
->>
->> Lastly, disabling the TDP MMU in v5.15 kernels also fixes a lurking train
->> wreck started by upstream commit a955cad84cda ("KVM: x86/mmu: Retry page
->> fault if root is invalidated by memslot update").  That commit was tagged
->> for stable to fix a memory leak, but didn't cherry-pick cleanly and was
->> never backported to v5.15.  Which is extremely fortunate, as it introduced
->> not one but two bugs, one of which was fixed by upstream commit
->> 18c841e1f411 ("KVM: x86: Retry page fault if MMU reload is pending and
->> root has no sp"), while the other was unknowingly fixed by upstream
->> commit ba6e3fe25543 ("KVM: x86/mmu: Grab mmu_invalidate_seq in
->> kvm_faultin_pfn()") in v6.3 (a one-off fix will be made for v6.1 kernels,
->> which did receive a backport for a955cad84cda).  Disabling the TDP MMU
->> by default reduces the probability of breaking v5.15 kernels by
->> backporting only a subset of the fixes.
->>
->> As far as what is lost by disabling the TDP MMU, the main selling point of
->> the TDP MMU is its ability to service page fault VM-Exits in parallel,
->> i.e. the main benefactors of the TDP MMU are deployments of large VMs
->> (hundreds of vCPUs), and in particular delployments that live-migrate such
->> VMs and thus need to fault-in huge amounts of memory on many vCPUs after
->> restarting the VM after migration.
->>
->> Smaller VMs can see performance improvements, but nowhere enough to make
->> up for the TDP MMU (in v5.15) absolutely cratering performance for some
->> workloads.  And practically speaking, anyone that is deploying and
->> migrating VMs with hundreds of vCPUs is likely rolling their own kernel,
->> not using a stock v5.15 series kernel.
->>
->> This reverts commit 71ba3f3189c78f756a659568fb473600fd78f207.
->>
->> Link: https://lore.kernel.org/all/ZDmEGM+CgYpvDLh6@google.com
->> Link: https://lore.kernel.org/all/f023d927-52aa-7e08-2ee5-59a2fbc65953@gameservers.com
->> Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
->> Cc: Mathias Krause <minipli@grsecurity.net>
->> Signed-off-by: Sean Christopherson <seanjc@google.com>
->> ---
->>  arch/x86/kvm/mmu/tdp_mmu.c | 2 +-
->>  1 file changed, 1 insertion(+), 1 deletion(-)
->>
->> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
->> index 6c2bb60ccd88..7a64fb238044 100644
->> --- a/arch/x86/kvm/mmu/tdp_mmu.c
->> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
->> @@ -10,7 +10,7 @@
->>  #include <asm/cmpxchg.h>
->>  #include <trace/events/kvm.h>
->>  
->> -static bool __read_mostly tdp_mmu_enabled = true;
->> +static bool __read_mostly tdp_mmu_enabled = false;
->>  module_param_named(tdp_mmu, tdp_mmu_enabled, bool, 0644);
->>  
->>  /* Initializes the TDP MMU for the VM, if enabled. */
->>
->> base-commit: f6f7927ac664ba23447f8dd3c3dfe2f4ee39272f
->> -- 
+> mmu_invalidate_seq (née mmu_notifier_seq) is a sequence counter used when
+> KVM is handling page faults to detect if userspace mappings relevant to
+> the guest were invalidated between snapshotting the counter and acquiring
+> mmu_lock, i.e. to ensure that the userspace mapping KVM is using to
+> resolve the page fault is fresh.  If KVM sees that the counter has
+> changed, KVM simply resumes the guest without fixing the fault.
+> 
+> What _should_ happen is that the source of the mmu_notifier invalidations
+> eventually goes away, mmu_invalidate_seq becomes stable, and KVM can once
+> again fix guest page fault(s).
+> 
+> But for a long-lived VM and/or a VM that the host just doesn't particularly
+> like, it's possible for a VM to be on the receiving end of 2 billion (with
+> a B) mmu_notifier invalidations.  When that happens, bit 31 will be set in
+> mmu_invalidate_seq.  This causes the value to be turned into a 32-bit
+> negative value when implicitly cast to an "int" by is_page_fault_stale(),
+> and then sign-extended into a 64-bit unsigned when the signed "int" is
+> implicitly cast back to an "unsigned long" on the call to
+> mmu_invalidate_retry_hva().
+> 
+> As a result of the casting and sign-extension, given a sequence counter of
+> e.g. 0x8002dc25, mmu_invalidate_retry_hva() ends up doing
+> 
+> 	if (0x8002dc25 != 0xffffffff8002dc25)
+> 
+> and signals that the page fault is stale and needs to be retried even
+> though the sequence counter is stable, and KVM effectively hangs any vCPU
+> that takes a page fault (EPT violation or #NPF when TDP is enabled).
+> 
+> Note, upstream commit ba6e3fe25543 ("KVM: x86/mmu: Grab mmu_invalidate_seq
+> in kvm_faultin_pfn()") unknowingly fixed the bug in v6.3 when refactoring
+> how KVM tracks the sequence counter snapshot.
+> 
+> Reported-by: Brian Rak <brak@vultr.com>
+> Reported-by: Amaan Cheval <amaan.cheval@gmail.com>
+> Reported-by: Eric Wheeler <kvm@lists.ewheeler.net>
+> Closes: https://lore.kernel.org/all/f023d927-52aa-7e08-2ee5-59a2fbc65953@gameservers.com
+> Fixes: a955cad84cda ("KVM: x86/mmu: Retry page fault if root is invalidated by memslot update")
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
 
-Acked-by: Mathias Krause <minipli@grsecurity.net>
+What is the git commit id of this change in Linus's tree?
 
-I guess this means no hope for
-https://lore.kernel.org/stable/234e01b6-1b5c-d682-a078-3dd91a62abf4@grsecurity.net/
-:/
+thanks,
+
+greg k-h
