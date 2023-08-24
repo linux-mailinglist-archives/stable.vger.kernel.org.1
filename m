@@ -2,91 +2,162 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5D948786717
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 07:23:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3277B786764
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 08:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239741AbjHXFXC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 01:23:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41744 "EHLO
+        id S240028AbjHXGU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 02:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239760AbjHXFXB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 01:23:01 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C176FCD0
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 22:22:15 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1692854535;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=A6Qew4bwWT29eWgkRsHjhp0JvjbaDuH4zLYS/iTSxH4=;
-        b=Mp2hD/TWjn7srTFCwJURmyMYdHR6vim011B0ajfKOBkokUPxStelkPyinGyrmmuC2+e0Sg
-        mUb1xZjO/EkupyWXEwMyTdNi70sdqBA30IbONxQR0eFWYP/ZVCaxiicHnMbYngYsM3Axjl
-        GkGQm+EqT3+sWbmVu1Y6/4F+3aBQ/NE=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-37-F2u2yJYrPtuQeoXas7tLbA-1; Thu, 24 Aug 2023 01:22:11 -0400
-X-MC-Unique: F2u2yJYrPtuQeoXas7tLbA-1
-Received: from smtp.corp.redhat.com (int-mx01.intmail.prod.int.rdu2.redhat.com [10.11.54.1])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 2A32B800270;
-        Thu, 24 Aug 2023 05:22:11 +0000 (UTC)
-Received: from localhost (unknown [10.72.120.8])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 66A8940C2073;
-        Thu, 24 Aug 2023 05:22:10 +0000 (UTC)
-From:   Ming Lei <ming.lei@redhat.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     Jens Axboe <axboe@kernel.dk>, linux-block@vger.kernel.org,
-        Ming Lei <ming.lei@redhat.com>
-Subject: [PATCH 6.1 -stable] ublk: remove check IO_URING_F_SQE128 in ublk_ch_uring_cmd
-Date:   Thu, 24 Aug 2023 13:22:03 +0800
-Message-Id: <20230824052203.1751458-1-ming.lei@redhat.com>
+        with ESMTP id S239994AbjHXGUK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 02:20:10 -0400
+Received: from mail-ed1-x533.google.com (mail-ed1-x533.google.com [IPv6:2a00:1450:4864:20::533])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86FA710F9
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 23:20:07 -0700 (PDT)
+Received: by mail-ed1-x533.google.com with SMTP id 4fb4d7f45d1cf-52683da3f5cso7929929a12.3
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 23:20:07 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=grsecurity.net; s=grsec; t=1692858005; x=1693462805;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=9ZTMp7fSbHFRbvTgphA7lDpRJ/hhLv6otAO2ZJDpDK8=;
+        b=OJJGvOM3gwU2+NVLAra05qN3U43KBkg9pxcpRR7+/JhRPxol7coNYQmdghA25qiuH3
+         hD6JV16rZCiy4VXBEFpL8Fsu0shAJPEcaMb0TMyyzGC9arVi/lsh8e9UBERAVb0O7sHq
+         IYX14B4Ku9CtCQy2zIpXHHGen6D9eGQgcqcomeg6ZmtZw9zh5LuS27yNPl0jk94I8ABb
+         u5p7cbZaUBs42ArIZ90LEftzSwTvhnOb9E/DhNptuH7V+IzWgOFBUjpNyFHySBWRT2mb
+         E1j03rjv7/QlDXnXnYsYDfAGKkzpCtOFAqKtzPKLbk7W3JuDXWyXxftiPMBsmvONUYtj
+         D2GQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692858005; x=1693462805;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9ZTMp7fSbHFRbvTgphA7lDpRJ/hhLv6otAO2ZJDpDK8=;
+        b=OKAcgIzlMq4/OOiUseP5RXV85t+fTx/UvR1cA9LQVqZQ6PfKaY8G1POoIQ6z+vKKL7
+         lEfwhpNaIuDCwjG/I80zrxuFY7kDochjl/VYXchdSltcCRuHcK5q8lcXLYyvgrotCXPt
+         YOLcH2kc1ZbbdZLmSP0IAzVygBx5yVSwVDutuELZfYr7pu4coLlTi7uEs9E985zZT1pm
+         SsAUUWlfpQsBiz5j61wEybbvFqnAqCBoJh3iSejcqlBw8QmpogpXLOqVhSaSM+6cen0Y
+         jrNKIF8wOCABpB1Ipu0S1+gADGg5khdhBhl66Glkjni6BykT9H8BMokImKkiUJZUOXnt
+         dtmg==
+X-Gm-Message-State: AOJu0YxZUCWm/RrYgu+iPkNFHgVxHdUWUjjEaQs2soI8E7eYj5Q0sjrz
+        gXSFUCALGlKfKLuZxSI0M/JvbA==
+X-Google-Smtp-Source: AGHT+IH6iRI1yyQ2Fh18V+FP5a/x2wOOzbATCEm5kD/EDvAecZIVxBVXcoqA/cTUAQCXsQIx6KENmA==
+X-Received: by 2002:aa7:c58f:0:b0:52a:1d6c:3127 with SMTP id g15-20020aa7c58f000000b0052a1d6c3127mr4404263edq.17.1692858005469;
+        Wed, 23 Aug 2023 23:20:05 -0700 (PDT)
+Received: from ?IPV6:2003:f6:af16:3400:a83f:7d2a:e2bc:49e1? (p200300f6af163400a83f7d2ae2bc49e1.dip0.t-ipconnect.de. [2003:f6:af16:3400:a83f:7d2a:e2bc:49e1])
+        by smtp.gmail.com with ESMTPSA id c14-20020aa7d60e000000b0052333e5237esm10051908edr.88.2023.08.23.23.20.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 23 Aug 2023 23:20:05 -0700 (PDT)
+Message-ID: <7f9587ed-36af-4cfe-3699-45ceb63b15c6@grsecurity.net>
+Date:   Thu, 24 Aug 2023 08:20:07 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 5.15] Revert "KVM: x86: enable TDP MMU by default"
+Content-Language: en-US, de-DE
+To:     Sean Christopherson <seanjc@google.com>, stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Paolo Bonzini <pbonzini@redhat.com>,
+        linux-kernel@vger.kernel.org
+Cc:     Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+References: <20230824010512.2714931-1-seanjc@google.com>
+ <ZOavFlKo2/sixUTk@google.com>
+From:   Mathias Krause <minipli@grsecurity.net>
+In-Reply-To: <ZOavFlKo2/sixUTk@google.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 9c7c4bc986932218fd0df9d2a100509772028fb1 upstream
+On 24.08.23 03:15, Sean Christopherson wrote:
+> +Jeremi and Mathias, my scripts for sending patches to stable don't auto-cc :-/
+> 
+> On Wed, Aug 23, 2023, Sean Christopherson wrote:
+>> Disable the TDP MMU by default in v5.15 kernels to "fix" several severe
+>> performance bugs that have since been found and fixed in the TDP MMU, but
+>> are unsuitable for backporting to v5.15.
+>>
+>> The problematic bugs are fixed by upstream commit edbdb43fc96b ("KVM:
+>> x86: Preserve TDP MMU roots until they are explicitly invalidated") and
+>> commit 01b31714bd90 ("KVM: x86: Do not unload MMU roots when only toggling
+>> CR0.WP with TDP enabled").  Both commits fix scenarios where KVM will
+>> rebuild all TDP MMU page tables in paths that are frequently hit by
+>> certain guest workloads.  While not exactly common, the guest workloads
+>> are far from rare.  The fallout of rebuilding TDP MMU page tables can be
+>> so severe in some cases that it induces soft lockups in the guest.
+>>
+>> Commit edbdb43fc96b would require _significant_ effort and churn to
+>> backport due it depending on a major rework that was done in v5.18.
+>>
+>> Commit 01b31714bd90 has far fewer direct conflicts, but has several subtle
+>> _known_ dependencies, and it's unclear whether or not there are more
+>> unknown dependencies that have been missed.
+>>
+>> Lastly, disabling the TDP MMU in v5.15 kernels also fixes a lurking train
+>> wreck started by upstream commit a955cad84cda ("KVM: x86/mmu: Retry page
+>> fault if root is invalidated by memslot update").  That commit was tagged
+>> for stable to fix a memory leak, but didn't cherry-pick cleanly and was
+>> never backported to v5.15.  Which is extremely fortunate, as it introduced
+>> not one but two bugs, one of which was fixed by upstream commit
+>> 18c841e1f411 ("KVM: x86: Retry page fault if MMU reload is pending and
+>> root has no sp"), while the other was unknowingly fixed by upstream
+>> commit ba6e3fe25543 ("KVM: x86/mmu: Grab mmu_invalidate_seq in
+>> kvm_faultin_pfn()") in v6.3 (a one-off fix will be made for v6.1 kernels,
+>> which did receive a backport for a955cad84cda).  Disabling the TDP MMU
+>> by default reduces the probability of breaking v5.15 kernels by
+>> backporting only a subset of the fixes.
+>>
+>> As far as what is lost by disabling the TDP MMU, the main selling point of
+>> the TDP MMU is its ability to service page fault VM-Exits in parallel,
+>> i.e. the main benefactors of the TDP MMU are deployments of large VMs
+>> (hundreds of vCPUs), and in particular delployments that live-migrate such
+>> VMs and thus need to fault-in huge amounts of memory on many vCPUs after
+>> restarting the VM after migration.
+>>
+>> Smaller VMs can see performance improvements, but nowhere enough to make
+>> up for the TDP MMU (in v5.15) absolutely cratering performance for some
+>> workloads.  And practically speaking, anyone that is deploying and
+>> migrating VMs with hundreds of vCPUs is likely rolling their own kernel,
+>> not using a stock v5.15 series kernel.
+>>
+>> This reverts commit 71ba3f3189c78f756a659568fb473600fd78f207.
+>>
+>> Link: https://lore.kernel.org/all/ZDmEGM+CgYpvDLh6@google.com
+>> Link: https://lore.kernel.org/all/f023d927-52aa-7e08-2ee5-59a2fbc65953@gameservers.com
+>> Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+>> Cc: Mathias Krause <minipli@grsecurity.net>
+>> Signed-off-by: Sean Christopherson <seanjc@google.com>
+>> ---
+>>  arch/x86/kvm/mmu/tdp_mmu.c | 2 +-
+>>  1 file changed, 1 insertion(+), 1 deletion(-)
+>>
+>> diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+>> index 6c2bb60ccd88..7a64fb238044 100644
+>> --- a/arch/x86/kvm/mmu/tdp_mmu.c
+>> +++ b/arch/x86/kvm/mmu/tdp_mmu.c
+>> @@ -10,7 +10,7 @@
+>>  #include <asm/cmpxchg.h>
+>>  #include <trace/events/kvm.h>
+>>  
+>> -static bool __read_mostly tdp_mmu_enabled = true;
+>> +static bool __read_mostly tdp_mmu_enabled = false;
+>>  module_param_named(tdp_mmu, tdp_mmu_enabled, bool, 0644);
+>>  
+>>  /* Initializes the TDP MMU for the VM, if enabled. */
+>>
+>> base-commit: f6f7927ac664ba23447f8dd3c3dfe2f4ee39272f
+>> -- 
 
-sizeof(struct ublksrv_io_cmd) is 16bytes, which can be held in 64byte SQE,
-so not necessary to check IO_URING_F_SQE128.
+Acked-by: Mathias Krause <minipli@grsecurity.net>
 
-With this change, we get chance to save half SQ ring memory.
-
-Fixed: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Link: https://lore.kernel.org/r/20230220041413.1524335-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
----
- drivers/block/ublk_drv.c | 3 ---
- 1 file changed, 3 deletions(-)
-
-diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-index f48d213fb65e..09d29fa53939 100644
---- a/drivers/block/ublk_drv.c
-+++ b/drivers/block/ublk_drv.c
-@@ -1271,9 +1271,6 @@ static int ublk_ch_uring_cmd(struct io_uring_cmd *cmd, unsigned int issue_flags)
- 			__func__, cmd->cmd_op, ub_cmd->q_id, tag,
- 			ub_cmd->result);
- 
--	if (!(issue_flags & IO_URING_F_SQE128))
--		goto out;
--
- 	if (ub_cmd->q_id >= ub->dev_info.nr_hw_queues)
- 		goto out;
- 
--- 
-2.40.1
-
+I guess this means no hope for
+https://lore.kernel.org/stable/234e01b6-1b5c-d682-a078-3dd91a62abf4@grsecurity.net/
+:/
