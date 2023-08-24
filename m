@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 703627876F6
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:22:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C86F07876F4
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235585AbjHXRVm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 13:21:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55126 "EHLO
+        id S242687AbjHXRVn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 13:21:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242745AbjHXRVL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41AEF10D7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:10 -0700 (PDT)
+        with ESMTP id S242823AbjHXRVP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C56219B5
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D27E767586
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCC2EC433C8;
-        Thu, 24 Aug 2023 17:21:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 025CA67100
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C9EC433C8;
+        Thu, 24 Aug 2023 17:21:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897669;
-        bh=doQMVzKBnl4e1veKpmvrsy6yHySZ+RahRZmr6knRi9U=;
+        s=korg; t=1692897672;
+        bh=0k43O3RQooUb3RGKiZKllc8RU5F+rBjMQ1G6kOAnL1Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=et8AF6GZN+6TF41bZ4eFWYDjyG6S9KXvatnLh7oTxm5qUjd6eI3jXJKcBStpPcX1i
-         XIZM02OYEYxqwN76uxEqF5WEQHtUSVVHtyg+Nhbw/KLfxuGaopuUH8rJKi/ZYlX7aD
-         S7bEJB9lWmdaHoLAzckL6B/3kY6ooxTcqW/Izt8g=
+        b=ij0RvTpfkkDt1fYgJEuZhoGhs32IynSouUuB4YdjAjrv6XR3n6xv/MWj9B6eR4IGr
+         vT7G/WHrHWlXuoZ54Syt/xjMKmjq34ddv11/cmy9SI9X2L7aWtsTvQ6tJim6BW2+9R
+         rP7HdlgLsvu2MR36/hTGVtyNrxVoH0e9UrTPiqfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.10 119/135] x86/cpu: Fix __x86_return_thunk symbol type
-Date:   Thu, 24 Aug 2023 19:09:51 +0200
-Message-ID: <20230824170622.433099593@linuxfoundation.org>
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 120/135] x86/cpu: Fix up srso_safe_ret() and __x86_return_thunk()
+Date:   Thu, 24 Aug 2023 19:09:52 +0200
+Message-ID: <20230824170622.474621805@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -46,10 +47,9 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -62,39 +62,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Peter Zijlstra <peterz@infradead.org>
 
-commit 77f67119004296a9b2503b377d610e08b08afc2a upstream.
+commit af023ef335f13c8b579298fc432daeef609a9e60 upstream.
 
-Commit
+  vmlinux.o: warning: objtool: srso_untrain_ret() falls through to next function __x86_return_skl()
+  vmlinux.o: warning: objtool: __x86_return_thunk() falls through to next function __x86_return_skl()
 
-  fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+This is because these functions (can) end with CALL, which objtool
+does not consider a terminating instruction. Therefore, replace the
+INT3 instruction (which is a non-fatal trap) with UD2 (which is a
+fatal-trap).
 
-reimplemented __x86_return_thunk with a mix of SYM_FUNC_START and
-SYM_CODE_END, this is not a sane combination.
-
-Since nothing should ever actually 'CALL' this, make it consistently
-CODE.
+This indicates execution will not continue past this point.
 
 Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.571027074@infradead.org
+Link: https://lore.kernel.org/r/20230814121148.637802730@infradead.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/lib/retpoline.S |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/lib/retpoline.S |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
 --- a/arch/x86/lib/retpoline.S
 +++ b/arch/x86/lib/retpoline.S
-@@ -204,7 +204,9 @@ SYM_CODE_END(srso_safe_ret)
+@@ -199,7 +199,7 @@ SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLO
+ 	int3
+ 	lfence
+ 	call srso_safe_ret
+-	int3
++	ud2
+ SYM_CODE_END(srso_safe_ret)
  SYM_FUNC_END(srso_untrain_ret)
  __EXPORT_THUNK(srso_untrain_ret)
- 
--SYM_FUNC_START(__x86_return_thunk)
-+SYM_CODE_START(__x86_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
+@@ -209,7 +209,7 @@ SYM_CODE_START(__x86_return_thunk)
+ 	ANNOTATE_NOENDBR
  	ALTERNATIVE_2 "jmp __ret", "call srso_safe_ret", X86_FEATURE_SRSO, \
  			"call srso_safe_ret_alias", X86_FEATURE_SRSO_ALIAS
- 	int3
+-	int3
++	ud2
+ SYM_CODE_END(__x86_return_thunk)
+ EXPORT_SYMBOL(__x86_return_thunk)
+ 
 
 
