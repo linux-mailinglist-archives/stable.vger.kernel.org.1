@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CBA6787694
+	by mail.lfdr.de (Postfix) with ESMTP id 02FD1787693
 	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242371AbjHXRRb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S242377AbjHXRRb (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 24 Aug 2023 13:17:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60132 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242556AbjHXRRS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:17:18 -0400
+        with ESMTP id S242589AbjHXRRV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:17:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC2519A3
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:17:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F35419A3
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:17:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1224863C32
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:17:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223F8C433C8;
-        Thu, 24 Aug 2023 17:17:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C11A163C3A
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:17:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D36EAC433C8;
+        Thu, 24 Aug 2023 17:17:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897435;
-        bh=mbjMGCqcu+8noL1io4DRLz5aq5aQs/hrM2PwvUMaAwI=;
+        s=korg; t=1692897438;
+        bh=88ClI+6dkGTOrNKciLvZ+v2sks8R+1GGj1R7RriKmIM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x0FP4Jr1YvM8KZuvr7V/OUwH4uVj5VyvTWT5bw0SlPRN4XCeLI1xbqMf0TbymLiio
-         X7t7MUh1m6PQXMUNjCVzdC9eR0kGDSulA8P84B9075J4GQDUjOqBptIdLTTxEt3KwO
-         gsOjU8SI+VZUq2a87Dh98N6q8M6lyQgUObE0V9Ig=
+        b=kc7x5puh0wWAiAAWMaFsgmDbDk3RE9Vf0X0pzJdFj6AHf4xgMLbaPkUi7CSa1FIQw
+         MoyM/YyGOSQ8jgi3yFbs7it3dW5dfQr7jZz3QmaAfRJzN3Q9s8z2LM1zkJazKtU39H
+         c8gDFu7IifFgQD+MOzWn58+RTq9kEHjnGPpUH0uc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Benjamin Gray <bgray@linux.ibm.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/135] ALSA: hda: fix a possible null-pointer dereference due to data race in snd_hdac_regmap_sync()
-Date:   Thu, 24 Aug 2023 19:08:30 +0200
-Message-ID: <20230824170618.797021209@linuxfoundation.org>
+Subject: [PATCH 5.10 039/135] powerpc/kasan: Disable KCOV in KASAN code
+Date:   Thu, 24 Aug 2023 19:08:31 +0200
+Message-ID: <20230824170618.837188836@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -59,59 +61,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Benjamin Gray <bgray@linux.ibm.com>
 
-[ Upstream commit 1f4a08fed450db87fbb5ff5105354158bdbe1a22 ]
+[ Upstream commit ccb381e1af1ace292153c88eb1fffa5683d16a20 ]
 
-The variable codec->regmap is often protected by the lock
-codec->regmap_lock when is accessed. However, it is accessed without
-holding the lock when is accessed in snd_hdac_regmap_sync():
+As per the generic KASAN code in mm/kasan, disable KCOV with
+KCOV_INSTRUMENT := n in the makefile.
 
-  if (codec->regmap)
+This fixes a ppc64 boot hang when KCOV and KASAN are enabled.
+kasan_early_init() gets called before a PACA is initialised, but the
+KCOV hook expects a valid PACA.
 
-In my opinion, this may be a harmful race, because if codec->regmap is
-set to NULL right after the condition is checked, a null-pointer
-dereference can occur in the called function regcache_sync():
-
-  map->lock(map->lock_arg); --> Line 360 in drivers/base/regmap/regcache.c
-
-To fix this possible null-pointer dereference caused by data race, the
-mutex_lock coverage is extended to protect the if statement as well as the
-function call to regcache_sync().
-
-[ Note: the lack of the regmap_lock itself is harmless for the current
-  codec driver implementations, as snd_hdac_regmap_sync() is only for
-  PM runtime resume that is prohibited during the codec probe.
-  But the change makes the whole code more consistent, so it's merged
-  as is -- tiwai ]
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/20230703031016.1184711-1-islituo@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230710044143.146840-1-bgray@linux.ibm.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdac_regmap.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ arch/powerpc/mm/kasan/Makefile | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/sound/hda/hdac_regmap.c b/sound/hda/hdac_regmap.c
-index d75f31eb9d78f..bf35acca5ea0e 100644
---- a/sound/hda/hdac_regmap.c
-+++ b/sound/hda/hdac_regmap.c
-@@ -597,10 +597,9 @@ EXPORT_SYMBOL_GPL(snd_hdac_regmap_update_raw_once);
-  */
- void snd_hdac_regmap_sync(struct hdac_device *codec)
- {
--	if (codec->regmap) {
--		mutex_lock(&codec->regmap_lock);
-+	mutex_lock(&codec->regmap_lock);
-+	if (codec->regmap)
- 		regcache_sync(codec->regmap);
--		mutex_unlock(&codec->regmap_lock);
--	}
-+	mutex_unlock(&codec->regmap_lock);
- }
- EXPORT_SYMBOL_GPL(snd_hdac_regmap_sync);
+diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
+index bb1a5408b86b2..8636b17c6a20f 100644
+--- a/arch/powerpc/mm/kasan/Makefile
++++ b/arch/powerpc/mm/kasan/Makefile
+@@ -1,6 +1,7 @@
+ # SPDX-License-Identifier: GPL-2.0
+ 
+ KASAN_SANITIZE := n
++KCOV_INSTRUMENT := n
+ 
+ obj-$(CONFIG_PPC32)           += kasan_init_32.o
+ obj-$(CONFIG_PPC_8xx)		+= 8xx.o
 -- 
 2.40.1
 
