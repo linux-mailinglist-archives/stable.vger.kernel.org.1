@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C9B57872B6
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4308378734E
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241907AbjHXO4S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:56:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36036 "EHLO
+        id S242003AbjHXPCH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:02:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242012AbjHXO4L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:11 -0400
+        with ESMTP id S242033AbjHXPBn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66DE41995
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 641271BC5
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CFC0061642
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4147C433C8;
-        Thu, 24 Aug 2023 14:56:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E87EE624B7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06DA9C433C7;
+        Thu, 24 Aug 2023 15:01:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888968;
-        bh=XeygF5EK9fvawY0vJD0vGuwKbM2EsgUbUPcTGtfwsPg=;
+        s=korg; t=1692889300;
+        bh=8b9ucScws4hp3uNwv4Ms+1DZBrRPXIDIr+1UVZfdkLg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gJpiyP4x9sGCDsRT2Azg6Pq0p13iXVn8SUE7iqh5TE/tCIMMwCfG/fk2bDKgNdswt
-         K0pAl9HFqDVMNa58vRG+b2L+grrS/y5//79K+awyFy6czTJLIyEhbjLOvuikZEdRsi
-         tg9d/JxKSIxIXvuJhNMcnzmAGTfcgxFYOuuSl84k=
+        b=KdK/zdJYQJ9wBxTdSOn/DRHs96OD22SF81P26MF+w0PFru5RgDu4wc54Z9PKAenoD
+         +vEV9s0xY8FFSqK8VIInPv0B9GzUgBNn1yxd1YDVvne+M1bKtEAGZn09IoW/tIr1wn
+         /MIt/D0W0RlxZsnSa3pAqEPargrKMX0TT49NCtC4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jerome Brunet <jbrunet@baylibre.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 105/139] ASoC: meson: axg-tdm-formatter: fix channel slot allocation
+Subject: [PATCH 5.10 085/135] drm/panel: simple: Fix AUO G121EAN01 panel timings according to the docs
 Date:   Thu, 24 Aug 2023 16:50:28 +0200
-Message-ID: <20230824145028.105377922@linuxfoundation.org>
+Message-ID: <20230824145030.575445553@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,108 +54,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jerome Brunet <jbrunet@baylibre.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-[ Upstream commit c1f848f12103920ca165758aedb1c10904e193e1 ]
+[ Upstream commit e8470c0a7bcaa82f78ad34282d662dd7bd9630c2 ]
 
-When the tdm lane mask is computed, the driver currently fills the 1st lane
-before moving on to the next. If the stream has less channels than the
-lanes can accommodate, slots will be disabled on the last lanes.
+Commit 03e909acd95a ("drm/panel: simple: Add support for AUO G121EAN01.4
+panel") added support for this panel model, but the timings it implements
+are very different from what the datasheet describes. I checked both the
+G121EAN01.0 datasheet from [0] and the G121EAN01.4 one from [1] and they
+all have the same timings: for example the LVDS clock typical value is 74.4
+MHz, not 66.7 MHz as implemented.
 
-Unfortunately, the HW distribute channels in a different way. It distribute
-channels in pair on each lanes before moving on the next slots.
+Replace the timings with the ones from the documentation. These timings
+have been tested and the clock frequencies verified with an oscilloscope to
+ensure they are correct.
 
-This difference leads to problems if a device has an interface with more
-than 1 lane and with more than 2 slots per lane.
+Also use struct display_timing instead of struct drm_display_mode in order
+to also specify the minimum and maximum values.
 
-For example: a playback interface with 2 lanes and 4 slots each (total 8
-slots - zero based numbering)
-- Playing a 8ch stream:
-  - All slots activated by the driver
-  - channel #2 will be played on lane #1 - slot #0 following HW placement
-- Playing a 4ch stream:
-  - Lane #1 disabled by the driver
-  - channel #2 will be played on lane #0 - slot #2
+[0] https://embedded.avnet.com/product/g121ean01-0/
+[1] https://embedded.avnet.com/product/g121ean01-4/
 
-This behaviour is obviously not desirable.
-
-Change the way slots are activated on the TDM lanes to follow what the HW
-does and make sure each channel always get mapped to the same slot/lane.
-
-Fixes: 1a11d88f499c ("ASoC: meson: add tdm formatter base driver")
-Signed-off-by: Jerome Brunet <jbrunet@baylibre.com>
-Link: https://lore.kernel.org/r/20230809171931.1244502-1-jbrunet@baylibre.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 03e909acd95a ("drm/panel: simple: Add support for AUO G121EAN01.4 panel")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230804151239.835216-1-luca.ceresoli@bootlin.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/meson/axg-tdm-formatter.c | 42 ++++++++++++++++++-----------
- 1 file changed, 26 insertions(+), 16 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/sound/soc/meson/axg-tdm-formatter.c b/sound/soc/meson/axg-tdm-formatter.c
-index cab7fa2851aa8..4834cfd163c03 100644
---- a/sound/soc/meson/axg-tdm-formatter.c
-+++ b/sound/soc/meson/axg-tdm-formatter.c
-@@ -30,27 +30,32 @@ int axg_tdm_formatter_set_channel_masks(struct regmap *map,
- 					struct axg_tdm_stream *ts,
- 					unsigned int offset)
- {
--	unsigned int val, ch = ts->channels;
--	unsigned long mask;
--	int i, j;
-+	unsigned int ch = ts->channels;
-+	u32 val[AXG_TDM_NUM_LANES];
-+	int i, j, k;
-+
-+	/*
-+	 * We need to mimick the slot distribution used by the HW to keep the
-+	 * channel placement consistent regardless of the number of channel
-+	 * in the stream. This is why the odd algorithm below is used.
-+	 */
-+	memset(val, 0, sizeof(*val) * AXG_TDM_NUM_LANES);
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 7b69f81444ebd..e40321d798981 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1010,21 +1010,21 @@ static const struct panel_desc auo_g104sn02 = {
+ 	},
+ };
  
- 	/*
- 	 * Distribute the channels of the stream over the available slots
--	 * of each TDM lane
-+	 * of each TDM lane. We need to go over the 32 slots ...
- 	 */
--	for (i = 0; i < AXG_TDM_NUM_LANES; i++) {
--		val = 0;
--		mask = ts->mask[i];
--
--		for (j = find_first_bit(&mask, 32);
--		     (j < 32) && ch;
--		     j = find_next_bit(&mask, 32, j + 1)) {
--			val |= 1 << j;
--			ch -= 1;
-+	for (i = 0; (i < 32) && ch; i += 2) {
-+		/* ... of all the lanes ... */
-+		for (j = 0; j < AXG_TDM_NUM_LANES; j++) {
-+			/* ... then distribute the channels in pairs */
-+			for (k = 0; k < 2; k++) {
-+				if ((BIT(i + k) & ts->mask[j]) && ch) {
-+					val[j] |= BIT(i + k);
-+					ch -= 1;
-+				}
-+			}
- 		}
--
--		regmap_write(map, offset, val);
--		offset += regmap_get_reg_stride(map);
- 	}
+-static const struct drm_display_mode auo_g121ean01_mode = {
+-	.clock = 66700,
+-	.hdisplay = 1280,
+-	.hsync_start = 1280 + 58,
+-	.hsync_end = 1280 + 58 + 8,
+-	.htotal = 1280 + 58 + 8 + 70,
+-	.vdisplay = 800,
+-	.vsync_start = 800 + 6,
+-	.vsync_end = 800 + 6 + 4,
+-	.vtotal = 800 + 6 + 4 + 10,
++static const struct display_timing auo_g121ean01_timing = {
++	.pixelclock = { 60000000, 74400000, 90000000 },
++	.hactive = { 1280, 1280, 1280 },
++	.hfront_porch = { 20, 50, 100 },
++	.hback_porch = { 20, 50, 100 },
++	.hsync_len = { 30, 100, 200 },
++	.vactive = { 800, 800, 800 },
++	.vfront_porch = { 2, 10, 25 },
++	.vback_porch = { 2, 10, 25 },
++	.vsync_len = { 4, 18, 50 },
+ };
  
- 	/*
-@@ -63,6 +68,11 @@ int axg_tdm_formatter_set_channel_masks(struct regmap *map,
- 		return -EINVAL;
- 	}
- 
-+	for (i = 0; i < AXG_TDM_NUM_LANES; i++) {
-+		regmap_write(map, offset, val[i]);
-+		offset += regmap_get_reg_stride(map);
-+	}
-+
- 	return 0;
- }
- EXPORT_SYMBOL_GPL(axg_tdm_formatter_set_channel_masks);
+ static const struct panel_desc auo_g121ean01 = {
+-	.modes = &auo_g121ean01_mode,
+-	.num_modes = 1,
++	.timings = &auo_g121ean01_timing,
++	.num_timings = 1,
+ 	.bpc = 8,
+ 	.size = {
+ 		.width = 261,
 -- 
 2.40.1
 
