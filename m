@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D170B787374
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:04:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF2DA7872DB
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242042AbjHXPDr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42668 "EHLO
+        id S241917AbjHXO5v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242072AbjHXPDV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:21 -0400
+        with ESMTP id S241949AbjHXO5e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 513501BF2
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:03:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19CE019AD
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9539671A3
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:03:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDBC3C433C7;
-        Thu, 24 Aug 2023 15:03:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A48B161642
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4E11C433C8;
+        Thu, 24 Aug 2023 14:57:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889383;
-        bh=FWGJ/tBNpZ5WLDG7unT3aos8Rw4Mr6ZdH8tnbUQ1WJk=;
+        s=korg; t=1692889051;
+        bh=kn5U04wt/x+mdGTzL3UCnk/p0FmMVh3g1zG1KIj1CBY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vYX8k1Oa35vmGUh4LZ8fBKnU9f9IEPgdvqTXrKTngvg6lkf9j4Ujx2f2cQk1VgtlS
-         H4MEYdiboZZncC2gfBfljoJmMi8rx1ioHbMDkLkFkBs+f3052FYRakhUCQr25KjZad
-         tRF//MZSAz2JzekoK87EJBJw+fYQUn3hv5dePz84=
+        b=oVuCBrxgNQuC2xfWs/EoShhcWENGbQtKqkAtDpVIvUME9YTg09OgVjT5yTDQecoQG
+         WokuhWwmHigtIl+QcgEts34u6bqfXeVJ6dxasmz+72Mc+s6asKYbFaVyuFacLihwoo
+         PXN7QTfnFE9YCSrMpoujTDnKAqsJNwJGijWiLG+s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 089/135] team: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
+Subject: [PATCH 5.15 109/139] serial: 8250: Fix oops for port->pm on uart_change_pm()
 Date:   Thu, 24 Aug 2023 16:50:32 +0200
-Message-ID: <20230824145030.744624398@linuxfoundation.org>
+Message-ID: <20230824145028.259796631@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,52 +53,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit dafcbce07136d799edc4c67f04f9fd69ff1eac1f ]
+[ Upstream commit dfe2aeb226fd5e19b0ee795f4f6ed8bc494c1534 ]
 
-Similar to commit 01f4fd270870 ("bonding: Fix incorrect deletion of
-ETH_P_8021AD protocol vid from slaves"), we can trigger BUG_ON(!vlan_info)
-in unregister_vlan_dev() with the following testcase:
+Unloading a hardware specific 8250 driver can produce error "Unable to
+handle kernel paging request at virtual address" about ten seconds after
+unloading the driver. This happens on uart_hangup() calling
+uart_change_pm().
 
-  # ip netns add ns1
-  # ip netns exec ns1 ip link add team1 type team
-  # ip netns exec ns1 ip link add team_slave type veth peer veth2
-  # ip netns exec ns1 ip link set team_slave master team1
-  # ip netns exec ns1 ip link add link team_slave name team_slave.10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link add link team1 name team1.10 type vlan id 10 protocol 802.1ad
-  # ip netns exec ns1 ip link set team_slave nomaster
-  # ip netns del ns1
+Turns out commit 04e82793f068 ("serial: 8250: Reinit port->pm on port
+specific driver unbind") was only a partial fix. If the hardware specific
+driver has initialized port->pm function, we need to clear port->pm too.
+Just reinitializing port->ops does not do this. Otherwise serial8250_pm()
+will call port->pm() instead of serial8250_do_pm().
 
-Add S-VLAN tag related features support to team driver. So the team driver
-will always propagate the VLAN info to its slaves.
-
-Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
-Suggested-by: Ido Schimmel <idosch@idosch.org>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230814032301.2804971-1-william.xuanziyang@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 04e82793f068 ("serial: 8250: Reinit port->pm on port specific driver unbind")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230804131553.52927-1-tony@atomide.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/team/team.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/tty/serial/8250/8250_port.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
-index 36c7eae776d44..721b536ce8861 100644
---- a/drivers/net/team/team.c
-+++ b/drivers/net/team/team.c
-@@ -2195,7 +2195,9 @@ static void team_setup(struct net_device *dev)
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index ad5b742a68cd0..74e477016f255 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -3274,6 +3274,7 @@ void serial8250_init_port(struct uart_8250_port *up)
+ 	struct uart_port *port = &up->port;
  
- 	dev->hw_features = TEAM_VLAN_FEATURES |
- 			   NETIF_F_HW_VLAN_CTAG_RX |
--			   NETIF_F_HW_VLAN_CTAG_FILTER;
-+			   NETIF_F_HW_VLAN_CTAG_FILTER |
-+			   NETIF_F_HW_VLAN_STAG_RX |
-+			   NETIF_F_HW_VLAN_STAG_FILTER;
+ 	spin_lock_init(&port->lock);
++	port->pm = NULL;
+ 	port->ops = &serial8250_pops;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
  
- 	dev->hw_features |= NETIF_F_GSO_ENCAP_ALL | NETIF_F_GSO_UDP_L4;
- 	dev->features |= dev->hw_features;
 -- 
 2.40.1
 
