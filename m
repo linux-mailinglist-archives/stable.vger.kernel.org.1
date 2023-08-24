@@ -2,45 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44EEF787347
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 595C97872B0
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242016AbjHXPBh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:01:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52686 "EHLO
+        id S241887AbjHXO4O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:56:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242052AbjHXPB1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:27 -0400
+        with ESMTP id S241950AbjHXOzz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9113FD
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:24 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 576091BCA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4609A6259A
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5A72CC433C8;
-        Thu, 24 Aug 2023 15:01:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EA9FC630D4
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1CBBC433C9;
+        Thu, 24 Aug 2023 14:55:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889283;
-        bh=uwH2qM8pWfNkMXk4ggaaMNx1SK49jBh9dZxgCEgLjGc=;
+        s=korg; t=1692888951;
+        bh=BmgkevON/ymIVT+fIBmoaZjcC1WOXo5MKmfDjBfG/40=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vSyLP2qbofw9HCgOHO2xY01Hn1u0b6+L2qpyPHO2MHcQg3ZqLzmLiR+/ahzhskcYQ
-         ZdwVpXp+HDFlPVuttRCoYEghT8EqG8nt/3yzzwCqhlLcZ1ej0yqNeVtJS82Gvs3kYT
-         xoZOahHXjNjrxuYoC5lsMAkmbXggCm0EKm76Nfdg=
+        b=bh89aSPMXlKujjMDviPu8uMvm+DVielGAAxKRqRfCesWs99ZPWZUTUEnDSuyZ/hvB
+         izrFEhGaGl0MxY3zm7QV6iTJR2rbszmYdXyDel3ZAaK9lK9ECmwci9xofikW0+QyLv
+         12zJFkTjob7fkiQ/o/EnFGPdo3mssphMgBBJu43E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 080/135] ip6_vti: fix slab-use-after-free in decode_session6
+Subject: [PATCH 5.15 100/139] net: do not allow gso_size to be set to GSO_BY_FRAGS
 Date:   Thu, 24 Aug 2023 16:50:23 +0200
-Message-ID: <20230824145030.338048562@linuxfoundation.org>
+Message-ID: <20230824145027.924263227@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,115 +61,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 9fd41f1ba638938c9a1195d09bc6fa3be2712f25 ]
+[ Upstream commit b616be6b97688f2f2bd7c4a47ab32f27f94fb2a9 ]
 
-When ipv6_vti device is set to the qdisc of the sfb type, the cb field
-of the sent skb may be modified during enqueuing. Then,
-slab-use-after-free may occur when ipv6_vti device sends IPv6 packets.
+One missing check in virtio_net_hdr_to_skb() allowed
+syzbot to crash kernels again [1]
 
-The stack information is as follows:
-BUG: KASAN: slab-use-after-free in decode_session6+0x103f/0x1890
-Read of size 1 at addr ffff88802e08edc2 by task swapper/0/0
-CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-next-20230707-00001-g84e2cad7f979 #410
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-1.fc33 04/01/2014
+Do not allow gso_size to be set to GSO_BY_FRAGS (0xffff),
+because this magic value is used by the kernel.
+
+[1]
+general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 0 PID: 5039 Comm: syz-executor401 Not tainted 6.5.0-rc5-next-20230809-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:skb_segment+0x1a52/0x3ef0 net/core/skbuff.c:4500
+Code: 00 00 00 e9 ab eb ff ff e8 6b 96 5d f9 48 8b 84 24 00 01 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e ea 21 00 00 48 8b 84 24 00 01
+RSP: 0018:ffffc90003d3f1c8 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 000000000001fffe RCX: 0000000000000000
+RDX: 000000000000000e RSI: ffffffff882a3115 RDI: 0000000000000070
+RBP: ffffc90003d3f378 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 5ee4a93e456187d6 R12: 000000000001ffc6
+R13: dffffc0000000000 R14: 0000000000000008 R15: 000000000000ffff
+FS: 00005555563f2380(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020020000 CR3: 000000001626d000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
-<IRQ>
-dump_stack_lvl+0xd9/0x150
-print_address_description.constprop.0+0x2c/0x3c0
-kasan_report+0x11d/0x130
-decode_session6+0x103f/0x1890
-__xfrm_decode_session+0x54/0xb0
-vti6_tnl_xmit+0x3e6/0x1ee0
-dev_hard_start_xmit+0x187/0x700
-sch_direct_xmit+0x1a3/0xc30
-__qdisc_run+0x510/0x17a0
-__dev_queue_xmit+0x2215/0x3b10
-neigh_connected_output+0x3c2/0x550
-ip6_finish_output2+0x55a/0x1550
-ip6_finish_output+0x6b9/0x1270
-ip6_output+0x1f1/0x540
-ndisc_send_skb+0xa63/0x1890
-ndisc_send_rs+0x132/0x6f0
-addrconf_rs_timer+0x3f1/0x870
-call_timer_fn+0x1a0/0x580
-expire_timers+0x29b/0x4b0
-run_timer_softirq+0x326/0x910
-__do_softirq+0x1d4/0x905
-irq_exit_rcu+0xb7/0x120
-sysvec_apic_timer_interrupt+0x97/0xc0
-</IRQ>
-Allocated by task 9176:
-kasan_save_stack+0x22/0x40
-kasan_set_track+0x25/0x30
-__kasan_slab_alloc+0x7f/0x90
-kmem_cache_alloc_node+0x1cd/0x410
-kmalloc_reserve+0x165/0x270
-__alloc_skb+0x129/0x330
-netlink_sendmsg+0x9b1/0xe30
-sock_sendmsg+0xde/0x190
-____sys_sendmsg+0x739/0x920
-___sys_sendmsg+0x110/0x1b0
-__sys_sendmsg+0xf7/0x1c0
-do_syscall_64+0x39/0xb0
+<TASK>
+udp6_ufo_fragment+0x9d2/0xd50 net/ipv6/udp_offload.c:109
+ipv6_gso_segment+0x5c4/0x17b0 net/ipv6/ip6_offload.c:120
+skb_mac_gso_segment+0x292/0x610 net/core/gso.c:53
+__skb_gso_segment+0x339/0x710 net/core/gso.c:124
+skb_gso_segment include/net/gso.h:83 [inline]
+validate_xmit_skb+0x3a5/0xf10 net/core/dev.c:3625
+__dev_queue_xmit+0x8f0/0x3d60 net/core/dev.c:4329
+dev_queue_xmit include/linux/netdevice.h:3082 [inline]
+packet_xmit+0x257/0x380 net/packet/af_packet.c:276
+packet_snd net/packet/af_packet.c:3087 [inline]
+packet_sendmsg+0x24c7/0x5570 net/packet/af_packet.c:3119
+sock_sendmsg_nosec net/socket.c:727 [inline]
+sock_sendmsg+0xd9/0x180 net/socket.c:750
+____sys_sendmsg+0x6ac/0x940 net/socket.c:2496
+___sys_sendmsg+0x135/0x1d0 net/socket.c:2550
+__sys_sendmsg+0x117/0x1e0 net/socket.c:2579
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
 entry_SYSCALL_64_after_hwframe+0x63/0xcd
-Freed by task 9176:
-kasan_save_stack+0x22/0x40
-kasan_set_track+0x25/0x30
-kasan_save_free_info+0x2b/0x40
-____kasan_slab_free+0x160/0x1c0
-slab_free_freelist_hook+0x11b/0x220
-kmem_cache_free+0xf0/0x490
-skb_free_head+0x17f/0x1b0
-skb_release_data+0x59c/0x850
-consume_skb+0xd2/0x170
-netlink_unicast+0x54f/0x7f0
-netlink_sendmsg+0x926/0xe30
-sock_sendmsg+0xde/0x190
-____sys_sendmsg+0x739/0x920
-___sys_sendmsg+0x110/0x1b0
-__sys_sendmsg+0xf7/0x1c0
-do_syscall_64+0x39/0xb0
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-The buggy address belongs to the object at ffff88802e08ed00
-which belongs to the cache skbuff_small_head of size 640
-The buggy address is located 194 bytes inside of
-freed 640-byte region [ffff88802e08ed00, ffff88802e08ef80)
+RIP: 0033:0x7ff27cdb34d9
 
-As commit f855691975bb ("xfrm6: Fix the nexthdr offset in
-_decode_session6.") showed, xfrm_decode_session was originally intended
-only for the receive path. IP6CB(skb)->nhoff is not set during
-transmission. Therefore, set the cb field in the skb to 0 before
-sending packets.
-
-Fixes: f855691975bb ("xfrm6: Fix the nexthdr offset in _decode_session6.")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230816142158.1779798-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv6/ip6_vti.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/virtio_net.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
-index 99f2dc802e366..162ba065d4764 100644
---- a/net/ipv6/ip6_vti.c
-+++ b/net/ipv6/ip6_vti.c
-@@ -567,12 +567,12 @@ vti6_tnl_xmit(struct sk_buff *skb, struct net_device *dev)
- 		    vti6_addr_conflict(t, ipv6_hdr(skb)))
- 			goto tx_err;
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index a960de68ac69e..6047058d67037 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -148,6 +148,10 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		if (gso_type & SKB_GSO_UDP)
+ 			nh_off -= thlen;
  
--		xfrm_decode_session(skb, &fl, AF_INET6);
- 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-+		xfrm_decode_session(skb, &fl, AF_INET6);
- 		break;
- 	case htons(ETH_P_IP):
--		xfrm_decode_session(skb, &fl, AF_INET);
- 		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+		xfrm_decode_session(skb, &fl, AF_INET);
- 		break;
- 	default:
- 		goto tx_err;
++		/* Kernel has a special handling for GSO_BY_FRAGS. */
++		if (gso_size == GSO_BY_FRAGS)
++			return -EINVAL;
++
+ 		/* Too small packets are not really GSO ones. */
+ 		if (skb->len - nh_off > gso_size) {
+ 			shinfo->gso_size = gso_size;
 -- 
 2.40.1
 
