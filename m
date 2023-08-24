@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8DDD7872B8
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE06278734D
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241897AbjHXO4R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:56:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41502 "EHLO
+        id S241995AbjHXPCG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:02:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241997AbjHXO4G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2AF410D7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:03 -0700 (PDT)
+        with ESMTP id S242025AbjHXPBk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A858A19AA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68FC5630D4
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7906DC433C8;
-        Thu, 24 Aug 2023 14:56:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43332624B7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 565E4C433C8;
+        Thu, 24 Aug 2023 15:01:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888962;
-        bh=Yb5NVqa7JHPpFUE1IxT7Fs0hB1o0i+K1yCgLhHO/kXI=;
+        s=korg; t=1692889297;
+        bh=t5XLQs3zPIMxJ1plc8R9tWGnqkSLJC8bTIky5DMvWbM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=chkqYuyZNrkRuZFO7VMlC+gqA7R+yS+xzTSOz4hv+xyV1R7GqvQ/GpZ7oc/Tk/qLq
-         tbK4OynX025b1Ls9TrvgHW6hswqNIRNL5kCfDBCKoDXb7she2n/kABrzwpL1fAiTIR
-         EtDCGkLLNI6+PUPzmjWFm62zA6ds344cKULXvai4=
+        b=BcqF4i0YEvaAefdvGSKf6hlq3eB/stiTrtOTLRQ/Z9ZeppUqiifb85cICdsR4wihE
+         4sFJoRyNcLuEjNFpSsbKAvxLavuZJ5B38vchpExWioxehTg1h3g7hF5mhj4v0Q7jx9
+         Tbr7WZdvcJFeeWqYSCKg5TRsfIj8GNzqOIJguXe8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Petr Machata <petrm@nvidia.com>,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 104/139] ASoC: rt5665: add missed regulator_bulk_disable
+Subject: [PATCH 5.10 084/135] selftests: mirror_gre_changes: Tighten up the TTL test match
 Date:   Thu, 24 Aug 2023 16:50:27 +0200
-Message-ID: <20230824145028.071687923@linuxfoundation.org>
+Message-ID: <20230824145030.533258481@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,36 +57,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit c163108e706909570f8aa9aa5bcf6806e2b4c98c ]
+[ Upstream commit 855067defa36b1f9effad8c219d9a85b655cf500 ]
 
-The driver forgets to call regulator_bulk_disable()
+This test verifies whether the encapsulated packets have the correct
+configured TTL. It does so by sending ICMP packets through the test
+topology and mirroring them to a gretap netdevice. On a busy host
+however, more than just the test ICMP packets may end up flowing
+through the topology, get mirrored, and counted. This leads to
+potential spurious failures as the test observes much more mirrored
+packets than the sent test packets, and assumes a bug.
 
-Add the missed call to fix it.
+Fix this by tightening up the mirror action match. Change it from
+matchall to a flower classifier matching on ICMP packets specifically.
 
-Fixes: 33ada14a26c8 ("ASoC: add rt5665 codec driver")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_A560D01E3E0A00A85A12F137E4B5205B3508@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 45315673e0c5 ("selftests: forwarding: Test changes in mirror-to-gretap")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5665.c | 2 ++
- 1 file changed, 2 insertions(+)
+ tools/testing/selftests/net/forwarding/mirror_gre_changes.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5665.c b/sound/soc/codecs/rt5665.c
-index e59323fd5bf24..5e00aca0c418a 100644
---- a/sound/soc/codecs/rt5665.c
-+++ b/sound/soc/codecs/rt5665.c
-@@ -4472,6 +4472,8 @@ static void rt5665_remove(struct snd_soc_component *component)
- 	struct rt5665_priv *rt5665 = snd_soc_component_get_drvdata(component);
+diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
+index 472bd023e2a5f..b501b366367f7 100755
+--- a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
++++ b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
+@@ -72,7 +72,8 @@ test_span_gre_ttl()
  
- 	regmap_write(rt5665->regmap, RT5665_RESET, 0);
-+
-+	regulator_bulk_disable(ARRAY_SIZE(rt5665->supplies), rt5665->supplies);
- }
+ 	RET=0
  
- #ifdef CONFIG_PM
+-	mirror_install $swp1 ingress $tundev "matchall $tcflags"
++	mirror_install $swp1 ingress $tundev \
++		"prot ip flower $tcflags ip_prot icmp"
+ 	tc filter add dev $h3 ingress pref 77 prot $prot \
+ 		flower ip_ttl 50 action pass
+ 
 -- 
 2.40.1
 
