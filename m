@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1B29787329
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:01:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6309C7872A4
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241982AbjHXPBE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:01:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44388 "EHLO
+        id S241874AbjHXOzn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:55:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242060AbjHXPAx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:00:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8693419AD
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:00:51 -0700 (PDT)
+        with ESMTP id S241910AbjHXOzV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F4B1BC6
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C8C660EB2
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:00:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3040DC433C8;
-        Thu, 24 Aug 2023 15:00:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5521E66F52
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62876C433CB;
+        Thu, 24 Aug 2023 14:55:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889250;
-        bh=6/B2Nkyu+1DMI6n1rnIkOOZ4+kof4xpTteVpqKHU9jI=;
+        s=korg; t=1692888917;
+        bh=8VweYY+PXhqmubbkyFUB9Xe2GccfGWACQon01ha/xLY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UVEVozMcW8IW/r558RlUM4btaqUIdXi8wKXbIVZJd1FHQ/UjlHj8Ng6ScvVky7FVi
-         HRXL96+ap/x2W5KAgN5M619bhtCLowp8eXKeGBO2rrquNxXP3+tb47ivQNICaDXBTW
-         Qn54t1CZ1gtW60ns8Q7+GI/yv68eliEhtPBHt02U=
+        b=QwagCEH9W46utU/YTbW1QMIoP4TKJzjSLEbZHBZBdXzZD3ZXs23v0InhDa80tYO24
+         wkHkOh663Q627Rd5dNbnwcYC4vu/tB9ioj5ie/vcpUnLD3CaiCrbu07snhbFGsDjt2
+         YP8Iz9bBCblkHTQODY7bWzDoFwJsXQmGDumiubys=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Ray Jui <ray.jui@broadcom.com>,
-        Andi Shyti <andi.shyti@kernel.org>,
-        Wolfram Sang <wsa@kernel.org>
-Subject: [PATCH 5.10 069/135] i2c: bcm-iproc: Fix bcm_iproc_i2c_isr deadlock issue
+        patches@lists.linux.dev, Luca Ceresoli <luca.ceresoli@bootlin.com>,
+        Neil Armstrong <neil.armstrong@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 089/139] drm/panel: simple: Fix AUO G121EAN01 panel timings according to the docs
 Date:   Thu, 24 Aug 2023 16:50:12 +0200
-Message-ID: <20230824145029.837606212@linuxfoundation.org>
+Message-ID: <20230824145027.489574243@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,61 +54,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Luca Ceresoli <luca.ceresoli@bootlin.com>
 
-commit 4caf4cb1eaed469742ef719f2cc024b1ec3fa9e6 upstream.
+[ Upstream commit e8470c0a7bcaa82f78ad34282d662dd7bd9630c2 ]
 
-iproc_i2c_rd_reg() and iproc_i2c_wr_reg() are called from both
-interrupt context (e.g. bcm_iproc_i2c_isr) and process context
-(e.g. bcm_iproc_i2c_suspend). Therefore, interrupts should be
-disabled to avoid potential deadlock. To prevent this scenario,
-use spin_lock_irqsave().
+Commit 03e909acd95a ("drm/panel: simple: Add support for AUO G121EAN01.4
+panel") added support for this panel model, but the timings it implements
+are very different from what the datasheet describes. I checked both the
+G121EAN01.0 datasheet from [0] and the G121EAN01.4 one from [1] and they
+all have the same timings: for example the LVDS clock typical value is 74.4
+MHz, not 66.7 MHz as implemented.
 
-Fixes: 9a1038728037 ("i2c: iproc: add NIC I2C support")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Acked-by: Ray Jui <ray.jui@broadcom.com>
-Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
-Signed-off-by: Wolfram Sang <wsa@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Replace the timings with the ones from the documentation. These timings
+have been tested and the clock frequencies verified with an oscilloscope to
+ensure they are correct.
+
+Also use struct display_timing instead of struct drm_display_mode in order
+to also specify the minimum and maximum values.
+
+[0] https://embedded.avnet.com/product/g121ean01-0/
+[1] https://embedded.avnet.com/product/g121ean01-4/
+
+Fixes: 03e909acd95a ("drm/panel: simple: Add support for AUO G121EAN01.4 panel")
+Signed-off-by: Luca Ceresoli <luca.ceresoli@bootlin.com>
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
+Signed-off-by: Neil Armstrong <neil.armstrong@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230804151239.835216-1-luca.ceresoli@bootlin.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i2c/busses/i2c-bcm-iproc.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/drivers/i2c/busses/i2c-bcm-iproc.c
-+++ b/drivers/i2c/busses/i2c-bcm-iproc.c
-@@ -242,13 +242,14 @@ static inline u32 iproc_i2c_rd_reg(struc
- 				   u32 offset)
- {
- 	u32 val;
-+	unsigned long flags;
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 391d73d2638a8..7cf0af78b7bc9 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1258,21 +1258,21 @@ static const struct panel_desc auo_g104sn02 = {
+ 	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
- 	if (iproc_i2c->idm_base) {
--		spin_lock(&iproc_i2c->idm_lock);
-+		spin_lock_irqsave(&iproc_i2c->idm_lock, flags);
- 		writel(iproc_i2c->ape_addr_mask,
- 		       iproc_i2c->idm_base + IDM_CTRL_DIRECT_OFFSET);
- 		val = readl(iproc_i2c->base + offset);
--		spin_unlock(&iproc_i2c->idm_lock);
-+		spin_unlock_irqrestore(&iproc_i2c->idm_lock, flags);
- 	} else {
- 		val = readl(iproc_i2c->base + offset);
- 	}
-@@ -259,12 +260,14 @@ static inline u32 iproc_i2c_rd_reg(struc
- static inline void iproc_i2c_wr_reg(struct bcm_iproc_i2c_dev *iproc_i2c,
- 				    u32 offset, u32 val)
- {
-+	unsigned long flags;
-+
- 	if (iproc_i2c->idm_base) {
--		spin_lock(&iproc_i2c->idm_lock);
-+		spin_lock_irqsave(&iproc_i2c->idm_lock, flags);
- 		writel(iproc_i2c->ape_addr_mask,
- 		       iproc_i2c->idm_base + IDM_CTRL_DIRECT_OFFSET);
- 		writel(val, iproc_i2c->base + offset);
--		spin_unlock(&iproc_i2c->idm_lock);
-+		spin_unlock_irqrestore(&iproc_i2c->idm_lock, flags);
- 	} else {
- 		writel(val, iproc_i2c->base + offset);
- 	}
+-static const struct drm_display_mode auo_g121ean01_mode = {
+-	.clock = 66700,
+-	.hdisplay = 1280,
+-	.hsync_start = 1280 + 58,
+-	.hsync_end = 1280 + 58 + 8,
+-	.htotal = 1280 + 58 + 8 + 70,
+-	.vdisplay = 800,
+-	.vsync_start = 800 + 6,
+-	.vsync_end = 800 + 6 + 4,
+-	.vtotal = 800 + 6 + 4 + 10,
++static const struct display_timing auo_g121ean01_timing = {
++	.pixelclock = { 60000000, 74400000, 90000000 },
++	.hactive = { 1280, 1280, 1280 },
++	.hfront_porch = { 20, 50, 100 },
++	.hback_porch = { 20, 50, 100 },
++	.hsync_len = { 30, 100, 200 },
++	.vactive = { 800, 800, 800 },
++	.vfront_porch = { 2, 10, 25 },
++	.vback_porch = { 2, 10, 25 },
++	.vsync_len = { 4, 18, 50 },
+ };
+ 
+ static const struct panel_desc auo_g121ean01 = {
+-	.modes = &auo_g121ean01_mode,
+-	.num_modes = 1,
++	.timings = &auo_g121ean01_timing,
++	.num_timings = 1,
+ 	.bpc = 8,
+ 	.size = {
+ 		.width = 261,
+-- 
+2.40.1
+
 
 
