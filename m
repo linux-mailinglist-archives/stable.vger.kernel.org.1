@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F35487872A9
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68F4C78733E
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241902AbjHXOzq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:55:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33732 "EHLO
+        id S241994AbjHXPBe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:01:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241933AbjHXOzc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 218BF1BCF
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:30 -0700 (PDT)
+        with ESMTP id S242010AbjHXPBM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6647DCC
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFC8F6115A
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0763C433C8;
-        Thu, 24 Aug 2023 14:55:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0461D6259A
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188B8C433C8;
+        Thu, 24 Aug 2023 15:01:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888929;
-        bh=d8DrmTca19cwKdoV/LMjC8HLZxXsFlzBtbI2h8zHFPc=;
+        s=korg; t=1692889267;
+        bh=93XXl43oqmPDKCqO9t+ynt/50OEmT8Pf9OKUa/WNdeI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HiSeI+T6Q3bSEbsVhLEJbgtb0cMO41i2KIeVUzcYg5VIQha71WmXyZmGA6zGC13tJ
-         9LTTkaTAOxrMbqXBNJIFd5rcEWF+qrjeEZFTZJgxpCim361xmFn4Vzyay8gpr6wUD3
-         GS3V0pYTJpj27T8+1KY1y8dcpGLanw1bG9QDea4o=
+        b=piy4fryKnr5ETAtsZOn4F1NtkGvvGGM7/N1XIdostVeJyGVhjdxrhWozGBaYf7nTm
+         zdPWM9fiFVBLn9JInST+bzbaE4NYhHNLDRBHLfuPVmxg5RcEe9FJwuvPjBbY7vmb/1
+         HiE8wUBK4RdkZYtt49PeFZDO86ryvp3a4Od0pVoA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 093/139] netfilter: nft_dynset: disallow object maps
-Date:   Thu, 24 Aug 2023 16:50:16 +0200
-Message-ID: <20230824145027.642127565@linuxfoundation.org>
+        patches@lists.linux.dev, xiaoshoukui <xiaoshoukui@ruijie.com.cn>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.10 074/135] btrfs: fix BUG_ON condition in btrfs_cancel_balance
+Date:   Thu, 24 Aug 2023 16:50:17 +0200
+Message-ID: <20230824145030.063721043@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,36 +53,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: xiaoshoukui <xiaoshoukui@gmail.com>
 
-[ Upstream commit 23185c6aed1ffb8fc44087880ba2767aba493779 ]
+commit 29eefa6d0d07e185f7bfe9576f91e6dba98189c2 upstream.
 
-Do not allow to insert elements from datapath to objects maps.
+Pausing and canceling balance can race to interrupt balance lead to BUG_ON
+panic in btrfs_cancel_balance. The BUG_ON condition in btrfs_cancel_balance
+does not take this race scenario into account.
 
-Fixes: 8aeff920dcc9 ("netfilter: nf_tables: add stateful object reference to set elements")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+However, the race condition has no other side effects. We can fix that.
+
+Reproducing it with panic trace like this:
+
+  kernel BUG at fs/btrfs/volumes.c:4618!
+  RIP: 0010:btrfs_cancel_balance+0x5cf/0x6a0
+  Call Trace:
+   <TASK>
+   ? do_nanosleep+0x60/0x120
+   ? hrtimer_nanosleep+0xb7/0x1a0
+   ? sched_core_clone_cookie+0x70/0x70
+   btrfs_ioctl_balance_ctl+0x55/0x70
+   btrfs_ioctl+0xa46/0xd20
+   __x64_sys_ioctl+0x7d/0xa0
+   do_syscall_64+0x38/0x80
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+  Race scenario as follows:
+  > mutex_unlock(&fs_info->balance_mutex);
+  > --------------------
+  > .......issue pause and cancel req in another thread
+  > --------------------
+  > ret = __btrfs_balance(fs_info);
+  >
+  > mutex_lock(&fs_info->balance_mutex);
+  > if (ret == -ECANCELED && atomic_read(&fs_info->balance_pause_req)) {
+  >         btrfs_info(fs_info, "balance: paused");
+  >         btrfs_exclop_balance(fs_info, BTRFS_EXCLOP_BALANCE_PAUSED);
+  > }
+
+CC: stable@vger.kernel.org # 4.19+
+Signed-off-by: xiaoshoukui <xiaoshoukui@ruijie.com.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_dynset.c | 3 +++
- 1 file changed, 3 insertions(+)
+ fs/btrfs/volumes.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/net/netfilter/nft_dynset.c b/net/netfilter/nft_dynset.c
-index 29c7ae8789e95..73e606372b05d 100644
---- a/net/netfilter/nft_dynset.c
-+++ b/net/netfilter/nft_dynset.c
-@@ -191,6 +191,9 @@ static int nft_dynset_init(const struct nft_ctx *ctx,
- 	if (IS_ERR(set))
- 		return PTR_ERR(set);
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -4460,8 +4460,7 @@ int btrfs_cancel_balance(struct btrfs_fs
+ 		}
+ 	}
  
-+	if (set->flags & NFT_SET_OBJECT)
-+		return -EOPNOTSUPP;
-+
- 	if (set->ops->update == NULL)
- 		return -EOPNOTSUPP;
- 
--- 
-2.40.1
-
+-	BUG_ON(fs_info->balance_ctl ||
+-		test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
++	ASSERT(!test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
+ 	atomic_dec(&fs_info->balance_cancel_req);
+ 	mutex_unlock(&fs_info->balance_mutex);
+ 	return 0;
 
 
