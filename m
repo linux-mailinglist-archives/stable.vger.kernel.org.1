@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E9ED7872CD
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1EF78735E
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:03:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241576AbjHXO5R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48290 "EHLO
+        id S242005AbjHXPCk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:02:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241924AbjHXO4v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F73919B3
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:47 -0700 (PDT)
+        with ESMTP id S242062AbjHXPCW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:02:22 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26ACA19B2
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E22A866FB9
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0066AC433C7;
-        Thu, 24 Aug 2023 14:56:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AD63567169
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFD0FC433C7;
+        Thu, 24 Aug 2023 15:02:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889006;
-        bh=HfA+FoqkoIaPuYwDtWcVV3Ra6n4i8UD45yGp329fl5A=;
+        s=korg; t=1692889339;
+        bh=QonmRdTxdpL+G6HSdx0K+WCV09Io5aZAUm19cwL4MWw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kPop4VFvKysZfF2nRLxlr4Oq29BRBvIcuAWxkAEobsCW/xE1dwVU8KRYXtHXZuVWd
-         oY42k+t6as3hC8kGJoX6rGoW8LvYlPn3pohONSTjcndmnnLLmj7W4YU2Red7ffGxYX
-         PvJpTB8zpywDRA026RyWt06mh452UOT0EC8c/vm8=
+        b=NxThHqt/iI4/mEEpoNZH4mtOQ/utHkvAXPa+I3dFqd7lnOwNS1k32/EaadqrKO7jS
+         sTs+la4wyecWjxU9z76BjohYqqDX5EGC04Y3fpB0vIl9MuEz8pIiVhAMUG/5WWu7yj
+         XRRpdg0dG+NJ3D7fZC7CRRSLR6mfXHrZmC7krYMc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jason Xing <kernelxing@tencent.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 121/139] net: fix the RTO timer retransmitting skb every 1ms if linear option is enabled
+        patches@lists.linux.dev,
+        Christopher Obbard <chris.obbard@collabora.com>,
+        Folker Schwesinger <dev@folker-schwesinger.de>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 101/135] arm64: dts: rockchip: Disable HS400 for eMMC on ROCK Pi 4
 Date:   Thu, 24 Aug 2023 16:50:44 +0200
-Message-ID: <20230824145028.759343994@linuxfoundation.org>
+Message-ID: <20230824145031.329414763@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,51 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Christopher Obbard <chris.obbard@collabora.com>
 
-commit e4dd0d3a2f64b8bd8029ec70f52bdbebd0644408 upstream.
+[ Upstream commit cee572756aa2cb46e959e9797ad4b730b78a050b ]
 
-In the real workload, I encountered an issue which could cause the RTO
-timer to retransmit the skb per 1ms with linear option enabled. The amount
-of lost-retransmitted skbs can go up to 1000+ instantly.
+There is some instablity with some eMMC modules on ROCK Pi 4 SBCs running
+in HS400 mode. This ends up resulting in some block errors after a while
+or after a "heavy" operation utilising the eMMC (e.g. resizing a
+filesystem). An example of these errors is as follows:
 
-The root cause is that if the icsk_rto happens to be zero in the 6th round
-(which is the TCP_THIN_LINEAR_RETRIES value), then it will always be zero
-due to the changed calculation method in tcp_retransmit_timer() as follows:
+    [  289.171014] mmc1: running CQE recovery
+    [  290.048972] mmc1: running CQE recovery
+    [  290.054834] mmc1: running CQE recovery
+    [  290.060817] mmc1: running CQE recovery
+    [  290.061337] blk_update_request: I/O error, dev mmcblk1, sector 1411072 op 0x1:(WRITE) flags 0x800 phys_seg 36 prio class 0
+    [  290.061370] EXT4-fs warning (device mmcblk1p1): ext4_end_bio:348: I/O error 10 writing to inode 29547 starting block 176466)
+    [  290.061484] Buffer I/O error on device mmcblk1p1, logical block 172288
+    [  290.061531] Buffer I/O error on device mmcblk1p1, logical block 172289
+    [  290.061551] Buffer I/O error on device mmcblk1p1, logical block 172290
+    [  290.061574] Buffer I/O error on device mmcblk1p1, logical block 172291
+    [  290.061592] Buffer I/O error on device mmcblk1p1, logical block 172292
+    [  290.061615] Buffer I/O error on device mmcblk1p1, logical block 172293
+    [  290.061632] Buffer I/O error on device mmcblk1p1, logical block 172294
+    [  290.061654] Buffer I/O error on device mmcblk1p1, logical block 172295
+    [  290.061673] Buffer I/O error on device mmcblk1p1, logical block 172296
+    [  290.061695] Buffer I/O error on device mmcblk1p1, logical block 172297
 
-icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
+Disabling the Command Queue seems to stop the CQE recovery from running,
+but doesn't seem to improve the I/O errors. Until this can be investigated
+further, disable HS400 mode on the ROCK Pi 4 SBCs to at least stop I/O
+errors from occurring.
 
-Above line could be converted to
-icsk->icsk_rto = min(0 << 1, TCP_RTO_MAX) = 0
+While we are here, set the eMMC maximum clock frequency to 1.5MHz to
+follow the ROCK 4C+.
 
-Therefore, the timer expires so quickly without any doubt.
-
-I read through the RFC 6298 and found that the RTO value can be rounded
-up to a certain value, in Linux, say TCP_RTO_MIN as default, which is
-regarded as the lower bound in this patch as suggested by Eric.
-
-Fixes: 36e31b0af587 ("net: TCP thin linear timeouts")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1b5715c602fd ("arm64: dts: rockchip: add ROCK Pi 4 DTS support")
+Signed-off-by: Christopher Obbard <chris.obbard@collabora.com>
+Tested-By: Folker Schwesinger <dev@folker-schwesinger.de>
+Link: https://lore.kernel.org/r/20230705144255.115299-2-chris.obbard@collabora.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/tcp_timer.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -582,7 +582,9 @@ out_reset_timer:
- 	    tcp_stream_is_thin(tp) &&
- 	    icsk->icsk_retransmits <= TCP_THIN_LINEAR_RETRIES) {
- 		icsk->icsk_backoff = 0;
--		icsk->icsk_rto = min(__tcp_set_rto(tp), TCP_RTO_MAX);
-+		icsk->icsk_rto = clamp(__tcp_set_rto(tp),
-+				       tcp_rto_min(sk),
-+				       TCP_RTO_MAX);
- 	} else {
- 		/* Use normal (exponential) backoff */
- 		icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+index 360a31d2c56cc..2f52b91b72152 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
++++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
+@@ -607,9 +607,9 @@
+ };
+ 
+ &sdhci {
++	max-frequency = <150000000>;
+ 	bus-width = <8>;
+-	mmc-hs400-1_8v;
+-	mmc-hs400-enhanced-strobe;
++	mmc-hs200-1_8v;
+ 	non-removable;
+ 	status = "okay";
+ };
+-- 
+2.40.1
+
 
 
