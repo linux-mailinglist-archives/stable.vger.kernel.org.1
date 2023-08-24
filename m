@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDFED7876CF
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:20:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E26147876FE
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:22:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237169AbjHXRUL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 13:20:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52750 "EHLO
+        id S242845AbjHXRVr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 13:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242811AbjHXRTl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:19:41 -0400
+        with ESMTP id S242863AbjHXRVi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3217112C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:19:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24CF310D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC7F16754D
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:19:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE820C433C8;
-        Thu, 24 Aug 2023 17:19:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AFB9F6756B
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF16CC433C7;
+        Thu, 24 Aug 2023 17:21:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897579;
-        bh=aTNKDsZvg8S1UBupcPaTWCNX2n4maXavKX++P0YHvlE=;
+        s=korg; t=1692897696;
+        bh=z8zDloZQ+YloSddYAkxtFwGDgbr8aaM4Rc/7pTmLkw8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yIOKcas11iCU7N7gN2GM4mqCB7G/8xYDmRW8fxPc60OI1aoFZbvDHeSNV7LoTdRkz
-         ziGj/7ZeEmwKc7eLOf+PMpnGVZTHJtWvt/jKyanDzu3VlPNN+j0pltbUwUbTGKO3cK
-         yhNlZz+601RgPserjH+3oqRdmyZu7I+Nz3NlUMcQ=
+        b=jXn3jsYz/y/ndWNWfLnJ9cEPe4ICbyq93VK0vG89sX3HKAbig7EcDpVh9bz4Or/pv
+         wC9LCm60OGHo6TBHT56nAosz27zzRSkRY4naW3iLVWXvDdSxDkIBZ22Ryw0IxpQ+z0
+         AXUH1r2P1vU+ytlvaL6J2unnqCDXjwCvVpLYBoK4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Justin Chen <justin.chen@broadcom.com>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
+        patches@lists.linux.dev, Ido Schimmel <idosch@idosch.org>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Simon Horman <horms@kernel.org>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 088/135] net: phy: broadcom: stub c45 read/write for 54810
-Date:   Thu, 24 Aug 2023 19:09:20 +0200
-Message-ID: <20230824170621.071833641@linuxfoundation.org>
+Subject: [PATCH 5.10 089/135] team: Fix incorrect deletion of ETH_P_8021AD protocol vid from slaves
+Date:   Thu, 24 Aug 2023 19:09:21 +0200
+Message-ID: <20230824170621.112184136@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -60,56 +61,52 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Justin Chen <justin.chen@broadcom.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 096516d092d54604d590827d05b1022c8f326639 ]
+[ Upstream commit dafcbce07136d799edc4c67f04f9fd69ff1eac1f ]
 
-The 54810 does not support c45. The mmd_phy_indirect accesses return
-arbirtary values leading to odd behavior like saying it supports EEE
-when it doesn't. We also see that reading/writing these non-existent
-MMD registers leads to phy instability in some cases.
+Similar to commit 01f4fd270870 ("bonding: Fix incorrect deletion of
+ETH_P_8021AD protocol vid from slaves"), we can trigger BUG_ON(!vlan_info)
+in unregister_vlan_dev() with the following testcase:
 
-Fixes: b14995ac2527 ("net: phy: broadcom: Add BCM54810 PHY entry")
-Signed-off-by: Justin Chen <justin.chen@broadcom.com>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Link: https://lore.kernel.org/r/1691901708-28650-1-git-send-email-justin.chen@broadcom.com
+  # ip netns add ns1
+  # ip netns exec ns1 ip link add team1 type team
+  # ip netns exec ns1 ip link add team_slave type veth peer veth2
+  # ip netns exec ns1 ip link set team_slave master team1
+  # ip netns exec ns1 ip link add link team_slave name team_slave.10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link add link team1 name team1.10 type vlan id 10 protocol 802.1ad
+  # ip netns exec ns1 ip link set team_slave nomaster
+  # ip netns del ns1
+
+Add S-VLAN tag related features support to team driver. So the team driver
+will always propagate the VLAN info to its slaves.
+
+Fixes: 8ad227ff89a7 ("net: vlan: add 802.1ad support")
+Suggested-by: Ido Schimmel <idosch@idosch.org>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230814032301.2804971-1-william.xuanziyang@huawei.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/phy/broadcom.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ drivers/net/team/team.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
-index 0cde17bd743f3..a664faa8f01f6 100644
---- a/drivers/net/phy/broadcom.c
-+++ b/drivers/net/phy/broadcom.c
-@@ -404,6 +404,17 @@ static int bcm54xx_resume(struct phy_device *phydev)
- 	return bcm54xx_config_init(phydev);
- }
+diff --git a/drivers/net/team/team.c b/drivers/net/team/team.c
+index 36c7eae776d44..721b536ce8861 100644
+--- a/drivers/net/team/team.c
++++ b/drivers/net/team/team.c
+@@ -2195,7 +2195,9 @@ static void team_setup(struct net_device *dev)
  
-+static int bcm54810_read_mmd(struct phy_device *phydev, int devnum, u16 regnum)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
-+static int bcm54810_write_mmd(struct phy_device *phydev, int devnum, u16 regnum,
-+			      u16 val)
-+{
-+	return -EOPNOTSUPP;
-+}
-+
- static int bcm54811_config_init(struct phy_device *phydev)
- {
- 	int err, reg;
-@@ -841,6 +852,8 @@ static struct phy_driver broadcom_drivers[] = {
- 	.phy_id_mask    = 0xfffffff0,
- 	.name           = "Broadcom BCM54810",
- 	/* PHY_GBIT_FEATURES */
-+	.read_mmd	= bcm54810_read_mmd,
-+	.write_mmd	= bcm54810_write_mmd,
- 	.config_init    = bcm54xx_config_init,
- 	.config_aneg    = bcm5481_config_aneg,
- 	.ack_interrupt  = bcm_phy_ack_intr,
+ 	dev->hw_features = TEAM_VLAN_FEATURES |
+ 			   NETIF_F_HW_VLAN_CTAG_RX |
+-			   NETIF_F_HW_VLAN_CTAG_FILTER;
++			   NETIF_F_HW_VLAN_CTAG_FILTER |
++			   NETIF_F_HW_VLAN_STAG_RX |
++			   NETIF_F_HW_VLAN_STAG_FILTER;
+ 
+ 	dev->hw_features |= NETIF_F_GSO_ENCAP_ALL | NETIF_F_GSO_UDP_L4;
+ 	dev->features |= dev->hw_features;
 -- 
 2.40.1
 
