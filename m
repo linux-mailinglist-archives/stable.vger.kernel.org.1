@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0D03787695
+	by mail.lfdr.de (Postfix) with ESMTP id 4CBA6787694
 	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:18:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242362AbjHXRRa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 13:17:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60046 "EHLO
+        id S242371AbjHXRRb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 13:17:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242530AbjHXRRP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:17:15 -0400
+        with ESMTP id S242556AbjHXRRS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:17:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A189419B0
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:17:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7DC2519A3
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:17:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39DA1648A5
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:17:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50673C433C7;
-        Thu, 24 Aug 2023 17:17:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1224863C32
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:17:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 223F8C433C8;
+        Thu, 24 Aug 2023 17:17:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897432;
-        bh=FIqPeeIGkcsDcSyF86wD8mvlvJxSSLF57sFDLVDMLC0=;
+        s=korg; t=1692897435;
+        bh=mbjMGCqcu+8noL1io4DRLz5aq5aQs/hrM2PwvUMaAwI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R21DiyjkjBwaGu+W49E9iQ8KhbjXMcIJN2h0ff5yBDiL0DoK833ggiud+othTJeuK
-         nrRw7MhXVxrVdb9T8r4AKdl3UNMGvpbVIUlWeB+aUDRgGIgfPNc0OQKMagVXPhamwA
-         8KNelTqgGCo5uAjZ01xiOMiZfoCWp9I7gIGk5dOo=
+        b=x0FP4Jr1YvM8KZuvr7V/OUwH4uVj5VyvTWT5bw0SlPRN4XCeLI1xbqMf0TbymLiio
+         X7t7MUh1m6PQXMUNjCVzdC9eR0kGDSulA8P84B9075J4GQDUjOqBptIdLTTxEt3KwO
+         gsOjU8SI+VZUq2a87Dh98N6q8M6lyQgUObE0V9Ig=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, dengxiang <dengxiang@nfschina.com>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 037/135] ALSA: hda/realtek: Add quirks for Unis H3C Desktop B760 & Q760
-Date:   Thu, 24 Aug 2023 19:08:29 +0200
-Message-ID: <20230824170618.759800857@linuxfoundation.org>
+        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
+        Tuo Li <islituo@gmail.com>, Takashi Iwai <tiwai@suse.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 038/135] ALSA: hda: fix a possible null-pointer dereference due to data race in snd_hdac_regmap_sync()
+Date:   Thu, 24 Aug 2023 19:08:30 +0200
+Message-ID: <20230824170618.797021209@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -58,57 +59,59 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: dengxiang <dengxiang@nfschina.com>
+From: Tuo Li <islituo@gmail.com>
 
-[ Upstream commit 73f1c75d5e6bd8ce2a887ef493a66ad1b16ed704 ]
+[ Upstream commit 1f4a08fed450db87fbb5ff5105354158bdbe1a22 ]
 
-These models use NSIWAY amplifiers for internal speaker, but cannot put
-sound outside from these amplifiers. So eapd verbs are needed to initialize
-the amplifiers. They can be added during boot to get working sound out
-of internal speaker.
+The variable codec->regmap is often protected by the lock
+codec->regmap_lock when is accessed. However, it is accessed without
+holding the lock when is accessed in snd_hdac_regmap_sync():
 
-Signed-off-by: dengxiang <dengxiang@nfschina.com>
-Link: https://lore.kernel.org/r/20230703021751.2945750-1-dengxiang@nfschina.com
+  if (codec->regmap)
+
+In my opinion, this may be a harmful race, because if codec->regmap is
+set to NULL right after the condition is checked, a null-pointer
+dereference can occur in the called function regcache_sync():
+
+  map->lock(map->lock_arg); --> Line 360 in drivers/base/regmap/regcache.c
+
+To fix this possible null-pointer dereference caused by data race, the
+mutex_lock coverage is extended to protect the if statement as well as the
+function call to regcache_sync().
+
+[ Note: the lack of the regmap_lock itself is harmless for the current
+  codec driver implementations, as snd_hdac_regmap_sync() is only for
+  PM runtime resume that is prohibited during the codec probe.
+  But the change makes the whole code more consistent, so it's merged
+  as is -- tiwai ]
+
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Signed-off-by: Tuo Li <islituo@gmail.com>
+Link: https://lore.kernel.org/r/20230703031016.1184711-1-islituo@gmail.com
 Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/hda/patch_realtek.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ sound/hda/hdac_regmap.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
-index db8593d794315..09a9e21675341 100644
---- a/sound/pci/hda/patch_realtek.c
-+++ b/sound/pci/hda/patch_realtek.c
-@@ -10719,6 +10719,7 @@ enum {
- 	ALC897_FIXUP_HP_HSMIC_VERB,
- 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
- 	ALC897_FIXUP_HEADSET_MIC_PIN2,
-+	ALC897_FIXUP_UNIS_H3C_X500S,
- };
- 
- static const struct hda_fixup alc662_fixups[] = {
-@@ -11158,6 +11159,13 @@ static const struct hda_fixup alc662_fixups[] = {
- 		.chained = true,
- 		.chain_id = ALC897_FIXUP_LENOVO_HEADSET_MODE
- 	},
-+	[ALC897_FIXUP_UNIS_H3C_X500S] = {
-+		.type = HDA_FIXUP_VERBS,
-+		.v.verbs = (const struct hda_verb[]) {
-+			{ 0x14, AC_VERB_SET_EAPD_BTLENABLE, 0 },
-+			{}
-+		},
-+	},
- };
- 
- static const struct snd_pci_quirk alc662_fixup_tbl[] = {
-@@ -11319,6 +11327,7 @@ static const struct hda_model_fixup alc662_fixup_models[] = {
- 	{.id = ALC662_FIXUP_USI_HEADSET_MODE, .name = "usi-headset"},
- 	{.id = ALC662_FIXUP_LENOVO_MULTI_CODECS, .name = "dual-codecs"},
- 	{.id = ALC669_FIXUP_ACER_ASPIRE_ETHOS, .name = "aspire-ethos"},
-+	{.id = ALC897_FIXUP_UNIS_H3C_X500S, .name = "unis-h3c-x500s"},
- 	{}
- };
- 
+diff --git a/sound/hda/hdac_regmap.c b/sound/hda/hdac_regmap.c
+index d75f31eb9d78f..bf35acca5ea0e 100644
+--- a/sound/hda/hdac_regmap.c
++++ b/sound/hda/hdac_regmap.c
+@@ -597,10 +597,9 @@ EXPORT_SYMBOL_GPL(snd_hdac_regmap_update_raw_once);
+  */
+ void snd_hdac_regmap_sync(struct hdac_device *codec)
+ {
+-	if (codec->regmap) {
+-		mutex_lock(&codec->regmap_lock);
++	mutex_lock(&codec->regmap_lock);
++	if (codec->regmap)
+ 		regcache_sync(codec->regmap);
+-		mutex_unlock(&codec->regmap_lock);
+-	}
++	mutex_unlock(&codec->regmap_lock);
+ }
+ EXPORT_SYMBOL_GPL(snd_hdac_regmap_sync);
 -- 
 2.40.1
 
