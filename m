@@ -2,154 +2,124 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CA0F7866D3
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 06:44:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AFBE786710
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 07:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239026AbjHXEnu convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Thu, 24 Aug 2023 00:43:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45490 "EHLO
+        id S239465AbjHXFTI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 01:19:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60444 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239003AbjHXEn0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 00:43:26 -0400
-Received: from relay.hostedemail.com (smtprelay0013.hostedemail.com [216.40.44.13])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6788810E4;
-        Wed, 23 Aug 2023 21:43:24 -0700 (PDT)
-Received: from omf11.hostedemail.com (a10.router.float.18 [10.200.18.1])
-        by unirelay10.hostedemail.com (Postfix) with ESMTP id 4F25FC0199;
-        Thu, 24 Aug 2023 04:43:22 +0000 (UTC)
-Received: from [HIDDEN] (Authenticated sender: joe@perches.com) by omf11.hostedemail.com (Postfix) with ESMTPA id BF3892002C;
-        Thu, 24 Aug 2023 04:43:18 +0000 (UTC)
-Message-ID: <0155a718388cf598d2171795c129a93f04a1ddfd.camel@perches.com>
-Subject: Re: checkpatch complains about Reported-by block (was: [PATCH v3]
- tpm: Enable hwrng only for Pluton on AMD CPUs)
-From:   Joe Perches <joe@perches.com>
-To:     Paul Menzel <pmenzel@molgen.mpg.de>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Andy Whitcroft <apw@canonical.com>
-Cc:     linux-integrity@vger.kernel.org,
-        Jerry Snitselaar <jsnitsel@redhat.com>, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-kernel@vger.kernel.org, Patrick Steinhardt <ps@pks.im>,
-        Ronan Pigott <ronan@rjp.ie>,
-        Raymond Jay Golo <rjgolo@gmail.com>
-Date:   Wed, 23 Aug 2023 21:43:17 -0700
-In-Reply-To: <3a9bf7a1-1664-401d-8cff-3a5d553bdd77@molgen.mpg.de>
-References: <20230822231510.2263255-1-jarkko@kernel.org>
-         <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
-         <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
-         <3a9bf7a1-1664-401d-8cff-3a5d553bdd77@molgen.mpg.de>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: 8BIT
-User-Agent: Evolution 3.48.4 (3.48.4-1.fc38) 
+        with ESMTP id S238903AbjHXFS5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 01:18:57 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62E71198
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 22:18:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692854292;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=8HYF8b5+w5zwg0TshHiVGB9NwZH2Hu45P81L38Yjgpg=;
+        b=fCoi7ctCIRj8wFVMk4UJd1w7O7egHYIgdMJFI/7OShUErtqnvHnGAMyNVTZwJL8EYLTAjL
+        4lLAwXFBTb5ZLWHKomLKDSzZdUPbsZ0vr5Jye8PUAR1PhNLYFcxC1R95hjOjNlzJlB6ekb
+        Jb9nXqNtyuS6cirqmcR2Kop51RZTFS4=
+Received: from mimecast-mx02.redhat.com (66.187.233.73 [66.187.233.73]) by
+ relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-299-Ocnjmqy5Miq2IMF3Ej3bCQ-1; Thu, 24 Aug 2023 01:18:08 -0400
+X-MC-Unique: Ocnjmqy5Miq2IMF3Ej3bCQ-1
+Received: from smtp.corp.redhat.com (int-mx05.intmail.prod.int.rdu2.redhat.com [10.11.54.5])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 574621C05132;
+        Thu, 24 Aug 2023 05:18:08 +0000 (UTC)
+Received: from fedora (unknown [10.72.120.8])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8D6C26B595;
+        Thu, 24 Aug 2023 05:18:03 +0000 (UTC)
+Date:   Thu, 24 Aug 2023 13:17:58 +0800
+From:   Ming Lei <ming.lei@redhat.com>
+To:     gregkh@linuxfoundation.org
+Cc:     axboe@kernel.dk, chuhu@redhat.com, snitzer@kernel.org,
+        tj@kernel.org, xifeng@redhat.com, yukuai3@huawei.com,
+        stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] blk-cgroup: hold queue_lock when removing
+ blkg->q_node" failed to apply to 6.1-stable tree
+Message-ID: <ZOboBivSI7gXCh5u@fedora>
+References: <2023082019-brink-buddhist-4d1b@gregkh>
 MIME-Version: 1.0
-X-Rspamd-Queue-Id: BF3892002C
-X-Stat-Signature: 1xjjsce6i7jma615t5qrayscjq57i77b
-X-Spam-Status: No, score=-0.9 required=5.0 tests=BAYES_00,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,
-        SPF_NONE,UNPARSEABLE_RELAY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Rspamd-Server: rspamout01
-X-Session-Marker: 6A6F6540706572636865732E636F6D
-X-Session-ID: U2FsdGVkX19JYEiz5PLpsLuruTuFz2VoiXh0OmEylcQ=
-X-HE-Tag: 1692852198-257671
-X-HE-Meta: U2FsdGVkX18dUYFgPAQ9ALE34cDSU20UTVW4v+/WfftjxcVwLDAO/iYlu2p9HTFx2nbunLChkhEy99hDhbsGyAVSwMlubZAymz5tXIdTjWR1KOLAi+hcDAkoRxwl3Ui+y3rfUF3WhAQivGMqptjwN9+Q8HMfHLirF6cxXKFdz7pSJO1aqFRGXLRq8EbDxCDmDma3KYVzhscvWv3cHFdLVS5sOef75KM+fs0vu73ins+f0XmsSj8yp97NsS4VVU/dp2hIOLvsW8tiwj1N7j2hcoHlh9c7AzajKKzDTCoyWHTULdcJketAj9AdxAOVdsqw7QrSd8zg29bJDWxfXfKx3mPvDKp5fzp+EsDgmds6MsLhHPjHgP1mpOZdZWAGNJiV//p8dWLuQkNxyXKBNi+TxAbB/I6qrzc7+iXM+rEIi9o=
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <2023082019-brink-buddhist-4d1b@gregkh>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.5
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-08-23 at 21:24 +0200, Paul Menzel wrote:
-> [Cc: +Andy, +Joe]
+On Sun, Aug 20, 2023 at 07:54:19PM +0200, gregkh@linuxfoundation.org wrote:
 > 
+> The patch below does not apply to the 6.1-stable tree.
+> If someone wants it applied there, or to any other stable or longterm
+> tree, then please email the backport, including the original git commit
+> id to <stable@vger.kernel.org>.
 > 
-> Dear Jarkko, dear Andy, dear Joe,
+> To reproduce the conflict and resubmit, you may use the following commands:
 > 
+> git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+> git checkout FETCH_HEAD
+> git cherry-pick -x c164c7bc9775be7bcc68754bb3431fce5823822e
+> # <resolve conflicts, build, test, etc.>
+> git commit -s
+> git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082019-brink-buddhist-4d1b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 > 
-> Am 23.08.23 um 19:40 schrieb Jarkko Sakkinen:
-> > On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
+> Possible dependencies:
 > 
-> > > Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
-> > > > The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
-> > > > all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
-> > > > reported systems the TPM doesn't reply at bootup and returns back the
-> > > > command code. This makes the TPM fail probe.
-> > > > 
-> > > > Since only Microsoft Pluton is the only known combination of AMD CPU and
-> > > > fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
-> > > > aware of this, print also info message to the klog.
-> > > > 
-> > > > Cc: stable@vger.kernel.org
-> > > > Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> > > > Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> > > > Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
-> > > > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > > 
-> > > Mario’s patch also had the three reporters below listed:
-> > > 
-> > > Reported-by: Patrick Steinhardt <ps@pks.im>
-> > > Reported-by: Ronan Pigott <ronan@rjp.ie>
-> > > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> > 
-> > The problem here is that checkpatch throws three warnings:
-> > 
-> > WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
-> > #19:
-> > Reported-by: Patrick Steinhardt <ps@pks.im>
-> > Reported-by: Ronan Pigott <ronan@rjp.ie>
-> > 
-> > WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
-> > #20:
-> > Reported-by: Ronan Pigott <ronan@rjp.ie>
-> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> > 
-> > WARNING: Reported-by: should be immediately followed by Closes: with a URL to the report
-> > #21:
-> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > 
-> > Since bugzilla is not part of the documented process afaik, I used this
-> > field as the guideline:
-> > 
-> > Reported:	2023-08-17 20:59 UTC by Todd Brandt
-> > 
-> > How otherwise I should interpret kernel bugzilla?
+> c164c7bc9775 ("blk-cgroup: hold queue_lock when removing blkg->q_node")
+> a06377c5d01e ("Revert "blk-cgroup: pin the gendisk in struct blkcg_gq"")
+> 9a9c261e6b55 ("Revert "blk-cgroup: pass a gendisk to blkg_lookup"")
+> 1231039db31c ("Revert "blk-cgroup: move the cgroup information to struct gendisk"")
+> dcb522014351 ("Revert "blk-cgroup: simplify blkg freeing from initialization failure paths"")
+> 3f13ab7c80fd ("blk-cgroup: move the cgroup information to struct gendisk")
+> 479664cee14d ("blk-cgroup: pass a gendisk to blkg_lookup")
+> ba91c849fa50 ("blk-rq-qos: store a gendisk instead of request_queue in struct rq_qos")
+> 3963d84df797 ("blk-rq-qos: constify rq_qos_ops")
+> ce57b558604e ("blk-rq-qos: make rq_qos_add and rq_qos_del more useful")
+> b494f9c566ba ("blk-rq-qos: move rq_qos_add and rq_qos_del out of line")
+> f05837ed73d0 ("blk-cgroup: store a gendisk to throttle in struct task_struct")
+> 84d7d462b16d ("blk-cgroup: pin the gendisk in struct blkcg_gq")
+> 180b04d450a7 ("blk-cgroup: remove the !bdi->dev check in blkg_dev_name")
+> 27b642b07a4a ("blk-cgroup: simplify blkg freeing from initialization failure paths")
+> 0b6f93bdf07e ("blk-cgroup: improve error unwinding in blkg_alloc")
+> f1c006f1c685 ("blk-cgroup: synchronize pd_free_fn() from blkg_free_workfn() and blkcg_deactivate_policy()")
+> dfd6200a0954 ("blk-cgroup: support to track if policy is online")
+> c7241babf085 ("blk-cgroup: dropping parent refcount after pd_free_fn() is done")
+> e3ff8887e7db ("blk-cgroup: fix missing pd_online_fn() while activating policy")
 > 
-> How is the proper process to add more than one reporter (so they are 
-> noted and also added to CC), so that checkpatch.pl does not complain?
+> thanks,
 > 
+> greg k-h
 > 
-> Kind regards,
+> ------------------ original commit in Linus's tree ------------------
 > 
-> Paul
+> From c164c7bc9775be7bcc68754bb3431fce5823822e Mon Sep 17 00:00:00 2001
+> From: Ming Lei <ming.lei@redhat.com>
+> Date: Thu, 17 Aug 2023 22:17:51 +0800
+> Subject: [PATCH] blk-cgroup: hold queue_lock when removing blkg->q_node
 > 
+> When blkg is removed from q->blkg_list from blkg_free_workfn(), queue_lock
+> has to be held, otherwise, all kinds of bugs(list corruption, hard lockup,
+> ..) can be triggered from blkg_destroy_all().
 > 
-> > In any case new version is still needed as the commit message must
-> > contain a mention of "Lenovo Legion Y540" as the stimulus for doing
-> > this code change in the first place.
-> > 
-> > BR, Jarkko
+> Fixes: f1c006f1c685 ("blk-cgroup: synchronize pd_free_fn() from blkg_free_workfn() and blkcg_deactivate_policy()")
 
-Well, if it's really desired to allow multiple consecutive reported-by:
-lines, maybe:
----
- scripts/checkpatch.pl | 2 ++
- 1 file changed, 2 insertions(+)
+The above commit is reverted on 6.1-stable only, so this patch needn't to
+backport on 6.1-stable.
 
-diff --git a/scripts/checkpatch.pl b/scripts/checkpatch.pl
-index 528f619520eb9..5b5c11ad04087 100755
---- a/scripts/checkpatch.pl
-+++ b/scripts/checkpatch.pl
-@@ -3179,6 +3179,8 @@ sub process {
- 				if (!defined $lines[$linenr]) {
- 					WARN("BAD_REPORTED_BY_LINK",
- 					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . "\n");
-+				} elsif ($rawlines[$linenr] =~ /^\s*reported(?:|-and-tested)-by:/i) {
-+					;
- 				} elsif ($rawlines[$linenr] !~ /^closes:\s*/i) {
- 					WARN("BAD_REPORTED_BY_LINK",
- 					     "Reported-by: should be immediately followed by Closes: with a URL to the report\n" . $herecurr . $rawlines[$linenr] . "\n");
+Thanks,
+Ming
 
