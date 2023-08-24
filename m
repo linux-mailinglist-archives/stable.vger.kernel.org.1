@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A455F787293
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:55:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6897F787332
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:01:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241868AbjHXOzK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:55:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58068 "EHLO
+        id S241971AbjHXPBC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:01:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241887AbjHXOyo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:54:44 -0400
+        with ESMTP id S242012AbjHXPAl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:00:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3C771995
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:54:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C79619B2
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:00:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9344C66F50
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:54:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5C92C433C9;
-        Thu, 24 Aug 2023 14:54:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5EE61612D6
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:00:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71072C433C8;
+        Thu, 24 Aug 2023 15:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888882;
-        bh=kR9yMCPS0UL4PdnjPz4SISKxbvb85zQ0O1jCJQ1qkww=;
+        s=korg; t=1692889233;
+        bh=Sm/ZJ8l1R3DdTYFes552ntbOga/iLMroGccfMcQmpt0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rv/ArUMBjNjEb49MvasEoFaJS2yiYoWi9KfYjUWnMEpRW5pVvxaaA/qepsaulV/Io
-         dfkMNfaEq32mNVtWVloDjtW4tdKhm7E9daRTU0Yk53IGVHJtEpC1j7eiU0t/osntF6
-         c+hhU4OJkf262Y+ePSmEPrQjUsw0YVsMRNWxdZX0=
+        b=xhSuxSjJlypgpQG5hTy+DySoQbT8weIgtD2NhwqmU6R39bvP6/a8QDM51L6gPey4M
+         jn3zyndm0pJr1VsQPcJNSJNRVUk6oO8AWjTIqWhH65x9AAhGAO/yMhPOACdvOEefPJ
+         upAFKFawsNpYFaH8iRLhQ28yqari3Jg59X8fS4bE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable <stable@kernel.org>,
-        Yi Yang <yiyang13@huawei.com>,
-        Qiumiao Zhang <zhangqiumiao1@huawei.com>
-Subject: [PATCH 5.15 074/139] tty: n_gsm: fix the UAF caused by race condition in gsm_cleanup_mux
-Date:   Thu, 24 Aug 2023 16:49:57 +0200
-Message-ID: <20230824145026.882347695@linuxfoundation.org>
+        patches@lists.linux.dev, Wesley Cheng <wcheng@codeaurora.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 055/135] usb: gadget: udc: core: Introduce check_config to verify USB configuration
+Date:   Thu, 24 Aug 2023 16:49:58 +0200
+Message-ID: <20230824145029.274443774@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,59 +53,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Wesley Cheng <wcheng@codeaurora.org>
 
-commit 3c4f8333b582487a2d1e02171f1465531cde53e3 upstream.
+[ Upstream commit ce7d0008c2356626f69f37ef1afce8fbc83fe142 ]
 
-In commit 9b9c8195f3f0 ("tty: n_gsm: fix UAF in gsm_cleanup_mux"), the UAF
-problem is not completely fixed. There is a race condition in
-gsm_cleanup_mux(), which caused this UAF.
+Some UDCs may have constraints on how many high bandwidth endpoints it can
+support in a certain configuration.  This API allows for the composite
+driver to pass down the total number of endpoints to the UDC so it can verify
+it has the required resources to support the configuration.
 
-The UAF problem is triggered by the following race:
-task[5046]                     task[5054]
------------------------        -----------------------
-gsm_cleanup_mux();
-dlci = gsm->dlci[0];
-mutex_lock(&gsm->mutex);
-                               gsm_cleanup_mux();
-			       dlci = gsm->dlci[0]; //Didn't take the lock
-gsm_dlci_release(gsm->dlci[i]);
-gsm->dlci[i] = NULL;
-mutex_unlock(&gsm->mutex);
-                               mutex_lock(&gsm->mutex);
-			       dlci->dead = true; //UAF
-
-Fix it by assigning values after mutex_lock().
-
-Link: https://syzkaller.appspot.com/text?tag=CrashReport&x=176188b5a80000
-Cc: stable <stable@kernel.org>
-Fixes: 9b9c8195f3f0 ("tty: n_gsm: fix UAF in gsm_cleanup_mux")
-Fixes: aa371e96f05d ("tty: n_gsm: fix restart handling via CLD command")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Co-developed-by: Qiumiao Zhang <zhangqiumiao1@huawei.com>
-Signed-off-by: Qiumiao Zhang <zhangqiumiao1@huawei.com>
-Link: https://lore.kernel.org/r/20230811031121.153237-1-yiyang13@huawei.com
+Signed-off-by: Wesley Cheng <wcheng@codeaurora.org>
+Link: https://lore.kernel.org/r/1625908395-5498-2-git-send-email-wcheng@codeaurora.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: dbe678f6192f ("usb: cdns3: fix NCM gadget RX speed 20x slow than expection at iMX8QM")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/n_gsm.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/usb/gadget/udc/core.c | 19 +++++++++++++++++++
+ include/linux/usb/gadget.h    |  4 ++++
+ 2 files changed, 23 insertions(+)
 
---- a/drivers/tty/n_gsm.c
-+++ b/drivers/tty/n_gsm.c
-@@ -2387,12 +2387,13 @@ static void gsm_error(struct gsm_mux *gs
- static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
- {
- 	int i;
--	struct gsm_dlci *dlci = gsm->dlci[0];
-+	struct gsm_dlci *dlci;
- 	struct gsm_msg *txq, *ntxq;
+diff --git a/drivers/usb/gadget/udc/core.c b/drivers/usb/gadget/udc/core.c
+index 3a3b5a03dda75..14d9d1ee16fc4 100644
+--- a/drivers/usb/gadget/udc/core.c
++++ b/drivers/usb/gadget/udc/core.c
+@@ -1004,6 +1004,25 @@ int usb_gadget_ep_match_desc(struct usb_gadget *gadget,
+ }
+ EXPORT_SYMBOL_GPL(usb_gadget_ep_match_desc);
  
- 	gsm->dead = true;
- 	mutex_lock(&gsm->mutex);
++/**
++ * usb_gadget_check_config - checks if the UDC can support the binded
++ *	configuration
++ * @gadget: controller to check the USB configuration
++ *
++ * Ensure that a UDC is able to support the requested resources by a
++ * configuration, and that there are no resource limitations, such as
++ * internal memory allocated to all requested endpoints.
++ *
++ * Returns zero on success, else a negative errno.
++ */
++int usb_gadget_check_config(struct usb_gadget *gadget)
++{
++	if (gadget->ops->check_config)
++		return gadget->ops->check_config(gadget);
++	return 0;
++}
++EXPORT_SYMBOL_GPL(usb_gadget_check_config);
++
+ /* ------------------------------------------------------------------------- */
  
-+	dlci = gsm->dlci[0];
- 	if (dlci) {
- 		if (disc && dlci->state != DLCI_CLOSED) {
- 			gsm_dlci_begin_close(dlci);
+ static void usb_gadget_state_work(struct work_struct *work)
+diff --git a/include/linux/usb/gadget.h b/include/linux/usb/gadget.h
+index e7351d64f11fa..11df3d5b40c6b 100644
+--- a/include/linux/usb/gadget.h
++++ b/include/linux/usb/gadget.h
+@@ -326,6 +326,7 @@ struct usb_gadget_ops {
+ 	struct usb_ep *(*match_ep)(struct usb_gadget *,
+ 			struct usb_endpoint_descriptor *,
+ 			struct usb_ss_ep_comp_descriptor *);
++	int	(*check_config)(struct usb_gadget *gadget);
+ };
+ 
+ /**
+@@ -596,6 +597,7 @@ int usb_gadget_connect(struct usb_gadget *gadget);
+ int usb_gadget_disconnect(struct usb_gadget *gadget);
+ int usb_gadget_deactivate(struct usb_gadget *gadget);
+ int usb_gadget_activate(struct usb_gadget *gadget);
++int usb_gadget_check_config(struct usb_gadget *gadget);
+ #else
+ static inline int usb_gadget_frame_number(struct usb_gadget *gadget)
+ { return 0; }
+@@ -619,6 +621,8 @@ static inline int usb_gadget_deactivate(struct usb_gadget *gadget)
+ { return 0; }
+ static inline int usb_gadget_activate(struct usb_gadget *gadget)
+ { return 0; }
++static inline int usb_gadget_check_config(struct usb_gadget *gadget)
++{ return 0; }
+ #endif /* CONFIG_USB_GADGET */
+ 
+ /*-------------------------------------------------------------------------*/
+-- 
+2.40.1
+
 
 
