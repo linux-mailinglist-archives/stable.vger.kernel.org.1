@@ -2,46 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 612757872F2
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93EF8787261
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:53:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237299AbjHXO6y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39958 "EHLO
+        id S241840AbjHXOxJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:53:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241939AbjHXO6X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:23 -0400
+        with ESMTP id S238667AbjHXOw5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:52:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11577FD
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:22 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2EE710D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:52:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9C0F16706C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC333C43397;
-        Thu, 24 Aug 2023 14:58:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 392BA66E9E
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:52:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4860EC433C8;
+        Thu, 24 Aug 2023 14:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889101;
-        bh=yWGIvhBon1LyRS6uwxVtkymcj0YZKiyj3c2jGc9jCnM=;
+        s=korg; t=1692888774;
+        bh=WiKd1M/+HOkjwcI+t1Ws4CiSVrfK+/xyIHWREWOa3t4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c+QyE5kvDjaQhjwiLeexwRipEo95VVi+CJFbEF/eXr045F88ZyOjfxH5unGrcHNmq
-         yaSzcfX0MN3xPF3pVXCpJO++e9kryY4jJ8+KKFVZv5H0XT76xw8T+3xOLs+KFzXej7
-         uDaPmiXyITiud0hrxCmWtA6TDak4WU1T0ia5DSLU=
+        b=BRQjLox2bblIDJ79jR9zs1hL1do18PLnTl8kbKq4P+e2h+nw2h4OYYIGoUB7d+IVk
+         QcZvEsO1nKSwnrRpM2JV4DsAyxemS8T4wlpNrs+wG8bXNKRyzGGkUIAC6Ze2knj5e5
+         rJaw0fZLgIuXS5iOZk+CxLgyVO5Fbh2ELnX/D0NM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>,
-        Ye Bin <yebin10@huawei.com>
-Subject: [PATCH 5.10 015/135] quota: Properly disable quotas when add_dquot_ref() fails
-Date:   Thu, 24 Aug 2023 16:49:18 +0200
-Message-ID: <20230824145027.623569717@linuxfoundation.org>
+        patches@lists.linux.dev, dengxiang <dengxiang@nfschina.com>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 036/139] ALSA: hda/realtek: Add quirks for Unis H3C Desktop B760 & Q760
+Date:   Thu, 24 Aug 2023 16:49:19 +0200
+Message-ID: <20230824145025.178848864@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,41 +53,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jan Kara <jack@suse.cz>
+From: dengxiang <dengxiang@nfschina.com>
 
-[ Upstream commit 6a4e3363792e30177cc3965697e34ddcea8b900b ]
+[ Upstream commit 73f1c75d5e6bd8ce2a887ef493a66ad1b16ed704 ]
 
-When add_dquot_ref() fails (usually due to IO error or ENOMEM), we want
-to disable quotas we are trying to enable. However dquot_disable() call
-was passed just the flags we are enabling so in case flags ==
-DQUOT_USAGE_ENABLED dquot_disable() call will just fail with EINVAL
-instead of properly disabling quotas. Fix the problem by always passing
-DQUOT_LIMITS_ENABLED | DQUOT_USAGE_ENABLED to dquot_disable() in this
-case.
+These models use NSIWAY amplifiers for internal speaker, but cannot put
+sound outside from these amplifiers. So eapd verbs are needed to initialize
+the amplifiers. They can be added during boot to get working sound out
+of internal speaker.
 
-Reported-and-tested-by: Ye Bin <yebin10@huawei.com>
-Reported-by: syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230605140731.2427629-2-yebin10@huawei.com>
+Signed-off-by: dengxiang <dengxiang@nfschina.com>
+Link: https://lore.kernel.org/r/20230703021751.2945750-1-dengxiang@nfschina.com
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/pci/hda/patch_realtek.c | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index ad255f8ab5c55..135984a1a52f4 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -2415,7 +2415,8 @@ int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
+diff --git a/sound/pci/hda/patch_realtek.c b/sound/pci/hda/patch_realtek.c
+index 965720b1d1b16..e335f3b5338f7 100644
+--- a/sound/pci/hda/patch_realtek.c
++++ b/sound/pci/hda/patch_realtek.c
+@@ -10809,6 +10809,7 @@ enum {
+ 	ALC897_FIXUP_HP_HSMIC_VERB,
+ 	ALC897_FIXUP_LENOVO_HEADSET_MODE,
+ 	ALC897_FIXUP_HEADSET_MIC_PIN2,
++	ALC897_FIXUP_UNIS_H3C_X500S,
+ };
  
- 	error = add_dquot_ref(sb, type);
- 	if (error)
--		dquot_disable(sb, type, flags);
-+		dquot_disable(sb, type,
-+			      DQUOT_USAGE_ENABLED | DQUOT_LIMITS_ENABLED);
+ static const struct hda_fixup alc662_fixups[] = {
+@@ -11248,6 +11249,13 @@ static const struct hda_fixup alc662_fixups[] = {
+ 		.chained = true,
+ 		.chain_id = ALC897_FIXUP_LENOVO_HEADSET_MODE
+ 	},
++	[ALC897_FIXUP_UNIS_H3C_X500S] = {
++		.type = HDA_FIXUP_VERBS,
++		.v.verbs = (const struct hda_verb[]) {
++			{ 0x14, AC_VERB_SET_EAPD_BTLENABLE, 0 },
++			{}
++		},
++	},
+ };
  
- 	return error;
- out_fmt:
+ static const struct snd_pci_quirk alc662_fixup_tbl[] = {
+@@ -11409,6 +11417,7 @@ static const struct hda_model_fixup alc662_fixup_models[] = {
+ 	{.id = ALC662_FIXUP_USI_HEADSET_MODE, .name = "usi-headset"},
+ 	{.id = ALC662_FIXUP_LENOVO_MULTI_CODECS, .name = "dual-codecs"},
+ 	{.id = ALC669_FIXUP_ACER_ASPIRE_ETHOS, .name = "aspire-ethos"},
++	{.id = ALC897_FIXUP_UNIS_H3C_X500S, .name = "unis-h3c-x500s"},
+ 	{}
+ };
+ 
 -- 
 2.40.1
 
