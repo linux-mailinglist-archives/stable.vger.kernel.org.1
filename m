@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 24F6B7872AA
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 883A0787334
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241896AbjHXOzp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:55:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48854 "EHLO
+        id S239365AbjHXPBc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:01:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241921AbjHXOz3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52DE019A9
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:27 -0700 (PDT)
+        with ESMTP id S241959AbjHXPBC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0266719AA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5DA162248
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06325C433C8;
-        Thu, 24 Aug 2023 14:55:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AA35612D6
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:00:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98676C433C7;
+        Thu, 24 Aug 2023 15:00:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888926;
-        bh=LBkaizgmm2RtNipaDqLm+mQ5VnhF3NnL/vmqwX9QbAw=;
+        s=korg; t=1692889259;
+        bh=lEOippMPUoFntfxkEhs6xg6hvJ9BTe8GI2YCVmyArzk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N1O4daiaQnJCl3bPmDBXgCajsRUnvJ/zVkrSDDqK9DhYjis+Uy1mJpc1DEclDymtd
-         u8Y/x6k60KT2nQzEIVW4wMuMv1WNKvmYPinOmeWtsWHgB8XJ/seo0/EtdDrlTteS+0
-         1hk16UgCSaNOTkLIosuF3V7OegZnvRXEM9OvdoeE=
+        b=fUVEnbhiN6vH/2ddrrFNVpnAc5TdBfdRxko/tVIIA5sgQgEAvoCX+n1wbht7FADsO
+         Sz/IhyQ3DREI2+umvy/4WBqL7ggeVPJ89QAjDPC8OIg30sJKn2c4gmi5NAHLvaGqZA
+         DiPifGnmMli+eJZsMVF5msH3cWr8bk1883luxvCQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sishuai Gong <sishuai.system@gmail.com>,
-        Simon Horman <horms@kernel.org>, Julian Anastasov <ja@ssi.bg>,
-        Florian Westphal <fw@strlen.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 092/139] ipvs: fix racy memcpy in proc_do_sync_threshold
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Yi Yang <yiyang13@huawei.com>,
+        Qiumiao Zhang <zhangqiumiao1@huawei.com>
+Subject: [PATCH 5.10 072/135] tty: n_gsm: fix the UAF caused by race condition in gsm_cleanup_mux
 Date:   Thu, 24 Aug 2023 16:50:15 +0200
-Message-ID: <20230824145027.605352585@linuxfoundation.org>
+Message-ID: <20230824145029.970025566@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,69 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sishuai Gong <sishuai.system@gmail.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 5310760af1d4fbea1452bfc77db5f9a680f7ae47 ]
+commit 3c4f8333b582487a2d1e02171f1465531cde53e3 upstream.
 
-When two threads run proc_do_sync_threshold() in parallel,
-data races could happen between the two memcpy():
+In commit 9b9c8195f3f0 ("tty: n_gsm: fix UAF in gsm_cleanup_mux"), the UAF
+problem is not completely fixed. There is a race condition in
+gsm_cleanup_mux(), which caused this UAF.
 
-Thread-1			Thread-2
-memcpy(val, valp, sizeof(val));
-				memcpy(valp, val, sizeof(val));
+The UAF problem is triggered by the following race:
+task[5046]                     task[5054]
+-----------------------        -----------------------
+gsm_cleanup_mux();
+dlci = gsm->dlci[0];
+mutex_lock(&gsm->mutex);
+                               gsm_cleanup_mux();
+			       dlci = gsm->dlci[0]; //Didn't take the lock
+gsm_dlci_release(gsm->dlci[i]);
+gsm->dlci[i] = NULL;
+mutex_unlock(&gsm->mutex);
+                               mutex_lock(&gsm->mutex);
+			       dlci->dead = true; //UAF
 
-This race might mess up the (struct ctl_table *) table->data,
-so we add a mutex lock to serialize them.
+Fix it by assigning values after mutex_lock().
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/netdev/B6988E90-0A1E-4B85-BF26-2DAF6D482433@gmail.com/
-Signed-off-by: Sishuai Gong <sishuai.system@gmail.com>
-Acked-by: Simon Horman <horms@kernel.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://syzkaller.appspot.com/text?tag=CrashReport&x=176188b5a80000
+Cc: stable <stable@kernel.org>
+Fixes: 9b9c8195f3f0 ("tty: n_gsm: fix UAF in gsm_cleanup_mux")
+Fixes: aa371e96f05d ("tty: n_gsm: fix restart handling via CLD command")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Co-developed-by: Qiumiao Zhang <zhangqiumiao1@huawei.com>
+Signed-off-by: Qiumiao Zhang <zhangqiumiao1@huawei.com>
+Link: https://lore.kernel.org/r/20230811031121.153237-1-yiyang13@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/tty/n_gsm.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/netfilter/ipvs/ip_vs_ctl.c b/net/netfilter/ipvs/ip_vs_ctl.c
-index 29ec3ef63edc7..d0b64c36471d5 100644
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1802,6 +1802,7 @@ static int
- proc_do_sync_threshold(struct ctl_table *table, int write,
- 		       void *buffer, size_t *lenp, loff_t *ppos)
+--- a/drivers/tty/n_gsm.c
++++ b/drivers/tty/n_gsm.c
+@@ -2159,12 +2159,13 @@ static void gsm_error(struct gsm_mux *gs
+ static void gsm_cleanup_mux(struct gsm_mux *gsm, bool disc)
  {
-+	struct netns_ipvs *ipvs = table->extra2;
- 	int *valp = table->data;
- 	int val[2];
- 	int rc;
-@@ -1811,6 +1812,7 @@ proc_do_sync_threshold(struct ctl_table *table, int write,
- 		.mode = table->mode,
- 	};
+ 	int i;
+-	struct gsm_dlci *dlci = gsm->dlci[0];
++	struct gsm_dlci *dlci;
+ 	struct gsm_msg *txq, *ntxq;
  
-+	mutex_lock(&ipvs->sync_mutex);
- 	memcpy(val, valp, sizeof(val));
- 	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
- 	if (write) {
-@@ -1820,6 +1822,7 @@ proc_do_sync_threshold(struct ctl_table *table, int write,
- 		else
- 			memcpy(valp, val, sizeof(val));
- 	}
-+	mutex_unlock(&ipvs->sync_mutex);
- 	return rc;
- }
+ 	gsm->dead = true;
+ 	mutex_lock(&gsm->mutex);
  
-@@ -4077,6 +4080,7 @@ static int __net_init ip_vs_control_net_init_sysctl(struct netns_ipvs *ipvs)
- 	ipvs->sysctl_sync_threshold[0] = DEFAULT_SYNC_THRESHOLD;
- 	ipvs->sysctl_sync_threshold[1] = DEFAULT_SYNC_PERIOD;
- 	tbl[idx].data = &ipvs->sysctl_sync_threshold;
-+	tbl[idx].extra2 = ipvs;
- 	tbl[idx++].maxlen = sizeof(ipvs->sysctl_sync_threshold);
- 	ipvs->sysctl_sync_refresh_period = DEFAULT_SYNC_REFRESH_PERIOD;
- 	tbl[idx++].data = &ipvs->sysctl_sync_refresh_period;
--- 
-2.40.1
-
++	dlci = gsm->dlci[0];
+ 	if (dlci) {
+ 		if (disc && dlci->state != DLCI_CLOSED) {
+ 			gsm_dlci_begin_close(dlci);
 
 
