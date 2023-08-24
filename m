@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97DF27872FE
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3BCBB787255
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241933AbjHXO70 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:59:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60582 "EHLO
+        id S234632AbjHXOxA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:53:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241934AbjHXO65 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:57 -0400
+        with ESMTP id S241821AbjHXOw3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:52:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3FE91BCC
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17571A1
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:52:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8454467074
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 992BBC433C7;
-        Thu, 24 Aug 2023 14:58:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A845366E9D
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:52:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B985CC433B6;
+        Thu, 24 Aug 2023 14:52:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889134;
-        bh=Vr/HCksX5FKvYUbAxFKaiONck05JeAhOfl8ggRl91KU=;
+        s=korg; t=1692888747;
+        bh=YAT9fqsiZKzI3ubIev0JTNq9tK2aOlpv+dBB585EpPY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=goiz/TdL1a67yy95MRDFIQf3jb+TDdlH0843Ur8JqxeN4Kdp3C2uyDbXW2Qs1bQXi
-         ueUUt4DQ1pV2YRcYaQepPZvy96t3AKwFf/Ln5YYcNflLaSwpxjTKib3juCvcdM/1u/
-         cwT8407o1DjHpkDFfdtLUOSPCbnQgV/MJ75a/4Vk=
+        b=vlaw9KWmLZd+nC2s9mxQjvw7BM/+OfMXIpcazvzleAM5aet1rAS3HZTVgepVMEjZB
+         IiauPTjsoy4Su9+U1A7AJnZVireDpVZxjUxSlD+6qQ4uylEe1n6Nws2GCXcF4ZIViG
+         5iyBxgXUTgcg1SWl2xBCLBEJEPdn7TFsfdX674sw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Moshe Shemesh <moshe@nvidia.com>,
-        Aya Levin <ayal@nvidia.com>,
-        Saeed Mahameed <saeedm@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Ganesh G R <ganeshgr@linux.ibm.com>
-Subject: [PATCH 5.10 006/135] net/mlx5: Skip clock update work when device is in error state
-Date:   Thu, 24 Aug 2023 16:49:09 +0200
-Message-ID: <20230824145027.288720794@linuxfoundation.org>
+        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 027/139] pcmcia: rsrc_nonstatic: Fix memory leak in nonstatic_release_resource_db()
+Date:   Thu, 24 Aug 2023 16:49:10 +0200
+Message-ID: <20230824145024.762135126@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -56,46 +53,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Moshe Shemesh <moshe@nvidia.com>
+From: Armin Wolf <W_Armin@gmx.de>
 
-[ Upstream commit d006207625657322ba8251b6e7e829f9659755dc ]
+[ Upstream commit c85fd9422fe0f5d667305efb27f56d09eab120b0 ]
 
-When device is in error state, marked by the flag
-MLX5_DEVICE_STATE_INTERNAL_ERROR, the HW and PCI may not be accessible
-and so clock update work should be skipped. Furthermore, such access
-through PCI in error state, after calling mlx5_pci_disable_device() can
-result in failing to recover from pci errors.
+When nonstatic_release_resource_db() frees all resources associated
+with an PCMCIA socket, it forgets to free socket_data too, causing
+a memory leak observable with kmemleak:
 
-Fixes: ef9814deafd0 ("net/mlx5e: Add HW timestamping (TS) support")
-Reported-and-tested-by: Ganesh G R <ganeshgr@linux.ibm.com>
-Closes: https://lore.kernel.org/netdev/9bdb9b9d-140a-7a28-f0de-2e64e873c068@nvidia.com
-Signed-off-by: Moshe Shemesh <moshe@nvidia.com>
-Reviewed-by: Aya Levin <ayal@nvidia.com>
-Signed-off-by: Saeed Mahameed <saeedm@nvidia.com>
+unreferenced object 0xc28d1000 (size 64):
+  comm "systemd-udevd", pid 297, jiffies 4294898478 (age 194.484s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 f0 85 0e c3 00 00 00 00  ................
+    00 00 00 00 0c 10 8d c2 00 00 00 00 00 00 00 00  ................
+  backtrace:
+    [<ffda4245>] __kmem_cache_alloc_node+0x2d7/0x4a0
+    [<7e51f0c8>] kmalloc_trace+0x31/0xa4
+    [<d52b4ca0>] nonstatic_init+0x24/0x1a4 [pcmcia_rsrc]
+    [<a2f13e08>] pcmcia_register_socket+0x200/0x35c [pcmcia_core]
+    [<a728be1b>] yenta_probe+0x4d8/0xa70 [yenta_socket]
+    [<c48fac39>] pci_device_probe+0x99/0x194
+    [<84b7c690>] really_probe+0x181/0x45c
+    [<8060fe6e>] __driver_probe_device+0x75/0x1f4
+    [<b9b76f43>] driver_probe_device+0x28/0xac
+    [<648b766f>] __driver_attach+0xeb/0x1e4
+    [<6e9659eb>] bus_for_each_dev+0x61/0xb4
+    [<25a669f3>] driver_attach+0x1e/0x28
+    [<d8671d6b>] bus_add_driver+0x102/0x20c
+    [<df0d323c>] driver_register+0x5b/0x120
+    [<942cd8a4>] __pci_register_driver+0x44/0x4c
+    [<e536027e>] __UNIQUE_ID___addressable_cleanup_module188+0x1c/0xfffff000 [iTCO_vendor_support]
+
+Fix this by freeing socket_data too.
+
+Tested on a Acer Travelmate 4002WLMi by manually binding/unbinding
+the yenta_cardbus driver (yenta_socket).
+
+Signed-off-by: Armin Wolf <W_Armin@gmx.de>
+Message-ID: <20230512184529.5094-1-W_Armin@gmx.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/pcmcia/rsrc_nonstatic.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-index 01b8a9648b16f..80dee8c692495 100644
---- a/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-+++ b/drivers/net/ethernet/mellanox/mlx5/core/lib/clock.c
-@@ -162,10 +162,15 @@ static void mlx5_timestamp_overflow(struct work_struct *work)
- 	clock = container_of(timer, struct mlx5_clock, timer);
- 	mdev = container_of(clock, struct mlx5_core_dev, clock);
- 
-+	if (mdev->state == MLX5_DEVICE_STATE_INTERNAL_ERROR)
-+		goto out;
+diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
+index 1cac528707111..e6c90c0bb7646 100644
+--- a/drivers/pcmcia/rsrc_nonstatic.c
++++ b/drivers/pcmcia/rsrc_nonstatic.c
+@@ -1053,6 +1053,8 @@ static void nonstatic_release_resource_db(struct pcmcia_socket *s)
+ 		q = p->next;
+ 		kfree(p);
+ 	}
 +
- 	write_seqlock_irqsave(&clock->lock, flags);
- 	timecounter_read(&timer->tc);
- 	mlx5_update_clock_info_page(mdev);
- 	write_sequnlock_irqrestore(&clock->lock, flags);
-+
-+out:
- 	schedule_delayed_work(&timer->overflow_work, timer->overflow_period);
++	kfree(data);
  }
+ 
  
 -- 
 2.40.1
