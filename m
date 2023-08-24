@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 654D2787379
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:04:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9C577872DF
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242048AbjHXPDr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:03:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42740 "EHLO
+        id S241918AbjHXO5v (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242086AbjHXPDY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:24 -0400
+        with ESMTP id S241986AbjHXO5j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D65C21BD1
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:03:09 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEC1FD
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AE4C671AC
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:03:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79391C43391;
-        Thu, 24 Aug 2023 15:03:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 212C267022
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DE4C433C7;
+        Thu, 24 Aug 2023 14:57:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889388;
-        bh=HfA+FoqkoIaPuYwDtWcVV3Ra6n4i8UD45yGp329fl5A=;
+        s=korg; t=1692889056;
+        bh=MbjjBAQP2sseTVUEUuPFpe1E5vPeODbUIKon84/yZdg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OdRSR0wKfTt8VCyG+nPvigEAO8lUx//SVVPNDNwide9lbFrUOSa+qpqMMEBxXRS+D
-         KAedcBIeUgfAPc1FWT1TrSofMdNvpGcchmZ0ZwCAxaCktxjXn4EFzrYjYv9pZH/K+C
-         KWGzDmbFvcNYrs3LBWUxDQZGsCial60YJCFxa89M=
+        b=QzYhBW8EMuDrSmFJPHRmwx6fW9e2av+OsTJJLHqRgQqoG0R9pRzcSB9ixVP9jXiWR
+         m2+HpoOQ+TmMgfnY3sWZ0z4ngD9czUqEGHB46YRrScSQ1VzNiqrmK7AoMi1PQ9pMTm
+         ptCewMO+Bn+umSxyX49ZW5pasYjh7NN9kkRwuhLM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Jason Xing <kernelxing@tencent.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.10 117/135] net: fix the RTO timer retransmitting skb every 1ms if linear option is enabled
+        patches@lists.linux.dev, Petr Pavlu <petr.pavlu@suse.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 137/139] x86/retpoline,kprobes: Fix position of thunk sections with CONFIG_LTO_CLANG
 Date:   Thu, 24 Aug 2023 16:51:00 +0200
-Message-ID: <20230824145032.038613345@linuxfoundation.org>
+Message-ID: <20230824145029.369493245@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,51 +55,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Jason Xing <kernelxing@tencent.com>
+From: Petr Pavlu <petr.pavlu@suse.com>
 
-commit e4dd0d3a2f64b8bd8029ec70f52bdbebd0644408 upstream.
+commit 79cd2a11224eab86d6673fe8a11d2046ae9d2757 upstream.
 
-In the real workload, I encountered an issue which could cause the RTO
-timer to retransmit the skb per 1ms with linear option enabled. The amount
-of lost-retransmitted skbs can go up to 1000+ instantly.
+The linker script arch/x86/kernel/vmlinux.lds.S matches the thunk
+sections ".text.__x86.*" from arch/x86/lib/retpoline.S as follows:
 
-The root cause is that if the icsk_rto happens to be zero in the 6th round
-(which is the TCP_THIN_LINEAR_RETRIES value), then it will always be zero
-due to the changed calculation method in tcp_retransmit_timer() as follows:
+  .text {
+    [...]
+    TEXT_TEXT
+    [...]
+    __indirect_thunk_start = .;
+    *(.text.__x86.*)
+    __indirect_thunk_end = .;
+    [...]
+  }
 
-icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
+Macro TEXT_TEXT references TEXT_MAIN which normally expands to only
+".text". However, with CONFIG_LTO_CLANG, TEXT_MAIN becomes
+".text .text.[0-9a-zA-Z_]*" which wrongly matches also the thunk
+sections. The output layout is then different than expected. For
+instance, the currently defined range [__indirect_thunk_start,
+__indirect_thunk_end] becomes empty.
 
-Above line could be converted to
-icsk->icsk_rto = min(0 << 1, TCP_RTO_MAX) = 0
+Prevent the problem by using ".." as the first separator, for example,
+".text..__x86.indirect_thunk". This pattern is utilized by other
+explicit section names which start with one of the standard prefixes,
+such as ".text" or ".data", and that need to be individually selected in
+the linker script.
 
-Therefore, the timer expires so quickly without any doubt.
+  [ nathan: Fix conflicts with SRSO and fold in fix issue brought up by
+    Andrew Cooper in post-review:
+    https://lore.kernel.org/20230803230323.1478869-1-andrew.cooper3@citrix.com ]
 
-I read through the RFC 6298 and found that the RTO value can be rounded
-up to a certain value, in Linux, say TCP_RTO_MIN as default, which is
-regarded as the lower bound in this patch as suggested by Eric.
-
-Fixes: 36e31b0af587 ("net: TCP thin linear timeouts")
-Suggested-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: Jason Xing <kernelxing@tencent.com>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: dc5723b02e52 ("kbuild: add support for Clang LTO")
+Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230711091952.27944-2-petr.pavlu@suse.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/tcp_timer.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/vmlinux.lds.S |    8 ++++----
+ arch/x86/lib/retpoline.S      |    8 ++++----
+ tools/objtool/check.c         |    2 +-
+ 3 files changed, 9 insertions(+), 9 deletions(-)
 
---- a/net/ipv4/tcp_timer.c
-+++ b/net/ipv4/tcp_timer.c
-@@ -582,7 +582,9 @@ out_reset_timer:
- 	    tcp_stream_is_thin(tp) &&
- 	    icsk->icsk_retransmits <= TCP_THIN_LINEAR_RETRIES) {
- 		icsk->icsk_backoff = 0;
--		icsk->icsk_rto = min(__tcp_set_rto(tp), TCP_RTO_MAX);
-+		icsk->icsk_rto = clamp(__tcp_set_rto(tp),
-+				       tcp_rto_min(sk),
-+				       TCP_RTO_MAX);
- 	} else {
- 		/* Use normal (exponential) backoff */
- 		icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -134,7 +134,7 @@ SECTIONS
+ 		KPROBES_TEXT
+ 		ALIGN_ENTRY_TEXT_BEGIN
+ #ifdef CONFIG_CPU_SRSO
+-		*(.text.__x86.rethunk_untrain)
++		*(.text..__x86.rethunk_untrain)
+ #endif
+ 
+ 		ENTRY_TEXT
+@@ -145,7 +145,7 @@ SECTIONS
+ 		 * definition.
+ 		 */
+ 		. = srso_alias_untrain_ret | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
+-		*(.text.__x86.rethunk_safe)
++		*(.text..__x86.rethunk_safe)
+ #endif
+ 		ALIGN_ENTRY_TEXT_END
+ 		SOFTIRQENTRY_TEXT
+@@ -155,8 +155,8 @@ SECTIONS
+ 
+ #ifdef CONFIG_RETPOLINE
+ 		__indirect_thunk_start = .;
+-		*(.text.__x86.indirect_thunk)
+-		*(.text.__x86.return_thunk)
++		*(.text..__x86.indirect_thunk)
++		*(.text..__x86.return_thunk)
+ 		__indirect_thunk_end = .;
+ #endif
+ 	} :text =0xcccc
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -11,7 +11,7 @@
+ #include <asm/frame.h>
+ #include <asm/nops.h>
+ 
+-	.section .text.__x86.indirect_thunk
++	.section .text..__x86.indirect_thunk
+ 
+ .macro RETPOLINE reg
+ 	ANNOTATE_INTRA_FUNCTION_CALL
+@@ -90,7 +90,7 @@ SYM_CODE_END(__x86_indirect_thunk_array)
+  * As a result, srso_alias_safe_ret() becomes a safe return.
+  */
+ #ifdef CONFIG_CPU_SRSO
+-	.section .text.__x86.rethunk_untrain
++	.section .text..__x86.rethunk_untrain
+ 
+ SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+ 	UNWIND_HINT_FUNC
+@@ -100,7 +100,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
+ SYM_FUNC_END(srso_alias_untrain_ret)
+ __EXPORT_THUNK(srso_alias_untrain_ret)
+ 
+-	.section .text.__x86.rethunk_safe
++	.section .text..__x86.rethunk_safe
+ #else
+ /* dummy definition for alternatives */
+ SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
+@@ -118,7 +118,7 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLO
+ 	int3
+ SYM_FUNC_END(srso_alias_safe_ret)
+ 
+-	.section .text.__x86.return_thunk
++	.section .text..__x86.return_thunk
+ 
+ SYM_CODE_START(srso_alias_return_thunk)
+ 	UNWIND_HINT_FUNC
+--- a/tools/objtool/check.c
++++ b/tools/objtool/check.c
+@@ -370,7 +370,7 @@ static int decode_instructions(struct ob
+ 
+ 		if (!strcmp(sec->name, ".noinstr.text") ||
+ 		    !strcmp(sec->name, ".entry.text") ||
+-		    !strncmp(sec->name, ".text.__x86.", 12))
++		    !strncmp(sec->name, ".text..__x86.", 13))
+ 			sec->noinstr = true;
+ 
+ 		for (offset = 0; offset < sec->sh.sh_size; offset += insn->len) {
 
 
