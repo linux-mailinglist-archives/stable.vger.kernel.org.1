@@ -2,373 +2,221 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F220A78714C
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:16:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8861B787155
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:17:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239161AbjHXOQQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:16:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43996 "EHLO
+        id S234781AbjHXORT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:17:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241553AbjHXOPw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:15:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D17F1BC7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:15:49 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1E21B6098A
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:15:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 274D3C433C7;
-        Thu, 24 Aug 2023 14:15:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692886548;
-        bh=f/nkjqWFlDMb7z4CtrzrouTAh1jXXktTg1QiqSJoPPQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bjl74ynTZmCM2iETYbXsg+WpV5xZM6Na2IksOFl1heS/sZPYFOMaMcq+hsnEZY2eg
-         JXJMxpWRQ87pAE0VB5U9PzkIEmey16oICh8ZzH52mXvYuKFkiLW/w5Jio8l5w/w/Ck
-         5s6c6aia0WF3xl99aWjCBr/A2Q7dZuzyR1kOHGjM=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        with ESMTP id S241576AbjHXORR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:17:17 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7376ACD0
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:17:14 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2bbbda48904so86508351fa.2
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:17:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692886632; x=1693491432;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+zWfxaz/cUCJkVxVyJpUo46ErD//bqro0X/XXZXc60Y=;
+        b=a7Fs4XyjZn2tM7QSfDVQGRGiG5EwXNBH8ikeC3+N39F4IKCsFa+/m+BRTNFBqmwv8R
+         0brQgPt3RJlioyR+SPj5Qz6/xEl+jYYjkJWSnX2t3PsUGbtrsuGPV8OAbQKgfL1kk3N7
+         od6E4LZJgDPk5aePsB/+QxhUbtn8+D+fkWTkLD+hO7ToQI/IyfnE5NPi+HU99EYccN71
+         xdlff1AmnkvXL+H174uBhf1qJT68aQ9AWAc0a8nhHbfRpmZiO1jnNNdOT0Ukb++dIeDW
+         HHKX3uUSwJwb+ldZUoxl/tBgdX3gUAGF9ohevZL1ksc741B30wTNqU4+5ZiUmxKQjt6N
+         dW9g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692886632; x=1693491432;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=+zWfxaz/cUCJkVxVyJpUo46ErD//bqro0X/XXZXc60Y=;
+        b=a1xZypf5q5I1R+85HR0p/92v8f/F2AMxrCy6ziBDg6cjsysti3VkorsPfHswucMVQ4
+         CS6wkiIeNY2P2yP/dBtOJj0SO/+N2oRpOhmhNU7oSIYy2fDIQvOomcjQkDNYwh+jne0Z
+         ERFU9buaiXdw9fUcLsTf1U0VxsCohCdoGj6jCpVOpKFzieXCE5xJyoA570X5ZDhXJ9au
+         uvgcpSc8x2Rs+C6+a7XsoQJTcux9p1KeKTpgyNJkorThstmcnqzoFxkyUnEpJDQEwK8j
+         9EbizLCvy5U2v2SyGkHbEEaTkbUkkAlKE3gkPj4MmzJfz/AcSWoQd9czNolZxlU6DgMu
+         rupQ==
+X-Gm-Message-State: AOJu0YwYbxf0Rtw/oAC0tMIQ9TuZSEDIgum53nSiDRpa0VonxkuQEMye
+        3ov6+s9VI+KER8o1PBGHh7cfPOAysPs=
+X-Google-Smtp-Source: AGHT+IE6KBGxJyMKVS6XmR42ScgMJKGYYB6gHzJRZbtiHrbUnEdYcP0y79OxDLAno8fdbnXZbwGt1w==
+X-Received: by 2002:a2e:b1c4:0:b0:2b9:3883:a765 with SMTP id e4-20020a2eb1c4000000b002b93883a765mr11953116lja.31.1692886632075;
+        Thu, 24 Aug 2023 07:17:12 -0700 (PDT)
+Received: from fedora.. (cable-178-148-234-71.dynamic.sbb.rs. [178.148.234.71])
+        by smtp.gmail.com with ESMTPSA id dv11-20020a170906b80b00b00997d7aa59fasm11177990ejb.14.2023.08.24.07.17.11
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Aug 2023 07:17:11 -0700 (PDT)
+From:   Aleksa Savic <savicaleksa83@gmail.com>
 To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 04/15] x86/cpu: Clean up SRSO return thunk mess
+Cc:     Aleksa Savic <savicaleksa83@gmail.com>
+Subject: [PATCH v6.1] hwmon: (aquacomputer_d5next) Add selective 200ms delay after sending ctrl report
 Date:   Thu, 24 Aug 2023 16:15:00 +0200
-Message-ID: <20230824141447.392496309@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824141447.155846739@linuxfoundation.org>
-References: <20230824141447.155846739@linuxfoundation.org>
-User-Agent: quilt/0.67
+Message-ID: <20230824141500.1813549-1-savicaleksa83@gmail.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <2023081222-chummy-aqueduct-85c2@gregkh>
+References: <2023081222-chummy-aqueduct-85c2@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+commit 56b930dcd88c2adc261410501c402c790980bdb5 upstream.
 
-commit d43490d0ab824023e11d0b57d0aeec17a6e0ca13 upstream.
+Add a 200ms delay after sending a ctrl report to Quadro,
+Octo, D5 Next and Aquaero to give them enough time to
+process the request and save the data to memory. Otherwise,
+under heavier userspace loads where multiple sysfs entries
+are usually set in quick succession, a new ctrl report could
+be requested from the device while it's still processing the
+previous one and fail with -EPIPE. The delay is only applied
+if two ctrl report operations are near each other in time.
 
-Use the existing configurable return thunk. There is absolute no
-justification for having created this __x86_return_thunk alternative.
+Reported by a user on Github [1] and tested by both of us.
 
-To clarify, the whole thing looks like:
+[1] https://github.com/aleksamagicka/aquacomputer_d5next-hwmon/issues/82
 
-Zen3/4 does:
-
-  srso_alias_untrain_ret:
-	  nop2
-	  lfence
-	  jmp srso_alias_return_thunk
-	  int3
-
-  srso_alias_safe_ret: // aliasses srso_alias_untrain_ret just so
-	  add $8, %rsp
-	  ret
-	  int3
-
-  srso_alias_return_thunk:
-	  call srso_alias_safe_ret
-	  ud2
-
-While Zen1/2 does:
-
-  srso_untrain_ret:
-	  movabs $foo, %rax
-	  lfence
-	  call srso_safe_ret           (jmp srso_return_thunk ?)
-	  int3
-
-  srso_safe_ret: // embedded in movabs instruction
-	  add $8,%rsp
-          ret
-          int3
-
-  srso_return_thunk:
-	  call srso_safe_ret
-	  ud2
-
-While retbleed does:
-
-  zen_untrain_ret:
-	  test $0xcc, %bl
-	  lfence
-	  jmp zen_return_thunk
-          int3
-
-  zen_return_thunk: // embedded in the test instruction
-	  ret
-          int3
-
-Where Zen1/2 flush the BTB entry using the instruction decoder trick
-(test,movabs) Zen3/4 use BTB aliasing. SRSO adds a return sequence
-(srso_safe_ret()) which forces the function return instruction to
-speculate into a trap (UD2).  This RET will then mispredict and
-execution will continue at the return site read from the top of the
-stack.
-
-Pick one of three options at boot (evey function can only ever return
-once).
-
-  [ bp: Fixup commit message uarch details and add them in a comment in
-    the code too. Add a comment about the srso_select_mitigation()
-    dependency on retbleed_select_mitigation(). Add moar ifdeffery for
-    32-bit builds. Add a dummy srso_untrain_ret_alias() definition for
-    32-bit alternatives needing the symbol. ]
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.842775684@infradead.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 752b927951ea ("hwmon: (aquacomputer_d5next) Add support for Aquacomputer Octo")
+Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
 ---
- arch/x86/include/asm/nospec-branch.h |    5 +++
- arch/x86/kernel/cpu/bugs.c           |   17 ++++++++--
- arch/x86/kernel/vmlinux.lds.S        |    4 +-
- arch/x86/lib/retpoline.S             |   58 +++++++++++++++++++++++++----------
- tools/objtool/arch/x86/decode.c      |    2 -
- 5 files changed, 64 insertions(+), 22 deletions(-)
+This is a backport of the upstream commit to v6.1. No functional
+changes, except that Aquaero support first appeared in
+v6.3, so that part of the original is not included here.
+---
+ drivers/hwmon/aquacomputer_d5next.c | 36 ++++++++++++++++++++++++++++-
+ 1 file changed, 35 insertions(+), 1 deletion(-)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -216,9 +216,14 @@ extern void __x86_return_thunk(void);
- static inline void __x86_return_thunk(void) {}
- #endif
+diff --git a/drivers/hwmon/aquacomputer_d5next.c b/drivers/hwmon/aquacomputer_d5next.c
+index c51a2678f0eb..8c7796d3fdd2 100644
+--- a/drivers/hwmon/aquacomputer_d5next.c
++++ b/drivers/hwmon/aquacomputer_d5next.c
+@@ -12,9 +12,11 @@
  
-+extern void zen_return_thunk(void);
-+extern void srso_return_thunk(void);
-+extern void srso_alias_return_thunk(void);
+ #include <linux/crc16.h>
+ #include <linux/debugfs.h>
++#include <linux/delay.h>
+ #include <linux/hid.h>
+ #include <linux/hwmon.h>
+ #include <linux/jiffies.h>
++#include <linux/ktime.h>
+ #include <linux/module.h>
+ #include <linux/mutex.h>
+ #include <linux/seq_file.h>
+@@ -49,6 +51,8 @@ static const char *const aqc_device_names[] = {
+ 
+ #define CTRL_REPORT_ID			0x03
+ 
++#define CTRL_REPORT_DELAY		200	/* ms */
 +
- extern void zen_untrain_ret(void);
- extern void srso_untrain_ret(void);
- extern void srso_untrain_ret_alias(void);
-+
- extern void entry_ibpb(void);
- 
- #ifdef CONFIG_RETPOLINE
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -166,8 +166,13 @@ void __init cpu_select_mitigations(void)
- 	md_clear_select_mitigation();
- 	srbds_select_mitigation();
- 	l1d_flush_select_mitigation();
--	gds_select_mitigation();
-+
-+	/*
-+	 * srso_select_mitigation() depends and must run after
-+	 * retbleed_select_mitigation().
-+	 */
- 	srso_select_mitigation();
-+	gds_select_mitigation();
- }
- 
- /*
-@@ -1015,6 +1020,9 @@ do_cmd_auto:
- 		setup_force_cpu_cap(X86_FEATURE_RETHUNK);
- 		setup_force_cpu_cap(X86_FEATURE_UNRET);
- 
-+		if (IS_ENABLED(CONFIG_RETHUNK))
-+			x86_return_thunk = zen_return_thunk;
-+
- 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
- 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
- 			pr_err(RETBLEED_UNTRAIN_MSG);
-@@ -2422,10 +2430,13 @@ static void __init srso_select_mitigatio
- 			 */
- 			setup_force_cpu_cap(X86_FEATURE_RETHUNK);
- 
--			if (boot_cpu_data.x86 == 0x19)
-+			if (boot_cpu_data.x86 == 0x19) {
- 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
--			else
-+				x86_return_thunk = srso_alias_return_thunk;
-+			} else {
- 				setup_force_cpu_cap(X86_FEATURE_SRSO);
-+				x86_return_thunk = srso_return_thunk;
-+			}
- 			srso_mitigation = SRSO_MITIGATION_SAFE_RET;
- 		} else {
- 			pr_err("WARNING: kernel not compiled with CPU_SRSO.\n");
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -507,8 +507,8 @@ INIT_PER_CPU(irq_stack_backing_store);
-            "fixed_percpu_data is not at start of per-cpu area");
- #endif
- 
-- #ifdef CONFIG_RETHUNK
--. = ASSERT((__ret & 0x3f) == 0, "__ret not cacheline-aligned");
-+#ifdef CONFIG_RETHUNK
-+. = ASSERT((zen_return_thunk & 0x3f) == 0, "zen_return_thunk not cacheline-aligned");
- . = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
- #endif
- 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -94,22 +94,27 @@ SYM_CODE_END(__x86_indirect_thunk_array)
- 	.section .text.__x86.rethunk_untrain
- 
- SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
-+	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
- 	ASM_NOP2
- 	lfence
--	jmp __x86_return_thunk
-+	jmp srso_alias_return_thunk
- SYM_FUNC_END(srso_untrain_ret_alias)
- __EXPORT_THUNK(srso_untrain_ret_alias)
- 
- 	.section .text.__x86.rethunk_safe
-+#else
-+/* dummy definition for alternatives */
-+SYM_START(srso_untrain_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
-+SYM_FUNC_END(srso_untrain_ret_alias)
- #endif
- 
--/* Needs a definition for the __x86_return_thunk alternative below. */
- SYM_START(srso_safe_ret_alias, SYM_L_GLOBAL, SYM_A_NONE)
--#ifdef CONFIG_CPU_SRSO
- 	add $8, %_ASM_SP
- 	UNWIND_HINT_FUNC
--#endif
- 	ANNOTATE_UNRET_SAFE
- 	ret
- 	int3
-@@ -117,9 +122,16 @@ SYM_FUNC_END(srso_safe_ret_alias)
- 
- 	.section .text.__x86.return_thunk
- 
-+SYM_CODE_START(srso_alias_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	call srso_safe_ret_alias
-+	ud2
-+SYM_CODE_END(srso_alias_return_thunk)
-+
- /*
-  * Safety details here pertain to the AMD Zen{1,2} microarchitecture:
-- * 1) The RET at __x86_return_thunk must be on a 64 byte boundary, for
-+ * 1) The RET at zen_return_thunk must be on a 64 byte boundary, for
-  *    alignment within the BTB.
-  * 2) The instruction at zen_untrain_ret must contain, and not
-  *    end with, the 0xc3 byte of the RET.
-@@ -127,7 +139,7 @@ SYM_FUNC_END(srso_safe_ret_alias)
-  *    from re-poisioning the BTB prediction.
+ /* The HID report that the official software always sends
+  * after writing values, currently same for all devices
   */
- 	.align 64
--	.skip 64 - (__ret - zen_untrain_ret), 0xcc
-+	.skip 64 - (zen_return_thunk - zen_untrain_ret), 0xcc
- SYM_START(zen_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	ANNOTATE_NOENDBR
- 	/*
-@@ -135,16 +147,16 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL,
- 	 *
- 	 *   TEST $0xcc, %bl
- 	 *   LFENCE
--	 *   JMP __x86_return_thunk
-+	 *   JMP zen_return_thunk
- 	 *
- 	 * Executing the TEST instruction has a side effect of evicting any BTB
- 	 * prediction (potentially attacker controlled) attached to the RET, as
--	 * __x86_return_thunk + 1 isn't an instruction boundary at the moment.
-+	 * zen_return_thunk + 1 isn't an instruction boundary at the moment.
- 	 */
- 	.byte	0xf6
+@@ -269,6 +273,9 @@ struct aqc_data {
+ 	enum kinds kind;
+ 	const char *name;
  
- 	/*
--	 * As executed from __x86_return_thunk, this is a plain RET.
-+	 * As executed from zen_return_thunk, this is a plain RET.
- 	 *
- 	 * As part of the TEST above, RET is the ModRM byte, and INT3 the imm8.
- 	 *
-@@ -156,13 +168,13 @@ SYM_START(zen_untrain_ret, SYM_L_GLOBAL,
- 	 * With SMT enabled and STIBP active, a sibling thread cannot poison
- 	 * RET's prediction to a type of its choice, but can evict the
- 	 * prediction due to competitive sharing. If the prediction is
--	 * evicted, __x86_return_thunk will suffer Straight Line Speculation
-+	 * evicted, zen_return_thunk will suffer Straight Line Speculation
- 	 * which will be contained safely by the INT3.
- 	 */
--SYM_INNER_LABEL(__ret, SYM_L_GLOBAL)
-+SYM_INNER_LABEL(zen_return_thunk, SYM_L_GLOBAL)
- 	ret
- 	int3
--SYM_CODE_END(__ret)
-+SYM_CODE_END(zen_return_thunk)
- 
- 	/*
- 	 * Ensure the TEST decoding / BTB invalidation is complete.
-@@ -173,7 +185,7 @@ SYM_CODE_END(__ret)
- 	 * Jump back and execute the RET in the middle of the TEST instruction.
- 	 * INT3 is for SLS protection.
- 	 */
--	jmp __ret
-+	jmp zen_return_thunk
- 	int3
- SYM_FUNC_END(zen_untrain_ret)
- __EXPORT_THUNK(zen_untrain_ret)
-@@ -194,12 +206,19 @@ SYM_START(srso_untrain_ret, SYM_L_GLOBAL
- 	ANNOTATE_NOENDBR
- 	.byte 0x48, 0xb8
- 
-+/*
-+ * This forces the function return instruction to speculate into a trap
-+ * (UD2 in srso_return_thunk() below).  This RET will then mispredict
-+ * and execution will continue at the return site read from the top of
-+ * the stack.
-+ */
- SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
- 	add $8, %_ASM_SP
- 	ret
- 	int3
- 	int3
- 	int3
-+	/* end of movabs */
- 	lfence
- 	call srso_safe_ret
- 	ud2
-@@ -207,12 +226,19 @@ SYM_CODE_END(srso_safe_ret)
- SYM_FUNC_END(srso_untrain_ret)
- __EXPORT_THUNK(srso_untrain_ret)
- 
--SYM_CODE_START(__x86_return_thunk)
-+SYM_CODE_START(srso_return_thunk)
- 	UNWIND_HINT_FUNC
- 	ANNOTATE_NOENDBR
--	ALTERNATIVE_2 "jmp __ret", "call srso_safe_ret", X86_FEATURE_SRSO, \
--			"call srso_safe_ret_alias", X86_FEATURE_SRSO_ALIAS
-+	call srso_safe_ret
- 	ud2
-+SYM_CODE_END(srso_return_thunk)
++	ktime_t last_ctrl_report_op;
++	int ctrl_report_delay;	/* Delay between two ctrl report operations, in ms */
 +
-+SYM_CODE_START(__x86_return_thunk)
-+	UNWIND_HINT_FUNC
-+	ANNOTATE_NOENDBR
-+	ANNOTATE_UNRET_SAFE
-+	ret
-+	int3
- SYM_CODE_END(__x86_return_thunk)
- EXPORT_SYMBOL(__x86_return_thunk)
- 
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -799,5 +799,5 @@ bool arch_is_rethunk(struct symbol *sym)
- 	return !strcmp(sym->name, "__x86_return_thunk") ||
- 	       !strcmp(sym->name, "srso_untrain_ret") ||
- 	       !strcmp(sym->name, "srso_safe_ret") ||
--	       !strcmp(sym->name, "__ret");
-+	       !strcmp(sym->name, "zen_return_thunk");
+ 	int buffer_size;
+ 	u8 *buffer;
+ 	int checksum_start;
+@@ -325,17 +332,35 @@ static int aqc_pwm_to_percent(long val)
+ 	return DIV_ROUND_CLOSEST(val * 100 * 100, 255);
  }
-
+ 
++static void aqc_delay_ctrl_report(struct aqc_data *priv)
++{
++	/*
++	 * If previous read or write is too close to this one, delay the current operation
++	 * to give the device enough time to process the previous one.
++	 */
++	if (priv->ctrl_report_delay) {
++		s64 delta = ktime_ms_delta(ktime_get(), priv->last_ctrl_report_op);
++
++		if (delta < priv->ctrl_report_delay)
++			msleep(priv->ctrl_report_delay - delta);
++	}
++}
++
+ /* Expects the mutex to be locked */
+ static int aqc_get_ctrl_data(struct aqc_data *priv)
+ {
+ 	int ret;
+ 
++	aqc_delay_ctrl_report(priv);
++
+ 	memset(priv->buffer, 0x00, priv->buffer_size);
+ 	ret = hid_hw_raw_request(priv->hdev, CTRL_REPORT_ID, priv->buffer, priv->buffer_size,
+ 				 HID_FEATURE_REPORT, HID_REQ_GET_REPORT);
+ 	if (ret < 0)
+ 		ret = -ENODATA;
+ 
++	priv->last_ctrl_report_op = ktime_get();
++
+ 	return ret;
+ }
+ 
+@@ -345,6 +370,8 @@ static int aqc_send_ctrl_data(struct aqc_data *priv)
+ 	int ret;
+ 	u16 checksum;
+ 
++	aqc_delay_ctrl_report(priv);
++
+ 	/* Init and xorout value for CRC-16/USB is 0xffff */
+ 	checksum = crc16(0xffff, priv->buffer + priv->checksum_start, priv->checksum_length);
+ 	checksum ^= 0xffff;
+@@ -356,12 +383,16 @@ static int aqc_send_ctrl_data(struct aqc_data *priv)
+ 	ret = hid_hw_raw_request(priv->hdev, CTRL_REPORT_ID, priv->buffer, priv->buffer_size,
+ 				 HID_FEATURE_REPORT, HID_REQ_SET_REPORT);
+ 	if (ret < 0)
+-		return ret;
++		goto record_access_and_ret;
+ 
+ 	/* The official software sends this report after every change, so do it here as well */
+ 	ret = hid_hw_raw_request(priv->hdev, SECONDARY_CTRL_REPORT_ID, secondary_ctrl_report,
+ 				 SECONDARY_CTRL_REPORT_SIZE, HID_FEATURE_REPORT,
+ 				 HID_REQ_SET_REPORT);
++
++record_access_and_ret:
++	priv->last_ctrl_report_op = ktime_get();
++
+ 	return ret;
+ }
+ 
+@@ -853,6 +884,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		priv->virtual_temp_sensor_start_offset = D5NEXT_VIRTUAL_SENSORS_START;
+ 		priv->power_cycle_count_offset = D5NEXT_POWER_CYCLES;
+ 		priv->buffer_size = D5NEXT_CTRL_REPORT_SIZE;
++		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
+ 
+ 		priv->temp_label = label_d5next_temp;
+ 		priv->virtual_temp_label = label_virtual_temp_sensors;
+@@ -893,6 +925,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		priv->virtual_temp_sensor_start_offset = OCTO_VIRTUAL_SENSORS_START;
+ 		priv->power_cycle_count_offset = OCTO_POWER_CYCLES;
+ 		priv->buffer_size = OCTO_CTRL_REPORT_SIZE;
++		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
+ 
+ 		priv->temp_label = label_temp_sensors;
+ 		priv->virtual_temp_label = label_virtual_temp_sensors;
+@@ -913,6 +946,7 @@ static int aqc_probe(struct hid_device *hdev, const struct hid_device_id *id)
+ 		priv->virtual_temp_sensor_start_offset = QUADRO_VIRTUAL_SENSORS_START;
+ 		priv->power_cycle_count_offset = QUADRO_POWER_CYCLES;
+ 		priv->buffer_size = QUADRO_CTRL_REPORT_SIZE;
++		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
+ 		priv->flow_sensor_offset = QUADRO_FLOW_SENSOR_OFFSET;
+ 
+ 		priv->temp_label = label_temp_sensors;
+-- 
+2.41.0
 
