@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7B98C787263
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:54:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F41D67872F4
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237043AbjHXOxc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50030 "EHLO
+        id S241909AbjHXO64 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:58:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60386 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241586AbjHXOxC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:53:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 133A710D7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:53:01 -0700 (PDT)
+        with ESMTP id S241975AbjHXO6f (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:35 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F344819B3
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F30F66EB2
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:53:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B54B5C433CC;
-        Thu, 24 Aug 2023 14:52:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A5E46706C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9EF9BC433C7;
+        Thu, 24 Aug 2023 14:58:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888780;
-        bh=fgdLDtvzoKvEDHXTifVWTZq8tUrzSmN4jtEK5Hxiclo=;
+        s=korg; t=1692889112;
+        bh=epjrtYMvYk8h30KQJTvpH6xgp+jyDlQchrT+bkG+uG0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kK2HQbSMEbFpqkZacxBooOeAP+dym4lUVdN5k4BT3VoKSUjMwFgtRzOkaCz9Sbayz
-         wwqJzUr5PSg8Im/MzqOJcUbRq1UpVi9Mr7ETtavplYfZnCpWe1v3hziDtToqZvkTJK
-         3bAI+vDQa5mmSZAZ9IgOZvUeiZy5E9mrUDHqtcJ0=
+        b=cio6OTjfLY3Cojv7X6bF8jcMk1P4AV/l1EVK49AZSyN5ImUZU8SZZxHl4+IuoEpLI
+         4L45yKYKS6LbUtvnioYHUojF6mmxDkaVUnCwrOqh2YR4PtzuOU95BoJP2LcC6jRDyT
+         +db+N48uPzIePcLOnLVyu7bvRhDkxdPMjHcens/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Benjamin Gray <bgray@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 038/139] powerpc/kasan: Disable KCOV in KASAN code
-Date:   Thu, 24 Aug 2023 16:49:21 +0200
-Message-ID: <20230824145025.269569680@linuxfoundation.org>
+        Marco Morandini <marco.morandini@polimi.it>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 019/135] HID: add quirk for 03f0:464a HP Elite Presenter Mouse
+Date:   Thu, 24 Aug 2023 16:49:22 +0200
+Message-ID: <20230824145027.773233656@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,38 +54,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Benjamin Gray <bgray@linux.ibm.com>
+From: Marco Morandini <marco.morandini@polimi.it>
 
-[ Upstream commit ccb381e1af1ace292153c88eb1fffa5683d16a20 ]
+[ Upstream commit 0db117359e47750d8bd310d19f13e1c4ef7fc26a ]
 
-As per the generic KASAN code in mm/kasan, disable KCOV with
-KCOV_INSTRUMENT := n in the makefile.
+HP Elite Presenter Mouse HID Record Descriptor shows
+two mouses (Repord ID 0x1 and 0x2), one keypad (Report ID 0x5),
+two Consumer Controls (Report IDs 0x6 and 0x3).
+Previous to this commit it registers one mouse, one keypad
+and one Consumer Control, and it was usable only as a
+digitl laser pointer (one of the two mouses). This patch defines
+the 464a USB device ID and enables the HID_QUIRK_MULTI_INPUT
+quirk for it, allowing to use the device both as a mouse
+and a digital laser pointer.
 
-This fixes a ppc64 boot hang when KCOV and KASAN are enabled.
-kasan_early_init() gets called before a PACA is initialised, but the
-KCOV hook expects a valid PACA.
-
-Suggested-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Benjamin Gray <bgray@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230710044143.146840-1-bgray@linux.ibm.com
+Signed-off-by: Marco Morandini <marco.morandini@polimi.it>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/mm/kasan/Makefile | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/arch/powerpc/mm/kasan/Makefile b/arch/powerpc/mm/kasan/Makefile
-index bb1a5408b86b2..8636b17c6a20f 100644
---- a/arch/powerpc/mm/kasan/Makefile
-+++ b/arch/powerpc/mm/kasan/Makefile
-@@ -1,6 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index 2b658d820b800..6712d99ad80da 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -582,6 +582,7 @@
+ #define USB_DEVICE_ID_UGCI_FIGHTING	0x0030
  
- KASAN_SANITIZE := n
-+KCOV_INSTRUMENT := n
- 
- obj-$(CONFIG_PPC32)           += kasan_init_32.o
- obj-$(CONFIG_PPC_8xx)		+= 8xx.o
+ #define USB_VENDOR_ID_HP		0x03f0
++#define USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A		0x464a
+ #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A	0x0a4a
+ #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A	0x0b4a
+ #define USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE		0x134a
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 9f1fcbea19eb7..4229e5de06745 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -96,6 +96,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A096), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A293), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A), HID_QUIRK_ALWAYS_POLL },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE_094A), HID_QUIRK_ALWAYS_POLL },
 -- 
 2.40.1
 
