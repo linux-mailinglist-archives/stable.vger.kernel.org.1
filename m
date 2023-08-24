@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68F4C78733E
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9F9CD7872A8
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241994AbjHXPBe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:01:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59046 "EHLO
+        id S241904AbjHXOzq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:55:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33832 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242010AbjHXPBM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:12 -0400
+        with ESMTP id S241942AbjHXOze (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6647DCC
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EABF61995
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0461D6259A
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 188B8C433C8;
-        Thu, 24 Aug 2023 15:01:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74F11630D4
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B5FC433C8;
+        Thu, 24 Aug 2023 14:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889267;
-        bh=93XXl43oqmPDKCqO9t+ynt/50OEmT8Pf9OKUa/WNdeI=;
+        s=korg; t=1692888931;
+        bh=gutcnvLFxv1/k56o5J4sRtWOEzzigEjTuXbHdWcFPlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=piy4fryKnr5ETAtsZOn4F1NtkGvvGGM7/N1XIdostVeJyGVhjdxrhWozGBaYf7nTm
-         zdPWM9fiFVBLn9JInST+bzbaE4NYhHNLDRBHLfuPVmxg5RcEe9FJwuvPjBbY7vmb/1
-         HiE8wUBK4RdkZYtt49PeFZDO86ryvp3a4Od0pVoA=
+        b=P+ibOuFIuHasAdJiXiq8xIrMAZR1205z+VulLpkuCdnx0zyl02XRaR+Zzd6h7EVK3
+         iabJMUUZ+kMKNVIdJBtWzha7aOYtZvd5lRPB0Ekm9AZ80rl/6hp7Ps7GkcZ0g7qoLW
+         vjib4F5T2YGNdzjPEI5sUWsV7Q4dJu9XSwYbHQik=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, xiaoshoukui <xiaoshoukui@ruijie.com.cn>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 074/135] btrfs: fix BUG_ON condition in btrfs_cancel_balance
+        patches@lists.linux.dev, Justin Chen <justin.chen@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 094/139] net: phy: broadcom: stub c45 read/write for 54810
 Date:   Thu, 24 Aug 2023 16:50:17 +0200
-Message-ID: <20230824145030.063721043@linuxfoundation.org>
+Message-ID: <20230824145027.681331045@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -53,64 +55,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: xiaoshoukui <xiaoshoukui@gmail.com>
+From: Justin Chen <justin.chen@broadcom.com>
 
-commit 29eefa6d0d07e185f7bfe9576f91e6dba98189c2 upstream.
+[ Upstream commit 096516d092d54604d590827d05b1022c8f326639 ]
 
-Pausing and canceling balance can race to interrupt balance lead to BUG_ON
-panic in btrfs_cancel_balance. The BUG_ON condition in btrfs_cancel_balance
-does not take this race scenario into account.
+The 54810 does not support c45. The mmd_phy_indirect accesses return
+arbirtary values leading to odd behavior like saying it supports EEE
+when it doesn't. We also see that reading/writing these non-existent
+MMD registers leads to phy instability in some cases.
 
-However, the race condition has no other side effects. We can fix that.
-
-Reproducing it with panic trace like this:
-
-  kernel BUG at fs/btrfs/volumes.c:4618!
-  RIP: 0010:btrfs_cancel_balance+0x5cf/0x6a0
-  Call Trace:
-   <TASK>
-   ? do_nanosleep+0x60/0x120
-   ? hrtimer_nanosleep+0xb7/0x1a0
-   ? sched_core_clone_cookie+0x70/0x70
-   btrfs_ioctl_balance_ctl+0x55/0x70
-   btrfs_ioctl+0xa46/0xd20
-   __x64_sys_ioctl+0x7d/0xa0
-   do_syscall_64+0x38/0x80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  Race scenario as follows:
-  > mutex_unlock(&fs_info->balance_mutex);
-  > --------------------
-  > .......issue pause and cancel req in another thread
-  > --------------------
-  > ret = __btrfs_balance(fs_info);
-  >
-  > mutex_lock(&fs_info->balance_mutex);
-  > if (ret == -ECANCELED && atomic_read(&fs_info->balance_pause_req)) {
-  >         btrfs_info(fs_info, "balance: paused");
-  >         btrfs_exclop_balance(fs_info, BTRFS_EXCLOP_BALANCE_PAUSED);
-  > }
-
-CC: stable@vger.kernel.org # 4.19+
-Signed-off-by: xiaoshoukui <xiaoshoukui@ruijie.com.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: b14995ac2527 ("net: phy: broadcom: Add BCM54810 PHY entry")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/1691901708-28650-1-git-send-email-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/btrfs/volumes.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/phy/broadcom.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -4460,8 +4460,7 @@ int btrfs_cancel_balance(struct btrfs_fs
- 		}
- 	}
+diff --git a/drivers/net/phy/broadcom.c b/drivers/net/phy/broadcom.c
+index b330efb98209b..f3b39af83a272 100644
+--- a/drivers/net/phy/broadcom.c
++++ b/drivers/net/phy/broadcom.c
+@@ -412,6 +412,17 @@ static int bcm54xx_resume(struct phy_device *phydev)
+ 	return bcm54xx_config_init(phydev);
+ }
  
--	BUG_ON(fs_info->balance_ctl ||
--		test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
-+	ASSERT(!test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
- 	atomic_dec(&fs_info->balance_cancel_req);
- 	mutex_unlock(&fs_info->balance_mutex);
- 	return 0;
++static int bcm54810_read_mmd(struct phy_device *phydev, int devnum, u16 regnum)
++{
++	return -EOPNOTSUPP;
++}
++
++static int bcm54810_write_mmd(struct phy_device *phydev, int devnum, u16 regnum,
++			      u16 val)
++{
++	return -EOPNOTSUPP;
++}
++
+ static int bcm54811_config_init(struct phy_device *phydev)
+ {
+ 	int err, reg;
+@@ -832,6 +843,8 @@ static struct phy_driver broadcom_drivers[] = {
+ 	.get_strings	= bcm_phy_get_strings,
+ 	.get_stats	= bcm54xx_get_stats,
+ 	.probe		= bcm54xx_phy_probe,
++	.read_mmd	= bcm54810_read_mmd,
++	.write_mmd	= bcm54810_write_mmd,
+ 	.config_init    = bcm54xx_config_init,
+ 	.config_aneg    = bcm5481_config_aneg,
+ 	.config_intr    = bcm_phy_config_intr,
+-- 
+2.40.1
+
 
 
