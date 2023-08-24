@@ -2,50 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D0200786FF4
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 856B6786FF9
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:14:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237999AbjHXNKa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 09:10:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41584 "EHLO
+        id S231631AbjHXNNq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 09:13:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236755AbjHXNKS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:10:18 -0400
-Received: from mail.astralinux.ru (mail.astralinux.ru [217.74.38.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC121987;
-        Thu, 24 Aug 2023 06:10:16 -0700 (PDT)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id 641B71866664;
-        Thu, 24 Aug 2023 16:10:12 +0300 (MSK)
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10032)
-        with ESMTP id fThewjPZHioT; Thu, 24 Aug 2023 16:10:12 +0300 (MSK)
-Received: from localhost (localhost.localdomain [127.0.0.1])
-        by mail.astralinux.ru (Postfix) with ESMTP id 17BC31867F66;
-        Thu, 24 Aug 2023 16:10:12 +0300 (MSK)
-X-Virus-Scanned: amavisd-new at astralinux.ru
-Received: from mail.astralinux.ru ([127.0.0.1])
-        by localhost (rbta-msk-vsrv-mail01.astralinux.ru [127.0.0.1]) (amavisd-new, port 10026)
-        with ESMTP id uK8xMjecZl51; Thu, 24 Aug 2023 16:10:12 +0300 (MSK)
-Received: from rbta-msk-lt-302690.astralinux.ru (unknown [10.177.233.235])
-        by mail.astralinux.ru (Postfix) with ESMTPSA id D2124186765A;
-        Thu, 24 Aug 2023 16:10:10 +0300 (MSK)
-From:   Alexandra Diupina <adiupina@astralinux.ru>
-To:     Joerg Roedel <joro@8bytes.org>, stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     Alexandra Diupina <adiupina@astralinux.ru>,
+        with ESMTP id S240397AbjHXNNl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:13:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DE98198A;
+        Thu, 24 Aug 2023 06:13:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF6026269E;
+        Thu, 24 Aug 2023 13:13:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A422AC433C7;
+        Thu, 24 Aug 2023 13:13:37 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692882818;
+        bh=SfeSvLlzV/QIsfQI6lGrqzROvKL38Kvs5ty/5yOH31A=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZhJLIz8BGyAb2ivMZw6rmCdfIOYmFrT9z8ODxNAAJEQ85enR0GfFmnfIbFsFmArtl
+         FXYOynVSVtLEblhukepFVPKrJuXATUHOsl0w7G192F+Dh01gV5/rU18iIZ1iZF5rBy
+         bA5+n8aGEXbZtIfZb49YeDS5zo5cbYTnS7/mUOWs=
+Date:   Thu, 24 Aug 2023 15:13:35 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Alexandra Diupina <adiupina@astralinux.ru>
+Cc:     Joerg Roedel <joro@8bytes.org>, stable@vger.kernel.org,
         Will Deacon <will@kernel.org>,
         Matthias Brugger <matthias.bgg@gmail.com>,
         iommu@lists.linux-foundation.org,
         linux-arm-kernel@lists.infradead.org,
         linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
-Subject: [PATCH] [PATCH 5.10] iommu/mediatek: remove redundant comparison
-Date:   Thu, 24 Aug 2023 16:09:54 +0300
-Message-Id: <20230824130954.29688-1-adiupina@astralinux.ru>
-X-Mailer: git-send-email 2.30.2
+Subject: Re: [PATCH] [PATCH 5.10] iommu/mediatek: remove redundant comparison
+Message-ID: <2023082458-mongrel-catlike-b73d@gregkh>
+References: <20230824130954.29688-1-adiupina@astralinux.ru>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824130954.29688-1-adiupina@astralinux.ru>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -54,34 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-iommu_device_register always returns 0 in 4.11-5.12, so
-we need to remove redundant comparison with 0
+On Thu, Aug 24, 2023 at 04:09:54PM +0300, Alexandra Diupina wrote:
+> iommu_device_register always returns 0 in 4.11-5.12, so
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+What do you mean by "4.11-5.12"?
 
-Fixes: b16c0170b53c ("iommu/mediatek: Make use of iommu_device_register i=
-nterface")
-Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
----
- drivers/iommu/mtk_iommu.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+> we need to remove redundant comparison with 0
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index 051815c9d2bb..208c47218b75 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -748,9 +748,7 @@ static int mtk_iommu_probe(struct platform_device *pd=
-ev)
- 	iommu_device_set_ops(&data->iommu, &mtk_iommu_ops);
- 	iommu_device_set_fwnode(&data->iommu, &pdev->dev.of_node->fwnode);
-=20
--	ret =3D iommu_device_register(&data->iommu);
--	if (ret)
--		return ret;
-+	iommu_device_register(&data->iommu);
-=20
- 	spin_lock_init(&data->tlb_lock);
- 	list_add_tail(&data->list, &m4ulist);
---=20
-2.30.2
+Why?
 
+> 
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> 
+> Fixes: b16c0170b53c ("iommu/mediatek: Make use of iommu_device_register interface")
+
+How is this a fix if it isn't actually changing the code at all?
+
+> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
+> ---
+>  drivers/iommu/mtk_iommu.c | 4 +---
+>  1 file changed, 1 insertion(+), 3 deletions(-)
+> 
+> diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
+> index 051815c9d2bb..208c47218b75 100644
+> --- a/drivers/iommu/mtk_iommu.c
+> +++ b/drivers/iommu/mtk_iommu.c
+> @@ -748,9 +748,7 @@ static int mtk_iommu_probe(struct platform_device *pdev)
+>  	iommu_device_set_ops(&data->iommu, &mtk_iommu_ops);
+>  	iommu_device_set_fwnode(&data->iommu, &pdev->dev.of_node->fwnode);
+>  
+> -	ret = iommu_device_register(&data->iommu);
+> -	if (ret)
+> -		return ret;
+> +	iommu_device_register(&data->iommu);
+
+This is obviously incorrect, please fix your "tool" that is telling you
+to make such a broken change.
+
+Unless your tool wants to create buggy code?  If so, it's succeeding
+very well.
+
+greg k-h
