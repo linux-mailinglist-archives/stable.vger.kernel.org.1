@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 675AC78736F
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:04:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 65F807872DA
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238177AbjHXPDm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:03:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48298 "EHLO
+        id S234135AbjHXO5t (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:57:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242030AbjHXPDO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3F51BC8
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:50 -0700 (PDT)
+        with ESMTP id S241913AbjHXO5U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42F7010D7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 26174671A0
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38299C433C7;
-        Thu, 24 Aug 2023 15:02:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF9216701D
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E037FC433C8;
+        Thu, 24 Aug 2023 14:57:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889369;
-        bh=zvtGsW7no0jve1Stu8qPZxmnBg/CC2W21zUH0yyTemg=;
+        s=korg; t=1692889037;
+        bh=9V7HxHQ5f7puiShOZXlSMDJSj2GcsiJsz6cBuSvbxew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zF9DijszARqsvNnzjq2w3Bbu4JzT7LFhuIdtL+ra88wiiI6XrQ4KgLKzl0SnZq8v4
-         ZC0vjyo0jv+s8Kyod2dAmJpLVsYCSzDtBYZhqkYgT4gtqvVqlR9n+W0CBa+/W7nZrA
-         taX9HfW7YIJBdurlacX7i5HMVmwDNb/G7etkvIr4=
+        b=09yArJ0H8Hyrhqn2V8E9MVZzkMl3qj7ETczZIFL8F2y+p48nX5NRoZsn3Q5C+ES2u
+         UKApWiEP6BGPgyzKlVCdec/r3oPIYMW6G2nJOFIIaNYEE91GkRFUIB1NyuBs0qByg/
+         rj/xZfGPLZ2LD/p2g4gy1h29zuYl09LqfxcYTJjE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Russell Harmon <russ@har.mn>,
-        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
-        David Howells <dhowells@redhat.com>,
-        Steve French <stfrench@microsoft.com>
-Subject: [PATCH 5.10 111/135] cifs: Release folio lock on fscache read hit.
+        patches@lists.linux.dev,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 5.15 131/139] x86/cpu: Cleanup the untrain mess
 Date:   Thu, 24 Aug 2023 16:50:54 +0200
-Message-ID: <20230824145031.761250733@linuxfoundation.org>
+Message-ID: <20230824145029.131866237@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,65 +54,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Russell Harmon via samba-technical <samba-technical@lists.samba.org>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 69513dd669e243928f7450893190915a88f84a2b upstream.
+commit e7c25c441e9e0fa75b4c83e0b26306b702cfe90d upstream.
 
-Under the current code, when cifs_readpage_worker is called, the call
-contract is that the callee should unlock the page. This is documented
-in the read_folio section of Documentation/filesystems/vfs.rst as:
+Since there can only be one active return_thunk, there only needs be
+one (matching) untrain_ret. It fundamentally doesn't make sense to
+allow multiple untrain_ret at the same time.
 
-> The filesystem should unlock the folio once the read has completed,
-> whether it was successful or not.
+Fold all the 3 different untrain methods into a single (temporary)
+helper stub.
 
-Without this change, when fscache is in use and cache hit occurs during
-a read, the page lock is leaked, producing the following stack on
-subsequent reads (via mmap) to the page:
-
-$ cat /proc/3890/task/12864/stack
-[<0>] folio_wait_bit_common+0x124/0x350
-[<0>] filemap_read_folio+0xad/0xf0
-[<0>] filemap_fault+0x8b1/0xab0
-[<0>] __do_fault+0x39/0x150
-[<0>] do_fault+0x25c/0x3e0
-[<0>] __handle_mm_fault+0x6ca/0xc70
-[<0>] handle_mm_fault+0xe9/0x350
-[<0>] do_user_addr_fault+0x225/0x6c0
-[<0>] exc_page_fault+0x84/0x1b0
-[<0>] asm_exc_page_fault+0x27/0x30
-
-This requires a reboot to resolve; it is a deadlock.
-
-Note however that the call to cifs_readpage_from_fscache does mark the
-page clean, but does not free the folio lock. This happens in
-__cifs_readpage_from_fscache on success. Releasing the lock at that
-point however is not appropriate as cifs_readahead also calls
-cifs_readpage_from_fscache and *does* unconditionally release the lock
-after its return. This change therefore effectively makes
-cifs_readpage_worker work like cifs_readahead.
-
-Signed-off-by: Russell Harmon <russ@har.mn>
-Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
-Reviewed-by: David Howells <dhowells@redhat.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Link: https://lore.kernel.org/r/20230814121149.042774962@infradead.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/cifs/file.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/x86/include/asm/nospec-branch.h |   12 ++++--------
+ arch/x86/kernel/cpu/bugs.c           |    1 +
+ arch/x86/lib/retpoline.S             |    7 +++++++
+ 3 files changed, 12 insertions(+), 8 deletions(-)
 
---- a/fs/cifs/file.c
-+++ b/fs/cifs/file.c
-@@ -4580,9 +4580,9 @@ static int cifs_readpage_worker(struct f
+--- a/arch/x86/include/asm/nospec-branch.h
++++ b/arch/x86/include/asm/nospec-branch.h
+@@ -156,9 +156,9 @@
+ .endm
  
- io_error:
- 	kunmap(page);
--	unlock_page(page);
+ #ifdef CONFIG_CPU_UNRET_ENTRY
+-#define CALL_ZEN_UNTRAIN_RET	"call retbleed_untrain_ret"
++#define CALL_UNTRAIN_RET	"call entry_untrain_ret"
+ #else
+-#define CALL_ZEN_UNTRAIN_RET	""
++#define CALL_UNTRAIN_RET	""
+ #endif
  
- read_complete:
-+	unlock_page(page);
- 	return rc;
- }
+ /*
+@@ -177,14 +177,9 @@
+ 	defined(CONFIG_CPU_SRSO)
+ 	ANNOTATE_UNRET_END
+ 	ALTERNATIVE_2 "",						\
+-	              CALL_ZEN_UNTRAIN_RET, X86_FEATURE_UNRET,		\
++		      CALL_UNTRAIN_RET, X86_FEATURE_UNRET,		\
+ 		      "call entry_ibpb", X86_FEATURE_ENTRY_IBPB
+ #endif
+-
+-#ifdef CONFIG_CPU_SRSO
+-	ALTERNATIVE_2 "", "call srso_untrain_ret", X86_FEATURE_SRSO, \
+-			  "call srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
+-#endif
+ .endm
  
+ #else /* __ASSEMBLY__ */
+@@ -209,6 +204,7 @@ extern void retbleed_untrain_ret(void);
+ extern void srso_untrain_ret(void);
+ extern void srso_alias_untrain_ret(void);
+ 
++extern void entry_untrain_ret(void);
+ extern void entry_ibpb(void);
+ 
+ #ifdef CONFIG_RETPOLINE
+--- a/arch/x86/kernel/cpu/bugs.c
++++ b/arch/x86/kernel/cpu/bugs.c
+@@ -2429,6 +2429,7 @@ static void __init srso_select_mitigatio
+ 			 * like ftrace, static_call, etc.
+ 			 */
+ 			setup_force_cpu_cap(X86_FEATURE_RETHUNK);
++			setup_force_cpu_cap(X86_FEATURE_UNRET);
+ 
+ 			if (boot_cpu_data.x86 == 0x19) {
+ 				setup_force_cpu_cap(X86_FEATURE_SRSO_ALIAS);
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -230,6 +230,13 @@ SYM_CODE_START(srso_return_thunk)
+ 	ud2
+ SYM_CODE_END(srso_return_thunk)
+ 
++SYM_FUNC_START(entry_untrain_ret)
++	ALTERNATIVE_2 "jmp retbleed_untrain_ret", \
++		      "jmp srso_untrain_ret", X86_FEATURE_SRSO, \
++		      "jmp srso_alias_untrain_ret", X86_FEATURE_SRSO_ALIAS
++SYM_FUNC_END(entry_untrain_ret)
++__EXPORT_THUNK(entry_untrain_ret)
++
+ SYM_CODE_START(__x86_return_thunk)
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_NOENDBR
 
 
