@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0F657876BB
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 163B77876BC
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242556AbjHXRTH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 13:19:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36020 "EHLO
+        id S242549AbjHXRTG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 13:19:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242863AbjHXRS6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:18:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6222E50
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:18:55 -0700 (PDT)
+        with ESMTP id S242868AbjHXRTA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:19:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 854181BC5
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:18:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6AB526750B
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:18:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B1A9C433C8;
-        Thu, 24 Aug 2023 17:18:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 235846750E
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:18:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35B02C433C8;
+        Thu, 24 Aug 2023 17:18:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897534;
-        bh=uxzaPKdAypYU2TiA64o10bJy43fivCqpSFD6Cc4ExV0=;
+        s=korg; t=1692897537;
+        bh=Vg1HpZFdF9kS7h+dgZY265u6RH3wYZzcEWah0kpZ69s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pM2FQXQe7A3t7pVfeNYlaOmISviMjjrct0HVGzmJsuerEIvsACul08qVfE9DzVmcL
-         PgkUHZr/vXFNk5zk5MDdnjvGX1Nhs6b/xP4vLjM3DtgNtQ+HLv0tUUHJgQBy+4UWqS
-         8LUzdeV9J2mCk6gFEgohBYEQxvqQ4yfFWKXaxY/s=
+        b=mC4kWbN6oLOqDIRfgcWJ6M19Tloe8snhPYKxN0mue1OWIgEbI35OTF88I/mYzI4tm
+         GLKGe8brx9lCHyaOmbC1c8uHE8TwAEE9TrErtL4f49fvrh6innirRihBUqJbizxV5I
+         vTxXZ9lYjBESYiZorSuEpzI4su/xJo58Meu+AO1I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, xiaoshoukui <xiaoshoukui@ruijie.com.cn>,
-        David Sterba <dsterba@suse.com>
-Subject: [PATCH 5.10 074/135] btrfs: fix BUG_ON condition in btrfs_cancel_balance
-Date:   Thu, 24 Aug 2023 19:09:06 +0200
-Message-ID: <20230824170620.428719506@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Tam Nguyen <tamnguyenchi@os.amperecomputing.com>,
+        Jarkko Nikula <jarkko.nikula@linux.intel.com>,
+        Andi Shyti <andi.shyti@kernel.org>,
+        Wolfram Sang <wsa@kernel.org>
+Subject: [PATCH 5.10 075/135] i2c: designware: Handle invalid SMBus block data response length value
+Date:   Thu, 24 Aug 2023 19:09:07 +0200
+Message-ID: <20230824170620.479920965@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -45,9 +48,10 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,64 +62,57 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: xiaoshoukui <xiaoshoukui@gmail.com>
+From: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
 
-commit 29eefa6d0d07e185f7bfe9576f91e6dba98189c2 upstream.
+commit 69f035c480d76f12bf061148ccfd578e1099e5fc upstream.
 
-Pausing and canceling balance can race to interrupt balance lead to BUG_ON
-panic in btrfs_cancel_balance. The BUG_ON condition in btrfs_cancel_balance
-does not take this race scenario into account.
+In the I2C_FUNC_SMBUS_BLOCK_DATA case, the invalid length byte value
+(outside of 1-32) of the SMBus block data response from the Slave device
+is not correctly handled by the I2C Designware driver.
 
-However, the race condition has no other side effects. We can fix that.
+In case IC_EMPTYFIFO_HOLD_MASTER_EN==1, which cannot be detected
+from the registers, the Master can be disabled only if the STOP bit
+is set. Without STOP bit set, the Master remains active, holding the bus
+until receiving a block data response length. This hangs the bus and
+is unrecoverable.
 
-Reproducing it with panic trace like this:
+Avoid this by issuing another dump read to reach the stop condition when
+an invalid length byte is received.
 
-  kernel BUG at fs/btrfs/volumes.c:4618!
-  RIP: 0010:btrfs_cancel_balance+0x5cf/0x6a0
-  Call Trace:
-   <TASK>
-   ? do_nanosleep+0x60/0x120
-   ? hrtimer_nanosleep+0xb7/0x1a0
-   ? sched_core_clone_cookie+0x70/0x70
-   btrfs_ioctl_balance_ctl+0x55/0x70
-   btrfs_ioctl+0xa46/0xd20
-   __x64_sys_ioctl+0x7d/0xa0
-   do_syscall_64+0x38/0x80
-   entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-  Race scenario as follows:
-  > mutex_unlock(&fs_info->balance_mutex);
-  > --------------------
-  > .......issue pause and cancel req in another thread
-  > --------------------
-  > ret = __btrfs_balance(fs_info);
-  >
-  > mutex_lock(&fs_info->balance_mutex);
-  > if (ret == -ECANCELED && atomic_read(&fs_info->balance_pause_req)) {
-  >         btrfs_info(fs_info, "balance: paused");
-  >         btrfs_exclop_balance(fs_info, BTRFS_EXCLOP_BALANCE_PAUSED);
-  > }
-
-CC: stable@vger.kernel.org # 4.19+
-Signed-off-by: xiaoshoukui <xiaoshoukui@ruijie.com.cn>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Tam Nguyen <tamnguyenchi@os.amperecomputing.com>
+Acked-by: Jarkko Nikula <jarkko.nikula@linux.intel.com>
+Link: https://lore.kernel.org/r/20230726080001.337353-3-tamnguyenchi@os.amperecomputing.com
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
+Signed-off-by: Wolfram Sang <wsa@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/btrfs/volumes.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/i2c/busses/i2c-designware-master.c |   15 +++++++++++++--
+ 1 file changed, 13 insertions(+), 2 deletions(-)
 
---- a/fs/btrfs/volumes.c
-+++ b/fs/btrfs/volumes.c
-@@ -4460,8 +4460,7 @@ int btrfs_cancel_balance(struct btrfs_fs
- 		}
- 	}
+--- a/drivers/i2c/busses/i2c-designware-master.c
++++ b/drivers/i2c/busses/i2c-designware-master.c
+@@ -432,8 +432,19 @@ i2c_dw_read(struct dw_i2c_dev *dev)
  
--	BUG_ON(fs_info->balance_ctl ||
--		test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
-+	ASSERT(!test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
- 	atomic_dec(&fs_info->balance_cancel_req);
- 	mutex_unlock(&fs_info->balance_mutex);
- 	return 0;
+ 			regmap_read(dev->map, DW_IC_DATA_CMD, &tmp);
+ 			/* Ensure length byte is a valid value */
+-			if (flags & I2C_M_RECV_LEN &&
+-			    tmp <= I2C_SMBUS_BLOCK_MAX && tmp > 0) {
++			if (flags & I2C_M_RECV_LEN) {
++				/*
++				 * if IC_EMPTYFIFO_HOLD_MASTER_EN is set, which cannot be
++				 * detected from the registers, the controller can be
++				 * disabled if the STOP bit is set. But it is only set
++				 * after receiving block data response length in
++				 * I2C_FUNC_SMBUS_BLOCK_DATA case. That needs to read
++				 * another byte with STOP bit set when the block data
++				 * response length is invalid to complete the transaction.
++				 */
++				if (!tmp || tmp > I2C_SMBUS_BLOCK_MAX)
++					tmp = 1;
++
+ 				len = i2c_dw_recv_len(dev, tmp);
+ 			}
+ 			*buf++ = tmp;
 
 
