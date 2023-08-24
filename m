@@ -2,51 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A05AD78730F
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55899787279
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:54:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236108AbjHXO74 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:59:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50502 "EHLO
+        id S241859AbjHXOyJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:54:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33292 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241954AbjHXO71 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:59:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B843019AD
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:59:25 -0700 (PDT)
+        with ESMTP id S241948AbjHXOyC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:54:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1C6219AD
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:53:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4CBD9670B3
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:59:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EEB1C43140;
-        Thu, 24 Aug 2023 14:59:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4020366EF0
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:53:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F757C433C8;
+        Thu, 24 Aug 2023 14:53:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889164;
-        bh=be3DZjrf1CBbDrCwhBrpg5pF3wLMkYjSSjSX9BZK2Fg=;
+        s=korg; t=1692888832;
+        bh=TnSQNfJjtZpEtwGHZo4/vFEpZdMFubugz2UFd2biJVs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=L69r5/+WeYZzPqk1kVwtb+JUB/PTILHwhSiqkUKs2qIZHxDx3aZGJQ3vTvlVfYyoJ
-         CaiE2cKvzQvJwRheOnCIsW88QwuuCb2RbFoU0mmPTsMyQPKZ5uLhpAaktKWfwFUoOA
-         gc6eh4H/N2sc7XuYPF38Y0wwyJY1W31VVc52CmHs=
+        b=ALgCv+6HXA8AXAxfq7b0GgEjbyBGQHTdLlWYY/oLmKXIuPbmO5dmhukBXUh4YxevY
+         pgMU1y99FwyPz0llAMmZs6DmlIw8Fo4sLqsvNPs8FVCQNpleAq8+jBmZeIkS3vYocF
+         gScL8ljo0yY+81KNjJImmt/WPC6B2VvRl1+BfzS0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Robert Hodaszi <robert.hodaszi@digi.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 038/135] ALSA: hda: fix a possible null-pointer dereference due to data race in snd_hdac_regmap_sync()
+Subject: [PATCH 5.15 058/139] tty: serial: fsl_lpuart: reduce RX watermark to 0 on LS1028A
 Date:   Thu, 24 Aug 2023 16:49:41 +0200
-Message-ID: <20230824145028.574729153@linuxfoundation.org>
+Message-ID: <20230824145026.144990676@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,59 +54,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tuo Li <islituo@gmail.com>
+From: Robert Hodaszi <robert.hodaszi@digi.com>
 
-[ Upstream commit 1f4a08fed450db87fbb5ff5105354158bdbe1a22 ]
+[ Upstream commit a82c3df955f8c1c726e4976527aa6ae924a67dd9 ]
 
-The variable codec->regmap is often protected by the lock
-codec->regmap_lock when is accessed. However, it is accessed without
-holding the lock when is accessed in snd_hdac_regmap_sync():
+LS1028A is using DMA with LPUART. Having RX watermark set to 1, means
+DMA transactions are started only after receiving the second character.
 
-  if (codec->regmap)
+On other platforms with newer LPUART IP, Receiver Idle Empty function
+initiates the DMA request after the receiver is idling for 4 characters.
+But this feature is missing on LS1028A, which is causing a 1-character
+delay in the RX direction on this platform.
 
-In my opinion, this may be a harmful race, because if codec->regmap is
-set to NULL right after the condition is checked, a null-pointer
-dereference can occur in the called function regcache_sync():
+Set RX watermark to 0 to initiate RX DMA after each character.
 
-  map->lock(map->lock_arg); --> Line 360 in drivers/base/regmap/regcache.c
-
-To fix this possible null-pointer dereference caused by data race, the
-mutex_lock coverage is extended to protect the if statement as well as the
-function call to regcache_sync().
-
-[ Note: the lack of the regmap_lock itself is harmless for the current
-  codec driver implementations, as snd_hdac_regmap_sync() is only for
-  PM runtime resume that is prohibited during the codec probe.
-  But the change makes the whole code more consistent, so it's merged
-  as is -- tiwai ]
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/20230703031016.1184711-1-islituo@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Link: https://lore.kernel.org/linux-serial/20230607103459.1222426-1-robert.hodaszi@digi.com/
+Fixes: 9ad9df844754 ("tty: serial: fsl_lpuart: Fix the wrong RXWATER setting for rx dma case")
+Cc: stable <stable@kernel.org>
+Signed-off-by: Robert Hodaszi <robert.hodaszi@digi.com>
+Message-ID: <20230609121334.1878626-1-robert.hodaszi@digi.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdac_regmap.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/tty/serial/fsl_lpuart.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/sound/hda/hdac_regmap.c b/sound/hda/hdac_regmap.c
-index d75f31eb9d78f..bf35acca5ea0e 100644
---- a/sound/hda/hdac_regmap.c
-+++ b/sound/hda/hdac_regmap.c
-@@ -597,10 +597,9 @@ EXPORT_SYMBOL_GPL(snd_hdac_regmap_update_raw_once);
-  */
- void snd_hdac_regmap_sync(struct hdac_device *codec)
- {
--	if (codec->regmap) {
--		mutex_lock(&codec->regmap_lock);
-+	mutex_lock(&codec->regmap_lock);
-+	if (codec->regmap)
- 		regcache_sync(codec->regmap);
--		mutex_unlock(&codec->regmap_lock);
--	}
-+	mutex_unlock(&codec->regmap_lock);
- }
- EXPORT_SYMBOL_GPL(snd_hdac_regmap_sync);
+diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
+index 380d9237989b2..74b445fb065bd 100644
+--- a/drivers/tty/serial/fsl_lpuart.c
++++ b/drivers/tty/serial/fsl_lpuart.c
+@@ -300,7 +300,7 @@ static const struct lpuart_soc_data ls1021a_data = {
+ static const struct lpuart_soc_data ls1028a_data = {
+ 	.devtype = LS1028A_LPUART,
+ 	.iotype = UPIO_MEM32,
+-	.rx_watermark = 1,
++	.rx_watermark = 0,
+ };
+ 
+ static struct lpuart_soc_data imx7ulp_data = {
 -- 
 2.40.1
 
