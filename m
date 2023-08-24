@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B0917876EC
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B9F57876F1
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:21:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242755AbjHXRVM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S242777AbjHXRVM (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 24 Aug 2023 13:21:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40190 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242861AbjHXRUu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:20:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADAFFE50
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:20:48 -0700 (PDT)
+        with ESMTP id S242867AbjHXRUy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:20:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB24CE50
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:20:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C72B6245D
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:20:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A27AC433C8;
-        Thu, 24 Aug 2023 17:20:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 714796245D
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:20:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78F8BC433C7;
+        Thu, 24 Aug 2023 17:20:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897647;
-        bh=G7HlSQBEaIZSwyVxOKGducYTsn4ZoNn65yk2/F90tj8=;
+        s=korg; t=1692897650;
+        bh=TH7n2NSnp03nYUzYZW0jUY/BBPw1yX6fXvlaPzhKkxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ok4w82K5T0xM5F2y03QddaDufUTJJlNEcgMr10jlXYpAWXrhudjIend7LVR/U6IOd
-         fwL513rxQyZLOewSM6JBfGWJUA+AOV5h6T8kCTCuL/O1/GiXLxZtvEN4CuHgWB6lGA
-         abj4oRfb4H/7yN14vqOFP935SlcRGT9w5/HPzVaU=
+        b=v1P/pjHx3xWhy9pz4RroeQ+aB67XyFoE+EBp6x6725/hwplUgfG8N7CXQXa3BCeWE
+         ox5mNQHUG/zL9gqjZuGRNDFTzFRy4e3cxLvGfNVKMHQqtlcOZKbIOwdK3ORVXxrwd3
+         JlXSrYH0ULagtegujZXYWK6QCNLy1SIFgNr+hA1I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yibin Ding <yibin.ding@unisoc.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 5.10 113/135] mmc: block: Fix in_flight[issue_type] value error
-Date:   Thu, 24 Aug 2023 19:09:45 +0200
-Message-ID: <20230824170622.180372253@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Valerio <pvalerio@redhat.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.10 114/135] netfilter: set default timeout to 3 secs for sctp shutdown send and recv state
+Date:   Thu, 24 Aug 2023 19:09:46 +0200
+Message-ID: <20230824170622.229873054@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -46,10 +47,9 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -60,75 +60,68 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yibin Ding <yibin.ding@unisoc.com>
+From: Xin Long <lucien.xin@gmail.com>
 
-commit 4b430d4ac99750ee2ae2f893f1055c7af1ec3dc5 upstream.
+commit 9bfab6d23a2865966a4f89a96536fbf23f83bc8c upstream.
 
-For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
-function is executed, the bitmap_tags corresponding to the
-request will be cleared, that is, the request will be regarded as
-idle. If the request is acquired by a different type of process at
-this time, the issue_type of the request may change. It further
-caused the value of mq->in_flight[issue_type] to be abnormal,
-and a large number of requests could not be sent.
+In SCTP protocol, it is using the same timer (T2 timer) for SHUTDOWN and
+SHUTDOWN_ACK retransmission. However in sctp conntrack the default timeout
+value for SCTP_CONNTRACK_SHUTDOWN_ACK_SENT state is 3 secs while it's 300
+msecs for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV state.
 
-p1:					      p2:
-mmc_blk_mq_complete_rq
-  blk_mq_free_request
-					      blk_mq_get_request
-					        blk_mq_rq_ctx_init
-mmc_blk_mq_dec_in_flight
-  mmc_issue_type(mq, req)
+As Paolo Valerio noticed, this might cause unwanted expiration of the ct
+entry. In my test, with 1s tc netem delay set on the NAT path, after the
+SHUTDOWN is sent, the sctp ct entry enters SCTP_CONNTRACK_SHUTDOWN_SEND
+state. However, due to 300ms (too short) delay, when the SHUTDOWN_ACK is
+sent back from the peer, the sctp ct entry has expired and been deleted,
+and then the SHUTDOWN_ACK has to be dropped.
 
-This strategy can ensure the consistency of issue_type
-before and after executing mmc_blk_mq_complete_rq.
+Also, it is confusing these two sysctl options always show 0 due to all
+timeout values using sec as unit:
 
-Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230802023023.1318134-1-yunlong.xing@unisoc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_recd = 0
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_sent = 0
+
+This patch fixes it by also using 3 secs for sctp shutdown send and recv
+state in sctp conntrack, which is also RTO.initial value in SCTP protocol.
+
+Note that the very short time value for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV
+was probably used for a rare scenario where SHUTDOWN is sent on 1st path
+but SHUTDOWN_ACK is replied on 2nd path, then a new connection started
+immediately on 1st path. So this patch also moves from SHUTDOWN_SEND/RECV
+to CLOSE when receiving INIT in the ORIGINAL direction.
+
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Reported-by: Paolo Valerio <pvalerio@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |    7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ net/netfilter/nf_conntrack_proto_sctp.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1980,14 +1980,14 @@ static void mmc_blk_mq_poll_completion(s
- 	mmc_blk_urgent_bkops(mq, mqrq);
- }
- 
--static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
-+static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, enum mmc_issue_type issue_type)
- {
- 	unsigned long flags;
- 	bool put_card;
- 
- 	spin_lock_irqsave(&mq->lock, flags);
- 
--	mq->in_flight[mmc_issue_type(mq, req)] -= 1;
-+	mq->in_flight[issue_type] -= 1;
- 
- 	put_card = (mmc_tot_in_flight(mq) == 0);
- 
-@@ -1999,6 +1999,7 @@ static void mmc_blk_mq_dec_in_flight(str
- 
- static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req)
- {
-+	enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
- 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
- 	struct mmc_request *mrq = &mqrq->brq.mrq;
- 	struct mmc_host *host = mq->card->host;
-@@ -2014,7 +2015,7 @@ static void mmc_blk_mq_post_req(struct m
- 	else if (likely(!blk_should_fake_timeout(req->q)))
- 		blk_mq_complete_request(req);
- 
--	mmc_blk_mq_dec_in_flight(mq, req);
-+	mmc_blk_mq_dec_in_flight(mq, issue_type);
- }
- 
- void mmc_blk_mq_recovery(struct mmc_queue *mq)
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -49,8 +49,8 @@ static const unsigned int sctp_timeouts[
+ 	[SCTP_CONNTRACK_COOKIE_WAIT]		= 3 SECS,
+ 	[SCTP_CONNTRACK_COOKIE_ECHOED]		= 3 SECS,
+ 	[SCTP_CONNTRACK_ESTABLISHED]		= 210 SECS,
+-	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 300 SECS / 1000,
+-	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 300 SECS / 1000,
++	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 3 SECS,
++	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 3 SECS,
+ 	[SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]	= 3 SECS,
+ 	[SCTP_CONNTRACK_HEARTBEAT_SENT]		= 30 SECS,
+ };
+@@ -105,7 +105,7 @@ static const u8 sctp_conntracks[2][11][S
+ 	{
+ /*	ORIGINAL	*/
+ /*                  sNO, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS */
+-/* init         */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCW},
++/* init         */ {sCL, sCL, sCW, sCE, sES, sCL, sCL, sSA, sCW},
+ /* init_ack     */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL},
+ /* abort        */ {sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL},
+ /* shutdown     */ {sCL, sCL, sCW, sCE, sSS, sSS, sSR, sSA, sCL},
 
 
