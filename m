@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADE407872AE
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF598787346
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236097AbjHXO4M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:56:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54874 "EHLO
+        id S242009AbjHXPBg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:01:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241899AbjHXOzq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38D61BE2
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:43 -0700 (PDT)
+        with ESMTP id S242031AbjHXPBS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 842C919B3
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71FA566F73
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 812F0C433C7;
-        Thu, 24 Aug 2023 14:55:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 17D1C6259A
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CF71C433C8;
+        Thu, 24 Aug 2023 15:01:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888942;
-        bh=+sFargaihwgm15ffu6uZJ0nrsrDAHpWAZJsDTsQpM6c=;
+        s=korg; t=1692889275;
+        bh=77KpwRPjGxEKOXktWylHOtu0Dh/cvfigpx3S3CFMvkg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zjcTuix3oBPB4S9bkUxw3tMNuBasOLbhopcS0RVXpNoXKes9Plznspj3pF8cLVGTx
-         wwh4XFL5Kog3H6iIRqu8UiKh6wWIycJtPL/aC0E7G838izkQHwgGYtMhzQuGMGqKhK
-         xJ6Ng9IDYRM/f/s5RJHrEsJgpXcxEvAIyUm7x1CE=
+        b=Pfs6X7cIlZ5Cci85FvQz14igJ1mDS81Mwl2ZAvMptCgjreyou2MWSSS/I5cCsW3SN
+         NpoTAbX0CY6F0fApBc9gpBe1WFy16d3iVn5SjHe2z19OZYzj4n0fG568fPNUjXZck9
+         vIhwV0LgsYRL8qXDX0RoCLfuok5KEh0eey3Crbb0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aleksandr Loktionov <aleksandr.loktionov@intel.com>,
-        Andrii Staikov <andrii.staikov@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 097/139] i40e: fix misleading debug logs
+Subject: [PATCH 5.10 077/135] net: af_key: fix sadb_x_filter validation
 Date:   Thu, 24 Aug 2023 16:50:20 +0200
-Message-ID: <20230824145027.796841220@linuxfoundation.org>
+Message-ID: <20230824145030.190019253@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,65 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrii Staikov <andrii.staikov@intel.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 2f2beb8874cb0844e84ad26e990f05f4f13ff63f ]
+[ Upstream commit 75065a8929069bc93181848818e23f147a73f83a ]
 
-Change "write" into the actual "read" word.
-Change parameters description.
+When running xfrm_state_walk_init(), the xfrm_address_filter being used
+is okay to have a splen/dplen that equals to sizeof(xfrm_address_t)<<3.
+This commit replaces >= to > to make sure the boundary checking is
+correct.
 
-Fixes: 7073f46e443e ("i40e: Add AQ commands for NVM Update for X722")
-Signed-off-by: Aleksandr Loktionov <aleksandr.loktionov@intel.com>
-Signed-off-by: Andrii Staikov <andrii.staikov@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Fixes: 37bd22420f85 ("af_key: pfkey_dump needs parameter validation")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/i40e/i40e_nvm.c | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ net/key/af_key.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/i40e/i40e_nvm.c b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-index 82af180cc5ee5..b7556a6c27589 100644
---- a/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-+++ b/drivers/net/ethernet/intel/i40e/i40e_nvm.c
-@@ -210,11 +210,11 @@ static int i40e_read_nvm_word_srctl(struct i40e_hw *hw, u16 offset,
-  * @hw: pointer to the HW structure.
-  * @module_pointer: module pointer location in words from the NVM beginning
-  * @offset: offset in words from module start
-- * @words: number of words to write
-- * @data: buffer with words to write to the Shadow RAM
-+ * @words: number of words to read
-+ * @data: buffer with words to read to the Shadow RAM
-  * @last_command: tells the AdminQ that this is the last command
-  *
-- * Writes a 16 bit words buffer to the Shadow RAM using the admin command.
-+ * Reads a 16 bit words buffer to the Shadow RAM using the admin command.
-  **/
- static int i40e_read_nvm_aq(struct i40e_hw *hw,
- 			    u8 module_pointer, u32 offset,
-@@ -234,18 +234,18 @@ static int i40e_read_nvm_aq(struct i40e_hw *hw,
- 	 */
- 	if ((offset + words) > hw->nvm.sr_size)
- 		i40e_debug(hw, I40E_DEBUG_NVM,
--			   "NVM write error: offset %d beyond Shadow RAM limit %d\n",
-+			   "NVM read error: offset %d beyond Shadow RAM limit %d\n",
- 			   (offset + words), hw->nvm.sr_size);
- 	else if (words > I40E_SR_SECTOR_SIZE_IN_WORDS)
--		/* We can write only up to 4KB (one sector), in one AQ write */
-+		/* We can read only up to 4KB (one sector), in one AQ write */
- 		i40e_debug(hw, I40E_DEBUG_NVM,
--			   "NVM write fail error: tried to write %d words, limit is %d.\n",
-+			   "NVM read fail error: tried to read %d words, limit is %d.\n",
- 			   words, I40E_SR_SECTOR_SIZE_IN_WORDS);
- 	else if (((offset + (words - 1)) / I40E_SR_SECTOR_SIZE_IN_WORDS)
- 		 != (offset / I40E_SR_SECTOR_SIZE_IN_WORDS))
--		/* A single write cannot spread over two sectors */
-+		/* A single read cannot spread over two sectors */
- 		i40e_debug(hw, I40E_DEBUG_NVM,
--			   "NVM write error: cannot spread over two sectors in a single write offset=%d words=%d\n",
-+			   "NVM read error: cannot spread over two sectors in a single read offset=%d words=%d\n",
- 			   offset, words);
- 	else
- 		ret_code = i40e_aq_read_nvm(hw, module_pointer,
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index fff2bd5f03e37..f42854973ba8d 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1852,9 +1852,9 @@ static int pfkey_dump(struct sock *sk, struct sk_buff *skb, const struct sadb_ms
+ 	if (ext_hdrs[SADB_X_EXT_FILTER - 1]) {
+ 		struct sadb_x_filter *xfilter = ext_hdrs[SADB_X_EXT_FILTER - 1];
+ 
+-		if ((xfilter->sadb_x_filter_splen >=
++		if ((xfilter->sadb_x_filter_splen >
+ 			(sizeof(xfrm_address_t) << 3)) ||
+-		    (xfilter->sadb_x_filter_dplen >=
++		    (xfilter->sadb_x_filter_dplen >
+ 			(sizeof(xfrm_address_t) << 3))) {
+ 			mutex_unlock(&pfk->dump_lock);
+ 			return -EINVAL;
 -- 
 2.40.1
 
