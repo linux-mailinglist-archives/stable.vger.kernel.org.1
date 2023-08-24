@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 639637872BF
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25C13787354
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237184AbjHXO4p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:56:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39452 "EHLO
+        id S242027AbjHXPCL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:02:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55238 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241926AbjHXO4W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:22 -0400
+        with ESMTP id S242070AbjHXPB4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:56 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1068D19B2
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09477C7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BE45612C4
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB4BBC433C8;
-        Thu, 24 Aug 2023 14:56:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9CC8D615C7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B0D7EC433C8;
+        Thu, 24 Aug 2023 15:01:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888979;
-        bh=lo5MGI7j44sqCsS4mng3fchd2K9GQH3eSmS1MHIvV5U=;
+        s=korg; t=1692889314;
+        bh=F3RfGIfkvl2dYNNS1Gy/5PiHahAYehlU2nXHwrRRwB0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SAp4NRzbdbYkbxhnPbb4UmERhvd4UDgfb8C9s30gBCWgHRWwftRKPc2N58kJa4rqE
-         88AgKnQbesN95P7x1MF3wWn5brc8O5vhg5iL43R6LeeoMo5Yu3yxXgqgqVF4pEzJXC
-         rEgc1f0j/JMKWxpPzigkuWm2EdcH90P20ZMSDb7E=
+        b=Yvtybwn8Nh3bUJfKOGeKq48dPOkHEGtIfstMYmzZb4hePqhoig0XFu6WEwb9GbPyq
+         Ywoh7UZc0a8eyrCcRVBldeV+lonUP8VpnpgP1AJkdtzCiPh1v9KBE+HkN98PUsDh+f
+         ZEoTHtV282KaL839hFs1tokPtZAY/VBOLovN/o0k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Heiner Kallweit <hkallweit1@gmail.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 082/139] xfrm: fix slab-use-after-free in decode_session6
+Subject: [PATCH 5.10 062/135] mmc: meson-gx: use devm_mmc_alloc_host
 Date:   Thu, 24 Aug 2023 16:50:05 +0200
-Message-ID: <20230824145027.203639748@linuxfoundation.org>
+Message-ID: <20230824145029.568472167@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,119 +54,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Heiner Kallweit <hkallweit1@gmail.com>
 
-[ Upstream commit 53223f2ed1ef5c90dad814daaaefea4e68a933c8 ]
+[ Upstream commit 418f7c2de1334b70fbee790911a1b46503230137 ]
 
-When the xfrm device is set to the qdisc of the sfb type, the cb field
-of the sent skb may be modified during enqueuing. Then,
-slab-use-after-free may occur when the xfrm device sends IPv6 packets.
+Use new function devm_mmc_alloc_host() to simplify the code.
 
-The stack information is as follows:
-BUG: KASAN: slab-use-after-free in decode_session6+0x103f/0x1890
-Read of size 1 at addr ffff8881111458ef by task swapper/3/0
-CPU: 3 PID: 0 Comm: swapper/3 Not tainted 6.4.0-next-20230707 #409
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-1.fc33 04/01/2014
-Call Trace:
-<IRQ>
-dump_stack_lvl+0xd9/0x150
-print_address_description.constprop.0+0x2c/0x3c0
-kasan_report+0x11d/0x130
-decode_session6+0x103f/0x1890
-__xfrm_decode_session+0x54/0xb0
-xfrmi_xmit+0x173/0x1ca0
-dev_hard_start_xmit+0x187/0x700
-sch_direct_xmit+0x1a3/0xc30
-__qdisc_run+0x510/0x17a0
-__dev_queue_xmit+0x2215/0x3b10
-neigh_connected_output+0x3c2/0x550
-ip6_finish_output2+0x55a/0x1550
-ip6_finish_output+0x6b9/0x1270
-ip6_output+0x1f1/0x540
-ndisc_send_skb+0xa63/0x1890
-ndisc_send_rs+0x132/0x6f0
-addrconf_rs_timer+0x3f1/0x870
-call_timer_fn+0x1a0/0x580
-expire_timers+0x29b/0x4b0
-run_timer_softirq+0x326/0x910
-__do_softirq+0x1d4/0x905
-irq_exit_rcu+0xb7/0x120
-sysvec_apic_timer_interrupt+0x97/0xc0
-</IRQ>
-<TASK>
-asm_sysvec_apic_timer_interrupt+0x1a/0x20
-RIP: 0010:intel_idle_hlt+0x23/0x30
-Code: 1f 84 00 00 00 00 00 f3 0f 1e fa 41 54 41 89 d4 0f 1f 44 00 00 66 90 0f 1f 44 00 00 0f 00 2d c4 9f ab 00 0f 1f 44 00 00 fb f4 <fa> 44 89 e0 41 5c c3 66 0f 1f 44 00 00 f3 0f 1e fa 41 54 41 89 d4
-RSP: 0018:ffffc90000197d78 EFLAGS: 00000246
-RAX: 00000000000a83c3 RBX: ffffe8ffffd09c50 RCX: ffffffff8a22d8e5
-RDX: 0000000000000001 RSI: ffffffff8d3f8080 RDI: ffffe8ffffd09c50
-RBP: ffffffff8d3f8080 R08: 0000000000000001 R09: ffffed1026ba6d9d
-R10: ffff888135d36ceb R11: 0000000000000001 R12: 0000000000000001
-R13: ffffffff8d3f8100 R14: 0000000000000001 R15: 0000000000000000
-cpuidle_enter_state+0xd3/0x6f0
-cpuidle_enter+0x4e/0xa0
-do_idle+0x2fe/0x3c0
-cpu_startup_entry+0x18/0x20
-start_secondary+0x200/0x290
-secondary_startup_64_no_verify+0x167/0x16b
-</TASK>
-Allocated by task 939:
-kasan_save_stack+0x22/0x40
-kasan_set_track+0x25/0x30
-__kasan_slab_alloc+0x7f/0x90
-kmem_cache_alloc_node+0x1cd/0x410
-kmalloc_reserve+0x165/0x270
-__alloc_skb+0x129/0x330
-inet6_ifa_notify+0x118/0x230
-__ipv6_ifa_notify+0x177/0xbe0
-addrconf_dad_completed+0x133/0xe00
-addrconf_dad_work+0x764/0x1390
-process_one_work+0xa32/0x16f0
-worker_thread+0x67d/0x10c0
-kthread+0x344/0x440
-ret_from_fork+0x1f/0x30
-The buggy address belongs to the object at ffff888111145800
-which belongs to the cache skbuff_small_head of size 640
-The buggy address is located 239 bytes inside of
-freed 640-byte region [ffff888111145800, ffff888111145a80)
-
-As commit f855691975bb ("xfrm6: Fix the nexthdr offset in
-_decode_session6.") showed, xfrm_decode_session was originally intended
-only for the receive path. IP6CB(skb)->nhoff is not set during
-transmission. Therefore, set the cb field in the skb to 0 before
-sending packets.
-
-Fixes: f855691975bb ("xfrm6: Fix the nexthdr offset in _decode_session6.")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Heiner Kallweit <hkallweit1@gmail.com>
+Link: https://lore.kernel.org/r/728f159b-885f-c78a-1a3d-f55c245250e1@gmail.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Stable-dep-of: b8ada54fa1b8 ("mmc: meson-gx: fix deferred probing")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_interface_core.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/mmc/host/meson-gx-mmc.c | 52 +++++++++++----------------------
+ 1 file changed, 17 insertions(+), 35 deletions(-)
 
-diff --git a/net/xfrm/xfrm_interface_core.c b/net/xfrm/xfrm_interface_core.c
-index 694eec6ca147e..ded752e33dacd 100644
---- a/net/xfrm/xfrm_interface_core.c
-+++ b/net/xfrm/xfrm_interface_core.c
-@@ -399,8 +399,8 @@ static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index e89bd6f4b317c..8a345ee2e6cf5 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -1122,7 +1122,7 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 	struct mmc_host *mmc;
+ 	int ret;
  
- 	switch (skb->protocol) {
- 	case htons(ETH_P_IPV6):
--		xfrm_decode_session(skb, &fl, AF_INET6);
- 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-+		xfrm_decode_session(skb, &fl, AF_INET6);
- 		if (!dst) {
- 			fl.u.ip6.flowi6_oif = dev->ifindex;
- 			fl.u.ip6.flowi6_flags |= FLOWI_FLAG_ANYSRC;
-@@ -414,8 +414,8 @@ static netdev_tx_t xfrmi_xmit(struct sk_buff *skb, struct net_device *dev)
- 		}
- 		break;
- 	case htons(ETH_P_IP):
--		xfrm_decode_session(skb, &fl, AF_INET);
- 		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+		xfrm_decode_session(skb, &fl, AF_INET);
- 		if (!dst) {
- 			struct rtable *rt;
+-	mmc = mmc_alloc_host(sizeof(struct meson_host), &pdev->dev);
++	mmc = devm_mmc_alloc_host(&pdev->dev, sizeof(struct meson_host));
+ 	if (!mmc)
+ 		return -ENOMEM;
+ 	host = mmc_priv(mmc);
+@@ -1138,46 +1138,33 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 	host->vqmmc_enabled = false;
+ 	ret = mmc_regulator_get_supply(mmc);
+ 	if (ret)
+-		goto free_host;
++		return ret;
+ 
+ 	ret = mmc_of_parse(mmc);
+-	if (ret) {
+-		if (ret != -EPROBE_DEFER)
+-			dev_warn(&pdev->dev, "error parsing DT: %d\n", ret);
+-		goto free_host;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "error parsing DT\n");
+ 
+ 	host->data = (struct meson_mmc_data *)
+ 		of_device_get_match_data(&pdev->dev);
+-	if (!host->data) {
+-		ret = -EINVAL;
+-		goto free_host;
+-	}
++	if (!host->data)
++		return -EINVAL;
+ 
+ 	ret = device_reset_optional(&pdev->dev);
+-	if (ret) {
+-		dev_err_probe(&pdev->dev, ret, "device reset failed\n");
+-		goto free_host;
+-	}
++	if (ret)
++		return dev_err_probe(&pdev->dev, ret, "device reset failed\n");
+ 
+ 	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
+ 	host->regs = devm_ioremap_resource(&pdev->dev, res);
+-	if (IS_ERR(host->regs)) {
+-		ret = PTR_ERR(host->regs);
+-		goto free_host;
+-	}
++	if (IS_ERR(host->regs))
++		return PTR_ERR(host->regs);
+ 
+ 	host->irq = platform_get_irq(pdev, 0);
+-	if (host->irq <= 0) {
+-		ret = -EINVAL;
+-		goto free_host;
+-	}
++	if (host->irq <= 0)
++		return -EINVAL;
+ 
+ 	host->pinctrl = devm_pinctrl_get(&pdev->dev);
+-	if (IS_ERR(host->pinctrl)) {
+-		ret = PTR_ERR(host->pinctrl);
+-		goto free_host;
+-	}
++	if (IS_ERR(host->pinctrl))
++		return PTR_ERR(host->pinctrl);
+ 
+ 	host->pins_clk_gate = pinctrl_lookup_state(host->pinctrl,
+ 						   "clk-gate");
+@@ -1188,14 +1175,12 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	host->core_clk = devm_clk_get(&pdev->dev, "core");
+-	if (IS_ERR(host->core_clk)) {
+-		ret = PTR_ERR(host->core_clk);
+-		goto free_host;
+-	}
++	if (IS_ERR(host->core_clk))
++		return PTR_ERR(host->core_clk);
+ 
+ 	ret = clk_prepare_enable(host->core_clk);
+ 	if (ret)
+-		goto free_host;
++		return ret;
+ 
+ 	ret = meson_mmc_clk_init(host);
+ 	if (ret)
+@@ -1290,8 +1275,6 @@ static int meson_mmc_probe(struct platform_device *pdev)
+ 	clk_disable_unprepare(host->mmc_clk);
+ err_core_clk:
+ 	clk_disable_unprepare(host->core_clk);
+-free_host:
+-	mmc_free_host(mmc);
+ 	return ret;
+ }
+ 
+@@ -1315,7 +1298,6 @@ static int meson_mmc_remove(struct platform_device *pdev)
+ 	clk_disable_unprepare(host->mmc_clk);
+ 	clk_disable_unprepare(host->core_clk);
+ 
+-	mmc_free_host(host->mmc);
+ 	return 0;
+ }
  
 -- 
 2.40.1
