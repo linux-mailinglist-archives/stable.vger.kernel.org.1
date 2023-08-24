@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30F66787B18
+	by mail.lfdr.de (Postfix) with ESMTP id 84085787B19
 	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 00:00:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243765AbjHXWA0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 18:00:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53974 "EHLO
+        id S243788AbjHXWA1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 18:00:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54012 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243842AbjHXWAX (ORCPT
+        with ESMTP id S243845AbjHXWAX (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 18:00:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 801451BE9;
-        Thu, 24 Aug 2023 15:00:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D90381BE6;
+        Thu, 24 Aug 2023 15:00:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1BAE564AFF;
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 78C836361B;
+        Thu, 24 Aug 2023 22:00:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2C80C433C8;
         Thu, 24 Aug 2023 22:00:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E83DC433C8;
-        Thu, 24 Aug 2023 22:00:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1692914418;
-        bh=ugfur8Szhw0qJJkTr4m18B2hI2Y31rP7OCZUC8QMIQg=;
+        s=korg; t=1692914419;
+        bh=QzZ3B29ZpeIXP1Docmt+R6yug/vu3LqFJ4ZpavpYzEQ=;
         h=Date:To:From:Subject:From;
-        b=rmKMHfAzBLNxdhymrtrFmO9YD5cLRInaZba3iTNRlGs2jYiJYT3CuwEtBdUgrsw4w
-         DGwa8a4qYqQXyWShpRQQ/UkiwzPztYK64WtnLVGxrNY0uVSIMmLMyZLhQKuVfNWNpd
-         jW45f3Dw/W2i6ZxCg3nf6eCWh929ubccWe3v4u/Y=
-Date:   Thu, 24 Aug 2023 15:00:17 -0700
-To:     mm-commits@vger.kernel.org, yuzhao@google.com, willy@infradead.org,
-        wangkefeng.wang@huawei.com, vishal.moola@gmail.com,
-        stable@vger.kernel.org, shy828301@gmail.com, ryan.roberts@arm.com,
-        minchan@kernel.org, david@redhat.com, fengwei.yin@intel.com,
-        akpm@linux-foundation.org
+        b=nWWWb+2rntfE78hzbASEWc2PagaaZnnF833484ysXFgdn6pjrZ/Z9+Ctswc7+NDYb
+         KoC/NBpVx132j49d41Pw8VLg/xv6nuY+ZyNnGzGG/uHUfcx7xY7pOodSf7eg4td6Sa
+         CgKRPqGNMp8eZyboxpu42vP85gSr3vKwauDtUcyg=
+Date:   Thu, 24 Aug 2023 15:00:19 -0700
+To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
+        Liam.Howlett@oracle.com, akpm@linux-foundation.org
 From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check.patch removed from -mm tree
-Message-Id: <20230824220018.6E83DC433C8@smtp.kernel.org>
+Subject: [merged mm-hotfixes-stable] maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch removed from -mm tree
+Message-Id: <20230824220019.D2C80C433C8@smtp.kernel.org>
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,
         SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -49,70 +46,96 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 The quilt patch titled
-     Subject: madvise:madvise_free_pte_range(): don't use mapcount() against large folio for sharing check
+     Subject: maple_tree: disable mas_wr_append() when other readers are possible
 has been removed from the -mm tree.  Its filename was
-     madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check.patch
+     maple_tree-disable-mas_wr_append-when-other-readers-are-possible.patch
 
 This patch was dropped because it was merged into the mm-hotfixes-stable branch
 of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
 ------------------------------------------------------
-From: Yin Fengwei <fengwei.yin@intel.com>
-Subject: madvise:madvise_free_pte_range(): don't use mapcount() against large folio for sharing check
-Date: Tue, 8 Aug 2023 10:09:17 +0800
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Subject: maple_tree: disable mas_wr_append() when other readers are possible
+Date: Fri, 18 Aug 2023 20:43:55 -0400
 
-Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a
-folio") replaced the page_mapcount() with folio_mapcount() to check
-whether the folio is shared by other mapping.
+The current implementation of append may cause duplicate data and/or
+incorrect ranges to be returned to a reader during an update.  Although
+this has not been reported or seen, disable the append write operation
+while the tree is in rcu mode out of an abundance of caution.
 
-It's not correct for large folios. folio_mapcount() returns the total
-mapcount of large folio which is not suitable to detect whether the folio
-is shared.
+During the analysis of the mas_next_slot() the following was
+artificially created by separating the writer and reader code:
 
-Use folio_estimated_sharers() which returns a estimated number of shares.
-That means it's not 100% correct. It should be OK for madvise case here.
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last slot write is to start of slot
+    store current contents in slot
+    overwrite old end pivot
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                return with incorrect range
+    store new value
 
-User-visible effects is that the THP is skipped when user call madvise.
-But the correct behavior is THP should be split and processed then.
+Alternatively:
 
-NOTE: this change is a temporary fix to reduce the user-visible effects
-before the long term fix from David is ready.
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last lost write to end of slot
+    store value
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                read new end pivot
+                                                return with incorrect range
+    set old end pivot
 
-Link: https://lkml.kernel.org/r/20230808020917.2230692-4-fengwei.yin@intel.com
-Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
-Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-Reviewed-by: Yu Zhao <yuzhao@google.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Yang Shi <shy828301@gmail.com>
+There may be other accesses that are not safe since we are now updating
+both metadata and pointers, so disabling append if there could be rcu
+readers is the safest action.
+
+Link: https://lkml.kernel.org/r/20230819004356.1454718-2-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
 
- mm/madvise.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/maple_tree.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/mm/madvise.c~madvise-madvise_free_pte_range-dont-use-mapcount-against-large-folio-for-sharing-check
-+++ a/mm/madvise.c
-@@ -680,7 +680,7 @@ static int madvise_free_pte_range(pmd_t
- 		if (folio_test_large(folio)) {
- 			int err;
+--- a/lib/maple_tree.c~maple_tree-disable-mas_wr_append-when-other-readers-are-possible
++++ a/lib/maple_tree.c
+@@ -4265,6 +4265,10 @@ static inline unsigned char mas_wr_new_e
+  * mas_wr_append: Attempt to append
+  * @wr_mas: the maple write state
+  *
++ * This is currently unsafe in rcu mode since the end of the node may be cached
++ * by readers while the node contents may be updated which could result in
++ * inaccurate information.
++ *
+  * Return: True if appended, false otherwise
+  */
+ static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
+@@ -4274,6 +4278,9 @@ static inline bool mas_wr_append(struct
+ 	struct ma_state *mas = wr_mas->mas;
+ 	unsigned char node_pivots = mt_pivots[wr_mas->type];
  
--			if (folio_mapcount(folio) != 1)
-+			if (folio_estimated_sharers(folio) != 1)
- 				break;
- 			if (!folio_trylock(folio))
- 				break;
++	if (mt_in_rcu(mas->tree))
++		return false;
++
+ 	if (mas->offset != wr_mas->node_end)
+ 		return false;
+ 
 _
 
-Patches currently in -mm which might be from fengwei.yin@intel.com are
+Patches currently in -mm which might be from Liam.Howlett@oracle.com are
 
-filemap-add-filemap_map_folio_range.patch
-rmap-add-folio_add_file_rmap_range.patch
-mm-convert-do_set_pte-to-set_pte_range.patch
-filemap-batch-pte-mappings.patch
+maple_tree-clean-up-mas_wr_append.patch
 
