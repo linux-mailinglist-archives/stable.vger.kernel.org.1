@@ -2,43 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 331CC787143
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:16:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C41DB787148
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:16:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237188AbjHXOPr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S241264AbjHXOPr (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 24 Aug 2023 10:15:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59806 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241539AbjHXOPg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:15:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D36B711F
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:15:34 -0700 (PDT)
+        with ESMTP id S241541AbjHXOPk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:15:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0932210C3
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:15:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 61AB5616E6
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:15:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 703F0C433C8;
-        Thu, 24 Aug 2023 14:15:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 98659616E6
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:15:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A878C433C8;
+        Thu, 24 Aug 2023 14:15:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692886533;
-        bh=ku46R3nMTxJvAhX2qfk6n2OZ1fmeak2j4wyA6XofgR8=;
+        s=korg; t=1692886537;
+        bh=PSzzHcLbiJRPJ8XMHvqia7Gwh0KcHTTH6tmKWeVToR8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cau5dqiEJlDaQzP2OjU+APCi6KS0VvaMromQwENrqRhdxCCAGdK2HZzVGeFYsXxyD
-         CYsNwlfvrDrJgge3J/KAIm8TQxE1vzL6wMfTKJsSeZqfk5ctHRGGMU4r+0cP1z1uyO
-         WrfL2NlrYp4H+Fb3vQ4To2Z21HjvogqPAU5AW2Zo=
+        b=oM9CBqnYWOa6i9nn5BvTA5O9scFSLDDtXq19H8AT+HP2L5pNYlRG7aO7SbF5zAb3k
+         uXE9wRP6xfb+2HCtOPqgphIW1Ag6c0YvpdTVRi97BC8a8b6wXnPo0DXhDMESnFaFoF
+         Uo1Tsmtk/qaUc1AfQaBvTJkNThXDsTN7sBBw3Xow=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Pavlu <petr.pavlu@suse.com>,
+        patches@lists.linux.dev,
         "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 6.1 13/15] x86/retpoline,kprobes: Fix position of thunk sections with CONFIG_LTO_CLANG
-Date:   Thu, 24 Aug 2023 16:15:09 +0200
-Message-ID: <20230824141447.774063914@linuxfoundation.org>
+        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        Josh Poimboeuf <jpoimboe@kernel.org>
+Subject: [PATCH 6.1 14/15] objtool/x86: Fixup frame-pointer vs rethunk
+Date:   Thu, 24 Aug 2023 16:15:10 +0200
+Message-ID: <20230824141447.814551319@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824141447.155846739@linuxfoundation.org>
 References: <20230824141447.155846739@linuxfoundation.org>
@@ -46,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,132 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Peter Zijlstra <peterz@infradead.org>
 
-commit 79cd2a11224eab86d6673fe8a11d2046ae9d2757 upstream.
+commit dbf46008775516f7f25c95b7760041c286299783 upstream.
 
-The linker script arch/x86/kernel/vmlinux.lds.S matches the thunk
-sections ".text.__x86.*" from arch/x86/lib/retpoline.S as follows:
+For stack-validation of a frame-pointer build, objtool validates that
+every CALL instruction is preceded by a frame-setup. The new SRSO
+return thunks violate this with their RSB stuffing trickery.
 
-  .text {
-    [...]
-    TEXT_TEXT
-    [...]
-    __indirect_thunk_start = .;
-    *(.text.__x86.*)
-    __indirect_thunk_end = .;
-    [...]
-  }
+Extend the __fentry__ exception to also cover the embedded_insn case
+used for this. This cures:
 
-Macro TEXT_TEXT references TEXT_MAIN which normally expands to only
-".text". However, with CONFIG_LTO_CLANG, TEXT_MAIN becomes
-".text .text.[0-9a-zA-Z_]*" which wrongly matches also the thunk
-sections. The output layout is then different than expected. For
-instance, the currently defined range [__indirect_thunk_start,
-__indirect_thunk_end] becomes empty.
+  vmlinux.o: warning: objtool: srso_untrain_ret+0xd: call without frame pointer save/setup
 
-Prevent the problem by using ".." as the first separator, for example,
-".text..__x86.indirect_thunk". This pattern is utilized by other
-explicit section names which start with one of the standard prefixes,
-such as ".text" or ".data", and that need to be individually selected in
-the linker script.
-
-  [ nathan: Fix conflicts with SRSO and fold in fix issue brought up by
-    Andrew Cooper in post-review:
-    https://lore.kernel.org/20230803230323.1478869-1-andrew.cooper3@citrix.com ]
-
-Fixes: dc5723b02e52 ("kbuild: add support for Clang LTO")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
+Fixes: 4ae68b26c3ab ("objtool/x86: Fix SRSO mess")
 Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
 Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230711091952.27944-2-petr.pavlu@suse.com
+Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Link: https://lore.kernel.org/r/20230816115921.GH980931@hirez.programming.kicks-ass.net
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/vmlinux.lds.S |    8 ++++----
- arch/x86/lib/retpoline.S      |    8 ++++----
- tools/objtool/check.c         |    2 +-
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ tools/objtool/check.c |   17 +++++++++++------
+ 1 file changed, 11 insertions(+), 6 deletions(-)
 
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -134,7 +134,7 @@ SECTIONS
- 		KPROBES_TEXT
- 		ALIGN_ENTRY_TEXT_BEGIN
- #ifdef CONFIG_CPU_SRSO
--		*(.text.__x86.rethunk_untrain)
-+		*(.text..__x86.rethunk_untrain)
- #endif
- 
- 		ENTRY_TEXT
-@@ -145,7 +145,7 @@ SECTIONS
- 		 * definition.
- 		 */
- 		. = srso_alias_untrain_ret | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
--		*(.text.__x86.rethunk_safe)
-+		*(.text..__x86.rethunk_safe)
- #endif
- 		ALIGN_ENTRY_TEXT_END
- 		SOFTIRQENTRY_TEXT
-@@ -154,8 +154,8 @@ SECTIONS
- 
- #ifdef CONFIG_RETPOLINE
- 		__indirect_thunk_start = .;
--		*(.text.__x86.indirect_thunk)
--		*(.text.__x86.return_thunk)
-+		*(.text..__x86.indirect_thunk)
-+		*(.text..__x86.return_thunk)
- 		__indirect_thunk_end = .;
- #endif
- 	} :text =0xcccc
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -11,7 +11,7 @@
- #include <asm/frame.h>
- #include <asm/nops.h>
- 
--	.section .text.__x86.indirect_thunk
-+	.section .text..__x86.indirect_thunk
- 
- .macro RETPOLINE reg
- 	ANNOTATE_INTRA_FUNCTION_CALL
-@@ -91,7 +91,7 @@ SYM_CODE_END(__x86_indirect_thunk_array)
-  * As a result, srso_alias_safe_ret() becomes a safe return.
-  */
- #ifdef CONFIG_CPU_SRSO
--	.section .text.__x86.rethunk_untrain
-+	.section .text..__x86.rethunk_untrain
- 
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	UNWIND_HINT_FUNC
-@@ -102,7 +102,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
- SYM_FUNC_END(srso_alias_untrain_ret)
- __EXPORT_THUNK(srso_alias_untrain_ret)
- 
--	.section .text.__x86.rethunk_safe
-+	.section .text..__x86.rethunk_safe
- #else
- /* dummy definition for alternatives */
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
-@@ -120,7 +120,7 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLO
- 	int3
- SYM_FUNC_END(srso_alias_safe_ret)
- 
--	.section .text.__x86.return_thunk
-+	.section .text..__x86.return_thunk
- 
- SYM_CODE_START(srso_alias_return_thunk)
- 	UNWIND_HINT_FUNC
 --- a/tools/objtool/check.c
 +++ b/tools/objtool/check.c
-@@ -379,7 +379,7 @@ static int decode_instructions(struct ob
+@@ -2450,12 +2450,17 @@ static int decode_sections(struct objtoo
+ 	return 0;
+ }
  
- 		if (!strcmp(sec->name, ".noinstr.text") ||
- 		    !strcmp(sec->name, ".entry.text") ||
--		    !strncmp(sec->name, ".text.__x86.", 12))
-+		    !strncmp(sec->name, ".text..__x86.", 13))
- 			sec->noinstr = true;
+-static bool is_fentry_call(struct instruction *insn)
++static bool is_special_call(struct instruction *insn)
+ {
+-	if (insn->type == INSN_CALL &&
+-	    insn->call_dest &&
+-	    insn->call_dest->fentry)
+-		return true;
++	if (insn->type == INSN_CALL) {
++		struct symbol *dest = insn->call_dest;
++
++		if (!dest)
++			return false;
++
++		if (dest->fentry)
++			return true;
++	}
  
- 		for (offset = 0; offset < sec->sh.sh_size; offset += insn->len) {
+ 	return false;
+ }
+@@ -3448,7 +3453,7 @@ static int validate_branch(struct objtoo
+ 			if (ret)
+ 				return ret;
+ 
+-			if (opts.stackval && func && !is_fentry_call(insn) &&
++			if (opts.stackval && func && !is_special_call(insn) &&
+ 			    !has_valid_stack_frame(&state)) {
+ 				WARN_FUNC("call without frame pointer save/setup",
+ 					  sec, insn->offset);
 
 
