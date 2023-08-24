@@ -2,141 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECA50787056
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:36:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57FD17870D2
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:48:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240056AbjHXNgS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 09:36:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43686 "EHLO
+        id S241469AbjHXNrf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 09:47:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35852 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241234AbjHXNgB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:36:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD02A19A5;
-        Thu, 24 Aug 2023 06:35:59 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62AC46313F;
-        Thu, 24 Aug 2023 13:35:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CFECC433C7;
-        Thu, 24 Aug 2023 13:35:58 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692884158;
-        bh=FoeW5Vf0WqDwd9w8w9n1OLSBxvLkKSrUFjawAzxgK5Q=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wO6K+J4gYSmVIxvG6AJs8XWztSAYYUx6KQlp04BrJNZZr50PFkHGPYaiuKgByK+hr
-         ZnZFVK6yk+oQHLDfGQh+uUl3vm8vFVWVeVf5Hj0Astq+d2hzxFMjmSEy54+dBheQso
-         RdCozM1P21Cs3h2gvuYXQV0+cvVz271OM+5Zqu0g=
-Date:   Thu, 24 Aug 2023 15:35:55 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
-Message-ID: <2023082401-arrange-bulk-d42a@gregkh>
-References: <20230821194122.695845670@linuxfoundation.org>
- <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
- <2023082309-veggie-unwoven-a7df@gregkh>
- <CA+G9fYvwxuVpSn24YvtdNXaofg2JtZDREatOpDsKTVJX+nFN3Q@mail.gmail.com>
- <2d8a5f48-6c50-4c12-8a3d-23e621c6b722@roeck-us.net>
- <2023082325-expansion-revoke-1f3a@gregkh>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <2023082325-expansion-revoke-1f3a@gregkh>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S241470AbjHXNrK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:47:10 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0A2E10EF
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 06:47:01 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-58fc448ee4fso62490837b3.2
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 06:47:01 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1692884821; x=1693489621;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=KAgKqHj78kAKZRTyvqkKPKjjidwxbpWPTAGlGXZyYJo=;
+        b=Qbs/mT7HhALHGb6bFGF4GZLNNHn3/oHFfz2XEEm7l4F7jhYKMsEAh8M1bURHvIL91o
+         ccKVZBwnpgh3IWsQDgPTTsDjKNXCUkzKwJ10nK1JyI75Qm4QLT6aRFcW4LUU48UZNRC0
+         RkAEzrhsDi7TdrBr/3Da5WA/zWCrybTGlmsutd5mAXsQVt5kZ1GZ7CrqDhQX0aOrBNZ9
+         yeDHRrR4AWikvau9MytM23mQov5Rx63ffg9pbZYf4p26wmJNhrXRgwk+bWcrBDDg6HRm
+         /zueRGvI6dhCg9J/ESU45hB3s3GtMiX1sQwjPj7IcBt6nOoNBNpflUl31lXqei5Fqyrw
+         TZXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692884821; x=1693489621;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=KAgKqHj78kAKZRTyvqkKPKjjidwxbpWPTAGlGXZyYJo=;
+        b=l9ts4R+CsCdk/zuAy21qD5vEAZSFwSDvb2+dFnc/cHJwu4b0tGnARzfyWoyKeI3TR2
+         89hQ9NkuQmuTgEFIGezMhwu0Yy+l+57vN0/FlrYUHlgmoL96AY5NeNIlVamMptZpF5Ut
+         8cqNXp5bnjq7vRvBTVlHZ09oO6rFGRHaihhdilgII1bH3w8/BDID2lyZPSGZuaRrYe7i
+         HemKWHlwmfX7maYDylSS7DkZD6iVsqCRBUkkAgHqjI0YQK5xQY7wBoKz0/qzWZQd1PC5
+         UPmq7BZrizjGFw1R+jpNI5IwyjySJ/VeKO82o1GDPd8HS6vE6Iw51VfpZYNyDASZfEhh
+         AUoQ==
+X-Gm-Message-State: AOJu0YxsO33r+o+QDr7MIc5MmNDCGoPLd0quy1AmHrChMMGInJTJxHAA
+        XMbyt098LZixQEUfjZM6oaOwaunnWCw=
+X-Google-Smtp-Source: AGHT+IGXdgg/ssklqYDk55RDWOjzVrp8+5srv3ZUQaokNQMyQlOg8jyuIRb8maXjf+ssY1vir68KGA2SVCw=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:af27:0:b0:586:a8ab:f8fe with SMTP id
+ n39-20020a81af27000000b00586a8abf8femr244105ywh.10.1692884821216; Thu, 24 Aug
+ 2023 06:47:01 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 06:46:59 -0700
+In-Reply-To: <2023082423-ninetieth-hamlet-54dc@gregkh>
+Mime-Version: 1.0
+References: <20230824010104.2714198-1-seanjc@google.com> <2023082423-ninetieth-hamlet-54dc@gregkh>
+Message-ID: <ZOdfU1zQ4UCQNVpz@google.com>
+Subject: Re: [PATCH 6.1] KVM: x86/mmu: Fix an sign-extension bug with mmu_seq
+ that hangs vCPUs
+From:   Sean Christopherson <seanjc@google.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+        linux-kernel@vger.kernel.org
+Content-Type: text/plain; charset="us-ascii"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 05:50:42PM +0200, Greg Kroah-Hartman wrote:
-> On Wed, Aug 23, 2023 at 06:30:13AM -0700, Guenter Roeck wrote:
-> > On Wed, Aug 23, 2023 at 01:47:39PM +0530, Naresh Kamboju wrote:
-> > > On Wed, 23 Aug 2023 at 12:33, Greg Kroah-Hartman
-> > > <gregkh@linuxfoundation.org> wrote:
-> > > >
-> > > > On Tue, Aug 22, 2023 at 05:49:54PM -0700, Guenter Roeck wrote:
-> > > > > On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
-> > > > > > This is the start of the stable review cycle for the 6.1.47 release.
-> > > > > > There are 194 patches in this series, all will be posted as a response
-> > > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > > let me know.
-> > > > > >
-> > > > > > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
-> > > > > > Anything received after that time might be too late.
-> > > > > >
-> > > > >
-> > > > > Build results:
-> > > > >       total: 157 pass: 156 fail: 1
-> > > > > Failed builds:
-> > > > >       m68k:sun3_defconfig
-> > > > > Qemu test results:
-> > > > >       total: 521 pass: 519 fail: 2
-> > > > > Failed tests:
-> > > > >       arm:fuji-bmc:aspeed_g5_defconfig:notests:mem1G:mtd128,0,8,1:net,nic:aspeed-bmc-facebook-fuji:f2fs
-> > > > >       arm:bletchley-bmc,fmc-model=mt25qu02g,spi-model=mt25qu02g:aspeed_g5_defconfig:notests:mem1G:mtd256:net,nic:aspeed-bmc-facebook-bletchley:f2fs
-> > > > >
-> > > > > The m68k build failure is
-> > > > >
-> > > > > Inconsistent kallsyms data
-> > > > > Try make KALLSYMS_EXTRA_PASS=1 as a workaround
-> > > > >
-> > > > > I already have KALLSYMS_EXTRA_PASS=1 enabled, so that doesn't help.
-> > > > > Nothing to worry about. The f2fs crashes are still seen. They
-> > > > > also happen for other architectures, so it is not just an arm problem.
-> > > > > I'll probably just disable all f2fs testing going forward. If so I'll
-> > > > > send a note clarifying that the lack of reported test failures doesn't
-> > > > > mean that it works.
-> > > >
-> > > > I'll look into this later this week, next week to resolve the f2fs
-> > > > stuff.  I wanted to get to the other known bug fixes first.
-> > > >
-> > > > > For x86 I get the same runtime warning as everyone else.
-> > > >
-> > > > Yeah, this is troubling...
-> > > >
-> > > > Is it clang only?  I'll dig into this today...
-> > > 
-> > > It is seen with gcc-13 and clang-17 with few extra configs.
-> > > We are not booting defconfig.
-> > > 
-> > > The Kconfigs are enabled with KFENCE.
-> > > 
-> > I have KFENCE enabled as well, so it may well be that this triggers
-> > the warning. I don't see it in 6.4.y or upstream, though.
+On Thu, Aug 24, 2023, Greg Kroah-Hartman wrote:
+> On Wed, Aug 23, 2023 at 06:01:04PM -0700, Sean Christopherson wrote:
+> > Note, upstream commit ba6e3fe25543 ("KVM: x86/mmu: Grab mmu_invalidate_seq
+> > in kvm_faultin_pfn()") unknowingly fixed the bug in v6.3 when refactoring
+> > how KVM tracks the sequence counter snapshot.
+> > 
+> > Reported-by: Brian Rak <brak@vultr.com>
+> > Reported-by: Amaan Cheval <amaan.cheval@gmail.com>
+> > Reported-by: Eric Wheeler <kvm@lists.ewheeler.net>
+> > Closes: https://lore.kernel.org/all/f023d927-52aa-7e08-2ee5-59a2fbc65953@gameservers.com
+> > Fixes: a955cad84cda ("KVM: x86/mmu: Retry page fault if root is invalidated by memslot update")
+> > Signed-off-by: Sean Christopherson <seanjc@google.com>
 > 
-> Ok, let me rip out all the x86 and objtool patches from this release,
-> get it out the door with the good things in there that everyone else
-> needs, and then we can focus on this mess...
-> 
-> Maybe I'll just backport _all_ objtool changes to sync things up better,
-> last time I tried that it was a maze of twisty passages, all coated in
-> assembly...
+> What is the git commit id of this change in Linus's tree?
 
-I got lost in the maze again today, ick.
-
-Anyway, I give up.  I'm just going to push out a -rc1 with just these
-changes in it today, and if people are upset about the runtime warning,
-then they can provide a working backport of this objtool patch.
-
-Ideally, the CPU vendor who is causing this mess will do that, as it's
-their issue we are spending all of this time on, not Linux's issue.
-
-Also, oddly, I can not reproduce this problem here on my hardware at
-all.  Maybe because it's an AMD processor?  If so, makes sense, as the
-SRSO issue is only for Intel chips.
-
-thanks,
-
-greg k-h
+There is none.  Commit ba6e3fe25543 (landed in v6.3) unknowingly fixed the bug as
+part of a completely unrelated refactoring.
