@@ -2,65 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E06FB78645F
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 03:02:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681FC786471
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 03:05:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238937AbjHXBBj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 23 Aug 2023 21:01:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53164 "EHLO
+        id S238950AbjHXBFZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 23 Aug 2023 21:05:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238939AbjHXBBL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 21:01:11 -0400
-Received: from mail-pj1-x1049.google.com (mail-pj1-x1049.google.com [IPv6:2607:f8b0:4864:20::1049])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DE75610EC
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 18:01:09 -0700 (PDT)
-Received: by mail-pj1-x1049.google.com with SMTP id 98e67ed59e1d1-26f3bf964feso4790657a91.1
-        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 18:01:09 -0700 (PDT)
+        with ESMTP id S238952AbjHXBFR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 23 Aug 2023 21:05:17 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A98EA10CA
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 18:05:15 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d6b7eb39ef0so7551233276.3
+        for <stable@vger.kernel.org>; Wed, 23 Aug 2023 18:05:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692838869; x=1693443669;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:reply-to:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=TaNHUAMr9/QkZN8b2Wm3agEs7xBWPglfJYxpYZqwWLM=;
-        b=wJo65TderJbBPGQj0Vh2yQmFIE9NyE0wgI/NLTtheTetFZcKV0WVtD9z2Ayqt2JrJ/
-         EVOFkxrGj6iS/qYsauoXTrHU5EUA9J2/WL1T8Lxb9VEw8wGSJEUjY32A1tpuABKFTkOZ
-         I+b5XopsKgD3BRq7r3WhikZJRRrCvoXgKq/8a7Ggd+FVqQzVSVzmlhbIwF6M1bXPd2YY
-         Qv09+9nyKL01NwBCZ5tkqQ8zCF/zPVZ7X8QGjS+ihCrSE1hXPR0aRQCWF3tPsJhMNafs
-         cMfPLBcYya6jIVthhBpBJ7p0p1JK94zdbZjfqxH6UVrVPYDM5yrOyid1KYRPKNPpp110
-         boRQ==
+        d=google.com; s=20221208; t=1692839115; x=1693443915;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ciPsiCz8yRdds7TlQN57K1bIWKakCjV9gzutuPf6Vpo=;
+        b=SdedHeyF9zT2I6oXPzI3C3PP/mWA2v6GF689lF8eMP3dYY9zcq9TQv9ARwOxgX4hrk
+         Zc5rVcfASn1P8Ce9MK7mx6CzUikF7D+F7l2TsNdlaj3W8xMAz6sSb+fpJ5YhVPUOV8WT
+         3+vbvQJCr2xSG4Xp/m/XuwsFtx0wd6025Wnk/9AqbavbE7cNMyIPsRr+iwGfx2cGg+IB
+         xuGAH13yQvPFe78Kzsi4xwEf5ceBfXz0TVVkhtrrbmE5oEsohONv9ysIsLjRgGnY3dXB
+         Kfgj+OuUi2tKEbrtIT3d7lgfoCiM6UkB9cutLawQZYqyrIpM70ykbE2jqYBufK8V9w8/
+         IWRA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692838869; x=1693443669;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:reply-to:x-gm-message-state:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=TaNHUAMr9/QkZN8b2Wm3agEs7xBWPglfJYxpYZqwWLM=;
-        b=JfDAurz/SDDvl9k2BEO4PdOvYie8W971uTUe8ZTVgypGRpVrs3GGd4U+ARmMn8TyzM
-         lkUHfFZgESOdbWupDPZa3sTKHnsVDj+0xG81LRGU9jY3QUoIF368TfcaeZZ4Pi0vJQuZ
-         V3xKDVOWA+TDxpcAaZMikUONLilIpQcd1PF4IKoNOE3rcBBV9aVBQX1ZQX7CA/j0OrjQ
-         C0wLJxCuG/ubP4nMHaKgrPdSqJ/eKtxoXfKbRm1HprQGzKKiP84fojaEBvDxTrzTsJtA
-         WXxIlSnEYsilv0Xr/KcgPVyMzUWTuU7b12sdZinZxWuljw3IURaFSKokd/COtyX/Il2B
-         2Mjg==
-X-Gm-Message-State: AOJu0Yzvg1roQDBz73ZA+RTNnnvZx6hISKt9pWEcXXWTb+ZWn0fS5yXS
-        oB3TC+SejCXAHfPWGOP/BHvGQNj+gHwXM8mRllDnh17ckw94w0WYdNS4MSRYYtaxFRjami5GLE3
-        SdRBIfbMWEAed77k7bjeDi0FHgkbGLLyHBR30LIFi5JVFdmkRgORi77dXwBD39A==
-X-Google-Smtp-Source: AGHT+IGgIOmtZIhvB1b+7llCJX0kyUtNx3VP+anHzo4hHSAWMaEvFD92kxdlb0Nt2VbZKdU9frzyZPtWcw0=
+        d=1e100.net; s=20221208; t=1692839115; x=1693443915;
+        h=cc:to:from:subject:message-id:mime-version:date:reply-to
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=ciPsiCz8yRdds7TlQN57K1bIWKakCjV9gzutuPf6Vpo=;
+        b=c64PVbDA2XngyziwTqZzuUHHcd/jR1FcCZIi3yj2fqYwfrCYQ8DsQRwx/Gl2vObEI5
+         feydlIonsrVQQUzz72PYOqBLrn5o1ypq2s4/OM2MIBvgjhex4nla7ik2SdDOuErMdquK
+         ZZ+3ylKNVFTrPqu7UF0fBMikuQEi6hHQ7jNHZVsQ/XEbQnh8UkSRJp2HI8l2HUDw3ZSB
+         1qx0lv3LwBDyFIRzgVx38988vz1ZtvTOZhFFy/Pmz9/rsuZgPjuj+mkwhRh+rNkCuBIN
+         i/Pzqz/nu4taAJXbYuIuTsUZo6Zo6YXdTdr3etuVzt2YzMU9PbNgLfbJ0/AhslQYOrUt
+         EQYg==
+X-Gm-Message-State: AOJu0Yxmm9ldAiu8QKaV7fQRwisCKOP5A0bCy/ize/IdBa7EDvI/z2Gv
+        I13kLLeTjQ0kIzobeLBsj6U/Nv0y0q/q68qIHP/wlSio3WhM2nbhDS1w91PevAaxtUTYHfGw9Ro
+        esvelf8FnbAnW2sHap4tPx+baf5F/kYvaLEDAC04lkOV/zrzfXHHRouPjUBdRZA==
+X-Google-Smtp-Source: AGHT+IGvZeYDmJ5qRDwkuav3SWHa2ryrgfkFo061XRpAtQVhMvYGtZtAxM56ojlm5rlYbmzFAkShwllBI4Q=
 X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:90a:ca16:b0:262:f6f4:7173 with SMTP id
- x22-20020a17090aca1600b00262f6f47173mr3635119pjt.5.1692838868990; Wed, 23 Aug
- 2023 18:01:08 -0700 (PDT)
+ (user=seanjc job=sendgmr) by 2002:a25:ce14:0:b0:c15:cbd1:60da with SMTP id
+ x20-20020a25ce14000000b00c15cbd160damr178097ybe.6.1692839114887; Wed, 23 Aug
+ 2023 18:05:14 -0700 (PDT)
 Reply-To: Sean Christopherson <seanjc@google.com>
-Date:   Wed, 23 Aug 2023 18:01:04 -0700
+Date:   Wed, 23 Aug 2023 18:05:12 -0700
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.42.0.rc2.253.gd59a3bf2b4-goog
-Message-ID: <20230824010104.2714198-1-seanjc@google.com>
-Subject: [PATCH 6.1] KVM: x86/mmu: Fix an sign-extension bug with mmu_seq that
- hangs vCPUs
+Message-ID: <20230824010512.2714931-1-seanjc@google.com>
+Subject: [PATCH 5.15] Revert "KVM: x86: enable TDP MMU by default"
 From:   Sean Christopherson <seanjc@google.com>
 To:     stable@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     Paolo Bonzini <pbonzini@redhat.com>, linux-kernel@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
@@ -71,76 +67,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Take the vCPU's mmu_seq snapshot as an "unsigned long" instead of an "int"
-when checking to see if a page fault is stale, as the sequence count is
-stored as an "unsigned long" everywhere else in KVM.  This fixes a bug
-where KVM will effectively hang vCPUs due to always thinking page faults
-are stale, which results in KVM refusing to "fix" faults.
+Disable the TDP MMU by default in v5.15 kernels to "fix" several severe
+performance bugs that have since been found and fixed in the TDP MMU, but
+are unsuitable for backporting to v5.15.
 
-mmu_invalidate_seq (n=C3=A9e mmu_notifier_seq) is a sequence counter used w=
-hen
-KVM is handling page faults to detect if userspace mappings relevant to
-the guest were invalidated between snapshotting the counter and acquiring
-mmu_lock, i.e. to ensure that the userspace mapping KVM is using to
-resolve the page fault is fresh.  If KVM sees that the counter has
-changed, KVM simply resumes the guest without fixing the fault.
+The problematic bugs are fixed by upstream commit edbdb43fc96b ("KVM:
+x86: Preserve TDP MMU roots until they are explicitly invalidated") and
+commit 01b31714bd90 ("KVM: x86: Do not unload MMU roots when only toggling
+CR0.WP with TDP enabled").  Both commits fix scenarios where KVM will
+rebuild all TDP MMU page tables in paths that are frequently hit by
+certain guest workloads.  While not exactly common, the guest workloads
+are far from rare.  The fallout of rebuilding TDP MMU page tables can be
+so severe in some cases that it induces soft lockups in the guest.
 
-What _should_ happen is that the source of the mmu_notifier invalidations
-eventually goes away, mmu_invalidate_seq becomes stable, and KVM can once
-again fix guest page fault(s).
+Commit edbdb43fc96b would require _significant_ effort and churn to
+backport due it depending on a major rework that was done in v5.18.
 
-But for a long-lived VM and/or a VM that the host just doesn't particularly
-like, it's possible for a VM to be on the receiving end of 2 billion (with
-a B) mmu_notifier invalidations.  When that happens, bit 31 will be set in
-mmu_invalidate_seq.  This causes the value to be turned into a 32-bit
-negative value when implicitly cast to an "int" by is_page_fault_stale(),
-and then sign-extended into a 64-bit unsigned when the signed "int" is
-implicitly cast back to an "unsigned long" on the call to
-mmu_invalidate_retry_hva().
+Commit 01b31714bd90 has far fewer direct conflicts, but has several subtle
+_known_ dependencies, and it's unclear whether or not there are more
+unknown dependencies that have been missed.
 
-As a result of the casting and sign-extension, given a sequence counter of
-e.g. 0x8002dc25, mmu_invalidate_retry_hva() ends up doing
+Lastly, disabling the TDP MMU in v5.15 kernels also fixes a lurking train
+wreck started by upstream commit a955cad84cda ("KVM: x86/mmu: Retry page
+fault if root is invalidated by memslot update").  That commit was tagged
+for stable to fix a memory leak, but didn't cherry-pick cleanly and was
+never backported to v5.15.  Which is extremely fortunate, as it introduced
+not one but two bugs, one of which was fixed by upstream commit
+18c841e1f411 ("KVM: x86: Retry page fault if MMU reload is pending and
+root has no sp"), while the other was unknowingly fixed by upstream
+commit ba6e3fe25543 ("KVM: x86/mmu: Grab mmu_invalidate_seq in
+kvm_faultin_pfn()") in v6.3 (a one-off fix will be made for v6.1 kernels,
+which did receive a backport for a955cad84cda).  Disabling the TDP MMU
+by default reduces the probability of breaking v5.15 kernels by
+backporting only a subset of the fixes.
 
-	if (0x8002dc25 !=3D 0xffffffff8002dc25)
+As far as what is lost by disabling the TDP MMU, the main selling point of
+the TDP MMU is its ability to service page fault VM-Exits in parallel,
+i.e. the main benefactors of the TDP MMU are deployments of large VMs
+(hundreds of vCPUs), and in particular delployments that live-migrate such
+VMs and thus need to fault-in huge amounts of memory on many vCPUs after
+restarting the VM after migration.
 
-and signals that the page fault is stale and needs to be retried even
-though the sequence counter is stable, and KVM effectively hangs any vCPU
-that takes a page fault (EPT violation or #NPF when TDP is enabled).
+Smaller VMs can see performance improvements, but nowhere enough to make
+up for the TDP MMU (in v5.15) absolutely cratering performance for some
+workloads.  And practically speaking, anyone that is deploying and
+migrating VMs with hundreds of vCPUs is likely rolling their own kernel,
+not using a stock v5.15 series kernel.
 
-Note, upstream commit ba6e3fe25543 ("KVM: x86/mmu: Grab mmu_invalidate_seq
-in kvm_faultin_pfn()") unknowingly fixed the bug in v6.3 when refactoring
-how KVM tracks the sequence counter snapshot.
+This reverts commit 71ba3f3189c78f756a659568fb473600fd78f207.
 
-Reported-by: Brian Rak <brak@vultr.com>
-Reported-by: Amaan Cheval <amaan.cheval@gmail.com>
-Reported-by: Eric Wheeler <kvm@lists.ewheeler.net>
-Closes: https://lore.kernel.org/all/f023d927-52aa-7e08-2ee5-59a2fbc65953@ga=
-meservers.com
-Fixes: a955cad84cda ("KVM: x86/mmu: Retry page fault if root is invalidated=
- by memslot update")
+Link: https://lore.kernel.org/all/ZDmEGM+CgYpvDLh6@google.com
+Link: https://lore.kernel.org/all/f023d927-52aa-7e08-2ee5-59a2fbc65953@gameservers.com
+Cc: Jeremi Piotrowski <jpiotrowski@linux.microsoft.com>
+Cc: Mathias Krause <minipli@grsecurity.net>
 Signed-off-by: Sean Christopherson <seanjc@google.com>
 ---
- arch/x86/kvm/mmu/mmu.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kvm/mmu/tdp_mmu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index 230108a90cf3..beca03556379 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -4212,7 +4212,8 @@ static int kvm_faultin_pfn(struct kvm_vcpu *vcpu, str=
-uct kvm_page_fault *fault)
-  * root was invalidated by a memslot update or a relevant mmu_notifier fir=
-ed.
-  */
- static bool is_page_fault_stale(struct kvm_vcpu *vcpu,
--				struct kvm_page_fault *fault, int mmu_seq)
-+				struct kvm_page_fault *fault,
-+				unsigned long mmu_seq)
- {
- 	struct kvm_mmu_page *sp =3D to_shadow_page(vcpu->arch.mmu->root.hpa);
-=20
+diff --git a/arch/x86/kvm/mmu/tdp_mmu.c b/arch/x86/kvm/mmu/tdp_mmu.c
+index 6c2bb60ccd88..7a64fb238044 100644
+--- a/arch/x86/kvm/mmu/tdp_mmu.c
++++ b/arch/x86/kvm/mmu/tdp_mmu.c
+@@ -10,7 +10,7 @@
+ #include <asm/cmpxchg.h>
+ #include <trace/events/kvm.h>
+ 
+-static bool __read_mostly tdp_mmu_enabled = true;
++static bool __read_mostly tdp_mmu_enabled = false;
+ module_param_named(tdp_mmu, tdp_mmu_enabled, bool, 0644);
+ 
+ /* Initializes the TDP MMU for the VM, if enabled. */
 
-base-commit: 802aacbbffe2512dce9f8f33ad99d01cfec435de
---=20
+base-commit: f6f7927ac664ba23447f8dd3c3dfe2f4ee39272f
+-- 
 2.42.0.rc2.253.gd59a3bf2b4-goog
 
