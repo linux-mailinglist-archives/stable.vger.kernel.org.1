@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C27077872D2
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68D13787363
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:03:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241912AbjHXO5T (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:57:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45544 "EHLO
+        id S242012AbjHXPDL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:03:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241988AbjHXO5O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:14 -0400
+        with ESMTP id S242076AbjHXPDF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:03:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8779A1995
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B44B5124
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:02:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1A1E966EDF
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D205C433C7;
-        Thu, 24 Aug 2023 14:57:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CECA6719C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:02:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A03C8C433C8;
+        Thu, 24 Aug 2023 15:02:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889031;
-        bh=MkTE1Fp5OAsO4XUEniFfVFKwObvnXMT8B6HVmtZl0UA=;
+        s=korg; t=1692889364;
+        bh=+Xy8nYP3pURNFq4RCmIqccSjrQnQNkmrb3DbD8+4wM4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j3KbqxhatGmxlXTKKQES005cdTzmZ8Cn0hTv/nXo/h+aj9C1sOF0OwH+v8O0yzzZ3
-         EyciMytcdW8RSFWnHVfTg3dKNyJaSgRHe1V/0+iDXVWdDWVsx7J+LcqZO6rHeQ8f14
-         KPYDIs9uEwZxWb4XD/D5fKG2Uqkn0A2N02MyOi7Y=
+        b=0N3aTIW+wlUVxoqOc0uz1B0QeAI3P5iTi+u2N2EGAmqHlglRkoji6UY17BRpndjke
+         v6J5CmZQGnjn83sgOdsGt6bZdbaBrkPUAflXPxFaUmHwqoO40zZqpUlO3XZvwk+xRC
+         /CrfWonYETVHe5dsCqYFMCezizbUqFyCxzatXRdA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Josh Poimboeuf <jpoimboe@kernel.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 129/139] x86/cpu: Rename original retbleed methods
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 109/135] serial: 8250: Fix oops for port->pm on uart_change_pm()
 Date:   Thu, 24 Aug 2023 16:50:52 +0200
-Message-ID: <20230824145029.065547436@linuxfoundation.org>
+Message-ID: <20230824145031.669940195@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,182 +53,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Tony Lindgren <tony@atomide.com>
 
-commit d025b7bac07a6e90b6b98b487f88854ad9247c39 upstream.
+[ Upstream commit dfe2aeb226fd5e19b0ee795f4f6ed8bc494c1534 ]
 
-Rename the original retbleed return thunk and untrain_ret to
-retbleed_return_thunk() and retbleed_untrain_ret().
+Unloading a hardware specific 8250 driver can produce error "Unable to
+handle kernel paging request at virtual address" about ten seconds after
+unloading the driver. This happens on uart_hangup() calling
+uart_change_pm().
 
-No functional changes.
+Turns out commit 04e82793f068 ("serial: 8250: Reinit port->pm on port
+specific driver unbind") was only a partial fix. If the hardware specific
+driver has initialized port->pm function, we need to clear port->pm too.
+Just reinitializing port->ops does not do this. Otherwise serial8250_pm()
+will call port->pm() instead of serial8250_do_pm().
 
-Suggested-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.909378169@infradead.org
+Fixes: 04e82793f068 ("serial: 8250: Reinit port->pm on port specific driver unbind")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230804131553.52927-1-tony@atomide.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/include/asm/nospec-branch.h |    8 ++++----
- arch/x86/kernel/cpu/bugs.c           |    2 +-
- arch/x86/kernel/vmlinux.lds.S        |    2 +-
- arch/x86/lib/retpoline.S             |   30 +++++++++++++++---------------
- tools/objtool/arch/x86/decode.c      |    2 +-
- tools/objtool/check.c                |    2 +-
- 6 files changed, 23 insertions(+), 23 deletions(-)
+ drivers/tty/serial/8250/8250_port.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/arch/x86/include/asm/nospec-branch.h
-+++ b/arch/x86/include/asm/nospec-branch.h
-@@ -156,7 +156,7 @@
- .endm
+diff --git a/drivers/tty/serial/8250/8250_port.c b/drivers/tty/serial/8250/8250_port.c
+index 432a438929e64..7499954c9aa76 100644
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -3231,6 +3231,7 @@ void serial8250_init_port(struct uart_8250_port *up)
+ 	struct uart_port *port = &up->port;
  
- #ifdef CONFIG_CPU_UNRET_ENTRY
--#define CALL_ZEN_UNTRAIN_RET	"call zen_untrain_ret"
-+#define CALL_ZEN_UNTRAIN_RET	"call retbleed_untrain_ret"
- #else
- #define CALL_ZEN_UNTRAIN_RET	""
- #endif
-@@ -166,7 +166,7 @@
-  * return thunk isn't mapped into the userspace tables (then again, AMD
-  * typically has NO_MELTDOWN).
-  *
-- * While zen_untrain_ret() doesn't clobber anything but requires stack,
-+ * While retbleed_untrain_ret() doesn't clobber anything but requires stack,
-  * entry_ibpb() will clobber AX, CX, DX.
-  *
-  * As such, this must be placed after every *SWITCH_TO_KERNEL_CR3 at a point
-@@ -201,11 +201,11 @@ extern void __x86_return_thunk(void);
- static inline void __x86_return_thunk(void) {}
- #endif
+ 	spin_lock_init(&port->lock);
++	port->pm = NULL;
+ 	port->ops = &serial8250_pops;
+ 	port->has_sysrq = IS_ENABLED(CONFIG_SERIAL_8250_CONSOLE);
  
--extern void zen_return_thunk(void);
-+extern void retbleed_return_thunk(void);
- extern void srso_return_thunk(void);
- extern void srso_alias_return_thunk(void);
- 
--extern void zen_untrain_ret(void);
-+extern void retbleed_untrain_ret(void);
- extern void srso_untrain_ret(void);
- extern void srso_untrain_ret_alias(void);
- 
---- a/arch/x86/kernel/cpu/bugs.c
-+++ b/arch/x86/kernel/cpu/bugs.c
-@@ -1021,7 +1021,7 @@ do_cmd_auto:
- 		setup_force_cpu_cap(X86_FEATURE_UNRET);
- 
- 		if (IS_ENABLED(CONFIG_RETHUNK))
--			x86_return_thunk = zen_return_thunk;
-+			x86_return_thunk = retbleed_return_thunk;
- 
- 		if (boot_cpu_data.x86_vendor != X86_VENDOR_AMD &&
- 		    boot_cpu_data.x86_vendor != X86_VENDOR_HYGON)
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -512,7 +512,7 @@ INIT_PER_CPU(irq_stack_backing_store);
- #endif
- 
- #ifdef CONFIG_RETHUNK
--. = ASSERT((zen_return_thunk & 0x3f) == 0, "zen_return_thunk not cacheline-aligned");
-+. = ASSERT((retbleed_return_thunk & 0x3f) == 0, "retbleed_return_thunk not cacheline-aligned");
- . = ASSERT((srso_safe_ret & 0x3f) == 0, "srso_safe_ret not cacheline-aligned");
- #endif
- 
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -129,32 +129,32 @@ SYM_CODE_END(srso_alias_return_thunk)
- 
- /*
-  * Safety details here pertain to the AMD Zen{1,2} microarchitecture:
-- * 1) The RET at zen_return_thunk must be on a 64 byte boundary, for
-+ * 1) The RET at retbleed_return_thunk must be on a 64 byte boundary, for
-  *    alignment within the BTB.
-- * 2) The instruction at zen_untrain_ret must contain, and not
-+ * 2) The instruction at retbleed_untrain_ret must contain, and not
-  *    end with, the 0xc3 byte of the RET.
-  * 3) STIBP must be enabled, or SMT disabled, to prevent the sibling thread
-  *    from re-poisioning the BTB prediction.
-  */
- 	.align 64
--	.skip 64 - (zen_return_thunk - zen_untrain_ret), 0xcc
--SYM_FUNC_START_NOALIGN(zen_untrain_ret);
-+	.skip 64 - (retbleed_return_thunk - retbleed_untrain_ret), 0xcc
-+SYM_FUNC_START_NOALIGN(retbleed_untrain_ret);
- 
- 	/*
--	 * As executed from zen_untrain_ret, this is:
-+	 * As executed from retbleed_untrain_ret, this is:
- 	 *
- 	 *   TEST $0xcc, %bl
- 	 *   LFENCE
--	 *   JMP zen_return_thunk
-+	 *   JMP retbleed_return_thunk
- 	 *
- 	 * Executing the TEST instruction has a side effect of evicting any BTB
- 	 * prediction (potentially attacker controlled) attached to the RET, as
--	 * zen_return_thunk + 1 isn't an instruction boundary at the moment.
-+	 * retbleed_return_thunk + 1 isn't an instruction boundary at the moment.
- 	 */
- 	.byte	0xf6
- 
- 	/*
--	 * As executed from zen_return_thunk, this is a plain RET.
-+	 * As executed from retbleed_return_thunk, this is a plain RET.
- 	 *
- 	 * As part of the TEST above, RET is the ModRM byte, and INT3 the imm8.
- 	 *
-@@ -166,13 +166,13 @@ SYM_FUNC_START_NOALIGN(zen_untrain_ret);
- 	 * With SMT enabled and STIBP active, a sibling thread cannot poison
- 	 * RET's prediction to a type of its choice, but can evict the
- 	 * prediction due to competitive sharing. If the prediction is
--	 * evicted, zen_return_thunk will suffer Straight Line Speculation
-+	 * evicted, retbleed_return_thunk will suffer Straight Line Speculation
- 	 * which will be contained safely by the INT3.
- 	 */
--SYM_INNER_LABEL(zen_return_thunk, SYM_L_GLOBAL)
-+SYM_INNER_LABEL(retbleed_return_thunk, SYM_L_GLOBAL)
- 	ret
- 	int3
--SYM_CODE_END(zen_return_thunk)
-+SYM_CODE_END(retbleed_return_thunk)
- 
- 	/*
- 	 * Ensure the TEST decoding / BTB invalidation is complete.
-@@ -183,13 +183,13 @@ SYM_CODE_END(zen_return_thunk)
- 	 * Jump back and execute the RET in the middle of the TEST instruction.
- 	 * INT3 is for SLS protection.
- 	 */
--	jmp zen_return_thunk
-+	jmp retbleed_return_thunk
- 	int3
--SYM_FUNC_END(zen_untrain_ret)
--__EXPORT_THUNK(zen_untrain_ret)
-+SYM_FUNC_END(retbleed_untrain_ret)
-+__EXPORT_THUNK(retbleed_untrain_ret)
- 
- /*
-- * SRSO untraining sequence for Zen1/2, similar to zen_untrain_ret()
-+ * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
-  * above. On kernel entry, srso_untrain_ret() is executed which is a
-  *
-  * movabs $0xccccccc308c48348,%rax
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -728,5 +728,5 @@ bool arch_is_rethunk(struct symbol *sym)
- 	return !strcmp(sym->name, "__x86_return_thunk") ||
- 	       !strcmp(sym->name, "srso_untrain_ret") ||
- 	       !strcmp(sym->name, "srso_safe_ret") ||
--	       !strcmp(sym->name, "zen_return_thunk");
-+	       !strcmp(sym->name, "retbleed_return_thunk");
- }
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -1228,7 +1228,7 @@ static int add_jump_destinations(struct
- 				continue;
- 
- 			/*
--			 * This is a special case for zen_untrain_ret().
-+			 * This is a special case for retbleed_untrain_ret().
- 			 * It jumps to __x86_return_thunk(), but objtool
- 			 * can't find the thunk's starting RET
- 			 * instruction, because the RET is also in the
+-- 
+2.40.1
+
 
 
