@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F7AE787317
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:00:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2E29787285
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:55:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241954AbjHXPAD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:00:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53198 "EHLO
+        id S241861AbjHXOyi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:54:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48780 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242013AbjHXO7u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:59:50 -0400
+        with ESMTP id S241875AbjHXOyR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:54:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE00DC7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:59:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9971995
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:54:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56773670B4
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:59:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 688B7C433C7;
-        Thu, 24 Aug 2023 14:59:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F37E266F12
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:54:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1108BC433C7;
+        Thu, 24 Aug 2023 14:54:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889186;
-        bh=rcbs7nWe86NZhJT+l7L+YkkrKoxBkPF3Xh4vfQgwch0=;
+        s=korg; t=1692888854;
+        bh=CmD37yCS0W9/zt85kp8DbXO4L8Qr+ez1h2V1K9sTpeA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ARO3nk+CG19QbZpiRxLIC5WWyIRQomV/n1gounGZVDiZajljn9KIUuhevzhMbVQLf
-         HsAW4UYReKYhaTdpNSdKGB63/N2yiSiGYHtxROKRp2/egqC/arQmF8IzeQ7exlQDU9
-         vrKIP/Vi/cJLmd7LvB3cnYnUB44h4Kz45vd7XNtg=
+        b=x4wbvl5ebegducIeo16K6mk4ntJrADm9QB+Z8KImQHSc6at8UHGG6KcxcPI4RNnn7
+         5V2rnf2DiEdlDmdr37G9b4BCX1FCz5zUNGq7p5Uic40ei38e8jbAQMnNWatg+gaZ+m
+         dYyMQSc4GyU1FrO/dt+yLTMvOfpuVPg1YHlrXSqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fred Eckert <Frede@cmslaser.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
+        Shawn Guo <shawnguo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 045/135] iio: adc: stx104: Implement and utilize register structures
+Subject: [PATCH 5.15 065/139] ARM: dts: nxp/imx6sll: fix wrong property name in usbphy node
 Date:   Thu, 24 Aug 2023 16:49:48 +0200
-Message-ID: <20230824145028.883308735@linuxfoundation.org>
+Message-ID: <20230824145026.478683833@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,211 +54,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: William Breathitt Gray <william.gray@linaro.org>
+From: Xu Yang <xu.yang_2@nxp.com>
 
-[ Upstream commit 6cfd14c54b1f42f29097244c1b6208f8268d7d5b ]
+[ Upstream commit ee70b908f77a9d8f689dea986f09e6d7dc481934 ]
 
-Reduce magic numbers and improve code readability by implementing and
-utilizing named register data structures.
+Property name "phy-3p0-supply" is used instead of "phy-reg_3p0-supply".
 
-Tested-by: Fred Eckert <Frede@cmslaser.com>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Link: https://lore.kernel.org/r/8cb91d5b53e57b066120e42ea07000d6c7ef5543.1657213745.git.william.gray@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
+Fixes: 9f30b6b1a957 ("ARM: dts: imx: Add basic dtsi file for imx6sll")
+cc: <stable@vger.kernel.org>
+Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stx104.c | 74 +++++++++++++++++++++++++++-------------
- 1 file changed, 50 insertions(+), 24 deletions(-)
+ arch/arm/boot/dts/imx6sll.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
-index 7552351bfed9e..48a91a95e597b 100644
---- a/drivers/iio/adc/stx104.c
-+++ b/drivers/iio/adc/stx104.c
-@@ -16,6 +16,7 @@
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/spinlock.h>
-+#include <linux/types.h>
+diff --git a/arch/arm/boot/dts/imx6sll.dtsi b/arch/arm/boot/dts/imx6sll.dtsi
+index 2873369a57c02..3659fd5ecfa62 100644
+--- a/arch/arm/boot/dts/imx6sll.dtsi
++++ b/arch/arm/boot/dts/imx6sll.dtsi
+@@ -552,7 +552,7 @@ usbphy2: usb-phy@20ca000 {
+ 				reg = <0x020ca000 0x1000>;
+ 				interrupts = <GIC_SPI 41 IRQ_TYPE_LEVEL_HIGH>;
+ 				clocks = <&clks IMX6SLL_CLK_USBPHY2>;
+-				phy-reg_3p0-supply = <&reg_3p0>;
++				phy-3p0-supply = <&reg_3p0>;
+ 				fsl,anatop = <&anatop>;
+ 			};
  
- #define STX104_OUT_CHAN(chan) {				\
- 	.type = IIO_VOLTAGE,				\
-@@ -44,14 +45,36 @@ static unsigned int num_stx104;
- module_param_hw_array(base, uint, ioport, &num_stx104, 0);
- MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
- 
-+/**
-+ * struct stx104_reg - device register structure
-+ * @ssr_ad:	Software Strobe Register and ADC Data
-+ * @achan:	ADC Channel
-+ * @dio:	Digital I/O
-+ * @dac:	DAC Channels
-+ * @cir_asr:	Clear Interrupts and ADC Status
-+ * @acr:	ADC Control
-+ * @pccr_fsh:	Pacer Clock Control and FIFO Status MSB
-+ * @acfg:	ADC Configuration
-+ */
-+struct stx104_reg {
-+	u16 ssr_ad;
-+	u8 achan;
-+	u8 dio;
-+	u16 dac[2];
-+	u8 cir_asr;
-+	u8 acr;
-+	u8 pccr_fsh;
-+	u8 acfg;
-+};
-+
- /**
-  * struct stx104_iio - IIO device private data structure
-  * @chan_out_states:	channels' output states
-- * @base:		base port address of the IIO device
-+ * @reg:		I/O address offset for the device registers
-  */
- struct stx104_iio {
- 	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
--	void __iomem *base;
-+	struct stx104_reg __iomem *reg;
- };
- 
- /**
-@@ -64,7 +87,7 @@ struct stx104_iio {
- struct stx104_gpio {
- 	struct gpio_chip chip;
- 	spinlock_t lock;
--	void __iomem *base;
-+	u8 __iomem *base;
- 	unsigned int out_state;
- };
- 
-@@ -72,6 +95,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
- {
- 	struct stx104_iio *const priv = iio_priv(indio_dev);
-+	struct stx104_reg __iomem *const reg = priv->reg;
- 	unsigned int adc_config;
- 	int adbu;
- 	int gain;
-@@ -79,7 +103,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_HARDWAREGAIN:
- 		/* get gain configuration */
--		adc_config = ioread8(priv->base + 11);
-+		adc_config = ioread8(&reg->acfg);
- 		gain = adc_config & 0x3;
- 
- 		*val = 1 << gain;
-@@ -91,24 +115,26 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 		}
- 
- 		/* select ADC channel */
--		iowrite8(chan->channel | (chan->channel << 4), priv->base + 2);
-+		iowrite8(chan->channel | (chan->channel << 4), &reg->achan);
- 
--		/* trigger ADC sample capture and wait for completion */
--		iowrite8(0, priv->base);
--		while (ioread8(priv->base + 8) & BIT(7));
-+		/* trigger ADC sample capture by writing to the 8-bit
-+		 * Software Strobe Register and wait for completion
-+		 */
-+		iowrite8(0, &reg->ssr_ad);
-+		while (ioread8(&reg->cir_asr) & BIT(7));
- 
--		*val = ioread16(priv->base);
-+		*val = ioread16(&reg->ssr_ad);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_OFFSET:
- 		/* get ADC bipolar/unipolar configuration */
--		adc_config = ioread8(priv->base + 11);
-+		adc_config = ioread8(&reg->acfg);
- 		adbu = !(adc_config & BIT(2));
- 
- 		*val = -32768 * adbu;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		/* get ADC bipolar/unipolar and gain configuration */
--		adc_config = ioread8(priv->base + 11);
-+		adc_config = ioread8(&reg->acfg);
- 		adbu = !(adc_config & BIT(2));
- 		gain = adc_config & 0x3;
- 
-@@ -130,16 +156,16 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 		/* Only four gain states (x1, x2, x4, x8) */
- 		switch (val) {
- 		case 1:
--			iowrite8(0, priv->base + 11);
-+			iowrite8(0, &priv->reg->acfg);
- 			break;
- 		case 2:
--			iowrite8(1, priv->base + 11);
-+			iowrite8(1, &priv->reg->acfg);
- 			break;
- 		case 4:
--			iowrite8(2, priv->base + 11);
-+			iowrite8(2, &priv->reg->acfg);
- 			break;
- 		case 8:
--			iowrite8(3, priv->base + 11);
-+			iowrite8(3, &priv->reg->acfg);
- 			break;
- 		default:
- 			return -EINVAL;
-@@ -153,7 +179,7 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 				return -EINVAL;
- 
- 			priv->chan_out_states[chan->channel] = val;
--			iowrite16(val, priv->base + 4 + 2 * chan->channel);
-+			iowrite16(val, &priv->reg->dac[chan->channel]);
- 
- 			return 0;
- 		}
-@@ -307,15 +333,15 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	}
- 
- 	priv = iio_priv(indio_dev);
--	priv->base = devm_ioport_map(dev, base[id], STX104_EXTENT);
--	if (!priv->base)
-+	priv->reg = devm_ioport_map(dev, base[id], STX104_EXTENT);
-+	if (!priv->reg)
- 		return -ENOMEM;
- 
- 	indio_dev->info = &stx104_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
- 	/* determine if differential inputs */
--	if (ioread8(priv->base + 8) & BIT(5)) {
-+	if (ioread8(&priv->reg->cir_asr) & BIT(5)) {
- 		indio_dev->num_channels = ARRAY_SIZE(stx104_channels_diff);
- 		indio_dev->channels = stx104_channels_diff;
- 	} else {
-@@ -326,14 +352,14 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	indio_dev->name = dev_name(dev);
- 
- 	/* configure device for software trigger operation */
--	iowrite8(0, priv->base + 9);
-+	iowrite8(0, &priv->reg->acr);
- 
- 	/* initialize gain setting to x1 */
--	iowrite8(0, priv->base + 11);
-+	iowrite8(0, &priv->reg->acfg);
- 
- 	/* initialize DAC output to 0V */
--	iowrite16(0, priv->base + 4);
--	iowrite16(0, priv->base + 6);
-+	iowrite16(0, &priv->reg->dac[0]);
-+	iowrite16(0, &priv->reg->dac[1]);
- 
- 	stx104gpio->chip.label = dev_name(dev);
- 	stx104gpio->chip.parent = dev;
-@@ -348,7 +374,7 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	stx104gpio->chip.get_multiple = stx104_gpio_get_multiple;
- 	stx104gpio->chip.set = stx104_gpio_set;
- 	stx104gpio->chip.set_multiple = stx104_gpio_set_multiple;
--	stx104gpio->base = priv->base + 3;
-+	stx104gpio->base = &priv->reg->dio;
- 	stx104gpio->out_state = 0x0;
- 
- 	spin_lock_init(&stx104gpio->lock);
 -- 
 2.40.1
 
