@@ -2,50 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5F0D787274
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:54:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D4567872E9
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241534AbjHXOyG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:54:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50786 "EHLO
+        id S239485AbjHXO6X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:58:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241863AbjHXOxn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:53:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AA2219A9
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:53:31 -0700 (PDT)
+        with ESMTP id S241970AbjHXO6H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E89DC7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3065E64452
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:53:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41196C433C7;
-        Thu, 24 Aug 2023 14:53:30 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1F8F67033
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17D2C433C8;
+        Thu, 24 Aug 2023 14:58:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888810;
-        bh=hk7DY3fYO7HyvsFp7Nhn0t3HcnF407ukLKHFS1ScQGg=;
+        s=korg; t=1692889084;
+        bh=p3NpI9nLbEH3pDJOR95VYufBYGYbPvLfteQstLCh94o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fI7wSwjFso+qjcduMeqhLGJoMRrZuIKTYqGEogE9ttbvghZlwr2RJsjC+uBdXRY0V
-         zaKVMGwMyiFMW0CWqVOjjEBnjSa+X9ikKF6wgr22TkNO5HMb6VujOloYDOoM4H9YLa
-         0Gbe2sspy1P237AttkMppZStsiQ5kDOINBfV9hiU=
+        b=OpBpzFs5pBeHQP4q8tqIcd4rjyYqhC+Mh8dibRbaxHN6gRle+XINtE82Zv/FfPwUg
+         KKwUIpwQExw0so6k3wxSRBHza0BLzE8A09zvlZFMYJ8IoB++UFwnaOGaU30pPcxNb6
+         fgLZXgvgMiy06UnPHWbylNvnl9B9nzzosja7StuI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Prashanth K <quic_prashk@quicinc.com>,
+        patches@lists.linux.dev,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 021/139] usb: gadget: u_serial: Avoid spinlock recursion in __gs_console_push
+Subject: [PATCH 5.10 001/135] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm
 Date:   Thu, 24 Aug 2023 16:49:04 +0200
-Message-ID: <20230824145024.488424147@linuxfoundation.org>
+Message-ID: <20230824145027.078587031@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,59 +58,153 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Prashanth K <quic_prashk@quicinc.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit e5990469943c711cb00bfde6338d2add6c6d0bfe ]
+[ Upstream commit 5def5c1c15bf22934ee227af85c1716762f3829f ]
 
-When serial console over USB is enabled, gs_console_connect
-queues gs_console_work, where it acquires the spinlock and
-queues the usb request, and this request goes to gadget layer.
-Now consider a situation where gadget layer prints something
-to dmesg, this will eventually call gs_console_write() which
-requires cons->lock. And this causes spinlock recursion. Avoid
-this by excluding usb_ep_queue from the spinlock.
+Even if sdhci_pltfm_pmops is specified for PM, this driver doesn't apply
+sdhci_pltfm, so the structure is not correctly referenced in PM functions.
+This applies sdhci_pltfm to this driver to fix this issue.
 
- spin_lock_irqsave //needs cons->lock
- gs_console_write
-	.
-	.
- _printk
- __warn_printk
- dev_warn/pr_err
-	.
-	.
- [USB Gadget Layer]
-	.
-	.
- usb_ep_queue
- gs_console_work
- __gs_console_push // acquires cons->lock
- process_one_work
+- Call sdhci_pltfm_init() instead of sdhci_alloc_host() and
+  other functions that covered by sdhci_pltfm.
+- Move ops and quirks to sdhci_pltfm_data
+- Replace sdhci_priv() with own private function sdhci_f_sdh30_priv().
 
-Signed-off-by: Prashanth K <quic_prashk@quicinc.com>
-Link: https://lore.kernel.org/r/1683638872-6885-1-git-send-email-quic_prashk@quicinc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 87a507459f49 ("mmc: sdhci: host: add new f_sdh30")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230630004533.26644-1-hayashi.kunihiko@socionext.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/u_serial.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/mmc/host/sdhci_f_sdh30.c | 60 ++++++++++++++------------------
+ 1 file changed, 27 insertions(+), 33 deletions(-)
 
-diff --git a/drivers/usb/gadget/function/u_serial.c b/drivers/usb/gadget/function/u_serial.c
-index a8d1e8b192c55..f975dc03a1904 100644
---- a/drivers/usb/gadget/function/u_serial.c
-+++ b/drivers/usb/gadget/function/u_serial.c
-@@ -915,8 +915,11 @@ static void __gs_console_push(struct gs_console *cons)
- 	}
+diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_sdh30.c
+index 6c4f43e112826..8876fd1c7eee0 100644
+--- a/drivers/mmc/host/sdhci_f_sdh30.c
++++ b/drivers/mmc/host/sdhci_f_sdh30.c
+@@ -26,9 +26,16 @@ struct f_sdhost_priv {
+ 	bool enable_cmd_dat_delay;
+ };
  
- 	req->length = size;
++static void *sdhci_f_sdhost_priv(struct sdhci_host *host)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
 +
-+	spin_unlock_irq(&cons->lock);
- 	if (usb_ep_queue(ep, req, GFP_ATOMIC))
- 		req->length = 0;
-+	spin_lock_irq(&cons->lock);
++	return sdhci_pltfm_priv(pltfm_host);
++}
++
+ static void sdhci_f_sdh30_soft_voltage_switch(struct sdhci_host *host)
+ {
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 	u32 ctrl = 0;
+ 
+ 	usleep_range(2500, 3000);
+@@ -61,7 +68,7 @@ static unsigned int sdhci_f_sdh30_get_min_clock(struct sdhci_host *host)
+ 
+ static void sdhci_f_sdh30_reset(struct sdhci_host *host, u8 mask)
+ {
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 	u32 ctl;
+ 
+ 	if (sdhci_readw(host, SDHCI_CLOCK_CONTROL) == 0)
+@@ -85,30 +92,32 @@ static const struct sdhci_ops sdhci_f_sdh30_ops = {
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+ };
+ 
++static const struct sdhci_pltfm_data sdhci_f_sdh30_pltfm_data = {
++	.ops = &sdhci_f_sdh30_ops,
++	.quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC
++		| SDHCI_QUIRK_INVERTED_WRITE_PROTECT,
++	.quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE
++		|  SDHCI_QUIRK2_TUNING_WORK_AROUND,
++};
++
+ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ {
+ 	struct sdhci_host *host;
+ 	struct device *dev = &pdev->dev;
+-	int irq, ctrl = 0, ret = 0;
++	int ctrl = 0, ret = 0;
+ 	struct f_sdhost_priv *priv;
++	struct sdhci_pltfm_host *pltfm_host;
+ 	u32 reg = 0;
+ 
+-	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
+-		return irq;
+-
+-	host = sdhci_alloc_host(dev, sizeof(struct f_sdhost_priv));
++	host = sdhci_pltfm_init(pdev, &sdhci_f_sdh30_pltfm_data,
++				sizeof(struct f_sdhost_priv));
+ 	if (IS_ERR(host))
+ 		return PTR_ERR(host);
+ 
+-	priv = sdhci_priv(host);
++	pltfm_host = sdhci_priv(host);
++	priv = sdhci_pltfm_priv(pltfm_host);
+ 	priv->dev = dev;
+ 
+-	host->quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
+-		       SDHCI_QUIRK_INVERTED_WRITE_PROTECT;
+-	host->quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE |
+-			SDHCI_QUIRK2_TUNING_WORK_AROUND;
+-
+ 	priv->enable_cmd_dat_delay = device_property_read_bool(dev,
+ 						"fujitsu,cmd-dat-delay-select");
+ 
+@@ -116,18 +125,6 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ 	if (ret)
+ 		goto err;
+ 
+-	platform_set_drvdata(pdev, host);
+-
+-	host->hw_name = "f_sdh30";
+-	host->ops = &sdhci_f_sdh30_ops;
+-	host->irq = irq;
+-
+-	host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(host->ioaddr)) {
+-		ret = PTR_ERR(host->ioaddr);
+-		goto err;
+-	}
+-
+ 	if (dev_of_node(dev)) {
+ 		sdhci_get_of_property(pdev);
+ 
+@@ -182,23 +179,20 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ err_clk:
+ 	clk_disable_unprepare(priv->clk_iface);
+ err:
+-	sdhci_free_host(host);
++	sdhci_pltfm_free(pdev);
++
+ 	return ret;
  }
  
- static void gs_console_work(struct work_struct *work)
+ static int sdhci_f_sdh30_remove(struct platform_device *pdev)
+ {
+ 	struct sdhci_host *host = platform_get_drvdata(pdev);
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
+-
+-	sdhci_remove_host(host, readl(host->ioaddr + SDHCI_INT_STATUS) ==
+-			  0xffffffff);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 
+ 	clk_disable_unprepare(priv->clk_iface);
+ 	clk_disable_unprepare(priv->clk);
+ 
+-	sdhci_free_host(host);
+-	platform_set_drvdata(pdev, NULL);
++	sdhci_pltfm_unregister(pdev);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
