@@ -2,52 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A56D786FFE
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A98378702B
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 15:24:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240448AbjHXNOR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 09:14:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47576 "EHLO
+        id S239590AbjHXNX4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 09:23:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240529AbjHXNNw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:13:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38C4719A1;
-        Thu, 24 Aug 2023 06:13:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C687662997;
-        Thu, 24 Aug 2023 13:13:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4844C433C7;
-        Thu, 24 Aug 2023 13:13:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692882830;
-        bh=KvEcWLiBBY8f1K358gTSNgZA4gcGcXcp2kJ+4ITugEM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=CmGMcjNJfWSNDKvI2a0KTa/PxceHJqg2tDiD2vLcTKGqwPi/W9EcJojYMHvBBjInr
-         DwfYbO/vPp52rfqXKkU8yjYrWNccE+KRJWJj62Fi/66XGHbNDJsMdACNlpnFTFQYVo
-         k53U/tOUZpStkS7K60Jh5h182Fs5cx/HaCOEzZ7g=
-Date:   Thu, 24 Aug 2023 15:13:47 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+        with ESMTP id S241152AbjHXNXy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 09:23:54 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7381F19A1
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 06:23:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692883432; x=1724419432;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=4Q9K6P4vwc1oLvCJ3m1fHBD0HH4SALhn4Uqx9s5+pKk=;
+  b=VNuhuyuGuJg31HQKEojcIH2Ctz6ucm3UOK/EmrJVQPmVK2K1LwYrSjLa
+   vUyN/vSZQiNjWe459qNcYy+jG6teCBV2bNZoI5zgnpmXv0f9/VyDDGXr4
+   4Juez8wLDvUrUr4i62J+ghXBXMLdgQ/WtrGCJPHtCpYBA53QnOU9AEIxm
+   b+7H0HX/LllIPhpLlBQEV0bbESrIwr6muVPPIrgnGp0sxKerf2ivDcK74
+   NKd7BH17gIyOYllTU0FV9qXhMKHEPXCIoQ/3xkjsbMEpiEbn4A1BZFGbO
+   JmK+r+CB7nzYc1wwekVQL5kBPq+wYFWzQ4VDEbzNLoYapcza396cnHCBb
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="440784056"
+X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
+   d="scan'208";a="440784056"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 06:16:10 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="766540999"
+X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
+   d="scan'208";a="766540999"
+Received: from lkp-server02.sh.intel.com (HELO daf8bb0a381d) ([10.239.97.151])
+  by orsmga008.jf.intel.com with ESMTP; 24 Aug 2023 06:16:09 -0700
+Received: from kbuild by daf8bb0a381d with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qZAC1-0002hM-01;
+        Thu, 24 Aug 2023 13:16:09 +0000
+Date:   Thu, 24 Aug 2023 21:15:43 +0800
+From:   kernel test robot <lkp@intel.com>
 To:     Alexandra Diupina <adiupina@astralinux.ru>
-Cc:     Joerg Roedel <joro@8bytes.org>, stable@vger.kernel.org,
-        Will Deacon <will@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        iommu@lists.linux-foundation.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org, linux-kernel@vger.kernel.org
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
 Subject: Re: [PATCH] [PATCH 5.10] iommu/mediatek: remove redundant comparison
-Message-ID: <2023082441-sulfide-abstain-fffa@gregkh>
-References: <20230824130954.29688-1-adiupina@astralinux.ru>
+Message-ID: <ZOdX/4Sqkr7y5v5D@24313c2339b3>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 In-Reply-To: <20230824130954.29688-1-adiupina@astralinux.ru>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,42 +62,23 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 04:09:54PM +0300, Alexandra Diupina wrote:
-> iommu_device_register always returns 0 in 4.11-5.12, so
-> we need to remove redundant comparison with 0
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Fixes: b16c0170b53c ("iommu/mediatek: Make use of iommu_device_register interface")
-> Signed-off-by: Alexandra Diupina <adiupina@astralinux.ru>
-> ---
->  drivers/iommu/mtk_iommu.c | 4 +---
->  1 file changed, 1 insertion(+), 3 deletions(-)
-> 
-> diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-> index 051815c9d2bb..208c47218b75 100644
-> --- a/drivers/iommu/mtk_iommu.c
-> +++ b/drivers/iommu/mtk_iommu.c
-> @@ -748,9 +748,7 @@ static int mtk_iommu_probe(struct platform_device *pdev)
->  	iommu_device_set_ops(&data->iommu, &mtk_iommu_ops);
->  	iommu_device_set_fwnode(&data->iommu, &pdev->dev.of_node->fwnode);
->  
-> -	ret = iommu_device_register(&data->iommu);
-> -	if (ret)
-> -		return ret;
-> +	iommu_device_register(&data->iommu);
->  
->  	spin_lock_init(&data->tlb_lock);
->  	list_add_tail(&data->list, &m4ulist);
-> -- 
-> 2.30.2
-> 
+Hi,
 
-<formletter>
+Thanks for your patch.
 
-This is not the correct way to submit patches for inclusion in the
-stable kernel tree.  Please read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-for how to do this properly.
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-</formletter>
+Rule: 'Cc: stable@vger.kernel.org' or 'commit <sha1> upstream.'
+Subject: [PATCH] [PATCH 5.10] iommu/mediatek: remove redundant comparison
+Link: https://lore.kernel.org/stable/20230824130954.29688-1-adiupina%40astralinux.ru
+
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
+
+Please ignore this mail if the patch is not relevant for upstream.
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
+
