@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 627E57876C4
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:20:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F08DD7876C9
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:20:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242724AbjHXRTi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S242728AbjHXRTi (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 24 Aug 2023 13:19:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37150 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37278 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242862AbjHXRTZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:19:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E5E19BC
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:19:23 -0700 (PDT)
+        with ESMTP id S242874AbjHXRT2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:19:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6236F12C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:19:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3728867531
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:19:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47140C433C8;
-        Thu, 24 Aug 2023 17:19:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0150567531
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:19:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A716C433C8;
+        Thu, 24 Aug 2023 17:19:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897562;
-        bh=jL91JGhduGqDmhVHQxr/6PwtRdiMt3uSbglNSmeDnOE=;
+        s=korg; t=1692897565;
+        bh=B1vfCA72aIVK/fgKpRM9Kjb+pURmZHNJTaqcz9Gn9+0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZsCXWNRBbCXtGHv//tKdPA+7h1IMh06dFJflhM8iRyBfc3SY261wuJMaBHCxcDSY+
-         OKs6galTHEzFtdjUDxNtHG5krgnQ6oBYrW4vdNAyD6HvKlHVg0AZTopTq59Ox/+WbR
-         oIJPK5jyK5OxwJNrENFpZqlV+QwU173dTTQbEsgg=
+        b=UdvihBQvhphqE/Arg4eG9QsUSnbgLIRWjJgaqnm/wb9+GfRpszSDgeGKfPPcf2vOL
+         TYkJAj33vtDKonXBS58PzGoSWJfdUxbOoosCNmMb0a11gm6ai587Id5gmTyRTjqspw
+         fg49MV5y2s119nmqP72KB6LJOjuMzIOZ93oE/36E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Simon Horman <simon.horman@corigine.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Petr Machata <petrm@nvidia.com>,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 083/135] xfrm: add forgotten nla_policy for XFRMA_MTIMER_THRESH
-Date:   Thu, 24 Aug 2023 19:09:15 +0200
-Message-ID: <20230824170620.838155252@linuxfoundation.org>
+Subject: [PATCH 5.10 084/135] selftests: mirror_gre_changes: Tighten up the TTL test match
+Date:   Thu, 24 Aug 2023 19:09:16 +0200
+Message-ID: <20230824170620.881402190@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -48,9 +49,10 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -61,51 +63,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Petr Machata <petrm@nvidia.com>
 
-[ Upstream commit 5e2424708da7207087934c5c75211e8584d553a0 ]
+[ Upstream commit 855067defa36b1f9effad8c219d9a85b655cf500 ]
 
-The previous commit 4e484b3e969b ("xfrm: rate limit SA mapping change
-message to user space") added one additional attribute named
-XFRMA_MTIMER_THRESH and described its type at compat_policy
-(net/xfrm/xfrm_compat.c).
+This test verifies whether the encapsulated packets have the correct
+configured TTL. It does so by sending ICMP packets through the test
+topology and mirroring them to a gretap netdevice. On a busy host
+however, more than just the test ICMP packets may end up flowing
+through the topology, get mirrored, and counted. This leads to
+potential spurious failures as the test observes much more mirrored
+packets than the sent test packets, and assumes a bug.
 
-However, the author forgot to also describe the nla_policy at
-xfrma_policy (net/xfrm/xfrm_user.c). Hence, this suppose NLA_U32 (4
-bytes) value can be faked as empty (0 bytes) by a malicious user, which
-leads to 4 bytes overflow read and heap information leak when parsing
-nlattrs.
+Fix this by tightening up the mirror action match. Change it from
+matchall to a flower classifier matching on ICMP packets specifically.
 
-To exploit this, one malicious user can spray the SLUB objects and then
-leverage this 4 bytes OOB read to leak the heap data into
-x->mapping_maxage (see xfrm_update_ae_params(...)), and leak it to
-userspace via copy_to_user_state_extra(...).
-
-The above bug is assigned CVE-2023-3773. To fix it, this commit just
-completes the nla_policy description for XFRMA_MTIMER_THRESH, which
-enforces the length check and avoids such OOB read.
-
-Fixes: 4e484b3e969b ("xfrm: rate limit SA mapping change message to user space")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Fixes: 45315673e0c5 ("selftests: forwarding: Test changes in mirror-to-gretap")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/net/forwarding/mirror_gre_changes.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index d093b4d684a61..8fce2e93bb3b3 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -2757,6 +2757,7 @@ const struct nla_policy xfrma_policy[XFRMA_MAX+1] = {
- 	[XFRMA_SET_MARK]	= { .type = NLA_U32 },
- 	[XFRMA_SET_MARK_MASK]	= { .type = NLA_U32 },
- 	[XFRMA_IF_ID]		= { .type = NLA_U32 },
-+	[XFRMA_MTIMER_THRESH]   = { .type = NLA_U32 },
- };
- EXPORT_SYMBOL_GPL(xfrma_policy);
+diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
+index 472bd023e2a5f..b501b366367f7 100755
+--- a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
++++ b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
+@@ -72,7 +72,8 @@ test_span_gre_ttl()
+ 
+ 	RET=0
+ 
+-	mirror_install $swp1 ingress $tundev "matchall $tcflags"
++	mirror_install $swp1 ingress $tundev \
++		"prot ip flower $tcflags ip_prot icmp"
+ 	tc filter add dev $h3 ingress pref 77 prot $prot \
+ 		flower ip_ttl 50 action pass
  
 -- 
 2.40.1
