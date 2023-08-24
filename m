@@ -2,76 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D28078784B
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 20:59:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B59E787863
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 21:12:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230094AbjHXS6k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 14:58:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32930 "EHLO
+        id S232893AbjHXTJx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 15:09:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230079AbjHXS6P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 14:58:15 -0400
-Received: from mail-ot1-x330.google.com (mail-ot1-x330.google.com [IPv6:2607:f8b0:4864:20::330])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B218E1BD1;
-        Thu, 24 Aug 2023 11:58:13 -0700 (PDT)
-Received: by mail-ot1-x330.google.com with SMTP id 46e09a7af769-6bd3317144fso150825a34.1;
-        Thu, 24 Aug 2023 11:58:13 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692903493; x=1693508293;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=cTx6IU2Ceazpc05DJ3qYtLFFrnEetHYitYmMRZqMriU=;
-        b=WOLiJcE+SWGGX95VXh8H5Gr76E5LwURu/6NJSn5hiS9LCJOGs5VrS5QEi5bLxScIFd
-         34lnY0cKM6IJd1QNEnC8gDaZsz1LkpI8F/e7jk+DeMBC7utnS1U2mHjU3vq3SlTWgqP5
-         GrhBFTetM2eHXydSnonip/+IXf5G+ZaA3epaYiDZEUOmSihNzeE8BACiRaTvSD99gvex
-         PLGJ126FYShxKGXA5FgdFOfjlwvnJIP4RhnDDwcNwgTzyZFlgOo/GgujQgPdDG0HDarh
-         YSS4iJ/q6zH6qNzIAoSAcjLy639IE/p9vuKv4QCkzzKtIiGud1/J0SxNqE56+Drlvezt
-         2wsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692903493; x=1693508293;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=cTx6IU2Ceazpc05DJ3qYtLFFrnEetHYitYmMRZqMriU=;
-        b=ky5oxam+F9Aq8cZ4ZtENsRklq4tGhi+qatvGkizh6B6BG3FX5JRIr5Utz4hQlwcGAY
-         r2vvTDn7wwN7O1aZagFUmYneue4g2I+kdAfWgh/1B7E7GdM4DZ/LdoX4nIHFeLyWiUF0
-         eTWJ43pYAvAEepcghy1Ad9hMi31rUujbWLILJDaBoc07QfBZi+15O/37OEW0DrDMaYhX
-         rVSF6BIzbxQSioUv5ot/34WjjlaBzypJF/myYwumhlaxKD3BKixONegb+b1I0u+lyfOJ
-         7Pk3LSFOp4V1/XH7vlZtLNIpDkTDpqWh8+i4T3VHvweUpjJOYw7RkmuWTvIzuBOhTbAA
-         JvTg==
-X-Gm-Message-State: AOJu0Yyp48xJ6PKHIeqfWWD8RXNtd8OjfEMGCPr2SmoiX1n98TFutese
-        incJIkRCfXI+sc5JBb8iY8s=
-X-Google-Smtp-Source: AGHT+IGIdGYFpUdJfRknf/yomB3a+RSBgDVRGmkaCdT3LuYrH7cKx5fAD4wFRuW3ARgGvn7lLsDbbw==
-X-Received: by 2002:a9d:63c1:0:b0:6bc:cace:c07 with SMTP id e1-20020a9d63c1000000b006bccace0c07mr3417604otl.18.1692903492877;
-        Thu, 24 Aug 2023 11:58:12 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id jr16-20020a05622a801000b00407906a4c6fsm25855qtb.71.2023.08.24.11.57.59
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 11:58:12 -0700 (PDT)
-Message-ID: <286fcd22-35a6-54f3-4abd-9bfb415defdb@gmail.com>
-Date:   Thu, 24 Aug 2023 11:57:53 -0700
+        with ESMTP id S229768AbjHXTJZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 15:09:25 -0400
+Received: from cstnet.cn (smtp81.cstnet.cn [159.226.251.81])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0CB3E6B;
+        Thu, 24 Aug 2023 12:09:22 -0700 (PDT)
+Received: from xmz-huawei.. (unknown [111.197.209.91])
+        by APP-03 (Coremail) with SMTP id rQCowAAXHmbGqudkwlMABQ--.63174S2;
+        Fri, 25 Aug 2023 03:08:55 +0800 (CST)
+From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+To:     Conor Dooley <conor@kernel.org>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Tom Rix <trix@redhat.com>
+Cc:     Bin Meng <bmeng@tinylab.org>, Guo Ren <guoren@kernel.org>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, stable@vger.kernel.org,
+        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
+        Conor Dooley <conor.dooley@microchip.com>
+Subject: [PATCH] riscv: Fix build errors using binutils2.37 toolchains
+Date:   Fri, 25 Aug 2023 03:08:52 +0800
+Message-Id: <20230824190852.45470-1-xingmingzheng@iscas.ac.cn>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 5.10 000/135] 5.10.192-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230824170617.074557800@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-CM-TRANSID: rQCowAAXHmbGqudkwlMABQ--.63174S2
+X-Coremail-Antispam: 1UD129KBjvJXoWxAw15uF48Cw4ftFy5ZF1rXrb_yoW5Cw4fp3
+        4fCFn8Kr1rWF1xJr10yr18W3WYgrZ5J39Igr4kXr4Uuws5ZrZrJ34vkr129rsFvrs7trZ5
+        Zr4F9a1rWF1DAaDanT9S1TB71UUUUUUqnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
+        9KBjDU0xBIdaVrnRJUUUkE14x267AKxVW8JVW5JwAFc2x0x2IEx4CE42xK8VAvwI8IcIk0
+        rVWrJVCq3wAFIxvE14AKwVWUJVWUGwA2ocxC64kIII0Yj41l84x0c7CEw4AK67xGY2AK02
+        1l84ACjcxK6xIIjxv20xvE14v26r1j6r1xM28EF7xvwVC0I7IYx2IY6xkF7I0E14v26r4j
+        6F4UM28EF7xvwVC2z280aVAFwI0_Gr0_Cr1l84ACjcxK6I8E87Iv6xkF7I0E14v26r4j6r
+        4UJwAS0I0E0xvYzxvE52x082IY62kv0487Mc02F40EFcxC0VAKzVAqx4xG6I80ewAv7VC0
+        I7IYx2IY67AKxVWUJVWUGwAv7VC2z280aVAFwI0_Jr0_Gr1lOx8S6xCaFVCjc4AY6r1j6r
+        4UM4x0Y48IcxkI7VAKI48JM4x0x7Aq67IIx4CEVc8vx2IErcIFxwACI402YVCY1x02628v
+        n2kIc2xKxwCF04k20xvY0x0EwIxGrwCFx2IqxVCFs4IE7xkEbVWUJVW8JwC20s026c02F4
+        0E14v26r1j6r18MI8I3I0E7480Y4vE14v26r106r1rMI8E67AF67kF1VAFwI0_Jw0_GFyl
+        IxkGc2Ij64vIr41lIxAIcVC0I7IYx2IY67AKxVWUJVWUCwCI42IY6xIIjxv20xvEc7CjxV
+        AFwI0_Gr0_Cr1lIxAIcVCF04k26cxKx2IYs7xG6r1j6r1xMIIF0xvEx4A2jsIE14v26r1j
+        6r4UMIIF0xvEx4A2jsIEc7CjxVAFwI0_Gr0_Gr1UYxBIdaVFxhVjvjDU0xZFpf9x0JUdHU
+        DUUUUU=
+X-Originating-IP: [111.197.209.91]
+X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiCgUNCmTnYiSHfgAAs0
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,29 +64,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/24/23 10:07, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.192 release.
-> There are 135 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 26 Aug 2023 17:05:50 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.192-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+When building the kernel with binutils 2.37 and GCC-11.1.0/GCC-11.2.0,
+the following error occurs:
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
+  Assembler messages:
+  Error: cannot find default versions of the ISA extension `zicsr'
+  Error: cannot find default versions of the ISA extension `zifencei'
 
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+The above error originated from this commit of binutils[0], which has been
+resolved and backported by GCC-12.1.0[1] and GCC-11.3.0[2].
+
+So fix this by change the GCC version in
+CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC to GCC-11.3.0.
+
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f0bae2552db1dd4f1995608fbf6648fcee4e9e0c [0]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=ca2bbb88f999f4d3cc40e89bc1aba712505dd598 [1]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=d29f5d6ab513c52fd872f532c492e35ae9fd6671 [2]
+Fixes: ca09f772ccca ("riscv: Handle zicsr/zifencei issue between gcc and binutils")
+Reported-by: Conor Dooley <conor.dooley@microchip.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+---
+
+Then below are my test results after this fix:
+
+gcc        binutils
+
+10.5.0     2.35            ok
+10.5.0     2.36            ok
+10.5.0     2.37            ok
+10.5.0     2.38            ok
+
+11.1.0     2.35            ok
+11.1.0     2.36            ok
+11.1.0     2.37            ok
+11.1.0     2.38            ok
+
+11.2.0     2.35            ok
+11.2.0     2.36            ok
+11.2.0     2.37            ok
+11.2.0     2.38            ok
+
+11.3.0     2.35            ok
+11.3.0     2.36            ok
+11.3.0     2.37            ok
+11.3.0     2.38            ok
+
+11.4.0     2.35            ok
+11.4.0     2.36            ok
+11.4.0     2.37            ok
+11.4.0     2.38            ok
+
+12.1.0     2.35            ok
+12.1.0     2.36            ok
+12.1.0     2.37            ok
+12.1.0     2.38            ok
+
+12.2.0     2.35            ok
+12.2.0     2.36            ok
+12.2.0     2.37            ok
+12.2.0     2.38            ok 
+
+ arch/riscv/Kconfig | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
+
+diff --git a/arch/riscv/Kconfig b/arch/riscv/Kconfig
+index 10e7a7ad175a..bea7b73e895d 100644
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -580,15 +580,15 @@ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	  and Zifencei are supported in binutils from version 2.36 onwards.
+ 	  To make life easier, and avoid forcing toolchains that default to a
+ 	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
+-	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
+-	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
++	  For clang < 17 or GCC < 11.3.0, for which this is not possible or need
++	  special treatment, this is dealt with in TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+ 
+ config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+ 	def_bool y
+ 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+-	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
+-	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=d29f5d6ab513c52fd872f532c492e35ae9fd6671
++	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110300)
+ 	help
+ 	  Certain versions of clang and GCC do not support zicsr and zifencei via
+ 	  -march. This option causes an older ISA spec compatible with these older
 -- 
-Florian
+2.34.1
 
