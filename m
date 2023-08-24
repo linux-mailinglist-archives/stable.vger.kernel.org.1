@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BB33787265
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 452F97872FA
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235640AbjHXOxc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:53:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38222 "EHLO
+        id S241920AbjHXO64 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:58:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241834AbjHXOxM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:53:12 -0400
+        with ESMTP id S241991AbjHXO6k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:40 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C245C19B7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:53:03 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8793EC7
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5827966EBE
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:53:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68EB3C433C7;
-        Thu, 24 Aug 2023 14:53:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 05E3A6706C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1953DC433C8;
+        Thu, 24 Aug 2023 14:58:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888782;
-        bh=b7Vq5K41SF4Hrrr5TQtSpLeeF6k5Qd8VpvgD4fcBhV0=;
+        s=korg; t=1692889117;
+        bh=B90roESOduiAmkozdZbYz9C9lRZ4eD0is4BxkWi65QA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A7AfRkNp5UwWGh6h2Cui3S7z7dsQy/fYx07Tswn2rQObiD5wiaoZ7NTokp5Qcoxpn
-         lc+i+vuH4/l2B6sYiHHRt6xwMZ/8bHcvA1fwQ6ck4ukfTuP0vtYtVYEIbQe2VfXLuh
-         gzkqL/2hR0NvaKWj3DObyD3gkt4RLljwvIxBVUFI=
+        b=TWaigQGKJ5UjtGbX1FrQU9V0bRxwgvKAvYaCPs4JX02fPd6leEXXlStgtVtYNYdva
+         pLwaoesY9RktW+DPF3T5h7xolEWklwKmspSem3o+ZsK+PExJKwlMU2B/aA9Xa/q60X
+         2bhgv5uuPiV5+R59CgN17T9ft9OMNf6OAygC+Olg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen Lin <chen.lin5@zte.com.cn>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Patrisious Haddad <phaddad@nvidia.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 039/139] ring-buffer: Do not swap cpu_buffer during resize process
-Date:   Thu, 24 Aug 2023 16:49:22 +0200
-Message-ID: <20230824145025.308881578@linuxfoundation.org>
+Subject: [PATCH 5.10 020/135] RDMA/mlx5: Return the firmware result upon destroying QP/RQ
+Date:   Thu, 24 Aug 2023 16:49:23 +0200
+Message-ID: <20230824145027.816778481@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,241 +54,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Chen Lin <chen.lin5@zte.com.cn>
+From: Patrisious Haddad <phaddad@nvidia.com>
 
-[ Upstream commit 8a96c0288d0737ad77882024974c075345c72011 ]
+[ Upstream commit 22664c06e997087fe37f9ba208008c948571214a ]
 
-When ring_buffer_swap_cpu was called during resize process,
-the cpu buffer was swapped in the middle, resulting in incorrect state.
-Continuing to run in the wrong state will result in oops.
+Previously when destroying a QP/RQ, the result of the firmware
+destruction function was ignored and upper layers weren't informed
+about the failure.
+Which in turn could lead to various problems since when upper layer
+isn't aware of the failure it continues its operation thinking that the
+related QP/RQ was successfully destroyed while it actually wasn't,
+which could lead to the below kernel WARN.
 
-This issue can be easily reproduced using the following two scripts:
-/tmp # cat test1.sh
-//#! /bin/sh
-for i in `seq 0 100000`
-do
-         echo 2000 > /sys/kernel/debug/tracing/buffer_size_kb
-         sleep 0.5
-         echo 5000 > /sys/kernel/debug/tracing/buffer_size_kb
-         sleep 0.5
-done
-/tmp # cat test2.sh
-//#! /bin/sh
-for i in `seq 0 100000`
-do
-        echo irqsoff > /sys/kernel/debug/tracing/current_tracer
-        sleep 1
-        echo nop > /sys/kernel/debug/tracing/current_tracer
-        sleep 1
-done
-/tmp # ./test1.sh &
-/tmp # ./test2.sh &
+Currently, we return the correct firmware destruction status to upper
+layers which in case of the RQ would be mlx5_ib_destroy_wq() which
+was already capable of handling RQ destruction failure or in case of
+a QP to destroy_qp_common(), which now would actually warn upon qp
+destruction failure.
 
-A typical oops log is as follows, sometimes with other different oops logs.
+WARNING: CPU: 3 PID: 995 at drivers/infiniband/core/rdma_core.c:940 uverbs_destroy_ufile_hw+0xcb/0xe0 [ib_uverbs]
+Modules linked in: xt_conntrack xt_MASQUERADE nf_conntrack_netlink nfnetlink xt_addrtype iptable_nat nf_nat br_netfilter rpcrdma rdma_ucm ib_iser libiscsi scsi_transport_iscsi rdma_cm ib_umad ib_ipoib iw_cm ib_cm mlx5_ib ib_uverbs ib_core overlay mlx5_core fuse
+CPU: 3 PID: 995 Comm: python3 Not tainted 5.16.0-rc5+ #1
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.13.0-0-gf21b5a4aeb02-prebuilt.qemu.org 04/01/2014
+RIP: 0010:uverbs_destroy_ufile_hw+0xcb/0xe0 [ib_uverbs]
+Code: 41 5c 41 5d 41 5e e9 44 34 f0 e0 48 89 df e8 4c 77 ff ff 49 8b 86 10 01 00 00 48 85 c0 74 a1 4c 89 e7 ff d0 eb 9a 0f 0b eb c1 <0f> 0b be 04 00 00 00 48 89 df e8 b6 f6 ff ff e9 75 ff ff ff 90 0f
+RSP: 0018:ffff8881533e3e78 EFLAGS: 00010287
+RAX: ffff88811b2cf3e0 RBX: ffff888106209700 RCX: 0000000000000000
+RDX: ffff888106209780 RSI: ffff8881533e3d30 RDI: ffff888109b101a0
+RBP: 0000000000000001 R08: ffff888127cb381c R09: 0de9890000000009
+R10: ffff888127cb3800 R11: 0000000000000000 R12: ffff888106209780
+R13: ffff888106209750 R14: ffff888100f20660 R15: 0000000000000000
+FS:  00007f8be353b740(0000) GS:ffff88852c980000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f8bd5b117c0 CR3: 000000012cd8a004 CR4: 0000000000370ea0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ib_uverbs_close+0x1a/0x90 [ib_uverbs]
+ __fput+0x82/0x230
+ task_work_run+0x59/0x90
+ exit_to_user_mode_prepare+0x138/0x140
+ syscall_exit_to_user_mode+0x1d/0x50
+ ? __x64_sys_close+0xe/0x40
+ do_syscall_64+0x4a/0x90
+ entry_SYSCALL_64_after_hwframe+0x44/0xae
+RIP: 0033:0x7f8be3ae0abb
+Code: 03 00 00 00 0f 05 48 3d 00 f0 ff ff 77 41 c3 48 83 ec 18 89 7c 24 0c e8 83 43 f9 ff 8b 7c 24 0c 41 89 c0 b8 03 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 35 44 89 c7 89 44 24 0c e8 c1 43 f9 ff 8b 44
+RSP: 002b:00007ffdb51909c0 EFLAGS: 00000293 ORIG_RAX: 0000000000000003
+RAX: 0000000000000000 RBX: 0000557bb7f7c020 RCX: 00007f8be3ae0abb
+RDX: 0000557bb7c74010 RSI: 0000557bb7f14ca0 RDI: 0000000000000005
+RBP: 0000557bb7fbd598 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000293 R12: 0000557bb7fbd5b8
+R13: 0000557bb7fbd5a8 R14: 0000000000001000 R15: 0000557bb7f7c020
+ </TASK>
 
-[  231.711293] WARNING: CPU: 0 PID: 9 at kernel/trace/ring_buffer.c:2026 rb_update_pages+0x378/0x3f8
-[  231.713375] Modules linked in:
-[  231.714735] CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W          6.5.0-rc1-00276-g20edcec23f92 #15
-[  231.716750] Hardware name: linux,dummy-virt (DT)
-[  231.718152] Workqueue: events update_pages_handler
-[  231.719714] pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  231.721171] pc : rb_update_pages+0x378/0x3f8
-[  231.722212] lr : rb_update_pages+0x25c/0x3f8
-[  231.723248] sp : ffff800082b9bd50
-[  231.724169] x29: ffff800082b9bd50 x28: ffff8000825f7000 x27: 0000000000000000
-[  231.726102] x26: 0000000000000001 x25: fffffffffffff010 x24: 0000000000000ff0
-[  231.728122] x23: ffff0000c3a0b600 x22: ffff0000c3a0b5c0 x21: fffffffffffffe0a
-[  231.730203] x20: ffff0000c3a0b600 x19: ffff0000c0102400 x18: 0000000000000000
-[  231.732329] x17: 0000000000000000 x16: 0000000000000000 x15: 0000ffffe7aa8510
-[  231.734212] x14: 0000000000000000 x13: 0000000000000000 x12: 0000000000000002
-[  231.736291] x11: ffff8000826998a8 x10: ffff800082b9baf0 x9 : ffff800081137558
-[  231.738195] x8 : fffffc00030e82c8 x7 : 0000000000000000 x6 : 0000000000000001
-[  231.740192] x5 : ffff0000ffbafe00 x4 : 0000000000000000 x3 : 0000000000000000
-[  231.742118] x2 : 00000000000006aa x1 : 0000000000000001 x0 : ffff0000c0007208
-[  231.744196] Call trace:
-[  231.744892]  rb_update_pages+0x378/0x3f8
-[  231.745893]  update_pages_handler+0x1c/0x38
-[  231.746893]  process_one_work+0x1f0/0x468
-[  231.747852]  worker_thread+0x54/0x410
-[  231.748737]  kthread+0x124/0x138
-[  231.749549]  ret_from_fork+0x10/0x20
-[  231.750434] ---[ end trace 0000000000000000 ]---
-[  233.720486] Unable to handle kernel NULL pointer dereference at virtual address 0000000000000000
-[  233.721696] Mem abort info:
-[  233.721935]   ESR = 0x0000000096000004
-[  233.722283]   EC = 0x25: DABT (current EL), IL = 32 bits
-[  233.722596]   SET = 0, FnV = 0
-[  233.722805]   EA = 0, S1PTW = 0
-[  233.723026]   FSC = 0x04: level 0 translation fault
-[  233.723458] Data abort info:
-[  233.723734]   ISV = 0, ISS = 0x00000004, ISS2 = 0x00000000
-[  233.724176]   CM = 0, WnR = 0, TnD = 0, TagAccess = 0
-[  233.724589]   GCS = 0, Overlay = 0, DirtyBit = 0, Xs = 0
-[  233.725075] user pgtable: 4k pages, 48-bit VAs, pgdp=0000000104943000
-[  233.725592] [0000000000000000] pgd=0000000000000000, p4d=0000000000000000
-[  233.726231] Internal error: Oops: 0000000096000004 [#1] PREEMPT SMP
-[  233.726720] Modules linked in:
-[  233.727007] CPU: 0 PID: 9 Comm: kworker/0:1 Tainted: G        W          6.5.0-rc1-00276-g20edcec23f92 #15
-[  233.727777] Hardware name: linux,dummy-virt (DT)
-[  233.728225] Workqueue: events update_pages_handler
-[  233.728655] pstate: 200000c5 (nzCv daIF -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-[  233.729054] pc : rb_update_pages+0x1a8/0x3f8
-[  233.729334] lr : rb_update_pages+0x154/0x3f8
-[  233.729592] sp : ffff800082b9bd50
-[  233.729792] x29: ffff800082b9bd50 x28: ffff8000825f7000 x27: 0000000000000000
-[  233.730220] x26: 0000000000000000 x25: ffff800082a8b840 x24: ffff0000c0102418
-[  233.730653] x23: 0000000000000000 x22: fffffc000304c880 x21: 0000000000000003
-[  233.731105] x20: 00000000000001f4 x19: ffff0000c0102400 x18: ffff800082fcbc58
-[  233.731727] x17: 0000000000000000 x16: 0000000000000001 x15: 0000000000000001
-[  233.732282] x14: ffff8000825fe0c8 x13: 0000000000000001 x12: 0000000000000000
-[  233.732709] x11: ffff8000826998a8 x10: 0000000000000ae0 x9 : ffff8000801b760c
-[  233.733148] x8 : fefefefefefefeff x7 : 0000000000000018 x6 : ffff0000c03298c0
-[  233.733553] x5 : 0000000000000002 x4 : 0000000000000000 x3 : 0000000000000000
-[  233.733972] x2 : ffff0000c3a0b600 x1 : 0000000000000000 x0 : 0000000000000000
-[  233.734418] Call trace:
-[  233.734593]  rb_update_pages+0x1a8/0x3f8
-[  233.734853]  update_pages_handler+0x1c/0x38
-[  233.735148]  process_one_work+0x1f0/0x468
-[  233.735525]  worker_thread+0x54/0x410
-[  233.735852]  kthread+0x124/0x138
-[  233.736064]  ret_from_fork+0x10/0x20
-[  233.736387] Code: 92400000 910006b5 aa000021 aa0303f7 (f9400060)
-[  233.736959] ---[ end trace 0000000000000000 ]---
-
-After analysis, the seq of the error is as follows [1-5]:
-
-int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
-			int cpu_id)
-{
-	for_each_buffer_cpu(buffer, cpu) {
-		cpu_buffer = buffer->buffers[cpu];
-		//1. get cpu_buffer, aka cpu_buffer(A)
-		...
-		...
-		schedule_work_on(cpu,
-		 &cpu_buffer->update_pages_work);
-		//2. 'update_pages_work' is queue on 'cpu', cpu_buffer(A) is passed to
-		// update_pages_handler, do the update process, set 'update_done' in
-		// complete(&cpu_buffer->update_done) and to wakeup resize process.
-	//---->
-		//3. Just at this moment, ring_buffer_swap_cpu is triggered,
-		//cpu_buffer(A) be swaped to cpu_buffer(B), the max_buffer.
-		//ring_buffer_swap_cpu is called as the 'Call trace' below.
-
-		Call trace:
-		 dump_backtrace+0x0/0x2f8
-		 show_stack+0x18/0x28
-		 dump_stack+0x12c/0x188
-		 ring_buffer_swap_cpu+0x2f8/0x328
-		 update_max_tr_single+0x180/0x210
-		 check_critical_timing+0x2b4/0x2c8
-		 tracer_hardirqs_on+0x1c0/0x200
-		 trace_hardirqs_on+0xec/0x378
-		 el0_svc_common+0x64/0x260
-		 do_el0_svc+0x90/0xf8
-		 el0_svc+0x20/0x30
-		 el0_sync_handler+0xb0/0xb8
-		 el0_sync+0x180/0x1c0
-	//<----
-
-	/* wait for all the updates to complete */
-	for_each_buffer_cpu(buffer, cpu) {
-		cpu_buffer = buffer->buffers[cpu];
-		//4. get cpu_buffer, cpu_buffer(B) is used in the following process,
-		//the state of cpu_buffer(A) and cpu_buffer(B) is totally wrong.
-		//for example, cpu_buffer(A)->update_done will leave be set 1, and will
-		//not 'wait_for_completion' at the next resize round.
-		  if (!cpu_buffer->nr_pages_to_update)
-			continue;
-
-		if (cpu_online(cpu))
-			wait_for_completion(&cpu_buffer->update_done);
-		cpu_buffer->nr_pages_to_update = 0;
-	}
-	...
-}
-	//5. the state of cpu_buffer(A) and cpu_buffer(B) is totally wrong,
-	//Continuing to run in the wrong state, then oops occurs.
-
-Link: https://lore.kernel.org/linux-trace-kernel/202307191558478409990@zte.com.cn
-
-Signed-off-by: Chen Lin <chen.lin5@zte.com.cn>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Patrisious Haddad <phaddad@nvidia.com>
+Link: https://lore.kernel.org/r/c6df677f931d18090bafbe7f7dbb9524047b7d9b.1685953497.git.leon@kernel.org
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/ring_buffer.c | 14 +++++++++++++-
- kernel/trace/trace.c       |  3 ++-
- 2 files changed, 15 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/mlx5/qpc.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index e1cef097b0df5..db7cefd196cec 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -535,6 +535,7 @@ struct trace_buffer {
- 	unsigned			flags;
- 	int				cpus;
- 	atomic_t			record_disabled;
-+	atomic_t			resizing;
- 	cpumask_var_t			cpumask;
- 
- 	struct lock_class_key		*reader_lock_key;
-@@ -2137,7 +2138,7 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 
- 	/* prevent another thread from changing buffer sizes */
- 	mutex_lock(&buffer->mutex);
--
-+	atomic_inc(&buffer->resizing);
- 
- 	if (cpu_id == RING_BUFFER_ALL_CPUS) {
- 		/*
-@@ -2276,6 +2277,7 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 		atomic_dec(&buffer->record_disabled);
- 	}
- 
-+	atomic_dec(&buffer->resizing);
- 	mutex_unlock(&buffer->mutex);
- 	return 0;
- 
-@@ -2296,6 +2298,7 @@ int ring_buffer_resize(struct trace_buffer *buffer, unsigned long size,
- 		}
- 	}
-  out_err_unlock:
-+	atomic_dec(&buffer->resizing);
- 	mutex_unlock(&buffer->mutex);
- 	return err;
+diff --git a/drivers/infiniband/hw/mlx5/qpc.c b/drivers/infiniband/hw/mlx5/qpc.c
+index c683d7000168d..9a306da7f9496 100644
+--- a/drivers/infiniband/hw/mlx5/qpc.c
++++ b/drivers/infiniband/hw/mlx5/qpc.c
+@@ -297,8 +297,7 @@ int mlx5_core_destroy_qp(struct mlx5_ib_dev *dev, struct mlx5_core_qp *qp)
+ 	MLX5_SET(destroy_qp_in, in, opcode, MLX5_CMD_OP_DESTROY_QP);
+ 	MLX5_SET(destroy_qp_in, in, qpn, qp->qpn);
+ 	MLX5_SET(destroy_qp_in, in, uid, qp->uid);
+-	mlx5_cmd_exec_in(dev->mdev, destroy_qp, in);
+-	return 0;
++	return mlx5_cmd_exec_in(dev->mdev, destroy_qp, in);
  }
-@@ -5497,6 +5500,15 @@ int ring_buffer_swap_cpu(struct trace_buffer *buffer_a,
- 	if (local_read(&cpu_buffer_b->committing))
- 		goto out_dec;
  
-+	/*
-+	 * When resize is in progress, we cannot swap it because
-+	 * it will mess the state of the cpu buffer.
-+	 */
-+	if (atomic_read(&buffer_a->resizing))
-+		goto out_dec;
-+	if (atomic_read(&buffer_b->resizing))
-+		goto out_dec;
-+
- 	buffer_a->buffers[cpu] = cpu_buffer_b;
- 	buffer_b->buffers[cpu] = cpu_buffer_a;
+ int mlx5_core_set_delay_drop(struct mlx5_ib_dev *dev,
+@@ -542,14 +541,14 @@ int mlx5_core_xrcd_dealloc(struct mlx5_ib_dev *dev, u32 xrcdn)
+ 	return mlx5_cmd_exec_in(dev->mdev, dealloc_xrcd, in);
+ }
  
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index ae7005af78c34..d4c381f06b7b2 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -1872,9 +1872,10 @@ update_max_tr_single(struct trace_array *tr, struct task_struct *tsk, int cpu)
- 		 * place on this CPU. We fail to record, but we reset
- 		 * the max trace buffer (no one writes directly to it)
- 		 * and flag that it failed.
-+		 * Another reason is resize is in progress.
- 		 */
- 		trace_array_printk_buf(tr->max_buffer.buffer, _THIS_IP_,
--			"Failed to swap buffers due to commit in progress\n");
-+			"Failed to swap buffers due to commit or resize in progress\n");
- 	}
+-static void destroy_rq_tracked(struct mlx5_ib_dev *dev, u32 rqn, u16 uid)
++static int destroy_rq_tracked(struct mlx5_ib_dev *dev, u32 rqn, u16 uid)
+ {
+ 	u32 in[MLX5_ST_SZ_DW(destroy_rq_in)] = {};
  
- 	WARN_ON_ONCE(ret && ret != -EAGAIN && ret != -EBUSY);
+ 	MLX5_SET(destroy_rq_in, in, opcode, MLX5_CMD_OP_DESTROY_RQ);
+ 	MLX5_SET(destroy_rq_in, in, rqn, rqn);
+ 	MLX5_SET(destroy_rq_in, in, uid, uid);
+-	mlx5_cmd_exec_in(dev->mdev, destroy_rq, in);
++	return mlx5_cmd_exec_in(dev->mdev, destroy_rq, in);
+ }
+ 
+ int mlx5_core_create_rq_tracked(struct mlx5_ib_dev *dev, u32 *in, int inlen,
+@@ -580,8 +579,7 @@ int mlx5_core_destroy_rq_tracked(struct mlx5_ib_dev *dev,
+ 				 struct mlx5_core_qp *rq)
+ {
+ 	destroy_resource_common(dev, rq);
+-	destroy_rq_tracked(dev, rq->qpn, rq->uid);
+-	return 0;
++	return destroy_rq_tracked(dev, rq->qpn, rq->uid);
+ }
+ 
+ static void destroy_sq_tracked(struct mlx5_ib_dev *dev, u32 sqn, u16 uid)
 -- 
 2.40.1
 
