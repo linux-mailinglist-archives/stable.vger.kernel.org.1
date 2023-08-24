@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 83117787151
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:16:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD34E787142
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:16:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241546AbjHXOQV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:16:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42566 "EHLO
+        id S241509AbjHXOPo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:15:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230245AbjHXOQF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:16:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E9F91989
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:16:04 -0700 (PDT)
+        with ESMTP id S241491AbjHXOP2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:15:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 376EBCD0
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:15:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A11C960B92
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:16:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1CEEC433C8;
-        Thu, 24 Aug 2023 14:16:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C06C566D8A
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:15:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4280C433CC;
+        Thu, 24 Aug 2023 14:15:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692886563;
-        bh=HQ8bPOu5wruvzUErKDn/m+eSOSUgyJex25sIu/IVKak=;
+        s=korg; t=1692886525;
+        bh=3135AucRp8HDUEViMDZIo4HxElcW+T/JS/MJul3oUKQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XAQ+a8nZ2OZT9Xi7DiiEid9cKLxl+SKm1mcTeWg76IkewpPSScXklnz317nMbTG4g
-         ZhuCu1bHWIDSTvvHOfedoTe5TSdU+6C0XgoUIoeuBh/dp+8QbQmKfg4g2x2TcdUW3I
-         bnOYnPr35jreEboHhhwWzEhgs/KslqWyPLPnSP8w=
+        b=THwNT3q9RUkzVyMOPmNo+CdQm1B0ehxW2WoIgkKFtmOAx0SLh3URpbDZDX7KkP3ML
+         UdsJeIzGNG/sdL9+RJ5kkjNmhV1aDWvw7nmIOEHQCNjLGxc8HasaooPzMtLIwd4+Ky
+         LUPF6oaKQiADhqM9H4TjNYUPUG5lb3kJ2IK/0Hu4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christian Bricart <christian@bricart.de>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 6.1 09/15] x86/static_call: Fix __static_call_fixup()
-Date:   Thu, 24 Aug 2023 16:15:05 +0200
-Message-ID: <20230824141447.611980994@linuxfoundation.org>
+        patches@lists.linux.dev, Srikanth Aithal <sraithal@amd.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Sean Christopherson <seanjc@google.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.1 10/15] x86/retpoline: Dont clobber RFLAGS during srso_safe_ret()
+Date:   Thu, 24 Aug 2023 16:15:06 +0200
+Message-ID: <20230824141447.659017387@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824141447.155846739@linuxfoundation.org>
 References: <20230824141447.155846739@linuxfoundation.org>
@@ -45,8 +46,8 @@ User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,51 +55,111 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Sean Christopherson <seanjc@google.com>
 
-commit 54097309620ef0dc2d7083783dc521c6a5fef957 upstream.
+commit ba5ca5e5e6a1d55923e88b4a83da452166f5560e upstream.
 
-Christian reported spurious module load crashes after some of Song's
-module memory layout patches.
+Use LEA instead of ADD when adjusting %rsp in srso_safe_ret{,_alias}()
+so as to avoid clobbering flags.  Drop one of the INT3 instructions to
+account for the LEA consuming one more byte than the ADD.
 
-Turns out that if the very last instruction on the very last page of the
-module is a 'JMP __x86_return_thunk' then __static_call_fixup() will
-trip a fault and die.
+KVM's emulator makes indirect calls into a jump table of sorts, where
+the destination of each call is a small blob of code that performs fast
+emulation by executing the target instruction with fixed operands.
 
-And while the module rework made this slightly more likely to happen,
-it's always been possible.
+E.g. to emulate ADC, fastop() invokes adcb_al_dl():
 
-Fixes: ee88d363d156 ("x86,static_call: Use alternative RET encoding")
-Reported-by: Christian Bricart <christian@bricart.de>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Acked-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Link: https://lkml.kernel.org/r/20230816104419.GA982867@hirez.programming.kicks-ass.net
+  adcb_al_dl:
+    <+0>:  adc    %dl,%al
+    <+2>:  jmp    <__x86_return_thunk>
+
+A major motivation for doing fast emulation is to leverage the CPU to
+handle consumption and manipulation of arithmetic flags, i.e. RFLAGS is
+both an input and output to the target of the call.  fastop() collects
+the RFLAGS result by pushing RFLAGS onto the stack and popping them back
+into a variable (held in %rdi in this case):
+
+  asm("push %[flags]; popf; " CALL_NOSPEC " ; pushf; pop %[flags]\n"
+
+  <+71>: mov    0xc0(%r8),%rdx
+  <+78>: mov    0x100(%r8),%rcx
+  <+85>: push   %rdi
+  <+86>: popf
+  <+87>: call   *%rsi
+  <+89>: nop
+  <+90>: nop
+  <+91>: nop
+  <+92>: pushf
+  <+93>: pop    %rdi
+
+and then propagating the arithmetic flags into the vCPU's emulator state:
+
+  ctxt->eflags = (ctxt->eflags & ~EFLAGS_MASK) | (flags & EFLAGS_MASK);
+
+  <+64>:  and    $0xfffffffffffff72a,%r9
+  <+94>:  and    $0x8d5,%edi
+  <+109>: or     %rdi,%r9
+  <+122>: mov    %r9,0x10(%r8)
+
+The failures can be most easily reproduced by running the "emulator"
+test in KVM-Unit-Tests.
+
+If you're feeling a bit of deja vu, see commit b63f20a778c8
+("x86/retpoline: Don't clobber RFLAGS during CALL_NOSPEC on i386").
+
+In addition, this breaks booting of clang-compiled guest on
+a gcc-compiled host where the host contains the %rsp-modifying SRSO
+mitigations.
+
+  [ bp: Massage commit message, extend, remove addresses. ]
+
+Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
+Closes: https://lore.kernel.org/all/de474347-122d-54cd-eabf-9dcc95ab9eae@amd.com
+Reported-by: Srikanth Aithal <sraithal@amd.com>
+Reported-by: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Tested-by: Nathan Chancellor <nathan@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/20230810013334.GA5354@dev-arch.thelio-3990X/
+Link: https://lore.kernel.org/r/20230811155255.250835-1-seanjc@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/static_call.c |   13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ arch/x86/lib/retpoline.S |    7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
---- a/arch/x86/kernel/static_call.c
-+++ b/arch/x86/kernel/static_call.c
-@@ -184,6 +184,19 @@ EXPORT_SYMBOL_GPL(arch_static_call_trans
+--- a/arch/x86/lib/retpoline.S
++++ b/arch/x86/lib/retpoline.S
+@@ -113,7 +113,7 @@ SYM_FUNC_END(srso_alias_untrain_ret)
+ #endif
+ 
+ SYM_START(srso_alias_safe_ret, SYM_L_GLOBAL, SYM_A_NONE)
+-	add $8, %_ASM_SP
++	lea 8(%_ASM_SP), %_ASM_SP
+ 	UNWIND_HINT_FUNC
+ 	ANNOTATE_UNRET_SAFE
+ 	ret
+@@ -213,7 +213,7 @@ __EXPORT_THUNK(retbleed_untrain_ret)
+  * SRSO untraining sequence for Zen1/2, similar to retbleed_untrain_ret()
+  * above. On kernel entry, srso_untrain_ret() is executed which is a
+  *
+- * movabs $0xccccccc308c48348,%rax
++ * movabs $0xccccc30824648d48,%rax
+  *
+  * and when the return thunk executes the inner label srso_safe_ret()
+  * later, it is a stack manipulation and a RET which is mispredicted and
+@@ -232,11 +232,10 @@ SYM_START(srso_untrain_ret, SYM_L_GLOBAL
+  * the stack.
   */
- bool __static_call_fixup(void *tramp, u8 op, void *dest)
- {
-+	unsigned long addr = (unsigned long)tramp;
-+	/*
-+	 * Not all .return_sites are a static_call trampoline (most are not).
-+	 * Check if the 3 bytes after the return are still kernel text, if not,
-+	 * then this definitely is not a trampoline and we need not worry
-+	 * further.
-+	 *
-+	 * This avoids the memcmp() below tripping over pagefaults etc..
-+	 */
-+	if (((addr >> PAGE_SHIFT) != ((addr + 7) >> PAGE_SHIFT)) &&
-+	    !kernel_text_address(addr + 7))
-+		return false;
-+
- 	if (memcmp(tramp+5, tramp_ud, 3)) {
- 		/* Not a trampoline site, not our problem. */
- 		return false;
+ SYM_INNER_LABEL(srso_safe_ret, SYM_L_GLOBAL)
+-	add $8, %_ASM_SP
++	lea 8(%_ASM_SP), %_ASM_SP
+ 	ret
+ 	int3
+ 	int3
+-	int3
+ 	/* end of movabs */
+ 	lfence
+ 	call srso_safe_ret
 
 
