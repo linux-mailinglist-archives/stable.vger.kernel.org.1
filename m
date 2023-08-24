@@ -2,252 +2,186 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4E9C787B86
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 00:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19CC0787B90
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 00:38:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229707AbjHXWdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 18:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36706 "EHLO
+        id S238556AbjHXWiH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 18:38:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237367AbjHXWc5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 18:32:57 -0400
-Received: from mail-yb1-xb4a.google.com (mail-yb1-xb4a.google.com [IPv6:2607:f8b0:4864:20::b4a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B4D71BEB
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:32:48 -0700 (PDT)
-Received: by mail-yb1-xb4a.google.com with SMTP id 3f1490d57ef6-d7475f45d31so399517276.0
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:32:48 -0700 (PDT)
+        with ESMTP id S243938AbjHXWhr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 18:37:47 -0400
+Received: from mail-yw1-x114a.google.com (mail-yw1-x114a.google.com [IPv6:2607:f8b0:4864:20::114a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B53F2E7F
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:37:45 -0700 (PDT)
+Received: by mail-yw1-x114a.google.com with SMTP id 00721157ae682-58e49935630so9452507b3.0
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:37:45 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1692916367; x=1693521167;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=yCnYome8PAd3QC/Si61T2W2ZZrM6jPg5kZ/VhtS/wVk=;
-        b=Qd6RK6ViEnRuNugywcZtpG+dU5vPQ6+D6UEXadXprd+D6zCTFDSSu/PU7u+0ojQmps
-         OCViKWx4ZW13wQGpOuzQEcZu0zStgU3mAR1W0JPlhe+UqMVNkbS8EqqQBCPVFuKSVYtu
-         V93I1UUiaBhyjf/GTds1vJvyTnE3NPXqiZOt56D31jBvfuwfdVOOvIBPoPFpFfvpchCO
-         lVvsD9oSymT+3rHg3RdTnYF0b7fkCgwrqjPPKJIHzaqMiFJzedv3sQPOfcJ7Vh134Yu0
-         xsPO+qjNVlQFGZK5+hSvRtjySBLhX4pxXJb3tuJf0KafbNNICzm0EK9l0OfwO84DWv75
-         +1oA==
+        d=google.com; s=20221208; t=1692916665; x=1693521465;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=UMFl4tquwwjAqS1w3i0zThSN3MgU1gooXrvOwfPzxiY=;
+        b=Dl/FB9cQAooD+5xmfvVkbd+RWJKasgFxWZ2KnhM7gWtqQS2A+Th+gfhgfoVdw+yGBD
+         mYbzABOrt/V+AYVwlcDMGJkT3fWxPaNC5WDQ3oUtROEpYeiNRHJJVzBaoW/HI3wQybTv
+         Y8p/5T7hLQ1GJ9TCE4PBEunEGsBjvOu0GH6hwVMDXSHGwuXTV7FZTU0zH6ixYJhS8zhD
+         X9lFj+ZI/5OvoJ/+DxT5hjWkaC0rwH+BPS8PIoTrkiPnjdWxgQNE/2LQo2Uo6qeCkkDB
+         Vchv+Sh4SesvmENbHOtNekx8pvUbPjDtfXT6xuB5SSWi5b38xG3rMzWsL9O4zquBpoDF
+         JALA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692916367; x=1693521167;
-        h=content-transfer-encoding:cc:to:from:subject:message-id
-         :mime-version:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=yCnYome8PAd3QC/Si61T2W2ZZrM6jPg5kZ/VhtS/wVk=;
-        b=YrWV/sxtukYNClsbyJS1c8BEuxFNwGeozG8l+OKyrCfugiT7eIVT+DUVuk3e/Zy00Z
-         sVUGGuXOGsMsEoPZ85zr3umY2q6aHs0vGTBINgesJ7p2VoRK52gt/MJ/+oR1V+0lylJX
-         zmtqIzN4laKqv/UFlAe1kRhO1/Fv9F8I4ZqtV52vuMGP2BCs8fq5XBZr8g83Bj85lJY8
-         QSXni+uyfsSz6wHj40unF3xgD//18JZBMlHGqEOoPpJuBgZZqSmB7SdUCwL0KoZvF1jJ
-         Hyl5wCoHXOxYDBWVzZ4JpKgXVBaSC6RXRfzuD0mx5eqrbGvYGqe70lCUhKxB6DagfBI7
-         nDtQ==
-X-Gm-Message-State: AOJu0YwRRem90+fvA4fcm/a2gQ+el+rp/pxnL589uerfQbKM8+ElQE6H
-        awwufvW8fRFHweWXEwG+ZuibUlhhg8oaIqHIBkEdzBBxpgRkcY3EHzEAvuQRSj7L06lmxFOC0Vd
-        o5IyfLWygW4bOojWMu/n3dKlZZEqbHg5JRPWvo7KxSYAWzqr6u526Rg4wFHE=
-X-Google-Smtp-Source: AGHT+IGgrArJ6KuWEfoqRiAlVMY/07X0dicWY0UXhV0vkep2AfUrsUvRiCEAEZMuwNeTHInhSucbWGaydA==
-X-Received: from prohr-desktop.mtv.corp.google.com ([2620:15c:211:200:171d:7a30:ab85:51b3])
- (user=prohr job=sendgmr) by 2002:a25:32c8:0:b0:d08:ea77:52d4 with SMTP id
- y191-20020a2532c8000000b00d08ea7752d4mr260984yby.12.1692916367607; Thu, 24
- Aug 2023 15:32:47 -0700 (PDT)
-Date:   Thu, 24 Aug 2023 15:32:25 -0700
+        d=1e100.net; s=20221208; t=1692916665; x=1693521465;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=UMFl4tquwwjAqS1w3i0zThSN3MgU1gooXrvOwfPzxiY=;
+        b=XMDyGGHfruaO8Qza7esDbCmH6RAlZnafy/9PqVrtnu7a20eF3cAkwtg+mX8jh35sUK
+         7bAp1OhmD+N3/BCHG4xgCw5sRm0UyNPyrHrfdHLNpDh+1/6GvikOT43MV8fjHkt2rUqb
+         7ldeCS6OgkYJsBx2uplpQUX7sma6kzrDrGN5EKT9pLYXKZ1jNH7wHBArww4OHDK/UxqO
+         Wv//qtx2FiAoMsARi6UNCG7w4i2tQjTQGqu6qQjDSGZMcVG5QlnNm2nkYs9UqYtw1UDE
+         raHhlqNB4p1S8edF25w2mvDbCBkil0vrA2zy6rxMwg4xhTXmXDNNPikutZNckFADvzAd
+         qh1Q==
+X-Gm-Message-State: AOJu0YxGhA6SNrmsCdaAqBWMqHRD1IFXNc4Z7XzvJPteZPX7jUfJ61cB
+        rqVFf/ldqEr5moeMKI/98itvjos4xua2/77T8g==
+X-Google-Smtp-Source: AGHT+IEcNoYWlkJCqJb3cVnMqS2O4oLgeTyN2sbLgckZMBtD7aJFOXZZEaU0dUzbpAUrKO56nFA29Ob66DhkUhC/HA==
+X-Received: from riemann.sea.corp.google.com ([2620:15c:100:201:1fdc:3cc3:587a:93c9])
+ (user=srutherford job=sendgmr) by 2002:a05:690c:2712:b0:57a:6019:62aa with
+ SMTP id dy18-20020a05690c271200b0057a601962aamr329028ywb.5.1692916665017;
+ Thu, 24 Aug 2023 15:37:45 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 15:37:31 -0700
 Mime-Version: 1.0
 X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
-Message-ID: <20230824223225.863719-1-prohr@google.com>
-Subject: [PATCH 6.1] net: add sysctl accept_ra_min_lft
-From:   Patrick Rohr <prohr@google.com>
-To:     stable@vger.kernel.org
-Cc:     Patrick Rohr <prohr@google.com>,
-        "=?UTF-8?q?Maciej=20=C5=BBenczykowski?=" <maze@google.com>,
-        Lorenzo Colitti <lorenzo@google.com>
+Message-ID: <20230824223731.2055016-1-srutherford@google.com>
+Subject: [PATCH v3] x86/sev: Make enc_dec_hypercall() accept a size instead of npages
+From:   Steve Rutherford <srutherford@google.com>
+To:     Borislav Petkov <bp@alien8.de>,
+        Thomas Gleixner <tglx@linutronix.de>, thomas.lendacky@amd.com,
+        pankaj.gupta@amd.com
+Cc:     Paolo Bonzini <pbonzini@redhat.com>,
+        Wanpeng Li <wanpengli@tencent.com>,
+        Vitaly Kuznetsov <vkuznets@redhat.com>,
+        Ingo Molnar <mingo@redhat.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H . Peter Anvin" <hpa@zytor.com>, kvm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, David.Kaplan@amd.com,
+        jacobhxu@google.com, patelsvishal@google.com, bhillier@google.com,
+        Steve Rutherford <srutherford@google.com>,
+        stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This change adds a new sysctl accept_ra_min_lft which enforces a minimum
-lifetime value for individual RA sections; in particular, router
-lifetime, PIO preferred lifetime, and RIO lifetime. If any of those
-lifetimes are lower than the configured value, the specific RA section
-is ignored.
+enc_dec_hypercall() accepted a page count instead of a size, which
+forced its callers to round up. As a result, non-page aligned
+vaddrs caused pages to be spuriously marked as decrypted via the
+encryption status hypercall, which in turn caused consistent
+corruption of pages during live migration. Live migration requires
+accurate encryption status information to avoid migrating pages
+from the wrong perspective.
 
-This fixes a potential denial of service attack vector where rogue WiFi
-routers (or devices) can send RAs with low lifetimes to actively drain a
-mobile device's battery (by preventing sleep).
-
-In addition to this change, Android uses hardware offloads to drop RAs
-for a fraction of the minimum of all lifetimes present in the RA (some
-networks have very frequent RAs (5s) with high lifetimes (2h)). Despite
-this, we have encountered networks that set the router lifetime to 30s
-which results in very frequent CPU wakeups. Instead of disabling IPv6
-(and dropping IPv6 ethertype in the WiFi firmware) entirely on such
-networks, misconfigured routers must be ignored while still processing
-RAs from other IPv6 routers on the same network (i.e. to support IoT
-applications).
-
-This change squashes the following patches into a single commit:
-- net-next 1671bcfd76fd ("net: add sysctl accept_ra_min_rtr_lft")
-- net-next 5027d54a9c30 ("net: change accept_ra_min_rtr_lft to affect all R=
-A lifetimes")
-- net-next 5cb249686e67 ("net: release reference to inet6_dev pointer")
-
-Cc: Maciej =C5=BBenczykowski <maze@google.com>
-Cc: Lorenzo Colitti <lorenzo@google.com>
-Signed-off-by: Patrick Rohr <prohr@google.com>
+Cc: stable@vger.kernel.org
+Fixes: 064ce6c550a0 ("mm: x86: Invoke hypercall when page encryption status is changed")
+Signed-off-by: Steve Rutherford <srutherford@google.com>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
 ---
- Documentation/networking/ip-sysctl.rst |  8 ++++++++
- include/linux/ipv6.h                   |  1 +
- include/uapi/linux/ipv6.h              |  1 +
- net/ipv6/addrconf.c                    | 13 +++++++++++++
- net/ipv6/ndisc.c                       | 13 +++++++++++--
- 5 files changed, 34 insertions(+), 2 deletions(-)
+ arch/x86/include/asm/mem_encrypt.h |  6 +++---
+ arch/x86/kernel/kvm.c              |  4 +---
+ arch/x86/mm/mem_encrypt_amd.c      | 13 ++++++-------
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-diff --git a/Documentation/networking/ip-sysctl.rst b/Documentation/network=
-ing/ip-sysctl.rst
-index 3301288a7c69..f5f7a464605f 100644
---- a/Documentation/networking/ip-sysctl.rst
-+++ b/Documentation/networking/ip-sysctl.rst
-@@ -2148,6 +2148,14 @@ accept_ra_min_hop_limit - INTEGER
-=20
- 	Default: 1
-=20
-+accept_ra_min_lft - INTEGER
-+	Minimum acceptable lifetime value in Router Advertisement.
-+
-+	RA sections with a lifetime less than this value shall be
-+	ignored. Zero lifetimes stay unaffected.
-+
-+	Default: 0
-+
- accept_ra_pinfo - BOOLEAN
- 	Learn Prefix Information in Router Advertisement.
-=20
-diff --git a/include/linux/ipv6.h b/include/linux/ipv6.h
-index 37dfdcfcdd54..0e3c95055b21 100644
---- a/include/linux/ipv6.h
-+++ b/include/linux/ipv6.h
-@@ -33,6 +33,7 @@ struct ipv6_devconf {
- 	__s32		accept_ra_defrtr;
- 	__u32		ra_defrtr_metric;
- 	__s32		accept_ra_min_hop_limit;
-+	__s32		accept_ra_min_lft;
- 	__s32		accept_ra_pinfo;
- 	__s32		ignore_routes_with_linkdown;
- #ifdef CONFIG_IPV6_ROUTER_PREF
-diff --git a/include/uapi/linux/ipv6.h b/include/uapi/linux/ipv6.h
-index 53326dfc59ec..4fa8511b1e35 100644
---- a/include/uapi/linux/ipv6.h
-+++ b/include/uapi/linux/ipv6.h
-@@ -198,6 +198,7 @@ enum {
- 	DEVCONF_IOAM6_ID_WIDE,
- 	DEVCONF_NDISC_EVICT_NOCARRIER,
- 	DEVCONF_ACCEPT_UNTRACKED_NA,
-+	DEVCONF_ACCEPT_RA_MIN_LFT,
- 	DEVCONF_MAX
- };
-=20
-diff --git a/net/ipv6/addrconf.c b/net/ipv6/addrconf.c
-index 48a6486951cd..5480ee507c61 100644
---- a/net/ipv6/addrconf.c
-+++ b/net/ipv6/addrconf.c
-@@ -202,6 +202,7 @@ static struct ipv6_devconf ipv6_devconf __read_mostly =
-=3D {
- 	.ra_defrtr_metric	=3D IP6_RT_PRIO_USER,
- 	.accept_ra_from_local	=3D 0,
- 	.accept_ra_min_hop_limit=3D 1,
-+	.accept_ra_min_lft	=3D 0,
- 	.accept_ra_pinfo	=3D 1,
- #ifdef CONFIG_IPV6_ROUTER_PREF
- 	.accept_ra_rtr_pref	=3D 1,
-@@ -262,6 +263,7 @@ static struct ipv6_devconf ipv6_devconf_dflt __read_mos=
-tly =3D {
- 	.ra_defrtr_metric	=3D IP6_RT_PRIO_USER,
- 	.accept_ra_from_local	=3D 0,
- 	.accept_ra_min_hop_limit=3D 1,
-+	.accept_ra_min_lft	=3D 0,
- 	.accept_ra_pinfo	=3D 1,
- #ifdef CONFIG_IPV6_ROUTER_PREF
- 	.accept_ra_rtr_pref	=3D 1,
-@@ -2731,6 +2733,9 @@ void addrconf_prefix_rcv(struct net_device *dev, u8 *=
-opt, int len, bool sllao)
- 		return;
- 	}
-=20
-+	if (valid_lft !=3D 0 && valid_lft < in6_dev->cnf.accept_ra_min_lft)
-+		goto put;
-+
- 	/*
- 	 *	Two things going on here:
- 	 *	1) Add routes for on-link prefixes
-@@ -5601,6 +5606,7 @@ static inline void ipv6_store_devconf(struct ipv6_dev=
-conf *cnf,
- 	array[DEVCONF_IOAM6_ID_WIDE] =3D cnf->ioam6_id_wide;
- 	array[DEVCONF_NDISC_EVICT_NOCARRIER] =3D cnf->ndisc_evict_nocarrier;
- 	array[DEVCONF_ACCEPT_UNTRACKED_NA] =3D cnf->accept_untracked_na;
-+	array[DEVCONF_ACCEPT_RA_MIN_LFT] =3D cnf->accept_ra_min_lft;
+diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
+index 7f97a8a97e24..473b16d73b47 100644
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -50,8 +50,8 @@ void __init sme_enable(struct boot_params *bp);
+ 
+ int __init early_set_memory_decrypted(unsigned long vaddr, unsigned long size);
+ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size);
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages,
+-					    bool enc);
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr,
++					    unsigned long size, bool enc);
+ 
+ void __init mem_encrypt_free_decrypted_mem(void);
+ 
+@@ -85,7 +85,7 @@ early_set_memory_decrypted(unsigned long vaddr, unsigned long size) { return 0;
+ static inline int __init
+ early_set_memory_encrypted(unsigned long vaddr, unsigned long size) { return 0; }
+ static inline void __init
+-early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc) {}
++early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc) {}
+ 
+ static inline void mem_encrypt_free_decrypted_mem(void) { }
+ 
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 6a36db4f79fd..b8ab9ee5896c 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -966,10 +966,8 @@ static void __init kvm_init_platform(void)
+ 		 * Ensure that _bss_decrypted section is marked as decrypted in the
+ 		 * shared pages list.
+ 		 */
+-		nr_pages = DIV_ROUND_UP(__end_bss_decrypted - __start_bss_decrypted,
+-					PAGE_SIZE);
+ 		early_set_mem_enc_dec_hypercall((unsigned long)__start_bss_decrypted,
+-						nr_pages, 0);
++						__end_bss_decrypted - __start_bss_decrypted, 0);
+ 
+ 		/*
+ 		 * If not booted using EFI, enable Live migration support.
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index 54bbd5163e8d..6faea41e99b6 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -288,11 +288,10 @@ static bool amd_enc_cache_flush_required(void)
+ 	return !cpu_feature_enabled(X86_FEATURE_SME_COHERENT);
  }
-=20
- static inline size_t inet6_ifla6_size(void)
-@@ -6794,6 +6800,13 @@ static const struct ctl_table addrconf_sysctl[] =3D =
-{
- 		.mode		=3D 0644,
- 		.proc_handler	=3D proc_dointvec,
- 	},
-+	{
-+		.procname	=3D "accept_ra_min_lft",
-+		.data		=3D &ipv6_devconf.accept_ra_min_lft,
-+		.maxlen		=3D sizeof(int),
-+		.mode		=3D 0644,
-+		.proc_handler	=3D proc_dointvec,
-+	},
- 	{
- 		.procname	=3D "accept_ra_pinfo",
- 		.data		=3D &ipv6_devconf.accept_ra_pinfo,
-diff --git a/net/ipv6/ndisc.c b/net/ipv6/ndisc.c
-index a4d43eb45a9d..6cb2d6a536a8 100644
---- a/net/ipv6/ndisc.c
-+++ b/net/ipv6/ndisc.c
-@@ -1331,6 +1331,14 @@ static void ndisc_router_discovery(struct sk_buff *s=
-kb)
- 		goto skip_defrtr;
- 	}
-=20
-+	lifetime =3D ntohs(ra_msg->icmph.icmp6_rt_lifetime);
-+	if (lifetime !=3D 0 && lifetime < in6_dev->cnf.accept_ra_min_lft) {
-+		ND_PRINTK(2, info,
-+			  "RA: router lifetime (%ds) is too short: %s\n",
-+			  lifetime, skb->dev->name);
-+		goto skip_defrtr;
-+	}
-+
- 	/* Do not accept RA with source-addr found on local machine unless
- 	 * accept_ra_from_local is set to true.
- 	 */
-@@ -1343,8 +1351,6 @@ static void ndisc_router_discovery(struct sk_buff *sk=
-b)
- 		goto skip_defrtr;
- 	}
-=20
--	lifetime =3D ntohs(ra_msg->icmph.icmp6_rt_lifetime);
--
- #ifdef CONFIG_IPV6_ROUTER_PREF
- 	pref =3D ra_msg->icmph.icmp6_router_pref;
- 	/* 10b is handled as if it were 00b (medium) */
-@@ -1519,6 +1525,9 @@ static void ndisc_router_discovery(struct sk_buff *sk=
-b)
- 			if (ri->prefix_len =3D=3D 0 &&
- 			    !in6_dev->cnf.accept_ra_defrtr)
- 				continue;
-+			if (ri->lifetime !=3D 0 &&
-+			    ntohl(ri->lifetime) < in6_dev->cnf.accept_ra_min_lft)
-+				continue;
- 			if (ri->prefix_len < in6_dev->cnf.accept_ra_rt_info_min_plen)
- 				continue;
- 			if (ri->prefix_len > in6_dev->cnf.accept_ra_rt_info_max_plen)
---=20
+ 
+-static void enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ {
+ #ifdef CONFIG_PARAVIRT
+-	unsigned long sz = npages << PAGE_SHIFT;
+-	unsigned long vaddr_end = vaddr + sz;
++	unsigned long vaddr_end = vaddr + size;
+ 
+ 	while (vaddr < vaddr_end) {
+ 		int psize, pmask, level;
+@@ -342,7 +341,7 @@ static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool e
+ 		snp_set_memory_private(vaddr, npages);
+ 
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+-		enc_dec_hypercall(vaddr, npages, enc);
++		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
+ 
+ 	return true;
+ }
+@@ -466,7 +465,7 @@ static int __init early_set_memory_enc_dec(unsigned long vaddr,
+ 
+ 	ret = 0;
+ 
+-	early_set_mem_enc_dec_hypercall(start, PAGE_ALIGN(size) >> PAGE_SHIFT, enc);
++	early_set_mem_enc_dec_hypercall(start, size, enc);
+ out:
+ 	__flush_tlb_all();
+ 	return ret;
+@@ -482,9 +481,9 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
+ 	return early_set_memory_enc_dec(vaddr, size, true);
+ }
+ 
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ {
+-	enc_dec_hypercall(vaddr, npages, enc);
++	enc_dec_hypercall(vaddr, size, enc);
+ }
+ 
+ void __init sme_early_init(void)
+-- 
 2.42.0.rc1.204.g551eb34607-goog
 
