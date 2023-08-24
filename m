@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3BCBB787255
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:53:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 322B6787303
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234632AbjHXOxA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:53:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39574 "EHLO
+        id S241938AbjHXO70 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:59:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241821AbjHXOw3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:52:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17571A1
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:52:28 -0700 (PDT)
+        with ESMTP id S241958AbjHXO67 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7641BCE
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A845366E9D
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:52:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B985CC433B6;
-        Thu, 24 Aug 2023 14:52:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4032E67077
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 51ED2C433C7;
+        Thu, 24 Aug 2023 14:58:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888747;
-        bh=YAT9fqsiZKzI3ubIev0JTNq9tK2aOlpv+dBB585EpPY=;
+        s=korg; t=1692889136;
+        bh=Y/rBKoF67ZBdhVir07/4ijAUCMOK2y9829sMvNmYMXY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vlaw9KWmLZd+nC2s9mxQjvw7BM/+OfMXIpcazvzleAM5aet1rAS3HZTVgepVMEjZB
-         IiauPTjsoy4Su9+U1A7AJnZVireDpVZxjUxSlD+6qQ4uylEe1n6Nws2GCXcF4ZIViG
-         5iyBxgXUTgcg1SWl2xBCLBEJEPdn7TFsfdX674sw=
+        b=D75RE9GxbVScDw2zv35PhE0UwH/w+/ihc2xOgJ5vvoFTzy72mCwz4DFX6Iz183jEE
+         AYSZ/BneLnLw8Sj4DCQ7dRzcWridCBHagghFn+a1F/bHlSByZSmjljfEzZ+cu7CzFt
+         OPo13OsZLyJpFgtZrWizggQD34BY+fMhwqlMx70U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        hackyzh002 <hackyzh002@gmail.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 027/139] pcmcia: rsrc_nonstatic: Fix memory leak in nonstatic_release_resource_db()
+Subject: [PATCH 5.10 007/135] drm/radeon: Fix integer overflow in radeon_cs_parser_init
 Date:   Thu, 24 Aug 2023 16:49:10 +0200
-Message-ID: <20230824145024.762135126@linuxfoundation.org>
+Message-ID: <20230824145027.321684302@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,62 +56,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: hackyzh002 <hackyzh002@gmail.com>
 
-[ Upstream commit c85fd9422fe0f5d667305efb27f56d09eab120b0 ]
+[ Upstream commit f828b681d0cd566f86351c0b913e6cb6ed8c7b9c ]
 
-When nonstatic_release_resource_db() frees all resources associated
-with an PCMCIA socket, it forgets to free socket_data too, causing
-a memory leak observable with kmemleak:
+The type of size is unsigned, if size is 0x40000000, there will be an
+integer overflow, size will be zero after size *= sizeof(uint32_t),
+will cause uninitialized memory to be referenced later
 
-unreferenced object 0xc28d1000 (size 64):
-  comm "systemd-udevd", pid 297, jiffies 4294898478 (age 194.484s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 f0 85 0e c3 00 00 00 00  ................
-    00 00 00 00 0c 10 8d c2 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffda4245>] __kmem_cache_alloc_node+0x2d7/0x4a0
-    [<7e51f0c8>] kmalloc_trace+0x31/0xa4
-    [<d52b4ca0>] nonstatic_init+0x24/0x1a4 [pcmcia_rsrc]
-    [<a2f13e08>] pcmcia_register_socket+0x200/0x35c [pcmcia_core]
-    [<a728be1b>] yenta_probe+0x4d8/0xa70 [yenta_socket]
-    [<c48fac39>] pci_device_probe+0x99/0x194
-    [<84b7c690>] really_probe+0x181/0x45c
-    [<8060fe6e>] __driver_probe_device+0x75/0x1f4
-    [<b9b76f43>] driver_probe_device+0x28/0xac
-    [<648b766f>] __driver_attach+0xeb/0x1e4
-    [<6e9659eb>] bus_for_each_dev+0x61/0xb4
-    [<25a669f3>] driver_attach+0x1e/0x28
-    [<d8671d6b>] bus_add_driver+0x102/0x20c
-    [<df0d323c>] driver_register+0x5b/0x120
-    [<942cd8a4>] __pci_register_driver+0x44/0x4c
-    [<e536027e>] __UNIQUE_ID___addressable_cleanup_module188+0x1c/0xfffff000 [iTCO_vendor_support]
-
-Fix this by freeing socket_data too.
-
-Tested on a Acer Travelmate 4002WLMi by manually binding/unbinding
-the yenta_cardbus driver (yenta_socket).
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Message-ID: <20230512184529.5094-1-W_Armin@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: hackyzh002 <hackyzh002@gmail.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/rsrc_nonstatic.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/gpu/drm/radeon/radeon_cs.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index 1cac528707111..e6c90c0bb7646 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -1053,6 +1053,8 @@ static void nonstatic_release_resource_db(struct pcmcia_socket *s)
- 		q = p->next;
- 		kfree(p);
- 	}
-+
-+	kfree(data);
- }
- 
+diff --git a/drivers/gpu/drm/radeon/radeon_cs.c b/drivers/gpu/drm/radeon/radeon_cs.c
+index a78b60b62caf2..87a57e5588a28 100644
+--- a/drivers/gpu/drm/radeon/radeon_cs.c
++++ b/drivers/gpu/drm/radeon/radeon_cs.c
+@@ -271,7 +271,8 @@ int radeon_cs_parser_init(struct radeon_cs_parser *p, void *data)
+ {
+ 	struct drm_radeon_cs *cs = data;
+ 	uint64_t *chunk_array_ptr;
+-	unsigned size, i;
++	u64 size;
++	unsigned i;
+ 	u32 ring = RADEON_CS_RING_GFX;
+ 	s32 priority = 0;
  
 -- 
 2.40.1
