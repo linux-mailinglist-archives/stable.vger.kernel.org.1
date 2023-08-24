@@ -2,174 +2,240 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB86A7873FD
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:23:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9939378747B
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:44:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241311AbjHXPW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54088 "EHLO
+        id S241182AbjHXPnu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:43:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241368AbjHXPWe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:22:34 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 874E019B0;
-        Thu, 24 Aug 2023 08:22:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1692890552; x=1724426552;
-  h=from:to:cc:subject:date:message-id:references:
-   in-reply-to:content-id:content-transfer-encoding:
-   mime-version;
-  bh=bkFBZnep0UTd78d+sQjflVI480yvbLYhzysmWqjq0Ao=;
-  b=VzRk26Cb93Tqdmg4hHdCb6kzC+CZJLkVLGcEvr63a9+ycsrWuY92dWAG
-   UcVuqb4REj3Z/akNTB9p9bgQaiOkJ376BIQvcNdh+bdtsCoE0564vg1UX
-   Zuf9nNJ8k7N0LShdxmWsD8NQ7Bvg8X661TRzX8XEqHCUauYnyvztwYL3j
-   eV3jxrtZcmf7pigMDko7NujrjrXGkvndiBlhkpbUXY/N/3N6rlFBNdU9X
-   n4v+GAmvYucqKOwEm2Sul52m38eXKqAUfBKki3ywAdeb1EaYLbmOc3K5w
-   jNYKuxwP5Gthv50vqMYI64TUzxvPptqAMKyzKKCSMQTL0anVla8nD+ZNN
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="405470699"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="405470699"
-Received: from fmsmga006.fm.intel.com ([10.253.24.20])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 24 Aug 2023 08:22:30 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10812"; a="983751853"
-X-IronPort-AV: E=Sophos;i="6.02,195,1688454000"; 
-   d="scan'208";a="983751853"
-Received: from fmsmsx601.amr.corp.intel.com ([10.18.126.81])
-  by fmsmga006.fm.intel.com with ESMTP; 24 Aug 2023 08:22:29 -0700
-Received: from fmsmsx611.amr.corp.intel.com (10.18.126.91) by
- fmsmsx601.amr.corp.intel.com (10.18.126.81) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Thu, 24 Aug 2023 08:22:28 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx611.amr.corp.intel.com (10.18.126.91) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Thu, 24 Aug 2023 08:22:28 -0700
-Received: from NAM12-DM6-obe.outbound.protection.outlook.com (104.47.59.175)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Thu, 24 Aug 2023 08:22:28 -0700
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=L5r58KiaKQBJCAlI7EB+2slzFAvDWkAAGAnrc1jHekc7gcHul1m/wM/qzpM8FRmrYBXE3AFwXdgaVALVtS9EcgUfH8TIGuOAS3LDverBaO1+pSPTkC97Vk7Hs54i8G7ZC+dz8x+1kYBa+14lmiG6iITWXyGMal19BypiI+JEfEveweTZaQRnELcaqjvumrNLenk8mUDWAzjdse1g7NgIkay796ImIJt79ycOm3MNBgdeJGYmPIMoDkc0eOjXz+T4i1+TCnamJxBIBeIbB+PnrqQfe7VmR3tyox6K6zLu8J0mbpzjAfUZeZ0pjmNDbSMmTqAoO1ukiec6YnUm0CQRmw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=bkFBZnep0UTd78d+sQjflVI480yvbLYhzysmWqjq0Ao=;
- b=c1LMd26WwRx9TTV+YgdqdcDZcSSYGtROoU94uzfKocRLYISbb+WJpbbErsbR3AAHBB0BMUBRcutGvTg9zJnqLqjPI9p3wETzOO/ULdMhRKYkeAj/HVcq10LZ+0PcJi47PU/5UKbX58migAXw0coEekOzqY58dLuqKAFiC5C5MP9HA5EyfGo5FckYLerr/Lx+lL+p+4ZxhrLYPG2QD+arQsMfaN2ZHLVfcaXkNFlJKqP5xtx+AqRiP22UNJRQm1pt7y5Vtz4gBcmCG9DZaIHw4uPrAeuAo1G7t7qLCRNmT3qEiz1VyAhM+3eAPPdegy67NCqUBKXHyGCXI9pq4oOLGg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com (2603:10b6:208:372::10)
- by DS0PR11MB7632.namprd11.prod.outlook.com (2603:10b6:8:14f::9) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Thu, 24 Aug
- 2023 15:22:26 +0000
-Received: from MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::abd2:f781:1433:259]) by MN0PR11MB5963.namprd11.prod.outlook.com
- ([fe80::abd2:f781:1433:259%3]) with mapi id 15.20.6699.027; Thu, 24 Aug 2023
- 15:22:26 +0000
-From:   "Edgecombe, Rick P" <rick.p.edgecombe@intel.com>
-To:     "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
-        "linux-tip-commits@vger.kernel.org" 
-        <linux-tip-commits@vger.kernel.org>
-CC:     "tglx@linutronix.de" <tglx@linutronix.de>,
-        "Mehta, Sohil" <sohil.mehta@intel.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "Wang, Lei4" <lei4.wang@intel.com>,
-        "Pan, Lijun" <lijun.pan@intel.com>,
-        "x86@kernel.org" <x86@kernel.org>
-Subject: Re: [tip: x86/urgent] x86/fpu: Invalidate FPU state correctly on
- exec()
-Thread-Topic: [tip: x86/urgent] x86/fpu: Invalidate FPU state correctly on
- exec()
-Thread-Index: AQHZ1msY6s2b2oIqDkeG/rIOCMuRSq/5kLuA
-Date:   Thu, 24 Aug 2023 15:22:26 +0000
-Message-ID: <f2fdba6ecda7a6b1e2ea048a3863fb302cc0f8d1.camel@intel.com>
-References: <20230818170305.502891-1-rick.p.edgecombe@intel.com>
-         <169286827548.27769.3257744272966160176.tip-bot2@tip-bot2>
-In-Reply-To: <169286827548.27769.3257744272966160176.tip-bot2@tip-bot2>
-Accept-Language: en-US
-Content-Language: en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-user-agent: Evolution 3.44.4-0ubuntu2 
-authentication-results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-x-ms-publictraffictype: Email
-x-ms-traffictypediagnostic: MN0PR11MB5963:EE_|DS0PR11MB7632:EE_
-x-ms-office365-filtering-correlation-id: eed721b4-25bb-43d5-a612-08dba4b5ec8a
-x-ms-exchange-senderadcheck: 1
-x-ms-exchange-antispam-relay: 0
-x-microsoft-antispam: BCL:0;
-x-microsoft-antispam-message-info: HZsF3dk26MsSJEdUcHdv4IxtttKvwoMiqmjT0JwCSatI1LBhQ+CeiwS1Tfs4SA8lhF4xvA2F3+4IgKWotmgmmhKZCBEDY8qS0fhIqtFiWkS+mKlJVdlsKzCopTUDudJK+vYkGSRvJsy4fxW/OJr0g+yBzG60oc0k9hPB625ow7PNyzPMqXFLHKMyVeKJWgEltyyY53vo1fzLl2znv1KwQNpscCr4ER1+7BSEFnyEamx9GTwk7Mc0z2nmThO336d0cHuS4kqMvls1/J0sWAZwQWkKSYYqPUndkK8wCnpVSuFjdL9CuOuhnYcYQYBHKj4VqUhbW+guFJdHDGjxyE/+Slz1cmdckal2V9ux7UiOO0sP+c8KHspHyhg9jsklVWsIESgeipz+mihCEwdYegNRF2e7H29AwxUU66qP+6fabeRe/iA1OVCLr2dp+U1i4OngWSObbRGrcJSbyxv3XZ3u0E4rgM55xsn9SvrDG2r4kI9dxa2Q5hYGszkdqcbqnxFA2oKzGipAgfemBW0nAoP9uZbZEekt/yjXmK0NjLfEUD+o1NTwwTuQkMmzgkm28ZYE+9rA7TDJs0WT0obrxU1GIw2MvM0BkfHWHS5d0pl/mX7FJsHBl6fguHJ85MsZDmRq
-x-forefront-antispam-report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR11MB5963.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(39860400002)(396003)(376002)(346002)(366004)(136003)(186009)(1800799009)(451199024)(2616005)(558084003)(5660300002)(8936002)(4326008)(8676002)(36756003)(26005)(71200400001)(38100700002)(38070700005)(82960400001)(122000001)(66556008)(66946007)(66476007)(64756008)(54906003)(66446008)(76116006)(316002)(91956017)(110136005)(478600001)(41300700001)(2906002)(6506007)(6512007)(86362001)(6486002);DIR:OUT;SFP:1102;
-x-ms-exchange-antispam-messagedata-chunkcount: 1
-x-ms-exchange-antispam-messagedata-0: =?utf-8?B?TzZHTzlQcU83RENoZXNGRzZDTlduRkhDdDVrdm1MSXJmWTBob3NTMC9LN3Vn?=
- =?utf-8?B?a0pFN0NFVnJRYXM5TldjVkFkcTBSeUxPTUo3aFdDZ3JabDdnZXpBejZMbGJu?=
- =?utf-8?B?ZUx6N2crSm5wZ1ZKazhYeUswTUN0TlE1RTJvNjNDZ0VldmpaUWU0N0k3Yi9O?=
- =?utf-8?B?WTdETUtWeVNKQVFXams3Y2pmUjcyMXp3eVcwMTlPSWtKc1YyaHlmaHpVaFJh?=
- =?utf-8?B?S0k3MEkzb2p2QWtmMlNtclRWcWI5bnlBSDFBeUF6TnBsbEFnT21ORk12Zmln?=
- =?utf-8?B?a053Qzg2b2dyQk1yekZwaThhQjhiSEZ6UWdzMTNIUkdkZktncU5IbHJIK1Aw?=
- =?utf-8?B?TDl5VDZ0YmRhU1BHeWFUYWkwNkducmQyNCswMXdHQm8zOEVuRmhzY1VXa1hU?=
- =?utf-8?B?S3o2UUJGZStFVFRGM2R4T1RRMFFDMEYzNFo3Z01rN0htVC9zWmUxa1FZajFM?=
- =?utf-8?B?L244anpTVStCS3plRWNIa2dHVjJ1cGJUc3hwSlRNcGVhTEFhZlZ1eGJRb05E?=
- =?utf-8?B?YkFXMXNrUWRrazJpUUVON1M5dmlSWjM3L2pQd1luUzFCT2kvalBGK29Hcm80?=
- =?utf-8?B?ZmdMQjVDbGdrUm04Y2tjQ0R3TUEyajhVZVQ2Q05YNmJTU2pibXJSNlNZWm5U?=
- =?utf-8?B?ek5QN0dJcDZzSDFadlMzRVJocW5VNjlvalk1ajdnUmhVbFF0a3lWdmVKcFdX?=
- =?utf-8?B?MUxBUmpqUFhmVG1seGJtOWIwNmJyaW0rM0VwN1NON29PbGowUjFVSXlTNEV4?=
- =?utf-8?B?VTJ0aDh5aHF1dEpzTjZRZXRrR3hFcUYwakdiWFZ5REhBRHRYK3N4OUU3VVRV?=
- =?utf-8?B?dFAwYitzSlMrZ2pISnE5VCtYV3hQUjdtUGkxTXQ3VkhIZVduQVk3WEE4VlpX?=
- =?utf-8?B?L2Y0RlZieWNIM2xnNFd4WVg4Q2Y5dlQyZ0lra1kzbUlhVTlKVGNBaHZuRTRo?=
- =?utf-8?B?YnlFVkZ4cVZOa3FOakd2dmZEVk9sV1JVelRWeDQydVlJMDVQNVd2cHhZZGQx?=
- =?utf-8?B?dnlLdnpvMEhKZkxESjIxY08xN1o2elkvekE0VzAzSVhKZThlVjRSc2FLelhY?=
- =?utf-8?B?RlppVHJOT2tiQTE5RnIreEsrY0s5ZHZyQngyZHVLT2hQVlBFVjdsYXBXbUxh?=
- =?utf-8?B?TEU3STFNMUxaQndHZ2lRdGZEQ24yRkdNTGxkV3VtazZmdzRaNGFZQkxMWTE0?=
- =?utf-8?B?aTkrdGRONGNnaDEvbmlsN2ZOeWtSYU1OaUl6Q0dTY2ZCZmlYREpiaFlhbXZO?=
- =?utf-8?B?Y0tBS2NJVWFEdkhBNC8vQ1U3QS9xeWpzak8wUlRkRzE3Zk1TSFFXcFNBTmVh?=
- =?utf-8?B?Q3J6UEN2L1ovMGVlUXJ2TlhEQnI1Z1pZOHFnUFhTdlR5MnhPYzBKZm5vRGVI?=
- =?utf-8?B?NkxsZ1NmclBCSWNqR0tObmQ5TFVmdzBUSVhjbUkyTGhmbmRHUXlORjdLUzRT?=
- =?utf-8?B?WU8xaGdwdmhnZnZ4dTUrZUlxVEdZU3FyODNRMEp2YmV6c0RKbXN0dVZCU29I?=
- =?utf-8?B?cXAwczExdHhrVjJTWDcyMVdiNVVXSDRBM1ErOVNYTTQwVlRSTDZueEN1LzIw?=
- =?utf-8?B?d2N1bHN1Rm9TYkNtTU9EVXdnbDRWOFBqOEtRR29sM1FoOHFWQmlhY2xDem10?=
- =?utf-8?B?Qk5hTzcyWUJsb05ydnRoMmFoYzlKVnlKQWRVOGhMM3NudUFHNTlVRHJaZVRy?=
- =?utf-8?B?amt4em9GazI0ZHRTZC9FYzNtT0J1QnJCbFdRdmFBNW5KbGU4TDhLVjdVT0NY?=
- =?utf-8?B?UDZJTmwwZ2xsaG5WOTFDL0Q1bTcvNHVwcEtBamdWN3lpTE16SUQwN0JMbWdk?=
- =?utf-8?B?bmZCRUdFaEM3MEVUbjVYdVp5VHZwUGIyZlhPMVJ5S3pKanAwMGhSRk90MUdY?=
- =?utf-8?B?cFg4cHlaVlB4V243WFZlWWJ1KzJtMGVzMEFBeklnS3JYWExCeDRpZVJwNXhy?=
- =?utf-8?B?Q09hNWVabGhDdENXVzVqVnRsNU91MGJ0aWdPN2dCQUU5RERzS3o0RFJUZUli?=
- =?utf-8?B?SU96R0kyRlJtSmgzRVBQaE5NdVdvZUlXbEwrR0k5cGlNQmd4cjJXaWJoeVFw?=
- =?utf-8?B?bElKTkFwVm0wV3lYRzBEOEdKdExGQ1F3Q0hkUmxCSDIxL3lKSVI1NnNIKzJS?=
- =?utf-8?B?eWpUanVMM2ppY0c0OGVjdm9maU9MTFFMd1c3SEhBWHdTNEYvVEpjalZuTFlm?=
- =?utf-8?B?S1E9PQ==?=
-Content-Type: text/plain; charset="utf-8"
-Content-ID: <B93CDA66FF945145A50E74C2A44713D0@namprd11.prod.outlook.com>
-Content-Transfer-Encoding: base64
+        with ESMTP id S239631AbjHXPnV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:43:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D98931B0;
+        Thu, 24 Aug 2023 08:43:18 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FFAD672CC;
+        Thu, 24 Aug 2023 15:43:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C03EDC433CC;
+        Thu, 24 Aug 2023 15:43:17 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692891797;
+        bh=oaFb5X1E3CxVVHedDJqOBhCTpJrS00UOEDxgUG4FgBs=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=j9k3htV3ynVAYCdyxXle4nNI+vJcpsNeouK3rNAxywVkuBSoGOupVo/RuXlsSLZK5
+         Ph7EeDMUsOALKLu7Si1qjRtPBiPoHCRGPFQeEJhrucTE/0PaV02qxU+ZN7GHyCrhOY
+         GVZVLhZfbHU6MfFNPCTzoQoDcUP1hNzfFcoalc3Hbo+0ZKkOPPbeqkLrJAP5fanwir
+         osA14XPWPwX4hG3vae0SxnDIh1kAB00GXS/5B8rNM9h8XuZdfISKqR3kcnwoZR3Urz
+         WSByJG6IIxMsXWFBUHAjvhf60KEXjVIYcCXlJ+kwIyUsFJp9B7lzX5hIgILyQ1M4Tj
+         O0/w3lFdTs/FA==
+Received: by mail-lj1-f178.google.com with SMTP id 38308e7fff4ca-2bb97f2c99cso107140281fa.0;
+        Thu, 24 Aug 2023 08:43:17 -0700 (PDT)
+X-Gm-Message-State: AOJu0Yz5X13uFXzOdRd5yZLl6CPWYA5pgmrP5ESqHjdnQ2oFqoYkrITy
+        lNGhe9m5Z1ezko2CxqrGpiUlYVk0vU5iiRI8VRU=
+X-Google-Smtp-Source: AGHT+IHxUs3znDfjRThQi13jN8gG7WYdCDMudAroETwME6DTL1gmJjX82U6iNnaYj+7FXyEJJTJUUDd8Hk9uwiOskVs=
+X-Received: by 2002:a2e:330f:0:b0:2b8:4079:fd9d with SMTP id
+ d15-20020a2e330f000000b002b84079fd9dmr11989361ljc.29.1692891795701; Thu, 24
+ Aug 2023 08:43:15 -0700 (PDT)
 MIME-Version: 1.0
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR11MB5963.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eed721b4-25bb-43d5-a612-08dba4b5ec8a
-X-MS-Exchange-CrossTenant-originalarrivaltime: 24 Aug 2023 15:22:26.7178
- (UTC)
-X-MS-Exchange-CrossTenant-fromentityheader: Hosted
-X-MS-Exchange-CrossTenant-id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-mailboxtype: HOSTED
-X-MS-Exchange-CrossTenant-userprincipalname: +4GkOOC6qfO9zWY9jaWGDCLz03/E/K6JdX0T8aoPZ71onCXTjXU/RLVGQi1LxpYGVYgoofR4B/lbJrh6NfWlRhSSAR6Gdfs26S/ZI6hKflE=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR11MB7632
-X-OriginatorOrg: intel.com
+References: <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
+ <5777BD82-2C8D-4BAB-BDD3-C2C003DC57FB@joelfernandes.org> <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
+ <87ttspct76.ffs@tglx> <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
+ <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
+ <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop> <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
+ <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop>
+In-Reply-To: <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Thu, 24 Aug 2023 23:43:04 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+Message-ID: <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     paulmck@kernel.org
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-T24gVGh1LCAyMDIzLTA4LTI0IGF0IDA5OjExICswMDAwLCB0aXAtYm90MiBmb3IgUmljayBFZGdl
-Y29tYmUgd3JvdGU6DQo+IEZpeGVzOiAzMzM0NDM2OGNiMDggKCJ4ODYvZnB1OiBDbGVhbiB1cCB0
-aGUgZnB1X19jbGVhcigpIHZhcmlhbnRzIikNCg0KT29wcywgeWVzIHRoaXMgbG9va3MgY29ycmVj
-dC4gU29ycnkgZm9yIHRoZSB3cm9uZyBjaGFyYWN0ZXJpemF0aW9uIG9mDQppdCBiZWluZyBvbGRl
-ci4NCg==
+Hi, Paul,
+
+On Thu, Aug 24, 2023 at 9:24=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
+g> wrote:
+>
+> On Thu, Aug 24, 2023 at 08:40:00PM +0800, Huacai Chen wrote:
+> > Hi, Paul,
+> > On Thu, Aug 24, 2023 at 7:40=E2=80=AFPM Paul E. McKenney <paulmck@kerne=
+l.org> wrote:
+> > > On Thu, Aug 24, 2023 at 10:50:41AM +0800, Huacai Chen wrote:
+> > > > Hi, Paul,
+> > > > On Thu, Aug 24, 2023 at 6:41=E2=80=AFAM Paul E. McKenney <paulmck@k=
+ernel.org> wrote:
+> > > > > On Thu, Aug 24, 2023 at 12:03:25AM +0200, Thomas Gleixner wrote:
+> > > > > > On Thu, Aug 17 2023 at 16:06, Huacai Chen wrote:
+> > > > > > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernandes <joel@=
+joelfernandes.org> wrote:
+> > > > > > >> > If  do_update_jiffies_64() cannot be used in NMI context,
+> > > > > > >>
+> > > > > > >> Can you not make the jiffies update conditional on whether i=
+t is
+> > > > > > >> called within NMI context?
+> > > > > >
+> > > > > > Which solves what? If KGDB has a breakpoint in the jiffies lock=
+ held
+> > > > > > region then you still dead lock.
+> > > > > >
+> > > > > > >> I dislike that..
+> > > > > > > Is this acceptable?
+> > > > > > >
+> > > > > > > void rcu_cpu_stall_reset(void)
+> > > > > > > {
+> > > > > > >         unsigned long delta;
+> > > > > > >
+> > > > > > >         delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get=
+_coarse_ns());
+> > > > > > >
+> > > > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
+> > > > > > >                    jiffies + delta + rcu_jiffies_till_stall_c=
+heck());
+> > > > > > > }
+> > > > > > >
+> > > > > > > This can update jiffies_stall without updating jiffies (but h=
+as the
+> > > > > > > same effect).
+> > > > > >
+> > > > > > Now you traded the potential dead lock on jiffies lock for a po=
+tential
+> > > > > > live lock vs. tk_core.seq. Not really an improvement, right?
+> > > > > >
+> > > > > > The only way you can do the above is something like the incompl=
+ete and
+> > > > > > uncompiled below. NMI safe and therefore livelock proof time in=
+terfaces
+> > > > > > exist for a reason.
+> > > > >
+> > > > > Just for completeness, another approach, with its own advantages
+> > > > > and disadvantage, is to add something like ULONG_MAX/4 to
+> > > > > rcu_state.jiffies_stall, but also set a counter indicating that t=
+his
+> > > > > has been done.  Then RCU's force-quiescent processing could decre=
+ment
+> > > > > that counter (if non-zero) and reset rcu_state.jiffies_stall when=
+ it
+> > > > > does reach zero.
+> > > > >
+> > > > > Setting the counter to three should cover most cases, but "live b=
+y the
+> > > > > heuristic, die by the heuristic".  ;-)
+> > > > >
+> > > > > It would be good to have some indication when gdb exited, but thi=
+ngs
+> > > > > like the gdb "next" command can make that "interesting" when appl=
+ied to
+> > > > > a long-running function.
+> > > >
+> > > > The original code is adding ULONG_MAX/2, so adding ULONG_MAX/4 may
+> > > > make no much difference? The simplest way is adding 300*HZ, but Joe=
+l
+> > > > dislikes that.
+> > >
+> > > I am not seeing the ULONG_MAX/2, so could you please point me to that
+> > > original code?
+> >
+> > Maybe I misunderstand something, I say the original code means code
+> > before commit a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP stall
+> > detection in rcu_cpu_stall_reset()").
+>
+> Yes, my suggestion would essentially revert that patch.  It would
+> compensate by resetting rcu_state.jiffies_stall after a few calls
+> to rcu_gp_fqs().
+>
+> Alternatively, we could simply provide a way for gdb users to manually
+> disable RCU CPU stall warnings at the beginning of their debug sessions
+> and to manually re-enable them when they are done.
+This problem is not KGDB-specific (though it is firstly found in the
+KGDB case), so I want to fix it in the rcu code rather than in the
+kgdb code.
+
+Huacai
+>
+>                                                         Thanx, Paul
+>
+> > Huacai
+> > >
+> > > The advantage of ULONG_MAX/4 over ULONG_MAX/2 is that the time_after(=
+)
+> > > and time_before() macros have ULONG_MAX/4 slop in either direction
+> > > before giving you the wrong answer.  You can get nearly the same resu=
+lt
+> > > using ULONG_MAX/2, but it requires a bit more care.  And even on 32-b=
+it
+> > > HZ=3D1000 systems, ULONG_MAX/4 gets you more than 12 days of gdb sess=
+ion
+> > > or jiffies-update delay before you start getting false positives.
+> > >
+> > > Then things can be reset after (say) 3 calls to rcu_gp_fqs() and
+> > > also the current reset at the beginning of a grace period, which
+> > > is in record_gp_stall_check_time().
+> > >
+> > > It would be better if RCU could get notified at both ends of the debu=
+g
+> > > session, but given gdb commands such as "next", along with Thomas's
+> > > point about gdb breakpoints being pretty much anywhere, this might or
+> > > might not be so helpful in real life.  But worth looking into.
+> > >
+> > >                                                         Thanx, Paul
+> > >
+> > > > Huacai
+> > > >
+> > > > >
+> > > > >                                                         Thanx, Pa=
+ul
+> > > > >
+> > > > > > Thanks,
+> > > > > >
+> > > > > >         tglx
+> > > > > > ---
+> > > > > > --- a/kernel/time/tick-sched.c
+> > > > > > +++ b/kernel/time/tick-sched.c
+> > > > > > @@ -51,6 +51,13 @@ struct tick_sched *tick_get_tick_sched(i
+> > > > > >   */
+> > > > > >  static ktime_t last_jiffies_update;
+> > > > > >
+> > > > > > +unsigned long tick_estimate_stale_jiffies(void)
+> > > > > > +{
+> > > > > > +     ktime_t delta =3D ktime_get_mono_fast_ns() - READ_ONCE(la=
+st_jiffies_update);
+> > > > > > +
+> > > > > > +     return delta < 0 ? 0 : div_s64(delta, TICK_NSEC);
+> > > > > > +}
+> > > > > > +
+> > > > > >  /*
+> > > > > >   * Must be called with interrupts disabled !
+> > > > > >   */
+> > > > > >
+> > > > > >
