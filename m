@@ -2,76 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 321CC78787F
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 21:28:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE610787899
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 21:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238149AbjHXT1y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 15:27:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42956 "EHLO
+        id S240123AbjHXTgd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 15:36:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243225AbjHXT1i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 15:27:38 -0400
-Received: from mail-qv1-xf2d.google.com (mail-qv1-xf2d.google.com [IPv6:2607:f8b0:4864:20::f2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D347172D;
-        Thu, 24 Aug 2023 12:27:36 -0700 (PDT)
-Received: by mail-qv1-xf2d.google.com with SMTP id 6a1803df08f44-64bb576b8abso1068776d6.2;
-        Thu, 24 Aug 2023 12:27:36 -0700 (PDT)
+        with ESMTP id S242028AbjHXTgR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 15:36:17 -0400
+Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 798FD1BDF
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 12:36:15 -0700 (PDT)
+Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1bdb7b0c8afso2213885ad.3
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 12:36:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692905255; x=1693510055;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=Y2YOn3bP9wwC0wDxAit0hTPbuVLPN9/Loqqsh/N4BSw=;
-        b=R/TbRsvuPAI2gC0fsHPTf2Vjz+HKcyF7tuNc5VynpFgnMj9B5sCEYXhYxI2doIYH7c
-         I5ZsuZPBMmObsd90zKd6rUlBns2f/7+JXRfR1/7L6hflggRb7xa8B673R4VDRDc2lHZ0
-         o7XOmYwayAkL7o9tAbYxLdg2xzmcbqEqv1G2tDEAJpiCHIVxrQiURn7G/c2qW+vlae4s
-         phvO+EcY0uJZm/X++DvFSBH/EB/jKQkQVcSYsLWTOFULeuaUv2N9nL9u3Frun9WLxmwO
-         33WsSFaSg/nY4e0AhrglYhDRdw8Eh/zbhLdJnhvbpmIDdx3NM6hWmD1MJx5xyQK94MrC
-         UPAw==
+        d=dabbelt-com.20221208.gappssmtp.com; s=20221208; t=1692905775; x=1693510575;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=4wIorNWdyOim0Yl5+/O6guxDVdvD8pw8pKxbm7dcdPQ=;
+        b=vkfnSDccPDleQWhZypW1vaQBlDMLohs76rDCLW1jIn9gS1PE25ocbxD3nx4CGayjiy
+         xRFJ2Wtcx7SZUPtvClu/a/1a2m+o2CfJNuKyJQXM3crXLK4eHGIODYS7KAazwqXYoADm
+         vVdYud4oxdyMI8mSMAp7B1I1GJu2PzM6oITVBUfY1B6S5XYuExLSIIQg3Ij8Renq/rxy
+         tyzv7kiTH7j8otIZFX1IfaEeclwB1E/mJ0dpBzywnAkEO+UzIk5QbDHKFPIL3HFmtZdB
+         lbKaYFUyCghRLvjEAcQgQ7EpVqFKVfX1lCfLlv9ACXCpgOpVeWL9c4NSkhAz1emRcE8z
+         1gng==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692905255; x=1693510055;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=Y2YOn3bP9wwC0wDxAit0hTPbuVLPN9/Loqqsh/N4BSw=;
-        b=JRVmp5kPJSLC4FRwp1XkftPZAE8QZPsobMXnU2qCMsECgWU1PMNT/Gxa9mFooESVt/
-         WaHevxuDnckFRZWayf4nqfFTM1aHv+F/N+sogVdppA9K4cy55oMEGwoEqxdMkSHrGayP
-         qDWLV9nOJXsDN92RfgSWi2W+Yn4j7HGWlaoxsiNIADdKpvBi5VX6by6plYJTadESmi9z
-         NeFhQ/rj6PAKRv8Z63KwsNrMxn8Bi0BIgwW3hls7YsAp64bH0uJSIllamIxVicbwtsjh
-         YyKwRjo5XHk5gVpcqL/C2AGvPOOAAEQtVG6CXdHFiJxFocWXDT+kD3gmWfBuBuVR7uSJ
-         bGKQ==
-X-Gm-Message-State: AOJu0YzeY++/DcbVOE70i7hU/rH9rBsZAhtI11QrZSMxECOVtGjLqDVP
-        gDvESEGLKBor9wKs4ZwscVaHGwweA1E=
-X-Google-Smtp-Source: AGHT+IE5w5WwObOT/qIdaqj/Bn3OwAgEl9gNcUs7jwqV/RXTCLkmWBHKHWZzScA78m1EG2QE8xFw+A==
-X-Received: by 2002:a0c:c543:0:b0:649:7da6:3c66 with SMTP id y3-20020a0cc543000000b006497da63c66mr15118708qvi.44.1692905255223;
-        Thu, 24 Aug 2023 12:27:35 -0700 (PDT)
-Received: from [10.67.48.245] ([192.19.223.252])
-        by smtp.googlemail.com with ESMTPSA id p12-20020a0ccb8c000000b0064f4e0b2089sm18228qvk.33.2023.08.24.12.27.21
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 24 Aug 2023 12:27:34 -0700 (PDT)
-Message-ID: <61314350-629a-f870-e203-270d66b13a54@gmail.com>
-Date:   Thu, 24 Aug 2023 12:27:15 -0700
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 5.15 000/139] 5.15.128-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230824145023.559380953@linuxfoundation.org>
-From:   Florian Fainelli <f.fainelli@gmail.com>
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        d=1e100.net; s=20221208; t=1692905775; x=1693510575;
+        h=content-transfer-encoding:mime-version:message-id:to:from:cc
+         :in-reply-to:subject:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4wIorNWdyOim0Yl5+/O6guxDVdvD8pw8pKxbm7dcdPQ=;
+        b=b4kRwBq6lyvuvb17mQdfN1xUxuRmaCZUHKV+NPlt2ci4iROPg84ugWUXUAraMtYUxo
+         q5RDPKOiA6YHaqXOeSEEE3uWO9ssMHeYVk8GHg9ZmDQV2VZZExOGj/fE+wqU8XsyA/NU
+         E5oLNm/Foeg+7cvYZDMJ4tqO4WIpF/pSFrtJWEgThGY0XlOcOzjcVu1q741RKuvt/S0o
+         AuJ3erIQhEvUJGJYyj9U36AVVpNAhRjITcum5v15OJO7yWaeZB1kwgJK+Xp4KovEQXR6
+         e1XGOXyYUqbGNM/7YjQOPxQi+dVcEHsWBxEUDVRlvxyHd92fETg6VzUom/DCf+0WbmMH
+         MvJQ==
+X-Gm-Message-State: AOJu0Yx+64xRftarMxTktEx4OAfG8cZt1JTVNMb9Uc8di9JWcsU6WzVB
+        BHjcCdcUFKIbXBh6GlZJC/XzkA==
+X-Google-Smtp-Source: AGHT+IFVrj1OzIkyNOoOCKQZ7jaR0afgTplscsaJzR2zemPpPXyzwEEXtz71kxOpimuVRf4ZW2UdOA==
+X-Received: by 2002:a17:902:f80d:b0:1c0:c1ed:70c9 with SMTP id ix13-20020a170902f80d00b001c0c1ed70c9mr3100816plb.12.1692905774791;
+        Thu, 24 Aug 2023 12:36:14 -0700 (PDT)
+Received: from localhost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id v4-20020a170902b7c400b001b8a3dd5a4asm24040plz.283.2023.08.24.12.36.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 24 Aug 2023 12:36:13 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 12:36:13 -0700 (PDT)
+X-Google-Original-Date: Thu, 24 Aug 2023 12:36:08 PDT (-0700)
+Subject:     Re: [PATCH] riscv: Fix build errors using binutils2.37 toolchains
+In-Reply-To: <20230824-wimp-unvocal-c27df1798ae8@spud>
+CC:     xingmingzheng@iscas.ac.cn,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        aou@eecs.berkeley.edu, nathan@kernel.org, ndesaulniers@google.com,
+        trix@redhat.com, bmeng@tinylab.org, guoren@kernel.org,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        llvm@lists.linux.dev, stable@vger.kernel.org,
+        Conor Dooley <conor.dooley@microchip.com>
+From:   Palmer Dabbelt <palmer@dabbelt.com>
+To:     Conor Dooley <conor@kernel.org>
+Message-ID: <mhng-72b1a20e-8bab-42f2-9a30-40f86038bba5@palmer-ri-x1c9a>
+Mime-Version: 1.0 (MHng)
+Content-Type: text/plain; charset=utf-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -79,29 +75,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/24/23 07:48, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.128 release.
-> There are 139 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 26 Aug 2023 14:49:55 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.128-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
+On Thu, 24 Aug 2023 12:25:36 PDT (-0700), Conor Dooley wrote:
+> On Fri, Aug 25, 2023 at 03:08:52AM +0800, Mingzheng Xing wrote:
+>> When building the kernel with binutils 2.37 and GCC-11.1.0/GCC-11.2.0,
+>> the following error occurs:
+>> 
+>>   Assembler messages:
+>>   Error: cannot find default versions of the ISA extension `zicsr'
+>>   Error: cannot find default versions of the ISA extension `zifencei'
+>> 
+>> The above error originated from this commit of binutils[0], which has been
+>> resolved and backported by GCC-12.1.0[1] and GCC-11.3.0[2].
+>> 
+>> So fix this by change the GCC version in
+>> CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC to GCC-11.3.0.
+>> 
+>> Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f0bae2552db1dd4f1995608fbf6648fcee4e9e0c [0]
+>> Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=ca2bbb88f999f4d3cc40e89bc1aba712505dd598 [1]
+>> Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=d29f5d6ab513c52fd872f532c492e35ae9fd6671 [2]
+>> Fixes: ca09f772ccca ("riscv: Handle zicsr/zifencei issue between gcc and binutils")
+>> Reported-by: Conor Dooley <conor.dooley@microchip.com>
+>
+> Closes: https://lore.kernel.org/all/20230823-captive-abdomen-befd942a4a73@wendy/
+> Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+> Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-On ARCH_BRCMSTB using 32-bit and 64-bit ARM kernels, build tested on 
-BMIPS_GENERIC:
-
-Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
--- 
-Florian
-
+Thanks.  I queued this up into staging, it's building -- so is Linus' 
+master, so it might take a bit to get through everything.
