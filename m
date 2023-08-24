@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E9C577872DF
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:58:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1916787393
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:05:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241918AbjHXO5v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:57:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45520 "EHLO
+        id S237030AbjHXPEs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:04:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241986AbjHXO5j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:57:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AEC1FD
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:57:37 -0700 (PDT)
+        with ESMTP id S242078AbjHXPEX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:04:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7089219AA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:04:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 212C267022
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:57:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31DE4C433C7;
-        Thu, 24 Aug 2023 14:57:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D8DB671AC
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:04:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20E1DC433C7;
+        Thu, 24 Aug 2023 15:04:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889056;
-        bh=MbjjBAQP2sseTVUEUuPFpe1E5vPeODbUIKon84/yZdg=;
+        s=korg; t=1692889458;
+        bh=ayBJRZCvt2084hc1IRrtsSpfdEvtOtwkL+oa3E/MWV0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QzYhBW8EMuDrSmFJPHRmwx6fW9e2av+OsTJJLHqRgQqoG0R9pRzcSB9ixVP9jXiWR
-         m2+HpoOQ+TmMgfnY3sWZ0z4ngD9czUqEGHB46YRrScSQ1VzNiqrmK7AoMi1PQ9pMTm
-         ptCewMO+Bn+umSxyX49ZW5pasYjh7NN9kkRwuhLM=
+        b=NsyPB7suXueGR8MWraC/Es6csvyDeDJk6nAZC7S43O4HfsKyBCT5rst5tP9ON4Sgw
+         FzLXHVw1NyEWIe6/Zhrv1PvJPhdgFH/z/O9rIr2D6oeEM7oqN0rLt/uX/3fQOAMWBC
+         yuRfEM5gL9JuPoYZu8O6mdnDICeqXU2vioOsDIRk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Pavlu <petr.pavlu@suse.com>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>
-Subject: [PATCH 5.15 137/139] x86/retpoline,kprobes: Fix position of thunk sections with CONFIG_LTO_CLANG
-Date:   Thu, 24 Aug 2023 16:51:00 +0200
-Message-ID: <20230824145029.369493245@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Yangtao Li <frank.li@vivo.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.10 118/135] mmc: f-sdh30: fix order of function calls in sdhci_f_sdh30_remove
+Date:   Thu, 24 Aug 2023 16:51:01 +0200
+Message-ID: <20230824145032.090093001@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,132 +56,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Petr Pavlu <petr.pavlu@suse.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-commit 79cd2a11224eab86d6673fe8a11d2046ae9d2757 upstream.
+commit 58abdd80b93b09023ca03007b608685c41e3a289 upstream.
 
-The linker script arch/x86/kernel/vmlinux.lds.S matches the thunk
-sections ".text.__x86.*" from arch/x86/lib/retpoline.S as follows:
+The order of function calls in sdhci_f_sdh30_remove is wrong,
+let's call sdhci_pltfm_unregister first.
 
-  .text {
-    [...]
-    TEXT_TEXT
-    [...]
-    __indirect_thunk_start = .;
-    *(.text.__x86.*)
-    __indirect_thunk_end = .;
-    [...]
-  }
-
-Macro TEXT_TEXT references TEXT_MAIN which normally expands to only
-".text". However, with CONFIG_LTO_CLANG, TEXT_MAIN becomes
-".text .text.[0-9a-zA-Z_]*" which wrongly matches also the thunk
-sections. The output layout is then different than expected. For
-instance, the currently defined range [__indirect_thunk_start,
-__indirect_thunk_end] becomes empty.
-
-Prevent the problem by using ".." as the first separator, for example,
-".text..__x86.indirect_thunk". This pattern is utilized by other
-explicit section names which start with one of the standard prefixes,
-such as ".text" or ".data", and that need to be individually selected in
-the linker script.
-
-  [ nathan: Fix conflicts with SRSO and fold in fix issue brought up by
-    Andrew Cooper in post-review:
-    https://lore.kernel.org/20230803230323.1478869-1-andrew.cooper3@citrix.com ]
-
-Fixes: dc5723b02e52 ("kbuild: add support for Clang LTO")
-Signed-off-by: Petr Pavlu <petr.pavlu@suse.com>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230711091952.27944-2-petr.pavlu@suse.com
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 5def5c1c15bf ("mmc: sdhci-f-sdh30: Replace with sdhci_pltfm")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230727070051.17778-62-frank.li@vivo.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/vmlinux.lds.S |    8 ++++----
- arch/x86/lib/retpoline.S      |    8 ++++----
- tools/objtool/check.c         |    2 +-
- 3 files changed, 9 insertions(+), 9 deletions(-)
+ drivers/mmc/host/sdhci_f_sdh30.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/arch/x86/kernel/vmlinux.lds.S
-+++ b/arch/x86/kernel/vmlinux.lds.S
-@@ -134,7 +134,7 @@ SECTIONS
- 		KPROBES_TEXT
- 		ALIGN_ENTRY_TEXT_BEGIN
- #ifdef CONFIG_CPU_SRSO
--		*(.text.__x86.rethunk_untrain)
-+		*(.text..__x86.rethunk_untrain)
- #endif
+--- a/drivers/mmc/host/sdhci_f_sdh30.c
++++ b/drivers/mmc/host/sdhci_f_sdh30.c
+@@ -188,12 +188,14 @@ static int sdhci_f_sdh30_remove(struct p
+ {
+ 	struct sdhci_host *host = platform_get_drvdata(pdev);
+ 	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+-
+-	clk_disable_unprepare(priv->clk_iface);
+-	clk_disable_unprepare(priv->clk);
++	struct clk *clk_iface = priv->clk_iface;
++	struct clk *clk = priv->clk;
  
- 		ENTRY_TEXT
-@@ -145,7 +145,7 @@ SECTIONS
- 		 * definition.
- 		 */
- 		. = srso_alias_untrain_ret | (1 << 2) | (1 << 8) | (1 << 14) | (1 << 20);
--		*(.text.__x86.rethunk_safe)
-+		*(.text..__x86.rethunk_safe)
- #endif
- 		ALIGN_ENTRY_TEXT_END
- 		SOFTIRQENTRY_TEXT
-@@ -155,8 +155,8 @@ SECTIONS
+ 	sdhci_pltfm_unregister(pdev);
  
- #ifdef CONFIG_RETPOLINE
- 		__indirect_thunk_start = .;
--		*(.text.__x86.indirect_thunk)
--		*(.text.__x86.return_thunk)
-+		*(.text..__x86.indirect_thunk)
-+		*(.text..__x86.return_thunk)
- 		__indirect_thunk_end = .;
- #endif
- 	} :text =0xcccc
---- a/arch/x86/lib/retpoline.S
-+++ b/arch/x86/lib/retpoline.S
-@@ -11,7 +11,7 @@
- #include <asm/frame.h>
- #include <asm/nops.h>
++	clk_disable_unprepare(clk_iface);
++	clk_disable_unprepare(clk);
++
+ 	return 0;
+ }
  
--	.section .text.__x86.indirect_thunk
-+	.section .text..__x86.indirect_thunk
- 
- .macro RETPOLINE reg
- 	ANNOTATE_INTRA_FUNCTION_CALL
-@@ -90,7 +90,7 @@ SYM_CODE_END(__x86_indirect_thunk_array)
-  * As a result, srso_alias_safe_ret() becomes a safe return.
-  */
- #ifdef CONFIG_CPU_SRSO
--	.section .text.__x86.rethunk_untrain
-+	.section .text..__x86.rethunk_untrain
- 
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
- 	UNWIND_HINT_FUNC
-@@ -100,7 +100,7 @@ SYM_START(srso_alias_untrain_ret, SYM_L_
- SYM_FUNC_END(srso_alias_untrain_ret)
- __EXPORT_THUNK(srso_alias_untrain_ret)
- 
--	.section .text.__x86.rethunk_safe
-+	.section .text..__x86.rethunk_safe
- #else
- /* dummy definition for alternatives */
- SYM_START(srso_alias_untrain_ret, SYM_L_GLOBAL, SYM_A_NONE)
-@@ -118,7 +118,7 @@ SYM_START(srso_alias_safe_ret, SYM_L_GLO
- 	int3
- SYM_FUNC_END(srso_alias_safe_ret)
- 
--	.section .text.__x86.return_thunk
-+	.section .text..__x86.return_thunk
- 
- SYM_CODE_START(srso_alias_return_thunk)
- 	UNWIND_HINT_FUNC
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -370,7 +370,7 @@ static int decode_instructions(struct ob
- 
- 		if (!strcmp(sec->name, ".noinstr.text") ||
- 		    !strcmp(sec->name, ".entry.text") ||
--		    !strncmp(sec->name, ".text.__x86.", 12))
-+		    !strncmp(sec->name, ".text..__x86.", 13))
- 			sec->noinstr = true;
- 
- 		for (offset = 0; offset < sec->sh.sh_size; offset += insn->len) {
 
 
