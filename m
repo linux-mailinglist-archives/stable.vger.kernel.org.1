@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B9678787267
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:54:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5E597872F8
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241831AbjHXOxe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 10:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38248 "EHLO
+        id S230016AbjHXO65 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241855AbjHXOxQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:53:16 -0400
+        with ESMTP id S241997AbjHXO6m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:58:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E3271BE6
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:53:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2387119AD
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:58:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3411266EBE
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:53:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45354C433C7;
-        Thu, 24 Aug 2023 14:53:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AE02066ECA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:58:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3BEFC433C8;
+        Thu, 24 Aug 2023 14:58:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692888785;
-        bh=qQBlCikUD6/ILLLtt5ZevKKRzOfEoLp6XnEBvIy2U9k=;
+        s=korg; t=1692889120;
+        bh=yXOcRPV76V06lvEh6KbNIf1KrQ71alo5ONh7Sa2opXw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wOA/0ZSJsi2ilcTYG0LsLBSMcreIpYZS1haNvVRTGatahuF/douLaGTX1CdDo+qmt
-         Xku2/FWs2RMOkCzpU5lQShLBNZzMJXqAQhN9vuY1BipzoohO79Q8sewvgeTsET1aJt
-         J1G/w3jQg33Bxvdz6Lt2eTWKnmycAxbwTAQgS7H8=
+        b=wEdEzIwruu816aMYJug3gRa6zsZj/qc0esUFeNsEd1V28hsFDDZMbTW2pUvU7yZMI
+         fzrDtXk6jGEY6JU9s6mmDxxD7jmBoJ0YNb4HIxMefpNIklFEgxeodzc7f8vNMOo++2
+         XvrjxxMjWSiJp0BEu2lyZTCnV1XbIbl+5cuzXd7c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Cosmin Tanislav <cosmin.tanislav@analog.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Christian Brauner <brauner@kernel.org>,
+        Amir Goldstein <amir73il@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 040/139] iio: add addac subdirectory
-Date:   Thu, 24 Aug 2023 16:49:23 +0200
-Message-ID: <20230824145025.357304584@linuxfoundation.org>
+Subject: [PATCH 5.10 021/135] ovl: check type and offset of struct vfsmount in ovl_entry
+Date:   Thu, 24 Aug 2023 16:49:24 +0200
+Message-ID: <20230824145027.868774961@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
+References: <20230824145027.008282920@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -55,76 +54,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Cosmin Tanislav <demonsingur@gmail.com>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit b62e2e1763cda3a6c494ed754317f19be1249297 ]
+[ Upstream commit f723edb8a532cd26e1ff0a2b271d73762d48f762 ]
 
-For IIO devices that expose both ADC and DAC functionality.
+Porting overlayfs to the new amount api I started experiencing random
+crashes that couldn't be explained easily. So after much debugging and
+reasoning it became clear that struct ovl_entry requires the point to
+struct vfsmount to be the first member and of type struct vfsmount.
 
-Signed-off-by: Cosmin Tanislav <cosmin.tanislav@analog.com>
-Link: https://lore.kernel.org/r/20211205114045.173612-2-cosmin.tanislav@analog.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
+During the port I added a new member at the beginning of struct
+ovl_entry which broke all over the place in the form of random crashes
+and cache corruptions. While there's a comment in ovl_free_fs() to the
+effect of "Hack! Reuse ofs->layers as a vfsmount array before freeing
+it" there's no such comment on struct ovl_entry which makes this easy to
+trip over.
+
+Add a comment and two static asserts for both the offset and the type of
+pointer in struct ovl_entry.
+
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Amir Goldstein <amir73il@gmail.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/Kconfig        | 1 +
- drivers/iio/Makefile       | 1 +
- drivers/iio/addac/Kconfig  | 8 ++++++++
- drivers/iio/addac/Makefile | 6 ++++++
- 4 files changed, 16 insertions(+)
- create mode 100644 drivers/iio/addac/Kconfig
- create mode 100644 drivers/iio/addac/Makefile
+ fs/overlayfs/ovl_entry.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/iio/Kconfig b/drivers/iio/Kconfig
-index 2334ad249b462..4fb4321a72cb1 100644
---- a/drivers/iio/Kconfig
-+++ b/drivers/iio/Kconfig
-@@ -70,6 +70,7 @@ config IIO_TRIGGERED_EVENT
+diff --git a/fs/overlayfs/ovl_entry.h b/fs/overlayfs/ovl_entry.h
+index b208eba5d0b64..b58a0140d78d5 100644
+--- a/fs/overlayfs/ovl_entry.h
++++ b/fs/overlayfs/ovl_entry.h
+@@ -30,6 +30,7 @@ struct ovl_sb {
+ };
  
- source "drivers/iio/accel/Kconfig"
- source "drivers/iio/adc/Kconfig"
-+source "drivers/iio/addac/Kconfig"
- source "drivers/iio/afe/Kconfig"
- source "drivers/iio/amplifiers/Kconfig"
- source "drivers/iio/cdc/Kconfig"
-diff --git a/drivers/iio/Makefile b/drivers/iio/Makefile
-index 65e39bd4f9346..8d48c70fee4d3 100644
---- a/drivers/iio/Makefile
-+++ b/drivers/iio/Makefile
-@@ -15,6 +15,7 @@ obj-$(CONFIG_IIO_TRIGGERED_EVENT) += industrialio-triggered-event.o
+ struct ovl_layer {
++	/* ovl_free_fs() relies on @mnt being the first member! */
+ 	struct vfsmount *mnt;
+ 	/* Trap in ovl inode cache */
+ 	struct inode *trap;
+@@ -40,6 +41,14 @@ struct ovl_layer {
+ 	int fsid;
+ };
  
- obj-y += accel/
- obj-y += adc/
-+obj-y += addac/
- obj-y += afe/
- obj-y += amplifiers/
- obj-y += buffer/
-diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
-new file mode 100644
-index 0000000000000..2e64d7755d5ea
---- /dev/null
-+++ b/drivers/iio/addac/Kconfig
-@@ -0,0 +1,8 @@
-+#
-+# ADC DAC drivers
-+#
-+# When adding new entries keep the list in alphabetical order
++/*
++ * ovl_free_fs() relies on @mnt being the first member when unmounting
++ * the private mounts created for each layer. Let's check both the
++ * offset and type.
++ */
++static_assert(offsetof(struct ovl_layer, mnt) == 0);
++static_assert(__same_type(typeof_member(struct ovl_layer, mnt), struct vfsmount *));
 +
-+menu "Analog to digital and digital to analog converters"
-+
-+endmenu
-diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
-new file mode 100644
-index 0000000000000..b888b9ee12da0
---- /dev/null
-+++ b/drivers/iio/addac/Makefile
-@@ -0,0 +1,6 @@
-+# SPDX-License-Identifier: GPL-2.0
-+#
-+# Makefile for industrial I/O ADDAC drivers
-+#
-+
-+# When adding new entries keep the list in alphabetical order
+ struct ovl_path {
+ 	const struct ovl_layer *layer;
+ 	struct dentry *dentry;
 -- 
 2.40.1
 
