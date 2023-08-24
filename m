@@ -2,94 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D771A7874DD
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 18:06:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 747CA787502
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 18:16:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242172AbjHXQF6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 12:05:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34864 "EHLO
+        id S242415AbjHXQPe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 12:15:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242378AbjHXQFm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 12:05:42 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A91F4E50;
-        Thu, 24 Aug 2023 09:05:40 -0700 (PDT)
-Received: from [10.10.2.52] (unknown [10.10.2.52])
-        by mail.ispras.ru (Postfix) with ESMTPSA id 1FF5840F1DE3;
-        Thu, 24 Aug 2023 16:05:36 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru 1FF5840F1DE3
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1692893136;
-        bh=caqsQ+c8XbhPmlQ5KZRGIo7T9OsOQPmeBRjdvjOtl3k=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=K7MyNx8Ik/O9d7LXuyLVLJL355ADYuFNMCAxtQtAi78K6IjMeaiGBxZX65EJltK/v
-         7kUsdZONsuAN5CDyCq2COSNroAjqql6u6//fZrXoH1NsPyZqGVcuU4g0CXLpFbwgc9
-         wa4cpjNavkPym3FL9Wt4WOueA0cX6Osu1Wnf0bRs=
-Subject: Re: [PATCH 5.10 000/135] 5.10.191-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230824145027.008282920@linuxfoundation.org>
-From:   Alexey Khoroshilov <khoroshilov@ispras.ru>
-Autocrypt: addr=khoroshilov@ispras.ru; prefer-encrypt=mutual; keydata=
- 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
- kK2E04Fb+Zk1eJvHYRc=
-Message-ID: <e722f48c-2032-8898-84ed-994a4457c62b@ispras.ru>
-Date:   Thu, 24 Aug 2023 19:05:35 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        with ESMTP id S242426AbjHXQP0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 12:15:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A784519A8;
+        Thu, 24 Aug 2023 09:15:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2E0A767334;
+        Thu, 24 Aug 2023 16:15:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91CD8C433CA;
+        Thu, 24 Aug 2023 16:15:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692893723;
+        bh=Fg6sjBNuvj9rdfbZjF3J8w70wp+BKLTDx2rtjGBdfkA=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=jhrL2Dc0nahMPmBZtgGMsliPuHwBZjDFKWBGRyZM83sxyymjiNEpMFTu3An1MAoem
+         H+MqERLwrsmb84il0kQWE1UBK3sRO3UIqyUq6RV2OEAl6wiGOXjRvtuawJygjUmrna
+         FQDN4huW4KAt+Pz/lmYkhhzwo8J/7/81lhOp5DZpv3LSP5hQECO9J5UN1MXbTv+t1/
+         JEPELeDC03o1MHcG62BSJWOvpog9jVg+ILjahMgZ2Ai/QYSR/TC6MsE+Hqk2vLOUAt
+         0S79GnzYWovbeSkD9/SPCHP20ijiH6Vp6PkiHCTn140ph8kP2Yuh+GnII/opJwe8FW
+         Eam8DQ5/NCoFg==
+Received: by mail-ed1-f46.google.com with SMTP id 4fb4d7f45d1cf-52a23227567so120736a12.0;
+        Thu, 24 Aug 2023 09:15:23 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwcZMwkNUlehg1RPVP6YZmvFtfNY/8JbsEPl5eUNON8Bc92o8xp
+        TL1vmYI+CMuZr2mPPJSTnaR58bL5cpOPKEcu8pQ=
+X-Google-Smtp-Source: AGHT+IEDYPlhylAuZtwPCfjjhJrgeCJ8FRSRuxViyUmEpDn1FQwlHvze4Hs0xgsudwwmt/JqtaLDTW5xjSS0wr2CgvA=
+X-Received: by 2002:a05:6402:1610:b0:525:469a:fc38 with SMTP id
+ f16-20020a056402161000b00525469afc38mr12032549edv.31.1692893721852; Thu, 24
+ Aug 2023 09:15:21 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru-RU
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+References: <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
+ <5777BD82-2C8D-4BAB-BDD3-C2C003DC57FB@joelfernandes.org> <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
+ <87ttspct76.ffs@tglx> <20230824132155.GB3810470@google.com>
+In-Reply-To: <20230824132155.GB3810470@google.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Fri, 25 Aug 2023 00:15:10 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H7L0gYZv_HgXRfF01y8j+KB7ne=8H0-KxXx4nYUyY-vxQ@mail.gmail.com>
+Message-ID: <CAAhV-H7L0gYZv_HgXRfF01y8j+KB7ne=8H0-KxXx4nYUyY-vxQ@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>, paulmck@kernel.org,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -98,10 +79,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 24.08.2023 17:49, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.191 release.
+Hi, Joel,
 
-Do you mean 5.10.192 release?
+On Thu, Aug 24, 2023 at 9:22=E2=80=AFPM Joel Fernandes <joel@joelfernandes.=
+org> wrote:
+>
+> Hello Thomas,
+>
+> On Thu, Aug 24, 2023 at 12:03:25AM +0200, Thomas Gleixner wrote:
+> > On Thu, Aug 17 2023 at 16:06, Huacai Chen wrote:
+> > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernandes <joel@joelfern=
+andes.org> wrote:
+> > >> > If  do_update_jiffies_64() cannot be used in NMI context,
+> > >>
+> > >> Can you not make the jiffies update conditional on whether it is
+> > >> called within NMI context?
+> >
+> > Which solves what? If KGDB has a breakpoint in the jiffies lock held
+> > region then you still dead lock.
+>
+> Yes, we had already discussed this that jiffies update is not possible fr=
+om
+> here. There are too many threads since different patch revisions were bei=
+ng
+> reviewed in different threads.
+>
+> > >> I dislike that..
+> > > Is this acceptable?
+> > >
+> > > void rcu_cpu_stall_reset(void)
+> > > {
+> > >         unsigned long delta;
+> > >
+> > >         delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_=
+ns());
+> > >
+> > >         WRITE_ONCE(rcu_state.jiffies_stall,
+> > >                    jiffies + delta + rcu_jiffies_till_stall_check());
+> > > }
+> > >
+> > > This can update jiffies_stall without updating jiffies (but has the
+> > > same effect).
+> >
+> > Now you traded the potential dead lock on jiffies lock for a potential
+> > live lock vs. tk_core.seq. Not really an improvement, right?
+> >
+> > The only way you can do the above is something like the incomplete and
+> > uncompiled below. NMI safe and therefore livelock proof time interfaces
+> > exist for a reason.
+>
+> Yes, I had already mentioned exactly this issue here of not using an NMI-=
+safe
+> interface:
+> https://lore.kernel.org/all/CAEXW_YT+uw5JodtrqjY0B2xx0J8ukF=3DFAB9-p5rxgW=
+obSU2P2A@mail.gmail.com/
+> I like your suggestion of using last_jiffies_update though (which as you
+> mentioned needs to be explored more).
+>
+> There are too many threads which makes the discussion hard to follow. Hua=
+cai,
+> it would be great if we can keep the discussions in the same thread (Say =
+for
+> example by passing options like --in-reply-to to "git send-email" command=
+).
+I will try my best. In the early time, not all of us were involved.
+And when I think we are all ready to accept the new solution, I sent a
+new patch. But unfortunately some others suggest different approaches
+which make the patch subject change again and again...
 
---
-Alexey
+Now I tend to use Thomas's method by introducing and using
+tick_estimate_stale_jiffies(). But let me wait for some time before
+sending patches.
+
+Huacai
+
+>
+> thanks,
+>
+>  - Joel
+>
+>
+> >
+> > Thanks,
+> >
+> >         tglx
+> > ---
+> > --- a/kernel/time/tick-sched.c
+> > +++ b/kernel/time/tick-sched.c
+> > @@ -51,6 +51,13 @@ struct tick_sched *tick_get_tick_sched(i
+> >   */
+> >  static ktime_t last_jiffies_update;
+> >
+> > +unsigned long tick_estimate_stale_jiffies(void)
+> > +{
+> > +     ktime_t delta =3D ktime_get_mono_fast_ns() - READ_ONCE(last_jiffi=
+es_update);
+> > +
+> > +     return delta < 0 ? 0 : div_s64(delta, TICK_NSEC);
+> > +}
+> > +
+> >  /*
+> >   * Must be called with interrupts disabled !
+> >   */
+> >
+> >
