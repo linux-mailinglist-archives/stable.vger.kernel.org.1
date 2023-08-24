@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9625B78734F
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:02:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 712627872BC
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:57:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242007AbjHXPCK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:02:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39112 "EHLO
+        id S234797AbjHXO4o (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:56:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242048AbjHXPBs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:01:48 -0400
+        with ESMTP id S241894AbjHXO4R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:56:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C290EFD
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:01:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE3C41BC6
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:56:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5AA53615C7
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:01:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E065C433C7;
-        Thu, 24 Aug 2023 15:01:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 44C7563B14
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:56:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57E01C433C7;
+        Thu, 24 Aug 2023 14:56:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889305;
-        bh=FrpZHTJLGrYQpFhA02gC1dQNXv1veS1RTtlq/oHNi5c=;
+        s=korg; t=1692888973;
+        bh=9G0h2QenOIxlAzyntXH5r4u7ATU6xkZBQNIqy9Egt4s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fBu9Kx/PiqVWNRBX5pObOa77KZgnARxhBZB4KwtUztNR5EMv2UAfuQDlEZFtWOWK7
-         kc0YbxgE50iO6PpVQp2V8vW6LaIO3SHdPkj2vu42BQBLnW4wQ7cUbm1G3eynLRTXUn
-         73VBUtvpl8adBeqrPLVbU6Xtix365W0SeNLvMX38=
+        b=D139mF1IURS7mEsWy10tj3o68mJtZyVG2zOoHl5EBKuUvdJ/v5iSVNHBSaWZqbMbx
+         miO+17VTkWVTQZu5jrOCyYLSiX3IKMs63nALfRcf1AA2Bw9XE4StcNOQhu7AP9mO9k
+         oFVrOcdEpDxR9bULYFhIm/e5RMy7rJ7HOPEtLkMg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 059/135] mmc: bcm2835: fix deferred probing
-Date:   Thu, 24 Aug 2023 16:50:02 +0200
-Message-ID: <20230824145029.450324835@linuxfoundation.org>
+Subject: [PATCH 5.15 080/139] net: af_key: fix sadb_x_filter validation
+Date:   Thu, 24 Aug 2023 16:50:03 +0200
+Message-ID: <20230824145027.118785520@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,42 +54,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 71150ac12558bcd9d75e6e24cf7c872c2efd80f3 ]
+[ Upstream commit 75065a8929069bc93181848818e23f147a73f83a ]
 
-The driver overrides the error codes and IRQ0 returned by platform_get_irq()
-to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the error
-codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
-in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
-so we now can safely ignore it...
+When running xfrm_state_walk_init(), the xfrm_address_filter being used
+is okay to have a splen/dplen that equals to sizeof(xfrm_address_t)<<3.
+This commit replaces >= to > to make sure the boundary checking is
+correct.
 
-Fixes: 660fc733bd74 ("mmc: bcm2835: Add new driver for the sdhost controller.")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-2-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Fixes: 37bd22420f85 ("af_key: pfkey_dump needs parameter validation")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/bcm2835.c | 4 ++--
+ net/key/af_key.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
-index 8c2361e662774..985079943be76 100644
---- a/drivers/mmc/host/bcm2835.c
-+++ b/drivers/mmc/host/bcm2835.c
-@@ -1413,8 +1413,8 @@ static int bcm2835_probe(struct platform_device *pdev)
- 	host->max_clk = clk_get_rate(clk);
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index d34fed1a484a7..258fa046f440d 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1848,9 +1848,9 @@ static int pfkey_dump(struct sock *sk, struct sk_buff *skb, const struct sadb_ms
+ 	if (ext_hdrs[SADB_X_EXT_FILTER - 1]) {
+ 		struct sadb_x_filter *xfilter = ext_hdrs[SADB_X_EXT_FILTER - 1];
  
- 	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0) {
--		ret = -EINVAL;
-+	if (host->irq < 0) {
-+		ret = host->irq;
- 		goto err;
- 	}
- 
+-		if ((xfilter->sadb_x_filter_splen >=
++		if ((xfilter->sadb_x_filter_splen >
+ 			(sizeof(xfrm_address_t) << 3)) ||
+-		    (xfilter->sadb_x_filter_dplen >=
++		    (xfilter->sadb_x_filter_dplen >
+ 			(sizeof(xfrm_address_t) << 3))) {
+ 			mutex_unlock(&pfk->dump_lock);
+ 			return -EINVAL;
 -- 
 2.40.1
 
