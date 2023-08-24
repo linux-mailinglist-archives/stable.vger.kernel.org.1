@@ -2,120 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 086FE786DE8
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 13:34:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FACF786E20
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 13:41:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241010AbjHXLdz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 07:33:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39894 "EHLO
+        id S239250AbjHXLkw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 07:40:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240980AbjHXLda (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 07:33:30 -0400
-Received: from cstnet.cn (smtp84.cstnet.cn [159.226.251.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B2B51987;
-        Thu, 24 Aug 2023 04:33:27 -0700 (PDT)
-Received: from [192.168.0.107] (unknown [111.197.209.91])
-        by APP-05 (Coremail) with SMTP id zQCowABHTPzXP+dkeCOzBA--.28393S2;
-        Thu, 24 Aug 2023 19:32:39 +0800 (CST)
-Message-ID: <4677fc33-6e76-21e6-2a7f-f12670bc1ce2@iscas.ac.cn>
-Date:   Thu, 24 Aug 2023 19:32:39 +0800
+        with ESMTP id S241056AbjHXLkp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 07:40:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C7251987;
+        Thu, 24 Aug 2023 04:40:43 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3581961B75;
+        Thu, 24 Aug 2023 11:40:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 944BBC433C7;
+        Thu, 24 Aug 2023 11:40:42 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692877242;
+        bh=mn2NFdgbZ0f8Gs/P98zOREPhC64kmawxUCgRDKDk8CI=;
+        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
+        b=qBXJMxT50BUCZ98e4iuCq5lOghHwxAfM1bCWvKYzS45DVdMvBF0NJbpt/R+pIx/Uz
+         2xEB8S2jatNNkEvsTIXkS7ehLogFX//YLGtVdvlZW7HQ32NWFd+pC+iFCo0vilGnJa
+         +YKKm9aUMtqPjQZz+0hZeOWgOMTFxA+agI0LyiNmtbhBcUybjiCrv9+qNlOZOwj9HZ
+         ow7pW2mwOv7Mv1etp/E+y+bgGImXxwk+L3xzYESs3hXQ2NtlyrPoeJTRdftf9FTzHj
+         zb7dAZry3X48ITB7wPcD6Wt/SuXuiq44Qjs78XU58vY0N6LE5PL4XI39vyUv/HakXt
+         o3QjuycuWBmYg==
+Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
+        id 2FD9CCE035E; Thu, 24 Aug 2023 04:40:42 -0700 (PDT)
+Date:   Thu, 24 Aug 2023 04:40:42 -0700
+From:   "Paul E. McKenney" <paulmck@kernel.org>
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     Thomas Gleixner <tglx@linutronix.de>,
+        Joel Fernandes <joel@joelfernandes.org>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+Message-ID: <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop>
+Reply-To: paulmck@kernel.org
+References: <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
+ <5777BD82-2C8D-4BAB-BDD3-C2C003DC57FB@joelfernandes.org>
+ <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
+ <87ttspct76.ffs@tglx>
+ <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
+ <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v5] riscv: Handle zicsr/zifencei issue between gcc and
- binutils
-Content-Language: en-US
-To:     Conor Dooley <conor@kernel.org>,
-        Conor Dooley <conor.dooley@microchip.com>
-Cc:     patchwork-bot+linux-riscv@kernel.org,
-        linux-riscv@lists.infradead.org, paul.walmsley@sifive.com,
-        palmer@dabbelt.com, aou@eecs.berkeley.edu, nathan@kernel.org,
-        ndesaulniers@google.com, trix@redhat.com, bmeng@tinylab.org,
-        guoren@kernel.org, linux-kernel@vger.kernel.org,
-        llvm@lists.linux.dev, stable@vger.kernel.org
-References: <20230809165648.21071-1-xingmingzheng@iscas.ac.cn>
- <169228562484.20811.14246462375671910714.git-patchwork-notify@kernel.org>
- <20230823-captive-abdomen-befd942a4a73@wendy>
- <20230823-facelift-ovary-41f2eb4d9eac@spud>
-From:   Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Organization: ISCAS
-In-Reply-To: <20230823-facelift-ovary-41f2eb4d9eac@spud>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-CM-TRANSID: zQCowABHTPzXP+dkeCOzBA--.28393S2
-X-Coremail-Antispam: 1UD129KBjvJXoW7AF1kKF48ZFy8uryxZrW5Jrb_yoW8ur45pa
-        yfKF9FkF4kXw48J3s7tr1jq3WYvw4ftryrXr1qyryjy3s8uF90qF92krWa9FyDZFWfCr40
-        kr4ruasxuw1qyaDanT9S1TB71UUUUU7qnTZGkaVYY2UrUUUUjbIjqfuFe4nvWSU5nxnvy2
-        9KBjDU0xBIdaVrnRJUUUvCb7Iv0xC_Kw4lb4IE77IF4wAFF20E14v26r4j6ryUM7CY07I2
-        0VC2zVCF04k26cxKx2IYs7xG6rWj6s0DM7CIcVAFz4kK6r1j6r18M28lY4IEw2IIxxk0rw
-        A2F7IY1VAKz4vEj48ve4kI8wA2z4x0Y4vE2Ix0cI8IcVAFwI0_JFI_Gr1l84ACjcxK6xII
-        jxv20xvEc7CjxVAFwI0_Gr1j6F4UJwA2z4x0Y4vEx4A2jsIE14v26F4UJVW0owA2z4x0Y4
-        vEx4A2jsIEc7CjxVAFwI0_GcCE3s1le2I262IYc4CY6c8Ij28IcVAaY2xG8wAqx4xG64xv
-        F2IEw4CE5I8CrVC2j2WlYx0E2Ix0cI8IcVAFwI0_Jr0_Jr4lYx0Ex4A2jsIE14v26r1j6r
-        4UMcvjeVCFs4IE7xkEbVWUJVW8JwACjcxG0xvEwIxGrwACI402YVCY1x02628vn2kIc2xK
-        xwCYjI0SjxkI62AI1cAE67vIY487MxAIw28IcxkI7VAKI48JMxC20s026xCaFVCjc4AY6r
-        1j6r4UMI8I3I0E5I8CrVAFwI0_Jr0_Jr4lx2IqxVCjr7xvwVAFwI0_JrI_JrWlx4CE17CE
-        b7AF67AKxVWUtVW8ZwCIc40Y0x0EwIxGrwCI42IY6xIIjxv20xvE14v26r1j6r1xMIIF0x
-        vE2Ix0cI8IcVCY1x0267AKxVW8JVWxJwCI42IY6xAIw20EY4v20xvaj40_Jr0_JF4lIxAI
-        cVC2z280aVAFwI0_Jr0_Gr1lIxAIcVC2z280aVCY1x0267AKxVW8JVW8JrUvcSsGvfC2Kf
-        nxnUUI43ZEXa7IU56c_DUUUUU==
-X-Originating-IP: [111.197.209.91]
-X-CM-SenderInfo: 50lqwzhlqj6xxhqjqxpvfd2hldfou0/1tbiAxANCmTnMS822AAAsn
-X-Spam-Status: No, score=-4.8 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/23/23 21:31, Conor Dooley wrote:
-> On Wed, Aug 23, 2023 at 12:51:13PM +0100, Conor Dooley wrote:
->> On Thu, Aug 17, 2023 at 03:20:24PM +0000, patchwork-bot+linux-riscv@kernel.org wrote:
->>> Hello:
->>>
->>> This patch was applied to riscv/linux.git (fixes)
->>> by Palmer Dabbelt <palmer@rivosinc.com>:
->>>
->>> On Thu, 10 Aug 2023 00:56:48 +0800 you wrote:
->>>> Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
->>>> 20191213 version which moves some instructions from the I extension to the
->>>> Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
->>>> that version, we should explicitly specifying Zicsr and Zifencei via -march
->>>> to cope with the new changes. but this only occurs when binutils >= 2.36
->>>> and GCC >= 11.1.0. It's a different story when binutils < 2.36.
->>>>
->>>> [...]
->>> Here is the summary with links:
->>>    - [v5] riscv: Handle zicsr/zifencei issue between gcc and binutils
->>>      https://git.kernel.org/riscv/c/ca09f772ccca
->> *sigh* so this breaks the build for gcc-11 & binutils 2.37 w/
->> 	Assembler messages:
->> 	Error: cannot find default versions of the ISA extension `zicsr'
->> 	Error: cannot find default versions of the ISA extension `zifencei'
->>
->> I'll have a poke later.
-> So uh, are we sure that this should not be:
-> -       depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
-> +       depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION <= 110100)
->
-> My gcc-11.1 + binutils 2.37 toolchain built from riscv-gnu-toolchain
-> doesn't have the default versions & the above diff fixes the build.
+On Thu, Aug 24, 2023 at 10:50:41AM +0800, Huacai Chen wrote:
+> Hi, Paul,
+> 
+> On Thu, Aug 24, 2023 at 6:41 AM Paul E. McKenney <paulmck@kernel.org> wrote:
+> >
+> > On Thu, Aug 24, 2023 at 12:03:25AM +0200, Thomas Gleixner wrote:
+> > > On Thu, Aug 17 2023 at 16:06, Huacai Chen wrote:
+> > > > On Thu, Aug 17, 2023 at 3:27 AM Joel Fernandes <joel@joelfernandes.org> wrote:
+> > > >> > If  do_update_jiffies_64() cannot be used in NMI context,
+> > > >>
+> > > >> Can you not make the jiffies update conditional on whether it is
+> > > >> called within NMI context?
+> > >
+> > > Which solves what? If KGDB has a breakpoint in the jiffies lock held
+> > > region then you still dead lock.
+> > >
+> > > >> I dislike that..
+> > > > Is this acceptable?
+> > > >
+> > > > void rcu_cpu_stall_reset(void)
+> > > > {
+> > > >         unsigned long delta;
+> > > >
+> > > >         delta = nsecs_to_jiffies(ktime_get_ns() - ktime_get_coarse_ns());
+> > > >
+> > > >         WRITE_ONCE(rcu_state.jiffies_stall,
+> > > >                    jiffies + delta + rcu_jiffies_till_stall_check());
+> > > > }
+> > > >
+> > > > This can update jiffies_stall without updating jiffies (but has the
+> > > > same effect).
+> > >
+> > > Now you traded the potential dead lock on jiffies lock for a potential
+> > > live lock vs. tk_core.seq. Not really an improvement, right?
+> > >
+> > > The only way you can do the above is something like the incomplete and
+> > > uncompiled below. NMI safe and therefore livelock proof time interfaces
+> > > exist for a reason.
+> >
+> > Just for completeness, another approach, with its own advantages
+> > and disadvantage, is to add something like ULONG_MAX/4 to
+> > rcu_state.jiffies_stall, but also set a counter indicating that this
+> > has been done.  Then RCU's force-quiescent processing could decrement
+> > that counter (if non-zero) and reset rcu_state.jiffies_stall when it
+> > does reach zero.
+> >
+> > Setting the counter to three should cover most cases, but "live by the
+> > heuristic, die by the heuristic".  ;-)
+> >
+> > It would be good to have some indication when gdb exited, but things
+> > like the gdb "next" command can make that "interesting" when applied to
+> > a long-running function.
+> 
+> The original code is adding ULONG_MAX/2, so adding ULONG_MAX/4 may
+> make no much difference? The simplest way is adding 300*HZ, but Joel
+> dislikes that.
 
-I reproduced the error, the combination of gcc-11.1 and
-binutils 2.37 does cause errors. What a surprise, since binutils
-2.36 and 2.38 are fine.
+I am not seeing the ULONG_MAX/2, so could you please point me to that
+original code?
 
-I used git bisect to locate this commit[1] for binutils.
-I'll test this diff in more detail later. Thanks!
+The advantage of ULONG_MAX/4 over ULONG_MAX/2 is that the time_after()
+and time_before() macros have ULONG_MAX/4 slop in either direction
+before giving you the wrong answer.  You can get nearly the same result
+using ULONG_MAX/2, but it requires a bit more care.  And even on 32-bit
+HZ=1000 systems, ULONG_MAX/4 gets you more than 12 days of gdb session
+or jiffies-update delay before you start getting false positives.
 
-[1] 
-https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f0bae2552db1dd4f1995608fbf6648fcee4e9e0c
+Then things can be reset after (say) 3 calls to rcu_gp_fqs() and
+also the current reset at the beginning of a grace period, which
+is in record_gp_stall_check_time().
 
-Best Regards,
-Mingzheng.
+It would be better if RCU could get notified at both ends of the debug
+session, but given gdb commands such as "next", along with Thomas's
+point about gdb breakpoints being pretty much anywhere, this might or
+might not be so helpful in real life.  But worth looking into.
 
->
-> Thanks,
-> Conor.
+							Thanx, Paul
 
+> Huacai
+> 
+> >
+> >                                                         Thanx, Paul
+> >
+> > > Thanks,
+> > >
+> > >         tglx
+> > > ---
+> > > --- a/kernel/time/tick-sched.c
+> > > +++ b/kernel/time/tick-sched.c
+> > > @@ -51,6 +51,13 @@ struct tick_sched *tick_get_tick_sched(i
+> > >   */
+> > >  static ktime_t last_jiffies_update;
+> > >
+> > > +unsigned long tick_estimate_stale_jiffies(void)
+> > > +{
+> > > +     ktime_t delta = ktime_get_mono_fast_ns() - READ_ONCE(last_jiffies_update);
+> > > +
+> > > +     return delta < 0 ? 0 : div_s64(delta, TICK_NSEC);
+> > > +}
+> > > +
+> > >  /*
+> > >   * Must be called with interrupts disabled !
+> > >   */
+> > >
+> > >
