@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5000A7876FC
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:22:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69EF17876DA
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:21:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242840AbjHXRVr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 13:21:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38936 "EHLO
+        id S230089AbjHXRUi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 13:20:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242860AbjHXRVg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:36 -0400
+        with ESMTP id S241809AbjHXRUH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:20:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C38112C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F2DF19BA
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:20:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E31876756B
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02216C433C7;
-        Thu, 24 Aug 2023 17:21:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D764F67553
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:20:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8393C433C8;
+        Thu, 24 Aug 2023 17:20:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897693;
-        bh=XDGaD6hap1ClgRMDXD5brLAvyb/MTyzWZi0uYFcUc2A=;
+        s=korg; t=1692897604;
+        bh=tn9KAem1j+KV06ecKFgauacRh1/RVKo/msUcMjdmcXs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hIoO+zk18Vem3e8h3ffurGevHz7gtfQuZbFDTajynvspx91YGRUhIaw4sJfBiG9WX
-         VlFhU8efFait5tMM/6tEi/Lk8n/JIAZjCPJQGcivMGSWsm1acmzdoD97Za1m0zqqHY
-         dtrCTfWiJPiKdrSuK0wWdTrgFymNQ5F42mWTERaw=
+        b=RuclTSDJ3eOpvOk28L4k0WLJSSxH7B6C0HwAAzfVEI2t614P15jLTaaGC6tjjx+pY
+         61RDemUgu5qhEg3vx8tzSIREgUOB6rYdIwrEg0maTULSK4bztebjR2SVOaUwpNUUJk
+         G7PLlGbgt6WblwkkPfBeOQHVs5FHBlSuyp+/Mpxg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alex Bee <knaerzche@gmail.com>,
+        patches@lists.linux.dev, FUKAUMI Naoki <naoki@radxa.com>,
         Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 098/135] arm64: dts: rockchip: add SPDIF node for ROCK Pi 4
-Date:   Thu, 24 Aug 2023 19:09:30 +0200
-Message-ID: <20230824170621.522408757@linuxfoundation.org>
+Subject: [PATCH 5.10 099/135] arm64: dts: rockchip: fix regulator name on rk3399-rock-4
+Date:   Thu, 24 Aug 2023 19:09:31 +0200
+Message-ID: <20230824170621.564917037@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -59,69 +59,108 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Alex Bee <knaerzche@gmail.com>
+From: FUKAUMI Naoki <naoki@radxa.com>
 
-[ Upstream commit 697dd494cb1cf56acfb764214a1e4788e4d1a983 ]
+[ Upstream commit 69448624b770aa88a71536a16900dd3cc6002919 ]
 
-Add a SPDIF audio-graph-card to ROCK Pi 4 device tree.
+fix regulator name
 
-It's not enabled by default since all dma channels are used by
-the (already) enabled i2s0/1/2 and the pin is muxed with GPIO4_C5
-which might be in use already.
-If enabled SPDIF_TX will be available at pin #15.
+ref:
+ https://dl.radxa.com/rockpi4/docs/hw/rockpi4/rockpi4_v13_sch_20181112.pdf
 
-Signed-off-by: Alex Bee <knaerzche@gmail.com>
-Link: https://lore.kernel.org/r/20210618181256.27992-6-knaerzche@gmail.com
+Signed-off-by: FUKAUMI Naoki <naoki@radxa.com>
+Link: https://lore.kernel.org/r/20220909195006.127957-4-naoki@radxa.com
 Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Stable-dep-of: cee572756aa2 ("arm64: dts: rockchip: Disable HS400 for eMMC on ROCK Pi 4")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../boot/dts/rockchip/rk3399-rock-pi-4.dtsi   | 26 +++++++++++++++++++
- 1 file changed, 26 insertions(+)
+ .../boot/dts/rockchip/rk3399-rock-pi-4.dtsi   | 25 ++++++++++---------
+ 1 file changed, 13 insertions(+), 12 deletions(-)
 
 diff --git a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-index f80cdb021f7fc..fcd8eeabf53b6 100644
+index fcd8eeabf53b6..4e1c1f970aba1 100644
 --- a/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
 +++ b/arch/arm64/boot/dts/rockchip/rk3399-rock-pi-4.dtsi
-@@ -37,6 +37,23 @@
- 		dais = <&i2s0_p0>;
+@@ -116,24 +116,25 @@
+ 		vin-supply = <&vcc5v0_sys>;
  	};
  
-+	sound-dit {
-+		compatible = "audio-graph-card";
-+		label = "SPDIF";
-+		dais = <&spdif_p0>;
-+	};
-+
-+	spdif-dit {
-+		compatible = "linux,spdif-dit";
-+		#sound-dai-cells = <0>;
-+
-+		port {
-+			dit_p0_0: endpoint {
-+				remote-endpoint = <&spdif_p0_0>;
-+			};
-+		};
-+	};
-+
- 	vcc12v_dcin: dc-12v {
+-	vcc5v0_typec: vcc5v0-typec-regulator {
++	vbus_typec: vbus-typec-regulator {
  		compatible = "regulator-fixed";
- 		regulator-name = "vcc12v_dcin";
-@@ -625,6 +642,15 @@
- 	status = "okay";
- };
+ 		enable-active-high;
+ 		gpio = <&gpio1 RK_PA3 GPIO_ACTIVE_HIGH>;
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&vcc5v0_typec_en>;
+-		regulator-name = "vcc5v0_typec";
++		regulator-name = "vbus_typec";
+ 		regulator-always-on;
+ 		vin-supply = <&vcc5v0_sys>;
+ 	};
  
-+&spdif {
-+
-+	spdif_p0: port {
-+		spdif_p0_0: endpoint {
-+			remote-endpoint = <&dit_p0_0>;
-+		};
-+	};
-+};
-+
- &tcphy0 {
+-	vcc_lan: vcc3v3-phy-regulator {
++	vcc3v3_lan: vcc3v3-lan-regulator {
+ 		compatible = "regulator-fixed";
+-		regulator-name = "vcc_lan";
++		regulator-name = "vcc3v3_lan";
+ 		regulator-always-on;
+ 		regulator-boot-on;
+ 		regulator-min-microvolt = <3300000>;
+ 		regulator-max-microvolt = <3300000>;
++		vin-supply = <&vcc3v3_sys>;
+ 	};
+ 
+ 	vdd_log: vdd-log {
+@@ -180,7 +181,7 @@
+ 	assigned-clocks = <&cru SCLK_RMII_SRC>;
+ 	assigned-clock-parents = <&clkin_gmac>;
+ 	clock_in_out = "input";
+-	phy-supply = <&vcc_lan>;
++	phy-supply = <&vcc3v3_lan>;
+ 	phy-mode = "rgmii";
+ 	pinctrl-names = "default";
+ 	pinctrl-0 = <&rgmii_pins>;
+@@ -285,8 +286,8 @@
+ 				};
+ 			};
+ 
+-			vcc1v8_codec: LDO_REG1 {
+-				regulator-name = "vcc1v8_codec";
++			vcca1v8_codec: LDO_REG1 {
++				regulator-name = "vcca1v8_codec";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <1800000>;
+@@ -296,8 +297,8 @@
+ 				};
+ 			};
+ 
+-			vcc1v8_hdmi: LDO_REG2 {
+-				regulator-name = "vcc1v8_hdmi";
++			vcca1v8_hdmi: LDO_REG2 {
++				regulator-name = "vcca1v8_hdmi";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <1800000>;
+@@ -354,8 +355,8 @@
+ 				};
+ 			};
+ 
+-			vcc0v9_hdmi: LDO_REG7 {
+-				regulator-name = "vcc0v9_hdmi";
++			vcca0v9_hdmi: LDO_REG7 {
++				regulator-name = "vcca0v9_hdmi";
+ 				regulator-always-on;
+ 				regulator-boot-on;
+ 				regulator-min-microvolt = <900000>;
+@@ -495,7 +496,7 @@
  	status = "okay";
+ 
+ 	bt656-supply = <&vcc_3v0>;
+-	audio-supply = <&vcc1v8_codec>;
++	audio-supply = <&vcca1v8_codec>;
+ 	sdmmc-supply = <&vcc_sdio>;
+ 	gpio1830-supply = <&vcc_3v0>;
  };
 -- 
 2.40.1
