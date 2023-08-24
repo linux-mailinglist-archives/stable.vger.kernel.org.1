@@ -2,43 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF4217876F2
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:21:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8DF07876F7
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 19:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242814AbjHXRVO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 13:21:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35432 "EHLO
+        id S242745AbjHXRVo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 13:21:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235585AbjHXRVI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:08 -0400
+        with ESMTP id S242843AbjHXRVV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 13:21:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDDC112C
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3FC612C
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 10:21:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7D40767577
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 805EEC433C7;
-        Thu, 24 Aug 2023 17:21:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5328E675A6
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 17:21:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 26341C433C7;
+        Thu, 24 Aug 2023 17:21:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692897665;
-        bh=kIWlIWdYcZhNpeA0b/VATOFSwJWSZStlRZfudmRJZAc=;
+        s=korg; t=1692897678;
+        bh=zZHpWg/r1A88I4kReNeWfcAYikSrDjldJbQZWFhUHrI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=i6Y6BZ4YerpL14PAAct2N/11YZ98HFKIkS+yOKrgecntwx2rzP51cT1YavO6K/b+F
-         +VdSbvED1u/NPbhBV+rWrZ2R2ngjvZ54cOqW3BqbgFToRVynGjbwhE8jhToZzi1y4C
-         XCJn7KYtWB5+lbGlnuyYhXZ/tTbMHo1Lm1s3zS/8=
+        b=MSTXBVnyP2Ij/S9np1YcpRCuC1sPvzEs40P2ZgvRDZQ637N0YyfbpUyo0Dx7FPXb1
+         IjTYnjikUBaWL4i+pZCCCvSa3d3eOIi8GrDi5RdRMbNX1dRr2+Ibm0uYgIkiacJTV/
+         TMzEP8nC8ublk/T/Q2zySqfMHpBOlMlMYE8ddS4E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
-        Shakeel Butt <shakeelb@google.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Willem de Bruijn <willemb@google.com>,
+        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 092/135] sock: Fix misuse of sk_under_memory_pressure()
-Date:   Thu, 24 Aug 2023 19:09:24 +0200
-Message-ID: <20230824170621.249848581@linuxfoundation.org>
+Subject: [PATCH 5.10 093/135] net: do not allow gso_size to be set to GSO_BY_FRAGS
+Date:   Thu, 24 Aug 2023 19:09:25 +0200
+Message-ID: <20230824170621.300166272@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 References: <20230824170617.074557800@linuxfoundation.org>
@@ -61,72 +67,88 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Abel Wu <wuyun.abel@bytedance.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 2d0c88e84e483982067a82073f6125490ddf3614 ]
+[ Upstream commit b616be6b97688f2f2bd7c4a47ab32f27f94fb2a9 ]
 
-The status of global socket memory pressure is updated when:
+One missing check in virtio_net_hdr_to_skb() allowed
+syzbot to crash kernels again [1]
 
-  a) __sk_mem_raise_allocated():
+Do not allow gso_size to be set to GSO_BY_FRAGS (0xffff),
+because this magic value is used by the kernel.
 
-	enter: sk_memory_allocated(sk) >  sysctl_mem[1]
-	leave: sk_memory_allocated(sk) <= sysctl_mem[0]
+[1]
+general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
+CPU: 0 PID: 5039 Comm: syz-executor401 Not tainted 6.5.0-rc5-next-20230809-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:skb_segment+0x1a52/0x3ef0 net/core/skbuff.c:4500
+Code: 00 00 00 e9 ab eb ff ff e8 6b 96 5d f9 48 8b 84 24 00 01 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e ea 21 00 00 48 8b 84 24 00 01
+RSP: 0018:ffffc90003d3f1c8 EFLAGS: 00010202
+RAX: dffffc0000000000 RBX: 000000000001fffe RCX: 0000000000000000
+RDX: 000000000000000e RSI: ffffffff882a3115 RDI: 0000000000000070
+RBP: ffffc90003d3f378 R08: 0000000000000005 R09: 000000000000ffff
+R10: 000000000000ffff R11: 5ee4a93e456187d6 R12: 000000000001ffc6
+R13: dffffc0000000000 R14: 0000000000000008 R15: 000000000000ffff
+FS: 00005555563f2380(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020020000 CR3: 000000001626d000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+<TASK>
+udp6_ufo_fragment+0x9d2/0xd50 net/ipv6/udp_offload.c:109
+ipv6_gso_segment+0x5c4/0x17b0 net/ipv6/ip6_offload.c:120
+skb_mac_gso_segment+0x292/0x610 net/core/gso.c:53
+__skb_gso_segment+0x339/0x710 net/core/gso.c:124
+skb_gso_segment include/net/gso.h:83 [inline]
+validate_xmit_skb+0x3a5/0xf10 net/core/dev.c:3625
+__dev_queue_xmit+0x8f0/0x3d60 net/core/dev.c:4329
+dev_queue_xmit include/linux/netdevice.h:3082 [inline]
+packet_xmit+0x257/0x380 net/packet/af_packet.c:276
+packet_snd net/packet/af_packet.c:3087 [inline]
+packet_sendmsg+0x24c7/0x5570 net/packet/af_packet.c:3119
+sock_sendmsg_nosec net/socket.c:727 [inline]
+sock_sendmsg+0xd9/0x180 net/socket.c:750
+____sys_sendmsg+0x6ac/0x940 net/socket.c:2496
+___sys_sendmsg+0x135/0x1d0 net/socket.c:2550
+__sys_sendmsg+0x117/0x1e0 net/socket.c:2579
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7ff27cdb34d9
 
-  b) __sk_mem_reduce_allocated():
-
-	leave: sk_under_memory_pressure(sk) &&
-		sk_memory_allocated(sk) < sysctl_mem[0]
-
-So the conditions of leaving global pressure are inconstant, which
-may lead to the situation that one pressured net-memcg prevents the
-global pressure from being cleared when there is indeed no global
-pressure, thus the global constrains are still in effect unexpectedly
-on the other sockets.
-
-This patch fixes this by ignoring the net-memcg's pressure when
-deciding whether should leave global memory pressure.
-
-Fixes: e1aab161e013 ("socket: initial cgroup code.")
-Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Link: https://lore.kernel.org/r/20230816091226.1542-1-wuyun.abel@bytedance.com
+Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Xin Long <lucien.xin@gmail.com>
+Cc: "Michael S. Tsirkin" <mst@redhat.com>
+Cc: Jason Wang <jasowang@redhat.com>
+Reviewed-by: Willem de Bruijn <willemb@google.com>
+Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+Link: https://lore.kernel.org/r/20230816142158.1779798-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 6 ++++++
- net/core/sock.c    | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ include/linux/virtio_net.h | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 1fb5c535537c1..665e388593752 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1346,6 +1346,12 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
- 	return sk->sk_prot->memory_pressure != NULL;
- }
+diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
+index a960de68ac69e..6047058d67037 100644
+--- a/include/linux/virtio_net.h
++++ b/include/linux/virtio_net.h
+@@ -148,6 +148,10 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
+ 		if (gso_type & SKB_GSO_UDP)
+ 			nh_off -= thlen;
  
-+static inline bool sk_under_global_memory_pressure(const struct sock *sk)
-+{
-+	return sk->sk_prot->memory_pressure &&
-+		!!*sk->sk_prot->memory_pressure;
-+}
++		/* Kernel has a special handling for GSO_BY_FRAGS. */
++		if (gso_size == GSO_BY_FRAGS)
++			return -EINVAL;
 +
- static inline bool sk_under_memory_pressure(const struct sock *sk)
- {
- 	if (!sk->sk_prot->memory_pressure)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 98f4b4a80de42..742356cfd07c4 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2724,7 +2724,7 @@ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
- 	if (mem_cgroup_sockets_enabled && sk->sk_memcg)
- 		mem_cgroup_uncharge_skmem(sk->sk_memcg, amount);
- 
--	if (sk_under_memory_pressure(sk) &&
-+	if (sk_under_global_memory_pressure(sk) &&
- 	    (sk_memory_allocated(sk) < sk_prot_mem_limits(sk, 0)))
- 		sk_leave_memory_pressure(sk);
- }
+ 		/* Too small packets are not really GSO ones. */
+ 		if (skb->len - nh_off > gso_size) {
+ 			shinfo->gso_size = gso_size;
 -- 
 2.40.1
 
