@@ -2,224 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CAF4F7873CC
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B95A17873D0
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:16:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237213AbjHXPP1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:15:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47036 "EHLO
+        id S242088AbjHXPQA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 11:16:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238196AbjHXPPK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:15:10 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA1EA199D
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:15:08 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1bdc19b782aso230815ad.0
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:15:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1692890108; x=1693494908;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=GbQm5GrS9AHJeptmoTY1xlWaV3Sgc7qH5XFXcMaRxu8=;
-        b=HBnSodqDLAC3oJXtWYIyv4/pAE5x5xrMeetcnpjyZhyDdOFk6VkFC/gzPru9KJvPeE
-         YbNJp7VeBCcD3AXXo1gS/TT8is0F9D/D4Q5w0P9X+my5iHNNqXvntRwsxTCgdMyKpo2x
-         mATdyhsD6cjsUqdfLKqZ/CWHSkTV2PiKv7+hWvbmv9mP1n3Tgmy6ferq5k/XcDwc+Vi8
-         ta4WTwb6GCS0uP5L23NZLRQUYQhmYofPNCGsI9pFBe1xVtn1MAk0VWunZJ5lXxjE1TLj
-         atjtSsE5rPvXDJgTtCQgkL3ljk7jqTPtQS+U5L2rIwmn3woZJdxNe6zJW3XQnwLv57/J
-         yF/w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692890108; x=1693494908;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=GbQm5GrS9AHJeptmoTY1xlWaV3Sgc7qH5XFXcMaRxu8=;
-        b=d80Ie2Y2eyIuEsPfdRhUusVxOvcSU5frXZDe4zZgTsyceLjiiU47mHfMl62WPSDS7W
-         BNTk6UXhjO+UNcSAlVi+reMpY/o+/6OEDNFM1D3rJhJ79er0QKqXN4UH2qwiW/KuZyLa
-         esW8NTcohF/L7+pcuYWVyrMwQw3xmJ31HG3B0lce1TquMegPfSNm7BLf8URN5wLwjIkj
-         Fh0CyhmejR0LOLXLI9hOHK7YkFsb5SXjxPt8WSVY5Tv1/vdKQHCcdmc3XMfN0riu6Qu+
-         NIweel9rBtS5OYYbBuu/w44E+DFIMqbeUhzSd/m5gVg+nplKTwEumKnNOPxMyFvqkXsc
-         mCYg==
-X-Gm-Message-State: AOJu0YwrGYcCBHjiF4x4NCnB5bgHw1gy33VoEgwliwd+LGCZ3EvW6qex
-        oQCJDaHR/I5PpPmZ8jyLCF2ePN01IkMlcO7qrVQ=
-X-Google-Smtp-Source: AGHT+IGa1XCVHrKlFLguvpSauVbWvZBxVQV31Qzw2wFqTtBLNQ1EEewbc93NcJDl4IMe7Lk/pgFuMg==
-X-Received: by 2002:a17:902:f68e:b0:1bb:91f2:bb3e with SMTP id l14-20020a170902f68e00b001bb91f2bb3emr15085658plg.49.1692890107969;
-        Thu, 24 Aug 2023 08:15:07 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id g8-20020a1709029f8800b001bf52834696sm11004261plq.207.2023.08.24.08.15.07
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Aug 2023 08:15:07 -0700 (PDT)
-Message-ID: <64e773fb.170a0220.eab39.5dd9@mx.google.com>
-Date:   Thu, 24 Aug 2023 08:15:07 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S242089AbjHXPPh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:15:37 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCCD4199D;
+        Thu, 24 Aug 2023 08:15:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 533966327D;
+        Thu, 24 Aug 2023 15:15:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394B6C433C9;
+        Thu, 24 Aug 2023 15:15:32 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1692890132;
+        bh=7VwnL8Kqzeq/1ZeBjWepo2f0bRj2CCuGL8qstPVUiak=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=nHIv7ex7FzG16L2QvDe6PfYu3Hz4NWLkw816pWVMEPHEwl2yIjDnb4Y8b2U7Eq69q
+         LP9CxepPtbWO6geH9xnSly7ZDyasq7ubHKE5qxGqVu6dm6WuIpJok54XlZdrHQynSo
+         azLi5RWhOx/7vW+4MmhXQMlsG9h/jO/EpQVja7K4=
+Date:   Thu, 24 Aug 2023 17:15:30 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     Naresh Kamboju <naresh.kamboju@linaro.org>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 000/194] 6.1.47-rc1 review
+Message-ID: <2023082459-oxidize-script-77e4@gregkh>
+References: <20230821194122.695845670@linuxfoundation.org>
+ <991b93d2-9fde-4233-97d5-1133a9360d02@roeck-us.net>
+ <2023082309-veggie-unwoven-a7df@gregkh>
+ <CA+G9fYvwxuVpSn24YvtdNXaofg2JtZDREatOpDsKTVJX+nFN3Q@mail.gmail.com>
+ <2d8a5f48-6c50-4c12-8a3d-23e621c6b722@roeck-us.net>
+ <2023082325-expansion-revoke-1f3a@gregkh>
+ <2023082401-arrange-bulk-d42a@gregkh>
+ <4b8fcb23-c5e3-4bf1-957f-f0cc717564be@roeck-us.net>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.47-16-gc079d0dd788a
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.47-16-gc079d0dd788a)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <4b8fcb23-c5e3-4bf1-957f-f0cc717564be@roeck-us.net>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.47-16-gc079d0dd788a)
+On Thu, Aug 24, 2023 at 08:08:19AM -0700, Guenter Roeck wrote:
+> On Thu, Aug 24, 2023 at 03:35:55PM +0200, Greg Kroah-Hartman wrote:
+> > On Wed, Aug 23, 2023 at 05:50:42PM +0200, Greg Kroah-Hartman wrote:
+> > > On Wed, Aug 23, 2023 at 06:30:13AM -0700, Guenter Roeck wrote:
+> > > > On Wed, Aug 23, 2023 at 01:47:39PM +0530, Naresh Kamboju wrote:
+> > > > > On Wed, 23 Aug 2023 at 12:33, Greg Kroah-Hartman
+> > > > > <gregkh@linuxfoundation.org> wrote:
+> > > > > >
+> > > > > > On Tue, Aug 22, 2023 at 05:49:54PM -0700, Guenter Roeck wrote:
+> > > > > > > On Mon, Aug 21, 2023 at 09:39:39PM +0200, Greg Kroah-Hartman wrote:
+> > > > > > > > This is the start of the stable review cycle for the 6.1.47 release.
+> > > > > > > > There are 194 patches in this series, all will be posted as a response
+> > > > > > > > to this one.  If anyone has any issues with these being applied, please
+> > > > > > > > let me know.
+> > > > > > > >
+> > > > > > > > Responses should be made by Wed, 23 Aug 2023 19:40:45 +0000.
+> > > > > > > > Anything received after that time might be too late.
+> > > > > > > >
+> > > > > > >
+> > > > > > > Build results:
+> > > > > > >       total: 157 pass: 156 fail: 1
+> > > > > > > Failed builds:
+> > > > > > >       m68k:sun3_defconfig
+> > > > > > > Qemu test results:
+> > > > > > >       total: 521 pass: 519 fail: 2
+> > > > > > > Failed tests:
+> > > > > > >       arm:fuji-bmc:aspeed_g5_defconfig:notests:mem1G:mtd128,0,8,1:net,nic:aspeed-bmc-facebook-fuji:f2fs
+> > > > > > >       arm:bletchley-bmc,fmc-model=mt25qu02g,spi-model=mt25qu02g:aspeed_g5_defconfig:notests:mem1G:mtd256:net,nic:aspeed-bmc-facebook-bletchley:f2fs
+> > > > > > >
+> > > > > > > The m68k build failure is
+> > > > > > >
+> > > > > > > Inconsistent kallsyms data
+> > > > > > > Try make KALLSYMS_EXTRA_PASS=1 as a workaround
+> > > > > > >
+> > > > > > > I already have KALLSYMS_EXTRA_PASS=1 enabled, so that doesn't help.
+> > > > > > > Nothing to worry about. The f2fs crashes are still seen. They
+> > > > > > > also happen for other architectures, so it is not just an arm problem.
+> > > > > > > I'll probably just disable all f2fs testing going forward. If so I'll
+> > > > > > > send a note clarifying that the lack of reported test failures doesn't
+> > > > > > > mean that it works.
+> > > > > >
+> > > > > > I'll look into this later this week, next week to resolve the f2fs
+> > > > > > stuff.  I wanted to get to the other known bug fixes first.
+> > > > > >
+> > > > > > > For x86 I get the same runtime warning as everyone else.
+> > > > > >
+> > > > > > Yeah, this is troubling...
+> > > > > >
+> > > > > > Is it clang only?  I'll dig into this today...
+> > > > > 
+> > > > > It is seen with gcc-13 and clang-17 with few extra configs.
+> > > > > We are not booting defconfig.
+> > > > > 
+> > > > > The Kconfigs are enabled with KFENCE.
+> > > > > 
+> > > > I have KFENCE enabled as well, so it may well be that this triggers
+> > > > the warning. I don't see it in 6.4.y or upstream, though.
+> > > 
+> > > Ok, let me rip out all the x86 and objtool patches from this release,
+> > > get it out the door with the good things in there that everyone else
+> > > needs, and then we can focus on this mess...
+> > > 
+> > > Maybe I'll just backport _all_ objtool changes to sync things up better,
+> > > last time I tried that it was a maze of twisty passages, all coated in
+> > > assembly...
+> > 
+> > I got lost in the maze again today, ick.
+> > 
+> > Anyway, I give up.  I'm just going to push out a -rc1 with just these
+> > changes in it today, and if people are upset about the runtime warning,
+> > then they can provide a working backport of this objtool patch.
+> > 
+> 
+> Or maybe just revert all srso patches.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.47-16-gc079d0dd788a/
+Hah, I wish.
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.47-16-gc079d0dd788a
-Git Commit: c079d0dd788ad4fe887ee6349fe89d23d72f7696
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+{sigh}
 
-Warnings Detected:
+I've notified the patch authors about this, hopefully they can come up
+with something.
 
-arc:
+> > Ideally, the CPU vendor who is causing this mess will do that, as it's
+> > their issue we are spending all of this time on, not Linux's issue.
+> > 
+> > Also, oddly, I can not reproduce this problem here on my hardware at
+> > all.  Maybe because it's an AMD processor?  If so, makes sense, as the
+> > SRSO issue is only for Intel chips.
+> > 
+> 
+> Apparently I am lost in the maze as well. I am quite sure that SRSO
+> only applies to AMD CPUs, and
+> 
+> arch/x86/Kconfig:config CPU_SRSO
+> arch/x86/Kconfig:         Enable the SRSO mitigation needed on AMD Zen1-4 machines.
+> 
+> seems to confirm that. What am I missing ? Do you mean the warning that
+> was supposed to be fixed with the objtool patch(es) is only seen on Intel
+> chips ?
 
-arm64:
+Ah, sorry, my confusion (too many different cpu bugs lately)
 
-arm:
+This might be an issue on AMD chips, but for some reason, in running
+this kernel on my systems here, I have no boot warnings at all.  I
+blamed it on them being only AMD chips.  If that's not the issue then I
+really have no idea, sorry.
 
-i386:
+thanks,
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+greg k-h
