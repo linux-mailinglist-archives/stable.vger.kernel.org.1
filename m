@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74F9B78732F
-	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 17:01:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77D3478729E
+	for <lists+stable@lfdr.de>; Thu, 24 Aug 2023 16:56:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241972AbjHXPBC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 11:01:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55584 "EHLO
+        id S233768AbjHXOzk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 10:55:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242020AbjHXPAm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 11:00:42 -0400
+        with ESMTP id S241863AbjHXOzK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 10:55:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6281BD4
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 08:00:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C461B19B3
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 07:55:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 306F7604EF
-        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 15:00:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 44E73C433C8;
-        Thu, 24 Aug 2023 15:00:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6293166F53
+        for <stable@vger.kernel.org>; Thu, 24 Aug 2023 14:55:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73F2BC433C7;
+        Thu, 24 Aug 2023 14:55:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692889236;
-        bh=hJ1UqpnfH/ZMxXl2s2GXa0MOo6xo/B/kGEmshFtX5+c=;
+        s=korg; t=1692888906;
+        bh=0OK4j+RBdAfyrp8MWs1wv4HpqPzZvKx3ALAhAmjBlHY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EYuugy5XeQyvSjmryjUGFY8yJNTokYPyW4pW/qL3blXT5PUkFnWMjLpcAFOJE/Evi
-         mX0UC9cYtmh15HG7xjT0d5KaNIw5XZTF29h/dnEhK508dAAOc1c1VJcTAL2Vwas8jf
-         8yA2Kctv+IDQUZGkFtOi9+8XXNNnYEobCYF0YBFA=
+        b=idGRKafGFMw+kpuFTRl7KIoubWb+U7o5zwpisgWXzocW90k31BdSYkQwPEK/oJ3ne
+         IhZHoka79hTaIx8HrJSOTmSojJq9wpq9iMYwGQOviKeRLneulIgVy6xGkJranESwqn
+         IftOxcly+dASb95oW7X7UNSuJChJuphMDKq1aVLU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        "Steven Rostedt (VMware)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 064/135] tracing/probes: Have process_fetch_insn() take a void * instead of pt_regs
-Date:   Thu, 24 Aug 2023 16:50:07 +0200
-Message-ID: <20230824145029.644699064@linuxfoundation.org>
+Subject: [PATCH 5.15 085/139] xfrm: add NULL check in xfrm_update_ae_params
+Date:   Thu, 24 Aug 2023 16:50:08 +0200
+Message-ID: <20230824145027.337355316@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230824145027.008282920@linuxfoundation.org>
-References: <20230824145027.008282920@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+References: <20230824145023.559380953@linuxfoundation.org>
 User-Agent: quilt/0.67
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -54,94 +55,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Steven Rostedt (VMware) <rostedt@goodmis.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 8565a45d0858078b63c7d84074a21a42ba9ebf01 ]
+[ Upstream commit 00374d9b6d9f932802b55181be9831aa948e5b7c ]
 
-In preparation to allow event probes to use the process_fetch_insn()
-callback in trace_probe_tmpl.h, change the data passed to it from a
-pointer to pt_regs, as the event probe will not be using regs, and make it
-a void pointer instead.
+Normally, x->replay_esn and x->preplay_esn should be allocated at
+xfrm_alloc_replay_state_esn(...) in xfrm_state_construct(...), hence the
+xfrm_update_ae_params(...) is okay to update them. However, the current
+implementation of xfrm_new_ae(...) allows a malicious user to directly
+dereference a NULL pointer and crash the kernel like below.
 
-Update the process_fetch_insn() callers for kprobe and uprobe events to
-have the regs defined in the function and just typecast the void pointer
-parameter.
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PGD 8253067 P4D 8253067 PUD 8e0e067 PMD 0
+Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 PID: 98 Comm: poc.npd Not tainted 6.4.0-rc7-00072-gdad9774deaf1 #8
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.o4
+RIP: 0010:memcpy_orig+0xad/0x140
+Code: e8 4c 89 5f e0 48 8d 7f e0 73 d2 83 c2 20 48 29 d6 48 29 d7 83 fa 10 72 34 4c 8b 06 4c 8b 4e 08 c
+RSP: 0018:ffff888008f57658 EFLAGS: 00000202
+RAX: 0000000000000000 RBX: ffff888008bd0000 RCX: ffffffff8238e571
+RDX: 0000000000000018 RSI: ffff888007f64844 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff888008f57818
+R13: ffff888007f64aa4 R14: 0000000000000000 R15: 0000000000000000
+FS:  00000000014013c0(0000) GS:ffff88806d600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000054d8000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ? __die+0x1f/0x70
+ ? page_fault_oops+0x1e8/0x500
+ ? __pfx_is_prefetch.constprop.0+0x10/0x10
+ ? __pfx_page_fault_oops+0x10/0x10
+ ? _raw_spin_unlock_irqrestore+0x11/0x40
+ ? fixup_exception+0x36/0x460
+ ? _raw_spin_unlock_irqrestore+0x11/0x40
+ ? exc_page_fault+0x5e/0xc0
+ ? asm_exc_page_fault+0x26/0x30
+ ? xfrm_update_ae_params+0xd1/0x260
+ ? memcpy_orig+0xad/0x140
+ ? __pfx__raw_spin_lock_bh+0x10/0x10
+ xfrm_update_ae_params+0xe7/0x260
+ xfrm_new_ae+0x298/0x4e0
+ ? __pfx_xfrm_new_ae+0x10/0x10
+ ? __pfx_xfrm_new_ae+0x10/0x10
+ xfrm_user_rcv_msg+0x25a/0x410
+ ? __pfx_xfrm_user_rcv_msg+0x10/0x10
+ ? __alloc_skb+0xcf/0x210
+ ? stack_trace_save+0x90/0xd0
+ ? filter_irq_stacks+0x1c/0x70
+ ? __stack_depot_save+0x39/0x4e0
+ ? __kasan_slab_free+0x10a/0x190
+ ? kmem_cache_free+0x9c/0x340
+ ? netlink_recvmsg+0x23c/0x660
+ ? sock_recvmsg+0xeb/0xf0
+ ? __sys_recvfrom+0x13c/0x1f0
+ ? __x64_sys_recvfrom+0x71/0x90
+ ? do_syscall_64+0x3f/0x90
+ ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
+ ? copyout+0x3e/0x50
+ netlink_rcv_skb+0xd6/0x210
+ ? __pfx_xfrm_user_rcv_msg+0x10/0x10
+ ? __pfx_netlink_rcv_skb+0x10/0x10
+ ? __pfx_sock_has_perm+0x10/0x10
+ ? mutex_lock+0x8d/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ xfrm_netlink_rcv+0x44/0x50
+ netlink_unicast+0x36f/0x4c0
+ ? __pfx_netlink_unicast+0x10/0x10
+ ? netlink_recvmsg+0x500/0x660
+ netlink_sendmsg+0x3b7/0x700
 
-Link: https://lkml.kernel.org/r/20210819041842.291622924@goodmis.org
+This Null-ptr-deref bug is assigned CVE-2023-3772. And this commit
+adds additional NULL check in xfrm_update_ae_params to fix the NPD.
 
-Acked-by: Masami Hiramatsu <mhiramat@kernel.org>
-Signed-off-by: Steven Rostedt (VMware) <rostedt@goodmis.org>
-Stable-dep-of: e38e2c6a9efc ("tracing/probes: Fix to update dynamic data counter if fetcharg uses it")
+Fixes: d8647b79c3b7 ("xfrm: Add user interface for esn and big anti-replay windows")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace_kprobe.c     | 3 ++-
- kernel/trace/trace_probe_tmpl.h | 6 +++---
- kernel/trace/trace_uprobe.c     | 3 ++-
- 3 files changed, 7 insertions(+), 5 deletions(-)
+ net/xfrm/xfrm_user.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_kprobe.c b/kernel/trace/trace_kprobe.c
-index 41dd17390c732..b882c6519b035 100644
---- a/kernel/trace/trace_kprobe.c
-+++ b/kernel/trace/trace_kprobe.c
-@@ -1332,9 +1332,10 @@ probe_mem_read(void *dest, void *src, size_t size)
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index f36fd1379effc..6ff405c2cd2c1 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -527,7 +527,7 @@ static void xfrm_update_ae_params(struct xfrm_state *x, struct nlattr **attrs,
+ 	struct nlattr *rt = attrs[XFRMA_REPLAY_THRESH];
+ 	struct nlattr *mt = attrs[XFRMA_MTIMER_THRESH];
  
- /* Note that we don't verify it, since the code does not come from user space */
- static int
--process_fetch_insn(struct fetch_insn *code, struct pt_regs *regs, void *dest,
-+process_fetch_insn(struct fetch_insn *code, void *rec, void *dest,
- 		   void *base)
- {
-+	struct pt_regs *regs = rec;
- 	unsigned long val;
- 
- retry:
-diff --git a/kernel/trace/trace_probe_tmpl.h b/kernel/trace/trace_probe_tmpl.h
-index 29348874ebde7..bbb479b3ba8fd 100644
---- a/kernel/trace/trace_probe_tmpl.h
-+++ b/kernel/trace/trace_probe_tmpl.h
-@@ -54,7 +54,7 @@ fetch_apply_bitfield(struct fetch_insn *code, void *buf)
-  * If dest is NULL, don't store result and return required dynamic data size.
-  */
- static int
--process_fetch_insn(struct fetch_insn *code, struct pt_regs *regs,
-+process_fetch_insn(struct fetch_insn *code, void *rec,
- 		   void *dest, void *base);
- static nokprobe_inline int fetch_store_strlen(unsigned long addr);
- static nokprobe_inline int
-@@ -190,7 +190,7 @@ __get_data_size(struct trace_probe *tp, struct pt_regs *regs)
- 
- /* Store the value of each argument */
- static nokprobe_inline void
--store_trace_args(void *data, struct trace_probe *tp, struct pt_regs *regs,
-+store_trace_args(void *data, struct trace_probe *tp, void *rec,
- 		 int header_size, int maxlen)
- {
- 	struct probe_arg *arg;
-@@ -205,7 +205,7 @@ store_trace_args(void *data, struct trace_probe *tp, struct pt_regs *regs,
- 		/* Point the dynamic data area if needed */
- 		if (unlikely(arg->dynamic))
- 			*dl = make_data_loc(maxlen, dyndata - base);
--		ret = process_fetch_insn(arg->code, regs, dl, base);
-+		ret = process_fetch_insn(arg->code, rec, dl, base);
- 		if (unlikely(ret < 0 && arg->dynamic)) {
- 			*dl = make_data_loc(0, dyndata - base);
- 		} else {
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 9900d4e3808cc..f6c47361c154e 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -217,9 +217,10 @@ static unsigned long translate_user_vaddr(unsigned long file_offset)
- 
- /* Note that we don't verify it, since the code does not come from user space */
- static int
--process_fetch_insn(struct fetch_insn *code, struct pt_regs *regs, void *dest,
-+process_fetch_insn(struct fetch_insn *code, void *rec, void *dest,
- 		   void *base)
- {
-+	struct pt_regs *regs = rec;
- 	unsigned long val;
- 
- 	/* 1st stage: get value from context */
+-	if (re) {
++	if (re && x->replay_esn && x->preplay_esn) {
+ 		struct xfrm_replay_state_esn *replay_esn;
+ 		replay_esn = nla_data(re);
+ 		memcpy(x->replay_esn, replay_esn,
 -- 
 2.40.1
 
