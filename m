@@ -2,47 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97E9D788E36
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 20:10:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D9B1788E4A
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 20:14:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230270AbjHYSJl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 14:09:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
+        id S229453AbjHYSN3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 14:13:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbjHYSJe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 14:09:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C49032685;
-        Fri, 25 Aug 2023 11:09:32 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 56B6A65B6C;
-        Fri, 25 Aug 2023 18:09:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9700C433C7;
-        Fri, 25 Aug 2023 18:09:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692986971;
-        bh=3h9/Ebs5p7iL789VesMcGrC+4uZ9dac5SCMwKpEeJYE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Ei4axnRTcr7SO6lIMlrfzm3ZwcNZzLOtxWj7MeDBZQoHhNfH93V7C4ytEJqbqKug+
-         7Yt3I1r6yMx3uRMmcX0Kr+kNw2kplOS6HGwTOB6ElUmKGda18oZD8wRGk7W4XvHnsy
-         hW1uqI37KOwAY+7LB1dEbJKgaqQHpLsFAkU0iMOD6kI+6Qc7ZqPslbxi6fHDqA4H91
-         Sr+jq7NF/9Hy1H4LOxmjLmW+xXoMd8J+LQpWf2j520Y9+4gSdwmq6ayP+4aWUGE2aZ
-         qV0oc0DPhhOXMTmScwaaObDNvtxBkZynjSf6VjFaQtcWS+aROtOR3G1l1eCcr1Kd4T
-         rl17WdLEF5Uiw==
-From:   deller@kernel.org
-To:     linux-parisc@vger.kernel.org
-Cc:     Helge Deller <deller@gmx.de>, stable@vger.kernel.org
-Subject: [PATCH 1/3] parisc: led: Reduce CPU overhead for disk & lan LED computation
-Date:   Fri, 25 Aug 2023 20:09:26 +0200
-Message-ID: <20230825180928.205499-1-deller@kernel.org>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S233342AbjHYSNW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 14:13:22 -0400
+Received: from mail-il1-x131.google.com (mail-il1-x131.google.com [IPv6:2607:f8b0:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CC102715
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 11:12:43 -0700 (PDT)
+Received: by mail-il1-x131.google.com with SMTP id e9e14a558f8ab-34cad4e6a34so1477535ab.0
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 11:12:43 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1692987156; x=1693591956;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=C7fASciw8k4HY5gXvLmNNZpvPMF/wBHDgCKHYnbqgSM=;
+        b=dK7KblEm0EswR6B8cyEjjhuWM7XS5qtPbE8Bgf7VcqBX3yZ220qH2zXenViyhB/z2V
+         cDxsqXZbJuNty3TjV3VlHU1dPU2xshi6sXMQ3YdiLEUZDuuHLPI27Xt13w8tyEBcylm/
+         sCCiEk4ftwmOsGJVDSy2AxrS67UXgDB0TIzaU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692987156; x=1693591956;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=C7fASciw8k4HY5gXvLmNNZpvPMF/wBHDgCKHYnbqgSM=;
+        b=hK1KKfB/um1akId8i2NajCyPYLXt1Q6e+/i13gJJKXEAnbZxJRWoiF5PjXTMTC8N2r
+         iXj8mrZiI2D8l3l6urnlD+qkaKjzGaIhLN30b+I6QlGvhL17jk7477DvwVxgtWwubAif
+         ryUB+r+JdF6IEF/9p3d7RULLNdeo/E5vD66K/KbXAnjvn3rDXA7MIhVF30NpPAuZ2hId
+         TuLQZCVerpQJhUjvUVBHSJEwV8H4txsDxuAHjYojJxMNjM4hChldBEK3M/5UcRNsB0e6
+         T+F0pR6nguu3z+iXjwkof3o59CkjouEMOwU6cONTGfVHzB+UeI8fwYqxPsi2rZQNpbcb
+         0xlA==
+X-Gm-Message-State: AOJu0Yx1YGwIZ5dQ6a787iwTA5zm8NHC7hZKQkmf4u9TNYFU7H+7ZtYP
+        0GBsQVkMpuNIJtbrk59G6s55Tg==
+X-Google-Smtp-Source: AGHT+IGClfzFcJ7TBPEQJdIsOSwJoe5p987iA5e84iRE5OkoNUjcWnuB8Xp2vTjF0Tgmd9qMMc9Gng==
+X-Received: by 2002:a92:c00f:0:b0:349:67b0:6045 with SMTP id q15-20020a92c00f000000b0034967b06045mr19074524ild.3.1692987155806;
+        Fri, 25 Aug 2023 11:12:35 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id w9-20020a92d2c9000000b0034886587bdcsm683452ilg.18.2023.08.25.11.12.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 25 Aug 2023 11:12:35 -0700 (PDT)
+Message-ID: <631bbec0-ce5e-9bff-d645-fa24b04e9ff3@linuxfoundation.org>
+Date:   Fri, 25 Aug 2023 12:12:34 -0600
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.1 00/15] 6.1.48-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20230824141447.155846739@linuxfoundation.org>
+From:   Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20230824141447.155846739@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,48 +77,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Helge Deller <deller@gmx.de>
+On 8/24/23 08:14, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.48 release.
+> There are 15 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 26 Aug 2023 14:14:28 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.48-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-Older PA-RISC machines have LEDs which show the disk- and LAN-activity.
-The computation is done in software and takes quite some time, e.g. on a
-J6500 this may take up to 60% time of one CPU if the machine is loaded
-via network traffic.
+Compiled and booted on my test system. No dmesg regressions.
 
-Since most people don't care about the LEDs, start with LEDs disabled and
-just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
-manually via /proc/pdc/led.
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org>
----
- drivers/parisc/led.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
-
-diff --git a/drivers/parisc/led.c b/drivers/parisc/led.c
-index 8bdc5e043831..765f19608f60 100644
---- a/drivers/parisc/led.c
-+++ b/drivers/parisc/led.c
-@@ -56,8 +56,8 @@
- static int led_type __read_mostly = -1;
- static unsigned char lastleds;	/* LED state from most recent update */
- static unsigned int led_heartbeat __read_mostly = 1;
--static unsigned int led_diskio    __read_mostly = 1;
--static unsigned int led_lanrxtx   __read_mostly = 1;
-+static unsigned int led_diskio    __read_mostly;
-+static unsigned int led_lanrxtx   __read_mostly;
- static char lcd_text[32]          __read_mostly;
- static char lcd_text_default[32]  __read_mostly;
- static int  lcd_no_led_support    __read_mostly = 0; /* KittyHawk doesn't support LED on its LCD */
-@@ -589,6 +589,9 @@ int __init register_led_driver(int model, unsigned long cmd_reg, unsigned long d
- 		return 1;
- 	}
- 	
-+	pr_info("LED: Enable disk and LAN activity LEDs "
-+		"via /proc/pdc/led\n");
-+
- 	/* mark the LCD/LED driver now as initialized and 
- 	 * register to the reboot notifier chain */
- 	initialized++;
--- 
-2.41.0
+thanks,
+-- Shuah
 
