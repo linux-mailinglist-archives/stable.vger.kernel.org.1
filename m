@@ -2,321 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8417D788408
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 11:47:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5290788484
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 12:15:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235628AbjHYJqf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 05:46:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59242 "EHLO
+        id S244368AbjHYKPJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 06:15:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231848AbjHYJqd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 05:46:33 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B90D19AD
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 02:45:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1692956747;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=CrjGBjMuzKz4ebBtAvxlAUidoQDPdf4WSl157LQLo1U=;
-        b=NQJpIcCQei83Ynvxi9hEsUJuRN8Pu0iqXXtnhxVBKYzGf8gXDoJwM81QAP1TOtc4G1M22F
-        sn5UTjSt4XvXxaKBtSmfQjj/fbxMvoN6/2i8uKI459u8T19hVMn2MqmfT9LZpvnFw6JY8N
-        TAdLxTVHbKz4nYKStWULwpeQJJbFp/w=
-Received: from mail-ed1-f69.google.com (mail-ed1-f69.google.com
- [209.85.208.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-632-eO9j4AqpMjaE1YFv54TDdg-1; Fri, 25 Aug 2023 05:45:45 -0400
-X-MC-Unique: eO9j4AqpMjaE1YFv54TDdg-1
-Received: by mail-ed1-f69.google.com with SMTP id 4fb4d7f45d1cf-51da39aa6dcso729389a12.2
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 02:45:45 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692956744; x=1693561544;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=CrjGBjMuzKz4ebBtAvxlAUidoQDPdf4WSl157LQLo1U=;
-        b=d90vEJk6jGOUQzuoQQcGeNG029VKsox5nXvBW3vD0VIna4GkxmQLgLYoNCZFFaHzeL
-         uFEKhmBbI5DyTYKO8UytOs1fW1vSNV17ahviNlSS71/7BK7n9t9HjV2b85YhGvISTaxI
-         V4m+B+Rxn6jAxOn1ylH5FHUEKqpe/ue75Ez5qY8il8+eG06YHnzzFF1qN1bVm8Ya9zax
-         lnVT+jtnmVZsSs6FehthuCOibJ0BddlsDuUTQtIy/GOf3xHkvAiml3aKkXzv6yaNCMAo
-         Ix4UTONjIN8hpFJoYiJ3bHbjZlWA/8ywoIhMuWsVi7Fg8KIwjBHFulpprguiH95bn1vw
-         EQeA==
-X-Gm-Message-State: AOJu0YzD/tLr04Qu1biFHRY6p85jnTsafcL8a7RfhYkML8X0bDIORl4D
-        /GZPd2AQ+zTekDgdLINTm6ghTSntU9Z+CZG07qdBno2WBZohuzriPBIQYaPvjusc4Ha5c491bJg
-        PC8q/X4nymOKEFpGnWbZ/ks9gsK9GK044
-X-Received: by 2002:aa7:d6d3:0:b0:526:9c4:bc06 with SMTP id x19-20020aa7d6d3000000b0052609c4bc06mr12003166edr.18.1692956744076;
-        Fri, 25 Aug 2023 02:45:44 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHgDt9FIdtsEpC4kqD3qNgfVsFAQCtSPJhDeSOFK7od6AJWv525UNBnReV1XMVXkZOH/9VDNNk8OLriDkJjk6M=
-X-Received: by 2002:aa7:d6d3:0:b0:526:9c4:bc06 with SMTP id
- x19-20020aa7d6d3000000b0052609c4bc06mr12003144edr.18.1692956743782; Fri, 25
- Aug 2023 02:45:43 -0700 (PDT)
+        with ESMTP id S243310AbjHYKOj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 06:14:39 -0400
+Received: from NAM12-DM6-obe.outbound.protection.outlook.com (mail-dm6nam12on2077.outbound.protection.outlook.com [40.107.243.77])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 378E42710;
+        Fri, 25 Aug 2023 03:14:21 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=I9K35MYtodZALGuvMVhSM2y/2E65c7P+WDgeB8DE/V1eEzuwOhe83Rsq8UdcGW0xBGdszzua/7GQyxCl0erhwv8KxgLAvRnFXlUIZAFj9EqSROpSNVALFDwOFwSkG2nbRxAQ2mAzugmqhCrUNh7rx++wfQ8Bdg7lKysoXX0siJuf6yb2erHVvvarNxpFMLKb8qg12t3a8SAeMy4Af9VrfFmwiOZPvxhubwB2jVP2AVKsP3X8ivMLE1VRXoK9Vq52YcoBizk1+K7if8a1bi/Tr4uaf+TwmdjJaH6YXTaR242K+iRhZfx/0cOLEwYHcabwUeGzUr785apQglvS4V205A==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=iM2YM2TI4VmZsYnOh1TTMuQPAUygxSqB3z6n8qTN20M=;
+ b=FVbaNLDZnziaIcnLYgmkTFYNpgJTQmS7FomvMUm3duFegRCqPFtYU27ib2/ACvBOiaF+3X8AamUMOmKRuFGiWoyDLjbJ75bpck0twieId0Uq8BSDg1gLuCXTt+SotZFgV7sz59Mweb3QvhdYS+knXFE0mwlzuLOiWNYKz4bR0rr7bpz9A+ZLCBuRxow9Xi67BWHmkTd+ERVjeT5GftfNbphwd0rp1ycTA92VyYK1cxoxZ+JeWKbFNYu7ymZyqjIrH6/y6r9Ow1+nBReZb1Qh3dF8PLvUE8WW1qH/y9tlA67HziwkQfprcQ0V0zNPiYKBHErhWWyI6jZSMUPa7qKiBg==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=iM2YM2TI4VmZsYnOh1TTMuQPAUygxSqB3z6n8qTN20M=;
+ b=C7bwVvNg9YLz/66a1/83MJzeRAQhDeXihkeFhHYfgXOtO2Nl63tzQzsa02p/oUY/dl1yAWbiyacTAyuFWskjXRKcVTbYeogkldFUJOhBdB2gejvtz8R8yXhlaoU5kFDlGaHQ455mHBxLkZQnEWsDE2QVvSi+amVDx4OgGOmAXStSTCJkFaRAKCcFyDNtqUA74eh0SjMgZn5aOrELFJYo2RObeVCXvTL5c5IcJOaMq23PC7a+H/baPoqHrw/kHkOaxhFpujSfbLCPGfvMZZr8PtpprdhofxPj8QUln1NmU/zSZJ95ZRELa3WjTuh3bq+8sgyYD/gWFT1hwyVbapFwsg==
+Received: from DS7PR05CA0012.namprd05.prod.outlook.com (2603:10b6:5:3b9::17)
+ by LV2PR12MB5848.namprd12.prod.outlook.com (2603:10b6:408:173::18) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Fri, 25 Aug
+ 2023 10:14:19 +0000
+Received: from CO1PEPF000044F1.namprd05.prod.outlook.com
+ (2603:10b6:5:3b9:cafe::3b) by DS7PR05CA0012.outlook.office365.com
+ (2603:10b6:5:3b9::17) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6723.19 via Frontend
+ Transport; Fri, 25 Aug 2023 10:14:18 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ CO1PEPF000044F1.mail.protection.outlook.com (10.167.241.71) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6699.14 via Frontend Transport; Fri, 25 Aug 2023 10:14:18 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Fri, 25 Aug 2023
+ 03:14:04 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.37; Fri, 25 Aug 2023 03:14:04 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37 via Frontend
+ Transport; Fri, 25 Aug 2023 03:14:04 -0700
+From:   Jon Hunter <jonathanh@nvidia.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>,
+        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.10 000/135] 5.10.192-rc1 review
+In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
+References: <20230824170617.074557800@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-References: <20230621-logitech-fixes-v2-1-3635f7f9c8af@kernel.org> <b68cf309-fca4-7ae0-b42f-90d5f338acdd@leemhuis.info>
-In-Reply-To: <b68cf309-fca4-7ae0-b42f-90d5f338acdd@leemhuis.info>
-From:   Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Date:   Fri, 25 Aug 2023 11:45:32 +0200
-Message-ID: <CAO-hwJLURSc03SdiHXst=kJnpZNjX0eeKPn14fYhtiSvWFzqKg@mail.gmail.com>
-Subject: Re: [PATCH v2] HID: logitech-hidpp: rework one more time the retries attempts
-To:     Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     bentiss@kernel.org,
-        =?UTF-8?Q?Filipe_La=C3=ADns?= <lains@riseup.net>,
-        Bastien Nocera <hadess@hadess.net>,
-        Jiri Kosina <jikos@kernel.org>,
-        Greg KH <gregkh@linuxfoundation.org>,
-        linux-input@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Message-ID: <826b587c-c622-4f30-b584-dc8cc3756313@drhqmail201.nvidia.com>
+Date:   Fri, 25 Aug 2023 03:14:04 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F1:EE_|LV2PR12MB5848:EE_
+X-MS-Office365-Filtering-Correlation-Id: 63116770-ae9a-4ea4-59c0-08dba5540b30
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: sUDfXm31JV7J6QT5pzjppQhOQoqR//E3mYvRn/Xyk6sMHU8uTY8khba+atJpDIhEo2EYgbgLhQUE8ShoT4jl3tjl3rW3G00AVApbr5ljtLRWUNUYDMHu2ctOqeNe3zKzRaoqWEvastLW7SCNpYvY8HVh6hIGND4XXVqdOByCFUTzrEusY3AGSxP2xfiF1R8B3ttLAS9ybRs4N9l0jPvNTdsCHFxgAR8S42zy5E2val763pjGav9cJN6nBFyNim7JgJp91S4dyrcpniQqpzOaUrYoxuXfXRWtiFBjUC9OErUxAMCV7mBNsZO1LLv2tXp5Pe8JWBZVDzUIozxVEKfpD8OGR2Hs2t0i0XWQxkRYm/rDIyi+59Cc68IQVTSRGZlX8rKGmqbg5QZjazytwqIRSdxfX13VJ1la2nVWGEIoHlzXD24m5y094jUEBGvLOzzxTyWgZsTWQe6eFcZR13r+xasSlY57kFBHi2CAD9nEOMGCo8HUb27L/uTBatTU0lPnPINETa7iuvaGLt4o8xuQgn2r4sdKrhysA0GpKpUF0QLt3sGkyJozbBo84MjfrNeTMmx1WQRZpXx4a1JW6EGETTNf4gI8r9qNssZzqpqlZUmHA21fNM6OGKMIgSPufesJq7Or+QPuSriOZdzPTN7fUiDEFtE0vKGYv0ryWb6yKunOsw7Qh/sdTA1ciPClMGRv8HzqGI0nUeBMTf0WnGX2KChnAgD1Yvh4drX/2q1epEfjYYW1SQfwFo54wZqgq0r7mXUqf+rIaoQnOTbUeJxBlrg3LHaUWgCkWNBnYnE34Ww=
+X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(396003)(376002)(39860400002)(136003)(346002)(451199024)(82310400011)(1800799009)(186009)(46966006)(36840700001)(40470700004)(31686004)(356005)(31696002)(86362001)(82740400003)(7636003)(40460700003)(478600001)(966005)(5660300002)(70206006)(316002)(6916009)(2906002)(54906003)(4326008)(8676002)(8936002)(70586007)(40480700001)(426003)(336012)(26005)(36860700001)(47076005)(7416002)(41300700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 25 Aug 2023 10:14:18.5829
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 63116770-ae9a-4ea4-59c0-08dba5540b30
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F1.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: LV2PR12MB5848
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Thorsten,
+On Thu, 24 Aug 2023 19:07:52 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.192 release.
+> There are 135 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 26 Aug 2023 17:05:50 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.192-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-On Fri, Aug 4, 2023 at 11:14=E2=80=AFAM Linux regression tracking (Thorsten
-Leemhuis) <regressions@leemhuis.info> wrote:
->
-> Hi Benjamin, /me again! :-D
->
-> On 12.07.23 17:02, bentiss@kernel.org wrote:
-> > From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> >
-> > Extract the internal code inside a helper function, fix the
-> > initialization of the parameters used in the helper function
-> > (`hidpp->answer_available` was not reset and `*response` wasn't either)=
-,
-> > and use a `do {...} while();` loop.
-> >
-> > Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device i=
-s busy")
-> > Cc: stable@vger.kernel.org
->
-> From what I understood there was hope that this would cure the last
-> remains (occasional init problems iirc) of the recent regressions with
-> this driver and their fixes. But things look stalled. Is there a reason?
-> Lack of reviews? Is there nevertheless hope that this will make it at
-> least into 6.6?
+All tests passing for Tegra ...
 
-Well, mostly lack of testing. But given that nothing happened, I just
-sneaked it in the 6.6 work. I guess bots are happy enough by now.
+Test results for stable-v5.10:
+    11 builds:	11 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    75 tests:	75 pass, 0 fail
 
-Cheers,
-Benjamin
+Linux version:	5.10.192-rc1-g78bdf347b342
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
->
-> Ciao, Thorsten
->
-> > Reviewed-by: Bastien Nocera <hadess@hadess.net>
-> > Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-> > ---
-> > as requested by https://lore.kernel.org/all/CAHk-=3DwiMbF38KCNhPFiargen=
-pSBoecSXTLQACKS2UMyo_Vu2ww@mail.gmail.com/
-> > This is a rewrite of that particular piece of code.
-> > ---
-> > Changes in v2:
-> > - added __must_hold() for KASAN
-> > - Reworked the comment describing the functions and their return values
-> > - Link to v1: https://lore.kernel.org/r/20230621-logitech-fixes-v1-1-32=
-e70933c0b0@redhat.com
-> > ---
-> >  drivers/hid/hid-logitech-hidpp.c | 115 +++++++++++++++++++++++++------=
---------
-> >  1 file changed, 75 insertions(+), 40 deletions(-)
-> >
-> > diff --git a/drivers/hid/hid-logitech-hidpp.c b/drivers/hid/hid-logitec=
-h-hidpp.c
-> > index 129b01be488d..09ba2086c95c 100644
-> > --- a/drivers/hid/hid-logitech-hidpp.c
-> > +++ b/drivers/hid/hid-logitech-hidpp.c
-> > @@ -275,21 +275,22 @@ static int __hidpp_send_report(struct hid_device =
-*hdev,
-> >  }
-> >
-> >  /*
-> > - * hidpp_send_message_sync() returns 0 in case of success, and somethi=
-ng else
-> > - * in case of a failure.
-> > - * - If ' something else' is positive, that means that an error has be=
-en raised
-> > - *   by the protocol itself.
-> > - * - If ' something else' is negative, that means that we had a classi=
-c error
-> > - *   (-ENOMEM, -EPIPE, etc...)
-> > + * Effectively send the message to the device, waiting for its answer.
-> > + *
-> > + * Must be called with hidpp->send_mutex locked
-> > + *
-> > + * Same return protocol than hidpp_send_message_sync():
-> > + * - success on 0
-> > + * - negative error means transport error
-> > + * - positive value means protocol error
-> >   */
-> > -static int hidpp_send_message_sync(struct hidpp_device *hidpp,
-> > +static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
-> >       struct hidpp_report *message,
-> >       struct hidpp_report *response)
-> >  {
-> > -     int ret =3D -1;
-> > -     int max_retries =3D 3;
-> > +     int ret;
-> >
-> > -     mutex_lock(&hidpp->send_mutex);
-> > +     __must_hold(&hidpp->send_mutex);
-> >
-> >       hidpp->send_receive_buf =3D response;
-> >       hidpp->answer_available =3D false;
-> > @@ -300,47 +301,74 @@ static int hidpp_send_message_sync(struct hidpp_d=
-evice *hidpp,
-> >        */
-> >       *response =3D *message;
-> >
-> > -     for (; max_retries !=3D 0 && ret; max_retries--) {
-> > -             ret =3D __hidpp_send_report(hidpp->hid_dev, message);
-> > +     ret =3D __hidpp_send_report(hidpp->hid_dev, message);
-> > +     if (ret) {
-> > +             dbg_hid("__hidpp_send_report returned err: %d\n", ret);
-> > +             memset(response, 0, sizeof(struct hidpp_report));
-> > +             return ret;
-> > +     }
-> >
-> > -             if (ret) {
-> > -                     dbg_hid("__hidpp_send_report returned err: %d\n",=
- ret);
-> > -                     memset(response, 0, sizeof(struct hidpp_report));
-> > -                     break;
-> > -             }
-> > +     if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
-> > +                             5*HZ)) {
-> > +             dbg_hid("%s:timeout waiting for response\n", __func__);
-> > +             memset(response, 0, sizeof(struct hidpp_report));
-> > +             return -ETIMEDOUT;
-> > +     }
-> >
-> > -             if (!wait_event_timeout(hidpp->wait, hidpp->answer_availa=
-ble,
-> > -                                     5*HZ)) {
-> > -                     dbg_hid("%s:timeout waiting for response\n", __fu=
-nc__);
-> > -                     memset(response, 0, sizeof(struct hidpp_report));
-> > -                     ret =3D -ETIMEDOUT;
-> > -                     break;
-> > -             }
-> > +     if (response->report_id =3D=3D REPORT_ID_HIDPP_SHORT &&
-> > +         response->rap.sub_id =3D=3D HIDPP_ERROR) {
-> > +             ret =3D response->rap.params[1];
-> > +             dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
-> > +             return ret;
-> > +     }
-> >
-> > -             if (response->report_id =3D=3D REPORT_ID_HIDPP_SHORT &&
-> > -                 response->rap.sub_id =3D=3D HIDPP_ERROR) {
-> > -                     ret =3D response->rap.params[1];
-> > -                     dbg_hid("%s:got hidpp error %02X\n", __func__, re=
-t);
-> > +     if ((response->report_id =3D=3D REPORT_ID_HIDPP_LONG ||
-> > +          response->report_id =3D=3D REPORT_ID_HIDPP_VERY_LONG) &&
-> > +         response->fap.feature_index =3D=3D HIDPP20_ERROR) {
-> > +             ret =3D response->fap.params[1];
-> > +             dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
-> > +             return ret;
-> > +     }
-> > +
-> > +     return 0;
-> > +}
-> > +
-> > +/*
-> > + * hidpp_send_message_sync() returns 0 in case of success, and somethi=
-ng else
-> > + * in case of a failure.
-> > + *
-> > + * See __do_hidpp_send_message_sync() for a detailed explanation of th=
-e returned
-> > + * value.
-> > + */
-> > +static int hidpp_send_message_sync(struct hidpp_device *hidpp,
-> > +     struct hidpp_report *message,
-> > +     struct hidpp_report *response)
-> > +{
-> > +     int ret;
-> > +     int max_retries =3D 3;
-> > +
-> > +     mutex_lock(&hidpp->send_mutex);
-> > +
-> > +     do {
-> > +             ret =3D __do_hidpp_send_message_sync(hidpp, message, resp=
-onse);
-> > +             if (ret !=3D HIDPP20_ERROR_BUSY)
-> >                       break;
-> > -             }
-> >
-> > -             if ((response->report_id =3D=3D REPORT_ID_HIDPP_LONG ||
-> > -                  response->report_id =3D=3D REPORT_ID_HIDPP_VERY_LONG=
-) &&
-> > -                 response->fap.feature_index =3D=3D HIDPP20_ERROR) {
-> > -                     ret =3D response->fap.params[1];
-> > -                     if (ret !=3D HIDPP20_ERROR_BUSY) {
-> > -                             dbg_hid("%s:got hidpp 2.0 error %02X\n", =
-__func__, ret);
-> > -                             break;
-> > -                     }
-> > -                     dbg_hid("%s:got busy hidpp 2.0 error %02X, retryi=
-ng\n", __func__, ret);
-> > -             }
-> > -     }
-> > +             dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", _=
-_func__, ret);
-> > +     } while (--max_retries);
-> >
-> >       mutex_unlock(&hidpp->send_mutex);
-> >       return ret;
-> >
-> >  }
-> >
-> > +/*
-> > + * hidpp_send_fap_command_sync() returns 0 in case of success, and som=
-ething else
-> > + * in case of a failure.
-> > + *
-> > + * See __do_hidpp_send_message_sync() for a detailed explanation of th=
-e returned
-> > + * value.
-> > + */
-> >  static int hidpp_send_fap_command_sync(struct hidpp_device *hidpp,
-> >       u8 feat_index, u8 funcindex_clientid, u8 *params, int param_count=
-,
-> >       struct hidpp_report *response)
-> > @@ -373,6 +401,13 @@ static int hidpp_send_fap_command_sync(struct hidp=
-p_device *hidpp,
-> >       return ret;
-> >  }
-> >
-> > +/*
-> > + * hidpp_send_rap_command_sync() returns 0 in case of success, and som=
-ething else
-> > + * in case of a failure.
-> > + *
-> > + * See __do_hidpp_send_message_sync() for a detailed explanation of th=
-e returned
-> > + * value.
-> > + */
-> >  static int hidpp_send_rap_command_sync(struct hidpp_device *hidpp_dev,
-> >       u8 report_id, u8 sub_id, u8 reg_address, u8 *params, int param_co=
-unt,
-> >       struct hidpp_report *response)
-> >
-> > ---
-> > base-commit: 87854366176403438d01f368b09de3ec2234e0f5
-> > change-id: 20230621-logitech-fixes-a4c0e66ea2ad
-> >
-> > Best regards,
->
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
+Jon
