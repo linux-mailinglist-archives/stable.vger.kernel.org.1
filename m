@@ -2,135 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A47FA7882D2
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 11:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C4E47882FD
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 11:07:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244028AbjHYJCR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 05:02:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37544 "EHLO
+        id S232993AbjHYJHE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 05:07:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241587AbjHYJBm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 05:01:42 -0400
-Received: from mail-vs1-xe30.google.com (mail-vs1-xe30.google.com [IPv6:2607:f8b0:4864:20::e30])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF7E6CD2
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 02:01:40 -0700 (PDT)
-Received: by mail-vs1-xe30.google.com with SMTP id ada2fe7eead31-44d3e4ad403so342579137.0
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 02:01:40 -0700 (PDT)
+        with ESMTP id S244194AbjHYJGu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 05:06:50 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 664942107;
+        Fri, 25 Aug 2023 02:06:30 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-3fee769fcc3so5708045e9.2;
+        Fri, 25 Aug 2023 02:06:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692954100; x=1693558900;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=5jNuKDvps1sCglmF+du8pTIMXdA0xOQsyQ7wJHt387U=;
-        b=dRh1yZm5f1GtDEAbEEFlfLZv71IsDsgFV5YA4nNBbJZNV/fVusCF98/XSOm+wzvUjR
-         ofKDEA7/EhgJtKxjEzFhNli5eBgOts8x1fmk4wVSwOtLQI3BUUKXUgQLA7mN10bAk8Q5
-         rXJtch37IrkLvP0g4+tg6bBEmE1/EAZ0yncK9qBy4IyafOMeVmFBLg3RJbuGLLChpTNX
-         xv5BBSKgwD0r/4XHBLet9l0rke885nf7vcbAzsZK0NvJr/Yz/UeANYSqZbn/7FzWmbEJ
-         H5Jgpezf5xGNhH6++Do6DnyZeCwc7OE/KaQp0ADE3B60HfS+AZJJTid6LwE2pFdyv9ut
-         HXnw==
+        d=gmail.com; s=20221208; t=1692954388; x=1693559188;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=i2nKk0BPW5aUoC/i6MdosDErp4K/kH35/8TD8Z/46T0=;
+        b=Mo8NvNjeDv9g2VTAEOh4XIAzg2uJ1V203fkY6ENjtVIxmU5nGuSgy3ZwVrcyb6gPGt
+         LBBjsiJxkeDECuqgMwMFkqBleQhit2sWEN8Q/XSBs99SM9I3fZrV5OEwLO+Z8GOnTa4w
+         wvb4f0qw58DgYTYS8PS7kWtKG9W5Kf9yzMu5hH20N3hWqFl58hV/Mk7nDKtlt07Wli4j
+         /J/2767vnf5Fd2HXPfhfNV3q99u2yCUvKBnGS1IY5xrOPe/8TcDpF3sj6dNW0XPQVdeE
+         5qPMsAdQK5cSb6FpO/KKt3Rvq8DJ9DPAzKfhfeoiu9NfG1iAAMcJ7Qco02CN0mv9GXKB
+         Db6w==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692954100; x=1693558900;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5jNuKDvps1sCglmF+du8pTIMXdA0xOQsyQ7wJHt387U=;
-        b=FnrWuorJ1KFdGodtdPNbj4OihpDPpRGYrjik+Efq+51/DIOL6DXqpw2W08AfB4xMGK
-         rbq0vMJZntRe/DVJsyIW1EZjRToik0BGMPCM99I39cabFDymvok/RblutFy167yI5wxi
-         gu6ZkNhfBezg7FLgoNrkHA+fY7XT3Wq9BmUDR5jUMKhSHjSPZ9NHDvhmtcIs0+lDO8aV
-         gw1VwUSjSvTVE23bu9+IpBNrTIhK10S2XH2X+18OF+Q90gRSqLuToWa4lj72LdtezXTx
-         6Gt+mxF5HIGO/+sYjAeqgJGGmwekIL7BZ5pIioO6l82v5ntxH8E8QJ9rk89aRpkIriV5
-         tF9A==
-X-Gm-Message-State: AOJu0Ywd9ap1E2asVl+kSRz5CXQTKl9I8n5BGi/V0n7t8rSKegzeZcRZ
-        8ZTLRMfixJCHG/SJWzYkgUttFi78tibbMixI0VmjXA==
-X-Google-Smtp-Source: AGHT+IEJcfxsajOw74cjTxoMx2fHBxxKcjfQHizvKpxsbPs4XlMbrQOO4qXPBTRhrTUQWN0KTliv//ujTUEwqUGRxZ4=
-X-Received: by 2002:a67:f74e:0:b0:44e:92dc:7f12 with SMTP id
- w14-20020a67f74e000000b0044e92dc7f12mr5671775vso.30.1692954099757; Fri, 25
- Aug 2023 02:01:39 -0700 (PDT)
-MIME-Version: 1.0
-References: <20230824170617.074557800@linuxfoundation.org>
-In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 25 Aug 2023 14:31:28 +0530
-Message-ID: <CA+G9fYtVDzeAKWLmLOuBWcKzK62+qWYAvpUyp4TqTGKfHKFb+A@mail.gmail.com>
-Subject: Re: [PATCH 5.10 000/135] 5.10.192-rc1 review
+        d=1e100.net; s=20221208; t=1692954388; x=1693559188;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=i2nKk0BPW5aUoC/i6MdosDErp4K/kH35/8TD8Z/46T0=;
+        b=HSdqYM+M4CUaJWasFlYEDwFgNiYGMgyff4clL8QIgxsR+WdEGMGIKtX27AP9BzHQPm
+         g7C5ArHOS3wtMGjruMAJ/RImFPQJEhwzz1ire8I03aeoUbEAihsXIsh5snRk0EBjIa+m
+         riRiY/KxM1IoPl3nNvFipD9svPrhvAfMuGAWcXd7w08TM4m5QywJUeEHXmkf6UcUDPjy
+         1LRarJVKteD74nO7timh1uj+8PefdwKBlLycevvosHXyY56i0BhI4gEfDtCdqrR92zq0
+         4oIQEL1CVKjyCxZA1USTbVdtvm7zLAUvgW+Xje7lEzvGvU5SljCTxHpSswXe7lUykUCX
+         /NCQ==
+X-Gm-Message-State: AOJu0Yy0c3W7ofByg3E4lAAPziI7iEyKebOsvcwSc+nmx0PY5KaSzY1g
+        Rx6N4Ot0z8c7b5JRVDEkBJ/LVHDMLXk=
+X-Google-Smtp-Source: AGHT+IFTRtpEgC1Fn8L6CBbV15hUqmulfli94PdQ6IwRK9ygLGLRHNz2ursxx5+h4i8bd/yOWGiN9g==
+X-Received: by 2002:adf:fc09:0:b0:31c:6476:b730 with SMTP id i9-20020adffc09000000b0031c6476b730mr7191600wrr.68.1692954388265;
+        Fri, 25 Aug 2023 02:06:28 -0700 (PDT)
+Received: from debian ([167.98.27.226])
+        by smtp.gmail.com with ESMTPSA id a16-20020a5d5090000000b0031432f1528csm1623492wrt.45.2023.08.25.02.06.27
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Aug 2023 02:06:27 -0700 (PDT)
+Date:   Fri, 25 Aug 2023 10:06:26 +0100
+From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.10 000/135] 5.10.192-rc1 review
+Message-ID: <ZOhvEoeysXR+4tGj@debian>
+References: <20230824170617.074557800@linuxfoundation.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 24 Aug 2023 at 22:47, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
+Hi Greg,
+
+On Thu, Aug 24, 2023 at 07:07:52PM +0200, Greg Kroah-Hartman wrote:
 > This is the start of the stable review cycle for the 5.10.192 release.
 > There are 135 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
->
+> 
 > Responses should be made by Sat, 26 Aug 2023 17:05:50 +0000.
 > Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.10.192-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.10.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+
+Build test (gcc version 11.4.1 20230625):
+mips: 63 configs -> 3 failures
+arm: 104 configs -> no failure
+arm64: 3 configs -> no failure
+x86_64: 4 configs -> no failure
+alpha allmodconfig -> no failure
+powerpc allmodconfig -> no failure
+riscv allmodconfig -> no failure
+s390 allmodconfig -> no failure
+xtensa allmodconfig -> no failure
+
+Note:
+
+mips db1xxx_defconfig, gpr_defconfig and mtx1_defconfig failed to build:
+
+rch/mips/alchemy/common/dbdma.c: In function 'au1xxx_dbdma_put_source':
+arch/mips/alchemy/common/dbdma.c:632:14: error: 'dma_default_coherent' undeclared (first use in this function); did you mean 'dma_free_coherent'?
+  632 |         if (!dma_default_coherent)
+      |              ^~~~~~~~~~~~~~~~~~~~
+      |              dma_free_coherent
+arch/mips/alchemy/common/dbdma.c:632:14: note: each undeclared identifier is reported only once for each function it appears in
+arch/mips/alchemy/common/dbdma.c: In function 'au1xxx_dbdma_put_dest':
+arch/mips/alchemy/common/dbdma.c:695:14: error: 'dma_default_coherent' undeclared (first use in this function); did you mean 'dma_free_coherent'?
+  695 |         if (!dma_default_coherent)
+      |              ^~~~~~~~~~~~~~~~~~~~
+      |              dma_free_coherent
 
 
-The same test regressions found on stable-rc linux.5.10.y as reported
-on stable-rc linux.6.1.y and linux.5.15.y branch. LTP syscalls chown02
-and fchown02 fails on arm64 Rpi4 device with the NFS rootfile system.
+Boot test:
+x86_64: Booted on my test laptop. No regression.
+x86_64: Booted on qemu. No regression. [1]
+arm64: Booted on rpi4b (4GB model). No regression. [2]
 
-Test log:
---------
-chown02.c:46: TPASS: chown(testfile1, 0, 0) passed
-chown02.c:46: TPASS: chown(testfile2, 0, 0) passed
-chown02.c:58: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
+[1]. https://openqa.qa.codethink.co.uk/tests/4779
+[2]. https://openqa.qa.codethink.co.uk/tests/4780
 
-fchown02.c:57: TPASS: fchown(3, 0, 0) passed
-fchown02.c:57: TPASS: fchown(4, 0, 0) passed
-fchown02.c:67: TFAIL: testfile2: wrong mode permissions 0100700,
-expected 0102700
 
-NOTE:
-Do we need a backport for this patch ?
+Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
 
-  nfsd: use vfs setgid helper
-    commit 2d8ae8c417db284f598dffb178cc01e7db0f1821 upstream.
-
-## Build
-* kernel: 5.10.191-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.10.y
-* git commit: da59b7b5c515edab9a57efd37b031b5b97e6c1cc
-* git describe: v5.10.190-136-gda59b7b5c515
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.10.y/build/v5.10.190-136-gda59b7b5c515
-
-## Test Regressions (compared to v5.10.191)
-* bcm2711-rpi-4-b, ltp-syscalls
-  - chown02
-  - fchown02
-
-* bcm2711-rpi-4-b-clang, ltp-syscalls
-  - chown02
-  - fchown02
-
---
-Linaro LKFT
-https://lkft.linaro.org
+--  
+Regards
+Sudip
