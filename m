@@ -2,109 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0BAB9788BA3
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 16:25:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37089788C52
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 17:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343734AbjHYOZG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 10:25:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49484 "EHLO
+        id S235606AbjHYPS5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 11:18:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49738 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343677AbjHYOYe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 10:24:34 -0400
-Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96471D1;
-        Fri, 25 Aug 2023 07:24:31 -0700 (PDT)
-Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-68c3b9f83f4so43080b3a.2;
-        Fri, 25 Aug 2023 07:24:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692973471; x=1693578271;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=vHyka2U6Y9QLR3iBbxMxEWSzu/iMnQI0MUngbRlsFAY=;
-        b=BRzIOGxuRosXrZwg7/OsmumCL3DVKh3ipGfPDi7BQNgjqFv/K4e0DeFlCr6B9ScpJq
-         tqhWrH3jBZ3JCUmy2nO/aJ99fqoda8abgk505EcnjRILOKbEQoUDhIdrY4s1YtUlSQmy
-         TpRPjkHL6+i1lhltwha+HSuEM3tQ89i1GyhmGfaERgalGjlkhSm8rpPV0QOg3DyRnm5X
-         ioNUCdsgXRo/Is7OidNH7wvAL1UDGdrF8S5GNRutFqo8OXIZWGJRHcb0eRNUUvP26L3j
-         trdtwFz8rEt8HDzw18kjjJvsyjev6lD3yRtb55T+vQOsggThF56tEMhSwUhz2RCNODof
-         eraw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692973471; x=1693578271;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=vHyka2U6Y9QLR3iBbxMxEWSzu/iMnQI0MUngbRlsFAY=;
-        b=QgmkYw3sX4nsOdRYcAb+x+W0HRVNgb5KV7yCMcFDjyr7eg8tyFkxtugN1PhLDic0in
-         ufyZrcOUFnljT1MIRxWopbm3tfAji23AohRtYhbtKXhgYqdq7Lmvpdkc//1bAstEDmVp
-         RNf/i7wVYL8iQ7gLvreTaCmd4vkU/eTlgSF8NQmbXkjj6zGzT8IxOJw6IFAG4+GI8MNR
-         5R2+skxlVqRYrVzSt1hOF3igQn9rhvebZM0IbqMbuGuJaXWUTESXeBvQkH72umk2DPaW
-         yd37gaDOx77YzWzocuOCN6j2TI/6X84alouaxtLCn7tUe3VM2uwMt8fLefSYyZmDAgIo
-         670g==
-X-Gm-Message-State: AOJu0YxthTQDeLlflttI7Jxs0A9UEj2HDSPIiRNCtweDbWpSuhJsYfBm
-        b1efRyMnxNFI4l4ycSDnLUng6SHvtQ8=
-X-Google-Smtp-Source: AGHT+IFVem110PP4tmF7Ev+4kTdchTFejqRzAwBbt3fP8YY3TzU76qliEjKgB2szc8YRyFlqWUssoQ==
-X-Received: by 2002:a05:6a00:1581:b0:68b:4e07:133f with SMTP id u1-20020a056a00158100b0068b4e07133fmr11558479pfk.7.1692973470973;
-        Fri, 25 Aug 2023 07:24:30 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y1-20020aa78541000000b006879493aca0sm1623555pfn.26.2023.08.25.07.24.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Aug 2023 07:24:30 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 25 Aug 2023 07:24:29 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.10 000/135] 5.10.192-rc1 review
-Message-ID: <fb1c3952-1d72-4f9d-bc93-2988bcde462e@roeck-us.net>
-References: <20230824170617.074557800@linuxfoundation.org>
+        with ESMTP id S234735AbjHYPSg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 11:18:36 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65A7C2121;
+        Fri, 25 Aug 2023 08:18:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1692976714; x=1724512714;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=4SuZ5OsPAW5MybHkdMLDB2TIspBmkp3UowO2L8p0FaQ=;
+  b=NlK+mVrHBOZG2iJazMNzV5gut9MuET4PcfpfB9/cf0apXjZeBEbuf2ab
+   roPxNfHGRZTCsHzeuEnhS7nq6YezdvL3FfR8AXBDrx5gtPcohXhlN8x2t
+   ZMqusYALJ2aSNDksjrQaBX4BI90SU31ZT+UiDLCfRl9q7S/2zhKenV+Kw
+   Gs713C1ZSGbmSzK6j0YmRXpWRZceB3FUMty7iNuQhvprPUGmBzaHgIGvz
+   jar/dpgmHiyYdpZiTF4WFF/XjuOY54u+KOyYHdUp+9oc0PvXs+Ku/Q2hB
+   GRZYDxFWqbO4rQtG0iyjjZJ1zh8fsb/6GGs129hJVTFLxN3ZPRlldRm9c
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10813"; a="405732486"
+X-IronPort-AV: E=Sophos;i="6.02,201,1688454000"; 
+   d="scan'208";a="405732486"
+Received: from orsmga006.jf.intel.com ([10.7.209.51])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2023 08:18:33 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10813"; a="714378664"
+X-IronPort-AV: E=Sophos;i="6.02,201,1688454000"; 
+   d="scan'208";a="714378664"
+Received: from sbilgin1-mobl1.amr.corp.intel.com (HELO [10.209.78.69]) ([10.209.78.69])
+  by orsmga006-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 25 Aug 2023 08:18:32 -0700
+Message-ID: <ba319881-b4e9-7129-123f-1884bfeb50ec@intel.com>
+Date:   Fri, 25 Aug 2023 08:18:32 -0700
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] x86/sgx: Describe the parameters of
+ sgx_calc_section_metric()
+Content-Language: en-US
+To:     Jarkko Sakkinen <jarkko@kernel.org>, linux-sgx@vger.kernel.org
+Cc:     stable@vger.kernel.org, kernel test robot <lkp@intel.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        x86@kernel.org, "H. Peter Anvin" <hpa@zytor.com>,
+        Jethro Beekman <jethro@fortanix.com>,
+        Serge Ayoun <serge.ayoun@intel.com>,
+        Sean Christopherson <seanjc@google.com>,
+        linux-kernel@vger.kernel.org
+References: <20230822102853.15078-1-jarkko@kernel.org>
+From:   Dave Hansen <dave.hansen@intel.com>
+In-Reply-To: <20230822102853.15078-1-jarkko@kernel.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 07:07:52PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.192 release.
-> There are 135 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 26 Aug 2023 17:05:50 +0000.
-> Anything received after that time might be too late.
-> 
+On 8/22/23 03:28, Jarkko Sakkinen wrote:
+> Cc: stable@vger.kernel.org # v5.11+
+> Fixes: e7e0545299d8 ("x86/sgx: Initialize metadata for Enclave Page Cache (EPC) sections")
+> Reported-by: kernel test robot <lkp@intel.com>
+> Closes: https://lore.kernel.org/oe-kbuild-all/202308221542.11UpkVfp-lkp@intel.com/
+> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 
-Testing is not complete, but early feedback: All riscv32 boot tests
-crash badly with errors such as
+-ENOCHANGELOG
 
-Starting syslogd: OK
-Starting klogd: OK
-/etc/init.d/S02sysctl: line 68: syntax error: EOF in backquote substitution
-/etc/init.d/S20seedrng: line 33: syntax error: unexpected end of file (expecting ";;")
-Starting network: /bin/sh: syntax error: unterminated quoted string
-sed: unmatched '/'
-/bin/sh: syntax error: unterminated quoted string
-FAIL
-/etc/init.d/S55runtest: line 48: syntax error: EOF in backquote substitution
+>  /**
+> + * sgx_calc_section_metric() - Calculate an EPC section metric
+> + * @low:	low 32-bit word from CPUID:0x12:{2, ...}
+> + * @high:	high 32-bit word from CPUID:0x12:{2, ...}
+> + *
+>   * A section metric is concatenated in a way that @low bits 12-31 define the
+>   * bits 12-31 of the metric and @high bits 0-19 define the bits 32-51 of the
+>   * metric.
 
-This is no longer seen after reverting the following patches.
+Shouldn't we just do:
 
-92609bb3a1f8 riscv: uaccess: Return the number of bytes effectively not copied
-e06648704417 riscv: lib: uaccess: fix CSR_STATUS SR_SUM bit
-20704d763646 riscv: lib: uaccess: fold fixups into body
-4f503bad920e riscv: __asm_copy_to-from_user: Optimize unaligned memory access and pipeline stall
+-  /**
++  /*
 
-Guenter
+?  This doesn't need kerneldoc comments.
