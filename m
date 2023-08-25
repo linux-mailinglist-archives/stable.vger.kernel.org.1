@@ -2,309 +2,189 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A29478856D
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 13:16:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4D2D978862D
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 13:44:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233216AbjHYLQK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 07:16:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51572 "EHLO
+        id S237508AbjHYLn3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 07:43:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234647AbjHYLQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 07:16:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9639F1BD4;
-        Fri, 25 Aug 2023 04:16:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DD98621A0;
-        Fri, 25 Aug 2023 11:16:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F444C433C7;
-        Fri, 25 Aug 2023 11:15:59 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1692962159;
-        bh=dFQYs74HXvTu7YBdYKQZ8MbmVQtVQchKfQEbhBBMerA=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=ZAUyKzrdW/oHkAXGlsMEHazLcTnscmRpWbCnsif9NCkrK/cArcUvBSjzm8IUGBH3D
-         Q2oMB0w0roWs2XQ1Gxl/Isb8hQvy7A679XQfX4zA29A9Axr6r3eBnOJ+V7K3uKz4Cm
-         4PEUBDLc/8MOcaaq3IZf6thuWnOLGeJIcQbYKh11DzvXTA1pfBcJDVxVNd1C9zyMTT
-         0pbjfClTFDe6roUzldqKtaSIfqAD95oqYisBZeUiSFuhr/kULOynCZcyB2twPqKAuN
-         8VpFDAZYKM5gxk8nlt1LPzzd6mX4fOfGnEzlEs5TQBQ17c1AI0fOZkpx6M1N7qAjlq
-         /N2lQkC45rdEQ==
-Received: by mail-lf1-f54.google.com with SMTP id 2adb3069b0e04-50098cc8967so1244096e87.1;
-        Fri, 25 Aug 2023 04:15:59 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyuEqgUz/uF67iFZvqYjw69awcQCwpVIMDvCrmelWVVJJMFJjLH
-        rv0XNOySxgMTVPyaTr3ZTNiz9oG8kNbdG1jSDs8=
-X-Google-Smtp-Source: AGHT+IGj0tXhxphH+FtycL0eYm7x0kAteFq2RBwyZRCaEhCWOi4QUiqfAMmEhbSIhFjknafwVOwZXPP8X19OujrsKy8=
-X-Received: by 2002:a05:6512:e99:b0:500:7de4:300e with SMTP id
- bi25-20020a0565120e9900b005007de4300emr14004186lfb.58.1692962157472; Fri, 25
- Aug 2023 04:15:57 -0700 (PDT)
-MIME-Version: 1.0
-References: <CAAhV-H6ejw=8afS0jmmQvKUrCw=qZm_P6SA0A+tuvvb8bsq4-Q@mail.gmail.com>
- <5777BD82-2C8D-4BAB-BDD3-C2C003DC57FB@joelfernandes.org> <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
- <87ttspct76.ffs@tglx> <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
- <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
- <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop> <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
- <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop> <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
- <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop>
-In-Reply-To: <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Fri, 25 Aug 2023 19:15:44 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
-Message-ID: <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
-Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
-To:     paulmck@kernel.org
-Cc:     Thomas Gleixner <tglx@linutronix.de>,
-        Joel Fernandes <joel@joelfernandes.org>,
-        Z qiang <qiang.zhang1211@gmail.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
+        with ESMTP id S243203AbjHYLn2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 07:43:28 -0400
+Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8FDC1FF7;
+        Fri, 25 Aug 2023 04:43:24 -0700 (PDT)
+Date:   Fri, 25 Aug 2023 11:43:21 -0000
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020; t=1692963802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8FfPtUpd0X5JOPZ4F00k/2tyeNozgYadcVwQROCZOAg=;
+        b=G6u37uGVzdcTxgN8oNPx/vtvXjLK+ARPzCcBt8jMV/PBipAq2TkHD3AtXaMuQnC8nuzADI
+        v5QBPn+hTe/Gk1i3UiW0fZt0AbAaqFGxYP/kEM6CylH13rzpPdFBUQ+NP5Sh+RZeK37C4T
+        IVybFoPrDppmWZn1neq+U7YmItuTtM8OwI80kIoBZJvrlMiFivHPcAm3oGHJcGYAh5SA+Q
+        7ZdPyulXHoACr4fVq+9kiCbDLnAcgJ5Xbs9leYdfW7YYWT+z7njNlzSuAjTABinA2zWaEv
+        WYdyHWZ+2eBdH6sVYevdwAVcwLseukjBh6mUkrWvMXlT2csGtqw532NFOuaOpw==
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
+        s=2020e; t=1692963802;
+        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
+         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
+         content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=8FfPtUpd0X5JOPZ4F00k/2tyeNozgYadcVwQROCZOAg=;
+        b=tA6QzbmuloJIU71VdM/d1439eMXDSrynKSUh7cRVMlr2GcDBzfsKiYjQHZUCNWAcIJgbek
+        7FY+ElFolgxllGBA==
+From:   "tip-bot2 for Steve Rutherford" <tip-bot2@linutronix.de>
+Sender: tip-bot2@linutronix.de
+Reply-to: linux-kernel@vger.kernel.org
+To:     linux-tip-commits@vger.kernel.org
+Subject: [tip: x86/sev] x86/sev: Make enc_dec_hypercall() accept a size
+ instead of npages
+Cc:     Steve Rutherford <srutherford@google.com>,
         Ingo Molnar <mingo@kernel.org>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        Tom Lendacky <thomas.lendacky@amd.com>,
+        Pankaj Gupta <pankaj.gupta@amd.com>,
+        Ben Hillier <bhillier@google.com>, stable@vger.kernel.org,
+        x86@kernel.org, linux-kernel@vger.kernel.org
+In-Reply-To: <20230824223731.2055016-1-srutherford@google.com>
+References: <20230824223731.2055016-1-srutherford@google.com>
+MIME-Version: 1.0
+Message-ID: <169296380171.27769.17128376044443888216.tip-bot2@tip-bot2>
+Robot-ID: <tip-bot2@linutronix.de>
+Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Paul,
+The following commit has been merged into the x86/sev branch of tip:
 
-On Fri, Aug 25, 2023 at 2:28=E2=80=AFAM Paul E. McKenney <paulmck@kernel.or=
-g> wrote:
->
-> On Thu, Aug 24, 2023 at 11:43:04PM +0800, Huacai Chen wrote:
-> > Hi, Paul,
-> >
-> > On Thu, Aug 24, 2023 at 9:24=E2=80=AFPM Paul E. McKenney <paulmck@kerne=
-l.org> wrote:
-> > >
-> > > On Thu, Aug 24, 2023 at 08:40:00PM +0800, Huacai Chen wrote:
-> > > > Hi, Paul,
-> > > > On Thu, Aug 24, 2023 at 7:40=E2=80=AFPM Paul E. McKenney <paulmck@k=
-ernel.org> wrote:
-> > > > > On Thu, Aug 24, 2023 at 10:50:41AM +0800, Huacai Chen wrote:
-> > > > > > Hi, Paul,
-> > > > > > On Thu, Aug 24, 2023 at 6:41=E2=80=AFAM Paul E. McKenney <paulm=
-ck@kernel.org> wrote:
-> > > > > > > On Thu, Aug 24, 2023 at 12:03:25AM +0200, Thomas Gleixner wro=
-te:
-> > > > > > > > On Thu, Aug 17 2023 at 16:06, Huacai Chen wrote:
-> > > > > > > > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernandes <j=
-oel@joelfernandes.org> wrote:
-> > > > > > > > >> > If  do_update_jiffies_64() cannot be used in NMI conte=
-xt,
-> > > > > > > > >>
-> > > > > > > > >> Can you not make the jiffies update conditional on wheth=
-er it is
-> > > > > > > > >> called within NMI context?
-> > > > > > > >
-> > > > > > > > Which solves what? If KGDB has a breakpoint in the jiffies =
-lock held
-> > > > > > > > region then you still dead lock.
-> > > > > > > >
-> > > > > > > > >> I dislike that..
-> > > > > > > > > Is this acceptable?
-> > > > > > > > >
-> > > > > > > > > void rcu_cpu_stall_reset(void)
-> > > > > > > > > {
-> > > > > > > > >         unsigned long delta;
-> > > > > > > > >
-> > > > > > > > >         delta =3D nsecs_to_jiffies(ktime_get_ns() - ktime=
-_get_coarse_ns());
-> > > > > > > > >
-> > > > > > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
-> > > > > > > > >                    jiffies + delta + rcu_jiffies_till_sta=
-ll_check());
-> > > > > > > > > }
-> > > > > > > > >
-> > > > > > > > > This can update jiffies_stall without updating jiffies (b=
-ut has the
-> > > > > > > > > same effect).
-> > > > > > > >
-> > > > > > > > Now you traded the potential dead lock on jiffies lock for =
-a potential
-> > > > > > > > live lock vs. tk_core.seq. Not really an improvement, right=
-?
-> > > > > > > >
-> > > > > > > > The only way you can do the above is something like the inc=
-omplete and
-> > > > > > > > uncompiled below. NMI safe and therefore livelock proof tim=
-e interfaces
-> > > > > > > > exist for a reason.
-> > > > > > >
-> > > > > > > Just for completeness, another approach, with its own advanta=
-ges
-> > > > > > > and disadvantage, is to add something like ULONG_MAX/4 to
-> > > > > > > rcu_state.jiffies_stall, but also set a counter indicating th=
-at this
-> > > > > > > has been done.  Then RCU's force-quiescent processing could d=
-ecrement
-> > > > > > > that counter (if non-zero) and reset rcu_state.jiffies_stall =
-when it
-> > > > > > > does reach zero.
-> > > > > > >
-> > > > > > > Setting the counter to three should cover most cases, but "li=
-ve by the
-> > > > > > > heuristic, die by the heuristic".  ;-)
-> > > > > > >
-> > > > > > > It would be good to have some indication when gdb exited, but=
- things
-> > > > > > > like the gdb "next" command can make that "interesting" when =
-applied to
-> > > > > > > a long-running function.
-> > > > > >
-> > > > > > The original code is adding ULONG_MAX/2, so adding ULONG_MAX/4 =
-may
-> > > > > > make no much difference? The simplest way is adding 300*HZ, but=
- Joel
-> > > > > > dislikes that.
-> > > > >
-> > > > > I am not seeing the ULONG_MAX/2, so could you please point me to =
-that
-> > > > > original code?
-> > > >
-> > > > Maybe I misunderstand something, I say the original code means code
-> > > > before commit a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP sta=
-ll
-> > > > detection in rcu_cpu_stall_reset()").
-> > >
-> > > Yes, my suggestion would essentially revert that patch.  It would
-> > > compensate by resetting rcu_state.jiffies_stall after a few calls
-> > > to rcu_gp_fqs().
-> > >
-> > > Alternatively, we could simply provide a way for gdb users to manuall=
-y
-> > > disable RCU CPU stall warnings at the beginning of their debug sessio=
-ns
-> > > and to manually re-enable them when they are done.
-> >
-> > This problem is not KGDB-specific (though it is firstly found in the
-> > KGDB case), so I want to fix it in the rcu code rather than in the
-> > kgdb code.
->
-> Sure, for example, there is also PowerPC XMON.
->
-> But this problem also is not RCU-specific.  There are also hardlockups,
-> softlockups, workqueue lockups, networking timeouts, and who knows what
-> all else.
->
-> Plus, and again to Thomas's point, gdb breakpoints can happen anywhere.
-> For example, immediately after RCU computes the RCU CPU stall time for
-> a new grace period, and right before it stores it.  The gdb callout
-> updates rcu_state.jiffies_stall, but that update is overwritten with a
-> stale value as soon as the system starts back up.
->
-> Low probabillity, to be sure, but there are quite a few places in
-> the kernel right after a read from some timebase or another, and many
-> (perhaps all) of these can see similar stale-time-use problems.
->
-> The only way I know of to avoid these sorts of false positives is for
-> the user to manually suppress all timeouts (perhaps using a kernel-boot
-> parameter for your early-boot case), do the gdb work, and then unsuppress
-> all stalls.  Even that won't work for networking, because the other
-> system's clock will be running throughout.
->
-> In other words, from what I know now, there is no perfect solution.
-> Therefore, there are sharp limits to the complexity of any solution that
-> I will be willing to accept.
-I think the simplest solution is (I hope Joel will not angry):
+Commit-ID:     ac3f9c9f1b37edaa7d1a9b908bc79d843955a1a2
+Gitweb:        https://git.kernel.org/tip/ac3f9c9f1b37edaa7d1a9b908bc79d843955a1a2
+Author:        Steve Rutherford <srutherford@google.com>
+AuthorDate:    Thu, 24 Aug 2023 15:37:31 -07:00
+Committer:     Ingo Molnar <mingo@kernel.org>
+CommitterDate: Fri, 25 Aug 2023 13:33:48 +02:00
 
-void rcu_cpu_stall_reset(void)
-{
-        WRITE_ONCE(rcu_state.jiffies_stall, jiffies + 300*HZ);
-}
+x86/sev: Make enc_dec_hypercall() accept a size instead of npages
 
-300s is the upper limit of "stall timeout" we can configure
-(RCU_CPU_STALL_TIMEOUT in kernel/rcu/Kconfig.debug), so it isn't just
-a "magic number". In practice, 300s is also enough for any normal kgdb
-operation. And compared to "resetting after a few calls to
-rcu_gp_fqs()", this simple solution means "automatically resetting
-after 300s".
+enc_dec_hypercall() accepted a page count instead of a size, which
+forced its callers to round up. As a result, non-page aligned
+vaddrs caused pages to be spuriously marked as decrypted via the
+encryption status hypercall, which in turn caused consistent
+corruption of pages during live migration. Live migration requires
+accurate encryption status information to avoid migrating pages
+from the wrong perspective.
 
-If this is completely unacceptable, I prefer Thomas's
-tick_estimate_stale_jiffies() solution.
+Fixes: 064ce6c550a0 ("mm: x86: Invoke hypercall when page encryption status is changed")
+Signed-off-by: Steve Rutherford <srutherford@google.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Tom Lendacky <thomas.lendacky@amd.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Tested-by: Ben Hillier <bhillier@google.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230824223731.2055016-1-srutherford@google.com
+---
+ arch/x86/include/asm/mem_encrypt.h |  6 +++---
+ arch/x86/kernel/kvm.c              |  4 +---
+ arch/x86/mm/mem_encrypt_amd.c      | 13 ++++++-------
+ 3 files changed, 10 insertions(+), 13 deletions(-)
 
-Huacai
-
->
->                                                         Thanx, Paul
->
-> > Huacai
-> > >
-> > >                                                         Thanx, Paul
-> > >
-> > > > Huacai
-> > > > >
-> > > > > The advantage of ULONG_MAX/4 over ULONG_MAX/2 is that the time_af=
-ter()
-> > > > > and time_before() macros have ULONG_MAX/4 slop in either directio=
-n
-> > > > > before giving you the wrong answer.  You can get nearly the same =
-result
-> > > > > using ULONG_MAX/2, but it requires a bit more care.  And even on =
-32-bit
-> > > > > HZ=3D1000 systems, ULONG_MAX/4 gets you more than 12 days of gdb =
-session
-> > > > > or jiffies-update delay before you start getting false positives.
-> > > > >
-> > > > > Then things can be reset after (say) 3 calls to rcu_gp_fqs() and
-> > > > > also the current reset at the beginning of a grace period, which
-> > > > > is in record_gp_stall_check_time().
-> > > > >
-> > > > > It would be better if RCU could get notified at both ends of the =
-debug
-> > > > > session, but given gdb commands such as "next", along with Thomas=
-'s
-> > > > > point about gdb breakpoints being pretty much anywhere, this migh=
-t or
-> > > > > might not be so helpful in real life.  But worth looking into.
-> > > > >
-> > > > >                                                         Thanx, Pa=
-ul
-> > > > >
-> > > > > > Huacai
-> > > > > >
-> > > > > > >
-> > > > > > >                                                         Thanx=
-, Paul
-> > > > > > >
-> > > > > > > > Thanks,
-> > > > > > > >
-> > > > > > > >         tglx
-> > > > > > > > ---
-> > > > > > > > --- a/kernel/time/tick-sched.c
-> > > > > > > > +++ b/kernel/time/tick-sched.c
-> > > > > > > > @@ -51,6 +51,13 @@ struct tick_sched *tick_get_tick_sched(i
-> > > > > > > >   */
-> > > > > > > >  static ktime_t last_jiffies_update;
-> > > > > > > >
-> > > > > > > > +unsigned long tick_estimate_stale_jiffies(void)
-> > > > > > > > +{
-> > > > > > > > +     ktime_t delta =3D ktime_get_mono_fast_ns() - READ_ONC=
-E(last_jiffies_update);
-> > > > > > > > +
-> > > > > > > > +     return delta < 0 ? 0 : div_s64(delta, TICK_NSEC);
-> > > > > > > > +}
-> > > > > > > > +
-> > > > > > > >  /*
-> > > > > > > >   * Must be called with interrupts disabled !
-> > > > > > > >   */
-> > > > > > > >
-> > > > > > > >
+diff --git a/arch/x86/include/asm/mem_encrypt.h b/arch/x86/include/asm/mem_encrypt.h
+index 7f97a8a..473b16d 100644
+--- a/arch/x86/include/asm/mem_encrypt.h
++++ b/arch/x86/include/asm/mem_encrypt.h
+@@ -50,8 +50,8 @@ void __init sme_enable(struct boot_params *bp);
+ 
+ int __init early_set_memory_decrypted(unsigned long vaddr, unsigned long size);
+ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size);
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages,
+-					    bool enc);
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr,
++					    unsigned long size, bool enc);
+ 
+ void __init mem_encrypt_free_decrypted_mem(void);
+ 
+@@ -85,7 +85,7 @@ early_set_memory_decrypted(unsigned long vaddr, unsigned long size) { return 0; 
+ static inline int __init
+ early_set_memory_encrypted(unsigned long vaddr, unsigned long size) { return 0; }
+ static inline void __init
+-early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc) {}
++early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc) {}
+ 
+ static inline void mem_encrypt_free_decrypted_mem(void) { }
+ 
+diff --git a/arch/x86/kernel/kvm.c b/arch/x86/kernel/kvm.c
+index 1cceac5..526d4da 100644
+--- a/arch/x86/kernel/kvm.c
++++ b/arch/x86/kernel/kvm.c
+@@ -966,10 +966,8 @@ static void __init kvm_init_platform(void)
+ 		 * Ensure that _bss_decrypted section is marked as decrypted in the
+ 		 * shared pages list.
+ 		 */
+-		nr_pages = DIV_ROUND_UP(__end_bss_decrypted - __start_bss_decrypted,
+-					PAGE_SIZE);
+ 		early_set_mem_enc_dec_hypercall((unsigned long)__start_bss_decrypted,
+-						nr_pages, 0);
++						__end_bss_decrypted - __start_bss_decrypted, 0);
+ 
+ 		/*
+ 		 * If not booted using EFI, enable Live migration support.
+diff --git a/arch/x86/mm/mem_encrypt_amd.c b/arch/x86/mm/mem_encrypt_amd.c
+index 54bbd51..6faea41 100644
+--- a/arch/x86/mm/mem_encrypt_amd.c
++++ b/arch/x86/mm/mem_encrypt_amd.c
+@@ -288,11 +288,10 @@ static bool amd_enc_cache_flush_required(void)
+ 	return !cpu_feature_enabled(X86_FEATURE_SME_COHERENT);
+ }
+ 
+-static void enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++static void enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ {
+ #ifdef CONFIG_PARAVIRT
+-	unsigned long sz = npages << PAGE_SHIFT;
+-	unsigned long vaddr_end = vaddr + sz;
++	unsigned long vaddr_end = vaddr + size;
+ 
+ 	while (vaddr < vaddr_end) {
+ 		int psize, pmask, level;
+@@ -342,7 +341,7 @@ static bool amd_enc_status_change_finish(unsigned long vaddr, int npages, bool e
+ 		snp_set_memory_private(vaddr, npages);
+ 
+ 	if (!cc_platform_has(CC_ATTR_HOST_MEM_ENCRYPT))
+-		enc_dec_hypercall(vaddr, npages, enc);
++		enc_dec_hypercall(vaddr, npages << PAGE_SHIFT, enc);
+ 
+ 	return true;
+ }
+@@ -466,7 +465,7 @@ static int __init early_set_memory_enc_dec(unsigned long vaddr,
+ 
+ 	ret = 0;
+ 
+-	early_set_mem_enc_dec_hypercall(start, PAGE_ALIGN(size) >> PAGE_SHIFT, enc);
++	early_set_mem_enc_dec_hypercall(start, size, enc);
+ out:
+ 	__flush_tlb_all();
+ 	return ret;
+@@ -482,9 +481,9 @@ int __init early_set_memory_encrypted(unsigned long vaddr, unsigned long size)
+ 	return early_set_memory_enc_dec(vaddr, size, true);
+ }
+ 
+-void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, int npages, bool enc)
++void __init early_set_mem_enc_dec_hypercall(unsigned long vaddr, unsigned long size, bool enc)
+ {
+-	enc_dec_hypercall(vaddr, npages, enc);
++	enc_dec_hypercall(vaddr, size, enc);
+ }
+ 
+ void __init sme_early_init(void)
