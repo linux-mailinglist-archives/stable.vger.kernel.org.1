@@ -2,111 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07674788789
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 14:34:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A3D3788897
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 15:30:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232938AbjHYMeI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 08:34:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33682 "EHLO
+        id S238473AbjHYN3j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 09:29:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40806 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244878AbjHYMdt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 08:33:49 -0400
-Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050D926B1
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 05:33:22 -0700 (PDT)
-Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-52a40cf952dso1342773a12.2
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 05:33:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1692966797; x=1693571597;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=32P+ZFI1tSBojfi+E4xOhhTXJzH5jER+YjKVHzgSHAY=;
-        b=3/pPdnklLTkdbJrgJjjALLC8S9ds83NXjsVorOj0iSf6+JOH8lir8uFRqKG6jmWPy1
-         SPr0o3gfGT5Yfn4LFHq8NhmF9KpZg9EefVxYUchbr1wIVAD2jLL+PhrhAHICCuCvBKm4
-         m8NhhP4ncZ34L9rcscQKJpyU4MiofBRki8f6WMlhJkpPvyLDKS7LLuF1EqJ4w1+pnE90
-         2dQxfBLlvVTHhMst30TsErK2v1ph3CGs6lAQ5AJsMTTDWg61TVnHRE/NdShkd40W3WFF
-         diaqMnMWOIzFox+XEC8ibWHvaos6f33EItwBcHkzIwQBQd0fKs4YOqEuxvyEgmvEA7yx
-         Cyhw==
+        with ESMTP id S245180AbjHYN3G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 09:29:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD46A1FDF
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 06:28:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1692970097;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=CqE2XZ8vAAjA28aCjN6vUrQeXq80ioUn58FygUj89Nk=;
+        b=Zzx3vGCdE5VQASLCNBxVzq6vlszfWcDWdpRL4qc44hvPbIuR8RJv2/ZhXyTeNKfZspbrbo
+        LbqtAOn7xDbLEZSygl/B6NKaQpYSsTwSfvDcN2tfT1h/7/ciEcaeEqzNwDQtYolewchVPO
+        5W7wCGqcT2aP7YXHGO+O6l7ZfZIYg2U=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-245-989uEdnUPjqdWWD56Q4Peg-1; Fri, 25 Aug 2023 09:28:15 -0400
+X-MC-Unique: 989uEdnUPjqdWWD56Q4Peg-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-4ff9b3ead6fso978014e87.2
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 06:28:14 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692966797; x=1693571597;
+        d=1e100.net; s=20221208; t=1692970093; x=1693574893;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=32P+ZFI1tSBojfi+E4xOhhTXJzH5jER+YjKVHzgSHAY=;
-        b=eIOvNSzjzUD3DTUtopBl6Pd1RnulokzX5B40hzVMkKjX8HbjMrNh++uC6hU0sSqCL0
-         x+JgC/CFFG53mruLbrByt4Ol59k/GGAINbeALBytg9Cp8UaYEdXE4QbSC2uucQ6GQniW
-         lo0wDIIVzeI9mo8wnFvjYz82HnxFhZcLRhtVqOdSrJuGTC9ofr4gZtvKQKp5ZeWWjPUb
-         JjnoRXONtsKQxbhQM9NB+QIR9EqgEnrQre623zFGRlhTX2sZjYDLS9JDV6cIh2LfX7yn
-         mj39znYoIKkeyp+yPuBWPnrbYpbpNluFMKb0+JKV9FpAl/DTRRAnOYmm7xn6Mhc8LcyA
-         zJ2A==
-X-Gm-Message-State: AOJu0Yz2pbZajbWWwXKNSgNaFD6gVsRSGq2388P2OpR+ktR/ywV9SMr4
-        9i88Lj9aLrjRzGs2UsKFbFfSzaqR3NT6Hmt3MdEoBA==
-X-Google-Smtp-Source: AGHT+IGaKjOzBddpOyoRZ6/22JOWZ17clvrTJvTI5coC7kWzoLT+Rqa0qdBOS3qSGTaXHQW2d05vTnDmbIn4hnC0mD4=
-X-Received: by 2002:a17:906:cc4e:b0:9a1:bccc:ef5f with SMTP id
- mm14-20020a170906cc4e00b009a1bcccef5fmr7737503ejb.53.1692966797212; Fri, 25
- Aug 2023 05:33:17 -0700 (PDT)
+        bh=CqE2XZ8vAAjA28aCjN6vUrQeXq80ioUn58FygUj89Nk=;
+        b=fJJtceD4MVlVp0fUMlw07+fnEYMMWKq+uj5nK7PnyaX6s4Rv7mQ1q1XDpgQi4YForz
+         lkVROoo779fq1g0ue3kdCvjwAFkUZNTdMHMXh0cxfQJ+D8K1lfsfXJhbTyjqfDiokJiK
+         oTu+xn3OuxKSiGNHP5VE/VwU4Uq91FfQIPiqFB4AmD4Oh5inoWENXs2hKyu1AAYe1uxF
+         gJqRFHJnJAuOXr47AcVN/ZaF3wmcpvnRUf2yiadDgf8mRYRJSq19G4Ntg2RKIM+t15ZO
+         KTNerO9cE74dbVQI6K6dwlhgIl8qLvJv5SWKipJWPI72tQe3HTZddHlpwQGFeQTFxEAJ
+         pY/g==
+X-Gm-Message-State: AOJu0YywcuJP1WFf4uWSBmnn4jkALsPnKlP7QHFEOv3Frf3Bnrz3q/Mw
+        KEMc3KL+QRr1VALnPdyzpcOBwe+QZL7A8U7yV5/UQA2o1DUVOtJFdkpjWgJ6eWkf7eFrpiriS8Y
+        lL8FBpQ4jwe1BuU74kkjiS3z7Y+2wQGv8O1lSmOBt
+X-Received: by 2002:ac2:5597:0:b0:500:a397:d4f0 with SMTP id v23-20020ac25597000000b00500a397d4f0mr2241620lfg.31.1692970093094;
+        Fri, 25 Aug 2023 06:28:13 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IEJ67vk3QxZ6sISoOnE3BVszGLL2jnGfU1MzHum7/pIdlRGhX0gCXDE1iJ2KeJ7zFMyuqWIkkAF0+pNC4hXrVA=
+X-Received: by 2002:ac2:5597:0:b0:500:a397:d4f0 with SMTP id
+ v23-20020ac25597000000b00500a397d4f0mr2241607lfg.31.1692970092728; Fri, 25
+ Aug 2023 06:28:12 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230824141447.155846739@linuxfoundation.org>
-In-Reply-To: <20230824141447.155846739@linuxfoundation.org>
-From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date:   Fri, 25 Aug 2023 21:33:06 +0900
-Message-ID: <CAKL4bV7tpe696zsOWxF7uv5J-Rm0E=b5BVLw=+pbe7Wpmwv17w@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/15] 6.1.48-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+References: <20230824205142.2732984-1-aahringo@redhat.com> <CAK-6q+iUe1=68LFv=BVd4MxVhtPf=jGPRFfXXNopEB2J+gjWqg@mail.gmail.com>
+In-Reply-To: <CAK-6q+iUe1=68LFv=BVd4MxVhtPf=jGPRFfXXNopEB2J+gjWqg@mail.gmail.com>
+From:   Alexander Aring <aahringo@redhat.com>
+Date:   Fri, 25 Aug 2023 09:28:01 -0400
+Message-ID: <CAK-6q+j=i176L=sC-xAXC6+rSrUhuSeTxWMrpwExeHTpDGKrGw@mail.gmail.com>
+Subject: Re: [PATCH dlm/next] dlm: fix plock lookup when using multiple lockspaces
+To:     teigland@redhat.com
+Cc:     cluster-devel@redhat.com, stable@vger.kernel.org,
+        bmarson@redhat.com
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
+Hi,
 
-On Thu, Aug 24, 2023 at 11:16=E2=80=AFPM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Thu, Aug 24, 2023 at 7:22=E2=80=AFPM Alexander Aring <aahringo@redhat.co=
+m> wrote:
+...
 >
-> This is the start of the stable review cycle for the 6.1.48 release.
-> There are 15 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 26 Aug 2023 14:14:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.48-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+> The reason why I probably never saw it is because those fields in my
+> tests are always the same and we simply don't compare all fields on
+> the sanity check.
 
-6.1.48-rc1 tested.
+I need to correct some things here... the patch works, but the commit
+message related to some locking issues is wrong. It works to make the
+lookup on a per lockspace basis because dlm_controld has a per
+lockspace corosync handle. Corosync keeps plock_op and results in
+order which is necessary for the lookup mechanism here. So this
+mechanism is on a per lockspace basis in order, if dlm_controld would
+have a global corosync handle it would work on a global basis.
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+The issue I saw with putting more sanity checks for start/end fields
+does not work because DLM_PLOCK_OP_GET will manipulate fields and they
+can't be compared between original request and result. I ran into this
+issue a couple times...
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+- Alex
 
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
