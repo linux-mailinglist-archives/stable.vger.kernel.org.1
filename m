@@ -2,104 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2738178891F
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 15:56:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BAB9788BA3
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 16:25:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245306AbjHYNza (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 09:55:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45668 "EHLO
+        id S1343734AbjHYOZG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 10:25:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245333AbjHYNzW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 09:55:22 -0400
-Received: from mail-ed1-x52c.google.com (mail-ed1-x52c.google.com [IPv6:2a00:1450:4864:20::52c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03E04213E
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 06:55:19 -0700 (PDT)
-Received: by mail-ed1-x52c.google.com with SMTP id 4fb4d7f45d1cf-5236b2b4cdbso1435803a12.3
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 06:55:19 -0700 (PDT)
+        with ESMTP id S1343677AbjHYOYe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 10:24:34 -0400
+Received: from mail-pf1-x42a.google.com (mail-pf1-x42a.google.com [IPv6:2607:f8b0:4864:20::42a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96471D1;
+        Fri, 25 Aug 2023 07:24:31 -0700 (PDT)
+Received: by mail-pf1-x42a.google.com with SMTP id d2e1a72fcca58-68c3b9f83f4so43080b3a.2;
+        Fri, 25 Aug 2023 07:24:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692971718; x=1693576518;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=A4OQDi/sFthYDrzyBFtYWst4OZy6IfZiLAmOykugLGc=;
-        b=VbIOoeFjX1650zgbcbcJkTrwyzmUHlArVvfCWsJv2batLsxPCO5RBOJQpwpx09DC5H
-         qETI1jIlm/k5Hs79WLxD/xiuy+Kx82UL676gRPwRpq9hyK+mErKI8IgkM1Ab2gxJ7tmI
-         iu8LJxVt+Y+ZRCzQv6T2eCAv/ljYj/JV52kkU8Q1APv9LyRkhYEVpsG1sbEM5eoaCQLz
-         WPuFdYq5vPfDUFL/sg9Pj4bfDHjEKDt1nVdPcgd5DcVuH0I3/wxZewumtSDltzQfwrEr
-         NeG3TRQq2lFKka1ShA7rjrFVzQdEFqEfk2MRYyRMqXh9Bh6Z1Eie+9CdFBc/0t3atYB7
-         qoOg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692971718; x=1693576518;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20221208; t=1692973471; x=1693578271;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=A4OQDi/sFthYDrzyBFtYWst4OZy6IfZiLAmOykugLGc=;
-        b=Oc39g0pHjKVRTQF9nRGwhmUmPXKcTUWfXk0aZN2xZYUfJYhSbVoGFbXWux+nLZSYT9
-         tmtXT8piz4MMa0dqKogozb9n4JiEUxtYETCUfJQhKk49yeHTBX/dK0EBs9VSZjisGoc2
-         bYoDxpuSFBTIHPNr6XJNg395WcRUl1H9gixym97D/1JTYlMNdL7cfkauzYGM5PMgTERf
-         O6jFJMdheTOU6ibhJz/PdS/7bpVgc6HZaT04mO9h5/7F+rE5YUO2I6BPf3zDhLDtebWX
-         N+2viOvPsqXSUVLLd9dXil8ZrtvKX5kqb0751uP00noofw+ewkKSu3E13tcuDt0xDwji
-         1g6w==
-X-Gm-Message-State: AOJu0Yytc6QziLkrQLJWy7DyzbpyL70qui6/7JQdr/yghy5zKmNHC4Fm
-        o7/Qkt4jdAoTqpOfruXbAuVM9w==
-X-Google-Smtp-Source: AGHT+IEkq63It/ry4mHQBYS8/cIH56V4AtHcFAdvj4JI6BUGBIs0N+ChYGqXiI/ZpYr2vi7ZdEq1pQ==
-X-Received: by 2002:aa7:d952:0:b0:523:ae0a:a447 with SMTP id l18-20020aa7d952000000b00523ae0aa447mr15361501eds.13.1692971718331;
-        Fri, 25 Aug 2023 06:55:18 -0700 (PDT)
-Received: from krzk-bin.. ([77.252.47.198])
-        by smtp.gmail.com with ESMTPSA id c21-20020aa7d615000000b005256aaa6e7asm1019660edr.78.2023.08.25.06.55.17
+        bh=vHyka2U6Y9QLR3iBbxMxEWSzu/iMnQI0MUngbRlsFAY=;
+        b=BRzIOGxuRosXrZwg7/OsmumCL3DVKh3ipGfPDi7BQNgjqFv/K4e0DeFlCr6B9ScpJq
+         tqhWrH3jBZ3JCUmy2nO/aJ99fqoda8abgk505EcnjRILOKbEQoUDhIdrY4s1YtUlSQmy
+         TpRPjkHL6+i1lhltwha+HSuEM3tQ89i1GyhmGfaERgalGjlkhSm8rpPV0QOg3DyRnm5X
+         ioNUCdsgXRo/Is7OidNH7wvAL1UDGdrF8S5GNRutFqo8OXIZWGJRHcb0eRNUUvP26L3j
+         trdtwFz8rEt8HDzw18kjjJvsyjev6lD3yRtb55T+vQOsggThF56tEMhSwUhz2RCNODof
+         eraw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692973471; x=1693578271;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=vHyka2U6Y9QLR3iBbxMxEWSzu/iMnQI0MUngbRlsFAY=;
+        b=QgmkYw3sX4nsOdRYcAb+x+W0HRVNgb5KV7yCMcFDjyr7eg8tyFkxtugN1PhLDic0in
+         ufyZrcOUFnljT1MIRxWopbm3tfAji23AohRtYhbtKXhgYqdq7Lmvpdkc//1bAstEDmVp
+         RNf/i7wVYL8iQ7gLvreTaCmd4vkU/eTlgSF8NQmbXkjj6zGzT8IxOJw6IFAG4+GI8MNR
+         5R2+skxlVqRYrVzSt1hOF3igQn9rhvebZM0IbqMbuGuJaXWUTESXeBvQkH72umk2DPaW
+         yd37gaDOx77YzWzocuOCN6j2TI/6X84alouaxtLCn7tUe3VM2uwMt8fLefSYyZmDAgIo
+         670g==
+X-Gm-Message-State: AOJu0YxthTQDeLlflttI7Jxs0A9UEj2HDSPIiRNCtweDbWpSuhJsYfBm
+        b1efRyMnxNFI4l4ycSDnLUng6SHvtQ8=
+X-Google-Smtp-Source: AGHT+IFVem110PP4tmF7Ev+4kTdchTFejqRzAwBbt3fP8YY3TzU76qliEjKgB2szc8YRyFlqWUssoQ==
+X-Received: by 2002:a05:6a00:1581:b0:68b:4e07:133f with SMTP id u1-20020a056a00158100b0068b4e07133fmr11558479pfk.7.1692973470973;
+        Fri, 25 Aug 2023 07:24:30 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id y1-20020aa78541000000b006879493aca0sm1623555pfn.26.2023.08.25.07.24.30
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 25 Aug 2023 06:55:17 -0700 (PDT)
-From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-To:     Ulf Hansson <ulf.hansson@linaro.org>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Bhupesh Sharma <bhupesh.sharma@linaro.org>,
-        linux-mmc@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH 1/2] dt-bindings: mmc: sdhci-msm: correct minimum number of clocks
-Date:   Fri, 25 Aug 2023 15:55:02 +0200
-Message-Id: <20230825135503.282135-1-krzysztof.kozlowski@linaro.org>
-X-Mailer: git-send-email 2.34.1
+        Fri, 25 Aug 2023 07:24:30 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Fri, 25 Aug 2023 07:24:29 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.10 000/135] 5.10.192-rc1 review
+Message-ID: <fb1c3952-1d72-4f9d-bc93-2988bcde462e@roeck-us.net>
+References: <20230824170617.074557800@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-In the TXT binding before conversion, the "xo" clock was listed as
-optional.  Conversion kept it optional in "clock-names", but not in
-"clocks".  This fixes dbts_check warnings like:
+On Thu, Aug 24, 2023 at 07:07:52PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.192 release.
+> There are 135 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 26 Aug 2023 17:05:50 +0000.
+> Anything received after that time might be too late.
+> 
 
-  qcom-sdx65-mtp.dtb: mmc@8804000: clocks: [[13, 59], [13, 58]] is too short
+Testing is not complete, but early feedback: All riscv32 boot tests
+crash badly with errors such as
 
-Cc: <stable@vger.kernel.org>
-Fixes: a45537723f4b ("dt-bindings: mmc: sdhci-msm: Convert bindings to yaml")
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
----
- Documentation/devicetree/bindings/mmc/sdhci-msm.yaml | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+Starting syslogd: OK
+Starting klogd: OK
+/etc/init.d/S02sysctl: line 68: syntax error: EOF in backquote substitution
+/etc/init.d/S20seedrng: line 33: syntax error: unexpected end of file (expecting ";;")
+Starting network: /bin/sh: syntax error: unterminated quoted string
+sed: unmatched '/'
+/bin/sh: syntax error: unterminated quoted string
+FAIL
+/etc/init.d/S55runtest: line 48: syntax error: EOF in backquote substitution
 
-diff --git a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-index 80141eb7fc6b..10f34aa8ba8a 100644
---- a/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-+++ b/Documentation/devicetree/bindings/mmc/sdhci-msm.yaml
-@@ -69,7 +69,7 @@ properties:
-     maxItems: 4
- 
-   clocks:
--    minItems: 3
-+    minItems: 2
-     items:
-       - description: Main peripheral bus clock, PCLK/HCLK - AHB Bus clock
-       - description: SDC MMC clock, MCLK
--- 
-2.34.1
+This is no longer seen after reverting the following patches.
 
+92609bb3a1f8 riscv: uaccess: Return the number of bytes effectively not copied
+e06648704417 riscv: lib: uaccess: fix CSR_STATUS SR_SUM bit
+20704d763646 riscv: lib: uaccess: fold fixups into body
+4f503bad920e riscv: __asm_copy_to-from_user: Optimize unaligned memory access and pipeline stall
+
+Guenter
