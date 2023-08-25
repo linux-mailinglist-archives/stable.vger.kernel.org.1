@@ -2,118 +2,184 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4EF97881B1
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 10:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ADB6C788243
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 10:38:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234499AbjHYIMB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 04:12:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47060 "EHLO
+        id S243228AbjHYIiX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 04:38:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243519AbjHYILv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 04:11:51 -0400
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF981FF7
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 01:11:49 -0700 (PDT)
-Received: from eig-obgw-6006a.ext.cloudfilter.net ([10.0.30.182])
-        by cmsmtp with ESMTP
-        id YyJlqmYnZyYOwZRv2qCUsr; Fri, 25 Aug 2023 08:11:48 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id ZRv0qUSyFOWWRZRv0qyA2n; Fri, 25 Aug 2023 08:11:46 +0000
-X-Authority-Analysis: v=2.4 cv=KdTBDCUD c=1 sm=1 tr=0 ts=64e86243
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=UttIx32zK-AA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=-AzgORsN3iX8tt9mf90A:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=SCiWYzsVolO7w3Wa+gemxZXSn/MaqliOj3WbUz/Gx98=; b=LPSeodhK9q21GrZsAs44/bozZv
-        EkesParxpwODw878cGIEu78ujaMZzrVaj7Bx3LREfelEI4/ja+LB9yXmEEoMttQHf/MMxnv0pss2G
-        lYeCCEvexpGg2sF03N6TvfOj3xrjIDvWEPqljaZWTnx/1t+ALXXeKh2C931XoROFLYYYq0676mHXf
-        fL2bcVYdmtYrqsJXZW4LRWz09kljcNFBgpivqUkMiB6bfxGY53pURkSGkglDk4TmD9xNcW7bX5UEK
-        hLZZCVF6jeFs6DR5JsHuJDfW/ecJK6dJ1OzaUkpmA9+uA19yjJTuhasQNSDza41T/f32cTqy/PH85
-        rhfnORmw==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:53070 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <re@w6rz.net>)
-        id 1qZRuy-0014FF-0W;
-        Fri, 25 Aug 2023 02:11:44 -0600
-Subject: Re: [PATCH 5.15 000/139] 5.15.128-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230824145023.559380953@linuxfoundation.org>
-In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <90797d76-4a3b-8e39-62f0-f7da1d61e47d@w6rz.net>
-Date:   Fri, 25 Aug 2023 01:11:42 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S243892AbjHYIiT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 04:38:19 -0400
+Received: from mail-lj1-x22d.google.com (mail-lj1-x22d.google.com [IPv6:2a00:1450:4864:20::22d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8BD6213B
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 01:38:05 -0700 (PDT)
+Received: by mail-lj1-x22d.google.com with SMTP id 38308e7fff4ca-2bcc331f942so8851371fa.0
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 01:38:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1692952684; x=1693557484;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=QT5lB6ELtp2Kj+OItj8lkNw3marf28CcZNitD0oxae4=;
+        b=fHBPaZspft3eDNR1krp/yU67SM/sMHlaoFAQ8K+sV3YhB930ZvHHtjyM4/Xm7cDeHD
+         cFf/Y1qlG6/9qyhsS9fvNcP7uj+gnQBidZRpwGJXqyRIhxAZD2vERtCVlmS7eR7RLUgV
+         NAvuj2MukmD0YWeP/1EAtb8qm/5kxKQWfdeYXf2Fa7NsLQjzsQnHoCEY5dp05IRcVfKJ
+         wL48tPb3fOP6w0hL8OBtwKSeKloWZLW/yasJUaMwepT1Kro0MaM3KYZ0kmnJZVZ0pp1K
+         6gY8rPD3p8kNBcxRtYAnySPI263hmGRTNp450NGWcbcOHUBkK9D5omX4W07QBvItD8Tx
+         tINg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692952684; x=1693557484;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=QT5lB6ELtp2Kj+OItj8lkNw3marf28CcZNitD0oxae4=;
+        b=lNTwpqqFlTkJDDCtH8gPfaplXcpi1S48gWj/n06J6RRbQHc2Gi6Rt/GnHkzJ3u5p7D
+         9LFHfCNTTywuMu/t9CYQbqUX/sz0dVjdtaSIeq8s4c5Z5RuhWUXNtP4SeIEJ6IpRLoeb
+         IHnF5Zbmc4zmqeXl/d0bipxVHakZvM0jO1mYfkzUZCFyDAm09urB81zZaRmhhnzN3Wn8
+         a64RBE4DHFdfpKWL2vGvf9ZrxCVQfG2T0z69KHICWwVu4obZ56o5Cryc2HVrfFWJza0y
+         MHO3zytrq8SLCZKkVZwqUEmnr95/7DWws33pH+byiBPQJA8X/bco/kDEyn3R72DKPRSl
+         1QRA==
+X-Gm-Message-State: AOJu0YzbGOt30ibjdIxIOPUgi6Wo+kIJxXnbQcQ0unhLDWgjsO77p0gi
+        wPu7hrBRm0D6zJNKSD+0lcM=
+X-Google-Smtp-Source: AGHT+IGOmN4g5i3o5oae/akXL0yQoPaUAUaWkgxO5MgazCDUPqE0YTdLnCr2Ujramb5WkqW0V1T2kA==
+X-Received: by 2002:a2e:a4b2:0:b0:2b6:b30f:5bf with SMTP id g18-20020a2ea4b2000000b002b6b30f05bfmr7106277ljm.13.1692952683415;
+        Fri, 25 Aug 2023 01:38:03 -0700 (PDT)
+Received: from [100.119.51.22] (95-24-151-207.broadband.corbina.ru. [95.24.151.207])
+        by smtp.gmail.com with ESMTPSA id j16-20020a2e6e10000000b002b9ef00b10csm240000ljc.2.2023.08.25.01.38.02
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 25 Aug 2023 01:38:03 -0700 (PDT)
+Message-ID: <e81e0014604bc8cf6f387c67875e43dc9a339815.camel@gmail.com>
+Subject: Re: [PATCH 5.10 066/135] net/ncsi: change from ndo_set_mac_address
+ to dev_set_mac_address
+From:   Ivan Mikhaylov <fr0st61te@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Paul Fertser <fercerpav@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Date:   Fri, 25 Aug 2023 11:38:02 +0300
+In-Reply-To: <2023082507-breezy-eastward-da6d@gregkh>
+References: <20230824170617.074557800@linuxfoundation.org>
+         <20230824170620.057993946@linuxfoundation.org>
+         <739b18f9dc2ae6cde7b1060ee8071d7687b5d4e3.camel@gmail.com>
+         <2023082507-breezy-eastward-da6d@gregkh>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.48.4 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qZRuy-0014FF-0W
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:53070
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfFSotuDi7y/3zpLZMJjW0oFvmlH6jBpop6BcNd0Oqz4xBaVtI3GaRdneC0A2wo7gGngSdpt/x5J0t9/TL0pTFrEPKeCx8oxI/TIDznIFyaAuTpZoGgDk
- N1rKXPbeVcjWW4Wemjyhm3t7dT69GWi+8upOoDeSqe2fyDpErF9nT0tgZNrHpThetob1UZQ64UkBpg==
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/24/23 7:48 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.128 release.
-> There are 139 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 26 Aug 2023 14:49:55 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.128-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
+On Fri, 2023-08-25 at 09:16 +0200, Greg Kroah-Hartman wrote:
+> On Fri, Aug 25, 2023 at 09:24:46AM +0300, Ivan Mikhaylov wrote:
+> > On Thu, 2023-08-24 at 19:08 +0200, Greg Kroah-Hartman wrote:
+> > > 5.10-stable review patch.=C2=A0 If anyone has any objections, please
+> > > let
+> > > me know.
+> > >=20
+> > > ------------------
+> > >=20
+> > > From: Ivan Mikhaylov <fr0st61te@gmail.com>
+> > >=20
+> > > [ Upstream commit 790071347a0a1a89e618eedcd51c687ea783aeb3 ]
+> > >=20
+> > > Change ndo_set_mac_address to dev_set_mac_address because
+> > > dev_set_mac_address provides a way to notify network layer about
+> > > MAC
+> > > change. In other case, services may not aware about MAC change
+> > > and
+> > > keep
+> > > using old one which set from network adapter driver.
+> > >=20
+> > > As example, DHCP client from systemd do not update MAC address
+> > > without
+> > > notification from net subsystem which leads to the problem with
+> > > acquiring
+> > > the right address from DHCP server.
+> > >=20
+> > > Fixes: cb10c7c0dfd9e ("net/ncsi: Add NCSI Broadcom OEM command")
+> > > Cc: stable@vger.kernel.org=C2=A0# v6.0+ 2f38e84 net/ncsi: make one
+> > > oem_gma
+> > > function for all mfr id
+> > > Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+> > > Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+> > > Reviewed-by: Simon Horman <simon.horman@corigine.com>
+> > > Signed-off-by: David S. Miller <davem@davemloft.net>
+> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > > ---
+> > > =C2=A0net/ncsi/ncsi-rsp.c | 5 +++--
+> > > =C2=A01 file changed, 3 insertions(+), 2 deletions(-)
+> > >=20
+> > > diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+> > > index 888ccc2d4e34b..47ffb790ff99f 100644
+> > > --- a/net/ncsi/ncsi-rsp.c
+> > > +++ b/net/ncsi/ncsi-rsp.c
+> > > @@ -616,7 +616,6 @@ static int
+> > > ncsi_rsp_handler_oem_mlx_gma(struct
+> > > ncsi_request *nr)
+> > > =C2=A0{
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ncsi_dev_priv =
+*ndp =3D nr->ndp;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct net_device *nd=
+ev =3D ndp->ndev.dev;
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0const struct net_device_op=
+s *ops =3D ndev->netdev_ops;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct ncsi_rsp_oem_p=
+kt *rsp;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0struct sockaddr saddr=
+;
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0int ret =3D 0;
+> > > @@ -630,7 +629,9 @@ static int
+> > > ncsi_rsp_handler_oem_mlx_gma(struct
+> > > ncsi_request *nr)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0/* Set the flag for G=
+MA command which should only be
+> > > called
+> > > once */
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ndp->gma_flag =3D 1;
+> > > =C2=A0
+> > > -=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D ops->ndo_set_mac_a=
+ddress(ndev, &saddr);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rtnl_lock();
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0ret =3D dev_set_mac_addres=
+s(ndev, &saddr, NULL);
+> > > +=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0rtnl_unlock();
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0if (ret < 0)
+> > > =C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=A0=C2=
+=A0=C2=A0=C2=A0=C2=A0=C2=A0netdev_warn(ndev, "NCSI: 'Writing mac address to
+> > > device failed\n");
+> > > =C2=A0
+> >=20
+> > Greg, we had conversation in the past about this particular
+> > patchset
+> > series:
+> > https://www.spinics.net/lists/stable-commits/msg308587.html
+> >=20
+> > Just one patch is not enough, I didn't test it either on linux
+> > kernel
+> > version < 6.0 , also I saw the Sasha's commits about the same for
+> > 5.4,
+> > 5.10, 5.15 and answered to him about necessity of two patchsets
+> > instead
+> > of one on 19 aug.
+>=20
+> Ah, so I should also include commit 74b449b98dcc ("net/ncsi: make one
+> oem_gma function for all mfr id"), right?
+>=20
 > thanks,
->
+>=20
 > greg k-h
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Greg, yes, that's right and I'm not sure if these two patches applies
+well for 5.x stable releases.
 
-Tested-by: Ron Economos <re@w6rz.net>
-
+Thanks.
