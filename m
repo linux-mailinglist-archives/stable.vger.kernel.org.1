@@ -2,67 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD7D4787CD8
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 03:14:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A13AE787D1D
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 03:31:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235445AbjHYBN7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 24 Aug 2023 21:13:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51762 "EHLO
+        id S231303AbjHYBac (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 24 Aug 2023 21:30:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42462 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235653AbjHYBNn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 21:13:43 -0400
-Received: from mail-pf1-x42c.google.com (mail-pf1-x42c.google.com [IPv6:2607:f8b0:4864:20::42c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5C9A1BF1;
-        Thu, 24 Aug 2023 18:13:41 -0700 (PDT)
-Received: by mail-pf1-x42c.google.com with SMTP id d2e1a72fcca58-68a3b66f350so404742b3a.3;
-        Thu, 24 Aug 2023 18:13:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1692926021; x=1693530821;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AIl1b0PkLEfFH4MOGYeCC8mCbNP8ENQSFlp2p49bKJI=;
-        b=CBADhGDm9T3A1HJfy4H9u4PjDEKVmnPFF65AhnJvO5XiteTtCjj84dAYdq0WZp3M7v
-         8zHjpOZciYAbHEn9apiIY8pKsI4StwQFoEKllQH/2CFudmvzipq2c83j1i/I8EkYfaBk
-         QEkSdlxLc5XdkPoe++S6cKeXjvwGcWpwxOO++zg7sA0iUY2J8TtTwYVfJ6dA+ax+lj7K
-         F8c09/LjeleTO4SDxCqBZhsaU2gzwvvonNeG+50+Tn8FjsbBMOGg5m+fxegBriaygtjb
-         CHOUv0t6nfEMj1N1xXWxIABEOKOa1obyWxBAUpG4yzqElI8jFT8vCVTMXz9Ay4vYxpTQ
-         qHSA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692926021; x=1693530821;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIl1b0PkLEfFH4MOGYeCC8mCbNP8ENQSFlp2p49bKJI=;
-        b=PZfQa3rqt+DDoJhp1FMLXpl5C6oU7ONTr8RRvlDOvzIzZQROSCR6svShL/TF2nf0C1
-         Wd2eRlz3t6jF9AMppIduPuKO4tUGS5bDbfxXEqkKXMzeRSmWCo7b2hlbPFTGoJOw/ZVC
-         1RS11l89EXvVzOWRmcQA03DkkkFB0CFnxyLGqaTbozDstKJs7QGpgsjr7y2Fk1d5QI5G
-         eSwneA+lP7TJnJ+vgvTYUdFVqS+IOMQA01c0dx+AqkIgDCWbn6FSZX7MWttsCB/syGQ7
-         isoB/M2AqezJdY0H2GpzZg/rDQ0mipTT3W/iKuVvXGT84m+JAxiSwVjT8s8z8fY1rkRr
-         6znA==
-X-Gm-Message-State: AOJu0Yy67xbDsz1Gq1Q6dGO5rE4nwyKDZtrebUZixW5Cpgdt9BHaVMsa
-        vS5BY9DuYTJZjswXds78kQw=
-X-Google-Smtp-Source: AGHT+IHFObaa9xySIu0dbyOas+UXR0VEQEHVnpTUb75GzWel58564U0y34/7nDlCMKK/JPqziLvYUA==
-X-Received: by 2002:a05:6a00:2284:b0:68b:f524:b8fa with SMTP id f4-20020a056a00228400b0068bf524b8famr3488304pfe.28.1692926021239;
-        Thu, 24 Aug 2023 18:13:41 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
-        by smtp.gmail.com with ESMTPSA id ff19-20020a056a002f5300b0068783a2dfdasm347878pfb.104.2023.08.24.18.13.40
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 24 Aug 2023 18:13:40 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id 4D132360439; Fri, 25 Aug 2023 13:13:37 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     s.shtylyov@omp.ru, dlemoal@kernel.org, linux-ide@vger.kernel.org,
-        linux-m68k@vger.kernel.org
-Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org,
-        Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v5 1/2] ata: pata_falcon: fix IO base selection for Q40
-Date:   Fri, 25 Aug 2023 13:13:34 +1200
-Message-Id: <20230825011335.25808-2-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230825011335.25808-1-schmitzmic@gmail.com>
-References: <20230825011335.25808-1-schmitzmic@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        with ESMTP id S232633AbjHYBa3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 24 Aug 2023 21:30:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF19CE7D;
+        Thu, 24 Aug 2023 18:30:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4338861961;
+        Fri, 25 Aug 2023 01:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E350C433C7;
+        Fri, 25 Aug 2023 01:30:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692927022;
+        bh=7XObBKsY+H6XyS6THaA4MDQv9qgGrQumGJeBl/f7+hM=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=gQ61VxneSHTO1hOAdvbOJkzwlkHqfM9gXYDVpOBsE1uooHWlHY3T+FtAguZ7fXHEL
+         bxKVJtgkTRXAig4GuWTeEY/8Xd15efY8aBpAdYnNf+KYGfy11fIUpscUmOqCI2/7Zw
+         OtuBZYe6/4oedAfjaZZz5DesKoEzlj/z2EdqOuQDaH0wJGRlrKqV22AMxytNLwUuMR
+         cD1njVXFjIwkhIROK1VluqKagvxW+J6Kb66Ov4ImGNA5La2PfLAMVtbG+7ruU2nojf
+         yycR0YzXB87Xp7dfgdZG0C10JRrSKCjhgQ0rN6I9+QuLjALq6Gvr/Je5/saaGbRlMN
+         BV32e+oLCtbAw==
+From:   SeongJae Park <sj@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, damon@lists.linux.dev,
+        SeongJae Park <sj@kernel.org>
+Subject: Re: [PATCH 6.1 00/15] 6.1.48-rc1 review
+Date:   Fri, 25 Aug 2023 01:30:19 +0000
+Message-Id: <20230825013019.50178-1-sj@kernel.org>
+X-Mailer: git-send-email 2.25.1
+In-Reply-To: <20230824141447.155846739@linuxfoundation.org>
+References: 
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -71,162 +60,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
-with pata_falcon and falconide"), the Q40 IDE driver was
-replaced by pata_falcon.c.
+Hello,
 
-Both IO and memory resources were defined for the Q40 IDE
-platform device, but definition of the IDE register addresses
-was modeled after the Falcon case, both in use of the memory
-resources and in including register shift and byte vs. word
-offset in the address.
+On Thu, 24 Aug 2023 16:14:56 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
 
-This was correct for the Falcon case, which does not apply
-any address translation to the register addresses. In the
-Q40 case, all of device base address, byte access offset
-and register shift is included in the platform specific
-ISA access translation (in asm/mm_io.h).
+> This is the start of the stable review cycle for the 6.1.48 release.
+> There are 15 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 26 Aug 2023 14:14:28 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.48-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> and the diffstat can be found below.
 
-As a consequence, such address translation gets applied
-twice, and register addresses are mangled.
+This rc kernel passes DAMON functionality test[1] on my test machine.
+Attaching the test results summary below.  Please note that I retrieved the
+kernel from linux-stable-rc tree[2].
 
-Use the device base address from the platform IO resource
-for Q40 (the IO address translation will then add the correct
-ISA window base address and byte access offset), with register
-shift 1. Use MMIO base address and register shift 2 as before
-for Falcon.
+Tested-by: SeongJae Park <sj@kernel.org>
 
-Encode PIO_OFFSET into IO port addresses for all registers
-for Q40 except the data transfer register. Encode the MMIO
-offset there (pata_falcon_data_xfer() directly uses raw IO
-with no address translation).
+[1] https://github.com/awslabs/damon-tests/tree/next/corr
+[2] c079d0dd788a ("Linux 6.1.48-rc1")
 
-Reported-by: William R Sowerbutts <will@sowerbutts.com>
-Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
-Cc: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Thanks,
+SJ
+
+[...]
 
 ---
 
-Changes from v4:
-
-Geert Uytterhoeven:
-- use %px for ap->ioaddr.data_addr
-
-Changes from v3:
-
-Sergey Shtylyov:
-- change use of reg_scale to reg_shift
-
-Geert Uytterhoeven:
-- factor out ata_port_desc() from platform specific code
-
-Changes from v2:
-
-Finn Thain:
-- add back stable Cc:
-
-Changes from v1:
-
-Damien Le Moal:
-- change patch title
-- drop stable backport tag
-
-Changes from RFC v3:
-
-- split off byte swap option into separate patch
-
-Geert Uytterhoeven:
-- review comments
-
-Changes from RFC v2:
-- add driver parameter 'data_swap' as bit mask for drives to swap
-
-Changes from RFC v1:
-
-Finn Thain:
-- take care to supply IO address suitable for ioread8/iowrite8
-- use MMIO address for data transfer
----
- drivers/ata/pata_falcon.c | 50 +++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
-index 996516e64f13..616064b02de6 100644
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	struct resource *base_res, *ctl_res, *irq_res;
- 	struct ata_host *host;
- 	struct ata_port *ap;
--	void __iomem *base;
--	int irq = 0;
-+	void __iomem *base, *ctl_base;
-+	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
- 
- 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
- 
-@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	ap->pio_mask = ATA_PIO4;
- 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
- 
--	base = (void __iomem *)base_mem_res->start;
- 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
--	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
--	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
--	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
--	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
--	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
--	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
--	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
--	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
--
--	base = (void __iomem *)ctl_mem_res->start;
--	ap->ioaddr.altstatus_addr	= base + 1;
--	ap->ioaddr.ctl_addr		= base + 1;
--
--	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
--		      (unsigned long)base_mem_res->start,
--		      (unsigned long)ctl_mem_res->start);
-+	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
-+
-+	if (base_res) {		/* only Q40 has IO resources */
-+		io_offset = 0x10000;
-+		reg_shift = 0;
-+		base = (void __iomem *)base_res->start;
-+		ctl_base = (void __iomem *)ctl_res->start;
-+	} else {
-+		base = (void __iomem *)base_mem_res->start;
-+		ctl_base = (void __iomem *)ctl_mem_res->start;
-+	}
-+
-+	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
-+	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
-+	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
-+	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
-+	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
-+	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
-+	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
-+
-+	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
-+	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
-+
-+	ata_port_desc(ap, "cmd %px ctl %px data %px",
-+		      base, ctl_base, ap->ioaddr.data_addr);
- 
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
--- 
-2.17.1
-
+# .config:1408:warning: override: reassigning to symbol CGROUPS
+ok 15 selftests: damon-tests: build_nomemcg.sh
+# kselftest dir '/home/sjpark/damon-tests-cont/linux/tools/testing/selftests/damon-tests' is in dirty state.
+# the log is at '/home/sjpark/log'.
+ [32m
+ok 1 selftests: damon: debugfs_attrs.sh
+ok 2 selftests: damon: debugfs_schemes.sh
+ok 3 selftests: damon: debugfs_target_ids.sh
+ok 4 selftests: damon: debugfs_empty_targets.sh
+ok 5 selftests: damon: debugfs_huge_count_read_write.sh
+ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
+ok 7 selftests: damon: sysfs.sh
+ok 1 selftests: damon-tests: kunit.sh
+ok 2 selftests: damon-tests: huge_count_read_write.sh
+ok 3 selftests: damon-tests: buffer_overflow.sh
+ok 4 selftests: damon-tests: rm_contexts.sh
+ok 5 selftests: damon-tests: record_null_deref.sh
+ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
+ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
+ok 8 selftests: damon-tests: damo_tests.sh
+ok 9 selftests: damon-tests: masim-record.sh
+ok 10 selftests: damon-tests: build_i386.sh
+ok 11 selftests: damon-tests: build_m68k.sh
+ok 12 selftests: damon-tests: build_arm64.sh
+ok 13 selftests: damon-tests: build_i386_idle_flag.sh
+ok 14 selftests: damon-tests: build_i386_highpte.sh
+ok 15 selftests: damon-tests: build_nomemcg.sh
+ [33m
+ [92mPASS [39m
+_remote_run_corr.sh SUCCESS
