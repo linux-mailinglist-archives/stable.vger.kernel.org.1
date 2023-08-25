@@ -2,202 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 081FC788098
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 09:07:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B4CF47880AA
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 09:11:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233425AbjHYHHA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 03:07:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41232 "EHLO
+        id S233289AbjHYHKp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 03:10:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238703AbjHYHGb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 03:06:31 -0400
-Received: from mail-vs1-xe2a.google.com (mail-vs1-xe2a.google.com [IPv6:2607:f8b0:4864:20::e2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA1AF2126
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 00:06:10 -0700 (PDT)
-Received: by mail-vs1-xe2a.google.com with SMTP id ada2fe7eead31-44dbd5011beso299799137.1
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 00:06:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1692947157; x=1693551957;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=zAyx91j0d1SiPs3sA0vgKNpQ3W+EG6C0ragX4AchNBE=;
-        b=uN2rEaDOxg/pvsgm9icIiIRITysW4eLMBpwqTl6ADtfVuemglwESF1ebt1WQUqa2eH
-         MaMHvubqXFo7kxYZkeKKL9BrOO4FMCgGlWmq1m7t9NpbLsiI6b0JuzPNyIJBCpca6cL5
-         4OLCC6NxZ42tEJYGwDn8Lwzb3xUJsi/IChumX8xNSHvgSPJ2rgYENoMTjDxoV5/KtTZV
-         s2lb9srRDXWRSs+2PE1gvDDqBj9liwPo4ZmjrZXnZxRomZg1R8yPiEQKRyJQbrN6I+MN
-         V0aQR68lzM4EAqwcIQnAyuNR1BIkbZKMKILMmoKgUZL8YXLydFBGa0Yv1jLbaBK5mBUa
-         iRiw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1692947157; x=1693551957;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zAyx91j0d1SiPs3sA0vgKNpQ3W+EG6C0ragX4AchNBE=;
-        b=fVJzUyDTv+UoTP98/q/oWxFWWxq2QzQOOFTAHMWFeBPEQ7Mu6DA80uECRKZh2+gG+D
-         pLEgokuSQ/nbE/D/HzcsyGz2YZnfvlxwXNmnRapWMOGZbfWWR8+zN6MPQRXdr76ubQjy
-         6zgNp8entGrMVF/Bibwp8DLJYops8mzpKGxkly0gNlOZZcxzKktVVjfVm7moxtgzliI/
-         cLwcVpawGWCFLvLVk7pw6TaXuY/8Z4Ib0+5ex/y86UWOcq7hfD/2vbw5AqXd/fzAxZMV
-         ZlB+KMd+CwuqH7uYbhbNS7Gv++vNg3WXR8sjIQWoH+XZFQW52nL6qsCHmZJH5ek8kabb
-         Jniw==
-X-Gm-Message-State: AOJu0YxLx/GRtAvKBdZbXwVgqh0sczcT1f9kBoV27jpiixrNH6ZO/tr3
-        zTm/Di1WTJadcNe18ItcptdcREchkakgvAFroIWv6w==
-X-Google-Smtp-Source: AGHT+IF2hKbfhy15wte1809kF7Hyk6ONBucrn4iHiZSvthzk5hzVmg8s0lNZHK6urLSSNHhlSLdD3/SCAArIH6tequQ=
-X-Received: by 2002:a67:fe10:0:b0:449:6e24:be74 with SMTP id
- l16-20020a67fe10000000b004496e24be74mr15745478vsr.0.1692947157287; Fri, 25
- Aug 2023 00:05:57 -0700 (PDT)
+        with ESMTP id S243033AbjHYHK1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 03:10:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3958A1FD3
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 00:10:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B8A6F66618
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 07:10:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPS id 17063C433C7;
+        Fri, 25 Aug 2023 07:10:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1692947423;
+        bh=ANcqmrfmUqry2M3Okymt6F6zYJogSeActNc5bmci11c=;
+        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
+        b=VxSozqKDqQK9k7D2etb0QxFAhqX8y4rOgRbHSw2jh/OCZEgOIfnqB9+5Ogyy1REoo
+         M3dYZa29Ke3B0WhrcJtGhR6KyNP5R6eGnM0+pjP8l45IbTDoUowcEBlXFGhZSmhgvl
+         EJ8WAYlzJOFteru8E9G4i4UtcMYMpCm31LR/jIKttuPEi7qY6G1Xp9X0oUyCHyS7s0
+         7acV9c0MrJ8wrC8SIULlkdtmGw5fg+vqKTQquEZtdY9jRDCJoodgmF3+aF2M+VWtcR
+         88yMiY6ehNBd5uUeZCEPOBuNUqhLWau6Kv/iFYKRb1QbKuugafgstBVEOp7rnjQBGu
+         Hy3cpZC7kW8eQ==
+Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
+        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id F0AD1E33083;
+        Fri, 25 Aug 2023 07:10:22 +0000 (UTC)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-References: <20230824141447.155846739@linuxfoundation.org>
-In-Reply-To: <20230824141447.155846739@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 25 Aug 2023 12:35:46 +0530
-Message-ID: <CA+G9fYsPPpduLzJ4+GZe_18jgYw56=w5bQ2W1jnyWa-8krmOSw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/15] 6.1.48-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>, linux-nfs@vger.kernel.org
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Sherry Yang <sherry.yang@oracle.com>,
-        LTP List <ltp@lists.linux.it>
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+Subject: Re: [PATCH net v3] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+From:   patchwork-bot+netdevbpf@kernel.org
+Message-Id: <169294742298.19723.4676181056392087198.git-patchwork-notify@kernel.org>
+Date:   Fri, 25 Aug 2023 07:10:22 +0000
+References: <20230823134102.1848881-1-nicolas.dichtel@6wind.com>
+In-Reply-To: <20230823134102.1848881-1-nicolas.dichtel@6wind.com>
+To:     Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Cc:     davem@davemloft.net, kuba@kernel.org, pabeni@redhat.com,
+        edumazet@google.com, daniel@iogearbox.net, ast@kernel.org,
+        john.fastabend@gmail.com, gnault@redhat.com,
+        netdev@vger.kernel.org, bpf@vger.kernel.org,
+        stable@vger.kernel.org, siwar.zitouni@6wind.com
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-+ linux-nfs and more
+Hello:
 
-On Thu, 24 Aug 2023 at 19:45, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.48 release.
-> There are 15 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 26 Aug 2023 14:14:28 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.48-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This patch was applied to netdev/net.git (main)
+by David S. Miller <davem@davemloft.net>:
 
+On Wed, 23 Aug 2023 15:41:02 +0200 you wrote:
+> The goal is to support a bpf_redirect() from an ethernet device (ingress)
+> to a ppp device (egress).
+> The l2 header is added automatically by the ppp driver, thus the ethernet
+> header should be removed.
+> 
+> CC: stable@vger.kernel.org
+> Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
+> Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+> Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
+> 
+> [...]
 
-Following test regression found on stable-rc 6.1.
-Rpi4 is using NFS mount rootfs and running LTP syscalls testing.
-chown02 tests creating testfile2 on NFS mounted and validating
-the functionality and found that it was a failure.
+Here is the summary with links:
+  - [net,v3] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+    https://git.kernel.org/netdev/net/c/a4f39c9f14a6
 
-This is already been reported by others on lore and fix patch merged
-into stable-rc linux-6.4.y [1] and [2].
-
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-Test log:
---------
-chown02.c:46: TPASS: chown(testfile1, 0, 0) passed
-chown02.c:46: TPASS: chown(testfile2, 0, 0) passed
-chown02.c:58: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
-
-fchown02.c:57: TPASS: fchown(3, 0, 0) passed
-fchown02.c:57: TPASS: fchown(4, 0, 0) passed
-fchown02.c:67: TFAIL: testfile2: wrong mode permissions 0100700,
-expected 0102700
+You are awesome, thank you!
+-- 
+Deet-doot-dot, I am a bot.
+https://korg.docs.kernel.org/patchwork/pwbot.html
 
 
-## Build
-* kernel: 6.1.48-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: c079d0dd788ad4fe887ee6349fe89d23d72f7696
-* git describe: v6.1.47-16-gc079d0dd788a
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.47-16-gc079d0dd788a
-
-## Test Regressions (compared to v6.1.46)
-* bcm2711-rpi-4-b, ltp-syscalls
-  - chown02
-  - fchown02
-
-* bcm2711-rpi-4-b-64k_page_size, ltp-syscalls
-  - chown02
-  - fchown02
-
-* bcm2711-rpi-4-b-clang, ltp-syscalls
-  - chown02
-  - fchown02
-
-
-
-
-Do we need the following patch into stable-rc linux-6.1.y ?
-
-I see from mailing thread discussion, says that
-
-the above commit is backported to LTS kernels -- 5.10.y,5.15.y and 6.1.y.
-
-
-----
-
-nfsd: use vfs setgid helper
-commit 2d8ae8c417db284f598dffb178cc01e7db0f1821 upstream.
-
-We've aligned setgid behavior over multiple kernel releases. The details
-can be found in commit cf619f891971 ("Merge tag 'fs.ovl.setgid.v6.2' of
-git://git.kernel.org/pub/scm/linux/kernel/git/vfs/idmapping") and
-commit 426b4ca2d6a5 ("Merge tag 'fs.setgid.v6.0' of
-git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux").
-Consistent setgid stripping behavior is now encapsulated in the
-setattr_should_drop_sgid() helper which is used by all filesystems that
-strip setgid bits outside of vfs proper. Usually ATTR_KILL_SGID is
-raised in e.g., chown_common() and is subject to the
-setattr_should_drop_sgid() check to determine whether the setgid bit can
-be retained. Since nfsd is raising ATTR_KILL_SGID unconditionally it
-will cause notify_change() to strip it even if the caller had the
-necessary privileges to retain it. Ensure that nfsd only raises
-ATR_KILL_SGID if the caller lacks the necessary privileges to retain the
-setgid bit.
-
-Without this patch the setgid stripping tests in LTP will fail:
-
-> As you can see, the problem is S_ISGID (0002000) was dropped on a
-> non-group-executable file while chown was invoked by super-user, while
-
-[...]
-
-> fchown02.c:66: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
-
-[...]
-
-> chown02.c:57: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
-
-With this patch all tests pass.
-
-Reported-by: Sherry Yang <sherry.yang@oracle.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-
-[1] https://lore.kernel.org/linux-nfs/20230502-agenda-regeln-04d2573bd0fd@brauner/
-[2] https://lore.kernel.org/all/202210091600.dbe52cbf-yujie.liu@intel.com/
---
-Linaro LKFT
-https://lkft.linaro.org
