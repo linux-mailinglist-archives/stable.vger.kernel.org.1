@@ -2,137 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A62788206
-	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 10:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A3F4B788199
+	for <lists+stable@lfdr.de>; Fri, 25 Aug 2023 10:09:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241178AbjHYI1L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 25 Aug 2023 04:27:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58090 "EHLO
+        id S236066AbjHYIIs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 25 Aug 2023 04:08:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240834AbjHYI0k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 04:26:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3183019A1
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 01:26:38 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C497360D24
-        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 08:26:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA0FFC433C8;
-        Fri, 25 Aug 2023 08:26:36 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1692951997;
-        bh=BoIkE++tUYhi0OPfDP4whDKT4LCikD9j1oX7SZ5yBDU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=TqKdtWHzSu5RKS5tskX5uAkKQNO99/exughbOpFXe1Pj96HUhhd5+qkJUj9LkKDiN
-         it8GcaI4KIeaOyTPVGqMuGLQLFvugJupCOP18tXdDO7Myph9STvLrz9ATu6ctLqFXt
-         ZGo4rXVeX+syGyrJGrZenydcx7tJAZCvt6S64Dik=
-Date:   Fri, 25 Aug 2023 09:16:39 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ivan Mikhaylov <fr0st61te@gmail.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Paul Fertser <fercerpav@gmail.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 5.10 066/135] net/ncsi: change from ndo_set_mac_address
- to dev_set_mac_address
-Message-ID: <2023082507-breezy-eastward-da6d@gregkh>
-References: <20230824170617.074557800@linuxfoundation.org>
- <20230824170620.057993946@linuxfoundation.org>
- <739b18f9dc2ae6cde7b1060ee8071d7687b5d4e3.camel@gmail.com>
+        with ESMTP id S237949AbjHYIIn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 25 Aug 2023 04:08:43 -0400
+Received: from mail-vk1-xa2a.google.com (mail-vk1-xa2a.google.com [IPv6:2607:f8b0:4864:20::a2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F394B1FFD
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 01:08:40 -0700 (PDT)
+Received: by mail-vk1-xa2a.google.com with SMTP id 71dfb90a1353d-48d0e695fa1so444863e0c.1
+        for <stable@vger.kernel.org>; Fri, 25 Aug 2023 01:08:40 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1692950920; x=1693555720;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=6QcQszMmxdJXwrdj7qv0i9KCRG16x6Uvx3Pa+z1CyMw=;
+        b=kEtf7/dJtTkeGYA9DS3Z7w0+USux+OmEZxVGCz29NkVWX3Qsq3XmhIxosoEibdvlge
+         4kmMeo9X53/5rlLa4p2CGlpDlmsCvSeaH0IKkM3p0YX0ZSgdo6FhQrFm8DSA+/HsPwNs
+         Pdtqggstnu370CZL4cGFTUMqwRXpkVk1EAupqfBGoCFn2zu1qO8jNUtTTkty8KOa46Vp
+         oH3ebYMo8M04POs8Yf7S+PbOMfGyqDx//XmIlrvcgiZASOt56kIdPdDkK8Ck/45lXwhM
+         3mpNpnLHi9PZ31O6pv8fH/7rZ5A1uAk1u5sF4Q9Z/OniV6tKFgQPVwhjX9Pm5HttSW0G
+         /JoQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1692950920; x=1693555720;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=6QcQszMmxdJXwrdj7qv0i9KCRG16x6Uvx3Pa+z1CyMw=;
+        b=k37hk+rlJEcagUcZ0G0Y4nHvyZfU5VKp02k8X5siQkjLfrtZprLiVvuNyAdw21WAUo
+         wye+p1mbnHSYjNtvunEFdrxPVq/zbEXeH6IJK5A4DA1klzVX78tK5WWEOLB9iT4AnlMC
+         xvIf2tar/DsIIlsE2dQfYTKNKu1WWAiG013iPzr0EhkwRionhH0yxAseFNo9/nbo+CXE
+         f0sDsW+3BUP5rmCWsG9qyvn2TUDJpvQ7Y5dXM4cxT8BoAoYOnsM8xVE7mwKuD+x1wLLE
+         DPVGDbEWO/9Cz09iF22+UgOtqoyHv9WdfENLtb/bC5QfbzItiHQXXZNgO2R+u1jpFny9
+         iPRg==
+X-Gm-Message-State: AOJu0YwlcsfhPyGLbUmSeq77+9q9M5qd9pxtHvD09zPkxVShVzDpzq7b
+        aAOd1VlYFeF0fW852w9qTC9MtaAGyFTf4J7oJ3fEIg==
+X-Google-Smtp-Source: AGHT+IGKlUoZqLtAuC5n6U8/S/LEQzMs7GSNBs/X3ca/L9sMnytTCYWAR49NLSPWdqYY3WSdtWOyVrio55hiXGg7eeY=
+X-Received: by 2002:a05:6122:c56:b0:48d:392c:c7d9 with SMTP id
+ i22-20020a0561220c5600b0048d392cc7d9mr5516493vkr.6.1692950919958; Fri, 25 Aug
+ 2023 01:08:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <739b18f9dc2ae6cde7b1060ee8071d7687b5d4e3.camel@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230824145023.559380953@linuxfoundation.org>
+In-Reply-To: <20230824145023.559380953@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Fri, 25 Aug 2023 13:38:28 +0530
+Message-ID: <CA+G9fYvNipSR9HDcWT7F6j+yvy87jsbzLG-vUQSGH-o2JQv4nQ@mail.gmail.com>
+Subject: Re: [PATCH 5.15 000/139] 5.15.128-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Christian Brauner <brauner@kernel.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org, linux-nfs@vger.kernel.org,
+        LTP List <ltp@lists.linux.it>,
+        Sherry Yang <sherry.yang@oracle.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 25, 2023 at 09:24:46AM +0300, Ivan Mikhaylov wrote:
-> On Thu, 2023-08-24 at 19:08 +0200, Greg Kroah-Hartman wrote:
-> > 5.10-stable review patch.  If anyone has any objections, please let
-> > me know.
-> > 
-> > ------------------
-> > 
-> > From: Ivan Mikhaylov <fr0st61te@gmail.com>
-> > 
-> > [ Upstream commit 790071347a0a1a89e618eedcd51c687ea783aeb3 ]
-> > 
-> > Change ndo_set_mac_address to dev_set_mac_address because
-> > dev_set_mac_address provides a way to notify network layer about MAC
-> > change. In other case, services may not aware about MAC change and
-> > keep
-> > using old one which set from network adapter driver.
-> > 
-> > As example, DHCP client from systemd do not update MAC address
-> > without
-> > notification from net subsystem which leads to the problem with
-> > acquiring
-> > the right address from DHCP server.
-> > 
-> > Fixes: cb10c7c0dfd9e ("net/ncsi: Add NCSI Broadcom OEM command")
-> > Cc: stable@vger.kernel.org # v6.0+ 2f38e84 net/ncsi: make one oem_gma
-> > function for all mfr id
-> > Signed-off-by: Paul Fertser <fercerpav@gmail.com>
-> > Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
-> > Reviewed-by: Simon Horman <simon.horman@corigine.com>
-> > Signed-off-by: David S. Miller <davem@davemloft.net>
-> > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > ---
-> >  net/ncsi/ncsi-rsp.c | 5 +++--
-> >  1 file changed, 3 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-> > index 888ccc2d4e34b..47ffb790ff99f 100644
-> > --- a/net/ncsi/ncsi-rsp.c
-> > +++ b/net/ncsi/ncsi-rsp.c
-> > @@ -616,7 +616,6 @@ static int ncsi_rsp_handler_oem_mlx_gma(struct
-> > ncsi_request *nr)
-> >  {
-> >         struct ncsi_dev_priv *ndp = nr->ndp;
-> >         struct net_device *ndev = ndp->ndev.dev;
-> > -       const struct net_device_ops *ops = ndev->netdev_ops;
-> >         struct ncsi_rsp_oem_pkt *rsp;
-> >         struct sockaddr saddr;
-> >         int ret = 0;
-> > @@ -630,7 +629,9 @@ static int ncsi_rsp_handler_oem_mlx_gma(struct
-> > ncsi_request *nr)
-> >         /* Set the flag for GMA command which should only be called
-> > once */
-> >         ndp->gma_flag = 1;
-> >  
-> > -       ret = ops->ndo_set_mac_address(ndev, &saddr);
-> > +       rtnl_lock();
-> > +       ret = dev_set_mac_address(ndev, &saddr, NULL);
-> > +       rtnl_unlock();
-> >         if (ret < 0)
-> >                 netdev_warn(ndev, "NCSI: 'Writing mac address to
-> > device failed\n");
-> >  
-> 
-> Greg, we had conversation in the past about this particular patchset
-> series:
-> https://www.spinics.net/lists/stable-commits/msg308587.html
-> 
-> Just one patch is not enough, I didn't test it either on linux kernel
-> version < 6.0 , also I saw the Sasha's commits about the same for 5.4,
-> 5.10, 5.15 and answered to him about necessity of two patchsets instead
-> of one on 19 aug.
+On Thu, 24 Aug 2023 at 20:22, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.128 release.
+> There are 139 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Sat, 26 Aug 2023 14:49:55 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.128-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Ah, so I should also include commit 74b449b98dcc ("net/ncsi: make one
-oem_gma function for all mfr id"), right?
 
-thanks,
+The same test regressions found on stable-rc linux.5.15.y as reported
+on stable-rc linux.6.1.y branch. LTP syscalls chown02 and fchown02 fails
+on arm64 Rpi4 device with the NFS rootfile system.
 
-greg k-h
+Test log:
+--------
+chown02.c:46: TPASS: chown(testfile1, 0, 0) passed
+chown02.c:46: TPASS: chown(testfile2, 0, 0) passed
+chown02.c:58: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
+
+fchown02.c:57: TPASS: fchown(3, 0, 0) passed
+fchown02.c:57: TPASS: fchown(4, 0, 0) passed
+fchown02.c:67: TFAIL: testfile2: wrong mode permissions 0100700,
+expected 0102700
+
+  Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+
+NOTE:
+Do we need a backport patch ?
+
+  nfsd: use vfs setgid helper
+    commit 2d8ae8c417db284f598dffb178cc01e7db0f1821 upstream.
+
+
+## Build
+* kernel: 5.15.128-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: 00e5f0b76767cab779762a1d27fc17c1cf2a3606
+* git describe: v5.15.127-140-g00e5f0b76767
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15.127-140-g00e5f0b76767
+
+## Test Regressions (compared to v5.15.127)
+* bcm2711-rpi-4-b, ltp-syscalls
+  - chown02
+  - fchown02
+
+* bcm2711-rpi-4-b-clang, ltp-syscalls
+  - chown02
+  - fchown02
+
+--
+Linaro LKFT
+https://lkft.linaro.org
