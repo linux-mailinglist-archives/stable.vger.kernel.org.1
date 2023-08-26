@@ -2,68 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 540D4789871
-	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 19:37:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69821789881
+	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 19:44:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229526AbjHZRga (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 26 Aug 2023 13:36:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48446 "EHLO
+        id S229769AbjHZRoM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 26 Aug 2023 13:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230404AbjHZRg3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 13:36:29 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50A70AB
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 10:36:27 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c06f6f98c0so15754395ad.3
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 10:36:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1693071386; x=1693676186;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=5OdsCNJbFjlGQVaBNH2ygEqLeU/OeanLmFkFFEe+Acg=;
-        b=NEz9eJZNfDwsEUsOkFqFQ7gFnjZknblFIdDFYPs/7NLVZMkwSKp9A41035LKIj2zkb
-         0VYOOMeWcsh2qku5n+ZNZUOXO5J3lercd1X6Y6hMh6tZnk882zb7mvp0UOLnux8MtlkD
-         4olfT/bZnjKtOj6rCebzSxV8zA+z3U3gEjH6Oh6Gfzk375XDTpvFQCXGsHt4Fbdc3gc1
-         E+kAObLDMW6RX7K6I9ezzBbWfGKIT/hJjwKhk+9eJeB6hapG3WJww47rhC9c1o0NOLyD
-         CDnauq34Le2hqevmEcRdbFRGPs9Qrkz/SEf3y3Xbs7kGbB7gPfGzpX5yYnAcns8GV2JH
-         cndA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693071386; x=1693676186;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=5OdsCNJbFjlGQVaBNH2ygEqLeU/OeanLmFkFFEe+Acg=;
-        b=ROSqOyx4EhXZrcxjIz5Oec1Z40yL4b7Ihcg4D5QtKFW76Rtre6mLu8PrxBOe6V7XKx
-         KnASi6ERbO3CTHMZYKGi5d/WS+188OR8VFNpCFcIQqevEcdCXpJOVgjh9WK5sIwDmKEd
-         K5MaPJtaMNji6DkZxZjn1awoVzMhewLEnn8TgmvvS2aIslJ4Sdi2MGVaNPUbEahYlId8
-         AHqRbzSOrnzwIm0T3x1zBRuGUduXkpNdrqt+GCGPlPRiZSckTqs/DPOWJ3+KWR4/qqHb
-         BT35qzrAaFvasPe0ULcYKd1WvU6ifZUpoe/4I5833W3AccHuhpYJDv+ULtIYqCDUWMFI
-         oycA==
-X-Gm-Message-State: AOJu0Yy1RTJ0nRDrTldwawGRDPRCP1QS8dnjgYRSXOsfvsg/wi88w0k6
-        19IRTrSgRydk8mOEN1zkYjj3Lah02FtiimZWvlY=
-X-Google-Smtp-Source: AGHT+IG/4hkbkt8i0j256a4+b6YVBT2MN3QIQJHc4iwTJ3TJ7Bl3TsSLeZwrz4rzutxdASlVDGOSwA==
-X-Received: by 2002:a17:902:e74a:b0:1bd:c931:8c47 with SMTP id p10-20020a170902e74a00b001bdc9318c47mr26335025plf.68.1693071386377;
-        Sat, 26 Aug 2023 10:36:26 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id h8-20020a170902f54800b001bb515e6b39sm3959095plf.306.2023.08.26.10.36.25
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Aug 2023 10:36:25 -0700 (PDT)
-Message-ID: <64ea3819.170a0220.413f8.6180@mx.google.com>
-Date:   Sat, 26 Aug 2023 10:36:25 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230516AbjHZRnt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 13:43:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9A50103
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 10:43:46 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 35B6D6204B
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 17:43:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46184C433C8;
+        Sat, 26 Aug 2023 17:43:45 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693071825;
+        bh=7ugB8SYMvdBLrYmeIvd26KP+X7b/kqiNd97LYtr7ZCg=;
+        h=Subject:To:Cc:From:Date:From;
+        b=MlmzkiQ+1BihET657TTJqwiFTGa4R/ZpgXUcOPsHbmPANIM00GzLu3cnvoS/yW2OM
+         G0dxdsOTx5ACkxkwdXpGKDrxrLB4iOwfVHlnvIt/q407FHWdNhEhUZubvyHi860ikR
+         esOp6brUdilQxHfzdOFvsJmiPnuU6T/Obw47Tcuk=
+Subject: FAILED: patch "[PATCH] mm,ima,kexec,of: use memblock_free_late from" failed to apply to 5.15-stable tree
+To:     riel@surriel.com, robh@kernel.org, rppt@kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 26 Aug 2023 19:43:42 +0200
+Message-ID: <2023082642-catfight-gallantly-8b84@gregkh>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.48-5-g1d91878df63ce
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.48-5-g1d91878df63ce)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,155 +48,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.48-5-g1d91878df63ce)
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.48-5-g1d91878df63ce/
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.48-5-g1d91878df63ce
-Git Commit: 1d91878df63ceab6316c7c84876abc7eec08a2e4
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Warnings Detected:
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x f0362a253606e2031f8d61c74195d4d6556e12a4
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082642-catfight-gallantly-8b84@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
-arc:
+Possible dependencies:
 
-arm64:
+f0362a253606 ("mm,ima,kexec,of: use memblock_free_late from ima_free_kexec_buffer")
+3ecc68349bba ("memblock: rename memblock_free to memblock_phys_free")
+fa27717110ae ("memblock: drop memblock_free_early_nid() and memblock_free_early()")
 
-arm:
+thanks,
 
-i386:
+greg k-h
 
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
+------------------ original commit in Linus's tree ------------------
 
-riscv:
+From f0362a253606e2031f8d61c74195d4d6556e12a4 Mon Sep 17 00:00:00 2001
+From: Rik van Riel <riel@surriel.com>
+Date: Thu, 17 Aug 2023 13:57:59 -0400
+Subject: [PATCH] mm,ima,kexec,of: use memblock_free_late from
+ ima_free_kexec_buffer
 
-x86_64:
+The code calling ima_free_kexec_buffer runs long after the memblock
+allocator has already been torn down, potentially resulting in a use
+after free in memblock_isolate_range.
 
+With KASAN or KFENCE, this use after free will result in a BUG
+from the idle task, and a subsequent kernel panic.
 
-Warnings summary:
+Switch ima_free_kexec_buffer over to memblock_free_late to avoid
+that issue.
 
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
+Fixes: fee3ff99bc67 ("powerpc: Move arch independent ima kexec functions to drivers/of/kexec.c")
+Cc: stable@kernel.org
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Suggested-by: Mike Rappoport <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20230817135759.0888e5ef@imladris.surriel.com
+Signed-off-by: Rob Herring <robh@kernel.org>
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+diff --git a/drivers/of/kexec.c b/drivers/of/kexec.c
+index f26d2ba8a371..68278340cecf 100644
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -184,7 +184,8 @@ int __init ima_free_kexec_buffer(void)
+ 	if (ret)
+ 		return ret;
+ 
+-	return memblock_phys_free(addr, size);
++	memblock_free_late(addr, size);
++	return 0;
+ }
+ #endif
+ 
 
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
