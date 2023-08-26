@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39A54789901
-	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 22:26:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3ADD9789900
+	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 22:26:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229542AbjHZU0O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S229645AbjHZU0O (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sat, 26 Aug 2023 16:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37904 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229821AbjHZUZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 16:25:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0EB1E4B
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 13:25:46 -0700 (PDT)
+        with ESMTP id S229823AbjHZUZ6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 16:25:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44BF6CF1
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 13:25:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 76E5860C34
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:25:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE2FC433C7;
-        Sat, 26 Aug 2023 20:25:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D723360C55
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:25:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E8CA9C433C8;
+        Sat, 26 Aug 2023 20:25:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693081545;
-        bh=+XUzrgN4gMgetgIhRlkVsUHRL22fbslPcQ5npwqypHc=;
+        s=korg; t=1693081555;
+        bh=oPSL9L8K0iA4OGbfptsGH/ieFgdIMSqILi79itcrHHw=;
         h=Subject:To:Cc:From:Date:From;
-        b=mhwpi82LJNTMjF8drB/57lPGxId4zNestuY1JCmTzZxXSkkZpNeQ7zccCSlO+wofW
-         C7dD4TNbBCA4LjRNcUT6itFp5/4B+Lwub23ahkoYuBdP5JvQgis1xVXHHwV+81gInK
-         X0u04Z+nUZsFzXf5QedI2kriZIvShb1yaGUnZElU=
-Subject: FAILED: patch "[PATCH] maple_tree: disable mas_wr_append() when other readers are" failed to apply to 6.4-stable tree
+        b=Nb/BArk1ZcE6xVpsYUP5I6kE0AyRSIX4zvBzA3oKXlALUEdLK2KofaXpYJ9wFYnhD
+         RqWZ1L2rBJMZqXdtk2QHqHgTkpW4WXHpxIZ2wALyLx8DNjtgYjnU99Q760tqRpziVf
+         pEudUB1O4GuJqtiosi8pK3ymQ0iYkiC1GmatwDOc=
+Subject: FAILED: patch "[PATCH] maple_tree: disable mas_wr_append() when other readers are" failed to apply to 6.1-stable tree
 To:     Liam.Howlett@oracle.com, akpm@linux-foundation.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 26 Aug 2023 22:25:42 +0200
-Message-ID: <2023082642-energetic-playpen-0bea@gregkh>
+Date:   Sat, 26 Aug 2023 22:25:44 +0200
+Message-ID: <2023082644-dimmed-purse-07c2@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -50,23 +49,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x cfeb6ae8bcb96ccf674724f223661bbcef7b0d0b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082642-energetic-playpen-0bea@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082644-dimmed-purse-07c2@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-
+cfeb6ae8bcb9 ("maple_tree: disable mas_wr_append() when other readers are possible")
+2e1da329b424 ("maple_tree: add comments and some minor cleanups to mas_wr_append()")
+c6fc9e4a5c50 ("maple_tree: add mas_wr_new_end() to calculate new_end accurately")
 
 thanks,
 
