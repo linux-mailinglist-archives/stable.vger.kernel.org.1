@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEAD07898FE
-	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 22:24:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A54789901
+	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 22:26:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229617AbjHZUXc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 26 Aug 2023 16:23:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41630 "EHLO
+        id S229542AbjHZU0O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 26 Aug 2023 16:26:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229600AbjHZUXA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 16:23:00 -0400
+        with ESMTP id S229821AbjHZUZt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 16:25:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A385102
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 13:22:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0EB1E4B
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 13:25:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93F4C60C7D
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:22:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2359C433C8;
-        Sat, 26 Aug 2023 20:22:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 76E5860C34
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:25:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE2FC433C7;
+        Sat, 26 Aug 2023 20:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693081377;
-        bh=731xHbB8SKHJWwoZOFDZs/qmxx7hzp1759BTKBDwqqQ=;
+        s=korg; t=1693081545;
+        bh=+XUzrgN4gMgetgIhRlkVsUHRL22fbslPcQ5npwqypHc=;
         h=Subject:To:Cc:From:Date:From;
-        b=i/RBZ3eAmm0dFP8DkiRhRb9QxYyinRcoqTS/QMaXdV3syCCOaRxAyvjqwyuinckNg
-         W+PerjceCXJL0ZIdWAr5swaem+1v0RyEXD/dybJLoEt7a3xtrlTVR2rF45KySuXSAO
-         ad0qOfFPVIXO24pKVCCyuxPXf0yOnonbwDFIw3vc=
-Subject: FAILED: patch "[PATCH] batman-adv: Hold rtnl lock during MTU update via netlink" failed to apply to 4.14-stable tree
-To:     sven@narfation.org, horms@kernel.org, kuba@kernel.org
+        b=mhwpi82LJNTMjF8drB/57lPGxId4zNestuY1JCmTzZxXSkkZpNeQ7zccCSlO+wofW
+         C7dD4TNbBCA4LjRNcUT6itFp5/4B+Lwub23ahkoYuBdP5JvQgis1xVXHHwV+81gInK
+         X0u04Z+nUZsFzXf5QedI2kriZIvShb1yaGUnZElU=
+Subject: FAILED: patch "[PATCH] maple_tree: disable mas_wr_append() when other readers are" failed to apply to 6.4-stable tree
+To:     Liam.Howlett@oracle.com, akpm@linux-foundation.org,
+        stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 26 Aug 2023 22:22:46 +0200
-Message-ID: <2023082645-unicycle-diaphragm-272c@gregkh>
+Date:   Sat, 26 Aug 2023 22:25:42 +0200
+Message-ID: <2023082642-energetic-playpen-0bea@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,41 +50,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 987aae75fc1041072941ffb622b45ce2359a99b9
+git cherry-pick -x cfeb6ae8bcb96ccf674724f223661bbcef7b0d0b
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082645-unicycle-diaphragm-272c@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082642-energetic-playpen-0bea@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-987aae75fc10 ("batman-adv: Hold rtnl lock during MTU update via netlink")
-3e15b06eb7e4 ("batman-adv: Add fragmentation mesh genl configuration")
-a1c8de803296 ("batman-adv: Add distributed_arp_table mesh genl configuration")
-43ff6105a527 ("batman-adv: Add bridge_loop_avoidance mesh genl configuration")
-d7e52506b680 ("batman-adv: Add bonding mesh genl configuration")
-e43d16b87dc2 ("batman-adv: Add ap_isolation mesh/vlan genl configuration")
-9ab4cee5ced9 ("batman-adv: Add aggregated_ogms mesh genl configuration")
-49e7e37cd981 ("batman-adv: Prepare framework for vlan genl config")
-5c55a40fa801 ("batman-adv: Prepare framework for hardif genl config")
-600405135360 ("batman-adv: Prepare framework for mesh genl config")
-c4a7a8d9bb8f ("batman-adv: Move common genl doit code pre/post hooks")
-fb69be697916 ("batman-adv: Add inconsistent hardif netlink dump detection")
-53dd9a68ba68 ("batman-adv: add multicast flags netlink support")
-41aeefcc38a2 ("batman-adv: add DAT cache netlink support")
-fec149f5d323 ("batman-adv: Convert packet.h to uapi header")
-7e9a8c2ce7c5 ("batman-adv: Use parentheses in function kernel-doc")
-7db7d9f369a4 ("batman-adv: Add SPDX license identifier above copyright header")
-40b16b9be577 ("batman-adv: use inline kernel-doc for uapi constants")
-706cc9f51d9a ("batman-adv: Add argument names for function ptr definitions")
+
 
 thanks,
 
@@ -91,43 +74,83 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 987aae75fc1041072941ffb622b45ce2359a99b9 Mon Sep 17 00:00:00 2001
-From: Sven Eckelmann <sven@narfation.org>
-Date: Mon, 21 Aug 2023 21:48:48 +0200
-Subject: [PATCH] batman-adv: Hold rtnl lock during MTU update via netlink
+From cfeb6ae8bcb96ccf674724f223661bbcef7b0d0b Mon Sep 17 00:00:00 2001
+From: "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Date: Fri, 18 Aug 2023 20:43:55 -0400
+Subject: [PATCH] maple_tree: disable mas_wr_append() when other readers are
+ possible
 
-The automatic recalculation of the maximum allowed MTU is usually triggered
-by code sections which are already rtnl lock protected by callers outside
-of batman-adv. But when the fragmentation setting is changed via
-batman-adv's own batadv genl family, then the rtnl lock is not yet taken.
+The current implementation of append may cause duplicate data and/or
+incorrect ranges to be returned to a reader during an update.  Although
+this has not been reported or seen, disable the append write operation
+while the tree is in rcu mode out of an abundance of caution.
 
-But dev_set_mtu requires that the caller holds the rtnl lock because it
-uses netdevice notifiers. And this code will then fail the check for this
-lock:
+During the analysis of the mas_next_slot() the following was
+artificially created by separating the writer and reader code:
 
-  RTNL: assertion failed at net/core/dev.c (1953)
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last slot write is to start of slot
+    store current contents in slot
+    overwrite old end pivot
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                return with incorrect range
+    store new value
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com
-Fixes: c6a953cce8d0 ("batman-adv: Trigger events for auto adjusted MTU")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230821-batadv-missing-mtu-rtnl-lock-v1-1-1c5a7bfe861e@narfation.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Alternatively:
 
-diff --git a/net/batman-adv/netlink.c b/net/batman-adv/netlink.c
-index ad5714f737be..6efbc9275aec 100644
---- a/net/batman-adv/netlink.c
-+++ b/net/batman-adv/netlink.c
-@@ -495,7 +495,10 @@ static int batadv_netlink_set_mesh(struct sk_buff *skb, struct genl_info *info)
- 		attr = info->attrs[BATADV_ATTR_FRAGMENTATION_ENABLED];
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last lost write to end of slot
+    store value
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                read new end pivot
+                                                return with incorrect range
+    set old end pivot
+
+There may be other accesses that are not safe since we are now updating
+both metadata and pointers, so disabling append if there could be rcu
+readers is the safest action.
+
+Link: https://lkml.kernel.org/r/20230819004356.1454718-2-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index 4dd73cf936a6..f723024e1426 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -4265,6 +4265,10 @@ static inline unsigned char mas_wr_new_end(struct ma_wr_state *wr_mas)
+  * mas_wr_append: Attempt to append
+  * @wr_mas: the maple write state
+  *
++ * This is currently unsafe in rcu mode since the end of the node may be cached
++ * by readers while the node contents may be updated which could result in
++ * inaccurate information.
++ *
+  * Return: True if appended, false otherwise
+  */
+ static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
+@@ -4274,6 +4278,9 @@ static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
+ 	struct ma_state *mas = wr_mas->mas;
+ 	unsigned char node_pivots = mt_pivots[wr_mas->type];
  
- 		atomic_set(&bat_priv->fragmentation, !!nla_get_u8(attr));
++	if (mt_in_rcu(mas->tree))
++		return false;
 +
-+		rtnl_lock();
- 		batadv_update_min_mtu(bat_priv->soft_iface);
-+		rtnl_unlock();
- 	}
+ 	if (mas->offset != wr_mas->node_end)
+ 		return false;
  
- 	if (info->attrs[BATADV_ATTR_GW_BANDWIDTH_DOWN]) {
 
