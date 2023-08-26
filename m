@@ -2,81 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C41A7897D9
-	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 17:49:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 062B87897DD
+	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 17:53:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230189AbjHZPtQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 26 Aug 2023 11:49:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35542 "EHLO
+        id S229468AbjHZPw7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 26 Aug 2023 11:52:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231253AbjHZPtE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 11:49:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7FEE1BD4;
-        Sat, 26 Aug 2023 08:49:02 -0700 (PDT)
+        with ESMTP id S229776AbjHZPww (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 11:52:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F91CE0;
+        Sat, 26 Aug 2023 08:52:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62B8F628C5;
-        Sat, 26 Aug 2023 15:49:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 490D7C433C8;
-        Sat, 26 Aug 2023 15:49:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B067A6115B;
+        Sat, 26 Aug 2023 15:52:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90DBBC433C7;
+        Sat, 26 Aug 2023 15:52:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693064941;
-        bh=cyldISG9CgG+prslJEU2swFaz2IVHWHkfUssWaglIbY=;
+        s=korg; t=1693065169;
+        bh=2r8AAy315jPDAk6JZfqisWgUEpomjvCHrtYpBhKJg9U=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BkO7D9m31dVgW09P317TX6bbwjJd2vbdbkSwPnTNx7cr4VxB00Rt/NcKZes/qaKhM
-         vD+Mu4rBjle5llFO3J2v55TbtaLL48ebNt/KDj3KEtQXX3rZKngJiZNr6dTGWI66W8
-         Ogbnh6rDfWHusT2q/S8SkXlTflydq7tahmO4qj+Y=
-Date:   Sat, 26 Aug 2023 17:48:59 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/149] 6.1.46-rc1 review
-Message-ID: <2023082627-tabasco-concave-1366@gregkh>
-References: <20230813211718.757428827@linuxfoundation.org>
- <b392e1a8-b987-4993-bd45-035db9415a6e@roeck-us.net>
- <2023081631-uproar-tapered-2221@gregkh>
+        b=TcA6V2gNWh9+JQmN0+h1Y8pYPQWGKzgnrkG/K50I2fw2YWdxdMpYo0iSRY2otMDZO
+         hYXs3EiZCin1Rh6mce9Jo7W38MgLE86SJIYTCKCftd1i55FXhpOe+ra88Pnccln4Ct
+         s3KuOKSo4iXmjjBIEBdbOhfAz89kJ88KgcpjFzxs=
+Date:   Sat, 26 Aug 2023 17:52:45 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     Huacai Chen <chenhuacai@loongson.cn>, loongarch@lists.linux.dev,
+        Xuefeng Li <lixuefeng@loongson.cn>,
+        Guo Ren <guoren@kernel.org>, Xuerui Wang <kernel@xen0n.name>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>,
+        linux-kernel@vger.kernel.org, loongson-kernel@lists.loongnix.cn,
+        stable@vger.kernel.org
+Subject: Re: [PATCH V2] LoongArch: Ensure FP/SIMD registers in the core dump
+ file is up to date
+Message-ID: <2023082611-tactical-embark-d99a@gregkh>
+References: <20230826142341.4107728-1-chenhuacai@loongson.cn>
+ <2023082618-mocha-reactor-1dbe@gregkh>
+ <CAAhV-H4aKT=O1Ly7Zw+oSuVDP73kcXf+boAJK5W=6n76Ftz=WA@mail.gmail.com>
+ <2023082609-coerce-capricorn-a69f@gregkh>
+ <CAAhV-H532djpsYDPGZxG9g8eiaq2UMGYX_+ADb4kaPpQmgTXYg@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <2023081631-uproar-tapered-2221@gregkh>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAhV-H532djpsYDPGZxG9g8eiaq2UMGYX_+ADb4kaPpQmgTXYg@mail.gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 16, 2023 at 06:26:47PM +0200, Greg Kroah-Hartman wrote:
-> On Mon, Aug 14, 2023 at 07:04:57AM -0700, Guenter Roeck wrote:
-> > On Sun, Aug 13, 2023 at 11:17:25PM +0200, Greg Kroah-Hartman wrote:
-> > > This is the start of the stable review cycle for the 6.1.46 release.
-> > > There are 149 patches in this series, all will be posted as a response
-> > > to this one.  If anyone has any issues with these being applied, please
-> > > let me know.
-> > > 
-> > > Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
-> > > Anything received after that time might be too late.
-> > 
-> > Booting with f2fs root file systems still crashes in this release
-> > candidate. Would it make sense to mark f2fs as broken in v6.1.y ?
-> 
-> Ick, yeah, let me dig into this next week and figure out what went
-> wrong...
+On Sat, Aug 26, 2023 at 11:47:24PM +0800, Huacai Chen wrote:
+> On Sat, Aug 26, 2023 at 11:43 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Sat, Aug 26, 2023 at 11:35:31PM +0800, Huacai Chen wrote:
+> > > On Sat, Aug 26, 2023 at 11:22 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> > > >
+> > > > On Sat, Aug 26, 2023 at 10:23:41PM +0800, Huacai Chen wrote:
+> > > > > This is a port of commit 379eb01c21795edb4c ("riscv: Ensure the value
+> > > > > of FP registers in the core dump file is up to date").
+> > > > >
+> > > > > The values of FP/SIMD registers in the core dump file come from the
+> > > > > thread.fpu. However, kernel saves the FP/SIMD registers only before
+> > > > > scheduling out the process. If no process switch happens during the
+> > > > > exception handling, kernel will not have a chance to save the latest
+> > > > > values of FP/SIMD registers. So it may cause their values in the core
+> > > > > dump file incorrect. To solve this problem, force fpr_get()/simd_get()
+> > > > > to save the FP/SIMD registers into the thread.fpu if the target task
+> > > > > equals the current task.
+> > > > >
+> > > > > Cc: stable@vger.kernel.org
+> > > > > Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+> > > > > ---
+> > > > > V2: Rename get_fpu_regs() to save_fpu_regs().
+> > > >
+> > > > What stable tree(s) is this for?
+> > > For 5.19+, but before 6.4 we should remove the call site in simd_get()
+> > > because that function doesn't exist.
+> >
+> > But this commit is already in the following released kernels:
+> >         5.10.62 5.13.14 5.14
+> Do you means commit 379eb01c21795edb4c ("riscv: Ensure the value of FP
+> registers in the core dump file is up to date")? That is a reference
+> commit, not a Fixes tag. This patch is for LoongArch and LoongArch
+> only exists after 5.19.
 
-I've now pushed out 6.1.49-rc1 with the last 3 f2fs patches reverted,
-and a single objtool fix.  Hopefully that should resolve this issue, if
-not, please let me know.
+Ah, ok, that wasn't obvious sorry.  I thought this was something you
+wanted backported to the stable kernel trees based on the comment in the
+first few lines of the change.
 
-thanks,
+I'll leave this alone then, thanks!
 
 greg k-h
