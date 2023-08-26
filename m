@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4E317898FD
-	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 22:23:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEAD07898FE
+	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 22:24:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229571AbjHZUW6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 26 Aug 2023 16:22:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58538 "EHLO
+        id S229617AbjHZUXc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 26 Aug 2023 16:23:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229735AbjHZUWv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 16:22:51 -0400
+        with ESMTP id S229600AbjHZUXA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 16:23:00 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE366102
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 13:22:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A385102
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 13:22:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8441E60C7D
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:22:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 666E0C433C8;
-        Sat, 26 Aug 2023 20:22:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93F4C60C7D
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:22:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2359C433C8;
+        Sat, 26 Aug 2023 20:22:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693081367;
-        bh=kxjsd42jv0Ehbvov50A6M5idDwXl3eEai+EGdHxnEbQ=;
+        s=korg; t=1693081377;
+        bh=731xHbB8SKHJWwoZOFDZs/qmxx7hzp1759BTKBDwqqQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=wOE8bhYKWdgLthSLF1/8Mz9lb6BPGJCst1Vqf1tMVIellsmG62QjtVgxPUhrWWWjp
-         TwXvXKguxVnLfDehvoHNV2mnG4VkRhdZVRgqNQ6X689MeG9Dn6nndKYCaJubY5Yts8
-         aDZGbRKRnnnNWyj9KGXs4AjS6xHlvFITE5Ds4Qng=
-Subject: FAILED: patch "[PATCH] batman-adv: Hold rtnl lock during MTU update via netlink" failed to apply to 4.19-stable tree
+        b=i/RBZ3eAmm0dFP8DkiRhRb9QxYyinRcoqTS/QMaXdV3syCCOaRxAyvjqwyuinckNg
+         W+PerjceCXJL0ZIdWAr5swaem+1v0RyEXD/dybJLoEt7a3xtrlTVR2rF45KySuXSAO
+         ad0qOfFPVIXO24pKVCCyuxPXf0yOnonbwDFIw3vc=
+Subject: FAILED: patch "[PATCH] batman-adv: Hold rtnl lock during MTU update via netlink" failed to apply to 4.14-stable tree
 To:     sven@narfation.org, horms@kernel.org, kuba@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 26 Aug 2023 22:22:44 +0200
-Message-ID: <2023082644-placard-bullfight-dbc3@gregkh>
+Date:   Sat, 26 Aug 2023 22:22:46 +0200
+Message-ID: <2023082645-unicycle-diaphragm-272c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 987aae75fc1041072941ffb622b45ce2359a99b9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082644-placard-bullfight-dbc3@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082645-unicycle-diaphragm-272c@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
@@ -77,6 +77,13 @@ e43d16b87dc2 ("batman-adv: Add ap_isolation mesh/vlan genl configuration")
 600405135360 ("batman-adv: Prepare framework for mesh genl config")
 c4a7a8d9bb8f ("batman-adv: Move common genl doit code pre/post hooks")
 fb69be697916 ("batman-adv: Add inconsistent hardif netlink dump detection")
+53dd9a68ba68 ("batman-adv: add multicast flags netlink support")
+41aeefcc38a2 ("batman-adv: add DAT cache netlink support")
+fec149f5d323 ("batman-adv: Convert packet.h to uapi header")
+7e9a8c2ce7c5 ("batman-adv: Use parentheses in function kernel-doc")
+7db7d9f369a4 ("batman-adv: Add SPDX license identifier above copyright header")
+40b16b9be577 ("batman-adv: use inline kernel-doc for uapi constants")
+706cc9f51d9a ("batman-adv: Add argument names for function ptr definitions")
 
 thanks,
 
