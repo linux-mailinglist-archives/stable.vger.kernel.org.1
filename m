@@ -2,159 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AE247894B8
-	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 10:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42F3A7894E7
+	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 10:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231470AbjHZIMg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 26 Aug 2023 04:12:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38912 "EHLO
+        id S230445AbjHZIpu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 26 Aug 2023 04:45:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229764AbjHZIMP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 04:12:15 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8501C1FD7;
-        Sat, 26 Aug 2023 01:12:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1693037530; x=1693642330; i=deller@gmx.de;
- bh=hm1F3N09SJ+WGgO0vYyvNvla2f7QTLVFBvCg3MxxSCo=;
- h=X-UI-Sender-Class:Date:Subject:To:Cc:References:From:In-Reply-To;
- b=oYiYBoZFErgc1j45ACFKyinCnwtftKkPXzUuXZNsQ3GEtEjdoZfe3NiqzS3eeDFzwHhCjB+
- pJyV4eWZIdl1aN08SNVtba/gULQwsP0q6HtAUoyeWP1D2K4IP4FmJkFIH2rpesjjC34sXUdO1
- sjjmqx0Piw+llAJQ19kjHS5+DcDGviiBIXXdEcTDnWUBjk1Uo9/DYIZ4JHgsUvMdDH4EbKWJy
- 27duX+7gACT+4ypLiJ178xMcLmOiWw84GEpWpseyln9ReKTIrlUGJ1wXvmRUHoqoWXtPvbDx8
- hrpIJAhDQM0JsiS8mkb+It3va7U/91U5IR92J6GmcC0OW0T876ww==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.20.60] ([94.134.144.244]) by mail.gmx.net (mrgmx104
- [212.227.17.168]) with ESMTPSA (Nemesis) id 1Md6R1-1q0kQr0s6t-00aF3g; Sat, 26
- Aug 2023 10:12:10 +0200
-Message-ID: <d819f689-9a38-3ab7-7585-ca85b69795bf@gmx.de>
-Date:   Sat, 26 Aug 2023 10:12:09 +0200
+        with ESMTP id S232059AbjHZIpa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 04:45:30 -0400
+Received: from mail-lj1-x236.google.com (mail-lj1-x236.google.com [IPv6:2a00:1450:4864:20::236])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC4E5213A;
+        Sat, 26 Aug 2023 01:45:27 -0700 (PDT)
+Received: by mail-lj1-x236.google.com with SMTP id 38308e7fff4ca-2b9c907bc68so24365781fa.2;
+        Sat, 26 Aug 2023 01:45:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693039525; x=1693644325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HBPeLGUAtVO0USbU1Yk7uoBTmd4OjEFwwRL+82RfIoU=;
+        b=I+hNkSebw7bIjmSdswc4ETvWrfjQhIqqY+AzDHmp9zFCeMNWaVgsoY8i/SRQOvrGuV
+         b3JnxqtDDyzX2Kt1PThI2M905f+tlLAY0nyXfocWLTW/OEDyW9R8OXLDjOHpNv7g+ewS
+         DAypWh0w7Q/Z0Jbn/x65RVdMo+UHYQpplrP8u7k+iEjxRxHnNuyuWmXJLl0zdyrte9Ed
+         q48hqzmZCvbqXi2nSNObFJjihjdATpkFNl77hVfruJ2tTYjItUzggpQ0lNXVoBjZ4h0u
+         nUrfd2YP9SS84IuSp/IaK2ZSGFPf1dAOwCcnkGEEGhAg5iLIge4tAkaWXELqT/l+vXvW
+         uLdw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693039525; x=1693644325;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=HBPeLGUAtVO0USbU1Yk7uoBTmd4OjEFwwRL+82RfIoU=;
+        b=RjAUtFScX72dp7k9Tr0QodLmM2oYXJAK0dylkQd6tuX+11bDxBPR5QFYoqizR0KYQx
+         3rh44+nM2jCyQ4sNF0kv/B+23DwHB+114dG1xp82FqEeDnNVmx6Q7wq0CWtphnatabNS
+         ps94fhShCY/igKoD/qmNs91UMrer9n9AteyJU/uih7f/VnncB40o+z+ovoOMxz+ib/xF
+         bBCdHRc66uJKEz3s2/1nGBWmDaWNDlhXT+igsSDJz1IW3xUm3wnL34S2X3CAGrEj5+nE
+         o7v+jej/kPSNTbEkiqFV7CB9itqq92U/6JAuMU08Kq6pereWXG9Rju0GZjOdOr6Ok3gF
+         YQGQ==
+X-Gm-Message-State: AOJu0YxN5Sde4Rz4owYHkeZURzsPYMJ+yAACdRbEBvKHzwhItBm3Fpgm
+        YI2cvrA81ILHYW83bj3yZNw=
+X-Google-Smtp-Source: AGHT+IHJ5zcjFrIN0QeJxxkD/ZHmLjGuxoaGhiieRGHGeCha2xLp4jN/svXjDeyG9xlQkN75QRRrZg==
+X-Received: by 2002:a2e:9e09:0:b0:2b6:dac0:affe with SMTP id e9-20020a2e9e09000000b002b6dac0affemr15375800ljk.31.1693039525121;
+        Sat, 26 Aug 2023 01:45:25 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id y24-20020a1c4b18000000b003fc01189b0dsm4306875wma.42.2023.08.26.01.45.23
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Aug 2023 01:45:23 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id E5A50BE2DE0; Sat, 26 Aug 2023 10:45:22 +0200 (CEST)
+Date:   Sat, 26 Aug 2023 10:45:22 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org, peterz@infradead.org
+Subject: Re: [PATCH 6.1 00/15] 6.1.48-rc1 review
+Message-ID: <ZOm7oqwTJiVW6Uvu@eldamar.lan>
+References: <20230824141447.155846739@linuxfoundation.org>
+ <ZOhz4/8Q8XjIqpCy@debian>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 1/3] parisc: led: Reduce CPU overhead for disk & lan LED
- computation
-Content-Language: en-US
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     linux-parisc@vger.kernel.org, stable@vger.kernel.org
-References: <20230825180928.205499-1-deller@kernel.org>
- <2023082636-refreeze-plot-9f6e@gregkh>
- <15c20ace-62c9-a986-cb68-f74953bef624@gmx.de>
- <2023082605-vista-probably-faac@gregkh>
-From:   Helge Deller <deller@gmx.de>
-In-Reply-To: <2023082605-vista-probably-faac@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: quoted-printable
-X-Provags-ID: V03:K1:iGoVkgBijaEutkD1CRFkxYCy7VLZgWn3iBSeaxdIJomcYNDkaey
- c1+D4EohHsQPulUzHTDiwCEhu4erorhktfGd275dHBXQwtS8GF+GYj/gUZylBkT8djnf2Eq
- 87nIhU8hl8uKbLRuJKiHoFXDDmGAE1GZ0PzlCskvWq7ewu82Rf+o5czDi0aILEithZYP9Ys
- vSmRDBHpl36Z3BMlqYniw==
-UI-OutboundReport: notjunk:1;M01:P0:olqhuQ1V458=;sF5dNz4EvTLEvk6WwSSfUrbLEEA
- n8M+RpZETPhF/Ii9Z1etHW753xgieEriXGzuwELxVm/wXIGBsrGWB6f4g/zsVd3GkBrZQYtT1
- yU8q3ELM/OKwudRcgAhLH7U/EH1pdWiE0Nqzm1lp89EQOuVv89Labq49o69PqNe4cotpEFfGP
- uKRRJwRUu3HU3zIkA+28R4Bqq47I1Gis8crt2soHPOQOh8ykVzjgXud6wMbOdNk9KyKM62Nu+
- VKRXYtxrRNO0JHKqSVX8Ih9b7Ey/dP4ouoGUQIxdCHkUGSYWz1wW/sq+ij607Z5pcyWlKxCNO
- kt4936+ZojfVxSxSttdB6r8AGCYmRYJ4719/Z7ndZ2vZo2pUsRf3dwsTDu95BlpdIlm1FQr4m
- aCFq3JRMRwu5A2n1+AYsa/8GUJpHqVT+aHDAzpcn4hVWi5BNoNNRqEKbiWgdYg4d2pOcCZ2cz
- XoU+1F2gDOWRX6Tcnfpw76dA0kdDzpJp1F4IQ+X/NRnW6poHaVgF07a5FtCKdhxBPjvEI1lD7
- F2wtvbzLgDu2tDzgq5w8ri1GBYf4oWuB0etHHSoXnq7aRLmmHCHbBV3ycDfbyGooGfHQnhg3V
- 00gw1cJ1ZzcmHSvvk5AnRGjo0WdC+aG+D1UUt8Sx8Wl/zg42C6jyT9SXoN3mOXDCBP2n46a3t
- rJjGT5VYNDqETNy8QshZgJn0nDozNRWrQh/xjKFxvpbbSs0EKYwdn/xCmwyKJGPKhbQTORQR6
- OK4vgNLucKsDHdSP7gXa9Ssq4+YZj9/B0r9HzjlcQcQvObICnlgLShL6l8y19YUGVnW+A73iA
- 9tnGR/f0Hc/qaDDrstjVKgN7rtsmt+peVv4sKhDKjNgDwDhADzQSsjVSW0RGFAtY0VZVtYOaM
- EzLxpezWDJ+NR67C518dnvSFjYidkPg1zGGRxUil3mbfJ8p5l0Rz8iNf+zvVpMWXb9LdUHfqk
- nvvOk8OwaUd1B2/BsMDe8P4LB3w=
-X-Spam-Status: No, score=-3.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <ZOhz4/8Q8XjIqpCy@debian>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/26/23 09:58, Greg KH wrote:
-> On Sat, Aug 26, 2023 at 09:54:55AM +0200, Helge Deller wrote:
->> On 8/26/23 09:34, Greg KH wrote:
->>> On Fri, Aug 25, 2023 at 08:09:26PM +0200, deller@kernel.org wrote:
->>>> From: Helge Deller <deller@gmx.de>
->>>>
->>>> Older PA-RISC machines have LEDs which show the disk- and LAN-activit=
-y.
->>>> The computation is done in software and takes quite some time, e.g. o=
-n a
->>>> J6500 this may take up to 60% time of one CPU if the machine is loade=
-d
->>>> via network traffic.
->>>>
->>>> Since most people don't care about the LEDs, start with LEDs disabled=
- and
->>>> just show a CPU heartbeat LED. The disk and LAN LEDs can be turned on
->>>> manually via /proc/pdc/led.
->>>>
->>>> Signed-off-by: Helge Deller <deller@gmx.de>
->>>> Cc: <stable@vger.kernel.org>
->>>> ---
->>>>    drivers/parisc/led.c | 7 +++++--
->>>>    1 file changed, 5 insertions(+), 2 deletions(-)
->>>>
->>>> diff --git a/drivers/parisc/led.c b/drivers/parisc/led.c
->>>> index 8bdc5e043831..765f19608f60 100644
->>>> --- a/drivers/parisc/led.c
->>>> +++ b/drivers/parisc/led.c
->>>> @@ -56,8 +56,8 @@
->>>>    static int led_type __read_mostly =3D -1;
->>>>    static unsigned char lastleds;	/* LED state from most recent updat=
-e */
->>>>    static unsigned int led_heartbeat __read_mostly =3D 1;
->>>> -static unsigned int led_diskio    __read_mostly =3D 1;
->>>> -static unsigned int led_lanrxtx   __read_mostly =3D 1;
->>>> +static unsigned int led_diskio    __read_mostly;
->>>> +static unsigned int led_lanrxtx   __read_mostly;
->>>>    static char lcd_text[32]          __read_mostly;
->>>>    static char lcd_text_default[32]  __read_mostly;
->>>>    static int  lcd_no_led_support    __read_mostly =3D 0; /* KittyHaw=
-k doesn't support LED on its LCD */
->>>> @@ -589,6 +589,9 @@ int __init register_led_driver(int model, unsigne=
-d long cmd_reg, unsigned long d
->>>>    		return 1;
->>>>    	}
->>>>
->>>> +	pr_info("LED: Enable disk and LAN activity LEDs "
->>>> +		"via /proc/pdc/led\n");
->>>
->>> When drivers are working properly, they should be quiet.  Who is going
->>> to see this message?
->>
->> That patch shouldn't have gone to stable@ yet... git-send-patch just
->> pulled the CC in and I didn't noticed.
->> So, please don't apply it yet.
->
-> I will not, and it's fine to cc: stable@ on stuff that is still making
-> it's way into the kernel tree.  It gives us a heads-up on stuff, AND
-> sometimes it gives you an additional free review :)
+Hi
+On Fri, Aug 25, 2023 at 10:26:59AM +0100, Sudip Mukherjee (Codethink) wrote:
+> Hi Greg,
+> 
+> On Thu, Aug 24, 2023 at 04:14:56PM +0200, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 6.1.48 release.
+> > There are 15 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Sat, 26 Aug 2023 14:14:28 +0000.
+> > Anything received after that time might be too late.
+> 
+> Build test (gcc version 12.3.1 20230625):
+> mips: 52 configs -> no failure
+> arm: 100 configs -> no failure
+> arm64: 3 configs -> no failure
+> x86_64: 4 configs -> no failure
+> alpha allmodconfig -> no failure
+> csky allmodconfig -> no failure
+> powerpc allmodconfig -> no failure
+> riscv allmodconfig -> no failure
+> s390 allmodconfig -> no failure
+> xtensa allmodconfig -> no failure
+> 
+> Boot test:
+> x86_64: Booted on my test laptop. Warning on boot.
+> x86_64: Booted on qemu. Warning on boot. [1]
+> arm64: Booted on rpi4b (4GB model). No regression. [2]
+> mips: Booted on ci20 board. No regression. [3]
+> 
+> [1]. https://openqa.qa.codethink.co.uk/tests/4787
+> [2]. https://openqa.qa.codethink.co.uk/tests/4796
+> [3]. https://openqa.qa.codethink.co.uk/tests/4795
+> 
+> Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+> 
+> 
+> [    0.154501] ------------[ cut here ]------------
+> [    0.154505] missing return thunk: __alt_instructions_end+0x21b2/0x21d0-srso_untrain_ret+0x0/0x2: e9 17 81 f8 fe
+> [    0.154517] WARNING: CPU: 0 PID: 0 at arch/x86/kernel/alternative.c:572 apply_returns+0x1cb/0x200
+> [    0.154524] Modules linked in:
+> [    0.154526] CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.1.48-rc1-c079d0dd788a+ #1
+> [    0.154529] Hardware name: LENOVO 4287CTO/4287CTO, BIOS 8DET68WW (1.38 ) 04/11/2013
+> [    0.154531] RIP: 0010:apply_returns+0x1cb/0x200
+> [    0.154534] Code: 5b 01 00 0f 85 0b ff ff ff 49 89 e8 b9 05 00 00 00 4c 89 f2 48 89 ee 48 c7 c7 38 16 4f b8 c6 05 f5 d1 5b 01 01 e8 85 8e 05 00 <0f> 0b e9 e3 fe ff ff c7 84 24 81 00 00 00 cc cc cc cc 42 c7 44 38
+> [    0.154536] RSP: 0000:ffffffffb8803e30 EFLAGS: 00010282
+> [    0.154539] RAX: 0000000000000000 RBX: ffffffffb906d7b4 RCX: 0000000000000000
+> [    0.154541] RDX: 0000000000000003 RSI: 0000000000004ffb RDI: 00000000ffffffff
+> [    0.154542] RBP: ffffffffb9079962 R08: 0000000000000000 R09: 00000000ffffefff
+> [    0.154544] R10: ffffffffb8803cc0 R11: ffffffffb88cc1e8 R12: ffffffffb906d7d4
+> [    0.154545] R13: cccccccccccccccc R14: ffffffffb8001a7e R15: 0000000000000004
+> [    0.154547] FS:  0000000000000000(0000) GS:ffff936dd6200000(0000) knlGS:0000000000000000
+> [    0.154549] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+> [    0.154551] CR2: ffff936dde5ff000 CR3: 000000013b40a001 CR4: 00000000000606f0
+> [    0.154553] Call Trace:
+> [    0.154556]  <TASK>
+> [    0.154559]  ? __warn+0x79/0xc0
+> [    0.154565]  ? apply_returns+0x1cb/0x200
+> [    0.154567]  ? report_bug+0xee/0x170
+> [    0.154572]  ? prb_read_valid+0x17/0x20
+> [    0.154578]  ? handle_bug+0x42/0x70
+> [    0.154581]  ? exc_invalid_op+0x14/0x70
+> [    0.154583]  ? asm_exc_invalid_op+0x16/0x20
+> [    0.154586]  ? retbleed_return_thunk+0x7e/0x7e
+> [    0.154591]  ? apply_returns+0x1cb/0x200
+> [    0.154594]  ? apply_retpolines+0x1f5/0x2c0
+> [    0.154598]  alternative_instructions+0x4d/0xfc
+> [    0.154604]  arch_cpu_finalize_init+0x28/0x47
+> [    0.154607]  start_kernel+0x66c/0x70e
+> [    0.154612]  secondary_startup_64_no_verify+0xce/0xdb
+> [    0.154618]  </TASK>
+> [    0.154619] ---[ end trace 0000000000000000 ]---
 
-Yes, thanks!  :-)
+Seeing this as well, but see some context in the thread in the
+previous cycle (where then those patches were not included);
 
->>> I don't even understand it, are you saying that you now need to go
->>> enable the led through proc?  And why are leds in proc, I thought they
->>> had a real class for them?  Why not use that instead?
->>
->> This is an old driver from the very beginning, and I don't want to chan=
-ge
->> much in it for old kernels other than to reduce the CPU overhead it gen=
-erates.
->
-> Ah, makes sense, that is a crazy amount of cpu time for a blinking led.
->
-> How about just default to it off (like the first chunk you have here),
-> which will go to stable trees,
+https://lore.kernel.org/stable/2023082212-pregnant-lizard-80e0@gregkh/
 
-Yes, that was the idea of this patch. I'll drop the pr_info() next time.
+Apart for the above regression, no other regressions spotted. 
 
-> and then a rewrite to use the proper LED api?
+Tested-by: Salvatore Bonaccorso <carnil@debian.org> 
 
-Yes.
-
-Helge
+Regards,
+Salvatore
