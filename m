@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0F4C78981F
-	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 18:37:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76418789836
+	for <lists+stable@lfdr.de>; Sat, 26 Aug 2023 18:41:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230001AbjHZQhM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 26 Aug 2023 12:37:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60804 "EHLO
+        id S229655AbjHZQlF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 26 Aug 2023 12:41:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230137AbjHZQgw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 12:36:52 -0400
+        with ESMTP id S230202AbjHZQk5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 12:40:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A21D61991;
-        Sat, 26 Aug 2023 09:36:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB7AA122;
+        Sat, 26 Aug 2023 09:40:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 418ED616E6;
-        Sat, 26 Aug 2023 16:36:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50245C433C7;
-        Sat, 26 Aug 2023 16:36:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 89CA3611B1;
+        Sat, 26 Aug 2023 16:40:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86F06C433C8;
+        Sat, 26 Aug 2023 16:40:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693067809;
-        bh=Bw8aXWJjlayr4JFwZwbqJJnYZJRH6/I9kF9alThINnM=;
+        s=korg; t=1693068054;
+        bh=widZUIL4awMnotV5PwgV7JD/Cqjjf+9Z4OIXH0r4UHU=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FJbwLHRQkJCvnOxlkzE9v6BH95R2CNXEOUcB/mcsoMILwR6DOZ5srlpeE4XL6gY0e
-         YZo+icE1dGDIcER8Mt0x8OWQm53yacn4zkB963DnVkydBrLG5F+22or4UmjMASnWpD
-         HcaUdYBCw5M39/ZsnPJD6yp3pXkbVOIBT63nl5xo=
-Date:   Sat, 26 Aug 2023 18:36:46 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Julian Anastasov <ja@ssi.bg>
-Cc:     stable@vger.kernel.org, Simon Horman <horms@verge.net.au>,
-        lvs-devel@vger.kernel.org, Pablo Neira Ayuso <pablo@netfilter.org>,
-        netfilter-devel@vger.kernel.org, Junwei Hu <hujunwei4@huawei.com>,
-        Sishuai Gong <sishuai.system@gmail.com>
-Subject: Re: [PATCH -stable,4.14.y,4.19.y 0/1] ipvs: backport 1b90af292e71
- and 5310760af1d4
-Message-ID: <2023082639-hacking-yoga-85c0@gregkh>
-References: <2023082114-remix-cable-0852@gregkh>
- <20230824115354.61669-1-ja@ssi.bg>
+        b=rwOLpLMyI4TvkLq706/Cxmncg4X+tXDMuAkPIWISEtEYE6+IQJg5e/hWdEBdDaZ1a
+         5N0gfyaPk0+vwEOU91hClwWDY5loE22CYxSkC1zLKD5/NBKg49Klo9P+ruaW+IHFE1
+         SNjps19s7mOYetR3G5VsB04XLJS7M18cJ45Rv1Z0=
+Date:   Sat, 26 Aug 2023 18:40:52 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Sean Christopherson <seanjc@google.com>
+Cc:     stable@vger.kernel.org, Paolo Bonzini <pbonzini@redhat.com>,
+        linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.15] Revert "KVM: x86: enable TDP MMU by default"
+Message-ID: <2023082644-vaporizer-stuffy-b8bc@gregkh>
+References: <20230824010512.2714931-1-seanjc@google.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230824115354.61669-1-ja@ssi.bg>
+In-Reply-To: <20230824010512.2714931-1-seanjc@google.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -55,28 +51,10 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 02:53:53PM +0300, Julian Anastasov wrote:
-> 	Hello,
-> 
-> 	This patchset contains backport for
-> commit 1b90af292e71b20d03b837d39406acfbdc5d4b2a. It applies
-> to linux-4.14.y and linux-4.19.y and differs from original commit
-> for the zero/one values used for extra1/extra2.
-> 
-> 	When applied, the concerned commit
-> 5310760af1d4fbea1452bfc77db5f9a680f7ae47 can be cherry-picked and
-> it will apply cleanly on top of 1b90af292e71.
-> 
-> Junwei Hu (1):
->   ipvs: Improve robustness to the ipvs sysctl
-> 
->  net/netfilter/ipvs/ip_vs_ctl.c | 70 +++++++++++++++++-----------------
->  1 file changed, 36 insertions(+), 34 deletions(-)
-> 
-> -- 
-> 2.41.0
-> 
-> 
+On Wed, Aug 23, 2023 at 06:05:12PM -0700, Sean Christopherson wrote:
+> Disable the TDP MMU by default in v5.15 kernels to "fix" several severe
+> performance bugs that have since been found and fixed in the TDP MMU, but
+> are unsuitable for backporting to v5.15.
 
 Now queued up, thanks.
 
