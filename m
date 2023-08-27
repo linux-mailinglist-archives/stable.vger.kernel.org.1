@@ -2,88 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1A7C789C85
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 11:11:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A826789C88
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 11:13:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229849AbjH0JKv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 05:10:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38542 "EHLO
+        id S230359AbjH0JMg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 05:12:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230271AbjH0JKY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 05:10:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE89CE;
-        Sun, 27 Aug 2023 02:10:20 -0700 (PDT)
+        with ESMTP id S230335AbjH0JMT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 05:12:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DA8EAD;
+        Sun, 27 Aug 2023 02:12:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6A3960B4D;
-        Sun, 27 Aug 2023 09:10:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB386C433C8;
-        Sun, 27 Aug 2023 09:10:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF7F561215;
+        Sun, 27 Aug 2023 09:12:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE6D1C433C9;
+        Sun, 27 Aug 2023 09:12:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693127419;
-        bh=3ENdR8Avkv75G4jC4qHBHUxW3T7qirhqAhfGDTz/D2E=;
+        s=korg; t=1693127535;
+        bh=HM3WKQ5OxVgWwzF+fZk+JF992E4jrGxxso+nB/vwuqo=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=RChM+iOTrbdxzULLZXjs7Y0KsjcL8P/0KxZ3absd1RpyoBR64VJ2Kcx+8VyJGN8u4
-         +bup9H8gIkaEbMNYacFHo/DFaEUJUWJl5PvC/Oja+UGggtQ0b5+363V2+H9hb+xsZc
-         ZuUVVEgOrjMBbJAqe1j84x0P3B7aBYfkzsjUHnM8=
-Date:   Sun, 27 Aug 2023 11:10:16 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Ming Lei <ming.lei@redhat.com>
-Cc:     stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
-        linux-block@vger.kernel.org
-Subject: Re: [PATCH 6.1 -stable] ublk: remove check IO_URING_F_SQE128 in
- ublk_ch_uring_cmd
-Message-ID: <2023082709-whisking-pruning-28d0@gregkh>
-References: <20230824052203.1751458-1-ming.lei@redhat.com>
+        b=OozhuMfF38EE67aqxmVwTU4PcUlUc0k7CSkrneYxKL/Cd4QojwDuzanY4PtqeClxR
+         eisLWxOHnsPqwhmmXs342jhVvTcZvbD0uCL1wvsQl+BsLkK2PTKGNoul7ANHpuobau
+         hniYqPSMkuyCwOywF1fqjNbXhggZPOonp3snepkM=
+Date:   Sun, 27 Aug 2023 11:12:12 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Srish Srinivasan <ssrish@vmware.com>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        borrello@diag.uniroma1.it, peterz@infradead.org, pauld@redhat.com,
+        rostedt@goodmis.org, sashal@kernel.org, mingo@redhat.com,
+        linux-kernel@vger.kernel.org, akaher@vmware.com,
+        vsirnapalli@vmware.com, amakhalov@vmware.com, tkundu@vmware.com,
+        keerthanak@vmware.com, srinidhir@vmware.com,
+        kashwindayan@vmware.com, vbrahmajosyula@vmware.com
+Subject: Re: [PATCH v4.19.y] sched/rt: pick_next_rt_entity(): check list_entry
+Message-ID: <2023082757-granny-dilute-b0d3@gregkh>
+References: <20230826021535.9065-1-ssrish@vmware.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230824052203.1751458-1-ming.lei@redhat.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230826021535.9065-1-ssrish@vmware.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 24, 2023 at 01:22:03PM +0800, Ming Lei wrote:
-> commit 9c7c4bc986932218fd0df9d2a100509772028fb1 upstream
+On Sat, Aug 26, 2023 at 07:45:35AM +0530, Srish Srinivasan wrote:
+> From: Pietro Borrello <borrello@diag.uniroma1.it>
 > 
-> sizeof(struct ublksrv_io_cmd) is 16bytes, which can be held in 64byte SQE,
-> so not necessary to check IO_URING_F_SQE128.
-> 
-> With this change, we get chance to save half SQ ring memory.
-> 
-> Fixed: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
-> Signed-off-by: Ming Lei <ming.lei@redhat.com>
-> Link: https://lore.kernel.org/r/20230220041413.1524335-1-ming.lei@redhat.com
-> Signed-off-by: Jens Axboe <axboe@kernel.dk>
-> ---
->  drivers/block/ublk_drv.c | 3 ---
->  1 file changed, 3 deletions(-)
-> 
-> diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
-> index f48d213fb65e..09d29fa53939 100644
-> --- a/drivers/block/ublk_drv.c
-> +++ b/drivers/block/ublk_drv.c
-> @@ -1271,9 +1271,6 @@ static int ublk_ch_uring_cmd(struct io_uring_cmd *cmd, unsigned int issue_flags)
->  			__func__, cmd->cmd_op, ub_cmd->q_id, tag,
->  			ub_cmd->result);
->  
-> -	if (!(issue_flags & IO_URING_F_SQE128))
-> -		goto out;
-> -
->  	if (ub_cmd->q_id >= ub->dev_info.nr_hw_queues)
->  		goto out;
->  
-> -- 
-> 2.40.1
-> 
+> commit 7c4a5b89a0b5a57a64b601775b296abf77a9fe97 upstream.
 
 Now queued up, thanks.
 
