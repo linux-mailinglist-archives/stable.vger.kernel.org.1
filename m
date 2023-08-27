@@ -2,89 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E534178A030
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 18:35:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B3B2E78A04D
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 18:53:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229798AbjH0QfF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 12:35:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39418 "EHLO
+        id S229974AbjH0QxP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 12:53:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229761AbjH0Qe5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 12:34:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6CFC1FE;
-        Sun, 27 Aug 2023 09:34:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 072F56246E;
-        Sun, 27 Aug 2023 16:34:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6172C433C7;
-        Sun, 27 Aug 2023 16:34:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693154093;
-        bh=J/F/uBhPlsY7AE/Vfwu6zri6LsrLMFUmvMG+meosyAA=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=n6LMR5xB1Ebw4MNrS8UoicIB0coaF7XgzCCou1hi1ZP6b0npt7lvHURh741Sg/k7b
-         sJ8XdahLXF8iVh+8qJTVoEV8UvDUVE3WIBHlzyLfmPpgZ8NELY7e0zGn+coAEbQLYa
-         8LTNcgRarab8pPn//z5+adtX/WoxNCysMFaTnQcE=
-Date:   Sun, 27 Aug 2023 18:34:50 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Guenter Roeck <linux@roeck-us.net>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/149] 6.1.46-rc1 review
-Message-ID: <2023082743-obsessive-thumb-01f7@gregkh>
-References: <20230813211718.757428827@linuxfoundation.org>
- <b392e1a8-b987-4993-bd45-035db9415a6e@roeck-us.net>
- <2023081631-uproar-tapered-2221@gregkh>
- <2023082627-tabasco-concave-1366@gregkh>
- <7e5c80f0-45a3-407c-8c2e-e85bf97f5483@roeck-us.net>
+        with ESMTP id S230073AbjH0QxB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 12:53:01 -0400
+Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80DA139;
+        Sun, 27 Aug 2023 09:52:55 -0700 (PDT)
+Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-565334377d0so1556061a12.2;
+        Sun, 27 Aug 2023 09:52:55 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693155175; x=1693759975;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ImkyWrYqH8lg/cu5/toGD9Vw+jK2UHolY7FUCZL6OdE=;
+        b=hwoyIGOuN4MJaB+1+5Fb0FIJaWkKb9UKcG+ZTWs5FSfhLzHAwu9wqzSWZnjyPfA+w9
+         RCjJLVmvULAGYD5DXYpal0MkHdRjk7K5ydL2W0N3+8GqhGdzlRsvle0plPcA+PnoaaGT
+         ozB1ErVvTyjz3qD6gscBhWDnw1KSOcdGuDTrBGioVyBnu0kXB/ZhLZ/h303FnnvGIctQ
+         E8DlbPRct/rVSWTuBfDyGTEODh0z02nKISVeql2RhUiJHcnYn3kQieLUbJcZxH6BhDKt
+         hWxT74KIgP9ZmWukTWMse5vxfZQRd1FtZC/9bNW8fIpsFaQHzaLod2ceIOzYZq9Mhx+U
+         Z+EA==
+X-Gm-Message-State: AOJu0YyXajby3gntrN3oChd0+/oleq0ZZg6tzHuQkXgKPW58wknCVsTH
+        mPENdQNIwL4suLb3aH3DK9c=
+X-Google-Smtp-Source: AGHT+IGQtRfWPaISyzI4T0Mr5/nRWzHuzFWUjp93ZJlkqnVi4QGK3coCaHFP+i/PC3lqhGoTNciR9w==
+X-Received: by 2002:a05:6a20:1444:b0:149:424e:b26a with SMTP id a4-20020a056a20144400b00149424eb26amr22909646pzi.19.1693155175186;
+        Sun, 27 Aug 2023 09:52:55 -0700 (PDT)
+Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
+        by smtp.gmail.com with ESMTPSA id fk22-20020a056a003a9600b006887037cde6sm5072546pfb.60.2023.08.27.09.52.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Aug 2023 09:52:54 -0700 (PDT)
+Date:   Mon, 28 Aug 2023 01:52:52 +0900
+From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Manivannan Sadhasivam <mani@kernel.org>,
+        Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Rob Herring <robh@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        Rohit Agarwal <quic_rohiagar@quicinc.com>,
+        linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
+        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] dt-bindings: PCI: qcom: fix SDX65 compatible
+Message-ID: <20230827165252.GB2932694@rocinante>
+References: <20230827085351.21932-1-krzysztof.kozlowski@linaro.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7e5c80f0-45a3-407c-8c2e-e85bf97f5483@roeck-us.net>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230827085351.21932-1-krzysztof.kozlowski@linaro.org>
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Aug 27, 2023 at 04:21:40AM -0700, Guenter Roeck wrote:
-> On Sat, Aug 26, 2023 at 05:48:59PM +0200, Greg Kroah-Hartman wrote:
-> > On Wed, Aug 16, 2023 at 06:26:47PM +0200, Greg Kroah-Hartman wrote:
-> > > On Mon, Aug 14, 2023 at 07:04:57AM -0700, Guenter Roeck wrote:
-> > > > On Sun, Aug 13, 2023 at 11:17:25PM +0200, Greg Kroah-Hartman wrote:
-> > > > > This is the start of the stable review cycle for the 6.1.46 release.
-> > > > > There are 149 patches in this series, all will be posted as a response
-> > > > > to this one.  If anyone has any issues with these being applied, please
-> > > > > let me know.
-> > > > > 
-> > > > > Responses should be made by Tue, 15 Aug 2023 21:16:53 +0000.
-> > > > > Anything received after that time might be too late.
-> > > > 
-> > > > Booting with f2fs root file systems still crashes in this release
-> > > > candidate. Would it make sense to mark f2fs as broken in v6.1.y ?
-> > > 
-> > > Ick, yeah, let me dig into this next week and figure out what went
-> > > wrong...
-> > 
-> > I've now pushed out 6.1.49-rc1 with the last 3 f2fs patches reverted,
-> > and a single objtool fix.  Hopefully that should resolve this issue, if
-> > not, please let me know.
-> > 
+Hello,
+
+> Commit c0aba9f32801 ("dt-bindings: PCI: qcom: Add SDX65 SoC") adding
+> SDX65 was not ever tested and is clearly bogus.  The qcom,sdx65-pcie-ep
+> compatible is followed by fallback in DTS and there is no driver
+> matching by this compatible.  Driver matches by its fallback
+> qcom,sdx55-pcie-ep.  This fixes also dtbs_check warnings like:
 > 
-> That does fix the problem.
+>   qcom-sdx65-mtp.dtb: pcie-ep@1c00000: compatible: ['qcom,sdx65-pcie-ep', 'qcom,sdx55-pcie-ep'] is too long
 
-Wonderful, thanks for testing.
+Applied to controller/qcom, thank you!
 
-greg k-h
+[1/1] dt-bindings: PCI: qcom: Fix SDX65 compatible
+      https://git.kernel.org/pci/pci/c/15d63a897f79
+
+	Krzysztof
