@@ -2,147 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1118789FAE
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 15:55:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACBA1789FBE
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 16:16:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229975AbjH0Nyv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 09:54:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47274 "EHLO
+        id S229765AbjH0OQV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 10:16:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbjH0Nyb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 09:54:31 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E5312E
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 06:54:28 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693144468; x=1724680468;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gOa2BNaEtR20yuUAbnvHtMItfKbUC364UnPJX+o2Q2M=;
-  b=ImIqmraqDwfG1D2kTF39vLDRBcYNfa23VdvaG/qJk+5Hmk6rbwLi39IP
-   k0k1n1i7nVOVK3AMvU7SqfyUE8MqUobyLgiy+6WJujwiv8T3gHasL9NEq
-   BWAnJ60ZiyICBKFbcn0cCbdR4Yu81we9JN6AI9721bWKmeICvs3Y5K/WB
-   Rd8FjvTOaUfXG0iMpidXOGhKo0G3jdomxVb53k3WLE+TNhLL/f5lu/MtB
-   Ob+q2/WJd7v7J1SA5fFAHBMsm8Oax2VjgVE3OmhSG2Ibmy6/aEF5hqzj7
-   2kNcnaPRdEqxX0zKC2LqFqM/w556z2/DjUQlScumeDxCLShlFs6mP4tW0
-   g==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10815"; a="441292025"
-X-IronPort-AV: E=Sophos;i="6.02,205,1688454000"; 
-   d="scan'208";a="441292025"
-Received: from orsmga008.jf.intel.com ([10.7.209.65])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 06:54:27 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10815"; a="767401793"
-X-IronPort-AV: E=Sophos;i="6.02,205,1688454000"; 
-   d="scan'208";a="767401793"
-Received: from fyin-dev.sh.intel.com ([10.239.159.24])
-  by orsmga008.jf.intel.com with ESMTP; 27 Aug 2023 06:54:24 -0700
-From:   Yin Fengwei <fengwei.yin@intel.com>
-To:     fengwei.yin@intel.com
-Cc:     Yu Zhao <yuzhao@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Minchan Kim <minchan@kernel.org>,
-        Vishal Moola <vishal.moola@gmail.com>,
-        Yang Shi <shy828301@gmail.com>, stable@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4.12] madvise:madvise_cold_or_pageout_pte_range(): don't use mapcount() against large folio for sharing check
-Date:   Sun, 27 Aug 2023 21:52:11 +0800
-Message-Id: <20230827135211.2115099-1-fengwei.yin@intel.com>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S230096AbjH0OQJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 10:16:09 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C779F11B
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 07:16:06 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99bdeae1d0aso300436266b.1
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 07:16:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693145765; x=1693750565;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:cc:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=wlWrC7UfFWG2JCIunWH3w3kpsU3Nr7X/K4LLgI+Iuc8=;
+        b=kxvQtY0DqiCEoXy/M+9kFNbjNCqEw1HH0H8e4GNTqxIsRkv+HS3zUzWpOR4+Kd3hb5
+         /pJrBZ/6KfN0EAPUFzHVwMP6TBSvVVsfP2pvEEgoQzJINnpTqe02zX4AZPjroiF+7fRl
+         exukGYQo8rGieLnSv6Zkf+8e1z5eun+2+iqozHm0PH/FkJiKy3IKoI/5/7gj+vxMttct
+         k0lbHJhqEpRJY8uAcx7adBc30DWzGy0sM8s9PnVTIKyv0rI0dTNae2fmo7VlfFEhp3rJ
+         5D1IivdWdCduZShO6fThQ19L1BzuOuKZCqheZiWSoPLAuJnzVdErdYdBm7NknT4iYuXn
+         YUXw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693145765; x=1693750565;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:to:subject:cc:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=wlWrC7UfFWG2JCIunWH3w3kpsU3Nr7X/K4LLgI+Iuc8=;
+        b=EP/+PPLCNaKCy12zEpX99m6aayREGHDZI/TlA4LTGoIuTb2fa6c4g0zfj0WWeNKwf2
+         5+YxVsmacWmdkBCxwR6CqAnlQGhdKINxshTtNZh20fG3oyg9kK3FHXoLuYrSLycbn7qJ
+         0aAYEwKTY4XjoA5ZtCVWcOLaThcgMQdpABcH/RF1Cmnd4szNYSpsNxrLCIC3uDBNIQTr
+         hBOWSFTFBpuyj+2xwhHU0URoV1tJlB7YPI5vG4ID8sbXxKFMgf1szvJ/RUOuFb3NVXUC
+         yxLTOnWwqVFfD5dfBcpsAFEwJALCczi2CCmZ8moSV6plKWnTY4q+F4+ApPKj7FQ+dmuJ
+         9oQA==
+X-Gm-Message-State: AOJu0YyliTMOHlWEvVOfJmbDVJtjulH8ZWP8wvDddaEiB8QmcczfPaHg
+        MKbj1xDJqYt5jMsqeiLHljQ=
+X-Google-Smtp-Source: AGHT+IHa8WfG76rLU/5B3c9LrokM1yRQd26ZeIg10jSFxK4WSf3SaiERVMvnlDls7q8mTBbV5PCKgg==
+X-Received: by 2002:a17:906:2214:b0:9a1:c659:7c56 with SMTP id s20-20020a170906221400b009a1c6597c56mr10213056ejs.22.1693145765026;
+        Sun, 27 Aug 2023 07:16:05 -0700 (PDT)
+Received: from [192.168.0.28] (cable-178-148-234-71.dynamic.sbb.rs. [178.148.234.71])
+        by smtp.gmail.com with ESMTPSA id qc10-20020a170906d8aa00b0099ce188be7fsm3475106ejb.3.2023.08.27.07.16.04
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 27 Aug 2023 07:16:04 -0700 (PDT)
+Message-ID: <11c18425-a677-532c-1592-3182cad771e5@gmail.com>
+Date:   Sun, 27 Aug 2023 16:16:03 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Cc:     savicaleksa83@gmail.com, stable@vger.kernel.org
+Subject: Re: [PATCH v6.1] hwmon: (aquacomputer_d5next) Add selective 200ms
+ delay after sending ctrl report
+To:     Greg KH <greg@kroah.com>
+References: <2023081222-chummy-aqueduct-85c2@gregkh>
+ <20230824141500.1813549-1-savicaleksa83@gmail.com>
+ <c4197112-986d-81f2-53aa-7d53086d5eb2@gmail.com>
+ <2023082708-jubilance-subtype-e111@gregkh>
+Content-Language: en-US
+From:   Aleksa Savic <savicaleksa83@gmail.com>
+In-Reply-To: <2023082708-jubilance-subtype-e111@gregkh>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,NICE_REPLY_A,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Patch series "don't use mapcount() to check large folio sharing", v2.
+On 2023-08-27 09:01:32 GMT+02:00, Greg KH wrote:
+> On Thu, Aug 24, 2023 at 04:26:10PM +0200, Aleksa Savic wrote:
+>> On 2023-08-24 16:15:00 GMT+02:00, Aleksa Savic wrote:
+>>> commit 56b930dcd88c2adc261410501c402c790980bdb5 upstream.
+>>>
+>>> Add a 200ms delay after sending a ctrl report to Quadro,
+>>> Octo, D5 Next and Aquaero to give them enough time to
+>>> process the request and save the data to memory. Otherwise,
+>>> under heavier userspace loads where multiple sysfs entries
+>>> are usually set in quick succession, a new ctrl report could
+>>> be requested from the device while it's still processing the
+>>> previous one and fail with -EPIPE. The delay is only applied
+>>> if two ctrl report operations are near each other in time.
+>>>
+>>> Reported by a user on Github [1] and tested by both of us.
+>>>
+>>> [1] https://github.com/aleksamagicka/aquacomputer_d5next-hwmon/issues/82
+>>>
+>>> Fixes: 752b927951ea ("hwmon: (aquacomputer_d5next) Add support for Aquacomputer Octo")
+>>> Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
+>>> ---
+>>> This is a backport of the upstream commit to v6.1. No functional
+>>> changes, except that Aquaero support first appeared in
+>>> v6.3, so that part of the original is not included here.
+>>> ---
+>>
+>> Just noticed that I left in the Aquaero mention in the commit
+>> message, sorry for the omission... Do I need to resend?
+> 
+> Nah, that's fine, we want to keep the changelog identical, I left your
+> note in the signed-off-by area explaining it.
+> 
+> thanks,
+> 
+> greg k-h
 
-In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(),
-folio_mapcount() is used to check whether the folio is shared.  But it's
-not correct as folio_mapcount() returns total mapcount of large folio.
+Ah, I see, thanks!
 
-Use folio_estimated_sharers() here as the estimated number is enough.
-
-This patchset will fix the cases:
-User space application call madvise() with MADV_FREE, MADV_COLD and
-MADV_PAGEOUT for specific address range. There are THP mapped to the
-range. Without the patchset, the THP is skipped. With the patch, the
-THP will be split and handled accordingly.
-
-David reported the cow self test skip some cases because of MADV_PAGEOUT
-skip THP:
-https://lore.kernel.org/linux-mm/9e92e42d-488f-47db-ac9d-75b24cd0d037@intel.com/T/#mbf0f2ec7fbe45da47526de1d7036183981691e81
-and I confirmed this patchset make it work again.
-
-This patch (of 3):
-
-Commit 07e8c82b5eff ("madvise: convert madvise_cold_or_pageout_pte_range()
-to use folios") replaced the page_mapcount() with folio_mapcount() to
-check whether the folio is shared by other mapping.
-
-It's not correct for large folio.  folio_mapcount() returns the total
-mapcount of large folio which is not suitable to detect whether the folio
-is shared.
-
-Use folio_estimated_sharers() which returns a estimated number of shares.
-That means it's not 100% correct.  It should be OK for madvise case here.
-
-User-visible effects is that the THP is skipped when user call madvise.
-But the correct behavior is THP should be split and processed then.
-
-NOTE: this change is a temporary fix to reduce the user-visible effects
-before the long term fix from David is ready.
-
-Link: https://lkml.kernel.org/r/20230808020917.2230692-1-fengwei.yin@intel.com
-Link: https://lkml.kernel.org/r/20230808020917.2230692-2-fengwei.yin@intel.com
-Fixes: 07e8c82b5eff ("madvise: convert madvise_cold_or_pageout_pte_range() to use folios")
-Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-Reviewed-by: Yu Zhao <yuzhao@google.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-(cherry picked from commit 2f406263e3e954aa24c1248edcfa9be0c1bb30fa)
----
- mm/madvise.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
-
-diff --git a/mm/madvise.c b/mm/madvise.c
-index b5ffbaf616f5..6adee363a9fa 100644
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -375,7 +375,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 		folio = pfn_folio(pmd_pfn(orig_pmd));
- 
- 		/* Do not interfere with other mappings of this folio */
--		if (folio_mapcount(folio) != 1)
-+		if (folio_estimated_sharers(folio) != 1)
- 			goto huge_unlock;
- 
- 		if (pageout_anon_only_filter && !folio_test_anon(folio))
-@@ -447,7 +447,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
- 		 * are sure it's worth. Split it if we are only owner.
- 		 */
- 		if (folio_test_large(folio)) {
--			if (folio_mapcount(folio) != 1)
-+			if (folio_estimated_sharers(folio) != 1)
- 				break;
- 			if (pageout_anon_only_filter && !folio_test_anon(folio))
- 				break;
--- 
-2.39.2
-
+Aleksa
