@@ -2,77 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08AF8789B7F
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 07:55:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2FE7B789B8C
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 08:42:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229606AbjH0FvR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 01:51:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
+        id S229683AbjH0Glm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 02:41:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229641AbjH0FvM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 01:51:12 -0400
+        with ESMTP id S229557AbjH0GlZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 02:41:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A173121;
-        Sat, 26 Aug 2023 22:51:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78B31197
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 23:41:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 93DD261F06;
-        Sun, 27 Aug 2023 05:51:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB709C433CC;
-        Sun, 27 Aug 2023 05:51:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693115469;
-        bh=C+Nf7CBzD0Q5vLjwMcpMDCumqXPtwRgFtsKEMR9LScY=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=UKVRPaauWeqwwN25bqPQKF4eSbqX8RbK2Yh7jZmwdlgoN+tyOekoRk1nEACVYIIG2
-         1U0qTKWH+Zkfrr5US9wNKT37lDKgLBDpk9PFLb53D6URciSAeUMhicRNqKk69Lijsh
-         ICyfIZQUwDy3FXGgbSI7EO41F+U+tgk9YtUZQt2Of2HfjHKe7c60Jw5vG6a7humHCs
-         8WLAqZus4p7eRD+J2Yq2qi96RBiQFKnnyk4OlLZbPsQa44vHGkvmMg3faFkcJtVcSU
-         QVdI6/uEekop+4Eae9AmR7kKN363ULf7jVF6EiKVcOM4PZvrr8chp/xbo1SJbXESH/
-         nlLvTraBSgsLw==
-Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-4fe8c16c1b4so3318318e87.2;
-        Sat, 26 Aug 2023 22:51:08 -0700 (PDT)
-X-Gm-Message-State: AOJu0YxEOKTnaniZx4iss2sTm9qJ/leUyA0bj+ddVd10eCqQ/uEnZCNj
-        h07VubzGDzdBNwQx/DSsuSGHSb+zNIct3kAB5go=
-X-Google-Smtp-Source: AGHT+IHA61TPYdTr1bFR7cKpkifAmXg0s/MST49tU58axMFhVT05AZUNdxy9+5xdiFli8x7Z7z5luA1jDhMhr1/345U=
-X-Received: by 2002:a05:6512:1310:b0:500:96dd:f95b with SMTP id
- x16-20020a056512131000b0050096ddf95bmr8955559lfu.59.1693115466912; Sat, 26
- Aug 2023 22:51:06 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DD6961DF4
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 06:41:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12CF4C433C8;
+        Sun, 27 Aug 2023 06:41:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693118481;
+        bh=GY0MaU8UiXgWMEn8fMTVI7ItsiLm2VF23SaEipWyRlM=;
+        h=Subject:To:Cc:From:Date:From;
+        b=ruBwIEszv+umG/hbXDP2dR2AWThrVl2P22IcVvAZSzca1zwIKiku+RZ2hJABP2Bfi
+         zOOdmgws8+G2UOE/qd0hj90ZS33snr9vBw4vyOAjOXyh+UnFlfPc7atrx35woOZ2gT
+         pDDyAcQbpZHg2G+TSzxVcgfdhZtPdjWlmsFcpGl4=
+Subject: FAILED: patch "[PATCH] drm/vmwgfx: Fix shader stage validation" failed to apply to 5.4-stable tree
+To:     zackr@vmware.com, ezrakiez@gmail.com, krastevm@vmware.com,
+        mombasawalam@vmware.com, ndegraef@redhat.com,
+        stable@vger.kernel.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 27 Aug 2023 08:41:18 +0200
+Message-ID: <2023082718-shriek-flanking-014b@gregkh>
 MIME-Version: 1.0
-References: <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
- <87ttspct76.ffs@tglx> <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
- <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
- <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop> <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
- <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop> <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
- <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
- <20230825232807.GA97898@google.com> <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
-In-Reply-To: <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Sun, 27 Aug 2023 13:50:56 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
-Message-ID: <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
-Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
-To:     Joel Fernandes <joel@joelfernandes.org>
-Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Z qiang <qiang.zhang1211@gmail.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -82,184 +49,213 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi, Joel,
 
-On Sun, Aug 27, 2023 at 11:27=E2=80=AFAM Joel Fernandes <joel@joelfernandes=
-.org> wrote:
->
-> On Fri, Aug 25, 2023 at 7:28=E2=80=AFPM Joel Fernandes <joel@joelfernande=
-s.org> wrote:
-> >
-> > On Fri, Aug 25, 2023 at 07:15:44PM +0800, Huacai Chen wrote:
-> > > Hi, Paul,
-> > >
-> > > On Fri, Aug 25, 2023 at 2:28=E2=80=AFAM Paul E. McKenney <paulmck@ker=
-nel.org> wrote:
-> [..]
-> > > > > > > > > > > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernan=
-des <joel@joelfernandes.org> wrote:
-> > > > > > > > > > > >> > If  do_update_jiffies_64() cannot be used in NMI=
- context,
-> > > > > > > > > > > >>
-> > > > > > > > > > > >> Can you not make the jiffies update conditional on=
- whether it is
-> > > > > > > > > > > >> called within NMI context?
-> > > > > > > > > > >
-> > > > > > > > > > > Which solves what? If KGDB has a breakpoint in the ji=
-ffies lock held
-> > > > > > > > > > > region then you still dead lock.
-> > > > > > > > > > >
-> > > > > > > > > > > >> I dislike that..
-> > > > > > > > > > > > Is this acceptable?
-> > > > > > > > > > > >
-> > > > > > > > > > > > void rcu_cpu_stall_reset(void)
-> > > > > > > > > > > > {
-> > > > > > > > > > > >         unsigned long delta;
-> > > > > > > > > > > >
-> > > > > > > > > > > >         delta =3D nsecs_to_jiffies(ktime_get_ns() -=
- ktime_get_coarse_ns());
-> > > > > > > > > > > >
-> > > > > > > > > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
-> > > > > > > > > > > >                    jiffies + delta + rcu_jiffies_ti=
-ll_stall_check());
-> > > > > > > > > > > > }
-> > > > > > > > > > > >
-> > > > > > > > > > > > This can update jiffies_stall without updating jiff=
-ies (but has the
-> > > > > > > > > > > > same effect).
-> > > > > > > > > > >
-> > > > > > > > > > > Now you traded the potential dead lock on jiffies loc=
-k for a potential
-> > > > > > > > > > > live lock vs. tk_core.seq. Not really an improvement,=
- right?
-> > > > > > > > > > >
-> > > > > > > > > > > The only way you can do the above is something like t=
-he incomplete and
-> > > > > > > > > > > uncompiled below. NMI safe and therefore livelock pro=
-of time interfaces
-> > > > > > > > > > > exist for a reason.
-> > > > > > > > > >
-> > > > > > > > > > Just for completeness, another approach, with its own a=
-dvantages
-> > > > > > > > > > and disadvantage, is to add something like ULONG_MAX/4 =
-to
-> > > > > > > > > > rcu_state.jiffies_stall, but also set a counter indicat=
-ing that this
-> > > > > > > > > > has been done.  Then RCU's force-quiescent processing c=
-ould decrement
-> > > > > > > > > > that counter (if non-zero) and reset rcu_state.jiffies_=
-stall when it
-> > > > > > > > > > does reach zero.
-> > > > > > > > > >
-> > > > > > > > > > Setting the counter to three should cover most cases, b=
-ut "live by the
-> > > > > > > > > > heuristic, die by the heuristic".  ;-)
-> > > > > > > > > >
-> > > > > > > > > > It would be good to have some indication when gdb exite=
-d, but things
-> > > > > > > > > > like the gdb "next" command can make that "interesting"=
- when applied to
-> > > > > > > > > > a long-running function.
-> > > > > > > > >
-> > > > > > > > > The original code is adding ULONG_MAX/2, so adding ULONG_=
-MAX/4 may
-> > > > > > > > > make no much difference? The simplest way is adding 300*H=
-Z, but Joel
-> > > > > > > > > dislikes that.
-> > > > > > > >
-> > > > > > > > I am not seeing the ULONG_MAX/2, so could you please point =
-me to that
-> > > > > > > > original code?
-> > > > > > >
-> > > > > > > Maybe I misunderstand something, I say the original code mean=
-s code
-> > > > > > > before commit a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable =
-GP stall
-> > > > > > > detection in rcu_cpu_stall_reset()").
-> > > > > >
-> > > > > > Yes, my suggestion would essentially revert that patch.  It wou=
-ld
-> > > > > > compensate by resetting rcu_state.jiffies_stall after a few cal=
-ls
-> > > > > > to rcu_gp_fqs().
-> > > > > >
-> > > > > > Alternatively, we could simply provide a way for gdb users to m=
-anually
-> > > > > > disable RCU CPU stall warnings at the beginning of their debug =
-sessions
-> > > > > > and to manually re-enable them when they are done.
-> > > > >
-> > > > > This problem is not KGDB-specific (though it is firstly found in =
-the
-> > > > > KGDB case), so I want to fix it in the rcu code rather than in th=
-e
-> > > > > kgdb code.
-> > > >
-> > > > Sure, for example, there is also PowerPC XMON.
-> > > >
-> > > > But this problem also is not RCU-specific.  There are also hardlock=
-ups,
-> > > > softlockups, workqueue lockups, networking timeouts, and who knows =
-what
-> > > > all else.
-> > > >
-> > > > Plus, and again to Thomas's point, gdb breakpoints can happen anywh=
-ere.
-> > > > For example, immediately after RCU computes the RCU CPU stall time =
-for
-> > > > a new grace period, and right before it stores it.  The gdb callout
-> > > > updates rcu_state.jiffies_stall, but that update is overwritten wit=
-h a
-> > > > stale value as soon as the system starts back up.
-> > > >
-> > > > Low probabillity, to be sure, but there are quite a few places in
-> > > > the kernel right after a read from some timebase or another, and ma=
-ny
-> > > > (perhaps all) of these can see similar stale-time-use problems.
-> > > >
-> > > > The only way I know of to avoid these sorts of false positives is f=
-or
-> > > > the user to manually suppress all timeouts (perhaps using a kernel-=
-boot
-> > > > parameter for your early-boot case), do the gdb work, and then unsu=
-ppress
-> > > > all stalls.  Even that won't work for networking, because the other
-> > > > system's clock will be running throughout.
-> > > >
-> > > > In other words, from what I know now, there is no perfect solution.
-> > > > Therefore, there are sharp limits to the complexity of any solution=
- that
-> > > > I will be willing to accept.
-> > > I think the simplest solution is (I hope Joel will not angry):
-> >
-> > Not angry at all, just want to help. ;-). The problem is the 300*HZ sol=
-ution
-> > will also effect the VM workloads which also do a similar reset.  Allow=
- me few
-> > days to see if I can take a shot at fixing it slightly differently. I a=
-m
-> > trying Paul's idea of setting jiffies at a later time. I think it is do=
-able.
-> > I think the advantage of doing this is it will make stall detection mor=
-e
-> > robust in this face of these gaps in jiffie update. And that solution d=
-oes
-> > not even need us to rely on ktime (and all the issues that come with th=
-at).
-> >
->
-> I wrote a patch similar to Paul's idea and sent it out for review, the
-> advantage being it purely is based on jiffies. Could you try it out
-> and let me know?
-If you can cc my gmail <chenhuacai@gmail.com>, that could be better.
+The patch below does not apply to the 5.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-I have read your patch, maybe the counter (nr_fqs_jiffies_stall)
-should be atomic_t and we should use atomic operation to decrement its
-value. Because rcu_gp_fqs() can be run concurrently, and we may miss
-the (nr_fqs =3D=3D 1) condition.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-Huacai
->
-> thanks,
->
->  - Joel
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x 14abdfae508228a7307f7491b5c4215ae70c6542
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082718-shriek-flanking-014b@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+
+Possible dependencies:
+
+14abdfae5082 ("drm/vmwgfx: Fix shader stage validation")
+c593197b6ece ("drm/vmwgfx: Fix fencing on SVGAv3")
+2cd80dbd3551 ("drm/vmwgfx: Add basic support for SVGA3")
+f3ebd4e6b692 ("drm/vmwgfx/vmwgfx_drv: Fix an error path in vmw_setup_pci_resources()")
+c6771b6338c8 ("drm/vmwgfx/vmwgfx_fence: Add, remove and demote various documentation params/headers")
+043948cfc823 ("drm/vmwgfx/vmwgfx_ioctl: Provide missing '@' sign required by kernel-doc")
+8426ed9c4b42 ("drm/vmwgfx: Cleanup the cmd/fifo split")
+359dc60d0fa5 ("drm/vmwgfx: Remove the throttling code")
+8772c0bb58bb ("drm/vmwgfx: Cleanup pci resource allocation")
+be4f77ac6884 ("drm/vmwgfx: Cleanup fifo mmio handling")
+9703bb329206 ("drm/vmwgfx: Switch to a managed drm device")
+31856c8c1ce4 ("drm/vmwgfx: Remove stealth mode")
+840462e6872d ("drm/vmwgfx: Remove references to struct drm_device.pdev")
+7a60c2dd0f57 ("drm: Remove SCATTERLIST_MAX_SEGMENT")
+c489573b5b6c ("Merge drm/drm-next into drm-misc-next")
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 14abdfae508228a7307f7491b5c4215ae70c6542 Mon Sep 17 00:00:00 2001
+From: Zack Rusin <zackr@vmware.com>
+Date: Fri, 16 Jun 2023 15:09:34 -0400
+Subject: [PATCH] drm/vmwgfx: Fix shader stage validation
+
+For multiple commands the driver was not correctly validating the shader
+stages resulting in possible kernel oopses. The validation code was only.
+if ever, checking the upper bound on the shader stages but never a lower
+bound (valid shader stages start at 1 not 0).
+
+Fixes kernel oopses ending up in vmw_binding_add, e.g.:
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 2443 Comm: testcase Not tainted 6.3.0-rc4-vmwgfx #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+RIP: 0010:vmw_binding_add+0x4c/0x140 [vmwgfx]
+Code: 7e 30 49 83 ff 0e 0f 87 ea 00 00 00 4b 8d 04 7f 89 d2 89 cb 48 c1 e0 03 4c 8b b0 40 3d 93 c0 48 8b 80 48 3d 93 c0 49 0f af de <48> 03 1c d0 4c 01 e3 49 8>
+RSP: 0018:ffffb8014416b968 EFLAGS: 00010206
+RAX: ffffffffc0933ec0 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 00000000ffffffff RSI: ffffb8014416b9c0 RDI: ffffb8014316f000
+RBP: ffffb8014416b998 R08: 0000000000000003 R09: 746f6c735f726564
+R10: ffffffffaaf2bda0 R11: 732e676e69646e69 R12: ffffb8014316f000
+R13: ffffb8014416b9c0 R14: 0000000000000040 R15: 0000000000000006
+FS:  00007fba8c0af740(0000) GS:ffff8a1277c80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000007c0933eb8 CR3: 0000000118244001 CR4: 00000000003706e0
+Call Trace:
+ <TASK>
+ vmw_view_bindings_add+0xf5/0x1b0 [vmwgfx]
+ ? ___drm_dbg+0x8a/0xb0 [drm]
+ vmw_cmd_dx_set_shader_res+0x8f/0xc0 [vmwgfx]
+ vmw_execbuf_process+0x590/0x1360 [vmwgfx]
+ vmw_execbuf_ioctl+0x173/0x370 [vmwgfx]
+ ? __drm_dev_dbg+0xb4/0xe0 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ drm_ioctl_kernel+0xbc/0x160 [drm]
+ drm_ioctl+0x2d2/0x580 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ ? do_fault+0x1a6/0x420
+ vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
+ vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
+ __x64_sys_ioctl+0x96/0xd0
+ do_syscall_64+0x5d/0x90
+ ? handle_mm_fault+0xe4/0x2f0
+ ? debug_smp_processor_id+0x1b/0x30
+ ? fpregs_assert_state_consistent+0x2e/0x50
+ ? exit_to_user_mode_prepare+0x40/0x180
+ ? irqentry_exit_to_user_mode+0xd/0x20
+ ? irqentry_exit+0x3f/0x50
+ ? exc_page_fault+0x8b/0x180
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Cc: security@openanolis.org
+Reported-by: Ziming Zhang <ezrakiez@gmail.com>
+Testcase-found-by: Niels De Graef <ndegraef@redhat.com>
+Fixes: d80efd5cb3de ("drm/vmwgfx: Initial DX support")
+Cc: <stable@vger.kernel.org> # v4.3+
+Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
+Reviewed-by: Martin Krastev <krastevm@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230616190934.54828-1-zack@kde.org
+
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+index 3810a9984a7f..58bfdf203eca 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -1513,4 +1513,16 @@ static inline bool vmw_has_fences(struct vmw_private *vmw)
+ 	return (vmw_fifo_caps(vmw) & SVGA_FIFO_CAP_FENCE) != 0;
+ }
+ 
++static inline bool vmw_shadertype_is_valid(enum vmw_sm_type shader_model,
++					   u32 shader_type)
++{
++	SVGA3dShaderType max_allowed = SVGA3D_SHADERTYPE_PREDX_MAX;
++
++	if (shader_model >= VMW_SM_5)
++		max_allowed = SVGA3D_SHADERTYPE_MAX;
++	else if (shader_model >= VMW_SM_4)
++		max_allowed = SVGA3D_SHADERTYPE_DX10_MAX;
++	return shader_type >= SVGA3D_SHADERTYPE_MIN && shader_type < max_allowed;
++}
++
+ #endif
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+index 6b9aa2b4ef54..d30c0e3d3ab7 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1992,7 +1992,7 @@ static int vmw_cmd_set_shader(struct vmw_private *dev_priv,
+ 
+ 	cmd = container_of(header, typeof(*cmd), header);
+ 
+-	if (cmd->body.type >= SVGA3D_SHADERTYPE_PREDX_MAX) {
++	if (!vmw_shadertype_is_valid(VMW_SM_LEGACY, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
+@@ -2115,8 +2115,6 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
+ 				      SVGA3dCmdHeader *header)
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetSingleConstantBuffer);
+-	SVGA3dShaderType max_shader_num = has_sm5_context(dev_priv) ?
+-		SVGA3D_NUM_SHADERTYPE : SVGA3D_NUM_SHADERTYPE_DX10;
+ 
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+@@ -2133,6 +2131,14 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
+ 	if (unlikely(ret != 0))
+ 		return ret;
+ 
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type) ||
++	    cmd->body.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
++		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
++			       (unsigned int) cmd->body.type,
++			       (unsigned int) cmd->body.slot);
++		return -EINVAL;
++	}
++
+ 	binding.bi.ctx = ctx_node->ctx;
+ 	binding.bi.res = res;
+ 	binding.bi.bt = vmw_ctx_binding_cb;
+@@ -2141,14 +2147,6 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
+ 	binding.size = cmd->body.sizeInBytes;
+ 	binding.slot = cmd->body.slot;
+ 
+-	if (binding.shader_slot >= max_shader_num ||
+-	    binding.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
+-		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
+-			       (unsigned int) cmd->body.type,
+-			       (unsigned int) binding.slot);
+-		return -EINVAL;
+-	}
+-
+ 	vmw_binding_add(ctx_node->staged, &binding.bi, binding.shader_slot,
+ 			binding.slot);
+ 
+@@ -2207,15 +2205,13 @@ static int vmw_cmd_dx_set_shader_res(struct vmw_private *dev_priv,
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShaderResources) =
+ 		container_of(header, typeof(*cmd), header);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 
+ 	u32 num_sr_view = (cmd->header.size - sizeof(cmd->body)) /
+ 		sizeof(SVGA3dShaderResourceViewId);
+ 
+ 	if ((u64) cmd->body.startView + (u64) num_sr_view >
+ 	    (u64) SVGA3D_DX_MAX_SRVIEWS ||
+-	    cmd->body.type >= max_allowed) {
++	    !vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Invalid shader binding.\n");
+ 		return -EINVAL;
+ 	}
+@@ -2239,8 +2235,6 @@ static int vmw_cmd_dx_set_shader(struct vmw_private *dev_priv,
+ 				 SVGA3dCmdHeader *header)
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShader);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+ 	struct vmw_ctx_bindinfo_shader binding;
+@@ -2251,8 +2245,7 @@ static int vmw_cmd_dx_set_shader(struct vmw_private *dev_priv,
+ 
+ 	cmd = container_of(header, typeof(*cmd), header);
+ 
+-	if (cmd->body.type >= max_allowed ||
+-	    cmd->body.type < SVGA3D_SHADERTYPE_MIN) {
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
+
