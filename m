@@ -2,111 +2,245 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4F9A789AD4
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 03:36:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AD21789B1C
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 05:28:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229576AbjH0BeL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 26 Aug 2023 21:34:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59978 "EHLO
+        id S229894AbjH0D1a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 26 Aug 2023 23:27:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229784AbjH0Bdh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 21:33:37 -0400
-Received: from mail-ej1-x629.google.com (mail-ej1-x629.google.com [IPv6:2a00:1450:4864:20::629])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1535E1BC
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 18:33:35 -0700 (PDT)
-Received: by mail-ej1-x629.google.com with SMTP id a640c23a62f3a-9a58dbd5daeso127707366b.2
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 18:33:35 -0700 (PDT)
+        with ESMTP id S229468AbjH0D1Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 26 Aug 2023 23:27:25 -0400
+Received: from mail-lj1-x229.google.com (mail-lj1-x229.google.com [IPv6:2a00:1450:4864:20::229])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96E9A1B9
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:27:22 -0700 (PDT)
+Received: by mail-lj1-x229.google.com with SMTP id 38308e7fff4ca-2bbad32bc79so32067551fa.0
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 20:27:22 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1693100013; x=1693704813;
+        d=joelfernandes.org; s=google; t=1693106840; x=1693711640;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=RT9M14f+fzjM8J0OEHrQ2CYoCkLyH8rDZSUrhqLTE98=;
-        b=470K4TIKA+UDx0xKr28T1LnbGBAo1YF/MzNcqB4YwDRaPOst6oIQ8KybSDan8xbUEz
-         novt/Z+sR2JenoGTUKoYy9VIwEX5cFdb2qUYg3jyKxGmmV9wKH3OkYcWmzsyZO7hDS3i
-         V3Q+bxpU9zbOp/p+u1NEa5FV5JaOjF4baZ/iauwu/PTBRgbtv5naW+/ceY3HJxlR1RNH
-         vZPi9aqYbl21ijBLx4FmzQwBVU4na3WBuiDdt+MVrRP9FD6tcmHUstH/EZNli8Pl4hYG
-         arP1gzdXiyG2vmVvBqObIQMjeIYAmi1vwFPCazMI1c6cKj2gt0uECg1nz4S4C+PVcHvV
-         q+pQ==
+        bh=VFuClnrxlnzijDXB/ZYm28FGDZrqZvXTpjgVHkF+lVY=;
+        b=rYKLIPZcgUc658lttS46V4n3y17njI/5lQrGz7qprb+W1yQUiqD5n+PPyPpr9Fev0Q
+         Ri7RkG4PlZE6BzwRZmyQwpEk59JGoHipVEL0vJ8pULjcmzHEtro5B1iVd3kHw7xctnmd
+         RUYQpn0S8yemjEY5kVSh2dkbopS/iibwD89V8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693100013; x=1693704813;
+        d=1e100.net; s=20221208; t=1693106840; x=1693711640;
         h=content-transfer-encoding:cc:to:subject:message-id:date:from
          :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=RT9M14f+fzjM8J0OEHrQ2CYoCkLyH8rDZSUrhqLTE98=;
-        b=cWsa3QjzHiTjiG58yM11zeQSmWvGY/O97hwD4ggqgYHIJE4xHEFBMrLv+ApIZxmpVe
-         Jfu9S217JbnHM51uPV+KAJxEGssz5NU+fASruAJg2oMyP3BeBFJJoGibKh+HfBaygvVG
-         sT++G3ZHs8+/33RDx3qKU9B9OcGJTIeRZD7NaQvR7SduYWtvYJ4If+UCXxd/2lspXkiT
-         oDQlfkOObzgGjjCscQ5sTCGVURh8AH2yNyUcms71iukPPiVKrgYF4wNhDhkdeXGaGkrm
-         ZINwqnBs6k6ckQKdducQN1v+bZlATY0WbBliuKATbLJn+n0OZw7plNC5Tuby9G6/iqiK
-         78zw==
-X-Gm-Message-State: AOJu0YzZ5jcB0lSJIUJMBqhWPxfjgtnzSuDHZkDYc3V2yoKNgxl8AO80
-        ntM3MnPFoKPaI3CVa/MKHbOIOGpjtEBgIqYz2a3zrw==
-X-Google-Smtp-Source: AGHT+IESODDnD/Bq39TxKw3pzqhTqWzhiSv0AMsfq+/Gt7aC1O3n9dbtLNKKv4hMcfA8FUflUhDP+nFfgroLq+u18Fo=
-X-Received: by 2002:a17:906:cd2:b0:99e:1041:f849 with SMTP id
- l18-20020a1709060cd200b0099e1041f849mr17616654ejh.20.1693100013381; Sat, 26
- Aug 2023 18:33:33 -0700 (PDT)
+        bh=VFuClnrxlnzijDXB/ZYm28FGDZrqZvXTpjgVHkF+lVY=;
+        b=DRTHV14XKGlB7KyRNRI54PkYVLzEEyj6qN6PiYF3/WeAENK+LmXwr9MutgdCOWd0df
+         sbsSMiU/hV5Jq+ZRdmwX7ybMYRixrfvBWBtcSn9AITNQ3thFfVbExKAI3ybirGtWSfln
+         SUEuSIHY0LXElvbIjwH3rQc+wAmJWiHiI6zkmiSzYJQXBFFVS9AYqUIUu18BaSFZWmY9
+         OmmuuvXXIrJHYg3qLssy/b40/hyXu8t+VZmeC4pvg6O5G2PrpT3wgQ2ysLVd+bkCG+Tl
+         UXNKYjp/fAHh1iYSY6M6oCcY8Ahb9hinuCeb5wMcTGachgp16ujo6X52BiKx2exgqHd0
+         g1cA==
+X-Gm-Message-State: AOJu0YxvVYUYxZzbpZL/WvLEQz+RML30/bMWMFcK3sptx90IH+W4Khzi
+        gBxWzsYaon45IkjnydRETA4IjAXy0CYj0wr4ISgkIw==
+X-Google-Smtp-Source: AGHT+IGNSytWMbiYTZDM2JN3ucYZuC5kuk2wpKr7D2qJaMGC19/0Opdza7R/QYv6z9hecjJ8L2O7zZRDuVeGBpXU39A=
+X-Received: by 2002:a2e:9646:0:b0:2bc:d7cb:8283 with SMTP id
+ z6-20020a2e9646000000b002bcd7cb8283mr10072806ljh.40.1693106840121; Sat, 26
+ Aug 2023 20:27:20 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230826154625.450325166@linuxfoundation.org>
-In-Reply-To: <20230826154625.450325166@linuxfoundation.org>
-From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
-Date:   Sun, 27 Aug 2023 10:33:22 +0900
-Message-ID: <CAKL4bV5npEHw3kfK_b4wbPZ0sEpW3muLzq6ENV2Y-7cqsE25Qw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 0/4] 6.1.49-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+References: <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
+ <87ttspct76.ffs@tglx> <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
+ <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
+ <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop> <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
+ <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop> <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+ <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
+ <20230825232807.GA97898@google.com>
+In-Reply-To: <20230825232807.GA97898@google.com>
+From:   Joel Fernandes <joel@joelfernandes.org>
+Date:   Sat, 26 Aug 2023 23:27:08 -0400
+Message-ID: <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
-
-On Sun, Aug 27, 2023 at 12:49=E2=80=AFAM Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
+On Fri, Aug 25, 2023 at 7:28=E2=80=AFPM Joel Fernandes <joel@joelfernandes.=
+org> wrote:
 >
-> This is the start of the stable review cycle for the 6.1.49 release.
-> There are 4 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Fri, Aug 25, 2023 at 07:15:44PM +0800, Huacai Chen wrote:
+> > Hi, Paul,
+> >
+> > On Fri, Aug 25, 2023 at 2:28=E2=80=AFAM Paul E. McKenney <paulmck@kerne=
+l.org> wrote:
+[..]
+> > > > > > > > > > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernande=
+s <joel@joelfernandes.org> wrote:
+> > > > > > > > > > >> > If  do_update_jiffies_64() cannot be used in NMI c=
+ontext,
+> > > > > > > > > > >>
+> > > > > > > > > > >> Can you not make the jiffies update conditional on w=
+hether it is
+> > > > > > > > > > >> called within NMI context?
+> > > > > > > > > >
+> > > > > > > > > > Which solves what? If KGDB has a breakpoint in the jiff=
+ies lock held
+> > > > > > > > > > region then you still dead lock.
+> > > > > > > > > >
+> > > > > > > > > > >> I dislike that..
+> > > > > > > > > > > Is this acceptable?
+> > > > > > > > > > >
+> > > > > > > > > > > void rcu_cpu_stall_reset(void)
+> > > > > > > > > > > {
+> > > > > > > > > > >         unsigned long delta;
+> > > > > > > > > > >
+> > > > > > > > > > >         delta =3D nsecs_to_jiffies(ktime_get_ns() - k=
+time_get_coarse_ns());
+> > > > > > > > > > >
+> > > > > > > > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
+> > > > > > > > > > >                    jiffies + delta + rcu_jiffies_till=
+_stall_check());
+> > > > > > > > > > > }
+> > > > > > > > > > >
+> > > > > > > > > > > This can update jiffies_stall without updating jiffie=
+s (but has the
+> > > > > > > > > > > same effect).
+> > > > > > > > > >
+> > > > > > > > > > Now you traded the potential dead lock on jiffies lock =
+for a potential
+> > > > > > > > > > live lock vs. tk_core.seq. Not really an improvement, r=
+ight?
+> > > > > > > > > >
+> > > > > > > > > > The only way you can do the above is something like the=
+ incomplete and
+> > > > > > > > > > uncompiled below. NMI safe and therefore livelock proof=
+ time interfaces
+> > > > > > > > > > exist for a reason.
+> > > > > > > > >
+> > > > > > > > > Just for completeness, another approach, with its own adv=
+antages
+> > > > > > > > > and disadvantage, is to add something like ULONG_MAX/4 to
+> > > > > > > > > rcu_state.jiffies_stall, but also set a counter indicatin=
+g that this
+> > > > > > > > > has been done.  Then RCU's force-quiescent processing cou=
+ld decrement
+> > > > > > > > > that counter (if non-zero) and reset rcu_state.jiffies_st=
+all when it
+> > > > > > > > > does reach zero.
+> > > > > > > > >
+> > > > > > > > > Setting the counter to three should cover most cases, but=
+ "live by the
+> > > > > > > > > heuristic, die by the heuristic".  ;-)
+> > > > > > > > >
+> > > > > > > > > It would be good to have some indication when gdb exited,=
+ but things
+> > > > > > > > > like the gdb "next" command can make that "interesting" w=
+hen applied to
+> > > > > > > > > a long-running function.
+> > > > > > > >
+> > > > > > > > The original code is adding ULONG_MAX/2, so adding ULONG_MA=
+X/4 may
+> > > > > > > > make no much difference? The simplest way is adding 300*HZ,=
+ but Joel
+> > > > > > > > dislikes that.
+> > > > > > >
+> > > > > > > I am not seeing the ULONG_MAX/2, so could you please point me=
+ to that
+> > > > > > > original code?
+> > > > > >
+> > > > > > Maybe I misunderstand something, I say the original code means =
+code
+> > > > > > before commit a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable GP=
+ stall
+> > > > > > detection in rcu_cpu_stall_reset()").
+> > > > >
+> > > > > Yes, my suggestion would essentially revert that patch.  It would
+> > > > > compensate by resetting rcu_state.jiffies_stall after a few calls
+> > > > > to rcu_gp_fqs().
+> > > > >
+> > > > > Alternatively, we could simply provide a way for gdb users to man=
+ually
+> > > > > disable RCU CPU stall warnings at the beginning of their debug se=
+ssions
+> > > > > and to manually re-enable them when they are done.
+> > > >
+> > > > This problem is not KGDB-specific (though it is firstly found in th=
+e
+> > > > KGDB case), so I want to fix it in the rcu code rather than in the
+> > > > kgdb code.
+> > >
+> > > Sure, for example, there is also PowerPC XMON.
+> > >
+> > > But this problem also is not RCU-specific.  There are also hardlockup=
+s,
+> > > softlockups, workqueue lockups, networking timeouts, and who knows wh=
+at
+> > > all else.
+> > >
+> > > Plus, and again to Thomas's point, gdb breakpoints can happen anywher=
+e.
+> > > For example, immediately after RCU computes the RCU CPU stall time fo=
+r
+> > > a new grace period, and right before it stores it.  The gdb callout
+> > > updates rcu_state.jiffies_stall, but that update is overwritten with =
+a
+> > > stale value as soon as the system starts back up.
+> > >
+> > > Low probabillity, to be sure, but there are quite a few places in
+> > > the kernel right after a read from some timebase or another, and many
+> > > (perhaps all) of these can see similar stale-time-use problems.
+> > >
+> > > The only way I know of to avoid these sorts of false positives is for
+> > > the user to manually suppress all timeouts (perhaps using a kernel-bo=
+ot
+> > > parameter for your early-boot case), do the gdb work, and then unsupp=
+ress
+> > > all stalls.  Even that won't work for networking, because the other
+> > > system's clock will be running throughout.
+> > >
+> > > In other words, from what I know now, there is no perfect solution.
+> > > Therefore, there are sharp limits to the complexity of any solution t=
+hat
+> > > I will be willing to accept.
+> > I think the simplest solution is (I hope Joel will not angry):
 >
-> Responses should be made by Mon, 28 Aug 2023 15:46:14 +0000.
-> Anything received after that time might be too late.
+> Not angry at all, just want to help. ;-). The problem is the 300*HZ solut=
+ion
+> will also effect the VM workloads which also do a similar reset.  Allow m=
+e few
+> days to see if I can take a shot at fixing it slightly differently. I am
+> trying Paul's idea of setting jiffies at a later time. I think it is doab=
+le.
+> I think the advantage of doing this is it will make stall detection more
+> robust in this face of these gaps in jiffie update. And that solution doe=
+s
+> not even need us to rely on ktime (and all the issues that come with that=
+).
 >
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.49-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
 
-6.1.49-rc1 tested.
+I wrote a patch similar to Paul's idea and sent it out for review, the
+advantage being it purely is based on jiffies. Could you try it out
+and let me know?
 
-Build successfully completed.
-Boot successfully completed.
-No dmesg regressions.
-Video output normal.
-Sound output normal.
+thanks,
 
-Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
-
-Thanks
-
-Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+ - Joel
