@@ -2,58 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AD0578A0E7
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 20:13:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2462878A0ED
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 20:25:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229843AbjH0SMd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 14:12:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52658 "EHLO
+        id S229937AbjH0SY6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 14:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230364AbjH0SMZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 14:12:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 127E5E6;
-        Sun, 27 Aug 2023 11:12:23 -0700 (PDT)
+        with ESMTP id S229713AbjH0SY0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 14:24:26 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E291E123
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 11:24:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A00AB6147A;
-        Sun, 27 Aug 2023 18:12:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDC9C433C7;
-        Sun, 27 Aug 2023 18:12:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693159942;
-        bh=Gtx6YMuQyMDzt4yTSZYJd+5ko0zLjEAbXXqlwMLbtf4=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=ZV9xzsu4xCOooWtwbzQw+WArL2yBSnAJdISGkNiPuBu2whAPZ86qFRkOZVMTFckFV
-         XIsvv6urrRCCvBvrmhgm3W1WRnnp6r2MWQ72ZngWClhbZ727qf29eUXfB+X0GMKGZy
-         P6k+lw6V6Ja14/caNIXZOPONxIb+Pu00L2p5s+MIJRogFPZ+HlbhC+Nm3LSY2f708D
-         ao6j4mcGCotf18GDiFJfGC9sfIdMvICCB76OqEt1bncCg82eVGNAvXcya8PpBzdXN8
-         FIfXesRNkZQIaxQkxVfH9RwE81gqWOn9dxlp9cnRBrC3PfrN0kjUH7AFKhqqQLk8+l
-         k1wOl4fJKm+rw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Sun, 27 Aug 2023 21:12:17 +0300
-Message-Id: <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
-Cc:     <linux-integrity@vger.kernel.org>,
-        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
-        "Todd Brandt" <todd.e.brandt@intel.com>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
-        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
-        "Raymond Jay Golo" <rjgolo@gmail.com>
-Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Mario Limonciello" <mario.limonciello@amd.com>,
-        "Paul Menzel" <pmenzel@molgen.mpg.de>
-X-Mailer: aerc 0.14.0
-References: <20230822231510.2263255-1-jarkko@kernel.org>
- <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
- <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
- <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
-In-Reply-To: <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D11A612BF
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 18:24:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43141C433C8;
+        Sun, 27 Aug 2023 18:24:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693160662;
+        bh=JydO1Yrt87UT6n7e5bO781ZlxB8bLm2b7Kd6FlxAI24=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=dosXAKpHsfHdNSwgjlh2Vr9k+Y9PWf5Wn02pUMFogJ7iX/m6FE3HCUWG1TYYZAIXs
+         68LrRWfSKa7g/qRuXiH2CCYiACl9g6Fq4TTh9tnud8rr3yDpbXb7nxdlVhveiSzsQJ
+         KIhmVSktjVwwWTjzo0DfaZ7SKg3lbp9Wo39KPYSQ=
+Date:   Sun, 27 Aug 2023 20:24:19 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Yin Fengwei <fengwei.yin@intel.com>
+Cc:     Yu Zhao <yuzhao@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Minchan Kim <minchan@kernel.org>,
+        Vishal Moola <vishal.moola@gmail.com>,
+        Yang Shi <shy828301@gmail.com>, stable@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 6.4.12] madvise:madvise_cold_or_pageout_pte_range():
+ don't use mapcount() against large folio for sharing check
+Message-ID: <2023082709-universal-zipfile-f50c@gregkh>
+References: <20230827135211.2115099-1-fengwei.yin@intel.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230827135211.2115099-1-fengwei.yin@intel.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -64,73 +58,13 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed Aug 23, 2023 at 9:58 PM EEST, Mario Limonciello wrote:
-> On 8/23/2023 12:40, Jarkko Sakkinen wrote:
-> > On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
-> >> Dear Jarkko,
-> >>
-> >>
-> >> Thank you for your patch.
-> >>
-> >>
-> >> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
-> >>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG=
- for
-> >>> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On=
- the
-> >>> reported systems the TPM doesn't reply at bootup and returns back the
-> >>> command code. This makes the TPM fail probe.
-> >>>
-> >>> Since only Microsoft Pluton is the only known combination of AMD CPU =
-and
-> >>> fTPM from other vendor, disable hwrng otherwise. In order to make sys=
-admin
-> >>> aware of this, print also info message to the klog.
-> >>>
-> >>> Cc: stable@vger.kernel.org
-> >>> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> >>> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> >>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
-> >>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >>
-> >> Mario=E2=80=99s patch also had the three reporters below listed:
-> >>
-> >> Reported-by: Patrick Steinhardt <ps@pks.im>
-> >> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> >> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> >=20
-> > The problem here is that checkpatch throws three warnings:
-> >=20
-> > WARNING: Reported-by: should be immediately followed by Closes: with a =
-URL to the report
-> > #19:
-> > Reported-by: Patrick Steinhardt <ps@pks.im>
-> > Reported-by: Ronan Pigott <ronan@rjp.ie>
-> >=20
-> > WARNING: Reported-by: should be immediately followed by Closes: with a =
-URL to the report
-> > #20:
-> > Reported-by: Ronan Pigott <ronan@rjp.ie>
-> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> >=20
-> > WARNING: Reported-by: should be immediately followed by Closes: with a =
-URL to the report
-> > #21:
-> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >=20
->
-> FWIW I observed the same checkpatch warning when I submitted my version=
-=20
-> of the patch.  I figured it's better to ignore the warning and attribute=
-=20
-> everyone who reported the issue affected them.
+On Sun, Aug 27, 2023 at 09:52:11PM +0800, Yin Fengwei wrote:
+> Patch series "don't use mapcount() to check large folio sharing", v2.
+> 
+> In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(),
+> folio_mapcount() is used to check whether the folio is shared.  But it's
+> not correct as folio_mapcount() returns total mapcount of large folio.
 
-OK so:
+All backports now queued up, thanks!
 
-1. checkpatch.pl is part of the kernel process.
-2. Bugzilla is not part of the kernel process.
-
-Why emphasis on 1?
-
-BR, Jarkko
+greg k-h
