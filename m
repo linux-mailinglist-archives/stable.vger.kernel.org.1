@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E89B789B90
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 08:42:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9E78789B8B
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 08:42:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229644AbjH0Gln (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 02:41:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56876 "EHLO
+        id S229661AbjH0GmP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 02:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229661AbjH0Glc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 02:41:32 -0400
+        with ESMTP id S229557AbjH0Gln (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 02:41:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D816197
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 23:41:29 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CC25197
+        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 23:41:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F305261DFC
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 06:41:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B232C433C7;
-        Sun, 27 Aug 2023 06:41:27 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3239460A6F
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 06:41:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42D63C433C8;
+        Sun, 27 Aug 2023 06:41:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693118488;
-        bh=TLAD52rnUXNPaMMITHPQzKFa+lqXlBzN7W1mHK5xVes=;
+        s=korg; t=1693118499;
+        bh=cmqwyMJRCAxM90n/+nCKt/JrbstXFNHAtWsX1k/FIso=;
         h=Subject:To:Cc:From:Date:From;
-        b=0dPkP76ZbJKhUatSm+veirC1m2QsNu070UzXOdmd4s4wdrGuj6TsskO0YWqrphTlk
-         J7jb8IEAjuqhCaz2PFxMOYuYrDRfxWx53tRU3/IUGia6xTHZ+guzBRCJFF+FXIeWtt
-         nYrwz5yj5WmwkIlIT+5HEqXz8hyNuUHseypy3VME=
-Subject: FAILED: patch "[PATCH] drm/vmwgfx: Fix shader stage validation" failed to apply to 4.14-stable tree
-To:     zackr@vmware.com, ezrakiez@gmail.com, krastevm@vmware.com,
-        mombasawalam@vmware.com, ndegraef@redhat.com,
+        b=UKDTYCYmM+aQ3JDqdy39LfvT1u7pHvFLWpvTeOXXrGOWycJZhxT571OfCWUgA65yy
+         Tp0UwS+zhBu3fP4JPwqk0PmtDiH+cr0HJA+Y1TMIuIMcufK3JrIaawgnc+eXAxeXA1
+         MOCC7GxUj8KZOD+VvhdCYtlkwOLgTlTzvdyqZNs8=
+Subject: FAILED: patch "[PATCH] drm/vmwgfx: Fix possible invalid drm gem put calls" failed to apply to 6.1-stable tree
+To:     zackr@vmware.com, iforbes@vmware.com, mombasawalam@vmware.com,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 27 Aug 2023 08:41:22 +0200
-Message-ID: <2023082722-junkman-private-ddc7@gregkh>
+Date:   Sun, 27 Aug 2023 08:41:36 +0200
+Message-ID: <2023082736-canal-swimsuit-6b7b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,37 +49,33 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 14abdfae508228a7307f7491b5c4215ae70c6542
+git cherry-pick -x f9e96bf1905479f18e83a3a4c314a8dfa56ede2c
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082722-junkman-private-ddc7@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082736-canal-swimsuit-6b7b@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-14abdfae5082 ("drm/vmwgfx: Fix shader stage validation")
-c593197b6ece ("drm/vmwgfx: Fix fencing on SVGAv3")
-2cd80dbd3551 ("drm/vmwgfx: Add basic support for SVGA3")
-f3ebd4e6b692 ("drm/vmwgfx/vmwgfx_drv: Fix an error path in vmw_setup_pci_resources()")
-c6771b6338c8 ("drm/vmwgfx/vmwgfx_fence: Add, remove and demote various documentation params/headers")
-043948cfc823 ("drm/vmwgfx/vmwgfx_ioctl: Provide missing '@' sign required by kernel-doc")
-8426ed9c4b42 ("drm/vmwgfx: Cleanup the cmd/fifo split")
-359dc60d0fa5 ("drm/vmwgfx: Remove the throttling code")
-8772c0bb58bb ("drm/vmwgfx: Cleanup pci resource allocation")
-be4f77ac6884 ("drm/vmwgfx: Cleanup fifo mmio handling")
-9703bb329206 ("drm/vmwgfx: Switch to a managed drm device")
-31856c8c1ce4 ("drm/vmwgfx: Remove stealth mode")
-840462e6872d ("drm/vmwgfx: Remove references to struct drm_device.pdev")
-7a60c2dd0f57 ("drm: Remove SCATTERLIST_MAX_SEGMENT")
-c489573b5b6c ("Merge drm/drm-next into drm-misc-next")
+f9e96bf19054 ("drm/vmwgfx: Fix possible invalid drm gem put calls")
+9ef8d83e8e25 ("drm/vmwgfx: Do not drop the reference to the handle too soon")
+668b206601c5 ("drm/vmwgfx: Stop using raw ttm_buffer_object's")
+39985eea5a6d ("drm/vmwgfx: Abstract placement selection")
+e0029da927fa ("drm/vmwgfx: Rename dummy to is_iomem")
+cb8097a45da1 ("drm/vmwgfx: Cleanup the vmw bo usage in the cursor paths")
+6703e28f976d ("drm/vmwgfx: Simplify fb pinning")
+09881d2940bb ("drm/vmwgfx: Rename vmw_buffer_object to vmw_bo")
+6b2e8aa45126 ("drm/vmwgfx: Remove the duplicate bo_free function")
+f87c1f0b7b79 ("drm/ttm: prevent moving of pinned BOs")
+aebd8f0c6f82 ("Merge v6.2-rc6 into drm-next")
 
 thanks,
 
@@ -88,174 +83,140 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 14abdfae508228a7307f7491b5c4215ae70c6542 Mon Sep 17 00:00:00 2001
+From f9e96bf1905479f18e83a3a4c314a8dfa56ede2c Mon Sep 17 00:00:00 2001
 From: Zack Rusin <zackr@vmware.com>
-Date: Fri, 16 Jun 2023 15:09:34 -0400
-Subject: [PATCH] drm/vmwgfx: Fix shader stage validation
+Date: Fri, 18 Aug 2023 00:13:01 -0400
+Subject: [PATCH] drm/vmwgfx: Fix possible invalid drm gem put calls
 
-For multiple commands the driver was not correctly validating the shader
-stages resulting in possible kernel oopses. The validation code was only.
-if ever, checking the upper bound on the shader stages but never a lower
-bound (valid shader stages start at 1 not 0).
+vmw_bo_unreference sets the input buffer to null on exit, resulting in
+null ptr deref's on the subsequent drm gem put calls.
 
-Fixes kernel oopses ending up in vmw_binding_add, e.g.:
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 1 PID: 2443 Comm: testcase Not tainted 6.3.0-rc4-vmwgfx #1
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:vmw_binding_add+0x4c/0x140 [vmwgfx]
-Code: 7e 30 49 83 ff 0e 0f 87 ea 00 00 00 4b 8d 04 7f 89 d2 89 cb 48 c1 e0 03 4c 8b b0 40 3d 93 c0 48 8b 80 48 3d 93 c0 49 0f af de <48> 03 1c d0 4c 01 e3 49 8>
-RSP: 0018:ffffb8014416b968 EFLAGS: 00010206
-RAX: ffffffffc0933ec0 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 00000000ffffffff RSI: ffffb8014416b9c0 RDI: ffffb8014316f000
-RBP: ffffb8014416b998 R08: 0000000000000003 R09: 746f6c735f726564
-R10: ffffffffaaf2bda0 R11: 732e676e69646e69 R12: ffffb8014316f000
-R13: ffffb8014416b9c0 R14: 0000000000000040 R15: 0000000000000006
-FS:  00007fba8c0af740(0000) GS:ffff8a1277c80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000007c0933eb8 CR3: 0000000118244001 CR4: 00000000003706e0
-Call Trace:
- <TASK>
- vmw_view_bindings_add+0xf5/0x1b0 [vmwgfx]
- ? ___drm_dbg+0x8a/0xb0 [drm]
- vmw_cmd_dx_set_shader_res+0x8f/0xc0 [vmwgfx]
- vmw_execbuf_process+0x590/0x1360 [vmwgfx]
- vmw_execbuf_ioctl+0x173/0x370 [vmwgfx]
- ? __drm_dev_dbg+0xb4/0xe0 [drm]
- ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
- drm_ioctl_kernel+0xbc/0x160 [drm]
- drm_ioctl+0x2d2/0x580 [drm]
- ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
- ? do_fault+0x1a6/0x420
- vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
- vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
- __x64_sys_ioctl+0x96/0xd0
- do_syscall_64+0x5d/0x90
- ? handle_mm_fault+0xe4/0x2f0
- ? debug_smp_processor_id+0x1b/0x30
- ? fpregs_assert_state_consistent+0x2e/0x50
- ? exit_to_user_mode_prepare+0x40/0x180
- ? irqentry_exit_to_user_mode+0xd/0x20
- ? irqentry_exit+0x3f/0x50
- ? exc_page_fault+0x8b/0x180
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
+This went unnoticed because only very old userspace would be exercising
+those paths but it wouldn't be hard to hit on old distros with brand
+new kernels.
+
+Introduce a new function that abstracts unrefing of user bo's to make
+the code cleaner and more explicit.
 
 Signed-off-by: Zack Rusin <zackr@vmware.com>
-Cc: security@openanolis.org
-Reported-by: Ziming Zhang <ezrakiez@gmail.com>
-Testcase-found-by: Niels De Graef <ndegraef@redhat.com>
-Fixes: d80efd5cb3de ("drm/vmwgfx: Initial DX support")
-Cc: <stable@vger.kernel.org> # v4.3+
+Reported-by: Ian Forbes <iforbes@vmware.com>
+Fixes: 9ef8d83e8e25 ("drm/vmwgfx: Do not drop the reference to the handle too soon")
+Cc: <stable@vger.kernel.org> # v6.4+
 Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
-Reviewed-by: Martin Krastev <krastevm@vmware.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230616190934.54828-1-zack@kde.org
+Link: https://patchwork.freedesktop.org/patch/msgid/20230818041301.407636-1-zack@kde.org
 
-diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-index 3810a9984a7f..58bfdf203eca 100644
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -1513,4 +1513,16 @@ static inline bool vmw_has_fences(struct vmw_private *vmw)
- 	return (vmw_fifo_caps(vmw) & SVGA_FIFO_CAP_FENCE) != 0;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+index 82094c137855..c43853597776 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
+@@ -497,10 +497,9 @@ static int vmw_user_bo_synccpu_release(struct drm_file *filp,
+ 		if (!(flags & drm_vmw_synccpu_allow_cs)) {
+ 			atomic_dec(&vmw_bo->cpu_writers);
+ 		}
+-		ttm_bo_put(&vmw_bo->tbo);
++		vmw_user_bo_unref(vmw_bo);
+ 	}
+ 
+-	drm_gem_object_put(&vmw_bo->tbo.base);
+ 	return ret;
  }
  
-+static inline bool vmw_shadertype_is_valid(enum vmw_sm_type shader_model,
-+					   u32 shader_type)
+@@ -540,8 +539,7 @@ int vmw_user_bo_synccpu_ioctl(struct drm_device *dev, void *data,
+ 			return ret;
+ 
+ 		ret = vmw_user_bo_synccpu_grab(vbo, arg->flags);
+-		vmw_bo_unreference(&vbo);
+-		drm_gem_object_put(&vbo->tbo.base);
++		vmw_user_bo_unref(vbo);
+ 		if (unlikely(ret != 0)) {
+ 			if (ret == -ERESTARTSYS || ret == -EBUSY)
+ 				return -EBUSY;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+index 50a836e70994..1d433fceed3d 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
+@@ -195,6 +195,14 @@ static inline struct vmw_bo *vmw_bo_reference(struct vmw_bo *buf)
+ 	return buf;
+ }
+ 
++static inline void vmw_user_bo_unref(struct vmw_bo *vbo)
 +{
-+	SVGA3dShaderType max_allowed = SVGA3D_SHADERTYPE_PREDX_MAX;
-+
-+	if (shader_model >= VMW_SM_5)
-+		max_allowed = SVGA3D_SHADERTYPE_MAX;
-+	else if (shader_model >= VMW_SM_4)
-+		max_allowed = SVGA3D_SHADERTYPE_DX10_MAX;
-+	return shader_type >= SVGA3D_SHADERTYPE_MIN && shader_type < max_allowed;
++	if (vbo) {
++		ttm_bo_put(&vbo->tbo);
++		drm_gem_object_put(&vbo->tbo.base);
++	}
 +}
 +
- #endif
+ static inline struct vmw_bo *to_vmw_bo(struct drm_gem_object *gobj)
+ {
+ 	return container_of((gobj), struct vmw_bo, tbo.base);
 diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-index 6b9aa2b4ef54..d30c0e3d3ab7 100644
+index d30c0e3d3ab7..98e0723ca6f5 100644
 --- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
 +++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1992,7 +1992,7 @@ static int vmw_cmd_set_shader(struct vmw_private *dev_priv,
- 
- 	cmd = container_of(header, typeof(*cmd), header);
- 
--	if (cmd->body.type >= SVGA3D_SHADERTYPE_PREDX_MAX) {
-+	if (!vmw_shadertype_is_valid(VMW_SM_LEGACY, cmd->body.type)) {
- 		VMW_DEBUG_USER("Illegal shader type %u.\n",
- 			       (unsigned int) cmd->body.type);
- 		return -EINVAL;
-@@ -2115,8 +2115,6 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
- 				      SVGA3dCmdHeader *header)
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetSingleConstantBuffer);
--	SVGA3dShaderType max_shader_num = has_sm5_context(dev_priv) ?
--		SVGA3D_NUM_SHADERTYPE : SVGA3D_NUM_SHADERTYPE_DX10;
- 
- 	struct vmw_resource *res = NULL;
- 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
-@@ -2133,6 +2131,14 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
+@@ -1164,8 +1164,7 @@ static int vmw_translate_mob_ptr(struct vmw_private *dev_priv,
+ 	}
+ 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_MOB, VMW_BO_DOMAIN_MOB);
+ 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo);
+-	ttm_bo_put(&vmw_bo->tbo);
+-	drm_gem_object_put(&vmw_bo->tbo.base);
++	vmw_user_bo_unref(vmw_bo);
  	if (unlikely(ret != 0))
  		return ret;
  
-+	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type) ||
-+	    cmd->body.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
-+		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
-+			       (unsigned int) cmd->body.type,
-+			       (unsigned int) cmd->body.slot);
-+		return -EINVAL;
-+	}
-+
- 	binding.bi.ctx = ctx_node->ctx;
- 	binding.bi.res = res;
- 	binding.bi.bt = vmw_ctx_binding_cb;
-@@ -2141,14 +2147,6 @@ vmw_cmd_dx_set_single_constant_buffer(struct vmw_private *dev_priv,
- 	binding.size = cmd->body.sizeInBytes;
- 	binding.slot = cmd->body.slot;
+@@ -1221,8 +1220,7 @@ static int vmw_translate_guest_ptr(struct vmw_private *dev_priv,
+ 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM,
+ 			     VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM);
+ 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo);
+-	ttm_bo_put(&vmw_bo->tbo);
+-	drm_gem_object_put(&vmw_bo->tbo.base);
++	vmw_user_bo_unref(vmw_bo);
+ 	if (unlikely(ret != 0))
+ 		return ret;
  
--	if (binding.shader_slot >= max_shader_num ||
--	    binding.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
--		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
--			       (unsigned int) cmd->body.type,
--			       (unsigned int) binding.slot);
--		return -EINVAL;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+index b62207be3363..1489ad73c103 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
+@@ -1665,10 +1665,8 @@ static struct drm_framebuffer *vmw_kms_fb_create(struct drm_device *dev,
+ 
+ err_out:
+ 	/* vmw_user_lookup_handle takes one ref so does new_fb */
+-	if (bo) {
+-		vmw_bo_unreference(&bo);
+-		drm_gem_object_put(&bo->tbo.base);
 -	}
--
- 	vmw_binding_add(ctx_node->staged, &binding.bi, binding.shader_slot,
- 			binding.slot);
++	if (bo)
++		vmw_user_bo_unref(bo);
+ 	if (surface)
+ 		vmw_surface_unreference(&surface);
  
-@@ -2207,15 +2205,13 @@ static int vmw_cmd_dx_set_shader_res(struct vmw_private *dev_priv,
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShaderResources) =
- 		container_of(header, typeof(*cmd), header);
--	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
--		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+index 7e112319a23c..fb85f244c3d0 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
+@@ -451,8 +451,7 @@ int vmw_overlay_ioctl(struct drm_device *dev, void *data,
  
- 	u32 num_sr_view = (cmd->header.size - sizeof(cmd->body)) /
- 		sizeof(SVGA3dShaderResourceViewId);
+ 	ret = vmw_overlay_update_stream(dev_priv, buf, arg, true);
  
- 	if ((u64) cmd->body.startView + (u64) num_sr_view >
- 	    (u64) SVGA3D_DX_MAX_SRVIEWS ||
--	    cmd->body.type >= max_allowed) {
-+	    !vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
- 		VMW_DEBUG_USER("Invalid shader binding.\n");
- 		return -EINVAL;
- 	}
-@@ -2239,8 +2235,6 @@ static int vmw_cmd_dx_set_shader(struct vmw_private *dev_priv,
- 				 SVGA3dCmdHeader *header)
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShader);
--	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
--		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
- 	struct vmw_resource *res = NULL;
- 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
- 	struct vmw_ctx_bindinfo_shader binding;
-@@ -2251,8 +2245,7 @@ static int vmw_cmd_dx_set_shader(struct vmw_private *dev_priv,
+-	vmw_bo_unreference(&buf);
+-	drm_gem_object_put(&buf->tbo.base);
++	vmw_user_bo_unref(buf);
  
- 	cmd = container_of(header, typeof(*cmd), header);
+ out_unlock:
+ 	mutex_unlock(&overlay->mutex);
+diff --git a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+index e7226db8b242..1e81ff2422cf 100644
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
+@@ -809,8 +809,7 @@ static int vmw_shader_define(struct drm_device *dev, struct drm_file *file_priv,
+ 				    shader_type, num_input_sig,
+ 				    num_output_sig, tfile, shader_handle);
+ out_bad_arg:
+-	vmw_bo_unreference(&buffer);
+-	drm_gem_object_put(&buffer->tbo.base);
++	vmw_user_bo_unref(buffer);
+ 	return ret;
+ }
  
--	if (cmd->body.type >= max_allowed ||
--	    cmd->body.type < SVGA3D_SHADERTYPE_MIN) {
-+	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
- 		VMW_DEBUG_USER("Illegal shader type %u.\n",
- 			       (unsigned int) cmd->body.type);
- 		return -EINVAL;
 
