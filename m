@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E33F789BF7
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 09:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 951C7789C06
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 10:05:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229716AbjH0H6U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 03:58:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36538 "EHLO
+        id S229468AbjH0IEv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 04:04:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230118AbjH0H5x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 03:57:53 -0400
+        with ESMTP id S230291AbjH0IEd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 04:04:33 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B92D10A;
-        Sun, 27 Aug 2023 00:57:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9B5812E
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 01:04:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C45F062022;
-        Sun, 27 Aug 2023 07:57:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D483AC433C8;
-        Sun, 27 Aug 2023 07:57:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EB9260B34
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 08:04:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F508C433C8;
+        Sun, 27 Aug 2023 08:04:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693123069;
-        bh=P4lsFlifRgGl4it2BA7doRsmnOUDU03SRSFRthQgHW4=;
+        s=korg; t=1693123469;
+        bh=msoldE/EM8IhgzkHqR+P3hH+vTRffVC7M0jKIkCt7cQ=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=rvVjaCPgR7djXjmsBKp+D/t4WmEwBdTztOsa2aaL4UTksn2utvyEGz0RIXVsMMm08
-         LIGU0JUpMRTtNOTm+XJQCLHGx7l+OFzdi4eJ80EARniQInx4n4jaRL6Z/VbOyDVKA6
-         +MxePoHqWO3MPX51UKAtL18en/Jj2fljYDZxnMHg=
-Date:   Sun, 27 Aug 2023 09:57:34 +0200
+        b=a3pK00SU2bjaCoos3tuqjwOb6NzvF04MUco0Z2pDYTMstBfN9tufMKWwc7oVx+PW5
+         ha4H2+jHGpiYNoOtGFQIVWzrDuPIpbfIgThvF2dBAJV/TLYqXIsS1gxSjWIZIxkBty
+         xPrj8CYQ4QMsYKGW1M7aRugwh9Smuk8CmPsFyHmY=
+Date:   Sun, 27 Aug 2023 10:04:12 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Cc:     brauner@kernel.org, chuck.lever@oracle.com, bfields@fieldses.org,
-        stable@vger.kernel.org, linux-nfs@vger.kernel.org, hch@lst.de,
-        jlayton@kernel.org, vegard.nossum@oracle.com,
-        naresh.kamboju@linaro.org
-Subject: Re: [PATCH 6.1.y 0/2] Address ltp nfs test failure.
-Message-ID: <2023082729-angles-aids-741f@gregkh>
-References: <20230825161603.371792-1-harshit.m.mogalapalli@oracle.com>
+To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Cc:     stable@vger.kernel.org, Davidlohr Bueso <dave@stgolabs.net>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Josh Triplett <josh@joshtriplett.org>
+Subject: Re: [PATCH 5.10 1/3] torture: Fix hang during kthread shutdown phase
+Message-ID: <2023082704-removed-rectified-8501@gregkh>
+References: <20230814033934.1165010-1-joel@joelfernandes.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230825161603.371792-1-harshit.m.mogalapalli@oracle.com>
+In-Reply-To: <20230814033934.1165010-1-joel@joelfernandes.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -52,33 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Aug 25, 2023 at 09:16:01AM -0700, Harshit Mogalapalli wrote:
-> These two are backports for 6.1.y. Conflict resolution in done in
-> both patches.
+On Mon, Aug 14, 2023 at 03:39:31AM +0000, Joel Fernandes (Google) wrote:
+> From: Joel Fernandes <joel@joelfernandes.org>
 > 
-> I have tested LTP-nfs fchown02 and chown02 on 6.1.y with below patches
-> applied. The tests passed.
+> [ Upstream commit d52d3a2bf408ff86f3a79560b5cce80efb340239 ]
+
+> During shutdown of rcutorture, the shutdown thread in
+> rcu_torture_cleanup() calls torture_cleanup_begin() which sets fullstop
+> to FULLSTOP_RMMOD. This is enough to cause the rcutorture threads for
+> readers and fakewriters to breakout of their main while loop and start
+> shutting down.
 > 
-> I would like to have a review as I am not familiar with this code.
+> Once out of their main loop, they then call torture_kthread_stopping()
+> which in turn waits for kthread_stop() to be called, however
+> rcu_torture_cleanup() has not even called kthread_stop() on those
+> threads yet, it does that a bit later.  However, before it gets a chance
+> to do so, torture_kthread_stopping() calls
+> schedule_timeout_interruptible(1) in a tight loop. Tracing confirmed
+> this makes the timer softirq constantly execute timer callbacks, while
+> never returning back to the softirq exit path and is essentially "locked
+> up" because of that. If the softirq preempts the shutdown thread,
+> kthread_stop() may never be called.
 > 
-> Thanks to Vegard for helping me with this.
+> This commit improves the situation dramatically, by increasing timeout
+> passed to schedule_timeout_interruptible() 1/20th of a second. This
+> causes the timer softirq to not lock up a CPU and everything works fine.
+> Testing has shown 100 runs of TREE07 passing reliably, which was not the
+> case before because of RCU stalls.
 > 
-> Thanks,
-> Harshit
+> Cc: Paul McKenney <paulmck@kernel.org>
+> Cc: Frederic Weisbecker <fweisbec@gmail.com>
+> Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
+> Cc: <stable@vger.kernel.org> # 6.0.x
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+> Tested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+> ---
+>  kernel/torture.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-> Christian Brauner (2):
->   nfs: use vfs setgid helper
->   nfsd: use vfs setgid helper
-> 
->  fs/attr.c          | 1 +
->  fs/internal.h      | 2 --
->  fs/nfs/inode.c     | 4 +---
->  fs/nfsd/vfs.c      | 4 +++-
->  include/linux/fs.h | 2 ++
->  5 files changed, 7 insertions(+), 6 deletions(-)
-> 
+> diff --git a/kernel/torture.c b/kernel/torture.c
+> index 1061492f14bd..477d9b601438 100644
+> --- a/kernel/torture.c
+> +++ b/kernel/torture.c
+> @@ -788,7 +788,7 @@ void torture_kthread_stopping(char *title)
+>  	VERBOSE_TOROUT_STRING(buf);
+>  	while (!kthread_should_stop()) {
+>  		torture_shutdown_absorb(title);
+> -		schedule_timeout_uninterruptible(1);
+> +		schedule_timeout_uninterruptible(HZ/20);
+>  	}
+>  }
+>  EXPORT_SYMBOL_GPL(torture_kthread_stopping);
 > -- 
-> 2.34.1
+> 2.41.0.640.ga95def55d0-goog
 > 
 
 All now queued up, thanks.
