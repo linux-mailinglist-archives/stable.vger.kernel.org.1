@@ -2,209 +2,231 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 573EF789B50
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 06:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACC65789B54
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 06:14:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229517AbjH0EIa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 00:08:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34904 "EHLO
+        id S229620AbjH0EOO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 00:14:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229492AbjH0EIN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 00:08:13 -0400
-Received: from NAM11-DM6-obe.outbound.protection.outlook.com (mail-dm6nam11on2070.outbound.protection.outlook.com [40.107.223.70])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13C17197
-        for <stable@vger.kernel.org>; Sat, 26 Aug 2023 21:08:11 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=i1akS08ucsjQ6mtM5s/29Y7Ywov7ieIe7jkc5NAe864VnxAI1Jae+ZMc/q7tA0wZyL7n9OPObjbs91VaZi7Gxkl2KB3J+tpFdUp1JbfXQLnKvv+TOVzfHS7FCELWU6u9QKM7HuJfeKoutyX55izY79M3HZs6woNxIloo7J2cQ/XPd+rBjzcBEvG50NViABIYk/0VghYB1cbzbk0SSPzJw/oNVFaYNqa3yWbG4kco5GN1dr+ShK990xtM2gHS2mmBGJgEWdcyE6Yz7MCUheKFnSD/e0vsgRYQCxrTot8CIvbPwSuL9tC8i7dSBer6MzMoj+F50boAL2uJ+LHNyyfPLg==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=7Y1tboOksgbuWSoGBi46tfDSvt6W0t21t24p1SKgBEQ=;
- b=Go1IVSirFijBxe4XXdYg5Lb75y/kRker6a/JS9BEqKSNZnBUTJ+afpH/83PTiN4DE3Tq8YDMc69kArqwmkhXrYaUPiYVRBiHxBWCY3MSzOEo1LjNY1Lc/bXEblTVAtpT2NDSRdRHD+gbRrGVVupAU46kPdXSwbPOfn81GGfXGKE8iUp6y0ogGb42njliXF5Q7fAXGvcLAV/wLqp1CscWj377eiVwzP6i528y1Koe9ON540zZYiF68eGwLCH+XNtcK5efgcuYOLL6Xc2QZZCPTIjpCqJZB2GO9JdyE5DvUSuk2Lhx6JFo/Q2Cd63yRnqUPVhgdRYFySFTh72czA2Z+g==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=7Y1tboOksgbuWSoGBi46tfDSvt6W0t21t24p1SKgBEQ=;
- b=ZTECU92wm9CJ68UlsYWmspYtlybhVmL0RZzEMGuNA1tUIUayhDP+TdDGEoetnwkKrBN7liDmtmy0NlJwZJgKGoJevJtscKwxAfeKStnMLEVnW36i+6brt1O25CB1wPsq6TKG+ODF4gEQyBiM1qQm/N8CrNMTAICgFeOf2LjIUxw=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com (2603:10b6:208:3cb::10)
- by SA1PR12MB5615.namprd12.prod.outlook.com (2603:10b6:806:229::17) with
- Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.27; Sun, 27 Aug
- 2023 04:08:08 +0000
-Received: from MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146]) by MN0PR12MB6101.namprd12.prod.outlook.com
- ([fe80::36f9:ffa7:c770:d146%7]) with mapi id 15.20.6699.034; Sun, 27 Aug 2023
- 04:08:08 +0000
-Message-ID: <a715e893-733b-4ffe-8646-87af49998cc2@amd.com>
-Date:   Sat, 26 Aug 2023 23:08:05 -0500
-User-Agent: Mozilla Thunderbird
-Subject: Re: [REGRESSION] [BISECTED] power button stopped working on lenovo
- ideapad 5 since a855724dc08b
-To:     Luca Pigliacampo <lucapgl2001@gmail.com>, stable@vger.kernel.org
-Cc:     regressions@lists.linux.dev, linus.walleij@linaro.org,
-        Basavaraj.Natikar@amd.com, Shyam-sundar.S-k@amd.com
-References: <aa1649b6-b7a8-4fbe-8356-2c856951e283@gmail.com>
-Content-Language: en-US
-From:   Mario Limonciello <mario.limonciello@amd.com>
-In-Reply-To: <aa1649b6-b7a8-4fbe-8356-2c856951e283@gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-ClientProxiedBy: SA0PR11CA0102.namprd11.prod.outlook.com
- (2603:10b6:806:d1::17) To MN0PR12MB6101.namprd12.prod.outlook.com
- (2603:10b6:208:3cb::10)
-MIME-Version: 1.0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: MN0PR12MB6101:EE_|SA1PR12MB5615:EE_
-X-MS-Office365-Filtering-Correlation-Id: 20e30760-6525-4228-31fc-08dba6b33866
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: lNL7D38nH1mUSVmSO+mlP98HHqp/DTyZr2IaKC9tYDxXoUtrlE5ehs7HgLIWkzDWs5wnPqdZfdM3+h8FVYUNEP2Ma2cL85QbfcPtRnaSEFDkjM7nsRpa8EzwXV73TSS5XcjYifoKL1o55ePMQuKsiJyc/6RNmn8oUHy37bUxVgig7Ljv4DSPmpCS7EnKs3e8oP6MWT1hwvbWow3ckotzbneFPQY1xdWS9HNzMrLwACNC804BoFLBYZuHyX5WuQmYzSDR+cJLCPD6BFKA7BD733TsenFRU5LJIXZQc5tXTIchPfbLnQNVuT6PF7NvGDrfd+rGhDMAVPsjDVKZ0X+KMMUUM5k6RA3AoU32sxzwG6WLInYBKOWM4dEzOMgH6yjjBxthfNtaeen8wYDIoBgS85LuATn+ODu/4t/PM3QbBBdceX4nCEr9lV5eXmGClSik9LL0gN9Erf75XzPWiOYfFDB33DA/30h0v9om8GxbOvKStyO7iCq6CJ/5C5XLUpGfqg1xrGWPQUkXvixodx/fYXS+Y1UXMfFmVBll6abLCnxFMdES5qvZPdjdMy8DHvt2BvzfFqj2fCGP/80cnip14HbaeYDkWLnjfcu5wJt7AOKkAenkte0nq2Do5gbwuy6IfGOg/vSC6xyWCwvh5cTuKQ==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:MN0PR12MB6101.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(39860400002)(136003)(396003)(366004)(1800799009)(186009)(451199024)(2616005)(5660300002)(8676002)(4326008)(8936002)(36756003)(83380400001)(26005)(6666004)(38100700002)(44832011)(66556008)(66476007)(66946007)(316002)(478600001)(31686004)(53546011)(41300700001)(6512007)(2906002)(6506007)(86362001)(6486002)(31696002)(45980500001)(43740500002);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?bHg2UVZUeVFGbTVZR3VwSDN5a1BkUjZianhRb2pDa0o2bllOcTBpcTlZMDZK?=
- =?utf-8?B?bHZYT2JlKzFGZzhPOWJ1K3BLU3FnbVM1ZzFCRk9GV25Jd0hVcmRCb0hUaTR5?=
- =?utf-8?B?Zm9xaEl0OXpTbUJHQTBtVXdEM25SNG1XVHVOUFROTGZ0TElES0dSTGJDb0pY?=
- =?utf-8?B?REVIVWdhVEFjaHpQOGRUMnRCTmIyM0laQjNkNGM4REEydHRxdU4vVC9FOXcw?=
- =?utf-8?B?WmFNdStQVW9BYVZrcWlJTEVFRXZLanY5bnFlREJUYzFkWUFJZjgyaDdER01U?=
- =?utf-8?B?alJNNSs3VVRNZHpmMU1lUGU2Q29oSDFwUXIzTzNubnN6QnhaeVkyQ2huRG82?=
- =?utf-8?B?Tm8xTDBjREFZSy92T2dsV3RFbGp5NnFMaDdYVTZZbEtmNHlpZHpxT3JSblp2?=
- =?utf-8?B?cTZsMzczZTVnaXVlY2YxUi9SWGxQUTdSV0xIaU0vQ0lxc0lPS2RqTEdMWElK?=
- =?utf-8?B?cHowdHFGK1J5VWcrUDE0MC9SY2NnbU1DVlBoYkk4NW8rN25NTXM0Z3VZR0tw?=
- =?utf-8?B?ZGZMUVJlTWJEMWpOcmVEbklsU0V6Y0VrV3BvMFVsZitNbmVFcDY1RW1XY1FN?=
- =?utf-8?B?Qms1SnNaaVp2OVJxUUcwdjRDcE9tVlpvU2FMNitaT3FjVHlHZThXN1Yvc3R5?=
- =?utf-8?B?NndZRnZjYnVWYXp4WHdyMWJrcTBTN2NIR3hmcXU4aUwzbWZFMktVNmp1VnB2?=
- =?utf-8?B?Yzh3RThzVWdiRjZtYmxuVlpvT3lLWHpkbGl4VzNpUm9yak1icUN4YS90SzYz?=
- =?utf-8?B?RXlaZi9aMlNLWjNBYWNPV3hFclZPdEZpNlpobWY2OUlCQ3BmZFVKYmJPbGZC?=
- =?utf-8?B?elFvZEJUekF2UmRmbFNUT3ZxMnNtQTZKZ1RBN0tUcDBEdTFSVldEb1oxMFlr?=
- =?utf-8?B?elpVY29FOFYxZnlOdysreFZUa2hqVHRNRzdzMUNyTTU3QVZ0UFBDTFVvcC9R?=
- =?utf-8?B?WmY2WGtnOWRManlQUmN5S0E4dkJKRGsyVFRYTjU1RWJuUmdHY0ZGdmhuWTFz?=
- =?utf-8?B?cUphSldEZnNudEwrTktwdDZ2cFloZ0RRS1NtVGNwMzF3UFg4elpLR0l3RTZR?=
- =?utf-8?B?b2JjNkhaUlA0cThkZ0JFTHZXWDk3Z3MxZ3k5Z3JnQjhLWHFuQjBnYVZQZktF?=
- =?utf-8?B?UDlSWTZvamZMZUNQUnZUS0Z1d2hhUWFBc290ZHZmdzZnYUlMajU1L0RKNDIr?=
- =?utf-8?B?T1dzRmYzY1dDOUhUeDdwN3drdEQ3TkptL0R2M1UzdDB4WnFzTnpOL0RrQkZx?=
- =?utf-8?B?dmxGSXQyb2owMTRUNjVBdzdEU2VyQVdqbktSekw3Vy9CRHBxMEVzZ01nTnJK?=
- =?utf-8?B?UGs5by84V0lTSEprNjdoVDhuUThxM1hMdThYbmZXcURleExxbXNLY1RweklX?=
- =?utf-8?B?NEQrZG1KVHI2T2wrVm5nN1cxTUZPRTBxYnE3S1VjYUZJWERqd0FUMnJhQ1ZU?=
- =?utf-8?B?Tk8zaHptdk5yS3ZYTkpjeS9BV0NjOUhoUmRrYkhsbTk4RklaeFBLd0dUOERz?=
- =?utf-8?B?WUgwM2cyd2FxaXl0ZkpXWnBDQWlHQkw0UmtISXpDZ0J3OHVHem96ZVpUMnZ3?=
- =?utf-8?B?Q1Vwdk5OVFU0K3dWRm1CS0htV2lQbnZWdVJvaDFHNm4yaFZJM0QralM1MnEw?=
- =?utf-8?B?TVF3ZHUvbnZzdzFtTmZiR3ZjeTRNMmdTSDdISmhlZW5OYngrVXlVRzNHRlFm?=
- =?utf-8?B?bFRFK1BtajZCemF2SGw3Qm5ZRXNUckhIQ0xZYlJ2OFg4SUxIQ0RyOFB5QjFr?=
- =?utf-8?B?NW15ZEFtSmxaTlJlckRvdGtjSXR3L1NjZ2hEVm03WVUrVFFzLzY2YlFJaGZz?=
- =?utf-8?B?NVRBbGNCQUwwU3dON3ZLMWh4Tm91eVB3TE4vRXhkamQ1clJmTmNYNGEyclNw?=
- =?utf-8?B?TUlPdXJvZzJTcFJ1QnN6RTlpcTVaeUlPQXdvTlhvVlkyVTZMaFBvUTNVdkln?=
- =?utf-8?B?UGlNRks3K2g4cDNldkNWeUMyTVlZb1g4UmF1SVBWUU1pRVVRTGJLWEIwUDUx?=
- =?utf-8?B?Y1ZDY2dINmU4Vlo4dXNBQmpHdytCSExNQ3RGQ1NjbnJ6WW0zMnFlcEhGVjdD?=
- =?utf-8?B?eUdKRXJINXNVSVdpeXdHM2dCUHNsMDV5VjBFOFFVMjlncXBnVTdFWEtyeVV6?=
- =?utf-8?Q?oLcY0Kl0oM+g87ybEZS0OfdbC?=
-X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: 20e30760-6525-4228-31fc-08dba6b33866
-X-MS-Exchange-CrossTenant-AuthSource: MN0PR12MB6101.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 27 Aug 2023 04:08:08.0931
- (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: 6RQRjD4USyNFeeopMm1sUF1EpPJCCrlV8WBkiRPbpzSHBwCCwBt6VNZ8ieaNClJeiLWLT8Tj6HUCti34Z9XW+Q==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SA1PR12MB5615
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S229527AbjH0EN7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 00:13:59 -0400
+Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCBA91AD;
+        Sat, 26 Aug 2023 21:13:55 -0700 (PDT)
+Received: by mail-oo1-xc2d.google.com with SMTP id 006d021491bc7-5733789a44cso1482935eaf.2;
+        Sat, 26 Aug 2023 21:13:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693109635; x=1693714435;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=AIl1b0PkLEfFH4MOGYeCC8mCbNP8ENQSFlp2p49bKJI=;
+        b=jqE/6cQ0xa/TO+YNkEKejmoU+mMYy91nOeqqWzXnwijbS/6CyAV09LX2kn2Zv1Zyfq
+         VpK2cA03TLcXs84PtDTPGpZxQdzVonQiNcMU78cdmvCyM7j70HYwszKassSt32QNx3yy
+         Djza6PNKkKNNXtbijWTXgn4LLojI5T+NTPah+4IQPzsdlqhHUjOlZZyiEVbNtQMHFkeT
+         RkxbP4oahAxbIjY6SCidw6ohMnuUqipdo6rqFptOB6g6JWVH7h2tz+0MSWEK/Ct64/tD
+         6c1/4wzbzB3jzM9Qt5B9nBTOjpo8GLv6ADapWGXsL/nFNbI8w2MvjDZUhydQik6W4N/9
+         n+9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693109635; x=1693714435;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=AIl1b0PkLEfFH4MOGYeCC8mCbNP8ENQSFlp2p49bKJI=;
+        b=hRvJFDDXpNZtKl0p+c2yseUfTjYjsJx6w45NKeey95lqUDkmleQUymwq1TJC4NGr9Y
+         xbC+LnTgSfWjDHyD1QQgnBXTAD5GJNK1ZQmf2vrI+5pgPGoMoa7P6oEeoGlNVHUUqguR
+         hpz/bTnGPSAKDJXnL8KDh8EgHIaOsJalTv28YDTsVRrJ1it1aIaq9k/11mhTLsIYAHUr
+         BBJNX0/U4ax2B5ZJJcaB55wuePMaihSEExC7EfBpfccDjqEhjT9un1Rj3fWxEpq/Hv5a
+         UVZuAOKSkA2W27r6fp4erD/aRPerNuqWTIkGb5lguBNxicmezkq0hnNTRQi9fDFZfJbX
+         5qcQ==
+X-Gm-Message-State: AOJu0YxNdQsPJM2o9emBw2GfziRgHutXoVcb9lj4TObfkqZAkl4zqWPT
+        NMYLwUjExkRBdrWV0vo8Vl8=
+X-Google-Smtp-Source: AGHT+IHMR88Wjl6mrPo3yoEkdBuxSBcmzN2yqs+3fEhsYUsZ5aLcat3S+kgXRbtRQHaqUadHXuiDmw==
+X-Received: by 2002:a05:6358:9217:b0:135:24ed:5108 with SMTP id d23-20020a056358921700b0013524ed5108mr24212851rwb.10.1693109634881;
+        Sat, 26 Aug 2023 21:13:54 -0700 (PDT)
+Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
+        by smtp.gmail.com with ESMTPSA id c6-20020a62e806000000b00682c1db7551sm4059758pfi.49.2023.08.26.21.13.53
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 26 Aug 2023 21:13:54 -0700 (PDT)
+Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
+        id E290636043C; Sun, 27 Aug 2023 16:13:50 +1200 (NZST)
+From:   Michael Schmitz <schmitzmic@gmail.com>
+To:     s.shtylyov@omp.ru, dlemoal@kernel.org, linux-ide@vger.kernel.org,
+        linux-m68k@vger.kernel.org
+Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
+        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org,
+        Finn Thain <fthain@linux-m68k.org>
+Subject: [PATCH v6 1/2] ata: pata_falcon: fix IO base selection for Q40
+Date:   Sun, 27 Aug 2023 16:13:47 +1200
+Message-Id: <20230827041348.18887-2-schmitzmic@gmail.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <20230827041348.18887-1-schmitzmic@gmail.com>
+References: <20230827041348.18887-1-schmitzmic@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/26/2023 15:33, Luca Pigliacampo wrote:
-> since the commit
-> 
-> a855724dc08b pinctrl: amd: Fix mistake in handling clearing pins at startup
-> 
-> after boot, pressing power button is detected just once and ignored 
-> afterwards.
-> 
-> 
-> product: IdeaPad 5 14ALC05
-> 
-> cpu: AMD Ryzen 5 5500U with Radeon Graphics
-> 
-> bios version: G5CN16WW(V1.04)
-> 
-> distro: Arch Linux
-> 
-> desktop environment: KDE Plasma 5.27.7
-> 
-> 
-> steps to reproduce:
-> 
-> boot the computer
-> 
-> log in
-> 
-> run sudo evtest
-> 
-> select event2
-> 
->       (on my computer the power button is always represented by 
-> /dev/input/event2,
-> 
->       i don't know if it's the same on others)
-> 
-> press the power button multiple times
-> 
->      (might have to close the log out dialog depending on the DE)
-> 
-> 
-> expected behavior:
-> 
-> all the power button presses are recorded
-> 
-> 
-> observed behavior:
-> 
-> only the first power button press is recorded
-> 
-> 
-> i also have a desktop computer with a ryzen 5 2600x processor, but that 
-> isn't affected
-> 
-> #regzbot introduced: a855724dc08b
-> 
+With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
+with pata_falcon and falconide"), the Q40 IDE driver was
+replaced by pata_falcon.c.
 
-If it bisects down to that commit then it means that the debounce 
-behavior wasn't working as intended for your system and is now adjusted 
-to work properly.  That commit fixes it so that the "Master" GPIO 
-controller register isn't inadvertently changed.
+Both IO and memory resources were defined for the Q40 IDE
+platform device, but definition of the IDE register addresses
+was modeled after the Falcon case, both in use of the memory
+resources and in including register shift and byte vs. word
+offset in the address.
 
-In a number of Lenovo designs I've found that GPIO0 is connected to the 
-EC and the EC uses this BOTH for lid and power button.  I don't know if 
-that's the case for your design, but if it is this might explain the 
-difference.
+This was correct for the Falcon case, which does not apply
+any address translation to the register addresses. In the
+Q40 case, all of device base address, byte access offset
+and register shift is included in the platform specific
+ISA access translation (in asm/mm_io.h).
 
-Given it changes the debounce behavior, can you hold the power button a 
-little longer to get the event you're looking for?
+As a consequence, such address translation gets applied
+twice, and register addresses are mangled.
 
-Also, can you please check if you can reproduce this with 6.5-rc8/6.5 
-(whatever happens tomorrow)?
+Use the device base address from the platform IO resource
+for Q40 (the IO address translation will then add the correct
+ISA window base address and byte access offset), with register
+shift 1. Use MMIO base address and register shift 2 as before
+for Falcon.
 
-If so; can you please open a kernel Bugzilla with the following details:
+Encode PIO_OFFSET into IO port addresses for all registers
+for Q40 except the data transfer register. Encode the MMIO
+offset there (pata_falcon_data_xfer() directly uses raw IO
+with no address translation).
 
-1. The contents of /sys/kernel/debug/gpio on a kernel that doesn't have 
-that series included/backported (the entire series of fixes - not just 
-that one commit).  A good test point for this is kernel 6.4.5.
-2. The contents of /sys/kernel/debug/gpio on kernel 6.5-rc8/6.5.
-3. An acpidump for your system.
-4. If you have a dual boot with Windows, I would like for your to 
-capture some registers using RW Everything in Windows for comparison.
-I'll provide your more steps on that bug report when you file it if 
-necessary.
+Reported-by: William R Sowerbutts <will@sowerbutts.com>
+Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
+Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
+Cc: stable@vger.kernel.org
+Cc: Finn Thain <fthain@linux-m68k.org>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Tested-by: William R Sowerbutts <will@sowerbutts.com>
+Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
+Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
 
-You can CC me directly to the bug report.
+---
+
+Changes from v4:
+
+Geert Uytterhoeven:
+- use %px for ap->ioaddr.data_addr
+
+Changes from v3:
+
+Sergey Shtylyov:
+- change use of reg_scale to reg_shift
+
+Geert Uytterhoeven:
+- factor out ata_port_desc() from platform specific code
+
+Changes from v2:
+
+Finn Thain:
+- add back stable Cc:
+
+Changes from v1:
+
+Damien Le Moal:
+- change patch title
+- drop stable backport tag
+
+Changes from RFC v3:
+
+- split off byte swap option into separate patch
+
+Geert Uytterhoeven:
+- review comments
+
+Changes from RFC v2:
+- add driver parameter 'data_swap' as bit mask for drives to swap
+
+Changes from RFC v1:
+
+Finn Thain:
+- take care to supply IO address suitable for ioread8/iowrite8
+- use MMIO address for data transfer
+---
+ drivers/ata/pata_falcon.c | 50 +++++++++++++++++++++++----------------
+ 1 file changed, 29 insertions(+), 21 deletions(-)
+
+diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
+index 996516e64f13..616064b02de6 100644
+--- a/drivers/ata/pata_falcon.c
++++ b/drivers/ata/pata_falcon.c
+@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
+ 	struct resource *base_res, *ctl_res, *irq_res;
+ 	struct ata_host *host;
+ 	struct ata_port *ap;
+-	void __iomem *base;
+-	int irq = 0;
++	void __iomem *base, *ctl_base;
++	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
+ 
+ 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
+ 
+@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
+ 	ap->pio_mask = ATA_PIO4;
+ 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
+ 
+-	base = (void __iomem *)base_mem_res->start;
+ 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
+-	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
+-	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
+-	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
+-	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
+-	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
+-	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
+-	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
+-	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
+-	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
+-
+-	base = (void __iomem *)ctl_mem_res->start;
+-	ap->ioaddr.altstatus_addr	= base + 1;
+-	ap->ioaddr.ctl_addr		= base + 1;
+-
+-	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
+-		      (unsigned long)base_mem_res->start,
+-		      (unsigned long)ctl_mem_res->start);
++	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
++
++	if (base_res) {		/* only Q40 has IO resources */
++		io_offset = 0x10000;
++		reg_shift = 0;
++		base = (void __iomem *)base_res->start;
++		ctl_base = (void __iomem *)ctl_res->start;
++	} else {
++		base = (void __iomem *)base_mem_res->start;
++		ctl_base = (void __iomem *)ctl_mem_res->start;
++	}
++
++	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
++	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
++	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
++	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
++	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
++	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
++	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
++	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
++
++	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
++	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
++
++	ata_port_desc(ap, "cmd %px ctl %px data %px",
++		      base, ctl_base, ap->ioaddr.data_addr);
+ 
+ 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
+ 	if (irq_res && irq_res->start > 0) {
+-- 
+2.17.1
+
