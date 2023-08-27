@@ -2,58 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 390AF789C4E
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 10:47:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39BB7789C56
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 10:52:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230525AbjH0Iqk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 04:46:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43442 "EHLO
+        id S229529AbjH0IwD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 04:52:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230404AbjH0IqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 04:46:03 -0400
+        with ESMTP id S229758AbjH0Iv7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 04:51:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB6DECD5
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 01:45:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF789131
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 01:51:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8AB0E62A34
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 08:45:39 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7880C4AF6E
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 08:45:38 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693125938;
-        bh=cUwi/7ZyLSL72EESWe/xmCmGixxpd59pa7G7FzSMtTw=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=WechjIWkC/syN4UUMFj/5srerLE3hChifvuKRRsxcqOCu8Yx8MYEoOsS+Z0xvtdTS
-         m8myOR6UyOhpLIlbMx9iHU260+QfMqLFthaXwsaPBuqqdTy8zJ3Q3njW/sqPpNj5AL
-         QSVlUOCafXYVgqlShDDYe3T5ybAFqgh8yEOnw1oEHRXCuQshaBwbrk1duvqXt44BiQ
-         JAO/0GKYxu9UQLexCzoIaWa1QqGzU+bceMUjZ36Z97sfd3qojVeWoO4cL59Q0DI7+B
-         gavLkgX/J4VJgxdM3iDAzdh7pb2CzhcuY4vVLiH8dSIKUtUR4rGjiRZt9blPxsiopJ
-         JuZPGrU9L01Kg==
-Received: by mail-ed1-f51.google.com with SMTP id 4fb4d7f45d1cf-52a3ff5f0abso3095230a12.1
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 01:45:38 -0700 (PDT)
-X-Gm-Message-State: AOJu0YwZ89SDdsVXdRB0KAnqCqBpjy/gAISWxrVli3iy4oSjnl4Iz8MX
-        3FNsygXyo9av8Z/icubIcOBckY8PPKYyxrsE4d0=
-X-Google-Smtp-Source: AGHT+IG1Vg7o7mtRlnu3+tPNZ1WtLXLBOvTOGfxB79XvOONA6cWMOq5QXu3QbimPiIlBhyuBJATGvWlDfnoSFsqoMYw=
-X-Received: by 2002:aa7:dccd:0:b0:52a:1d9c:83ff with SMTP id
- w13-20020aa7dccd000000b0052a1d9c83ffmr10992092edu.1.1693125937206; Sun, 27
- Aug 2023 01:45:37 -0700 (PDT)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A91160B9F
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 08:51:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E31C433C7;
+        Sun, 27 Aug 2023 08:51:55 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693126315;
+        bh=scC8bu16gGWi0B+Q9Ey1AtjehGY0JyyaioomazbwRGY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZHsiktiEr+5zRIT4NVNgTKWETqACmrdh8orLAqy9wnCTGC9OiRTdmgZhUlTexdmUT
+         zhVpalpe/AOQ5q0lyNecyAweQscAsFCcFC56JRfIazIpTKgwP7JBRlAH1d+J7eF6Lh
+         6gWd/66ja2mL3KMgN2zkqhWxo2sMqB2OmKqh3SOM=
+Date:   Sun, 27 Aug 2023 10:51:53 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH 5.10.y] drm/i915: Fix premature release of request's
+ reusable memory
+Message-ID: <2023082743-bulldog-letter-fe5c@gregkh>
+References: <2023080742-ion-implement-ceb1@gregkh>
+ <20230822090542.44189-2-janusz.krzysztofik@linux.intel.com>
 MIME-Version: 1.0
-References: <2023082705-predator-enjoyable-15fb@gregkh> <CAAhV-H5WYTGSvkz6tgZZud7gUOYyQGUXgSY_7ipe_0BGkz=YeQ@mail.gmail.com>
- <2023082731-dotted-plexiglas-ce0d@gregkh>
-In-Reply-To: <2023082731-dotted-plexiglas-ce0d@gregkh>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Sun, 27 Aug 2023 16:45:27 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H5AeBZ9nsmkXi5tjo6r_+JAc=6rvxZvHQHtp8M8EVCX+A@mail.gmail.com>
-Message-ID: <CAAhV-H5AeBZ9nsmkXi5tjo6r_+JAc=6rvxZvHQHtp8M8EVCX+A@mail.gmail.com>
-Subject: Re: FAILED: patch "[PATCH] LoongArch: Ensure FP/SIMD registers in the
- core dump file is" failed to apply to 6.4-stable tree
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     chenhuacai@loongson.cn, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230822090542.44189-2-janusz.krzysztofik@linux.intel.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -64,45 +52,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Aug 27, 2023 at 4:38=E2=80=AFPM Greg KH <gregkh@linuxfoundation.org=
-> wrote:
->
-> On Sun, Aug 27, 2023 at 04:23:35PM +0800, Huacai Chen wrote:
-> > On Sun, Aug 27, 2023 at 2:45=E2=80=AFPM <gregkh@linuxfoundation.org> wr=
-ote:
-> > >
-> > >
-> > > The patch below does not apply to the 6.4-stable tree.
-> > > If someone wants it applied there, or to any other stable or longterm
-> > > tree, then please email the backport, including the original git comm=
-it
-> > > id to <stable@vger.kernel.org>.
-> > >
-> > > To reproduce the conflict and resubmit, you may use the following com=
-mands:
-> > >
-> > > git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linu=
-x.git/ linux-6.4.y
-> > > git checkout FETCH_HEAD
-> > > git cherry-pick -x 656f9aec07dba7c61d469727494a5d1b18d0bef4
-> > > # <resolve conflicts, build, test, etc.>
-> > > git commit -s
-> > > git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082=
-705-predator-enjoyable-15fb@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
-> > >
-> > > Possible dependencies:
-> > I'm sorry, this is my mistake. 6.4 also need to cut the simd_get()
-> > part, because simd is only supported since 6.5
->
-> I do not understand, sorry.  Is this relevant for 6.4.y?  If so, can you
-> provide a working backport?
-Sorry to bother you. Please give up backporting this patch, I found
-that there are some dependencies but they shouldn't be backported to
-stable branches.
-Sorry for that again.
+On Tue, Aug 22, 2023 at 11:05:43AM +0200, Janusz Krzysztofik wrote:
+> Infinite waits for completion of GPU activity have been observed in CI,
+> mostly inside __i915_active_wait(), triggered by igt@gem_barrier_race or
+> igt@perf@stress-open-close.  Root cause analysis, based of ftrace dumps
+> generated with a lot of extra trace_printk() calls added to the code,
+> revealed loops of request dependencies being accidentally built,
+> preventing the requests from being processed, each waiting for completion
+> of another one's activity.
+> 
+> After we substitute a new request for a last active one tracked on a
+> timeline, we set up a dependency of our new request to wait on completion
+> of current activity of that previous one.  While doing that, we must take
+> care of keeping the old request still in memory until we use its
+> attributes for setting up that await dependency, or we can happen to set
+> up the await dependency on an unrelated request that already reuses the
+> memory previously allocated to the old one, already released.  Combined
+> with perf adding consecutive kernel context remote requests to different
+> user context timelines, unresolvable loops of await dependencies can be
+> built, leading do infinite waits.
+> 
+> We obtain a pointer to the previous request to wait upon when we
+> substitute it with a pointer to our new request in an active tracker,
+> e.g. in intel_timeline.last_request.  In some processing paths we protect
+> that old request from being freed before we use it by getting a reference
+> to it under RCU protection, but in others, e.g.  __i915_request_commit()
+> -> __i915_request_add_to_timeline() -> __i915_request_ensure_ordering(),
+> we don't.  But anyway, since the requests' memory is SLAB_FAILSAFE_BY_RCU,
+> that RCU protection is not sufficient against reuse of memory.
+> 
+> We could protect i915_request's memory from being prematurely reused by
+> calling its release function via call_rcu() and using rcu_read_lock()
+> consequently, as proposed in v1.  However, that approach leads to
+> significant (up to 10 times) increase of SLAB utilization by i915_request
+> SLAB cache.  Another potential approach is to take a reference to the
+> previous active fence.
+> 
+> When updating an active fence tracker, we first lock the new fence,
+> substitute a pointer of the current active fence with the new one, then we
+> lock the substituted fence.  With this approach, there is a time window
+> after the substitution and before the lock when the request can be
+> concurrently released by an interrupt handler and its memory reused, then
+> we may happen to lock and return a new, unrelated request.
+> 
+> Always get a reference to the current active fence first, before
+> replacing it with a new one.  Having it protected from premature release
+> and reuse, lock it and then replace with the new one but only if not
+> yet signalled via a potential concurrent interrupt nor replaced with
+> another one by a potential concurrent thread, otherwise retry, starting
+> from getting a reference to the new current one.  Adjust users to not
+> get a reference to the previous active fence themselves and always put the
+> reference got by __i915_active_fence_set() when no longer needed.
+> 
+> v3: Fix lockdep splat reports and other issues caused by incorrect use of
+>     try_cmpxchg() (use (cmpxchg() != prev) instead)
+> v2: Protect request's memory by getting a reference to it in favor of
+>     delegating its release to call_rcu() (Chris)
+> 
+> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8211
+> Fixes: df9f85d8582e ("drm/i915: Serialise i915_active_fence_set() with itself")
+> Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v5.6+
+> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20230720093543.832147-2-janusz.krzysztofik@linux.intel.com
+> (cherry picked from commit 946e047a3d88d46d15b5c5af0414098e12b243f7)
+> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+> (cherry picked from commit a337b64f0d5717248a0c894e2618e658e6a9de9f)
+> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+> ---
+>  drivers/gpu/drm/i915/i915_active.c  | 99 ++++++++++++++++++++---------
+>  drivers/gpu/drm/i915/i915_request.c |  2 +
+>  2 files changed, 72 insertions(+), 29 deletions(-)
 
-Huacai
->
-> thanks,
->
-> greg k-h
+Now queued up, thanks.
+
+greg k-h
