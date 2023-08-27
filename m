@@ -2,45 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF090789CFF
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 12:33:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 29E4E789D0D
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 12:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229630AbjH0KdC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 06:33:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
+        id S229534AbjH0Kte (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 06:49:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjH0Kcv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 06:32:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F121138
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 03:32:42 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E23CC6152B
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 10:32:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0266C433C7;
-        Sun, 27 Aug 2023 10:32:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693132361;
-        bh=6ueKYRi/vviYZe+fJbKzBS5OqwxX9CfplbjeyaqShAo=;
-        h=Subject:To:Cc:From:Date:From;
-        b=0MiCVUwLeCuzc3OuXIXgNblf7mj/JJvOBFhlp+gUSJ9bULTPdm1xZSDwc1cFl5ZpX
-         zUM+tgevmxpqUESlvcKaRqLuu/ilL+Y7izh8Avx/CepftrxldwheIpezXYmQpK9orZ
-         H7NPNv2/gbiJ2+GYWDixK+zDnp5OKnCJgBNKwZJs=
-Subject: FAILED: patch "[PATCH] can: raw: add missing refcount for memory leak fix" failed to apply to 5.15-stable tree
-To:     socketcan@hartkopp.net, edumazet@google.com, kuba@kernel.org,
-        william.xuanziyang@huawei.com
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 27 Aug 2023 12:32:38 +0200
-Message-ID: <2023082737-cavity-bloating-1779@gregkh>
+        with ESMTP id S229527AbjH0KtY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 06:49:24 -0400
+Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C46B2F9;
+        Sun, 27 Aug 2023 03:49:22 -0700 (PDT)
+Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-34bbc5eb310so8247745ab.2;
+        Sun, 27 Aug 2023 03:49:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693133362; x=1693738162;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=pW7IzFA0mTX34WomjctbyWOYGPZAXEGhbrFXLCtnqaw=;
+        b=g7rTEQDet1fKpExTG3EFTT+sTkjp6iso3Fb71bHkDwSLdvG+tEl60fXwUO36YPt1ir
+         RkMZJ2HP7sMC37Woi9psbrpESHQ6jzJoKq8XdOon64ARpxGcOvn5i9CUjgW6BRMCZuMW
+         xSX5gEuKphIvTRK1KbMx1VTnqj5n7mHMuSwFs1024dYCkrpEbeqCkwNMFDF0Oha9F+5U
+         f3BczKeElsrModFN+xniZOnEnE6zlPny6wUazEjYFFpeTS6zyj9+wdfWmvpYOpLPHMmQ
+         +hDodKK7ZVXCh//t4BKhYK1ztJrUpW6WEZ7kuH6sLo1L3yCX5G53R+KGHjU/tSoZ2xSp
+         njqg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693133362; x=1693738162;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=pW7IzFA0mTX34WomjctbyWOYGPZAXEGhbrFXLCtnqaw=;
+        b=QmTL5lIEi9vMUdu5QZ3OPRN5CTlAchddneie0cUXMGr5Ivj0rnIiDl63Fh4GGYLpi9
+         B2mPB3H+13mYQJuXzmlkibB/CpXqdz1koeMM+k3NOiNm1D+h+hkM9lHQcVt0b7drenzD
+         e0sSEHT8ObihJ6WpE4AD5IYXXL+PRKFwQXei5REMcHtfZFDRawqBzRwO91DXSM/3NdNj
+         ngSNoKa8UBUQ6IwyMYhGU75oND+0KYuhVZVXRE0jY0LaG3KlBBl0AWHEcrH1cWD8MOdo
+         8dBk1R7t9eDc7AeXJ38urbWBiSx12O3ct7MHavougmWXATWiUHP5S8NQiI2Bq0hKW0lb
+         5xuA==
+X-Gm-Message-State: AOJu0YzQrH5oWH+tnWCrC+v6KBXVCsg5KcVsBrV9Zj052tKh9M9sWVtY
+        Ru4vM23lsUczDMPq4Wushp4=
+X-Google-Smtp-Source: AGHT+IHZK+KETXES93aurwx91PrqJAtM8/WBWNO/krX25zFGiQVPK+XzbIEnEQQkbS5TXtzQVqTg1w==
+X-Received: by 2002:a05:6e02:2181:b0:34c:e4c6:c51c with SMTP id j1-20020a056e02218100b0034ce4c6c51cmr6174119ila.9.1693133362040;
+        Sun, 27 Aug 2023 03:49:22 -0700 (PDT)
+Received: from debian.me ([103.124.138.83])
+        by smtp.gmail.com with ESMTPSA id f5-20020a170902ce8500b001b04c2023e3sm5068240plg.218.2023.08.27.03.49.20
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 27 Aug 2023 03:49:21 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 0D8418158460; Sun, 27 Aug 2023 17:49:15 +0700 (WIB)
+Date:   Sun, 27 Aug 2023 17:49:15 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 6.1 0/4] 6.1.49-rc1 review
+Message-ID: <ZOsqK0NvgddvFQkD@debian.me>
+References: <20230826154625.450325166@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="LAOyK7J7JXf1jAJC"
+Content-Disposition: inline
+In-Reply-To: <20230826154625.450325166@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,143 +79,35 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+--LAOyK7J7JXf1jAJC
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-To reproduce the conflict and resubmit, you may use the following commands:
+On Sat, Aug 26, 2023 at 05:47:56PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.49 release.
+> There are 4 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>=20
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x c275a176e4b69868576e543409927ae75e3a3288
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082737-cavity-bloating-1779@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+Successfully compiled and installed bindeb-pkgs on my computer (Acer
+Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
 
-Possible dependencies:
+Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 
-c275a176e4b6 ("can: raw: add missing refcount for memory leak fix")
-ee8b94c8510c ("can: raw: fix receiver memory leak")
+--=20
+An old man doll... just what I always wanted! - Clara
 
-thanks,
+--LAOyK7J7JXf1jAJC
+Content-Type: application/pgp-signature; name="signature.asc"
 
-greg k-h
+-----BEGIN PGP SIGNATURE-----
 
------------------- original commit in Linus's tree ------------------
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZOsqJgAKCRD2uYlJVVFO
+o0WeAQDF56rn55bfNoItb91KPLkJZYyGOPOwXraSMp+r2n89bwEAhkQUfswTlIgK
+vAU9NK3a5gHRUqX3gUjdWCem3mlqJQI=
+=NDqK
+-----END PGP SIGNATURE-----
 
-From c275a176e4b69868576e543409927ae75e3a3288 Mon Sep 17 00:00:00 2001
-From: Oliver Hartkopp <socketcan@hartkopp.net>
-Date: Mon, 21 Aug 2023 16:45:47 +0200
-Subject: [PATCH] can: raw: add missing refcount for memory leak fix
-
-Commit ee8b94c8510c ("can: raw: fix receiver memory leak") introduced
-a new reference to the CAN netdevice that has assigned CAN filters.
-But this new ro->dev reference did not maintain its own refcount which
-lead to another KASAN use-after-free splat found by Eric Dumazet.
-
-This patch ensures a proper refcount for the CAN nedevice.
-
-Fixes: ee8b94c8510c ("can: raw: fix receiver memory leak")
-Reported-by: Eric Dumazet <edumazet@google.com>
-Cc: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/r/20230821144547.6658-3-socketcan@hartkopp.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-
-diff --git a/net/can/raw.c b/net/can/raw.c
-index e10f59375659..d50c3f3d892f 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -85,6 +85,7 @@ struct raw_sock {
- 	int bound;
- 	int ifindex;
- 	struct net_device *dev;
-+	netdevice_tracker dev_tracker;
- 	struct list_head notifier;
- 	int loopback;
- 	int recv_own_msgs;
-@@ -285,8 +286,10 @@ static void raw_notify(struct raw_sock *ro, unsigned long msg,
- 	case NETDEV_UNREGISTER:
- 		lock_sock(sk);
- 		/* remove current filters & unregister */
--		if (ro->bound)
-+		if (ro->bound) {
- 			raw_disable_allfilters(dev_net(dev), dev, sk);
-+			netdev_put(dev, &ro->dev_tracker);
-+		}
- 
- 		if (ro->count > 1)
- 			kfree(ro->filter);
-@@ -391,10 +394,12 @@ static int raw_release(struct socket *sock)
- 
- 	/* remove current filters & unregister */
- 	if (ro->bound) {
--		if (ro->dev)
-+		if (ro->dev) {
- 			raw_disable_allfilters(dev_net(ro->dev), ro->dev, sk);
--		else
-+			netdev_put(ro->dev, &ro->dev_tracker);
-+		} else {
- 			raw_disable_allfilters(sock_net(sk), NULL, sk);
-+		}
- 	}
- 
- 	if (ro->count > 1)
-@@ -445,10 +450,10 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
- 			goto out;
- 		}
- 		if (dev->type != ARPHRD_CAN) {
--			dev_put(dev);
- 			err = -ENODEV;
--			goto out;
-+			goto out_put_dev;
- 		}
-+
- 		if (!(dev->flags & IFF_UP))
- 			notify_enetdown = 1;
- 
-@@ -456,7 +461,9 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
- 
- 		/* filters set by default/setsockopt */
- 		err = raw_enable_allfilters(sock_net(sk), dev, sk);
--		dev_put(dev);
-+		if (err)
-+			goto out_put_dev;
-+
- 	} else {
- 		ifindex = 0;
- 
-@@ -467,18 +474,28 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
- 	if (!err) {
- 		if (ro->bound) {
- 			/* unregister old filters */
--			if (ro->dev)
-+			if (ro->dev) {
- 				raw_disable_allfilters(dev_net(ro->dev),
- 						       ro->dev, sk);
--			else
-+				/* drop reference to old ro->dev */
-+				netdev_put(ro->dev, &ro->dev_tracker);
-+			} else {
- 				raw_disable_allfilters(sock_net(sk), NULL, sk);
-+			}
- 		}
- 		ro->ifindex = ifindex;
- 		ro->bound = 1;
-+		/* bind() ok -> hold a reference for new ro->dev */
- 		ro->dev = dev;
-+		if (ro->dev)
-+			netdev_hold(ro->dev, &ro->dev_tracker, GFP_KERNEL);
- 	}
- 
-- out:
-+out_put_dev:
-+	/* remove potential reference from dev_get_by_index() */
-+	if (dev)
-+		dev_put(dev);
-+out:
- 	release_sock(sk);
- 	rtnl_unlock();
- 
-
+--LAOyK7J7JXf1jAJC--
