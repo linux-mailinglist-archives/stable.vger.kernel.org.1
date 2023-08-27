@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BD3A789C69
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 10:59:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B1A7C789C85
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 11:11:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229649AbjH0I7S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 04:59:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40080 "EHLO
+        id S229849AbjH0JKv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 05:10:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229654AbjH0I7J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 04:59:09 -0400
+        with ESMTP id S230271AbjH0JKY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 05:10:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31B9EAD
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 01:59:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DE89CE;
+        Sun, 27 Aug 2023 02:10:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B85F76147B
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 08:59:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C25E6C433C8;
-        Sun, 27 Aug 2023 08:59:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B6A3960B4D;
+        Sun, 27 Aug 2023 09:10:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB386C433C8;
+        Sun, 27 Aug 2023 09:10:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693126746;
-        bh=/asIKlZ3mHBQIBpcD7zuVlVrJ8ha+u7aYfjQ0vsacRw=;
+        s=korg; t=1693127419;
+        bh=3ENdR8Avkv75G4jC4qHBHUxW3T7qirhqAhfGDTz/D2E=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BjSk4csJI0SPbzZ9c5tqz20UsoQcwIDFdt2mKb0IaJ1fy1qqsQ6ZDYjAslL12Pa1V
-         0f4zFgxRtzB+gO0ZzCKp4xve69hsSirL5lSfxWS062MFD5/OWABL5x11HXfJFNtA/Y
-         Y5pN5i/7vfC57wnHPqjVhGyJX14Kqk+9ZUiEfPI8=
-Date:   Sun, 27 Aug 2023 10:59:02 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Mario Limonciello <mario.limonciello@amd.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 6.4.y] thunderbolt: Fix Thunderbolt 3 display flickering
- issue on 2nd hot plug onwards
-Message-ID: <2023082749-stew-undamaged-9480@gregkh>
-References: <20230823191825.26861-1-mario.limonciello@amd.com>
+        b=RChM+iOTrbdxzULLZXjs7Y0KsjcL8P/0KxZ3absd1RpyoBR64VJ2Kcx+8VyJGN8u4
+         +bup9H8gIkaEbMNYacFHo/DFaEUJUWJl5PvC/Oja+UGggtQ0b5+363V2+H9hb+xsZc
+         ZuUVVEgOrjMBbJAqe1j84x0P3B7aBYfkzsjUHnM8=
+Date:   Sun, 27 Aug 2023 11:10:16 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Ming Lei <ming.lei@redhat.com>
+Cc:     stable@vger.kernel.org, Jens Axboe <axboe@kernel.dk>,
+        linux-block@vger.kernel.org
+Subject: Re: [PATCH 6.1 -stable] ublk: remove check IO_URING_F_SQE128 in
+ ublk_ch_uring_cmd
+Message-ID: <2023082709-whisking-pruning-28d0@gregkh>
+References: <20230824052203.1751458-1-ming.lei@redhat.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230823191825.26861-1-mario.limonciello@amd.com>
+In-Reply-To: <20230824052203.1751458-1-ming.lei@redhat.com>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -50,39 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 02:18:25PM -0500, Mario Limonciello wrote:
-> From: Sanjay R Mehta <sanju.mehta@amd.com>
+On Thu, Aug 24, 2023 at 01:22:03PM +0800, Ming Lei wrote:
+> commit 9c7c4bc986932218fd0df9d2a100509772028fb1 upstream
 > 
-> Previously, on unplug events, the TMU mode was disabled first
-> followed by the Time Synchronization Handshake, irrespective of
-> whether the tb_switch_tmu_rate_write() API was successful or not.
+> sizeof(struct ublksrv_io_cmd) is 16bytes, which can be held in 64byte SQE,
+> so not necessary to check IO_URING_F_SQE128.
 > 
-> However, this caused a problem with Thunderbolt 3 (TBT3)
-> devices, as the TSPacketInterval bits were always enabled by default,
-> leading the host router to assume that the device router's TMU was
-> already enabled and preventing it from initiating the Time
-> Synchronization Handshake. As a result, TBT3 monitors experienced
-> display flickering from the second hot plug onwards.
+> With this change, we get chance to save half SQ ring memory.
 > 
-> To address this issue, we have modified the code to only disable the
-> Time Synchronization Handshake during TMU disable if the
-> tb_switch_tmu_rate_write() function is successful. This ensures that
-> the TBT3 devices function correctly and eliminates the display
-> flickering issue.
+> Fixed: 71f28f3136af ("ublk_drv: add io_uring based userspace block driver")
+> Signed-off-by: Ming Lei <ming.lei@redhat.com>
+> Link: https://lore.kernel.org/r/20230220041413.1524335-1-ming.lei@redhat.com
+> Signed-off-by: Jens Axboe <axboe@kernel.dk>
+> ---
+>  drivers/block/ublk_drv.c | 3 ---
+>  1 file changed, 3 deletions(-)
 > 
-> Co-developed-by: Sanath S <Sanath.S@amd.com>
-> Signed-off-by: Sanath S <Sanath.S@amd.com>
-> Signed-off-by: Sanjay R Mehta <sanju.mehta@amd.com>
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Mika Westerberg <mika.westerberg@linux.intel.com>
-> (cherry picked from commit 583893a66d731f5da010a3fa38a0460e05f0149b)
+> diff --git a/drivers/block/ublk_drv.c b/drivers/block/ublk_drv.c
+> index f48d213fb65e..09d29fa53939 100644
+> --- a/drivers/block/ublk_drv.c
+> +++ b/drivers/block/ublk_drv.c
+> @@ -1271,9 +1271,6 @@ static int ublk_ch_uring_cmd(struct io_uring_cmd *cmd, unsigned int issue_flags)
+>  			__func__, cmd->cmd_op, ub_cmd->q_id, tag,
+>  			ub_cmd->result);
+>  
+> -	if (!(issue_flags & IO_URING_F_SQE128))
+> -		goto out;
+> -
+>  	if (ub_cmd->q_id >= ub->dev_info.nr_hw_queues)
+>  		goto out;
+>  
+> -- 
+> 2.40.1
 > 
-> USB4v2 introduced support for uni-directional TMU mode as part of
-> d49b4f043d63 ("thunderbolt: Add support for enhanced uni-directional TMU mode")
-> This is not a stable candidate commit, so adjust the code for backport.
-> 
-> Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
 
-Both now applied, thanks.
+Now queued up, thanks.
 
 greg k-h
