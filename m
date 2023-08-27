@@ -2,231 +2,264 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ACC65789B54
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 06:14:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08AF8789B7F
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 07:55:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229620AbjH0EOO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 00:14:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41778 "EHLO
+        id S229606AbjH0FvR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 01:51:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49072 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229527AbjH0EN7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 00:13:59 -0400
-Received: from mail-oo1-xc2d.google.com (mail-oo1-xc2d.google.com [IPv6:2607:f8b0:4864:20::c2d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CCBA91AD;
-        Sat, 26 Aug 2023 21:13:55 -0700 (PDT)
-Received: by mail-oo1-xc2d.google.com with SMTP id 006d021491bc7-5733789a44cso1482935eaf.2;
-        Sat, 26 Aug 2023 21:13:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693109635; x=1693714435;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=AIl1b0PkLEfFH4MOGYeCC8mCbNP8ENQSFlp2p49bKJI=;
-        b=jqE/6cQ0xa/TO+YNkEKejmoU+mMYy91nOeqqWzXnwijbS/6CyAV09LX2kn2Zv1Zyfq
-         VpK2cA03TLcXs84PtDTPGpZxQdzVonQiNcMU78cdmvCyM7j70HYwszKassSt32QNx3yy
-         Djza6PNKkKNNXtbijWTXgn4LLojI5T+NTPah+4IQPzsdlqhHUjOlZZyiEVbNtQMHFkeT
-         RkxbP4oahAxbIjY6SCidw6ohMnuUqipdo6rqFptOB6g6JWVH7h2tz+0MSWEK/Ct64/tD
-         6c1/4wzbzB3jzM9Qt5B9nBTOjpo8GLv6ADapWGXsL/nFNbI8w2MvjDZUhydQik6W4N/9
-         n+9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693109635; x=1693714435;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=AIl1b0PkLEfFH4MOGYeCC8mCbNP8ENQSFlp2p49bKJI=;
-        b=hRvJFDDXpNZtKl0p+c2yseUfTjYjsJx6w45NKeey95lqUDkmleQUymwq1TJC4NGr9Y
-         xbC+LnTgSfWjDHyD1QQgnBXTAD5GJNK1ZQmf2vrI+5pgPGoMoa7P6oEeoGlNVHUUqguR
-         hpz/bTnGPSAKDJXnL8KDh8EgHIaOsJalTv28YDTsVRrJ1it1aIaq9k/11mhTLsIYAHUr
-         BBJNX0/U4ax2B5ZJJcaB55wuePMaihSEExC7EfBpfccDjqEhjT9un1Rj3fWxEpq/Hv5a
-         UVZuAOKSkA2W27r6fp4erD/aRPerNuqWTIkGb5lguBNxicmezkq0hnNTRQi9fDFZfJbX
-         5qcQ==
-X-Gm-Message-State: AOJu0YxNdQsPJM2o9emBw2GfziRgHutXoVcb9lj4TObfkqZAkl4zqWPT
-        NMYLwUjExkRBdrWV0vo8Vl8=
-X-Google-Smtp-Source: AGHT+IHMR88Wjl6mrPo3yoEkdBuxSBcmzN2yqs+3fEhsYUsZ5aLcat3S+kgXRbtRQHaqUadHXuiDmw==
-X-Received: by 2002:a05:6358:9217:b0:135:24ed:5108 with SMTP id d23-20020a056358921700b0013524ed5108mr24212851rwb.10.1693109634881;
-        Sat, 26 Aug 2023 21:13:54 -0700 (PDT)
-Received: from xplor.waratah.dyndns.org (125-236-136-221-fibre.sparkbb.co.nz. [125.236.136.221])
-        by smtp.gmail.com with ESMTPSA id c6-20020a62e806000000b00682c1db7551sm4059758pfi.49.2023.08.26.21.13.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 26 Aug 2023 21:13:54 -0700 (PDT)
-Received: by xplor.waratah.dyndns.org (Postfix, from userid 1000)
-        id E290636043C; Sun, 27 Aug 2023 16:13:50 +1200 (NZST)
-From:   Michael Schmitz <schmitzmic@gmail.com>
-To:     s.shtylyov@omp.ru, dlemoal@kernel.org, linux-ide@vger.kernel.org,
-        linux-m68k@vger.kernel.org
-Cc:     will@sowerbutts.com, rz@linux-m68k.org, geert@linux-m68k.org,
-        Michael Schmitz <schmitzmic@gmail.com>, stable@vger.kernel.org,
-        Finn Thain <fthain@linux-m68k.org>
-Subject: [PATCH v6 1/2] ata: pata_falcon: fix IO base selection for Q40
-Date:   Sun, 27 Aug 2023 16:13:47 +1200
-Message-Id: <20230827041348.18887-2-schmitzmic@gmail.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <20230827041348.18887-1-schmitzmic@gmail.com>
-References: <20230827041348.18887-1-schmitzmic@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S229641AbjH0FvM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 01:51:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A173121;
+        Sat, 26 Aug 2023 22:51:10 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93DD261F06;
+        Sun, 27 Aug 2023 05:51:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB709C433CC;
+        Sun, 27 Aug 2023 05:51:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693115469;
+        bh=C+Nf7CBzD0Q5vLjwMcpMDCumqXPtwRgFtsKEMR9LScY=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=UKVRPaauWeqwwN25bqPQKF4eSbqX8RbK2Yh7jZmwdlgoN+tyOekoRk1nEACVYIIG2
+         1U0qTKWH+Zkfrr5US9wNKT37lDKgLBDpk9PFLb53D6URciSAeUMhicRNqKk69Lijsh
+         ICyfIZQUwDy3FXGgbSI7EO41F+U+tgk9YtUZQt2Of2HfjHKe7c60Jw5vG6a7humHCs
+         8WLAqZus4p7eRD+J2Yq2qi96RBiQFKnnyk4OlLZbPsQa44vHGkvmMg3faFkcJtVcSU
+         QVdI6/uEekop+4Eae9AmR7kKN363ULf7jVF6EiKVcOM4PZvrr8chp/xbo1SJbXESH/
+         nlLvTraBSgsLw==
+Received: by mail-lf1-f47.google.com with SMTP id 2adb3069b0e04-4fe8c16c1b4so3318318e87.2;
+        Sat, 26 Aug 2023 22:51:08 -0700 (PDT)
+X-Gm-Message-State: AOJu0YxEOKTnaniZx4iss2sTm9qJ/leUyA0bj+ddVd10eCqQ/uEnZCNj
+        h07VubzGDzdBNwQx/DSsuSGHSb+zNIct3kAB5go=
+X-Google-Smtp-Source: AGHT+IHA61TPYdTr1bFR7cKpkifAmXg0s/MST49tU58axMFhVT05AZUNdxy9+5xdiFli8x7Z7z5luA1jDhMhr1/345U=
+X-Received: by 2002:a05:6512:1310:b0:500:96dd:f95b with SMTP id
+ x16-20020a056512131000b0050096ddf95bmr8955559lfu.59.1693115466912; Sat, 26
+ Aug 2023 22:51:06 -0700 (PDT)
+MIME-Version: 1.0
+References: <CAAhV-H58OpQJapV7LDNjZ-vM7nNJrwdkBiPjFcCutO1yRsUshQ@mail.gmail.com>
+ <87ttspct76.ffs@tglx> <03fe7084-0509-45fa-87ee-8f8705a221a6@paulmck-laptop>
+ <CAAhV-H5Z3s=2_OyA_AJ1-NqXBtNrcs-EmsqYcrjc+qXmJ=SitQ@mail.gmail.com>
+ <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop> <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
+ <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop> <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+ <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
+ <20230825232807.GA97898@google.com> <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
+In-Reply-To: <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Sun, 27 Aug 2023 13:50:56 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
+Message-ID: <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-With commit 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver
-with pata_falcon and falconide"), the Q40 IDE driver was
-replaced by pata_falcon.c.
+Hi, Joel,
 
-Both IO and memory resources were defined for the Q40 IDE
-platform device, but definition of the IDE register addresses
-was modeled after the Falcon case, both in use of the memory
-resources and in including register shift and byte vs. word
-offset in the address.
+On Sun, Aug 27, 2023 at 11:27=E2=80=AFAM Joel Fernandes <joel@joelfernandes=
+.org> wrote:
+>
+> On Fri, Aug 25, 2023 at 7:28=E2=80=AFPM Joel Fernandes <joel@joelfernande=
+s.org> wrote:
+> >
+> > On Fri, Aug 25, 2023 at 07:15:44PM +0800, Huacai Chen wrote:
+> > > Hi, Paul,
+> > >
+> > > On Fri, Aug 25, 2023 at 2:28=E2=80=AFAM Paul E. McKenney <paulmck@ker=
+nel.org> wrote:
+> [..]
+> > > > > > > > > > > > On Thu, Aug 17, 2023 at 3:27=E2=80=AFAM Joel Fernan=
+des <joel@joelfernandes.org> wrote:
+> > > > > > > > > > > >> > If  do_update_jiffies_64() cannot be used in NMI=
+ context,
+> > > > > > > > > > > >>
+> > > > > > > > > > > >> Can you not make the jiffies update conditional on=
+ whether it is
+> > > > > > > > > > > >> called within NMI context?
+> > > > > > > > > > >
+> > > > > > > > > > > Which solves what? If KGDB has a breakpoint in the ji=
+ffies lock held
+> > > > > > > > > > > region then you still dead lock.
+> > > > > > > > > > >
+> > > > > > > > > > > >> I dislike that..
+> > > > > > > > > > > > Is this acceptable?
+> > > > > > > > > > > >
+> > > > > > > > > > > > void rcu_cpu_stall_reset(void)
+> > > > > > > > > > > > {
+> > > > > > > > > > > >         unsigned long delta;
+> > > > > > > > > > > >
+> > > > > > > > > > > >         delta =3D nsecs_to_jiffies(ktime_get_ns() -=
+ ktime_get_coarse_ns());
+> > > > > > > > > > > >
+> > > > > > > > > > > >         WRITE_ONCE(rcu_state.jiffies_stall,
+> > > > > > > > > > > >                    jiffies + delta + rcu_jiffies_ti=
+ll_stall_check());
+> > > > > > > > > > > > }
+> > > > > > > > > > > >
+> > > > > > > > > > > > This can update jiffies_stall without updating jiff=
+ies (but has the
+> > > > > > > > > > > > same effect).
+> > > > > > > > > > >
+> > > > > > > > > > > Now you traded the potential dead lock on jiffies loc=
+k for a potential
+> > > > > > > > > > > live lock vs. tk_core.seq. Not really an improvement,=
+ right?
+> > > > > > > > > > >
+> > > > > > > > > > > The only way you can do the above is something like t=
+he incomplete and
+> > > > > > > > > > > uncompiled below. NMI safe and therefore livelock pro=
+of time interfaces
+> > > > > > > > > > > exist for a reason.
+> > > > > > > > > >
+> > > > > > > > > > Just for completeness, another approach, with its own a=
+dvantages
+> > > > > > > > > > and disadvantage, is to add something like ULONG_MAX/4 =
+to
+> > > > > > > > > > rcu_state.jiffies_stall, but also set a counter indicat=
+ing that this
+> > > > > > > > > > has been done.  Then RCU's force-quiescent processing c=
+ould decrement
+> > > > > > > > > > that counter (if non-zero) and reset rcu_state.jiffies_=
+stall when it
+> > > > > > > > > > does reach zero.
+> > > > > > > > > >
+> > > > > > > > > > Setting the counter to three should cover most cases, b=
+ut "live by the
+> > > > > > > > > > heuristic, die by the heuristic".  ;-)
+> > > > > > > > > >
+> > > > > > > > > > It would be good to have some indication when gdb exite=
+d, but things
+> > > > > > > > > > like the gdb "next" command can make that "interesting"=
+ when applied to
+> > > > > > > > > > a long-running function.
+> > > > > > > > >
+> > > > > > > > > The original code is adding ULONG_MAX/2, so adding ULONG_=
+MAX/4 may
+> > > > > > > > > make no much difference? The simplest way is adding 300*H=
+Z, but Joel
+> > > > > > > > > dislikes that.
+> > > > > > > >
+> > > > > > > > I am not seeing the ULONG_MAX/2, so could you please point =
+me to that
+> > > > > > > > original code?
+> > > > > > >
+> > > > > > > Maybe I misunderstand something, I say the original code mean=
+s code
+> > > > > > > before commit a80be428fbc1f1f3bc9ed924 ("rcu: Do not disable =
+GP stall
+> > > > > > > detection in rcu_cpu_stall_reset()").
+> > > > > >
+> > > > > > Yes, my suggestion would essentially revert that patch.  It wou=
+ld
+> > > > > > compensate by resetting rcu_state.jiffies_stall after a few cal=
+ls
+> > > > > > to rcu_gp_fqs().
+> > > > > >
+> > > > > > Alternatively, we could simply provide a way for gdb users to m=
+anually
+> > > > > > disable RCU CPU stall warnings at the beginning of their debug =
+sessions
+> > > > > > and to manually re-enable them when they are done.
+> > > > >
+> > > > > This problem is not KGDB-specific (though it is firstly found in =
+the
+> > > > > KGDB case), so I want to fix it in the rcu code rather than in th=
+e
+> > > > > kgdb code.
+> > > >
+> > > > Sure, for example, there is also PowerPC XMON.
+> > > >
+> > > > But this problem also is not RCU-specific.  There are also hardlock=
+ups,
+> > > > softlockups, workqueue lockups, networking timeouts, and who knows =
+what
+> > > > all else.
+> > > >
+> > > > Plus, and again to Thomas's point, gdb breakpoints can happen anywh=
+ere.
+> > > > For example, immediately after RCU computes the RCU CPU stall time =
+for
+> > > > a new grace period, and right before it stores it.  The gdb callout
+> > > > updates rcu_state.jiffies_stall, but that update is overwritten wit=
+h a
+> > > > stale value as soon as the system starts back up.
+> > > >
+> > > > Low probabillity, to be sure, but there are quite a few places in
+> > > > the kernel right after a read from some timebase or another, and ma=
+ny
+> > > > (perhaps all) of these can see similar stale-time-use problems.
+> > > >
+> > > > The only way I know of to avoid these sorts of false positives is f=
+or
+> > > > the user to manually suppress all timeouts (perhaps using a kernel-=
+boot
+> > > > parameter for your early-boot case), do the gdb work, and then unsu=
+ppress
+> > > > all stalls.  Even that won't work for networking, because the other
+> > > > system's clock will be running throughout.
+> > > >
+> > > > In other words, from what I know now, there is no perfect solution.
+> > > > Therefore, there are sharp limits to the complexity of any solution=
+ that
+> > > > I will be willing to accept.
+> > > I think the simplest solution is (I hope Joel will not angry):
+> >
+> > Not angry at all, just want to help. ;-). The problem is the 300*HZ sol=
+ution
+> > will also effect the VM workloads which also do a similar reset.  Allow=
+ me few
+> > days to see if I can take a shot at fixing it slightly differently. I a=
+m
+> > trying Paul's idea of setting jiffies at a later time. I think it is do=
+able.
+> > I think the advantage of doing this is it will make stall detection mor=
+e
+> > robust in this face of these gaps in jiffie update. And that solution d=
+oes
+> > not even need us to rely on ktime (and all the issues that come with th=
+at).
+> >
+>
+> I wrote a patch similar to Paul's idea and sent it out for review, the
+> advantage being it purely is based on jiffies. Could you try it out
+> and let me know?
+If you can cc my gmail <chenhuacai@gmail.com>, that could be better.
 
-This was correct for the Falcon case, which does not apply
-any address translation to the register addresses. In the
-Q40 case, all of device base address, byte access offset
-and register shift is included in the platform specific
-ISA access translation (in asm/mm_io.h).
+I have read your patch, maybe the counter (nr_fqs_jiffies_stall)
+should be atomic_t and we should use atomic operation to decrement its
+value. Because rcu_gp_fqs() can be run concurrently, and we may miss
+the (nr_fqs =3D=3D 1) condition.
 
-As a consequence, such address translation gets applied
-twice, and register addresses are mangled.
-
-Use the device base address from the platform IO resource
-for Q40 (the IO address translation will then add the correct
-ISA window base address and byte access offset), with register
-shift 1. Use MMIO base address and register shift 2 as before
-for Falcon.
-
-Encode PIO_OFFSET into IO port addresses for all registers
-for Q40 except the data transfer register. Encode the MMIO
-offset there (pata_falcon_data_xfer() directly uses raw IO
-with no address translation).
-
-Reported-by: William R Sowerbutts <will@sowerbutts.com>
-Closes: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Link: https://lore.kernel.org/r/CAMuHMdUU62jjunJh9cqSqHT87B0H0A4udOOPs=WN7WZKpcagVA@mail.gmail.com
-Fixes: 44b1fbc0f5f3 ("m68k/q40: Replace q40ide driver with pata_falcon and falconide")
-Cc: stable@vger.kernel.org
-Cc: Finn Thain <fthain@linux-m68k.org>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Tested-by: William R Sowerbutts <will@sowerbutts.com>
-Signed-off-by: Michael Schmitz <schmitzmic@gmail.com>
-Reviewed-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Reviewed-by: Geert Uytterhoeven <geert@linux-m68k.org>
-
----
-
-Changes from v4:
-
-Geert Uytterhoeven:
-- use %px for ap->ioaddr.data_addr
-
-Changes from v3:
-
-Sergey Shtylyov:
-- change use of reg_scale to reg_shift
-
-Geert Uytterhoeven:
-- factor out ata_port_desc() from platform specific code
-
-Changes from v2:
-
-Finn Thain:
-- add back stable Cc:
-
-Changes from v1:
-
-Damien Le Moal:
-- change patch title
-- drop stable backport tag
-
-Changes from RFC v3:
-
-- split off byte swap option into separate patch
-
-Geert Uytterhoeven:
-- review comments
-
-Changes from RFC v2:
-- add driver parameter 'data_swap' as bit mask for drives to swap
-
-Changes from RFC v1:
-
-Finn Thain:
-- take care to supply IO address suitable for ioread8/iowrite8
-- use MMIO address for data transfer
----
- drivers/ata/pata_falcon.c | 50 +++++++++++++++++++++++----------------
- 1 file changed, 29 insertions(+), 21 deletions(-)
-
-diff --git a/drivers/ata/pata_falcon.c b/drivers/ata/pata_falcon.c
-index 996516e64f13..616064b02de6 100644
---- a/drivers/ata/pata_falcon.c
-+++ b/drivers/ata/pata_falcon.c
-@@ -123,8 +123,8 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	struct resource *base_res, *ctl_res, *irq_res;
- 	struct ata_host *host;
- 	struct ata_port *ap;
--	void __iomem *base;
--	int irq = 0;
-+	void __iomem *base, *ctl_base;
-+	int irq = 0, io_offset = 1, reg_shift = 2; /* Falcon defaults */
- 
- 	dev_info(&pdev->dev, "Atari Falcon and Q40/Q60 PATA controller\n");
- 
-@@ -165,26 +165,34 @@ static int __init pata_falcon_init_one(struct platform_device *pdev)
- 	ap->pio_mask = ATA_PIO4;
- 	ap->flags |= ATA_FLAG_SLAVE_POSS | ATA_FLAG_NO_IORDY;
- 
--	base = (void __iomem *)base_mem_res->start;
- 	/* N.B. this assumes data_addr will be used for word-sized I/O only */
--	ap->ioaddr.data_addr		= base + 0 + 0 * 4;
--	ap->ioaddr.error_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.feature_addr		= base + 1 + 1 * 4;
--	ap->ioaddr.nsect_addr		= base + 1 + 2 * 4;
--	ap->ioaddr.lbal_addr		= base + 1 + 3 * 4;
--	ap->ioaddr.lbam_addr		= base + 1 + 4 * 4;
--	ap->ioaddr.lbah_addr		= base + 1 + 5 * 4;
--	ap->ioaddr.device_addr		= base + 1 + 6 * 4;
--	ap->ioaddr.status_addr		= base + 1 + 7 * 4;
--	ap->ioaddr.command_addr		= base + 1 + 7 * 4;
--
--	base = (void __iomem *)ctl_mem_res->start;
--	ap->ioaddr.altstatus_addr	= base + 1;
--	ap->ioaddr.ctl_addr		= base + 1;
--
--	ata_port_desc(ap, "cmd 0x%lx ctl 0x%lx",
--		      (unsigned long)base_mem_res->start,
--		      (unsigned long)ctl_mem_res->start);
-+	ap->ioaddr.data_addr = (void __iomem *)base_mem_res->start;
-+
-+	if (base_res) {		/* only Q40 has IO resources */
-+		io_offset = 0x10000;
-+		reg_shift = 0;
-+		base = (void __iomem *)base_res->start;
-+		ctl_base = (void __iomem *)ctl_res->start;
-+	} else {
-+		base = (void __iomem *)base_mem_res->start;
-+		ctl_base = (void __iomem *)ctl_mem_res->start;
-+	}
-+
-+	ap->ioaddr.error_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.feature_addr	= base + io_offset + (1 << reg_shift);
-+	ap->ioaddr.nsect_addr	= base + io_offset + (2 << reg_shift);
-+	ap->ioaddr.lbal_addr	= base + io_offset + (3 << reg_shift);
-+	ap->ioaddr.lbam_addr	= base + io_offset + (4 << reg_shift);
-+	ap->ioaddr.lbah_addr	= base + io_offset + (5 << reg_shift);
-+	ap->ioaddr.device_addr	= base + io_offset + (6 << reg_shift);
-+	ap->ioaddr.status_addr	= base + io_offset + (7 << reg_shift);
-+	ap->ioaddr.command_addr	= base + io_offset + (7 << reg_shift);
-+
-+	ap->ioaddr.altstatus_addr	= ctl_base + io_offset;
-+	ap->ioaddr.ctl_addr		= ctl_base + io_offset;
-+
-+	ata_port_desc(ap, "cmd %px ctl %px data %px",
-+		      base, ctl_base, ap->ioaddr.data_addr);
- 
- 	irq_res = platform_get_resource(pdev, IORESOURCE_IRQ, 0);
- 	if (irq_res && irq_res->start > 0) {
--- 
-2.17.1
-
+Huacai
+>
+> thanks,
+>
+>  - Joel
