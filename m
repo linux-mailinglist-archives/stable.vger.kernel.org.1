@@ -2,46 +2,60 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39BB7789C56
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 10:52:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79E3C789C5A
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 10:53:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229529AbjH0IwD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 04:52:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45736 "EHLO
+        id S229552AbjH0IxW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 04:53:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229758AbjH0Iv7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 04:51:59 -0400
+        with ESMTP id S230115AbjH0Iw7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 04:52:59 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF789131
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 01:51:56 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25B69F1;
+        Sun, 27 Aug 2023 01:52:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A91160B9F
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 08:51:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71E31C433C7;
-        Sun, 27 Aug 2023 08:51:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B75C262167;
+        Sun, 27 Aug 2023 08:52:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9E012C433C7;
+        Sun, 27 Aug 2023 08:52:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693126315;
-        bh=scC8bu16gGWi0B+Q9Ey1AtjehGY0JyyaioomazbwRGY=;
+        s=korg; t=1693126375;
+        bh=TMfQl3Pz+V2rPjEjmQALnP4xXEsGHixS96zlrjaSDkw=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZHsiktiEr+5zRIT4NVNgTKWETqACmrdh8orLAqy9wnCTGC9OiRTdmgZhUlTexdmUT
-         zhVpalpe/AOQ5q0lyNecyAweQscAsFCcFC56JRfIazIpTKgwP7JBRlAH1d+J7eF6Lh
-         6gWd/66ja2mL3KMgN2zkqhWxo2sMqB2OmKqh3SOM=
-Date:   Sun, 27 Aug 2023 10:51:53 +0200
+        b=tcuXk0cHMQUqSoJaQxUN0GjNbCw6l/tR9z3vAAx/SvsyRN24m121+4Mm7dIoTxW7v
+         5fK4XWmIcYyx+QsW/8XtADuugqrtXZ71fza0xnva4BDTHxFklL7gQjp/XcRgtoDm7R
+         vgblHvZGSuNaISMjxJ6GfdIPZq+No+VdCEJ3gtTE=
+Date:   Sun, 27 Aug 2023 10:52:52 +0200
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-Cc:     stable@vger.kernel.org
-Subject: Re: [PATCH 5.10.y] drm/i915: Fix premature release of request's
- reusable memory
-Message-ID: <2023082743-bulldog-letter-fe5c@gregkh>
-References: <2023080742-ion-implement-ceb1@gregkh>
- <20230822090542.44189-2-janusz.krzysztofik@linux.intel.com>
+To:     Saeed Mirzamohammadi <saeed.mirzamohammadi@oracle.com>
+Cc:     "# v4 . 16+" <stable@vger.kernel.org>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kees Cook <keescook@chromium.org>,
+        "linux-mm@kvack.org" <linux-mm@kvack.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>,
+        "linux-fsdevel@vger.kernel.org" <linux-fsdevel@vger.kernel.org>
+Subject: Re: [PATCH 5.4 0/1] mm: allow a controlled amount of unfairness in
+ the page lock
+Message-ID: <2023082742-mourner-amaze-7ff9@gregkh>
+References: <20230821222547.483583-1-saeed.mirzamohammadi@oracle.com>
+ <2023082248-parting-backed-2ab0@gregkh>
+ <D13FD910-FB1B-4DD8-9FFC-1BAF2C1390BF@oracle.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230822090542.44189-2-janusz.krzysztofik@linux.intel.com>
+In-Reply-To: <D13FD910-FB1B-4DD8-9FFC-1BAF2C1390BF@oracle.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -52,80 +66,29 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Aug 22, 2023 at 11:05:43AM +0200, Janusz Krzysztofik wrote:
-> Infinite waits for completion of GPU activity have been observed in CI,
-> mostly inside __i915_active_wait(), triggered by igt@gem_barrier_race or
-> igt@perf@stress-open-close.  Root cause analysis, based of ftrace dumps
-> generated with a lot of extra trace_printk() calls added to the code,
-> revealed loops of request dependencies being accidentally built,
-> preventing the requests from being processed, each waiting for completion
-> of another one's activity.
+On Tue, Aug 22, 2023 at 05:20:50PM +0000, Saeed Mirzamohammadi wrote:
 > 
-> After we substitute a new request for a last active one tracked on a
-> timeline, we set up a dependency of our new request to wait on completion
-> of current activity of that previous one.  While doing that, we must take
-> care of keeping the old request still in memory until we use its
-> attributes for setting up that await dependency, or we can happen to set
-> up the await dependency on an unrelated request that already reuses the
-> memory previously allocated to the old one, already released.  Combined
-> with perf adding consecutive kernel context remote requests to different
-> user context timelines, unresolvable loops of await dependencies can be
-> built, leading do infinite waits.
 > 
-> We obtain a pointer to the previous request to wait upon when we
-> substitute it with a pointer to our new request in an active tracker,
-> e.g. in intel_timeline.last_request.  In some processing paths we protect
-> that old request from being freed before we use it by getting a reference
-> to it under RCU protection, but in others, e.g.  __i915_request_commit()
-> -> __i915_request_add_to_timeline() -> __i915_request_ensure_ordering(),
-> we don't.  But anyway, since the requests' memory is SLAB_FAILSAFE_BY_RCU,
-> that RCU protection is not sufficient against reuse of memory.
+> > On Aug 22, 2023, at 12:08 AM, Greg KH <gregkh@linuxfoundation.org> wrote:
+> > 
+> > On Mon, Aug 21, 2023 at 03:25:45PM -0700, Saeed Mirzamohammadi wrote:
+> >> We observed a 35% of regression running phoronix pts/ramspeed and also 16%
+> >> with unixbench. Regression is caused by the following commit:
+> >> dd0f194cfeb5 | mm: rewrite wait_on_page_bit_common() logic
+> > 
+> > That is not a valid git id in Linus's or in the linux-stable repo that I
+> > can see.  Are you sure that it is correct?
 > 
-> We could protect i915_request's memory from being prematurely reused by
-> calling its release function via call_rcu() and using rcu_read_lock()
-> consequently, as proposed in v1.  However, that approach leads to
-> significant (up to 10 times) increase of SLAB utilization by i915_request
-> SLAB cache.  Another potential approach is to take a reference to the
-> previous active fence.
+> Sorry for the incorrect sha. Here are the correct ones:
 > 
-> When updating an active fence tracker, we first lock the new fence,
-> substitute a pointer of the current active fence with the new one, then we
-> lock the substituted fence.  With this approach, there is a time window
-> after the substitution and before the lock when the request can be
-> concurrently released by an interrupt handler and its memory reused, then
-> we may happen to lock and return a new, unrelated request.
-> 
-> Always get a reference to the current active fence first, before
-> replacing it with a new one.  Having it protected from premature release
-> and reuse, lock it and then replace with the new one but only if not
-> yet signalled via a potential concurrent interrupt nor replaced with
-> another one by a potential concurrent thread, otherwise retry, starting
-> from getting a reference to the new current one.  Adjust users to not
-> get a reference to the previous active fence themselves and always put the
-> reference got by __i915_active_fence_set() when no longer needed.
-> 
-> v3: Fix lockdep splat reports and other issues caused by incorrect use of
->     try_cmpxchg() (use (cmpxchg() != prev) instead)
-> v2: Protect request's memory by getting a reference to it in favor of
->     delegating its release to call_rcu() (Chris)
-> 
-> Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8211
-> Fixes: df9f85d8582e ("drm/i915: Serialise i915_active_fence_set() with itself")
-> Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
-> Cc: <stable@vger.kernel.org> # v5.6+
-> Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-> Link: https://patchwork.freedesktop.org/patch/msgid/20230720093543.832147-2-janusz.krzysztofik@linux.intel.com
-> (cherry picked from commit 946e047a3d88d46d15b5c5af0414098e12b243f7)
-> Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-> (cherry picked from commit a337b64f0d5717248a0c894e2618e658e6a9de9f)
-> Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+>   kernel_dot_org/linux-stable.git    linux-5.4.y            - c32ab1c1959a
+>   kernel_dot_org/torvalds_linux.git  master                 - 2a9127fcf229
+>   kernel_dot_org/linux-stable.git    master                 - 2a9127fcf229
 > ---
->  drivers/gpu/drm/i915/i915_active.c  | 99 ++++++++++++++++++++---------
->  drivers/gpu/drm/i915/i915_request.c |  2 +
->  2 files changed, 72 insertions(+), 29 deletions(-)
+>   subject          : mm: rewrite wait_on_page_bit_common() logic
+>   author           : torvalds@linux-foundation.org
+>   author date      : 2020-07-23 17:16:49
 
-Now queued up, thanks.
+Thanks, now queued up.
 
 greg k-h
