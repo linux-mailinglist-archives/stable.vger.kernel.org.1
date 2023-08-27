@@ -2,64 +2,61 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34FE1789DC6
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 14:13:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1118789FAE
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 15:55:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229607AbjH0MKt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 08:10:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57364 "EHLO
+        id S229975AbjH0Nyv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 09:54:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229508AbjH0MKh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 08:10:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CAE130;
-        Sun, 27 Aug 2023 05:10:34 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7751B60F0F;
-        Sun, 27 Aug 2023 12:10:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84B0DC433C7;
-        Sun, 27 Aug 2023 12:10:30 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693138233;
-        bh=WMzxN+/vPzfmnWAACf8mcof6OpZORi1WlHwqzQDLUrk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=jCAZep4DsRDmbmzerSlURVj5dx6DHazJVvmof31F0VAjS3U6WGGomC14azfCjxn73
-         7aqr07Ia/1W6K0EMqWSRGkgQYSs0rWRWfeFhjKG1w1XQsqwOZw0THjcQEWQdijPQ1c
-         N0qUJOtf0V61x/PXv0rfbNheIhOOuQJ6Sn96EPpUHplPiJLJv/GukG3b3zgFsE89sf
-         g7e0Lm8SQZfjHzyFT7sw2jjHy+1uQhfbB94ST/x6KxHj8wbweG9Il6CrhluyYf5xHU
-         lFFVTi5nDVGKeegzZXqO2Rl5QBFG8ZjktDtJbkG8mAP4rdjAGMb+6ny6V+hB4C7nyb
-         V0Gt5YLkbNCTg==
-Date:   Sun, 27 Aug 2023 13:10:28 +0100
-From:   Conor Dooley <conor@kernel.org>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Rohit Agarwal <quic_rohiagar@quicinc.com>,
-        linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: PCI: qcom: fix SDX65 compatible
-Message-ID: <20230827-eggshell-rift-94f423e74dab@spud>
-References: <20230827085351.21932-1-krzysztof.kozlowski@linaro.org>
+        with ESMTP id S231129AbjH0Nyb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 09:54:31 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79E5312E
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 06:54:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693144468; x=1724680468;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=gOa2BNaEtR20yuUAbnvHtMItfKbUC364UnPJX+o2Q2M=;
+  b=ImIqmraqDwfG1D2kTF39vLDRBcYNfa23VdvaG/qJk+5Hmk6rbwLi39IP
+   k0k1n1i7nVOVK3AMvU7SqfyUE8MqUobyLgiy+6WJujwiv8T3gHasL9NEq
+   BWAnJ60ZiyICBKFbcn0cCbdR4Yu81we9JN6AI9721bWKmeICvs3Y5K/WB
+   Rd8FjvTOaUfXG0iMpidXOGhKo0G3jdomxVb53k3WLE+TNhLL/f5lu/MtB
+   Ob+q2/WJd7v7J1SA5fFAHBMsm8Oax2VjgVE3OmhSG2Ibmy6/aEF5hqzj7
+   2kNcnaPRdEqxX0zKC2LqFqM/w556z2/DjUQlScumeDxCLShlFs6mP4tW0
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10815"; a="441292025"
+X-IronPort-AV: E=Sophos;i="6.02,205,1688454000"; 
+   d="scan'208";a="441292025"
+Received: from orsmga008.jf.intel.com ([10.7.209.65])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 27 Aug 2023 06:54:27 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10815"; a="767401793"
+X-IronPort-AV: E=Sophos;i="6.02,205,1688454000"; 
+   d="scan'208";a="767401793"
+Received: from fyin-dev.sh.intel.com ([10.239.159.24])
+  by orsmga008.jf.intel.com with ESMTP; 27 Aug 2023 06:54:24 -0700
+From:   Yin Fengwei <fengwei.yin@intel.com>
+To:     fengwei.yin@intel.com
+Cc:     Yu Zhao <yuzhao@google.com>, Ryan Roberts <ryan.roberts@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Minchan Kim <minchan@kernel.org>,
+        Vishal Moola <vishal.moola@gmail.com>,
+        Yang Shi <shy828301@gmail.com>, stable@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4.12] madvise:madvise_cold_or_pageout_pte_range(): don't use mapcount() against large folio for sharing check
+Date:   Sun, 27 Aug 2023 21:52:11 +0800
+Message-Id: <20230827135211.2115099-1-fengwei.yin@intel.com>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha256;
-        protocol="application/pgp-signature"; boundary="Y5ooK+v/FYTMRcoa"
-Content-Disposition: inline
-In-Reply-To: <20230827085351.21932-1-krzysztof.kozlowski@linaro.org>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,79 +64,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Patch series "don't use mapcount() to check large folio sharing", v2.
 
---Y5ooK+v/FYTMRcoa
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+In madvise_cold_or_pageout_pte_range() and madvise_free_pte_range(),
+folio_mapcount() is used to check whether the folio is shared.  But it's
+not correct as folio_mapcount() returns total mapcount of large folio.
 
-On Sun, Aug 27, 2023 at 10:53:51AM +0200, Krzysztof Kozlowski wrote:
-> Commit c0aba9f32801 ("dt-bindings: PCI: qcom: Add SDX65 SoC") adding
-> SDX65 was not ever tested and is clearly bogus.  The qcom,sdx65-pcie-ep
-> compatible is followed by fallback in DTS and there is no driver
-> matching by this compatible.  Driver matches by its fallback
-> qcom,sdx55-pcie-ep.  This fixes also dtbs_check warnings like:
->=20
->   qcom-sdx65-mtp.dtb: pcie-ep@1c00000: compatible: ['qcom,sdx65-pcie-ep',=
- 'qcom,sdx55-pcie-ep'] is too long
->=20
-> Fixes: c0aba9f32801 ("dt-bindings: PCI: qcom: Add SDX65 SoC")
-> Cc: <stable@vger.kernel.org>
-> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Use folio_estimated_sharers() here as the estimated number is enough.
 
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
+This patchset will fix the cases:
+User space application call madvise() with MADV_FREE, MADV_COLD and
+MADV_PAGEOUT for specific address range. There are THP mapped to the
+range. Without the patchset, the THP is skipped. With the patch, the
+THP will be split and handled accordingly.
 
-Thanks,
-Conor.
+David reported the cow self test skip some cases because of MADV_PAGEOUT
+skip THP:
+https://lore.kernel.org/linux-mm/9e92e42d-488f-47db-ac9d-75b24cd0d037@intel.com/T/#mbf0f2ec7fbe45da47526de1d7036183981691e81
+and I confirmed this patchset make it work again.
 
-> ---
->  .../devicetree/bindings/pci/qcom,pcie-ep.yaml        | 12 +++++++-----
->  1 file changed, 7 insertions(+), 5 deletions(-)
->=20
-> diff --git a/Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml b/Do=
-cumentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-> index 811112255d7d..c94b49498f69 100644
-> --- a/Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-> +++ b/Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-> @@ -11,10 +11,13 @@ maintainers:
-> =20
->  properties:
->    compatible:
-> -    enum:
-> -      - qcom,sdx55-pcie-ep
-> -      - qcom,sdx65-pcie-ep
-> -      - qcom,sm8450-pcie-ep
-> +    oneOf:
-> +      - enum:
-> +          - qcom,sdx55-pcie-ep
-> +          - qcom,sm8450-pcie-ep
-> +      - items:
-> +          - const: qcom,sdx65-pcie-ep
-> +          - const: qcom,sdx55-pcie-ep
-> =20
->    reg:
->      items:
-> @@ -110,7 +113,6 @@ allOf:
->            contains:
->              enum:
->                - qcom,sdx55-pcie-ep
-> -              - qcom,sdx65-pcie-ep
->      then:
->        properties:
->          clocks:
-> --=20
-> 2.34.1
->=20
+This patch (of 3):
 
---Y5ooK+v/FYTMRcoa
-Content-Type: application/pgp-signature; name="signature.asc"
+Commit 07e8c82b5eff ("madvise: convert madvise_cold_or_pageout_pte_range()
+to use folios") replaced the page_mapcount() with folio_mapcount() to
+check whether the folio is shared by other mapping.
 
------BEGIN PGP SIGNATURE-----
+It's not correct for large folio.  folio_mapcount() returns the total
+mapcount of large folio which is not suitable to detect whether the folio
+is shared.
 
-iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZOs9NAAKCRB4tDGHoIJi
-0iL6APsGucI4pCdyWDXNGs3In99cNJWvdrvhE7ev5q0DILG3NAEA+2q4eG9xiZCJ
-POmCuJO6gXOLawwxCu2gSWuTtCNA1w4=
-=pkml
------END PGP SIGNATURE-----
+Use folio_estimated_sharers() which returns a estimated number of shares.
+That means it's not 100% correct.  It should be OK for madvise case here.
 
---Y5ooK+v/FYTMRcoa--
+User-visible effects is that the THP is skipped when user call madvise.
+But the correct behavior is THP should be split and processed then.
+
+NOTE: this change is a temporary fix to reduce the user-visible effects
+before the long term fix from David is ready.
+
+Link: https://lkml.kernel.org/r/20230808020917.2230692-1-fengwei.yin@intel.com
+Link: https://lkml.kernel.org/r/20230808020917.2230692-2-fengwei.yin@intel.com
+Fixes: 07e8c82b5eff ("madvise: convert madvise_cold_or_pageout_pte_range() to use folios")
+Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+Reviewed-by: Yu Zhao <yuzhao@google.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+(cherry picked from commit 2f406263e3e954aa24c1248edcfa9be0c1bb30fa)
+---
+ mm/madvise.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/mm/madvise.c b/mm/madvise.c
+index b5ffbaf616f5..6adee363a9fa 100644
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -375,7 +375,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 		folio = pfn_folio(pmd_pfn(orig_pmd));
+ 
+ 		/* Do not interfere with other mappings of this folio */
+-		if (folio_mapcount(folio) != 1)
++		if (folio_estimated_sharers(folio) != 1)
+ 			goto huge_unlock;
+ 
+ 		if (pageout_anon_only_filter && !folio_test_anon(folio))
+@@ -447,7 +447,7 @@ static int madvise_cold_or_pageout_pte_range(pmd_t *pmd,
+ 		 * are sure it's worth. Split it if we are only owner.
+ 		 */
+ 		if (folio_test_large(folio)) {
+-			if (folio_mapcount(folio) != 1)
++			if (folio_estimated_sharers(folio) != 1)
+ 				break;
+ 			if (pageout_anon_only_filter && !folio_test_anon(folio))
+ 				break;
+-- 
+2.39.2
+
