@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10261789CF3
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 12:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EE96789CF1
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 12:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230339AbjH0KRw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S230331AbjH0KRw (ORCPT <rfc822;lists+stable@lfdr.de>);
         Sun, 27 Aug 2023 06:17:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41756 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35106 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230416AbjH0KRi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 06:17:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A083D132
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 03:17:35 -0700 (PDT)
+        with ESMTP id S230358AbjH0KR3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 06:17:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE896132
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 03:17:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EC6062ACF
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 10:17:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E6E7C433C8;
-        Sun, 27 Aug 2023 10:17:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 52B2162ABD
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 10:17:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F23AC433C7;
+        Sun, 27 Aug 2023 10:17:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693131454;
-        bh=Ym/Ofw9kfGb6pWnRy7M1f15SGfzDc/3Pn5zFDcJT52k=;
+        s=korg; t=1693131445;
+        bh=l3Z0dNgu3ChMEjyOjJTO74O8s/sNI8dq+2amhsw4/xY=;
         h=Subject:To:Cc:From:Date:From;
-        b=Zh5RWhFilayabdBOordGffAJvd2wP1eoCMBBWLOWfW5hIBLeKqcdnrln+rUAXKKol
-         v+jxjOVbjZCDVB2C7O66HTLkSIszHRCKgGcro/4iFfcpDUO6/Z6NFeslZM64dHIbgt
-         /qOPtF1jW/5dnLzxp+bz7zuJ5RH95Bduo41XpqR4=
-Subject: FAILED: patch "[PATCH] objtool/x86: Fixup frame-pointer vs rethunk" failed to apply to 5.15-stable tree
+        b=x7EY9AUvgXa2gR1u9gBGaFBh5S8FqdJ1xRJHINUrhqAoIn2jUnW2/hTKFhSLigj37
+         Owko/Fq9DfVgABLuvKXzLSrQS7LtIdrc5EQUEM4nzRZ8Arrj60TWOVmVHlG56TRqBe
+         ef3wI7RoD09cX+kgtIM3ZoOvoZAIrHqYdbE+jwwE=
+Subject: FAILED: patch "[PATCH] objtool/x86: Fixup frame-pointer vs rethunk" failed to apply to 6.1-stable tree
 To:     peterz@infradead.org, bp@alien8.de, jpoimboe@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sun, 27 Aug 2023 12:17:23 +0200
-Message-ID: <2023082723-bribe-sporty-3c8c@gregkh>
+Message-ID: <2023082722-rocking-unbaked-1baf@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,19 +48,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x dbf46008775516f7f25c95b7760041c286299783
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082723-bribe-sporty-3c8c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082722-rocking-unbaked-1baf@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
