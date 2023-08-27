@@ -2,87 +2,135 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B3B2E78A04D
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 18:53:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AD0578A0E7
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 20:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229974AbjH0QxP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 12:53:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35774 "EHLO
+        id S229843AbjH0SMd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 14:12:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230073AbjH0QxB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 12:53:01 -0400
-Received: from mail-pg1-f170.google.com (mail-pg1-f170.google.com [209.85.215.170])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80DA139;
-        Sun, 27 Aug 2023 09:52:55 -0700 (PDT)
-Received: by mail-pg1-f170.google.com with SMTP id 41be03b00d2f7-565334377d0so1556061a12.2;
-        Sun, 27 Aug 2023 09:52:55 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693155175; x=1693759975;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ImkyWrYqH8lg/cu5/toGD9Vw+jK2UHolY7FUCZL6OdE=;
-        b=hwoyIGOuN4MJaB+1+5Fb0FIJaWkKb9UKcG+ZTWs5FSfhLzHAwu9wqzSWZnjyPfA+w9
-         RCjJLVmvULAGYD5DXYpal0MkHdRjk7K5ydL2W0N3+8GqhGdzlRsvle0plPcA+PnoaaGT
-         ozB1ErVvTyjz3qD6gscBhWDnw1KSOcdGuDTrBGioVyBnu0kXB/ZhLZ/h303FnnvGIctQ
-         E8DlbPRct/rVSWTuBfDyGTEODh0z02nKISVeql2RhUiJHcnYn3kQieLUbJcZxH6BhDKt
-         hWxT74KIgP9ZmWukTWMse5vxfZQRd1FtZC/9bNW8fIpsFaQHzaLod2ceIOzYZq9Mhx+U
-         Z+EA==
-X-Gm-Message-State: AOJu0YyXajby3gntrN3oChd0+/oleq0ZZg6tzHuQkXgKPW58wknCVsTH
-        mPENdQNIwL4suLb3aH3DK9c=
-X-Google-Smtp-Source: AGHT+IGQtRfWPaISyzI4T0Mr5/nRWzHuzFWUjp93ZJlkqnVi4QGK3coCaHFP+i/PC3lqhGoTNciR9w==
-X-Received: by 2002:a05:6a20:1444:b0:149:424e:b26a with SMTP id a4-20020a056a20144400b00149424eb26amr22909646pzi.19.1693155175186;
-        Sun, 27 Aug 2023 09:52:55 -0700 (PDT)
-Received: from localhost (fpd11144dd.ap.nuro.jp. [209.17.68.221])
-        by smtp.gmail.com with ESMTPSA id fk22-20020a056a003a9600b006887037cde6sm5072546pfb.60.2023.08.27.09.52.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Aug 2023 09:52:54 -0700 (PDT)
-Date:   Mon, 28 Aug 2023 01:52:52 +0900
-From:   Krzysztof =?utf-8?Q?Wilczy=C5=84ski?= <kw@linux.com>
-To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Cc:     Manivannan Sadhasivam <mani@kernel.org>,
-        Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        Rob Herring <robh@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Rohit Agarwal <quic_rohiagar@quicinc.com>,
-        linux-pci@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH] dt-bindings: PCI: qcom: fix SDX65 compatible
-Message-ID: <20230827165252.GB2932694@rocinante>
-References: <20230827085351.21932-1-krzysztof.kozlowski@linaro.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230827085351.21932-1-krzysztof.kozlowski@linaro.org>
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S230364AbjH0SMZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 14:12:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 127E5E6;
+        Sun, 27 Aug 2023 11:12:23 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A00AB6147A;
+        Sun, 27 Aug 2023 18:12:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEDC9C433C7;
+        Sun, 27 Aug 2023 18:12:19 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693159942;
+        bh=Gtx6YMuQyMDzt4yTSZYJd+5ko0zLjEAbXXqlwMLbtf4=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=ZV9xzsu4xCOooWtwbzQw+WArL2yBSnAJdISGkNiPuBu2whAPZ86qFRkOZVMTFckFV
+         XIsvv6urrRCCvBvrmhgm3W1WRnnp6r2MWQ72ZngWClhbZ727qf29eUXfB+X0GMKGZy
+         P6k+lw6V6Ja14/caNIXZOPONxIb+Pu00L2p5s+MIJRogFPZ+HlbhC+Nm3LSY2f708D
+         ao6j4mcGCotf18GDiFJfGC9sfIdMvICCB76OqEt1bncCg82eVGNAvXcya8PpBzdXN8
+         FIfXesRNkZQIaxQkxVfH9RwE81gqWOn9dxlp9cnRBrC3PfrN0kjUH7AFKhqqQLk8+l
+         k1wOl4fJKm+rw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Sun, 27 Aug 2023 21:12:17 +0300
+Message-Id: <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
+Cc:     <linux-integrity@vger.kernel.org>,
+        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
+        "Todd Brandt" <todd.e.brandt@intel.com>,
+        "Peter Huewe" <peterhuewe@gmx.de>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
+        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
+        "Raymond Jay Golo" <rjgolo@gmail.com>
+Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Mario Limonciello" <mario.limonciello@amd.com>,
+        "Paul Menzel" <pmenzel@molgen.mpg.de>
+X-Mailer: aerc 0.14.0
+References: <20230822231510.2263255-1-jarkko@kernel.org>
+ <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+ <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
+ <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
+In-Reply-To: <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
+On Wed Aug 23, 2023 at 9:58 PM EEST, Mario Limonciello wrote:
+> On 8/23/2023 12:40, Jarkko Sakkinen wrote:
+> > On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
+> >> Dear Jarkko,
+> >>
+> >>
+> >> Thank you for your patch.
+> >>
+> >>
+> >> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
+> >>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG=
+ for
+> >>> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On=
+ the
+> >>> reported systems the TPM doesn't reply at bootup and returns back the
+> >>> command code. This makes the TPM fail probe.
+> >>>
+> >>> Since only Microsoft Pluton is the only known combination of AMD CPU =
+and
+> >>> fTPM from other vendor, disable hwrng otherwise. In order to make sys=
+admin
+> >>> aware of this, print also info message to the klog.
+> >>>
+> >>> Cc: stable@vger.kernel.org
+> >>> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> >>> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> >>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
+> >>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >>
+> >> Mario=E2=80=99s patch also had the three reporters below listed:
+> >>
+> >> Reported-by: Patrick Steinhardt <ps@pks.im>
+> >> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> >> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> >=20
+> > The problem here is that checkpatch throws three warnings:
+> >=20
+> > WARNING: Reported-by: should be immediately followed by Closes: with a =
+URL to the report
+> > #19:
+> > Reported-by: Patrick Steinhardt <ps@pks.im>
+> > Reported-by: Ronan Pigott <ronan@rjp.ie>
+> >=20
+> > WARNING: Reported-by: should be immediately followed by Closes: with a =
+URL to the report
+> > #20:
+> > Reported-by: Ronan Pigott <ronan@rjp.ie>
+> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> >=20
+> > WARNING: Reported-by: should be immediately followed by Closes: with a =
+URL to the report
+> > #21:
+> > Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> > Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >=20
+>
+> FWIW I observed the same checkpatch warning when I submitted my version=
+=20
+> of the patch.  I figured it's better to ignore the warning and attribute=
+=20
+> everyone who reported the issue affected them.
 
-> Commit c0aba9f32801 ("dt-bindings: PCI: qcom: Add SDX65 SoC") adding
-> SDX65 was not ever tested and is clearly bogus.  The qcom,sdx65-pcie-ep
-> compatible is followed by fallback in DTS and there is no driver
-> matching by this compatible.  Driver matches by its fallback
-> qcom,sdx55-pcie-ep.  This fixes also dtbs_check warnings like:
-> 
->   qcom-sdx65-mtp.dtb: pcie-ep@1c00000: compatible: ['qcom,sdx65-pcie-ep', 'qcom,sdx55-pcie-ep'] is too long
+OK so:
 
-Applied to controller/qcom, thank you!
+1. checkpatch.pl is part of the kernel process.
+2. Bugzilla is not part of the kernel process.
 
-[1/1] dt-bindings: PCI: qcom: Fix SDX65 compatible
-      https://git.kernel.org/pci/pci/c/15d63a897f79
+Why emphasis on 1?
 
-	Krzysztof
+BR, Jarkko
