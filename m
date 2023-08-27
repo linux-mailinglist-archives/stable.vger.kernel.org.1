@@ -2,224 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5649878A154
-	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 22:15:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D74B778A20C
+	for <lists+stable@lfdr.de>; Sun, 27 Aug 2023 23:47:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229589AbjH0UOq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 27 Aug 2023 16:14:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59674 "EHLO
+        id S230287AbjH0Vq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 27 Aug 2023 17:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57674 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229862AbjH0UO1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 16:14:27 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03452103
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 13:14:25 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-68a3f1d8be2so2043559b3a.3
-        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 13:14:24 -0700 (PDT)
+        with ESMTP id S230365AbjH0Vqc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 27 Aug 2023 17:46:32 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 156B4131
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 14:46:30 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-77acb04309dso88008439f.2
+        for <stable@vger.kernel.org>; Sun, 27 Aug 2023 14:46:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1693167264; x=1693772064;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=jOZvqNec2SsnhlhBZjwQQ5UUgJ5WDB1PrlubWErrQIw=;
-        b=aL3OounB7m8hmR5cYQqlfPDSbZAkxH20eVlx6GkhvO44C8jhEogCgjdTvMOTzay1rf
-         4MSHoIRed/dah5ecICiNYWuMImuP8NCuv6DgLuTcr5ya+ucoTjBj7oEZJEL+096rinhH
-         x9wDJt6G2FE/z9fRATeIMIysf7TRzpwrkdxYsJZ+qGzyFGvDgphx3qvBDLeLhl4ETult
-         eaMpxSLiAqE4K6G0XFc+oNBr0hn7+4NkI2n2lSiR6MGlVrPUF667dJOUq+TRTSeB+L3W
-         kQP3HobBrdHSfaMYjVTD9YFbY5+Sg3Lu4oE084Gha+vpoJqZ3fz9c8LSTHtHCjxrMh0s
-         vEkA==
+        d=joelfernandes.org; s=google; t=1693172789; x=1693777589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=6mcwO+IbeJ6pSmZ/BjxjTTVqEmFcInv2K/OfpA2NMnU=;
+        b=Az9zw+ATe3PlF3OhMMTM/WWPXUwi/94KCKAGjXJD7qM6Mr6OrjUiOn1sH+8o/EsaOn
+         cdsc5A9xXnfw+YW2bjmLdScXX0nuHHoHS6oiYGmQAQVOSwLzL/56I4CuEJMsWm4tQFNy
+         iS5GrBPzUdWHXbboY3hnu8CQNg2WGc4D72uA4=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693167264; x=1693772064;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1693172789; x=1693777589;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=jOZvqNec2SsnhlhBZjwQQ5UUgJ5WDB1PrlubWErrQIw=;
-        b=HIDbroxzH6ayDTnMtk2LBFcvgN+LZlbQYchKVQJJuRFbkZ9spUs945sTTnPsDW9OGW
-         288IPn9C5D9jWj/3PSKh1hNvQZoa4Z3cgiBIi7eBv8bpSbHJ2Fw5ZGtmUVMk17fdnMED
-         zZvgOQSFnpcXbXK5pqZ+g9hiNOtBgcHpOEkt52JlJuIMBglv+Sbj3nR7kV2xqDKZ2c5c
-         Jb01SU5ImS6VMkY1n3NgWomRhUvv1Fl1G81zz1bXkHeRwodnybMSMT2i3gtiVQxDTd5j
-         VgbLHEXzEuOed5yF7Yuh97Bc/dOJ57Coc8HjMvmzW9Z+SWprn0UNeUe+5m90Y+DghDyD
-         Bj4w==
-X-Gm-Message-State: AOJu0YxL+wSFsCTm89uOlH7aNk8jLGHIIlFSN+77RD3upjtkEKJvqHHT
-        652GMYbeucWhJtHkC0xsw8IPsnLwKBzHJCc/DFE=
-X-Google-Smtp-Source: AGHT+IEItjl4w7TEAODOaeU+dRjsGMuq0GBP3VSDt+awCqYFoULDf8dLqWpFQUC2GKO4U8/JazwvnA==
-X-Received: by 2002:a05:6a00:850:b0:68b:a137:372b with SMTP id q16-20020a056a00085000b0068ba137372bmr19355945pfk.19.1693167263876;
-        Sun, 27 Aug 2023 13:14:23 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id j7-20020a62e907000000b0064d57ecaa1dsm5180800pfh.28.2023.08.27.13.14.22
+        bh=6mcwO+IbeJ6pSmZ/BjxjTTVqEmFcInv2K/OfpA2NMnU=;
+        b=cKmtu9mH6U2xDp2Px0U+SrmWRYFEoZqUDnYhc494RugUiiAjhGu936d366kfs+5CO+
+         3AqhW03yYphWm+Z3qLykYSN7ZWIIkEiPtyQws48FzYgKEovewsoGDI3eCAzr+8P2nJT1
+         14h6SCVhOOEvaeC0TlZkPLnAlfi3d9KVSCE9XyFG/40DBEQ0Bax9hE2LZ0kD+FCFDQZD
+         +ESleP+fBbpCIGoTXt6eXvsYQrzNNeFzvc/kSrorUEuvODc0jAL897MNv3LxOUWsq3Bh
+         0XQVTXTEg6L7MEp8E1oRZDJthIAFL3TATNe7FOZVbEXZ5vhiEis1yjEV+6mw99svtR7v
+         VtaA==
+X-Gm-Message-State: AOJu0YwMCti0m1QBZ/osS5Ke4A/Ia6eyKeMgh+btQv40j6lp97aQfp9c
+        vTIaRCbVOfOSIgiUWFeuS01DEW1jUn3F3LOokDM=
+X-Google-Smtp-Source: AGHT+IE2PDpFOgkg1eIeYAvpTEAZMfuuiEANqDy0KOpHgWijDj9rwgdkP6amMl/prwYlxtPA6KcOrg==
+X-Received: by 2002:a6b:f214:0:b0:790:ff32:eb3 with SMTP id q20-20020a6bf214000000b00790ff320eb3mr17389815ioh.17.1693172788924;
+        Sun, 27 Aug 2023 14:46:28 -0700 (PDT)
+Received: from joelboxx5.c.googlers.com.com (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id d13-20020a02a48d000000b0042b1cd4c096sm1992515jam.74.2023.08.27.14.46.27
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 27 Aug 2023 13:14:22 -0700 (PDT)
-Message-ID: <64ebae9e.620a0220.65e4e.7e24@mx.google.com>
-Date:   Sun, 27 Aug 2023 13:14:22 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Sun, 27 Aug 2023 14:46:28 -0700 (PDT)
+From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
+To:     stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Shuah Khan <shuah@kernel.org>
+Cc:     Joel Fernandes <joel@joelfernandes.org>, rcu@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 5.10 1/2] torture: Avoid torture-test reboot loops
+Date:   Sun, 27 Aug 2023 21:46:20 +0000
+Message-ID: <20230827214622.240001-1-joel@joelfernandes.org>
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.49
-Subject: stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.49)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.1.4=
-9)
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-6.1.y/ke=
-rnel/v6.1.49/
+[ Upstream commit 10f84c2cfb5045e37d78cb5d4c8e8321e06ae18f ]
 
-Tree: stable
-Branch: linux-6.1.y
-Git Describe: v6.1.49
-Git Commit: 024f76bca9d0e29513fa99e1cd0f86bfa841743b
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
+Currently, the various torture tests sometimes react to an early-boot
+bug by rebooting.  This is almost always counterproductive, needlessly
+consuming CPU time and bloating the console log.  This commit therefore
+adds the "-no-reboot" argument to qemu so that reboot requests will
+cause qemu to exit.
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 ---
-For more info write to <info@kernelci.org>
+ tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+index 6dc2b49b85ea..bdd747dc61f2 100755
+--- a/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
++++ b/tools/testing/selftests/rcutorture/bin/kvm-test-1-run.sh
+@@ -9,7 +9,7 @@
+ #
+ # Usage: kvm-test-1-run.sh config builddir resdir seconds qemu-args boot_args
+ #
+-# qemu-args defaults to "-enable-kvm -nographic", along with arguments
++# qemu-args defaults to "-enable-kvm -nographic -no-reboot", along with arguments
+ #			specifying the number of CPUs and other options
+ #			generated from the underlying CPU architecture.
+ # boot_args defaults to value returned by the per_version_boot_params
+@@ -132,7 +132,7 @@ then
+ fi
+ 
+ # Generate -smp qemu argument.
+-qemu_args="-enable-kvm -nographic $qemu_args"
++qemu_args="-enable-kvm -nographic -no-reboot $qemu_args"
+ cpu_count=`configNR_CPUS.sh $resdir/ConfigFragment`
+ cpu_count=`configfrag_boot_cpus "$boot_args" "$config_template" "$cpu_count"`
+ if test "$cpu_count" -gt "$TORTURE_ALLOTED_CPUS"
+-- 
+2.42.0.rc1.204.g551eb34607-goog
+
