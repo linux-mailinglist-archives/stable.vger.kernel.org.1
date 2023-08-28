@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FF3C78ADB3
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC55378ACAE
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232149AbjH1KuO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:50:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45822 "EHLO
+        id S231790AbjH1Klh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:41:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232241AbjH1KuB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:50:01 -0400
+        with ESMTP id S231833AbjH1KlZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17D2F115
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D70CA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A88B64446
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89938C116A4;
-        Mon, 28 Aug 2023 10:49:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A05E363EA1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5079C433C8;
+        Mon, 28 Aug 2023 10:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219772;
-        bh=tFOPIGC4P8QbrhABZJoikB9H/xp5XMFnn06PRjbvn7o=;
+        s=korg; t=1693219282;
+        bh=MNZ22KkZNghR2IfkLSw4sPcNZsLHKPYIXkhtblOFFDA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sfKQEBMSHYXYLYZLvJ6W7xRQ+prqyzdZjDWbc8b0Gy4C8iqoebCDJx8nvDl3P3V/z
-         y8XYhFO9hdZCB9wq+BbuQltOXbfOc+s6ZapDbAh6uMrl4WwMOXZe8mYFV3fMGzjwJn
-         ve0Zv/cOJv9FSwyOyxybYkdufynBBaGCQZaOAQJM=
+        b=2tRcJgyhW+LJipdrgzA8gkkwG1dYQpkJKaqjJFywfklgsYL76fL0zUtDCBPjTkK3m
+         UEypOl/m+/a98+D8+zYS5TQcgnxHypE7JAkUbfs/x9s9udXq1ZE2DNxLtWSwcAf429
+         D2fY1ocDKt4le2irBXNDkytV83/XlTwW4IJcgdTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
-        Ido Schimmel <idosch@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 39/84] rtnetlink: Reject negative ifindexes in RTM_NEWLINK
+        syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.4 139/158] batman-adv: Hold rtnl lock during MTU update via netlink
 Date:   Mon, 28 Aug 2023 12:13:56 +0200
-Message-ID: <20230828101150.595205899@linuxfoundation.org>
+Message-ID: <20230828101202.222488327@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,72 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit 30188bd7838c16a98a520db1fe9df01ffc6ed368 ]
+commit 987aae75fc1041072941ffb622b45ce2359a99b9 upstream.
 
-Negative ifindexes are illegal, but the kernel does not validate the
-ifindex in the ancillary header of RTM_NEWLINK messages, resulting in
-the kernel generating a warning [1] when such an ifindex is specified.
+The automatic recalculation of the maximum allowed MTU is usually triggered
+by code sections which are already rtnl lock protected by callers outside
+of batman-adv. But when the fragmentation setting is changed via
+batman-adv's own batadv genl family, then the rtnl lock is not yet taken.
 
-Fix by rejecting negative ifindexes.
+But dev_set_mtu requires that the caller holds the rtnl lock because it
+uses netdevice notifiers. And this code will then fail the check for this
+lock:
 
-[1]
-WARNING: CPU: 0 PID: 5031 at net/core/dev.c:9593 dev_index_reserve+0x1a2/0x1c0 net/core/dev.c:9593
-[...]
-Call Trace:
- <TASK>
- register_netdevice+0x69a/0x1490 net/core/dev.c:10081
- br_dev_newlink+0x27/0x110 net/bridge/br_netlink.c:1552
- rtnl_newlink_create net/core/rtnetlink.c:3471 [inline]
- __rtnl_newlink+0x115e/0x18c0 net/core/rtnetlink.c:3688
- rtnl_newlink+0x67/0xa0 net/core/rtnetlink.c:3701
- rtnetlink_rcv_msg+0x439/0xd30 net/core/rtnetlink.c:6427
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2545
- netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
- netlink_unicast+0x536/0x810 net/netlink/af_netlink.c:1368
- netlink_sendmsg+0x93c/0xe40 net/netlink/af_netlink.c:1910
- sock_sendmsg_nosec net/socket.c:728 [inline]
- sock_sendmsg+0xd9/0x180 net/socket.c:751
- ____sys_sendmsg+0x6ac/0x940 net/socket.c:2538
- ___sys_sendmsg+0x135/0x1d0 net/socket.c:2592
- __sys_sendmsg+0x117/0x1e0 net/socket.c:2621
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+  RTNL: assertion failed at net/core/dev.c (1953)
 
-Fixes: 38f7b870d4a6 ("[RTNETLINK]: Link creation API")
-Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20230823064348.2252280-1-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com
+Fixes: c6a953cce8d0 ("batman-adv: Trigger events for auto adjusted MTU")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230821-batadv-missing-mtu-rtnl-lock-v1-1-1c5a7bfe861e@narfation.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/core/rtnetlink.c | 3 +++
+ net/batman-adv/netlink.c |    3 +++
  1 file changed, 3 insertions(+)
 
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index ffa97613314ff..021dcfdae2835 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -3296,6 +3296,9 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (ifm->ifi_index > 0) {
- 		link_specified = true;
- 		dev = __dev_get_by_index(net, ifm->ifi_index);
-+	} else if (ifm->ifi_index < 0) {
-+		NL_SET_ERR_MSG(extack, "ifindex can't be negative");
-+		return -EINVAL;
- 	} else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME]) {
- 		link_specified = true;
- 		dev = rtnl_dev_get(net, NULL, tb[IFLA_ALT_IFNAME], ifname);
--- 
-2.40.1
-
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -496,7 +496,10 @@ static int batadv_netlink_set_mesh(struc
+ 		attr = info->attrs[BATADV_ATTR_FRAGMENTATION_ENABLED];
+ 
+ 		atomic_set(&bat_priv->fragmentation, !!nla_get_u8(attr));
++
++		rtnl_lock();
+ 		batadv_update_min_mtu(bat_priv->soft_iface);
++		rtnl_unlock();
+ 	}
+ 
+ 	if (info->attrs[BATADV_ATTR_GW_BANDWIDTH_DOWN]) {
 
 
