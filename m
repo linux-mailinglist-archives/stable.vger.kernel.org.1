@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BEC878AD91
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE1FD78AD23
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232024AbjH1Ktd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:49:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45996 "EHLO
+        id S231971AbjH1Kp7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232078AbjH1KtE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:49:04 -0400
+        with ESMTP id S232053AbjH1Kpn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D9ECC6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F0F4E48
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 94C8964215
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8E1DC433C7;
-        Mon, 28 Aug 2023 10:48:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 00A9B641FF
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10226C433C7;
+        Mon, 28 Aug 2023 10:45:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219728;
-        bh=d2hiszxF9knRTVMReMZN5WwNlNU4+xpFzVPbEkE9ouU=;
+        s=korg; t=1693219523;
+        bh=qb1oMrNVJYRumpMC+SNIbmoy4M6/n4RCdua/Xfjaiig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XbMSFs7kqZq5hTC+MAkXZROKfbp8mCmeRNj86SWB2rshMfvBOnDD1i+dq+XadDxgw
-         Vf6z/PfWxrVpiN1Gml3jmAOYWAbhlB7H1xYnW4FV3qEW9PKFWJoq77Y0BX05LLG7kX
-         k7kkpr4fCzqU8c4XFS38dfLtuuelC2fmUaa3IlrY=
+        b=U7oCjcBLgfRUVfF0muXf/di+WTZAq2mP6rJUYKJ5cCTthcMBD8EEMS/4pSHtxfS45
+         nhIUA+vDpp9YX4GbTMinCYQ1U7NiX3S5QDgbrelQBHAL3smsZ+8hMaj/XKCDYO38Nh
+         4Z7aZKhFbTYxk66Gj9zjvFuZcAmlZjV3oEs4qCdc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.10 51/84] batman-adv: Do not get eth header before batadv_check_management_packet
+        patches@lists.linux.dev, Zack Rusin <zackr@vmware.com>,
+        security@openanolis.org, Ziming Zhang <ezrakiez@gmail.com>,
+        Maaz Mombasawala <mombasawalam@vmware.com>,
+        Martin Krastev <krastevm@vmware.com>,
+        Niels De Graef <ndegraef@redhat.com>
+Subject: [PATCH 5.15 67/89] drm/vmwgfx: Fix shader stage validation
 Date:   Mon, 28 Aug 2023 12:14:08 +0200
-Message-ID: <20230828101151.002487185@linuxfoundation.org>
+Message-ID: <20230828101152.426428232@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,126 +57,179 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Zack Rusin <zackr@vmware.com>
 
-commit eac27a41ab641de074655d2932fc7f8cdb446881 upstream.
+commit 14abdfae508228a7307f7491b5c4215ae70c6542 upstream.
 
-If received skb in batadv_v_elp_packet_recv or batadv_v_ogm_packet_recv
-is either cloned or non linearized then its data buffer will be
-reallocated by batadv_check_management_packet when skb_cow or
-skb_linearize get called. Thus geting ethernet header address inside
-skb data buffer before batadv_check_management_packet had any chance to
-reallocate it could lead to the following kernel panic:
+For multiple commands the driver was not correctly validating the shader
+stages resulting in possible kernel oopses. The validation code was only.
+if ever, checking the upper bound on the shader stages but never a lower
+bound (valid shader stages start at 1 not 0).
 
-  Unable to handle kernel paging request at virtual address ffffff8020ab069a
-  Mem abort info:
-    ESR = 0x96000007
-    EC = 0x25: DABT (current EL), IL = 32 bits
-    SET = 0, FnV = 0
-    EA = 0, S1PTW = 0
-    FSC = 0x07: level 3 translation fault
-  Data abort info:
-    ISV = 0, ISS = 0x00000007
-    CM = 0, WnR = 0
-  swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000040f45000
-  [ffffff8020ab069a] pgd=180000007fffa003, p4d=180000007fffa003, pud=180000007fffa003, pmd=180000007fefe003, pte=0068000020ab0706
-  Internal error: Oops: 96000007 [#1] SMP
-  Modules linked in: ahci_mvebu libahci_platform libahci dvb_usb_af9035 dvb_usb_dib0700 dib0070 dib7000m dibx000_common ath11k_pci ath10k_pci ath10k_core mwl8k_new nf_nat_sip nf_conntrack_sip xhci_plat_hcd xhci_hcd nf_nat_pptp nf_conntrack_pptp at24 sbsa_gwdt
-  CPU: 1 PID: 16 Comm: ksoftirqd/1 Not tainted 5.15.42-00066-g3242268d425c-dirty #550
-  Hardware name: A8k (DT)
-  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : batadv_is_my_mac+0x60/0xc0
-  lr : batadv_v_ogm_packet_recv+0x98/0x5d0
-  sp : ffffff8000183820
-  x29: ffffff8000183820 x28: 0000000000000001 x27: ffffff8014f9af00
-  x26: 0000000000000000 x25: 0000000000000543 x24: 0000000000000003
-  x23: ffffff8020ab0580 x22: 0000000000000110 x21: ffffff80168ae880
-  x20: 0000000000000000 x19: ffffff800b561000 x18: 0000000000000000
-  x17: 0000000000000000 x16: 0000000000000000 x15: 00dc098924ae0032
-  x14: 0f0405433e0054b0 x13: ffffffff00000080 x12: 0000004000000001
-  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-  x8 : 0000000000000000 x7 : ffffffc076dae000 x6 : ffffff8000183700
-  x5 : ffffffc00955e698 x4 : ffffff80168ae000 x3 : ffffff80059cf000
-  x2 : ffffff800b561000 x1 : ffffff8020ab0696 x0 : ffffff80168ae880
-  Call trace:
-   batadv_is_my_mac+0x60/0xc0
-   batadv_v_ogm_packet_recv+0x98/0x5d0
-   batadv_batman_skb_recv+0x1b8/0x244
-   __netif_receive_skb_core.isra.0+0x440/0xc74
-   __netif_receive_skb_one_core+0x14/0x20
-   netif_receive_skb+0x68/0x140
-   br_pass_frame_up+0x70/0x80
-   br_handle_frame_finish+0x108/0x284
-   br_handle_frame+0x190/0x250
-   __netif_receive_skb_core.isra.0+0x240/0xc74
-   __netif_receive_skb_list_core+0x6c/0x90
-   netif_receive_skb_list_internal+0x1f4/0x310
-   napi_complete_done+0x64/0x1d0
-   gro_cell_poll+0x7c/0xa0
-   __napi_poll+0x34/0x174
-   net_rx_action+0xf8/0x2a0
-   _stext+0x12c/0x2ac
-   run_ksoftirqd+0x4c/0x7c
-   smpboot_thread_fn+0x120/0x210
-   kthread+0x140/0x150
-   ret_from_fork+0x10/0x20
-  Code: f9403844 eb03009f 54fffee1 f94
+Fixes kernel oopses ending up in vmw_binding_add, e.g.:
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 2443 Comm: testcase Not tainted 6.3.0-rc4-vmwgfx #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+RIP: 0010:vmw_binding_add+0x4c/0x140 [vmwgfx]
+Code: 7e 30 49 83 ff 0e 0f 87 ea 00 00 00 4b 8d 04 7f 89 d2 89 cb 48 c1 e0 03 4c 8b b0 40 3d 93 c0 48 8b 80 48 3d 93 c0 49 0f af de <48> 03 1c d0 4c 01 e3 49 8>
+RSP: 0018:ffffb8014416b968 EFLAGS: 00010206
+RAX: ffffffffc0933ec0 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 00000000ffffffff RSI: ffffb8014416b9c0 RDI: ffffb8014316f000
+RBP: ffffb8014416b998 R08: 0000000000000003 R09: 746f6c735f726564
+R10: ffffffffaaf2bda0 R11: 732e676e69646e69 R12: ffffb8014316f000
+R13: ffffb8014416b9c0 R14: 0000000000000040 R15: 0000000000000006
+FS:  00007fba8c0af740(0000) GS:ffff8a1277c80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000007c0933eb8 CR3: 0000000118244001 CR4: 00000000003706e0
+Call Trace:
+ <TASK>
+ vmw_view_bindings_add+0xf5/0x1b0 [vmwgfx]
+ ? ___drm_dbg+0x8a/0xb0 [drm]
+ vmw_cmd_dx_set_shader_res+0x8f/0xc0 [vmwgfx]
+ vmw_execbuf_process+0x590/0x1360 [vmwgfx]
+ vmw_execbuf_ioctl+0x173/0x370 [vmwgfx]
+ ? __drm_dev_dbg+0xb4/0xe0 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ drm_ioctl_kernel+0xbc/0x160 [drm]
+ drm_ioctl+0x2d2/0x580 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ ? do_fault+0x1a6/0x420
+ vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
+ vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
+ __x64_sys_ioctl+0x96/0xd0
+ do_syscall_64+0x5d/0x90
+ ? handle_mm_fault+0xe4/0x2f0
+ ? debug_smp_processor_id+0x1b/0x30
+ ? fpregs_assert_state_consistent+0x2e/0x50
+ ? exit_to_user_mode_prepare+0x40/0x180
+ ? irqentry_exit_to_user_mode+0xd/0x20
+ ? irqentry_exit+0x3f/0x50
+ ? exc_page_fault+0x8b/0x180
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Thus ethernet header address should only be fetched after
-batadv_check_management_packet has been called.
-
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Cc: security@openanolis.org
+Reported-by: Ziming Zhang <ezrakiez@gmail.com>
+Testcase-found-by: Niels De Graef <ndegraef@redhat.com>
+Fixes: d80efd5cb3de ("drm/vmwgfx: Initial DX support")
+Cc: <stable@vger.kernel.org> # v4.3+
+Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
+Reviewed-by: Martin Krastev <krastevm@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230616190934.54828-1-zack@kde.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v_elp.c |    3 ++-
- net/batman-adv/bat_v_ogm.c |    3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h     |   12 ++++++++++++
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   29 +++++++++++------------------
+ 2 files changed, 23 insertions(+), 18 deletions(-)
 
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -509,7 +509,7 @@ int batadv_v_elp_packet_recv(struct sk_b
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
- 	struct batadv_elp_packet *elp_packet;
- 	struct batadv_hard_iface *primary_if;
--	struct ethhdr *ethhdr = (struct ethhdr *)skb_mac_header(skb);
-+	struct ethhdr *ethhdr;
- 	bool res;
- 	int ret = NET_RX_DROP;
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -1685,4 +1685,16 @@ static inline bool vmw_has_fences(struct
+ 	return (vmw_fifo_caps(vmw) & SVGA_FIFO_CAP_FENCE) != 0;
+ }
  
-@@ -517,6 +517,7 @@ int batadv_v_elp_packet_recv(struct sk_b
- 	if (!res)
- 		goto free_skb;
++static inline bool vmw_shadertype_is_valid(enum vmw_sm_type shader_model,
++					   u32 shader_type)
++{
++	SVGA3dShaderType max_allowed = SVGA3D_SHADERTYPE_PREDX_MAX;
++
++	if (shader_model >= VMW_SM_5)
++		max_allowed = SVGA3D_SHADERTYPE_MAX;
++	else if (shader_model >= VMW_SM_4)
++		max_allowed = SVGA3D_SHADERTYPE_DX10_MAX;
++	return shader_type >= SVGA3D_SHADERTYPE_MIN && shader_type < max_allowed;
++}
++
+ #endif
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -2003,7 +2003,7 @@ static int vmw_cmd_set_shader(struct vmw
  
-+	ethhdr = eth_hdr(skb);
- 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
- 		goto free_skb;
+ 	cmd = container_of(header, typeof(*cmd), header);
  
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -998,7 +998,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
+-	if (cmd->body.type >= SVGA3D_SHADERTYPE_PREDX_MAX) {
++	if (!vmw_shadertype_is_valid(VMW_SM_LEGACY, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
+@@ -2125,8 +2125,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 				      SVGA3dCmdHeader *header)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
- 	struct batadv_ogm2_packet *ogm_packet;
--	struct ethhdr *ethhdr = eth_hdr(skb);
-+	struct ethhdr *ethhdr;
- 	int ogm_offset;
- 	u8 *packet_pos;
- 	int ret = NET_RX_DROP;
-@@ -1012,6 +1012,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
- 	if (!batadv_check_management_packet(skb, if_incoming, BATADV_OGM2_HLEN))
- 		goto free_skb;
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetSingleConstantBuffer);
+-	SVGA3dShaderType max_shader_num = has_sm5_context(dev_priv) ?
+-		SVGA3D_NUM_SHADERTYPE : SVGA3D_NUM_SHADERTYPE_DX10;
  
-+	ethhdr = eth_hdr(skb);
- 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
- 		goto free_skb;
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+@@ -2143,6 +2141,14 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 	if (unlikely(ret != 0))
+ 		return ret;
  
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type) ||
++	    cmd->body.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
++		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
++			       (unsigned int) cmd->body.type,
++			       (unsigned int) cmd->body.slot);
++		return -EINVAL;
++	}
++
+ 	binding.bi.ctx = ctx_node->ctx;
+ 	binding.bi.res = res;
+ 	binding.bi.bt = vmw_ctx_binding_cb;
+@@ -2151,14 +2157,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 	binding.size = cmd->body.sizeInBytes;
+ 	binding.slot = cmd->body.slot;
+ 
+-	if (binding.shader_slot >= max_shader_num ||
+-	    binding.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
+-		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
+-			       (unsigned int) cmd->body.type,
+-			       (unsigned int) binding.slot);
+-		return -EINVAL;
+-	}
+-
+ 	vmw_binding_add(ctx_node->staged, &binding.bi, binding.shader_slot,
+ 			binding.slot);
+ 
+@@ -2179,15 +2177,13 @@ static int vmw_cmd_dx_set_shader_res(str
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShaderResources) =
+ 		container_of(header, typeof(*cmd), header);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 
+ 	u32 num_sr_view = (cmd->header.size - sizeof(cmd->body)) /
+ 		sizeof(SVGA3dShaderResourceViewId);
+ 
+ 	if ((u64) cmd->body.startView + (u64) num_sr_view >
+ 	    (u64) SVGA3D_DX_MAX_SRVIEWS ||
+-	    cmd->body.type >= max_allowed) {
++	    !vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Invalid shader binding.\n");
+ 		return -EINVAL;
+ 	}
+@@ -2211,8 +2207,6 @@ static int vmw_cmd_dx_set_shader(struct
+ 				 SVGA3dCmdHeader *header)
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShader);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+ 	struct vmw_ctx_bindinfo_shader binding;
+@@ -2223,8 +2217,7 @@ static int vmw_cmd_dx_set_shader(struct
+ 
+ 	cmd = container_of(header, typeof(*cmd), header);
+ 
+-	if (cmd->body.type >= max_allowed ||
+-	    cmd->body.type < SVGA3D_SHADERTYPE_MIN) {
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
 
 
