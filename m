@@ -2,47 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CAD178ABCF
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4DBBE78AD0C
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231537AbjH1Kee (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:34:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35974 "EHLO
+        id S231892AbjH1KpV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231549AbjH1KeH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:07 -0400
+        with ESMTP id S231959AbjH1KpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B53C1AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:54 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8C4191
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C4D963D24
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30176C433C8;
-        Mon, 28 Aug 2023 10:33:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A0C264147
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D580C433C9;
+        Mon, 28 Aug 2023 10:43:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218833;
-        bh=KxvcsIN2Q8nGQ1rDystgEo3sbuVZ4r69ffXhLfhwnTY=;
+        s=korg; t=1693219434;
+        bh=PEr2AKwVofMHYNmEOf8aNuDqFTUsnTgSTVc5R4mYr7Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mEIrcfWvJWdRxLkzQ+GaAspaTNOpOLDaFj6w9kEeUE7t6axdpGioBH8oLJhK2QTH9
-         A2fhblUwTqEkPZie3c/34aoRcbBfZEfeaYvOW+U8n15RUpk50bZz7ZsvMljbsceSfM
-         eAZrXVHI+d0NstZ+9MzYOT4N0EpHbCn4jdIBedPg=
+        b=mU57iwh+4qAlHtecfBFzRBefrxIS4AiFMazxEFltdZUL6sfEYDjw/4Ahkzzx3xo8S
+         9RAMShlhiaWoh7tSlcdrb4wNj/xzgX5H6jDSaaY4OXMCpnRJUtOVHz8wp/jQkdG72D
+         c1XgeB2ympYVp1V3bN+fkgX2y2MBSZTGcuTTGGvg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sherry Yang <sherry.yang@oracle.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 6.1 100/122] nfsd: use vfs setgid helper
-Date:   Mon, 28 Aug 2023 12:13:35 +0200
-Message-ID: <20230828101159.733955856@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Alessio Igor Bogani <alessio.bogani@elettra.eu>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 5.15 35/89] igb: Avoid starting unnecessary workqueues
+Date:   Mon, 28 Aug 2023 12:13:36 +0200
+Message-ID: <20230828101151.366957124@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,71 +59,95 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Alessio Igor Bogani <alessio.bogani@elettra.eu>
 
-commit 2d8ae8c417db284f598dffb178cc01e7db0f1821 upstream.
+[ Upstream commit b888c510f7b3d64ca75fc0f43b4a4bd1a611312f ]
 
-We've aligned setgid behavior over multiple kernel releases. The details
-can be found in commit cf619f891971 ("Merge tag 'fs.ovl.setgid.v6.2' of
-git://git.kernel.org/pub/scm/linux/kernel/git/vfs/idmapping") and
-commit 426b4ca2d6a5 ("Merge tag 'fs.setgid.v6.0' of
-git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux").
-Consistent setgid stripping behavior is now encapsulated in the
-setattr_should_drop_sgid() helper which is used by all filesystems that
-strip setgid bits outside of vfs proper. Usually ATTR_KILL_SGID is
-raised in e.g., chown_common() and is subject to the
-setattr_should_drop_sgid() check to determine whether the setgid bit can
-be retained. Since nfsd is raising ATTR_KILL_SGID unconditionally it
-will cause notify_change() to strip it even if the caller had the
-necessary privileges to retain it. Ensure that nfsd only raises
-ATR_KILL_SGID if the caller lacks the necessary privileges to retain the
-setgid bit.
+If ptp_clock_register() fails or CONFIG_PTP isn't enabled, avoid starting
+PTP related workqueues.
 
-Without this patch the setgid stripping tests in LTP will fail:
+In this way we can fix this:
+ BUG: unable to handle page fault for address: ffffc9000440b6f8
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 100000067 P4D 100000067 PUD 1001e0067 PMD 107dc5067 PTE 0
+ Oops: 0000 [#1] PREEMPT SMP
+ [...]
+ Workqueue: events igb_ptp_overflow_check
+ RIP: 0010:igb_rd32+0x1f/0x60
+ [...]
+ Call Trace:
+  igb_ptp_read_82580+0x20/0x50
+  timecounter_read+0x15/0x60
+  igb_ptp_overflow_check+0x1a/0x50
+  process_one_work+0x1cb/0x3c0
+  worker_thread+0x53/0x3f0
+  ? rescuer_thread+0x370/0x370
+  kthread+0x142/0x160
+  ? kthread_associate_blkcg+0xc0/0xc0
+  ret_from_fork+0x1f/0x30
 
-> As you can see, the problem is S_ISGID (0002000) was dropped on a
-> non-group-executable file while chown was invoked by super-user, while
-
-[...]
-
-> fchown02.c:66: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
-
-[...]
-
-> chown02.c:57: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
-
-With this patch all tests pass.
-
-Reported-by: Sherry Yang <sherry.yang@oracle.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-[Harshit: backport to 6.1.y:
- Use init_user_ns instead of nop_mnt_idmap as we don't have
- commit abf08576afe3 ("fs: port vfs_*() helpers to struct mnt_idmap")]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1f6e8178d685 ("igb: Prevent dropped Tx timestamps via work items and interrupts.")
+Fixes: d339b1331616 ("igb: add PTP Hardware Clock code")
+Signed-off-by: Alessio Igor Bogani <alessio.bogani@elettra.eu>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230821171927.2203644-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/vfs.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/intel/igb/igb_ptp.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
---- a/fs/nfsd/vfs.c
-+++ b/fs/nfsd/vfs.c
-@@ -321,7 +321,9 @@ nfsd_sanitize_attrs(struct inode *inode,
- 				iap->ia_mode &= ~S_ISGID;
- 		} else {
- 			/* set ATTR_KILL_* bits and let VFS handle it */
--			iap->ia_valid |= (ATTR_KILL_SUID | ATTR_KILL_SGID);
-+			iap->ia_valid |= ATTR_KILL_SUID;
-+			iap->ia_valid |=
-+				setattr_should_drop_sgid(&init_user_ns, inode);
- 		}
+diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+index 0011b15e678c3..9cdb7a856ab6c 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ptp.c
++++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+@@ -1260,18 +1260,6 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		return;
+ 	}
+ 
+-	spin_lock_init(&adapter->tmreg_lock);
+-	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+-
+-	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+-		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+-				  igb_ptp_overflow_check);
+-
+-	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
+-	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+-
+-	igb_ptp_reset(adapter);
+-
+ 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
+ 						&adapter->pdev->dev);
+ 	if (IS_ERR(adapter->ptp_clock)) {
+@@ -1281,6 +1269,18 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		dev_info(&adapter->pdev->dev, "added PHC on %s\n",
+ 			 adapter->netdev->name);
+ 		adapter->ptp_flags |= IGB_PTP_ENABLED;
++
++		spin_lock_init(&adapter->tmreg_lock);
++		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
++
++		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
++			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
++					  igb_ptp_overflow_check);
++
++		adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
++		adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
++
++		igb_ptp_reset(adapter);
  	}
  }
+ 
+-- 
+2.40.1
+
 
 
