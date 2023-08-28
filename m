@@ -2,53 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CED1378ACF0
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F193978A9FD
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229621AbjH1KoM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:44:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39768 "EHLO
+        id S230420AbjH1KR6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:17:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231831AbjH1Knn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:43 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F5CCEB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:43:20 -0700 (PDT)
+        with ESMTP id S230437AbjH1KRb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD5C186
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A35C8640B7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CC7C433C7;
-        Mon, 28 Aug 2023 10:43:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D955A6371C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB701C433C7;
+        Mon, 28 Aug 2023 10:17:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219382;
-        bh=9HTwGfkCOerCcr/mTh0H9Gr3lHBrS+iBZzfIbrnG15k=;
+        s=korg; t=1693217839;
+        bh=NuMQ+TkWEWgrHK20jK5PCY4HSTGFAdc1tAWlKZjcYkc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0fJKK9R9ieKAt8kWwKG/t+2+ZQ4EbgYSQNsCFt1yiQ8PtPG6H6cbWmYbeXT5rK1rR
-         yGB0f4ajJGf7ml1/4EAeCZ2KZRjvMKjb4K+Pl0xy+J6SmqCQrX2thNOGPQmRcH9moq
-         UXFpwCVqyazlqKBIW0vBGvmCNtvewYvY5dxdLFKE=
+        b=ZJwIz0b7u7Kws1fCORY2VbF5EmXmbaIbIvEtlaeNRThUGSx72UACdUaCbPmo3V8oU
+         ZkzurLUlu8EDR50AX0BVc8b03KGh/gkA7e1krcgFsz4ZBl2p4h1GULTfcmewczIcR9
+         sbx4KmI8Yh4im40+pp29lbgq++CmNYuWNy91mtAo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 02/89] NFSv4.2: fix error handling in nfs42_proc_getxattr
+        patches@lists.linux.dev,
+        Alessio Igor Bogani <alessio.bogani@elettra.eu>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 4.14 43/57] igb: Avoid starting unnecessary workqueues
 Date:   Mon, 28 Aug 2023 12:13:03 +0200
-Message-ID: <20230828101150.262766639@linuxfoundation.org>
+Message-ID: <20230828101145.846710080@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,53 +59,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Alessio Igor Bogani <alessio.bogani@elettra.eu>
 
-[ Upstream commit 4e3733fd2b0f677faae21cf838a43faf317986d3 ]
+[ Upstream commit b888c510f7b3d64ca75fc0f43b4a4bd1a611312f ]
 
-There is a slight issue with error handling code inside
-nfs42_proc_getxattr(). If page allocating loop fails then we free the
-failing page array element which is NULL but __free_page() can't deal with
-NULL args.
+If ptp_clock_register() fails or CONFIG_PTP isn't enabled, avoid starting
+PTP related workqueues.
 
-Found by Linux Verification Center (linuxtesting.org).
+In this way we can fix this:
+ BUG: unable to handle page fault for address: ffffc9000440b6f8
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 100000067 P4D 100000067 PUD 1001e0067 PMD 107dc5067 PTE 0
+ Oops: 0000 [#1] PREEMPT SMP
+ [...]
+ Workqueue: events igb_ptp_overflow_check
+ RIP: 0010:igb_rd32+0x1f/0x60
+ [...]
+ Call Trace:
+  igb_ptp_read_82580+0x20/0x50
+  timecounter_read+0x15/0x60
+  igb_ptp_overflow_check+0x1a/0x50
+  process_one_work+0x1cb/0x3c0
+  worker_thread+0x53/0x3f0
+  ? rescuer_thread+0x370/0x370
+  kthread+0x142/0x160
+  ? kthread_associate_blkcg+0xc0/0xc0
+  ret_from_fork+0x1f/0x30
 
-Fixes: a1f26739ccdc ("NFSv4.2: improve page handling for GETXATTR")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Fixes: 1f6e8178d685 ("igb: Prevent dropped Tx timestamps via work items and interrupts.")
+Fixes: d339b1331616 ("igb: add PTP Hardware Clock code")
+Signed-off-by: Alessio Igor Bogani <alessio.bogani@elettra.eu>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230821171927.2203644-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42proc.c | 5 ++---
- 1 file changed, 2 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_ptp.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
-index da94bf2afd070..bc07012741cb4 100644
---- a/fs/nfs/nfs42proc.c
-+++ b/fs/nfs/nfs42proc.c
-@@ -1339,7 +1339,6 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
- 	for (i = 0; i < np; i++) {
- 		pages[i] = alloc_page(GFP_KERNEL);
- 		if (!pages[i]) {
--			np = i + 1;
- 			err = -ENOMEM;
- 			goto out;
- 		}
-@@ -1363,8 +1362,8 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
- 	} while (exception.retry);
+diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+index 295d27f331042..179e1d74661d4 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ptp.c
++++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+@@ -1195,18 +1195,6 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		return;
+ 	}
  
- out:
--	while (--np >= 0)
--		__free_page(pages[np]);
-+	while (--i >= 0)
-+		__free_page(pages[i]);
- 	kfree(pages);
+-	spin_lock_init(&adapter->tmreg_lock);
+-	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+-
+-	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+-		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+-				  igb_ptp_overflow_check);
+-
+-	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
+-	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+-
+-	igb_ptp_reset(adapter);
+-
+ 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
+ 						&adapter->pdev->dev);
+ 	if (IS_ERR(adapter->ptp_clock)) {
+@@ -1216,6 +1204,18 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		dev_info(&adapter->pdev->dev, "added PHC on %s\n",
+ 			 adapter->netdev->name);
+ 		adapter->ptp_flags |= IGB_PTP_ENABLED;
++
++		spin_lock_init(&adapter->tmreg_lock);
++		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
++
++		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
++			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
++					  igb_ptp_overflow_check);
++
++		adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
++		adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
++
++		igb_ptp_reset(adapter);
+ 	}
+ }
  
- 	return err;
 -- 
 2.40.1
 
