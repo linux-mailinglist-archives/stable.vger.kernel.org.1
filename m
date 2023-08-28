@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 552C278AD69
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9919D78AB47
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232011AbjH1KsD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:48:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47836 "EHLO
+        id S231344AbjH1K3p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58094 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232050AbjH1Krd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A9C6E119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:17 -0700 (PDT)
+        with ESMTP id S231347AbjH1K3X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F9C8AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3EBDA62A91
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50507C433C8;
-        Mon, 28 Aug 2023 10:47:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C229163BFD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D645CC433C8;
+        Mon, 28 Aug 2023 10:29:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219636;
-        bh=lflyiRXFkXBHelGkSDOBggeD4D/5gacRv2UxzKwe/iA=;
+        s=korg; t=1693218560;
+        bh=s3rASLW+Q82ni6FayfndvZGk7xYX5BOL76wIPcwm32s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XaJNuR+C8EmHJpGeHgWbHVOGXsS/YK5MK9/MNenQn2EMiQ3Q4YXAQ+SWj3LIpbM6a
-         jd9lUF5AzL2eSgJ+UU8q1+QDzK0vgDBiG4w9pSQdPW1x0NDm/txot1gRq6bPJ0Troa
-         jDACXWWVlpyjqgNPI7EdfyhJPkW/HhcXJh1zks1w=
+        b=SWGDjrAk2kLyHFT+sLyxnB/Y0g0x/JrReS8IIZA/DHbbYr0zLx1wnEl/BpcTrAWNw
+         U8LSCb5woH1Qq45DWGOmg3XyJnm5x3cBv9+2eS2nkmriR4myP5rG1ap8TiYWTzFGqO
+         H26Ar9kaEY+W9DymzpElIN8KzIaMtFjVOCQQ1X8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 18/84] ALSA: pcm: Fix potential data race at PCM memory allocation helpers
+        patches@lists.linux.dev, Yibin Ding <yibin.ding@unisoc.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 4.19 121/129] mmc: block: Fix in_flight[issue_type] value error
 Date:   Mon, 28 Aug 2023 12:13:35 +0200
-Message-ID: <20230828101149.810608401@linuxfoundation.org>
+Message-ID: <20230828101157.638612575@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,115 +55,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Yibin Ding <yibin.ding@unisoc.com>
 
-[ Upstream commit bd55842ed998a622ba6611fe59b3358c9f76773d ]
+commit 4b430d4ac99750ee2ae2f893f1055c7af1ec3dc5 upstream.
 
-The PCM memory allocation helpers have a sanity check against too many
-buffer allocations.  However, the check is performed without a proper
-lock and the allocation isn't serialized; this allows user to allocate
-more memories than predefined max size.
+For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
+function is executed, the bitmap_tags corresponding to the
+request will be cleared, that is, the request will be regarded as
+idle. If the request is acquired by a different type of process at
+this time, the issue_type of the request may change. It further
+caused the value of mq->in_flight[issue_type] to be abnormal,
+and a large number of requests could not be sent.
 
-Practically seen, this isn't really a big problem, as it's more or
-less some "soft limit" as a sanity check, and it's not possible to
-allocate unlimitedly.  But it's still better to address this for more
-consistent behavior.
+p1:					      p2:
+mmc_blk_mq_complete_rq
+  blk_mq_free_request
+					      blk_mq_get_request
+					        blk_mq_rq_ctx_init
+mmc_blk_mq_dec_in_flight
+  mmc_issue_type(mq, req)
 
-The patch covers the size check in do_alloc_pages() with the
-card->memory_mutex, and increases the allocated size there for
-preventing the further overflow.  When the actual allocation fails,
-the size is decreased accordingly.
+This strategy can ensure the consistency of issue_type
+before and after executing mmc_blk_mq_complete_rq.
 
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Reported-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/CADm8Tek6t0WedK+3Y6rbE5YEt19tML8BUL45N2ji4ZAz1KcN_A@mail.gmail.com
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230703112430.30634-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
+Cc: stable@vger.kernel.org
+Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Link: https://lore.kernel.org/r/20230802023023.1318134-1-yunlong.xing@unisoc.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_memory.c | 44 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 8 deletions(-)
+ drivers/mmc/core/block.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
-diff --git a/sound/core/pcm_memory.c b/sound/core/pcm_memory.c
-index 191883842a35d..3e60a337bbef1 100644
---- a/sound/core/pcm_memory.c
-+++ b/sound/core/pcm_memory.c
-@@ -31,20 +31,51 @@ static unsigned long max_alloc_per_card = 32UL * 1024UL * 1024UL;
- module_param(max_alloc_per_card, ulong, 0644);
- MODULE_PARM_DESC(max_alloc_per_card, "Max total allocation bytes per card.");
- 
-+static void __update_allocated_size(struct snd_card *card, ssize_t bytes)
-+{
-+	card->total_pcm_alloc_bytes += bytes;
-+}
-+
-+static void update_allocated_size(struct snd_card *card, ssize_t bytes)
-+{
-+	mutex_lock(&card->memory_mutex);
-+	__update_allocated_size(card, bytes);
-+	mutex_unlock(&card->memory_mutex);
-+}
-+
-+static void decrease_allocated_size(struct snd_card *card, size_t bytes)
-+{
-+	mutex_lock(&card->memory_mutex);
-+	WARN_ON(card->total_pcm_alloc_bytes < bytes);
-+	__update_allocated_size(card, -(ssize_t)bytes);
-+	mutex_unlock(&card->memory_mutex);
-+}
-+
- static int do_alloc_pages(struct snd_card *card, int type, struct device *dev,
- 			  size_t size, struct snd_dma_buffer *dmab)
- {
- 	int err;
- 
-+	/* check and reserve the requested size */
-+	mutex_lock(&card->memory_mutex);
- 	if (max_alloc_per_card &&
--	    card->total_pcm_alloc_bytes + size > max_alloc_per_card)
-+	    card->total_pcm_alloc_bytes + size > max_alloc_per_card) {
-+		mutex_unlock(&card->memory_mutex);
- 		return -ENOMEM;
-+	}
-+	__update_allocated_size(card, size);
-+	mutex_unlock(&card->memory_mutex);
- 
- 	err = snd_dma_alloc_pages(type, dev, size, dmab);
- 	if (!err) {
--		mutex_lock(&card->memory_mutex);
--		card->total_pcm_alloc_bytes += dmab->bytes;
--		mutex_unlock(&card->memory_mutex);
-+		/* the actual allocation size might be bigger than requested,
-+		 * and we need to correct the account
-+		 */
-+		if (dmab->bytes != size)
-+			update_allocated_size(card, dmab->bytes - size);
-+	} else {
-+		/* take back on allocation failure */
-+		decrease_allocated_size(card, size);
- 	}
- 	return err;
+--- a/drivers/mmc/core/block.c
++++ b/drivers/mmc/core/block.c
+@@ -1976,15 +1976,16 @@ static void mmc_blk_mq_poll_completion(s
+ 	mmc_blk_urgent_bkops(mq, mqrq);
  }
-@@ -53,10 +84,7 @@ static void do_free_pages(struct snd_card *card, struct snd_dma_buffer *dmab)
+ 
+-static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
++static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq,
++				     struct request_queue *q,
++				     enum mmc_issue_type issue_type)
  {
- 	if (!dmab->area)
- 		return;
--	mutex_lock(&card->memory_mutex);
--	WARN_ON(card->total_pcm_alloc_bytes < dmab->bytes);
--	card->total_pcm_alloc_bytes -= dmab->bytes;
--	mutex_unlock(&card->memory_mutex);
-+	decrease_allocated_size(card, dmab->bytes);
- 	snd_dma_free_pages(dmab);
- 	dmab->area = NULL;
+-	struct request_queue *q = req->q;
+ 	unsigned long flags;
+ 	bool put_card;
+ 
+ 	spin_lock_irqsave(q->queue_lock, flags);
+ 
+-	mq->in_flight[mmc_issue_type(mq, req)] -= 1;
++	mq->in_flight[issue_type] -= 1;
+ 
+ 	put_card = (mmc_tot_in_flight(mq) == 0);
+ 
+@@ -1996,9 +1997,11 @@ static void mmc_blk_mq_dec_in_flight(str
+ 
+ static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req)
+ {
++	enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
+ 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
+ 	struct mmc_request *mrq = &mqrq->brq.mrq;
+ 	struct mmc_host *host = mq->card->host;
++	struct request_queue *q = req->q;
+ 
+ 	mmc_post_req(host, mrq, 0);
+ 
+@@ -2011,7 +2014,7 @@ static void mmc_blk_mq_post_req(struct m
+ 	else
+ 		blk_mq_complete_request(req);
+ 
+-	mmc_blk_mq_dec_in_flight(mq, req);
++	mmc_blk_mq_dec_in_flight(mq, q, issue_type);
  }
--- 
-2.40.1
-
+ 
+ void mmc_blk_mq_recovery(struct mmc_queue *mq)
 
 
