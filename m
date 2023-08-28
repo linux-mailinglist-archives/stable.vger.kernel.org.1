@@ -2,56 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B331278AB8E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D80EA78AA42
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:21:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231430AbjH1KcV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:32:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40178 "EHLO
+        id S229607AbjH1KUh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:20:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231502AbjH1KcC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE73CCD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:30 -0700 (PDT)
+        with ESMTP id S229795AbjH1KUH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:20:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45CA1CC1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:19:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CF2263D23
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA55C433C8;
-        Mon, 28 Aug 2023 10:31:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 25F6B63778
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:19:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38A3AC433C8;
+        Mon, 28 Aug 2023 10:19:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218690;
-        bh=QNe/QEY/Mk/Dkn9Im5z862V6xl+U0WjpVTg7QF+JV44=;
+        s=korg; t=1693217991;
+        bh=/jJW5lfBMUWAGxbxs/mB6YB/nzU57QXpGbUcjx7pRrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lT+1ZohtlNA/s+svAAic4dTp3HTZ850gjqvL9MpAHIjjTP1h5IuNTgI0dlwXKvC8N
-         1tPRXV/OM4uBTlyhoa7t9x/Jz3dNuNo2H6Dqd285vk4wfU8yz6Y4KPGTFnOfzl9Yra
-         2UIMaJZjVujdOfhlGltD0n9Uqwre8rN1f5y6WF2A=
+        b=O5ILhOEEckjVTpbP/bdMVNNU6Jy8rrBmA8SdnraB505lpPj7hmZni/wsUXnXVrxtY
+         70i8DC2y65vhhpD7ymfQuce7UDXrsgdOo1FhKEsh1aDuAo7x/BZpKe4Xw/v7NNvuP/
+         kxgSVgNi0FnySRpnJLpDWjG9BI3z/Cok/U+aQecM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
-        Matt Roper <matthew.d.roper@intel.com>,
-        Jonathan Cavitt <jonathan.cavitt@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Nirmoy Das <nirmoy.das@intel.com>,
-        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 020/122] drm/i915: Add the gen12_needs_ccs_aux_inv helper
+        patches@lists.linux.dev, Swapnil Devesh <me@sidevesh.com>,
+        =?UTF-8?q?Gerg=C5=91=20K=C3=B6teles?= <soyer@irl.hu>,
+        Hans de Goede <hdegoede@redhat.com>
+Subject: [PATCH 6.4 056/129] platform/x86: lenovo-ymc: Add Lenovo Yoga 7 14ACN6 to ec_trigger_quirk_dmi_table
 Date:   Mon, 28 Aug 2023 12:12:15 +0200
-Message-ID: <20230828101157.111103084@linuxfoundation.org>
+Message-ID: <20230828101159.232568253@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,92 +56,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andi Shyti <andi.shyti@linux.intel.com>
+From: Swapnil Devesh <me@sidevesh.com>
 
-[ Upstream commit b2f59e9026038a5bbcbc0019fa58f963138211ee ]
+commit db35610a181c18f7a521a2e157f7acdef7ce425f upstream.
 
-We always assumed that a device might either have AUX or FLAT
-CCS, but this is an approximation that is not always true, e.g.
-PVC represents an exception.
+This adds my laptop Lenovo Yoga 7 14ACN6, with Product Name: 82N7
+(from `dmidecode -t1 | grep "Product Name"`) to
+the ec_trigger_quirk_dmi_table, have tested that this is required
+for the YMC driver to work correctly on this model.
 
-Set the basis for future finer selection by implementing a
-boolean gen12_needs_ccs_aux_inv() function that tells whether aux
-invalidation is needed or not.
-
-Currently PVC is the only exception to the above mentioned rule.
-
-Requires: 059ae7ae2a1c ("drm/i915/gt: Cleanup aux invalidation registers")
-Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
-Cc: <stable@vger.kernel.org> # v5.8+
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-3-andi.shyti@linux.intel.com
-(cherry picked from commit c827655b87ad201ebe36f2e28d16b5491c8f7801)
-Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Swapnil Devesh <me@sidevesh.com>
+Reviewed-by: Gergő Köteles <soyer@irl.hu>
+Link: https://lore.kernel.org/r/18a08a8b173.895ef3b250414.1213194126082324071@sidevesh.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 18 +++++++++++++++---
- 1 file changed, 15 insertions(+), 3 deletions(-)
+ drivers/platform/x86/lenovo-ymc.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-index b2838732ac936..8e286733a4367 100644
---- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-+++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
-@@ -165,6 +165,18 @@ static u32 preparser_disable(bool state)
- 	return MI_ARB_CHECK | 1 << 8 | state;
- }
+--- a/drivers/platform/x86/lenovo-ymc.c
++++ b/drivers/platform/x86/lenovo-ymc.c
+@@ -36,6 +36,13 @@ static const struct dmi_system_id ec_tri
+ 			DMI_MATCH(DMI_PRODUCT_NAME, "82QF"),
+ 		},
+ 	},
++	{
++		/* Lenovo Yoga 7 14ACN6 */
++		.matches = {
++			DMI_MATCH(DMI_SYS_VENDOR, "LENOVO"),
++			DMI_MATCH(DMI_PRODUCT_NAME, "82N7"),
++		},
++	},
+ 	{ }
+ };
  
-+static bool gen12_needs_ccs_aux_inv(struct intel_engine_cs *engine)
-+{
-+	if (IS_PONTEVECCHIO(engine->i915))
-+		return false;
-+
-+	/*
-+	 * so far platforms supported by i915 having
-+	 * flat ccs do not require AUX invalidation
-+	 */
-+	return !HAS_FLAT_CCS(engine->i915);
-+}
-+
- u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
- {
- 	u32 gsi_offset = gt->uncore->gsi_offset;
-@@ -236,7 +248,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 		else if (engine->class == COMPUTE_CLASS)
- 			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
- 
--		if (!HAS_FLAT_CCS(rq->engine->i915))
-+		if (gen12_needs_ccs_aux_inv(rq->engine))
- 			count = 8 + 4;
- 		else
- 			count = 8;
-@@ -254,7 +266,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
- 
- 		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
- 
--		if (!HAS_FLAT_CCS(rq->engine->i915)) {
-+		if (gen12_needs_ccs_aux_inv(rq->engine)) {
- 			/* hsdes: 1809175790 */
- 			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
- 						      GEN12_CCS_AUX_INV);
-@@ -276,7 +288,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
- 	if (mode & EMIT_INVALIDATE) {
- 		cmd += 2;
- 
--		if (!HAS_FLAT_CCS(rq->engine->i915) &&
-+		if (gen12_needs_ccs_aux_inv(rq->engine) &&
- 		    (rq->engine->class == VIDEO_DECODE_CLASS ||
- 		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
- 			aux_inv = rq->engine->mask &
--- 
-2.40.1
-
 
 
