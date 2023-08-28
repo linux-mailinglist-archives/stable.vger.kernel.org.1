@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F02BC78AAD3
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3E5F78AA3E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:20:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230461AbjH1KZb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:25:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43942 "EHLO
+        id S230232AbjH1KUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231234AbjH1KZD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:25:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE893AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:25:00 -0700 (PDT)
+        with ESMTP id S230006AbjH1KT7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:19:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C186126
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:19:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6D43763A4C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:25:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81A67C433C7;
-        Mon, 28 Aug 2023 10:24:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F061763668
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:19:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1083DC433C8;
+        Mon, 28 Aug 2023 10:19:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218299;
-        bh=lKD7RPxRuuXiTqCqc/qlLk2IgXh4eyIMvQ8s8ufuZdk=;
+        s=korg; t=1693217983;
+        bh=h/pXnaQoBae982MUchWK4WuHKla4CHCPMjb+Eowuy/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JP9B2ybkaMZvbrR7uAusO8zPIzTn0Fqdh65L3lpQKWKU8DLo79NJjdA2oJ8LaU5zR
-         nuwzvZ6RuHw8SnPU5ah2Xgxm+gobCxwHqZw6GT+Lq3uDH0/jaVAxfxwXzzDDN+U0pS
-         7ZKNq7ETvwq9mF1OGBP8ZC8ZLFcpYHpzfypq/6Iw=
+        b=YBhUXBgJ2KFZFPSHwBahDzRPiAdx6o+w5K33LG0y3x2/t3ekNqDqKWXXY6oelVUcK
+         eduwbKkgZmqBwogNL2/3R+l3yRMkAuJgPVkSQwVbKtEXe23jIDGjnx+8XaRL5DlQxU
+         jFDFaOXcb1Gnu8aCyHl0/HMxgSBwLs/2WToYsuAE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 038/129] mmc: tmio: replace tmio_mmc_clk_stop() calls with tmio_mmc_set_clock()
+        patches@lists.linux.dev, Srinivas Goud <srinivas.goud@amd.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>
+Subject: [PATCH 6.4 053/129] spi: spi-cadence: Fix data corruption issues in slave mode
 Date:   Mon, 28 Aug 2023 12:12:12 +0200
-Message-ID: <20230828101154.556037513@linuxfoundation.org>
+Message-ID: <20230828101159.135174810@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,59 +55,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
+From: Srinivas Goud <srinivas.goud@amd.com>
 
-[ Upstream commit 74005a01f1ff66f98bf24163297932144d4da1ae ]
+commit 627d05a41ca1fbb9d390f9513af262f001f261f7 upstream.
 
-tmio_mmc_clk_stop(host) is equivalent to tmio_mmc_set_clock(host, 0).
-This replacement is needed for the next commit.
+Remove 10us delay in cdns_spi_process_fifo() (called from cdns_spi_irq())
+to fix data corruption issue on Master side when this driver
+configured in Slave mode, as Slave is failed to prepare the date
+on time due to above delay.
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-Reviewed-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 71150ac12558 ("mmc: bcm2835: fix deferred probing")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Add 10us delay before processing the RX FIFO as TX empty doesn't
+guarantee valid data in RX FIFO.
+
+Signed-off-by: Srinivas Goud <srinivas.goud@amd.com>
+Reviewed-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Tested-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/1692610216-217644-1-git-send-email-srinivas.goud@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/tmio_mmc_core.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/spi/spi-cadence.c |   19 ++++++++++++-------
+ 1 file changed, 12 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/mmc/host/tmio_mmc_core.c b/drivers/mmc/host/tmio_mmc_core.c
-index 33c9ca8f14a97..195f45a84282e 100644
---- a/drivers/mmc/host/tmio_mmc_core.c
-+++ b/drivers/mmc/host/tmio_mmc_core.c
-@@ -1051,7 +1051,7 @@ static void tmio_mmc_set_ios(struct mmc_host *mmc, struct mmc_ios *ios)
- 	switch (ios->power_mode) {
- 	case MMC_POWER_OFF:
- 		tmio_mmc_power_off(host);
--		tmio_mmc_clk_stop(host);
-+		tmio_mmc_set_clock(host, 0);
- 		break;
- 	case MMC_POWER_UP:
- 		tmio_mmc_power_on(host, ios->vdd);
-@@ -1318,7 +1318,7 @@ int tmio_mmc_host_probe(struct tmio_mmc_host *_host)
- 	if (pdata->flags & TMIO_MMC_SDIO_IRQ)
- 		_host->sdio_irq_mask = TMIO_SDIO_MASK_ALL;
+--- a/drivers/spi/spi-cadence.c
++++ b/drivers/spi/spi-cadence.c
+@@ -316,12 +316,6 @@ static void cdns_spi_process_fifo(struct
+ 	xspi->rx_bytes -= nrx;
  
--	tmio_mmc_clk_stop(_host);
-+	tmio_mmc_set_clock(_host, 0);
- 	tmio_mmc_reset(_host);
+ 	while (ntx || nrx) {
+-		/* When xspi in busy condition, bytes may send failed,
+-		 * then spi control did't work thoroughly, add one byte delay
+-		 */
+-		if (cdns_spi_read(xspi, CDNS_SPI_ISR) & CDNS_SPI_IXR_TXFULL)
+-			udelay(10);
+-
+ 		if (ntx) {
+ 			if (xspi->txbuf)
+ 				cdns_spi_write(xspi, CDNS_SPI_TXD, *xspi->txbuf++);
+@@ -391,6 +385,11 @@ static irqreturn_t cdns_spi_irq(int irq,
+ 		if (xspi->tx_bytes) {
+ 			cdns_spi_process_fifo(xspi, trans_cnt, trans_cnt);
+ 		} else {
++			/* Fixed delay due to controller limitation with
++			 * RX_NEMPTY incorrect status
++			 * Xilinx AR:65885 contains more details
++			 */
++			udelay(10);
+ 			cdns_spi_process_fifo(xspi, 0, trans_cnt);
+ 			cdns_spi_write(xspi, CDNS_SPI_IDR,
+ 				       CDNS_SPI_IXR_DEFAULT);
+@@ -438,12 +437,18 @@ static int cdns_transfer_one(struct spi_
+ 		cdns_spi_setup_transfer(spi, transfer);
+ 	} else {
+ 		/* Set TX empty threshold to half of FIFO depth
+-		 * only if TX bytes are more than half FIFO depth.
++		 * only if TX bytes are more than FIFO depth.
+ 		 */
+ 		if (xspi->tx_bytes > xspi->tx_fifo_depth)
+ 			cdns_spi_write(xspi, CDNS_SPI_THLD, xspi->tx_fifo_depth >> 1);
+ 	}
  
- 	_host->sdcard_irq_mask = sd_ctrl_read16_and_16_as_32(_host, CTL_IRQ_MASK);
-@@ -1402,7 +1402,7 @@ int tmio_mmc_host_runtime_suspend(struct device *dev)
- 	tmio_mmc_disable_mmc_irqs(host, TMIO_MASK_ALL);
++	/* When xspi in busy condition, bytes may send failed,
++	 * then spi control didn't work thoroughly, add one byte delay
++	 */
++	if (cdns_spi_read(xspi, CDNS_SPI_ISR) & CDNS_SPI_IXR_TXFULL)
++		udelay(10);
++
+ 	cdns_spi_process_fifo(xspi, xspi->tx_fifo_depth, 0);
+ 	spi_transfer_delay_exec(transfer);
  
- 	if (host->clk_cache)
--		tmio_mmc_clk_stop(host);
-+		tmio_mmc_set_clock(host, 0);
- 
- 	tmio_mmc_clk_disable(host);
- 
--- 
-2.40.1
-
 
 
