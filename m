@@ -2,52 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FF4778A648
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 09:11:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BB9478A64D
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 09:13:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229470AbjH1HLH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 03:11:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45388 "EHLO
+        id S229461AbjH1HMo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 03:12:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229613AbjH1HK4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 03:10:56 -0400
+        with ESMTP id S229756AbjH1HMf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 03:12:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFBA1E0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 00:10:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1606D113
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 00:12:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7F8CF63122
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 07:10:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69378C433C7;
-        Mon, 28 Aug 2023 07:10:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93628631CE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 07:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A59D6C433C7;
+        Mon, 28 Aug 2023 07:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693206652;
-        bh=CsfmyuGb6zoqpQ+ewDY00fEjSrkZ3qmsqGwW7UWlync=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=wr0RcEBJqvhCTqFSgl0ZvMaEFpvBxhFnMf8MZ7FsveTfcqQ6C9rPw7IH4cAZdnpK1
-         MBscVi8hp/fi8HlG9qYapgwWRNe9/87vDhpoGeN72EPl6UxPThRFO65CtH35Xyw3ZH
-         JIq9w1Ro82cBe/kAicfHX67Lp5VwtuE6Pvyrowqk=
-Date:   Mon, 28 Aug 2023 09:10:50 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Philip =?iso-8859-1?Q?M=FCller?= <philm@manjaro.org>
-Cc:     stable@vger.kernel.org, Bernhard Landauer <bernhard@manjaro.org>
-Subject: Re: 5.10.192 fails to build =?utf-8?B?KGVy?=
- =?utf-8?B?cm9yOiDigJhSVDcxMV9KRDJfMTAwSw==?= =?utf-8?B?4oCZ?= undeclared
- here (not in a function))
-Message-ID: <2023082825-release-opal-fdc4@gregkh>
-References: <3dc52ac6-790b-42b7-949b-cc1aa6a54b5b@manjaro.org>
- <2023082729-charm-broom-6cfb@gregkh>
- <b8a8451e-675d-4766-a886-2ff01fad1493@manjaro.org>
- <d2cce7fe-7847-4689-b5bd-cceaeac0a2ab@manjaro.org>
- <2023082804-unnamable-papyrus-ab8e@gregkh>
- <1fdd05f6-34fc-4ab7-b58e-090a542317c0@manjaro.org>
+        s=korg; t=1693206747;
+        bh=x3YU8sx7IfNNd05X7gayK5oT1KGIQ+8KbSAbUVZoaas=;
+        h=Subject:To:Cc:From:Date:From;
+        b=HkwwMjLXWm1Zy8t/UeAcIEBRc44QxEKkipXO20ZtRzTnbuH/dVm4ddgJeaGP+ity8
+         rBO4jRQwg9gaWh9EZnuz/eulvE7pqA6weOFU5yVHtgnaOuqyaCM5k9d7vhbkNmsi5t
+         771Jtxn4LzTn/Wk0o50oBkyRnbUphuFh1s3fZICI=
+Subject: FAILED: patch "[PATCH] drm/amd/display: Revert vblank change that causes null" failed to apply to 6.4-stable tree
+To:     daniel.miess@amd.com, alexander.deucher@amd.com,
+        chiahsuan.chung@amd.com, daniel.wheeler@amd.com,
+        nicholas.kazlauskas@amd.com
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Mon, 28 Aug 2023 09:12:24 +0200
+Message-ID: <2023082823-pacifism-armful-44b5@gregkh>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <1fdd05f6-34fc-4ab7-b58e-090a542317c0@manjaro.org>
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -57,31 +49,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 08:49:14AM +0200, Philip Müller wrote:
-> On 28.08.23 08:46, Greg Kroah-Hartman wrote:
-> > On Mon, Aug 28, 2023 at 07:17:21AM +0200, Philip Müller wrote:
-> > > Hi Greg,
-> > > 
-> > > Seems this needs to been backported too:
-> > > 
-> > > https://github.com/torvalds/linux/commit/8e6c00f1fdea9fdf727969d7485d417240d2a1f9
-> > > 
-> > > At least an #include "../../codecs/rt711.h" in
-> > > sound/soc/intel/boards/sof_sdw.c
-> > 
-> > Now queued up, thanks.
-> > 
-> > And why are you the only one seeing this issue?  What odd config are you
-> > using that none of the CI systems are catching this?
-> > 
-> > thanks,
-> > 
-> > greg k-h
-> 
-> I don't know if it is odd, but here it is:
-> https://gitlab.manjaro.org/packages/core/linux510/-/raw/master/config
 
-Thanks, that helped.  And verified that the above commit solved the
-issue, thanks for the reporting and testing.
+The patch below does not apply to the 6.4-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
+
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git checkout FETCH_HEAD
+git cherry-pick -x c02b04633c4f4654331c53966cb937df1c73a9bb
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023082823-pacifism-armful-44b5@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
 
 greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From c02b04633c4f4654331c53966cb937df1c73a9bb Mon Sep 17 00:00:00 2001
+From: Daniel Miess <daniel.miess@amd.com>
+Date: Thu, 11 May 2023 09:12:09 -0400
+Subject: [PATCH] drm/amd/display: Revert vblank change that causes null
+ pointer crash
+
+Revert commit 1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
+Because it cause some regression
+
+Fixes: 1a4bcdbea431 ("drm/amd/display: Fix possible underflow for displays with large vblank")
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Acked-by: Tom Chung <chiahsuan.chung@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+index 554152371eb5..1d00eb9e73c6 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -33,7 +33,7 @@
+ #include "dml/display_mode_vba.h"
+ 
+ struct _vcs_dpi_ip_params_st dcn3_14_ip = {
+-	.VBlankNomDefaultUS = 800,
++	.VBlankNomDefaultUS = 668,
+ 	.gpuvm_enable = 1,
+ 	.gpuvm_max_page_table_levels = 1,
+ 	.hostvm_enable = 1,
+@@ -286,7 +286,7 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
+ 	struct resource_context *res_ctx = &context->res_ctx;
+ 	struct pipe_ctx *pipe;
+ 	bool upscaled = false;
+-	const unsigned int max_allowed_vblank_nom = 1023;
++	bool isFreesyncVideo = false;
+ 
+ 	dc_assert_fp_enabled();
+ 
+@@ -300,11 +300,16 @@ int dcn314_populate_dml_pipes_from_context_fpu(struct dc *dc, struct dc_state *c
+ 		pipe = &res_ctx->pipe_ctx[i];
+ 		timing = &pipe->stream->timing;
+ 
+-		pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, dcn3_14_ip.VBlankNomDefaultUS);
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = max(pipes[pipe_cnt].pipe.dest.vblank_nom, timing->v_sync_width);
+-		pipes[pipe_cnt].pipe.dest.vblank_nom = min(pipes[pipe_cnt].pipe.dest.vblank_nom, max_allowed_vblank_nom);
++		isFreesyncVideo = pipe->stream->adjust.v_total_max == pipe->stream->adjust.v_total_min;
++		isFreesyncVideo = isFreesyncVideo && pipe->stream->adjust.v_total_min > timing->v_total;
++
++		if (!isFreesyncVideo) {
++			pipes[pipe_cnt].pipe.dest.vblank_nom =
++				dcn3_14_ip.VBlankNomDefaultUS / (timing->h_total / (timing->pix_clk_100hz / 10000.0));
++		} else {
++			pipes[pipe_cnt].pipe.dest.vtotal = pipe->stream->adjust.v_total_min;
++			pipes[pipe_cnt].pipe.dest.vblank_nom = timing->v_total - pipes[pipe_cnt].pipe.dest.vactive;
++		}
+ 
+ 		if (pipe->plane_state &&
+ 				(pipe->plane_state->src_rect.height < pipe->plane_state->dst_rect.height ||
+
