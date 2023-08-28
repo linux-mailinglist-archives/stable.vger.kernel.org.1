@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF24678ABA7
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F10F78A9DB
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:17:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231431AbjH1Kd0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:33:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40256 "EHLO
+        id S230098AbjH1KQv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231496AbjH1Kc6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC1212D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:34 -0700 (PDT)
+        with ESMTP id S230413AbjH1KQT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:16:19 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3539395
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 00F3C63D39
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DB74C433C8;
-        Mon, 28 Aug 2023 10:31:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BEE68636BB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1493C433C8;
+        Mon, 28 Aug 2023 10:16:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218717;
-        bh=nNRdEpPlfnw8r5Fj7xeIRM5d9YI9/Ha73iakJfEVzTo=;
+        s=korg; t=1693217776;
+        bh=WERKyct2fTF6umI4xg0JbVBVB/ZNFTHxR068zetY1tk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m7eD7hm4mPeaDIvLCsxcrcW2HoXndHXQKhZuLCpysTT9OSFx2AQKipWJYePWp5rXZ
-         C8zZUrNUQ/cQ9HOeSkX4udJ3/G7/+N5UDtOtPGuqcEVfmtVARe0KF7p1wCDI1grV49
-         g/tVVI9zx6EoFosLUGmSBOPkqN6+QRwPBAU/pT84=
+        b=ak8habwvKQdvmHGewjwhgApliWZ8i5phXUTEzGIzEpD/KLmAPfXW/Piet3P+UY0Y9
+         PeSZoImdEYO0p+JI7kJclu7xL6R5+CodApV79f7ZZdOxeIOa01Vx4dfdAGidzNfh4N
+         kPJomnH/i+8IDNCQ8yWs7P8mu/7awC3KOdaiO5dc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 059/122] io_uring/msg_ring: move double lock/unlock helpers higher up
-Date:   Mon, 28 Aug 2023 12:12:54 +0200
-Message-ID: <20230828101158.398763949@linuxfoundation.org>
+        patches@lists.linux.dev, Paolo Valerio <pvalerio@redhat.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 4.14 35/57] netfilter: set default timeout to 3 secs for sctp shutdown send and recv state
+Date:   Mon, 28 Aug 2023 12:12:55 +0200
+Message-ID: <20230828101145.562789922@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -53,94 +56,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Xin Long <lucien.xin@gmail.com>
 
-Commit 423d5081d0451faa59a707e57373801da5b40141 upstream.
+commit 9bfab6d23a2865966a4f89a96536fbf23f83bc8c upstream.
 
-In preparation for needing them somewhere else, move them and get rid of
-the unused 'issue_flags' for the unlock side.
+In SCTP protocol, it is using the same timer (T2 timer) for SHUTDOWN and
+SHUTDOWN_ACK retransmission. However in sctp conntrack the default timeout
+value for SCTP_CONNTRACK_SHUTDOWN_ACK_SENT state is 3 secs while it's 300
+msecs for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV state.
 
-No functional changes in this patch.
+As Paolo Valerio noticed, this might cause unwanted expiration of the ct
+entry. In my test, with 1s tc netem delay set on the NAT path, after the
+SHUTDOWN is sent, the sctp ct entry enters SCTP_CONNTRACK_SHUTDOWN_SEND
+state. However, due to 300ms (too short) delay, when the SHUTDOWN_ACK is
+sent back from the peer, the sctp ct entry has expired and been deleted,
+and then the SHUTDOWN_ACK has to be dropped.
 
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Also, it is confusing these two sysctl options always show 0 due to all
+timeout values using sec as unit:
+
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_recd = 0
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_sent = 0
+
+This patch fixes it by also using 3 secs for sctp shutdown send and recv
+state in sctp conntrack, which is also RTO.initial value in SCTP protocol.
+
+Note that the very short time value for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV
+was probably used for a rare scenario where SHUTDOWN is sent on 1st path
+but SHUTDOWN_ACK is replied on 2nd path, then a new connection started
+immediately on 1st path. So this patch also moves from SHUTDOWN_SEND/RECV
+to CLOSE when receiving INIT in the ORIGINAL direction.
+
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Reported-by: Paolo Valerio <pvalerio@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/msg_ring.c |   47 +++++++++++++++++++++++------------------------
- 1 file changed, 23 insertions(+), 24 deletions(-)
+ net/netfilter/nf_conntrack_proto_sctp.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/io_uring/msg_ring.c
-+++ b/io_uring/msg_ring.c
-@@ -24,6 +24,28 @@ struct io_msg {
- 	u32 flags;
- };
- 
-+static void io_double_unlock_ctx(struct io_ring_ctx *octx)
-+{
-+	mutex_unlock(&octx->uring_lock);
-+}
-+
-+static int io_double_lock_ctx(struct io_ring_ctx *octx,
-+			      unsigned int issue_flags)
-+{
-+	/*
-+	 * To ensure proper ordering between the two ctxs, we can only
-+	 * attempt a trylock on the target. If that fails and we already have
-+	 * the source ctx lock, punt to io-wq.
-+	 */
-+	if (!(issue_flags & IO_URING_F_UNLOCKED)) {
-+		if (!mutex_trylock(&octx->uring_lock))
-+			return -EAGAIN;
-+		return 0;
-+	}
-+	mutex_lock(&octx->uring_lock);
-+	return 0;
-+}
-+
- void io_msg_ring_cleanup(struct io_kiocb *req)
- {
- 	struct io_msg *msg = io_kiocb_to_cmd(req, struct io_msg);
-@@ -51,29 +73,6 @@ static int io_msg_ring_data(struct io_ki
- 	return -EOVERFLOW;
- }
- 
--static void io_double_unlock_ctx(struct io_ring_ctx *octx,
--				 unsigned int issue_flags)
--{
--	mutex_unlock(&octx->uring_lock);
--}
--
--static int io_double_lock_ctx(struct io_ring_ctx *octx,
--			      unsigned int issue_flags)
--{
--	/*
--	 * To ensure proper ordering between the two ctxs, we can only
--	 * attempt a trylock on the target. If that fails and we already have
--	 * the source ctx lock, punt to io-wq.
--	 */
--	if (!(issue_flags & IO_URING_F_UNLOCKED)) {
--		if (!mutex_trylock(&octx->uring_lock))
--			return -EAGAIN;
--		return 0;
--	}
--	mutex_lock(&octx->uring_lock);
--	return 0;
--}
--
- static struct file *io_msg_grab_file(struct io_kiocb *req, unsigned int issue_flags)
- {
- 	struct io_msg *msg = io_kiocb_to_cmd(req, struct io_msg);
-@@ -122,7 +121,7 @@ static int io_msg_install_complete(struc
- 	if (!io_post_aux_cqe(target_ctx, msg->user_data, ret, 0, true))
- 		ret = -EOVERFLOW;
- out_unlock:
--	io_double_unlock_ctx(target_ctx, issue_flags);
-+	io_double_unlock_ctx(target_ctx);
- 	return ret;
- }
- 
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -57,8 +57,8 @@ static unsigned int sctp_timeouts[SCTP_C
+ 	[SCTP_CONNTRACK_COOKIE_WAIT]		= 3 SECS,
+ 	[SCTP_CONNTRACK_COOKIE_ECHOED]		= 3 SECS,
+ 	[SCTP_CONNTRACK_ESTABLISHED]		= 5 DAYS,
+-	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 300 SECS / 1000,
+-	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 300 SECS / 1000,
++	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 3 SECS,
++	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 3 SECS,
+ 	[SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]	= 3 SECS,
+ 	[SCTP_CONNTRACK_HEARTBEAT_SENT]		= 30 SECS,
+ 	[SCTP_CONNTRACK_HEARTBEAT_ACKED]	= 210 SECS,
+@@ -116,7 +116,7 @@ static const u8 sctp_conntracks[2][11][S
+ 	{
+ /*	ORIGINAL	*/
+ /*                  sNO, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS, sHA */
+-/* init         */ {sCW, sCW, sCW, sCE, sES, sSS, sSR, sSA, sCW, sHA},
++/* init         */ {sCW, sCW, sCW, sCE, sES, sCL, sCL, sSA, sCW, sHA},
+ /* init_ack     */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL, sHA},
+ /* abort        */ {sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL},
+ /* shutdown     */ {sCL, sCL, sCW, sCE, sSS, sSS, sSR, sSA, sCL, sSS},
 
 
