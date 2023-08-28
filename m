@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37A3C78AB74
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48E7F78AC23
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231450AbjH1Kax (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:30:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49588 "EHLO
+        id S231627AbjH1KhO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:37:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231446AbjH1Kaa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:30:30 -0400
+        with ESMTP id S231665AbjH1KhB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:01 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65CCEAB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:30:27 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F207BA6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04A9D63CB8
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:30:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15099C433C7;
-        Mon, 28 Aug 2023 10:30:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FEAB63ED4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4024C433C8;
+        Mon, 28 Aug 2023 10:36:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218626;
-        bh=EPA5f3y/WJdc4NXun6Q3xvNAVUGRtQ+h9CkJa96eLj8=;
+        s=korg; t=1693219018;
+        bh=EWcAo6XtNI93+XLON91byq2cmpTW1NlRVD5sYLs1Fo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sraZ3C7up9fMCGmDXlVjvdsndzjNT+uyyJ75KZLQMsnih8J0xAmwgxRWvN++QuIuL
-         +2fbBh3gAOK75/C0OPiEqOg/MMZzVSUp0L1jPX/snXjttZtcaDGKjNLUyomEe7afox
-         p70n8G/vdG5jKTHFDG0gnoGI6xk07/JwVz3OGIcw=
+        b=jWSAwrzxxdJtYH5rzVQ6ycnWxxKYAec3kdUnFnkR5mtIDgELdMx1Sj4/2I2JpsrOd
+         tXW/5XAc3+CeOiaOl+JsN+7g6dwZn6mq5TNBCqDrFF96DXU2GmJwVSYngzBG55R2l2
+         u4m0iZbe6G2xo6fM8U33aI5dJ5KhqkQAotxfk090=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 026/122] octeontx2-af: SDP: fix receive link config
+Subject: [PATCH 5.4 044/158] mmc: bcm2835: fix deferred probing
 Date:   Mon, 28 Aug 2023 12:12:21 +0200
-Message-ID: <20230828101157.302782251@linuxfoundation.org>
+Message-ID: <20230828101158.817680940@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,47 +55,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Sergey Shtylyov <s.shtylyov@omp.ru>
 
-[ Upstream commit 05f3d5bc23524bed6f043dfe6b44da687584f9fb ]
+[ Upstream commit 71150ac12558bcd9d75e6e24cf7c872c2efd80f3 ]
 
-On SDP interfaces, frame oversize and undersize errors are
-observed as driver is not considering packet sizes of all
-subscribers of the link before updating the link config.
+The driver overrides the error codes and IRQ0 returned by platform_get_irq()
+to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+permanently instead of the deferred probing. Switch to propagating the error
+codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
+in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
+so we now can safely ignore it...
 
-This patch fixes the same.
-
-Fixes: 9b7dd87ac071 ("octeontx2-af: Support to modify min/max allowed packet lengths")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230817063006.10366-1-hkelam@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 660fc733bd74 ("mmc: bcm2835: Add new driver for the sdhost controller.")
+Cc: stable@vger.kernel.org # v5.19+
+Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+Link: https://lore.kernel.org/r/20230617203622.6812-2-s.shtylyov@omp.ru
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/mmc/host/bcm2835.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 705325431dec3..5541e284cd3f0 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -4005,9 +4005,10 @@ int rvu_mbox_handler_nix_set_hw_frs(struct rvu *rvu, struct nix_frs_cfg *req,
- 	if (link < 0)
- 		return NIX_AF_ERR_RX_LINK_INVALID;
+diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
+index 148414d7f0c9d..d20943e433127 100644
+--- a/drivers/mmc/host/bcm2835.c
++++ b/drivers/mmc/host/bcm2835.c
+@@ -1408,8 +1408,8 @@ static int bcm2835_probe(struct platform_device *pdev)
+ 	host->max_clk = clk_get_rate(clk);
  
--	nix_find_link_frs(rvu, req, pcifunc);
+ 	host->irq = platform_get_irq(pdev, 0);
+-	if (host->irq <= 0) {
+-		ret = -EINVAL;
++	if (host->irq < 0) {
++		ret = host->irq;
+ 		goto err;
+ 	}
  
- linkcfg:
-+	nix_find_link_frs(rvu, req, pcifunc);
-+
- 	cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_LINKX_CFG(link));
- 	cfg = (cfg & ~(0xFFFFULL << 16)) | ((u64)req->maxlen << 16);
- 	if (req->update_minlen)
 -- 
 2.40.1
 
