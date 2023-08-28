@@ -2,51 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7419278ABA4
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AED3E78A9D5
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231625AbjH1KdY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:33:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40220 "EHLO
+        id S230400AbjH1KQa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:16:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231474AbjH1Kcz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 136DDCCA
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:29 -0700 (PDT)
+        with ESMTP id S230409AbjH1KQL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:16:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0309895
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E9E163D3B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D2D6C433C8;
-        Mon, 28 Aug 2023 10:31:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CF6461522
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A011EC433C7;
+        Mon, 28 Aug 2023 10:16:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218711;
-        bh=hd6HN3+3jH1gS5f6JYVeehtMt1rC4aDp03uw62iC/50=;
+        s=korg; t=1693217768;
+        bh=EwrkWVXLHlbsKyyqoPMNsvGCRnMSnUZfSjXi7514S2Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AHt9YMaSZTFWH+MR0rV7EiSh3fHC2ED4AuSiOvz71s6DrBojsoD81LXp7UFiBrH2Z
-         PVAoEuy2zqLg2mC8Wo1aRAExrljA9UnyRlt74lruF/uO1PxR6rWdOjHYqPJ65AsSfx
-         5RvB1PX2xTZrfQm9OYgpV/kJ7jt1z7ruEmA22UFc=
+        b=HF52IhAQ2NM8T4D5TpAuD0waatbQvTteoi/q+yrcyfNhRF2LM8aW0KxcMkcrXXSrH
+         pHWVoq0noQtjXgZjjr0cLynJOepIVM4lDc9vUaQUUHY0ws2/wiME2ShFrEJ4L6wtnT
+         5iZ2J9oJHuP8XyTNgpg8QE88perjwBRQiB3+gZgc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.1 057/122] io_uring: get rid of double locking
+        patches@lists.linux.dev, Tony Lindgren <tony@atomide.com>
+Subject: [PATCH 4.14 32/57] serial: 8250: Fix oops for port->pm on uart_change_pm()
 Date:   Mon, 28 Aug 2023 12:12:52 +0200
-Message-ID: <20230828101158.322755368@linuxfoundation.org>
+Message-ID: <20230828101145.438210237@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,198 +53,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Tony Lindgren <tony@atomide.com>
 
-Commit 11373026f2960390d5e330df4e92735c4265c440 upstream.
+commit dfe2aeb226fd5e19b0ee795f4f6ed8bc494c1534 upstream.
 
-We don't need to take both uring_locks at once, msg_ring can be split in
-two parts, first getting a file from the filetable of the first ring and
-then installing it into the second one.
+Unloading a hardware specific 8250 driver can produce error "Unable to
+handle kernel paging request at virtual address" about ten seconds after
+unloading the driver. This happens on uart_hangup() calling
+uart_change_pm().
 
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/a80ecc2bc99c3b3f2cf20015d618b7c51419a797.1670384893.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Turns out commit 04e82793f068 ("serial: 8250: Reinit port->pm on port
+specific driver unbind") was only a partial fix. If the hardware specific
+driver has initialized port->pm function, we need to clear port->pm too.
+Just reinitializing port->ops does not do this. Otherwise serial8250_pm()
+will call port->pm() instead of serial8250_do_pm().
+
+Fixes: 04e82793f068 ("serial: 8250: Reinit port->pm on port specific driver unbind")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
+Link: https://lore.kernel.org/r/20230804131553.52927-1-tony@atomide.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- io_uring/msg_ring.c |   85 +++++++++++++++++++++++++++++-----------------------
- io_uring/msg_ring.h |    1 
- io_uring/opdef.c    |    1 
- 3 files changed, 51 insertions(+), 36 deletions(-)
+ drivers/tty/serial/8250/8250_port.c |    1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/msg_ring.c
-+++ b/io_uring/msg_ring.c
-@@ -15,6 +15,7 @@
+--- a/drivers/tty/serial/8250/8250_port.c
++++ b/drivers/tty/serial/8250/8250_port.c
+@@ -3191,6 +3191,7 @@ void serial8250_init_port(struct uart_82
+ 	struct uart_port *port = &up->port;
  
- struct io_msg {
- 	struct file			*file;
-+	struct file			*src_file;
- 	u64 user_data;
- 	u32 len;
- 	u32 cmd;
-@@ -23,6 +24,17 @@ struct io_msg {
- 	u32 flags;
- };
+ 	spin_lock_init(&port->lock);
++	port->pm = NULL;
+ 	port->ops = &serial8250_pops;
  
-+void io_msg_ring_cleanup(struct io_kiocb *req)
-+{
-+	struct io_msg *msg = io_kiocb_to_cmd(req, struct io_msg);
-+
-+	if (WARN_ON_ONCE(!msg->src_file))
-+		return;
-+
-+	fput(msg->src_file);
-+	msg->src_file = NULL;
-+}
-+
- static int io_msg_ring_data(struct io_kiocb *req)
- {
- 	struct io_ring_ctx *target_ctx = req->file->private_data;
-@@ -39,17 +51,13 @@ static int io_msg_ring_data(struct io_ki
- 	return -EOVERFLOW;
- }
- 
--static void io_double_unlock_ctx(struct io_ring_ctx *ctx,
--				 struct io_ring_ctx *octx,
-+static void io_double_unlock_ctx(struct io_ring_ctx *octx,
- 				 unsigned int issue_flags)
- {
--	if (issue_flags & IO_URING_F_UNLOCKED)
--		mutex_unlock(&ctx->uring_lock);
- 	mutex_unlock(&octx->uring_lock);
- }
- 
--static int io_double_lock_ctx(struct io_ring_ctx *ctx,
--			      struct io_ring_ctx *octx,
-+static int io_double_lock_ctx(struct io_ring_ctx *octx,
- 			      unsigned int issue_flags)
- {
- 	/*
-@@ -62,17 +70,28 @@ static int io_double_lock_ctx(struct io_
- 			return -EAGAIN;
- 		return 0;
- 	}
-+	mutex_lock(&octx->uring_lock);
-+	return 0;
-+}
- 
--	/* Always grab smallest value ctx first. We know ctx != octx. */
--	if (ctx < octx) {
--		mutex_lock(&ctx->uring_lock);
--		mutex_lock(&octx->uring_lock);
--	} else {
--		mutex_lock(&octx->uring_lock);
--		mutex_lock(&ctx->uring_lock);
--	}
-+static struct file *io_msg_grab_file(struct io_kiocb *req, unsigned int issue_flags)
-+{
-+	struct io_msg *msg = io_kiocb_to_cmd(req, struct io_msg);
-+	struct io_ring_ctx *ctx = req->ctx;
-+	struct file *file = NULL;
-+	unsigned long file_ptr;
-+	int idx = msg->src_fd;
- 
--	return 0;
-+	io_ring_submit_lock(ctx, issue_flags);
-+	if (likely(idx < ctx->nr_user_files)) {
-+		idx = array_index_nospec(idx, ctx->nr_user_files);
-+		file_ptr = io_fixed_file_slot(&ctx->file_table, idx)->file_ptr;
-+		file = (struct file *) (file_ptr & FFS_MASK);
-+		if (file)
-+			get_file(file);
-+	}
-+	io_ring_submit_unlock(ctx, issue_flags);
-+	return file;
- }
- 
- static int io_msg_send_fd(struct io_kiocb *req, unsigned int issue_flags)
-@@ -80,8 +99,7 @@ static int io_msg_send_fd(struct io_kioc
- 	struct io_ring_ctx *target_ctx = req->file->private_data;
- 	struct io_msg *msg = io_kiocb_to_cmd(req, struct io_msg);
- 	struct io_ring_ctx *ctx = req->ctx;
--	unsigned long file_ptr;
--	struct file *src_file;
-+	struct file *src_file = msg->src_file;
- 	int ret;
- 
- 	if (msg->len)
-@@ -90,28 +108,22 @@ static int io_msg_send_fd(struct io_kioc
- 		return -EINVAL;
- 	if (target_ctx->flags & IORING_SETUP_R_DISABLED)
- 		return -EBADFD;
-+	if (!src_file) {
-+		src_file = io_msg_grab_file(req, issue_flags);
-+		if (!src_file)
-+			return -EBADF;
-+		msg->src_file = src_file;
-+		req->flags |= REQ_F_NEED_CLEANUP;
-+	}
- 
--	ret = io_double_lock_ctx(ctx, target_ctx, issue_flags);
--	if (unlikely(ret))
--		return ret;
--
--	ret = -EBADF;
--	if (unlikely(msg->src_fd >= ctx->nr_user_files))
--		goto out_unlock;
--
--	msg->src_fd = array_index_nospec(msg->src_fd, ctx->nr_user_files);
--	file_ptr = io_fixed_file_slot(&ctx->file_table, msg->src_fd)->file_ptr;
--	if (!file_ptr)
--		goto out_unlock;
--
--	src_file = (struct file *) (file_ptr & FFS_MASK);
--	get_file(src_file);
-+	if (unlikely(io_double_lock_ctx(target_ctx, issue_flags)))
-+		return -EAGAIN;
- 
- 	ret = __io_fixed_fd_install(target_ctx, src_file, msg->dst_fd);
--	if (ret < 0) {
--		fput(src_file);
-+	if (ret < 0)
- 		goto out_unlock;
--	}
-+	msg->src_file = NULL;
-+	req->flags &= ~REQ_F_NEED_CLEANUP;
- 
- 	if (msg->flags & IORING_MSG_RING_CQE_SKIP)
- 		goto out_unlock;
-@@ -125,7 +137,7 @@ static int io_msg_send_fd(struct io_kioc
- 	if (!io_post_aux_cqe(target_ctx, msg->user_data, ret, 0, true))
- 		ret = -EOVERFLOW;
- out_unlock:
--	io_double_unlock_ctx(ctx, target_ctx, issue_flags);
-+	io_double_unlock_ctx(target_ctx, issue_flags);
- 	return ret;
- }
- 
-@@ -136,6 +148,7 @@ int io_msg_ring_prep(struct io_kiocb *re
- 	if (unlikely(sqe->buf_index || sqe->personality))
- 		return -EINVAL;
- 
-+	msg->src_file = NULL;
- 	msg->user_data = READ_ONCE(sqe->off);
- 	msg->len = READ_ONCE(sqe->len);
- 	msg->cmd = READ_ONCE(sqe->addr);
---- a/io_uring/msg_ring.h
-+++ b/io_uring/msg_ring.h
-@@ -2,3 +2,4 @@
- 
- int io_msg_ring_prep(struct io_kiocb *req, const struct io_uring_sqe *sqe);
- int io_msg_ring(struct io_kiocb *req, unsigned int issue_flags);
-+void io_msg_ring_cleanup(struct io_kiocb *req);
---- a/io_uring/opdef.c
-+++ b/io_uring/opdef.c
-@@ -445,6 +445,7 @@ const struct io_op_def io_op_defs[] = {
- 		.name			= "MSG_RING",
- 		.prep			= io_msg_ring_prep,
- 		.issue			= io_msg_ring,
-+		.cleanup		= io_msg_ring_cleanup,
- 	},
- 	[IORING_OP_FSETXATTR] = {
- 		.needs_file = 1,
+ 	up->cur_iotype = 0xFF;
 
 
