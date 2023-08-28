@@ -2,135 +2,320 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1385178A983
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:01:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7106078A98B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:04:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230254AbjH1KAa convert rfc822-to-8bit (ORCPT
-        <rfc822;lists+stable@lfdr.de>); Mon, 28 Aug 2023 06:00:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60514 "EHLO
+        id S230253AbjH1KDp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:03:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230274AbjH1KAU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:00:20 -0400
-Received: from eu-smtp-delivery-151.mimecast.com (eu-smtp-delivery-151.mimecast.com [185.58.85.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89A23103
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:00:16 -0700 (PDT)
-Received: from AcuMS.aculab.com (156.67.243.121 [156.67.243.121]) by
- relay.mimecast.com with ESMTP with both STARTTLS and AUTH (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id
- uk-mta-8-TGqkI5SJM1mCeElt0jlUJQ-1; Mon, 28 Aug 2023 11:00:13 +0100
-X-MC-Unique: TGqkI5SJM1mCeElt0jlUJQ-1
-Received: from AcuMS.Aculab.com (10.202.163.4) by AcuMS.aculab.com
- (10.202.163.4) with Microsoft SMTP Server (TLS) id 15.0.1497.48; Mon, 28 Aug
- 2023 11:00:15 +0100
-Received: from AcuMS.Aculab.com ([::1]) by AcuMS.aculab.com ([::1]) with mapi
- id 15.00.1497.048; Mon, 28 Aug 2023 11:00:15 +0100
-From:   David Laight <David.Laight@ACULAB.COM>
-To:     'Tony Nguyen' <anthony.l.nguyen@intel.com>,
-        "davem@davemloft.net" <davem@davemloft.net>,
-        "kuba@kernel.org" <kuba@kernel.org>,
-        "pabeni@redhat.com" <pabeni@redhat.com>,
-        "edumazet@google.com" <edumazet@google.com>,
-        "netdev@vger.kernel.org" <netdev@vger.kernel.org>
-CC:     Radoslaw Tyl <radoslawx.tyl@intel.com>,
-        "greearb@candelatech.com" <greearb@candelatech.com>,
-        "jesse.brandeburg@intel.com" <jesse.brandeburg@intel.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Manfred Rudigier <manfred.rudigier@omicronenergy.com>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: RE: [PATCH net] igb: set max size RX buffer when store bad packet is
- enabled
-Thread-Topic: [PATCH net] igb: set max size RX buffer when store bad packet is
- enabled
-Thread-Index: AQHZ1s0SCB7wBXMg2kyry1grla+28a//fdDA
-Date:   Mon, 28 Aug 2023 10:00:15 +0000
-Message-ID: <c4c5a28345c34c428d612993a3c79264@AcuMS.aculab.com>
-References: <20230824204619.1551135-1-anthony.l.nguyen@intel.com>
-In-Reply-To: <20230824204619.1551135-1-anthony.l.nguyen@intel.com>
-Accept-Language: en-GB, en-US
-X-MS-Has-Attach: 
-X-MS-TNEF-Correlator: 
-x-ms-exchange-transport-fromentityheader: Hosted
-x-originating-ip: [10.202.205.107]
+        with ESMTP id S230286AbjH1KDh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:03:37 -0400
+Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B15EBF0;
+        Mon, 28 Aug 2023 03:03:33 -0700 (PDT)
+Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-68a529e1974so2011267b3a.3;
+        Mon, 28 Aug 2023 03:03:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693217013; x=1693821813;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=y+m7qhg+0nv62qiTjlTeUn/Y1rJMp/EuMcHg0FMMCKo=;
+        b=P4mqpjKl7ddIZv4B4GvRLFlnEUBjYFBAxRFX3YSjBA+szFSurQnGVGc9USRMRIsMMK
+         2fw8lyEcxdVMlfpkFTQf2fHhov+Jsew8zlmsMrz7mhQQQCiOhCdNJb92VmLcEyDsWKKr
+         yhtl1tIrXdFNW0mZLcogBHSbDvoY3hVMoq2ZRzbivxje5mm7weSh5NdmW14cSos/2qLd
+         Oj+2H0dOa5i3f33jvZ5jmLpJtrE3QiuLYky/Jrn8TZg3vYeB4DLo/TeZHD/3UQDl8w0v
+         806Hh9nSJFCtInoD4urt8iLM8pkhRLql2X5ot5zQdBEFNcLKfe8wdhcsJRgVhBo+TKx8
+         W1ng==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693217013; x=1693821813;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=y+m7qhg+0nv62qiTjlTeUn/Y1rJMp/EuMcHg0FMMCKo=;
+        b=IfCqJDa7jcFId6fQvN9Q3VbmUnatfe6YADlxvZ2jhWagX9vpLtINmGFGPkUhiTDOcg
+         ONAop/Wz/ow3O2mAOzD5ng5ryGS5iqGpOdk2KFvWxxuQ3v6ioAbUKAuCDIrH7ge5mCmU
+         aCC54zWJSVEHorQN1jsr01IzkBjBJpA3tphoR9j0V5gIwhhASxEoK4B9FB8MtmSZ7aAh
+         bWJDPpSb05igktBeQ/sMWhdgZTYpoJK84jtc6xTihWKCYglcKEDSSwYx/ybRcnA3h9qC
+         ieO1aAR/8NUetg9O27i5LdSgrju5jYk6EoKRgKuhFRGv/wXuiSQbQKlk/D3JzDtQ0sWv
+         KUpg==
+X-Gm-Message-State: AOJu0YzkRn5oFBcfUAttsa+8y5ldqLESSrRj3oebh1YHEBVfL9/pIX7W
+        f7UdHktBlOh2Eb6ZxrZdPm4=
+X-Google-Smtp-Source: AGHT+IFjtOlQkYt6SCf2U54F86EY8PkQSVTSqwtAOyFJOBG7hg69Gw4DyrnSq8XN86YnGpyOo6vC8Q==
+X-Received: by 2002:a05:6a20:729b:b0:140:a6ec:b55e with SMTP id o27-20020a056a20729b00b00140a6ecb55emr24031643pzk.3.1693217013085;
+        Mon, 28 Aug 2023 03:03:33 -0700 (PDT)
+Received: from arch-pc.genesyslogic.com.tw (60-251-58-169.hinet-ip.hinet.net. [60.251.58.169])
+        by smtp.gmail.com with ESMTPSA id q9-20020a63ae09000000b005579f12a238sm6973165pgf.86.2023.08.28.03.03.30
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Aug 2023 03:03:32 -0700 (PDT)
+From:   Ben Chuang <benchuanggli@gmail.com>
+To:     adrian.hunter@intel.com
+Cc:     SeanHY.chen@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw,
+        greg.tu@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, reniuschengl@gmail.com,
+        skardach@google.com, stable@vger.kernel.org, svenva@chromium.org,
+        ulf.hansson@linaro.org, victor.shih@genesyslogic.com.tw,
+        benchuanggli@gmail.com, victorshihgli@gmail.com
+Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix SoCs can suspend
+Date:   Mon, 28 Aug 2023 18:02:49 +0800
+Message-ID: <20230828100313.3051403-1-benchuanggli@gmail.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
+References: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
 MIME-Version: 1.0
-X-Mimecast-Spam-Score: 0
-X-Mimecast-Originator: aculab.com
-Content-Language: en-US
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8BIT
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,PDS_BAD_THREAD_QP_64,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=y
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tony Nguyen
-> Sent: 24 August 2023 21:46
-> 
-> From: Radoslaw Tyl <radoslawx.tyl@intel.com>
-> 
-> Increase the RX buffer size to 3K when the SBP bit is on. The size of
-> the RX buffer determines the number of pages allocated which may not
-> be sufficient for receive frames larger than the set MTU size.
+Hi,
 
-How much does that actually help?
-In principle there is no limit to the length of an ethernet frame.
-So the code has to handle overlong packets whatever the receive
-buffer size is set to.
+On 24/08/23 20:18, Adrian Hunter wrote:
+> On 24/08/23 14:50, Stanisław Kardach wrote:
+> > Hi Adrian,
+> > 
+> > Thanks for reviewing our patches.
+> > 
+> > On Thu, Aug 24, 2023 at 1:47 PM Adrian Hunter <adrian.hunter@intel.com <mailto:adrian.hunter@intel.com>> wrote:
+> > 
+> >     Hi
+> > 
+> >     Looks OK - a few minor comments below
+> > 
+> >     On 23/08/23 20:41, Sven van Ashbrook wrote:
+> >     > To improve the r/w performance of GL9763E, the current driver inhibits LPM
+> >     > negotiation while the device is active.
+> >     >
+> >     > This prevents a large number of SoCs from suspending, notably x86 systems
+> > 
+> >     If possible, can you give example of which SoCs / products
+> > 
+> >     > which use S0ix as the suspend mechanism:
+> >     > 1. Userspace initiates s2idle suspend (e.g. via writing to
+> >     >    /sys/power/state)
+> >     > 2. This switches the runtime_pm device state to active, which disables
+> >     >    LPM negotiation, then calls the "regular" suspend callback
+> >     > 3. With LPM negotiation disabled, the bus cannot enter low-power state
+> >     > 4. On a large number of SoCs, if the bus not in a low-power state, S0ix
+> >     >    cannot be entered, which in turn prevents the SoC from entering
+> >     >    suspend.
+> >     >
+> >     > Fix by re-enabling LPM negotiation in the device's suspend callback.
+> >     >
+> >     > Suggested-by: Stanislaw Kardach <skardach@google.com <mailto:skardach@google.com>>
+> >     > Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+> >     > Cc: stable@vger.kernel.org <mailto:stable@vger.kernel.org>
+> >     > Signed-off-by: Sven van Ashbrook <svenva@chromium.org <mailto:svenva@chromium.org>>
+> >     >      # on gladios device
+> >     >      # on 15590.0.0 with v5.10 and upstream (v6.4) kernels
+> >     >
+> > 
+> >     3 extraneous lines here - please remove
+> > 
+> >     > ---
+> >     >
+> >     > Changes in v2:
+> >     > - improved symmetry and error path in s2idle suspend callback (internal review)
+> >     >
+> >     >  drivers/mmc/host/sdhci-pci-gli.c | 102 +++++++++++++++++++------------
+> >     >  1 file changed, 64 insertions(+), 38 deletions(-)
+> >     >
+> >     > diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+> >     > index 1792665c9494a..19f577cc8bceb 100644
+> >     > --- a/drivers/mmc/host/sdhci-pci-gli.c
+> >     > +++ b/drivers/mmc/host/sdhci-pci-gli.c
+> >     > @@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+> >     >       return value;
+> >     >  }
+> >     > 
+> >     > -#ifdef CONFIG_PM_SLEEP
+> >     > -static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+> >     > -{
+> >     > -     struct sdhci_pci_slot *slot = chip->slots[0];
+> >     > -
+> >     > -     pci_free_irq_vectors(slot->chip->pdev);
+> >     > -     gli_pcie_enable_msi(slot);
+> >     > -
+> >     > -     return sdhci_pci_resume_host(chip);
+> >     > -}
+> >     > -
+> >     > -static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
+> >     > -{
+> >     > -     struct sdhci_pci_slot *slot = chip->slots[0];
+> >     > -     int ret;
+> >     > -
+> >     > -     ret = sdhci_pci_gli_resume(chip);
+> >     > -     if (ret)
+> >     > -             return ret;
+> >     > -
+> >     > -     return cqhci_resume(slot->host->mmc);
+> >     > -}
+> >     > -
+> >     > -static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
+> >     > -{
+> >     > -     struct sdhci_pci_slot *slot = chip->slots[0];
+> >     > -     int ret;
+> >     > -
+> >     > -     ret = cqhci_suspend(slot->host->mmc);
+> >     > -     if (ret)
+> >     > -             return ret;
+> >     > -
+> >     > -     return sdhci_suspend_host(slot->host);
+> >     > -}
+> >     > -#endif
+> >     > -
+> >     >  static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
+> >     >                                         struct mmc_ios *ios)
+> >     >  {
+> >     > @@ -1029,6 +993,68 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
+> >     >  }
+> >     >  #endif
+> >     > 
+> >     > +#ifdef CONFIG_PM_SLEEP
+> >     > +static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+> >     > +{
+> >     > +     struct sdhci_pci_slot *slot = chip->slots[0];
+> >     > +
+> >     > +     pci_free_irq_vectors(slot->chip->pdev);
+> >     > +     gli_pcie_enable_msi(slot);
+> >     > +
+> >     > +     return sdhci_pci_resume_host(chip);
+> >     > +}
 
-Modern ethernet hardware probably has configurable rx frame length
-limits - but with old hardware the drivers had to handle frames
-longer than 'buffer_size * ring_size'.
+sdhci_pci_gli_resume() is the same as before. Is there any reason to move it here?
 
-	David
+> >     > +
+> >     > +static int gl9763e_resume(struct sdhci_pci_chip *chip)
+> >     > +{
+> >     > +     struct sdhci_pci_slot *slot = chip->slots[0];
+> >     > +     int ret;
+> >     > +
+> >     > +     ret = sdhci_pci_gli_resume(chip);
+> >     > +     if (ret)
+> >     > +             return ret;
+> >     > +
+> >     > +     ret = cqhci_resume(slot->host->mmc);
+> >     > +     if (ret)
+> >     > +             return ret;
+> >     > +
+> >     > +     /* Disable LPM negotiation to bring device back in sync
+> >     > +      * with its runtime_pm state.
+> >     > +      */
+> > 
+> >     I would prefer the comment style:
+> > 
+> >             /*
+> >              * Blah, blah ...
+> >              * Blah, blah, blah.
+> >              */
+> > 
+> >     > +     gl9763e_set_low_power_negotiation(slot, false);
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 89eaefb61dc9 ("igb: Support RX-ALL feature flag.")
-> Reported-by: Manfred Rudigier <manfred.rudigier@omicronenergy.com>
-> Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
-> Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-> Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-> ---
->  drivers/net/ethernet/intel/igb/igb_main.c | 11 +++++++----
->  1 file changed, 7 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/net/ethernet/intel/igb/igb_main.c b/drivers/net/ethernet/intel/igb/igb_main.c
-> index 9a2561409b06..08e3df37089f 100644
-> --- a/drivers/net/ethernet/intel/igb/igb_main.c
-> +++ b/drivers/net/ethernet/intel/igb/igb_main.c
-> @@ -4814,6 +4814,10 @@ void igb_configure_rx_ring(struct igb_adapter *adapter,
->  static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
->  				  struct igb_ring *rx_ring)
->  {
-> +#if (PAGE_SIZE < 8192)
-> +	struct e1000_hw *hw = &adapter->hw;
-> +#endif
-> +
->  	/* set build_skb and buffer size flags */
->  	clear_ring_build_skb_enabled(rx_ring);
->  	clear_ring_uses_large_buffer(rx_ring);
-> @@ -4824,10 +4828,9 @@ static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
->  	set_ring_build_skb_enabled(rx_ring);
-> 
->  #if (PAGE_SIZE < 8192)
-> -	if (adapter->max_frame_size <= IGB_MAX_FRAME_BUILD_SKB)
-> -		return;
-> -
-> -	set_ring_uses_large_buffer(rx_ring);
-> +	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
-> +	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
-> +		set_ring_uses_large_buffer(rx_ring);
->  #endif
->  }
-> 
-> --
-> 2.38.1
-> 
+There is a situation for your reference.
+If `allow_runtime_pm' is set to false and the system resumes from suspend, GL9763E 
+LPM negotiation will be always disabled on S0. GL9763E will stay L0 and never 
+enter L1 because GL9763E LPM negotiation is disabled.
 
--
-Registered Address Lakeside, Bramley Road, Mount Farm, Milton Keynes, MK1 1PT, UK
-Registration No: 1397386 (Wales)
+This patch enables allow_runtime_pm. The simple flow is
+gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled -> (a)
+(a) -+--> idle -->  gl9763e_runtime_suspend() -> LPM enabled
+     |
+     +--> no idle -> gl9763e_runtime_resume() -> LPM disabled
 
+This patch disables allow_runtime_pm. The simple flow is
+gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled (no runtime_pm)
+
+Although that may not be the case with the current configuration, it's only a
+possibility.
+
+> >     > +
+> >     > +     return 0;
+> >     > +}
+> >     > +
+> >     > +static int gl9763e_suspend(struct sdhci_pci_chip *chip)
+> >     > +{
+> >     > +     struct sdhci_pci_slot *slot = chip->slots[0];
+> >     > +     int ret;
+> >     > +
+> >     > +     /* Certain SoCs can suspend only with the bus in low-
+> > 
+> >     Ditto re comment style
+> > 
+> >     > +      * power state, notably x86 SoCs when using S0ix.
+> >     > +      * Re-enable LPM negotiation to allow entering L1 state
+> >     > +      * and entering system suspend.
+> >     > +      */
+> >     > +     gl9763e_set_low_power_negotiation(slot, true);
+> > 
+> >     Couldn't this be at the end of the function, save
+> >     an error path
+> > 
+> > Please correct me if I'm wrong but writing to device config
+> > space could trigger a side effect, so it's probably better to
+> > do it before calling functions suspending the device?
+> 
+> sdhci doesn't know anything about the bus.  It is independent
+> of PCI, so I can't see how it would make any difference.
+> One of the people cc'ed might know more.  Jason Lai (cc'ed)
+> added it for runtime PM.
+>
+
+As far as I know, when disabling LPM negotiation, the GL9763E will stop entering
+L1. It doesn't other side effect. Does Jason.Lai and Victor.Shih have any comments
+or suggestions?
+
+Best regards,
+Ben Chuang
+
+> > 
+> > 
+> >     > +
+> >     > +     ret = cqhci_suspend(slot->host->mmc);
+> >     > +     if (ret)
+> >     > +             goto err_suspend;
+> >     > +
+> >     > +     ret = sdhci_suspend_host(slot->host);
+> >     > +     if (ret)
+> >     > +             goto err_suspend_host;
+> >     > +
+> >     > +     return 0;
+> >     > +
+> >     > +err_suspend_host:
+> >     > +     cqhci_resume(slot->host->mmc);
+> >     > +err_suspend:
+> >     > +     gl9763e_set_low_power_negotiation(slot, false);
+> >     > +     return ret;
+> >     > +}
+> >     > +#endif
+> >     > +
+> >     >  static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
+> >     >  {
+> >     >       struct pci_dev *pdev = slot->chip->pdev;
+> >     > @@ -1113,8 +1139,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
+> >     >       .probe_slot     = gli_probe_slot_gl9763e,
+> >     >       .ops            = &sdhci_gl9763e_ops,
+> >     >  #ifdef CONFIG_PM_SLEEP
+> >     > -     .resume         = sdhci_cqhci_gli_resume,
+> >     > -     .suspend        = sdhci_cqhci_gli_suspend,
+> >     > +     .resume         = gl9763e_resume,
+> >     > +     .suspend        = gl9763e_suspend,
+> >     >  #endif
+> >     >  #ifdef CONFIG_PM
+> >     >       .runtime_suspend = gl9763e_runtime_suspend,
+> > 
+> > 
+> > 
+> > -- 
+> > Best Regards,
+> > Stanisław Kardach
+> 
+> 
