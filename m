@@ -2,218 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C75D78B20F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 15:35:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6918E78B250
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 15:56:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230253AbjH1Ne7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 09:34:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35086 "EHLO
+        id S230424AbjH1Nzi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 09:55:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230273AbjH1Nem (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 09:34:42 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 080B1CFA
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 06:34:06 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-79275d86bc3so116318639f.0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 06:34:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1693229629; x=1693834429;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=gdfwWZuHfmu4XVauJdMgU5vlwPFHnOTjqbMeUAVj4NA=;
-        b=cunLBsMuV99MuZIqzzB3pvXS5IVO9fnMv09aXOWv62jRJVQ4OTjLxV4A7A8UYTqJyK
-         7PlpuRfKd9Q1/8O7A4qKZD5FOzUqNLAqIyTBGWygawTQHJ/3n2OZpt7YxNP84fc5IX5n
-         GSmv1es2mR3cTpDSGKOGmlzmAfube0w+g1/38=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693229629; x=1693834429;
-        h=in-reply-to:content-transfer-encoding:content-disposition
-         :mime-version:references:message-id:subject:cc:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=gdfwWZuHfmu4XVauJdMgU5vlwPFHnOTjqbMeUAVj4NA=;
-        b=JGn31W/7G6rtcoj982APuhjrVLYgO3pL+FfT4u4EnVvfpzWaS9KHY1F6rIUkXZrVaI
-         vMRimF66MSSOTK6yJTzTSryo5H3ok9oBbI/pjGi/N6TT8TI7pY08U7zMJPYmbUCqqM82
-         9pdQRmTps3pUcmoIf+jEF3Oz3Rf3aKc6zqgNv6uZBFN9V216uY6ZwfppiRDx9hbxgpEP
-         3qNHR8Wgz7NTClNL9vimZuQcSHpshkzY4EoauVITdwJxDtfwwd+OaFJYnmUc/xtm86fq
-         SZXBxUWzjxcj8A48dEGz2/sGmQWeCGRXVxYNTaa36K9ct9NXa2ZSVjTsDAS/KXKClHup
-         Wu9Q==
-X-Gm-Message-State: AOJu0YwInf3mMK004bO20opaQj5ivUCYdNjv1NBPyJMVQAHfXNbIottI
-        6vLOr/7V9k9NWtg/Wqcz0nF6pg==
-X-Google-Smtp-Source: AGHT+IF5+VfM0BVFTCOXKLdn6eWCMQ6wX7z/wEgNm8jXMcm1bcG9fXtJVfR5TJ+0nSKOdMNnfxE9Yg==
-X-Received: by 2002:a5e:cb07:0:b0:785:5917:a35f with SMTP id p7-20020a5ecb07000000b007855917a35fmr16961160iom.8.1693229629617;
-        Mon, 28 Aug 2023 06:33:49 -0700 (PDT)
-Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id eh25-20020a056638299900b00433dd6c78b0sm2445541jab.97.2023.08.28.06.33.48
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 06:33:48 -0700 (PDT)
-Date:   Mon, 28 Aug 2023 13:33:48 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     Huacai Chen <chenhuacai@kernel.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Z qiang <qiang.zhang1211@gmail.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
-Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
-Message-ID: <20230828133348.GA1553000@google.com>
-References: <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
- <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop>
- <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
- <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop>
- <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
- <20230825232807.GA97898@google.com>
- <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
- <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
- <CAEXW_YS5dVVOQvO6tWwF7mrgtHiYgVKP_TAipzBNiaFqWDzdeQ@mail.gmail.com>
- <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop>
+        with ESMTP id S230439AbjH1NzQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 09:55:16 -0400
+Received: from esa.microchip.iphmx.com (esa.microchip.iphmx.com [68.232.154.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990D3CE;
+        Mon, 28 Aug 2023 06:55:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=microchip.com; i=@microchip.com; q=dns/txt; s=mchp;
+  t=1693230913; x=1724766913;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=zP+aR1qLi8yYPI0boF+W89QBgdXfE3+6S0i6OY6bCxA=;
+  b=oa6iYjE1x/Y6/hpqI+Wk4O2jaacbquptomDggpYU4HxQV9FNsiHhrDrO
+   YIcUwAg3reJIviGi5tlDJ3C2NJLiDdWAy+I+nB56LE1fONbIbB4V8rpQ7
+   HaYOS6ktFIvH/Ehz1ZClHCe1EfLg057wLQWW3cX+6Rqt480G3KiRXBLNz
+   A/0d+yJf30T9pdssfgaYQhajiIUPJGRFe0oS0VMYw+w3zfKixudpziZmo
+   Dh+W6xALtlQkuaOSAzdH/GX0nk/O+GAoygKL8ii0z6JFPvsCtoAwO8Ijm
+   XxTZ9jag5qtq7qd6h8SaPC+v1wkbJyaEAxVKwTbxbivp349Nr3nLahjCr
+   w==;
+X-IronPort-AV: E=Sophos;i="6.02,207,1688454000"; 
+   d="asc'?scan'208";a="168669658"
+X-Amp-Result: UNKNOWN
+X-Amp-Original-Verdict: FILE UNKNOWN
+Received: from unknown (HELO email.microchip.com) ([170.129.1.10])
+  by esa6.microchip.iphmx.com with ESMTP/TLS/AES256-SHA256; 28 Aug 2023 06:55:12 -0700
+Received: from chn-vm-ex03.mchp-main.com (10.10.85.151) by
+ chn-vm-ex01.mchp-main.com (10.10.85.143) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.1.2507.21; Mon, 28 Aug 2023 06:54:36 -0700
+Received: from wendy (10.10.85.11) by chn-vm-ex03.mchp-main.com (10.10.85.151)
+ with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.21 via Frontend
+ Transport; Mon, 28 Aug 2023 06:54:33 -0700
+Date:   Mon, 28 Aug 2023 14:53:51 +0100
+From:   Conor Dooley <conor.dooley@microchip.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <patches@lists.linux.dev>,
+        <linux-kernel@vger.kernel.org>, <torvalds@linux-foundation.org>,
+        <akpm@linux-foundation.org>, <linux@roeck-us.net>,
+        <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>
+Subject: Re: [PATCH 6.1 000/122] 6.1.50-rc1 review
+Message-ID: <20230828-clasp-reformat-1d6c70a835dd@wendy>
+References: <20230828101156.480754469@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: multipart/signed; micalg=pgp-sha256;
+        protocol="application/pgp-signature"; boundary="+9/25Ag1w0lpe2Cj"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 03:47:12AM -0700, Paul E. McKenney wrote:
-> On Sun, Aug 27, 2023 at 06:11:40PM -0400, Joel Fernandes wrote:
-> > On Sun, Aug 27, 2023 at 1:51 AM Huacai Chen <chenhuacai@kernel.org> wrote:
-> > [..]
-> > > > > > > The only way I know of to avoid these sorts of false positives is for
-> > > > > > > the user to manually suppress all timeouts (perhaps using a kernel-boot
-> > > > > > > parameter for your early-boot case), do the gdb work, and then unsuppress
-> > > > > > > all stalls.  Even that won't work for networking, because the other
-> > > > > > > system's clock will be running throughout.
-> > > > > > >
-> > > > > > > In other words, from what I know now, there is no perfect solution.
-> > > > > > > Therefore, there are sharp limits to the complexity of any solution that
-> > > > > > > I will be willing to accept.
-> > > > > > I think the simplest solution is (I hope Joel will not angry):
-> > > > >
-> > > > > Not angry at all, just want to help. ;-). The problem is the 300*HZ solution
-> > > > > will also effect the VM workloads which also do a similar reset.  Allow me few
-> > > > > days to see if I can take a shot at fixing it slightly differently. I am
-> > > > > trying Paul's idea of setting jiffies at a later time. I think it is doable.
-> > > > > I think the advantage of doing this is it will make stall detection more
-> > > > > robust in this face of these gaps in jiffie update. And that solution does
-> > > > > not even need us to rely on ktime (and all the issues that come with that).
-> > > > >
-> > > >
-> > > > I wrote a patch similar to Paul's idea and sent it out for review, the
-> > > > advantage being it purely is based on jiffies. Could you try it out
-> > > > and let me know?
-> > > If you can cc my gmail <chenhuacai@gmail.com>, that could be better.
-> > 
-> > Sure, will do.
-> > 
-> > > I have read your patch, maybe the counter (nr_fqs_jiffies_stall)
-> > > should be atomic_t and we should use atomic operation to decrement its
-> > > value. Because rcu_gp_fqs() can be run concurrently, and we may miss
-> > > the (nr_fqs == 1) condition.
-> > 
-> > I don't think so. There is only 1 place where RMW operation happens
-> > and rcu_gp_fqs() is called only from the GP kthread. So a concurrent
-> > RMW (and hence a lost update) is not possible.
-> 
-> Huacai, is your concern that the gdb user might have created a script
-> (for example, printing a variable or two, then automatically continuing),
-> so that breakpoints could happen in quick successsion, such that the
-> second breakpoint might run concurrently with rcu_gp_fqs()?
-> 
-> If this can really happen, the point that Joel makes is a good one, namely
-> that rcu_gp_fqs() is single-threaded and (absent rcutorture) runs only
-> once every few jiffies.  And gdb breakpoints, even with scripting, should
-> also be rather rare.  So if this is an issue, a global lock should do the
-> trick, perhaps even one of the existing locks in the rcu_state structure.
-> The result should then be just as performant/scalable and a lot simpler
-> than use of atomics.
+--+9/25Ag1w0lpe2Cj
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-Thanks Paul and Huacai, also I was thinking in the event of such concurrent
-breakpoint stalling jiffies updates but GP thread / rcu_gp_fqs() chugging
-along, we could also make the patch more robust for such a situation as
-follows (diff on top of previous patch [1]). Thoughts?
+On Mon, Aug 28, 2023 at 12:11:55PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.1.50 release.
+> There are 122 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-Also if someone sets a breakpoint right after the "nr_fqs == 1" check, then
-they are kind of asking for it anyway since the GP kthread getting
-stalled is an actual reason for RCU stalls (infact rcutorture has a test mode
-for it even :P) and as such the false-positive may not be that false. ;-)
+Tested-by: Conor Dooley <conor.dooley@microchip.com>
 
-Btw apologies for forgetting to CC Thomas on [1] since he is involved in the
-timekeeping discussions. I relied on "git send-email" to populate the Cc list
-but did not add Cc: to the patch.
+Thanks,
+Conor.
 
-[1] https://lore.kernel.org/all/20230827025349.4161262-1-joel@joelfernandes.org/
+--+9/25Ag1w0lpe2Cj
+Content-Type: application/pgp-signature; name="signature.asc"
 
----8<-----------------------
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/kernel/rcu/tree.c b/kernel/rcu/tree.c
-index 9273f2318ea1..ffb165a2ef41 100644
---- a/kernel/rcu/tree.c
-+++ b/kernel/rcu/tree.c
-@@ -1559,13 +1559,15 @@ static void rcu_gp_fqs(bool first_time)
- 	WRITE_ONCE(rcu_state.n_force_qs, rcu_state.n_force_qs + 1);
- 
- 	WARN_ON_ONCE(nr_fqs > 3);
--	if (nr_fqs) {
-+	/* Only countdown nr_fqs for stall purposes if jiffies moves. */
-+	if (nr_fqs && jiffies != READ_ONCE(rcu_state.jiffies_last_fqs)) {
- 		if (nr_fqs == 1) {
- 			WRITE_ONCE(rcu_state.jiffies_stall,
- 				   jiffies + rcu_jiffies_till_stall_check());
- 		}
- 		WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, --nr_fqs);
- 	}
-+	WRITE_ONCE(rcu_state.jiffies_last_fqs, jiffies);
- 
- 	if (first_time) {
- 		/* Collect dyntick-idle snapshots. */
-diff --git a/kernel/rcu/tree.h b/kernel/rcu/tree.h
-index e9821a8422db..72128e348fa1 100644
---- a/kernel/rcu/tree.h
-+++ b/kernel/rcu/tree.h
-@@ -386,6 +386,8 @@ struct rcu_state {
- 						/*  in jiffies. */
- 	unsigned long jiffies_stall;		/* Time at which to check */
- 						/*  for CPU stalls. */
-+	unsigned long jiffies_last_fqs;		/* jiffies value at last FQS.
-+						   to confirm jiffies moves. */
- 	int nr_fqs_jiffies_stall;		/* Number of fqs loops after
- 						 * which read jiffies and set
- 						 * jiffies_stall. Stall
-diff --git a/kernel/rcu/tree_stall.h b/kernel/rcu/tree_stall.h
-index a2fa6b22e248..0ddd22afbc3a 100644
---- a/kernel/rcu/tree_stall.h
-+++ b/kernel/rcu/tree_stall.h
-@@ -160,6 +160,7 @@ void rcu_cpu_stall_reset(void)
- {
- 	WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, 3);
- 	WRITE_ONCE(rcu_state.jiffies_stall, ULONG_MAX);
-+	WRITE_ONCE(rcu_state.jiffies_last_fqs, 0);
- }
- 
- //////////////////////////////////////////////////////////////////////////////
-@@ -177,6 +178,7 @@ static void record_gp_stall_check_time(void)
- 	smp_mb(); // ->gp_start before ->jiffies_stall and caller's ->gp_seq.
- 	WRITE_ONCE(rcu_state.nr_fqs_jiffies_stall, 0);
- 	WRITE_ONCE(rcu_state.jiffies_stall, j + j1);
-+	WRITE_ONCE(rcu_state.jiffies_last_fqs, 0);
- 	rcu_state.jiffies_resched = j + j1 / 2;
- 	rcu_state.n_force_qs_gpstart = READ_ONCE(rcu_state.n_force_qs);
- }
+iHUEABYIAB0WIQRh246EGq/8RLhDjO14tDGHoIJi0gUCZOym7wAKCRB4tDGHoIJi
+0t/CAP99hGJt04bJe6pBAhOYBVGxtUChtUyQtPDCVKdfwkviMgD8CGUrKV+uSPhg
+NnrpBgREctlIF3C+aiyuJUHcsSEMCww=
+=mRPi
+-----END PGP SIGNATURE-----
+
+--+9/25Ag1w0lpe2Cj--
