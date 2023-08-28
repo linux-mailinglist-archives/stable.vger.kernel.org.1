@@ -2,52 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 627F978AA0A
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA3C178ABFE
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230498AbjH1KSl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:18:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48550 "EHLO
+        id S231609AbjH1KgM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:36:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231178AbjH1KST (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:19 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE37B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:18:12 -0700 (PDT)
+        with ESMTP id S231657AbjH1Kf5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC6B7A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 30A0D63714
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:18:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EE59C433C8;
-        Mon, 28 Aug 2023 10:18:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 49FDF61562
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA80C433C8;
+        Mon, 28 Aug 2023 10:35:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217891;
-        bh=HjrW3k8GSE7NNhuU53TgzSivbrVAKMVqHUqZfTQle5E=;
+        s=korg; t=1693218953;
+        bh=7hD1PHYwk7zIypdCGx1F62BF7bVFxCckMSlQtvyicbk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2ZIVkZWSIcT9eKNiFHYc2MHCtD3aCKAVWdzZ0fudRo4/LiSUYHQ/3SGQceDL0fuoq
-         cPUeK27xFhIg/lBSJXlucRTPVHzOlf8hKNJoHqY4wPkAhCzU5trhQmEGBk26lU4IUh
-         k0/BdzMd6LP6dyAW++Je/PHMG5p2gRms1LlFLdKQ=
+        b=gTnWxI0drA7uXHy7Fsyw4cXSTDa+bL0qm/WWm6RMcvkaoIGGw55xurMJjwmvXnuVG
+         Z192LEjs7pPMuLZCnIxX2rvFQAkPer5cDIWYjMKwMl8RMhBcQ4cko89KR2uSeRK44f
+         TJoTdZzIBEgevwY7C5GGtLzIoZ6WUiFTOOK6A6I0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        patches@lists.linux.dev,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Nikolay Aleksandrov <razor@blackwall.org>,
         Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 020/129] dccp: annotate data-races in dccp_poll()
-Date:   Mon, 28 Aug 2023 12:11:39 +0200
-Message-ID: <20230828101158.057251852@linuxfoundation.org>
+Subject: [PATCH 5.4 003/158] selftests: forwarding: tc_flower: Relax success criterion
+Date:   Mon, 28 Aug 2023 12:11:40 +0200
+Message-ID: <20230828101157.430388155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,84 +60,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-[ Upstream commit cba3f1786916063261e3e5ccbb803abc325b24ef ]
+[ Upstream commit 9ee37e53e7687654b487fc94e82569377272a7a8 ]
 
-We changed tcp_poll() over time, bug never updated dccp.
+The test checks that filters that match on source or destination MAC
+were only hit once. A host can send more than one packet with a given
+source or destination MAC, resulting in failures.
 
-Note that we also could remove dccp instead of maintaining it.
+Fix by relaxing the success criterion and instead check that the filters
+were not hit zero times. Using tc_check_at_least_x_packets() is also an
+option, but it is not available in older kernels.
 
-Fixes: 7c657876b63c ("[DCCP]: Initial implementation")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Link: https://lore.kernel.org/r/20230818015820.2701595-1-edumazet@google.com
+Fixes: 07e5c75184a1 ("selftests: forwarding: Introduce tc flower matching tests")
+Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
+Link: https://lore.kernel.org/r/20230808141503.4060661-13-idosch@nvidia.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/dccp/proto.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ tools/testing/selftests/net/forwarding/tc_flower.sh | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/net/dccp/proto.c b/net/dccp/proto.c
-index 18873f2308ec8..f3494cb5fab04 100644
---- a/net/dccp/proto.c
-+++ b/net/dccp/proto.c
-@@ -315,11 +315,15 @@ EXPORT_SYMBOL_GPL(dccp_disconnect);
- __poll_t dccp_poll(struct file *file, struct socket *sock,
- 		       poll_table *wait)
- {
--	__poll_t mask;
- 	struct sock *sk = sock->sk;
-+	__poll_t mask;
-+	u8 shutdown;
-+	int state;
+diff --git a/tools/testing/selftests/net/forwarding/tc_flower.sh b/tools/testing/selftests/net/forwarding/tc_flower.sh
+index b11d8e6b5bc14..b7cdf75efb5f9 100755
+--- a/tools/testing/selftests/net/forwarding/tc_flower.sh
++++ b/tools/testing/selftests/net/forwarding/tc_flower.sh
+@@ -49,8 +49,8 @@ match_dst_mac_test()
+ 	tc_check_packets "dev $h2 ingress" 101 1
+ 	check_fail $? "Matched on a wrong filter"
  
- 	sock_poll_wait(file, sock, wait);
--	if (sk->sk_state == DCCP_LISTEN)
-+
-+	state = inet_sk_state_load(sk);
-+	if (state == DCCP_LISTEN)
- 		return inet_csk_listen_poll(sk);
+-	tc_check_packets "dev $h2 ingress" 102 1
+-	check_err $? "Did not match on correct filter"
++	tc_check_packets "dev $h2 ingress" 102 0
++	check_fail $? "Did not match on correct filter"
  
- 	/* Socket is not locked. We are protected from async events
-@@ -328,20 +332,21 @@ __poll_t dccp_poll(struct file *file, struct socket *sock,
- 	 */
+ 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
+ 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
+@@ -75,8 +75,8 @@ match_src_mac_test()
+ 	tc_check_packets "dev $h2 ingress" 101 1
+ 	check_fail $? "Matched on a wrong filter"
  
- 	mask = 0;
--	if (sk->sk_err)
-+	if (READ_ONCE(sk->sk_err))
- 		mask = EPOLLERR;
-+	shutdown = READ_ONCE(sk->sk_shutdown);
+-	tc_check_packets "dev $h2 ingress" 102 1
+-	check_err $? "Did not match on correct filter"
++	tc_check_packets "dev $h2 ingress" 102 0
++	check_fail $? "Did not match on correct filter"
  
--	if (sk->sk_shutdown == SHUTDOWN_MASK || sk->sk_state == DCCP_CLOSED)
-+	if (shutdown == SHUTDOWN_MASK || state == DCCP_CLOSED)
- 		mask |= EPOLLHUP;
--	if (sk->sk_shutdown & RCV_SHUTDOWN)
-+	if (shutdown & RCV_SHUTDOWN)
- 		mask |= EPOLLIN | EPOLLRDNORM | EPOLLRDHUP;
- 
- 	/* Connected? */
--	if ((1 << sk->sk_state) & ~(DCCPF_REQUESTING | DCCPF_RESPOND)) {
-+	if ((1 << state) & ~(DCCPF_REQUESTING | DCCPF_RESPOND)) {
- 		if (atomic_read(&sk->sk_rmem_alloc) > 0)
- 			mask |= EPOLLIN | EPOLLRDNORM;
- 
--		if (!(sk->sk_shutdown & SEND_SHUTDOWN)) {
-+		if (!(shutdown & SEND_SHUTDOWN)) {
- 			if (sk_stream_is_writeable(sk)) {
- 				mask |= EPOLLOUT | EPOLLWRNORM;
- 			} else {  /* send SIGIO later */
-@@ -359,7 +364,6 @@ __poll_t dccp_poll(struct file *file, struct socket *sock,
- 	}
- 	return mask;
- }
--
- EXPORT_SYMBOL_GPL(dccp_poll);
- 
- int dccp_ioctl(struct sock *sk, int cmd, unsigned long arg)
+ 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
+ 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
 -- 
 2.40.1
 
