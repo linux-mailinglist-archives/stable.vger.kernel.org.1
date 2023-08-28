@@ -2,53 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DB9978AA66
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 907A278ABA0
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231149AbjH1KVz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:21:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33416 "EHLO
+        id S231510AbjH1KdA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:33:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231163AbjH1KV1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108C9103
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:09 -0700 (PDT)
+        with ESMTP id S231610AbjH1Kcu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507211BC
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5FC5638E3
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01774C433C7;
-        Mon, 28 Aug 2023 10:21:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A68DD63D33
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7EAC433CB;
+        Mon, 28 Aug 2023 10:31:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218068;
-        bh=7v3AYpl3jalSDTII3sZEKIgUm3yaZ9cv4EP3kjiAPWg=;
+        s=korg; t=1693218709;
+        bh=Jx7J2RU36fPRVHgSAFaLzVrEhyJ2afFvI0CnEDjM090=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FWib7qfk4wpDbEuKw8nWyFXOsIERz7ZTuw5nWzvYWyczNLokr+7dOVAXSPDhv5jBl
-         /vvolxelAYIrJtB/ZzBgNwi3JndjLp5ojpwsGhtUi8Jr0qRgg/Q+sKVfLuAyp6UXc5
-         IgCkA6qFySmLjJG57ByRGOL0ZOToEWzS/TXFtVUo=
+        b=zpjM5exxVwL/BF7pGWpeNcx0vlBzTl+h4mG4yWd0c4LB3MY7o1SqBe6g6yUsC4Nbk
+         fEh/M653xgEtJXkXbu+qqazsPuFglrgPA39Znt3fn9QE/yVXZzRzc2fQixTeRsgI1C
+         7kfxcU0XK2Xv5+xvb1IaueF5QAorVZcCJaUvLH5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
-        Dietmar Eggemann <dietmar.eggemann@arm.com>,
-        Juri Lelli <juri.lelli@redhat.com>, Tejun Heo <tj@kernel.org>,
-        "Qais Yousef (Google)" <qyousef@layalina.io>
-Subject: [PATCH 6.4 084/129] cgroup/cpuset: Free DL BW in case can_attach() fails
+        patches@lists.linux.dev, Sasha Neftin <sasha.neftin@intel.com>,
+        Naama Meir <naamax.meir@linux.intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 048/122] igc: Fix the typo in the PTM Control macro
 Date:   Mon, 28 Aug 2023 12:12:43 +0200
-Message-ID: <20230828101200.138051720@linuxfoundation.org>
+Message-ID: <20230828101158.010030639@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,199 +59,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dietmar Eggemann <dietmar.eggemann@arm.com>
+From: Sasha Neftin <sasha.neftin@intel.com>
 
-commit 2ef269ef1ac006acf974793d975539244d77b28f upstream.
+[ Upstream commit de43975721b97283d5f17eea4228faddf08f2681 ]
 
-cpuset_can_attach() can fail. Postpone DL BW allocation until all tasks
-have been checked. DL BW is not allocated per-task but as a sum over
-all DL tasks migrating.
+The IGC_PTM_CTRL_SHRT_CYC defines the time between two consecutive PTM
+requests. The bit resolution of this field is six bits. That bit five was
+missing in the mask. This patch comes to correct the typo in the
+IGC_PTM_CTRL_SHRT_CYC macro.
 
-If multiple controllers are attached to the cgroup next to the cpuset
-controller a non-cpuset can_attach() can fail. In this case free DL BW
-in cpuset_cancel_attach().
-
-Finally, update cpuset DL task count (nr_deadline_tasks) only in
-cpuset_attach().
-
-Suggested-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
+Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
+Tested-by: Naama Meir <naamax.meir@linux.intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
+Link: https://lore.kernel.org/r/20230821171721.2203572-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/sched.h  |    2 -
- kernel/cgroup/cpuset.c |   53 ++++++++++++++++++++++++++++++++++++++++++++-----
- kernel/sched/core.c    |   17 +--------------
- 3 files changed, 51 insertions(+), 21 deletions(-)
+ drivers/net/ethernet/intel/igc/igc_defines.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/sched.h
-+++ b/include/linux/sched.h
-@@ -1852,7 +1852,7 @@ current_restore_flags(unsigned long orig
- }
+diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
+index dbfa4b9dee066..90ca01889cd82 100644
+--- a/drivers/net/ethernet/intel/igc/igc_defines.h
++++ b/drivers/net/ethernet/intel/igc/igc_defines.h
+@@ -536,7 +536,7 @@
+ #define IGC_PTM_CTRL_START_NOW	BIT(29) /* Start PTM Now */
+ #define IGC_PTM_CTRL_EN		BIT(30) /* Enable PTM */
+ #define IGC_PTM_CTRL_TRIG	BIT(31) /* PTM Cycle trigger */
+-#define IGC_PTM_CTRL_SHRT_CYC(usec)	(((usec) & 0x2f) << 2)
++#define IGC_PTM_CTRL_SHRT_CYC(usec)	(((usec) & 0x3f) << 2)
+ #define IGC_PTM_CTRL_PTM_TO(usec)	(((usec) & 0xff) << 8)
  
- extern int cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
--extern int task_can_attach(struct task_struct *p, const struct cpumask *cs_effective_cpus);
-+extern int task_can_attach(struct task_struct *p);
- extern int dl_bw_alloc(int cpu, u64 dl_bw);
- extern void dl_bw_free(int cpu, u64 dl_bw);
- #ifdef CONFIG_SMP
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -198,6 +198,8 @@ struct cpuset {
- 	 * know when to rebuild associated root domain bandwidth information.
- 	 */
- 	int nr_deadline_tasks;
-+	int nr_migrate_dl_tasks;
-+	u64 sum_migrate_dl_bw;
- 
- 	/* Invalid partition error code, not lock protected */
- 	enum prs_errcode prs_err;
-@@ -2496,16 +2498,23 @@ static int cpuset_can_attach_check(struc
- 	return 0;
- }
- 
-+static void reset_migrate_dl_data(struct cpuset *cs)
-+{
-+	cs->nr_migrate_dl_tasks = 0;
-+	cs->sum_migrate_dl_bw = 0;
-+}
-+
- /* Called by cgroups to determine if a cpuset is usable; cpuset_mutex held */
- static int cpuset_can_attach(struct cgroup_taskset *tset)
- {
- 	struct cgroup_subsys_state *css;
--	struct cpuset *cs;
-+	struct cpuset *cs, *oldcs;
- 	struct task_struct *task;
- 	int ret;
- 
- 	/* used later by cpuset_attach() */
- 	cpuset_attach_old_cs = task_cs(cgroup_taskset_first(tset, &css));
-+	oldcs = cpuset_attach_old_cs;
- 	cs = css_cs(css);
- 
- 	mutex_lock(&cpuset_mutex);
-@@ -2516,7 +2525,7 @@ static int cpuset_can_attach(struct cgro
- 		goto out_unlock;
- 
- 	cgroup_taskset_for_each(task, css, tset) {
--		ret = task_can_attach(task, cs->effective_cpus);
-+		ret = task_can_attach(task);
- 		if (ret)
- 			goto out_unlock;
- 		ret = security_task_setscheduler(task);
-@@ -2524,11 +2533,31 @@ static int cpuset_can_attach(struct cgro
- 			goto out_unlock;
- 
- 		if (dl_task(task)) {
--			cs->nr_deadline_tasks++;
--			cpuset_attach_old_cs->nr_deadline_tasks--;
-+			cs->nr_migrate_dl_tasks++;
-+			cs->sum_migrate_dl_bw += task->dl.dl_bw;
- 		}
- 	}
- 
-+	if (!cs->nr_migrate_dl_tasks)
-+		goto out_success;
-+
-+	if (!cpumask_intersects(oldcs->effective_cpus, cs->effective_cpus)) {
-+		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
-+
-+		if (unlikely(cpu >= nr_cpu_ids)) {
-+			reset_migrate_dl_data(cs);
-+			ret = -EINVAL;
-+			goto out_unlock;
-+		}
-+
-+		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
-+		if (ret) {
-+			reset_migrate_dl_data(cs);
-+			goto out_unlock;
-+		}
-+	}
-+
-+out_success:
- 	/*
- 	 * Mark attach is in progress.  This makes validate_change() fail
- 	 * changes which zero cpus/mems_allowed.
-@@ -2551,6 +2580,14 @@ static void cpuset_cancel_attach(struct
- 	cs->attach_in_progress--;
- 	if (!cs->attach_in_progress)
- 		wake_up(&cpuset_attach_wq);
-+
-+	if (cs->nr_migrate_dl_tasks) {
-+		int cpu = cpumask_any(cs->effective_cpus);
-+
-+		dl_bw_free(cpu, cs->sum_migrate_dl_bw);
-+		reset_migrate_dl_data(cs);
-+	}
-+
- 	mutex_unlock(&cpuset_mutex);
- }
- 
-@@ -2651,6 +2688,12 @@ static void cpuset_attach(struct cgroup_
- out:
- 	cs->old_mems_allowed = cpuset_attach_nodemask_to;
- 
-+	if (cs->nr_migrate_dl_tasks) {
-+		cs->nr_deadline_tasks += cs->nr_migrate_dl_tasks;
-+		oldcs->nr_deadline_tasks -= cs->nr_migrate_dl_tasks;
-+		reset_migrate_dl_data(cs);
-+	}
-+
- 	cs->attach_in_progress--;
- 	if (!cs->attach_in_progress)
- 		wake_up(&cpuset_attach_wq);
-@@ -3330,7 +3373,7 @@ static int cpuset_can_fork(struct task_s
- 	if (ret)
- 		goto out_unlock;
- 
--	ret = task_can_attach(task, cs->effective_cpus);
-+	ret = task_can_attach(task);
- 	if (ret)
- 		goto out_unlock;
- 
---- a/kernel/sched/core.c
-+++ b/kernel/sched/core.c
-@@ -9294,8 +9294,7 @@ int cpuset_cpumask_can_shrink(const stru
- 	return ret;
- }
- 
--int task_can_attach(struct task_struct *p,
--		    const struct cpumask *cs_effective_cpus)
-+int task_can_attach(struct task_struct *p)
- {
- 	int ret = 0;
- 
-@@ -9308,21 +9307,9 @@ int task_can_attach(struct task_struct *
- 	 * success of set_cpus_allowed_ptr() on all attached tasks
- 	 * before cpus_mask may be changed.
- 	 */
--	if (p->flags & PF_NO_SETAFFINITY) {
-+	if (p->flags & PF_NO_SETAFFINITY)
- 		ret = -EINVAL;
--		goto out;
--	}
- 
--	if (dl_task(p) && !cpumask_intersects(task_rq(p)->rd->span,
--					      cs_effective_cpus)) {
--		int cpu = cpumask_any_and(cpu_active_mask, cs_effective_cpus);
--
--		if (unlikely(cpu >= nr_cpu_ids))
--			return -EINVAL;
--		ret = dl_bw_alloc(cpu, p->dl.dl_bw);
--	}
--
--out:
- 	return ret;
- }
- 
+ #define IGC_PTM_SHORT_CYC_DEFAULT	10  /* Default Short/interrupted cycle interval */
+-- 
+2.40.1
+
 
 
