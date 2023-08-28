@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2FEC478AB23
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:28:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE70878AA8A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231345AbjH1K2P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:28:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48194 "EHLO
+        id S230460AbjH1KXT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231411AbjH1K16 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:27:58 -0400
+        with ESMTP id S231285AbjH1KWo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 714AAB9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:27:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E3012F
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 07DE863B8F
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:27:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E00FC433C7;
-        Mon, 28 Aug 2023 10:27:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 734566389D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 879B4C433C7;
+        Mon, 28 Aug 2023 10:22:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218474;
-        bh=zEHA5PkNWABtaxztyVT2ydQM0EBHKJI1m7YLPPv/aIU=;
+        s=korg; t=1693218156;
+        bh=EdcvGE8gu/J2WzXDbfp5VogQ2HpGey3+enwsXkztXIs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iYBIlAGriV8Dysm0qys7u9db/6nO3N2T5kr7EssjbrQTrjCAe0sfk806s4mxkli2K
-         c+84n04Imqvm632VQk6glPCQsDUT73I9JYKY7TKilqApR3gkhDaEIwqdHkI4LWJeSP
-         yCleKPqZpY95YV7dbvOwu2d4bVG5IwRwkz98XNks=
+        b=2bkto+L0MDmWYbUvFmI/ifxVwgIYc+pwahPRKRnBrk1VoC15MbFdrwkSp6LWdgI+b
+         +eppmNlV9GuSvin8CvG0F5BAIROfG/3UiKVVi7/YOhwcrpN2q5bKa+hkoHnp7U4+hz
+         htpc6Z0I9EoS5S7ZrKZHgz+L//KYe4B//JH4HhSE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Stephen Boyd <sboyd@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 101/129] tracing: Fix memleak due to race between current_tracer and trace
+Subject: [PATCH 6.4 116/129] clk: Fix undefined reference to `clk_rate_exclusive_{get,put}
 Date:   Mon, 28 Aug 2023 12:13:15 +0200
-Message-ID: <20230828101156.993810953@linuxfoundation.org>
+Message-ID: <20230828101201.234353968@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,124 +56,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yejian <zhengyejian1@huawei.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit eecb91b9f98d6427d4af5fdb8f108f52572a39e7 ]
+[ Upstream commit 2746f13f6f1df7999001d6595b16f789ecc28ad1 ]
 
-Kmemleak report a leak in graph_trace_open():
+The COMMON_CLK config is not enabled in some of the architectures.
+This causes below build issues:
 
-  unreferenced object 0xffff0040b95f4a00 (size 128):
-    comm "cat", pid 204981, jiffies 4301155872 (age 99771.964s)
-    hex dump (first 32 bytes):
-      e0 05 e7 b4 ab 7d 00 00 0b 00 01 00 00 00 00 00 .....}..........
-      f4 00 01 10 00 a0 ff ff 00 00 00 00 65 00 10 00 ............e...
-    backtrace:
-      [<000000005db27c8b>] kmem_cache_alloc_trace+0x348/0x5f0
-      [<000000007df90faa>] graph_trace_open+0xb0/0x344
-      [<00000000737524cd>] __tracing_open+0x450/0xb10
-      [<0000000098043327>] tracing_open+0x1a0/0x2a0
-      [<00000000291c3876>] do_dentry_open+0x3c0/0xdc0
-      [<000000004015bcd6>] vfs_open+0x98/0xd0
-      [<000000002b5f60c9>] do_open+0x520/0x8d0
-      [<00000000376c7820>] path_openat+0x1c0/0x3e0
-      [<00000000336a54b5>] do_filp_open+0x14c/0x324
-      [<000000002802df13>] do_sys_openat2+0x2c4/0x530
-      [<0000000094eea458>] __arm64_sys_openat+0x130/0x1c4
-      [<00000000a71d7881>] el0_svc_common.constprop.0+0xfc/0x394
-      [<00000000313647bf>] do_el0_svc+0xac/0xec
-      [<000000002ef1c651>] el0_svc+0x20/0x30
-      [<000000002fd4692a>] el0_sync_handler+0xb0/0xb4
-      [<000000000c309c35>] el0_sync+0x160/0x180
+pwm-rz-mtu3.c:(.text+0x114):
+undefined reference to `clk_rate_exclusive_put'
+pwm-rz-mtu3.c:(.text+0x32c):
+undefined reference to `clk_rate_exclusive_get'
 
-The root cause is descripted as follows:
+Fix these issues by moving clk_rate_exclusive_{get,put} inside COMMON_CLK
+code block, as clk.c is enabled by COMMON_CLK.
 
-  __tracing_open() {  // 1. File 'trace' is being opened;
-    ...
-    *iter->trace = *tr->current_trace;  // 2. Tracer 'function_graph' is
-                                        //    currently set;
-    ...
-    iter->trace->open(iter);  // 3. Call graph_trace_open() here,
-                              //    and memory are allocated in it;
-    ...
-  }
-
-  s_start() {  // 4. The opened file is being read;
-    ...
-    *iter->trace = *tr->current_trace;  // 5. If tracer is switched to
-                                        //    'nop' or others, then memory
-                                        //    in step 3 are leaked!!!
-    ...
-  }
-
-To fix it, in s_start(), close tracer before switching then reopen the
-new tracer after switching. And some tracers like 'wakeup' may not update
-'iter->private' in some cases when reopen, then it should be cleared
-to avoid being mistakenly closed again.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230817125539.1646321-1-zhengyejian1@huawei.com
-
-Fixes: d7350c3f4569 ("tracing/core: make the read callbacks reentrants")
-Signed-off-by: Zheng Yejian <zhengyejian1@huawei.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Fixes: 55e9b8b7b806 ("clk: add clk_rate_exclusive api")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202307251752.vLfmmhYm-lkp@intel.com/
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20230725175140.361479-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/trace/trace.c              | 9 ++++++++-
- kernel/trace/trace_irqsoff.c      | 3 ++-
- kernel/trace/trace_sched_wakeup.c | 2 ++
- 3 files changed, 12 insertions(+), 2 deletions(-)
+ include/linux/clk.h | 80 ++++++++++++++++++++++-----------------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
 
-diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-index 9da7b10e56d23..f44c8f1fd3ec5 100644
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -3277,8 +3277,15 @@ static void *s_start(struct seq_file *m, loff_t *pos)
- 	 * will point to the same string as current_trace->name.
- 	 */
- 	mutex_lock(&trace_types_lock);
--	if (unlikely(tr->current_trace && iter->trace->name != tr->current_trace->name))
-+	if (unlikely(tr->current_trace && iter->trace->name != tr->current_trace->name)) {
-+		/* Close iter->trace before switching to the new current tracer */
-+		if (iter->trace->close)
-+			iter->trace->close(iter);
- 		*iter->trace = *tr->current_trace;
-+		/* Reopen the new current tracer */
-+		if (iter->trace->open)
-+			iter->trace->open(iter);
-+	}
- 	mutex_unlock(&trace_types_lock);
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 1ef0133242374..06f1b292f8a00 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -183,6 +183,39 @@ int clk_get_scaled_duty_cycle(struct clk *clk, unsigned int scale);
+  */
+ bool clk_is_match(const struct clk *p, const struct clk *q);
  
- #ifdef CONFIG_TRACER_MAX_TRACE
-diff --git a/kernel/trace/trace_irqsoff.c b/kernel/trace/trace_irqsoff.c
-index 98ea6d28df15d..0f36bb59970df 100644
---- a/kernel/trace/trace_irqsoff.c
-+++ b/kernel/trace/trace_irqsoff.c
-@@ -222,7 +222,8 @@ static void irqsoff_trace_open(struct trace_iterator *iter)
- {
- 	if (is_graph(iter->tr))
- 		graph_trace_open(iter);
++/**
++ * clk_rate_exclusive_get - get exclusivity over the rate control of a
++ *                          producer
++ * @clk: clock source
++ *
++ * This function allows drivers to get exclusive control over the rate of a
++ * provider. It prevents any other consumer to execute, even indirectly,
++ * opereation which could alter the rate of the provider or cause glitches
++ *
++ * If exlusivity is claimed more than once on clock, even by the same driver,
++ * the rate effectively gets locked as exclusivity can't be preempted.
++ *
++ * Must not be called from within atomic context.
++ *
++ * Returns success (0) or negative errno.
++ */
++int clk_rate_exclusive_get(struct clk *clk);
++
++/**
++ * clk_rate_exclusive_put - release exclusivity over the rate control of a
++ *                          producer
++ * @clk: clock source
++ *
++ * This function allows drivers to release the exclusivity it previously got
++ * from clk_rate_exclusive_get()
++ *
++ * The caller must balance the number of clk_rate_exclusive_get() and
++ * clk_rate_exclusive_put() calls.
++ *
++ * Must not be called from within atomic context.
++ */
++void clk_rate_exclusive_put(struct clk *clk);
++
+ #else
+ 
+ static inline int clk_notifier_register(struct clk *clk,
+@@ -236,6 +269,13 @@ static inline bool clk_is_match(const struct clk *p, const struct clk *q)
+ 	return p == q;
+ }
+ 
++static inline int clk_rate_exclusive_get(struct clk *clk)
++{
++	return 0;
++}
++
++static inline void clk_rate_exclusive_put(struct clk *clk) {}
++
+ #endif
+ 
+ #ifdef CONFIG_HAVE_CLK_PREPARE
+@@ -583,38 +623,6 @@ struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id);
+  */
+ struct clk *devm_get_clk_from_child(struct device *dev,
+ 				    struct device_node *np, const char *con_id);
+-/**
+- * clk_rate_exclusive_get - get exclusivity over the rate control of a
+- *                          producer
+- * @clk: clock source
+- *
+- * This function allows drivers to get exclusive control over the rate of a
+- * provider. It prevents any other consumer to execute, even indirectly,
+- * opereation which could alter the rate of the provider or cause glitches
+- *
+- * If exlusivity is claimed more than once on clock, even by the same driver,
+- * the rate effectively gets locked as exclusivity can't be preempted.
+- *
+- * Must not be called from within atomic context.
+- *
+- * Returns success (0) or negative errno.
+- */
+-int clk_rate_exclusive_get(struct clk *clk);
 -
-+	else
-+		iter->private = NULL;
- }
+-/**
+- * clk_rate_exclusive_put - release exclusivity over the rate control of a
+- *                          producer
+- * @clk: clock source
+- *
+- * This function allows drivers to release the exclusivity it previously got
+- * from clk_rate_exclusive_get()
+- *
+- * The caller must balance the number of clk_rate_exclusive_get() and
+- * clk_rate_exclusive_put() calls.
+- *
+- * Must not be called from within atomic context.
+- */
+-void clk_rate_exclusive_put(struct clk *clk);
  
- static void irqsoff_trace_close(struct trace_iterator *iter)
-diff --git a/kernel/trace/trace_sched_wakeup.c b/kernel/trace/trace_sched_wakeup.c
-index 11f4dbd9526b6..8041bd5e42624 100644
---- a/kernel/trace/trace_sched_wakeup.c
-+++ b/kernel/trace/trace_sched_wakeup.c
-@@ -287,6 +287,8 @@ static void wakeup_trace_open(struct trace_iterator *iter)
+ /**
+  * clk_enable - inform the system when the clock source should be running.
+@@ -974,14 +982,6 @@ static inline void clk_bulk_put_all(int num_clks, struct clk_bulk_data *clks) {}
+ 
+ static inline void devm_clk_put(struct device *dev, struct clk *clk) {}
+ 
+-
+-static inline int clk_rate_exclusive_get(struct clk *clk)
+-{
+-	return 0;
+-}
+-
+-static inline void clk_rate_exclusive_put(struct clk *clk) {}
+-
+ static inline int clk_enable(struct clk *clk)
  {
- 	if (is_graph(iter->tr))
- 		graph_trace_open(iter);
-+	else
-+		iter->private = NULL;
- }
- 
- static void wakeup_trace_close(struct trace_iterator *iter)
+ 	return 0;
 -- 
 2.40.1
 
