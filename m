@@ -2,52 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E0A978ABF3
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0E8178AD71
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231578AbjH1Kfj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34304 "EHLO
+        id S231899AbjH1Ksa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:48:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231645AbjH1KfV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:21 -0400
+        with ESMTP id S232226AbjH1Kr5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780F9AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA37710B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D76C63E95
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A47C433C7;
-        Mon, 28 Aug 2023 10:35:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA6106408B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2EFC433C8;
+        Mon, 28 Aug 2023 10:47:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218917;
-        bh=+JnsrZKGYYqd4Eog2BPpx674k/QBfgF3GZz/GhAOdW4=;
+        s=korg; t=1693219667;
+        bh=fIL4lUI0mtenToI5GPL97ZgDwoIBs2QZ+zAbt6X5uF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W+TweSq7yfcbOAzfHbXw9vaE+mGAj7+2xx83z6Guc5863VJ27nKlSJItMEfLpgx4o
-         Nz184OHEIcXxVB2jhdWNUXAhRxk7Z8j7QLl2uwYVqgk+k6EHEEc1FWcfaR+ckKYLEu
-         JLGTRGdJDISO+SACdPIhVUuZ62OQ5O3DGleLLNYQ=
+        b=j3u+2muc0zzsejwLh9A4/6olYh9jTJO0/7KnYtlKmL1ANAFIKPNq2ULq4qk4Lb3Tm
+         LfzZIF4053KB8XMqgnws+gh3DOmE7coZd2FnU5phvjuWgkYbdNyn8EkrXaVEQ4KMmD
+         XNRAQmHDwc3Mh0FCmgkGHs6/ppeDjnGTqfYtyRyA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yin Fengwei <fengwei.yin@intel.com>,
-        Yu Zhao <yuzhao@google.com>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Minchan Kim <minchan@kernel.org>,
-        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 110/122] madvise:madvise_free_pte_range(): dont use mapcount() against large folio for sharing check
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Abel Wu <wuyun.abel@bytedance.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 28/84] sock: annotate data-races around prot->memory_pressure
 Date:   Mon, 28 Aug 2023 12:13:45 +0200
-Message-ID: <20230828101200.083518183@linuxfoundation.org>
+Message-ID: <20230828101150.200332817@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -62,90 +57,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yin Fengwei <fengwei.yin@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 0e0e9bd5f7b9d40fd03b70092367247d52da1db0 upstream.
+[ Upstream commit 76f33296d2e09f63118db78125c95ef56df438e9 ]
 
-Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a
-folio") replaced the page_mapcount() with folio_mapcount() to check
-whether the folio is shared by other mapping.
+*prot->memory_pressure is read/writen locklessly, we need
+to add proper annotations.
 
-It's not correct for large folios. folio_mapcount() returns the total
-mapcount of large folio which is not suitable to detect whether the folio
-is shared.
+A recent commit added a new race, it is time to audit all accesses.
 
-Use folio_estimated_sharers() which returns a estimated number of shares.
-That means it's not 100% correct. It should be OK for madvise case here.
-
-User-visible effects is that the THP is skipped when user call madvise.
-But the correct behavior is THP should be split and processed then.
-
-NOTE: this change is a temporary fix to reduce the user-visible effects
-before the long term fix from David is ready.
-
-Link: https://lkml.kernel.org/r/20230808020917.2230692-4-fengwei.yin@intel.com
-Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
-Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-Reviewed-by: Yu Zhao <yuzhao@google.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2d0c88e84e48 ("sock: Fix misuse of sk_under_memory_pressure()")
+Fixes: 4d93df0abd50 ("[SCTP]: Rewrite of sctp buffer management code")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Abel Wu <wuyun.abel@bytedance.com>
+Reviewed-by: Shakeel Butt <shakeelb@google.com>
+Link: https://lore.kernel.org/r/20230818015132.2699348-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/mm.h |   19 +++++++++++++++++++
- mm/madvise.c       |    4 ++--
- 2 files changed, 21 insertions(+), 2 deletions(-)
+ include/net/sock.h | 7 ++++---
+ net/sctp/socket.c  | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -1727,6 +1727,25 @@ static inline size_t folio_size(struct f
- 	return PAGE_SIZE << folio_order(folio);
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 665e388593752..234196d904238 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1233,6 +1233,7 @@ struct proto {
+ 	/*
+ 	 * Pressure flag: try to collapse.
+ 	 * Technical note: it is used by multiple contexts non atomically.
++	 * Make sure to use READ_ONCE()/WRITE_ONCE() for all reads/writes.
+ 	 * All the __sk_mem_schedule() is of this nature: accounting
+ 	 * is strict, actions are advisory and have some latency.
+ 	 */
+@@ -1349,7 +1350,7 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
+ static inline bool sk_under_global_memory_pressure(const struct sock *sk)
+ {
+ 	return sk->sk_prot->memory_pressure &&
+-		!!*sk->sk_prot->memory_pressure;
++		!!READ_ONCE(*sk->sk_prot->memory_pressure);
  }
  
-+/**
-+ * folio_estimated_sharers - Estimate the number of sharers of a folio.
-+ * @folio: The folio.
-+ *
-+ * folio_estimated_sharers() aims to serve as a function to efficiently
-+ * estimate the number of processes sharing a folio. This is done by
-+ * looking at the precise mapcount of the first subpage in the folio, and
-+ * assuming the other subpages are the same. This may not be true for large
-+ * folios. If you want exact mapcounts for exact calculations, look at
-+ * page_mapcount() or folio_total_mapcount().
-+ *
-+ * Return: The estimated number of processes sharing a folio.
-+ */
-+static inline int folio_estimated_sharers(struct folio *folio)
-+{
-+	return page_mapcount(folio_page(folio, 0));
-+}
-+
-+
- #ifndef HAVE_ARCH_MAKE_PAGE_ACCESSIBLE
- static inline int arch_make_page_accessible(struct page *page)
+ static inline bool sk_under_memory_pressure(const struct sock *sk)
+@@ -1361,7 +1362,7 @@ static inline bool sk_under_memory_pressure(const struct sock *sk)
+ 	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
+ 		return true;
+ 
+-	return !!*sk->sk_prot->memory_pressure;
++	return !!READ_ONCE(*sk->sk_prot->memory_pressure);
+ }
+ 
+ static inline long
+@@ -1415,7 +1416,7 @@ proto_memory_pressure(struct proto *prot)
  {
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -654,8 +654,8 @@ static int madvise_free_pte_range(pmd_t
- 		 * deactivate all pages.
- 		 */
- 		if (folio_test_large(folio)) {
--			if (folio_mapcount(folio) != 1)
--				goto out;
-+			if (folio_estimated_sharers(folio) != 1)
-+				break;
- 			folio_get(folio);
- 			if (!folio_trylock(folio)) {
- 				folio_put(folio);
+ 	if (!prot->memory_pressure)
+ 		return false;
+-	return !!*prot->memory_pressure;
++	return !!READ_ONCE(*prot->memory_pressure);
+ }
+ 
+ 
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 534364bb871a3..fa4d31b507f29 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -97,7 +97,7 @@ struct percpu_counter sctp_sockets_allocated;
+ 
+ static void sctp_enter_memory_pressure(struct sock *sk)
+ {
+-	sctp_memory_pressure = 1;
++	WRITE_ONCE(sctp_memory_pressure, 1);
+ }
+ 
+ 
+-- 
+2.40.1
+
 
 
