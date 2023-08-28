@@ -2,45 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3039B78AD63
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2606E78AD0B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231996AbjH1KsA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43746 "EHLO
+        id S231894AbjH1KpV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232042AbjH1Krb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:31 -0400
+        with ESMTP id S231952AbjH1KpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A41B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54730CD2
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 840B664215
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917F0C433C7;
-        Mon, 28 Aug 2023 10:47:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A70C6412D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AC47C433C7;
+        Mon, 28 Aug 2023 10:43:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219634;
-        bh=JMEQ2lTuWmMq36dAwXU0ua9QcoILtx6ag66yk1+vWp8=;
+        s=korg; t=1693219429;
+        bh=aUwte5xAa7Ov/eVPU7wJ0JoIDir+KVMYXds6BTzq7HU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y3sWVeHxzhTqLaRtKhSBacycgs124Gpxjrjjct0QrcbpVCjUfNXJJVsDRiBsmKH7G
-         bOtA9mR7zj+ViPBRbAiYoUG3HxI89hpOmA5zYmOQ+L5v4hX1kKAIESHtAIhwI185UL
-         RBzw8i4L0kVIJ+uJ1fv+e8GJ0lCtkJEjUEqc0WFU=
+        b=hmIWIIxFg6ikHg54L4krNc02Kir8d/IXDoksjJIrV+7cJ96iQn8dQVEvFYIR1eK4L
+         000VY5fQtXUGKwPxljAgUbuYwo2g7y6dl8hkHVBxpQMc3RmyNCyin6dzQshSjluTG7
+         /bk8hn6VNSPNOR3iwgrbD0Ygd2ohQYTJMQE21O+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
-        Mike Snitzer <snitzer@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 17/84] dm integrity: reduce vmalloc space footprint on 32-bit architectures
+Subject: [PATCH 5.15 33/89] net: validate veth and vxcan peer ifindexes
 Date:   Mon, 28 Aug 2023 12:13:34 +0200
-Message-ID: <20230828101149.781556264@linuxfoundation.org>
+Message-ID: <20230828101151.298045436@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,49 +58,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 6d50eb4725934fd22f5eeccb401000687c790fd0 ]
+[ Upstream commit f534f6581ec084fe94d6759f7672bd009794b07e ]
 
-It was reported that dm-integrity runs out of vmalloc space on 32-bit
-architectures. On x86, there is only 128MiB vmalloc space and dm-integrity
-consumes it quickly because it has a 64MiB journal and 8MiB recalculate
-buffer.
+veth and vxcan need to make sure the ifindexes of the peer
+are not negative, core does not validate this.
 
-Fix this by reducing the size of the journal to 4MiB and the size of
-the recalculate buffer to 1MiB, so that multiple dm-integrity devices
-can be created and activated on 32-bit architectures.
+Using iproute2 with user-space-level checking removed:
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Before:
+
+  # ./ip link add index 10 type veth peer index -1
+  # ip link show
+  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:74:b2:03 brd ff:ff:ff:ff:ff:ff
+  10: veth1@veth0: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 8a:90:ff:57:6d:5d brd ff:ff:ff:ff:ff:ff
+  -1: veth0@veth1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether ae:ed:18:e6:fa:7f brd ff:ff:ff:ff:ff:ff
+
+Now:
+
+  $ ./ip link add index 10 type veth peer index -1
+  Error: ifindex can't be negative.
+
+This problem surfaced in net-next because an explicit WARN()
+was added, the root cause is older.
+
+Fixes: e6f8f1a739b6 ("veth: Allow to create peer link with given ifindex")
+Fixes: a8f820a380a2 ("can: add Virtual CAN Tunnel driver (vxcan)")
+Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/dm-integrity.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/can/vxcan.c |  7 +------
+ drivers/net/veth.c      |  5 +----
+ include/net/rtnetlink.h |  4 ++--
+ net/core/rtnetlink.c    | 22 ++++++++++++++++++----
+ 4 files changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index ea08eb4ed0d95..1667ac1406098 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -31,11 +31,11 @@
- #define DEFAULT_BUFFER_SECTORS		128
- #define DEFAULT_JOURNAL_WATERMARK	50
- #define DEFAULT_SYNC_MSEC		10000
--#define DEFAULT_MAX_JOURNAL_SECTORS	131072
-+#define DEFAULT_MAX_JOURNAL_SECTORS	(IS_ENABLED(CONFIG_64BIT) ? 131072 : 8192)
- #define MIN_LOG2_INTERLEAVE_SECTORS	3
- #define MAX_LOG2_INTERLEAVE_SECTORS	31
- #define METADATA_WORKQUEUE_MAX_ACTIVE	16
--#define RECALC_SECTORS			32768
-+#define RECALC_SECTORS			(IS_ENABLED(CONFIG_64BIT) ? 32768 : 2048)
- #define RECALC_WRITE_SUPER		16
- #define BITMAP_BLOCK_SIZE		4096	/* don't change it */
- #define BITMAP_FLUSH_INTERVAL		(10 * HZ)
+diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
+index be5566168d0f3..afd9060c5421c 100644
+--- a/drivers/net/can/vxcan.c
++++ b/drivers/net/can/vxcan.c
+@@ -179,12 +179,7 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
+ 
+ 		nla_peer = data[VXCAN_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) +
+-					  sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) -
+-					  sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 41cb9179e8b79..45ee44f66e77d 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1654,10 +1654,7 @@ static int veth_newlink(struct net *src_net, struct net_device *dev,
+ 
+ 		nla_peer = data[VETH_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) + sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) - sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 9f48733bfd21c..a2a74e0e5c494 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -175,8 +175,8 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ int rtnl_delete_link(struct net_device *dev);
+ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm);
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr);
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr);
+ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
+ 
+ #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index b055e196f5306..03dd8dc9e1425 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2173,13 +2173,27 @@ static int rtnl_dump_ifinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return err;
+ }
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr)
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr)
+ {
+-	return nla_parse_deprecated(tb, IFLA_MAX, head, len, ifla_policy,
++	const struct ifinfomsg *ifmp;
++	const struct nlattr *attrs;
++	size_t len;
++
++	ifmp = nla_data(nla_peer);
++	attrs = nla_data(nla_peer) + sizeof(struct ifinfomsg);
++	len = nla_len(nla_peer) - sizeof(struct ifinfomsg);
++
++	if (ifmp->ifi_index < 0) {
++		NL_SET_ERR_MSG_ATTR(exterr, nla_peer,
++				    "ifindex can't be negative");
++		return -EINVAL;
++	}
++
++	return nla_parse_deprecated(tb, IFLA_MAX, attrs, len, ifla_policy,
+ 				    exterr);
+ }
+-EXPORT_SYMBOL(rtnl_nla_parse_ifla);
++EXPORT_SYMBOL(rtnl_nla_parse_ifinfomsg);
+ 
+ struct net *rtnl_link_get_net(struct net *src_net, struct nlattr *tb[])
+ {
 -- 
 2.40.1
 
