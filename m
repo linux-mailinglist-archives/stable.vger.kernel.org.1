@@ -2,55 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7ABC78AD77
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 856F478ABEB
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232058AbjH1Ksf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:48:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52358 "EHLO
+        id S231540AbjH1Kfe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232086AbjH1KsK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:48:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC3A1AD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:02 -0700 (PDT)
+        with ESMTP id S231576AbjH1KfI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:08 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 752DA115
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B32ED642C0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5945C433C8;
-        Mon, 28 Aug 2023 10:48:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 13C3C63E3C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB39C433C7;
+        Mon, 28 Aug 2023 10:35:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219681;
-        bh=hf7Kj1zMBfe3nMY061AfTDVfSJMV8JrO9uuqVqIiP9o=;
+        s=korg; t=1693218903;
+        bh=J2QkVzm5NAdtXBcwLMq8PaDky662ckh9uP0maFJxFhA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GItyQIdBSOCGJ+abeEbOLhIlefIhBSjViNG5O7+dWe3/XVBedDpuZCzrJdDINcFvN
-         ErKWcsjKIa9jwmjph/A1CC+ijFelv8gqOff1yNE9SsvE6yUD1Y4wPlzQAQEzPVqpDN
-         DFARMGZSkiqI8RsUQOcncPib9v5Kr3en4pr48gTA=
+        b=Iw5n6CL6Uwq3AemT18Txq49Hdx0lKxZkk3l2Knv4Jp0Qh5EsWDLd9v65q73kkXulV
+         FeQ/25eTlPRPfFjAUctQACXeJ2DaEwTOx0SjDhpETmWo0fmzF4RulJvwU8FMMrJ3ab
+         DB6gbuH6BE1XBDY8lZiyQ3JBKpE9chEACvZ8MmaE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 33/84] net: validate veth and vxcan peer ifindexes
+Subject: [PATCH 6.1 115/122] pinctrl: renesas: rzv2m: Fix NULL pointer dereference in rzv2m_dt_subnode_to_map()
 Date:   Mon, 28 Aug 2023 12:13:50 +0200
-Message-ID: <20230828101150.386388491@linuxfoundation.org>
+Message-ID: <20230828101200.247811125@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,139 +55,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit f534f6581ec084fe94d6759f7672bd009794b07e ]
+[ Upstream commit f982b9d57e7f834138fc908804fe66f646f2b108 ]
 
-veth and vxcan need to make sure the ifindexes of the peer
-are not negative, core does not validate this.
+Fix the below random NULL pointer crash during boot by serializing
+pinctrl group and function creation/remove calls in
+rzv2m_dt_subnode_to_map() with mutex lock.
 
-Using iproute2 with user-space-level checking removed:
+Crash logs:
+    pc : __pi_strcmp+0x20/0x140
+    lr : pinmux_func_name_to_selector+0x68/0xa4
+    Call trace:
+    __pi_strcmp+0x20/0x140
+    pinmux_generic_add_function+0x34/0xcc
+    rzv2m_dt_subnode_to_map+0x2e4/0x418
+    rzv2m_dt_node_to_map+0x15c/0x18c
+    pinctrl_dt_to_map+0x218/0x37c
+    create_pinctrl+0x70/0x3d8
 
-Before:
+While at it, add a comment for lock.
 
-  # ./ip link add index 10 type veth peer index -1
-  # ip link show
-  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-  2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
-    link/ether 52:54:00:74:b2:03 brd ff:ff:ff:ff:ff:ff
-  10: veth1@veth0: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether 8a:90:ff:57:6d:5d brd ff:ff:ff:ff:ff:ff
-  -1: veth0@veth1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether ae:ed:18:e6:fa:7f brd ff:ff:ff:ff:ff:ff
-
-Now:
-
-  $ ./ip link add index 10 type veth peer index -1
-  Error: ifindex can't be negative.
-
-This problem surfaced in net-next because an explicit WARN()
-was added, the root cause is older.
-
-Fixes: e6f8f1a739b6 ("veth: Allow to create peer link with given ifindex")
-Fixes: a8f820a380a2 ("can: add Virtual CAN Tunnel driver (vxcan)")
-Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 92a9b8252576 ("pinctrl: renesas: Add RZ/V2M pin and gpio controller driver")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230815131558.33787-3-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/can/vxcan.c |  7 +------
- drivers/net/veth.c      |  5 +----
- include/net/rtnetlink.h |  4 ++--
- net/core/rtnetlink.c    | 22 ++++++++++++++++++----
- 4 files changed, 22 insertions(+), 16 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rzv2m.c | 13 +++++++++++--
+ 1 file changed, 11 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
-index 282c53ef76d23..1bfede407270d 100644
---- a/drivers/net/can/vxcan.c
-+++ b/drivers/net/can/vxcan.c
-@@ -179,12 +179,7 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
+diff --git a/drivers/pinctrl/renesas/pinctrl-rzv2m.c b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
+index 35f382b055e83..2858800288bb7 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rzv2m.c
++++ b/drivers/pinctrl/renesas/pinctrl-rzv2m.c
+@@ -14,6 +14,7 @@
+ #include <linux/gpio/driver.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/of_device.h>
+ #include <linux/pinctrl/pinconf-generic.h>
+ #include <linux/pinctrl/pinconf.h>
+@@ -121,7 +122,8 @@ struct rzv2m_pinctrl {
+ 	struct gpio_chip		gpio_chip;
+ 	struct pinctrl_gpio_range	gpio_range;
  
- 		nla_peer = data[VXCAN_INFO_PEER];
- 		ifmp = nla_data(nla_peer);
--		err = rtnl_nla_parse_ifla(peer_tb,
--					  nla_data(nla_peer) +
--					  sizeof(struct ifinfomsg),
--					  nla_len(nla_peer) -
--					  sizeof(struct ifinfomsg),
--					  NULL);
-+		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
- 		if (err < 0)
- 			return err;
+-	spinlock_t			lock;
++	spinlock_t			lock; /* lock read/write registers */
++	struct mutex			mutex; /* serialize adding groups and functions */
+ };
  
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index 5aa23a036ed36..4ba86fa4d6497 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1313,10 +1313,7 @@ static int veth_newlink(struct net *src_net, struct net_device *dev,
+ static const unsigned int drv_1_8V_group2_uA[] = { 1800, 3800, 7800, 11000 };
+@@ -320,11 +322,13 @@ static int rzv2m_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 		name = np->name;
+ 	}
  
- 		nla_peer = data[VETH_INFO_PEER];
- 		ifmp = nla_data(nla_peer);
--		err = rtnl_nla_parse_ifla(peer_tb,
--					  nla_data(nla_peer) + sizeof(struct ifinfomsg),
--					  nla_len(nla_peer) - sizeof(struct ifinfomsg),
--					  NULL);
-+		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
- 		if (err < 0)
- 			return err;
- 
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index 4da61c950e931..5c2a73bbfabee 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -166,8 +166,8 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- int rtnl_delete_link(struct net_device *dev);
- int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm);
- 
--int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
--			struct netlink_ext_ack *exterr);
-+int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
-+			     struct netlink_ext_ack *exterr);
- struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
- 
- #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index ce37a052b9c32..cee86a2b3a036 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2161,13 +2161,27 @@ static int rtnl_dump_ifinfo(struct sk_buff *skb, struct netlink_callback *cb)
- 	return err;
- }
- 
--int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
--			struct netlink_ext_ack *exterr)
-+int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
-+			     struct netlink_ext_ack *exterr)
- {
--	return nla_parse_deprecated(tb, IFLA_MAX, head, len, ifla_policy,
-+	const struct ifinfomsg *ifmp;
-+	const struct nlattr *attrs;
-+	size_t len;
++	mutex_lock(&pctrl->mutex);
 +
-+	ifmp = nla_data(nla_peer);
-+	attrs = nla_data(nla_peer) + sizeof(struct ifinfomsg);
-+	len = nla_len(nla_peer) - sizeof(struct ifinfomsg);
-+
-+	if (ifmp->ifi_index < 0) {
-+		NL_SET_ERR_MSG_ATTR(exterr, nla_peer,
-+				    "ifindex can't be negative");
-+		return -EINVAL;
-+	}
-+
-+	return nla_parse_deprecated(tb, IFLA_MAX, attrs, len, ifla_policy,
- 				    exterr);
- }
--EXPORT_SYMBOL(rtnl_nla_parse_ifla);
-+EXPORT_SYMBOL(rtnl_nla_parse_ifinfomsg);
+ 	/* Register a single pin group listing all the pins we read from DT */
+ 	gsel = pinctrl_generic_add_group(pctldev, name, pins, num_pinmux, NULL);
+ 	if (gsel < 0) {
+ 		ret = gsel;
+-		goto done;
++		goto unlock;
+ 	}
  
- struct net *rtnl_link_get_net(struct net *src_net, struct nlattr *tb[])
- {
+ 	/*
+@@ -338,6 +342,8 @@ static int rzv2m_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 		goto remove_group;
+ 	}
+ 
++	mutex_unlock(&pctrl->mutex);
++
+ 	maps[idx].type = PIN_MAP_TYPE_MUX_GROUP;
+ 	maps[idx].data.mux.group = name;
+ 	maps[idx].data.mux.function = name;
+@@ -349,6 +355,8 @@ static int rzv2m_dt_subnode_to_map(struct pinctrl_dev *pctldev,
+ 
+ remove_group:
+ 	pinctrl_generic_remove_group(pctldev, gsel);
++unlock:
++	mutex_unlock(&pctrl->mutex);
+ done:
+ 	*index = idx;
+ 	kfree(configs);
+@@ -1070,6 +1078,7 @@ static int rzv2m_pinctrl_probe(struct platform_device *pdev)
+ 	}
+ 
+ 	spin_lock_init(&pctrl->lock);
++	mutex_init(&pctrl->mutex);
+ 
+ 	platform_set_drvdata(pdev, pctrl);
+ 
 -- 
 2.40.1
 
