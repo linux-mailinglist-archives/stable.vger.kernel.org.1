@@ -2,44 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 135C078AA6F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2990A78ABB3
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:34:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229846AbjH1KWN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:22:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49316 "EHLO
+        id S229671AbjH1Kd5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:33:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230178AbjH1KVn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:43 -0400
+        with ESMTP id S231477AbjH1Kd2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:33:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05464B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A8051AE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CCAD361835
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9AB0C433C8;
-        Mon, 28 Aug 2023 10:21:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6A31A63D57
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75FD6C433C7;
+        Mon, 28 Aug 2023 10:33:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218085;
-        bh=uiMmP4zJRBNDWGLxueTEkjbJ7lO7DOWFNSadaCfpL5M=;
+        s=korg; t=1693218783;
+        bh=FCCMFWLGoh473qNiTofxxeDDCOOqzOr0NS/i6lgZyJI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2K3KPecXSrWZ/3Iu7yburDq5pK+LoadmK9HeUqmLRBPIuDPnRmn1AYD8s41XrThPE
-         LOXsHrjPFz1tyJq0bgUZ8B4zkxLI6lEYMroZ3GwLMB2NcNoi7O/pkx5LdahvQT9etD
-         HYK4VqSN1B732twD38bTOgNTZnGLXb6nkvrqHMro=
+        b=P5Y6+MaGeFNm9Sl1kdAC3UtEjiZqpiFIjp+gOszBIvAVCOvF2Lm0N7fPBovHF0QLN
+         /ADsMAtzdTiV94yy10+OJMHwJbmH5BWn1SsHKt/DeVQfQzBfD7Zow1+Ge9CXyDq98q
+         8fYG7PBQh4AlOlbGVOCgGqL9zTazT1fbAAyWV/rU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chris Mason <clm@fb.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 6.4 089/129] NFS: Fix a use after free in nfs_direct_join_group()
+        patches@lists.linux.dev,
+        syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
+        Ido Schimmel <idosch@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 053/122] rtnetlink: Reject negative ifindexes in RTM_NEWLINK
 Date:   Mon, 28 Aug 2023 12:12:48 +0200
-Message-ID: <20230828101200.313185708@linuxfoundation.org>
+Message-ID: <20230828101158.169570933@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,64 +58,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Ido Schimmel <idosch@nvidia.com>
 
-commit be2fd1560eb57b7298aa3c258ddcca0d53ecdea3 upstream.
+[ Upstream commit 30188bd7838c16a98a520db1fe9df01ffc6ed368 ]
 
-Be more careful when tearing down the subrequests of an O_DIRECT write
-as part of a retransmission.
+Negative ifindexes are illegal, but the kernel does not validate the
+ifindex in the ancillary header of RTM_NEWLINK messages, resulting in
+the kernel generating a warning [1] when such an ifindex is specified.
 
-Reported-by: Chris Mason <clm@fb.com>
-Fixes: ed5d588fe47f ("NFS: Try to join page groups before an O_DIRECT retransmission")
-Cc: stable@vger.kernel.org
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix by rejecting negative ifindexes.
+
+[1]
+WARNING: CPU: 0 PID: 5031 at net/core/dev.c:9593 dev_index_reserve+0x1a2/0x1c0 net/core/dev.c:9593
+[...]
+Call Trace:
+ <TASK>
+ register_netdevice+0x69a/0x1490 net/core/dev.c:10081
+ br_dev_newlink+0x27/0x110 net/bridge/br_netlink.c:1552
+ rtnl_newlink_create net/core/rtnetlink.c:3471 [inline]
+ __rtnl_newlink+0x115e/0x18c0 net/core/rtnetlink.c:3688
+ rtnl_newlink+0x67/0xa0 net/core/rtnetlink.c:3701
+ rtnetlink_rcv_msg+0x439/0xd30 net/core/rtnetlink.c:6427
+ netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2545
+ netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
+ netlink_unicast+0x536/0x810 net/netlink/af_netlink.c:1368
+ netlink_sendmsg+0x93c/0xe40 net/netlink/af_netlink.c:1910
+ sock_sendmsg_nosec net/socket.c:728 [inline]
+ sock_sendmsg+0xd9/0x180 net/socket.c:751
+ ____sys_sendmsg+0x6ac/0x940 net/socket.c:2538
+ ___sys_sendmsg+0x135/0x1d0 net/socket.c:2592
+ __sys_sendmsg+0x117/0x1e0 net/socket.c:2621
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+Fixes: 38f7b870d4a6 ("[RTNETLINK]: Link creation API")
+Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
+Signed-off-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Link: https://lore.kernel.org/r/20230823064348.2252280-1-idosch@nvidia.com
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/direct.c |   26 ++++++++++++++++----------
- 1 file changed, 16 insertions(+), 10 deletions(-)
+ net/core/rtnetlink.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfs/direct.c
-+++ b/fs/nfs/direct.c
-@@ -472,20 +472,26 @@ out:
- 	return result;
- }
- 
--static void
--nfs_direct_join_group(struct list_head *list, struct inode *inode)
-+static void nfs_direct_join_group(struct list_head *list, struct inode *inode)
- {
--	struct nfs_page *req, *next;
-+	struct nfs_page *req, *subreq;
- 
- 	list_for_each_entry(req, list, wb_list) {
--		if (req->wb_head != req || req->wb_this_page == req)
-+		if (req->wb_head != req)
- 			continue;
--		for (next = req->wb_this_page;
--				next != req->wb_head;
--				next = next->wb_this_page) {
--			nfs_list_remove_request(next);
--			nfs_release_request(next);
--		}
-+		subreq = req->wb_this_page;
-+		if (subreq == req)
-+			continue;
-+		do {
-+			/*
-+			 * Remove subrequests from this list before freeing
-+			 * them in the call to nfs_join_page_group().
-+			 */
-+			if (!list_empty(&subreq->wb_list)) {
-+				nfs_list_remove_request(subreq);
-+				nfs_release_request(subreq);
-+			}
-+		} while ((subreq = subreq->wb_this_page) != req);
- 		nfs_join_page_group(req, inode);
- 	}
- }
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index 48e300a144ad6..9d4507aa736b7 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -3465,6 +3465,9 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
+ 	if (ifm->ifi_index > 0) {
+ 		link_specified = true;
+ 		dev = __dev_get_by_index(net, ifm->ifi_index);
++	} else if (ifm->ifi_index < 0) {
++		NL_SET_ERR_MSG(extack, "ifindex can't be negative");
++		return -EINVAL;
+ 	} else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME]) {
+ 		link_specified = true;
+ 		dev = rtnl_dev_get(net, tb);
+-- 
+2.40.1
+
 
 
