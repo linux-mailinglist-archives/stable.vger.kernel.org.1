@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 891B578ABCA
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF79C78AD07
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231532AbjH1Ked (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:34:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45944 "EHLO
+        id S231875AbjH1KpT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231530AbjH1KeE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A69D12D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:43 -0700 (PDT)
+        with ESMTP id S231907AbjH1Ko4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:44:56 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C62CC4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EEBE363CE4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D49AC433C8;
-        Mon, 28 Aug 2023 10:33:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 789D6640B7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CD9C433C8;
+        Mon, 28 Aug 2023 10:43:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218822;
-        bh=K5xee8rZrpG7HffUO5LyQiUjupcTWF3qI89FOWc+ppU=;
+        s=korg; t=1693219423;
+        bh=7liSs+pVPaD19tHvGMfbv+eCvDFqH+F42XEU4fIQP2U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PbSa7xTbFAvkUcWbhJj3lMSmZReUKyFfANP4qqBbGadSvGpxPUdpxJhvkZAS928hB
-         RVuSEWMc/QOafY5adOCizixHIzgMB5XeS3yRT0aUZTByAdHZG3rfMoR7oODznBOXUh
-         hwBcVoG58mUW9YR/wqqKMI66QjrsW6qisjEQO+jY=
+        b=qHU9LAoRCfztyfQDcesoQXyalu7zHnaj7mYdzeAdiKvie3piKZPVqlNThT7D3UTSu
+         PucO/D6m/EaA0LwZILr8qzFnxeLmAR94sYatt4b2qJi1huq1FgqBF/Vylpo5kKO/oC
+         nf9fvmomcbTJzRqCgw0dDwsatrdE7EbNxckIyy+E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Savic <savicaleksa83@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 6.1 097/122] hwmon: (aquacomputer_d5next) Add selective 200ms delay after sending ctrl report
+        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
+        Andrew Lunn <andrew@lunn.ch>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 31/89] net: bgmac: Fix return value check for fixed_phy_register()
 Date:   Mon, 28 Aug 2023 12:13:32 +0200
-Message-ID: <20230828101159.627544601@linuxfoundation.org>
+Message-ID: <20230828101151.226485784@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,157 +57,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Savic <savicaleksa83@gmail.com>
+From: Ruan Jinjie <ruanjinjie@huawei.com>
 
-commit 56b930dcd88c2adc261410501c402c790980bdb5 upstream.
+[ Upstream commit 23a14488ea5882dea5851b65c9fce2127ee8fcad ]
 
-Add a 200ms delay after sending a ctrl report to Quadro,
-Octo, D5 Next and Aquaero to give them enough time to
-process the request and save the data to memory. Otherwise,
-under heavier userspace loads where multiple sysfs entries
-are usually set in quick succession, a new ctrl report could
-be requested from the device while it's still processing the
-previous one and fail with -EPIPE. The delay is only applied
-if two ctrl report operations are near each other in time.
+The fixed_phy_register() function returns error pointers and never
+returns NULL. Update the checks accordingly.
 
-Reported by a user on Github [1] and tested by both of us.
-
-[1] https://github.com/aleksamagicka/aquacomputer_d5next-hwmon/issues/82
-
-Fixes: 752b927951ea ("hwmon: (aquacomputer_d5next) Add support for Aquacomputer Octo")
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Link: https://lore.kernel.org/r/20230807172004.456968-1-savicaleksa83@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-[ removed Aquaero support as it's not in 6.1 ]
-Signed-off-by: Aleksa Savic <savicaleksa83@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: c25b23b8a387 ("bgmac: register fixed PHY for ARM BCM470X / BCM5301X chipsets")
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/aquacomputer_d5next.c |   36 +++++++++++++++++++++++++++++++++++-
- 1 file changed, 35 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/broadcom/bgmac.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/hwmon/aquacomputer_d5next.c
-+++ b/drivers/hwmon/aquacomputer_d5next.c
-@@ -12,9 +12,11 @@
+diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
+index a9c99ac81730a..c691635cf4ebe 100644
+--- a/drivers/net/ethernet/broadcom/bgmac.c
++++ b/drivers/net/ethernet/broadcom/bgmac.c
+@@ -1448,7 +1448,7 @@ int bgmac_phy_connect_direct(struct bgmac *bgmac)
+ 	int err;
  
- #include <linux/crc16.h>
- #include <linux/debugfs.h>
-+#include <linux/delay.h>
- #include <linux/hid.h>
- #include <linux/hwmon.h>
- #include <linux/jiffies.h>
-+#include <linux/ktime.h>
- #include <linux/module.h>
- #include <linux/mutex.h>
- #include <linux/seq_file.h>
-@@ -49,6 +51,8 @@ static const char *const aqc_device_name
- 
- #define CTRL_REPORT_ID			0x03
- 
-+#define CTRL_REPORT_DELAY		200	/* ms */
-+
- /* The HID report that the official software always sends
-  * after writing values, currently same for all devices
-  */
-@@ -269,6 +273,9 @@ struct aqc_data {
- 	enum kinds kind;
- 	const char *name;
- 
-+	ktime_t last_ctrl_report_op;
-+	int ctrl_report_delay;	/* Delay between two ctrl report operations, in ms */
-+
- 	int buffer_size;
- 	u8 *buffer;
- 	int checksum_start;
-@@ -325,17 +332,35 @@ static int aqc_pwm_to_percent(long val)
- 	return DIV_ROUND_CLOSEST(val * 100 * 100, 255);
- }
- 
-+static void aqc_delay_ctrl_report(struct aqc_data *priv)
-+{
-+	/*
-+	 * If previous read or write is too close to this one, delay the current operation
-+	 * to give the device enough time to process the previous one.
-+	 */
-+	if (priv->ctrl_report_delay) {
-+		s64 delta = ktime_ms_delta(ktime_get(), priv->last_ctrl_report_op);
-+
-+		if (delta < priv->ctrl_report_delay)
-+			msleep(priv->ctrl_report_delay - delta);
-+	}
-+}
-+
- /* Expects the mutex to be locked */
- static int aqc_get_ctrl_data(struct aqc_data *priv)
- {
- 	int ret;
- 
-+	aqc_delay_ctrl_report(priv);
-+
- 	memset(priv->buffer, 0x00, priv->buffer_size);
- 	ret = hid_hw_raw_request(priv->hdev, CTRL_REPORT_ID, priv->buffer, priv->buffer_size,
- 				 HID_FEATURE_REPORT, HID_REQ_GET_REPORT);
- 	if (ret < 0)
- 		ret = -ENODATA;
- 
-+	priv->last_ctrl_report_op = ktime_get();
-+
- 	return ret;
- }
- 
-@@ -345,6 +370,8 @@ static int aqc_send_ctrl_data(struct aqc
- 	int ret;
- 	u16 checksum;
- 
-+	aqc_delay_ctrl_report(priv);
-+
- 	/* Init and xorout value for CRC-16/USB is 0xffff */
- 	checksum = crc16(0xffff, priv->buffer + priv->checksum_start, priv->checksum_length);
- 	checksum ^= 0xffff;
-@@ -356,12 +383,16 @@ static int aqc_send_ctrl_data(struct aqc
- 	ret = hid_hw_raw_request(priv->hdev, CTRL_REPORT_ID, priv->buffer, priv->buffer_size,
- 				 HID_FEATURE_REPORT, HID_REQ_SET_REPORT);
- 	if (ret < 0)
--		return ret;
-+		goto record_access_and_ret;
- 
- 	/* The official software sends this report after every change, so do it here as well */
- 	ret = hid_hw_raw_request(priv->hdev, SECONDARY_CTRL_REPORT_ID, secondary_ctrl_report,
- 				 SECONDARY_CTRL_REPORT_SIZE, HID_FEATURE_REPORT,
- 				 HID_REQ_SET_REPORT);
-+
-+record_access_and_ret:
-+	priv->last_ctrl_report_op = ktime_get();
-+
- 	return ret;
- }
- 
-@@ -853,6 +884,7 @@ static int aqc_probe(struct hid_device *
- 		priv->virtual_temp_sensor_start_offset = D5NEXT_VIRTUAL_SENSORS_START;
- 		priv->power_cycle_count_offset = D5NEXT_POWER_CYCLES;
- 		priv->buffer_size = D5NEXT_CTRL_REPORT_SIZE;
-+		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
- 
- 		priv->temp_label = label_d5next_temp;
- 		priv->virtual_temp_label = label_virtual_temp_sensors;
-@@ -893,6 +925,7 @@ static int aqc_probe(struct hid_device *
- 		priv->virtual_temp_sensor_start_offset = OCTO_VIRTUAL_SENSORS_START;
- 		priv->power_cycle_count_offset = OCTO_POWER_CYCLES;
- 		priv->buffer_size = OCTO_CTRL_REPORT_SIZE;
-+		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
- 
- 		priv->temp_label = label_temp_sensors;
- 		priv->virtual_temp_label = label_virtual_temp_sensors;
-@@ -913,6 +946,7 @@ static int aqc_probe(struct hid_device *
- 		priv->virtual_temp_sensor_start_offset = QUADRO_VIRTUAL_SENSORS_START;
- 		priv->power_cycle_count_offset = QUADRO_POWER_CYCLES;
- 		priv->buffer_size = QUADRO_CTRL_REPORT_SIZE;
-+		priv->ctrl_report_delay = CTRL_REPORT_DELAY;
- 		priv->flow_sensor_offset = QUADRO_FLOW_SENSOR_OFFSET;
- 
- 		priv->temp_label = label_temp_sensors;
+ 	phy_dev = fixed_phy_register(PHY_POLL, &fphy_status, NULL);
+-	if (!phy_dev || IS_ERR(phy_dev)) {
++	if (IS_ERR(phy_dev)) {
+ 		dev_err(bgmac->dev, "Failed to register fixed PHY device\n");
+ 		return -ENODEV;
+ 	}
+-- 
+2.40.1
+
 
 
