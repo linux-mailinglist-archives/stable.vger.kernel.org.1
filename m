@@ -2,59 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3655A78AAF7
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AADB878AB8F
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231255AbjH1K0h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43678 "EHLO
+        id S231441AbjH1KcV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231351AbjH1K0V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:21 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B3E4B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:26:12 -0700 (PDT)
+        with ESMTP id S231513AbjH1KcE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFBCDCD7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0653A6131B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:26:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3B78C433C8;
-        Mon, 28 Aug 2023 10:26:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B7A4A63CC5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C76C2C433CB;
+        Mon, 28 Aug 2023 10:31:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218371;
-        bh=Z0r4Z9IOFO7Mxc34+NE+mS/ZY1rRAxGkAIRORTnF3Rw=;
+        s=korg; t=1693218676;
+        bh=RY9xrpw1lXKOrVLELhsPD1CmWm2NkC8/svWpS/JgbqM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jFHkg9Va3xJGplBY9TYMhxD8q36XM03qwrDiM/e9HFIxR+BUPicQNY9QAlS/Igg5N
-         qiXLvNQNI/rE+CqbM2AXIPrkmHqwbABH7pIF8VOrssLUaJFshvDccHL35N2yPPouO5
-         nqFWSpjnCzzPxWNqNqPypASGgHAw43f3v7onAo5Q=
+        b=NKrggZH7LOhs+yKjnMoMLtp6B1PGgqWPQhINJC3Jn/TW9goMQubd/G4Ta2Bi4++6F
+         6dBAMBbwiNknhv8FA8L7Fetu5q6I+127f2dR2/78uXvnnlmbRg1LQmulEuC+jn/6H+
+         UZA2XzoUD5RufgCJsLsLcCvHTuuqjH99ose6Ozvs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Xin Long <lucien.xin@gmail.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Willem de Bruijn <willemb@google.com>,
-        Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>,
-        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Petr Oros <poros@redhat.com>,
+        Simon Horman <horms@kernel.org>,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Rafal Romanowski <rafal.romanowski@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 064/129] net: do not allow gso_size to be set to GSO_BY_FRAGS
+Subject: [PATCH 6.1 043/122] Revert "ice: Fix ice VF reset during iavf initialization"
 Date:   Mon, 28 Aug 2023 12:12:38 +0200
-Message-ID: <20230828101155.670677041@linuxfoundation.org>
+Message-ID: <20230828101157.833614863@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,92 +59,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Petr Oros <poros@redhat.com>
 
-[ Upstream commit b616be6b97688f2f2bd7c4a47ab32f27f94fb2a9 ]
+[ Upstream commit 0ecff05e6c59dd82dbcb9706db911f7fd9f40fb8 ]
 
-One missing check in virtio_net_hdr_to_skb() allowed
-syzbot to crash kernels again [1]
+This reverts commit 7255355a0636b4eff08d5e8139c77d98f151c4fc.
 
-Do not allow gso_size to be set to GSO_BY_FRAGS (0xffff),
-because this magic value is used by the kernel.
+After this commit we are not able to attach VF to VM:
+virsh attach-interface v0 hostdev --managed 0000:41:01.0 --mac 52:52:52:52:52:52
+error: Failed to attach interface
+error: Cannot set interface MAC to 52:52:52:52:52:52 for ifname enp65s0f0np0 vf 0: Resource temporarily unavailable
 
-[1]
-general protection fault, probably for non-canonical address 0xdffffc000000000e: 0000 [#1] PREEMPT SMP KASAN
-KASAN: null-ptr-deref in range [0x0000000000000070-0x0000000000000077]
-CPU: 0 PID: 5039 Comm: syz-executor401 Not tainted 6.5.0-rc5-next-20230809-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-RIP: 0010:skb_segment+0x1a52/0x3ef0 net/core/skbuff.c:4500
-Code: 00 00 00 e9 ab eb ff ff e8 6b 96 5d f9 48 8b 84 24 00 01 00 00 48 8d 78 70 48 b8 00 00 00 00 00 fc ff df 48 89 fa 48 c1 ea 03 <0f> b6 04 02 84 c0 74 08 3c 03 0f 8e ea 21 00 00 48 8b 84 24 00 01
-RSP: 0018:ffffc90003d3f1c8 EFLAGS: 00010202
-RAX: dffffc0000000000 RBX: 000000000001fffe RCX: 0000000000000000
-RDX: 000000000000000e RSI: ffffffff882a3115 RDI: 0000000000000070
-RBP: ffffc90003d3f378 R08: 0000000000000005 R09: 000000000000ffff
-R10: 000000000000ffff R11: 5ee4a93e456187d6 R12: 000000000001ffc6
-R13: dffffc0000000000 R14: 0000000000000008 R15: 000000000000ffff
-FS: 00005555563f2380(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
-CS: 0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000020020000 CR3: 000000001626d000 CR4: 00000000003506f0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
-<TASK>
-udp6_ufo_fragment+0x9d2/0xd50 net/ipv6/udp_offload.c:109
-ipv6_gso_segment+0x5c4/0x17b0 net/ipv6/ip6_offload.c:120
-skb_mac_gso_segment+0x292/0x610 net/core/gso.c:53
-__skb_gso_segment+0x339/0x710 net/core/gso.c:124
-skb_gso_segment include/net/gso.h:83 [inline]
-validate_xmit_skb+0x3a5/0xf10 net/core/dev.c:3625
-__dev_queue_xmit+0x8f0/0x3d60 net/core/dev.c:4329
-dev_queue_xmit include/linux/netdevice.h:3082 [inline]
-packet_xmit+0x257/0x380 net/packet/af_packet.c:276
-packet_snd net/packet/af_packet.c:3087 [inline]
-packet_sendmsg+0x24c7/0x5570 net/packet/af_packet.c:3119
-sock_sendmsg_nosec net/socket.c:727 [inline]
-sock_sendmsg+0xd9/0x180 net/socket.c:750
-____sys_sendmsg+0x6ac/0x940 net/socket.c:2496
-___sys_sendmsg+0x135/0x1d0 net/socket.c:2550
-__sys_sendmsg+0x117/0x1e0 net/socket.c:2579
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7ff27cdb34d9
+ice_check_vf_ready_for_cfg() already contain waiting for reset.
+New condition in ice_check_vf_ready_for_reset() causing only problems.
 
-Fixes: 3953c46c3ac7 ("sk_buff: allow segmenting based on frag sizes")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Xin Long <lucien.xin@gmail.com>
-Cc: "Michael S. Tsirkin" <mst@redhat.com>
-Cc: Jason Wang <jasowang@redhat.com>
-Reviewed-by: Willem de Bruijn <willemb@google.com>
-Reviewed-by: Marcelo Ricardo Leitner <marcelo.leitner@gmail.com>
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230816142158.1779798-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 7255355a0636 ("ice: Fix ice VF reset during iavf initialization")
+Signed-off-by: Petr Oros <poros@redhat.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/virtio_net.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/net/ethernet/intel/ice/ice_sriov.c    |  8 ++++----
+ drivers/net/ethernet/intel/ice/ice_vf_lib.c   | 19 -------------------
+ drivers/net/ethernet/intel/ice/ice_vf_lib.h   |  1 -
+ drivers/net/ethernet/intel/ice/ice_virtchnl.c |  1 -
+ 4 files changed, 4 insertions(+), 25 deletions(-)
 
-diff --git a/include/linux/virtio_net.h b/include/linux/virtio_net.h
-index faee73c084d49..d49c1aad24643 100644
---- a/include/linux/virtio_net.h
-+++ b/include/linux/virtio_net.h
-@@ -148,6 +148,10 @@ static inline int virtio_net_hdr_to_skb(struct sk_buff *skb,
- 		if (gso_type & SKB_GSO_UDP)
- 			nh_off -= thlen;
+diff --git a/drivers/net/ethernet/intel/ice/ice_sriov.c b/drivers/net/ethernet/intel/ice/ice_sriov.c
+index b8c31bf721ad1..b719e9a771e36 100644
+--- a/drivers/net/ethernet/intel/ice/ice_sriov.c
++++ b/drivers/net/ethernet/intel/ice/ice_sriov.c
+@@ -1240,7 +1240,7 @@ int ice_set_vf_spoofchk(struct net_device *netdev, int vf_id, bool ena)
+ 	if (!vf)
+ 		return -EINVAL;
  
-+		/* Kernel has a special handling for GSO_BY_FRAGS. */
-+		if (gso_size == GSO_BY_FRAGS)
-+			return -EINVAL;
-+
- 		/* Too small packets are not really GSO ones. */
- 		if (skb->len - nh_off > gso_size) {
- 			shinfo->gso_size = gso_size;
+-	ret = ice_check_vf_ready_for_reset(vf);
++	ret = ice_check_vf_ready_for_cfg(vf);
+ 	if (ret)
+ 		goto out_put_vf;
+ 
+@@ -1355,7 +1355,7 @@ int ice_set_vf_mac(struct net_device *netdev, int vf_id, u8 *mac)
+ 		goto out_put_vf;
+ 	}
+ 
+-	ret = ice_check_vf_ready_for_reset(vf);
++	ret = ice_check_vf_ready_for_cfg(vf);
+ 	if (ret)
+ 		goto out_put_vf;
+ 
+@@ -1409,7 +1409,7 @@ int ice_set_vf_trust(struct net_device *netdev, int vf_id, bool trusted)
+ 		return -EOPNOTSUPP;
+ 	}
+ 
+-	ret = ice_check_vf_ready_for_reset(vf);
++	ret = ice_check_vf_ready_for_cfg(vf);
+ 	if (ret)
+ 		goto out_put_vf;
+ 
+@@ -1722,7 +1722,7 @@ ice_set_vf_port_vlan(struct net_device *netdev, int vf_id, u16 vlan_id, u8 qos,
+ 	if (!vf)
+ 		return -EINVAL;
+ 
+-	ret = ice_check_vf_ready_for_reset(vf);
++	ret = ice_check_vf_ready_for_cfg(vf);
+ 	if (ret)
+ 		goto out_put_vf;
+ 
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+index 71047fc341392..86abbcb480d9d 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
+@@ -185,25 +185,6 @@ int ice_check_vf_ready_for_cfg(struct ice_vf *vf)
+ 	return 0;
+ }
+ 
+-/**
+- * ice_check_vf_ready_for_reset - check if VF is ready to be reset
+- * @vf: VF to check if it's ready to be reset
+- *
+- * The purpose of this function is to ensure that the VF is not in reset,
+- * disabled, and is both initialized and active, thus enabling us to safely
+- * initialize another reset.
+- */
+-int ice_check_vf_ready_for_reset(struct ice_vf *vf)
+-{
+-	int ret;
+-
+-	ret = ice_check_vf_ready_for_cfg(vf);
+-	if (!ret && !test_bit(ICE_VF_STATE_ACTIVE, vf->vf_states))
+-		ret = -EAGAIN;
+-
+-	return ret;
+-}
+-
+ /**
+  * ice_trigger_vf_reset - Reset a VF on HW
+  * @vf: pointer to the VF structure
+diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.h b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
+index e5bed85724622..9f7fcd8e5714b 100644
+--- a/drivers/net/ethernet/intel/ice/ice_vf_lib.h
++++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.h
+@@ -214,7 +214,6 @@ u16 ice_get_num_vfs(struct ice_pf *pf);
+ struct ice_vsi *ice_get_vf_vsi(struct ice_vf *vf);
+ bool ice_is_vf_disabled(struct ice_vf *vf);
+ int ice_check_vf_ready_for_cfg(struct ice_vf *vf);
+-int ice_check_vf_ready_for_reset(struct ice_vf *vf);
+ void ice_set_vf_state_dis(struct ice_vf *vf);
+ bool ice_is_any_vf_in_unicast_promisc(struct ice_pf *pf);
+ void
+diff --git a/drivers/net/ethernet/intel/ice/ice_virtchnl.c b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+index ef3c709d6a750..2b4c791b6cbad 100644
+--- a/drivers/net/ethernet/intel/ice/ice_virtchnl.c
++++ b/drivers/net/ethernet/intel/ice/ice_virtchnl.c
+@@ -3722,7 +3722,6 @@ void ice_vc_process_vf_msg(struct ice_pf *pf, struct ice_rq_event_info *event)
+ 		ice_vc_notify_vf_link_state(vf);
+ 		break;
+ 	case VIRTCHNL_OP_RESET_VF:
+-		clear_bit(ICE_VF_STATE_ACTIVE, vf->vf_states);
+ 		ops->reset_vf(vf);
+ 		break;
+ 	case VIRTCHNL_OP_ADD_ETH_ADDR:
 -- 
 2.40.1
 
