@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D98C778AC07
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70E9978AA5B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231584AbjH1Kgj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:36:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40170 "EHLO
+        id S230484AbjH1KVr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231607AbjH1KgM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:12 -0400
+        with ESMTP id S229772AbjH1KVJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94D5D198
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15FE610C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:20:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28CCE63C55
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C0CC433C8;
-        Mon, 28 Aug 2023 10:36:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9F0260FD4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB18CC433CA;
+        Mon, 28 Aug 2023 10:20:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218967;
-        bh=6f2vA28Eio8sU8aQsIeik7JtD46rJO7feLcniIUMypo=;
+        s=korg; t=1693218038;
+        bh=0F/bwZVOFm/FePtuZtFRAEtPAp7ZQ4aFDqsubV11vF0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gLXyxlRdHASfT/n7VLLJwNafqlCoIq3iffdU1tq/OgdO5NILVu87BrH5QD13rTwUH
-         OvXZuc5fToxHO7l+p7Ax0IxIDjTiwXhwpptQhHWOmq0pKNp/OlkURS6oaUV87mE1xP
-         y1kM+7e3NrrfzZI7DCjIDjzBvjismrgDMO9TkaAI=
+        b=imqnGIww5QItrRZUJ+IS4WWsinNmpF39o3C38BKAB+UG2E/3LTUYtC4X1qoTxNOzW
+         qoxkDX3TSMAQ1hzWz2J6L0sesH+UiM7Ax3ziLVcJaIacWwwGV6NJHB+ms7ND0GKlbj
+         shPh1Sw3U6uioeBsFL7zhohdvdhM7MShOwCrWPwI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
+        Florian Westphal <fw@strlen.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 025/158] ALSA: hda: fix a possible null-pointer dereference due to data race in snd_hdac_regmap_sync()
+Subject: [PATCH 6.4 043/129] netfilter: nf_tables: validate all pending tables
 Date:   Mon, 28 Aug 2023 12:12:02 +0200
-Message-ID: <20230828101158.197678661@linuxfoundation.org>
+Message-ID: <20230828101158.800486385@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,63 +55,102 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 1f4a08fed450db87fbb5ff5105354158bdbe1a22 ]
+[ Upstream commit 4b80ced971b0d118f9a11dd503a5833a5016de92 ]
 
-The variable codec->regmap is often protected by the lock
-codec->regmap_lock when is accessed. However, it is accessed without
-holding the lock when is accessed in snd_hdac_regmap_sync():
+We have to validate all tables in the transaction that are in
+VALIDATE_DO state, the blamed commit below did not move the break
+statement to its right location so we only validate one table.
 
-  if (codec->regmap)
+Moreover, we can't init table->validate to _SKIP when a table object
+is allocated.
 
-In my opinion, this may be a harmful race, because if codec->regmap is
-set to NULL right after the condition is checked, a null-pointer
-dereference can occur in the called function regcache_sync():
+If we do, then if a transcaction creates a new table and then
+fails the transaction, nfnetlink will loop and nft will hang until
+user cancels the command.
 
-  map->lock(map->lock_arg); --> Line 360 in drivers/base/regmap/regcache.c
+Add back the pernet state as a place to stash the last state encountered.
+This is either _DO (we hit an error during commit validation) or _SKIP
+(transaction passed all checks).
 
-To fix this possible null-pointer dereference caused by data race, the
-mutex_lock coverage is extended to protect the if statement as well as the
-function call to regcache_sync().
-
-[ Note: the lack of the regmap_lock itself is harmless for the current
-  codec driver implementations, as snd_hdac_regmap_sync() is only for
-  PM runtime resume that is prohibited during the codec probe.
-  But the change makes the whole code more consistent, so it's merged
-  as is -- tiwai ]
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/20230703031016.1184711-1-islituo@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: 00c320f9b755 ("netfilter: nf_tables: make validation state per table")
+Reported-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/hda/hdac_regmap.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ include/net/netfilter/nf_tables.h |  1 +
+ net/netfilter/nf_tables_api.c     | 11 +++++++----
+ 2 files changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/sound/hda/hdac_regmap.c b/sound/hda/hdac_regmap.c
-index 49780399c2849..a035a7d74ce09 100644
---- a/sound/hda/hdac_regmap.c
-+++ b/sound/hda/hdac_regmap.c
-@@ -596,10 +596,9 @@ EXPORT_SYMBOL_GPL(snd_hdac_regmap_update_raw_once);
-  */
- void snd_hdac_regmap_sync(struct hdac_device *codec)
- {
--	if (codec->regmap) {
--		mutex_lock(&codec->regmap_lock);
-+	mutex_lock(&codec->regmap_lock);
-+	if (codec->regmap)
- 		regcache_sync(codec->regmap);
--		mutex_unlock(&codec->regmap_lock);
--	}
-+	mutex_unlock(&codec->regmap_lock);
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index ad97049e28881..a9a730fb9f963 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -1817,6 +1817,7 @@ struct nftables_pernet {
+ 	u64			table_handle;
+ 	unsigned int		base_seq;
+ 	unsigned int		gc_seq;
++	u8			validate_state;
+ };
+ 
+ extern unsigned int nf_tables_net_id;
+diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
+index b280b151a9e98..5275c4112b57d 100644
+--- a/net/netfilter/nf_tables_api.c
++++ b/net/netfilter/nf_tables_api.c
+@@ -1372,7 +1372,7 @@ static int nf_tables_newtable(struct sk_buff *skb, const struct nfnl_info *info,
+ 	if (table == NULL)
+ 		goto err_kzalloc;
+ 
+-	table->validate_state = NFT_VALIDATE_SKIP;
++	table->validate_state = nft_net->validate_state;
+ 	table->name = nla_strdup(attr, GFP_KERNEL_ACCOUNT);
+ 	if (table->name == NULL)
+ 		goto err_strdup;
+@@ -9065,9 +9065,8 @@ static int nf_tables_validate(struct net *net)
+ 				return -EAGAIN;
+ 
+ 			nft_validate_state_update(table, NFT_VALIDATE_SKIP);
++			break;
+ 		}
+-
+-		break;
+ 	}
+ 
+ 	return 0;
+@@ -9813,8 +9812,10 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 	}
+ 
+ 	/* 0. Validate ruleset, otherwise roll back for error reporting. */
+-	if (nf_tables_validate(net) < 0)
++	if (nf_tables_validate(net) < 0) {
++		nft_net->validate_state = NFT_VALIDATE_DO;
+ 		return -EAGAIN;
++	}
+ 
+ 	err = nft_flow_rule_offload_commit(net);
+ 	if (err < 0)
+@@ -10070,6 +10071,7 @@ static int nf_tables_commit(struct net *net, struct sk_buff *skb)
+ 	nf_tables_commit_audit_log(&adl, nft_net->base_seq);
+ 
+ 	nft_gc_seq_end(nft_net, gc_seq);
++	nft_net->validate_state = NFT_VALIDATE_SKIP;
+ 	nf_tables_commit_release(net);
+ 
+ 	return 0;
+@@ -11126,6 +11128,7 @@ static int __net_init nf_tables_init_net(struct net *net)
+ 	mutex_init(&nft_net->commit_mutex);
+ 	nft_net->base_seq = 1;
+ 	nft_net->gc_seq = 0;
++	nft_net->validate_state = NFT_VALIDATE_SKIP;
+ 
+ 	return 0;
  }
- EXPORT_SYMBOL_GPL(snd_hdac_regmap_sync);
 -- 
 2.40.1
 
