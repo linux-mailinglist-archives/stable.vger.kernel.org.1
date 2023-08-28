@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF79C78AD07
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5215178AD61
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231875AbjH1KpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53850 "EHLO
+        id S231950AbjH1Kr6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:47:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43616 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231907AbjH1Ko4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:44:56 -0400
+        with ESMTP id S232003AbjH1Kr1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85C62CC4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9FF61BD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 789D6640B7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CD9C433C8;
-        Mon, 28 Aug 2023 10:43:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9BCE0642C0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AADEAC433C8;
+        Mon, 28 Aug 2023 10:47:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219423;
-        bh=7liSs+pVPaD19tHvGMfbv+eCvDFqH+F42XEU4fIQP2U=;
+        s=korg; t=1693219631;
+        bh=CJvjZj6C3AjEVD6vM6a/0wcqNAw/nLX/RyoAj/95mWA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qHU9LAoRCfztyfQDcesoQXyalu7zHnaj7mYdzeAdiKvie3piKZPVqlNThT7D3UTSu
-         PucO/D6m/EaA0LwZILr8qzFnxeLmAR94sYatt4b2qJi1huq1FgqBF/Vylpo5kKO/oC
-         nf9fvmomcbTJzRqCgw0dDwsatrdE7EbNxckIyy+E=
+        b=ws7qizflNxI9ZOJSHf70SPu7k2DlK/vIaaHBWesIBetnO4qKWlsIywgYWMzVHblaU
+         XEH/wumJlMAeO2gIzg36rv5wlw+9Qg5my41rtZe3Vh0s52y7TxjMuC2hgp3+mkb+2I
+         OYe0Y641a0sY6JLBKTbkouvepLzOOTmZBVINK9SE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
-        Andrew Lunn <andrew@lunn.ch>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
+        Mike Snitzer <snitzer@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 31/89] net: bgmac: Fix return value check for fixed_phy_register()
-Date:   Mon, 28 Aug 2023 12:13:32 +0200
-Message-ID: <20230828101151.226485784@linuxfoundation.org>
+Subject: [PATCH 5.10 16/84] dm integrity: increase RECALC_SECTORS to improve recalculate speed
+Date:   Mon, 28 Aug 2023 12:13:33 +0200
+Message-ID: <20230828101149.752401908@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,40 +55,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruan Jinjie <ruanjinjie@huawei.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-[ Upstream commit 23a14488ea5882dea5851b65c9fce2127ee8fcad ]
+[ Upstream commit b1a2b9332050c7ae32a22c2c74bc443e39f37b23 ]
 
-The fixed_phy_register() function returns error pointers and never
-returns NULL. Update the checks accordingly.
+Increase RECALC_SECTORS because it improves recalculate speed slightly
+(from 390kiB/s to 410kiB/s).
 
-Fixes: c25b23b8a387 ("bgmac: register fixed PHY for ARM BCM470X / BCM5301X chipsets")
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-Reviewed-by: Andrew Lunn <andrew@lunn.ch>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@redhat.com>
+Stable-dep-of: 6d50eb472593 ("dm integrity: reduce vmalloc space footprint on 32-bit architectures")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bgmac.c | 2 +-
+ drivers/md/dm-integrity.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bgmac.c b/drivers/net/ethernet/broadcom/bgmac.c
-index a9c99ac81730a..c691635cf4ebe 100644
---- a/drivers/net/ethernet/broadcom/bgmac.c
-+++ b/drivers/net/ethernet/broadcom/bgmac.c
-@@ -1448,7 +1448,7 @@ int bgmac_phy_connect_direct(struct bgmac *bgmac)
- 	int err;
- 
- 	phy_dev = fixed_phy_register(PHY_POLL, &fphy_status, NULL);
--	if (!phy_dev || IS_ERR(phy_dev)) {
-+	if (IS_ERR(phy_dev)) {
- 		dev_err(bgmac->dev, "Failed to register fixed PHY device\n");
- 		return -ENODEV;
- 	}
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index 7599a122c9563..ea08eb4ed0d95 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -35,7 +35,7 @@
+ #define MIN_LOG2_INTERLEAVE_SECTORS	3
+ #define MAX_LOG2_INTERLEAVE_SECTORS	31
+ #define METADATA_WORKQUEUE_MAX_ACTIVE	16
+-#define RECALC_SECTORS			8192
++#define RECALC_SECTORS			32768
+ #define RECALC_WRITE_SUPER		16
+ #define BITMAP_BLOCK_SIZE		4096	/* don't change it */
+ #define BITMAP_FLUSH_INTERVAL		(10 * HZ)
 -- 
 2.40.1
 
