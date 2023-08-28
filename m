@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBB9D78AB1E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:28:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FD2278AC60
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:40:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231284AbjH1K2K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:28:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46050 "EHLO
+        id S231669AbjH1Kj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:39:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231313AbjH1K1l (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:27:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90E7E125
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:27:38 -0700 (PDT)
+        with ESMTP id S231710AbjH1KjR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B057993
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 301E863B92
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:27:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4470CC433C7;
-        Mon, 28 Aug 2023 10:27:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4621163FC3
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 526FFC433C7;
+        Mon, 28 Aug 2023 10:39:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218457;
-        bh=cwOz45leAZMmWcSEh9Hd4p4uOz2dQa6colaYi56PqZg=;
+        s=korg; t=1693219154;
+        bh=RT38TN3jDEGSO/7/k+ed20dY+XhOdcYtpL10d6++uA0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SGDFUfwwoLuWEORYEPH1OhKFs5lBRHDgmaXUuCrqqkd1AXaaMS0F+MUFvbVyVWe+k
-         xD6OdlnwfsBeMZNaRG/vjrCLGfI136v0xkz04eubgWeyiCUzvD8Pu7XefEl9p5+7AD
-         ehw/1hPO1kRj0DCyk9OynSQKDAek5GKOQwHtV1UA=
+        b=z56jss6Fz4pvfmT5kO7RbCykdu4f1Vq+LJs2DoD/IQ6fWKyduY8ZtAW/7YSJQfaY4
+         kPq32fmOvbtHWwtYQa3Dk5Vo4HyoG5b30irRjhT/vdlXSw3dT0Ssa7XQZAoptb1t+F
+         u/z5gkMxK3qBxqT1L3q/nD5DDOQ7fYnsc/h/RmdU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Joel Stanley <joel@jms.id.au>,
-        Naveen N Rao <naveen@kernel.org>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 095/129] powerpc: Fail build if using recordmcount with binutils v2.37
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Steffen Klassert <steffen.klassert@secunet.com>
+Subject: [PATCH 5.4 092/158] net: xfrm: Amend XFRMA_SEC_CTX nla_policy structure
 Date:   Mon, 28 Aug 2023 12:13:09 +0200
-Message-ID: <20230828101156.813408282@linuxfoundation.org>
+Message-ID: <20230828101200.408299533@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,58 +54,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 25ea739ea1d4d3de41acc4f4eb2d1a97eee0eb75 ]
+commit d1e0e61d617ba17aa516db707aa871387566bbf7 upstream.
 
-binutils v2.37 drops unused section symbols, which prevents recordmcount
-from capturing mcount locations in sections that have no non-weak
-symbols. This results in a build failure with a message such as:
-	Cannot find symbol for section 12: .text.perf_callchain_kernel.
-	kernel/events/callchain.o: failed
+According to all consumers code of attrs[XFRMA_SEC_CTX], like
 
-The change to binutils was reverted for v2.38, so this behavior is
-specific to binutils v2.37:
-https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=c09c8b42021180eee9495bd50d8b35e683d3901b
+* verify_sec_ctx_len(), convert to xfrm_user_sec_ctx*
+* xfrm_state_construct(), call security_xfrm_state_alloc whose prototype
+is int security_xfrm_state_alloc(.., struct xfrm_user_sec_ctx *sec_ctx);
+* copy_from_user_sec_ctx(), convert to xfrm_user_sec_ctx *
+...
 
-Objtool is able to cope with such sections, so this issue is specific to
-recordmcount.
+It seems that the expected parsing result for XFRMA_SEC_CTX should be
+structure xfrm_user_sec_ctx, and the current xfrm_sec_ctx is confusing
+and misleading (Luckily, they happen to have same size 8 bytes).
 
-Fail the build and print a warning if binutils v2.37 is detected and if
-we are using recordmcount.
+This commit amend the policy structure to xfrm_user_sec_ctx to avoid
+ambiguity.
 
-Cc: stable@vger.kernel.org
-Suggested-by: Joel Stanley <joel@jms.id.au>
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230530061436.56925-1-naveen@kernel.org
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cf5cb79f6946 ("[XFRM] netlink: Establish an attribute policy")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/Makefile | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/xfrm/xfrm_user.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 2fad158173485..daddada1a3902 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -439,3 +439,11 @@ checkbin:
- 		echo -n '*** Please use a different binutils version.' ; \
- 		false ; \
- 	fi
-+	@if test "x${CONFIG_FTRACE_MCOUNT_USE_RECORDMCOUNT}" = "xy" -a \
-+		"x${CONFIG_LD_IS_BFD}" = "xy" -a \
-+		"${CONFIG_LD_VERSION}" = "23700" ; then \
-+		echo -n '*** binutils 2.37 drops unused section symbols, which recordmcount ' ; \
-+		echo 'is unable to handle.' ; \
-+		echo '*** Please use a different binutils version.' ; \
-+		false ; \
-+	fi
--- 
-2.40.1
-
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -2583,7 +2583,7 @@ static const struct nla_policy xfrma_pol
+ 	[XFRMA_ALG_COMP]	= { .len = sizeof(struct xfrm_algo) },
+ 	[XFRMA_ENCAP]		= { .len = sizeof(struct xfrm_encap_tmpl) },
+ 	[XFRMA_TMPL]		= { .len = sizeof(struct xfrm_user_tmpl) },
+-	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_sec_ctx) },
++	[XFRMA_SEC_CTX]		= { .len = sizeof(struct xfrm_user_sec_ctx) },
+ 	[XFRMA_LTIME_VAL]	= { .len = sizeof(struct xfrm_lifetime_cur) },
+ 	[XFRMA_REPLAY_VAL]	= { .len = sizeof(struct xfrm_replay_state) },
+ 	[XFRMA_REPLAY_THRESH]	= { .type = NLA_U32 },
 
 
