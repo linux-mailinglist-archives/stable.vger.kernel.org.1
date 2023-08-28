@@ -2,42 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF76078AC1D
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD02978ABF4
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231608AbjH1KhL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:37:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60234 "EHLO
+        id S231585AbjH1Kfj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231642AbjH1Kgu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC29F188
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:47 -0700 (PDT)
+        with ESMTP id S231664AbjH1Kf1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2AB115
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 81E3663EFB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 960FAC433C8;
-        Mon, 28 Aug 2023 10:36:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D5E963E3C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10D3C433C9;
+        Mon, 28 Aug 2023 10:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219007;
-        bh=t5coIyvRERdy4u5dIqXBW7Q/fFjU6gi2ClRZp739daw=;
+        s=korg; t=1693218923;
+        bh=ll3May4PISAOw+HnT5xU+nHPLNZxaSKTY9okacbE1Dw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N9/bOhJaUt9ks5IbjT1mviIxnlB/eNaefU73yDHDUa7BUAgqnTR24zXvfzdlmIjL6
-         WdPeNnrBcTpk5iOXQhxhuwFxUiSkeWmu4WgOBqqKmk3i2Jts7oYPAvsqibdvgDq6wv
-         7qrf6RFurw/yKL+B2vw4uVrAwZVTnFUD3MhHtDdw=
+        b=FYv/Aefo/pKZGwtWcsuy4c81dC25SpogZzi9eQ831Y855Pdmv9XTte9/uCNC1pdHp
+         tj16MFnNzyfQfbkEBCyezvDrc3DutfYjRccm1CSEd8mYbDl/kD8IRvh0iWdHmBSWSB
+         k6JzHThYQYIW0dhZVVDkHuM22+sz7hiPYroE8ueU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yangtao Li <tiny.windzz@gmail.com>,
+        patches@lists.linux.dev,
+        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
         Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 001/158] mmc: sdhci_f_sdh30: convert to devm_platform_ioremap_resource
-Date:   Mon, 28 Aug 2023 12:11:38 +0200
-Message-ID: <20230828101157.371325990@linuxfoundation.org>
+Subject: [PATCH 5.4 002/158] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm
+Date:   Mon, 28 Aug 2023 12:11:39 +0200
+Message-ID: <20230828101157.400602981@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
 References: <20230828101157.322319621@linuxfoundation.org>
@@ -46,8 +48,8 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,43 +61,153 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Yangtao Li <tiny.windzz@gmail.com>
+From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
 
-[ Upstream commit dbf90a178cdcfe255f6e67ecfcf720d1592efb60 ]
+[ Upstream commit 5def5c1c15bf22934ee227af85c1716762f3829f ]
 
-Use devm_platform_ioremap_resource() to simplify code.
+Even if sdhci_pltfm_pmops is specified for PM, this driver doesn't apply
+sdhci_pltfm, so the structure is not correctly referenced in PM functions.
+This applies sdhci_pltfm to this driver to fix this issue.
 
-Signed-off-by: Yangtao Li <tiny.windzz@gmail.com>
-Link: https://lore.kernel.org/r/20191215175120.3290-7-tiny.windzz@gmail.com
+- Call sdhci_pltfm_init() instead of sdhci_alloc_host() and
+  other functions that covered by sdhci_pltfm.
+- Move ops and quirks to sdhci_pltfm_data
+- Replace sdhci_priv() with own private function sdhci_f_sdh30_priv().
+
+Fixes: 87a507459f49 ("mmc: sdhci: host: add new f_sdh30")
+Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230630004533.26644-1-hayashi.kunihiko@socionext.com
 Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Stable-dep-of: 5def5c1c15bf ("mmc: sdhci-f-sdh30: Replace with sdhci_pltfm")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_f_sdh30.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+ drivers/mmc/host/sdhci_f_sdh30.c | 60 ++++++++++++++------------------
+ 1 file changed, 27 insertions(+), 33 deletions(-)
 
 diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_sdh30.c
-index 9548d022d52ba..74757809fc90d 100644
+index 74757809fc90d..bfaabd4130a43 100644
 --- a/drivers/mmc/host/sdhci_f_sdh30.c
 +++ b/drivers/mmc/host/sdhci_f_sdh30.c
-@@ -113,7 +113,6 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+@@ -50,9 +50,16 @@ struct f_sdhost_priv {
+ 	bool enable_cmd_dat_delay;
+ };
+ 
++static void *sdhci_f_sdhost_priv(struct sdhci_host *host)
++{
++	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
++
++	return sdhci_pltfm_priv(pltfm_host);
++}
++
+ static void sdhci_f_sdh30_soft_voltage_switch(struct sdhci_host *host)
+ {
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 	u32 ctrl = 0;
+ 
+ 	usleep_range(2500, 3000);
+@@ -85,7 +92,7 @@ static unsigned int sdhci_f_sdh30_get_min_clock(struct sdhci_host *host)
+ 
+ static void sdhci_f_sdh30_reset(struct sdhci_host *host, u8 mask)
+ {
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 	u32 ctl;
+ 
+ 	if (sdhci_readw(host, SDHCI_CLOCK_CONTROL) == 0)
+@@ -109,30 +116,32 @@ static const struct sdhci_ops sdhci_f_sdh30_ops = {
+ 	.set_uhs_signaling = sdhci_set_uhs_signaling,
+ };
+ 
++static const struct sdhci_pltfm_data sdhci_f_sdh30_pltfm_data = {
++	.ops = &sdhci_f_sdh30_ops,
++	.quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC
++		| SDHCI_QUIRK_INVERTED_WRITE_PROTECT,
++	.quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE
++		|  SDHCI_QUIRK2_TUNING_WORK_AROUND,
++};
++
+ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
  {
  	struct sdhci_host *host;
  	struct device *dev = &pdev->dev;
--	struct resource *res;
- 	int irq, ctrl = 0, ret = 0;
+-	int irq, ctrl = 0, ret = 0;
++	int ctrl = 0, ret = 0;
  	struct f_sdhost_priv *priv;
++	struct sdhci_pltfm_host *pltfm_host;
  	u32 reg = 0;
-@@ -147,8 +146,7 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
- 	host->ops = &sdhci_f_sdh30_ops;
- 	host->irq = irq;
  
--	res = platform_get_resource(pdev, IORESOURCE_MEM, 0);
--	host->ioaddr = devm_ioremap_resource(&pdev->dev, res);
-+	host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
- 	if (IS_ERR(host->ioaddr)) {
- 		ret = PTR_ERR(host->ioaddr);
+-	irq = platform_get_irq(pdev, 0);
+-	if (irq < 0)
+-		return irq;
+-
+-	host = sdhci_alloc_host(dev, sizeof(struct f_sdhost_priv));
++	host = sdhci_pltfm_init(pdev, &sdhci_f_sdh30_pltfm_data,
++				sizeof(struct f_sdhost_priv));
+ 	if (IS_ERR(host))
+ 		return PTR_ERR(host);
+ 
+-	priv = sdhci_priv(host);
++	pltfm_host = sdhci_priv(host);
++	priv = sdhci_pltfm_priv(pltfm_host);
+ 	priv->dev = dev;
+ 
+-	host->quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
+-		       SDHCI_QUIRK_INVERTED_WRITE_PROTECT;
+-	host->quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE |
+-			SDHCI_QUIRK2_TUNING_WORK_AROUND;
+-
+ 	priv->enable_cmd_dat_delay = device_property_read_bool(dev,
+ 						"fujitsu,cmd-dat-delay-select");
+ 
+@@ -140,18 +149,6 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ 	if (ret)
  		goto err;
+ 
+-	platform_set_drvdata(pdev, host);
+-
+-	host->hw_name = "f_sdh30";
+-	host->ops = &sdhci_f_sdh30_ops;
+-	host->irq = irq;
+-
+-	host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(host->ioaddr)) {
+-		ret = PTR_ERR(host->ioaddr);
+-		goto err;
+-	}
+-
+ 	if (dev_of_node(dev)) {
+ 		sdhci_get_of_property(pdev);
+ 
+@@ -206,23 +203,20 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
+ err_clk:
+ 	clk_disable_unprepare(priv->clk_iface);
+ err:
+-	sdhci_free_host(host);
++	sdhci_pltfm_free(pdev);
++
+ 	return ret;
+ }
+ 
+ static int sdhci_f_sdh30_remove(struct platform_device *pdev)
+ {
+ 	struct sdhci_host *host = platform_get_drvdata(pdev);
+-	struct f_sdhost_priv *priv = sdhci_priv(host);
+-
+-	sdhci_remove_host(host, readl(host->ioaddr + SDHCI_INT_STATUS) ==
+-			  0xffffffff);
++	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+ 
+ 	clk_disable_unprepare(priv->clk_iface);
+ 	clk_disable_unprepare(priv->clk);
+ 
+-	sdhci_free_host(host);
+-	platform_set_drvdata(pdev, NULL);
++	sdhci_pltfm_unregister(pdev);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
