@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0469278AB3E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0950E78AAA5
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:24:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231329AbjH1K3S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55090 "EHLO
+        id S231172AbjH1KXz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231366AbjH1K3B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:01 -0400
+        with ESMTP id S231215AbjH1KXf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C842119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51ADA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AED2763BFF
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE5F7C433C8;
-        Mon, 28 Aug 2023 10:28:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 82F366399A
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F60FC433C9;
+        Mon, 28 Aug 2023 10:23:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218538;
-        bh=OHa23mFkhWrGNiMfuBvGDpTGgBimV7q6YJ1b1KTdcIE=;
+        s=korg; t=1693218211;
+        bh=jQMpYP+TkuLMOmDQEIiw4iPtrs+K0krQpRV2ULu+owo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bh/n0zcwVGVT0lEHz+PH590vjt6+gXmCoA+i50hdXHUoVeYpWDmldE8P/CrEUiWXl
-         sJS2vPxzNDBlX00N+LbOQZOLIfpHltFGCvJm1/z2f/PbWQE1kqOPWH3qlRXlu8VVj9
-         C6e+S68hEwGyHMiRcKZ/Nq9N+WUz9o0NwLEqEK8s=
+        b=ZU5YvcVFNaKYA2FjXqW5osPzr8j1OT/y6Ml+rslK/X60Ob8gwa4ff+DRH8VpqB7hd
+         oO5H16G7rNn5PQD5yR0mBYbKMhcH/vTMmI1kkyQycZQkuUw6bqlPlZ/Ed1EmDx6gv4
+         W//gKmVwDW2gEPnrzlihFLlLAGw+0qv7c+LmGEr4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Masahiro Yamada <yamada.masahiro@socionext.com>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 094/129] powerpc: remove leftover code of old GCC version checks
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.4 109/129] can: raw: add missing refcount for memory leak fix
 Date:   Mon, 28 Aug 2023 12:13:08 +0200
-Message-ID: <20230828101156.783686338@linuxfoundation.org>
+Message-ID: <20230828101200.993327219@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,51 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <yamada.masahiro@socionext.com>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit bad96de8d31ba65dc26645af5550135315ea0b19 ]
+commit c275a176e4b69868576e543409927ae75e3a3288 upstream.
 
-Clean up the leftover of commit f2910f0e6835 ("powerpc: remove old
-GCC version checks").
+Commit ee8b94c8510c ("can: raw: fix receiver memory leak") introduced
+a new reference to the CAN netdevice that has assigned CAN filters.
+But this new ro->dev reference did not maintain its own refcount which
+lead to another KASAN use-after-free splat found by Eric Dumazet.
 
-Signed-off-by: Masahiro Yamada <yamada.masahiro@socionext.com>
-Acked-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Stable-dep-of: 25ea739ea1d4 ("powerpc: Fail build if using recordmcount with binutils v2.37")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch ensures a proper refcount for the CAN nedevice.
+
+Fixes: ee8b94c8510c ("can: raw: fix receiver memory leak")
+Reported-by: Eric Dumazet <edumazet@google.com>
+Cc: Ziyang Xuan <william.xuanziyang@huawei.com>
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://lore.kernel.org/r/20230821144547.6658-3-socketcan@hartkopp.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/powerpc/Makefile | 8 --------
- 1 file changed, 8 deletions(-)
+ net/can/raw.c |   35 ++++++++++++++++++++++++++---------
+ 1 file changed, 26 insertions(+), 9 deletions(-)
 
-diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
-index 4cea663d5d49b..2fad158173485 100644
---- a/arch/powerpc/Makefile
-+++ b/arch/powerpc/Makefile
-@@ -429,10 +429,6 @@ stack_protector_prepare: prepare0
- 	$(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
- endif
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -85,6 +85,7 @@ struct raw_sock {
+ 	int bound;
+ 	int ifindex;
+ 	struct net_device *dev;
++	netdevice_tracker dev_tracker;
+ 	struct list_head notifier;
+ 	int loopback;
+ 	int recv_own_msgs;
+@@ -285,8 +286,10 @@ static void raw_notify(struct raw_sock *
+ 	case NETDEV_UNREGISTER:
+ 		lock_sock(sk);
+ 		/* remove current filters & unregister */
+-		if (ro->bound)
++		if (ro->bound) {
+ 			raw_disable_allfilters(dev_net(dev), dev, sk);
++			netdev_put(dev, &ro->dev_tracker);
++		}
  
--# Use the file '.tmp_gas_check' for binutils tests, as gas won't output
--# to stdout and these checks are run even on install targets.
--TOUT	:= .tmp_gas_check
--
- # Check toolchain versions:
- # - gcc-4.6 is the minimum kernel-wide version so nothing required.
- checkbin:
-@@ -443,7 +439,3 @@ checkbin:
- 		echo -n '*** Please use a different binutils version.' ; \
- 		false ; \
- 	fi
--
--
--CLEAN_FILES += $(TOUT)
--
--- 
-2.40.1
-
+ 		if (ro->count > 1)
+ 			kfree(ro->filter);
+@@ -391,10 +394,12 @@ static int raw_release(struct socket *so
+ 
+ 	/* remove current filters & unregister */
+ 	if (ro->bound) {
+-		if (ro->dev)
++		if (ro->dev) {
+ 			raw_disable_allfilters(dev_net(ro->dev), ro->dev, sk);
+-		else
++			netdev_put(ro->dev, &ro->dev_tracker);
++		} else {
+ 			raw_disable_allfilters(sock_net(sk), NULL, sk);
++		}
+ 	}
+ 
+ 	if (ro->count > 1)
+@@ -445,10 +450,10 @@ static int raw_bind(struct socket *sock,
+ 			goto out;
+ 		}
+ 		if (dev->type != ARPHRD_CAN) {
+-			dev_put(dev);
+ 			err = -ENODEV;
+-			goto out;
++			goto out_put_dev;
+ 		}
++
+ 		if (!(dev->flags & IFF_UP))
+ 			notify_enetdown = 1;
+ 
+@@ -456,7 +461,9 @@ static int raw_bind(struct socket *sock,
+ 
+ 		/* filters set by default/setsockopt */
+ 		err = raw_enable_allfilters(sock_net(sk), dev, sk);
+-		dev_put(dev);
++		if (err)
++			goto out_put_dev;
++
+ 	} else {
+ 		ifindex = 0;
+ 
+@@ -467,18 +474,28 @@ static int raw_bind(struct socket *sock,
+ 	if (!err) {
+ 		if (ro->bound) {
+ 			/* unregister old filters */
+-			if (ro->dev)
++			if (ro->dev) {
+ 				raw_disable_allfilters(dev_net(ro->dev),
+ 						       ro->dev, sk);
+-			else
++				/* drop reference to old ro->dev */
++				netdev_put(ro->dev, &ro->dev_tracker);
++			} else {
+ 				raw_disable_allfilters(sock_net(sk), NULL, sk);
++			}
+ 		}
+ 		ro->ifindex = ifindex;
+ 		ro->bound = 1;
++		/* bind() ok -> hold a reference for new ro->dev */
+ 		ro->dev = dev;
++		if (ro->dev)
++			netdev_hold(ro->dev, &ro->dev_tracker, GFP_KERNEL);
+ 	}
+ 
+- out:
++out_put_dev:
++	/* remove potential reference from dev_get_by_index() */
++	if (dev)
++		dev_put(dev);
++out:
+ 	release_sock(sk);
+ 	rtnl_unlock();
+ 
 
 
