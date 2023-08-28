@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9782978AAB8
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F11F678ABF8
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231152AbjH1KY0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51616 "EHLO
+        id S231545AbjH1KgF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:36:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231225AbjH1KYD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:03 -0400
+        with ESMTP id S231543AbjH1Kff (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 870BF119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:00 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49B77B9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B89A639FA
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CA75C433CC;
-        Mon, 28 Aug 2023 10:23:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D338163E9E
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3843C433C7;
+        Mon, 28 Aug 2023 10:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218239;
-        bh=anLnGYoYXzpHDPRtZw+jCbyjdKMuwwpetxs3BYp2E/4=;
+        s=korg; t=1693218931;
+        bh=mME0esKvDBz0gjwtuL5kWU/4b41wwvV1cPJ6KIy/qig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ud0Zo8oe3wq+44waN2EmJhKYPEvlzNt1RjQo/MgGlt4SBri8sjP8DDT39sBwQhTwN
-         OdWlab0ggnmg4K9LN2NE204EOxNqKZE8I2Vnyd2c45dnMcgveccXEpvc5Qct/dcwUY
-         pwxeNg1HCqbGUXmBgheHJEOzX0daZV3tbdTEBapU=
+        b=F7KPLxPT/GkqMPEzXox4V7r4gkUQYAN/DA7ylHrug8oe2HNEBGIlsHMSdP3lH+f47
+         aXVefe/oEqa2xQQCOqNMg6SXnHa/5sOYxUPfnFgPISDtzADmTrFUA0CxAyNvK6iBUV
+         i2upEUKXfSMbi3wmPGEO6LwGtB/FFH01S3N5X3Bw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
+        patches@lists.linux.dev,
+        syzbot+853a6f4dfa3cf37d3aea@syzkaller.appspotmail.com,
+        Yogesh <yogi.kernel@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 016/129] pcmcia: rsrc_nonstatic: Fix memory leak in nonstatic_release_resource_db()
+Subject: [PATCH 5.4 013/158] fs: jfs: Fix UBSAN: array-index-out-of-bounds in dbAllocDmapLev
 Date:   Mon, 28 Aug 2023 12:11:50 +0200
-Message-ID: <20230828101153.661141205@linuxfoundation.org>
+Message-ID: <20230828101157.782661683@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,67 +57,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Yogesh <yogi.kernel@gmail.com>
 
-[ Upstream commit c85fd9422fe0f5d667305efb27f56d09eab120b0 ]
+[ Upstream commit 4e302336d5ca1767a06beee7596a72d3bdc8d983 ]
 
-When nonstatic_release_resource_db() frees all resources associated
-with an PCMCIA socket, it forgets to free socket_data too, causing
-a memory leak observable with kmemleak:
+Syzkaller reported the following issue:
 
-unreferenced object 0xc28d1000 (size 64):
-  comm "systemd-udevd", pid 297, jiffies 4294898478 (age 194.484s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 f0 85 0e c3 00 00 00 00  ................
-    00 00 00 00 0c 10 8d c2 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffda4245>] __kmem_cache_alloc_node+0x2d7/0x4a0
-    [<7e51f0c8>] kmalloc_trace+0x31/0xa4
-    [<d52b4ca0>] nonstatic_init+0x24/0x1a4 [pcmcia_rsrc]
-    [<a2f13e08>] pcmcia_register_socket+0x200/0x35c [pcmcia_core]
-    [<a728be1b>] yenta_probe+0x4d8/0xa70 [yenta_socket]
-    [<c48fac39>] pci_device_probe+0x99/0x194
-    [<84b7c690>] really_probe+0x181/0x45c
-    [<8060fe6e>] __driver_probe_device+0x75/0x1f4
-    [<b9b76f43>] driver_probe_device+0x28/0xac
-    [<648b766f>] __driver_attach+0xeb/0x1e4
-    [<6e9659eb>] bus_for_each_dev+0x61/0xb4
-    [<25a669f3>] driver_attach+0x1e/0x28
-    [<d8671d6b>] bus_add_driver+0x102/0x20c
-    [<df0d323c>] driver_register+0x5b/0x120
-    [<942cd8a4>] __pci_register_driver+0x44/0x4c
-    [<e536027e>] __UNIQUE_ID___addressable_cleanup_module188+0x1c/0xfffff000 [iTCO_vendor_support]
+UBSAN: array-index-out-of-bounds in fs/jfs/jfs_dmap.c:1965:6
+index -84 is out of range for type 's8[341]' (aka 'signed char[341]')
+CPU: 1 PID: 4995 Comm: syz-executor146 Not tainted 6.4.0-rc6-syzkaller-00037-gb6dad5178cea #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
+ ubsan_epilogue lib/ubsan.c:217 [inline]
+ __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
+ dbAllocDmapLev+0x3e5/0x430 fs/jfs/jfs_dmap.c:1965
+ dbAllocCtl+0x113/0x920 fs/jfs/jfs_dmap.c:1809
+ dbAllocAG+0x28f/0x10b0 fs/jfs/jfs_dmap.c:1350
+ dbAlloc+0x658/0xca0 fs/jfs/jfs_dmap.c:874
+ dtSplitUp fs/jfs/jfs_dtree.c:974 [inline]
+ dtInsert+0xda7/0x6b00 fs/jfs/jfs_dtree.c:863
+ jfs_create+0x7b6/0xbb0 fs/jfs/namei.c:137
+ lookup_open fs/namei.c:3492 [inline]
+ open_last_lookups fs/namei.c:3560 [inline]
+ path_openat+0x13df/0x3170 fs/namei.c:3788
+ do_filp_open+0x234/0x490 fs/namei.c:3818
+ do_sys_openat2+0x13f/0x500 fs/open.c:1356
+ do_sys_open fs/open.c:1372 [inline]
+ __do_sys_openat fs/open.c:1388 [inline]
+ __se_sys_openat fs/open.c:1383 [inline]
+ __x64_sys_openat+0x247/0x290 fs/open.c:1383
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f1f4e33f7e9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 51 14 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 c0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc21129578 EFLAGS: 00000246 ORIG_RAX: 0000000000000101
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007f1f4e33f7e9
+RDX: 000000000000275a RSI: 0000000020000040 RDI: 00000000ffffff9c
+RBP: 00007f1f4e2ff080 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00007f1f4e2ff110
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
 
-Fix this by freeing socket_data too.
+The bug occurs when the dbAllocDmapLev()function attempts to access
+dp->tree.stree[leafidx + LEAFIND] while the leafidx value is negative.
 
-Tested on a Acer Travelmate 4002WLMi by manually binding/unbinding
-the yenta_cardbus driver (yenta_socket).
+To rectify this, the patch introduces a safeguard within the
+dbAllocDmapLev() function. A check has been added to verify if leafidx is
+negative. If it is, the function immediately returns an I/O error, preventing
+any further execution that could potentially cause harm.
 
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Message-ID: <20230512184529.5094-1-W_Armin@gmx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Tested via syzbot.
+
+Reported-by: syzbot+853a6f4dfa3cf37d3aea@syzkaller.appspotmail.com
+Link: https://syzkaller.appspot.com/bug?extid=ae2f5a27a07ae44b0f17
+Signed-off-by: Yogesh <yogi.kernel@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/rsrc_nonstatic.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/jfs/jfs_dmap.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index 123420cac6b54..b75b12c2c702d 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -1056,6 +1056,8 @@ static void nonstatic_release_resource_db(struct pcmcia_socket *s)
- 		q = p->next;
- 		kfree(p);
- 	}
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index dac67ee1879be..8e8d53241386f 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -2027,6 +2027,9 @@ dbAllocDmapLev(struct bmap * bmp,
+ 	if (dbFindLeaf((dmtree_t *) & dp->tree, l2nb, &leafidx))
+ 		return -ENOSPC;
+ 
++	if (leafidx < 0)
++		return -EIO;
 +
-+	kfree(data);
- }
- 
- 
+ 	/* determine the block number within the file system corresponding
+ 	 * to the leaf at which free space was found.
+ 	 */
 -- 
 2.40.1
 
