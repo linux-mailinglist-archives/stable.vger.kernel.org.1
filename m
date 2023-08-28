@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DC0B178AC00
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAA7378AB52
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231580AbjH1KgL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:36:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39114 "EHLO
+        id S231422AbjH1KaX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:30:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33316 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231642AbjH1Kfw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:52 -0400
+        with ESMTP id S231435AbjH1KaC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:30:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D1B115
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:49 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6250A6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A859B612AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0DAC433C8;
-        Mon, 28 Aug 2023 10:35:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7B8D363C6C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E166C433C7;
+        Mon, 28 Aug 2023 10:29:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218948;
-        bh=qII5INwMu4TAe7xtLCBmPUUKWO/WvyTZToDugU/Ib0U=;
+        s=korg; t=1693218598;
+        bh=7fG4/mor0EkPlRpSmg4JoPkNNVGb6wlQuVa283N3Tqg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d3hllQsZTDcgntfwlc2SzspbXrb9JRWwVK2bTJxYzo4+J5jqM7Gt4bqnEpNLnV0wp
-         hG1qWkZ7F6yFkAGZRv7cDtOzcY0YdHgtGxhrPpLF8o3eciGMJ0nJ5KkvXsHUJUmtic
-         AS7LQ3xAch7uq1binuexhHL7Vsd+SF24bs5m25oM=
+        b=g+rusgMisu0zE/omLbiwcDJIY0M4n0qe5PAq79uDvrz4ox9zTXZLtpYAtyOZ+mzYM
+         RlVSu5pYMsknwKkzS/L5vQ0XgT7FbXRUWotBdBs/FDmXkcqssjNAfGixGQGKm55yX7
+         P3e6xrce7p+AQYMZo/z0DwwUFVH9xV9D+rHizpec=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Li Jun <jun.li@nxp.com>, Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 019/158] usb: chipidea: imx: dont request QoS for imx8ulp
-Date:   Mon, 28 Aug 2023 12:11:56 +0200
-Message-ID: <20230828101157.993492885@linuxfoundation.org>
+Subject: [PATCH 6.1 002/122] NFSv4: fix out path in __nfs4_get_acl_uncached
+Date:   Mon, 28 Aug 2023 12:11:57 +0200
+Message-ID: <20230828101156.558203793@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,51 +56,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 9a070e8e208995a9d638b538ed7abf28bd6ea6f0 ]
+[ Upstream commit f4e89f1a6dab4c063fc1e823cc9dddc408ff40cf ]
 
-Use dedicated imx8ulp usb compatible to remove QoS request
-since imx8ulp has no such limitation of imx7ulp: DMA will
-not work if system enters idle.
+Another highly rare error case when a page allocating loop (inside
+__nfs4_get_acl_uncached, this time) is not properly unwound on error.
+Since pages array is allocated being uninitialized, need to free only
+lower array indices. NULL checks were useful before commit 62a1573fcf84
+("NFSv4 fix acl retrieval over krb5i/krb5p mounts") when the array had
+been initialized to zero on stack.
 
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Signed-off-by: Li Jun <jun.li@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Message-ID: <20230530104007.1294702-2-xu.yang_2@nxp.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: 62a1573fcf84 ("NFSv4 fix acl retrieval over krb5i/krb5p mounts")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/chipidea/ci_hdrc_imx.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ fs/nfs/nfs4proc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 85561b3194a16..0fe545815c5ce 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -70,6 +70,10 @@ static const struct ci_hdrc_imx_platform_flag imx7ulp_usb_data = {
- 		CI_HDRC_PMQOS,
- };
- 
-+static const struct ci_hdrc_imx_platform_flag imx8ulp_usb_data = {
-+	.flags = CI_HDRC_SUPPORTS_RUNTIME_PM,
-+};
-+
- static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
- 	{ .compatible = "fsl,imx23-usb", .data = &imx23_usb_data},
- 	{ .compatible = "fsl,imx28-usb", .data = &imx28_usb_data},
-@@ -80,6 +84,7 @@ static const struct of_device_id ci_hdrc_imx_dt_ids[] = {
- 	{ .compatible = "fsl,imx6ul-usb", .data = &imx6ul_usb_data},
- 	{ .compatible = "fsl,imx7d-usb", .data = &imx7d_usb_data},
- 	{ .compatible = "fsl,imx7ulp-usb", .data = &imx7ulp_usb_data},
-+	{ .compatible = "fsl,imx8ulp-usb", .data = &imx8ulp_usb_data},
- 	{ /* sentinel */ }
- };
- MODULE_DEVICE_TABLE(of, ci_hdrc_imx_dt_ids);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 177cb7b089b9a..d67383665e9bb 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -5995,9 +5995,8 @@ static ssize_t __nfs4_get_acl_uncached(struct inode *inode, void *buf,
+ out_ok:
+ 	ret = res.acl_len;
+ out_free:
+-	for (i = 0; i < npages; i++)
+-		if (pages[i])
+-			__free_page(pages[i]);
++	while (--i >= 0)
++		__free_page(pages[i]);
+ 	if (res.acl_scratch)
+ 		__free_page(res.acl_scratch);
+ 	kfree(pages);
 -- 
 2.40.1
 
