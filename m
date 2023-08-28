@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0A6A78AB9D
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98BEE78AA7A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231492AbjH1Kc5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58482 "EHLO
+        id S230483AbjH1KWs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231542AbjH1Kci (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:38 -0400
+        with ESMTP id S231130AbjH1KWU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF12F1AE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFD8B124
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D81263D24
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF6EBC433C7;
-        Mon, 28 Aug 2023 10:32:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D0FE163913
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2D08C433C7;
+        Mon, 28 Aug 2023 10:21:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218731;
-        bh=CD4/WRFmqH+7u7xva6H6Am6ZuVrXOJ4VDikgZba3HRk=;
+        s=korg; t=1693218118;
+        bh=mxGb1NV25CTNtrtIRarMwXR8J+3N1KiUyfEstY2fO10=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I/DsN8k/00nU7t8jj2Jbl/IihqAT+jZmND1x8cW22XRAW6lpsp3JGbfrmccG4mpjc
-         gDWr7YS5v5w9hYhFw4wtX2jCwmGMFe6NYn+vN1imYV2EjZhCBQqkcf/24tgQV0gD9/
-         fSACiA1D2CuC19PQsYD05GKS+IkOlo0C1tg+Qfgo=
+        b=OSu6y3TRS10kxLqxLTIf/TBbmHoYBqhOSJDnrbu9rT8k2Yxe8x5Z6VRuDhTRsF0uc
+         BBv9ZI8EwgQ4kZMxdIGWNw3fXRXMUGLVXgAWC/UvNpQ+pu22BSTRM4K6VtGeTSJ9q4
+         kPlK4RRdk3KwvUo8AEfgWBdODXR1BQ9oEl8sFfeM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
-        Johannes Berg <johannes.berg@intel.com>
-Subject: [PATCH 6.1 064/122] wifi: mac80211: limit reorder_buf_filtered to avoid UBSAN warning
+        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
+        Guo Ren <guoren@kernel.org>,
+        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.4 100/129] riscv: Handle zicsr/zifencei issue between gcc and binutils
 Date:   Mon, 28 Aug 2023 12:12:59 +0200
-Message-ID: <20230828101158.559113182@linuxfoundation.org>
+Message-ID: <20230828101200.673110884@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,101 +56,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
 
-commit b98c16107cc1647242abbd11f234c05a3a5864f6 upstream.
+commit ca09f772cccaeec4cd05a21528c37a260aa2dd2c upstream.
 
-The commit 06470f7468c8 ("mac80211: add API to allow filtering frames in BA sessions")
-added reorder_buf_filtered to mark frames filtered by firmware, and it
-can only work correctly if hw.max_rx_aggregation_subframes <= 64 since
-it stores the bitmap in a u64 variable.
+Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
+20191213 version which moves some instructions from the I extension to the
+Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
+that version, we should explicitly specifying Zicsr and Zifencei via -march
+to cope with the new changes. but this only occurs when binutils >= 2.36
+and GCC >= 11.1.0. It's a different story when binutils < 2.36.
 
-However, new HE or EHT devices can support BlockAck number up to 256 or
-1024, and then using a higher subframe index leads UBSAN warning:
+binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
+Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
+and Zifencei extension for -march. binutils-2.35 does not support the
+Zifencei extension, and does not need to specify Zicsr and Zifencei when
+working with GCC >= 12.1.0.
 
- UBSAN: shift-out-of-bounds in net/mac80211/rx.c:1129:39
- shift exponent 215 is too large for 64-bit type 'long long unsigned int'
- Call Trace:
-  <IRQ>
-  dump_stack_lvl+0x48/0x70
-  dump_stack+0x10/0x20
-  __ubsan_handle_shift_out_of_bounds+0x1ac/0x360
-  ieee80211_release_reorder_frame.constprop.0.cold+0x64/0x69 [mac80211]
-  ieee80211_sta_reorder_release+0x9c/0x400 [mac80211]
-  ieee80211_prepare_and_rx_handle+0x1234/0x1420 [mac80211]
-  ieee80211_rx_list+0xaef/0xf60 [mac80211]
-  ieee80211_rx_napi+0x53/0xd0 [mac80211]
+To make our lives easier, let's relax the check to binutils >= 2.36 in
+CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
+where clang < 17 or GCC < 11.1.0, we will deal with them in
+CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
 
-Since only old hardware that supports <=64 BlockAck uses
-ieee80211_mark_rx_ba_filtered_frames(), limit the use as it is, so add a
-WARN_ONCE() and comment to note to avoid using this function if hardware
-capability is not suitable.
+For more information, please refer to:
+commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
+commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
 
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Link: https://lore.kernel.org/r/20230818014004.16177-1-pkshih@realtek.com
-[edit commit message]
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [1]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=5a1b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=729a53530e86972d1143553a415db34e6e01d5d2 [3]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 [4]
+Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
+Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Guo Ren <guoren@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230809165648.21071-1-xingmingzheng@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/mac80211.h |    1 +
- net/mac80211/rx.c      |   12 ++++++++++--
- 2 files changed, 11 insertions(+), 2 deletions(-)
+ arch/riscv/Kconfig                     |   28 +++++++++++++++++-----------
+ arch/riscv/kernel/compat_vdso/Makefile |    8 +++++++-
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -6444,6 +6444,7 @@ void ieee80211_stop_rx_ba_session(struct
-  * marks frames marked in the bitmap as having been filtered. Afterwards, it
-  * checks if any frames in the window starting from @ssn can now be released
-  * (in case they were only waiting for frames that were filtered.)
-+ * (Only work correctly if @max_rx_aggregation_subframes <= 64 frames)
-  */
- void ieee80211_mark_rx_ba_filtered_frames(struct ieee80211_sta *pubsta, u8 tid,
- 					  u16 ssn, u64 filtered,
---- a/net/mac80211/rx.c
-+++ b/net/mac80211/rx.c
-@@ -1102,7 +1102,8 @@ static inline bool ieee80211_rx_reorder_
- 	struct sk_buff *tail = skb_peek_tail(frames);
- 	struct ieee80211_rx_status *status;
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -525,24 +525,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
+ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	def_bool y
+ 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
+-	depends on AS_IS_GNU && AS_VERSION >= 23800
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
++	depends on AS_IS_GNU && AS_VERSION >= 23600
+ 	help
+-	  Newer binutils versions default to ISA spec version 20191213 which
+-	  moves some instructions from the I extension to the Zicsr and Zifencei
+-	  extensions.
++	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
++	  20191213 version, which moves some instructions from the I extension to
++	  the Zicsr and Zifencei extensions. This requires explicitly specifying
++	  Zicsr and Zifencei when binutils >= 2.38 or GCC >= 12.1.0. Zicsr
++	  and Zifencei are supported in binutils from version 2.36 onwards.
++	  To make life easier, and avoid forcing toolchains that default to a
++	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
++	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
++	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
  
--	if (tid_agg_rx->reorder_buf_filtered & BIT_ULL(index))
-+	if (tid_agg_rx->reorder_buf_filtered &&
-+	    tid_agg_rx->reorder_buf_filtered & BIT_ULL(index))
- 		return true;
+ config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+ 	def_bool y
+ 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+-	depends on CC_IS_CLANG && CLANG_VERSION < 170000
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
++	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
+ 	help
+-	  Certain versions of clang do not support zicsr and zifencei via -march
+-	  but newer versions of binutils require it for the reasons noted in the
+-	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
+-	  option causes an older ISA spec compatible with these older versions
+-	  of clang to be passed to GAS, which has the same result as passing zicsr
+-	  and zifencei to -march.
++	  Certain versions of clang and GCC do not support zicsr and zifencei via
++	  -march. This option causes an older ISA spec compatible with these older
++	  versions of clang and GCC to be passed to GAS, which has the same result
++	  as passing zicsr and zifencei to -march.
  
- 	if (!tail)
-@@ -1143,7 +1144,8 @@ static void ieee80211_release_reorder_fr
- 	}
+ config FPU
+ 	bool "FPU support"
+--- a/arch/riscv/kernel/compat_vdso/Makefile
++++ b/arch/riscv/kernel/compat_vdso/Makefile
+@@ -11,7 +11,13 @@ compat_vdso-syms += flush_icache
+ COMPAT_CC := $(CC)
+ COMPAT_LD := $(LD)
  
- no_frame:
--	tid_agg_rx->reorder_buf_filtered &= ~BIT_ULL(index);
-+	if (tid_agg_rx->reorder_buf_filtered)
-+		tid_agg_rx->reorder_buf_filtered &= ~BIT_ULL(index);
- 	tid_agg_rx->head_seq_num = ieee80211_sn_inc(tid_agg_rx->head_seq_num);
- }
+-COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++# binutils 2.35 does not support the zifencei extension, but in the ISA
++# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
++ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
++	COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++else
++	COMPAT_CC_FLAGS := -march=rv32imafd -mabi=ilp32
++endif
+ COMPAT_LD_FLAGS := -melf32lriscv
  
-@@ -4162,6 +4164,7 @@ void ieee80211_mark_rx_ba_filtered_frame
- 					  u16 ssn, u64 filtered,
- 					  u16 received_mpdus)
- {
-+	struct ieee80211_local *local;
- 	struct sta_info *sta;
- 	struct tid_ampdu_rx *tid_agg_rx;
- 	struct sk_buff_head frames;
-@@ -4179,6 +4182,11 @@ void ieee80211_mark_rx_ba_filtered_frame
- 
- 	sta = container_of(pubsta, struct sta_info, sta);
- 
-+	local = sta->sdata->local;
-+	WARN_ONCE(local->hw.max_rx_aggregation_subframes > 64,
-+		  "RX BA marker can't support max_rx_aggregation_subframes %u > 64\n",
-+		  local->hw.max_rx_aggregation_subframes);
-+
- 	if (!ieee80211_rx_data_set_sta(&rx, sta, -1))
- 		return;
- 
+ # Disable attributes, as they're useless and break the build.
 
 
