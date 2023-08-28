@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B5F4278AC7F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:41:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A1CBC78AA9D
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:24:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231717AbjH1Kkf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:40:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
+        id S230508AbjH1KXu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231725AbjH1KkI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:40:08 -0400
+        with ESMTP id S230511AbjH1KXS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADE7AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:40:05 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E91383
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A10B64028
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:40:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF54C433C7;
-        Mon, 28 Aug 2023 10:40:03 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2CBD66398F
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ADF8C433C7;
+        Mon, 28 Aug 2023 10:23:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219204;
-        bh=GDCVmVLba0Xfe20+3m042y9vPBwWx9J3Wqyw8u0kH34=;
+        s=korg; t=1693218195;
+        bh=5iuDqNTnHT5DY3eJJuK3QSmTGimvOpnvfqezHYKQAyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1ifSNvYw6XgnYWpoYx66Scy5NQ/6Nvp4EWK3y9a0JB5eO2P6kO8rSYpFfZMNDIpK7
-         4ubDQLnfbkjYYwBxj5n+L3VX5rqKokYB7aTa5hdIEmdtLHYJx3tgUipomGDPosLhUL
-         6yzyweX4FVq4y6ZFsocCNugp49c797ATNCu5bISg=
+        b=TDUPFCA/pDzU4vHKuF+FvswSYiKSIk14ESjVM4Ixhy0hGZ1InBnuGkYul5XgmKODM
+         X4RRZE9CrKTVHvnGOTfcPU7YUD5OZdHAIfaGuL7469Bfkcpu1aC4ADK1yF9fAnUFiw
+         gLqkFwqAssK+pZHf75doJ/SJkOJrwZScozGNKwTw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 111/158] ALSA: pcm: Fix potential data race at PCM memory allocation helpers
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 6.4 129/129] netfilter: nf_tables: fix kdoc warnings after gc rework
 Date:   Mon, 28 Aug 2023 12:13:28 +0200
-Message-ID: <20230828101201.040903876@linuxfoundation.org>
+Message-ID: <20230828101201.789209041@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,119 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit bd55842ed998a622ba6611fe59b3358c9f76773d ]
+commit 08713cb006b6f07434f276c5ee214fb20c7fd965 upstream.
 
-The PCM memory allocation helpers have a sanity check against too many
-buffer allocations.  However, the check is performed without a proper
-lock and the allocation isn't serialized; this allows user to allocate
-more memories than predefined max size.
+Jakub Kicinski says:
+  We've got some new kdoc warnings here:
+  net/netfilter/nft_set_pipapo.c:1557: warning: Function parameter or member '_set' not described in 'pipapo_gc'
+  net/netfilter/nft_set_pipapo.c:1557: warning: Excess function parameter 'set' description in 'pipapo_gc'
+  include/net/netfilter/nf_tables.h:577: warning: Function parameter or member 'dead' not described in 'nft_set'
 
-Practically seen, this isn't really a big problem, as it's more or
-less some "soft limit" as a sanity check, and it's not possible to
-allocate unlimitedly.  But it's still better to address this for more
-consistent behavior.
-
-The patch covers the size check in do_alloc_pages() with the
-card->memory_mutex, and increases the allocated size there for
-preventing the further overflow.  When the actual allocation fails,
-the size is decreased accordingly.
-
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Reported-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/CADm8Tek6t0WedK+3Y6rbE5YEt19tML8BUL45N2ji4ZAz1KcN_A@mail.gmail.com
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
-Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230703112430.30634-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Reported-by: Jakub Kicinski <kuba@kernel.org>
+Closes: https://lore.kernel.org/netdev/20230810104638.746e46f1@kernel.org/
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_memory.c | 44 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 8 deletions(-)
+ include/net/netfilter/nf_tables.h |    1 +
+ net/netfilter/nft_set_pipapo.c    |    2 +-
+ 2 files changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/sound/core/pcm_memory.c b/sound/core/pcm_memory.c
-index 97b471d7b32e5..beca39f7c8f35 100644
---- a/sound/core/pcm_memory.c
-+++ b/sound/core/pcm_memory.c
-@@ -31,14 +31,40 @@ static unsigned long max_alloc_per_card = 32UL * 1024UL * 1024UL;
- module_param(max_alloc_per_card, ulong, 0644);
- MODULE_PARM_DESC(max_alloc_per_card, "Max total allocation bytes per card.");
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -534,6 +534,7 @@ struct nft_set_elem_expr {
+  *	@expr: stateful expression
+  * 	@ops: set ops
+  * 	@flags: set flags
++ *	@dead: set will be freed, never cleared
+  *	@genmask: generation mask
+  * 	@klen: key length
+  * 	@dlen: data length
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -1550,7 +1550,7 @@ static void nft_pipapo_gc_deactivate(str
  
-+static void __update_allocated_size(struct snd_card *card, ssize_t bytes)
-+{
-+	card->total_pcm_alloc_bytes += bytes;
-+}
-+
-+static void update_allocated_size(struct snd_card *card, ssize_t bytes)
-+{
-+	mutex_lock(&card->memory_mutex);
-+	__update_allocated_size(card, bytes);
-+	mutex_unlock(&card->memory_mutex);
-+}
-+
-+static void decrease_allocated_size(struct snd_card *card, size_t bytes)
-+{
-+	mutex_lock(&card->memory_mutex);
-+	WARN_ON(card->total_pcm_alloc_bytes < bytes);
-+	__update_allocated_size(card, -(ssize_t)bytes);
-+	mutex_unlock(&card->memory_mutex);
-+}
-+
- static int do_alloc_pages(struct snd_card *card, int type, struct device *dev,
- 			  size_t size, struct snd_dma_buffer *dmab)
- {
- 	int err;
- 
-+	/* check and reserve the requested size */
-+	mutex_lock(&card->memory_mutex);
- 	if (max_alloc_per_card &&
--	    card->total_pcm_alloc_bytes + size > max_alloc_per_card)
-+	    card->total_pcm_alloc_bytes + size > max_alloc_per_card) {
-+		mutex_unlock(&card->memory_mutex);
- 		return -ENOMEM;
-+	}
-+	__update_allocated_size(card, size);
-+	mutex_unlock(&card->memory_mutex);
- 
- 	if (IS_ENABLED(CONFIG_SND_DMA_SGBUF) &&
- 	    (type == SNDRV_DMA_TYPE_DEV_SG || type == SNDRV_DMA_TYPE_DEV_UC_SG) &&
-@@ -53,9 +79,14 @@ static int do_alloc_pages(struct snd_card *card, int type, struct device *dev,
- 
- 	err = snd_dma_alloc_pages(type, dev, size, dmab);
- 	if (!err) {
--		mutex_lock(&card->memory_mutex);
--		card->total_pcm_alloc_bytes += dmab->bytes;
--		mutex_unlock(&card->memory_mutex);
-+		/* the actual allocation size might be bigger than requested,
-+		 * and we need to correct the account
-+		 */
-+		if (dmab->bytes != size)
-+			update_allocated_size(card, dmab->bytes - size);
-+	} else {
-+		/* take back on allocation failure */
-+		decrease_allocated_size(card, size);
- 	}
- 	return err;
- }
-@@ -64,10 +95,7 @@ static void do_free_pages(struct snd_card *card, struct snd_dma_buffer *dmab)
- {
- 	if (!dmab->area)
- 		return;
--	mutex_lock(&card->memory_mutex);
--	WARN_ON(card->total_pcm_alloc_bytes < dmab->bytes);
--	card->total_pcm_alloc_bytes -= dmab->bytes;
--	mutex_unlock(&card->memory_mutex);
-+	decrease_allocated_size(card, dmab->bytes);
- 	snd_dma_free_pages(dmab);
- 	dmab->area = NULL;
- }
--- 
-2.40.1
-
+ /**
+  * pipapo_gc() - Drop expired entries from set, destroy start and end elements
+- * @set:	nftables API set representation
++ * @_set:	nftables API set representation
+  * @m:		Matching data
+  */
+ static void pipapo_gc(const struct nft_set *_set, struct nft_pipapo_match *m)
 
 
