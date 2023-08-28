@@ -2,49 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70A5D78AB89
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B3378AA65
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231463AbjH1Kby (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:31:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36730 "EHLO
+        id S231139AbjH1KVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231551AbjH1Kbp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:31:45 -0400
+        with ESMTP id S231158AbjH1KV0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90769E49
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:16 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD89BB9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E387E61544
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 017EDC433C9;
-        Mon, 28 Aug 2023 10:31:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1895363728
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C25BC433C8;
+        Mon, 28 Aug 2023 10:20:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218673;
-        bh=eEszNnF9DLOiZD1hOEfoxORMXqIYdvNn2hHnbx30s6U=;
+        s=korg; t=1693218054;
+        bh=3uji408avfhbBtJcEga3DlPSbfRCyQZsoYS29qRfcOQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hCiywjbkdoHEg/EOCAIJLY0jzOxbeQ+ufq582XDP36dimEkcfZZj+Zm0PHC9p+JeC
-         tnehLCTaOcbXyRYwWN/sZOLouy9eOv2S523aJHmGdWPxasibTgHTzG3S0ufAcjKbnT
-         zrc9Op6HOLJbeAv2WlcwVUPvC5XapiKvQ93a6+ts=
+        b=n7rJ/8A1CK4ssIJY/l0lBz8upowwqQ81ETiFVRW0xTKptd8c51q/xieKbmRJMrg/6
+         FIxHX6D2MQTLbei12NAZ/0sKI8MOI1pHT/lSEgZsVIDq0LZRC8gPQQ1zAA4kLe0/3Y
+         XgxVYujzzFqIncCUKRyyeopWttJRftVL6XAxVhsE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Jesse Brandeburg <jesse.brandeburg@intel.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
-Subject: [PATCH 6.1 042/122] ice: fix receive buffer size miscalculation
-Date:   Mon, 28 Aug 2023 12:12:37 +0200
-Message-ID: <20230828101157.803913979@linuxfoundation.org>
+        "Qais Yousef (Google)" <qyousef@layalina.io>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>
+Subject: [PATCH 6.4 079/129] cgroup/cpuset: Rename functions dealing with DEADLINE accounting
+Date:   Mon, 28 Aug 2023 12:12:38 +0200
+Message-ID: <20230828101159.962991302@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,54 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jesse Brandeburg <jesse.brandeburg@intel.com>
+From: Juri Lelli <juri.lelli@redhat.com>
 
-[ Upstream commit 10083aef784031fa9f06c19a1b182e6fad5338d9 ]
+commit ad3a557daf6915296a43ef97a3e9c48e076c9dd8 upstream.
 
-The driver is misconfiguring the hardware for some values of MTU such that
-it could use multiple descriptors to receive a packet when it could have
-simply used one.
+rebuild_root_domains() and update_tasks_root_domain() have neutral
+names, but actually deal with DEADLINE bandwidth accounting.
 
-Change the driver to use a round-up instead of the result of a shift, as
-the shift can truncate the lower bits of the size, and result in the
-problem noted above. It also aligns this driver with similar code in i40e.
+Rename them to use 'dl_' prefix so that intent is more clear.
 
-The insidiousness of this problem is that everything works with the wrong
-size, it's just not working as well as it could, as some MTU sizes end up
-using two or more descriptors, and there is no way to tell that is
-happening without looking at ice_trace or a bus analyzer.
+No functional change.
 
-Fixes: efc2214b6047 ("ice: Add support for XDP")
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Suggested-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_base.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/cgroup/cpuset.c |    8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
-index e864634d66bc6..818eca6aa4a41 100644
---- a/drivers/net/ethernet/intel/ice/ice_base.c
-+++ b/drivers/net/ethernet/intel/ice/ice_base.c
-@@ -396,7 +396,8 @@ static int ice_setup_rx_ctx(struct ice_rx_ring *ring)
- 	/* Receive Packet Data Buffer Size.
- 	 * The Packet Data Buffer Size is defined in 128 byte units.
- 	 */
--	rlan_ctx.dbuf = ring->rx_buf_len >> ICE_RLAN_CTX_DBUF_S;
-+	rlan_ctx.dbuf = DIV_ROUND_UP(ring->rx_buf_len,
-+				     BIT_ULL(ICE_RLAN_CTX_DBUF_S));
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -1066,7 +1066,7 @@ done:
+ 	return ndoms;
+ }
  
- 	/* use 32 byte descriptors */
- 	rlan_ctx.dsize = 1;
--- 
-2.40.1
-
+-static void update_tasks_root_domain(struct cpuset *cs)
++static void dl_update_tasks_root_domain(struct cpuset *cs)
+ {
+ 	struct css_task_iter it;
+ 	struct task_struct *task;
+@@ -1079,7 +1079,7 @@ static void update_tasks_root_domain(str
+ 	css_task_iter_end(&it);
+ }
+ 
+-static void rebuild_root_domains(void)
++static void dl_rebuild_rd_accounting(void)
+ {
+ 	struct cpuset *cs = NULL;
+ 	struct cgroup_subsys_state *pos_css;
+@@ -1107,7 +1107,7 @@ static void rebuild_root_domains(void)
+ 
+ 		rcu_read_unlock();
+ 
+-		update_tasks_root_domain(cs);
++		dl_update_tasks_root_domain(cs);
+ 
+ 		rcu_read_lock();
+ 		css_put(&cs->css);
+@@ -1121,7 +1121,7 @@ partition_and_rebuild_sched_domains(int
+ {
+ 	mutex_lock(&sched_domains_mutex);
+ 	partition_sched_domains_locked(ndoms_new, doms_new, dattr_new);
+-	rebuild_root_domains();
++	dl_rebuild_rd_accounting();
+ 	mutex_unlock(&sched_domains_mutex);
+ }
+ 
 
 
