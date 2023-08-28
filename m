@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E9C478AB03
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C448078AA69
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231235AbjH1K1C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:27:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56056 "EHLO
+        id S231162AbjH1KV5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231254AbjH1K0h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:37 -0400
+        with ESMTP id S231229AbjH1KVf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB181AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:26:34 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C9A5CF7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5562962FAD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:26:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B3A8C433C8;
-        Mon, 28 Aug 2023 10:26:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DE276389F
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 608C7C433C7;
+        Mon, 28 Aug 2023 10:21:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218393;
-        bh=RaaPr6l6onW+DZq80kaXM50XV28jBcFBcuTLTehOLKI=;
+        s=korg; t=1693218076;
+        bh=pCjDyhlRneiS9hVvkHU1yVaCtoLIiqP3d7ui/vJMs8k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BWzYEU1OnVVUlK32yZPa1stJaRhWu4cQ9rewNTNNjeEQ+Ur4X+1xDiM4+fLI/wIV7
-         2ev7PNAkmrK8cjZLM45WiJvVNLjLNB9vVRrAKYAR2e/8hOLJefowPXzx6x3r3CdPSA
-         uCLC8/REA8yJ1WEU13DufDvJX7Gmkp31lnXNMcos=
+        b=d7DORtKXxwQPJVo3xqEVvw8MsODoR7IwV/G0rz3978yPe0ZYfXBpeL3x55+vMsP6c
+         TififKr7eeRlnOZK1FOi5DifNmoDz+6EwcUGOYikklr3ze5Y21XIfrYsRvrVJDLDIb
+         Fb8K0sm4zy7rG06WtlYPgSSsnQ5+frp/HtVnHSUs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Valerio <pvalerio@redhat.com>,
-        Xin Long <lucien.xin@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 4.19 072/129] netfilter: set default timeout to 3 secs for sctp shutdown send and recv state
+        patches@lists.linux.dev, "T.J. Mercier" <tjmercier@google.com>,
+        Yu Zhao <yuzhao@google.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 087/129] mm: multi-gen LRU: dont spin during memcg release
 Date:   Mon, 28 Aug 2023 12:12:46 +0200
-Message-ID: <20230828101155.984463897@linuxfoundation.org>
+Message-ID: <20230828101200.240802547@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,72 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: T.J. Mercier <tjmercier@google.com>
 
-commit 9bfab6d23a2865966a4f89a96536fbf23f83bc8c upstream.
+commit 6867c7a3320669cbe44b905a3eb35db725c6d470 upstream.
 
-In SCTP protocol, it is using the same timer (T2 timer) for SHUTDOWN and
-SHUTDOWN_ACK retransmission. However in sctp conntrack the default timeout
-value for SCTP_CONNTRACK_SHUTDOWN_ACK_SENT state is 3 secs while it's 300
-msecs for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV state.
+When a memcg is in the process of being released mem_cgroup_tryget will
+fail because its reference count has already reached 0.  This can happen
+during reclaim if the memcg has already been offlined, and we reclaim all
+remaining pages attributed to the offlined memcg.  shrink_many attempts to
+skip the empty memcg in this case, and continue reclaiming from the
+remaining memcgs in the old generation.  If there is only one memcg
+remaining, or if all remaining memcgs are in the process of being released
+then shrink_many will spin until all memcgs have finished being released.
+The release occurs through a workqueue, so it can take a while before
+kswapd is able to make any further progress.
 
-As Paolo Valerio noticed, this might cause unwanted expiration of the ct
-entry. In my test, with 1s tc netem delay set on the NAT path, after the
-SHUTDOWN is sent, the sctp ct entry enters SCTP_CONNTRACK_SHUTDOWN_SEND
-state. However, due to 300ms (too short) delay, when the SHUTDOWN_ACK is
-sent back from the peer, the sctp ct entry has expired and been deleted,
-and then the SHUTDOWN_ACK has to be dropped.
+This fix results in reductions in kswapd activity and direct reclaim in
+a test where 28 apps (working set size > total memory) are repeatedly
+launched in a random sequence:
 
-Also, it is confusing these two sysctl options always show 0 due to all
-timeout values using sec as unit:
+                                       A          B      delta   ratio(%)
+           allocstall_movable       5962       3539      -2423     -40.64
+            allocstall_normal       2661       2417       -244      -9.17
+kswapd_high_wmark_hit_quickly      53152       7594     -45558     -85.71
+                   pageoutrun      57365      11750     -45615     -79.52
 
-  net.netfilter.nf_conntrack_sctp_timeout_shutdown_recd = 0
-  net.netfilter.nf_conntrack_sctp_timeout_shutdown_sent = 0
-
-This patch fixes it by also using 3 secs for sctp shutdown send and recv
-state in sctp conntrack, which is also RTO.initial value in SCTP protocol.
-
-Note that the very short time value for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV
-was probably used for a rare scenario where SHUTDOWN is sent on 1st path
-but SHUTDOWN_ACK is replied on 2nd path, then a new connection started
-immediately on 1st path. So this patch also moves from SHUTDOWN_SEND/RECV
-to CLOSE when receiving INIT in the ORIGINAL direction.
-
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Reported-by: Paolo Valerio <pvalerio@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Link: https://lkml.kernel.org/r/20230814151636.1639123-1-tjmercier@google.com
+Fixes: e4dde56cd208 ("mm: multi-gen LRU: per-node lru_gen_folio lists")
+Signed-off-by: T.J. Mercier <tjmercier@google.com>
+Acked-by: Yu Zhao <yuzhao@google.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ mm/vmscan.c |   13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -58,8 +58,8 @@ static const unsigned int sctp_timeouts[
- 	[SCTP_CONNTRACK_COOKIE_WAIT]		= 3 SECS,
- 	[SCTP_CONNTRACK_COOKIE_ECHOED]		= 3 SECS,
- 	[SCTP_CONNTRACK_ESTABLISHED]		= 5 DAYS,
--	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 300 SECS / 1000,
--	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 300 SECS / 1000,
-+	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 3 SECS,
-+	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 3 SECS,
- 	[SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]	= 3 SECS,
- 	[SCTP_CONNTRACK_HEARTBEAT_SENT]		= 30 SECS,
- 	[SCTP_CONNTRACK_HEARTBEAT_ACKED]	= 210 SECS,
-@@ -119,7 +119,7 @@ static const u8 sctp_conntracks[2][11][S
- 	{
- /*	ORIGINAL	*/
- /*                  sNO, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS, sHA */
--/* init         */ {sCW, sCW, sCW, sCE, sES, sSS, sSR, sSA, sCW, sHA},
-+/* init         */ {sCW, sCW, sCW, sCE, sES, sCL, sCL, sSA, sCW, sHA},
- /* init_ack     */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL, sHA},
- /* abort        */ {sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL},
- /* shutdown     */ {sCL, sCL, sCW, sCE, sSS, sSS, sSR, sSA, sCL, sSS},
+--- a/mm/vmscan.c
++++ b/mm/vmscan.c
+@@ -4818,16 +4818,17 @@ void lru_gen_release_memcg(struct mem_cg
+ 
+ 		spin_lock_irq(&pgdat->memcg_lru.lock);
+ 
+-		VM_WARN_ON_ONCE(hlist_nulls_unhashed(&lruvec->lrugen.list));
++		if (hlist_nulls_unhashed(&lruvec->lrugen.list))
++			goto unlock;
+ 
+ 		gen = lruvec->lrugen.gen;
+ 
+-		hlist_nulls_del_rcu(&lruvec->lrugen.list);
++		hlist_nulls_del_init_rcu(&lruvec->lrugen.list);
+ 		pgdat->memcg_lru.nr_memcgs[gen]--;
+ 
+ 		if (!pgdat->memcg_lru.nr_memcgs[gen] && gen == get_memcg_gen(pgdat->memcg_lru.seq))
+ 			WRITE_ONCE(pgdat->memcg_lru.seq, pgdat->memcg_lru.seq + 1);
+-
++unlock:
+ 		spin_unlock_irq(&pgdat->memcg_lru.lock);
+ 	}
+ }
+@@ -5398,8 +5399,10 @@ restart:
+ 	rcu_read_lock();
+ 
+ 	hlist_nulls_for_each_entry_rcu(lrugen, pos, &pgdat->memcg_lru.fifo[gen][bin], list) {
+-		if (op)
++		if (op) {
+ 			lru_gen_rotate_memcg(lruvec, op);
++			op = 0;
++		}
+ 
+ 		mem_cgroup_put(memcg);
+ 
+@@ -5407,7 +5410,7 @@ restart:
+ 		memcg = lruvec_memcg(lruvec);
+ 
+ 		if (!mem_cgroup_tryget(memcg)) {
+-			op = 0;
++			lru_gen_release_memcg(memcg);
+ 			memcg = NULL;
+ 			continue;
+ 		}
 
 
