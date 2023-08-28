@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 38CE878A9BE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:16:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E134478AA64
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230393AbjH1KPz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:15:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49130 "EHLO
+        id S231144AbjH1KVy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47782 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230421AbjH1KPm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:15:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 48B1010A
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:15:40 -0700 (PDT)
+        with ESMTP id S231152AbjH1KVZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30D5DCCC
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B6E93617E4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:15:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB544C433C8;
-        Mon, 28 Aug 2023 10:15:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22378614CA
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33785C433C8;
+        Mon, 28 Aug 2023 10:21:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217737;
-        bh=kV4wPRz54hOPq8Uz1932qu8N+p0bUviTuhOLhPIv/C8=;
+        s=korg; t=1693218065;
+        bh=Ll9ksOqLxMjAXxhaa4iogSa9a0HP/bzfM3R418gGJoo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PE3cXi4gOx5aIQE6CrFV/9M1GWdZ6fkfAAHKKZGJUYOujTQ3EYFwYF0ld+qVUNzaQ
-         pNqwArUQh3J/qkf3k4+rfErMmxe++2yfxAnmvHmE1ur5n2SGzMl4Fcr5+8E2jQna4f
-         Xk+tK4zZ9vt6wDsmY3gIa1QXayibj1kEHkTm1soQ=
+        b=Jcx1GCmC/qMeDZRkBmdO9UzWSrlHMUzDk5xmm5qX6kPxYRs6f/zgJDNkRbJfmlubN
+         O0ydmEFYxay1fe6pI4ApUWg1JVXEVvB7MB86gQYY/KiCL4GZVDp11ZTdnXdF7PwwcL
+         X3Z8s+OushFr1X5NC0XJHD81G2SpnoaM9coRyq6s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 22/57] ip_vti: fix potential slab-use-after-free in decode_session6
+        patches@lists.linux.dev,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Juri Lelli <juri.lelli@redhat.com>, Tejun Heo <tj@kernel.org>,
+        "Qais Yousef (Google)" <qyousef@layalina.io>
+Subject: [PATCH 6.4 083/129] sched/deadline: Create DL BW alloc, free & check overflow interface
 Date:   Mon, 28 Aug 2023 12:12:42 +0200
-Message-ID: <20230828101145.046226410@linuxfoundation.org>
+Message-ID: <20230828101200.103744383@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,52 +56,167 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhengchao Shao <shaozhengchao@huawei.com>
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
 
-[ Upstream commit 6018a266279b1a75143c7c0804dd08a5fc4c3e0b ]
+commit 85989106feb734437e2d598b639991b9185a43a6 upstream.
 
-When ip_vti device is set to the qdisc of the sfb type, the cb field
-of the sent skb may be modified during enqueuing. Then,
-slab-use-after-free may occur when ip_vti device sends IPv6 packets.
-As commit f855691975bb ("xfrm6: Fix the nexthdr offset in
-_decode_session6.") showed, xfrm_decode_session was originally intended
-only for the receive path. IP6CB(skb)->nhoff is not set during
-transmission. Therefore, set the cb field in the skb to 0 before
-sending packets.
+While moving a set of tasks between exclusive cpusets,
+cpuset_can_attach() -> task_can_attach() calls dl_cpu_busy(..., p) for
+DL BW overflow checking and per-task DL BW allocation on the destination
+root_domain for the DL tasks in this set.
 
-Fixes: f855691975bb ("xfrm6: Fix the nexthdr offset in _decode_session6.")
-Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This approach has the issue of not freeing already allocated DL BW in
+the following error cases:
+
+(1) The set of tasks includes multiple DL tasks and DL BW overflow
+    checking fails for one of the subsequent DL tasks.
+
+(2) Another controller next to the cpuset controller which is attached
+    to the same cgroup fails in its can_attach().
+
+To address this problem rework dl_cpu_busy():
+
+(1) Split it into dl_bw_check_overflow() & dl_bw_alloc() and add a
+    dedicated dl_bw_free().
+
+(2) dl_bw_alloc() & dl_bw_free() take a `u64 dl_bw` parameter instead of
+    a `struct task_struct *p` used in dl_cpu_busy(). This allows to
+    allocate DL BW for a set of tasks too rather than only for a single
+    task.
+
+Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ipv4/ip_vti.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/sched.h   |    2 +
+ kernel/sched/core.c     |    4 +--
+ kernel/sched/deadline.c |   53 ++++++++++++++++++++++++++++++++++++------------
+ kernel/sched/sched.h    |    2 -
+ 4 files changed, 45 insertions(+), 16 deletions(-)
 
-diff --git a/net/ipv4/ip_vti.c b/net/ipv4/ip_vti.c
-index 33a85269a9f26..d43180dd543e3 100644
---- a/net/ipv4/ip_vti.c
-+++ b/net/ipv4/ip_vti.c
-@@ -325,12 +325,12 @@ static netdev_tx_t vti_tunnel_xmit(struct sk_buff *skb, struct net_device *dev)
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1853,6 +1853,8 @@ current_restore_flags(unsigned long orig
  
- 	switch (skb->protocol) {
- 	case htons(ETH_P_IP):
--		xfrm_decode_session(skb, &fl, AF_INET);
- 		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
-+		xfrm_decode_session(skb, &fl, AF_INET);
- 		break;
- 	case htons(ETH_P_IPV6):
--		xfrm_decode_session(skb, &fl, AF_INET6);
- 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
-+		xfrm_decode_session(skb, &fl, AF_INET6);
- 		break;
- 	default:
- 		dev->stats.tx_errors++;
--- 
-2.40.1
-
+ extern int cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
+ extern int task_can_attach(struct task_struct *p, const struct cpumask *cs_effective_cpus);
++extern int dl_bw_alloc(int cpu, u64 dl_bw);
++extern void dl_bw_free(int cpu, u64 dl_bw);
+ #ifdef CONFIG_SMP
+ extern void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask);
+ extern int set_cpus_allowed_ptr(struct task_struct *p, const struct cpumask *new_mask);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9319,7 +9319,7 @@ int task_can_attach(struct task_struct *
+ 
+ 		if (unlikely(cpu >= nr_cpu_ids))
+ 			return -EINVAL;
+-		ret = dl_cpu_busy(cpu, p);
++		ret = dl_bw_alloc(cpu, p->dl.dl_bw);
+ 	}
+ 
+ out:
+@@ -9604,7 +9604,7 @@ static void cpuset_cpu_active(void)
+ static int cpuset_cpu_inactive(unsigned int cpu)
+ {
+ 	if (!cpuhp_tasks_frozen) {
+-		int ret = dl_cpu_busy(cpu, NULL);
++		int ret = dl_bw_check_overflow(cpu);
+ 
+ 		if (ret)
+ 			return ret;
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -3058,26 +3058,38 @@ int dl_cpuset_cpumask_can_shrink(const s
+ 	return ret;
+ }
+ 
+-int dl_cpu_busy(int cpu, struct task_struct *p)
++enum dl_bw_request {
++	dl_bw_req_check_overflow = 0,
++	dl_bw_req_alloc,
++	dl_bw_req_free
++};
++
++static int dl_bw_manage(enum dl_bw_request req, int cpu, u64 dl_bw)
+ {
+-	unsigned long flags, cap;
++	unsigned long flags;
+ 	struct dl_bw *dl_b;
+-	bool overflow;
++	bool overflow = 0;
+ 
+ 	rcu_read_lock_sched();
+ 	dl_b = dl_bw_of(cpu);
+ 	raw_spin_lock_irqsave(&dl_b->lock, flags);
+-	cap = dl_bw_capacity(cpu);
+-	overflow = __dl_overflow(dl_b, cap, 0, p ? p->dl.dl_bw : 0);
+ 
+-	if (!overflow && p) {
+-		/*
+-		 * We reserve space for this task in the destination
+-		 * root_domain, as we can't fail after this point.
+-		 * We will free resources in the source root_domain
+-		 * later on (see set_cpus_allowed_dl()).
+-		 */
+-		__dl_add(dl_b, p->dl.dl_bw, dl_bw_cpus(cpu));
++	if (req == dl_bw_req_free) {
++		__dl_sub(dl_b, dl_bw, dl_bw_cpus(cpu));
++	} else {
++		unsigned long cap = dl_bw_capacity(cpu);
++
++		overflow = __dl_overflow(dl_b, cap, 0, dl_bw);
++
++		if (req == dl_bw_req_alloc && !overflow) {
++			/*
++			 * We reserve space in the destination
++			 * root_domain, as we can't fail after this point.
++			 * We will free resources in the source root_domain
++			 * later on (see set_cpus_allowed_dl()).
++			 */
++			__dl_add(dl_b, dl_bw, dl_bw_cpus(cpu));
++		}
+ 	}
+ 
+ 	raw_spin_unlock_irqrestore(&dl_b->lock, flags);
+@@ -3085,6 +3097,21 @@ int dl_cpu_busy(int cpu, struct task_str
+ 
+ 	return overflow ? -EBUSY : 0;
+ }
++
++int dl_bw_check_overflow(int cpu)
++{
++	return dl_bw_manage(dl_bw_req_check_overflow, cpu, 0);
++}
++
++int dl_bw_alloc(int cpu, u64 dl_bw)
++{
++	return dl_bw_manage(dl_bw_req_alloc, cpu, dl_bw);
++}
++
++void dl_bw_free(int cpu, u64 dl_bw)
++{
++	dl_bw_manage(dl_bw_req_free, cpu, dl_bw);
++}
+ #endif
+ 
+ #ifdef CONFIG_SCHED_DEBUG
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -330,7 +330,7 @@ extern void __getparam_dl(struct task_st
+ extern bool __checkparam_dl(const struct sched_attr *attr);
+ extern bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr);
+ extern int  dl_cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
+-extern int  dl_cpu_busy(int cpu, struct task_struct *p);
++extern int  dl_bw_check_overflow(int cpu);
+ 
+ #ifdef CONFIG_CGROUP_SCHED
+ 
 
 
