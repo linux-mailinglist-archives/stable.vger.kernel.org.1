@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0844C78ACEF
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEEF578ABDE
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231838AbjH1KoN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:44:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39896 "EHLO
+        id S231488AbjH1KfB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231873AbjH1Knu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4AC7CC0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:43:27 -0700 (PDT)
+        with ESMTP id S231524AbjH1Ked (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A484CA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A55D964121
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5C22C433C7;
-        Mon, 28 Aug 2023 10:43:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4334661DAA
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536BAC433C8;
+        Mon, 28 Aug 2023 10:34:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219407;
-        bh=e5yipL7LhOvQVAGHMQzq/IjSk5Ku2NEQc0jz8cQh1mY=;
+        s=korg; t=1693218866;
+        bh=LQ9Cn/EXRIYva6cwo53DLGItr8WXMQyXG4/KxgL0byM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y1jL1BZdyT21/R2A4F/7y0FbzEfMsCOQFWKVrGnXKkNuh1te9AH4wkMdI2nsNQ3qa
-         8JQax3UfOIhnIMgz8LETl3g7rC4KV5QNszopuaCjzUoFyyL2dU4ZWMMR0Rixw7U+yr
-         e1UKNIReh0L7nqxtqY1lX/4wcjIp8+Ph0JVWeLFE=
+        b=wi3FETTke7I4TvE3YZ0EQalHpo1jNtVPkTgHmEZcHFcSg+T0FUJsbmkqvKKOjmvc+
+         GDkPN38Jucl4TPeSwFHftaiDOqmx4DeID1Sm0LNl4vpy7hiP396s7qOx9ME9AI6+nV
+         PdGH6dH63itAdPBAas6YQCahia/VIPXFq0Vd84JE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 17/89] ALSA: pcm: Fix potential data race at PCM memory allocation helpers
-Date:   Mon, 28 Aug 2023 12:13:18 +0200
-Message-ID: <20230828101150.752276145@linuxfoundation.org>
+        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
+        Guo Ren <guoren@kernel.org>,
+        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.1 084/122] riscv: Handle zicsr/zifencei issue between gcc and binutils
+Date:   Mon, 28 Aug 2023 12:13:19 +0200
+Message-ID: <20230828101159.206446328@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,115 +56,115 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
 
-[ Upstream commit bd55842ed998a622ba6611fe59b3358c9f76773d ]
+commit ca09f772cccaeec4cd05a21528c37a260aa2dd2c upstream.
 
-The PCM memory allocation helpers have a sanity check against too many
-buffer allocations.  However, the check is performed without a proper
-lock and the allocation isn't serialized; this allows user to allocate
-more memories than predefined max size.
+Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
+20191213 version which moves some instructions from the I extension to the
+Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
+that version, we should explicitly specifying Zicsr and Zifencei via -march
+to cope with the new changes. but this only occurs when binutils >= 2.36
+and GCC >= 11.1.0. It's a different story when binutils < 2.36.
 
-Practically seen, this isn't really a big problem, as it's more or
-less some "soft limit" as a sanity check, and it's not possible to
-allocate unlimitedly.  But it's still better to address this for more
-consistent behavior.
+binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
+Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
+and Zifencei extension for -march. binutils-2.35 does not support the
+Zifencei extension, and does not need to specify Zicsr and Zifencei when
+working with GCC >= 12.1.0.
 
-The patch covers the size check in do_alloc_pages() with the
-card->memory_mutex, and increases the allocated size there for
-preventing the further overflow.  When the actual allocation fails,
-the size is decreased accordingly.
+To make our lives easier, let's relax the check to binutils >= 2.36 in
+CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
+where clang < 17 or GCC < 11.1.0, we will deal with them in
+CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
 
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Reported-by: Tuo Li <islituo@gmail.com>
-Link: https://lore.kernel.org/r/CADm8Tek6t0WedK+3Y6rbE5YEt19tML8BUL45N2ji4ZAz1KcN_A@mail.gmail.com
-Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+For more information, please refer to:
+commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
+commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
+
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [1]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=5a1b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
+Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=729a53530e86972d1143553a415db34e6e01d5d2 [3]
+Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 [4]
+Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
+Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
+Acked-by: Guo Ren <guoren@kernel.org>
 Cc: <stable@vger.kernel.org>
-Link: https://lore.kernel.org/r/20230703112430.30634-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+Link: https://lore.kernel.org/r/20230809165648.21071-1-xingmingzheng@iscas.ac.cn
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_memory.c | 44 +++++++++++++++++++++++++++++++++--------
- 1 file changed, 36 insertions(+), 8 deletions(-)
+ arch/riscv/Kconfig                     |   28 +++++++++++++++++-----------
+ arch/riscv/kernel/compat_vdso/Makefile |    8 +++++++-
+ 2 files changed, 24 insertions(+), 12 deletions(-)
 
-diff --git a/sound/core/pcm_memory.c b/sound/core/pcm_memory.c
-index f1470590239e5..711e71016a7c3 100644
---- a/sound/core/pcm_memory.c
-+++ b/sound/core/pcm_memory.c
-@@ -31,20 +31,51 @@ static unsigned long max_alloc_per_card = 32UL * 1024UL * 1024UL;
- module_param(max_alloc_per_card, ulong, 0644);
- MODULE_PARM_DESC(max_alloc_per_card, "Max total allocation bytes per card.");
+--- a/arch/riscv/Kconfig
++++ b/arch/riscv/Kconfig
+@@ -447,24 +447,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
+ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	def_bool y
+ 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
+-	depends on AS_IS_GNU && AS_VERSION >= 23800
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
++	depends on AS_IS_GNU && AS_VERSION >= 23600
+ 	help
+-	  Newer binutils versions default to ISA spec version 20191213 which
+-	  moves some instructions from the I extension to the Zicsr and Zifencei
+-	  extensions.
++	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
++	  20191213 version, which moves some instructions from the I extension to
++	  the Zicsr and Zifencei extensions. This requires explicitly specifying
++	  Zicsr and Zifencei when binutils >= 2.38 or GCC >= 12.1.0. Zicsr
++	  and Zifencei are supported in binutils from version 2.36 onwards.
++	  To make life easier, and avoid forcing toolchains that default to a
++	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
++	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
++	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
  
-+static void __update_allocated_size(struct snd_card *card, ssize_t bytes)
-+{
-+	card->total_pcm_alloc_bytes += bytes;
-+}
-+
-+static void update_allocated_size(struct snd_card *card, ssize_t bytes)
-+{
-+	mutex_lock(&card->memory_mutex);
-+	__update_allocated_size(card, bytes);
-+	mutex_unlock(&card->memory_mutex);
-+}
-+
-+static void decrease_allocated_size(struct snd_card *card, size_t bytes)
-+{
-+	mutex_lock(&card->memory_mutex);
-+	WARN_ON(card->total_pcm_alloc_bytes < bytes);
-+	__update_allocated_size(card, -(ssize_t)bytes);
-+	mutex_unlock(&card->memory_mutex);
-+}
-+
- static int do_alloc_pages(struct snd_card *card, int type, struct device *dev,
- 			  size_t size, struct snd_dma_buffer *dmab)
- {
- 	int err;
+ config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
+ 	def_bool y
+ 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
+ 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
+-	depends on CC_IS_CLANG && CLANG_VERSION < 170000
++	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
++	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
+ 	help
+-	  Certain versions of clang do not support zicsr and zifencei via -march
+-	  but newer versions of binutils require it for the reasons noted in the
+-	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
+-	  option causes an older ISA spec compatible with these older versions
+-	  of clang to be passed to GAS, which has the same result as passing zicsr
+-	  and zifencei to -march.
++	  Certain versions of clang and GCC do not support zicsr and zifencei via
++	  -march. This option causes an older ISA spec compatible with these older
++	  versions of clang and GCC to be passed to GAS, which has the same result
++	  as passing zicsr and zifencei to -march.
  
-+	/* check and reserve the requested size */
-+	mutex_lock(&card->memory_mutex);
- 	if (max_alloc_per_card &&
--	    card->total_pcm_alloc_bytes + size > max_alloc_per_card)
-+	    card->total_pcm_alloc_bytes + size > max_alloc_per_card) {
-+		mutex_unlock(&card->memory_mutex);
- 		return -ENOMEM;
-+	}
-+	__update_allocated_size(card, size);
-+	mutex_unlock(&card->memory_mutex);
+ config FPU
+ 	bool "FPU support"
+--- a/arch/riscv/kernel/compat_vdso/Makefile
++++ b/arch/riscv/kernel/compat_vdso/Makefile
+@@ -11,7 +11,13 @@ compat_vdso-syms += flush_icache
+ COMPAT_CC := $(CC)
+ COMPAT_LD := $(LD)
  
- 	err = snd_dma_alloc_pages(type, dev, size, dmab);
- 	if (!err) {
--		mutex_lock(&card->memory_mutex);
--		card->total_pcm_alloc_bytes += dmab->bytes;
--		mutex_unlock(&card->memory_mutex);
-+		/* the actual allocation size might be bigger than requested,
-+		 * and we need to correct the account
-+		 */
-+		if (dmab->bytes != size)
-+			update_allocated_size(card, dmab->bytes - size);
-+	} else {
-+		/* take back on allocation failure */
-+		decrease_allocated_size(card, size);
- 	}
- 	return err;
- }
-@@ -53,10 +84,7 @@ static void do_free_pages(struct snd_card *card, struct snd_dma_buffer *dmab)
- {
- 	if (!dmab->area)
- 		return;
--	mutex_lock(&card->memory_mutex);
--	WARN_ON(card->total_pcm_alloc_bytes < dmab->bytes);
--	card->total_pcm_alloc_bytes -= dmab->bytes;
--	mutex_unlock(&card->memory_mutex);
-+	decrease_allocated_size(card, dmab->bytes);
- 	snd_dma_free_pages(dmab);
- 	dmab->area = NULL;
- }
--- 
-2.40.1
-
+-COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++# binutils 2.35 does not support the zifencei extension, but in the ISA
++# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
++ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
++	COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
++else
++	COMPAT_CC_FLAGS := -march=rv32imafd -mabi=ilp32
++endif
+ COMPAT_LD_FLAGS := -melf32lriscv
+ 
+ # Disable attributes, as they're useless and break the build.
 
 
