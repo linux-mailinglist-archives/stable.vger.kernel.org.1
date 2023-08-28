@@ -2,53 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C18E178AC58
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:39:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B228878ABB8
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231649AbjH1Kj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:39:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
+        id S231452AbjH1Kd7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:33:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231701AbjH1KjH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:07 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84736AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:04 -0700 (PDT)
+        with ESMTP id S231511AbjH1Kdc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:33:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B5D2CE8
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1620763FC5
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:04 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00F2C433C9;
-        Mon, 28 Aug 2023 10:39:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C44C563D27
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0D08C433C8;
+        Mon, 28 Aug 2023 10:32:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219143;
-        bh=QRFbm7lP9Vlc7ZwlBZ/4Tumz3dJHpFVMpHc3cODn6Ic=;
+        s=korg; t=1693218753;
+        bh=7YKmiXY8wRRshmldssynO4WrKh7Ti/yudWpLmexeEIQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mMiSFfZwMC3PCcxB8jhOm+BleDWUdq6YSFchC45pt4IfvLCHZbn6n/kCp90yVWrBn
-         ESdvHkK8WuB85DzC54MUcxUv8/yPV2fPs0OJZZXo0/PdgCwswt5L8GQKLCepWI1eFQ
-         dyrSNCxi2Bgryqy6ZG93DlY8dTvw1F92CQr22Kmw=
+        b=EW2W13Cu5lqUcpE5tjenHSY/fYJStw+v801xca8ittzlU1eLSnB7Vax8CUKd0WbYN
+         3I7UT5MOHznnUFEX2Iy8uoBlFJZTy/YP/lfthmKlqBMPwxhQhkG+y01S9hM5DKN2Zm
+         5zkiDEv7iA51dILsvdXxJZSBbAmwANIxIS16pBkA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paolo Valerio <pvalerio@redhat.com>,
-        Xin Long <lucien.xin@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 5.4 088/158] netfilter: set default timeout to 3 secs for sctp shutdown send and recv state
-Date:   Mon, 28 Aug 2023 12:13:05 +0200
-Message-ID: <20230828101200.265799057@linuxfoundation.org>
+        patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        John Hubbard <jhubbard@nvidia.com>,
+        Jason Gunthorpe <jgg@nvidia.com>, Peter Xu <peterx@redhat.com>,
+        Mike Kravetz <mike.kravetz@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 071/122] mm/gup: handle cont-PTE hugetlb pages correctly in gup_must_unshare() via GUP-fast
+Date:   Mon, 28 Aug 2023 12:13:06 +0200
+Message-ID: <20230828101158.802889051@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,72 +59,153 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xin Long <lucien.xin@gmail.com>
+From: David Hildenbrand <david@redhat.com>
 
-commit 9bfab6d23a2865966a4f89a96536fbf23f83bc8c upstream.
+commit 5805192c7b7257d290474cb1a3897d0567281bbc upstream.
 
-In SCTP protocol, it is using the same timer (T2 timer) for SHUTDOWN and
-SHUTDOWN_ACK retransmission. However in sctp conntrack the default timeout
-value for SCTP_CONNTRACK_SHUTDOWN_ACK_SENT state is 3 secs while it's 300
-msecs for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV state.
+In contrast to most other GUP code, GUP-fast common page table walking
+code like gup_pte_range() also handles hugetlb pages.  But in contrast to
+other hugetlb page table walking code, it does not look at the hugetlb PTE
+abstraction whereby we have only a single logical hugetlb PTE per hugetlb
+page, even when using multiple cont-PTEs underneath -- which is for
+example what huge_ptep_get() abstracts.
 
-As Paolo Valerio noticed, this might cause unwanted expiration of the ct
-entry. In my test, with 1s tc netem delay set on the NAT path, after the
-SHUTDOWN is sent, the sctp ct entry enters SCTP_CONNTRACK_SHUTDOWN_SEND
-state. However, due to 300ms (too short) delay, when the SHUTDOWN_ACK is
-sent back from the peer, the sctp ct entry has expired and been deleted,
-and then the SHUTDOWN_ACK has to be dropped.
+So when we have a hugetlb page that is mapped via cont-PTEs, GUP-fast
+might stumble over a PTE that does not map the head page of a hugetlb page
+-- not the first "head" PTE of such a cont mapping.
 
-Also, it is confusing these two sysctl options always show 0 due to all
-timeout values using sec as unit:
+Logically, the whole hugetlb page is mapped (entire_mapcount == 1), but we
+might end up calling gup_must_unshare() with a tail page of a hugetlb
+page.
 
-  net.netfilter.nf_conntrack_sctp_timeout_shutdown_recd = 0
-  net.netfilter.nf_conntrack_sctp_timeout_shutdown_sent = 0
+We only maintain a single PageAnonExclusive flag per hugetlb page (as
+hugetlb pages cannot get partially COW-shared), stored for the head page.
+That flag is clear for all tail pages.
 
-This patch fixes it by also using 3 secs for sctp shutdown send and recv
-state in sctp conntrack, which is also RTO.initial value in SCTP protocol.
+So when gup_must_unshare() ends up calling PageAnonExclusive() with a tail
+page of a hugetlb page:
 
-Note that the very short time value for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV
-was probably used for a rare scenario where SHUTDOWN is sent on 1st path
-but SHUTDOWN_ACK is replied on 2nd path, then a new connection started
-immediately on 1st path. So this patch also moves from SHUTDOWN_SEND/RECV
-to CLOSE when receiving INIT in the ORIGINAL direction.
+1) With CONFIG_DEBUG_VM_PGFLAGS
 
-Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
-Reported-by: Paolo Valerio <pvalerio@redhat.com>
-Signed-off-by: Xin Long <lucien.xin@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Stumbles over the:
+
+	VM_BUG_ON_PGFLAGS(PageHuge(page) && !PageHead(page), page);
+
+For example, when executing the COW selftests with 64k hugetlb pages on
+arm64:
+
+  [   61.082187] page:00000000829819ff refcount:3 mapcount:1 mapping:0000000000000000 index:0x1 pfn:0x11ee11
+  [   61.082842] head:0000000080f79bf7 order:4 entire_mapcount:1 nr_pages_mapped:0 pincount:2
+  [   61.083384] anon flags: 0x17ffff80003000e(referenced|uptodate|dirty|head|mappedtodisk|node=0|zone=2|lastcpupid=0xfffff)
+  [   61.084101] page_type: 0xffffffff()
+  [   61.084332] raw: 017ffff800000000 fffffc00037b8401 0000000000000402 0000000200000000
+  [   61.084840] raw: 0000000000000010 0000000000000000 00000000ffffffff 0000000000000000
+  [   61.085359] head: 017ffff80003000e ffffd9e95b09b788 ffffd9e95b09b788 ffff0007ff63cf71
+  [   61.085885] head: 0000000000000000 0000000000000002 00000003ffffffff 0000000000000000
+  [   61.086415] page dumped because: VM_BUG_ON_PAGE(PageHuge(page) && !PageHead(page))
+  [   61.086914] ------------[ cut here ]------------
+  [   61.087220] kernel BUG at include/linux/page-flags.h:990!
+  [   61.087591] Internal error: Oops - BUG: 00000000f2000800 [#1] SMP
+  [   61.087999] Modules linked in: ...
+  [   61.089404] CPU: 0 PID: 4612 Comm: cow Kdump: loaded Not tainted 6.5.0-rc4+ #3
+  [   61.089917] Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+  [   61.090409] pstate: 604000c5 (nZCv daIF +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  [   61.090897] pc : gup_must_unshare.part.0+0x64/0x98
+  [   61.091242] lr : gup_must_unshare.part.0+0x64/0x98
+  [   61.091592] sp : ffff8000825eb940
+  [   61.091826] x29: ffff8000825eb940 x28: 0000000000000000 x27: fffffc00037b8440
+  [   61.092329] x26: 0400000000000001 x25: 0000000000080101 x24: 0000000000080000
+  [   61.092835] x23: 0000000000080100 x22: ffff0000cffb9588 x21: ffff0000c8ec6b58
+  [   61.093341] x20: 0000ffffad6b1000 x19: fffffc00037b8440 x18: ffffffffffffffff
+  [   61.093850] x17: 2864616548656761 x16: 5021202626202965 x15: 6761702865677548
+  [   61.094358] x14: 6567615028454741 x13: 2929656761702864 x12: 6165486567615021
+  [   61.094858] x11: 00000000ffff7fff x10: 00000000ffff7fff x9 : ffffd9e958b7a1c0
+  [   61.095359] x8 : 00000000000bffe8 x7 : c0000000ffff7fff x6 : 00000000002bffa8
+  [   61.095873] x5 : ffff0008bb19e708 x4 : 0000000000000000 x3 : 0000000000000000
+  [   61.096380] x2 : 0000000000000000 x1 : ffff0000cf6636c0 x0 : 0000000000000046
+  [   61.096894] Call trace:
+  [   61.097080]  gup_must_unshare.part.0+0x64/0x98
+  [   61.097392]  gup_pte_range+0x3a8/0x3f0
+  [   61.097662]  gup_pgd_range+0x1ec/0x280
+  [   61.097942]  lockless_pages_from_mm+0x64/0x1a0
+  [   61.098258]  internal_get_user_pages_fast+0xe4/0x1d0
+  [   61.098612]  pin_user_pages_fast+0x58/0x78
+  [   61.098917]  pin_longterm_test_start+0xf4/0x2b8
+  [   61.099243]  gup_test_ioctl+0x170/0x3b0
+  [   61.099528]  __arm64_sys_ioctl+0xa8/0xf0
+  [   61.099822]  invoke_syscall.constprop.0+0x7c/0xd0
+  [   61.100160]  el0_svc_common.constprop.0+0xe8/0x100
+  [   61.100500]  do_el0_svc+0x38/0xa0
+  [   61.100736]  el0_svc+0x3c/0x198
+  [   61.100971]  el0t_64_sync_handler+0x134/0x150
+  [   61.101280]  el0t_64_sync+0x17c/0x180
+  [   61.101543] Code: aa1303e0 f00074c1 912b0021 97fffeb2 (d4210000)
+
+2) Without CONFIG_DEBUG_VM_PGFLAGS
+
+Always detects "not exclusive" for passed tail pages and refuses to PIN
+the tail pages R/O, as gup_must_unshare() == true.  GUP-fast will fallback
+to ordinary GUP.  As ordinary GUP properly considers the logical hugetlb
+PTE abstraction in hugetlb_follow_page_mask(), pinning the page will
+succeed when looking at the PageAnonExclusive on the head page only.
+
+So the only real effect of this is that with cont-PTE hugetlb pages, we'll
+always fallback from GUP-fast to ordinary GUP when not working on the head
+page, which ends up checking the head page and do the right thing.
+
+Consequently, the cow selftests pass with cont-PTE hugetlb pages as well
+without CONFIG_DEBUG_VM_PGFLAGS.
+
+Note that this only applies to anon hugetlb pages that are mapped using
+cont-PTEs: for example 64k hugetlb pages on a 4k arm64 kernel.
+
+... and only when R/O-pinning (FOLL_PIN) such pages that are mapped into
+the page table R/O using GUP-fast.
+
+On production kernels (and even most debug kernels, that don't set
+CONFIG_DEBUG_VM_PGFLAGS) this patch should theoretically not be required
+to be backported.  But of course, it does not hurt.
+
+Link: https://lkml.kernel.org/r/20230805101256.87306-1-david@redhat.com
+Fixes: a7f226604170 ("mm/gup: trigger FAULT_FLAG_UNSHARE when R/O-pinning a possibly shared anonymous page")
+Signed-off-by: David Hildenbrand <david@redhat.com>
+Reported-by: Ryan Roberts <ryan.roberts@arm.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Tested-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: John Hubbard <jhubbard@nvidia.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: Peter Xu <peterx@redhat.com>
+Cc: Mike Kravetz <mike.kravetz@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nf_conntrack_proto_sctp.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ include/linux/mm.h |   10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
---- a/net/netfilter/nf_conntrack_proto_sctp.c
-+++ b/net/netfilter/nf_conntrack_proto_sctp.c
-@@ -49,8 +49,8 @@ static const unsigned int sctp_timeouts[
- 	[SCTP_CONNTRACK_COOKIE_WAIT]		= 3 SECS,
- 	[SCTP_CONNTRACK_COOKIE_ECHOED]		= 3 SECS,
- 	[SCTP_CONNTRACK_ESTABLISHED]		= 210 SECS,
--	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 300 SECS / 1000,
--	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 300 SECS / 1000,
-+	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 3 SECS,
-+	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 3 SECS,
- 	[SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]	= 3 SECS,
- 	[SCTP_CONNTRACK_HEARTBEAT_SENT]		= 30 SECS,
- };
-@@ -105,7 +105,7 @@ static const u8 sctp_conntracks[2][11][S
- 	{
- /*	ORIGINAL	*/
- /*                  sNO, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS */
--/* init         */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCW},
-+/* init         */ {sCL, sCL, sCW, sCE, sES, sCL, sCL, sSA, sCW},
- /* init_ack     */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL},
- /* abort        */ {sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL},
- /* shutdown     */ {sCL, sCL, sCW, sCE, sSS, sSS, sSR, sSA, sCL},
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -3092,6 +3092,16 @@ static inline bool gup_must_unshare(unsi
+ 		smp_rmb();
+ 
+ 	/*
++	 * During GUP-fast we might not get called on the head page for a
++	 * hugetlb page that is mapped using cont-PTE, because GUP-fast does
++	 * not work with the abstracted hugetlb PTEs that always point at the
++	 * head page. For hugetlb, PageAnonExclusive only applies on the head
++	 * page (as it cannot be partially COW-shared), so lookup the head page.
++	 */
++	if (unlikely(!PageHead(page) && PageHuge(page)))
++		page = compound_head(page);
++
++	/*
+ 	 * Note that PageKsm() pages cannot be exclusive, and consequently,
+ 	 * cannot get pinned.
+ 	 */
 
 
