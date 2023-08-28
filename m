@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57D1B78AA52
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:21:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 733E078AAE4
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:26:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230493AbjH1KVN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:21:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43474 "EHLO
+        id S230506AbjH1K0A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:26:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230022AbjH1KUm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:20:42 -0400
+        with ESMTP id S231225AbjH1KZf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:25:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81478124
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:20:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 17A73D7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:25:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C91B963778
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC39C433C7;
-        Mon, 28 Aug 2023 10:20:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A1C9063AAE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:25:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5B9DC433C9;
+        Mon, 28 Aug 2023 10:25:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218013;
-        bh=dGE/1pNTSjdA7j0z9Om04BXIz863Pk1bqJn8Z7YIECI=;
+        s=korg; t=1693218330;
+        bh=JlC7Kja1LMjRWxsSyHRgqXma2wKLZBxjiMZKGcD7lLs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PrKmonk9aPAWLZvYuHRDrqFCDbAwAgA+guwmP11PmvbGgzunJEgrKJcqNOhCZIuRc
-         XQLK0VjxZLpZtfC5QHFDt+wC+AtLIov67bUHdVPcQsmVc8zVFEW4xdz+dF9avihtKL
-         klzEXhboUrqMEZZ/h313myX85fY2t0V/sbmU0IkE=
+        b=S7cCBMpQBHwjUcjpSuHZoYfteU7FK/gtNrIesDsDszT8bDFj/W9BwxyYXA4gqS2bm
+         AfxH2Xe68N4A5WlVqcePDy4Esff/JiLgmdtwbAcvRT/JeOeVD+59LknCC6vanvCMIW
+         RE48y2eIOWS6F2heOPx3ko1Ud61Vbr0bDuesWbOA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ayush Jain <ayush.jain3@amd.com>,
-        Raghavendra K T <raghavendra.kt@amd.com>,
-        John Hubbard <jhubbard@nvidia.com>,
-        David Hildenbrand <david@redhat.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 063/129] selftests/mm: FOLL_LONGTERM need to be updated to 0x100
+        patches@lists.linux.dev,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 048/129] virtio-mmio: dont break lifecycle of vm_dev
 Date:   Mon, 28 Aug 2023 12:12:22 +0200
-Message-ID: <20230828101159.454479442@linuxfoundation.org>
+Message-ID: <20230828101154.994097149@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,94 +56,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ayush Jain <ayush.jain3@amd.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-commit 1738b949625c7e17a454b25de33f1f415da3db69 upstream.
+[ Upstream commit 55c91fedd03d7b9cf0c5199b2eb12b9b8e95281a ]
 
-After commit 2c2241081f7d ("mm/gup: move private gup FOLL_ flags to
-internal.h") FOLL_LONGTERM flag value got updated from 0x10000 to 0x100 at
-include/linux/mm_types.h.
+vm_dev has a separate lifecycle because it has a 'struct device'
+embedded. Thus, having a release callback for it is correct.
 
-As hmm.hmm_device_private.hmm_gup_test uses FOLL_LONGTERM Updating same
-here as well.
+Allocating the vm_dev struct with devres totally breaks this protection,
+though. Instead of waiting for the vm_dev release callback, the memory
+is freed when the platform_device is removed. Resulting in a
+use-after-free when finally the callback is to be called.
 
-Before this change test goes in an infinite assert loop in
-hmm.hmm_device_private.hmm_gup_test
-==========================================================
- RUN           hmm.hmm_device_private.hmm_gup_test ...
-hmm-tests.c:1962:hmm_gup_test:Expected HMM_DMIRROR_PROT_WRITE..
-..(2) == m[2] (34)
-hmm-tests.c:157:hmm_gup_test:Expected ret (-1) == 0 (0)
-hmm-tests.c:157:hmm_gup_test:Expected ret (-1) == 0 (0)
-...
-==========================================================
+To easily see the problem, compile the kernel with
+CONFIG_DEBUG_KOBJECT_RELEASE and unbind with sysfs.
 
- Call Trace:
- <TASK>
- ? sched_clock+0xd/0x20
- ? __lock_acquire.constprop.0+0x120/0x6c0
- ? ktime_get+0x2c/0xd0
- ? sched_clock+0xd/0x20
- ? local_clock+0x12/0xd0
- ? lock_release+0x26e/0x3b0
- pin_user_pages_fast+0x4c/0x70
- gup_test_ioctl+0x4ff/0xbb0
- ? gup_test_ioctl+0x68c/0xbb0
- __x64_sys_ioctl+0x99/0xd0
- do_syscall_64+0x60/0x90
- ? syscall_exit_to_user_mode+0x2a/0x50
- ? do_syscall_64+0x6d/0x90
- ? syscall_exit_to_user_mode+0x2a/0x50
- ? do_syscall_64+0x6d/0x90
- ? irqentry_exit_to_user_mode+0xd/0x20
- ? irqentry_exit+0x3f/0x50
- ? exc_page_fault+0x96/0x200
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
- RIP: 0033:0x7f6aaa31aaff
+The fix is easy, don't use devres in this case.
 
-After this change test is able to pass successfully.
+Found during my research about object lifetime problems.
 
-Link: https://lkml.kernel.org/r/20230808124347.79163-1-ayush.jain3@amd.com
-Fixes: 2c2241081f7d ("mm/gup: move private gup FOLL_ flags to internal.h")
-Signed-off-by: Ayush Jain <ayush.jain3@amd.com>
-Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
-Reviewed-by: John Hubbard <jhubbard@nvidia.com>
-Acked-by: David Hildenbrand <david@redhat.com>
-Cc: Jason Gunthorpe <jgg@nvidia.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 7eb781b1bbb7 ("virtio_mmio: add cleanup for virtio_mmio_probe")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Message-Id: <20230629120526.7184-1-wsa+renesas@sang-engineering.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/mm/hmm-tests.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ drivers/virtio/virtio_mmio.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
-index 4adaad1b822f..20294553a5dd 100644
---- a/tools/testing/selftests/mm/hmm-tests.c
-+++ b/tools/testing/selftests/mm/hmm-tests.c
-@@ -57,9 +57,14 @@ enum {
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index d654e8953b6cb..07be3a374efbb 100644
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -537,9 +537,8 @@ static void virtio_mmio_release_dev(struct device *_d)
+ 	struct virtio_device *vdev =
+ 			container_of(_d, struct virtio_device, dev);
+ 	struct virtio_mmio_device *vm_dev = to_virtio_mmio_device(vdev);
+-	struct platform_device *pdev = vm_dev->pdev;
  
- #define ALIGN(x, a) (((x) + (a - 1)) & (~((a) - 1)))
- /* Just the flags we need, copied from mm.h: */
--#define FOLL_WRITE	0x01	/* check pte is writable */
--#define FOLL_LONGTERM   0x10000 /* mapping lifetime is indefinite */
+-	devm_kfree(&pdev->dev, vm_dev);
++	kfree(vm_dev);
+ }
  
-+#ifndef FOLL_WRITE
-+#define FOLL_WRITE	0x01	/* check pte is writable */
-+#endif
-+
-+#ifndef FOLL_LONGTERM
-+#define FOLL_LONGTERM   0x100 /* mapping lifetime is indefinite */
-+#endif
- FIXTURE(hmm)
- {
- 	int		fd;
+ /* Platform device */
+@@ -550,7 +549,7 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 	unsigned long magic;
+ 	int rc;
+ 
+-	vm_dev = devm_kzalloc(&pdev->dev, sizeof(*vm_dev), GFP_KERNEL);
++	vm_dev = kzalloc(sizeof(*vm_dev), GFP_KERNEL);
+ 	if (!vm_dev)
+ 		return -ENOMEM;
+ 
 -- 
-2.42.0
+2.40.1
 
 
 
