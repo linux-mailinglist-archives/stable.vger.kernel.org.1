@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9770E78AD70
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F68B78AD1C
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231769AbjH1Ks3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55020 "EHLO
+        id S231949AbjH1Kpz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232213AbjH1Kr4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:56 -0400
+        with ESMTP id S231956AbjH1Kp1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:27 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 73964131
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83DA11B4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1197D64320
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 253B0C433C8;
-        Mon, 28 Aug 2023 10:47:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DE7161943
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D01C433C8;
+        Mon, 28 Aug 2023 10:44:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219664;
-        bh=qARDTI5Qz0PezXszDywNDCJz40uiW22tgHGQsvAzZk0=;
+        s=korg; t=1693219462;
+        bh=aAGzF/oGWN632POR1Rimjxpsnnbgen+mmDEr+XlOFtg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N1btf8wd8FCtXRmKucV9Y+qFIEQOsuxAjedb16lL7m72wHBTSL4y4g+HDqPCCsarb
-         PS08tSmbqWt0VcldAyCoapi3WNZGb1RGwaw7wGwmeiDwKjQbzqyJMexM4+epdXHm9N
-         Y5N3Yx22lXbbRcgGVYvXVdHUeU0dFB6y5Fn5NXMc=
+        b=gHEkKrhnmSyLSW2k1uOdAWOemNZ6LX/1X244Nwnp6ut4uikoxG/SKDYYDxSF1fX4r
+         v6ulVFtl3bOJD78YQDLEV9P/D/FM1Qf/w4A4WQeWA2NLmdYcUil2JOnO73Z/4TXTww
+         hMvHeBXgI4LO6ZSRBQXQbW5faiJY6FVodZmhie9M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 27/84] octeontx2-af: SDP: fix receive link config
-Date:   Mon, 28 Aug 2023 12:13:44 +0200
-Message-ID: <20230828101150.160315837@linuxfoundation.org>
+        patches@lists.linux.dev, Simon Horman <simon.horman@corigine.com>,
+        Ivan Mikhaylov <fr0st61te@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 44/89] net/ncsi: make one oem_gma function for all mfr id
+Date:   Mon, 28 Aug 2023 12:13:45 +0200
+Message-ID: <20230828101151.654151435@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,49 +55,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Ivan Mikhaylov <fr0st61te@gmail.com>
 
-[ Upstream commit 05f3d5bc23524bed6f043dfe6b44da687584f9fb ]
+commit 74b449b98dccdf24288d562f9d207fa066da793d upstream.
 
-On SDP interfaces, frame oversize and undersize errors are
-observed as driver is not considering packet sizes of all
-subscribers of the link before updating the link config.
+Make the one Get Mac Address function for all manufacturers and change
+this call in handlers accordingly.
 
-This patch fixes the same.
-
-Fixes: 9b7dd87ac071 ("octeontx2-af: Support to modify min/max allowed packet lengths")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230817063006.10366-1-hkelam@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ net/ncsi/ncsi-rsp.c |   88 +++++++++++-----------------------------------------
+ 1 file changed, 19 insertions(+), 69 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index 449f5224d1aeb..e549b09c347a7 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -2876,9 +2876,10 @@ int rvu_mbox_handler_nix_set_hw_frs(struct rvu *rvu, struct nix_frs_cfg *req,
- 	if (link < 0)
- 		return NIX_AF_ERR_RX_LINK_INVALID;
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -611,14 +611,15 @@ static int ncsi_rsp_handler_snfc(struct
+ 	return 0;
+ }
  
--	nix_find_link_frs(rvu, req, pcifunc);
+-/* Response handler for Mellanox command Get Mac Address */
+-static int ncsi_rsp_handler_oem_mlx_gma(struct ncsi_request *nr)
++/* Response handler for Get Mac Address command */
++static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
+ {
+ 	struct ncsi_dev_priv *ndp = nr->ndp;
+ 	struct net_device *ndev = ndp->ndev.dev;
+ 	const struct net_device_ops *ops = ndev->netdev_ops;
+ 	struct ncsi_rsp_oem_pkt *rsp;
+ 	struct sockaddr saddr;
++	u32 mac_addr_off = 0;
+ 	int ret = 0;
  
- linkcfg:
-+	nix_find_link_frs(rvu, req, pcifunc);
+ 	/* Get the response header */
+@@ -626,7 +627,19 @@ static int ncsi_rsp_handler_oem_mlx_gma(
+ 
+ 	saddr.sa_family = ndev->type;
+ 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+-	memcpy(saddr.sa_data, &rsp->data[MLX_MAC_ADDR_OFFSET], ETH_ALEN);
++	if (mfr_id == NCSI_OEM_MFR_BCM_ID)
++		mac_addr_off = BCM_MAC_ADDR_OFFSET;
++	else if (mfr_id == NCSI_OEM_MFR_MLX_ID)
++		mac_addr_off = MLX_MAC_ADDR_OFFSET;
++	else if (mfr_id == NCSI_OEM_MFR_INTEL_ID)
++		mac_addr_off = INTEL_MAC_ADDR_OFFSET;
 +
- 	cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_LINKX_CFG(link));
- 	cfg = (cfg & ~(0xFFFFULL << 16)) | ((u64)req->maxlen << 16);
- 	if (req->update_minlen)
--- 
-2.40.1
-
++	memcpy(saddr.sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
++	if (mfr_id == NCSI_OEM_MFR_BCM_ID || mfr_id == NCSI_OEM_MFR_INTEL_ID)
++		eth_addr_inc((u8 *)saddr.sa_data);
++	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
++		return -ENXIO;
++
+ 	/* Set the flag for GMA command which should only be called once */
+ 	ndp->gma_flag = 1;
+ 
+@@ -649,41 +662,10 @@ static int ncsi_rsp_handler_oem_mlx(stru
+ 
+ 	if (mlx->cmd == NCSI_OEM_MLX_CMD_GMA &&
+ 	    mlx->param == NCSI_OEM_MLX_CMD_GMA_PARAM)
+-		return ncsi_rsp_handler_oem_mlx_gma(nr);
++		return ncsi_rsp_handler_oem_gma(nr, NCSI_OEM_MFR_MLX_ID);
+ 	return 0;
+ }
+ 
+-/* Response handler for Broadcom command Get Mac Address */
+-static int ncsi_rsp_handler_oem_bcm_gma(struct ncsi_request *nr)
+-{
+-	struct ncsi_dev_priv *ndp = nr->ndp;
+-	struct net_device *ndev = ndp->ndev.dev;
+-	const struct net_device_ops *ops = ndev->netdev_ops;
+-	struct ncsi_rsp_oem_pkt *rsp;
+-	struct sockaddr saddr;
+-	int ret = 0;
+-
+-	/* Get the response header */
+-	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
+-
+-	saddr.sa_family = ndev->type;
+-	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+-	memcpy(saddr.sa_data, &rsp->data[BCM_MAC_ADDR_OFFSET], ETH_ALEN);
+-	/* Increase mac address by 1 for BMC's address */
+-	eth_addr_inc((u8 *)saddr.sa_data);
+-	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
+-		return -ENXIO;
+-
+-	/* Set the flag for GMA command which should only be called once */
+-	ndp->gma_flag = 1;
+-
+-	ret = ops->ndo_set_mac_address(ndev, &saddr);
+-	if (ret < 0)
+-		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
+-
+-	return ret;
+-}
+-
+ /* Response handler for Broadcom card */
+ static int ncsi_rsp_handler_oem_bcm(struct ncsi_request *nr)
+ {
+@@ -695,42 +677,10 @@ static int ncsi_rsp_handler_oem_bcm(stru
+ 	bcm = (struct ncsi_rsp_oem_bcm_pkt *)(rsp->data);
+ 
+ 	if (bcm->type == NCSI_OEM_BCM_CMD_GMA)
+-		return ncsi_rsp_handler_oem_bcm_gma(nr);
++		return ncsi_rsp_handler_oem_gma(nr, NCSI_OEM_MFR_BCM_ID);
+ 	return 0;
+ }
+ 
+-/* Response handler for Intel command Get Mac Address */
+-static int ncsi_rsp_handler_oem_intel_gma(struct ncsi_request *nr)
+-{
+-	struct ncsi_dev_priv *ndp = nr->ndp;
+-	struct net_device *ndev = ndp->ndev.dev;
+-	const struct net_device_ops *ops = ndev->netdev_ops;
+-	struct ncsi_rsp_oem_pkt *rsp;
+-	struct sockaddr saddr;
+-	int ret = 0;
+-
+-	/* Get the response header */
+-	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
+-
+-	saddr.sa_family = ndev->type;
+-	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+-	memcpy(saddr.sa_data, &rsp->data[INTEL_MAC_ADDR_OFFSET], ETH_ALEN);
+-	/* Increase mac address by 1 for BMC's address */
+-	eth_addr_inc((u8 *)saddr.sa_data);
+-	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
+-		return -ENXIO;
+-
+-	/* Set the flag for GMA command which should only be called once */
+-	ndp->gma_flag = 1;
+-
+-	ret = ops->ndo_set_mac_address(ndev, &saddr);
+-	if (ret < 0)
+-		netdev_warn(ndev,
+-			    "NCSI: 'Writing mac address to device failed\n");
+-
+-	return ret;
+-}
+-
+ /* Response handler for Intel card */
+ static int ncsi_rsp_handler_oem_intel(struct ncsi_request *nr)
+ {
+@@ -742,7 +692,7 @@ static int ncsi_rsp_handler_oem_intel(st
+ 	intel = (struct ncsi_rsp_oem_intel_pkt *)(rsp->data);
+ 
+ 	if (intel->cmd == NCSI_OEM_INTEL_CMD_GMA)
+-		return ncsi_rsp_handler_oem_intel_gma(nr);
++		return ncsi_rsp_handler_oem_gma(nr, NCSI_OEM_MFR_INTEL_ID);
+ 
+ 	return 0;
+ }
 
 
