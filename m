@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EC5978AD6E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBECC78AB42
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232068AbjH1KsJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:48:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
+        id S231346AbjH1K3m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:29:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232165AbjH1Krs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:48 -0400
+        with ESMTP id S231277AbjH1K3K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C275D139
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C76119
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A25EB6408B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89022C433C8;
-        Mon, 28 Aug 2023 10:47:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0401663BE1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1793CC433C7;
+        Mon, 28 Aug 2023 10:29:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219656;
-        bh=86rLZKebt7vrAARwgIJjlAcXKoVpTF8WP9wP57Fzddg=;
+        s=korg; t=1693218546;
+        bh=gM62mdnJkOJxFNGu1ow9lbDPIzWweJ6X0EFgY3Tp17Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ICW8uPRzdQIX8oZgr807IXlntqMPVqf0o55rsuz5gq/TY0V6qDd6lKxM1Hls4fELt
-         jIxa16DUIHaFdz5gFspBWaeKmDkXy7G2bsp1j6l2fPa/hXdKkERORZI0M6ygTCAA1a
-         EMbd505ODZiQb3ld4evKwtAqGsedS4vKDr9FUgC8=
+        b=ILhVzSPylevKFTf/nvLlZEZjXQJZiWKqXG4etVLkb51T5dC1F70ZW1RSlnPxGd3xq
+         +lGay9P+69FaVCavB197WGqecgCyFXHCRXFXhVGN7Z7v+yntXKEfu8t0yaCfn2sUW3
+         /AFNULhBrCGWgKpG9l+IryWH1Q+G6Jb7QFz/jcaU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ilya Dryomov <idryomov@gmail.com>,
-        Dongsheng Yang <dongsheng.yang@easystack.cn>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 24/84] rbd: prevent busy loop when requesting exclusive lock
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 4.19 127/129] scsi: core: raid_class: Remove raid_component_add()
 Date:   Mon, 28 Aug 2023 12:13:41 +0200
-Message-ID: <20230828101150.052493251@linuxfoundation.org>
+Message-ID: <20230828101157.839797565@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,118 +55,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilya Dryomov <idryomov@gmail.com>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-[ Upstream commit 9d01e07fd1bfb4daae156ab528aa196f5ac2b2bc ]
+commit 60c5fd2e8f3c42a5abc565ba9876ead1da5ad2b7 upstream.
 
-Due to rbd_try_acquire_lock() effectively swallowing all but
-EBLOCKLISTED error from rbd_try_lock() ("request lock anyway") and
-rbd_request_lock() returning ETIMEDOUT error not only for an actual
-notify timeout but also when the lock owner doesn't respond, a busy
-loop inside of rbd_acquire_lock() between rbd_try_acquire_lock() and
-rbd_request_lock() is possible.
+The raid_component_add() function was added to the kernel tree via patch
+"[SCSI] embryonic RAID class" (2005). Remove this function since it never
+has had any callers in the Linux kernel. And also raid_component_release()
+is only used in raid_component_add(), so it is also removed.
 
-Requesting the lock on EBUSY error (returned by get_lock_owner_info()
-if an incompatible lock or invalid lock owner is detected) makes very
-little sense.  The same goes for ETIMEDOUT error (might pop up pretty
-much anywhere if osd_request_timeout option is set) and many others.
-
-Just fail I/O requests on rbd_dev->acquiring_list immediately on any
-error from rbd_try_lock().
-
-Cc: stable@vger.kernel.org # 588159009d5b: rbd: retrieve and check lock owner twice before blocklisting
-Cc: stable@vger.kernel.org
-Signed-off-by: Ilya Dryomov <idryomov@gmail.com>
-Reviewed-by: Dongsheng Yang <dongsheng.yang@easystack.cn>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Link: https://lore.kernel.org/r/20230822015254.184270-1-wangzhu9@huawei.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Fixes: 04b5b5cb0136 ("scsi: core: Fix possible memory leak if device_add() fails")
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/block/rbd.c | 28 +++++++++++++++-------------
- 1 file changed, 15 insertions(+), 13 deletions(-)
+ drivers/scsi/raid_class.c  |   48 ---------------------------------------------
+ include/linux/raid_class.h |    4 ---
+ 2 files changed, 52 deletions(-)
 
-diff --git a/drivers/block/rbd.c b/drivers/block/rbd.c
-index 60d3a143ff450..95cbd5790ed60 100644
---- a/drivers/block/rbd.c
-+++ b/drivers/block/rbd.c
-@@ -3740,7 +3740,7 @@ static int rbd_lock(struct rbd_device *rbd_dev)
- 	ret = ceph_cls_lock(osdc, &rbd_dev->header_oid, &rbd_dev->header_oloc,
- 			    RBD_LOCK_NAME, CEPH_CLS_LOCK_EXCLUSIVE, cookie,
- 			    RBD_LOCK_TAG, "", 0);
--	if (ret)
-+	if (ret && ret != -EEXIST)
- 		return ret;
+--- a/drivers/scsi/raid_class.c
++++ b/drivers/scsi/raid_class.c
+@@ -210,54 +210,6 @@ raid_attr_ro_state(level);
+ raid_attr_ro_fn(resync);
+ raid_attr_ro_state_fn(state);
  
- 	__rbd_lock(rbd_dev, cookie);
-@@ -3944,7 +3944,7 @@ static struct ceph_locker *get_lock_owner_info(struct rbd_device *rbd_dev)
- 				 &rbd_dev->header_oloc, RBD_LOCK_NAME,
- 				 &lock_type, &lock_tag, &lockers, &num_lockers);
- 	if (ret) {
--		rbd_warn(rbd_dev, "failed to retrieve lockers: %d", ret);
-+		rbd_warn(rbd_dev, "failed to get header lockers: %d", ret);
- 		return ERR_PTR(ret);
- 	}
- 
-@@ -3996,8 +3996,10 @@ static int find_watcher(struct rbd_device *rbd_dev,
- 	ret = ceph_osdc_list_watchers(osdc, &rbd_dev->header_oid,
- 				      &rbd_dev->header_oloc, &watchers,
- 				      &num_watchers);
--	if (ret)
-+	if (ret) {
-+		rbd_warn(rbd_dev, "failed to get watchers: %d", ret);
- 		return ret;
-+	}
- 
- 	sscanf(locker->id.cookie, RBD_LOCK_COOKIE_PREFIX " %llu", &cookie);
- 	for (i = 0; i < num_watchers; i++) {
-@@ -4041,8 +4043,12 @@ static int rbd_try_lock(struct rbd_device *rbd_dev)
- 		locker = refreshed_locker = NULL;
- 
- 		ret = rbd_lock(rbd_dev);
--		if (ret != -EBUSY)
-+		if (!ret)
-+			goto out;
-+		if (ret != -EBUSY) {
-+			rbd_warn(rbd_dev, "failed to lock header: %d", ret);
- 			goto out;
-+		}
- 
- 		/* determine if the current lock holder is still alive */
- 		locker = get_lock_owner_info(rbd_dev);
-@@ -4145,11 +4151,8 @@ static int rbd_try_acquire_lock(struct rbd_device *rbd_dev)
- 
- 	ret = rbd_try_lock(rbd_dev);
- 	if (ret < 0) {
--		rbd_warn(rbd_dev, "failed to lock header: %d", ret);
--		if (ret == -EBLOCKLISTED)
--			goto out;
+-static void raid_component_release(struct device *dev)
+-{
+-	struct raid_component *rc =
+-		container_of(dev, struct raid_component, dev);
+-	dev_printk(KERN_ERR, rc->dev.parent, "COMPONENT RELEASE\n");
+-	put_device(rc->dev.parent);
+-	kfree(rc);
+-}
 -
--		ret = 1; /* request lock anyway */
-+		rbd_warn(rbd_dev, "failed to acquire lock: %d", ret);
-+		goto out;
- 	}
- 	if (ret > 0) {
- 		up_write(&rbd_dev->lock_rwsem);
-@@ -6699,12 +6702,11 @@ static int rbd_add_acquire_lock(struct rbd_device *rbd_dev)
- 		cancel_delayed_work_sync(&rbd_dev->lock_dwork);
- 		if (!ret)
- 			ret = -ETIMEDOUT;
--	}
- 
--	if (ret) {
--		rbd_warn(rbd_dev, "failed to acquire exclusive lock: %ld", ret);
--		return ret;
-+		rbd_warn(rbd_dev, "failed to acquire lock: %ld", ret);
- 	}
-+	if (ret)
-+		return ret;
- 
- 	/*
- 	 * The lock may have been released by now, unless automatic lock
--- 
-2.40.1
-
+-int raid_component_add(struct raid_template *r,struct device *raid_dev,
+-		       struct device *component_dev)
+-{
+-	struct device *cdev =
+-		attribute_container_find_class_device(&r->raid_attrs.ac,
+-						      raid_dev);
+-	struct raid_component *rc;
+-	struct raid_data *rd = dev_get_drvdata(cdev);
+-	int err;
+-
+-	rc = kzalloc(sizeof(*rc), GFP_KERNEL);
+-	if (!rc)
+-		return -ENOMEM;
+-
+-	INIT_LIST_HEAD(&rc->node);
+-	device_initialize(&rc->dev);
+-	rc->dev.release = raid_component_release;
+-	rc->dev.parent = get_device(component_dev);
+-	rc->num = rd->component_count++;
+-
+-	dev_set_name(&rc->dev, "component-%d", rc->num);
+-	list_add_tail(&rc->node, &rd->component_list);
+-	rc->dev.class = &raid_class.class;
+-	err = device_add(&rc->dev);
+-	if (err)
+-		goto err_out;
+-
+-	return 0;
+-
+-err_out:
+-	put_device(&rc->dev);
+-	list_del(&rc->node);
+-	rd->component_count--;
+-	put_device(component_dev);
+-	kfree(rc);
+-	return err;
+-}
+-EXPORT_SYMBOL(raid_component_add);
+-
+ struct raid_template *
+ raid_class_attach(struct raid_function_template *ft)
+ {
+--- a/include/linux/raid_class.h
++++ b/include/linux/raid_class.h
+@@ -78,7 +78,3 @@ DEFINE_RAID_ATTRIBUTE(enum raid_state, s
+ 	
+ struct raid_template *raid_class_attach(struct raid_function_template *);
+ void raid_class_release(struct raid_template *);
+-
+-int __must_check raid_component_add(struct raid_template *, struct device *,
+-				    struct device *);
+-
 
 
