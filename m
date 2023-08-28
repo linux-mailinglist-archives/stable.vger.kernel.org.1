@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3225578AA7E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74A3C78AB9A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230166AbjH1KWq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:22:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40030 "EHLO
+        id S231458AbjH1Kcy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:32:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58414 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230513AbjH1KWS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826C71AE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:56 -0700 (PDT)
+        with ESMTP id S231477AbjH1Kc1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7206CC5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 186D663912
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2843CC433C9;
-        Mon, 28 Aug 2023 10:21:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A782B63CFA
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B932DC433C7;
+        Mon, 28 Aug 2023 10:31:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218104;
-        bh=QfWHOkpD/MEkJ/yDAmoc1yX0U5R2qNdyLZJ49WOE3mY=;
+        s=korg; t=1693218720;
+        bh=gADK3H8U8aLzfIj0HI0IpLwdijPkcNl1XB8bPGYxaow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J1+mCdvhVeWtsKfRB7PhhpHe8hd1+doB+Jc8jexqm+CtEDJ0Z4ad/jpFo1Dfz/xXE
-         XZsNAz+RCKF+ojqCkBNVGVcJCJufvW39Uf3fqCqRLw05eD8qsi9/NRPCUq7NeV+HxP
-         IaQRxosZAcEEPxFMCpISdcJ1HYwKo4jparmwMijk=
+        b=i5mdMdZiEGR6I17I4vtDPqpCV8NN5Jo8RXCpwHMmHS5FFtD3wsP6nPNGQQ2lw1OiO
+         0XHJnSW6+pLPQi58ArghoaKaI3uMs9tuIIHb8YOc+DVP+X+NMGI9aG1Iv//eJRppah
+         wEIpqdBwF/v/cqQ/XsQ+CKF4vgIK4UEaZzymNm+I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.4 096/129] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
+        patches@lists.linux.dev, Xingyuan Mo <hdthky0@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 060/122] io_uring/msg_ring: fix missing lock on overflow for IOPOLL
 Date:   Mon, 28 Aug 2023 12:12:55 +0200
-Message-ID: <20230828101200.539084907@linuxfoundation.org>
+Message-ID: <20230828101158.427639186@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,60 +54,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Jens Axboe <axboe@kernel.dk>
 
-commit 421d467dc2d483175bad4fb76a31b9e5a3d744cf upstream.
+Commit e12d7a46f65ae4b7d58a5e0c1cbfa825cf8d830d upstream.
 
-When batadv_v_ogm_aggr_send is called for an inactive interface, the skb
-is silently dropped by batadv_v_ogm_send_to_if() but never freed causing
-the following memory leak:
+If the target ring is configured with IOPOLL, then we always need to hold
+the target ring uring_lock before posting CQEs. We could just grab it
+unconditionally, but since we don't expect many target rings to be of this
+type, make grabbing the uring_lock conditional on the ring type.
 
-  unreferenced object 0xffff00000c164800 (size 512):
-    comm "kworker/u8:1", pid 2648, jiffies 4295122303 (age 97.656s)
-    hex dump (first 32 bytes):
-      00 80 af 09 00 00 ff ff e1 09 00 00 75 01 60 83  ............u.`.
-      1f 00 00 00 b8 00 00 00 15 00 05 00 da e3 d3 64  ...............d
-    backtrace:
-      [<0000000007ad20f6>] __kmalloc_track_caller+0x1a8/0x310
-      [<00000000d1029e55>] kmalloc_reserve.constprop.0+0x70/0x13c
-      [<000000008b9d4183>] __alloc_skb+0xec/0x1fc
-      [<00000000c7af5051>] __netdev_alloc_skb+0x48/0x23c
-      [<00000000642ee5f5>] batadv_v_ogm_aggr_send+0x50/0x36c
-      [<0000000088660bd7>] batadv_v_ogm_aggr_work+0x24/0x40
-      [<0000000042fc2606>] process_one_work+0x3b0/0x610
-      [<000000002f2a0b1c>] worker_thread+0xa0/0x690
-      [<0000000059fae5d4>] kthread+0x1fc/0x210
-      [<000000000c587d3a>] ret_from_fork+0x10/0x20
-
-Free the skb in that case to fix this leak.
-
-Cc: stable@vger.kernel.org
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Link: https://lore.kernel.org/io-uring/Y8krlYa52%2F0YGqkg@ip-172-31-85-199.ec2.internal/
+Reported-by: Xingyuan Mo <hdthky0@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v_ogm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ io_uring/msg_ring.c |   20 +++++++++++++++-----
+ 1 file changed, 15 insertions(+), 5 deletions(-)
 
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -123,8 +123,10 @@ static void batadv_v_ogm_send_to_if(stru
- {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+--- a/io_uring/msg_ring.c
++++ b/io_uring/msg_ring.c
+@@ -57,20 +57,30 @@ void io_msg_ring_cleanup(struct io_kiocb
+ 	msg->src_file = NULL;
+ }
  
--	if (hard_iface->if_status != BATADV_IF_ACTIVE)
-+	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
-+		kfree_skb(skb);
- 		return;
+-static int io_msg_ring_data(struct io_kiocb *req)
++static int io_msg_ring_data(struct io_kiocb *req, unsigned int issue_flags)
+ {
+ 	struct io_ring_ctx *target_ctx = req->file->private_data;
+ 	struct io_msg *msg = io_kiocb_to_cmd(req, struct io_msg);
++	int ret;
+ 
+ 	if (msg->src_fd || msg->dst_fd || msg->flags)
+ 		return -EINVAL;
+ 	if (target_ctx->flags & IORING_SETUP_R_DISABLED)
+ 		return -EBADFD;
+ 
+-	if (io_post_aux_cqe(target_ctx, msg->user_data, msg->len, 0, true))
+-		return 0;
++	ret = -EOVERFLOW;
++	if (target_ctx->flags & IORING_SETUP_IOPOLL) {
++		if (unlikely(io_double_lock_ctx(target_ctx, issue_flags)))
++			return -EAGAIN;
++		if (io_post_aux_cqe(target_ctx, msg->user_data, msg->len, 0, true))
++			ret = 0;
++		io_double_unlock_ctx(target_ctx);
++	} else {
++		if (io_post_aux_cqe(target_ctx, msg->user_data, msg->len, 0, true))
++			ret = 0;
 +	}
  
- 	batadv_inc_counter(bat_priv, BATADV_CNT_MGMT_TX);
- 	batadv_add_counter(bat_priv, BATADV_CNT_MGMT_TX_BYTES,
+-	return -EOVERFLOW;
++	return ret;
+ }
+ 
+ static struct file *io_msg_grab_file(struct io_kiocb *req, unsigned int issue_flags)
+@@ -175,7 +185,7 @@ int io_msg_ring(struct io_kiocb *req, un
+ 
+ 	switch (msg->cmd) {
+ 	case IORING_MSG_DATA:
+-		ret = io_msg_ring_data(req);
++		ret = io_msg_ring_data(req, issue_flags);
+ 		break;
+ 	case IORING_MSG_SEND_FD:
+ 		ret = io_msg_send_fd(req, issue_flags);
 
 
