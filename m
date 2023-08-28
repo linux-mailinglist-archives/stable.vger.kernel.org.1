@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAD578AD22
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7ABC78AD77
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231977AbjH1KqA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:46:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44248 "EHLO
+        id S232058AbjH1Ksf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:48:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232072AbjH1Kpq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:46 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D7CB12F
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:26 -0700 (PDT)
+        with ESMTP id S232086AbjH1KsK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:48:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BC3A1AD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 28F2964114
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10F0EC433C8;
-        Mon, 28 Aug 2023 10:44:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B32ED642C0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5945C433C8;
+        Mon, 28 Aug 2023 10:48:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219495;
-        bh=NBebVoq+shgty5AJ9kgCgdv9pEJXFhaxkV2Zz+74cy0=;
+        s=korg; t=1693219681;
+        bh=hf7Kj1zMBfe3nMY061AfTDVfSJMV8JrO9uuqVqIiP9o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MJVzm8hrL11qXu3QLiRogxBMU4Eb1/lCJveF0zN5e3UJRpvGtd0SWBFCaoL8JRBob
-         rpAuQjibzYVdGIvd8IZktvKcfd1xJ3fX0hatTpcGhZFg7ED0QXbtGfJlHnz1rNT4Ye
-         AyY//wwhtBk94kfiS19wf81xu6dwEso5Vm4XaxKY=
+        b=GItyQIdBSOCGJ+abeEbOLhIlefIhBSjViNG5O7+dWe3/XVBedDpuZCzrJdDINcFvN
+         ErKWcsjKIa9jwmjph/A1CC+ijFelv8gqOff1yNE9SsvE6yUD1Y4wPlzQAQEzPVqpDN
+         DFARMGZSkiqI8RsUQOcncPib9v5Kr3en4pr48gTA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 5.15 49/89] clk: Fix slab-out-of-bounds error in devm_clk_release()
+        syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 33/84] net: validate veth and vxcan peer ifindexes
 Date:   Mon, 28 Aug 2023 12:13:50 +0200
-Message-ID: <20230828101151.823242036@linuxfoundation.org>
+Message-ID: <20230828101150.386388491@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,150 +58,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-commit 66fbfb35da47f391bdadf9fa7ceb88af4faa9022 upstream.
+[ Upstream commit f534f6581ec084fe94d6759f7672bd009794b07e ]
 
-Problem can be reproduced by unloading snd_soc_simple_card, because in
-devm_get_clk_from_child() devres data is allocated as `struct clk`, but
-devm_clk_release() expects devres data to be `struct devm_clk_state`.
+veth and vxcan need to make sure the ifindexes of the peer
+are not negative, core does not validate this.
 
-KASAN report:
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in devm_clk_release+0x20/0x54
- Read of size 8 at addr ffffff800ee09688 by task (udev-worker)/287
+Using iproute2 with user-space-level checking removed:
 
- Call trace:
-  dump_backtrace+0xe8/0x11c
-  show_stack+0x1c/0x30
-  dump_stack_lvl+0x60/0x78
-  print_report+0x150/0x450
-  kasan_report+0xa8/0xf0
-  __asan_load8+0x78/0xa0
-  devm_clk_release+0x20/0x54
-  release_nodes+0x84/0x120
-  devres_release_all+0x144/0x210
-  device_unbind_cleanup+0x1c/0xac
-  really_probe+0x2f0/0x5b0
-  __driver_probe_device+0xc0/0x1f0
-  driver_probe_device+0x68/0x120
-  __driver_attach+0x140/0x294
-  bus_for_each_dev+0xec/0x160
-  driver_attach+0x38/0x44
-  bus_add_driver+0x24c/0x300
-  driver_register+0xf0/0x210
-  __platform_driver_register+0x48/0x54
-  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
-  do_one_initcall+0xac/0x340
-  do_init_module+0xd0/0x300
-  load_module+0x2ba4/0x3100
-  __do_sys_init_module+0x2c8/0x300
-  __arm64_sys_init_module+0x48/0x5c
-  invoke_syscall+0x64/0x190
-  el0_svc_common.constprop.0+0x124/0x154
-  do_el0_svc+0x44/0xdc
-  el0_svc+0x14/0x50
-  el0t_64_sync_handler+0xec/0x11c
-  el0t_64_sync+0x14c/0x150
+Before:
 
- Allocated by task 287:
-  kasan_save_stack+0x38/0x60
-  kasan_set_track+0x28/0x40
-  kasan_save_alloc_info+0x20/0x30
-  __kasan_kmalloc+0xac/0xb0
-  __kmalloc_node_track_caller+0x6c/0x1c4
-  __devres_alloc_node+0x44/0xb4
-  devm_get_clk_from_child+0x44/0xa0
-  asoc_simple_parse_clk+0x1b8/0x1dc [snd_soc_simple_card_utils]
-  simple_parse_node.isra.0+0x1ec/0x230 [snd_soc_simple_card]
-  simple_dai_link_of+0x1bc/0x334 [snd_soc_simple_card]
-  __simple_for_each_link+0x2ec/0x320 [snd_soc_simple_card]
-  asoc_simple_probe+0x468/0x4dc [snd_soc_simple_card]
-  platform_probe+0x90/0xf0
-  really_probe+0x118/0x5b0
-  __driver_probe_device+0xc0/0x1f0
-  driver_probe_device+0x68/0x120
-  __driver_attach+0x140/0x294
-  bus_for_each_dev+0xec/0x160
-  driver_attach+0x38/0x44
-  bus_add_driver+0x24c/0x300
-  driver_register+0xf0/0x210
-  __platform_driver_register+0x48/0x54
-  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
-  do_one_initcall+0xac/0x340
-  do_init_module+0xd0/0x300
-  load_module+0x2ba4/0x3100
-  __do_sys_init_module+0x2c8/0x300
-  __arm64_sys_init_module+0x48/0x5c
-  invoke_syscall+0x64/0x190
-  el0_svc_common.constprop.0+0x124/0x154
-  do_el0_svc+0x44/0xdc
-  el0_svc+0x14/0x50
-  el0t_64_sync_handler+0xec/0x11c
-  el0t_64_sync+0x14c/0x150
+  # ./ip link add index 10 type veth peer index -1
+  # ip link show
+  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:74:b2:03 brd ff:ff:ff:ff:ff:ff
+  10: veth1@veth0: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 8a:90:ff:57:6d:5d brd ff:ff:ff:ff:ff:ff
+  -1: veth0@veth1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether ae:ed:18:e6:fa:7f brd ff:ff:ff:ff:ff:ff
 
- The buggy address belongs to the object at ffffff800ee09600
-  which belongs to the cache kmalloc-256 of size 256
- The buggy address is located 136 bytes inside of
-  256-byte region [ffffff800ee09600, ffffff800ee09700)
+Now:
 
- The buggy address belongs to the physical page:
- page:000000002d97303b refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ee08
- head:000000002d97303b order:1 compound_mapcount:0 compound_pincount:0
- flags: 0x10200(slab|head|zone=0)
- raw: 0000000000010200 0000000000000000 dead000000000122 ffffff8002c02480
- raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
- page dumped because: kasan: bad access detected
+  $ ./ip link add index 10 type veth peer index -1
+  Error: ifindex can't be negative.
 
- Memory state around the buggy address:
-  ffffff800ee09580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffffff800ee09600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ffffff800ee09680: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                       ^
-  ffffff800ee09700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffffff800ee09780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ==================================================================
+This problem surfaced in net-next because an explicit WARN()
+was added, the root cause is older.
 
-Fixes: abae8e57e49a ("clk: generalize devm_clk_get() a bit")
-Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Link: https://lore.kernel.org/r/20230805084847.3110586-1-andrej.skvortzov@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: e6f8f1a739b6 ("veth: Allow to create peer link with given ifindex")
+Fixes: a8f820a380a2 ("can: add Virtual CAN Tunnel driver (vxcan)")
+Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/clk-devres.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ drivers/net/can/vxcan.c |  7 +------
+ drivers/net/veth.c      |  5 +----
+ include/net/rtnetlink.h |  4 ++--
+ net/core/rtnetlink.c    | 22 ++++++++++++++++++----
+ 4 files changed, 22 insertions(+), 16 deletions(-)
 
---- a/drivers/clk/clk-devres.c
-+++ b/drivers/clk/clk-devres.c
-@@ -205,18 +205,19 @@ EXPORT_SYMBOL(devm_clk_put);
- struct clk *devm_get_clk_from_child(struct device *dev,
- 				    struct device_node *np, const char *con_id)
+diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
+index 282c53ef76d23..1bfede407270d 100644
+--- a/drivers/net/can/vxcan.c
++++ b/drivers/net/can/vxcan.c
+@@ -179,12 +179,7 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
+ 
+ 		nla_peer = data[VXCAN_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) +
+-					  sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) -
+-					  sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 5aa23a036ed36..4ba86fa4d6497 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1313,10 +1313,7 @@ static int veth_newlink(struct net *src_net, struct net_device *dev,
+ 
+ 		nla_peer = data[VETH_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) + sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) - sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 4da61c950e931..5c2a73bbfabee 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -166,8 +166,8 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ int rtnl_delete_link(struct net_device *dev);
+ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm);
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr);
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr);
+ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
+ 
+ #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index ce37a052b9c32..cee86a2b3a036 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2161,13 +2161,27 @@ static int rtnl_dump_ifinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return err;
+ }
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr)
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr)
  {
--	struct clk **ptr, *clk;
-+	struct devm_clk_state *state;
-+	struct clk *clk;
+-	return nla_parse_deprecated(tb, IFLA_MAX, head, len, ifla_policy,
++	const struct ifinfomsg *ifmp;
++	const struct nlattr *attrs;
++	size_t len;
++
++	ifmp = nla_data(nla_peer);
++	attrs = nla_data(nla_peer) + sizeof(struct ifinfomsg);
++	len = nla_len(nla_peer) - sizeof(struct ifinfomsg);
++
++	if (ifmp->ifi_index < 0) {
++		NL_SET_ERR_MSG_ATTR(exterr, nla_peer,
++				    "ifindex can't be negative");
++		return -EINVAL;
++	}
++
++	return nla_parse_deprecated(tb, IFLA_MAX, attrs, len, ifla_policy,
+ 				    exterr);
+ }
+-EXPORT_SYMBOL(rtnl_nla_parse_ifla);
++EXPORT_SYMBOL(rtnl_nla_parse_ifinfomsg);
  
--	ptr = devres_alloc(devm_clk_release, sizeof(*ptr), GFP_KERNEL);
--	if (!ptr)
-+	state = devres_alloc(devm_clk_release, sizeof(*state), GFP_KERNEL);
-+	if (!state)
- 		return ERR_PTR(-ENOMEM);
- 
- 	clk = of_clk_get_by_name(np, con_id);
- 	if (!IS_ERR(clk)) {
--		*ptr = clk;
--		devres_add(dev, ptr);
-+		state->clk = clk;
-+		devres_add(dev, state);
- 	} else {
--		devres_free(ptr);
-+		devres_free(state);
- 	}
- 
- 	return clk;
+ struct net *rtnl_link_get_net(struct net *src_net, struct nlattr *tb[])
+ {
+-- 
+2.40.1
+
 
 
