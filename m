@@ -2,54 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 075A378AD31
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DF84178ACDB
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231986AbjH1Kq2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:46:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37122 "EHLO
+        id S231833AbjH1KnN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:43:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232019AbjH1KqJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F4DAB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:43 -0700 (PDT)
+        with ESMTP id S231874AbjH1KnC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CC854F9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6955C622EB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A79CC433C7;
-        Mon, 28 Aug 2023 10:45:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5B611640B8
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D91FC433C8;
+        Mon, 28 Aug 2023 10:42:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219542;
-        bh=MWghyhnyl92tvQoALg4AsuxMi9fq1qcrzsxk0imtp+E=;
+        s=korg; t=1693219356;
+        bh=FQyOyKcis6smUC855VVdYL+5VlDOcL9aHq/hE9tCY+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iwj09xUGplHwL3lfo8SbjUi4bMq3gnqxPi2C+a3v0kWmKui9FJKgkZvkakohfQ5G7
-         dv6d5DzKLuBbEvkYkizPFJIdOV179HLqRK9yVASqkVEpoBMWzdinx1IlKXxwIvnxUJ
-         HC6vf4GGvrfEECubNWSnMXWoUwtuabWTBr+ZPfXg=
+        b=BiAsf9al3NZ9J4ISGDhNVHMEEIim2/xin04E3m+eg+BOnTl6WConLsgjlNFJc4s/N
+         p5kJjXuNL+p43RMtuY1R1Lzm07zPZu93woxcyQUUNmXjgkkKEYk74kvsw/rkdtH1qK
+         +vSJNDYphZCHLbg7v2k9K9bCD0R9/U5SlOAf2mV0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Paul McKenney <paulmck@kernel.org>,
-        Frederic Weisbecker <fweisbec@gmail.com>,
-        Zhouyi Zhou <zhouzhouyi@gmail.com>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        Davidlohr Bueso <dave@stgolabs.net>
-Subject: [PATCH 5.15 73/89] torture: Fix hang during kthread shutdown phase
-Date:   Mon, 28 Aug 2023 12:14:14 +0200
-Message-ID: <20230828101152.657057854@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+        Rob Clark <robdclark@chromium.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 158/158] dma-buf/sw_sync: Avoid recursive lock during fence signal
+Date:   Mon, 28 Aug 2023 12:14:15 +0200
+Message-ID: <20230828101203.132704804@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,58 +58,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Rob Clark <robdclark@chromium.org>
 
-commit d52d3a2bf408ff86f3a79560b5cce80efb340239 upstream.
+[ Upstream commit e531fdb5cd5ee2564b7fe10c8a9219e2b2fac61e ]
 
-During rcutorture shutdown, the rcu_torture_cleanup() function calls
-torture_cleanup_begin(), which sets the fullstop global variable to
-FULLSTOP_RMMOD. This causes the rcutorture threads for readers and
-fakewriters to exit all of their "while" loops and start shutting down.
+If a signal callback releases the sw_sync fence, that will trigger a
+deadlock as the timeline_fence_release recurses onto the fence->lock
+(used both for signaling and the the timeline tree).
 
-They then call torture_kthread_stopping(), which in turn waits for
-kthread_stop() to be called.  However, rcu_torture_cleanup() has
-not yet called kthread_stop() on those threads, and before it gets a
-chance to do so, multiple instances of torture_kthread_stopping() invoke
-schedule_timeout_interruptible(1) in a tight loop.  Tracing confirms that
-TIMER_SOFTIRQ can then continuously execute timer callbacks.  If that
-TIMER_SOFTIRQ preempts the task executing rcu_torture_cleanup(), that
-task might never invoke kthread_stop().
+To avoid that, temporarily hold an extra reference to the signalled
+fences until after we drop the lock.
 
-This commit improves this situation by increasing the timeout passed to
-schedule_timeout_interruptible() from one jiffy to 1/20th of a second.
-This change prevents TIMER_SOFTIRQ from monopolizing its CPU, thus
-allowing rcu_torture_cleanup() to carry out the needed kthread_stop()
-invocations.  Testing has shown 100 runs of TREE07 passing reliably,
-as oppose to the tens-of-percent failure rates seen beforehand.
+(This is an alternative implementation of https://patchwork.kernel.org/patch/11664717/
+which avoids some potential UAF issues with the original patch.)
 
-Cc: Paul McKenney <paulmck@kernel.org>
-Cc: Frederic Weisbecker <fweisbec@gmail.com>
-Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Cc: <stable@vger.kernel.org> # 6.0.x
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Tested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2: Remove now obsolete comment, use list_move_tail() and
+    list_del_init()
+
+Reported-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Fixes: d3c6dd1fb30d ("dma-buf/sw_sync: Synchronize signal vs syncpt free")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230818145939.39697-1-robdclark@gmail.com
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/torture.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/dma-buf/sw_sync.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
---- a/kernel/torture.c
-+++ b/kernel/torture.c
-@@ -915,7 +915,7 @@ void torture_kthread_stopping(char *titl
- 	VERBOSE_TOROUT_STRING(buf);
- 	while (!kthread_should_stop()) {
- 		torture_shutdown_absorb(title);
--		schedule_timeout_uninterruptible(1);
-+		schedule_timeout_uninterruptible(HZ / 20);
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index 6713cfb1995c6..7e7356970d5fc 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -191,6 +191,7 @@ static const struct dma_fence_ops timeline_fence_ops = {
+  */
+ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+ {
++	LIST_HEAD(signalled);
+ 	struct sync_pt *pt, *next;
+ 
+ 	trace_sync_timeline(obj);
+@@ -203,21 +204,20 @@ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+ 		if (!timeline_fence_signaled(&pt->base))
+ 			break;
+ 
+-		list_del_init(&pt->link);
++		dma_fence_get(&pt->base);
++
++		list_move_tail(&pt->link, &signalled);
+ 		rb_erase(&pt->node, &obj->pt_tree);
+ 
+-		/*
+-		 * A signal callback may release the last reference to this
+-		 * fence, causing it to be freed. That operation has to be
+-		 * last to avoid a use after free inside this loop, and must
+-		 * be after we remove the fence from the timeline in order to
+-		 * prevent deadlocking on timeline->lock inside
+-		 * timeline_fence_release().
+-		 */
+ 		dma_fence_signal_locked(&pt->base);
  	}
+ 
+ 	spin_unlock_irq(&obj->lock);
++
++	list_for_each_entry_safe(pt, next, &signalled, link) {
++		list_del_init(&pt->link);
++		dma_fence_put(&pt->base);
++	}
  }
- EXPORT_SYMBOL_GPL(torture_kthread_stopping);
+ 
+ /**
+-- 
+2.40.1
+
 
 
