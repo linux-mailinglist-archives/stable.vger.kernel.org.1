@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43BB578ACBF
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 18BDC78AD18
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231808AbjH1KmK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:42:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59000 "EHLO
+        id S231938AbjH1Kpx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231827AbjH1Klo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:44 -0400
+        with ESMTP id S231966AbjH1Kp3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5D45F10D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:42 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 628EBCDB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5BB663F14
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06500C433C8;
-        Mon, 28 Aug 2023 10:41:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DDDD64170
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FA68C433C8;
+        Mon, 28 Aug 2023 10:45:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219301;
-        bh=Q2Ck+MLRlxPXnJmfout1JjIUaNkU3aQG0J4yKuF9hLY=;
+        s=korg; t=1693219506;
+        bh=VHrW5/k2f99K/U946pnPvtBjWFdMSfJRCpoHEP9cYNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jyhYnY25F1d3CdbODQnkXCtdFt+uyPWZcZnS3ltD48Dkc0byvSt7cHTjOVn7gCCOj
-         xs8g8jmOFLi2e/7K6RuHkfB7DuKDeA0i47A1lXpMW0Kqtskb9OuyzvLF8GTGuBgPyj
-         MkRcbiAAPySdprh9nOTOhoP5AVP0EJGe+XQu2jSk=
+        b=zYmefU4ZrC5igZJdxmHcaUlOfTkp15dhKaEpVtnyicFBgNvcnjMONQSDnOIWYH6Gh
+         BhyZqZrHujzTgcwpzX289vKdfYIoZXvPp7DD03W6uQpw+M6wy4fK2Zu5ipjHEJfzOr
+         5EHD4jWd1bJ/RNJFyW0My2CCTRtPfoqeH1JbUvK8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
-        Feng Tang <feng.tang@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 5.4 145/158] x86/fpu: Set X86_FEATURE_OSXSAVE feature after enabling OSXSAVE in CR4
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Chanho Min <chanho.min@lge.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.15 61/89] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
 Date:   Mon, 28 Aug 2023 12:14:02 +0200
-Message-ID: <20230828101202.502369004@linuxfoundation.org>
+Message-ID: <20230828101152.238502559@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,66 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Tang <feng.tang@intel.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 2c66ca3949dc701da7f4c9407f2140ae425683a5 upstream.
+commit 382d4cd1847517ffcb1800fd462b625db7b2ebea upstream.
 
-0-Day found a 34.6% regression in stress-ng's 'af-alg' test case, and
-bisected it to commit b81fac906a8f ("x86/fpu: Move FPU initialization into
-arch_cpu_finalize_init()"), which optimizes the FPU init order, and moves
-the CR4_OSXSAVE enabling into a later place:
+The gcc compiler translates on some architectures the 64-bit
+__builtin_clzll() function to a call to the libgcc function __clzdi2(),
+which should take a 64-bit parameter on 32- and 64-bit platforms.
 
-   arch_cpu_finalize_init
-       identify_boot_cpu
-	   identify_cpu
-	       generic_identify
-                   get_cpu_cap --> setup cpu capability
-       ...
-       fpu__init_cpu
-           fpu__init_cpu_xstate
-               cr4_set_bits(X86_CR4_OSXSAVE);
+But in the current kernel code, the built-in __clzdi2() function is
+defined to operate (wrongly) on 32-bit parameters if BITS_PER_LONG ==
+32, thus the return values on 32-bit kernels are in the range from
+[0..31] instead of the expected [0..63] range.
 
-As the FPU is not yet initialized the CPU capability setup fails to set
-X86_FEATURE_OSXSAVE. Many security module like 'camellia_aesni_avx_x86_64'
-depend on this feature and therefore fail to load, causing the regression.
+This patch fixes the in-kernel functions __clzdi2() and __ctzdi2() to
+take a 64-bit parameter on 32-bit kernels as well, thus it makes the
+functions identical for 32- and 64-bit kernels.
 
-Cure this by setting X86_FEATURE_OSXSAVE feature right after OSXSAVE
-enabling.
+This bug went unnoticed since kernel 3.11 for over 10 years, and here
+are some possible reasons for that:
 
-[ tglx: Moved it into the actual BSP FPU initialization code and added a comment ]
+ a) Some architectures have assembly instructions to count the bits and
+    which are used instead of calling __clzdi2(), e.g. on x86 the bsr
+    instruction and on ppc cntlz is used. On such architectures the
+    wrong __clzdi2() implementation isn't used and as such the bug has
+    no effect and won't be noticed.
 
-Fixes: b81fac906a8f ("x86/fpu: Move FPU initialization into arch_cpu_finalize_init()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Feng Tang <feng.tang@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/202307192135.203ac24e-oliver.sang@intel.com
-Link: https://lore.kernel.org/lkml/20230823065747.92257-1-feng.tang@intel.com
+ b) Some architectures link to libgcc.a, and the in-kernel weak
+    functions get replaced by the correct 64-bit variants from libgcc.a.
+
+ c) __builtin_clzll() and __clzdi2() doesn't seem to be used in many
+    places in the kernel, and most likely only in uncritical functions,
+    e.g. when printing hex values via seq_put_hex_ll(). The wrong return
+    value will still print the correct number, but just in a wrong
+    formatting (e.g. with too many leading zeroes).
+
+ d) 32-bit kernels aren't used that much any longer, so they are less
+    tested.
+
+A trivial testcase to verify if the currently running 32-bit kernel is
+affected by the bug is to look at the output of /proc/self/maps:
+
+Here the kernel uses a correct implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
+  00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
+  0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
+  f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+and this kernel uses the broken implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
+  0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
+  000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
+  00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 4df87bb7b6a22 ("lib: add weak clz/ctz functions")
+Cc: Chanho Min <chanho.min@lge.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org # v3.11+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/kernel/fpu/xstate.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ lib/clz_ctz.c |   32 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 26 deletions(-)
 
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -805,6 +805,14 @@ void __init fpu__init_system_xstate(void
- 	fpu__init_prepare_fx_sw_frame();
- 	setup_init_fpu_buf();
- 	setup_xstate_comp();
-+
-+	/*
-+	 * CPU capabilities initialization runs before FPU init. So
-+	 * X86_FEATURE_OSXSAVE is not set. Now that XSAVE is completely
-+	 * functional, set the feature bit so depending code works.
-+	 */
-+	setup_force_cpu_cap(X86_FEATURE_OSXSAVE);
-+
- 	print_xstate_offset_size();
+--- a/lib/clz_ctz.c
++++ b/lib/clz_ctz.c
+@@ -28,36 +28,16 @@ int __weak __clzsi2(int val)
+ }
+ EXPORT_SYMBOL(__clzsi2);
  
- 	pr_info("x86/fpu: Enabled xstate features 0x%llx, context size is %d bytes, using '%s' format.\n",
+-int __weak __clzdi2(long val);
+-int __weak __ctzdi2(long val);
+-#if BITS_PER_LONG == 32
+-
+-int __weak __clzdi2(long val)
++int __weak __clzdi2(u64 val);
++int __weak __clzdi2(u64 val)
+ {
+-	return 32 - fls((int)val);
++	return 64 - fls64(val);
+ }
+ EXPORT_SYMBOL(__clzdi2);
+ 
+-int __weak __ctzdi2(long val)
++int __weak __ctzdi2(u64 val);
++int __weak __ctzdi2(u64 val)
+ {
+-	return __ffs((u32)val);
++	return __ffs64(val);
+ }
+ EXPORT_SYMBOL(__ctzdi2);
+-
+-#elif BITS_PER_LONG == 64
+-
+-int __weak __clzdi2(long val)
+-{
+-	return 64 - fls64((u64)val);
+-}
+-EXPORT_SYMBOL(__clzdi2);
+-
+-int __weak __ctzdi2(long val)
+-{
+-	return __ffs64((u64)val);
+-}
+-EXPORT_SYMBOL(__ctzdi2);
+-
+-#else
+-#error BITS_PER_LONG not 32 or 64
+-#endif
 
 
