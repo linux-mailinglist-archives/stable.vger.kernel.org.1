@@ -2,56 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96B6378ACA4
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6EDE878AB48
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231750AbjH1Kle (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:41:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
+        id S231362AbjH1K3n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:29:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231794AbjH1KlN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222FCAB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:09 -0700 (PDT)
+        with ESMTP id S231316AbjH1K3P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 029C8AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B2C0E615FE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C623FC433C8;
-        Mon, 28 Aug 2023 10:41:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8C2D963C13
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9B7C9C433C7;
+        Mon, 28 Aug 2023 10:29:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219268;
-        bh=ZBZxFsXqnHmibq83M1gDZm1k+egw1VrHS/p2XDLXUvo=;
+        s=korg; t=1693218552;
+        bh=oZMW9dkZM8N9HKhBidEeqpSY628ShBqhKyus1Gp8kg8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dyffso3Kyr526EQf4ozHfHDJuljUVaFUuY0NW1lEf/R6REhu7q5f1t0bQHYHXuk3i
-         NEGgPKQTGHoMbjKVLrgufZuYthrsDKd5G877GmJyLwytUmpktJU3VT0r1Z8rLEcB4W
-         zE4aYhfparvkihNPL2gN27tHHPyjaD/9SveFRgWs=
+        b=yxeuWfQVjd3IahkboYA1bzzm8Zr2MMxbSSiY9chWUJ57BMOxPh4OzXYuq1A3Y7Zq1
+         NXx5/1SV8rH+M+9jqG1msb1ZFqgdyox5cWTNhBKrnsYU8knfijabaI0kX1KZjZPJVa
+         M9+UYbjo0MTw0d7cdEgpqYioveAEsVNI7b0WxnBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alessio Igor Bogani <alessio.bogani@elettra.eu>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 5.4 126/158] igb: Avoid starting unnecessary workqueues
+        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+        Rob Clark <robdclark@chromium.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 129/129] dma-buf/sw_sync: Avoid recursive lock during fence signal
 Date:   Mon, 28 Aug 2023 12:13:43 +0200
-Message-ID: <20230828101201.646448121@linuxfoundation.org>
+Message-ID: <20230828101157.899010507@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,93 +58,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Igor Bogani <alessio.bogani@elettra.eu>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit b888c510f7b3d64ca75fc0f43b4a4bd1a611312f ]
+[ Upstream commit e531fdb5cd5ee2564b7fe10c8a9219e2b2fac61e ]
 
-If ptp_clock_register() fails or CONFIG_PTP isn't enabled, avoid starting
-PTP related workqueues.
+If a signal callback releases the sw_sync fence, that will trigger a
+deadlock as the timeline_fence_release recurses onto the fence->lock
+(used both for signaling and the the timeline tree).
 
-In this way we can fix this:
- BUG: unable to handle page fault for address: ffffc9000440b6f8
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 100000067 P4D 100000067 PUD 1001e0067 PMD 107dc5067 PTE 0
- Oops: 0000 [#1] PREEMPT SMP
- [...]
- Workqueue: events igb_ptp_overflow_check
- RIP: 0010:igb_rd32+0x1f/0x60
- [...]
- Call Trace:
-  igb_ptp_read_82580+0x20/0x50
-  timecounter_read+0x15/0x60
-  igb_ptp_overflow_check+0x1a/0x50
-  process_one_work+0x1cb/0x3c0
-  worker_thread+0x53/0x3f0
-  ? rescuer_thread+0x370/0x370
-  kthread+0x142/0x160
-  ? kthread_associate_blkcg+0xc0/0xc0
-  ret_from_fork+0x1f/0x30
+To avoid that, temporarily hold an extra reference to the signalled
+fences until after we drop the lock.
 
-Fixes: 1f6e8178d685 ("igb: Prevent dropped Tx timestamps via work items and interrupts.")
-Fixes: d339b1331616 ("igb: add PTP Hardware Clock code")
-Signed-off-by: Alessio Igor Bogani <alessio.bogani@elettra.eu>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230821171927.2203644-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+(This is an alternative implementation of https://patchwork.kernel.org/patch/11664717/
+which avoids some potential UAF issues with the original patch.)
+
+v2: Remove now obsolete comment, use list_move_tail() and
+    list_del_init()
+
+Reported-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Fixes: d3c6dd1fb30d ("dma-buf/sw_sync: Synchronize signal vs syncpt free")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230818145939.39697-1-robdclark@gmail.com
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ptp.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/dma-buf/sw_sync.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
-index c39e921757ba9..3c501c67bdbb6 100644
---- a/drivers/net/ethernet/intel/igb/igb_ptp.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
-@@ -1245,18 +1245,6 @@ void igb_ptp_init(struct igb_adapter *adapter)
- 		return;
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index 81ba4eb348909..09d369306ee36 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -200,6 +200,7 @@ static const struct dma_fence_ops timeline_fence_ops = {
+  */
+ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+ {
++	LIST_HEAD(signalled);
+ 	struct sync_pt *pt, *next;
+ 
+ 	trace_sync_timeline(obj);
+@@ -212,21 +213,20 @@ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+ 		if (!timeline_fence_signaled(&pt->base))
+ 			break;
+ 
+-		list_del_init(&pt->link);
++		dma_fence_get(&pt->base);
++
++		list_move_tail(&pt->link, &signalled);
+ 		rb_erase(&pt->node, &obj->pt_tree);
+ 
+-		/*
+-		 * A signal callback may release the last reference to this
+-		 * fence, causing it to be freed. That operation has to be
+-		 * last to avoid a use after free inside this loop, and must
+-		 * be after we remove the fence from the timeline in order to
+-		 * prevent deadlocking on timeline->lock inside
+-		 * timeline_fence_release().
+-		 */
+ 		dma_fence_signal_locked(&pt->base);
  	}
  
--	spin_lock_init(&adapter->tmreg_lock);
--	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
--
--	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
--		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
--				  igb_ptp_overflow_check);
--
--	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
--	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
--
--	igb_ptp_reset(adapter);
--
- 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
- 						&adapter->pdev->dev);
- 	if (IS_ERR(adapter->ptp_clock)) {
-@@ -1266,6 +1254,18 @@ void igb_ptp_init(struct igb_adapter *adapter)
- 		dev_info(&adapter->pdev->dev, "added PHC on %s\n",
- 			 adapter->netdev->name);
- 		adapter->ptp_flags |= IGB_PTP_ENABLED;
+ 	spin_unlock_irq(&obj->lock);
 +
-+		spin_lock_init(&adapter->tmreg_lock);
-+		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
-+
-+		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
-+			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
-+					  igb_ptp_overflow_check);
-+
-+		adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
-+		adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
-+
-+		igb_ptp_reset(adapter);
- 	}
++	list_for_each_entry_safe(pt, next, &signalled, link) {
++		list_del_init(&pt->link);
++		dma_fence_put(&pt->base);
++	}
  }
  
+ /**
 -- 
 2.40.1
 
