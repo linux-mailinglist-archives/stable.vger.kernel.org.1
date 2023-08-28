@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1970B78AB2D
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22B0E78AA91
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231287AbjH1K2j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:28:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52946 "EHLO
+        id S231137AbjH1KXZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231361AbjH1K2T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:19 -0400
+        with ESMTP id S231158AbjH1KW5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 13CF612D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BB8AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A51F763BA4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB1E8C433C8;
-        Mon, 28 Aug 2023 10:28:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22B2563985
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F1FC433C8;
+        Mon, 28 Aug 2023 10:22:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218491;
-        bh=fhdH+RShQxfQIQq/yI5q1Dt7+IqHwszLRKg6onLlvCo=;
+        s=korg; t=1693218173;
+        bh=12i0WzbYO9Mq7uivNhG7qSa6IDvx7ndFKH2iECgKRL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WSxVzreBp4bq5iARJ/gJCH73FJty2WtOSExCkYYzUOB1Rt9IrtgfgVoxv4t7Z5ApA
-         Ygv9UFsbcgYxr5gUH4obG5tAVL5muWg5l73ZCjUAX7vFMZQ+BmEf/ZRuazkYXi4poQ
-         YkA1+Jz9vU7dfry84h99xtuwru6K123rwOLJd+AE=
+        b=bQlC/B5e9qH5lMvR/lWyrL/dlD2g8Gy7lfSEVnn1ieCdcBHEzL8hEQUOyxF++b151
+         13idw5yHGdzda2BFtuk398z+OLNiQpUsxzghw5qi+mFEBHnKoyJ8rfMAMIdLqbGZ62
+         02ZIbpMkvNAimdA59ICSWXG1bTgRgnatTDTHsLrI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 106/129] net: remove bond_slave_has_mac_rcu()
+Subject: [PATCH 6.4 121/129] pinctrl: renesas: rza2: Add lock around pinctrl_generic{{add,remove}_group,{add,remove}_function}
 Date:   Mon, 28 Aug 2023 12:13:20 +0200
-Message-ID: <20230828101157.144088502@linuxfoundation.org>
+Message-ID: <20230828101201.417256892@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,49 +55,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-[ Upstream commit 8b0fdcdc3a7d44aff907f0103f5ffb86b12bfe71 ]
+[ Upstream commit 8fcc1c40b747069644db6102c1d84c942c9d4d86 ]
 
-No caller since v3.16.
+The pinctrl group and function creation/remove calls expect
+caller to take care of locking. Add lock around these functions.
 
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: e74216b8def3 ("bonding: fix macvlan over alb bond support")
+Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230815131558.33787-4-biju.das.jz@bp.renesas.com
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bonding.h | 14 --------------
- 1 file changed, 14 deletions(-)
+ drivers/pinctrl/renesas/pinctrl-rza2.c | 17 +++++++++++++++--
+ 1 file changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index c458f084f7bb9..ab862e2e34520 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -674,20 +674,6 @@ static inline struct slave *bond_slave_has_mac(struct bonding *bond,
- 	return NULL;
- }
+diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
+index 40b1326a10776..5591ddf16fdfd 100644
+--- a/drivers/pinctrl/renesas/pinctrl-rza2.c
++++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
+@@ -14,6 +14,7 @@
+ #include <linux/gpio/driver.h>
+ #include <linux/io.h>
+ #include <linux/module.h>
++#include <linux/mutex.h>
+ #include <linux/of_device.h>
+ #include <linux/pinctrl/pinmux.h>
  
--/* Caller must hold rcu_read_lock() for read */
--static inline struct slave *bond_slave_has_mac_rcu(struct bonding *bond,
--					       const u8 *mac)
--{
--	struct list_head *iter;
--	struct slave *tmp;
--
--	bond_for_each_slave_rcu(bond, tmp, iter)
--		if (ether_addr_equal_64bits(mac, tmp->dev->dev_addr))
--			return tmp;
--
--	return NULL;
--}
--
- /* Caller must hold rcu_read_lock() for read */
- static inline bool bond_slave_has_mac_rx(struct bonding *bond, const u8 *mac)
- {
+@@ -46,6 +47,7 @@ struct rza2_pinctrl_priv {
+ 	struct pinctrl_dev *pctl;
+ 	struct pinctrl_gpio_range gpio_range;
+ 	int npins;
++	struct mutex mutex; /* serialize adding groups and functions */
+ };
+ 
+ #define RZA2_PDR(port)		(0x0000 + (port) * 2)	/* Direction 16-bit */
+@@ -358,10 +360,14 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 		psel_val[i] = MUX_FUNC(value);
+ 	}
+ 
++	mutex_lock(&priv->mutex);
++
+ 	/* Register a single pin group listing all the pins we read from DT */
+ 	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, npins, NULL);
+-	if (gsel < 0)
+-		return gsel;
++	if (gsel < 0) {
++		ret = gsel;
++		goto unlock;
++	}
+ 
+ 	/*
+ 	 * Register a single group function where the 'data' is an array PSEL
+@@ -390,6 +396,8 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
+ 	(*map)->data.mux.function = np->name;
+ 	*num_maps = 1;
+ 
++	mutex_unlock(&priv->mutex);
++
+ 	return 0;
+ 
+ remove_function:
+@@ -398,6 +406,9 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
+ remove_group:
+ 	pinctrl_generic_remove_group(pctldev, gsel);
+ 
++unlock:
++	mutex_unlock(&priv->mutex);
++
+ 	dev_err(priv->dev, "Unable to parse DT node %s\n", np->name);
+ 
+ 	return ret;
+@@ -473,6 +484,8 @@ static int rza2_pinctrl_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->base))
+ 		return PTR_ERR(priv->base);
+ 
++	mutex_init(&priv->mutex);
++
+ 	platform_set_drvdata(pdev, priv);
+ 
+ 	priv->npins = (int)(uintptr_t)of_device_get_match_data(&pdev->dev) *
 -- 
 2.40.1
 
