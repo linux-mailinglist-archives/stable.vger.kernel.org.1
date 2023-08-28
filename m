@@ -2,55 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 479DF78ACE5
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5681D78AA89
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231828AbjH1Knn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:43:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58546 "EHLO
+        id S230489AbjH1KXT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231981AbjH1Knh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28D0ACD8
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:43:12 -0700 (PDT)
+        with ESMTP id S231284AbjH1KWo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 865BD83
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9B09264114
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81933C433C9;
-        Mon, 28 Aug 2023 10:42:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6550863914
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A50EC433C8;
+        Mon, 28 Aug 2023 10:22:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219379;
-        bh=b5qhIZnVTfivkpEZUMZnQSbD7Tt1ML+1Gg0ScVWkFic=;
+        s=korg; t=1693218159;
+        bh=3XosIgii8qlwt+LNDIt8DHXWRLNvhJShUlQe0WY5AAs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PZMDLtzf5jdWKycdjlpRTME90MqLjPkzifTfJ5+59AfHSodoomZBUNahQt1AFzLUn
-         QQ5KV1duP0qE7IGxbcm4/QOEWPREj6ND43C6zCLEt1vVxa36V8sW8E6k7ZlsN9/Ijk
-         n5ty2Dr2jGFtHAxIar/A/bKDxVJL1PRNC0UUv638=
+        b=tkPMZdSp3GzJAVfinXgO6avC4U2AVm1NyE72TW91bGo1hdfqySELVaRDZh2PBueT0
+         vSbFENnz///Pjja98cajd1GES+ObdoIeFcDEFvm75WO3HsbuWZaeLWWpx/jvzsD5OP
+         /elp5eywShzuf8hVk1jsRcF0bzxJXDc0OFB1FJ1A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
+        patches@lists.linux.dev, Chao Song <chao.song@linux.intel.com>,
+        Bard Liao <yung-chuan.liao@linux.intel.com>,
+        Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>,
+        Peter Ujfalusi <peter.ujfalusi@linux.intel.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 15/89] fbdev: Fix sys_imageblit() for arbitrary image widths
+Subject: [PATCH 6.4 117/129] ASoC: SOF: ipc4-pcm: fix possible null pointer deference
 Date:   Mon, 28 Aug 2023 12:13:16 +0200
-Message-ID: <20230828101150.678600573@linuxfoundation.org>
+Message-ID: <20230828101201.263230293@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,105 +58,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Chao Song <chao.song@linux.intel.com>
 
-[ Upstream commit 61bfcb6a3b981e8f19e044ac8c3de6edbe6caf70 ]
+[ Upstream commit 2d218b45848b92b03b220bf4d9bef29f058f866f ]
 
-Commit 6f29e04938bf ("fbdev: Improve performance of sys_imageblit()")
-broke sys_imageblit() for image width that are not aligned to 8-bit
-boundaries. Fix this by handling the trailing pixels on each line
-separately. The performance improvements in the original commit do not
-regress by this change.
+The call to snd_sof_find_spcm_dai() could return NULL,
+add nullable check for the return value to avoid null
+pointer defenrece.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 6f29e04938bf ("fbdev: Improve performance of sys_imageblit()")
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220313192952.12058-2-tzimmermann@suse.de
-Stable-dep-of: c2d22806aecb ("fbdev: fix potential OOB read in fast_imageblit()")
+Fixes: 7cb19007baba ("ASoC: SOF: ipc4-pcm: add hw_params")
+Signed-off-by: Chao Song <chao.song@linux.intel.com>
+Reviewed-by: Bard Liao <yung-chuan.liao@linux.intel.com>
+Reviewed-by: Pierre-Louis Bossart <pierre-louis.bossart@linux.intel.com>
+Signed-off-by: Peter Ujfalusi <peter.ujfalusi@linux.intel.com>
+Link: https://lore.kernel.org/r/20230816133311.7523-1-peter.ujfalusi@linux.intel.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/sysimgblt.c | 29 ++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ sound/soc/sof/ipc4-pcm.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
-index 722c327a381bd..335e92b813fc4 100644
---- a/drivers/video/fbdev/core/sysimgblt.c
-+++ b/drivers/video/fbdev/core/sysimgblt.c
-@@ -188,7 +188,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- {
- 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
- 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
--	u32 bit_mask, eorx;
-+	u32 bit_mask, eorx, shift;
- 	const char *s = image->data, *src;
- 	u32 *dst;
- 	const u32 *tab;
-@@ -229,17 +229,23 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
+diff --git a/sound/soc/sof/ipc4-pcm.c b/sound/soc/sof/ipc4-pcm.c
+index 9e2b6c45080dd..49eb98605518a 100644
+--- a/sound/soc/sof/ipc4-pcm.c
++++ b/sound/soc/sof/ipc4-pcm.c
+@@ -708,6 +708,9 @@ static int sof_ipc4_pcm_hw_params(struct snd_soc_component *component,
+ 	struct snd_sof_pcm *spcm;
  
- 	for (i = image->height; i--; ) {
- 		dst = dst1;
-+		shift = 8;
- 		src = s;
- 
-+		/*
-+		 * Manually unroll the per-line copying loop for better
-+		 * performance. This works until we processed the last
-+		 * completely filled source byte (inclusive).
-+		 */
- 		switch (ppw) {
- 		case 4: /* 8 bpp */
--			for (j = k; j; j -= 2, ++src) {
-+			for (j = k; j >= 2; j -= 2, ++src) {
- 				*dst++ = colortab[(*src >> 4) & bit_mask];
- 				*dst++ = colortab[(*src >> 0) & bit_mask];
- 			}
- 			break;
- 		case 2: /* 16 bpp */
--			for (j = k; j; j -= 4, ++src) {
-+			for (j = k; j >= 4; j -= 4, ++src) {
- 				*dst++ = colortab[(*src >> 6) & bit_mask];
- 				*dst++ = colortab[(*src >> 4) & bit_mask];
- 				*dst++ = colortab[(*src >> 2) & bit_mask];
-@@ -247,7 +253,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 			}
- 			break;
- 		case 1: /* 32 bpp */
--			for (j = k; j; j -= 8, ++src) {
-+			for (j = k; j >= 8; j -= 8, ++src) {
- 				*dst++ = colortab[(*src >> 7) & bit_mask];
- 				*dst++ = colortab[(*src >> 6) & bit_mask];
- 				*dst++ = colortab[(*src >> 5) & bit_mask];
-@@ -259,6 +265,21 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 			}
- 			break;
- 		}
+ 	spcm = snd_sof_find_spcm_dai(component, rtd);
++	if (!spcm)
++		return -EINVAL;
 +
-+		/*
-+		 * For image widths that are not a multiple of 8, there
-+		 * are trailing pixels left on the current line. Print
-+		 * them as well.
-+		 */
-+		for (; j--; ) {
-+			shift -= ppw;
-+			*dst++ = colortab[(*src >> shift) & bit_mask];
-+			if (!shift) {
-+				shift = 8;
-+				++src;
-+			}
-+		}
-+
- 		dst1 += p->fix.line_length;
- 		s += spitch;
- 	}
+ 	time_info = spcm->stream[substream->stream].private;
+ 	/* delay calculation is not supported by current fw_reg ABI */
+ 	if (!time_info)
 -- 
 2.40.1
 
