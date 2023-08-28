@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 381FB78A9DA
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:17:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6DD578AC49
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:39:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229896AbjH1KQx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:16:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39056 "EHLO
+        id S231655AbjH1Kiy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:38:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230346AbjH1KQX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:16:23 -0400
+        with ESMTP id S231710AbjH1Kii (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:38:38 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D297B95
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:19 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8577893
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:38:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C2D6636C3
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83495C433C9;
-        Mon, 28 Aug 2023 10:16:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B49D63F42
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:38:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2CD49C433C7;
+        Mon, 28 Aug 2023 10:38:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217778;
-        bh=COeaAKJnbWLMVlB8TaZqwMfRStf11ANLet5Xi6Sy9Og=;
+        s=korg; t=1693219115;
+        bh=FCRwj/ZGt7b8+HmPKonapQDgql5tZix5Wpbw41XYAzQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MqoWHsHkYQEQ/UsUCD7a+wlUSOpmVEwafS+CqHO7W60Cv+rf+A9tXewzafJK+/8tB
-         rSSwqIe8VZJMM6H4imaa2tQ1jzFgKjIaKz0Be1xLWURbrOvAVEPtaIfv1cxPwurd2G
-         TLaHaNvHhxd30H/J64SWehs4Oq/IHAM2M0S/y8eY=
+        b=PbvwPdklJzFWjdqLFcScbQR81MgkJXs7QIHSLe4g3LkKOq/YA7uN9me4qaH2tNp0W
+         zWXnCSmnNwCUY4ApxIrmwd0zNxkAdsgoMtDExS8Kg/bDvIZ4SBErr6nYwcQ3uvIZKf
+         n3Rk+Ez6JRsrBddBonwr7DpDOQddbIm/HC1YRJH0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 4.14 36/57] ASoC: rt5665: add missed regulator_bulk_disable
+        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Shawn Guo <shawnguo@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 079/158] ARM: dts: imx: Set default tuning step for imx7d usdhc
 Date:   Mon, 28 Aug 2023 12:12:56 +0200
-Message-ID: <20230828101145.598337219@linuxfoundation.org>
+Message-ID: <20230828101159.941048786@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,37 +56,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Xiaolei Wang <xiaolei.wang@windriver.com>
 
-commit c163108e706909570f8aa9aa5bcf6806e2b4c98c upstream.
+[ Upstream commit be18293e47cbca7c6acee9231fc851601d69563a ]
 
-The driver forgets to call regulator_bulk_disable()
+If the tuning step is not set, the tuning step is set to 1.
+For some sd cards, the following Tuning timeout will occur.
 
-Add the missed call to fix it.
+Tuning failed, falling back to fixed sampling clock
+mmc0: Tuning failed, falling back to fixed sampling clock
 
-Fixes: 33ada14a26c8 ("ASoC: add rt5665 codec driver")
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
-Link: https://lore.kernel.org/r/tencent_A560D01E3E0A00A85A12F137E4B5205B3508@qq.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+So set the default tuning step. This refers to the NXP vendor's
+commit below:
+
+https://github.com/nxp-imx/linux-imx/blob/lf-6.1.y/
+arch/arm/boot/dts/imx7s.dtsi#L1216-L1217
+
+Fixes: 1e336aa0c025 ("mmc: sdhci-esdhc-imx: correct the tuning start tap and step setting")
+Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5665.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/arm/boot/dts/imx7s.dtsi | 6 ++++++
+ 1 file changed, 6 insertions(+)
 
---- a/sound/soc/codecs/rt5665.c
-+++ b/sound/soc/codecs/rt5665.c
-@@ -4957,6 +4957,8 @@ static void rt5665_i2c_shutdown(struct i
- 	struct rt5665_priv *rt5665 = i2c_get_clientdata(client);
+diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
+index a06efc1270fb6..791530124fb0a 100644
+--- a/arch/arm/boot/dts/imx7s.dtsi
++++ b/arch/arm/boot/dts/imx7s.dtsi
+@@ -1133,6 +1133,8 @@
+ 					<&clks IMX7D_USDHC1_ROOT_CLK>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
++				fsl,tuning-step = <2>;
++				fsl,tuning-start-tap = <20>;
+ 				status = "disabled";
+ 			};
  
- 	regmap_write(rt5665->regmap, RT5665_RESET, 0);
-+
-+	regulator_bulk_disable(ARRAY_SIZE(rt5665->supplies), rt5665->supplies);
- }
+@@ -1145,6 +1147,8 @@
+ 					<&clks IMX7D_USDHC2_ROOT_CLK>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
++				fsl,tuning-step = <2>;
++				fsl,tuning-start-tap = <20>;
+ 				status = "disabled";
+ 			};
  
- #ifdef CONFIG_OF
+@@ -1157,6 +1161,8 @@
+ 					<&clks IMX7D_USDHC3_ROOT_CLK>;
+ 				clock-names = "ipg", "ahb", "per";
+ 				bus-width = <4>;
++				fsl,tuning-step = <2>;
++				fsl,tuning-start-tap = <20>;
+ 				status = "disabled";
+ 			};
+ 
+-- 
+2.40.1
+
 
 
