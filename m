@@ -2,139 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0EE778B0DE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 14:46:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B5FB78B137
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 14:59:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229852AbjH1Mpy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 08:45:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48904 "EHLO
+        id S230465AbjH1M7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 08:59:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35932 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231459AbjH1Mpp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 08:45:45 -0400
-Received: from mail-vs1-xe35.google.com (mail-vs1-xe35.google.com [IPv6:2607:f8b0:4864:20::e35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EB90107
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 05:45:43 -0700 (PDT)
-Received: by mail-vs1-xe35.google.com with SMTP id ada2fe7eead31-44e86f3e4b6so735406137.0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 05:45:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693226742; x=1693831542;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=VTdd850krtmWOtzkmq2Um5vO5DePaECfmrOyvFGNw0A=;
-        b=Cl4kvMCHEE66Ya0Go8DA39JpS4V1fIu0PIESwO0nFk8jbH8PGbH+CcJhRg/H4db+xu
-         90Ouxfl5VQ8e3ZNihXfNkROCddPI8nHa6ihNn0xIia50OBkLRoS+kkH9kQiJxXIgMJ5i
-         1HCtKLUHJfs110V+xnWhWaQMIduOBhQrpTWpCzH6yl9gmzyOiVgximeqfee2XAwHIL30
-         XYL1eqyfVRUdPgUYMkCDZlJFilTN+4nE4c492dX1GTQ+CvKRD0PdtkOWvGwQ4xjaZtXE
-         XoL45paXRbVv00CLxyGJ+h5C4F0aOtjMjGbmLpY6MSToKwTadNC9m8YVqodTMf4nHuHc
-         z9xA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693226742; x=1693831542;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=VTdd850krtmWOtzkmq2Um5vO5DePaECfmrOyvFGNw0A=;
-        b=k5qyoZ++43SewRVzMsj3d1TqZNq3w7BpFV4r3Oeq0X6PALotpJ/ijDtbcNHg9c4mMz
-         YgU93sNJngpU+I8oxYYRfUaREfHgGOUfQDkGV98aHczGDgMFtc55gxUxFx8sg83QzRPf
-         MGKzmqpR3dShiXtMiF7D9E/QrA4cPNIz6UaRuJqJaCxuF0Nq8SEsh+PnObiMrX8TL8Qw
-         20xhCInQHWCmla3KLDmFKZvN7L15OlPbQqqr+dCNNhNeInCdNmUtJV3LXdT3h0sM02Tm
-         Zrn4PEry8aO9SNbAcUc5bDzzlTj9e26PsVmLacYtpKyIyNcrvYxhIJV14U4UWUma9Usz
-         v9Kg==
-X-Gm-Message-State: AOJu0YxP6YKedxe5dJeKGUlMJQKui/SKmspbJDphL1Psgk1LmCMMCW4v
-        RPpjTgeLL+HUu4443+W3TFkhsygWo/WmlRyYDI+MI5EaWzTJRZR0nfY=
-X-Google-Smtp-Source: AGHT+IEdtTtOwloNSd4mKOu1fuHlpzN9wjd8g8mWnEVcCo/jqSV0UrXEouOfLDsQ4b3Si8PKFIfpCo1vgB6+TlUNSw8=
-X-Received: by 2002:a05:6102:533:b0:44d:42c4:f4c0 with SMTP id
- m19-20020a056102053300b0044d42c4f4c0mr14199635vsa.3.1693226742327; Mon, 28
- Aug 2023 05:45:42 -0700 (PDT)
+        with ESMTP id S232599AbjH1M7T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 08:59:19 -0400
+Received: from mout.gmx.net (mout.gmx.net [212.227.17.22])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A1011C;
+        Mon, 28 Aug 2023 05:59:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
+ s=s31663417; t=1693227552; x=1693832352; i=rwarsow@gmx.de;
+ bh=Sp9xJK9z8qxahavi8wfZaCf1HV2tA2qjs6U3xm/TnoU=;
+ h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
+ b=ufCyneihF5w7wv7v1KUeuEoromoeer1SdhTyf9m+o9zTAcVs6hysEgHHBEi/MNRPa9M4bMP
+ 5R1LDRgTkaMPaDvead4SftJyWve+x8Emlm04OBwtUHGB7Jejfm+LHPvG9h5wKUM1Bv+2HspaY
+ lEY4au3ApqcWUDDlLWsT3znRS+JmYS3kcn3w6wntXKEuZnz10JyPJnE++ZfpWUOlzjfe1hHBd
+ t+sPGLn6QdcT1hqfa7JMWzUUlJ3kLTQfNtuPNzz1WhD8MWpraHBDTUEAa0PYmLcpkZrK82z+t
+ 45LxHyrsFaxzHZyFTpj5N1HJXVTKbKMLvMWsfbCqZ16EiEapiNgQ==
+X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
+Received: from [192.168.100.20] ([46.142.35.180]) by mail.gmx.net (mrgmx104
+ [212.227.17.168]) with ESMTPSA (Nemesis) id 1N4QsY-1paQpK2ft0-011RG9; Mon, 28
+ Aug 2023 14:59:12 +0200
+Message-ID: <0cf15e33-9972-f63c-8602-70c8f6971c11@gmx.de>
+Date:   Mon, 28 Aug 2023 14:59:11 +0200
 MIME-Version: 1.0
-References: <20230828101153.030066927@linuxfoundation.org>
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Mon, 28 Aug 2023 18:15:30 +0530
-Message-ID: <CA+G9fYuQXq7-jkL59MMKfRbqqB509T3nQdtcW+4wVW_QRovx5g@mail.gmail.com>
-Subject: Re: [PATCH 4.19 000/129] 4.19.293-rc1 review
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+From:   Ronald Warsow <rwarsow@gmx.de>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Tony Lindgren <tony@atomide.com>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, Arnd Bergmann <arnd@arndb.de>,
-        Anders Roxell <anders.roxell@linaro.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        stable@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org
+Content-Language: de-DE, en-US
+Subject: Re: [PATCH 6.4 000/129] 6.4.13-rc1 review
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Provags-ID: V03:K1:eVVWlXTPD4GB1OJmNl5gNhwVZ0zqa7dhl5lj55RFy/9ePbtbCks
+ 8/bHG7pVCaPxrsDd02vzj22KO3QYJZYUBZDxqLLkfxgcpdTKBqiv6QurQ+0clp9PitI4KCh
+ eRqwsJHx0OqgvnKfu+R3EwY3VoeUe4tqrY/9zhU8KB4kVW9aQOAsQIe3hBrAlsJ791eE3MV
+ TamnzRe82YYNW4JE9udLA==
+UI-OutboundReport: notjunk:1;M01:P0:6hbeup7vLMM=;x9IhoNxx3OOwkHf3GezxGktXjj4
+ xJ9MMECBYMr2QIfcCfR5vH/OOXfiMqCjRANOcuWAJuVU7EzZjAWLV/GD3BbPqD+YFj/dk0P2N
+ WhVxbk57IbJYD/IdFPhvrnRAx4yOpXilxFayHjnQD0/qeRW/kkAdH+szEpjY8uLtZtWApS5c/
+ zhM6cLRTG1/OSDmcp0rJWdV13MHAfD7MQDZTC0i9mb75TEmmBuxo/ycaYdzq9ZMj7XDxXHDTr
+ vCl3XJAscv75WrG3RxhUT6cgGQybG2dTZK9BnPNf8+mpKzAaA6jNeAmzuBD3iRwKQ4Zo3/wKh
+ 8sjqueEUhY8ytWOLFjb5Kf5jBJYMHjyFpGJHU+3lBu9JnEHu5h7feCsH+9hoDO1tm6EvpavCX
+ JmdLYbE6kDWzQqIexMhAYTv2goJSOikV8zUlG7L2v/voHvTTFk8dus7wNzGrH4Us+52MyN2tP
+ q/i/B0m9hpYyytBATvr9AInudRM4JxjNgxQ0cfYGqbV4UrmF7lhak8AdiUmguh1rwODAYCZXQ
+ Wduv//+3yIXuCSLAD9DYW4KvMR8sq+ORsxBnIYNxzyK8VoZroUfn5qCTC5E+V0ZkMQY0uBBtR
+ +xvjtuJ9FEXmC+IZk4lcok1ILlNnBYlilYJwi+en/9Ms8BffXtOZISfxCRrPqdtnprdt+1bsx
+ yjThiMi2ihvahzTJecZMY0UTOm+8zd1XxbfUf6r9uOIJqy23TR2/pEMryvJEwy3OL+y7ZeOW5
+ aSBGerSe1Yf/Ty442rBL2/N3/Bmfibnpsead0BjOSk/0lPMKGQkT2zABExcg+2HP7P7SpbBgY
+ E+ScSKSuNY8cJRnXuDQp5B4BpMvPQ2wNO/D/T8MkYaDISlFoqCwSJ409JS7lx+i0V5UzOXMHK
+ 8HoZWjFgJyDtSynI0ZiGyDYigDjaR02zRwJ2+v/aJcBCpcqBIojT0wtaZhELLhATCjdQLNDey
+ PzmzFr3tNBDgcgwhBcmxpNYfIIY=
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 28 Aug 2023 at 15:54, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 4.19.293 release.
-> There are 129 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-=
-4.19.293-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-4.19.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Greg
 
-Results from Linaro=E2=80=99s test farm.
-Regressions on arm.
+6.4.13-rc1
 
-stable-rc linux-4.19.y arm gcc-12 builds fails with
-following warnings / errors.
+compiles, boots and runs here on x86_64
+(Intel Rocket Lake, i5-11400)
 
-Build errors:
---------------
-drivers/bus/ti-sysc.c: In function 'sysc_reset':
-drivers/bus/ti-sysc.c:982:15: error: implicit declaration of function
-'sysc_read_sysconfig' [-Werror=3Dimplicit-function-declaration]
-  982 |         val =3D sysc_read_sysconfig(ddata);
-      |               ^~~~~~~~~~~~~~~~~~~
-cc1: some warnings being treated as errors
+Thanks
 
-Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+Tested-by: Ronald Warsow <rwarsow@gmx.de>
 
-
- > Tony Lindgren <tony@atomide.com>
- >   bus: ti-sysc: Flush posted write on enable before reset
-
-bus: ti-sysc: Flush posted write on enable before reset
-commit 34539b442b3bc7d5bf10164750302b60b91f18a7 upstream.
-
-The above commit is causing this build warnings / errors.
-
-Links,
-https://storage.tuxsuite.com/public/linaro/lkft/builds/2UbpNRPtHJcx6nk8e60a=
-mSmKgZ3/
-
-
-steps to reproduce:
-tuxmake --runtime podman --target-arch arm --toolchain gcc-12
---kconfig https://storage.tuxsuite.com/public/linaro/lkft/builds/2UbpNRPtHJ=
-cx6nk8e60amSmKgZ3/config
-
-
---
-Linaro LKFT
-https://lkft.linaro.org
