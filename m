@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0950E78AAA5
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:24:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0FEED78AC5E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:39:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231172AbjH1KXz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57274 "EHLO
+        id S231668AbjH1Kj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:39:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47864 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjH1KXf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:35 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E51ADA7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:32 -0700 (PDT)
+        with ESMTP id S231709AbjH1KjP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:15 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19BDAAB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 82F366399A
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:32 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F60FC433C9;
-        Mon, 28 Aug 2023 10:23:31 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75885615E1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89304C433C8;
+        Mon, 28 Aug 2023 10:39:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218211;
-        bh=jQMpYP+TkuLMOmDQEIiw4iPtrs+K0krQpRV2ULu+owo=;
+        s=korg; t=1693219151;
+        bh=N6IBSHGeKhdqZPPpxUQJZeoQuFWZzvLsGbqvblhnQyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZU5YvcVFNaKYA2FjXqW5osPzr8j1OT/y6Ml+rslK/X60Ob8gwa4ff+DRH8VpqB7hd
-         oO5H16G7rNn5PQD5yR0mBYbKMhcH/vTMmI1kkyQycZQkuUw6bqlPlZ/Ed1EmDx6gv4
-         W//gKmVwDW2gEPnrzlihFLlLAGw+0qv7c+LmGEr4=
+        b=PkL54/WpBzIywiYL9qmcIWTokFEmIGLja70RJbWE3b+LCg2Xzxk/Hvkx1qGXTSCM+
+         HuioWQ1AO08LLCyq1Ss8Z1vwaaIbWNC5waYMaRwHXXQvSlbwIRM/mlJGas7JvOM8Bw
+         Cip7VYbgjuC1P+8H7zvkWKJfLIsCxLKxP6f1RK+g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 6.4 109/129] can: raw: add missing refcount for memory leak fix
+        Jason Xing <kernelxing@tencent.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.4 091/158] net: fix the RTO timer retransmitting skb every 1ms if linear option is enabled
 Date:   Mon, 28 Aug 2023 12:13:08 +0200
-Message-ID: <20230828101200.993327219@linuxfoundation.org>
+Message-ID: <20230828101200.379086442@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,124 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oliver Hartkopp <socketcan@hartkopp.net>
+From: Jason Xing <kernelxing@tencent.com>
 
-commit c275a176e4b69868576e543409927ae75e3a3288 upstream.
+commit e4dd0d3a2f64b8bd8029ec70f52bdbebd0644408 upstream.
 
-Commit ee8b94c8510c ("can: raw: fix receiver memory leak") introduced
-a new reference to the CAN netdevice that has assigned CAN filters.
-But this new ro->dev reference did not maintain its own refcount which
-lead to another KASAN use-after-free splat found by Eric Dumazet.
+In the real workload, I encountered an issue which could cause the RTO
+timer to retransmit the skb per 1ms with linear option enabled. The amount
+of lost-retransmitted skbs can go up to 1000+ instantly.
 
-This patch ensures a proper refcount for the CAN nedevice.
+The root cause is that if the icsk_rto happens to be zero in the 6th round
+(which is the TCP_THIN_LINEAR_RETRIES value), then it will always be zero
+due to the changed calculation method in tcp_retransmit_timer() as follows:
 
-Fixes: ee8b94c8510c ("can: raw: fix receiver memory leak")
-Reported-by: Eric Dumazet <edumazet@google.com>
-Cc: Ziyang Xuan <william.xuanziyang@huawei.com>
-Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Link: https://lore.kernel.org/r/20230821144547.6658-3-socketcan@hartkopp.net
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
+
+Above line could be converted to
+icsk->icsk_rto = min(0 << 1, TCP_RTO_MAX) = 0
+
+Therefore, the timer expires so quickly without any doubt.
+
+I read through the RFC 6298 and found that the RTO value can be rounded
+up to a certain value, in Linux, say TCP_RTO_MIN as default, which is
+regarded as the lower bound in this patch as suggested by Eric.
+
+Fixes: 36e31b0af587 ("net: TCP thin linear timeouts")
+Suggested-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: Jason Xing <kernelxing@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/can/raw.c |   35 ++++++++++++++++++++++++++---------
- 1 file changed, 26 insertions(+), 9 deletions(-)
+ net/ipv4/tcp_timer.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -85,6 +85,7 @@ struct raw_sock {
- 	int bound;
- 	int ifindex;
- 	struct net_device *dev;
-+	netdevice_tracker dev_tracker;
- 	struct list_head notifier;
- 	int loopback;
- 	int recv_own_msgs;
-@@ -285,8 +286,10 @@ static void raw_notify(struct raw_sock *
- 	case NETDEV_UNREGISTER:
- 		lock_sock(sk);
- 		/* remove current filters & unregister */
--		if (ro->bound)
-+		if (ro->bound) {
- 			raw_disable_allfilters(dev_net(dev), dev, sk);
-+			netdev_put(dev, &ro->dev_tracker);
-+		}
- 
- 		if (ro->count > 1)
- 			kfree(ro->filter);
-@@ -391,10 +394,12 @@ static int raw_release(struct socket *so
- 
- 	/* remove current filters & unregister */
- 	if (ro->bound) {
--		if (ro->dev)
-+		if (ro->dev) {
- 			raw_disable_allfilters(dev_net(ro->dev), ro->dev, sk);
--		else
-+			netdev_put(ro->dev, &ro->dev_tracker);
-+		} else {
- 			raw_disable_allfilters(sock_net(sk), NULL, sk);
-+		}
- 	}
- 
- 	if (ro->count > 1)
-@@ -445,10 +450,10 @@ static int raw_bind(struct socket *sock,
- 			goto out;
- 		}
- 		if (dev->type != ARPHRD_CAN) {
--			dev_put(dev);
- 			err = -ENODEV;
--			goto out;
-+			goto out_put_dev;
- 		}
-+
- 		if (!(dev->flags & IFF_UP))
- 			notify_enetdown = 1;
- 
-@@ -456,7 +461,9 @@ static int raw_bind(struct socket *sock,
- 
- 		/* filters set by default/setsockopt */
- 		err = raw_enable_allfilters(sock_net(sk), dev, sk);
--		dev_put(dev);
-+		if (err)
-+			goto out_put_dev;
-+
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -573,7 +573,9 @@ out_reset_timer:
+ 	    tcp_stream_is_thin(tp) &&
+ 	    icsk->icsk_retransmits <= TCP_THIN_LINEAR_RETRIES) {
+ 		icsk->icsk_backoff = 0;
+-		icsk->icsk_rto = min(__tcp_set_rto(tp), TCP_RTO_MAX);
++		icsk->icsk_rto = clamp(__tcp_set_rto(tp),
++				       tcp_rto_min(sk),
++				       TCP_RTO_MAX);
  	} else {
- 		ifindex = 0;
- 
-@@ -467,18 +474,28 @@ static int raw_bind(struct socket *sock,
- 	if (!err) {
- 		if (ro->bound) {
- 			/* unregister old filters */
--			if (ro->dev)
-+			if (ro->dev) {
- 				raw_disable_allfilters(dev_net(ro->dev),
- 						       ro->dev, sk);
--			else
-+				/* drop reference to old ro->dev */
-+				netdev_put(ro->dev, &ro->dev_tracker);
-+			} else {
- 				raw_disable_allfilters(sock_net(sk), NULL, sk);
-+			}
- 		}
- 		ro->ifindex = ifindex;
- 		ro->bound = 1;
-+		/* bind() ok -> hold a reference for new ro->dev */
- 		ro->dev = dev;
-+		if (ro->dev)
-+			netdev_hold(ro->dev, &ro->dev_tracker, GFP_KERNEL);
- 	}
- 
-- out:
-+out_put_dev:
-+	/* remove potential reference from dev_get_by_index() */
-+	if (dev)
-+		dev_put(dev);
-+out:
- 	release_sock(sk);
- 	rtnl_unlock();
- 
+ 		/* Use normal (exponential) backoff */
+ 		icsk->icsk_rto = min(icsk->icsk_rto << 1, TCP_RTO_MAX);
 
 
