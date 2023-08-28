@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4311E78AB22
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:28:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0D1E478AA88
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231339AbjH1K2N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:28:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52954 "EHLO
+        id S231272AbjH1KXQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231360AbjH1K1t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:27:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA85312D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:27:46 -0700 (PDT)
+        with ESMTP id S231270AbjH1KWm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49531107
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E4A263B8C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:27:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938B2C433C8;
-        Mon, 28 Aug 2023 10:27:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B10663778
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E990C433C8;
+        Mon, 28 Aug 2023 10:22:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218465;
-        bh=lPpCcTLoEe/ThfTtYNQrticZfVYTIk3V1n4qaWulrVM=;
+        s=korg; t=1693218148;
+        bh=4g8dpvswpuJ2joIZakB8xs6Ayn6giuNeZ+XXOERsCXo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v5e2YI47r/63xInmq4tqyhaQTAS3ejO6Ql7Nih80m3t2gcZMNCByOFgyJzvqnuKl+
-         siquph2tlw5nO04Xuuehw0XCnecWdZMxc2YEG38vu91RbZWwpqpkkvoVMoMWRCWZcR
-         OcbbkWbkrGX7SsQuX6b+O1rjFgeko8CKr7V7AVc0=
+        b=R72Ir/96ZtHfuTDxfTPEd1qDKvvdiFbbxKqL4iN/IwG4mHaNS3gycDg24NeGOGrYS
+         /oUjGaFC1/BJvyE8Wb1OmIHZMbGaVrNoVFvbID1vB+1pneEOazYBnzS2/HXZeYJChA
+         /E07nE3octZNHYl+PUnoiLIFh28GLMvDTJCM2u5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Mark Brown <broonie@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 098/129] regmap: Account for register length in SMBus I/O limits
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.4 113/129] scsi: snic: Fix double free in snic_tgt_create()
 Date:   Mon, 28 Aug 2023 12:13:12 +0200
-Message-ID: <20230828101156.904232053@linuxfoundation.org>
+Message-ID: <20230828101201.120121319@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,47 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mark Brown <broonie@kernel.org>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-[ Upstream commit 0c9d2eb5e94792fe64019008a04d4df5e57625af ]
+commit 1bd3a76880b2bce017987cf53780b372cf59528e upstream.
 
-The SMBus I2C buses have limits on the size of transfers they can do but
-do not factor in the register length meaning we may try to do a transfer
-longer than our length limit, the core will not take care of this.
-Future changes will factor this out into the core but there are a number
-of users that assume current behaviour so let's just do something
-conservative here.
+Commit 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add()
+fails") fixed the memory leak caused by dev_set_name() when device_add()
+failed. However, it did not consider that 'tgt' has already been released
+when put_device(&tgt->dev) is called. Remove kfree(tgt) in the error path
+to avoid double free of 'tgt' and move put_device(&tgt->dev) after the
+removed kfree(tgt) to avoid a use-after-free.
 
-This does not take account padding bits but practically speaking these
-are very rarely if ever used on I2C buses given that they generally run
-slowly enough to mean there's no issue.
-
-Cc: stable@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Xu Yilun <yilun.xu@intel.com>
-Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-2-80e2aed22e83@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add() fails")
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Link: https://lore.kernel.org/r/20230819083941.164365-1-wangzhu9@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/base/regmap/regmap-i2c.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/snic/snic_disc.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/base/regmap/regmap-i2c.c
-+++ b/drivers/base/regmap/regmap-i2c.c
-@@ -246,8 +246,8 @@ static int regmap_i2c_smbus_i2c_read(voi
- static struct regmap_bus regmap_i2c_smbus_i2c_block = {
- 	.write = regmap_i2c_smbus_i2c_write,
- 	.read = regmap_i2c_smbus_i2c_read,
--	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
--	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
-+	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 1,
-+	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 1,
- };
+--- a/drivers/scsi/snic/snic_disc.c
++++ b/drivers/scsi/snic/snic_disc.c
+@@ -303,12 +303,11 @@ snic_tgt_create(struct snic *snic, struc
+ 			      "Snic Tgt: device_add, with err = %d\n",
+ 			      ret);
  
- static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
+-		put_device(&tgt->dev);
+ 		put_device(&snic->shost->shost_gendev);
+ 		spin_lock_irqsave(snic->shost->host_lock, flags);
+ 		list_del(&tgt->list);
+ 		spin_unlock_irqrestore(snic->shost->host_lock, flags);
+-		kfree(tgt);
++		put_device(&tgt->dev);
+ 		tgt = NULL;
+ 
+ 		return tgt;
 
 
