@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3D1378AB30
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CA7778AA97
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231299AbjH1K2l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44654 "EHLO
+        id S231184AbjH1KX2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54590 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231444AbjH1K2c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:32 -0400
+        with ESMTP id S231269AbjH1KXO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6F8418E
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:25 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF39122
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6754763BA4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79EE0C433C7;
-        Mon, 28 Aug 2023 10:28:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 063C963989
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17300C433C9;
+        Mon, 28 Aug 2023 10:23:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218504;
-        bh=xQ3lYAaxiBgvidac/tJ6r3qYRaGJSt9DrvBn6wH6U/4=;
+        s=korg; t=1693218187;
+        bh=G4NqrSYMthlPg97NQtXFEr4DoozG46x+DzGE5RLUol0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bKZCVHWXwc/cQIJV+kFvfzPeasOwhvQd+8DdhsLkew8IzLdI4H1qbSf3F9K5rex/C
-         29DFe6+jJoLXcMg1Igft8j7FETAH2YgaFgmR65kMrrpyqye5e7WngACEu6YPPU9ddU
-         k0UplM40sxCT6W+4MTm/D4ddix2m9c44fJyvOc8Y=
+        b=jxLGuJg6tgfIcL/6qN0tc1N5KeXjFUs7Dn0K9K38Fs1CSHdPWD/AGM299diunlZBn
+         TdT1rXbGh2NhPURfN/3Qt32vx1W/gKGicjxz00odpTU1sZE9FnZzSS8DdsS5LFtyvk
+         RMpSufF6OgH+A2YxUgpdb4bhRguH8Tii4j4g9Ivw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 4.19 111/129] nfsd: Fix race to FREE_STATEID and cl_revoked
+        patches@lists.linux.dev,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 126/129] maple_tree: disable mas_wr_append() when other readers are possible
 Date:   Mon, 28 Aug 2023 12:13:25 +0200
-Message-ID: <20230828101157.292757915@linuxfoundation.org>
+Message-ID: <20230828101201.644638047@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,51 +56,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-commit 3b816601e279756e781e6c4d9b3f3bd21a72ac67 upstream.
+[ Upstream commit cfeb6ae8bcb96ccf674724f223661bbcef7b0d0b ]
 
-We have some reports of linux NFS clients that cannot satisfy a linux knfsd
-server that always sets SEQ4_STATUS_RECALLABLE_STATE_REVOKED even though
-those clients repeatedly walk all their known state using TEST_STATEID and
-receive NFS4_OK for all.
+The current implementation of append may cause duplicate data and/or
+incorrect ranges to be returned to a reader during an update.  Although
+this has not been reported or seen, disable the append write operation
+while the tree is in rcu mode out of an abundance of caution.
 
-Its possible for revoke_delegation() to set NFS4_REVOKED_DELEG_STID, then
-nfsd4_free_stateid() finds the delegation and returns NFS4_OK to
-FREE_STATEID.  Afterward, revoke_delegation() moves the same delegation to
-cl_revoked.  This would produce the observed client/server effect.
+During the analysis of the mas_next_slot() the following was
+artificially created by separating the writer and reader code:
 
-Fix this by ensuring that the setting of sc_type to NFS4_REVOKED_DELEG_STID
-and move to cl_revoked happens within the same cl_lock.  This will allow
-nfsd4_free_stateid() to properly remove the delegation from cl_revoked.
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last slot write is to start of slot
+    store current contents in slot
+    overwrite old end pivot
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                return with incorrect range
+    store new value
 
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2217103
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2176575
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Cc: stable@vger.kernel.org # v4.17+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Alternatively:
+
+Writer:                                 reader:
+mas_wr_append
+    set end pivot
+    updates end metata
+    Detects write to last slot
+    last lost write to end of slot
+    store value
+                                        mas_next_slot():
+                                                read end metadata
+                                                read old end pivot
+                                                read new end pivot
+                                                return with incorrect range
+    set old end pivot
+
+There may be other accesses that are not safe since we are now updating
+both metadata and pointers, so disabling append if there could be rcu
+readers is the safest action.
+
+Link: https://lkml.kernel.org/r/20230819004356.1454718-2-Liam.Howlett@oracle.com
+Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ lib/maple_tree.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1019,9 +1019,9 @@ static void revoke_delegation(struct nfs
- 	WARN_ON(!list_empty(&dp->dl_recall_lru));
+diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+index bb28a49d173c0..3315eaf93f563 100644
+--- a/lib/maple_tree.c
++++ b/lib/maple_tree.c
+@@ -4315,6 +4315,9 @@ static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
+ 	struct ma_state *mas = wr_mas->mas;
+ 	unsigned char node_pivots = mt_pivots[wr_mas->type];
  
- 	if (clp->cl_minorversion) {
-+		spin_lock(&clp->cl_lock);
- 		dp->dl_stid.sc_type = NFS4_REVOKED_DELEG_STID;
- 		refcount_inc(&dp->dl_stid.sc_count);
--		spin_lock(&clp->cl_lock);
- 		list_add(&dp->dl_recall_lru, &clp->cl_revoked);
- 		spin_unlock(&clp->cl_lock);
- 	}
++	if (mt_in_rcu(mas->tree))
++		return false;
++
+ 	if ((mas->index != wr_mas->r_min) && (mas->last == wr_mas->r_max)) {
+ 		if (new_end < node_pivots)
+ 			wr_mas->pivots[new_end] = wr_mas->pivots[end];
+-- 
+2.40.1
+
 
 
