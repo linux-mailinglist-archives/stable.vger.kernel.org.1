@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9919D78AB47
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CAD178ABCF
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231344AbjH1K3p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58094 "EHLO
+        id S231537AbjH1Kee (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:34:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35974 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231347AbjH1K3X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:23 -0400
+        with ESMTP id S231549AbjH1KeH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:07 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F9C8AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B53C1AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C229163BFD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D645CC433C8;
-        Mon, 28 Aug 2023 10:29:19 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C4D963D24
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30176C433C8;
+        Mon, 28 Aug 2023 10:33:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218560;
-        bh=s3rASLW+Q82ni6FayfndvZGk7xYX5BOL76wIPcwm32s=;
+        s=korg; t=1693218833;
+        bh=KxvcsIN2Q8nGQ1rDystgEo3sbuVZ4r69ffXhLfhwnTY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SWGDjrAk2kLyHFT+sLyxnB/Y0g0x/JrReS8IIZA/DHbbYr0zLx1wnEl/BpcTrAWNw
-         U8LSCb5woH1Qq45DWGOmg3XyJnm5x3cBv9+2eS2nkmriR4myP5rG1ap8TiYWTzFGqO
-         H26Ar9kaEY+W9DymzpElIN8KzIaMtFjVOCQQ1X8M=
+        b=mEIrcfWvJWdRxLkzQ+GaAspaTNOpOLDaFj6w9kEeUE7t6axdpGioBH8oLJhK2QTH9
+         A2fhblUwTqEkPZie3c/34aoRcbBfZEfeaYvOW+U8n15RUpk50bZz7ZsvMljbsceSfM
+         eAZrXVHI+d0NstZ+9MzYOT4N0EpHbCn4jdIBedPg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yibin Ding <yibin.ding@unisoc.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>
-Subject: [PATCH 4.19 121/129] mmc: block: Fix in_flight[issue_type] value error
+        patches@lists.linux.dev, Sherry Yang <sherry.yang@oracle.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+Subject: [PATCH 6.1 100/122] nfsd: use vfs setgid helper
 Date:   Mon, 28 Aug 2023 12:13:35 +0200
-Message-ID: <20230828101157.638612575@linuxfoundation.org>
+Message-ID: <20230828101159.733955856@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,87 +57,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yibin Ding <yibin.ding@unisoc.com>
+From: Christian Brauner <brauner@kernel.org>
 
-commit 4b430d4ac99750ee2ae2f893f1055c7af1ec3dc5 upstream.
+commit 2d8ae8c417db284f598dffb178cc01e7db0f1821 upstream.
 
-For a completed request, after the mmc_blk_mq_complete_rq(mq, req)
-function is executed, the bitmap_tags corresponding to the
-request will be cleared, that is, the request will be regarded as
-idle. If the request is acquired by a different type of process at
-this time, the issue_type of the request may change. It further
-caused the value of mq->in_flight[issue_type] to be abnormal,
-and a large number of requests could not be sent.
+We've aligned setgid behavior over multiple kernel releases. The details
+can be found in commit cf619f891971 ("Merge tag 'fs.ovl.setgid.v6.2' of
+git://git.kernel.org/pub/scm/linux/kernel/git/vfs/idmapping") and
+commit 426b4ca2d6a5 ("Merge tag 'fs.setgid.v6.0' of
+git://git.kernel.org/pub/scm/linux/kernel/git/brauner/linux").
+Consistent setgid stripping behavior is now encapsulated in the
+setattr_should_drop_sgid() helper which is used by all filesystems that
+strip setgid bits outside of vfs proper. Usually ATTR_KILL_SGID is
+raised in e.g., chown_common() and is subject to the
+setattr_should_drop_sgid() check to determine whether the setgid bit can
+be retained. Since nfsd is raising ATTR_KILL_SGID unconditionally it
+will cause notify_change() to strip it even if the caller had the
+necessary privileges to retain it. Ensure that nfsd only raises
+ATR_KILL_SGID if the caller lacks the necessary privileges to retain the
+setgid bit.
 
-p1:					      p2:
-mmc_blk_mq_complete_rq
-  blk_mq_free_request
-					      blk_mq_get_request
-					        blk_mq_rq_ctx_init
-mmc_blk_mq_dec_in_flight
-  mmc_issue_type(mq, req)
+Without this patch the setgid stripping tests in LTP will fail:
 
-This strategy can ensure the consistency of issue_type
-before and after executing mmc_blk_mq_complete_rq.
+> As you can see, the problem is S_ISGID (0002000) was dropped on a
+> non-group-executable file while chown was invoked by super-user, while
 
-Fixes: 81196976ed94 ("mmc: block: Add blk-mq support")
-Cc: stable@vger.kernel.org
-Signed-off-by: Yibin Ding <yibin.ding@unisoc.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Link: https://lore.kernel.org/r/20230802023023.1318134-1-yunlong.xing@unisoc.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Adrian Hunter <adrian.hunter@intel.com>
+[...]
+
+> fchown02.c:66: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
+
+[...]
+
+> chown02.c:57: TFAIL: testfile2: wrong mode permissions 0100700, expected 0102700
+
+With this patch all tests pass.
+
+Reported-by: Sherry Yang <sherry.yang@oracle.com>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+[Harshit: backport to 6.1.y:
+ Use init_user_ns instead of nop_mnt_idmap as we don't have
+ commit abf08576afe3 ("fs: port vfs_*() helpers to struct mnt_idmap")]
+Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/core/block.c |   11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ fs/nfsd/vfs.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/drivers/mmc/core/block.c
-+++ b/drivers/mmc/core/block.c
-@@ -1976,15 +1976,16 @@ static void mmc_blk_mq_poll_completion(s
- 	mmc_blk_urgent_bkops(mq, mqrq);
+--- a/fs/nfsd/vfs.c
++++ b/fs/nfsd/vfs.c
+@@ -321,7 +321,9 @@ nfsd_sanitize_attrs(struct inode *inode,
+ 				iap->ia_mode &= ~S_ISGID;
+ 		} else {
+ 			/* set ATTR_KILL_* bits and let VFS handle it */
+-			iap->ia_valid |= (ATTR_KILL_SUID | ATTR_KILL_SGID);
++			iap->ia_valid |= ATTR_KILL_SUID;
++			iap->ia_valid |=
++				setattr_should_drop_sgid(&init_user_ns, inode);
+ 		}
+ 	}
  }
- 
--static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq, struct request *req)
-+static void mmc_blk_mq_dec_in_flight(struct mmc_queue *mq,
-+				     struct request_queue *q,
-+				     enum mmc_issue_type issue_type)
- {
--	struct request_queue *q = req->q;
- 	unsigned long flags;
- 	bool put_card;
- 
- 	spin_lock_irqsave(q->queue_lock, flags);
- 
--	mq->in_flight[mmc_issue_type(mq, req)] -= 1;
-+	mq->in_flight[issue_type] -= 1;
- 
- 	put_card = (mmc_tot_in_flight(mq) == 0);
- 
-@@ -1996,9 +1997,11 @@ static void mmc_blk_mq_dec_in_flight(str
- 
- static void mmc_blk_mq_post_req(struct mmc_queue *mq, struct request *req)
- {
-+	enum mmc_issue_type issue_type = mmc_issue_type(mq, req);
- 	struct mmc_queue_req *mqrq = req_to_mmc_queue_req(req);
- 	struct mmc_request *mrq = &mqrq->brq.mrq;
- 	struct mmc_host *host = mq->card->host;
-+	struct request_queue *q = req->q;
- 
- 	mmc_post_req(host, mrq, 0);
- 
-@@ -2011,7 +2014,7 @@ static void mmc_blk_mq_post_req(struct m
- 	else
- 		blk_mq_complete_request(req);
- 
--	mmc_blk_mq_dec_in_flight(mq, req);
-+	mmc_blk_mq_dec_in_flight(mq, q, issue_type);
- }
- 
- void mmc_blk_mq_recovery(struct mmc_queue *mq)
 
 
