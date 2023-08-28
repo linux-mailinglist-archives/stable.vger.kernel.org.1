@@ -2,53 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEEF578ABDE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C4C78AB2B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231488AbjH1KfB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:35:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40216 "EHLO
+        id S231282AbjH1K2i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52872 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231524AbjH1Ked (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A484CA7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:27 -0700 (PDT)
+        with ESMTP id S231344AbjH1K2R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:17 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7799C131
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4334661DAA
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536BAC433C8;
-        Mon, 28 Aug 2023 10:34:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DC2C762AF3
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC096C433C7;
+        Mon, 28 Aug 2023 10:28:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218866;
-        bh=LQ9Cn/EXRIYva6cwo53DLGItr8WXMQyXG4/KxgL0byM=;
+        s=korg; t=1693218488;
+        bh=iEEL7hj6WNo8szj0sPV/oYuUi/+AGOUFkAs2Pz8kSYo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wi3FETTke7I4TvE3YZ0EQalHpo1jNtVPkTgHmEZcHFcSg+T0FUJsbmkqvKKOjmvc+
-         GDkPN38Jucl4TPeSwFHftaiDOqmx4DeID1Sm0LNl4vpy7hiP396s7qOx9ME9AI6+nV
-         PdGH6dH63itAdPBAas6YQCahia/VIPXFq0Vd84JE=
+        b=XkZcMmQdcjqxxokRUgLgvjaFYOXHLfYHXrw1GMX/D/ZiitlfFG0l6HZBAMUHWkX3Z
+         Q/npZwuPN0XcFWPKJXWhcxAHNii4KTkFWjGI8ZZ1BGG2Bw/249BE56JfOK4lqsUkWk
+         WhC4YdkkcZk9LBCaNmDMD+sYUTHpjaFSa/AMvrkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        Guo Ren <guoren@kernel.org>,
-        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.1 084/122] riscv: Handle zicsr/zifencei issue between gcc and binutils
+        patches@lists.linux.dev,
+        syzbot+a3618a167af2021433cd@syzkaller.appspotmail.com,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 105/129] net/sched: fix a qdisc modification with ambiguous command request
 Date:   Mon, 28 Aug 2023 12:13:19 +0200
-Message-ID: <20230828101159.206446328@linuxfoundation.org>
+Message-ID: <20230828101157.114098041@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,115 +60,142 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-commit ca09f772cccaeec4cd05a21528c37a260aa2dd2c upstream.
+[ Upstream commit da71714e359b64bd7aab3bd56ec53f307f058133 ]
 
-Binutils-2.38 and GCC-12.1.0 bumped[0][1] the default ISA spec to the newer
-20191213 version which moves some instructions from the I extension to the
-Zicsr and Zifencei extensions. So if one of the binutils and GCC exceeds
-that version, we should explicitly specifying Zicsr and Zifencei via -march
-to cope with the new changes. but this only occurs when binutils >= 2.36
-and GCC >= 11.1.0. It's a different story when binutils < 2.36.
+When replacing an existing root qdisc, with one that is of the same kind, the
+request boils down to essentially a parameterization change  i.e not one that
+requires allocation and grafting of a new qdisc. syzbot was able to create a
+scenario which resulted in a taprio qdisc replacing an existing taprio qdisc
+with a combination of NLM_F_CREATE, NLM_F_REPLACE and NLM_F_EXCL leading to
+create and graft scenario.
+The fix ensures that only when the qdisc kinds are different that we should
+allow a create and graft, otherwise it goes into the "change" codepath.
 
-binutils-2.36 supports the Zifencei extension[2] and splits Zifencei and
-Zicsr from I[3]. GCC-11.1.0 is particular[4] because it add support Zicsr
-and Zifencei extension for -march. binutils-2.35 does not support the
-Zifencei extension, and does not need to specify Zicsr and Zifencei when
-working with GCC >= 12.1.0.
+While at it, fix the code and comments to improve readability.
 
-To make our lives easier, let's relax the check to binutils >= 2.36 in
-CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. For the other two cases,
-where clang < 17 or GCC < 11.1.0, we will deal with them in
-CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+While syzbot was able to create the issue, it did not zone on the root cause.
+Analysis from Vladimir Oltean <vladimir.oltean@nxp.com> helped narrow it down.
 
-For more information, please refer to:
-commit 6df2a016c0c8 ("riscv: fix build with binutils 2.38")
-commit e89c2e815e76 ("riscv: Handle zicsr/zifencei issues between clang and binutils")
+v1->V2 changes:
+- remove "inline" function definition (Vladmir)
+- remove extrenous braces in branches (Vladmir)
+- change inline function names (Pedro)
+- Run tdc tests (Victor)
+v2->v3 changes:
+- dont break else/if (Simon)
 
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc [0]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd [1]
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=5a1b31e1e1cee6e9f1c92abff59cdcfff0dddf30 [2]
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=729a53530e86972d1143553a415db34e6e01d5d2 [3]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49 [4]
-Link: https://lore.kernel.org/all/20230308220842.1231003-1-conor@kernel.org
-Link: https://lore.kernel.org/all/20230223220546.52879-1-conor@kernel.org
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Acked-by: Guo Ren <guoren@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230809165648.21071-1-xingmingzheng@iscas.ac.cn
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+a3618a167af2021433cd@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/20230816225759.g25x76kmgzya2gei@skbuf/T/
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/riscv/Kconfig                     |   28 +++++++++++++++++-----------
- arch/riscv/kernel/compat_vdso/Makefile |    8 +++++++-
- 2 files changed, 24 insertions(+), 12 deletions(-)
+ net/sched/sch_api.c | 53 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -447,24 +447,30 @@ config TOOLCHAIN_HAS_ZIHINTPAUSE
- config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	def_bool y
- 	# https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=aed44286efa8ae8717a77d94b51ac3614e2ca6dc
--	depends on AS_IS_GNU && AS_VERSION >= 23800
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=98416dbb0a62579d4a7a4a76bab51b5b52fec2cd
-+	depends on AS_IS_GNU && AS_VERSION >= 23600
- 	help
--	  Newer binutils versions default to ISA spec version 20191213 which
--	  moves some instructions from the I extension to the Zicsr and Zifencei
--	  extensions.
-+	  Binutils-2.38 and GCC-12.1.0 bumped the default ISA spec to the newer
-+	  20191213 version, which moves some instructions from the I extension to
-+	  the Zicsr and Zifencei extensions. This requires explicitly specifying
-+	  Zicsr and Zifencei when binutils >= 2.38 or GCC >= 12.1.0. Zicsr
-+	  and Zifencei are supported in binutils from version 2.36 onwards.
-+	  To make life easier, and avoid forcing toolchains that default to a
-+	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
-+	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
-+	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index 5a0e71873e24b..8105563593b6f 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1438,10 +1438,28 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 	return 0;
+ }
  
- config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
- 	def_bool y
- 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
--	depends on CC_IS_CLANG && CLANG_VERSION < 170000
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
-+	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
- 	help
--	  Certain versions of clang do not support zicsr and zifencei via -march
--	  but newer versions of binutils require it for the reasons noted in the
--	  help text of CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI. This
--	  option causes an older ISA spec compatible with these older versions
--	  of clang to be passed to GAS, which has the same result as passing zicsr
--	  and zifencei to -march.
-+	  Certain versions of clang and GCC do not support zicsr and zifencei via
-+	  -march. This option causes an older ISA spec compatible with these older
-+	  versions of clang and GCC to be passed to GAS, which has the same result
-+	  as passing zicsr and zifencei to -march.
- 
- config FPU
- 	bool "FPU support"
---- a/arch/riscv/kernel/compat_vdso/Makefile
-+++ b/arch/riscv/kernel/compat_vdso/Makefile
-@@ -11,7 +11,13 @@ compat_vdso-syms += flush_icache
- COMPAT_CC := $(CC)
- COMPAT_LD := $(LD)
- 
--COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-+# binutils 2.35 does not support the zifencei extension, but in the ISA
-+# spec 20191213, G stands for IMAFD_ZICSR_ZIFENCEI.
-+ifdef CONFIG_TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
-+	COMPAT_CC_FLAGS := -march=rv32g -mabi=ilp32
-+else
-+	COMPAT_CC_FLAGS := -march=rv32imafd -mabi=ilp32
-+endif
- COMPAT_LD_FLAGS := -melf32lriscv
- 
- # Disable attributes, as they're useless and break the build.
++static bool req_create_or_replace(struct nlmsghdr *n)
++{
++	return (n->nlmsg_flags & NLM_F_CREATE &&
++		n->nlmsg_flags & NLM_F_REPLACE);
++}
++
++static bool req_create_exclusive(struct nlmsghdr *n)
++{
++	return (n->nlmsg_flags & NLM_F_CREATE &&
++		n->nlmsg_flags & NLM_F_EXCL);
++}
++
++static bool req_change(struct nlmsghdr *n)
++{
++	return (!(n->nlmsg_flags & NLM_F_CREATE) &&
++		!(n->nlmsg_flags & NLM_F_REPLACE) &&
++		!(n->nlmsg_flags & NLM_F_EXCL));
++}
++
+ /*
+  * Create/change qdisc.
+  */
+-
+ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 			   struct netlink_ext_ack *extack)
+ {
+@@ -1538,27 +1556,35 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 				 *
+ 				 *   We know, that some child q is already
+ 				 *   attached to this parent and have choice:
+-				 *   either to change it or to create/graft new one.
++				 *   1) change it or 2) create/graft new one.
++				 *   If the requested qdisc kind is different
++				 *   than the existing one, then we choose graft.
++				 *   If they are the same then this is "change"
++				 *   operation - just let it fallthrough..
+ 				 *
+ 				 *   1. We are allowed to create/graft only
+-				 *   if CREATE and REPLACE flags are set.
++				 *   if the request is explicitly stating
++				 *   "please create if it doesn't exist".
+ 				 *
+-				 *   2. If EXCL is set, requestor wanted to say,
+-				 *   that qdisc tcm_handle is not expected
++				 *   2. If the request is to exclusive create
++				 *   then the qdisc tcm_handle is not expected
+ 				 *   to exist, so that we choose create/graft too.
+ 				 *
+ 				 *   3. The last case is when no flags are set.
++				 *   This will happen when for example tc
++				 *   utility issues a "change" command.
+ 				 *   Alas, it is sort of hole in API, we
+ 				 *   cannot decide what to do unambiguously.
+-				 *   For now we select create/graft, if
+-				 *   user gave KIND, which does not match existing.
++				 *   For now we select create/graft.
+ 				 */
+-				if ((n->nlmsg_flags & NLM_F_CREATE) &&
+-				    (n->nlmsg_flags & NLM_F_REPLACE) &&
+-				    ((n->nlmsg_flags & NLM_F_EXCL) ||
+-				     (tca[TCA_KIND] &&
+-				      nla_strcmp(tca[TCA_KIND], q->ops->id))))
+-					goto create_n_graft;
++				if (tca[TCA_KIND] &&
++				    nla_strcmp(tca[TCA_KIND], q->ops->id)) {
++					if (req_create_or_replace(n) ||
++					    req_create_exclusive(n))
++						goto create_n_graft;
++					else if (req_change(n))
++						goto create_n_graft2;
++				}
+ 			}
+ 		}
+ 	} else {
+@@ -1592,6 +1618,7 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 		NL_SET_ERR_MSG(extack, "Qdisc not found. To create specify NLM_F_CREATE flag");
+ 		return -ENOENT;
+ 	}
++create_n_graft2:
+ 	if (clid == TC_H_INGRESS) {
+ 		if (dev_ingress_queue(dev)) {
+ 			q = qdisc_create(dev, dev_ingress_queue(dev), p,
+-- 
+2.40.1
+
 
 
