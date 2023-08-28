@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E0FB78AB86
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07AB178AC36
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231449AbjH1Kbv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42260 "EHLO
+        id S231695AbjH1Kh6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:37:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34756 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231509AbjH1Kbc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:31:32 -0400
+        with ESMTP id S231706AbjH1Khq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5B57CE7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE54B93
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6ABC6619F7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75E62C433C7;
-        Mon, 28 Aug 2023 10:31:07 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5D5C263F25
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A961C433C9;
+        Mon, 28 Aug 2023 10:37:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218667;
-        bh=8h/nWeH79EWD2Sn/DcNqH8wvxNG5fm5Jdu6QjDaN0Hc=;
+        s=korg; t=1693219062;
+        bh=iiM3621qfL0Ziw4EIFTDs+P2UbWhfrnrsxZl6dtWQkY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dXCXgdqi6DxzNPYGOEt2Num6JF0ZvcXBcfbywEFHvT5gNshQnk0oz8niLprXUcrf/
-         velKbzC+HG7FJfCR69RV549XEWh1zAT3kslob4LPup7ifo/tsdDGR1/2pAj+xfENZD
-         hiBLuGxvEPbxe6DcuoYp9qigICGlZgsLxnmnAsLM=
+        b=l1fPTVVEvc9zMbV0/r4Q5x3G/LruRGZP0aMrRfr0+soJzonHonEWWCni6R1G4k/1E
+         kGONufCOX58QXFfAblCHFyKxYbWVWrminC5dB86km0gpZB1qB7JBacsmD6chUf4AL+
+         kfVve6qrEhuU+hv+1BIHMmFk0jBjIHOM0wALC6Uc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
-        Jakub Kicinski <kuba@kernel.org>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 040/122] net: validate veth and vxcan peer ifindexes
-Date:   Mon, 28 Aug 2023 12:12:35 +0200
-Message-ID: <20230828101157.735520597@linuxfoundation.org>
+        patches@lists.linux.dev, xiaoshoukui <xiaoshoukui@ruijie.com.cn>,
+        David Sterba <dsterba@suse.com>
+Subject: [PATCH 5.4 059/158] btrfs: fix BUG_ON condition in btrfs_cancel_balance
+Date:   Mon, 28 Aug 2023 12:12:36 +0200
+Message-ID: <20230828101159.293664998@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,141 +54,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: xiaoshoukui <xiaoshoukui@gmail.com>
 
-[ Upstream commit f534f6581ec084fe94d6759f7672bd009794b07e ]
+commit 29eefa6d0d07e185f7bfe9576f91e6dba98189c2 upstream.
 
-veth and vxcan need to make sure the ifindexes of the peer
-are not negative, core does not validate this.
+Pausing and canceling balance can race to interrupt balance lead to BUG_ON
+panic in btrfs_cancel_balance. The BUG_ON condition in btrfs_cancel_balance
+does not take this race scenario into account.
 
-Using iproute2 with user-space-level checking removed:
+However, the race condition has no other side effects. We can fix that.
 
-Before:
+Reproducing it with panic trace like this:
 
-  # ./ip link add index 10 type veth peer index -1
-  # ip link show
-  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
-    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
-  2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
-    link/ether 52:54:00:74:b2:03 brd ff:ff:ff:ff:ff:ff
-  10: veth1@veth0: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether 8a:90:ff:57:6d:5d brd ff:ff:ff:ff:ff:ff
-  -1: veth0@veth1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
-    link/ether ae:ed:18:e6:fa:7f brd ff:ff:ff:ff:ff:ff
+  kernel BUG at fs/btrfs/volumes.c:4618!
+  RIP: 0010:btrfs_cancel_balance+0x5cf/0x6a0
+  Call Trace:
+   <TASK>
+   ? do_nanosleep+0x60/0x120
+   ? hrtimer_nanosleep+0xb7/0x1a0
+   ? sched_core_clone_cookie+0x70/0x70
+   btrfs_ioctl_balance_ctl+0x55/0x70
+   btrfs_ioctl+0xa46/0xd20
+   __x64_sys_ioctl+0x7d/0xa0
+   do_syscall_64+0x38/0x80
+   entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Now:
+  Race scenario as follows:
+  > mutex_unlock(&fs_info->balance_mutex);
+  > --------------------
+  > .......issue pause and cancel req in another thread
+  > --------------------
+  > ret = __btrfs_balance(fs_info);
+  >
+  > mutex_lock(&fs_info->balance_mutex);
+  > if (ret == -ECANCELED && atomic_read(&fs_info->balance_pause_req)) {
+  >         btrfs_info(fs_info, "balance: paused");
+  >         btrfs_exclop_balance(fs_info, BTRFS_EXCLOP_BALANCE_PAUSED);
+  > }
 
-  $ ./ip link add index 10 type veth peer index -1
-  Error: ifindex can't be negative.
-
-This problem surfaced in net-next because an explicit WARN()
-was added, the root cause is older.
-
-Fixes: e6f8f1a739b6 ("veth: Allow to create peer link with given ifindex")
-Fixes: a8f820a380a2 ("can: add Virtual CAN Tunnel driver (vxcan)")
-Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+CC: stable@vger.kernel.org # 4.19+
+Signed-off-by: xiaoshoukui <xiaoshoukui@ruijie.com.cn>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/can/vxcan.c |  7 +------
- drivers/net/veth.c      |  5 +----
- include/net/rtnetlink.h |  4 ++--
- net/core/rtnetlink.c    | 22 ++++++++++++++++++----
- 4 files changed, 22 insertions(+), 16 deletions(-)
+ fs/btrfs/volumes.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
-index 26a472d2ea583..6d549dbdb4674 100644
---- a/drivers/net/can/vxcan.c
-+++ b/drivers/net/can/vxcan.c
-@@ -192,12 +192,7 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
+--- a/fs/btrfs/volumes.c
++++ b/fs/btrfs/volumes.c
+@@ -4558,8 +4558,7 @@ int btrfs_cancel_balance(struct btrfs_fs
+ 		}
+ 	}
  
- 		nla_peer = data[VXCAN_INFO_PEER];
- 		ifmp = nla_data(nla_peer);
--		err = rtnl_nla_parse_ifla(peer_tb,
--					  nla_data(nla_peer) +
--					  sizeof(struct ifinfomsg),
--					  nla_len(nla_peer) -
--					  sizeof(struct ifinfomsg),
--					  NULL);
-+		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
- 		if (err < 0)
- 			return err;
- 
-diff --git a/drivers/net/veth.c b/drivers/net/veth.c
-index a71786b3e7ba7..727b9278b9fe5 100644
---- a/drivers/net/veth.c
-+++ b/drivers/net/veth.c
-@@ -1716,10 +1716,7 @@ static int veth_newlink(struct net *src_net, struct net_device *dev,
- 
- 		nla_peer = data[VETH_INFO_PEER];
- 		ifmp = nla_data(nla_peer);
--		err = rtnl_nla_parse_ifla(peer_tb,
--					  nla_data(nla_peer) + sizeof(struct ifinfomsg),
--					  nla_len(nla_peer) - sizeof(struct ifinfomsg),
--					  NULL);
-+		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
- 		if (err < 0)
- 			return err;
- 
-diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
-index bf8bb33578250..9f881b74f32ed 100644
---- a/include/net/rtnetlink.h
-+++ b/include/net/rtnetlink.h
-@@ -189,8 +189,8 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
- int rtnl_delete_link(struct net_device *dev);
- int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm);
- 
--int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
--			struct netlink_ext_ack *exterr);
-+int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
-+			     struct netlink_ext_ack *exterr);
- struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
- 
- #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
-diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 2758b3f7c0214..48e300a144ad6 100644
---- a/net/core/rtnetlink.c
-+++ b/net/core/rtnetlink.c
-@@ -2220,13 +2220,27 @@ static int rtnl_dump_ifinfo(struct sk_buff *skb, struct netlink_callback *cb)
- 	return err;
- }
- 
--int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
--			struct netlink_ext_ack *exterr)
-+int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
-+			     struct netlink_ext_ack *exterr)
- {
--	return nla_parse_deprecated(tb, IFLA_MAX, head, len, ifla_policy,
-+	const struct ifinfomsg *ifmp;
-+	const struct nlattr *attrs;
-+	size_t len;
-+
-+	ifmp = nla_data(nla_peer);
-+	attrs = nla_data(nla_peer) + sizeof(struct ifinfomsg);
-+	len = nla_len(nla_peer) - sizeof(struct ifinfomsg);
-+
-+	if (ifmp->ifi_index < 0) {
-+		NL_SET_ERR_MSG_ATTR(exterr, nla_peer,
-+				    "ifindex can't be negative");
-+		return -EINVAL;
-+	}
-+
-+	return nla_parse_deprecated(tb, IFLA_MAX, attrs, len, ifla_policy,
- 				    exterr);
- }
--EXPORT_SYMBOL(rtnl_nla_parse_ifla);
-+EXPORT_SYMBOL(rtnl_nla_parse_ifinfomsg);
- 
- struct net *rtnl_link_get_net(struct net *src_net, struct nlattr *tb[])
- {
--- 
-2.40.1
-
+-	BUG_ON(fs_info->balance_ctl ||
+-		test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
++	ASSERT(!test_bit(BTRFS_FS_BALANCE_RUNNING, &fs_info->flags));
+ 	atomic_dec(&fs_info->balance_cancel_req);
+ 	mutex_unlock(&fs_info->balance_mutex);
+ 	return 0;
 
 
