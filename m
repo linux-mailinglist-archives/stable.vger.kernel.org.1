@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6416D78ACD7
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 075A378AD31
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231901AbjH1KnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57812 "EHLO
+        id S231986AbjH1Kq2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:46:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231858AbjH1Km6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:58 -0400
+        with ESMTP id S232019AbjH1KqJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:09 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0DAE5119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:35 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87F4DAB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 994CB640B7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9D97C433C8;
-        Mon, 28 Aug 2023 10:42:33 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6955C622EB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A79CC433C7;
+        Mon, 28 Aug 2023 10:45:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219354;
-        bh=0MGRqz3Mpd1X2WLniItMA3hevBprX9uS/QFYSh5Xz14=;
+        s=korg; t=1693219542;
+        bh=MWghyhnyl92tvQoALg4AsuxMi9fq1qcrzsxk0imtp+E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=I7ol5G3QjOHPu6qHxDK9yj0lwvcb5u6o5IkvBzVMIdprnhbvjRO1zayzcjiaaDEWe
-         5lbw2hgHoN0SwyNFit0ucZS/ovg5G0FqSALUH1/6nrYhui2lBJkQc2lTHowU1chnIE
-         ucTOSftZYEVKvNqVzipk/kQzVu9iFCO2wSuM5uzw=
+        b=iwj09xUGplHwL3lfo8SbjUi4bMq3gnqxPi2C+a3v0kWmKui9FJKgkZvkakohfQ5G7
+         dv6d5DzKLuBbEvkYkizPFJIdOV179HLqRK9yVASqkVEpoBMWzdinx1IlKXxwIvnxUJ
+         HC6vf4GGvrfEECubNWSnMXWoUwtuabWTBr+ZPfXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 157/158] pinctrl: renesas: rza2: Add lock around pinctrl_generic{{add,remove}_group,{add,remove}_function}
+        patches@lists.linux.dev, Paul McKenney <paulmck@kernel.org>,
+        Frederic Weisbecker <fweisbec@gmail.com>,
+        Zhouyi Zhou <zhouzhouyi@gmail.com>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Davidlohr Bueso <dave@stgolabs.net>
+Subject: [PATCH 5.15 73/89] torture: Fix hang during kthread shutdown phase
 Date:   Mon, 28 Aug 2023 12:14:14 +0200
-Message-ID: <20230828101203.079887793@linuxfoundation.org>
+Message-ID: <20230828101152.657057854@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,94 +57,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Joel Fernandes (Google) <joel@joelfernandes.org>
 
-[ Upstream commit 8fcc1c40b747069644db6102c1d84c942c9d4d86 ]
+commit d52d3a2bf408ff86f3a79560b5cce80efb340239 upstream.
 
-The pinctrl group and function creation/remove calls expect
-caller to take care of locking. Add lock around these functions.
+During rcutorture shutdown, the rcu_torture_cleanup() function calls
+torture_cleanup_begin(), which sets the fullstop global variable to
+FULLSTOP_RMMOD. This causes the rcutorture threads for readers and
+fakewriters to exit all of their "while" loops and start shutting down.
 
-Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230815131558.33787-4-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+They then call torture_kthread_stopping(), which in turn waits for
+kthread_stop() to be called.  However, rcu_torture_cleanup() has
+not yet called kthread_stop() on those threads, and before it gets a
+chance to do so, multiple instances of torture_kthread_stopping() invoke
+schedule_timeout_interruptible(1) in a tight loop.  Tracing confirms that
+TIMER_SOFTIRQ can then continuously execute timer callbacks.  If that
+TIMER_SOFTIRQ preempts the task executing rcu_torture_cleanup(), that
+task might never invoke kthread_stop().
+
+This commit improves this situation by increasing the timeout passed to
+schedule_timeout_interruptible() from one jiffy to 1/20th of a second.
+This change prevents TIMER_SOFTIRQ from monopolizing its CPU, thus
+allowing rcu_torture_cleanup() to carry out the needed kthread_stop()
+invocations.  Testing has shown 100 runs of TREE07 passing reliably,
+as oppose to the tens-of-percent failure rates seen beforehand.
+
+Cc: Paul McKenney <paulmck@kernel.org>
+Cc: Frederic Weisbecker <fweisbec@gmail.com>
+Cc: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Cc: <stable@vger.kernel.org> # 6.0.x
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Tested-by: Zhouyi Zhou <zhouzhouyi@gmail.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-rza2.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ kernel/torture.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/pinctrl-rza2.c b/drivers/pinctrl/pinctrl-rza2.c
-index eda88cdf870df..8c3174d007507 100644
---- a/drivers/pinctrl/pinctrl-rza2.c
-+++ b/drivers/pinctrl/pinctrl-rza2.c
-@@ -14,6 +14,7 @@
- #include <linux/gpio/driver.h>
- #include <linux/io.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/pinctrl/pinmux.h>
- 
-@@ -46,6 +47,7 @@ struct rza2_pinctrl_priv {
- 	struct pinctrl_dev *pctl;
- 	struct pinctrl_gpio_range gpio_range;
- 	int npins;
-+	struct mutex mutex; /* serialize adding groups and functions */
- };
- 
- #define RZA2_PDR(port)		(0x0000 + (port) * 2)	/* Direction 16-bit */
-@@ -359,10 +361,14 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- 		psel_val[i] = MUX_FUNC(value);
+--- a/kernel/torture.c
++++ b/kernel/torture.c
+@@ -915,7 +915,7 @@ void torture_kthread_stopping(char *titl
+ 	VERBOSE_TOROUT_STRING(buf);
+ 	while (!kthread_should_stop()) {
+ 		torture_shutdown_absorb(title);
+-		schedule_timeout_uninterruptible(1);
++		schedule_timeout_uninterruptible(HZ / 20);
  	}
- 
-+	mutex_lock(&priv->mutex);
-+
- 	/* Register a single pin group listing all the pins we read from DT */
- 	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, npins, NULL);
--	if (gsel < 0)
--		return gsel;
-+	if (gsel < 0) {
-+		ret = gsel;
-+		goto unlock;
-+	}
- 
- 	/*
- 	 * Register a single group function where the 'data' is an array PSEL
-@@ -391,6 +397,8 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	(*map)->data.mux.function = np->name;
- 	*num_maps = 1;
- 
-+	mutex_unlock(&priv->mutex);
-+
- 	return 0;
- 
- remove_function:
-@@ -399,6 +407,9 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- remove_group:
- 	pinctrl_generic_remove_group(pctldev, gsel);
- 
-+unlock:
-+	mutex_unlock(&priv->mutex);
-+
- 	dev_err(priv->dev, "Unable to parse DT node %s\n", np->name);
- 
- 	return ret;
-@@ -476,6 +487,8 @@ static int rza2_pinctrl_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
- 
-+	mutex_init(&priv->mutex);
-+
- 	platform_set_drvdata(pdev, priv);
- 
- 	priv->npins = (int)(uintptr_t)of_device_get_match_data(&pdev->dev) *
--- 
-2.40.1
-
+ }
+ EXPORT_SYMBOL_GPL(torture_kthread_stopping);
 
 
