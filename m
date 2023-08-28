@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1F4578ABA6
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AA4A78AC5A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:39:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231455AbjH1Kd2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:33:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40270 "EHLO
+        id S231628AbjH1KjZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:39:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231491AbjH1Kc5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:57 -0400
+        with ESMTP id S231629AbjH1Ki6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:38:58 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79196CD2
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:32 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09E0993
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:38:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A0B5863D1E
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C9FC433C8;
-        Mon, 28 Aug 2023 10:32:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 93D1263FC1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:38:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A5509C433C7;
+        Mon, 28 Aug 2023 10:38:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218742;
-        bh=4nCGffygssluaBL8gm132E6gaRbQe3rlb4nqOD8XHh4=;
+        s=korg; t=1693219135;
+        bh=qeYu0QQcTa/82Llb4GhKndpK77AVaL9pqh5DtAjE5NY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R/3tvvxeXB9w9AjTluEOv3AKF+MmnITBT3OlIxFY8VDFWYwfW1Bd1uIaqknaPt6uf
-         ETdZjEpDrwpa6/9jyTZP0lD+l8MxoLAqYlgKqaP6VjYnCZ0JRK5wa1C4vIbfZaXe+L
-         40KUia+NMUoaryHDMJArFtui4UFKnojeGvWEVhMQ=
+        b=q5IA7IbihQlaVR447Wfox24ie7EfTMwu4/NVKJmjlaXwomR9MEBDegT2baEKHOOWU
+         F4lr4+xlguKxWTEX+G9EITciNy7YXtdaJxjlhSUDDYwQeg85wc1OFgsTbFEby4eB8X
+         rWKkfbXZqqIZaeXil/nqgWA52MN7JSiQUq2OvT5Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 6.1 067/122] clk: Fix slab-out-of-bounds error in devm_clk_release()
+        patches@lists.linux.dev, Russell Harmon <russ@har.mn>,
+        "Paulo Alcantara (SUSE)" <pc@manguebit.com>,
+        David Howells <dhowells@redhat.com>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.4 085/158] cifs: Release folio lock on fscache read hit.
 Date:   Mon, 28 Aug 2023 12:13:02 +0200
-Message-ID: <20230828101158.667243054@linuxfoundation.org>
+Message-ID: <20230828101200.157922485@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,150 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+From: Russell Harmon via samba-technical <samba-technical@lists.samba.org>
 
-commit 66fbfb35da47f391bdadf9fa7ceb88af4faa9022 upstream.
+commit 69513dd669e243928f7450893190915a88f84a2b upstream.
 
-Problem can be reproduced by unloading snd_soc_simple_card, because in
-devm_get_clk_from_child() devres data is allocated as `struct clk`, but
-devm_clk_release() expects devres data to be `struct devm_clk_state`.
+Under the current code, when cifs_readpage_worker is called, the call
+contract is that the callee should unlock the page. This is documented
+in the read_folio section of Documentation/filesystems/vfs.rst as:
 
-KASAN report:
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in devm_clk_release+0x20/0x54
- Read of size 8 at addr ffffff800ee09688 by task (udev-worker)/287
+> The filesystem should unlock the folio once the read has completed,
+> whether it was successful or not.
 
- Call trace:
-  dump_backtrace+0xe8/0x11c
-  show_stack+0x1c/0x30
-  dump_stack_lvl+0x60/0x78
-  print_report+0x150/0x450
-  kasan_report+0xa8/0xf0
-  __asan_load8+0x78/0xa0
-  devm_clk_release+0x20/0x54
-  release_nodes+0x84/0x120
-  devres_release_all+0x144/0x210
-  device_unbind_cleanup+0x1c/0xac
-  really_probe+0x2f0/0x5b0
-  __driver_probe_device+0xc0/0x1f0
-  driver_probe_device+0x68/0x120
-  __driver_attach+0x140/0x294
-  bus_for_each_dev+0xec/0x160
-  driver_attach+0x38/0x44
-  bus_add_driver+0x24c/0x300
-  driver_register+0xf0/0x210
-  __platform_driver_register+0x48/0x54
-  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
-  do_one_initcall+0xac/0x340
-  do_init_module+0xd0/0x300
-  load_module+0x2ba4/0x3100
-  __do_sys_init_module+0x2c8/0x300
-  __arm64_sys_init_module+0x48/0x5c
-  invoke_syscall+0x64/0x190
-  el0_svc_common.constprop.0+0x124/0x154
-  do_el0_svc+0x44/0xdc
-  el0_svc+0x14/0x50
-  el0t_64_sync_handler+0xec/0x11c
-  el0t_64_sync+0x14c/0x150
+Without this change, when fscache is in use and cache hit occurs during
+a read, the page lock is leaked, producing the following stack on
+subsequent reads (via mmap) to the page:
 
- Allocated by task 287:
-  kasan_save_stack+0x38/0x60
-  kasan_set_track+0x28/0x40
-  kasan_save_alloc_info+0x20/0x30
-  __kasan_kmalloc+0xac/0xb0
-  __kmalloc_node_track_caller+0x6c/0x1c4
-  __devres_alloc_node+0x44/0xb4
-  devm_get_clk_from_child+0x44/0xa0
-  asoc_simple_parse_clk+0x1b8/0x1dc [snd_soc_simple_card_utils]
-  simple_parse_node.isra.0+0x1ec/0x230 [snd_soc_simple_card]
-  simple_dai_link_of+0x1bc/0x334 [snd_soc_simple_card]
-  __simple_for_each_link+0x2ec/0x320 [snd_soc_simple_card]
-  asoc_simple_probe+0x468/0x4dc [snd_soc_simple_card]
-  platform_probe+0x90/0xf0
-  really_probe+0x118/0x5b0
-  __driver_probe_device+0xc0/0x1f0
-  driver_probe_device+0x68/0x120
-  __driver_attach+0x140/0x294
-  bus_for_each_dev+0xec/0x160
-  driver_attach+0x38/0x44
-  bus_add_driver+0x24c/0x300
-  driver_register+0xf0/0x210
-  __platform_driver_register+0x48/0x54
-  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
-  do_one_initcall+0xac/0x340
-  do_init_module+0xd0/0x300
-  load_module+0x2ba4/0x3100
-  __do_sys_init_module+0x2c8/0x300
-  __arm64_sys_init_module+0x48/0x5c
-  invoke_syscall+0x64/0x190
-  el0_svc_common.constprop.0+0x124/0x154
-  do_el0_svc+0x44/0xdc
-  el0_svc+0x14/0x50
-  el0t_64_sync_handler+0xec/0x11c
-  el0t_64_sync+0x14c/0x150
+$ cat /proc/3890/task/12864/stack
+[<0>] folio_wait_bit_common+0x124/0x350
+[<0>] filemap_read_folio+0xad/0xf0
+[<0>] filemap_fault+0x8b1/0xab0
+[<0>] __do_fault+0x39/0x150
+[<0>] do_fault+0x25c/0x3e0
+[<0>] __handle_mm_fault+0x6ca/0xc70
+[<0>] handle_mm_fault+0xe9/0x350
+[<0>] do_user_addr_fault+0x225/0x6c0
+[<0>] exc_page_fault+0x84/0x1b0
+[<0>] asm_exc_page_fault+0x27/0x30
 
- The buggy address belongs to the object at ffffff800ee09600
-  which belongs to the cache kmalloc-256 of size 256
- The buggy address is located 136 bytes inside of
-  256-byte region [ffffff800ee09600, ffffff800ee09700)
+This requires a reboot to resolve; it is a deadlock.
 
- The buggy address belongs to the physical page:
- page:000000002d97303b refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ee08
- head:000000002d97303b order:1 compound_mapcount:0 compound_pincount:0
- flags: 0x10200(slab|head|zone=0)
- raw: 0000000000010200 0000000000000000 dead000000000122 ffffff8002c02480
- raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
- page dumped because: kasan: bad access detected
+Note however that the call to cifs_readpage_from_fscache does mark the
+page clean, but does not free the folio lock. This happens in
+__cifs_readpage_from_fscache on success. Releasing the lock at that
+point however is not appropriate as cifs_readahead also calls
+cifs_readpage_from_fscache and *does* unconditionally release the lock
+after its return. This change therefore effectively makes
+cifs_readpage_worker work like cifs_readahead.
 
- Memory state around the buggy address:
-  ffffff800ee09580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffffff800ee09600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ffffff800ee09680: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                       ^
-  ffffff800ee09700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffffff800ee09780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ==================================================================
-
-Fixes: abae8e57e49a ("clk: generalize devm_clk_get() a bit")
-Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Link: https://lore.kernel.org/r/20230805084847.3110586-1-andrej.skvortzov@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Russell Harmon <russ@har.mn>
+Acked-by: Paulo Alcantara (SUSE) <pc@manguebit.com>
+Reviewed-by: David Howells <dhowells@redhat.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-devres.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ fs/cifs/file.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/clk/clk-devres.c
-+++ b/drivers/clk/clk-devres.c
-@@ -205,18 +205,19 @@ EXPORT_SYMBOL(devm_clk_put);
- struct clk *devm_get_clk_from_child(struct device *dev,
- 				    struct device_node *np, const char *con_id)
- {
--	struct clk **ptr, *clk;
-+	struct devm_clk_state *state;
-+	struct clk *clk;
+--- a/fs/cifs/file.c
++++ b/fs/cifs/file.c
+@@ -4510,9 +4510,9 @@ static int cifs_readpage_worker(struct f
  
--	ptr = devres_alloc(devm_clk_release, sizeof(*ptr), GFP_KERNEL);
--	if (!ptr)
-+	state = devres_alloc(devm_clk_release, sizeof(*state), GFP_KERNEL);
-+	if (!state)
- 		return ERR_PTR(-ENOMEM);
+ io_error:
+ 	kunmap(page);
+-	unlock_page(page);
  
- 	clk = of_clk_get_by_name(np, con_id);
- 	if (!IS_ERR(clk)) {
--		*ptr = clk;
--		devres_add(dev, ptr);
-+		state->clk = clk;
-+		devres_add(dev, state);
- 	} else {
--		devres_free(ptr);
-+		devres_free(state);
- 	}
+ read_complete:
++	unlock_page(page);
+ 	return rc;
+ }
  
- 	return clk;
 
 
