@@ -2,55 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B59578AB39
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C18E178AC58
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231314AbjH1K3P (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54912 "EHLO
+        id S231649AbjH1Kj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37668 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231328AbjH1K2x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E739B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:50 -0700 (PDT)
+        with ESMTP id S231701AbjH1KjH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84736AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3D14163BFF
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49721C433C7;
-        Mon, 28 Aug 2023 10:28:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1620763FC5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F00F2C433C9;
+        Mon, 28 Aug 2023 10:39:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218529;
-        bh=FRfCfCc8urFFR44PVq4E3n3EdMbzR1W4uJKuwnZh0oE=;
+        s=korg; t=1693219143;
+        bh=QRFbm7lP9Vlc7ZwlBZ/4Tumz3dJHpFVMpHc3cODn6Ic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YiQtyTiXcw1BokoEXCsNhHg40ug1wfhay68NUsACxlWUZnY4h0RjK3B3t0SAumibD
-         HXRjT14bb1McASRVM8JqrjYiVEqyM+T/LQUGJ0Q9lB+8GWhRJNUVMZcrwavh/RO9j6
-         afO5jv4Ql+l+C18dATWy9iovhalvaz4If3ej3XUM=
+        b=mMiSFfZwMC3PCcxB8jhOm+BleDWUdq6YSFchC45pt4IfvLCHZbn6n/kCp90yVWrBn
+         ESdvHkK8WuB85DzC54MUcxUv8/yPV2fPs0OJZZXo0/PdgCwswt5L8GQKLCepWI1eFQ
+         dyrSNCxi2Bgryqy6ZG93DlY8dTvw1F92CQr22Kmw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 091/129] fbdev: Fix sys_imageblit() for arbitrary image widths
+        patches@lists.linux.dev, Paolo Valerio <pvalerio@redhat.com>,
+        Xin Long <lucien.xin@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        Florian Westphal <fw@strlen.de>
+Subject: [PATCH 5.4 088/158] netfilter: set default timeout to 3 secs for sctp shutdown send and recv state
 Date:   Mon, 28 Aug 2023 12:13:05 +0200
-Message-ID: <20230828101156.694037000@linuxfoundation.org>
+Message-ID: <20230828101200.265799057@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,107 +56,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Xin Long <lucien.xin@gmail.com>
 
-[ Upstream commit 61bfcb6a3b981e8f19e044ac8c3de6edbe6caf70 ]
+commit 9bfab6d23a2865966a4f89a96536fbf23f83bc8c upstream.
 
-Commit 6f29e04938bf ("fbdev: Improve performance of sys_imageblit()")
-broke sys_imageblit() for image width that are not aligned to 8-bit
-boundaries. Fix this by handling the trailing pixels on each line
-separately. The performance improvements in the original commit do not
-regress by this change.
+In SCTP protocol, it is using the same timer (T2 timer) for SHUTDOWN and
+SHUTDOWN_ACK retransmission. However in sctp conntrack the default timeout
+value for SCTP_CONNTRACK_SHUTDOWN_ACK_SENT state is 3 secs while it's 300
+msecs for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV state.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 6f29e04938bf ("fbdev: Improve performance of sys_imageblit()")
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220313192952.12058-2-tzimmermann@suse.de
-Stable-dep-of: c2d22806aecb ("fbdev: fix potential OOB read in fast_imageblit()")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+As Paolo Valerio noticed, this might cause unwanted expiration of the ct
+entry. In my test, with 1s tc netem delay set on the NAT path, after the
+SHUTDOWN is sent, the sctp ct entry enters SCTP_CONNTRACK_SHUTDOWN_SEND
+state. However, due to 300ms (too short) delay, when the SHUTDOWN_ACK is
+sent back from the peer, the sctp ct entry has expired and been deleted,
+and then the SHUTDOWN_ACK has to be dropped.
+
+Also, it is confusing these two sysctl options always show 0 due to all
+timeout values using sec as unit:
+
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_recd = 0
+  net.netfilter.nf_conntrack_sctp_timeout_shutdown_sent = 0
+
+This patch fixes it by also using 3 secs for sctp shutdown send and recv
+state in sctp conntrack, which is also RTO.initial value in SCTP protocol.
+
+Note that the very short time value for SCTP_CONNTRACK_SHUTDOWN_SEND/RECV
+was probably used for a rare scenario where SHUTDOWN is sent on 1st path
+but SHUTDOWN_ACK is replied on 2nd path, then a new connection started
+immediately on 1st path. So this patch also moves from SHUTDOWN_SEND/RECV
+to CLOSE when receiving INIT in the ORIGINAL direction.
+
+Fixes: 9fb9cbb1082d ("[NETFILTER]: Add nf_conntrack subsystem.")
+Reported-by: Paolo Valerio <pvalerio@redhat.com>
+Signed-off-by: Xin Long <lucien.xin@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/sysimgblt.c | 29 ++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ net/netfilter/nf_conntrack_proto_sctp.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
-index 722c327a381bd..335e92b813fc4 100644
---- a/drivers/video/fbdev/core/sysimgblt.c
-+++ b/drivers/video/fbdev/core/sysimgblt.c
-@@ -188,7 +188,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- {
- 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
- 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
--	u32 bit_mask, eorx;
-+	u32 bit_mask, eorx, shift;
- 	const char *s = image->data, *src;
- 	u32 *dst;
- 	const u32 *tab;
-@@ -229,17 +229,23 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 
- 	for (i = image->height; i--; ) {
- 		dst = dst1;
-+		shift = 8;
- 		src = s;
- 
-+		/*
-+		 * Manually unroll the per-line copying loop for better
-+		 * performance. This works until we processed the last
-+		 * completely filled source byte (inclusive).
-+		 */
- 		switch (ppw) {
- 		case 4: /* 8 bpp */
--			for (j = k; j; j -= 2, ++src) {
-+			for (j = k; j >= 2; j -= 2, ++src) {
- 				*dst++ = colortab[(*src >> 4) & bit_mask];
- 				*dst++ = colortab[(*src >> 0) & bit_mask];
- 			}
- 			break;
- 		case 2: /* 16 bpp */
--			for (j = k; j; j -= 4, ++src) {
-+			for (j = k; j >= 4; j -= 4, ++src) {
- 				*dst++ = colortab[(*src >> 6) & bit_mask];
- 				*dst++ = colortab[(*src >> 4) & bit_mask];
- 				*dst++ = colortab[(*src >> 2) & bit_mask];
-@@ -247,7 +253,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 			}
- 			break;
- 		case 1: /* 32 bpp */
--			for (j = k; j; j -= 8, ++src) {
-+			for (j = k; j >= 8; j -= 8, ++src) {
- 				*dst++ = colortab[(*src >> 7) & bit_mask];
- 				*dst++ = colortab[(*src >> 6) & bit_mask];
- 				*dst++ = colortab[(*src >> 5) & bit_mask];
-@@ -259,6 +265,21 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 			}
- 			break;
- 		}
-+
-+		/*
-+		 * For image widths that are not a multiple of 8, there
-+		 * are trailing pixels left on the current line. Print
-+		 * them as well.
-+		 */
-+		for (; j--; ) {
-+			shift -= ppw;
-+			*dst++ = colortab[(*src >> shift) & bit_mask];
-+			if (!shift) {
-+				shift = 8;
-+				++src;
-+			}
-+		}
-+
- 		dst1 += p->fix.line_length;
- 		s += spitch;
- 	}
--- 
-2.40.1
-
+--- a/net/netfilter/nf_conntrack_proto_sctp.c
++++ b/net/netfilter/nf_conntrack_proto_sctp.c
+@@ -49,8 +49,8 @@ static const unsigned int sctp_timeouts[
+ 	[SCTP_CONNTRACK_COOKIE_WAIT]		= 3 SECS,
+ 	[SCTP_CONNTRACK_COOKIE_ECHOED]		= 3 SECS,
+ 	[SCTP_CONNTRACK_ESTABLISHED]		= 210 SECS,
+-	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 300 SECS / 1000,
+-	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 300 SECS / 1000,
++	[SCTP_CONNTRACK_SHUTDOWN_SENT]		= 3 SECS,
++	[SCTP_CONNTRACK_SHUTDOWN_RECD]		= 3 SECS,
+ 	[SCTP_CONNTRACK_SHUTDOWN_ACK_SENT]	= 3 SECS,
+ 	[SCTP_CONNTRACK_HEARTBEAT_SENT]		= 30 SECS,
+ };
+@@ -105,7 +105,7 @@ static const u8 sctp_conntracks[2][11][S
+ 	{
+ /*	ORIGINAL	*/
+ /*                  sNO, sCL, sCW, sCE, sES, sSS, sSR, sSA, sHS */
+-/* init         */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCW},
++/* init         */ {sCL, sCL, sCW, sCE, sES, sCL, sCL, sSA, sCW},
+ /* init_ack     */ {sCL, sCL, sCW, sCE, sES, sSS, sSR, sSA, sCL},
+ /* abort        */ {sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL, sCL},
+ /* shutdown     */ {sCL, sCL, sCW, sCE, sSS, sSS, sSR, sSA, sCL},
 
 
