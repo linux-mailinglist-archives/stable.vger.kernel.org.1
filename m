@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25BB578AA04
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E9F578ACED
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230470AbjH1KSF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:18:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38740 "EHLO
+        id S230119AbjH1KoL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230505AbjH1KRm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D0AE118
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:34 -0700 (PDT)
+        with ESMTP id S231774AbjH1Knl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:41 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 044BD1B4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:43:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 984A16374A
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B3CC433C8;
-        Mon, 28 Aug 2023 10:17:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CB6896418F
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AE48BC433C7;
+        Mon, 28 Aug 2023 10:43:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217853;
-        bh=ERDH9VJby5iqFTAfHFSXpzrVVwSCW9uG70a9WHkgkTc=;
+        s=korg; t=1693219396;
+        bh=vq7s2hWfKAysWjX89PHSE2KP/diPB4n/4mswQt0znCg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mwukb2T297bPY4sOtocNJk/y8Eq4aCs9rgWHXRiCNuqqgtAG0X+htJ/3hBWRr4vrZ
-         Z22bEjov9VddwCnmS61cYRmD6gShSR/we0CKnIM8IBC/GYlcCMZvcm4t0Gfzodh+L+
-         GCmk+7fdX/w9ClF7oLWWNc3wqjH2pNxCKWsCiZaY=
+        b=nn+JV/BPryis9Xn3LU0Mx4y96bPr6i62zybJFddkw9LMo0AataTTw2P0fvUDfHsB8
+         CBDgjycMRHeQ8UOkis+o6jI2ZyHMxYZEMylOTKEpOxFGcCjwlI+wxBu61xq7eF8BLV
+         5l5PvPI7rbSa5AblNOG1z5ynbT01Y5YQBpvNjm8A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4.14 48/57] batman-adv: Do not get eth header before batadv_check_management_packet
+        patches@lists.linux.dev, Jakob Koschel <jakobkoschel@gmail.com>,
+        Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 07/89] dlm: replace usage of found with dedicated list iterator variable
 Date:   Mon, 28 Aug 2023 12:13:08 +0200
-Message-ID: <20230828101146.025063154@linuxfoundation.org>
+Message-ID: <20230828101150.419692786@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,126 +56,304 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Jakob Koschel <jakobkoschel@gmail.com>
 
-commit eac27a41ab641de074655d2932fc7f8cdb446881 upstream.
+[ Upstream commit dc1acd5c94699389a9ed023e94dd860c846ea1f6 ]
 
-If received skb in batadv_v_elp_packet_recv or batadv_v_ogm_packet_recv
-is either cloned or non linearized then its data buffer will be
-reallocated by batadv_check_management_packet when skb_cow or
-skb_linearize get called. Thus geting ethernet header address inside
-skb data buffer before batadv_check_management_packet had any chance to
-reallocate it could lead to the following kernel panic:
+To move the list iterator variable into the list_for_each_entry_*()
+macro in the future it should be avoided to use the list iterator
+variable after the loop body.
 
-  Unable to handle kernel paging request at virtual address ffffff8020ab069a
-  Mem abort info:
-    ESR = 0x96000007
-    EC = 0x25: DABT (current EL), IL = 32 bits
-    SET = 0, FnV = 0
-    EA = 0, S1PTW = 0
-    FSC = 0x07: level 3 translation fault
-  Data abort info:
-    ISV = 0, ISS = 0x00000007
-    CM = 0, WnR = 0
-  swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000040f45000
-  [ffffff8020ab069a] pgd=180000007fffa003, p4d=180000007fffa003, pud=180000007fffa003, pmd=180000007fefe003, pte=0068000020ab0706
-  Internal error: Oops: 96000007 [#1] SMP
-  Modules linked in: ahci_mvebu libahci_platform libahci dvb_usb_af9035 dvb_usb_dib0700 dib0070 dib7000m dibx000_common ath11k_pci ath10k_pci ath10k_core mwl8k_new nf_nat_sip nf_conntrack_sip xhci_plat_hcd xhci_hcd nf_nat_pptp nf_conntrack_pptp at24 sbsa_gwdt
-  CPU: 1 PID: 16 Comm: ksoftirqd/1 Not tainted 5.15.42-00066-g3242268d425c-dirty #550
-  Hardware name: A8k (DT)
-  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : batadv_is_my_mac+0x60/0xc0
-  lr : batadv_v_ogm_packet_recv+0x98/0x5d0
-  sp : ffffff8000183820
-  x29: ffffff8000183820 x28: 0000000000000001 x27: ffffff8014f9af00
-  x26: 0000000000000000 x25: 0000000000000543 x24: 0000000000000003
-  x23: ffffff8020ab0580 x22: 0000000000000110 x21: ffffff80168ae880
-  x20: 0000000000000000 x19: ffffff800b561000 x18: 0000000000000000
-  x17: 0000000000000000 x16: 0000000000000000 x15: 00dc098924ae0032
-  x14: 0f0405433e0054b0 x13: ffffffff00000080 x12: 0000004000000001
-  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-  x8 : 0000000000000000 x7 : ffffffc076dae000 x6 : ffffff8000183700
-  x5 : ffffffc00955e698 x4 : ffffff80168ae000 x3 : ffffff80059cf000
-  x2 : ffffff800b561000 x1 : ffffff8020ab0696 x0 : ffffff80168ae880
-  Call trace:
-   batadv_is_my_mac+0x60/0xc0
-   batadv_v_ogm_packet_recv+0x98/0x5d0
-   batadv_batman_skb_recv+0x1b8/0x244
-   __netif_receive_skb_core.isra.0+0x440/0xc74
-   __netif_receive_skb_one_core+0x14/0x20
-   netif_receive_skb+0x68/0x140
-   br_pass_frame_up+0x70/0x80
-   br_handle_frame_finish+0x108/0x284
-   br_handle_frame+0x190/0x250
-   __netif_receive_skb_core.isra.0+0x240/0xc74
-   __netif_receive_skb_list_core+0x6c/0x90
-   netif_receive_skb_list_internal+0x1f4/0x310
-   napi_complete_done+0x64/0x1d0
-   gro_cell_poll+0x7c/0xa0
-   __napi_poll+0x34/0x174
-   net_rx_action+0xf8/0x2a0
-   _stext+0x12c/0x2ac
-   run_ksoftirqd+0x4c/0x7c
-   smpboot_thread_fn+0x120/0x210
-   kthread+0x140/0x150
-   ret_from_fork+0x10/0x20
-  Code: f9403844 eb03009f 54fffee1 f94
+To *never* use the list iterator variable after the loop it was
+concluded to use a separate iterator variable instead of a
+found boolean [1].
 
-Thus ethernet header address should only be fetched after
-batadv_check_management_packet has been called.
+This removes the need to use a found variable and simply checking if
+the variable was set, can determine if the break/goto was hit.
 
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Link: https://lore.kernel.org/all/CAHk-=wgRr_D8CB-D9Kg-c=EHreAsk5SqXPwr9Y7k9sA6cWXJ6w@mail.gmail.com/ [1]
+Signed-off-by: Jakob Koschel <jakobkoschel@gmail.com>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Stable-dep-of: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_v_elp.c |    3 ++-
- net/batman-adv/bat_v_ogm.c |    3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ fs/dlm/lock.c    | 53 +++++++++++++++++++++++-------------------------
+ fs/dlm/plock.c   | 24 +++++++++++-----------
+ fs/dlm/recover.c | 39 +++++++++++++++++------------------
+ 3 files changed, 56 insertions(+), 60 deletions(-)
 
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -507,7 +507,7 @@ int batadv_v_elp_packet_recv(struct sk_b
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
- 	struct batadv_elp_packet *elp_packet;
- 	struct batadv_hard_iface *primary_if;
--	struct ethhdr *ethhdr = (struct ethhdr *)skb_mac_header(skb);
-+	struct ethhdr *ethhdr;
- 	bool res;
- 	int ret = NET_RX_DROP;
- 
-@@ -515,6 +515,7 @@ int batadv_v_elp_packet_recv(struct sk_b
- 	if (!res)
- 		goto free_skb;
- 
-+	ethhdr = eth_hdr(skb);
- 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
- 		goto free_skb;
- 
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -831,7 +831,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
+diff --git a/fs/dlm/lock.c b/fs/dlm/lock.c
+index 862cb7a353c1c..b9829b873bf2e 100644
+--- a/fs/dlm/lock.c
++++ b/fs/dlm/lock.c
+@@ -1856,7 +1856,7 @@ static void del_timeout(struct dlm_lkb *lkb)
+ void dlm_scan_timeout(struct dlm_ls *ls)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
- 	struct batadv_ogm2_packet *ogm_packet;
--	struct ethhdr *ethhdr = eth_hdr(skb);
-+	struct ethhdr *ethhdr;
- 	int ogm_offset;
- 	u8 *packet_pos;
- 	int ret = NET_RX_DROP;
-@@ -845,6 +845,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
- 	if (!batadv_check_management_packet(skb, if_incoming, BATADV_OGM2_HLEN))
- 		goto free_skb;
+ 	struct dlm_rsb *r;
+-	struct dlm_lkb *lkb;
++	struct dlm_lkb *lkb = NULL, *iter;
+ 	int do_cancel, do_warn;
+ 	s64 wait_us;
  
-+	ethhdr = eth_hdr(skb);
- 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
- 		goto free_skb;
+@@ -1867,27 +1867,28 @@ void dlm_scan_timeout(struct dlm_ls *ls)
+ 		do_cancel = 0;
+ 		do_warn = 0;
+ 		mutex_lock(&ls->ls_timeout_mutex);
+-		list_for_each_entry(lkb, &ls->ls_timeout, lkb_time_list) {
++		list_for_each_entry(iter, &ls->ls_timeout, lkb_time_list) {
  
+ 			wait_us = ktime_to_us(ktime_sub(ktime_get(),
+-					      		lkb->lkb_timestamp));
++							iter->lkb_timestamp));
+ 
+-			if ((lkb->lkb_exflags & DLM_LKF_TIMEOUT) &&
+-			    wait_us >= (lkb->lkb_timeout_cs * 10000))
++			if ((iter->lkb_exflags & DLM_LKF_TIMEOUT) &&
++			    wait_us >= (iter->lkb_timeout_cs * 10000))
+ 				do_cancel = 1;
+ 
+-			if ((lkb->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
++			if ((iter->lkb_flags & DLM_IFL_WATCH_TIMEWARN) &&
+ 			    wait_us >= dlm_config.ci_timewarn_cs * 10000)
+ 				do_warn = 1;
+ 
+ 			if (!do_cancel && !do_warn)
+ 				continue;
+-			hold_lkb(lkb);
++			hold_lkb(iter);
++			lkb = iter;
+ 			break;
+ 		}
+ 		mutex_unlock(&ls->ls_timeout_mutex);
+ 
+-		if (!do_cancel && !do_warn)
++		if (!lkb)
+ 			break;
+ 
+ 		r = lkb->lkb_resource;
+@@ -5239,21 +5240,18 @@ void dlm_recover_waiters_pre(struct dlm_ls *ls)
+ 
+ static struct dlm_lkb *find_resend_waiter(struct dlm_ls *ls)
+ {
+-	struct dlm_lkb *lkb;
+-	int found = 0;
++	struct dlm_lkb *lkb = NULL, *iter;
+ 
+ 	mutex_lock(&ls->ls_waiters_mutex);
+-	list_for_each_entry(lkb, &ls->ls_waiters, lkb_wait_reply) {
+-		if (lkb->lkb_flags & DLM_IFL_RESEND) {
+-			hold_lkb(lkb);
+-			found = 1;
++	list_for_each_entry(iter, &ls->ls_waiters, lkb_wait_reply) {
++		if (iter->lkb_flags & DLM_IFL_RESEND) {
++			hold_lkb(iter);
++			lkb = iter;
+ 			break;
+ 		}
+ 	}
+ 	mutex_unlock(&ls->ls_waiters_mutex);
+ 
+-	if (!found)
+-		lkb = NULL;
+ 	return lkb;
+ }
+ 
+@@ -5912,37 +5910,36 @@ int dlm_user_adopt_orphan(struct dlm_ls *ls, struct dlm_user_args *ua_tmp,
+ 		     int mode, uint32_t flags, void *name, unsigned int namelen,
+ 		     unsigned long timeout_cs, uint32_t *lkid)
+ {
+-	struct dlm_lkb *lkb;
++	struct dlm_lkb *lkb = NULL, *iter;
+ 	struct dlm_user_args *ua;
+ 	int found_other_mode = 0;
+-	int found = 0;
+ 	int rv = 0;
+ 
+ 	mutex_lock(&ls->ls_orphans_mutex);
+-	list_for_each_entry(lkb, &ls->ls_orphans, lkb_ownqueue) {
+-		if (lkb->lkb_resource->res_length != namelen)
++	list_for_each_entry(iter, &ls->ls_orphans, lkb_ownqueue) {
++		if (iter->lkb_resource->res_length != namelen)
+ 			continue;
+-		if (memcmp(lkb->lkb_resource->res_name, name, namelen))
++		if (memcmp(iter->lkb_resource->res_name, name, namelen))
+ 			continue;
+-		if (lkb->lkb_grmode != mode) {
++		if (iter->lkb_grmode != mode) {
+ 			found_other_mode = 1;
+ 			continue;
+ 		}
+ 
+-		found = 1;
+-		list_del_init(&lkb->lkb_ownqueue);
+-		lkb->lkb_flags &= ~DLM_IFL_ORPHAN;
+-		*lkid = lkb->lkb_id;
++		lkb = iter;
++		list_del_init(&iter->lkb_ownqueue);
++		iter->lkb_flags &= ~DLM_IFL_ORPHAN;
++		*lkid = iter->lkb_id;
+ 		break;
+ 	}
+ 	mutex_unlock(&ls->ls_orphans_mutex);
+ 
+-	if (!found && found_other_mode) {
++	if (!lkb && found_other_mode) {
+ 		rv = -EAGAIN;
+ 		goto out;
+ 	}
+ 
+-	if (!found) {
++	if (!lkb) {
+ 		rv = -ENOENT;
+ 		goto out;
+ 	}
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index f74d5a28ad27c..95f4662c1209a 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -434,9 +434,9 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
+ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
+ 			 loff_t *ppos)
+ {
++	struct plock_op *op = NULL, *iter;
+ 	struct dlm_plock_info info;
+-	struct plock_op *op;
+-	int found = 0, do_callback = 0;
++	int do_callback = 0;
+ 
+ 	if (count != sizeof(info))
+ 		return -EINVAL;
+@@ -448,23 +448,23 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
+ 		return -EINVAL;
+ 
+ 	spin_lock(&ops_lock);
+-	list_for_each_entry(op, &recv_list, list) {
+-		if (op->info.fsid == info.fsid &&
+-		    op->info.number == info.number &&
+-		    op->info.owner == info.owner) {
+-			list_del_init(&op->list);
+-			memcpy(&op->info, &info, sizeof(info));
+-			if (op->data)
++	list_for_each_entry(iter, &recv_list, list) {
++		if (iter->info.fsid == info.fsid &&
++		    iter->info.number == info.number &&
++		    iter->info.owner == info.owner) {
++			list_del_init(&iter->list);
++			memcpy(&iter->info, &info, sizeof(info));
++			if (iter->data)
+ 				do_callback = 1;
+ 			else
+-				op->done = 1;
+-			found = 1;
++				iter->done = 1;
++			op = iter;
+ 			break;
+ 		}
+ 	}
+ 	spin_unlock(&ops_lock);
+ 
+-	if (found) {
++	if (op) {
+ 		if (do_callback)
+ 			dlm_plock_callback(op);
+ 		else
+diff --git a/fs/dlm/recover.c b/fs/dlm/recover.c
+index 8928e99dfd47d..df18f38a02734 100644
+--- a/fs/dlm/recover.c
++++ b/fs/dlm/recover.c
+@@ -732,10 +732,9 @@ void dlm_recovered_lock(struct dlm_rsb *r)
+ 
+ static void recover_lvb(struct dlm_rsb *r)
+ {
+-	struct dlm_lkb *lkb, *high_lkb = NULL;
++	struct dlm_lkb *big_lkb = NULL, *iter, *high_lkb = NULL;
+ 	uint32_t high_seq = 0;
+ 	int lock_lvb_exists = 0;
+-	int big_lock_exists = 0;
+ 	int lvblen = r->res_ls->ls_lvblen;
+ 
+ 	if (!rsb_flag(r, RSB_NEW_MASTER2) &&
+@@ -751,37 +750,37 @@ static void recover_lvb(struct dlm_rsb *r)
+ 	/* we are the new master, so figure out if VALNOTVALID should
+ 	   be set, and set the rsb lvb from the best lkb available. */
+ 
+-	list_for_each_entry(lkb, &r->res_grantqueue, lkb_statequeue) {
+-		if (!(lkb->lkb_exflags & DLM_LKF_VALBLK))
++	list_for_each_entry(iter, &r->res_grantqueue, lkb_statequeue) {
++		if (!(iter->lkb_exflags & DLM_LKF_VALBLK))
+ 			continue;
+ 
+ 		lock_lvb_exists = 1;
+ 
+-		if (lkb->lkb_grmode > DLM_LOCK_CR) {
+-			big_lock_exists = 1;
++		if (iter->lkb_grmode > DLM_LOCK_CR) {
++			big_lkb = iter;
+ 			goto setflag;
+ 		}
+ 
+-		if (((int)lkb->lkb_lvbseq - (int)high_seq) >= 0) {
+-			high_lkb = lkb;
+-			high_seq = lkb->lkb_lvbseq;
++		if (((int)iter->lkb_lvbseq - (int)high_seq) >= 0) {
++			high_lkb = iter;
++			high_seq = iter->lkb_lvbseq;
+ 		}
+ 	}
+ 
+-	list_for_each_entry(lkb, &r->res_convertqueue, lkb_statequeue) {
+-		if (!(lkb->lkb_exflags & DLM_LKF_VALBLK))
++	list_for_each_entry(iter, &r->res_convertqueue, lkb_statequeue) {
++		if (!(iter->lkb_exflags & DLM_LKF_VALBLK))
+ 			continue;
+ 
+ 		lock_lvb_exists = 1;
+ 
+-		if (lkb->lkb_grmode > DLM_LOCK_CR) {
+-			big_lock_exists = 1;
++		if (iter->lkb_grmode > DLM_LOCK_CR) {
++			big_lkb = iter;
+ 			goto setflag;
+ 		}
+ 
+-		if (((int)lkb->lkb_lvbseq - (int)high_seq) >= 0) {
+-			high_lkb = lkb;
+-			high_seq = lkb->lkb_lvbseq;
++		if (((int)iter->lkb_lvbseq - (int)high_seq) >= 0) {
++			high_lkb = iter;
++			high_seq = iter->lkb_lvbseq;
+ 		}
+ 	}
+ 
+@@ -790,7 +789,7 @@ static void recover_lvb(struct dlm_rsb *r)
+ 		goto out;
+ 
+ 	/* lvb is invalidated if only NL/CR locks remain */
+-	if (!big_lock_exists)
++	if (!big_lkb)
+ 		rsb_set_flag(r, RSB_VALNOTVALID);
+ 
+ 	if (!r->res_lvbptr) {
+@@ -799,9 +798,9 @@ static void recover_lvb(struct dlm_rsb *r)
+ 			goto out;
+ 	}
+ 
+-	if (big_lock_exists) {
+-		r->res_lvbseq = lkb->lkb_lvbseq;
+-		memcpy(r->res_lvbptr, lkb->lkb_lvbptr, lvblen);
++	if (big_lkb) {
++		r->res_lvbseq = big_lkb->lkb_lvbseq;
++		memcpy(r->res_lvbptr, big_lkb->lkb_lvbptr, lvblen);
+ 	} else if (high_lkb) {
+ 		r->res_lvbseq = high_lkb->lkb_lvbseq;
+ 		memcpy(r->res_lvbptr, high_lkb->lkb_lvbptr, lvblen);
+-- 
+2.40.1
+
 
 
