@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3086578AC2F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A108778AAF4
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231640AbjH1Khv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:37:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33626 "EHLO
+        id S231229AbjH1K0f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:26:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231638AbjH1KhV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:21 -0400
+        with ESMTP id S231316AbjH1K0P (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 836BCA6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01D9E95
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:26:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1F93E63F26
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C206C433C7;
-        Mon, 28 Aug 2023 10:37:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9147A618B9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:26:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A06EDC433C9;
+        Mon, 28 Aug 2023 10:26:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219037;
-        bh=3rLIZopWh4fv27sb690BoF2I8Y0tznQEKW/5w73VOY8=;
+        s=korg; t=1693218366;
+        bh=5brn3LF2dCgcToTvqvZU3yHBuBC+Mb0n+OpnPuyn8bc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=D2LM6t+OLm9DnTBwV86VAPAc/KLlStnjHBpmqgumXcF+4zlJYRgSMM1VTk0QXb5F/
-         7NbfbkOtCOxYYAJZVwuKkLozNXI3ITOso/k9F9/MhnystZSocleBL2KkT8isbt/+sU
-         lE29xj3xblRM4RCmypcI4V3PXfcFkvUdLlN+sEQ4=
+        b=ubZvD/8UZGrzwOgRVwnuX3WQNbnbH14qyIF7mcLOdR0HZX851zY76SSZdLotU4oCJ
+         H0ltgi+MPLpzu6ZUQOT/fuCz4P3ZAMl2FDZdyaB6YOgoO4HPeOf5ntS+wa1m2u8lf8
+         D7EKAJzTcZp3G4RnfRb7eJn6m8wkrfvdA6/75ywg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Frank Ch. Eigler" <fche@redhat.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>,
+        patches@lists.linux.dev, Eyal Birger <eyal.birger@gmail.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 051/158] nfsd: Remove incorrect check in nfsd4_validate_stateid
+Subject: [PATCH 4.19 054/129] xfrm: interface: rename xfrm_interface.c to xfrm_interface_core.c
 Date:   Mon, 28 Aug 2023 12:12:28 +0200
-Message-ID: <20230828101159.060268673@linuxfoundation.org>
+Message-ID: <20230828101155.264807940@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,45 +55,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Trond Myklebust <trond.myklebust@hammerspace.com>
+From: Eyal Birger <eyal.birger@gmail.com>
 
-[ Upstream commit f75546f58a70da5cfdcec5a45ffc377885ccbee8 ]
+[ Upstream commit ee9a113ab63468137802898bcd2c598998c96938 ]
 
-If the client is calling TEST_STATEID, then it is because some event
-occurred that requires it to check all the stateids for validity and
-call FREE_STATEID on the ones that have been revoked. In this case,
-either the stateid exists in the list of stateids associated with that
-nfs4_client, in which case it should be tested, or it does not. There
-are no additional conditions to be considered.
+This change allows adding additional files to the xfrm_interface module.
 
-Reported-by: "Frank Ch. Eigler" <fche@redhat.com>
-Fixes: 7df302f75ee2 ("NFSD: TEST_STATEID should not return NFS4ERR_STALE_STATEID")
-Cc: stable@vger.kernel.org # v5.7+
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Eyal Birger <eyal.birger@gmail.com>
+Link: https://lore.kernel.org/r/20221203084659.1837829-2-eyal.birger@gmail.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Stable-dep-of: 53223f2ed1ef ("xfrm: fix slab-use-after-free in decode_session6")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/nfs4state.c | 2 --
- 1 file changed, 2 deletions(-)
+ net/xfrm/Makefile                                    | 2 ++
+ net/xfrm/{xfrm_interface.c => xfrm_interface_core.c} | 0
+ 2 files changed, 2 insertions(+)
+ rename net/xfrm/{xfrm_interface.c => xfrm_interface_core.c} (100%)
 
-diff --git a/fs/nfsd/nfs4state.c b/fs/nfsd/nfs4state.c
-index ecdf83c723f42..e62b6e45dcff2 100644
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -5513,8 +5513,6 @@ static __be32 nfsd4_validate_stateid(struct nfs4_client *cl, stateid_t *stateid)
- 	if (ZERO_STATEID(stateid) || ONE_STATEID(stateid) ||
- 		CLOSE_STATEID(stateid))
- 		return status;
--	if (!same_clid(&stateid->si_opaque.so_clid, &cl->cl_clientid))
--		return status;
- 	spin_lock(&cl->cl_lock);
- 	s = find_stateid_locked(cl, stateid);
- 	if (!s)
+diff --git a/net/xfrm/Makefile b/net/xfrm/Makefile
+index fbc4552d17b85..6e5e307f985e4 100644
+--- a/net/xfrm/Makefile
++++ b/net/xfrm/Makefile
+@@ -3,6 +3,8 @@
+ # Makefile for the XFRM subsystem.
+ #
+ 
++xfrm_interface-$(CONFIG_XFRM_INTERFACE) += xfrm_interface_core.o
++
+ obj-$(CONFIG_XFRM) := xfrm_policy.o xfrm_state.o xfrm_hash.o \
+ 		      xfrm_input.o xfrm_output.o \
+ 		      xfrm_sysctl.o xfrm_replay.o xfrm_device.o
+diff --git a/net/xfrm/xfrm_interface.c b/net/xfrm/xfrm_interface_core.c
+similarity index 100%
+rename from net/xfrm/xfrm_interface.c
+rename to net/xfrm/xfrm_interface_core.c
 -- 
 2.40.1
 
