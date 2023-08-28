@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2D06A78AB1F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:28:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EAAA078A9F1
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231304AbjH1K2L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:28:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52828 "EHLO
+        id S230438AbjH1KRb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:17:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231299AbjH1K1o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:27:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63427A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:27:41 -0700 (PDT)
+        with ESMTP id S230469AbjH1KRJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:09 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAFE119
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC78263B8D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:27:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CD35C433C7;
-        Mon, 28 Aug 2023 10:27:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E47663746
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D23C433CA;
+        Mon, 28 Aug 2023 10:16:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218460;
-        bh=BLg3V32j1Bp0S3RcDwV7JHQ3W3p7mUHE2SEO2ssKAnM=;
+        s=korg; t=1693217814;
+        bh=rvZ0foPHoQEDuM+YTbJRV2EkL3MKZEBjp33X0LpoiTQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GS3xtcm98I3w5CQwZmB9L/M7nhhZpZEqdZxQM8dMzU0iwnxMGq9FfuniZi/DWYOyB
-         tX/+wdp6nohA5FTuzf5EoRcpV//WIaUeCv7xod6eNNLU3RhjBtY7qVHHSR1gi2foKe
-         DCAAZ3a9eBEmzokVufvuFZG9iMTJF870WfvHmZkQ=
+        b=wslzNyKWpggE2Mkgmm1gGe1MvrAMKjLPi5GSLwNTL7vtTFPzECcNGr8JoLfZZVL8b
+         dZTPUiwsbPEGExvKRdiA3r4aH75fIPvL6flRLFo4dwoRptyp5+sdH+aiDoFw84EFog
+         sne2jgzmpemOYFQaiZhT5e7c2yCGbFsCEWiKnvMc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
-        Mike Snitzer <snitzer@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 096/129] dm integrity: increase RECALC_SECTORS to improve recalculate speed
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 4.14 50/57] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
 Date:   Mon, 28 Aug 2023 12:13:10 +0200
-Message-ID: <20230828101156.843596312@linuxfoundation.org>
+Message-ID: <20230828101146.110440013@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,40 +55,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikulas Patocka <mpatocka@redhat.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit b1a2b9332050c7ae32a22c2c74bc443e39f37b23 ]
+commit 421d467dc2d483175bad4fb76a31b9e5a3d744cf upstream.
 
-Increase RECALC_SECTORS because it improves recalculate speed slightly
-(from 390kiB/s to 410kiB/s).
+When batadv_v_ogm_aggr_send is called for an inactive interface, the skb
+is silently dropped by batadv_v_ogm_send_to_if() but never freed causing
+the following memory leak:
 
-Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
-Signed-off-by: Mike Snitzer <snitzer@redhat.com>
-Stable-dep-of: 6d50eb472593 ("dm integrity: reduce vmalloc space footprint on 32-bit architectures")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  unreferenced object 0xffff00000c164800 (size 512):
+    comm "kworker/u8:1", pid 2648, jiffies 4295122303 (age 97.656s)
+    hex dump (first 32 bytes):
+      00 80 af 09 00 00 ff ff e1 09 00 00 75 01 60 83  ............u.`.
+      1f 00 00 00 b8 00 00 00 15 00 05 00 da e3 d3 64  ...............d
+    backtrace:
+      [<0000000007ad20f6>] __kmalloc_track_caller+0x1a8/0x310
+      [<00000000d1029e55>] kmalloc_reserve.constprop.0+0x70/0x13c
+      [<000000008b9d4183>] __alloc_skb+0xec/0x1fc
+      [<00000000c7af5051>] __netdev_alloc_skb+0x48/0x23c
+      [<00000000642ee5f5>] batadv_v_ogm_aggr_send+0x50/0x36c
+      [<0000000088660bd7>] batadv_v_ogm_aggr_work+0x24/0x40
+      [<0000000042fc2606>] process_one_work+0x3b0/0x610
+      [<000000002f2a0b1c>] worker_thread+0xa0/0x690
+      [<0000000059fae5d4>] kthread+0x1fc/0x210
+      [<000000000c587d3a>] ret_from_fork+0x10/0x20
+
+Free the skb in that case to fix this leak.
+
+Cc: stable@vger.kernel.org
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/md/dm-integrity.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/batman-adv/bat_v_ogm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
-index 0a4e440948f0d..eead731a1aeda 100644
---- a/drivers/md/dm-integrity.c
-+++ b/drivers/md/dm-integrity.c
-@@ -33,7 +33,7 @@
- #define MIN_LOG2_INTERLEAVE_SECTORS	3
- #define MAX_LOG2_INTERLEAVE_SECTORS	31
- #define METADATA_WORKQUEUE_MAX_ACTIVE	16
--#define RECALC_SECTORS			8192
-+#define RECALC_SECTORS			32768
- #define RECALC_WRITE_SUPER		16
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -118,8 +118,10 @@ static void batadv_v_ogm_send_to_if(stru
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
  
- /*
--- 
-2.40.1
-
+-	if (hard_iface->if_status != BATADV_IF_ACTIVE)
++	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
++		kfree_skb(skb);
+ 		return;
++	}
+ 
+ 	batadv_inc_counter(bat_priv, BATADV_CNT_MGMT_TX);
+ 	batadv_add_counter(bat_priv, BATADV_CNT_MGMT_TX_BYTES,
 
 
