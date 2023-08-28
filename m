@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AEFC78AD2E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11D1978AD99
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231947AbjH1KqZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:46:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42544 "EHLO
+        id S232100AbjH1Kth (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:49:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231982AbjH1KqB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0463130
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:38 -0700 (PDT)
+        with ESMTP id S232171AbjH1KtV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:49:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7BE31B5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D042C614DB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B57B1C433C7;
-        Mon, 28 Aug 2023 10:45:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87D81619CB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CF2DC433C7;
+        Mon, 28 Aug 2023 10:48:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219537;
-        bh=d4UEUQd81kwTenfdHpOBMpfx6i0iJBIIukrwGH3k3p4=;
+        s=korg; t=1693219739;
+        bh=MAZczK/G2p8OHImgNwTexXw5Ag45oJzXKpFM46ee97A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oUvDkCwjpgsvJHRjeNiqk+kloLR/jS9KkdE18LOca4855FHeOMfa3aOxrYKlrzY7O
-         xm92eM0fWKo/SpvMWuUVmGAWOGw3HygevYKldEbNxbZIK2ZPD7j0KKLs0Io5BJtv1x
-         YhuWPcpIZUBHREMmtWcUhhI9iGCQi0XWyDqw3hlI=
+        b=mQ8UecTVNyE/eqcCEXlpUte1aS8CAtiMAiPA/AHu2uRpDMw8Q/PcF+Ju5xSsPQ85T
+         tRKrjsWi1lJ68CIVLKeQ7sb+UYmfDDRGV9meq8fSvOlBVyEgA6CKx+PB9T6mEf2Wpw
+         oLOSF6/Y04hSkRepgcrTFV80vxt+Rxct8elyqOPs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Christian Brauner (Microsoft)" <brauner@kernel.org>,
-        Christoph Hellwig <hch@lst.de>,
-        Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
-Subject: [PATCH 5.15 71/89] nfs: use vfs setgid helper
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Chanho Min <chanho.min@lge.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 5.10 55/84] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
 Date:   Mon, 28 Aug 2023 12:14:12 +0200
-Message-ID: <20230828101152.577700935@linuxfoundation.org>
+Message-ID: <20230828101151.123901555@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,83 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 4f704d9a8352f5c0a8fcdb6213b934630342bd44 upstream.
+commit 382d4cd1847517ffcb1800fd462b625db7b2ebea upstream.
 
-We've aligned setgid behavior over multiple kernel releases. The details
-can be found in the following two merge messages:
-cf619f891971 ("Merge tag 'fs.ovl.setgid.v6.2')
-426b4ca2d6a5 ("Merge tag 'fs.setgid.v6.0')
-Consistent setgid stripping behavior is now encapsulated in the
-setattr_should_drop_sgid() helper which is used by all filesystems that
-strip setgid bits outside of vfs proper. Switch nfs to rely on this
-helper as well. Without this patch the setgid stripping tests in
-xfstests will fail.
+The gcc compiler translates on some architectures the 64-bit
+__builtin_clzll() function to a call to the libgcc function __clzdi2(),
+which should take a 64-bit parameter on 32- and 64-bit platforms.
 
-Signed-off-by: Christian Brauner (Microsoft) <brauner@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Message-Id: <20230313-fs-nfs-setgid-v2-1-9a59f436cfc0@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-[ Harshit: backport to 5.15.y]
-    fs/internal.h -- minor conflcit due to code change differences.
-    include/linux/fs.h -- Used struct user_namespace *mnt_userns
-                          instead of struct mnt_idmap *idmap
-    fs/nfs/inode.c -- Used init_user_ns instead of nop_mnt_idmap ]
-Signed-off-by: Harshit Mogalapalli <harshit.m.mogalapalli@oracle.com>
+But in the current kernel code, the built-in __clzdi2() function is
+defined to operate (wrongly) on 32-bit parameters if BITS_PER_LONG ==
+32, thus the return values on 32-bit kernels are in the range from
+[0..31] instead of the expected [0..63] range.
+
+This patch fixes the in-kernel functions __clzdi2() and __ctzdi2() to
+take a 64-bit parameter on 32-bit kernels as well, thus it makes the
+functions identical for 32- and 64-bit kernels.
+
+This bug went unnoticed since kernel 3.11 for over 10 years, and here
+are some possible reasons for that:
+
+ a) Some architectures have assembly instructions to count the bits and
+    which are used instead of calling __clzdi2(), e.g. on x86 the bsr
+    instruction and on ppc cntlz is used. On such architectures the
+    wrong __clzdi2() implementation isn't used and as such the bug has
+    no effect and won't be noticed.
+
+ b) Some architectures link to libgcc.a, and the in-kernel weak
+    functions get replaced by the correct 64-bit variants from libgcc.a.
+
+ c) __builtin_clzll() and __clzdi2() doesn't seem to be used in many
+    places in the kernel, and most likely only in uncritical functions,
+    e.g. when printing hex values via seq_put_hex_ll(). The wrong return
+    value will still print the correct number, but just in a wrong
+    formatting (e.g. with too many leading zeroes).
+
+ d) 32-bit kernels aren't used that much any longer, so they are less
+    tested.
+
+A trivial testcase to verify if the currently running 32-bit kernel is
+affected by the bug is to look at the output of /proc/self/maps:
+
+Here the kernel uses a correct implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
+  00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
+  0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
+  f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+and this kernel uses the broken implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
+  0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
+  000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
+  00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 4df87bb7b6a22 ("lib: add weak clz/ctz functions")
+Cc: Chanho Min <chanho.min@lge.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org # v3.11+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/attr.c          |    1 +
- fs/internal.h      |    2 --
- fs/nfs/inode.c     |    4 +---
- include/linux/fs.h |    2 ++
- 4 files changed, 4 insertions(+), 5 deletions(-)
+ lib/clz_ctz.c |   32 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 26 deletions(-)
 
---- a/fs/attr.c
-+++ b/fs/attr.c
-@@ -47,6 +47,7 @@ int setattr_should_drop_sgid(struct user
- 		return ATTR_KILL_SGID;
- 	return 0;
+--- a/lib/clz_ctz.c
++++ b/lib/clz_ctz.c
+@@ -28,36 +28,16 @@ int __weak __clzsi2(int val)
  }
-+EXPORT_SYMBOL(setattr_should_drop_sgid);
+ EXPORT_SYMBOL(__clzsi2);
  
- /**
-  * setattr_should_drop_suidgid - determine whether the set{g,u}id bit needs to
---- a/fs/internal.h
-+++ b/fs/internal.h
-@@ -235,5 +235,3 @@ int do_setxattr(struct user_namespace *m
- /*
-  * fs/attr.c
-  */
--int setattr_should_drop_sgid(struct user_namespace *mnt_userns,
--			     const struct inode *inode);
---- a/fs/nfs/inode.c
-+++ b/fs/nfs/inode.c
-@@ -731,9 +731,7 @@ void nfs_setattr_update_inode(struct ino
- 		if ((attr->ia_valid & ATTR_KILL_SUID) != 0 &&
- 		    inode->i_mode & S_ISUID)
- 			inode->i_mode &= ~S_ISUID;
--		if ((attr->ia_valid & ATTR_KILL_SGID) != 0 &&
--		    (inode->i_mode & (S_ISGID | S_IXGRP)) ==
--		     (S_ISGID | S_IXGRP))
-+		if (setattr_should_drop_sgid(&init_user_ns, inode))
- 			inode->i_mode &= ~S_ISGID;
- 		if ((attr->ia_valid & ATTR_MODE) != 0) {
- 			int mode = attr->ia_mode & S_IALLUGO;
---- a/include/linux/fs.h
-+++ b/include/linux/fs.h
-@@ -3135,6 +3135,8 @@ extern struct inode *new_inode(struct su
- extern void free_inode_nonrcu(struct inode *inode);
- extern int setattr_should_drop_suidgid(struct user_namespace *, struct inode *);
- extern int file_remove_privs(struct file *);
-+int setattr_should_drop_sgid(struct user_namespace *mnt_userns,
-+			     const struct inode *inode);
+-int __weak __clzdi2(long val);
+-int __weak __ctzdi2(long val);
+-#if BITS_PER_LONG == 32
+-
+-int __weak __clzdi2(long val)
++int __weak __clzdi2(u64 val);
++int __weak __clzdi2(u64 val)
+ {
+-	return 32 - fls((int)val);
++	return 64 - fls64(val);
+ }
+ EXPORT_SYMBOL(__clzdi2);
  
- extern void __insert_inode_hash(struct inode *, unsigned long hashval);
- static inline void insert_inode_hash(struct inode *inode)
+-int __weak __ctzdi2(long val)
++int __weak __ctzdi2(u64 val);
++int __weak __ctzdi2(u64 val)
+ {
+-	return __ffs((u32)val);
++	return __ffs64(val);
+ }
+ EXPORT_SYMBOL(__ctzdi2);
+-
+-#elif BITS_PER_LONG == 64
+-
+-int __weak __clzdi2(long val)
+-{
+-	return 64 - fls64((u64)val);
+-}
+-EXPORT_SYMBOL(__clzdi2);
+-
+-int __weak __ctzdi2(long val)
+-{
+-	return __ffs64((u64)val);
+-}
+-EXPORT_SYMBOL(__ctzdi2);
+-
+-#else
+-#error BITS_PER_LONG not 32 or 64
+-#endif
 
 
