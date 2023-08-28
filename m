@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5553378AA61
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31BA378AB53
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230527AbjH1KVv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:21:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47748 "EHLO
+        id S231202AbjH1KaQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:30:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52484 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231142AbjH1KVX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:23 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD7F2CC1
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:04 -0700 (PDT)
+        with ESMTP id S231379AbjH1K3p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C0D8129
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 35EFB638DD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 421F8C433C8;
-        Mon, 28 Aug 2023 10:20:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CF15C63C26
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0011C433CD;
+        Mon, 28 Aug 2023 10:29:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218043;
-        bh=nZbwt/aOincUZqNFixGr3zdZRZFBvUEGPXcbKw/Sq9M=;
+        s=korg; t=1693218582;
+        bh=SyaYDjdhFwvweH2PhSAVDwJo+PlYVLkcoT49WuquBIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TfSo6g631TpybFqO4XxGh3Yqz+ktpZJQHAq5lRrjQef0G1nVlDDIbovQvCjTJQs4C
-         noty1+hU1BOa8WMc4CmBn9aPqg/cmyC5QyPtj53PBAYXXwW5PE5jThMObcFlKTAgUM
-         Lp89k0K2/ohXqI1csDGjnsoCeD1+na20fvlxBLWY=
+        b=lhiR6QaMoW1AhbAzIWNnd0fzy7reQ+gjYEuy62ttxYPtyi8nefFfZU9fNEXWQXH+L
+         AVTk3CCz0IbKlo7259a6+BGArHp5VD/Ht1lI0IpwwxW13KsQEjjDwj94BYGot3CPKt
+         6qogfvRbPV9dWp9D6DDmFxYzA28Gfngb0xHTxDS8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pablo Neira Ayuso <pablo@netfilter.org>,
-        Florian Westphal <fw@strlen.de>,
+        patches@lists.linux.dev, Igor Mammedov <imammedo@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 045/129] netfilter: nf_tables: GC transaction race with abort path
-Date:   Mon, 28 Aug 2023 12:12:04 +0200
-Message-ID: <20230828101158.866860095@linuxfoundation.org>
+Subject: [PATCH 6.1 010/122] PCI: acpiphp: Reassign resources on bridge if necessary
+Date:   Mon, 28 Aug 2023 12:12:05 +0200
+Message-ID: <20230828101156.813026608@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,44 +57,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pablo Neira Ayuso <pablo@netfilter.org>
+From: Igor Mammedov <imammedo@redhat.com>
 
-[ Upstream commit 720344340fb9be2765bbaab7b292ece0a4570eae ]
+[ Upstream commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 ]
 
-Abort path is missing a synchronization point with GC transactions. Add
-GC sequence number hence any GC transaction losing race will be
-discarded.
+When using ACPI PCI hotplug, hotplugging a device with large BARs may fail
+if bridge windows programmed by firmware are not large enough.
 
-Fixes: 5f68718b34a5 ("netfilter: nf_tables: GC transaction API to avoid race with control plane")
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+Reproducer:
+  $ qemu-kvm -monitor stdio -M q35  -m 4G \
+      -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
+      -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
+      disk_image
+
+ wait till linux guest boots, then hotplug device:
+   (qemu) device_add qxl,bus=rp1
+
+ hotplug on guest side fails with:
+   pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
+   pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
+   pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
+   pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
+   pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
+   pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
+   pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
+   qxl 0000:01:00.0: enabling device (0000 -> 0003)
+   Unable to create vram_mapping
+   qxl: probe of 0000:01:00.0 failed with error -12
+
+However when using native PCIe hotplug
+  '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
+it works fine, since kernel attempts to reassign unused resources.
+
+Use the same machinery as native PCIe hotplug to (re)assign resources.
+
+Link: https://lore.kernel.org/r/20230424191557.2464760-1-imammedo@redhat.com
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: stable@vger.kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/nf_tables_api.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/pci/hotplug/acpiphp_glue.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-diff --git a/net/netfilter/nf_tables_api.c b/net/netfilter/nf_tables_api.c
-index 539bc5d5c12fd..9cd8c14a0faf4 100644
---- a/net/netfilter/nf_tables_api.c
-+++ b/net/netfilter/nf_tables_api.c
-@@ -10348,8 +10348,12 @@ static int nf_tables_abort(struct net *net, struct sk_buff *skb,
- 			   enum nfnl_abort_action action)
- {
- 	struct nftables_pernet *nft_net = nft_pernet(net);
--	int ret = __nf_tables_abort(net, action);
-+	unsigned int gc_seq;
-+	int ret;
+diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+index 6efa3d8db9a56..393f341d9d764 100644
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -490,7 +490,6 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+ 				acpiphp_native_scan_bridge(dev);
+ 		}
+ 	} else {
+-		LIST_HEAD(add_list);
+ 		int max, pass;
  
-+	gc_seq = nft_gc_seq_begin(nft_net);
-+	ret = __nf_tables_abort(net, action);
-+	nft_gc_seq_end(nft_net, gc_seq);
- 	mutex_unlock(&nft_net->commit_mutex);
+ 		acpiphp_rescan_slot(slot);
+@@ -504,12 +503,10 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+ 				if (pass && dev->subordinate) {
+ 					check_hotplug_bridge(slot, dev);
+ 					pcibios_resource_survey_bus(dev->subordinate);
+-					__pci_bus_size_bridges(dev->subordinate,
+-							       &add_list);
+ 				}
+ 			}
+ 		}
+-		__pci_bus_assign_resources(bus, &add_list, NULL);
++		pci_assign_unassigned_bridge_resources(bus->self);
+ 	}
  
- 	return ret;
+ 	acpiphp_sanitize_bus(bus);
 -- 
 2.40.1
 
