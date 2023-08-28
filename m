@@ -2,49 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4DBBE78AD0C
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 74DF578AD67
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231892AbjH1KpV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:45:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54176 "EHLO
+        id S232010AbjH1KsC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:48:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231959AbjH1KpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:04 -0400
+        with ESMTP id S232059AbjH1Kre (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:34 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C8C4191
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 778D8130
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A0C264147
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D580C433C9;
-        Mon, 28 Aug 2023 10:43:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 15508642C1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 259B2C433C7;
+        Mon, 28 Aug 2023 10:47:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219434;
-        bh=PEr2AKwVofMHYNmEOf8aNuDqFTUsnTgSTVc5R4mYr7Y=;
+        s=korg; t=1693219639;
+        bh=42TvqwCJM5JG+YMQv3CVektItOleR+HtKlolBHKaUhM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mU57iwh+4qAlHtecfBFzRBefrxIS4AiFMazxEFltdZUL6sfEYDjw/4Ahkzzx3xo8S
-         9RAMShlhiaWoh7tSlcdrb4wNj/xzgX5H6jDSaaY4OXMCpnRJUtOVHz8wp/jQkdG72D
-         c1XgeB2ympYVp1V3bN+fkgX2y2MBSZTGcuTTGGvg=
+        b=RW5cPm0zi5oN6SnRh67fcvIV1PmEc7kVYM6C7JsQD6KJ2ollEvBU3JsU/vkZBCDob
+         g8NCWhLBMZbPA3xLCGCW5DkpMH2XlSRrY5BjgIlSJ0iZB5QtSIKFBoWqFWGcI+SeSl
+         NL4X7NphlE+GCyTq3x4R9jiej5WKcSLJmen52QTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Alessio Igor Bogani <alessio.bogani@elettra.eu>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Arpana Arland <arpanax.arland@intel.com>
-Subject: [PATCH 5.15 35/89] igb: Avoid starting unnecessary workqueues
+        patches@lists.linux.dev, Jun Lei <Jun.Lei@amd.com>,
+        Pavle Kotarac <Pavle.Kotarac@amd.com>,
+        Josip Pavic <Josip.Pavic@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 19/84] drm/amd/display: do not wait for mpc idle if tg is disabled
 Date:   Mon, 28 Aug 2023 12:13:36 +0200
-Message-ID: <20230828101151.366957124@linuxfoundation.org>
+Message-ID: <20230828101149.842693274@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,93 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alessio Igor Bogani <alessio.bogani@elettra.eu>
+From: Josip Pavic <Josip.Pavic@amd.com>
 
-[ Upstream commit b888c510f7b3d64ca75fc0f43b4a4bd1a611312f ]
+[ Upstream commit 2513ed4f937999c0446fd824f7564f76b697d722 ]
 
-If ptp_clock_register() fails or CONFIG_PTP isn't enabled, avoid starting
-PTP related workqueues.
+[Why]
+When booting, the driver waits for the MPC idle bit to be set as part of
+pipe initialization. However, on some systems this occurs before OTG is
+enabled, and since the MPC idle bit won't be set until the vupdate
+signal occurs (which requires OTG to be enabled), this never happens and
+the wait times out. This can add hundreds of milliseconds to the boot
+time.
 
-In this way we can fix this:
- BUG: unable to handle page fault for address: ffffc9000440b6f8
- #PF: supervisor read access in kernel mode
- #PF: error_code(0x0000) - not-present page
- PGD 100000067 P4D 100000067 PUD 1001e0067 PMD 107dc5067 PTE 0
- Oops: 0000 [#1] PREEMPT SMP
- [...]
- Workqueue: events igb_ptp_overflow_check
- RIP: 0010:igb_rd32+0x1f/0x60
- [...]
- Call Trace:
-  igb_ptp_read_82580+0x20/0x50
-  timecounter_read+0x15/0x60
-  igb_ptp_overflow_check+0x1a/0x50
-  process_one_work+0x1cb/0x3c0
-  worker_thread+0x53/0x3f0
-  ? rescuer_thread+0x370/0x370
-  kthread+0x142/0x160
-  ? kthread_associate_blkcg+0xc0/0xc0
-  ret_from_fork+0x1f/0x30
+[How]
+Do not wait for mpc idle if tg is disabled
 
-Fixes: 1f6e8178d685 ("igb: Prevent dropped Tx timestamps via work items and interrupts.")
-Fixes: d339b1331616 ("igb: add PTP Hardware Clock code")
-Signed-off-by: Alessio Igor Bogani <alessio.bogani@elettra.eu>
-Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230821171927.2203644-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Acked-by: Pavle Kotarac <Pavle.Kotarac@amd.com>
+Signed-off-by: Josip Pavic <Josip.Pavic@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 5a25cefc0920 ("drm/amd/display: check TG is non-null before checking if enabled")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igb/igb_ptp.c | 24 ++++++++++++------------
- 1 file changed, 12 insertions(+), 12 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
-index 0011b15e678c3..9cdb7a856ab6c 100644
---- a/drivers/net/ethernet/intel/igb/igb_ptp.c
-+++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
-@@ -1260,18 +1260,6 @@ void igb_ptp_init(struct igb_adapter *adapter)
- 		return;
- 	}
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+index 71a85c5306ed0..8bdbf3c31194b 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+@@ -3282,7 +3282,8 @@ void dcn10_wait_for_mpcc_disconnect(
+ 		if (pipe_ctx->stream_res.opp->mpcc_disconnect_pending[mpcc_inst]) {
+ 			struct hubp *hubp = get_hubp_by_inst(res_pool, mpcc_inst);
  
--	spin_lock_init(&adapter->tmreg_lock);
--	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
--
--	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
--		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
--				  igb_ptp_overflow_check);
--
--	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
--	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
--
--	igb_ptp_reset(adapter);
--
- 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
- 						&adapter->pdev->dev);
- 	if (IS_ERR(adapter->ptp_clock)) {
-@@ -1281,6 +1269,18 @@ void igb_ptp_init(struct igb_adapter *adapter)
- 		dev_info(&adapter->pdev->dev, "added PHC on %s\n",
- 			 adapter->netdev->name);
- 		adapter->ptp_flags |= IGB_PTP_ENABLED;
-+
-+		spin_lock_init(&adapter->tmreg_lock);
-+		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
-+
-+		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
-+			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
-+					  igb_ptp_overflow_check);
-+
-+		adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
-+		adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
-+
-+		igb_ptp_reset(adapter);
- 	}
- }
- 
+-			res_pool->mpc->funcs->wait_for_idle(res_pool->mpc, mpcc_inst);
++			if (pipe_ctx->stream_res.tg->funcs->is_tg_enabled(pipe_ctx->stream_res.tg))
++				res_pool->mpc->funcs->wait_for_idle(res_pool->mpc, mpcc_inst);
+ 			pipe_ctx->stream_res.opp->mpcc_disconnect_pending[mpcc_inst] = false;
+ 			hubp->funcs->set_blank(hubp, true);
+ 		}
 -- 
 2.40.1
 
