@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2B1178AC0D
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A48F078AAC7
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231612AbjH1Kgp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:36:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42238 "EHLO
+        id S231211AbjH1KY6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37730 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231668AbjH1Kge (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:34 -0400
+        with ESMTP id S231238AbjH1KYg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C81B3A6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:30 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56B7EA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66CB763C55
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 776D1C433C8;
-        Mon, 28 Aug 2023 10:36:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E6D8263A16
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05500C433C8;
+        Mon, 28 Aug 2023 10:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218989;
-        bh=26SLeUZKZxq6kQvvaf7Bcolzjt1wf1JF5Jtk5ef4ElE=;
+        s=korg; t=1693218272;
+        bh=NYKkPUcvY6RcILdNz7rapL4U+PJuqDXUHwFqHaRrH/8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qqjaYbwbGwn2DDcos8C5ZF5Q6D2jVXQOrdghgnzOdZ5CPk6qvVgQBaUcKD1kQ/N0P
-         M/amRpQSfliF3SqPQ3S0IxVidBLrh9/2C7WuMndEOdfHntKn5K8KG5P3IdJJIOWq5i
-         Qg0ob4beIOfSCQq/5wDk8+MkDSyA7ywz5sj7CZ+8=
+        b=UgtqjhdrOCtHCckKkg7BP2T5fUaRK8Iuf+kWEK8u5f8NbHKCVhV6L3VzTdwUZ5r31
+         in/RjyjCMtVfSCnBmCqJXbWTwF3J4Caxp+W8TokVV3Z5Fg0pxFutdIeW4AUFPtn8xI
+         CRHCEIovURTIX2WeMZT5r+sg8zWp3iSLdG256l7w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        Sabrina Dubroca <sd@queasysnail.net>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 005/158] macsec: use DEV_STATS_INC()
+        patches@lists.linux.dev,
+        syzbot+cd311b1e43cc25f90d18@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 008/129] udf: Fix uninitialized array access for some pathnames
 Date:   Mon, 28 Aug 2023 12:11:42 +0200
-Message-ID: <20230828101157.492095171@linuxfoundation.org>
+Message-ID: <20230828101153.364422528@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,147 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 32d0a49d36a2a306c2e47fe5659361e424f0ed3f ]
+[ Upstream commit 028f6055c912588e6f72722d89c30b401bbcf013 ]
 
-syzbot/KCSAN reported data-races in macsec whenever dev->stats fields
-are updated.
+For filenames that begin with . and are between 2 and 5 characters long,
+UDF charset conversion code would read uninitialized memory in the
+output buffer. The only practical impact is that the name may be prepended a
+"unification hash" when it is not actually needed but still it is good
+to fix this.
 
-It appears all of these updates can happen from multiple cpus.
-
-Adopt SMP safe DEV_STATS_INC() to update dev->stats fields.
-
-Fixes: c09440f7dcb3 ("macsec: introduce IEEE 802.1AE driver")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Sabrina Dubroca <sd@queasysnail.net>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Reported-by: syzbot+cd311b1e43cc25f90d18@syzkaller.appspotmail.com
+Link: https://lore.kernel.org/all/000000000000e2638a05fe9dc8f9@google.com
+Signed-off-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ fs/udf/unicode.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/macsec.c b/drivers/net/macsec.c
-index dcabff57efa73..25fa3ef5b804f 100644
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -825,7 +825,7 @@ static bool macsec_post_decrypt(struct sk_buff *skb, struct macsec_secy *secy, u
- 		u64_stats_update_begin(&rxsc_stats->syncp);
- 		rxsc_stats->stats.InPktsLate++;
- 		u64_stats_update_end(&rxsc_stats->syncp);
--		secy->netdev->stats.rx_dropped++;
-+		DEV_STATS_INC(secy->netdev, rx_dropped);
- 		return false;
+diff --git a/fs/udf/unicode.c b/fs/udf/unicode.c
+index 5fcfa96463ebb..85521d6b02370 100644
+--- a/fs/udf/unicode.c
++++ b/fs/udf/unicode.c
+@@ -247,7 +247,7 @@ static int udf_name_from_CS0(struct super_block *sb,
  	}
  
-@@ -849,7 +849,7 @@ static bool macsec_post_decrypt(struct sk_buff *skb, struct macsec_secy *secy, u
- 			rxsc_stats->stats.InPktsNotValid++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
- 			this_cpu_inc(rx_sa->stats->InPktsNotValid);
--			secy->netdev->stats.rx_errors++;
-+			DEV_STATS_INC(secy->netdev, rx_errors);
- 			return false;
- 		}
- 
-@@ -1079,7 +1079,7 @@ static void handle_not_macsec(struct sk_buff *skb)
- 			u64_stats_update_begin(&secy_stats->syncp);
- 			secy_stats->stats.InPktsNoTag++;
- 			u64_stats_update_end(&secy_stats->syncp);
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 			continue;
- 		}
- 
-@@ -1191,7 +1191,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 		u64_stats_update_begin(&secy_stats->syncp);
- 		secy_stats->stats.InPktsBadTag++;
- 		u64_stats_update_end(&secy_stats->syncp);
--		secy->netdev->stats.rx_errors++;
-+		DEV_STATS_INC(secy->netdev, rx_errors);
- 		goto drop_nosa;
- 	}
- 
-@@ -1208,7 +1208,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsNotUsingSA++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
--			secy->netdev->stats.rx_errors++;
-+			DEV_STATS_INC(secy->netdev, rx_errors);
- 			if (active_rx_sa)
- 				this_cpu_inc(active_rx_sa->stats->InPktsNotUsingSA);
- 			goto drop_nosa;
-@@ -1239,7 +1239,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			u64_stats_update_begin(&rxsc_stats->syncp);
- 			rxsc_stats->stats.InPktsLate++;
- 			u64_stats_update_end(&rxsc_stats->syncp);
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 			goto drop;
- 		}
- 	}
-@@ -1280,7 +1280,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 	if (ret == NET_RX_SUCCESS)
- 		count_rx(dev, len);
- 	else
--		macsec->secy.netdev->stats.rx_dropped++;
-+		DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 
- 	rcu_read_unlock();
- 
-@@ -1317,7 +1317,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			u64_stats_update_begin(&secy_stats->syncp);
- 			secy_stats->stats.InPktsNoSCI++;
- 			u64_stats_update_end(&secy_stats->syncp);
--			macsec->secy.netdev->stats.rx_errors++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_errors);
- 			continue;
- 		}
- 
-@@ -1336,7 +1336,7 @@ static rx_handler_result_t macsec_handle_frame(struct sk_buff **pskb)
- 			secy_stats->stats.InPktsUnknownSCI++;
- 			u64_stats_update_end(&secy_stats->syncp);
- 		} else {
--			macsec->secy.netdev->stats.rx_dropped++;
-+			DEV_STATS_INC(macsec->secy.netdev, rx_dropped);
- 		}
- 	}
- 
-@@ -2770,7 +2770,7 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
- 
- 	if (!secy->operational) {
- 		kfree_skb(skb);
--		dev->stats.tx_dropped++;
-+		DEV_STATS_INC(dev, tx_dropped);
- 		return NETDEV_TX_OK;
- 	}
- 
-@@ -2778,7 +2778,7 @@ static netdev_tx_t macsec_start_xmit(struct sk_buff *skb,
- 	skb = macsec_encrypt(skb, dev);
- 	if (IS_ERR(skb)) {
- 		if (PTR_ERR(skb) != -EINPROGRESS)
--			dev->stats.tx_dropped++;
-+			DEV_STATS_INC(dev, tx_dropped);
- 		return NETDEV_TX_OK;
- 	}
- 
-@@ -2996,9 +2996,9 @@ static void macsec_get_stats64(struct net_device *dev,
- 		s->tx_bytes   += tmp.tx_bytes;
- 	}
- 
--	s->rx_dropped = dev->stats.rx_dropped;
--	s->tx_dropped = dev->stats.tx_dropped;
--	s->rx_errors = dev->stats.rx_errors;
-+	s->rx_dropped = atomic_long_read(&dev->stats.__rx_dropped);
-+	s->tx_dropped = atomic_long_read(&dev->stats.__tx_dropped);
-+	s->rx_errors = atomic_long_read(&dev->stats.__rx_errors);
- }
- 
- static int macsec_get_iflink(const struct net_device *dev)
+ 	if (translate) {
+-		if (str_o_len <= 2 && str_o[0] == '.' &&
++		if (str_o_len > 0 && str_o_len <= 2 && str_o[0] == '.' &&
+ 		    (str_o_len == 1 || str_o[1] == '.'))
+ 			needsCRC = 1;
+ 		if (needsCRC) {
 -- 
 2.40.1
 
