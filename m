@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCB3178AA07
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40B8378AA0B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230514AbjH1KSH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:18:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55144 "EHLO
+        id S229445AbjH1KS2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:18:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230091AbjH1KRx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD11118
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:42 -0700 (PDT)
+        with ESMTP id S230426AbjH1KR5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9D69DC
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E360463746
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1D66C433C8;
-        Mon, 28 Aug 2023 10:17:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id AB64A6374A
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0090C433C8;
+        Mon, 28 Aug 2023 10:17:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217861;
-        bh=HgWyuBtbh0wZqjC4Bp9BsFdyE2kryrz6E70ioROZqv0=;
+        s=korg; t=1693217864;
+        bh=quZdhGmFBK+QKgGSM08v+juKr6bhDli2U+rexaepeqA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U0u8zyXMh2XOTXIU/uKgH699QU3DAdquBGbI/bItAQg1o2SNVKNhp+/2u5SG1W0f5
-         FwfOa1G+fBKFEAWuqtgnnY8/K3oj5PF2nGUbE0alWv4osw7rHA4dF24zbjKDb4Dnyw
-         GefvVCMflXRUGwVtIpX5oMC7FPOJV7zWf7Chxlz4=
+        b=dBZinX+v6Ircsj5rKEAA1sb7KNnG68gwpvm0MZh46fs6KGp6xzkXd+727cCUZZvfG
+         E6aUJ6Zd9ADqdn+3ctyg+GlMwXX76jF/BGJLoFsQJ8qlAVgmEJEob/W8meOsvaOBF5
+         3jQ+f5OCE2wmHWZ+K8snUsYVY3ynrCBfq9HkXVOo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -36,9 +36,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Benjamin Coddington <bcodding@redhat.com>,
         Trond Myklebust <trond.myklebust@hammerspace.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 001/129] NFSv4.2: fix error handling in nfs42_proc_getxattr
-Date:   Mon, 28 Aug 2023 12:11:20 +0200
-Message-ID: <20230828101157.435582071@linuxfoundation.org>
+Subject: [PATCH 6.4 002/129] NFSv4: fix out path in __nfs4_get_acl_uncached
+Date:   Mon, 28 Aug 2023 12:11:21 +0200
+Message-ID: <20230828101157.473736835@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
 References: <20230828101157.383363777@linuxfoundation.org>
@@ -47,8 +47,8 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,47 +62,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 4e3733fd2b0f677faae21cf838a43faf317986d3 ]
+[ Upstream commit f4e89f1a6dab4c063fc1e823cc9dddc408ff40cf ]
 
-There is a slight issue with error handling code inside
-nfs42_proc_getxattr(). If page allocating loop fails then we free the
-failing page array element which is NULL but __free_page() can't deal with
-NULL args.
+Another highly rare error case when a page allocating loop (inside
+__nfs4_get_acl_uncached, this time) is not properly unwound on error.
+Since pages array is allocated being uninitialized, need to free only
+lower array indices. NULL checks were useful before commit 62a1573fcf84
+("NFSv4 fix acl retrieval over krb5i/krb5p mounts") when the array had
+been initialized to zero on stack.
 
 Found by Linux Verification Center (linuxtesting.org).
 
-Fixes: a1f26739ccdc ("NFSv4.2: improve page handling for GETXATTR")
+Fixes: 62a1573fcf84 ("NFSv4 fix acl retrieval over krb5i/krb5p mounts")
 Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
 Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42proc.c | 5 ++---
+ fs/nfs/nfs4proc.c | 5 ++---
  1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
-index 93e306bf4430f..5d7e0511f3513 100644
---- a/fs/nfs/nfs42proc.c
-+++ b/fs/nfs/nfs42proc.c
-@@ -1360,7 +1360,6 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
- 	for (i = 0; i < np; i++) {
- 		pages[i] = alloc_page(GFP_KERNEL);
- 		if (!pages[i]) {
--			np = i + 1;
- 			err = -ENOMEM;
- 			goto out;
- 		}
-@@ -1384,8 +1383,8 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
- 	} while (exception.retry);
- 
- out:
--	while (--np >= 0)
--		__free_page(pages[np]);
+diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
+index 9faba2dac11dd..f16742b8e0e21 100644
+--- a/fs/nfs/nfs4proc.c
++++ b/fs/nfs/nfs4proc.c
+@@ -6004,9 +6004,8 @@ static ssize_t __nfs4_get_acl_uncached(struct inode *inode, void *buf,
+ out_ok:
+ 	ret = res.acl_len;
+ out_free:
+-	for (i = 0; i < npages; i++)
+-		if (pages[i])
+-			__free_page(pages[i]);
 +	while (--i >= 0)
 +		__free_page(pages[i]);
+ 	if (res.acl_scratch)
+ 		__free_page(res.acl_scratch);
  	kfree(pages);
- 
- 	return err;
 -- 
 2.40.1
 
