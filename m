@@ -2,56 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 907A278ABA0
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49E4778A9C3
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:16:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231510AbjH1KdA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:33:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        id S230396AbjH1KP4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:15:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49140 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231610AbjH1Kcu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 507211BC
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:26 -0700 (PDT)
+        with ESMTP id S230424AbjH1KPn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:15:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E259CB9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:15:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A68DD63D33
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF7EAC433CB;
-        Mon, 28 Aug 2023 10:31:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 77E6A615AF
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:15:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5D9C433C7;
+        Mon, 28 Aug 2023 10:15:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218709;
-        bh=Jx7J2RU36fPRVHgSAFaLzVrEhyJ2afFvI0CnEDjM090=;
+        s=korg; t=1693217739;
+        bh=p9SnKRvn3xZEW3kk0/zOnbR3LJDqz4rx5epIVOZ2olk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zpjM5exxVwL/BF7pGWpeNcx0vlBzTl+h4mG4yWd0c4LB3MY7o1SqBe6g6yUsC4Nbk
-         fEh/M653xgEtJXkXbu+qqazsPuFglrgPA39Znt3fn9QE/yVXZzRzc2fQixTeRsgI1C
-         7kfxcU0XK2Xv5+xvb1IaueF5QAorVZcCJaUvLH5g=
+        b=RgmVrn+5xQC5En2g2+0Pm4QN737oHKz9Zzt/AChBS4FTLPzWv4LOZPHb6ssi36hCH
+         K6xP444g1jioJ4GolDoGDbX7z0oaHOf9FpCh2KSRlGTBgzRqymvsc+oeW5p5I4ujdM
+         fB+/tpXZzpfG7BmQu1g7F7XNqcr9GqPiZ8B4dle0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sasha Neftin <sasha.neftin@intel.com>,
-        Naama Meir <naamax.meir@linux.intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Simon Horman <horms@kernel.org>,
-        Kalesh AP <kalesh-anakkur.purayil@broadcom.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 048/122] igc: Fix the typo in the PTM Control macro
+Subject: [PATCH 4.14 23/57] xfrm: add NULL check in xfrm_update_ae_params
 Date:   Mon, 28 Aug 2023 12:12:43 +0200
-Message-ID: <20230828101158.010030639@linuxfoundation.org>
+Message-ID: <20230828101145.079114064@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,45 +56,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sasha Neftin <sasha.neftin@intel.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit de43975721b97283d5f17eea4228faddf08f2681 ]
+[ Upstream commit 00374d9b6d9f932802b55181be9831aa948e5b7c ]
 
-The IGC_PTM_CTRL_SHRT_CYC defines the time between two consecutive PTM
-requests. The bit resolution of this field is six bits. That bit five was
-missing in the mask. This patch comes to correct the typo in the
-IGC_PTM_CTRL_SHRT_CYC macro.
+Normally, x->replay_esn and x->preplay_esn should be allocated at
+xfrm_alloc_replay_state_esn(...) in xfrm_state_construct(...), hence the
+xfrm_update_ae_params(...) is okay to update them. However, the current
+implementation of xfrm_new_ae(...) allows a malicious user to directly
+dereference a NULL pointer and crash the kernel like below.
 
-Fixes: a90ec8483732 ("igc: Add support for PTP getcrosststamp()")
-Signed-off-by: Sasha Neftin <sasha.neftin@intel.com>
-Tested-by: Naama Meir <naamax.meir@linux.intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Kalesh AP <kalesh-anakkur.purayil@broadcom.com>
-Link: https://lore.kernel.org/r/20230821171721.2203572-1-anthony.l.nguyen@intel.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+BUG: kernel NULL pointer dereference, address: 0000000000000000
+PGD 8253067 P4D 8253067 PUD 8e0e067 PMD 0
+Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
+CPU: 0 PID: 98 Comm: poc.npd Not tainted 6.4.0-rc7-00072-gdad9774deaf1 #8
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.o4
+RIP: 0010:memcpy_orig+0xad/0x140
+Code: e8 4c 89 5f e0 48 8d 7f e0 73 d2 83 c2 20 48 29 d6 48 29 d7 83 fa 10 72 34 4c 8b 06 4c 8b 4e 08 c
+RSP: 0018:ffff888008f57658 EFLAGS: 00000202
+RAX: 0000000000000000 RBX: ffff888008bd0000 RCX: ffffffff8238e571
+RDX: 0000000000000018 RSI: ffff888007f64844 RDI: 0000000000000000
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000000 R12: ffff888008f57818
+R13: ffff888007f64aa4 R14: 0000000000000000 R15: 0000000000000000
+FS:  00000000014013c0(0000) GS:ffff88806d600000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 00000000054d8000 CR4: 00000000000006f0
+Call Trace:
+ <TASK>
+ ? __die+0x1f/0x70
+ ? page_fault_oops+0x1e8/0x500
+ ? __pfx_is_prefetch.constprop.0+0x10/0x10
+ ? __pfx_page_fault_oops+0x10/0x10
+ ? _raw_spin_unlock_irqrestore+0x11/0x40
+ ? fixup_exception+0x36/0x460
+ ? _raw_spin_unlock_irqrestore+0x11/0x40
+ ? exc_page_fault+0x5e/0xc0
+ ? asm_exc_page_fault+0x26/0x30
+ ? xfrm_update_ae_params+0xd1/0x260
+ ? memcpy_orig+0xad/0x140
+ ? __pfx__raw_spin_lock_bh+0x10/0x10
+ xfrm_update_ae_params+0xe7/0x260
+ xfrm_new_ae+0x298/0x4e0
+ ? __pfx_xfrm_new_ae+0x10/0x10
+ ? __pfx_xfrm_new_ae+0x10/0x10
+ xfrm_user_rcv_msg+0x25a/0x410
+ ? __pfx_xfrm_user_rcv_msg+0x10/0x10
+ ? __alloc_skb+0xcf/0x210
+ ? stack_trace_save+0x90/0xd0
+ ? filter_irq_stacks+0x1c/0x70
+ ? __stack_depot_save+0x39/0x4e0
+ ? __kasan_slab_free+0x10a/0x190
+ ? kmem_cache_free+0x9c/0x340
+ ? netlink_recvmsg+0x23c/0x660
+ ? sock_recvmsg+0xeb/0xf0
+ ? __sys_recvfrom+0x13c/0x1f0
+ ? __x64_sys_recvfrom+0x71/0x90
+ ? do_syscall_64+0x3f/0x90
+ ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
+ ? copyout+0x3e/0x50
+ netlink_rcv_skb+0xd6/0x210
+ ? __pfx_xfrm_user_rcv_msg+0x10/0x10
+ ? __pfx_netlink_rcv_skb+0x10/0x10
+ ? __pfx_sock_has_perm+0x10/0x10
+ ? mutex_lock+0x8d/0xe0
+ ? __pfx_mutex_lock+0x10/0x10
+ xfrm_netlink_rcv+0x44/0x50
+ netlink_unicast+0x36f/0x4c0
+ ? __pfx_netlink_unicast+0x10/0x10
+ ? netlink_recvmsg+0x500/0x660
+ netlink_sendmsg+0x3b7/0x700
+
+This Null-ptr-deref bug is assigned CVE-2023-3772. And this commit
+adds additional NULL check in xfrm_update_ae_params to fix the NPD.
+
+Fixes: d8647b79c3b7 ("xfrm: Add user interface for esn and big anti-replay windows")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/intel/igc/igc_defines.h | 2 +-
+ net/xfrm/xfrm_user.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/intel/igc/igc_defines.h b/drivers/net/ethernet/intel/igc/igc_defines.h
-index dbfa4b9dee066..90ca01889cd82 100644
---- a/drivers/net/ethernet/intel/igc/igc_defines.h
-+++ b/drivers/net/ethernet/intel/igc/igc_defines.h
-@@ -536,7 +536,7 @@
- #define IGC_PTM_CTRL_START_NOW	BIT(29) /* Start PTM Now */
- #define IGC_PTM_CTRL_EN		BIT(30) /* Enable PTM */
- #define IGC_PTM_CTRL_TRIG	BIT(31) /* PTM Cycle trigger */
--#define IGC_PTM_CTRL_SHRT_CYC(usec)	(((usec) & 0x2f) << 2)
-+#define IGC_PTM_CTRL_SHRT_CYC(usec)	(((usec) & 0x3f) << 2)
- #define IGC_PTM_CTRL_PTM_TO(usec)	(((usec) & 0xff) << 8)
+diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
+index c932ec65cfa09..224f627e0f6df 100644
+--- a/net/xfrm/xfrm_user.c
++++ b/net/xfrm/xfrm_user.c
+@@ -521,7 +521,7 @@ static void xfrm_update_ae_params(struct xfrm_state *x, struct nlattr **attrs,
+ 	struct nlattr *et = attrs[XFRMA_ETIMER_THRESH];
+ 	struct nlattr *rt = attrs[XFRMA_REPLAY_THRESH];
  
- #define IGC_PTM_SHORT_CYC_DEFAULT	10  /* Default Short/interrupted cycle interval */
+-	if (re) {
++	if (re && x->replay_esn && x->preplay_esn) {
+ 		struct xfrm_replay_state_esn *replay_esn;
+ 		replay_esn = nla_data(re);
+ 		memcpy(x->replay_esn, replay_esn,
 -- 
 2.40.1
 
