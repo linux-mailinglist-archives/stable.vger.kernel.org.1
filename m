@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0E8178AD71
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA37E78ACD6
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231899AbjH1Ksa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55048 "EHLO
+        id S231749AbjH1Kmm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:42:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232226AbjH1Kr5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:57 -0400
+        with ESMTP id S231898AbjH1KmP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA37710B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0827ACC0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA6106408B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:47 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD2EFC433C8;
-        Mon, 28 Aug 2023 10:47:46 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8F1AC64113
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C96FC433C7;
+        Mon, 28 Aug 2023 10:42:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219667;
-        bh=fIL4lUI0mtenToI5GPL97ZgDwoIBs2QZ+zAbt6X5uF0=;
+        s=korg; t=1693219329;
+        bh=SjgJlWmomEEk+Y5k9uzooq4F1dY4k75q/ZTNiWEK5LQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j3u+2muc0zzsejwLh9A4/6olYh9jTJO0/7KnYtlKmL1ANAFIKPNq2ULq4qk4Lb3Tm
-         LfzZIF4053KB8XMqgnws+gh3DOmE7coZd2FnU5phvjuWgkYbdNyn8EkrXaVEQ4KMmD
-         XNRAQmHDwc3Mh0FCmgkGHs6/ppeDjnGTqfYtyRyA=
+        b=pkARaXiUIljM+b9nhP1mfT1gDFTEgjEdjLMS3T4IciHGPr+prBbNGM4GE4ByQXVqb
+         KH9uQK7dySpFzh5uuaxnNQa2MxlmCiDTNR52EFMKHW1SP4c9X2yCf9sq+6iFrurJsb
+         QVBWFspqZkvJCwjurQZpxHZP+l2hPyBcpjaprmd8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Abel Wu <wuyun.abel@bytedance.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Jakub Kicinski <kuba@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 28/84] sock: annotate data-races around prot->memory_pressure
+Subject: [PATCH 5.4 128/158] net: remove bond_slave_has_mac_rcu()
 Date:   Mon, 28 Aug 2023 12:13:45 +0200
-Message-ID: <20230828101150.200332817@linuxfoundation.org>
+Message-ID: <20230828101201.732341197@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,84 +55,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 76f33296d2e09f63118db78125c95ef56df438e9 ]
+[ Upstream commit 8b0fdcdc3a7d44aff907f0103f5ffb86b12bfe71 ]
 
-*prot->memory_pressure is read/writen locklessly, we need
-to add proper annotations.
+No caller since v3.16.
 
-A recent commit added a new race, it is time to audit all accesses.
-
-Fixes: 2d0c88e84e48 ("sock: Fix misuse of sk_under_memory_pressure()")
-Fixes: 4d93df0abd50 ("[SCTP]: Rewrite of sctp buffer management code")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Abel Wu <wuyun.abel@bytedance.com>
-Reviewed-by: Shakeel Butt <shakeelb@google.com>
-Link: https://lore.kernel.org/r/20230818015132.2699348-1-edumazet@google.com
 Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: e74216b8def3 ("bonding: fix macvlan over alb bond support")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/sock.h | 7 ++++---
- net/sctp/socket.c  | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ include/net/bonding.h | 14 --------------
+ 1 file changed, 14 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 665e388593752..234196d904238 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1233,6 +1233,7 @@ struct proto {
- 	/*
- 	 * Pressure flag: try to collapse.
- 	 * Technical note: it is used by multiple contexts non atomically.
-+	 * Make sure to use READ_ONCE()/WRITE_ONCE() for all reads/writes.
- 	 * All the __sk_mem_schedule() is of this nature: accounting
- 	 * is strict, actions are advisory and have some latency.
- 	 */
-@@ -1349,7 +1350,7 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
- static inline bool sk_under_global_memory_pressure(const struct sock *sk)
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index a3698f0fb2a6d..4e1e589aae057 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -685,20 +685,6 @@ static inline struct slave *bond_slave_has_mac(struct bonding *bond,
+ 	return NULL;
+ }
+ 
+-/* Caller must hold rcu_read_lock() for read */
+-static inline struct slave *bond_slave_has_mac_rcu(struct bonding *bond,
+-					       const u8 *mac)
+-{
+-	struct list_head *iter;
+-	struct slave *tmp;
+-
+-	bond_for_each_slave_rcu(bond, tmp, iter)
+-		if (ether_addr_equal_64bits(mac, tmp->dev->dev_addr))
+-			return tmp;
+-
+-	return NULL;
+-}
+-
+ /* Caller must hold rcu_read_lock() for read */
+ static inline bool bond_slave_has_mac_rx(struct bonding *bond, const u8 *mac)
  {
- 	return sk->sk_prot->memory_pressure &&
--		!!*sk->sk_prot->memory_pressure;
-+		!!READ_ONCE(*sk->sk_prot->memory_pressure);
- }
- 
- static inline bool sk_under_memory_pressure(const struct sock *sk)
-@@ -1361,7 +1362,7 @@ static inline bool sk_under_memory_pressure(const struct sock *sk)
- 	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
- 		return true;
- 
--	return !!*sk->sk_prot->memory_pressure;
-+	return !!READ_ONCE(*sk->sk_prot->memory_pressure);
- }
- 
- static inline long
-@@ -1415,7 +1416,7 @@ proto_memory_pressure(struct proto *prot)
- {
- 	if (!prot->memory_pressure)
- 		return false;
--	return !!*prot->memory_pressure;
-+	return !!READ_ONCE(*prot->memory_pressure);
- }
- 
- 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 534364bb871a3..fa4d31b507f29 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -97,7 +97,7 @@ struct percpu_counter sctp_sockets_allocated;
- 
- static void sctp_enter_memory_pressure(struct sock *sk)
- {
--	sctp_memory_pressure = 1;
-+	WRITE_ONCE(sctp_memory_pressure, 1);
- }
- 
- 
 -- 
 2.40.1
 
