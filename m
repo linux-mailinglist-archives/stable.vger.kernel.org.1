@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02D1278AC04
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B650D78AB63
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:31:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231487AbjH1Kgg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:36:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45738 "EHLO
+        id S231425AbjH1KaY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:30:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33526 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231576AbjH1KgL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:11 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB873130
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:02 -0700 (PDT)
+        with ESMTP id S231468AbjH1KaL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:30:11 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33BFB129;
+        Mon, 28 Aug 2023 03:30:08 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8561661592
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93F50C433C8;
-        Mon, 28 Aug 2023 10:36:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BD3A663C6C;
+        Mon, 28 Aug 2023 10:30:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D194BC433C8;
+        Mon, 28 Aug 2023 10:30:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218962;
-        bh=2usSlczlvJmay8urZPhHAtihNfYxeiL1nIIrnQm/4Ck=;
+        s=korg; t=1693218607;
+        bh=mwknJkyoH5UO24OF0N2LW4xoJd3pjAzpMHHxPzl5kic=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AgsP0i4GmBMYlNizbWrOqGG1cxu1nAOd0WNZXuLJ0PrUHDCUssIuiPf7+OmpUzVmL
-         quyXV3qquxQQaHKV80ml/jrie++dwUPhIBhumovkbjyFMknW/QqgJPYDXnmZRqE7PJ
-         8VKWypvHtDXnPO4B70/h+H1m4/Ux/S6ClXFQ8PPw=
+        b=oDW63G9cEQFKSJBYoPg4Vvq5MnD61ONk8MRWLjRvQIeVrrv5/mK2ozW3sUDfD7iuT
+         oK72yryC5nzDohDGbd5/vVBnh2v1vs+4f4M19HAVPBT0TNjzATc1IR3oDiLdxKTQsn
+         fiyPOFhCPylMA50MTKppUKYop2aMy591Hz66vb2o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, shanzhulig <shanzhulig@gmail.com>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Daniel Vetter <daniel.vetter@ffwll.ch>,
+        Benjamin Herrenschmidt <benh@kernel.crashing.org>,
+        linux-fbdev@vger.kernel.org,
+        Thomas Zimmermann <tzimmermann@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 023/158] drm/amdgpu: Fix potential fence use-after-free v2
+Subject: [PATCH 6.1 005/122] fbdev/radeon: use pci aperture helpers
 Date:   Mon, 28 Aug 2023 12:12:00 +0200
-Message-ID: <20230828101158.137718009@linuxfoundation.org>
+Message-ID: <20230828101156.656023754@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,51 +57,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: shanzhulig <shanzhulig@gmail.com>
+From: Daniel Vetter <daniel.vetter@ffwll.ch>
 
-[ Upstream commit 2e54154b9f27262efd0cb4f903cc7d5ad1fe9628 ]
+[ Upstream commit 9b539c4d1b921bc9c8c578d4d50f0a7e7874d384 ]
 
-fence Decrements the reference count before exiting.
-Avoid Race Vulnerabilities for fence use-after-free.
+It's not exactly the same since the open coded version doesn't set
+primary correctly. But that's a bugfix, so shouldn't hurt really.
 
-v2 (chk): actually fix the use after free and not just move it.
-
-Signed-off-by: shanzhulig <shanzhulig@gmail.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Reviewed-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Daniel Vetter <daniel.vetter@ffwll.ch>
+Cc: Benjamin Herrenschmidt <benh@kernel.crashing.org>
+Cc: linux-fbdev@vger.kernel.org
+Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230111154112.90575-7-daniel.vetter@ffwll.ch
+Stable-dep-of: 5ae3716cfdcd ("video/aperture: Only remove sysfb on the default vga pci device")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/video/fbdev/aty/radeon_base.c | 10 +---------
+ 1 file changed, 1 insertion(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-index 7eeb98fe50ed7..0e478d4d830c9 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_cs.c
-@@ -1575,15 +1575,15 @@ static int amdgpu_cs_wait_all_fences(struct amdgpu_device *adev,
- 			continue;
+diff --git a/drivers/video/fbdev/aty/radeon_base.c b/drivers/video/fbdev/aty/radeon_base.c
+index 8b28c9bddd974..50c384ce28837 100644
+--- a/drivers/video/fbdev/aty/radeon_base.c
++++ b/drivers/video/fbdev/aty/radeon_base.c
+@@ -2238,14 +2238,6 @@ static const struct bin_attribute edid2_attr = {
+ 	.read	= radeon_show_edid2,
+ };
  
- 		r = dma_fence_wait_timeout(fence, true, timeout);
-+		if (r > 0 && fence->error)
-+			r = fence->error;
-+
- 		dma_fence_put(fence);
- 		if (r < 0)
- 			return r;
- 
- 		if (r == 0)
- 			break;
+-static int radeon_kick_out_firmware_fb(struct pci_dev *pdev)
+-{
+-	resource_size_t base = pci_resource_start(pdev, 0);
+-	resource_size_t size = pci_resource_len(pdev, 0);
 -
--		if (fence->error)
--			return fence->error;
- 	}
+-	return aperture_remove_conflicting_devices(base, size, false, KBUILD_MODNAME);
+-}
+-
+ static int radeonfb_pci_register(struct pci_dev *pdev,
+ 				 const struct pci_device_id *ent)
+ {
+@@ -2296,7 +2288,7 @@ static int radeonfb_pci_register(struct pci_dev *pdev,
+ 	rinfo->fb_base_phys = pci_resource_start (pdev, 0);
+ 	rinfo->mmio_base_phys = pci_resource_start (pdev, 2);
  
- 	memset(wait, 0, sizeof(*wait));
+-	ret = radeon_kick_out_firmware_fb(pdev);
++	ret = aperture_remove_conflicting_pci_devices(pdev, KBUILD_MODNAME);
+ 	if (ret)
+ 		goto err_release_fb;
+ 
 -- 
 2.40.1
 
