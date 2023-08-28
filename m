@@ -2,54 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F407378AA51
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:21:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30F9678AAE9
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:26:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230487AbjH1KVP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:21:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43572 "EHLO
+        id S231241AbjH1K0D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:26:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230481AbjH1KUt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:20:49 -0400
+        with ESMTP id S231270AbjH1KZj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:25:39 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E28B8110
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:20:21 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A34CBAB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:25:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6186C6389C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BBB8C433C8;
-        Mon, 28 Aug 2023 10:20:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 33C0B615F4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:25:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43F7AC433C8;
+        Mon, 28 Aug 2023 10:25:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218018;
-        bh=NNtlkGsuKa7m4t36XOoCiZXia+rMDfAShRkotElg/Es=;
+        s=korg; t=1693218335;
+        bh=fk6u7AqTKXX+G3HG0ibI59Pm67rMhTmVpPJAMRVX76E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U7/G4CDbMDEVnzPeQTus9GeB53nS43bRw/1tl/K1t36m1PKw0TgYqpaOb3vTfsKYf
-         00ZKwQbFK8AhZapO9teoJchqLRNcllFOtX4uhLlj/TzvkwhKTnyI8njM/yBYmcdWJP
-         Qa9BuR/IVXg3o7GAtzyrReIehmUnKQLWJxAzH7Ys=
+        b=vS6aj4Vnz0fs6fKszPWJ3sx5QysgJG9Ix244Jqaw9zs6T59dUcwXBkIhlPQ7LppE6
+         8Yyyw6ppzy2muRQj5QXQJ3XY82n9WAVj/HolFcgGSxLKxwVL8k7ldn88SgCYKXkYJK
+         kxPpygBBeXmSfRZGfi/D2us6svrndUb47flh/6Tg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
-        liubo <liubo254@huawei.com>, Peter Xu <peterx@redhat.com>,
-        Mel Gorman <mgorman@techsingularity.net>,
-        Hugh Dickins <hughd@google.com>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        John Hubbard <jhubbard@nvidia.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Mel Gorman <mgorman@suse.de>,
-        Paolo Bonzini <pbonzini@redhat.com>,
-        Shuah Khan <shuah@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 065/129] mm/gup: reintroduce FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
+        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 4.19 050/129] powerpc/rtas_flash: allow user copy to flash block cache objects
 Date:   Mon, 28 Aug 2023 12:12:24 +0200
-Message-ID: <20230828101159.516033860@linuxfoundation.org>
+Message-ID: <20230828101155.089509724@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -64,254 +55,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-commit d74943a2f3cdade34e471b36f55f7979be656867 upstream.
+commit 4f3175979e62de3b929bfa54a0db4b87d36257a7 upstream.
 
-Unfortunately commit 474098edac26 ("mm/gup: replace FOLL_NUMA by
-gup_can_follow_protnone()") missed that follow_page() and
-follow_trans_huge_pmd() never implicitly set FOLL_NUMA because they really
-don't want to fail on PROT_NONE-mapped pages -- either due to NUMA hinting
-or due to inaccessible (PROT_NONE) VMAs.
+With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
+/proc/powerpc/rtas/firmware_update interface to prepare a system
+firmware update yields a BUG():
 
-As spelled out in commit 0b9d705297b2 ("mm: numa: Support NUMA hinting
-page faults from gup/gup_fast"): "Other follow_page callers like KSM
-should not use FOLL_NUMA, or they would fail to get the pages if they use
-follow_page instead of get_user_pages."
+  kernel BUG at mm/usercopy.c:102!
+  Oops: Exception in kernel mode, sig: 5 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+  Modules linked in:
+  CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
+  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
+  NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
+  REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
+  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
+  CFAR: c0000000001fbd34 IRQMASK: 0
+  [ ... GPRs omitted ... ]
+  NIP usercopy_abort+0xa0/0xb0
+  LR  usercopy_abort+0x9c/0xb0
+  Call Trace:
+    usercopy_abort+0x9c/0xb0 (unreliable)
+    __check_heap_object+0x1b4/0x1d0
+    __check_object_size+0x2d0/0x380
+    rtas_flash_write+0xe4/0x250
+    proc_reg_write+0xfc/0x160
+    vfs_write+0xfc/0x4e0
+    ksys_write+0x90/0x160
+    system_call_exception+0x178/0x320
+    system_call_common+0x160/0x2c4
 
-liubo reported [1] that smaps_rollup results are imprecise, because they
-miss accounting of pages that are mapped PROT_NONE.  Further, it's easy to
-reproduce that KSM no longer works on inaccessible VMAs on x86-64, because
-pte_protnone()/pmd_protnone() also indictaes "true" in inaccessible VMAs,
-and follow_page() refuses to return such pages right now.
+The blocks of the firmware image are copied directly from user memory
+to objects allocated from flash_block_cache, so flash_block_cache must
+be created using kmem_cache_create_usercopy() to mark it safe for user
+access.
 
-As KVM really depends on these NUMA hinting faults, removing the
-pte_protnone()/pmd_protnone() handling in GUP code completely is not
-really an option.
-
-To fix the issues at hand, let's revive FOLL_NUMA as FOLL_HONOR_NUMA_FAULT
-to restore the original behavior for now and add better comments.
-
-Set FOLL_HONOR_NUMA_FAULT independent of FOLL_FORCE in
-is_valid_gup_args(), to add that flag for all external GUP users.
-
-Note that there are three GUP-internal __get_user_pages() users that don't
-end up calling is_valid_gup_args() and consequently won't get
-FOLL_HONOR_NUMA_FAULT set.
-
-1) get_dump_page(): we really don't want to handle NUMA hinting
-   faults. It specifies FOLL_FORCE and wouldn't have honored NUMA
-   hinting faults already.
-2) populate_vma_page_range(): we really don't want to handle NUMA hinting
-   faults. It specifies FOLL_FORCE on accessible VMAs, so it wouldn't have
-   honored NUMA hinting faults already.
-3) faultin_vma_page_range(): we similarly don't want to handle NUMA
-   hinting faults.
-
-To make the combination of FOLL_FORCE and FOLL_HONOR_NUMA_FAULT work in
-inaccessible VMAs properly, we have to perform VMA accessibility checks in
-gup_can_follow_protnone().
-
-As GUP-fast should reject such pages either way in
-pte_access_permitted()/pmd_access_permitted() -- for example on x86-64 and
-arm64 that both implement pte_protnone() -- let's just always fallback to
-ordinary GUP when stumbling over pte_protnone()/pmd_protnone().
-
-As Linus notes [2], honoring NUMA faults might only make sense for
-selected GUP users.
-
-So we should really see if we can instead let relevant GUP callers specify
-it manually, and not trigger NUMA hinting faults from GUP as default.
-Prepare for that by making FOLL_HONOR_NUMA_FAULT an external GUP flag and
-adding appropriate documenation.
-
-While at it, remove a stale comment from follow_trans_huge_pmd(): That
-comment for pmd_protnone() was added in commit 2b4847e73004 ("mm: numa:
-serialise parallel get_user_page against THP migration"), which noted:
-
-	THP does not unmap pages due to a lack of support for migration
-	entries at a PMD level.  This allows races with get_user_pages
-
-Nowadays, we do have PMD migration entries, so the comment no longer
-applies.  Let's drop it.
-
-[1] https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
-[2] https://lore.kernel.org/r/CAHk-=wgRiP_9X0rRdZKT8nhemZGNateMtb366t37d8-x7VRs=g@mail.gmail.com
-
-Link: https://lkml.kernel.org/r/20230803143208.383663-2-david@redhat.com
-Fixes: 474098edac26 ("mm/gup: replace FOLL_NUMA by gup_can_follow_protnone()")
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Reported-by: liubo <liubo254@huawei.com>
-Closes: https://lore.kernel.org/r/20230726073409.631838-1-liubo254@huawei.com
-Reported-by: Peter Xu <peterx@redhat.com>
-Closes: https://lore.kernel.org/all/ZMKJjDaqZ7FW0jfe@x1n/
-Acked-by: Mel Gorman <mgorman@techsingularity.net>
-Acked-by: Peter Xu <peterx@redhat.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jason Gunthorpe <jgg@ziepe.ca>
-Cc: John Hubbard <jhubbard@nvidia.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Mel Gorman <mgorman@suse.de>
-Cc: Paolo Bonzini <pbonzini@redhat.com>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+[mpe: Trim and indent oops]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/mm.h       |   21 +++++++++++++++------
- include/linux/mm_types.h |    9 +++++++++
- mm/gup.c                 |   30 ++++++++++++++++++++++++------
- mm/huge_memory.c         |    3 +--
- 4 files changed, 49 insertions(+), 14 deletions(-)
+ arch/powerpc/kernel/rtas_flash.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/include/linux/mm.h
-+++ b/include/linux/mm.h
-@@ -3381,15 +3381,24 @@ static inline int vm_fault_to_errno(vm_f
-  * Indicates whether GUP can follow a PROT_NONE mapped page, or whether
-  * a (NUMA hinting) fault is required.
-  */
--static inline bool gup_can_follow_protnone(unsigned int flags)
-+static inline bool gup_can_follow_protnone(struct vm_area_struct *vma,
-+					   unsigned int flags)
- {
- 	/*
--	 * FOLL_FORCE has to be able to make progress even if the VMA is
--	 * inaccessible. Further, FOLL_FORCE access usually does not represent
--	 * application behaviour and we should avoid triggering NUMA hinting
--	 * faults.
-+	 * If callers don't want to honor NUMA hinting faults, no need to
-+	 * determine if we would actually have to trigger a NUMA hinting fault.
- 	 */
--	return flags & FOLL_FORCE;
-+	if (!(flags & FOLL_HONOR_NUMA_FAULT))
-+		return true;
-+
-+	/*
-+	 * NUMA hinting faults don't apply in inaccessible (PROT_NONE) VMAs.
-+	 *
-+	 * Requiring a fault here even for inaccessible VMAs would mean that
-+	 * FOLL_FORCE cannot make any progress, because handle_mm_fault()
-+	 * refuses to process NUMA hinting faults in inaccessible VMAs.
-+	 */
-+	return !vma_is_accessible(vma);
- }
+--- a/arch/powerpc/kernel/rtas_flash.c
++++ b/arch/powerpc/kernel/rtas_flash.c
+@@ -714,9 +714,9 @@ static int __init rtas_flash_init(void)
+ 	if (!rtas_validate_flash_data.buf)
+ 		return -ENOMEM;
  
- typedef int (*pte_fn_t)(pte_t *pte, unsigned long addr, void *data);
---- a/include/linux/mm_types.h
-+++ b/include/linux/mm_types.h
-@@ -1286,6 +1286,15 @@ enum {
- 	FOLL_PCI_P2PDMA = 1 << 10,
- 	/* allow interrupts from generic signals */
- 	FOLL_INTERRUPTIBLE = 1 << 11,
-+	/*
-+	 * Always honor (trigger) NUMA hinting faults.
-+	 *
-+	 * FOLL_WRITE implicitly honors NUMA hinting faults because a
-+	 * PROT_NONE-mapped page is not writable (exceptions with FOLL_FORCE
-+	 * apply). get_user_pages_fast_only() always implicitly honors NUMA
-+	 * hinting faults.
-+	 */
-+	FOLL_HONOR_NUMA_FAULT = 1 << 12,
- 
- 	/* See also internal only FOLL flags in mm/internal.h */
- };
---- a/mm/gup.c
-+++ b/mm/gup.c
-@@ -551,7 +551,7 @@ static struct page *follow_page_pte(stru
- 	pte = *ptep;
- 	if (!pte_present(pte))
- 		goto no_page;
--	if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
-+	if (pte_protnone(pte) && !gup_can_follow_protnone(vma, flags))
- 		goto no_page;
- 
- 	page = vm_normal_page(vma, address, pte);
-@@ -672,7 +672,7 @@ static struct page *follow_pmd_mask(stru
- 	if (likely(!pmd_trans_huge(pmdval)))
- 		return follow_page_pte(vma, address, pmd, flags, &ctx->pgmap);
- 
--	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(flags))
-+	if (pmd_protnone(pmdval) && !gup_can_follow_protnone(vma, flags))
- 		return no_page_table(vma, flags);
- 
- 	ptl = pmd_lock(mm, pmd);
-@@ -820,6 +820,10 @@ struct page *follow_page(struct vm_area_
- 	if (WARN_ON_ONCE(foll_flags & FOLL_PIN))
- 		return NULL;
- 
-+	/*
-+	 * We never set FOLL_HONOR_NUMA_FAULT because callers don't expect
-+	 * to fail on PROT_NONE-mapped pages.
-+	 */
- 	page = follow_page_mask(vma, address, foll_flags, &ctx);
- 	if (ctx.pgmap)
- 		put_dev_pagemap(ctx.pgmap);
-@@ -2134,6 +2138,13 @@ static bool is_valid_gup_args(struct pag
- 		gup_flags |= FOLL_UNLOCKABLE;
- 	}
- 
-+	/*
-+	 * For now, always trigger NUMA hinting faults. Some GUP users like
-+	 * KVM require the hint to be as the calling context of GUP is
-+	 * functionally similar to a memory reference from task context.
-+	 */
-+	gup_flags |= FOLL_HONOR_NUMA_FAULT;
-+
- 	/* FOLL_GET and FOLL_PIN are mutually exclusive. */
- 	if (WARN_ON_ONCE((gup_flags & (FOLL_PIN | FOLL_GET)) ==
- 			 (FOLL_PIN | FOLL_GET)))
-@@ -2394,7 +2405,14 @@ static int gup_pte_range(pmd_t pmd, pmd_
- 		struct page *page;
- 		struct folio *folio;
- 
--		if (pte_protnone(pte) && !gup_can_follow_protnone(flags))
-+		/*
-+		 * Always fallback to ordinary GUP on PROT_NONE-mapped pages:
-+		 * pte_access_permitted() better should reject these pages
-+		 * either way: otherwise, GUP-fast might succeed in
-+		 * cases where ordinary GUP would fail due to VMA access
-+		 * permissions.
-+		 */
-+		if (pte_protnone(pte))
- 			goto pte_unmap;
- 
- 		if (!pte_access_permitted(pte, flags & FOLL_WRITE))
-@@ -2784,8 +2802,8 @@ static int gup_pmd_range(pud_t *pudp, pu
- 
- 		if (unlikely(pmd_trans_huge(pmd) || pmd_huge(pmd) ||
- 			     pmd_devmap(pmd))) {
--			if (pmd_protnone(pmd) &&
--			    !gup_can_follow_protnone(flags))
-+			/* See gup_pte_range() */
-+			if (pmd_protnone(pmd))
- 				return 0;
- 
- 			if (!gup_huge_pmd(pmd, pmdp, addr, next, flags,
-@@ -2965,7 +2983,7 @@ static int internal_get_user_pages_fast(
- 	if (WARN_ON_ONCE(gup_flags & ~(FOLL_WRITE | FOLL_LONGTERM |
- 				       FOLL_FORCE | FOLL_PIN | FOLL_GET |
- 				       FOLL_FAST_ONLY | FOLL_NOFAULT |
--				       FOLL_PCI_P2PDMA)))
-+				       FOLL_PCI_P2PDMA | FOLL_HONOR_NUMA_FAULT)))
- 		return -EINVAL;
- 
- 	if (gup_flags & FOLL_PIN)
---- a/mm/huge_memory.c
-+++ b/mm/huge_memory.c
-@@ -1467,8 +1467,7 @@ struct page *follow_trans_huge_pmd(struc
- 	if ((flags & FOLL_DUMP) && is_huge_zero_pmd(*pmd))
- 		return ERR_PTR(-EFAULT);
- 
--	/* Full NUMA hinting faults to serialise migration in fault paths */
--	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(flags))
-+	if (pmd_protnone(*pmd) && !gup_can_follow_protnone(vma, flags))
- 		return NULL;
- 
- 	if (!pmd_write(*pmd) && gup_must_unshare(vma, flags, page))
+-	flash_block_cache = kmem_cache_create("rtas_flash_cache",
+-					      RTAS_BLK_SIZE, RTAS_BLK_SIZE, 0,
+-					      NULL);
++	flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
++						       RTAS_BLK_SIZE, RTAS_BLK_SIZE,
++						       0, 0, RTAS_BLK_SIZE, NULL);
+ 	if (!flash_block_cache) {
+ 		printk(KERN_ERR "%s: failed to create block cache\n",
+ 				__func__);
 
 
