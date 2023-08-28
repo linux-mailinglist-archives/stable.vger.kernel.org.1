@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 445BC78AC76
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:40:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB0A178AA94
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231705AbjH1KkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57782 "EHLO
+        id S231163AbjH1KX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231712AbjH1Kjv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:51 -0400
+        with ESMTP id S231191AbjH1KXF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:05 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CF3EB10D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC6B120
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:00 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6507863FFD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 746F2C433C7;
-        Mon, 28 Aug 2023 10:39:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B995A63989
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7395C433C8;
+        Mon, 28 Aug 2023 10:22:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219187;
-        bh=PLW2tGN+OasK4ieKkNwhyAb848ESN4XZUUiVmVC6KJU=;
+        s=korg; t=1693218179;
+        bh=NtJbmZsO8yXnhQfPziqiEQK8wTnCyPglIIkKtA5KsxY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YpRioF7IY6dhXvz5ZDwKpnOAMxwSue1XbGHBCTTtqy85ppmK8cO5LxGw7zi0JEuWQ
-         MSfE9509JD8TyKqHRS3VP3d5d9SvtJ26pObso5wck0rjsLEnMEGGPk8IWVQ+5UqCvc
-         WwEz9En/6g71jP7SrIT6VPrZNwSzL49rWlKxO8W0=
+        b=nPxrVrlF0ldB1RFhNJrWNQF6CZ3AJmT2+hytGKs1NbHzN0D+DHhinLy2PT+S4QeCj
+         VJ5wbCxvKnkijObbxfVX4UpvidMZ5ymCFNNddPe94K/H0EemmMec6VzrzTIJCIdYOn
+         VykbyN+oO2GoM5RFYd9k7JrJhK1gBSP8wvSHJNUM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Sam Ravnborg <sam@ravnborg.org>,
+        patches@lists.linux.dev,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 105/158] fbdev: Fix sys_imageblit() for arbitrary image widths
+Subject: [PATCH 6.4 123/129] gpio: sim: dispose of irq mappings before destroying the irq_sim domain
 Date:   Mon, 28 Aug 2023 12:13:22 +0200
-Message-ID: <20230828101200.850688325@linuxfoundation.org>
+Message-ID: <20230828101201.504346911@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,105 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-[ Upstream commit 61bfcb6a3b981e8f19e044ac8c3de6edbe6caf70 ]
+[ Upstream commit ab4109f91b328ff5cb5e1279f64d443241add2d1 ]
 
-Commit 6f29e04938bf ("fbdev: Improve performance of sys_imageblit()")
-broke sys_imageblit() for image width that are not aligned to 8-bit
-boundaries. Fix this by handling the trailing pixels on each line
-separately. The performance improvements in the original commit do not
-regress by this change.
+If a GPIO simulator device is unbound with interrupts still requested,
+we will hit a use-after-free issue in __irq_domain_deactivate_irq(). The
+owner of the irq domain must dispose of all mappings before destroying
+the domain object.
 
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 6f29e04938bf ("fbdev: Improve performance of sys_imageblit()")
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Daniel Vetter <daniel.vetter@ffwll.ch>
-Tested-by: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Javier Martinez Canillas <javierm@redhat.com>
-Cc: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220313192952.12058-2-tzimmermann@suse.de
-Stable-dep-of: c2d22806aecb ("fbdev: fix potential OOB read in fast_imageblit()")
+Fixes: cb8c474e79be ("gpio: sim: new testing module")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/sysimgblt.c | 29 ++++++++++++++++++++++++----
- 1 file changed, 25 insertions(+), 4 deletions(-)
+ drivers/gpio/gpio-sim.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
-diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
-index 722c327a381bd..335e92b813fc4 100644
---- a/drivers/video/fbdev/core/sysimgblt.c
-+++ b/drivers/video/fbdev/core/sysimgblt.c
-@@ -188,7 +188,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
+diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
+index f1f6f1c329877..8fb11a5395eb8 100644
+--- a/drivers/gpio/gpio-sim.c
++++ b/drivers/gpio/gpio-sim.c
+@@ -291,6 +291,15 @@ static void gpio_sim_mutex_destroy(void *data)
+ 	mutex_destroy(lock);
+ }
+ 
++static void gpio_sim_dispose_mappings(void *data)
++{
++	struct gpio_sim_chip *chip = data;
++	unsigned int i;
++
++	for (i = 0; i < chip->gc.ngpio; i++)
++		irq_dispose_mapping(irq_find_mapping(chip->irq_sim, i));
++}
++
+ static void gpio_sim_sysfs_remove(void *data)
  {
- 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
- 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
--	u32 bit_mask, eorx;
-+	u32 bit_mask, eorx, shift;
- 	const char *s = image->data, *src;
- 	u32 *dst;
- 	const u32 *tab;
-@@ -229,17 +229,23 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
+ 	struct gpio_sim_chip *chip = data;
+@@ -406,6 +415,10 @@ static int gpio_sim_add_bank(struct fwnode_handle *swnode, struct device *dev)
+ 	if (IS_ERR(chip->irq_sim))
+ 		return PTR_ERR(chip->irq_sim);
  
- 	for (i = image->height; i--; ) {
- 		dst = dst1;
-+		shift = 8;
- 		src = s;
- 
-+		/*
-+		 * Manually unroll the per-line copying loop for better
-+		 * performance. This works until we processed the last
-+		 * completely filled source byte (inclusive).
-+		 */
- 		switch (ppw) {
- 		case 4: /* 8 bpp */
--			for (j = k; j; j -= 2, ++src) {
-+			for (j = k; j >= 2; j -= 2, ++src) {
- 				*dst++ = colortab[(*src >> 4) & bit_mask];
- 				*dst++ = colortab[(*src >> 0) & bit_mask];
- 			}
- 			break;
- 		case 2: /* 16 bpp */
--			for (j = k; j; j -= 4, ++src) {
-+			for (j = k; j >= 4; j -= 4, ++src) {
- 				*dst++ = colortab[(*src >> 6) & bit_mask];
- 				*dst++ = colortab[(*src >> 4) & bit_mask];
- 				*dst++ = colortab[(*src >> 2) & bit_mask];
-@@ -247,7 +253,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 			}
- 			break;
- 		case 1: /* 32 bpp */
--			for (j = k; j; j -= 8, ++src) {
-+			for (j = k; j >= 8; j -= 8, ++src) {
- 				*dst++ = colortab[(*src >> 7) & bit_mask];
- 				*dst++ = colortab[(*src >> 6) & bit_mask];
- 				*dst++ = colortab[(*src >> 5) & bit_mask];
-@@ -259,6 +265,21 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 			}
- 			break;
- 		}
++	ret = devm_add_action_or_reset(dev, gpio_sim_dispose_mappings, chip);
++	if (ret)
++		return ret;
 +
-+		/*
-+		 * For image widths that are not a multiple of 8, there
-+		 * are trailing pixels left on the current line. Print
-+		 * them as well.
-+		 */
-+		for (; j--; ) {
-+			shift -= ppw;
-+			*dst++ = colortab[(*src >> shift) & bit_mask];
-+			if (!shift) {
-+				shift = 8;
-+				++src;
-+			}
-+		}
-+
- 		dst1 += p->fix.line_length;
- 		s += spitch;
- 	}
+ 	mutex_init(&chip->lock);
+ 	ret = devm_add_action_or_reset(dev, gpio_sim_mutex_destroy,
+ 				       &chip->lock);
 -- 
 2.40.1
 
