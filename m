@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 546C978A9BB
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:15:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96F5778AC29
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230364AbjH1KPX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:15:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
+        id S231610AbjH1Khs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:37:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230368AbjH1KPP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:15:15 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0222A95
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:15:13 -0700 (PDT)
+        with ESMTP id S231614AbjH1KhM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA91AA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8885863685
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:15:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C763C433C7;
-        Mon, 28 Aug 2023 10:15:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8970C63F25
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D0C8C433C8;
+        Mon, 28 Aug 2023 10:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217712;
-        bh=nB9LO6ZRthhvX51wgQ+/PX00JAeji7dUkMV/cDWQiDQ=;
+        s=korg; t=1693219029;
+        bh=1i0CVaNZIZo1kuzhJZwKXkYgaMpUDI0HfsumnCIkFrE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SmTuomX1S2RKiZwS4ZhrGtYZ4ZichPkBqnKSdKJC/CcAQT0Sjh5DDitEZ+XQDZdz6
-         psHTt75XFcUuJfvlf4WoEc/8a3hRUKCuHqZCQjk8v3FHnHaNNA+kZLUW88Y8Pl3yO9
-         xL0JsWxJnkXSNmXSP7UZsL70fZDkPGUujAIxPAGw=
+        b=izpnYVIPFgCJwfLCEq7f/v997HR/eUz15BbDATXPcoZnyCMq4+ZzNQr8qXkSIsnTe
+         ohOaqDyABwvr9hRaOFFiMgyBWghFtENLWIflgsl7G5OPARD988aKltXF2Q7/FJ3Bwt
+         m27IhZOOh9tisfZeI5sgHzp5QrSg8NlINIM804H0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ye Bin <yebin10@huawei.com>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 05/57] quota: fix warning in dqgrab()
+        patches@lists.linux.dev, Steven Rostedt <rostedt@goodmis.org>,
+        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 048/158] tracing/probes: Fix to update dynamic data counter if fetcharg uses it
 Date:   Mon, 28 Aug 2023 12:12:25 +0200
-Message-ID: <20230828101144.393981655@linuxfoundation.org>
+Message-ID: <20230828101158.957370858@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,106 +55,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Masami Hiramatsu (Google) <mhiramat@kernel.org>
 
-[ Upstream commit d6a95db3c7ad160bc16b89e36449705309b52bcb ]
+[ Upstream commit e38e2c6a9efc435f9de344b7c91f7697e01b47d5 ]
 
-There's issue as follows when do fault injection:
-WARNING: CPU: 1 PID: 14870 at include/linux/quotaops.h:51 dquot_disable+0x13b7/0x18c0
-Modules linked in:
-CPU: 1 PID: 14870 Comm: fsconfig Not tainted 6.3.0-next-20230505-00006-g5107a9c821af-dirty #541
-RIP: 0010:dquot_disable+0x13b7/0x18c0
-RSP: 0018:ffffc9000acc79e0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88825e41b980
-RDX: 0000000000000000 RSI: ffff88825e41b980 RDI: 0000000000000002
-RBP: ffff888179f68000 R08: ffffffff82087ca7 R09: 0000000000000000
-R10: 0000000000000001 R11: ffffed102f3ed026 R12: ffff888179f68130
-R13: ffff888179f68110 R14: dffffc0000000000 R15: ffff888179f68118
-FS:  00007f450a073740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe96f2efd8 CR3: 000000025c8ad000 CR4: 00000000000006e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- dquot_load_quota_sb+0xd53/0x1060
- dquot_resume+0x172/0x230
- ext4_reconfigure+0x1dc6/0x27b0
- reconfigure_super+0x515/0xa90
- __x64_sys_fsconfig+0xb19/0xd20
- do_syscall_64+0x39/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Fix to update dynamic data counter ('dyndata') and max length ('maxlen')
+only if the fetcharg uses the dynamic data. Also get out arg->dynamic
+from unlikely(). This makes dynamic data address wrong if
+process_fetch_insn() returns error on !arg->dynamic case.
 
-Above issue may happens as follows:
-ProcessA              ProcessB                    ProcessC
-sys_fsconfig
-  vfs_fsconfig_locked
-   reconfigure_super
-     ext4_remount
-      dquot_suspend -> suspend all type quota
+Link: https://lore.kernel.org/all/168908494781.123124.8160245359962103684.stgit@devnote2/
 
-                 sys_fsconfig
-                  vfs_fsconfig_locked
-                    reconfigure_super
-                     ext4_remount
-                      dquot_resume
-                       ret = dquot_load_quota_sb
-                        add_dquot_ref
-                                           do_open  -> open file O_RDWR
-                                            vfs_open
-                                             do_dentry_open
-                                              get_write_access
-                                               atomic_inc_unless_negative(&inode->i_writecount)
-                                              ext4_file_open
-                                               dquot_file_open
-                                                dquot_initialize
-                                                  __dquot_initialize
-                                                   dqget
-						    atomic_inc(&dquot->dq_count);
-
-                          __dquot_initialize
-                           __dquot_initialize
-                            dqget
-                             if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-                               ext4_acquire_dquot
-			        -> Return error DQ_ACTIVE_B flag isn't set
-                         dquot_disable
-			  invalidate_dquots
-			   if (atomic_read(&dquot->dq_count))
-	                    dqgrab
-			     WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-	                      -> Trigger warning
-
-In the above scenario, 'dquot->dq_flags' has no DQ_ACTIVE_B is normal when
-dqgrab().
-To solve above issue just replace the dqgrab() use in invalidate_dquots() with
-atomic_inc(&dquot->dq_count).
-
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230605140731.2427629-3-yebin10@huawei.com>
+Suggested-by: Steven Rostedt <rostedt@goodmis.org>
+Link: https://lore.kernel.org/all/20230710233400.5aaf024e@gandalf.local.home/
+Fixes: 9178412ddf5a ("tracing: probeevent: Return consumed bytes of dynamic area")
+Cc: stable@vger.kernel.org
+Signed-off-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Reviewed-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/trace/trace_probe_tmpl.h | 12 +++++++-----
+ 1 file changed, 7 insertions(+), 5 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 1cbec5dde5830..1629d50782bf9 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -540,7 +540,7 @@ static void invalidate_dquots(struct super_block *sb, int type)
- 			continue;
- 		/* Wait for dquot users */
- 		if (atomic_read(&dquot->dq_count)) {
--			dqgrab(dquot);
-+			atomic_inc(&dquot->dq_count);
- 			spin_unlock(&dq_list_lock);
- 			/*
- 			 * Once dqput() wakes us up, we know it's time to free
+diff --git a/kernel/trace/trace_probe_tmpl.h b/kernel/trace/trace_probe_tmpl.h
+index bbb479b3ba8fd..cf14a37dff8c8 100644
+--- a/kernel/trace/trace_probe_tmpl.h
++++ b/kernel/trace/trace_probe_tmpl.h
+@@ -206,11 +206,13 @@ store_trace_args(void *data, struct trace_probe *tp, void *rec,
+ 		if (unlikely(arg->dynamic))
+ 			*dl = make_data_loc(maxlen, dyndata - base);
+ 		ret = process_fetch_insn(arg->code, rec, dl, base);
+-		if (unlikely(ret < 0 && arg->dynamic)) {
+-			*dl = make_data_loc(0, dyndata - base);
+-		} else {
+-			dyndata += ret;
+-			maxlen -= ret;
++		if (arg->dynamic) {
++			if (unlikely(ret < 0)) {
++				*dl = make_data_loc(0, dyndata - base);
++			} else {
++				dyndata += ret;
++				maxlen -= ret;
++			}
+ 		}
+ 	}
+ }
 -- 
 2.40.1
 
