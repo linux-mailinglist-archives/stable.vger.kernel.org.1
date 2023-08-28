@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF68B78AD3D
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:47:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E021E78ADAB
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231915AbjH1Kqx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46462 "EHLO
+        id S232145AbjH1KuN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:50:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60948 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231918AbjH1KqW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:22 -0400
+        with ESMTP id S232144AbjH1Ktq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:49:46 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB53C12D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B205CCA
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A84506412D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B70E1C433C7;
-        Mon, 28 Aug 2023 10:45:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 68C6E643C9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CF6DC433CA;
+        Mon, 28 Aug 2023 10:49:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219554;
-        bh=UCH6at7pqT3cw/jreFYEcF0lQ9/DxbP7n6e8CKKKk64=;
+        s=korg; t=1693219761;
+        bh=vnm6pKBjxKVM/sm1c5TW9aghuTwrbPt1okEutJT9eco=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mDGfq7R0gpS4LKwJDne/ogo83BNFw0WItKhz42MdSZkFKkFOT2nYfcZtOGceexvyF
-         nK2Fg2S+oCKy3aCKmgZAbFLuW+hFtPo2SMti+yZ3bgf3U16pMzpZ0taaK9UFkNI0xZ
-         VHkKXtu743jPG/d1sjc8TtKAS2RtwZtTlPgzF7Is=
+        b=BibeAJDgNQNjM4yFEVpp0zOIR5UgKtSJgA24uuS6umGs7tMZ1fPgWh6rTqJDCZ+hp
+         bgFArQ0vYRAEQnifR5k+YzRbv2YAYgBq5MXz/0D4Tpd9V4samqV8m1aSAGCR4RyFkH
+         oQCn5GY5QjM6TxWoHEASFB0AX5suB/vX3F8ORfG8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Qais Yousef (Google)" <qyousef@layalina.io>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>
-Subject: [PATCH 5.15 77/89] cgroup/cpuset: Iterate only if DEADLINE tasks are present
-Date:   Mon, 28 Aug 2023 12:14:18 +0200
-Message-ID: <20230828101152.809970505@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
+        Feng Tang <feng.tang@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 5.10 62/84] x86/fpu: Set X86_FEATURE_OSXSAVE feature after enabling OSXSAVE in CR4
+Date:   Mon, 28 Aug 2023 12:14:19 +0200
+Message-ID: <20230828101151.362291771@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,43 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Feng Tang <feng.tang@intel.com>
 
-commit c0f78fd5edcf29b2822ac165f9248a6c165e8554 upstream.
+commit 2c66ca3949dc701da7f4c9407f2140ae425683a5 upstream.
 
-update_tasks_root_domain currently iterates over all tasks even if no
-DEADLINE task is present on the cpuset/root domain for which bandwidth
-accounting is being rebuilt. This has been reported to introduce 10+ ms
-delays on suspend-resume operations.
+0-Day found a 34.6% regression in stress-ng's 'af-alg' test case, and
+bisected it to commit b81fac906a8f ("x86/fpu: Move FPU initialization into
+arch_cpu_finalize_init()"), which optimizes the FPU init order, and moves
+the CR4_OSXSAVE enabling into a later place:
 
-Skip the costly iteration for cpusets that don't contain DEADLINE tasks.
+   arch_cpu_finalize_init
+       identify_boot_cpu
+	   identify_cpu
+	       generic_identify
+                   get_cpu_cap --> setup cpu capability
+       ...
+       fpu__init_cpu
+           fpu__init_cpu_xstate
+               cr4_set_bits(X86_CR4_OSXSAVE);
 
-Reported-by: Qais Yousef (Google) <qyousef@layalina.io>
-Link: https://lore.kernel.org/lkml/20230206221428.2125324-1-qyousef@layalina.io/
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+As the FPU is not yet initialized the CPU capability setup fails to set
+X86_FEATURE_OSXSAVE. Many security module like 'camellia_aesni_avx_x86_64'
+depend on this feature and therefore fail to load, causing the regression.
+
+Cure this by setting X86_FEATURE_OSXSAVE feature right after OSXSAVE
+enabling.
+
+[ tglx: Moved it into the actual BSP FPU initialization code and added a comment ]
+
+Fixes: b81fac906a8f ("x86/fpu: Move FPU initialization into arch_cpu_finalize_init()")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/lkml/202307192135.203ac24e-oliver.sang@intel.com
+Link: https://lore.kernel.org/lkml/20230823065747.92257-1-feng.tang@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cpuset.c |    3 +++
- 1 file changed, 3 insertions(+)
+ arch/x86/kernel/fpu/xstate.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -966,6 +966,9 @@ static void dl_update_tasks_root_domain(
- 	struct css_task_iter it;
- 	struct task_struct *task;
- 
-+	if (cs->nr_deadline_tasks == 0)
-+		return;
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -892,6 +892,14 @@ void __init fpu__init_system_xstate(void
+ 	setup_init_fpu_buf();
+ 	setup_xstate_comp_offsets();
+ 	setup_supervisor_only_offsets();
 +
- 	css_task_iter_start(&cs->css, 0, &it);
++	/*
++	 * CPU capabilities initialization runs before FPU init. So
++	 * X86_FEATURE_OSXSAVE is not set. Now that XSAVE is completely
++	 * functional, set the feature bit so depending code works.
++	 */
++	setup_force_cpu_cap(X86_FEATURE_OSXSAVE);
++
+ 	print_xstate_offset_size();
  
- 	while ((task = css_task_iter_next(&it)))
+ 	pr_info("x86/fpu: Enabled xstate features 0x%llx, context size is %d bytes, using '%s' format.\n",
 
 
