@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6905178ABB4
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:34:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E22578AA6E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231454AbjH1Kd6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:33:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40086 "EHLO
+        id S230178AbjH1KWO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:22:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231452AbjH1Kd1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:33:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72E371A4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:03 -0700 (PDT)
+        with ESMTP id S230518AbjH1KVu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB98D136
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8171161DAA
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90514C433C8;
-        Mon, 28 Aug 2023 10:33:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34D3A638EE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AA8DC433C8;
+        Mon, 28 Aug 2023 10:21:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218781;
-        bh=jDiVtACYXBNhHyxp2PVbSYUCakQE4ETViIQUHo0ld6g=;
+        s=korg; t=1693218079;
+        bh=91qeNnNHuDWmx+AxHkIBov4XrfVHp98ZP97pA9wjO/I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V6geURieA0oSiVioZ/o/KzZPqbro2uh78VLfm7gt+4jIKP77//UC8NIYapD4Jt4DC
-         TWE132moRgYIghwuA8azLY6Dk1f2Y1knZeYVjIXDNETUL6apf+ZzzL0+PdbWZp5FYp
-         IIXnRiIam/qrqNqo6XO3yYWCS2/Gwhteiz7kNXTg=
+        b=DlPV2dtlSwloh+X1CZv+pZxv2M64FOYL32SmV8zHdyWhmlyAiBaY+h0+KavIXXlfu
+         D1fa+tUv3n2ML0MDlXCbd/VsAJ69WGn9+N962vSgtyKTLfPEvDG8BYzWX0M9pfKd99
+         63f1PC4zu04gYv9a4vkllOez9+HmAAoA1FMGS+eM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
-        Stefano Brivio <sbrivio@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 052/122] netfilter: nf_tables: fix out of memory error handling
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 088/129] nilfs2: fix general protection fault in nilfs_lookup_dirty_data_buffers()
 Date:   Mon, 28 Aug 2023 12:12:47 +0200
-Message-ID: <20230828101158.139893818@linuxfoundation.org>
+Message-ID: <20230828101200.282396340@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,69 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Florian Westphal <fw@strlen.de>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-[ Upstream commit 5e1be4cdc98c989d5387ce94ff15b5ad06a5b681 ]
+commit f83913f8c5b882a312e72b7669762f8a5c9385e4 upstream.
 
-Several instances of pipapo_resize() don't propagate allocation failures,
-this causes a crash when fault injection is enabled for gfp_kernel slabs.
+A syzbot stress test reported that create_empty_buffers() called from
+nilfs_lookup_dirty_data_buffers() can cause a general protection fault.
 
-Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Analysis using its reproducer revealed that the back reference "mapping"
+from a page/folio has been changed to NULL after dirty page/folio gang
+lookup in nilfs_lookup_dirty_data_buffers().
+
+Fix this issue by excluding pages/folios from being collected if, after
+acquiring a lock on each page/folio, its back reference "mapping" differs
+from the pointer to the address space struct that held the page/folio.
+
+Link: https://lkml.kernel.org/r/20230805132038.6435-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000002930a705fc32b231@google.com
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/nft_set_pipapo.c | 13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ fs/nilfs2/segment.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
-index 32cfd0a84b0e2..8c16681884b7e 100644
---- a/net/netfilter/nft_set_pipapo.c
-+++ b/net/netfilter/nft_set_pipapo.c
-@@ -901,12 +901,14 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
- static int pipapo_insert(struct nft_pipapo_field *f, const uint8_t *k,
- 			 int mask_bits)
- {
--	int rule = f->rules++, group, ret, bit_offset = 0;
-+	int rule = f->rules, group, ret, bit_offset = 0;
+--- a/fs/nilfs2/segment.c
++++ b/fs/nilfs2/segment.c
+@@ -725,6 +725,11 @@ static size_t nilfs_lookup_dirty_data_bu
+ 		struct folio *folio = fbatch.folios[i];
  
--	ret = pipapo_resize(f, f->rules - 1, f->rules);
-+	ret = pipapo_resize(f, f->rules, f->rules + 1);
- 	if (ret)
- 		return ret;
- 
-+	f->rules++;
-+
- 	for (group = 0; group < f->groups; group++) {
- 		int i, v;
- 		u8 mask;
-@@ -1051,7 +1053,9 @@ static int pipapo_expand(struct nft_pipapo_field *f,
- 			step++;
- 			if (step >= len) {
- 				if (!masks) {
--					pipapo_insert(f, base, 0);
-+					err = pipapo_insert(f, base, 0);
-+					if (err < 0)
-+						return err;
- 					masks = 1;
- 				}
- 				goto out;
-@@ -1234,6 +1238,9 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
- 		else
- 			ret = pipapo_expand(f, start, end, f->groups * f->bb);
- 
-+		if (ret < 0)
-+			return ret;
-+
- 		if (f->bsize > bsize_max)
- 			bsize_max = f->bsize;
- 
--- 
-2.40.1
-
+ 		folio_lock(folio);
++		if (unlikely(folio->mapping != mapping)) {
++			/* Exclude folios removed from the address space */
++			folio_unlock(folio);
++			continue;
++		}
+ 		head = folio_buffers(folio);
+ 		if (!head) {
+ 			create_empty_buffers(&folio->page, i_blocksize(inode), 0);
 
 
