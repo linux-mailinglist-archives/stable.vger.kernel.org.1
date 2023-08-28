@@ -2,45 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5604C78AA2F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA10978AA33
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:20:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229955AbjH1KTg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:19:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42912 "EHLO
+        id S229834AbjH1KUH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:20:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231131AbjH1KTS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:19:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E62E5118
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:18:59 -0700 (PDT)
+        with ESMTP id S230460AbjH1KTn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:19:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 562A7122;
+        Mon, 28 Aug 2023 03:19:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 854B1637BE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:18:59 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 967C8C433C8;
-        Mon, 28 Aug 2023 10:18:58 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id F235863829;
+        Mon, 28 Aug 2023 10:19:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD5FAC433C7;
+        Mon, 28 Aug 2023 10:19:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217939;
-        bh=/RYUeT9ASGvPdMRf23R2pPbiloayyd7Tfie5L5S6uSw=;
+        s=korg; t=1693217944;
+        bh=EJ+2FRpR64R9HkOHWigcvnITZ7Gh2+h4XI0tdaeTp7w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xiY6YLIYCShUUeFAeyt/pUXIlLH7h8uBH+DkKumrrZxqwk+R7h2UzJhyNkNacRwZW
-         n2F5ez/bXabVLm6DWnyKhVMaiXk3JBzpECyibs5Tzh3xjHrEwPkJasL7ChLDhDyjDv
-         ygDV5nu/OWgPK9lQjM+NVawVwGstAw+X/F6mOo28=
+        b=0f24V8eHxBu/CUCHrpDw+I0tVx7Nx2Dk2R39xGzDdwAPt17w82A6tnCpAzn35U7X7
+         rLaoWFoBELRwhQaJYccj6gBAfOz8Z86gwcnvLVYtYO620mkRESmdPKNJFA+zylPtjk
+         svITJUDb1v/cFrZFolK+M5G6tcGNAYOFM82aqnt4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
+        kernel test robot <lkp@intel.com>,
+        Krishnanand Prabhu <krishnanand.prabhu@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Gregory Greenman <gregory.greenman@intel.com>,
+        Johannes Berg <johannes.berg@intel.com>,
+        Kalle Valo <kvalo@kernel.org>, linux-wireless@vger.kernel.org,
+        "David S. Miller" <davem@davemloft.net>,
         Eric Dumazet <edumazet@google.com>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Oliver Hartkopp <socketcan@hartkopp.net>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>, netdev@vger.kernel.org,
+        Simon Horman <horms@kernel.org>,
+        Richard Cochran <richardcochran@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 009/129] can: raw: fix lockdep issue in raw_release()
-Date:   Mon, 28 Aug 2023 12:11:28 +0200
-Message-ID: <20230828101157.688688497@linuxfoundation.org>
+Subject: [PATCH 6.4 010/129] wifi: iwlwifi: mvm: add dependency for PTP clock
+Date:   Mon, 28 Aug 2023 12:11:29 +0200
+Message-ID: <20230828101157.719066172@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
 References: <20230828101157.383363777@linuxfoundation.org>
@@ -49,8 +57,8 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,157 +70,63 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Randy Dunlap <rdunlap@infradead.org>
 
-[ Upstream commit 11c9027c983e9e4b408ee5613b6504d24ebd85be ]
+[ Upstream commit 609a1bcd7bebac90a1b443e9fed47fd48dac5799 ]
 
-syzbot complained about a lockdep issue [1]
+When the code to use the PTP HW clock was added, it didn't update
+the Kconfig entry for the PTP dependency, leading to build errors,
+so update the Kconfig entry to depend on PTP_1588_CLOCK_OPTIONAL.
 
-Since raw_bind() and raw_setsockopt() first get RTNL
-before locking the socket, we must adopt the same order in raw_release()
+aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.o: in function `iwl_mvm_ptp_init':
+drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:294: undefined reference to `ptp_clock_register'
+drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:294:(.text+0xce8): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_register'
+aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:301: undefined reference to `ptp_clock_index'
+drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:301:(.text+0xd18): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_index'
+aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.o: in function `iwl_mvm_ptp_remove':
+drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:315: undefined reference to `ptp_clock_index'
+drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:315:(.text+0xe80): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_index'
+aarch64-linux-ld: drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:319: undefined reference to `ptp_clock_unregister'
+drivers/net/wireless/intel/iwlwifi/mvm/ptp.c:319:(.text+0xeac): relocation truncated to fit: R_AARCH64_CALL26 against undefined symbol `ptp_clock_unregister'
 
-[1]
-WARNING: possible circular locking dependency detected
-6.5.0-rc1-syzkaller-00192-g78adb4bcf99e #0 Not tainted
-------------------------------------------------------
-syz-executor.0/14110 is trying to acquire lock:
-ffff88804e4b6130 (sk_lock-AF_CAN){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1708 [inline]
-ffff88804e4b6130 (sk_lock-AF_CAN){+.+.}-{0:0}, at: raw_bind+0xb1/0xab0 net/can/raw.c:435
-
-but task is already holding lock:
-ffffffff8e3df368 (rtnl_mutex){+.+.}-{3:3}, at: raw_bind+0xa7/0xab0 net/can/raw.c:434
-
-which lock already depends on the new lock.
-
-the existing dependency chain (in reverse order) is:
-
--> #1 (rtnl_mutex){+.+.}-{3:3}:
-__mutex_lock_common kernel/locking/mutex.c:603 [inline]
-__mutex_lock+0x181/0x1340 kernel/locking/mutex.c:747
-raw_release+0x1c6/0x9b0 net/can/raw.c:391
-__sock_release+0xcd/0x290 net/socket.c:654
-sock_close+0x1c/0x20 net/socket.c:1386
-__fput+0x3fd/0xac0 fs/file_table.c:384
-task_work_run+0x14d/0x240 kernel/task_work.c:179
-resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
-exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
-exit_to_user_mode_prepare+0x210/0x240 kernel/entry/common.c:204
-__syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
-syscall_exit_to_user_mode+0x1d/0x50 kernel/entry/common.c:297
-do_syscall_64+0x44/0xb0 arch/x86/entry/common.c:86
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
--> #0 (sk_lock-AF_CAN){+.+.}-{0:0}:
-check_prev_add kernel/locking/lockdep.c:3142 [inline]
-check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-validate_chain kernel/locking/lockdep.c:3876 [inline]
-__lock_acquire+0x2e3d/0x5de0 kernel/locking/lockdep.c:5144
-lock_acquire kernel/locking/lockdep.c:5761 [inline]
-lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
-lock_sock_nested+0x3a/0xf0 net/core/sock.c:3492
-lock_sock include/net/sock.h:1708 [inline]
-raw_bind+0xb1/0xab0 net/can/raw.c:435
-__sys_bind+0x1ec/0x220 net/socket.c:1792
-__do_sys_bind net/socket.c:1803 [inline]
-__se_sys_bind net/socket.c:1801 [inline]
-__x64_sys_bind+0x72/0xb0 net/socket.c:1801
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-other info that might help us debug this:
-
-Possible unsafe locking scenario:
-
-CPU0 CPU1
----- ----
-lock(rtnl_mutex);
-        lock(sk_lock-AF_CAN);
-        lock(rtnl_mutex);
-lock(sk_lock-AF_CAN);
-
-*** DEADLOCK ***
-
-1 lock held by syz-executor.0/14110:
-
-stack backtrace:
-CPU: 0 PID: 14110 Comm: syz-executor.0 Not tainted 6.5.0-rc1-syzkaller-00192-g78adb4bcf99e #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
-Call Trace:
-<TASK>
-__dump_stack lib/dump_stack.c:88 [inline]
-dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
-check_noncircular+0x311/0x3f0 kernel/locking/lockdep.c:2195
-check_prev_add kernel/locking/lockdep.c:3142 [inline]
-check_prevs_add kernel/locking/lockdep.c:3261 [inline]
-validate_chain kernel/locking/lockdep.c:3876 [inline]
-__lock_acquire+0x2e3d/0x5de0 kernel/locking/lockdep.c:5144
-lock_acquire kernel/locking/lockdep.c:5761 [inline]
-lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
-lock_sock_nested+0x3a/0xf0 net/core/sock.c:3492
-lock_sock include/net/sock.h:1708 [inline]
-raw_bind+0xb1/0xab0 net/can/raw.c:435
-__sys_bind+0x1ec/0x220 net/socket.c:1792
-__do_sys_bind net/socket.c:1803 [inline]
-__se_sys_bind net/socket.c:1801 [inline]
-__x64_sys_bind+0x72/0xb0 net/socket.c:1801
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-RIP: 0033:0x7fd89007cb29
-Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
-RSP: 002b:00007fd890d2a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000031
-RAX: ffffffffffffffda RBX: 00007fd89019bf80 RCX: 00007fd89007cb29
-RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
-RBP: 00007fd8900c847a R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
-R13: 000000000000000b R14: 00007fd89019bf80 R15: 00007ffebf8124f8
-</TASK>
-
-Fixes: ee8b94c8510c ("can: raw: fix receiver memory leak")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Ziyang Xuan <william.xuanziyang@huawei.com>
-Cc: Oliver Hartkopp <socketcan@hartkopp.net>
-Cc: stable@vger.kernel.org
-Cc: Marc Kleine-Budde <mkl@pengutronix.de>
-Link: https://lore.kernel.org/all/20230720114438.172434-1-edumazet@google.com
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Fixes: 1595ecce1cf3 ("wifi: iwlwifi: mvm: add support for PTP HW clock (PHC)")
+Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/all/202308110447.4QSJHmFH-lkp@intel.com/
+Cc: Krishnanand Prabhu <krishnanand.prabhu@intel.com>
+Cc: Luca Coelho <luciano.coelho@intel.com>
+Cc: Gregory Greenman <gregory.greenman@intel.com>
+Cc: Johannes Berg <johannes.berg@intel.com>
+Cc: Kalle Valo <kvalo@kernel.org>
+Cc: linux-wireless@vger.kernel.org
+Cc: "David S. Miller" <davem@davemloft.net>
+Cc: Eric Dumazet <edumazet@google.com>
+Cc: Jakub Kicinski <kuba@kernel.org>
+Cc: Paolo Abeni <pabeni@redhat.com>
+Cc: netdev@vger.kernel.org
+Reviewed-by: Simon Horman <horms@kernel.org>
+Tested-by: Simon Horman <horms@kernel.org> # build-tested
+Acked-by: Richard Cochran <richardcochran@gmail.com>
+Acked-by: Gregory Greenman <gregory.greenman@intel.com>
+Link: https://lore.kernel.org/r/20230812052947.22913-1-rdunlap@infradead.org
+Signed-off-by: Johannes Berg <johannes.berg@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/raw.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/net/wireless/intel/iwlwifi/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index 9fdad12d16325..9fbbf6e00287f 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -386,9 +386,9 @@ static int raw_release(struct socket *sock)
- 	list_del(&ro->notifier);
- 	spin_unlock(&raw_notifier_lock);
- 
-+	rtnl_lock();
- 	lock_sock(sk);
- 
--	rtnl_lock();
- 	/* remove current filters & unregister */
- 	if (ro->bound) {
- 		if (ro->dev)
-@@ -405,12 +405,13 @@ static int raw_release(struct socket *sock)
- 	ro->dev = NULL;
- 	ro->count = 0;
- 	free_percpu(ro->uniq);
--	rtnl_unlock();
- 
- 	sock_orphan(sk);
- 	sock->sk = NULL;
- 
- 	release_sock(sk);
-+	rtnl_unlock();
-+
- 	sock_put(sk);
- 
- 	return 0;
+diff --git a/drivers/net/wireless/intel/iwlwifi/Kconfig b/drivers/net/wireless/intel/iwlwifi/Kconfig
+index b20409f8c13ab..20971304fdef4 100644
+--- a/drivers/net/wireless/intel/iwlwifi/Kconfig
++++ b/drivers/net/wireless/intel/iwlwifi/Kconfig
+@@ -66,6 +66,7 @@ config IWLMVM
+ 	tristate "Intel Wireless WiFi MVM Firmware support"
+ 	select WANT_DEV_COREDUMP
+ 	depends on MAC80211
++	depends on PTP_1588_CLOCK_OPTIONAL
+ 	help
+ 	  This is the driver that supports the MVM firmware. The list
+ 	  of the devices that use this firmware is available here:
 -- 
 2.40.1
 
