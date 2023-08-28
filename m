@@ -2,47 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E393B78AD95
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB77178ACD4
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232093AbjH1Ktf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:49:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33780 "EHLO
+        id S231835AbjH1Kmv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:42:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232164AbjH1KtT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:49:19 -0400
+        with ESMTP id S231895AbjH1KmP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5469EAB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 393621B1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E6369642C0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC064C433C8;
-        Mon, 28 Aug 2023 10:48:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CC82E640E3
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD622C433C7;
+        Mon, 28 Aug 2023 10:42:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219736;
-        bh=dS51HqnUf23RZp9a7kM7MwzgkD586WI1vQ52BJyJxNQ=;
+        s=korg; t=1693219326;
+        bh=meYLforkHCvoq+qDqWSjO9pwFOxQBvJUZrxD5HRVDZo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FMUFacujcpZyr/BteDDgJHcV99XM6wHN8gOsYUqdGxecybmv67PuSt46sv4bK5/z4
-         0tqfiAcAnom7ur3Wo66DDuGh5/CvD4atntykHM/0TIOhefcyOXq/1a9B2Rtb+DnI1Q
-         jftfYJsQdZZEY2BN5MbuwLa11efpL0FVdgmYa5GA=
+        b=i2VREX8DtnScP9QRrCcIa81TXSIsJpuCNw92MeqxQ4Rd5q6GHSV/0XmkwRXVSJ99s
+         A/WqarA8MaV1OORZ/r0NMSeOHACovUuB9/ouPcB+JJRruUhTq2nf0a6IEzmz2aOLUt
+         E7MHSZiMGrNQ8eAP5nTkd9rru52ejKfd8xhFvL1k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>
-Subject: [PATCH 5.10 54/84] batman-adv: Hold rtnl lock during MTU update via netlink
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.4 154/158] scsi: snic: Fix double free in snic_tgt_create()
 Date:   Mon, 28 Aug 2023 12:14:11 +0200
-Message-ID: <20230828101151.092998076@linuxfoundation.org>
+Message-ID: <20230828101202.928712787@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,49 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-commit 987aae75fc1041072941ffb622b45ce2359a99b9 upstream.
+commit 1bd3a76880b2bce017987cf53780b372cf59528e upstream.
 
-The automatic recalculation of the maximum allowed MTU is usually triggered
-by code sections which are already rtnl lock protected by callers outside
-of batman-adv. But when the fragmentation setting is changed via
-batman-adv's own batadv genl family, then the rtnl lock is not yet taken.
+Commit 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add()
+fails") fixed the memory leak caused by dev_set_name() when device_add()
+failed. However, it did not consider that 'tgt' has already been released
+when put_device(&tgt->dev) is called. Remove kfree(tgt) in the error path
+to avoid double free of 'tgt' and move put_device(&tgt->dev) after the
+removed kfree(tgt) to avoid a use-after-free.
 
-But dev_set_mtu requires that the caller holds the rtnl lock because it
-uses netdevice notifiers. And this code will then fail the check for this
-lock:
-
-  RTNL: assertion failed at net/core/dev.c (1953)
-
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com
-Fixes: c6a953cce8d0 ("batman-adv: Trigger events for auto adjusted MTU")
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230821-batadv-missing-mtu-rtnl-lock-v1-1-1c5a7bfe861e@narfation.org
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add() fails")
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Link: https://lore.kernel.org/r/20230819083941.164365-1-wangzhu9@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/netlink.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/scsi/snic/snic_disc.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/net/batman-adv/netlink.c
-+++ b/net/batman-adv/netlink.c
-@@ -496,7 +496,10 @@ static int batadv_netlink_set_mesh(struc
- 		attr = info->attrs[BATADV_ATTR_FRAGMENTATION_ENABLED];
+--- a/drivers/scsi/snic/snic_disc.c
++++ b/drivers/scsi/snic/snic_disc.c
+@@ -317,12 +317,11 @@ snic_tgt_create(struct snic *snic, struc
+ 			      "Snic Tgt: device_add, with err = %d\n",
+ 			      ret);
  
- 		atomic_set(&bat_priv->fragmentation, !!nla_get_u8(attr));
-+
-+		rtnl_lock();
- 		batadv_update_min_mtu(bat_priv->soft_iface);
-+		rtnl_unlock();
- 	}
+-		put_device(&tgt->dev);
+ 		put_device(&snic->shost->shost_gendev);
+ 		spin_lock_irqsave(snic->shost->host_lock, flags);
+ 		list_del(&tgt->list);
+ 		spin_unlock_irqrestore(snic->shost->host_lock, flags);
+-		kfree(tgt);
++		put_device(&tgt->dev);
+ 		tgt = NULL;
  
- 	if (info->attrs[BATADV_ATTR_GW_BANDWIDTH_DOWN]) {
+ 		return tgt;
 
 
