@@ -2,56 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78A9F78AA7C
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F55B78AB17
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:28:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230515AbjH1KWv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:22:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55882 "EHLO
+        id S231318AbjH1K1l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231157AbjH1KWY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE32195
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:01 -0700 (PDT)
+        with ESMTP id S231341AbjH1K1Y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:27:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4706A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:27:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9019562F9C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A065EC433C8;
-        Mon, 28 Aug 2023 10:22:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69DA363ADB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:27:21 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB05C433C7;
+        Mon, 28 Aug 2023 10:27:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218121;
-        bh=5TkR90K5USFTReOshMUkfWw5dgClL7MaPYYy5LsdIqA=;
+        s=korg; t=1693218440;
+        bh=NKvc404geRug+F6KJFTx39J1P3KRaT6MBkNERDlNvu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Sm1iehQ4OuO2nhX2Any7AslWEDVcEjDkt7hXG4PEuY/POdzKOj9Za22fEbDxNzqFk
-         BJIZ42FZCf8mhG33zElKTSGXa25FJ9H3y6TOj6zsKlGgq7pLhPCh6+ND2xZmrEJcV3
-         gSbE3VUjubRSNOPhrfRFb7T1kw2LDFGQFT/Jkpak=
+        b=Ja4J1hfvxVwQgH3uPG68bI2MsxZQMFlerSJnzbcRxEtwMv1AsIFWk+BfmL73XfmeT
+         XkC3eOKhaFcX8ZOcbQMnX0FEywdtVeoZSDLAxiYo0xKNDW1axairTDqRVr3rAz388M
+         3wEUc6t7D6jhHSTh9VH0Z2YP7dGyKhtsfS7Fyib0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        dri-devel@lists.freedesktop.org,
-        =?UTF-8?q?Jouni=20H=C3=B6gander?= <jouni.hogander@intel.com>,
-        Imre Deak <imre.deak@intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.4 073/129] drm/i915: Fix HPD polling, reenabling the output poll work as needed
-Date:   Mon, 28 Aug 2023 12:12:32 +0200
-Message-ID: <20230828101159.764514347@linuxfoundation.org>
+        patches@lists.linux.dev, Petr Machata <petrm@nvidia.com>,
+        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 059/129] selftests: mirror_gre_changes: Tighten up the TTL test match
+Date:   Mon, 28 Aug 2023 12:12:33 +0200
+Message-ID: <20230828101155.463329794@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -59,60 +58,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imre Deak <imre.deak@intel.com>
+From: Petr Machata <petrm@nvidia.com>
 
-commit 1dcc437427bbcebc8381226352f7ade08a271191 upstream.
+[ Upstream commit 855067defa36b1f9effad8c219d9a85b655cf500 ]
 
-After the commit in the Fixes: line below, HPD polling stopped working
-on i915, since after that change calling drm_kms_helper_poll_enable()
-doesn't restart drm_mode_config::output_poll_work if the work was
-stopped (no connectors needing polling) and enabling polling for a
-connector (during runtime suspend or detecting an HPD IRQ storm).
+This test verifies whether the encapsulated packets have the correct
+configured TTL. It does so by sending ICMP packets through the test
+topology and mirroring them to a gretap netdevice. On a busy host
+however, more than just the test ICMP packets may end up flowing
+through the topology, get mirrored, and counted. This leads to
+potential spurious failures as the test observes much more mirrored
+packets than the sent test packets, and assumes a bug.
 
-After the above change calling drm_kms_helper_poll_enable() is a nop
-after it's been called already and polling for some connectors was
-disabled/re-enabled.
+Fix this by tightening up the mirror action match. Change it from
+matchall to a flower classifier matching on ICMP packets specifically.
 
-Fix this by calling drm_kms_helper_poll_reschedule() added in the
-previous patch instead, which reschedules the work whenever expected.
-
-Fixes: d33a54e3991d ("drm/probe_helper: sort out poll_running vs poll_enabled")
-CC: stable@vger.kernel.org # 6.4+
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: dri-devel@lists.freedesktop.org
-Reviewed-by: Jouni Högander <jouni.hogander@intel.com>
-Signed-off-by: Imre Deak <imre.deak@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230822113015.41224-2-imre.deak@intel.com
-(cherry picked from commit 50452f2f76852322620b63e62922b85e955abe94)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 45315673e0c5 ("selftests: forwarding: Test changes in mirror-to-gretap")
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_hotplug.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/net/forwarding/mirror_gre_changes.sh | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_hotplug.c
-+++ b/drivers/gpu/drm/i915/display/intel_hotplug.c
-@@ -210,7 +210,7 @@ intel_hpd_irq_storm_switch_to_polling(st
+diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
+index 135902aa8b114..a372863c9efdb 100755
+--- a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
++++ b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
+@@ -72,7 +72,8 @@ test_span_gre_ttl()
  
- 	/* Enable polling and queue hotplug re-enabling. */
- 	if (hpd_disabled) {
--		drm_kms_helper_poll_enable(&dev_priv->drm);
-+		drm_kms_helper_poll_reschedule(&dev_priv->drm);
- 		mod_delayed_work(system_wq, &dev_priv->display.hotplug.reenable_work,
- 				 msecs_to_jiffies(HPD_STORM_REENABLE_DELAY));
- 	}
-@@ -644,7 +644,7 @@ static void i915_hpd_poll_init_work(stru
- 	drm_connector_list_iter_end(&conn_iter);
+ 	RET=0
  
- 	if (enabled)
--		drm_kms_helper_poll_enable(&dev_priv->drm);
-+		drm_kms_helper_poll_reschedule(&dev_priv->drm);
+-	mirror_install $swp1 ingress $tundev "matchall $tcflags"
++	mirror_install $swp1 ingress $tundev \
++		"prot ip flower $tcflags ip_prot icmp"
+ 	tc filter add dev $h3 ingress pref 77 prot $prot \
+ 		flower ip_ttl 50 action pass
  
- 	mutex_unlock(&dev_priv->drm.mode_config.mutex);
- 
+-- 
+2.40.1
+
 
 
