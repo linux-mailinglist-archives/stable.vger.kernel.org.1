@@ -2,236 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6108378A88C
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 11:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6670578A920
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 11:44:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229626AbjH1JKO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 05:10:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38966 "EHLO
+        id S229602AbjH1JoZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 05:44:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229894AbjH1JJw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 05:09:52 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F948113
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 02:09:48 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1bdbbede5d4so23240755ad.2
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 02:09:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1693213787; x=1693818587;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fMH3WTO4XP2VJDPFSMtVvTwacpvt4zj19bQEKMQBKhE=;
-        b=10A4MoX/af1Ory9cuUNqg0dmHfBX2EC3PCJQH5MknJoJv+4i8rEkHscDhbFXPBcRXs
-         Y/kAkprZfzWUgQAF3ySGxf5lwqbL+x8yBRaiEyWPxIBXzb8T4+rVNhOwValTcIPgDNTU
-         KzpjzwAc0chH/0fG+asenZPdK61t/Agc6eadufgoIGMh8f7t7K77zPSF0N47x1gN5CF5
-         QW+RYKeneBpLpbYhc5n3qNbk/Cq/hhc2MePAjw4ck+Mb9exIRuk+qg51BriEhzSUSeIu
-         4iEMKWsFwPfMgTsoPsuWnsP7hUieF9Ky+9pReP2jCtzYMWmxVs/zklGuTcuYEKSD2dS0
-         xeHA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693213787; x=1693818587;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fMH3WTO4XP2VJDPFSMtVvTwacpvt4zj19bQEKMQBKhE=;
-        b=Ewb3sxiIX6z6/f0Le1QQYuGF1JmztA5wh6Quub5r60H4UvEvoHgEsDkMJGox1axVWV
-         T97+GWDZI9Hb6Ij21dBvGjdYXR+WfOFQiMPmezXJYlztWfCMtdJITPPowEaLs/lzsYoz
-         QDAjFS2b1qYG8tO5ZIF+O7oeUBLJyPK1cbHiknGayB79X2RoD5fpAGVZBoRHt3O3R1pY
-         PHJgoKhJwHO81EGMmWwTncQmKvprhjz2UEUUI4kNJMnLKieyk0PODE8BA5PhxsgJuJro
-         U0nnKX7ZsARoc1Rz++ppBUo83LeSENbVFHqwQ6MehxEmGBRv2vIsYFGDkV6T4FhbpoLn
-         SenA==
-X-Gm-Message-State: AOJu0YyvuvBR1/AtxXue3EI1BkP/DQRntnHD/l25OdDTvTvq0uO7NS2Y
-        TfV68M0riMM55WMmzLrAsYfcw1znSg59S8hBNek=
-X-Google-Smtp-Source: AGHT+IFasaL8nKdIGHf3RM5zA0+zNiZW6xbHriVl3LxRgcWwrMU5aSwWSsAinfshsLtUetentPW0iQ==
-X-Received: by 2002:a17:903:258a:b0:1bf:25a1:9813 with SMTP id jb10-20020a170903258a00b001bf25a19813mr22940484plb.6.1693213787111;
-        Mon, 28 Aug 2023 02:09:47 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id h6-20020a170902748600b001b2069072ccsm6777612pll.18.2023.08.28.02.09.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 02:09:46 -0700 (PDT)
-Message-ID: <64ec645a.170a0220.fe928.a5eb@mx.google.com>
-Date:   Mon, 28 Aug 2023 02:09:46 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S230158AbjH1JoD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 05:44:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D02AA;
+        Mon, 28 Aug 2023 02:44:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D70660B86;
+        Mon, 28 Aug 2023 09:44:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33BE7C433C7;
+        Mon, 28 Aug 2023 09:43:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693215839;
+        bh=xjAeVP31obttB8Bvi53bbgjrxVQcHlvWuSepU2NlDME=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cugJG4/qmTzGMC+Vw/+V6jdhsSzRJYf5aTW+RzXw16WEBCoNdKtICGoQhshJSlf7T
+         /eRYxRYHMpIBqtR2h8LHiUdBUDfovOX1ikseHoXzTxTZSHz8l8owiHIHNibcZw52ib
+         7aZpQ17gDxL9eELUHU1EA/xD4tCSW8x9aV6/Ayag42oGoYrc9iIsGQzaSm+wEltO0r
+         60XkHU0adZ4Vws8/NX2UcADa71iL6R81R7QWEQjPddvosNAvrE8GvK7YpOdwC8JPSi
+         g9CW5DMZNeXlpmONXxf8SPlFBk89b0udzvfZMlDNGHUU4Y88VMgtUo3iaKJdc9CmRD
+         75vhN5QMpRyAw==
+From:   Tzung-Bi Shih <tzungbi@kernel.org>
+To:     bleung@chromium.org, groeck@chromium.org, jic23@kernel.org,
+        lars@metafoo.de
+Cc:     chrome-platform@lists.linux.dev, tzungbi@kernel.org,
+        gwendal@chromium.org, linux-iio@vger.kernel.org,
+        dianders@chromium.org, swboyd@chromium.org, stable@vger.kernel.org
+Subject: [PATCH] iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()
+Date:   Mon, 28 Aug 2023 17:43:39 +0800
+Message-ID: <20230828094339.1248472-1-tzungbi@kernel.org>
+X-Mailer: git-send-email 2.42.0.rc1.204.g551eb34607-goog
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.128-91-g59406ae6f227c
-Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.128-91-g59406ae6f227c)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
-5.15.128-91-g59406ae6f227c)
+cros_ec_sensors_push_data() reads some `indio_dev` states (e.g.
+iio_buffer_enabled() and `indio_dev->active_scan_mask`) without holding
+the `mlock`.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.128-91-g59406ae6f227c/
+An use-after-free on `indio_dev->active_scan_mask` was observed.  The
+call trace:
+[...]
+ _find_next_bit
+ cros_ec_sensors_push_data
+ cros_ec_sensorhub_event
+ blocking_notifier_call_chain
+ cros_ec_irq_thread
 
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.128-91-g59406ae6f227c
-Git Commit: 59406ae6f227c88a91c47b05e1aca4fc8bb4dd45
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+It was caused by a race condition: one thread just freed
+`active_scan_mask` at [1]; while another thread tried to access the
+memory at [2].
 
-Warnings Detected:
+Fix it by acquiring the `mlock` before accessing the `indio_dev` states.
 
-arc:
+[1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industrialio-buffer.c#L1189
+[2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c#L198
 
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
-
-
-Warnings summary:
-
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
+Cc: stable@vger.kernel.org
+Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
 ---
-For more info write to <info@kernelci.org>
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
+
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index b72d39fc2434..a514d0dbafc7 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -182,17 +182,20 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 			      s16 *data,
+ 			      s64 timestamp)
+ {
++	struct iio_dev_opaque *iio_dev_opaque = to_iio_dev_opaque(indio_dev);
+ 	struct cros_ec_sensors_core_state *st = iio_priv(indio_dev);
+ 	s16 *out;
+ 	s64 delta;
+ 	unsigned int i;
+ 
++	mutex_lock(&iio_dev_opaque->mlock);
++
+ 	/*
+ 	 * Ignore samples if the buffer is not set: it is needed if the ODR is
+ 	 * set but the buffer is not enabled yet.
+ 	 */
+ 	if (!iio_buffer_enabled(indio_dev))
+-		return 0;
++		goto exit;
+ 
+ 	out = (s16 *)st->samples;
+ 	for_each_set_bit(i,
+@@ -210,6 +213,8 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
+ 					   timestamp + delta);
+ 
++exit:
++	mutex_unlock(&iio_dev_opaque->mlock);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
+-- 
+2.42.0.rc1.204.g551eb34607-goog
+
