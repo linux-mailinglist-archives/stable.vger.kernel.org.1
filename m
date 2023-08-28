@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F15478AA83
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE20178AAF6
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231156AbjH1KW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:22:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33734 "EHLO
+        id S231238AbjH1K0g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:26:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231205AbjH1KWe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:34 -0400
+        with ESMTP id S231318AbjH1K0R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD0F18B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE70F103
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:26:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 63AEE63951
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FD0C433C8;
-        Mon, 28 Aug 2023 10:22:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BA26612F5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:26:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6718CC433C7;
+        Mon, 28 Aug 2023 10:26:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218134;
-        bh=ghCic2kYQAIafuwlvqGjC72H0u/YLzYvvYV+9Xc9UQI=;
+        s=korg; t=1693218368;
+        bh=PwcMliAun47Qb1lqmojJoJrdTm1FUp+OfbSWnwBA1Mk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=klPWVl8LA6ky1CVwBFDuKrrRaHHaRcTxqt/LGaYIARQTLsfQmFCw6wCA8gYruliiM
-         GheSTJcJVFyzBjKbRvziy1cdhTeOpMORZ10tgRheFY42JA7MmclvRdZZ2XAtAZvled
-         HpUJwEiI7PFKorwyfSGg14hs5N2SToNBrd/9hFUw=
+        b=pW4tWsGUumumU1PNcJlr29Is6a6s8VlkfqFlZR5hAqd0HOFZB7q37MdNt3/3jquf6
+         rfwFkL6wHdx4/X9HMWlObeQKAzg2+kip3DNVPHROMuyE9Ohf5E3idQnaYgPv/hZyMo
+         GQwrxxhP1lCh5nFXodWVFC/HJAw0BD6K/uHPjQBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matt Roper <matthew.d.roper@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>,
-        Luca Coelho <luciano.coelho@intel.com>,
-        Jani Nikula <jani.nikula@intel.com>,
-        Rodrigo Vivi <rodrigo.vivi@intel.com>
-Subject: [PATCH 6.4 078/129] drm/i915: fix display probe for IVB Q and IVB D GT2 server
+        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 063/129] sock: Fix misuse of sk_under_memory_pressure()
 Date:   Mon, 28 Aug 2023 12:12:37 +0200
-Message-ID: <20230828101159.929916336@linuxfoundation.org>
+Message-ID: <20230828101155.630185239@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,160 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jani Nikula <jani.nikula@intel.com>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-commit 423ffe62c06ae241ad460f4629dddb9dcf55e060 upstream.
+[ Upstream commit 2d0c88e84e483982067a82073f6125490ddf3614 ]
 
-The current display probe is unable to differentiate between IVB Q and
-IVB D GT2 server, as they both have the same device id, but different
-subvendor and subdevice. This leads to the latter being misidentified as
-the former, and should just end up not having a display. However, the no
-display case returns a NULL as the display device info, and promptly
-oopses.
+The status of global socket memory pressure is updated when:
 
-As the IVB Q case is rare, and we're anyway moving towards GMD ID,
-handle the identification requiring subvendor and subdevice as a special
-case first, instead of unnecessarily growing the intel_display_ids[]
-array with subvendor and subdevice.
+  a) __sk_mem_raise_allocated():
 
-[    5.425298] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[    5.426059] #PF: supervisor read access in kernel mode
-[    5.426810] #PF: error_code(0x0000) - not-present page
-[    5.427570] PGD 0 P4D 0
-[    5.428285] Oops: 0000 [#1] PREEMPT SMP PTI
-[    5.429035] CPU: 0 PID: 137 Comm: (udev-worker) Not tainted 6.4.0-1-amd64 #1  Debian 6.4.4-1
-[    5.429759] Hardware name: HP HP Z220 SFF Workstation/HP Z220 SFF Workstation, BIOS 4.19-218-gb184e6e0a1 02/02/2023
-[    5.430485] RIP: 0010:intel_device_info_driver_create+0xf1/0x120 [i915]
-[    5.431338] Code: 48 8b 97 80 1b 00 00 89 8f c0 1b 00 00 48 89 b7 b0 1b 00 00 48 89 97 b8 1b 00 00 0f b7 fd e8 76 e8 14 00 48 89 83 50 1b 00 00 <48> 8b 08 48 89 8b c4 1b 00 00 48 8b 48 08 48 89 8b cc 1b 00 00 8b
-[    5.432920] RSP: 0018:ffffb8254044fb98 EFLAGS: 00010206
-[    5.433707] RAX: 0000000000000000 RBX: ffff923076e80000 RCX: 0000000000000000
-[    5.434494] RDX: 0000000000000260 RSI: 0000000100001000 RDI: 000000000000016a
-[    5.435277] RBP: 000000000000016a R08: ffffb8254044fb00 R09: 0000000000000000
-[    5.436055] R10: ffff922d02761de8 R11: 00657361656c6572 R12: ffffffffc0e5d140
-[    5.436867] R13: ffff922d00b720d0 R14: 0000000076e80000 R15: ffff923078c0cae8
-[    5.437646] FS:  00007febd19a18c0(0000) GS:ffff92307c000000(0000) knlGS:0000000000000000
-[    5.438434] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    5.439218] CR2: 0000000000000000 CR3: 000000010256e002 CR4: 00000000001706f0
-[    5.440009] Call Trace:
-[    5.440824]  <TASK>
-[    5.441611]  ? __die+0x23/0x70
-[    5.442394]  ? page_fault_oops+0x17d/0x4c0
-[    5.443173]  ? exc_page_fault+0x7f/0x180
-[    5.443949]  ? asm_exc_page_fault+0x26/0x30
-[    5.444756]  ? intel_device_info_driver_create+0xf1/0x120 [i915]
-[    5.445652]  ? intel_device_info_driver_create+0xea/0x120 [i915]
-[    5.446545]  i915_driver_probe+0x7f/0xb60 [i915]
-[    5.447431]  ? drm_privacy_screen_get+0x15c/0x1a0 [drm]
-[    5.448240]  local_pci_probe+0x45/0xa0
-[    5.449013]  pci_device_probe+0xc7/0x240
-[    5.449748]  really_probe+0x19e/0x3e0
-[    5.450464]  ? __pfx___driver_attach+0x10/0x10
-[    5.451172]  __driver_probe_device+0x78/0x160
-[    5.451870]  driver_probe_device+0x1f/0x90
-[    5.452601]  __driver_attach+0xd2/0x1c0
-[    5.453293]  bus_for_each_dev+0x88/0xd0
-[    5.453989]  bus_add_driver+0x116/0x220
-[    5.454672]  driver_register+0x59/0x100
-[    5.455336]  i915_init+0x25/0xc0 [i915]
-[    5.456104]  ? __pfx_i915_init+0x10/0x10 [i915]
-[    5.456882]  do_one_initcall+0x5d/0x240
-[    5.457511]  do_init_module+0x60/0x250
-[    5.458126]  __do_sys_finit_module+0xac/0x120
-[    5.458721]  do_syscall_64+0x60/0xc0
-[    5.459314]  ? syscall_exit_to_user_mode+0x1b/0x40
-[    5.459897]  ? do_syscall_64+0x6c/0xc0
-[    5.460510]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[    5.461082] RIP: 0033:0x7febd20b0eb9
-[    5.461648] Code: 08 89 e8 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 2f 1f 0d 00 f7 d8 64 89 01 48
-[    5.462905] RSP: 002b:00007fffabb1ba78 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
-[    5.463554] RAX: ffffffffffffffda RBX: 0000561e6304f410 RCX: 00007febd20b0eb9
-[    5.464201] RDX: 0000000000000000 RSI: 00007febd2244f0d RDI: 0000000000000015
-[    5.464869] RBP: 00007febd2244f0d R08: 0000000000000000 R09: 000000000000000a
-[    5.465512] R10: 0000000000000015 R11: 0000000000000246 R12: 0000000000020000
-[    5.466124] R13: 0000000000000000 R14: 0000561e63032b60 R15: 000000000000000a
-[    5.466700]  </TASK>
-[    5.467271] Modules linked in: i915(+) drm_buddy video crc32_pclmul sr_mod hid_generic wmi crc32c_intel i2c_algo_bit sd_mod cdrom drm_display_helper cec usbhid rc_core ghash_clmulni_intel hid sha512_ssse3 ttm sha512_generic xhci_pci ehci_pci xhci_hcd ehci_hcd nvme ahci drm_kms_helper nvme_core libahci t10_pi libata psmouse aesni_intel scsi_mod crypto_simd i2c_i801 scsi_common crc64_rocksoft_generic cryptd i2c_smbus drm lpc_ich crc64_rocksoft crc_t10dif e1000e usbcore crct10dif_generic usb_common crct10dif_pclmul crc64 crct10dif_common button
-[    5.469750] CR2: 0000000000000000
-[    5.470364] ---[ end trace 0000000000000000 ]---
-[    5.470971] RIP: 0010:intel_device_info_driver_create+0xf1/0x120 [i915]
-[    5.471699] Code: 48 8b 97 80 1b 00 00 89 8f c0 1b 00 00 48 89 b7 b0 1b 00 00 48 89 97 b8 1b 00 00 0f b7 fd e8 76 e8 14 00 48 89 83 50 1b 00 00 <48> 8b 08 48 89 8b c4 1b 00 00 48 8b 48 08 48 89 8b cc 1b 00 00 8b
-[    5.473034] RSP: 0018:ffffb8254044fb98 EFLAGS: 00010206
-[    5.473698] RAX: 0000000000000000 RBX: ffff923076e80000 RCX: 0000000000000000
-[    5.474371] RDX: 0000000000000260 RSI: 0000000100001000 RDI: 000000000000016a
-[    5.475045] RBP: 000000000000016a R08: ffffb8254044fb00 R09: 0000000000000000
-[    5.475725] R10: ffff922d02761de8 R11: 00657361656c6572 R12: ffffffffc0e5d140
-[    5.476405] R13: ffff922d00b720d0 R14: 0000000076e80000 R15: ffff923078c0cae8
-[    5.477124] FS:  00007febd19a18c0(0000) GS:ffff92307c000000(0000) knlGS:0000000000000000
-[    5.477811] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[    5.478499] CR2: 0000000000000000 CR3: 000000010256e002 CR4: 00000000001706f0
+	enter: sk_memory_allocated(sk) >  sysctl_mem[1]
+	leave: sk_memory_allocated(sk) <= sysctl_mem[0]
 
-Fixes: 69d439818fe5 ("drm/i915/display: Make display responsible for probing its own IP")
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8991
-Cc: Matt Roper <matthew.d.roper@intel.com>
-Cc: Andrzej Hajda <andrzej.hajda@intel.com>
-Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
-Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
-Signed-off-by: Jani Nikula <jani.nikula@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230804084600.1005818-1-jani.nikula@intel.com
-(cherry picked from commit 1435188307d128671f677eb908e165666dd83652)
-Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+  b) __sk_mem_reduce_allocated():
+
+	leave: sk_under_memory_pressure(sk) &&
+		sk_memory_allocated(sk) < sysctl_mem[0]
+
+So the conditions of leaving global pressure are inconstant, which
+may lead to the situation that one pressured net-memcg prevents the
+global pressure from being cleared when there is indeed no global
+pressure, thus the global constrains are still in effect unexpectedly
+on the other sockets.
+
+This patch fixes this by ignoring the net-memcg's pressure when
+deciding whether should leave global memory pressure.
+
+Fixes: e1aab161e013 ("socket: initial cgroup code.")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
+Link: https://lore.kernel.org/r/20230816091226.1542-1-wuyun.abel@bytedance.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_device.c |   24 +++++++++++++++++---
- 1 file changed, 21 insertions(+), 3 deletions(-)
+ include/net/sock.h | 6 ++++++
+ net/core/sock.c    | 2 +-
+ 2 files changed, 7 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_device.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_device.c
-@@ -660,10 +660,24 @@ static const struct intel_display_device
- 		BIT(TRANSCODER_C) | BIT(TRANSCODER_D),
- };
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 72739f72e4b90..bcb1901ac13a5 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1265,6 +1265,12 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
+ 	return sk->sk_prot->memory_pressure != NULL;
+ }
  
-+/*
-+ * Separate detection for no display cases to keep the display id array simple.
-+ *
-+ * IVB Q requires subvendor and subdevice matching to differentiate from IVB D
-+ * GT2 server.
-+ */
-+static bool has_no_display(struct pci_dev *pdev)
++static inline bool sk_under_global_memory_pressure(const struct sock *sk)
 +{
-+	static const struct pci_device_id ids[] = {
-+		INTEL_IVB_Q_IDS(0),
-+		{}
-+	};
-+
-+	return pci_match_id(ids, pdev);
++	return sk->sk_prot->memory_pressure &&
++		!!*sk->sk_prot->memory_pressure;
 +}
 +
- #undef INTEL_VGA_DEVICE
--#undef INTEL_QUANTA_VGA_DEVICE
- #define INTEL_VGA_DEVICE(id, info) { id, info }
--#define INTEL_QUANTA_VGA_DEVICE(info) { 0x16a, info }
+ static inline bool sk_under_memory_pressure(const struct sock *sk)
+ {
+ 	if (!sk->sk_prot->memory_pressure)
+diff --git a/net/core/sock.c b/net/core/sock.c
+index 3e6da3694a5a5..4e3ed80a68ceb 100644
+--- a/net/core/sock.c
++++ b/net/core/sock.c
+@@ -2538,7 +2538,7 @@ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
+ 	if (mem_cgroup_sockets_enabled && sk->sk_memcg)
+ 		mem_cgroup_uncharge_skmem(sk->sk_memcg, amount);
  
- static const struct {
- 	u32 devid;
-@@ -688,7 +702,6 @@ static const struct {
- 	INTEL_IRONLAKE_M_IDS(&ilk_m_display),
- 	INTEL_SNB_D_IDS(&snb_display),
- 	INTEL_SNB_M_IDS(&snb_display),
--	INTEL_IVB_Q_IDS(NULL),		/* must be first IVB in list */
- 	INTEL_IVB_M_IDS(&ivb_display),
- 	INTEL_IVB_D_IDS(&ivb_display),
- 	INTEL_HSW_IDS(&hsw_display),
-@@ -773,6 +786,11 @@ intel_display_device_probe(struct drm_i9
- 	if (has_gmdid)
- 		return probe_gmdid_display(i915, gmdid_ver, gmdid_rel, gmdid_step);
- 
-+	if (has_no_display(pdev)) {
-+		drm_dbg_kms(&i915->drm, "Device doesn't have display\n");
-+		return &no_display;
-+	}
-+
- 	for (i = 0; i < ARRAY_SIZE(intel_display_ids); i++) {
- 		if (intel_display_ids[i].devid == pdev->device)
- 			return intel_display_ids[i].info;
+-	if (sk_under_memory_pressure(sk) &&
++	if (sk_under_global_memory_pressure(sk) &&
+ 	    (sk_memory_allocated(sk) < sk_prot_mem_limits(sk, 0)))
+ 		sk_leave_memory_pressure(sk);
+ }
+-- 
+2.40.1
+
 
 
