@@ -2,55 +2,58 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41A4978AC68
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:40:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DE75A78AB01
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231641AbjH1Kj5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:39:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54468 "EHLO
+        id S231234AbjH1K1B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:27:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231663AbjH1Kj2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:28 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AF9AB9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:26 -0700 (PDT)
+        with ESMTP id S231223AbjH1K0e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B16BAB;
+        Mon, 28 Aug 2023 03:26:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 39A8963FFE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4B99DC433C7;
-        Mon, 28 Aug 2023 10:39:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9468A63B14;
+        Mon, 28 Aug 2023 10:26:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80F66C433BB;
+        Mon, 28 Aug 2023 10:26:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219165;
-        bh=RvX0ITxgx+NkPO+gPF+Cvl7FHQJUR+LgrpcOfHR+H10=;
+        s=korg; t=1693218391;
+        bh=OA/S58v6LhfALqigNs/3TLHurKf7FxzbJREmAHkJVGo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CpK3ZLxIPD0JHcDzNH7ccxXH94wZDD8w5Wx2GbxWHK6dPZdcjEvHjFwLkxEvwEA7F
-         jZWV4MxwvJZKgtFuyPLL0JzGr749t8c+rkxK+O9yAzvp0GThGrP8sBn9qZILMuQRet
-         DONi/UA2hv/6v0rUBddpyln+3TKQT3yz4JllDqeE=
+        b=V+OTZnJjsR1/Ok5QbcUst8/oSJrwNH9aSGCzBxqxB3xfwRW+FwrcQqSy3eGTCHDVD
+         4YZdKYopEL2E0YUsLueQmH/gTFycdKvPUo4UmfynslEc206JooTrnOwkJST1OIpAD7
+         sLJtf/VLJFzfyIj1S1/Ezki1Mezj1ZfzjSL63mG0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Machata <petrm@nvidia.com>,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 067/158] selftests: mirror_gre_changes: Tighten up the TTL test match
-Date:   Mon, 28 Aug 2023 12:12:44 +0200
-Message-ID: <20230828101159.535639039@linuxfoundation.org>
+        patches@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>,
+        Russ Weight <russell.h.weight@intel.com>,
+        Takashi Iwai <tiwai@suse.de>,
+        Tianfei Zhang <tianfei.zhang@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Colin Ian King <colin.i.king@gmail.com>,
+        Randy Dunlap <rdunlap@infradead.org>,
+        linux-kselftest@vger.kernel.org, Dan Carpenter <error27@gmail.com>,
+        Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Subject: [PATCH 4.19 071/129] test_firmware: prevent race conditions by a correct implementation of locking
+Date:   Mon, 28 Aug 2023 12:12:45 +0200
+Message-ID: <20230828101155.947513225@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,52 +61,209 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Machata <petrm@nvidia.com>
+From: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
 
-[ Upstream commit 855067defa36b1f9effad8c219d9a85b655cf500 ]
+commit 4acfe3dfde685a5a9eaec5555351918e2d7266a1 upstream.
 
-This test verifies whether the encapsulated packets have the correct
-configured TTL. It does so by sending ICMP packets through the test
-topology and mirroring them to a gretap netdevice. On a busy host
-however, more than just the test ICMP packets may end up flowing
-through the topology, get mirrored, and counted. This leads to
-potential spurious failures as the test observes much more mirrored
-packets than the sent test packets, and assumes a bug.
+Dan Carpenter spotted a race condition in a couple of situations like
+these in the test_firmware driver:
 
-Fix this by tightening up the mirror action match. Change it from
-matchall to a flower classifier matching on ICMP packets specifically.
+static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+{
+        u8 val;
+        int ret;
 
-Fixes: 45315673e0c5 ("selftests: forwarding: Test changes in mirror-to-gretap")
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+        ret = kstrtou8(buf, 10, &val);
+        if (ret)
+                return ret;
+
+        mutex_lock(&test_fw_mutex);
+        *(u8 *)cfg = val;
+        mutex_unlock(&test_fw_mutex);
+
+        /* Always return full write size even if we didn't consume all */
+        return size;
+}
+
+static ssize_t config_num_requests_store(struct device *dev,
+                                         struct device_attribute *attr,
+                                         const char *buf, size_t count)
+{
+        int rc;
+
+        mutex_lock(&test_fw_mutex);
+        if (test_fw_config->reqs) {
+                pr_err("Must call release_all_firmware prior to changing config\n");
+                rc = -EINVAL;
+                mutex_unlock(&test_fw_mutex);
+                goto out;
+        }
+        mutex_unlock(&test_fw_mutex);
+
+        rc = test_dev_config_update_u8(buf, count,
+                                       &test_fw_config->num_requests);
+
+out:
+        return rc;
+}
+
+static ssize_t config_read_fw_idx_store(struct device *dev,
+                                        struct device_attribute *attr,
+                                        const char *buf, size_t count)
+{
+        return test_dev_config_update_u8(buf, count,
+                                         &test_fw_config->read_fw_idx);
+}
+
+The function test_dev_config_update_u8() is called from both the locked
+and the unlocked context, function config_num_requests_store() and
+config_read_fw_idx_store() which can both be called asynchronously as
+they are driver's methods, while test_dev_config_update_u8() and siblings
+change their argument pointed to by u8 *cfg or similar pointer.
+
+To avoid deadlock on test_fw_mutex, the lock is dropped before calling
+test_dev_config_update_u8() and re-acquired within test_dev_config_update_u8()
+itself, but alas this creates a race condition.
+
+Having two locks wouldn't assure a race-proof mutual exclusion.
+
+This situation is best avoided by the introduction of a new, unlocked
+function __test_dev_config_update_u8() which can be called from the locked
+context and reducing test_dev_config_update_u8() to:
+
+static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+{
+        int ret;
+
+        mutex_lock(&test_fw_mutex);
+        ret = __test_dev_config_update_u8(buf, size, cfg);
+        mutex_unlock(&test_fw_mutex);
+
+        return ret;
+}
+
+doing the locking and calling the unlocked primitive, which enables both
+locked and unlocked versions without duplication of code.
+
+The similar approach was applied to all functions called from the locked
+and the unlocked context, which safely mitigates both deadlocks and race
+conditions in the driver.
+
+__test_dev_config_update_bool(), __test_dev_config_update_u8() and
+__test_dev_config_update_size_t() unlocked versions of the functions
+were introduced to be called from the locked contexts as a workaround
+without releasing the main driver's lock and thereof causing a race
+condition.
+
+The test_dev_config_update_bool(), test_dev_config_update_u8() and
+test_dev_config_update_size_t() locked versions of the functions
+are being called from driver methods without the unnecessary multiplying
+of the locking and unlocking code for each method, and complicating
+the code with saving of the return value across lock.
+
+Fixes: 7feebfa487b92 ("test_firmware: add support for request_firmware_into_buf")
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Russ Weight <russell.h.weight@intel.com>
+Cc: Takashi Iwai <tiwai@suse.de>
+Cc: Tianfei Zhang <tianfei.zhang@intel.com>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Colin Ian King <colin.i.king@gmail.com>
+Cc: Randy Dunlap <rdunlap@infradead.org>
+Cc: linux-kselftest@vger.kernel.org
+Cc: stable@vger.kernel.org # v5.4
+Suggested-by: Dan Carpenter <error27@gmail.com>
+Signed-off-by: Mirsad Goran Todorovac <mirsad.todorovac@alu.unizg.hr>
+Link: https://lore.kernel.org/r/20230509084746.48259-1-mirsad.todorovac@alu.unizg.hr
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/testing/selftests/net/forwarding/mirror_gre_changes.sh | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/test_firmware.c |   37 ++++++++++++++++++++++++++++---------
+ 1 file changed, 28 insertions(+), 9 deletions(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
-index 472bd023e2a5f..b501b366367f7 100755
---- a/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
-+++ b/tools/testing/selftests/net/forwarding/mirror_gre_changes.sh
-@@ -72,7 +72,8 @@ test_span_gre_ttl()
+--- a/lib/test_firmware.c
++++ b/lib/test_firmware.c
+@@ -284,16 +284,26 @@ static ssize_t config_test_show_str(char
+ 	return len;
+ }
  
- 	RET=0
+-static int test_dev_config_update_bool(const char *buf, size_t size,
+-				       bool *cfg)
++static inline int __test_dev_config_update_bool(const char *buf, size_t size,
++						bool *cfg)
+ {
+ 	int ret;
  
--	mirror_install $swp1 ingress $tundev "matchall $tcflags"
-+	mirror_install $swp1 ingress $tundev \
-+		"prot ip flower $tcflags ip_prot icmp"
- 	tc filter add dev $h3 ingress pref 77 prot $prot \
- 		flower ip_ttl 50 action pass
+-	mutex_lock(&test_fw_mutex);
+ 	if (strtobool(buf, cfg) < 0)
+ 		ret = -EINVAL;
+ 	else
+ 		ret = size;
++
++	return ret;
++}
++
++static int test_dev_config_update_bool(const char *buf, size_t size,
++				       bool *cfg)
++{
++	int ret;
++
++	mutex_lock(&test_fw_mutex);
++	ret = __test_dev_config_update_bool(buf, size, cfg);
+ 	mutex_unlock(&test_fw_mutex);
  
--- 
-2.40.1
-
+ 	return ret;
+@@ -323,7 +333,7 @@ static ssize_t test_dev_config_show_int(
+ 	return snprintf(buf, PAGE_SIZE, "%d\n", val);
+ }
+ 
+-static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
++static inline int __test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
+ {
+ 	int ret;
+ 	long new;
+@@ -335,14 +345,23 @@ static int test_dev_config_update_u8(con
+ 	if (new > U8_MAX)
+ 		return -EINVAL;
+ 
+-	mutex_lock(&test_fw_mutex);
+ 	*(u8 *)cfg = new;
+-	mutex_unlock(&test_fw_mutex);
+ 
+ 	/* Always return full write size even if we didn't consume all */
+ 	return size;
+ }
+ 
++static int test_dev_config_update_u8(const char *buf, size_t size, u8 *cfg)
++{
++	int ret;
++
++	mutex_lock(&test_fw_mutex);
++	ret = __test_dev_config_update_u8(buf, size, cfg);
++	mutex_unlock(&test_fw_mutex);
++
++	return ret;
++}
++
+ static ssize_t test_dev_config_show_u8(char *buf, u8 cfg)
+ {
+ 	u8 val;
+@@ -375,10 +394,10 @@ static ssize_t config_num_requests_store
+ 		mutex_unlock(&test_fw_mutex);
+ 		goto out;
+ 	}
+-	mutex_unlock(&test_fw_mutex);
+ 
+-	rc = test_dev_config_update_u8(buf, count,
+-				       &test_fw_config->num_requests);
++	rc = __test_dev_config_update_u8(buf, count,
++					 &test_fw_config->num_requests);
++	mutex_unlock(&test_fw_mutex);
+ 
+ out:
+ 	return rc;
 
 
