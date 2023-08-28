@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 628EE78AB2E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D8C778AD21
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231295AbjH1K2k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:28:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36536 "EHLO
+        id S231967AbjH1Kp6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231408AbjH1K21 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:27 -0400
+        with ESMTP id S232004AbjH1Kph (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AE0E136
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:20 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9BAAEF7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F264263BC6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13F94C433C7;
-        Mon, 28 Aug 2023 10:28:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C4B664206
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55D4FC433C7;
+        Mon, 28 Aug 2023 10:44:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218499;
-        bh=TcA3HtzEvy/Zs9AGzsS6fGgJUy9zoIlETYhu0bLsgmc=;
+        s=korg; t=1693219481;
+        bh=gTrIQNQAsIs9EUSR/nF9UlPNdAy6Aw0Ho+qSPmGioKw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yODpLQy4wKBT9QVgPN/2sJi6+54UjYwyZx2iZetf6M11IqQCAzSl4s4/T0RZjxE7O
-         EMx9DwMTsX/k9XPx/53EgknDPbEgPUjqBABjGR6t6ZzN0/DnO9JpLrH2Wcjz34n9AR
-         Z/gbKsWhS8BLJ2BLQZo5dPJbjRqnhKj5qPz9KT4g=
+        b=Y3ZCaFW2IqDjG79965S+eFITkxJ8+snUbzF8Gd2aJUc1ryrlJHu/3WbEOorzYdvKZ
+         lnuJOezDP8Fmab7RBdHRWSfxr/rwml8kt8cuOo5zuQdjYLtmXMJ8hEe+8xSVCRypIY
+         jOk3Ki9lTlAzHGmVi79ahg7ZlCxjPIP4M9f//PRI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sishuai Gong <sishuai.system@gmail.com>,
-        Simon Horman <horms@kernel.org>, Julian Anastasov <ja@ssi.bg>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 4.19 109/129] ipvs: fix racy memcpy in proc_do_sync_threshold
+        patches@lists.linux.dev, Jun Lei <Jun.Lei@amd.com>,
+        Pavle Kotarac <Pavle.Kotarac@amd.com>,
+        Josip Pavic <Josip.Pavic@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 22/89] drm/amd/display: do not wait for mpc idle if tg is disabled
 Date:   Mon, 28 Aug 2023 12:13:23 +0200
-Message-ID: <20230828101157.232908332@linuxfoundation.org>
+Message-ID: <20230828101150.916307340@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,68 +57,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sishuai Gong <sishuai.system@gmail.com>
+From: Josip Pavic <Josip.Pavic@amd.com>
 
-commit 5310760af1d4fbea1452bfc77db5f9a680f7ae47 upstream.
+[ Upstream commit 2513ed4f937999c0446fd824f7564f76b697d722 ]
 
-When two threads run proc_do_sync_threshold() in parallel,
-data races could happen between the two memcpy():
+[Why]
+When booting, the driver waits for the MPC idle bit to be set as part of
+pipe initialization. However, on some systems this occurs before OTG is
+enabled, and since the MPC idle bit won't be set until the vupdate
+signal occurs (which requires OTG to be enabled), this never happens and
+the wait times out. This can add hundreds of milliseconds to the boot
+time.
 
-Thread-1			Thread-2
-memcpy(val, valp, sizeof(val));
-				memcpy(valp, val, sizeof(val));
+[How]
+Do not wait for mpc idle if tg is disabled
 
-This race might mess up the (struct ctl_table *) table->data,
-so we add a mutex lock to serialize them.
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Link: https://lore.kernel.org/netdev/B6988E90-0A1E-4B85-BF26-2DAF6D482433@gmail.com/
-Signed-off-by: Sishuai Gong <sishuai.system@gmail.com>
-Acked-by: Simon Horman <horms@kernel.org>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jun Lei <Jun.Lei@amd.com>
+Acked-by: Pavle Kotarac <Pavle.Kotarac@amd.com>
+Signed-off-by: Josip Pavic <Josip.Pavic@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Stable-dep-of: 5a25cefc0920 ("drm/amd/display: check TG is non-null before checking if enabled")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1690,6 +1690,7 @@ static int
- proc_do_sync_threshold(struct ctl_table *table, int write,
- 		       void __user *buffer, size_t *lenp, loff_t *ppos)
- {
-+	struct netns_ipvs *ipvs = table->extra2;
- 	int *valp = table->data;
- 	int val[2];
- 	int rc;
-@@ -1699,6 +1700,7 @@ proc_do_sync_threshold(struct ctl_table
- 		.mode = table->mode,
- 	};
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+index 73457c32f3e7f..6d17cdf1bd921 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
+@@ -3142,7 +3142,8 @@ void dcn10_wait_for_mpcc_disconnect(
+ 		if (pipe_ctx->stream_res.opp->mpcc_disconnect_pending[mpcc_inst]) {
+ 			struct hubp *hubp = get_hubp_by_inst(res_pool, mpcc_inst);
  
-+	mutex_lock(&ipvs->sync_mutex);
- 	memcpy(val, valp, sizeof(val));
- 	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
- 	if (write) {
-@@ -1708,6 +1710,7 @@ proc_do_sync_threshold(struct ctl_table
- 		else
- 			memcpy(valp, val, sizeof(val));
- 	}
-+	mutex_unlock(&ipvs->sync_mutex);
- 	return rc;
- }
- 
-@@ -3944,6 +3947,7 @@ static int __net_init ip_vs_control_net_
- 	ipvs->sysctl_sync_threshold[0] = DEFAULT_SYNC_THRESHOLD;
- 	ipvs->sysctl_sync_threshold[1] = DEFAULT_SYNC_PERIOD;
- 	tbl[idx].data = &ipvs->sysctl_sync_threshold;
-+	tbl[idx].extra2 = ipvs;
- 	tbl[idx++].maxlen = sizeof(ipvs->sysctl_sync_threshold);
- 	ipvs->sysctl_sync_refresh_period = DEFAULT_SYNC_REFRESH_PERIOD;
- 	tbl[idx++].data = &ipvs->sysctl_sync_refresh_period;
+-			res_pool->mpc->funcs->wait_for_idle(res_pool->mpc, mpcc_inst);
++			if (pipe_ctx->stream_res.tg->funcs->is_tg_enabled(pipe_ctx->stream_res.tg))
++				res_pool->mpc->funcs->wait_for_idle(res_pool->mpc, mpcc_inst);
+ 			pipe_ctx->stream_res.opp->mpcc_disconnect_pending[mpcc_inst] = false;
+ 			hubp->funcs->set_blank(hubp, true);
+ 		}
+-- 
+2.40.1
+
 
 
