@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F01278ACD5
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5F0078AD1B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231785AbjH1Kmq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:42:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
+        id S231939AbjH1Kpy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231925AbjH1KmS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:18 -0400
+        with ESMTP id S231962AbjH1Kp3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 853ABAB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:15 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCEBDCD7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1DE696410A
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30D17C433C7;
-        Mon, 28 Aug 2023 10:42:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 089E8641F4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17F49C433C9;
+        Mon, 28 Aug 2023 10:44:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219334;
-        bh=ia8JMGiktv1f2yyBJMELz9JDYTyb5VLP/y1FSzMN20k=;
+        s=korg; t=1693219465;
+        bh=yBYDjRJf+mEO6t3p+k352pY3cMmhu+AHDD8xUDp9P7k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fk8EDRf/DzaITFQkHjoLS31WOLsE+JYbGCeJ1YgO9lKTXAJSfX6nnVtdyqZYmphOL
-         JXrClfl8pT4XXBQ+UJX182PhglAb66mviy9E4v5fzAA/pFDGCxhKrT6lfB4wBdblhw
-         dLnKa6b6vPwmLB4Lf06EGxOBqCM8Ck1JwHkCtK0k=
+        b=2v0BKDoA5IVTuUCH/DO0+XIodJF3CkfSFDBPjlnVp/Jtfj2vpm7lTFNCsf31OW63B
+         IRKK+hgfK0/nnu8q+2lQO2aqLGfzZO4bEQ6/XdXI1W7aL/NrIp3RntQz9+Vvi+x/ZQ
+         Z1F2P5KvAMrl1SBjMK8SdpCrohvM2jIS4pdYhHXg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, susan.zheng@veritas.com,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Jay Vosburgh <jay.vosburgh@canonical.com>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 129/158] bonding: fix macvlan over alb bond support
+        patches@lists.linux.dev, Paul Fertser <fercerpav@gmail.com>,
+        Ivan Mikhaylov <fr0st61te@gmail.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 5.15 45/89] net/ncsi: change from ndo_set_mac_address to dev_set_mac_address
 Date:   Mon, 28 Aug 2023 12:13:46 +0200
-Message-ID: <20230828101201.778131129@linuxfoundation.org>
+Message-ID: <20230828101151.684010399@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,94 +56,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Ivan Mikhaylov <fr0st61te@gmail.com>
 
-[ Upstream commit e74216b8def3803e98ae536de78733e9d7f3b109 ]
+commit 790071347a0a1a89e618eedcd51c687ea783aeb3 upstream.
 
-The commit 14af9963ba1e ("bonding: Support macvlans on top of tlb/rlb mode
-bonds") aims to enable the use of macvlans on top of rlb bond mode. However,
-the current rlb bond mode only handles ARP packets to update remote neighbor
-entries. This causes an issue when a macvlan is on top of the bond, and
-remote devices send packets to the macvlan using the bond's MAC address
-as the destination. After delivering the packets to the macvlan, the macvlan
-will rejects them as the MAC address is incorrect. Consequently, this commit
-makes macvlan over bond non-functional.
+Change ndo_set_mac_address to dev_set_mac_address because
+dev_set_mac_address provides a way to notify network layer about MAC
+change. In other case, services may not aware about MAC change and keep
+using old one which set from network adapter driver.
 
-To address this problem, one potential solution is to check for the presence
-of a macvlan port on the bond device using netif_is_macvlan_port(bond->dev)
-and return NULL in the rlb_arp_xmit() function. However, this approach
-doesn't fully resolve the situation when a VLAN exists between the bond and
-macvlan.
+As example, DHCP client from systemd do not update MAC address without
+notification from net subsystem which leads to the problem with acquiring
+the right address from DHCP server.
 
-So let's just do a partial revert for commit 14af9963ba1e in rlb_arp_xmit().
-As the comment said, Don't modify or load balance ARPs that do not originate
-locally.
-
-Fixes: 14af9963ba1e ("bonding: Support macvlans on top of tlb/rlb mode bonds")
-Reported-by: susan.zheng@veritas.com
-Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2117816
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: cb10c7c0dfd9e ("net/ncsi: Add NCSI Broadcom OEM command")
+Cc: stable@vger.kernel.org # v6.0+ 2f38e84 net/ncsi: make one oem_gma function for all mfr id
+Signed-off-by: Paul Fertser <fercerpav@gmail.com>
+Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/bonding/bond_alb.c |  6 +++---
- include/net/bonding.h          | 11 +----------
- 2 files changed, 4 insertions(+), 13 deletions(-)
+ net/ncsi/ncsi-rsp.c |    5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
-index 20114e1dde77e..6df78a36bafde 100644
---- a/drivers/net/bonding/bond_alb.c
-+++ b/drivers/net/bonding/bond_alb.c
-@@ -656,10 +656,10 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
- 		return NULL;
- 	arp = (struct arp_pkt *)skb_network_header(skb);
- 
--	/* Don't modify or load balance ARPs that do not originate locally
--	 * (e.g.,arrive via a bridge).
-+	/* Don't modify or load balance ARPs that do not originate
-+	 * from the bond itself or a VLAN directly above the bond.
- 	 */
--	if (!bond_slave_has_mac_rx(bond, arp->mac_src))
-+	if (!bond_slave_has_mac_rcu(bond, arp->mac_src))
- 		return NULL;
- 
- 	if (arp->op_code == htons(ARPOP_REPLY)) {
-diff --git a/include/net/bonding.h b/include/net/bonding.h
-index 4e1e589aae057..9e9ccbade3b54 100644
---- a/include/net/bonding.h
-+++ b/include/net/bonding.h
-@@ -686,23 +686,14 @@ static inline struct slave *bond_slave_has_mac(struct bonding *bond,
- }
- 
- /* Caller must hold rcu_read_lock() for read */
--static inline bool bond_slave_has_mac_rx(struct bonding *bond, const u8 *mac)
-+static inline bool bond_slave_has_mac_rcu(struct bonding *bond, const u8 *mac)
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -616,7 +616,6 @@ static int ncsi_rsp_handler_oem_gma(stru
  {
- 	struct list_head *iter;
- 	struct slave *tmp;
--	struct netdev_hw_addr *ha;
+ 	struct ncsi_dev_priv *ndp = nr->ndp;
+ 	struct net_device *ndev = ndp->ndev.dev;
+-	const struct net_device_ops *ops = ndev->netdev_ops;
+ 	struct ncsi_rsp_oem_pkt *rsp;
+ 	struct sockaddr saddr;
+ 	u32 mac_addr_off = 0;
+@@ -643,7 +642,9 @@ static int ncsi_rsp_handler_oem_gma(stru
+ 	/* Set the flag for GMA command which should only be called once */
+ 	ndp->gma_flag = 1;
  
- 	bond_for_each_slave_rcu(bond, tmp, iter)
- 		if (ether_addr_equal_64bits(mac, tmp->dev->dev_addr))
- 			return true;
--
--	if (netdev_uc_empty(bond->dev))
--		return false;
--
--	netdev_for_each_uc_addr(ha, bond->dev)
--		if (ether_addr_equal_64bits(mac, ha->addr))
--			return true;
--
- 	return false;
- }
+-	ret = ops->ndo_set_mac_address(ndev, &saddr);
++	rtnl_lock();
++	ret = dev_set_mac_address(ndev, &saddr, NULL);
++	rtnl_unlock();
+ 	if (ret < 0)
+ 		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
  
--- 
-2.40.1
-
 
 
