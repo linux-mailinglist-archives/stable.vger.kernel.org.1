@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 185FC78AD87
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A315778ACCA
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232090AbjH1KtH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:49:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45450 "EHLO
+        id S231853AbjH1KmP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232178AbjH1Ksu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:48:50 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2B59B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:40 -0700 (PDT)
+        with ESMTP id S231851AbjH1Klx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:53 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0072119
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 83B64642C0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 934C0C433C8;
-        Mon, 28 Aug 2023 10:48:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4575B63F14
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5892CC433C7;
+        Mon, 28 Aug 2023 10:41:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219719;
-        bh=iPq+HiMXNaRWCzNX/MoaHghAp+eSbAsv/IFbAx/7aYU=;
+        s=korg; t=1693219309;
+        bh=9ZYdu7WmT7EOq43bNgHExxTx62qDQqJIJ7V4HZikT9o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=djrjNnClpBvyoBlhnY1HM5+jC4jNDOuCqz76CHpE+/PoMubonf9+/ohNJXvsgtBX1
-         xEzjrFPQbvKfuJFdkdRssfIHja/8ZuglkD3ihWRgay+pWx/LBBj3iJtjr1pdqWGFmm
-         8rpKHmC9ftn3cNvHAe8ca/ZoOz8IAGmVd5+yCeIE=
+        b=qGFD/ZE4ZH/B3w712yLwAdl6bZWSBVm7OEpM4bl/miUOcKq2DT+jWRn7d+quel9LD
+         hdpZ3thwDd/ix2WZY+m3S3wEOCbyg/riin0cnyEKjuSYM/J7ctd7dISGUz8QzV5/Gr
+         7lqhaK5tCvq0AeU3U7At/DudpVC9NfYZ7gTCkrXI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20G=C3=B6ttsche?= <cgzones@googlemail.com>,
-        Paul Moore <paul@paul-moore.com>
-Subject: [PATCH 5.10 48/84] selinux: set next pointer before attaching to list
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 148/158] ALSA: pcm: Fix build error on m68k and others
 Date:   Mon, 28 Aug 2023 12:14:05 +0200
-Message-ID: <20230828101150.904799944@linuxfoundation.org>
+Message-ID: <20230828101202.647786424@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,44 +54,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Göttsche <cgzones@googlemail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit 70d91dc9b2ac91327d0eefd86163abc3548effa6 upstream.
+commit 467fd0e82b6265b8e6cc078a70bd7592574d5c83 upstream.
 
-Set the next pointer in filename_trans_read_helper() before attaching
-the new node under construction to the list, otherwise garbage would be
-dereferenced on subsequent failure during cleanup in the out goto label.
+The commit 3ad796cbc36a ("ALSA: pcm: Use SG-buffer only when direct
+DMA is available") introduced a check of the DMA type and this caused
+a build error on m68k (and possibly some others) due to the lack of
+dma_is_direct() definition.  Since the check is needed only for
+CONFIG_SND_DMA_SGBUF enablement (i.e. solely x86), use #ifdef instead
+of IS_ENABLED() for avoiding such a build error.
 
-Cc: <stable@vger.kernel.org>
-Fixes: 430059024389 ("selinux: implement new format of filename transitions")
-Signed-off-by: Christian Göttsche <cgzones@googlemail.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
+Fixes: 3ad796cbc36a ("ALSA: pcm: Use SG-buffer only when direct DMA is available")
+Reported-by: kernel test robot <lkp@intel.com>
+Link: https://lore.kernel.org/r/20200707111225.26826-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- security/selinux/ss/policydb.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/pcm_memory.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/security/selinux/ss/policydb.c
-+++ b/security/selinux/ss/policydb.c
-@@ -2011,6 +2011,7 @@ static int filename_trans_read_helper(st
- 		if (!datum)
- 			goto out;
+--- a/sound/core/pcm_memory.c
++++ b/sound/core/pcm_memory.c
+@@ -66,8 +66,9 @@ static int do_alloc_pages(struct snd_car
+ 	__update_allocated_size(card, size);
+ 	mutex_unlock(&card->memory_mutex);
  
-+		datum->next = NULL;
- 		*dst = datum;
- 
- 		/* ebitmap_read() will at least init the bitmap */
-@@ -2023,7 +2024,6 @@ static int filename_trans_read_helper(st
- 			goto out;
- 
- 		datum->otype = le32_to_cpu(buf[0]);
--		datum->next = NULL;
- 
- 		dst = &datum->next;
+-	if (IS_ENABLED(CONFIG_SND_DMA_SGBUF) &&
+-	    (type == SNDRV_DMA_TYPE_DEV_SG || type == SNDRV_DMA_TYPE_DEV_UC_SG) &&
++
++#ifdef CONFIG_SND_DMA_SGBUF
++	if ((type == SNDRV_DMA_TYPE_DEV_SG || type == SNDRV_DMA_TYPE_DEV_UC_SG) &&
+ 	    !dma_is_direct(get_dma_ops(dev))) {
+ 		/* mutate to continuous page allocation */
+ 		dev_dbg(dev, "Use continuous page allocator\n");
+@@ -76,6 +77,7 @@ static int do_alloc_pages(struct snd_car
+ 		else
+ 			type = SNDRV_DMA_TYPE_DEV_UC;
  	}
++#endif /* CONFIG_SND_DMA_SGBUF */
+ 
+ 	err = snd_dma_alloc_pages(type, dev, size, dmab);
+ 	if (!err) {
 
 
