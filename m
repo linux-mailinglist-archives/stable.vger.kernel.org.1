@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A208578ADC0
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6AA1B78AD28
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232246AbjH1Kui (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:50:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49336 "EHLO
+        id S231858AbjH1KqU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:46:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59678 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232211AbjH1KuJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:50:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81AF7CC6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:48 -0700 (PDT)
+        with ESMTP id S231872AbjH1Kps (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AAF1CCD8
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4C42363874
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62B35C433C7;
-        Mon, 28 Aug 2023 10:49:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9991E6407C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADFAAC433C7;
+        Mon, 28 Aug 2023 10:45:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219787;
-        bh=cOmNiqVv5dKYUSPPUlk/l2j+W2SFSVjCbrK8nsCR+Ps=;
+        s=korg; t=1693219501;
+        bh=988bLz3o1WNQ642WNYNOweupIFfwNo4rVXYjl9VGzQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kZcrwq0bG1t+8dWuC2lJGg1S+NRe+7/033xkTSKa5ISo+BZAUgBqPQBfwJ5xKtpnv
-         M7idSzCFDeWrpTgQsVo5/h1VusftSdVCFuWRyvLnTUpiceXqm5crIhW9/xMR+S+ok/
-         Vo4IuqZifEfDplPxThX+rxu/oFc9o8MADvV0iO+0=
+        b=y92oaSi65mfisAoTV/RsSnVeC08NWihdqPoWwuO3zpYAKh7wVp54vt6oU5gJzsGKN
+         wthYfbG13Cm3/d5DYXNL1zVb96Uv7TpTEzvU8d0Y0QAGA+elofkz3WLDJ/D150TfPa
+         Xe9rLuCCSMI7uCYzQsLJhV4JO3L9BACddNTOGkY4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Trond Myklebust <trondmy@hammerspace.com>,
-        Benjamin Coddington <bcodding@redhat.com>,
-        Trond Myklebust <trond.myklebust@hammerspace.com>
-Subject: [PATCH 5.10 43/84] NFSv4: Fix dropped lock for racing OPEN and delegation return
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.15 59/89] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
 Date:   Mon, 28 Aug 2023 12:14:00 +0200
-Message-ID: <20230828101150.723572183@linuxfoundation.org>
+Message-ID: <20230828101152.163945413@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,58 +55,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-commit 1cbc11aaa01f80577b67ae02c73ee781112125fd upstream.
+commit 421d467dc2d483175bad4fb76a31b9e5a3d744cf upstream.
 
-Commmit f5ea16137a3f ("NFSv4: Retry LOCK on OLD_STATEID during delegation
-return") attempted to solve this problem by using nfs4's generic async error
-handling, but introduced a regression where v4.0 lock recovery would hang.
-The additional complexity introduced by overloading that error handling is
-not necessary for this case.  This patch expects that commit to be
-reverted.
+When batadv_v_ogm_aggr_send is called for an inactive interface, the skb
+is silently dropped by batadv_v_ogm_send_to_if() but never freed causing
+the following memory leak:
 
-The problem as originally explained in the above commit is:
+  unreferenced object 0xffff00000c164800 (size 512):
+    comm "kworker/u8:1", pid 2648, jiffies 4295122303 (age 97.656s)
+    hex dump (first 32 bytes):
+      00 80 af 09 00 00 ff ff e1 09 00 00 75 01 60 83  ............u.`.
+      1f 00 00 00 b8 00 00 00 15 00 05 00 da e3 d3 64  ...............d
+    backtrace:
+      [<0000000007ad20f6>] __kmalloc_track_caller+0x1a8/0x310
+      [<00000000d1029e55>] kmalloc_reserve.constprop.0+0x70/0x13c
+      [<000000008b9d4183>] __alloc_skb+0xec/0x1fc
+      [<00000000c7af5051>] __netdev_alloc_skb+0x48/0x23c
+      [<00000000642ee5f5>] batadv_v_ogm_aggr_send+0x50/0x36c
+      [<0000000088660bd7>] batadv_v_ogm_aggr_work+0x24/0x40
+      [<0000000042fc2606>] process_one_work+0x3b0/0x610
+      [<000000002f2a0b1c>] worker_thread+0xa0/0x690
+      [<0000000059fae5d4>] kthread+0x1fc/0x210
+      [<000000000c587d3a>] ret_from_fork+0x10/0x20
 
-    There's a small window where a LOCK sent during a delegation return can
-    race with another OPEN on client, but the open stateid has not yet been
-    updated.  In this case, the client doesn't handle the OLD_STATEID error
-    from the server and will lose this lock, emitting:
-    "NFS: nfs4_handle_delegation_recall_error: unhandled error -10024".
+Free the skb in that case to fix this leak.
 
-Fix this by using the old_stateid refresh helpers if the server replies
-with OLD_STATEID.
-
-Suggested-by: Trond Myklebust <trondmy@hammerspace.com>
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Cc: stable@vger.kernel.org
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfs/nfs4proc.c |    9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ net/batman-adv/bat_v_ogm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -7046,8 +7046,15 @@ static void nfs4_lock_done(struct rpc_ta
- 		} else if (!nfs4_update_lock_stateid(lsp, &data->res.stateid))
- 			goto out_restart;
- 		break;
--	case -NFS4ERR_BAD_STATEID:
- 	case -NFS4ERR_OLD_STATEID:
-+		if (data->arg.new_lock_owner != 0 &&
-+			nfs4_refresh_open_old_stateid(&data->arg.open_stateid,
-+					lsp->ls_state))
-+			goto out_restart;
-+		if (nfs4_refresh_lock_old_stateid(&data->arg.lock_stateid, lsp))
-+			goto out_restart;
-+		fallthrough;
-+	case -NFS4ERR_BAD_STATEID:
- 	case -NFS4ERR_STALE_STATEID:
- 	case -NFS4ERR_EXPIRED:
- 		if (data->arg.new_lock_owner != 0) {
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -124,8 +124,10 @@ static void batadv_v_ogm_send_to_if(stru
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+ 
+-	if (hard_iface->if_status != BATADV_IF_ACTIVE)
++	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
++		kfree_skb(skb);
+ 		return;
++	}
+ 
+ 	batadv_inc_counter(bat_priv, BATADV_CNT_MGMT_TX);
+ 	batadv_add_counter(bat_priv, BATADV_CNT_MGMT_TX_BYTES,
 
 
