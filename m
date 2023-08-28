@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90B7478ABC5
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D6F78AA9C
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:24:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231432AbjH1Kea (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:34:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36008 "EHLO
+        id S230497AbjH1KXt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54628 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231491AbjH1KeA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:00 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B16871B8
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:38 -0700 (PDT)
+        with ESMTP id S231296AbjH1KXQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C799F83
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4B7F563D57
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59A31C433C7;
-        Mon, 28 Aug 2023 10:33:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6014A63987
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0BCC433C8;
+        Mon, 28 Aug 2023 10:23:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218808;
-        bh=4eZ9r9vQiDYsM00lixLP7vBLdBgAWRVVeZXHOADXLa0=;
+        s=korg; t=1693218192;
+        bh=L932I2SPUfhu5cKo2yFi6bQJBkrvoE7Kry3Sl3ZxiUE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SZIppO5wx6cDPsZoLWrCklKnomJo2vqRBzHwOOtAjW1p6vbrFf1FutlmdaP4m0Y3F
-         ZpyETN3GAfp6Yx/7YPZ+kOBFguJXd5o5Pr0gxx2nrJf6ZucVCH4pGJp5F/rzXnTGpj
-         HtdQ0CmqXN62aew2Okw0/Yz1F9sCKmnH8bYSbsHs=
+        b=auEHFdsAEviXXyX8AmmxTBv07GhgkSHoPDml+ZhSg+YNZmyTFsCrCpuFLUCqnfqdd
+         CkMOU0Z6vh7f7d5YXPvGNMjsuH0+/Prm0Ch/Ngnaxbvbwej5YPHABfK7xjd3X/4Umv
+         Wz3bW9yCOphWKy/xW82nmWUcwhRuO+LZqumDVN4U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zack Rusin <zackr@vmware.com>,
-        security@openanolis.org, Ziming Zhang <ezrakiez@gmail.com>,
-        Maaz Mombasawala <mombasawalam@vmware.com>,
-        Martin Krastev <krastevm@vmware.com>,
-        Niels De Graef <ndegraef@redhat.com>
-Subject: [PATCH 6.1 092/122] drm/vmwgfx: Fix shader stage validation
+        patches@lists.linux.dev,
+        =?UTF-8?q?G=C3=BCnther=20Noack?= <gnoack3000@gmail.com>,
+        Samuel Thibault <samuel.thibault@ens-lyon.org>
+Subject: [PATCH 6.4 128/129] TIOCSTI: Document CAP_SYS_ADMIN behaviour in Kconfig
 Date:   Mon, 28 Aug 2023 12:13:27 +0200
-Message-ID: <20230828101159.462648875@linuxfoundation.org>
+Message-ID: <20230828101201.736785943@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,179 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zackr@vmware.com>
+From: Günther Noack <gnoack3000@gmail.com>
 
-commit 14abdfae508228a7307f7491b5c4215ae70c6542 upstream.
+commit 3f29d9ee323ae5cda59d144d1f8b0b10ea065be0 upstream.
 
-For multiple commands the driver was not correctly validating the shader
-stages resulting in possible kernel oopses. The validation code was only.
-if ever, checking the upper bound on the shader stages but never a lower
-bound (valid shader stages start at 1 not 0).
+Clarifies that the LEGACY_TIOCSTI setting is safe to turn off even
+when running BRLTTY, as it was introduced in commit 690c8b804ad2
+("TIOCSTI: always enable for CAP_SYS_ADMIN").
 
-Fixes kernel oopses ending up in vmw_binding_add, e.g.:
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 1 PID: 2443 Comm: testcase Not tainted 6.3.0-rc4-vmwgfx #1
-Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
-RIP: 0010:vmw_binding_add+0x4c/0x140 [vmwgfx]
-Code: 7e 30 49 83 ff 0e 0f 87 ea 00 00 00 4b 8d 04 7f 89 d2 89 cb 48 c1 e0 03 4c 8b b0 40 3d 93 c0 48 8b 80 48 3d 93 c0 49 0f af de <48> 03 1c d0 4c 01 e3 49 8>
-RSP: 0018:ffffb8014416b968 EFLAGS: 00010206
-RAX: ffffffffc0933ec0 RBX: 0000000000000000 RCX: 0000000000000000
-RDX: 00000000ffffffff RSI: ffffb8014416b9c0 RDI: ffffb8014316f000
-RBP: ffffb8014416b998 R08: 0000000000000003 R09: 746f6c735f726564
-R10: ffffffffaaf2bda0 R11: 732e676e69646e69 R12: ffffb8014316f000
-R13: ffffb8014416b9c0 R14: 0000000000000040 R15: 0000000000000006
-FS:  00007fba8c0af740(0000) GS:ffff8a1277c80000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000007c0933eb8 CR3: 0000000118244001 CR4: 00000000003706e0
-Call Trace:
- <TASK>
- vmw_view_bindings_add+0xf5/0x1b0 [vmwgfx]
- ? ___drm_dbg+0x8a/0xb0 [drm]
- vmw_cmd_dx_set_shader_res+0x8f/0xc0 [vmwgfx]
- vmw_execbuf_process+0x590/0x1360 [vmwgfx]
- vmw_execbuf_ioctl+0x173/0x370 [vmwgfx]
- ? __drm_dev_dbg+0xb4/0xe0 [drm]
- ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
- drm_ioctl_kernel+0xbc/0x160 [drm]
- drm_ioctl+0x2d2/0x580 [drm]
- ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
- ? do_fault+0x1a6/0x420
- vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
- vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
- __x64_sys_ioctl+0x96/0xd0
- do_syscall_64+0x5d/0x90
- ? handle_mm_fault+0xe4/0x2f0
- ? debug_smp_processor_id+0x1b/0x30
- ? fpregs_assert_state_consistent+0x2e/0x50
- ? exit_to_user_mode_prepare+0x40/0x180
- ? irqentry_exit_to_user_mode+0xd/0x20
- ? irqentry_exit+0x3f/0x50
- ? exc_page_fault+0x8b/0x180
- entry_SYSCALL_64_after_hwframe+0x72/0xdc
-
-Signed-off-by: Zack Rusin <zackr@vmware.com>
-Cc: security@openanolis.org
-Reported-by: Ziming Zhang <ezrakiez@gmail.com>
-Testcase-found-by: Niels De Graef <ndegraef@redhat.com>
-Fixes: d80efd5cb3de ("drm/vmwgfx: Initial DX support")
-Cc: <stable@vger.kernel.org> # v4.3+
-Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
-Reviewed-by: Martin Krastev <krastevm@vmware.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230616190934.54828-1-zack@kde.org
+Signed-off-by: Günther Noack <gnoack3000@gmail.com>
+Reviewed-by: Samuel Thibault <samuel.thibault@ens-lyon.org>
+Link: https://lore.kernel.org/r/20230808201115.23993-1-gnoack3000@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_drv.h     |   12 ++++++++++++
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   29 +++++++++++------------------
- 2 files changed, 23 insertions(+), 18 deletions(-)
+ drivers/tty/Kconfig |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
-@@ -1683,4 +1683,16 @@ static inline bool vmw_has_fences(struct
- 	return (vmw_fifo_caps(vmw) & SVGA_FIFO_CAP_FENCE) != 0;
- }
+--- a/drivers/tty/Kconfig
++++ b/drivers/tty/Kconfig
+@@ -164,6 +164,9 @@ config LEGACY_TIOCSTI
+ 	  userspace depends on this functionality to continue operating
+ 	  normally.
  
-+static inline bool vmw_shadertype_is_valid(enum vmw_sm_type shader_model,
-+					   u32 shader_type)
-+{
-+	SVGA3dShaderType max_allowed = SVGA3D_SHADERTYPE_PREDX_MAX;
++	  Processes which run with CAP_SYS_ADMIN, such as BRLTTY, can
++	  use TIOCSTI even when this is set to N.
 +
-+	if (shader_model >= VMW_SM_5)
-+		max_allowed = SVGA3D_SHADERTYPE_MAX;
-+	else if (shader_model >= VMW_SM_4)
-+		max_allowed = SVGA3D_SHADERTYPE_DX10_MAX;
-+	return shader_type >= SVGA3D_SHADERTYPE_MIN && shader_type < max_allowed;
-+}
-+
- #endif
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1985,7 +1985,7 @@ static int vmw_cmd_set_shader(struct vmw
- 
- 	cmd = container_of(header, typeof(*cmd), header);
- 
--	if (cmd->body.type >= SVGA3D_SHADERTYPE_PREDX_MAX) {
-+	if (!vmw_shadertype_is_valid(VMW_SM_LEGACY, cmd->body.type)) {
- 		VMW_DEBUG_USER("Illegal shader type %u.\n",
- 			       (unsigned int) cmd->body.type);
- 		return -EINVAL;
-@@ -2108,8 +2108,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
- 				      SVGA3dCmdHeader *header)
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetSingleConstantBuffer);
--	SVGA3dShaderType max_shader_num = has_sm5_context(dev_priv) ?
--		SVGA3D_NUM_SHADERTYPE : SVGA3D_NUM_SHADERTYPE_DX10;
- 
- 	struct vmw_resource *res = NULL;
- 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
-@@ -2126,6 +2124,14 @@ vmw_cmd_dx_set_single_constant_buffer(st
- 	if (unlikely(ret != 0))
- 		return ret;
- 
-+	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type) ||
-+	    cmd->body.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
-+		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
-+			       (unsigned int) cmd->body.type,
-+			       (unsigned int) cmd->body.slot);
-+		return -EINVAL;
-+	}
-+
- 	binding.bi.ctx = ctx_node->ctx;
- 	binding.bi.res = res;
- 	binding.bi.bt = vmw_ctx_binding_cb;
-@@ -2134,14 +2140,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
- 	binding.size = cmd->body.sizeInBytes;
- 	binding.slot = cmd->body.slot;
- 
--	if (binding.shader_slot >= max_shader_num ||
--	    binding.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
--		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
--			       (unsigned int) cmd->body.type,
--			       (unsigned int) binding.slot);
--		return -EINVAL;
--	}
--
- 	vmw_binding_add(ctx_node->staged, &binding.bi, binding.shader_slot,
- 			binding.slot);
- 
-@@ -2200,15 +2198,13 @@ static int vmw_cmd_dx_set_shader_res(str
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShaderResources) =
- 		container_of(header, typeof(*cmd), header);
--	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
--		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
- 
- 	u32 num_sr_view = (cmd->header.size - sizeof(cmd->body)) /
- 		sizeof(SVGA3dShaderResourceViewId);
- 
- 	if ((u64) cmd->body.startView + (u64) num_sr_view >
- 	    (u64) SVGA3D_DX_MAX_SRVIEWS ||
--	    cmd->body.type >= max_allowed) {
-+	    !vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
- 		VMW_DEBUG_USER("Invalid shader binding.\n");
- 		return -EINVAL;
- 	}
-@@ -2232,8 +2228,6 @@ static int vmw_cmd_dx_set_shader(struct
- 				 SVGA3dCmdHeader *header)
- {
- 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShader);
--	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
--		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
- 	struct vmw_resource *res = NULL;
- 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
- 	struct vmw_ctx_bindinfo_shader binding;
-@@ -2244,8 +2238,7 @@ static int vmw_cmd_dx_set_shader(struct
- 
- 	cmd = container_of(header, typeof(*cmd), header);
- 
--	if (cmd->body.type >= max_allowed ||
--	    cmd->body.type < SVGA3D_SHADERTYPE_MIN) {
-+	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
- 		VMW_DEBUG_USER("Illegal shader type %u.\n",
- 			       (unsigned int) cmd->body.type);
- 		return -EINVAL;
+ 	  This functionality can be changed at runtime with the
+ 	  dev.tty.legacy_tiocsti sysctl. This configuration option sets
+ 	  the default value of the sysctl.
 
 
