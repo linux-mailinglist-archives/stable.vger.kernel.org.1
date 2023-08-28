@@ -2,49 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA1B578AC14
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C4C5178AA24
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231542AbjH1KhI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:37:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42374 "EHLO
+        id S230458AbjH1KTH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:19:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231583AbjH1Kgj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:39 -0400
+        with ESMTP id S230517AbjH1KSn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F8E5119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:36 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2B7B199
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:18:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E40D263ED3
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F27D2C433CD;
-        Mon, 28 Aug 2023 10:36:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E0FE637B5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:18:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E89FC433C7;
+        Mon, 28 Aug 2023 10:18:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218995;
-        bh=uHj0IAmoaQz5tPDrvw90q8QXF4su93bJQkFxdN9sNW8=;
+        s=korg; t=1693217910;
+        bh=gAQCrrcxjMteKDhNELuTXCqDp/XzZlODc6QxWDd9mLw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C0RhD9XJUGz2z2A9gLEmZyxPx2cV06k3iZnBwGLDNUtS5GUZxse+o4+C5spHvNzkB
-         whCZ/+8NoLVEHFOzCYnrMJxrOByacS32eGF7Uv6OFKDE0ThAa3+gANgCJ396VlJQlP
-         uOSU0bUvQ67Kog0pJyWgMw80lpFMBnj+YIG0BXus=
+        b=dj3P+d6QYGpZN14l4ciGgSjU8mDNkG7tAhe4oyaCel8fsjCeKKhJ9wOZ6R0uce1yE
+         uHIrO2wBh8VRtsTxtuPNqzfdAwU8vskIuwmg8d/at3zpI/zd5T3wy2TnUaGHJWwiiD
+         EgP08TgVYu+6f9FpoU8Efl7zrnzdiOWgJmVtHRWw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Oswald Buddenhagen <oswald.buddenhagen@gmx.de>,
-        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 007/158] ALSA: emu10k1: roll up loops in DSP setup code for Audigy
-Date:   Mon, 28 Aug 2023 12:11:44 +0200
-Message-ID: <20230828101157.564422556@linuxfoundation.org>
+        =?UTF-8?q?Ar=C4=B1n=C3=A7=20=C3=9CNAL?= <arinc.unal@arinc9.com>,
+        Vladimir Oltean <olteanv@gmail.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 026/129] net: dsa: mt7530: fix handling of 802.1X PAE frames
+Date:   Mon, 28 Aug 2023 12:11:45 +0200
+Message-ID: <20230828101158.261891830@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -55,155 +58,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
+From: Arınç ÜNAL <arinc.unal@arinc9.com>
 
-[ Upstream commit 8cabf83c7aa54530e699be56249fb44f9505c4f3 ]
+[ Upstream commit e94b590abfff2cdbf0bdaa7d9904364c8d480af5 ]
 
-There is no apparent reason for the massive code duplication.
+802.1X PAE frames are link-local frames, therefore they must be trapped to
+the CPU port. Currently, the MT753X switches treat 802.1X PAE frames as
+regular multicast frames, therefore flooding them to user ports. To fix
+this, set 802.1X PAE frames to be trapped to the CPU port(s).
 
-Signed-off-by: Oswald Buddenhagen <oswald.buddenhagen@gmx.de>
-Link: https://lore.kernel.org/r/20230510173917.3073107-3-oswald.buddenhagen@gmx.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Fixes: b8f126a8d543 ("net-next: dsa: add dsa support for Mediatek MT7530 switch")
+Signed-off-by: Arınç ÜNAL <arinc.unal@arinc9.com>
+Reviewed-by: Vladimir Oltean <olteanv@gmail.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/pci/emu10k1/emufx.c | 112 +++-----------------------------------
- 1 file changed, 9 insertions(+), 103 deletions(-)
+ drivers/net/dsa/mt7530.c | 4 ++++
+ drivers/net/dsa/mt7530.h | 2 ++
+ 2 files changed, 6 insertions(+)
 
-diff --git a/sound/pci/emu10k1/emufx.c b/sound/pci/emu10k1/emufx.c
-index e053f0d58bdd0..2f3cfcfcdb9a3 100644
---- a/sound/pci/emu10k1/emufx.c
-+++ b/sound/pci/emu10k1/emufx.c
-@@ -1536,14 +1536,8 @@ A_OP(icode, &ptr, iMAC0, A_GPR(var), A_GPR(var), A_GPR(vol), A_EXTIN(input))
- 	gpr += 2;
+diff --git a/drivers/net/dsa/mt7530.c b/drivers/net/dsa/mt7530.c
+index 7e773c4ba0463..32dc4f19c82c6 100644
+--- a/drivers/net/dsa/mt7530.c
++++ b/drivers/net/dsa/mt7530.c
+@@ -1006,6 +1006,10 @@ mt753x_trap_frames(struct mt7530_priv *priv)
+ 	mt7530_rmw(priv, MT753X_BPC, MT753X_BPDU_PORT_FW_MASK,
+ 		   MT753X_BPDU_CPU_ONLY);
  
- 	/* Master volume (will be renamed later) */
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+0+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+0+SND_EMU10K1_PLAYBACK_CHANNELS));
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+1+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+1+SND_EMU10K1_PLAYBACK_CHANNELS));
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+2+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+2+SND_EMU10K1_PLAYBACK_CHANNELS));
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+3+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+3+SND_EMU10K1_PLAYBACK_CHANNELS));
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+4+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+4+SND_EMU10K1_PLAYBACK_CHANNELS));
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+5+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+5+SND_EMU10K1_PLAYBACK_CHANNELS));
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+6+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+6+SND_EMU10K1_PLAYBACK_CHANNELS));
--	A_OP(icode, &ptr, iMAC0, A_GPR(playback+7+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+7+SND_EMU10K1_PLAYBACK_CHANNELS));
-+	for (z = 0; z < 8; z++)
-+		A_OP(icode, &ptr, iMAC0, A_GPR(playback+z+SND_EMU10K1_PLAYBACK_CHANNELS), A_C_00000000, A_GPR(gpr), A_GPR(playback+z+SND_EMU10K1_PLAYBACK_CHANNELS));
- 	snd_emu10k1_init_mono_control(&controls[nctl++], "Wave Master Playback Volume", gpr, 0);
- 	gpr += 2;
++	/* Trap 802.1X PAE frames to the CPU port(s) */
++	mt7530_rmw(priv, MT753X_BPC, MT753X_PAE_PORT_FW_MASK,
++		   MT753X_PAE_PORT_FW(MT753X_BPDU_CPU_ONLY));
++
+ 	/* Trap LLDP frames with :0E MAC DA to the CPU port(s) */
+ 	mt7530_rmw(priv, MT753X_RGAC2, MT753X_R0E_PORT_FW_MASK,
+ 		   MT753X_R0E_PORT_FW(MT753X_BPDU_CPU_ONLY));
+diff --git a/drivers/net/dsa/mt7530.h b/drivers/net/dsa/mt7530.h
+index 08045b035e6ab..17e42d30fff4b 100644
+--- a/drivers/net/dsa/mt7530.h
++++ b/drivers/net/dsa/mt7530.h
+@@ -66,6 +66,8 @@ enum mt753x_id {
+ /* Registers for BPDU and PAE frame control*/
+ #define MT753X_BPC			0x24
+ #define  MT753X_BPDU_PORT_FW_MASK	GENMASK(2, 0)
++#define  MT753X_PAE_PORT_FW_MASK	GENMASK(18, 16)
++#define  MT753X_PAE_PORT_FW(x)		FIELD_PREP(MT753X_PAE_PORT_FW_MASK, x)
  
-@@ -1627,102 +1621,14 @@ A_OP(icode, &ptr, iMAC0, A_GPR(var), A_GPR(var), A_GPR(vol), A_EXTIN(input))
- 			dev_dbg(emu->card->dev, "emufx.c: gpr=0x%x, tmp=0x%x\n",
- 			       gpr, tmp);
- 			*/
--			/* For the EMU1010: How to get 32bit values from the DSP. High 16bits into L, low 16bits into R. */
--			/* A_P16VIN(0) is delayed by one sample,
--			 * so all other A_P16VIN channels will need to also be delayed
--			 */
--			/* Left ADC in. 1 of 2 */
- 			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_P16VIN(0x0), A_FXBUS2(0) );
--			/* Right ADC in 1 of 2 */
--			gpr_map[gpr++] = 0x00000000;
--			/* Delaying by one sample: instead of copying the input
--			 * value A_P16VIN to output A_FXBUS2 as in the first channel,
--			 * we use an auxiliary register, delaying the value by one
--			 * sample
--			 */
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr - 1), A_FXBUS2(2) );
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x1), A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr - 1), A_FXBUS2(4) );
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x2), A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr - 1), A_FXBUS2(6) );
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x3), A_C_00000000, A_C_00000000);
--			/* For 96kHz mode */
--			/* Left ADC in. 2 of 2 */
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr - 1), A_FXBUS2(0x8) );
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x4), A_C_00000000, A_C_00000000);
--			/* Right ADC in 2 of 2 */
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr - 1), A_FXBUS2(0xa) );
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x5), A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr - 1), A_FXBUS2(0xc) );
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x6), A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr - 1), A_FXBUS2(0xe) );
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x7), A_C_00000000, A_C_00000000);
--			/* Pavel Hofman - we still have voices, A_FXBUS2s, and
--			 * A_P16VINs available -
--			 * let's add 8 more capture channels - total of 16
--			 */
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x10));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x8),
--			     A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x12));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0x9),
--			     A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x14));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0xa),
--			     A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x16));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0xb),
--			     A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x18));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0xc),
--			     A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x1a));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0xd),
--			     A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x1c));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0xe),
--			     A_C_00000000, A_C_00000000);
--			gpr_map[gpr++] = 0x00000000;
--			snd_emu10k1_audigy_dsp_convert_32_to_2x16(icode, &ptr, tmp,
--								  bit_shifter16,
--								  A_GPR(gpr - 1),
--								  A_FXBUS2(0x1e));
--			A_OP(icode, &ptr, iACC3, A_GPR(gpr - 1), A_P16VIN(0xf),
--			     A_C_00000000, A_C_00000000);
-+			/* A_P16VIN(0) is delayed by one sample, so all other A_P16VIN channels
-+			 * will need to also be delayed; we use an auxiliary register for that. */
-+			for (z = 1; z < 0x10; z++) {
-+				snd_emu10k1_audigy_dsp_convert_32_to_2x16( icode, &ptr, tmp, bit_shifter16, A_GPR(gpr), A_FXBUS2(z * 2) );
-+				A_OP(icode, &ptr, iACC3, A_GPR(gpr), A_P16VIN(z), A_C_00000000, A_C_00000000);
-+				gpr_map[gpr++] = 0x00000000;
-+			}
- 		}
- 
- #if 0
+ /* Register for :03 and :0E MAC DA frame control */
+ #define MT753X_RGAC2			0x2c
 -- 
 2.40.1
 
