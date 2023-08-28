@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E7D1B78AACC
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2089678AC09
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231230AbjH1KZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60756 "EHLO
+        id S231601AbjH1Kgl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:36:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229686AbjH1KYs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:48 -0400
+        with ESMTP id S231636AbjH1KgY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:24 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EA1B122
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B75F115
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0DABC63A2B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21643C433C9;
-        Mon, 28 Aug 2023 10:24:42 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 19E1B63ECD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:19 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC3CC433C8;
+        Mon, 28 Aug 2023 10:36:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218283;
-        bh=lJkmgO6xZDV7mrlS1zsQI6sEkkTARTicKO+uUzhVTV0=;
+        s=korg; t=1693218978;
+        bh=PVMEQymqrs08cGsUwGN90wrnriEUDRjVD8a+SWve8SM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KSzWTj1hB2ewk6FbiGh01H0lXucCZTEl4E5Py5G8rsbpqqafmMQVjaG8jKttr/t+a
-         K2AOJlDqawC0q9yQt/m/YD5wKRPkm/3eDCG0N/HpGZmMZW+50Zb7m/nd654WTybWah
-         XuPVlKFkMfhwwmpM1/n3VzroUfqDA/eGm+OV1pFo=
+        b=KyOoTdQnevb3GSIR9MITFiyLZu3Lhg9d7QGSz0CZ49N0MEPv6rwDNJfmUtRWSX2fq
+         +exOvexNFZDAoAeSYywhTFcDIQx7BioUf6vu1u7wYHBi2bfHajYXkskSRC/MzPnKX6
+         6Q6j+ZvfcEDYtdC45zn8khhsS6lx+42tpzFj4oy0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, David Laight <David.Laight@ACULAB.COM>,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Linus Walleij <linus.walleij@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 032/129] irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()
+Subject: [PATCH 5.4 029/158] iio: adc: stx104: Utilize iomap interface
 Date:   Mon, 28 Aug 2023 12:12:06 +0200
-Message-ID: <20230828101154.283894087@linuxfoundation.org>
+Message-ID: <20230828101158.327061207@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,104 +57,208 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: William Breathitt Gray <william.gray@linaro.org>
 
-[ Upstream commit dd098a0e031928cf88c89f7577d31821e1f0e6de ]
+[ Upstream commit 73b8390cc27e096ab157be261ccc4eaaa6db87af ]
 
-The MIPS GIC driver uses irq_cpu_online() to go and program the
-per-CPU interrupts. However, this method iterates over all IRQs
-in the system, despite only 3 per-CPU interrupts being of interest.
+This driver doesn't need to access I/O ports directly via inb()/outb()
+and friends. This patch abstracts such access by calling ioport_map()
+to enable the use of more typical ioread8()/iowrite8() I/O memory
+accessor calls.
 
-Let's be terribly bold and do the iteration ourselves. To ensure
-mutual exclusion, hold the gic_lock spinlock that is otherwise
-taken while dealing with these interrupts.
-
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/20211021170414.3341522-3-maz@kernel.org
-Stable-dep-of: 3d6a0e4197c0 ("irqchip/mips-gic: Use raw spinlock for gic_lock")
+Suggested-by: David Laight <David.Laight@ACULAB.COM>
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
+Link: https://lore.kernel.org/r/64673797df382c52fc32fce24348b25a0b05e73a.1652201921.git.william.gray@linaro.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mips-gic.c | 37 ++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/iio/adc/stx104.c | 56 +++++++++++++++++++++-------------------
+ 1 file changed, 29 insertions(+), 27 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index f3985469c2211..6b8c3dd0f76f4 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -380,24 +380,35 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
- 	spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
--static void gic_all_vpes_irq_cpu_online(struct irq_data *d)
-+static void gic_all_vpes_irq_cpu_online(void)
- {
--	struct gic_all_vpes_chip_data *cd;
--	unsigned int intr;
-+	static const unsigned int local_intrs[] = {
-+		GIC_LOCAL_INT_TIMER,
-+		GIC_LOCAL_INT_PERFCTR,
-+		GIC_LOCAL_INT_FDC,
-+	};
-+	unsigned long flags;
-+	int i;
- 
--	intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
--	cd = irq_data_get_irq_chip_data(d);
-+	spin_lock_irqsave(&gic_lock, flags);
- 
--	write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
--	if (cd->mask)
--		write_gic_vl_smask(BIT(intr));
-+	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
-+		unsigned int intr = local_intrs[i];
-+		struct gic_all_vpes_chip_data *cd;
-+
-+		cd = &gic_all_vpes_chip_data[intr];
-+		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
-+		if (cd->mask)
-+			write_gic_vl_smask(BIT(intr));
-+	}
-+
-+	spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
- static struct irq_chip gic_all_vpes_local_irq_controller = {
- 	.name			= "MIPS GIC Local",
- 	.irq_mask		= gic_mask_local_irq_all_vpes,
- 	.irq_unmask		= gic_unmask_local_irq_all_vpes,
--	.irq_cpu_online		= gic_all_vpes_irq_cpu_online,
+diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
+index f87bbc711ccc0..112362f7d3943 100644
+--- a/drivers/iio/adc/stx104.c
++++ b/drivers/iio/adc/stx104.c
+@@ -51,7 +51,7 @@ MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
+  */
+ struct stx104_iio {
+ 	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
+-	unsigned int base;
++	void __iomem *base;
  };
  
- static void __gic_irq_dispatch(void)
-@@ -476,6 +487,10 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 	intr = GIC_HWIRQ_TO_LOCAL(hwirq);
- 	map = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
+ /**
+@@ -64,7 +64,7 @@ struct stx104_iio {
+ struct stx104_gpio {
+ 	struct gpio_chip chip;
+ 	spinlock_t lock;
+-	unsigned int base;
++	void __iomem *base;
+ 	unsigned int out_state;
+ };
  
-+	/*
-+	 * If adding support for more per-cpu interrupts, keep the the
-+	 * array in gic_all_vpes_irq_cpu_online() in sync.
-+	 */
- 	switch (intr) {
- 	case GIC_LOCAL_INT_TIMER:
- 		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
-@@ -662,8 +677,8 @@ static int gic_cpu_startup(unsigned int cpu)
- 	/* Clear all local IRQ masks (ie. disable all local interrupts) */
- 	write_gic_vl_rmask(~0);
+@@ -79,7 +79,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
+ 	switch (mask) {
+ 	case IIO_CHAN_INFO_HARDWAREGAIN:
+ 		/* get gain configuration */
+-		adc_config = inb(priv->base + 11);
++		adc_config = ioread8(priv->base + 11);
+ 		gain = adc_config & 0x3;
  
--	/* Invoke irq_cpu_online callbacks to enable desired interrupts */
--	irq_cpu_online();
-+	/* Enable desired interrupts */
-+	gic_all_vpes_irq_cpu_online();
+ 		*val = 1 << gain;
+@@ -91,24 +91,24 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
+ 		}
+ 
+ 		/* select ADC channel */
+-		outb(chan->channel | (chan->channel << 4), priv->base + 2);
++		iowrite8(chan->channel | (chan->channel << 4), priv->base + 2);
+ 
+ 		/* trigger ADC sample capture and wait for completion */
+-		outb(0, priv->base);
+-		while (inb(priv->base + 8) & BIT(7));
++		iowrite8(0, priv->base);
++		while (ioread8(priv->base + 8) & BIT(7));
+ 
+-		*val = inw(priv->base);
++		*val = ioread16(priv->base);
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_OFFSET:
+ 		/* get ADC bipolar/unipolar configuration */
+-		adc_config = inb(priv->base + 11);
++		adc_config = ioread8(priv->base + 11);
+ 		adbu = !(adc_config & BIT(2));
+ 
+ 		*val = -32768 * adbu;
+ 		return IIO_VAL_INT;
+ 	case IIO_CHAN_INFO_SCALE:
+ 		/* get ADC bipolar/unipolar and gain configuration */
+-		adc_config = inb(priv->base + 11);
++		adc_config = ioread8(priv->base + 11);
+ 		adbu = !(adc_config & BIT(2));
+ 		gain = adc_config & 0x3;
+ 
+@@ -130,16 +130,16 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
+ 		/* Only four gain states (x1, x2, x4, x8) */
+ 		switch (val) {
+ 		case 1:
+-			outb(0, priv->base + 11);
++			iowrite8(0, priv->base + 11);
+ 			break;
+ 		case 2:
+-			outb(1, priv->base + 11);
++			iowrite8(1, priv->base + 11);
+ 			break;
+ 		case 4:
+-			outb(2, priv->base + 11);
++			iowrite8(2, priv->base + 11);
+ 			break;
+ 		case 8:
+-			outb(3, priv->base + 11);
++			iowrite8(3, priv->base + 11);
+ 			break;
+ 		default:
+ 			return -EINVAL;
+@@ -153,7 +153,7 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
+ 				return -EINVAL;
+ 
+ 			priv->chan_out_states[chan->channel] = val;
+-			outw(val, priv->base + 4 + 2 * chan->channel);
++			iowrite16(val, priv->base + 4 + 2 * chan->channel);
+ 
+ 			return 0;
+ 		}
+@@ -222,7 +222,7 @@ static int stx104_gpio_get(struct gpio_chip *chip, unsigned int offset)
+ 	if (offset >= 4)
+ 		return -EINVAL;
+ 
+-	return !!(inb(stx104gpio->base) & BIT(offset));
++	return !!(ioread8(stx104gpio->base) & BIT(offset));
+ }
+ 
+ static int stx104_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
+@@ -230,7 +230,7 @@ static int stx104_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
+ {
+ 	struct stx104_gpio *const stx104gpio = gpiochip_get_data(chip);
+ 
+-	*bits = inb(stx104gpio->base);
++	*bits = ioread8(stx104gpio->base);
  
  	return 0;
  }
+@@ -252,7 +252,7 @@ static void stx104_gpio_set(struct gpio_chip *chip, unsigned int offset,
+ 	else
+ 		stx104gpio->out_state &= ~mask;
+ 
+-	outb(stx104gpio->out_state, stx104gpio->base);
++	iowrite8(stx104gpio->out_state, stx104gpio->base);
+ 
+ 	spin_unlock_irqrestore(&stx104gpio->lock, flags);
+ }
+@@ -279,7 +279,7 @@ static void stx104_gpio_set_multiple(struct gpio_chip *chip,
+ 
+ 	stx104gpio->out_state &= ~*mask;
+ 	stx104gpio->out_state |= *mask & *bits;
+-	outb(stx104gpio->out_state, stx104gpio->base);
++	iowrite8(stx104gpio->out_state, stx104gpio->base);
+ 
+ 	spin_unlock_irqrestore(&stx104gpio->lock, flags);
+ }
+@@ -306,11 +306,16 @@ static int stx104_probe(struct device *dev, unsigned int id)
+ 		return -EBUSY;
+ 	}
+ 
++	priv = iio_priv(indio_dev);
++	priv->base = devm_ioport_map(dev, base[id], STX104_EXTENT);
++	if (!priv->base)
++		return -ENOMEM;
++
+ 	indio_dev->info = &stx104_info;
+ 	indio_dev->modes = INDIO_DIRECT_MODE;
+ 
+ 	/* determine if differential inputs */
+-	if (inb(base[id] + 8) & BIT(5)) {
++	if (ioread8(priv->base + 8) & BIT(5)) {
+ 		indio_dev->num_channels = ARRAY_SIZE(stx104_channels_diff);
+ 		indio_dev->channels = stx104_channels_diff;
+ 	} else {
+@@ -321,18 +326,15 @@ static int stx104_probe(struct device *dev, unsigned int id)
+ 	indio_dev->name = dev_name(dev);
+ 	indio_dev->dev.parent = dev;
+ 
+-	priv = iio_priv(indio_dev);
+-	priv->base = base[id];
+-
+ 	/* configure device for software trigger operation */
+-	outb(0, base[id] + 9);
++	iowrite8(0, priv->base + 9);
+ 
+ 	/* initialize gain setting to x1 */
+-	outb(0, base[id] + 11);
++	iowrite8(0, priv->base + 11);
+ 
+ 	/* initialize DAC output to 0V */
+-	outw(0, base[id] + 4);
+-	outw(0, base[id] + 6);
++	iowrite16(0, priv->base + 4);
++	iowrite16(0, priv->base + 6);
+ 
+ 	stx104gpio->chip.label = dev_name(dev);
+ 	stx104gpio->chip.parent = dev;
+@@ -347,7 +349,7 @@ static int stx104_probe(struct device *dev, unsigned int id)
+ 	stx104gpio->chip.get_multiple = stx104_gpio_get_multiple;
+ 	stx104gpio->chip.set = stx104_gpio_set;
+ 	stx104gpio->chip.set_multiple = stx104_gpio_set_multiple;
+-	stx104gpio->base = base[id] + 3;
++	stx104gpio->base = priv->base + 3;
+ 	stx104gpio->out_state = 0x0;
+ 
+ 	spin_lock_init(&stx104gpio->lock);
 -- 
 2.40.1
 
