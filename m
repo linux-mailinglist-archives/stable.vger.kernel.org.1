@@ -2,51 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D1E478AA88
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A933478ACA0
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231272AbjH1KXQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33800 "EHLO
+        id S231744AbjH1Kld (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:41:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231270AbjH1KWm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 49531107
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:29 -0700 (PDT)
+        with ESMTP id S231788AbjH1KlM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7101FC5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2B10663778
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E990C433C8;
-        Mon, 28 Aug 2023 10:22:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A81164080
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:06 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 165A3C433C7;
+        Mon, 28 Aug 2023 10:41:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218148;
-        bh=4g8dpvswpuJ2joIZakB8xs6Ayn6giuNeZ+XXOERsCXo=;
+        s=korg; t=1693219265;
+        bh=rAJrWuU0wKOlwBAbMKOo42DrguaMzsnXXVkcJr9cOF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=R72Ir/96ZtHfuTDxfTPEd1qDKvvdiFbbxKqL4iN/IwG4mHaNS3gycDg24NeGOGrYS
-         /oUjGaFC1/BJvyE8Wb1OmIHZMbGaVrNoVFvbID1vB+1pneEOazYBnzS2/HXZeYJChA
-         /E07nE3octZNHYl+PUnoiLIFh28GLMvDTJCM2u5g=
+        b=zfrZg6cuTUPKeW9rgTQjAw0YkXo9uvrrzn0Gv1tzdhjkZSfJguDmFA6JY1qx3VNDJ
+         1eC3KGUrj5EyaShgjGux6Y0XN2f01E6m34T8PxJejR0lHBt8R1HNEXC4XN3LPzPhKY
+         m8ZN1klTyMNNF+xPwSmtTOuOoM+6nYyyg/TjOvTk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 6.4 113/129] scsi: snic: Fix double free in snic_tgt_create()
+        patches@lists.linux.dev, Igor Mammedov <imammedo@redhat.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 095/158] PCI: acpiphp: Reassign resources on bridge if necessary
 Date:   Mon, 28 Aug 2023 12:13:12 +0200
-Message-ID: <20230828101201.120121319@linuxfoundation.org>
+Message-ID: <20230828101200.497193588@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,45 +57,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Igor Mammedov <imammedo@redhat.com>
 
-commit 1bd3a76880b2bce017987cf53780b372cf59528e upstream.
+[ Upstream commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 ]
 
-Commit 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add()
-fails") fixed the memory leak caused by dev_set_name() when device_add()
-failed. However, it did not consider that 'tgt' has already been released
-when put_device(&tgt->dev) is called. Remove kfree(tgt) in the error path
-to avoid double free of 'tgt' and move put_device(&tgt->dev) after the
-removed kfree(tgt) to avoid a use-after-free.
+When using ACPI PCI hotplug, hotplugging a device with large BARs may fail
+if bridge windows programmed by firmware are not large enough.
 
-Fixes: 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add() fails")
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230819083941.164365-1-wangzhu9@huawei.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reproducer:
+  $ qemu-kvm -monitor stdio -M q35  -m 4G \
+      -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
+      -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
+      disk_image
+
+ wait till linux guest boots, then hotplug device:
+   (qemu) device_add qxl,bus=rp1
+
+ hotplug on guest side fails with:
+   pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
+   pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
+   pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
+   pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
+   pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
+   pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
+   pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
+   pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
+   qxl 0000:01:00.0: enabling device (0000 -> 0003)
+   Unable to create vram_mapping
+   qxl: probe of 0000:01:00.0 failed with error -12
+
+However when using native PCIe hotplug
+  '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
+it works fine, since kernel attempts to reassign unused resources.
+
+Use the same machinery as native PCIe hotplug to (re)assign resources.
+
+Link: https://lore.kernel.org/r/20230424191557.2464760-1-imammedo@redhat.com
+Signed-off-by: Igor Mammedov <imammedo@redhat.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Acked-by: Rafael J. Wysocki <rafael@kernel.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/snic/snic_disc.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/pci/hotplug/acpiphp_glue.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
---- a/drivers/scsi/snic/snic_disc.c
-+++ b/drivers/scsi/snic/snic_disc.c
-@@ -303,12 +303,11 @@ snic_tgt_create(struct snic *snic, struc
- 			      "Snic Tgt: device_add, with err = %d\n",
- 			      ret);
+diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
+index 98be06ac2af24..8a0f2bf888536 100644
+--- a/drivers/pci/hotplug/acpiphp_glue.c
++++ b/drivers/pci/hotplug/acpiphp_glue.c
+@@ -496,7 +496,6 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+ 				acpiphp_native_scan_bridge(dev);
+ 		}
+ 	} else {
+-		LIST_HEAD(add_list);
+ 		int max, pass;
  
--		put_device(&tgt->dev);
- 		put_device(&snic->shost->shost_gendev);
- 		spin_lock_irqsave(snic->shost->host_lock, flags);
- 		list_del(&tgt->list);
- 		spin_unlock_irqrestore(snic->shost->host_lock, flags);
--		kfree(tgt);
-+		put_device(&tgt->dev);
- 		tgt = NULL;
+ 		acpiphp_rescan_slot(slot);
+@@ -510,12 +509,10 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
+ 				if (pass && dev->subordinate) {
+ 					check_hotplug_bridge(slot, dev);
+ 					pcibios_resource_survey_bus(dev->subordinate);
+-					__pci_bus_size_bridges(dev->subordinate,
+-							       &add_list);
+ 				}
+ 			}
+ 		}
+-		__pci_bus_assign_resources(bus, &add_list, NULL);
++		pci_assign_unassigned_bridge_resources(bus->self);
+ 	}
  
- 		return tgt;
+ 	acpiphp_sanitize_bus(bus);
+-- 
+2.40.1
+
 
 
