@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48F3478ABDB
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE35378AC99
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231572AbjH1Kem (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:34:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
+        id S231697AbjH1Klb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:41:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54724 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231644AbjH1Ke1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC584A6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:24 -0700 (PDT)
+        with ESMTP id S231708AbjH1KlC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AEB7189
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:40:55 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 71D6263CC5
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D7DC433C7;
-        Mon, 28 Aug 2023 10:34:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E81961350
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:40:54 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AEB9BC433C8;
+        Mon, 28 Aug 2023 10:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218863;
-        bh=4QEmGJThwrBxw3lulIuKPNi5bKIQUhXDF8uSw29zlRI=;
+        s=korg; t=1693219254;
+        bh=i9gx588P3O1uD0h1egYaJQ1MxjXx0lMivTbdUSmbFac=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qtW/GzU8eLbNg87EKV3DTMMB/SZE+7KNLhrUB4NOWcnim1iEEOYfy4E1J6XUTABSM
-         khvt2HCVn3ec9pFi5biFv9TpVWlUSr5rwCjZYiPFWpFpf4HVMbclOMV79gQRSMepWZ
-         IJpFz2SoPPr6AAOGRfVqjEBpn499qXN7PZF4FCF8=
+        b=juYPAmONJP3xZi1mhaDtI+aOgAJ4DQ3aPfsu6J+aWHK/Nz6A2akFoW/oAsRKLyUEk
+         cwOfYVj4VWy42q+vcZnucq8hy3bKzrwkjB1hsEiUQHT7QdBgEA/grcEl+DoZ9VSCSq
+         enON62LLKg3BO2XMH9iWk/eJWCCspcd5LmeYm4Vk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
-        Chanho Min <chanho.min@lge.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Linus Torvalds <torvalds@linux-foundation.org>
-Subject: [PATCH 6.1 083/122] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 101/158] fs: dlm: fix mismatch of plock results from userspace
 Date:   Mon, 28 Aug 2023 12:13:18 +0200
-Message-ID: <20230828101159.176016124@linuxfoundation.org>
+Message-ID: <20230828101200.712358341@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,124 +55,113 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit 382d4cd1847517ffcb1800fd462b625db7b2ebea upstream.
+[ Upstream commit 57e2c2f2d94cfd551af91cedfa1af6d972487197 ]
 
-The gcc compiler translates on some architectures the 64-bit
-__builtin_clzll() function to a call to the libgcc function __clzdi2(),
-which should take a 64-bit parameter on 32- and 64-bit platforms.
+When a waiting plock request (F_SETLKW) is sent to userspace
+for processing (dlm_controld), the result is returned at a
+later time. That result could be incorrectly matched to a
+different waiting request in cases where the owner field is
+the same (e.g. different threads in a process.) This is fixed
+by comparing all the properties in the request and reply.
 
-But in the current kernel code, the built-in __clzdi2() function is
-defined to operate (wrongly) on 32-bit parameters if BITS_PER_LONG ==
-32, thus the return values on 32-bit kernels are in the range from
-[0..31] instead of the expected [0..63] range.
+The results for non-waiting plock requests are now matched
+based on list order because the results are returned in the
+same order they were sent.
 
-This patch fixes the in-kernel functions __clzdi2() and __ctzdi2() to
-take a 64-bit parameter on 32-bit kernels as well, thus it makes the
-functions identical for 32- and 64-bit kernels.
-
-This bug went unnoticed since kernel 3.11 for over 10 years, and here
-are some possible reasons for that:
-
- a) Some architectures have assembly instructions to count the bits and
-    which are used instead of calling __clzdi2(), e.g. on x86 the bsr
-    instruction and on ppc cntlz is used. On such architectures the
-    wrong __clzdi2() implementation isn't used and as such the bug has
-    no effect and won't be noticed.
-
- b) Some architectures link to libgcc.a, and the in-kernel weak
-    functions get replaced by the correct 64-bit variants from libgcc.a.
-
- c) __builtin_clzll() and __clzdi2() doesn't seem to be used in many
-    places in the kernel, and most likely only in uncritical functions,
-    e.g. when printing hex values via seq_put_hex_ll(). The wrong return
-    value will still print the correct number, but just in a wrong
-    formatting (e.g. with too many leading zeroes).
-
- d) 32-bit kernels aren't used that much any longer, so they are less
-    tested.
-
-A trivial testcase to verify if the currently running 32-bit kernel is
-affected by the bug is to look at the output of /proc/self/maps:
-
-Here the kernel uses a correct implementation of __clzdi2():
-
-  root@debian:~# cat /proc/self/maps
-  00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
-  00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
-  0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
-  f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
-  ...
-
-and this kernel uses the broken implementation of __clzdi2():
-
-  root@debian:~# cat /proc/self/maps
-  0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
-  0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
-  000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
-  00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
-  ...
-
-Signed-off-by: Helge Deller <deller@gmx.de>
-Fixes: 4df87bb7b6a22 ("lib: add weak clz/ctz functions")
-Cc: Chanho Min <chanho.min@lge.com>
-Cc: Geert Uytterhoeven <geert@linux-m68k.org>
-Cc: stable@vger.kernel.org # v3.11+
-Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: stable@vger.kernel.org
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/clz_ctz.c |   32 ++++++--------------------------
- 1 file changed, 6 insertions(+), 26 deletions(-)
+ fs/dlm/plock.c | 58 +++++++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 45 insertions(+), 13 deletions(-)
 
---- a/lib/clz_ctz.c
-+++ b/lib/clz_ctz.c
-@@ -28,36 +28,16 @@ int __weak __clzsi2(int val)
- }
- EXPORT_SYMBOL(__clzsi2);
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index fa8969c0a5f55..28735e8c5e206 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -405,7 +405,7 @@ static ssize_t dev_read(struct file *file, char __user *u, size_t count,
+ 		if (op->info.flags & DLM_PLOCK_FL_CLOSE)
+ 			list_del(&op->list);
+ 		else
+-			list_move(&op->list, &recv_list);
++			list_move_tail(&op->list, &recv_list);
+ 		memcpy(&info, &op->info, sizeof(info));
+ 	}
+ 	spin_unlock(&ops_lock);
+@@ -443,20 +443,52 @@ static ssize_t dev_write(struct file *file, const char __user *u, size_t count,
+ 	if (check_version(&info))
+ 		return -EINVAL;
  
--int __weak __clzdi2(long val);
--int __weak __ctzdi2(long val);
--#if BITS_PER_LONG == 32
--
--int __weak __clzdi2(long val)
-+int __weak __clzdi2(u64 val);
-+int __weak __clzdi2(u64 val)
- {
--	return 32 - fls((int)val);
-+	return 64 - fls64(val);
- }
- EXPORT_SYMBOL(__clzdi2);
++	/*
++	 * The results for waiting ops (SETLKW) can be returned in any
++	 * order, so match all fields to find the op.  The results for
++	 * non-waiting ops are returned in the order that they were sent
++	 * to userspace, so match the result with the first non-waiting op.
++	 */
+ 	spin_lock(&ops_lock);
+-	list_for_each_entry(iter, &recv_list, list) {
+-		if (iter->info.fsid == info.fsid &&
+-		    iter->info.number == info.number &&
+-		    iter->info.owner == info.owner) {
+-			list_del_init(&iter->list);
+-			memcpy(&iter->info, &info, sizeof(info));
+-			if (iter->data)
+-				do_callback = 1;
+-			else
+-				iter->done = 1;
+-			op = iter;
+-			break;
++	if (info.wait) {
++		list_for_each_entry(iter, &recv_list, list) {
++			if (iter->info.fsid == info.fsid &&
++			    iter->info.number == info.number &&
++			    iter->info.owner == info.owner &&
++			    iter->info.pid == info.pid &&
++			    iter->info.start == info.start &&
++			    iter->info.end == info.end &&
++			    iter->info.ex == info.ex &&
++			    iter->info.wait) {
++				op = iter;
++				break;
++			}
+ 		}
++	} else {
++		list_for_each_entry(iter, &recv_list, list) {
++			if (!iter->info.wait) {
++				op = iter;
++				break;
++			}
++		}
++	}
++
++	if (op) {
++		/* Sanity check that op and info match. */
++		if (info.wait)
++			WARN_ON(op->info.optype != DLM_PLOCK_OP_LOCK);
++		else
++			WARN_ON(op->info.fsid != info.fsid ||
++				op->info.number != info.number ||
++				op->info.owner != info.owner ||
++				op->info.optype != info.optype);
++
++		list_del_init(&op->list);
++		memcpy(&op->info, &info, sizeof(info));
++		if (op->data)
++			do_callback = 1;
++		else
++			op->done = 1;
+ 	}
+ 	spin_unlock(&ops_lock);
  
--int __weak __ctzdi2(long val)
-+int __weak __ctzdi2(u64 val);
-+int __weak __ctzdi2(u64 val)
- {
--	return __ffs((u32)val);
-+	return __ffs64(val);
- }
- EXPORT_SYMBOL(__ctzdi2);
--
--#elif BITS_PER_LONG == 64
--
--int __weak __clzdi2(long val)
--{
--	return 64 - fls64((u64)val);
--}
--EXPORT_SYMBOL(__clzdi2);
--
--int __weak __ctzdi2(long val)
--{
--	return __ffs64((u64)val);
--}
--EXPORT_SYMBOL(__ctzdi2);
--
--#else
--#error BITS_PER_LONG not 32 or 64
--#endif
+-- 
+2.40.1
+
 
 
