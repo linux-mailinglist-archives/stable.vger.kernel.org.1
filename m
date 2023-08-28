@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22B0E78AA91
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1FADC78AD09
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231137AbjH1KXZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38846 "EHLO
+        id S231886AbjH1KpU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54180 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231158AbjH1KW5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84BB8AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:54 -0700 (PDT)
+        with ESMTP id S231960AbjH1KpE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 070DB18D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 22B2563985
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31F1FC433C8;
-        Mon, 28 Aug 2023 10:22:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DB80764170
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B46C433C7;
+        Mon, 28 Aug 2023 10:44:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218173;
-        bh=12i0WzbYO9Mq7uivNhG7qSa6IDvx7ndFKH2iECgKRL4=;
+        s=korg; t=1693219476;
+        bh=T3WPOdjkwCQtgkCvdAus1dS64cqvtt32BO2mzMFh3Xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bQlC/B5e9qH5lMvR/lWyrL/dlD2g8Gy7lfSEVnn1ieCdcBHEzL8hEQUOyxF++b151
-         13idw5yHGdzda2BFtuk398z+OLNiQpUsxzghw5qi+mFEBHnKoyJ8rfMAMIdLqbGZ62
-         02ZIbpMkvNAimdA59ICSWXG1bTgRgnatTDTHsLrI=
+        b=bMT7BObr9gHXz1QqRhgt6kdezDREpQQYazCvPbf900KyxmiTMaa2OncDA42ms8nLL
+         MUBd5cp4YQWGaR1y/Dk8U90TJZpQKOMrm87YU4ZYAFPhQedof1HXNHyx5/Dnm3/ZnD
+         wnoVuNxH6idi8ZkHeREEew+r4HKbGy5kmO8gl6Vs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Zhang Yi <yi.zhang@huawei.com>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 121/129] pinctrl: renesas: rza2: Add lock around pinctrl_generic{{add,remove}_group,{add,remove}_function}
-Date:   Mon, 28 Aug 2023 12:13:20 +0200
-Message-ID: <20230828101201.417256892@linuxfoundation.org>
+Subject: [PATCH 5.15 20/89] jbd2: fix a race when checking checkpoint buffer busy
+Date:   Mon, 28 Aug 2023 12:13:21 +0200
+Message-ID: <20230828101150.843521536@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,92 +55,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit 8fcc1c40b747069644db6102c1d84c942c9d4d86 ]
+[ Upstream commit 46f881b5b1758dc4a35fba4a643c10717d0cf427 ]
 
-The pinctrl group and function creation/remove calls expect
-caller to take care of locking. Add lock around these functions.
+Before removing checkpoint buffer from the t_checkpoint_list, we have to
+check both BH_Dirty and BH_Lock bits together to distinguish buffers
+have not been or were being written back. But __cp_buffer_busy() checks
+them separately, it first check lock state and then check dirty, the
+window between these two checks could be raced by writing back
+procedure, which locks buffer and clears buffer dirty before I/O
+completes. So it cannot guarantee checkpointing buffers been written
+back to disk if some error happens later. Finally, it may clean
+checkpoint transactions and lead to inconsistent filesystem.
 
-Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230815131558.33787-4-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
+same problem (journal_unmap_buffer() escape from this issue since it's
+running under the buffer lock), so fix them through introducing a new
+helper to try holding the buffer lock and remove really clean buffer.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
+Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
+Reviewed-by: Jan Kara <jack@suse.cz>
+Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
+Signed-off-by: Theodore Ts'o <tytso@mit.edu>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rza2.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ fs/jbd2/checkpoint.c  | 38 +++++++++++++++++++++++++++++++++++---
+ fs/jbd2/transaction.c | 17 +++++------------
+ include/linux/jbd2.h  |  1 +
+ 3 files changed, 41 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
-index 40b1326a10776..5591ddf16fdfd 100644
---- a/drivers/pinctrl/renesas/pinctrl-rza2.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
-@@ -14,6 +14,7 @@
- #include <linux/gpio/driver.h>
- #include <linux/io.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/pinctrl/pinmux.h>
+diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
+index ab72aeb766a74..fc6989e7a8c51 100644
+--- a/fs/jbd2/checkpoint.c
++++ b/fs/jbd2/checkpoint.c
+@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+ 		jh = next_jh;
+ 		next_jh = jh->b_cpnext;
  
-@@ -46,6 +47,7 @@ struct rza2_pinctrl_priv {
- 	struct pinctrl_dev *pctl;
- 	struct pinctrl_gpio_range gpio_range;
- 	int npins;
-+	struct mutex mutex; /* serialize adding groups and functions */
- };
+-		if (!destroy && __cp_buffer_busy(jh))
+-			continue;
++		if (destroy) {
++			ret = __jbd2_journal_remove_checkpoint(jh);
++		} else {
++			ret = jbd2_journal_try_remove_checkpoint(jh);
++			if (ret < 0)
++				continue;
++		}
  
- #define RZA2_PDR(port)		(0x0000 + (port) * 2)	/* Direction 16-bit */
-@@ -358,10 +360,14 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- 		psel_val[i] = MUX_FUNC(value);
- 	}
+ 		nr_freed++;
+-		ret = __jbd2_journal_remove_checkpoint(jh);
+ 		if (ret) {
+ 			*released = true;
+ 			break;
+@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
+ 	return 1;
+ }
  
-+	mutex_lock(&priv->mutex);
++/*
++ * Check the checkpoint buffer and try to remove it from the checkpoint
++ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
++ * it frees the transaction, 0 otherwise.
++ *
++ * This function is called with j_list_lock held.
++ */
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
++{
++	struct buffer_head *bh = jh2bh(jh);
 +
- 	/* Register a single pin group listing all the pins we read from DT */
- 	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, npins, NULL);
--	if (gsel < 0)
--		return gsel;
-+	if (gsel < 0) {
-+		ret = gsel;
-+		goto unlock;
++	if (!trylock_buffer(bh))
++		return -EBUSY;
++	if (buffer_dirty(bh)) {
++		unlock_buffer(bh);
++		return -EBUSY;
 +	}
- 
- 	/*
- 	 * Register a single group function where the 'data' is an array PSEL
-@@ -390,6 +396,8 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	(*map)->data.mux.function = np->name;
- 	*num_maps = 1;
- 
-+	mutex_unlock(&priv->mutex);
++	unlock_buffer(bh);
 +
- 	return 0;
- 
- remove_function:
-@@ -398,6 +406,9 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- remove_group:
- 	pinctrl_generic_remove_group(pctldev, gsel);
- 
-+unlock:
-+	mutex_unlock(&priv->mutex);
++	/*
++	 * Buffer is clean and the IO has finished (we held the buffer
++	 * lock) so the checkpoint is done. We can safely remove the
++	 * buffer from this transaction.
++	 */
++	JBUFFER_TRACE(jh, "remove from checkpoint list");
++	return __jbd2_journal_remove_checkpoint(jh);
++}
 +
- 	dev_err(priv->dev, "Unable to parse DT node %s\n", np->name);
+ /*
+  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
+  * list so that we know when it is safe to clean the transaction out of
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index ce4a5ccadeff4..62e68c5b8ec3d 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1775,8 +1775,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
+ 		 * Otherwise, if the buffer has been written to disk,
+ 		 * it is safe to remove the checkpoint and drop it.
+ 		 */
+-		if (!buffer_dirty(bh)) {
+-			__jbd2_journal_remove_checkpoint(jh);
++		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
+ 			spin_unlock(&journal->j_list_lock);
+ 			goto drop;
+ 		}
+@@ -2103,20 +2102,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
  
- 	return ret;
-@@ -473,6 +484,8 @@ static int rza2_pinctrl_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
+ 	jh = bh2jh(bh);
  
-+	mutex_init(&priv->mutex);
-+
- 	platform_set_drvdata(pdev, priv);
+-	if (buffer_locked(bh) || buffer_dirty(bh))
+-		goto out;
+-
+ 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
+-		goto out;
++		return;
  
- 	priv->npins = (int)(uintptr_t)of_device_get_match_data(&pdev->dev) *
+ 	spin_lock(&journal->j_list_lock);
+-	if (jh->b_cp_transaction != NULL) {
+-		/* written-back checkpointed metadata buffer */
+-		JBUFFER_TRACE(jh, "remove from checkpoint list");
+-		__jbd2_journal_remove_checkpoint(jh);
+-	}
++	/* Remove written-back checkpointed metadata buffer */
++	if (jh->b_cp_transaction != NULL)
++		jbd2_journal_try_remove_checkpoint(jh);
+ 	spin_unlock(&journal->j_list_lock);
+-out:
+ 	return;
+ }
+ 
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index e6cfbcde96f29..ade8a6d7acff9 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1441,6 +1441,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
+ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
+ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
+ int __jbd2_journal_remove_checkpoint(struct journal_head *);
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
+ void jbd2_journal_destroy_checkpoint(journal_t *journal);
+ void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
+ 
 -- 
 2.40.1
 
