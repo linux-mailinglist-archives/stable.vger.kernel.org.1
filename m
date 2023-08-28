@@ -2,57 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 803A778AC8B
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:41:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BD33E78AB49
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231536AbjH1Kk7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:40:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53544 "EHLO
+        id S231374AbjH1K3p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:29:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231754AbjH1Kk1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:40:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB7B4A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:40:24 -0700 (PDT)
+        with ESMTP id S231344AbjH1K3V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA87A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 68C9B6401D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:40:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7944DC433C8;
-        Mon, 28 Aug 2023 10:40:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B6C563C1D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C160C433C8;
+        Mon, 28 Aug 2023 10:29:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219223;
-        bh=jHfYp2H6KMuc0BrxChkNlVp9yYcgNxzs6EKQIvXU3no=;
+        s=korg; t=1693218557;
+        bh=IjUGECT6qRqIvFKo5MLj3o60ZnaEHsSyPpjFjEf7RZY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=feVugQLy3vp40yY2cK5cpTCtxWSYErsX1G1Hqf/SKvZvxoxzLEbLUyt9HVwiovF6P
-         BadQ7fk36xvXuOwbnb6xv4SANAFT3HuxRRGHf1Fy7JA7CMlzUK9tqHB9+0SseMhHfO
-         4SkyslRGeBYOC9KJutEvwthHNvlhfyOPAXTEgDfI=
+        b=QD0tWTFUXKAtGMYGYgoey8f91+2nfNyTx6xB4CIzzCgz3O6ex3upbA0A/tPMFRvwK
+         HgMn7u82bJZeM1lAstQTvGKoXacrEkYdV4xTo6jd88IbSu6viZcYoE+iS7JF11tqR6
+         1K21iVt4loHL5HpGD+9Ho5VKhCMAEAfNFskR7akA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Alan Liu <haoping.liu@amd.com>,
-        Taimur Hassan <syed.hassan@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 117/158] drm/amd/display: check TG is non-null before checking if enabled
+        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
+        Feng Tang <feng.tang@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>
+Subject: [PATCH 4.19 120/129] x86/fpu: Set X86_FEATURE_OSXSAVE feature after enabling OSXSAVE in CR4
 Date:   Mon, 28 Aug 2023 12:13:34 +0200
-Message-ID: <20230828101201.268695115@linuxfoundation.org>
+Message-ID: <20230828101157.609588570@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,47 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Taimur Hassan <syed.hassan@amd.com>
+From: Feng Tang <feng.tang@intel.com>
 
-[ Upstream commit 5a25cefc0920088bb9afafeb80ad3dcd84fe278b ]
+commit 2c66ca3949dc701da7f4c9407f2140ae425683a5 upstream.
 
-[Why & How]
-If there is no TG allocation we can dereference a NULL pointer when
-checking if the TG is enabled.
+0-Day found a 34.6% regression in stress-ng's 'af-alg' test case, and
+bisected it to commit b81fac906a8f ("x86/fpu: Move FPU initialization into
+arch_cpu_finalize_init()"), which optimizes the FPU init order, and moves
+the CR4_OSXSAVE enabling into a later place:
 
-Cc: Mario Limonciello <mario.limonciello@amd.com>
-Cc: Alex Deucher <alexander.deucher@amd.com>
+   arch_cpu_finalize_init
+       identify_boot_cpu
+	   identify_cpu
+	       generic_identify
+                   get_cpu_cap --> setup cpu capability
+       ...
+       fpu__init_cpu
+           fpu__init_cpu_xstate
+               cr4_set_bits(X86_CR4_OSXSAVE);
+
+As the FPU is not yet initialized the CPU capability setup fails to set
+X86_FEATURE_OSXSAVE. Many security module like 'camellia_aesni_avx_x86_64'
+depend on this feature and therefore fail to load, causing the regression.
+
+Cure this by setting X86_FEATURE_OSXSAVE feature right after OSXSAVE
+enabling.
+
+[ tglx: Moved it into the actual BSP FPU initialization code and added a comment ]
+
+Fixes: b81fac906a8f ("x86/fpu: Move FPU initialization into arch_cpu_finalize_init()")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Feng Tang <feng.tang@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Acked-by: Alan Liu <haoping.liu@amd.com>
-Signed-off-by: Taimur Hassan <syed.hassan@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lore.kernel.org/lkml/202307192135.203ac24e-oliver.sang@intel.com
+Link: https://lore.kernel.org/lkml/20230823065747.92257-1-feng.tang@intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/x86/kernel/fpu/xstate.c |    8 ++++++++
+ 1 file changed, 8 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-index 16b87af6f6628..c4c99bc7f2890 100644
---- a/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn10/dcn10_hw_sequencer.c
-@@ -2902,7 +2902,8 @@ static void dcn10_wait_for_mpcc_disconnect(
- 		if (pipe_ctx->stream_res.opp->mpcc_disconnect_pending[mpcc_inst]) {
- 			struct hubp *hubp = get_hubp_by_inst(res_pool, mpcc_inst);
+--- a/arch/x86/kernel/fpu/xstate.c
++++ b/arch/x86/kernel/fpu/xstate.c
+@@ -811,6 +811,14 @@ void __init fpu__init_system_xstate(void
+ 	fpu__init_prepare_fx_sw_frame();
+ 	setup_init_fpu_buf();
+ 	setup_xstate_comp();
++
++	/*
++	 * CPU capabilities initialization runs before FPU init. So
++	 * X86_FEATURE_OSXSAVE is not set. Now that XSAVE is completely
++	 * functional, set the feature bit so depending code works.
++	 */
++	setup_force_cpu_cap(X86_FEATURE_OSXSAVE);
++
+ 	print_xstate_offset_size();
  
--			if (pipe_ctx->stream_res.tg->funcs->is_tg_enabled(pipe_ctx->stream_res.tg))
-+			if (pipe_ctx->stream_res.tg &&
-+				pipe_ctx->stream_res.tg->funcs->is_tg_enabled(pipe_ctx->stream_res.tg))
- 				res_pool->mpc->funcs->wait_for_idle(res_pool->mpc, mpcc_inst);
- 			pipe_ctx->stream_res.opp->mpcc_disconnect_pending[mpcc_inst] = false;
- 			hubp->funcs->set_blank(hubp, true);
--- 
-2.40.1
-
+ 	pr_info("x86/fpu: Enabled xstate features 0x%llx, context size is %d bytes, using '%s' format.\n",
 
 
