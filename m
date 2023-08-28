@@ -2,48 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9385A78AB7A
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:31:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 401C878AC33
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231489AbjH1Kb0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:31:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
+        id S231681AbjH1Khz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231536AbjH1KbG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:31:06 -0400
+        with ESMTP id S231658AbjH1Khb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D375DCD5
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:30:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 969F2A6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AFD35619B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:30:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C3F04C433C7;
-        Mon, 28 Aug 2023 10:30:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2C6C463F25
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F773C433C8;
+        Mon, 28 Aug 2023 10:37:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218651;
-        bh=/tNGFyZ+8SH7lxhffrv8FXWaKQ/0/zkWwmMPkpzlpjc=;
+        s=korg; t=1693219048;
+        bh=mWwr4Rh+z/6RUVOfszFiUurmttLkIPPmg/vVR7V7ZdQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EuvyKX0MiNXqCOqJQ0reTakeVzuvN8XstcCymlRe/vgQov42wnIKmS0L2uPuZ5E08
-         eyLPhgTRt3Re/S+7BCldO8ZCfkzWOfZZ8FWVij4EkLGkSbIMaAVMeFTMOvxcehRG4R
-         czxouRVaEda2vwvrHvSJy+BJjeWc4LJy3ZDnF+Qg=
+        b=lB/r5fUqwzB1ZoilvM26mZiQTargGEVdwaKoqsK/8FyvGXc4vWDwzUHeR8jo/yGuO
+         DKCs1mtH6mls1Wo0OyUDgDHlkcUEaZZKVQRS6Tj1uZE/1qZLRaUGYGJEA9dyT5Lw66
+         EfGyXr5Ygl5l0yRN/8+fAojqoszxplSpEVsDs090=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Amit Cohen <amcohen@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 035/122] mlxsw: Fix the size of VIRT_ROUTER_MSB
-Date:   Mon, 28 Aug 2023 12:12:30 +0200
-Message-ID: <20230828101157.578723441@linuxfoundation.org>
+Subject: [PATCH 5.4 054/158] virtio-mmio: dont break lifecycle of vm_dev
+Date:   Mon, 28 Aug 2023 12:12:31 +0200
+Message-ID: <20230828101159.147977576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,90 +56,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Amit Cohen <amcohen@nvidia.com>
+From: Wolfram Sang <wsa+renesas@sang-engineering.com>
 
-[ Upstream commit 348c976be0a599918b88729def198a843701c9fe ]
+[ Upstream commit 55c91fedd03d7b9cf0c5199b2eb12b9b8e95281a ]
 
-The field 'virtual router' was extended to 12 bits in Spectrum-4.
-Therefore, the element 'MLXSW_AFK_ELEMENT_VIRT_ROUTER_MSB' needs 3 bits for
-Spectrum < 4 and 4 bits for Spectrum >= 4.
+vm_dev has a separate lifecycle because it has a 'struct device'
+embedded. Thus, having a release callback for it is correct.
 
-The elements are stored in an internal storage scratchpad. Currently, the
-MSB is defined there as 3 bits. It means that for Spectrum-4, only 2K VRFs
-can be used for multicast routing, as the highest bit is not really used by
-the driver. Fix the definition of 'VIRT_ROUTER_MSB' to use 4 bits. Adjust
-the definitions of 'virtual router' field in the blocks accordingly - use
-'_avoid_size_check' for Spectrum-2 instead of for Spectrum-4. Fix the mask
-in parse function to use 4 bits.
+Allocating the vm_dev struct with devres totally breaks this protection,
+though. Instead of waiting for the vm_dev release callback, the memory
+is freed when the platform_device is removed. Resulting in a
+use-after-free when finally the callback is to be called.
 
-Fixes: 6d5d8ebb881c ("mlxsw: Rename virtual router flex key element")
-Signed-off-by: Amit Cohen <amcohen@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/79bed2b70f6b9ed58d4df02e9798a23da648015b.1692268427.git.petrm@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+To easily see the problem, compile the kernel with
+CONFIG_DEBUG_KOBJECT_RELEASE and unbind with sysfs.
+
+The fix is easy, don't use devres in this case.
+
+Found during my research about object lifetime problems.
+
+Fixes: 7eb781b1bbb7 ("virtio_mmio: add cleanup for virtio_mmio_probe")
+Signed-off-by: Wolfram Sang <wsa+renesas@sang-engineering.com>
+Message-Id: <20230629120526.7184-1-wsa+renesas@sang-engineering.com>
+Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c     | 4 ++--
- drivers/net/ethernet/mellanox/mlxsw/spectrum2_mr_tcam.c      | 2 +-
- drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c | 4 ++--
- 3 files changed, 5 insertions(+), 5 deletions(-)
+ drivers/virtio/virtio_mmio.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c
-index bd1a51a0a5408..f208a237d0b52 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/core_acl_flex_keys.c
-@@ -32,8 +32,8 @@ static const struct mlxsw_afk_element_info mlxsw_afk_element_infos[] = {
- 	MLXSW_AFK_ELEMENT_INFO_U32(IP_TTL_, 0x18, 0, 8),
- 	MLXSW_AFK_ELEMENT_INFO_U32(IP_ECN, 0x18, 9, 2),
- 	MLXSW_AFK_ELEMENT_INFO_U32(IP_DSCP, 0x18, 11, 6),
--	MLXSW_AFK_ELEMENT_INFO_U32(VIRT_ROUTER_MSB, 0x18, 17, 3),
--	MLXSW_AFK_ELEMENT_INFO_U32(VIRT_ROUTER_LSB, 0x18, 20, 8),
-+	MLXSW_AFK_ELEMENT_INFO_U32(VIRT_ROUTER_MSB, 0x18, 17, 4),
-+	MLXSW_AFK_ELEMENT_INFO_U32(VIRT_ROUTER_LSB, 0x18, 21, 8),
- 	MLXSW_AFK_ELEMENT_INFO_BUF(SRC_IP_96_127, 0x20, 4),
- 	MLXSW_AFK_ELEMENT_INFO_BUF(SRC_IP_64_95, 0x24, 4),
- 	MLXSW_AFK_ELEMENT_INFO_BUF(SRC_IP_32_63, 0x28, 4),
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum2_mr_tcam.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum2_mr_tcam.c
-index e4f4cded2b6f9..b1178b7a7f51a 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum2_mr_tcam.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum2_mr_tcam.c
-@@ -193,7 +193,7 @@ mlxsw_sp2_mr_tcam_rule_parse(struct mlxsw_sp_acl_rule *rule,
- 				       key->vrid, GENMASK(7, 0));
- 	mlxsw_sp_acl_rulei_keymask_u32(rulei,
- 				       MLXSW_AFK_ELEMENT_VIRT_ROUTER_MSB,
--				       key->vrid >> 8, GENMASK(2, 0));
-+				       key->vrid >> 8, GENMASK(3, 0));
- 	switch (key->proto) {
- 	case MLXSW_SP_L3_PROTO_IPV4:
- 		return mlxsw_sp2_mr_tcam_rule_parse4(rulei, key);
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-index 00c32320f8915..173808c096bab 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/spectrum_acl_flex_keys.c
-@@ -169,7 +169,7 @@ static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_2[] = {
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index e39b530b218a2..aee8b5ce8b63c 100644
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -543,9 +543,8 @@ static void virtio_mmio_release_dev(struct device *_d)
+ 	struct virtio_device *vdev =
+ 			container_of(_d, struct virtio_device, dev);
+ 	struct virtio_mmio_device *vm_dev = to_virtio_mmio_device(vdev);
+-	struct platform_device *pdev = vm_dev->pdev;
  
- static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_4[] = {
- 	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER_LSB, 0x04, 24, 8),
--	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER_MSB, 0x00, 0, 3),
-+	MLXSW_AFK_ELEMENT_INST_EXT_U32(VIRT_ROUTER_MSB, 0x00, 0, 3, 0, true),
- };
+-	devm_kfree(&pdev->dev, vm_dev);
++	kfree(vm_dev);
+ }
  
- static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv6_0[] = {
-@@ -319,7 +319,7 @@ static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_mac_5b[] = {
+ /* Platform device */
+@@ -556,7 +555,7 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 	unsigned long magic;
+ 	int rc;
  
- static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv4_4b[] = {
- 	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER_LSB, 0x04, 13, 8),
--	MLXSW_AFK_ELEMENT_INST_EXT_U32(VIRT_ROUTER_MSB, 0x04, 21, 4, 0, true),
-+	MLXSW_AFK_ELEMENT_INST_U32(VIRT_ROUTER_MSB, 0x04, 21, 4),
- };
+-	vm_dev = devm_kzalloc(&pdev->dev, sizeof(*vm_dev), GFP_KERNEL);
++	vm_dev = kzalloc(sizeof(*vm_dev), GFP_KERNEL);
+ 	if (!vm_dev)
+ 		return -ENOMEM;
  
- static struct mlxsw_afk_element_inst mlxsw_sp_afk_element_info_ipv6_2b[] = {
 -- 
 2.40.1
 
