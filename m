@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18FFC78AC97
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:41:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B304778A9FA
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231768AbjH1KlJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:41:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33150 "EHLO
+        id S230424AbjH1KR5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:17:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231820AbjH1Kk5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:40:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4DDA1131
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:40:52 -0700 (PDT)
+        with ESMTP id S230420AbjH1KR3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:29 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA89E198
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9A826100C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:40:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED79FC433C8;
-        Mon, 28 Aug 2023 10:40:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 58A7F613F8
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0B1C433C9;
+        Mon, 28 Aug 2023 10:17:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219251;
-        bh=kZCqamOnE4ZHwPtQ/gHM18npCJoSWiWTPW0RHl3lmLE=;
+        s=korg; t=1693217833;
+        bh=ujLExOIIbhAws6yZlcipBu4aAVRnI8x3H6NxpZbPeuY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MmzvMU/0shVTtUGXwmt0BuXnMYMKbeiOr9x3EGO4yDC1TR95IwI9lCZqN1kArdCHj
-         dxGMYZ25uIz+2YuTt8IMz9JVax2oFqRWW1nwu3coH1DfQfZFdwAvp3UzjDv3T3Rb8Y
-         WkbVeckYgCeHWaF4UxNC+mdB9wr5Fn7mdxexRk40=
+        b=uODE7Gd+VVvq1D6Le/PB1XuR1vsnlJp9AyrOAwXK2riFgykiKEgp8TsG31X+b5FxP
+         /6n8eB8u3ItOOesNoo4dL1+XKOMVkTgVV4eTNhiQ86P5jqKZTsfToHflYGCUV/n5x9
+         DvYMglg9vjtPz2dTbsfsfnnuqT+1CaljxWRCcMJw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>,
+        patches@lists.linux.dev,
+        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+        Rob Clark <robdclark@chromium.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 100/158] fs: dlm: use dlm_plock_info for do_unlock_close
+Subject: [PATCH 4.14 57/57] dma-buf/sw_sync: Avoid recursive lock during fence signal
 Date:   Mon, 28 Aug 2023 12:13:17 +0200
-Message-ID: <20230828101200.683064751@linuxfoundation.org>
+Message-ID: <20230828101146.410338460@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,68 +58,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 4d413ae9ced4180c0e2114553c3a7560b509b0f8 ]
+[ Upstream commit e531fdb5cd5ee2564b7fe10c8a9219e2b2fac61e ]
 
-This patch refactors do_unlock_close() by using only struct dlm_plock_info
-as a parameter.
+If a signal callback releases the sw_sync fence, that will trigger a
+deadlock as the timeline_fence_release recurses onto the fence->lock
+(used both for signaling and the the timeline tree).
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Stable-dep-of: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
+To avoid that, temporarily hold an extra reference to the signalled
+fences until after we drop the lock.
+
+(This is an alternative implementation of https://patchwork.kernel.org/patch/11664717/
+which avoids some potential UAF issues with the original patch.)
+
+v2: Remove now obsolete comment, use list_move_tail() and
+    list_del_init()
+
+Reported-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Fixes: d3c6dd1fb30d ("dma-buf/sw_sync: Synchronize signal vs syncpt free")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230818145939.39697-1-robdclark@gmail.com
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/plock.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/dma-buf/sw_sync.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index 0d00ca2c44c71..fa8969c0a5f55 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -80,8 +80,7 @@ static void send_op(struct plock_op *op)
-    abandoned waiter.  So, we have to insert the unlock-close when the
-    lock call is interrupted. */
- 
--static void do_unlock_close(struct dlm_ls *ls, u64 number,
--			    struct file *file, struct file_lock *fl)
-+static void do_unlock_close(const struct dlm_plock_info *info)
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index 114b36674af42..29a4e2bb61f03 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -201,6 +201,7 @@ static const struct dma_fence_ops timeline_fence_ops = {
+  */
+ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
  {
- 	struct plock_op *op;
++	LIST_HEAD(signalled);
+ 	struct sync_pt *pt, *next;
  
-@@ -90,15 +89,12 @@ static void do_unlock_close(struct dlm_ls *ls, u64 number,
- 		return;
+ 	trace_sync_timeline(obj);
+@@ -213,21 +214,20 @@ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+ 		if (!timeline_fence_signaled(&pt->base))
+ 			break;
  
- 	op->info.optype		= DLM_PLOCK_OP_UNLOCK;
--	op->info.pid		= fl->fl_pid;
--	op->info.fsid		= ls->ls_global_id;
--	op->info.number		= number;
-+	op->info.pid		= info->pid;
-+	op->info.fsid		= info->fsid;
-+	op->info.number		= info->number;
- 	op->info.start		= 0;
- 	op->info.end		= OFFSET_MAX;
--	if (fl->fl_lmops && fl->fl_lmops->lm_grant)
--		op->info.owner	= (__u64) fl->fl_pid;
--	else
--		op->info.owner	= (__u64)(long) fl->fl_owner;
-+	op->info.owner		= info->owner;
+-		list_del_init(&pt->link);
++		dma_fence_get(&pt->base);
++
++		list_move_tail(&pt->link, &signalled);
+ 		rb_erase(&pt->node, &obj->pt_tree);
  
- 	op->info.flags |= DLM_PLOCK_FL_CLOSE;
- 	send_op(op);
-@@ -168,7 +164,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 			  __func__, ls->ls_global_id,
- 			  (unsigned long long)number, op->info.pid);
- 		dlm_release_plock_op(op);
--		do_unlock_close(ls, number, file, fl);
-+		do_unlock_close(&op->info);
- 		goto out;
+-		/*
+-		 * A signal callback may release the last reference to this
+-		 * fence, causing it to be freed. That operation has to be
+-		 * last to avoid a use after free inside this loop, and must
+-		 * be after we remove the fence from the timeline in order to
+-		 * prevent deadlocking on timeline->lock inside
+-		 * timeline_fence_release().
+-		 */
+ 		dma_fence_signal_locked(&pt->base);
  	}
  
+ 	spin_unlock_irq(&obj->lock);
++
++	list_for_each_entry_safe(pt, next, &signalled, link) {
++		list_del_init(&pt->link);
++		dma_fence_put(&pt->base);
++	}
+ }
+ 
+ /**
 -- 
 2.40.1
 
