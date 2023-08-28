@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E300878AB94
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CBCB778AC50
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:39:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231461AbjH1KcZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:32:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39958 "EHLO
+        id S231658AbjH1Ki7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:38:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231577AbjH1KcR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:17 -0400
+        with ESMTP id S231645AbjH1KiX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:38:23 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C789E49
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 01DFF93
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:38:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3BDA963D22
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A35AC433C8;
-        Mon, 28 Aug 2023 10:31:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BF93463F4C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:38:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE3D3C433C8;
+        Mon, 28 Aug 2023 10:38:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218681;
-        bh=HV160Rtq+con/wRq5mBpxdY1LxWkNoIDUSk8UDZmZWU=;
+        s=korg; t=1693219096;
+        bh=MXB80s9WICmlk85v73omaViUgArJ/jaCA1XdKJunE8M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uZAdrtV2YfekHYYGCuFCtAF5ZLhRKmyOM5tQPSAg2RP0P2HYRg8sH53FNpJe+HuqN
-         HJeGZUcfj6oHYtYGNSAu20igaFNHKZ/5ruuYWvVZF3SV+SJvR24kuqeOYtWkXMFCl0
-         5C7HRUSTbRW5OG/FH8GgpDofduqOFFxx1DopEiWo=
+        b=sYFGvVmcu18R5OtGkt7PS7mIkTZZSuUJaMTvsV4qSZSWZYRfhEAbkCbOhY/dHVLKL
+         PF8ozJcZOaw1mbv/ttbMsEYy0Bcl2/6KVLkXRPCng8jqMSwfp7xNEqa4fthLZiYkIL
+         aOO/yvjCmSD6bPOyX+gvn3dMKY6xHrKXZPufT8Cc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Zhengchao Shao <shaozhengchao@huawei.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Jakub Kicinski <kuba@kernel.org>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 045/122] selftests: bonding: do not set port down before adding to bond
-Date:   Mon, 28 Aug 2023 12:12:40 +0200
-Message-ID: <20230828101157.902342410@linuxfoundation.org>
+Subject: [PATCH 5.4 064/158] ip6_vti: fix slab-use-after-free in decode_session6
+Date:   Mon, 28 Aug 2023 12:12:41 +0200
+Message-ID: <20230828101159.439283360@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,50 +55,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hangbin Liu <liuhangbin@gmail.com>
+From: Zhengchao Shao <shaozhengchao@huawei.com>
 
-[ Upstream commit be809424659c2844a2d7ab653aacca4898538023 ]
+[ Upstream commit 9fd41f1ba638938c9a1195d09bc6fa3be2712f25 ]
 
-Before adding a port to bond, it need to be set down first. In the
-lacpdu test the author set the port down specifically. But commit
-a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
-changed the operation order, the kernel will set the port down _after_
-adding to bond. So all the ports will be down at last and the test failed.
+When ipv6_vti device is set to the qdisc of the sfb type, the cb field
+of the sent skb may be modified during enqueuing. Then,
+slab-use-after-free may occur when ipv6_vti device sends IPv6 packets.
 
-In fact, the veth interfaces are already inactive when added. This
-means there's no need to set them down again before adding to the bond.
-Let's just remove the link down operation.
+The stack information is as follows:
+BUG: KASAN: slab-use-after-free in decode_session6+0x103f/0x1890
+Read of size 1 at addr ffff88802e08edc2 by task swapper/0/0
+CPU: 0 PID: 0 Comm: swapper/0 Not tainted 6.4.0-next-20230707-00001-g84e2cad7f979 #410
+Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS 1.14.0-1.fc33 04/01/2014
+Call Trace:
+<IRQ>
+dump_stack_lvl+0xd9/0x150
+print_address_description.constprop.0+0x2c/0x3c0
+kasan_report+0x11d/0x130
+decode_session6+0x103f/0x1890
+__xfrm_decode_session+0x54/0xb0
+vti6_tnl_xmit+0x3e6/0x1ee0
+dev_hard_start_xmit+0x187/0x700
+sch_direct_xmit+0x1a3/0xc30
+__qdisc_run+0x510/0x17a0
+__dev_queue_xmit+0x2215/0x3b10
+neigh_connected_output+0x3c2/0x550
+ip6_finish_output2+0x55a/0x1550
+ip6_finish_output+0x6b9/0x1270
+ip6_output+0x1f1/0x540
+ndisc_send_skb+0xa63/0x1890
+ndisc_send_rs+0x132/0x6f0
+addrconf_rs_timer+0x3f1/0x870
+call_timer_fn+0x1a0/0x580
+expire_timers+0x29b/0x4b0
+run_timer_softirq+0x326/0x910
+__do_softirq+0x1d4/0x905
+irq_exit_rcu+0xb7/0x120
+sysvec_apic_timer_interrupt+0x97/0xc0
+</IRQ>
+Allocated by task 9176:
+kasan_save_stack+0x22/0x40
+kasan_set_track+0x25/0x30
+__kasan_slab_alloc+0x7f/0x90
+kmem_cache_alloc_node+0x1cd/0x410
+kmalloc_reserve+0x165/0x270
+__alloc_skb+0x129/0x330
+netlink_sendmsg+0x9b1/0xe30
+sock_sendmsg+0xde/0x190
+____sys_sendmsg+0x739/0x920
+___sys_sendmsg+0x110/0x1b0
+__sys_sendmsg+0xf7/0x1c0
+do_syscall_64+0x39/0xb0
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Freed by task 9176:
+kasan_save_stack+0x22/0x40
+kasan_set_track+0x25/0x30
+kasan_save_free_info+0x2b/0x40
+____kasan_slab_free+0x160/0x1c0
+slab_free_freelist_hook+0x11b/0x220
+kmem_cache_free+0xf0/0x490
+skb_free_head+0x17f/0x1b0
+skb_release_data+0x59c/0x850
+consume_skb+0xd2/0x170
+netlink_unicast+0x54f/0x7f0
+netlink_sendmsg+0x926/0xe30
+sock_sendmsg+0xde/0x190
+____sys_sendmsg+0x739/0x920
+___sys_sendmsg+0x110/0x1b0
+__sys_sendmsg+0xf7/0x1c0
+do_syscall_64+0x39/0xb0
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+The buggy address belongs to the object at ffff88802e08ed00
+which belongs to the cache skbuff_small_head of size 640
+The buggy address is located 194 bytes inside of
+freed 640-byte region [ffff88802e08ed00, ffff88802e08ef80)
 
-Fixes: a4abfa627c38 ("net: rtnetlink: Enslave device before bringing it up")
-Reported-by: Zhengchao Shao <shaozhengchao@huawei.com>
-Closes: https://lore.kernel.org/netdev/a0ef07c7-91b0-94bd-240d-944a330fcabd@huawei.com/
-Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
-Link: https://lore.kernel.org/r/20230817082459.1685972-1-liuhangbin@gmail.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+As commit f855691975bb ("xfrm6: Fix the nexthdr offset in
+_decode_session6.") showed, xfrm_decode_session was originally intended
+only for the receive path. IP6CB(skb)->nhoff is not set during
+transmission. Therefore, set the cb field in the skb to 0 before
+sending packets.
+
+Fixes: f855691975bb ("xfrm6: Fix the nexthdr offset in _decode_session6.")
+Signed-off-by: Zhengchao Shao <shaozhengchao@huawei.com>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/drivers/net/bonding/bond-break-lacpdu-tx.sh     | 4 ++--
+ net/ipv6/ip6_vti.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/drivers/net/bonding/bond-break-lacpdu-tx.sh b/tools/testing/selftests/drivers/net/bonding/bond-break-lacpdu-tx.sh
-index 47ab90596acb2..6358df5752f90 100755
---- a/tools/testing/selftests/drivers/net/bonding/bond-break-lacpdu-tx.sh
-+++ b/tools/testing/selftests/drivers/net/bonding/bond-break-lacpdu-tx.sh
-@@ -57,8 +57,8 @@ ip link add name veth2-bond type veth peer name veth2-end
+diff --git a/net/ipv6/ip6_vti.c b/net/ipv6/ip6_vti.c
+index 8b44d3b53844e..e4cd6909e9bbc 100644
+--- a/net/ipv6/ip6_vti.c
++++ b/net/ipv6/ip6_vti.c
+@@ -558,12 +558,12 @@ vti6_tnl_xmit(struct sk_buff *skb, struct net_device *dev)
+ 		    vti6_addr_conflict(t, ipv6_hdr(skb)))
+ 			goto tx_err;
  
- # add ports
- ip link set fbond master fab-br0
--ip link set veth1-bond down master fbond
--ip link set veth2-bond down master fbond
-+ip link set veth1-bond master fbond
-+ip link set veth2-bond master fbond
- 
- # bring up
- ip link set veth1-end up
+-		xfrm_decode_session(skb, &fl, AF_INET6);
+ 		memset(IP6CB(skb), 0, sizeof(*IP6CB(skb)));
++		xfrm_decode_session(skb, &fl, AF_INET6);
+ 		break;
+ 	case htons(ETH_P_IP):
+-		xfrm_decode_session(skb, &fl, AF_INET);
+ 		memset(IPCB(skb), 0, sizeof(*IPCB(skb)));
++		xfrm_decode_session(skb, &fl, AF_INET);
+ 		break;
+ 	default:
+ 		goto tx_err;
 -- 
 2.40.1
 
