@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EAAA078A9F1
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C7CAA78AC66
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:40:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230438AbjH1KRb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:17:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54700 "EHLO
+        id S231629AbjH1Kjz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:39:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230469AbjH1KRJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAFE119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:55 -0700 (PDT)
+        with ESMTP id S231713AbjH1KjX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:23 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A481A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 3E47663746
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47D23C433CA;
-        Mon, 28 Aug 2023 10:16:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A368463F6C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9285C433C7;
+        Mon, 28 Aug 2023 10:39:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217814;
-        bh=rvZ0foPHoQEDuM+YTbJRV2EkL3MKZEBjp33X0LpoiTQ=;
+        s=korg; t=1693219160;
+        bh=2ROo+oMbMLaJzU7CCo7INavdjgU9sfLVRfiO50WpHQw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wslzNyKWpggE2Mkgmm1gGe1MvrAMKjLPi5GSLwNTL7vtTFPzECcNGr8JoLfZZVL8b
-         dZTPUiwsbPEGExvKRdiA3r4aH75fIPvL6flRLFo4dwoRptyp5+sdH+aiDoFw84EFog
-         sne2jgzmpemOYFQaiZhT5e7c2yCGbFsCEWiKnvMc=
+        b=DZ3INM0vd2940JvYA/v/lbZqJS47WjQ3tqLp1wZIvz9ndAf1ujSLsOK5i3/zfUWnE
+         KZfAuvhdLXOwOqd6PHyXKCOM0yi/X0cCOMEZbyd5MfiLqviEGailBmUvBMdfhpsiIe
+         hxGmyt3OGjfuZcSHLEN1alJKotu7HziZE3rEsTpw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4.14 50/57] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
+        patches@lists.linux.dev,
+        =?UTF-8?q?Uwe=20Kleine-K=C3=B6nig?= 
+        <u.kleine-koenig@pengutronix.de>, Yangtao Li <frank.li@vivo.com>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>
+Subject: [PATCH 5.4 093/158] mmc: f-sdh30: fix order of function calls in sdhci_f_sdh30_remove
 Date:   Mon, 28 Aug 2023 12:13:10 +0200
-Message-ID: <20230828101146.110440013@linuxfoundation.org>
+Message-ID: <20230828101200.437695371@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,60 +58,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Yangtao Li <frank.li@vivo.com>
 
-commit 421d467dc2d483175bad4fb76a31b9e5a3d744cf upstream.
+commit 58abdd80b93b09023ca03007b608685c41e3a289 upstream.
 
-When batadv_v_ogm_aggr_send is called for an inactive interface, the skb
-is silently dropped by batadv_v_ogm_send_to_if() but never freed causing
-the following memory leak:
+The order of function calls in sdhci_f_sdh30_remove is wrong,
+let's call sdhci_pltfm_unregister first.
 
-  unreferenced object 0xffff00000c164800 (size 512):
-    comm "kworker/u8:1", pid 2648, jiffies 4295122303 (age 97.656s)
-    hex dump (first 32 bytes):
-      00 80 af 09 00 00 ff ff e1 09 00 00 75 01 60 83  ............u.`.
-      1f 00 00 00 b8 00 00 00 15 00 05 00 da e3 d3 64  ...............d
-    backtrace:
-      [<0000000007ad20f6>] __kmalloc_track_caller+0x1a8/0x310
-      [<00000000d1029e55>] kmalloc_reserve.constprop.0+0x70/0x13c
-      [<000000008b9d4183>] __alloc_skb+0xec/0x1fc
-      [<00000000c7af5051>] __netdev_alloc_skb+0x48/0x23c
-      [<00000000642ee5f5>] batadv_v_ogm_aggr_send+0x50/0x36c
-      [<0000000088660bd7>] batadv_v_ogm_aggr_work+0x24/0x40
-      [<0000000042fc2606>] process_one_work+0x3b0/0x610
-      [<000000002f2a0b1c>] worker_thread+0xa0/0x690
-      [<0000000059fae5d4>] kthread+0x1fc/0x210
-      [<000000000c587d3a>] ret_from_fork+0x10/0x20
-
-Free the skb in that case to fix this leak.
-
+Cc: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Fixes: 5def5c1c15bf ("mmc: sdhci-f-sdh30: Replace with sdhci_pltfm")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reported-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Uwe Kleine-König <u.kleine-koenig@pengutronix.de>
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Link: https://lore.kernel.org/r/20230727070051.17778-62-frank.li@vivo.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v_ogm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/mmc/host/sdhci_f_sdh30.c |    8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -118,8 +118,10 @@ static void batadv_v_ogm_send_to_if(stru
+--- a/drivers/mmc/host/sdhci_f_sdh30.c
++++ b/drivers/mmc/host/sdhci_f_sdh30.c
+@@ -212,12 +212,14 @@ static int sdhci_f_sdh30_remove(struct p
  {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+ 	struct sdhci_host *host = platform_get_drvdata(pdev);
+ 	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
+-
+-	clk_disable_unprepare(priv->clk_iface);
+-	clk_disable_unprepare(priv->clk);
++	struct clk *clk_iface = priv->clk_iface;
++	struct clk *clk = priv->clk;
  
--	if (hard_iface->if_status != BATADV_IF_ACTIVE)
-+	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
-+		kfree_skb(skb);
- 		return;
-+	}
+ 	sdhci_pltfm_unregister(pdev);
  
- 	batadv_inc_counter(bat_priv, BATADV_CNT_MGMT_TX);
- 	batadv_add_counter(bat_priv, BATADV_CNT_MGMT_TX_BYTES,
++	clk_disable_unprepare(clk_iface);
++	clk_disable_unprepare(clk);
++
+ 	return 0;
+ }
+ 
 
 
