@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B426278AA18
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03AE478AAC8
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230504AbjH1KSm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:18:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49232 "EHLO
+        id S231200AbjH1KY6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:24:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231187AbjH1KSZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E99818D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:18:15 -0700 (PDT)
+        with ESMTP id S231222AbjH1KYd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:33 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E56C6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 18AAD63728
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:18:15 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D840C433C7;
-        Mon, 28 Aug 2023 10:18:14 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3B52663A31
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F000C433C8;
+        Mon, 28 Aug 2023 10:24:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217894;
-        bh=5y0CPhvSthjtFJD5zy2gGcu92zYbOESKyGSCmpdW7RM=;
+        s=korg; t=1693218269;
+        bh=GoMF5k9f8qKodyNH8yxMEiS5usrnr2YzH8GxVA62A8A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a6Q/tqPzv9Hb+RhQlI/WZdovDfK4suFc0Uly9WSMxkb+SRKw68QjJEETokp5taX9Y
-         z2yHHNnCSe57YfMhRkQixltikbp0oey1o2JY109VoJX9dfHGXX4H87MnS2qssEt6uF
-         s/ZiANeUbPaCZBI1V6NwWxnbBd1Ev7EsB1LOojAk=
+        b=nmmc5jQdmquhgc53bkgZoAAOty5EWcPicNG0i43WR5fzCnWFRltibCIC6K5a01mQm
+         qk/eOPwCN7+ZjOWxRhQBJkK9/3lC3DWnpHUxA+IKTDZC+SmuYn4XVSZkX3NvRmi1Z4
+         h49n6qJozLyG3gbHFD46aUV8fl0AnER+1MMlM0kc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lu Wei <luwei32@huawei.com>,
-        Florian Westphal <fw@strlen.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 021/129] ipvlan: Fix a reference count leak warning in ipvlan_ns_exit()
-Date:   Mon, 28 Aug 2023 12:11:40 +0200
-Message-ID: <20230828101158.086581552@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Marco Morandini <marco.morandini@polimi.it>,
+        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 007/129] HID: add quirk for 03f0:464a HP Elite Presenter Mouse
+Date:   Mon, 28 Aug 2023 12:11:41 +0200
+Message-ID: <20230828101153.317939441@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,92 +55,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Wei <luwei32@huawei.com>
+From: Marco Morandini <marco.morandini@polimi.it>
 
-[ Upstream commit 043d5f68d0ccdda91029b4b6dce7eeffdcfad281 ]
+[ Upstream commit 0db117359e47750d8bd310d19f13e1c4ef7fc26a ]
 
-There are two network devices(veth1 and veth3) in ns1, and ipvlan1 with
-L3S mode and ipvlan2 with L2 mode are created based on them as
-figure (1). In this case, ipvlan_register_nf_hook() will be called to
-register nf hook which is needed by ipvlans in L3S mode in ns1 and value
-of ipvl_nf_hook_refcnt is set to 1.
+HP Elite Presenter Mouse HID Record Descriptor shows
+two mouses (Repord ID 0x1 and 0x2), one keypad (Report ID 0x5),
+two Consumer Controls (Report IDs 0x6 and 0x3).
+Previous to this commit it registers one mouse, one keypad
+and one Consumer Control, and it was usable only as a
+digitl laser pointer (one of the two mouses). This patch defines
+the 464a USB device ID and enables the HID_QUIRK_MULTI_INPUT
+quirk for it, allowing to use the device both as a mouse
+and a digital laser pointer.
 
-(1)
-           ns1                           ns2
-      ------------                  ------------
-
-   veth1--ipvlan1 (L3S)
-
-   veth3--ipvlan2 (L2)
-
-(2)
-           ns1                           ns2
-      ------------                  ------------
-
-   veth1--ipvlan1 (L3S)
-
-         ipvlan2 (L2)                  veth3
-     |                                  |
-     |------->-------->--------->--------
-                    migrate
-
-When veth3 migrates from ns1 to ns2 as figure (2), veth3 will register in
-ns2 and calls call_netdevice_notifiers with NETDEV_REGISTER event:
-
-dev_change_net_namespace
-    call_netdevice_notifiers
-        ipvlan_device_event
-            ipvlan_migrate_l3s_hook
-                ipvlan_register_nf_hook(newnet)      (I)
-                ipvlan_unregister_nf_hook(oldnet)    (II)
-
-In function ipvlan_migrate_l3s_hook(), ipvl_nf_hook_refcnt in ns1 is not 0
-since veth1 with ipvlan1 still in ns1, (I) and (II) will be called to
-register nf_hook in ns2 and unregister nf_hook in ns1. As a result,
-ipvl_nf_hook_refcnt in ns1 is decreased incorrectly and this in ns2
-is increased incorrectly. When the second net namespace is removed, a
-reference count leak warning in ipvlan_ns_exit() will be triggered.
-
-This patch add a check before ipvlan_migrate_l3s_hook() is called. The
-warning can be triggered as follows:
-
-$ ip netns add ns1
-$ ip netns add ns2
-$ ip netns exec ns1 ip link add veth1 type veth peer name veth2
-$ ip netns exec ns1 ip link add veth3 type veth peer name veth4
-$ ip netns exec ns1 ip link add ipv1 link veth1 type ipvlan mode l3s
-$ ip netns exec ns1 ip link add ipv2 link veth3 type ipvlan mode l2
-$ ip netns exec ns1 ip link set veth3 netns ns2
-$ ip net del ns2
-
-Fixes: 3133822f5ac1 ("ipvlan: use pernet operations and restrict l3s hooks to master netns")
-Signed-off-by: Lu Wei <luwei32@huawei.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Link: https://lore.kernel.org/r/20230817145449.141827-1-luwei32@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Marco Morandini <marco.morandini@polimi.it>
+Signed-off-by: Jiri Kosina <jkosina@suse.cz>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ipvlan/ipvlan_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-ids.h    | 1 +
+ drivers/hid/hid-quirks.c | 1 +
+ 2 files changed, 2 insertions(+)
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index b15dd9a3ad540..1b55928e89b8a 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -748,7 +748,8 @@ static int ipvlan_device_event(struct notifier_block *unused,
+diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
+index c0ba8d6f4978f..a9d6f8acf70b5 100644
+--- a/drivers/hid/hid-ids.h
++++ b/drivers/hid/hid-ids.h
+@@ -571,6 +571,7 @@
+ #define USB_DEVICE_ID_UGCI_FIGHTING	0x0030
  
- 		write_pnet(&port->pnet, newnet);
- 
--		ipvlan_migrate_l3s_hook(oldnet, newnet);
-+		if (port->mode == IPVLAN_MODE_L3S)
-+			ipvlan_migrate_l3s_hook(oldnet, newnet);
- 		break;
- 	}
- 	case NETDEV_UNREGISTER:
+ #define USB_VENDOR_ID_HP		0x03f0
++#define USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A		0x464a
+ #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A	0x0a4a
+ #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A	0x0b4a
+ #define USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE		0x134a
+diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
+index 8de294aa3184a..a2ab338166e61 100644
+--- a/drivers/hid/hid-quirks.c
++++ b/drivers/hid/hid-quirks.c
+@@ -98,6 +98,7 @@ static const struct hid_device_id hid_quirks[] = {
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A096), HID_QUIRK_NO_INIT_REPORTS },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A293), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A), HID_QUIRK_ALWAYS_POLL },
++	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A), HID_QUIRK_MULTI_INPUT },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE), HID_QUIRK_ALWAYS_POLL },
+ 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE_094A), HID_QUIRK_ALWAYS_POLL },
 -- 
 2.40.1
 
