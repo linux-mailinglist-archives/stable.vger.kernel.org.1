@@ -2,52 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 348F478AD52
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:47:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05CD078ADE0
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231958AbjH1KrZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:47:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36518 "EHLO
+        id S232277AbjH1Kvv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:51:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231966AbjH1KrA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:00 -0400
+        with ESMTP id S232304AbjH1KvU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:51:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7547C2
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:46:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 186B0CCC
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:50:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 80A08614DB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:46:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676BDC433C8;
-        Mon, 28 Aug 2023 10:46:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A3F4642C0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:50:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1417C433C9;
+        Mon, 28 Aug 2023 10:50:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219600;
-        bh=76Itv3yAqXq1WN75ngND4us01gK78CM9osakVbeNgWc=;
+        s=korg; t=1693219827;
+        bh=C1ieDp3RWRBc8Eg1DSt+E+Yq2OzH5WdjZIIKmu74SVk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CZjvYPtxisMutgzhY0VtxdepzQ+m2eyzFc3eRbvGvS6DuYdzSbGg4txiXL34yJUUG
-         J3dvYHrPHayrXp0KHf3Q3TWZPenQK7ACqez3AdFUaVcuN1bMQ9csF/xLfcxJ5ZQaBN
-         QhTB1yPd9go4b3VvanhBE6vg393XPEX8eAwure1s=
+        b=ShZo0LmpNXo6h0pyTBBB56AcnNDt17HxS8Eb+PgGjpSxG/6Xu6T8G+WF9dwVCjEw4
+         WEoO7bI+a1ZMwY5AAjLSEUSaMJZwqldxbUKaraPCaqtE1AeHesIa0u8GWZgksidGS9
+         0qRBu1K7ISj1OUNI8yQLctplw6nlxssb5cWvIWB4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
-        Rob Clark <robdclark@chromium.org>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 86/89] dma-buf/sw_sync: Avoid recursive lock during fence signal
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Juri Lelli <juri.lelli@redhat.com>, Tejun Heo <tj@kernel.org>,
+        "Qais Yousef (Google)" <qyousef@layalina.io>
+Subject: [PATCH 5.10 70/84] sched/deadline: Create DL BW alloc, free & check overflow interface
 Date:   Mon, 28 Aug 2023 12:14:27 +0200
-Message-ID: <20230828101153.145316894@linuxfoundation.org>
+Message-ID: <20230828101151.645291311@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -58,82 +56,167 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
 
-[ Upstream commit e531fdb5cd5ee2564b7fe10c8a9219e2b2fac61e ]
+commit 85989106feb734437e2d598b639991b9185a43a6 upstream.
 
-If a signal callback releases the sw_sync fence, that will trigger a
-deadlock as the timeline_fence_release recurses onto the fence->lock
-(used both for signaling and the the timeline tree).
+While moving a set of tasks between exclusive cpusets,
+cpuset_can_attach() -> task_can_attach() calls dl_cpu_busy(..., p) for
+DL BW overflow checking and per-task DL BW allocation on the destination
+root_domain for the DL tasks in this set.
 
-To avoid that, temporarily hold an extra reference to the signalled
-fences until after we drop the lock.
+This approach has the issue of not freeing already allocated DL BW in
+the following error cases:
 
-(This is an alternative implementation of https://patchwork.kernel.org/patch/11664717/
-which avoids some potential UAF issues with the original patch.)
+(1) The set of tasks includes multiple DL tasks and DL BW overflow
+    checking fails for one of the subsequent DL tasks.
 
-v2: Remove now obsolete comment, use list_move_tail() and
-    list_del_init()
+(2) Another controller next to the cpuset controller which is attached
+    to the same cgroup fails in its can_attach().
 
-Reported-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-Fixes: d3c6dd1fb30d ("dma-buf/sw_sync: Synchronize signal vs syncpt free")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230818145939.39697-1-robdclark@gmail.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+To address this problem rework dl_cpu_busy():
+
+(1) Split it into dl_bw_check_overflow() & dl_bw_alloc() and add a
+    dedicated dl_bw_free().
+
+(2) dl_bw_alloc() & dl_bw_free() take a `u64 dl_bw` parameter instead of
+    a `struct task_struct *p` used in dl_cpu_busy(). This allows to
+    allocate DL BW for a set of tasks too rather than only for a single
+    task.
+
+Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/sw_sync.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ include/linux/sched.h   |    2 +
+ kernel/sched/core.c     |    4 +--
+ kernel/sched/deadline.c |   53 ++++++++++++++++++++++++++++++++++++------------
+ kernel/sched/sched.h    |    2 -
+ 4 files changed, 45 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
-index 348b3a9170fa4..7f5ed1aa7a9f8 100644
---- a/drivers/dma-buf/sw_sync.c
-+++ b/drivers/dma-buf/sw_sync.c
-@@ -191,6 +191,7 @@ static const struct dma_fence_ops timeline_fence_ops = {
-  */
- static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
- {
-+	LIST_HEAD(signalled);
- 	struct sync_pt *pt, *next;
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1658,6 +1658,8 @@ current_restore_flags(unsigned long orig
  
- 	trace_sync_timeline(obj);
-@@ -203,21 +204,20 @@ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
- 		if (!timeline_fence_signaled(&pt->base))
- 			break;
+ extern int cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
+ extern int task_can_attach(struct task_struct *p, const struct cpumask *cs_effective_cpus);
++extern int dl_bw_alloc(int cpu, u64 dl_bw);
++extern void dl_bw_free(int cpu, u64 dl_bw);
+ #ifdef CONFIG_SMP
+ extern void do_set_cpus_allowed(struct task_struct *p, const struct cpumask *new_mask);
+ extern int set_cpus_allowed_ptr(struct task_struct *p, const struct cpumask *new_mask);
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -6625,7 +6625,7 @@ int task_can_attach(struct task_struct *
  
--		list_del_init(&pt->link);
-+		dma_fence_get(&pt->base);
-+
-+		list_move_tail(&pt->link, &signalled);
- 		rb_erase(&pt->node, &obj->pt_tree);
- 
--		/*
--		 * A signal callback may release the last reference to this
--		 * fence, causing it to be freed. That operation has to be
--		 * last to avoid a use after free inside this loop, and must
--		 * be after we remove the fence from the timeline in order to
--		 * prevent deadlocking on timeline->lock inside
--		 * timeline_fence_release().
--		 */
- 		dma_fence_signal_locked(&pt->base);
+ 		if (unlikely(cpu >= nr_cpu_ids))
+ 			return -EINVAL;
+-		ret = dl_cpu_busy(cpu, p);
++		ret = dl_bw_alloc(cpu, p->dl.dl_bw);
  	}
  
- 	spin_unlock_irq(&obj->lock);
-+
-+	list_for_each_entry_safe(pt, next, &signalled, link) {
-+		list_del_init(&pt->link);
-+		dma_fence_put(&pt->base);
-+	}
+ out:
+@@ -6885,7 +6885,7 @@ static void cpuset_cpu_active(void)
+ static int cpuset_cpu_inactive(unsigned int cpu)
+ {
+ 	if (!cpuhp_tasks_frozen) {
+-		int ret = dl_cpu_busy(cpu, NULL);
++		int ret = dl_bw_check_overflow(cpu);
+ 
+ 		if (ret)
+ 			return ret;
+--- a/kernel/sched/deadline.c
++++ b/kernel/sched/deadline.c
+@@ -2858,26 +2858,38 @@ int dl_cpuset_cpumask_can_shrink(const s
+ 	return ret;
  }
  
- /**
--- 
-2.40.1
-
+-int dl_cpu_busy(int cpu, struct task_struct *p)
++enum dl_bw_request {
++	dl_bw_req_check_overflow = 0,
++	dl_bw_req_alloc,
++	dl_bw_req_free
++};
++
++static int dl_bw_manage(enum dl_bw_request req, int cpu, u64 dl_bw)
+ {
+-	unsigned long flags, cap;
++	unsigned long flags;
+ 	struct dl_bw *dl_b;
+-	bool overflow;
++	bool overflow = 0;
+ 
+ 	rcu_read_lock_sched();
+ 	dl_b = dl_bw_of(cpu);
+ 	raw_spin_lock_irqsave(&dl_b->lock, flags);
+-	cap = dl_bw_capacity(cpu);
+-	overflow = __dl_overflow(dl_b, cap, 0, p ? p->dl.dl_bw : 0);
+ 
+-	if (!overflow && p) {
+-		/*
+-		 * We reserve space for this task in the destination
+-		 * root_domain, as we can't fail after this point.
+-		 * We will free resources in the source root_domain
+-		 * later on (see set_cpus_allowed_dl()).
+-		 */
+-		__dl_add(dl_b, p->dl.dl_bw, dl_bw_cpus(cpu));
++	if (req == dl_bw_req_free) {
++		__dl_sub(dl_b, dl_bw, dl_bw_cpus(cpu));
++	} else {
++		unsigned long cap = dl_bw_capacity(cpu);
++
++		overflow = __dl_overflow(dl_b, cap, 0, dl_bw);
++
++		if (req == dl_bw_req_alloc && !overflow) {
++			/*
++			 * We reserve space in the destination
++			 * root_domain, as we can't fail after this point.
++			 * We will free resources in the source root_domain
++			 * later on (see set_cpus_allowed_dl()).
++			 */
++			__dl_add(dl_b, dl_bw, dl_bw_cpus(cpu));
++		}
+ 	}
+ 
+ 	raw_spin_unlock_irqrestore(&dl_b->lock, flags);
+@@ -2885,6 +2897,21 @@ int dl_cpu_busy(int cpu, struct task_str
+ 
+ 	return overflow ? -EBUSY : 0;
+ }
++
++int dl_bw_check_overflow(int cpu)
++{
++	return dl_bw_manage(dl_bw_req_check_overflow, cpu, 0);
++}
++
++int dl_bw_alloc(int cpu, u64 dl_bw)
++{
++	return dl_bw_manage(dl_bw_req_alloc, cpu, dl_bw);
++}
++
++void dl_bw_free(int cpu, u64 dl_bw)
++{
++	dl_bw_manage(dl_bw_req_free, cpu, dl_bw);
++}
+ #endif
+ 
+ #ifdef CONFIG_SCHED_DEBUG
+--- a/kernel/sched/sched.h
++++ b/kernel/sched/sched.h
+@@ -348,7 +348,7 @@ extern void __getparam_dl(struct task_st
+ extern bool __checkparam_dl(const struct sched_attr *attr);
+ extern bool dl_param_changed(struct task_struct *p, const struct sched_attr *attr);
+ extern int  dl_cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
+-extern int  dl_cpu_busy(int cpu, struct task_struct *p);
++extern int  dl_bw_check_overflow(int cpu);
+ 
+ #ifdef CONFIG_CGROUP_SCHED
+ 
 
 
