@@ -2,54 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFED878AD86
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CF8D78AA93
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjH1KtE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:49:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43402 "EHLO
+        id S231147AbjH1KXZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232111AbjH1Ksl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:48:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C9FC713E
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:29 -0700 (PDT)
+        with ESMTP id S231177AbjH1KXC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521BDB9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 651DD642C0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72DDDC433C7;
-        Mon, 28 Aug 2023 10:48:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D8B8763714
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2F8C433C7;
+        Mon, 28 Aug 2023 10:22:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219708;
-        bh=XsNuOVJ4+HahOUUBNXit4jE1KOntVCCnStfERnkgw6w=;
+        s=korg; t=1693218176;
+        bh=bdGFGJ1+lun/kLHLH1UOP8ArW9jsiJudUsZzfBY16C4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e6QyA8QP1+9FVoYp3KI1TOEhipJNBrIxvNabirhQUH/JZJY/HGnZXs4nafGWxzF6b
-         Oldyo7SxXaalD24zVc/gM/XQMSyuGC7Z6mauQMseE3jac2XAH4os+5l5T7PSi3tmAf
-         38cVilg1lxnsKSVZI87MK5klLlQIx9yuJsEN0NBw=
+        b=pPBFE0gf525Zr/GzVi5gIOYgBrkoZypFjqIo7EO1/hRf6mQZHOy8NX1Cu0Q3UB3j2
+         2A1tVDmEp/gHJIA1NNQNBd6ufdnac9bfmFNc0UafR3r5SIm10gUUraL2LvYFco2DAc
+         wYwAf09GlntOnSFcidDlavFqtGBE5bpRH3LIUGYQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Igor Mammedov <imammedo@redhat.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        patches@lists.linux.dev,
+        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
+        Rob Clark <robdclark@chromium.org>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 04/84] PCI: acpiphp: Reassign resources on bridge if necessary
+Subject: [PATCH 6.4 122/129] dma-buf/sw_sync: Avoid recursive lock during fence signal
 Date:   Mon, 28 Aug 2023 12:13:21 +0200
-Message-ID: <20230828101149.303076225@linuxfoundation.org>
+Message-ID: <20230828101201.458721376@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,85 +58,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Igor Mammedov <imammedo@redhat.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 40613da52b13fb21c5566f10b287e0ca8c12c4e9 ]
+[ Upstream commit e531fdb5cd5ee2564b7fe10c8a9219e2b2fac61e ]
 
-When using ACPI PCI hotplug, hotplugging a device with large BARs may fail
-if bridge windows programmed by firmware are not large enough.
+If a signal callback releases the sw_sync fence, that will trigger a
+deadlock as the timeline_fence_release recurses onto the fence->lock
+(used both for signaling and the the timeline tree).
 
-Reproducer:
-  $ qemu-kvm -monitor stdio -M q35  -m 4G \
-      -global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=on \
-      -device id=rp1,pcie-root-port,bus=pcie.0,chassis=4 \
-      disk_image
+To avoid that, temporarily hold an extra reference to the signalled
+fences until after we drop the lock.
 
- wait till linux guest boots, then hotplug device:
-   (qemu) device_add qxl,bus=rp1
+(This is an alternative implementation of https://patchwork.kernel.org/patch/11664717/
+which avoids some potential UAF issues with the original patch.)
 
- hotplug on guest side fails with:
-   pci 0000:01:00.0: [1b36:0100] type 00 class 0x038000
-   pci 0000:01:00.0: reg 0x10: [mem 0x00000000-0x03ffffff]
-   pci 0000:01:00.0: reg 0x14: [mem 0x00000000-0x03ffffff]
-   pci 0000:01:00.0: reg 0x18: [mem 0x00000000-0x00001fff]
-   pci 0000:01:00.0: reg 0x1c: [io  0x0000-0x001f]
-   pci 0000:01:00.0: BAR 0: no space for [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 0: failed to assign [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 1: no space for [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 1: failed to assign [mem size 0x04000000]
-   pci 0000:01:00.0: BAR 2: assigned [mem 0xfe800000-0xfe801fff]
-   pci 0000:01:00.0: BAR 3: assigned [io  0x1000-0x101f]
-   qxl 0000:01:00.0: enabling device (0000 -> 0003)
-   Unable to create vram_mapping
-   qxl: probe of 0000:01:00.0 failed with error -12
+v2: Remove now obsolete comment, use list_move_tail() and
+    list_del_init()
 
-However when using native PCIe hotplug
-  '-global ICH9-LPC.acpi-pci-hotplug-with-bridge-support=off'
-it works fine, since kernel attempts to reassign unused resources.
-
-Use the same machinery as native PCIe hotplug to (re)assign resources.
-
-Link: https://lore.kernel.org/r/20230424191557.2464760-1-imammedo@redhat.com
-Signed-off-by: Igor Mammedov <imammedo@redhat.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: Michael S. Tsirkin <mst@redhat.com>
-Acked-by: Rafael J. Wysocki <rafael@kernel.org>
-Cc: stable@vger.kernel.org
+Reported-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
+Fixes: d3c6dd1fb30d ("dma-buf/sw_sync: Synchronize signal vs syncpt free")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230818145939.39697-1-robdclark@gmail.com
+Reviewed-by: Christian König <christian.koenig@amd.com>
+Signed-off-by: Christian König <christian.koenig@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/hotplug/acpiphp_glue.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
+ drivers/dma-buf/sw_sync.c | 18 +++++++++---------
+ 1 file changed, 9 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/pci/hotplug/acpiphp_glue.c b/drivers/pci/hotplug/acpiphp_glue.c
-index f031302ad4019..44c0b025f09e1 100644
---- a/drivers/pci/hotplug/acpiphp_glue.c
-+++ b/drivers/pci/hotplug/acpiphp_glue.c
-@@ -489,7 +489,6 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
- 				acpiphp_native_scan_bridge(dev);
- 		}
- 	} else {
--		LIST_HEAD(add_list);
- 		int max, pass;
+diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
+index 348b3a9170fa4..7f5ed1aa7a9f8 100644
+--- a/drivers/dma-buf/sw_sync.c
++++ b/drivers/dma-buf/sw_sync.c
+@@ -191,6 +191,7 @@ static const struct dma_fence_ops timeline_fence_ops = {
+  */
+ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+ {
++	LIST_HEAD(signalled);
+ 	struct sync_pt *pt, *next;
  
- 		acpiphp_rescan_slot(slot);
-@@ -503,12 +502,10 @@ static void enable_slot(struct acpiphp_slot *slot, bool bridge)
- 				if (pass && dev->subordinate) {
- 					check_hotplug_bridge(slot, dev);
- 					pcibios_resource_survey_bus(dev->subordinate);
--					__pci_bus_size_bridges(dev->subordinate,
--							       &add_list);
- 				}
- 			}
- 		}
--		__pci_bus_assign_resources(bus, &add_list, NULL);
-+		pci_assign_unassigned_bridge_resources(bus->self);
+ 	trace_sync_timeline(obj);
+@@ -203,21 +204,20 @@ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+ 		if (!timeline_fence_signaled(&pt->base))
+ 			break;
+ 
+-		list_del_init(&pt->link);
++		dma_fence_get(&pt->base);
++
++		list_move_tail(&pt->link, &signalled);
+ 		rb_erase(&pt->node, &obj->pt_tree);
+ 
+-		/*
+-		 * A signal callback may release the last reference to this
+-		 * fence, causing it to be freed. That operation has to be
+-		 * last to avoid a use after free inside this loop, and must
+-		 * be after we remove the fence from the timeline in order to
+-		 * prevent deadlocking on timeline->lock inside
+-		 * timeline_fence_release().
+-		 */
+ 		dma_fence_signal_locked(&pt->base);
  	}
  
- 	acpiphp_sanitize_bus(bus);
+ 	spin_unlock_irq(&obj->lock);
++
++	list_for_each_entry_safe(pt, next, &signalled, link) {
++		list_del_init(&pt->link);
++		dma_fence_put(&pt->base);
++	}
+ }
+ 
+ /**
 -- 
 2.40.1
 
