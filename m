@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0525378AD48
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:47:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5301878ADE1
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231975AbjH1KrA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:47:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46572 "EHLO
+        id S232236AbjH1Kvr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:51:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232072AbjH1Kqg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:36 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5621CE1
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:46:24 -0700 (PDT)
+        with ESMTP id S232328AbjH1KvU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:51:20 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDE1AE50
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:50:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C6FCE6426C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:46:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93F2C433C8;
-        Mon, 28 Aug 2023 10:46:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9F652644B5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:50:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B187FC433C8;
+        Mon, 28 Aug 2023 10:50:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219584;
-        bh=UZUxV8fOSr95ODFe6ytZUaWahFRESP2o/jwqPIxnAc8=;
+        s=korg; t=1693219838;
+        bh=FJafJBmpRznDKF8aByP3zIeQv/T+5ECetVBfMPSFtOI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xcAv9iGSyKlYpq59Im2NlLVTlVtVJHHhNh1sDI1PvW5YGContRycy8Zz7Buk/92mk
-         yagItQ54Z+CsXNCC8z5lexuAxEkhn/DNZreRtM9e7K4sDaY5fA9uqaig2ZaINcvOli
-         2fbNLEIMc8rIyEHfb68+VlQcQgrbakbO+jl7ZPS4=
+        b=euppMaQBDyLguJTnz9w76vYALXySoidq14mV9ghCUe33zjDUjd02nJI8huPcJnaXq
+         bkE8PW3XKvvqYWGq98M0fDxP8pHqpoYxRIUJRLnoJgTfSVBix7dMpTfiYpHOkGmTxi
+         iUys1fqBdnq22zaoaRtfUDdccfYA/MqQ0ntVllSM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Rik van Riel <riel@surriel.com>,
-        Mike Rappoport <rppt@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: [PATCH 5.15 89/89] mm,ima,kexec,of: use memblock_free_late from ima_free_kexec_buffer
-Date:   Mon, 28 Aug 2023 12:14:30 +0200
-Message-ID: <20230828101153.258035606@linuxfoundation.org>
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 5.10 74/84] scsi: snic: Fix double free in snic_tgt_create()
+Date:   Mon, 28 Aug 2023 12:14:31 +0200
+Message-ID: <20230828101151.796166573@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,48 +54,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-commit f0362a253606e2031f8d61c74195d4d6556e12a4 upstream.
+commit 1bd3a76880b2bce017987cf53780b372cf59528e upstream.
 
-The code calling ima_free_kexec_buffer runs long after the memblock
-allocator has already been torn down, potentially resulting in a use
-after free in memblock_isolate_range.
+Commit 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add()
+fails") fixed the memory leak caused by dev_set_name() when device_add()
+failed. However, it did not consider that 'tgt' has already been released
+when put_device(&tgt->dev) is called. Remove kfree(tgt) in the error path
+to avoid double free of 'tgt' and move put_device(&tgt->dev) after the
+removed kfree(tgt) to avoid a use-after-free.
 
-With KASAN or KFENCE, this use after free will result in a BUG
-from the idle task, and a subsequent kernel panic.
-
-Switch ima_free_kexec_buffer over to memblock_free_late to avoid
-that issue.
-
-Fixes: fee3ff99bc67 ("powerpc: Move arch independent ima kexec functions to drivers/of/kexec.c")
-Cc: stable@kernel.org
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Suggested-by: Mike Rappoport <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20230817135759.0888e5ef@imladris.surriel.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Mike Rappoport (IBM) <rppt@kernel.org>
+Fixes: 41320b18a0e0 ("scsi: snic: Fix possible memory leak if device_add() fails")
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Link: https://lore.kernel.org/r/20230819083941.164365-1-wangzhu9@huawei.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/of/kexec.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/scsi/snic/snic_disc.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -187,8 +187,8 @@ int ima_free_kexec_buffer(void)
- 	if (ret)
- 		return ret;
+--- a/drivers/scsi/snic/snic_disc.c
++++ b/drivers/scsi/snic/snic_disc.c
+@@ -317,12 +317,11 @@ snic_tgt_create(struct snic *snic, struc
+ 			      "Snic Tgt: device_add, with err = %d\n",
+ 			      ret);
  
--	return memblock_free(addr, size);
--
-+	memblock_free_late(addr, size);
-+	return 0;
- }
+-		put_device(&tgt->dev);
+ 		put_device(&snic->shost->shost_gendev);
+ 		spin_lock_irqsave(snic->shost->host_lock, flags);
+ 		list_del(&tgt->list);
+ 		spin_unlock_irqrestore(snic->shost->host_lock, flags);
+-		kfree(tgt);
++		put_device(&tgt->dev);
+ 		tgt = NULL;
  
- /**
+ 		return tgt;
 
 
