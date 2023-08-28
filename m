@@ -2,53 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 812A878ABE6
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 829F478AD44
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:47:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231590AbjH1KfJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:35:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32836 "EHLO
+        id S231952AbjH1Kq6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:46:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46690 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231592AbjH1Kew (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:52 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1F39CAB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:50 -0700 (PDT)
+        with ESMTP id S232012AbjH1Kqa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:30 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42326115
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:46:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A8FEC63E2F
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BA0C433C7;
-        Mon, 28 Aug 2023 10:34:48 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 22993619CB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:46:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3700BC433C8;
+        Mon, 28 Aug 2023 10:46:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218889;
-        bh=MYvkx70+CRhlVzLYEgrJNHosxu/LDFnJRMIogMttFq8=;
+        s=korg; t=1693219570;
+        bh=scKji3pLApb+56DMKAfLzQM4WJZW3H5sLYj6xk4qV38=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hCQObj9O4OeAl3fBFczEQdyeJNtWTeYrgGp4AcxVnnUUNpqRK5cDbX7tw8XuW+x+R
-         4bSXNIJ8QB1dls/FjC2GCDxJpcKtSZU0KMCjMvtcQwgkA4+0Q+lHxJPWRQdOClKAvT
-         KXoqpZzQFx5hhXrgf0EeLbFofK40DdY6NrFnwXFU=
+        b=KnVduaTwaKYBK/Zw1gRXpE93LVizrnqCRZuKMz3WfBEZIk8Tkmtmv8bj+7MrpgwY4
+         YmIeKwtM8SBOZygz6IFtWsJ3IXCzndE2dWmtdlG95FpM3FqrryobXyiF9GUHJrEOOZ
+         2bqmGwSKGFCgAsal9CdN312pNnuGstGmtYzQcNNU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 121/122] maple_tree: disable mas_wr_append() when other readers are possible
+        patches@lists.linux.dev, Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.15 55/89] batman-adv: Trigger events for auto adjusted MTU
 Date:   Mon, 28 Aug 2023 12:13:56 +0200
-Message-ID: <20230828101200.461264443@linuxfoundation.org>
+Message-ID: <20230828101152.021396365@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,82 +54,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit cfeb6ae8bcb96ccf674724f223661bbcef7b0d0b ]
+commit c6a953cce8d0438391e6da48c8d0793d3fbfcfa6 upstream.
 
-The current implementation of append may cause duplicate data and/or
-incorrect ranges to be returned to a reader during an update.  Although
-this has not been reported or seen, disable the append write operation
-while the tree is in rcu mode out of an abundance of caution.
+If an interface changes the MTU, it is expected that an NETDEV_PRECHANGEMTU
+and NETDEV_CHANGEMTU notification events is triggered. This worked fine for
+.ndo_change_mtu based changes because core networking code took care of it.
+But for auto-adjustments after hard-interfaces changes, these events were
+simply missing.
 
-During the analysis of the mas_next_slot() the following was
-artificially created by separating the writer and reader code:
+Due to this problem, non-batman-adv components weren't aware of MTU changes
+and thus couldn't perform their own tasks correctly.
 
-Writer:                                 reader:
-mas_wr_append
-    set end pivot
-    updates end metata
-    Detects write to last slot
-    last slot write is to start of slot
-    store current contents in slot
-    overwrite old end pivot
-                                        mas_next_slot():
-                                                read end metadata
-                                                read old end pivot
-                                                return with incorrect range
-    store new value
-
-Alternatively:
-
-Writer:                                 reader:
-mas_wr_append
-    set end pivot
-    updates end metata
-    Detects write to last slot
-    last lost write to end of slot
-    store value
-                                        mas_next_slot():
-                                                read end metadata
-                                                read old end pivot
-                                                read new end pivot
-                                                return with incorrect range
-    set old end pivot
-
-There may be other accesses that are not safe since we are now updating
-both metadata and pointers, so disabling append if there could be rcu
-readers is the safest action.
-
-Link: https://lkml.kernel.org/r/20230819004356.1454718-2-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/maple_tree.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/batman-adv/hard-interface.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index 47d0c95b9a01e..250b4c67fac8f 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -4333,6 +4333,9 @@ static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
- 	struct ma_state *mas = wr_mas->mas;
- 	unsigned char node_pivots = mt_pivots[wr_mas->type];
+--- a/net/batman-adv/hard-interface.c
++++ b/net/batman-adv/hard-interface.c
+@@ -627,7 +627,7 @@ out:
+  */
+ void batadv_update_min_mtu(struct net_device *soft_iface)
+ {
+-	soft_iface->mtu = batadv_hardif_min_mtu(soft_iface);
++	dev_set_mtu(soft_iface, batadv_hardif_min_mtu(soft_iface));
  
-+	if (mt_in_rcu(mas->tree))
-+		return false;
-+
- 	if ((mas->index != wr_mas->r_min) && (mas->last == wr_mas->r_max)) {
- 		if (new_end < node_pivots)
- 			wr_mas->pivots[new_end] = wr_mas->pivots[end];
--- 
-2.40.1
-
+ 	/* Check if the local translate table should be cleaned up to match a
+ 	 * new (and smaller) MTU.
 
 
