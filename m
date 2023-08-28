@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0786678ACE1
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7B10578AC95
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:41:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231787AbjH1Knm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:43:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58434 "EHLO
+        id S231752AbjH1KlH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:41:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40818 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231953AbjH1Knb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:31 -0400
+        with ESMTP id S231803AbjH1Kkt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:40:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C0BC194
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:43:06 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEA02A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:40:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BF17564156
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1036C433C8;
-        Mon, 28 Aug 2023 10:42:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6DA26614BD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:40:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D0A8C433C7;
+        Mon, 28 Aug 2023 10:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219376;
-        bh=WXAwxpCE2RhnUWIDlUQP3tBWc2dP/VNcdsfcAMeXSV0=;
+        s=korg; t=1693219245;
+        bh=KyGv1NvZ+XmBaTlPD8mulzaIurgyorG8Ajtnfj0pI8Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJV8rNM2T/PxaxaONwEZSMl/s/RUjAQa2Sk3Mcg3A77dvEcIvFrCpF4RxKuw7eIPq
-         19RWk8lnVUIbfmqvzffviK7FUcTzuZJ6LmkevvFUk+2Ncx6EJmO9m7DET+tUV9Ny+k
-         VauSFnPa7fBfo81uKa9v2KL08fz0iJskCb8qy0uI=
+        b=e5MVAMQht63H3suE0BmwYm4v1VCZZK46nYfHGTFeue23Ynf6lj8o0jxqTGoNVzLAD
+         kKJfq9v8+XoryF8Z4s3p6N2tq+q9XOb31ihD4x2aDJVkuIB9PQKsMDo9hAbd69iBEC
+         6WKEnkrHB9uRgcAfBnpde4N8E5i4KC5SBICKAIyE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>,
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 14/89] fbdev: Improve performance of sys_imageblit()
+Subject: [PATCH 5.4 098/158] fs: dlm: add pid to debug log
 Date:   Mon, 28 Aug 2023 12:13:15 +0200
-Message-ID: <20230828101150.644350280@linuxfoundation.org>
+Message-ID: <20230828101200.614442526@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,132 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Alexander Aring <aahringo@redhat.com>
 
-[ Upstream commit 6f29e04938bf509fccfad490a74284cf158891ce ]
+[ Upstream commit 19d7ca051d303622c423b4cb39e6bde5d177328b ]
 
-Improve the performance of sys_imageblit() by manually unrolling
-the inner blitting loop and moving some invariants out. The compiler
-failed to do this automatically. The resulting binary code was even
-slower than the cfb_imageblit() helper, which uses the same algorithm,
-but operates on I/O memory.
+This patch adds the pid information which requested the lock operation
+to the debug log output.
 
-A microbenchmark measures the average number of CPU cycles
-for sys_imageblit() after a stabilizing period of a few minutes
-(i7-4790, FullHD, simpledrm, kernel with debugging). The value
-for CFB is given as a reference.
-
-  sys_imageblit(), new: 25934 cycles
-  sys_imageblit(), old: 35944 cycles
-  cfb_imageblit():      30566 cycles
-
-In the optimized case, sys_imageblit() is now ~30% faster than before
-and ~20% faster than cfb_imageblit().
-
-v2:
-	* move switch out of inner loop (Gerd)
-	* remove test for alignment of dst1 (Sam)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Acked-by: Sam Ravnborg <sam@ravnborg.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20220223193804.18636-3-tzimmermann@suse.de
-Stable-dep-of: c2d22806aecb ("fbdev: fix potential OOB read in fast_imageblit()")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Stable-dep-of: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/fbdev/core/sysimgblt.c | 49 +++++++++++++++++++++-------
- 1 file changed, 38 insertions(+), 11 deletions(-)
+ fs/dlm/plock.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
-index a4d05b1b17d7d..722c327a381bd 100644
---- a/drivers/video/fbdev/core/sysimgblt.c
-+++ b/drivers/video/fbdev/core/sysimgblt.c
-@@ -188,23 +188,29 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- {
- 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
- 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
--	u32 bit_mask, end_mask, eorx, shift;
-+	u32 bit_mask, eorx;
- 	const char *s = image->data, *src;
- 	u32 *dst;
--	const u32 *tab = NULL;
-+	const u32 *tab;
-+	size_t tablen;
-+	u32 colortab[16];
- 	int i, j, k;
- 
- 	switch (bpp) {
- 	case 8:
- 		tab = fb_be_math(p) ? cfb_tab8_be : cfb_tab8_le;
-+		tablen = 16;
- 		break;
- 	case 16:
- 		tab = fb_be_math(p) ? cfb_tab16_be : cfb_tab16_le;
-+		tablen = 4;
- 		break;
- 	case 32:
--	default:
- 		tab = cfb_tab32;
-+		tablen = 2;
- 		break;
-+	default:
-+		return;
- 	}
- 
- 	for (i = ppw-1; i--; ) {
-@@ -218,19 +224,40 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 	eorx = fgx ^ bgx;
- 	k = image->width/ppw;
- 
-+	for (i = 0; i < tablen; ++i)
-+		colortab[i] = (tab[i] & eorx) ^ bgx;
-+
- 	for (i = image->height; i--; ) {
- 		dst = dst1;
--		shift = 8;
- 		src = s;
- 
--		for (j = k; j--; ) {
--			shift -= ppw;
--			end_mask = tab[(*src >> shift) & bit_mask];
--			*dst++ = (end_mask & eorx) ^ bgx;
--			if (!shift) {
--				shift = 8;
--				src++;
-+		switch (ppw) {
-+		case 4: /* 8 bpp */
-+			for (j = k; j; j -= 2, ++src) {
-+				*dst++ = colortab[(*src >> 4) & bit_mask];
-+				*dst++ = colortab[(*src >> 0) & bit_mask];
-+			}
-+			break;
-+		case 2: /* 16 bpp */
-+			for (j = k; j; j -= 4, ++src) {
-+				*dst++ = colortab[(*src >> 6) & bit_mask];
-+				*dst++ = colortab[(*src >> 4) & bit_mask];
-+				*dst++ = colortab[(*src >> 2) & bit_mask];
-+				*dst++ = colortab[(*src >> 0) & bit_mask];
-+			}
-+			break;
-+		case 1: /* 32 bpp */
-+			for (j = k; j; j -= 8, ++src) {
-+				*dst++ = colortab[(*src >> 7) & bit_mask];
-+				*dst++ = colortab[(*src >> 6) & bit_mask];
-+				*dst++ = colortab[(*src >> 5) & bit_mask];
-+				*dst++ = colortab[(*src >> 4) & bit_mask];
-+				*dst++ = colortab[(*src >> 3) & bit_mask];
-+				*dst++ = colortab[(*src >> 2) & bit_mask];
-+				*dst++ = colortab[(*src >> 1) & bit_mask];
-+				*dst++ = colortab[(*src >> 0) & bit_mask];
- 			}
-+			break;
- 		}
- 		dst1 += p->fix.line_length;
- 		s += spitch;
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index 95f4662c1209a..f685d56a4f909 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -164,9 +164,9 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 		spin_lock(&ops_lock);
+ 		list_del(&op->list);
+ 		spin_unlock(&ops_lock);
+-		log_print("%s: wait interrupted %x %llx, op removed",
++		log_print("%s: wait interrupted %x %llx pid %d, op removed",
+ 			  __func__, ls->ls_global_id,
+-			  (unsigned long long)number);
++			  (unsigned long long)number, op->info.pid);
+ 		dlm_release_plock_op(op);
+ 		do_unlock_close(ls, number, file, fl);
+ 		goto out;
 -- 
 2.40.1
 
