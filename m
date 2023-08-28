@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4013678AAEB
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:26:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E369978AC2A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231256AbjH1K0F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:26:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58756 "EHLO
+        id S231591AbjH1Kht (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:37:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231305AbjH1KZs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:25:48 -0400
+        with ESMTP id S231634AbjH1KhP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:15 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E42D3A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:25:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D29A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 78A8D6131B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:25:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C1BFC433C8;
-        Mon, 28 Aug 2023 10:25:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 75FAF63F25
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D827C433C8;
+        Mon, 28 Aug 2023 10:37:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218343;
-        bh=gLm9jmY/bgswGBw2rVaKehHB9iqWimGbSlznW1OAqI8=;
+        s=korg; t=1693219031;
+        bh=37UlUW5qEBmm5mgatx9mThVnt8CWCTx5bB6Hy5dNST0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gso2h5ypyoGbbqBIZVid0q185WsSETxoq7kus1SAOCNw8+l9B636ZYHUQC/jW9EVo
-         Ht+mIywM6zFJxNBEJMx6lrHsfKw89AjWubdM3hKPaQ989+TrCSEQKYlvVcgb6e9/kE
-         rqHTC5C+cq867oojntuHH+9I4RA1AEpDTOwqe5Uk=
+        b=zxB3rNa9JaGN5//JQtnyNm8Izzek6bJa3XP7zGJfCmkznuHbCZDwuz0U1xnt0ivLY
+         8r75tOMJnA1rSy337LdP0GeILaT061P32V+zjhwrt5H+vo2aj/HGwyOAwrzMcFVLik
+         K7q6E+AvVe6oOm8P1uiLpbhFC6vE2v8MppbyU8gA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
+        patches@lists.linux.dev, Vijay Khemka <vijaykhemka@fb.com>,
+        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 052/129] net: xfrm: Fix xfrm_address_filter OOB read
+Subject: [PATCH 5.4 049/158] net/ncsi: Fix gma flag setting after response
 Date:   Mon, 28 Aug 2023 12:12:26 +0200
-Message-ID: <20230828101155.176149066@linuxfoundation.org>
+Message-ID: <20230828101158.997892908@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,204 +56,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Vijay Khemka <vijaykhemka@fb.com>
 
-[ Upstream commit dfa73c17d55b921e1d4e154976de35317e43a93a ]
+[ Upstream commit 9e860947d8d7a1504476ac49abfce90a4ce600f3 ]
 
-We found below OOB crash:
+gma_flag was set at the time of GMA command request but it should
+only be set after getting successful response. Movinng this flag
+setting in GMA response handler.
 
-[   44.211730] ==================================================================
-[   44.212045] BUG: KASAN: slab-out-of-bounds in memcmp+0x8b/0xb0
-[   44.212045] Read of size 8 at addr ffff88800870f320 by task poc.xfrm/97
-[   44.212045]
-[   44.212045] CPU: 0 PID: 97 Comm: poc.xfrm Not tainted 6.4.0-rc7-00072-gdad9774deaf1-dirty #4
-[   44.212045] Call Trace:
-[   44.212045]  <TASK>
-[   44.212045]  dump_stack_lvl+0x37/0x50
-[   44.212045]  print_report+0xcc/0x620
-[   44.212045]  ? __virt_addr_valid+0xf3/0x170
-[   44.212045]  ? memcmp+0x8b/0xb0
-[   44.212045]  kasan_report+0xb2/0xe0
-[   44.212045]  ? memcmp+0x8b/0xb0
-[   44.212045]  kasan_check_range+0x39/0x1c0
-[   44.212045]  memcmp+0x8b/0xb0
-[   44.212045]  xfrm_state_walk+0x21c/0x420
-[   44.212045]  ? __pfx_dump_one_state+0x10/0x10
-[   44.212045]  xfrm_dump_sa+0x1e2/0x290
-[   44.212045]  ? __pfx_xfrm_dump_sa+0x10/0x10
-[   44.212045]  ? __kernel_text_address+0xd/0x40
-[   44.212045]  ? kasan_unpoison+0x27/0x60
-[   44.212045]  ? mutex_lock+0x60/0xe0
-[   44.212045]  ? __pfx_mutex_lock+0x10/0x10
-[   44.212045]  ? kasan_save_stack+0x22/0x50
-[   44.212045]  netlink_dump+0x322/0x6c0
-[   44.212045]  ? __pfx_netlink_dump+0x10/0x10
-[   44.212045]  ? mutex_unlock+0x7f/0xd0
-[   44.212045]  ? __pfx_mutex_unlock+0x10/0x10
-[   44.212045]  __netlink_dump_start+0x353/0x430
-[   44.212045]  xfrm_user_rcv_msg+0x3a4/0x410
-[   44.212045]  ? __pfx__raw_spin_lock_irqsave+0x10/0x10
-[   44.212045]  ? __pfx_xfrm_user_rcv_msg+0x10/0x10
-[   44.212045]  ? __pfx_xfrm_dump_sa+0x10/0x10
-[   44.212045]  ? __pfx_xfrm_dump_sa_done+0x10/0x10
-[   44.212045]  ? __stack_depot_save+0x382/0x4e0
-[   44.212045]  ? filter_irq_stacks+0x1c/0x70
-[   44.212045]  ? kasan_save_stack+0x32/0x50
-[   44.212045]  ? kasan_save_stack+0x22/0x50
-[   44.212045]  ? kasan_set_track+0x25/0x30
-[   44.212045]  ? __kasan_slab_alloc+0x59/0x70
-[   44.212045]  ? kmem_cache_alloc_node+0xf7/0x260
-[   44.212045]  ? kmalloc_reserve+0xab/0x120
-[   44.212045]  ? __alloc_skb+0xcf/0x210
-[   44.212045]  ? netlink_sendmsg+0x509/0x700
-[   44.212045]  ? sock_sendmsg+0xde/0xe0
-[   44.212045]  ? __sys_sendto+0x18d/0x230
-[   44.212045]  ? __x64_sys_sendto+0x71/0x90
-[   44.212045]  ? do_syscall_64+0x3f/0x90
-[   44.212045]  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[   44.212045]  ? netlink_sendmsg+0x509/0x700
-[   44.212045]  ? sock_sendmsg+0xde/0xe0
-[   44.212045]  ? __sys_sendto+0x18d/0x230
-[   44.212045]  ? __x64_sys_sendto+0x71/0x90
-[   44.212045]  ? do_syscall_64+0x3f/0x90
-[   44.212045]  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[   44.212045]  ? kasan_save_stack+0x22/0x50
-[   44.212045]  ? kasan_set_track+0x25/0x30
-[   44.212045]  ? kasan_save_free_info+0x2e/0x50
-[   44.212045]  ? __kasan_slab_free+0x10a/0x190
-[   44.212045]  ? kmem_cache_free+0x9c/0x340
-[   44.212045]  ? netlink_recvmsg+0x23c/0x660
-[   44.212045]  ? sock_recvmsg+0xeb/0xf0
-[   44.212045]  ? __sys_recvfrom+0x13c/0x1f0
-[   44.212045]  ? __x64_sys_recvfrom+0x71/0x90
-[   44.212045]  ? do_syscall_64+0x3f/0x90
-[   44.212045]  ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[   44.212045]  ? copyout+0x3e/0x50
-[   44.212045]  netlink_rcv_skb+0xd6/0x210
-[   44.212045]  ? __pfx_xfrm_user_rcv_msg+0x10/0x10
-[   44.212045]  ? __pfx_netlink_rcv_skb+0x10/0x10
-[   44.212045]  ? __pfx_sock_has_perm+0x10/0x10
-[   44.212045]  ? mutex_lock+0x8d/0xe0
-[   44.212045]  ? __pfx_mutex_lock+0x10/0x10
-[   44.212045]  xfrm_netlink_rcv+0x44/0x50
-[   44.212045]  netlink_unicast+0x36f/0x4c0
-[   44.212045]  ? __pfx_netlink_unicast+0x10/0x10
-[   44.212045]  ? netlink_recvmsg+0x500/0x660
-[   44.212045]  netlink_sendmsg+0x3b7/0x700
-[   44.212045]  ? __pfx_netlink_sendmsg+0x10/0x10
-[   44.212045]  ? __pfx_netlink_sendmsg+0x10/0x10
-[   44.212045]  sock_sendmsg+0xde/0xe0
-[   44.212045]  __sys_sendto+0x18d/0x230
-[   44.212045]  ? __pfx___sys_sendto+0x10/0x10
-[   44.212045]  ? rcu_core+0x44a/0xe10
-[   44.212045]  ? __rseq_handle_notify_resume+0x45b/0x740
-[   44.212045]  ? _raw_spin_lock_irq+0x81/0xe0
-[   44.212045]  ? __pfx___rseq_handle_notify_resume+0x10/0x10
-[   44.212045]  ? __pfx_restore_fpregs_from_fpstate+0x10/0x10
-[   44.212045]  ? __pfx_blkcg_maybe_throttle_current+0x10/0x10
-[   44.212045]  ? __pfx_task_work_run+0x10/0x10
-[   44.212045]  __x64_sys_sendto+0x71/0x90
-[   44.212045]  do_syscall_64+0x3f/0x90
-[   44.212045]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[   44.212045] RIP: 0033:0x44b7da
-[   44.212045] RSP: 002b:00007ffdc8838548 EFLAGS: 00000246 ORIG_RAX: 000000000000002c
-[   44.212045] RAX: ffffffffffffffda RBX: 00007ffdc8839978 RCX: 000000000044b7da
-[   44.212045] RDX: 0000000000000038 RSI: 00007ffdc8838770 RDI: 0000000000000003
-[   44.212045] RBP: 00007ffdc88385b0 R08: 00007ffdc883858c R09: 000000000000000c
-[   44.212045] R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000001
-[   44.212045] R13: 00007ffdc8839968 R14: 00000000004c37d0 R15: 0000000000000001
-[   44.212045]  </TASK>
-[   44.212045]
-[   44.212045] Allocated by task 97:
-[   44.212045]  kasan_save_stack+0x22/0x50
-[   44.212045]  kasan_set_track+0x25/0x30
-[   44.212045]  __kasan_kmalloc+0x7f/0x90
-[   44.212045]  __kmalloc_node_track_caller+0x5b/0x140
-[   44.212045]  kmemdup+0x21/0x50
-[   44.212045]  xfrm_dump_sa+0x17d/0x290
-[   44.212045]  netlink_dump+0x322/0x6c0
-[   44.212045]  __netlink_dump_start+0x353/0x430
-[   44.212045]  xfrm_user_rcv_msg+0x3a4/0x410
-[   44.212045]  netlink_rcv_skb+0xd6/0x210
-[   44.212045]  xfrm_netlink_rcv+0x44/0x50
-[   44.212045]  netlink_unicast+0x36f/0x4c0
-[   44.212045]  netlink_sendmsg+0x3b7/0x700
-[   44.212045]  sock_sendmsg+0xde/0xe0
-[   44.212045]  __sys_sendto+0x18d/0x230
-[   44.212045]  __x64_sys_sendto+0x71/0x90
-[   44.212045]  do_syscall_64+0x3f/0x90
-[   44.212045]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
-[   44.212045]
-[   44.212045] The buggy address belongs to the object at ffff88800870f300
-[   44.212045]  which belongs to the cache kmalloc-64 of size 64
-[   44.212045] The buggy address is located 32 bytes inside of
-[   44.212045]  allocated 36-byte region [ffff88800870f300, ffff88800870f324)
-[   44.212045]
-[   44.212045] The buggy address belongs to the physical page:
-[   44.212045] page:00000000e4de16ee refcount:1 mapcount:0 mapping:000000000 ...
-[   44.212045] flags: 0x100000000000200(slab|node=0|zone=1)
-[   44.212045] page_type: 0xffffffff()
-[   44.212045] raw: 0100000000000200 ffff888004c41640 dead000000000122 0000000000000000
-[   44.212045] raw: 0000000000000000 0000000080200020 00000001ffffffff 0000000000000000
-[   44.212045] page dumped because: kasan: bad access detected
-[   44.212045]
-[   44.212045] Memory state around the buggy address:
-[   44.212045]  ffff88800870f200: fa fb fb fb fb fb fb fb fc fc fc fc fc fc fc fc
-[   44.212045]  ffff88800870f280: 00 00 00 00 00 fc fc fc fc fc fc fc fc fc fc fc
-[   44.212045] >ffff88800870f300: 00 00 00 00 04 fc fc fc fc fc fc fc fc fc fc fc
-[   44.212045]                                ^
-[   44.212045]  ffff88800870f380: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   44.212045]  ffff88800870f400: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-[   44.212045] ==================================================================
+This flag is used mainly for not repeating GMA command once
+received MAC address.
 
-By investigating the code, we find the root cause of this OOB is the lack
-of checks in xfrm_dump_sa(). The buggy code allows a malicious user to pass
-arbitrary value of filter->splen/dplen. Hence, with crafted xfrm states,
-the attacker can achieve 8 bytes heap OOB read, which causes info leak.
-
-  if (attrs[XFRMA_ADDRESS_FILTER]) {
-    filter = kmemdup(nla_data(attrs[XFRMA_ADDRESS_FILTER]),
-        sizeof(*filter), GFP_KERNEL);
-    if (filter == NULL)
-      return -ENOMEM;
-    // NO MORE CHECKS HERE !!!
-  }
-
-This patch fixes the OOB by adding necessary boundary checks, just like
-the code in pfkey_dump() function.
-
-Fixes: d3623099d350 ("ipsec: add support of limited SA dump")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Vijay Khemka <vijaykhemka@fb.com>
+Reviewed-by: Samuel Mendoza-Jonas <sam@mendozajonas.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Stable-dep-of: 790071347a0a ("net/ncsi: change from ndo_set_mac_address to dev_set_mac_address")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/xfrm/xfrm_user.c | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ net/ncsi/ncsi-manage.c | 3 ---
+ net/ncsi/ncsi-rsp.c    | 6 ++++++
+ 2 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index 94c7ebc26c48e..03322e015eaed 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -1036,6 +1036,15 @@ static int xfrm_dump_sa(struct sk_buff *skb, struct netlink_callback *cb)
- 					 sizeof(*filter), GFP_KERNEL);
- 			if (filter == NULL)
- 				return -ENOMEM;
-+
-+			/* see addr_match(), (prefix length >> 5) << 2
-+			 * will be used to compare xfrm_address_t
-+			 */
-+			if (filter->splen > (sizeof(xfrm_address_t) << 3) ||
-+			    filter->dplen > (sizeof(xfrm_address_t) << 3)) {
-+				kfree(filter);
-+				return -EINVAL;
-+			}
- 		}
+diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
+index 9bd12f7517ed5..6710f6b8764be 100644
+--- a/net/ncsi/ncsi-manage.c
++++ b/net/ncsi/ncsi-manage.c
+@@ -770,9 +770,6 @@ static int ncsi_gma_handler(struct ncsi_cmd_arg *nca, unsigned int mf_id)
+ 		return -1;
+ 	}
  
- 		if (attrs[XFRMA_PROTO])
+-	/* Set the flag for GMA command which should only be called once */
+-	nca->ndp->gma_flag = 1;
+-
+ 	/* Get Mac address from NCSI device */
+ 	return nch->handler(nca);
+ }
+diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
+index 7c893c3799202..e1c6bb4ab98fd 100644
+--- a/net/ncsi/ncsi-rsp.c
++++ b/net/ncsi/ncsi-rsp.c
+@@ -627,6 +627,9 @@ static int ncsi_rsp_handler_oem_mlx_gma(struct ncsi_request *nr)
+ 	saddr.sa_family = ndev->type;
+ 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
+ 	memcpy(saddr.sa_data, &rsp->data[MLX_MAC_ADDR_OFFSET], ETH_ALEN);
++	/* Set the flag for GMA command which should only be called once */
++	ndp->gma_flag = 1;
++
+ 	ret = ops->ndo_set_mac_address(ndev, &saddr);
+ 	if (ret < 0)
+ 		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
+@@ -671,6 +674,9 @@ static int ncsi_rsp_handler_oem_bcm_gma(struct ncsi_request *nr)
+ 	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
+ 		return -ENXIO;
+ 
++	/* Set the flag for GMA command which should only be called once */
++	ndp->gma_flag = 1;
++
+ 	ret = ops->ndo_set_mac_address(ndev, &saddr);
+ 	if (ret < 0)
+ 		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
 -- 
 2.40.1
 
