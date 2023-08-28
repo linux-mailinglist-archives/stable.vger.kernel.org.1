@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 49E4778A9C3
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F3AEE78AA67
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230396AbjH1KP4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:15:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49140 "EHLO
+        id S231151AbjH1KVz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230424AbjH1KPn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:15:43 -0400
+        with ESMTP id S231197AbjH1KVa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E259CB9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:15:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F025CE0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 77E6A615AF
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:15:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A5D9C433C7;
-        Mon, 28 Aug 2023 10:15:39 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A7C0E638ED
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC3F0C433C9;
+        Mon, 28 Aug 2023 10:21:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217739;
-        bh=p9SnKRvn3xZEW3kk0/zOnbR3LJDqz4rx5epIVOZ2olk=;
+        s=korg; t=1693218071;
+        bh=kye2fGnNdGl+chNLB901inur56Zf0LZX0F0KlNiqzd4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RgmVrn+5xQC5En2g2+0Pm4QN737oHKz9Zzt/AChBS4FTLPzWv4LOZPHb6ssi36hCH
-         K6xP444g1jioJ4GolDoGDbX7z0oaHOf9FpCh2KSRlGTBgzRqymvsc+oeW5p5I4ujdM
-         fB+/tpXZzpfG7BmQu1g7F7XNqcr9GqPiZ8B4dle0=
+        b=PYNySi5NNtx/6xc6UozvpGL4fqrRBrVBxXHvh6eEkWI2Fo6ve+/BqmcntsxnoAYm9
+         R9cMMfMxmJKTpaGuoAjCNVraIOYe7w8zTxxnPuhBIjeT/pEFYM5Ff7bYe6RrptCjRJ
+         svRUZJe9NnpvS3jPSZM+upKNnva4muD5Hq8p1Bb4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Steffen Klassert <steffen.klassert@secunet.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 23/57] xfrm: add NULL check in xfrm_update_ae_params
-Date:   Mon, 28 Aug 2023 12:12:43 +0200
-Message-ID: <20230828101145.079114064@linuxfoundation.org>
+        patches@lists.linux.dev, Dylan Jhong <dylan@andestech.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Christoph Hellwig <hch@lst.de>,
+        Palmer Dabbelt <palmer@rivosinc.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 085/129] mm: add a call to flush_cache_vmap() in vmap_pfn()
+Date:   Mon, 28 Aug 2023 12:12:44 +0200
+Message-ID: <20230828101200.168768520@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,108 +57,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-[ Upstream commit 00374d9b6d9f932802b55181be9831aa948e5b7c ]
+commit a50420c79731fc5cf27ad43719c1091e842a2606 upstream.
 
-Normally, x->replay_esn and x->preplay_esn should be allocated at
-xfrm_alloc_replay_state_esn(...) in xfrm_state_construct(...), hence the
-xfrm_update_ae_params(...) is okay to update them. However, the current
-implementation of xfrm_new_ae(...) allows a malicious user to directly
-dereference a NULL pointer and crash the kernel like below.
+flush_cache_vmap() must be called after new vmalloc mappings are installed
+in the page table in order to allow architectures to make sure the new
+mapping is visible.
 
-BUG: kernel NULL pointer dereference, address: 0000000000000000
-PGD 8253067 P4D 8253067 PUD 8e0e067 PMD 0
-Oops: 0002 [#1] PREEMPT SMP KASAN NOPTI
-CPU: 0 PID: 98 Comm: poc.npd Not tainted 6.4.0-rc7-00072-gdad9774deaf1 #8
-Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.0-0-gd239552ce722-prebuilt.qemu.o4
-RIP: 0010:memcpy_orig+0xad/0x140
-Code: e8 4c 89 5f e0 48 8d 7f e0 73 d2 83 c2 20 48 29 d6 48 29 d7 83 fa 10 72 34 4c 8b 06 4c 8b 4e 08 c
-RSP: 0018:ffff888008f57658 EFLAGS: 00000202
-RAX: 0000000000000000 RBX: ffff888008bd0000 RCX: ffffffff8238e571
-RDX: 0000000000000018 RSI: ffff888007f64844 RDI: 0000000000000000
-RBP: 0000000000000000 R08: 0000000000000000 R09: 0000000000000000
-R10: 0000000000000000 R11: 0000000000000000 R12: ffff888008f57818
-R13: ffff888007f64aa4 R14: 0000000000000000 R15: 0000000000000000
-FS:  00000000014013c0(0000) GS:ffff88806d600000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 00000000054d8000 CR4: 00000000000006f0
-Call Trace:
- <TASK>
- ? __die+0x1f/0x70
- ? page_fault_oops+0x1e8/0x500
- ? __pfx_is_prefetch.constprop.0+0x10/0x10
- ? __pfx_page_fault_oops+0x10/0x10
- ? _raw_spin_unlock_irqrestore+0x11/0x40
- ? fixup_exception+0x36/0x460
- ? _raw_spin_unlock_irqrestore+0x11/0x40
- ? exc_page_fault+0x5e/0xc0
- ? asm_exc_page_fault+0x26/0x30
- ? xfrm_update_ae_params+0xd1/0x260
- ? memcpy_orig+0xad/0x140
- ? __pfx__raw_spin_lock_bh+0x10/0x10
- xfrm_update_ae_params+0xe7/0x260
- xfrm_new_ae+0x298/0x4e0
- ? __pfx_xfrm_new_ae+0x10/0x10
- ? __pfx_xfrm_new_ae+0x10/0x10
- xfrm_user_rcv_msg+0x25a/0x410
- ? __pfx_xfrm_user_rcv_msg+0x10/0x10
- ? __alloc_skb+0xcf/0x210
- ? stack_trace_save+0x90/0xd0
- ? filter_irq_stacks+0x1c/0x70
- ? __stack_depot_save+0x39/0x4e0
- ? __kasan_slab_free+0x10a/0x190
- ? kmem_cache_free+0x9c/0x340
- ? netlink_recvmsg+0x23c/0x660
- ? sock_recvmsg+0xeb/0xf0
- ? __sys_recvfrom+0x13c/0x1f0
- ? __x64_sys_recvfrom+0x71/0x90
- ? do_syscall_64+0x3f/0x90
- ? entry_SYSCALL_64_after_hwframe+0x72/0xdc
- ? copyout+0x3e/0x50
- netlink_rcv_skb+0xd6/0x210
- ? __pfx_xfrm_user_rcv_msg+0x10/0x10
- ? __pfx_netlink_rcv_skb+0x10/0x10
- ? __pfx_sock_has_perm+0x10/0x10
- ? mutex_lock+0x8d/0xe0
- ? __pfx_mutex_lock+0x10/0x10
- xfrm_netlink_rcv+0x44/0x50
- netlink_unicast+0x36f/0x4c0
- ? __pfx_netlink_unicast+0x10/0x10
- ? netlink_recvmsg+0x500/0x660
- netlink_sendmsg+0x3b7/0x700
+It could lead to a panic since on some architectures (like powerpc),
+the page table walker could see the wrong pte value and trigger a
+spurious page fault that can not be resolved (see commit f1cb8f9beba8
+("powerpc/64s/radix: avoid ptesync after set_pte and
+ptep_set_access_flags")).
 
-This Null-ptr-deref bug is assigned CVE-2023-3772. And this commit
-adds additional NULL check in xfrm_update_ae_params to fix the NPD.
+But actually the patch is aiming at riscv: the riscv specification
+allows the caching of invalid entries in the TLB, and since we recently
+removed the vmalloc page fault handling, we now need to emit a tlb
+shootdown whenever a new vmalloc mapping is emitted
+(https://lore.kernel.org/linux-riscv/20230725132246.817726-1-alexghiti@rivosinc.com/).
+That's a temporary solution, there are ways to avoid that :)
 
-Fixes: d8647b79c3b7 ("xfrm: Add user interface for esn and big anti-replay windows")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Link: https://lkml.kernel.org/r/20230809164633.1556126-1-alexghiti@rivosinc.com
+Fixes: 3e9a9e256b1e ("mm: add a vmap_pfn function")
+Reported-by: Dylan Jhong <dylan@andestech.com>
+Closes: https://lore.kernel.org/linux-riscv/ZMytNY2J8iyjbPPy@atctrx.andestech.com/
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Palmer Dabbelt <palmer@rivosinc.com>
+Acked-by: Palmer Dabbelt <palmer@rivosinc.com>
+Reviewed-by: Dylan Jhong <dylan@andestech.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/xfrm/xfrm_user.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/vmalloc.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/net/xfrm/xfrm_user.c b/net/xfrm/xfrm_user.c
-index c932ec65cfa09..224f627e0f6df 100644
---- a/net/xfrm/xfrm_user.c
-+++ b/net/xfrm/xfrm_user.c
-@@ -521,7 +521,7 @@ static void xfrm_update_ae_params(struct xfrm_state *x, struct nlattr **attrs,
- 	struct nlattr *et = attrs[XFRMA_ETIMER_THRESH];
- 	struct nlattr *rt = attrs[XFRMA_REPLAY_THRESH];
- 
--	if (re) {
-+	if (re && x->replay_esn && x->preplay_esn) {
- 		struct xfrm_replay_state_esn *replay_esn;
- 		replay_esn = nla_data(re);
- 		memcpy(x->replay_esn, replay_esn,
--- 
-2.40.1
-
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -2929,6 +2929,10 @@ void *vmap_pfn(unsigned long *pfns, unsi
+ 		free_vm_area(area);
+ 		return NULL;
+ 	}
++
++	flush_cache_vmap((unsigned long)area->addr,
++			 (unsigned long)area->addr + count * PAGE_SIZE);
++
+ 	return area->addr;
+ }
+ EXPORT_SYMBOL_GPL(vmap_pfn);
 
 
