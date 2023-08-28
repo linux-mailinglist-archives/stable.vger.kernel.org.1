@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD33E78AB49
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3039B78AD63
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231374AbjH1K3p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48552 "EHLO
+        id S231996AbjH1KsA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:48:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231344AbjH1K3V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:21 -0400
+        with ESMTP id S232042AbjH1Krb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CA87A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A41B9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:47:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B6C563C1D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C160C433C8;
-        Mon, 28 Aug 2023 10:29:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 840B664215
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:47:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 917F0C433C7;
+        Mon, 28 Aug 2023 10:47:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218557;
-        bh=IjUGECT6qRqIvFKo5MLj3o60ZnaEHsSyPpjFjEf7RZY=;
+        s=korg; t=1693219634;
+        bh=JMEQ2lTuWmMq36dAwXU0ua9QcoILtx6ag66yk1+vWp8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QD0tWTFUXKAtGMYGYgoey8f91+2nfNyTx6xB4CIzzCgz3O6ex3upbA0A/tPMFRvwK
-         HgMn7u82bJZeM1lAstQTvGKoXacrEkYdV4xTo6jd88IbSu6viZcYoE+iS7JF11tqR6
-         1K21iVt4loHL5HpGD+9Ho5VKhCMAEAfNFskR7akA=
+        b=y3sWVeHxzhTqLaRtKhSBacycgs124Gpxjrjjct0QrcbpVCjUfNXJJVsDRiBsmKH7G
+         bOtA9mR7zj+ViPBRbAiYoUG3HxI89hpOmA5zYmOQ+L5v4hX1kKAIESHtAIhwI185UL
+         RBzw8i4L0kVIJ+uJ1fv+e8GJ0lCtkJEjUEqc0WFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <oliver.sang@intel.com>,
-        Feng Tang <feng.tang@intel.com>,
-        Thomas Gleixner <tglx@linutronix.de>
-Subject: [PATCH 4.19 120/129] x86/fpu: Set X86_FEATURE_OSXSAVE feature after enabling OSXSAVE in CR4
+        patches@lists.linux.dev, Mikulas Patocka <mpatocka@redhat.com>,
+        Mike Snitzer <snitzer@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 17/84] dm integrity: reduce vmalloc space footprint on 32-bit architectures
 Date:   Mon, 28 Aug 2023 12:13:34 +0200
-Message-ID: <20230828101157.609588570@linuxfoundation.org>
+Message-ID: <20230828101149.781556264@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,66 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Feng Tang <feng.tang@intel.com>
+From: Mikulas Patocka <mpatocka@redhat.com>
 
-commit 2c66ca3949dc701da7f4c9407f2140ae425683a5 upstream.
+[ Upstream commit 6d50eb4725934fd22f5eeccb401000687c790fd0 ]
 
-0-Day found a 34.6% regression in stress-ng's 'af-alg' test case, and
-bisected it to commit b81fac906a8f ("x86/fpu: Move FPU initialization into
-arch_cpu_finalize_init()"), which optimizes the FPU init order, and moves
-the CR4_OSXSAVE enabling into a later place:
+It was reported that dm-integrity runs out of vmalloc space on 32-bit
+architectures. On x86, there is only 128MiB vmalloc space and dm-integrity
+consumes it quickly because it has a 64MiB journal and 8MiB recalculate
+buffer.
 
-   arch_cpu_finalize_init
-       identify_boot_cpu
-	   identify_cpu
-	       generic_identify
-                   get_cpu_cap --> setup cpu capability
-       ...
-       fpu__init_cpu
-           fpu__init_cpu_xstate
-               cr4_set_bits(X86_CR4_OSXSAVE);
+Fix this by reducing the size of the journal to 4MiB and the size of
+the recalculate buffer to 1MiB, so that multiple dm-integrity devices
+can be created and activated on 32-bit architectures.
 
-As the FPU is not yet initialized the CPU capability setup fails to set
-X86_FEATURE_OSXSAVE. Many security module like 'camellia_aesni_avx_x86_64'
-depend on this feature and therefore fail to load, causing the regression.
-
-Cure this by setting X86_FEATURE_OSXSAVE feature right after OSXSAVE
-enabling.
-
-[ tglx: Moved it into the actual BSP FPU initialization code and added a comment ]
-
-Fixes: b81fac906a8f ("x86/fpu: Move FPU initialization into arch_cpu_finalize_init()")
-Reported-by: kernel test robot <oliver.sang@intel.com>
-Signed-off-by: Feng Tang <feng.tang@intel.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
 Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/202307192135.203ac24e-oliver.sang@intel.com
-Link: https://lore.kernel.org/lkml/20230823065747.92257-1-feng.tang@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Mikulas Patocka <mpatocka@redhat.com>
+Signed-off-by: Mike Snitzer <snitzer@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/fpu/xstate.c |    8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/md/dm-integrity.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/arch/x86/kernel/fpu/xstate.c
-+++ b/arch/x86/kernel/fpu/xstate.c
-@@ -811,6 +811,14 @@ void __init fpu__init_system_xstate(void
- 	fpu__init_prepare_fx_sw_frame();
- 	setup_init_fpu_buf();
- 	setup_xstate_comp();
-+
-+	/*
-+	 * CPU capabilities initialization runs before FPU init. So
-+	 * X86_FEATURE_OSXSAVE is not set. Now that XSAVE is completely
-+	 * functional, set the feature bit so depending code works.
-+	 */
-+	setup_force_cpu_cap(X86_FEATURE_OSXSAVE);
-+
- 	print_xstate_offset_size();
- 
- 	pr_info("x86/fpu: Enabled xstate features 0x%llx, context size is %d bytes, using '%s' format.\n",
+diff --git a/drivers/md/dm-integrity.c b/drivers/md/dm-integrity.c
+index ea08eb4ed0d95..1667ac1406098 100644
+--- a/drivers/md/dm-integrity.c
++++ b/drivers/md/dm-integrity.c
+@@ -31,11 +31,11 @@
+ #define DEFAULT_BUFFER_SECTORS		128
+ #define DEFAULT_JOURNAL_WATERMARK	50
+ #define DEFAULT_SYNC_MSEC		10000
+-#define DEFAULT_MAX_JOURNAL_SECTORS	131072
++#define DEFAULT_MAX_JOURNAL_SECTORS	(IS_ENABLED(CONFIG_64BIT) ? 131072 : 8192)
+ #define MIN_LOG2_INTERLEAVE_SECTORS	3
+ #define MAX_LOG2_INTERLEAVE_SECTORS	31
+ #define METADATA_WORKQUEUE_MAX_ACTIVE	16
+-#define RECALC_SECTORS			32768
++#define RECALC_SECTORS			(IS_ENABLED(CONFIG_64BIT) ? 32768 : 2048)
+ #define RECALC_WRITE_SUPER		16
+ #define BITMAP_BLOCK_SIZE		4096	/* don't change it */
+ #define BITMAP_FLUSH_INTERVAL		(10 * HZ)
+-- 
+2.40.1
+
 
 
