@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 738BA78AA0E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6538178AA23
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230422AbjH1KSc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:18:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55288 "EHLO
+        id S230448AbjH1KTF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:19:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230512AbjH1KSH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:07 -0400
+        with ESMTP id S230508AbjH1KSn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:43 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8CDB19B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:58 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3098318B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:18:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 66D826375B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B622C433CB;
-        Mon, 28 Aug 2023 10:17:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C0FBD637B2
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:18:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D3B2FC433C9;
+        Mon, 28 Aug 2023 10:18:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217877;
-        bh=p3qNK9aoILUufrrO2T6oW+4Ynzbt25aAjv4pOk5yZNs=;
+        s=korg; t=1693217908;
+        bh=gvDNtOyALCStYtDt8WgR2Vx22NBEIhHHMB14Xx5gSG4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Oz/EkyK8un6rT3/p4Bg3yCPKPtCzE5StttlY6wUOATJxjuexEOmXam9XiC0paZskD
-         CrVuyDlTT9zg2xtpUAWmyrydmr1bUOB3IcsoGmoPIpt6KhJiBBr8NH7bslqGXjZM+B
-         fokUpOxDEqTSQ45cTRDpy+nNxJhjwd6fFgOgCzI8=
+        b=jreeUjiWqIWJvlZ+/P5XfhzQdOw1SZZgIEfJ+jwkHONpKBP73JOkha/yTeWYw8KJX
+         8jYs2cIOZ5zIN9dIUp1tFwS45y31i2KTka0mGI9pUWjNXMXIM3pMXoW3lzMfnOx7I5
+         8Vdy4eQ9GI70UUfTK9e+NBCPz8dMATU5L0cKdrVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Zhang Yi <yi.zhang@huawei.com>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, Oliver Hartkopp <socketcan@hartkopp.net>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 007/129] jbd2: fix a race when checking checkpoint buffer busy
-Date:   Mon, 28 Aug 2023 12:11:26 +0200
-Message-ID: <20230828101157.630238664@linuxfoundation.org>
+Subject: [PATCH 6.4 008/129] can: raw: fix receiver memory leak
+Date:   Mon, 28 Aug 2023 12:11:27 +0200
+Message-ID: <20230828101157.659245949@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
 References: <20230828101157.383363777@linuxfoundation.org>
@@ -59,147 +60,235 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Ziyang Xuan <william.xuanziyang@huawei.com>
 
-[ Upstream commit 46f881b5b1758dc4a35fba4a643c10717d0cf427 ]
+[ Upstream commit ee8b94c8510ce64afe0b87ef548d23e00915fb10 ]
 
-Before removing checkpoint buffer from the t_checkpoint_list, we have to
-check both BH_Dirty and BH_Lock bits together to distinguish buffers
-have not been or were being written back. But __cp_buffer_busy() checks
-them separately, it first check lock state and then check dirty, the
-window between these two checks could be raced by writing back
-procedure, which locks buffer and clears buffer dirty before I/O
-completes. So it cannot guarantee checkpointing buffers been written
-back to disk if some error happens later. Finally, it may clean
-checkpoint transactions and lead to inconsistent filesystem.
+Got kmemleak errors with the following ltp can_filter testcase:
 
-jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
-same problem (journal_unmap_buffer() escape from this issue since it's
-running under the buffer lock), so fix them through introducing a new
-helper to try holding the buffer lock and remove really clean buffer.
+for ((i=1; i<=100; i++))
+do
+        ./can_filter &
+        sleep 0.1
+done
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+==============================================================
+[<00000000db4a4943>] can_rx_register+0x147/0x360 [can]
+[<00000000a289549d>] raw_setsockopt+0x5ef/0x853 [can_raw]
+[<000000006d3d9ebd>] __sys_setsockopt+0x173/0x2c0
+[<00000000407dbfec>] __x64_sys_setsockopt+0x61/0x70
+[<00000000fd468496>] do_syscall_64+0x33/0x40
+[<00000000b7e47d51>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
+
+It's a bug in the concurrent scenario of unregister_netdevice_many()
+and raw_release() as following:
+
+             cpu0                                        cpu1
+unregister_netdevice_many(can_dev)
+  unlist_netdevice(can_dev) // dev_get_by_index() return NULL after this
+  net_set_todo(can_dev)
+						raw_release(can_socket)
+						  dev = dev_get_by_index(, ro->ifindex); // dev == NULL
+						  if (dev) { // receivers in dev_rcv_lists not free because dev is NULL
+						    raw_disable_allfilters(, dev, );
+						    dev_put(dev);
+						  }
+						  ...
+						  ro->bound = 0;
+						  ...
+
+call_netdevice_notifiers(NETDEV_UNREGISTER, )
+  raw_notify(, NETDEV_UNREGISTER, )
+    if (ro->bound) // invalid because ro->bound has been set 0
+      raw_disable_allfilters(, dev, ); // receivers in dev_rcv_lists will never be freed
+
+Add a net_device pointer member in struct raw_sock to record bound
+can_dev, and use rtnl_lock to serialize raw_socket members between
+raw_bind(), raw_release(), raw_setsockopt() and raw_notify(). Use
+ro->dev to decide whether to free receivers in dev_rcv_lists.
+
+Fixes: 8d0caedb7596 ("can: bcm/raw/isotp: use per module netdevice notifier")
+Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
+Link: https://lore.kernel.org/all/20230711011737.1969582-1-william.xuanziyang@huawei.com
 Cc: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c  | 38 +++++++++++++++++++++++++++++++++++---
- fs/jbd2/transaction.c | 17 +++++------------
- include/linux/jbd2.h  |  1 +
- 3 files changed, 41 insertions(+), 15 deletions(-)
+ net/can/raw.c | 57 ++++++++++++++++++++++-----------------------------
+ 1 file changed, 24 insertions(+), 33 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 42b34cab64fbd..9ec91017a7f3c 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 		jh = next_jh;
- 		next_jh = jh->b_cpnext;
+diff --git a/net/can/raw.c b/net/can/raw.c
+index f8e3866157a33..9fdad12d16325 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -84,6 +84,7 @@ struct raw_sock {
+ 	struct sock sk;
+ 	int bound;
+ 	int ifindex;
++	struct net_device *dev;
+ 	struct list_head notifier;
+ 	int loopback;
+ 	int recv_own_msgs;
+@@ -277,7 +278,7 @@ static void raw_notify(struct raw_sock *ro, unsigned long msg,
+ 	if (!net_eq(dev_net(dev), sock_net(sk)))
+ 		return;
  
--		if (!destroy && __cp_buffer_busy(jh))
--			continue;
-+		if (destroy) {
-+			ret = __jbd2_journal_remove_checkpoint(jh);
-+		} else {
-+			ret = jbd2_journal_try_remove_checkpoint(jh);
-+			if (ret < 0)
-+				continue;
-+		}
+-	if (ro->ifindex != dev->ifindex)
++	if (ro->dev != dev)
+ 		return;
  
- 		nr_freed++;
--		ret = __jbd2_journal_remove_checkpoint(jh);
- 		if (ret) {
- 			*released = true;
- 			break;
-@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 	return 1;
- }
+ 	switch (msg) {
+@@ -292,6 +293,7 @@ static void raw_notify(struct raw_sock *ro, unsigned long msg,
  
-+/*
-+ * Check the checkpoint buffer and try to remove it from the checkpoint
-+ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
-+ * it frees the transaction, 0 otherwise.
-+ *
-+ * This function is called with j_list_lock held.
-+ */
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
-+{
-+	struct buffer_head *bh = jh2bh(jh);
-+
-+	if (!trylock_buffer(bh))
-+		return -EBUSY;
-+	if (buffer_dirty(bh)) {
-+		unlock_buffer(bh);
-+		return -EBUSY;
-+	}
-+	unlock_buffer(bh);
-+
-+	/*
-+	 * Buffer is clean and the IO has finished (we held the buffer
-+	 * lock) so the checkpoint is done. We can safely remove the
-+	 * buffer from this transaction.
-+	 */
-+	JBUFFER_TRACE(jh, "remove from checkpoint list");
-+	return __jbd2_journal_remove_checkpoint(jh);
-+}
-+
- /*
-  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
-  * list so that we know when it is safe to clean the transaction out of
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index 18611241f4513..6ef5022949c46 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1784,8 +1784,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
- 		 * Otherwise, if the buffer has been written to disk,
- 		 * it is safe to remove the checkpoint and drop it.
- 		 */
--		if (!buffer_dirty(bh)) {
--			__jbd2_journal_remove_checkpoint(jh);
-+		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
- 			spin_unlock(&journal->j_list_lock);
- 			goto drop;
- 		}
-@@ -2112,20 +2111,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
+ 		ro->ifindex = 0;
+ 		ro->bound = 0;
++		ro->dev = NULL;
+ 		ro->count = 0;
+ 		release_sock(sk);
  
- 	jh = bh2jh(bh);
+@@ -337,6 +339,7 @@ static int raw_init(struct sock *sk)
  
--	if (buffer_locked(bh) || buffer_dirty(bh))
--		goto out;
+ 	ro->bound            = 0;
+ 	ro->ifindex          = 0;
++	ro->dev              = NULL;
+ 
+ 	/* set default filter to single entry dfilter */
+ 	ro->dfilter.can_id   = 0;
+@@ -385,19 +388,13 @@ static int raw_release(struct socket *sock)
+ 
+ 	lock_sock(sk);
+ 
++	rtnl_lock();
+ 	/* remove current filters & unregister */
+ 	if (ro->bound) {
+-		if (ro->ifindex) {
+-			struct net_device *dev;
 -
- 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
--		goto out;
-+		return;
+-			dev = dev_get_by_index(sock_net(sk), ro->ifindex);
+-			if (dev) {
+-				raw_disable_allfilters(dev_net(dev), dev, sk);
+-				dev_put(dev);
+-			}
+-		} else {
++		if (ro->dev)
++			raw_disable_allfilters(dev_net(ro->dev), ro->dev, sk);
++		else
+ 			raw_disable_allfilters(sock_net(sk), NULL, sk);
+-		}
+ 	}
  
- 	spin_lock(&journal->j_list_lock);
--	if (jh->b_cp_transaction != NULL) {
--		/* written-back checkpointed metadata buffer */
--		JBUFFER_TRACE(jh, "remove from checkpoint list");
--		__jbd2_journal_remove_checkpoint(jh);
--	}
-+	/* Remove written-back checkpointed metadata buffer */
-+	if (jh->b_cp_transaction != NULL)
-+		jbd2_journal_try_remove_checkpoint(jh);
- 	spin_unlock(&journal->j_list_lock);
--out:
- 	return;
- }
+ 	if (ro->count > 1)
+@@ -405,8 +402,10 @@ static int raw_release(struct socket *sock)
  
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index 91a2cf4bc5756..c212da35a052c 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1443,6 +1443,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
- void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
- unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
- int __jbd2_journal_remove_checkpoint(struct journal_head *);
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
- void jbd2_journal_destroy_checkpoint(journal_t *journal);
- void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
+ 	ro->ifindex = 0;
+ 	ro->bound = 0;
++	ro->dev = NULL;
+ 	ro->count = 0;
+ 	free_percpu(ro->uniq);
++	rtnl_unlock();
+ 
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
+@@ -422,6 +421,7 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	struct sockaddr_can *addr = (struct sockaddr_can *)uaddr;
+ 	struct sock *sk = sock->sk;
+ 	struct raw_sock *ro = raw_sk(sk);
++	struct net_device *dev = NULL;
+ 	int ifindex;
+ 	int err = 0;
+ 	int notify_enetdown = 0;
+@@ -431,14 +431,13 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	if (addr->can_family != AF_CAN)
+ 		return -EINVAL;
+ 
++	rtnl_lock();
+ 	lock_sock(sk);
+ 
+ 	if (ro->bound && addr->can_ifindex == ro->ifindex)
+ 		goto out;
+ 
+ 	if (addr->can_ifindex) {
+-		struct net_device *dev;
+-
+ 		dev = dev_get_by_index(sock_net(sk), addr->can_ifindex);
+ 		if (!dev) {
+ 			err = -ENODEV;
+@@ -467,26 +466,20 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 	if (!err) {
+ 		if (ro->bound) {
+ 			/* unregister old filters */
+-			if (ro->ifindex) {
+-				struct net_device *dev;
+-
+-				dev = dev_get_by_index(sock_net(sk),
+-						       ro->ifindex);
+-				if (dev) {
+-					raw_disable_allfilters(dev_net(dev),
+-							       dev, sk);
+-					dev_put(dev);
+-				}
+-			} else {
++			if (ro->dev)
++				raw_disable_allfilters(dev_net(ro->dev),
++						       ro->dev, sk);
++			else
+ 				raw_disable_allfilters(sock_net(sk), NULL, sk);
+-			}
+ 		}
+ 		ro->ifindex = ifindex;
+ 		ro->bound = 1;
++		ro->dev = dev;
+ 	}
+ 
+  out:
+ 	release_sock(sk);
++	rtnl_unlock();
+ 
+ 	if (notify_enetdown) {
+ 		sk->sk_err = ENETDOWN;
+@@ -553,9 +546,9 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
+ 		rtnl_lock();
+ 		lock_sock(sk);
+ 
+-		if (ro->bound && ro->ifindex) {
+-			dev = dev_get_by_index(sock_net(sk), ro->ifindex);
+-			if (!dev) {
++		dev = ro->dev;
++		if (ro->bound && dev) {
++			if (dev->reg_state != NETREG_REGISTERED) {
+ 				if (count > 1)
+ 					kfree(filter);
+ 				err = -ENODEV;
+@@ -596,7 +589,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
+ 		ro->count  = count;
+ 
+  out_fil:
+-		dev_put(dev);
+ 		release_sock(sk);
+ 		rtnl_unlock();
+ 
+@@ -614,9 +606,9 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
+ 		rtnl_lock();
+ 		lock_sock(sk);
+ 
+-		if (ro->bound && ro->ifindex) {
+-			dev = dev_get_by_index(sock_net(sk), ro->ifindex);
+-			if (!dev) {
++		dev = ro->dev;
++		if (ro->bound && dev) {
++			if (dev->reg_state != NETREG_REGISTERED) {
+ 				err = -ENODEV;
+ 				goto out_err;
+ 			}
+@@ -640,7 +632,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
+ 		ro->err_mask = err_mask;
+ 
+  out_err:
+-		dev_put(dev);
+ 		release_sock(sk);
+ 		rtnl_unlock();
  
 -- 
 2.40.1
