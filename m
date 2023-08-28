@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E49778AB38
+	by mail.lfdr.de (Postfix) with ESMTP id A9D2E78AB3A
 	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231311AbjH1K3N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50744 "EHLO
+        id S231313AbjH1K3O (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:29:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231313AbjH1K2r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:47 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC73A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:45 -0700 (PDT)
+        with ESMTP id S231317AbjH1K2u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:50 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E06A0A6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B1D8063BE1
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6F40C433C7;
-        Mon, 28 Aug 2023 10:28:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 74D5A63BE1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8920FC433C7;
+        Mon, 28 Aug 2023 10:28:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218524;
-        bh=EV8bYV0jPUqsVcbOYdJ6vc8oA7Mm/45lbM3kgZ7yF2I=;
+        s=korg; t=1693218526;
+        bh=ZiTmxGEK1NmmSb1NEWFVFvNjcHCRfgb4Zn1muFlAIR8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fZ5Ute7zgdRlGxnAxIYwL642E5U7d6w2WOgz9sXeoAxvs0Iancr+q5kujVwj/MlRW
-         51nbo6hgzJvdfH4emnU1v2/QktI0KFr/MV0VlBzgDzib0ULcbLCMy/oBEdthV/4FAO
-         Ooa4vSGAAYDRKkSg7mJIft7ZZqrtNZd/1G2O0nmc=
+        b=Kkc/D81NoWophKhoz/j2gIuq4Kwo0bPASrYj2GfgunkNhsdAhYSVvvSflezEzqHYa
+         A4TiNKJzSkJN0AZ9y3IRulvlrrxGxNJ7vyEVnsu1TJE2guzAbmZJwl8pSYpC8+cvFt
+         AtlYa89XnY4L2bLYEzFFldOyCx/pFbcMDy1a3wY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sherry Sun <sherry.sun@nxp.com>,
-        stable <stable@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 089/129] tty: serial: fsl_lpuart: add earlycon for imx8ulp platform
-Date:   Mon, 28 Aug 2023 12:13:03 +0200
-Message-ID: <20230828101156.629980626@linuxfoundation.org>
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 090/129] fbdev: Improve performance of sys_imageblit()
+Date:   Mon, 28 Aug 2023 12:13:04 +0200
+Message-ID: <20230828101156.664385214@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
 References: <20230828101153.030066927@linuxfoundation.org>
@@ -45,8 +47,8 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,33 +60,128 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Sherry Sun <sherry.sun@nxp.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit e0edfdc15863ec80a1d9ac6e174dbccc00206dd0 ]
+[ Upstream commit 6f29e04938bf509fccfad490a74284cf158891ce ]
 
-Add earlycon support for imx8ulp platform.
+Improve the performance of sys_imageblit() by manually unrolling
+the inner blitting loop and moving some invariants out. The compiler
+failed to do this automatically. The resulting binary code was even
+slower than the cfb_imageblit() helper, which uses the same algorithm,
+but operates on I/O memory.
 
-Signed-off-by: Sherry Sun <sherry.sun@nxp.com>
-Cc: stable <stable@kernel.org>
-Link: https://lore.kernel.org/r/20230619080613.16522-1-sherry.sun@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+A microbenchmark measures the average number of CPU cycles
+for sys_imageblit() after a stabilizing period of a few minutes
+(i7-4790, FullHD, simpledrm, kernel with debugging). The value
+for CFB is given as a reference.
+
+  sys_imageblit(), new: 25934 cycles
+  sys_imageblit(), old: 35944 cycles
+  cfb_imageblit():      30566 cycles
+
+In the optimized case, sys_imageblit() is now ~30% faster than before
+and ~20% faster than cfb_imageblit().
+
+v2:
+	* move switch out of inner loop (Gerd)
+	* remove test for alignment of dst1 (Sam)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220223193804.18636-3-tzimmermann@suse.de
+Stable-dep-of: c2d22806aecb ("fbdev: fix potential OOB read in fast_imageblit()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/fsl_lpuart.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/video/fbdev/core/sysimgblt.c | 49 +++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/tty/serial/fsl_lpuart.c b/drivers/tty/serial/fsl_lpuart.c
-index 573086aac2c82..af23d41b98438 100644
---- a/drivers/tty/serial/fsl_lpuart.c
-+++ b/drivers/tty/serial/fsl_lpuart.c
-@@ -2136,6 +2136,7 @@ static int __init lpuart32_imx_early_console_setup(struct earlycon_device *devic
- OF_EARLYCON_DECLARE(lpuart, "fsl,vf610-lpuart", lpuart_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,ls1021a-lpuart", lpuart32_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,imx7ulp-lpuart", lpuart32_imx_early_console_setup);
-+OF_EARLYCON_DECLARE(lpuart32, "fsl,imx8ulp-lpuart", lpuart32_imx_early_console_setup);
- OF_EARLYCON_DECLARE(lpuart32, "fsl,imx8qxp-lpuart", lpuart32_imx_early_console_setup);
- EARLYCON_DECLARE(lpuart, lpuart_early_console_setup);
- EARLYCON_DECLARE(lpuart32, lpuart32_early_console_setup);
+diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
+index a4d05b1b17d7d..722c327a381bd 100644
+--- a/drivers/video/fbdev/core/sysimgblt.c
++++ b/drivers/video/fbdev/core/sysimgblt.c
+@@ -188,23 +188,29 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
+ {
+ 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
+ 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
+-	u32 bit_mask, end_mask, eorx, shift;
++	u32 bit_mask, eorx;
+ 	const char *s = image->data, *src;
+ 	u32 *dst;
+-	const u32 *tab = NULL;
++	const u32 *tab;
++	size_t tablen;
++	u32 colortab[16];
+ 	int i, j, k;
+ 
+ 	switch (bpp) {
+ 	case 8:
+ 		tab = fb_be_math(p) ? cfb_tab8_be : cfb_tab8_le;
++		tablen = 16;
+ 		break;
+ 	case 16:
+ 		tab = fb_be_math(p) ? cfb_tab16_be : cfb_tab16_le;
++		tablen = 4;
+ 		break;
+ 	case 32:
+-	default:
+ 		tab = cfb_tab32;
++		tablen = 2;
+ 		break;
++	default:
++		return;
+ 	}
+ 
+ 	for (i = ppw-1; i--; ) {
+@@ -218,19 +224,40 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
+ 	eorx = fgx ^ bgx;
+ 	k = image->width/ppw;
+ 
++	for (i = 0; i < tablen; ++i)
++		colortab[i] = (tab[i] & eorx) ^ bgx;
++
+ 	for (i = image->height; i--; ) {
+ 		dst = dst1;
+-		shift = 8;
+ 		src = s;
+ 
+-		for (j = k; j--; ) {
+-			shift -= ppw;
+-			end_mask = tab[(*src >> shift) & bit_mask];
+-			*dst++ = (end_mask & eorx) ^ bgx;
+-			if (!shift) {
+-				shift = 8;
+-				src++;
++		switch (ppw) {
++		case 4: /* 8 bpp */
++			for (j = k; j; j -= 2, ++src) {
++				*dst++ = colortab[(*src >> 4) & bit_mask];
++				*dst++ = colortab[(*src >> 0) & bit_mask];
++			}
++			break;
++		case 2: /* 16 bpp */
++			for (j = k; j; j -= 4, ++src) {
++				*dst++ = colortab[(*src >> 6) & bit_mask];
++				*dst++ = colortab[(*src >> 4) & bit_mask];
++				*dst++ = colortab[(*src >> 2) & bit_mask];
++				*dst++ = colortab[(*src >> 0) & bit_mask];
++			}
++			break;
++		case 1: /* 32 bpp */
++			for (j = k; j; j -= 8, ++src) {
++				*dst++ = colortab[(*src >> 7) & bit_mask];
++				*dst++ = colortab[(*src >> 6) & bit_mask];
++				*dst++ = colortab[(*src >> 5) & bit_mask];
++				*dst++ = colortab[(*src >> 4) & bit_mask];
++				*dst++ = colortab[(*src >> 3) & bit_mask];
++				*dst++ = colortab[(*src >> 2) & bit_mask];
++				*dst++ = colortab[(*src >> 1) & bit_mask];
++				*dst++ = colortab[(*src >> 0) & bit_mask];
+ 			}
++			break;
+ 		}
+ 		dst1 += p->fix.line_length;
+ 		s += spitch;
 -- 
 2.40.1
 
