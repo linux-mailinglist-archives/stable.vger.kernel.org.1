@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 525EE78AC81
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:41:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97C6078AB37
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231724AbjH1Kkg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59472 "EHLO
+        id S231305AbjH1K3N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:29:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231744AbjH1KkR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:40:17 -0400
+        with ESMTP id S231311AbjH1K2o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:44 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2201B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:40:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6415FA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8A3B564030
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:40:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 961B3C433C7;
-        Mon, 28 Aug 2023 10:40:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ECB9B63BFD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C53CC433C7;
+        Mon, 28 Aug 2023 10:28:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219210;
-        bh=VRvjz2FU5r0sHR4HHw2WhLNSYFPt3cP774XNGKKJaGQ=;
+        s=korg; t=1693218521;
+        bh=iCBFNabSWzdWVUzMAi2GZ7mh6/oHmH62Zdd/2kZYnX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1kENzfoAlTDP2y8D1Xl1wkskCj0lar9SYJPBNBQhph0HZttlhIkqlvUoWhmALGjbY
-         HyyOqnFSPpls9Dy/JogeESH2+UWq8QSM08eNwnoiMESkTgi1fvTycrOZQF3pfrbY/b
-         M6BMBzpdvQz9fthy+nWXdYM3ynTxKODOpm47+y30=
+        b=DEohYPp6APqNI/rNlMn953GycGpcddiLxJMajplpiPj379vljaLCynCyzgJSzICxm
+         Kw98yKIeSBTo+4Xg/6NpczBZQoXF3KRLvPfwIjFxUwyo6/3g+VX6n8oOYJtpJgtFR3
+         7asf8AMybdfGDux826inkqkLF6A9TcVZ6237YjE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shengjiu Wang <shengjiu.wang@nxp.com>,
-        Nicolin Chen <nicoleotsuka@gmail.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 113/158] ASoC: fsl_sai: Refine enable/disable TE/RE sequence in trigger()
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 4.19 116/129] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
 Date:   Mon, 28 Aug 2023 12:13:30 +0200
-Message-ID: <20230828101201.110348399@linuxfoundation.org>
+Message-ID: <20230828101157.468755706@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,209 +55,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shengjiu Wang <shengjiu.wang@nxp.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 94741eba63c23b0f1527b0ae0125e6b553bde10e ]
+commit 421d467dc2d483175bad4fb76a31b9e5a3d744cf upstream.
 
-Current code enables TCSR.TE and RCSR.RE together, and disable
-TCSR.TE and RCSR.RE together in trigger(), which only supports
-one operation mode：
-1. Rx synchronous with Tx: TE is last enabled and first disabled
+When batadv_v_ogm_aggr_send is called for an inactive interface, the skb
+is silently dropped by batadv_v_ogm_send_to_if() but never freed causing
+the following memory leak:
 
-Other operation mode need to be considered also:
-2. Tx synchronous with Rx: RE is last enabled and first disabled.
-3. Asynchronous mode: Tx and Rx are independent.
+  unreferenced object 0xffff00000c164800 (size 512):
+    comm "kworker/u8:1", pid 2648, jiffies 4295122303 (age 97.656s)
+    hex dump (first 32 bytes):
+      00 80 af 09 00 00 ff ff e1 09 00 00 75 01 60 83  ............u.`.
+      1f 00 00 00 b8 00 00 00 15 00 05 00 da e3 d3 64  ...............d
+    backtrace:
+      [<0000000007ad20f6>] __kmalloc_track_caller+0x1a8/0x310
+      [<00000000d1029e55>] kmalloc_reserve.constprop.0+0x70/0x13c
+      [<000000008b9d4183>] __alloc_skb+0xec/0x1fc
+      [<00000000c7af5051>] __netdev_alloc_skb+0x48/0x23c
+      [<00000000642ee5f5>] batadv_v_ogm_aggr_send+0x50/0x36c
+      [<0000000088660bd7>] batadv_v_ogm_aggr_work+0x24/0x40
+      [<0000000042fc2606>] process_one_work+0x3b0/0x610
+      [<000000002f2a0b1c>] worker_thread+0xa0/0x690
+      [<0000000059fae5d4>] kthread+0x1fc/0x210
+      [<000000000c587d3a>] ret_from_fork+0x10/0x20
 
-So the enable TCSR.TE and RCSR.RE sequence and the disable
-sequence need to be refined accordingly for #2 and #3.
+Free the skb in that case to fix this leak.
 
-There is slightly against what RM recommennds with this change.
-For example in Rx synchronous with Tx mode, case "aplay 1.wav;
-arecord 2.wav" enable TE before RE. But it should be safe to
-do so, judging by years of testing results.
-
-Signed-off-by: Shengjiu Wang <shengjiu.wang@nxp.com>
-Reviewed-by: Nicolin Chen <nicoleotsuka@gmail.com>
-Link: https://lore.kernel.org/r/20200805063413.4610-2-shengjiu.wang@nxp.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Stable-dep-of: 269f399dc19f ("ASoC: fsl_sai: Disable bit clock with transmitter")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/fsl/fsl_sai.c | 126 +++++++++++++++++++++++++++-------------
- 1 file changed, 85 insertions(+), 41 deletions(-)
+ net/batman-adv/bat_v_ogm.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/fsl/fsl_sai.c b/sound/soc/fsl/fsl_sai.c
-index f8445231ad782..23f0b5ee000c3 100644
---- a/sound/soc/fsl/fsl_sai.c
-+++ b/sound/soc/fsl/fsl_sai.c
-@@ -37,6 +37,24 @@ static const struct snd_pcm_hw_constraint_list fsl_sai_rate_constraints = {
- 	.list = fsl_sai_rates,
- };
- 
-+/**
-+ * fsl_sai_dir_is_synced - Check if stream is synced by the opposite stream
-+ *
-+ * SAI supports synchronous mode using bit/frame clocks of either Transmitter's
-+ * or Receiver's for both streams. This function is used to check if clocks of
-+ * the stream's are synced by the opposite stream.
-+ *
-+ * @sai: SAI context
-+ * @dir: stream direction
-+ */
-+static inline bool fsl_sai_dir_is_synced(struct fsl_sai *sai, int dir)
-+{
-+	int adir = (dir == TX) ? RX : TX;
-+
-+	/* current dir in async mode while opposite dir in sync mode */
-+	return !sai->synchronous[dir] && sai->synchronous[adir];
-+}
-+
- static irqreturn_t fsl_sai_isr(int irq, void *devid)
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -119,8 +119,10 @@ static void batadv_v_ogm_send_to_if(stru
  {
- 	struct fsl_sai *sai = (struct fsl_sai *)devid;
-@@ -523,6 +541,38 @@ static int fsl_sai_hw_free(struct snd_pcm_substream *substream,
- 	return 0;
- }
+ 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
  
-+static void fsl_sai_config_disable(struct fsl_sai *sai, int dir)
-+{
-+	unsigned int ofs = sai->soc_data->reg_offset;
-+	bool tx = dir == TX;
-+	u32 xcsr, count = 100;
-+
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
-+			   FSL_SAI_CSR_TERE, 0);
-+
-+	/* TERE will remain set till the end of current frame */
-+	do {
-+		udelay(10);
-+		regmap_read(sai->regmap, FSL_SAI_xCSR(tx, ofs), &xcsr);
-+	} while (--count && xcsr & FSL_SAI_CSR_TERE);
-+
-+	regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
-+			   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
-+
-+	/*
-+	 * For sai master mode, after several open/close sai,
-+	 * there will be no frame clock, and can't recover
-+	 * anymore. Add software reset to fix this issue.
-+	 * This is a hardware bug, and will be fix in the
-+	 * next sai version.
-+	 */
-+	if (!sai->is_slave_mode) {
-+		/* Software Reset */
-+		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), FSL_SAI_CSR_SR);
-+		/* Clear SR bit to finish the reset */
-+		regmap_write(sai->regmap, FSL_SAI_xCSR(tx, ofs), 0);
+-	if (hard_iface->if_status != BATADV_IF_ACTIVE)
++	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
++		kfree_skb(skb);
+ 		return;
 +	}
-+}
  
- static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 		struct snd_soc_dai *cpu_dai)
-@@ -531,7 +581,9 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 	unsigned int ofs = sai->soc_data->reg_offset;
- 
- 	bool tx = substream->stream == SNDRV_PCM_STREAM_PLAYBACK;
--	u32 xcsr, count = 100;
-+	int adir = tx ? RX : TX;
-+	int dir = tx ? TX : RX;
-+	u32 xcsr;
- 
- 	/*
- 	 * Asynchronous mode: Clear SYNC for both Tx and Rx.
-@@ -554,10 +606,22 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
- 				   FSL_SAI_CSR_FRDE, FSL_SAI_CSR_FRDE);
- 
--		regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
--				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
--		regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
-+		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
- 				   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
-+		/*
-+		 * Enable the opposite direction for synchronous mode
-+		 * 1. Tx sync with Rx: only set RE for Rx; set TE & RE for Tx
-+		 * 2. Rx sync with Tx: only set TE for Tx; set RE & TE for Rx
-+		 *
-+		 * RM recommends to enable RE after TE for case 1 and to enable
-+		 * TE after RE for case 2, but we here may not always guarantee
-+		 * that happens: "arecord 1.wav; aplay 2.wav" in case 1 enables
-+		 * TE after RE, which is against what RM recommends but should
-+		 * be safe to do, judging by years of testing results.
-+		 */
-+		if (fsl_sai_dir_is_synced(sai, adir))
-+			regmap_update_bits(sai->regmap, FSL_SAI_xCSR((!tx), ofs),
-+					   FSL_SAI_CSR_TERE, FSL_SAI_CSR_TERE);
- 
- 		regmap_update_bits(sai->regmap, FSL_SAI_xCSR(tx, ofs),
- 				   FSL_SAI_CSR_xIE_MASK, FSL_SAI_FLAGS);
-@@ -572,43 +636,23 @@ static int fsl_sai_trigger(struct snd_pcm_substream *substream, int cmd,
- 
- 		/* Check if the opposite FRDE is also disabled */
- 		regmap_read(sai->regmap, FSL_SAI_xCSR(!tx, ofs), &xcsr);
--		if (!(xcsr & FSL_SAI_CSR_FRDE)) {
--			/* Disable both directions and reset their FIFOs */
--			regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
--					   FSL_SAI_CSR_TERE, 0);
--			regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
--					   FSL_SAI_CSR_TERE, 0);
--
--			/* TERE will remain set till the end of current frame */
--			do {
--				udelay(10);
--				regmap_read(sai->regmap,
--					    FSL_SAI_xCSR(tx, ofs), &xcsr);
--			} while (--count && xcsr & FSL_SAI_CSR_TERE);
--
--			regmap_update_bits(sai->regmap, FSL_SAI_TCSR(ofs),
--					   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
--			regmap_update_bits(sai->regmap, FSL_SAI_RCSR(ofs),
--					   FSL_SAI_CSR_FR, FSL_SAI_CSR_FR);
--
--			/*
--			 * For sai master mode, after several open/close sai,
--			 * there will be no frame clock, and can't recover
--			 * anymore. Add software reset to fix this issue.
--			 * This is a hardware bug, and will be fix in the
--			 * next sai version.
--			 */
--			if (!sai->is_slave_mode) {
--				/* Software Reset for both Tx and Rx */
--				regmap_write(sai->regmap, FSL_SAI_TCSR(ofs),
--					     FSL_SAI_CSR_SR);
--				regmap_write(sai->regmap, FSL_SAI_RCSR(ofs),
--					     FSL_SAI_CSR_SR);
--				/* Clear SR bit to finish the reset */
--				regmap_write(sai->regmap, FSL_SAI_TCSR(ofs), 0);
--				regmap_write(sai->regmap, FSL_SAI_RCSR(ofs), 0);
--			}
--		}
-+
-+		/*
-+		 * If opposite stream provides clocks for synchronous mode and
-+		 * it is inactive, disable it before disabling the current one
-+		 */
-+		if (fsl_sai_dir_is_synced(sai, adir) && !(xcsr & FSL_SAI_CSR_FRDE))
-+			fsl_sai_config_disable(sai, adir);
-+
-+		/*
-+		 * Disable current stream if either of:
-+		 * 1. current stream doesn't provide clocks for synchronous mode
-+		 * 2. current stream provides clocks for synchronous mode but no
-+		 *    more stream is active.
-+		 */
-+		if (!fsl_sai_dir_is_synced(sai, dir) || !(xcsr & FSL_SAI_CSR_FRDE))
-+			fsl_sai_config_disable(sai, dir);
-+
- 		break;
- 	default:
- 		return -EINVAL;
--- 
-2.40.1
-
+ 	batadv_inc_counter(bat_priv, BATADV_CNT_MGMT_TX);
+ 	batadv_add_counter(bat_priv, BATADV_CNT_MGMT_TX_BYTES,
 
 
