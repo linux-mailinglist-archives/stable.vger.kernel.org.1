@@ -2,81 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0CF4A78B9B6
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 22:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E0EA78B9C6
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 22:52:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233243AbjH1Ur3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 16:47:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
+        id S230330AbjH1Uvu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 16:51:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44716 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233102AbjH1UrY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 16:47:24 -0400
-Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BB211B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:47:21 -0700 (PDT)
-Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2bceca8a41aso54460471fa.0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:47:21 -0700 (PDT)
+        with ESMTP id S232656AbjH1Uvc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 16:51:32 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02CF2194
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:51:26 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-34ba9d6f033so12896555ab.2
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:51:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1693255640; x=1693860440;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=4xC6lZ6BMGGGW970pla1pAI2sfTG4MPU4nqIiCLcvow=;
-        b=CmJOHJeAi+FAllIu7mvMkI3Iw3qdaWZLSF0qzx9zfGZYgxz9uPAbHCMJMQrPqrhFj0
-         KWeXH+ttc5aH7ccZ+UJaf3jHQMOWYAT5c46DexbD0zt+r1ZFFmJyh6KgkB2HVr+rI4Uy
-         2lWK86r/GvtQYZ7t5O9dMvjaxjhRvejyDsOrw=
+        d=joelfernandes.org; s=google; t=1693255886; x=1693860686;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=/RRrCS1VOjSue2iqf5lDVAh4p7y1PlwPwihpyQqkBBI=;
+        b=RU3s+/zpXsqwVIIxAeyU4TA7Zi8TUbfWRLx3PQEzSQR3GdAguMvp9rYYQBmYIzZtIx
+         VTMdMlt0DYPRZN12Eg2XrC1xI7NHZ4eIm2FO6f2wQ7TBQencya+/XuIccapDWQqMO9rI
+         pb+0K0X5KB6j7aif6r11JA+jOB9cyt5LHhQEM=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693255640; x=1693860440;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=4xC6lZ6BMGGGW970pla1pAI2sfTG4MPU4nqIiCLcvow=;
-        b=I697aimGd3JjioBtPV0gA1BhIbjWiFLtzHbDnmGsvUmbIIAeBaJDtNVPrItPwudPei
-         Bt/RAbPCCFvaoS96Fp9i1xNrNCc0U68UDWqdN0Bf6hDQ6+NiFU/W8YVZ8YaQNAkKIXNZ
-         2Ax1zo7vWv2j2YVkhp2stYNkSR0axZn/jn24g0S0GOz/v/SBu2WZ/OKkJQhdhEUPko4E
-         S5fxzZLCTORNFv3AP0EVEHAma4IU2oPiiLUqttGcGDQVvoauhgrxjULoWtthSaz6sO4s
-         0L5hOL2utSO5x1UdCv9B0CctgnwWF2VvpSMRF6emfJbgmlnQ2RlUHktaQXU/2EQeimok
-         41Lw==
-X-Gm-Message-State: AOJu0YyL0BG/J3tmxJevl6LHIR374GTPMyS6KYEW8MGq0b5bqG/008wM
-        EEoeQ5aTmBsHvgk3cb/YofLO2PHUTAuTnOAYOj7w+Q==
-X-Google-Smtp-Source: AGHT+IGsERbihRzk13LRMf+4HVqatcZ5uGgRwfk/ClbcDnRaTlozyXs+625uI3DQf2agtAGhbV0EYasI15L27f9m5yU=
-X-Received: by 2002:a2e:3210:0:b0:2bc:d43c:8607 with SMTP id
- y16-20020a2e3210000000b002bcd43c8607mr14283630ljy.14.1693255639638; Mon, 28
- Aug 2023 13:47:19 -0700 (PDT)
-MIME-Version: 1.0
-References: <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop>
- <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
- <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
- <20230825232807.GA97898@google.com> <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
- <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
- <CAEXW_YS5dVVOQvO6tWwF7mrgtHiYgVKP_TAipzBNiaFqWDzdeQ@mail.gmail.com>
- <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop> <20230828133348.GA1553000@google.com>
- <142b4bff-6a2e-4ea0-928c-3cfe9befa403@paulmck-laptop> <CAAhV-H4MrUm2xZdZyAALV-r+aKMRQ50v6me6hybpR1pRijirqw@mail.gmail.com>
- <CAEXW_YT-z6s+4MnxTnwFk2-mPba65dbnZogdPDSr14LmOW-h-g@mail.gmail.com> <CAAhV-H5tYV=ezPY_O7c=sd3DULB6BjoiYnw9nE2EzDFaBHcKPw@mail.gmail.com>
-In-Reply-To: <CAAhV-H5tYV=ezPY_O7c=sd3DULB6BjoiYnw9nE2EzDFaBHcKPw@mail.gmail.com>
-From:   Joel Fernandes <joel@joelfernandes.org>
-Date:   Mon, 28 Aug 2023 16:47:07 -0400
-Message-ID: <CAEXW_YTfV1NVb3tOhunHZK_6oeUHxz_azv6uVq3k0O2UEAX5OQ@mail.gmail.com>
-Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
-        Z qiang <qiang.zhang1211@gmail.com>,
-        Huacai Chen <chenhuacai@loongson.cn>,
-        Frederic Weisbecker <frederic@kernel.org>,
-        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        d=1e100.net; s=20221208; t=1693255886; x=1693860686;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=/RRrCS1VOjSue2iqf5lDVAh4p7y1PlwPwihpyQqkBBI=;
+        b=iGkbyQeMSbJuPm4O0a/8lk41r13kW0OMuClpK0/BE7gIiuIwhA2rSdWz/ItcI9J+vU
+         zlbu3OEc9HBG9ooIERp0etftGYjOOTAE601MQChuHt0oqfY6pJekOWfIHMxCq/LJ6lOM
+         98RBxxiJBabmerInhm2jICq0phUEpreYRGebgTE1b7gJAdNarSClG4JSss79y2DmSUfK
+         75Pmv1TnypL/TrwI4P+xNVVukhmtvfMeKtzpvPv2edXps4ey5TKo0Us9thkyGKQqYwaZ
+         3ojVmxEDiKRdw1bgstyuNVDwvsUG0TpXZOcKaKkYYSHa2Z5S8sxo1gVPcZvhJFk1Tahr
+         ElNQ==
+X-Gm-Message-State: AOJu0Yzor/ho2JN+nwm4KKb7/L/LR2ZV/fPy+ZEIP+FVyFQxyCJnUI4F
+        nf7ZxtEVrkKkJF3nVyaYFrobZWbZQ1ltUkHlcxY=
+X-Google-Smtp-Source: AGHT+IGOHHkHWDdYPEc57VIDJSmAi9D/bcAlPpB0fiy+mkf4XLdcr36knXBbP+o17hB3+49Ajt7HHA==
+X-Received: by 2002:a05:6e02:1ca8:b0:345:fae5:666c with SMTP id x8-20020a056e021ca800b00345fae5666cmr20361505ill.4.1693255885813;
+        Mon, 28 Aug 2023 13:51:25 -0700 (PDT)
+Received: from joelboxx5.c.googlers.com.com (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id z23-20020a02ceb7000000b0042b39f1c3d2sm2722979jaq.144.2023.08.28.13.51.25
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 28 Aug 2023 13:51:25 -0700 (PDT)
+From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
+To:     stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
         Josh Triplett <josh@joshtriplett.org>,
-        Boqun Feng <boqun.feng@gmail.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        John Stultz <jstultz@google.com>,
-        Stephen Boyd <sboyd@kernel.org>,
         Steven Rostedt <rostedt@goodmis.org>,
         Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
         Lai Jiangshan <jiangshanlai@gmail.com>,
-        Sergey Senozhatsky <senozhatsky@chromium.org>,
-        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+        Joel Fernandes <joel@joelfernandes.org>
+Cc:     rcu@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 5.15] rcu: Prevent expedited GP from enabling tick on offline CPU
+Date:   Mon, 28 Aug 2023 20:51:21 +0000
+Message-ID: <20230828205122.1659823-1-joel@joelfernandes.org>
+X-Mailer: git-send-email 2.42.0.rc2.253.gd59a3bf2b4-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
@@ -87,43 +69,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Huacai,
+From: "Paul E. McKenney" <paulmck@kernel.org>
 
-On Mon, Aug 28, 2023 at 11:13=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org=
-> wrote:
->
-[...]
-> >
-> > > [Huacai]
-> > > I also think the original patch should be OK, but I have another
-> > > question: what will happen if the current GP ends before
-> > > nr_fqs_jiffies_stall reaches zero?
-> >
-> > Nothing should happen. Stall detection only happens when a GP is in
-> > progress. If a new GP starts, it resets nr_fqs_jiffies_stall.
-> >
-> > Or can you elaborate your concern more?
-> OK, I will test your patch these days. Maybe putting
-> nr_fqs_jiffies_stall before jiffies_force_qs is better, because I
-> think putting an 'int' between two 'long' is wasting space. :)
+[ Upstream commit 147f04b14adde831eb4a0a1e378667429732f9e8 ]
 
-That's a good point and I'll look into that.
+If an RCU expedited grace period starts just when a CPU is in the process
+of going offline, so that the outgoing CPU has completed its pass through
+stop-machine but has not yet completed its final dive into the idle loop,
+RCU will attempt to enable that CPU's scheduling-clock tick via a call
+to tick_dep_set_cpu().  For this to happen, that CPU has to have been
+online when the expedited grace period completed its CPU-selection phase.
 
-Meanwhile I pushed the patch out to my 6.4 stable tree for testing on my fl=
-eet.
+This is pointless:  The outgoing CPU has interrupts disabled, so it cannot
+take a scheduling-clock tick anyway.  In addition, the tick_dep_set_cpu()
+function's eventual call to irq_work_queue_on() will splat as follows:
 
-Ideally, I'd like to change the stall detection test in the rcutorture
-to actually fail rcutorture if stalls don't happen in time. But at
-least I verified this manually using rcutorture.
+smpboot: CPU 1 is now offline
+WARNING: CPU: 6 PID: 124 at kernel/irq_work.c:95
++irq_work_queue_on+0x57/0x60
+Modules linked in:
+CPU: 6 PID: 124 Comm: kworker/6:2 Not tainted 5.15.0-rc1+ #3
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
++rel-1.14.0-0-g155821a-rebuilt.opensuse.org 04/01/2014
+Workqueue: rcu_gp wait_rcu_exp_gp
+RIP: 0010:irq_work_queue_on+0x57/0x60
+Code: 8b 05 1d c7 ea 62 a9 00 00 f0 00 75 21 4c 89 ce 44 89 c7 e8
++9b 37 fa ff ba 01 00 00 00 89 d0 c3 4c 89 cf e8 3b ff ff ff eb ee <0f> 0b eb b7
++0f 0b eb db 90 48 c7 c0 98 2a 02 00 65 48 03 05 91
+ 6f
+RSP: 0000:ffffb12cc038fe48 EFLAGS: 00010282
+RAX: 0000000000000001 RBX: 0000000000005208 RCX: 0000000000000020
+RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffff9ad01f45a680
+RBP: 000000000004c990 R08: 0000000000000001 R09: ffff9ad01f45a680
+R10: ffffb12cc0317db0 R11: 0000000000000001 R12: 00000000fffecee8
+R13: 0000000000000001 R14: 0000000000026980 R15: ffffffff9e53ae00
+FS:  0000000000000000(0000) GS:ffff9ad01f580000(0000)
++knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000000de0c000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ tick_nohz_dep_set_cpu+0x59/0x70
+ rcu_exp_wait_wake+0x54e/0x870
+ ? sync_rcu_exp_select_cpus+0x1fc/0x390
+ process_one_work+0x1ef/0x3c0
+ ? process_one_work+0x3c0/0x3c0
+ worker_thread+0x28/0x3c0
+ ? process_one_work+0x3c0/0x3c0
+ kthread+0x115/0x140
+ ? set_kthread_struct+0x40/0x40
+ ret_from_fork+0x22/0x30
+---[ end trace c5bf75eb6aa80bc6 ]---
 
-I should also add a documentation patch for stallwarn.rst to document
-the understandable sensitivity of RCU stall detection to jiffies
-updates (or lack thereof). Or if you have time, I'd appreciate support
-on such a patch (not mandatory but I thought it would not hurt to
-ask).
+This commit therefore avoids invoking tick_dep_set_cpu() on offlined
+CPUs to limit both futility and false-positive splats.
 
-Looking forward to how your testing goes as well!
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+---
+ kernel/rcu/tree_exp.h | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-thanks,
+diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
+index f46c0c1a5eb3..407941a2903b 100644
+--- a/kernel/rcu/tree_exp.h
++++ b/kernel/rcu/tree_exp.h
+@@ -507,7 +507,10 @@ static void synchronize_rcu_expedited_wait(void)
+ 				if (rdp->rcu_forced_tick_exp)
+ 					continue;
+ 				rdp->rcu_forced_tick_exp = true;
+-				tick_dep_set_cpu(cpu, TICK_DEP_BIT_RCU_EXP);
++				preempt_disable();
++				if (cpu_online(cpu))
++					tick_dep_set_cpu(cpu, TICK_DEP_BIT_RCU_EXP);
++				preempt_enable();
+ 			}
+ 		}
+ 		j = READ_ONCE(jiffies_till_first_fqs);
+-- 
+2.42.0.rc2.253.gd59a3bf2b4-goog
 
- - Joel
