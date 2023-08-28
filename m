@@ -2,53 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4CA7778AA97
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7511B78AD24
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231184AbjH1KX2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54590 "EHLO
+        id S231969AbjH1Kp7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231269AbjH1KXO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FF39122
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:08 -0700 (PDT)
+        with ESMTP id S232042AbjH1Kpk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFBFECC4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 063C963989
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17300C433C9;
-        Mon, 28 Aug 2023 10:23:06 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C811764140
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8981C433C7;
+        Mon, 28 Aug 2023 10:44:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218187;
-        bh=G4NqrSYMthlPg97NQtXFEr4DoozG46x+DzGE5RLUol0=;
+        s=korg; t=1693219487;
+        bh=gpBB2ObSXgrLT9mSkO437JuusM7XEmgaRbr21WtHQK0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jxLGuJg6tgfIcL/6qN0tc1N5KeXjFUs7Dn0K9K38Fs1CSHdPWD/AGM299diunlZBn
-         TdT1rXbGh2NhPURfN/3Qt32vx1W/gKGicjxz00odpTU1sZE9FnZzSS8DdsS5LFtyvk
-         RMpSufF6OgH+A2YxUgpdb4bhRguH8Tii4j4g9Ivw=
+        b=xBVW/MW4NoaYPFHw7khCM4c4Wa4Y6DdxH+eAVDaShVwPxgmI57Wmc7I6QzSPoHp22
+         BuOcZzPXksMsIkPliFq8f2Edx46NmkWfU88qhdRpbH7fO5PDsB00DJVkT5iJoXHL06
+         sCEiwf15Rh7FDnT75iWwBw1ACahXydbgVCRLcTlc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 126/129] maple_tree: disable mas_wr_append() when other readers are possible
+Subject: [PATCH 5.15 24/89] can: raw: fix lockdep issue in raw_release()
 Date:   Mon, 28 Aug 2023 12:13:25 +0200
-Message-ID: <20230828101201.644638047@linuxfoundation.org>
+Message-ID: <20230828101150.988023449@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,80 +58,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liam R. Howlett <Liam.Howlett@oracle.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit cfeb6ae8bcb96ccf674724f223661bbcef7b0d0b ]
+[ Upstream commit 11c9027c983e9e4b408ee5613b6504d24ebd85be ]
 
-The current implementation of append may cause duplicate data and/or
-incorrect ranges to be returned to a reader during an update.  Although
-this has not been reported or seen, disable the append write operation
-while the tree is in rcu mode out of an abundance of caution.
+syzbot complained about a lockdep issue [1]
 
-During the analysis of the mas_next_slot() the following was
-artificially created by separating the writer and reader code:
+Since raw_bind() and raw_setsockopt() first get RTNL
+before locking the socket, we must adopt the same order in raw_release()
 
-Writer:                                 reader:
-mas_wr_append
-    set end pivot
-    updates end metata
-    Detects write to last slot
-    last slot write is to start of slot
-    store current contents in slot
-    overwrite old end pivot
-                                        mas_next_slot():
-                                                read end metadata
-                                                read old end pivot
-                                                return with incorrect range
-    store new value
+[1]
+WARNING: possible circular locking dependency detected
+6.5.0-rc1-syzkaller-00192-g78adb4bcf99e #0 Not tainted
+------------------------------------------------------
+syz-executor.0/14110 is trying to acquire lock:
+ffff88804e4b6130 (sk_lock-AF_CAN){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1708 [inline]
+ffff88804e4b6130 (sk_lock-AF_CAN){+.+.}-{0:0}, at: raw_bind+0xb1/0xab0 net/can/raw.c:435
 
-Alternatively:
+but task is already holding lock:
+ffffffff8e3df368 (rtnl_mutex){+.+.}-{3:3}, at: raw_bind+0xa7/0xab0 net/can/raw.c:434
 
-Writer:                                 reader:
-mas_wr_append
-    set end pivot
-    updates end metata
-    Detects write to last slot
-    last lost write to end of slot
-    store value
-                                        mas_next_slot():
-                                                read end metadata
-                                                read old end pivot
-                                                read new end pivot
-                                                return with incorrect range
-    set old end pivot
+which lock already depends on the new lock.
 
-There may be other accesses that are not safe since we are now updating
-both metadata and pointers, so disabling append if there could be rcu
-readers is the safest action.
+the existing dependency chain (in reverse order) is:
 
-Link: https://lkml.kernel.org/r/20230819004356.1454718-2-Liam.Howlett@oracle.com
-Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+-> #1 (rtnl_mutex){+.+.}-{3:3}:
+__mutex_lock_common kernel/locking/mutex.c:603 [inline]
+__mutex_lock+0x181/0x1340 kernel/locking/mutex.c:747
+raw_release+0x1c6/0x9b0 net/can/raw.c:391
+__sock_release+0xcd/0x290 net/socket.c:654
+sock_close+0x1c/0x20 net/socket.c:1386
+__fput+0x3fd/0xac0 fs/file_table.c:384
+task_work_run+0x14d/0x240 kernel/task_work.c:179
+resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+exit_to_user_mode_prepare+0x210/0x240 kernel/entry/common.c:204
+__syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+syscall_exit_to_user_mode+0x1d/0x50 kernel/entry/common.c:297
+do_syscall_64+0x44/0xb0 arch/x86/entry/common.c:86
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+-> #0 (sk_lock-AF_CAN){+.+.}-{0:0}:
+check_prev_add kernel/locking/lockdep.c:3142 [inline]
+check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+validate_chain kernel/locking/lockdep.c:3876 [inline]
+__lock_acquire+0x2e3d/0x5de0 kernel/locking/lockdep.c:5144
+lock_acquire kernel/locking/lockdep.c:5761 [inline]
+lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+lock_sock_nested+0x3a/0xf0 net/core/sock.c:3492
+lock_sock include/net/sock.h:1708 [inline]
+raw_bind+0xb1/0xab0 net/can/raw.c:435
+__sys_bind+0x1ec/0x220 net/socket.c:1792
+__do_sys_bind net/socket.c:1803 [inline]
+__se_sys_bind net/socket.c:1801 [inline]
+__x64_sys_bind+0x72/0xb0 net/socket.c:1801
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+other info that might help us debug this:
+
+Possible unsafe locking scenario:
+
+CPU0 CPU1
+---- ----
+lock(rtnl_mutex);
+        lock(sk_lock-AF_CAN);
+        lock(rtnl_mutex);
+lock(sk_lock-AF_CAN);
+
+*** DEADLOCK ***
+
+1 lock held by syz-executor.0/14110:
+
+stack backtrace:
+CPU: 0 PID: 14110 Comm: syz-executor.0 Not tainted 6.5.0-rc1-syzkaller-00192-g78adb4bcf99e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
+Call Trace:
+<TASK>
+__dump_stack lib/dump_stack.c:88 [inline]
+dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
+check_noncircular+0x311/0x3f0 kernel/locking/lockdep.c:2195
+check_prev_add kernel/locking/lockdep.c:3142 [inline]
+check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+validate_chain kernel/locking/lockdep.c:3876 [inline]
+__lock_acquire+0x2e3d/0x5de0 kernel/locking/lockdep.c:5144
+lock_acquire kernel/locking/lockdep.c:5761 [inline]
+lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+lock_sock_nested+0x3a/0xf0 net/core/sock.c:3492
+lock_sock include/net/sock.h:1708 [inline]
+raw_bind+0xb1/0xab0 net/can/raw.c:435
+__sys_bind+0x1ec/0x220 net/socket.c:1792
+__do_sys_bind net/socket.c:1803 [inline]
+__se_sys_bind net/socket.c:1801 [inline]
+__x64_sys_bind+0x72/0xb0 net/socket.c:1801
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fd89007cb29
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fd890d2a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000031
+RAX: ffffffffffffffda RBX: 00007fd89019bf80 RCX: 00007fd89007cb29
+RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
+RBP: 00007fd8900c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007fd89019bf80 R15: 00007ffebf8124f8
+</TASK>
+
+Fixes: ee8b94c8510c ("can: raw: fix receiver memory leak")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Ziyang Xuan <william.xuanziyang@huawei.com>
+Cc: Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: stable@vger.kernel.org
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/all/20230720114438.172434-1-edumazet@google.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- lib/maple_tree.c | 3 +++
- 1 file changed, 3 insertions(+)
+ net/can/raw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/lib/maple_tree.c b/lib/maple_tree.c
-index bb28a49d173c0..3315eaf93f563 100644
---- a/lib/maple_tree.c
-+++ b/lib/maple_tree.c
-@@ -4315,6 +4315,9 @@ static inline bool mas_wr_append(struct ma_wr_state *wr_mas)
- 	struct ma_state *mas = wr_mas->mas;
- 	unsigned char node_pivots = mt_pivots[wr_mas->type];
+diff --git a/net/can/raw.c b/net/can/raw.c
+index afa76ce0bf608..c02df37894ff9 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -383,9 +383,9 @@ static int raw_release(struct socket *sock)
+ 	list_del(&ro->notifier);
+ 	spin_unlock(&raw_notifier_lock);
  
-+	if (mt_in_rcu(mas->tree))
-+		return false;
++	rtnl_lock();
+ 	lock_sock(sk);
+ 
+-	rtnl_lock();
+ 	/* remove current filters & unregister */
+ 	if (ro->bound) {
+ 		if (ro->dev)
+@@ -402,12 +402,13 @@ static int raw_release(struct socket *sock)
+ 	ro->dev = NULL;
+ 	ro->count = 0;
+ 	free_percpu(ro->uniq);
+-	rtnl_unlock();
+ 
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
+ 
+ 	release_sock(sk);
++	rtnl_unlock();
 +
- 	if ((mas->index != wr_mas->r_min) && (mas->last == wr_mas->r_max)) {
- 		if (new_end < node_pivots)
- 			wr_mas->pivots[new_end] = wr_mas->pivots[end];
+ 	sock_put(sk);
+ 
+ 	return 0;
 -- 
 2.40.1
 
