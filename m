@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5571B78AA39
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:20:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 738BA78AA0E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230376AbjH1KUM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:20:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46544 "EHLO
+        id S230422AbjH1KSc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:18:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231129AbjH1KTv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:19:51 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5B46CDB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:19:30 -0700 (PDT)
+        with ESMTP id S230512AbjH1KSH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:07 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8CDB19B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FDB16382C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:19:21 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A266CC433C9;
-        Mon, 28 Aug 2023 10:19:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 66D826375B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B622C433CB;
+        Mon, 28 Aug 2023 10:17:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217961;
-        bh=dRWtVHROzteuaiGl8yaL4AdJMMUGnx5twGuQsIuPxBg=;
+        s=korg; t=1693217877;
+        bh=p3qNK9aoILUufrrO2T6oW+4Ynzbt25aAjv4pOk5yZNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TbGGJ/fj5h76YrCytocJza2ZU4/Eb9BmzTDeLjBuxiWwQGVJFdkxK9NyjH05ympmM
-         LsJHW4eLlCB6sF9bKX0cjibeux2oheu81OekmZh61eE25ZPtPiSNd0Yg/AqnwlUoLB
-         0QyFSMUQmuraCKKecpLIkhUo6F1fXpn8mgE9ek+g=
+        b=Oz/EkyK8un6rT3/p4Bg3yCPKPtCzE5StttlY6wUOATJxjuexEOmXam9XiC0paZskD
+         CrVuyDlTT9zg2xtpUAWmyrydmr1bUOB3IcsoGmoPIpt6KhJiBBr8NH7bslqGXjZM+B
+         fokUpOxDEqTSQ45cTRDpy+nNxJhjwd6fFgOgCzI8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Yi <yi.zhang@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Zhang Yi <yi.zhang@huawei.com>, Theodore Tso <tytso@mit.edu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 006/129] jbd2: remove journal_clean_one_cp_list()
-Date:   Mon, 28 Aug 2023 12:11:25 +0200
-Message-ID: <20230828101157.600162985@linuxfoundation.org>
+Subject: [PATCH 6.4 007/129] jbd2: fix a race when checking checkpoint buffer busy
+Date:   Mon, 28 Aug 2023 12:11:26 +0200
+Message-ID: <20230828101157.630238664@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
 References: <20230828101157.383363777@linuxfoundation.org>
@@ -46,8 +46,8 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -61,231 +61,146 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Zhang Yi <yi.zhang@huawei.com>
 
-[ Upstream commit b98dba273a0e47dbfade89c9af73c5b012a4eabb ]
+[ Upstream commit 46f881b5b1758dc4a35fba4a643c10717d0cf427 ]
 
-journal_clean_one_cp_list() and journal_shrink_one_cp_list() are almost
-the same, so merge them into journal_shrink_one_cp_list(), remove the
-nr_to_scan parameter, always scan and try to free the whole checkpoint
-list.
+Before removing checkpoint buffer from the t_checkpoint_list, we have to
+check both BH_Dirty and BH_Lock bits together to distinguish buffers
+have not been or were being written back. But __cp_buffer_busy() checks
+them separately, it first check lock state and then check dirty, the
+window between these two checks could be raced by writing back
+procedure, which locks buffer and clears buffer dirty before I/O
+completes. So it cannot guarantee checkpointing buffers been written
+back to disk if some error happens later. Finally, it may clean
+checkpoint transactions and lead to inconsistent filesystem.
 
+jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
+same problem (journal_unmap_buffer() escape from this issue since it's
+running under the buffer lock), so fix them through introducing a new
+helper to try holding the buffer lock and remove really clean buffer.
+
+Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
+Cc: stable@vger.kernel.org
+Suggested-by: Jan Kara <jack@suse.cz>
 Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
 Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-4-yi.zhang@huaweicloud.com
+Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
 Signed-off-by: Theodore Ts'o <tytso@mit.edu>
-Stable-dep-of: 46f881b5b175 ("jbd2: fix a race when checking checkpoint buffer busy")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c        | 75 +++++++++----------------------------
- include/trace/events/jbd2.h | 12 ++----
- 2 files changed, 21 insertions(+), 66 deletions(-)
+ fs/jbd2/checkpoint.c  | 38 +++++++++++++++++++++++++++++++++++---
+ fs/jbd2/transaction.c | 17 +++++------------
+ include/linux/jbd2.h  |  1 +
+ 3 files changed, 41 insertions(+), 15 deletions(-)
 
 diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index 723b4eb112828..42b34cab64fbd 100644
+index 42b34cab64fbd..9ec91017a7f3c 100644
 --- a/fs/jbd2/checkpoint.c
 +++ b/fs/jbd2/checkpoint.c
-@@ -349,50 +349,10 @@ int jbd2_cleanup_journal_tail(journal_t *journal)
- 
- /* Checkpoint list management */
- 
--/*
-- * journal_clean_one_cp_list
-- *
-- * Find all the written-back checkpoint buffers in the given list and
-- * release them. If 'destroy' is set, clean all buffers unconditionally.
-- *
-- * Called with j_list_lock held.
-- * Returns 1 if we freed the transaction, 0 otherwise.
-- */
--static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
--{
--	struct journal_head *last_jh;
--	struct journal_head *next_jh = jh;
--
--	if (!jh)
--		return 0;
--
--	last_jh = jh->b_cpprev;
--	do {
--		jh = next_jh;
--		next_jh = jh->b_cpnext;
--
--		if (!destroy && __cp_buffer_busy(jh))
--			return 0;
--
--		if (__jbd2_journal_remove_checkpoint(jh))
--			return 1;
--		/*
--		 * This function only frees up some memory
--		 * if possible so we dont have an obligation
--		 * to finish processing. Bail out if preemption
--		 * requested:
--		 */
--		if (need_resched())
--			return 0;
--	} while (jh != last_jh);
--
--	return 0;
--}
--
- /*
-  * journal_shrink_one_cp_list
-  *
-- * Find 'nr_to_scan' written-back checkpoint buffers in the given list
-+ * Find all the written-back checkpoint buffers in the given list
-  * and try to release them. If the whole transaction is released, set
-  * the 'released' parameter. Return the number of released checkpointed
-  * buffers.
-@@ -400,15 +360,15 @@ static int journal_clean_one_cp_list(struct journal_head *jh, bool destroy)
-  * Called with j_list_lock held.
-  */
- static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
--						unsigned long *nr_to_scan,
--						bool *released)
-+						bool destroy, bool *released)
- {
- 	struct journal_head *last_jh;
- 	struct journal_head *next_jh = jh;
- 	unsigned long nr_freed = 0;
- 	int ret;
- 
--	if (!jh || *nr_to_scan == 0)
-+	*released = false;
-+	if (!jh)
- 		return 0;
- 
- 	last_jh = jh->b_cpprev;
-@@ -416,8 +376,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
+@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
  		jh = next_jh;
  		next_jh = jh->b_cpnext;
  
--		(*nr_to_scan)--;
--		if (__cp_buffer_busy(jh))
-+		if (!destroy && __cp_buffer_busy(jh))
- 			continue;
+-		if (!destroy && __cp_buffer_busy(jh))
+-			continue;
++		if (destroy) {
++			ret = __jbd2_journal_remove_checkpoint(jh);
++		} else {
++			ret = jbd2_journal_try_remove_checkpoint(jh);
++			if (ret < 0)
++				continue;
++		}
  
  		nr_freed++;
-@@ -429,7 +388,7 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 
- 		if (need_resched())
+-		ret = __jbd2_journal_remove_checkpoint(jh);
+ 		if (ret) {
+ 			*released = true;
  			break;
--	} while (jh != last_jh && *nr_to_scan);
-+	} while (jh != last_jh);
- 
- 	return nr_freed;
+@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
+ 	return 1;
  }
-@@ -447,11 +406,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 						  unsigned long *nr_to_scan)
- {
- 	transaction_t *transaction, *last_transaction, *next_transaction;
--	bool released;
-+	bool __maybe_unused released;
- 	tid_t first_tid = 0, last_tid = 0, next_tid = 0;
- 	tid_t tid = 0;
- 	unsigned long nr_freed = 0;
--	unsigned long nr_scanned = *nr_to_scan;
-+	unsigned long freed;
  
- again:
- 	spin_lock(&journal->j_list_lock);
-@@ -480,10 +439,11 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 		transaction = next_transaction;
- 		next_transaction = transaction->t_cpnext;
- 		tid = transaction->t_tid;
--		released = false;
- 
--		nr_freed += journal_shrink_one_cp_list(transaction->t_checkpoint_list,
--						       nr_to_scan, &released);
-+		freed = journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-+						   false, &released);
-+		nr_freed += freed;
-+		(*nr_to_scan) -= min(*nr_to_scan, freed);
- 		if (*nr_to_scan == 0)
- 			break;
- 		if (need_resched() || spin_needbreak(&journal->j_list_lock))
-@@ -504,9 +464,8 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- 	if (*nr_to_scan && next_tid)
- 		goto again;
- out:
--	nr_scanned -= *nr_to_scan;
- 	trace_jbd2_shrink_checkpoint_list(journal, first_tid, tid, last_tid,
--					  nr_freed, nr_scanned, next_tid);
-+					  nr_freed, next_tid);
- 
- 	return nr_freed;
- }
-@@ -522,7 +481,7 @@ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal,
- void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- {
- 	transaction_t *transaction, *last_transaction, *next_transaction;
--	int ret;
-+	bool released;
- 
- 	transaction = journal->j_checkpoint_transactions;
- 	if (!transaction)
-@@ -533,8 +492,8 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 	do {
- 		transaction = next_transaction;
- 		next_transaction = transaction->t_cpnext;
--		ret = journal_clean_one_cp_list(transaction->t_checkpoint_list,
--						destroy);
-+		journal_shrink_one_cp_list(transaction->t_checkpoint_list,
-+					   destroy, &released);
- 		/*
- 		 * This function only frees up some memory if possible so we
- 		 * dont have an obligation to finish processing. Bail out if
-@@ -547,7 +506,7 @@ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy)
- 		 * avoids pointless scanning of transactions which still
- 		 * weren't checkpointed.
++/*
++ * Check the checkpoint buffer and try to remove it from the checkpoint
++ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
++ * it frees the transaction, 0 otherwise.
++ *
++ * This function is called with j_list_lock held.
++ */
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
++{
++	struct buffer_head *bh = jh2bh(jh);
++
++	if (!trylock_buffer(bh))
++		return -EBUSY;
++	if (buffer_dirty(bh)) {
++		unlock_buffer(bh);
++		return -EBUSY;
++	}
++	unlock_buffer(bh);
++
++	/*
++	 * Buffer is clean and the IO has finished (we held the buffer
++	 * lock) so the checkpoint is done. We can safely remove the
++	 * buffer from this transaction.
++	 */
++	JBUFFER_TRACE(jh, "remove from checkpoint list");
++	return __jbd2_journal_remove_checkpoint(jh);
++}
++
+ /*
+  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
+  * list so that we know when it is safe to clean the transaction out of
+diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
+index 18611241f4513..6ef5022949c46 100644
+--- a/fs/jbd2/transaction.c
++++ b/fs/jbd2/transaction.c
+@@ -1784,8 +1784,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
+ 		 * Otherwise, if the buffer has been written to disk,
+ 		 * it is safe to remove the checkpoint and drop it.
  		 */
--		if (!ret)
-+		if (!released)
- 			return;
- 	} while (transaction != last_transaction);
+-		if (!buffer_dirty(bh)) {
+-			__jbd2_journal_remove_checkpoint(jh);
++		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
+ 			spin_unlock(&journal->j_list_lock);
+ 			goto drop;
+ 		}
+@@ -2112,20 +2111,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
+ 
+ 	jh = bh2jh(bh);
+ 
+-	if (buffer_locked(bh) || buffer_dirty(bh))
+-		goto out;
+-
+ 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
+-		goto out;
++		return;
+ 
+ 	spin_lock(&journal->j_list_lock);
+-	if (jh->b_cp_transaction != NULL) {
+-		/* written-back checkpointed metadata buffer */
+-		JBUFFER_TRACE(jh, "remove from checkpoint list");
+-		__jbd2_journal_remove_checkpoint(jh);
+-	}
++	/* Remove written-back checkpointed metadata buffer */
++	if (jh->b_cp_transaction != NULL)
++		jbd2_journal_try_remove_checkpoint(jh);
+ 	spin_unlock(&journal->j_list_lock);
+-out:
+ 	return;
  }
-diff --git a/include/trace/events/jbd2.h b/include/trace/events/jbd2.h
-index 8f5ee380d3093..5646ae15a957a 100644
---- a/include/trace/events/jbd2.h
-+++ b/include/trace/events/jbd2.h
-@@ -462,11 +462,9 @@ TRACE_EVENT(jbd2_shrink_scan_exit,
- TRACE_EVENT(jbd2_shrink_checkpoint_list,
  
- 	TP_PROTO(journal_t *journal, tid_t first_tid, tid_t tid, tid_t last_tid,
--		 unsigned long nr_freed, unsigned long nr_scanned,
--		 tid_t next_tid),
-+		 unsigned long nr_freed, tid_t next_tid),
+diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
+index 91a2cf4bc5756..c212da35a052c 100644
+--- a/include/linux/jbd2.h
++++ b/include/linux/jbd2.h
+@@ -1443,6 +1443,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
+ void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
+ unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
+ int __jbd2_journal_remove_checkpoint(struct journal_head *);
++int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
+ void jbd2_journal_destroy_checkpoint(journal_t *journal);
+ void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
  
--	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed,
--		nr_scanned, next_tid),
-+	TP_ARGS(journal, first_tid, tid, last_tid, nr_freed, next_tid),
- 
- 	TP_STRUCT__entry(
- 		__field(dev_t, dev)
-@@ -474,7 +472,6 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 		__field(tid_t, tid)
- 		__field(tid_t, last_tid)
- 		__field(unsigned long, nr_freed)
--		__field(unsigned long, nr_scanned)
- 		__field(tid_t, next_tid)
- 	),
- 
-@@ -484,15 +481,14 @@ TRACE_EVENT(jbd2_shrink_checkpoint_list,
- 		__entry->tid		= tid;
- 		__entry->last_tid	= last_tid;
- 		__entry->nr_freed	= nr_freed;
--		__entry->nr_scanned	= nr_scanned;
- 		__entry->next_tid	= next_tid;
- 	),
- 
- 	TP_printk("dev %d,%d shrink transaction %u-%u(%u) freed %lu "
--		  "scanned %lu next transaction %u",
-+		  "next transaction %u",
- 		  MAJOR(__entry->dev), MINOR(__entry->dev),
- 		  __entry->first_tid, __entry->tid, __entry->last_tid,
--		  __entry->nr_freed, __entry->nr_scanned, __entry->next_tid)
-+		  __entry->nr_freed, __entry->next_tid)
- );
- 
- #endif /* _TRACE_JBD2_H */
 -- 
 2.40.1
 
