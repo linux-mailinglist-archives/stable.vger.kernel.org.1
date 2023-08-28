@@ -2,94 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4E7978A98A
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96FEA78A970
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 11:57:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230266AbjH1KCl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:02:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49112 "EHLO
+        id S230235AbjH1J5P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 05:57:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230232AbjH1KC3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:02:29 -0400
-X-Greylist: delayed 459 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 28 Aug 2023 03:02:26 PDT
-Received: from sv8486.xserver.jp (sv8486.xserver.jp [183.181.84.7])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFCC591
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:02:26 -0700 (PDT)
-X-Virus-Status: clean(F-Secure/fsigk_smtp/521/virusgw12006.xserver.jp)
-Received: from webmail.xserver.ne.jp (webmail.xserver.ne.jp [202.226.37.183])
-        by sv8486.xserver.jp (Postfix) with ESMTPA id 29FDB184219A37;
-        Mon, 28 Aug 2023 18:54:43 +0900 (JST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=glory-web.com;
-        s=default; t=1693216483;
-        bh=rpUHn7kU1/Dak590j/h+MEmTMT+2DOsDjLv+q7c6B2A=;
-        h=Date:From:To:Subject:Reply-To:From;
-        b=iVXzIxwbDfmlTQmpzu+v3Jkd/dGNvUTEvghhMLW4sRYl8dE4tOHAkQ0O6fOtFIOhx
-         8qOUCwb3Cj1WTc3a3rezRsXEIzMxJffReUDa5VLWBFWtmS+0lrx9DQtllwvs9AArIK
-         /EURE3KHo71YhDoCK5Nd2pGjyekI0bx6ULwGuwuvy8pr3dd3XdxucClwa1tcMFl+1I
-         T+h56nPZsqU3ssR3IgZqpULw4KQHb41lLKdLeN82Ewz92kp9gSJLuwXCCOqGYWqiqA
-         d8JKjC2BFFxwqncRlCHOwKttJHkQi7Uho5BoPR3jemj3t2T4FgmyfZK62dgQx91re4
-         8YMBFgf+JJXeg==
+        with ESMTP id S230240AbjH1J4v (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 05:56:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F1010C;
+        Mon, 28 Aug 2023 02:56:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 04B156362B;
+        Mon, 28 Aug 2023 09:56:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7562C433C7;
+        Mon, 28 Aug 2023 09:56:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693216608;
+        bh=n3ZveLCRiywPM51R3UgAxLkq2oP2wEOsDu10F1AptNA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=JNLHP+peq8UXHf72xcyBxH4HegIk/sP6rv57/7Opan+gvE4Or3ydfBSwPLVxN0Zf8
+         Rt0CCHHaW0aZsoHKtXJVIOsjzuZaTyRGXEiDYltL/WzfGxRPrQ7Hm149KkGX57uDDn
+         +lkKhnNOL4TdS3hKKD4gg7Tq+9FpzZUpRAIR1c1M=
+Date:   Mon, 28 Aug 2023 11:56:40 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Shuah Khan <shuah@kernel.org>, rcu@vger.kernel.org,
+        linux-kselftest@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 5.15 1/2] torture: Avoid torture-test reboot loops
+Message-ID: <2023082815-job-hull-9b54@gregkh>
+References: <20230827215741.246948-1-joel@joelfernandes.org>
+ <2023082812-pampers-uptown-69a2@gregkh>
+ <CAEXW_YTP9mm2f5YEL=Dbr399KomN6jd8Rwx+N1MXOuefs-vzoA@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8;
- format=flowed
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-Date:   Mon, 28 Aug 2023 02:54:43 -0700
-From:   Law Chung <glory002@glory-web.com>
-To:     undisclosed-recipients:;
-Subject: New Business Proposal
-Organization: Law Chung
-Reply-To: lawkokchung487@gmail.com
-Mail-Reply-To: lawkokchung487@gmail.com
-Message-ID: <79fef4873b4adf2477d6915abac46f65@glory-web.com>
-X-Sender: glory002@glory-web.com
-User-Agent: Roundcube Webmail/1.2.0
-X-Spam-Status: Yes, score=6.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FORGED_REPLYTO,
-        FREEMAIL_REPLYTO_END_DIGIT,ODD_FREEM_REPTO,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS,UNDISC_MONEY autolearn=no autolearn_force=no
-        version=3.4.6
-X-Spam-Report: *  0.0 RCVD_IN_DNSWL_BLOCKED RBL: ADMINISTRATOR NOTICE: The query to
-        *      DNSWL was blocked.  See
-        *      http://wiki.apache.org/spamassassin/DnsBlocklists#dnsbl-block
-        *      for more information.
-        *      [183.181.84.7 listed in list.dnswl.org]
-        *  0.8 BAYES_50 BODY: Bayes spam probability is 40 to 60%
-        *      [score: 0.5000]
-        * -0.0 SPF_PASS SPF: sender matches SPF record
-        *  0.2 FREEMAIL_REPLYTO_END_DIGIT Reply-To freemail username ends in
-        *      digit
-        *      [lawkokchung487[at]gmail.com]
-        * -0.0 SPF_HELO_PASS SPF: HELO matches SPF record
-        * -0.1 DKIM_VALID Message has at least one valid DKIM or DK signature
-        * -0.1 DKIM_VALID_EF Message has a valid DKIM or DK signature from
-        *      envelope-from domain
-        *  0.1 DKIM_SIGNED Message has a DKIM or DK signature, not necessarily
-        *       valid
-        * -0.1 DKIM_VALID_AU Message has a valid DKIM or DK signature from
-        *      author's domain
-        *  1.0 ODD_FREEM_REPTO Has unusual reply-to header
-        *  2.1 FREEMAIL_FORGED_REPLYTO Freemail in Reply-To, but not From
-        *  2.8 UNDISC_MONEY Undisclosed recipients + money/fraud signs
-X-Spam-Level: ******
+In-Reply-To: <CAEXW_YTP9mm2f5YEL=Dbr399KomN6jd8Rwx+N1MXOuefs-vzoA@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Aug 27, 2023 at 06:31:55PM -0400, Joel Fernandes wrote:
+> On Sun, Aug 27, 2023 at 6:27 PM Greg KH <gregkh@linuxfoundation.org> wrote:
+> >
+> > On Sun, Aug 27, 2023 at 09:57:39PM +0000, Joel Fernandes (Google) wrote:
+> > > From: "Paul E. McKenney" <paulmck@kernel.org>
+> > >
+> > > [ Upstream commit 10f84c2cfb5045e37d78cb5d4c8e8321e06ae18f ]
+> >
+> > I don't see this commit in Linus's tree, am I just missing it somewhere?
+> >
+> 
+> Ah, this particular patch might not be in Linus's tree yet. It is in
+> Paul's tree. Feel free to ignore it for now if you want and I'll
+> resend it later (and likewise for the 5.10 one).
 
+Yeah, please just send it later, once it has landed in a -rc release
+otherwise there's nothing we can do with it now, sorry.
 
--- 
-My name is Dr.Law Kok Chung, I have very important information that I 
-would like to pass to you but I was wondering if you are still using 
-this email ID or not. Please if I reach you on this email as I am 
-hopeful, Please endeavor to confirm to me so I can pass the detailed 
-information to you.
+thanks,
 
-I will be waiting for your feedback.
-
-Thanks
-
-Dr.Law Kok Chung
-Research Assistant
-CV Industrial laboratory Ltd
+greg k-h
