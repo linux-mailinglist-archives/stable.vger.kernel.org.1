@@ -2,50 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4ABBD78ADC2
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 177B578ACA7
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232167AbjH1Kuo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:50:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52126 "EHLO
+        id S231771AbjH1Klf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:41:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232257AbjH1KuY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:50:24 -0400
+        with ESMTP id S231814AbjH1KlR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:17 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DBC125
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC17C119
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 90F33619CB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A638DC433C9;
-        Mon, 28 Aug 2023 10:49:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4BFC163EA1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BE6DC433C8;
+        Mon, 28 Aug 2023 10:41:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219796;
-        bh=Cq+X2qay9wGQ5SRKKsILsFARPbQ4i1TterhQrHSJVNw=;
+        s=korg; t=1693219273;
+        bh=ECpKqZJKoaRxwNkbeQVCMObdx4f4mOF6OOMYCpWfE78=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mRRE5t73euorTCchNE8hNBYZH3aAyFPxQM+EH3rwoWMr74LvLpr5zZoV5Xq4oe5wP
-         cc6yx9GAEK+15DRMfbyigi3joKKY5P+0ih43n9n6kUwDn9gTC5ash64eW/eSW0he4W
-         Sx3UZkAwJ4HbA9vwg+PKRQOkM9woKJEFSEYUoGWg=
+        b=bOj2spXwFW1eQKza7vO9yDIQSwMKrNFx517e/pUkj8gt+MR+8tVmW3u5P/AXHlEv8
+         RVVDX/mVxm/59CJYO/cx9nHHJS7cckwotY3PFKVl232g57NMLinJFUA7htGdqCkkMs
+         DM+tIusEgBu/1q/w2H+gJzO6TzSH0d7jkI6dLEvM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+a3618a167af2021433cd@syzkaller.appspotmail.com,
-        Vladimir Oltean <vladimir.oltean@nxp.com>,
-        Victor Nogueira <victor@mojatatu.com>,
-        Pedro Tammela <pctammela@mojatatu.com>,
-        Jamal Hadi Salim <jhs@mojatatu.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 36/84] net/sched: fix a qdisc modification with ambiguous command request
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 5.4 136/158] batman-adv: Do not get eth header before batadv_check_management_packet
 Date:   Mon, 28 Aug 2023 12:13:53 +0200
-Message-ID: <20230828101150.483620606@linuxfoundation.org>
+Message-ID: <20230828101202.111324503@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,142 +55,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jamal Hadi Salim <jhs@mojatatu.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit da71714e359b64bd7aab3bd56ec53f307f058133 ]
+commit eac27a41ab641de074655d2932fc7f8cdb446881 upstream.
 
-When replacing an existing root qdisc, with one that is of the same kind, the
-request boils down to essentially a parameterization change  i.e not one that
-requires allocation and grafting of a new qdisc. syzbot was able to create a
-scenario which resulted in a taprio qdisc replacing an existing taprio qdisc
-with a combination of NLM_F_CREATE, NLM_F_REPLACE and NLM_F_EXCL leading to
-create and graft scenario.
-The fix ensures that only when the qdisc kinds are different that we should
-allow a create and graft, otherwise it goes into the "change" codepath.
+If received skb in batadv_v_elp_packet_recv or batadv_v_ogm_packet_recv
+is either cloned or non linearized then its data buffer will be
+reallocated by batadv_check_management_packet when skb_cow or
+skb_linearize get called. Thus geting ethernet header address inside
+skb data buffer before batadv_check_management_packet had any chance to
+reallocate it could lead to the following kernel panic:
 
-While at it, fix the code and comments to improve readability.
+  Unable to handle kernel paging request at virtual address ffffff8020ab069a
+  Mem abort info:
+    ESR = 0x96000007
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x07: level 3 translation fault
+  Data abort info:
+    ISV = 0, ISS = 0x00000007
+    CM = 0, WnR = 0
+  swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000040f45000
+  [ffffff8020ab069a] pgd=180000007fffa003, p4d=180000007fffa003, pud=180000007fffa003, pmd=180000007fefe003, pte=0068000020ab0706
+  Internal error: Oops: 96000007 [#1] SMP
+  Modules linked in: ahci_mvebu libahci_platform libahci dvb_usb_af9035 dvb_usb_dib0700 dib0070 dib7000m dibx000_common ath11k_pci ath10k_pci ath10k_core mwl8k_new nf_nat_sip nf_conntrack_sip xhci_plat_hcd xhci_hcd nf_nat_pptp nf_conntrack_pptp at24 sbsa_gwdt
+  CPU: 1 PID: 16 Comm: ksoftirqd/1 Not tainted 5.15.42-00066-g3242268d425c-dirty #550
+  Hardware name: A8k (DT)
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : batadv_is_my_mac+0x60/0xc0
+  lr : batadv_v_ogm_packet_recv+0x98/0x5d0
+  sp : ffffff8000183820
+  x29: ffffff8000183820 x28: 0000000000000001 x27: ffffff8014f9af00
+  x26: 0000000000000000 x25: 0000000000000543 x24: 0000000000000003
+  x23: ffffff8020ab0580 x22: 0000000000000110 x21: ffffff80168ae880
+  x20: 0000000000000000 x19: ffffff800b561000 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 00dc098924ae0032
+  x14: 0f0405433e0054b0 x13: ffffffff00000080 x12: 0000004000000001
+  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+  x8 : 0000000000000000 x7 : ffffffc076dae000 x6 : ffffff8000183700
+  x5 : ffffffc00955e698 x4 : ffffff80168ae000 x3 : ffffff80059cf000
+  x2 : ffffff800b561000 x1 : ffffff8020ab0696 x0 : ffffff80168ae880
+  Call trace:
+   batadv_is_my_mac+0x60/0xc0
+   batadv_v_ogm_packet_recv+0x98/0x5d0
+   batadv_batman_skb_recv+0x1b8/0x244
+   __netif_receive_skb_core.isra.0+0x440/0xc74
+   __netif_receive_skb_one_core+0x14/0x20
+   netif_receive_skb+0x68/0x140
+   br_pass_frame_up+0x70/0x80
+   br_handle_frame_finish+0x108/0x284
+   br_handle_frame+0x190/0x250
+   __netif_receive_skb_core.isra.0+0x240/0xc74
+   __netif_receive_skb_list_core+0x6c/0x90
+   netif_receive_skb_list_internal+0x1f4/0x310
+   napi_complete_done+0x64/0x1d0
+   gro_cell_poll+0x7c/0xa0
+   __napi_poll+0x34/0x174
+   net_rx_action+0xf8/0x2a0
+   _stext+0x12c/0x2ac
+   run_ksoftirqd+0x4c/0x7c
+   smpboot_thread_fn+0x120/0x210
+   kthread+0x140/0x150
+   ret_from_fork+0x10/0x20
+  Code: f9403844 eb03009f 54fffee1 f94
 
-While syzbot was able to create the issue, it did not zone on the root cause.
-Analysis from Vladimir Oltean <vladimir.oltean@nxp.com> helped narrow it down.
+Thus ethernet header address should only be fetched after
+batadv_check_management_packet has been called.
 
-v1->V2 changes:
-- remove "inline" function definition (Vladmir)
-- remove extrenous braces in branches (Vladmir)
-- change inline function names (Pedro)
-- Run tdc tests (Victor)
-v2->v3 changes:
-- dont break else/if (Simon)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Reported-by: syzbot+a3618a167af2021433cd@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/netdev/20230816225759.g25x76kmgzya2gei@skbuf/T/
-Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
-Tested-by: Victor Nogueira <victor@mojatatu.com>
-Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
-Reviewed-by: Victor Nogueira <victor@mojatatu.com>
-Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/sched/sch_api.c | 53 ++++++++++++++++++++++++++++++++++-----------
- 1 file changed, 40 insertions(+), 13 deletions(-)
+ net/batman-adv/bat_v_elp.c |    3 ++-
+ net/batman-adv/bat_v_ogm.c |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
-index fb50e3f3283f9..5c2d230790db9 100644
---- a/net/sched/sch_api.c
-+++ b/net/sched/sch_api.c
-@@ -1513,10 +1513,28 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 	return 0;
- }
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -501,7 +501,7 @@ int batadv_v_elp_packet_recv(struct sk_b
+ 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
+ 	struct batadv_elp_packet *elp_packet;
+ 	struct batadv_hard_iface *primary_if;
+-	struct ethhdr *ethhdr = (struct ethhdr *)skb_mac_header(skb);
++	struct ethhdr *ethhdr;
+ 	bool res;
+ 	int ret = NET_RX_DROP;
  
-+static bool req_create_or_replace(struct nlmsghdr *n)
-+{
-+	return (n->nlmsg_flags & NLM_F_CREATE &&
-+		n->nlmsg_flags & NLM_F_REPLACE);
-+}
-+
-+static bool req_create_exclusive(struct nlmsghdr *n)
-+{
-+	return (n->nlmsg_flags & NLM_F_CREATE &&
-+		n->nlmsg_flags & NLM_F_EXCL);
-+}
-+
-+static bool req_change(struct nlmsghdr *n)
-+{
-+	return (!(n->nlmsg_flags & NLM_F_CREATE) &&
-+		!(n->nlmsg_flags & NLM_F_REPLACE) &&
-+		!(n->nlmsg_flags & NLM_F_EXCL));
-+}
-+
- /*
-  * Create/change qdisc.
-  */
--
- static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 			   struct netlink_ext_ack *extack)
+@@ -509,6 +509,7 @@ int batadv_v_elp_packet_recv(struct sk_b
+ 	if (!res)
+ 		goto free_skb;
+ 
++	ethhdr = eth_hdr(skb);
+ 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
+ 		goto free_skb;
+ 
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -994,7 +994,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
  {
-@@ -1613,27 +1631,35 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 				 *
- 				 *   We know, that some child q is already
- 				 *   attached to this parent and have choice:
--				 *   either to change it or to create/graft new one.
-+				 *   1) change it or 2) create/graft new one.
-+				 *   If the requested qdisc kind is different
-+				 *   than the existing one, then we choose graft.
-+				 *   If they are the same then this is "change"
-+				 *   operation - just let it fallthrough..
- 				 *
- 				 *   1. We are allowed to create/graft only
--				 *   if CREATE and REPLACE flags are set.
-+				 *   if the request is explicitly stating
-+				 *   "please create if it doesn't exist".
- 				 *
--				 *   2. If EXCL is set, requestor wanted to say,
--				 *   that qdisc tcm_handle is not expected
-+				 *   2. If the request is to exclusive create
-+				 *   then the qdisc tcm_handle is not expected
- 				 *   to exist, so that we choose create/graft too.
- 				 *
- 				 *   3. The last case is when no flags are set.
-+				 *   This will happen when for example tc
-+				 *   utility issues a "change" command.
- 				 *   Alas, it is sort of hole in API, we
- 				 *   cannot decide what to do unambiguously.
--				 *   For now we select create/graft, if
--				 *   user gave KIND, which does not match existing.
-+				 *   For now we select create/graft.
- 				 */
--				if ((n->nlmsg_flags & NLM_F_CREATE) &&
--				    (n->nlmsg_flags & NLM_F_REPLACE) &&
--				    ((n->nlmsg_flags & NLM_F_EXCL) ||
--				     (tca[TCA_KIND] &&
--				      nla_strcmp(tca[TCA_KIND], q->ops->id))))
--					goto create_n_graft;
-+				if (tca[TCA_KIND] &&
-+				    nla_strcmp(tca[TCA_KIND], q->ops->id)) {
-+					if (req_create_or_replace(n) ||
-+					    req_create_exclusive(n))
-+						goto create_n_graft;
-+					else if (req_change(n))
-+						goto create_n_graft2;
-+				}
- 			}
- 		}
- 	} else {
-@@ -1667,6 +1693,7 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
- 		NL_SET_ERR_MSG(extack, "Qdisc not found. To create specify NLM_F_CREATE flag");
- 		return -ENOENT;
- 	}
-+create_n_graft2:
- 	if (clid == TC_H_INGRESS) {
- 		if (dev_ingress_queue(dev)) {
- 			q = qdisc_create(dev, dev_ingress_queue(dev), p,
--- 
-2.40.1
-
+ 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
+ 	struct batadv_ogm2_packet *ogm_packet;
+-	struct ethhdr *ethhdr = eth_hdr(skb);
++	struct ethhdr *ethhdr;
+ 	int ogm_offset;
+ 	u8 *packet_pos;
+ 	int ret = NET_RX_DROP;
+@@ -1008,6 +1008,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
+ 	if (!batadv_check_management_packet(skb, if_incoming, BATADV_OGM2_HLEN))
+ 		goto free_skb;
+ 
++	ethhdr = eth_hdr(skb);
+ 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
+ 		goto free_skb;
+ 
 
 
