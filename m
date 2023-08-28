@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1FADC78AD09
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C7CA78AB2C
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231886AbjH1KpU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:45:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54180 "EHLO
+        id S231290AbjH1K2j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:28:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjH1KpE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 070DB18D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:37 -0700 (PDT)
+        with ESMTP id S231371AbjH1K2V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7750132
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DB80764170
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F1B46C433C7;
-        Mon, 28 Aug 2023 10:44:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7158B63BC7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84830C433C8;
+        Mon, 28 Aug 2023 10:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219476;
-        bh=T3WPOdjkwCQtgkCvdAus1dS64cqvtt32BO2mzMFh3Xk=;
+        s=korg; t=1693218493;
+        bh=5nPomlW3vJ6fL9QUhSWaGx0Rqmemyfi1Evhyb2lcJA8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bMT7BObr9gHXz1QqRhgt6kdezDREpQQYazCvPbf900KyxmiTMaa2OncDA42ms8nLL
-         MUBd5cp4YQWGaR1y/Dk8U90TJZpQKOMrm87YU4ZYAFPhQedof1HXNHyx5/Dnm3/ZnD
-         wnoVuNxH6idi8ZkHeREEew+r4HKbGy5kmO8gl6Vs=
+        b=Ep82QpbeDNJvhPwurTx2tBYLZfWYg4cq+FJQvx5pmzIe/m50G5tSHnRjdbdAXt0mZ
+         d7EJ38Er8Uv2f1uYGmWdYmoMJv6uRThcnsUAmCTgI78Bc6LnAuwA/IxC4L2p4+Rgwk
+         RLNCMXp10Y8NB1FsMqDT5RVFU7gi7wDASlk03vnE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Zhang Yi <yi.zhang@huawei.com>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, susan.zheng@veritas.com,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Jay Vosburgh <jay.vosburgh@canonical.com>,
+        Paolo Abeni <pabeni@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 20/89] jbd2: fix a race when checking checkpoint buffer busy
+Subject: [PATCH 4.19 107/129] bonding: fix macvlan over alb bond support
 Date:   Mon, 28 Aug 2023 12:13:21 +0200
-Message-ID: <20230828101150.843521536@linuxfoundation.org>
+Message-ID: <20230828101157.173484011@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,151 +57,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Yi <yi.zhang@huawei.com>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-[ Upstream commit 46f881b5b1758dc4a35fba4a643c10717d0cf427 ]
+[ Upstream commit e74216b8def3803e98ae536de78733e9d7f3b109 ]
 
-Before removing checkpoint buffer from the t_checkpoint_list, we have to
-check both BH_Dirty and BH_Lock bits together to distinguish buffers
-have not been or were being written back. But __cp_buffer_busy() checks
-them separately, it first check lock state and then check dirty, the
-window between these two checks could be raced by writing back
-procedure, which locks buffer and clears buffer dirty before I/O
-completes. So it cannot guarantee checkpointing buffers been written
-back to disk if some error happens later. Finally, it may clean
-checkpoint transactions and lead to inconsistent filesystem.
+The commit 14af9963ba1e ("bonding: Support macvlans on top of tlb/rlb mode
+bonds") aims to enable the use of macvlans on top of rlb bond mode. However,
+the current rlb bond mode only handles ARP packets to update remote neighbor
+entries. This causes an issue when a macvlan is on top of the bond, and
+remote devices send packets to the macvlan using the bond's MAC address
+as the destination. After delivering the packets to the macvlan, the macvlan
+will rejects them as the MAC address is incorrect. Consequently, this commit
+makes macvlan over bond non-functional.
 
-jbd2_journal_forget() and __journal_try_to_free_buffer() also have the
-same problem (journal_unmap_buffer() escape from this issue since it's
-running under the buffer lock), so fix them through introducing a new
-helper to try holding the buffer lock and remove really clean buffer.
+To address this problem, one potential solution is to check for the presence
+of a macvlan port on the bond device using netif_is_macvlan_port(bond->dev)
+and return NULL in the rlb_arp_xmit() function. However, this approach
+doesn't fully resolve the situation when a VLAN exists between the bond and
+macvlan.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217490
-Cc: stable@vger.kernel.org
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Zhang Yi <yi.zhang@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230606135928.434610-6-yi.zhang@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+So let's just do a partial revert for commit 14af9963ba1e in rlb_arp_xmit().
+As the comment said, Don't modify or load balance ARPs that do not originate
+locally.
+
+Fixes: 14af9963ba1e ("bonding: Support macvlans on top of tlb/rlb mode bonds")
+Reported-by: susan.zheng@veritas.com
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2117816
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/jbd2/checkpoint.c  | 38 +++++++++++++++++++++++++++++++++++---
- fs/jbd2/transaction.c | 17 +++++------------
- include/linux/jbd2.h  |  1 +
- 3 files changed, 41 insertions(+), 15 deletions(-)
+ drivers/net/bonding/bond_alb.c |  6 +++---
+ include/net/bonding.h          | 11 +----------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
-diff --git a/fs/jbd2/checkpoint.c b/fs/jbd2/checkpoint.c
-index ab72aeb766a74..fc6989e7a8c51 100644
---- a/fs/jbd2/checkpoint.c
-+++ b/fs/jbd2/checkpoint.c
-@@ -376,11 +376,15 @@ static unsigned long journal_shrink_one_cp_list(struct journal_head *jh,
- 		jh = next_jh;
- 		next_jh = jh->b_cpnext;
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 3fc439d924451..e03f4883858ac 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -671,10 +671,10 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
+ 		return NULL;
+ 	arp = (struct arp_pkt *)skb_network_header(skb);
  
--		if (!destroy && __cp_buffer_busy(jh))
--			continue;
-+		if (destroy) {
-+			ret = __jbd2_journal_remove_checkpoint(jh);
-+		} else {
-+			ret = jbd2_journal_try_remove_checkpoint(jh);
-+			if (ret < 0)
-+				continue;
-+		}
+-	/* Don't modify or load balance ARPs that do not originate locally
+-	 * (e.g.,arrive via a bridge).
++	/* Don't modify or load balance ARPs that do not originate
++	 * from the bond itself or a VLAN directly above the bond.
+ 	 */
+-	if (!bond_slave_has_mac_rx(bond, arp->mac_src))
++	if (!bond_slave_has_mac_rcu(bond, arp->mac_src))
+ 		return NULL;
  
- 		nr_freed++;
--		ret = __jbd2_journal_remove_checkpoint(jh);
- 		if (ret) {
- 			*released = true;
- 			break;
-@@ -616,6 +620,34 @@ int __jbd2_journal_remove_checkpoint(struct journal_head *jh)
- 	return 1;
+ 	if (arp->op_code == htons(ARPOP_REPLY)) {
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index ab862e2e34520..7d317434e3d13 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -675,23 +675,14 @@ static inline struct slave *bond_slave_has_mac(struct bonding *bond,
  }
  
-+/*
-+ * Check the checkpoint buffer and try to remove it from the checkpoint
-+ * list if it's clean. Returns -EBUSY if it is not clean, returns 1 if
-+ * it frees the transaction, 0 otherwise.
-+ *
-+ * This function is called with j_list_lock held.
-+ */
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh)
-+{
-+	struct buffer_head *bh = jh2bh(jh);
-+
-+	if (!trylock_buffer(bh))
-+		return -EBUSY;
-+	if (buffer_dirty(bh)) {
-+		unlock_buffer(bh);
-+		return -EBUSY;
-+	}
-+	unlock_buffer(bh);
-+
-+	/*
-+	 * Buffer is clean and the IO has finished (we held the buffer
-+	 * lock) so the checkpoint is done. We can safely remove the
-+	 * buffer from this transaction.
-+	 */
-+	JBUFFER_TRACE(jh, "remove from checkpoint list");
-+	return __jbd2_journal_remove_checkpoint(jh);
-+}
-+
- /*
-  * journal_insert_checkpoint: put a committed buffer onto a checkpoint
-  * list so that we know when it is safe to clean the transaction out of
-diff --git a/fs/jbd2/transaction.c b/fs/jbd2/transaction.c
-index ce4a5ccadeff4..62e68c5b8ec3d 100644
---- a/fs/jbd2/transaction.c
-+++ b/fs/jbd2/transaction.c
-@@ -1775,8 +1775,7 @@ int jbd2_journal_forget(handle_t *handle, struct buffer_head *bh)
- 		 * Otherwise, if the buffer has been written to disk,
- 		 * it is safe to remove the checkpoint and drop it.
- 		 */
--		if (!buffer_dirty(bh)) {
--			__jbd2_journal_remove_checkpoint(jh);
-+		if (jbd2_journal_try_remove_checkpoint(jh) >= 0) {
- 			spin_unlock(&journal->j_list_lock);
- 			goto drop;
- 		}
-@@ -2103,20 +2102,14 @@ __journal_try_to_free_buffer(journal_t *journal, struct buffer_head *bh)
+ /* Caller must hold rcu_read_lock() for read */
+-static inline bool bond_slave_has_mac_rx(struct bonding *bond, const u8 *mac)
++static inline bool bond_slave_has_mac_rcu(struct bonding *bond, const u8 *mac)
+ {
+ 	struct list_head *iter;
+ 	struct slave *tmp;
+-	struct netdev_hw_addr *ha;
  
- 	jh = bh2jh(bh);
- 
--	if (buffer_locked(bh) || buffer_dirty(bh))
--		goto out;
+ 	bond_for_each_slave_rcu(bond, tmp, iter)
+ 		if (ether_addr_equal_64bits(mac, tmp->dev->dev_addr))
+ 			return true;
 -
- 	if (jh->b_next_transaction != NULL || jh->b_transaction != NULL)
--		goto out;
-+		return;
- 
- 	spin_lock(&journal->j_list_lock);
--	if (jh->b_cp_transaction != NULL) {
--		/* written-back checkpointed metadata buffer */
--		JBUFFER_TRACE(jh, "remove from checkpoint list");
--		__jbd2_journal_remove_checkpoint(jh);
--	}
-+	/* Remove written-back checkpointed metadata buffer */
-+	if (jh->b_cp_transaction != NULL)
-+		jbd2_journal_try_remove_checkpoint(jh);
- 	spin_unlock(&journal->j_list_lock);
--out:
- 	return;
+-	if (netdev_uc_empty(bond->dev))
+-		return false;
+-
+-	netdev_for_each_uc_addr(ha, bond->dev)
+-		if (ether_addr_equal_64bits(mac, ha->addr))
+-			return true;
+-
+ 	return false;
  }
- 
-diff --git a/include/linux/jbd2.h b/include/linux/jbd2.h
-index e6cfbcde96f29..ade8a6d7acff9 100644
---- a/include/linux/jbd2.h
-+++ b/include/linux/jbd2.h
-@@ -1441,6 +1441,7 @@ extern void jbd2_journal_commit_transaction(journal_t *);
- void __jbd2_journal_clean_checkpoint_list(journal_t *journal, bool destroy);
- unsigned long jbd2_journal_shrink_checkpoint_list(journal_t *journal, unsigned long *nr_to_scan);
- int __jbd2_journal_remove_checkpoint(struct journal_head *);
-+int jbd2_journal_try_remove_checkpoint(struct journal_head *jh);
- void jbd2_journal_destroy_checkpoint(journal_t *journal);
- void __jbd2_journal_insert_checkpoint(struct journal_head *, transaction_t *);
  
 -- 
 2.40.1
