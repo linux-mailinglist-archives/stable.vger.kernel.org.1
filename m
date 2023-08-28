@@ -2,69 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71C8B78A700
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 10:04:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 939E078A72A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 10:07:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229478AbjH1IER (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 04:04:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43818 "EHLO
+        id S229583AbjH1IG2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 04:06:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229457AbjH1IDq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 04:03:46 -0400
-Received: from mail-vk1-xa2e.google.com (mail-vk1-xa2e.google.com [IPv6:2607:f8b0:4864:20::a2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88D34114
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 01:03:43 -0700 (PDT)
-Received: by mail-vk1-xa2e.google.com with SMTP id 71dfb90a1353d-48d0eafcd9bso827443e0c.0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 01:03:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693209822; x=1693814622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=lXhc2ckjjHSmkLw88l9MqVujXGlqnXakWUFu8QqVEak=;
-        b=dN54oUuH/wY6Q9oA5R1ZsJezruY52D94VtYcerRYpVr/5bnJfjit/kzUHm3REAhvIQ
-         hV4UQTwOafWtc/P4xPvizgmeTY3Bcrw4Il3C5Fq5SC8z5edqkmU8IMOO72pri6r/a6XD
-         dd9ZjJCrg1CinICacu3aFzH+sf5uktRPMZD38Y/O/EH6ZBFrnghwSDo2iW9xz/CH9TXv
-         orCIucBjET0m5iO5yCn2kaOSXyO5fbKdTN+qDP8MzZxgZogPydIvaOyyrpmyhBTQHRoT
-         SbdaDC84T1Vogd0bVlRbXVEEsd82LMTiCS1MjWsq5jk/dPMHiSeyosGRFf/Zg1asNWvT
-         fQQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693209822; x=1693814622;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=lXhc2ckjjHSmkLw88l9MqVujXGlqnXakWUFu8QqVEak=;
-        b=iol+NnpskBrZVPeSoOWJuCNGlFu27A/QBl4rgb3HdQunLyZYXEvSdyLG6ZL74LbM/u
-         o2HO9SU5frgf0u6ApuLMUYyKT5Vhtu1WqJMHnpk3wzj3r3e3KtRXSdZ7riAm+H5NZL7/
-         p5RAd0xitVa3DDCBjvvRZ5XPlb/+wACYKPLPtkJmvxbC0aizfrZClz1RYME7V9fvyv4T
-         n2LbzhO1z4lWBh5tLUQ/FjEYe7P34uG+U5y7LIqHqxwooUWeFxu3Oi0pg1L2CkGWly8P
-         c97U/z+pThkelFcHA2WGMCBs4DxcWACyyTxJg7S/7MmNJwikdMZRR6LobJ0uZ1GdumyC
-         rH2w==
-X-Gm-Message-State: AOJu0Yw90REbs1g1nI4J9LMOIjWhvLID14wIGKfFnylsDGuXtGkzY6zM
-        p6gdcb65snSxpAbzP52KVMiuxcs+fMKhPgobbhZsNv+sa7CUTBk+9Nc=
-X-Google-Smtp-Source: AGHT+IHL/DjlIRID00Nnd70scSmEUPlJN8eZeHILo/LpLLzxBk481L8nn4KnGD6WWfvJlnAr5MIfoUH8fPrrSzbeDbw=
-X-Received: by 2002:a1f:4d83:0:b0:48d:13be:92c3 with SMTP id
- a125-20020a1f4d83000000b0048d13be92c3mr17223202vkb.8.1693209822604; Mon, 28
- Aug 2023 01:03:42 -0700 (PDT)
+        with ESMTP id S230020AbjH1IGX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 04:06:23 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1769114;
+        Mon, 28 Aug 2023 01:06:20 -0700 (PDT)
+Received: from localhost (unknown [IPv6:2a01:e0a:2c:6930:5cf4:84a1:2763:fe0d])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: bbrezillon)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 451986607186;
+        Mon, 28 Aug 2023 09:06:19 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1693209979;
+        bh=kV58buPVjDtdxXmHENO8P2ec4R8bJeK82hfUoWhb84I=;
+        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
+        b=S9IEtVk72yHqpdVthh0ij8JoCZIZgGyS+Le4vc7O09foWPuMPU5opQ8ZbJ0ZS8/Jc
+         LP1VYJRUOqALa1j4QgJKP/7Ia50wHiafbh2j9QKKzv/yNPONt3aZRSYXCqctkoBz54
+         mQbHnI7xMc1Ziyp1dpiKQrQVxsxjuLfy7I66vs5MnQPHwlPbO+VzJdV3vPiRTj+/Tz
+         2mFCwWcuqA884NzOBbqpaEd09n5WjK1wvxlqyO2YgWeKHY/35AL599Ac8NT6WyzJQ1
+         /dJuhAvxtv0ICZy/6hp9cPSUoJ64m401Vt7GxIBN6znZPl13/RwmzZ4GSTlvzEFrkj
+         4rZxz6hpa0NRw==
+Date:   Mon, 28 Aug 2023 10:06:16 +0200
+From:   Boris Brezillon <boris.brezillon@collabora.com>
+To:     "Rafael J. Wysocki" <rafael@kernel.org>
+Cc:     Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>, linux-pm@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] thermal/of: Fix a leak in thermal_of_zone_register()
+Message-ID: <20230828100616.7d64c98d@collabora.com>
+In-Reply-To: <CAJZ5v0jZ8By3Mz_JM6O79p0af4GaRBXE4PgiCHVOuHWcf=UQsA@mail.gmail.com>
+References: <20230809112348.2302384-1-boris.brezillon@collabora.com>
+        <CAJZ5v0jZ8By3Mz_JM6O79p0af4GaRBXE4PgiCHVOuHWcf=UQsA@mail.gmail.com>
+Organization: Collabora
+X-Mailer: Claws Mail 4.1.1 (GTK 3.24.38; x86_64-redhat-linux-gnu)
 MIME-Version: 1.0
-References: <20230826154625.450325166@linuxfoundation.org>
-In-Reply-To: <20230826154625.450325166@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Mon, 28 Aug 2023 13:33:31 +0530
-Message-ID: <CA+G9fYtsAHoRTcQdzJ9B1ftmGwkDLuDM2hCZ19X5DuEDr+XBAw@mail.gmail.com>
-Subject: Re: [PATCH 6.1 0/4] 6.1.49-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,197 +57,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, 26 Aug 2023 at 21:18, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.49 release.
-> There are 4 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Mon, 28 Aug 2023 15:46:14 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.49-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+On Fri, 11 Aug 2023 21:18:39 +0200
+"Rafael J. Wysocki" <rafael@kernel.org> wrote:
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+> On Wed, Aug 9, 2023 at 1:23=E2=80=AFPM Boris Brezillon
+> <boris.brezillon@collabora.com> wrote:
+> >
+> > thermal_zone_device_register_with_trips() copies the tzp info. After
+> > calling this function, we should free the tzp object, otherwise it's
+> > leaked.
+> >
+> > Fixes: 3d439b1a2ad3 ("thermal/core: Alloc-copy-free the thermal zone pa=
+rameters structure")
+> > Cc: <stable@vger.kernel.org>
+> > Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com> =20
+>=20
+> Hasn't this been fixed in -rc5?
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+It was indeed. I was based on -rc2 when I tested. Sorry for the noise.
 
-NOTE:
-Kernel warnings reported on previous releases have been fixed now.
+>=20
+> > ---
+> >  drivers/thermal/thermal_of.c | 11 ++++++++---
+> >  1 file changed, 8 insertions(+), 3 deletions(-)
+> >
+> > diff --git a/drivers/thermal/thermal_of.c b/drivers/thermal/thermal_of.c
+> > index 6fb14e521197..e74ef4fa576b 100644
+> > --- a/drivers/thermal/thermal_of.c
+> > +++ b/drivers/thermal/thermal_of.c
+> > @@ -524,10 +524,17 @@ static struct thermal_zone_device *thermal_of_zon=
+e_register(struct device_node *
+> >         tz =3D thermal_zone_device_register_with_trips(np->name, trips,=
+ ntrips,
+> >                                                      mask, data, of_ops=
+, tzp,
+> >                                                      pdelay, delay);
+> > +
+> > +       /*
+> > +        * thermal_zone_device_register_with_trips() copies the tzp inf=
+o.
+> > +        * We don't need it after that point.
+> > +        */
+> > +       kfree(tzp);
+> > +
+> >         if (IS_ERR(tz)) {
+> >                 ret =3D PTR_ERR(tz);
+> >                 pr_err("Failed to register thermal zone %pOFn: %d\n", n=
+p, ret);
+> > -               goto out_kfree_tzp;
+> > +               goto out_kfree_trips;
+> >         }
+> >
+> >         ret =3D thermal_zone_device_enable(tz);
+> > @@ -540,8 +547,6 @@ static struct thermal_zone_device *thermal_of_zone_=
+register(struct device_node *
+> >
+> >         return tz;
+> >
+> > -out_kfree_tzp:
+> > -       kfree(tzp);
+> >  out_kfree_trips:
+> >         kfree(trips);
+> >  out_kfree_of_ops:
+> > --
+> > 2.41.0
+> > =20
 
-[    0.531602] missing return thunk:
-__alt_instructions_end+0x2f1f/0x2f70-srso_untrain_ret+0x0/0x2: e9 c2
-5b 0c ff
-[    0.533242] WARNING: CPU: 0 PID: 0 at
-arch/x86/kernel/alternative.c:574 apply_returns+0x1c0/0x3d0
-
-
-## Build
-* kernel: 6.1.49-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: 1d91878df63ceab6316c7c84876abc7eec08a2e4
-* git describe: v6.1.48-5-g1d91878df63c
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.4=
-8-5-g1d91878df63c
-
-## Test Regressions (compared to v6.1.47)
-
-## Metric Regressions (compared to v6.1.47)
-
-## Test Fixes (compared to v6.1.47)
-
-* qemu-x86_64, log-parser-boot
-  - check-kernel-exception
-  - check-kernel-warning
-
-* x86, log-parser-boot
-  - check-kernel-warning
-
-* x86-kasan, log-parser-boot
-  - check-kernel-warning
-
-* x86_64-clang, log-parser-boot
-  - check-kernel-exception
-  - check-kernel-warning
-
-
-## Metric Fixes (compared to v6.1.47)
-
-## Test result summary
-total: 168275, pass: 142858, fail: 2955, skip: 22260, xfail: 202
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 151 total, 149 passed, 2 failed
-* arm64: 56 total, 53 passed, 3 failed
-* i386: 41 total, 39 passed, 2 failed
-* mips: 30 total, 28 passed, 2 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 16 total, 13 passed, 3 failed
-* s390: 16 total, 14 passed, 2 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 46 total, 44 passed, 2 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
