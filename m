@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 78B1978AC4F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:39:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F3778AA72
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231670AbjH1Ki5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:38:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58700 "EHLO
+        id S230406AbjH1KWP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:22:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231696AbjH1Kib (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:38:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29FD593
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:38:28 -0700 (PDT)
+        with ESMTP id S231183AbjH1KWA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAC071BD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BC0FA615E1
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:38:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0735C433C8;
-        Mon, 28 Aug 2023 10:38:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A1516389D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:21:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3AA2C433CA;
+        Mon, 28 Aug 2023 10:21:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219107;
-        bh=jrvIWMhwJU2NdyKrobiQYUm3FTlI/g0N2V6jX+Q2QwY=;
+        s=korg; t=1693218099;
+        bh=tnjA6+LlQ0Q9put7L/VYbZ6iDtdtgHLFPnMbLaOWt9M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jQb91whSzbEusbnf9W7fv/nhA3vKtBMljPXEZuM/wk9/5wYDr3v7ihOXnK3GrfuhN
-         R/Cz75rfbn8QeiNi2v9Z50/n4as7rdG+ptvilrfLDLP5U1cXx/rD3MPkyL2q2sMZoT
-         weIeifYe35XfcxyznIkmPadW1AcFs87vW+q+3Lj8=
+        b=tSg0GmgwloslvYWj3o9rZrxmm/AqceGK8T9NuKnND342/mwadwIuYcbLBl09HPQU7
+         3hOgVoWkzP9niFZXwsff4Fa7lF/8U2iQfWZqitXfAjDREB60TxAHie1evHefco/mNm
+         0A02x30/Ns/LxhXytW7ELAveh/uIAs+m/2iiJBJ4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 076/158] bus: ti-sysc: Flush posted write on enable before reset
+        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Wunderlich <sw@simonwunderlich.de>
+Subject: [PATCH 6.4 094/129] batman-adv: Do not get eth header before batadv_check_management_packet
 Date:   Mon, 28 Aug 2023 12:12:53 +0200
-Message-ID: <20230828101159.842263803@linuxfoundation.org>
+Message-ID: <20230828101200.475449589@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,52 +55,126 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Remi Pommarel <repk@triplefau.lt>
 
-[ Upstream commit 34539b442b3bc7d5bf10164750302b60b91f18a7 ]
+commit eac27a41ab641de074655d2932fc7f8cdb446881 upstream.
 
-The am335x devices started producing boot errors for resetting musb module
-in because of subtle timing changes:
+If received skb in batadv_v_elp_packet_recv or batadv_v_ogm_packet_recv
+is either cloned or non linearized then its data buffer will be
+reallocated by batadv_check_management_packet when skb_cow or
+skb_linearize get called. Thus geting ethernet header address inside
+skb data buffer before batadv_check_management_packet had any chance to
+reallocate it could lead to the following kernel panic:
 
-Unhandled fault: external abort on non-linefetch (0x1008)
-...
-sysc_poll_reset_sysconfig from sysc_reset+0x109/0x12
-sysc_reset from sysc_probe+0xa99/0xeb0
-...
+  Unable to handle kernel paging request at virtual address ffffff8020ab069a
+  Mem abort info:
+    ESR = 0x96000007
+    EC = 0x25: DABT (current EL), IL = 32 bits
+    SET = 0, FnV = 0
+    EA = 0, S1PTW = 0
+    FSC = 0x07: level 3 translation fault
+  Data abort info:
+    ISV = 0, ISS = 0x00000007
+    CM = 0, WnR = 0
+  swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000040f45000
+  [ffffff8020ab069a] pgd=180000007fffa003, p4d=180000007fffa003, pud=180000007fffa003, pmd=180000007fefe003, pte=0068000020ab0706
+  Internal error: Oops: 96000007 [#1] SMP
+  Modules linked in: ahci_mvebu libahci_platform libahci dvb_usb_af9035 dvb_usb_dib0700 dib0070 dib7000m dibx000_common ath11k_pci ath10k_pci ath10k_core mwl8k_new nf_nat_sip nf_conntrack_sip xhci_plat_hcd xhci_hcd nf_nat_pptp nf_conntrack_pptp at24 sbsa_gwdt
+  CPU: 1 PID: 16 Comm: ksoftirqd/1 Not tainted 5.15.42-00066-g3242268d425c-dirty #550
+  Hardware name: A8k (DT)
+  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+  pc : batadv_is_my_mac+0x60/0xc0
+  lr : batadv_v_ogm_packet_recv+0x98/0x5d0
+  sp : ffffff8000183820
+  x29: ffffff8000183820 x28: 0000000000000001 x27: ffffff8014f9af00
+  x26: 0000000000000000 x25: 0000000000000543 x24: 0000000000000003
+  x23: ffffff8020ab0580 x22: 0000000000000110 x21: ffffff80168ae880
+  x20: 0000000000000000 x19: ffffff800b561000 x18: 0000000000000000
+  x17: 0000000000000000 x16: 0000000000000000 x15: 00dc098924ae0032
+  x14: 0f0405433e0054b0 x13: ffffffff00000080 x12: 0000004000000001
+  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
+  x8 : 0000000000000000 x7 : ffffffc076dae000 x6 : ffffff8000183700
+  x5 : ffffffc00955e698 x4 : ffffff80168ae000 x3 : ffffff80059cf000
+  x2 : ffffff800b561000 x1 : ffffff8020ab0696 x0 : ffffff80168ae880
+  Call trace:
+   batadv_is_my_mac+0x60/0xc0
+   batadv_v_ogm_packet_recv+0x98/0x5d0
+   batadv_batman_skb_recv+0x1b8/0x244
+   __netif_receive_skb_core.isra.0+0x440/0xc74
+   __netif_receive_skb_one_core+0x14/0x20
+   netif_receive_skb+0x68/0x140
+   br_pass_frame_up+0x70/0x80
+   br_handle_frame_finish+0x108/0x284
+   br_handle_frame+0x190/0x250
+   __netif_receive_skb_core.isra.0+0x240/0xc74
+   __netif_receive_skb_list_core+0x6c/0x90
+   netif_receive_skb_list_internal+0x1f4/0x310
+   napi_complete_done+0x64/0x1d0
+   gro_cell_poll+0x7c/0xa0
+   __napi_poll+0x34/0x174
+   net_rx_action+0xf8/0x2a0
+   _stext+0x12c/0x2ac
+   run_ksoftirqd+0x4c/0x7c
+   smpboot_thread_fn+0x120/0x210
+   kthread+0x140/0x150
+   ret_from_fork+0x10/0x20
+  Code: f9403844 eb03009f 54fffee1 f94
 
-The fix is to flush posted write after enable before reset during
-probe. Note that some devices also need to specify the delay after enable
-with ti,sysc-delay-us, but this is not needed for musb on am335x based on
-my tests.
+Thus ethernet header address should only be fetched after
+batadv_check_management_packet has been called.
 
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Closes: https://storage.kernelci.org/next/master/next-20230614/arm/multi_v7_defconfig+CONFIG_THUMB2_KERNEL=y/gcc-10/lab-cip/baseline-beaglebone-black.html
-Fixes: 596e7955692b ("bus: ti-sysc: Add support for software reset")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
+Cc: stable@vger.kernel.org
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/ti-sysc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ net/batman-adv/bat_v_elp.c |    3 ++-
+ net/batman-adv/bat_v_ogm.c |    3 ++-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index c2808d118568e..e1a9838c96655 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -1823,6 +1823,8 @@ static int sysc_reset(struct sysc *ddata)
- 		sysc_val = sysc_read_sysconfig(ddata);
- 		sysc_val |= sysc_mask;
- 		sysc_write(ddata, sysc_offset, sysc_val);
-+		/* Flush posted write */
-+		sysc_val = sysc_read_sysconfig(ddata);
- 	}
+--- a/net/batman-adv/bat_v_elp.c
++++ b/net/batman-adv/bat_v_elp.c
+@@ -505,7 +505,7 @@ int batadv_v_elp_packet_recv(struct sk_b
+ 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
+ 	struct batadv_elp_packet *elp_packet;
+ 	struct batadv_hard_iface *primary_if;
+-	struct ethhdr *ethhdr = (struct ethhdr *)skb_mac_header(skb);
++	struct ethhdr *ethhdr;
+ 	bool res;
+ 	int ret = NET_RX_DROP;
  
- 	if (ddata->cfg.srst_udelay)
--- 
-2.40.1
-
+@@ -513,6 +513,7 @@ int batadv_v_elp_packet_recv(struct sk_b
+ 	if (!res)
+ 		goto free_skb;
+ 
++	ethhdr = eth_hdr(skb);
+ 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
+ 		goto free_skb;
+ 
+--- a/net/batman-adv/bat_v_ogm.c
++++ b/net/batman-adv/bat_v_ogm.c
+@@ -985,7 +985,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
+ {
+ 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
+ 	struct batadv_ogm2_packet *ogm_packet;
+-	struct ethhdr *ethhdr = eth_hdr(skb);
++	struct ethhdr *ethhdr;
+ 	int ogm_offset;
+ 	u8 *packet_pos;
+ 	int ret = NET_RX_DROP;
+@@ -999,6 +999,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
+ 	if (!batadv_check_management_packet(skb, if_incoming, BATADV_OGM2_HLEN))
+ 		goto free_skb;
+ 
++	ethhdr = eth_hdr(skb);
+ 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
+ 		goto free_skb;
+ 
 
 
