@@ -2,53 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E98878AC40
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B331278AB8E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231646AbjH1KiX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:38:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51542 "EHLO
+        id S231430AbjH1KcV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40178 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231783AbjH1KiJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:38:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55740B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:38:03 -0700 (PDT)
+        with ESMTP id S231502AbjH1KcC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:02 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABE73CCD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:30 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DF9E56160B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:38:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28F2C433C9;
-        Mon, 28 Aug 2023 10:38:01 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8CF2263D23
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CA55C433C8;
+        Mon, 28 Aug 2023 10:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219082;
-        bh=/SiLs7owJXPfOE24NRIMrKKuDxaOPm3wFsjOmGR+yhw=;
+        s=korg; t=1693218690;
+        bh=QNe/QEY/Mk/Dkn9Im5z862V6xl+U0WjpVTg7QF+JV44=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=06mhYQR+zf4YM3UARammk0x2rrLPX/21QNZVUCGoBI62S/Lk2aE/SZcEsHYGGS1gC
-         4D+/Ikrxez0nULd/s6wp7/jTWeUciA3YaPq9HjW8hB4D0Qz+8rCws3QGfz/zlYRga1
-         FGg3s75+ry6BVzsiqosA8UJh83+A2O+Q9Eg/S0MY=
+        b=lT+1ZohtlNA/s+svAAic4dTp3HTZ850gjqvL9MpAHIjjTP1h5IuNTgI0dlwXKvC8N
+         1tPRXV/OM4uBTlyhoa7t9x/Jz3dNuNo2H6Dqd285vk4wfU8yz6Y4KPGTFnOfzl9Yra
+         2UIMaJZjVujdOfhlGltD0n9Uqwre8rN1f5y6WF2A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marc Zyngier <maz@kernel.org>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Florian Fainelli <f.fainelli@gmail.com>,
+        patches@lists.linux.dev, Andi Shyti <andi.shyti@linux.intel.com>,
+        Matt Roper <matthew.d.roper@intel.com>,
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 038/158] irqchip/mips-gic: Get rid of the reliance on irq_cpu_online()
+Subject: [PATCH 6.1 020/122] drm/i915: Add the gen12_needs_ccs_aux_inv helper
 Date:   Mon, 28 Aug 2023 12:12:15 +0200
-Message-ID: <20230828101158.619332180@linuxfoundation.org>
+Message-ID: <20230828101157.111103084@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,104 +59,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marc Zyngier <maz@kernel.org>
+From: Andi Shyti <andi.shyti@linux.intel.com>
 
-[ Upstream commit dd098a0e031928cf88c89f7577d31821e1f0e6de ]
+[ Upstream commit b2f59e9026038a5bbcbc0019fa58f963138211ee ]
 
-The MIPS GIC driver uses irq_cpu_online() to go and program the
-per-CPU interrupts. However, this method iterates over all IRQs
-in the system, despite only 3 per-CPU interrupts being of interest.
+We always assumed that a device might either have AUX or FLAT
+CCS, but this is an approximation that is not always true, e.g.
+PVC represents an exception.
 
-Let's be terribly bold and do the iteration ourselves. To ensure
-mutual exclusion, hold the gic_lock spinlock that is otherwise
-taken while dealing with these interrupts.
+Set the basis for future finer selection by implementing a
+boolean gen12_needs_ccs_aux_inv() function that tells whether aux
+invalidation is needed or not.
 
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Reviewed-by: Florian Fainelli <f.fainelli@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Link: https://lore.kernel.org/r/20211021170414.3341522-3-maz@kernel.org
-Stable-dep-of: 3d6a0e4197c0 ("irqchip/mips-gic: Use raw spinlock for gic_lock")
+Currently PVC is the only exception to the above mentioned rule.
+
+Requires: 059ae7ae2a1c ("drm/i915/gt: Cleanup aux invalidation registers")
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-3-andi.shyti@linux.intel.com
+(cherry picked from commit c827655b87ad201ebe36f2e28d16b5491c8f7801)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mips-gic.c | 37 ++++++++++++++++++++++++----------
- 1 file changed, 26 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 18 +++++++++++++++---
+ 1 file changed, 15 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index f3985469c2211..6b8c3dd0f76f4 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -380,24 +380,35 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
- 	spin_unlock_irqrestore(&gic_lock, flags);
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index b2838732ac936..8e286733a4367 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -165,6 +165,18 @@ static u32 preparser_disable(bool state)
+ 	return MI_ARB_CHECK | 1 << 8 | state;
  }
  
--static void gic_all_vpes_irq_cpu_online(struct irq_data *d)
-+static void gic_all_vpes_irq_cpu_online(void)
- {
--	struct gic_all_vpes_chip_data *cd;
--	unsigned int intr;
-+	static const unsigned int local_intrs[] = {
-+		GIC_LOCAL_INT_TIMER,
-+		GIC_LOCAL_INT_PERFCTR,
-+		GIC_LOCAL_INT_FDC,
-+	};
-+	unsigned long flags;
-+	int i;
- 
--	intr = GIC_HWIRQ_TO_LOCAL(d->hwirq);
--	cd = irq_data_get_irq_chip_data(d);
-+	spin_lock_irqsave(&gic_lock, flags);
- 
--	write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
--	if (cd->mask)
--		write_gic_vl_smask(BIT(intr));
-+	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
-+		unsigned int intr = local_intrs[i];
-+		struct gic_all_vpes_chip_data *cd;
++static bool gen12_needs_ccs_aux_inv(struct intel_engine_cs *engine)
++{
++	if (IS_PONTEVECCHIO(engine->i915))
++		return false;
 +
-+		cd = &gic_all_vpes_chip_data[intr];
-+		write_gic_vl_map(mips_gic_vx_map_reg(intr), cd->map);
-+		if (cd->mask)
-+			write_gic_vl_smask(BIT(intr));
-+	}
-+
-+	spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
- static struct irq_chip gic_all_vpes_local_irq_controller = {
- 	.name			= "MIPS GIC Local",
- 	.irq_mask		= gic_mask_local_irq_all_vpes,
- 	.irq_unmask		= gic_unmask_local_irq_all_vpes,
--	.irq_cpu_online		= gic_all_vpes_irq_cpu_online,
- };
- 
- static void __gic_irq_dispatch(void)
-@@ -476,6 +487,10 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 	intr = GIC_HWIRQ_TO_LOCAL(hwirq);
- 	map = GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin;
- 
 +	/*
-+	 * If adding support for more per-cpu interrupts, keep the the
-+	 * array in gic_all_vpes_irq_cpu_online() in sync.
++	 * so far platforms supported by i915 having
++	 * flat ccs do not require AUX invalidation
 +	 */
- 	switch (intr) {
- 	case GIC_LOCAL_INT_TIMER:
- 		/* CONFIG_MIPS_CMP workaround (see __gic_init) */
-@@ -662,8 +677,8 @@ static int gic_cpu_startup(unsigned int cpu)
- 	/* Clear all local IRQ masks (ie. disable all local interrupts) */
- 	write_gic_vl_rmask(~0);
++	return !HAS_FLAT_CCS(engine->i915);
++}
++
+ u32 *gen12_emit_aux_table_inv(struct intel_gt *gt, u32 *cs, const i915_reg_t inv_reg)
+ {
+ 	u32 gsi_offset = gt->uncore->gsi_offset;
+@@ -236,7 +248,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ 		else if (engine->class == COMPUTE_CLASS)
+ 			flags &= ~PIPE_CONTROL_3D_ENGINE_FLAGS;
  
--	/* Invoke irq_cpu_online callbacks to enable desired interrupts */
--	irq_cpu_online();
-+	/* Enable desired interrupts */
-+	gic_all_vpes_irq_cpu_online();
+-		if (!HAS_FLAT_CCS(rq->engine->i915))
++		if (gen12_needs_ccs_aux_inv(rq->engine))
+ 			count = 8 + 4;
+ 		else
+ 			count = 8;
+@@ -254,7 +266,7 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
  
- 	return 0;
- }
+ 		cs = gen8_emit_pipe_control(cs, flags, LRC_PPHWSP_SCRATCH_ADDR);
+ 
+-		if (!HAS_FLAT_CCS(rq->engine->i915)) {
++		if (gen12_needs_ccs_aux_inv(rq->engine)) {
+ 			/* hsdes: 1809175790 */
+ 			cs = gen12_emit_aux_table_inv(rq->engine->gt, cs,
+ 						      GEN12_CCS_AUX_INV);
+@@ -276,7 +288,7 @@ int gen12_emit_flush_xcs(struct i915_request *rq, u32 mode)
+ 	if (mode & EMIT_INVALIDATE) {
+ 		cmd += 2;
+ 
+-		if (!HAS_FLAT_CCS(rq->engine->i915) &&
++		if (gen12_needs_ccs_aux_inv(rq->engine) &&
+ 		    (rq->engine->class == VIDEO_DECODE_CLASS ||
+ 		     rq->engine->class == VIDEO_ENHANCEMENT_CLASS)) {
+ 			aux_inv = rq->engine->mask &
 -- 
 2.40.1
 
