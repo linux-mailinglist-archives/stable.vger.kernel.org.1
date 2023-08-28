@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C18F78AD35
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9747C78ADAA
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232027AbjH1Kqb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:46:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59098 "EHLO
+        id S232130AbjH1KuL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232065AbjH1KqR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:17 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEF7ACD7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:51 -0700 (PDT)
+        with ESMTP id S232140AbjH1Kto (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:49:44 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E41C01B6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D0B3364206
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3275C433C8;
-        Mon, 28 Aug 2023 10:45:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EC4CC643E0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB465C433CB;
+        Mon, 28 Aug 2023 10:49:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219551;
-        bh=wQSlyz/I/LXlBHHyi/AUHWnJawWcgT2r4zbma63dJUE=;
+        s=korg; t=1693219756;
+        bh=FOoCWd1wWNKvpf/SIsOhS9oFXrTgnycRdaafr2917oE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RFaGe3+ufmBdC4O7pCkdkSCGUSR6mK2BI59L+mvaDHKLQ1Ois20/12Wnv0kdQRHjN
-         u3qwC+v6yv7VSfz8PBKCc5c0eigNprGheVIiO5f3btbYsHNHsbBd8i8k3nRSLfv6qJ
-         ynNZ1BS0YtChbP1YyiBe7H3pgRwry1jvN9YB4cts=
+        b=j6rvvQGgtoziIX5dS2SbFP04LLWznjMbHdah8uAkaNqKYg6JHF1K4ZBuYdYxNa+xR
+         9Kp3jll45j5PKYkFgzgjsHN7RLlCeBe8mcnmyDK3nKoh9H3qeltp1rYcDcaxyAvNNh
+         BheTqMrwWJtcFBU8ZjRDvEEz2RsItAq0enXYuhNY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Qais Yousef (Google)" <qyousef@layalina.io>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>
-Subject: [PATCH 5.15 76/89] sched/cpuset: Keep track of SCHED_DEADLINE task in cpusets
+        patches@lists.linux.dev, Zack Rusin <zackr@vmware.com>,
+        security@openanolis.org, Ziming Zhang <ezrakiez@gmail.com>,
+        Maaz Mombasawala <mombasawalam@vmware.com>,
+        Martin Krastev <krastevm@vmware.com>,
+        Niels De Graef <ndegraef@redhat.com>
+Subject: [PATCH 5.10 60/84] drm/vmwgfx: Fix shader stage validation
 Date:   Mon, 28 Aug 2023 12:14:17 +0200
-Message-ID: <20230828101152.770220521@linuxfoundation.org>
+Message-ID: <20230828101151.293053597@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,163 +57,180 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Zack Rusin <zackr@vmware.com>
 
-commit 6c24849f5515e4966d94fa5279bdff4acf2e9489 upstream.
+commit 14abdfae508228a7307f7491b5c4215ae70c6542 upstream.
 
-Qais reported that iterating over all tasks when rebuilding root domains
-for finding out which ones are DEADLINE and need their bandwidth
-correctly restored on such root domains can be a costly operation (10+
-ms delays on suspend-resume).
+For multiple commands the driver was not correctly validating the shader
+stages resulting in possible kernel oopses. The validation code was only.
+if ever, checking the upper bound on the shader stages but never a lower
+bound (valid shader stages start at 1 not 0).
 
-To fix the problem keep track of the number of DEADLINE tasks belonging
-to each cpuset and then use this information (followup patch) to only
-perform the above iteration if DEADLINE tasks are actually present in
-the cpuset for which a corresponding root domain is being rebuilt.
+Fixes kernel oopses ending up in vmw_binding_add, e.g.:
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 2443 Comm: testcase Not tainted 6.3.0-rc4-vmwgfx #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+RIP: 0010:vmw_binding_add+0x4c/0x140 [vmwgfx]
+Code: 7e 30 49 83 ff 0e 0f 87 ea 00 00 00 4b 8d 04 7f 89 d2 89 cb 48 c1 e0 03 4c 8b b0 40 3d 93 c0 48 8b 80 48 3d 93 c0 49 0f af de <48> 03 1c d0 4c 01 e3 49 8>
+RSP: 0018:ffffb8014416b968 EFLAGS: 00010206
+RAX: ffffffffc0933ec0 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 00000000ffffffff RSI: ffffb8014416b9c0 RDI: ffffb8014316f000
+RBP: ffffb8014416b998 R08: 0000000000000003 R09: 746f6c735f726564
+R10: ffffffffaaf2bda0 R11: 732e676e69646e69 R12: ffffb8014316f000
+R13: ffffb8014416b9c0 R14: 0000000000000040 R15: 0000000000000006
+FS:  00007fba8c0af740(0000) GS:ffff8a1277c80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000007c0933eb8 CR3: 0000000118244001 CR4: 00000000003706e0
+Call Trace:
+ <TASK>
+ vmw_view_bindings_add+0xf5/0x1b0 [vmwgfx]
+ ? ___drm_dbg+0x8a/0xb0 [drm]
+ vmw_cmd_dx_set_shader_res+0x8f/0xc0 [vmwgfx]
+ vmw_execbuf_process+0x590/0x1360 [vmwgfx]
+ vmw_execbuf_ioctl+0x173/0x370 [vmwgfx]
+ ? __drm_dev_dbg+0xb4/0xe0 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ drm_ioctl_kernel+0xbc/0x160 [drm]
+ drm_ioctl+0x2d2/0x580 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ ? do_fault+0x1a6/0x420
+ vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
+ vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
+ __x64_sys_ioctl+0x96/0xd0
+ do_syscall_64+0x5d/0x90
+ ? handle_mm_fault+0xe4/0x2f0
+ ? debug_smp_processor_id+0x1b/0x30
+ ? fpregs_assert_state_consistent+0x2e/0x50
+ ? exit_to_user_mode_prepare+0x40/0x180
+ ? irqentry_exit_to_user_mode+0xd/0x20
+ ? irqentry_exit+0x3f/0x50
+ ? exc_page_fault+0x8b/0x180
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Reported-by: Qais Yousef (Google) <qyousef@layalina.io>
-Link: https://lore.kernel.org/lkml/20230206221428.2125324-1-qyousef@layalina.io/
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-[ Conflict in kernel/cgroup/cpuset.c and kernel/sched/deadline.c due to
-  pulling new code. Reject new code/fields. ]
-Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Cc: security@openanolis.org
+Reported-by: Ziming Zhang <ezrakiez@gmail.com>
+Testcase-found-by: Niels De Graef <ndegraef@redhat.com>
+Fixes: d80efd5cb3de ("drm/vmwgfx: Initial DX support")
+Cc: <stable@vger.kernel.org> # v4.3+
+Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
+Reviewed-by: Martin Krastev <krastevm@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230616190934.54828-1-zack@kde.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/cpuset.h  |    4 ++++
- kernel/cgroup/cgroup.c  |    4 ++++
- kernel/cgroup/cpuset.c  |   25 +++++++++++++++++++++++++
- kernel/sched/deadline.c |   13 +++++++++++++
- 4 files changed, 46 insertions(+)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h     |   13 +++++++++++++
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   29 +++++++++++------------------
+ 2 files changed, 24 insertions(+), 18 deletions(-)
 
---- a/include/linux/cpuset.h
-+++ b/include/linux/cpuset.h
-@@ -56,6 +56,8 @@ extern void cpuset_init_smp(void);
- extern void cpuset_force_rebuild(void);
- extern void cpuset_update_active_cpus(void);
- extern void cpuset_wait_for_hotplug(void);
-+extern void inc_dl_tasks_cs(struct task_struct *task);
-+extern void dec_dl_tasks_cs(struct task_struct *task);
- extern void cpuset_lock(void);
- extern void cpuset_unlock(void);
- extern void cpuset_cpus_allowed(struct task_struct *p, struct cpumask *mask);
-@@ -179,6 +181,8 @@ static inline void cpuset_update_active_
- 
- static inline void cpuset_wait_for_hotplug(void) { }
- 
-+static inline void inc_dl_tasks_cs(struct task_struct *task) { }
-+static inline void dec_dl_tasks_cs(struct task_struct *task) { }
- static inline void cpuset_lock(void) { }
- static inline void cpuset_unlock(void) { }
- 
---- a/kernel/cgroup/cgroup.c
-+++ b/kernel/cgroup/cgroup.c
-@@ -56,6 +56,7 @@
- #include <linux/file.h>
- #include <linux/fs_parser.h>
- #include <linux/sched/cputime.h>
-+#include <linux/sched/deadline.h>
- #include <linux/psi.h>
- #include <net/sock.h>
- 
-@@ -6467,6 +6468,9 @@ void cgroup_exit(struct task_struct *tsk
- 	list_add_tail(&tsk->cg_list, &cset->dying_tasks);
- 	cset->nr_tasks--;
- 
-+	if (dl_task(tsk))
-+		dec_dl_tasks_cs(tsk);
-+
- 	WARN_ON_ONCE(cgroup_task_frozen(tsk));
- 	if (unlikely(!(tsk->flags & PF_KTHREAD) &&
- 		     test_bit(CGRP_FREEZE, &task_dfl_cgroup(tsk)->flags)))
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -162,6 +162,12 @@ struct cpuset {
- 	int use_parent_ecpus;
- 	int child_ecpus_count;
- 
-+	/*
-+	 * number of SCHED_DEADLINE tasks attached to this cpuset, so that we
-+	 * know when to rebuild associated root domain bandwidth information.
-+	 */
-+	int nr_deadline_tasks;
-+
- 	/* Handle for cpuset.cpus.partition */
- 	struct cgroup_file partition_file;
- };
-@@ -209,6 +215,20 @@ static inline struct cpuset *parent_cs(s
- 	return css_cs(cs->css.parent);
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -1606,4 +1606,17 @@ static inline void vmw_mmio_write(u32 va
+ {
+ 	WRITE_ONCE(*addr, value);
  }
++
++static inline bool vmw_shadertype_is_valid(enum vmw_sm_type shader_model,
++					   u32 shader_type)
++{
++	SVGA3dShaderType max_allowed = SVGA3D_SHADERTYPE_PREDX_MAX;
++
++	if (shader_model >= VMW_SM_5)
++		max_allowed = SVGA3D_SHADERTYPE_MAX;
++	else if (shader_model >= VMW_SM_4)
++		max_allowed = SVGA3D_SHADERTYPE_DX10_MAX;
++	return shader_type >= SVGA3D_SHADERTYPE_MIN && shader_type < max_allowed;
++}
++
+ #endif
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1998,7 +1998,7 @@ static int vmw_cmd_set_shader(struct vmw
  
-+void inc_dl_tasks_cs(struct task_struct *p)
-+{
-+	struct cpuset *cs = task_cs(p);
+ 	cmd = container_of(header, typeof(*cmd), header);
+ 
+-	if (cmd->body.type >= SVGA3D_SHADERTYPE_PREDX_MAX) {
++	if (!vmw_shadertype_is_valid(VMW_SM_LEGACY, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
+@@ -2120,8 +2120,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 				      SVGA3dCmdHeader *header)
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetSingleConstantBuffer);
+-	SVGA3dShaderType max_shader_num = has_sm5_context(dev_priv) ?
+-		SVGA3D_NUM_SHADERTYPE : SVGA3D_NUM_SHADERTYPE_DX10;
+ 
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+@@ -2138,6 +2136,14 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 	if (unlikely(ret != 0))
+ 		return ret;
+ 
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type) ||
++	    cmd->body.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
++		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
++			       (unsigned int) cmd->body.type,
++			       (unsigned int) cmd->body.slot);
++		return -EINVAL;
++	}
 +
-+	cs->nr_deadline_tasks++;
-+}
-+
-+void dec_dl_tasks_cs(struct task_struct *p)
-+{
-+	struct cpuset *cs = task_cs(p);
-+
-+	cs->nr_deadline_tasks--;
-+}
-+
- /* bits in struct cpuset flags field */
- typedef enum {
- 	CS_ONLINE,
-@@ -2210,6 +2230,11 @@ static int cpuset_can_attach(struct cgro
- 		ret = security_task_setscheduler(task);
- 		if (ret)
- 			goto out_unlock;
-+
-+		if (dl_task(task)) {
-+			cs->nr_deadline_tasks++;
-+			cpuset_attach_old_cs->nr_deadline_tasks--;
-+		}
+ 	binding.bi.ctx = ctx_node->ctx;
+ 	binding.bi.res = res;
+ 	binding.bi.bt = vmw_ctx_binding_cb;
+@@ -2146,14 +2152,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 	binding.size = cmd->body.sizeInBytes;
+ 	binding.slot = cmd->body.slot;
+ 
+-	if (binding.shader_slot >= max_shader_num ||
+-	    binding.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
+-		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
+-			       (unsigned int) cmd->body.type,
+-			       (unsigned int) binding.slot);
+-		return -EINVAL;
+-	}
+-
+ 	vmw_binding_add(ctx_node->staged, &binding.bi, binding.shader_slot,
+ 			binding.slot);
+ 
+@@ -2174,15 +2172,13 @@ static int vmw_cmd_dx_set_shader_res(str
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShaderResources) =
+ 		container_of(header, typeof(*cmd), header);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 
+ 	u32 num_sr_view = (cmd->header.size - sizeof(cmd->body)) /
+ 		sizeof(SVGA3dShaderResourceViewId);
+ 
+ 	if ((u64) cmd->body.startView + (u64) num_sr_view >
+ 	    (u64) SVGA3D_DX_MAX_SRVIEWS ||
+-	    cmd->body.type >= max_allowed) {
++	    !vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Invalid shader binding.\n");
+ 		return -EINVAL;
  	}
+@@ -2206,8 +2202,6 @@ static int vmw_cmd_dx_set_shader(struct
+ 				 SVGA3dCmdHeader *header)
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShader);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+ 	struct vmw_ctx_bindinfo_shader binding;
+@@ -2218,8 +2212,7 @@ static int vmw_cmd_dx_set_shader(struct
  
- 	/*
---- a/kernel/sched/deadline.c
-+++ b/kernel/sched/deadline.c
-@@ -17,6 +17,7 @@
-  */
- #include "sched.h"
- #include "pelt.h"
-+#include <linux/cpuset.h>
+ 	cmd = container_of(header, typeof(*cmd), header);
  
- struct dl_bandwidth def_dl_bandwidth;
- 
-@@ -2446,6 +2447,12 @@ static void switched_from_dl(struct rq *
- 	if (task_on_rq_queued(p) && p->dl.dl_runtime)
- 		task_non_contending(p);
- 
-+	/*
-+	 * In case a task is setscheduled out from SCHED_DEADLINE we need to
-+	 * keep track of that on its cpuset (for correct bandwidth tracking).
-+	 */
-+	dec_dl_tasks_cs(p);
-+
- 	if (!task_on_rq_queued(p)) {
- 		/*
- 		 * Inactive timer is armed. However, p is leaving DEADLINE and
-@@ -2486,6 +2493,12 @@ static void switched_to_dl(struct rq *rq
- 	if (hrtimer_try_to_cancel(&p->dl.inactive_timer) == 1)
- 		put_task_struct(p);
- 
-+	/*
-+	 * In case a task is setscheduled to SCHED_DEADLINE we need to keep
-+	 * track of that on its cpuset (for correct bandwidth tracking).
-+	 */
-+	inc_dl_tasks_cs(p);
-+
- 	/* If p is not queued we will update its parameters at next wakeup. */
- 	if (!task_on_rq_queued(p)) {
- 		add_rq_bw(&p->dl, &rq->dl);
+-	if (cmd->body.type >= max_allowed ||
+-	    cmd->body.type < SVGA3D_SHADERTYPE_MIN) {
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
 
 
