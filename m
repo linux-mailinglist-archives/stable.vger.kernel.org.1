@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CFD3F78AA03
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C58F378AB3C
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230469AbjH1KSE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:18:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60160 "EHLO
+        id S231328AbjH1K3Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:29:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230499AbjH1KRk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 027E4122
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:31 -0700 (PDT)
+        with ESMTP id S231356AbjH1K27 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:59 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67BDA129
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:56 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D3AFF635E5
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2684C433C7;
-        Mon, 28 Aug 2023 10:17:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E5AE863BE1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:55 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2C46C433C7;
+        Mon, 28 Aug 2023 10:28:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217850;
-        bh=hPbkbhIWCKlSFMcGExZBxO/1hHvxWd59oai/d8yAIdM=;
+        s=korg; t=1693218535;
+        bh=U040z8qR0DFFosPyt73zuu6usUPuE3bRnxOock0Xc50=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rGqitWtRC6O0esmS+JCmVOXpBqzCbMJlQUp9pURTA7MOUc0kMzjuxDvqNfwFL0bqL
-         Au96JEiwCPGjJf/BxFKBab8UDDeT32AfLm0rL+nACfnr/ABK219xeElpVB7zCWXEu0
-         sHPwKsXuEJDQbI0Tr5tw+1OKEO2/R4Y7x9tjjgrk=
+        b=Br0OaekA9NZQ4ys15eaPBPQV1wxvVT0HT8j6owzR3m3BsJlsFVPYcKvbTperi8RNu
+         zgJcSBwG9GzF4BA9gaEjKBtE92grEomSbf+fuMDNJqtAxgukHVINN7pFBZSTGEaEeF
+         acVItVwyTtzi3nCXsBGLtsJ4hdAEEgspEWysVCm0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4.14 47/57] batman-adv: Trigger events for auto adjusted MTU
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@c-s.fr>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 093/129] powerpc/32: add stack protector support
 Date:   Mon, 28 Aug 2023 12:13:07 +0200
-Message-ID: <20230828101145.993218934@linuxfoundation.org>
+Message-ID: <20230828101156.753926694@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,42 +56,181 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Christophe Leroy <christophe.leroy@c-s.fr>
 
-commit c6a953cce8d0438391e6da48c8d0793d3fbfcfa6 upstream.
+[ Upstream commit c3ff2a5193fa61b1b284cfb1d79628814ed0e95a ]
 
-If an interface changes the MTU, it is expected that an NETDEV_PRECHANGEMTU
-and NETDEV_CHANGEMTU notification events is triggered. This worked fine for
-.ndo_change_mtu based changes because core networking code took care of it.
-But for auto-adjustments after hard-interfaces changes, these events were
-simply missing.
+This functionality was tentatively added in the past
+(commit 6533b7c16ee5 ("powerpc: Initial stack protector
+(-fstack-protector) support")) but had to be reverted
+(commit f2574030b0e3 ("powerpc: Revert the initial stack
+protector support") because of GCC implementing it differently
+whether it had been built with libc support or not.
 
-Due to this problem, non-batman-adv components weren't aware of MTU changes
-and thus couldn't perform their own tasks correctly.
+Now, GCC offers the possibility to manually set the
+stack-protector mode (global or tls) regardless of libc support.
 
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+This time, the patch selects HAVE_STACKPROTECTOR only if
+-mstack-protector-guard=tls is supported by GCC.
+
+On PPC32, as register r2 points to current task_struct at
+all time, the stack_canary located inside task_struct can be
+used directly by using the following GCC options:
+-mstack-protector-guard=tls
+-mstack-protector-guard-reg=r2
+-mstack-protector-guard-offset=offsetof(struct task_struct, stack_canary))
+
+The protector is disabled for prom_init and bootx_init as
+it is too early to handle it properly.
+
+ $ echo CORRUPT_STACK > /sys/kernel/debug/provoke-crash/DIRECT
+[  134.943666] Kernel panic - not syncing: stack-protector: Kernel stack is corrupted in: lkdtm_CORRUPT_STACK+0x64/0x64
+[  134.943666]
+[  134.955414] CPU: 0 PID: 283 Comm: sh Not tainted 4.18.0-s3k-dev-12143-ga3272be41209 #835
+[  134.963380] Call Trace:
+[  134.965860] [c6615d60] [c001f76c] panic+0x118/0x260 (unreliable)
+[  134.971775] [c6615dc0] [c001f654] panic+0x0/0x260
+[  134.976435] [c6615dd0] [c032c368] lkdtm_CORRUPT_STACK_STRONG+0x0/0x64
+[  134.982769] [c6615e00] [ffffffff] 0xffffffff
+
+Signed-off-by: Christophe Leroy <christophe.leroy@c-s.fr>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Stable-dep-of: 25ea739ea1d4 ("powerpc: Fail build if using recordmcount with binutils v2.37")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/hard-interface.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/Kconfig                      |  1 +
+ arch/powerpc/Makefile                     | 10 +++++++
+ arch/powerpc/include/asm/stackprotector.h | 34 +++++++++++++++++++++++
+ arch/powerpc/kernel/Makefile              |  2 ++
+ arch/powerpc/kernel/asm-offsets.c         |  3 ++
+ arch/powerpc/platforms/powermac/Makefile  |  1 +
+ 6 files changed, 51 insertions(+)
+ create mode 100644 arch/powerpc/include/asm/stackprotector.h
 
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -625,7 +625,7 @@ out:
- /* adjusts the MTU if a new interface with a smaller MTU appeared. */
- void batadv_update_min_mtu(struct net_device *soft_iface)
- {
--	soft_iface->mtu = batadv_hardif_min_mtu(soft_iface);
-+	dev_set_mtu(soft_iface, batadv_hardif_min_mtu(soft_iface));
+diff --git a/arch/powerpc/Kconfig b/arch/powerpc/Kconfig
+index f0e09d5f0bedd..3be56d857d57f 100644
+--- a/arch/powerpc/Kconfig
++++ b/arch/powerpc/Kconfig
+@@ -181,6 +181,7 @@ config PPC
+ 	select HAVE_ARCH_SECCOMP_FILTER
+ 	select HAVE_ARCH_TRACEHOOK
+ 	select HAVE_CBPF_JIT			if !PPC64
++	select HAVE_STACKPROTECTOR		if $(cc-option,-mstack-protector-guard=tls) && PPC32
+ 	select HAVE_CONTEXT_TRACKING		if PPC64
+ 	select HAVE_DEBUG_KMEMLEAK
+ 	select HAVE_DEBUG_STACKOVERFLOW
+diff --git a/arch/powerpc/Makefile b/arch/powerpc/Makefile
+index b2e0fd8735627..4cea663d5d49b 100644
+--- a/arch/powerpc/Makefile
++++ b/arch/powerpc/Makefile
+@@ -113,6 +113,9 @@ KBUILD_LDFLAGS	+= -m elf$(BITS)$(LDEMULATION)
+ KBUILD_ARFLAGS	+= --target=elf$(BITS)-$(GNUTARGET)
+ endif
  
- 	/* Check if the local translate table should be cleaned up to match a
- 	 * new (and smaller) MTU.
++cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard=tls
++cflags-$(CONFIG_STACKPROTECTOR)	+= -mstack-protector-guard-reg=r2
++
+ LDFLAGS_vmlinux-y := -Bstatic
+ LDFLAGS_vmlinux-$(CONFIG_RELOCATABLE) := -pie
+ LDFLAGS_vmlinux	:= $(LDFLAGS_vmlinux-y)
+@@ -419,6 +422,13 @@ archclean:
+ 
+ archprepare: checkbin
+ 
++ifdef CONFIG_STACKPROTECTOR
++prepare: stack_protector_prepare
++
++stack_protector_prepare: prepare0
++	$(eval KBUILD_CFLAGS += -mstack-protector-guard-offset=$(shell awk '{if ($$2 == "TASK_CANARY") print $$3;}' include/generated/asm-offsets.h))
++endif
++
+ # Use the file '.tmp_gas_check' for binutils tests, as gas won't output
+ # to stdout and these checks are run even on install targets.
+ TOUT	:= .tmp_gas_check
+diff --git a/arch/powerpc/include/asm/stackprotector.h b/arch/powerpc/include/asm/stackprotector.h
+new file mode 100644
+index 0000000000000..d05d969c98c21
+--- /dev/null
++++ b/arch/powerpc/include/asm/stackprotector.h
+@@ -0,0 +1,34 @@
++/* SPDX-License-Identifier: GPL-2.0 */
++/*
++ * GCC stack protector support.
++ *
++ */
++
++#ifndef _ASM_STACKPROTECTOR_H
++#define _ASM_STACKPROTECTOR_H
++
++#include <linux/random.h>
++#include <linux/version.h>
++#include <asm/reg.h>
++#include <asm/current.h>
++
++/*
++ * Initialize the stackprotector canary value.
++ *
++ * NOTE: this must only be called from functions that never return,
++ * and it must always be inlined.
++ */
++static __always_inline void boot_init_stack_canary(void)
++{
++	unsigned long canary;
++
++	/* Try to get a semi random initial value. */
++	canary = get_random_canary();
++	canary ^= mftb();
++	canary ^= LINUX_VERSION_CODE;
++	canary &= CANARY_MASK;
++
++	current->stack_canary = canary;
++}
++
++#endif	/* _ASM_STACKPROTECTOR_H */
+diff --git a/arch/powerpc/kernel/Makefile b/arch/powerpc/kernel/Makefile
+index bf19c5514d6c2..cccea292af683 100644
+--- a/arch/powerpc/kernel/Makefile
++++ b/arch/powerpc/kernel/Makefile
+@@ -21,6 +21,8 @@ CFLAGS_prom_init.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ CFLAGS_btext.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ CFLAGS_prom.o += $(DISABLE_LATENT_ENTROPY_PLUGIN)
+ 
++CFLAGS_prom_init.o += $(call cc-option, -fno-stack-protector)
++
+ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code
+ CFLAGS_REMOVE_cputable.o = $(CC_FLAGS_FTRACE)
+diff --git a/arch/powerpc/kernel/asm-offsets.c b/arch/powerpc/kernel/asm-offsets.c
+index 50400f213bbf2..c2288c73d56d1 100644
+--- a/arch/powerpc/kernel/asm-offsets.c
++++ b/arch/powerpc/kernel/asm-offsets.c
+@@ -79,6 +79,9 @@ int main(void)
+ {
+ 	OFFSET(THREAD, task_struct, thread);
+ 	OFFSET(MM, task_struct, mm);
++#ifdef CONFIG_STACKPROTECTOR
++	OFFSET(TASK_CANARY, task_struct, stack_canary);
++#endif
+ 	OFFSET(MMCONTEXTID, mm_struct, context.id);
+ #ifdef CONFIG_PPC64
+ 	DEFINE(SIGSEGV, SIGSEGV);
+diff --git a/arch/powerpc/platforms/powermac/Makefile b/arch/powerpc/platforms/powermac/Makefile
+index 561a67d65e4d4..923bfb3404333 100644
+--- a/arch/powerpc/platforms/powermac/Makefile
++++ b/arch/powerpc/platforms/powermac/Makefile
+@@ -1,5 +1,6 @@
+ # SPDX-License-Identifier: GPL-2.0
+ CFLAGS_bootx_init.o  		+= -fPIC
++CFLAGS_bootx_init.o  		+= $(call cc-option, -fno-stack-protector)
+ 
+ ifdef CONFIG_FUNCTION_TRACER
+ # Do not trace early boot code
+-- 
+2.40.1
+
 
 
