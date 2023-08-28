@@ -2,53 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E40C578ABF1
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4ABBD78ADC2
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231558AbjH1Kfg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:35:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
+        id S232167AbjH1Kuo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:50:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52126 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231614AbjH1KfQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:16 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBBC131
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:12 -0700 (PDT)
+        with ESMTP id S232257AbjH1KuY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:50:24 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92DBC125
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C6F663E95
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E27C433C8;
-        Mon, 28 Aug 2023 10:35:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 90F33619CB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A638DC433C9;
+        Mon, 28 Aug 2023 10:49:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218911;
-        bh=F86vrD8I+sQP5e40iuNceCqRxUj4mWrLpSdpeIlAHGw=;
+        s=korg; t=1693219796;
+        bh=Cq+X2qay9wGQ5SRKKsILsFARPbQ4i1TterhQrHSJVNw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Bq8Ul26ngbaJG+BjnD/Ejj+NAklpMX7xjWU3Yowi4NMoOaybJH3Pr/cO7Vr2aZsdW
-         RXes66v/y7nww7Bmhgmqv7RfGY1WbdVNYDbSgglF1FqHUOWMWYPnlLhKhu0KwKW0hR
-         8YZk4zlC0qLI+9AZsKWZ/vSJh9mtHs773wAUOGAs=
+        b=mRRE5t73euorTCchNE8hNBYZH3aAyFPxQM+EH3rwoWMr74LvLpr5zZoV5Xq4oe5wP
+         cc6yx9GAEK+15DRMfbyigi3joKKY5P+0ih43n9n6kUwDn9gTC5ash64eW/eSW0he4W
+         Sx3UZkAwJ4HbA9vwg+PKRQOkM9woKJEFSEYUoGWg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
-        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        syzbot+a3618a167af2021433cd@syzkaller.appspotmail.com,
+        Vladimir Oltean <vladimir.oltean@nxp.com>,
+        Victor Nogueira <victor@mojatatu.com>,
+        Pedro Tammela <pctammela@mojatatu.com>,
+        Jamal Hadi Salim <jhs@mojatatu.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 118/122] gpio: sim: dispose of irq mappings before destroying the irq_sim domain
+Subject: [PATCH 5.10 36/84] net/sched: fix a qdisc modification with ambiguous command request
 Date:   Mon, 28 Aug 2023 12:13:53 +0200
-Message-ID: <20230828101200.352990407@linuxfoundation.org>
+Message-ID: <20230828101150.483620606@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,58 +60,140 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+From: Jamal Hadi Salim <jhs@mojatatu.com>
 
-[ Upstream commit ab4109f91b328ff5cb5e1279f64d443241add2d1 ]
+[ Upstream commit da71714e359b64bd7aab3bd56ec53f307f058133 ]
 
-If a GPIO simulator device is unbound with interrupts still requested,
-we will hit a use-after-free issue in __irq_domain_deactivate_irq(). The
-owner of the irq domain must dispose of all mappings before destroying
-the domain object.
+When replacing an existing root qdisc, with one that is of the same kind, the
+request boils down to essentially a parameterization change  i.e not one that
+requires allocation and grafting of a new qdisc. syzbot was able to create a
+scenario which resulted in a taprio qdisc replacing an existing taprio qdisc
+with a combination of NLM_F_CREATE, NLM_F_REPLACE and NLM_F_EXCL leading to
+create and graft scenario.
+The fix ensures that only when the qdisc kinds are different that we should
+allow a create and graft, otherwise it goes into the "change" codepath.
 
-Fixes: cb8c474e79be ("gpio: sim: new testing module")
-Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
-Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+While at it, fix the code and comments to improve readability.
+
+While syzbot was able to create the issue, it did not zone on the root cause.
+Analysis from Vladimir Oltean <vladimir.oltean@nxp.com> helped narrow it down.
+
+v1->V2 changes:
+- remove "inline" function definition (Vladmir)
+- remove extrenous braces in branches (Vladmir)
+- change inline function names (Pedro)
+- Run tdc tests (Victor)
+v2->v3 changes:
+- dont break else/if (Simon)
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+a3618a167af2021433cd@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/netdev/20230816225759.g25x76kmgzya2gei@skbuf/T/
+Tested-by: Vladimir Oltean <vladimir.oltean@nxp.com>
+Tested-by: Victor Nogueira <victor@mojatatu.com>
+Reviewed-by: Pedro Tammela <pctammela@mojatatu.com>
+Reviewed-by: Victor Nogueira <victor@mojatatu.com>
+Signed-off-by: Jamal Hadi Salim <jhs@mojatatu.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpio/gpio-sim.c | 13 +++++++++++++
- 1 file changed, 13 insertions(+)
+ net/sched/sch_api.c | 53 ++++++++++++++++++++++++++++++++++-----------
+ 1 file changed, 40 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
-index fef12e57b1f13..3fa123bb72ee1 100644
---- a/drivers/gpio/gpio-sim.c
-+++ b/drivers/gpio/gpio-sim.c
-@@ -290,6 +290,15 @@ static void gpio_sim_mutex_destroy(void *data)
- 	mutex_destroy(lock);
+diff --git a/net/sched/sch_api.c b/net/sched/sch_api.c
+index fb50e3f3283f9..5c2d230790db9 100644
+--- a/net/sched/sch_api.c
++++ b/net/sched/sch_api.c
+@@ -1513,10 +1513,28 @@ static int tc_get_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 	return 0;
  }
  
-+static void gpio_sim_dispose_mappings(void *data)
++static bool req_create_or_replace(struct nlmsghdr *n)
 +{
-+	struct gpio_sim_chip *chip = data;
-+	unsigned int i;
-+
-+	for (i = 0; i < chip->gc.ngpio; i++)
-+		irq_dispose_mapping(irq_find_mapping(chip->irq_sim, i));
++	return (n->nlmsg_flags & NLM_F_CREATE &&
++		n->nlmsg_flags & NLM_F_REPLACE);
 +}
 +
- static void gpio_sim_sysfs_remove(void *data)
- {
- 	struct gpio_sim_chip *chip = data;
-@@ -402,6 +411,10 @@ static int gpio_sim_add_bank(struct fwnode_handle *swnode, struct device *dev)
- 	if (IS_ERR(chip->irq_sim))
- 		return PTR_ERR(chip->irq_sim);
- 
-+	ret = devm_add_action_or_reset(dev, gpio_sim_dispose_mappings, chip);
-+	if (ret)
-+		return ret;
++static bool req_create_exclusive(struct nlmsghdr *n)
++{
++	return (n->nlmsg_flags & NLM_F_CREATE &&
++		n->nlmsg_flags & NLM_F_EXCL);
++}
 +
- 	mutex_init(&chip->lock);
- 	ret = devm_add_action_or_reset(dev, gpio_sim_mutex_destroy,
- 				       &chip->lock);
++static bool req_change(struct nlmsghdr *n)
++{
++	return (!(n->nlmsg_flags & NLM_F_CREATE) &&
++		!(n->nlmsg_flags & NLM_F_REPLACE) &&
++		!(n->nlmsg_flags & NLM_F_EXCL));
++}
++
+ /*
+  * Create/change qdisc.
+  */
+-
+ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 			   struct netlink_ext_ack *extack)
+ {
+@@ -1613,27 +1631,35 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 				 *
+ 				 *   We know, that some child q is already
+ 				 *   attached to this parent and have choice:
+-				 *   either to change it or to create/graft new one.
++				 *   1) change it or 2) create/graft new one.
++				 *   If the requested qdisc kind is different
++				 *   than the existing one, then we choose graft.
++				 *   If they are the same then this is "change"
++				 *   operation - just let it fallthrough..
+ 				 *
+ 				 *   1. We are allowed to create/graft only
+-				 *   if CREATE and REPLACE flags are set.
++				 *   if the request is explicitly stating
++				 *   "please create if it doesn't exist".
+ 				 *
+-				 *   2. If EXCL is set, requestor wanted to say,
+-				 *   that qdisc tcm_handle is not expected
++				 *   2. If the request is to exclusive create
++				 *   then the qdisc tcm_handle is not expected
+ 				 *   to exist, so that we choose create/graft too.
+ 				 *
+ 				 *   3. The last case is when no flags are set.
++				 *   This will happen when for example tc
++				 *   utility issues a "change" command.
+ 				 *   Alas, it is sort of hole in API, we
+ 				 *   cannot decide what to do unambiguously.
+-				 *   For now we select create/graft, if
+-				 *   user gave KIND, which does not match existing.
++				 *   For now we select create/graft.
+ 				 */
+-				if ((n->nlmsg_flags & NLM_F_CREATE) &&
+-				    (n->nlmsg_flags & NLM_F_REPLACE) &&
+-				    ((n->nlmsg_flags & NLM_F_EXCL) ||
+-				     (tca[TCA_KIND] &&
+-				      nla_strcmp(tca[TCA_KIND], q->ops->id))))
+-					goto create_n_graft;
++				if (tca[TCA_KIND] &&
++				    nla_strcmp(tca[TCA_KIND], q->ops->id)) {
++					if (req_create_or_replace(n) ||
++					    req_create_exclusive(n))
++						goto create_n_graft;
++					else if (req_change(n))
++						goto create_n_graft2;
++				}
+ 			}
+ 		}
+ 	} else {
+@@ -1667,6 +1693,7 @@ static int tc_modify_qdisc(struct sk_buff *skb, struct nlmsghdr *n,
+ 		NL_SET_ERR_MSG(extack, "Qdisc not found. To create specify NLM_F_CREATE flag");
+ 		return -ENOENT;
+ 	}
++create_n_graft2:
+ 	if (clid == TC_H_INGRESS) {
+ 		if (dev_ingress_queue(dev)) {
+ 			q = qdisc_create(dev, dev_ingress_queue(dev), p,
 -- 
 2.40.1
 
