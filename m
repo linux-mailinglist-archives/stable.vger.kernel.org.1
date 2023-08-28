@@ -2,46 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BFFB78AB46
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96B6378ACA4
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231349AbjH1K3l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
+        id S231750AbjH1Kle (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:41:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231310AbjH1K3M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:12 -0400
+        with ESMTP id S231794AbjH1KlN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:13 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EC3F129
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:10 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 222FCAB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D33D763C25
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:09 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3D94C433C8;
-        Mon, 28 Aug 2023 10:29:08 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B2C0E615FE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C623FC433C8;
+        Mon, 28 Aug 2023 10:41:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218549;
-        bh=+MHqt2axvNaAVe6EIIb74ZgLQL8RgP1BaqfNsrDZNYE=;
+        s=korg; t=1693219268;
+        bh=ZBZxFsXqnHmibq83M1gDZm1k+egw1VrHS/p2XDLXUvo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SYKWeSlYAYTlaaJhjti+nCweGfrm6fn4XDjGZWqvDbMGABW+rA0ltsy2kk1sRlwzr
-         m32FjVOQh+bF16SFKWFNk8FQlj3yUyxt0SAib9O4/CHAPXD6SSIje2d59mZjnua3/Q
-         irox/o9jNlgyYoz8+PaDjuJUUg8iy4nScSli3EyM=
+        b=dyffso3Kyr526EQf4ozHfHDJuljUVaFUuY0NW1lEf/R6REhu7q5f1t0bQHYHXuk3i
+         NEGgPKQTGHoMbjKVLrgufZuYthrsDKd5G877GmJyLwytUmpktJU3VT0r1Z8rLEcB4W
+         zE4aYhfparvkihNPL2gN27tHHPyjaD/9SveFRgWs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 128/129] clk: Fix undefined reference to `clk_rate_exclusive_{get,put}
-Date:   Mon, 28 Aug 2023 12:13:42 +0200
-Message-ID: <20230828101157.869113955@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Alessio Igor Bogani <alessio.bogani@elettra.eu>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 5.4 126/158] igb: Avoid starting unnecessary workqueues
+Date:   Mon, 28 Aug 2023 12:13:43 +0200
+Message-ID: <20230828101201.646448121@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,148 +59,93 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Alessio Igor Bogani <alessio.bogani@elettra.eu>
 
-[ Upstream commit 2746f13f6f1df7999001d6595b16f789ecc28ad1 ]
+[ Upstream commit b888c510f7b3d64ca75fc0f43b4a4bd1a611312f ]
 
-The COMMON_CLK config is not enabled in some of the architectures.
-This causes below build issues:
+If ptp_clock_register() fails or CONFIG_PTP isn't enabled, avoid starting
+PTP related workqueues.
 
-pwm-rz-mtu3.c:(.text+0x114):
-undefined reference to `clk_rate_exclusive_put'
-pwm-rz-mtu3.c:(.text+0x32c):
-undefined reference to `clk_rate_exclusive_get'
+In this way we can fix this:
+ BUG: unable to handle page fault for address: ffffc9000440b6f8
+ #PF: supervisor read access in kernel mode
+ #PF: error_code(0x0000) - not-present page
+ PGD 100000067 P4D 100000067 PUD 1001e0067 PMD 107dc5067 PTE 0
+ Oops: 0000 [#1] PREEMPT SMP
+ [...]
+ Workqueue: events igb_ptp_overflow_check
+ RIP: 0010:igb_rd32+0x1f/0x60
+ [...]
+ Call Trace:
+  igb_ptp_read_82580+0x20/0x50
+  timecounter_read+0x15/0x60
+  igb_ptp_overflow_check+0x1a/0x50
+  process_one_work+0x1cb/0x3c0
+  worker_thread+0x53/0x3f0
+  ? rescuer_thread+0x370/0x370
+  kthread+0x142/0x160
+  ? kthread_associate_blkcg+0xc0/0xc0
+  ret_from_fork+0x1f/0x30
 
-Fix these issues by moving clk_rate_exclusive_{get,put} inside COMMON_CLK
-code block, as clk.c is enabled by COMMON_CLK.
-
-Fixes: 55e9b8b7b806 ("clk: add clk_rate_exclusive api")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202307251752.vLfmmhYm-lkp@intel.com/
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20230725175140.361479-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Fixes: 1f6e8178d685 ("igb: Prevent dropped Tx timestamps via work items and interrupts.")
+Fixes: d339b1331616 ("igb: add PTP Hardware Clock code")
+Signed-off-by: Alessio Igor Bogani <alessio.bogani@elettra.eu>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230821171927.2203644-1-anthony.l.nguyen@intel.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/clk.h | 80 ++++++++++++++++++++++-----------------------
- 1 file changed, 40 insertions(+), 40 deletions(-)
+ drivers/net/ethernet/intel/igb/igb_ptp.c | 24 ++++++++++++------------
+ 1 file changed, 12 insertions(+), 12 deletions(-)
 
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 4f750c481b82b..0a2382d3f68c8 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -175,6 +175,39 @@ int clk_get_scaled_duty_cycle(struct clk *clk, unsigned int scale);
-  */
- bool clk_is_match(const struct clk *p, const struct clk *q);
+diff --git a/drivers/net/ethernet/intel/igb/igb_ptp.c b/drivers/net/ethernet/intel/igb/igb_ptp.c
+index c39e921757ba9..3c501c67bdbb6 100644
+--- a/drivers/net/ethernet/intel/igb/igb_ptp.c
++++ b/drivers/net/ethernet/intel/igb/igb_ptp.c
+@@ -1245,18 +1245,6 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		return;
+ 	}
  
-+/**
-+ * clk_rate_exclusive_get - get exclusivity over the rate control of a
-+ *                          producer
-+ * @clk: clock source
-+ *
-+ * This function allows drivers to get exclusive control over the rate of a
-+ * provider. It prevents any other consumer to execute, even indirectly,
-+ * opereation which could alter the rate of the provider or cause glitches
-+ *
-+ * If exlusivity is claimed more than once on clock, even by the same driver,
-+ * the rate effectively gets locked as exclusivity can't be preempted.
-+ *
-+ * Must not be called from within atomic context.
-+ *
-+ * Returns success (0) or negative errno.
-+ */
-+int clk_rate_exclusive_get(struct clk *clk);
+-	spin_lock_init(&adapter->tmreg_lock);
+-	INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
+-
+-	if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
+-		INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
+-				  igb_ptp_overflow_check);
+-
+-	adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
+-	adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
+-
+-	igb_ptp_reset(adapter);
+-
+ 	adapter->ptp_clock = ptp_clock_register(&adapter->ptp_caps,
+ 						&adapter->pdev->dev);
+ 	if (IS_ERR(adapter->ptp_clock)) {
+@@ -1266,6 +1254,18 @@ void igb_ptp_init(struct igb_adapter *adapter)
+ 		dev_info(&adapter->pdev->dev, "added PHC on %s\n",
+ 			 adapter->netdev->name);
+ 		adapter->ptp_flags |= IGB_PTP_ENABLED;
 +
-+/**
-+ * clk_rate_exclusive_put - release exclusivity over the rate control of a
-+ *                          producer
-+ * @clk: clock source
-+ *
-+ * This function allows drivers to release the exclusivity it previously got
-+ * from clk_rate_exclusive_get()
-+ *
-+ * The caller must balance the number of clk_rate_exclusive_get() and
-+ * clk_rate_exclusive_put() calls.
-+ *
-+ * Must not be called from within atomic context.
-+ */
-+void clk_rate_exclusive_put(struct clk *clk);
++		spin_lock_init(&adapter->tmreg_lock);
++		INIT_WORK(&adapter->ptp_tx_work, igb_ptp_tx_work);
 +
- #else
- 
- static inline int clk_notifier_register(struct clk *clk,
-@@ -221,6 +254,13 @@ static inline bool clk_is_match(const struct clk *p, const struct clk *q)
- 	return p == q;
++		if (adapter->ptp_flags & IGB_PTP_OVERFLOW_CHECK)
++			INIT_DELAYED_WORK(&adapter->ptp_overflow_work,
++					  igb_ptp_overflow_check);
++
++		adapter->tstamp_config.rx_filter = HWTSTAMP_FILTER_NONE;
++		adapter->tstamp_config.tx_type = HWTSTAMP_TX_OFF;
++
++		igb_ptp_reset(adapter);
+ 	}
  }
  
-+static inline int clk_rate_exclusive_get(struct clk *clk)
-+{
-+	return 0;
-+}
-+
-+static inline void clk_rate_exclusive_put(struct clk *clk) {}
-+
- #endif
- 
- /**
-@@ -364,38 +404,6 @@ struct clk *devm_clk_get(struct device *dev, const char *id);
-  */
- struct clk *devm_get_clk_from_child(struct device *dev,
- 				    struct device_node *np, const char *con_id);
--/**
-- * clk_rate_exclusive_get - get exclusivity over the rate control of a
-- *                          producer
-- * @clk: clock source
-- *
-- * This function allows drivers to get exclusive control over the rate of a
-- * provider. It prevents any other consumer to execute, even indirectly,
-- * opereation which could alter the rate of the provider or cause glitches
-- *
-- * If exlusivity is claimed more than once on clock, even by the same driver,
-- * the rate effectively gets locked as exclusivity can't be preempted.
-- *
-- * Must not be called from within atomic context.
-- *
-- * Returns success (0) or negative errno.
-- */
--int clk_rate_exclusive_get(struct clk *clk);
--
--/**
-- * clk_rate_exclusive_put - release exclusivity over the rate control of a
-- *                          producer
-- * @clk: clock source
-- *
-- * This function allows drivers to release the exclusivity it previously got
-- * from clk_rate_exclusive_get()
-- *
-- * The caller must balance the number of clk_rate_exclusive_get() and
-- * clk_rate_exclusive_put() calls.
-- *
-- * Must not be called from within atomic context.
-- */
--void clk_rate_exclusive_put(struct clk *clk);
- 
- /**
-  * clk_enable - inform the system when the clock source should be running.
-@@ -665,14 +673,6 @@ static inline void clk_bulk_put(int num_clks, struct clk_bulk_data *clks) {}
- 
- static inline void devm_clk_put(struct device *dev, struct clk *clk) {}
- 
--
--static inline int clk_rate_exclusive_get(struct clk *clk)
--{
--	return 0;
--}
--
--static inline void clk_rate_exclusive_put(struct clk *clk) {}
--
- static inline int clk_enable(struct clk *clk)
- {
- 	return 0;
 -- 
 2.40.1
 
