@@ -2,54 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 13D8F78AB88
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3F15478AA83
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231451AbjH1Kbw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:31:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42396 "EHLO
+        id S231156AbjH1KW4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:22:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231524AbjH1Kbh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:31:37 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAA1E42
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:11 -0700 (PDT)
+        with ESMTP id S231205AbjH1KWe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FD0F18B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D9616131B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4214AC433C7;
-        Mon, 28 Aug 2023 10:31:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 63AEE63951
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78FD0C433C8;
+        Mon, 28 Aug 2023 10:22:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218670;
-        bh=JS/4EjB3ds5kL57G7KmLD6SMXv536MDmNrsgdtuqQnU=;
+        s=korg; t=1693218134;
+        bh=ghCic2kYQAIafuwlvqGjC72H0u/YLzYvvYV+9Xc9UQI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l/Qa4IRASZHj/9yufZkL8iTag+j7DXD6lHbLY+1tt010LsFdkmMFXD+/lRBSIkuHs
-         7JqCbVGOHb/hHodT5ls9zBT2hkLhmbJHDkTYoG3HKyIi41K+30Oashi8iEPFeh74Wa
-         HhCO6k8lGIld6jNM6HH1oqmEnbkLQGmrUpxXrRhw=
+        b=klPWVl8LA6ky1CVwBFDuKrrRaHHaRcTxqt/LGaYIARQTLsfQmFCw6wCA8gYruliiM
+         GheSTJcJVFyzBjKbRvziy1cdhTeOpMORZ10tgRheFY42JA7MmclvRdZZ2XAtAZvled
+         HpUJwEiI7PFKorwyfSGg14hs5N2SToNBrd/9hFUw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
-        Eric Dumazet <edumazet@google.com>,
-        David Ahern <dsahern@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 041/122] ipv4: fix data-races around inet->inet_id
-Date:   Mon, 28 Aug 2023 12:12:36 +0200
-Message-ID: <20230828101157.765041395@linuxfoundation.org>
+        patches@lists.linux.dev, Matt Roper <matthew.d.roper@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Luca Coelho <luciano.coelho@intel.com>,
+        Jani Nikula <jani.nikula@intel.com>,
+        Rodrigo Vivi <rodrigo.vivi@intel.com>
+Subject: [PATCH 6.4 078/129] drm/i915: fix display probe for IVB Q and IVB D GT2 server
+Date:   Mon, 28 Aug 2023 12:12:37 +0200
+Message-ID: <20230828101159.929916336@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,232 +57,160 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Jani Nikula <jani.nikula@intel.com>
 
-[ Upstream commit f866fbc842de5976e41ba874b76ce31710b634b5 ]
+commit 423ffe62c06ae241ad460f4629dddb9dcf55e060 upstream.
 
-UDP sendmsg() is lockless, so ip_select_ident_segs()
-can very well be run from multiple cpus [1]
+The current display probe is unable to differentiate between IVB Q and
+IVB D GT2 server, as they both have the same device id, but different
+subvendor and subdevice. This leads to the latter being misidentified as
+the former, and should just end up not having a display. However, the no
+display case returns a NULL as the display device info, and promptly
+oopses.
 
-Convert inet->inet_id to an atomic_t, but implement
-a dedicated path for TCP, avoiding cost of a locked
-instruction (atomic_add_return())
+As the IVB Q case is rare, and we're anyway moving towards GMD ID,
+handle the identification requiring subvendor and subdevice as a special
+case first, instead of unnecessarily growing the intel_display_ids[]
+array with subvendor and subdevice.
 
-Note that this patch will cause a trivial merge conflict
-because we added inet->flags in net-next tree.
+[    5.425298] BUG: kernel NULL pointer dereference, address: 0000000000000000
+[    5.426059] #PF: supervisor read access in kernel mode
+[    5.426810] #PF: error_code(0x0000) - not-present page
+[    5.427570] PGD 0 P4D 0
+[    5.428285] Oops: 0000 [#1] PREEMPT SMP PTI
+[    5.429035] CPU: 0 PID: 137 Comm: (udev-worker) Not tainted 6.4.0-1-amd64 #1  Debian 6.4.4-1
+[    5.429759] Hardware name: HP HP Z220 SFF Workstation/HP Z220 SFF Workstation, BIOS 4.19-218-gb184e6e0a1 02/02/2023
+[    5.430485] RIP: 0010:intel_device_info_driver_create+0xf1/0x120 [i915]
+[    5.431338] Code: 48 8b 97 80 1b 00 00 89 8f c0 1b 00 00 48 89 b7 b0 1b 00 00 48 89 97 b8 1b 00 00 0f b7 fd e8 76 e8 14 00 48 89 83 50 1b 00 00 <48> 8b 08 48 89 8b c4 1b 00 00 48 8b 48 08 48 89 8b cc 1b 00 00 8b
+[    5.432920] RSP: 0018:ffffb8254044fb98 EFLAGS: 00010206
+[    5.433707] RAX: 0000000000000000 RBX: ffff923076e80000 RCX: 0000000000000000
+[    5.434494] RDX: 0000000000000260 RSI: 0000000100001000 RDI: 000000000000016a
+[    5.435277] RBP: 000000000000016a R08: ffffb8254044fb00 R09: 0000000000000000
+[    5.436055] R10: ffff922d02761de8 R11: 00657361656c6572 R12: ffffffffc0e5d140
+[    5.436867] R13: ffff922d00b720d0 R14: 0000000076e80000 R15: ffff923078c0cae8
+[    5.437646] FS:  00007febd19a18c0(0000) GS:ffff92307c000000(0000) knlGS:0000000000000000
+[    5.438434] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    5.439218] CR2: 0000000000000000 CR3: 000000010256e002 CR4: 00000000001706f0
+[    5.440009] Call Trace:
+[    5.440824]  <TASK>
+[    5.441611]  ? __die+0x23/0x70
+[    5.442394]  ? page_fault_oops+0x17d/0x4c0
+[    5.443173]  ? exc_page_fault+0x7f/0x180
+[    5.443949]  ? asm_exc_page_fault+0x26/0x30
+[    5.444756]  ? intel_device_info_driver_create+0xf1/0x120 [i915]
+[    5.445652]  ? intel_device_info_driver_create+0xea/0x120 [i915]
+[    5.446545]  i915_driver_probe+0x7f/0xb60 [i915]
+[    5.447431]  ? drm_privacy_screen_get+0x15c/0x1a0 [drm]
+[    5.448240]  local_pci_probe+0x45/0xa0
+[    5.449013]  pci_device_probe+0xc7/0x240
+[    5.449748]  really_probe+0x19e/0x3e0
+[    5.450464]  ? __pfx___driver_attach+0x10/0x10
+[    5.451172]  __driver_probe_device+0x78/0x160
+[    5.451870]  driver_probe_device+0x1f/0x90
+[    5.452601]  __driver_attach+0xd2/0x1c0
+[    5.453293]  bus_for_each_dev+0x88/0xd0
+[    5.453989]  bus_add_driver+0x116/0x220
+[    5.454672]  driver_register+0x59/0x100
+[    5.455336]  i915_init+0x25/0xc0 [i915]
+[    5.456104]  ? __pfx_i915_init+0x10/0x10 [i915]
+[    5.456882]  do_one_initcall+0x5d/0x240
+[    5.457511]  do_init_module+0x60/0x250
+[    5.458126]  __do_sys_finit_module+0xac/0x120
+[    5.458721]  do_syscall_64+0x60/0xc0
+[    5.459314]  ? syscall_exit_to_user_mode+0x1b/0x40
+[    5.459897]  ? do_syscall_64+0x6c/0xc0
+[    5.460510]  entry_SYSCALL_64_after_hwframe+0x72/0xdc
+[    5.461082] RIP: 0033:0x7febd20b0eb9
+[    5.461648] Code: 08 89 e8 5b 5d c3 66 2e 0f 1f 84 00 00 00 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 8b 0d 2f 1f 0d 00 f7 d8 64 89 01 48
+[    5.462905] RSP: 002b:00007fffabb1ba78 EFLAGS: 00000246 ORIG_RAX: 0000000000000139
+[    5.463554] RAX: ffffffffffffffda RBX: 0000561e6304f410 RCX: 00007febd20b0eb9
+[    5.464201] RDX: 0000000000000000 RSI: 00007febd2244f0d RDI: 0000000000000015
+[    5.464869] RBP: 00007febd2244f0d R08: 0000000000000000 R09: 000000000000000a
+[    5.465512] R10: 0000000000000015 R11: 0000000000000246 R12: 0000000000020000
+[    5.466124] R13: 0000000000000000 R14: 0000561e63032b60 R15: 000000000000000a
+[    5.466700]  </TASK>
+[    5.467271] Modules linked in: i915(+) drm_buddy video crc32_pclmul sr_mod hid_generic wmi crc32c_intel i2c_algo_bit sd_mod cdrom drm_display_helper cec usbhid rc_core ghash_clmulni_intel hid sha512_ssse3 ttm sha512_generic xhci_pci ehci_pci xhci_hcd ehci_hcd nvme ahci drm_kms_helper nvme_core libahci t10_pi libata psmouse aesni_intel scsi_mod crypto_simd i2c_i801 scsi_common crc64_rocksoft_generic cryptd i2c_smbus drm lpc_ich crc64_rocksoft crc_t10dif e1000e usbcore crct10dif_generic usb_common crct10dif_pclmul crc64 crct10dif_common button
+[    5.469750] CR2: 0000000000000000
+[    5.470364] ---[ end trace 0000000000000000 ]---
+[    5.470971] RIP: 0010:intel_device_info_driver_create+0xf1/0x120 [i915]
+[    5.471699] Code: 48 8b 97 80 1b 00 00 89 8f c0 1b 00 00 48 89 b7 b0 1b 00 00 48 89 97 b8 1b 00 00 0f b7 fd e8 76 e8 14 00 48 89 83 50 1b 00 00 <48> 8b 08 48 89 8b c4 1b 00 00 48 8b 48 08 48 89 8b cc 1b 00 00 8b
+[    5.473034] RSP: 0018:ffffb8254044fb98 EFLAGS: 00010206
+[    5.473698] RAX: 0000000000000000 RBX: ffff923076e80000 RCX: 0000000000000000
+[    5.474371] RDX: 0000000000000260 RSI: 0000000100001000 RDI: 000000000000016a
+[    5.475045] RBP: 000000000000016a R08: ffffb8254044fb00 R09: 0000000000000000
+[    5.475725] R10: ffff922d02761de8 R11: 00657361656c6572 R12: ffffffffc0e5d140
+[    5.476405] R13: ffff922d00b720d0 R14: 0000000076e80000 R15: ffff923078c0cae8
+[    5.477124] FS:  00007febd19a18c0(0000) GS:ffff92307c000000(0000) knlGS:0000000000000000
+[    5.477811] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[    5.478499] CR2: 0000000000000000 CR3: 000000010256e002 CR4: 00000000001706f0
 
-v2: added missing change in
-drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-(David Ahern)
-
-[1]
-
-BUG: KCSAN: data-race in __ip_make_skb / __ip_make_skb
-
-read-write to 0xffff888145af952a of 2 bytes by task 7803 on cpu 1:
-ip_select_ident_segs include/net/ip.h:542 [inline]
-ip_select_ident include/net/ip.h:556 [inline]
-__ip_make_skb+0x844/0xc70 net/ipv4/ip_output.c:1446
-ip_make_skb+0x233/0x2c0 net/ipv4/ip_output.c:1560
-udp_sendmsg+0x1199/0x1250 net/ipv4/udp.c:1260
-inet_sendmsg+0x63/0x80 net/ipv4/af_inet.c:830
-sock_sendmsg_nosec net/socket.c:725 [inline]
-sock_sendmsg net/socket.c:748 [inline]
-____sys_sendmsg+0x37c/0x4d0 net/socket.c:2494
-___sys_sendmsg net/socket.c:2548 [inline]
-__sys_sendmmsg+0x269/0x500 net/socket.c:2634
-__do_sys_sendmmsg net/socket.c:2663 [inline]
-__se_sys_sendmmsg net/socket.c:2660 [inline]
-__x64_sys_sendmmsg+0x57/0x60 net/socket.c:2660
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-read to 0xffff888145af952a of 2 bytes by task 7804 on cpu 0:
-ip_select_ident_segs include/net/ip.h:541 [inline]
-ip_select_ident include/net/ip.h:556 [inline]
-__ip_make_skb+0x817/0xc70 net/ipv4/ip_output.c:1446
-ip_make_skb+0x233/0x2c0 net/ipv4/ip_output.c:1560
-udp_sendmsg+0x1199/0x1250 net/ipv4/udp.c:1260
-inet_sendmsg+0x63/0x80 net/ipv4/af_inet.c:830
-sock_sendmsg_nosec net/socket.c:725 [inline]
-sock_sendmsg net/socket.c:748 [inline]
-____sys_sendmsg+0x37c/0x4d0 net/socket.c:2494
-___sys_sendmsg net/socket.c:2548 [inline]
-__sys_sendmmsg+0x269/0x500 net/socket.c:2634
-__do_sys_sendmmsg net/socket.c:2663 [inline]
-__se_sys_sendmmsg net/socket.c:2660 [inline]
-__x64_sys_sendmmsg+0x57/0x60 net/socket.c:2660
-do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
-entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-value changed: 0x184d -> 0x184e
-
-Reported by Kernel Concurrency Sanitizer on:
-CPU: 0 PID: 7804 Comm: syz-executor.1 Not tainted 6.5.0-rc6-syzkaller #0
-Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
-==================================================================
-
-Fixes: 23f57406b82d ("ipv4: avoid using shared IP generator for connected sockets")
-Reported-by: syzbot <syzkaller@googlegroups.com>
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reviewed-by: David Ahern <dsahern@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 69d439818fe5 ("drm/i915/display: Make display responsible for probing its own IP")
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8991
+Cc: Matt Roper <matthew.d.roper@intel.com>
+Cc: Andrzej Hajda <andrzej.hajda@intel.com>
+Reviewed-by: Luca Coelho <luciano.coelho@intel.com>
+Reviewed-by: Matt Roper <matthew.d.roper@intel.com>
+Signed-off-by: Jani Nikula <jani.nikula@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230804084600.1005818-1-jani.nikula@intel.com
+(cherry picked from commit 1435188307d128671f677eb908e165666dd83652)
+Signed-off-by: Rodrigo Vivi <rodrigo.vivi@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../chelsio/inline_crypto/chtls/chtls_cm.c        |  2 +-
- include/net/inet_sock.h                           |  2 +-
- include/net/ip.h                                  | 15 +++++++++++++--
- net/dccp/ipv4.c                                   |  4 ++--
- net/ipv4/af_inet.c                                |  2 +-
- net/ipv4/datagram.c                               |  2 +-
- net/ipv4/tcp_ipv4.c                               |  4 ++--
- net/sctp/socket.c                                 |  2 +-
- 8 files changed, 22 insertions(+), 11 deletions(-)
+ drivers/gpu/drm/i915/display/intel_display_device.c |   24 +++++++++++++++++---
+ 1 file changed, 21 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-index c2e7037c7ba1c..7750702900fa6 100644
---- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-+++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
-@@ -1466,7 +1466,7 @@ static void make_established(struct sock *sk, u32 snd_isn, unsigned int opt)
- 	tp->write_seq = snd_isn;
- 	tp->snd_nxt = snd_isn;
- 	tp->snd_una = snd_isn;
--	inet_sk(sk)->inet_id = get_random_u16();
-+	atomic_set(&inet_sk(sk)->inet_id, get_random_u16());
- 	assign_rxopt(sk, opt);
+--- a/drivers/gpu/drm/i915/display/intel_display_device.c
++++ b/drivers/gpu/drm/i915/display/intel_display_device.c
+@@ -660,10 +660,24 @@ static const struct intel_display_device
+ 		BIT(TRANSCODER_C) | BIT(TRANSCODER_D),
+ };
  
- 	if (tp->rcv_wnd > (RCV_BUFSIZ_M << 10))
-diff --git a/include/net/inet_sock.h b/include/net/inet_sock.h
-index c8ef3b881f03d..c2432c2addc82 100644
---- a/include/net/inet_sock.h
-+++ b/include/net/inet_sock.h
-@@ -222,8 +222,8 @@ struct inet_sock {
- 	__s16			uc_ttl;
- 	__u16			cmsg_flags;
- 	struct ip_options_rcu __rcu	*inet_opt;
-+	atomic_t		inet_id;
- 	__be16			inet_sport;
--	__u16			inet_id;
- 
- 	__u8			tos;
- 	__u8			min_ttl;
-diff --git a/include/net/ip.h b/include/net/ip.h
-index 530e7257e4389..1872f570abeda 100644
---- a/include/net/ip.h
-+++ b/include/net/ip.h
-@@ -532,8 +532,19 @@ static inline void ip_select_ident_segs(struct net *net, struct sk_buff *skb,
- 	 * generator as much as we can.
- 	 */
- 	if (sk && inet_sk(sk)->inet_daddr) {
--		iph->id = htons(inet_sk(sk)->inet_id);
--		inet_sk(sk)->inet_id += segs;
-+		int val;
++/*
++ * Separate detection for no display cases to keep the display id array simple.
++ *
++ * IVB Q requires subvendor and subdevice matching to differentiate from IVB D
++ * GT2 server.
++ */
++static bool has_no_display(struct pci_dev *pdev)
++{
++	static const struct pci_device_id ids[] = {
++		INTEL_IVB_Q_IDS(0),
++		{}
++	};
 +
-+		/* avoid atomic operations for TCP,
-+		 * as we hold socket lock at this point.
-+		 */
-+		if (sk_is_tcp(sk)) {
-+			sock_owned_by_me(sk);
-+			val = atomic_read(&inet_sk(sk)->inet_id);
-+			atomic_set(&inet_sk(sk)->inet_id, val + segs);
-+		} else {
-+			val = atomic_add_return(segs, &inet_sk(sk)->inet_id);
-+		}
-+		iph->id = htons(val);
- 		return;
- 	}
- 	if ((iph->frag_off & htons(IP_DF)) && !skb->ignore_df) {
-diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
-index b780827f5e0a5..bfececa9e244e 100644
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -130,7 +130,7 @@ int dccp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
- 						    inet->inet_daddr,
- 						    inet->inet_sport,
- 						    inet->inet_dport);
--	inet->inet_id = get_random_u16();
-+	atomic_set(&inet->inet_id, get_random_u16());
++	return pci_match_id(ids, pdev);
++}
++
+ #undef INTEL_VGA_DEVICE
+-#undef INTEL_QUANTA_VGA_DEVICE
+ #define INTEL_VGA_DEVICE(id, info) { id, info }
+-#define INTEL_QUANTA_VGA_DEVICE(info) { 0x16a, info }
  
- 	err = dccp_connect(sk);
- 	rt = NULL;
-@@ -430,7 +430,7 @@ struct sock *dccp_v4_request_recv_sock(const struct sock *sk,
- 	RCU_INIT_POINTER(newinet->inet_opt, rcu_dereference(ireq->ireq_opt));
- 	newinet->mc_index  = inet_iif(skb);
- 	newinet->mc_ttl	   = ip_hdr(skb)->ttl;
--	newinet->inet_id   = get_random_u16();
-+	atomic_set(&newinet->inet_id, get_random_u16());
+ static const struct {
+ 	u32 devid;
+@@ -688,7 +702,6 @@ static const struct {
+ 	INTEL_IRONLAKE_M_IDS(&ilk_m_display),
+ 	INTEL_SNB_D_IDS(&snb_display),
+ 	INTEL_SNB_M_IDS(&snb_display),
+-	INTEL_IVB_Q_IDS(NULL),		/* must be first IVB in list */
+ 	INTEL_IVB_M_IDS(&ivb_display),
+ 	INTEL_IVB_D_IDS(&ivb_display),
+ 	INTEL_HSW_IDS(&hsw_display),
+@@ -773,6 +786,11 @@ intel_display_device_probe(struct drm_i9
+ 	if (has_gmdid)
+ 		return probe_gmdid_display(i915, gmdid_ver, gmdid_rel, gmdid_step);
  
- 	if (dst == NULL && (dst = inet_csk_route_child_sock(sk, newsk, req)) == NULL)
- 		goto put_and_exit;
-diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
-index ebb737ac9e894..04853c83c85c4 100644
---- a/net/ipv4/af_inet.c
-+++ b/net/ipv4/af_inet.c
-@@ -340,7 +340,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
- 	else
- 		inet->pmtudisc = IP_PMTUDISC_WANT;
- 
--	inet->inet_id = 0;
-+	atomic_set(&inet->inet_id, 0);
- 
- 	sock_init_data(sock, sk);
- 
-diff --git a/net/ipv4/datagram.c b/net/ipv4/datagram.c
-index 4d1af0cd7d99e..cb5dbee9e018f 100644
---- a/net/ipv4/datagram.c
-+++ b/net/ipv4/datagram.c
-@@ -73,7 +73,7 @@ int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
- 	reuseport_has_conns_set(sk);
- 	sk->sk_state = TCP_ESTABLISHED;
- 	sk_set_txhash(sk);
--	inet->inet_id = get_random_u16();
-+	atomic_set(&inet->inet_id, get_random_u16());
- 
- 	sk_dst_set(sk, &rt->dst);
- 	err = 0;
-diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
-index 08921b96f9728..f9b8a4a1d2edc 100644
---- a/net/ipv4/tcp_ipv4.c
-+++ b/net/ipv4/tcp_ipv4.c
-@@ -312,7 +312,7 @@ int tcp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
- 					     inet->inet_daddr));
- 	}
- 
--	inet->inet_id = get_random_u16();
-+	atomic_set(&inet->inet_id, get_random_u16());
- 
- 	if (tcp_fastopen_defer_connect(sk, &err))
- 		return err;
-@@ -1539,7 +1539,7 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
- 	inet_csk(newsk)->icsk_ext_hdr_len = 0;
- 	if (inet_opt)
- 		inet_csk(newsk)->icsk_ext_hdr_len = inet_opt->opt.optlen;
--	newinet->inet_id = get_random_u16();
-+	atomic_set(&newinet->inet_id, get_random_u16());
- 
- 	/* Set ToS of the new socket based upon the value of incoming SYN.
- 	 * ECT bits are set later in tcp_init_transfer().
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 83656fe03a0e6..a11b0d903514c 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -9472,7 +9472,7 @@ void sctp_copy_sock(struct sock *newsk, struct sock *sk,
- 	newinet->inet_rcv_saddr = inet->inet_rcv_saddr;
- 	newinet->inet_dport = htons(asoc->peer.port);
- 	newinet->pmtudisc = inet->pmtudisc;
--	newinet->inet_id = get_random_u16();
-+	atomic_set(&newinet->inet_id, get_random_u16());
- 
- 	newinet->uc_ttl = inet->uc_ttl;
- 	newinet->mc_loop = 1;
--- 
-2.40.1
-
++	if (has_no_display(pdev)) {
++		drm_dbg_kms(&i915->drm, "Device doesn't have display\n");
++		return &no_display;
++	}
++
+ 	for (i = 0; i < ARRAY_SIZE(intel_display_ids); i++) {
+ 		if (intel_display_ids[i].devid == pdev->device)
+ 			return intel_display_ids[i].info;
 
 
