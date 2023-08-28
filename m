@@ -2,48 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F2B4778AD16
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B46A878ACD9
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231891AbjH1Kpu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:45:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54186 "EHLO
+        id S231753AbjH1KnK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:43:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231916AbjH1KpX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:23 -0400
+        with ESMTP id S231841AbjH1Kmy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:54 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1A9CD3
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3AC9FCC2
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id E5FC0641F0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 029E5C433C7;
-        Mon, 28 Aug 2023 10:44:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9C176407C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6378C433C8;
+        Mon, 28 Aug 2023 10:42:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219454;
-        bh=MFTT5R5u/rNisn1JPmJcJgnd+MRRIvk8KHHgsHAK5po=;
+        s=korg; t=1693219351;
+        bh=verYMXFD0Bvv/u4cflhntJtSEOpYiBSoQSGP2GAdvwE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EszN/Pc4ix1UCLUlTacOePyCHt9mbEif42/fwMdzZsvPTPk9MGZ79Dl+8bxsP79WG
-         v4NA/DZ6eBYEOntcJBWo9L3niPWzJwBQHV/bg9RWBJRw3OtxXexQ7obZlwN0PMQtz2
-         BRuJksX0IJ0ylC65B3cu0kfAliljbzC4NFAnI9SA=
+        b=LR0o+az/IYAex1aIKx0mvzBoGKlOExTCShfDAko91o4nSCjG4O2U1QP9aB8puVT9G
+         W12QvGyYg8IRsJTp1ezayO5tRWMnlJ7RTwJJXgLf29FKSh8/MCO02vOxSaO9CQl124
+         68gTWitA2EG0harzy8l+c0a3fI8PRJ7137Qud1nU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
         syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
-        Ido Schimmel <idosch@nvidia.com>, Jiri Pirko <jiri@nvidia.com>,
         Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 41/89] rtnetlink: Reject negative ifindexes in RTM_NEWLINK
+Subject: [PATCH 5.4 125/158] net: validate veth and vxcan peer ifindexes
 Date:   Mon, 28 Aug 2023 12:13:42 +0200
-Message-ID: <20230828101151.564388223@linuxfoundation.org>
+Message-ID: <20230828101201.593592580@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,70 +58,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 30188bd7838c16a98a520db1fe9df01ffc6ed368 ]
+[ Upstream commit f534f6581ec084fe94d6759f7672bd009794b07e ]
 
-Negative ifindexes are illegal, but the kernel does not validate the
-ifindex in the ancillary header of RTM_NEWLINK messages, resulting in
-the kernel generating a warning [1] when such an ifindex is specified.
+veth and vxcan need to make sure the ifindexes of the peer
+are not negative, core does not validate this.
 
-Fix by rejecting negative ifindexes.
+Using iproute2 with user-space-level checking removed:
 
-[1]
-WARNING: CPU: 0 PID: 5031 at net/core/dev.c:9593 dev_index_reserve+0x1a2/0x1c0 net/core/dev.c:9593
-[...]
-Call Trace:
- <TASK>
- register_netdevice+0x69a/0x1490 net/core/dev.c:10081
- br_dev_newlink+0x27/0x110 net/bridge/br_netlink.c:1552
- rtnl_newlink_create net/core/rtnetlink.c:3471 [inline]
- __rtnl_newlink+0x115e/0x18c0 net/core/rtnetlink.c:3688
- rtnl_newlink+0x67/0xa0 net/core/rtnetlink.c:3701
- rtnetlink_rcv_msg+0x439/0xd30 net/core/rtnetlink.c:6427
- netlink_rcv_skb+0x16b/0x440 net/netlink/af_netlink.c:2545
- netlink_unicast_kernel net/netlink/af_netlink.c:1342 [inline]
- netlink_unicast+0x536/0x810 net/netlink/af_netlink.c:1368
- netlink_sendmsg+0x93c/0xe40 net/netlink/af_netlink.c:1910
- sock_sendmsg_nosec net/socket.c:728 [inline]
- sock_sendmsg+0xd9/0x180 net/socket.c:751
- ____sys_sendmsg+0x6ac/0x940 net/socket.c:2538
- ___sys_sendmsg+0x135/0x1d0 net/socket.c:2592
- __sys_sendmsg+0x117/0x1e0 net/socket.c:2621
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+Before:
 
-Fixes: 38f7b870d4a6 ("[RTNETLINK]: Link creation API")
+  # ./ip link add index 10 type veth peer index -1
+  # ip link show
+  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:74:b2:03 brd ff:ff:ff:ff:ff:ff
+  10: veth1@veth0: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 8a:90:ff:57:6d:5d brd ff:ff:ff:ff:ff:ff
+  -1: veth0@veth1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether ae:ed:18:e6:fa:7f brd ff:ff:ff:ff:ff:ff
+
+Now:
+
+  $ ./ip link add index 10 type veth peer index -1
+  Error: ifindex can't be negative.
+
+This problem surfaced in net-next because an explicit WARN()
+was added, the root cause is older.
+
+Fixes: e6f8f1a739b6 ("veth: Allow to create peer link with given ifindex")
+Fixes: a8f820a380a2 ("can: add Virtual CAN Tunnel driver (vxcan)")
 Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Link: https://lore.kernel.org/r/20230823064348.2252280-1-idosch@nvidia.com
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/rtnetlink.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/can/vxcan.c |  7 +------
+ drivers/net/veth.c      |  5 +----
+ include/net/rtnetlink.h |  4 ++--
+ net/core/rtnetlink.c    | 22 ++++++++++++++++++----
+ 4 files changed, 22 insertions(+), 16 deletions(-)
 
+diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
+index 282c53ef76d23..1bfede407270d 100644
+--- a/drivers/net/can/vxcan.c
++++ b/drivers/net/can/vxcan.c
+@@ -179,12 +179,7 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
+ 
+ 		nla_peer = data[VXCAN_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) +
+-					  sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) -
+-					  sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 683425e3a353c..a6445bba4f942 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1255,10 +1255,7 @@ static int veth_newlink(struct net *src_net, struct net_device *dev,
+ 
+ 		nla_peer = data[VETH_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) + sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) - sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index 4da61c950e931..5c2a73bbfabee 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -166,8 +166,8 @@ struct net_device *rtnl_create_link(struct net *net, const char *ifname,
+ int rtnl_delete_link(struct net_device *dev);
+ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm);
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr);
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr);
+ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
+ 
+ #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
 diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
-index 7c1a2fd7d9532..1b71e5c582bbc 100644
+index 3eaf7c706b0ec..3dfdf83e6e45f 100644
 --- a/net/core/rtnetlink.c
 +++ b/net/core/rtnetlink.c
-@@ -3318,6 +3318,9 @@ static int __rtnl_newlink(struct sk_buff *skb, struct nlmsghdr *nlh,
- 	if (ifm->ifi_index > 0) {
- 		link_specified = true;
- 		dev = __dev_get_by_index(net, ifm->ifi_index);
-+	} else if (ifm->ifi_index < 0) {
-+		NL_SET_ERR_MSG(extack, "ifindex can't be negative");
+@@ -2034,13 +2034,27 @@ static int rtnl_dump_ifinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return err;
+ }
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr)
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr)
+ {
+-	return nla_parse_deprecated(tb, IFLA_MAX, head, len, ifla_policy,
++	const struct ifinfomsg *ifmp;
++	const struct nlattr *attrs;
++	size_t len;
++
++	ifmp = nla_data(nla_peer);
++	attrs = nla_data(nla_peer) + sizeof(struct ifinfomsg);
++	len = nla_len(nla_peer) - sizeof(struct ifinfomsg);
++
++	if (ifmp->ifi_index < 0) {
++		NL_SET_ERR_MSG_ATTR(exterr, nla_peer,
++				    "ifindex can't be negative");
 +		return -EINVAL;
- 	} else if (tb[IFLA_IFNAME] || tb[IFLA_ALT_IFNAME]) {
- 		link_specified = true;
- 		dev = rtnl_dev_get(net, NULL, tb[IFLA_ALT_IFNAME], ifname);
++	}
++
++	return nla_parse_deprecated(tb, IFLA_MAX, attrs, len, ifla_policy,
+ 				    exterr);
+ }
+-EXPORT_SYMBOL(rtnl_nla_parse_ifla);
++EXPORT_SYMBOL(rtnl_nla_parse_ifinfomsg);
+ 
+ struct net *rtnl_link_get_net(struct net *src_net, struct nlattr *tb[])
+ {
 -- 
 2.40.1
 
