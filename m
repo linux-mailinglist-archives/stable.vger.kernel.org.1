@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60B1178ACA8
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E40C578ABF1
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231764AbjH1Klf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:41:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51194 "EHLO
+        id S231558AbjH1Kfg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231807AbjH1KlP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:15 -0400
+        with ESMTP id S231614AbjH1KfQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:16 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E52DCC5
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFBBC131
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 847EE615FE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:11 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 970E5C433C8;
-        Mon, 28 Aug 2023 10:41:10 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6C6F663E95
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E27C433C8;
+        Mon, 28 Aug 2023 10:35:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219271;
-        bh=yAbQnjxPZhxGefE/STspDKV4KoqywJ5b53dwU9jZYZc=;
+        s=korg; t=1693218911;
+        bh=F86vrD8I+sQP5e40iuNceCqRxUj4mWrLpSdpeIlAHGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IBGLY+EL+ISnZjQJqZDDycVCxDQghTnw8GX7sdQ1KM3Y4g2yjKGcYXmIz4+mVJHoN
-         W9VvvJ5+X26L/rO/GSa628l0+ysutrR/rJMBhXgEoC48aZTR2xQM9C6l6P8jjpemla
-         9mzD55kNdCbfZVB7a0f2lOhN3VSM+QUa2TSlWn/Y=
+        b=Bq8Ul26ngbaJG+BjnD/Ejj+NAklpMX7xjWU3Yowi4NMoOaybJH3Pr/cO7Vr2aZsdW
+         RXes66v/y7nww7Bmhgmqv7RfGY1WbdVNYDbSgglF1FqHUOWMWYPnlLhKhu0KwKW0hR
+         8YZk4zlC0qLI+9AZsKWZ/vSJh9mtHs773wAUOGAs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.4 135/158] batman-adv: Dont increase MTU when set by user
-Date:   Mon, 28 Aug 2023 12:13:52 +0200
-Message-ID: <20230828101202.064516976@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 118/122] gpio: sim: dispose of irq mappings before destroying the irq_sim domain
+Date:   Mon, 28 Aug 2023 12:13:53 +0200
+Message-ID: <20230828101200.352990407@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,87 +56,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit d8e42a2b0addf238be8b3b37dcd9795a5c1be459 upstream.
+[ Upstream commit ab4109f91b328ff5cb5e1279f64d443241add2d1 ]
 
-If the user set an MTU value, it usually means that there are special
-requirements for the MTU. But if an interface gots activated, the MTU was
-always recalculated and then the user set value was overwritten.
+If a GPIO simulator device is unbound with interrupts still requested,
+we will hit a use-after-free issue in __irq_domain_deactivate_irq(). The
+owner of the irq domain must dispose of all mappings before destroying
+the domain object.
 
-The only reason why this user set value has to be overwritten, is when the
-MTU has to be decreased because batman-adv is not able to transfer packets
-with the user specified size.
-
-Fixes: c6c8fea29769 ("net: Add batman-adv meshing protocol")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cb8c474e79be ("gpio: sim: new testing module")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/hard-interface.c |   14 +++++++++++++-
- net/batman-adv/soft-interface.c |    3 +++
- net/batman-adv/types.h          |    6 ++++++
- 3 files changed, 22 insertions(+), 1 deletion(-)
+ drivers/gpio/gpio-sim.c | 13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/net/batman-adv/hard-interface.c
-+++ b/net/batman-adv/hard-interface.c
-@@ -632,7 +632,19 @@ out:
-  */
- void batadv_update_min_mtu(struct net_device *soft_iface)
- {
--	dev_set_mtu(soft_iface, batadv_hardif_min_mtu(soft_iface));
-+	struct batadv_priv *bat_priv = netdev_priv(soft_iface);
-+	int limit_mtu;
-+	int mtu;
-+
-+	mtu = batadv_hardif_min_mtu(soft_iface);
-+
-+	if (bat_priv->mtu_set_by_user)
-+		limit_mtu = bat_priv->mtu_set_by_user;
-+	else
-+		limit_mtu = ETH_DATA_LEN;
-+
-+	mtu = min(mtu, limit_mtu);
-+	dev_set_mtu(soft_iface, mtu);
- 
- 	/* Check if the local translate table should be cleaned up to match a
- 	 * new (and smaller) MTU.
---- a/net/batman-adv/soft-interface.c
-+++ b/net/batman-adv/soft-interface.c
-@@ -156,11 +156,14 @@ static int batadv_interface_set_mac_addr
- 
- static int batadv_interface_change_mtu(struct net_device *dev, int new_mtu)
- {
-+	struct batadv_priv *bat_priv = netdev_priv(dev);
-+
- 	/* check ranges */
- 	if (new_mtu < 68 || new_mtu > batadv_hardif_min_mtu(dev))
- 		return -EINVAL;
- 
- 	dev->mtu = new_mtu;
-+	bat_priv->mtu_set_by_user = new_mtu;
- 
- 	return 0;
+diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
+index fef12e57b1f13..3fa123bb72ee1 100644
+--- a/drivers/gpio/gpio-sim.c
++++ b/drivers/gpio/gpio-sim.c
+@@ -290,6 +290,15 @@ static void gpio_sim_mutex_destroy(void *data)
+ 	mutex_destroy(lock);
  }
---- a/net/batman-adv/types.h
-+++ b/net/batman-adv/types.h
-@@ -1564,6 +1564,12 @@ struct batadv_priv {
- 	struct net_device *soft_iface;
  
- 	/**
-+	 * @mtu_set_by_user: MTU was set once by user
-+	 * protected by rtnl_lock
-+	 */
-+	int mtu_set_by_user;
++static void gpio_sim_dispose_mappings(void *data)
++{
++	struct gpio_sim_chip *chip = data;
++	unsigned int i;
 +
-+	/**
- 	 * @bat_counters: mesh internal traffic statistic counters (see
- 	 *  batadv_counters)
- 	 */
++	for (i = 0; i < chip->gc.ngpio; i++)
++		irq_dispose_mapping(irq_find_mapping(chip->irq_sim, i));
++}
++
+ static void gpio_sim_sysfs_remove(void *data)
+ {
+ 	struct gpio_sim_chip *chip = data;
+@@ -402,6 +411,10 @@ static int gpio_sim_add_bank(struct fwnode_handle *swnode, struct device *dev)
+ 	if (IS_ERR(chip->irq_sim))
+ 		return PTR_ERR(chip->irq_sim);
+ 
++	ret = devm_add_action_or_reset(dev, gpio_sim_dispose_mappings, chip);
++	if (ret)
++		return ret;
++
+ 	mutex_init(&chip->lock);
+ 	ret = devm_add_action_or_reset(dev, gpio_sim_mutex_destroy,
+ 				       &chip->lock);
+-- 
+2.40.1
+
 
 
