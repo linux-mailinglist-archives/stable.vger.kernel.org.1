@@ -2,45 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A65578ABEE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CC3978AD7A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231548AbjH1Kff (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:35:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38294 "EHLO
+        id S232059AbjH1Ksg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:48:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229587AbjH1KfK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:10 -0400
+        with ESMTP id S232142AbjH1KsL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:48:11 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B667B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:07 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AA4C9E
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:07 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C589A63E3C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:06 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D468DC433C7;
-        Mon, 28 Aug 2023 10:35:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2883664215
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:07 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D045C433C7;
+        Mon, 28 Aug 2023 10:48:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218906;
-        bh=CVG/sUN9nSJrYcnvMNPkXmWNPeczgFNgd5LbLZHwgLI=;
+        s=korg; t=1693219686;
+        bh=w//VUv9aUNd4f+mZDg0jEffixjvyG7prfxEB1rHz6fo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TN6rWoMPogTGB8P89+bvVlQHsgh1dbt+81Hd9i3yKqeaqSuOloJwMMfrZHeCwVjGW
-         qVjUSz63DyfZZP/R/1KkA4wg39otrCjHogr+U9tHLZZSbjPhTJZfPwgZpWLvVPuroQ
-         2dP8UG8PZlRLF163wQYzJI9ssI9ul2z8gU+gXtKM=
+        b=fF+4qdBN7LTlP5VEeA6NG0VTkCB2nm8UDqJF3L8aRUs86n1A92P2o22A4vQCRU8mw
+         Ibd4YT6kEU1em8j3TEMHG/gFezzwqCfgAxV3Lbsq71aRE92bB9UWxOftmP0ddlhUz9
+         DAa1Bf7f5A+k6oRUoUoRK+AmRr4EwjQMTBxZdpDk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 116/122] pinctrl: renesas: rza2: Add lock around pinctrl_generic{{add,remove}_group,{add,remove}_function}
+        patches@lists.linux.dev,
+        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
+        Jesse Brandeburg <jesse.brandeburg@intel.com>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com>
+Subject: [PATCH 5.10 34/84] ice: fix receive buffer size miscalculation
 Date:   Mon, 28 Aug 2023 12:13:51 +0200
-Message-ID: <20230828101200.277285413@linuxfoundation.org>
+Message-ID: <20230828101150.415479056@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,92 +59,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Jesse Brandeburg <jesse.brandeburg@intel.com>
 
-[ Upstream commit 8fcc1c40b747069644db6102c1d84c942c9d4d86 ]
+[ Upstream commit 10083aef784031fa9f06c19a1b182e6fad5338d9 ]
 
-The pinctrl group and function creation/remove calls expect
-caller to take care of locking. Add lock around these functions.
+The driver is misconfiguring the hardware for some values of MTU such that
+it could use multiple descriptors to receive a packet when it could have
+simply used one.
 
-Fixes: b59d0e782706 ("pinctrl: Add RZ/A2 pin and gpio controller")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230815131558.33787-4-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Change the driver to use a round-up instead of the result of a shift, as
+the shift can truncate the lower bits of the size, and result in the
+problem noted above. It also aligns this driver with similar code in i40e.
+
+The insidiousness of this problem is that everything works with the wrong
+size, it's just not working as well as it could, as some MTU sizes end up
+using two or more descriptors, and there is no way to tell that is
+happening without looking at ice_trace or a bus analyzer.
+
+Fixes: efc2214b6047 ("ice: Add support for XDP")
+Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
+Signed-off-by: Jesse Brandeburg <jesse.brandeburg@intel.com>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Tested-by: Pucha Himasekhar Reddy <himasekharx.reddy.pucha@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rza2.c | 17 +++++++++++++++--
- 1 file changed, 15 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_base.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rza2.c b/drivers/pinctrl/renesas/pinctrl-rza2.c
-index c0a04f1ee994e..12126e30dc20f 100644
---- a/drivers/pinctrl/renesas/pinctrl-rza2.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rza2.c
-@@ -14,6 +14,7 @@
- #include <linux/gpio/driver.h>
- #include <linux/io.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/pinctrl/pinmux.h>
+diff --git a/drivers/net/ethernet/intel/ice/ice_base.c b/drivers/net/ethernet/intel/ice/ice_base.c
+index 1929847b8c404..59df4c9bd8f90 100644
+--- a/drivers/net/ethernet/intel/ice/ice_base.c
++++ b/drivers/net/ethernet/intel/ice/ice_base.c
+@@ -353,7 +353,8 @@ int ice_setup_rx_ctx(struct ice_ring *ring)
+ 	/* Receive Packet Data Buffer Size.
+ 	 * The Packet Data Buffer Size is defined in 128 byte units.
+ 	 */
+-	rlan_ctx.dbuf = ring->rx_buf_len >> ICE_RLAN_CTX_DBUF_S;
++	rlan_ctx.dbuf = DIV_ROUND_UP(ring->rx_buf_len,
++				     BIT_ULL(ICE_RLAN_CTX_DBUF_S));
  
-@@ -46,6 +47,7 @@ struct rza2_pinctrl_priv {
- 	struct pinctrl_dev *pctl;
- 	struct pinctrl_gpio_range gpio_range;
- 	int npins;
-+	struct mutex mutex; /* serialize adding groups and functions */
- };
- 
- #define RZA2_PDR(port)		(0x0000 + (port) * 2)	/* Direction 16-bit */
-@@ -358,10 +360,14 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- 		psel_val[i] = MUX_FUNC(value);
- 	}
- 
-+	mutex_lock(&priv->mutex);
-+
- 	/* Register a single pin group listing all the pins we read from DT */
- 	gsel = pinctrl_generic_add_group(pctldev, np->name, pins, npins, NULL);
--	if (gsel < 0)
--		return gsel;
-+	if (gsel < 0) {
-+		ret = gsel;
-+		goto unlock;
-+	}
- 
- 	/*
- 	 * Register a single group function where the 'data' is an array PSEL
-@@ -390,6 +396,8 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- 	(*map)->data.mux.function = np->name;
- 	*num_maps = 1;
- 
-+	mutex_unlock(&priv->mutex);
-+
- 	return 0;
- 
- remove_function:
-@@ -398,6 +406,9 @@ static int rza2_dt_node_to_map(struct pinctrl_dev *pctldev,
- remove_group:
- 	pinctrl_generic_remove_group(pctldev, gsel);
- 
-+unlock:
-+	mutex_unlock(&priv->mutex);
-+
- 	dev_err(priv->dev, "Unable to parse DT node %s\n", np->name);
- 
- 	return ret;
-@@ -473,6 +484,8 @@ static int rza2_pinctrl_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
- 
-+	mutex_init(&priv->mutex);
-+
- 	platform_set_drvdata(pdev, priv);
- 
- 	priv->npins = (int)(uintptr_t)of_device_get_match_data(&pdev->dev) *
+ 	/* use 32 byte descriptors */
+ 	rlan_ctx.dsize = 1;
 -- 
 2.40.1
 
