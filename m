@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 212E178A9CE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:16:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 418BD78AB06
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230360AbjH1KQY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:16:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46776 "EHLO
+        id S231280AbjH1K1F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:27:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230391AbjH1KPz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:15:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 411DE95
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:15:52 -0700 (PDT)
+        with ESMTP id S231294AbjH1K0p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:45 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15292AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:26:43 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CAEFC615F4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:15:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFE26C433C7;
-        Mon, 28 Aug 2023 10:15:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A74EA63ADB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:26:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB508C433C8;
+        Mon, 28 Aug 2023 10:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217751;
-        bh=C5epJ+Zz2pdWmjW6DWXxpwiUxdK4t4Rf12FTBo4fmi8=;
+        s=korg; t=1693218402;
+        bh=2DsqC0dytA1f5e/MyrvztZ2TpQfphH+EJ7Q60Zl/ilg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c1XR/Mfay3yaw98dxCL6/k9YAwbXCuLYaLtqEsjSdm3wLRG03rySyYSaifoG0IxBI
-         GhkDol3/UnSyiDOtOF+Mi7+irdJJ/aQbO7QBoKVUUQ/GnB+i3LhdNQnSeWvWZrDBEs
-         g31y0aRaOO6N0jqqaYySH13sGdSKNb+tCJJ2V1SI=
+        b=eoQHYxzOAsEx8hwsK84akJ5xEAG1i7b2LRCZQ9e7ueInkAYLtgebRAh85UFG2KimD
+         ARsVI52mkIPZe9LJ9EcU10Bg+5ka+T+9YunEw8QJVAmDfkgQlXzRTZXWuj5wsLHGhI
+         8VhDQijloVT0RT0A8Ci9d6iY9RpSuJtgHYa+A0aQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 27/57] sock: Fix misuse of sk_under_memory_pressure()
-Date:   Mon, 28 Aug 2023 12:12:47 +0200
-Message-ID: <20230828101145.241275707@linuxfoundation.org>
+        patches@lists.linux.dev, Dragos Tatulea <dtatulea@nvidia.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 4.19 074/129] virtio-net: set queues after driver_ok
+Date:   Mon, 28 Aug 2023 12:12:48 +0200
+Message-ID: <20230828101156.060226453@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,78 +56,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Abel Wu <wuyun.abel@bytedance.com>
+From: Jason Wang <jasowang@redhat.com>
 
-[ Upstream commit 2d0c88e84e483982067a82073f6125490ddf3614 ]
+commit 51b813176f098ff61bd2833f627f5319ead098a5 upstream.
 
-The status of global socket memory pressure is updated when:
+Commit 25266128fe16 ("virtio-net: fix race between set queues and
+probe") tries to fix the race between set queues and probe by calling
+_virtnet_set_queues() before DRIVER_OK is set. This violates virtio
+spec. Fixing this by setting queues after virtio_device_ready().
 
-  a) __sk_mem_raise_allocated():
+Note that rtnl needs to be held for userspace requests to change the
+number of queues. So we are serialized in this way.
 
-	enter: sk_memory_allocated(sk) >  sysctl_mem[1]
-	leave: sk_memory_allocated(sk) <= sysctl_mem[0]
-
-  b) __sk_mem_reduce_allocated():
-
-	leave: sk_under_memory_pressure(sk) &&
-		sk_memory_allocated(sk) < sysctl_mem[0]
-
-So the conditions of leaving global pressure are inconstant, which
-may lead to the situation that one pressured net-memcg prevents the
-global pressure from being cleared when there is indeed no global
-pressure, thus the global constrains are still in effect unexpectedly
-on the other sockets.
-
-This patch fixes this by ignoring the net-memcg's pressure when
-deciding whether should leave global memory pressure.
-
-Fixes: e1aab161e013 ("socket: initial cgroup code.")
-Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Link: https://lore.kernel.org/r/20230816091226.1542-1-wuyun.abel@bytedance.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: 25266128fe16 ("virtio-net: fix race between set queues and probe")
+Reported-by: Dragos Tatulea <dtatulea@nvidia.com>
+Acked-by: Michael S. Tsirkin <mst@redhat.com>
+Signed-off-by: Jason Wang <jasowang@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 6 ++++++
- net/core/sock.c    | 2 +-
- 2 files changed, 7 insertions(+), 1 deletion(-)
+ drivers/net/virtio_net.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index def9dc1ddda11..1937deba0849b 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1211,6 +1211,12 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
- 	return sk->sk_prot->memory_pressure != NULL;
- }
+--- a/drivers/net/virtio_net.c
++++ b/drivers/net/virtio_net.c
+@@ -3120,8 +3120,6 @@ static int virtnet_probe(struct virtio_d
+ 		}
+ 	}
  
-+static inline bool sk_under_global_memory_pressure(const struct sock *sk)
-+{
-+	return sk->sk_prot->memory_pressure &&
-+		!!*sk->sk_prot->memory_pressure;
-+}
+-	_virtnet_set_queues(vi, vi->curr_queue_pairs);
+-
+ 	/* serialize netdev register + virtio_device_ready() with ndo_open() */
+ 	rtnl_lock();
+ 
+@@ -3134,6 +3132,8 @@ static int virtnet_probe(struct virtio_d
+ 
+ 	virtio_device_ready(vdev);
+ 
++	_virtnet_set_queues(vi, vi->curr_queue_pairs);
 +
- static inline bool sk_under_memory_pressure(const struct sock *sk)
- {
- 	if (!sk->sk_prot->memory_pressure)
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 0ff80718f194d..a7a0bc9c2a9f0 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -2459,7 +2459,7 @@ void __sk_mem_reduce_allocated(struct sock *sk, int amount)
- 	if (mem_cgroup_sockets_enabled && sk->sk_memcg)
- 		mem_cgroup_uncharge_skmem(sk->sk_memcg, amount);
+ 	rtnl_unlock();
  
--	if (sk_under_memory_pressure(sk) &&
-+	if (sk_under_global_memory_pressure(sk) &&
- 	    (sk_memory_allocated(sk) < sk_prot_mem_limits(sk, 0)))
- 		sk_leave_memory_pressure(sk);
- }
--- 
-2.40.1
-
+ 	err = virtnet_cpu_notif_add(vi);
 
 
