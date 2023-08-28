@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3B3A78AB76
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:31:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57D1B78AA52
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:21:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231462AbjH1Kay (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:30:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43846 "EHLO
+        id S230493AbjH1KVN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231460AbjH1Kae (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:30:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DF93A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:30:30 -0700 (PDT)
+        with ESMTP id S230022AbjH1KUm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:20:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81478124
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:20:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B0C9963CB0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:30:29 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2B40C433C8;
-        Mon, 28 Aug 2023 10:30:28 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C91B963778
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAC39C433C7;
+        Mon, 28 Aug 2023 10:20:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218629;
-        bh=BwsgbxZvH+ZxmPDroh9x3ELfInhKWxplo1fzT1Q8DGU=;
+        s=korg; t=1693218013;
+        bh=dGE/1pNTSjdA7j0z9Om04BXIz863Pk1bqJn8Z7YIECI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W8LdLHyeBCDEUrGlJFTuZAKZisTRR/FIlL9sUTJWExFWs7JZvXybdOfPagG5z3kaD
-         CiVKtyc8S999PbaOE2D/ViOHyZfI416ww5ihhe7VoVozz4vDPa0s9UZB5MdhWGB9s5
-         YmgaVt9IdSZPMO/A9nQ4xky+DrEfO9i5B+LaO2Tk=
+        b=PrKmonk9aPAWLZvYuHRDrqFCDbAwAgA+guwmP11PmvbGgzunJEgrKJcqNOhCZIuRc
+         XQLK0VjxZLpZtfC5QHFDt+wC+AtLIov67bUHdVPcQsmVc8zVFEW4xdz+dF9avihtKL
+         klzEXhboUrqMEZZ/h313myX85fY2t0V/sbmU0IkE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jacob Keller <jacob.e.keller@intel.com>,
-        Jiri Pirko <jiri@nvidia.com>, Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 027/122] devlink: move code to a dedicated directory
+        patches@lists.linux.dev, Ayush Jain <ayush.jain3@amd.com>,
+        Raghavendra K T <raghavendra.kt@amd.com>,
+        John Hubbard <jhubbard@nvidia.com>,
+        David Hildenbrand <david@redhat.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 063/129] selftests/mm: FOLL_LONGTERM need to be updated to 0x100
 Date:   Mon, 28 Aug 2023 12:12:22 +0200
-Message-ID: <20230828101157.332802472@linuxfoundation.org>
+Message-ID: <20230828101159.454479442@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,90 +58,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jakub Kicinski <kuba@kernel.org>
+From: Ayush Jain <ayush.jain3@amd.com>
 
-[ Upstream commit f05bd8ebeb69c803efd6d8a76d96b7fcd7011094 ]
+commit 1738b949625c7e17a454b25de33f1f415da3db69 upstream.
 
-The devlink code is hard to navigate with 13kLoC in one file.
-I really like the way Michal split the ethtool into per-command
-files and core. It'd probably be too much to split it all up,
-but we can at least separate the core parts out of the per-cmd
-implementations and put it in a directory so that new commands
-can be separate files.
+After commit 2c2241081f7d ("mm/gup: move private gup FOLL_ flags to
+internal.h") FOLL_LONGTERM flag value got updated from 0x10000 to 0x100 at
+include/linux/mm_types.h.
 
-Move the code, subsequent commit will do a partial split.
+As hmm.hmm_device_private.hmm_gup_test uses FOLL_LONGTERM Updating same
+here as well.
 
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Reviewed-by: Jiri Pirko <jiri@nvidia.com>
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Stable-dep-of: 2ebbc9752d06 ("devlink: add missing unregister linecard notification")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Before this change test goes in an infinite assert loop in
+hmm.hmm_device_private.hmm_gup_test
+==========================================================
+ RUN           hmm.hmm_device_private.hmm_gup_test ...
+hmm-tests.c:1962:hmm_gup_test:Expected HMM_DMIRROR_PROT_WRITE..
+..(2) == m[2] (34)
+hmm-tests.c:157:hmm_gup_test:Expected ret (-1) == 0 (0)
+hmm-tests.c:157:hmm_gup_test:Expected ret (-1) == 0 (0)
+...
+==========================================================
+
+ Call Trace:
+ <TASK>
+ ? sched_clock+0xd/0x20
+ ? __lock_acquire.constprop.0+0x120/0x6c0
+ ? ktime_get+0x2c/0xd0
+ ? sched_clock+0xd/0x20
+ ? local_clock+0x12/0xd0
+ ? lock_release+0x26e/0x3b0
+ pin_user_pages_fast+0x4c/0x70
+ gup_test_ioctl+0x4ff/0xbb0
+ ? gup_test_ioctl+0x68c/0xbb0
+ __x64_sys_ioctl+0x99/0xd0
+ do_syscall_64+0x60/0x90
+ ? syscall_exit_to_user_mode+0x2a/0x50
+ ? do_syscall_64+0x6d/0x90
+ ? syscall_exit_to_user_mode+0x2a/0x50
+ ? do_syscall_64+0x6d/0x90
+ ? irqentry_exit_to_user_mode+0xd/0x20
+ ? irqentry_exit+0x3f/0x50
+ ? exc_page_fault+0x96/0x200
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
+ RIP: 0033:0x7f6aaa31aaff
+
+After this change test is able to pass successfully.
+
+Link: https://lkml.kernel.org/r/20230808124347.79163-1-ayush.jain3@amd.com
+Fixes: 2c2241081f7d ("mm/gup: move private gup FOLL_ flags to internal.h")
+Signed-off-by: Ayush Jain <ayush.jain3@amd.com>
+Reviewed-by: Raghavendra K T <raghavendra.kt@amd.com>
+Reviewed-by: John Hubbard <jhubbard@nvidia.com>
+Acked-by: David Hildenbrand <david@redhat.com>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- MAINTAINERS                                | 2 +-
- net/Makefile                               | 1 +
- net/core/Makefile                          | 1 -
- net/devlink/Makefile                       | 3 +++
- net/{core/devlink.c => devlink/leftover.c} | 0
- 5 files changed, 5 insertions(+), 2 deletions(-)
- create mode 100644 net/devlink/Makefile
- rename net/{core/devlink.c => devlink/leftover.c} (100%)
+ tools/testing/selftests/mm/hmm-tests.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 379387e20a96d..07a9c274c0e29 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -6027,7 +6027,7 @@ S:	Supported
- F:	Documentation/networking/devlink
- F:	include/net/devlink.h
- F:	include/uapi/linux/devlink.h
--F:	net/core/devlink.c
-+F:	net/devlink/
+diff --git a/tools/testing/selftests/mm/hmm-tests.c b/tools/testing/selftests/mm/hmm-tests.c
+index 4adaad1b822f..20294553a5dd 100644
+--- a/tools/testing/selftests/mm/hmm-tests.c
++++ b/tools/testing/selftests/mm/hmm-tests.c
+@@ -57,9 +57,14 @@ enum {
  
- DH ELECTRONICS IMX6 DHCOM BOARD SUPPORT
- M:	Christoph Niedermaier <cniedermaier@dh-electronics.com>
-diff --git a/net/Makefile b/net/Makefile
-index 6a62e5b273781..0914bea9c335f 100644
---- a/net/Makefile
-+++ b/net/Makefile
-@@ -23,6 +23,7 @@ obj-$(CONFIG_BPFILTER)		+= bpfilter/
- obj-$(CONFIG_PACKET)		+= packet/
- obj-$(CONFIG_NET_KEY)		+= key/
- obj-$(CONFIG_BRIDGE)		+= bridge/
-+obj-$(CONFIG_NET_DEVLINK)	+= devlink/
- obj-$(CONFIG_NET_DSA)		+= dsa/
- obj-$(CONFIG_ATALK)		+= appletalk/
- obj-$(CONFIG_X25)		+= x25/
-diff --git a/net/core/Makefile b/net/core/Makefile
-index 5857cec87b839..10edd66a8a372 100644
---- a/net/core/Makefile
-+++ b/net/core/Makefile
-@@ -33,7 +33,6 @@ obj-$(CONFIG_LWTUNNEL) += lwtunnel.o
- obj-$(CONFIG_LWTUNNEL_BPF) += lwt_bpf.o
- obj-$(CONFIG_DST_CACHE) += dst_cache.o
- obj-$(CONFIG_HWBM) += hwbm.o
--obj-$(CONFIG_NET_DEVLINK) += devlink.o
- obj-$(CONFIG_GRO_CELLS) += gro_cells.o
- obj-$(CONFIG_FAILOVER) += failover.o
- obj-$(CONFIG_NET_SOCK_MSG) += skmsg.o
-diff --git a/net/devlink/Makefile b/net/devlink/Makefile
-new file mode 100644
-index 0000000000000..3a60959f71eea
---- /dev/null
-+++ b/net/devlink/Makefile
-@@ -0,0 +1,3 @@
-+# SPDX-License-Identifier: GPL-2.0
+ #define ALIGN(x, a) (((x) + (a - 1)) & (~((a) - 1)))
+ /* Just the flags we need, copied from mm.h: */
+-#define FOLL_WRITE	0x01	/* check pte is writable */
+-#define FOLL_LONGTERM   0x10000 /* mapping lifetime is indefinite */
+ 
++#ifndef FOLL_WRITE
++#define FOLL_WRITE	0x01	/* check pte is writable */
++#endif
 +
-+obj-y := leftover.o
-diff --git a/net/core/devlink.c b/net/devlink/leftover.c
-similarity index 100%
-rename from net/core/devlink.c
-rename to net/devlink/leftover.c
++#ifndef FOLL_LONGTERM
++#define FOLL_LONGTERM   0x100 /* mapping lifetime is indefinite */
++#endif
+ FIXTURE(hmm)
+ {
+ 	int		fd;
 -- 
-2.40.1
+2.42.0
 
 
 
