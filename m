@@ -2,50 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2229978AA44
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:21:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9982F78AB93
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229758AbjH1KUk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:20:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38544 "EHLO
+        id S231447AbjH1KcX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:32:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230503AbjH1KUV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:20:21 -0400
+        with ESMTP id S231557AbjH1KcO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:14 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB660C6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:19:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 148EACEE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9919A6371C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:19:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A837CC433C9;
-        Mon, 28 Aug 2023 10:19:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A31C63CE4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CD64C433C7;
+        Mon, 28 Aug 2023 10:31:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217997;
-        bh=ywdPzCE0ZNRyUCFX8q80cS0BMHCWtj9qrg4wmO3hR7A=;
+        s=korg; t=1693218692;
+        bh=ht/hvx3SdA3f8OjcD6aWe9RiCadd21V8sKFYe3TkFBs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pIfsEdFeLi+EW73dx0xIVUT4RnTNAVitbgzDzjLWZxEx3NWOt20iYRx7eEOBtpAqG
-         wFgue8+EKdSlzTjjePRKrzhGYOdDOxCKygqva5AveR5vDtGGxixFfgnm2oX0vxJQ6j
-         ffHvZQkoGQdZ04bZUDHQbcirmWAI0gUqYrrwKTj8=
+        b=W33buqj59JV9MJ9Sk8L1d6ivZJ17Nb+Bns3ub0T6/aWfygNQhv4qr/SJCWgmXoBH/
+         1ebS4LVsUyPPYcy2VgWPMlmpmBXGZD8dsNdypRoeiVJU/w3Rn2WcTVEAdEuKLc7zv2
+         RzcyL+MO+d+yRgv5/Gxg4W6ll+9t6BOCpLZEegUA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Andr=C3=A9=20Apitzsch?= <git@apitzsch.eu>,
-        Hans de Goede <hdegoede@redhat.com>
-Subject: [PATCH 6.4 057/129] platform/x86: ideapad-laptop: Add support for new hotkeys found on ThinkBook 14s Yoga ITL
+        Jonathan Cavitt <jonathan.cavitt@intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Nirmoy Das <nirmoy.das@intel.com>,
+        Andrzej Hajda <andrzej.hajda@intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 021/122] drm/i915/gt: Ensure memory quiesced before invalidation
 Date:   Mon, 28 Aug 2023 12:12:16 +0200
-Message-ID: <20230828101159.262251768@linuxfoundation.org>
+Message-ID: <20230828101157.141586818@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,49 +59,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: André Apitzsch <git@apitzsch.eu>
+From: Jonathan Cavitt <jonathan.cavitt@intel.com>
 
-commit a260f7d726fde52c0278bd3fa085a758639bcee2 upstream.
+[ Upstream commit 78a6ccd65fa3a7cc697810db079cc4b84dff03d5 ]
 
-The Lenovo Thinkbook 14s Yoga ITL has 4 new symbols/shortcuts on their
-F9-F11 and PrtSc keys:
+All memory traffic must be quiesced before requesting
+an aux invalidation on platforms that use Aux CCS.
 
-F9:    Has a symbol of a head with a headset, the manual says "Service key"
-F10:   Has a symbol of a telephone horn which has been picked up from the
-       receiver, the manual says: "Answer incoming calls"
-F11:   Has a symbol of a telephone horn which is resting on the receiver,
-       the manual says: "Reject incoming calls"
-PrtSc: Has a symbol of a siccor and a dashed ellipse, the manual says:
-       "Open the Windows 'Snipping' Tool app"
-
-This commit adds support for these 4 new hkey events.
-
-Signed-off-by: André Apitzsch <git@apitzsch.eu>
-Link: https://lore.kernel.org/r/20230819-lenovo_keys-v1-1-9d34eac88e0a@apitzsch.eu
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 972282c4cf24 ("drm/i915/gen12: Add aux table invalidate for all engines")
+Requires: a2a4aa0eef3b ("drm/i915: Add the gen12_needs_ccs_aux_inv helper")
+Signed-off-by: Jonathan Cavitt <jonathan.cavitt@intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.8+
+Reviewed-by: Nirmoy Das <nirmoy.das@intel.com>
+Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230725001950.1014671-4-andi.shyti@linux.intel.com
+(cherry picked from commit ad8ebf12217e451cd19804b1c3e97ad56491c74a)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/ideapad-laptop.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/gpu/drm/i915/gt/gen8_engine_cs.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
---- a/drivers/platform/x86/ideapad-laptop.c
-+++ b/drivers/platform/x86/ideapad-laptop.c
-@@ -1049,6 +1049,11 @@ static const struct key_entry ideapad_ke
- 	{ KE_IGNORE,	0x03 | IDEAPAD_WMI_KEY },
- 	/* Customizable Lenovo Hotkey ("star" with 'S' inside) */
- 	{ KE_KEY,	0x01 | IDEAPAD_WMI_KEY, { KEY_FAVORITES } },
-+	{ KE_KEY,	0x04 | IDEAPAD_WMI_KEY, { KEY_SELECTIVE_SCREENSHOT } },
-+	/* Lenovo Support */
-+	{ KE_KEY,	0x07 | IDEAPAD_WMI_KEY, { KEY_HELP } },
-+	{ KE_KEY,	0x0e | IDEAPAD_WMI_KEY, { KEY_PICKUP_PHONE } },
-+	{ KE_KEY,	0x0f | IDEAPAD_WMI_KEY, { KEY_HANGUP_PHONE } },
- 	/* Dark mode toggle */
- 	{ KE_KEY,	0x13 | IDEAPAD_WMI_KEY, { KEY_PROG1 } },
- 	/* Sound profile switch */
+diff --git a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+index 8e286733a4367..6a8c2fab4ca81 100644
+--- a/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
++++ b/drivers/gpu/drm/i915/gt/gen8_engine_cs.c
+@@ -193,7 +193,11 @@ int gen12_emit_flush_rcs(struct i915_request *rq, u32 mode)
+ {
+ 	struct intel_engine_cs *engine = rq->engine;
+ 
+-	if (mode & EMIT_FLUSH) {
++	/*
++	 * On Aux CCS platforms the invalidation of the Aux
++	 * table requires quiescing memory traffic beforehand
++	 */
++	if (mode & EMIT_FLUSH || gen12_needs_ccs_aux_inv(engine)) {
+ 		u32 flags = 0;
+ 		u32 *cs;
+ 
+-- 
+2.40.1
+
 
 
