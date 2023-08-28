@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5650C78AC3B
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7161D78AB73
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:31:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231546AbjH1KiV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:38:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34826 "EHLO
+        id S231429AbjH1Kaw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:30:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231679AbjH1Khz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:55 -0400
+        with ESMTP id S231437AbjH1Ka2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:30:28 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FF5EC5
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:52 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFE79131
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:30:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D26D863F42
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4093C433C8;
-        Mon, 28 Aug 2023 10:37:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F5EA63CAA
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:30:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6382FC433C7;
+        Mon, 28 Aug 2023 10:30:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219071;
-        bh=7NqRESLnxkuGaFvPjeDCR2RjF6kNPmaomvDYpkDOooc=;
+        s=korg; t=1693218623;
+        bh=RNZMRI7r3RVPV14HFvRvyr+YeaEmXSY+H2qehQM82qM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q7bvujZ5kJ56o48cJnLLGv2fHiCte8WdWjmxEx/zyGKiMZoo0i9UAKiiiRz+kGkXs
-         9FhoFZv9eFFMJ4RCE5/D318Th8KEc+VMfgELRMvj6/aXdZ2VRiDL7Vy5IQ0QjATb3e
-         rDUDcJeFfRiCHrBXNTf1Inh9H6aPptI/4WIpvgZQ=
+        b=LkuWoYKK8j0YoFE9pj8tZEhor1YM9TJXeK0Px2mYDfjYtQ0m3dQt6C4I1hZ79RTkr
+         a3ACJXY7AJHWAlNyoqYzBQP5N/bPd159TpUqZiPqqZ1sk+G3PcSE0oo1Io+GTIbQQ2
+         5UpJwKVT5rloqRiWlU9xhLRdU+VKwvujjxsj6BP0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Micha=C5=82=20Miros=C5=82aw?= <mirq-linux@rere.qmqm.pl>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Ziyang Xuan <william.xuanziyang@huawei.com>,
+        Oliver Hartkopp <socketcan@hartkopp.net>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 035/158] PM-runtime: add tracepoints for usage_count changes
+Subject: [PATCH 6.1 017/122] can: raw: fix lockdep issue in raw_release()
 Date:   Mon, 28 Aug 2023 12:12:12 +0200
-Message-ID: <20230828101158.531401699@linuxfoundation.org>
+Message-ID: <20230828101157.021413398@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -57,99 +58,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michał Mirosław <mirq-linux@rere.qmqm.pl>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit d229290689ae0f6eae068ef142de4fd61ab4ba50 ]
+[ Upstream commit 11c9027c983e9e4b408ee5613b6504d24ebd85be ]
 
-Add tracepoints to remaining places where device's power.usage_count
-is changed.
+syzbot complained about a lockdep issue [1]
 
-This helps debugging where and why autosuspend is prevented.
+Since raw_bind() and raw_setsockopt() first get RTNL
+before locking the socket, we must adopt the same order in raw_release()
 
-Signed-off-by: Michał Mirosław <mirq-linux@rere.qmqm.pl>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Stable-dep-of: 81302b1c7c99 ("ALSA: hda: Fix unhandled register update during auto-suspend period")
+[1]
+WARNING: possible circular locking dependency detected
+6.5.0-rc1-syzkaller-00192-g78adb4bcf99e #0 Not tainted
+------------------------------------------------------
+syz-executor.0/14110 is trying to acquire lock:
+ffff88804e4b6130 (sk_lock-AF_CAN){+.+.}-{0:0}, at: lock_sock include/net/sock.h:1708 [inline]
+ffff88804e4b6130 (sk_lock-AF_CAN){+.+.}-{0:0}, at: raw_bind+0xb1/0xab0 net/can/raw.c:435
+
+but task is already holding lock:
+ffffffff8e3df368 (rtnl_mutex){+.+.}-{3:3}, at: raw_bind+0xa7/0xab0 net/can/raw.c:434
+
+which lock already depends on the new lock.
+
+the existing dependency chain (in reverse order) is:
+
+-> #1 (rtnl_mutex){+.+.}-{3:3}:
+__mutex_lock_common kernel/locking/mutex.c:603 [inline]
+__mutex_lock+0x181/0x1340 kernel/locking/mutex.c:747
+raw_release+0x1c6/0x9b0 net/can/raw.c:391
+__sock_release+0xcd/0x290 net/socket.c:654
+sock_close+0x1c/0x20 net/socket.c:1386
+__fput+0x3fd/0xac0 fs/file_table.c:384
+task_work_run+0x14d/0x240 kernel/task_work.c:179
+resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+exit_to_user_mode_loop kernel/entry/common.c:171 [inline]
+exit_to_user_mode_prepare+0x210/0x240 kernel/entry/common.c:204
+__syscall_exit_to_user_mode_work kernel/entry/common.c:286 [inline]
+syscall_exit_to_user_mode+0x1d/0x50 kernel/entry/common.c:297
+do_syscall_64+0x44/0xb0 arch/x86/entry/common.c:86
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+-> #0 (sk_lock-AF_CAN){+.+.}-{0:0}:
+check_prev_add kernel/locking/lockdep.c:3142 [inline]
+check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+validate_chain kernel/locking/lockdep.c:3876 [inline]
+__lock_acquire+0x2e3d/0x5de0 kernel/locking/lockdep.c:5144
+lock_acquire kernel/locking/lockdep.c:5761 [inline]
+lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+lock_sock_nested+0x3a/0xf0 net/core/sock.c:3492
+lock_sock include/net/sock.h:1708 [inline]
+raw_bind+0xb1/0xab0 net/can/raw.c:435
+__sys_bind+0x1ec/0x220 net/socket.c:1792
+__do_sys_bind net/socket.c:1803 [inline]
+__se_sys_bind net/socket.c:1801 [inline]
+__x64_sys_bind+0x72/0xb0 net/socket.c:1801
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+other info that might help us debug this:
+
+Possible unsafe locking scenario:
+
+CPU0 CPU1
+---- ----
+lock(rtnl_mutex);
+        lock(sk_lock-AF_CAN);
+        lock(rtnl_mutex);
+lock(sk_lock-AF_CAN);
+
+*** DEADLOCK ***
+
+1 lock held by syz-executor.0/14110:
+
+stack backtrace:
+CPU: 0 PID: 14110 Comm: syz-executor.0 Not tainted 6.5.0-rc1-syzkaller-00192-g78adb4bcf99e #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
+Call Trace:
+<TASK>
+__dump_stack lib/dump_stack.c:88 [inline]
+dump_stack_lvl+0xd9/0x1b0 lib/dump_stack.c:106
+check_noncircular+0x311/0x3f0 kernel/locking/lockdep.c:2195
+check_prev_add kernel/locking/lockdep.c:3142 [inline]
+check_prevs_add kernel/locking/lockdep.c:3261 [inline]
+validate_chain kernel/locking/lockdep.c:3876 [inline]
+__lock_acquire+0x2e3d/0x5de0 kernel/locking/lockdep.c:5144
+lock_acquire kernel/locking/lockdep.c:5761 [inline]
+lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+lock_sock_nested+0x3a/0xf0 net/core/sock.c:3492
+lock_sock include/net/sock.h:1708 [inline]
+raw_bind+0xb1/0xab0 net/can/raw.c:435
+__sys_bind+0x1ec/0x220 net/socket.c:1792
+__do_sys_bind net/socket.c:1803 [inline]
+__se_sys_bind net/socket.c:1801 [inline]
+__x64_sys_bind+0x72/0xb0 net/socket.c:1801
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fd89007cb29
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007fd890d2a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000031
+RAX: ffffffffffffffda RBX: 00007fd89019bf80 RCX: 00007fd89007cb29
+RDX: 0000000000000010 RSI: 0000000020000040 RDI: 0000000000000003
+RBP: 00007fd8900c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007fd89019bf80 R15: 00007ffebf8124f8
+</TASK>
+
+Fixes: ee8b94c8510c ("can: raw: fix receiver memory leak")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Ziyang Xuan <william.xuanziyang@huawei.com>
+Cc: Oliver Hartkopp <socketcan@hartkopp.net>
+Cc: stable@vger.kernel.org
+Cc: Marc Kleine-Budde <mkl@pengutronix.de>
+Link: https://lore.kernel.org/all/20230720114438.172434-1-edumazet@google.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/power/runtime.c | 13 +++++++++++--
- include/trace/events/rpm.h   |  6 ++++++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ net/can/raw.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/power/runtime.c b/drivers/base/power/runtime.c
-index d5c2d86fbecd4..6e110c80079d7 100644
---- a/drivers/base/power/runtime.c
-+++ b/drivers/base/power/runtime.c
-@@ -1048,8 +1048,10 @@ int __pm_runtime_idle(struct device *dev, int rpmflags)
- 	int retval;
+diff --git a/net/can/raw.c b/net/can/raw.c
+index 1cd2c8748c26a..0dd3259357a35 100644
+--- a/net/can/raw.c
++++ b/net/can/raw.c
+@@ -386,9 +386,9 @@ static int raw_release(struct socket *sock)
+ 	list_del(&ro->notifier);
+ 	spin_unlock(&raw_notifier_lock);
  
- 	if (rpmflags & RPM_GET_PUT) {
--		if (!atomic_dec_and_test(&dev->power.usage_count))
-+		if (!atomic_dec_and_test(&dev->power.usage_count)) {
-+			trace_rpm_usage_rcuidle(dev, rpmflags);
- 			return 0;
-+		}
- 	}
++	rtnl_lock();
+ 	lock_sock(sk);
  
- 	might_sleep_if(!(rpmflags & RPM_ASYNC) && !dev->power.irq_safe);
-@@ -1080,8 +1082,10 @@ int __pm_runtime_suspend(struct device *dev, int rpmflags)
- 	int retval;
+-	rtnl_lock();
+ 	/* remove current filters & unregister */
+ 	if (ro->bound) {
+ 		if (ro->dev)
+@@ -405,12 +405,13 @@ static int raw_release(struct socket *sock)
+ 	ro->dev = NULL;
+ 	ro->count = 0;
+ 	free_percpu(ro->uniq);
+-	rtnl_unlock();
  
- 	if (rpmflags & RPM_GET_PUT) {
--		if (!atomic_dec_and_test(&dev->power.usage_count))
-+		if (!atomic_dec_and_test(&dev->power.usage_count)) {
-+			trace_rpm_usage_rcuidle(dev, rpmflags);
- 			return 0;
-+		}
- 	}
+ 	sock_orphan(sk);
+ 	sock->sk = NULL;
  
- 	might_sleep_if(!(rpmflags & RPM_ASYNC) && !dev->power.irq_safe);
-@@ -1143,6 +1147,7 @@ int pm_runtime_get_if_in_use(struct device *dev)
- 	retval = dev->power.disable_depth > 0 ? -EINVAL :
- 		dev->power.runtime_status == RPM_ACTIVE
- 			&& atomic_inc_not_zero(&dev->power.usage_count);
-+	trace_rpm_usage_rcuidle(dev, 0);
- 	spin_unlock_irqrestore(&dev->power.lock, flags);
- 	return retval;
- }
-@@ -1476,6 +1481,8 @@ void pm_runtime_allow(struct device *dev)
- 	dev->power.runtime_auto = true;
- 	if (atomic_dec_and_test(&dev->power.usage_count))
- 		rpm_idle(dev, RPM_AUTO | RPM_ASYNC);
-+	else
-+		trace_rpm_usage_rcuidle(dev, RPM_AUTO | RPM_ASYNC);
- 
-  out:
- 	spin_unlock_irq(&dev->power.lock);
-@@ -1543,6 +1550,8 @@ static void update_autosuspend(struct device *dev, int old_delay, int old_use)
- 		if (!old_use || old_delay >= 0) {
- 			atomic_inc(&dev->power.usage_count);
- 			rpm_resume(dev, 0);
-+		} else {
-+			trace_rpm_usage_rcuidle(dev, 0);
- 		}
- 	}
- 
-diff --git a/include/trace/events/rpm.h b/include/trace/events/rpm.h
-index 26927a560eabc..3c716214dab1a 100644
---- a/include/trace/events/rpm.h
-+++ b/include/trace/events/rpm.h
-@@ -74,6 +74,12 @@ DEFINE_EVENT(rpm_internal, rpm_idle,
- 
- 	TP_ARGS(dev, flags)
- );
-+DEFINE_EVENT(rpm_internal, rpm_usage,
+ 	release_sock(sk);
++	rtnl_unlock();
 +
-+	TP_PROTO(struct device *dev, int flags),
-+
-+	TP_ARGS(dev, flags)
-+);
+ 	sock_put(sk);
  
- TRACE_EVENT(rpm_return_int,
- 	TP_PROTO(struct device *dev, unsigned long ip, int ret),
+ 	return 0;
 -- 
 2.40.1
 
