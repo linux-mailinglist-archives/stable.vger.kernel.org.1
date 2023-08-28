@@ -2,89 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C97078B4B9
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 17:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F063F78B542
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 18:21:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229816AbjH1Prt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 11:47:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40752 "EHLO
+        id S229819AbjH1QU4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 12:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231767AbjH1PrV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 11:47:21 -0400
-Received: from wout1-smtp.messagingengine.com (wout1-smtp.messagingengine.com [64.147.123.24])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4A4A9D;
-        Mon, 28 Aug 2023 08:47:18 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id A40BF3200D99;
-        Mon, 28 Aug 2023 11:47:14 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Mon, 28 Aug 2023 11:47:15 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=dustymabe.com;
-         h=cc:cc:content-transfer-encoding:content-type:content-type
-        :date:date:from:from:in-reply-to:in-reply-to:message-id
-        :mime-version:references:reply-to:sender:subject:subject:to:to;
-         s=fm2; t=1693237634; x=1693324034; bh=Ksgm/zu84KcSiZz5BxlGxxG1S
-        PevzpBLxTP8pcnPzho=; b=ekMbexukrb/ravvKKRGNtMQWGvtJpoUy0NjD9dDKw
-        Lw5sNJQtxV2PbQWUgLsr2eU7Gh075xnw+k+PMqEwHV8G3mr18n+ik9jlOUSk+i3+
-        4cbytZf7bdNkRfl21d81FNeSb/B2y/bjnmKP/e49oRXlCu5yE1QvVi94fVXVmJIR
-        BImSPBRFVYIRx66Ntznw5knfffJX5XngsJU+AUACe46g0/kJEATPV5OAx/dTIYc+
-        5VXMrKP+Hnb4Aobrk3cZuklIg7atgX5RfTLTxsD7vHnHuZksaf1utfflf3cApVMJ
-        K/p5kikWOx6YrSuA8gS0t7Q72Atzt3OF3lWB09UMhs21g==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1693237634; x=1693324034; bh=Ksgm/zu84KcSiZz5BxlGxxG1SPevzpBLxTP
-        8pcnPzho=; b=mIGIsK+go6/bw4GhcyR3991+TVb22OUafpGnrJF6Yv9Z2Cjpzs9
-        XSQciSaxUVgImHgU4bt1vawWaT4ziLY1p/wf5yTurN9c93+mMCp4cSTZo8KACzrB
-        6wWOelDKWIkUjEigTh3RcOYwKIRMQUshnCJCEtUffBbX+XMLnXw5EwZwX42pUNvG
-        V5nx5d0QbF93MXbFvnwFWcMap+plIISdpod5viIi6S9mhDeWEMZCva/fPWDp3Mww
-        Crgm//BQkzxeE8/vl4znpQZeS+sW6jfjvoNHt2ghzv5abRhunOAetlxwe16S/HCr
-        kTNPtmIftSA64Ol5J8oxpfwrl8nn1hBgheA==
-X-ME-Sender: <xms:gcHsZCge2uIsNya5wVWMbLJ4DUJyh5l-K2sY4j4ke8wE00jkFi5tLQ>
-    <xme:gcHsZDDjzFKGZoCL2kBclX8LCOYgV42GUaLwGGLr7DVxQyavVuiG1qZtHOVAwcbpB
-    2n_7Rpzb8k0unUSuGU>
-X-ME-Received: <xmr:gcHsZKEz-lxOd_tHinqQYkICSwBYK8--8jfP8wILCfvl0A2yboR2ireqyrTP1IiIDJ5f>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudefgedgleduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeffuhhs
-    thihucforggsvgcuoeguuhhsthihseguuhhsthihmhgrsggvrdgtohhmqeenucggtffrrg
-    htthgvrhhnpedujeehleejheejvdefudelvedvueetfeefvdevtdefieettdduhfejhfei
-    ffdvteenucffohhmrghinheprhgvughhrghtrdgtohhmnecuvehluhhsthgvrhfuihiivg
-    eptdenucfrrghrrghmpehmrghilhhfrhhomhepughushhthiesughushhthihmrggsvgdr
-    tghomh
-X-ME-Proxy: <xmx:gcHsZLQNOtxFy5TuWk7BwX72AkSxXtWHUfuTDyoJl_lUWU2GnFFJQg>
-    <xmx:gcHsZPxRO-Oy34QCFWIC8rvRoFSyPxqu3J0cjVBqG3l9fXk9F5qxSg>
-    <xmx:gcHsZJ7sIKn7Jyc-UXOkwoxX_SxcLDyAgXyJQ5VB26ArKmDZkwBIpQ>
-    <xmx:gsHsZGlGkYxiJAHipJaMZSBb9IbCRiko5avz7hzA2lOYLNBSIb70_A>
-Feedback-ID: i13394474:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 28 Aug 2023 11:47:13 -0400 (EDT)
-Message-ID: <7eaf0f76-5820-e404-905e-892610eaed36@dustymabe.com>
-Date:   Mon, 28 Aug 2023 11:47:12 -0400
+        with ESMTP id S232404AbjH1QUs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 12:20:48 -0400
+Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BADE4185;
+        Mon, 28 Aug 2023 09:20:40 -0700 (PDT)
+Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
+        id 99AD41C0004; Mon, 28 Aug 2023 18:20:38 +0200 (CEST)
+Date:   Mon, 28 Aug 2023 18:20:38 +0200
+From:   Pavel Machek <pavel@denx.de>
+To:     Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Tony Lindgren <tony@atomide.com>, stable@vger.kernel.org,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Arnd Bergmann <arnd@arndb.de>,
+        Anders Roxell <anders.roxell@linaro.org>
+Subject: Re: [PATCH 4.19 000/129] 4.19.293-rc1 review
+Message-ID: <ZOzJVveC2YhjBA9d@duo.ucw.cz>
+References: <20230828101153.030066927@linuxfoundation.org>
+ <CA+G9fYuQXq7-jkL59MMKfRbqqB509T3nQdtcW+4wVW_QRovx5g@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: [PATCH] tpm: Don't make vendor check required for probe
-Content-Language: en-US
-To:     Mario Limonciello <mario.limonciello@amd.com>, jarkko@kernel.org
-Cc:     linux-integrity@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Thorsten Leemhuis <regressions@leemhuis.info>,
-        charles.d.prestopine@intel.com, rafael.j.wysocki@intel.com,
-        len.brown@intel.com, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>
-References: <20230818181516.19167-1-mario.limonciello@amd.com>
-From:   Dusty Mabe <dusty@dustymabe.com>
-In-Reply-To: <20230818181516.19167-1-mario.limonciello@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha1;
+        protocol="application/pgp-signature"; boundary="t7PEBjmXvmbOHmzp"
+Content-Disposition: inline
+In-Reply-To: <CA+G9fYuQXq7-jkL59MMKfRbqqB509T3nQdtcW+4wVW_QRovx5g@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_PASS,
+        T_SPF_TEMPERROR autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -92,17 +47,77 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
+--t7PEBjmXvmbOHmzp
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-On 8/18/23 14:15, Mario Limonciello wrote:
-> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
-> all AMD fTPMs") doesn't work properly on Intel fTPM.  The TPM doesn't reply
-> at bootup and returns back the command code.
-> 
-> As this isn't crucial for anything but AMD fTPM and AMD fTPM works, throw
-> away the error code to let Intel fTPM continue to work.
-> 
+Hi!
 
-FWIW there is a Fedora bug where several people are reporting similar issues:
-https://bugzilla.redhat.com/show_bug.cgi?id=2232888
+> > This is the start of the stable review cycle for the 4.19.293 release.
+> > There are 129 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> >
+> > Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
+> > Anything received after that time might be too late.
+> >
+> > The whole patch series can be found in one patch at:
+> >         https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patc=
+h-4.19.293-rc1.gz
+> > or in the git tree and branch at:
+> >         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stab=
+le-rc.git linux-4.19.y
+> > and the diffstat can be found below.
+> >
+> > thanks,
+> >
+> > greg k-h
+>=20
+> Results from Linaro=E2=80=99s test farm.
+> Regressions on arm.
+>=20
+> stable-rc linux-4.19.y arm gcc-12 builds fails with
+> following warnings / errors.
+>=20
+> Build errors:
+> --------------
+> drivers/bus/ti-sysc.c: In function 'sysc_reset':
+> drivers/bus/ti-sysc.c:982:15: error: implicit declaration of function
+> 'sysc_read_sysconfig' [-Werror=3Dimplicit-function-declaration]
+>   982 |         val =3D sysc_read_sysconfig(ddata);
+>       |               ^~~~~~~~~~~~~~~~~~~
+> cc1: some warnings being treated as errors
+>=20
+> Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Dusty
+We see this one, too:
+
+  CC      kernel/kthread.o
+1126drivers/bus/ti-sysc.c: In function 'sysc_reset':
+1127drivers/bus/ti-sysc.c:982:8: error: implicit declaration of function 's=
+ysc_read_sysconfig'; did you mean 'sysc_read_revision'? [-Werror=3Dimplicit=
+-function-declaration]
+1128  val =3D sysc_read_sysconfig(ddata);
+1129        ^~~~~~~~~~~~~~~~~~~
+1130        sysc_read_revision
+1131  CC      drivers/char/hw_random/omap3-rom-rng.o
+1132  CC      fs/readdir.o
+
+Best regards,
+								Pavel
+--=20
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
+
+--t7PEBjmXvmbOHmzp
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZOzJVgAKCRAw5/Bqldv6
+8sGYAJ4ufDqWxOYm44vyNUUZS0yCNsdmIQCcC1lWmrgK4yhClD/2za9/oIevXO0=
+=ucW/
+-----END PGP SIGNATURE-----
+
+--t7PEBjmXvmbOHmzp--
