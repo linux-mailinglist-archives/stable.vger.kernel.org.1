@@ -2,52 +2,59 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F68B78AD1C
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E0A978ABF3
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231949AbjH1Kpz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:45:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54142 "EHLO
+        id S231578AbjH1Kfj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231956AbjH1Kp1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 83DA11B4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:07 -0700 (PDT)
+        with ESMTP id S231645AbjH1KfV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:21 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780F9AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4DE7161943
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 61D01C433C8;
-        Mon, 28 Aug 2023 10:44:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0D76C63E95
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E5A47C433C7;
+        Mon, 28 Aug 2023 10:35:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219462;
-        bh=aAGzF/oGWN632POR1Rimjxpsnnbgen+mmDEr+XlOFtg=;
+        s=korg; t=1693218917;
+        bh=+JnsrZKGYYqd4Eog2BPpx674k/QBfgF3GZz/GhAOdW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gHEkKrhnmSyLSW2k1uOdAWOemNZ6LX/1X244Nwnp6ut4uikoxG/SKDYYDxSF1fX4r
-         v6ulVFtl3bOJD78YQDLEV9P/D/FM1Qf/w4A4WQeWA2NLmdYcUil2JOnO73Z/4TXTww
-         hMvHeBXgI4LO6ZSRBQXQbW5faiJY6FVodZmhie9M=
+        b=W+TweSq7yfcbOAzfHbXw9vaE+mGAj7+2xx83z6Guc5863VJ27nKlSJItMEfLpgx4o
+         Nz184OHEIcXxVB2jhdWNUXAhRxk7Z8j7QLl2uwYVqgk+k6EHEEc1FWcfaR+ckKYLEu
+         JLGTRGdJDISO+SACdPIhVUuZ62OQ5O3DGleLLNYQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Simon Horman <simon.horman@corigine.com>,
-        Ivan Mikhaylov <fr0st61te@gmail.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.15 44/89] net/ncsi: make one oem_gma function for all mfr id
+        patches@lists.linux.dev, Yin Fengwei <fengwei.yin@intel.com>,
+        Yu Zhao <yuzhao@google.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Minchan Kim <minchan@kernel.org>,
+        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+        Yang Shi <shy828301@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 110/122] madvise:madvise_free_pte_range(): dont use mapcount() against large folio for sharing check
 Date:   Mon, 28 Aug 2023 12:13:45 +0200
-Message-ID: <20230828101151.654151435@linuxfoundation.org>
+Message-ID: <20230828101200.083518183@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,161 +62,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ivan Mikhaylov <fr0st61te@gmail.com>
+From: Yin Fengwei <fengwei.yin@intel.com>
 
-commit 74b449b98dccdf24288d562f9d207fa066da793d upstream.
+commit 0e0e9bd5f7b9d40fd03b70092367247d52da1db0 upstream.
 
-Make the one Get Mac Address function for all manufacturers and change
-this call in handlers accordingly.
+Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a
+folio") replaced the page_mapcount() with folio_mapcount() to check
+whether the folio is shared by other mapping.
 
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Ivan Mikhaylov <fr0st61te@gmail.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+It's not correct for large folios. folio_mapcount() returns the total
+mapcount of large folio which is not suitable to detect whether the folio
+is shared.
+
+Use folio_estimated_sharers() which returns a estimated number of shares.
+That means it's not 100% correct. It should be OK for madvise case here.
+
+User-visible effects is that the THP is skipped when user call madvise.
+But the correct behavior is THP should be split and processed then.
+
+NOTE: this change is a temporary fix to reduce the user-visible effects
+before the long term fix from David is ready.
+
+Link: https://lkml.kernel.org/r/20230808020917.2230692-4-fengwei.yin@intel.com
+Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
+Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+Reviewed-by: Yu Zhao <yuzhao@google.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-rsp.c |   88 +++++++++++-----------------------------------------
- 1 file changed, 19 insertions(+), 69 deletions(-)
+ include/linux/mm.h |   19 +++++++++++++++++++
+ mm/madvise.c       |    4 ++--
+ 2 files changed, 21 insertions(+), 2 deletions(-)
 
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -611,14 +611,15 @@ static int ncsi_rsp_handler_snfc(struct
- 	return 0;
+--- a/include/linux/mm.h
++++ b/include/linux/mm.h
+@@ -1727,6 +1727,25 @@ static inline size_t folio_size(struct f
+ 	return PAGE_SIZE << folio_order(folio);
  }
  
--/* Response handler for Mellanox command Get Mac Address */
--static int ncsi_rsp_handler_oem_mlx_gma(struct ncsi_request *nr)
-+/* Response handler for Get Mac Address command */
-+static int ncsi_rsp_handler_oem_gma(struct ncsi_request *nr, int mfr_id)
- {
- 	struct ncsi_dev_priv *ndp = nr->ndp;
- 	struct net_device *ndev = ndp->ndev.dev;
- 	const struct net_device_ops *ops = ndev->netdev_ops;
- 	struct ncsi_rsp_oem_pkt *rsp;
- 	struct sockaddr saddr;
-+	u32 mac_addr_off = 0;
- 	int ret = 0;
- 
- 	/* Get the response header */
-@@ -626,7 +627,19 @@ static int ncsi_rsp_handler_oem_mlx_gma(
- 
- 	saddr.sa_family = ndev->type;
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
--	memcpy(saddr.sa_data, &rsp->data[MLX_MAC_ADDR_OFFSET], ETH_ALEN);
-+	if (mfr_id == NCSI_OEM_MFR_BCM_ID)
-+		mac_addr_off = BCM_MAC_ADDR_OFFSET;
-+	else if (mfr_id == NCSI_OEM_MFR_MLX_ID)
-+		mac_addr_off = MLX_MAC_ADDR_OFFSET;
-+	else if (mfr_id == NCSI_OEM_MFR_INTEL_ID)
-+		mac_addr_off = INTEL_MAC_ADDR_OFFSET;
++/**
++ * folio_estimated_sharers - Estimate the number of sharers of a folio.
++ * @folio: The folio.
++ *
++ * folio_estimated_sharers() aims to serve as a function to efficiently
++ * estimate the number of processes sharing a folio. This is done by
++ * looking at the precise mapcount of the first subpage in the folio, and
++ * assuming the other subpages are the same. This may not be true for large
++ * folios. If you want exact mapcounts for exact calculations, look at
++ * page_mapcount() or folio_total_mapcount().
++ *
++ * Return: The estimated number of processes sharing a folio.
++ */
++static inline int folio_estimated_sharers(struct folio *folio)
++{
++	return page_mapcount(folio_page(folio, 0));
++}
 +
-+	memcpy(saddr.sa_data, &rsp->data[mac_addr_off], ETH_ALEN);
-+	if (mfr_id == NCSI_OEM_MFR_BCM_ID || mfr_id == NCSI_OEM_MFR_INTEL_ID)
-+		eth_addr_inc((u8 *)saddr.sa_data);
-+	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
-+		return -ENXIO;
 +
- 	/* Set the flag for GMA command which should only be called once */
- 	ndp->gma_flag = 1;
- 
-@@ -649,41 +662,10 @@ static int ncsi_rsp_handler_oem_mlx(stru
- 
- 	if (mlx->cmd == NCSI_OEM_MLX_CMD_GMA &&
- 	    mlx->param == NCSI_OEM_MLX_CMD_GMA_PARAM)
--		return ncsi_rsp_handler_oem_mlx_gma(nr);
-+		return ncsi_rsp_handler_oem_gma(nr, NCSI_OEM_MFR_MLX_ID);
- 	return 0;
- }
- 
--/* Response handler for Broadcom command Get Mac Address */
--static int ncsi_rsp_handler_oem_bcm_gma(struct ncsi_request *nr)
--{
--	struct ncsi_dev_priv *ndp = nr->ndp;
--	struct net_device *ndev = ndp->ndev.dev;
--	const struct net_device_ops *ops = ndev->netdev_ops;
--	struct ncsi_rsp_oem_pkt *rsp;
--	struct sockaddr saddr;
--	int ret = 0;
--
--	/* Get the response header */
--	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
--
--	saddr.sa_family = ndev->type;
--	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
--	memcpy(saddr.sa_data, &rsp->data[BCM_MAC_ADDR_OFFSET], ETH_ALEN);
--	/* Increase mac address by 1 for BMC's address */
--	eth_addr_inc((u8 *)saddr.sa_data);
--	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
--		return -ENXIO;
--
--	/* Set the flag for GMA command which should only be called once */
--	ndp->gma_flag = 1;
--
--	ret = ops->ndo_set_mac_address(ndev, &saddr);
--	if (ret < 0)
--		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
--
--	return ret;
--}
--
- /* Response handler for Broadcom card */
- static int ncsi_rsp_handler_oem_bcm(struct ncsi_request *nr)
+ #ifndef HAVE_ARCH_MAKE_PAGE_ACCESSIBLE
+ static inline int arch_make_page_accessible(struct page *page)
  {
-@@ -695,42 +677,10 @@ static int ncsi_rsp_handler_oem_bcm(stru
- 	bcm = (struct ncsi_rsp_oem_bcm_pkt *)(rsp->data);
- 
- 	if (bcm->type == NCSI_OEM_BCM_CMD_GMA)
--		return ncsi_rsp_handler_oem_bcm_gma(nr);
-+		return ncsi_rsp_handler_oem_gma(nr, NCSI_OEM_MFR_BCM_ID);
- 	return 0;
- }
- 
--/* Response handler for Intel command Get Mac Address */
--static int ncsi_rsp_handler_oem_intel_gma(struct ncsi_request *nr)
--{
--	struct ncsi_dev_priv *ndp = nr->ndp;
--	struct net_device *ndev = ndp->ndev.dev;
--	const struct net_device_ops *ops = ndev->netdev_ops;
--	struct ncsi_rsp_oem_pkt *rsp;
--	struct sockaddr saddr;
--	int ret = 0;
--
--	/* Get the response header */
--	rsp = (struct ncsi_rsp_oem_pkt *)skb_network_header(nr->rsp);
--
--	saddr.sa_family = ndev->type;
--	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
--	memcpy(saddr.sa_data, &rsp->data[INTEL_MAC_ADDR_OFFSET], ETH_ALEN);
--	/* Increase mac address by 1 for BMC's address */
--	eth_addr_inc((u8 *)saddr.sa_data);
--	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
--		return -ENXIO;
--
--	/* Set the flag for GMA command which should only be called once */
--	ndp->gma_flag = 1;
--
--	ret = ops->ndo_set_mac_address(ndev, &saddr);
--	if (ret < 0)
--		netdev_warn(ndev,
--			    "NCSI: 'Writing mac address to device failed\n");
--
--	return ret;
--}
--
- /* Response handler for Intel card */
- static int ncsi_rsp_handler_oem_intel(struct ncsi_request *nr)
- {
-@@ -742,7 +692,7 @@ static int ncsi_rsp_handler_oem_intel(st
- 	intel = (struct ncsi_rsp_oem_intel_pkt *)(rsp->data);
- 
- 	if (intel->cmd == NCSI_OEM_INTEL_CMD_GMA)
--		return ncsi_rsp_handler_oem_intel_gma(nr);
-+		return ncsi_rsp_handler_oem_gma(nr, NCSI_OEM_MFR_INTEL_ID);
- 
- 	return 0;
- }
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -654,8 +654,8 @@ static int madvise_free_pte_range(pmd_t
+ 		 * deactivate all pages.
+ 		 */
+ 		if (folio_test_large(folio)) {
+-			if (folio_mapcount(folio) != 1)
+-				goto out;
++			if (folio_estimated_sharers(folio) != 1)
++				break;
+ 			folio_get(folio);
+ 			if (!folio_trylock(folio)) {
+ 				folio_put(folio);
 
 
