@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF92278AD30
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3240F78ACC3
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231974AbjH1Kq0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:46:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37074 "EHLO
+        id S231851AbjH1KmP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:42:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231989AbjH1KqE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:04 -0400
+        with ESMTP id S231855AbjH1Klz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1955C1BD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:39 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 693DF10D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:53 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5BAC664244
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:18 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71503C433C9;
-        Mon, 28 Aug 2023 10:45:17 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF22261943
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:52 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C2E3C433C8;
+        Mon, 28 Aug 2023 10:41:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219517;
-        bh=DZAgK5VGrL3fkiJJfwCR7J/OY/Eoy8xIGfIIP+kNwF0=;
+        s=korg; t=1693219312;
+        bh=6T1EYa6ScFFCq3Czktnc5qPp13Yc9CnxG59iNx/3mIA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CzWNOnSEpFFpYH0oMaGkaO+Eg5gjyvwm+3DlovrKdsNk6rPjRq94ByWQROC5vJ4Qb
-         u2s19GOMpcwnu8FISVYUyytNe+fujkr79CC92q8uhxTm90tzGZ3UA00Trs9GvOztnF
-         DUOLnWjapk3pW98uf1vBXKKqxcfQTAKJj8B45E1s=
+        b=124CYyWta+BTEQh0jbp+YQp79wZfNhv9V5hDi+IaJsCsjN8nU2PF3NKIFibr3vitd
+         aozn25auZwPlMrclK2ba/0jHfKmQqrFVXPMfUeTrN3CijyJNKAcsHNHJjOtfEAhnQI
+         lVcngiPSxwq6ymw8YiH6Rj9iyrfryvw05wDEhY/w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
-        Chen-Yu Tsai <wenst@chromium.org>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Subject: [PATCH 5.15 65/89] media: vcodec: Fix potential array out-of-bounds in encoder queue_setup
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>
+Subject: [PATCH 5.4 149/158] Revert "ALSA: pcm: Use SG-buffer only when direct DMA is available"
 Date:   Mon, 28 Aug 2023 12:14:06 +0200
-Message-ID: <20230828101152.362980866@linuxfoundation.org>
+Message-ID: <20230828101202.695378560@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,41 +53,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Wei Chen <harperchen1110@gmail.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-commit e7f2e65699e2290fd547ec12a17008764e5d9620 upstream.
+commit 7d50b295c4af16f814ee82369c4a234df5228801 upstream.
 
-variable *nplanes is provided by user via system call argument. The
-possible value of q_data->fmt->num_planes is 1-3, while the value
-of *nplanes can be 1-8. The array access by index i can cause array
-out-of-bounds.
+This reverts commit 3ad796cbc36a ("ALSA: pcm: Use SG-buffer only when
+direct DMA is available") also the modification commit 467fd0e82b62
+("ALSA: pcm: Fix build error on m68k and others").
 
-Fix this bug by checking *nplanes against the array size.
+Poking the DMA internal helper is a layer violation, so we should
+avoid that.  Meanwhile the actual bug has been addressed by the
+Kconfig fix in commit dbed452a078d ("dma-pool: decouple DMA_REMAP from
+DMA_COHERENT_POOL"), so we can live without this hack.
 
-Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
-Signed-off-by: Wei Chen <harperchen1110@gmail.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Link: https://lore.kernel.org/r/20200717064130.22957-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/platform/mtk-vcodec/mtk_vcodec_enc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ sound/core/pcm_memory.c |   14 --------------
+ 1 file changed, 14 deletions(-)
 
---- a/drivers/media/platform/mtk-vcodec/mtk_vcodec_enc.c
-+++ b/drivers/media/platform/mtk-vcodec/mtk_vcodec_enc.c
-@@ -733,6 +733,8 @@ static int vb2ops_venc_queue_setup(struc
- 		return -EINVAL;
+--- a/sound/core/pcm_memory.c
++++ b/sound/core/pcm_memory.c
+@@ -11,7 +11,6 @@
+ #include <linux/moduleparam.h>
+ #include <linux/vmalloc.h>
+ #include <linux/export.h>
+-#include <linux/dma-mapping.h>
+ #include <sound/core.h>
+ #include <sound/pcm.h>
+ #include <sound/info.h>
+@@ -66,19 +65,6 @@ static int do_alloc_pages(struct snd_car
+ 	__update_allocated_size(card, size);
+ 	mutex_unlock(&card->memory_mutex);
  
- 	if (*nplanes) {
-+		if (*nplanes != q_data->fmt->num_planes)
-+			return -EINVAL;
- 		for (i = 0; i < *nplanes; i++)
- 			if (sizes[i] < q_data->sizeimage[i])
- 				return -EINVAL;
+-
+-#ifdef CONFIG_SND_DMA_SGBUF
+-	if ((type == SNDRV_DMA_TYPE_DEV_SG || type == SNDRV_DMA_TYPE_DEV_UC_SG) &&
+-	    !dma_is_direct(get_dma_ops(dev))) {
+-		/* mutate to continuous page allocation */
+-		dev_dbg(dev, "Use continuous page allocator\n");
+-		if (type == SNDRV_DMA_TYPE_DEV_SG)
+-			type = SNDRV_DMA_TYPE_DEV;
+-		else
+-			type = SNDRV_DMA_TYPE_DEV_UC;
+-	}
+-#endif /* CONFIG_SND_DMA_SGBUF */
+-
+ 	err = snd_dma_alloc_pages(type, dev, size, dmab);
+ 	if (!err) {
+ 		/* the actual allocation size might be bigger than requested,
 
 
