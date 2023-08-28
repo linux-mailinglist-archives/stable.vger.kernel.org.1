@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F0DE78AA98
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C28F78AD7E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231187AbjH1KX3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54596 "EHLO
+        id S232095AbjH1Ksj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:48:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58720 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231293AbjH1KXO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:14 -0400
+        with ESMTP id S232183AbjH1KsU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:48:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EF3683
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:11 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FDBE119
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:48:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A87256397B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:10 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B88CAC433C7;
-        Mon, 28 Aug 2023 10:23:09 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BAC2264327
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:48:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CEB80C433C8;
+        Mon, 28 Aug 2023 10:48:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218190;
-        bh=jMHoe6+51Hq1FIXHacKKX5i0+7fuV+H0V/ozH9Xhwr4=;
+        s=korg; t=1693219695;
+        bh=HURGjjnnlqyyEqa6Nnfmj5cTOw14w0mgbqSGTp1+OZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VUJgLpLjxe2gHEegsk9IsXz7DTRIqhgU0p988pHGjv/aDY8HfoGP0/ZnIL7qnv85h
-         4GqEQlmJLEL6OxpSSDu5BR7CULUcfEJP8sw48E/KFuaHiPjC14UEFptRfDABIhkC0Q
-         SvC6hWs3kB96wfndjmuBcU0KOSVA1Kykdya35LO8=
+        b=i+o+7Uji9PNibyrwZGubxA2FppMgKOSOmxi9oNXD9gMuw1eyp2SHNOGsZxX/k06pG
+         14cpwlmUDd4Ip3B/papWTp1s9oNYDglZ5hlY07fUcMN1fuccXOpB5atajgbqoMQgho
+         Pl+vD5yAYIVCVL6eLzKMeVKl06uv15h2kYC8gZAA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Mark Brown <broonie@kernel.org>
-Subject: [PATCH 6.4 127/129] ASoC: amd: vangogh: select CONFIG_SND_AMD_ACP_CONFIG
+        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 09/84] fs: dlm: use dlm_plock_info for do_unlock_close
 Date:   Mon, 28 Aug 2023 12:13:26 +0200
-Message-ID: <20230828101201.697006745@linuxfoundation.org>
+Message-ID: <20230828101149.486764904@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,38 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit fd0a7ec379dbf21b7bfd81914381ae5281706ef5 upstream.
+[ Upstream commit 4d413ae9ced4180c0e2114553c3a7560b509b0f8 ]
 
-The vangogh driver just gained a link time dependency that now causes
-randconfig builds to fail:
+This patch refactors do_unlock_close() by using only struct dlm_plock_info
+as a parameter.
 
-x86_64-linux-ld: sound/soc/amd/vangogh/pci-acp5x.o: in function `snd_acp5x_probe':
-pci-acp5x.c:(.text+0xbb): undefined reference to `snd_amd_acp_find_config'
-
-Fixes: e89f45edb747e ("ASoC: amd: vangogh: Add check for acp config flags in vangogh platform")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230605085839.2157268-1-arnd@kernel.org
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
+Stable-dep-of: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/amd/Kconfig |    1 +
- 1 file changed, 1 insertion(+)
+ fs/dlm/plock.c | 16 ++++++----------
+ 1 file changed, 6 insertions(+), 10 deletions(-)
 
---- a/sound/soc/amd/Kconfig
-+++ b/sound/soc/amd/Kconfig
-@@ -71,6 +71,7 @@ config SND_SOC_AMD_RENOIR_MACH
- config SND_SOC_AMD_ACP5x
- 	tristate "AMD Audio Coprocessor-v5.x I2S support"
- 	depends on X86 && PCI
-+	select SND_AMD_ACP_CONFIG
- 	help
- 	 This option enables ACP v5.x support on AMD platform
+diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
+index 0d00ca2c44c71..fa8969c0a5f55 100644
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -80,8 +80,7 @@ static void send_op(struct plock_op *op)
+    abandoned waiter.  So, we have to insert the unlock-close when the
+    lock call is interrupted. */
  
+-static void do_unlock_close(struct dlm_ls *ls, u64 number,
+-			    struct file *file, struct file_lock *fl)
++static void do_unlock_close(const struct dlm_plock_info *info)
+ {
+ 	struct plock_op *op;
+ 
+@@ -90,15 +89,12 @@ static void do_unlock_close(struct dlm_ls *ls, u64 number,
+ 		return;
+ 
+ 	op->info.optype		= DLM_PLOCK_OP_UNLOCK;
+-	op->info.pid		= fl->fl_pid;
+-	op->info.fsid		= ls->ls_global_id;
+-	op->info.number		= number;
++	op->info.pid		= info->pid;
++	op->info.fsid		= info->fsid;
++	op->info.number		= info->number;
+ 	op->info.start		= 0;
+ 	op->info.end		= OFFSET_MAX;
+-	if (fl->fl_lmops && fl->fl_lmops->lm_grant)
+-		op->info.owner	= (__u64) fl->fl_pid;
+-	else
+-		op->info.owner	= (__u64)(long) fl->fl_owner;
++	op->info.owner		= info->owner;
+ 
+ 	op->info.flags |= DLM_PLOCK_FL_CLOSE;
+ 	send_op(op);
+@@ -168,7 +164,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
+ 			  __func__, ls->ls_global_id,
+ 			  (unsigned long long)number, op->info.pid);
+ 		dlm_release_plock_op(op);
+-		do_unlock_close(ls, number, file, fl);
++		do_unlock_close(&op->info);
+ 		goto out;
+ 	}
+ 
+-- 
+2.40.1
+
 
 
