@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DFE678AACB
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF9C878AA3B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:20:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231228AbjH1KZB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:25:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60684 "EHLO
+        id S230428AbjH1KUO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:20:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36622 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231282AbjH1KYp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:45 -0400
+        with ESMTP id S231138AbjH1KTx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:19:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA581126
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430A6CE9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:19:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 57EE663A32
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63E14C433C8;
-        Mon, 28 Aug 2023 10:24:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 510236383C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:19:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62E3EC433C9;
+        Mon, 28 Aug 2023 10:19:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218280;
-        bh=tIsMWziSLfe1hScD/wAL5JLXIECT9Idw0rhCkiK2l7E=;
+        s=korg; t=1693217963;
+        bh=k2F8HFJ25wfG8SuxTa+pB4xMFPxqD8tsvgJNWZOArpI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c3FGnyHb+obXsV/qmanG27Vsuio7anK/1NC/KtHA060mRqgqDT9Oz4dwmscy4Q74U
-         pQoH7MKJX8aaM6mWeiZktSxAXF6mE/c8LjP9X6DgUswopXQHdg3kULBhFdufkk9iqP
-         aZLnDXkpzAAEjKHynqJ07RR5f8iYTrnWL8S78T10=
+        b=hdnS2NpJQqgnuUxrSjmnTKv/oO2iAV/AvKLK7ck9qs/KOzMzvFtUiBEsr4FfVCNq2
+         JZp8QZkGHfXrY+gqXIwRdJMI2lsTBbdGrCWU2F218etRNVd2uo2A01FmF6qG6KMcgA
+         eRpc9r5uWhuRtQ4/8yqCmWx7yxkbdsXqfuDUkFOA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Stable@vger.kernel.org,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Oliver Hartkopp <socketcan@hartkopp.net>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 023/129] iio: addac: stx104: Fix race condition for stx104_write_raw()
+Subject: [PATCH 6.4 038/129] can: isotp: fix support for transmission of SF without flow control
 Date:   Mon, 28 Aug 2023 12:11:57 +0200
-Message-ID: <20230828101153.911704411@linuxfoundation.org>
+Message-ID: <20230828101158.645922569@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,76 +55,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <william.gray@linaro.org>
+From: Oliver Hartkopp <socketcan@hartkopp.net>
 
-[ Upstream commit 9740827468cea80c42db29e7171a50e99acf7328 ]
+[ Upstream commit 0bfe71159230bab79ee230225ae12ffecbb69f3e ]
 
-The priv->chan_out_states array and actual DAC value can become
-mismatched if stx104_write_raw() is called concurrently. Prevent such a
-race condition by utilizing a mutex.
+The original implementation had a very simple handling for single frame
+transmissions as it just sent the single frame without a timeout handling.
 
-Fixes: 97a445dad37a ("iio: Add IIO support for the DAC on the Apex Embedded Systems STX104")
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Link: https://lore.kernel.org/r/c95c9a77fcef36b2a052282146950f23bbc1ebdc.1680790580.git.william.gray@linaro.org
-Cc: <Stable@vger.kernel.org>
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
+With the new echo frame handling the echo frame was also introduced for
+single frames but the former exception ('simple without timers') has been
+maintained by accident. This leads to a 1 second timeout when closing the
+socket and to an -ECOMM error when CAN_ISOTP_WAIT_TX_DONE is selected.
+
+As the echo handling is always active (also for single frames) remove the
+wrong extra condition for single frames.
+
+Fixes: 9f39d36530e5 ("can: isotp: add support for transmission without flow control")
+Signed-off-by: Oliver Hartkopp <socketcan@hartkopp.net>
+Link: https://lore.kernel.org/r/20230821144547.6658-2-socketcan@hartkopp.net
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stx104.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ net/can/isotp.c | 22 +++++++---------------
+ 1 file changed, 7 insertions(+), 15 deletions(-)
 
-diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
-index c25523ecebab2..78e87d1aaaefb 100644
---- a/drivers/iio/adc/stx104.c
-+++ b/drivers/iio/adc/stx104.c
-@@ -23,6 +23,7 @@
- #include <linux/kernel.h>
- #include <linux/module.h>
- #include <linux/moduleparam.h>
-+#include <linux/mutex.h>
- #include <linux/spinlock.h>
- #include <linux/types.h>
+diff --git a/net/can/isotp.c b/net/can/isotp.c
+index ca9d728d6d727..9d498a886a586 100644
+--- a/net/can/isotp.c
++++ b/net/can/isotp.c
+@@ -188,12 +188,6 @@ static bool isotp_register_rxid(struct isotp_sock *so)
+ 	return (isotp_bc_flags(so) == 0);
+ }
  
-@@ -77,10 +78,12 @@ struct stx104_reg {
+-static bool isotp_register_txecho(struct isotp_sock *so)
+-{
+-	/* all modes but SF_BROADCAST register for tx echo skbs */
+-	return (isotp_bc_flags(so) != CAN_ISOTP_SF_BROADCAST);
+-}
+-
+ static enum hrtimer_restart isotp_rx_timer_handler(struct hrtimer *hrtimer)
+ {
+ 	struct isotp_sock *so = container_of(hrtimer, struct isotp_sock,
+@@ -1209,7 +1203,7 @@ static int isotp_release(struct socket *sock)
+ 	lock_sock(sk);
  
- /**
-  * struct stx104_iio - IIO device private data structure
-+ * @lock: synchronization lock to prevent I/O race conditions
-  * @chan_out_states:	channels' output states
-  * @reg:		I/O address offset for the device registers
-  */
- struct stx104_iio {
-+	struct mutex lock;
- 	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
- 	struct stx104_reg __iomem *reg;
- };
-@@ -186,9 +189,12 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 			if ((unsigned int)val > 65535)
- 				return -EINVAL;
+ 	/* remove current filters & unregister */
+-	if (so->bound && isotp_register_txecho(so)) {
++	if (so->bound) {
+ 		if (so->ifindex) {
+ 			struct net_device *dev;
  
-+			mutex_lock(&priv->lock);
-+
- 			priv->chan_out_states[chan->channel] = val;
- 			iowrite16(val, &priv->reg->dac[chan->channel]);
+@@ -1332,14 +1326,12 @@ static int isotp_bind(struct socket *sock, struct sockaddr *uaddr, int len)
+ 		can_rx_register(net, dev, rx_id, SINGLE_MASK(rx_id),
+ 				isotp_rcv, sk, "isotp", sk);
  
-+			mutex_unlock(&priv->lock);
- 			return 0;
- 		}
- 		return -EINVAL;
-@@ -360,6 +366,8 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	indio_dev->name = dev_name(dev);
- 	indio_dev->dev.parent = dev;
+-	if (isotp_register_txecho(so)) {
+-		/* no consecutive frame echo skb in flight */
+-		so->cfecho = 0;
++	/* no consecutive frame echo skb in flight */
++	so->cfecho = 0;
  
-+	mutex_init(&priv->lock);
-+
- 	/* configure device for software trigger operation */
- 	iowrite8(0, &priv->reg->acr);
+-		/* register for echo skb's */
+-		can_rx_register(net, dev, tx_id, SINGLE_MASK(tx_id),
+-				isotp_rcv_echo, sk, "isotpe", sk);
+-	}
++	/* register for echo skb's */
++	can_rx_register(net, dev, tx_id, SINGLE_MASK(tx_id),
++			isotp_rcv_echo, sk, "isotpe", sk);
  
+ 	dev_put(dev);
+ 
+@@ -1560,7 +1552,7 @@ static void isotp_notify(struct isotp_sock *so, unsigned long msg,
+ 	case NETDEV_UNREGISTER:
+ 		lock_sock(sk);
+ 		/* remove current filters & unregister */
+-		if (so->bound && isotp_register_txecho(so)) {
++		if (so->bound) {
+ 			if (isotp_register_rxid(so))
+ 				can_rx_unregister(dev_net(dev), dev, so->rxid,
+ 						  SINGLE_MASK(so->rxid),
 -- 
 2.40.1
 
