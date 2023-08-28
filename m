@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F131E78AD57
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 031BC78ADE4
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231984AbjH1Kr0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:47:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44560 "EHLO
+        id S232185AbjH1Kvp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:51:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41522 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232010AbjH1KrH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:07 -0400
+        with ESMTP id S232283AbjH1KvS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:51:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 429A219B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:46:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EE95CFF
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:50:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D595E642B0
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:46:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2AF3C433C8;
-        Mon, 28 Aug 2023 10:46:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2FD8B643E0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:50:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A946C433C7;
+        Mon, 28 Aug 2023 10:50:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219606;
-        bh=GGy72m5RuqyQjFBIfb+AsjUCn8kN/SQq/qh5bteSykc=;
+        s=korg; t=1693219832;
+        bh=CRTNciDDyH7eo+UBPFpqmbhdCSH5m1QrUUQ5JHtShSA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fKiPK/a54dJNoYyvaVFs53prXVgcaoX1c3folC8oR2zUzb+iVfecr6DHjDSUCi2vo
-         OCeC1CAHSsFDHGsBYbpmySQIWto5WbQ+ZXn2rGZI8CTwvILTEg+Jof275ROLtFjAbc
-         G1VeG06Ex1UPjJsAb/hh857iUAZPLm6d9ZXGv5QM=
+        b=zyvwTDybijtuGokVJwZsdKlulBykqumXRQmzQ0FrIcFlfqpVQbj4EM7AyrWZ7xhGa
+         tcodHFdHF3mYHJy5LaDI2KFyuZy+FcXa1W8canN2l9hhSszE5i8EDdNrAXXB3wl0Ct
+         PrLZsk0vfmASxwhU0SaMCqdPRhsSlB5aXDr5q7d0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Miaohe Lin <linmiaohe@huawei.com>,
-        Naoya Horiguchi <naoya.horiguchi@nec.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 88/89] mm: memory-failure: fix unexpected return value in soft_offline_page()
+        patches@lists.linux.dev, Chris Wilson <chris@chris-wilson.co.uk>,
+        Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>,
+        Andi Shyti <andi.shyti@linux.intel.com>,
+        Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Subject: [PATCH 5.10 72/84] drm/i915: Fix premature release of requests reusable memory
 Date:   Mon, 28 Aug 2023 12:14:29 +0200
-Message-ID: <20230828101153.216728715@linuxfoundation.org>
+Message-ID: <20230828101151.726921078@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,56 +56,251 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miaohe Lin <linmiaohe@huawei.com>
+From: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
 
-[ Upstream commit e2c1ab070fdc81010ec44634838d24fce9ff9e53 ]
+commit a337b64f0d5717248a0c894e2618e658e6a9de9f upstream.
 
-When page_handle_poison() fails to handle the hugepage or free page in
-retry path, soft_offline_page() will return 0 while -EBUSY is expected in
-this case.
+Infinite waits for completion of GPU activity have been observed in CI,
+mostly inside __i915_active_wait(), triggered by igt@gem_barrier_race or
+igt@perf@stress-open-close.  Root cause analysis, based of ftrace dumps
+generated with a lot of extra trace_printk() calls added to the code,
+revealed loops of request dependencies being accidentally built,
+preventing the requests from being processed, each waiting for completion
+of another one's activity.
 
-Consequently the user will think soft_offline_page succeeds while it in
-fact failed.  So the user will not try again later in this case.
+After we substitute a new request for a last active one tracked on a
+timeline, we set up a dependency of our new request to wait on completion
+of current activity of that previous one.  While doing that, we must take
+care of keeping the old request still in memory until we use its
+attributes for setting up that await dependency, or we can happen to set
+up the await dependency on an unrelated request that already reuses the
+memory previously allocated to the old one, already released.  Combined
+with perf adding consecutive kernel context remote requests to different
+user context timelines, unresolvable loops of await dependencies can be
+built, leading do infinite waits.
 
-Link: https://lkml.kernel.org/r/20230627112808.1275241-1-linmiaohe@huawei.com
-Fixes: b94e02822deb ("mm,hwpoison: try to narrow window race for free pages")
-Signed-off-by: Miaohe Lin <linmiaohe@huawei.com>
-Acked-by: Naoya Horiguchi <naoya.horiguchi@nec.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+We obtain a pointer to the previous request to wait upon when we
+substitute it with a pointer to our new request in an active tracker,
+e.g. in intel_timeline.last_request.  In some processing paths we protect
+that old request from being freed before we use it by getting a reference
+to it under RCU protection, but in others, e.g.  __i915_request_commit()
+-> __i915_request_add_to_timeline() -> __i915_request_ensure_ordering(),
+we don't.  But anyway, since the requests' memory is SLAB_FAILSAFE_BY_RCU,
+that RCU protection is not sufficient against reuse of memory.
+
+We could protect i915_request's memory from being prematurely reused by
+calling its release function via call_rcu() and using rcu_read_lock()
+consequently, as proposed in v1.  However, that approach leads to
+significant (up to 10 times) increase of SLAB utilization by i915_request
+SLAB cache.  Another potential approach is to take a reference to the
+previous active fence.
+
+When updating an active fence tracker, we first lock the new fence,
+substitute a pointer of the current active fence with the new one, then we
+lock the substituted fence.  With this approach, there is a time window
+after the substitution and before the lock when the request can be
+concurrently released by an interrupt handler and its memory reused, then
+we may happen to lock and return a new, unrelated request.
+
+Always get a reference to the current active fence first, before
+replacing it with a new one.  Having it protected from premature release
+and reuse, lock it and then replace with the new one but only if not
+yet signalled via a potential concurrent interrupt nor replaced with
+another one by a potential concurrent thread, otherwise retry, starting
+from getting a reference to the new current one.  Adjust users to not
+get a reference to the previous active fence themselves and always put the
+reference got by __i915_active_fence_set() when no longer needed.
+
+v3: Fix lockdep splat reports and other issues caused by incorrect use of
+    try_cmpxchg() (use (cmpxchg() != prev) instead)
+v2: Protect request's memory by getting a reference to it in favor of
+    delegating its release to call_rcu() (Chris)
+
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/8211
+Fixes: df9f85d8582e ("drm/i915: Serialise i915_active_fence_set() with itself")
+Suggested-by: Chris Wilson <chris@chris-wilson.co.uk>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.6+
+Reviewed-by: Andi Shyti <andi.shyti@linux.intel.com>
+Signed-off-by: Andi Shyti <andi.shyti@linux.intel.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230720093543.832147-2-janusz.krzysztofik@linux.intel.com
+(cherry picked from commit 946e047a3d88d46d15b5c5af0414098e12b243f7)
+Signed-off-by: Tvrtko Ursulin <tvrtko.ursulin@intel.com>
+Signed-off-by: Janusz Krzysztofik <janusz.krzysztofik@linux.intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memory-failure.c | 11 +++++++----
- 1 file changed, 7 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/i915/i915_active.c  |   99 +++++++++++++++++++++++++-----------
+ drivers/gpu/drm/i915/i915_request.c |    2 
+ 2 files changed, 72 insertions(+), 29 deletions(-)
 
-diff --git a/mm/memory-failure.c b/mm/memory-failure.c
-index 69d22af10adfc..bcd71d8736be5 100644
---- a/mm/memory-failure.c
-+++ b/mm/memory-failure.c
-@@ -2284,10 +2284,13 @@ int soft_offline_page(unsigned long pfn, int flags)
- 	if (ret > 0) {
- 		ret = soft_offline_in_use_page(page);
- 	} else if (ret == 0) {
--		if (!page_handle_poison(page, true, false) && try_again) {
--			try_again = false;
--			flags &= ~MF_COUNT_INCREASED;
--			goto retry;
-+		if (!page_handle_poison(page, true, false)) {
-+			if (try_again) {
-+				try_again = false;
-+				flags &= ~MF_COUNT_INCREASED;
-+				goto retry;
-+			}
-+			ret = -EBUSY;
+--- a/drivers/gpu/drm/i915/i915_active.c
++++ b/drivers/gpu/drm/i915/i915_active.c
+@@ -457,8 +457,11 @@ int i915_active_ref(struct i915_active *
  		}
+ 	} while (unlikely(is_barrier(active)));
+ 
+-	if (!__i915_active_fence_set(active, fence))
++	fence = __i915_active_fence_set(active, fence);
++	if (!fence)
+ 		__i915_active_acquire(ref);
++	else
++		dma_fence_put(fence);
+ 
+ out:
+ 	i915_active_release(ref);
+@@ -477,13 +480,9 @@ __i915_active_set_fence(struct i915_acti
+ 		return NULL;
  	}
  
--- 
-2.40.1
-
+-	rcu_read_lock();
+ 	prev = __i915_active_fence_set(active, fence);
+-	if (prev)
+-		prev = dma_fence_get_rcu(prev);
+-	else
++	if (!prev)
+ 		__i915_active_acquire(ref);
+-	rcu_read_unlock();
+ 
+ 	return prev;
+ }
+@@ -1050,10 +1049,11 @@ void i915_request_add_active_barriers(st
+  *
+  * Records the new @fence as the last active fence along its timeline in
+  * this active tracker, moving the tracking callbacks from the previous
+- * fence onto this one. Returns the previous fence (if not already completed),
+- * which the caller must ensure is executed before the new fence. To ensure
+- * that the order of fences within the timeline of the i915_active_fence is
+- * understood, it should be locked by the caller.
++ * fence onto this one. Gets and returns a reference to the previous fence
++ * (if not already completed), which the caller must put after making sure
++ * that it is executed before the new fence. To ensure that the order of
++ * fences within the timeline of the i915_active_fence is understood, it
++ * should be locked by the caller.
+  */
+ struct dma_fence *
+ __i915_active_fence_set(struct i915_active_fence *active,
+@@ -1062,7 +1062,23 @@ __i915_active_fence_set(struct i915_acti
+ 	struct dma_fence *prev;
+ 	unsigned long flags;
+ 
+-	if (fence == rcu_access_pointer(active->fence))
++	/*
++	 * In case of fences embedded in i915_requests, their memory is
++	 * SLAB_FAILSAFE_BY_RCU, then it can be reused right after release
++	 * by new requests.  Then, there is a risk of passing back a pointer
++	 * to a new, completely unrelated fence that reuses the same memory
++	 * while tracked under a different active tracker.  Combined with i915
++	 * perf open/close operations that build await dependencies between
++	 * engine kernel context requests and user requests from different
++	 * timelines, this can lead to dependency loops and infinite waits.
++	 *
++	 * As a countermeasure, we try to get a reference to the active->fence
++	 * first, so if we succeed and pass it back to our user then it is not
++	 * released and potentially reused by an unrelated request before the
++	 * user has a chance to set up an await dependency on it.
++	 */
++	prev = i915_active_fence_get(active);
++	if (fence == prev)
+ 		return fence;
+ 
+ 	GEM_BUG_ON(test_bit(DMA_FENCE_FLAG_SIGNALED_BIT, &fence->flags));
+@@ -1071,27 +1087,56 @@ __i915_active_fence_set(struct i915_acti
+ 	 * Consider that we have two threads arriving (A and B), with
+ 	 * C already resident as the active->fence.
+ 	 *
+-	 * A does the xchg first, and so it sees C or NULL depending
+-	 * on the timing of the interrupt handler. If it is NULL, the
+-	 * previous fence must have been signaled and we know that
+-	 * we are first on the timeline. If it is still present,
+-	 * we acquire the lock on that fence and serialise with the interrupt
+-	 * handler, in the process removing it from any future interrupt
+-	 * callback. A will then wait on C before executing (if present).
+-	 *
+-	 * As B is second, it sees A as the previous fence and so waits for
+-	 * it to complete its transition and takes over the occupancy for
+-	 * itself -- remembering that it needs to wait on A before executing.
++	 * Both A and B have got a reference to C or NULL, depending on the
++	 * timing of the interrupt handler.  Let's assume that if A has got C
++	 * then it has locked C first (before B).
+ 	 *
+ 	 * Note the strong ordering of the timeline also provides consistent
+ 	 * nesting rules for the fence->lock; the inner lock is always the
+ 	 * older lock.
+ 	 */
+ 	spin_lock_irqsave(fence->lock, flags);
+-	prev = xchg(__active_fence_slot(active), fence);
+-	if (prev) {
+-		GEM_BUG_ON(prev == fence);
++	if (prev)
+ 		spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
++
++	/*
++	 * A does the cmpxchg first, and so it sees C or NULL, as before, or
++	 * something else, depending on the timing of other threads and/or
++	 * interrupt handler.  If not the same as before then A unlocks C if
++	 * applicable and retries, starting from an attempt to get a new
++	 * active->fence.  Meanwhile, B follows the same path as A.
++	 * Once A succeeds with cmpxch, B fails again, retires, gets A from
++	 * active->fence, locks it as soon as A completes, and possibly
++	 * succeeds with cmpxchg.
++	 */
++	while (cmpxchg(__active_fence_slot(active), prev, fence) != prev) {
++		if (prev) {
++			spin_unlock(prev->lock);
++			dma_fence_put(prev);
++		}
++		spin_unlock_irqrestore(fence->lock, flags);
++
++		prev = i915_active_fence_get(active);
++		GEM_BUG_ON(prev == fence);
++
++		spin_lock_irqsave(fence->lock, flags);
++		if (prev)
++			spin_lock_nested(prev->lock, SINGLE_DEPTH_NESTING);
++	}
++
++	/*
++	 * If prev is NULL then the previous fence must have been signaled
++	 * and we know that we are first on the timeline.  If it is still
++	 * present then, having the lock on that fence already acquired, we
++	 * serialise with the interrupt handler, in the process of removing it
++	 * from any future interrupt callback.  A will then wait on C before
++	 * executing (if present).
++	 *
++	 * As B is second, it sees A as the previous fence and so waits for
++	 * it to complete its transition and takes over the occupancy for
++	 * itself -- remembering that it needs to wait on A before executing.
++	 */
++	if (prev) {
+ 		__list_del_entry(&active->cb.node);
+ 		spin_unlock(prev->lock); /* serialise with prev->cb_list */
+ 	}
+@@ -1108,11 +1153,7 @@ int i915_active_fence_set(struct i915_ac
+ 	int err = 0;
+ 
+ 	/* Must maintain timeline ordering wrt previous active requests */
+-	rcu_read_lock();
+ 	fence = __i915_active_fence_set(active, &rq->fence);
+-	if (fence) /* but the previous fence may not belong to that timeline! */
+-		fence = dma_fence_get_rcu(fence);
+-	rcu_read_unlock();
+ 	if (fence) {
+ 		err = i915_request_await_dma_fence(rq, fence);
+ 		dma_fence_put(fence);
+--- a/drivers/gpu/drm/i915/i915_request.c
++++ b/drivers/gpu/drm/i915/i915_request.c
+@@ -1525,6 +1525,8 @@ __i915_request_add_to_timeline(struct i9
+ 							 &rq->dep,
+ 							 0);
+ 	}
++	if (prev)
++		i915_request_put(prev);
+ 
+ 	/*
+ 	 * Make sure that no request gazumped us - if it was allocated after
 
 
