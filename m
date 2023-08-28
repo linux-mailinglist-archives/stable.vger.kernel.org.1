@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD02978ABF4
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41A5978AAC5
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231585AbjH1Kfj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:35:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35022 "EHLO
+        id S230283AbjH1KY4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:24:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231664AbjH1Kf1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:27 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE2AB115
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:23 -0700 (PDT)
+        with ESMTP id S231197AbjH1KY1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FDA7A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8D5E963E3C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A10D3C433C9;
-        Mon, 28 Aug 2023 10:35:22 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA4AB63990
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0050C433C8;
+        Mon, 28 Aug 2023 10:24:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218923;
-        bh=ll3May4PISAOw+HnT5xU+nHPLNZxaSKTY9okacbE1Dw=;
+        s=korg; t=1693218264;
+        bh=F8Ndk1yfhUVL94yjhsIsWU+hATqTRFVhJox4KSErXIg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FYv/Aefo/pKZGwtWcsuy4c81dC25SpogZzi9eQ831Y855Pdmv9XTte9/uCNC1pdHp
-         tj16MFnNzyfQfbkEBCyezvDrc3DutfYjRccm1CSEd8mYbDl/kD8IRvh0iWdHmBSWSB
-         k6JzHThYQYIW0dhZVVDkHuM22+sz7hiPYroE8ueU=
+        b=C5mhIVEL6XX4bX+j3bOplExJUIIUTqM4M5opoUyPyD/SLz55GQdsDkH5bbvbRY5b2
+         hzu85Y0/UKtKDi335Rg5CEGThjHuFczHZ+MKRjxl0RMCxr/n6olUuTUMe3PLf27tBR
+         3Tat5FvIaNdstWvpnEDsmv4MEJgZMdh58b5/2zjU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Kunihiko Hayashi <hayashi.kunihiko@socionext.com>,
-        Adrian Hunter <adrian.hunter@intel.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 002/158] mmc: sdhci-f-sdh30: Replace with sdhci_pltfm
+        syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>,
+        Ye Bin <yebin10@huawei.com>
+Subject: [PATCH 4.19 005/129] quota: Properly disable quotas when add_dquot_ref() fails
 Date:   Mon, 28 Aug 2023 12:11:39 +0200
-Message-ID: <20230828101157.400602981@linuxfoundation.org>
+Message-ID: <20230828101153.239311573@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,157 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit 5def5c1c15bf22934ee227af85c1716762f3829f ]
+[ Upstream commit 6a4e3363792e30177cc3965697e34ddcea8b900b ]
 
-Even if sdhci_pltfm_pmops is specified for PM, this driver doesn't apply
-sdhci_pltfm, so the structure is not correctly referenced in PM functions.
-This applies sdhci_pltfm to this driver to fix this issue.
+When add_dquot_ref() fails (usually due to IO error or ENOMEM), we want
+to disable quotas we are trying to enable. However dquot_disable() call
+was passed just the flags we are enabling so in case flags ==
+DQUOT_USAGE_ENABLED dquot_disable() call will just fail with EINVAL
+instead of properly disabling quotas. Fix the problem by always passing
+DQUOT_LIMITS_ENABLED | DQUOT_USAGE_ENABLED to dquot_disable() in this
+case.
 
-- Call sdhci_pltfm_init() instead of sdhci_alloc_host() and
-  other functions that covered by sdhci_pltfm.
-- Move ops and quirks to sdhci_pltfm_data
-- Replace sdhci_priv() with own private function sdhci_f_sdh30_priv().
-
-Fixes: 87a507459f49 ("mmc: sdhci: host: add new f_sdh30")
-Signed-off-by: Kunihiko Hayashi <hayashi.kunihiko@socionext.com>
-Acked-by: Adrian Hunter <adrian.hunter@intel.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230630004533.26644-1-hayashi.kunihiko@socionext.com
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+Reported-and-tested-by: Ye Bin <yebin10@huawei.com>
+Reported-by: syzbot+e633c79ceaecbf479854@syzkaller.appspotmail.com
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230605140731.2427629-2-yebin10@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mmc/host/sdhci_f_sdh30.c | 60 ++++++++++++++------------------
- 1 file changed, 27 insertions(+), 33 deletions(-)
+ fs/quota/dquot.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/mmc/host/sdhci_f_sdh30.c b/drivers/mmc/host/sdhci_f_sdh30.c
-index 74757809fc90d..bfaabd4130a43 100644
---- a/drivers/mmc/host/sdhci_f_sdh30.c
-+++ b/drivers/mmc/host/sdhci_f_sdh30.c
-@@ -50,9 +50,16 @@ struct f_sdhost_priv {
- 	bool enable_cmd_dat_delay;
- };
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 770a2b1434856..0d3ffc727bb00 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -2407,7 +2407,8 @@ int dquot_load_quota_sb(struct super_block *sb, int type, int format_id,
  
-+static void *sdhci_f_sdhost_priv(struct sdhci_host *host)
-+{
-+	struct sdhci_pltfm_host *pltfm_host = sdhci_priv(host);
-+
-+	return sdhci_pltfm_priv(pltfm_host);
-+}
-+
- static void sdhci_f_sdh30_soft_voltage_switch(struct sdhci_host *host)
- {
--	struct f_sdhost_priv *priv = sdhci_priv(host);
-+	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
- 	u32 ctrl = 0;
+ 	error = add_dquot_ref(sb, type);
+ 	if (error)
+-		dquot_disable(sb, type, flags);
++		dquot_disable(sb, type,
++			      DQUOT_USAGE_ENABLED | DQUOT_LIMITS_ENABLED);
  
- 	usleep_range(2500, 3000);
-@@ -85,7 +92,7 @@ static unsigned int sdhci_f_sdh30_get_min_clock(struct sdhci_host *host)
- 
- static void sdhci_f_sdh30_reset(struct sdhci_host *host, u8 mask)
- {
--	struct f_sdhost_priv *priv = sdhci_priv(host);
-+	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
- 	u32 ctl;
- 
- 	if (sdhci_readw(host, SDHCI_CLOCK_CONTROL) == 0)
-@@ -109,30 +116,32 @@ static const struct sdhci_ops sdhci_f_sdh30_ops = {
- 	.set_uhs_signaling = sdhci_set_uhs_signaling,
- };
- 
-+static const struct sdhci_pltfm_data sdhci_f_sdh30_pltfm_data = {
-+	.ops = &sdhci_f_sdh30_ops,
-+	.quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC
-+		| SDHCI_QUIRK_INVERTED_WRITE_PROTECT,
-+	.quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE
-+		|  SDHCI_QUIRK2_TUNING_WORK_AROUND,
-+};
-+
- static int sdhci_f_sdh30_probe(struct platform_device *pdev)
- {
- 	struct sdhci_host *host;
- 	struct device *dev = &pdev->dev;
--	int irq, ctrl = 0, ret = 0;
-+	int ctrl = 0, ret = 0;
- 	struct f_sdhost_priv *priv;
-+	struct sdhci_pltfm_host *pltfm_host;
- 	u32 reg = 0;
- 
--	irq = platform_get_irq(pdev, 0);
--	if (irq < 0)
--		return irq;
--
--	host = sdhci_alloc_host(dev, sizeof(struct f_sdhost_priv));
-+	host = sdhci_pltfm_init(pdev, &sdhci_f_sdh30_pltfm_data,
-+				sizeof(struct f_sdhost_priv));
- 	if (IS_ERR(host))
- 		return PTR_ERR(host);
- 
--	priv = sdhci_priv(host);
-+	pltfm_host = sdhci_priv(host);
-+	priv = sdhci_pltfm_priv(pltfm_host);
- 	priv->dev = dev;
- 
--	host->quirks = SDHCI_QUIRK_NO_ENDATTR_IN_NOPDESC |
--		       SDHCI_QUIRK_INVERTED_WRITE_PROTECT;
--	host->quirks2 = SDHCI_QUIRK2_SUPPORT_SINGLE |
--			SDHCI_QUIRK2_TUNING_WORK_AROUND;
--
- 	priv->enable_cmd_dat_delay = device_property_read_bool(dev,
- 						"fujitsu,cmd-dat-delay-select");
- 
-@@ -140,18 +149,6 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
- 	if (ret)
- 		goto err;
- 
--	platform_set_drvdata(pdev, host);
--
--	host->hw_name = "f_sdh30";
--	host->ops = &sdhci_f_sdh30_ops;
--	host->irq = irq;
--
--	host->ioaddr = devm_platform_ioremap_resource(pdev, 0);
--	if (IS_ERR(host->ioaddr)) {
--		ret = PTR_ERR(host->ioaddr);
--		goto err;
--	}
--
- 	if (dev_of_node(dev)) {
- 		sdhci_get_of_property(pdev);
- 
-@@ -206,23 +203,20 @@ static int sdhci_f_sdh30_probe(struct platform_device *pdev)
- err_clk:
- 	clk_disable_unprepare(priv->clk_iface);
- err:
--	sdhci_free_host(host);
-+	sdhci_pltfm_free(pdev);
-+
- 	return ret;
- }
- 
- static int sdhci_f_sdh30_remove(struct platform_device *pdev)
- {
- 	struct sdhci_host *host = platform_get_drvdata(pdev);
--	struct f_sdhost_priv *priv = sdhci_priv(host);
--
--	sdhci_remove_host(host, readl(host->ioaddr + SDHCI_INT_STATUS) ==
--			  0xffffffff);
-+	struct f_sdhost_priv *priv = sdhci_f_sdhost_priv(host);
- 
- 	clk_disable_unprepare(priv->clk_iface);
- 	clk_disable_unprepare(priv->clk);
- 
--	sdhci_free_host(host);
--	platform_set_drvdata(pdev, NULL);
-+	sdhci_pltfm_unregister(pdev);
- 
- 	return 0;
- }
+ 	return error;
+ out_fmt:
 -- 
 2.40.1
 
