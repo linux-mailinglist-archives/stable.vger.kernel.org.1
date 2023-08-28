@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902C478AA5E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0781078AB80
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:31:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230512AbjH1KVt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:21:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33362 "EHLO
+        id S231480AbjH1KbZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:31:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230518AbjH1KVR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:17 -0400
+        with ESMTP id S231532AbjH1KbG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:31:06 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FDAD1AE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:02 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FEF3CD1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:30:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 728E76389D
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7E8AEC433C8;
-        Mon, 28 Aug 2023 10:20:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 72D29617C0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:30:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87979C433C7;
+        Mon, 28 Aug 2023 10:30:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218029;
-        bh=5+uv+t8Izs+nPhD3uRuqgT45am/m7RuzTs1/exk8mSE=;
+        s=korg; t=1693218642;
+        bh=Av0p98fLpfEx6ssO/snMS2410v/tbBspOF9HgmxpUo0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FqIjwjQOu5PotllBUk4PQr79Kw7uFZ3NBZaoduUdhUn3FxUh3pbe5wLtL5WKZFBqN
-         c4jiY8HZBOovOoIsa4Q4qItWb8KVkPFYUB9kpEbfcNjhjHhy2GEahz9Xk+oMmpn3h7
-         kkgob5bePzsyo1Mrhg/a2dd26+zjYQDcczmHk+tY=
+        b=q3/LU0iM0OTrZPI4xG+eY0nx1tYAnI1Dh9d07QBuUYjrC4HcoTks2tvappEuLvYFh
+         YWKlTBn9XO+Gz4f3Nl0DlqbEIKRE4gLNhhRuZa7ilSNPOOhoHzbc5rMzxPswl0V+l5
+         th+hNzXJ76HLIee5sAbxnRExS7G5qQ/8eNWZVUx4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zack Rusin <zackr@vmware.com>,
-        Ian Forbes <iforbes@vmware.com>,
-        Maaz Mombasawala <mombasawalam@vmware.com>
-Subject: [PATCH 6.4 068/129] drm/vmwgfx: Fix possible invalid drm gem put calls
+        patches@lists.linux.dev, Lu Wei <luwei32@huawei.com>,
+        Florian Westphal <fw@strlen.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 032/122] ipvlan: Fix a reference count leak warning in ipvlan_ns_exit()
 Date:   Mon, 28 Aug 2023 12:12:27 +0200
-Message-ID: <20230828101159.613224516@linuxfoundation.org>
+Message-ID: <20230828101157.490617212@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,141 +56,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zack Rusin <zackr@vmware.com>
+From: Lu Wei <luwei32@huawei.com>
 
-commit f9e96bf1905479f18e83a3a4c314a8dfa56ede2c upstream.
+[ Upstream commit 043d5f68d0ccdda91029b4b6dce7eeffdcfad281 ]
 
-vmw_bo_unreference sets the input buffer to null on exit, resulting in
-null ptr deref's on the subsequent drm gem put calls.
+There are two network devices(veth1 and veth3) in ns1, and ipvlan1 with
+L3S mode and ipvlan2 with L2 mode are created based on them as
+figure (1). In this case, ipvlan_register_nf_hook() will be called to
+register nf hook which is needed by ipvlans in L3S mode in ns1 and value
+of ipvl_nf_hook_refcnt is set to 1.
 
-This went unnoticed because only very old userspace would be exercising
-those paths but it wouldn't be hard to hit on old distros with brand
-new kernels.
+(1)
+           ns1                           ns2
+      ------------                  ------------
 
-Introduce a new function that abstracts unrefing of user bo's to make
-the code cleaner and more explicit.
+   veth1--ipvlan1 (L3S)
 
-Signed-off-by: Zack Rusin <zackr@vmware.com>
-Reported-by: Ian Forbes <iforbes@vmware.com>
-Fixes: 9ef8d83e8e25 ("drm/vmwgfx: Do not drop the reference to the handle too soon")
-Cc: <stable@vger.kernel.org> # v6.4+
-Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230818041301.407636-1-zack@kde.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+   veth3--ipvlan2 (L2)
+
+(2)
+           ns1                           ns2
+      ------------                  ------------
+
+   veth1--ipvlan1 (L3S)
+
+         ipvlan2 (L2)                  veth3
+     |                                  |
+     |------->-------->--------->--------
+                    migrate
+
+When veth3 migrates from ns1 to ns2 as figure (2), veth3 will register in
+ns2 and calls call_netdevice_notifiers with NETDEV_REGISTER event:
+
+dev_change_net_namespace
+    call_netdevice_notifiers
+        ipvlan_device_event
+            ipvlan_migrate_l3s_hook
+                ipvlan_register_nf_hook(newnet)      (I)
+                ipvlan_unregister_nf_hook(oldnet)    (II)
+
+In function ipvlan_migrate_l3s_hook(), ipvl_nf_hook_refcnt in ns1 is not 0
+since veth1 with ipvlan1 still in ns1, (I) and (II) will be called to
+register nf_hook in ns2 and unregister nf_hook in ns1. As a result,
+ipvl_nf_hook_refcnt in ns1 is decreased incorrectly and this in ns2
+is increased incorrectly. When the second net namespace is removed, a
+reference count leak warning in ipvlan_ns_exit() will be triggered.
+
+This patch add a check before ipvlan_migrate_l3s_hook() is called. The
+warning can be triggered as follows:
+
+$ ip netns add ns1
+$ ip netns add ns2
+$ ip netns exec ns1 ip link add veth1 type veth peer name veth2
+$ ip netns exec ns1 ip link add veth3 type veth peer name veth4
+$ ip netns exec ns1 ip link add ipv1 link veth1 type ipvlan mode l3s
+$ ip netns exec ns1 ip link add ipv2 link veth3 type ipvlan mode l2
+$ ip netns exec ns1 ip link set veth3 netns ns2
+$ ip net del ns2
+
+Fixes: 3133822f5ac1 ("ipvlan: use pernet operations and restrict l3s hooks to master netns")
+Signed-off-by: Lu Wei <luwei32@huawei.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Link: https://lore.kernel.org/r/20230817145449.141827-1-luwei32@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.c      |    6 ++----
- drivers/gpu/drm/vmwgfx/vmwgfx_bo.h      |    8 ++++++++
- drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |    6 ++----
- drivers/gpu/drm/vmwgfx/vmwgfx_kms.c     |    6 ++----
- drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c |    3 +--
- drivers/gpu/drm/vmwgfx/vmwgfx_shader.c  |    3 +--
- 6 files changed, 16 insertions(+), 16 deletions(-)
+ drivers/net/ipvlan/ipvlan_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.c
-@@ -497,10 +497,9 @@ static int vmw_user_bo_synccpu_release(s
- 		if (!(flags & drm_vmw_synccpu_allow_cs)) {
- 			atomic_dec(&vmw_bo->cpu_writers);
- 		}
--		ttm_bo_put(&vmw_bo->tbo);
-+		vmw_user_bo_unref(vmw_bo);
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index 796a38f9d7b24..cd16bc8bf154c 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -748,7 +748,8 @@ static int ipvlan_device_event(struct notifier_block *unused,
+ 
+ 		write_pnet(&port->pnet, newnet);
+ 
+-		ipvlan_migrate_l3s_hook(oldnet, newnet);
++		if (port->mode == IPVLAN_MODE_L3S)
++			ipvlan_migrate_l3s_hook(oldnet, newnet);
+ 		break;
  	}
- 
--	drm_gem_object_put(&vmw_bo->tbo.base);
- 	return ret;
- }
- 
-@@ -540,8 +539,7 @@ int vmw_user_bo_synccpu_ioctl(struct drm
- 			return ret;
- 
- 		ret = vmw_user_bo_synccpu_grab(vbo, arg->flags);
--		vmw_bo_unreference(&vbo);
--		drm_gem_object_put(&vbo->tbo.base);
-+		vmw_user_bo_unref(vbo);
- 		if (unlikely(ret != 0)) {
- 			if (ret == -ERESTARTSYS || ret == -EBUSY)
- 				return -EBUSY;
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_bo.h
-@@ -195,6 +195,14 @@ static inline struct vmw_bo *vmw_bo_refe
- 	return buf;
- }
- 
-+static inline void vmw_user_bo_unref(struct vmw_bo *vbo)
-+{
-+	if (vbo) {
-+		ttm_bo_put(&vbo->tbo);
-+		drm_gem_object_put(&vbo->tbo.base);
-+	}
-+}
-+
- static inline struct vmw_bo *to_vmw_bo(struct drm_gem_object *gobj)
- {
- 	return container_of((gobj), struct vmw_bo, tbo.base);
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
-@@ -1164,8 +1164,7 @@ static int vmw_translate_mob_ptr(struct
- 	}
- 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_MOB, VMW_BO_DOMAIN_MOB);
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo);
--	ttm_bo_put(&vmw_bo->tbo);
--	drm_gem_object_put(&vmw_bo->tbo.base);
-+	vmw_user_bo_unref(vmw_bo);
- 	if (unlikely(ret != 0))
- 		return ret;
- 
-@@ -1221,8 +1220,7 @@ static int vmw_translate_guest_ptr(struc
- 	vmw_bo_placement_set(vmw_bo, VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM,
- 			     VMW_BO_DOMAIN_GMR | VMW_BO_DOMAIN_VRAM);
- 	ret = vmw_validation_add_bo(sw_context->ctx, vmw_bo);
--	ttm_bo_put(&vmw_bo->tbo);
--	drm_gem_object_put(&vmw_bo->tbo.base);
-+	vmw_user_bo_unref(vmw_bo);
- 	if (unlikely(ret != 0))
- 		return ret;
- 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_kms.c
-@@ -1665,10 +1665,8 @@ static struct drm_framebuffer *vmw_kms_f
- 
- err_out:
- 	/* vmw_user_lookup_handle takes one ref so does new_fb */
--	if (bo) {
--		vmw_bo_unreference(&bo);
--		drm_gem_object_put(&bo->tbo.base);
--	}
-+	if (bo)
-+		vmw_user_bo_unref(bo);
- 	if (surface)
- 		vmw_surface_unreference(&surface);
- 
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_overlay.c
-@@ -451,8 +451,7 @@ int vmw_overlay_ioctl(struct drm_device
- 
- 	ret = vmw_overlay_update_stream(dev_priv, buf, arg, true);
- 
--	vmw_bo_unreference(&buf);
--	drm_gem_object_put(&buf->tbo.base);
-+	vmw_user_bo_unref(buf);
- 
- out_unlock:
- 	mutex_unlock(&overlay->mutex);
---- a/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-+++ b/drivers/gpu/drm/vmwgfx/vmwgfx_shader.c
-@@ -809,8 +809,7 @@ static int vmw_shader_define(struct drm_
- 				    shader_type, num_input_sig,
- 				    num_output_sig, tfile, shader_handle);
- out_bad_arg:
--	vmw_bo_unreference(&buffer);
--	drm_gem_object_put(&buffer->tbo.base);
-+	vmw_user_bo_unref(buffer);
- 	return ret;
- }
- 
+ 	case NETDEV_UNREGISTER:
+-- 
+2.40.1
+
 
 
