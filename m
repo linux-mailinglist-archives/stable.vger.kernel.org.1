@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C53B78A9E6
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:17:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5177F78AC35
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229472AbjH1KRX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36652 "EHLO
+        id S231723AbjH1Kh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:37:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230409AbjH1KQz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:16:55 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30449CC1
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:39 -0700 (PDT)
+        with ESMTP id S231682AbjH1Khk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:40 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAE2B9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD99C63712
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2432C433C7;
-        Mon, 28 Aug 2023 10:16:37 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 97C6763F26
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21D0C433C7;
+        Mon, 28 Aug 2023 10:37:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217798;
-        bh=6G4JqJ6gI58888aeyZcst8RhCHXzysrCd19MNzbKBhg=;
+        s=korg; t=1693219057;
+        bh=/5KcCZGeWRu/1Z8vHb2hwiN0mY7PcpAfrP5x97pC/OU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HypbmI2JQhh5gWCQGBapPK1dD16gZxGFZdI6Y/53zX1kzJsmawgQMpTXKgC9DG+3+
-         /cWtHvnT6i6fdKEIATDthYlbAHeFa9SMdws8heWQ/9jgDVTMZftGun6rXB4q3cxim9
-         pT7cZ+lZrUNgMIX9hvhb5xPG3jNrJbso5GGJpBSs=
+        b=0TxDa2tBG7WwDLuV4cUuZwe4snNmX4WL9wr5Gjzi1TVswog9EddNsey5lGaqzkR0l
+         gl6F6l+fKonYtZl9ERaclYliSBWa5CxCyoQGYALCcF1D+/aRTsCXQ6i+tUm4Yk1oYe
+         oX7eiQFCTIlg/990+AbyA3aclkMKQ3rKzRIxRxKg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Armin Wolf <W_Armin@gmx.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 14/57] pcmcia: rsrc_nonstatic: Fix memory leak in nonstatic_release_resource_db()
+        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
+        Kees Cook <keescook@chromium.org>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 5.4 057/158] powerpc/rtas_flash: allow user copy to flash block cache objects
 Date:   Mon, 28 Aug 2023 12:12:34 +0200
-Message-ID: <20230828101144.733243892@linuxfoundation.org>
+Message-ID: <20230828101159.235015468@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,69 +55,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Armin Wolf <W_Armin@gmx.de>
+From: Nathan Lynch <nathanl@linux.ibm.com>
 
-[ Upstream commit c85fd9422fe0f5d667305efb27f56d09eab120b0 ]
+commit 4f3175979e62de3b929bfa54a0db4b87d36257a7 upstream.
 
-When nonstatic_release_resource_db() frees all resources associated
-with an PCMCIA socket, it forgets to free socket_data too, causing
-a memory leak observable with kmemleak:
+With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
+/proc/powerpc/rtas/firmware_update interface to prepare a system
+firmware update yields a BUG():
 
-unreferenced object 0xc28d1000 (size 64):
-  comm "systemd-udevd", pid 297, jiffies 4294898478 (age 194.484s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 f0 85 0e c3 00 00 00 00  ................
-    00 00 00 00 0c 10 8d c2 00 00 00 00 00 00 00 00  ................
-  backtrace:
-    [<ffda4245>] __kmem_cache_alloc_node+0x2d7/0x4a0
-    [<7e51f0c8>] kmalloc_trace+0x31/0xa4
-    [<d52b4ca0>] nonstatic_init+0x24/0x1a4 [pcmcia_rsrc]
-    [<a2f13e08>] pcmcia_register_socket+0x200/0x35c [pcmcia_core]
-    [<a728be1b>] yenta_probe+0x4d8/0xa70 [yenta_socket]
-    [<c48fac39>] pci_device_probe+0x99/0x194
-    [<84b7c690>] really_probe+0x181/0x45c
-    [<8060fe6e>] __driver_probe_device+0x75/0x1f4
-    [<b9b76f43>] driver_probe_device+0x28/0xac
-    [<648b766f>] __driver_attach+0xeb/0x1e4
-    [<6e9659eb>] bus_for_each_dev+0x61/0xb4
-    [<25a669f3>] driver_attach+0x1e/0x28
-    [<d8671d6b>] bus_add_driver+0x102/0x20c
-    [<df0d323c>] driver_register+0x5b/0x120
-    [<942cd8a4>] __pci_register_driver+0x44/0x4c
-    [<e536027e>] __UNIQUE_ID___addressable_cleanup_module188+0x1c/0xfffff000 [iTCO_vendor_support]
+  kernel BUG at mm/usercopy.c:102!
+  Oops: Exception in kernel mode, sig: 5 [#1]
+  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
+  Modules linked in:
+  CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
+  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
+  NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
+  REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
+  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
+  CFAR: c0000000001fbd34 IRQMASK: 0
+  [ ... GPRs omitted ... ]
+  NIP usercopy_abort+0xa0/0xb0
+  LR  usercopy_abort+0x9c/0xb0
+  Call Trace:
+    usercopy_abort+0x9c/0xb0 (unreliable)
+    __check_heap_object+0x1b4/0x1d0
+    __check_object_size+0x2d0/0x380
+    rtas_flash_write+0xe4/0x250
+    proc_reg_write+0xfc/0x160
+    vfs_write+0xfc/0x4e0
+    ksys_write+0x90/0x160
+    system_call_exception+0x178/0x320
+    system_call_common+0x160/0x2c4
 
-Fix this by freeing socket_data too.
+The blocks of the firmware image are copied directly from user memory
+to objects allocated from flash_block_cache, so flash_block_cache must
+be created using kmem_cache_create_usercopy() to mark it safe for user
+access.
 
-Tested on a Acer Travelmate 4002WLMi by manually binding/unbinding
-the yenta_cardbus driver (yenta_socket).
-
-Signed-off-by: Armin Wolf <W_Armin@gmx.de>
-Message-ID: <20230512184529.5094-1-W_Armin@gmx.de>
+Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
+Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+[mpe: Trim and indent oops]
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pcmcia/rsrc_nonstatic.c | 2 ++
- 1 file changed, 2 insertions(+)
+ arch/powerpc/kernel/rtas_flash.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/pcmcia/rsrc_nonstatic.c b/drivers/pcmcia/rsrc_nonstatic.c
-index 2e96d9273b780..e5ec8a2c022a2 100644
---- a/drivers/pcmcia/rsrc_nonstatic.c
-+++ b/drivers/pcmcia/rsrc_nonstatic.c
-@@ -1056,6 +1056,8 @@ static void nonstatic_release_resource_db(struct pcmcia_socket *s)
- 		q = p->next;
- 		kfree(p);
- 	}
-+
-+	kfree(data);
- }
+--- a/arch/powerpc/kernel/rtas_flash.c
++++ b/arch/powerpc/kernel/rtas_flash.c
+@@ -710,9 +710,9 @@ static int __init rtas_flash_init(void)
+ 	if (!rtas_validate_flash_data.buf)
+ 		return -ENOMEM;
  
- 
--- 
-2.40.1
-
+-	flash_block_cache = kmem_cache_create("rtas_flash_cache",
+-					      RTAS_BLK_SIZE, RTAS_BLK_SIZE, 0,
+-					      NULL);
++	flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
++						       RTAS_BLK_SIZE, RTAS_BLK_SIZE,
++						       0, 0, RTAS_BLK_SIZE, NULL);
+ 	if (!flash_block_cache) {
+ 		printk(KERN_ERR "%s: failed to create block cache\n",
+ 				__func__);
 
 
