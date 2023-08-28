@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F04878AC1B
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 28EF178AABF
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231607AbjH1KhK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:37:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60170 "EHLO
+        id S231209AbjH1KYa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:24:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32802 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231630AbjH1Kgt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA42136
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:45 -0700 (PDT)
+        with ESMTP id S231164AbjH1KXy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43B2883
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C1E1863EF7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6E9FC433C8;
-        Mon, 28 Aug 2023 10:36:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D66C6639FD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0C77C433BD;
+        Mon, 28 Aug 2023 10:23:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219004;
-        bh=dFKWNgWC/Q5piAJdLQ2krzfNYtPqy6RYe/HFn3kGf+s=;
+        s=korg; t=1693218231;
+        bh=w/Flywy1R2FTI+mX7f26sspbJqlfeIa4ymr3r1PHLDs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JfE3b/gBgSLd4dogRe6ExI0zZvxQNdn77qslincjOTK8nbkRW/EPx1E8kA4Iuf7Fb
-         K2hFAJbA7PdHXj2NEVSEI20YxD8/ExpX4SnBTRwJtRJAnWZD8XcwiK88dF5jzt3YhB
-         VLSInnrESAvdcIJin+gKCKe7QQqDJF2M5QTDcCVw=
+        b=OTOLXJ41ZTyAmbrFlemQlMdnDjgthLNTw6HX92/PRfNgBxWeWIQG5NEBtNLLLzY9U
+         3DgdJpxzHYN8lacqU8U2456hz6yp0lPwkEvSLjmv6KXMoC9PxfY/bgSl70VVKTSBKk
+         GV/PGnDi6CeNkBHexN094+F5r4nyyF38AgzPojjI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Marco Morandini <marco.morandini@polimi.it>,
-        Jiri Kosina <jkosina@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 010/158] HID: add quirk for 03f0:464a HP Elite Presenter Mouse
+        patches@lists.linux.dev, Pina Chen <pina.chen@mediatek.com>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 013/129] media: v4l2-mem2mem: add lock to protect parameter num_rdy
 Date:   Mon, 28 Aug 2023 12:11:47 +0200
-Message-ID: <20230828101157.682096181@linuxfoundation.org>
+Message-ID: <20230828101153.536465544@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,56 +57,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Morandini <marco.morandini@polimi.it>
+From: Yunfei Dong <yunfei.dong@mediatek.com>
 
-[ Upstream commit 0db117359e47750d8bd310d19f13e1c4ef7fc26a ]
+[ Upstream commit 56b5c3e67b0f9af3f45cf393be048ee8d8a92694 ]
 
-HP Elite Presenter Mouse HID Record Descriptor shows
-two mouses (Repord ID 0x1 and 0x2), one keypad (Report ID 0x5),
-two Consumer Controls (Report IDs 0x6 and 0x3).
-Previous to this commit it registers one mouse, one keypad
-and one Consumer Control, and it was usable only as a
-digitl laser pointer (one of the two mouses). This patch defines
-the 464a USB device ID and enables the HID_QUIRK_MULTI_INPUT
-quirk for it, allowing to use the device both as a mouse
-and a digital laser pointer.
+Getting below error when using KCSAN to check the driver. Adding lock to
+protect parameter num_rdy when getting the value with function:
+v4l2_m2m_num_src_bufs_ready/v4l2_m2m_num_dst_bufs_ready.
 
-Signed-off-by: Marco Morandini <marco.morandini@polimi.it>
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+kworker/u16:3: [name:report&]BUG: KCSAN: data-race in v4l2_m2m_buf_queue
+kworker/u16:3: [name:report&]
+
+kworker/u16:3: [name:report&]read-write to 0xffffff8105f35b94 of 1 bytes by task 20865 on cpu 7:
+kworker/u16:3:  v4l2_m2m_buf_queue+0xd8/0x10c
+
+Signed-off-by: Pina Chen <pina.chen@mediatek.com>
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-ids.h    | 1 +
- drivers/hid/hid-quirks.c | 1 +
- 2 files changed, 2 insertions(+)
+ include/media/v4l2-mem2mem.h | 18 ++++++++++++++++--
+ 1 file changed, 16 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/hid/hid-ids.h b/drivers/hid/hid-ids.h
-index 479516bbb61bf..64842926aff64 100644
---- a/drivers/hid/hid-ids.h
-+++ b/drivers/hid/hid-ids.h
-@@ -581,6 +581,7 @@
- #define USB_DEVICE_ID_UGCI_FIGHTING	0x0030
+diff --git a/include/media/v4l2-mem2mem.h b/include/media/v4l2-mem2mem.h
+index d655720e16a15..62c67e9e190c0 100644
+--- a/include/media/v4l2-mem2mem.h
++++ b/include/media/v4l2-mem2mem.h
+@@ -405,7 +405,14 @@ void v4l2_m2m_buf_queue(struct v4l2_m2m_ctx *m2m_ctx,
+ static inline
+ unsigned int v4l2_m2m_num_src_bufs_ready(struct v4l2_m2m_ctx *m2m_ctx)
+ {
+-	return m2m_ctx->out_q_ctx.num_rdy;
++	unsigned int num_buf_rdy;
++	unsigned long flags;
++
++	spin_lock_irqsave(&m2m_ctx->out_q_ctx.rdy_spinlock, flags);
++	num_buf_rdy = m2m_ctx->out_q_ctx.num_rdy;
++	spin_unlock_irqrestore(&m2m_ctx->out_q_ctx.rdy_spinlock, flags);
++
++	return num_buf_rdy;
+ }
  
- #define USB_VENDOR_ID_HP		0x03f0
-+#define USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A		0x464a
- #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A	0x0a4a
- #define USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A	0x0b4a
- #define USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE		0x134a
-diff --git a/drivers/hid/hid-quirks.c b/drivers/hid/hid-quirks.c
-index e5dcc47586ee4..83c3322fcf187 100644
---- a/drivers/hid/hid-quirks.c
-+++ b/drivers/hid/hid-quirks.c
-@@ -96,6 +96,7 @@ static const struct hid_device_id hid_quirks[] = {
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A096), HID_QUIRK_NO_INIT_REPORTS },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_HOLTEK_ALT, USB_DEVICE_ID_HOLTEK_ALT_KEYBOARD_A293), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0A4A), HID_QUIRK_ALWAYS_POLL },
-+	{ HID_BLUETOOTH_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_ELITE_PRESENTER_MOUSE_464A), HID_QUIRK_MULTI_INPUT },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_LOGITECH_OEM_USB_OPTICAL_MOUSE_0B4A), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE), HID_QUIRK_ALWAYS_POLL },
- 	{ HID_USB_DEVICE(USB_VENDOR_ID_HP, USB_PRODUCT_ID_HP_PIXART_OEM_USB_OPTICAL_MOUSE_094A), HID_QUIRK_ALWAYS_POLL },
+ /**
+@@ -417,7 +424,14 @@ unsigned int v4l2_m2m_num_src_bufs_ready(struct v4l2_m2m_ctx *m2m_ctx)
+ static inline
+ unsigned int v4l2_m2m_num_dst_bufs_ready(struct v4l2_m2m_ctx *m2m_ctx)
+ {
+-	return m2m_ctx->cap_q_ctx.num_rdy;
++	unsigned int num_buf_rdy;
++	unsigned long flags;
++
++	spin_lock_irqsave(&m2m_ctx->cap_q_ctx.rdy_spinlock, flags);
++	num_buf_rdy = m2m_ctx->cap_q_ctx.num_rdy;
++	spin_unlock_irqrestore(&m2m_ctx->cap_q_ctx.rdy_spinlock, flags);
++
++	return num_buf_rdy;
+ }
+ 
+ /**
 -- 
 2.40.1
 
