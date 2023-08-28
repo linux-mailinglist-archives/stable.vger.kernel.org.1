@@ -2,59 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 180B078AA8E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E07BD78A9F2
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230520AbjH1KXY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33910 "EHLO
+        id S230432AbjH1KRa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:17:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231258AbjH1KWl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDCE7B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:26 -0700 (PDT)
+        with ESMTP id S230472AbjH1KRK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 503FA124
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 62E0B63914
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:26 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A30AC433C7;
-        Mon, 28 Aug 2023 10:22:25 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id DF31E63726
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2975C433C9;
+        Mon, 28 Aug 2023 10:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218145;
-        bh=gh+yk4tl3bR9pRZsxT6xl7Yi7/L+YQtX8D0jmo2AZmA=;
+        s=korg; t=1693217817;
+        bh=zMstjQ9X/zORgAzjsW2yzYM2K+lzmumhTJbVftqCLhw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ovSr4KrozleENP7FWpuAd7rHpoUMg7BkChiQjiRmhYrDnb0kI+g/+ZPaAglXTtZbV
-         4miClppuE6aEHnDh3ANPeDbrEb/oLVkDIGyzCn0wehOh4u6ongVkZyEp+snJp5IhKg
-         /9zE64hOlJMgwdEFzoTS5yBWQAkAf6oi1o+uD4mg=
+        b=fkgeKep/+zcVKGiO92xjBVENipwDGSB4U7esE3LV/Y2L1JfHrMPGYfIY8TZoynyly
+         nBxRA9K2SvAwSKfApHLVneeuvo7rcNUAH/qcH2QW/NqGoc+ZqIJJ+vdb153zRsLRBC
+         7oC12gPadrBbzk9JbWW4aqqALesSexpOcPNOQjrw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yin Fengwei <fengwei.yin@intel.com>,
-        Yu Zhao <yuzhao@google.com>,
-        Ryan Roberts <ryan.roberts@arm.com>,
-        David Hildenbrand <david@redhat.com>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Matthew Wilcox <willy@infradead.org>,
-        Minchan Kim <minchan@kernel.org>,
-        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
-        Yang Shi <shy828301@gmail.com>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 112/129] madvise:madvise_free_pte_range(): dont use mapcount() against large folio for sharing check
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Chanho Min <chanho.min@lge.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 4.14 51/57] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
 Date:   Mon, 28 Aug 2023 12:13:11 +0200
-Message-ID: <20230828101201.090409576@linuxfoundation.org>
+Message-ID: <20230828101146.148941596@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,61 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yin Fengwei <fengwei.yin@intel.com>
+From: Helge Deller <deller@gmx.de>
 
-commit 0e0e9bd5f7b9d40fd03b70092367247d52da1db0 upstream.
+commit 382d4cd1847517ffcb1800fd462b625db7b2ebea upstream.
 
-Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a
-folio") replaced the page_mapcount() with folio_mapcount() to check
-whether the folio is shared by other mapping.
+The gcc compiler translates on some architectures the 64-bit
+__builtin_clzll() function to a call to the libgcc function __clzdi2(),
+which should take a 64-bit parameter on 32- and 64-bit platforms.
 
-It's not correct for large folios. folio_mapcount() returns the total
-mapcount of large folio which is not suitable to detect whether the folio
-is shared.
+But in the current kernel code, the built-in __clzdi2() function is
+defined to operate (wrongly) on 32-bit parameters if BITS_PER_LONG ==
+32, thus the return values on 32-bit kernels are in the range from
+[0..31] instead of the expected [0..63] range.
 
-Use folio_estimated_sharers() which returns a estimated number of shares.
-That means it's not 100% correct. It should be OK for madvise case here.
+This patch fixes the in-kernel functions __clzdi2() and __ctzdi2() to
+take a 64-bit parameter on 32-bit kernels as well, thus it makes the
+functions identical for 32- and 64-bit kernels.
 
-User-visible effects is that the THP is skipped when user call madvise.
-But the correct behavior is THP should be split and processed then.
+This bug went unnoticed since kernel 3.11 for over 10 years, and here
+are some possible reasons for that:
 
-NOTE: this change is a temporary fix to reduce the user-visible effects
-before the long term fix from David is ready.
+ a) Some architectures have assembly instructions to count the bits and
+    which are used instead of calling __clzdi2(), e.g. on x86 the bsr
+    instruction and on ppc cntlz is used. On such architectures the
+    wrong __clzdi2() implementation isn't used and as such the bug has
+    no effect and won't be noticed.
 
-Link: https://lkml.kernel.org/r/20230808020917.2230692-4-fengwei.yin@intel.com
-Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
-Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
-Reviewed-by: Yu Zhao <yuzhao@google.com>
-Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
-Cc: David Hildenbrand <david@redhat.com>
-Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Minchan Kim <minchan@kernel.org>
-Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
-Cc: Yang Shi <shy828301@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+ b) Some architectures link to libgcc.a, and the in-kernel weak
+    functions get replaced by the correct 64-bit variants from libgcc.a.
+
+ c) __builtin_clzll() and __clzdi2() doesn't seem to be used in many
+    places in the kernel, and most likely only in uncritical functions,
+    e.g. when printing hex values via seq_put_hex_ll(). The wrong return
+    value will still print the correct number, but just in a wrong
+    formatting (e.g. with too many leading zeroes).
+
+ d) 32-bit kernels aren't used that much any longer, so they are less
+    tested.
+
+A trivial testcase to verify if the currently running 32-bit kernel is
+affected by the bug is to look at the output of /proc/self/maps:
+
+Here the kernel uses a correct implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
+  00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
+  0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
+  f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+and this kernel uses the broken implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
+  0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
+  000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
+  00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 4df87bb7b6a22 ("lib: add weak clz/ctz functions")
+Cc: Chanho Min <chanho.min@lge.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org # v3.11+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/madvise.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ lib/clz_ctz.c |   32 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 26 deletions(-)
 
---- a/mm/madvise.c
-+++ b/mm/madvise.c
-@@ -666,8 +666,8 @@ static int madvise_free_pte_range(pmd_t
- 		 * deactivate all pages.
- 		 */
- 		if (folio_test_large(folio)) {
--			if (folio_mapcount(folio) != 1)
--				goto out;
-+			if (folio_estimated_sharers(folio) != 1)
-+				break;
- 			folio_get(folio);
- 			if (!folio_trylock(folio)) {
- 				folio_put(folio);
+--- a/lib/clz_ctz.c
++++ b/lib/clz_ctz.c
+@@ -30,36 +30,16 @@ int __weak __clzsi2(int val)
+ }
+ EXPORT_SYMBOL(__clzsi2);
+ 
+-int __weak __clzdi2(long val);
+-int __weak __ctzdi2(long val);
+-#if BITS_PER_LONG == 32
+-
+-int __weak __clzdi2(long val)
++int __weak __clzdi2(u64 val);
++int __weak __clzdi2(u64 val)
+ {
+-	return 32 - fls((int)val);
++	return 64 - fls64(val);
+ }
+ EXPORT_SYMBOL(__clzdi2);
+ 
+-int __weak __ctzdi2(long val)
++int __weak __ctzdi2(u64 val);
++int __weak __ctzdi2(u64 val)
+ {
+-	return __ffs((u32)val);
++	return __ffs64(val);
+ }
+ EXPORT_SYMBOL(__ctzdi2);
+-
+-#elif BITS_PER_LONG == 64
+-
+-int __weak __clzdi2(long val)
+-{
+-	return 64 - fls64((u64)val);
+-}
+-EXPORT_SYMBOL(__clzdi2);
+-
+-int __weak __ctzdi2(long val)
+-{
+-	return __ffs64((u64)val);
+-}
+-EXPORT_SYMBOL(__ctzdi2);
+-
+-#else
+-#error BITS_PER_LONG not 32 or 64
+-#endif
 
 
