@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9EEEC78ABAB
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CED1378ACF0
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231482AbjH1Kd2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:33:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40296 "EHLO
+        id S229621AbjH1KoM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:44:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39768 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231495AbjH1Kc6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 903B318B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:33 -0700 (PDT)
+        with ESMTP id S231831AbjH1Knn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:43 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43F5CCEB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:43:20 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 693B063D57
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A072C433C8;
-        Mon, 28 Aug 2023 10:32:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A35C8640B7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83CC7C433C7;
+        Mon, 28 Aug 2023 10:43:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218744;
-        bh=vJW8WipR9n+9EYEUzxEOpcVIibnM8IomNqA+EqzBgfw=;
+        s=korg; t=1693219382;
+        bh=9HTwGfkCOerCcr/mTh0H9Gr3lHBrS+iBZzfIbrnG15k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mfv/WBK5fxj0WVlerTHeOMGWWgls2vnNlXlgQeAu3Ss1vMjynQSTRKcNIs8CdjBuc
-         Q3raxNw9dzhM7QBTpjN98iuW+SUUEj3OyibISsrooNyd9ffzouwQUCdIGhM+BrtBRf
-         9tmURyB53wvRM1vk/1C/D4DHNu+2Wfg2JwwrgvME=
+        b=0fJKK9R9ieKAt8kWwKG/t+2+ZQ4EbgYSQNsCFt1yiQ8PtPG6H6cbWmYbeXT5rK1rR
+         yGB0f4ajJGf7ml1/4EAeCZ2KZRjvMKjb4K+Pl0xy+J6SmqCQrX2thNOGPQmRcH9moq
+         UXFpwCVqyazlqKBIW0vBGvmCNtvewYvY5dxdLFKE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, stable@kernel.org,
-        Rik van Riel <riel@surriel.com>,
-        Mike Rappoport <rppt@kernel.org>, Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.1 068/122] mm,ima,kexec,of: use memblock_free_late from ima_free_kexec_buffer
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 02/89] NFSv4.2: fix error handling in nfs42_proc_getxattr
 Date:   Mon, 28 Aug 2023 12:13:03 +0200
-Message-ID: <20230828101158.711325423@linuxfoundation.org>
+Message-ID: <20230828101150.262766639@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,46 +56,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rik van Riel <riel@surriel.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-commit f0362a253606e2031f8d61c74195d4d6556e12a4 upstream.
+[ Upstream commit 4e3733fd2b0f677faae21cf838a43faf317986d3 ]
 
-The code calling ima_free_kexec_buffer runs long after the memblock
-allocator has already been torn down, potentially resulting in a use
-after free in memblock_isolate_range.
+There is a slight issue with error handling code inside
+nfs42_proc_getxattr(). If page allocating loop fails then we free the
+failing page array element which is NULL but __free_page() can't deal with
+NULL args.
 
-With KASAN or KFENCE, this use after free will result in a BUG
-from the idle task, and a subsequent kernel panic.
+Found by Linux Verification Center (linuxtesting.org).
 
-Switch ima_free_kexec_buffer over to memblock_free_late to avoid
-that issue.
-
-Fixes: fee3ff99bc67 ("powerpc: Move arch independent ima kexec functions to drivers/of/kexec.c")
-Cc: stable@kernel.org
-Signed-off-by: Rik van Riel <riel@surriel.com>
-Suggested-by: Mike Rappoport <rppt@kernel.org>
-Link: https://lore.kernel.org/r/20230817135759.0888e5ef@imladris.surriel.com
-Signed-off-by: Rob Herring <robh@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a1f26739ccdc ("NFSv4.2: improve page handling for GETXATTR")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/kexec.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ fs/nfs/nfs42proc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
---- a/drivers/of/kexec.c
-+++ b/drivers/of/kexec.c
-@@ -184,7 +184,8 @@ int __init ima_free_kexec_buffer(void)
- 	if (ret)
- 		return ret;
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index da94bf2afd070..bc07012741cb4 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -1339,7 +1339,6 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
+ 	for (i = 0; i < np; i++) {
+ 		pages[i] = alloc_page(GFP_KERNEL);
+ 		if (!pages[i]) {
+-			np = i + 1;
+ 			err = -ENOMEM;
+ 			goto out;
+ 		}
+@@ -1363,8 +1362,8 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
+ 	} while (exception.retry);
  
--	return memblock_phys_free(addr, size);
-+	memblock_free_late(addr, size);
-+	return 0;
- }
- #endif
+ out:
+-	while (--np >= 0)
+-		__free_page(pages[np]);
++	while (--i >= 0)
++		__free_page(pages[i]);
+ 	kfree(pages);
  
+ 	return err;
+-- 
+2.40.1
+
 
 
