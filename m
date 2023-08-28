@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9919778AD58
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:48:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48F3478ABDB
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232009AbjH1Kr2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:47:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44600 "EHLO
+        id S231572AbjH1Kem (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232040AbjH1KrK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:47:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B09759B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:46:52 -0700 (PDT)
+        with ESMTP id S231644AbjH1Ke1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC584A6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4F55A62A91
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:46:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6279BC433C8;
-        Mon, 28 Aug 2023 10:46:51 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 71D6263CC5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85D7DC433C7;
+        Mon, 28 Aug 2023 10:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219611;
-        bh=t778fVTDCSeRkrcXNuSLlqe0/p8461ssdcqaSuoSmjk=;
+        s=korg; t=1693218863;
+        bh=4QEmGJThwrBxw3lulIuKPNi5bKIQUhXDF8uSw29zlRI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=06AovCAXe4ntbxmUYNs3hmX0uloyJa3odL4eBFCxFNBc7n3hlHgVGhSD42FHZgTO9
-         kzLymNG8y0GfKpaVolq1ecpLy3zZItdGZGANw8/KWWrTze34B464Oq/MM2XyyYolbb
-         6n2PsOeP40PAVHPkAAzY0NaHLmAGL/2hC8pT6kts=
+        b=qtW/GzU8eLbNg87EKV3DTMMB/SZE+7KNLhrUB4NOWcnim1iEEOYfy4E1J6XUTABSM
+         khvt2HCVn3ec9pFi5biFv9TpVWlUSr5rwCjZYiPFWpFpf4HVMbclOMV79gQRSMepWZ
+         IJpFz2SoPPr6AAOGRfVqjEBpn499qXN7PZF4FCF8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.10 01/84] objtool/x86: Fix SRSO mess
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Chanho Min <chanho.min@lge.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 6.1 083/122] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
 Date:   Mon, 28 Aug 2023 12:13:18 +0200
-Message-ID: <20230828101149.197279560@linuxfoundation.org>
+Message-ID: <20230828101159.176016124@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,148 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Helge Deller <deller@gmx.de>
 
-commit 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40 upstream.
+commit 382d4cd1847517ffcb1800fd462b625db7b2ebea upstream.
 
-Objtool --rethunk does two things:
+The gcc compiler translates on some architectures the 64-bit
+__builtin_clzll() function to a call to the libgcc function __clzdi2(),
+which should take a 64-bit parameter on 32- and 64-bit platforms.
 
- - it collects all (tail) call's of __x86_return_thunk and places them
-   into .return_sites. These are typically compiler generated, but
-   RET also emits this same.
+But in the current kernel code, the built-in __clzdi2() function is
+defined to operate (wrongly) on 32-bit parameters if BITS_PER_LONG ==
+32, thus the return values on 32-bit kernels are in the range from
+[0..31] instead of the expected [0..63] range.
 
- - it fudges the validation of the __x86_return_thunk symbol; because
-   this symbol is inside another instruction, it can't actually find
-   the instruction pointed to by the symbol offset and gets upset.
+This patch fixes the in-kernel functions __clzdi2() and __ctzdi2() to
+take a 64-bit parameter on 32-bit kernels as well, thus it makes the
+functions identical for 32- and 64-bit kernels.
 
-Because these two things pertained to the same symbol, there was no
-pressing need to separate these two separate things.
+This bug went unnoticed since kernel 3.11 for over 10 years, and here
+are some possible reasons for that:
 
-However, alas, along comes SRSO and more crazy things to deal with
-appeared.
+ a) Some architectures have assembly instructions to count the bits and
+    which are used instead of calling __clzdi2(), e.g. on x86 the bsr
+    instruction and on ppc cntlz is used. On such architectures the
+    wrong __clzdi2() implementation isn't used and as such the bug has
+    no effect and won't be noticed.
 
-The SRSO patch itself added the following symbol names to identify as
-rethunk:
+ b) Some architectures link to libgcc.a, and the in-kernel weak
+    functions get replaced by the correct 64-bit variants from libgcc.a.
 
-  'srso_untrain_ret', 'srso_safe_ret' and '__ret'
+ c) __builtin_clzll() and __clzdi2() doesn't seem to be used in many
+    places in the kernel, and most likely only in uncritical functions,
+    e.g. when printing hex values via seq_put_hex_ll(). The wrong return
+    value will still print the correct number, but just in a wrong
+    formatting (e.g. with too many leading zeroes).
 
-Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
-new similarly embedded return thunk, and 'srso_untrain_ret' is
-completely unrelated to anything the above does (and was only included
-because of that INT3 vs UD2 issue fixed previous).
+ d) 32-bit kernels aren't used that much any longer, so they are less
+    tested.
 
-Clear things up by adding a second category for the embedded instruction
-thing.
+A trivial testcase to verify if the currently running 32-bit kernel is
+affected by the bug is to look at the output of /proc/self/maps:
 
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
+Here the kernel uses a correct implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
+  00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
+  0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
+  f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+and this kernel uses the broken implementation of __clzdi2():
+
+  root@debian:~# cat /proc/self/maps
+  0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
+  0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
+  000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
+  00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 4df87bb7b6a22 ("lib: add weak clz/ctz functions")
+Cc: Chanho Min <chanho.min@lge.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org # v3.11+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- tools/objtool/arch.h            |    1 +
- tools/objtool/arch/x86/decode.c |   11 +++++++----
- tools/objtool/check.c           |   22 +++++++++++++++++++++-
- tools/objtool/elf.h             |    1 +
- 4 files changed, 30 insertions(+), 5 deletions(-)
+ lib/clz_ctz.c |   32 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 26 deletions(-)
 
---- a/tools/objtool/arch.h
-+++ b/tools/objtool/arch.h
-@@ -90,6 +90,7 @@ int arch_decode_hint_reg(u8 sp_reg, int
+--- a/lib/clz_ctz.c
++++ b/lib/clz_ctz.c
+@@ -28,36 +28,16 @@ int __weak __clzsi2(int val)
+ }
+ EXPORT_SYMBOL(__clzsi2);
  
- bool arch_is_retpoline(struct symbol *sym);
- bool arch_is_rethunk(struct symbol *sym);
-+bool arch_is_embedded_insn(struct symbol *sym);
- 
- int arch_rewrite_retpolines(struct objtool_file *file);
- 
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -652,8 +652,11 @@ bool arch_is_retpoline(struct symbol *sy
- 
- bool arch_is_rethunk(struct symbol *sym)
+-int __weak __clzdi2(long val);
+-int __weak __ctzdi2(long val);
+-#if BITS_PER_LONG == 32
+-
+-int __weak __clzdi2(long val)
++int __weak __clzdi2(u64 val);
++int __weak __clzdi2(u64 val)
  {
--	return !strcmp(sym->name, "__x86_return_thunk") ||
--	       !strcmp(sym->name, "srso_untrain_ret") ||
--	       !strcmp(sym->name, "srso_safe_ret") ||
--	       !strcmp(sym->name, "retbleed_return_thunk");
-+	return !strcmp(sym->name, "__x86_return_thunk");
-+}
-+
-+bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return !strcmp(sym->name, "retbleed_return_thunk") ||
-+	       !strcmp(sym->name, "srso_safe_ret");
+-	return 32 - fls((int)val);
++	return 64 - fls64(val);
  }
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -946,16 +946,33 @@ static int add_ignore_alternatives(struc
- 	return 0;
- }
+ EXPORT_SYMBOL(__clzdi2);
  
-+/*
-+ * Symbols that replace INSN_CALL_DYNAMIC, every (tail) call to such a symbol
-+ * will be added to the .retpoline_sites section.
-+ */
- __weak bool arch_is_retpoline(struct symbol *sym)
+-int __weak __ctzdi2(long val)
++int __weak __ctzdi2(u64 val);
++int __weak __ctzdi2(u64 val)
  {
- 	return false;
+-	return __ffs((u32)val);
++	return __ffs64(val);
  }
- 
-+/*
-+ * Symbols that replace INSN_RETURN, every (tail) call to such a symbol
-+ * will be added to the .return_sites section.
-+ */
- __weak bool arch_is_rethunk(struct symbol *sym)
- {
- 	return false;
- }
- 
-+/*
-+ * Symbols that are embedded inside other instructions, because sometimes crazy
-+ * code exists. These are mostly ignored for validation purposes.
-+ */
-+__weak bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return false;
-+}
-+
- #define NEGATIVE_RELOC	((void *)-1L)
- 
- static struct reloc *insn_reloc(struct objtool_file *file, struct instruction *insn)
-@@ -1172,7 +1189,7 @@ static int add_jump_destinations(struct
- 			 * middle of another instruction.  Objtool only
- 			 * knows about the outer instruction.
- 			 */
--			if (sym && sym->return_thunk) {
-+			if (sym && sym->embedded_insn) {
- 				add_return_call(file, insn, false);
- 				continue;
- 			}
-@@ -1971,6 +1988,9 @@ static int classify_symbols(struct objto
- 			if (arch_is_rethunk(func))
- 				func->return_thunk = true;
- 
-+			if (arch_is_embedded_insn(func))
-+				func->embedded_insn = true;
-+
- 			if (!strcmp(func->name, "__fentry__"))
- 				func->fentry = true;
- 
---- a/tools/objtool/elf.h
-+++ b/tools/objtool/elf.h
-@@ -61,6 +61,7 @@ struct symbol {
- 	u8 return_thunk      : 1;
- 	u8 fentry            : 1;
- 	u8 kcov              : 1;
-+	u8 embedded_insn     : 1;
- };
- 
- struct reloc {
+ EXPORT_SYMBOL(__ctzdi2);
+-
+-#elif BITS_PER_LONG == 64
+-
+-int __weak __clzdi2(long val)
+-{
+-	return 64 - fls64((u64)val);
+-}
+-EXPORT_SYMBOL(__clzdi2);
+-
+-int __weak __ctzdi2(long val)
+-{
+-	return __ffs64((u64)val);
+-}
+-EXPORT_SYMBOL(__ctzdi2);
+-
+-#else
+-#error BITS_PER_LONG not 32 or 64
+-#endif
 
 
