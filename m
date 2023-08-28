@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BC3D78AAF5
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3789378AB56
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231226AbjH1K0e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:26:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44240 "EHLO
+        id S231250AbjH1KaP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:30:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231307AbjH1K0N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:13 -0400
+        with ESMTP id S231360AbjH1K3m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EF21B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:26:04 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E485A7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C8BB86131B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:26:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCB0AC433C7;
-        Mon, 28 Aug 2023 10:26:02 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 03EA263C3B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13C9DC433C7;
+        Mon, 28 Aug 2023 10:29:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218363;
-        bh=rUyASpT8XeKq9MgIqYZV4w8ZH31YOEfGel0GulK4hdY=;
+        s=korg; t=1693218579;
+        bh=Z7skcU9s9WwG2HqW1kmLNfS6OdXH0w6Wp09NFRflw4k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fIvTHmEUz4yNWDZm9bSCvIaYh1jxLPYFH4p4dIJnAWjxm0KZBMVHejWY4bxpddviw
-         cRnq3W/B1UiQM8KVKM8135nzTLn1x7wk9tT/kzYYiLW9DBUskkZ4qDjoLsp10IuaWJ
-         zxa8AIEN9geN+7412YWvnzbP2mrYqwJVfQUKJcC8=
+        b=tbQfawcvnRxuM1kgliyspO4jDlgH/Nkku0UEtNWI0769oCLQik4ixJNSpsLKmi1mF
+         7x2tYs1HFSS4Ru8XJnHjL+maehcn6/9ifXyyvmT8gZhlWGX4MYiwBR0Yo80G+x32P2
+         HNSFQOJHtd0HB0G7VUw8VX2beyzrDwbplPdkCddw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fred Eckert <Frede@cmslaser.com>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        Benjamin Coddington <bcodding@redhat.com>,
+        Trond Myklebust <trond.myklebust@hammerspace.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 022/129] iio: adc: stx104: Implement and utilize register structures
+Subject: [PATCH 6.1 001/122] NFSv4.2: fix error handling in nfs42_proc_getxattr
 Date:   Mon, 28 Aug 2023 12:11:56 +0200
-Message-ID: <20230828101153.873079432@linuxfoundation.org>
+Message-ID: <20230828101156.528209711@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,215 +56,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <william.gray@linaro.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 6cfd14c54b1f42f29097244c1b6208f8268d7d5b ]
+[ Upstream commit 4e3733fd2b0f677faae21cf838a43faf317986d3 ]
 
-Reduce magic numbers and improve code readability by implementing and
-utilizing named register data structures.
+There is a slight issue with error handling code inside
+nfs42_proc_getxattr(). If page allocating loop fails then we free the
+failing page array element which is NULL but __free_page() can't deal with
+NULL args.
 
-Tested-by: Fred Eckert <Frede@cmslaser.com>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Link: https://lore.kernel.org/r/8cb91d5b53e57b066120e42ea07000d6c7ef5543.1657213745.git.william.gray@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
+Found by Linux Verification Center (linuxtesting.org).
+
+Fixes: a1f26739ccdc ("NFSv4.2: improve page handling for GETXATTR")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Reviewed-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Trond Myklebust <trond.myklebust@hammerspace.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stx104.c | 74 +++++++++++++++++++++++++++-------------
- 1 file changed, 50 insertions(+), 24 deletions(-)
+ fs/nfs/nfs42proc.c | 5 ++---
+ 1 file changed, 2 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
-index bdc4281d9fdaf..c25523ecebab2 100644
---- a/drivers/iio/adc/stx104.c
-+++ b/drivers/iio/adc/stx104.c
-@@ -24,6 +24,7 @@
- #include <linux/module.h>
- #include <linux/moduleparam.h>
- #include <linux/spinlock.h>
-+#include <linux/types.h>
- 
- #define STX104_OUT_CHAN(chan) {				\
- 	.type = IIO_VOLTAGE,				\
-@@ -52,14 +53,36 @@ static unsigned int num_stx104;
- module_param_hw_array(base, uint, ioport, &num_stx104, 0);
- MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
- 
-+/**
-+ * struct stx104_reg - device register structure
-+ * @ssr_ad:	Software Strobe Register and ADC Data
-+ * @achan:	ADC Channel
-+ * @dio:	Digital I/O
-+ * @dac:	DAC Channels
-+ * @cir_asr:	Clear Interrupts and ADC Status
-+ * @acr:	ADC Control
-+ * @pccr_fsh:	Pacer Clock Control and FIFO Status MSB
-+ * @acfg:	ADC Configuration
-+ */
-+struct stx104_reg {
-+	u16 ssr_ad;
-+	u8 achan;
-+	u8 dio;
-+	u16 dac[2];
-+	u8 cir_asr;
-+	u8 acr;
-+	u8 pccr_fsh;
-+	u8 acfg;
-+};
-+
- /**
-  * struct stx104_iio - IIO device private data structure
-  * @chan_out_states:	channels' output states
-- * @base:		base port address of the IIO device
-+ * @reg:		I/O address offset for the device registers
-  */
- struct stx104_iio {
- 	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
--	void __iomem *base;
-+	struct stx104_reg __iomem *reg;
- };
- 
- /**
-@@ -72,7 +95,7 @@ struct stx104_iio {
- struct stx104_gpio {
- 	struct gpio_chip chip;
- 	spinlock_t lock;
--	void __iomem *base;
-+	u8 __iomem *base;
- 	unsigned int out_state;
- };
- 
-@@ -80,6 +103,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 	struct iio_chan_spec const *chan, int *val, int *val2, long mask)
- {
- 	struct stx104_iio *const priv = iio_priv(indio_dev);
-+	struct stx104_reg __iomem *const reg = priv->reg;
- 	unsigned int adc_config;
- 	int adbu;
- 	int gain;
-@@ -87,7 +111,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_HARDWAREGAIN:
- 		/* get gain configuration */
--		adc_config = ioread8(priv->base + 11);
-+		adc_config = ioread8(&reg->acfg);
- 		gain = adc_config & 0x3;
- 
- 		*val = 1 << gain;
-@@ -99,24 +123,26 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
+diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
+index ecb428512fe1a..7c33bba179d2f 100644
+--- a/fs/nfs/nfs42proc.c
++++ b/fs/nfs/nfs42proc.c
+@@ -1359,7 +1359,6 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
+ 	for (i = 0; i < np; i++) {
+ 		pages[i] = alloc_page(GFP_KERNEL);
+ 		if (!pages[i]) {
+-			np = i + 1;
+ 			err = -ENOMEM;
+ 			goto out;
  		}
+@@ -1383,8 +1382,8 @@ ssize_t nfs42_proc_getxattr(struct inode *inode, const char *name,
+ 	} while (exception.retry);
  
- 		/* select ADC channel */
--		iowrite8(chan->channel | (chan->channel << 4), priv->base + 2);
-+		iowrite8(chan->channel | (chan->channel << 4), &reg->achan);
+ out:
+-	while (--np >= 0)
+-		__free_page(pages[np]);
++	while (--i >= 0)
++		__free_page(pages[i]);
+ 	kfree(pages);
  
--		/* trigger ADC sample capture and wait for completion */
--		iowrite8(0, priv->base);
--		while (ioread8(priv->base + 8) & BIT(7));
-+		/* trigger ADC sample capture by writing to the 8-bit
-+		 * Software Strobe Register and wait for completion
-+		 */
-+		iowrite8(0, &reg->ssr_ad);
-+		while (ioread8(&reg->cir_asr) & BIT(7));
- 
--		*val = ioread16(priv->base);
-+		*val = ioread16(&reg->ssr_ad);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_OFFSET:
- 		/* get ADC bipolar/unipolar configuration */
--		adc_config = ioread8(priv->base + 11);
-+		adc_config = ioread8(&reg->acfg);
- 		adbu = !(adc_config & BIT(2));
- 
- 		*val = -32768 * adbu;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		/* get ADC bipolar/unipolar and gain configuration */
--		adc_config = ioread8(priv->base + 11);
-+		adc_config = ioread8(&reg->acfg);
- 		adbu = !(adc_config & BIT(2));
- 		gain = adc_config & 0x3;
- 
-@@ -138,16 +164,16 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 		/* Only four gain states (x1, x2, x4, x8) */
- 		switch (val) {
- 		case 1:
--			iowrite8(0, priv->base + 11);
-+			iowrite8(0, &priv->reg->acfg);
- 			break;
- 		case 2:
--			iowrite8(1, priv->base + 11);
-+			iowrite8(1, &priv->reg->acfg);
- 			break;
- 		case 4:
--			iowrite8(2, priv->base + 11);
-+			iowrite8(2, &priv->reg->acfg);
- 			break;
- 		case 8:
--			iowrite8(3, priv->base + 11);
-+			iowrite8(3, &priv->reg->acfg);
- 			break;
- 		default:
- 			return -EINVAL;
-@@ -161,7 +187,7 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 				return -EINVAL;
- 
- 			priv->chan_out_states[chan->channel] = val;
--			iowrite16(val, priv->base + 4 + 2 * chan->channel);
-+			iowrite16(val, &priv->reg->dac[chan->channel]);
- 
- 			return 0;
- 		}
-@@ -315,15 +341,15 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	}
- 
- 	priv = iio_priv(indio_dev);
--	priv->base = devm_ioport_map(dev, base[id], STX104_EXTENT);
--	if (!priv->base)
-+	priv->reg = devm_ioport_map(dev, base[id], STX104_EXTENT);
-+	if (!priv->reg)
- 		return -ENOMEM;
- 
- 	indio_dev->info = &stx104_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
- 
- 	/* determine if differential inputs */
--	if (ioread8(priv->base + 8) & BIT(5)) {
-+	if (ioread8(&priv->reg->cir_asr) & BIT(5)) {
- 		indio_dev->num_channels = ARRAY_SIZE(stx104_channels_diff);
- 		indio_dev->channels = stx104_channels_diff;
- 	} else {
-@@ -335,14 +361,14 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	indio_dev->dev.parent = dev;
- 
- 	/* configure device for software trigger operation */
--	iowrite8(0, priv->base + 9);
-+	iowrite8(0, &priv->reg->acr);
- 
- 	/* initialize gain setting to x1 */
--	iowrite8(0, priv->base + 11);
-+	iowrite8(0, &priv->reg->acfg);
- 
- 	/* initialize DAC output to 0V */
--	iowrite16(0, priv->base + 4);
--	iowrite16(0, priv->base + 6);
-+	iowrite16(0, &priv->reg->dac[0]);
-+	iowrite16(0, &priv->reg->dac[1]);
- 
- 	stx104gpio->chip.label = dev_name(dev);
- 	stx104gpio->chip.parent = dev;
-@@ -357,7 +383,7 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	stx104gpio->chip.get_multiple = stx104_gpio_get_multiple;
- 	stx104gpio->chip.set = stx104_gpio_set;
- 	stx104gpio->chip.set_multiple = stx104_gpio_set_multiple;
--	stx104gpio->base = priv->base + 3;
-+	stx104gpio->base = &priv->reg->dio;
- 	stx104gpio->out_state = 0x0;
- 
- 	spin_lock_init(&stx104gpio->lock);
+ 	return err;
 -- 
 2.40.1
 
