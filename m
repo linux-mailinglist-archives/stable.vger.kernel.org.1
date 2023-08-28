@@ -2,151 +2,174 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1484478B9C8
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 22:54:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDB6278BA7A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 23:57:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229723AbjH1Ux0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 16:53:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50898 "EHLO
+        id S231251AbjH1V4a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 17:56:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232753AbjH1UxJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 16:53:09 -0400
-Received: from mail-il1-x12e.google.com (mail-il1-x12e.google.com [IPv6:2607:f8b0:4864:20::12e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C360E12A
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:53:06 -0700 (PDT)
-Received: by mail-il1-x12e.google.com with SMTP id e9e14a558f8ab-34deab8010dso361545ab.3
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:53:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1693255986; x=1693860786;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=6EHvhYNt+YdRhsmSbNDmpyOVgrF3DogD6lN7EDypwxg=;
-        b=fUyGPpig19ciAcQynM5TiTE3a40epaqfni/gNELFb5tc1i1ZByAz4rt/CujuRxITrX
-         uEOxX8K4G5OFl2xChFLTHWX/obMq4aUWF77Bp6CWd4plBSLrkymkEEfauakLysTCH1Xn
-         vcYGEALttnHeWZhI0/UmxNrXf3IOAeAKlFbn8=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693255986; x=1693860786;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=6EHvhYNt+YdRhsmSbNDmpyOVgrF3DogD6lN7EDypwxg=;
-        b=ZzaHyrJQbQnZacL0NwIbRPxTpcWhex1UJq0cjT1aTSD+ovohVzexngCKg0Tw4fh3CW
-         yE0GM7ZmXHylNYFd/GJN60vVwwcedU+giXfY67XC3MXgGFFXDKw8b4v9ywFUqWQpXgqB
-         BnYTFaknKWZLoqrrnfXrP0YDUL8vafjrIXFzUk1tZ+ZdSlGlQEvcw0qeOmJAZc2AjlE8
-         c146KXBADG8Xergf2zqTT1B10drFU3hPDThBJbLKPjgFXW0S9I34sNMLACr7pUjPi67+
-         q767KqxgPBEUJbj46Ex+gcg0nLGk5ASc1ujpN0ZSPgOPTLCEP3cgluMUPLIZdh6yHhyT
-         PdTg==
-X-Gm-Message-State: AOJu0Yx4Di6eOAiMCiWa2FNbL4B3rSfGERSzG9uGMwUqgm2Nuw6HNF+L
-        S6h+dYumxR02KxG7djCIcQivPeIK1ngfwIf51YA=
-X-Google-Smtp-Source: AGHT+IFKePN5jQUllnPWZpOthmuFkVluxrH6XoeS0AmoQO9fLpkllywkeTVAIWDXE5M2PoyafqTulA==
-X-Received: by 2002:a92:caca:0:b0:34a:c61f:9e99 with SMTP id m10-20020a92caca000000b0034ac61f9e99mr17646978ilq.9.1693255985709;
-        Mon, 28 Aug 2023 13:53:05 -0700 (PDT)
-Received: from joelboxx5.c.googlers.com.com (74.120.171.34.bc.googleusercontent.com. [34.171.120.74])
-        by smtp.gmail.com with ESMTPSA id i15-20020a02cc4f000000b0039deb26853csm2744432jaq.10.2023.08.28.13.53.05
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 13:53:05 -0700 (PDT)
-From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
-To:     stable@vger.kernel.org, "Paul E. McKenney" <paulmck@kernel.org>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Joel Fernandes <joel@joelfernandes.org>
-Cc:     rcu@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [PATCH 5.10] rcu: Prevent expedited GP from enabling tick on offline CPU
-Date:   Mon, 28 Aug 2023 20:53:01 +0000
-Message-ID: <20230828205302.1660666-1-joel@joelfernandes.org>
-X-Mailer: git-send-email 2.42.0.rc2.253.gd59a3bf2b4-goog
+        with ESMTP id S229772AbjH1V4F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 17:56:05 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38F410C;
+        Mon, 28 Aug 2023 14:56:01 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 699B061935;
+        Mon, 28 Aug 2023 21:56:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7126C433C7;
+        Mon, 28 Aug 2023 21:55:58 +0000 (UTC)
+Date:   Mon, 28 Aug 2023 23:55:55 +0200
+From:   Helge Deller <deller@gmx.de>
+To:     stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-parisc@vger.kernel.org,
+        Jens Axboe <axboe@kernel.dk>
+Cc:     Vidra.Jonas@seznam.cz, Sam James <sam@gentoo.org>,
+        John David Anglin <dave.anglin@bell.net>
+Subject: [STABLE] stable backport request for 6.1 for io_uring
+Message-ID: <ZO0X64s72JpFJnRM@p100>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-2.7 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        HEXHASH_WORD,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: "Paul E. McKenney" <paulmck@kernel.org>
+Hello Greg, Hello Jens, Hello stable team,
 
-[ Upstream commit 147f04b14adde831eb4a0a1e378667429732f9e8 ]
+would you please accept some backports to v6.1-stable for io_uring()?
+io_uring() fails on parisc because of some missing upstream patches.
+Since 6.1 is currently used in debian and gentoo as main kernel we
+face some build errors due to the missing patches.
 
-If an RCU expedited grace period starts just when a CPU is in the process
-of going offline, so that the outgoing CPU has completed its pass through
-stop-machine but has not yet completed its final dive into the idle loop,
-RCU will attempt to enable that CPU's scheduling-clock tick via a call
-to tick_dep_set_cpu().  For this to happen, that CPU has to have been
-online when the expedited grace period completed its CPU-selection phase.
+Here are the 3 steps I'm asking for (for kernel 6.1-stable only, the others are OK):
 
-This is pointless:  The outgoing CPU has interrupts disabled, so it cannot
-take a scheduling-clock tick anyway.  In addition, the tick_dep_set_cpu()
-function's eventual call to irq_work_queue_on() will splat as follows:
+1) cherry-pick this upstream commit:
+	commit 567b35159e76997e95b643b9a8a5d9d2198f2522
+	Author: John David Anglin <dave@parisc-linux.org>
+	Date:   Sun Feb 26 18:03:33 2023 +0000
+	parisc: Cleanup mmap implementation regarding color alignment
 
-smpboot: CPU 1 is now offline
-WARNING: CPU: 6 PID: 124 at kernel/irq_work.c:95
-+irq_work_queue_on+0x57/0x60
-Modules linked in:
-CPU: 6 PID: 124 Comm: kworker/6:2 Not tainted 5.15.0-rc1+ #3
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-+rel-1.14.0-0-g155821a-rebuilt.opensuse.org 04/01/2014
-Workqueue: rcu_gp wait_rcu_exp_gp
-RIP: 0010:irq_work_queue_on+0x57/0x60
-Code: 8b 05 1d c7 ea 62 a9 00 00 f0 00 75 21 4c 89 ce 44 89 c7 e8
-+9b 37 fa ff ba 01 00 00 00 89 d0 c3 4c 89 cf e8 3b ff ff ff eb ee <0f> 0b eb b7
-+0f 0b eb db 90 48 c7 c0 98 2a 02 00 65 48 03 05 91
- 6f
-RSP: 0000:ffffb12cc038fe48 EFLAGS: 00010282
-RAX: 0000000000000001 RBX: 0000000000005208 RCX: 0000000000000020
-RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffff9ad01f45a680
-RBP: 000000000004c990 R08: 0000000000000001 R09: ffff9ad01f45a680
-R10: ffffb12cc0317db0 R11: 0000000000000001 R12: 00000000fffecee8
-R13: 0000000000000001 R14: 0000000000026980 R15: ffffffff9e53ae00
-FS:  0000000000000000(0000) GS:ffff9ad01f580000(0000)
-+knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 0000000000000000 CR3: 000000000de0c000 CR4: 00000000000006e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- tick_nohz_dep_set_cpu+0x59/0x70
- rcu_exp_wait_wake+0x54e/0x870
- ? sync_rcu_exp_select_cpus+0x1fc/0x390
- process_one_work+0x1ef/0x3c0
- ? process_one_work+0x3c0/0x3c0
- worker_thread+0x28/0x3c0
- ? process_one_work+0x3c0/0x3c0
- kthread+0x115/0x140
- ? set_kthread_struct+0x40/0x40
- ret_from_fork+0x22/0x30
----[ end trace c5bf75eb6aa80bc6 ]---
+2) cherry-pick this upstream commit:
+	commit b5d89408b9fb21258f7c371d6d48a674f60f7181
+	Author: Helge Deller <deller@gmx.de>
+	Date:   Fri Jun 30 12:36:09 2023 +0200
+	parisc: sys_parisc: parisc_personality() is called from asm code
 
-This commit therefore avoids invoking tick_dep_set_cpu() on offlined
-CPUs to limit both futility and false-positive splats.
+3) apply the patch below as manual backport:
+I think this is the least invasive change and I wasn't able to otherwise
+simply pull in the upstream patches without touching code I don't want
+to touch (and keep life easier for Jens if he wants to backport other
+patches later).
 
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
----
- kernel/rcu/tree_exp.h | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+Thanks!
+Helge
 
-diff --git a/kernel/rcu/tree_exp.h b/kernel/rcu/tree_exp.h
-index 401c1f331caf..07a284a18645 100644
---- a/kernel/rcu/tree_exp.h
-+++ b/kernel/rcu/tree_exp.h
-@@ -507,7 +507,10 @@ static void synchronize_rcu_expedited_wait(void)
- 				if (rdp->rcu_forced_tick_exp)
- 					continue;
- 				rdp->rcu_forced_tick_exp = true;
--				tick_dep_set_cpu(cpu, TICK_DEP_BIT_RCU_EXP);
-+				preempt_disable();
-+				if (cpu_online(cpu))
-+					tick_dep_set_cpu(cpu, TICK_DEP_BIT_RCU_EXP);
-+				preempt_enable();
- 			}
- 		}
- 		j = READ_ONCE(jiffies_till_first_fqs);
--- 
-2.42.0.rc2.253.gd59a3bf2b4-goog
 
+From: Helge Deller <deller@gmx.de>
+Date: Mon, 28 Aug 2023 23:07:49 +0200
+Subject: [PATCH] io_uring/parisc: Adjust pgoff in io_uring mmap() for parisc
+
+Vidra Jonas reported issues on parisc with libuv which then triggers
+build errors with cmake. Debugging shows that those issues stem from
+io_uring().
+
+I was not able to easily pull in upstream commits directly, so here
+is IMHO the least invasive manual backport of the following upstream
+commits to fix the cache aliasing issues on parisc on kernel 6.1
+with io_uring:
+
+56675f8b9f9b ("io_uring/parisc: Adjust pgoff in io_uring mmap() for parisc")
+32832a407a71 ("io_uring: Fix io_uring mmap() by using architecture-provided get_unmapped_area()")
+d808459b2e31 ("io_uring: Adjust mapping wrt architecture aliasing requirements")
+
+With this patch kernel 6.1 has all relevant mmap changes and is
+identical to kernel 6.5 with regard to mmap() in io_uring.
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Reported-by: Vidra.Jonas@seznam.cz
+Link: https://lore.kernel.org/linux-parisc/520.NvTX.6mXZpmfh4Ju.1awpAS@seznam.cz/
+Cc: Sam James <sam@gentoo.org>
+Cc: John David Anglin <dave.anglin@bell.net>
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index ed8e9deae284..b0e47fe1eb4b 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -72,6 +72,7 @@
+ #include <linux/io_uring.h>
+ #include <linux/audit.h>
+ #include <linux/security.h>
++#include <asm/shmparam.h>
+ 
+ #define CREATE_TRACE_POINTS
+ #include <trace/events/io_uring.h>
+@@ -3110,6 +3111,49 @@ static __cold int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+ 	return remap_pfn_range(vma, vma->vm_start, pfn, sz, vma->vm_page_prot);
+ }
+ 
++static unsigned long io_uring_mmu_get_unmapped_area(struct file *filp,
++			unsigned long addr, unsigned long len,
++			unsigned long pgoff, unsigned long flags)
++{
++	void *ptr;
++
++	/*
++	 * Do not allow to map to user-provided address to avoid breaking the
++	 * aliasing rules. Userspace is not able to guess the offset address of
++	 * kernel kmalloc()ed memory area.
++	 */
++	if (addr)
++		return -EINVAL;
++
++	ptr = io_uring_validate_mmap_request(filp, pgoff, len);
++	if (IS_ERR(ptr))
++		return -ENOMEM;
++
++	/*
++	 * Some architectures have strong cache aliasing requirements.
++	 * For such architectures we need a coherent mapping which aliases
++	 * kernel memory *and* userspace memory. To achieve that:
++	 * - use a NULL file pointer to reference physical memory, and
++	 * - use the kernel virtual address of the shared io_uring context
++	 *   (instead of the userspace-provided address, which has to be 0UL
++	 *   anyway).
++	 * - use the same pgoff which the get_unmapped_area() uses to
++	 *   calculate the page colouring.
++	 * For architectures without such aliasing requirements, the
++	 * architecture will return any suitable mapping because addr is 0.
++	 */
++	filp = NULL;
++	flags |= MAP_SHARED;
++	pgoff = 0;	/* has been translated to ptr above */
++#ifdef SHM_COLOUR
++	addr = (uintptr_t) ptr;
++	pgoff = addr >> PAGE_SHIFT;
++#else
++	addr = 0UL;
++#endif
++	return current->mm->get_unmapped_area(filp, addr, len, pgoff, flags);
++}
++
+ #else /* !CONFIG_MMU */
+ 
+ static int io_uring_mmap(struct file *file, struct vm_area_struct *vma)
+@@ -3324,6 +3368,8 @@ static const struct file_operations io_uring_fops = {
+ #ifndef CONFIG_MMU
+ 	.get_unmapped_area = io_uring_nommu_get_unmapped_area,
+ 	.mmap_capabilities = io_uring_nommu_mmap_capabilities,
++#else
++	.get_unmapped_area = io_uring_mmu_get_unmapped_area,
+ #endif
+ 	.poll		= io_uring_poll,
+ #ifdef CONFIG_PROC_FS
