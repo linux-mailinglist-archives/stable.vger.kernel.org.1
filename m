@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5C35878AACE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1AD4F78AC0E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229463AbjH1KZY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:25:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60872 "EHLO
+        id S231486AbjH1Kgo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:36:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42204 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230461AbjH1KYv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:51 -0400
+        with ESMTP id S231665AbjH1Kgb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B7C483
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:47 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC468130
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BD86963998
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFC5C433C7;
-        Mon, 28 Aug 2023 10:24:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8977163C55
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DAFC433C8;
+        Mon, 28 Aug 2023 10:36:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218286;
-        bh=DSLz885p4bAdQy3TVZNwfkf2Oea6x8wJweXSLwohnDQ=;
+        s=korg; t=1693218987;
+        bh=p6m0ecwV0lDfVoFRe8+qxqIUYxrOsks0YMmOEsycRk4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FbHzIhVUNy+G5qpo7jleAVPuH3RcHgVZZI/qtEasftxI/cMe7qaqNHmwLIDI+h35K
-         m6KQmmo83jw+nbGJAQOgH75qIQlz5Y30RDr6dYH9xJpQApjG9yBCeuIOvXFa2h1H5G
-         KWXIdkWk/nIU6uZOkEGNm9hd9vaktVsO47fmu3wE=
+        b=UD55Ik2RvI56LYdumEdBG7PP15IwIJcWS9UG6DbKSJxffLv5Ud6jeZMtEmvb6OGWK
+         53WCZQeKlwb6JBu4Ps4LTUW2JP0BXrZ2yVlCi57U6N8p5uJccmSVYC7xkG5HV2XksZ
+         +ctYyUllti5jjF7AgMSrr9OSE7v2puS8JZ9OJnVU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Serge Semin <fancer.lancer@gmail.com>,
-        Marc Zyngier <maz@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 033/129] irqchip/mips-gic: Use raw spinlock for gic_lock
-Date:   Mon, 28 Aug 2023 12:12:07 +0200
-Message-ID: <20230828101154.330191687@linuxfoundation.org>
+        patches@lists.linux.dev,
+        William Breathitt Gray <william.gray@linaro.org>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 031/158] iio: stx104: Move to addac subdirectory
+Date:   Mon, 28 Aug 2023 12:12:08 +0200
+Message-ID: <20230828101158.393396227@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,165 +56,121 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: William Breathitt Gray <william.gray@linaro.org>
 
-[ Upstream commit 3d6a0e4197c04599d75d85a608c8bb16a630a38c ]
+[ Upstream commit 955c2aa9cff2dd07ff798ca8c883398731687972 ]
 
-Since we may hold gic_lock in hardirq context, use raw spinlock
-makes more sense given that it is for low-level interrupt handling
-routine and the critical section is small.
+The stx104 driver supports both ADC and DAC functionality.
 
-Fixes BUG:
-
-[    0.426106] =============================
-[    0.426257] [ BUG: Invalid wait context ]
-[    0.426422] 6.3.0-rc7-next-20230421-dirty #54 Not tainted
-[    0.426638] -----------------------------
-[    0.426766] swapper/0/1 is trying to lock:
-[    0.426954] ffffffff8104e7b8 (gic_lock){....}-{3:3}, at: gic_set_type+0x30/08
-
-Fixes: 95150ae8b330 ("irqchip: mips-gic: Implement irq_set_type callback")
-Cc: stable@vger.kernel.org
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Reviewed-by: Serge Semin <fancer.lancer@gmail.com>
-Tested-by: Serge Semin <fancer.lancer@gmail.com>
-Signed-off-by: Marc Zyngier <maz@kernel.org>
-Link: https://lore.kernel.org/r/20230424103156.66753-3-jiaxun.yang@flygoat.com
+Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
+Link: https://lore.kernel.org/r/20220815222921.138945-1-william.gray@linaro.org
+Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/irqchip/irq-mips-gic.c | 30 +++++++++++++++---------------
- 1 file changed, 15 insertions(+), 15 deletions(-)
+ MAINTAINERS                         |  2 +-
+ drivers/iio/adc/Kconfig             | 16 ----------------
+ drivers/iio/adc/Makefile            |  1 -
+ drivers/iio/addac/Kconfig           | 16 ++++++++++++++++
+ drivers/iio/addac/Makefile          |  1 +
+ drivers/iio/{adc => addac}/stx104.c |  0
+ 6 files changed, 18 insertions(+), 18 deletions(-)
+ rename drivers/iio/{adc => addac}/stx104.c (100%)
 
-diff --git a/drivers/irqchip/irq-mips-gic.c b/drivers/irqchip/irq-mips-gic.c
-index 6b8c3dd0f76f4..dd9b111038b06 100644
---- a/drivers/irqchip/irq-mips-gic.c
-+++ b/drivers/irqchip/irq-mips-gic.c
-@@ -48,7 +48,7 @@ void __iomem *mips_gic_base;
+diff --git a/MAINTAINERS b/MAINTAINERS
+index 34d3497f11772..2040c2f76dcf7 100644
+--- a/MAINTAINERS
++++ b/MAINTAINERS
+@@ -1101,7 +1101,7 @@ APEX EMBEDDED SYSTEMS STX104 IIO DRIVER
+ M:	William Breathitt Gray <vilhelm.gray@gmail.com>
+ L:	linux-iio@vger.kernel.org
+ S:	Maintained
+-F:	drivers/iio/adc/stx104.c
++F:	drivers/iio/addac/stx104.c
  
- DEFINE_PER_CPU_READ_MOSTLY(unsigned long[GIC_MAX_LONGS], pcpu_masks);
+ APM DRIVER
+ M:	Jiri Kosina <jikos@kernel.org>
+diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
+index cb57880842991..b39d5ad157449 100644
+--- a/drivers/iio/adc/Kconfig
++++ b/drivers/iio/adc/Kconfig
+@@ -840,22 +840,6 @@ config STMPE_ADC
+ 	  Say yes here to build support for ST Microelectronics STMPE
+ 	  built-in ADC block (stmpe811).
  
--static DEFINE_SPINLOCK(gic_lock);
-+static DEFINE_RAW_SPINLOCK(gic_lock);
- static struct irq_domain *gic_irq_domain;
- static struct irq_domain *gic_ipi_domain;
- static int gic_shared_intrs;
-@@ -207,7 +207,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
+-config STX104
+-	tristate "Apex Embedded Systems STX104 driver"
+-	depends on PC104 && X86
+-	select ISA_BUS_API
+-	select GPIOLIB
+-	help
+-	  Say yes here to build support for the Apex Embedded Systems STX104
+-	  integrated analog PC/104 card.
+-
+-	  This driver supports the 16 channels of single-ended (8 channels of
+-	  differential) analog inputs, 2 channels of analog output, 4 digital
+-	  inputs, and 4 digital outputs provided by the STX104.
+-
+-	  The base port addresses for the devices may be configured via the base
+-	  array module parameter.
+-
+ config SUN4I_GPADC
+ 	tristate "Support for the Allwinner SoCs GPADC"
+ 	depends on IIO
+diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
+index ef9cc485fb674..d0b11502102ed 100644
+--- a/drivers/iio/adc/Makefile
++++ b/drivers/iio/adc/Makefile
+@@ -72,7 +72,6 @@ obj-$(CONFIG_RCAR_GYRO_ADC) += rcar-gyroadc.o
+ obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
+ obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
+ obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
+-obj-$(CONFIG_STX104) += stx104.o
+ obj-$(CONFIG_SUN4I_GPADC) += sun4i-gpadc-iio.o
+ obj-$(CONFIG_STM32_ADC_CORE) += stm32-adc-core.o
+ obj-$(CONFIG_STM32_ADC) += stm32-adc.o
+diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
+index 2e64d7755d5ea..1f598670e84fb 100644
+--- a/drivers/iio/addac/Kconfig
++++ b/drivers/iio/addac/Kconfig
+@@ -5,4 +5,20 @@
  
- 	irq = GIC_HWIRQ_TO_SHARED(d->hwirq);
+ menu "Analog to digital and digital to analog converters"
  
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	switch (type & IRQ_TYPE_SENSE_MASK) {
- 	case IRQ_TYPE_EDGE_FALLING:
- 		pol = GIC_POL_FALLING_EDGE;
-@@ -247,7 +247,7 @@ static int gic_set_type(struct irq_data *d, unsigned int type)
- 	else
- 		irq_set_chip_handler_name_locked(d, &gic_level_irq_controller,
- 						 handle_level_irq, NULL);
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
++config STX104
++	tristate "Apex Embedded Systems STX104 driver"
++	depends on PC104 && X86
++	select ISA_BUS_API
++	select GPIOLIB
++	help
++	  Say yes here to build support for the Apex Embedded Systems STX104
++	  integrated analog PC/104 card.
++
++	  This driver supports the 16 channels of single-ended (8 channels of
++	  differential) analog inputs, 2 channels of analog output, 4 digital
++	  inputs, and 4 digital outputs provided by the STX104.
++
++	  The base port addresses for the devices may be configured via the base
++	  array module parameter.
++
+ endmenu
+diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
+index b888b9ee12da0..8629145233544 100644
+--- a/drivers/iio/addac/Makefile
++++ b/drivers/iio/addac/Makefile
+@@ -4,3 +4,4 @@
+ #
  
- 	return 0;
- }
-@@ -265,7 +265,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 		return -EINVAL;
- 
- 	/* Assumption : cpumask refers to a single CPU */
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 
- 	/* Re-route this IRQ */
- 	write_gic_map_vp(irq, BIT(mips_cm_vp_id(cpu)));
-@@ -276,7 +276,7 @@ static int gic_set_affinity(struct irq_data *d, const struct cpumask *cpumask,
- 		set_bit(irq, per_cpu_ptr(pcpu_masks, cpu));
- 
- 	irq_data_update_effective_affinity(d, cpumask_of(cpu));
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return IRQ_SET_MASK_OK;
- }
-@@ -354,12 +354,12 @@ static void gic_mask_local_irq_all_vpes(struct irq_data *d)
- 	cd = irq_data_get_irq_chip_data(d);
- 	cd->mask = false;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	for_each_online_cpu(cpu) {
- 		write_gic_vl_other(mips_cm_vp_id(cpu));
- 		write_gic_vo_rmask(BIT(intr));
- 	}
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
- static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
-@@ -372,12 +372,12 @@ static void gic_unmask_local_irq_all_vpes(struct irq_data *d)
- 	cd = irq_data_get_irq_chip_data(d);
- 	cd->mask = true;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	for_each_online_cpu(cpu) {
- 		write_gic_vl_other(mips_cm_vp_id(cpu));
- 		write_gic_vo_smask(BIT(intr));
- 	}
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
- static void gic_all_vpes_irq_cpu_online(void)
-@@ -390,7 +390,7 @@ static void gic_all_vpes_irq_cpu_online(void)
- 	unsigned long flags;
- 	int i;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 
- 	for (i = 0; i < ARRAY_SIZE(local_intrs); i++) {
- 		unsigned int intr = local_intrs[i];
-@@ -402,7 +402,7 @@ static void gic_all_vpes_irq_cpu_online(void)
- 			write_gic_vl_smask(BIT(intr));
- 	}
- 
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- }
- 
- static struct irq_chip gic_all_vpes_local_irq_controller = {
-@@ -432,11 +432,11 @@ static int gic_shared_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 
- 	data = irq_get_irq_data(virq);
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	write_gic_map_pin(intr, GIC_MAP_PIN_MAP_TO_PIN | gic_cpu_pin);
- 	write_gic_map_vp(intr, BIT(mips_cm_vp_id(cpu)));
- 	irq_data_update_effective_affinity(data, cpumask_of(cpu));
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
- }
-@@ -529,12 +529,12 @@ static int gic_irq_domain_map(struct irq_domain *d, unsigned int virq,
- 	if (!gic_local_irq_is_routable(intr))
- 		return -EPERM;
- 
--	spin_lock_irqsave(&gic_lock, flags);
-+	raw_spin_lock_irqsave(&gic_lock, flags);
- 	for_each_online_cpu(cpu) {
- 		write_gic_vl_other(mips_cm_vp_id(cpu));
- 		write_gic_vo_map(mips_gic_vx_map_reg(intr), map);
- 	}
--	spin_unlock_irqrestore(&gic_lock, flags);
-+	raw_spin_unlock_irqrestore(&gic_lock, flags);
- 
- 	return 0;
- }
+ # When adding new entries keep the list in alphabetical order
++obj-$(CONFIG_STX104) += stx104.o
+diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/addac/stx104.c
+similarity index 100%
+rename from drivers/iio/adc/stx104.c
+rename to drivers/iio/addac/stx104.c
 -- 
 2.40.1
 
