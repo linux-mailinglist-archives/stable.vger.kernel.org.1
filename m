@@ -2,120 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C96D78B993
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 22:33:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0CF4A78B9B6
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 22:48:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232649AbjH1Ucs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 16:32:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56748 "EHLO
+        id S233243AbjH1Ur3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 16:47:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232979AbjH1Ucn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 16:32:43 -0400
-Received: from mail-pf1-x431.google.com (mail-pf1-x431.google.com [IPv6:2607:f8b0:4864:20::431])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93C2CEC;
-        Mon, 28 Aug 2023 13:32:41 -0700 (PDT)
-Received: by mail-pf1-x431.google.com with SMTP id d2e1a72fcca58-68c3b9f8333so1719794b3a.1;
-        Mon, 28 Aug 2023 13:32:41 -0700 (PDT)
+        with ESMTP id S233102AbjH1UrY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 16:47:24 -0400
+Received: from mail-lj1-x235.google.com (mail-lj1-x235.google.com [IPv6:2a00:1450:4864:20::235])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2BB211B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:47:21 -0700 (PDT)
+Received: by mail-lj1-x235.google.com with SMTP id 38308e7fff4ca-2bceca8a41aso54460471fa.0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 13:47:21 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693254761; x=1693859561; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:from:to:cc:subject:date:message-id:reply-to;
-        bh=2DctLJ0sN1rLWYEamaeYJQ0hHmAoC8BkhI/utXkH6Aw=;
-        b=VvKs3rkGARBLGEpM3G8ywEMrZHgDQuchaZOaU3WtfgG/YtD1U8NvSurQYR7DAJ1sjB
-         dhjJDgAQ74ISsXXekf13niRLAXTbtq6Xi4jZkBSanw2MllQAY1K3v5xzFievOt9wmACX
-         H0uZvTBLmHXMDwszPcNPZzflva3udr4LEiFvjH3mNJVhfvYftjnH5LAR2JH493N5PKyH
-         Nx0A2nAENsfpjVudY1uHoRhbky8qzBu4os1M654Plm1Jrf1YLTXPjjFLzxf41mYJp7Mn
-         RUXgJghzcik104Ev9RINlkZRLZpSAEFhI9jCZ6X2ibAqprJ4/adxzzIJhoCna4t0BMlf
-         DlKw==
+        d=joelfernandes.org; s=google; t=1693255640; x=1693860440;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=4xC6lZ6BMGGGW970pla1pAI2sfTG4MPU4nqIiCLcvow=;
+        b=CmJOHJeAi+FAllIu7mvMkI3Iw3qdaWZLSF0qzx9zfGZYgxz9uPAbHCMJMQrPqrhFj0
+         KWeXH+ttc5aH7ccZ+UJaf3jHQMOWYAT5c46DexbD0zt+r1ZFFmJyh6KgkB2HVr+rI4Uy
+         2lWK86r/GvtQYZ7t5O9dMvjaxjhRvejyDsOrw=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693254761; x=1693859561;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :sender:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2DctLJ0sN1rLWYEamaeYJQ0hHmAoC8BkhI/utXkH6Aw=;
-        b=NfsV9kog3pbQD521TXRnIO+0s/lKPlw/p+RfW8jZCQIltzqGzqI3gOndVYw9bkZYNk
-         i4NJruX0sxcwaCMtwzJlKMx0TiBTDrdqNdiqU85kYT5M8WeYWxSvmNTKJx+CS7aaynZu
-         zAwVoSd8coM0SaoiP5hvh7wt6BHyPzvgEi8mEuSunHk5eSYo7R3mbaJjacVuFg6EM6YM
-         OjJ8S3pK5MM7CENo87sDv3clEhWO7SgI2pdnpyIS0vD7RWiIBLE4UaMEuUwmgAO6avHk
-         sQV4TrLY0DP9jk7hIbANzCae3nnIPfVW3MNyY/LbfnxvcGs8Ufcfdp3huja8VkvW/pw5
-         gSIg==
-X-Gm-Message-State: AOJu0YwJwM+bDcdiHHDgjDv+dBZxozVItcq5DYRuTJ65qiFoWjuJnRJ4
-        g0e/gM6+v9LDxd+XE7z4rOhAqSZRa2c=
-X-Google-Smtp-Source: AGHT+IExS4GSW+/X8U9BFi2G0OwOd4T6jCEWg8kgMcckw/tc7P9drIQDk7DlD2SzNFGol3eWBvEbmw==
-X-Received: by 2002:a05:6a00:35c4:b0:68c:59cb:2dd9 with SMTP id dc4-20020a056a0035c400b0068c59cb2dd9mr1026403pfb.1.1693254760933;
-        Mon, 28 Aug 2023 13:32:40 -0700 (PDT)
-Received: from ?IPV6:2600:1700:e321:62f0:329c:23ff:fee3:9d7c? ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id m14-20020aa78a0e000000b0062cf75a9e6bsm7092592pfa.131.2023.08.28.13.32.39
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Aug 2023 13:32:40 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Message-ID: <ef24157c-75ff-6874-d8e5-723baa2ac7ea@roeck-us.net>
-Date:   Mon, 28 Aug 2023 13:32:38 -0700
+        d=1e100.net; s=20221208; t=1693255640; x=1693860440;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=4xC6lZ6BMGGGW970pla1pAI2sfTG4MPU4nqIiCLcvow=;
+        b=I697aimGd3JjioBtPV0gA1BhIbjWiFLtzHbDnmGsvUmbIIAeBaJDtNVPrItPwudPei
+         Bt/RAbPCCFvaoS96Fp9i1xNrNCc0U68UDWqdN0Bf6hDQ6+NiFU/W8YVZ8YaQNAkKIXNZ
+         2Ax1zo7vWv2j2YVkhp2stYNkSR0axZn/jn24g0S0GOz/v/SBu2WZ/OKkJQhdhEUPko4E
+         S5fxzZLCTORNFv3AP0EVEHAma4IU2oPiiLUqttGcGDQVvoauhgrxjULoWtthSaz6sO4s
+         0L5hOL2utSO5x1UdCv9B0CctgnwWF2VvpSMRF6emfJbgmlnQ2RlUHktaQXU/2EQeimok
+         41Lw==
+X-Gm-Message-State: AOJu0YyL0BG/J3tmxJevl6LHIR374GTPMyS6KYEW8MGq0b5bqG/008wM
+        EEoeQ5aTmBsHvgk3cb/YofLO2PHUTAuTnOAYOj7w+Q==
+X-Google-Smtp-Source: AGHT+IGsERbihRzk13LRMf+4HVqatcZ5uGgRwfk/ClbcDnRaTlozyXs+625uI3DQf2agtAGhbV0EYasI15L27f9m5yU=
+X-Received: by 2002:a2e:3210:0:b0:2bc:d43c:8607 with SMTP id
+ y16-20020a2e3210000000b002bcd43c8607mr14283630ljy.14.1693255639638; Mon, 28
+ Aug 2023 13:47:19 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 4.19 000/129] 4.19.293-rc1 review
-Content-Language: en-US
-To:     Sudip Mukherjee <sudipm.mukherjee@gmail.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-References: <20230828101153.030066927@linuxfoundation.org>
- <CADVatmPpi8pLT=MKNuPjkTP5pLHPnCKu2v2Ms98YhzXUhAvyyA@mail.gmail.com>
-From:   Guenter Roeck <linux@roeck-us.net>
-In-Reply-To: <CADVatmPpi8pLT=MKNuPjkTP5pLHPnCKu2v2Ms98YhzXUhAvyyA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+References: <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop>
+ <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+ <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
+ <20230825232807.GA97898@google.com> <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
+ <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
+ <CAEXW_YS5dVVOQvO6tWwF7mrgtHiYgVKP_TAipzBNiaFqWDzdeQ@mail.gmail.com>
+ <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop> <20230828133348.GA1553000@google.com>
+ <142b4bff-6a2e-4ea0-928c-3cfe9befa403@paulmck-laptop> <CAAhV-H4MrUm2xZdZyAALV-r+aKMRQ50v6me6hybpR1pRijirqw@mail.gmail.com>
+ <CAEXW_YT-z6s+4MnxTnwFk2-mPba65dbnZogdPDSr14LmOW-h-g@mail.gmail.com> <CAAhV-H5tYV=ezPY_O7c=sd3DULB6BjoiYnw9nE2EzDFaBHcKPw@mail.gmail.com>
+In-Reply-To: <CAAhV-H5tYV=ezPY_O7c=sd3DULB6BjoiYnw9nE2EzDFaBHcKPw@mail.gmail.com>
+From:   Joel Fernandes <joel@joelfernandes.org>
+Date:   Mon, 28 Aug 2023 16:47:07 -0400
+Message-ID: <CAEXW_YTfV1NVb3tOhunHZK_6oeUHxz_azv6uVq3k0O2UEAX5OQ@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/28/23 13:20, Sudip Mukherjee wrote:
-> Hi Greg,
-> 
-> On Mon, 28 Aug 2023 at 11:24, Greg Kroah-Hartman
-> <gregkh@linuxfoundation.org> wrote:
->>
->> This is the start of the stable review cycle for the 4.19.293 release.
->> There are 129 patches in this series, all will be posted as a response
->> to this one.  If anyone has any issues with these being applied, please
->> let me know.
->>
->> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
->> Anything received after that time might be too late.
-> 
-> Just an initial report.
-> 
-> mips builds are failing with the error:
-> arch/mips/alchemy/common/dbdma.c:33:10: fatal error:
-> linux/dma-map-ops.h: No such file or directory
-> 33 | #include <linux/dma-map-ops.h> /* for dma_default_coherent */
-> | ^~~~~~~~~~~~~~~~~~~~~
-> 
-> arm build has failed with:
-> arch/arm/mach-ep93xx/timer-ep93xx.c:12:10: fatal error: platform.h: No
-> such file or directory
-> 12 | #include "platform.h"
-> | ^~~~~~~~~~~~
-> 
-> 
-I'd guess that the mips dma patch which fail to build in v5.10.y
-(and by extension in all older kernels) have been applied to
-those older kernels. AFAICs the problem now affects all releases
-form v4.14.y to v5.10.y.
+Hi Huacai,
 
-Guenter
+On Mon, Aug 28, 2023 at 11:13=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org=
+> wrote:
+>
+[...]
+> >
+> > > [Huacai]
+> > > I also think the original patch should be OK, but I have another
+> > > question: what will happen if the current GP ends before
+> > > nr_fqs_jiffies_stall reaches zero?
+> >
+> > Nothing should happen. Stall detection only happens when a GP is in
+> > progress. If a new GP starts, it resets nr_fqs_jiffies_stall.
+> >
+> > Or can you elaborate your concern more?
+> OK, I will test your patch these days. Maybe putting
+> nr_fqs_jiffies_stall before jiffies_force_qs is better, because I
+> think putting an 'int' between two 'long' is wasting space. :)
 
+That's a good point and I'll look into that.
+
+Meanwhile I pushed the patch out to my 6.4 stable tree for testing on my fl=
+eet.
+
+Ideally, I'd like to change the stall detection test in the rcutorture
+to actually fail rcutorture if stalls don't happen in time. But at
+least I verified this manually using rcutorture.
+
+I should also add a documentation patch for stallwarn.rst to document
+the understandable sensitivity of RCU stall detection to jiffies
+updates (or lack thereof). Or if you have time, I'd appreciate support
+on such a patch (not mandatory but I thought it would not hurt to
+ask).
+
+Looking forward to how your testing goes as well!
+
+thanks,
+
+ - Joel
