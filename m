@@ -2,91 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 168F478BB0B
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 00:38:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA49878BB2F
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 00:52:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233851AbjH1Wgv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 18:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55682 "EHLO
+        id S234262AbjH1Wvg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 18:51:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233311AbjH1WgU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 18:36:20 -0400
-Received: from omta036.useast.a.cloudfilter.net (omta036.useast.a.cloudfilter.net [44.202.169.35])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C1DAD2
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 15:36:17 -0700 (PDT)
-Received: from eig-obgw-5008a.ext.cloudfilter.net ([10.0.29.246])
-        by cmsmtp with ESMTP
-        id aif9qcXFJDKaKakqGqs5fP; Mon, 28 Aug 2023 22:36:16 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id akqFqkYZY38SbakqGqs50p; Mon, 28 Aug 2023 22:36:16 +0000
-X-Authority-Analysis: v=2.4 cv=cdTBE1PM c=1 sm=1 tr=0 ts=64ed2160
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=UttIx32zK-AA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=o9+P6fCbD8VCllGnyBTCQCE6h4voI3rfT2ANK4Dkumk=; b=Q52wgxSe5zARX6JpCDhU4gh408
-        3duq3UaGA66+Fvot4aZ0n2+Cu7BV8rTc7vMXoVr2G8fm+raSO/NrIPBpRWff+axmBIr1KW65j1FU5
-        nh8VZTOTfGgStQIVZzWVzL/WJO2WG8wbtH5mrFD3zKVgccdFnMqM9LJ8uBOvTyUlf4JOyp/9pJQct
-        90v570wVvXDjuXDnWsrAnUi0rEqxqrR/6ejFQKHI9d6nBNcaDmbUxBDZbTFPfp+PZeLdCl7XKWCNG
-        NO9bgEUftXvzUYOAncjHEsbnhA/Jhw9Gye9so59gBOhd0fqlgeXKBMih+Zj6Joky55hIbz5ELrK+X
-        C8IEAYAQ==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:53442 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <re@w6rz.net>)
-        id 1qakqD-000L4C-1u;
-        Mon, 28 Aug 2023 16:36:13 -0600
-Subject: Re: [PATCH 6.4 000/129] 6.4.13-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230828101157.383363777@linuxfoundation.org>
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <26308695-25e9-34ec-bcf4-5d3df1ab7b90@w6rz.net>
-Date:   Mon, 28 Aug 2023 15:36:11 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+        with ESMTP id S233435AbjH1WvS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 18:51:18 -0400
+Received: from mail-oa1-x2c.google.com (mail-oa1-x2c.google.com [IPv6:2001:4860:4864:20::2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A67AE185
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 15:51:15 -0700 (PDT)
+Received: by mail-oa1-x2c.google.com with SMTP id 586e51a60fabf-1c4f4d67f5bso2551063fac.0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 15:51:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693263074; x=1693867874;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=7DIqwskK0oYqXSVa28hgr5U7LAJbKxCjHL8WYKkpGDQ=;
+        b=ITw2jWGaLstQYHZ9c72vF7WGCcIAi19eDX3cFfRNLdrfimlVzgIXnxJl8E8LemmLJw
+         gBq9DJpbixcO13fzBluyjR3E4nO1TUEm1DoAI3raq0fYmHI2k7BAc/MClLntR3pIj9Sm
+         6W3wYpTON1B7JhNkVSddmHJCF0yCvYoWE0JIE=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693263074; x=1693867874;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=7DIqwskK0oYqXSVa28hgr5U7LAJbKxCjHL8WYKkpGDQ=;
+        b=WX1RlXv6hLH/iVKGH+nnx8jvZ+Lt8O3N0VJLP8a0xj7T4foeI0nLkKvnZXpFYg3vVR
+         IufngsSlUT1PTlqXqYMv+DaEqY3lLuFRoQ3vrqpyFpddzzfwjlvmsnTxUzwbFwN1TD01
+         ybGxggY7pDIWpu0NKk253w49+ZEtXbCYCvOAW7tNZN/N2qQN58NUJcKhQHPV/HDzjy9n
+         xAYpsBJ0PDBU3KLPhqGK+xTp8Freiyzl4FGZ5pNgnEmrV5njvzayEGkVOKpuuxmAkZ5e
+         s3RKJDTZaxHKJVbKRSh15S/0GzG6KxGXxzIprxtQ3B8qg2EYIr1CLKpOa925YW+DvdK0
+         Kgog==
+X-Gm-Message-State: AOJu0Yz5Q3Lmz+lvUMsBmrdCY3bOZ2h1wgZ6tSZwhWiiY/OcsIYaBHkh
+        Ud1tamtPsS+0qHrdQ6giVmzLp7IH1NWXyBLAw8L3Yg==
+X-Google-Smtp-Source: AGHT+IFhaBwbYY6NH5M8NCoCeXN2tAsEyjtJJk1uTx2T543prAKt6iO221j6wbVTc68tchaDYZOJGox5XoJSGcAlo+Y=
+X-Received: by 2002:a05:6870:3906:b0:1c8:bf19:e1e4 with SMTP id
+ b6-20020a056870390600b001c8bf19e1e4mr13435455oap.37.1693263074222; Mon, 28
+ Aug 2023 15:51:14 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qakqD-000L4C-1u
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:53442
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 2
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfKSYSOVQ+VCdBfzNNuuHbGL2LbqwoYybEWMdjIECGwoOLQlfmSbKNdF9y8r+Zk2JdK0Fx8UU9jSP/L2ukm3oH4ISph9iwpglKmvMvNGYsVZnxDqs73hO
- TqLmhju7f+E8tNcC/i1Teuj+cAkrOJ+tSF0952mgc7gTJmni04/oHRhbGdYeo+MjlMsw52WwSrB/gg==
-X-Spam-Status: No, score=-5.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com> <20230828100313.3051403-1-benchuanggli@gmail.com>
+In-Reply-To: <20230828100313.3051403-1-benchuanggli@gmail.com>
+From:   Sven van Ashbrook <svenva@chromium.org>
+Date:   Mon, 28 Aug 2023 18:51:03 -0400
+Message-ID: <CAG-rBig+koxDf3TuC-0p=tcBY_2WM1sPCvRDtjRmR7AnikrN-A@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+To:     Ben Chuang <benchuanggli@gmail.com>
+Cc:     adrian.hunter@intel.com, SeanHY.chen@genesyslogic.com.tw,
+        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw,
+        jason.lai@genesyslogic.com.tw, jasonlai.genesyslogic@gmail.com,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        reniuschengl@gmail.com, skardach@google.com,
+        stable@vger.kernel.org, ulf.hansson@linaro.org,
+        victor.shih@genesyslogic.com.tw, victorshihgli@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -94,26 +71,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/28/23 3:11 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.13 release.
-> There are 129 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.13-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Ben, thank you for reviewing this patch. See below.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+On Mon, Aug 28, 2023 at 6:03=E2=80=AFAM Ben Chuang <benchuanggli@gmail.com>=
+ wrote:
+>
+> There is a situation for your reference.
+> If `allow_runtime_pm' is set to false and the system resumes from suspend=
+, GL9763E
+> LPM negotiation will be always disabled on S0. GL9763E will stay L0 and n=
+ever
+> enter L1 because GL9763E LPM negotiation is disabled.
+>
+> This patch enables allow_runtime_pm. The simple flow is
+> gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled -> (=
+a)
+> (a) -+--> idle -->  gl9763e_runtime_suspend() -> LPM enabled
+>      |
+>      +--> no idle -> gl9763e_runtime_resume() -> LPM disabled
+>
+> This patch disables allow_runtime_pm. The simple flow is
+> gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled (no =
+runtime_pm)
+>
+> Although that may not be the case with the current configuration, it's on=
+ly a
+> possibility.
+>
 
-Tested-by: Ron Economos <re@w6rz.net>
+Thanks so much for bringing this up. We have discussed internally and
+as far as we know, the current patch will work correctly in all cases.
+Could you verify our argument please?
 
+The following assumptions are key:
+
+1. If CONFIG_PM is set, the runtime_pm framework is always present, i.e. th=
+ere
+cannot exist a kernel which has PM but lacks runtime_pm.
+2. The pm_runtime framework always makes sure the device is runtime
+active before
+calling XXX_suspend, waking it up if need be. So when XXX_suspend gets call=
+ed,
+the device is always runtime active.
+3. if CONFIG_PM is set, runtime_pm can only be disabled via
+echo on > /sys/devices/.../power/control, and then the runtime_pm framework
+always keeps the device in runtime active. In such case LPM negotiation is
+always disabled.
+
+Using these assumptions, we get:
+
+Runtime_pm allowed:
+=E2=80=94------------------
+gl9763e_runtime_resume() -> LPM disabled -> gl9763e_suspend() -> LPM enable=
+d
+-> gl9763e_resume() -> LPM disabled -> (a)
+(a) -+--> idle --> gl9763e_runtime_suspend() -> LPM enabled
+|
++--> no idle -> nothing - already runtime active -> LPM disabled
+
+Runtime_pm not allowed:
+=E2=80=94----------------------
+gl9763e_runtime_resume() always called -> LPM always disabled
+gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled
+
+In all above cases the LPM negotiation flag is correct.
+
+> >
+> > sdhci doesn't know anything about the bus.  It is independent
+> > of PCI, so I can't see how it would make any difference.
+> > One of the people cc'ed might know more.  Jason Lai (cc'ed)
+> > added it for runtime PM.
+> >
+>
+> As far as I know, when disabling LPM negotiation, the GL9763E will stop e=
+ntering
+> L1. It doesn't other side effect. Does Jason.Lai and Victor.Shih have any=
+ comments
+> or suggestions?
+
+Sounds like everyone assumes that you can freely change LPM
+negotiation on the PCIe
+bus after the cqhci_suspend() and sdhci_suspend_host() calls, so we will as=
+sume
+that too.
