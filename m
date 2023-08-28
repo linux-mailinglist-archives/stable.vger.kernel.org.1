@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2089678AC09
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13BC178AA3A
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:20:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231601AbjH1Kgl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:36:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60888 "EHLO
+        id S230417AbjH1KUO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:20:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231636AbjH1KgY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:24 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B75F115
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:19 -0700 (PDT)
+        with ESMTP id S231139AbjH1KTy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:19:54 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82D84CEE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:19:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 19E1B63ECD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BC3CC433C8;
-        Mon, 28 Aug 2023 10:36:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E106A6381D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:19:29 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE987C433C7;
+        Mon, 28 Aug 2023 10:19:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218978;
-        bh=PVMEQymqrs08cGsUwGN90wrnriEUDRjVD8a+SWve8SM=;
+        s=korg; t=1693217969;
+        bh=Vr60zr2HJCKVQby5yDtEbjdteCCQfilAw8X5fGpI+P0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KyOoTdQnevb3GSIR9MITFiyLZu3Lhg9d7QGSz0CZ49N0MEPv6rwDNJfmUtRWSX2fq
-         +exOvexNFZDAoAeSYywhTFcDIQx7BioUf6vu1u7wYHBi2bfHajYXkskSRC/MzPnKX6
-         6Q6j+ZvfcEDYtdC45zn8khhsS6lx+42tpzFj4oy0=
+        b=MlebTc6KE+5BR6ZVfcTWOWseihiqgsp3P4JBKLXSW88QgP9kShXe1RJJZzlqYEdAX
+         O/UIGP85yM8u00ZzSvpHUB+eoD+OVjtyby56BMCECVsiRDSVIyefqfoo3DGd769yXj
+         7xw6skpUkioROMr0DkLcWBwlVzqPcGRRb+xB9Bco=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Laight <David.Laight@ACULAB.COM>,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Pablo Neira Ayuso <pablo@netfilter.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 029/158] iio: adc: stx104: Utilize iomap interface
-Date:   Mon, 28 Aug 2023 12:12:06 +0200
-Message-ID: <20230828101158.327061207@linuxfoundation.org>
+Subject: [PATCH 6.4 048/129] netfilter: nf_tables: defer gc run if previous batch is still pending
+Date:   Mon, 28 Aug 2023 12:12:07 +0200
+Message-ID: <20230828101158.980789953@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,208 +55,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <william.gray@linaro.org>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit 73b8390cc27e096ab157be261ccc4eaaa6db87af ]
+[ Upstream commit 8e51830e29e12670b4c10df070a4ea4c9593e961 ]
 
-This driver doesn't need to access I/O ports directly via inb()/outb()
-and friends. This patch abstracts such access by calling ioport_map()
-to enable the use of more typical ioread8()/iowrite8() I/O memory
-accessor calls.
+Don't queue more gc work, else we may queue the same elements multiple
+times.
 
-Suggested-by: David Laight <David.Laight@ACULAB.COM>
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/64673797df382c52fc32fce24348b25a0b05e73a.1652201921.git.william.gray@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
+If an element is flagged as dead, this can mean that either the previous
+gc request was invalidated/discarded by a transaction or that the previous
+request is still pending in the system work queue.
+
+The latter will happen if the gc interval is set to a very low value,
+e.g. 1ms, and system work queue is backlogged.
+
+The sets refcount is 1 if no previous gc requeusts are queued, so add
+a helper for this and skip gc run if old requests are pending.
+
+Add a helper for this and skip the gc run in this case.
+
+Fixes: f6c383b8c31a ("netfilter: nf_tables: adapt set backend to use GC transaction API")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/adc/stx104.c | 56 +++++++++++++++++++++-------------------
- 1 file changed, 29 insertions(+), 27 deletions(-)
+ include/net/netfilter/nf_tables.h | 5 +++++
+ net/netfilter/nft_set_hash.c      | 3 +++
+ net/netfilter/nft_set_rbtree.c    | 3 +++
+ 3 files changed, 11 insertions(+)
 
-diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/adc/stx104.c
-index f87bbc711ccc0..112362f7d3943 100644
---- a/drivers/iio/adc/stx104.c
-+++ b/drivers/iio/adc/stx104.c
-@@ -51,7 +51,7 @@ MODULE_PARM_DESC(base, "Apex Embedded Systems STX104 base addresses");
-  */
- struct stx104_iio {
- 	unsigned int chan_out_states[STX104_NUM_OUT_CHAN];
--	unsigned int base;
-+	void __iomem *base;
- };
- 
- /**
-@@ -64,7 +64,7 @@ struct stx104_iio {
- struct stx104_gpio {
- 	struct gpio_chip chip;
- 	spinlock_t lock;
--	unsigned int base;
-+	void __iomem *base;
- 	unsigned int out_state;
- };
- 
-@@ -79,7 +79,7 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 	switch (mask) {
- 	case IIO_CHAN_INFO_HARDWAREGAIN:
- 		/* get gain configuration */
--		adc_config = inb(priv->base + 11);
-+		adc_config = ioread8(priv->base + 11);
- 		gain = adc_config & 0x3;
- 
- 		*val = 1 << gain;
-@@ -91,24 +91,24 @@ static int stx104_read_raw(struct iio_dev *indio_dev,
- 		}
- 
- 		/* select ADC channel */
--		outb(chan->channel | (chan->channel << 4), priv->base + 2);
-+		iowrite8(chan->channel | (chan->channel << 4), priv->base + 2);
- 
- 		/* trigger ADC sample capture and wait for completion */
--		outb(0, priv->base);
--		while (inb(priv->base + 8) & BIT(7));
-+		iowrite8(0, priv->base);
-+		while (ioread8(priv->base + 8) & BIT(7));
- 
--		*val = inw(priv->base);
-+		*val = ioread16(priv->base);
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_OFFSET:
- 		/* get ADC bipolar/unipolar configuration */
--		adc_config = inb(priv->base + 11);
-+		adc_config = ioread8(priv->base + 11);
- 		adbu = !(adc_config & BIT(2));
- 
- 		*val = -32768 * adbu;
- 		return IIO_VAL_INT;
- 	case IIO_CHAN_INFO_SCALE:
- 		/* get ADC bipolar/unipolar and gain configuration */
--		adc_config = inb(priv->base + 11);
-+		adc_config = ioread8(priv->base + 11);
- 		adbu = !(adc_config & BIT(2));
- 		gain = adc_config & 0x3;
- 
-@@ -130,16 +130,16 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 		/* Only four gain states (x1, x2, x4, x8) */
- 		switch (val) {
- 		case 1:
--			outb(0, priv->base + 11);
-+			iowrite8(0, priv->base + 11);
- 			break;
- 		case 2:
--			outb(1, priv->base + 11);
-+			iowrite8(1, priv->base + 11);
- 			break;
- 		case 4:
--			outb(2, priv->base + 11);
-+			iowrite8(2, priv->base + 11);
- 			break;
- 		case 8:
--			outb(3, priv->base + 11);
-+			iowrite8(3, priv->base + 11);
- 			break;
- 		default:
- 			return -EINVAL;
-@@ -153,7 +153,7 @@ static int stx104_write_raw(struct iio_dev *indio_dev,
- 				return -EINVAL;
- 
- 			priv->chan_out_states[chan->channel] = val;
--			outw(val, priv->base + 4 + 2 * chan->channel);
-+			iowrite16(val, priv->base + 4 + 2 * chan->channel);
- 
- 			return 0;
- 		}
-@@ -222,7 +222,7 @@ static int stx104_gpio_get(struct gpio_chip *chip, unsigned int offset)
- 	if (offset >= 4)
- 		return -EINVAL;
- 
--	return !!(inb(stx104gpio->base) & BIT(offset));
-+	return !!(ioread8(stx104gpio->base) & BIT(offset));
+diff --git a/include/net/netfilter/nf_tables.h b/include/net/netfilter/nf_tables.h
+index a9a730fb9f963..394b22b44b0e8 100644
+--- a/include/net/netfilter/nf_tables.h
++++ b/include/net/netfilter/nf_tables.h
+@@ -586,6 +586,11 @@ static inline void *nft_set_priv(const struct nft_set *set)
+ 	return (void *)set->data;
  }
  
- static int stx104_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
-@@ -230,7 +230,7 @@ static int stx104_gpio_get_multiple(struct gpio_chip *chip, unsigned long *mask,
- {
- 	struct stx104_gpio *const stx104gpio = gpiochip_get_data(chip);
- 
--	*bits = inb(stx104gpio->base);
-+	*bits = ioread8(stx104gpio->base);
- 
- 	return 0;
- }
-@@ -252,7 +252,7 @@ static void stx104_gpio_set(struct gpio_chip *chip, unsigned int offset,
- 	else
- 		stx104gpio->out_state &= ~mask;
- 
--	outb(stx104gpio->out_state, stx104gpio->base);
-+	iowrite8(stx104gpio->out_state, stx104gpio->base);
- 
- 	spin_unlock_irqrestore(&stx104gpio->lock, flags);
- }
-@@ -279,7 +279,7 @@ static void stx104_gpio_set_multiple(struct gpio_chip *chip,
- 
- 	stx104gpio->out_state &= ~*mask;
- 	stx104gpio->out_state |= *mask & *bits;
--	outb(stx104gpio->out_state, stx104gpio->base);
-+	iowrite8(stx104gpio->out_state, stx104gpio->base);
- 
- 	spin_unlock_irqrestore(&stx104gpio->lock, flags);
- }
-@@ -306,11 +306,16 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 		return -EBUSY;
- 	}
- 
-+	priv = iio_priv(indio_dev);
-+	priv->base = devm_ioport_map(dev, base[id], STX104_EXTENT);
-+	if (!priv->base)
-+		return -ENOMEM;
++static inline bool nft_set_gc_is_pending(const struct nft_set *s)
++{
++	return refcount_read(&s->refs) != 1;
++}
 +
- 	indio_dev->info = &stx104_info;
- 	indio_dev->modes = INDIO_DIRECT_MODE;
+ static inline struct nft_set *nft_set_container_of(const void *priv)
+ {
+ 	return (void *)priv - offsetof(struct nft_set, data);
+diff --git a/net/netfilter/nft_set_hash.c b/net/netfilter/nft_set_hash.c
+index cef5df8460009..524763659f251 100644
+--- a/net/netfilter/nft_set_hash.c
++++ b/net/netfilter/nft_set_hash.c
+@@ -326,6 +326,9 @@ static void nft_rhash_gc(struct work_struct *work)
+ 	nft_net = nft_pernet(net);
+ 	gc_seq = READ_ONCE(nft_net->gc_seq);
  
- 	/* determine if differential inputs */
--	if (inb(base[id] + 8) & BIT(5)) {
-+	if (ioread8(priv->base + 8) & BIT(5)) {
- 		indio_dev->num_channels = ARRAY_SIZE(stx104_channels_diff);
- 		indio_dev->channels = stx104_channels_diff;
- 	} else {
-@@ -321,18 +326,15 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	indio_dev->name = dev_name(dev);
- 	indio_dev->dev.parent = dev;
++	if (nft_set_gc_is_pending(set))
++		goto done;
++
+ 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
+ 	if (!gc)
+ 		goto done;
+diff --git a/net/netfilter/nft_set_rbtree.c b/net/netfilter/nft_set_rbtree.c
+index f9d4c8fcbbf82..c6435e7092319 100644
+--- a/net/netfilter/nft_set_rbtree.c
++++ b/net/netfilter/nft_set_rbtree.c
+@@ -611,6 +611,9 @@ static void nft_rbtree_gc(struct work_struct *work)
+ 	nft_net = nft_pernet(net);
+ 	gc_seq  = READ_ONCE(nft_net->gc_seq);
  
--	priv = iio_priv(indio_dev);
--	priv->base = base[id];
--
- 	/* configure device for software trigger operation */
--	outb(0, base[id] + 9);
-+	iowrite8(0, priv->base + 9);
- 
- 	/* initialize gain setting to x1 */
--	outb(0, base[id] + 11);
-+	iowrite8(0, priv->base + 11);
- 
- 	/* initialize DAC output to 0V */
--	outw(0, base[id] + 4);
--	outw(0, base[id] + 6);
-+	iowrite16(0, priv->base + 4);
-+	iowrite16(0, priv->base + 6);
- 
- 	stx104gpio->chip.label = dev_name(dev);
- 	stx104gpio->chip.parent = dev;
-@@ -347,7 +349,7 @@ static int stx104_probe(struct device *dev, unsigned int id)
- 	stx104gpio->chip.get_multiple = stx104_gpio_get_multiple;
- 	stx104gpio->chip.set = stx104_gpio_set;
- 	stx104gpio->chip.set_multiple = stx104_gpio_set_multiple;
--	stx104gpio->base = base[id] + 3;
-+	stx104gpio->base = priv->base + 3;
- 	stx104gpio->out_state = 0x0;
- 
- 	spin_lock_init(&stx104gpio->lock);
++	if (nft_set_gc_is_pending(set))
++		goto done;
++
+ 	gc = nft_trans_gc_alloc(set, gc_seq, GFP_KERNEL);
+ 	if (!gc)
+ 		goto done;
 -- 
 2.40.1
 
