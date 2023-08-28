@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABFC778ACE0
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 10E2C78A9F8
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231767AbjH1Knk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46858 "EHLO
+        id S229918AbjH1KR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:17:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231741AbjH1KnJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:09 -0400
+        with ESMTP id S230435AbjH1KRa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:30 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE06BCD8
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 866CE199
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 02FD56412F
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:43 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DA522C433CD;
-        Mon, 28 Aug 2023 10:42:41 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B72D63714
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB99C433C8;
+        Mon, 28 Aug 2023 10:17:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219362;
-        bh=LUzbqKUxFJbuNmVYmsXhtteldakT7Hrk1GrOAE36nOY=;
+        s=korg; t=1693217836;
+        bh=EU4Yxsczc7dHLGQKDTirQebEqfH1RQugIv+GJctzvu0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P4uW8Jf8xEqFCbSp0su3SVU71BJGh2kkCUv+rvIA37spxwK7Bbw+Kfv2z+0XDO4su
-         MeJLgXnnOVIdBDbPGc7Quw400//3JPoySRxcviE8GAZdppAesDJDq5XoXJGbIHKDqE
-         1BXBvYXDk62qthfs28KKfJXG9Rv8DyVxMTJEZ1qo=
+        b=yVM7Mb6xR3MYPBZG36vWi0uElvS8rOG+9ViNao/qh+VMaOg8gjAslJjlTjGmrajPw
+         vIY9keYSO5fhj/IYYdfjUzpAZSiC/0FSNKTYp5YNvjsNPCQtKY4rUIq1936CzSktDS
+         tLYaydP+814QJmIlqcp1rkJLhWGFrmFzV//dP9IQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
-        Josh Poimboeuf <jpoimboe@kernel.org>
-Subject: [PATCH 5.15 01/89] objtool/x86: Fix SRSO mess
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Abel Wu <wuyun.abel@bytedance.com>,
+        Shakeel Butt <shakeelb@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 42/57] sock: annotate data-races around prot->memory_pressure
 Date:   Mon, 28 Aug 2023 12:13:02 +0200
-Message-ID: <20230828101150.227032778@linuxfoundation.org>
+Message-ID: <20230828101145.815775798@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,148 +57,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peter Zijlstra <peterz@infradead.org>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 4ae68b26c3ab5a82aa271e6e9fc9b1a06e1d6b40 upstream.
+[ Upstream commit 76f33296d2e09f63118db78125c95ef56df438e9 ]
 
-Objtool --rethunk does two things:
+*prot->memory_pressure is read/writen locklessly, we need
+to add proper annotations.
 
- - it collects all (tail) call's of __x86_return_thunk and places them
-   into .return_sites. These are typically compiler generated, but
-   RET also emits this same.
+A recent commit added a new race, it is time to audit all accesses.
 
- - it fudges the validation of the __x86_return_thunk symbol; because
-   this symbol is inside another instruction, it can't actually find
-   the instruction pointed to by the symbol offset and gets upset.
-
-Because these two things pertained to the same symbol, there was no
-pressing need to separate these two separate things.
-
-However, alas, along comes SRSO and more crazy things to deal with
-appeared.
-
-The SRSO patch itself added the following symbol names to identify as
-rethunk:
-
-  'srso_untrain_ret', 'srso_safe_ret' and '__ret'
-
-Where '__ret' is the old retbleed return thunk, 'srso_safe_ret' is a
-new similarly embedded return thunk, and 'srso_untrain_ret' is
-completely unrelated to anything the above does (and was only included
-because of that INT3 vs UD2 issue fixed previous).
-
-Clear things up by adding a second category for the embedded instruction
-thing.
-
-Fixes: fb3bd914b3ec ("x86/srso: Add a Speculative RAS Overflow mitigation")
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230814121148.704502245@infradead.org
-Signed-off-by: Josh Poimboeuf <jpoimboe@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 2d0c88e84e48 ("sock: Fix misuse of sk_under_memory_pressure()")
+Fixes: 4d93df0abd50 ("[SCTP]: Rewrite of sctp buffer management code")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Abel Wu <wuyun.abel@bytedance.com>
+Reviewed-by: Shakeel Butt <shakeelb@google.com>
+Link: https://lore.kernel.org/r/20230818015132.2699348-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/objtool/arch/x86/decode.c      |   11 +++++++----
- tools/objtool/check.c                |   22 +++++++++++++++++++++-
- tools/objtool/include/objtool/arch.h |    1 +
- tools/objtool/include/objtool/elf.h  |    1 +
- 4 files changed, 30 insertions(+), 5 deletions(-)
+ include/net/sock.h | 7 ++++---
+ net/sctp/socket.c  | 2 +-
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
---- a/tools/objtool/arch/x86/decode.c
-+++ b/tools/objtool/arch/x86/decode.c
-@@ -725,8 +725,11 @@ bool arch_is_retpoline(struct symbol *sy
- 
- bool arch_is_rethunk(struct symbol *sym)
+diff --git a/include/net/sock.h b/include/net/sock.h
+index 1937deba0849b..7b42ddca4decb 100644
+--- a/include/net/sock.h
++++ b/include/net/sock.h
+@@ -1115,6 +1115,7 @@ struct proto {
+ 	/*
+ 	 * Pressure flag: try to collapse.
+ 	 * Technical note: it is used by multiple contexts non atomically.
++	 * Make sure to use READ_ONCE()/WRITE_ONCE() for all reads/writes.
+ 	 * All the __sk_mem_schedule() is of this nature: accounting
+ 	 * is strict, actions are advisory and have some latency.
+ 	 */
+@@ -1214,7 +1215,7 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
+ static inline bool sk_under_global_memory_pressure(const struct sock *sk)
  {
--	return !strcmp(sym->name, "__x86_return_thunk") ||
--	       !strcmp(sym->name, "srso_untrain_ret") ||
--	       !strcmp(sym->name, "srso_safe_ret") ||
--	       !strcmp(sym->name, "retbleed_return_thunk");
-+	return !strcmp(sym->name, "__x86_return_thunk");
-+}
-+
-+bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return !strcmp(sym->name, "retbleed_return_thunk") ||
-+	       !strcmp(sym->name, "srso_safe_ret");
- }
---- a/tools/objtool/check.c
-+++ b/tools/objtool/check.c
-@@ -990,16 +990,33 @@ static int add_ignore_alternatives(struc
- 	return 0;
+ 	return sk->sk_prot->memory_pressure &&
+-		!!*sk->sk_prot->memory_pressure;
++		!!READ_ONCE(*sk->sk_prot->memory_pressure);
  }
  
-+/*
-+ * Symbols that replace INSN_CALL_DYNAMIC, every (tail) call to such a symbol
-+ * will be added to the .retpoline_sites section.
-+ */
- __weak bool arch_is_retpoline(struct symbol *sym)
+ static inline bool sk_under_memory_pressure(const struct sock *sk)
+@@ -1226,7 +1227,7 @@ static inline bool sk_under_memory_pressure(const struct sock *sk)
+ 	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
+ 		return true;
+ 
+-	return !!*sk->sk_prot->memory_pressure;
++	return !!READ_ONCE(*sk->sk_prot->memory_pressure);
+ }
+ 
+ static inline long
+@@ -1280,7 +1281,7 @@ proto_memory_pressure(struct proto *prot)
  {
- 	return false;
+ 	if (!prot->memory_pressure)
+ 		return false;
+-	return !!*prot->memory_pressure;
++	return !!READ_ONCE(*prot->memory_pressure);
  }
  
-+/*
-+ * Symbols that replace INSN_RETURN, every (tail) call to such a symbol
-+ * will be added to the .return_sites section.
-+ */
- __weak bool arch_is_rethunk(struct symbol *sym)
+ 
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 9414dcb376d26..e5c3c37108e4e 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -110,7 +110,7 @@ struct percpu_counter sctp_sockets_allocated;
+ 
+ static void sctp_enter_memory_pressure(struct sock *sk)
  {
- 	return false;
+-	sctp_memory_pressure = 1;
++	WRITE_ONCE(sctp_memory_pressure, 1);
  }
  
-+/*
-+ * Symbols that are embedded inside other instructions, because sometimes crazy
-+ * code exists. These are mostly ignored for validation purposes.
-+ */
-+__weak bool arch_is_embedded_insn(struct symbol *sym)
-+{
-+	return false;
-+}
-+
- #define NEGATIVE_RELOC	((void *)-1L)
  
- static struct reloc *insn_reloc(struct objtool_file *file, struct instruction *insn)
-@@ -1235,7 +1252,7 @@ static int add_jump_destinations(struct
- 			 * middle of another instruction.  Objtool only
- 			 * knows about the outer instruction.
- 			 */
--			if (sym && sym->return_thunk) {
-+			if (sym && sym->embedded_insn) {
- 				add_return_call(file, insn, false);
- 				continue;
- 			}
-@@ -2066,6 +2083,9 @@ static int classify_symbols(struct objto
- 			if (arch_is_rethunk(func))
- 				func->return_thunk = true;
- 
-+			if (arch_is_embedded_insn(func))
-+				func->embedded_insn = true;
-+
- 			if (!strcmp(func->name, "__fentry__"))
- 				func->fentry = true;
- 
---- a/tools/objtool/include/objtool/arch.h
-+++ b/tools/objtool/include/objtool/arch.h
-@@ -89,6 +89,7 @@ int arch_decode_hint_reg(u8 sp_reg, int
- 
- bool arch_is_retpoline(struct symbol *sym);
- bool arch_is_rethunk(struct symbol *sym);
-+bool arch_is_embedded_insn(struct symbol *sym);
- 
- int arch_rewrite_retpolines(struct objtool_file *file);
- 
---- a/tools/objtool/include/objtool/elf.h
-+++ b/tools/objtool/include/objtool/elf.h
-@@ -60,6 +60,7 @@ struct symbol {
- 	u8 return_thunk      : 1;
- 	u8 fentry            : 1;
- 	u8 kcov              : 1;
-+	u8 embedded_insn     : 1;
- };
- 
- struct reloc {
+-- 
+2.40.1
+
 
 
