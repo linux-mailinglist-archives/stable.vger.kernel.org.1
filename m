@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EE3078ACA6
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97B3078ABF0
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231778AbjH1Klg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:41:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51302 "EHLO
+        id S231571AbjH1Kfi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34198 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231825AbjH1KlU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B1B9A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:17 -0700 (PDT)
+        with ESMTP id S231630AbjH1KfS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7595B9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 098FA63EA1
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18AABC433C8;
-        Mon, 28 Aug 2023 10:41:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 3C4F263E81
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E7B4C433C9;
+        Mon, 28 Aug 2023 10:35:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219276;
-        bh=HbOaXIVt+7O+dmkE31Bmhe7mBB7AbBNmD46yqCZo6oA=;
+        s=korg; t=1693218914;
+        bh=yoaXRrKdlGgcEgQPYCXaOyDhREKOT0YV8ZT5rrauFwU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f7Ts0eXcYOr3cU6ZnkyrnUXdyboHEgobJietJMCVUC6w6/KRkblF0IY4O9xQaXXjp
-         PRV5QxOJsEv2JATR1ShwbucMZHzkFKNRMsbgCM78l7EB64XBSVjYz2QvLcsJ8tjnOm
-         8j0L4cIRSVKizzmHZv1Ul2YJ1yj2uAlOeqhYrgLI=
+        b=X+KVHwzrN5DuGZrEKb4UCK3inGf/CykcAs2/GLIL9UhfmbUSSqj/C5QFc8qa9G5uS
+         5zM7Xc0nojadGheCUH9jT+hLTE5tvN/uKylpYhr8IrY8OrYhbv1xgktV6V+zsVzGi+
+         Tc5e8BC9cy4lcAxvRn2pwvHMryvAP1VMueYaojUk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.4 137/158] batman-adv: Fix TT global entry leak when client roamed back
+        patches@lists.linux.dev,
+        Bartosz Golaszewski <bartosz.golaszewski@linaro.org>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 119/122] gpio: sim: pass the GPIO devices software node to irq domain
 Date:   Mon, 28 Aug 2023 12:13:54 +0200
-Message-ID: <20230828101202.160705034@linuxfoundation.org>
+Message-ID: <20230828101200.382091479@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,89 +56,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
 
-commit d25ddb7e788d34cf27ff1738d11a87cb4b67d446 upstream.
+[ Upstream commit 6e39c1ac688161b4db3617aabbca589b395242bc ]
 
-When a client roamed back to a node before it got time to destroy the
-pending local entry (i.e. within the same originator interval) the old
-global one is directly removed from hash table and left as such.
+Associate the swnode of the GPIO device's (which is the interrupt
+controller here) with the irq domain. Otherwise the interrupt-controller
+device attribute is a no-op.
 
-But because this entry had an extra reference taken at lookup (i.e using
-batadv_tt_global_hash_find) there is no way its memory will be reclaimed
-at any time causing the following memory leak:
-
-  unreferenced object 0xffff0000073c8000 (size 18560):
-    comm "softirq", pid 0, jiffies 4294907738 (age 228.644s)
-    hex dump (first 32 bytes):
-      06 31 ac 12 c7 7a 05 00 01 00 00 00 00 00 00 00  .1...z..........
-      2c ad be 08 00 80 ff ff 6c b6 be 08 00 80 ff ff  ,.......l.......
-    backtrace:
-      [<00000000ee6e0ffa>] kmem_cache_alloc+0x1b4/0x300
-      [<000000000ff2fdbc>] batadv_tt_global_add+0x700/0xe20
-      [<00000000443897c7>] _batadv_tt_update_changes+0x21c/0x790
-      [<000000005dd90463>] batadv_tt_update_changes+0x3c/0x110
-      [<00000000a2d7fc57>] batadv_tt_tvlv_unicast_handler_v1+0xafc/0xe10
-      [<0000000011793f2a>] batadv_tvlv_containers_process+0x168/0x2b0
-      [<00000000b7cbe2ef>] batadv_recv_unicast_tvlv+0xec/0x1f4
-      [<0000000042aef1d8>] batadv_batman_skb_recv+0x25c/0x3a0
-      [<00000000bbd8b0a2>] __netif_receive_skb_core.isra.0+0x7a8/0xe90
-      [<000000004033d428>] __netif_receive_skb_one_core+0x64/0x74
-      [<000000000f39a009>] __netif_receive_skb+0x48/0xe0
-      [<00000000f2cd8888>] process_backlog+0x174/0x344
-      [<00000000507d6564>] __napi_poll+0x58/0x1f4
-      [<00000000b64ef9eb>] net_rx_action+0x504/0x590
-      [<00000000056fa5e4>] _stext+0x1b8/0x418
-      [<00000000878879d6>] run_ksoftirqd+0x74/0xa4
-  unreferenced object 0xffff00000bae1a80 (size 56):
-    comm "softirq", pid 0, jiffies 4294910888 (age 216.092s)
-    hex dump (first 32 bytes):
-      00 78 b1 0b 00 00 ff ff 0d 50 00 00 00 00 00 00  .x.......P......
-      00 00 00 00 00 00 00 00 50 c8 3c 07 00 00 ff ff  ........P.<.....
-    backtrace:
-      [<00000000ee6e0ffa>] kmem_cache_alloc+0x1b4/0x300
-      [<00000000d9aaa49e>] batadv_tt_global_add+0x53c/0xe20
-      [<00000000443897c7>] _batadv_tt_update_changes+0x21c/0x790
-      [<000000005dd90463>] batadv_tt_update_changes+0x3c/0x110
-      [<00000000a2d7fc57>] batadv_tt_tvlv_unicast_handler_v1+0xafc/0xe10
-      [<0000000011793f2a>] batadv_tvlv_containers_process+0x168/0x2b0
-      [<00000000b7cbe2ef>] batadv_recv_unicast_tvlv+0xec/0x1f4
-      [<0000000042aef1d8>] batadv_batman_skb_recv+0x25c/0x3a0
-      [<00000000bbd8b0a2>] __netif_receive_skb_core.isra.0+0x7a8/0xe90
-      [<000000004033d428>] __netif_receive_skb_one_core+0x64/0x74
-      [<000000000f39a009>] __netif_receive_skb+0x48/0xe0
-      [<00000000f2cd8888>] process_backlog+0x174/0x344
-      [<00000000507d6564>] __napi_poll+0x58/0x1f4
-      [<00000000b64ef9eb>] net_rx_action+0x504/0x590
-      [<00000000056fa5e4>] _stext+0x1b8/0x418
-      [<00000000878879d6>] run_ksoftirqd+0x74/0xa4
-
-Releasing the extra reference from batadv_tt_global_hash_find even at
-roam back when batadv_tt_global_free is called fixes this memory leak.
-
-Cc: stable@vger.kernel.org
-Fixes: 068ee6e204e1 ("batman-adv: roaming handling mechanism redesign")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by; Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: cb8c474e79be ("gpio: sim: new testing module")
+Signed-off-by: Bartosz Golaszewski <bartosz.golaszewski@linaro.org>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/translation-table.c |    1 -
- 1 file changed, 1 deletion(-)
+ drivers/gpio/gpio-sim.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/translation-table.c
-+++ b/net/batman-adv/translation-table.c
-@@ -780,7 +780,6 @@ check_roaming:
- 		if (roamed_back) {
- 			batadv_tt_global_free(bat_priv, tt_global,
- 					      "Roaming canceled");
--			tt_global = NULL;
- 		} else {
- 			/* The global entry has to be marked as ROAMING and
- 			 * has to be kept for consistency purpose
+diff --git a/drivers/gpio/gpio-sim.c b/drivers/gpio/gpio-sim.c
+index 3fa123bb72ee1..b352775e5e0b8 100644
+--- a/drivers/gpio/gpio-sim.c
++++ b/drivers/gpio/gpio-sim.c
+@@ -407,7 +407,7 @@ static int gpio_sim_add_bank(struct fwnode_handle *swnode, struct device *dev)
+ 	if (!chip->pull_map)
+ 		return -ENOMEM;
+ 
+-	chip->irq_sim = devm_irq_domain_create_sim(dev, NULL, num_lines);
++	chip->irq_sim = devm_irq_domain_create_sim(dev, swnode, num_lines);
+ 	if (IS_ERR(chip->irq_sim))
+ 		return PTR_ERR(chip->irq_sim);
+ 
+-- 
+2.40.1
+
 
 
