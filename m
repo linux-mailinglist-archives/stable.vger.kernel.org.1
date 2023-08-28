@@ -2,41 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BB3878ACC5
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6698278ACCF
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231917AbjH1KmR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:42:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60914 "EHLO
+        id S232014AbjH1Kmg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:42:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231868AbjH1KmB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0BD23B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:59 -0700 (PDT)
+        with ESMTP id S231876AbjH1KmE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C293010D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A19B63F14
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD97AC433C7;
-        Mon, 28 Aug 2023 10:41:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5FB00640BB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 446B7C433C8;
+        Mon, 28 Aug 2023 10:42:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219318;
-        bh=kzgVQzeWszVhHHLjIpy6sNxFjSs2zVQXSaa9aq+9AoU=;
+        s=korg; t=1693219320;
+        bh=jQTYoidahfGPJyeVDPwfPYqRniXpTNwNduwv3rRNoOo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yJ+OvAkoycBjrFwkvJZ6KtwmBYC35PHCL8TKxKTBNaR5Bq2XWh9kZWwLQ/Lu5einn
-         ox3LGaGZAt9zGbFMqocS7Hd8545XIbgyUlJbUtcdM1QGbBmz5k7oHjN7QsUjmH257j
-         2x0dFhlS2WaD4cop74x65/nyEIxYwZp7+a2PRhw0=
+        b=N3Bb6C3YPDDu0HDhgSG4+8zpfCGNG7fHRwKeRJHv0D6+dNgZIK1BoW9opPBD/bQSt
+         02bKdBBAZf/57hUmu1CrrszOIfw7IHt/CekV3PYrlSTWNy3RVMEep3W/4EF8IQ2pf5
+         sjit183MzaFG5IzZtA9wZqGPiveiL5CNoSVbb75Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 151/158] ALSA: pcm: Check for null pointer of pointer substream before dereferencing it
-Date:   Mon, 28 Aug 2023 12:14:08 +0200
-Message-ID: <20230828101202.794821211@linuxfoundation.org>
+        patches@lists.linux.dev, Joel Savitz <jsavitz@redhat.com>,
+        Jonathan Corbet <corbet@lwn.net>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Mel Gorman <mgorman@techsingularity.net>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Suren Baghdasaryan <surenb@google.com>,
+        Mike Rapoport <rppt@kernel.org>,
+        "zhangyi (F)" <yi.zhang@huawei.com>,
+        Charan Teja Reddy <charante@codeaurora.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 5.4 152/158] Documentation/sysctl: document page_lock_unfairness
+Date:   Mon, 28 Aug 2023 12:14:09 +0200
+Message-ID: <20230828101202.828603936@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
 References: <20230828101157.322319621@linuxfoundation.org>
@@ -45,8 +54,8 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,42 +67,56 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Joel Savitz <jsavitz@redhat.com>
 
-commit 011b559be832194f992f73d6c0d5485f5925a10b upstream.
+commit 8d98e42fb20c25e8efdab4cc1ac46d52ba964aca upstream.
 
-Pointer substream is being dereferenced on the assignment of pointer card
-before substream is being null checked with the macro PCM_RUNTIME_CHECK.
-Although PCM_RUNTIME_CHECK calls BUG_ON, it still is useful to perform the
-the pointer check before card is assigned.
+commit 5ef64cc8987a ("mm: allow a controlled amount of unfairness in the
+page lock") introduced a new systctl but no accompanying documentation.
 
-Fixes: d4cfb30fce03 ("ALSA: pcm: Set per-card upper limit of PCM buffer allocations")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Link: https://lore.kernel.org/r/20220424205945.1372247-1-colin.i.king@gmail.com
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Add a simple entry to the documentation.
+
+Link: https://lkml.kernel.org/r/20220325164437.120246-1-jsavitz@redhat.com
+Signed-off-by: Joel Savitz <jsavitz@redhat.com>
+Cc: Jonathan Corbet <corbet@lwn.net>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Cc: Mel Gorman <mgorman@techsingularity.net>
+Cc: Dave Hansen <dave.hansen@linux.intel.com>
+Cc: Suren Baghdasaryan <surenb@google.com>
+Cc: Mike Rapoport <rppt@kernel.org>
+Cc: "zhangyi (F)" <yi.zhang@huawei.com>
+Cc: Charan Teja Reddy <charante@codeaurora.org>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_memory.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ Documentation/admin-guide/sysctl/vm.rst |    9 +++++++++
+ 1 file changed, 9 insertions(+)
 
---- a/sound/core/pcm_memory.c
-+++ b/sound/core/pcm_memory.c
-@@ -401,7 +401,6 @@ EXPORT_SYMBOL(snd_pcm_lib_malloc_pages);
-  */
- int snd_pcm_lib_free_pages(struct snd_pcm_substream *substream)
- {
--	struct snd_card *card = substream->pcm->card;
- 	struct snd_pcm_runtime *runtime;
+--- a/Documentation/admin-guide/sysctl/vm.rst
++++ b/Documentation/admin-guide/sysctl/vm.rst
+@@ -61,6 +61,7 @@ Currently, these files are in /proc/sys/
+ - overcommit_memory
+ - overcommit_ratio
+ - page-cluster
++- page_lock_unfairness
+ - panic_on_oom
+ - percpu_pagelist_fraction
+ - stat_interval
+@@ -741,6 +742,14 @@ extra faults and I/O delays for followin
+ that consecutive pages readahead would have brought in.
  
- 	if (PCM_RUNTIME_CHECK(substream))
-@@ -410,6 +409,8 @@ int snd_pcm_lib_free_pages(struct snd_pc
- 	if (runtime->dma_area == NULL)
- 		return 0;
- 	if (runtime->dma_buffer_p != &substream->dma_buffer) {
-+		struct snd_card *card = substream->pcm->card;
+ 
++page_lock_unfairness
++====================
 +
- 		/* it's a newly allocated buffer.  release it now. */
- 		do_free_pages(card, runtime->dma_buffer_p);
- 		kfree(runtime->dma_buffer_p);
++This value determines the number of times that the page lock can be
++stolen from under a waiter. After the lock is stolen the number of times
++specified in this file (default is 5), the "fair lock handoff" semantics
++will apply, and the waiter will only be awakened if the lock can be taken.
++
+ panic_on_oom
+ ============
+ 
 
 
