@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 314B178AB9F
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42E6B78AAD1
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231502AbjH1Kc7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:32:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56124 "EHLO
+        id S230234AbjH1KZa (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:25:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34576 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231605AbjH1Kct (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:49 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BB0C19B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:24 -0700 (PDT)
+        with ESMTP id S231226AbjH1KZA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:25:00 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28561103
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC6F263D2A
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 012CFC433C9;
-        Mon, 28 Aug 2023 10:31:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B0BE463A4C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C6C60C433C8;
+        Mon, 28 Aug 2023 10:24:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218706;
-        bh=brNCZzUPzw30BOGgpZXeQ2yW/TrGPcI1/vCREIR8x4E=;
+        s=korg; t=1693218297;
+        bh=KCmrdtVQNo4JxBuoCnJeS2wJqaO4wmB2tRPSjGr0WGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZBED2+/kzg0duC08fEvv4HBox/CXERrlbUYi+CWTlpA9sh9i2Phxv5h+7ww+31GJo
-         XbY8/OiAywXgGelgi074LeYwXNfr1LzDFn9IO0eWg3spQc+c60Nevs/xBkISjj/R9b
-         sMNl0ktYJmFecwxvG5RJf3IZprzaKAxI/ZW4EOYw=
+        b=1XvyKACm+QLl+uRZEh4Spf0b0GM/+XEiHRTkqg64gSz5fCxU/QP3tkPRPS5FWjXsY
+         uxZVxoxQX9rRbIJHkJOK6u4521ReQlBQC194AnHQGoVVbfszlRnJOb/JXJCokiqUCP
+         vtKJacqpKvzh/F7W6ebMlICTLnKA+OGhlDW7JfOg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Oliver Hartkopp <socketcan@hartkopp.net>,
-        Ziyang Xuan <william.xuanziyang@huawei.com>,
-        Marc Kleine-Budde <mkl@pengutronix.de>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Martin=20Hundeb=C3=B8ll?= <martin@geanix.com>,
+        Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 016/122] can: raw: fix receiver memory leak
+Subject: [PATCH 4.19 037/129] mmc: meson-gx: remove redundant mmc_request_done() call from irq context
 Date:   Mon, 28 Aug 2023 12:12:11 +0200
-Message-ID: <20230828101156.992105058@linuxfoundation.org>
+Message-ID: <20230828101154.504874193@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,239 +57,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ziyang Xuan <william.xuanziyang@huawei.com>
+From: Martin Hundebøll <martin@geanix.com>
 
-[ Upstream commit ee8b94c8510ce64afe0b87ef548d23e00915fb10 ]
+[ Upstream commit 3c40eb8145325b0f5b93b8a169146078cb2c49d6 ]
 
-Got kmemleak errors with the following ltp can_filter testcase:
+The call to mmc_request_done() can schedule, so it must not be called
+from irq context. Wake the irq thread if it needs to be called, and let
+its existing logic do its work.
 
-for ((i=1; i<=100; i++))
-do
-        ./can_filter &
-        sleep 0.1
-done
+Fixes the following kernel bug, which appears when running an RT patched
+kernel on the AmLogic Meson AXG A113X SoC:
+[   11.111407] BUG: scheduling while atomic: kworker/0:1H/75/0x00010001
+[   11.111438] Modules linked in:
+[   11.111451] CPU: 0 PID: 75 Comm: kworker/0:1H Not tainted 6.4.0-rc3-rt2-rtx-00081-gfd07f41ed6b4-dirty #1
+[   11.111461] Hardware name: RTX AXG A113X Linux Platform Board (DT)
+[   11.111469] Workqueue: kblockd blk_mq_run_work_fn
+[   11.111492] Call trace:
+[   11.111497]  dump_backtrace+0xac/0xe8
+[   11.111510]  show_stack+0x18/0x28
+[   11.111518]  dump_stack_lvl+0x48/0x60
+[   11.111530]  dump_stack+0x18/0x24
+[   11.111537]  __schedule_bug+0x4c/0x68
+[   11.111548]  __schedule+0x80/0x574
+[   11.111558]  schedule_loop+0x2c/0x50
+[   11.111567]  schedule_rtlock+0x14/0x20
+[   11.111576]  rtlock_slowlock_locked+0x468/0x730
+[   11.111587]  rt_spin_lock+0x40/0x64
+[   11.111596]  __wake_up_common_lock+0x5c/0xc4
+[   11.111610]  __wake_up+0x18/0x24
+[   11.111620]  mmc_blk_mq_req_done+0x68/0x138
+[   11.111633]  mmc_request_done+0x104/0x118
+[   11.111644]  meson_mmc_request_done+0x38/0x48
+[   11.111654]  meson_mmc_irq+0x128/0x1f0
+[   11.111663]  __handle_irq_event_percpu+0x70/0x114
+[   11.111674]  handle_irq_event_percpu+0x18/0x4c
+[   11.111683]  handle_irq_event+0x80/0xb8
+[   11.111691]  handle_fasteoi_irq+0xa4/0x120
+[   11.111704]  handle_irq_desc+0x20/0x38
+[   11.111712]  generic_handle_domain_irq+0x1c/0x28
+[   11.111721]  gic_handle_irq+0x8c/0xa8
+[   11.111735]  call_on_irq_stack+0x24/0x4c
+[   11.111746]  do_interrupt_handler+0x88/0x94
+[   11.111757]  el1_interrupt+0x34/0x64
+[   11.111769]  el1h_64_irq_handler+0x18/0x24
+[   11.111779]  el1h_64_irq+0x64/0x68
+[   11.111786]  __add_wait_queue+0x0/0x4c
+[   11.111795]  mmc_blk_rw_wait+0x84/0x118
+[   11.111804]  mmc_blk_mq_issue_rq+0x5c4/0x654
+[   11.111814]  mmc_mq_queue_rq+0x194/0x214
+[   11.111822]  blk_mq_dispatch_rq_list+0x3ac/0x528
+[   11.111834]  __blk_mq_sched_dispatch_requests+0x340/0x4d0
+[   11.111847]  blk_mq_sched_dispatch_requests+0x38/0x70
+[   11.111858]  blk_mq_run_work_fn+0x3c/0x70
+[   11.111865]  process_one_work+0x17c/0x1f0
+[   11.111876]  worker_thread+0x1d4/0x26c
+[   11.111885]  kthread+0xe4/0xf4
+[   11.111894]  ret_from_fork+0x10/0x20
 
-==============================================================
-[<00000000db4a4943>] can_rx_register+0x147/0x360 [can]
-[<00000000a289549d>] raw_setsockopt+0x5ef/0x853 [can_raw]
-[<000000006d3d9ebd>] __sys_setsockopt+0x173/0x2c0
-[<00000000407dbfec>] __x64_sys_setsockopt+0x61/0x70
-[<00000000fd468496>] do_syscall_64+0x33/0x40
-[<00000000b7e47d51>] entry_SYSCALL_64_after_hwframe+0x61/0xc6
-
-It's a bug in the concurrent scenario of unregister_netdevice_many()
-and raw_release() as following:
-
-             cpu0                                        cpu1
-unregister_netdevice_many(can_dev)
-  unlist_netdevice(can_dev) // dev_get_by_index() return NULL after this
-  net_set_todo(can_dev)
-						raw_release(can_socket)
-						  dev = dev_get_by_index(, ro->ifindex); // dev == NULL
-						  if (dev) { // receivers in dev_rcv_lists not free because dev is NULL
-						    raw_disable_allfilters(, dev, );
-						    dev_put(dev);
-						  }
-						  ...
-						  ro->bound = 0;
-						  ...
-
-call_netdevice_notifiers(NETDEV_UNREGISTER, )
-  raw_notify(, NETDEV_UNREGISTER, )
-    if (ro->bound) // invalid because ro->bound has been set 0
-      raw_disable_allfilters(, dev, ); // receivers in dev_rcv_lists will never be freed
-
-Add a net_device pointer member in struct raw_sock to record bound
-can_dev, and use rtnl_lock to serialize raw_socket members between
-raw_bind(), raw_release(), raw_setsockopt() and raw_notify(). Use
-ro->dev to decide whether to free receivers in dev_rcv_lists.
-
-Fixes: 8d0caedb7596 ("can: bcm/raw/isotp: use per module netdevice notifier")
-Reviewed-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Acked-by: Oliver Hartkopp <socketcan@hartkopp.net>
-Signed-off-by: Ziyang Xuan <william.xuanziyang@huawei.com>
-Link: https://lore.kernel.org/all/20230711011737.1969582-1-william.xuanziyang@huawei.com
+Fixes: 51c5d8447bd7 ("MMC: meson: initial support for GX platforms")
 Cc: stable@vger.kernel.org
-Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
+Signed-off-by: Martin Hundebøll <martin@geanix.com>
+Link: https://lore.kernel.org/r/20230607082713.517157-1-martin@geanix.com
+Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/can/raw.c | 57 ++++++++++++++++++++++-----------------------------
- 1 file changed, 24 insertions(+), 33 deletions(-)
+ drivers/mmc/host/meson-gx-mmc.c | 10 ++--------
+ 1 file changed, 2 insertions(+), 8 deletions(-)
 
-diff --git a/net/can/raw.c b/net/can/raw.c
-index 4abab2c3011a3..1cd2c8748c26a 100644
---- a/net/can/raw.c
-+++ b/net/can/raw.c
-@@ -84,6 +84,7 @@ struct raw_sock {
- 	struct sock sk;
- 	int bound;
- 	int ifindex;
-+	struct net_device *dev;
- 	struct list_head notifier;
- 	int loopback;
- 	int recv_own_msgs;
-@@ -277,7 +278,7 @@ static void raw_notify(struct raw_sock *ro, unsigned long msg,
- 	if (!net_eq(dev_net(dev), sock_net(sk)))
- 		return;
- 
--	if (ro->ifindex != dev->ifindex)
-+	if (ro->dev != dev)
- 		return;
- 
- 	switch (msg) {
-@@ -292,6 +293,7 @@ static void raw_notify(struct raw_sock *ro, unsigned long msg,
- 
- 		ro->ifindex = 0;
- 		ro->bound = 0;
-+		ro->dev = NULL;
- 		ro->count = 0;
- 		release_sock(sk);
- 
-@@ -337,6 +339,7 @@ static int raw_init(struct sock *sk)
- 
- 	ro->bound            = 0;
- 	ro->ifindex          = 0;
-+	ro->dev              = NULL;
- 
- 	/* set default filter to single entry dfilter */
- 	ro->dfilter.can_id   = 0;
-@@ -385,19 +388,13 @@ static int raw_release(struct socket *sock)
- 
- 	lock_sock(sk);
- 
-+	rtnl_lock();
- 	/* remove current filters & unregister */
- 	if (ro->bound) {
--		if (ro->ifindex) {
--			struct net_device *dev;
--
--			dev = dev_get_by_index(sock_net(sk), ro->ifindex);
--			if (dev) {
--				raw_disable_allfilters(dev_net(dev), dev, sk);
--				dev_put(dev);
--			}
--		} else {
-+		if (ro->dev)
-+			raw_disable_allfilters(dev_net(ro->dev), ro->dev, sk);
-+		else
- 			raw_disable_allfilters(sock_net(sk), NULL, sk);
--		}
+diff --git a/drivers/mmc/host/meson-gx-mmc.c b/drivers/mmc/host/meson-gx-mmc.c
+index 313aff92b97c9..a3e5be81b4660 100644
+--- a/drivers/mmc/host/meson-gx-mmc.c
++++ b/drivers/mmc/host/meson-gx-mmc.c
+@@ -1067,11 +1067,8 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
+ 	if (status & (IRQ_END_OF_CHAIN | IRQ_RESP_STATUS)) {
+ 		if (data && !cmd->error)
+ 			data->bytes_xfered = data->blksz * data->blocks;
+-		if (meson_mmc_bounce_buf_read(data) ||
+-		    meson_mmc_get_next_command(cmd))
+-			ret = IRQ_WAKE_THREAD;
+-		else
+-			ret = IRQ_HANDLED;
++
++		return IRQ_WAKE_THREAD;
  	}
  
- 	if (ro->count > 1)
-@@ -405,8 +402,10 @@ static int raw_release(struct socket *sock)
- 
- 	ro->ifindex = 0;
- 	ro->bound = 0;
-+	ro->dev = NULL;
- 	ro->count = 0;
- 	free_percpu(ro->uniq);
-+	rtnl_unlock();
- 
- 	sock_orphan(sk);
- 	sock->sk = NULL;
-@@ -422,6 +421,7 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
- 	struct sockaddr_can *addr = (struct sockaddr_can *)uaddr;
- 	struct sock *sk = sock->sk;
- 	struct raw_sock *ro = raw_sk(sk);
-+	struct net_device *dev = NULL;
- 	int ifindex;
- 	int err = 0;
- 	int notify_enetdown = 0;
-@@ -431,14 +431,13 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
- 	if (addr->can_family != AF_CAN)
- 		return -EINVAL;
- 
-+	rtnl_lock();
- 	lock_sock(sk);
- 
- 	if (ro->bound && addr->can_ifindex == ro->ifindex)
- 		goto out;
- 
- 	if (addr->can_ifindex) {
--		struct net_device *dev;
--
- 		dev = dev_get_by_index(sock_net(sk), addr->can_ifindex);
- 		if (!dev) {
- 			err = -ENODEV;
-@@ -467,26 +466,20 @@ static int raw_bind(struct socket *sock, struct sockaddr *uaddr, int len)
- 	if (!err) {
- 		if (ro->bound) {
- 			/* unregister old filters */
--			if (ro->ifindex) {
--				struct net_device *dev;
--
--				dev = dev_get_by_index(sock_net(sk),
--						       ro->ifindex);
--				if (dev) {
--					raw_disable_allfilters(dev_net(dev),
--							       dev, sk);
--					dev_put(dev);
--				}
--			} else {
-+			if (ro->dev)
-+				raw_disable_allfilters(dev_net(ro->dev),
-+						       ro->dev, sk);
-+			else
- 				raw_disable_allfilters(sock_net(sk), NULL, sk);
--			}
- 		}
- 		ro->ifindex = ifindex;
- 		ro->bound = 1;
-+		ro->dev = dev;
+ out:
+@@ -1086,9 +1083,6 @@ static irqreturn_t meson_mmc_irq(int irq, void *dev_id)
+ 		writel(start, host->regs + SD_EMMC_START);
  	}
  
-  out:
- 	release_sock(sk);
-+	rtnl_unlock();
- 
- 	if (notify_enetdown) {
- 		sk->sk_err = ENETDOWN;
-@@ -552,9 +545,9 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		rtnl_lock();
- 		lock_sock(sk);
- 
--		if (ro->bound && ro->ifindex) {
--			dev = dev_get_by_index(sock_net(sk), ro->ifindex);
--			if (!dev) {
-+		dev = ro->dev;
-+		if (ro->bound && dev) {
-+			if (dev->reg_state != NETREG_REGISTERED) {
- 				if (count > 1)
- 					kfree(filter);
- 				err = -ENODEV;
-@@ -595,7 +588,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		ro->count  = count;
- 
-  out_fil:
--		dev_put(dev);
- 		release_sock(sk);
- 		rtnl_unlock();
- 
-@@ -613,9 +605,9 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		rtnl_lock();
- 		lock_sock(sk);
- 
--		if (ro->bound && ro->ifindex) {
--			dev = dev_get_by_index(sock_net(sk), ro->ifindex);
--			if (!dev) {
-+		dev = ro->dev;
-+		if (ro->bound && dev) {
-+			if (dev->reg_state != NETREG_REGISTERED) {
- 				err = -ENODEV;
- 				goto out_err;
- 			}
-@@ -639,7 +631,6 @@ static int raw_setsockopt(struct socket *sock, int level, int optname,
- 		ro->err_mask = err_mask;
- 
-  out_err:
--		dev_put(dev);
- 		release_sock(sk);
- 		rtnl_unlock();
+-	if (ret == IRQ_HANDLED)
+-		meson_mmc_request_done(host->mmc, cmd->mrq);
+-
+ 	return ret;
+ }
  
 -- 
 2.40.1
