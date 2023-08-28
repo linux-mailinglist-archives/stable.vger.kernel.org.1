@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6FAE78AAA9
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:24:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7052378AA05
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231179AbjH1KX4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57388 "EHLO
+        id S230492AbjH1KSG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:18:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231232AbjH1KXl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:41 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A6D9AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:38 -0700 (PDT)
+        with ESMTP id S231137AbjH1KRt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5693010C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id EC5B763999
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 07DA0C433C7;
-        Mon, 28 Aug 2023 10:23:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 32D7163728
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D58AC433C8;
+        Mon, 28 Aug 2023 10:17:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218217;
-        bh=gJcRspsrhLSUSqvVwgcKz71s+msz+hUh5iULPtgRaCs=;
+        s=korg; t=1693217858;
+        bh=KDoaFPaehos2gUDRLbOSQnDqJL1BrHZ1++thCPkYlQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nOnZOsZ5IYFtMHcTeyl54ejW/1XnpeTdXA95oHpNRG2NyekPLUcuVybTih+a4H5IU
-         Im/2SGvI90FORKmq63RrNhggsPoPOSd3xsku1qDavj2LLrPJtc51RuRESWb/9J1mLl
-         NDteWfqpyI6Qg6sVA2Ct7rKkx74iw0nyftVAiHRw=
+        b=0zU+yhnngBIyHyQ4935P0J19ACZX9mAdbDYpSuTJqF8nGXKGsz23mQ526Q8Xz/TYY
+         ZEgbFPbxYVUfAYqbHCyqTE+pXMNNc7wPUl0OsxlZUTxyw1NT1QqVPWWzjfolrVUVHg
+         bmIg/GtzE7+1+n3sJQvRhIPOdwiSq24zgzNywpp0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Conor Dooley <conor.dooley@microchip.com>,
-        Mingzheng Xing <xingmingzheng@iscas.ac.cn>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.4 101/129] riscv: Fix build errors using binutils2.37 toolchains
+        patches@lists.linux.dev, Justin Chen <justin.chen@broadcom.com>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 4.14 40/57] net: phy: broadcom: stub c45 read/write for 54810
 Date:   Mon, 28 Aug 2023 12:13:00 +0200
-Message-ID: <20230828101200.703930591@linuxfoundation.org>
+Message-ID: <20230828101145.730594925@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,65 +55,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
+From: Justin Chen <justin.chen@broadcom.com>
 
-commit ef21fa7c198e04f3d3053b1c5b5f2b4b225c3350 upstream.
+commit 096516d092d54604d590827d05b1022c8f326639 upstream.
 
-When building the kernel with binutils 2.37 and GCC-11.1.0/GCC-11.2.0,
-the following error occurs:
+The 54810 does not support c45. The mmd_phy_indirect accesses return
+arbirtary values leading to odd behavior like saying it supports EEE
+when it doesn't. We also see that reading/writing these non-existent
+MMD registers leads to phy instability in some cases.
 
-  Assembler messages:
-  Error: cannot find default versions of the ISA extension `zicsr'
-  Error: cannot find default versions of the ISA extension `zifencei'
-
-The above error originated from this commit of binutils[0], which has been
-resolved and backported by GCC-12.1.0[1] and GCC-11.3.0[2].
-
-So fix this by change the GCC version in
-CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC to GCC-11.3.0.
-
-Link: https://sourceware.org/git/?p=binutils-gdb.git;a=commit;h=f0bae2552db1dd4f1995608fbf6648fcee4e9e0c [0]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=ca2bbb88f999f4d3cc40e89bc1aba712505dd598 [1]
-Link: https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=d29f5d6ab513c52fd872f532c492e35ae9fd6671 [2]
-Fixes: ca09f772ccca ("riscv: Handle zicsr/zifencei issue between gcc and binutils")
-Reported-by: Conor Dooley <conor.dooley@microchip.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Mingzheng Xing <xingmingzheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230824190852.45470-1-xingmingzheng@iscas.ac.cn
-Closes: https://lore.kernel.org/all/20230823-captive-abdomen-befd942a4a73@wendy/
-Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
-Tested-by: Conor Dooley <conor.dooley@microchip.com>
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
+Fixes: b14995ac2527 ("net: phy: broadcom: Add BCM54810 PHY entry")
+Signed-off-by: Justin Chen <justin.chen@broadcom.com>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Link: https://lore.kernel.org/r/1691901708-28650-1-git-send-email-justin.chen@broadcom.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+[florian: resolved conflicts in 4.14]
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/Kconfig |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/net/phy/broadcom.c |   13 +++++++++++++
+ 1 file changed, 13 insertions(+)
 
---- a/arch/riscv/Kconfig
-+++ b/arch/riscv/Kconfig
-@@ -535,15 +535,15 @@ config TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZI
- 	  and Zifencei are supported in binutils from version 2.36 onwards.
- 	  To make life easier, and avoid forcing toolchains that default to a
- 	  newer ISA spec to version 2.2, relax the check to binutils >= 2.36.
--	  For clang < 17 or GCC < 11.1.0, for which this is not possible, this is
--	  dealt with in CONFIG_TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
-+	  For clang < 17 or GCC < 11.3.0, for which this is not possible or need
-+	  special treatment, this is dealt with in TOOLCHAIN_NEEDS_OLD_ISA_SPEC.
+--- a/drivers/net/phy/broadcom.c
++++ b/drivers/net/phy/broadcom.c
+@@ -403,6 +403,17 @@ static int bcm5482_read_status(struct ph
+ 	return err;
+ }
  
- config TOOLCHAIN_NEEDS_OLD_ISA_SPEC
- 	def_bool y
- 	depends on TOOLCHAIN_NEEDS_EXPLICIT_ZICSR_ZIFENCEI
- 	# https://github.com/llvm/llvm-project/commit/22e199e6afb1263c943c0c0d4498694e15bf8a16
--	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=b03be74bad08c382da47e048007a78fa3fb4ef49
--	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110100)
-+	# https://gcc.gnu.org/git/?p=gcc.git;a=commit;h=d29f5d6ab513c52fd872f532c492e35ae9fd6671
-+	depends on (CC_IS_CLANG && CLANG_VERSION < 170000) || (CC_IS_GCC && GCC_VERSION < 110300)
- 	help
- 	  Certain versions of clang and GCC do not support zicsr and zifencei via
- 	  -march. This option causes an older ISA spec compatible with these older
++static int bcm54810_read_mmd(struct phy_device *phydev, int devnum, u16 regnum)
++{
++	return -EOPNOTSUPP;
++}
++
++static int bcm54810_write_mmd(struct phy_device *phydev, int devnum, u16 regnum,
++			      u16 val)
++{
++	return -EOPNOTSUPP;
++}
++
+ static int bcm5481_config_aneg(struct phy_device *phydev)
+ {
+ 	struct device_node *np = phydev->mdio.dev.of_node;
+@@ -650,6 +661,8 @@ static struct phy_driver broadcom_driver
+ 	.name           = "Broadcom BCM54810",
+ 	.features       = PHY_GBIT_FEATURES,
+ 	.flags          = PHY_HAS_INTERRUPT,
++	.read_mmd	= bcm54810_read_mmd,
++	.write_mmd	= bcm54810_write_mmd,
+ 	.config_init    = bcm54xx_config_init,
+ 	.config_aneg    = bcm5481_config_aneg,
+ 	.read_status    = genphy_read_status,
 
 
