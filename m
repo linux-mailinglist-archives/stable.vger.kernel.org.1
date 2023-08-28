@@ -2,98 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E23178B658
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 19:25:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 857B878B667
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 19:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229782AbjH1RYm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 13:24:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36048 "EHLO
+        id S230370AbjH1R1Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 13:27:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231927AbjH1RYc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 13:24:32 -0400
-Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 283A1E1;
-        Mon, 28 Aug 2023 10:24:30 -0700 (PDT)
-Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-26b5e737191so1588081a91.2;
-        Mon, 28 Aug 2023 10:24:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693243469; x=1693848269;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DH5Pw+Nwtjtpn2RlWDLRV4PLv534RmiJ+ccVLunffaM=;
-        b=pNg4eGBNuZU4MjoKe5+HwtXKrM2X1biBf0V+NuWovRIv6ZESWJ52o8VHP4ry2WYXQm
-         51cOOFQ/Dcj2nlLA/xapoR38GfIo6MnlQqAq13QCLKIKtwNNNwHk87/7V46n7z/yexcS
-         WrcO+xy9sbXGnnaLfvf254Q8LDCbHecvWbR3aeyGgCJnkvy8j8oX/vERrDHHNuzgtxfA
-         gg/AGZIvsTMBHR6kIdzwc1jL9tHn6RMdxaDnIvfUzhHMSq/C+QLSqG8jMrilJzyF7MsT
-         Bk0mLGiE8fhQLqLvMyFWCVSiyky3CN4+YQXGC58jQFKWSpUbln6KGyNSydCy83qmVViY
-         4SWg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693243469; x=1693848269;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DH5Pw+Nwtjtpn2RlWDLRV4PLv534RmiJ+ccVLunffaM=;
-        b=T8BefpeWXzggHe89nO4u19+K7lFe+O/WJcMcLk1w/FLbtDDAYzmxlLH9H/8PPyS2Hn
-         Dy/jDAY7xyxb+58FZV+fA/8VdKoPcWl4kixXGZEXQXQGcm3AtDSgS8Vh5jkohRtv7HWQ
-         LzExuTiSFnRURbuYBeX6yq64HzvPRbOSZD89y0bNIecZ/tRV54dFsbS9/ug06VxHz0Fi
-         efO73MP99uNzsaNXHfCTyjY2LfGinJrcR8L0wDTOL7FYpVaPs8D4j7yEMfHCUqTBIogh
-         Mx/ebrc7oACLqNcA9mXm4kNuJz6RH+KoBdaq+4VEwA39MUlkS8o84USwJw3Q6pBVrGfW
-         PMcg==
-X-Gm-Message-State: AOJu0YzNtEAAa5M4yrgPEKgpxSvrZVIHwWlwIuM/JfsmN+bBvMnqxo3V
-        EiGojAGoSs5mE9hRCpl7evk=
-X-Google-Smtp-Source: AGHT+IGaAIVkKliPxSEirGIzxTAM3xU/hfjAL4uB3WLrRpgkso8PKdU5F/PUUFmn6v+c3BpaIplIlg==
-X-Received: by 2002:a17:90a:748b:b0:26f:a34c:90e3 with SMTP id p11-20020a17090a748b00b0026fa34c90e3mr14857713pjk.31.1693243469388;
-        Mon, 28 Aug 2023 10:24:29 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id 7-20020a17090a1a4700b00263f446d432sm9864248pjl.43.2023.08.28.10.24.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 10:24:28 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Mon, 28 Aug 2023 10:24:27 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.10 00/84] 5.10.193-rc1 review
-Message-ID: <a47b63cc-174f-4de7-987b-16a6264ce42d@roeck-us.net>
-References: <20230828101149.146126827@linuxfoundation.org>
+        with ESMTP id S232861AbjH1R1B (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 13:27:01 -0400
+Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BA1103;
+        Mon, 28 Aug 2023 10:26:57 -0700 (PDT)
+Received: from pendragon.ideasonboard.com (117.145-247-81.adsl-dyn.isp.belgacom.be [81.247.145.117])
+        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1B8CA5AA;
+        Mon, 28 Aug 2023 19:25:35 +0200 (CEST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
+        s=mail; t=1693243535;
+        bh=ssG+wmaauBYkmFohm0LN3Ai/dsIv1Lk5t8fuUcW/ueY=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=VghHy9QFYH/wYcJxOTD1E+JY/1v2eDBQZIJKqlyw0FtTwTUhmvrzqBd8abTgS8gGv
+         ZZtReM92yXAeRUe+HeiAxep9pLa3/XYgvgOrG6YuFpqjKdV774+VvwW6eXtjB+uS6K
+         nQqfXYL/0pn8jgLSWmcaDPKo1BmGwngTU/xHnX5A=
+Date:   Mon, 28 Aug 2023 20:27:05 +0300
+From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+Cc:     rfoss@kernel.org, todor.too@gmail.com, agross@kernel.org,
+        andersson@kernel.org, konrad.dybcio@linaro.org, mchehab@kernel.org,
+        hverkuil-cisco@xs4all.nl, sakari.ailus@linux.intel.com,
+        andrey.konovalov@linaro.org, linux-media@vger.kernel.org,
+        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH v2 9/9] media: qcom: camss: Fix csid-gen2 for test
+ pattern generator
+Message-ID: <20230828172705.GD14596@pendragon.ideasonboard.com>
+References: <20230822200626.1931129-1-bryan.odonoghue@linaro.org>
+ <20230822200626.1931129-10-bryan.odonoghue@linaro.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230822200626.1931129-10-bryan.odonoghue@linaro.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 12:13:17PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.193 release.
-> There are 84 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Hi Bryan,
+
+Thank you for the patch.
+
+On Tue, Aug 22, 2023 at 09:06:26PM +0100, Bryan O'Donoghue wrote:
+> From: Andrey Konovalov <andrey.konovalov@linaro.org>
 > 
-> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
-> Anything received after that time might be too late.
+> In the current driver csid Test Pattern Generator (TPG) doesn't work.
+> This change:
+> - fixes writing frame width and height values into CSID_TPG_DT_n_CFG_0
+> - fixes the shift by one between test_pattern control value and the
+>   actual pattern.
+> - drops fixed VC of 0x0a which testing showed prohibited some test
+>   patterns in the CSID to produce output.
+> So that TPG starts working, but with the below limitations:
+> - only test_pattern=9 works as it should
+> - test_pattern=8 and test_pattern=7 produce black frame (all zeroes)
+> - the rest of test_pattern's don't work (yavta doesn't get the data)
+> - regardless of the CFA pattern set by 'media-ctl -V' the actual pixel
+>   order is always the same (RGGB for any RAW8 or RAW10P format in
+>   4608x2592 resolution).
 > 
+> Tested with:
+> 
+> RAW10P format, VC0:
+>  media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4608x2592 field:none]'
+>  media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4608x2592 field:none]'
+>  media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+>  v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
+>  yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video0
+> 
+> RAW10P format, VC1:
+>  media-ctl -V '"msm_csid0":2[fmt:SRGGB10/4608x2592 field:none]'
+>  media-ctl -V '"msm_vfe0_rdi1":0[fmt:SRGGB10/4608x2592 field:none]'
+>  media-ctl -l '"msm_csid0":2->"msm_vfe0_rdi1":0[1]'
+>  v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
+>  yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video1
+> 
+> RAW8 format, VC0:
+>  media-ctl --reset
+>  media-ctl -V '"msm_csid0":0[fmt:SRGGB8/4608x2592 field:none]'
+>  media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB8/4608x2592 field:none]'
+>  media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
+>  yavta -B capture-mplane --capture=3 -n 3 -f SRGGB8 -s 4608x2592 /dev/video0
+> 
+> Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Andrey Konovalov <andrey.konovalov@linaro.org>
+> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
 
-v5.10.y also needs commit 4ea6fa2cb921 ("mhi: pci_generic: Fix implicit
-conversion warning") to avoid
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 
-drivers/bus/mhi/host/pci_generic.c:276:25: warning: implicit conversion from 'unsigned long long' to 'dma_addr_t'
-	(aka 'unsigned int') changes value from 18446744073709551615 to 4294967295 [-Wconstant-conversion]
+> ---
+>  drivers/media/platform/qcom/camss/camss-csid-gen2.c | 9 +++------
+>  1 file changed, 3 insertions(+), 6 deletions(-)
+> 
+> diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+> index 140c584bfb8b1..6ba2b10326444 100644
+> --- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+> +++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
+> @@ -355,9 +355,6 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
+>  		u8 dt_id = vc;
+>  
+>  		if (tg->enabled) {
+> -			/* Config Test Generator */
+> -			vc = 0xa;
+> -
+>  			/* configure one DT, infinite frames */
+>  			val = vc << TPG_VC_CFG0_VC_NUM;
+>  			val |= INTELEAVING_MODE_ONE_SHOT << TPG_VC_CFG0_LINE_INTERLEAVING_MODE;
+> @@ -370,14 +367,14 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
+>  
+>  			writel_relaxed(0x12345678, csid->base + CSID_TPG_LFSR_SEED);
+>  
+> -			val = input_format->height & 0x1fff << TPG_DT_n_CFG_0_FRAME_HEIGHT;
+> -			val |= input_format->width & 0x1fff << TPG_DT_n_CFG_0_FRAME_WIDTH;
+> +			val = (input_format->height & 0x1fff) << TPG_DT_n_CFG_0_FRAME_HEIGHT;
+> +			val |= (input_format->width & 0x1fff) << TPG_DT_n_CFG_0_FRAME_WIDTH;
+>  			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_0(0));
+>  
+>  			val = format->data_type << TPG_DT_n_CFG_1_DATA_TYPE;
+>  			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_1(0));
+>  
+> -			val = tg->mode << TPG_DT_n_CFG_2_PAYLOAD_MODE;
+> +			val = (tg->mode - 1) << TPG_DT_n_CFG_2_PAYLOAD_MODE;
+>  			val |= 0xBE << TPG_DT_n_CFG_2_USER_SPECIFIED_PAYLOAD;
+>  			val |= format->decode_format << TPG_DT_n_CFG_2_ENCODE_FORMAT;
+>  			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_2(0));
 
-which is seen since v5.10.192 when building images with clang.
+-- 
+Regards,
 
-Thanks,
-Guenter
+Laurent Pinchart
