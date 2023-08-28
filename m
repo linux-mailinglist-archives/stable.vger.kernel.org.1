@@ -2,51 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4A1A78AC75
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:40:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 24BD578ABE3
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231716AbjH1KkC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:40:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57836 "EHLO
+        id S231555AbjH1KfG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40388 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231720AbjH1Kjx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 746A5129
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:51 -0700 (PDT)
+        with ESMTP id S231567AbjH1Kem (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:42 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB237B9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1393B63FFC
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29390C433C8;
-        Mon, 28 Aug 2023 10:39:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4109C63E32
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:38 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DDBEC433C7;
+        Mon, 28 Aug 2023 10:34:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219190;
-        bh=qhnCPPjynsGwn4GjTYHijffYxlS9zduO5sU1Zr8LxQQ=;
+        s=korg; t=1693218877;
+        bh=8VMdgU5KrqO9SjFbkivCjHu5xZfCQbkZxMQqCD3wMsc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=emaSPj/qs7dtzFw3ZwbRD1WMUe6rKtcJOyh2NExdqxWtxKOm0MM2t3OG0Sw0NZ2EH
-         f9ApIdzNxDg/lPwWsBdP+DsTzacnpj9nXgm8pNKHNXpPMfdXtn6ct5HX1cbaNIY091
-         H8uhyz6P7Et0jUgALly8+ko05NVfT3xxYiaku6vo=
+        b=RK5sMd8KHeNN5eUReEIsSg8F5bttL+KmFnJJA0l4WPGJqoMDjVV+lgzHh2DnG96eL
+         fpGc/3xEb07MEqs74NdoOc7qlyS64NGDkUs7QuMTAlob9gNhp+Y38A9TlYajKuYYgw
+         mwy/eHWXDcQ9yJq19qlo4n8Z+uRBSUzr14RsJbxI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
-        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 106/158] fbdev: fix potential OOB read in fast_imageblit()
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH 6.1 088/122] of: dynamic: Refactor action prints to not use "%pOF" inside devtree_lock
 Date:   Mon, 28 Aug 2023 12:13:23 +0200
-Message-ID: <20230828101200.886937835@linuxfoundation.org>
+Message-ID: <20230828101159.326845462@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,49 +55,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhang Shurong <zhang_shurong@foxmail.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit c2d22806aecb24e2de55c30a06e5d6eb297d161d ]
+commit 914d9d831e6126a6e7a92e27fcfaa250671be42c upstream.
 
-There is a potential OOB read at fast_imageblit, for
-"colortab[(*src >> 4)]" can become a negative value due to
-"const char *s = image->data, *src".
-This change makes sure the index for colortab always positive
-or zero.
+While originally it was fine to format strings using "%pOF" while
+holding devtree_lock, this now causes a deadlock.  Lockdep reports:
 
-Similar commit:
-https://patchwork.kernel.org/patch/11746067
+    of_get_parent from of_fwnode_get_parent+0x18/0x24
+    ^^^^^^^^^^^^^
+    of_fwnode_get_parent from fwnode_count_parents+0xc/0x28
+    fwnode_count_parents from fwnode_full_name_string+0x18/0xac
+    fwnode_full_name_string from device_node_string+0x1a0/0x404
+    device_node_string from pointer+0x3c0/0x534
+    pointer from vsnprintf+0x248/0x36c
+    vsnprintf from vprintk_store+0x130/0x3b4
 
-Potential bug report:
-https://groups.google.com/g/syzkaller-bugs/c/9ubBXKeKXf4/m/k-QXy4UgAAAJ
+Fix this by moving the printing in __of_changeset_entry_apply() outside
+the lock. As the only difference in the multiple prints is the action
+name, use the existing "action_names" to refactor the prints into a
+single print.
 
-Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Fixes: a92eb7621b9fb2c2 ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
 Cc: stable@vger.kernel.org
-Signed-off-by: Helge Deller <deller@gmx.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230801-dt-changeset-fixes-v3-2-5f0410e007dd@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/fbdev/core/sysimgblt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/of/dynamic.c |   31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
-index 335e92b813fc4..665ef7a0a2495 100644
---- a/drivers/video/fbdev/core/sysimgblt.c
-+++ b/drivers/video/fbdev/core/sysimgblt.c
-@@ -189,7 +189,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
- 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
- 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
- 	u32 bit_mask, eorx, shift;
--	const char *s = image->data, *src;
-+	const u8 *s = image->data, *src;
- 	u32 *dst;
- 	const u32 *tab;
- 	size_t tablen;
--- 
-2.40.1
-
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -63,15 +63,14 @@ int of_reconfig_notifier_unregister(stru
+ }
+ EXPORT_SYMBOL_GPL(of_reconfig_notifier_unregister);
+ 
+-#ifdef DEBUG
+-const char *action_names[] = {
++static const char *action_names[] = {
++	[0] = "INVALID",
+ 	[OF_RECONFIG_ATTACH_NODE] = "ATTACH_NODE",
+ 	[OF_RECONFIG_DETACH_NODE] = "DETACH_NODE",
+ 	[OF_RECONFIG_ADD_PROPERTY] = "ADD_PROPERTY",
+ 	[OF_RECONFIG_REMOVE_PROPERTY] = "REMOVE_PROPERTY",
+ 	[OF_RECONFIG_UPDATE_PROPERTY] = "UPDATE_PROPERTY",
+ };
+-#endif
+ 
+ int of_reconfig_notify(unsigned long action, struct of_reconfig_data *p)
+ {
+@@ -594,21 +593,9 @@ static int __of_changeset_entry_apply(st
+ 		}
+ 
+ 		ret = __of_add_property(ce->np, ce->prop);
+-		if (ret) {
+-			pr_err("changeset: add_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 	case OF_RECONFIG_REMOVE_PROPERTY:
+ 		ret = __of_remove_property(ce->np, ce->prop);
+-		if (ret) {
+-			pr_err("changeset: remove_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 
+ 	case OF_RECONFIG_UPDATE_PROPERTY:
+@@ -622,20 +609,17 @@ static int __of_changeset_entry_apply(st
+ 		}
+ 
+ 		ret = __of_update_property(ce->np, ce->prop, &old_prop);
+-		if (ret) {
+-			pr_err("changeset: update_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+ 	}
+ 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+ 
+-	if (ret)
++	if (ret) {
++		pr_err("changeset: apply failed: %-15s %pOF:%s\n",
++		       action_names[ce->action], ce->np, ce->prop->name);
+ 		return ret;
++	}
+ 
+ 	switch (ce->action) {
+ 	case OF_RECONFIG_ATTACH_NODE:
+@@ -921,6 +905,9 @@ int of_changeset_action(struct of_change
+ 	if (!ce)
+ 		return -ENOMEM;
+ 
++	if (WARN_ON(action >= ARRAY_SIZE(action_names)))
++		return -EINVAL;
++
+ 	/* get a reference to the node */
+ 	ce->action = action;
+ 	ce->np = of_node_get(np);
 
 
