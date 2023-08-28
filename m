@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A315778ACCA
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1ED9078AD1F
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231853AbjH1KmP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:42:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60746 "EHLO
+        id S231964AbjH1Kp5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231851AbjH1Klx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:53 -0400
+        with ESMTP id S231996AbjH1Kpf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:35 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0072119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B476E44
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:16 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4575B63F14
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:50 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5892CC433C7;
-        Mon, 28 Aug 2023 10:41:49 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7206764229
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83538C433C9;
+        Mon, 28 Aug 2023 10:45:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219309;
-        bh=9ZYdu7WmT7EOq43bNgHExxTx62qDQqJIJ7V4HZikT9o=;
+        s=korg; t=1693219514;
+        bh=GvKP74ipp9Ply2Bpc3/qz1V1Ftu7yfp9Ziey4IIH358=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qGFD/ZE4ZH/B3w712yLwAdl6bZWSBVm7OEpM4bl/miUOcKq2DT+jWRn7d+quel9LD
-         hdpZ3thwDd/ix2WZY+m3S3wEOCbyg/riin0cnyEKjuSYM/J7ctd7dISGUz8QzV5/Gr
-         7lqhaK5tCvq0AeU3U7At/DudpVC9NfYZ7gTCkrXI=
+        b=ps+wZowOmTtV8aoxFSQ0MhppVIulGqvT3FQpo1S0E6nvJpETlLJ6WKZnSei5Yglr1
+         bajhcEBM/2OBsz9uZNLJtBSSNDlbmgYQDIXKGoVbW5tMeTUNveGvEAaYvlP74iBbbw
+         mof0kNFl9xJqi11LXtkXelYbL1i8sDieFm+BRuL4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 5.4 148/158] ALSA: pcm: Fix build error on m68k and others
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH 5.15 64/89] of: dynamic: Refactor action prints to not use "%pOF" inside devtree_lock
 Date:   Mon, 28 Aug 2023 12:14:05 +0200
-Message-ID: <20230828101202.647786424@linuxfoundation.org>
+Message-ID: <20230828101152.332769276@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,51 +55,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Rob Herring <robh@kernel.org>
 
-commit 467fd0e82b6265b8e6cc078a70bd7592574d5c83 upstream.
+commit 914d9d831e6126a6e7a92e27fcfaa250671be42c upstream.
 
-The commit 3ad796cbc36a ("ALSA: pcm: Use SG-buffer only when direct
-DMA is available") introduced a check of the DMA type and this caused
-a build error on m68k (and possibly some others) due to the lack of
-dma_is_direct() definition.  Since the check is needed only for
-CONFIG_SND_DMA_SGBUF enablement (i.e. solely x86), use #ifdef instead
-of IS_ENABLED() for avoiding such a build error.
+While originally it was fine to format strings using "%pOF" while
+holding devtree_lock, this now causes a deadlock.  Lockdep reports:
 
-Fixes: 3ad796cbc36a ("ALSA: pcm: Use SG-buffer only when direct DMA is available")
-Reported-by: kernel test robot <lkp@intel.com>
-Link: https://lore.kernel.org/r/20200707111225.26826-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+    of_get_parent from of_fwnode_get_parent+0x18/0x24
+    ^^^^^^^^^^^^^
+    of_fwnode_get_parent from fwnode_count_parents+0xc/0x28
+    fwnode_count_parents from fwnode_full_name_string+0x18/0xac
+    fwnode_full_name_string from device_node_string+0x1a0/0x404
+    device_node_string from pointer+0x3c0/0x534
+    pointer from vsnprintf+0x248/0x36c
+    vsnprintf from vprintk_store+0x130/0x3b4
+
+Fix this by moving the printing in __of_changeset_entry_apply() outside
+the lock. As the only difference in the multiple prints is the action
+name, use the existing "action_names" to refactor the prints into a
+single print.
+
+Fixes: a92eb7621b9fb2c2 ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
+Cc: stable@vger.kernel.org
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230801-dt-changeset-fixes-v3-2-5f0410e007dd@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/core/pcm_memory.c |    6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/of/dynamic.c |   31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
 
---- a/sound/core/pcm_memory.c
-+++ b/sound/core/pcm_memory.c
-@@ -66,8 +66,9 @@ static int do_alloc_pages(struct snd_car
- 	__update_allocated_size(card, size);
- 	mutex_unlock(&card->memory_mutex);
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -63,15 +63,14 @@ int of_reconfig_notifier_unregister(stru
+ }
+ EXPORT_SYMBOL_GPL(of_reconfig_notifier_unregister);
  
--	if (IS_ENABLED(CONFIG_SND_DMA_SGBUF) &&
--	    (type == SNDRV_DMA_TYPE_DEV_SG || type == SNDRV_DMA_TYPE_DEV_UC_SG) &&
-+
-+#ifdef CONFIG_SND_DMA_SGBUF
-+	if ((type == SNDRV_DMA_TYPE_DEV_SG || type == SNDRV_DMA_TYPE_DEV_UC_SG) &&
- 	    !dma_is_direct(get_dma_ops(dev))) {
- 		/* mutate to continuous page allocation */
- 		dev_dbg(dev, "Use continuous page allocator\n");
-@@ -76,6 +77,7 @@ static int do_alloc_pages(struct snd_car
- 		else
- 			type = SNDRV_DMA_TYPE_DEV_UC;
+-#ifdef DEBUG
+-const char *action_names[] = {
++static const char *action_names[] = {
++	[0] = "INVALID",
+ 	[OF_RECONFIG_ATTACH_NODE] = "ATTACH_NODE",
+ 	[OF_RECONFIG_DETACH_NODE] = "DETACH_NODE",
+ 	[OF_RECONFIG_ADD_PROPERTY] = "ADD_PROPERTY",
+ 	[OF_RECONFIG_REMOVE_PROPERTY] = "REMOVE_PROPERTY",
+ 	[OF_RECONFIG_UPDATE_PROPERTY] = "UPDATE_PROPERTY",
+ };
+-#endif
+ 
+ int of_reconfig_notify(unsigned long action, struct of_reconfig_data *p)
+ {
+@@ -594,21 +593,9 @@ static int __of_changeset_entry_apply(st
+ 		}
+ 
+ 		ret = __of_add_property(ce->np, ce->prop);
+-		if (ret) {
+-			pr_err("changeset: add_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 	case OF_RECONFIG_REMOVE_PROPERTY:
+ 		ret = __of_remove_property(ce->np, ce->prop);
+-		if (ret) {
+-			pr_err("changeset: remove_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 
+ 	case OF_RECONFIG_UPDATE_PROPERTY:
+@@ -622,20 +609,17 @@ static int __of_changeset_entry_apply(st
+ 		}
+ 
+ 		ret = __of_update_property(ce->np, ce->prop, &old_prop);
+-		if (ret) {
+-			pr_err("changeset: update_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
  	}
-+#endif /* CONFIG_SND_DMA_SGBUF */
+ 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
  
- 	err = snd_dma_alloc_pages(type, dev, size, dmab);
- 	if (!err) {
+-	if (ret)
++	if (ret) {
++		pr_err("changeset: apply failed: %-15s %pOF:%s\n",
++		       action_names[ce->action], ce->np, ce->prop->name);
+ 		return ret;
++	}
+ 
+ 	switch (ce->action) {
+ 	case OF_RECONFIG_ATTACH_NODE:
+@@ -921,6 +905,9 @@ int of_changeset_action(struct of_change
+ 	if (!ce)
+ 		return -ENOMEM;
+ 
++	if (WARN_ON(action >= ARRAY_SIZE(action_names)))
++		return -EINVAL;
++
+ 	/* get a reference to the node */
+ 	ce->action = action;
+ 	ce->np = of_node_get(np);
 
 
