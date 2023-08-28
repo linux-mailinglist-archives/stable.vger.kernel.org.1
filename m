@@ -2,52 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DC5B78A9FF
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B2A3978ABB5
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:34:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230455AbjH1KSB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:18:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60216 "EHLO
+        id S231459AbjH1Kd6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230447AbjH1KRd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:33 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BAABF188
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:22 -0700 (PDT)
+        with ESMTP id S231454AbjH1Kd1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:33:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B97A1A6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9AAC76374A
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A961FC433CA;
-        Mon, 28 Aug 2023 10:17:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 31DCB61544
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 43AC3C433C7;
+        Mon, 28 Aug 2023 10:32:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217842;
-        bh=7+CHnaC1gBCiwP+hzmlqvP7yA2tKwUMGbpc/EKT/DEY=;
+        s=korg; t=1693218747;
+        bh=xilxuoOirtyYakOLJoJ/JQswp6wCizkBrqsuh5Bd4tA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RdGnpfjhETX2WePMiNx9YVOjxU3ccDm42fljjAFqfVR3nQ0Jk7y4IAd0LbOLCdwny
-         7uUgeFrU73x8MtEBTdxEXh0S3JSsXgIb/UwOlWKy8ptezWolYchJ36yfaODntcHox4
-         VSdvfRHDOCdtQavpNzz02iZmvAkS/gvMdS9I2AgA=
+        b=LyML9BAi4wCKsJzTCRUcpRR/1SgP1lD6L5mCjK112CYvnsjs6GAyH0B4sfxOR7pyp
+         HsPKNDmbXxGqx0Fi27SNNil5iyAcyJfILxb0NHQDOqN97mfc8XIRP+OA1w5vN5GvuD
+         vBMex+aRJUnD/4zev4jSzNxfwMQ6k+YZPACVonzY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Junwei Hu <hujunwei4@huawei.com>,
-        Julian Anastasov <ja@ssi.bg>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 4.14 44/57] ipvs: Improve robustness to the ipvs sysctl
+        patches@lists.linux.dev, Hugh Dickins <hughd@google.com>,
+        Peter Xu <peterx@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 069/122] shmem: fix smaps BUG sleeping while atomic
 Date:   Mon, 28 Aug 2023 12:13:04 +0200
-Message-ID: <20230828101145.883319622@linuxfoundation.org>
+Message-ID: <20230828101158.742995218@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,145 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junwei Hu <hujunwei4@huawei.com>
+From: Hugh Dickins <hughd@google.com>
 
-commit 1b90af292e71b20d03b837d39406acfbdc5d4b2a upstream.
+commit e5548f85b4527c4c803b7eae7887c10bf8f90c97 upstream.
 
-The ipvs module parse the user buffer and save it to sysctl,
-then check if the value is valid. invalid value occurs
-over a period of time.
-Here, I add a variable, struct ctl_table tmp, used to read
-the value from the user buffer, and save only when it is valid.
-I delete proc_do_sync_mode and use extra1/2 in table for the
-proc_dointvec_minmax call.
+smaps_pte_hole_lookup() is calling shmem_partial_swap_usage() with page
+table lock held: but shmem_partial_swap_usage() does cond_resched_rcu() if
+need_resched(): "BUG: sleeping function called from invalid context".
 
-Fixes: f73181c8288f ("ipvs: add support for sync threads")
-Signed-off-by: Junwei Hu <hujunwei4@huawei.com>
-Acked-by: Julian Anastasov <ja@ssi.bg>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
-[Julian: Backport by changing SYSCTL_ZERO/SYSCTL_ONE to zero/one]
-Signed-off-by: Julian Anastasov <ja@ssi.bg>
+Since shmem_partial_swap_usage() is designed to count across a range, but
+smaps_pte_hole_lookup() only calls it for a single page slot, just break
+out of the loop on the last or only page, before checking need_resched().
+
+Link: https://lkml.kernel.org/r/6fe3b3ec-abdf-332f-5c23-6a3b3a3b11a9@google.com
+Fixes: 230100321518 ("mm/smaps: simplify shmem handling of pte holes")
+Signed-off-by: Hugh Dickins <hughd@google.com>
+Acked-by: Peter Xu <peterx@redhat.com>
+Cc: <stable@vger.kernel.org>	[5.16+]
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipvs/ip_vs_ctl.c |   70 +++++++++++++++++++++--------------------
- 1 file changed, 36 insertions(+), 34 deletions(-)
+ mm/shmem.c |    6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/net/netfilter/ipvs/ip_vs_ctl.c
-+++ b/net/netfilter/ipvs/ip_vs_ctl.c
-@@ -1648,6 +1648,7 @@ static int ip_vs_zero_all(struct netns_i
- #ifdef CONFIG_SYSCTL
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -800,14 +800,16 @@ unsigned long shmem_partial_swap_usage(s
+ 	XA_STATE(xas, &mapping->i_pages, start);
+ 	struct page *page;
+ 	unsigned long swapped = 0;
++	unsigned long max = end - 1;
  
- static int zero;
-+static int one = 1;
- static int three = 3;
- 
- static int
-@@ -1659,12 +1660,18 @@ proc_do_defense_mode(struct ctl_table *t
- 	int val = *valp;
- 	int rc;
- 
--	rc = proc_dointvec(table, write, buffer, lenp, ppos);
-+	struct ctl_table tmp = {
-+		.data = &val,
-+		.maxlen = sizeof(int),
-+		.mode = table->mode,
-+	};
-+
-+	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
- 	if (write && (*valp != val)) {
--		if ((*valp < 0) || (*valp > 3)) {
--			/* Restore the correct value */
--			*valp = val;
-+		if (val < 0 || val > 3) {
-+			rc = -EINVAL;
- 		} else {
-+			*valp = val;
- 			update_defense_level(ipvs);
- 		}
- 	}
-@@ -1678,33 +1685,20 @@ proc_do_sync_threshold(struct ctl_table
- 	int *valp = table->data;
- 	int val[2];
- 	int rc;
-+	struct ctl_table tmp = {
-+		.data = &val,
-+		.maxlen = table->maxlen,
-+		.mode = table->mode,
-+	};
- 
--	/* backup the value first */
- 	memcpy(val, valp, sizeof(val));
+ 	rcu_read_lock();
+-	xas_for_each(&xas, page, end - 1) {
++	xas_for_each(&xas, page, max) {
+ 		if (xas_retry(&xas, page))
+ 			continue;
+ 		if (xa_is_value(page))
+ 			swapped++;
 -
--	rc = proc_dointvec(table, write, buffer, lenp, ppos);
--	if (write && (valp[0] < 0 || valp[1] < 0 ||
--	    (valp[0] >= valp[1] && valp[1]))) {
--		/* Restore the correct value */
--		memcpy(valp, val, sizeof(val));
--	}
--	return rc;
--}
--
--static int
--proc_do_sync_mode(struct ctl_table *table, int write,
--		     void __user *buffer, size_t *lenp, loff_t *ppos)
--{
--	int *valp = table->data;
--	int val = *valp;
--	int rc;
--
--	rc = proc_dointvec(table, write, buffer, lenp, ppos);
--	if (write && (*valp != val)) {
--		if ((*valp < 0) || (*valp > 1)) {
--			/* Restore the correct value */
--			*valp = val;
--		}
-+	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
-+	if (write) {
-+		if (val[0] < 0 || val[1] < 0 ||
-+		    (val[0] >= val[1] && val[1]))
-+			rc = -EINVAL;
-+		else
-+			memcpy(valp, val, sizeof(val));
- 	}
- 	return rc;
- }
-@@ -1717,12 +1711,18 @@ proc_do_sync_ports(struct ctl_table *tab
- 	int val = *valp;
- 	int rc;
- 
--	rc = proc_dointvec(table, write, buffer, lenp, ppos);
-+	struct ctl_table tmp = {
-+		.data = &val,
-+		.maxlen = sizeof(int),
-+		.mode = table->mode,
-+	};
-+
-+	rc = proc_dointvec(&tmp, write, buffer, lenp, ppos);
- 	if (write && (*valp != val)) {
--		if (*valp < 1 || !is_power_of_2(*valp)) {
--			/* Restore the correct value */
-+		if (val < 1 || !is_power_of_2(val))
-+			rc = -EINVAL;
-+		else
- 			*valp = val;
--		}
- 	}
- 	return rc;
- }
-@@ -1782,7 +1782,9 @@ static struct ctl_table vs_vars[] = {
- 		.procname	= "sync_version",
- 		.maxlen		= sizeof(int),
- 		.mode		= 0644,
--		.proc_handler	= proc_do_sync_mode,
-+		.proc_handler	= proc_dointvec_minmax,
-+		.extra1		= &zero,
-+		.extra2		= &one,
- 	},
- 	{
- 		.procname	= "sync_ports",
++		if (xas.xa_index == max)
++			break;
+ 		if (need_resched()) {
+ 			xas_pause(&xas);
+ 			cond_resched_rcu();
 
 
