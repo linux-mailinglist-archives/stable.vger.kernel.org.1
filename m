@@ -2,318 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 80DE878AEB0
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 13:22:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CCF078AEE7
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 13:32:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230198AbjH1LWC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 07:22:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58264 "EHLO
+        id S232452AbjH1Lbm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 07:31:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45824 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230225AbjH1LVn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 07:21:43 -0400
-Received: from mail-oi1-x22d.google.com (mail-oi1-x22d.google.com [IPv6:2607:f8b0:4864:20::22d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A232B6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 04:21:40 -0700 (PDT)
-Received: by mail-oi1-x22d.google.com with SMTP id 5614622812f47-3a9b41ffe11so1970411b6e.2
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 04:21:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20221208.gappssmtp.com; s=20221208; t=1693221699; x=1693826499;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=X1vkLgfX/Q3WigqY4gS4Edm12iHiTxX2c31lsR7rC9E=;
-        b=SXP/5Ps9boBryduH8FGUC+riOJVSZ9ULmmhl5mgIyzJf59eWB62JU5tTeRtMbr0YMT
-         aeJYuiHP/tY01jRZrzzHEjtLPNBKNZ+8OPNzIF9gIXeevBlCryYFFxrtp18ReULSIkNV
-         BtQgQ079jz8g57RVC/B9P2uMw+lAaULe99p0g9s1ku+RQXbtZmHFBHD2CkJov2lYvEwf
-         5QDJmdAKcGb3+N1BqyBpw8zTzp0GlFAu7rdenIgM+IzWrQGmZmzK+xVh27bgRdnDFKKD
-         Dd//wXATM80cfXxpNGU4cb2dSD+rTNjwc4iNbgtkLSDgsuaT94r+jk5VzEvGoHFl9zyD
-         RTbw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693221699; x=1693826499;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=X1vkLgfX/Q3WigqY4gS4Edm12iHiTxX2c31lsR7rC9E=;
-        b=MdA1HdL1wiIdSFcJuzPuN7crXUG/2XR2vpKkYrpvuEAgt2DHfYbWX54qHQXEzYhIKX
-         sj2XwN2IM3R/+EDrsk+vkbN/RDYhkLBjaYRAEZEr6FIAUXD8F0tBIldDaZAzQfXFfiVc
-         HQ9xmJU3WElnrBfxo3ok09Ccq12ZtfS13Fg4XJvfMBrskQW+8vq37N+KW3bQuJOM4T1x
-         k7oObAkrgQ0abM/f1WsKS+LEjb08kxsQaflZiMvigYbpSwcBZyhgyGt8LBl2OMUrK0IP
-         OayzdfBtHmTFYn/lDeWrL3Hh8KHSXEHEtNe5OhQyjCbvq8nR4ANXuhVpRcbQSWEREDRg
-         rqpQ==
-X-Gm-Message-State: AOJu0YwbE9+MxoOX7e6iUvZuAZiaKRfXsD/yZFvEOr0XFGIMIEOe1YNJ
-        ZUdmRZh2eZDhy4KDSvc7TEPf/X+5Kgn9Te4OGss=
-X-Google-Smtp-Source: AGHT+IEiBBSKHKKy95TzUGlbc3ADIq2P7gcWRhQpAqLtFDUicdBHhDIu0mAeVZUC4OtQJlshpoNoEw==
-X-Received: by 2002:a05:6808:144f:b0:3a3:95f9:c99b with SMTP id x15-20020a056808144f00b003a395f9c99bmr13852428oiv.35.1693221699337;
-        Mon, 28 Aug 2023 04:21:39 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x4-20020a656aa4000000b00553dcfc2179sm6498629pgu.52.2023.08.28.04.21.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 28 Aug 2023 04:21:38 -0700 (PDT)
-Message-ID: <64ec8342.650a0220.fb85f.75eb@mx.google.com>
-Date:   Mon, 28 Aug 2023 04:21:38 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S232450AbjH1LbM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 07:31:12 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B4EBE7;
+        Mon, 28 Aug 2023 04:31:09 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 34C79644F5;
+        Mon, 28 Aug 2023 11:31:09 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E0ABC433C7;
+        Mon, 28 Aug 2023 11:31:08 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693222268;
+        bh=Nhion05gVnDK6S9dWuQYwIm+H21e1aZtGHRfwWW5B4Y=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=rfJF0avrAMX2oDW30SSR0xJi79YnoYmOJKbFFWoPuTJ4RNDjNDEMnOU0QopXJlhhZ
+         hge8x62/bDP8pH+UCXpS18/szaR4jQoygldyjVOILGS2qLl/CaIKNl/i1a2lNS9Ba2
+         bHrRp6TrtM1hrb8anUwKb6kWbDHe1WWlhM3hoa/m89tcxpaOQQ87hnJ3odpN2YYILK
+         4Ra4umyL7N7cmEgKOQyaWFjGa1/X3XkWDkotAYvvqws+gBsFTuwBthWZWrlq/HW/H9
+         pGk39C25XAOIuNLogb6p4Ovhmhw0gLOUMLKjURwGph9QASHtzG+OS9ZgnzSDz02qLR
+         cBlqKxcVRyWlw==
+Received: by mail-ej1-f44.google.com with SMTP id a640c23a62f3a-99c1d03e124so405894766b.2;
+        Mon, 28 Aug 2023 04:31:08 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwwbJNXBSWFs7/vERTrX2z5O1NJiDvoDDI8Dsl2BV9nQFj2PX1c
+        3+SOYjENUDjIxnyekun6tZ0uiCyYEnwY94iIqyk=
+X-Google-Smtp-Source: AGHT+IGLeODxbIyTL5Ow53F35GSsVkvyB/kUjH1zd48Qn339Qibc5wi6a1Bv79ZKnXlQIzXYbich/pPwHHY6t1DW78Q=
+X-Received: by 2002:a17:906:5198:b0:9a1:b967:aca8 with SMTP id
+ y24-20020a170906519800b009a1b967aca8mr12841234ejk.4.1693222266793; Mon, 28
+ Aug 2023 04:31:06 -0700 (PDT)
 MIME-Version: 1.0
+References: <16827b4e-9823-456d-a6be-157fbfae64c3@paulmck-laptop>
+ <CAAhV-H7uXA=r-w1nN7sBpRTba3LjjZs+wasJfGo7VZ6D9eMBAw@mail.gmail.com>
+ <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop> <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+ <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
+ <20230825232807.GA97898@google.com> <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
+ <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
+ <CAEXW_YS5dVVOQvO6tWwF7mrgtHiYgVKP_TAipzBNiaFqWDzdeQ@mail.gmail.com> <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop>
+In-Reply-To: <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Mon, 28 Aug 2023 19:30:43 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6hkyAe616BuuE2H2TqNYFXqyHpJVc_Zn4307JszuVKYQ@mail.gmail.com>
+Message-ID: <CAAhV-H6hkyAe616BuuE2H2TqNYFXqyHpJVc_Zn4307JszuVKYQ@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     paulmck@kernel.org
+Cc:     Joel Fernandes <joel@joelfernandes.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.292-130-ga291d82603f3
-Subject: stable-rc/linux-4.19.y build: 19 builds: 5 failed, 14 passed, 2 errors,
- 22 warnings (v4.19.292-130-ga291d82603f3)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.19.y build: 19 builds: 5 failed, 14 passed, 2 errors, 22 =
-warnings (v4.19.292-130-ga291d82603f3)
+Hi, Paul and Joel,
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.292-130-ga291d82603f3/
+On Mon, Aug 28, 2023 at 6:47=E2=80=AFPM Paul E. McKenney <paulmck@kernel.or=
+g> wrote:
+>
+> On Sun, Aug 27, 2023 at 06:11:40PM -0400, Joel Fernandes wrote:
+> > On Sun, Aug 27, 2023 at 1:51=E2=80=AFAM Huacai Chen <chenhuacai@kernel.=
+org> wrote:
+> > [..]
+> > > > > > > The only way I know of to avoid these sorts of false positive=
+s is for
+> > > > > > > the user to manually suppress all timeouts (perhaps using a k=
+ernel-boot
+> > > > > > > parameter for your early-boot case), do the gdb work, and the=
+n unsuppress
+> > > > > > > all stalls.  Even that won't work for networking, because the=
+ other
+> > > > > > > system's clock will be running throughout.
+> > > > > > >
+> > > > > > > In other words, from what I know now, there is no perfect sol=
+ution.
+> > > > > > > Therefore, there are sharp limits to the complexity of any so=
+lution that
+> > > > > > > I will be willing to accept.
+> > > > > > I think the simplest solution is (I hope Joel will not angry):
+> > > > >
+> > > > > Not angry at all, just want to help. ;-). The problem is the 300*=
+HZ solution
+> > > > > will also effect the VM workloads which also do a similar reset. =
+ Allow me few
+> > > > > days to see if I can take a shot at fixing it slightly differentl=
+y. I am
+> > > > > trying Paul's idea of setting jiffies at a later time. I think it=
+ is doable.
+> > > > > I think the advantage of doing this is it will make stall detecti=
+on more
+> > > > > robust in this face of these gaps in jiffie update. And that solu=
+tion does
+> > > > > not even need us to rely on ktime (and all the issues that come w=
+ith that).
+> > > > >
+> > > >
+> > > > I wrote a patch similar to Paul's idea and sent it out for review, =
+the
+> > > > advantage being it purely is based on jiffies. Could you try it out
+> > > > and let me know?
+> > > If you can cc my gmail <chenhuacai@gmail.com>, that could be better.
+> >
+> > Sure, will do.
+> >
+> > > I have read your patch, maybe the counter (nr_fqs_jiffies_stall)
+> > > should be atomic_t and we should use atomic operation to decrement it=
+s
+> > > value. Because rcu_gp_fqs() can be run concurrently, and we may miss
+> > > the (nr_fqs =3D=3D 1) condition.
+> >
+> > I don't think so. There is only 1 place where RMW operation happens
+> > and rcu_gp_fqs() is called only from the GP kthread. So a concurrent
+> > RMW (and hence a lost update) is not possible.
+>
+> Huacai, is your concern that the gdb user might have created a script
+> (for example, printing a variable or two, then automatically continuing),
+> so that breakpoints could happen in quick successsion, such that the
+> second breakpoint might run concurrently with rcu_gp_fqs()?
+>
+> If this can really happen, the point that Joel makes is a good one, namel=
+y
+> that rcu_gp_fqs() is single-threaded and (absent rcutorture) runs only
+> once every few jiffies.  And gdb breakpoints, even with scripting, should
+> also be rather rare.  So if this is an issue, a global lock should do the
+> trick, perhaps even one of the existing locks in the rcu_state structure.
+> The result should then be just as performant/scalable and a lot simpler
+> than use of atomics.
+Sorry, I made a mistake. Yes, there is no concurrent issue, and this
+approach probably works. But I have another problem: how to ensure
+that there is a jiffies update in three calls to rcu_gp_fqs()? Or in
+other word, is three also a magic number here?
 
-Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.292-130-ga291d82603f3
-Git Commit: a291d82603f3070dd8d1a940750eea9f477d1112
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+And I rechecked the commit message of a80be428fbc1f1f3bc9e ("rcu: Do
+not disable GP stall detection in rcu_cpu_stall_reset()"). I don't
+know why Sergey said that the original code disables stall-detection
+forever, in fact it only disables the detection in the current GP.
 
-Build Failures Detected:
+Huacai
 
-arm:
-    multi_v7_defconfig: (gcc-10) FAIL
-    omap2plus_defconfig: (gcc-10) FAIL
-
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
-Errors and Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
-
-arm:
-    multi_v7_defconfig (gcc-10): 1 error, 1 warning
-    omap2plus_defconfig (gcc-10): 1 error, 1 warning
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
-
-Errors summary:
-
-    2    drivers/bus/ti-sysc.c:982:8: error: implicit declaration of functi=
-on =E2=80=98sysc_read_sysconfig=E2=80=99 [-Werror=3Dimplicit-function-decla=
-ration]
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    cc1: some warnings being treated as errors
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sect=
-ion mismatches
-
-Errors:
-    drivers/bus/ti-sysc.c:982:8: error: implicit declaration of function =
-=E2=80=98sysc_read_sysconfig=E2=80=99 [-Werror=3Dimplicit-function-declarat=
-ion]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 FAIL, 1 error, 1 warning, 0 sec=
-tion mismatches
-
-Errors:
-    drivers/bus/ti-sysc.c:982:8: error: implicit declaration of function =
-=E2=80=98sysc_read_sysconfig=E2=80=99 [-Werror=3Dimplicit-function-declarat=
-ion]
-
-Warnings:
-    cc1: some warnings being treated as errors
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-2 warnings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+>
+> > Could you test the patch for the issue you are seeing and provide your
+> > Tested-by tag? Thanks,
+>
+> Either way, testing would of course be very good!  ;-)
+>
+>                                                         Thanx, Paul
