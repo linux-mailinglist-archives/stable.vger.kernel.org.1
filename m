@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2C878AD0A
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:45:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5F4278AC7F
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:41:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231882AbjH1KpT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:45:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34746 "EHLO
+        id S231717AbjH1Kkf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:40:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231937AbjH1KpC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:02 -0400
+        with ESMTP id S231725AbjH1KkI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:40:08 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F01E130
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADE7AB
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:40:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 384286407C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D62C433C7;
-        Mon, 28 Aug 2023 10:43:32 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 0A10B64028
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:40:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CF54C433C7;
+        Mon, 28 Aug 2023 10:40:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219412;
-        bh=77KJxSlOJ4cr+0Q/BZyGsSpqnAHCFertiXFwxKF4u2g=;
+        s=korg; t=1693219204;
+        bh=GDCVmVLba0Xfe20+3m042y9vPBwWx9J3Wqyw8u0kH34=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gGvapCri3WIFIkrY0gyA/j7KUkxkEIjirQSyYgIGIwyq9ThBROLPUm9hRK150qcWi
-         GmNlUgsokc2bXJ86trafIzHFAlKV9sMCmU6Nj3HARNc0rjuANSPkpTmG61ZaA7nE2O
-         69q8A6DYUwtGdVTIzQ+2PsrXer5TAL0Dgcls4PgI=
+        b=1ifSNvYw6XgnYWpoYx66Scy5NQ/6Nvp4EWK3y9a0JB5eO2P6kO8rSYpFfZMNDIpK7
+         4ubDQLnfbkjYYwBxj5n+L3VX5rqKokYB7aTa5hdIEmdtLHYJx3tgUipomGDPosLhUL
+         6yzyweX4FVq4y6ZFsocCNugp49c797ATNCu5bISg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
-        Sunil Goutham <sgoutham@marvell.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 27/89] octeontx2-af: SDP: fix receive link config
+        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
+        Tuo Li <islituo@gmail.com>, Jaroslav Kysela <perex@perex.cz>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 111/158] ALSA: pcm: Fix potential data race at PCM memory allocation helpers
 Date:   Mon, 28 Aug 2023 12:13:28 +0200
-Message-ID: <20230828101151.090993815@linuxfoundation.org>
+Message-ID: <20230828101201.040903876@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,47 +55,117 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hariprasad Kelam <hkelam@marvell.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 05f3d5bc23524bed6f043dfe6b44da687584f9fb ]
+[ Upstream commit bd55842ed998a622ba6611fe59b3358c9f76773d ]
 
-On SDP interfaces, frame oversize and undersize errors are
-observed as driver is not considering packet sizes of all
-subscribers of the link before updating the link config.
+The PCM memory allocation helpers have a sanity check against too many
+buffer allocations.  However, the check is performed without a proper
+lock and the allocation isn't serialized; this allows user to allocate
+more memories than predefined max size.
 
-This patch fixes the same.
+Practically seen, this isn't really a big problem, as it's more or
+less some "soft limit" as a sanity check, and it's not possible to
+allocate unlimitedly.  But it's still better to address this for more
+consistent behavior.
 
-Fixes: 9b7dd87ac071 ("octeontx2-af: Support to modify min/max allowed packet lengths")
-Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
-Signed-off-by: Sunil Goutham <sgoutham@marvell.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Link: https://lore.kernel.org/r/20230817063006.10366-1-hkelam@marvell.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+The patch covers the size check in do_alloc_pages() with the
+card->memory_mutex, and increases the allocated size there for
+preventing the further overflow.  When the actual allocation fails,
+the size is decreased accordingly.
+
+Reported-by: BassCheck <bass@buaa.edu.cn>
+Reported-by: Tuo Li <islituo@gmail.com>
+Link: https://lore.kernel.org/r/CADm8Tek6t0WedK+3Y6rbE5YEt19tML8BUL45N2ji4ZAz1KcN_A@mail.gmail.com
+Reviewed-by: Jaroslav Kysela <perex@perex.cz>
+Cc: <stable@vger.kernel.org>
+Link: https://lore.kernel.org/r/20230703112430.30634-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ sound/core/pcm_memory.c | 44 +++++++++++++++++++++++++++++++++--------
+ 1 file changed, 36 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-index dee2f2086bb5d..f5922d63e33e4 100644
---- a/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-+++ b/drivers/net/ethernet/marvell/octeontx2/af/rvu_nix.c
-@@ -4013,9 +4013,10 @@ int rvu_mbox_handler_nix_set_hw_frs(struct rvu *rvu, struct nix_frs_cfg *req,
- 	if (link < 0)
- 		return NIX_AF_ERR_RX_LINK_INVALID;
+diff --git a/sound/core/pcm_memory.c b/sound/core/pcm_memory.c
+index 97b471d7b32e5..beca39f7c8f35 100644
+--- a/sound/core/pcm_memory.c
++++ b/sound/core/pcm_memory.c
+@@ -31,14 +31,40 @@ static unsigned long max_alloc_per_card = 32UL * 1024UL * 1024UL;
+ module_param(max_alloc_per_card, ulong, 0644);
+ MODULE_PARM_DESC(max_alloc_per_card, "Max total allocation bytes per card.");
  
--	nix_find_link_frs(rvu, req, pcifunc);
- 
- linkcfg:
-+	nix_find_link_frs(rvu, req, pcifunc);
++static void __update_allocated_size(struct snd_card *card, ssize_t bytes)
++{
++	card->total_pcm_alloc_bytes += bytes;
++}
 +
- 	cfg = rvu_read64(rvu, blkaddr, NIX_AF_RX_LINKX_CFG(link));
- 	cfg = (cfg & ~(0xFFFFULL << 16)) | ((u64)req->maxlen << 16);
- 	if (req->update_minlen)
++static void update_allocated_size(struct snd_card *card, ssize_t bytes)
++{
++	mutex_lock(&card->memory_mutex);
++	__update_allocated_size(card, bytes);
++	mutex_unlock(&card->memory_mutex);
++}
++
++static void decrease_allocated_size(struct snd_card *card, size_t bytes)
++{
++	mutex_lock(&card->memory_mutex);
++	WARN_ON(card->total_pcm_alloc_bytes < bytes);
++	__update_allocated_size(card, -(ssize_t)bytes);
++	mutex_unlock(&card->memory_mutex);
++}
++
+ static int do_alloc_pages(struct snd_card *card, int type, struct device *dev,
+ 			  size_t size, struct snd_dma_buffer *dmab)
+ {
+ 	int err;
+ 
++	/* check and reserve the requested size */
++	mutex_lock(&card->memory_mutex);
+ 	if (max_alloc_per_card &&
+-	    card->total_pcm_alloc_bytes + size > max_alloc_per_card)
++	    card->total_pcm_alloc_bytes + size > max_alloc_per_card) {
++		mutex_unlock(&card->memory_mutex);
+ 		return -ENOMEM;
++	}
++	__update_allocated_size(card, size);
++	mutex_unlock(&card->memory_mutex);
+ 
+ 	if (IS_ENABLED(CONFIG_SND_DMA_SGBUF) &&
+ 	    (type == SNDRV_DMA_TYPE_DEV_SG || type == SNDRV_DMA_TYPE_DEV_UC_SG) &&
+@@ -53,9 +79,14 @@ static int do_alloc_pages(struct snd_card *card, int type, struct device *dev,
+ 
+ 	err = snd_dma_alloc_pages(type, dev, size, dmab);
+ 	if (!err) {
+-		mutex_lock(&card->memory_mutex);
+-		card->total_pcm_alloc_bytes += dmab->bytes;
+-		mutex_unlock(&card->memory_mutex);
++		/* the actual allocation size might be bigger than requested,
++		 * and we need to correct the account
++		 */
++		if (dmab->bytes != size)
++			update_allocated_size(card, dmab->bytes - size);
++	} else {
++		/* take back on allocation failure */
++		decrease_allocated_size(card, size);
+ 	}
+ 	return err;
+ }
+@@ -64,10 +95,7 @@ static void do_free_pages(struct snd_card *card, struct snd_dma_buffer *dmab)
+ {
+ 	if (!dmab->area)
+ 		return;
+-	mutex_lock(&card->memory_mutex);
+-	WARN_ON(card->total_pcm_alloc_bytes < dmab->bytes);
+-	card->total_pcm_alloc_bytes -= dmab->bytes;
+-	mutex_unlock(&card->memory_mutex);
++	decrease_allocated_size(card, dmab->bytes);
+ 	snd_dma_free_pages(dmab);
+ 	dmab->area = NULL;
+ }
 -- 
 2.40.1
 
