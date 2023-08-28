@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4403D78AB5D
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0573D78AA38
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:20:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231376AbjH1KaR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:30:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52634 "EHLO
+        id S230333AbjH1KUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46464 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231397AbjH1K3s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:48 -0400
+        with ESMTP id S230519AbjH1KTs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:19:48 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12CF1AB
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A4CCC1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:19:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A5F6263C13
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B85F8C433C8;
-        Mon, 28 Aug 2023 10:29:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2456463841
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:19:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31AF9C433C7;
+        Mon, 28 Aug 2023 10:19:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218585;
-        bh=JbkJefR4ZOLPspLlD47Dsuq4yZrA/8CmfARt6lkxlEk=;
+        s=korg; t=1693217966;
+        bh=gpHcxNeJIrE/fxyR99Mo7FtDGn96C587qYfBXnhFPo4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qpkefqbAol0Dr2bOS6ZKshJvhxZfR0aYyMoPij/MGghDBpz8/NW22JXGh68pbPhIU
-         DsW/daoJnhUcv08BHZCiF7wty8Tq2nJoCTexmrVYwq3HdRW1x+TiMq1A3aWWji8joR
-         7pnDEyiXIGowtrZX4uMpsLLgd/T/oYww7StMCMYQ=
+        b=nOf4ULkVFECPrV4ks/jp/ncan/ZCbqrGRBjlt4/qmqUtgBCaQ60szyfiHu/XyxKxl
+         WCjMsSS2uhjM0+b5XtbwV3CNUt28Zm7bEn3wOERDwpFaA2W/VIv93bjpq+7TsoBpR5
+         Dr8pIIInkd98ekZ+//DZ7nCI1se2kCmm46y8W50U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiaxun Yang <jiaxun.yang@flygoat.com>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        patches@lists.linux.dev, Florian Westphal <fw@strlen.de>,
+        Stefano Brivio <sbrivio@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/122] MIPS: cpu-features: Enable octeon_cache by cpu_type
+Subject: [PATCH 6.4 047/129] netfilter: nf_tables: fix out of memory error handling
 Date:   Mon, 28 Aug 2023 12:12:06 +0200
-Message-ID: <20230828101156.842993300@linuxfoundation.org>
+Message-ID: <20230828101158.941656303@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,58 +55,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiaxun Yang <jiaxun.yang@flygoat.com>
+From: Florian Westphal <fw@strlen.de>
 
-[ Upstream commit f641519409a73403ee6612b8648b95a688ab85c2 ]
+[ Upstream commit 5e1be4cdc98c989d5387ce94ff15b5ad06a5b681 ]
 
-cpu_has_octeon_cache was tied to 0 for generic cpu-features,
-whith this generic kernel built for octeon CPU won't boot.
+Several instances of pipapo_resize() don't propagate allocation failures,
+this causes a crash when fault injection is enabled for gfp_kernel slabs.
 
-Just enable this flag by cpu_type. It won't hurt orther platforms
-because compiler will eliminate the code path on other processors.
-
-Signed-off-by: Jiaxun Yang <jiaxun.yang@flygoat.com>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Stable-dep-of: 5487a7b60695 ("MIPS: cpu-features: Use boot_cpu_type for CPU type based features")
+Fixes: 3c4287f62044 ("nf_tables: Add set type for arbitrary concatenation of ranges")
+Signed-off-by: Florian Westphal <fw@strlen.de>
+Reviewed-by: Stefano Brivio <sbrivio@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/include/asm/cpu-features.h | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ net/netfilter/nft_set_pipapo.c | 13 ++++++++++---
+ 1 file changed, 10 insertions(+), 3 deletions(-)
 
-diff --git a/arch/mips/include/asm/cpu-features.h b/arch/mips/include/asm/cpu-features.h
-index c0983130a44c9..53c8551ec89bc 100644
---- a/arch/mips/include/asm/cpu-features.h
-+++ b/arch/mips/include/asm/cpu-features.h
-@@ -121,7 +121,24 @@
- #define cpu_has_4k_cache	__isa_ge_or_opt(1, MIPS_CPU_4K_CACHE)
- #endif
- #ifndef cpu_has_octeon_cache
--#define cpu_has_octeon_cache	0
-+#define cpu_has_octeon_cache						\
-+({									\
-+	int __res;							\
-+									\
-+	switch (current_cpu_type()) {					\
-+	case CPU_CAVIUM_OCTEON:						\
-+	case CPU_CAVIUM_OCTEON_PLUS:					\
-+	case CPU_CAVIUM_OCTEON2:					\
-+	case CPU_CAVIUM_OCTEON3:					\
-+		__res = 1;						\
-+		break;							\
-+									\
-+	default:							\
-+		__res = 0;						\
-+	}								\
-+									\
-+	__res;								\
-+})
- #endif
- /* Don't override `cpu_has_fpu' to 1 or the "nofpu" option won't work.  */
- #ifndef cpu_has_fpu
+diff --git a/net/netfilter/nft_set_pipapo.c b/net/netfilter/nft_set_pipapo.c
+index 352180b123fc7..58bd514260b90 100644
+--- a/net/netfilter/nft_set_pipapo.c
++++ b/net/netfilter/nft_set_pipapo.c
+@@ -902,12 +902,14 @@ static void pipapo_lt_bits_adjust(struct nft_pipapo_field *f)
+ static int pipapo_insert(struct nft_pipapo_field *f, const uint8_t *k,
+ 			 int mask_bits)
+ {
+-	int rule = f->rules++, group, ret, bit_offset = 0;
++	int rule = f->rules, group, ret, bit_offset = 0;
+ 
+-	ret = pipapo_resize(f, f->rules - 1, f->rules);
++	ret = pipapo_resize(f, f->rules, f->rules + 1);
+ 	if (ret)
+ 		return ret;
+ 
++	f->rules++;
++
+ 	for (group = 0; group < f->groups; group++) {
+ 		int i, v;
+ 		u8 mask;
+@@ -1052,7 +1054,9 @@ static int pipapo_expand(struct nft_pipapo_field *f,
+ 			step++;
+ 			if (step >= len) {
+ 				if (!masks) {
+-					pipapo_insert(f, base, 0);
++					err = pipapo_insert(f, base, 0);
++					if (err < 0)
++						return err;
+ 					masks = 1;
+ 				}
+ 				goto out;
+@@ -1235,6 +1239,9 @@ static int nft_pipapo_insert(const struct net *net, const struct nft_set *set,
+ 		else
+ 			ret = pipapo_expand(f, start, end, f->groups * f->bb);
+ 
++		if (ret < 0)
++			return ret;
++
+ 		if (f->bsize > bsize_max)
+ 			bsize_max = f->bsize;
+ 
 -- 
 2.40.1
 
