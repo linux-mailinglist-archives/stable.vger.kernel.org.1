@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4833778ACD2
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 389B078ABEA
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229651AbjH1Kmn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:42:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40694 "EHLO
+        id S230022AbjH1Kfd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:35:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231945AbjH1KmV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:21 -0400
+        with ESMTP id S231244AbjH1KfC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:02 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FD85195
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:18 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D165DA6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:58 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9DE7640D8
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED10EC433C8;
-        Mon, 28 Aug 2023 10:42:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 65E4663E31
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:58 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72E8CC433C9;
+        Mon, 28 Aug 2023 10:34:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219337;
-        bh=FHre1k4pz3DXKkesddZrHpQzIo6+Gr6KEwUjnQebgx8=;
+        s=korg; t=1693218897;
+        bh=tjzUFQMql9rsgz5aQ0LNvo1gRYhw8HXgEkoyp4W5X9I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NbEKCfEvUPOy7cRYNpR4m2mgptK2DlMEAUb9Yk8bM5WWCvMzKs4mBak0uaZZLWQ3F
-         joN48QKpwM5hBuO3ygD0dsFI3NgKbIPtCWFdYQCuNdFetDvz23CyECOKt8DpLvKK+9
-         2/OzyNxSjn4if5r6+wX7N8wS775fMl3GKzr4QFlc=
+        b=JlVwGojwCgUk+x6Oy8Ds5SYGadgW+zjKR67jU0reCbL1r0U5n+Bu1fBKkij6GoYq9
+         tFKri3CBakiN7cXOVmmNcAyAKYwYO0p4DrI3pwSb2Derjzvfie8UpLNdvFEEl60nW+
+         +5FPtUF0wQqGFiZjejGRNCOQLAwKTAi2N4O1jXR0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Ellerman <mpe@ellerman.id.au>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 5.4 130/158] ibmveth: Use dcbf rather than dcbfl
-Date:   Mon, 28 Aug 2023 12:13:47 +0200
-Message-ID: <20230828101201.828143161@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 113/122] clk: Fix undefined reference to `clk_rate_exclusive_{get,put}
+Date:   Mon, 28 Aug 2023 12:13:48 +0200
+Message-ID: <20230828101200.183148904@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,38 +56,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit bfedba3b2c7793ce127680bc8f70711e05ec7a17 upstream.
+[ Upstream commit 2746f13f6f1df7999001d6595b16f789ecc28ad1 ]
 
-When building for power4, newer binutils don't recognise the "dcbfl"
-extended mnemonic.
+The COMMON_CLK config is not enabled in some of the architectures.
+This causes below build issues:
 
-dcbfl RA, RB is equivalent to dcbf RA, RB, 1.
+pwm-rz-mtu3.c:(.text+0x114):
+undefined reference to `clk_rate_exclusive_put'
+pwm-rz-mtu3.c:(.text+0x32c):
+undefined reference to `clk_rate_exclusive_get'
 
-Switch to "dcbf" to avoid the build error.
+Fix these issues by moving clk_rate_exclusive_{get,put} inside COMMON_CLK
+code block, as clk.c is enabled by COMMON_CLK.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 55e9b8b7b806 ("clk: add clk_rate_exclusive api")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202307251752.vLfmmhYm-lkp@intel.com/
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20230725175140.361479-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/ibm/ibmveth.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/linux/clk.h | 80 ++++++++++++++++++++++-----------------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
 
---- a/drivers/net/ethernet/ibm/ibmveth.c
-+++ b/drivers/net/ethernet/ibm/ibmveth.c
-@@ -196,7 +196,7 @@ static inline void ibmveth_flush_buffer(
- 	unsigned long offset;
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 1ef0133242374..06f1b292f8a00 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -183,6 +183,39 @@ int clk_get_scaled_duty_cycle(struct clk *clk, unsigned int scale);
+  */
+ bool clk_is_match(const struct clk *p, const struct clk *q);
  
- 	for (offset = 0; offset < length; offset += SMP_CACHE_BYTES)
--		asm("dcbfl %0,%1" :: "b" (addr), "r" (offset));
-+		asm("dcbf %0,%1,1" :: "b" (addr), "r" (offset));
++/**
++ * clk_rate_exclusive_get - get exclusivity over the rate control of a
++ *                          producer
++ * @clk: clock source
++ *
++ * This function allows drivers to get exclusive control over the rate of a
++ * provider. It prevents any other consumer to execute, even indirectly,
++ * opereation which could alter the rate of the provider or cause glitches
++ *
++ * If exlusivity is claimed more than once on clock, even by the same driver,
++ * the rate effectively gets locked as exclusivity can't be preempted.
++ *
++ * Must not be called from within atomic context.
++ *
++ * Returns success (0) or negative errno.
++ */
++int clk_rate_exclusive_get(struct clk *clk);
++
++/**
++ * clk_rate_exclusive_put - release exclusivity over the rate control of a
++ *                          producer
++ * @clk: clock source
++ *
++ * This function allows drivers to release the exclusivity it previously got
++ * from clk_rate_exclusive_get()
++ *
++ * The caller must balance the number of clk_rate_exclusive_get() and
++ * clk_rate_exclusive_put() calls.
++ *
++ * Must not be called from within atomic context.
++ */
++void clk_rate_exclusive_put(struct clk *clk);
++
+ #else
+ 
+ static inline int clk_notifier_register(struct clk *clk,
+@@ -236,6 +269,13 @@ static inline bool clk_is_match(const struct clk *p, const struct clk *q)
+ 	return p == q;
  }
  
- /* replenish the buffers for a pool.  note that we don't need to
++static inline int clk_rate_exclusive_get(struct clk *clk)
++{
++	return 0;
++}
++
++static inline void clk_rate_exclusive_put(struct clk *clk) {}
++
+ #endif
+ 
+ #ifdef CONFIG_HAVE_CLK_PREPARE
+@@ -583,38 +623,6 @@ struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id);
+  */
+ struct clk *devm_get_clk_from_child(struct device *dev,
+ 				    struct device_node *np, const char *con_id);
+-/**
+- * clk_rate_exclusive_get - get exclusivity over the rate control of a
+- *                          producer
+- * @clk: clock source
+- *
+- * This function allows drivers to get exclusive control over the rate of a
+- * provider. It prevents any other consumer to execute, even indirectly,
+- * opereation which could alter the rate of the provider or cause glitches
+- *
+- * If exlusivity is claimed more than once on clock, even by the same driver,
+- * the rate effectively gets locked as exclusivity can't be preempted.
+- *
+- * Must not be called from within atomic context.
+- *
+- * Returns success (0) or negative errno.
+- */
+-int clk_rate_exclusive_get(struct clk *clk);
+-
+-/**
+- * clk_rate_exclusive_put - release exclusivity over the rate control of a
+- *                          producer
+- * @clk: clock source
+- *
+- * This function allows drivers to release the exclusivity it previously got
+- * from clk_rate_exclusive_get()
+- *
+- * The caller must balance the number of clk_rate_exclusive_get() and
+- * clk_rate_exclusive_put() calls.
+- *
+- * Must not be called from within atomic context.
+- */
+-void clk_rate_exclusive_put(struct clk *clk);
+ 
+ /**
+  * clk_enable - inform the system when the clock source should be running.
+@@ -974,14 +982,6 @@ static inline void clk_bulk_put_all(int num_clks, struct clk_bulk_data *clks) {}
+ 
+ static inline void devm_clk_put(struct device *dev, struct clk *clk) {}
+ 
+-
+-static inline int clk_rate_exclusive_get(struct clk *clk)
+-{
+-	return 0;
+-}
+-
+-static inline void clk_rate_exclusive_put(struct clk *clk) {}
+-
+ static inline int clk_enable(struct clk *clk)
+ {
+ 	return 0;
+-- 
+2.40.1
+
 
 
