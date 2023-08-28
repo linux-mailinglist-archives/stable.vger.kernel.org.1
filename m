@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2415F78AABB
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B822A78AA28
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231206AbjH1KY2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:24:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32928 "EHLO
+        id S230465AbjH1KTO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:19:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47684 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231202AbjH1KYA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:00 -0400
+        with ESMTP id S231158AbjH1KSv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:51 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04A95119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:23:57 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF48F118
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:18:42 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5F46263999
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:23:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71984C433C7;
-        Mon, 28 Aug 2023 10:23:56 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0BFC637AC
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:18:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B431CC433CA;
+        Mon, 28 Aug 2023 10:18:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218236;
-        bh=HBfXq3ZOK2Grq1OG8ggHQK2tai5PZsNbrpJz8G6A+fY=;
+        s=korg; t=1693217922;
+        bh=nnd/K7ljkyDZfPWW4nXrhA6eaG2um7C58QL9RFZzWZo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yBCO7HrByN0sk2kMiifZCMJJGrKOMI8Isr0UFsGtqmyu7lUJfs9lONxQZVgSbpxmK
-         UluKNQIVO+gvyhdeW167oLdg3N7ePdFIQ/+TZTGd7by6DM9IpzMRp+Taun6H+5CtUd
-         aSH7xR+DxGBY9CnueICRDogH0KQ9A/gvw2Eo7xxw=
+        b=vVwR4KZFs3FS1054QVnzC5cUa+cp3d7XIZ57XsW2WFs1Xu6zmO/NcES0OrCczYEM8
+         PupQxBDKk7PExa+feRryf2ikLAFYSsfDENo/k/IgJmGIWieSXr5cf64SYKKk4b91jm
+         2AMDJWq2y/Iyy/or0QKRqOfGM29hIW7LI6bXNz3A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, BassCheck <bass@buaa.edu.cn>,
-        Tuo Li <islituo@gmail.com>,
-        Andreas Gruenbacher <agruenba@redhat.com>,
+        patches@lists.linux.dev,
+        syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com,
+        Jakub Kicinski <kuba@kernel.org>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 015/129] gfs2: Fix possible data races in gfs2_show_options()
+Subject: [PATCH 6.4 030/129] net: validate veth and vxcan peer ifindexes
 Date:   Mon, 28 Aug 2023 12:11:49 +0200
-Message-ID: <20230828101153.627410177@linuxfoundation.org>
+Message-ID: <20230828101158.383443740@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,88 +58,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tuo Li <islituo@gmail.com>
+From: Jakub Kicinski <kuba@kernel.org>
 
-[ Upstream commit 6fa0a72cbbe45db4ed967a51f9e6f4e3afe61d20 ]
+[ Upstream commit f534f6581ec084fe94d6759f7672bd009794b07e ]
 
-Some fields such as gt_logd_secs of the struct gfs2_tune are accessed
-without holding the lock gt_spin in gfs2_show_options():
+veth and vxcan need to make sure the ifindexes of the peer
+are not negative, core does not validate this.
 
-  val = sdp->sd_tune.gt_logd_secs;
-  if (val != 30)
-    seq_printf(s, ",commit=%d", val);
+Using iproute2 with user-space-level checking removed:
 
-And thus can cause data races when gfs2_show_options() and other functions
-such as gfs2_reconfigure() are concurrently executed:
+Before:
 
-  spin_lock(&gt->gt_spin);
-  gt->gt_logd_secs = newargs->ar_commit;
+  # ./ip link add index 10 type veth peer index -1
+  # ip link show
+  1: lo: <LOOPBACK,UP,LOWER_UP> mtu 65536 qdisc noqueue state UNKNOWN mode DEFAULT group default qlen 1000
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+  2: enp1s0: <BROADCAST,MULTICAST,UP,LOWER_UP> mtu 1500 qdisc fq_codel state UP mode DEFAULT group default qlen 1000
+    link/ether 52:54:00:74:b2:03 brd ff:ff:ff:ff:ff:ff
+  10: veth1@veth0: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether 8a:90:ff:57:6d:5d brd ff:ff:ff:ff:ff:ff
+  -1: veth0@veth1: <BROADCAST,MULTICAST,M-DOWN> mtu 1500 qdisc noop state DOWN mode DEFAULT group default qlen 1000
+    link/ether ae:ed:18:e6:fa:7f brd ff:ff:ff:ff:ff:ff
 
-To fix these possible data races, the lock sdp->sd_tune.gt_spin is
-acquired before accessing the fields of gfs2_tune and released after these
-accesses.
+Now:
 
-Further changes by Andreas:
+  $ ./ip link add index 10 type veth peer index -1
+  Error: ifindex can't be negative.
 
-- Don't hold the spin lock over the seq_printf operations.
+This problem surfaced in net-next because an explicit WARN()
+was added, the root cause is older.
 
-Reported-by: BassCheck <bass@buaa.edu.cn>
-Signed-off-by: Tuo Li <islituo@gmail.com>
-Signed-off-by: Andreas Gruenbacher <agruenba@redhat.com>
+Fixes: e6f8f1a739b6 ("veth: Allow to create peer link with given ifindex")
+Fixes: a8f820a380a2 ("can: add Virtual CAN Tunnel driver (vxcan)")
+Reported-by: syzbot+5ba06978f34abb058571@syzkaller.appspotmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/gfs2/super.c | 26 +++++++++++++++-----------
- 1 file changed, 15 insertions(+), 11 deletions(-)
+ drivers/net/can/vxcan.c |  7 +------
+ drivers/net/veth.c      |  5 +----
+ include/net/rtnetlink.h |  4 ++--
+ net/core/rtnetlink.c    | 22 ++++++++++++++++++----
+ 4 files changed, 22 insertions(+), 16 deletions(-)
 
-diff --git a/fs/gfs2/super.c b/fs/gfs2/super.c
-index bb0eaa4638e3c..29157f7d9663d 100644
---- a/fs/gfs2/super.c
-+++ b/fs/gfs2/super.c
-@@ -1374,7 +1374,14 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
- {
- 	struct gfs2_sbd *sdp = root->d_sb->s_fs_info;
- 	struct gfs2_args *args = &sdp->sd_args;
--	int val;
-+	unsigned int logd_secs, statfs_slow, statfs_quantum, quota_quantum;
-+
-+	spin_lock(&sdp->sd_tune.gt_spin);
-+	logd_secs = sdp->sd_tune.gt_logd_secs;
-+	quota_quantum = sdp->sd_tune.gt_quota_quantum;
-+	statfs_quantum = sdp->sd_tune.gt_statfs_quantum;
-+	statfs_slow = sdp->sd_tune.gt_statfs_slow;
-+	spin_unlock(&sdp->sd_tune.gt_spin);
+diff --git a/drivers/net/can/vxcan.c b/drivers/net/can/vxcan.c
+index 4068d962203d6..98c669ad51414 100644
+--- a/drivers/net/can/vxcan.c
++++ b/drivers/net/can/vxcan.c
+@@ -192,12 +192,7 @@ static int vxcan_newlink(struct net *net, struct net_device *dev,
  
- 	if (is_ancestor(root, sdp->sd_master_dir))
- 		seq_puts(s, ",meta");
-@@ -1429,17 +1436,14 @@ static int gfs2_show_options(struct seq_file *s, struct dentry *root)
- 	}
- 	if (args->ar_discard)
- 		seq_puts(s, ",discard");
--	val = sdp->sd_tune.gt_logd_secs;
--	if (val != 30)
--		seq_printf(s, ",commit=%d", val);
--	val = sdp->sd_tune.gt_statfs_quantum;
--	if (val != 30)
--		seq_printf(s, ",statfs_quantum=%d", val);
--	else if (sdp->sd_tune.gt_statfs_slow)
-+	if (logd_secs != 30)
-+		seq_printf(s, ",commit=%d", logd_secs);
-+	if (statfs_quantum != 30)
-+		seq_printf(s, ",statfs_quantum=%d", statfs_quantum);
-+	else if (statfs_slow)
- 		seq_puts(s, ",statfs_quantum=0");
--	val = sdp->sd_tune.gt_quota_quantum;
--	if (val != 60)
--		seq_printf(s, ",quota_quantum=%d", val);
-+	if (quota_quantum != 60)
-+		seq_printf(s, ",quota_quantum=%d", quota_quantum);
- 	if (args->ar_statfs_percent)
- 		seq_printf(s, ",statfs_percent=%d", args->ar_statfs_percent);
- 	if (args->ar_errors != GFS2_ERRORS_DEFAULT) {
+ 		nla_peer = data[VXCAN_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) +
+-					  sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) -
+-					  sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/drivers/net/veth.c b/drivers/net/veth.c
+index 76019949e3fe9..c977b704f1342 100644
+--- a/drivers/net/veth.c
++++ b/drivers/net/veth.c
+@@ -1851,10 +1851,7 @@ static int veth_newlink(struct net *src_net, struct net_device *dev,
+ 
+ 		nla_peer = data[VETH_INFO_PEER];
+ 		ifmp = nla_data(nla_peer);
+-		err = rtnl_nla_parse_ifla(peer_tb,
+-					  nla_data(nla_peer) + sizeof(struct ifinfomsg),
+-					  nla_len(nla_peer) - sizeof(struct ifinfomsg),
+-					  NULL);
++		err = rtnl_nla_parse_ifinfomsg(peer_tb, nla_peer, extack);
+ 		if (err < 0)
+ 			return err;
+ 
+diff --git a/include/net/rtnetlink.h b/include/net/rtnetlink.h
+index d9076a7a430c2..6506221c5fe31 100644
+--- a/include/net/rtnetlink.h
++++ b/include/net/rtnetlink.h
+@@ -190,8 +190,8 @@ int rtnl_delete_link(struct net_device *dev, u32 portid, const struct nlmsghdr *
+ int rtnl_configure_link(struct net_device *dev, const struct ifinfomsg *ifm,
+ 			u32 portid, const struct nlmsghdr *nlh);
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr);
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr);
+ struct net *rtnl_get_net_ns_capable(struct sock *sk, int netnsid);
+ 
+ #define MODULE_ALIAS_RTNL_LINK(kind) MODULE_ALIAS("rtnl-link-" kind)
+diff --git a/net/core/rtnetlink.c b/net/core/rtnetlink.c
+index aa1743b2b770b..baa323ca37c42 100644
+--- a/net/core/rtnetlink.c
++++ b/net/core/rtnetlink.c
+@@ -2268,13 +2268,27 @@ static int rtnl_dump_ifinfo(struct sk_buff *skb, struct netlink_callback *cb)
+ 	return err;
+ }
+ 
+-int rtnl_nla_parse_ifla(struct nlattr **tb, const struct nlattr *head, int len,
+-			struct netlink_ext_ack *exterr)
++int rtnl_nla_parse_ifinfomsg(struct nlattr **tb, const struct nlattr *nla_peer,
++			     struct netlink_ext_ack *exterr)
+ {
+-	return nla_parse_deprecated(tb, IFLA_MAX, head, len, ifla_policy,
++	const struct ifinfomsg *ifmp;
++	const struct nlattr *attrs;
++	size_t len;
++
++	ifmp = nla_data(nla_peer);
++	attrs = nla_data(nla_peer) + sizeof(struct ifinfomsg);
++	len = nla_len(nla_peer) - sizeof(struct ifinfomsg);
++
++	if (ifmp->ifi_index < 0) {
++		NL_SET_ERR_MSG_ATTR(exterr, nla_peer,
++				    "ifindex can't be negative");
++		return -EINVAL;
++	}
++
++	return nla_parse_deprecated(tb, IFLA_MAX, attrs, len, ifla_policy,
+ 				    exterr);
+ }
+-EXPORT_SYMBOL(rtnl_nla_parse_ifla);
++EXPORT_SYMBOL(rtnl_nla_parse_ifinfomsg);
+ 
+ struct net *rtnl_link_get_net(struct net *src_net, struct nlattr *tb[])
+ {
 -- 
 2.40.1
 
