@@ -2,52 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4816278AD4C
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:47:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F02C78ADD0
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231994AbjH1KrE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:47:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46510 "EHLO
+        id S232108AbjH1Kui (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:50:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35890 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232038AbjH1Kqc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADCA2CCE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:46:16 -0700 (PDT)
+        with ESMTP id S232167AbjH1KuQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:50:16 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A204ECE1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8DE6A60F9E
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:46:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0CE8C433C9;
-        Mon, 28 Aug 2023 10:46:15 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 831ED6443B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:42 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9690AC433C7;
+        Mon, 28 Aug 2023 10:49:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219576;
-        bh=/A989Z5uKDExKyc1HaleGpxUQUaqHaulrh9UU5Xrc7U=;
+        s=korg; t=1693219782;
+        bh=cDN53F2oW7UJe5skUNVSzfOj2YZNl8YrE/8LcOrR/uM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LgtW8C45BoHBAW2E3oMOZji18Izvtn0XwAJp5opm7rF14X8zPX9bYkmN9G70OI6bZ
-         ne75X7hY2kgJsG9xkzjnXnc+OfLdmyWgtTu7Nv0A7Kt3oAiO4GL0/UPPUfSoiWaPx+
-         1kGATOSDKtUgpnTVg9XjrLBxoWmsXWPtOHq08/5c=
+        b=CtYIYxyJJqcfFcFTeiVs4lmDqeoGanyTVkDcMuXePDn4VzS4hPDDadibQiEgbO9fv
+         MkArrJJ/0c9oBli9SjVtjEEtGlp6ic1BB9foYiwCqECdicX4f4R2VTuFYXMBy/5P0g
+         8kaWqTDYzy+ONVuRGvqMsAdoICnlUI0xnBhJOEw4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 5.15 57/89] batman-adv: Do not get eth header before batadv_check_management_packet
+        patches@lists.linux.dev, susan.zheng@veritas.com,
+        Hangbin Liu <liuhangbin@gmail.com>,
+        Jay Vosburgh <jay.vosburgh@canonical.com>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 41/84] bonding: fix macvlan over alb bond support
 Date:   Mon, 28 Aug 2023 12:13:58 +0200
-Message-ID: <20230828101152.085366253@linuxfoundation.org>
+Message-ID: <20230828101150.664987046@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,126 +57,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Hangbin Liu <liuhangbin@gmail.com>
 
-commit eac27a41ab641de074655d2932fc7f8cdb446881 upstream.
+[ Upstream commit e74216b8def3803e98ae536de78733e9d7f3b109 ]
 
-If received skb in batadv_v_elp_packet_recv or batadv_v_ogm_packet_recv
-is either cloned or non linearized then its data buffer will be
-reallocated by batadv_check_management_packet when skb_cow or
-skb_linearize get called. Thus geting ethernet header address inside
-skb data buffer before batadv_check_management_packet had any chance to
-reallocate it could lead to the following kernel panic:
+The commit 14af9963ba1e ("bonding: Support macvlans on top of tlb/rlb mode
+bonds") aims to enable the use of macvlans on top of rlb bond mode. However,
+the current rlb bond mode only handles ARP packets to update remote neighbor
+entries. This causes an issue when a macvlan is on top of the bond, and
+remote devices send packets to the macvlan using the bond's MAC address
+as the destination. After delivering the packets to the macvlan, the macvlan
+will rejects them as the MAC address is incorrect. Consequently, this commit
+makes macvlan over bond non-functional.
 
-  Unable to handle kernel paging request at virtual address ffffff8020ab069a
-  Mem abort info:
-    ESR = 0x96000007
-    EC = 0x25: DABT (current EL), IL = 32 bits
-    SET = 0, FnV = 0
-    EA = 0, S1PTW = 0
-    FSC = 0x07: level 3 translation fault
-  Data abort info:
-    ISV = 0, ISS = 0x00000007
-    CM = 0, WnR = 0
-  swapper pgtable: 4k pages, 39-bit VAs, pgdp=0000000040f45000
-  [ffffff8020ab069a] pgd=180000007fffa003, p4d=180000007fffa003, pud=180000007fffa003, pmd=180000007fefe003, pte=0068000020ab0706
-  Internal error: Oops: 96000007 [#1] SMP
-  Modules linked in: ahci_mvebu libahci_platform libahci dvb_usb_af9035 dvb_usb_dib0700 dib0070 dib7000m dibx000_common ath11k_pci ath10k_pci ath10k_core mwl8k_new nf_nat_sip nf_conntrack_sip xhci_plat_hcd xhci_hcd nf_nat_pptp nf_conntrack_pptp at24 sbsa_gwdt
-  CPU: 1 PID: 16 Comm: ksoftirqd/1 Not tainted 5.15.42-00066-g3242268d425c-dirty #550
-  Hardware name: A8k (DT)
-  pstate: 60000005 (nZCv daif -PAN -UAO -TCO -DIT -SSBS BTYPE=--)
-  pc : batadv_is_my_mac+0x60/0xc0
-  lr : batadv_v_ogm_packet_recv+0x98/0x5d0
-  sp : ffffff8000183820
-  x29: ffffff8000183820 x28: 0000000000000001 x27: ffffff8014f9af00
-  x26: 0000000000000000 x25: 0000000000000543 x24: 0000000000000003
-  x23: ffffff8020ab0580 x22: 0000000000000110 x21: ffffff80168ae880
-  x20: 0000000000000000 x19: ffffff800b561000 x18: 0000000000000000
-  x17: 0000000000000000 x16: 0000000000000000 x15: 00dc098924ae0032
-  x14: 0f0405433e0054b0 x13: ffffffff00000080 x12: 0000004000000001
-  x11: 0000000000000000 x10: 0000000000000000 x9 : 0000000000000000
-  x8 : 0000000000000000 x7 : ffffffc076dae000 x6 : ffffff8000183700
-  x5 : ffffffc00955e698 x4 : ffffff80168ae000 x3 : ffffff80059cf000
-  x2 : ffffff800b561000 x1 : ffffff8020ab0696 x0 : ffffff80168ae880
-  Call trace:
-   batadv_is_my_mac+0x60/0xc0
-   batadv_v_ogm_packet_recv+0x98/0x5d0
-   batadv_batman_skb_recv+0x1b8/0x244
-   __netif_receive_skb_core.isra.0+0x440/0xc74
-   __netif_receive_skb_one_core+0x14/0x20
-   netif_receive_skb+0x68/0x140
-   br_pass_frame_up+0x70/0x80
-   br_handle_frame_finish+0x108/0x284
-   br_handle_frame+0x190/0x250
-   __netif_receive_skb_core.isra.0+0x240/0xc74
-   __netif_receive_skb_list_core+0x6c/0x90
-   netif_receive_skb_list_internal+0x1f4/0x310
-   napi_complete_done+0x64/0x1d0
-   gro_cell_poll+0x7c/0xa0
-   __napi_poll+0x34/0x174
-   net_rx_action+0xf8/0x2a0
-   _stext+0x12c/0x2ac
-   run_ksoftirqd+0x4c/0x7c
-   smpboot_thread_fn+0x120/0x210
-   kthread+0x140/0x150
-   ret_from_fork+0x10/0x20
-  Code: f9403844 eb03009f 54fffee1 f94
+To address this problem, one potential solution is to check for the presence
+of a macvlan port on the bond device using netif_is_macvlan_port(bond->dev)
+and return NULL in the rlb_arp_xmit() function. However, this approach
+doesn't fully resolve the situation when a VLAN exists between the bond and
+macvlan.
 
-Thus ethernet header address should only be fetched after
-batadv_check_management_packet has been called.
+So let's just do a partial revert for commit 14af9963ba1e in rlb_arp_xmit().
+As the comment said, Don't modify or load balance ARPs that do not originate
+locally.
 
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Cc: stable@vger.kernel.org
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 14af9963ba1e ("bonding: Support macvlans on top of tlb/rlb mode bonds")
+Reported-by: susan.zheng@veritas.com
+Closes: https://bugzilla.redhat.com/show_bug.cgi?id=2117816
+Signed-off-by: Hangbin Liu <liuhangbin@gmail.com>
+Acked-by: Jay Vosburgh <jay.vosburgh@canonical.com>
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_v_elp.c |    3 ++-
- net/batman-adv/bat_v_ogm.c |    3 ++-
- 2 files changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/bonding/bond_alb.c |  6 +++---
+ include/net/bonding.h          | 11 +----------
+ 2 files changed, 4 insertions(+), 13 deletions(-)
 
---- a/net/batman-adv/bat_v_elp.c
-+++ b/net/batman-adv/bat_v_elp.c
-@@ -507,7 +507,7 @@ int batadv_v_elp_packet_recv(struct sk_b
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
- 	struct batadv_elp_packet *elp_packet;
- 	struct batadv_hard_iface *primary_if;
--	struct ethhdr *ethhdr = (struct ethhdr *)skb_mac_header(skb);
-+	struct ethhdr *ethhdr;
- 	bool res;
- 	int ret = NET_RX_DROP;
+diff --git a/drivers/net/bonding/bond_alb.c b/drivers/net/bonding/bond_alb.c
+index 152f76f869278..64ba465741a78 100644
+--- a/drivers/net/bonding/bond_alb.c
++++ b/drivers/net/bonding/bond_alb.c
+@@ -656,10 +656,10 @@ static struct slave *rlb_arp_xmit(struct sk_buff *skb, struct bonding *bond)
+ 		return NULL;
+ 	arp = (struct arp_pkt *)skb_network_header(skb);
  
-@@ -515,6 +515,7 @@ int batadv_v_elp_packet_recv(struct sk_b
- 	if (!res)
- 		goto free_skb;
+-	/* Don't modify or load balance ARPs that do not originate locally
+-	 * (e.g.,arrive via a bridge).
++	/* Don't modify or load balance ARPs that do not originate
++	 * from the bond itself or a VLAN directly above the bond.
+ 	 */
+-	if (!bond_slave_has_mac_rx(bond, arp->mac_src))
++	if (!bond_slave_has_mac_rcu(bond, arp->mac_src))
+ 		return NULL;
  
-+	ethhdr = eth_hdr(skb);
- 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
- 		goto free_skb;
+ 	if (arp->op_code == htons(ARPOP_REPLY)) {
+diff --git a/include/net/bonding.h b/include/net/bonding.h
+index 34b6f7241a41e..82d128c0fe6df 100644
+--- a/include/net/bonding.h
++++ b/include/net/bonding.h
+@@ -698,23 +698,14 @@ static inline struct slave *bond_slave_has_mac(struct bonding *bond,
+ }
  
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -986,7 +986,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
+ /* Caller must hold rcu_read_lock() for read */
+-static inline bool bond_slave_has_mac_rx(struct bonding *bond, const u8 *mac)
++static inline bool bond_slave_has_mac_rcu(struct bonding *bond, const u8 *mac)
  {
- 	struct batadv_priv *bat_priv = netdev_priv(if_incoming->soft_iface);
- 	struct batadv_ogm2_packet *ogm_packet;
--	struct ethhdr *ethhdr = eth_hdr(skb);
-+	struct ethhdr *ethhdr;
- 	int ogm_offset;
- 	u8 *packet_pos;
- 	int ret = NET_RX_DROP;
-@@ -1000,6 +1000,7 @@ int batadv_v_ogm_packet_recv(struct sk_b
- 	if (!batadv_check_management_packet(skb, if_incoming, BATADV_OGM2_HLEN))
- 		goto free_skb;
+ 	struct list_head *iter;
+ 	struct slave *tmp;
+-	struct netdev_hw_addr *ha;
  
-+	ethhdr = eth_hdr(skb);
- 	if (batadv_is_my_mac(bat_priv, ethhdr->h_source))
- 		goto free_skb;
+ 	bond_for_each_slave_rcu(bond, tmp, iter)
+ 		if (ether_addr_equal_64bits(mac, tmp->dev->dev_addr))
+ 			return true;
+-
+-	if (netdev_uc_empty(bond->dev))
+-		return false;
+-
+-	netdev_for_each_uc_addr(ha, bond->dev)
+-		if (ether_addr_equal_64bits(mac, ha->addr))
+-			return true;
+-
+ 	return false;
+ }
  
+-- 
+2.40.1
+
 
 
