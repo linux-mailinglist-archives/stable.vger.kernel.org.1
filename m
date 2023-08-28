@@ -2,54 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D20A578ABED
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2A75678ACD1
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231244AbjH1Kfd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:35:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38252 "EHLO
+        id S231827AbjH1Kmt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:42:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231548AbjH1KfG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:06 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8FA99119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:01 -0700 (PDT)
+        with ESMTP id S231994AbjH1Km2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:42:28 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDB37130
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:23 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2540563E49
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FF17C433C8;
-        Mon, 28 Aug 2023 10:35:00 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6BF3761943
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7DB2BC433C7;
+        Mon, 28 Aug 2023 10:42:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218900;
-        bh=FGEh7L7Cu1UtvwrHqggls9gTbL47jO3cxX28GT3qZls=;
+        s=korg; t=1693219342;
+        bh=daLk/S6KbDcxxnTt46pDOzm9emkqDMgkd3KIZqpzuuo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rBCuCg+foFZo6HlicUSFJNn6qmXT5kYhr/z/OGg1+mvNNzwMICZgD6+4oGhpfztW4
-         gRpahrkr1+s8ztxdWwjez44s/ue8D13rheEUE0yMU8uiSN+XajtIIg7JoDpEeXBrUv
-         DEE0vaI80127d+HbG1DZFY8mQoMXF0Dmri3H/wWg=
+        b=K5skHQPxlURZvuP7VqAQW0W8vcYn4S8G2yuFZNkbg8pzxKuz6omUIrRV8Px3tqBck
+         5Qb0BUNIVGGW8vEzygaFTpSD0yZ+d3M/5EaYrk/GYDn4LeoNd3hysZJWxcOrCCBvvq
+         wz3/YqSGgpMHOxfjI0wNm5qFpdUFJgYAhLUkOlaI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Chris Paterson <Chris.Paterson2@renesas.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 114/122] pinctrl: renesas: rzg2l: Fix NULL pointer dereference in rzg2l_dt_subnode_to_map()
+        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 5.4 132/158] clk: Fix slab-out-of-bounds error in devm_clk_release()
 Date:   Mon, 28 Aug 2023 12:13:49 +0200
-Message-ID: <20230828101200.217469741@linuxfoundation.org>
+Message-ID: <20230828101201.921938005@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,111 +55,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
 
-[ Upstream commit 661efa2284bbc2338da0424e219603f034072c74 ]
+commit 66fbfb35da47f391bdadf9fa7ceb88af4faa9022 upstream.
 
-Fix the below random NULL pointer crash during boot by serializing
-pinctrl group and function creation/remove calls in
-rzg2l_dt_subnode_to_map() with mutex lock.
+Problem can be reproduced by unloading snd_soc_simple_card, because in
+devm_get_clk_from_child() devres data is allocated as `struct clk`, but
+devm_clk_release() expects devres data to be `struct devm_clk_state`.
 
-Crash log:
-    pc : __pi_strcmp+0x20/0x140
-    lr : pinmux_func_name_to_selector+0x68/0xa4
-    Call trace:
-    __pi_strcmp+0x20/0x140
-    pinmux_generic_add_function+0x34/0xcc
-    rzg2l_dt_subnode_to_map+0x314/0x44c
-    rzg2l_dt_node_to_map+0x164/0x194
-    pinctrl_dt_to_map+0x218/0x37c
-    create_pinctrl+0x70/0x3d8
+KASAN report:
+ ==================================================================
+ BUG: KASAN: slab-out-of-bounds in devm_clk_release+0x20/0x54
+ Read of size 8 at addr ffffff800ee09688 by task (udev-worker)/287
 
-While at it, add comments for bitmap_lock and lock.
+ Call trace:
+  dump_backtrace+0xe8/0x11c
+  show_stack+0x1c/0x30
+  dump_stack_lvl+0x60/0x78
+  print_report+0x150/0x450
+  kasan_report+0xa8/0xf0
+  __asan_load8+0x78/0xa0
+  devm_clk_release+0x20/0x54
+  release_nodes+0x84/0x120
+  devres_release_all+0x144/0x210
+  device_unbind_cleanup+0x1c/0xac
+  really_probe+0x2f0/0x5b0
+  __driver_probe_device+0xc0/0x1f0
+  driver_probe_device+0x68/0x120
+  __driver_attach+0x140/0x294
+  bus_for_each_dev+0xec/0x160
+  driver_attach+0x38/0x44
+  bus_add_driver+0x24c/0x300
+  driver_register+0xf0/0x210
+  __platform_driver_register+0x48/0x54
+  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
+  do_one_initcall+0xac/0x340
+  do_init_module+0xd0/0x300
+  load_module+0x2ba4/0x3100
+  __do_sys_init_module+0x2c8/0x300
+  __arm64_sys_init_module+0x48/0x5c
+  invoke_syscall+0x64/0x190
+  el0_svc_common.constprop.0+0x124/0x154
+  do_el0_svc+0x44/0xdc
+  el0_svc+0x14/0x50
+  el0t_64_sync_handler+0xec/0x11c
+  el0t_64_sync+0x14c/0x150
 
-Fixes: c4c4637eb57f ("pinctrl: renesas: Add RZ/G2L pin and gpio controller driver")
-Tested-by: Chris Paterson <Chris.Paterson2@renesas.com>
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230815131558.33787-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Allocated by task 287:
+  kasan_save_stack+0x38/0x60
+  kasan_set_track+0x28/0x40
+  kasan_save_alloc_info+0x20/0x30
+  __kasan_kmalloc+0xac/0xb0
+  __kmalloc_node_track_caller+0x6c/0x1c4
+  __devres_alloc_node+0x44/0xb4
+  devm_get_clk_from_child+0x44/0xa0
+  asoc_simple_parse_clk+0x1b8/0x1dc [snd_soc_simple_card_utils]
+  simple_parse_node.isra.0+0x1ec/0x230 [snd_soc_simple_card]
+  simple_dai_link_of+0x1bc/0x334 [snd_soc_simple_card]
+  __simple_for_each_link+0x2ec/0x320 [snd_soc_simple_card]
+  asoc_simple_probe+0x468/0x4dc [snd_soc_simple_card]
+  platform_probe+0x90/0xf0
+  really_probe+0x118/0x5b0
+  __driver_probe_device+0xc0/0x1f0
+  driver_probe_device+0x68/0x120
+  __driver_attach+0x140/0x294
+  bus_for_each_dev+0xec/0x160
+  driver_attach+0x38/0x44
+  bus_add_driver+0x24c/0x300
+  driver_register+0xf0/0x210
+  __platform_driver_register+0x48/0x54
+  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
+  do_one_initcall+0xac/0x340
+  do_init_module+0xd0/0x300
+  load_module+0x2ba4/0x3100
+  __do_sys_init_module+0x2c8/0x300
+  __arm64_sys_init_module+0x48/0x5c
+  invoke_syscall+0x64/0x190
+  el0_svc_common.constprop.0+0x124/0x154
+  do_el0_svc+0x44/0xdc
+  el0_svc+0x14/0x50
+  el0t_64_sync_handler+0xec/0x11c
+  el0t_64_sync+0x14c/0x150
+
+ The buggy address belongs to the object at ffffff800ee09600
+  which belongs to the cache kmalloc-256 of size 256
+ The buggy address is located 136 bytes inside of
+  256-byte region [ffffff800ee09600, ffffff800ee09700)
+
+ The buggy address belongs to the physical page:
+ page:000000002d97303b refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ee08
+ head:000000002d97303b order:1 compound_mapcount:0 compound_pincount:0
+ flags: 0x10200(slab|head|zone=0)
+ raw: 0000000000010200 0000000000000000 dead000000000122 ffffff8002c02480
+ raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffffff800ee09580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffffff800ee09600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ >ffffff800ee09680: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                       ^
+  ffffff800ee09700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffffff800ee09780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ==================================================================
+
+Fixes: abae8e57e49a ("clk: generalize devm_clk_get() a bit")
+Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Link: https://lore.kernel.org/r/20230805084847.3110586-1-andrej.skvortzov@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/renesas/pinctrl-rzg2l.c | 15 ++++++++++++---
- 1 file changed, 12 insertions(+), 3 deletions(-)
+ drivers/clk/clk-devres.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/pinctrl/renesas/pinctrl-rzg2l.c b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-index fd11d28e5a1e4..2a617832a7e60 100644
---- a/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-+++ b/drivers/pinctrl/renesas/pinctrl-rzg2l.c
-@@ -11,6 +11,7 @@
- #include <linux/io.h>
- #include <linux/interrupt.h>
- #include <linux/module.h>
-+#include <linux/mutex.h>
- #include <linux/of_device.h>
- #include <linux/of_irq.h>
- #include <linux/pinctrl/pinconf-generic.h>
-@@ -146,10 +147,11 @@ struct rzg2l_pinctrl {
- 	struct gpio_chip		gpio_chip;
- 	struct pinctrl_gpio_range	gpio_range;
- 	DECLARE_BITMAP(tint_slot, RZG2L_TINT_MAX_INTERRUPT);
--	spinlock_t			bitmap_lock;
-+	spinlock_t			bitmap_lock; /* protect tint_slot bitmap */
- 	unsigned int			hwirq[RZG2L_TINT_MAX_INTERRUPT];
+--- a/drivers/clk/clk-devres.c
++++ b/drivers/clk/clk-devres.c
+@@ -205,18 +205,19 @@ EXPORT_SYMBOL(devm_clk_put);
+ struct clk *devm_get_clk_from_child(struct device *dev,
+ 				    struct device_node *np, const char *con_id)
+ {
+-	struct clk **ptr, *clk;
++	struct devm_clk_state *state;
++	struct clk *clk;
  
--	spinlock_t			lock;
-+	spinlock_t			lock; /* lock read/write registers */
-+	struct mutex			mutex; /* serialize adding groups and functions */
- };
+-	ptr = devres_alloc(devm_clk_release, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
++	state = devres_alloc(devm_clk_release, sizeof(*state), GFP_KERNEL);
++	if (!state)
+ 		return ERR_PTR(-ENOMEM);
  
- static const unsigned int iolh_groupa_mA[] = { 2, 4, 8, 12 };
-@@ -359,11 +361,13 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 		name = np->name;
+ 	clk = of_clk_get_by_name(np, con_id);
+ 	if (!IS_ERR(clk)) {
+-		*ptr = clk;
+-		devres_add(dev, ptr);
++		state->clk = clk;
++		devres_add(dev, state);
+ 	} else {
+-		devres_free(ptr);
++		devres_free(state);
  	}
  
-+	mutex_lock(&pctrl->mutex);
-+
- 	/* Register a single pin group listing all the pins we read from DT */
- 	gsel = pinctrl_generic_add_group(pctldev, name, pins, num_pinmux, NULL);
- 	if (gsel < 0) {
- 		ret = gsel;
--		goto done;
-+		goto unlock;
- 	}
- 
- 	/*
-@@ -377,6 +381,8 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 		goto remove_group;
- 	}
- 
-+	mutex_unlock(&pctrl->mutex);
-+
- 	maps[idx].type = PIN_MAP_TYPE_MUX_GROUP;
- 	maps[idx].data.mux.group = name;
- 	maps[idx].data.mux.function = name;
-@@ -388,6 +394,8 @@ static int rzg2l_dt_subnode_to_map(struct pinctrl_dev *pctldev,
- 
- remove_group:
- 	pinctrl_generic_remove_group(pctldev, gsel);
-+unlock:
-+	mutex_unlock(&pctrl->mutex);
- done:
- 	*index = idx;
- 	kfree(configs);
-@@ -1501,6 +1509,7 @@ static int rzg2l_pinctrl_probe(struct platform_device *pdev)
- 
- 	spin_lock_init(&pctrl->lock);
- 	spin_lock_init(&pctrl->bitmap_lock);
-+	mutex_init(&pctrl->mutex);
- 
- 	platform_set_drvdata(pdev, pctrl);
- 
--- 
-2.40.1
-
+ 	return clk;
 
 
