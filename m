@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5177F78AC35
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D57A78A9E7
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:17:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231723AbjH1Kh5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:37:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50504 "EHLO
+        id S229965AbjH1KRY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:17:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231682AbjH1Khk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:40 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FAE2B9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:38 -0700 (PDT)
+        with ESMTP id S230413AbjH1KQz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:16:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E21B5C1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:16:41 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 97C6763F26
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A21D0C433C7;
-        Mon, 28 Aug 2023 10:37:36 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8081163710
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:16:41 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 911E7C433C8;
+        Mon, 28 Aug 2023 10:16:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219057;
-        bh=/5KcCZGeWRu/1Z8vHb2hwiN0mY7PcpAfrP5x97pC/OU=;
+        s=korg; t=1693217800;
+        bh=gHEa+i3pLP6XMfn8OmzYzUXi0/COS0gNveDz2m/po9o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0TxDa2tBG7WwDLuV4cUuZwe4snNmX4WL9wr5Gjzi1TVswog9EddNsey5lGaqzkR0l
-         gl6F6l+fKonYtZl9ERaclYliSBWa5CxCyoQGYALCcF1D+/aRTsCXQ6i+tUm4Yk1oYe
-         oX7eiQFCTIlg/990+AbyA3aclkMKQ3rKzRIxRxKg=
+        b=YGJByqTHl1S8m//gxBXHUjNwkOfVXSVwsGWk60RtEIwR+HZ/DP7Nz4PnAKCMz+s3f
+         1cn4vwlh3jYxppiFTRcr3B5gKHfV7t8q5XAPktMQJgyclxsbRuMKQrTHdYuVpwWnaR
+         ZOXSy7saSipIOtD3yKcfLeIxb4OWQMAU7kzlLjrk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nathan Lynch <nathanl@linux.ibm.com>,
-        Kees Cook <keescook@chromium.org>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 5.4 057/158] powerpc/rtas_flash: allow user copy to flash block cache objects
-Date:   Mon, 28 Aug 2023 12:12:34 +0200
-Message-ID: <20230828101159.235015468@linuxfoundation.org>
+        patches@lists.linux.dev, Zhengping Jiang <jiangzp@google.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 15/57] Bluetooth: L2CAP: Fix use-after-free
+Date:   Mon, 28 Aug 2023 12:12:35 +0200
+Message-ID: <20230828101144.773011569@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
+References: <20230828101144.231099710@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,72 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.14-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nathan Lynch <nathanl@linux.ibm.com>
+From: Zhengping Jiang <jiangzp@google.com>
 
-commit 4f3175979e62de3b929bfa54a0db4b87d36257a7 upstream.
+[ Upstream commit f752a0b334bb95fe9b42ecb511e0864e2768046f ]
 
-With hardened usercopy enabled (CONFIG_HARDENED_USERCOPY=y), using the
-/proc/powerpc/rtas/firmware_update interface to prepare a system
-firmware update yields a BUG():
+Fix potential use-after-free in l2cap_le_command_rej.
 
-  kernel BUG at mm/usercopy.c:102!
-  Oops: Exception in kernel mode, sig: 5 [#1]
-  LE PAGE_SIZE=64K MMU=Hash SMP NR_CPUS=2048 NUMA pSeries
-  Modules linked in:
-  CPU: 0 PID: 2232 Comm: dd Not tainted 6.5.0-rc3+ #2
-  Hardware name: IBM,8408-E8E POWER8E (raw) 0x4b0201 0xf000004 of:IBM,FW860.50 (SV860_146) hv:phyp pSeries
-  NIP:  c0000000005991d0 LR: c0000000005991cc CTR: 0000000000000000
-  REGS: c0000000148c76a0 TRAP: 0700   Not tainted  (6.5.0-rc3+)
-  MSR:  8000000000029033 <SF,EE,ME,IR,DR,RI,LE>  CR: 24002242  XER: 0000000c
-  CFAR: c0000000001fbd34 IRQMASK: 0
-  [ ... GPRs omitted ... ]
-  NIP usercopy_abort+0xa0/0xb0
-  LR  usercopy_abort+0x9c/0xb0
-  Call Trace:
-    usercopy_abort+0x9c/0xb0 (unreliable)
-    __check_heap_object+0x1b4/0x1d0
-    __check_object_size+0x2d0/0x380
-    rtas_flash_write+0xe4/0x250
-    proc_reg_write+0xfc/0x160
-    vfs_write+0xfc/0x4e0
-    ksys_write+0x90/0x160
-    system_call_exception+0x178/0x320
-    system_call_common+0x160/0x2c4
-
-The blocks of the firmware image are copied directly from user memory
-to objects allocated from flash_block_cache, so flash_block_cache must
-be created using kmem_cache_create_usercopy() to mark it safe for user
-access.
-
-Fixes: 6d07d1cd300f ("usercopy: Restrict non-usercopy caches to size 0")
-Signed-off-by: Nathan Lynch <nathanl@linux.ibm.com>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-[mpe: Trim and indent oops]
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230810-rtas-flash-vs-hardened-usercopy-v2-1-dcf63793a938@linux.ibm.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Zhengping Jiang <jiangzp@google.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/rtas_flash.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ net/bluetooth/l2cap_core.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/arch/powerpc/kernel/rtas_flash.c
-+++ b/arch/powerpc/kernel/rtas_flash.c
-@@ -710,9 +710,9 @@ static int __init rtas_flash_init(void)
- 	if (!rtas_validate_flash_data.buf)
- 		return -ENOMEM;
+diff --git a/net/bluetooth/l2cap_core.c b/net/bluetooth/l2cap_core.c
+index 25d88b8cfae97..6bae68b5d439c 100644
+--- a/net/bluetooth/l2cap_core.c
++++ b/net/bluetooth/l2cap_core.c
+@@ -5705,9 +5705,14 @@ static inline int l2cap_le_command_rej(struct l2cap_conn *conn,
+ 	if (!chan)
+ 		goto done;
  
--	flash_block_cache = kmem_cache_create("rtas_flash_cache",
--					      RTAS_BLK_SIZE, RTAS_BLK_SIZE, 0,
--					      NULL);
-+	flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
-+						       RTAS_BLK_SIZE, RTAS_BLK_SIZE,
-+						       0, 0, RTAS_BLK_SIZE, NULL);
- 	if (!flash_block_cache) {
- 		printk(KERN_ERR "%s: failed to create block cache\n",
- 				__func__);
++	chan = l2cap_chan_hold_unless_zero(chan);
++	if (!chan)
++		goto done;
++
+ 	l2cap_chan_lock(chan);
+ 	l2cap_chan_del(chan, ECONNREFUSED);
+ 	l2cap_chan_unlock(chan);
++	l2cap_chan_put(chan);
+ 
+ done:
+ 	mutex_unlock(&conn->chan_lock);
+-- 
+2.40.1
+
 
 
