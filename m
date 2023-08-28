@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E369978AC2A
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2576678AA4F
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231591AbjH1Kht (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:37:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33594 "EHLO
+        id S230481AbjH1KVP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231634AbjH1KhP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:15 -0400
+        with ESMTP id S230505AbjH1KUx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:20:53 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D29A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:12 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B49E8129
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:20:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 75FAF63F25
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D827C433C8;
-        Mon, 28 Aug 2023 10:37:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9512663728
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A549BC433C8;
+        Mon, 28 Aug 2023 10:20:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219031;
-        bh=37UlUW5qEBmm5mgatx9mThVnt8CWCTx5bB6Hy5dNST0=;
+        s=korg; t=1693218027;
+        bh=nu/ysn2d9dVmB9Dpkf14IIfH30vDCs6l7LJy2ILXfTs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zxB3rNa9JaGN5//JQtnyNm8Izzek6bJa3XP7zGJfCmkznuHbCZDwuz0U1xnt0ivLY
-         8r75tOMJnA1rSy337LdP0GeILaT061P32V+zjhwrt5H+vo2aj/HGwyOAwrzMcFVLik
-         K7q6E+AvVe6oOm8P1uiLpbhFC6vE2v8MppbyU8gA=
+        b=kuh/7EJIIbwC65wWLM+CiCLv5z9tKdBA/4qMhKn7BqFGrnACTozAtB4E3r0wJZSVi
+         Gstd7JFkXibFA8mmuUZIE3/XDeVALP968JiGrowu/73l0bw00bhZujz3WPSCfGvCkW
+         KxDVAG0v7jpqrXNfoKvG8cxWLJ7vSA5V56ODTJQ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vijay Khemka <vijaykhemka@fb.com>,
-        Samuel Mendoza-Jonas <sam@mendozajonas.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 049/158] net/ncsi: Fix gma flag setting after response
+        patches@lists.linux.dev, Zack Rusin <zackr@vmware.com>,
+        security@openanolis.org, Ziming Zhang <ezrakiez@gmail.com>,
+        Maaz Mombasawala <mombasawalam@vmware.com>,
+        Martin Krastev <krastevm@vmware.com>,
+        Niels De Graef <ndegraef@redhat.com>
+Subject: [PATCH 6.4 067/129] drm/vmwgfx: Fix shader stage validation
 Date:   Mon, 28 Aug 2023 12:12:26 +0200
-Message-ID: <20230828101158.997892908@linuxfoundation.org>
+Message-ID: <20230828101159.577328451@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,71 +57,179 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijay Khemka <vijaykhemka@fb.com>
+From: Zack Rusin <zackr@vmware.com>
 
-[ Upstream commit 9e860947d8d7a1504476ac49abfce90a4ce600f3 ]
+commit 14abdfae508228a7307f7491b5c4215ae70c6542 upstream.
 
-gma_flag was set at the time of GMA command request but it should
-only be set after getting successful response. Movinng this flag
-setting in GMA response handler.
+For multiple commands the driver was not correctly validating the shader
+stages resulting in possible kernel oopses. The validation code was only.
+if ever, checking the upper bound on the shader stages but never a lower
+bound (valid shader stages start at 1 not 0).
 
-This flag is used mainly for not repeating GMA command once
-received MAC address.
+Fixes kernel oopses ending up in vmw_binding_add, e.g.:
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 1 PID: 2443 Comm: testcase Not tainted 6.3.0-rc4-vmwgfx #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop Reference Platform, BIOS 6.00 11/12/2020
+RIP: 0010:vmw_binding_add+0x4c/0x140 [vmwgfx]
+Code: 7e 30 49 83 ff 0e 0f 87 ea 00 00 00 4b 8d 04 7f 89 d2 89 cb 48 c1 e0 03 4c 8b b0 40 3d 93 c0 48 8b 80 48 3d 93 c0 49 0f af de <48> 03 1c d0 4c 01 e3 49 8>
+RSP: 0018:ffffb8014416b968 EFLAGS: 00010206
+RAX: ffffffffc0933ec0 RBX: 0000000000000000 RCX: 0000000000000000
+RDX: 00000000ffffffff RSI: ffffb8014416b9c0 RDI: ffffb8014316f000
+RBP: ffffb8014416b998 R08: 0000000000000003 R09: 746f6c735f726564
+R10: ffffffffaaf2bda0 R11: 732e676e69646e69 R12: ffffb8014316f000
+R13: ffffb8014416b9c0 R14: 0000000000000040 R15: 0000000000000006
+FS:  00007fba8c0af740(0000) GS:ffff8a1277c80000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000007c0933eb8 CR3: 0000000118244001 CR4: 00000000003706e0
+Call Trace:
+ <TASK>
+ vmw_view_bindings_add+0xf5/0x1b0 [vmwgfx]
+ ? ___drm_dbg+0x8a/0xb0 [drm]
+ vmw_cmd_dx_set_shader_res+0x8f/0xc0 [vmwgfx]
+ vmw_execbuf_process+0x590/0x1360 [vmwgfx]
+ vmw_execbuf_ioctl+0x173/0x370 [vmwgfx]
+ ? __drm_dev_dbg+0xb4/0xe0 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ drm_ioctl_kernel+0xbc/0x160 [drm]
+ drm_ioctl+0x2d2/0x580 [drm]
+ ? __pfx_vmw_execbuf_ioctl+0x10/0x10 [vmwgfx]
+ ? do_fault+0x1a6/0x420
+ vmw_generic_ioctl+0xbd/0x180 [vmwgfx]
+ vmw_unlocked_ioctl+0x19/0x20 [vmwgfx]
+ __x64_sys_ioctl+0x96/0xd0
+ do_syscall_64+0x5d/0x90
+ ? handle_mm_fault+0xe4/0x2f0
+ ? debug_smp_processor_id+0x1b/0x30
+ ? fpregs_assert_state_consistent+0x2e/0x50
+ ? exit_to_user_mode_prepare+0x40/0x180
+ ? irqentry_exit_to_user_mode+0xd/0x20
+ ? irqentry_exit+0x3f/0x50
+ ? exc_page_fault+0x8b/0x180
+ entry_SYSCALL_64_after_hwframe+0x72/0xdc
 
-Signed-off-by: Vijay Khemka <vijaykhemka@fb.com>
-Reviewed-by: Samuel Mendoza-Jonas <sam@mendozajonas.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Stable-dep-of: 790071347a0a ("net/ncsi: change from ndo_set_mac_address to dev_set_mac_address")
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Zack Rusin <zackr@vmware.com>
+Cc: security@openanolis.org
+Reported-by: Ziming Zhang <ezrakiez@gmail.com>
+Testcase-found-by: Niels De Graef <ndegraef@redhat.com>
+Fixes: d80efd5cb3de ("drm/vmwgfx: Initial DX support")
+Cc: <stable@vger.kernel.org> # v4.3+
+Reviewed-by: Maaz Mombasawala<mombasawalam@vmware.com>
+Reviewed-by: Martin Krastev <krastevm@vmware.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230616190934.54828-1-zack@kde.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/ncsi/ncsi-manage.c | 3 ---
- net/ncsi/ncsi-rsp.c    | 6 ++++++
- 2 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/vmwgfx/vmwgfx_drv.h     |   12 ++++++++++++
+ drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c |   29 +++++++++++------------------
+ 2 files changed, 23 insertions(+), 18 deletions(-)
 
-diff --git a/net/ncsi/ncsi-manage.c b/net/ncsi/ncsi-manage.c
-index 9bd12f7517ed5..6710f6b8764be 100644
---- a/net/ncsi/ncsi-manage.c
-+++ b/net/ncsi/ncsi-manage.c
-@@ -770,9 +770,6 @@ static int ncsi_gma_handler(struct ncsi_cmd_arg *nca, unsigned int mf_id)
- 		return -1;
- 	}
- 
--	/* Set the flag for GMA command which should only be called once */
--	nca->ndp->gma_flag = 1;
--
- 	/* Get Mac address from NCSI device */
- 	return nch->handler(nca);
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_drv.h
+@@ -1513,4 +1513,16 @@ static inline bool vmw_has_fences(struct
+ 	return (vmw_fifo_caps(vmw) & SVGA_FIFO_CAP_FENCE) != 0;
  }
-diff --git a/net/ncsi/ncsi-rsp.c b/net/ncsi/ncsi-rsp.c
-index 7c893c3799202..e1c6bb4ab98fd 100644
---- a/net/ncsi/ncsi-rsp.c
-+++ b/net/ncsi/ncsi-rsp.c
-@@ -627,6 +627,9 @@ static int ncsi_rsp_handler_oem_mlx_gma(struct ncsi_request *nr)
- 	saddr.sa_family = ndev->type;
- 	ndev->priv_flags |= IFF_LIVE_ADDR_CHANGE;
- 	memcpy(saddr.sa_data, &rsp->data[MLX_MAC_ADDR_OFFSET], ETH_ALEN);
-+	/* Set the flag for GMA command which should only be called once */
-+	ndp->gma_flag = 1;
-+
- 	ret = ops->ndo_set_mac_address(ndev, &saddr);
- 	if (ret < 0)
- 		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
-@@ -671,6 +674,9 @@ static int ncsi_rsp_handler_oem_bcm_gma(struct ncsi_request *nr)
- 	if (!is_valid_ether_addr((const u8 *)saddr.sa_data))
- 		return -ENXIO;
  
-+	/* Set the flag for GMA command which should only be called once */
-+	ndp->gma_flag = 1;
++static inline bool vmw_shadertype_is_valid(enum vmw_sm_type shader_model,
++					   u32 shader_type)
++{
++	SVGA3dShaderType max_allowed = SVGA3D_SHADERTYPE_PREDX_MAX;
 +
- 	ret = ops->ndo_set_mac_address(ndev, &saddr);
- 	if (ret < 0)
- 		netdev_warn(ndev, "NCSI: 'Writing mac address to device failed\n");
--- 
-2.40.1
-
++	if (shader_model >= VMW_SM_5)
++		max_allowed = SVGA3D_SHADERTYPE_MAX;
++	else if (shader_model >= VMW_SM_4)
++		max_allowed = SVGA3D_SHADERTYPE_DX10_MAX;
++	return shader_type >= SVGA3D_SHADERTYPE_MIN && shader_type < max_allowed;
++}
++
+ #endif
+--- a/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
++++ b/drivers/gpu/drm/vmwgfx/vmwgfx_execbuf.c
+@@ -1992,7 +1992,7 @@ static int vmw_cmd_set_shader(struct vmw
+ 
+ 	cmd = container_of(header, typeof(*cmd), header);
+ 
+-	if (cmd->body.type >= SVGA3D_SHADERTYPE_PREDX_MAX) {
++	if (!vmw_shadertype_is_valid(VMW_SM_LEGACY, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
+@@ -2115,8 +2115,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 				      SVGA3dCmdHeader *header)
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetSingleConstantBuffer);
+-	SVGA3dShaderType max_shader_num = has_sm5_context(dev_priv) ?
+-		SVGA3D_NUM_SHADERTYPE : SVGA3D_NUM_SHADERTYPE_DX10;
+ 
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+@@ -2133,6 +2131,14 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 	if (unlikely(ret != 0))
+ 		return ret;
+ 
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type) ||
++	    cmd->body.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
++		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
++			       (unsigned int) cmd->body.type,
++			       (unsigned int) cmd->body.slot);
++		return -EINVAL;
++	}
++
+ 	binding.bi.ctx = ctx_node->ctx;
+ 	binding.bi.res = res;
+ 	binding.bi.bt = vmw_ctx_binding_cb;
+@@ -2141,14 +2147,6 @@ vmw_cmd_dx_set_single_constant_buffer(st
+ 	binding.size = cmd->body.sizeInBytes;
+ 	binding.slot = cmd->body.slot;
+ 
+-	if (binding.shader_slot >= max_shader_num ||
+-	    binding.slot >= SVGA3D_DX_MAX_CONSTBUFFERS) {
+-		VMW_DEBUG_USER("Illegal const buffer shader %u slot %u.\n",
+-			       (unsigned int) cmd->body.type,
+-			       (unsigned int) binding.slot);
+-		return -EINVAL;
+-	}
+-
+ 	vmw_binding_add(ctx_node->staged, &binding.bi, binding.shader_slot,
+ 			binding.slot);
+ 
+@@ -2207,15 +2205,13 @@ static int vmw_cmd_dx_set_shader_res(str
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShaderResources) =
+ 		container_of(header, typeof(*cmd), header);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 
+ 	u32 num_sr_view = (cmd->header.size - sizeof(cmd->body)) /
+ 		sizeof(SVGA3dShaderResourceViewId);
+ 
+ 	if ((u64) cmd->body.startView + (u64) num_sr_view >
+ 	    (u64) SVGA3D_DX_MAX_SRVIEWS ||
+-	    cmd->body.type >= max_allowed) {
++	    !vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Invalid shader binding.\n");
+ 		return -EINVAL;
+ 	}
+@@ -2239,8 +2235,6 @@ static int vmw_cmd_dx_set_shader(struct
+ 				 SVGA3dCmdHeader *header)
+ {
+ 	VMW_DECLARE_CMD_VAR(*cmd, SVGA3dCmdDXSetShader);
+-	SVGA3dShaderType max_allowed = has_sm5_context(dev_priv) ?
+-		SVGA3D_SHADERTYPE_MAX : SVGA3D_SHADERTYPE_DX10_MAX;
+ 	struct vmw_resource *res = NULL;
+ 	struct vmw_ctx_validation_info *ctx_node = VMW_GET_CTX_NODE(sw_context);
+ 	struct vmw_ctx_bindinfo_shader binding;
+@@ -2251,8 +2245,7 @@ static int vmw_cmd_dx_set_shader(struct
+ 
+ 	cmd = container_of(header, typeof(*cmd), header);
+ 
+-	if (cmd->body.type >= max_allowed ||
+-	    cmd->body.type < SVGA3D_SHADERTYPE_MIN) {
++	if (!vmw_shadertype_is_valid(dev_priv->sm_type, cmd->body.type)) {
+ 		VMW_DEBUG_USER("Illegal shader type %u.\n",
+ 			       (unsigned int) cmd->body.type);
+ 		return -EINVAL;
 
 
