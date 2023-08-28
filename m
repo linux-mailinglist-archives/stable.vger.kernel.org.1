@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48E7F78AC23
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17BE678AA49
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:21:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231627AbjH1KhO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:37:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51254 "EHLO
+        id S230480AbjH1KVN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48658 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231665AbjH1KhB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F207BA6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:58 -0700 (PDT)
+        with ESMTP id S229630AbjH1KUi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:20:38 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BD38CC9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:20:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8FEAB63ED4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4024C433C8;
-        Mon, 28 Aug 2023 10:36:57 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B6EE6382F
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3012EC433C8;
+        Mon, 28 Aug 2023 10:20:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219018;
-        bh=EWcAo6XtNI93+XLON91byq2cmpTW1NlRVD5sYLs1Fo0=;
+        s=korg; t=1693218010;
+        bh=mUC4K+aiiXUm+VCZxoHOrunNzQgFyjiS94ygmkdRsnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jWSAwrzxxdJtYH5rzVQ6ycnWxxKYAec3kdUnFnkR5mtIDgELdMx1Sj4/2I2JpsrOd
-         tXW/5XAc3+CeOiaOl+JsN+7g6dwZn6mq5TNBCqDrFF96DXU2GmJwVSYngzBG55R2l2
-         u4m0iZbe6G2xo6fM8U33aI5dJ5KhqkQAotxfk090=
+        b=SKdBFakYhWIXmrniT4+DtDuisA/SXAzzZy1KY29HUTRJOVu7atWGSxOiedwMxCS9c
+         XBpsjFXTFi8yIScSVxNZ2l3AaV5nikUnGBIyl09Rydc4Vz+Uw2rSWLnIzUzQRuRxf8
+         2vSvmR0Ko6qhwkv4zyHaxbRMPWRlItMVSXeNcfpA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sergey Shtylyov <s.shtylyov@omp.ru>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 044/158] mmc: bcm2835: fix deferred probing
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
+        Takashi Yano <takashi.yano@nifty.ne.jp>
+Subject: [PATCH 6.4 062/129] ALSA: ymfpci: Fix the missing snd_card_free() call at probe error
 Date:   Mon, 28 Aug 2023 12:12:21 +0200
-Message-ID: <20230828101158.817680940@linuxfoundation.org>
+Message-ID: <20230828101159.425903342@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,48 +54,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sergey Shtylyov <s.shtylyov@omp.ru>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 71150ac12558bcd9d75e6e24cf7c872c2efd80f3 ]
+commit 1d0eb6143c1e85d3f9a3f5a616ee7e5dc351d33b upstream.
 
-The driver overrides the error codes and IRQ0 returned by platform_get_irq()
-to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
-permanently instead of the deferred probing. Switch to propagating the error
-codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
-in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
-so we now can safely ignore it...
+Like a few other drivers, YMFPCI driver needs to clean up with
+snd_card_free() call at an error path of the probe; otherwise the
+other devres resources are released before the card and it results in
+the UAF.
 
-Fixes: 660fc733bd74 ("mmc: bcm2835: Add new driver for the sdhost controller.")
-Cc: stable@vger.kernel.org # v5.19+
-Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-Link: https://lore.kernel.org/r/20230617203622.6812-2-s.shtylyov@omp.ru
-Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This patch uses the helper for handling the probe error gracefully.
+
+Fixes: f33fc1576757 ("ALSA: ymfpci: Create card with device-managed snd_devm_card_new()")
+Cc: <stable@vger.kernel.org>
+Reported-and-tested-by: Takashi Yano <takashi.yano@nifty.ne.jp>
+Closes: https://lore.kernel.org/r/20230823135846.1812-1-takashi.yano@nifty.ne.jp
+Link: https://lore.kernel.org/r/20230823161625.5807-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/mmc/host/bcm2835.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/pci/ymfpci/ymfpci.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/mmc/host/bcm2835.c b/drivers/mmc/host/bcm2835.c
-index 148414d7f0c9d..d20943e433127 100644
---- a/drivers/mmc/host/bcm2835.c
-+++ b/drivers/mmc/host/bcm2835.c
-@@ -1408,8 +1408,8 @@ static int bcm2835_probe(struct platform_device *pdev)
- 	host->max_clk = clk_get_rate(clk);
+--- a/sound/pci/ymfpci/ymfpci.c
++++ b/sound/pci/ymfpci/ymfpci.c
+@@ -152,8 +152,8 @@ static inline int snd_ymfpci_create_game
+ void snd_ymfpci_free_gameport(struct snd_ymfpci *chip) { }
+ #endif /* SUPPORT_JOYSTICK */
  
- 	host->irq = platform_get_irq(pdev, 0);
--	if (host->irq <= 0) {
--		ret = -EINVAL;
-+	if (host->irq < 0) {
-+		ret = host->irq;
- 		goto err;
- 	}
+-static int snd_card_ymfpci_probe(struct pci_dev *pci,
+-				 const struct pci_device_id *pci_id)
++static int __snd_card_ymfpci_probe(struct pci_dev *pci,
++				   const struct pci_device_id *pci_id)
+ {
+ 	static int dev;
+ 	struct snd_card *card;
+@@ -348,6 +348,12 @@ static int snd_card_ymfpci_probe(struct
+ 	return 0;
+ }
  
--- 
-2.40.1
-
++static int snd_card_ymfpci_probe(struct pci_dev *pci,
++				 const struct pci_device_id *pci_id)
++{
++	return snd_card_free_on_error(&pci->dev, __snd_card_ymfpci_probe(pci, pci_id));
++}
++
+ static struct pci_driver ymfpci_driver = {
+ 	.name = KBUILD_MODNAME,
+ 	.id_table = snd_ymfpci_ids,
 
 
