@@ -2,52 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBECC78AB42
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1D9F78ABDA
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231346AbjH1K3m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36948 "EHLO
+        id S231565AbjH1Kek (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44748 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231277AbjH1K3K (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 75C76119
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:07 -0700 (PDT)
+        with ESMTP id S231628AbjH1KeS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C54A6
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:10 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0401663BE1
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1793CC433C7;
-        Mon, 28 Aug 2023 10:29:05 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BABE163D76
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:10 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB082C433C7;
+        Mon, 28 Aug 2023 10:34:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218546;
-        bh=gM62mdnJkOJxFNGu1ow9lbDPIzWweJ6X0EFgY3Tp17Y=;
+        s=korg; t=1693218850;
+        bh=sCktPawIehrUWey4SnyVJqf5bcyCtAXJZdDzqIAVHbQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ILhVzSPylevKFTf/nvLlZEZjXQJZiWKqXG4etVLkb51T5dC1F70ZW1RSlnPxGd3xq
-         +lGay9P+69FaVCavB197WGqecgCyFXHCRXFXhVGN7Z7v+yntXKEfu8t0yaCfn2sUW3
-         /AFNULhBrCGWgKpG9l+IryWH1Q+G6Jb7QFz/jcaU=
+        b=IYjv0H9LqDSUPvZnD7uuBzwlfVJU+zcrri6atDoKX8Ho8W8nguNjvXYckSJ2Bfgqr
+         3ml0yumDSCkQRd4Kh6101poAMUtyjkcl5L9OgoHdR3WqqW/jP9tTD3ZV1SBStkA0yf
+         HwrBBikS+7Ftn3DI3TbgpoRdYHdvtm869t6apScc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 4.19 127/129] scsi: core: raid_class: Remove raid_component_add()
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Juri Lelli <juri.lelli@redhat.com>, Tejun Heo <tj@kernel.org>,
+        "Qais Yousef (Google)" <qyousef@layalina.io>
+Subject: [PATCH 6.1 106/122] cgroup/cpuset: Free DL BW in case can_attach() fails
 Date:   Mon, 28 Aug 2023 12:13:41 +0200
-Message-ID: <20230828101157.839797565@linuxfoundation.org>
+Message-ID: <20230828101159.949430577@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,96 +56,199 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Dietmar Eggemann <dietmar.eggemann@arm.com>
 
-commit 60c5fd2e8f3c42a5abc565ba9876ead1da5ad2b7 upstream.
+commit 2ef269ef1ac006acf974793d975539244d77b28f upstream.
 
-The raid_component_add() function was added to the kernel tree via patch
-"[SCSI] embryonic RAID class" (2005). Remove this function since it never
-has had any callers in the Linux kernel. And also raid_component_release()
-is only used in raid_component_add(), so it is also removed.
+cpuset_can_attach() can fail. Postpone DL BW allocation until all tasks
+have been checked. DL BW is not allocated per-task but as a sum over
+all DL tasks migrating.
 
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230822015254.184270-1-wangzhu9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Fixes: 04b5b5cb0136 ("scsi: core: Fix possible memory leak if device_add() fails")
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+If multiple controllers are attached to the cgroup next to the cpuset
+controller a non-cpuset can_attach() can fail. In this case free DL BW
+in cpuset_cancel_attach().
+
+Finally, update cpuset DL task count (nr_deadline_tasks) only in
+cpuset_attach().
+
+Suggested-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Dietmar Eggemann <dietmar.eggemann@arm.com>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/raid_class.c  |   48 ---------------------------------------------
- include/linux/raid_class.h |    4 ---
- 2 files changed, 52 deletions(-)
+ include/linux/sched.h  |    2 -
+ kernel/cgroup/cpuset.c |   53 ++++++++++++++++++++++++++++++++++++++++++++-----
+ kernel/sched/core.c    |   17 +--------------
+ 3 files changed, 51 insertions(+), 21 deletions(-)
 
---- a/drivers/scsi/raid_class.c
-+++ b/drivers/scsi/raid_class.c
-@@ -210,54 +210,6 @@ raid_attr_ro_state(level);
- raid_attr_ro_fn(resync);
- raid_attr_ro_state_fn(state);
+--- a/include/linux/sched.h
++++ b/include/linux/sched.h
+@@ -1846,7 +1846,7 @@ current_restore_flags(unsigned long orig
+ }
  
--static void raid_component_release(struct device *dev)
--{
--	struct raid_component *rc =
--		container_of(dev, struct raid_component, dev);
--	dev_printk(KERN_ERR, rc->dev.parent, "COMPONENT RELEASE\n");
--	put_device(rc->dev.parent);
--	kfree(rc);
--}
--
--int raid_component_add(struct raid_template *r,struct device *raid_dev,
--		       struct device *component_dev)
--{
--	struct device *cdev =
--		attribute_container_find_class_device(&r->raid_attrs.ac,
--						      raid_dev);
--	struct raid_component *rc;
--	struct raid_data *rd = dev_get_drvdata(cdev);
--	int err;
--
--	rc = kzalloc(sizeof(*rc), GFP_KERNEL);
--	if (!rc)
--		return -ENOMEM;
--
--	INIT_LIST_HEAD(&rc->node);
--	device_initialize(&rc->dev);
--	rc->dev.release = raid_component_release;
--	rc->dev.parent = get_device(component_dev);
--	rc->num = rd->component_count++;
--
--	dev_set_name(&rc->dev, "component-%d", rc->num);
--	list_add_tail(&rc->node, &rd->component_list);
--	rc->dev.class = &raid_class.class;
--	err = device_add(&rc->dev);
--	if (err)
--		goto err_out;
--
--	return 0;
--
--err_out:
--	put_device(&rc->dev);
--	list_del(&rc->node);
--	rd->component_count--;
--	put_device(component_dev);
--	kfree(rc);
--	return err;
--}
--EXPORT_SYMBOL(raid_component_add);
--
- struct raid_template *
- raid_class_attach(struct raid_function_template *ft)
+ extern int cpuset_cpumask_can_shrink(const struct cpumask *cur, const struct cpumask *trial);
+-extern int task_can_attach(struct task_struct *p, const struct cpumask *cs_effective_cpus);
++extern int task_can_attach(struct task_struct *p);
+ extern int dl_bw_alloc(int cpu, u64 dl_bw);
+ extern void dl_bw_free(int cpu, u64 dl_bw);
+ #ifdef CONFIG_SMP
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -198,6 +198,8 @@ struct cpuset {
+ 	 * know when to rebuild associated root domain bandwidth information.
+ 	 */
+ 	int nr_deadline_tasks;
++	int nr_migrate_dl_tasks;
++	u64 sum_migrate_dl_bw;
+ 
+ 	/* Invalid partition error code, not lock protected */
+ 	enum prs_errcode prs_err;
+@@ -2491,16 +2493,23 @@ static int cpuset_can_attach_check(struc
+ 	return 0;
+ }
+ 
++static void reset_migrate_dl_data(struct cpuset *cs)
++{
++	cs->nr_migrate_dl_tasks = 0;
++	cs->sum_migrate_dl_bw = 0;
++}
++
+ /* Called by cgroups to determine if a cpuset is usable; cpuset_mutex held */
+ static int cpuset_can_attach(struct cgroup_taskset *tset)
  {
---- a/include/linux/raid_class.h
-+++ b/include/linux/raid_class.h
-@@ -78,7 +78,3 @@ DEFINE_RAID_ATTRIBUTE(enum raid_state, s
- 	
- struct raid_template *raid_class_attach(struct raid_function_template *);
- void raid_class_release(struct raid_template *);
+ 	struct cgroup_subsys_state *css;
+-	struct cpuset *cs;
++	struct cpuset *cs, *oldcs;
+ 	struct task_struct *task;
+ 	int ret;
+ 
+ 	/* used later by cpuset_attach() */
+ 	cpuset_attach_old_cs = task_cs(cgroup_taskset_first(tset, &css));
++	oldcs = cpuset_attach_old_cs;
+ 	cs = css_cs(css);
+ 
+ 	mutex_lock(&cpuset_mutex);
+@@ -2511,7 +2520,7 @@ static int cpuset_can_attach(struct cgro
+ 		goto out_unlock;
+ 
+ 	cgroup_taskset_for_each(task, css, tset) {
+-		ret = task_can_attach(task, cs->effective_cpus);
++		ret = task_can_attach(task);
+ 		if (ret)
+ 			goto out_unlock;
+ 		ret = security_task_setscheduler(task);
+@@ -2519,11 +2528,31 @@ static int cpuset_can_attach(struct cgro
+ 			goto out_unlock;
+ 
+ 		if (dl_task(task)) {
+-			cs->nr_deadline_tasks++;
+-			cpuset_attach_old_cs->nr_deadline_tasks--;
++			cs->nr_migrate_dl_tasks++;
++			cs->sum_migrate_dl_bw += task->dl.dl_bw;
+ 		}
+ 	}
+ 
++	if (!cs->nr_migrate_dl_tasks)
++		goto out_success;
++
++	if (!cpumask_intersects(oldcs->effective_cpus, cs->effective_cpus)) {
++		int cpu = cpumask_any_and(cpu_active_mask, cs->effective_cpus);
++
++		if (unlikely(cpu >= nr_cpu_ids)) {
++			reset_migrate_dl_data(cs);
++			ret = -EINVAL;
++			goto out_unlock;
++		}
++
++		ret = dl_bw_alloc(cpu, cs->sum_migrate_dl_bw);
++		if (ret) {
++			reset_migrate_dl_data(cs);
++			goto out_unlock;
++		}
++	}
++
++out_success:
+ 	/*
+ 	 * Mark attach is in progress.  This makes validate_change() fail
+ 	 * changes which zero cpus/mems_allowed.
+@@ -2546,6 +2575,14 @@ static void cpuset_cancel_attach(struct
+ 	cs->attach_in_progress--;
+ 	if (!cs->attach_in_progress)
+ 		wake_up(&cpuset_attach_wq);
++
++	if (cs->nr_migrate_dl_tasks) {
++		int cpu = cpumask_any(cs->effective_cpus);
++
++		dl_bw_free(cpu, cs->sum_migrate_dl_bw);
++		reset_migrate_dl_data(cs);
++	}
++
+ 	mutex_unlock(&cpuset_mutex);
+ }
+ 
+@@ -2623,6 +2660,12 @@ static void cpuset_attach(struct cgroup_
+ 
+ 	cs->old_mems_allowed = cpuset_attach_nodemask_to;
+ 
++	if (cs->nr_migrate_dl_tasks) {
++		cs->nr_deadline_tasks += cs->nr_migrate_dl_tasks;
++		oldcs->nr_deadline_tasks -= cs->nr_migrate_dl_tasks;
++		reset_migrate_dl_data(cs);
++	}
++
+ 	cs->attach_in_progress--;
+ 	if (!cs->attach_in_progress)
+ 		wake_up(&cpuset_attach_wq);
+@@ -3298,7 +3341,7 @@ static int cpuset_can_fork(struct task_s
+ 	if (ret)
+ 		goto out_unlock;
+ 
+-	ret = task_can_attach(task, cs->effective_cpus);
++	ret = task_can_attach(task);
+ 	if (ret)
+ 		goto out_unlock;
+ 
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -9083,8 +9083,7 @@ int cpuset_cpumask_can_shrink(const stru
+ 	return ret;
+ }
+ 
+-int task_can_attach(struct task_struct *p,
+-		    const struct cpumask *cs_effective_cpus)
++int task_can_attach(struct task_struct *p)
+ {
+ 	int ret = 0;
+ 
+@@ -9097,21 +9096,9 @@ int task_can_attach(struct task_struct *
+ 	 * success of set_cpus_allowed_ptr() on all attached tasks
+ 	 * before cpus_mask may be changed.
+ 	 */
+-	if (p->flags & PF_NO_SETAFFINITY) {
++	if (p->flags & PF_NO_SETAFFINITY)
+ 		ret = -EINVAL;
+-		goto out;
+-	}
+ 
+-	if (dl_task(p) && !cpumask_intersects(task_rq(p)->rd->span,
+-					      cs_effective_cpus)) {
+-		int cpu = cpumask_any_and(cpu_active_mask, cs_effective_cpus);
 -
--int __must_check raid_component_add(struct raid_template *, struct device *,
--				    struct device *);
+-		if (unlikely(cpu >= nr_cpu_ids))
+-			return -EINVAL;
+-		ret = dl_bw_alloc(cpu, p->dl.dl_bw);
+-	}
 -
+-out:
+ 	return ret;
+ }
+ 
 
 
