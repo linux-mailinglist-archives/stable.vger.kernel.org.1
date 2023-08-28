@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 189A578ACF8
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67A1678AB54
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:30:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231863AbjH1KoQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:44:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38056 "EHLO
+        id S231296AbjH1KaN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:30:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231960AbjH1KoH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:44:07 -0400
+        with ESMTP id S231250AbjH1K3l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:29:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8F531B3
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:43:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5FA1129
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:29:37 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A587641C4
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:43:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB9D9C433C7;
-        Mon, 28 Aug 2023 10:43:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 474CA63C3B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:29:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C88C433C7;
+        Mon, 28 Aug 2023 10:29:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219421;
-        bh=cQNLDoomuKWI7AOXKn/QGzEeDSJSxvPUToIBdVZ09w4=;
+        s=korg; t=1693218576;
+        bh=oFMK5b4TU7N8HPqFhdanzjmLjgvvgseS/+9OwS6g5eM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GbBZx02KYIzDYmgWmF2DGBJ243XitqJ3P/6eqDc/ZwIsiGbUv9ThZQ0ElmI2cPdI8
-         n/2xvw5JsFZ7BPKnIIYoqhbCnWPo0y+GzuOuPrR0kizCy+XBLjXWey2OBvQUNiGgdA
-         9koX/cDq7Vi1x4PFZef8xmVApqXf5/mdwAqyyA1s=
+        b=RkedwjkeIdGMbjdwS7wjL0BZsdVQmAiXjsZpA29x15DZfDLI/EfPzym/8vu2ZLh06
+         Mb5jnenmr/WLnkBEWwNuUQy47O+p8HmVN31RwWKYbQu6M4/KlH++N6F0cbob8Z8/+D
+         2QiMzv20pOjR6CxrEP0eyYh2pJ5qF0qZuPP+2xdI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lu Wei <luwei32@huawei.com>,
-        Florian Westphal <fw@strlen.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 30/89] ipvlan: Fix a reference count leak warning in ipvlan_ns_exit()
+        patches@lists.linux.dev, Helge Deller <deller@gmx.de>,
+        Chanho Min <chanho.min@lge.com>,
+        Geert Uytterhoeven <geert@linux-m68k.org>,
+        Linus Torvalds <torvalds@linux-foundation.org>
+Subject: [PATCH 4.19 117/129] lib/clz_ctz.c: Fix __clzdi2() and __ctzdi2() for 32-bit kernels
 Date:   Mon, 28 Aug 2023 12:13:31 +0200
-Message-ID: <20230828101151.191714590@linuxfoundation.org>
+Message-ID: <20230828101157.506132241@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,94 +56,124 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lu Wei <luwei32@huawei.com>
+From: Helge Deller <deller@gmx.de>
 
-[ Upstream commit 043d5f68d0ccdda91029b4b6dce7eeffdcfad281 ]
+commit 382d4cd1847517ffcb1800fd462b625db7b2ebea upstream.
 
-There are two network devices(veth1 and veth3) in ns1, and ipvlan1 with
-L3S mode and ipvlan2 with L2 mode are created based on them as
-figure (1). In this case, ipvlan_register_nf_hook() will be called to
-register nf hook which is needed by ipvlans in L3S mode in ns1 and value
-of ipvl_nf_hook_refcnt is set to 1.
+The gcc compiler translates on some architectures the 64-bit
+__builtin_clzll() function to a call to the libgcc function __clzdi2(),
+which should take a 64-bit parameter on 32- and 64-bit platforms.
 
-(1)
-           ns1                           ns2
-      ------------                  ------------
+But in the current kernel code, the built-in __clzdi2() function is
+defined to operate (wrongly) on 32-bit parameters if BITS_PER_LONG ==
+32, thus the return values on 32-bit kernels are in the range from
+[0..31] instead of the expected [0..63] range.
 
-   veth1--ipvlan1 (L3S)
+This patch fixes the in-kernel functions __clzdi2() and __ctzdi2() to
+take a 64-bit parameter on 32-bit kernels as well, thus it makes the
+functions identical for 32- and 64-bit kernels.
 
-   veth3--ipvlan2 (L2)
+This bug went unnoticed since kernel 3.11 for over 10 years, and here
+are some possible reasons for that:
 
-(2)
-           ns1                           ns2
-      ------------                  ------------
+ a) Some architectures have assembly instructions to count the bits and
+    which are used instead of calling __clzdi2(), e.g. on x86 the bsr
+    instruction and on ppc cntlz is used. On such architectures the
+    wrong __clzdi2() implementation isn't used and as such the bug has
+    no effect and won't be noticed.
 
-   veth1--ipvlan1 (L3S)
+ b) Some architectures link to libgcc.a, and the in-kernel weak
+    functions get replaced by the correct 64-bit variants from libgcc.a.
 
-         ipvlan2 (L2)                  veth3
-     |                                  |
-     |------->-------->--------->--------
-                    migrate
+ c) __builtin_clzll() and __clzdi2() doesn't seem to be used in many
+    places in the kernel, and most likely only in uncritical functions,
+    e.g. when printing hex values via seq_put_hex_ll(). The wrong return
+    value will still print the correct number, but just in a wrong
+    formatting (e.g. with too many leading zeroes).
 
-When veth3 migrates from ns1 to ns2 as figure (2), veth3 will register in
-ns2 and calls call_netdevice_notifiers with NETDEV_REGISTER event:
+ d) 32-bit kernels aren't used that much any longer, so they are less
+    tested.
 
-dev_change_net_namespace
-    call_netdevice_notifiers
-        ipvlan_device_event
-            ipvlan_migrate_l3s_hook
-                ipvlan_register_nf_hook(newnet)      (I)
-                ipvlan_unregister_nf_hook(oldnet)    (II)
+A trivial testcase to verify if the currently running 32-bit kernel is
+affected by the bug is to look at the output of /proc/self/maps:
 
-In function ipvlan_migrate_l3s_hook(), ipvl_nf_hook_refcnt in ns1 is not 0
-since veth1 with ipvlan1 still in ns1, (I) and (II) will be called to
-register nf_hook in ns2 and unregister nf_hook in ns1. As a result,
-ipvl_nf_hook_refcnt in ns1 is decreased incorrectly and this in ns2
-is increased incorrectly. When the second net namespace is removed, a
-reference count leak warning in ipvlan_ns_exit() will be triggered.
+Here the kernel uses a correct implementation of __clzdi2():
 
-This patch add a check before ipvlan_migrate_l3s_hook() is called. The
-warning can be triggered as follows:
+  root@debian:~# cat /proc/self/maps
+  00010000-00019000 r-xp 00000000 08:05 787324     /usr/bin/cat
+  00019000-0001a000 rwxp 00009000 08:05 787324     /usr/bin/cat
+  0001a000-0003b000 rwxp 00000000 00:00 0          [heap]
+  f7551000-f770d000 r-xp 00000000 08:05 794765     /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
 
-$ ip netns add ns1
-$ ip netns add ns2
-$ ip netns exec ns1 ip link add veth1 type veth peer name veth2
-$ ip netns exec ns1 ip link add veth3 type veth peer name veth4
-$ ip netns exec ns1 ip link add ipv1 link veth1 type ipvlan mode l3s
-$ ip netns exec ns1 ip link add ipv2 link veth3 type ipvlan mode l2
-$ ip netns exec ns1 ip link set veth3 netns ns2
-$ ip net del ns2
+and this kernel uses the broken implementation of __clzdi2():
 
-Fixes: 3133822f5ac1 ("ipvlan: use pernet operations and restrict l3s hooks to master netns")
-Signed-off-by: Lu Wei <luwei32@huawei.com>
-Reviewed-by: Florian Westphal <fw@strlen.de>
-Link: https://lore.kernel.org/r/20230817145449.141827-1-luwei32@huawei.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+  root@debian:~# cat /proc/self/maps
+  0000000010000-0000000019000 r-xp 00000000 000000008:000000005 787324  /usr/bin/cat
+  0000000019000-000000001a000 rwxp 000000009000 000000008:000000005 787324  /usr/bin/cat
+  000000001a000-000000003b000 rwxp 00000000 00:00 0  [heap]
+  00000000f73d1000-00000000f758d000 r-xp 00000000 000000008:000000005 794765  /usr/lib/hppa-linux-gnu/libc.so.6
+  ...
+
+Signed-off-by: Helge Deller <deller@gmx.de>
+Fixes: 4df87bb7b6a22 ("lib: add weak clz/ctz functions")
+Cc: Chanho Min <chanho.min@lge.com>
+Cc: Geert Uytterhoeven <geert@linux-m68k.org>
+Cc: stable@vger.kernel.org # v3.11+
+Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ipvlan/ipvlan_main.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ lib/clz_ctz.c |   32 ++++++--------------------------
+ 1 file changed, 6 insertions(+), 26 deletions(-)
 
-diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
-index 3f43c253adaca..c199f0b465cd0 100644
---- a/drivers/net/ipvlan/ipvlan_main.c
-+++ b/drivers/net/ipvlan/ipvlan_main.c
-@@ -748,7 +748,8 @@ static int ipvlan_device_event(struct notifier_block *unused,
+--- a/lib/clz_ctz.c
++++ b/lib/clz_ctz.c
+@@ -30,36 +30,16 @@ int __weak __clzsi2(int val)
+ }
+ EXPORT_SYMBOL(__clzsi2);
  
- 		write_pnet(&port->pnet, newnet);
+-int __weak __clzdi2(long val);
+-int __weak __ctzdi2(long val);
+-#if BITS_PER_LONG == 32
+-
+-int __weak __clzdi2(long val)
++int __weak __clzdi2(u64 val);
++int __weak __clzdi2(u64 val)
+ {
+-	return 32 - fls((int)val);
++	return 64 - fls64(val);
+ }
+ EXPORT_SYMBOL(__clzdi2);
  
--		ipvlan_migrate_l3s_hook(oldnet, newnet);
-+		if (port->mode == IPVLAN_MODE_L3S)
-+			ipvlan_migrate_l3s_hook(oldnet, newnet);
- 		break;
- 	}
- 	case NETDEV_UNREGISTER:
--- 
-2.40.1
-
+-int __weak __ctzdi2(long val)
++int __weak __ctzdi2(u64 val);
++int __weak __ctzdi2(u64 val)
+ {
+-	return __ffs((u32)val);
++	return __ffs64(val);
+ }
+ EXPORT_SYMBOL(__ctzdi2);
+-
+-#elif BITS_PER_LONG == 64
+-
+-int __weak __clzdi2(long val)
+-{
+-	return 64 - fls64((u64)val);
+-}
+-EXPORT_SYMBOL(__clzdi2);
+-
+-int __weak __ctzdi2(long val)
+-{
+-	return __ffs64((u64)val);
+-}
+-EXPORT_SYMBOL(__ctzdi2);
+-
+-#else
+-#error BITS_PER_LONG not 32 or 64
+-#endif
 
 
