@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2365E78ABCE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F012B78AD11
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231530AbjH1Kee (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:34:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45932 "EHLO
+        id S231860AbjH1Kpt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231538AbjH1KeF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:05 -0400
+        with ESMTP id S231864AbjH1KpS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDB98129
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:48 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF3641A1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:44:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9D46F6131B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2886C433C9;
-        Mon, 28 Aug 2023 10:33:47 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 36523641FD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:44:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F4CC433C7;
+        Mon, 28 Aug 2023 10:44:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218828;
-        bh=23RGUJ9dGLhaVTh+jWynb8uo7aU4w8gXBHWbv/wsrG8=;
+        s=korg; t=1693219492;
+        bh=L0WJYFQQtHbmge/VBymJmHhUicKvnOSqBAHGFo5JTcg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Zm43TSpq0AAS+yT22anpBP3MKnPk1rsOQ2uB1fyCB9ZcdHybNktZFcXmeKrDri4CI
-         HtAAEzYrK+WVznyHKXZWR9MUIu8Vh6au7pFXAoedFAAZu4mwnNJcTaYmkZT7FNXFxJ
-         xtSTc3ePweSHQPzupp25Qsgk0RbNADfUblprOZKM=
+        b=pcqEOWrholWp5pOe1vnbocoBZZcn8atN1+7wQjrSKLNZkmRgM5dn95N35ihVBjI6V
+         UwOGrc36W0XYibmi4TtW3iPyp5SIXrZtFcvIR3goqMz2c56f72cff0JrjAdjbY7UkY
+         /ETHciFyMT11Z2+GSp9jiztXtkATmlMSCNRGhDx0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 6.1 081/122] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
-Date:   Mon, 28 Aug 2023 12:13:16 +0200
-Message-ID: <20230828101159.111914853@linuxfoundation.org>
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.15 16/89] fbdev: fix potential OOB read in fast_imageblit()
+Date:   Mon, 28 Aug 2023 12:13:17 +0200
+Message-ID: <20230828101150.713918880@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,60 +54,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-commit 421d467dc2d483175bad4fb76a31b9e5a3d744cf upstream.
+[ Upstream commit c2d22806aecb24e2de55c30a06e5d6eb297d161d ]
 
-When batadv_v_ogm_aggr_send is called for an inactive interface, the skb
-is silently dropped by batadv_v_ogm_send_to_if() but never freed causing
-the following memory leak:
+There is a potential OOB read at fast_imageblit, for
+"colortab[(*src >> 4)]" can become a negative value due to
+"const char *s = image->data, *src".
+This change makes sure the index for colortab always positive
+or zero.
 
-  unreferenced object 0xffff00000c164800 (size 512):
-    comm "kworker/u8:1", pid 2648, jiffies 4295122303 (age 97.656s)
-    hex dump (first 32 bytes):
-      00 80 af 09 00 00 ff ff e1 09 00 00 75 01 60 83  ............u.`.
-      1f 00 00 00 b8 00 00 00 15 00 05 00 da e3 d3 64  ...............d
-    backtrace:
-      [<0000000007ad20f6>] __kmalloc_track_caller+0x1a8/0x310
-      [<00000000d1029e55>] kmalloc_reserve.constprop.0+0x70/0x13c
-      [<000000008b9d4183>] __alloc_skb+0xec/0x1fc
-      [<00000000c7af5051>] __netdev_alloc_skb+0x48/0x23c
-      [<00000000642ee5f5>] batadv_v_ogm_aggr_send+0x50/0x36c
-      [<0000000088660bd7>] batadv_v_ogm_aggr_work+0x24/0x40
-      [<0000000042fc2606>] process_one_work+0x3b0/0x610
-      [<000000002f2a0b1c>] worker_thread+0xa0/0x690
-      [<0000000059fae5d4>] kthread+0x1fc/0x210
-      [<000000000c587d3a>] ret_from_fork+0x10/0x20
+Similar commit:
+https://patchwork.kernel.org/patch/11746067
 
-Free the skb in that case to fix this leak.
+Potential bug report:
+https://groups.google.com/g/syzkaller-bugs/c/9ubBXKeKXf4/m/k-QXy4UgAAAJ
 
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
 Cc: stable@vger.kernel.org
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Helge Deller <deller@gmx.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/batman-adv/bat_v_ogm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/video/fbdev/core/sysimgblt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -124,8 +124,10 @@ static void batadv_v_ogm_send_to_if(stru
- {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
- 
--	if (hard_iface->if_status != BATADV_IF_ACTIVE)
-+	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
-+		kfree_skb(skb);
- 		return;
-+	}
- 
- 	batadv_inc_counter(bat_priv, BATADV_CNT_MGMT_TX);
- 	batadv_add_counter(bat_priv, BATADV_CNT_MGMT_TX_BYTES,
+diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
+index 335e92b813fc4..665ef7a0a2495 100644
+--- a/drivers/video/fbdev/core/sysimgblt.c
++++ b/drivers/video/fbdev/core/sysimgblt.c
+@@ -189,7 +189,7 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
+ 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
+ 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
+ 	u32 bit_mask, eorx, shift;
+-	const char *s = image->data, *src;
++	const u8 *s = image->data, *src;
+ 	u32 *dst;
+ 	const u32 *tab;
+ 	size_t tablen;
+-- 
+2.40.1
+
 
 
