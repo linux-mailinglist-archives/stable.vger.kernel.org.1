@@ -2,53 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1AD4F78AC0E
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:37:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CA08678AAD0
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231486AbjH1Kgo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:36:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42204 "EHLO
+        id S229903AbjH1KZ2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:25:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231665AbjH1Kgb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:36:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC468130
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:36:27 -0700 (PDT)
+        with ESMTP id S229801AbjH1KYw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 050D3122
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:50 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8977163C55
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:36:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 99DAFC433C8;
-        Mon, 28 Aug 2023 10:36:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7CCC063A33
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 920C5C433C7;
+        Mon, 28 Aug 2023 10:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218987;
-        bh=p6m0ecwV0lDfVoFRe8+qxqIUYxrOsks0YMmOEsycRk4=;
+        s=korg; t=1693218288;
+        bh=esqAmAiMRzsWd7xD72Vu+Q7kd6QDVIHvTRA8QlztDuE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UD55Ik2RvI56LYdumEdBG7PP15IwIJcWS9UG6DbKSJxffLv5Ud6jeZMtEmvb6OGWK
-         53WCZQeKlwb6JBu4Ps4LTUW2JP0BXrZ2yVlCi57U6N8p5uJccmSVYC7xkG5HV2XksZ
-         +ctYyUllti5jjF7AgMSrr9OSE7v2puS8JZ9OJnVU=
+        b=v2BYcPuA7VoaSN46Eaz4r5eBxU81zUPpiIe1cKVeulDo+bZ/LN04OOjtpalIgLIoB
+         1s/GdB9DQCcSHXfJ13djYirVzik+LPyZyzIPjVALrLz+h55KakP6pknJRKBZEytdA1
+         KaEIKJRtI78DAAkqD/lfEznTowPCgCIYVBHrBN0c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Breathitt Gray <william.gray@linaro.org>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Matthias Kaehlcke <mka@chromium.org>,
+        Pavankumar Kondeti <quic_pkondeti@quicinc.com>,
+        Sandeep Maheswaram <quic_c_sanm@quicinc.com>,
+        Krishna Kurapati <quic_kriskura@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 031/158] iio: stx104: Move to addac subdirectory
+Subject: [PATCH 4.19 034/129] usb: dwc3: qcom: Add helper functions to enable,disable wake irqs
 Date:   Mon, 28 Aug 2023 12:12:08 +0200
-Message-ID: <20230828101158.393396227@linuxfoundation.org>
+Message-ID: <20230828101154.362522155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,121 +57,110 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: William Breathitt Gray <william.gray@linaro.org>
+From: Sandeep Maheswaram <quic_c_sanm@quicinc.com>
 
-[ Upstream commit 955c2aa9cff2dd07ff798ca8c883398731687972 ]
+[ Upstream commit 360e8230516de94d74d30c64f0cdcf228b8e8b67 ]
 
-The stx104 driver supports both ADC and DAC functionality.
+Adding helper functions to enable,disable wake irqs to make
+the code simple and readable.
 
-Signed-off-by: William Breathitt Gray <william.gray@linaro.org>
-Link: https://lore.kernel.org/r/20220815222921.138945-1-william.gray@linaro.org
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Stable-dep-of: 4f9b80aefb9e ("iio: addac: stx104: Fix race condition when converting analog-to-digital")
+Reviewed-by: Matthias Kaehlcke <mka@chromium.org>
+Reviewed-by: Pavankumar Kondeti <quic_pkondeti@quicinc.com>
+Signed-off-by: Sandeep Maheswaram <quic_c_sanm@quicinc.com>
+Signed-off-by: Krishna Kurapati <quic_kriskura@quicinc.com>
+Link: https://lore.kernel.org/r/1655094654-24052-4-git-send-email-quic_kriskura@quicinc.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: d2d69354226d ("USB: dwc3: qcom: fix NULL-deref on suspend")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- MAINTAINERS                         |  2 +-
- drivers/iio/adc/Kconfig             | 16 ----------------
- drivers/iio/adc/Makefile            |  1 -
- drivers/iio/addac/Kconfig           | 16 ++++++++++++++++
- drivers/iio/addac/Makefile          |  1 +
- drivers/iio/{adc => addac}/stx104.c |  0
- 6 files changed, 18 insertions(+), 18 deletions(-)
- rename drivers/iio/{adc => addac}/stx104.c (100%)
+ drivers/usb/dwc3/dwc3-qcom.c | 58 ++++++++++++++++--------------------
+ 1 file changed, 26 insertions(+), 32 deletions(-)
 
-diff --git a/MAINTAINERS b/MAINTAINERS
-index 34d3497f11772..2040c2f76dcf7 100644
---- a/MAINTAINERS
-+++ b/MAINTAINERS
-@@ -1101,7 +1101,7 @@ APEX EMBEDDED SYSTEMS STX104 IIO DRIVER
- M:	William Breathitt Gray <vilhelm.gray@gmail.com>
- L:	linux-iio@vger.kernel.org
- S:	Maintained
--F:	drivers/iio/adc/stx104.c
-+F:	drivers/iio/addac/stx104.c
+diff --git a/drivers/usb/dwc3/dwc3-qcom.c b/drivers/usb/dwc3/dwc3-qcom.c
+index 58e1bc3a77d80..cbf9286d4c46f 100644
+--- a/drivers/usb/dwc3/dwc3-qcom.c
++++ b/drivers/usb/dwc3/dwc3-qcom.c
+@@ -181,50 +181,44 @@ static bool dwc3_qcom_is_host(struct dwc3_qcom *qcom)
+ 	return dwc->xhci;
+ }
  
- APM DRIVER
- M:	Jiri Kosina <jikos@kernel.org>
-diff --git a/drivers/iio/adc/Kconfig b/drivers/iio/adc/Kconfig
-index cb57880842991..b39d5ad157449 100644
---- a/drivers/iio/adc/Kconfig
-+++ b/drivers/iio/adc/Kconfig
-@@ -840,22 +840,6 @@ config STMPE_ADC
- 	  Say yes here to build support for ST Microelectronics STMPE
- 	  built-in ADC block (stmpe811).
- 
--config STX104
--	tristate "Apex Embedded Systems STX104 driver"
--	depends on PC104 && X86
--	select ISA_BUS_API
--	select GPIOLIB
--	help
--	  Say yes here to build support for the Apex Embedded Systems STX104
--	  integrated analog PC/104 card.
--
--	  This driver supports the 16 channels of single-ended (8 channels of
--	  differential) analog inputs, 2 channels of analog output, 4 digital
--	  inputs, and 4 digital outputs provided by the STX104.
--
--	  The base port addresses for the devices may be configured via the base
--	  array module parameter.
--
- config SUN4I_GPADC
- 	tristate "Support for the Allwinner SoCs GPADC"
- 	depends on IIO
-diff --git a/drivers/iio/adc/Makefile b/drivers/iio/adc/Makefile
-index ef9cc485fb674..d0b11502102ed 100644
---- a/drivers/iio/adc/Makefile
-+++ b/drivers/iio/adc/Makefile
-@@ -72,7 +72,6 @@ obj-$(CONFIG_RCAR_GYRO_ADC) += rcar-gyroadc.o
- obj-$(CONFIG_ROCKCHIP_SARADC) += rockchip_saradc.o
- obj-$(CONFIG_SC27XX_ADC) += sc27xx_adc.o
- obj-$(CONFIG_SPEAR_ADC) += spear_adc.o
--obj-$(CONFIG_STX104) += stx104.o
- obj-$(CONFIG_SUN4I_GPADC) += sun4i-gpadc-iio.o
- obj-$(CONFIG_STM32_ADC_CORE) += stm32-adc-core.o
- obj-$(CONFIG_STM32_ADC) += stm32-adc.o
-diff --git a/drivers/iio/addac/Kconfig b/drivers/iio/addac/Kconfig
-index 2e64d7755d5ea..1f598670e84fb 100644
---- a/drivers/iio/addac/Kconfig
-+++ b/drivers/iio/addac/Kconfig
-@@ -5,4 +5,20 @@
- 
- menu "Analog to digital and digital to analog converters"
- 
-+config STX104
-+	tristate "Apex Embedded Systems STX104 driver"
-+	depends on PC104 && X86
-+	select ISA_BUS_API
-+	select GPIOLIB
-+	help
-+	  Say yes here to build support for the Apex Embedded Systems STX104
-+	  integrated analog PC/104 card.
++static void dwc3_qcom_enable_wakeup_irq(int irq)
++{
++	if (!irq)
++		return;
 +
-+	  This driver supports the 16 channels of single-ended (8 channels of
-+	  differential) analog inputs, 2 channels of analog output, 4 digital
-+	  inputs, and 4 digital outputs provided by the STX104.
++	enable_irq(irq);
++	enable_irq_wake(irq);
++}
 +
-+	  The base port addresses for the devices may be configured via the base
-+	  array module parameter.
++static void dwc3_qcom_disable_wakeup_irq(int irq)
++{
++	if (!irq)
++		return;
 +
- endmenu
-diff --git a/drivers/iio/addac/Makefile b/drivers/iio/addac/Makefile
-index b888b9ee12da0..8629145233544 100644
---- a/drivers/iio/addac/Makefile
-+++ b/drivers/iio/addac/Makefile
-@@ -4,3 +4,4 @@
- #
++	disable_irq_wake(irq);
++	disable_irq_nosync(irq);
++}
++
+ static void dwc3_qcom_disable_interrupts(struct dwc3_qcom *qcom)
+ {
+-	if (qcom->hs_phy_irq) {
+-		disable_irq_wake(qcom->hs_phy_irq);
+-		disable_irq_nosync(qcom->hs_phy_irq);
+-	}
++	dwc3_qcom_disable_wakeup_irq(qcom->hs_phy_irq);
  
- # When adding new entries keep the list in alphabetical order
-+obj-$(CONFIG_STX104) += stx104.o
-diff --git a/drivers/iio/adc/stx104.c b/drivers/iio/addac/stx104.c
-similarity index 100%
-rename from drivers/iio/adc/stx104.c
-rename to drivers/iio/addac/stx104.c
+-	if (qcom->dp_hs_phy_irq) {
+-		disable_irq_wake(qcom->dp_hs_phy_irq);
+-		disable_irq_nosync(qcom->dp_hs_phy_irq);
+-	}
++	dwc3_qcom_disable_wakeup_irq(qcom->dp_hs_phy_irq);
+ 
+-	if (qcom->dm_hs_phy_irq) {
+-		disable_irq_wake(qcom->dm_hs_phy_irq);
+-		disable_irq_nosync(qcom->dm_hs_phy_irq);
+-	}
++	dwc3_qcom_disable_wakeup_irq(qcom->dm_hs_phy_irq);
+ 
+-	if (qcom->ss_phy_irq) {
+-		disable_irq_wake(qcom->ss_phy_irq);
+-		disable_irq_nosync(qcom->ss_phy_irq);
+-	}
++	dwc3_qcom_disable_wakeup_irq(qcom->ss_phy_irq);
+ }
+ 
+ static void dwc3_qcom_enable_interrupts(struct dwc3_qcom *qcom)
+ {
+-	if (qcom->hs_phy_irq) {
+-		enable_irq(qcom->hs_phy_irq);
+-		enable_irq_wake(qcom->hs_phy_irq);
+-	}
++	dwc3_qcom_enable_wakeup_irq(qcom->hs_phy_irq);
+ 
+-	if (qcom->dp_hs_phy_irq) {
+-		enable_irq(qcom->dp_hs_phy_irq);
+-		enable_irq_wake(qcom->dp_hs_phy_irq);
+-	}
++	dwc3_qcom_enable_wakeup_irq(qcom->dp_hs_phy_irq);
+ 
+-	if (qcom->dm_hs_phy_irq) {
+-		enable_irq(qcom->dm_hs_phy_irq);
+-		enable_irq_wake(qcom->dm_hs_phy_irq);
+-	}
++	dwc3_qcom_enable_wakeup_irq(qcom->dm_hs_phy_irq);
+ 
+-	if (qcom->ss_phy_irq) {
+-		enable_irq(qcom->ss_phy_irq);
+-		enable_irq_wake(qcom->ss_phy_irq);
+-	}
++	dwc3_qcom_enable_wakeup_irq(qcom->ss_phy_irq);
+ }
+ 
+ static int dwc3_qcom_suspend(struct dwc3_qcom *qcom)
 -- 
 2.40.1
 
