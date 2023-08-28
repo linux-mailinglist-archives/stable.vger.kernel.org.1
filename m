@@ -2,53 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76B3378AA65
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7963378AC39
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:38:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231139AbjH1KVx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:21:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33402 "EHLO
+        id S231622AbjH1KiU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:38:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231158AbjH1KV0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:26 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD89BB9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:08 -0700 (PDT)
+        with ESMTP id S231638AbjH1Khw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:37:52 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80A2A93
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:37:49 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1895363728
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:55 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C25BC433C8;
-        Mon, 28 Aug 2023 10:20:54 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 1601163F42
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:37:49 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F108FC43395;
+        Mon, 28 Aug 2023 10:37:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218054;
-        bh=3uji408avfhbBtJcEga3DlPSbfRCyQZsoYS29qRfcOQ=;
+        s=korg; t=1693219068;
+        bh=ytXRXDtD0WFl8KRRrFTv6b1xsprDGdkSz5vSRJExV5E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=n7rJ/8A1CK4ssIJY/l0lBz8upowwqQ81ETiFVRW0xTKptd8c51q/xieKbmRJMrg/6
-         FIxHX6D2MQTLbei12NAZ/0sKI8MOI1pHT/lSEgZsVIDq0LZRC8gPQQ1zAA4kLe0/3Y
-         XgxVYujzzFqIncCUKRyyeopWttJRftVL6XAxVhsE=
+        b=Rc0qwxGyc089avYAl057ZzdpgVZm3t4VIXPYcdzZUkmYxoNCG5nxRdwwlpEamWrOh
+         sxR/BqFZjPcB90C7aasoLGDoMPu1MYqxR5KgZkJPaUXBgI1LGQ8lAGhUzs3cjTCIwT
+         6H/gXyD6PGPoQAd0T+9rhAvTeZI+T+IJ+bZN4qnQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Qais Yousef (Google)" <qyousef@layalina.io>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>
-Subject: [PATCH 6.4 079/129] cgroup/cpuset: Rename functions dealing with DEADLINE accounting
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Steffen Klassert <steffen.klassert@secunet.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 061/158] net: af_key: fix sadb_x_filter validation
 Date:   Mon, 28 Aug 2023 12:12:38 +0200
-Message-ID: <20230828101159.962991302@linuxfoundation.org>
+Message-ID: <20230828101159.352640582@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,68 +55,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Lin Ma <linma@zju.edu.cn>
 
-commit ad3a557daf6915296a43ef97a3e9c48e076c9dd8 upstream.
+[ Upstream commit 75065a8929069bc93181848818e23f147a73f83a ]
 
-rebuild_root_domains() and update_tasks_root_domain() have neutral
-names, but actually deal with DEADLINE bandwidth accounting.
+When running xfrm_state_walk_init(), the xfrm_address_filter being used
+is okay to have a splen/dplen that equals to sizeof(xfrm_address_t)<<3.
+This commit replaces >= to > to make sure the boundary checking is
+correct.
 
-Rename them to use 'dl_' prefix so that intent is more clear.
-
-No functional change.
-
-Suggested-by: Qais Yousef (Google) <qyousef@layalina.io>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 37bd22420f85 ("af_key: pfkey_dump needs parameter validation")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Signed-off-by: Steffen Klassert <steffen.klassert@secunet.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ net/key/af_key.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1066,7 +1066,7 @@ done:
- 	return ndoms;
- }
+diff --git a/net/key/af_key.c b/net/key/af_key.c
+index 1a33c46d9c894..ce844919b2eb3 100644
+--- a/net/key/af_key.c
++++ b/net/key/af_key.c
+@@ -1852,9 +1852,9 @@ static int pfkey_dump(struct sock *sk, struct sk_buff *skb, const struct sadb_ms
+ 	if (ext_hdrs[SADB_X_EXT_FILTER - 1]) {
+ 		struct sadb_x_filter *xfilter = ext_hdrs[SADB_X_EXT_FILTER - 1];
  
--static void update_tasks_root_domain(struct cpuset *cs)
-+static void dl_update_tasks_root_domain(struct cpuset *cs)
- {
- 	struct css_task_iter it;
- 	struct task_struct *task;
-@@ -1079,7 +1079,7 @@ static void update_tasks_root_domain(str
- 	css_task_iter_end(&it);
- }
- 
--static void rebuild_root_domains(void)
-+static void dl_rebuild_rd_accounting(void)
- {
- 	struct cpuset *cs = NULL;
- 	struct cgroup_subsys_state *pos_css;
-@@ -1107,7 +1107,7 @@ static void rebuild_root_domains(void)
- 
- 		rcu_read_unlock();
- 
--		update_tasks_root_domain(cs);
-+		dl_update_tasks_root_domain(cs);
- 
- 		rcu_read_lock();
- 		css_put(&cs->css);
-@@ -1121,7 +1121,7 @@ partition_and_rebuild_sched_domains(int
- {
- 	mutex_lock(&sched_domains_mutex);
- 	partition_sched_domains_locked(ndoms_new, doms_new, dattr_new);
--	rebuild_root_domains();
-+	dl_rebuild_rd_accounting();
- 	mutex_unlock(&sched_domains_mutex);
- }
- 
+-		if ((xfilter->sadb_x_filter_splen >=
++		if ((xfilter->sadb_x_filter_splen >
+ 			(sizeof(xfrm_address_t) << 3)) ||
+-		    (xfilter->sadb_x_filter_dplen >=
++		    (xfilter->sadb_x_filter_dplen >
+ 			(sizeof(xfrm_address_t) << 3))) {
+ 			mutex_unlock(&pfk->dump_lock);
+ 			return -EINVAL;
+-- 
+2.40.1
+
 
 
