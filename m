@@ -2,52 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97C6078AB37
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:29:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41DDE78ABCC
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231305AbjH1K3N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:29:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50728 "EHLO
+        id S231511AbjH1Ked (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231311AbjH1K2o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:28:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6415FA7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:28:42 -0700 (PDT)
+        with ESMTP id S231508AbjH1KeB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:01 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1CFC1BD
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:33:39 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id ECB9B63BFD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:28:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C53CC433C7;
-        Mon, 28 Aug 2023 10:28:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 87D7261DAA
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:33:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A15DC433C8;
+        Mon, 28 Aug 2023 10:33:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218521;
-        bh=iCBFNabSWzdWVUzMAi2GZ7mh6/oHmH62Zdd/2kZYnX0=;
+        s=korg; t=1693218817;
+        bh=dOfXHCEYn5z54YVriaSvmmkLBUzR8qBLe8ywrE4aWm4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DEohYPp6APqNI/rNlMn953GycGpcddiLxJMajplpiPj379vljaLCynCyzgJSzICxm
-         Kw98yKIeSBTo+4Xg/6NpczBZQoXF3KRLvPfwIjFxUwyo6/3g+VX6n8oOYJtpJgtFR3
-         7asf8AMybdfGDux826inkqkLF6A9TcVZ6237YjE0=
+        b=jJ4IX5Fm9kRLyj08whsVVaFrqW2ygX0I1g9C+vs2zHuvDOGqYB8mSp8CCod2yahHY
+         c5qQezeqlkk2Fbg+fUobDwAqPAt++hcT5RKSAcXIanEXVB4SqLyH5kwhiOIkdg0wu3
+         mRGzhpxDubGde9Rd2/ImFgkf4eLf9+MzK6XuhKIA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Remi Pommarel <repk@triplefau.lt>,
-        Sven Eckelmann <sven@narfation.org>,
-        Simon Wunderlich <sw@simonwunderlich.de>
-Subject: [PATCH 4.19 116/129] batman-adv: Fix batadv_v_ogm_aggr_send memory leak
+        patches@lists.linux.dev, Lei Wang <lei4.wang@intel.com>,
+        Rick Edgecombe <rick.p.edgecombe@intel.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Lijun Pan <lijun.pan@intel.com>,
+        Sohil Mehta <sohil.mehta@intel.com>
+Subject: [PATCH 6.1 095/122] x86/fpu: Invalidate FPU state correctly on exec()
 Date:   Mon, 28 Aug 2023 12:13:30 +0200
-Message-ID: <20230828101157.468755706@linuxfoundation.org>
+Message-ID: <20230828101159.557302308@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -55,60 +58,136 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Remi Pommarel <repk@triplefau.lt>
+From: Rick Edgecombe <rick.p.edgecombe@intel.com>
 
-commit 421d467dc2d483175bad4fb76a31b9e5a3d744cf upstream.
+commit 1f69383b203e28cf8a4ca9570e572da1699f76cd upstream.
 
-When batadv_v_ogm_aggr_send is called for an inactive interface, the skb
-is silently dropped by batadv_v_ogm_send_to_if() but never freed causing
-the following memory leak:
+The thread flag TIF_NEED_FPU_LOAD indicates that the FPU saved state is
+valid and should be reloaded when returning to userspace. However, the
+kernel will skip doing this if the FPU registers are already valid as
+determined by fpregs_state_valid(). The logic embedded there considers
+the state valid if two cases are both true:
 
-  unreferenced object 0xffff00000c164800 (size 512):
-    comm "kworker/u8:1", pid 2648, jiffies 4295122303 (age 97.656s)
-    hex dump (first 32 bytes):
-      00 80 af 09 00 00 ff ff e1 09 00 00 75 01 60 83  ............u.`.
-      1f 00 00 00 b8 00 00 00 15 00 05 00 da e3 d3 64  ...............d
-    backtrace:
-      [<0000000007ad20f6>] __kmalloc_track_caller+0x1a8/0x310
-      [<00000000d1029e55>] kmalloc_reserve.constprop.0+0x70/0x13c
-      [<000000008b9d4183>] __alloc_skb+0xec/0x1fc
-      [<00000000c7af5051>] __netdev_alloc_skb+0x48/0x23c
-      [<00000000642ee5f5>] batadv_v_ogm_aggr_send+0x50/0x36c
-      [<0000000088660bd7>] batadv_v_ogm_aggr_work+0x24/0x40
-      [<0000000042fc2606>] process_one_work+0x3b0/0x610
-      [<000000002f2a0b1c>] worker_thread+0xa0/0x690
-      [<0000000059fae5d4>] kthread+0x1fc/0x210
-      [<000000000c587d3a>] ret_from_fork+0x10/0x20
+  1: fpu_fpregs_owner_ctx points to the current tasks FPU state
+  2: the last CPU the registers were live in was the current CPU.
 
-Free the skb in that case to fix this leak.
+This is usually correct logic. A CPU’s fpu_fpregs_owner_ctx is set to
+the current FPU during the fpregs_restore_userregs() operation, so it
+indicates that the registers have been restored on this CPU. But this
+alone doesn’t preclude that the task hasn’t been rescheduled to a
+different CPU, where the registers were modified, and then back to the
+current CPU. To verify that this was not the case the logic relies on the
+second condition. So the assumption is that if the registers have been
+restored, AND they haven’t had the chance to be modified (by being
+loaded on another CPU), then they MUST be valid on the current CPU.
 
+Besides the lazy FPU optimizations, the other cases where the FPU
+registers might not be valid are when the kernel modifies the FPU register
+state or the FPU saved buffer. In this case the operation modifying the
+FPU state needs to let the kernel know the correspondence has been
+broken. The comment in “arch/x86/kernel/fpu/context.h” has:
+/*
+...
+ * If the FPU register state is valid, the kernel can skip restoring the
+ * FPU state from memory.
+ *
+ * Any code that clobbers the FPU registers or updates the in-memory
+ * FPU state for a task MUST let the rest of the kernel know that the
+ * FPU registers are no longer valid for this task.
+ *
+ * Either one of these invalidation functions is enough. Invalidate
+ * a resource you control: CPU if using the CPU for something else
+ * (with preemption disabled), FPU for the current task, or a task that
+ * is prevented from running by the current task.
+ */
+
+However, this is not completely true. When the kernel modifies the
+registers or saved FPU state, it can only rely on
+__fpu_invalidate_fpregs_state(), which wipes the FPU’s last_cpu
+tracking. The exec path instead relies on fpregs_deactivate(), which sets
+the CPU’s FPU context to NULL. This was observed to fail to restore the
+reset FPU state to the registers when returning to userspace in the
+following scenario:
+
+1. A task is executing in userspace on CPU0
+	- CPU0’s FPU context points to tasks
+	- fpu->last_cpu=CPU0
+
+2. The task exec()’s
+
+3. While in the kernel the task is preempted
+	- CPU0 gets a thread executing in the kernel (such that no other
+		FPU context is activated)
+	- Scheduler sets task’s fpu->last_cpu=CPU0 when scheduling out
+
+4. Task is migrated to CPU1
+
+5. Continuing the exec(), the task gets to
+   fpu_flush_thread()->fpu_reset_fpregs()
+	- Sets CPU1’s fpu context to NULL
+	- Copies the init state to the task’s FPU buffer
+	- Sets TIF_NEED_FPU_LOAD on the task
+
+6. The task reschedules back to CPU0 before completing the exec() and
+   returning to userspace
+	- During the reschedule, scheduler finds TIF_NEED_FPU_LOAD is set
+	- Skips saving the registers and updating task’s fpu→last_cpu,
+	  because TIF_NEED_FPU_LOAD is the canonical source.
+
+7. Now CPU0’s FPU context is still pointing to the task’s, and
+   fpu->last_cpu is still CPU0. So fpregs_state_valid() returns true even
+   though the reset FPU state has not been restored.
+
+So the root cause is that exec() is doing the wrong kind of invalidate. It
+should reset fpu->last_cpu via __fpu_invalidate_fpregs_state(). Further,
+fpu__drop() doesn't really seem appropriate as the task (and FPU) are not
+going away, they are just getting reset as part of an exec. So switch to
+__fpu_invalidate_fpregs_state().
+
+Also, delete the misleading comment that says that either kind of
+invalidate will be enough, because it’s not always the case.
+
+Fixes: 33344368cb08 ("x86/fpu: Clean up the fpu__clear() variants")
+Reported-by: Lei Wang <lei4.wang@intel.com>
+Signed-off-by: Rick Edgecombe <rick.p.edgecombe@intel.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Lijun Pan <lijun.pan@intel.com>
+Reviewed-by: Sohil Mehta <sohil.mehta@intel.com>
+Acked-by: Lijun Pan <lijun.pan@intel.com>
 Cc: stable@vger.kernel.org
-Fixes: 0da0035942d4 ("batman-adv: OGMv2 - add basic infrastructure")
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Simon Wunderlich <sw@simonwunderlich.de>
+Link: https://lore.kernel.org/r/20230818170305.502891-1-rick.p.edgecombe@intel.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/batman-adv/bat_v_ogm.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/x86/kernel/fpu/context.h |    3 +--
+ arch/x86/kernel/fpu/core.c    |    2 +-
+ 2 files changed, 2 insertions(+), 3 deletions(-)
 
---- a/net/batman-adv/bat_v_ogm.c
-+++ b/net/batman-adv/bat_v_ogm.c
-@@ -119,8 +119,10 @@ static void batadv_v_ogm_send_to_if(stru
- {
- 	struct batadv_priv *bat_priv = netdev_priv(hard_iface->soft_iface);
+--- a/arch/x86/kernel/fpu/context.h
++++ b/arch/x86/kernel/fpu/context.h
+@@ -19,8 +19,7 @@
+  * FPU state for a task MUST let the rest of the kernel know that the
+  * FPU registers are no longer valid for this task.
+  *
+- * Either one of these invalidation functions is enough. Invalidate
+- * a resource you control: CPU if using the CPU for something else
++ * Invalidate a resource you control: CPU if using the CPU for something else
+  * (with preemption disabled), FPU for the current task, or a task that
+  * is prevented from running by the current task.
+  */
+--- a/arch/x86/kernel/fpu/core.c
++++ b/arch/x86/kernel/fpu/core.c
+@@ -679,7 +679,7 @@ static void fpu_reset_fpregs(void)
+ 	struct fpu *fpu = &current->thread.fpu;
  
--	if (hard_iface->if_status != BATADV_IF_ACTIVE)
-+	if (hard_iface->if_status != BATADV_IF_ACTIVE) {
-+		kfree_skb(skb);
- 		return;
-+	}
- 
- 	batadv_inc_counter(bat_priv, BATADV_CNT_MGMT_TX);
- 	batadv_add_counter(bat_priv, BATADV_CNT_MGMT_TX_BYTES,
+ 	fpregs_lock();
+-	fpu__drop(fpu);
++	__fpu_invalidate_fpregs_state(fpu);
+ 	/*
+ 	 * This does not change the actual hardware registers. It just
+ 	 * resets the memory image and sets TIF_NEED_FPU_LOAD so a
 
 
