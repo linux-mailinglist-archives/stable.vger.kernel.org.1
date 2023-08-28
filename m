@@ -2,52 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B304778A9FA
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB56A78ABD8
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:35:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230424AbjH1KR5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:17:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
+        id S231569AbjH1Kem (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:34:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230420AbjH1KR3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:29 -0400
+        with ESMTP id S231637AbjH1KeV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:34:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA89E198
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:14 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C67BA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:34:19 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 58A7F613F8
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6E0B1C433C9;
-        Mon, 28 Aug 2023 10:17:13 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id EF0E263CE4
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:34:18 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0992EC433C8;
+        Mon, 28 Aug 2023 10:34:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217833;
-        bh=ujLExOIIbhAws6yZlcipBu4aAVRnI8x3H6NxpZbPeuY=;
+        s=korg; t=1693218858;
+        bh=nGXoV96PpPH5mCgYsTY1PoLzc77VQon832HbgP+9xKU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uODE7Gd+VVvq1D6Le/PB1XuR1vsnlJp9AyrOAwXK2riFgykiKEgp8TsG31X+b5FxP
-         /6n8eB8u3ItOOesNoo4dL1+XKOMVkTgVV4eTNhiQ86P5jqKZTsfToHflYGCUV/n5x9
-         DvYMglg9vjtPz2dTbsfsfnnuqT+1CaljxWRCcMJw=
+        b=YgRWpinGwspwIt0Ysk2sYU7uDmc1UwgvjqhkHUguRSkpigtVdr7dddBOHJ/K+ySYo
+         Dgna5zObbJeIbcbss00w0c6rm8dYOpo1H2aa8rTqSIL2vZLCUx0bbaHbL7PF1TLqXu
+         jElAcamC+7+JRy6QC+lFFKXlKOJxvfJTMBnmA82Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
-        Rob Clark <robdclark@chromium.org>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 57/57] dma-buf/sw_sync: Avoid recursive lock during fence signal
+        syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 6.1 082/122] batman-adv: Hold rtnl lock during MTU update via netlink
 Date:   Mon, 28 Aug 2023 12:13:17 +0200
-Message-ID: <20230828101146.410338460@linuxfoundation.org>
+Message-ID: <20230828101159.146200801@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -58,82 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Sven Eckelmann <sven@narfation.org>
 
-[ Upstream commit e531fdb5cd5ee2564b7fe10c8a9219e2b2fac61e ]
+commit 987aae75fc1041072941ffb622b45ce2359a99b9 upstream.
 
-If a signal callback releases the sw_sync fence, that will trigger a
-deadlock as the timeline_fence_release recurses onto the fence->lock
-(used both for signaling and the the timeline tree).
+The automatic recalculation of the maximum allowed MTU is usually triggered
+by code sections which are already rtnl lock protected by callers outside
+of batman-adv. But when the fragmentation setting is changed via
+batman-adv's own batadv genl family, then the rtnl lock is not yet taken.
 
-To avoid that, temporarily hold an extra reference to the signalled
-fences until after we drop the lock.
+But dev_set_mtu requires that the caller holds the rtnl lock because it
+uses netdevice notifiers. And this code will then fail the check for this
+lock:
 
-(This is an alternative implementation of https://patchwork.kernel.org/patch/11664717/
-which avoids some potential UAF issues with the original patch.)
+  RTNL: assertion failed at net/core/dev.c (1953)
 
-v2: Remove now obsolete comment, use list_move_tail() and
-    list_del_init()
-
-Reported-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-Fixes: d3c6dd1fb30d ("dma-buf/sw_sync: Synchronize signal vs syncpt free")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230818145939.39697-1-robdclark@gmail.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com
+Fixes: c6a953cce8d0 ("batman-adv: Trigger events for auto adjusted MTU")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230821-batadv-missing-mtu-rtnl-lock-v1-1-1c5a7bfe861e@narfation.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/dma-buf/sw_sync.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ net/batman-adv/netlink.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
-index 114b36674af42..29a4e2bb61f03 100644
---- a/drivers/dma-buf/sw_sync.c
-+++ b/drivers/dma-buf/sw_sync.c
-@@ -201,6 +201,7 @@ static const struct dma_fence_ops timeline_fence_ops = {
-  */
- static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
- {
-+	LIST_HEAD(signalled);
- 	struct sync_pt *pt, *next;
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -495,7 +495,10 @@ static int batadv_netlink_set_mesh(struc
+ 		attr = info->attrs[BATADV_ATTR_FRAGMENTATION_ENABLED];
  
- 	trace_sync_timeline(obj);
-@@ -213,21 +214,20 @@ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
- 		if (!timeline_fence_signaled(&pt->base))
- 			break;
- 
--		list_del_init(&pt->link);
-+		dma_fence_get(&pt->base);
+ 		atomic_set(&bat_priv->fragmentation, !!nla_get_u8(attr));
 +
-+		list_move_tail(&pt->link, &signalled);
- 		rb_erase(&pt->node, &obj->pt_tree);
- 
--		/*
--		 * A signal callback may release the last reference to this
--		 * fence, causing it to be freed. That operation has to be
--		 * last to avoid a use after free inside this loop, and must
--		 * be after we remove the fence from the timeline in order to
--		 * prevent deadlocking on timeline->lock inside
--		 * timeline_fence_release().
--		 */
- 		dma_fence_signal_locked(&pt->base);
++		rtnl_lock();
+ 		batadv_update_min_mtu(bat_priv->soft_iface);
++		rtnl_unlock();
  	}
  
- 	spin_unlock_irq(&obj->lock);
-+
-+	list_for_each_entry_safe(pt, next, &signalled, link) {
-+		list_del_init(&pt->link);
-+		dma_fence_put(&pt->base);
-+	}
- }
- 
- /**
--- 
-2.40.1
-
+ 	if (info->attrs[BATADV_ATTR_GW_BANDWIDTH_DOWN]) {
 
 
