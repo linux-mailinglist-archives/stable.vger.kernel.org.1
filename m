@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A3D778AB07
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EF8678AC72
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:40:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231283AbjH1K1F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:27:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49490 "EHLO
+        id S231707AbjH1KkA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:40:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231312AbjH1K0s (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:26:48 -0400
+        with ESMTP id S231696AbjH1Kjm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:39:42 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0429DDC
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:26:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91C2BA7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:39:40 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 86DD162FAD
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:26:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 95DBFC433C7;
-        Mon, 28 Aug 2023 10:26:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2753D63FF9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:39:40 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A30BC433CA;
+        Mon, 28 Aug 2023 10:39:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218405;
-        bh=UzWPPFglri7Fszo/1RAkwjU7ydSsf18YWwVP9VZL4Lw=;
+        s=korg; t=1693219179;
+        bh=xfSQaXN/l2azzKSuvt5eTmYIXVwKUglpch4q1BWw0/o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CCYtpL6hluxQYZ7VTd2B15dFgU8KF2aSIAPHomajXc/34S1u7JeqN3crhb3Y1n9qk
-         1TVKgqt51SH+1gohiPaTMn70OUCXivpu/XIuUnouxgx+FzGF4qQnsxSaH9ccU+3ZZx
-         9T7vsk0YDVE1Ek6axG/VcIvwDkQYefcoFtuRpoHg=
+        b=W4ESri3ZasXujN6QWoQp7g1Evzw46W1gJkaiDuoPnmt1cdvZEGeRw35qHz5g/RHNJ
+         2FNLjF7qC404U62dmEE3qX2U1XX12ii18TQrI7zMCYGgwGY109NL+6usLfSA5yazbm
+         BqTWoWwC+LnhxgN9ZjjuF4Pb9bsUttMXY1VwIOhk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "kernelci.org bot" <bot@kernelci.org>,
-        Tony Lindgren <tony@atomide.com>
-Subject: [PATCH 4.19 075/129] bus: ti-sysc: Flush posted write on enable before reset
+        patches@lists.linux.dev, Alfred Lee <l00g33k@gmail.com>,
+        Andrew Lunn <andrew@lunn.ch>, Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 072/158] net: dsa: mv88e6xxx: Wait for EEPROM done before HW reset
 Date:   Mon, 28 Aug 2023 12:12:49 +0200
-Message-ID: <20230828101156.100043904@linuxfoundation.org>
+Message-ID: <20230828101159.710904896@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Alfred Lee <l00g33k@gmail.com>
 
-commit 34539b442b3bc7d5bf10164750302b60b91f18a7 upstream.
+[ Upstream commit 23d775f12dcd23d052a4927195f15e970e27ab26 ]
 
-The am335x devices started producing boot errors for resetting musb module
-in because of subtle timing changes:
+If the switch is reset during active EEPROM transactions, as in
+just after an SoC reset after power up, the I2C bus transaction
+may be cut short leaving the EEPROM internal I2C state machine
+in the wrong state.  When the switch is reset again, the bad
+state machine state may result in data being read from the wrong
+memory location causing the switch to enter unexpected mode
+rendering it inoperational.
 
-Unhandled fault: external abort on non-linefetch (0x1008)
-...
-sysc_poll_reset_sysconfig from sysc_reset+0x109/0x12
-sysc_reset from sysc_probe+0xa99/0xeb0
-...
-
-The fix is to flush posted write after enable before reset during
-probe. Note that some devices also need to specify the delay after enable
-with ti,sysc-delay-us, but this is not needed for musb on am335x based on
-my tests.
-
-Reported-by: kernelci.org bot <bot@kernelci.org>
-Closes: https://storage.kernelci.org/next/master/next-20230614/arm/multi_v7_defconfig+CONFIG_THUMB2_KERNEL=y/gcc-10/lab-cip/baseline-beaglebone-black.html
-Fixes: 596e7955692b ("bus: ti-sysc: Add support for software reset")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a3dcb3e7e70c ("net: dsa: mv88e6xxx: Wait for EEPROM done after HW reset")
+Signed-off-by: Alfred Lee <l00g33k@gmail.com>
+Reviewed-by: Andrew Lunn <andrew@lunn.ch>
+Link: https://lore.kernel.org/r/20230815001323.24739-1-l00g33k@gmail.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c |    2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/dsa/mv88e6xxx/chip.c | 8 ++++++++
+ 1 file changed, 8 insertions(+)
 
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -978,6 +978,8 @@ static int sysc_reset(struct sysc *ddata
- 	val = sysc_read(ddata, offset);
- 	val |= (0x1 << ddata->cap->regbits->srst_shift);
- 	sysc_write(ddata, offset, val);
-+	/* Flush posted write */
-+	val = sysc_read_sysconfig(ddata);
+diff --git a/drivers/net/dsa/mv88e6xxx/chip.c b/drivers/net/dsa/mv88e6xxx/chip.c
+index 393ee145ae066..ca705a0e0961c 100644
+--- a/drivers/net/dsa/mv88e6xxx/chip.c
++++ b/drivers/net/dsa/mv88e6xxx/chip.c
+@@ -2143,6 +2143,14 @@ static void mv88e6xxx_hardware_reset(struct mv88e6xxx_chip *chip)
  
- 	/* Poll on reset status */
- 	offset = ddata->offsets[SYSC_SYSSTATUS];
+ 	/* If there is a GPIO connected to the reset pin, toggle it */
+ 	if (gpiod) {
++		/* If the switch has just been reset and not yet completed
++		 * loading EEPROM, the reset may interrupt the I2C transaction
++		 * mid-byte, causing the first EEPROM read after the reset
++		 * from the wrong location resulting in the switch booting
++		 * to wrong mode and inoperable.
++		 */
++		mv88e6xxx_g1_wait_eeprom_done(chip);
++
+ 		gpiod_set_value_cansleep(gpiod, 1);
+ 		usleep_range(10000, 20000);
+ 		gpiod_set_value_cansleep(gpiod, 0);
+-- 
+2.40.1
+
 
 
