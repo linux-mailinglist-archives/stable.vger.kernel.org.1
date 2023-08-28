@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE8E378ACD8
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:43:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 223CD78AD9B
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229704AbjH1KnJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:43:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56270 "EHLO
+        id S232111AbjH1Ktj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:49:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53850 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231886AbjH1KnF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:05 -0400
+        with ESMTP id S232241AbjH1Kt3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:49:29 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C637195
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:40 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71F42E7A
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:09 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1C152640C3
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29E80C433C7;
-        Mon, 28 Aug 2023 10:42:38 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 69E43643EE
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A3AEC43397;
+        Mon, 28 Aug 2023 10:49:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219359;
-        bh=duFgPvrWy6mNElaLtuxhdeFR6WdKaGlGZRs7FZUktXs=;
+        s=korg; t=1693219747;
+        bh=RgDtkI8CgWFLlxJ5HN39BqA++7DkRnxWV7wggnfAHRo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=K1CSZSrwQeyqq8hEZo3wKX1Ytm5dGceYFGxK9wc1HsoIgZPk10svedbpCKODmWgqs
-         IxAx2zIsduOPAbfrQSXwQuphu/pspETm9+1DnaP84IzyFnKImn974+DqWpFGJidnp2
-         3EcgoYPu2mi6B2eqtPw9V/HsLjiqsqEK2lBNfvT4=
+        b=WGAAgihqny3BZigxGt8Ska6DbTAli3l3g+ATDk7eFqzmmO1ecfKNkC/HK7A9XCo+9
+         c96gGunXwYZlXAw6X0X9ke6VBm+zHE8Ja2yLTMmE/4Pi2aLazmi4nfnrNnlnAo33rS
+         iDe+9Eb/BMQd77/o4nrr3pgWAPcWDugj08lN++Yg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Stephen Boyd <sboyd@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 156/158] clk: Fix undefined reference to `clk_rate_exclusive_{get,put}
-Date:   Mon, 28 Aug 2023 12:14:13 +0200
-Message-ID: <20230828101203.029856913@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH 5.10 57/84] of: dynamic: Refactor action prints to not use "%pOF" inside devtree_lock
+Date:   Mon, 28 Aug 2023 12:14:14 +0200
+Message-ID: <20230828101151.190863012@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,150 +55,118 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Rob Herring <robh@kernel.org>
 
-[ Upstream commit 2746f13f6f1df7999001d6595b16f789ecc28ad1 ]
+commit 914d9d831e6126a6e7a92e27fcfaa250671be42c upstream.
 
-The COMMON_CLK config is not enabled in some of the architectures.
-This causes below build issues:
+While originally it was fine to format strings using "%pOF" while
+holding devtree_lock, this now causes a deadlock.  Lockdep reports:
 
-pwm-rz-mtu3.c:(.text+0x114):
-undefined reference to `clk_rate_exclusive_put'
-pwm-rz-mtu3.c:(.text+0x32c):
-undefined reference to `clk_rate_exclusive_get'
+    of_get_parent from of_fwnode_get_parent+0x18/0x24
+    ^^^^^^^^^^^^^
+    of_fwnode_get_parent from fwnode_count_parents+0xc/0x28
+    fwnode_count_parents from fwnode_full_name_string+0x18/0xac
+    fwnode_full_name_string from device_node_string+0x1a0/0x404
+    device_node_string from pointer+0x3c0/0x534
+    pointer from vsnprintf+0x248/0x36c
+    vsnprintf from vprintk_store+0x130/0x3b4
 
-Fix these issues by moving clk_rate_exclusive_{get,put} inside COMMON_CLK
-code block, as clk.c is enabled by COMMON_CLK.
+Fix this by moving the printing in __of_changeset_entry_apply() outside
+the lock. As the only difference in the multiple prints is the action
+name, use the existing "action_names" to refactor the prints into a
+single print.
 
-Fixes: 55e9b8b7b806 ("clk: add clk_rate_exclusive api")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/all/202307251752.vLfmmhYm-lkp@intel.com/
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20230725175140.361479-1-biju.das.jz@bp.renesas.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: a92eb7621b9fb2c2 ("lib/vsprintf: Make use of fwnode API to obtain node names and separators")
+Cc: stable@vger.kernel.org
+Reported-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/20230801-dt-changeset-fixes-v3-2-5f0410e007dd@kernel.org
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/clk.h | 80 ++++++++++++++++++++++-----------------------
- 1 file changed, 40 insertions(+), 40 deletions(-)
+ drivers/of/dynamic.c |   31 +++++++++----------------------
+ 1 file changed, 9 insertions(+), 22 deletions(-)
 
-diff --git a/include/linux/clk.h b/include/linux/clk.h
-index 87730337e28f8..562859ee24f43 100644
---- a/include/linux/clk.h
-+++ b/include/linux/clk.h
-@@ -172,6 +172,39 @@ int clk_get_scaled_duty_cycle(struct clk *clk, unsigned int scale);
-  */
- bool clk_is_match(const struct clk *p, const struct clk *q);
- 
-+/**
-+ * clk_rate_exclusive_get - get exclusivity over the rate control of a
-+ *                          producer
-+ * @clk: clock source
-+ *
-+ * This function allows drivers to get exclusive control over the rate of a
-+ * provider. It prevents any other consumer to execute, even indirectly,
-+ * opereation which could alter the rate of the provider or cause glitches
-+ *
-+ * If exlusivity is claimed more than once on clock, even by the same driver,
-+ * the rate effectively gets locked as exclusivity can't be preempted.
-+ *
-+ * Must not be called from within atomic context.
-+ *
-+ * Returns success (0) or negative errno.
-+ */
-+int clk_rate_exclusive_get(struct clk *clk);
-+
-+/**
-+ * clk_rate_exclusive_put - release exclusivity over the rate control of a
-+ *                          producer
-+ * @clk: clock source
-+ *
-+ * This function allows drivers to release the exclusivity it previously got
-+ * from clk_rate_exclusive_get()
-+ *
-+ * The caller must balance the number of clk_rate_exclusive_get() and
-+ * clk_rate_exclusive_put() calls.
-+ *
-+ * Must not be called from within atomic context.
-+ */
-+void clk_rate_exclusive_put(struct clk *clk);
-+
- #else
- 
- static inline int clk_notifier_register(struct clk *clk,
-@@ -218,6 +251,13 @@ static inline bool clk_is_match(const struct clk *p, const struct clk *q)
- 	return p == q;
+--- a/drivers/of/dynamic.c
++++ b/drivers/of/dynamic.c
+@@ -63,15 +63,14 @@ int of_reconfig_notifier_unregister(stru
  }
+ EXPORT_SYMBOL_GPL(of_reconfig_notifier_unregister);
  
-+static inline int clk_rate_exclusive_get(struct clk *clk)
-+{
-+	return 0;
-+}
-+
-+static inline void clk_rate_exclusive_put(struct clk *clk) {}
-+
- #endif
+-#ifdef DEBUG
+-const char *action_names[] = {
++static const char *action_names[] = {
++	[0] = "INVALID",
+ 	[OF_RECONFIG_ATTACH_NODE] = "ATTACH_NODE",
+ 	[OF_RECONFIG_DETACH_NODE] = "DETACH_NODE",
+ 	[OF_RECONFIG_ADD_PROPERTY] = "ADD_PROPERTY",
+ 	[OF_RECONFIG_REMOVE_PROPERTY] = "REMOVE_PROPERTY",
+ 	[OF_RECONFIG_UPDATE_PROPERTY] = "UPDATE_PROPERTY",
+ };
+-#endif
  
- /**
-@@ -530,38 +570,6 @@ struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id);
-  */
- struct clk *devm_get_clk_from_child(struct device *dev,
- 				    struct device_node *np, const char *con_id);
--/**
-- * clk_rate_exclusive_get - get exclusivity over the rate control of a
-- *                          producer
-- * @clk: clock source
-- *
-- * This function allows drivers to get exclusive control over the rate of a
-- * provider. It prevents any other consumer to execute, even indirectly,
-- * opereation which could alter the rate of the provider or cause glitches
-- *
-- * If exlusivity is claimed more than once on clock, even by the same driver,
-- * the rate effectively gets locked as exclusivity can't be preempted.
-- *
-- * Must not be called from within atomic context.
-- *
-- * Returns success (0) or negative errno.
-- */
--int clk_rate_exclusive_get(struct clk *clk);
--
--/**
-- * clk_rate_exclusive_put - release exclusivity over the rate control of a
-- *                          producer
-- * @clk: clock source
-- *
-- * This function allows drivers to release the exclusivity it previously got
-- * from clk_rate_exclusive_get()
-- *
-- * The caller must balance the number of clk_rate_exclusive_get() and
-- * clk_rate_exclusive_put() calls.
-- *
-- * Must not be called from within atomic context.
-- */
--void clk_rate_exclusive_put(struct clk *clk);
- 
- /**
-  * clk_enable - inform the system when the clock source should be running.
-@@ -918,14 +926,6 @@ static inline void clk_bulk_put_all(int num_clks, struct clk_bulk_data *clks) {}
- 
- static inline void devm_clk_put(struct device *dev, struct clk *clk) {}
- 
--
--static inline int clk_rate_exclusive_get(struct clk *clk)
--{
--	return 0;
--}
--
--static inline void clk_rate_exclusive_put(struct clk *clk) {}
--
- static inline int clk_enable(struct clk *clk)
+ int of_reconfig_notify(unsigned long action, struct of_reconfig_data *p)
  {
- 	return 0;
--- 
-2.40.1
-
+@@ -589,21 +588,9 @@ static int __of_changeset_entry_apply(st
+ 		}
+ 
+ 		ret = __of_add_property(ce->np, ce->prop);
+-		if (ret) {
+-			pr_err("changeset: add_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 	case OF_RECONFIG_REMOVE_PROPERTY:
+ 		ret = __of_remove_property(ce->np, ce->prop);
+-		if (ret) {
+-			pr_err("changeset: remove_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 
+ 	case OF_RECONFIG_UPDATE_PROPERTY:
+@@ -617,20 +604,17 @@ static int __of_changeset_entry_apply(st
+ 		}
+ 
+ 		ret = __of_update_property(ce->np, ce->prop, &old_prop);
+-		if (ret) {
+-			pr_err("changeset: update_property failed @%pOF/%s\n",
+-				ce->np,
+-				ce->prop->name);
+-			break;
+-		}
+ 		break;
+ 	default:
+ 		ret = -EINVAL;
+ 	}
+ 	raw_spin_unlock_irqrestore(&devtree_lock, flags);
+ 
+-	if (ret)
++	if (ret) {
++		pr_err("changeset: apply failed: %-15s %pOF:%s\n",
++		       action_names[ce->action], ce->np, ce->prop->name);
+ 		return ret;
++	}
+ 
+ 	switch (ce->action) {
+ 	case OF_RECONFIG_ATTACH_NODE:
+@@ -913,6 +897,9 @@ int of_changeset_action(struct of_change
+ 	if (!ce)
+ 		return -ENOMEM;
+ 
++	if (WARN_ON(action >= ARRAY_SIZE(action_names)))
++		return -EINVAL;
++
+ 	/* get a reference to the node */
+ 	ce->action = action;
+ 	ce->np = of_node_get(np);
 
 
