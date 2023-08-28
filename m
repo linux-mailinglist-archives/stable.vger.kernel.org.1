@@ -2,51 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D53DF78AAC6
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B426278AA18
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:19:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231197AbjH1KY5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:24:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
+        id S230504AbjH1KSm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:18:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49232 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjH1KYb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:31 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80CD95
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:27 -0700 (PDT)
+        with ESMTP id S231187AbjH1KSZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:18:25 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E99818D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:18:15 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6ECEE63A2B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:27 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8381AC433C7;
-        Mon, 28 Aug 2023 10:24:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 18AAD63728
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:18:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2D840C433C7;
+        Mon, 28 Aug 2023 10:18:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218266;
-        bh=KtAiD65fehSKT5DKQtRRhM/ZJolXAcTAfqe+wIYXj4o=;
+        s=korg; t=1693217894;
+        bh=5y0CPhvSthjtFJD5zy2gGcu92zYbOESKyGSCmpdW7RM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BCE/Rjon+6mBi+sw9B3Nq2YsK7eCPlf1M3f00/AGYwHozkVT7iFpvOh9/8UehvEi9
-         M4pOSfFyt4XWix9lHCnTy2ALX2pEiPArM0caDCEajVX9lmnHG3/aUAKk15SzorW0PF
-         y2iy+LDyv7f5PkRbZfCU+6Ur+FYhN+5Kj22PBM7I=
+        b=a6Q/tqPzv9Hb+RhQlI/WZdovDfK4suFc0Uly9WSMxkb+SRKw68QjJEETokp5taX9Y
+         z2yHHNnCSe57YfMhRkQixltikbp0oey1o2JY109VoJX9dfHGXX4H87MnS2qssEt6uF
+         s/ZiANeUbPaCZBI1V6NwWxnbBd1Ev7EsB1LOojAk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ye Bin <yebin10@huawei.com>,
-        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.19 006/129] quota: fix warning in dqgrab()
+        patches@lists.linux.dev, Lu Wei <luwei32@huawei.com>,
+        Florian Westphal <fw@strlen.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 021/129] ipvlan: Fix a reference count leak warning in ipvlan_ns_exit()
 Date:   Mon, 28 Aug 2023 12:11:40 +0200
-Message-ID: <20230828101153.282041313@linuxfoundation.org>
+Message-ID: <20230828101158.086581552@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -54,106 +56,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.19-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ye Bin <yebin10@huawei.com>
+From: Lu Wei <luwei32@huawei.com>
 
-[ Upstream commit d6a95db3c7ad160bc16b89e36449705309b52bcb ]
+[ Upstream commit 043d5f68d0ccdda91029b4b6dce7eeffdcfad281 ]
 
-There's issue as follows when do fault injection:
-WARNING: CPU: 1 PID: 14870 at include/linux/quotaops.h:51 dquot_disable+0x13b7/0x18c0
-Modules linked in:
-CPU: 1 PID: 14870 Comm: fsconfig Not tainted 6.3.0-next-20230505-00006-g5107a9c821af-dirty #541
-RIP: 0010:dquot_disable+0x13b7/0x18c0
-RSP: 0018:ffffc9000acc79e0 EFLAGS: 00010246
-RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88825e41b980
-RDX: 0000000000000000 RSI: ffff88825e41b980 RDI: 0000000000000002
-RBP: ffff888179f68000 R08: ffffffff82087ca7 R09: 0000000000000000
-R10: 0000000000000001 R11: ffffed102f3ed026 R12: ffff888179f68130
-R13: ffff888179f68110 R14: dffffc0000000000 R15: ffff888179f68118
-FS:  00007f450a073740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00007ffe96f2efd8 CR3: 000000025c8ad000 CR4: 00000000000006e0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- dquot_load_quota_sb+0xd53/0x1060
- dquot_resume+0x172/0x230
- ext4_reconfigure+0x1dc6/0x27b0
- reconfigure_super+0x515/0xa90
- __x64_sys_fsconfig+0xb19/0xd20
- do_syscall_64+0x39/0xb0
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
+There are two network devices(veth1 and veth3) in ns1, and ipvlan1 with
+L3S mode and ipvlan2 with L2 mode are created based on them as
+figure (1). In this case, ipvlan_register_nf_hook() will be called to
+register nf hook which is needed by ipvlans in L3S mode in ns1 and value
+of ipvl_nf_hook_refcnt is set to 1.
 
-Above issue may happens as follows:
-ProcessA              ProcessB                    ProcessC
-sys_fsconfig
-  vfs_fsconfig_locked
-   reconfigure_super
-     ext4_remount
-      dquot_suspend -> suspend all type quota
+(1)
+           ns1                           ns2
+      ------------                  ------------
 
-                 sys_fsconfig
-                  vfs_fsconfig_locked
-                    reconfigure_super
-                     ext4_remount
-                      dquot_resume
-                       ret = dquot_load_quota_sb
-                        add_dquot_ref
-                                           do_open  -> open file O_RDWR
-                                            vfs_open
-                                             do_dentry_open
-                                              get_write_access
-                                               atomic_inc_unless_negative(&inode->i_writecount)
-                                              ext4_file_open
-                                               dquot_file_open
-                                                dquot_initialize
-                                                  __dquot_initialize
-                                                   dqget
-						    atomic_inc(&dquot->dq_count);
+   veth1--ipvlan1 (L3S)
 
-                          __dquot_initialize
-                           __dquot_initialize
-                            dqget
-                             if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-                               ext4_acquire_dquot
-			        -> Return error DQ_ACTIVE_B flag isn't set
-                         dquot_disable
-			  invalidate_dquots
-			   if (atomic_read(&dquot->dq_count))
-	                    dqgrab
-			     WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
-	                      -> Trigger warning
+   veth3--ipvlan2 (L2)
 
-In the above scenario, 'dquot->dq_flags' has no DQ_ACTIVE_B is normal when
-dqgrab().
-To solve above issue just replace the dqgrab() use in invalidate_dquots() with
-atomic_inc(&dquot->dq_count).
+(2)
+           ns1                           ns2
+      ------------                  ------------
 
-Signed-off-by: Ye Bin <yebin10@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230605140731.2427629-3-yebin10@huawei.com>
+   veth1--ipvlan1 (L3S)
+
+         ipvlan2 (L2)                  veth3
+     |                                  |
+     |------->-------->--------->--------
+                    migrate
+
+When veth3 migrates from ns1 to ns2 as figure (2), veth3 will register in
+ns2 and calls call_netdevice_notifiers with NETDEV_REGISTER event:
+
+dev_change_net_namespace
+    call_netdevice_notifiers
+        ipvlan_device_event
+            ipvlan_migrate_l3s_hook
+                ipvlan_register_nf_hook(newnet)      (I)
+                ipvlan_unregister_nf_hook(oldnet)    (II)
+
+In function ipvlan_migrate_l3s_hook(), ipvl_nf_hook_refcnt in ns1 is not 0
+since veth1 with ipvlan1 still in ns1, (I) and (II) will be called to
+register nf_hook in ns2 and unregister nf_hook in ns1. As a result,
+ipvl_nf_hook_refcnt in ns1 is decreased incorrectly and this in ns2
+is increased incorrectly. When the second net namespace is removed, a
+reference count leak warning in ipvlan_ns_exit() will be triggered.
+
+This patch add a check before ipvlan_migrate_l3s_hook() is called. The
+warning can be triggered as follows:
+
+$ ip netns add ns1
+$ ip netns add ns2
+$ ip netns exec ns1 ip link add veth1 type veth peer name veth2
+$ ip netns exec ns1 ip link add veth3 type veth peer name veth4
+$ ip netns exec ns1 ip link add ipv1 link veth1 type ipvlan mode l3s
+$ ip netns exec ns1 ip link add ipv2 link veth3 type ipvlan mode l2
+$ ip netns exec ns1 ip link set veth3 netns ns2
+$ ip net del ns2
+
+Fixes: 3133822f5ac1 ("ipvlan: use pernet operations and restrict l3s hooks to master netns")
+Signed-off-by: Lu Wei <luwei32@huawei.com>
+Reviewed-by: Florian Westphal <fw@strlen.de>
+Link: https://lore.kernel.org/r/20230817145449.141827-1-luwei32@huawei.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ipvlan/ipvlan_main.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 0d3ffc727bb00..303987d29b9c9 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -540,7 +540,7 @@ static void invalidate_dquots(struct super_block *sb, int type)
- 			continue;
- 		/* Wait for dquot users */
- 		if (atomic_read(&dquot->dq_count)) {
--			dqgrab(dquot);
-+			atomic_inc(&dquot->dq_count);
- 			spin_unlock(&dq_list_lock);
- 			/*
- 			 * Once dqput() wakes us up, we know it's time to free
+diff --git a/drivers/net/ipvlan/ipvlan_main.c b/drivers/net/ipvlan/ipvlan_main.c
+index b15dd9a3ad540..1b55928e89b8a 100644
+--- a/drivers/net/ipvlan/ipvlan_main.c
++++ b/drivers/net/ipvlan/ipvlan_main.c
+@@ -748,7 +748,8 @@ static int ipvlan_device_event(struct notifier_block *unused,
+ 
+ 		write_pnet(&port->pnet, newnet);
+ 
+-		ipvlan_migrate_l3s_hook(oldnet, newnet);
++		if (port->mode == IPVLAN_MODE_L3S)
++			ipvlan_migrate_l3s_hook(oldnet, newnet);
+ 		break;
+ 	}
+ 	case NETDEV_UNREGISTER:
 -- 
 2.40.1
 
