@@ -2,50 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F8B678ADE2
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0525378AD48
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:47:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232261AbjH1Kvu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:51:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41458 "EHLO
+        id S231975AbjH1KrA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:47:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232305AbjH1KvU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:51:20 -0400
+        with ESMTP id S232072AbjH1Kqg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:36 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2362E42
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:50:37 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5621CE1
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:46:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DD84A612AE
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:50:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB4DAC433C9;
-        Mon, 28 Aug 2023 10:50:34 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C6FCE6426C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:46:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D93F2C433C8;
+        Mon, 28 Aug 2023 10:46:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219835;
-        bh=Y9JNocup4Hqt4Bq5XtJN4xL9jEyLJu/LT2bOf2QLX0I=;
+        s=korg; t=1693219584;
+        bh=UZUxV8fOSr95ODFe6ytZUaWahFRESP2o/jwqPIxnAc8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UJys/IJCQgofdRjWQFzFDWovPKwj2A/RiiP0oCoWQa7ZcK0xWpW9aVDhmvCV/VoHN
-         RM044R4pElBBKyaOctEWlAY8M2hgRFO9FlqZpxIPRA5B1/KlhI3uIEQkM3de1Quu/a
-         YXXLsZKl0QPPCnXW1ljSCGTpQgeiiteRb6+BY+Zw=
+        b=xcAv9iGSyKlYpq59Im2NlLVTlVtVJHHhNh1sDI1PvW5YGContRycy8Zz7Buk/92mk
+         yagItQ54Z+CsXNCC8z5lexuAxEkhn/DNZreRtM9e7K4sDaY5fA9uqaig2ZaINcvOli
+         2fbNLEIMc8rIyEHfb68+VlQcQgrbakbO+jl7ZPS4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Mark Brown <broonie@kernel.org>,
-        =?UTF-8?q?Philip=20M=C3=BCller?= <philm@manjaro.org>
-Subject: [PATCH 5.10 73/84] ASoC: rt711: add two jack detection modes
+        patches@lists.linux.dev, stable@kernel.org,
+        Rik van Riel <riel@surriel.com>,
+        Mike Rappoport <rppt@kernel.org>, Rob Herring <robh@kernel.org>
+Subject: [PATCH 5.15 89/89] mm,ima,kexec,of: use memblock_free_late from ima_free_kexec_buffer
 Date:   Mon, 28 Aug 2023 12:14:30 +0200
-Message-ID: <20230828101151.757309756@linuxfoundation.org>
+Message-ID: <20230828101153.258035606@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
@@ -56,137 +55,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Rik van Riel <riel@surriel.com>
 
-commit 683b0df26c3333a5c020a2764b71a70d082c1c61 upstream.
+commit f0362a253606e2031f8d61c74195d4d6556e12a4 upstream.
 
-Some boards use different circuits for jack detection.
-This patch adds two modes as below
-1. JD2/2 ports/external resister 100k
-2. JD2/1 port/JD voltage 1.8V
+The code calling ima_free_kexec_buffer runs long after the memblock
+allocator has already been torn down, potentially resulting in a use
+after free in memblock_isolate_range.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Link: https://lore.kernel.org/r/20210617090822.16960-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
-Cc: Philip Müller <philm@manjaro.org>
+With KASAN or KFENCE, this use after free will result in a BUG
+from the idle task, and a subsequent kernel panic.
+
+Switch ima_free_kexec_buffer over to memblock_free_late to avoid
+that issue.
+
+Fixes: fee3ff99bc67 ("powerpc: Move arch independent ima kexec functions to drivers/of/kexec.c")
+Cc: stable@kernel.org
+Signed-off-by: Rik van Riel <riel@surriel.com>
+Suggested-by: Mike Rappoport <rppt@kernel.org>
+Link: https://lore.kernel.org/r/20230817135759.0888e5ef@imladris.surriel.com
+Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Mike Rappoport (IBM) <rppt@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- sound/soc/codecs/rt711-sdw.h |    2 ++
- sound/soc/codecs/rt711.c     |   30 ++++++++++++++++++++++++++++++
- sound/soc/codecs/rt711.h     |   29 ++++++++++++++++++++++++++++-
- 3 files changed, 60 insertions(+), 1 deletion(-)
+ drivers/of/kexec.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/sound/soc/codecs/rt711-sdw.h
-+++ b/sound/soc/codecs/rt711-sdw.h
-@@ -267,7 +267,9 @@ static const struct reg_default rt711_re
- 	{ 0x8393, 0x00 },
- 	{ 0x7319, 0x00 },
- 	{ 0x8399, 0x00 },
-+	{ 0x752008, 0xa807 },
- 	{ 0x752009, 0x1029 },
-+	{ 0x75200b, 0x7770 },
- 	{ 0x752011, 0x007a },
- 	{ 0x75201a, 0x8003 },
- 	{ 0x752045, 0x5289 },
---- a/sound/soc/codecs/rt711.c
-+++ b/sound/soc/codecs/rt711.c
-@@ -389,6 +389,36 @@ static void rt711_jack_init(struct rt711
- 				RT711_HP_JD_FINAL_RESULT_CTL_JD12,
- 				RT711_HP_JD_FINAL_RESULT_CTL_JD12);
- 			break;
-+		case RT711_JD2_100K:
-+			rt711_index_update_bits(rt711->regmap, RT711_VENDOR_REG,
-+				RT711_JD_CTL2, RT711_JD2_2PORT_100K_DECODE | RT711_JD2_1PORT_TYPE_DECODE |
-+				RT711_HP_JD_SEL_JD2 | RT711_JD1_2PORT_TYPE_100K_DECODE,
-+				RT711_JD2_2PORT_100K_DECODE_HP | RT711_JD2_1PORT_JD_HP |
-+				RT711_HP_JD_SEL_JD2 | RT711_JD1_2PORT_JD_RESERVED);
-+			rt711_index_update_bits(rt711->regmap, RT711_VENDOR_REG,
-+				RT711_CC_DET1,
-+				RT711_HP_JD_FINAL_RESULT_CTL_JD12,
-+				RT711_HP_JD_FINAL_RESULT_CTL_JD12);
-+			break;
-+		case RT711_JD2_1P8V_1PORT:
-+			rt711_index_update_bits(rt711->regmap, RT711_VENDOR_REG,
-+				RT711_JD_CTL1, RT711_JD2_DIGITAL_JD_MODE_SEL,
-+				RT711_JD2_1_JD_MODE);
-+			rt711_index_update_bits(rt711->regmap, RT711_VENDOR_REG,
-+				RT711_JD_CTL2, RT711_JD2_1PORT_TYPE_DECODE |
-+				RT711_HP_JD_SEL_JD2,
-+				RT711_JD2_1PORT_JD_HP |
-+				RT711_HP_JD_SEL_JD2);
-+			rt711_index_update_bits(rt711->regmap, RT711_VENDOR_REG,
-+				RT711_JD_CTL4, RT711_JD2_PAD_PULL_UP_MASK |
-+				RT711_JD2_MODE_SEL_MASK,
-+				RT711_JD2_PAD_PULL_UP |
-+				RT711_JD2_MODE2_1P8V_1PORT);
-+			rt711_index_update_bits(rt711->regmap, RT711_VENDOR_REG,
-+				RT711_CC_DET1,
-+				RT711_HP_JD_FINAL_RESULT_CTL_JD12,
-+				RT711_HP_JD_FINAL_RESULT_CTL_JD12);
-+			break;
- 		default:
- 			dev_warn(rt711->component->dev, "Wrong JD source\n");
- 			break;
---- a/sound/soc/codecs/rt711.h
-+++ b/sound/soc/codecs/rt711.h
-@@ -52,7 +52,9 @@ struct sdw_stream_data {
+--- a/drivers/of/kexec.c
++++ b/drivers/of/kexec.c
+@@ -187,8 +187,8 @@ int ima_free_kexec_buffer(void)
+ 	if (ret)
+ 		return ret;
  
- /* Index (NID:20h) */
- #define RT711_DAC_DC_CALI_CTL1				0x00
-+#define RT711_JD_CTL1				0x08
- #define RT711_JD_CTL2				0x09
-+#define RT711_JD_CTL4				0x0b
- #define RT711_CC_DET1				0x11
- #define RT711_PARA_VERB_CTL				0x1a
- #define RT711_COMBO_JACK_AUTO_CTL1				0x45
-@@ -171,10 +173,33 @@ struct sdw_stream_data {
- /* DAC DC offset calibration control-1 (0x00)(NID:20h) */
- #define RT711_DAC_DC_CALI_TRIGGER (0x1 << 15)
+-	return memblock_free(addr, size);
+-
++	memblock_free_late(addr, size);
++	return 0;
+ }
  
-+/* jack detect control 1 (0x08)(NID:20h) */
-+#define RT711_JD2_DIGITAL_JD_MODE_SEL (0x1 << 1)
-+#define RT711_JD2_1_JD_MODE (0x0 << 1)
-+#define RT711_JD2_2_JD_MODE (0x1 << 1)
-+
- /* jack detect control 2 (0x09)(NID:20h) */
- #define RT711_JD2_2PORT_200K_DECODE_HP (0x1 << 13)
-+#define RT711_JD2_2PORT_100K_DECODE (0x1 << 12)
-+#define RT711_JD2_2PORT_100K_DECODE_HP (0x0 << 12)
- #define RT711_HP_JD_SEL_JD1 (0x0 << 1)
- #define RT711_HP_JD_SEL_JD2 (0x1 << 1)
-+#define RT711_JD2_1PORT_TYPE_DECODE (0x3 << 10)
-+#define RT711_JD2_1PORT_JD_LINE2 (0x0 << 10)
-+#define RT711_JD2_1PORT_JD_HP (0x1 << 10)
-+#define RT711_JD2_1PORT_JD_LINE1 (0x2 << 10)
-+#define RT711_JD1_2PORT_TYPE_100K_DECODE (0x1 << 0)
-+#define RT711_JD1_2PORT_JD_RESERVED (0x0 << 0)
-+#define RT711_JD1_2PORT_JD_LINE1 (0x1 << 0)
-+
-+/* jack detect control 4 (0x0b)(NID:20h) */
-+#define RT711_JD2_PAD_PULL_UP_MASK (0x1 << 3)
-+#define RT711_JD2_PAD_NOT_PULL_UP (0x0 << 3)
-+#define RT711_JD2_PAD_PULL_UP (0x1 << 3)
-+#define RT711_JD2_MODE_SEL_MASK (0x3 << 0)
-+#define RT711_JD2_MODE0_2PORT (0x0 << 0)
-+#define RT711_JD2_MODE1_3P3V_1PORT (0x1 << 0)
-+#define RT711_JD2_MODE2_1P8V_1PORT (0x2 << 0)
- 
- /* CC DET1 (0x11)(NID:20h) */
- #define RT711_HP_JD_FINAL_RESULT_CTL_JD12 (0x1 << 10)
-@@ -215,7 +240,9 @@ enum {
- enum rt711_jd_src {
- 	RT711_JD_NULL,
- 	RT711_JD1,
--	RT711_JD2
-+	RT711_JD2,
-+	RT711_JD2_100K,
-+	RT711_JD2_1P8V_1PORT
- };
- 
- int rt711_io_init(struct device *dev, struct sdw_slave *slave);
+ /**
 
 
