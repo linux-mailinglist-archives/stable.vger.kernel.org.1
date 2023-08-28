@@ -2,55 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1CF8D78AA93
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0B8278ACA2
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:42:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231147AbjH1KXZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:23:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59606 "EHLO
+        id S231734AbjH1Kld (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:41:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231177AbjH1KXC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:23:02 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 521BDB9
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:57 -0700 (PDT)
+        with ESMTP id S231775AbjH1KlK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:41:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF38B18D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:41:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D8B8763714
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2F8C433C7;
-        Mon, 28 Aug 2023 10:22:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 37D1964075
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:41:03 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 470C0C433C7;
+        Mon, 28 Aug 2023 10:41:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218176;
-        bh=bdGFGJ1+lun/kLHLH1UOP8ArW9jsiJudUsZzfBY16C4=;
+        s=korg; t=1693219262;
+        bh=IXr44UkxhDmR1f3qeHvDM7Wd7Ho1HFhngtIJPy815UY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pPBFE0gf525Zr/GzVi5gIOYgBrkoZypFjqIo7EO1/hRf6mQZHOy8NX1Cu0Q3UB3j2
-         2A1tVDmEp/gHJIA1NNQNBd6ufdnac9bfmFNc0UafR3r5SIm10gUUraL2LvYFco2DAc
-         wYwAf09GlntOnSFcidDlavFqtGBE5bpRH3LIUGYQ=
+        b=phm4Ue+wZopNsK5/RgSgsovZPBg33uQqJ1zimt0SU8bC0w1kzggVLesL5iRnpSGeb
+         OLAKC/AHvJnbDbGoNws2UIWIQsezSNDWOiSmK/UZk8ket+YcZvD90CaLXvCANDAp8k
+         ZBJGWG+VHlD1XpxJg9Qy9fJqjI1LbGDha/Z8EzM4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>,
-        Rob Clark <robdclark@chromium.org>,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 122/129] dma-buf/sw_sync: Avoid recursive lock during fence signal
+Subject: [PATCH 5.4 104/158] fbdev: Improve performance of sys_imageblit()
 Date:   Mon, 28 Aug 2023 12:13:21 +0200
-Message-ID: <20230828101201.458721376@linuxfoundation.org>
+Message-ID: <20230828101200.820283902@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
+References: <20230828101157.322319621@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -58,80 +56,132 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-[ Upstream commit e531fdb5cd5ee2564b7fe10c8a9219e2b2fac61e ]
+[ Upstream commit 6f29e04938bf509fccfad490a74284cf158891ce ]
 
-If a signal callback releases the sw_sync fence, that will trigger a
-deadlock as the timeline_fence_release recurses onto the fence->lock
-(used both for signaling and the the timeline tree).
+Improve the performance of sys_imageblit() by manually unrolling
+the inner blitting loop and moving some invariants out. The compiler
+failed to do this automatically. The resulting binary code was even
+slower than the cfb_imageblit() helper, which uses the same algorithm,
+but operates on I/O memory.
 
-To avoid that, temporarily hold an extra reference to the signalled
-fences until after we drop the lock.
+A microbenchmark measures the average number of CPU cycles
+for sys_imageblit() after a stabilizing period of a few minutes
+(i7-4790, FullHD, simpledrm, kernel with debugging). The value
+for CFB is given as a reference.
 
-(This is an alternative implementation of https://patchwork.kernel.org/patch/11664717/
-which avoids some potential UAF issues with the original patch.)
+  sys_imageblit(), new: 25934 cycles
+  sys_imageblit(), old: 35944 cycles
+  cfb_imageblit():      30566 cycles
 
-v2: Remove now obsolete comment, use list_move_tail() and
-    list_del_init()
+In the optimized case, sys_imageblit() is now ~30% faster than before
+and ~20% faster than cfb_imageblit().
 
-Reported-by: Bas Nieuwenhuizen <bas@basnieuwenhuizen.nl>
-Fixes: d3c6dd1fb30d ("dma-buf/sw_sync: Synchronize signal vs syncpt free")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230818145939.39697-1-robdclark@gmail.com
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Christian König <christian.koenig@amd.com>
+v2:
+	* move switch out of inner loop (Gerd)
+	* remove test for alignment of dst1 (Sam)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Acked-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220223193804.18636-3-tzimmermann@suse.de
+Stable-dep-of: c2d22806aecb ("fbdev: fix potential OOB read in fast_imageblit()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma-buf/sw_sync.c | 18 +++++++++---------
- 1 file changed, 9 insertions(+), 9 deletions(-)
+ drivers/video/fbdev/core/sysimgblt.c | 49 +++++++++++++++++++++-------
+ 1 file changed, 38 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/dma-buf/sw_sync.c b/drivers/dma-buf/sw_sync.c
-index 348b3a9170fa4..7f5ed1aa7a9f8 100644
---- a/drivers/dma-buf/sw_sync.c
-+++ b/drivers/dma-buf/sw_sync.c
-@@ -191,6 +191,7 @@ static const struct dma_fence_ops timeline_fence_ops = {
-  */
- static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
+diff --git a/drivers/video/fbdev/core/sysimgblt.c b/drivers/video/fbdev/core/sysimgblt.c
+index a4d05b1b17d7d..722c327a381bd 100644
+--- a/drivers/video/fbdev/core/sysimgblt.c
++++ b/drivers/video/fbdev/core/sysimgblt.c
+@@ -188,23 +188,29 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
  {
-+	LIST_HEAD(signalled);
- 	struct sync_pt *pt, *next;
+ 	u32 fgx = fgcolor, bgx = bgcolor, bpp = p->var.bits_per_pixel;
+ 	u32 ppw = 32/bpp, spitch = (image->width + 7)/8;
+-	u32 bit_mask, end_mask, eorx, shift;
++	u32 bit_mask, eorx;
+ 	const char *s = image->data, *src;
+ 	u32 *dst;
+-	const u32 *tab = NULL;
++	const u32 *tab;
++	size_t tablen;
++	u32 colortab[16];
+ 	int i, j, k;
  
- 	trace_sync_timeline(obj);
-@@ -203,21 +204,20 @@ static void sync_timeline_signal(struct sync_timeline *obj, unsigned int inc)
- 		if (!timeline_fence_signaled(&pt->base))
- 			break;
- 
--		list_del_init(&pt->link);
-+		dma_fence_get(&pt->base);
-+
-+		list_move_tail(&pt->link, &signalled);
- 		rb_erase(&pt->node, &obj->pt_tree);
- 
--		/*
--		 * A signal callback may release the last reference to this
--		 * fence, causing it to be freed. That operation has to be
--		 * last to avoid a use after free inside this loop, and must
--		 * be after we remove the fence from the timeline in order to
--		 * prevent deadlocking on timeline->lock inside
--		 * timeline_fence_release().
--		 */
- 		dma_fence_signal_locked(&pt->base);
+ 	switch (bpp) {
+ 	case 8:
+ 		tab = fb_be_math(p) ? cfb_tab8_be : cfb_tab8_le;
++		tablen = 16;
+ 		break;
+ 	case 16:
+ 		tab = fb_be_math(p) ? cfb_tab16_be : cfb_tab16_le;
++		tablen = 4;
+ 		break;
+ 	case 32:
+-	default:
+ 		tab = cfb_tab32;
++		tablen = 2;
+ 		break;
++	default:
++		return;
  	}
  
- 	spin_unlock_irq(&obj->lock);
-+
-+	list_for_each_entry_safe(pt, next, &signalled, link) {
-+		list_del_init(&pt->link);
-+		dma_fence_put(&pt->base);
-+	}
- }
+ 	for (i = ppw-1; i--; ) {
+@@ -218,19 +224,40 @@ static void fast_imageblit(const struct fb_image *image, struct fb_info *p,
+ 	eorx = fgx ^ bgx;
+ 	k = image->width/ppw;
  
- /**
++	for (i = 0; i < tablen; ++i)
++		colortab[i] = (tab[i] & eorx) ^ bgx;
++
+ 	for (i = image->height; i--; ) {
+ 		dst = dst1;
+-		shift = 8;
+ 		src = s;
+ 
+-		for (j = k; j--; ) {
+-			shift -= ppw;
+-			end_mask = tab[(*src >> shift) & bit_mask];
+-			*dst++ = (end_mask & eorx) ^ bgx;
+-			if (!shift) {
+-				shift = 8;
+-				src++;
++		switch (ppw) {
++		case 4: /* 8 bpp */
++			for (j = k; j; j -= 2, ++src) {
++				*dst++ = colortab[(*src >> 4) & bit_mask];
++				*dst++ = colortab[(*src >> 0) & bit_mask];
++			}
++			break;
++		case 2: /* 16 bpp */
++			for (j = k; j; j -= 4, ++src) {
++				*dst++ = colortab[(*src >> 6) & bit_mask];
++				*dst++ = colortab[(*src >> 4) & bit_mask];
++				*dst++ = colortab[(*src >> 2) & bit_mask];
++				*dst++ = colortab[(*src >> 0) & bit_mask];
++			}
++			break;
++		case 1: /* 32 bpp */
++			for (j = k; j; j -= 8, ++src) {
++				*dst++ = colortab[(*src >> 7) & bit_mask];
++				*dst++ = colortab[(*src >> 6) & bit_mask];
++				*dst++ = colortab[(*src >> 5) & bit_mask];
++				*dst++ = colortab[(*src >> 4) & bit_mask];
++				*dst++ = colortab[(*src >> 3) & bit_mask];
++				*dst++ = colortab[(*src >> 2) & bit_mask];
++				*dst++ = colortab[(*src >> 1) & bit_mask];
++				*dst++ = colortab[(*src >> 0) & bit_mask];
+ 			}
++			break;
+ 		}
+ 		dst1 += p->fix.line_length;
+ 		s += spitch;
 -- 
 2.40.1
 
