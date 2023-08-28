@@ -2,49 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 493FE78AB91
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16E3D78AA62
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:22:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231444AbjH1KcX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:32:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40310 "EHLO
+        id S231138AbjH1KVx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:21:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231520AbjH1KcH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:07 -0400
+        with ESMTP id S231159AbjH1KV0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:21:26 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 398B2130
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D443E95
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:21:06 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7A0BA63D00
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8BF8AC433C9;
-        Mon, 28 Aug 2023 10:31:18 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id C9AE76389C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:20:57 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7230C433C8;
+        Mon, 28 Aug 2023 10:20:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218678;
-        bh=IWVKZs5pL6+pXDMlRDYz0dLB/4dnMaO10QL0PfFGeAk=;
+        s=korg; t=1693218057;
+        bh=WXfHf5VLmZfAr1BvAemGWnbRWDC2THFcgzEW74x2lQ0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PAtjl8BhhBRfjU8KHN3QubeVKQVGYB8e5BwI3heUMuQ8Knox1Xj76IAAaponjx6NL
-         Rp9r45oJO4SzVhpjbVRRNWNAdZ2WJBUnPLqhtYu27HydXdYJEltq7aJM/M2jOqqw6+
-         jo2q3y7fD2NwaFbRjByzInRY3MzSOoo8QT1phaLk=
+        b=pjtR1v/vM0NMwIN90LcW73bAG1s9Lt53x3Lw4Jj0Hn2EPFyHxTl3kzCywvlRUdYQj
+         /XE51Xl4UCuILeWS0TkILRKkubwtI209PUgicxHsAof1H0qiBLTqxdZuEyIBdSVQN1
+         5Q4tgDoc+jCGMC4ijav4jgk/cAQBmxLHQz66DqJg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Petr Oros <poros@redhat.com>,
-        Simon Horman <horms@kernel.org>,
-        Przemek Kitszel <przemyslaw.kitszel@intel.com>,
-        Jacob Keller <jacob.e.keller@intel.com>,
-        Rafal Romanowski <rafal.romanowski@intel.com>,
-        Tony Nguyen <anthony.l.nguyen@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 044/122] ice: Fix NULL pointer deref during VF reset
+        patches@lists.linux.dev, Juri Lelli <juri.lelli@redhat.com>,
+        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>,
+        "Qais Yousef (Google)" <qyousef@layalina.io>
+Subject: [PATCH 6.4 080/129] sched/cpuset: Bring back cpuset_mutex
 Date:   Mon, 28 Aug 2023 12:12:39 +0200
-Message-ID: <20230828101157.872462867@linuxfoundation.org>
+Message-ID: <20230828101159.993231479@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,136 +55,711 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Petr Oros <poros@redhat.com>
+From: Juri Lelli <juri.lelli@redhat.com>
 
-[ Upstream commit 67f6317dfa609846a227a706532439a22828c24b ]
+commit 111cd11bbc54850f24191c52ff217da88a5e639b upstream.
 
-During stress test with attaching and detaching VF from KVM and
-simultaneously changing VFs spoofcheck and trust there was a
-NULL pointer dereference in ice_reset_vf that VF's VSI is null.
+Turns out percpu_cpuset_rwsem - commit 1243dc518c9d ("cgroup/cpuset:
+Convert cpuset_mutex to percpu_rwsem") - wasn't such a brilliant idea,
+as it has been reported to cause slowdowns in workloads that need to
+change cpuset configuration frequently and it is also not implementing
+priority inheritance (which causes troubles with realtime workloads).
 
-More than one instance of ice_reset_vf() can be running at a given
-time. When we rebuild the VSI in ice_reset_vf, another reset can be
-triaged from ice_service_task. In this case we can access the currently
-uninitialized VSI and cause panic. The window for this racing condition
-has been around for a long time but it's much worse after commit
-227bf4500aaa ("ice: move VSI delete outside deconfig") because
-the reset runs faster. ice_reset_vf() using vf->cfg_lock and when
-we move this lock before accessing to the VF VSI, we can fix
-BUG for all cases.
+Convert percpu_cpuset_rwsem back to regular cpuset_mutex. Also grab it
+only for SCHED_DEADLINE tasks (other policies don't care about stable
+cpusets anyway).
 
-Panic occurs sometimes in ice_vsi_is_rx_queue_active() and sometimes
-in ice_vsi_stop_all_rx_rings()
-
-With our reproducer, we can hit BUG:
-~8h before commit 227bf4500aaa ("ice: move VSI delete outside deconfig").
-~20m after commit 227bf4500aaa ("ice: move VSI delete outside deconfig").
-After this fix we are not able to reproduce it after ~48h
-
-There was commit cf90b74341ee ("ice: Fix call trace with null VSI during
-VF reset") which also tried to fix this issue, but it was only
-partially resolved and the bug still exists.
-
-[ 6420.658415] BUG: kernel NULL pointer dereference, address: 0000000000000000
-[ 6420.665382] #PF: supervisor read access in kernel mode
-[ 6420.670521] #PF: error_code(0x0000) - not-present page
-[ 6420.675659] PGD 0
-[ 6420.677679] Oops: 0000 [#1] PREEMPT SMP NOPTI
-[ 6420.682038] CPU: 53 PID: 326472 Comm: kworker/53:0 Kdump: loaded Not tainted 5.14.0-317.el9.x86_64 #1
-[ 6420.691250] Hardware name: Dell Inc. PowerEdge R750/04V528, BIOS 1.6.5 04/15/2022
-[ 6420.698729] Workqueue: ice ice_service_task [ice]
-[ 6420.703462] RIP: 0010:ice_vsi_is_rx_queue_active+0x2d/0x60 [ice]
-[ 6420.705860] ice 0000:ca:00.0: VF 0 is now untrusted
-[ 6420.709494] Code: 00 00 66 83 bf 76 04 00 00 00 48 8b 77 10 74 3e 31 c0 eb 0f 0f b7 97 76 04 00 00 48 83 c0 01 39 c2 7e 2b 48 8b 97 68 04 00 00 <0f> b7 0c 42 48 8b 96 20 13 00 00 48 8d 94 8a 00 00 12 00 8b 12 83
-[ 6420.714426] ice 0000:ca:00.0 ens7f0: Setting MAC 22:22:22:22:22:00 on VF 0. VF driver will be reinitialized
-[ 6420.733120] RSP: 0018:ff778d2ff383fdd8 EFLAGS: 00010246
-[ 6420.733123] RAX: 0000000000000000 RBX: ff2acf1916294000 RCX: 0000000000000000
-[ 6420.733125] RDX: 0000000000000000 RSI: ff2acf1f2c6401a0 RDI: ff2acf1a27301828
-[ 6420.762346] RBP: ff2acf1a27301828 R08: 0000000000000010 R09: 0000000000001000
-[ 6420.769476] R10: ff2acf1916286000 R11: 00000000019eba3f R12: ff2acf19066460d0
-[ 6420.776611] R13: ff2acf1f2c6401a0 R14: ff2acf1f2c6401a0 R15: 00000000ffffffff
-[ 6420.783742] FS:  0000000000000000(0000) GS:ff2acf28ffa80000(0000) knlGS:0000000000000000
-[ 6420.791829] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 6420.797575] CR2: 0000000000000000 CR3: 00000016ad410003 CR4: 0000000000773ee0
-[ 6420.804708] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 6420.811034] vfio-pci 0000:ca:01.0: enabling device (0000 -> 0002)
-[ 6420.811840] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 6420.811841] PKRU: 55555554
-[ 6420.811842] Call Trace:
-[ 6420.811843]  <TASK>
-[ 6420.811844]  ice_reset_vf+0x9a/0x450 [ice]
-[ 6420.811876]  ice_process_vflr_event+0x8f/0xc0 [ice]
-[ 6420.841343]  ice_service_task+0x23b/0x600 [ice]
-[ 6420.845884]  ? __schedule+0x212/0x550
-[ 6420.849550]  process_one_work+0x1e2/0x3b0
-[ 6420.853563]  ? rescuer_thread+0x390/0x390
-[ 6420.857577]  worker_thread+0x50/0x3a0
-[ 6420.861242]  ? rescuer_thread+0x390/0x390
-[ 6420.865253]  kthread+0xdd/0x100
-[ 6420.868400]  ? kthread_complete_and_exit+0x20/0x20
-[ 6420.873194]  ret_from_fork+0x1f/0x30
-[ 6420.876774]  </TASK>
-[ 6420.878967] Modules linked in: vfio_pci vfio_pci_core vfio_iommu_type1 vfio iavf vhost_net vhost vhost_iotlb tap tun xt_CHECKSUM xt_MASQUERADE xt_conntrack ipt_REJECT nf_reject_ipv4 nft_compat nft_chain_nat nf_nat nf_conntrack nf_defrag_ipv6 nf_defrag_ipv4 nft_counter nf_tables bridge stp llc sctp ip6_udp_tunnel udp_tunnel nfp tls nfnetlink bluetooth mlx4_en mlx4_core rpcsec_gss_krb5 auth_rpcgss nfsv4 dns_resolver nfs lockd grace fscache netfs rfkill sunrpc intel_rapl_msr intel_rapl_common i10nm_edac nfit libnvdimm ipmi_ssif x86_pkg_temp_thermal intel_powerclamp coretemp irdma kvm_intel i40e kvm iTCO_wdt dcdbas ib_uverbs irqbypass iTCO_vendor_support mgag200 mei_me ib_core dell_smbios isst_if_mmio isst_if_mbox_pci rapl i2c_algo_bit drm_shmem_helper intel_cstate drm_kms_helper syscopyarea sysfillrect isst_if_common sysimgblt intel_uncore fb_sys_fops dell_wmi_descriptor wmi_bmof intel_vsec mei i2c_i801 acpi_ipmi ipmi_si i2c_smbus ipmi_devintf intel_pch_thermal acpi_power_meter pcspk
- r
-
-Fixes: efe41860008e ("ice: Fix memory corruption in VF driver")
-Fixes: f23df5220d2b ("ice: Fix spurious interrupt during removal of trusted VF")
-Signed-off-by: Petr Oros <poros@redhat.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Przemek Kitszel <przemyslaw.kitszel@intel.com>
-Reviewed-by: Jacob Keller <jacob.e.keller@intel.com>
-Tested-by: Rafal Romanowski <rafal.romanowski@intel.com>
-Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
+Reviewed-by: Waiman Long <longman@redhat.com>
+Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/intel/ice/ice_vf_lib.c | 15 ++++++++-------
- 1 file changed, 8 insertions(+), 7 deletions(-)
+ include/linux/cpuset.h |    8 +-
+ kernel/cgroup/cpuset.c |  159 ++++++++++++++++++++++++-------------------------
+ kernel/sched/core.c    |   22 ++++--
+ 3 files changed, 99 insertions(+), 90 deletions(-)
 
-diff --git a/drivers/net/ethernet/intel/ice/ice_vf_lib.c b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-index 86abbcb480d9d..9dbe6e9bb1f79 100644
---- a/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-+++ b/drivers/net/ethernet/intel/ice/ice_vf_lib.c
-@@ -569,11 +569,17 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+--- a/include/linux/cpuset.h
++++ b/include/linux/cpuset.h
+@@ -71,8 +71,8 @@ extern void cpuset_init_smp(void);
+ extern void cpuset_force_rebuild(void);
+ extern void cpuset_update_active_cpus(void);
+ extern void cpuset_wait_for_hotplug(void);
+-extern void cpuset_read_lock(void);
+-extern void cpuset_read_unlock(void);
++extern void cpuset_lock(void);
++extern void cpuset_unlock(void);
+ extern void cpuset_cpus_allowed(struct task_struct *p, struct cpumask *mask);
+ extern bool cpuset_cpus_allowed_fallback(struct task_struct *p);
+ extern nodemask_t cpuset_mems_allowed(struct task_struct *p);
+@@ -189,8 +189,8 @@ static inline void cpuset_update_active_
+ 
+ static inline void cpuset_wait_for_hotplug(void) { }
+ 
+-static inline void cpuset_read_lock(void) { }
+-static inline void cpuset_read_unlock(void) { }
++static inline void cpuset_lock(void) { }
++static inline void cpuset_unlock(void) { }
+ 
+ static inline void cpuset_cpus_allowed(struct task_struct *p,
+ 				       struct cpumask *mask)
+--- a/kernel/cgroup/cpuset.c
++++ b/kernel/cgroup/cpuset.c
+@@ -366,22 +366,23 @@ static struct cpuset top_cpuset = {
+ 		if (is_cpuset_online(((des_cs) = css_cs((pos_css)))))
+ 
+ /*
+- * There are two global locks guarding cpuset structures - cpuset_rwsem and
++ * There are two global locks guarding cpuset structures - cpuset_mutex and
+  * callback_lock. We also require taking task_lock() when dereferencing a
+  * task's cpuset pointer. See "The task_lock() exception", at the end of this
+- * comment.  The cpuset code uses only cpuset_rwsem write lock.  Other
+- * kernel subsystems can use cpuset_read_lock()/cpuset_read_unlock() to
+- * prevent change to cpuset structures.
++ * comment.  The cpuset code uses only cpuset_mutex. Other kernel subsystems
++ * can use cpuset_lock()/cpuset_unlock() to prevent change to cpuset
++ * structures. Note that cpuset_mutex needs to be a mutex as it is used in
++ * paths that rely on priority inheritance (e.g. scheduler - on RT) for
++ * correctness.
+  *
+  * A task must hold both locks to modify cpusets.  If a task holds
+- * cpuset_rwsem, it blocks others wanting that rwsem, ensuring that it
+- * is the only task able to also acquire callback_lock and be able to
+- * modify cpusets.  It can perform various checks on the cpuset structure
+- * first, knowing nothing will change.  It can also allocate memory while
+- * just holding cpuset_rwsem.  While it is performing these checks, various
+- * callback routines can briefly acquire callback_lock to query cpusets.
+- * Once it is ready to make the changes, it takes callback_lock, blocking
+- * everyone else.
++ * cpuset_mutex, it blocks others, ensuring that it is the only task able to
++ * also acquire callback_lock and be able to modify cpusets.  It can perform
++ * various checks on the cpuset structure first, knowing nothing will change.
++ * It can also allocate memory while just holding cpuset_mutex.  While it is
++ * performing these checks, various callback routines can briefly acquire
++ * callback_lock to query cpusets.  Once it is ready to make the changes, it
++ * takes callback_lock, blocking everyone else.
+  *
+  * Calls to the kernel memory allocator can not be made while holding
+  * callback_lock, as that would risk double tripping on callback_lock
+@@ -403,16 +404,16 @@ static struct cpuset top_cpuset = {
+  * guidelines for accessing subsystem state in kernel/cgroup.c
+  */
+ 
+-DEFINE_STATIC_PERCPU_RWSEM(cpuset_rwsem);
++static DEFINE_MUTEX(cpuset_mutex);
+ 
+-void cpuset_read_lock(void)
++void cpuset_lock(void)
+ {
+-	percpu_down_read(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ }
+ 
+-void cpuset_read_unlock(void)
++void cpuset_unlock(void)
+ {
+-	percpu_up_read(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ }
+ 
+ static DEFINE_SPINLOCK(callback_lock);
+@@ -496,7 +497,7 @@ static inline bool partition_is_populate
+  * One way or another, we guarantee to return some non-empty subset
+  * of cpu_online_mask.
+  *
+- * Call with callback_lock or cpuset_rwsem held.
++ * Call with callback_lock or cpuset_mutex held.
+  */
+ static void guarantee_online_cpus(struct task_struct *tsk,
+ 				  struct cpumask *pmask)
+@@ -538,7 +539,7 @@ out_unlock:
+  * One way or another, we guarantee to return some non-empty subset
+  * of node_states[N_MEMORY].
+  *
+- * Call with callback_lock or cpuset_rwsem held.
++ * Call with callback_lock or cpuset_mutex held.
+  */
+ static void guarantee_online_mems(struct cpuset *cs, nodemask_t *pmask)
+ {
+@@ -550,7 +551,7 @@ static void guarantee_online_mems(struct
+ /*
+  * update task's spread flag if cpuset's page/slab spread flag is set
+  *
+- * Call with callback_lock or cpuset_rwsem held. The check can be skipped
++ * Call with callback_lock or cpuset_mutex held. The check can be skipped
+  * if on default hierarchy.
+  */
+ static void cpuset_update_task_spread_flags(struct cpuset *cs,
+@@ -575,7 +576,7 @@ static void cpuset_update_task_spread_fl
+  *
+  * One cpuset is a subset of another if all its allowed CPUs and
+  * Memory Nodes are a subset of the other, and its exclusive flags
+- * are only set if the other's are set.  Call holding cpuset_rwsem.
++ * are only set if the other's are set.  Call holding cpuset_mutex.
+  */
+ 
+ static int is_cpuset_subset(const struct cpuset *p, const struct cpuset *q)
+@@ -713,7 +714,7 @@ out:
+  * If we replaced the flag and mask values of the current cpuset
+  * (cur) with those values in the trial cpuset (trial), would
+  * our various subset and exclusive rules still be valid?  Presumes
+- * cpuset_rwsem held.
++ * cpuset_mutex held.
+  *
+  * 'cur' is the address of an actual, in-use cpuset.  Operations
+  * such as list traversal that depend on the actual address of the
+@@ -829,7 +830,7 @@ static void update_domain_attr_tree(stru
+ 	rcu_read_unlock();
+ }
+ 
+-/* Must be called with cpuset_rwsem held.  */
++/* Must be called with cpuset_mutex held.  */
+ static inline int nr_cpusets(void)
+ {
+ 	/* jump label reference count + the top-level cpuset */
+@@ -855,7 +856,7 @@ static inline int nr_cpusets(void)
+  * domains when operating in the severe memory shortage situations
+  * that could cause allocation failures below.
+  *
+- * Must be called with cpuset_rwsem held.
++ * Must be called with cpuset_mutex held.
+  *
+  * The three key local variables below are:
+  *    cp - cpuset pointer, used (together with pos_css) to perform a
+@@ -1084,7 +1085,7 @@ static void dl_rebuild_rd_accounting(voi
+ 	struct cpuset *cs = NULL;
+ 	struct cgroup_subsys_state *pos_css;
+ 
+-	percpu_rwsem_assert_held(&cpuset_rwsem);
++	lockdep_assert_held(&cpuset_mutex);
+ 	lockdep_assert_cpus_held();
+ 	lockdep_assert_held(&sched_domains_mutex);
+ 
+@@ -1134,7 +1135,7 @@ partition_and_rebuild_sched_domains(int
+  * 'cpus' is removed, then call this routine to rebuild the
+  * scheduler's dynamic sched domains.
+  *
+- * Call with cpuset_rwsem held.  Takes cpus_read_lock().
++ * Call with cpuset_mutex held.  Takes cpus_read_lock().
+  */
+ static void rebuild_sched_domains_locked(void)
+ {
+@@ -1145,7 +1146,7 @@ static void rebuild_sched_domains_locked
+ 	int ndoms;
+ 
+ 	lockdep_assert_cpus_held();
+-	percpu_rwsem_assert_held(&cpuset_rwsem);
++	lockdep_assert_held(&cpuset_mutex);
+ 
+ 	/*
+ 	 * If we have raced with CPU hotplug, return early to avoid
+@@ -1196,9 +1197,9 @@ static void rebuild_sched_domains_locked
+ void rebuild_sched_domains(void)
+ {
+ 	cpus_read_lock();
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	rebuild_sched_domains_locked();
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	cpus_read_unlock();
+ }
+ 
+@@ -1208,7 +1209,7 @@ void rebuild_sched_domains(void)
+  * @new_cpus: the temp variable for the new effective_cpus mask
+  *
+  * Iterate through each task of @cs updating its cpus_allowed to the
+- * effective cpuset's.  As this function is called with cpuset_rwsem held,
++ * effective cpuset's.  As this function is called with cpuset_mutex held,
+  * cpuset membership stays stable. For top_cpuset, task_cpu_possible_mask()
+  * is used instead of effective_cpus to make sure all offline CPUs are also
+  * included as hotplug code won't update cpumasks for tasks in top_cpuset.
+@@ -1322,7 +1323,7 @@ static int update_parent_subparts_cpumas
+ 	int old_prs, new_prs;
+ 	int part_error = PERR_NONE;	/* Partition error? */
+ 
+-	percpu_rwsem_assert_held(&cpuset_rwsem);
++	lockdep_assert_held(&cpuset_mutex);
+ 
+ 	/*
+ 	 * The parent must be a partition root.
+@@ -1545,7 +1546,7 @@ static int update_parent_subparts_cpumas
+  *
+  * On legacy hierarchy, effective_cpus will be the same with cpu_allowed.
+  *
+- * Called with cpuset_rwsem held
++ * Called with cpuset_mutex held
+  */
+ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
+ 				 bool force)
+@@ -1705,7 +1706,7 @@ static void update_sibling_cpumasks(stru
+ 	struct cpuset *sibling;
+ 	struct cgroup_subsys_state *pos_css;
+ 
+-	percpu_rwsem_assert_held(&cpuset_rwsem);
++	lockdep_assert_held(&cpuset_mutex);
+ 
+ 	/*
+ 	 * Check all its siblings and call update_cpumasks_hier()
+@@ -1955,12 +1956,12 @@ static void *cpuset_being_rebound;
+  * @cs: the cpuset in which each task's mems_allowed mask needs to be changed
+  *
+  * Iterate through each task of @cs updating its mems_allowed to the
+- * effective cpuset's.  As this function is called with cpuset_rwsem held,
++ * effective cpuset's.  As this function is called with cpuset_mutex held,
+  * cpuset membership stays stable.
+  */
+ static void update_tasks_nodemask(struct cpuset *cs)
+ {
+-	static nodemask_t newmems;	/* protected by cpuset_rwsem */
++	static nodemask_t newmems;	/* protected by cpuset_mutex */
+ 	struct css_task_iter it;
+ 	struct task_struct *task;
+ 
+@@ -1973,7 +1974,7 @@ static void update_tasks_nodemask(struct
+ 	 * take while holding tasklist_lock.  Forks can happen - the
+ 	 * mpol_dup() cpuset_being_rebound check will catch such forks,
+ 	 * and rebind their vma mempolicies too.  Because we still hold
+-	 * the global cpuset_rwsem, we know that no other rebind effort
++	 * the global cpuset_mutex, we know that no other rebind effort
+ 	 * will be contending for the global variable cpuset_being_rebound.
+ 	 * It's ok if we rebind the same mm twice; mpol_rebind_mm()
+ 	 * is idempotent.  Also migrate pages in each mm to new nodes.
+@@ -2019,7 +2020,7 @@ static void update_tasks_nodemask(struct
+  *
+  * On legacy hierarchy, effective_mems will be the same with mems_allowed.
+  *
+- * Called with cpuset_rwsem held
++ * Called with cpuset_mutex held
+  */
+ static void update_nodemasks_hier(struct cpuset *cs, nodemask_t *new_mems)
+ {
+@@ -2072,7 +2073,7 @@ static void update_nodemasks_hier(struct
+  * mempolicies and if the cpuset is marked 'memory_migrate',
+  * migrate the tasks pages to the new memory.
+  *
+- * Call with cpuset_rwsem held. May take callback_lock during call.
++ * Call with cpuset_mutex held. May take callback_lock during call.
+  * Will take tasklist_lock, scan tasklist for tasks in cpuset cs,
+  * lock each such tasks mm->mmap_lock, scan its vma's and rebind
+  * their mempolicies to the cpusets new mems_allowed.
+@@ -2164,7 +2165,7 @@ static int update_relax_domain_level(str
+  * @cs: the cpuset in which each task's spread flags needs to be changed
+  *
+  * Iterate through each task of @cs updating its spread flags.  As this
+- * function is called with cpuset_rwsem held, cpuset membership stays
++ * function is called with cpuset_mutex held, cpuset membership stays
+  * stable.
+  */
+ static void update_tasks_flags(struct cpuset *cs)
+@@ -2184,7 +2185,7 @@ static void update_tasks_flags(struct cp
+  * cs:		the cpuset to update
+  * turning_on: 	whether the flag is being set or cleared
+  *
+- * Call with cpuset_rwsem held.
++ * Call with cpuset_mutex held.
+  */
+ 
+ static int update_flag(cpuset_flagbits_t bit, struct cpuset *cs,
+@@ -2234,7 +2235,7 @@ out:
+  * @new_prs: new partition root state
+  * Return: 0 if successful, != 0 if error
+  *
+- * Call with cpuset_rwsem held.
++ * Call with cpuset_mutex held.
+  */
+ static int update_prstate(struct cpuset *cs, int new_prs)
+ {
+@@ -2472,7 +2473,7 @@ static int cpuset_can_attach_check(struc
+ 	return 0;
+ }
+ 
+-/* Called by cgroups to determine if a cpuset is usable; cpuset_rwsem held */
++/* Called by cgroups to determine if a cpuset is usable; cpuset_mutex held */
+ static int cpuset_can_attach(struct cgroup_taskset *tset)
+ {
+ 	struct cgroup_subsys_state *css;
+@@ -2484,7 +2485,7 @@ static int cpuset_can_attach(struct cgro
+ 	cpuset_attach_old_cs = task_cs(cgroup_taskset_first(tset, &css));
+ 	cs = css_cs(css);
+ 
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 
+ 	/* Check to see if task is allowed in the cpuset */
+ 	ret = cpuset_can_attach_check(cs);
+@@ -2506,7 +2507,7 @@ static int cpuset_can_attach(struct cgro
+ 	 */
+ 	cs->attach_in_progress++;
+ out_unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	return ret;
+ }
+ 
+@@ -2518,15 +2519,15 @@ static void cpuset_cancel_attach(struct
+ 	cgroup_taskset_first(tset, &css);
+ 	cs = css_cs(css);
+ 
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	cs->attach_in_progress--;
+ 	if (!cs->attach_in_progress)
+ 		wake_up(&cpuset_attach_wq);
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ }
+ 
+ /*
+- * Protected by cpuset_rwsem. cpus_attach is used only by cpuset_attach_task()
++ * Protected by cpuset_mutex. cpus_attach is used only by cpuset_attach_task()
+  * but we can't allocate it dynamically there.  Define it global and
+  * allocate from cpuset_init().
+  */
+@@ -2535,7 +2536,7 @@ static nodemask_t cpuset_attach_nodemask
+ 
+ static void cpuset_attach_task(struct cpuset *cs, struct task_struct *task)
+ {
+-	percpu_rwsem_assert_held(&cpuset_rwsem);
++	lockdep_assert_held(&cpuset_mutex);
+ 
+ 	if (cs != &top_cpuset)
+ 		guarantee_online_cpus(task, cpus_attach);
+@@ -2565,7 +2566,7 @@ static void cpuset_attach(struct cgroup_
+ 	cs = css_cs(css);
+ 
+ 	lockdep_assert_cpus_held();	/* see cgroup_attach_lock() */
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	cpus_updated = !cpumask_equal(cs->effective_cpus,
+ 				      oldcs->effective_cpus);
+ 	mems_updated = !nodes_equal(cs->effective_mems, oldcs->effective_mems);
+@@ -2626,7 +2627,7 @@ out:
+ 	if (!cs->attach_in_progress)
+ 		wake_up(&cpuset_attach_wq);
+ 
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ }
+ 
+ /* The various types of files and directories in a cpuset file system */
+@@ -2658,7 +2659,7 @@ static int cpuset_write_u64(struct cgrou
+ 	int retval = 0;
+ 
+ 	cpus_read_lock();
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	if (!is_cpuset_online(cs)) {
+ 		retval = -ENODEV;
+ 		goto out_unlock;
+@@ -2694,7 +2695,7 @@ static int cpuset_write_u64(struct cgrou
+ 		break;
+ 	}
+ out_unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	cpus_read_unlock();
+ 	return retval;
+ }
+@@ -2707,7 +2708,7 @@ static int cpuset_write_s64(struct cgrou
+ 	int retval = -ENODEV;
+ 
+ 	cpus_read_lock();
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	if (!is_cpuset_online(cs))
+ 		goto out_unlock;
+ 
+@@ -2720,7 +2721,7 @@ static int cpuset_write_s64(struct cgrou
+ 		break;
+ 	}
+ out_unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	cpus_read_unlock();
+ 	return retval;
+ }
+@@ -2753,7 +2754,7 @@ static ssize_t cpuset_write_resmask(stru
+ 	 * operation like this one can lead to a deadlock through kernfs
+ 	 * active_ref protection.  Let's break the protection.  Losing the
+ 	 * protection is okay as we check whether @cs is online after
+-	 * grabbing cpuset_rwsem anyway.  This only happens on the legacy
++	 * grabbing cpuset_mutex anyway.  This only happens on the legacy
+ 	 * hierarchies.
+ 	 */
+ 	css_get(&cs->css);
+@@ -2761,7 +2762,7 @@ static ssize_t cpuset_write_resmask(stru
+ 	flush_work(&cpuset_hotplug_work);
+ 
+ 	cpus_read_lock();
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	if (!is_cpuset_online(cs))
+ 		goto out_unlock;
+ 
+@@ -2785,7 +2786,7 @@ static ssize_t cpuset_write_resmask(stru
+ 
+ 	free_cpuset(trialcs);
+ out_unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	cpus_read_unlock();
+ 	kernfs_unbreak_active_protection(of->kn);
+ 	css_put(&cs->css);
+@@ -2933,13 +2934,13 @@ static ssize_t sched_partition_write(str
+ 
+ 	css_get(&cs->css);
+ 	cpus_read_lock();
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	if (!is_cpuset_online(cs))
+ 		goto out_unlock;
+ 
+ 	retval = update_prstate(cs, val);
+ out_unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	cpus_read_unlock();
+ 	css_put(&cs->css);
+ 	return retval ?: nbytes;
+@@ -3156,7 +3157,7 @@ static int cpuset_css_online(struct cgro
  		return 0;
+ 
+ 	cpus_read_lock();
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 
+ 	set_bit(CS_ONLINE, &cs->flags);
+ 	if (is_spread_page(parent))
+@@ -3207,7 +3208,7 @@ static int cpuset_css_online(struct cgro
+ 	cpumask_copy(cs->effective_cpus, parent->cpus_allowed);
+ 	spin_unlock_irq(&callback_lock);
+ out_unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	cpus_read_unlock();
+ 	return 0;
+ }
+@@ -3228,7 +3229,7 @@ static void cpuset_css_offline(struct cg
+ 	struct cpuset *cs = css_cs(css);
+ 
+ 	cpus_read_lock();
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 
+ 	if (is_partition_valid(cs))
+ 		update_prstate(cs, 0);
+@@ -3247,7 +3248,7 @@ static void cpuset_css_offline(struct cg
+ 	cpuset_dec();
+ 	clear_bit(CS_ONLINE, &cs->flags);
+ 
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	cpus_read_unlock();
+ }
+ 
+@@ -3260,7 +3261,7 @@ static void cpuset_css_free(struct cgrou
+ 
+ static void cpuset_bind(struct cgroup_subsys_state *root_css)
+ {
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	spin_lock_irq(&callback_lock);
+ 
+ 	if (is_in_v2_mode()) {
+@@ -3273,7 +3274,7 @@ static void cpuset_bind(struct cgroup_su
  	}
  
-+	if (flags & ICE_VF_RESET_LOCK)
-+		mutex_lock(&vf->cfg_lock);
-+	else
-+		lockdep_assert_held(&vf->cfg_lock);
-+
- 	if (ice_is_vf_disabled(vf)) {
- 		vsi = ice_get_vf_vsi(vf);
- 		if (!vsi) {
- 			dev_dbg(dev, "VF is already removed\n");
--			return -EINVAL;
-+			err = -EINVAL;
-+			goto out_unlock;
- 		}
- 		ice_vsi_stop_lan_tx_rings(vsi, ICE_NO_RESET, vf->vf_id);
+ 	spin_unlock_irq(&callback_lock);
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ }
  
-@@ -582,14 +588,9 @@ int ice_reset_vf(struct ice_vf *vf, u32 flags)
+ /*
+@@ -3294,7 +3295,7 @@ static int cpuset_can_fork(struct task_s
+ 		return 0;
  
- 		dev_dbg(dev, "VF is already disabled, there is no need for resetting it, telling VM, all is fine %d\n",
- 			vf->vf_id);
--		return 0;
-+		goto out_unlock;
+ 	lockdep_assert_held(&cgroup_mutex);
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 
+ 	/* Check to see if task is allowed in the cpuset */
+ 	ret = cpuset_can_attach_check(cs);
+@@ -3315,7 +3316,7 @@ static int cpuset_can_fork(struct task_s
+ 	 */
+ 	cs->attach_in_progress++;
+ out_unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 	return ret;
+ }
+ 
+@@ -3331,11 +3332,11 @@ static void cpuset_cancel_fork(struct ta
+ 	if (same_cs)
+ 		return;
+ 
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	cs->attach_in_progress--;
+ 	if (!cs->attach_in_progress)
+ 		wake_up(&cpuset_attach_wq);
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ }
+ 
+ /*
+@@ -3363,7 +3364,7 @@ static void cpuset_fork(struct task_stru
  	}
  
--	if (flags & ICE_VF_RESET_LOCK)
--		mutex_lock(&vf->cfg_lock);
--	else
--		lockdep_assert_held(&vf->cfg_lock);
--
- 	/* Set VF disable bit state here, before triggering reset */
- 	set_bit(ICE_VF_STATE_DIS, vf->vf_states);
- 	ice_trigger_vf_reset(vf, flags & ICE_VF_RESET_VFLR, false);
--- 
-2.40.1
-
+ 	/* CLONE_INTO_CGROUP */
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 	guarantee_online_mems(cs, &cpuset_attach_nodemask_to);
+ 	cpuset_attach_task(cs, task);
+ 
+@@ -3371,7 +3372,7 @@ static void cpuset_fork(struct task_stru
+ 	if (!cs->attach_in_progress)
+ 		wake_up(&cpuset_attach_wq);
+ 
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ }
+ 
+ struct cgroup_subsys cpuset_cgrp_subsys = {
+@@ -3472,7 +3473,7 @@ hotplug_update_tasks_legacy(struct cpuse
+ 	is_empty = cpumask_empty(cs->cpus_allowed) ||
+ 		   nodes_empty(cs->mems_allowed);
+ 
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 
+ 	/*
+ 	 * Move tasks to the nearest ancestor with execution resources,
+@@ -3482,7 +3483,7 @@ hotplug_update_tasks_legacy(struct cpuse
+ 	if (is_empty)
+ 		remove_tasks_in_empty_cpuset(cs);
+ 
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ }
+ 
+ static void
+@@ -3533,14 +3534,14 @@ static void cpuset_hotplug_update_tasks(
+ retry:
+ 	wait_event(cpuset_attach_wq, cs->attach_in_progress == 0);
+ 
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 
+ 	/*
+ 	 * We have raced with task attaching. We wait until attaching
+ 	 * is finished, so we won't attach a task to an empty cpuset.
+ 	 */
+ 	if (cs->attach_in_progress) {
+-		percpu_up_write(&cpuset_rwsem);
++		mutex_unlock(&cpuset_mutex);
+ 		goto retry;
+ 	}
+ 
+@@ -3637,7 +3638,7 @@ update_tasks:
+ 					    cpus_updated, mems_updated);
+ 
+ unlock:
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ }
+ 
+ /**
+@@ -3667,7 +3668,7 @@ static void cpuset_hotplug_workfn(struct
+ 	if (on_dfl && !alloc_cpumasks(NULL, &tmp))
+ 		ptmp = &tmp;
+ 
+-	percpu_down_write(&cpuset_rwsem);
++	mutex_lock(&cpuset_mutex);
+ 
+ 	/* fetch the available cpus/mems and find out which changed how */
+ 	cpumask_copy(&new_cpus, cpu_active_mask);
+@@ -3724,7 +3725,7 @@ static void cpuset_hotplug_workfn(struct
+ 		update_tasks_nodemask(&top_cpuset);
+ 	}
+ 
+-	percpu_up_write(&cpuset_rwsem);
++	mutex_unlock(&cpuset_mutex);
+ 
+ 	/* if cpus or mems changed, we need to propagate to descendants */
+ 	if (cpus_updated || mems_updated) {
+@@ -4155,7 +4156,7 @@ void __cpuset_memory_pressure_bump(void)
+  *  - Used for /proc/<pid>/cpuset.
+  *  - No need to task_lock(tsk) on this tsk->cpuset reference, as it
+  *    doesn't really matter if tsk->cpuset changes after we read it,
+- *    and we take cpuset_rwsem, keeping cpuset_attach() from changing it
++ *    and we take cpuset_mutex, keeping cpuset_attach() from changing it
+  *    anyway.
+  */
+ int proc_cpuset_show(struct seq_file *m, struct pid_namespace *ns,
+--- a/kernel/sched/core.c
++++ b/kernel/sched/core.c
+@@ -7590,6 +7590,7 @@ static int __sched_setscheduler(struct t
+ 	int reset_on_fork;
+ 	int queue_flags = DEQUEUE_SAVE | DEQUEUE_MOVE | DEQUEUE_NOCLOCK;
+ 	struct rq *rq;
++	bool cpuset_locked = false;
+ 
+ 	/* The pi code expects interrupts enabled */
+ 	BUG_ON(pi && in_interrupt());
+@@ -7639,8 +7640,14 @@ recheck:
+ 			return retval;
+ 	}
+ 
+-	if (pi)
+-		cpuset_read_lock();
++	/*
++	 * SCHED_DEADLINE bandwidth accounting relies on stable cpusets
++	 * information.
++	 */
++	if (dl_policy(policy) || dl_policy(p->policy)) {
++		cpuset_locked = true;
++		cpuset_lock();
++	}
+ 
+ 	/*
+ 	 * Make sure no PI-waiters arrive (or leave) while we are
+@@ -7716,8 +7723,8 @@ change:
+ 	if (unlikely(oldpolicy != -1 && oldpolicy != p->policy)) {
+ 		policy = oldpolicy = -1;
+ 		task_rq_unlock(rq, p, &rf);
+-		if (pi)
+-			cpuset_read_unlock();
++		if (cpuset_locked)
++			cpuset_unlock();
+ 		goto recheck;
+ 	}
+ 
+@@ -7784,7 +7791,8 @@ change:
+ 	task_rq_unlock(rq, p, &rf);
+ 
+ 	if (pi) {
+-		cpuset_read_unlock();
++		if (cpuset_locked)
++			cpuset_unlock();
+ 		rt_mutex_adjust_pi(p);
+ 	}
+ 
+@@ -7796,8 +7804,8 @@ change:
+ 
+ unlock:
+ 	task_rq_unlock(rq, p, &rf);
+-	if (pi)
+-		cpuset_read_unlock();
++	if (cpuset_locked)
++		cpuset_unlock();
+ 	return retval;
+ }
+ 
 
 
