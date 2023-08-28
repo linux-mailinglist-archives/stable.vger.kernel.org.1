@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4FD7278AD34
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA69978AD9C
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:50:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231991AbjH1Kq3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:46:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58976 "EHLO
+        id S232112AbjH1Ktk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232032AbjH1KqL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:46:11 -0400
+        with ESMTP id S232249AbjH1Ktb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:49:31 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43FC2198
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7F42C5
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2517B63FE7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:46 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39510C433C8;
-        Mon, 28 Aug 2023 10:45:45 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2203864399
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 37456C433C8;
+        Mon, 28 Aug 2023 10:49:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219545;
-        bh=uw+85u0Jp4NQ+V9GYW571l0CQh4axEs8hxOGYYOifK0=;
+        s=korg; t=1693219750;
+        bh=GR1AzrFnRL27MnqHBaiQSIEpA8QIm7d4pOmRh8t3x70=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rUHXehZLpHMdk8VvYs2069dUmdCq42o3ZK0ddJtXe+6JW9nHghzE65kTy5oqcTGpf
-         dofgV5EJrqNHDjbPD0nZbTN982akOjQxNiQThjbkGB44jAxAIjz2Vag1QPuCrxJL2m
-         MTV7mZQLKJo8Ox1dp5HkiVs40nw5H8+iuhg8L6mI=
+        b=s1qJo4MSrZ2I3Eaetl2XbXg3sKMCCXEC1TBtSFRlhXRHamhCbX3VLUf9EwR+EHvzx
+         MdVo0X1ZgnsN8gjFzDWCQ2vrTzoaeniee4MtIC5lMB1Vn+DWoLuWOMb8N1tWfCnPLr
+         0EzkbRpJTgmlXAY0Yj1DqwalLrjP67BQnce2liUQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Qais Yousef (Google)" <qyousef@layalina.io>,
-        Juri Lelli <juri.lelli@redhat.com>,
-        Waiman Long <longman@redhat.com>, Tejun Heo <tj@kernel.org>
-Subject: [PATCH 5.15 74/89] cgroup/cpuset: Rename functions dealing with DEADLINE accounting
+        patches@lists.linux.dev, Wei Chen <harperchen1110@gmail.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 5.10 58/84] media: vcodec: Fix potential array out-of-bounds in encoder queue_setup
 Date:   Mon, 28 Aug 2023 12:14:15 +0200
-Message-ID: <20230828101152.693630494@linuxfoundation.org>
+Message-ID: <20230828101151.228427086@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+References: <20230828101149.146126827@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,68 +55,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Juri Lelli <juri.lelli@redhat.com>
+From: Wei Chen <harperchen1110@gmail.com>
 
-commit ad3a557daf6915296a43ef97a3e9c48e076c9dd8 upstream.
+commit e7f2e65699e2290fd547ec12a17008764e5d9620 upstream.
 
-rebuild_root_domains() and update_tasks_root_domain() have neutral
-names, but actually deal with DEADLINE bandwidth accounting.
+variable *nplanes is provided by user via system call argument. The
+possible value of q_data->fmt->num_planes is 1-3, while the value
+of *nplanes can be 1-8. The array access by index i can cause array
+out-of-bounds.
 
-Rename them to use 'dl_' prefix so that intent is more clear.
+Fix this bug by checking *nplanes against the array size.
 
-No functional change.
-
-Suggested-by: Qais Yousef (Google) <qyousef@layalina.io>
-Signed-off-by: Juri Lelli <juri.lelli@redhat.com>
-Reviewed-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
-Signed-off-by: Qais Yousef (Google) <qyousef@layalina.io>
+Fixes: 4e855a6efa54 ("[media] vcodec: mediatek: Add Mediatek V4L2 Video Encoder Driver")
+Signed-off-by: Wei Chen <harperchen1110@gmail.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Chen-Yu Tsai <wenst@chromium.org>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/cgroup/cpuset.c |    8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/platform/mtk-vcodec/mtk_vcodec_enc.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -940,7 +940,7 @@ done:
- 	return ndoms;
- }
+--- a/drivers/media/platform/mtk-vcodec/mtk_vcodec_enc.c
++++ b/drivers/media/platform/mtk-vcodec/mtk_vcodec_enc.c
+@@ -729,6 +729,8 @@ static int vb2ops_venc_queue_setup(struc
+ 		return -EINVAL;
  
--static void update_tasks_root_domain(struct cpuset *cs)
-+static void dl_update_tasks_root_domain(struct cpuset *cs)
- {
- 	struct css_task_iter it;
- 	struct task_struct *task;
-@@ -953,7 +953,7 @@ static void update_tasks_root_domain(str
- 	css_task_iter_end(&it);
- }
- 
--static void rebuild_root_domains(void)
-+static void dl_rebuild_rd_accounting(void)
- {
- 	struct cpuset *cs = NULL;
- 	struct cgroup_subsys_state *pos_css;
-@@ -981,7 +981,7 @@ static void rebuild_root_domains(void)
- 
- 		rcu_read_unlock();
- 
--		update_tasks_root_domain(cs);
-+		dl_update_tasks_root_domain(cs);
- 
- 		rcu_read_lock();
- 		css_put(&cs->css);
-@@ -995,7 +995,7 @@ partition_and_rebuild_sched_domains(int
- {
- 	mutex_lock(&sched_domains_mutex);
- 	partition_sched_domains_locked(ndoms_new, doms_new, dattr_new);
--	rebuild_root_domains();
-+	dl_rebuild_rd_accounting();
- 	mutex_unlock(&sched_domains_mutex);
- }
- 
+ 	if (*nplanes) {
++		if (*nplanes != q_data->fmt->num_planes)
++			return -EINVAL;
+ 		for (i = 0; i < *nplanes; i++)
+ 			if (sizes[i] < q_data->sizeimage[i])
+ 				return -EINVAL;
 
 
