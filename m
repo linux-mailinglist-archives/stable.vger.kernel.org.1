@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C84A78ADDF
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C07A78ADE3
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232251AbjH1Kvt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:51:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41660 "EHLO
+        id S232288AbjH1Kvw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:51:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232333AbjH1KvU (ORCPT
+        with ESMTP id S232344AbjH1KvU (ORCPT
         <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:51:20 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7E0DE64
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:50:41 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4025C10D7
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:50:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 659CA61A14
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:50:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 650C1C433C8;
-        Mon, 28 Aug 2023 10:50:40 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 20733644F2
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:50:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E1C9C116A3;
+        Mon, 28 Aug 2023 10:50:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219840;
-        bh=hUgkYiei286+qWYFM6NGLk57eRaeVXkTB/GCjtfBACY=;
+        s=korg; t=1693219843;
+        bh=SbMzgz+h+AW/JQBf1/O5i+ZdDGuvitML3/FDWqfyKu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BWbl08nhb3PUwXeMtm4HbBk/KvKSZKLBRcbaoeZJTJb3Hppc4xMrHOGCwEWunUfR+
-         FUwoN7mxaxeJdll7aUDDWaI7GlSYEtUka2aqq/lBVYJJ2Werwlz+8IF7LQXY/KEjsn
-         BuJZ/BFyEuCNi6YmRa+nj/KiZg/48HClMnue+heo=
+        b=htCk0/VNaSZcxYhxHW5ysDsFm99D280ceEQTBwQ6Kly+xrh6u2JT+PZqi4E3RAnwe
+         vlUDbDhuaFnHU9450neewhZd3jntE460qhZavRtHW9n26S3G7T1cACVLIytk70E32v
+         fT24SqUmeCbpoMsqctvQMkG2RkDFUN6eX7/Bfb80=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>
-Subject: [PATCH 5.10 75/84] scsi: core: raid_class: Remove raid_component_add()
-Date:   Mon, 28 Aug 2023 12:14:32 +0200
-Message-ID: <20230828101151.840383602@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Biju Das <biju.das.jz@bp.renesas.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.10 76/84] clk: Fix undefined reference to `clk_rate_exclusive_{get,put}
+Date:   Mon, 28 Aug 2023 12:14:33 +0200
+Message-ID: <20230828101151.870885898@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
 References: <20230828101149.146126827@linuxfoundation.org>
@@ -59,92 +60,146 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Zhu Wang <wangzhu9@huawei.com>
+From: Biju Das <biju.das.jz@bp.renesas.com>
 
-commit 60c5fd2e8f3c42a5abc565ba9876ead1da5ad2b7 upstream.
+[ Upstream commit 2746f13f6f1df7999001d6595b16f789ecc28ad1 ]
 
-The raid_component_add() function was added to the kernel tree via patch
-"[SCSI] embryonic RAID class" (2005). Remove this function since it never
-has had any callers in the Linux kernel. And also raid_component_release()
-is only used in raid_component_add(), so it is also removed.
+The COMMON_CLK config is not enabled in some of the architectures.
+This causes below build issues:
 
-Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
-Link: https://lore.kernel.org/r/20230822015254.184270-1-wangzhu9@huawei.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Fixes: 04b5b5cb0136 ("scsi: core: Fix possible memory leak if device_add() fails")
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+pwm-rz-mtu3.c:(.text+0x114):
+undefined reference to `clk_rate_exclusive_put'
+pwm-rz-mtu3.c:(.text+0x32c):
+undefined reference to `clk_rate_exclusive_get'
+
+Fix these issues by moving clk_rate_exclusive_{get,put} inside COMMON_CLK
+code block, as clk.c is enabled by COMMON_CLK.
+
+Fixes: 55e9b8b7b806 ("clk: add clk_rate_exclusive api")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/all/202307251752.vLfmmhYm-lkp@intel.com/
+Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
+Link: https://lore.kernel.org/r/20230725175140.361479-1-biju.das.jz@bp.renesas.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/raid_class.c  |   48 ---------------------------------------------
- include/linux/raid_class.h |    4 ---
- 2 files changed, 52 deletions(-)
+ include/linux/clk.h | 80 ++++++++++++++++++++++-----------------------
+ 1 file changed, 40 insertions(+), 40 deletions(-)
 
---- a/drivers/scsi/raid_class.c
-+++ b/drivers/scsi/raid_class.c
-@@ -209,54 +209,6 @@ raid_attr_ro_state(level);
- raid_attr_ro_fn(resync);
- raid_attr_ro_state_fn(state);
+diff --git a/include/linux/clk.h b/include/linux/clk.h
+index 1814eabb7c204..12c85ba606ec5 100644
+--- a/include/linux/clk.h
++++ b/include/linux/clk.h
+@@ -172,6 +172,39 @@ int clk_get_scaled_duty_cycle(struct clk *clk, unsigned int scale);
+  */
+ bool clk_is_match(const struct clk *p, const struct clk *q);
  
--static void raid_component_release(struct device *dev)
++/**
++ * clk_rate_exclusive_get - get exclusivity over the rate control of a
++ *                          producer
++ * @clk: clock source
++ *
++ * This function allows drivers to get exclusive control over the rate of a
++ * provider. It prevents any other consumer to execute, even indirectly,
++ * opereation which could alter the rate of the provider or cause glitches
++ *
++ * If exlusivity is claimed more than once on clock, even by the same driver,
++ * the rate effectively gets locked as exclusivity can't be preempted.
++ *
++ * Must not be called from within atomic context.
++ *
++ * Returns success (0) or negative errno.
++ */
++int clk_rate_exclusive_get(struct clk *clk);
++
++/**
++ * clk_rate_exclusive_put - release exclusivity over the rate control of a
++ *                          producer
++ * @clk: clock source
++ *
++ * This function allows drivers to release the exclusivity it previously got
++ * from clk_rate_exclusive_get()
++ *
++ * The caller must balance the number of clk_rate_exclusive_get() and
++ * clk_rate_exclusive_put() calls.
++ *
++ * Must not be called from within atomic context.
++ */
++void clk_rate_exclusive_put(struct clk *clk);
++
+ #else
+ 
+ static inline int clk_notifier_register(struct clk *clk,
+@@ -218,6 +251,13 @@ static inline bool clk_is_match(const struct clk *p, const struct clk *q)
+ 	return p == q;
+ }
+ 
++static inline int clk_rate_exclusive_get(struct clk *clk)
++{
++	return 0;
++}
++
++static inline void clk_rate_exclusive_put(struct clk *clk) {}
++
+ #endif
+ 
+ /**
+@@ -530,38 +570,6 @@ struct clk *devm_clk_get_optional_enabled(struct device *dev, const char *id);
+  */
+ struct clk *devm_get_clk_from_child(struct device *dev,
+ 				    struct device_node *np, const char *con_id);
+-/**
+- * clk_rate_exclusive_get - get exclusivity over the rate control of a
+- *                          producer
+- * @clk: clock source
+- *
+- * This function allows drivers to get exclusive control over the rate of a
+- * provider. It prevents any other consumer to execute, even indirectly,
+- * opereation which could alter the rate of the provider or cause glitches
+- *
+- * If exlusivity is claimed more than once on clock, even by the same driver,
+- * the rate effectively gets locked as exclusivity can't be preempted.
+- *
+- * Must not be called from within atomic context.
+- *
+- * Returns success (0) or negative errno.
+- */
+-int clk_rate_exclusive_get(struct clk *clk);
+-
+-/**
+- * clk_rate_exclusive_put - release exclusivity over the rate control of a
+- *                          producer
+- * @clk: clock source
+- *
+- * This function allows drivers to release the exclusivity it previously got
+- * from clk_rate_exclusive_get()
+- *
+- * The caller must balance the number of clk_rate_exclusive_get() and
+- * clk_rate_exclusive_put() calls.
+- *
+- * Must not be called from within atomic context.
+- */
+-void clk_rate_exclusive_put(struct clk *clk);
+ 
+ /**
+  * clk_enable - inform the system when the clock source should be running.
+@@ -921,14 +929,6 @@ static inline void clk_bulk_put_all(int num_clks, struct clk_bulk_data *clks) {}
+ 
+ static inline void devm_clk_put(struct device *dev, struct clk *clk) {}
+ 
+-
+-static inline int clk_rate_exclusive_get(struct clk *clk)
 -{
--	struct raid_component *rc =
--		container_of(dev, struct raid_component, dev);
--	dev_printk(KERN_ERR, rc->dev.parent, "COMPONENT RELEASE\n");
--	put_device(rc->dev.parent);
--	kfree(rc);
--}
--
--int raid_component_add(struct raid_template *r,struct device *raid_dev,
--		       struct device *component_dev)
--{
--	struct device *cdev =
--		attribute_container_find_class_device(&r->raid_attrs.ac,
--						      raid_dev);
--	struct raid_component *rc;
--	struct raid_data *rd = dev_get_drvdata(cdev);
--	int err;
--
--	rc = kzalloc(sizeof(*rc), GFP_KERNEL);
--	if (!rc)
--		return -ENOMEM;
--
--	INIT_LIST_HEAD(&rc->node);
--	device_initialize(&rc->dev);
--	rc->dev.release = raid_component_release;
--	rc->dev.parent = get_device(component_dev);
--	rc->num = rd->component_count++;
--
--	dev_set_name(&rc->dev, "component-%d", rc->num);
--	list_add_tail(&rc->node, &rd->component_list);
--	rc->dev.class = &raid_class.class;
--	err = device_add(&rc->dev);
--	if (err)
--		goto err_out;
--
 -	return 0;
--
--err_out:
--	put_device(&rc->dev);
--	list_del(&rc->node);
--	rd->component_count--;
--	put_device(component_dev);
--	kfree(rc);
--	return err;
 -}
--EXPORT_SYMBOL(raid_component_add);
 -
- struct raid_template *
- raid_class_attach(struct raid_function_template *ft)
+-static inline void clk_rate_exclusive_put(struct clk *clk) {}
+-
+ static inline int clk_enable(struct clk *clk)
  {
---- a/include/linux/raid_class.h
-+++ b/include/linux/raid_class.h
-@@ -77,7 +77,3 @@ DEFINE_RAID_ATTRIBUTE(enum raid_state, s
- 	
- struct raid_template *raid_class_attach(struct raid_function_template *);
- void raid_class_release(struct raid_template *);
--
--int __must_check raid_component_add(struct raid_template *, struct device *,
--				    struct device *);
--
+ 	return 0;
+-- 
+2.40.1
+
 
 
