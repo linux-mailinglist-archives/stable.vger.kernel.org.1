@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CF7678ACDF
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4311E78AB22
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:28:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231693AbjH1Knk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46928 "EHLO
+        id S231339AbjH1K2N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:28:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231831AbjH1KnN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:43:13 -0400
+        with ESMTP id S231360AbjH1K1t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:27:49 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F841CF6
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:42:46 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA85312D
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:27:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id C01AB64084
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:42:45 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1DDFC433C8;
-        Mon, 28 Aug 2023 10:42:44 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E4A263B8C
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:27:46 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938B2C433C8;
+        Mon, 28 Aug 2023 10:27:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219365;
-        bh=Bm03aJwrjIJlQ7yAhekBRSd25Z2XSZZK5q48qATird8=;
+        s=korg; t=1693218465;
+        bh=lPpCcTLoEe/ThfTtYNQrticZfVYTIk3V1n4qaWulrVM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uqC01aziUvvv1kecRAIvIM5bX0Nzz5GulqboQp+dLBE4Ima9ltyLKBOZoP16EumcA
-         cGgSyCVJ4EfZxtmDbMyBQ9nPcy3mIHLqJl/7zOsxBWJMOCqJthh+sDVxVcwSQrpACv
-         YJrUHFKYNq9BPRRr+GGElcJUIZbV5PzMUeoHBA4w=
+        b=v5e2YI47r/63xInmq4tqyhaQTAS3ejO6Ql7Nih80m3t2gcZMNCByOFgyJzvqnuKl+
+         siquph2tlw5nO04Xuuehw0XCnecWdZMxc2YEG38vu91RbZWwpqpkkvoVMoMWRCWZcR
+         OcbbkWbkrGX7SsQuX6b+O1rjFgeko8CKr7V7AVc0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alexander Aring <aahringo@redhat.com>,
-        David Teigland <teigland@redhat.com>,
+        patches@lists.linux.dev, stable@kernel.org,
+        Mark Brown <broonie@kernel.org>, Xu Yilun <yilun.xu@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.15 10/89] fs: dlm: use dlm_plock_info for do_unlock_close
-Date:   Mon, 28 Aug 2023 12:13:11 +0200
-Message-ID: <20230828101150.526402888@linuxfoundation.org>
+Subject: [PATCH 4.19 098/129] regmap: Account for register length in SMBus I/O limits
+Date:   Mon, 28 Aug 2023 12:13:12 +0200
+Message-ID: <20230828101156.904232053@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-References: <20230828101150.163430842@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,70 +55,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Aring <aahringo@redhat.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit 4d413ae9ced4180c0e2114553c3a7560b509b0f8 ]
+[ Upstream commit 0c9d2eb5e94792fe64019008a04d4df5e57625af ]
 
-This patch refactors do_unlock_close() by using only struct dlm_plock_info
-as a parameter.
+The SMBus I2C buses have limits on the size of transfers they can do but
+do not factor in the register length meaning we may try to do a transfer
+longer than our length limit, the core will not take care of this.
+Future changes will factor this out into the core but there are a number
+of users that assume current behaviour so let's just do something
+conservative here.
 
-Signed-off-by: Alexander Aring <aahringo@redhat.com>
-Signed-off-by: David Teigland <teigland@redhat.com>
-Stable-dep-of: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
+This does not take account padding bits but practically speaking these
+are very rarely if ever used on I2C buses given that they generally run
+slowly enough to mean there's no issue.
+
+Cc: stable@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Xu Yilun <yilun.xu@intel.com>
+Link: https://lore.kernel.org/r/20230712-regmap-max-transfer-v1-2-80e2aed22e83@kernel.org
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/dlm/plock.c | 16 ++++++----------
- 1 file changed, 6 insertions(+), 10 deletions(-)
+ drivers/base/regmap/regmap-i2c.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/fs/dlm/plock.c b/fs/dlm/plock.c
-index 0d00ca2c44c71..fa8969c0a5f55 100644
---- a/fs/dlm/plock.c
-+++ b/fs/dlm/plock.c
-@@ -80,8 +80,7 @@ static void send_op(struct plock_op *op)
-    abandoned waiter.  So, we have to insert the unlock-close when the
-    lock call is interrupted. */
+--- a/drivers/base/regmap/regmap-i2c.c
++++ b/drivers/base/regmap/regmap-i2c.c
+@@ -246,8 +246,8 @@ static int regmap_i2c_smbus_i2c_read(voi
+ static struct regmap_bus regmap_i2c_smbus_i2c_block = {
+ 	.write = regmap_i2c_smbus_i2c_write,
+ 	.read = regmap_i2c_smbus_i2c_read,
+-	.max_raw_read = I2C_SMBUS_BLOCK_MAX,
+-	.max_raw_write = I2C_SMBUS_BLOCK_MAX,
++	.max_raw_read = I2C_SMBUS_BLOCK_MAX - 1,
++	.max_raw_write = I2C_SMBUS_BLOCK_MAX - 1,
+ };
  
--static void do_unlock_close(struct dlm_ls *ls, u64 number,
--			    struct file *file, struct file_lock *fl)
-+static void do_unlock_close(const struct dlm_plock_info *info)
- {
- 	struct plock_op *op;
- 
-@@ -90,15 +89,12 @@ static void do_unlock_close(struct dlm_ls *ls, u64 number,
- 		return;
- 
- 	op->info.optype		= DLM_PLOCK_OP_UNLOCK;
--	op->info.pid		= fl->fl_pid;
--	op->info.fsid		= ls->ls_global_id;
--	op->info.number		= number;
-+	op->info.pid		= info->pid;
-+	op->info.fsid		= info->fsid;
-+	op->info.number		= info->number;
- 	op->info.start		= 0;
- 	op->info.end		= OFFSET_MAX;
--	if (fl->fl_lmops && fl->fl_lmops->lm_grant)
--		op->info.owner	= (__u64) fl->fl_pid;
--	else
--		op->info.owner	= (__u64)(long) fl->fl_owner;
-+	op->info.owner		= info->owner;
- 
- 	op->info.flags |= DLM_PLOCK_FL_CLOSE;
- 	send_op(op);
-@@ -168,7 +164,7 @@ int dlm_posix_lock(dlm_lockspace_t *lockspace, u64 number, struct file *file,
- 			  __func__, ls->ls_global_id,
- 			  (unsigned long long)number, op->info.pid);
- 		dlm_release_plock_op(op);
--		do_unlock_close(ls, number, file, fl);
-+		do_unlock_close(&op->info);
- 		goto out;
- 	}
- 
--- 
-2.40.1
-
+ static const struct regmap_bus *regmap_get_i2c_bus(struct i2c_client *i2c,
 
 
