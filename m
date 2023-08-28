@@ -2,45 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB57578ABAD
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:34:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 180B078AA8E
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231503AbjH1Kdb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:33:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42584 "EHLO
+        id S230520AbjH1KXY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:23:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231550AbjH1KdI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:33:08 -0400
+        with ESMTP id S231258AbjH1KWl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:41 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 458C0CF5
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:45 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CDCE7B9
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:26 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B30FC63D6C
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:44 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5749C433C8;
-        Mon, 28 Aug 2023 10:32:43 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 62E0B63914
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A30AC433C7;
+        Mon, 28 Aug 2023 10:22:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218764;
-        bh=uFEkGqbVSO7r09zOLQcyma6L9nSCv2pbiCBmA411N88=;
+        s=korg; t=1693218145;
+        bh=gh+yk4tl3bR9pRZsxT6xl7Yi7/L+YQtX8D0jmo2AZmA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1na9p6s3418fapHo1fFhI48oY30ySTU1sBPoLivZy9fKsrJ6yRswhlzZBJBzRlYV3
-         WhtYeWZkft5P9hnNFB7CHIuJBEevFKoMOVHrQnXhto4Ac4lG0a7VMjWvuVDw3NWx/e
-         vjskV66hU2L2S2jXdrnYv9JEzKS3iww0rIBtqWsw=
+        b=ovSr4KrozleENP7FWpuAd7rHpoUMg7BkChiQjiRmhYrDnb0kI+g/+ZPaAglXTtZbV
+         4miClppuE6aEHnDh3ANPeDbrEb/oLVkDIGyzCn0wehOh4u6ongVkZyEp+snJp5IhKg
+         /9zE64hOlJMgwdEFzoTS5yBWQAkAf6oi1o+uD4mg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
-        Jeff Layton <jlayton@kernel.org>,
-        Chuck Lever <chuck.lever@oracle.com>
-Subject: [PATCH 6.1 075/122] nfsd: Fix race to FREE_STATEID and cl_revoked
-Date:   Mon, 28 Aug 2023 12:13:10 +0200
-Message-ID: <20230828101158.920135142@linuxfoundation.org>
+        patches@lists.linux.dev, Yin Fengwei <fengwei.yin@intel.com>,
+        Yu Zhao <yuzhao@google.com>,
+        Ryan Roberts <ryan.roberts@arm.com>,
+        David Hildenbrand <david@redhat.com>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Matthew Wilcox <willy@infradead.org>,
+        Minchan Kim <minchan@kernel.org>,
+        "Vishal Moola (Oracle)" <vishal.moola@gmail.com>,
+        Yang Shi <shy828301@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.4 112/129] madvise:madvise_free_pte_range(): dont use mapcount() against large folio for sharing check
+Date:   Mon, 28 Aug 2023 12:13:11 +0200
+Message-ID: <20230828101201.090409576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
+References: <20230828101157.383363777@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,51 +62,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Coddington <bcodding@redhat.com>
+From: Yin Fengwei <fengwei.yin@intel.com>
 
-commit 3b816601e279756e781e6c4d9b3f3bd21a72ac67 upstream.
+commit 0e0e9bd5f7b9d40fd03b70092367247d52da1db0 upstream.
 
-We have some reports of linux NFS clients that cannot satisfy a linux knfsd
-server that always sets SEQ4_STATUS_RECALLABLE_STATE_REVOKED even though
-those clients repeatedly walk all their known state using TEST_STATEID and
-receive NFS4_OK for all.
+Commit 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a
+folio") replaced the page_mapcount() with folio_mapcount() to check
+whether the folio is shared by other mapping.
 
-Its possible for revoke_delegation() to set NFS4_REVOKED_DELEG_STID, then
-nfsd4_free_stateid() finds the delegation and returns NFS4_OK to
-FREE_STATEID.  Afterward, revoke_delegation() moves the same delegation to
-cl_revoked.  This would produce the observed client/server effect.
+It's not correct for large folios. folio_mapcount() returns the total
+mapcount of large folio which is not suitable to detect whether the folio
+is shared.
 
-Fix this by ensuring that the setting of sc_type to NFS4_REVOKED_DELEG_STID
-and move to cl_revoked happens within the same cl_lock.  This will allow
-nfsd4_free_stateid() to properly remove the delegation from cl_revoked.
+Use folio_estimated_sharers() which returns a estimated number of shares.
+That means it's not 100% correct. It should be OK for madvise case here.
 
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2217103
-Link: https://bugzilla.redhat.com/show_bug.cgi?id=2176575
-Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
-Cc: stable@vger.kernel.org # v4.17+
-Reviewed-by: Jeff Layton <jlayton@kernel.org>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+User-visible effects is that the THP is skipped when user call madvise.
+But the correct behavior is THP should be split and processed then.
+
+NOTE: this change is a temporary fix to reduce the user-visible effects
+before the long term fix from David is ready.
+
+Link: https://lkml.kernel.org/r/20230808020917.2230692-4-fengwei.yin@intel.com
+Fixes: 98b211d6415f ("madvise: convert madvise_free_pte_range() to use a folio")
+Signed-off-by: Yin Fengwei <fengwei.yin@intel.com>
+Reviewed-by: Yu Zhao <yuzhao@google.com>
+Reviewed-by: Ryan Roberts <ryan.roberts@arm.com>
+Cc: David Hildenbrand <david@redhat.com>
+Cc: Kefeng Wang <wangkefeng.wang@huawei.com>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Minchan Kim <minchan@kernel.org>
+Cc: Vishal Moola (Oracle) <vishal.moola@gmail.com>
+Cc: Yang Shi <shy828301@gmail.com>
+Cc: <stable@vger.kernel.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nfsd/nfs4state.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ mm/madvise.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nfsd/nfs4state.c
-+++ b/fs/nfsd/nfs4state.c
-@@ -1368,9 +1368,9 @@ static void revoke_delegation(struct nfs
- 	WARN_ON(!list_empty(&dp->dl_recall_lru));
- 
- 	if (clp->cl_minorversion) {
-+		spin_lock(&clp->cl_lock);
- 		dp->dl_stid.sc_type = NFS4_REVOKED_DELEG_STID;
- 		refcount_inc(&dp->dl_stid.sc_count);
--		spin_lock(&clp->cl_lock);
- 		list_add(&dp->dl_recall_lru, &clp->cl_revoked);
- 		spin_unlock(&clp->cl_lock);
- 	}
+--- a/mm/madvise.c
++++ b/mm/madvise.c
+@@ -666,8 +666,8 @@ static int madvise_free_pte_range(pmd_t
+ 		 * deactivate all pages.
+ 		 */
+ 		if (folio_test_large(folio)) {
+-			if (folio_mapcount(folio) != 1)
+-				goto out;
++			if (folio_estimated_sharers(folio) != 1)
++				break;
+ 			folio_get(folio);
+ 			if (!folio_trylock(folio)) {
+ 				folio_put(folio);
 
 
