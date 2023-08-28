@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB5B178ADC8
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:52:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50D7F78AD17
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:46:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232146AbjH1Kuj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:50:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35858 "EHLO
+        id S231933AbjH1Kpw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:45:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232155AbjH1KuO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:50:14 -0400
+        with ESMTP id S231932AbjH1KpZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:45:25 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53CABCD8
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:49:51 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77F52136
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:45:04 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 33A8E64394
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:49:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4875EC433C8;
-        Mon, 28 Aug 2023 10:49:50 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 586EF64147
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:45:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6AD41C433C8;
+        Mon, 28 Aug 2023 10:45:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693219790;
-        bh=nT81QTxJ0xW7hbIOnueQY7Qhxowb3R8It61bqWuLI/Y=;
+        s=korg; t=1693219503;
+        bh=htLtTE6v4x4T3lP3iV9rveqXv39LC/pdO50vFNVjqz4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wPcNFjqDxVISIMcHVoOktr3/ZNII4PRjyiwmWbmjCXzFxO+mRg2ZfNwvYU2wSiDgg
-         U4Iaii9yFoueBpfzOiFgmXqWchHTwZpG+28iFmBOiKwdwmxZUZ6n1NW1bomiE9wGfg
-         J1ZiNpaHN6+GFyqY7ps4uyTs32ahyBoWPTsFHR9k=
+        b=lMoN/xpU2LaoLMwlBcn5joz5KAzIhirvd2v4RCZaRGFJ7w5o64+efD3L9w3HNDRuc
+         uLI5xwb8NsYd/Hx6yNRYyBANxXc/Bao7gFM5UyR2tvlMldAUGR6UOKeXLYFXViR1dG
+         ABGJZqvM3mfQDiP9W82OHroSbmSQAHQhcERm+4rY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
-        Stephen Boyd <sboyd@kernel.org>
-Subject: [PATCH 5.10 44/84] clk: Fix slab-out-of-bounds error in devm_clk_release()
+        syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com,
+        Sven Eckelmann <sven@narfation.org>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>
+Subject: [PATCH 5.15 60/89] batman-adv: Hold rtnl lock during MTU update via netlink
 Date:   Mon, 28 Aug 2023 12:14:01 +0200
-Message-ID: <20230828101150.760420388@linuxfoundation.org>
+Message-ID: <20230828101152.203329321@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
-References: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
+References: <20230828101150.163430842@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,150 +57,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 66fbfb35da47f391bdadf9fa7ceb88af4faa9022 upstream.
+commit 987aae75fc1041072941ffb622b45ce2359a99b9 upstream.
 
-Problem can be reproduced by unloading snd_soc_simple_card, because in
-devm_get_clk_from_child() devres data is allocated as `struct clk`, but
-devm_clk_release() expects devres data to be `struct devm_clk_state`.
+The automatic recalculation of the maximum allowed MTU is usually triggered
+by code sections which are already rtnl lock protected by callers outside
+of batman-adv. But when the fragmentation setting is changed via
+batman-adv's own batadv genl family, then the rtnl lock is not yet taken.
 
-KASAN report:
- ==================================================================
- BUG: KASAN: slab-out-of-bounds in devm_clk_release+0x20/0x54
- Read of size 8 at addr ffffff800ee09688 by task (udev-worker)/287
+But dev_set_mtu requires that the caller holds the rtnl lock because it
+uses netdevice notifiers. And this code will then fail the check for this
+lock:
 
- Call trace:
-  dump_backtrace+0xe8/0x11c
-  show_stack+0x1c/0x30
-  dump_stack_lvl+0x60/0x78
-  print_report+0x150/0x450
-  kasan_report+0xa8/0xf0
-  __asan_load8+0x78/0xa0
-  devm_clk_release+0x20/0x54
-  release_nodes+0x84/0x120
-  devres_release_all+0x144/0x210
-  device_unbind_cleanup+0x1c/0xac
-  really_probe+0x2f0/0x5b0
-  __driver_probe_device+0xc0/0x1f0
-  driver_probe_device+0x68/0x120
-  __driver_attach+0x140/0x294
-  bus_for_each_dev+0xec/0x160
-  driver_attach+0x38/0x44
-  bus_add_driver+0x24c/0x300
-  driver_register+0xf0/0x210
-  __platform_driver_register+0x48/0x54
-  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
-  do_one_initcall+0xac/0x340
-  do_init_module+0xd0/0x300
-  load_module+0x2ba4/0x3100
-  __do_sys_init_module+0x2c8/0x300
-  __arm64_sys_init_module+0x48/0x5c
-  invoke_syscall+0x64/0x190
-  el0_svc_common.constprop.0+0x124/0x154
-  do_el0_svc+0x44/0xdc
-  el0_svc+0x14/0x50
-  el0t_64_sync_handler+0xec/0x11c
-  el0t_64_sync+0x14c/0x150
+  RTNL: assertion failed at net/core/dev.c (1953)
 
- Allocated by task 287:
-  kasan_save_stack+0x38/0x60
-  kasan_set_track+0x28/0x40
-  kasan_save_alloc_info+0x20/0x30
-  __kasan_kmalloc+0xac/0xb0
-  __kmalloc_node_track_caller+0x6c/0x1c4
-  __devres_alloc_node+0x44/0xb4
-  devm_get_clk_from_child+0x44/0xa0
-  asoc_simple_parse_clk+0x1b8/0x1dc [snd_soc_simple_card_utils]
-  simple_parse_node.isra.0+0x1ec/0x230 [snd_soc_simple_card]
-  simple_dai_link_of+0x1bc/0x334 [snd_soc_simple_card]
-  __simple_for_each_link+0x2ec/0x320 [snd_soc_simple_card]
-  asoc_simple_probe+0x468/0x4dc [snd_soc_simple_card]
-  platform_probe+0x90/0xf0
-  really_probe+0x118/0x5b0
-  __driver_probe_device+0xc0/0x1f0
-  driver_probe_device+0x68/0x120
-  __driver_attach+0x140/0x294
-  bus_for_each_dev+0xec/0x160
-  driver_attach+0x38/0x44
-  bus_add_driver+0x24c/0x300
-  driver_register+0xf0/0x210
-  __platform_driver_register+0x48/0x54
-  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
-  do_one_initcall+0xac/0x340
-  do_init_module+0xd0/0x300
-  load_module+0x2ba4/0x3100
-  __do_sys_init_module+0x2c8/0x300
-  __arm64_sys_init_module+0x48/0x5c
-  invoke_syscall+0x64/0x190
-  el0_svc_common.constprop.0+0x124/0x154
-  do_el0_svc+0x44/0xdc
-  el0_svc+0x14/0x50
-  el0t_64_sync_handler+0xec/0x11c
-  el0t_64_sync+0x14c/0x150
-
- The buggy address belongs to the object at ffffff800ee09600
-  which belongs to the cache kmalloc-256 of size 256
- The buggy address is located 136 bytes inside of
-  256-byte region [ffffff800ee09600, ffffff800ee09700)
-
- The buggy address belongs to the physical page:
- page:000000002d97303b refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ee08
- head:000000002d97303b order:1 compound_mapcount:0 compound_pincount:0
- flags: 0x10200(slab|head|zone=0)
- raw: 0000000000010200 0000000000000000 dead000000000122 ffffff8002c02480
- raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
- page dumped because: kasan: bad access detected
-
- Memory state around the buggy address:
-  ffffff800ee09580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffffff800ee09600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
- >ffffff800ee09680: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-                       ^
-  ffffff800ee09700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
-  ffffff800ee09780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
- ==================================================================
-
-Fixes: abae8e57e49a ("clk: generalize devm_clk_get() a bit")
-Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
-Link: https://lore.kernel.org/r/20230805084847.3110586-1-andrej.skvortzov@gmail.com
-Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+f8812454d9b3ac00d282@syzkaller.appspotmail.com
+Fixes: c6a953cce8d0 ("batman-adv: Trigger events for auto adjusted MTU")
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230821-batadv-missing-mtu-rtnl-lock-v1-1-1c5a7bfe861e@narfation.org
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/clk/clk-devres.c |   13 +++++++------
- 1 file changed, 7 insertions(+), 6 deletions(-)
+ net/batman-adv/netlink.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/drivers/clk/clk-devres.c
-+++ b/drivers/clk/clk-devres.c
-@@ -205,18 +205,19 @@ EXPORT_SYMBOL(devm_clk_put);
- struct clk *devm_get_clk_from_child(struct device *dev,
- 				    struct device_node *np, const char *con_id)
- {
--	struct clk **ptr, *clk;
-+	struct devm_clk_state *state;
-+	struct clk *clk;
+--- a/net/batman-adv/netlink.c
++++ b/net/batman-adv/netlink.c
+@@ -495,7 +495,10 @@ static int batadv_netlink_set_mesh(struc
+ 		attr = info->attrs[BATADV_ATTR_FRAGMENTATION_ENABLED];
  
--	ptr = devres_alloc(devm_clk_release, sizeof(*ptr), GFP_KERNEL);
--	if (!ptr)
-+	state = devres_alloc(devm_clk_release, sizeof(*state), GFP_KERNEL);
-+	if (!state)
- 		return ERR_PTR(-ENOMEM);
- 
- 	clk = of_clk_get_by_name(np, con_id);
- 	if (!IS_ERR(clk)) {
--		*ptr = clk;
--		devres_add(dev, ptr);
-+		state->clk = clk;
-+		devres_add(dev, state);
- 	} else {
--		devres_free(ptr);
-+		devres_free(state);
+ 		atomic_set(&bat_priv->fragmentation, !!nla_get_u8(attr));
++
++		rtnl_lock();
+ 		batadv_update_min_mtu(bat_priv->soft_iface);
++		rtnl_unlock();
  	}
  
- 	return clk;
+ 	if (info->attrs[BATADV_ATTR_GW_BANDWIDTH_DOWN]) {
 
 
