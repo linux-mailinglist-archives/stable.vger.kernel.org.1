@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0EBAF78AA81
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:23:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13D8F78AB88
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:32:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231135AbjH1KWy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:22:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55956 "EHLO
+        id S231451AbjH1Kbw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:31:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231196AbjH1KWd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:22:33 -0400
+        with ESMTP id S231524AbjH1Kbh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:31:37 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F23B132
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:22:13 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5EAA1E42
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:31:11 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BA59063930
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:22:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96AEC433C7;
-        Mon, 28 Aug 2023 10:22:11 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2D9616131B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:31:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4214AC433C7;
+        Mon, 28 Aug 2023 10:31:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218132;
-        bh=VPLr7kcRVPJrGYnvixuj/KQsvgf8tS+FRP8cwANGeDY=;
+        s=korg; t=1693218670;
+        bh=JS/4EjB3ds5kL57G7KmLD6SMXv536MDmNrsgdtuqQnU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bAtH3AWxxNx7ZIOQtJaQ6c3hbq5GSmHLdTtMDKYc1TbiZ0l6n+WDZbsv50BAM+cDF
-         UoygGkkPTiq5gVFqlxNnDmh76XzbGywvYSB5rzRMO47SwNmLFoCpZy0KA/HG7S4uMK
-         R2N+2Kx+UHVcC6ZNcF1JNemg7LQho8iRmV8KHN04=
+        b=l/Qa4IRASZHj/9yufZkL8iTag+j7DXD6lHbLY+1tt010LsFdkmMFXD+/lRBSIkuHs
+         7JqCbVGOHb/hHodT5ls9zBT2hkLhmbJHDkTYoG3HKyIi41K+30Oashi8iEPFeh74Wa
+         HhCO6k8lGIld6jNM6HH1oqmEnbkLQGmrUpxXrRhw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Matt Roper <matthew.d.roper@intel.com>,
-        Andrzej Hajda <andrzej.hajda@intel.com>
-Subject: [PATCH 6.4 077/129] drm/i915/display: Handle GMD_ID identification in display code
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Eric Dumazet <edumazet@google.com>,
+        David Ahern <dsahern@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 041/122] ipv4: fix data-races around inet->inet_id
 Date:   Mon, 28 Aug 2023 12:12:36 +0200
-Message-ID: <20230828101159.896417386@linuxfoundation.org>
+Message-ID: <20230828101157.765041395@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.383363777@linuxfoundation.org>
-References: <20230828101157.383363777@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,236 +57,232 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matt Roper <matthew.d.roper@intel.com>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 12e6f6dc78e4f4a418648fb1a9c0cd2ae9b3430b upstream.
+[ Upstream commit f866fbc842de5976e41ba874b76ce31710b634b5 ]
 
-For platforms with GMD_ID support (i.e., everything MTL and beyond),
-identification of the display IP present should be based on the contents
-of the GMD_ID register rather than a PCI devid match.
+UDP sendmsg() is lockless, so ip_select_ident_segs()
+can very well be run from multiple cpus [1]
 
-Note that since GMD_ID readout requires access to the PCI BAR, a slight
-change to the driver init sequence is needed --- pci_enable_device() is
-now called before i915_driver_create().
+Convert inet->inet_id to an atomic_t, but implement
+a dedicated path for TCP, avoiding cost of a locked
+instruction (atomic_add_return())
 
-v2:
- - Fix use of uninitialized i915 pointer in error path if
-   pci_enable_device() fails before the i915 device is created.  (lkp)
- - Use drm_device parameter to intel_display_device_probe.  This goes
-   against i915 conventions, but since the primary goal here is to make
-   it easy to call this function from other drivers (like Xe) and since
-   we don't need anything from the i915 structure, this seems like an
-   exception where drm_device is a more natural fit.
-v3:
- - Go back do drm_i915_private for intel_display_device_probe.  (Jani)
- - Move forward decl to top of header.  (Jani)
+Note that this patch will cause a trivial merge conflict
+because we added inet->flags in net-next tree.
 
-Signed-off-by: Matt Roper <matthew.d.roper@intel.com>
-Reviewed-by: Andrzej Hajda <andrzej.hajda@intel.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230523195609.73627-6-matthew.d.roper@intel.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+v2: added missing change in
+drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
+(David Ahern)
+
+[1]
+
+BUG: KCSAN: data-race in __ip_make_skb / __ip_make_skb
+
+read-write to 0xffff888145af952a of 2 bytes by task 7803 on cpu 1:
+ip_select_ident_segs include/net/ip.h:542 [inline]
+ip_select_ident include/net/ip.h:556 [inline]
+__ip_make_skb+0x844/0xc70 net/ipv4/ip_output.c:1446
+ip_make_skb+0x233/0x2c0 net/ipv4/ip_output.c:1560
+udp_sendmsg+0x1199/0x1250 net/ipv4/udp.c:1260
+inet_sendmsg+0x63/0x80 net/ipv4/af_inet.c:830
+sock_sendmsg_nosec net/socket.c:725 [inline]
+sock_sendmsg net/socket.c:748 [inline]
+____sys_sendmsg+0x37c/0x4d0 net/socket.c:2494
+___sys_sendmsg net/socket.c:2548 [inline]
+__sys_sendmmsg+0x269/0x500 net/socket.c:2634
+__do_sys_sendmmsg net/socket.c:2663 [inline]
+__se_sys_sendmmsg net/socket.c:2660 [inline]
+__x64_sys_sendmmsg+0x57/0x60 net/socket.c:2660
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+read to 0xffff888145af952a of 2 bytes by task 7804 on cpu 0:
+ip_select_ident_segs include/net/ip.h:541 [inline]
+ip_select_ident include/net/ip.h:556 [inline]
+__ip_make_skb+0x817/0xc70 net/ipv4/ip_output.c:1446
+ip_make_skb+0x233/0x2c0 net/ipv4/ip_output.c:1560
+udp_sendmsg+0x1199/0x1250 net/ipv4/udp.c:1260
+inet_sendmsg+0x63/0x80 net/ipv4/af_inet.c:830
+sock_sendmsg_nosec net/socket.c:725 [inline]
+sock_sendmsg net/socket.c:748 [inline]
+____sys_sendmsg+0x37c/0x4d0 net/socket.c:2494
+___sys_sendmsg net/socket.c:2548 [inline]
+__sys_sendmmsg+0x269/0x500 net/socket.c:2634
+__do_sys_sendmmsg net/socket.c:2663 [inline]
+__se_sys_sendmmsg net/socket.c:2660 [inline]
+__x64_sys_sendmmsg+0x57/0x60 net/socket.c:2660
+do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
+entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+value changed: 0x184d -> 0x184e
+
+Reported by Kernel Concurrency Sanitizer on:
+CPU: 0 PID: 7804 Comm: syz-executor.1 Not tainted 6.5.0-rc6-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+==================================================================
+
+Fixes: 23f57406b82d ("ipv4: avoid using shared IP generator for connected sockets")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reviewed-by: David Ahern <dsahern@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/i915/display/intel_display_device.c |   65 ++++++++++++++++++--
- drivers/gpu/drm/i915/display/intel_display_device.h |    5 +
- drivers/gpu/drm/i915/i915_driver.c                  |   17 +++--
- drivers/gpu/drm/i915/intel_device_info.c            |   13 ++--
- 4 files changed, 84 insertions(+), 16 deletions(-)
+ .../chelsio/inline_crypto/chtls/chtls_cm.c        |  2 +-
+ include/net/inet_sock.h                           |  2 +-
+ include/net/ip.h                                  | 15 +++++++++++++--
+ net/dccp/ipv4.c                                   |  4 ++--
+ net/ipv4/af_inet.c                                |  2 +-
+ net/ipv4/datagram.c                               |  2 +-
+ net/ipv4/tcp_ipv4.c                               |  4 ++--
+ net/sctp/socket.c                                 |  2 +-
+ 8 files changed, 22 insertions(+), 11 deletions(-)
 
---- a/drivers/gpu/drm/i915/display/intel_display_device.c
-+++ b/drivers/gpu/drm/i915/display/intel_display_device.c
-@@ -5,7 +5,10 @@
+diff --git a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
+index c2e7037c7ba1c..7750702900fa6 100644
+--- a/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
++++ b/drivers/net/ethernet/chelsio/inline_crypto/chtls/chtls_cm.c
+@@ -1466,7 +1466,7 @@ static void make_established(struct sock *sk, u32 snd_isn, unsigned int opt)
+ 	tp->write_seq = snd_isn;
+ 	tp->snd_nxt = snd_isn;
+ 	tp->snd_una = snd_isn;
+-	inet_sk(sk)->inet_id = get_random_u16();
++	atomic_set(&inet_sk(sk)->inet_id, get_random_u16());
+ 	assign_rxopt(sk, opt);
  
- #include <drm/i915_pciids.h>
- #include <drm/drm_color_mgmt.h>
-+#include <linux/pci.h>
+ 	if (tp->rcv_wnd > (RCV_BUFSIZ_M << 10))
+diff --git a/include/net/inet_sock.h b/include/net/inet_sock.h
+index c8ef3b881f03d..c2432c2addc82 100644
+--- a/include/net/inet_sock.h
++++ b/include/net/inet_sock.h
+@@ -222,8 +222,8 @@ struct inet_sock {
+ 	__s16			uc_ttl;
+ 	__u16			cmsg_flags;
+ 	struct ip_options_rcu __rcu	*inet_opt;
++	atomic_t		inet_id;
+ 	__be16			inet_sport;
+-	__u16			inet_id;
  
-+#include "i915_drv.h"
-+#include "i915_reg.h"
- #include "intel_display_device.h"
- #include "intel_display_power.h"
- #include "intel_display_reg_defs.h"
-@@ -710,19 +713,73 @@ static const struct {
- 	INTEL_RPLP_IDS(&xe_lpd_display),
- 	INTEL_DG2_IDS(&xe_hpd_display),
+ 	__u8			tos;
+ 	__u8			min_ttl;
+diff --git a/include/net/ip.h b/include/net/ip.h
+index 530e7257e4389..1872f570abeda 100644
+--- a/include/net/ip.h
++++ b/include/net/ip.h
+@@ -532,8 +532,19 @@ static inline void ip_select_ident_segs(struct net *net, struct sk_buff *skb,
+ 	 * generator as much as we can.
+ 	 */
+ 	if (sk && inet_sk(sk)->inet_daddr) {
+-		iph->id = htons(inet_sk(sk)->inet_id);
+-		inet_sk(sk)->inet_id += segs;
++		int val;
++
++		/* avoid atomic operations for TCP,
++		 * as we hold socket lock at this point.
++		 */
++		if (sk_is_tcp(sk)) {
++			sock_owned_by_me(sk);
++			val = atomic_read(&inet_sk(sk)->inet_id);
++			atomic_set(&inet_sk(sk)->inet_id, val + segs);
++		} else {
++			val = atomic_add_return(segs, &inet_sk(sk)->inet_id);
++		}
++		iph->id = htons(val);
+ 		return;
+ 	}
+ 	if ((iph->frag_off & htons(IP_DF)) && !skb->ignore_df) {
+diff --git a/net/dccp/ipv4.c b/net/dccp/ipv4.c
+index b780827f5e0a5..bfececa9e244e 100644
+--- a/net/dccp/ipv4.c
++++ b/net/dccp/ipv4.c
+@@ -130,7 +130,7 @@ int dccp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+ 						    inet->inet_daddr,
+ 						    inet->inet_sport,
+ 						    inet->inet_dport);
+-	inet->inet_id = get_random_u16();
++	atomic_set(&inet->inet_id, get_random_u16());
  
--	/* FIXME: Replace this with a GMD_ID lookup */
--	INTEL_MTL_IDS(&xe_lpdp_display),
-+	/*
-+	 * Do not add any GMD_ID-based platforms to this list.  They will
-+	 * be probed automatically based on the IP version reported by
-+	 * the hardware.
-+	 */
- };
+ 	err = dccp_connect(sk);
+ 	rt = NULL;
+@@ -430,7 +430,7 @@ struct sock *dccp_v4_request_recv_sock(const struct sock *sk,
+ 	RCU_INIT_POINTER(newinet->inet_opt, rcu_dereference(ireq->ireq_opt));
+ 	newinet->mc_index  = inet_iif(skb);
+ 	newinet->mc_ttl	   = ip_hdr(skb)->ttl;
+-	newinet->inet_id   = get_random_u16();
++	atomic_set(&newinet->inet_id, get_random_u16());
  
-+static const struct {
-+	u16 ver;
-+	u16 rel;
-+	const struct intel_display_device_info *display;
-+} gmdid_display_map[] = {
-+	{ 14,  0, &xe_lpdp_display },
-+};
-+
-+static const struct intel_display_device_info *
-+probe_gmdid_display(struct drm_i915_private *i915, u16 *ver, u16 *rel, u16 *step)
-+{
-+	struct pci_dev *pdev = to_pci_dev(i915->drm.dev);
-+	void __iomem *addr;
-+	u32 val;
-+	int i;
-+
-+	addr = pci_iomap_range(pdev, 0, i915_mmio_reg_offset(GMD_ID_DISPLAY), sizeof(u32));
-+	if (!addr) {
-+		drm_err(&i915->drm, "Cannot map MMIO BAR to read display GMD_ID\n");
-+		return &no_display;
-+	}
-+
-+	val = ioread32(addr);
-+	pci_iounmap(pdev, addr);
-+
-+	if (val == 0)
-+		/* Platform doesn't have display */
-+		return &no_display;
-+
-+	*ver = REG_FIELD_GET(GMD_ID_ARCH_MASK, val);
-+	*rel = REG_FIELD_GET(GMD_ID_RELEASE_MASK, val);
-+	*step = REG_FIELD_GET(GMD_ID_STEP, val);
-+
-+	for (i = 0; i < ARRAY_SIZE(gmdid_display_map); i++)
-+		if (*ver == gmdid_display_map[i].ver &&
-+		    *rel == gmdid_display_map[i].rel)
-+			return gmdid_display_map[i].display;
-+
-+	drm_err(&i915->drm, "Unrecognized display IP version %d.%02d; disabling display.\n",
-+		*ver, *rel);
-+	return &no_display;
-+}
-+
- const struct intel_display_device_info *
--intel_display_device_probe(u16 pci_devid)
-+intel_display_device_probe(struct drm_i915_private *i915, bool has_gmdid,
-+			   u16 *gmdid_ver, u16 *gmdid_rel, u16 *gmdid_step)
- {
-+	struct pci_dev *pdev = to_pci_dev(i915->drm.dev);
- 	int i;
+ 	if (dst == NULL && (dst = inet_csk_route_child_sock(sk, newsk, req)) == NULL)
+ 		goto put_and_exit;
+diff --git a/net/ipv4/af_inet.c b/net/ipv4/af_inet.c
+index ebb737ac9e894..04853c83c85c4 100644
+--- a/net/ipv4/af_inet.c
++++ b/net/ipv4/af_inet.c
+@@ -340,7 +340,7 @@ static int inet_create(struct net *net, struct socket *sock, int protocol,
+ 	else
+ 		inet->pmtudisc = IP_PMTUDISC_WANT;
  
-+	if (has_gmdid)
-+		return probe_gmdid_display(i915, gmdid_ver, gmdid_rel, gmdid_step);
-+
- 	for (i = 0; i < ARRAY_SIZE(intel_display_ids); i++) {
--		if (intel_display_ids[i].devid == pci_devid)
-+		if (intel_display_ids[i].devid == pdev->device)
- 			return intel_display_ids[i].info;
+-	inet->inet_id = 0;
++	atomic_set(&inet->inet_id, 0);
+ 
+ 	sock_init_data(sock, sk);
+ 
+diff --git a/net/ipv4/datagram.c b/net/ipv4/datagram.c
+index 4d1af0cd7d99e..cb5dbee9e018f 100644
+--- a/net/ipv4/datagram.c
++++ b/net/ipv4/datagram.c
+@@ -73,7 +73,7 @@ int __ip4_datagram_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len
+ 	reuseport_has_conns_set(sk);
+ 	sk->sk_state = TCP_ESTABLISHED;
+ 	sk_set_txhash(sk);
+-	inet->inet_id = get_random_u16();
++	atomic_set(&inet->inet_id, get_random_u16());
+ 
+ 	sk_dst_set(sk, &rt->dst);
+ 	err = 0;
+diff --git a/net/ipv4/tcp_ipv4.c b/net/ipv4/tcp_ipv4.c
+index 08921b96f9728..f9b8a4a1d2edc 100644
+--- a/net/ipv4/tcp_ipv4.c
++++ b/net/ipv4/tcp_ipv4.c
+@@ -312,7 +312,7 @@ int tcp_v4_connect(struct sock *sk, struct sockaddr *uaddr, int addr_len)
+ 					     inet->inet_daddr));
  	}
  
-+	drm_dbg(&i915->drm, "No display ID found for device ID %04x; disabling display.\n",
-+		pdev->device);
-+
- 	return &no_display;
- }
---- a/drivers/gpu/drm/i915/display/intel_display_device.h
-+++ b/drivers/gpu/drm/i915/display/intel_display_device.h
-@@ -10,6 +10,8 @@
+-	inet->inet_id = get_random_u16();
++	atomic_set(&inet->inet_id, get_random_u16());
  
- #include "display/intel_display_limits.h"
+ 	if (tcp_fastopen_defer_connect(sk, &err))
+ 		return err;
+@@ -1539,7 +1539,7 @@ struct sock *tcp_v4_syn_recv_sock(const struct sock *sk, struct sk_buff *skb,
+ 	inet_csk(newsk)->icsk_ext_hdr_len = 0;
+ 	if (inet_opt)
+ 		inet_csk(newsk)->icsk_ext_hdr_len = inet_opt->opt.optlen;
+-	newinet->inet_id = get_random_u16();
++	atomic_set(&newinet->inet_id, get_random_u16());
  
-+struct drm_i915_private;
-+
- #define DEV_INFO_DISPLAY_FOR_EACH_FLAG(func) \
- 	/* Keep in alphabetical order */ \
- 	func(cursor_needs_physical); \
-@@ -81,6 +83,7 @@ struct intel_display_device_info {
- };
+ 	/* Set ToS of the new socket based upon the value of incoming SYN.
+ 	 * ECT bits are set later in tcp_init_transfer().
+diff --git a/net/sctp/socket.c b/net/sctp/socket.c
+index 83656fe03a0e6..a11b0d903514c 100644
+--- a/net/sctp/socket.c
++++ b/net/sctp/socket.c
+@@ -9472,7 +9472,7 @@ void sctp_copy_sock(struct sock *newsk, struct sock *sk,
+ 	newinet->inet_rcv_saddr = inet->inet_rcv_saddr;
+ 	newinet->inet_dport = htons(asoc->peer.port);
+ 	newinet->pmtudisc = inet->pmtudisc;
+-	newinet->inet_id = get_random_u16();
++	atomic_set(&newinet->inet_id, get_random_u16());
  
- const struct intel_display_device_info *
--intel_display_device_probe(u16 pci_devid);
-+intel_display_device_probe(struct drm_i915_private *i915, bool has_gmdid,
-+			   u16 *ver, u16 *rel, u16 *step);
- 
- #endif
---- a/drivers/gpu/drm/i915/i915_driver.c
-+++ b/drivers/gpu/drm/i915/i915_driver.c
-@@ -739,13 +739,17 @@ int i915_driver_probe(struct pci_dev *pd
- 	struct drm_i915_private *i915;
- 	int ret;
- 
--	i915 = i915_driver_create(pdev, ent);
--	if (IS_ERR(i915))
--		return PTR_ERR(i915);
--
- 	ret = pci_enable_device(pdev);
--	if (ret)
--		goto out_fini;
-+	if (ret) {
-+		pr_err("Failed to enable graphics device: %pe\n", ERR_PTR(ret));
-+		return ret;
-+	}
-+
-+	i915 = i915_driver_create(pdev, ent);
-+	if (IS_ERR(i915)) {
-+		ret = PTR_ERR(i915);
-+		goto out_pci_disable;
-+	}
- 
- 	ret = i915_driver_early_probe(i915);
- 	if (ret < 0)
-@@ -828,7 +832,6 @@ out_runtime_pm_put:
- 	i915_driver_late_release(i915);
- out_pci_disable:
- 	pci_disable_device(pdev);
--out_fini:
- 	i915_probe_error(i915, "Device initialization failed (%d)\n", ret);
- 	return ret;
- }
---- a/drivers/gpu/drm/i915/intel_device_info.c
-+++ b/drivers/gpu/drm/i915/intel_device_info.c
-@@ -345,7 +345,6 @@ static void ip_ver_read(struct drm_i915_
- static void intel_ipver_early_init(struct drm_i915_private *i915)
- {
- 	struct intel_runtime_info *runtime = RUNTIME_INFO(i915);
--	struct intel_display_runtime_info *display_runtime = DISPLAY_RUNTIME_INFO(i915);
- 
- 	if (!HAS_GMD_ID(i915)) {
- 		drm_WARN_ON(&i915->drm, RUNTIME_INFO(i915)->graphics.ip.ver > 12);
-@@ -366,8 +365,6 @@ static void intel_ipver_early_init(struc
- 		RUNTIME_INFO(i915)->graphics.ip.ver = 12;
- 		RUNTIME_INFO(i915)->graphics.ip.rel = 70;
- 	}
--	ip_ver_read(i915, i915_mmio_reg_offset(GMD_ID_DISPLAY),
--		    (struct intel_ip_version *)&display_runtime->ip);
- 	ip_ver_read(i915, i915_mmio_reg_offset(GMD_ID_MEDIA),
- 		    &runtime->media.ip);
- }
-@@ -574,6 +571,7 @@ void intel_device_info_driver_create(str
- {
- 	struct intel_device_info *info;
- 	struct intel_runtime_info *runtime;
-+	u16 ver, rel, step;
- 
- 	/* Setup the write-once "constant" device info */
- 	info = mkwrite_device_info(i915);
-@@ -584,11 +582,18 @@ void intel_device_info_driver_create(str
- 	memcpy(runtime, &INTEL_INFO(i915)->__runtime, sizeof(*runtime));
- 
- 	/* Probe display support */
--	info->display = intel_display_device_probe(device_id);
-+	info->display = intel_display_device_probe(i915, info->has_gmd_id,
-+						   &ver, &rel, &step);
- 	memcpy(DISPLAY_RUNTIME_INFO(i915),
- 	       &DISPLAY_INFO(i915)->__runtime_defaults,
- 	       sizeof(*DISPLAY_RUNTIME_INFO(i915)));
- 
-+	if (info->has_gmd_id) {
-+		DISPLAY_RUNTIME_INFO(i915)->ip.ver = ver;
-+		DISPLAY_RUNTIME_INFO(i915)->ip.rel = rel;
-+		DISPLAY_RUNTIME_INFO(i915)->ip.step = step;
-+	}
-+
- 	runtime->device_id = device_id;
- }
- 
+ 	newinet->uc_ttl = inet->uc_ttl;
+ 	newinet->mc_loop = 1;
+-- 
+2.40.1
+
 
 
