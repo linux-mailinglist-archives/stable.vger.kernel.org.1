@@ -2,145 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 857B878B667
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 19:27:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BFB178B677
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 19:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230370AbjH1R1Z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 13:27:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60418 "EHLO
+        id S229909AbjH1Rah (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 13:30:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232861AbjH1R1B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 13:27:01 -0400
-Received: from perceval.ideasonboard.com (perceval.ideasonboard.com [213.167.242.64])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2BA1103;
-        Mon, 28 Aug 2023 10:26:57 -0700 (PDT)
-Received: from pendragon.ideasonboard.com (117.145-247-81.adsl-dyn.isp.belgacom.be [81.247.145.117])
-        by perceval.ideasonboard.com (Postfix) with ESMTPSA id 1B8CA5AA;
-        Mon, 28 Aug 2023 19:25:35 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=ideasonboard.com;
-        s=mail; t=1693243535;
-        bh=ssG+wmaauBYkmFohm0LN3Ai/dsIv1Lk5t8fuUcW/ueY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=VghHy9QFYH/wYcJxOTD1E+JY/1v2eDBQZIJKqlyw0FtTwTUhmvrzqBd8abTgS8gGv
-         ZZtReM92yXAeRUe+HeiAxep9pLa3/XYgvgOrG6YuFpqjKdV774+VvwW6eXtjB+uS6K
-         nQqfXYL/0pn8jgLSWmcaDPKo1BmGwngTU/xHnX5A=
-Date:   Mon, 28 Aug 2023 20:27:05 +0300
-From:   Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-To:     Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Cc:     rfoss@kernel.org, todor.too@gmail.com, agross@kernel.org,
-        andersson@kernel.org, konrad.dybcio@linaro.org, mchehab@kernel.org,
-        hverkuil-cisco@xs4all.nl, sakari.ailus@linux.intel.com,
-        andrey.konovalov@linaro.org, linux-media@vger.kernel.org,
-        linux-arm-msm@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: Re: [PATCH v2 9/9] media: qcom: camss: Fix csid-gen2 for test
- pattern generator
-Message-ID: <20230828172705.GD14596@pendragon.ideasonboard.com>
-References: <20230822200626.1931129-1-bryan.odonoghue@linaro.org>
- <20230822200626.1931129-10-bryan.odonoghue@linaro.org>
+        with ESMTP id S232849AbjH1RaY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 13:30:24 -0400
+Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 964D211A
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:30:21 -0700 (PDT)
+Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-44e86f3e4b6so858399137.0
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:30:21 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1693243820; x=1693848620;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=2WXMkuXavCrvB5E1bSmvUXIa9Xz7X0iJQJfaZFxRihk=;
+        b=C8lvsFNOYMem0PLD28/tzEAE2qEIzHidIey+CQoeI/aBZ0YTVeFVWYombQUGViO2+t
+         W+80eJyqOHVAhZryw0bNoYX3j/u3RqY/2VyNLWozWheCAXYLfsy/KIYqgCFnx1sFctD0
+         p2186BC1f9D4So9WK6jNJQGqgNlb7+Lja2enTtdMHhCtoNj2eUKz2kLeO5be6yyyL+lF
+         RdVmYG4sDir0f1W8QK+9BrR5dPRK+3o0W+LIVIpDg8HDpY+UqWCIMMxE45JqAlv43aCH
+         +6F0q9p4NMRxZRB4hzh9Oe+sr5oOX9C5kkiVwlU2BIH1WtM4s3T9DgcxAVgrZzlRWRZT
+         FmDQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693243820; x=1693848620;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=2WXMkuXavCrvB5E1bSmvUXIa9Xz7X0iJQJfaZFxRihk=;
+        b=NAcuwvJfMKtKuNr7uhOQjBVToYixgkluBOOOuOzd3vvc6+nnS5jWPQUS5EH5HzreAv
+         lIgHM0Py90DukvnrzNjhEyXupSAnSQ6IcHp+rPo84SUfxxTuc7EL9rEdbA8ItYxzA4SH
+         svlwCjTgQVAyb/jScmsnfn5xcb4sZJZU1VW2bdn2TTPDU6RQ6A4FKYLkjUsuqO7Z/OYk
+         sPU+PJvViZgQKNh88pbJo6cmYQiibSNG6xvtcRCqMZO5CHQsMrk0tiN33mlRVEiMxTAS
+         QsfoCfe9DwkUJGP/NOip3F69Pd4L0jZWVo/KzCaPpbgPzSuXyGvTLSej6sNZhbbjl0dZ
+         28Ng==
+X-Gm-Message-State: AOJu0Yx9RAtFeqSqRXeKfeXuT0FqtcMvMJE1Y7BUk8FX8IVqIBVPIDep
+        ke5IzGmyFIwKX2XMlPMdoiZgbq5Au8dTqJy0p0rShA==
+X-Google-Smtp-Source: AGHT+IGgcJ/msAlUq9iW+kDjKzwJiwE02t53bR7UOEBKquUn9g7lTmqYj/TpdAvPJIlxRJNe5bMBS4W5kuKO4v5LwKk=
+X-Received: by 2002:a67:f8d5:0:b0:44e:9a71:27a1 with SMTP id
+ c21-20020a67f8d5000000b0044e9a7127a1mr7609225vsp.17.1693243820627; Mon, 28
+ Aug 2023 10:30:20 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-In-Reply-To: <20230822200626.1931129-10-bryan.odonoghue@linaro.org>
+References: <CA+G9fYscGFiG1TVLyfETVu3NV5BAe8sCOXRGDnky-w31aB6yVQ@mail.gmail.com>
+ <2023082853-ladylike-clanking-3dbb@gregkh>
+In-Reply-To: <2023082853-ladylike-clanking-3dbb@gregkh>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Mon, 28 Aug 2023 23:00:08 +0530
+Message-ID: <CA+G9fYtS-Pe0L9PsjTdEjnysuX9Ax+04jgZSkJAFqsGHC1Xm=w@mail.gmail.com>
+Subject: Re: clang: net: qed_main.c:1227:3: error: 'snprintf' will always be
+ truncated; specified size is 16, but format string expands to at least 18 [-Werror,-Wfortify-source]
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     clang-built-linux <llvm@lists.linux.dev>,
+        linux-stable <stable@vger.kernel.org>,
+        lkft-triage@lists.linaro.org, Netdev <netdev@vger.kernel.org>,
+        David Miller <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>
+Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Bryan,
+On Mon, 28 Aug 2023 at 20:22, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Mon, Aug 28, 2023 at 05:57:38PM +0530, Naresh Kamboju wrote:
+> > [My two cents]
+> >
+> > stable-rc linux-6.1.y and linux-6.4.y x86 clang-nightly builds fail with
+> > following warnings / errors.
+> >
+> > Build errors:
+> > --------------
+> > drivers/net/ethernet/qlogic/qed/qed_main.c:1227:3: error: 'snprintf'
+> > will always be truncated; specified size is 16, but format string
+> > expands to at least 18 [-Werror,-Wfortify-source]
+> >  1227 |                 snprintf(name, NAME_SIZE, "slowpath-%02x:%02x.%02x",
+> >       |                 ^
+> > 1 error generated.
+> >
+> > Reported-by: Linux Kernel Functional Testing <lkft@linaro.org>
+>
+> Is this also an issue in 6.5?
 
-Thank you for the patch.
+I see it on 6.5, Linux next-20230828 tag, stable 6.4 and 6.1.
 
-On Tue, Aug 22, 2023 at 09:06:26PM +0100, Bryan O'Donoghue wrote:
-> From: Andrey Konovalov <andrey.konovalov@linaro.org>
-> 
-> In the current driver csid Test Pattern Generator (TPG) doesn't work.
-> This change:
-> - fixes writing frame width and height values into CSID_TPG_DT_n_CFG_0
-> - fixes the shift by one between test_pattern control value and the
->   actual pattern.
-> - drops fixed VC of 0x0a which testing showed prohibited some test
->   patterns in the CSID to produce output.
-> So that TPG starts working, but with the below limitations:
-> - only test_pattern=9 works as it should
-> - test_pattern=8 and test_pattern=7 produce black frame (all zeroes)
-> - the rest of test_pattern's don't work (yavta doesn't get the data)
-> - regardless of the CFA pattern set by 'media-ctl -V' the actual pixel
->   order is always the same (RGGB for any RAW8 or RAW10P format in
->   4608x2592 resolution).
-> 
-> Tested with:
-> 
-> RAW10P format, VC0:
->  media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4608x2592 field:none]'
->  media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4608x2592 field:none]'
->  media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
->  v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
->  yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video0
-> 
-> RAW10P format, VC1:
->  media-ctl -V '"msm_csid0":2[fmt:SRGGB10/4608x2592 field:none]'
->  media-ctl -V '"msm_vfe0_rdi1":0[fmt:SRGGB10/4608x2592 field:none]'
->  media-ctl -l '"msm_csid0":2->"msm_vfe0_rdi1":0[1]'
->  v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
->  yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video1
-> 
-> RAW8 format, VC0:
->  media-ctl --reset
->  media-ctl -V '"msm_csid0":0[fmt:SRGGB8/4608x2592 field:none]'
->  media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB8/4608x2592 field:none]'
->  media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
->  yavta -B capture-mplane --capture=3 -n 3 -f SRGGB8 -s 4608x2592 /dev/video0
-> 
-> Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Andrey Konovalov <andrey.konovalov@linaro.org>
-> Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
-
-> ---
->  drivers/media/platform/qcom/camss/camss-csid-gen2.c | 9 +++------
->  1 file changed, 3 insertions(+), 6 deletions(-)
-> 
-> diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> index 140c584bfb8b1..6ba2b10326444 100644
-> --- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> +++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-> @@ -355,9 +355,6 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
->  		u8 dt_id = vc;
->  
->  		if (tg->enabled) {
-> -			/* Config Test Generator */
-> -			vc = 0xa;
-> -
->  			/* configure one DT, infinite frames */
->  			val = vc << TPG_VC_CFG0_VC_NUM;
->  			val |= INTELEAVING_MODE_ONE_SHOT << TPG_VC_CFG0_LINE_INTERLEAVING_MODE;
-> @@ -370,14 +367,14 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
->  
->  			writel_relaxed(0x12345678, csid->base + CSID_TPG_LFSR_SEED);
->  
-> -			val = input_format->height & 0x1fff << TPG_DT_n_CFG_0_FRAME_HEIGHT;
-> -			val |= input_format->width & 0x1fff << TPG_DT_n_CFG_0_FRAME_WIDTH;
-> +			val = (input_format->height & 0x1fff) << TPG_DT_n_CFG_0_FRAME_HEIGHT;
-> +			val |= (input_format->width & 0x1fff) << TPG_DT_n_CFG_0_FRAME_WIDTH;
->  			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_0(0));
->  
->  			val = format->data_type << TPG_DT_n_CFG_1_DATA_TYPE;
->  			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_1(0));
->  
-> -			val = tg->mode << TPG_DT_n_CFG_2_PAYLOAD_MODE;
-> +			val = (tg->mode - 1) << TPG_DT_n_CFG_2_PAYLOAD_MODE;
->  			val |= 0xBE << TPG_DT_n_CFG_2_USER_SPECIFIED_PAYLOAD;
->  			val |= format->decode_format << TPG_DT_n_CFG_2_ENCODE_FORMAT;
->  			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_2(0));
-
--- 
-Regards,
-
-Laurent Pinchart
+- Naresh
