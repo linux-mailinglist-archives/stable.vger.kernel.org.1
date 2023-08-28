@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10E2C78A9F8
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:18:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C1F4578ABA6
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:33:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229918AbjH1KR4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:17:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60202 "EHLO
+        id S231455AbjH1Kd2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:33:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230435AbjH1KRa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:17:30 -0400
+        with ESMTP id S231491AbjH1Kc5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:32:57 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 866CE199
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:17:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79196CD2
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:32:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 1B72D63714
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:17:17 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB99C433C8;
-        Mon, 28 Aug 2023 10:17:16 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A0B5863D1E
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:32:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6C9FC433C8;
+        Mon, 28 Aug 2023 10:32:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693217836;
-        bh=EU4Yxsczc7dHLGQKDTirQebEqfH1RQugIv+GJctzvu0=;
+        s=korg; t=1693218742;
+        bh=4nCGffygssluaBL8gm132E6gaRbQe3rlb4nqOD8XHh4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yVM7Mb6xR3MYPBZG36vWi0uElvS8rOG+9ViNao/qh+VMaOg8gjAslJjlTjGmrajPw
-         vIY9keYSO5fhj/IYYdfjUzpAZSiC/0FSNKTYp5YNvjsNPCQtKY4rUIq1936CzSktDS
-         tLYaydP+814QJmIlqcp1rkJLhWGFrmFzV//dP9IQ=
+        b=R/3tvvxeXB9w9AjTluEOv3AKF+MmnITBT3OlIxFY8VDFWYwfW1Bd1uIaqknaPt6uf
+         ETdZjEpDrwpa6/9jyTZP0lD+l8MxoLAqYlgKqaP6VjYnCZ0JRK5wa1C4vIbfZaXe+L
+         40KUia+NMUoaryHDMJArFtui4UFKnojeGvWEVhMQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        Abel Wu <wuyun.abel@bytedance.com>,
-        Shakeel Butt <shakeelb@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 42/57] sock: annotate data-races around prot->memory_pressure
+        patches@lists.linux.dev,
+        Andrey Skvortsov <andrej.skvortzov@gmail.com>,
+        Stephen Boyd <sboyd@kernel.org>
+Subject: [PATCH 6.1 067/122] clk: Fix slab-out-of-bounds error in devm_clk_release()
 Date:   Mon, 28 Aug 2023 12:13:02 +0200
-Message-ID: <20230828101145.815775798@linuxfoundation.org>
+Message-ID: <20230828101158.667243054@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-References: <20230828101144.231099710@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+References: <20230828101156.480754469@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,86 +55,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-4.14-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Andrey Skvortsov <andrej.skvortzov@gmail.com>
 
-[ Upstream commit 76f33296d2e09f63118db78125c95ef56df438e9 ]
+commit 66fbfb35da47f391bdadf9fa7ceb88af4faa9022 upstream.
 
-*prot->memory_pressure is read/writen locklessly, we need
-to add proper annotations.
+Problem can be reproduced by unloading snd_soc_simple_card, because in
+devm_get_clk_from_child() devres data is allocated as `struct clk`, but
+devm_clk_release() expects devres data to be `struct devm_clk_state`.
 
-A recent commit added a new race, it is time to audit all accesses.
+KASAN report:
+ ==================================================================
+ BUG: KASAN: slab-out-of-bounds in devm_clk_release+0x20/0x54
+ Read of size 8 at addr ffffff800ee09688 by task (udev-worker)/287
 
-Fixes: 2d0c88e84e48 ("sock: Fix misuse of sk_under_memory_pressure()")
-Fixes: 4d93df0abd50 ("[SCTP]: Rewrite of sctp buffer management code")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Cc: Abel Wu <wuyun.abel@bytedance.com>
-Reviewed-by: Shakeel Butt <shakeelb@google.com>
-Link: https://lore.kernel.org/r/20230818015132.2699348-1-edumazet@google.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+ Call trace:
+  dump_backtrace+0xe8/0x11c
+  show_stack+0x1c/0x30
+  dump_stack_lvl+0x60/0x78
+  print_report+0x150/0x450
+  kasan_report+0xa8/0xf0
+  __asan_load8+0x78/0xa0
+  devm_clk_release+0x20/0x54
+  release_nodes+0x84/0x120
+  devres_release_all+0x144/0x210
+  device_unbind_cleanup+0x1c/0xac
+  really_probe+0x2f0/0x5b0
+  __driver_probe_device+0xc0/0x1f0
+  driver_probe_device+0x68/0x120
+  __driver_attach+0x140/0x294
+  bus_for_each_dev+0xec/0x160
+  driver_attach+0x38/0x44
+  bus_add_driver+0x24c/0x300
+  driver_register+0xf0/0x210
+  __platform_driver_register+0x48/0x54
+  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
+  do_one_initcall+0xac/0x340
+  do_init_module+0xd0/0x300
+  load_module+0x2ba4/0x3100
+  __do_sys_init_module+0x2c8/0x300
+  __arm64_sys_init_module+0x48/0x5c
+  invoke_syscall+0x64/0x190
+  el0_svc_common.constprop.0+0x124/0x154
+  do_el0_svc+0x44/0xdc
+  el0_svc+0x14/0x50
+  el0t_64_sync_handler+0xec/0x11c
+  el0t_64_sync+0x14c/0x150
+
+ Allocated by task 287:
+  kasan_save_stack+0x38/0x60
+  kasan_set_track+0x28/0x40
+  kasan_save_alloc_info+0x20/0x30
+  __kasan_kmalloc+0xac/0xb0
+  __kmalloc_node_track_caller+0x6c/0x1c4
+  __devres_alloc_node+0x44/0xb4
+  devm_get_clk_from_child+0x44/0xa0
+  asoc_simple_parse_clk+0x1b8/0x1dc [snd_soc_simple_card_utils]
+  simple_parse_node.isra.0+0x1ec/0x230 [snd_soc_simple_card]
+  simple_dai_link_of+0x1bc/0x334 [snd_soc_simple_card]
+  __simple_for_each_link+0x2ec/0x320 [snd_soc_simple_card]
+  asoc_simple_probe+0x468/0x4dc [snd_soc_simple_card]
+  platform_probe+0x90/0xf0
+  really_probe+0x118/0x5b0
+  __driver_probe_device+0xc0/0x1f0
+  driver_probe_device+0x68/0x120
+  __driver_attach+0x140/0x294
+  bus_for_each_dev+0xec/0x160
+  driver_attach+0x38/0x44
+  bus_add_driver+0x24c/0x300
+  driver_register+0xf0/0x210
+  __platform_driver_register+0x48/0x54
+  asoc_simple_card_init+0x24/0x1000 [snd_soc_simple_card]
+  do_one_initcall+0xac/0x340
+  do_init_module+0xd0/0x300
+  load_module+0x2ba4/0x3100
+  __do_sys_init_module+0x2c8/0x300
+  __arm64_sys_init_module+0x48/0x5c
+  invoke_syscall+0x64/0x190
+  el0_svc_common.constprop.0+0x124/0x154
+  do_el0_svc+0x44/0xdc
+  el0_svc+0x14/0x50
+  el0t_64_sync_handler+0xec/0x11c
+  el0t_64_sync+0x14c/0x150
+
+ The buggy address belongs to the object at ffffff800ee09600
+  which belongs to the cache kmalloc-256 of size 256
+ The buggy address is located 136 bytes inside of
+  256-byte region [ffffff800ee09600, ffffff800ee09700)
+
+ The buggy address belongs to the physical page:
+ page:000000002d97303b refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x4ee08
+ head:000000002d97303b order:1 compound_mapcount:0 compound_pincount:0
+ flags: 0x10200(slab|head|zone=0)
+ raw: 0000000000010200 0000000000000000 dead000000000122 ffffff8002c02480
+ raw: 0000000000000000 0000000080100010 00000001ffffffff 0000000000000000
+ page dumped because: kasan: bad access detected
+
+ Memory state around the buggy address:
+  ffffff800ee09580: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffffff800ee09600: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00
+ >ffffff800ee09680: 00 fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+                       ^
+  ffffff800ee09700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+  ffffff800ee09780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+ ==================================================================
+
+Fixes: abae8e57e49a ("clk: generalize devm_clk_get() a bit")
+Signed-off-by: Andrey Skvortsov <andrej.skvortzov@gmail.com>
+Link: https://lore.kernel.org/r/20230805084847.3110586-1-andrej.skvortzov@gmail.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/net/sock.h | 7 ++++---
- net/sctp/socket.c  | 2 +-
- 2 files changed, 5 insertions(+), 4 deletions(-)
+ drivers/clk/clk-devres.c |   13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/sock.h b/include/net/sock.h
-index 1937deba0849b..7b42ddca4decb 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -1115,6 +1115,7 @@ struct proto {
- 	/*
- 	 * Pressure flag: try to collapse.
- 	 * Technical note: it is used by multiple contexts non atomically.
-+	 * Make sure to use READ_ONCE()/WRITE_ONCE() for all reads/writes.
- 	 * All the __sk_mem_schedule() is of this nature: accounting
- 	 * is strict, actions are advisory and have some latency.
- 	 */
-@@ -1214,7 +1215,7 @@ static inline bool sk_has_memory_pressure(const struct sock *sk)
- static inline bool sk_under_global_memory_pressure(const struct sock *sk)
+--- a/drivers/clk/clk-devres.c
++++ b/drivers/clk/clk-devres.c
+@@ -205,18 +205,19 @@ EXPORT_SYMBOL(devm_clk_put);
+ struct clk *devm_get_clk_from_child(struct device *dev,
+ 				    struct device_node *np, const char *con_id)
  {
- 	return sk->sk_prot->memory_pressure &&
--		!!*sk->sk_prot->memory_pressure;
-+		!!READ_ONCE(*sk->sk_prot->memory_pressure);
- }
+-	struct clk **ptr, *clk;
++	struct devm_clk_state *state;
++	struct clk *clk;
  
- static inline bool sk_under_memory_pressure(const struct sock *sk)
-@@ -1226,7 +1227,7 @@ static inline bool sk_under_memory_pressure(const struct sock *sk)
- 	    mem_cgroup_under_socket_pressure(sk->sk_memcg))
- 		return true;
+-	ptr = devres_alloc(devm_clk_release, sizeof(*ptr), GFP_KERNEL);
+-	if (!ptr)
++	state = devres_alloc(devm_clk_release, sizeof(*state), GFP_KERNEL);
++	if (!state)
+ 		return ERR_PTR(-ENOMEM);
  
--	return !!*sk->sk_prot->memory_pressure;
-+	return !!READ_ONCE(*sk->sk_prot->memory_pressure);
- }
+ 	clk = of_clk_get_by_name(np, con_id);
+ 	if (!IS_ERR(clk)) {
+-		*ptr = clk;
+-		devres_add(dev, ptr);
++		state->clk = clk;
++		devres_add(dev, state);
+ 	} else {
+-		devres_free(ptr);
++		devres_free(state);
+ 	}
  
- static inline long
-@@ -1280,7 +1281,7 @@ proto_memory_pressure(struct proto *prot)
- {
- 	if (!prot->memory_pressure)
- 		return false;
--	return !!*prot->memory_pressure;
-+	return !!READ_ONCE(*prot->memory_pressure);
- }
- 
- 
-diff --git a/net/sctp/socket.c b/net/sctp/socket.c
-index 9414dcb376d26..e5c3c37108e4e 100644
---- a/net/sctp/socket.c
-+++ b/net/sctp/socket.c
-@@ -110,7 +110,7 @@ struct percpu_counter sctp_sockets_allocated;
- 
- static void sctp_enter_memory_pressure(struct sock *sk)
- {
--	sctp_memory_pressure = 1;
-+	WRITE_ONCE(sctp_memory_pressure, 1);
- }
- 
- 
--- 
-2.40.1
-
+ 	return clk;
 
 
