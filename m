@@ -2,57 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA3C178ABFE
-	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:36:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D53DF78AAC6
+	for <lists+stable@lfdr.de>; Mon, 28 Aug 2023 12:25:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231609AbjH1KgM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 06:36:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39188 "EHLO
+        id S231197AbjH1KY5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 06:24:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231657AbjH1Kf5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:35:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC6B7A7
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:35:54 -0700 (PDT)
+        with ESMTP id S231215AbjH1KYb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 06:24:31 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D80CD95
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 03:24:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 49FDF61562
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:35:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AA80C433C8;
-        Mon, 28 Aug 2023 10:35:53 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6ECEE63A2B
+        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 10:24:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8381AC433C7;
+        Mon, 28 Aug 2023 10:24:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693218953;
-        bh=7hD1PHYwk7zIypdCGx1F62BF7bVFxCckMSlQtvyicbk=;
+        s=korg; t=1693218266;
+        bh=KtAiD65fehSKT5DKQtRRhM/ZJolXAcTAfqe+wIYXj4o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gTnWxI0drA7uXHy7Fsyw4cXSTDa+bL0qm/WWm6RMcvkaoIGGw55xurMJjwmvXnuVG
-         Z192LEjs7pPMuLZCnIxX2rvFQAkPer5cDIWYjMKwMl8RMhBcQ4cko89KR2uSeRK44f
-         TJoTdZzIBEgevwY7C5GGtLzIoZ6WUiFTOOK6A6I0=
+        b=BCE/Rjon+6mBi+sw9B3Nq2YsK7eCPlf1M3f00/AGYwHozkVT7iFpvOh9/8UehvEi9
+         M4pOSfFyt4XWix9lHCnTy2ALX2pEiPArM0caDCEajVX9lmnHG3/aUAKk15SzorW0PF
+         y2iy+LDyv7f5PkRbZfCU+6Ur+FYhN+5Kj22PBM7I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        Hangbin Liu <liuhangbin@gmail.com>,
-        Nikolay Aleksandrov <razor@blackwall.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 003/158] selftests: forwarding: tc_flower: Relax success criterion
+        patches@lists.linux.dev, Ye Bin <yebin10@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.19 006/129] quota: fix warning in dqgrab()
 Date:   Mon, 28 Aug 2023 12:11:40 +0200
-Message-ID: <20230828101157.430388155@linuxfoundation.org>
+Message-ID: <20230828101153.282041313@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-References: <20230828101157.322319621@linuxfoundation.org>
+In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -60,63 +54,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+4.19-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ido Schimmel <idosch@nvidia.com>
+From: Ye Bin <yebin10@huawei.com>
 
-[ Upstream commit 9ee37e53e7687654b487fc94e82569377272a7a8 ]
+[ Upstream commit d6a95db3c7ad160bc16b89e36449705309b52bcb ]
 
-The test checks that filters that match on source or destination MAC
-were only hit once. A host can send more than one packet with a given
-source or destination MAC, resulting in failures.
+There's issue as follows when do fault injection:
+WARNING: CPU: 1 PID: 14870 at include/linux/quotaops.h:51 dquot_disable+0x13b7/0x18c0
+Modules linked in:
+CPU: 1 PID: 14870 Comm: fsconfig Not tainted 6.3.0-next-20230505-00006-g5107a9c821af-dirty #541
+RIP: 0010:dquot_disable+0x13b7/0x18c0
+RSP: 0018:ffffc9000acc79e0 EFLAGS: 00010246
+RAX: 0000000000000000 RBX: 0000000000000000 RCX: ffff88825e41b980
+RDX: 0000000000000000 RSI: ffff88825e41b980 RDI: 0000000000000002
+RBP: ffff888179f68000 R08: ffffffff82087ca7 R09: 0000000000000000
+R10: 0000000000000001 R11: ffffed102f3ed026 R12: ffff888179f68130
+R13: ffff888179f68110 R14: dffffc0000000000 R15: ffff888179f68118
+FS:  00007f450a073740(0000) GS:ffff88882fc00000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007ffe96f2efd8 CR3: 000000025c8ad000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ dquot_load_quota_sb+0xd53/0x1060
+ dquot_resume+0x172/0x230
+ ext4_reconfigure+0x1dc6/0x27b0
+ reconfigure_super+0x515/0xa90
+ __x64_sys_fsconfig+0xb19/0xd20
+ do_syscall_64+0x39/0xb0
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-Fix by relaxing the success criterion and instead check that the filters
-were not hit zero times. Using tc_check_at_least_x_packets() is also an
-option, but it is not available in older kernels.
+Above issue may happens as follows:
+ProcessA              ProcessB                    ProcessC
+sys_fsconfig
+  vfs_fsconfig_locked
+   reconfigure_super
+     ext4_remount
+      dquot_suspend -> suspend all type quota
 
-Fixes: 07e5c75184a1 ("selftests: forwarding: Introduce tc flower matching tests")
-Reported-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Closes: https://lore.kernel.org/netdev/adc5e40d-d040-a65e-eb26-edf47dac5b02@alu.unizg.hr/
-Signed-off-by: Ido Schimmel <idosch@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Tested-by: Mirsad Todorovac <mirsad.todorovac@alu.unizg.hr>
-Reviewed-by: Hangbin Liu <liuhangbin@gmail.com>
-Acked-by: Nikolay Aleksandrov <razor@blackwall.org>
-Link: https://lore.kernel.org/r/20230808141503.4060661-13-idosch@nvidia.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+                 sys_fsconfig
+                  vfs_fsconfig_locked
+                    reconfigure_super
+                     ext4_remount
+                      dquot_resume
+                       ret = dquot_load_quota_sb
+                        add_dquot_ref
+                                           do_open  -> open file O_RDWR
+                                            vfs_open
+                                             do_dentry_open
+                                              get_write_access
+                                               atomic_inc_unless_negative(&inode->i_writecount)
+                                              ext4_file_open
+                                               dquot_file_open
+                                                dquot_initialize
+                                                  __dquot_initialize
+                                                   dqget
+						    atomic_inc(&dquot->dq_count);
+
+                          __dquot_initialize
+                           __dquot_initialize
+                            dqget
+                             if (!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+                               ext4_acquire_dquot
+			        -> Return error DQ_ACTIVE_B flag isn't set
+                         dquot_disable
+			  invalidate_dquots
+			   if (atomic_read(&dquot->dq_count))
+	                    dqgrab
+			     WARN_ON_ONCE(!test_bit(DQ_ACTIVE_B, &dquot->dq_flags))
+	                      -> Trigger warning
+
+In the above scenario, 'dquot->dq_flags' has no DQ_ACTIVE_B is normal when
+dqgrab().
+To solve above issue just replace the dqgrab() use in invalidate_dquots() with
+atomic_inc(&dquot->dq_count).
+
+Signed-off-by: Ye Bin <yebin10@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230605140731.2427629-3-yebin10@huawei.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/net/forwarding/tc_flower.sh | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ fs/quota/dquot.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/net/forwarding/tc_flower.sh b/tools/testing/selftests/net/forwarding/tc_flower.sh
-index b11d8e6b5bc14..b7cdf75efb5f9 100755
---- a/tools/testing/selftests/net/forwarding/tc_flower.sh
-+++ b/tools/testing/selftests/net/forwarding/tc_flower.sh
-@@ -49,8 +49,8 @@ match_dst_mac_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched on a wrong filter"
- 
--	tc_check_packets "dev $h2 ingress" 102 1
--	check_err $? "Did not match on correct filter"
-+	tc_check_packets "dev $h2 ingress" 102 0
-+	check_fail $? "Did not match on correct filter"
- 
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
-@@ -75,8 +75,8 @@ match_src_mac_test()
- 	tc_check_packets "dev $h2 ingress" 101 1
- 	check_fail $? "Matched on a wrong filter"
- 
--	tc_check_packets "dev $h2 ingress" 102 1
--	check_err $? "Did not match on correct filter"
-+	tc_check_packets "dev $h2 ingress" 102 0
-+	check_fail $? "Did not match on correct filter"
- 
- 	tc filter del dev $h2 ingress protocol ip pref 1 handle 101 flower
- 	tc filter del dev $h2 ingress protocol ip pref 2 handle 102 flower
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 0d3ffc727bb00..303987d29b9c9 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -540,7 +540,7 @@ static void invalidate_dquots(struct super_block *sb, int type)
+ 			continue;
+ 		/* Wait for dquot users */
+ 		if (atomic_read(&dquot->dq_count)) {
+-			dqgrab(dquot);
++			atomic_inc(&dquot->dq_count);
+ 			spin_unlock(&dq_list_lock);
+ 			/*
+ 			 * Once dqput() wakes us up, we know it's time to free
 -- 
 2.40.1
 
