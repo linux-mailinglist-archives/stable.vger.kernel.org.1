@@ -2,66 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8BFA978CDCC
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 22:48:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5BC5778CDD8
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 22:51:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236547AbjH2UsM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 16:48:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60028 "EHLO
+        id S229616AbjH2Uv1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 16:51:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239159AbjH2Urv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 16:47:51 -0400
-Received: from mail-lf1-x130.google.com (mail-lf1-x130.google.com [IPv6:2a00:1450:4864:20::130])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D38511B
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 13:47:49 -0700 (PDT)
-Received: by mail-lf1-x130.google.com with SMTP id 2adb3069b0e04-50091b91a83so7535090e87.3
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 13:47:48 -0700 (PDT)
+        with ESMTP id S231636AbjH2UvP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 16:51:15 -0400
+Received: from mail-qt1-x836.google.com (mail-qt1-x836.google.com [IPv6:2607:f8b0:4864:20::836])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B4641BB
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 13:51:12 -0700 (PDT)
+Received: by mail-qt1-x836.google.com with SMTP id d75a77b69052e-40c72caec5cso101311cf.0
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 13:51:12 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1693342067; x=1693946867; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ki20NgIKQhPJbKEH+X1Ki0pzE8kY5+/jmra4p7XJ/qQ=;
-        b=a+XY3DuBfdC7euBT10lsbtc8JtCgk39LiD4Ab1P10BFOQZR4KOJDqMt7+jQXb0DeKg
-         ZJ907QehWxj7j0hQf9q8+rJf7RwBJgyAvxCzzCePw74im8BjCEpPxXFfAoE+cY+XbohC
-         wEhfamJoW7aOHaimCCfGKRvhsWR3EPgEZvi64=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693342067; x=1693946867;
-        h=cc:to:subject:message-id:date:user-agent:from:references
-         :in-reply-to:mime-version:x-gm-message-state:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1693342271; x=1693947071; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=ki20NgIKQhPJbKEH+X1Ki0pzE8kY5+/jmra4p7XJ/qQ=;
-        b=OeKuginF7juoaH10Byf5u6ycb5ifxaASO7IDDBH2LPOwqgVtzwGlF9Zc8D2q6m4rE7
-         UL6OkaUOZ00Lr+YzW2W9X730Sp6+htax7kWNaD83embz0U7EN1cnE2kzmaSEugDeA1Rb
-         Y7M8heDT2lGd0wtZGRJejhTXhoWqQ3VvPRJIdNbpzRpsAkMpQ7lzCQcXj5yV0IBUlJ7o
-         CFniv+vRKqv9Bdf6gQdWaNsFgrM9NLRxm8n4vF8oPWd3oUd0Y8ZezilBiTZvDwecvWaZ
-         +YcSEl08nSORT539AtCkKfdQ4oZ4GuQ0iNk6pM/E3tRqXLeSvrC96nnQYTLQt7M6qhIC
-         GOqQ==
-X-Gm-Message-State: AOJu0YwUhU7hLcD/zaB6vi3k6AGja8jMSGiWHb3KmoBfs75G8O0Ecb7L
-        f9M/zeel5RLB2N2kl8NJdqr8eayCqTdZkN1T8UVmbQ==
-X-Google-Smtp-Source: AGHT+IHvV0xjYkZ59GGkSoCx9wwb0Zm3Y6TKNWjMt1TL8chPCHnRNNl0RAggvHb9x1w+P7BNB5JUsZKz79SLnBYK+DU=
-X-Received: by 2002:a19:6557:0:b0:500:aa41:9d67 with SMTP id
- c23-20020a196557000000b00500aa419d67mr50520lfj.8.1693342067249; Tue, 29 Aug
- 2023 13:47:47 -0700 (PDT)
-Received: from 753933720722 named unknown by gmailapi.google.com with
- HTTPREST; Tue, 29 Aug 2023 15:47:46 -0500
+        bh=NeQ6PnT2X5OAN+PUcFdr1liTuB+fdgrOrVYsIp5DUEg=;
+        b=n2tT3msIJWbbmG5p6x09DTwWfjI/pR5DrqDBZVEs8gBoALJRGprUq1q0+jPJoxJ1NB
+         sTFwPDaR0MmpuDWqhdCMayQY8bT8t5E+EMBM9S9lJKNnjhGnoQnzAO3YCEBgWkcufaG4
+         t8IEhox4vfDs1F3WXVqrut+lId++D9Nlkx5ohfMkVCVskgZHYgpq93raqhOrdrS2Vwwe
+         iHAfaohYjSaSCNqi6i22VbuQGtvLf2kPCLsMXWpo3foVJhkh5BnYV+asOJ0gnB/iQJej
+         ce7BjmWa/gZo0gVkMhtjO1jRNfeNOrotZw08yteBzWfsPjIbnF9KHVHt9EwDKcah3iDB
+         8Lrw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693342271; x=1693947071;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=NeQ6PnT2X5OAN+PUcFdr1liTuB+fdgrOrVYsIp5DUEg=;
+        b=JcWMCU33u/4+thWqdxfIrNt05boioiZeruN+QXhO6c9C3wt8VHlKUMO8sG+DbCGEfg
+         yq+mYTtKRd6ur2Ndu9EOh6FbLIwO6P8EzLmgX45DLP94lvVZybZ3HMJmfL5DVcVCRZLh
+         J1E9MSbCa+aQcUkcqaCFXNc0AVMqJQ4dVOv/Rbng4hZ49VpWtMUCdB+SSO/RtsGkoD8i
+         Yxs/wbb60i2CJL348wLACd0CM7ggw0wlKUzpPT3sBhhWxMuPRI3gqFjEH/2/2qzD3ARA
+         SI6d8JeQt6y1Ug/TNNDraHvy/wjAQF12+eweVVbdo0i7JYhhlbUaTjVEQYbmcDHq8nJB
+         1EoA==
+X-Gm-Message-State: AOJu0Yxurfjx+ifb+vxY3BN40Lr1g08aK6tDPEZwgrTUtMQx3cn2QAGJ
+        BTFCYkqxA2CaufEjZKlG7GwsjH23FhAtPTDg3aG5bw==
+X-Google-Smtp-Source: AGHT+IHfwvVY+FulDFY6b/mtqjHft/EOuA9DkxgnPhQI6OKdriWUaWzbuOFOUWeZ4mpR5dNcDPzhQcFLTENXWTwM5S0=
+X-Received: by 2002:a05:622a:40f:b0:3fa:3c8f:3435 with SMTP id
+ n15-20020a05622a040f00b003fa3c8f3435mr316048qtx.27.1693342271616; Tue, 29 Aug
+ 2023 13:51:11 -0700 (PDT)
 MIME-Version: 1.0
-In-Reply-To: <20230829030622.1571852-1-tzungbi@kernel.org>
 References: <20230829030622.1571852-1-tzungbi@kernel.org>
-From:   Stephen Boyd <swboyd@chromium.org>
-User-Agent: alot/0.10
-Date:   Tue, 29 Aug 2023 15:47:46 -0500
-Message-ID: <CAE-0n50pkiQ=WO-EXmMPB_YBj6Vz1k1BkgkyqKH7BK+YpeV30g@mail.gmail.com>
+In-Reply-To: <20230829030622.1571852-1-tzungbi@kernel.org>
+From:   Guenter Roeck <groeck@google.com>
+Date:   Tue, 29 Aug 2023 13:50:59 -0700
+Message-ID: <CABXOdTfSXJdAz83t-Ndu+MMVLr3KoB37HG3e8_82eE-WmSAZgg@mail.gmail.com>
 Subject: Re: [PATCH v2] iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()
-To:     Tzung-Bi Shih <tzungbi@kernel.org>, bleung@chromium.org,
-        groeck@chromium.org, jic23@kernel.org, lars@metafoo.de
-Cc:     chrome-platform@lists.linux.dev, gwendal@chromium.org,
-        linux-iio@vger.kernel.org, dianders@chromium.org,
-        stable@vger.kernel.org
+To:     Tzung-Bi Shih <tzungbi@kernel.org>
+Cc:     bleung@chromium.org, groeck@chromium.org, jic23@kernel.org,
+        lars@metafoo.de, chrome-platform@lists.linux.dev,
+        gwendal@chromium.org, linux-iio@vger.kernel.org,
+        dianders@chromium.org, swboyd@chromium.org, stable@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -69,7 +71,9 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Quoting Tzung-Bi Shih (2023-08-28 20:06:22)
+On Mon, Aug 28, 2023 at 8:06=E2=80=AFPM Tzung-Bi Shih <tzungbi@kernel.org> =
+wrote:
+>
 > cros_ec_sensors_push_data() reads `indio_dev->active_scan_mask` and
 > calls iio_push_to_buffers_with_timestamp() without making sure the
 > `indio_dev` stays in buffer mode.  There is a race if `indio_dev` exits
@@ -91,12 +95,57 @@ Quoting Tzung-Bi Shih (2023-08-28 20:06:22)
 > Fix it by calling iio_device_claim_buffer_mode() to ensure the
 > `indio_dev` can't exit buffer mode during cros_ec_sensors_push_data().
 >
-> [1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industrialio-buffer.c#L1189
-> [2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c#L198
+> [1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industriali=
+o-buffer.c#L1189
+> [2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros=
+_ec_sensors/cros_ec_sensors_core.c#L198
 >
 > Cc: stable@vger.kernel.org
-> Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO")
+> Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC=
+ supports FIFO")
 > Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-> ---
 
-Reviewed-by: Stephen Boyd <swboyd@chromium.org>
+Reviewed-by: Guenter Roeck <groeck@chromium.org>
+
+> ---
+> Changes from v1(https://patchwork.kernel.org/project/linux-iio/patch/2023=
+0828094339.1248472-1-tzungbi@kernel.org/):
+> - Use iio_device_{claim|release}_buffer_mode() instead of accessing `mloc=
+k`.
+>
+>  drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 6 +++++-
+>  1 file changed, 5 insertions(+), 1 deletion(-)
+>
+> diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/=
+drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> index b72d39fc2434..6bfe5d6847e7 100644
+> --- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> +++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+> @@ -190,8 +190,11 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_=
+dev,
+>         /*
+>          * Ignore samples if the buffer is not set: it is needed if the O=
+DR is
+>          * set but the buffer is not enabled yet.
+> +        *
+> +        * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buf=
+fer
+> +        * is not enabled.
+>          */
+> -       if (!iio_buffer_enabled(indio_dev))
+> +       if (iio_device_claim_buffer_mode(indio_dev) < 0)
+>                 return 0;
+>
+>         out =3D (s16 *)st->samples;
+> @@ -210,6 +213,7 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_d=
+ev,
+>         iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
+>                                            timestamp + delta);
+>
+> +       iio_device_release_buffer_mode(indio_dev);
+>         return 0;
+>  }
+>  EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
+> --
+> 2.42.0.rc2.253.gd59a3bf2b4-goog
+>
