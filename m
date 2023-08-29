@@ -2,71 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88C4478C9BD
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 18:36:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E60A78C9D1
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 18:43:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236263AbjH2Qf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 12:35:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38850 "EHLO
+        id S237501AbjH2QnA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 12:43:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51876 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237494AbjH2QfW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 12:35:22 -0400
-Received: from mail-oo1-xc2b.google.com (mail-oo1-xc2b.google.com [IPv6:2607:f8b0:4864:20::c2b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC77184
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 09:35:19 -0700 (PDT)
-Received: by mail-oo1-xc2b.google.com with SMTP id 006d021491bc7-5733aa10291so3079343eaf.3
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 09:35:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=chromium.org; s=google; t=1693326918; x=1693931718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=X0pWbpInDstIHBeP/BS4VOTRMTkNBmu1VJYzwpZwV48=;
-        b=mfRZRWbghdgh0zjCP5AmsjeyhQDj/khco0H/tA3gxDMc0QrOgFq/kvqlvs+R9YQDuP
-         XAkfzfLzsKH+qlyoeeORg3tnPEYuSLDN+OuUD5STnwjIhHlG7uFZv0EJcV7nJxpSfPYV
-         4GMH/NhgRY2yaAqGR5DD7PmxJwAVgrcf66RY4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693326918; x=1693931718;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=X0pWbpInDstIHBeP/BS4VOTRMTkNBmu1VJYzwpZwV48=;
-        b=Q+z/l+mGdMAB+3WHDSPoDYbP22b9LyZOsaDo+cp40QcALN+o+fqyWmeYAkEZASAHiv
-         dK8iV34iFXpCw108uDrX5fBI0kpqj3us/NOUoTxJOoxGj3OZ9JmZQoeTmD4d8eKZoMaj
-         UTpVuEY1fHab/wOJmzsL9Nr8nCwH/DeRt6hFWrPQaWgADOyeTiB3nwql37nCRNNvyuFa
-         +3iQwJMqwsj20WUkFGmC2T3W8UJxh8EnLzvkDvO3BWw/54t9bnIUAkclziA9xjidfGJp
-         oyzunwCfzXs0wEEKJR2oouOEsA6KvFagESkbOIr6JkPS6xDmA95Qt72Y/TJjCPVHJO4V
-         7qzA==
-X-Gm-Message-State: AOJu0Yxkd66XvCpc9Eutgf3kMuJdCs2Nj3H0T4R2Tf6WugA6srx6DaL2
-        XpREY+bo9TnkaV3xv02O614LuAdIUv5BteCHAqe6xg==
-X-Google-Smtp-Source: AGHT+IGc5a3RHIDC903KhYAdCNp4NhyszcvbVEQ3ozZ1UJetLD8jl2bwSLKwJYPtWPl7FhSb4DGeiiI4ID14JE+nfzg=
-X-Received: by 2002:a4a:765b:0:b0:571:28d5:2c72 with SMTP id
- w27-20020a4a765b000000b0057128d52c72mr15448838ooe.7.1693326918612; Tue, 29
- Aug 2023 09:35:18 -0700 (PDT)
+        with ESMTP id S237570AbjH2Qm5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 12:42:57 -0400
+Received: from laurent.telenet-ops.be (laurent.telenet-ops.be [IPv6:2a02:1800:110:4::f00:19])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 175F21A6
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 09:42:53 -0700 (PDT)
+Received: from ramsan.of.borg ([IPv6:2a02:1810:ac12:ed40:c79b:b256:edee:805c])
+        by laurent.telenet-ops.be with bizsmtp
+        id fUio2A00927hkyq01UioRU; Tue, 29 Aug 2023 18:42:50 +0200
+Received: from geert (helo=localhost)
+        by ramsan.of.borg with local-esmtp (Exim 4.95)
+        (envelope-from <geert@linux-m68k.org>)
+        id 1qb1nk-002041-8E;
+        Tue, 29 Aug 2023 18:42:48 +0200
+Date:   Tue, 29 Aug 2023 18:42:48 +0200 (CEST)
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
+cc:     Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
+ readers are possible
+In-Reply-To: <20230819004356.1454718-2-Liam.Howlett@oracle.com>
+Message-ID: <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
+References: <20230819004356.1454718-1-Liam.Howlett@oracle.com> <20230819004356.1454718-2-Liam.Howlett@oracle.com>
 MIME-Version: 1.0
-References: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
- <20230828100313.3051403-1-benchuanggli@gmail.com> <CAG-rBig+koxDf3TuC-0p=tcBY_2WM1sPCvRDtjRmR7AnikrN-A@mail.gmail.com>
- <CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com>
-In-Reply-To: <CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com>
-From:   Sven van Ashbrook <svenva@chromium.org>
-Date:   Tue, 29 Aug 2023 12:35:07 -0400
-Message-ID: <CAG-rBihBkTeZR6yMSF+5zg-h1U1pxGuN-nv=Y7DXLvxV435hDw@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
- SoCs can suspend
-To:     Ben Chuang <benchuanggli@gmail.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-Cc:     skardach@google.com, adrian.hunter@intel.com,
-        SeanHY.chen@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw,
-        greg.tu@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
-        jasonlai.genesyslogic@gmail.com, linux-kernel@vger.kernel.org,
-        linux-mmc@vger.kernel.org, reniuschengl@gmail.com,
-        stable@vger.kernel.org, ulf.hansson@linaro.org,
-        victor.shih@genesyslogic.com.tw, victorshihgli@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=US-ASCII; format=flowed
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -74,38 +45,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-+ Rafael for advice on runtime_pm corner cases.
+ 	Hi Liam,
 
-On Mon, Aug 28, 2023 at 10:48=E2=80=AFPM Ben Chuang <benchuanggli@gmail.com=
-> wrote:
+On Fri, 18 Aug 2023, Liam R. Howlett wrote:
+> The current implementation of append may cause duplicate data and/or
+> incorrect ranges to be returned to a reader during an update.  Although
+> this has not been reported or seen, disable the append write operation
+> while the tree is in rcu mode out of an abundance of caution.
 >
+> During the analysis of the mas_next_slot() the following was
+> artificially created by separating the writer and reader code:
 >
-> My concern is that when runtime_pm is false, gl9763e is disabled LPM
-> negotiation, gl9763e can't enter L1.x and s0ix may fail.
-> It seems that runtime_pm will always exist and that's ok.
+> Writer:                                 reader:
+> mas_wr_append
+>    set end pivot
+>    updates end metata
+>    Detects write to last slot
+>    last slot write is to start of slot
+>    store current contents in slot
+>    overwrite old end pivot
+>                                        mas_next_slot():
+>                                                read end metadata
+>                                                read old end pivot
+>                                                return with incorrect range
+>    store new value
 >
+> Alternatively:
+>
+> Writer:                                 reader:
+> mas_wr_append
+>    set end pivot
+>    updates end metata
+>    Detects write to last slot
+>    last lost write to end of slot
+>    store value
+>                                        mas_next_slot():
+>                                                read end metadata
+>                                                read old end pivot
+>                                                read new end pivot
+>                                                return with incorrect range
+>    set old end pivot
+>
+> There may be other accesses that are not safe since we are now updating
+> both metadata and pointers, so disabling append if there could be rcu
+> readers is the safest action.
+>
+> Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
 
-Thank you. I believe we can address your concern.
+Thanks for your patch, which is now commit cfeb6ae8bcb96ccf
+("maple_tree: disable mas_wr_append() when other readers are
+possible") in v6.5, and is being backported to stable.
 
-- XXX_suspend/XXX_resume (i.e. classic suspend/resume) depends on
-  CONFIG_PM_SLEEP. This always selects CONFIG_PM. This always includes
-  the runtime_pm framework. So, if XXX_suspend/XXX_resume gets called,
-  the runtime_pm framework is always present, but may not be actively
-  managing the device.
+On Renesas RZ/A1 and RZ/A2 (single-core Cortex-A9), this causes the
+following warning:
 
-- "when runtime_pm is false" AFAIK the only way to disable runtime_pm
-  when CONFIG_PM is set, is to write "on" to /sys/devices/.../power/control=
-.
-  See https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-devices-po=
-wer
-  In that case, the runtime_pm framework will activate the device, calling
-  XXX_runtime_resume() if necessary. Are there other ways of disabling it?
+      clocksource: timer@e803b000: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 28958491609 ns
+      sched_clock: 32 bits at 66MHz, resolution 15ns, wraps every 32537631224ns
+      /soc/timer@e803b000: used for clocksource
+      /soc/timer@e803c000: used for clock events
+     +------------[ cut here ]------------
+     +WARNING: CPU: 0 PID: 0 at init/main.c:992 start_kernel+0x2f0/0x480
+     +Interrupts were enabled early
+     +CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0-rza2mevb-10197-g99b80d6b92b5 #237
+     +Hardware name: Generic R7S9210 (Flattened Device Tree)
+     + unwind_backtrace from show_stack+0x10/0x14
+     + show_stack from dump_stack_lvl+0x24/0x3c
+     + dump_stack_lvl from __warn+0x74/0xb8
+     + __warn from warn_slowpath_fmt+0x78/0xb0
+     + warn_slowpath_fmt from start_kernel+0x2f0/0x480
+     + start_kernel from 0x0
+     +---[ end trace 0000000000000000 ]---
+      Console: colour dummy device 80x30
+      printk: console [tty0] enabled
+      Calibrating delay loop (skipped) preset value.. 1056.00 BogoMIPS (lpj=5280000)
 
-- if /sys/devices/.../power/control is "on", then:
-  gl9763e_runtime_resume() always called -> LPM always disabled
-  gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled
-  In between "classic" XXX_suspend and XXX_resume, LPM will be enabled,
-  so the device can enter L1.x and S0ix.
+Reverting this commit fixes the issue.
 
-And the LPM negotiation flags look correct.
-Does that address your concerns?
+RCU-related configs:
+
+     $ grep RCU .config
+     # RCU Subsystem
+     CONFIG_TINY_RCU=y
+     # CONFIG_RCU_EXPERT is not set
+     CONFIG_TINY_SRCU=y
+     # end of RCU Subsystem
+     # RCU Debugging
+     # CONFIG_RCU_SCALE_TEST is not set
+     # CONFIG_RCU_TORTURE_TEST is not set
+     # CONFIG_RCU_REF_SCALE_TEST is not set
+     # CONFIG_RCU_TRACE is not set
+     # CONFIG_RCU_EQS_DEBUG is not set
+     # end of RCU Debugging
+
+CONFIG_MAPLE_RCU_DISABLED is not defined (and should BTW be renamed,
+as CONFIG_* is reserved for kernel configuration options).
+
+I do not see this issue on any other platform
+(arm/arm64/risc-v/mips/sh/m68k), several of them use the same
+RCU configuration.
+
+Do you have a clue?
+Thanks!
+
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -4107,6 +4107,10 @@ static inline unsigned char mas_wr_new_end(struct ma_wr_state *wr_mas)
+>  * mas_wr_append: Attempt to append
+>  * @wr_mas: the maple write state
+>  *
+> + * This is currently unsafe in rcu mode since the end of the node may be cached
+> + * by readers while the node contents may be updated which could result in
+> + * inaccurate information.
+> + *
+>  * Return: True if appended, false otherwise
+>  */
+> static inline bool mas_wr_append(struct ma_wr_state *wr_mas,
+> @@ -4116,6 +4120,9 @@ static inline bool mas_wr_append(struct ma_wr_state *wr_mas,
+> 	struct ma_state *mas = wr_mas->mas;
+> 	unsigned char node_pivots = mt_pivots[wr_mas->type];
+>
+> +	if (mt_in_rcu(mas->tree))
+> +		return false;
+> +
+> 	if (mas->offset != wr_mas->node_end)
+> 		return false;
+>
+> -- 
+> 2.39.2
+
+Gr{oetje,eeting}s,
+
+ 						Geert
+
+--
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+ 							    -- Linus Torvalds
