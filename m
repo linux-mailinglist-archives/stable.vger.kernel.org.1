@@ -2,54 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CD4378C620
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 15:36:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8C578C66D
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 15:48:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236372AbjH2Nf6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 09:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52314 "EHLO
+        id S231390AbjH2NsH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 09:48:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236538AbjH2NfF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 09:35:05 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C98F10F0;
-        Tue, 29 Aug 2023 06:34:32 -0700 (PDT)
+        with ESMTP id S236651AbjH2Nrz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 09:47:55 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86F101BD;
+        Tue, 29 Aug 2023 06:47:38 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2351165883;
-        Tue, 29 Aug 2023 13:34:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B315EC433C7;
-        Tue, 29 Aug 2023 13:34:29 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693316070;
-        bh=Ikq7HXuDLqv01f378rpNzSykJAHeQjycEAisBl23l5s=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ACT+3yConGLTFoJ1OhqOkB8rfdacGridXfOArWymnQbWu0vcd059ThM8ztwVB1OwF
-         dIm43QFZQ0we755fye6EFZJud3EJAlxlKgKCo/0c8RlKSY48IPvF8po8ZFLtVwgfFJ
-         8316CIa1tls6SSW51ZLubEXR5G5+TPoj4+C9Wdqk/ZO1gKKQjHxT/QlALmqJyqgsu9
-         rPT7Kt39okpqnoZVpnX+lz0O79CcOFnpz+DWyffACjQrHXkvu1aLaw11FQpCG5rcmt
-         8uFJDk3TD9vA7uTNcNZwRrGOzdRDUHaM//MQcsUR15OK06CijSWOJW3cRD3hvv3fLI
-         zrRTNIsSThXuw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Takashi Iwai <tiwai@suse.de>, "Gong, Sishuai" <sishuai@purdue.edu>,
-        Sasha Levin <sashal@kernel.org>, perex@perex.cz,
-        tiwai@suse.com, alsa-devel@alsa-project.org
-Subject: [PATCH AUTOSEL 4.14 5/5] ALSA: seq: oss: Fix racy open/close of MIDI devices
-Date:   Tue, 29 Aug 2023 09:34:18 -0400
-Message-Id: <20230829133419.520830-5-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230829133419.520830-1-sashal@kernel.org>
-References: <20230829133419.520830-1-sashal@kernel.org>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E474360F05;
+        Tue, 29 Aug 2023 13:47:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D509DC433C8;
+        Tue, 29 Aug 2023 13:47:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693316851;
+        bh=0FFf82qc9Cph0ezBg05gQiq4/FYRS4yIF4NeErfGBX4=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=J6hm2quXspglRw1XKgfRB7dpTJzQdF9GrCQTjMLppzki5m79/R5tjukeHrVMoSMLs
+         13mSOayLIP8IYE9duc3J8LQ74zm+8ICNlpz2b0Rt5eJ575bOyWyU44taVQ/hnxLjNu
+         3d99Ijrb228BL5zuosX4WSRpXwlK8EHTY/oubItY=
+Date:   Tue, 29 Aug 2023 15:47:28 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Shyam Prasad N <sprasad@microsoft.com>,
+        Bharath SM <bharathsm@microsoft.com>,
+        Steve French <stfrench@microsoft.com>, pc@cjr.nz,
+        lsahlber@redhat.com, pc@manguebit.com, vl@samba.org,
+        ematsumiya@suse.de
+Subject: Re: [PATCH AUTOSEL 5.10 5/7] cifs: add a warning when the in-flight
+ count goes negative
+Message-ID: <2023082936-reborn-overjoyed-b3bc@gregkh>
+References: <20230829133336.520573-1-sashal@kernel.org>
+ <20230829133336.520573-5-sashal@kernel.org>
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.323
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230829133336.520573-5-sashal@kernel.org>
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,126 +56,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Takashi Iwai <tiwai@suse.de>
+On Tue, Aug 29, 2023 at 09:33:34AM -0400, Sasha Levin wrote:
+> From: Shyam Prasad N <sprasad@microsoft.com>
+> 
+> [ Upstream commit e4645cc2f1e2d6f268bb8dcfac40997c52432aed ]
+> 
+> We've seen the in-flight count go into negative with some
+> internal stress testing in Microsoft.
+> 
+> Adding a WARN when this happens, in hope of understanding
+> why this happens when it happens.
+> 
+> Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
+> Reviewed-by: Bharath SM <bharathsm@microsoft.com>
+> Signed-off-by: Steve French <stfrench@microsoft.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  fs/cifs/smb2ops.c | 1 +
+>  1 file changed, 1 insertion(+)
+> 
+> diff --git a/fs/cifs/smb2ops.c b/fs/cifs/smb2ops.c
+> index 015b7b37edee5..7ed6c2d4c549a 100644
+> --- a/fs/cifs/smb2ops.c
+> +++ b/fs/cifs/smb2ops.c
+> @@ -82,6 +82,7 @@ smb2_add_credits(struct TCP_Server_Info *server,
+>  		*val = 65000; /* Don't get near 64K credits, avoid srv bugs */
+>  		pr_warn_once("server overflowed SMB3 credits\n");
+>  	}
+> +	WARN_ON_ONCE(server->in_flight == 0);
+>  	server->in_flight--;
+>  	if (server->in_flight == 0 && (optype & CIFS_OP_MASK) != CIFS_NEG_OP)
+>  		rc = change_conf(server);
+> -- 
+> 2.40.1
+> 
 
-[ Upstream commit 297224fc0922e7385573a30c29ffdabb67f27b7d ]
+Please drop this from all queues, it's debugging code for the CIFS
+developers, and they can debug it in Linus's tree, not in the stable
+trees where something like this is going to cause systems to reboot.
 
-Although snd_seq_oss_midi_open() and snd_seq_oss_midi_close() can be
-called concurrently from different code paths, we have no proper data
-protection against races.  Introduce open_mutex to each seq_oss_midi
-object for avoiding the races.
+thanks,
 
-Reported-by: "Gong, Sishuai" <sishuai@purdue.edu>
-Closes: https://lore.kernel.org/r/7DC9AF71-F481-4ABA-955F-76C535661E33@purdue.edu
-Link: https://lore.kernel.org/r/20230612125533.27461-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- sound/core/seq/oss/seq_oss_midi.c | 35 +++++++++++++++++++------------
- 1 file changed, 22 insertions(+), 13 deletions(-)
-
-diff --git a/sound/core/seq/oss/seq_oss_midi.c b/sound/core/seq/oss/seq_oss_midi.c
-index cc8f06638edca..7226c03f15934 100644
---- a/sound/core/seq/oss/seq_oss_midi.c
-+++ b/sound/core/seq/oss/seq_oss_midi.c
-@@ -50,6 +50,7 @@ struct seq_oss_midi {
- 	struct snd_midi_event *coder;	/* MIDI event coder */
- 	struct seq_oss_devinfo *devinfo;	/* assigned OSSseq device */
- 	snd_use_lock_t use_lock;
-+	struct mutex open_mutex;
- };
- 
- 
-@@ -184,6 +185,7 @@ snd_seq_oss_midi_check_new_port(struct snd_seq_port_info *pinfo)
- 	mdev->flags = pinfo->capability;
- 	mdev->opened = 0;
- 	snd_use_lock_init(&mdev->use_lock);
-+	mutex_init(&mdev->open_mutex);
- 
- 	/* copy and truncate the name of synth device */
- 	strlcpy(mdev->name, pinfo->name, sizeof(mdev->name));
-@@ -332,14 +334,16 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
- 	int perm;
- 	struct seq_oss_midi *mdev;
- 	struct snd_seq_port_subscribe subs;
-+	int err;
- 
- 	if ((mdev = get_mididev(dp, dev)) == NULL)
- 		return -ENODEV;
- 
-+	mutex_lock(&mdev->open_mutex);
- 	/* already used? */
- 	if (mdev->opened && mdev->devinfo != dp) {
--		snd_use_lock_free(&mdev->use_lock);
--		return -EBUSY;
-+		err = -EBUSY;
-+		goto unlock;
- 	}
- 
- 	perm = 0;
-@@ -349,14 +353,14 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
- 		perm |= PERM_READ;
- 	perm &= mdev->flags;
- 	if (perm == 0) {
--		snd_use_lock_free(&mdev->use_lock);
--		return -ENXIO;
-+		err = -ENXIO;
-+		goto unlock;
- 	}
- 
- 	/* already opened? */
- 	if ((mdev->opened & perm) == perm) {
--		snd_use_lock_free(&mdev->use_lock);
--		return 0;
-+		err = 0;
-+		goto unlock;
- 	}
- 
- 	perm &= ~mdev->opened;
-@@ -381,13 +385,17 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
- 	}
- 
- 	if (! mdev->opened) {
--		snd_use_lock_free(&mdev->use_lock);
--		return -ENXIO;
-+		err = -ENXIO;
-+		goto unlock;
- 	}
- 
- 	mdev->devinfo = dp;
-+	err = 0;
-+
-+ unlock:
-+	mutex_unlock(&mdev->open_mutex);
- 	snd_use_lock_free(&mdev->use_lock);
--	return 0;
-+	return err;
- }
- 
- /*
-@@ -401,10 +409,9 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
- 
- 	if ((mdev = get_mididev(dp, dev)) == NULL)
- 		return -ENODEV;
--	if (! mdev->opened || mdev->devinfo != dp) {
--		snd_use_lock_free(&mdev->use_lock);
--		return 0;
--	}
-+	mutex_lock(&mdev->open_mutex);
-+	if (!mdev->opened || mdev->devinfo != dp)
-+		goto unlock;
- 
- 	memset(&subs, 0, sizeof(subs));
- 	if (mdev->opened & PERM_WRITE) {
-@@ -423,6 +430,8 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
- 	mdev->opened = 0;
- 	mdev->devinfo = NULL;
- 
-+ unlock:
-+	mutex_unlock(&mdev->open_mutex);
- 	snd_use_lock_free(&mdev->use_lock);
- 	return 0;
- }
--- 
-2.40.1
-
+greg k-h
