@@ -2,165 +2,116 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E25D578CCA3
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 21:04:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E96F78CCA6
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 21:05:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230395AbjH2TE1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 15:04:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54494 "EHLO
+        id S231250AbjH2TF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 15:05:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49504 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239719AbjH2TEK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 15:04:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4993D7
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 12:03:17 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1693335797;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=zuneSeBFPY/y8fIPFfiRl+/xkZx/Kn4q/QLdpRgSaJQ=;
-        b=cJ5ZhRpbnPbtfM4zOukXZ9wo4OCcsjF+CKpd+N5WghkJtGM4KIov26f6MVjsSFPJUDfxvP
-        9E7sy4NMI+vuAx9xvwO1GlWO7V8izPL/JLw+itTTIcxWuTRbLZ0IlehrX54+b2Dzn4qkUH
-        CX8W0hsaWTFy4k61yUQKNOh//FM4XQo=
-Received: from mail-qv1-f69.google.com (mail-qv1-f69.google.com
- [209.85.219.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-248-YTwCEWqLMImTvdbQD0oItw-1; Tue, 29 Aug 2023 15:03:15 -0400
-X-MC-Unique: YTwCEWqLMImTvdbQD0oItw-1
-Received: by mail-qv1-f69.google.com with SMTP id 6a1803df08f44-64f73be2019so60159176d6.1
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 12:03:15 -0700 (PDT)
+        with ESMTP id S238970AbjH2TFJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 15:05:09 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EFE9CF0
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 12:04:57 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-26b5e737191so2438302a91.2
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 12:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1693335897; x=1693940697; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=EkhRA/lQC5h1Knqaf4HRNhdd9OJwWl6v8O5LTA25fgQ=;
+        b=FPbi8VSGU8Jt8VNJDVnmiNKcqUS14FOYP4C668LaF1ubPunYULj38n1j+/VT1qLUMb
+         SSaVYO87Ea8M9p9i0TCLKzmuGru1GlQ58Ek9Oh+ybJBxWSK0C7C0BQyUXBb0mJnfLEg5
+         vib+2zxUZ3t+Cgmp7btZ2R1reXUcYzQ9EB6cY3tbwMk3vftqHfIkjAusXxtY4zpuvypU
+         mIRV4Iii2c8YdI/CXg0g1xI91DUOpCc1S+gxsbwlxIIEXNAup+MJu94GrVXwAm3z/NYT
+         JGCDt9hukI19PorheiUGDee7VxR/hNz7TJ6Dz3VXw9rUyfR1JlsKf9cO7bcKH4xdTup4
+         mHQA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693335795; x=1693940595;
+        d=1e100.net; s=20221208; t=1693335897; x=1693940697;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=zuneSeBFPY/y8fIPFfiRl+/xkZx/Kn4q/QLdpRgSaJQ=;
-        b=M2wkGuou42gPZ5H+OYWrItiGZ6Q2yZDSDEuFn+i9NpqNHiVuxXUE6vUl/QiC3HZ1nG
-         7yRB43KNFX/Ui34FU847JmHntv+4ENOQkXRzyap6/NzCYHS7yqTyr6mbeppAVmvEQcbo
-         UkpxT5zL1gimM1Um/bERr1NwyUbFtaOUQBz57T5x60mWypOKpHscsLaocToGCx3xTygv
-         7KbOmrbfisUd3pgcu4bq5VE0pcXghFXF/WwLmSF4WJ8B0VHsPVdb/CdnZmB1mxrWiT+8
-         ryz4PzA3BTts/XVe9v+VoYSy9s3njuQDdk/3avZp61SjuXrAp6p4JSBLI4Biyv/k3j0g
-         sCcA==
-X-Gm-Message-State: AOJu0Yws1NsjtX1ZHGUnriF+ueg4AeKlr5+VCw+uonSrHBW8cZr6Jtoo
-        A2/bT925j2SjEdgYzJ1xjyynkJzRPjEszrl1HB58FqzrdOEmBoTMhov8Eq2MhUSZMAa4TUNheKz
-        gMKqgXPFVXU4xgzH0
-X-Received: by 2002:a0c:8ecb:0:b0:63d:657:4cb9 with SMTP id y11-20020a0c8ecb000000b0063d06574cb9mr28870361qvb.42.1693335795010;
-        Tue, 29 Aug 2023 12:03:15 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IHO6zVtzuoNE6uuA2BCZJX/EOpJ2jrXsv+BY1DJ8I5lozKTj/Td7N9r2DAZ+Yrj8E+AMHy93Q==
-X-Received: by 2002:a0c:8ecb:0:b0:63d:657:4cb9 with SMTP id y11-20020a0c8ecb000000b0063d06574cb9mr28870339qvb.42.1693335794750;
-        Tue, 29 Aug 2023 12:03:14 -0700 (PDT)
-Received: from localhost (ip98-179-76-75.ph.ph.cox.net. [98.179.76.75])
-        by smtp.gmail.com with ESMTPSA id b2-20020a0cb3c2000000b0063cdbe739f0sm3606355qvf.71.2023.08.29.12.03.13
+        bh=EkhRA/lQC5h1Knqaf4HRNhdd9OJwWl6v8O5LTA25fgQ=;
+        b=Uin1MAwWD7zd9agLRfzRncqRzMuz3l41ej0Ceier3/MNxb04Jpvd06N19Ccwil7RVA
+         KHtsX1P1RZDFsxBoiJj1zqGAQegf0NAXUl3VfROaSNnTnO6CJT2G+0jAPDFeoBXeb3o/
+         YwKs7bXozAqb6PXJCermcj4S5eHHUWyA81KeHCdM/e5aqaLCNRGcnLp66IcJG09wtCcO
+         r8yqsJN2W3GEYayBjST91a9weV1dtM7KGuFxDR9vFwTVUj7ILhTY97GfV8ciyx+yzU1o
+         MCRXmYUqFgPyoHKhBRtiVtCwMMfGl1BoLfx3V30hBr6WRjlvru1f8xLW0RoDsI8tdts2
+         /R6A==
+X-Gm-Message-State: AOJu0YyU0IGx7xap8xg+xAIatq5Ydr/lv+sv1K+FDvQknS6Jie1X7/Bv
+        LymQjvVY4l9ewD8sd6uKWGHXIg==
+X-Google-Smtp-Source: AGHT+IEmWzR2EFRVld8dtFg6O30X0kJHSic7sbU0n0pIaph9jOGM2LqjeEEvBi7SdfgiWpDGjX3Tww==
+X-Received: by 2002:a17:90a:e015:b0:270:1611:484b with SMTP id u21-20020a17090ae01500b002701611484bmr105814pjy.41.1693335896703;
+        Tue, 29 Aug 2023 12:04:56 -0700 (PDT)
+Received: from ghost ([50.221.140.188])
+        by smtp.gmail.com with ESMTPSA id gd9-20020a17090b0fc900b0026d034f6badsm9189710pjb.38.2023.08.29.12.04.55
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 12:03:14 -0700 (PDT)
-Date:   Tue, 29 Aug 2023 12:03:12 -0700
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-Cc:     linux-integrity@vger.kernel.org, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-kernel@vger.kernel.org
-Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
-Message-ID: <zlywbvfgkkygcpvmj5rd4thuhbdacit2meg2fj6eyua5qpwyoc@beyiattrr7o6>
-References: <20230822231510.2263255-1-jarkko@kernel.org>
+        Tue, 29 Aug 2023 12:04:56 -0700 (PDT)
+Date:   Tue, 29 Aug 2023 12:04:53 -0700
+From:   Charlie Jenkins <charlie@rivosinc.com>
+To:     Nam Cao <namcaov@gmail.com>
+Cc:     Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>,
+        linux-riscv@lists.infradead.org, linux-kernel@vger.kernel.org,
+        guoren@kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] riscv: kprobes: allow writing to x0
+Message-ID: <ZO5BVWFbAwXLf0WS@ghost>
+References: <20230829182500.61875-1-namcaov@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230822231510.2263255-1-jarkko@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230829182500.61875-1-namcaov@gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 23, 2023 at 02:15:10AM +0300, Jarkko Sakkinen wrote:
-> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
-> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
-> reported systems the TPM doesn't reply at bootup and returns back the
-> command code. This makes the TPM fail probe.
+On Tue, Aug 29, 2023 at 08:25:00PM +0200, Nam Cao wrote:
+> Instructions can write to x0, so we should simulate these instructions
+> normally.
 > 
-> Since only Microsoft Pluton is the only known combination of AMD CPU and
-> fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
-> aware of this, print also info message to the klog.
+> Currently, the kernel hangs if an instruction who writes to x0 is
+> simulated.
 > 
+> Fixes: c22b0bcb1dd0 ("riscv: Add kprobes supported")
 > Cc: stable@vger.kernel.org
-> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
-> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> Signed-off-by: Nam Cao <namcaov@gmail.com>
 > ---
-> v3:
-> * Forgot to amend config flags.
-> v2:
-> * CONFIG_X86
-> * Removed "Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>"
-> * Removed "Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>"
-> ---
->  drivers/char/tpm/tpm_crb.c | 33 ++++++++-------------------------
->  1 file changed, 8 insertions(+), 25 deletions(-)
+>  arch/riscv/kernel/probes/simulate-insn.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
 > 
-
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-
-> diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
-> index 65ff4d2fbe8d..ea085b14ab7c 100644
-> --- a/drivers/char/tpm/tpm_crb.c
-> +++ b/drivers/char/tpm/tpm_crb.c
-> @@ -463,28 +463,6 @@ static bool crb_req_canceled(struct tpm_chip *chip, u8 status)
->  	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
->  }
->  
-> -static int crb_check_flags(struct tpm_chip *chip)
-> -{
-> -	u32 val;
-> -	int ret;
-> -
-> -	ret = crb_request_locality(chip, 0);
-> -	if (ret)
-> -		return ret;
-> -
-> -	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
-> -	if (ret)
-> -		goto release;
-> -
-> -	if (val == 0x414D4400U /* AMD */)
-> -		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
-> -
-> -release:
-> -	crb_relinquish_locality(chip, 0);
-> -
-> -	return ret;
-> -}
-> -
->  static const struct tpm_class_ops tpm_crb = {
->  	.flags = TPM_OPS_AUTO_STARTUP,
->  	.status = crb_status,
-> @@ -827,9 +805,14 @@ static int crb_acpi_add(struct acpi_device *device)
->  	if (rc)
->  		goto out;
->  
-> -	rc = crb_check_flags(chip);
-> -	if (rc)
-> -		goto out;
-> +#ifdef CONFIG_X86
-> +	/* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
-> +	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
-> +	    priv->sm != ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
-> +		dev_info(dev, "Disabling hwrng\n");
-> +		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
-> +	}
-> +#endif /* CONFIG_X86 */
->  
->  	rc = tpm_chip_register(chip);
->  
+> diff --git a/arch/riscv/kernel/probes/simulate-insn.c b/arch/riscv/kernel/probes/simulate-insn.c
+> index d3099d67816d..6c166029079c 100644
+> --- a/arch/riscv/kernel/probes/simulate-insn.c
+> +++ b/arch/riscv/kernel/probes/simulate-insn.c
+> @@ -24,7 +24,7 @@ static inline bool rv_insn_reg_set_val(struct pt_regs *regs, u32 index,
+>  				       unsigned long val)
+>  {
+>  	if (index == 0)
+> -		return false;
+> +		return true;
+>  	else if (index <= 31)
+>  		*((unsigned long *)regs + index) = val;
+>  	else
 > -- 
-> 2.39.2
+> 2.34.1
 > 
+> 
+> _______________________________________________
+> linux-riscv mailing list
+> linux-riscv@lists.infradead.org
+> http://lists.infradead.org/mailman/listinfo/linux-riscv
+Thank you for this change. 
 
+simulate_auipc would previously fail with an rd = 0 which made sense
+because auipc it is defined as a HINT in the riscv spec when rd = 0,
+but QEMU and spike don't say it is an illegal instruction so I think
+it is okay to make this change.
+
+Reviewed-by: Charlie Jenkins <charlie@rivosinc.com>
