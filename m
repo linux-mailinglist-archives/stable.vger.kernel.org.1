@@ -2,53 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B7A678C388
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 13:44:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C792378C39D
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 13:51:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232098AbjH2Lnk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 07:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
+        id S230015AbjH2LvL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 07:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232167AbjH2LnM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 07:43:12 -0400
-Received: from mail-wm1-x335.google.com (mail-wm1-x335.google.com [IPv6:2a00:1450:4864:20::335])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C6A7CDF;
-        Tue, 29 Aug 2023 04:42:57 -0700 (PDT)
-Received: by mail-wm1-x335.google.com with SMTP id 5b1f17b1804b1-3fee8af9cb9so39982095e9.1;
-        Tue, 29 Aug 2023 04:42:56 -0700 (PDT)
+        with ESMTP id S232601AbjH2Lu5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 07:50:57 -0400
+Received: from mail-wm1-x332.google.com (mail-wm1-x332.google.com [IPv6:2a00:1450:4864:20::332])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BE5E5132;
+        Tue, 29 Aug 2023 04:50:54 -0700 (PDT)
+Received: by mail-wm1-x332.google.com with SMTP id 5b1f17b1804b1-401bbfc05fcso36277385e9.3;
+        Tue, 29 Aug 2023 04:50:54 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693309375; x=1693914175;
+        d=gmail.com; s=20221208; t=1693309853; x=1693914653;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=DUFgkWgRGJdQGLH7OwNpWHqQKyvcDuixCo9WMkNHlOw=;
-        b=Je4fBGHd6zZykC2QDsb2KPelhvWoDyDhy4FR48JVGqMDhTJdQnDEb5GlVxG96AYmpR
-         GJuw2fG98I3mWOQnTuxP9e/h8Hbmg43A/oJVeFXriViiWXQukTOyj1JqgugU6pwOaioe
-         yytdh0P7aQCVOwK/JAMuAZ2IQz/LgM6Ta9zk2jr1FYp7kNh1hWUSch36TVQvdMQuDW7s
-         NOvbLl2mVqfFTeedSOYcyIB5pJyqcawZYQCpkCGCmzlsjizSHRfCbNv/gM1zSptpWMtA
-         wnfr5vrHyoU4mN2jA2kNoN/lGpfe9n373A7iBjKDjR4J0aFF6NMs+YAcsG2U9lBcPJjG
-         N81A==
+        bh=IxizkUy5yBDTtEGaVTKg6jAoVfIxrNZ5Slb9begCALE=;
+        b=QBdSWhTmUvyAjBTnt1XTxEeFQjDi5tkGmhrkexSO8l/M3aSSCFEZr4Alm8M8hA9Hj+
+         ASIdCcYrI1RtlKAM0n6DbzsSnI66JpRt8gLK6AtHrx3Y9Vf6exP+VZXSd5bY9dTHXKbj
+         pXkJjJ7kueoamOnNozOSLaDd5a308VvaMc3UTPuT9qGWkv6oc+Qj8qzNOonEIC1oRyqk
+         neYbeimaZxAfUr/ifs5L5R63gqWeKJSh9+guWKXmg6GKEFuOzv9b94uFNJQ4rTm1PfbX
+         nSTaLgdKu7kLLnCL4/ahOq2H2N6j9Lvw3szpesaZyCfiChBLO+dbWpbawq6DI7j1dY/f
+         /rBw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693309375; x=1693914175;
+        d=1e100.net; s=20221208; t=1693309853; x=1693914653;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=DUFgkWgRGJdQGLH7OwNpWHqQKyvcDuixCo9WMkNHlOw=;
-        b=fzsa6X2tdQXQB7KXVZUB9kwy+eGUduYgeXvm4awRGoYhb1XpIKMy+al5w/HqJjjcx7
-         sz5Oq2eb3g8YN8bpblhRE6jqkXDMXs49fNrTOUYMJ8S4j0QH1Bfr6VoHB86MLEUcXaAX
-         xb1N38OD5pD1SjEbbcX4HY/9PGHGGA2BqiI8FPrzeUaMD6blDOtNVcuDln8uUq7ILREA
-         sMAAij4YKZanzcHwLvPNRrtaMzboPIbxLK7AzkAkFusF+v6JkWgoGNQXqvK987CbDXs+
-         kwyOxBL/AjoF2V9OuSv2+MYB4zfXwk6zZXMH5Rsg+43602rO5Xuy1k8CFMkTghpM+NDM
-         w9Xg==
-X-Gm-Message-State: AOJu0Yz9y1pAMp44nJMMwUzyBYZGaZX4H+GQpb0hf7nZtrAfMLX0CUfw
-        r3waeB7iwfUrTx1BuPqNADo=
-X-Google-Smtp-Source: AGHT+IFWrmVRduvT1XLhQ4gyTPLnyZUQiknaD0axW2HfQCI9n21Rc1x68Mm+QuGe9Mtu3slHLukl9w==
-X-Received: by 2002:a05:600c:2993:b0:400:57d1:491b with SMTP id r19-20020a05600c299300b0040057d1491bmr12757073wmd.2.1693309375326;
-        Tue, 29 Aug 2023 04:42:55 -0700 (PDT)
+        bh=IxizkUy5yBDTtEGaVTKg6jAoVfIxrNZ5Slb9begCALE=;
+        b=H0CmVq7JmfShV84Nh23JpvHztwDtxypGxv9kopkyWtM6dAM0wy3n31UjB6thFTJIdh
+         2GKSPWY/4/wilzYDJfRIRXtKWQT+7q7hgy3BpNzpOtVsjGjlA8+h8CZ99vujuPVOxpyn
+         bodxVIakKUUtoQM0AyNXTqBi/rk2LxU/P72jh71VbVH1nNh4U57J7IDYFxMFiaB+WwIi
+         M95mH1l3iyl/hafO3VBJ0m7B6+QYsdCem7lNvDJ+HBI9KYdAVc1FyoafbDkv9idylm8z
+         KFQk9AQtoHdoLuRoy4gaiRav+i20q0RQNsEEMMWygT32zZVJ2nMZPiMzxcF8Uh7+2oYL
+         h81Q==
+X-Gm-Message-State: AOJu0YzjRCG3cDz/qcq6WtE3sM0aCZQimcJ1NnSvQwDR4+LaAXkX7aa9
+        B0IHObvNu/tQHzutA9YE1FU=
+X-Google-Smtp-Source: AGHT+IEesIndmqEJay6wwnFGesWsz1/5jdiPC4i14UignA7futhgSXTkmtwkhHT2HeVamd+ca9SdWw==
+X-Received: by 2002:a05:600c:ad6:b0:3fe:fc0f:52e2 with SMTP id c22-20020a05600c0ad600b003fefc0f52e2mr15403503wmr.37.1693309852966;
+        Tue, 29 Aug 2023 04:50:52 -0700 (PDT)
 Received: from debian ([167.98.27.226])
-        by smtp.gmail.com with ESMTPSA id q20-20020a7bce94000000b003fedcd02e2asm13718105wmj.35.2023.08.29.04.42.54
+        by smtp.gmail.com with ESMTPSA id 10-20020a05600c234a00b003feeb082a9fsm13812623wmq.3.2023.08.29.04.50.52
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 04:42:54 -0700 (PDT)
-Date:   Tue, 29 Aug 2023 12:42:53 +0100
+        Tue, 29 Aug 2023 04:50:52 -0700 (PDT)
+Date:   Tue, 29 Aug 2023 12:50:50 +0100
 From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -57,13 +57,13 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
         jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
         rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.10 00/84] 5.10.193-rc1 review
-Message-ID: <ZO3ZvTOwn0dS0IcQ@debian>
-References: <20230828101149.146126827@linuxfoundation.org>
+Subject: Re: [PATCH 5.15 00/89] 5.15.129-rc1 review
+Message-ID: <ZO3bmkc2J0UpzSGR@debian>
+References: <20230828101150.163430842@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230828101149.146126827@linuxfoundation.org>
+In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -76,50 +76,36 @@ X-Mailing-List: stable@vger.kernel.org
 
 Hi Greg,
 
-On Mon, Aug 28, 2023 at 12:13:17PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.10.193 release.
-> There are 84 patches in this series, all will be posted as a response
+On Mon, Aug 28, 2023 at 12:13:01PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.129 release.
+> There are 89 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
 > Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
 > Anything received after that time might be too late.
 
-Build test (gcc version 11.4.1 20230629):
-mips: 63 configs -> 3 failures
-arm: 104 configs -> no failure
+Build test (gcc version 12.3.1 20230629):
+mips: 62 configs -> no failure
+arm: 99 configs -> no failure
 arm64: 3 configs -> no failure
 x86_64: 4 configs -> no failure
 alpha allmodconfig -> no failure
+csky allmodconfig -> no failure
 powerpc allmodconfig -> no failure
 riscv allmodconfig -> no failure
 s390 allmodconfig -> no failure
 xtensa allmodconfig -> no failure
 
-Note:
-
-mips builds are failing with the error:
-
-arch/mips/alchemy/common/dbdma.c: In function 'au1xxx_dbdma_put_source':
-arch/mips/alchemy/common/dbdma.c:632:14: error: 'dma_default_coherent' undeclared (first use in this function); did you mean 'dma_free_coherent'?
-  632 |         if (!dma_default_coherent)
-      |              ^~~~~~~~~~~~~~~~~~~~
-      |              dma_free_coherent
-arch/mips/alchemy/common/dbdma.c:632:14: note: each undeclared identifier is reported only once for each function it appears in
-arch/mips/alchemy/common/dbdma.c: In function 'au1xxx_dbdma_put_dest':
-arch/mips/alchemy/common/dbdma.c:695:14: error: 'dma_default_coherent' undeclared (first use in this function); did you mean 'dma_free_coherent'?
-  695 |         if (!dma_default_coherent)
-      |              ^~~~~~~~~~~~~~~~~~~~
-      |              dma_free_coherent
-
 Boot test:
 x86_64: Booted on my test laptop. No regression.
 x86_64: Booted on qemu. No regression. [1]
 arm64: Booted on rpi4b (4GB model). No regression. [2]
+mips: Booted on ci20 board. No regression. [3]
 
-[1]. https://openqa.qa.codethink.co.uk/tests/4838
-[2]. https://openqa.qa.codethink.co.uk/tests/4858
-
+[1]. https://openqa.qa.codethink.co.uk/tests/4839
+[2]. https://openqa.qa.codethink.co.uk/tests/4860
+[3]. https://openqa.qa.codethink.co.uk/tests/4859
 
 Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
 
