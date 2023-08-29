@@ -2,76 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDB3678BD1D
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 05:02:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5D73878BD21
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 05:07:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232601AbjH2DBv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 23:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42044 "EHLO
+        id S234071AbjH2DHS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 28 Aug 2023 23:07:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233441AbjH2DBt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 23:01:49 -0400
-Received: from mail-oo1-xc2c.google.com (mail-oo1-xc2c.google.com [IPv6:2607:f8b0:4864:20::c2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2F2B10B
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 20:01:46 -0700 (PDT)
-Received: by mail-oo1-xc2c.google.com with SMTP id 006d021491bc7-57359e85e9bso1484395eaf.2
-        for <stable@vger.kernel.org>; Mon, 28 Aug 2023 20:01:46 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693278106; x=1693882906;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=D5rw8PU4MLe4UjShUw3LXe+vB86DdsSYaP+ghtZws/w=;
-        b=Om/imUt6v85D7tXVu75ho/1nRdM1AinjiyuB9uH8IUgSOtsB1BM7L6xiVqpH1Jjq+w
-         CIA8jrT4J54nkjgNhVoLR/QmlwrFb6Hy6yLAC/FLuM3LfQbKfkJqSgLD5moBlZvx2ASa
-         qTfJqssKTP1f0xFRrqqE4sgvT0t3MkGWLCu2kC5NZDtj9qlgZ1q/XWCvMNqdsIMh9WQY
-         YCJlzPaFd+hG4rOhFMBYcBw5Qym97e5QHYKibWIu8r+bg8rGcw59Q7ef+m59H6pDpx25
-         ybvN2TljBwPjxHZacLx2f04dApyBZMnOX6YU0vmd/QjYi2v56BFLaUkS+ao5ia0P8CH8
-         /zEg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693278106; x=1693882906;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=D5rw8PU4MLe4UjShUw3LXe+vB86DdsSYaP+ghtZws/w=;
-        b=jrPKfe7mMKCebZlYMX8hGgqsxa+AoE0WrtIMzKV6TGPzTiK6Z3Km6x/rSaci9FQxIJ
-         Q6Ej+/Hpcj3ceFPla3EILfOd0NTpuVxz82fpSefxkkiXVsw8t3AurPeZYk7FCo/K6pgt
-         Pq3k2WD/ydEPY1um8/WC8pm0GFvq8RRVvu4554g+9WkU6tBxG8BGfAWohE1PEZ/gJfTT
-         gRs7zROxiMpmjHNRARrGVgCM0H5b8FJrP0tPMeEgo2ybdEkUi25kt+4CCHOOpjMTctwd
-         UGoGXTbtL+Dh7OiOpKJ6h43CHzTT3iYbRdyBUrRAff1nie/BFIJWv9eg0nCNSw6yy14p
-         BaWQ==
-X-Gm-Message-State: AOJu0YwiQMk96npj0EFQ/OzYr4D7Mj2cUyt/4GaBftBfZ8psrJDcBXeN
-        gGLv+lsUrmI0gQOcFfRu/XRNvw==
-X-Google-Smtp-Source: AGHT+IGUySozNNm6SNEiVWhhfJeY00gXvZg2x0BAmIH2AU8UpQrCsM3f0aY9YUY9gBPTJNSDf9g9cg==
-X-Received: by 2002:a4a:6c13:0:b0:571:1fad:ebd7 with SMTP id q19-20020a4a6c13000000b005711fadebd7mr11635350ooc.7.1693278106207;
-        Mon, 28 Aug 2023 20:01:46 -0700 (PDT)
-Received: from [192.168.17.16] ([138.84.45.150])
-        by smtp.gmail.com with ESMTPSA id b25-20020a9d6b99000000b006bee51de9f6sm4075630otq.18.2023.08.28.20.01.42
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 28 Aug 2023 20:01:45 -0700 (PDT)
-Message-ID: <868cd8e3-2e7e-7b98-0a6e-e5586cb6ab0d@linaro.org>
-Date:   Mon, 28 Aug 2023 21:01:41 -0600
+        with ESMTP id S233875AbjH2DGv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 23:06:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B96B2C1;
+        Mon, 28 Aug 2023 20:06:47 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 53D1E63011;
+        Tue, 29 Aug 2023 03:06:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EB733C433C7;
+        Tue, 29 Aug 2023 03:06:44 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693278406;
+        bh=QKe8SUE1Ew+GerDkUiq65QOLr+UYSEHt3K5MUDwaSC0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=cpv9R3GNpa4yz4bv0ge0kjV1mTzL8SX4F9ply1yWfryfW5SlOPPpj1gRR4N/mPvs/
+         FbLr8VPD8GxTEeKz3qH89hZ18pJM+AUezgYWb+FCxWlxV5f4XHtuoz1d6yQq6XoXF/
+         XviRCxp+PI4ORKolz1XwIzVXh1PgtQzkGkThoPqDwRTBIzeiONillc3eUF3K+nyCX2
+         5Lm8uOAqA0ZmMaPTY9yg68oAmgr9aGqq/tLy8C9peEaQtdv1Z1Ubl+M0HURFKwhzs9
+         TXz27/7KIkkbyM4zZIJFIQf/W0wxhI1H9PxZqprFi6QZS2ALQGuHa3ZofWWjHRPkNE
+         57dPr4GvFGDag==
+From:   Tzung-Bi Shih <tzungbi@kernel.org>
+To:     bleung@chromium.org, groeck@chromium.org, jic23@kernel.org,
+        lars@metafoo.de
+Cc:     chrome-platform@lists.linux.dev, tzungbi@kernel.org,
+        gwendal@chromium.org, linux-iio@vger.kernel.org,
+        dianders@chromium.org, swboyd@chromium.org, stable@vger.kernel.org
+Subject: [PATCH v2] iio: cros_ec: fix an use-after-free in cros_ec_sensors_push_data()
+Date:   Tue, 29 Aug 2023 11:06:22 +0800
+Message-ID: <20230829030622.1571852-1-tzungbi@kernel.org>
+X-Mailer: git-send-email 2.42.0.rc2.253.gd59a3bf2b4-goog
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH 4.14 00/57] 4.14.324-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        nathanl@linux.ibm.com, mpe@ellerman.id.au
-References: <20230828101144.231099710@linuxfoundation.org>
-Content-Language: en-US
-From:   =?UTF-8?Q?Daniel_D=c3=adaz?= <daniel.diaz@linaro.org>
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -80,63 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello!
+cros_ec_sensors_push_data() reads `indio_dev->active_scan_mask` and
+calls iio_push_to_buffers_with_timestamp() without making sure the
+`indio_dev` stays in buffer mode.  There is a race if `indio_dev` exits
+buffer mode right before cros_ec_sensors_push_data() accesses them.
 
-On 28/08/23 4:12 a. m., Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.14.324 release.
-> There are 57 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.14.324-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.14.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
-> -------------
-> Pseudo-Shortlog of commits:
-> 
-> Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->      Linux 4.14.324-rc1
-> 
+An use-after-free on `indio_dev->active_scan_mask` was observed.  The
+call trace:
 [...]
-> Nathan Lynch <nathanl@linux.ibm.com>
->      powerpc/rtas_flash: allow user copy to flash block cache objects
-[...]
+ _find_next_bit
+ cros_ec_sensors_push_data
+ cros_ec_sensorhub_event
+ blocking_notifier_call_chain
+ cros_ec_irq_thread
 
-We see this build regression on PowerPC with GCC-8 and GCC-12:
------8<-----
-   /builds/linux/arch/powerpc/kernel/rtas_flash.c: In function 'rtas_flash_init':
-   /builds/linux/arch/powerpc/kernel/rtas_flash.c:717:22: error: implicit declaration of function 'kmem_cache_create_usercopy'; did you mean 'kmem_cache_create'? [-Werror=implicit-function-declaration]
-     flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
-                         ^~~~~~~~~~~~~~~~~~~~~~~~~~
-                         kmem_cache_create
-   /builds/linux/arch/powerpc/kernel/rtas_flash.c:717:20: error: assignment to 'struct kmem_cache *' from 'int' makes pointer from integer without a cast [-Werror=int-conversion]
-     flash_block_cache = kmem_cache_create_usercopy("rtas_flash_cache",
-                       ^
------>8-----
+It was caused by a race condition: one thread just freed
+`active_scan_mask` at [1]; while another thread tried to access the
+memory at [2].
 
-That's on defconfig and cell_defconfig.
+Fix it by calling iio_device_claim_buffer_mode() to ensure the
+`indio_dev` can't exit buffer mode during cros_ec_sensors_push_data().
 
-Bisection points to "powerpc/rtas_flash: allow user copy to flash block cache objects" (5190538c66e5). Reverting that patch makes the build pass again.
+[1]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/industrialio-buffer.c#L1189
+[2]: https://elixir.bootlin.com/linux/v6.5/source/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c#L198
 
-Tuxmake reproducer:
+Cc: stable@vger.kernel.org
+Fixes: aa984f1ba4a4 ("iio: cros_ec: Register to cros_ec_sensorhub when EC supports FIFO")
+Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+---
+Changes from v1(https://patchwork.kernel.org/project/linux-iio/patch/20230828094339.1248472-1-tzungbi@kernel.org/):
+- Use iio_device_{claim|release}_buffer_mode() instead of accessing `mlock`.
 
-   #pip3 install -U tuxmake
-   tuxmake --runtime podman --target-arch powerpc --toolchain gcc-8 --kconfig defconfig
-   git revert 5190538c66e5e8e7cdbf694afec8291f421e6bcf
-   tuxmake --runtime podman --target-arch powerpc --toolchain gcc-8 --kconfig defconfig
+ drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-Greetings!
-
-Daniel Díaz
-daniel.diaz@linaro.org
+diff --git a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+index b72d39fc2434..6bfe5d6847e7 100644
+--- a/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
++++ b/drivers/iio/common/cros_ec_sensors/cros_ec_sensors_core.c
+@@ -190,8 +190,11 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 	/*
+ 	 * Ignore samples if the buffer is not set: it is needed if the ODR is
+ 	 * set but the buffer is not enabled yet.
++	 *
++	 * Note: iio_device_claim_buffer_mode() returns -EBUSY if the buffer
++	 * is not enabled.
+ 	 */
+-	if (!iio_buffer_enabled(indio_dev))
++	if (iio_device_claim_buffer_mode(indio_dev) < 0)
+ 		return 0;
+ 
+ 	out = (s16 *)st->samples;
+@@ -210,6 +213,7 @@ int cros_ec_sensors_push_data(struct iio_dev *indio_dev,
+ 	iio_push_to_buffers_with_timestamp(indio_dev, st->samples,
+ 					   timestamp + delta);
+ 
++	iio_device_release_buffer_mode(indio_dev);
+ 	return 0;
+ }
+ EXPORT_SYMBOL_GPL(cros_ec_sensors_push_data);
+-- 
+2.42.0.rc2.253.gd59a3bf2b4-goog
 
