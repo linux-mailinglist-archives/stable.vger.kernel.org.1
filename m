@@ -2,52 +2,80 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA4E078BD23
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 05:10:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BF55B78BD6F
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 06:08:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229633AbjH2DJc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 28 Aug 2023 23:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46658 "EHLO
+        id S233230AbjH2EIM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 00:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37190 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229841AbjH2DJZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 28 Aug 2023 23:09:25 -0400
+        with ESMTP id S233981AbjH2EIE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 00:08:04 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15D0EC1;
-        Mon, 28 Aug 2023 20:09:23 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1400BD;
+        Mon, 28 Aug 2023 21:08:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 9E46E63093;
-        Tue, 29 Aug 2023 03:09:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7211CC433C7;
-        Tue, 29 Aug 2023 03:09:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 43CAB617C9;
+        Tue, 29 Aug 2023 04:08:01 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A4E79C433CB;
+        Tue, 29 Aug 2023 04:08:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693278562;
-        bh=N7jWe3j6XOtjLkaxY7ui5Esh2q5j2JyJskPmlck1d0E=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GQvbgAQ0H8IiVMWMELo4/mGJnYg7DtujfnQPPlgskzP9ZiBLvM4PY5pVAaMevfuwS
-         jIrMTNMECfDSVLrDm92yKpUWPk+ecFKUmhkPnH6E911fqu2Y2HM5tNLgIb24BBjyc/
-         1PbAiXHZ/0ag7m8qb2YeZUCeFJszZk6ERx3ts2uEAgqXRWc/MLVUFRt+X/vzaKtyQy
-         cYDFmHvGNfBs48AX+v/18uSctrPXdhOsjZqMUiLxlh/0flb6BwFx+gyitdiiBTi3nN
-         2iONo687DaNlUYrc+89H6gnwgGufIBzZJPXzvvNLvZrzni4FDBS7Z6Zz7Su7oAKH3x
-         cuuEOaDXqwcWw==
-Date:   Tue, 29 Aug 2023 11:09:18 +0800
-From:   Tzung-Bi Shih <tzungbi@kernel.org>
-To:     Jonathan Cameron <jic23@kernel.org>
-Cc:     bleung@chromium.org, groeck@chromium.org, lars@metafoo.de,
-        chrome-platform@lists.linux.dev, gwendal@chromium.org,
-        linux-iio@vger.kernel.org, dianders@chromium.org,
-        swboyd@chromium.org, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: cros_ec: fix an use-after-free in
- cros_ec_sensors_push_data()
-Message-ID: <ZO1hXo7J02w8sv0T@google.com>
-References: <20230828094339.1248472-1-tzungbi@kernel.org>
- <20230828115359.054dc13a@jic23-huawei>
+        s=k20201202; t=1693282080;
+        bh=Yo/1OpFbUF2M6wOhA1RLEhxC+KWTlVLoD+XnYgqbHYg=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=irN+3jF9LN2VUTDfjRyJsZJNR0Zu97FSoQOK+RwPIFARRzYrh9ZYSdRUWtwjxRDvs
+         bvhQrohaQbNkFywM7W15EIaCOlxHDKP9hcKPB3CrbysUzRRWI1GaeOoWmHsWAr3/h/
+         YOSEz18RxFS76mVAbxF7VUFVdEem341+E7HFjlKOlh17DdN0e2C0Y84B9+5lg19UNL
+         N4eGz3EP/8qRIBN2McJCiyY2LnGuR17YO4MLieJrYDiQ7BwBV+Q1koguBSCLsASYdj
+         7Bq0B5VAVCkkVbvWHnsAKbyvAS9eZB8HzOw6iT5ZvCLtRUDXvtRzSN3Y2jqhUbkhY2
+         IQEI5L2SD9+Lg==
+Received: by mail-ej1-f43.google.com with SMTP id a640c23a62f3a-99bdeae1d0aso502058266b.1;
+        Mon, 28 Aug 2023 21:08:00 -0700 (PDT)
+X-Gm-Message-State: AOJu0YyNjU3w+CIYrv5wghGEUwFdFNPpnqh/IU0H95nKRi0KkkBvnWHT
+        hG6f6oMknpBxLoO2JyW3zf89NyJPb9Ts+1kc+pk=
+X-Google-Smtp-Source: AGHT+IEugUtZjdtVJqio2CQ6W8LQxEzy3rliFmZBmcTMUiA+b2EuJxvBrnP8kCbFz5qSTtDne3bEtoonIchoCdctQv0=
+X-Received: by 2002:a17:906:7395:b0:9a1:f73b:90ce with SMTP id
+ f21-20020a170906739500b009a1f73b90cemr12929181ejl.54.1693282078841; Mon, 28
+ Aug 2023 21:07:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230828115359.054dc13a@jic23-huawei>
+References: <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop>
+ <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+ <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
+ <20230825232807.GA97898@google.com> <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
+ <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
+ <CAEXW_YS5dVVOQvO6tWwF7mrgtHiYgVKP_TAipzBNiaFqWDzdeQ@mail.gmail.com>
+ <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop> <20230828133348.GA1553000@google.com>
+ <142b4bff-6a2e-4ea0-928c-3cfe9befa403@paulmck-laptop> <CAAhV-H4MrUm2xZdZyAALV-r+aKMRQ50v6me6hybpR1pRijirqw@mail.gmail.com>
+ <CAEXW_YT-z6s+4MnxTnwFk2-mPba65dbnZogdPDSr14LmOW-h-g@mail.gmail.com>
+ <CAAhV-H5tYV=ezPY_O7c=sd3DULB6BjoiYnw9nE2EzDFaBHcKPw@mail.gmail.com> <CAEXW_YTfV1NVb3tOhunHZK_6oeUHxz_azv6uVq3k0O2UEAX5OQ@mail.gmail.com>
+In-Reply-To: <CAEXW_YTfV1NVb3tOhunHZK_6oeUHxz_azv6uVq3k0O2UEAX5OQ@mail.gmail.com>
+From:   Huacai Chen <chenhuacai@kernel.org>
+Date:   Tue, 29 Aug 2023 12:07:46 +0800
+X-Gmail-Original-Message-ID: <CAAhV-H6oN69rV2OyGzUganRv4KbS7a3_gNyWhCqVp51Ay9Q_=g@mail.gmail.com>
+Message-ID: <CAAhV-H6oN69rV2OyGzUganRv4KbS7a3_gNyWhCqVp51Ay9Q_=g@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     Joel Fernandes <joel@joelfernandes.org>
+Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -58,20 +86,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 11:53:59AM +0100, Jonathan Cameron wrote:
-> Can we use iio_device_claim_buffer_mode() here?  I believe that has the right handling
-> even though I don't think we've used it to protect iio_push_* before.  Normally it's about
-> enforcing we stay in the mode if the read out of a channel needs to be handled differently
-> in a read_raw() callback.
-> 
-> if (iio_device_claim_buffer_mode(indio_dev) < 0) {
-> 	/* Not in buffer mode so fine to drop out - we got -EBUSY*/
-> 	return 0;
-> }
-> //Otherwise mlock is held - though that's an implementation detail all we care about is we can't exit buffer mode.
-> ...
-> iio_push_...
-> iio_device_release_buffer_mode(indio_dev);
-> return 0;
+Hi, Joel,
 
-Ack, fix it in v2(https://patchwork.kernel.org/project/linux-iio/patch/20230829030622.1571852-1-tzungbi@kernel.org/).
+On Tue, Aug 29, 2023 at 4:47=E2=80=AFAM Joel Fernandes <joel@joelfernandes.=
+org> wrote:
+>
+> Hi Huacai,
+>
+> On Mon, Aug 28, 2023 at 11:13=E2=80=AFAM Huacai Chen <chenhuacai@kernel.o=
+rg> wrote:
+> >
+> [...]
+> > >
+> > > > [Huacai]
+> > > > I also think the original patch should be OK, but I have another
+> > > > question: what will happen if the current GP ends before
+> > > > nr_fqs_jiffies_stall reaches zero?
+> > >
+> > > Nothing should happen. Stall detection only happens when a GP is in
+> > > progress. If a new GP starts, it resets nr_fqs_jiffies_stall.
+> > >
+> > > Or can you elaborate your concern more?
+> > OK, I will test your patch these days. Maybe putting
+> > nr_fqs_jiffies_stall before jiffies_force_qs is better, because I
+> > think putting an 'int' between two 'long' is wasting space. :)
+>
+> That's a good point and I'll look into that.
+Another point, is it better to replace ULONG_MAX with ULONG_MAX/4 as
+Paul suggested?
+
+>
+> Meanwhile I pushed the patch out to my 6.4 stable tree for testing on my =
+fleet.
+>
+> Ideally, I'd like to change the stall detection test in the rcutorture
+> to actually fail rcutorture if stalls don't happen in time. But at
+> least I verified this manually using rcutorture.
+>
+> I should also add a documentation patch for stallwarn.rst to document
+> the understandable sensitivity of RCU stall detection to jiffies
+> updates (or lack thereof). Or if you have time, I'd appreciate support
+> on such a patch (not mandatory but I thought it would not hurt to
+> ask).
+>
+> Looking forward to how your testing goes as well!
+I have tested, it works for KGDB.
+
+Huacai
+>
+> thanks,
+>
+>  - Joel
