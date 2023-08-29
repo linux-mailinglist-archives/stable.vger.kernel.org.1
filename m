@@ -2,155 +2,95 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1993878C53E
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 15:27:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BBDA78C579
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 15:33:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231659AbjH2N0g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 09:26:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39228 "EHLO
+        id S236102AbjH2NdM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 09:33:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33202 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236113AbjH2N0W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 09:26:22 -0400
-Received: from mail.ispras.ru (mail.ispras.ru [83.149.199.84])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AEB6E47
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 06:26:12 -0700 (PDT)
-Received: from [10.10.2.52] (unknown [10.10.2.52])
-        by mail.ispras.ru (Postfix) with ESMTPSA id CFB0940F1DD4;
-        Tue, 29 Aug 2023 13:26:09 +0000 (UTC)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mail.ispras.ru CFB0940F1DD4
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ispras.ru;
-        s=default; t=1693315569;
-        bh=6BL5nD77jsbKrrtnhZzxKSsFrdJDEMu95UklGStKwOA=;
-        h=Subject:To:Cc:References:From:Date:In-Reply-To:From;
-        b=d0apnDyxppQJI4lc1IbGz8sxSJmbPfVSvpD/eXhZBMMhZeAZX3gPLBmDptgm/zL61
-         RaEh5Y67rxAucfcM63cjxyBXUDSI1neJKzRmGHfF2YnWMPQq4ENeanSLVhzVbHAc9r
-         myLspKESopOoF47lkmyfiwWZ1EliMiGYEi77u18k=
-Subject: Re: [lvc-project] [PATCH] ssb-main: Fix division by zero in
- ssb_calc_clock_rate()
-To:     Rand Deeb <deeb.rand@confident.ru>, stable@vger.kernel.org,
-        gregkh@linuxfoundation.org
-Cc:     voskresenski.stanislav@confident.ru, lvc-project@linuxtesting.org
-References: <20230829111251.6190-1-deeb.rand@confident.ru>
-From:   Alexey Khoroshilov <khoroshilov@ispras.ru>
-Autocrypt: addr=khoroshilov@ispras.ru; prefer-encrypt=mutual; keydata=
- xsFNBFtq9eIBEACxmOIPDht+aZvO9DGi4TwnZ1WTDnyDVz3Nnh0rlQCK8IssaT6wE5a95VWo
- iwOWalcL9bJMHQvw60JwZKFjt9oH2bov3xzx/JRCISQB4a4U1J/scWvPtabbB3t+VAodF5KZ
- vZ2gu/Q/Wa5JZ9aBH0IvNpBAAThFg1rBXKh7wNqrhsQlMLg+zTSK6ZctddNl6RyaJvAmbaTS
- sSeyUKXiabxHn3BR9jclXfmPLfWuayinBvW4J3vS+bOhbLxeu3MO0dUqeX/Nl8EAhvzo0I2d
- A0vRu/Ze1wU3EQYT6M8z3i1b3pdLjr/i+MI8Rgijs+TFRAhxRw/+0vHGTg6Pn02t0XkycxQR
- mhH3v0kVTvMyM7YSI7yXvd0QPxb1RX9AGmvbJu7eylzcq9Jla+/T3pOuWsJkbvbvuFKKmmYY
- WnAOR7vu/VNVfiy4rM0bfO14cIuEG+yvogcPuMmQGYu6ZwS9IdgZIOAkO57M/6wR0jIyfxrG
- FV3ietPtVcqeDVrcShKyziRLJ+Xcsg9BLdnImAqVQomYr27pyNMRL5ILuT7uOuAQPDKBksK+
- l2Fws0d5iUifqnXSPuYxqgS4f8SQLS7ECxvCGVVbkEEng9vkkmyrF6wM86BZ9apPGDFbopiK
- 7GRxQtSGszVv83abaVb8aDsAudJIp7lLaIuXLZAe1r+ycYpEtQARAQABzSpBbGV4ZXkgS2hv
- cm9zaGlsb3YgPGtob3Jvc2hpbG92QGlzcHJhcy5ydT7CwX0EEwEIACcFAltq9eICGwMFCRLM
- AwAFCwkIBwIGFQgJCgsCBBYCAwECHgECF4AACgkQ2B/JSzCwrEWLaA/+NFZfyhU0vJzFtYsk
- yaqx8nWZLrAoUK7VcobH0lJH6lfGbarO5JpENaIiTP12YZ4xO+j3GGJtLy2gvnpypGnxmiAl
- RqPt7WeAIj6oqPrUs2QF7i4SOiPtku/NrysI1zHzlA8yqUduBtam5rdQeLRNCJiEED1fU8sp
- +DgJBN/OHEDyAag2hu1KFKWuPfQ+QGpXYZb+1NW/hKwvvwCNVyypELAfFnkketFXjIMwHnL8
- ZPqJZlkvkpxuRXOaXPL9NFhZnC/WS+NJ81L3pr+w6eo3xTPYZvRW8glvqlEDgHqr3uMGIaes
- nwfRXLHp+TC1ht6efCXzdPyMZ1E7HXQN9foKisI1V5iQFhN+CT3dbsguQI4e10F5ql0TZUJY
- SMzvY0eObs6TWRdD/Ha7Y5rLmZ54R9sxumpZNcJzktfgm9f0XfeqVEJUn/40MRDD+l2W12Db
- Jkko+sbtAEw+f+/j3uz8xOE+Uv4kwFC5a6JKgdX88oigHnpAs3FvffP594Loi3ibFrQUW5wH
- bXh5Ni+l1GKEQ0PHMk+KQQT9L2r9s7C0Nh8XzwdpOshZWsrNSZqcG+01wrmUhyX2uSaoZ07I
- /+KZURlMSqI71X6lkMWlB3SyThvYhHgnR0EGGTerwM1MaVjHN+Z6lPmsKNxG8lzCeWeZ6peA
- c5oUHV4WQ8Ux9BM8saLOwU0EW2r14gEQAMz+5u+X7j1/dT4WLVRQaE1Shnd2dKBn2E7fgo/N
- 4JIY6wHD/DJoWYQpCJjjvBYSonvQsHicvDW8lPh2EXgZ9Fi8AHKT2mVPitVy+uhfWa/0FtsC
- e3hPfrjTcN7BUcXlIjmptxIoDbvQrNfIWUGdWiyDj4EDfABW/kagXqaBwF2HdcDaNDGggD1c
- DglA0APjezIyTGnGMKsi5QSSlOLm8OZEJMj5t+JL6QXrruijNb5Asmz5mpRQrak7DpGOskjK
- fClm/0oy2zDvWuoXJa+dm3YFr43V+c5EIMA4LpGk63Eg+5NltQ/gj0ycgD5o6reCbjLz4R9D
- JzBezK/KOQuNG5qKUTMbOHWaApZnZ6BDdOVflkV1V+LMo5GvIzkATNLm/7Jj6DmYmXbKoSAY
- BKZiJWqzNsL1AJtmJA1y5zbWX/W4CpNs8qYMYG8eTNOqunzopEhX7T0cOswcTGArZYygiwDW
- BuIS83QRc7udMlQg79qyMA5WqS9g9g/iodlssR9weIVoZSjfjhm5NJ3FmaKnb56h6DSvFgsH
- xCa4s1DGnZGSAtedj8E3ACOsEfu4J/WqXEmvMYNBdGos2YAc+g0hjuOB10BSD98d38xP1vPc
- qNrztIF+TODAl1dNwU4rCSdGQymsrMVFuXnHMH4G+dHvMAwWauzDbnILHAGFyJtfxVefABEB
- AAHCwWUEGAEIAA8FAltq9eICGwwFCRLMAwAACgkQ2B/JSzCwrEU3Rg//eFWHXqTQ5CKw4KrX
- kTFxdXnYKJ5zZB0EzqU6m/FAV7snmygFLbOXYlcMW2Fh306ivj9NKJrlOaPbUzzyDf8dtDAg
- nSbH156oNJ9NHkz0mrxFMpJA2E5AUemOFx57PUYt93pR2B7bF2zGua4gMC+vorDQZjX9kvrL
- Kbenh3boFOe1tUaiRRvEltVFLOg+b+CMkKVbLIQe/HkyKJH5MFiHAF7QxnPHaxyO7QbWaUmF
- 6BHVujxAGvNgkrYJb6dpiNNZSFNRodaSToU5oM+z1dCrNNtN3u4R7AYr6DDIDxoSzR4k0ZaG
- uSeqh4xxQCD7vLT3JdZDyhYUJgy9mvSXdkXGdBIhVmeLch2gaWNf5UOutVJwdPbIaUDRjVoV
- Iw6qjKq+mnK3ttuxW5Aeg9Y1OuKEvCVu+U/iEEJxx1JRmVAYq848YqtVPY9DkZdBT4E9dHqO
- n8lr+XPVyMN6SBXkaR5tB6zSkSDrIw+9uv1LN7QIri43fLqhM950ltlveROEdLL1bI30lYO5
- J07KmxgOjrvY8X9WOC3O0k/nFpBbbsM4zUrmF6F5wIYO99xafQOlfpUnVtbo3GnBR2LIcPYj
- SyY3dW28JXo2cftxIOr1edJ+fhcRqYRrPzJrQBZcE2GZjRO8tz6IOMAsc+WMtVfj5grgVHCu
- kK2E04Fb+Zk1eJvHYRc=
-Message-ID: <466c4b9e-322f-97eb-ca85-3c4e81b1538c@ispras.ru>
-Date:   Tue, 29 Aug 2023 16:26:09 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:68.0) Gecko/20100101
- Thunderbird/68.10.0
+        with ESMTP id S236122AbjH2Ncv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 09:32:51 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6F49E4A;
+        Tue, 29 Aug 2023 06:32:15 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4A06861D44;
+        Tue, 29 Aug 2023 13:32:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82D92C433C8;
+        Tue, 29 Aug 2023 13:32:13 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693315934;
+        bh=Vu27EeyOaTT49MCsitsQ7/mC2fu7y2oNK59IjlyS50k=;
+        h=From:To:Cc:Subject:Date:From;
+        b=nMG71CAsmZ5+OCzvzjaTtWC8lBZom2FU90/DSjVY4ePAWz05zdVN88IIDXHmsrCba
+         L3+n3vMBG7/F4ackdLsUcPYS6sO4PXy0P+VmRH9Fgf+VSPxylrxGtYlkMBEJm7VlgE
+         2TN2dLmHLw7tSI2LdDFay1TLOHle0hlGKCJClXyPQqG5SzAlnBenaYpPC3avqCmBuk
+         gNg21z9qcBn7/5JAsk+Fc/G0k0/JaR0e0hcIbY3Ud8hKgrf40jE3+6PrDSdZfE6OzX
+         Fo+JmqU8Rt+FrM5AjKRQFSu//bEU5GeLiBodCXlzc2jiKjJ8kqNAopQCUfC4W1r176
+         CJ6LLRiaQuJIQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sasha Levin <sashal@kernel.org>, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, andyshrk@163.com,
+        devicetree@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-rockchip@lists.infradead.org
+Subject: [PATCH AUTOSEL 6.4 01/17] arm64: dts: rockchip: correct wifi interrupt flag in eaidk-610
+Date:   Tue, 29 Aug 2023 09:31:48 -0400
+Message-Id: <20230829133211.519957-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-In-Reply-To: <20230829111251.6190-1-deeb.rand@confident.ru>
-Content-Type: text/plain; charset=utf-8
-Content-Language: ru-RU
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.4.12
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Dear Rand,
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-1. It seems you have incorrect list of recipients, please, use
-get_maintainers.pl to get correct one.
+[ Upstream commit 8183bb7e291b7818f49ea39687c2fafa01a46e27 ]
 
-On 29.08.2023 14:12, Rand Deeb wrote:
-> In the line 910, the value of m1 may be zero, so there is a possibility
-> of dividing by zero, we fixed it by checking the values before dividing
-> (found with SVACE). In the same way, after checking and reading the
-> function, we found that lines 906, 908, 912 have the same situation, so
-> we fixed them as well.
+GPIO_ACTIVE_x flags are not correct in the context of interrupt flags.
+These are simple defines so they could be used in DTS but they will not
+have the same meaning: GPIO_ACTIVE_HIGH = 0 = IRQ_TYPE_NONE.
 
-2. It would be good to justify why zero can happen here.
-3. It is not recommended to use line numbers in commit messages.
-4. As for the patch, it does not have else branches and at leaset break
-statement should be added.
+Correct the interrupt flags, assuming the author of the code wanted same
+logical behavior behind the name "ACTIVE_xxx", this is:
+  ACTIVE_HIGH  => IRQ_TYPE_LEVEL_HIGH
 
---
-Alexey
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230707063335.13317-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> 
-> Signed-off-by: Rand Deeb <deeb.rand@confident.ru>
-> ---
->  drivers/ssb/main.c | 16 ++++++++++++----
->  1 file changed, 12 insertions(+), 4 deletions(-)
-> 
-> diff --git a/drivers/ssb/main.c b/drivers/ssb/main.c
-> index 0a26984acb2c..e0776a16d04d 100644
-> --- a/drivers/ssb/main.c
-> +++ b/drivers/ssb/main.c
-> @@ -903,13 +903,21 @@ u32 ssb_calc_clock_rate(u32 plltype, u32 n, u32 m)
->  		case SSB_CHIPCO_CLK_MC_BYPASS:
->  			return clock;
->  		case SSB_CHIPCO_CLK_MC_M1:
-> -			return (clock / m1);
-> +			if (m1 != 0)
-> +				return (clock / m1);
-> +			break;
->  		case SSB_CHIPCO_CLK_MC_M1M2:
-> -			return (clock / (m1 * m2));
-> +			if ((m1 * m2) != 0)
-> +				return (clock / (m1 * m2));
-> +			break;
->  		case SSB_CHIPCO_CLK_MC_M1M2M3:
-> -			return (clock / (m1 * m2 * m3));
-> +			if ((m1 * m2 * m3) != 0)
-> +				return (clock / (m1 * m2 * m3));
-> +			break;
->  		case SSB_CHIPCO_CLK_MC_M1M3:
-> -			return (clock / (m1 * m3));
-> +			if ((m1 * m3) != 0)
-> +				return (clock / (m1 * m3));
-> +			break;
->  		}
->  		return 0;
->  	case SSB_PLLTYPE_2:
-> 
+diff --git a/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts b/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts
+index d1f343345f674..6464ef4d113dd 100644
+--- a/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts
++++ b/arch/arm64/boot/dts/rockchip/rk3399-eaidk-610.dts
+@@ -773,7 +773,7 @@ brcmf: wifi@1 {
+ 		compatible = "brcm,bcm4329-fmac";
+ 		reg = <1>;
+ 		interrupt-parent = <&gpio0>;
+-		interrupts = <RK_PA3 GPIO_ACTIVE_HIGH>;
++		interrupts = <RK_PA3 IRQ_TYPE_LEVEL_HIGH>;
+ 		interrupt-names = "host-wake";
+ 		pinctrl-names = "default";
+ 		pinctrl-0 = <&wifi_host_wake_l>;
+-- 
+2.40.1
 
