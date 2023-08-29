@@ -2,113 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2A47578C41E
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 14:20:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 434E378C433
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 14:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230125AbjH2MUV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 08:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58082 "EHLO
+        id S233236AbjH2MYh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 08:24:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235491AbjH2MUU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 08:20:20 -0400
-Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B3DACF9;
-        Tue, 29 Aug 2023 05:19:45 -0700 (PDT)
-Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-401187f8071so27155255e9.0;
-        Tue, 29 Aug 2023 05:19:44 -0700 (PDT)
+        with ESMTP id S235480AbjH2MY3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 08:24:29 -0400
+Received: from mail-ej1-x630.google.com (mail-ej1-x630.google.com [IPv6:2a00:1450:4864:20::630])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5875E4D
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 05:24:03 -0700 (PDT)
+Received: by mail-ej1-x630.google.com with SMTP id a640c23a62f3a-98377c5d53eso559042666b.0
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 05:24:03 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693311562; x=1693916362;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=mNfFsSrHfmhhWlX6jJezyPUMpq+AyznfbXEcUEhwfFo=;
-        b=phP6IbXgWo1ccHlUUiaW/MqXctIjJ1N5TK8jUf45zhLzqG4vyQP9X5ZUJJFIDdiGN4
-         0GlC64iSzWupjz9UgllrJAcAZ0QoaEC6geGOYjFCkGkAQCV6F2Hi8TKvt8FEhEf+lgQK
-         bWmdIc2rbRqcNs2ikHfRXGI8uuLRted7xQ4jTb5ce4ssIh3dYrA9qF9nVvW6Ewbq+O+0
-         Fy6v6W+6yeVDsL6tn/xfmi1XdPCT9zB3lxJI/njmPWa5RTI5HbCu8yANAO/wf37SLoSi
-         mtmkIuq+STxI+6NlXad4drJ1coKDgidu4fj0kh/xuaknhe6A13ENZyN8dKGLIBG0v9zk
-         WO5g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693311562; x=1693916362;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+        d=futuring-girl-com.20221208.gappssmtp.com; s=20221208; t=1693311842; x=1693916642;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=mNfFsSrHfmhhWlX6jJezyPUMpq+AyznfbXEcUEhwfFo=;
-        b=YfHP6FCDt/qcwh/I6RblFNt6Gx4+XhTJW2dEz/y6Owt5KWDfA3cnonQ/QZ3+G4sG50
-         YqEtk4d+bNGqlNw0SlyWnEmZ+NqPPiRiLrnb80kiw2Pmztnb4ZghC+OqlMRFxlYlzjIn
-         rZWUU8xJlh4QkbfvmKmdxJ17x0XGmzeNbT4HifxToYjgFlemNfET4upiEETiTbI4Ujnn
-         9R3d4RGhvpF7P47lmp0bN8J02qjqruhgATqMurAHRBdcb3060fe7N5BRJ1sr3TBCGr4s
-         wP+3Zci9AJ94//gTD7ZZh7wqqQrhClp2fnkpzPp4+M9kTvaq9DET8bBm2OkoBRndcxBc
-         kedw==
-X-Gm-Message-State: AOJu0YwqrXtVs+ynaZROi8sizOy+AGTpt6IAtKTJIALFW5qaz7xedPyQ
-        TJtmLFcsgE6RaAvTkCWH4d5jYAJGLPI=
-X-Google-Smtp-Source: AGHT+IEeh+znma1g4setjUEYhruswbgcqMaM9C2GUbUmqFMZvQcW5GFOn0WKfSU8IkmrhKjzs8tTxg==
-X-Received: by 2002:a1c:4b17:0:b0:401:b0f2:88d3 with SMTP id y23-20020a1c4b17000000b00401b0f288d3mr2024106wma.19.1693311561822;
-        Tue, 29 Aug 2023 05:19:21 -0700 (PDT)
-Received: from debian ([167.98.27.226])
-        by smtp.gmail.com with ESMTPSA id n23-20020a7bcbd7000000b003fef6881350sm13981741wmi.25.2023.08.29.05.19.21
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 05:19:21 -0700 (PDT)
-Date:   Tue, 29 Aug 2023 13:19:19 +0100
-From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+        bh=p1DpgeQF0qAJYwjOQwq1anUEnLtdLD/PWJWKK0I1HOc=;
+        b=cA9XmJfcRbpUztCevZFe3yo0E656X8yAIzfKzOCkNBQey6M7j6DitExsyN6z0SyX1+
+         M9GeV/m5aK3eGekA2kHNxNqglSbkD5ENHHKUi3wlKg+5nojr1km1OUPSikCmrXGytj0F
+         4jyEBFC7wtpyBFC20qwSvZaLuHC6lAFSYC4RPXQFjJ2Xvz+Z0ECLIM4OS2rQpRGX6zKw
+         9IAoPjKc49a5Cc53J8pjx3aIH1aw0PqyZwPj67K4XSaPP2aVGvITagZT9uryXSEG/fjr
+         DB3kyxxgjD/I3fi+P6b6vSm2kQFbx8Lyo61NitQCnbmZNtyWLvlt3pUba3F2B8DvxXX4
+         MV0w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693311842; x=1693916642;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=p1DpgeQF0qAJYwjOQwq1anUEnLtdLD/PWJWKK0I1HOc=;
+        b=Sc5QiyIunxICbZVWfk5QGddEQE+jNzqXtoBVddwcdGaWUgmlpWYG4qsQ6rutJd6EW0
+         5iRXz84IgX2Wn1BxDf3x9hItBX+ZId4htCifP4yoCIzLoO96nsAcPc6aY9TVbsjVWWxp
+         sUkR3oGj71jG/p/06Xa2xJ19MOxXQYIz9kSGmbXRI21Jj8q1RgF6aQxHPuA7ijIyJBSA
+         /Qg3t5oVki+hN3198I72dbdIL99Z9dq3gzRKUYpina4PBe4pIKhKsn6wMAkHW/GrIyVu
+         e3cGq3MZ5s16P1VspeOUQEZgHwX6s6cCN9AIn+IV/oDsXKsjWpf/0INhxQpSQ2wcR8dR
+         sVPg==
+X-Gm-Message-State: AOJu0YyiVxmcvDNTehkQmJHdjr2lEkythVaPYUuVL4W3wKdhT6JsTQx3
+        sioHnJDzbWIBYjfRe3kAxiqmGiQ9lxI8wGWAbJzzLmj/2IYU5KCTwB4+ag==
+X-Google-Smtp-Source: AGHT+IHR/4fdDkjCkO44/dq2ZeuQnhrhwd/+5QWGpoWoiT0wRctbDgQt3EbA24iEBZ7SyGgQyWIKrh9PYnmaIRZlQ4c=
+X-Received: by 2002:a17:906:cc2:b0:99e:f3b:2f78 with SMTP id
+ l2-20020a1709060cc200b0099e0f3b2f78mr22432508ejh.67.1693311842156; Tue, 29
+ Aug 2023 05:24:02 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230828101156.480754469@linuxfoundation.org>
+In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
+From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date:   Tue, 29 Aug 2023 21:23:51 +0900
+Message-ID: <CAKL4bV4_k=G5FbiFxZnw70Vsy6CmCOpH3oUSq5_wRzVqdnz4OA@mail.gmail.com>
+Subject: Re: [PATCH 6.1 000/122] 6.1.50-rc1 review
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
         akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
         patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.1 000/122] 6.1.50-rc1 review
-Message-ID: <ZO3iR/frz8QhqTGB@debian>
-References: <20230828101156.480754469@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230828101156.480754469@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+Hi Greg
 
-On Mon, Aug 28, 2023 at 12:11:55PM +0200, Greg Kroah-Hartman wrote:
+On Mon, Aug 28, 2023 at 7:31=E2=80=AFPM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
 > This is the start of the stable review cycle for the 6.1.50 release.
 > There are 122 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
-> 
+>
 > Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
 > Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.50-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
+>
 
-Build test (gcc version 12.3.1 20230829):
-mips: 52 configs -> no failure
-arm: 100 configs -> no failure
-arm64: 3 configs -> no failure
-x86_64: 4 configs -> no failure
-alpha allmodconfig -> no failure
-csky allmodconfig -> no failure
-powerpc allmodconfig -> no failure
-riscv allmodconfig -> no failure
-s390 allmodconfig -> no failure
-xtensa allmodconfig -> no failure
+6.1.50-rc1 tested.
 
-Boot test:
-x86_64: Booted on my test laptop. No regression.
-x86_64: Booted on qemu. No regression. [1]
-arm64: Booted on rpi4b (4GB model). No regression. [2]
-mips: Booted on ci20 board. No regression. [3]
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
 
-[1]. https://openqa.qa.codethink.co.uk/tests/4840
-[2]. https://openqa.qa.codethink.co.uk/tests/4862
-[3]. https://openqa.qa.codethink.co.uk/tests/4861
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
 
-Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+Thanks
 
--- 
-Regards
-Sudip
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
