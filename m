@@ -2,104 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 37F7978C790
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 16:32:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 823F578C7E8
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 16:47:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234157AbjH2Obn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 10:31:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58984 "EHLO
+        id S232068AbjH2OrP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 10:47:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231879AbjH2Obe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 10:31:34 -0400
-Received: from mail-il1-x12c.google.com (mail-il1-x12c.google.com [IPv6:2607:f8b0:4864:20::12c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7549EE1
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 07:31:30 -0700 (PDT)
-Received: by mail-il1-x12c.google.com with SMTP id e9e14a558f8ab-34bbc394fa0so3494225ab.1
-        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 07:31:30 -0700 (PDT)
+        with ESMTP id S237007AbjH2Oqu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 10:46:50 -0400
+Received: from mail-lj1-x233.google.com (mail-lj1-x233.google.com [IPv6:2a00:1450:4864:20::233])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22406E1
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 07:46:48 -0700 (PDT)
+Received: by mail-lj1-x233.google.com with SMTP id 38308e7fff4ca-2b9d07a8d84so66516981fa.3
+        for <stable@vger.kernel.org>; Tue, 29 Aug 2023 07:46:48 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1693319489; x=1693924289;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=2Wv1qx1QuMk9lQBurvufJPtkuCt8LqeR1hukSIeupGQ=;
-        b=ASLN4rNXK+TbXbhxgCc0jywxJ6k3fCVXyB/c2YGU+Wviy+PveGSKFK94/MAYQHpVWk
-         x5YULkf9ru2Lok44CYdHr9UOcFDqfugiPZQ5vJtkChlSyMn3vKNZtCDhG+YDAS584u3h
-         JcilNlI1kMp1KNc5DDbJ0jwgiA6mcSHlD5VOM=
+        d=joelfernandes.org; s=google; t=1693320406; x=1693925206;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=WnQJ5RlFnma/9gchBlknmNpXDI6oKIUQEmJTsZOL0fk=;
+        b=Lc3sdSLR154c/3Hz6IykxmZeUtriOVuO8zdwMjCZdu6tQVuq6JcvdP8P2c4fSG/vyb
+         AMlmRh2yPXwJLZNVekbmX3JJjVt++10/HBLlE8sf4e1Evns0URcH0YxXKI3gtRR+TClG
+         Te+WsJ55fkmBkOJ0DEhmRqNYfKVho8GMM78OE=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693319489; x=1693924289;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=2Wv1qx1QuMk9lQBurvufJPtkuCt8LqeR1hukSIeupGQ=;
-        b=dhgGs4RLXnRP/fODAXH63j7HpecN1gTboa8I6bCQeuknulESKdiUERdPXD6Jqa+rZI
-         3RZBWdQW71Qyfp2oChOjtobI9KgeCdnG/F/9jARjYWxEEhzmAdHrmCa7WbKXmcfTLT4D
-         j8t4lJvj4ojPH98KXp7t/MVxqOUCGO8aCk/uk96TaQAflnVqGrEL274ybLfeZB78yWXw
-         vClAxLCiR/LklZiOjU1JZK6Ga1G0bTmcw/c+CQukZhXF5LWHfI+zylJriv9Tv8/e9MIG
-         /IZkRJO1KkMSMvWybhlJ6AYVC4dOYxf9HQ9wzs3NstS6FofMvXM39TBIlE9MKZhpqV/t
-         lz+Q==
-X-Gm-Message-State: AOJu0YxdPB2L08y+97HTqkvrZUiRS6+zyI80TUuBtjWOYwu0n83+kjR7
-        TD/Sg22CUQYgicu2/NrQ9uEPmA==
-X-Google-Smtp-Source: AGHT+IGHEHRGN+SqlSx9SNUOkFSh/Dg8cYNqtY/QuM59ulqH706FbLV81tOCJyH4RuaAanofng3v9w==
-X-Received: by 2002:a92:da88:0:b0:349:4e1f:e9a0 with SMTP id u8-20020a92da88000000b003494e1fe9a0mr29377757iln.2.1693319489497;
-        Tue, 29 Aug 2023 07:31:29 -0700 (PDT)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id gm10-20020a0566382b8a00b0042b70c5d242sm3056685jab.116.2023.08.29.07.31.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Tue, 29 Aug 2023 07:31:28 -0700 (PDT)
-Message-ID: <1acdd9ad-2ccf-b576-9ca3-59fcae203c5e@linuxfoundation.org>
-Date:   Tue, 29 Aug 2023 08:31:27 -0600
+        d=1e100.net; s=20221208; t=1693320406; x=1693925206;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=WnQJ5RlFnma/9gchBlknmNpXDI6oKIUQEmJTsZOL0fk=;
+        b=CXsDCmBgIp/M4aQ8tqs5HUk0rHtwFCvZQJ1CwDMTA7RHPzmG3hbO2sG+gVD/DqRkTC
+         ZkdcL2e/94dt1aZ2UOisBNQvbfCCLp2UqUlPTdIJb9JaYKnxtuox3MfFF0+U8HIXCtQe
+         iqZrLAIrUgYp9+b121/b9g/31l3SsuBIzmt2rVwgjxI0n01jj7/m+qRO3QLDUd445xvX
+         G3cp6zBVX+9h9HcU32zZSJ0qxDnXvM27xzdJc42eX6oKdunuE3h3RS3bv9Ldc6QPSuwu
+         sEHL2KSaaAxaML5Rnwx2GlzMxwqoGTjlfQyZ3KiqQ03lSdc/uJuw2Sd7c9s6Sp86uaSM
+         b7CQ==
+X-Gm-Message-State: AOJu0YzyUSF6UagNOz0EFBHSh44RLiADZPxp49rg4yiryAEEzjrQxuhb
+        U1tc87rdxbjPy2GpbPzOKDDGONX5/Jsfyw+keIoMZw==
+X-Google-Smtp-Source: AGHT+IHFIIs+B47JJP4BF26EqCYwygNc1qnS3IfDxU8w1ctm6bZur28At4kLq+yymeZAa0CznER413+aFnR+mTcnjew=
+X-Received: by 2002:a2e:9649:0:b0:2bc:c28c:a2b8 with SMTP id
+ z9-20020a2e9649000000b002bcc28ca2b8mr16902909ljh.27.1693320406233; Tue, 29
+ Aug 2023 07:46:46 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 4.19 000/129] 4.19.293-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20230828101153.030066927@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20230828101153.030066927@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <8792da20-a58e-4cc0-b3d2-231d5ade2242@paulmck-laptop>
+ <CAAhV-H5BNPX8Eo3Xdy-jcYY97=xazGU+VVqoDy7qEH+VpVWFJA@mail.gmail.com>
+ <24e34f50-32d2-4b67-8ec0-1034c984d035@paulmck-laptop> <CAAhV-H5pfDG_tsRDL4dUYykaQ1ZwQYRDrQccpULBM5+kF4i2fA@mail.gmail.com>
+ <20230825232807.GA97898@google.com> <CAEXW_YSock304V471X_A7WrxCWtHJGx3APmSy0k7Lc0o69D9Hg@mail.gmail.com>
+ <CAAhV-H6PM_KZj4_h-SdJAaseMDK2nMqqJWL8fWHhL4vUA50bQg@mail.gmail.com>
+ <CAEXW_YS5dVVOQvO6tWwF7mrgtHiYgVKP_TAipzBNiaFqWDzdeQ@mail.gmail.com>
+ <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop> <20230828133348.GA1553000@google.com>
+ <142b4bff-6a2e-4ea0-928c-3cfe9befa403@paulmck-laptop> <CAAhV-H4MrUm2xZdZyAALV-r+aKMRQ50v6me6hybpR1pRijirqw@mail.gmail.com>
+ <CAEXW_YT-z6s+4MnxTnwFk2-mPba65dbnZogdPDSr14LmOW-h-g@mail.gmail.com>
+ <CAAhV-H5tYV=ezPY_O7c=sd3DULB6BjoiYnw9nE2EzDFaBHcKPw@mail.gmail.com>
+ <CAEXW_YTfV1NVb3tOhunHZK_6oeUHxz_azv6uVq3k0O2UEAX5OQ@mail.gmail.com> <CAAhV-H6oN69rV2OyGzUganRv4KbS7a3_gNyWhCqVp51Ay9Q_=g@mail.gmail.com>
+In-Reply-To: <CAAhV-H6oN69rV2OyGzUganRv4KbS7a3_gNyWhCqVp51Ay9Q_=g@mail.gmail.com>
+From:   Joel Fernandes <joel@joelfernandes.org>
+Date:   Tue, 29 Aug 2023 10:46:34 -0400
+Message-ID: <CAEXW_YRpT8wcLmsaHA6yMQ-ZCNYG7v4b4m-qvLHVxcbOJJcrPg@mail.gmail.com>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/28/23 04:11, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.293 release.
-> There are 129 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.293-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Tue, Aug 29, 2023 at 12:08=E2=80=AFAM Huacai Chen <chenhuacai@kernel.org=
+> wrote:
+>
+> Hi, Joel,
+>
+> On Tue, Aug 29, 2023 at 4:47=E2=80=AFAM Joel Fernandes <joel@joelfernande=
+s.org> wrote:
+> >
+> > Hi Huacai,
+> >
+> > On Mon, Aug 28, 2023 at 11:13=E2=80=AFAM Huacai Chen <chenhuacai@kernel=
+.org> wrote:
+> > >
+> > [...]
+> > > >
+> > > > > [Huacai]
+> > > > > I also think the original patch should be OK, but I have another
+> > > > > question: what will happen if the current GP ends before
+> > > > > nr_fqs_jiffies_stall reaches zero?
+> > > >
+> > > > Nothing should happen. Stall detection only happens when a GP is in
+> > > > progress. If a new GP starts, it resets nr_fqs_jiffies_stall.
+> > > >
+> > > > Or can you elaborate your concern more?
+> > > OK, I will test your patch these days. Maybe putting
+> > > nr_fqs_jiffies_stall before jiffies_force_qs is better, because I
+> > > think putting an 'int' between two 'long' is wasting space. :)
+> >
+> > That's a good point and I'll look into that.
+> Another point, is it better to replace ULONG_MAX with ULONG_MAX/4 as
+> Paul suggested?
+>
 
-Compiled and booted on my test system. No dmesg regressions.
+I could do that but I don't feel too strongly about it. I will keep it
+at ULONG_MAX if it's OK with everyone.
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+> > Meanwhile I pushed the patch out to my 6.4 stable tree for testing on m=
+y fleet.
+> >
+> > Ideally, I'd like to change the stall detection test in the rcutorture
+> > to actually fail rcutorture if stalls don't happen in time. But at
+> > least I verified this manually using rcutorture.
+> >
+> > I should also add a documentation patch for stallwarn.rst to document
+> > the understandable sensitivity of RCU stall detection to jiffies
+> > updates (or lack thereof). Or if you have time, I'd appreciate support
+> > on such a patch (not mandatory but I thought it would not hurt to
+> > ask).
+> >
+> > Looking forward to how your testing goes as well!
+> I have tested, it works for KGDB.
 
-thanks,
--- Shuah
+Thanks! If you don't mind, I will add your Tested-by tag to the patch
+and send it out soon. My tests also look good!
+
+
+ - Joel
