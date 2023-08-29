@@ -2,117 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B925978C35E
-	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 13:36:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6A0FA78C363
+	for <lists+stable@lfdr.de>; Tue, 29 Aug 2023 13:38:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231983AbjH2LgA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 07:36:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32824 "EHLO
+        id S231437AbjH2LiL convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Tue, 29 Aug 2023 07:38:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232022AbjH2Lf4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 07:35:56 -0400
-Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 409CB109;
-        Tue, 29 Aug 2023 04:35:54 -0700 (PDT)
-Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-31c615eb6feso3534227f8f.3;
-        Tue, 29 Aug 2023 04:35:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693308952; x=1693913752;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=xWhAtL2TKAqZhNqTfWPeRd6vPLlQaIg+ZlfW16RbgSE=;
-        b=ZFXXSDF09zrHP4TQEdm1z/2f8J0GVa8l/tVn62bcGmv3gQzX8LR37g5UjPuwxAVoEu
-         oTOrMiCH/Lc/RuzNtxFNIxaxFI/QIoZl+MngjhtTgtB68D7EKRFMYxIy7c9gv5u6J1GA
-         gJz98LIbcQoDA3eu+2zmMuCZoi5RqlTFAhNgxPIVQkQoAvA04BfesckW1HlpKHDWXXjf
-         wQri5WErEfU/wKrjIzr38oizGUPW8wTdUub05pcfC/CV4UDmz7d1mXEwGI1Rq7EkSuxZ
-         BCA4MDuaDTzvohVb339hjbhVTUpT6opZDhk3v6OMZulymwgaP/w+nI9OE4v0B/PcP78P
-         qcFQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693308952; x=1693913752;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=xWhAtL2TKAqZhNqTfWPeRd6vPLlQaIg+ZlfW16RbgSE=;
-        b=JXghfDdJ7bUH8HpsVSxmNm4eJ/+fOGmnuB+YHBK9C1IyVttnNcsLnXBAAK0oFqyftB
-         5Mz5w+8sMFAcDKqsJWPaz1AmrRQ7p5bgEejwKKyI8xj8kXQWD1GQVzZUqFs4EkdjqXRP
-         iEKIPeXufCS8v6n9VtZhhpyVbdDljbze9B+gRVtTikZG0315gXsgnBkfz1vRaGG5Lu+i
-         LBCI0uM98FCKlcWePde3K2d4lk6e1D96mQsSfd8ZwUwk/uaxOQF9NxXoph4n7lG/WRNV
-         Kvi0s7ah+Kc0liqmNgXBimrTby7cbjkJWHmp5y0DgTQKAUG7v3c3jOmgKcv/p0T2jCR0
-         ko4w==
-X-Gm-Message-State: AOJu0YzsFxCHwOyv67dYuWD2Oi5oTnX4ZUOua2nYm1q8k1OOtEBkaV0r
-        9UVdWDZkovvKjgTJnWTUpec=
-X-Google-Smtp-Source: AGHT+IG1HNZ5VMTyMEpkNg73r5goCQlAVI6Pib8xIMrDC5m+I2nm2/1ePjQiKBmtjapVMFZeXlr/QQ==
-X-Received: by 2002:adf:fc51:0:b0:314:1443:7fbe with SMTP id e17-20020adffc51000000b0031414437fbemr20697268wrs.36.1693308952394;
-        Tue, 29 Aug 2023 04:35:52 -0700 (PDT)
-Received: from debian ([167.98.27.226])
-        by smtp.gmail.com with ESMTPSA id z6-20020a5d4406000000b003143c6e09ccsm13507702wrq.16.2023.08.29.04.35.51
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 04:35:52 -0700 (PDT)
-Date:   Tue, 29 Aug 2023 12:35:50 +0100
-From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
-        rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.4 000/158] 5.4.255-rc1 review
-Message-ID: <ZO3YFi7KghBSABnH@debian>
-References: <20230828101157.322319621@linuxfoundation.org>
+        with ESMTP id S232022AbjH2Lhs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 07:37:48 -0400
+Received: from frasgout.his.huawei.com (frasgout.his.huawei.com [185.176.79.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAF43129;
+        Tue, 29 Aug 2023 04:37:45 -0700 (PDT)
+Received: from lhrpeml500005.china.huawei.com (unknown [172.18.147.206])
+        by frasgout.his.huawei.com (SkyGuard) with ESMTP id 4RZlfs5vQSz67K8h;
+        Tue, 29 Aug 2023 19:33:25 +0800 (CST)
+Received: from localhost (10.202.227.76) by lhrpeml500005.china.huawei.com
+ (7.191.163.240) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.31; Tue, 29 Aug
+ 2023 12:37:43 +0100
+Date:   Tue, 29 Aug 2023 12:37:42 +0100
+From:   Jonathan Cameron <Jonathan.Cameron@Huawei.com>
+To:     Linus Walleij <linus.walleij@linaro.org>
+CC:     Jonathan Cameron <jic23@kernel.org>,
+        Mighty <bavishimithil@gmail.com>, <lars@metafoo.de>,
+        <liambeguin@gmail.com>, <linux-iio@vger.kernel.org>,
+        <peda@axentia.se>, <stable@vger.kernel.org>
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+Message-ID: <20230829123742.0000033e@Huawei.com>
+In-Reply-To: <CACRpkdZXBjHU4t-GVOCFxRO-AHGxKnxMeHD2s4Y4PuC29gBq6g@mail.gmail.com>
+References: <CACRpkdZn3MePSohFU7AzVtzdaKW=edsw14Y42xbScXNBVZDOjA@mail.gmail.com>
+        <20230824073933.80-1-bavishimithil@gmail.com>
+        <CACRpkdYOpz7gDQsM+tgxj7sjKzv8FtehEsjezD8_bpDk-F_b=A@mail.gmail.com>
+        <CACRpkdYtXAWDcAMRJxh5YbNKmrYurH=z0pR47bftc+u1Yt4Nig@mail.gmail.com>
+        <20230828191859.2cced5cb@jic23-huawei>
+        <CACRpkdZXBjHU4t-GVOCFxRO-AHGxKnxMeHD2s4Y4PuC29gBq6g@mail.gmail.com>
+Organization: Huawei Technologies Research and Development (UK) Ltd.
+X-Mailer: Claws Mail 4.1.0 (GTK 3.24.33; x86_64-w64-mingw32)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230828101157.322319621@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Originating-IP: [10.202.227.76]
+X-ClientProxiedBy: lhrpeml500004.china.huawei.com (7.191.163.9) To
+ lhrpeml500005.china.huawei.com (7.191.163.240)
+X-CFilter-Loop: Reflected
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+On Tue, 29 Aug 2023 09:17:00 +0200
+Linus Walleij <linus.walleij@linaro.org> wrote:
 
-On Mon, Aug 28, 2023 at 12:11:37PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.4.255 release.
-> There are 158 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+> On Mon, Aug 28, 2023 at 8:18 PM Jonathan Cameron <jic23@kernel.org> wrote:
 > 
-> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
-> Anything received after that time might be too late.
+> > Not 100% the follow is relevant as I've lost track of the discussion
+> > but maybe it is useful.
+> >
+> > Worth noting there are a few reasons why RAW and PROCESSED can coexist
+> > in drivers and indeed why SCALE can be absent.. (OFFSET is much the same)  
+> 
+> That's fine. If we have PROCESSED the rescaler will use that first.
+> 
+> What we're discussing are channels that have just RAW
+> and no PROCESSED, nor SCALE or OFFSET yet are connected to
+> a rescaler.
+> 
+> > 1) If SCALE = 1.0 the driver is allowed not to provide it - the channel
+> >    might still be raw if OFFSET != 0  
+> 
+> I'm not so sure the rescaler can handle that though. Just no-one
+> ran into it yet...
+> 
+> > 2) If the channel has a horrible non linear and none invertable conversion
+> >    to standard units and events support the you might need PROCESSED to
+> >    provide the useful value, but RAW to give you clue what the current value
+> >    is for setting an event (light sensors are usual place we see this).
+> >
+> > 3) Historical ABI errors.  If we first had RAW and no scale or offset because
+> >    we had no known values for them.  Then later we discovered that there
+> >    was a non linear transform involved (often when someone found a magic
+> >    calibration code somewhere).  Given the RAW interface might be in use
+> >    and isn't a bug as such, we can't easily remove it.  The new PROCESSED
+> >    interface needs to be there because of the non linear transform..
+> >
+> > Odd corner cases...  In this particular case the original code made no
+> > sense but might have allowed for case 3 by accident?  
+> 
+> I think it's fine, we make PROCESSED take precedence in all cases
+> as long as SCALE is not there as well.
+> 
+> rescale_configure_channel() does this:
+> 
+>         if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
+>             iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE)) {
+>                 dev_info(dev, "using raw+scale source channel\n");
+>         } else if (iio_channel_has_info(schan, IIO_CHAN_INFO_PROCESSED)) {
+>                 dev_info(dev, "using processed channel\n");
+>                 rescale->chan_processed = true;
+>         } else {
+>                 dev_err(dev, "source channel is not supported\n");
+>                 return -EINVAL;
+>         }
+> 
+> I think the first line should be
+> 
+> if (iio_channel_has_info(schan, IIO_CHAN_INFO_RAW) &&
+>     (iio_channel_has_info(schan, IIO_CHAN_INFO_SCALE ||
+>      iio_channel_has_info(schan,IIO_CHAN_INFO_OFFSET)))
+> 
+> right? We just never ran into it.
 
-Build test (gcc version 11.4.1 20230829):
-mips: 65 configs -> 3 failures
-arm: 106 configs -> no failure
-arm64: 2 configs -> no failure
-x86_64: 4 configs -> no failure
-alpha allmodconfig -> no failure
-powerpc allmodconfig -> no failure
-riscv allmodconfig -> no failure
-s390 allmodconfig -> no failure
-xtensa allmodconfig -> no failure
+Makes sense to me.
 
-Note:
+Jonathan
 
-mips builds are failing with the error:
+> 
+> Yours,
+> Linus Walleij
 
-arch/mips/alchemy/common/dbdma.c:33:10: fatal error: linux/dma-map-ops.h: No such file or directory
-   33 | #include <linux/dma-map-ops.h> /* for dma_default_coherent */
-      |          ^~~~~~~~~~~~~~~~~~~~~
-
-Boot test:
-x86_64: Booted on my test laptop. No regression.
-x86_64: Booted on qemu. No regression. [1]
-
-[1]. https://openqa.qa.codethink.co.uk/tests/4837
-
-
-Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
-
--- 
-Regards
-Sudip
