@@ -2,68 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7131378DBE0
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EFCD78DAE4
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238882AbjH3SjY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:39:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40912 "EHLO
+        id S234398AbjH3SiE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46498 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343720AbjH3Qmt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 12:42:49 -0400
-Received: from mail-pl1-x62e.google.com (mail-pl1-x62e.google.com [IPv6:2607:f8b0:4864:20::62e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8E7519A
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 09:42:45 -0700 (PDT)
-Received: by mail-pl1-x62e.google.com with SMTP id d9443c01a7336-1c1e128135aso23951515ad.3
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 09:42:45 -0700 (PDT)
+        with ESMTP id S1343757AbjH3Qoi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 12:44:38 -0400
+Received: from mail-io1-xd29.google.com (mail-io1-xd29.google.com [IPv6:2607:f8b0:4864:20::d29])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7891319A;
+        Wed, 30 Aug 2023 09:44:36 -0700 (PDT)
+Received: by mail-io1-xd29.google.com with SMTP id ca18e2360f4ac-79289fefdbeso164877839f.3;
+        Wed, 30 Aug 2023 09:44:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693413765; x=1694018565; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=qGzaNyZ9CddkbiQdISCl/ijZ2ep7GZGhaNn5SS/vI7Y=;
-        b=bE2epE7YvHsnojbiWO3X1zySI3+3Qp8tW/wpxHNT/osP2F3BetOxTBc4U4vy6bsyPd
-         HKcYc7HsXfxvfnmNLKeM59Cs9B9LDx5EfTw3zUVkjYPvc7vpuxSCZoye8fzxuw+ms2XU
-         eVFgL9uWI5LbETB1/ZSTvWfXIHhP7TUMX2ls0NWZeP0DbDcrkDPuNq4TL1ozu7PVgOqv
-         aFoXPiaksEIoczToSYyfWWk/CBNFCnjUoGmklUMkrFBYaArq0oBtbAv08q+VD50vd1aF
-         Q1zbXS/oBIMqfWFAo1yhHD4wPqcbCtFpfKQY2NSwGndqrtdO/s1vlPlakoucCuJQwgIk
-         x+Rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693413765; x=1694018565;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=gmail.com; s=20221208; t=1693413876; x=1694018676; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=qGzaNyZ9CddkbiQdISCl/ijZ2ep7GZGhaNn5SS/vI7Y=;
-        b=ejTgq7T1JgPJ6Mzdh3edWKzoRt+jX2DsJqc9cOtutuGy0adgGdMJCQDFRiNnYhnfXA
-         8ji94qktDIktBvrMLnJAZ3QdLuyFDR6U/2VxnbqA4fNivzmennHBBgEczoC+eScCNb4E
-         YvEOqhy4u9EW/Az3gqUluJDslYOuH/gSzAEbWs+VTuDfr0V/LM8NSim2zoStsSK+6r8y
-         sl8kLDX3rrgh7Nat9KAxdaGF8lXB9Ea/59vpW0dICKsH2qLiVEipvR2fZVV1/rLUBwM8
-         xysblZZ00h0pbAOFJvE7BmxI33/904Ao41k8qb0btOe7O+83SWT0XOmbDsoxmcAmg9U2
-         CFxA==
-X-Gm-Message-State: AOJu0YzLK5zWhuar2BdooZZY5orc8nGdpWfP/gmwbj8o8qCS0nIsuYHG
-        RTBHupf5wOAj7G4UK87OG+JwVtU9DtOfTLbY9nQ=
-X-Google-Smtp-Source: AGHT+IG77kfQba1joc4IydqZOmg+ymN1yl1kN10FjQ9U1N5S7b20AhCUYRXNTG//LIh0tHGxjnaRmQ==
-X-Received: by 2002:a17:903:26cc:b0:1c2:9d0:e176 with SMTP id jg12-20020a17090326cc00b001c209d0e176mr2272780plb.27.1693413764799;
-        Wed, 30 Aug 2023 09:42:44 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id b16-20020a170902d51000b001bdcd4b1616sm11275068plg.260.2023.08.30.09.42.43
+        bh=VB9BcG9DBx3YBgNtAp765xJQP9YYe+QOzLCI45b7TjA=;
+        b=bqgHe3b+c2HIfT8Snf/P5PEu9PtTi+7GwResDismUCljPPApYs8ENhvkfSofh09RmJ
+         0Z+twB8V393/VtWri99gDyApfq0ytwyBhZkSVINUHlxcY1DZBUBgYMPyU7DBrEWq2AeW
+         i6ncwpB9uMw+p1yT71QbS2+RLO0lEIUPzTZd8bo2RfdaWma4fIpzoaVOeHL6zlB51sN5
+         suXP8z6FWOcIkALlbRB3Z6VrQgR5wB3CGyF3rWjpGH6SdwmD8yTpPvAZo7KBqWBDjL1e
+         aEtmjMFAExz8B0NRTxR5S2uxRMSDTSJxn+Zj4qGqipGC4kwhsPuU4+DiyTdjhORmbURo
+         37/w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693413876; x=1694018676;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=VB9BcG9DBx3YBgNtAp765xJQP9YYe+QOzLCI45b7TjA=;
+        b=cey6DlaNOcUSV2kgTd6zNlaaZm9sR41q+E7qR8DtAmjm3Ef4Qx3cfK2SHJo0SehfXW
+         cQynOY8H81cjoQGXHKDbQPJhKsiBYXKigs2FbNo1GdreBd/qkxkY6OD3ev5mq41d6rwx
+         qwGMoBJydSKPcXyZ1HdqaDrZUCcUm058m8QthukAnCbiSpYrHPxfbM683axGVzUIcvF4
+         bmprS09GlE4qgGRRrNIZdGiklDYB2oknnV3C76yGe7z0gErWlbtfUdc6du/l2BmxF7I1
+         zI2IJMubwAgXh01RafyStMbzX0PciF16BmtqMfR+/MksB+zmdYQAYDl6tLvGRhz3cAhc
+         qNLQ==
+X-Gm-Message-State: AOJu0YxTjwdXVWeH8dtbf/IU8FRO9QqY0yfZeScqEiywW2GVB0WOBohz
+        Wjj2Uxi+e0aEOE2DmsDEZUo=
+X-Google-Smtp-Source: AGHT+IGUv20sbwduwPaQIjZ7MnGXmaLgkBIZ4HLZXUWF8gBJHgLANXduERX1A/QiIRbKuOhDZRDqkg==
+X-Received: by 2002:a6b:7006:0:b0:795:c6f:59ff with SMTP id l6-20020a6b7006000000b007950c6f59ffmr3192682ioc.17.1693413875851;
+        Wed, 30 Aug 2023 09:44:35 -0700 (PDT)
+Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
+        by smtp.gmail.com with ESMTPSA id g7-20020a6b6b07000000b00786f5990435sm4001523ioc.7.2023.08.30.09.44.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 09:42:44 -0700 (PDT)
-Message-ID: <64ef7184.170a0220.9355b.43e0@mx.google.com>
-Date:   Wed, 30 Aug 2023 09:42:44 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Wed, 30 Aug 2023 09:44:35 -0700 (PDT)
+Sender: Guenter Roeck <groeck7@gmail.com>
+Date:   Wed, 30 Aug 2023 09:44:33 -0700
+From:   Guenter Roeck <linux@roeck-us.net>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.10 000/135] 5.10.192-rc1 review
+Message-ID: <27d08b24-3581-4451-b8db-5df144784d6a@roeck-us.net>
+References: <20230824170617.074557800@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.14.y
-X-Kernelci-Tree: stable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.14.324
-Subject: stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
- 21 warnings (v4.14.324)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230824170617.074557800@linuxfoundation.org>
+X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,202 +77,30 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (v4.=
-14.324)
+Hi,
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-4.14.y/k=
-ernel/v4.14.324/
+On Thu, Aug 24, 2023 at 07:07:52PM +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.10.192 release.
+> There are 135 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 26 Aug 2023 17:05:50 +0000.
+> Anything received after that time might be too late.
+> 
+[ ... ]
 
-Tree: stable
-Branch: linux-4.14.y
-Git Describe: v4.14.324
-Git Commit: 836d42d04f5d8d38fe2f21ed9ec50413f1421185
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 6 unique architectures
+> Lang Yu <Lang.Yu@amd.com>
+>     drm/amdgpu: install stub fence into potential unused fence pointers
+> 
 
-Warnings Detected:
+This patch is causing continuous log spam in chromeos-5.10, so we are
+going to revert it.
 
-arc:
+WARNING: CPU: 1 PID: 13383 at include/linux/dma-fence.h:478 amdgpu_sync_keep_later+0x95/0xbd
 
-arm64:
+This is just a note to let others know that this may be the cause
+if they see the same problem.
 
-arm:
-
-i386:
-    allnoconfig (gcc-10): 3 warnings
-    i386_defconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-
-mips:
-
-x86_64:
-    allnoconfig (gcc-10): 3 warnings
-    tinyconfig (gcc-10): 3 warnings
-    x86_64_defconfig (gcc-10): 3 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
-' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
-ffix given and no register operands; using default for `btr'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
-mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
- mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
-given and no register operands; using default for `btr'
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-3 warnings, 0 section mismatches
-
-Warnings:
-    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
-fers from latest kernel version at 'arch/x86/include/asm/insn.h'
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
+Thanks,
+Guenter
