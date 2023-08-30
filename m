@@ -2,82 +2,130 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1752578DAF2
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F369378DB24
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237302AbjH3SiL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41136 "EHLO
+        id S232975AbjH3Sih (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243698AbjH3Lbx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 07:31:53 -0400
-Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25307132;
-        Wed, 30 Aug 2023 04:31:51 -0700 (PDT)
-Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id CE7291C0004; Wed, 30 Aug 2023 13:31:49 +0200 (CEST)
-Date:   Wed, 30 Aug 2023 13:31:49 +0200
-From:   Pavel Machek <pavel@denx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 4.14 00/57] 4.14.324-rc1 review
-Message-ID: <ZO8opSrHB0brhBA3@duo.ucw.cz>
-References: <20230828101144.231099710@linuxfoundation.org>
+        with ESMTP id S243827AbjH3Lu2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 07:50:28 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E9AB41B0;
+        Wed, 30 Aug 2023 04:50:24 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 118872F4;
+        Wed, 30 Aug 2023 04:50:59 -0700 (PDT)
+Received: from bogus (unknown [10.57.36.157])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E29423F738;
+        Wed, 30 Aug 2023 04:50:15 -0700 (PDT)
+Date:   Wed, 30 Aug 2023 12:49:18 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+Cc:     x86@kernel.org, Andreas Herrmann <aherrmann@suse.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
+        Radu Rendec <rrendec@redhat.com>,
+        Pierre Gondois <Pierre.Gondois@arm.com>,
+        Pu Wen <puwen@hygon.cn>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Will Deacon <will@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        stable@vger.kernel.org, Ricardo Neri <ricardo.neri@intel.com>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/3] cacheinfo: Allocate memory for memory if not done
+ from the primary CPU
+Message-ID: <20230830114918.be4mvwfogdqmsxk6@bogus>
+References: <20230805012421.7002-1-ricardo.neri-calderon@linux.intel.com>
+ <20230805012421.7002-2-ricardo.neri-calderon@linux.intel.com>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="4qVzUVJRZaDnkrqt"
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230828101144.231099710@linuxfoundation.org>
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230805012421.7002-2-ricardo.neri-calderon@linux.intel.com>
+X-Spam-Status: No, score=-4.2 required=5.0 tests=BAYES_00,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Fri, Aug 04, 2023 at 06:24:19PM -0700, Ricardo Neri wrote:
+> Commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU")
+> adds functionality that architectures can use to optionally allocate and
+> build cacheinfo early during boot. Commit 6539cffa9495 ("cacheinfo: Add
+> arch specific early level initializer") lets secondary CPUs correct (and
+> reallocate memory) cacheinfo data if needed.
+> 
+> If the early build functionality is not used and cacheinfo does not need
+> correction, memory for cacheinfo is never allocated. x86 does not use the
+> early build functionality. Consequently, during the cacheinfo CPU hotplug
+> callback, last_level_cache_is_valid() attempts to dereference a NULL
+> pointer:
+> 
+>      BUG: kernel NULL pointer dereference, address: 0000000000000100
+>      #PF: supervisor read access in kernel mode
+>      #PF: error_code(0x0000) - not present page
+>      PGD 0 P4D 0
+>      Oops: 0000 [#1] PREEPMT SMP NOPTI
+>      CPU: 0 PID 19 Comm: cpuhp/0 Not tainted 6.4.0-rc2 #1
+>      RIP: 0010: last_level_cache_is_valid+0x95/0xe0a
+> 
+> Allocate memory for cacheinfo during the cacheinfo CPU hotplug callback if
+> not done earlier.
+> 
+> Cc: Andreas Herrmann <aherrmann@suse.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Chen Yu <yu.c.chen@intel.com>
+> Cc: Len Brown <len.brown@intel.com>
+> Cc: Radu Rendec <rrendec@redhat.com>
+> Cc: Pierre Gondois <Pierre.Gondois@arm.com>
+> Cc: Pu Wen <puwen@hygon.cn>
+> Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> Cc: Sudeep Holla <sudeep.holla@arm.com>
+> Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> Cc: Will Deacon <will@kernel.org>
+> Cc: Zhang Rui <rui.zhang@intel.com>
+> Cc: linux-arm-kernel@lists.infradead.org
+> Cc: stable@vger.kernel.org
+> Acked-by: Len Brown <len.brown@intel.com>
+> Fixes: 6539cffa9495 ("cacheinfo: Add arch specific early level initializer")
 
---4qVzUVJRZaDnkrqt
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Not sure if we strictly need this(details below), but I am fine either way.
 
-Hi!
+> Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> ---
+> The motivation for commit 5944ce092b97 was to prevent a BUG splat in
+> PREEMPT_RT kernels during memory allocation. This splat is not observed on
+> x86 because the memory allocation for cacheinfo happens in
+> detect_cache_attributes() from the cacheinfo CPU hotplug callback.
+> 
+> The dereference of a NULL pointer is not observed today because
+> cache_leaves(cpu) is zero until after init_cache_level() is called (also
+> during the CPU hotplug callback). Patch2 will set it earlier and the NULL-
+> pointer dereference will be observed.
 
-> This is the start of the stable review cycle for the 4.14.324 release.
-> There are 57 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+Right, this is the information I have been asking in the previous versions.
+This clarifies a lot. The trigger is in the patch 2/3 which is why it didn't
+make complete sense to me without it when you posted this patch independently.
+Thanks for posting it together and sorry for the delay(both reviewing this
+and in understanding the issue).
 
-CIP testing did not find any problems here:
+Given the trigger for NULL pointer dereference is in 2/3, I am not sure
+if it is really worth applying this to all the stable kernels with the
+commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU").
+That is the reason why I asked to drop fixes tag if you agree with me.
+It is simple fix, so I am OK if you prefer to see that in the stable kernels
+as well.
 
-https://gitlab.com/cip-project/cip-testing/linux-stable-rc-ci/-/tree/linux-=
-4.14.y
+Since there are x86 changes and patch 2/3 triggers NULL pointer dereference
+without this patch, I prefer you route all 3 via x86. So,
 
-Tested-by: Pavel Machek (CIP) <pavel@denx.de>
+Reviewed-by: Sudeep Holla <sudeep.holla@arm.com>
 
-Best regards,
-                                                                Pavel
-
---=20
-DENX Software Engineering GmbH,        Managing Director: Erika Unter
-HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
-
---4qVzUVJRZaDnkrqt
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZO8opQAKCRAw5/Bqldv6
-8gF1AJsFshgYIHOA90GoGZZKmClqgJ7ONgCffnQ8x6QjvAmbJ/c5FaFVS4Gaeto=
-=yEqD
------END PGP SIGNATURE-----
-
---4qVzUVJRZaDnkrqt--
+-- 
+Regards,
+Sudeep
