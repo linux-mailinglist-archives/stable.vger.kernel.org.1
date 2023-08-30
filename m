@@ -2,53 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1105778DB42
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0A6EC78DBE4
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:46:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235841AbjH3Siu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51308 "EHLO
+        id S238915AbjH3Sj0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:39:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53340 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242239AbjH3Hev (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 03:34:51 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F845CC9;
-        Wed, 30 Aug 2023 00:34:48 -0700 (PDT)
-Received: from [192.168.100.7] (unknown [39.34.186.40])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id EE30866071DF;
-        Wed, 30 Aug 2023 08:34:44 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1693380887;
-        bh=FAqKMrDY1sgnEDen564Uz0JqloJwW0ZuxAgPpMdqgus=;
-        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
-        b=Qf2duL2p2Hicri0va/ik8ADYHPGFylNPxgGYRWTu8yc/Zo5SoYVrbSgjDerAoCDmc
-         9x0fbsqbD878DXxsTuaO9hDWCOozhx52nu+24C9dRmxGF6VVSOHx0vHcCCDL6U5kvQ
-         UduiMAMHgQ4/9ECJWkPcMIP57EdIs0IoGbdvROxzsB9qylzYJFMk+APngqouGeref0
-         Y15ecksvXyNGrQq04GPDk1XarcKT2hgsONwXloHlCEfyrrHWqAoULqLW9THdzHT92Q
-         RqHwn5ohgMmxR5mNBTy9cMgMRC5blzL5c4tRzW00EB2qg9rTJ0ygHQ1m65q87IWlmA
-         pYxjXZF4Gms/A==
-Message-ID: <b4451119-9ab8-455f-b964-e54a1be21ea2@collabora.com>
-Date:   Wed, 30 Aug 2023 12:34:38 +0500
+        with ESMTP id S243199AbjH3KSi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 06:18:38 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B83F1BB
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 03:18:35 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-79277cfc73bso194190439f.1
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 03:18:35 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1693390715; x=1693995515; darn=vger.kernel.org;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=OP1LgWzoGhEjsjDMUhRzMucVKH/U+zqBw+ArzgUhqBs=;
+        b=EI/w92x72VOPT4SZD/7eh/4otRlHkg81LbDubr4RBX+fJ5tA8GkEcJLpYZFTr4LBSF
+         48AouyCjnhXWClT8R9566ieZ9TUy8olFxfEqKXWb7WhInSfDp7BVkPCObbRhh44tPr9O
+         SmibuHnFjmH20RO/+m/97G9gYv2RLMDaCNd4A=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693390715; x=1693995515;
+        h=in-reply-to:content-transfer-encoding:content-disposition
+         :mime-version:references:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=OP1LgWzoGhEjsjDMUhRzMucVKH/U+zqBw+ArzgUhqBs=;
+        b=WHK7u1OZGMYVrSVK6W5lRgX+2oJxsreizmhtD4aGpDLhRH1ivrPzhMQ8KZLTJep/6w
+         H++uiBODv9DobdCeark0UKE3PPxmzfcjO6sRD0wd/awBW1A42f4nOJj0Y3WKLOzsnKRr
+         dOfNdyXVm5xf7cIqqJn5xYSb+ImfK+Tb+/S7sqbtQy7sQGOqt0V7YhtlBHWxKYmSo7Zy
+         uRRjxMylu4GO6sFuTB4gmBu+Wkx39qvxHkfLQI6gXdaYVCiowdF4Lx5S6Ty2boWjLCR3
+         X99mHL5xJP6z70uEHyPtpMNwqbOPNA+IzjDZENXUnFntMeqU/srlLaiNIWw/F9sKDjfS
+         SiFQ==
+X-Gm-Message-State: AOJu0Yx3IZ1xoHrhzlHb3BofWud/0leKGtEZCQZ9K6Nv9QnzVe0GTaqe
+        HyGOz45J6x9F/IzhDxfc5RcazA==
+X-Google-Smtp-Source: AGHT+IG3k2+yMtXHAP9nLcsR9EPP888/ZCoqSPE1tFAcn3dj8YgJkcEF/dU7zXKS4kNi7fSDVC2vRw==
+X-Received: by 2002:a05:6602:19da:b0:786:71d0:ff9b with SMTP id ba26-20020a05660219da00b0078671d0ff9bmr2199117iob.10.1693390714826;
+        Wed, 30 Aug 2023 03:18:34 -0700 (PDT)
+Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id i15-20020a02cc4f000000b0039deb26853csm3800016jaq.10.2023.08.30.03.18.33
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Aug 2023 03:18:34 -0700 (PDT)
+Date:   Wed, 30 Aug 2023 10:18:33 +0000
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     paulmck@kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Z qiang <qiang.zhang1211@gmail.com>,
+        Huacai Chen <chenhuacai@loongson.cn>,
+        Frederic Weisbecker <frederic@kernel.org>,
+        Neeraj Upadhyay <quic_neeraju@quicinc.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Boqun Feng <boqun.feng@gmail.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        John Stultz <jstultz@google.com>,
+        Stephen Boyd <sboyd@kernel.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Mathieu Desnoyers <mathieu.desnoyers@efficios.com>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        rcu@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, Binbin Zhou <zhoubinbin@loongson.cn>
+Subject: Re: [PATCH V4 2/2] rcu: Update jiffies in rcu_cpu_stall_reset()
+Message-ID: <20230830101833.GA310377@google.com>
+References: <2681134d-cc88-49a0-a1bc-4ec0816288f6@paulmck-laptop>
+ <20230828133348.GA1553000@google.com>
+ <142b4bff-6a2e-4ea0-928c-3cfe9befa403@paulmck-laptop>
+ <CAAhV-H4MrUm2xZdZyAALV-r+aKMRQ50v6me6hybpR1pRijirqw@mail.gmail.com>
+ <CAEXW_YT-z6s+4MnxTnwFk2-mPba65dbnZogdPDSr14LmOW-h-g@mail.gmail.com>
+ <CAAhV-H5tYV=ezPY_O7c=sd3DULB6BjoiYnw9nE2EzDFaBHcKPw@mail.gmail.com>
+ <CAEXW_YTfV1NVb3tOhunHZK_6oeUHxz_azv6uVq3k0O2UEAX5OQ@mail.gmail.com>
+ <CAAhV-H6oN69rV2OyGzUganRv4KbS7a3_gNyWhCqVp51Ay9Q_=g@mail.gmail.com>
+ <CAEXW_YRpT8wcLmsaHA6yMQ-ZCNYG7v4b4m-qvLHVxcbOJJcrPg@mail.gmail.com>
+ <CAAhV-H62o96sgwWK7JAh+GOP=KNtZGS0HjVgHR19jJS1ONJW2Q@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        kernel@collabora.com, stable@vger.kernel.org
-Subject: Re: [PATCH v3] tty/sysrq: replace smp_processor_id() with get_cpu()
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
-        Ingo Molnar <mingo@elte.hu>, Jiri Slaby <jirislaby@kernel.org>
-References: <20230822102606.2821311-1-usama.anjum@collabora.com>
- <2023082258-lethargic-hazily-5c7e@gregkh>
- <deab26bd-7db4-422a-8e58-6ea56ed0b200@collabora.com>
-Content-Language: en-US
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-In-Reply-To: <deab26bd-7db4-422a-8e58-6ea56ed0b200@collabora.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CAAhV-H62o96sgwWK7JAh+GOP=KNtZGS0HjVgHR19jJS1ONJW2Q@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -58,93 +91,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/23/23 4:06 PM, Muhammad Usama Anjum wrote:
-> On 8/22/23 6:24 PM, Greg Kroah-Hartman wrote:
->> On Tue, Aug 22, 2023 at 03:26:06PM +0500, Muhammad Usama Anjum wrote:
->>> The smp_processor_id() shouldn't be called from preemptible code.
->>> Instead use get_cpu() and put_cpu() which disables preemption in
->>> addition to getting the processor id. This fixes the following bug:
->>>
->>> [  119.143590] sysrq: Show backtrace of all active CPUs
->>> [  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
->>> [  119.144586] caller is debug_smp_processor_id+0x20/0x30
->>> [  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
->>> [  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
->>> [  119.145053] Call trace:
->>> [  119.145093]  dump_backtrace+0x0/0x1a0
->>> [  119.145122]  show_stack+0x18/0x70
->>> [  119.145141]  dump_stack+0xc4/0x11c
->>> [  119.145159]  check_preemption_disabled+0x100/0x110
->>> [  119.145175]  debug_smp_processor_id+0x20/0x30
->>> [  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
->>> [  119.145211]  __handle_sysrq+0x8c/0x1a0
->>> [  119.145227]  write_sysrq_trigger+0x94/0x12c
->>> [  119.145247]  proc_reg_write+0xa8/0xe4
->>> [  119.145266]  vfs_write+0xec/0x280
->>> [  119.145282]  ksys_write+0x6c/0x100
->>> [  119.145298]  __arm64_sys_write+0x20/0x30
->>> [  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
->>> [  119.145332]  do_el0_svc+0x24/0x8c
->>> [  119.145348]  el0_svc+0x10/0x20
->>> [  119.145364]  el0_sync_handler+0x134/0x140
->>> [  119.145381]  el0_sync+0x180/0x1c0
->>>
->>> Cc: stable@vger.kernel.org
->>> Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")This commit had introduced the smp_processor_id() function in
-> sysrq_handle_showallcpus().
-> 
->>
->> How has this never shown up before now?  What changed to cause this to
->> now be triggered?  This feels odd that no one has seen this in the past
->> 20+ years :(
-> Not sure. Probably the combination of reproduction has happened now. The
-> following three conditions are needed for the warning to appear:
-> * Enable CONFIG_DEBUG_PREEMPT
-> * Arch which doesn't define arch_trigger_all_cpu_backtrace such as arm64
-> * Trigger showallcpu's stack sysrqAny thoughts?
+On Wed, Aug 30, 2023 at 12:25:56PM +0800, Huacai Chen wrote:
+> On Tue, Aug 29, 2023 at 10:46 PM Joel Fernandes <joel@joelfernandes.org> wrote:
+> >
+> > On Tue, Aug 29, 2023 at 12:08 AM Huacai Chen <chenhuacai@kernel.org> wrote:
+> > >
+> > > Hi, Joel,
+> > >
+> > > On Tue, Aug 29, 2023 at 4:47 AM Joel Fernandes <joel@joelfernandes.org> wrote:
+> > > >
+> > > > Hi Huacai,
+> > > >
+> > > > On Mon, Aug 28, 2023 at 11:13 AM Huacai Chen <chenhuacai@kernel.org> wrote:
+> > > > >
+> > > > [...]
+> > > > > >
+> > > > > > > [Huacai]
+> > > > > > > I also think the original patch should be OK, but I have another
+> > > > > > > question: what will happen if the current GP ends before
+> > > > > > > nr_fqs_jiffies_stall reaches zero?
+> > > > > >
+> > > > > > Nothing should happen. Stall detection only happens when a GP is in
+> > > > > > progress. If a new GP starts, it resets nr_fqs_jiffies_stall.
+> > > > > >
+> > > > > > Or can you elaborate your concern more?
+> > > > > OK, I will test your patch these days. Maybe putting
+> > > > > nr_fqs_jiffies_stall before jiffies_force_qs is better, because I
+> > > > > think putting an 'int' between two 'long' is wasting space. :)
+> > > >
+> > > > That's a good point and I'll look into that.
+> > > Another point, is it better to replace ULONG_MAX with ULONG_MAX/4 as
+> > > Paul suggested?
+> > >
+> >
+> > I could do that but I don't feel too strongly about it. I will keep it
+> > at ULONG_MAX if it's OK with everyone.
+> >
+> > > > Meanwhile I pushed the patch out to my 6.4 stable tree for testing on my fleet.
+> > > >
+> > > > Ideally, I'd like to change the stall detection test in the rcutorture
+> > > > to actually fail rcutorture if stalls don't happen in time. But at
+> > > > least I verified this manually using rcutorture.
+> > > >
+> > > > I should also add a documentation patch for stallwarn.rst to document
+> > > > the understandable sensitivity of RCU stall detection to jiffies
+> > > > updates (or lack thereof). Or if you have time, I'd appreciate support
+> > > > on such a patch (not mandatory but I thought it would not hurt to
+> > > > ask).
+> > > >
+> > > > Looking forward to how your testing goes as well!
+> > > I have tested, it works for KGDB.
+> >
+> > Thanks! If you don't mind, I will add your Tested-by tag to the patch
+> > and send it out soon. My tests also look good!
+>
+> You can add my Tested-by, but Reported-by should be "Binbin Zhou
+> <zhoubinbin@loongson.cn>"
 
-> 
->>
->>
->>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
->>> ---
->>> Changes since v2:
->>> - Add changelog and resend
->>>
->>> Changes since v1:
->>> - Add "Cc: stable@vger.kernel.org" tag
->>> ---
->>>  drivers/tty/sysrq.c | 3 ++-
->>>  1 file changed, 2 insertions(+), 1 deletion(-)
->>>
->>> diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
->>> index 23198e3f1461a..6b4a28bcf2f5f 100644
->>> --- a/drivers/tty/sysrq.c
->>> +++ b/drivers/tty/sysrq.c
->>> @@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
->>>  		if (in_hardirq())
->>>  			regs = get_irq_regs();
->>>  
->>> -		pr_info("CPU%d:\n", smp_processor_id());
->>> +		pr_info("CPU%d:\n", get_cpu());
->>>  		if (regs)
->>>  			show_regs(regs);
->>>  		else
->>>  			show_stack(NULL, NULL, KERN_INFO);
->>>  
->>>  		schedule_work(&sysrq_showallcpus);
->>> +		put_cpu();
->>
->> Why are you putting the cpu _after_ you schedule the work?
-> The sysrq_showallcpus work prints stack traces on all CPUs other than the
-> current CPU. So we are re-enabling preemption after scheduling work from
-> current CPU. So that it doesn't get changed.
->>
->> thanks,
->>
->> greg k-h
-> 
+Thanks, if/when Paul takes it, he could kindly change the Reported-by, or I
+could.
 
--- 
-BR,
-Muhammad Usama Anjum
+thanks,
+
+ - Joel
+
