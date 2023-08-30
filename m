@@ -2,46 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C5C878DB19
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:43:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 50AEA78DB47
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238181AbjH3Si3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38794 "EHLO
+        id S234500AbjH3Siv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60014 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245243AbjH3OyD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 10:54:03 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FF3A198
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 07:54:01 -0700 (PDT)
+        with ESMTP id S245268AbjH3PAF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:00:05 -0400
+X-Greylist: delayed 353 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Aug 2023 08:00:02 PDT
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C8C1A2
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:00:02 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id F2FBA615B4
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 14:54:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CA2AC433C9;
-        Wed, 30 Aug 2023 14:53:59 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 4D359CE1E04
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 14:54:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24934C433C8;
+        Wed, 30 Aug 2023 14:54:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693407240;
-        bh=lMmRYNqlhOrbWWKzhwoZ59JMj/Hi+w+yaGvFMQYy3+8=;
+        s=korg; t=1693407243;
+        bh=w+upvcvjXDSXuL0vyhULfF9pWpMtzP0xv4k+7PUUQuE=;
         h=Subject:To:Cc:From:Date:From;
-        b=U2b2CqgUwC6N8O5SH0Mob2P8oP8H3wH9cudnlYYUTqm+3G+v9EmIFvFahIP/ELAYY
-         jfschSeuY1jiolRKLq5KqJKHVR78mRAiRTxiv23ipNmMBu6ehLUU6OpTFtXlv3BXH/
-         3Ydlr96vCVWvZeA+RkuLp+/kwIjrbfxZwqLkKw2U=
-Subject: FAILED: patch "[PATCH] ACPI: thermal: Drop nocrt parameter" failed to apply to 4.19-stable tree
+        b=AE4TQYN3Vb6EsCqXPEFraKDFaTlJRav4Ikxp0lvnGIc+VJ9jpNjqZocCbUPwy4YKC
+         uCAFg/7/AOI7K53r46r0EhPGY4BEv4qgP7OU0LJlWRxfdU/PERjt6iieMWUXWhqxMe
+         Gkog1jYi1sjYTjW2JlLiwSzV4r9aiOgGBz6r3Swk=
+Subject: FAILED: patch "[PATCH] ACPI: thermal: Drop nocrt parameter" failed to apply to 4.14-stable tree
 To:     mario.limonciello@amd.com, rafael.j.wysocki@intel.com,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 30 Aug 2023 16:53:47 +0200
-Message-ID: <2023083047-alive-reburial-8310@gregkh>
+Date:   Wed, 30 Aug 2023 16:53:48 +0200
+Message-ID: <2023083048-startup-unreached-148d@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -49,19 +51,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5f641174a12b8a876a4101201a21ef4675ecc014
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023083047-alive-reburial-8310@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023083048-startup-unreached-148d@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
