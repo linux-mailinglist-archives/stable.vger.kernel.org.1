@@ -2,68 +2,54 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F0B8E78DB85
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:45:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4D678DBE2
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:46:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238979AbjH3Sjh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:39:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36286 "EHLO
+        id S238886AbjH3SjZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:39:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41512 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245624AbjH3Pod (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:44:33 -0400
-Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3587122
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:44:30 -0700 (PDT)
-Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-68a1af910e0so4072465b3a.2
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:44:30 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693410270; x=1694015070; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PvwBbsM6Gk5NTGpHqyI4YBo7JC1+gngdXonIsavPhYI=;
-        b=wb787k2onQz2jpxhH+vu+6FNyYQmJssoVGPkjSAi4kqx0KqxHgzmfEqESwAIjEjuIl
-         jxsAjo0+GKKA4YTubZ/cqfT05kQqn3O+lI7ucKbyelOsnWwqqIumxuljrzsrWT8o9N0c
-         Zho+aYttzl5xhqaBRi3WsolKZiWOpWbzzSEIrzfqNN0pYfgoGkIqH4XEkgE+iwAJnFs3
-         /xv2TvwJzsumhMo0kTJ32xBDR6xO6H2XMRyro3ze0bpeQL4zxJnSgkBBFfPAbIdyd9gV
-         Lv0Ed+21BByRui9lu6QVvah/578XSJ5kHobX60ekyj4EVzNUcPzKgd/Sqmzoyw7xwYaE
-         zz4g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693410270; x=1694015070;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PvwBbsM6Gk5NTGpHqyI4YBo7JC1+gngdXonIsavPhYI=;
-        b=PPPGPN2lRk2+ClRXFN5Y4ikIAxcL22Xb6Qd4TqPWPiy66q0XeOs6qlZtaa6JjiGfS+
-         yglpfYCfXcSISl0pjVvX/VxNbp1+W1RzKkz46pXnr3QrZeh6bT7y3gawS1BFNAF+ph5R
-         RKved6gRftSOdxyAOnV0XIEp/295ON5Wm/rbek29Xx8vdM8IcRwrEnh6db7Zw2kuON0j
-         6Jrlweh2BLcTj/9UMMt3U6BOMgZWkVlLniJp/GKZOpbqzCah+sopShnv3opvtWKyo7B3
-         rdU9/3CmPBvdeH+7l6DSAbPIALNPYDGAdXQJ1UqvU6tRj9tTXxbxyW9JWVuMl9aFZ7YC
-         /QRQ==
-X-Gm-Message-State: AOJu0YwhFPSBoL+QG6/JjD4HCAexajslmHoAflHZRwmtBSa6bGFxwcbA
-        XgWoaA7+zmHzxA2MIOt84Hexd/r7ZKhLaHLE5Yc=
-X-Google-Smtp-Source: AGHT+IHnhJ2Zrq6MDhAwoetNEbyz1Ubqbz7qyrsyNWUN1vKYBPRQqYEyAPPJ/oItwFWIQPhwmazYNw==
-X-Received: by 2002:a05:6a20:3950:b0:148:97d9:4a71 with SMTP id r16-20020a056a20395000b0014897d94a71mr2909807pzg.39.1693410269843;
-        Wed, 30 Aug 2023 08:44:29 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id f5-20020a170902ce8500b001b89891bfc4sm11161955plg.199.2023.08.30.08.44.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 08:44:29 -0700 (PDT)
-Message-ID: <64ef63dd.170a0220.da8c6.394c@mx.google.com>
-Date:   Wed, 30 Aug 2023 08:44:29 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S245650AbjH3PsL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:48:11 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E29CE122;
+        Wed, 30 Aug 2023 08:48:07 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B3462F4;
+        Wed, 30 Aug 2023 08:48:47 -0700 (PDT)
+Received: from bogus (unknown [10.57.36.157])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 472D53F64C;
+        Wed, 30 Aug 2023 08:48:04 -0700 (PDT)
+Date:   Wed, 30 Aug 2023 16:47:07 +0100
+From:   Sudeep Holla <sudeep.holla@arm.com>
+To:     Radu Rendec <rrendec@redhat.com>
+Cc:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
+        x86@kernel.org, Andreas Herrmann <aherrmann@suse.com>,
+        Sudeep Holla <sudeep.holla@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
+        Pierre Gondois <Pierre.Gondois@arm.com>,
+        Pu Wen <puwen@hygon.cn>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        Will Deacon <will@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
+        stable@vger.kernel.org, Ricardo Neri <ricardo.neri@intel.com>,
+        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
+Subject: Re: [PATCH v3 1/3] cacheinfo: Allocate memory for memory if not done
+ from the primary CPU
+Message-ID: <20230830154707.dyeihenolc5nwmi2@bogus>
+References: <20230805012421.7002-1-ricardo.neri-calderon@linux.intel.com>
+ <20230805012421.7002-2-ricardo.neri-calderon@linux.intel.com>
+ <20230830114918.be4mvwfogdqmsxk6@bogus>
+ <23a1677c3df233c220df68ea429a2d0fec52e1d4.camel@redhat.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.193
-Subject: stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 5 warnings (v5.10.193)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <23a1677c3df233c220df68ea429a2d0fec52e1d4.camel@redhat.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,161 +57,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.1=
-0.193)
+On Wed, Aug 30, 2023 at 08:13:09AM -0400, Radu Rendec wrote:
+> On Wed, 2023-08-30 at 12:49 +0100, Sudeep Holla wrote:
+> > On Fri, Aug 04, 2023 at 06:24:19PM -0700, Ricardo Neri wrote:
+> > > Commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU")
+> > > adds functionality that architectures can use to optionally allocate and
+> > > build cacheinfo early during boot. Commit 6539cffa9495 ("cacheinfo: Add
+> > > arch specific early level initializer") lets secondary CPUs correct (and
+> > > reallocate memory) cacheinfo data if needed.
+> > > 
+> > > If the early build functionality is not used and cacheinfo does not need
+> > > correction, memory for cacheinfo is never allocated. x86 does not use the
+> > > early build functionality. Consequently, during the cacheinfo CPU hotplug
+> > > callback, last_level_cache_is_valid() attempts to dereference a NULL
+> > > pointer:
+> > > 
+> > >      BUG: kernel NULL pointer dereference, address: 0000000000000100
+> > >      #PF: supervisor read access in kernel mode
+> > >      #PF: error_code(0x0000) - not present page
+> > >      PGD 0 P4D 0
+> > >      Oops: 0000 [#1] PREEPMT SMP NOPTI
+> > >      CPU: 0 PID 19 Comm: cpuhp/0 Not tainted 6.4.0-rc2 #1
+> > >      RIP: 0010: last_level_cache_is_valid+0x95/0xe0a
+> > > 
+> > > Allocate memory for cacheinfo during the cacheinfo CPU hotplug callback if
+> > > not done earlier.
+> > > 
+> > > Cc: Andreas Herrmann <aherrmann@suse.com>
+> > > Cc: Catalin Marinas <catalin.marinas@arm.com>
+> > > Cc: Chen Yu <yu.c.chen@intel.com>
+> > > Cc: Len Brown <len.brown@intel.com>
+> > > Cc: Radu Rendec <rrendec@redhat.com>
+> > > Cc: Pierre Gondois <Pierre.Gondois@arm.com>
+> > > Cc: Pu Wen <puwen@hygon.cn>
+> > > Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
+> > > Cc: Sudeep Holla <sudeep.holla@arm.com>
+> > > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+> > > Cc: Will Deacon <will@kernel.org>
+> > > Cc: Zhang Rui <rui.zhang@intel.com>
+> > > Cc: linux-arm-kernel@lists.infradead.org
+> > > Cc: stable@vger.kernel.org
+> > > Acked-by: Len Brown <len.brown@intel.com>
+> > > Fixes: 6539cffa9495 ("cacheinfo: Add arch specific early level initializer")
+> > 
+> > Not sure if we strictly need this(details below), but I am fine either way.
+> > 
+> > > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
+> > > ---
+> > > The motivation for commit 5944ce092b97 was to prevent a BUG splat in
+> > > PREEMPT_RT kernels during memory allocation. This splat is not observed on
+> > > x86 because the memory allocation for cacheinfo happens in
+> > > detect_cache_attributes() from the cacheinfo CPU hotplug callback.
+> > > 
+> > > The dereference of a NULL pointer is not observed today because
+> > > cache_leaves(cpu) is zero until after init_cache_level() is called (also
+> > > during the CPU hotplug callback). Patch2 will set it earlier and the NULL-
+> > > pointer dereference will be observed.
+> > 
+> > Right, this is the information I have been asking in the previous versions.
+> > This clarifies a lot. The trigger is in the patch 2/3 which is why it didn't
+> > make complete sense to me without it when you posted this patch independently.
+> > Thanks for posting it together and sorry for the delay(both reviewing this
+> > and in understanding the issue).
+> > 
+> > Given the trigger for NULL pointer dereference is in 2/3, I am not sure
+> > if it is really worth applying this to all the stable kernels with the
+> > commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU").
+> > That is the reason why I asked to drop fixes tag if you agree with me.
+> > It is simple fix, so I am OK if you prefer to see that in the stable kernels
+> > as well.
+> 
+> Thanks for reviewing, Sudeep. Since my previous commit 6539cffa9495
+> ("cacheinfo: Add arch specific early level initializer") opens a door
+> for the NULL pointer dereference, I would sleep better at night if the
+> fix was included in the stable kernels :) But seriously, I am concerned
+> that with the fix applied in mainline and not in stable, something else
+> could be backported to the stable in the future, that could trigger the
+> NULL pointer dereference there. Ricardo's patch 2/3 is one way to
+> trigger it, but you never know what other patch lands in mainline in
+> the future that assumes it's safe to set the cache leaves earlier.
+> 
 
-Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.10.y/k=
-ernel/v5.10.193/
+Fair enough. I agree with you, so please retain the fixes tag as is.
+Please work with x86 maintainers to get it merged along with other patches.
+Let me know if you have other plans.
 
-Tree: stable
-Branch: linux-5.10.y
-Git Describe: v5.10.193
-Git Commit: 4566606fe3a43e819e0a5e00eb47deccdf5427eb
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+-- 
+Regards,
+Sudeep
