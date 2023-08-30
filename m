@@ -2,54 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F4D678DBE2
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:46:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77F6578DAFE
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:39:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238886AbjH3SjZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:39:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41512 "EHLO
+        id S232832AbjH3SiR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245650AbjH3PsL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:48:11 -0400
-Received: from foss.arm.com (foss.arm.com [217.140.110.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id E29CE122;
-        Wed, 30 Aug 2023 08:48:07 -0700 (PDT)
-Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
-        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 1B3462F4;
-        Wed, 30 Aug 2023 08:48:47 -0700 (PDT)
-Received: from bogus (unknown [10.57.36.157])
-        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id 472D53F64C;
-        Wed, 30 Aug 2023 08:48:04 -0700 (PDT)
-Date:   Wed, 30 Aug 2023 16:47:07 +0100
-From:   Sudeep Holla <sudeep.holla@arm.com>
-To:     Radu Rendec <rrendec@redhat.com>
-Cc:     Ricardo Neri <ricardo.neri-calderon@linux.intel.com>,
-        x86@kernel.org, Andreas Herrmann <aherrmann@suse.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Chen Yu <yu.c.chen@intel.com>, Len Brown <len.brown@intel.com>,
-        Pierre Gondois <Pierre.Gondois@arm.com>,
-        Pu Wen <puwen@hygon.cn>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        Will Deacon <will@kernel.org>, Zhang Rui <rui.zhang@intel.com>,
-        stable@vger.kernel.org, Ricardo Neri <ricardo.neri@intel.com>,
-        "Ravi V. Shankar" <ravi.v.shankar@intel.com>,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH v3 1/3] cacheinfo: Allocate memory for memory if not done
- from the primary CPU
-Message-ID: <20230830154707.dyeihenolc5nwmi2@bogus>
-References: <20230805012421.7002-1-ricardo.neri-calderon@linux.intel.com>
- <20230805012421.7002-2-ricardo.neri-calderon@linux.intel.com>
- <20230830114918.be4mvwfogdqmsxk6@bogus>
- <23a1677c3df233c220df68ea429a2d0fec52e1d4.camel@redhat.com>
+        with ESMTP id S245667AbjH3PwV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:52:21 -0400
+Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C34D9122
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:52:16 -0700 (PDT)
+Received: from [192.168.1.103] (178.176.75.182) by msexch01.omp.ru
+ (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Wed, 30 Aug
+ 2023 18:52:10 +0300
+Subject: Re: [PATCH 5.4 044/158] mmc: bcm2835: fix deferred probing
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <stable@vger.kernel.org>
+CC:     <patches@lists.linux.dev>, Ulf Hansson <ulf.hansson@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+References: <20230828101157.322319621@linuxfoundation.org>
+ <20230828101158.817680940@linuxfoundation.org>
+From:   Sergey Shtylyov <s.shtylyov@omp.ru>
+Organization: Open Mobile Platform
+Message-ID: <4c269565-e798-7c7e-b4f1-4057b44faeaf@omp.ru>
+Date:   Wed, 30 Aug 2023 18:52:09 +0300
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
+ Thunderbird/78.10.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <23a1677c3df233c220df68ea429a2d0fec52e1d4.camel@redhat.com>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+In-Reply-To: <20230828101158.817680940@linuxfoundation.org>
+Content-Type: text/plain; charset="utf-8"
+Content-Language: en-US
+Content-Transfer-Encoding: 7bit
+X-Originating-IP: [178.176.75.182]
+X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
+ (10.188.4.12)
+X-KSE-ServerInfo: msexch01.omp.ru, 9
+X-KSE-AntiSpam-Interceptor-Info: scan successful
+X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 08/30/2023 15:30:03
+X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
+X-KSE-AntiSpam-Method: none
+X-KSE-AntiSpam-Rate: 59
+X-KSE-AntiSpam-Info: Lua profiles 179545 [Aug 30 2023]
+X-KSE-AntiSpam-Info: Version: 5.9.59.0
+X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
+X-KSE-AntiSpam-Info: LuaCore: 529 529 a773548e495283fecef97c3e587259fde2135fef
+X-KSE-AntiSpam-Info: {rep_avail}
+X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
+X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
+X-KSE-AntiSpam-Info: {relay has no DNS name}
+X-KSE-AntiSpam-Info: {SMTP from is not routable}
+X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.75.182 in (user)
+ dbl.spamhaus.org}
+X-KSE-AntiSpam-Info: lore.kernel.org:7.1.1;178.176.75.182:7.1.2,7.7.3;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;omp.ru:7.1.1;127.0.0.199:7.1.2
+X-KSE-AntiSpam-Info: FromAlignment: s
+X-KSE-AntiSpam-Info: {rdns complete}
+X-KSE-AntiSpam-Info: {fromrtbl complete}
+X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.182
+X-KSE-AntiSpam-Info: Rate: 59
+X-KSE-AntiSpam-Info: Status: not_detected
+X-KSE-AntiSpam-Info: Method: none
+X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
+ smtp.mailfrom=omp.ru;dkim=none
+X-KSE-Antiphishing-Info: Clean
+X-KSE-Antiphishing-ScanningType: Heuristic
+X-KSE-Antiphishing-Method: None
+X-KSE-Antiphishing-Bases: 08/30/2023 15:35:00
+X-KSE-Antivirus-Interceptor-Info: scan successful
+X-KSE-Antivirus-Info: Clean, bases: 8/30/2023 8:27:00 AM
+X-KSE-Attachment-Filter-Triggered-Rules: Clean
+X-KSE-Attachment-Filter-Triggered-Filters: Clean
+X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
+X-Spam-Status: No, score=-3.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,91 +84,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 30, 2023 at 08:13:09AM -0400, Radu Rendec wrote:
-> On Wed, 2023-08-30 at 12:49 +0100, Sudeep Holla wrote:
-> > On Fri, Aug 04, 2023 at 06:24:19PM -0700, Ricardo Neri wrote:
-> > > Commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU")
-> > > adds functionality that architectures can use to optionally allocate and
-> > > build cacheinfo early during boot. Commit 6539cffa9495 ("cacheinfo: Add
-> > > arch specific early level initializer") lets secondary CPUs correct (and
-> > > reallocate memory) cacheinfo data if needed.
-> > > 
-> > > If the early build functionality is not used and cacheinfo does not need
-> > > correction, memory for cacheinfo is never allocated. x86 does not use the
-> > > early build functionality. Consequently, during the cacheinfo CPU hotplug
-> > > callback, last_level_cache_is_valid() attempts to dereference a NULL
-> > > pointer:
-> > > 
-> > >      BUG: kernel NULL pointer dereference, address: 0000000000000100
-> > >      #PF: supervisor read access in kernel mode
-> > >      #PF: error_code(0x0000) - not present page
-> > >      PGD 0 P4D 0
-> > >      Oops: 0000 [#1] PREEPMT SMP NOPTI
-> > >      CPU: 0 PID 19 Comm: cpuhp/0 Not tainted 6.4.0-rc2 #1
-> > >      RIP: 0010: last_level_cache_is_valid+0x95/0xe0a
-> > > 
-> > > Allocate memory for cacheinfo during the cacheinfo CPU hotplug callback if
-> > > not done earlier.
-> > > 
-> > > Cc: Andreas Herrmann <aherrmann@suse.com>
-> > > Cc: Catalin Marinas <catalin.marinas@arm.com>
-> > > Cc: Chen Yu <yu.c.chen@intel.com>
-> > > Cc: Len Brown <len.brown@intel.com>
-> > > Cc: Radu Rendec <rrendec@redhat.com>
-> > > Cc: Pierre Gondois <Pierre.Gondois@arm.com>
-> > > Cc: Pu Wen <puwen@hygon.cn>
-> > > Cc: "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>
-> > > Cc: Sudeep Holla <sudeep.holla@arm.com>
-> > > Cc: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-> > > Cc: Will Deacon <will@kernel.org>
-> > > Cc: Zhang Rui <rui.zhang@intel.com>
-> > > Cc: linux-arm-kernel@lists.infradead.org
-> > > Cc: stable@vger.kernel.org
-> > > Acked-by: Len Brown <len.brown@intel.com>
-> > > Fixes: 6539cffa9495 ("cacheinfo: Add arch specific early level initializer")
-> > 
-> > Not sure if we strictly need this(details below), but I am fine either way.
-> > 
-> > > Signed-off-by: Ricardo Neri <ricardo.neri-calderon@linux.intel.com>
-> > > ---
-> > > The motivation for commit 5944ce092b97 was to prevent a BUG splat in
-> > > PREEMPT_RT kernels during memory allocation. This splat is not observed on
-> > > x86 because the memory allocation for cacheinfo happens in
-> > > detect_cache_attributes() from the cacheinfo CPU hotplug callback.
-> > > 
-> > > The dereference of a NULL pointer is not observed today because
-> > > cache_leaves(cpu) is zero until after init_cache_level() is called (also
-> > > during the CPU hotplug callback). Patch2 will set it earlier and the NULL-
-> > > pointer dereference will be observed.
-> > 
-> > Right, this is the information I have been asking in the previous versions.
-> > This clarifies a lot. The trigger is in the patch 2/3 which is why it didn't
-> > make complete sense to me without it when you posted this patch independently.
-> > Thanks for posting it together and sorry for the delay(both reviewing this
-> > and in understanding the issue).
-> > 
-> > Given the trigger for NULL pointer dereference is in 2/3, I am not sure
-> > if it is really worth applying this to all the stable kernels with the
-> > commit 5944ce092b97 ("arch_topology: Build cacheinfo from primary CPU").
-> > That is the reason why I asked to drop fixes tag if you agree with me.
-> > It is simple fix, so I am OK if you prefer to see that in the stable kernels
-> > as well.
-> 
-> Thanks for reviewing, Sudeep. Since my previous commit 6539cffa9495
-> ("cacheinfo: Add arch specific early level initializer") opens a door
-> for the NULL pointer dereference, I would sleep better at night if the
-> fix was included in the stable kernels :) But seriously, I am concerned
-> that with the fix applied in mainline and not in stable, something else
-> could be backported to the stable in the future, that could trigger the
-> NULL pointer dereference there. Ricardo's patch 2/3 is one way to
-> trigger it, but you never know what other patch lands in mainline in
-> the future that assumes it's safe to set the cache leaves earlier.
-> 
+On 8/28/23 1:12 PM, Greg Kroah-Hartman wrote:
 
-Fair enough. I agree with you, so please retain the fixes tag as is.
-Please work with x86 maintainers to get it merged along with other patches.
-Let me know if you have other plans.
+> 5.4-stable review patch.  If anyone has any objections, please let me know.
+> 
+> ------------------
+> 
+> From: Sergey Shtylyov <s.shtylyov@omp.ru>
+> 
+> [ Upstream commit 71150ac12558bcd9d75e6e24cf7c872c2efd80f3 ]
+> 
+> The driver overrides the error codes and IRQ0 returned by platform_get_irq()
+> to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
+> permanently instead of the deferred probing. Switch to propagating the error
+> codes upstream.  Since commit ce753ad1549c ("platform: finally disallow IRQ0
+> in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
+> so we now can safely ignore it...
+> 
+> Fixes: 660fc733bd74 ("mmc: bcm2835: Add new driver for the sdhost controller.")
+> Cc: stable@vger.kernel.org # v5.19+
 
--- 
-Regards,
-Sudeep
+   After a glance at the driver, the patch seems safe to be applied to 5.4.y,
+despite I tried to limit it to 5.19.y and newer...
+
+> Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
+> Link: https://lore.kernel.org/r/20230617203622.6812-2-s.shtylyov@omp.ru
+> Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+[...]
+
+MBR, Sergey
