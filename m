@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0C6FF78DB3C
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DB5578DB08
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:39:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232193AbjH3Sis (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
+        id S231941AbjH3SiT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245584AbjH3PhY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:37:24 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A60B113
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:37:21 -0700 (PDT)
+        with ESMTP id S245585AbjH3Ph2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:37:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC9C8122
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:37:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 2B51DB81F55
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 15:37:20 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A32BC433C8;
-        Wed, 30 Aug 2023 15:37:18 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2BA98B81F54
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 15:37:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 553F0C433C7;
+        Wed, 30 Aug 2023 15:37:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693409838;
-        bh=GuUmsXe0pQe4w8xoe+a6RZwgXIKs44+GiAdQPf1WJqk=;
+        s=korg; t=1693409842;
+        bh=3+l9YGQnV+S5TDUK8XWZckiUMR0xE9/Sxnj0T2QUsPY=;
         h=Subject:To:Cc:From:Date:From;
-        b=A2id2iU08Mmy8s05vildOTKyLLkJwlBySy9azrlDv2lZfQMWOq0mYWzjia7KpE9I9
-         TC2v4KST1avqNQ9//mTuGsSiFSLawVO7Fvs8kVtY5TRuvX58auEHsOYVNWuOm8Xee8
-         TfMMT8TleVjUEf7I9+TCyh0/SwXob3eqCKnx9fGE=
-Subject: FAILED: patch "[PATCH] Bluetooth: HCI: Introduce HCI_QUIRK_BROKEN_LE_CODED" failed to apply to 6.5-stable tree
+        b=iEUqu7+hI8Nb9VuhHA9kgVlq++4cpXh9K2ujfB/+1ITO9Ct0UD1ZgUQAbKqwqToW7
+         VmpUWj2Lxx2E41S5KGYI5+NxevonJUyCqe0P6v8RUIAo3Z1Gh5d5JDwFZnYyYMje8n
+         opV6hn1cZY6vNpO10wdBqvg8ITsrcrei/4tT7rGE=
+Subject: FAILED: patch "[PATCH] Bluetooth: HCI: Introduce HCI_QUIRK_BROKEN_LE_CODED" failed to apply to 6.4-stable tree
 To:     luiz.von.dentz@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 30 Aug 2023 17:37:02 +0200
-Message-ID: <2023083002-resilient-washed-2807@gregkh>
+Date:   Wed, 30 Aug 2023 17:37:03 +0200
+Message-ID: <2023083002-unguarded-radiance-bab8@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -49,19 +49,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 253f3399f4c09ce6f4e67350f839be0361b4d5ff
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023083002-resilient-washed-2807@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023083002-unguarded-radiance-bab8@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
