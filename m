@@ -2,98 +2,221 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A69078E36C
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 01:43:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA96578E33F
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 01:28:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343575AbjH3Xnc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 19:43:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44980 "EHLO
+        id S1344477AbjH3X2i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 19:28:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244582AbjH3Xnc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 19:43:32 -0400
-X-Greylist: delayed 7053 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 30 Aug 2023 16:43:26 PDT
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ACE5CF;
-        Wed, 30 Aug 2023 16:43:26 -0700 (PDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4RbZdC575gz1sCHT;
-        Wed, 30 Aug 2023 21:49:48 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
-        by mail.m-online.net (Postfix) with ESMTP id 4RbZd83ty8z1qqlb;
-        Wed, 30 Aug 2023 21:49:48 +0200 (CEST)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
- with ESMTP id PaI3XmDZtnS9; Wed, 30 Aug 2023 21:49:47 +0200 (CEST)
-X-Auth-Info: Pbpxk8dOWlbPEEBN/noqaoWZixAIgLuZJUPRLWT+r811XAsiT63LvvaA3kzBJABK
-Received: from igel.home (aftr-62-216-205-244.dynamic.mnet-online.de [62.216.205.244])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Wed, 30 Aug 2023 21:49:47 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-        id 3018C2C0D30; Wed, 30 Aug 2023 21:49:47 +0200 (CEST)
-From:   Andreas Schwab <schwab@linux-m68k.org>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-In-Reply-To: <20230819004356.1454718-2-Liam.Howlett@oracle.com> (Liam
-        R. Howlett's message of "Fri, 18 Aug 2023 20:43:55 -0400")
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
-        <20230819004356.1454718-2-Liam.Howlett@oracle.com>
-X-Yow:  Hmmm..  a CRIPPLED ACCOUNTANT with a FALAFEL sandwich is HIT
- by a TROLLEY-CAR..
-Date:   Wed, 30 Aug 2023 21:49:47 +0200
-Message-ID: <87bkeotin8.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13)
-MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=3.2 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+        with ESMTP id S231269AbjH3X2h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 19:28:37 -0400
+Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC5F9CC
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 16:28:33 -0700 (PDT)
+Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-794c7d95ba5so11844339f.0
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 16:28:33 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=purestorage.com; s=google2022; t=1693438113; x=1694042913; darn=vger.kernel.org;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=qO4oHVMeF3PN/FsRZDW5+HN48tR0F4cYrDjxuervmcc=;
+        b=Eu0NVCbcNENxU4orBwSrtqGgmihSut/PWtGAPbw2wOyvpCJQdk7hA6lP1g+1k5d+C7
+         ae4Acdh+Fa3efuCr0CsyLWOOQpbtJ6O9GHm1jAJ24eZbnawbLwDTFOjH49qe1ma56c//
+         1OqWXvFVOJUSD881Qje3Xm91ynq7X286LsgY1SYf2Rr4aX2dDTTaJhIPhwigMKoWJ1m/
+         /bcH8wrXonwgGfg1MjaMBxTXXhjNdjlz6htRtPhHKU7PIDMrzpgOhJeoTJKhOKsQbXzx
+         22F/riaYP6Nm644PCunG8fGX7fl78eSIaqYk4oAz7dQnmakq3S6UAzjti2zC3H2kndfs
+         0AaA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693438113; x=1694042913;
+        h=references:in-reply-to:message-id:date:subject:cc:to:from
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=qO4oHVMeF3PN/FsRZDW5+HN48tR0F4cYrDjxuervmcc=;
+        b=ZEctUG+/0qALwQkAWKlwtIbsCP8ZOkVbMZ2Cpf921aaC1BuP7te8kF/1wpbUxTk3dI
+         8GmAjG2sOa8mAHczLqOkHkejdvuf6+CJq1OUUfOGQ7suO8bZXDxlm8/loGfR7MzQb3Wq
+         rfB5nExZpvbJ3B46Z8be3Xpa5fkUCps1mMS4mwwumWYPvDzzDxfirsJCMefKZ/K6r1jX
+         BeKr32EowF0l1L34Dw6FR2G0iq7ssXZMwtnnizaYu0N3HNGdDbfnOfIRqvYrswJAp+Hb
+         NC4DttLw1yexDUhDy/qDxDG0JY4UbOnfNwUINon27753/De9dlVM4yEHgugQ9GYU04l0
+         ECHg==
+X-Gm-Message-State: AOJu0YxZlzFPA4mIDhuzCTN+8mcnpz7TjXz0LsYTMFxpN86ROaG8KqTR
+        mjPGGLFTsHwIl3ypqZfPdghvHA==
+X-Google-Smtp-Source: AGHT+IGHZX6zgxZVgpuwzmQ02MWpvEuUfxgBDG8q3JehNd8n4slhLq/nkl0RKY60VYpQx78mOh9ZbA==
+X-Received: by 2002:a6b:e914:0:b0:783:57ae:1894 with SMTP id u20-20020a6be914000000b0078357ae1894mr4089814iof.9.1693438113284;
+        Wed, 30 Aug 2023 16:28:33 -0700 (PDT)
+Received: from dev-mkhalfella2.dev.purestorage.com ([208.88.159.129])
+        by smtp.googlemail.com with ESMTPSA id x17-20020a029711000000b0041d73d0a412sm56753jai.19.2023.08.30.16.28.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Aug 2023 16:28:32 -0700 (PDT)
+From:   Mohamed Khalfella <mkhalfella@purestorage.com>
+To:     willemdebruijn.kernel@gmail.com
+Cc:     alexanderduyck@fb.com, bpf@vger.kernel.org, brouer@redhat.com,
+        davem@davemloft.net, dhowells@redhat.com, edumazet@google.com,
+        keescook@chromium.org, kuba@kernel.org,
+        linux-kernel@vger.kernel.org, mkhalfella@purestorage.com,
+        netdev@vger.kernel.org, pabeni@redhat.com, willemb@google.com,
+        stable@vger.kernel.org
+Subject: [PATCH v2] skbuff: skb_segment, Call zero copy functions before using skbuff frags
+Date:   Wed, 30 Aug 2023 17:28:11 -0600
+Message-Id: <20230830232811.9876-1-mkhalfella@purestorage.com>
+X-Mailer: git-send-email 2.17.1
+In-Reply-To: <64ed7188a2745_9cf208e1@penguin.notmuch>
+References: <64ed7188a2745_9cf208e1@penguin.notmuch>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,T_SPF_PERMERROR autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This breaks booting on ppc32:
+Commit bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions
+once per nskb") added the call to zero copy functions in skb_segment().
+The change introduced a bug in skb_segment() because skb_orphan_frags()
+may possibly change the number of fragments or allocate new fragments
+altogether leaving nrfrags and frag to point to the old values. This can
+cause a panic with stacktrace like the one below.
 
-Kernel attemptd to writ user page (1ff0) - exploit attempt? (uid: 0)
-BUG: Unable to handle kernel data access on write at 0x00001ff0
-Faulting instruction address: 0xc0009554
-Vector: 300 (Data Access) at [c0b09d10]
-    pc: c0009554: do_softirq_own_stack+0x18/0x30
-    lr: c004f480: __irq_exit_rcu+0x70/0xc0
-    sp: c0b09dd0
-   msr: 1032
-   dar: 1ff0
- dsisr: 42000000
-  current = 0xc0a08360
-    pid   = 0, comm = swapper
-Linux version 6.5.0 ...
-enter ? for help
-[c0b09de0] c00ff480 __irq_exit_rcu+0x70/0xc0
-[c0b09df0] c0005a98 Decrementer_virt+0x108/0x10c
---- Exception: 900 (Decrementer) at c06cfa0c __schedule+0x4fc/0x510
-[c0b09ec0] c06cf75c __schedule+0x1cc/0x510 (unreliable)
-[c0b09ef0] c06cfc90 __cond_resched+0x2c/0x54
-[c0b09f00] c06d07f8 mutex_lock_killable+0x18/0x5c
-[c0b09f10] c013c404 pcpu_alloc+0x110/0x4dc
-[c0b09f70] c000cc34 alloc_descr.isra.18+0x48/0x144
-[c0b09f90] c0988aa0 early_irq_init+0x64/0x8c
-[c0b09fa0] c097a5a4 start_kernel+0x5b4/0x7b0
-[c0b09ff0] 00003dc0
-mon>
+[  193.894380] BUG: kernel NULL pointer dereference, address: 00000000000000bc
+[  193.895273] CPU: 13 PID: 18164 Comm: vh-net-17428 Kdump: loaded Tainted: G           O      5.15.123+ #26
+[  193.903919] RIP: 0010:skb_segment+0xb0e/0x12f0
+[  194.021892] Call Trace:
+[  194.027422]  <TASK>
+[  194.072861]  tcp_gso_segment+0x107/0x540
+[  194.082031]  inet_gso_segment+0x15c/0x3d0
+[  194.090783]  skb_mac_gso_segment+0x9f/0x110
+[  194.095016]  __skb_gso_segment+0xc1/0x190
+[  194.103131]  netem_enqueue+0x290/0xb10 [sch_netem]
+[  194.107071]  dev_qdisc_enqueue+0x16/0x70
+[  194.110884]  __dev_queue_xmit+0x63b/0xb30
+[  194.121670]  bond_start_xmit+0x159/0x380 [bonding]
+[  194.128506]  dev_hard_start_xmit+0xc3/0x1e0
+[  194.131787]  __dev_queue_xmit+0x8a0/0xb30
+[  194.138225]  macvlan_start_xmit+0x4f/0x100 [macvlan]
+[  194.141477]  dev_hard_start_xmit+0xc3/0x1e0
+[  194.144622]  sch_direct_xmit+0xe3/0x280
+[  194.147748]  __dev_queue_xmit+0x54a/0xb30
+[  194.154131]  tap_get_user+0x2a8/0x9c0 [tap]
+[  194.157358]  tap_sendmsg+0x52/0x8e0 [tap]
+[  194.167049]  handle_tx_zerocopy+0x14e/0x4c0 [vhost_net]
+[  194.173631]  handle_tx+0xcd/0xe0 [vhost_net]
+[  194.176959]  vhost_worker+0x76/0xb0 [vhost]
+[  194.183667]  kthread+0x118/0x140
+[  194.190358]  ret_from_fork+0x1f/0x30
+[  194.193670]  </TASK>
 
+In this case calling skb_orphan_frags() updated nr_frags leaving nrfrags
+local variable in skb_segment() stale. This resulted in the code hitting
+i >= nrfrags prematurely and trying to move to next frag_skb using
+list_skb pointer, which was NULL, and caused kernel panic. Move the call
+to zero copy functions before using frags and nr_frags.
+
+Fixes: bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions once per nskb")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reported-by: Amit Goyal <agoyal@purestorage.com>
+Cc: stable@vger.kernel.org
+---
+ net/core/skbuff.c | 34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
+
+diff --git a/net/core/skbuff.c b/net/core/skbuff.c
+index a298992060e6..18a33dc2d6af 100644
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4354,21 +4354,20 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 	struct sk_buff *segs = NULL;
+ 	struct sk_buff *tail = NULL;
+ 	struct sk_buff *list_skb = skb_shinfo(head_skb)->frag_list;
+-	skb_frag_t *frag = skb_shinfo(head_skb)->frags;
+ 	unsigned int mss = skb_shinfo(head_skb)->gso_size;
+ 	unsigned int doffset = head_skb->data - skb_mac_header(head_skb);
+-	struct sk_buff *frag_skb = head_skb;
+ 	unsigned int offset = doffset;
+ 	unsigned int tnl_hlen = skb_tnl_header_len(head_skb);
+ 	unsigned int partial_segs = 0;
+ 	unsigned int headroom;
+ 	unsigned int len = head_skb->len;
++	struct sk_buff *frag_skb;
++	skb_frag_t *frag;
+ 	__be16 proto;
+ 	bool csum, sg;
+-	int nfrags = skb_shinfo(head_skb)->nr_frags;
+ 	int err = -ENOMEM;
+ 	int i = 0;
+-	int pos;
++	int nfrags, pos;
+ 
+ 	if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
+ 	    mss != GSO_BY_FRAGS && mss != skb_headlen(head_skb)) {
+@@ -4445,6 +4444,13 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 	headroom = skb_headroom(head_skb);
+ 	pos = skb_headlen(head_skb);
+ 
++	if (skb_orphan_frags(head_skb, GFP_ATOMIC))
++		return ERR_PTR(-ENOMEM);
++
++	nfrags = skb_shinfo(head_skb)->nr_frags;
++	frag = skb_shinfo(head_skb)->frags;
++	frag_skb = head_skb;
++
+ 	do {
+ 		struct sk_buff *nskb;
+ 		skb_frag_t *nskb_frag;
+@@ -4465,6 +4471,10 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 		    (skb_headlen(list_skb) == len || sg)) {
+ 			BUG_ON(skb_headlen(list_skb) > len);
+ 
++			nskb = skb_clone(list_skb, GFP_ATOMIC);
++			if (unlikely(!nskb))
++				goto err;
++
+ 			i = 0;
+ 			nfrags = skb_shinfo(list_skb)->nr_frags;
+ 			frag = skb_shinfo(list_skb)->frags;
+@@ -4483,12 +4493,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 				frag++;
+ 			}
+ 
+-			nskb = skb_clone(list_skb, GFP_ATOMIC);
+ 			list_skb = list_skb->next;
+ 
+-			if (unlikely(!nskb))
+-				goto err;
+-
+ 			if (unlikely(pskb_trim(nskb, len))) {
+ 				kfree_skb(nskb);
+ 				goto err;
+@@ -4564,12 +4570,16 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 		skb_shinfo(nskb)->flags |= skb_shinfo(head_skb)->flags &
+ 					   SKBFL_SHARED_FRAG;
+ 
+-		if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
+-		    skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
++		if (skb_zerocopy_clone(nskb, list_skb, GFP_ATOMIC))
+ 			goto err;
+ 
+ 		while (pos < offset + len) {
+ 			if (i >= nfrags) {
++				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
++				    skb_zerocopy_clone(nskb, list_skb,
++						       GFP_ATOMIC))
++					goto err;
++
+ 				i = 0;
+ 				nfrags = skb_shinfo(list_skb)->nr_frags;
+ 				frag = skb_shinfo(list_skb)->frags;
+@@ -4583,10 +4593,6 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
+ 					i--;
+ 					frag--;
+ 				}
+-				if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
+-				    skb_zerocopy_clone(nskb, frag_skb,
+-						       GFP_ATOMIC))
+-					goto err;
+ 
+ 				list_skb = list_skb->next;
+ 			}
 -- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+2.17.1
+
