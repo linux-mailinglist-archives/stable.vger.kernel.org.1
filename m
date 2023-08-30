@@ -2,40 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B8A978D2FA
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 07:29:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7710378D357
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 08:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235933AbjH3F3A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 01:29:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46138 "EHLO
+        id S236433AbjH3G0f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 02:26:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238336AbjH3F2z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 01:28:55 -0400
+        with ESMTP id S231588AbjH3G0K (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 02:26:10 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1217CFC;
-        Tue, 29 Aug 2023 22:28:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 275CD1BB;
+        Tue, 29 Aug 2023 23:26:05 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A527562AF2;
-        Wed, 30 Aug 2023 05:28:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1F7EC433C8;
-        Wed, 30 Aug 2023 05:28:50 +0000 (UTC)
-Date:   Wed, 30 Aug 2023 07:28:47 +0200
-From:   Helge Deller <deller@gmx.de>
-To:     stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Cc:     linux-parisc@vger.kernel.org
-Subject: [STABLE] lockdep patch for 6.1-stable to 6.5-stable
-Message-ID: <ZO7Tj3Pf3P01ImCG@p100>
+        by dfw.source.kernel.org (Postfix) with ESMTPS id BA32360E05;
+        Wed, 30 Aug 2023 06:26:04 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BABDC433C8;
+        Wed, 30 Aug 2023 06:26:03 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693376764;
+        bh=5CTRaQi87lWjlnEJg7LzQ49T5UnzTi0vTd1SjwA50cw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=a6CVy3vAwAqiqNjRcl44SAEIcqzREnVPXyBJHY2g9sZmbunT1GBDyATpX6TB1ZKeL
+         iftxn9XFvTMVnKLs9ChzY61M2kWqd8B0a0+KXc9+xgggCOtyAwbngSAuTAYFxOCgqn
+         k4ZF1DMAD8Ie6vlwkTONkSA8kswHZDt2kw89j/Oo=
+Date:   Wed, 30 Aug 2023 08:26:01 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Maximilian Heyne <mheyne@amazon.de>
+Cc:     stable@vger.kernel.org,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Michael Larabel <Michael@michaellarabel.com>,
+        Matthieu Baerts <matthieu.baerts@tessares.net>,
+        Dave Chinner <david@fromorbit.com>,
+        Matthew Wilcox <willy@infradead.org>, Chris Mason <clm@fb.com>,
+        Jan Kara <jack@suse.cz>, Amir Goldstein <amir73il@gmail.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ingo Molnar <mingo@redhat.com>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Juri Lelli <juri.lelli@redhat.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Dietmar Eggemann <dietmar.eggemann@arm.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Ben Segall <bsegall@google.com>, Mel Gorman <mgorman@suse.de>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Kees Cook <keescook@chromium.org>, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org
+Subject: Re: [PATCH] mm: allow a controlled amount of unfairness in the page
+ lock
+Message-ID: <2023083048-eraser-imprison-5cbd@gregkh>
+References: <20230823061642.76949-1-mheyne@amazon.de>
+ <2023082731-crunching-second-ad89@gregkh>
+ <20230828101420.GA54787@dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+In-Reply-To: <20230828101420.GA54787@dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,142 +70,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg,
+On Mon, Aug 28, 2023 at 10:14:20AM +0000, Maximilian Heyne wrote:
+> On Sun, Aug 27, 2023 at 10:54:03AM +0200, Greg KH wrote:
+> > On Wed, Aug 23, 2023 at 06:16:42AM +0000, Maximilian Heyne wrote:
+> > > From: Linus Torvalds <torvalds@linux-foundation.org>
+> > >
+> > > [ upstream commit 5ef64cc8987a9211d3f3667331ba3411a94ddc79 ]
+> > >
+> > > Commit 2a9127fcf229 ("mm: rewrite wait_on_page_bit_common() logic") made
+> > > the page locking entirely fair, in that if a waiter came in while the
+> > > lock was held, the lock would be transferred to the lockers strictly in
+> > > order.
+> > >
+> > > That was intended to finally get rid of the long-reported watchdog
+> > > failures that involved the page lock under extreme load, where a process
+> > > could end up waiting essentially forever, as other page lockers stole
+> > > the lock from under it.
+> > >
+> > > It also improved some benchmarks, but it ended up causing huge
+> > > performance regressions on others, simply because fair lock behavior
+> > > doesn't end up giving out the lock as aggressively, causing better
+> > > worst-case latency, but potentially much worse average latencies and
+> > > throughput.
+> > >
+> > > Instead of reverting that change entirely, this introduces a controlled
+> > > amount of unfairness, with a sysctl knob to tune it if somebody needs
+> > > to.  But the default value should hopefully be good for any normal load,
+> > > allowing a few rounds of lock stealing, but enforcing the strict
+> > > ordering before the lock has been stolen too many times.
+> > >
+> > > There is also a hint from Matthieu Baerts that the fair page coloring
+> > > may end up exposing an ABBA deadlock that is hidden by the usual
+> > > optimistic lock stealing, and while the unfairness doesn't fix the
+> > > fundamental issue (and I'm still looking at that), it avoids it in
+> > > practice.
+> > >
+> > > The amount of unfairness can be modified by writing a new value to the
+> > > 'sysctl_page_lock_unfairness' variable (default value of 5, exposed
+> > > through /proc/sys/vm/page_lock_unfairness), but that is hopefully
+> > > something we'd use mainly for debugging rather than being necessary for
+> > > any deep system tuning.
+> > >
+> > > This whole issue has exposed just how critical the page lock can be, and
+> > > how contended it gets under certain locks.  And the main contention
+> > > doesn't really seem to be anything related to IO (which was the origin
+> > > of this lock), but for things like just verifying that the page file
+> > > mapping is stable while faulting in the page into a page table.
+> > >
+> > > Link: https://lore.kernel.org/linux-fsdevel/ed8442fd-6f54-dd84-cd4a-941e8b7ee603@MichaelLarabel.com/
+> > > Link: https://www.phoronix.com/scan.php?page=article&item=linux-50-59&num=1
+> > > Link: https://lore.kernel.org/linux-fsdevel/c560a38d-8313-51fb-b1ec-e904bd8836bc@tessares.net/
+> > > Reported-and-tested-by: Michael Larabel <Michael@michaellarabel.com>
+> > > Tested-by: Matthieu Baerts <matthieu.baerts@tessares.net>
+> > > Cc: Dave Chinner <david@fromorbit.com>
+> > > Cc: Matthew Wilcox <willy@infradead.org>
+> > > Cc: Chris Mason <clm@fb.com>
+> > > Cc: Jan Kara <jack@suse.cz>
+> > > Cc: Amir Goldstein <amir73il@gmail.com>
+> > > Signed-off-by: Linus Torvalds <torvalds@linux-foundation.org>
+> > > CC: <stable@vger.kernel.org> # 5.4
+> > > [ mheyne: fixed contextual conflict in mm/filemap.c due to missing
+> > >   commit c7510ab2cf5c ("mm: abstract out wake_page_match() from
+> > >   wake_page_function()"). Added WQ_FLAG_CUSTOM due to missing commit
+> > >   7f26482a872c ("locking/percpu-rwsem: Remove the embedded rwsem") ]
+> > > Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+> > > ---
+> > >  include/linux/mm.h   |   2 +
+> > >  include/linux/wait.h |   2 +
+> > >  kernel/sysctl.c      |   8 +++
+> > >  mm/filemap.c         | 160 ++++++++++++++++++++++++++++++++++---------
+> > >  4 files changed, 141 insertions(+), 31 deletions(-)
+> > 
+> > This was also backported here:
+> >         https://lore.kernel.org/r/20230821222547.483583-1-saeed.mirzamohammadi@oracle.com
+> > before yours.
+> > 
+> > I took that one, can you verify that it is identical to yours and works
+> > properly as well?
+> 
+> Yes it's identical and fixes the performance regression seen. Therefore,
+> 
+>   Tested-by: Maximilian Heyne <mheyne@amazon.de>
+> 
+> for the other patch.
 
-would you please queue up this upstream patch:
+Thanks, I've added this to the patch now.
 
-	0a6b58c5cd0d ("lockdep: fix static memory detection even more")
-
-to stable kernels 6.1, 6.4 and 6.5 ?
-
-Thanks,
-Helge
-
-
-From 0a6b58c5cd0dfd7961e725212f0fc8dfc5d96195 Mon Sep 17 00:00:00 2001
-From: Helge Deller <deller@gmx.de>
-Date: Tue, 15 Aug 2023 00:31:09 +0200
-Subject: [PATCH] lockdep: fix static memory detection even more
-
-On the parisc architecture, lockdep reports for all static objects which
-are in the __initdata section (e.g. "setup_done" in devtmpfs,
-"kthreadd_done" in init/main.c) this warning:
-
-	INFO: trying to register non-static key.
-
-The warning itself is wrong, because those objects are in the __initdata
-section, but the section itself is on parisc outside of range from
-_stext to _end, which is why the static_obj() functions returns a wrong
-answer.
-
-While fixing this issue, I noticed that the whole existing check can
-be simplified a lot.
-Instead of checking against the _stext and _end symbols (which include
-code areas too) just check for the .data and .bss segments (since we check a
-data object). This can be done with the existing is_kernel_core_data()
-macro.
-
-In addition objects in the __initdata section can be checked with
-init_section_contains(), and is_kernel_rodata() allows keys to be in the
-_ro_after_init section.
-
-This partly reverts and simplifies commit bac59d18c701 ("x86/setup: Fix static
-memory detection").
-
-Link: https://lkml.kernel.org/r/ZNqrLRaOi/3wPAdp@p100
-Fixes: bac59d18c701 ("x86/setup: Fix static memory detection")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: Borislav Petkov <bp@suse.de>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
-Cc: Peter Zijlstra <peterz@infradead.org>
-Cc: "Rafael J. Wysocki" <rafael@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/arch/x86/include/asm/sections.h b/arch/x86/include/asm/sections.h
-index a6e8373a5170..3fa87e5e11ab 100644
---- a/arch/x86/include/asm/sections.h
-+++ b/arch/x86/include/asm/sections.h
-@@ -2,8 +2,6 @@
- #ifndef _ASM_X86_SECTIONS_H
- #define _ASM_X86_SECTIONS_H
- 
--#define arch_is_kernel_initmem_freed arch_is_kernel_initmem_freed
--
- #include <asm-generic/sections.h>
- #include <asm/extable.h>
- 
-@@ -18,20 +16,4 @@ extern char __end_of_kernel_reserve[];
- 
- extern unsigned long _brk_start, _brk_end;
- 
--static inline bool arch_is_kernel_initmem_freed(unsigned long addr)
--{
--	/*
--	 * If _brk_start has not been cleared, brk allocation is incomplete,
--	 * and we can not make assumptions about its use.
--	 */
--	if (_brk_start)
--		return 0;
--
--	/*
--	 * After brk allocation is complete, space between _brk_end and _end
--	 * is available for allocation.
--	 */
--	return addr >= _brk_end && addr < (unsigned long)&_end;
--}
--
- #endif	/* _ASM_X86_SECTIONS_H */
-diff --git a/kernel/locking/lockdep.c b/kernel/locking/lockdep.c
-index 111607d91489..e85b5ad3e206 100644
---- a/kernel/locking/lockdep.c
-+++ b/kernel/locking/lockdep.c
-@@ -819,34 +819,26 @@ static int very_verbose(struct lock_class *class)
-  * Is this the address of a static object:
-  */
- #ifdef __KERNEL__
--/*
-- * Check if an address is part of freed initmem. After initmem is freed,
-- * memory can be allocated from it, and such allocations would then have
-- * addresses within the range [_stext, _end].
-- */
--#ifndef arch_is_kernel_initmem_freed
--static int arch_is_kernel_initmem_freed(unsigned long addr)
--{
--	if (system_state < SYSTEM_FREEING_INITMEM)
--		return 0;
--
--	return init_section_contains((void *)addr, 1);
--}
--#endif
--
- static int static_obj(const void *obj)
- {
--	unsigned long start = (unsigned long) &_stext,
--		      end   = (unsigned long) &_end,
--		      addr  = (unsigned long) obj;
-+	unsigned long addr = (unsigned long) obj;
- 
--	if (arch_is_kernel_initmem_freed(addr))
--		return 0;
-+	if (is_kernel_core_data(addr))
-+		return 1;
-+
-+	/*
-+	 * keys are allowed in the __ro_after_init section.
-+	 */
-+	if (is_kernel_rodata(addr))
-+		return 1;
- 
- 	/*
--	 * static variable?
-+	 * in initdata section and used during bootup only?
-+	 * NOTE: On some platforms the initdata section is
-+	 * outside of the _stext ... _end range.
- 	 */
--	if ((addr >= start) && (addr < end))
-+	if (system_state < SYSTEM_FREEING_INITMEM &&
-+		init_section_contains((void *)addr, 1))
- 		return 1;
- 
- 	/*
+greg k-h
