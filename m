@@ -2,111 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39D8E78DB76
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:45:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2BD5878DB27
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238840AbjH3SjR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:39:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37032 "EHLO
+        id S238660AbjH3Sij (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244508AbjH3NPm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 09:15:42 -0400
+        with ESMTP id S242232AbjH3HcW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 03:32:22 -0400
 Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0803FCD6
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 06:15:38 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1bf55a81eeaso29975755ad.0
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 06:15:38 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD638CCF
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 00:32:19 -0700 (PDT)
+Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1bbb3195013so116505ad.1
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 00:32:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=rivosinc-com.20221208.gappssmtp.com; s=20221208; t=1693401337; x=1694006137; darn=vger.kernel.org;
-        h=to:from:cc:content-transfer-encoding:mime-version:references
-         :in-reply-to:message-id:date:subject:from:to:cc:subject:date
+        d=google.com; s=20221208; t=1693380739; x=1693985539; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=58JmpBMuut0U4rrpw0CXIuY7q7ojOIFJjIbB/139BI0=;
-        b=JCfWGFKyJV9N+qOgd2ElNqvENwjFHCCxaSER4TS5syWPZCqcR1QixR9LJGdGWFej8N
-         ALl90jo0+bvhJy6Wd9vcGLb8K2DZEvU3bA6SdYsP9qvJQAECnASzinZdG/EfZ+8dTsmg
-         Zk39gYK7y28D4YCqCdGJv+z1MktptJIeSYiRCt4qMgh8rMfBHRdZfjAVzSgz5nEUJO95
-         q/nNQ0o4/RTHYIXcYMNeXqc4xG/5LMei10sgVdwRxBmjrmJgqXNgcylbcG9+7HDWgzxz
-         GV6zIiMmC2dc6TVBJT1qNRQfW5/vAahtT8h29F069qPUuClmxSuQ39y8mRBi7BV4/eQF
-         vf1Q==
+        bh=Iz2oCR+RAlpCrkxasky0/cEyFi5EfsfgieHbbEfIWZM=;
+        b=yLxBw6Egb45a0joG/LAHUP2vv3u5FOVU8rsczXV7MAXxXuUA3qqj04LC8A/Kvu9vFm
+         CeNhIbRL2PPycc2BrqO0l+sDJcRCNVZMIVlI13zGbVM9HDXIWmBk4LB8qFWJRuk3ELEB
+         bMlxM9oFaS1QTjfFRgsUdaSES/0CIdzxYHj07K1Bqv/XB0ptcl302L4R7Qe+AqjMCrxE
+         co+TE6zQEvwl7JWlNMr6PQqjEuqjjZnmowoOOcmrKvgbEXvolIUxqkVU2TMx2CD4eTfS
+         +IKFD7+4CfiGBX9OFZgJCSgaVW6inxpXOWh9J/c1RTv+gcGi7Y+XQF44iqf/FLxPdWhB
+         SsOw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693401337; x=1694006137;
-        h=to:from:cc:content-transfer-encoding:mime-version:references
-         :in-reply-to:message-id:date:subject:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1693380739; x=1693985539;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=58JmpBMuut0U4rrpw0CXIuY7q7ojOIFJjIbB/139BI0=;
-        b=Xrd718449o8d1j2qOMwz6+8HuoHdbCfKuAJwF1hCxAfUzs61/1XQDGQd4InXn4fYen
-         ENjb9j6CH9qLfaab/Zo6nGinlq49uZHFJUY1Q936Mp35OfSxiSZRRGqEeDFcuaS1tGkL
-         n5+RdRQUUyS8Qhf+Hprr0hiK52LehTVQJ1ZTEDUCM+cDc0xIBebgrPlQYfSXuvzmaSg5
-         eqh80p4kAZZ2H5u7PAdKukUb/J4rD0urQJrMT6qRh++60qxbP9Tamca9DE1gBSh+Plpt
-         QdyRYoNjSY3GEAai5pRIbBXXgJ93s/q2Jkd9Tt+EUoUSk9MKlww4Xh+3swvHkMB0vkEE
-         4QQg==
-X-Gm-Message-State: AOJu0YxOtf6le4Au81GVVVR+XLOL9PGIfpPSSsR8nTF6/UQ+I0ZWg0ZH
-        OHv2jdml28LmQ29HfCtA3zGU5Q==
-X-Google-Smtp-Source: AGHT+IECpbqH/UrkxB1+1DlNKmoHKvp+r/ynwupNT9KnTwQXvzoUtZlWI5HNytgqOrLW6uFMy/+qpw==
-X-Received: by 2002:a17:902:720a:b0:1c1:f3f8:3949 with SMTP id ba10-20020a170902720a00b001c1f3f83949mr1656776plb.1.1693401337465;
-        Wed, 30 Aug 2023 06:15:37 -0700 (PDT)
-Received: from localhost ([135.180.227.0])
-        by smtp.gmail.com with ESMTPSA id d10-20020a170902654a00b001bc445e249asm11306143pln.124.2023.08.30.06.15.37
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 06:15:37 -0700 (PDT)
-Subject: [PATCH v2 2/2] riscv: correct pt_level name via pgtable_l5/4_enabled
-Date:   Tue, 29 Aug 2023 21:39:20 -0700
-Message-ID: <20230830044129.11481-3-palmer@rivosinc.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230830044129.11481-1-palmer@rivosinc.com>
-References: <20230830044129.11481-1-palmer@rivosinc.com>
+        bh=Iz2oCR+RAlpCrkxasky0/cEyFi5EfsfgieHbbEfIWZM=;
+        b=L2sEAfystGBfi16VEsGts2Oqd2KzXGKg/qdph4yoK32UC3prZzM+oDwOx/DwRFOS7E
+         Tik9U4M8ZAR9S7blhEErGPunxj6quOpqQZUq1o6YkjIuFaI8AhDRjzgINRz+kr2qGutT
+         hHS74srA/DCFbU9P5xAwQq+f/8uJf0FaWGlNxByN3ig5esZBpQRo5bu1RC+HdJxAXKSO
+         TbWaLHTqoZAYN0Bntqw793NdQ3/Qh8cAhMvqzsakHdS9yIRXGlPvY8wt8Q4HP9Ly483u
+         H6yTfpAlNQ7QhC/rx60vukbqdggXXF2mj077GHA/djWAr8Fh1R8TKR8Tumb6tUHSxYMN
+         ANbw==
+X-Gm-Message-State: AOJu0YztkqA1EnwSJV8E1Od/rkyCkURuVWhPHzz2GVcTcFbUguqIclNa
+        Dj2WCcqhqI6a1yVDlzcXqMnXJaRT81+6iYiiI4gyvg==
+X-Google-Smtp-Source: AGHT+IHZDLHCdHYQ9I3MT4mWpxfcxGu0ny/XtY9avjaPygtJms04xIPzZ3tibXlSN07Fmv4Sg13Y6y8nu+j0D9py61Y=
+X-Received: by 2002:a17:902:d2c2:b0:1ae:51f3:a4d with SMTP id
+ n2-20020a170902d2c200b001ae51f30a4dmr468257plc.13.1693380738930; Wed, 30 Aug
+ 2023 00:32:18 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Cc:     Alexandre Ghiti <alexghiti@rivosinc.com>, stable@vger.kernel.org,
-        Palmer Dabbelt <palmer@rivosinc.com>
-From:   Palmer Dabbelt <palmer@rivosinc.com>
-To:         linux-riscv@lists.infradead.org, suagrfillet@gmail.com
-X-Spam-Status: No, score=-0.4 required=5.0 tests=BAYES_00,DATE_IN_PAST_06_12,
-        DKIM_SIGNED,DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+References: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
+ <20230828100313.3051403-1-benchuanggli@gmail.com> <CAG-rBig+koxDf3TuC-0p=tcBY_2WM1sPCvRDtjRmR7AnikrN-A@mail.gmail.com>
+ <CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com>
+ <CAG-rBihBkTeZR6yMSF+5zg-h1U1pxGuN-nv=Y7DXLvxV435hDw@mail.gmail.com> <CACT4zj_84eCYOq56zdqaydaEGqyqBrXDrsTkDRyCntvVF78-0A@mail.gmail.com>
+In-Reply-To: <CACT4zj_84eCYOq56zdqaydaEGqyqBrXDrsTkDRyCntvVF78-0A@mail.gmail.com>
+From:   =?UTF-8?Q?Stanis=C5=82aw_Kardach?= <skardach@google.com>
+Date:   Wed, 30 Aug 2023 09:31:41 +0200
+Message-ID: <CADj_en4MTtqm0VSs2=1K5VB0fpZjga3ttMLE7RoEGQgxvQ8XFA@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+To:     Ben Chuang <benchuanggli@gmail.com>
+Cc:     Sven van Ashbrook <svenva@chromium.org>,
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        adrian.hunter@intel.com, SeanHY.chen@genesyslogic.com.tw,
+        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw,
+        jason.lai@genesyslogic.com.tw, jasonlai.genesyslogic@gmail.com,
+        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
+        reniuschengl@gmail.com, stable@vger.kernel.org,
+        ulf.hansson@linaro.org, victor.shih@genesyslogic.com.tw,
+        victorshihgli@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Song Shuai <suagrfillet@gmail.com>
+On Wed, Aug 30, 2023 at 4:27=E2=80=AFAM Ben Chuang <benchuanggli@gmail.com>=
+ wrote:
+>
+> Hi,
+> On Wed, Aug 30, 2023 at 12:35=E2=80=AFAM Sven van Ashbrook <svenva@chromi=
+um.org> wrote:
+> >
+> > + Rafael for advice on runtime_pm corner cases.
+> >
+> > On Mon, Aug 28, 2023 at 10:48=E2=80=AFPM Ben Chuang <benchuanggli@gmail=
+.com> wrote:
+> > >
+> > >
+> > > My concern is that when runtime_pm is false, gl9763e is disabled LPM
+> > > negotiation, gl9763e can't enter L1.x and s0ix may fail.
+> > > It seems that runtime_pm will always exist and that's ok.
+> > >
+> >
+> > Thank you. I believe we can address your concern.
+> >
+> > - XXX_suspend/XXX_resume (i.e. classic suspend/resume) depends on
+> >   CONFIG_PM_SLEEP. This always selects CONFIG_PM. This always includes
+> >   the runtime_pm framework. So, if XXX_suspend/XXX_resume gets called,
+> >   the runtime_pm framework is always present, but may not be actively
+> >   managing the device.
+> This is ok.
+>
+> >
+> > - "when runtime_pm is false" AFAIK the only way to disable runtime_pm
+> >   when CONFIG_PM is set, is to write "on" to /sys/devices/.../power/con=
+trol.
+> >   See https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-device=
+s-power
+> >   In that case, the runtime_pm framework will activate the device, call=
+ing
+> >   XXX_runtime_resume() if necessary. Are there other ways of disabling =
+it?
+> >
+> > - if /sys/devices/.../power/control is "on", then:
+> >   gl9763e_runtime_resume() always called -> LPM always disabled
+> >   gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled
+> >   In between "classic" XXX_suspend and XXX_resume, LPM will be enabled,
+> >   so the device can enter L1.x and S0ix.
+> In this cas, after gl9763e_resume(), it is LPM disabled.
+> Is there no chance for gl9763e to enter L1.x again when the system is idl=
+e?
+With runtime PM disabled via sysfs, the short answer is not since
+https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
+id=3Df9e5b33934cec24b8c024add5c5d65d2f93ade05.
 
-The pt_level uses CONFIG_PGTABLE_LEVELS to display page table names.
-But if page mode is downgraded from kernel cmdline or restricted by
-the hardware in 64BIT, it will give a wrong name.
+The longer answer is:
+1. System boots up with LPM flags in PCI config space in default value
+(might be LPM enabled).
+2.1. If runtime PM is disabled before first runtime suspend -
+registers will be left in their default state.
+2.2. If runtime PM is disabled after first runtime suspend, the device
+will be woken up and the gl9763e runtime resume callback will disable
+LPM.
+>
+> >
+> > And the LPM negotiation flags look correct.
+> > Does that address your concerns?
+>
+> Best regards,
+> Ben Chuang
 
-Like, using no4lvl for sv39, ptdump named the 1G-mapping as "PUD"
-that should be "PGD":
-
-0xffffffd840000000-0xffffffd900000000    0x00000000c0000000         3G PUD     D A G . . W R V
-
-So select "P4D/PUD" or "PGD" via pgtable_l5/4_enabled to correct it.
-
-Fixes: e8a62cc26ddf ("riscv: Implement sv48 support")
-Reviewed-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Signed-off-by: Song Shuai <suagrfillet@gmail.com>
-Link: https://lore.kernel.org/r/20230712115740.943324-1-suagrfillet@gmail.com
-Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
----
- arch/riscv/mm/ptdump.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/riscv/mm/ptdump.c b/arch/riscv/mm/ptdump.c
-index 20a9f991a6d7..e9090b38f811 100644
---- a/arch/riscv/mm/ptdump.c
-+++ b/arch/riscv/mm/ptdump.c
-@@ -384,6 +384,9 @@ static int __init ptdump_init(void)
- 
- 	kernel_ptd_info.base_addr = KERN_VIRT_START;
- 
-+	pg_level[1].name = pgtable_l5_enabled ? "P4D" : "PGD";
-+	pg_level[2].name = pgtable_l4_enabled ? "PUD" : "PGD";
-+
- 	for (i = 0; i < ARRAY_SIZE(pg_level); i++)
- 		for (j = 0; j < ARRAY_SIZE(pte_bits); j++)
- 			pg_level[i].mask |= pte_bits[j].mask;
--- 
-2.41.0
-
+--
+Best Regards,
+Stanis=C5=82aw Kardach
