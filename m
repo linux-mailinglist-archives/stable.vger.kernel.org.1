@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 64F0778DB33
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0C6FF78DB3C
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238665AbjH3Sio (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59296 "EHLO
+        id S232193AbjH3Sis (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245568AbjH3Pgi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:36:38 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE42113
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:36:35 -0700 (PDT)
+        with ESMTP id S245584AbjH3PhY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:37:24 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A60B113
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:37:21 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 725D0606DC
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 15:36:35 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7FE77C433C8;
-        Wed, 30 Aug 2023 15:36:34 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 2B51DB81F55
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 15:37:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A32BC433C8;
+        Wed, 30 Aug 2023 15:37:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693409794;
-        bh=knotnrb5e2HHS5qIc95f+KMFbNiAmmqg8tk/F3Kettc=;
+        s=korg; t=1693409838;
+        bh=GuUmsXe0pQe4w8xoe+a6RZwgXIKs44+GiAdQPf1WJqk=;
         h=Subject:To:Cc:From:Date:From;
-        b=zh0XgWNKzzNaNUQaNdyZPKdpObV256odPB50wdXXEeBscly/UCgnmTCpCnPmBrF9g
-         HA1+cs9RdU+KnhYAnUFsHTkQuBAbsfWhp2UfUvkZTUMRT9uqK3q+4L6cdFkWBWZCNS
-         b68kHqXmsR7D2RpsBokZSWv7I33A8+5/u8rmruvA=
-Subject: FAILED: patch "[PATCH] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for RTL8852C" failed to apply to 6.5-stable tree
-To:     max.chou@realtek.com, hildawu@realtek.com,
-        juerg.haefliger@canonical.com, luiz.von.dentz@intel.com
+        b=A2id2iU08Mmy8s05vildOTKyLLkJwlBySy9azrlDv2lZfQMWOq0mYWzjia7KpE9I9
+         TC2v4KST1avqNQ9//mTuGsSiFSLawVO7Fvs8kVtY5TRuvX58auEHsOYVNWuOm8Xee8
+         TfMMT8TleVjUEf7I9+TCyh0/SwXob3eqCKnx9fGE=
+Subject: FAILED: patch "[PATCH] Bluetooth: HCI: Introduce HCI_QUIRK_BROKEN_LE_CODED" failed to apply to 6.5-stable tree
+To:     luiz.von.dentz@intel.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Wed, 30 Aug 2023 17:36:22 +0200
-Message-ID: <2023083021-unease-catfish-92ad@gregkh>
+Date:   Wed, 30 Aug 2023 17:37:02 +0200
+Message-ID: <2023083002-resilient-washed-2807@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,10 +58,10 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x bd003fb338afee97c76f13c3e9144a7e4ad37179
+git cherry-pick -x 253f3399f4c09ce6f4e67350f839be0361b4d5ff
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023083021-unease-catfish-92ad@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023083002-resilient-washed-2807@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
@@ -73,273 +73,96 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From bd003fb338afee97c76f13c3e9144a7e4ad37179 Mon Sep 17 00:00:00 2001
-From: Max Chou <max.chou@realtek.com>
-Date: Mon, 7 Aug 2023 19:42:59 +0800
-Subject: [PATCH] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for RTL8852C
+From 253f3399f4c09ce6f4e67350f839be0361b4d5ff Mon Sep 17 00:00:00 2001
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Date: Tue, 22 Aug 2023 12:02:03 -0700
+Subject: [PATCH] Bluetooth: HCI: Introduce HCI_QUIRK_BROKEN_LE_CODED
 
-In this commit, prefer to load FW v2 if available. Fallback to FW v1
-otherwise. This behavior is only for RTL8852C.
+This introduces HCI_QUIRK_BROKEN_LE_CODED which is used to indicate
+that LE Coded PHY shall not be used, it is then set for some Intel
+models that claim to support it but when used causes many problems.
 
-Fixes: 9a24ce5e29b1 ("Bluetooth: btrtl: Firmware format v2 support")
-Cc: stable@vger.kernel.org
-Suggested-by: Juerg Haefliger <juerg.haefliger@canonical.com>
-Tested-by: Hilda Wu <hildawu@realtek.com>
-Signed-off-by: Max Chou <max.chou@realtek.com>
+Cc: stable@vger.kernel.org # 6.4.y+
+Link: https://github.com/bluez/bluez/issues/577
+Link: https://github.com/bluez/bluez/issues/582
+Link: https://lore.kernel.org/linux-bluetooth/CABBYNZKco-v7wkjHHexxQbgwwSz-S=GZ=dZKbRE1qxT1h4fFbQ@mail.gmail.com/T/#
+Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
 Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index ddae6524106d..84c2c2e1122f 100644
---- a/drivers/bluetooth/btrtl.c
-+++ b/drivers/bluetooth/btrtl.c
-@@ -104,7 +104,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8723A, 0xb, 0x6, HCI_USB),
- 	  .config_needed = false,
- 	  .has_rom_version = false,
--	  .fw_name = "rtl_bt/rtl8723a_fw.bin",
-+	  .fw_name = "rtl_bt/rtl8723a_fw",
- 	  .cfg_name = NULL,
- 	  .hw_info = "rtl8723au" },
+diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
+index 9b239ce96fa4..2462796a512a 100644
+--- a/drivers/bluetooth/btintel.c
++++ b/drivers/bluetooth/btintel.c
+@@ -2787,6 +2787,9 @@ static int btintel_setup_combined(struct hci_dev *hdev)
+ 			set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED,
+ 				&hdev->quirks);
  
-@@ -112,7 +112,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_UART),
- 	  .config_needed = true,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8723bs_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8723bs_fw",
- 	  .cfg_name = "rtl_bt/rtl8723bs_config",
- 	  .hw_info  = "rtl8723bs" },
- 
-@@ -120,7 +120,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xb, 0x6, HCI_USB),
- 	  .config_needed = false,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8723b_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8723b_fw",
- 	  .cfg_name = "rtl_bt/rtl8723b_config",
- 	  .hw_info  = "rtl8723bu" },
- 
-@@ -132,7 +132,7 @@ static const struct id_table ic_id_table[] = {
- 	  .hci_bus = HCI_UART,
- 	  .config_needed = true,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8723cs_cg_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8723cs_cg_fw",
- 	  .cfg_name = "rtl_bt/rtl8723cs_cg_config",
- 	  .hw_info  = "rtl8723cs-cg" },
- 
-@@ -144,7 +144,7 @@ static const struct id_table ic_id_table[] = {
- 	  .hci_bus = HCI_UART,
- 	  .config_needed = true,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8723cs_vf_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8723cs_vf_fw",
- 	  .cfg_name = "rtl_bt/rtl8723cs_vf_config",
- 	  .hw_info  = "rtl8723cs-vf" },
- 
-@@ -156,7 +156,7 @@ static const struct id_table ic_id_table[] = {
- 	  .hci_bus = HCI_UART,
- 	  .config_needed = true,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8723cs_xx_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8723cs_xx_fw",
- 	  .cfg_name = "rtl_bt/rtl8723cs_xx_config",
- 	  .hw_info  = "rtl8723cs" },
- 
-@@ -164,7 +164,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_USB),
- 	  .config_needed = true,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8723d_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8723d_fw",
- 	  .cfg_name = "rtl_bt/rtl8723d_config",
- 	  .hw_info  = "rtl8723du" },
- 
-@@ -172,7 +172,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8723B, 0xd, 0x8, HCI_UART),
- 	  .config_needed = true,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8723ds_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8723ds_fw",
- 	  .cfg_name = "rtl_bt/rtl8723ds_config",
- 	  .hw_info  = "rtl8723ds" },
- 
-@@ -180,7 +180,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8821A, 0xa, 0x6, HCI_USB),
- 	  .config_needed = false,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8821a_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8821a_fw",
- 	  .cfg_name = "rtl_bt/rtl8821a_config",
- 	  .hw_info  = "rtl8821au" },
- 
-@@ -189,7 +189,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = false,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8821c_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8821c_fw",
- 	  .cfg_name = "rtl_bt/rtl8821c_config",
- 	  .hw_info  = "rtl8821cu" },
- 
-@@ -198,7 +198,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = true,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8821cs_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8821cs_fw",
- 	  .cfg_name = "rtl_bt/rtl8821cs_config",
- 	  .hw_info  = "rtl8821cs" },
- 
-@@ -206,7 +206,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8761A, 0xa, 0x6, HCI_USB),
- 	  .config_needed = false,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8761a_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8761a_fw",
- 	  .cfg_name = "rtl_bt/rtl8761a_config",
- 	  .hw_info  = "rtl8761au" },
- 
-@@ -215,7 +215,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = false,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8761b_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8761b_fw",
- 	  .cfg_name = "rtl_bt/rtl8761b_config",
- 	  .hw_info  = "rtl8761btv" },
- 
-@@ -223,7 +223,7 @@ static const struct id_table ic_id_table[] = {
- 	{ IC_INFO(RTL_ROM_LMP_8761A, 0xb, 0xa, HCI_USB),
- 	  .config_needed = false,
- 	  .has_rom_version = true,
--	  .fw_name  = "rtl_bt/rtl8761bu_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8761bu_fw",
- 	  .cfg_name = "rtl_bt/rtl8761bu_config",
- 	  .hw_info  = "rtl8761bu" },
- 
-@@ -232,7 +232,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = true,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8822cs_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8822cs_fw",
- 	  .cfg_name = "rtl_bt/rtl8822cs_config",
- 	  .hw_info  = "rtl8822cs" },
- 
-@@ -241,7 +241,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = true,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8822cs_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8822cs_fw",
- 	  .cfg_name = "rtl_bt/rtl8822cs_config",
- 	  .hw_info  = "rtl8822cs" },
- 
-@@ -250,7 +250,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = false,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8822cu_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8822cu_fw",
- 	  .cfg_name = "rtl_bt/rtl8822cu_config",
- 	  .hw_info  = "rtl8822cu" },
- 
-@@ -259,7 +259,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = true,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8822b_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8822b_fw",
- 	  .cfg_name = "rtl_bt/rtl8822b_config",
- 	  .hw_info  = "rtl8822bu" },
- 
-@@ -268,7 +268,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = false,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8852au_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8852au_fw",
- 	  .cfg_name = "rtl_bt/rtl8852au_config",
- 	  .hw_info  = "rtl8852au" },
- 
-@@ -277,7 +277,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = true,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8852bs_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8852bs_fw",
- 	  .cfg_name = "rtl_bt/rtl8852bs_config",
- 	  .hw_info  = "rtl8852bs" },
- 
-@@ -286,7 +286,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = false,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8852bu_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8852bu_fw",
- 	  .cfg_name = "rtl_bt/rtl8852bu_config",
- 	  .hw_info  = "rtl8852bu" },
- 
-@@ -295,7 +295,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = false,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = true,
--	  .fw_name  = "rtl_bt/rtl8852cu_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8852cu_fw",
- 	  .cfg_name = "rtl_bt/rtl8852cu_config",
- 	  .hw_info  = "rtl8852cu" },
- 
-@@ -304,7 +304,7 @@ static const struct id_table ic_id_table[] = {
- 	  .config_needed = false,
- 	  .has_rom_version = true,
- 	  .has_msft_ext = false,
--	  .fw_name  = "rtl_bt/rtl8851bu_fw.bin",
-+	  .fw_name  = "rtl_bt/rtl8851bu_fw",
- 	  .cfg_name = "rtl_bt/rtl8851bu_config",
- 	  .hw_info  = "rtl8851bu" },
- 	};
-@@ -1045,6 +1045,7 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 	struct sk_buff *skb;
- 	struct hci_rp_read_local_version *resp;
- 	struct hci_command_hdr *cmd;
-+	char fw_name[40];
- 	char cfg_name[40];
- 	u16 hci_rev, lmp_subver;
- 	u8 hci_ver, lmp_ver, chip_type = 0;
-@@ -1154,8 +1155,26 @@ struct btrtl_device_info *btrtl_initialize(struct hci_dev *hdev,
- 			goto err_free;
- 	}
- 
--	btrtl_dev->fw_len = rtl_load_file(hdev, btrtl_dev->ic_info->fw_name,
--					  &btrtl_dev->fw_data);
-+	if (!btrtl_dev->ic_info->fw_name) {
-+		ret = -ENOMEM;
-+		goto err_free;
-+	}
++			/* These variants don't seem to support LE Coded PHY */
++			set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
 +
-+	btrtl_dev->fw_len = -EIO;
-+	if (lmp_subver == RTL_ROM_LMP_8852A && hci_rev == 0x000c) {
-+		snprintf(fw_name, sizeof(fw_name), "%s_v2.bin",
-+				btrtl_dev->ic_info->fw_name);
-+		btrtl_dev->fw_len = rtl_load_file(hdev, fw_name,
-+				&btrtl_dev->fw_data);
-+	}
+ 			/* Setup MSFT Extension support */
+ 			btintel_set_msft_opcode(hdev, ver.hw_variant);
+ 
+@@ -2858,6 +2861,9 @@ static int btintel_setup_combined(struct hci_dev *hdev)
+ 		 */
+ 		set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED, &hdev->quirks);
+ 
++		/* These variants don't seem to support LE Coded PHY */
++		set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
 +
-+	if (btrtl_dev->fw_len < 0) {
-+		snprintf(fw_name, sizeof(fw_name), "%s.bin",
-+				btrtl_dev->ic_info->fw_name);
-+		btrtl_dev->fw_len = rtl_load_file(hdev, fw_name,
-+				&btrtl_dev->fw_data);
-+	}
+ 		/* Set Valid LE States quirk */
+ 		set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
+ 
+diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
+index c58425d4c592..87d92accc26e 100644
+--- a/include/net/bluetooth/hci.h
++++ b/include/net/bluetooth/hci.h
+@@ -319,6 +319,16 @@ enum {
+ 	 * This quirk must be set before hci_register_dev is called.
+ 	 */
+ 	HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER,
 +
- 	if (btrtl_dev->fw_len < 0) {
- 		rtl_dev_err(hdev, "firmware file %s not found",
- 			    btrtl_dev->ic_info->fw_name);
-@@ -1491,4 +1510,5 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bs_config.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
-+MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw_v2.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
++	/*
++	 * When this quirk is set, LE Coded PHY shall not be used. This is
++	 * required for some Intel controllers which erroneously claim to
++	 * support it but it causes problems with extended scanning.
++	 *
++	 * This quirk can be set before hci_register_dev is called or
++	 * during the hdev->setup vendor callback.
++	 */
++	HCI_QUIRK_BROKEN_LE_CODED,
+ };
+ 
+ /* HCI device flags */
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 6e2988b11f99..e6359f7346f1 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -1817,7 +1817,9 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
+ #define scan_2m(dev) (((dev)->le_tx_def_phys & HCI_LE_SET_PHY_2M) || \
+ 		      ((dev)->le_rx_def_phys & HCI_LE_SET_PHY_2M))
+ 
+-#define le_coded_capable(dev) (((dev)->le_features[1] & HCI_LE_PHY_CODED))
++#define le_coded_capable(dev) (((dev)->le_features[1] & HCI_LE_PHY_CODED) && \
++			       !test_bit(HCI_QUIRK_BROKEN_LE_CODED, \
++					 &(dev)->quirks))
+ 
+ #define scan_coded(dev) (((dev)->le_tx_def_phys & HCI_LE_SET_PHY_CODED) || \
+ 			 ((dev)->le_rx_def_phys & HCI_LE_SET_PHY_CODED))
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 0cb780817198..9b93653c6197 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -4668,7 +4668,10 @@ static const struct {
+ 			 "advertised, but not supported."),
+ 	HCI_QUIRK_BROKEN(SET_RPA_TIMEOUT,
+ 			 "HCI LE Set Random Private Address Timeout command is "
+-			 "advertised, but not supported.")
++			 "advertised, but not supported."),
++	HCI_QUIRK_BROKEN(LE_CODED,
++			 "HCI LE Coded PHY feature bit is set, "
++			 "but its usage is not supported.")
+ };
+ 
+ /* This function handles hdev setup stage:
 
