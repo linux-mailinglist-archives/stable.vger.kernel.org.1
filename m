@@ -2,125 +2,180 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 81F1B78DAF6
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:39:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16BCB78E1AC
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 23:54:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236279AbjH3SiK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32852 "EHLO
+        id S243085AbjH3Vyz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 17:54:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51774 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344201AbjH3S0y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 14:26:54 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43CF31A1
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 11:26:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1693419965;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=536hEdeJYk89mYwQhbVybpmlRd6HjhERfF4XbjkRN4c=;
-        b=ebEIlwjeZrnZBTFpL5Y1+z3MIlIWw9FlunwVbmsak9Idh73zwsMAWmwZZgdpayvbbBc6TE
-        Kf/Fqq8+gNg0DogIw5eYuUr6RJVX7Rb3TcAwT+4T0rsi3i1zlIZat8vqMuOoq03aldrABs
-        SH7YPr/arKbBsx2GO7ErpDh7SYZgkUA=
-Received: from mail-pj1-f70.google.com (mail-pj1-f70.google.com
- [209.85.216.70]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-342-DMqXXmOoOuyum_nwSGZpEw-1; Wed, 30 Aug 2023 14:26:01 -0400
-X-MC-Unique: DMqXXmOoOuyum_nwSGZpEw-1
-Received: by mail-pj1-f70.google.com with SMTP id 98e67ed59e1d1-271cf74f2a2so38938a91.2
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 11:26:01 -0700 (PDT)
+        with ESMTP id S243147AbjH3Vyw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 17:54:52 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3694CB5;
+        Wed, 30 Aug 2023 14:54:28 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-52349d93c8aso29575a12.1;
+        Wed, 30 Aug 2023 14:54:28 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693432387; x=1694037187; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=UiovL3shtkWUEkDqidG4l7jy83YUFtef6AXPkqmEUnM=;
+        b=ldDL/as2+9M3gqor2d+Ou1X2XJqvzHJZP2GLwmB3260x10MQ0nvuI61Rf5UUFUN3Xx
+         yrQOvCibRbg4QbEItwv+QHn2yGrh47aOWC6WlshZ+9/ddq5vGUAbnXbRu2PKhYqq1Btn
+         q3gZfAITrEaoo6m4xwoQ+E01+2xu/gBW3LbY8i7GDh+x0KCYd5ULF3/3CuIqNzKlwd/r
+         xNoBZtX7Ss7mlK0gbdCe449dF0oJiCKOC6rNGV0IafDLC8NZ22Wfy+R/kvNmWZMa/YOK
+         YZrNbpQ7UFD0l0fXhldJxM54i1UUexMYOaNBYeyl6twd+eRzJQsVFNIQSj8kauuClTV0
+         ajrw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693419959; x=1694024759;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1693432387; x=1694037187;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=536hEdeJYk89mYwQhbVybpmlRd6HjhERfF4XbjkRN4c=;
-        b=ef2BXqi13W3RePWB5e7QrZWj3/jMFtLCfVQiWmxHhx3XYgr4FEJDKrr1/8/bmk9lvP
-         ObUCPhYAT/rJKHV91e4yzo595df9Vuq63rzFWjMNrTHVF4DWsH18Ew77718ul4+AsjFi
-         B9OkTcfCN5LS1KNrLU2WLrK2m74qgoY5fJJo36AZohtxmAlyi639+lPHFRI7HaXtTl1z
-         Ji5+FjkMsbAYr9RvsG2zRTkYSMQpjKjkmQHjTz+uQ+XoDbpXtmUK1thEek9GuA7Z0j7g
-         xIDbKNN/nZtpNqsdrDLYi3GyG8CYQKWiB1MgcUBUWQnJDivqm6jayru1DTNlBgVBqj9O
-         BCNw==
-X-Gm-Message-State: AOJu0YyKIIs/J7xU671HgWzAZnH/adX0cuK0LD51bTXg7HRugO/IOPmW
-        rH4rgIO42Nw4xEGt44UHEywr/gIMmf2xbpgHCaAjmcK5BocpzVRSRWEhViX+NLmEuSYUxi+Hs4E
-        ZK7dVHjqKSFA9F5kNv9ZJbnh7gkiUPdq0FMpdB82OXF6WWmW9DI3PFR+XSXLgdL8S8HSFjLOQ67
-        Ht
-X-Received: by 2002:a17:902:ea0f:b0:1b8:a88c:4dc6 with SMTP id s15-20020a170902ea0f00b001b8a88c4dc6mr3373232plg.45.1693419958964;
-        Wed, 30 Aug 2023 11:25:58 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IFJpuzkMKCcUxXuBwzDEAWKKYDzm/197FeA+Z+f1IJBUSeHVr2tKRuQSsaHopYrWCL9mnbIjA==
-X-Received: by 2002:a17:902:ea0f:b0:1b8:a88c:4dc6 with SMTP id s15-20020a170902ea0f00b001b8a88c4dc6mr3373207plg.45.1693419958613;
-        Wed, 30 Aug 2023 11:25:58 -0700 (PDT)
-Received: from smtpclient.apple ([2600:1011:b15c:d1ac:a90e:1171:fe6:7d04])
-        by smtp.gmail.com with ESMTPSA id jj14-20020a170903048e00b001bbaf09ce15sm11357005plb.152.2023.08.30.11.25.57
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 30 Aug 2023 11:25:58 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
+        bh=UiovL3shtkWUEkDqidG4l7jy83YUFtef6AXPkqmEUnM=;
+        b=YBkOVdfEl+g80n4iBGjq6GBFnWeU3ZV1IayV8FFGmnA8viLRRcn1fMKmQZV/1qawxL
+         b+iE5OGPivx2jOb4aKt18fjrxv3/Wt3IA47PkROf2lWQSvsMm3NKGZL1QojACm7b7j/B
+         T7JACEKLJW82dlMFaHERrfmddmNCUCKA4iPc52jQxyYj9czKssJ02tiQjnezzdjW4ExV
+         QKoPEySuojp5RVbGAZomIGoWaGszrD6gJSJyh0oxXU53h4BXOVO1KFSED25u2ZlUoQ8E
+         8sn5ACMQt77L9UTPisCclDAwIHJDRDiE6p3Alhfow6Zzmy7bCF0zMurf8MxW3SVdbzW8
+         bs9A==
+X-Gm-Message-State: AOJu0Yztt74D6V/zKpV1dNcp6GDoWZoFPi1lp2Ru/t0HFQyGQhy542Hh
+        S3H+TRF44JWirwKuCuofRAo5Glocdk0ZWx+kmCLqI+fPPPY=
+X-Google-Smtp-Source: AGHT+IGy/AV2rmGPQ0TmC4v5zG95IX0+cAwadZku+J53oMPTpAKpv/G2XuYFL8RiHFA5uTbjfwFeSUROn8JL+r9+TG0=
+X-Received: by 2002:a05:6402:3554:b0:523:f69:9a0d with SMTP id
+ f20-20020a056402355400b005230f699a0dmr2328724edd.4.1693421620864; Wed, 30 Aug
+ 2023 11:53:40 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230724012419.2317649-1-sashal@kernel.org> <20230724012419.2317649-13-sashal@kernel.org>
+In-Reply-To: <20230724012419.2317649-13-sashal@kernel.org>
+From:   Chia-I Wu <olvaffe@gmail.com>
+Date:   Wed, 30 Aug 2023 11:53:29 -0700
+Message-ID: <CAPaKu7RTgAMBLHbwtp4zgiBSDrTFtAj07k5qMzkuLQy2Zr+sZA@mail.gmail.com>
+Subject: Re: [PATCH AUTOSEL 5.10 13/22] drm/amdgpu: install stub fence into
+ potential unused fence pointers
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        airlied@linux.ie, gregkh@linuxfoundation.org,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Lang Yu <Lang.Yu@amd.com>,
+        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-From:   Jerry Snitselaar <jsnitsel@redhat.com>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
-Date:   Wed, 30 Aug 2023 11:25:45 -0700
-Message-Id: <446E94FC-C47A-453F-9A0E-CBE5049582ED@redhat.com>
-References: <zlywbvfgkkygcpvmj5rd4thuhbdacit2meg2fj6eyua5qpwyoc@beyiattrr7o6>
-Cc:     linux-integrity@vger.kernel.org, stable@vger.kernel.org,
-        Todd Brandt <todd.e.brandt@intel.com>,
-        Peter Huewe <peterhuewe@gmx.de>,
-        Jason Gunthorpe <jgg@ziepe.ca>,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <zlywbvfgkkygcpvmj5rd4thuhbdacit2meg2fj6eyua5qpwyoc@beyiattrr7o6>
-To:     Jarkko Sakkinen <jarkko@kernel.org>
-X-Mailer: iPhone Mail (20G75)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Jul 23, 2023 at 6:24=E2=80=AFPM Sasha Levin <sashal@kernel.org> wro=
+te:
+>
+> From: Lang Yu <Lang.Yu@amd.com>
+>
+> [ Upstream commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 ]
+>
+> When using cpu to update page tables, vm update fences are unused.
+> Install stub fence into these fence pointers instead of NULL
+> to avoid NULL dereference when calling dma_fence_wait() on them.
+>
+> Suggested-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+> Reviewed-by: Christian K=C3=B6nig <christian.koenig@amd.com>
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
+>  1 file changed, 4 insertions(+), 2 deletions(-)
 
+We start getting this warning spew on chromeos, likely from
+dma_fence_is_later because the stub fence is on a different timeline:
 
-> On Aug 29, 2023, at 12:03 PM, Jerry Snitselaar <jsnitsel@redhat.com> wrote=
-:
->=20
-> =EF=BB=BFOn Wed, Aug 23, 2023 at 02:15:10AM +0300, Jarkko Sakkinen wrote:
->> The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for=
-
->> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the=
-
->> reported systems the TPM doesn't reply at bootup and returns back the
->> command code. This makes the TPM fail probe.
->>=20
->> Since only Microsoft Pluton is the only known combination of AMD CPU and
->> fTPM from other vendor, disable hwrng otherwise. In order to make sysadmi=
-n
->> aware of this, print also info message to the klog.
->>=20
->> Cc: stable@vger.kernel.org
->> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
->> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
->> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
->> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
->> ---
->> v3:
->> * Forgot to amend config flags.
->> v2:
->> * CONFIG_X86
->> * Removed "Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>"
->> * Removed "Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>"
->> ---
->> drivers/char/tpm/tpm_crb.c | 33 ++++++++-------------------------
->> 1 file changed, 8 insertions(+), 25 deletions(-)
->>=20
->=20
-> Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-
-
-It looks like the Fedora folks are getting more reports of the issue.=
-
+[  273.334767] WARNING: CPU: 1 PID: 13383 at
+include/linux/dma-fence.h:478 amdgpu_sync_keep_later+0x95/0xbd
+[  273.334769] Modules linked in: snd_seq_dummy snd_seq snd_seq_device
+bridge stp llc tun vhost_vsock vhost vhost_iotlb
+vmw_vsock_virtio_transport_common vsock 8021q veth lzo_rle
+lzo_compress zram uinput snd_acp_sof_mach snd_acp_mach snd_soc_dmic
+xt_cgroup rfcomm xt_MASQUERADE cmac algif_hash algif_skcipher af_alg
+btusb btrtl btintel btbcm rtw89_8852ae rtw89_pci rtw89_8852a
+rtw89_core snd_sof_amd_renoir snd_sof_xtensa_dsp snd_sof_amd_acp
+snd_acp_pci snd_acp_config snd_soc_acpi snd_pci_acp3x snd_sof_pci
+snd_sof snd_hda_codec_hdmi snd_sof_utils snd_hda_intel mac80211
+snd_intel_dspcfg snd_hda_codec cros_ec_typec snd_hwdep roles
+snd_hda_core typec snd_soc_rt5682s snd_soc_rt1019 snd_soc_rl6231
+ip6table_nat i2c_piix4 fuse bluetooth ecdh_generic ecc cfg80211
+iio_trig_sysfs cros_ec_lid_angle cros_ec_sensors cros_ec_sensors_core
+industrialio_triggered_buffer kfifo_buf industrialio cros_ec_sensorhub
+r8153_ecm cdc_ether usbnet r8152 mii uvcvideo videobuf2_vmalloc
+videobuf2_memops videobuf2_v4l2
+[  273.334795]  videobuf2_common joydev
+[  273.334799] CPU: 1 PID: 13383 Comm: chrome:cs0 Tainted: G        W
+       5.10.192-23384-g3d3f0f0c5e4f #1
+fe1e7e3b7510aa7b8e01701478119255f825a36f
+[  273.334800] Hardware name: Google Dewatt/Dewatt, BIOS
+Google_Dewatt.14500.347.0 03/30/2023
+[  273.334802] RIP: 0010:amdgpu_sync_keep_later+0x95/0xbd
+[  273.334804] Code: 00 00 b8 01 00 00 00 f0 0f c1 43 38 85 c0 74 26
+8d 48 01 09 c1 78 24 49 89 1e 5b 41 5e 5d c3 cc cc cc cc e8 4a 94 ac
+ff eb ce <0f> 0b 49 8b 06 48 85 c0 75 af eb c2 be 02 00 00 00 48 8d 7b
+38 e8
+[  273.334805] RSP: 0018:ffffb222c1817b50 EFLAGS: 00010293
+[  273.334807] RAX: ffffffff89bfc838 RBX: ffff8aa425e9ed00 RCX: 00000000000=
+00000
+[  273.334808] RDX: ffff8aa426156a98 RSI: ffff8aa425e9ed00 RDI: ffff8aa4325=
+18918
+[  273.334810] RBP: ffffb222c1817b60 R08: ffff8aa43ca6c0a0 R09: ffff8aa33af=
+3c9a0
+[  273.334811] R10: fffffcf8c5986600 R11: ffffffff87a00fce R12: 00000000000=
+00098
+[  273.334812] R13: 00000000005e2a00 R14: ffff8aa432518918 R15: 00000000000=
+00000
+[  273.334814] FS:  00007e70f8694640(0000) GS:ffff8aa4e6080000(0000)
+knlGS:0000000000000000
+[  273.334816] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+[  273.334817] CR2: 00007e70ea049020 CR3: 0000000178e6e000 CR4: 00000000007=
+50ee0
+[  273.334818] PKRU: 55555554
+[  273.334819] Call Trace:
+[  273.334822]  ? __warn+0xa3/0x131
+[  273.334824]  ? amdgpu_sync_keep_later+0x95/0xbd
+[  273.334826]  ? report_bug+0x97/0xfa
+[  273.334829]  ? handle_bug+0x41/0x66
+[  273.334832]  ? exc_invalid_op+0x1b/0x72
+[  273.334835]  ? asm_exc_invalid_op+0x12/0x20
+[  273.334837]  ? native_sched_clock+0x9a/0x9a
+[  273.334840]  ? amdgpu_sync_keep_later+0x95/0xbd
+[  273.334843]  amdgpu_sync_vm_fence+0x23/0x39
+[  273.334846]  amdgpu_cs_ioctl+0x1782/0x1e56
+[  273.334851]  ? amdgpu_cs_report_moved_bytes+0x5f/0x5f
+[  273.334854]  drm_ioctl_kernel+0xdf/0x150
+[  273.334858]  drm_ioctl+0x1f5/0x3d2
+[  273.334928]  ? amdgpu_cs_report_moved_bytes+0x5f/0x5f
+[  273.334932]  amdgpu_drm_ioctl+0x49/0x81
+[  273.334935]  __x64_sys_ioctl+0x7d/0xc8
+[  273.334937]  do_syscall_64+0x42/0x54
+[  273.334939]  entry_SYSCALL_64_after_hwframe+0x4a/0xaf
+[  273.334941] RIP: 0033:0x7e70ff797649
+[  273.334943] Code: 04 25 28 00 00 00 48 89 45 c8 31 c0 48 8d 45 10
+c7 45 b0 10 00 00 00 48 89 45 b8 48 8d 45 d0 48 89 45 c0 b8 10 00 00
+00 0f 05 <41> 89 c0 3d 00 f0 ff ff 77 1d 48 8b 45 c8 64 48 2b 04 25 28
+00 00
+[  273.334945] RSP: 002b:00007e70f8693170 EFLAGS: 00000246 ORIG_RAX:
+0000000000000010
+[  273.334947] RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007e70ff7=
+97649
+[  273.334948] RDX: 00007e70f8693248 RSI: 00000000c0186444 RDI: 00000000000=
+00013
+[  273.334950] RBP: 00007e70f86931c0 R08: 00007e70f8693350 R09: 00007e70f86=
+93340
+[  273.334951] R10: 000000000000000a R11: 0000000000000246 R12: 00000000c01=
+86444
+[  273.334952] R13: 00007e70f8693380 R14: 00007e70f8693248 R15: 00000000000=
+00013
+[  273.334954] ---[ end trace fc066a0fcea39e8c ]---
