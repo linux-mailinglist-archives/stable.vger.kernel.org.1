@@ -2,160 +2,77 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA91578DB4F
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 70CA778DB69
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233075AbjH3Siz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55940 "EHLO
+        id S238776AbjH3SjK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:39:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245471AbjH3PQf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:16:35 -0400
-Received: from mail-wm1-x32c.google.com (mail-wm1-x32c.google.com [IPv6:2a00:1450:4864:20::32c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 408C01AE
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:16:32 -0700 (PDT)
-Received: by mail-wm1-x32c.google.com with SMTP id 5b1f17b1804b1-400a087b0bfso53691635e9.2
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:16:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693408591; x=1694013391; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=2IkRunNGFvIUJfzmN6ZAOdQYKxHXQcRYO09oUxFh850=;
-        b=c3PT7U7Lj/4oiPhQ21wVDQxLw+K5NmnFvzFWXxuVoicCp/kIimH1f54x7DPy3qq64Y
-         oTJF5m56wLrVPrM6PWqesduc+aSrFEgWRaARLjbxxi3EAR1kl2fUkPf48Qmwvb4uepQo
-         y5axITUR+o2zP6RYewb/0Ge8JjEEpAoloBGpM8/S4OGvTIgCgUJNdFGMLjlGnqYFRcpI
-         CuPYeO2Uy++VYwXNqFwrYs8M9ZO+VsYzOleJ2tq/vnGWs72Vg4M4oIPMGbpHqDIGsB1b
-         GkerDeYyCqIzIiiHHPmfCRdmoO9LbkXYEVyZ50FHWFieWggPzUt99B9ye66W0Wt9O9p2
-         dszg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693408591; x=1694013391;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=2IkRunNGFvIUJfzmN6ZAOdQYKxHXQcRYO09oUxFh850=;
-        b=cBmPuw9dkHHwUHDmYQiZGNFDlu5aCKJsesHDm0IqLdjpVj4nGdat2E6h0lNccUI68L
-         b0v6K33t44BNlL73kJypM0UStIVZQczsWvMjH8nK1AQRwOFuYzbQiQo+uQIVjscuLw1z
-         AfNZetiQQiuf23XjKyiYo1hYeKHgJbB9G42MXNNM9INqVo2gEtIuCs/SxGdqOk5O+5Oc
-         e6al3S4HPIS1cWMLhHdYDQRqL5M8BECsfcXBqZn0+w0U4YABxjqFdatOXokkgHimWRq3
-         cZCdZskBDH0qWnK684xp5VOhb3kNmHxf0fKUHw6MhoiFuFyMRmVVWWWsbM3EUohDX9+4
-         Iq0g==
-X-Gm-Message-State: AOJu0YzJSmAs56+Jz/TYOf+BCoKVWdgBZ5QcnjmRhh2sxra/IxCf3egB
-        HdsgjoAx5LVw7/QqzUYyW2cVCw==
-X-Google-Smtp-Source: AGHT+IHFl1yrh0ovBa90KE0kq0+ttmyMeRKswrgsfajAr7QL3hpxWJxBE3YovtaB1CnKt0Tfj4M63Q==
-X-Received: by 2002:a7b:c7c7:0:b0:401:bf62:9456 with SMTP id z7-20020a7bc7c7000000b00401bf629456mr2507971wmk.8.1693408590646;
-        Wed, 30 Aug 2023 08:16:30 -0700 (PDT)
-Received: from sagittarius-a.chello.ie (188-141-3-169.dynamic.upc.ie. [188.141.3.169])
-        by smtp.gmail.com with ESMTPSA id b16-20020a5d4d90000000b0030fd03e3d25sm16989961wru.75.2023.08.30.08.16.29
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 30 Aug 2023 08:16:29 -0700 (PDT)
-From:   Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-To:     rfoss@kernel.org, todor.too@gmail.com, bryan.odonoghue@linaro.org,
-        agross@kernel.org, andersson@kernel.org, konrad.dybcio@linaro.org,
-        mchehab@kernel.org, hverkuil-cisco@xs4all.nl,
-        laurent.pinchart@ideasonboard.com, sakari.ailus@linux.intel.com,
-        andrey.konovalov@linaro.org
-Cc:     linux-media@vger.kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Subject: [PATCH v3 10/10] media: qcom: camss: Fix csid-gen2 for test pattern generator
-Date:   Wed, 30 Aug 2023 16:16:15 +0100
-Message-ID: <20230830151615.3012325-11-bryan.odonoghue@linaro.org>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230830151615.3012325-1-bryan.odonoghue@linaro.org>
-References: <20230830151615.3012325-1-bryan.odonoghue@linaro.org>
+        with ESMTP id S245555AbjH3Pdr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:33:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A008113
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:33:45 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 9A6D86108C
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 15:33:44 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F7EBC433C8;
+        Wed, 30 Aug 2023 15:33:43 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693409624;
+        bh=gzcbRtMaT4maj5dYPN1BKdQWxeis9Z2fvcWGGIyz/Jk=;
+        h=Date:From:To:Cc:Subject:From;
+        b=eYGOdS++mCbvQtDJw53dk31OQCUcdshDJwG+YBA3lwIDtL6hnWMkyh5tYVTMuTQ0z
+         nxfF7FHvF4la/rs/jbA7PpwaV++Zdo7NOrVF+845gE6qySIMl3Rh6ScxCDZ9HHwpAb
+         ITDsiHEu5VKnziZEnRYSQ2OkTvNXebFM2fZfH7cx/19NzwMkgctDDbL/ibDOXujo4A
+         2x/5I9lgcUlnxxFcQof/BD+SOrzJB2d4pUzU4MSfRwPn1E1sEY7Fii+XYBTgCbybGb
+         6pxmitgyqH286aLvwDQoNTq8oQTd5x9IS82AYqSU8QREvL/A51gm6xT8D34ZBdWnKW
+         UwMHgicxcyYoQ==
+Date:   Wed, 30 Aug 2023 08:33:42 -0700
+From:   Nathan Chancellor <nathan@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Cc:     stable@vger.kernel.org, llvm@lists.linux.dev,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: Apply 9451c79bc39e610882bdd12370f01af5004a3c4f to linux-5.4.y
+Message-ID: <20230830153342.GA888898@dev-arch.thelio-3990X>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Andrey Konovalov <andrey.konovalov@linaro.org>
+Hi Greg and Sasha,
 
-In the current driver csid Test Pattern Generator (TPG) doesn't work.
-This change:
-- fixes writing frame width and height values into CSID_TPG_DT_n_CFG_0
-- fixes the shift by one between test_pattern control value and the
-  actual pattern.
-- drops fixed VC of 0x0a which testing showed prohibited some test
-  patterns in the CSID to produce output.
-So that TPG starts working, but with the below limitations:
-- only test_pattern=9 works as it should
-- test_pattern=8 and test_pattern=7 produce black frame (all zeroes)
-- the rest of test_pattern's don't work (yavta doesn't get the data)
-- regardless of the CFA pattern set by 'media-ctl -V' the actual pixel
-  order is always the same (RGGB for any RAW8 or RAW10P format in
-  4608x2592 resolution).
+Please consider applying commit 9451c79bc39e ("powerpc/pmac/smp: Avoid
+unused-variable warnings") to 5.4, as it resolves a build failure that
+we see building ppc64_guest_defconfig with clang due to arch/powerpc
+compiling with -Werror by default:
 
-Tested with:
+  arch/powerpc/platforms/powermac/smp.c:664:26: error: unused variable 'core99_l2_cache' [-Werror,-Wunused-variable]
+    664 | volatile static long int core99_l2_cache;
+        |                          ^~~~~~~~~~~~~~~
+  arch/powerpc/platforms/powermac/smp.c:665:26: error: unused variable 'core99_l3_cache' [-Werror,-Wunused-variable]
+    665 | volatile static long int core99_l3_cache;
+        |                          ^~~~~~~~~~~~~~~
+  2 errors generated.
 
-RAW10P format, VC0:
- media-ctl -V '"msm_csid0":0[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
- v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
- yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video0
+I have verified that it applies cleanly and does not appear to have any
+direct follow up fixes, although commit a4037d1f1fc4 ("powerpc/pmac/smp:
+Drop unnecessary volatile qualifier") was in the same area around the
+same time so maybe it makes sense to take that one as well but I don't
+think it has any functional impact.
 
-RAW10P format, VC1:
- media-ctl -V '"msm_csid0":2[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -V '"msm_vfe0_rdi1":0[fmt:SRGGB10/4608x2592 field:none]'
- media-ctl -l '"msm_csid0":2->"msm_vfe0_rdi1":0[1]'
- v4l2-ctl -d /dev/v4l-subdev6 -c test_pattern=9
- yavta -B capture-mplane --capture=3 -n 3 -f SRGGB10P -s 4608x2592 /dev/video1
-
-RAW8 format, VC0:
- media-ctl --reset
- media-ctl -V '"msm_csid0":0[fmt:SRGGB8/4608x2592 field:none]'
- media-ctl -V '"msm_vfe0_rdi0":0[fmt:SRGGB8/4608x2592 field:none]'
- media-ctl -l '"msm_csid0":1->"msm_vfe0_rdi0":0[1]'
- yavta -B capture-mplane --capture=3 -n 3 -f SRGGB8 -s 4608x2592 /dev/video0
-
-Fixes: eebe6d00e9bf ("media: camss: Add support for CSID hardware version Titan 170")
-Cc: stable@vger.kernel.org
-Signed-off-by: Andrey Konovalov <andrey.konovalov@linaro.org>
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
----
- drivers/media/platform/qcom/camss/camss-csid-gen2.c | 9 +++------
- 1 file changed, 3 insertions(+), 6 deletions(-)
-
-diff --git a/drivers/media/platform/qcom/camss/camss-csid-gen2.c b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-index 140c584bfb8b1..6ba2b10326444 100644
---- a/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-+++ b/drivers/media/platform/qcom/camss/camss-csid-gen2.c
-@@ -355,9 +355,6 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
- 		u8 dt_id = vc;
- 
- 		if (tg->enabled) {
--			/* Config Test Generator */
--			vc = 0xa;
--
- 			/* configure one DT, infinite frames */
- 			val = vc << TPG_VC_CFG0_VC_NUM;
- 			val |= INTELEAVING_MODE_ONE_SHOT << TPG_VC_CFG0_LINE_INTERLEAVING_MODE;
-@@ -370,14 +367,14 @@ static void __csid_configure_stream(struct csid_device *csid, u8 enable, u8 vc)
- 
- 			writel_relaxed(0x12345678, csid->base + CSID_TPG_LFSR_SEED);
- 
--			val = input_format->height & 0x1fff << TPG_DT_n_CFG_0_FRAME_HEIGHT;
--			val |= input_format->width & 0x1fff << TPG_DT_n_CFG_0_FRAME_WIDTH;
-+			val = (input_format->height & 0x1fff) << TPG_DT_n_CFG_0_FRAME_HEIGHT;
-+			val |= (input_format->width & 0x1fff) << TPG_DT_n_CFG_0_FRAME_WIDTH;
- 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_0(0));
- 
- 			val = format->data_type << TPG_DT_n_CFG_1_DATA_TYPE;
- 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_1(0));
- 
--			val = tg->mode << TPG_DT_n_CFG_2_PAYLOAD_MODE;
-+			val = (tg->mode - 1) << TPG_DT_n_CFG_2_PAYLOAD_MODE;
- 			val |= 0xBE << TPG_DT_n_CFG_2_USER_SPECIFIED_PAYLOAD;
- 			val |= format->decode_format << TPG_DT_n_CFG_2_ENCODE_FORMAT;
- 			writel_relaxed(val, csid->base + CSID_TPG_DT_n_CFG_2(0));
--- 
-2.41.0
-
+Cheers,
+Nathan
