@@ -2,74 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F9C978D203
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 04:25:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 78B9278D20B
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 04:27:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235464AbjH3CZS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 29 Aug 2023 22:25:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37872 "EHLO
+        id S239305AbjH3C10 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 29 Aug 2023 22:27:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239290AbjH3CYu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 22:24:50 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CE637CC9;
-        Tue, 29 Aug 2023 19:24:47 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-792965813e7so124220339f.2;
-        Tue, 29 Aug 2023 19:24:47 -0700 (PDT)
+        with ESMTP id S241713AbjH3C1O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 29 Aug 2023 22:27:14 -0400
+Received: from mail-ed1-x535.google.com (mail-ed1-x535.google.com [IPv6:2a00:1450:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 990E0CD2;
+        Tue, 29 Aug 2023 19:27:11 -0700 (PDT)
+Received: by mail-ed1-x535.google.com with SMTP id 4fb4d7f45d1cf-52a4818db4aso6463484a12.2;
+        Tue, 29 Aug 2023 19:27:11 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693362287; x=1693967087; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lIPqgFvDaI9bwZtognGowvWWbSTHbXBUdbdWIzJhIjY=;
-        b=eB662TuLRe1aBIf9WUVIgRzeRkHtSnAthd5h5h1wT8pbyZZl4nFmrWg9UzIGDfrXjL
-         RIalzUstqytmSi19Mdaxtf2fngAk05BNyQI46SNJoR8l2k6Xx0xhCQlVR2WBHa/YaLjQ
-         9iDbtc2qkgsBgwBxbEEQxeY6ykAClAcCD8KWaEDYLad0uJLioxoeE6PnpVTXpngKal5X
-         1k4t7KhP/GCj1xOjZiTRYvbVW4FFqIohe7WsGOQfBHtFCdy0KI1yccqKAdeOKPU9RfqN
-         A9QOU1m+NqH6k6FTv5+Y1c6PtwuGuvQhkh170+8vzqI9sJHPq6LXufFP+sBWt+2u29q0
-         rAcA==
+        d=gmail.com; s=20221208; t=1693362430; x=1693967230; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=5JE8hnIxCXr8U3qk0svTUe9K1s4/roIND9EZ2Jy2dqo=;
+        b=DSxweWxa9Qh2f7CnqJxG3DgbVeVqK/IKs9mfdmE2rIPKGiFmA63NtzJBm5+eljHsfD
+         b7puvs7YpQPgGb5yVSucWQ1ejGuBa3Lzwz/togtofUrFdcE4V4/SLndR4avMTq96lVLf
+         QKtZDEY2LIDoeDU8e+6SUC0QlXL7hAB4IX9F64ZafGXOMBqRAUsJbNwvdoVK45HZs1Vg
+         907N+P3BqltxnSU9JGfZlb9dWTyAOx6RKzcgUHl2EtdnE8aq2oGdrVh7C9k71HV+OK+A
+         L3Ypqc4gt1Tkf4OcBlScC2b6YreJflPulJQixV6kkydxXo4qLLAJEMmRFYCrsznwNhaO
+         Ug9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693362287; x=1693967087;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1693362430; x=1693967230;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=lIPqgFvDaI9bwZtognGowvWWbSTHbXBUdbdWIzJhIjY=;
-        b=SIU1TM0vXe94vSSy7YTPA3B4/TLZ+fwVKCnbBBooxAl/IrQwxujh40Z9HRlzyUBRjB
-         HV3XGiRuhoOfQemoXqllyryBLQy4eHAuMZqTcqV8zGCzlL6+SHROp8n/X+4oMp6FVm9C
-         6/dfNB9cGZfQQtUPBHfh75XTWRVQB/FgYiL2fr/bFEHixNFNY4rejnID/MF9U6CJ0l/t
-         MggyuMAGBqXWCIcvv4VmeBil6w1Kfuf68MdIgxnsoFy2ZQJTxu7Pu2LDuqZIBfC/9kcn
-         E+p06vJhRHOS9a5Zwk0UKPzsBiRnWDXmf0mD1svZI+MgCw8QUuA8XQRwCXwvawSIUz4w
-         unCg==
-X-Gm-Message-State: AOJu0YxiJrFM/Anh7Bg7GMl8LavTqOYBPQExzvCsi6sKxqL88Zyqs2oY
-        R6VlWyB6XEVXC0VOIZyx8Mk=
-X-Google-Smtp-Source: AGHT+IHqfFMD5BTfKENln/kG2oDw8tsQJmbAo9w8IHgr0LcdjC8+0MpqVAkynVn2NOAHHvxjv40C/g==
-X-Received: by 2002:a92:de08:0:b0:34b:b16d:aa38 with SMTP id x8-20020a92de08000000b0034bb16daa38mr1206283ilm.29.1693362287171;
-        Tue, 29 Aug 2023 19:24:47 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id v2-20020a92c6c2000000b0034ab6f53e23sm3492402ilm.28.2023.08.29.19.24.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 29 Aug 2023 19:24:46 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Tue, 29 Aug 2023 19:24:45 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.15 00/89] 5.15.129-rc1 review
-Message-ID: <f2b014ac-707e-4c78-836d-b0ccf46a4de6@roeck-us.net>
-References: <20230828101150.163430842@linuxfoundation.org>
+        bh=5JE8hnIxCXr8U3qk0svTUe9K1s4/roIND9EZ2Jy2dqo=;
+        b=S+pLnyS+NEVEqdBhWTT57UPKoEfheE5CpQzfE0gidd+qyG8dhTIKNtjK1QNvybkwZ0
+         cWUxMRyvl4weXIv3keA1elIMqEVUD4T6EHCfX1pykE8oj5wfOOdVzVWyuf9Nf9pbxHoh
+         trc2BMkYuifL3W/rbe/zRGFa2JG+1fIIH/PueD3U4g1TvNYk//k+q9X2D2R8nc+mxWpG
+         wt6VnSfoRfVcg/m+abu0hzKRqQmPCMbjZ91GpdrYjJu2d0J9am49bsh4qqJcUkP4gWQK
+         9/VNxhxsnWD7zXmimiicstSLXfxPthQ9LpCiHwvXTs7KIYc2AhSSHSY86XmIL1ZBmWwp
+         zcHg==
+X-Gm-Message-State: AOJu0YyJ27VSbnFrxTzaTw2KFFhKbQoQe/tXs0pkdhL9FR4+whRHCKg6
+        oz9Ks1p0W9NiC2ydJ/WIzc1ysPjrnF++EyOCl7M=
+X-Google-Smtp-Source: AGHT+IH8LujHkY5DxX8PNSWnczR+zMlFkeA9IvuEfId5ZWsGHO109BtUJvyFnH1zqu1T3/muTPWzqG0CMUTETs3oOI8=
+X-Received: by 2002:a05:6402:8d0:b0:527:237d:3765 with SMTP id
+ d16-20020a05640208d000b00527237d3765mr777624edz.26.1693362429902; Tue, 29 Aug
+ 2023 19:27:09 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230828101150.163430842@linuxfoundation.org>
-X-Spam-Status: No, score=-1.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=no
+References: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
+ <20230828100313.3051403-1-benchuanggli@gmail.com> <CAG-rBig+koxDf3TuC-0p=tcBY_2WM1sPCvRDtjRmR7AnikrN-A@mail.gmail.com>
+ <CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com> <CAG-rBihBkTeZR6yMSF+5zg-h1U1pxGuN-nv=Y7DXLvxV435hDw@mail.gmail.com>
+In-Reply-To: <CAG-rBihBkTeZR6yMSF+5zg-h1U1pxGuN-nv=Y7DXLvxV435hDw@mail.gmail.com>
+From:   Ben Chuang <benchuanggli@gmail.com>
+Date:   Wed, 30 Aug 2023 10:26:42 +0800
+Message-ID: <CACT4zj_84eCYOq56zdqaydaEGqyqBrXDrsTkDRyCntvVF78-0A@mail.gmail.com>
+Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+To:     Sven van Ashbrook <svenva@chromium.org>
+Cc:     "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        skardach@google.com, adrian.hunter@intel.com,
+        SeanHY.chen@genesyslogic.com.tw, ben.chuang@genesyslogic.com.tw,
+        greg.tu@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, linux-kernel@vger.kernel.org,
+        linux-mmc@vger.kernel.org, reniuschengl@gmail.com,
+        stable@vger.kernel.org, ulf.hansson@linaro.org,
+        victor.shih@genesyslogic.com.tw, victorshihgli@gmail.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -77,21 +77,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 12:13:01PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.129 release.
-> There are 89 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
-> Anything received after that time might be too late.
-> 
+Hi,
+On Wed, Aug 30, 2023 at 12:35=E2=80=AFAM Sven van Ashbrook <svenva@chromium=
+.org> wrote:
+>
+> + Rafael for advice on runtime_pm corner cases.
+>
+> On Mon, Aug 28, 2023 at 10:48=E2=80=AFPM Ben Chuang <benchuanggli@gmail.c=
+om> wrote:
+> >
+> >
+> > My concern is that when runtime_pm is false, gl9763e is disabled LPM
+> > negotiation, gl9763e can't enter L1.x and s0ix may fail.
+> > It seems that runtime_pm will always exist and that's ok.
+> >
+>
+> Thank you. I believe we can address your concern.
+>
+> - XXX_suspend/XXX_resume (i.e. classic suspend/resume) depends on
+>   CONFIG_PM_SLEEP. This always selects CONFIG_PM. This always includes
+>   the runtime_pm framework. So, if XXX_suspend/XXX_resume gets called,
+>   the runtime_pm framework is always present, but may not be actively
+>   managing the device.
+This is ok.
 
-Build results:
-	total: 155 pass: 155 fail: 0
-Qemu test results:
-	total: 501 pass: 501 fail: 0
+>
+> - "when runtime_pm is false" AFAIK the only way to disable runtime_pm
+>   when CONFIG_PM is set, is to write "on" to /sys/devices/.../power/contr=
+ol.
+>   See https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-devices-=
+power
+>   In that case, the runtime_pm framework will activate the device, callin=
+g
+>   XXX_runtime_resume() if necessary. Are there other ways of disabling it=
+?
+>
+> - if /sys/devices/.../power/control is "on", then:
+>   gl9763e_runtime_resume() always called -> LPM always disabled
+>   gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled
+>   In between "classic" XXX_suspend and XXX_resume, LPM will be enabled,
+>   so the device can enter L1.x and S0ix.
+In this cas, after gl9763e_resume(), it is LPM disabled.
+Is there no chance for gl9763e to enter L1.x again when the system is idle?
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+>
+> And the LPM negotiation flags look correct.
+> Does that address your concerns?
 
-Guenter
+Best regards,
+Ben Chuang
