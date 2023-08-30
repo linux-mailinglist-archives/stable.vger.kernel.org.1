@@ -2,150 +2,149 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BD5878DB27
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1105778DB42
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238660AbjH3Sij (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:38:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56404 "EHLO
+        id S235841AbjH3Siu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:38:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242232AbjH3HcW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 03:32:22 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD638CCF
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 00:32:19 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1bbb3195013so116505ad.1
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 00:32:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693380739; x=1693985539; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Iz2oCR+RAlpCrkxasky0/cEyFi5EfsfgieHbbEfIWZM=;
-        b=yLxBw6Egb45a0joG/LAHUP2vv3u5FOVU8rsczXV7MAXxXuUA3qqj04LC8A/Kvu9vFm
-         CeNhIbRL2PPycc2BrqO0l+sDJcRCNVZMIVlI13zGbVM9HDXIWmBk4LB8qFWJRuk3ELEB
-         bMlxM9oFaS1QTjfFRgsUdaSES/0CIdzxYHj07K1Bqv/XB0ptcl302L4R7Qe+AqjMCrxE
-         co+TE6zQEvwl7JWlNMr6PQqjEuqjjZnmowoOOcmrKvgbEXvolIUxqkVU2TMx2CD4eTfS
-         +IKFD7+4CfiGBX9OFZgJCSgaVW6inxpXOWh9J/c1RTv+gcGi7Y+XQF44iqf/FLxPdWhB
-         SsOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693380739; x=1693985539;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=Iz2oCR+RAlpCrkxasky0/cEyFi5EfsfgieHbbEfIWZM=;
-        b=L2sEAfystGBfi16VEsGts2Oqd2KzXGKg/qdph4yoK32UC3prZzM+oDwOx/DwRFOS7E
-         Tik9U4M8ZAR9S7blhEErGPunxj6quOpqQZUq1o6YkjIuFaI8AhDRjzgINRz+kr2qGutT
-         hHS74srA/DCFbU9P5xAwQq+f/8uJf0FaWGlNxByN3ig5esZBpQRo5bu1RC+HdJxAXKSO
-         TbWaLHTqoZAYN0Bntqw793NdQ3/Qh8cAhMvqzsakHdS9yIRXGlPvY8wt8Q4HP9Ly483u
-         H6yTfpAlNQ7QhC/rx60vukbqdggXXF2mj077GHA/djWAr8Fh1R8TKR8Tumb6tUHSxYMN
-         ANbw==
-X-Gm-Message-State: AOJu0YztkqA1EnwSJV8E1Od/rkyCkURuVWhPHzz2GVcTcFbUguqIclNa
-        Dj2WCcqhqI6a1yVDlzcXqMnXJaRT81+6iYiiI4gyvg==
-X-Google-Smtp-Source: AGHT+IHZDLHCdHYQ9I3MT4mWpxfcxGu0ny/XtY9avjaPygtJms04xIPzZ3tibXlSN07Fmv4Sg13Y6y8nu+j0D9py61Y=
-X-Received: by 2002:a17:902:d2c2:b0:1ae:51f3:a4d with SMTP id
- n2-20020a170902d2c200b001ae51f30a4dmr468257plc.13.1693380738930; Wed, 30 Aug
- 2023 00:32:18 -0700 (PDT)
+        with ESMTP id S242239AbjH3Hev (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 03:34:51 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F845CC9;
+        Wed, 30 Aug 2023 00:34:48 -0700 (PDT)
+Received: from [192.168.100.7] (unknown [39.34.186.40])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: usama.anjum)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id EE30866071DF;
+        Wed, 30 Aug 2023 08:34:44 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1693380887;
+        bh=FAqKMrDY1sgnEDen564Uz0JqloJwW0ZuxAgPpMdqgus=;
+        h=Date:Cc:Subject:To:References:From:In-Reply-To:From;
+        b=Qf2duL2p2Hicri0va/ik8ADYHPGFylNPxgGYRWTu8yc/Zo5SoYVrbSgjDerAoCDmc
+         9x0fbsqbD878DXxsTuaO9hDWCOozhx52nu+24C9dRmxGF6VVSOHx0vHcCCDL6U5kvQ
+         UduiMAMHgQ4/9ECJWkPcMIP57EdIs0IoGbdvROxzsB9qylzYJFMk+APngqouGeref0
+         Y15ecksvXyNGrQq04GPDk1XarcKT2hgsONwXloHlCEfyrrHWqAoULqLW9THdzHT92Q
+         RqHwn5ohgMmxR5mNBTy9cMgMRC5blzL5c4tRzW00EB2qg9rTJ0ygHQ1m65q87IWlmA
+         pYxjXZF4Gms/A==
+Message-ID: <b4451119-9ab8-455f-b964-e54a1be21ea2@collabora.com>
+Date:   Wed, 30 Aug 2023 12:34:38 +0500
 MIME-Version: 1.0
-References: <391c4270-637a-2afb-210d-6b6dfef01efa@intel.com>
- <20230828100313.3051403-1-benchuanggli@gmail.com> <CAG-rBig+koxDf3TuC-0p=tcBY_2WM1sPCvRDtjRmR7AnikrN-A@mail.gmail.com>
- <CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com>
- <CAG-rBihBkTeZR6yMSF+5zg-h1U1pxGuN-nv=Y7DXLvxV435hDw@mail.gmail.com> <CACT4zj_84eCYOq56zdqaydaEGqyqBrXDrsTkDRyCntvVF78-0A@mail.gmail.com>
-In-Reply-To: <CACT4zj_84eCYOq56zdqaydaEGqyqBrXDrsTkDRyCntvVF78-0A@mail.gmail.com>
-From:   =?UTF-8?Q?Stanis=C5=82aw_Kardach?= <skardach@google.com>
-Date:   Wed, 30 Aug 2023 09:31:41 +0200
-Message-ID: <CADj_en4MTtqm0VSs2=1K5VB0fpZjga3ttMLE7RoEGQgxvQ8XFA@mail.gmail.com>
-Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
- SoCs can suspend
-To:     Ben Chuang <benchuanggli@gmail.com>
-Cc:     Sven van Ashbrook <svenva@chromium.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
-        adrian.hunter@intel.com, SeanHY.chen@genesyslogic.com.tw,
-        ben.chuang@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw,
-        jason.lai@genesyslogic.com.tw, jasonlai.genesyslogic@gmail.com,
-        linux-kernel@vger.kernel.org, linux-mmc@vger.kernel.org,
-        reniuschengl@gmail.com, stable@vger.kernel.org,
-        ulf.hansson@linaro.org, victor.shih@genesyslogic.com.tw,
-        victorshihgli@gmail.com
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        kernel@collabora.com, stable@vger.kernel.org
+Subject: Re: [PATCH v3] tty/sysrq: replace smp_processor_id() with get_cpu()
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-kernel@vger.kernel.org, linux-serial@vger.kernel.org,
+        Ingo Molnar <mingo@elte.hu>, Jiri Slaby <jirislaby@kernel.org>
+References: <20230822102606.2821311-1-usama.anjum@collabora.com>
+ <2023082258-lethargic-hazily-5c7e@gregkh>
+ <deab26bd-7db4-422a-8e58-6ea56ed0b200@collabora.com>
+Content-Language: en-US
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+In-Reply-To: <deab26bd-7db4-422a-8e58-6ea56ed0b200@collabora.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 30, 2023 at 4:27=E2=80=AFAM Ben Chuang <benchuanggli@gmail.com>=
- wrote:
->
-> Hi,
-> On Wed, Aug 30, 2023 at 12:35=E2=80=AFAM Sven van Ashbrook <svenva@chromi=
-um.org> wrote:
-> >
-> > + Rafael for advice on runtime_pm corner cases.
-> >
-> > On Mon, Aug 28, 2023 at 10:48=E2=80=AFPM Ben Chuang <benchuanggli@gmail=
-.com> wrote:
-> > >
-> > >
-> > > My concern is that when runtime_pm is false, gl9763e is disabled LPM
-> > > negotiation, gl9763e can't enter L1.x and s0ix may fail.
-> > > It seems that runtime_pm will always exist and that's ok.
-> > >
-> >
-> > Thank you. I believe we can address your concern.
-> >
-> > - XXX_suspend/XXX_resume (i.e. classic suspend/resume) depends on
-> >   CONFIG_PM_SLEEP. This always selects CONFIG_PM. This always includes
-> >   the runtime_pm framework. So, if XXX_suspend/XXX_resume gets called,
-> >   the runtime_pm framework is always present, but may not be actively
-> >   managing the device.
-> This is ok.
->
-> >
-> > - "when runtime_pm is false" AFAIK the only way to disable runtime_pm
-> >   when CONFIG_PM is set, is to write "on" to /sys/devices/.../power/con=
-trol.
-> >   See https://www.kernel.org/doc/Documentation/ABI/testing/sysfs-device=
-s-power
-> >   In that case, the runtime_pm framework will activate the device, call=
-ing
-> >   XXX_runtime_resume() if necessary. Are there other ways of disabling =
-it?
-> >
-> > - if /sys/devices/.../power/control is "on", then:
-> >   gl9763e_runtime_resume() always called -> LPM always disabled
-> >   gl9763e_suspend() -> LPM enabled -> gl9763e_resume() -> LPM disabled
-> >   In between "classic" XXX_suspend and XXX_resume, LPM will be enabled,
-> >   so the device can enter L1.x and S0ix.
-> In this cas, after gl9763e_resume(), it is LPM disabled.
-> Is there no chance for gl9763e to enter L1.x again when the system is idl=
-e?
-With runtime PM disabled via sysfs, the short answer is not since
-https://git.kernel.org/pub/scm/linux/kernel/git/torvalds/linux.git/commit/?=
-id=3Df9e5b33934cec24b8c024add5c5d65d2f93ade05.
+On 8/23/23 4:06 PM, Muhammad Usama Anjum wrote:
+> On 8/22/23 6:24 PM, Greg Kroah-Hartman wrote:
+>> On Tue, Aug 22, 2023 at 03:26:06PM +0500, Muhammad Usama Anjum wrote:
+>>> The smp_processor_id() shouldn't be called from preemptible code.
+>>> Instead use get_cpu() and put_cpu() which disables preemption in
+>>> addition to getting the processor id. This fixes the following bug:
+>>>
+>>> [  119.143590] sysrq: Show backtrace of all active CPUs
+>>> [  119.143902] BUG: using smp_processor_id() in preemptible [00000000] code: bash/873
+>>> [  119.144586] caller is debug_smp_processor_id+0x20/0x30
+>>> [  119.144827] CPU: 6 PID: 873 Comm: bash Not tainted 5.10.124-dirty #3
+>>> [  119.144861] Hardware name: QEMU QEMU Virtual Machine, BIOS 2023.05-1 07/22/2023
+>>> [  119.145053] Call trace:
+>>> [  119.145093]  dump_backtrace+0x0/0x1a0
+>>> [  119.145122]  show_stack+0x18/0x70
+>>> [  119.145141]  dump_stack+0xc4/0x11c
+>>> [  119.145159]  check_preemption_disabled+0x100/0x110
+>>> [  119.145175]  debug_smp_processor_id+0x20/0x30
+>>> [  119.145195]  sysrq_handle_showallcpus+0x20/0xc0
+>>> [  119.145211]  __handle_sysrq+0x8c/0x1a0
+>>> [  119.145227]  write_sysrq_trigger+0x94/0x12c
+>>> [  119.145247]  proc_reg_write+0xa8/0xe4
+>>> [  119.145266]  vfs_write+0xec/0x280
+>>> [  119.145282]  ksys_write+0x6c/0x100
+>>> [  119.145298]  __arm64_sys_write+0x20/0x30
+>>> [  119.145315]  el0_svc_common.constprop.0+0x78/0x1e4
+>>> [  119.145332]  do_el0_svc+0x24/0x8c
+>>> [  119.145348]  el0_svc+0x10/0x20
+>>> [  119.145364]  el0_sync_handler+0x134/0x140
+>>> [  119.145381]  el0_sync+0x180/0x1c0
+>>>
+>>> Cc: stable@vger.kernel.org
+>>> Fixes: 47cab6a722d4 ("debug lockups: Improve lockup detection, fix generic arch fallback")This commit had introduced the smp_processor_id() function in
+> sysrq_handle_showallcpus().
+> 
+>>
+>> How has this never shown up before now?  What changed to cause this to
+>> now be triggered?  This feels odd that no one has seen this in the past
+>> 20+ years :(
+> Not sure. Probably the combination of reproduction has happened now. The
+> following three conditions are needed for the warning to appear:
+> * Enable CONFIG_DEBUG_PREEMPT
+> * Arch which doesn't define arch_trigger_all_cpu_backtrace such as arm64
+> * Trigger showallcpu's stack sysrqAny thoughts?
 
-The longer answer is:
-1. System boots up with LPM flags in PCI config space in default value
-(might be LPM enabled).
-2.1. If runtime PM is disabled before first runtime suspend -
-registers will be left in their default state.
-2.2. If runtime PM is disabled after first runtime suspend, the device
-will be woken up and the gl9763e runtime resume callback will disable
-LPM.
->
-> >
-> > And the LPM negotiation flags look correct.
-> > Does that address your concerns?
->
-> Best regards,
-> Ben Chuang
+> 
+>>
+>>
+>>> Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
+>>> ---
+>>> Changes since v2:
+>>> - Add changelog and resend
+>>>
+>>> Changes since v1:
+>>> - Add "Cc: stable@vger.kernel.org" tag
+>>> ---
+>>>  drivers/tty/sysrq.c | 3 ++-
+>>>  1 file changed, 2 insertions(+), 1 deletion(-)
+>>>
+>>> diff --git a/drivers/tty/sysrq.c b/drivers/tty/sysrq.c
+>>> index 23198e3f1461a..6b4a28bcf2f5f 100644
+>>> --- a/drivers/tty/sysrq.c
+>>> +++ b/drivers/tty/sysrq.c
+>>> @@ -262,13 +262,14 @@ static void sysrq_handle_showallcpus(u8 key)
+>>>  		if (in_hardirq())
+>>>  			regs = get_irq_regs();
+>>>  
+>>> -		pr_info("CPU%d:\n", smp_processor_id());
+>>> +		pr_info("CPU%d:\n", get_cpu());
+>>>  		if (regs)
+>>>  			show_regs(regs);
+>>>  		else
+>>>  			show_stack(NULL, NULL, KERN_INFO);
+>>>  
+>>>  		schedule_work(&sysrq_showallcpus);
+>>> +		put_cpu();
+>>
+>> Why are you putting the cpu _after_ you schedule the work?
+> The sysrq_showallcpus work prints stack traces on all CPUs other than the
+> current CPU. So we are re-enabling preemption after scheduling work from
+> current CPU. So that it doesn't get changed.
+>>
+>> thanks,
+>>
+>> greg k-h
+> 
 
---
-Best Regards,
-Stanis=C5=82aw Kardach
+-- 
+BR,
+Muhammad Usama Anjum
