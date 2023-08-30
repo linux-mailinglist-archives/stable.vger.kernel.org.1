@@ -2,163 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A43E78DB8A
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:45:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42FCA78DB93
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:45:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239001AbjH3Sjj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:39:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41326 "EHLO
+        id S239076AbjH3Sjv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:39:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243246AbjH3KaE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 06:30:04 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [193.142.43.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3BB8C0;
-        Wed, 30 Aug 2023 03:30:00 -0700 (PDT)
-Date:   Wed, 30 Aug 2023 10:29:58 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1693391399;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qiHeCeWMqDfMSLrY6Ovkw5z04+RV1jb4Pn6ptsA182g=;
-        b=C7zeWOUFsIxIOmrcGuA8IfFFwpcUzR2rVivjQI4/pT4xX9yEq6w5+H5ODHp/6EQujgdV80
-        CodiI1EZdivpvPRUGqjLf4/pgJ5Av9Ta6tgGMM30VdTaWu1v2kXd+FVaX/VzQ3IjepvLMc
-        TdoZKaRA5MuMu9qB3RaPonvBcs2NaGtmvv6KJE3GNLPGBGwejWarKv7mDm/7/qb7kG6fvv
-        MzNqqau1d6NUZBqCfKkjPOy980SVmgRWw9ay8yrnxvyC8cGjM3QUoxrFpKtF7gfEkQiYkk
-        TGQDsBCl8XknJYvq/WVOWTnlNaBU+UG4Ic49nkqDCTy6Lk4Ngs+csvLD5AmJXw==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1693391399;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=qiHeCeWMqDfMSLrY6Ovkw5z04+RV1jb4Pn6ptsA182g=;
-        b=CvDNKDlmsb+IHEd3R72G0w2INwWC9axP1vaDZvpoeUlOA0ojqtGDxJ975TiP8Zsi1Y+5y0
-        vqo+XOIrEc9aYnCA==
-From:   "tip-bot2 for Thomas Gleixner" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: smp/urgent] cpu/hotplug: Prevent self deadlock on CPU hot-unplug
-Cc:     Xiongfeng Wang <wangxiongfeng2@huawei.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Yu Liao <liaoyu15@huawei.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-In-Reply-To: <8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com>
-References: <8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com>
+        with ESMTP id S243386AbjH3Kw1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 06:52:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C53331BE;
+        Wed, 30 Aug 2023 03:52:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 45B0062692;
+        Wed, 30 Aug 2023 10:52:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2384DC433C7;
+        Wed, 30 Aug 2023 10:52:23 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693392743;
+        bh=HkmR4WgVFZiZO7iDk5txTDhY7eZdDEzHI12HCpTFiQ8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=M0d8l5h7KWzt9bGt0L3p2LA0kZwmhmUUpXZSByTmPw04dRaSd3QlsWjijShdZBXj/
+         oEgTvBfHz5EgRKEaj8PSLuy0jAz5rNl0d0VYv8sEt/YCxpwL3792qtiEB7d62+/3fu
+         hJsutYNiMM6UiykILQmssKzU4FzZdu6ZNpc64fH4=
+Date:   Wed, 30 Aug 2023 12:52:19 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Guenter Roeck <linux@roeck-us.net>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Subject: Re: [PATCH 5.10 00/84] 5.10.193-rc1 review
+Message-ID: <2023083014-barley-upscale-518e@gregkh>
+References: <20230828101149.146126827@linuxfoundation.org>
+ <5b30ff73-46cb-1d1e-3823-f175dbfbd91b@roeck-us.net>
 MIME-Version: 1.0
-Message-ID: <169339139819.27769.17621875462076784482.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
-Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <5b30ff73-46cb-1d1e-3823-f175dbfbd91b@roeck-us.net>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the smp/urgent branch of tip:
+On Mon, Aug 28, 2023 at 09:42:11AM -0700, Guenter Roeck wrote:
+> On 8/28/23 03:13, Greg Kroah-Hartman wrote:
+> > This is the start of the stable review cycle for the 5.10.193 release.
+> > There are 84 patches in this series, all will be posted as a response
+> > to this one.  If anyone has any issues with these being applied, please
+> > let me know.
+> > 
+> > Responses should be made by Wed, 30 Aug 2023 10:11:30 +0000.
+> > Anything received after that time might be too late.
+> > 
+> 
+> FWIW, commit 619672bf2d04 ("MIPS: Alchemy: fix dbdma2") should be reverted
+> v5.10.y since it doesn't fix anything but breaks the build for affected boards
+> completely.
+> 
+> arch/mips/alchemy/common/dbdma.c: In function 'au1xxx_dbdma_put_source':
+> arch/mips/alchemy/common/dbdma.c:632:14: error: 'dma_default_coherent' undeclared
+> 
+> There is no 'dma_default_coherent' in v5.10.y.
 
-Commit-ID:     2b8272ff4a70b866106ae13c36be7ecbef5d5da2
-Gitweb:        https://git.kernel.org/tip/2b8272ff4a70b866106ae13c36be7ecbef5d5da2
-Author:        Thomas Gleixner <tglx@linutronix.de>
-AuthorDate:    Wed, 23 Aug 2023 10:47:02 +02:00
-Committer:     Thomas Gleixner <tglx@linutronix.de>
-CommitterDate: Wed, 30 Aug 2023 12:24:22 +02:00
+But that was added in 5.10.185, from back in June.  What changed to
+suddenly cause this to fail now?
 
-cpu/hotplug: Prevent self deadlock on CPU hot-unplug
+As this isn't a new regression, I'll hold off on fixing this here and
+just do so in a future release.
 
-Xiongfeng reported and debugged a self deadlock of the task which initiates
-and controls a CPU hot-unplug operation vs. the CFS bandwidth timer.
+thanks,
 
-    CPU1      			                 	 CPU2
-
-T1 sets cfs_quota
-   starts hrtimer cfs_bandwidth 'period_timer'
-T1 is migrated to CPU2				
-						T1 initiates offlining of CPU1
-Hotplug operation starts
-  ...
-'period_timer' expires and is re-enqueued on CPU1
-  ...
-take_cpu_down()
-  CPU1 shuts down and does not handle timers
-  anymore. They have to be migrated in the
-  post dead hotplug steps by the control task.
-
-						T1 runs the post dead offline operation
-					      	T1 is scheduled out
-						T1 waits for 'period_timer' to expire
-
-T1 waits there forever if it is scheduled out before it can execute the hrtimer
-offline callback hrtimers_dead_cpu().
-
-Cure this by delegating the hotplug control operation to a worker thread on
-an online CPU. This takes the initiating user space task, which might be
-affected by the bandwidth timer, completely out of the picture.
-
-Reported-by: Xiongfeng Wang <wangxiongfeng2@huawei.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Yu Liao <liaoyu15@huawei.com>
-Acked-by: Vincent Guittot <vincent.guittot@linaro.org>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/lkml/8e785777-03aa-99e1-d20e-e956f5685be6@huawei.com
-Link: https://lore.kernel.org/r/87h6oqdq0i.ffs@tglx
-
----
- kernel/cpu.c | 24 +++++++++++++++++++++++-
- 1 file changed, 23 insertions(+), 1 deletion(-)
-
-diff --git a/kernel/cpu.c b/kernel/cpu.c
-index f6811c8..6de7c6b 100644
---- a/kernel/cpu.c
-+++ b/kernel/cpu.c
-@@ -1487,8 +1487,22 @@ out:
- 	return ret;
- }
- 
-+struct cpu_down_work {
-+	unsigned int		cpu;
-+	enum cpuhp_state	target;
-+};
-+
-+static long __cpu_down_maps_locked(void *arg)
-+{
-+	struct cpu_down_work *work = arg;
-+
-+	return _cpu_down(work->cpu, 0, work->target);
-+}
-+
- static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
- {
-+	struct cpu_down_work work = { .cpu = cpu, .target = target, };
-+
- 	/*
- 	 * If the platform does not support hotplug, report it explicitly to
- 	 * differentiate it from a transient offlining failure.
-@@ -1497,7 +1511,15 @@ static int cpu_down_maps_locked(unsigned int cpu, enum cpuhp_state target)
- 		return -EOPNOTSUPP;
- 	if (cpu_hotplug_disabled)
- 		return -EBUSY;
--	return _cpu_down(cpu, 0, target);
-+
-+	/*
-+	 * Ensure that the control task does not run on the to be offlined
-+	 * CPU to prevent a deadlock against cfs_b->period_timer.
-+	 */
-+	cpu = cpumask_any_but(cpu_online_mask, cpu);
-+	if (cpu >= nr_cpu_ids)
-+		return -EBUSY;
-+	return work_on_cpu(cpu, __cpu_down_maps_locked, &work);
- }
- 
- static int cpu_down(unsigned int cpu, enum cpuhp_state target)
+greg k-h
