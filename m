@@ -2,49 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 620F578DB6B
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:44:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0B8E78DB85
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:45:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238788AbjH3SjK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:39:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56690 "EHLO
+        id S238979AbjH3Sjh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:39:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245596AbjH3Pj1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:39:27 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C60D185
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:39:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 0F47BB81F55
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 15:39:23 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3970BC433C7;
-        Wed, 30 Aug 2023 15:39:21 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693409961;
-        bh=ne4Gc5MN3+77rtGMwaPZrR9E+QAA8QsqVqxCBZ0rPBM=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=z0eu/k18sxOxR+B3cSOhiqjW50rAMxUSR2ntv0kFJ6Um38IrQv4a81J9p/G0+9MJG
-         vi2dBGfwvsPsprnfOo4ZiAroD6MvcyCDgRzvTA6WutxyIpLM15sG4vEBVnrPcInxfZ
-         1+Yf5yPbxTKs/ToAgO8GMahlv1b7RfRzUHkHukeA=
-Date:   Wed, 30 Aug 2023 17:39:18 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        llvm@lists.linux.dev, Nick Desaulniers <ndesaulniers@google.com>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: Re: Apply 9451c79bc39e610882bdd12370f01af5004a3c4f to linux-5.4.y
-Message-ID: <2023083056-figure-plasma-1774@gregkh>
-References: <20230830153342.GA888898@dev-arch.thelio-3990X>
+        with ESMTP id S245624AbjH3Pod (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:44:33 -0400
+Received: from mail-pf1-x42f.google.com (mail-pf1-x42f.google.com [IPv6:2607:f8b0:4864:20::42f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3587122
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:44:30 -0700 (PDT)
+Received: by mail-pf1-x42f.google.com with SMTP id d2e1a72fcca58-68a1af910e0so4072465b3a.2
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:44:30 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693410270; x=1694015070; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=PvwBbsM6Gk5NTGpHqyI4YBo7JC1+gngdXonIsavPhYI=;
+        b=wb787k2onQz2jpxhH+vu+6FNyYQmJssoVGPkjSAi4kqx0KqxHgzmfEqESwAIjEjuIl
+         jxsAjo0+GKKA4YTubZ/cqfT05kQqn3O+lI7ucKbyelOsnWwqqIumxuljrzsrWT8o9N0c
+         Zho+aYttzl5xhqaBRi3WsolKZiWOpWbzzSEIrzfqNN0pYfgoGkIqH4XEkgE+iwAJnFs3
+         /xv2TvwJzsumhMo0kTJ32xBDR6xO6H2XMRyro3ze0bpeQL4zxJnSgkBBFfPAbIdyd9gV
+         Lv0Ed+21BByRui9lu6QVvah/578XSJ5kHobX60ekyj4EVzNUcPzKgd/Sqmzoyw7xwYaE
+         zz4g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693410270; x=1694015070;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=PvwBbsM6Gk5NTGpHqyI4YBo7JC1+gngdXonIsavPhYI=;
+        b=PPPGPN2lRk2+ClRXFN5Y4ikIAxcL22Xb6Qd4TqPWPiy66q0XeOs6qlZtaa6JjiGfS+
+         yglpfYCfXcSISl0pjVvX/VxNbp1+W1RzKkz46pXnr3QrZeh6bT7y3gawS1BFNAF+ph5R
+         RKved6gRftSOdxyAOnV0XIEp/295ON5Wm/rbek29Xx8vdM8IcRwrEnh6db7Zw2kuON0j
+         6Jrlweh2BLcTj/9UMMt3U6BOMgZWkVlLniJp/GKZOpbqzCah+sopShnv3opvtWKyo7B3
+         rdU9/3CmPBvdeH+7l6DSAbPIALNPYDGAdXQJ1UqvU6tRj9tTXxbxyW9JWVuMl9aFZ7YC
+         /QRQ==
+X-Gm-Message-State: AOJu0YwhFPSBoL+QG6/JjD4HCAexajslmHoAflHZRwmtBSa6bGFxwcbA
+        XgWoaA7+zmHzxA2MIOt84Hexd/r7ZKhLaHLE5Yc=
+X-Google-Smtp-Source: AGHT+IHnhJ2Zrq6MDhAwoetNEbyz1Ubqbz7qyrsyNWUN1vKYBPRQqYEyAPPJ/oItwFWIQPhwmazYNw==
+X-Received: by 2002:a05:6a20:3950:b0:148:97d9:4a71 with SMTP id r16-20020a056a20395000b0014897d94a71mr2909807pzg.39.1693410269843;
+        Wed, 30 Aug 2023 08:44:29 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id f5-20020a170902ce8500b001b89891bfc4sm11161955plg.199.2023.08.30.08.44.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 30 Aug 2023 08:44:29 -0700 (PDT)
+Message-ID: <64ef63dd.170a0220.da8c6.394c@mx.google.com>
+Date:   Wed, 30 Aug 2023 08:44:29 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230830153342.GA888898@dev-arch.thelio-3990X>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.10.y
+X-Kernelci-Tree: stable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.10.193
+Subject: stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
+ 5 warnings (v5.10.193)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,28 +71,161 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Aug 30, 2023 at 08:33:42AM -0700, Nathan Chancellor wrote:
-> Hi Greg and Sasha,
-> 
-> Please consider applying commit 9451c79bc39e ("powerpc/pmac/smp: Avoid
-> unused-variable warnings") to 5.4, as it resolves a build failure that
-> we see building ppc64_guest_defconfig with clang due to arch/powerpc
-> compiling with -Werror by default:
-> 
->   arch/powerpc/platforms/powermac/smp.c:664:26: error: unused variable 'core99_l2_cache' [-Werror,-Wunused-variable]
->     664 | volatile static long int core99_l2_cache;
->         |                          ^~~~~~~~~~~~~~~
->   arch/powerpc/platforms/powermac/smp.c:665:26: error: unused variable 'core99_l3_cache' [-Werror,-Wunused-variable]
->     665 | volatile static long int core99_l3_cache;
->         |                          ^~~~~~~~~~~~~~~
->   2 errors generated.
-> 
-> I have verified that it applies cleanly and does not appear to have any
-> direct follow up fixes, although commit a4037d1f1fc4 ("powerpc/pmac/smp:
-> Drop unnecessary volatile qualifier") was in the same area around the
-> same time so maybe it makes sense to take that one as well but I don't
-> think it has any functional impact.
+stable/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 5 warnings (v5.1=
+0.193)
 
-Now queued up.
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-5.10.y/k=
+ernel/v5.10.193/
 
-greg k-h
+Tree: stable
+Branch: linux-5.10.y
+Git Describe: v5.10.193
+Git Commit: 4566606fe3a43e819e0a5e00eb47deccdf5427eb
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 7 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+    rv32_defconfig (gcc-10): 4 warnings
+
+x86_64:
+
+
+Warnings summary:
+
+    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
+-Wcpp]
+    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
+d [-Wcpp]
+    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
+mbol check will be entirely skipped.
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
+check will be entirely skipped.
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
+ion mismatches
+
+Warnings:
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
+    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
+cpp]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
+---
+For more info write to <info@kernelci.org>
