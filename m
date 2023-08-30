@@ -2,39 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30E1978DB7A
-	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:45:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4822578DB8F
+	for <lists+stable@lfdr.de>; Wed, 30 Aug 2023 20:45:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238862AbjH3SjU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 30 Aug 2023 14:39:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44470 "EHLO
+        id S239038AbjH3Sjn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 30 Aug 2023 14:39:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245676AbjH3PyL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 11:54:11 -0400
+        with ESMTP id S245718AbjH3QAi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 30 Aug 2023 12:00:38 -0400
 Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87210193
-        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 08:54:08 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82F11193
+        for <stable@vger.kernel.org>; Wed, 30 Aug 2023 09:00:35 -0700 (PDT)
 Received: from [192.168.1.103] (178.176.75.182) by msexch01.omp.ru
  (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
  cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Wed, 30 Aug
- 2023 18:54:06 +0300
-Subject: Re: [PATCH 5.4 045/158] mmc: sunxi: fix deferred probing
+ 2023 19:00:32 +0300
+Subject: Re: [PATCH 4.19 041/129] mmc: bcm2835: fix deferred probing
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         <stable@vger.kernel.org>
-CC:     <patches@lists.linux.dev>,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Ulf Hansson <ulf.hansson@linaro.org>,
+CC:     <patches@lists.linux.dev>, Ulf Hansson <ulf.hansson@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-References: <20230828101157.322319621@linuxfoundation.org>
- <20230828101158.847321164@linuxfoundation.org>
+References: <20230828101153.030066927@linuxfoundation.org>
+ <20230828101154.692366986@linuxfoundation.org>
 From:   Sergey Shtylyov <s.shtylyov@omp.ru>
 Organization: Open Mobile Platform
-Message-ID: <1778890d-1434-835a-0aca-c3ebe67b8392@omp.ru>
-Date:   Wed, 30 Aug 2023 18:54:05 +0300
+Message-ID: <bbe23831-161b-1423-bdec-06f5dfa53c2a@omp.ru>
+Date:   Wed, 30 Aug 2023 19:00:31 +0300
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
  Thunderbird/78.10.1
 MIME-Version: 1.0
-In-Reply-To: <20230828101158.847321164@linuxfoundation.org>
+In-Reply-To: <20230828101154.692366986@linuxfoundation.org>
 Content-Type: text/plain; charset="utf-8"
 Content-Language: en-US
 Content-Transfer-Encoding: 7bit
@@ -73,7 +71,7 @@ X-KSE-Antiphishing-ScanningType: Heuristic
 X-KSE-Antiphishing-Method: None
 X-KSE-Antiphishing-Bases: 08/30/2023 15:35:00
 X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 8/30/2023 8:27:00 AM
+X-KSE-Antivirus-Info: Clean, bases: 8/30/2023 2:00:00 PM
 X-KSE-Attachment-Filter-Triggered-Rules: Clean
 X-KSE-Attachment-Filter-Triggered-Filters: Clean
 X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
@@ -88,13 +86,13 @@ X-Mailing-List: stable@vger.kernel.org
 
 On 8/28/23 1:12 PM, Greg Kroah-Hartman wrote:
 
-> 5.4-stable review patch.  If anyone has any objections, please let me know.
+> 4.19-stable review patch.  If anyone has any objections, please let me know.
 > 
 > ------------------
 > 
 > From: Sergey Shtylyov <s.shtylyov@omp.ru>
 > 
-> [ Upstream commit c2df53c5806cfd746dae08e07bc8c4ad247c3b70 ]
+> [ Upstream commit 71150ac12558bcd9d75e6e24cf7c872c2efd80f3 ]
 > 
 > The driver overrides the error codes and IRQ0 returned by platform_get_irq()
 > to -EINVAL, so if it returns -EPROBE_DEFER, the driver will fail the probe
@@ -103,15 +101,14 @@ On 8/28/23 1:12 PM, Greg Kroah-Hartman wrote:
 > in platform_get_irq() and its ilk") IRQ0 is no longer returned by those APIs,
 > so we now can safely ignore it...
 > 
-> Fixes: 2408a08583d2 ("mmc: sunxi-mmc: Handle return value of platform_get_irq")
+> Fixes: 660fc733bd74 ("mmc: bcm2835: Add new driver for the sdhost controller.")
 > Cc: stable@vger.kernel.org # v5.19+
 
-   After a glance at the driver, the patch too seems safe to be applied to 5.4.y,
+   After a glance at the driver, the patch seems safe to be applied to 4.19.y,
 despite I tried to limit it to 5.19.y and newer...
 
 > Signed-off-by: Sergey Shtylyov <s.shtylyov@omp.ru>
-> Reviewed-by: Jernej Skrabec <jernej.skrabec@gmail.com>
-> Link: https://lore.kernel.org/r/20230617203622.6812-12-s.shtylyov@omp.ru
+> Link: https://lore.kernel.org/r/20230617203622.6812-2-s.shtylyov@omp.ru
 > Signed-off-by: Ulf Hansson <ulf.hansson@linaro.org>
 > Signed-off-by: Sasha Levin <sashal@kernel.org>
 [...]
