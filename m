@@ -2,32 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F1C3978EC02
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:31:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BF9A78EC03
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:31:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233881AbjHaLbG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        id S239841AbjHaLbG (ORCPT <rfc822;lists+stable@lfdr.de>);
         Thu, 31 Aug 2023 07:31:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36450 "EHLO
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbjHaLbF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:31:05 -0400
-Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE8E9CE4
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:31:00 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R251e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045192;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0Vqy4wcI_1693481447;
-Received: from e18g06460.et15sqa.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Vqy4wcI_1693481447)
+        with ESMTP id S237022AbjHaLbG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:31:06 -0400
+Received: from out30-118.freemail.mail.aliyun.com (out30-118.freemail.mail.aliyun.com [115.124.30.118])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 456C6CF9
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:31:02 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R701e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018046049;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0Vqy4wfA_1693481458;
+Received: from e18g06460.et15sqa.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Vqy4wfA_1693481458)
           by smtp.aliyun-inc.com;
-          Thu, 31 Aug 2023 19:30:58 +0800
+          Thu, 31 Aug 2023 19:30:59 +0800
 From:   Gao Xiang <hsiangkao@linux.alibaba.com>
 To:     stable@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-erofs@lists.ozlabs.org,
         Gao Xiang <hsiangkao@linux.alibaba.com>,
         keltargw <keltar.gw@gmail.com>
-Subject: [PATCH 6.5.y] erofs: ensure that the post-EOF tails are all zeroed
-Date:   Thu, 31 Aug 2023 19:29:53 +0800
-Message-Id: <20230831112959.99884-1-hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.4.y] erofs: ensure that the post-EOF tails are all zeroed
+Date:   Thu, 31 Aug 2023 19:29:54 +0800
+Message-Id: <20230831112959.99884-2-hsiangkao@linux.alibaba.com>
 X-Mailer: git-send-email 2.24.4
+In-Reply-To: <20230831112959.99884-1-hsiangkao@linux.alibaba.com>
+References: <20230831112959.99884-1-hsiangkao@linux.alibaba.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
@@ -69,10 +71,10 @@ Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
  1 file changed, 2 insertions(+)
 
 diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index de4f12152b62..9c9350eb1704 100644
+index 470988bb7867..9a7c8bb0590f 100644
 --- a/fs/erofs/zdata.c
 +++ b/fs/erofs/zdata.c
-@@ -1038,6 +1038,8 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
+@@ -993,6 +993,8 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
  	cur = end - min_t(erofs_off_t, offset + end - map->m_la, end);
  	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
  		zero_user_segment(page, cur, end);
