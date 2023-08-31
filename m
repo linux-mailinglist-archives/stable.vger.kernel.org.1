@@ -2,98 +2,199 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6A25C78E9B0
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 11:43:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4832C78E9B5
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 11:43:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243790AbjHaJnP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 05:43:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46288 "EHLO
+        id S234693AbjHaJnx convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 31 Aug 2023 05:43:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230374AbjHaJnO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 05:43:14 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B94DCCED;
-        Thu, 31 Aug 2023 02:43:05 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 4EF6D63502;
-        Thu, 31 Aug 2023 09:43:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC4D4C433C7;
-        Thu, 31 Aug 2023 09:43:04 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693474984;
-        bh=avSgZWMqI/UwLukj4GGSxxGERqgCYoJMEQ3aHYIN6I4=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=cOaQDSl8irWyaEvVhpfBjHoxS51YJJAV9ww/L/2c4hURu7P4xZkBw1fElxP1I/2VY
-         3CnNWbQH7q/Rss//oOn9Cc71uQyejiZtALxXwFjST0PcpMZU4QKXPrBByej1ozJeNO
-         dD2eF6T8M5NanEMQwRZfgorjnk7UbhHsAPTtk+ycYqWa4uHIzVojFF79En/1+124Au
-         rguWyvBYUL1zwAZ4p1/ofNHESW+ZKpKXevl0m7IZIpQgXUhq52MGO8ukIXJVz5QEK+
-         tgGabQowZrGp4QZZU7xlCcKabTXBGqotWS2zAgOspEcNoB1Y6PqhgPZLKmXLinyp1m
-         f7Hw1e9XP0vGA==
-Received: by mail-ej1-f53.google.com with SMTP id a640c23a62f3a-99bf1f632b8so68484166b.1;
-        Thu, 31 Aug 2023 02:43:04 -0700 (PDT)
-X-Gm-Message-State: AOJu0YyvJUVhoYipeu/C3FdFg109pI2HlqYrOmKoZFHhlMpbovqSzT/k
-        9oVztztOI3dwfV1zbPPjXK3g4fYJ0l4PnntBAN4=
-X-Google-Smtp-Source: AGHT+IGB/PPfnX7fFwCgEaUCeRbh/qQRu5L1vsYuQ4+PNdm7gPz3x1vbD41UmxnUOFOQbFVtwSqF3ckrHmqOWTXYFKo=
-X-Received: by 2002:a17:906:300a:b0:9a1:f81f:d0df with SMTP id
- 10-20020a170906300a00b009a1f81fd0dfmr3447526ejz.69.1693474982925; Thu, 31 Aug
- 2023 02:43:02 -0700 (PDT)
+        with ESMTP id S230374AbjHaJnw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 05:43:52 -0400
+Received: from mail-yw1-f177.google.com (mail-yw1-f177.google.com [209.85.128.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A015BCF2;
+        Thu, 31 Aug 2023 02:43:40 -0700 (PDT)
+Received: by mail-yw1-f177.google.com with SMTP id 00721157ae682-58dce1f42d6so24752047b3.0;
+        Thu, 31 Aug 2023 02:43:40 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693475020; x=1694079820;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=15fJYkK70EO/L01pQbhlxvsvLOdh5C+6wf2tECW+cxA=;
+        b=BBhr1m1cDVSyTTpYlnoyT2KFW3qtPNpUjX8Y8dl9aVpZ8w92/P8NDjx0I9D6ZQKUJa
+         LpeQTA2B2oM32VjTw2UKD8eG2Fe7X68txhelrzTflfmRjJcNANnhPJ41TbirHVbRMx1y
+         Q5KUkcNnZUSy6FyzSWDvW2Cnf5nMSJhiagPSXY4J3mxiFnlTe7Fv16rHI1bAKKNpVtLi
+         0V15CUZy2vQSY+p2fjVcxb5/fEFop+pp/EtOM6YPi4cc9FbKIBnhg1cx0MpzTaCMGMpN
+         GjJ2wdXm5JWElggTbKpOHOraqRACs74RI+jf5JuIv9vONwE99y2t+X9ltPAvYhUiWKwz
+         GMOQ==
+X-Gm-Message-State: AOJu0YzVGL+QxJZUhWVJLv5CgU3tFoJ42GBYRCnqiBx+Ju07ZAo9vbOL
+        uWhLwZj/d/iOdf1W1q5k8mVl8kKT2DZw/A==
+X-Google-Smtp-Source: AGHT+IGV3oWpIkFQCRh6pUiD+AR9nPLL5f/86qEUlIQ9akcbu6HwX10apBOMez98Nv80e89ipFpuzQ==
+X-Received: by 2002:a81:498b:0:b0:58c:5598:be97 with SMTP id w133-20020a81498b000000b0058c5598be97mr2002843ywa.15.1693475019652;
+        Thu, 31 Aug 2023 02:43:39 -0700 (PDT)
+Received: from mail-yb1-f177.google.com (mail-yb1-f177.google.com. [209.85.219.177])
+        by smtp.gmail.com with ESMTPSA id b131-20020a0dd989000000b005772abf6234sm305977ywe.11.2023.08.31.02.43.39
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Aug 2023 02:43:39 -0700 (PDT)
+Received: by mail-yb1-f177.google.com with SMTP id 3f1490d57ef6-d7830c5b20aso785038276.0;
+        Thu, 31 Aug 2023 02:43:39 -0700 (PDT)
+X-Received: by 2002:a25:fc10:0:b0:d71:7d2f:c548 with SMTP id
+ v16-20020a25fc10000000b00d717d2fc548mr2178292ybd.15.1693475018810; Thu, 31
+ Aug 2023 02:43:38 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
- <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com> <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
- <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com> <CAAhV-H67ehyqtm4ocOTWQPGBioWjQjLoyN5H9hALdq0oXdzWVg@mail.gmail.com>
- <62a7b292-ea1e-fb88-79cb-e7968d350a5e@flygoat.com>
-In-Reply-To: <62a7b292-ea1e-fb88-79cb-e7968d350a5e@flygoat.com>
-From:   Huacai Chen <chenhuacai@kernel.org>
-Date:   Thu, 31 Aug 2023 17:42:51 +0800
-X-Gmail-Original-Message-ID: <CAAhV-H4DRFrsWOusyVPo5U_F-fwcfUUktGe31x9S3=E7vci=pQ@mail.gmail.com>
-Message-ID: <CAAhV-H4DRFrsWOusyVPo5U_F-fwcfUUktGe31x9S3=E7vci=pQ@mail.gmail.com>
-Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
-To:     Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     linux-pci@vger.kernel.org, bhelgaas@google.com,
-        linux-kernel@vger.kernel.org, kw@linux.com, lpieralisi@kernel.org,
-        stable@vger.kernel.org
+References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
+ <20230819004356.1454718-2-Liam.Howlett@oracle.com> <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
+ <87v8cv22jh.fsf@mail.lhotse> <CAMuHMdXMpr0spdprjwsV56nJE3vHGTFaodcnVXUa=GMYaB5yKw@mail.gmail.com>
+ <6f663185-2ef1-5075-99c9-e16050329d74@bytedance.com>
+In-Reply-To: <6f663185-2ef1-5075-99c9-e16050329d74@bytedance.com>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 31 Aug 2023 11:43:25 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdW+wNma-Nr+595kRgZfG_fS2zgbZxJNbtcNRxnmpCJ=5w@mail.gmail.com>
+Message-ID: <CAMuHMdW+wNma-Nr+595kRgZfG_fS2zgbZxJNbtcNRxnmpCJ=5w@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
+ readers are possible
+To:     Peng Zhang <zhangpeng.00@bytedance.com>
+Cc:     Michael Ellerman <mpe@ellerman.id.au>,
+        "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 31, 2023 at 4:58=E2=80=AFPM Jiaxun Yang <jiaxun.yang@flygoat.co=
-m> wrote:
->
->
->
-> =E5=9C=A8 2023/8/31 14:22, Huacai Chen =E5=86=99=E9=81=93:
->
-> [...]
-> > But it is worth to try, and you can walk the children to set mrrs when
-> > the quirk runs on bridges, I think.
-> No, this will break hotplug, I had managed to get hotplug work on 2K1000.
-> Also we have no guarantee on order of discovering devices.
-> >> but the old quirk should run on every single device.
-> > Your current patch has a drawback that both quirks will run for MIPS,
-> > and their order is random (though it may cause nothing, but not
-> > elegant).
-> Actually loongson_mrrs_quirk is declared by DECLARE_PCI_FIXUP_EARLY but
-> loongson_old_mrrs_quirk is declared by DECLARE_PCI_FIXUP_ENABLE,
-> which means loongson_old_mrrs_quirk always runs after loongson_mrrs_quirk=
- as
-> expected.
-Then I think it is better to put this quirk in arch/mips/loongson64/,
-just as pci_fixup_radeon().
+Hi Peng,
 
-Huacai
+On Thu, Aug 31, 2023 at 10:45 AM Peng Zhang <zhangpeng.00@bytedance.com> wrote:
+> 在 2023/8/31 16:25, Geert Uytterhoeven 写道:
+> > On Thu, Aug 31, 2023 at 7:39 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> >> Geert Uytterhoeven <geert@linux-m68k.org> writes:
+> >>> On Fri, 18 Aug 2023, Liam R. Howlett wrote:
+> >>>> The current implementation of append may cause duplicate data and/or
+> >>>> incorrect ranges to be returned to a reader during an update.  Although
+> >>>> this has not been reported or seen, disable the append write operation
+> >>>> while the tree is in rcu mode out of an abundance of caution.
+> >>>>
+> >>>> During the analysis of the mas_next_slot() the following was
+> >>>> artificially created by separating the writer and reader code:
+> >>>>
+> >>>> Writer:                                 reader:
+> >>>> mas_wr_append
+> >>>>     set end pivot
+> >>>>     updates end metata
+> >>>>     Detects write to last slot
+> >>>>     last slot write is to start of slot
+> >>>>     store current contents in slot
+> >>>>     overwrite old end pivot
+> >>>>                                         mas_next_slot():
+> >>>>                                                 read end metadata
+> >>>>                                                 read old end pivot
+> >>>>                                                 return with incorrect range
+> >>>>     store new value
+> >>>>
+> >>>> Alternatively:
+> >>>>
+> >>>> Writer:                                 reader:
+> >>>> mas_wr_append
+> >>>>     set end pivot
+> >>>>     updates end metata
+> >>>>     Detects write to last slot
+> >>>>     last lost write to end of slot
+> >>>>     store value
+> >>>>                                         mas_next_slot():
+> >>>>                                                 read end metadata
+> >>>>                                                 read old end pivot
+> >>>>                                                 read new end pivot
+> >>>>                                                 return with incorrect range
+> >>>>     set old end pivot
+> >>>>
+> >>>> There may be other accesses that are not safe since we are now updating
+> >>>> both metadata and pointers, so disabling append if there could be rcu
+> >>>> readers is the safest action.
+> >>>>
+> >>>> Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> >>>> Cc: stable@vger.kernel.org
+> >>>> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> >>>
+> >>> Thanks for your patch, which is now commit cfeb6ae8bcb96ccf
+> >>> ("maple_tree: disable mas_wr_append() when other readers are
+> >>> possible") in v6.5, and is being backported to stable.
+> >>>
+> >>> On Renesas RZ/A1 and RZ/A2 (single-core Cortex-A9), this causes the
+> >>> following warning:
+> >>>
+> >>>        clocksource: timer@e803b000: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 28958491609 ns
+> >>>        sched_clock: 32 bits at 66MHz, resolution 15ns, wraps every 32537631224ns
+> >>>        /soc/timer@e803b000: used for clocksource
+> >>>        /soc/timer@e803c000: used for clock events
+> >>>       +------------[ cut here ]------------
+> >>>       +WARNING: CPU: 0 PID: 0 at init/main.c:992 start_kernel+0x2f0/0x480
+> >>>       +Interrupts were enabled early
+> >> ...
+> >>>
+> >>> I do not see this issue on any other platform
+> >>> (arm/arm64/risc-v/mips/sh/m68k), several of them use the same
+> >>> RCU configuration.
+> >>
+> >> There's something similar on pmac32 / mac99.
+> >>
+> >>> Do you have a clue?
+> >>
+> >> It seems something in the maple tree code is setting TIF_NEED_RESCHED,
+> >> and that causes a subsequent call to cond_resched() to call schedule()
+> >> and enable interrupts.
+> >>
+> >> On pmac32 enabling CONFIG_DEBUG_ATOMIC_SLEEP fixes/hides the problem.
+> >> But I don't see why.
+> >
+> > Enabling CONFIG_DEBUG_ATOMIC_SLEEP on RZ/A1 and RZ/A2 does
+> > fix the problem.
+> > But there must be more to it, as some of my test configs had it enabled,
+> > and others hadn't, while only RZ/A showed the issue.
+> > I tried disabling it on R-Car M2-W (arm32) and R-Car H3 (arm64), and
+> > that did not cause the problem to happen...
 >
-> Thanks
-> - Jiaxun
+> I guess this patch triggers a potential problem with the maple tree.
+> I don't have the environment to trigger the problem. Can you apply the
+> following patch to see if the problem still exists? This can help locate
+> the root cause. At least narrow down the scope of the code that has bug.
+
+Thanks for your suggestion!
+
+> diff --git a/lib/maple_tree.c b/lib/maple_tree.c
+> index f723024e1426..1b4b6f6e3095 100644
+> --- a/lib/maple_tree.c
+> +++ b/lib/maple_tree.c
+> @@ -4351,9 +4351,6 @@ static inline void mas_wr_modify(struct
+> ma_wr_state *wr_mas)
+>         if (new_end == wr_mas->node_end && mas_wr_slot_store(wr_mas))
+>                 return;
 >
-> [...]
+> -       if (mas_wr_node_store(wr_mas, new_end))
+> -               return;
+> -
+>         if (mas_is_err(mas))
+>                 return;
+
+Unfortunately removing these lines does not help.
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
+-- 
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
+
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
