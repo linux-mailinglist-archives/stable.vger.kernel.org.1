@@ -2,41 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6017278EB86
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8D37C78EB88
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345759AbjHaLLD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:11:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43884 "EHLO
+        id S230510AbjHaLLK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:11:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345913AbjHaLLD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:03 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 403DFE76
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:38 -0700 (PDT)
+        with ESMTP id S244193AbjHaLLK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:10 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B378CE4
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 9ECB8B82262
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:28 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F177AC433C8;
-        Thu, 31 Aug 2023 11:10:26 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A9FA963963
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:30 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0A0C433C7;
+        Thu, 31 Aug 2023 11:10:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480227;
-        bh=N6HN+WYJoKwKX3xjRRKeBzURNQ9PnMp4cJus2Fx+9+E=;
+        s=korg; t=1693480230;
+        bh=cRuq4F/BwwutsMpRy7D3viz1/yWkQWjlRKwGHoICyNA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DZFyxFzTnl+qu89oQP0tmKOHqqaUH13IsHOkdbom/hUMQnVQOL7ciCJ0GwYnCY3K0
-         Ina358i2I6Ox9J38CDaFbMJ0nQcNUq0whdLsh/DuK/p96STdo7klJX+JBDUVTcdng6
-         Zwsp5HuTHDJNaz7dXgDMwGc31c1HlQcE9KgtybL0=
+        b=z415ZdLXxs1sdTgPSidS7m2yfckgAsBLyAoFnFoyPOlc/qbMrUZqGVvO0eArLX0l2
+         dg+m+28ipRfJyWNv7MSu22GoN+iNDsenF5azBdo44vtHZtkutRfO1QK1IJc0JPOHGF
+         MgCaY5wHtsHJ2/NB37b0hprz7Vz7hPAkODE1qL8g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, James Morse <james.morse@arm.com>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 5.10 04/11] ARM: module: Use module_init_layout_section() to spot init sections
-Date:   Thu, 31 Aug 2023 13:09:56 +0200
-Message-ID: <20230831110830.641736194@linuxfoundation.org>
+        patches@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>,
+        kernel test robot <lkp@intel.com>,
+        Nathan Chancellor <natechancellor@gmail.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 5.10 05/11] mhi: pci_generic: Fix implicit conversion warning
+Date:   Thu, 31 Aug 2023 13:09:57 +0200
+Message-ID: <20230831110830.674039666@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230831110830.455765526@linuxfoundation.org>
 References: <20230831110830.455765526@linuxfoundation.org>
@@ -45,9 +48,10 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,46 +62,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: James Morse <james.morse@arm.com>
+From: Loic Poulain <loic.poulain@linaro.org>
 
-commit a6846234f45801441f0e31a8b37f901ef0abd2df upstream.
+commit 4ea6fa2cb921cb17812501a27c3761037d64a217 upstream.
 
-Today module_frob_arch_sections() spots init sections from their
-'init' prefix, and uses this to keep the init PLTs separate from the rest.
+Fix the following warning with explicit cast:
 
-get_module_plt() uses within_module_init() to determine if a
-location is in the init text or not, but this depends on whether
-core code thought this was an init section.
+warning: implicit conversion from 'unsigned long long' to
+'dma_addr_t' (aka 'unsigned int')
+mhi_cntrl->iova_stop = DMA_BIT_MASK(info->dma_data_width);
 
-Naturally the logic is different.
-
-module_init_layout_section() groups the init and exit text together if
-module unloading is disabled, as the exit code will never run. The result
-is kernels with this configuration can't load all their modules because
-there are not enough PLTs for the combined init+exit section.
-
-A previous patch exposed module_init_layout_section(), use that so the
-logic is the same.
-
-Fixes: 055f23b74b20 ("module: check for exit sections in layout_sections() instead of module_init_section()")
-Cc: stable@vger.kernel.org
-Signed-off-by: James Morse <james.morse@arm.com>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Fixes: 855a70c12021 ("bus: mhi: Add MHI PCI support for WWAN modems")
+Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
+Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Cc: Guenter Roeck <linux@roeck-us.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/arm/kernel/module-plts.c |    2 +-
+ drivers/bus/mhi/host/pci_generic.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm/kernel/module-plts.c
-+++ b/arch/arm/kernel/module-plts.c
-@@ -256,7 +256,7 @@ int module_frob_arch_sections(Elf_Ehdr *
- 		/* sort by type and symbol index */
- 		sort(rels, numrels, sizeof(Elf32_Rel), cmp_rel, NULL);
+--- a/drivers/bus/mhi/host/pci_generic.c
++++ b/drivers/bus/mhi/host/pci_generic.c
+@@ -273,7 +273,7 @@ static int mhi_pci_probe(struct pci_dev
+ 	mhi_cntrl_config = info->config;
+ 	mhi_cntrl->cntrl_dev = &pdev->dev;
+ 	mhi_cntrl->iova_start = 0;
+-	mhi_cntrl->iova_stop = DMA_BIT_MASK(info->dma_data_width);
++	mhi_cntrl->iova_stop = (dma_addr_t)DMA_BIT_MASK(info->dma_data_width);
+ 	mhi_cntrl->fw_image = info->fw;
+ 	mhi_cntrl->edl_image = info->edl;
  
--		if (strncmp(secstrings + dstsec->sh_name, ".init", 5) != 0)
-+		if (!module_init_layout_section(secstrings + dstsec->sh_name))
- 			core_plts += count_plts(syms, dstsec->sh_addr, rels,
- 						numrels, s->sh_info);
- 		else
 
 
