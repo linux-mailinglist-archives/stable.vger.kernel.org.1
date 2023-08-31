@@ -2,120 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B5BD78EA26
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 12:27:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C8AD78EA2F
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 12:29:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233058AbjHaK1i (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 06:27:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37342 "EHLO
+        id S234457AbjHaK3h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 06:29:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55372 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229766AbjHaK1f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 06:27:35 -0400
-Received: from mail-ej1-x62c.google.com (mail-ej1-x62c.google.com [IPv6:2a00:1450:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C455DCED;
-        Thu, 31 Aug 2023 03:27:31 -0700 (PDT)
-Received: by mail-ej1-x62c.google.com with SMTP id a640c23a62f3a-99bdcade7fbso69430966b.1;
-        Thu, 31 Aug 2023 03:27:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693477650; x=1694082450; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=9rMQT9yusBBUN/RCuYBZaJicPTDoesLvwEVu8RRpkfw=;
-        b=VdxD/oi9didiSjcfSaYAeC2JKfF6GaqZ8lcSptm4mXejwWfzAbq2wEPMltPp0HyZHI
-         wVyHhTkH7kT+b0HSZW852COU3dtqWZL5m+vnso6rA24TFoCNAeBJbw5x7iXyG29psY61
-         B3spkoha2oMnwHKzDIAvLe7PF1diiSxKKWK64pX6JG2jBrDNLwMXzngc2XNOvgrLVx0Z
-         7woOS0qkFmFsk3TUfKPs0RWPbWEHtcTYjTozaQ+PPqwvVKLVRW2V8pOMuGJJr0COTG/x
-         jpNKQrGs3wXr4GQBGI7Ud2LWuRJIkeKBYPW7ArvvRjiKM4/tCs2ECf2hcolt14QB6a0e
-         BJCg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693477650; x=1694082450;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=9rMQT9yusBBUN/RCuYBZaJicPTDoesLvwEVu8RRpkfw=;
-        b=WeNk2wJivW6Deaeptlsxg7TnFZPzTgiwa40U9zs/vGLR3qSC3yWrvp18hcazhu++uG
-         PWHxhgH6nZ13fJMu5eQ1Lq9J7TYCMxRl8nVJM5ZIV9Z1hHKl/Vho3/6AqAE32laAaaH3
-         6MJz/D2TxfzBqzRlmyI1K5UviQEzSzZeU4PRu8ngCwh15m4R9upnE2sfbYa+MDB0iF3e
-         Zy+JkpxEixXCKrd0KOpn719wJU4jNvMZP0w4/5tljKxWWI9mtYakhizMTAhRafUWQ0kW
-         P0ydyBnjX/zkVvpProOcbnyks1/OqtCFjceoBz8E4bXkNOuBYNXtzdbULO9mnTdQJUB9
-         Q1Kg==
-X-Gm-Message-State: AOJu0Yw99VDmFxPOsxF+GHuMM0JkBkI6kzxvJL5ZqnkkW0mLQ8T7TpUB
-        N79Y0DWVhgvOCZvC4Gf/tDA=
-X-Google-Smtp-Source: AGHT+IF2/sYK+ET0W+3LRvFd8r455J9HqaoHLtAHHWxRx/3UIXdlPKvy9UyLiaphpNwziAbmSFXVGQ==
-X-Received: by 2002:a17:907:ea7:b0:9a5:b8c1:2ce1 with SMTP id ho39-20020a1709070ea700b009a5b8c12ce1mr4552358ejc.31.1693477650018;
-        Thu, 31 Aug 2023 03:27:30 -0700 (PDT)
-Received: from [192.168.178.25] ([134.19.50.95])
-        by smtp.gmail.com with ESMTPSA id x24-20020a170906805800b009894b476310sm596003ejw.163.2023.08.31.03.27.28
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Aug 2023 03:27:29 -0700 (PDT)
-Message-ID: <55fc4a28-1e17-44df-2069-a688828080e6@gmail.com>
-Date:   Thu, 31 Aug 2023 12:27:27 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
+        with ESMTP id S229629AbjHaK3g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 06:29:36 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0444CF4;
+        Thu, 31 Aug 2023 03:29:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 8086BB82171;
+        Thu, 31 Aug 2023 10:29:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6983C433C8;
+        Thu, 31 Aug 2023 10:29:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693477771;
+        bh=n7XYpIoHtsPh4F6mWsyvz+3exvdD3VfOyzPPO2/fitM=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=WuA+2Iosw1DQs+PoFXGFko8jwHKSI3h1oeTi5cBhek9Oyxe+we8A/f9ECLXbdeGE9
+         chnEyE8pNABYeqz93OH3H7qabj5soQnhGrsof04IE7umrdypNmFoFfUZi6u5x0LBa5
+         OKdnJjXl2GAvo1m9PvgcYxENaSVuObPM5g4ax+Eo=
+Date:   Thu, 31 Aug 2023 12:29:28 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Chia-I Wu <olvaffe@gmail.com>
+Cc:     Sasha Levin <sashal@kernel.org>, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, airlied@linux.ie,
+        amd-gfx@lists.freedesktop.org, dri-devel@lists.freedesktop.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        Lang Yu <Lang.Yu@amd.com>,
+        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
 Subject: Re: [PATCH AUTOSEL 5.10 13/22] drm/amdgpu: install stub fence into
  potential unused fence pointers
-Content-Language: en-US
-To:     Chia-I Wu <olvaffe@gmail.com>, Sasha Levin <sashal@kernel.org>
-Cc:     airlied@linux.ie, gregkh@linuxfoundation.org,
-        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
-        amd-gfx@lists.freedesktop.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        stable@vger.kernel.org, Lang Yu <Lang.Yu@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+Message-ID: <2023083119-phoney-ascend-d4ec@gregkh>
 References: <20230724012419.2317649-1-sashal@kernel.org>
  <20230724012419.2317649-13-sashal@kernel.org>
  <CAPaKu7RTgAMBLHbwtp4zgiBSDrTFtAj07k5qMzkuLQy2Zr+sZA@mail.gmail.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <CAPaKu7RTgAMBLHbwtp4zgiBSDrTFtAj07k5qMzkuLQy2Zr+sZA@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAPaKu7RTgAMBLHbwtp4zgiBSDrTFtAj07k5qMzkuLQy2Zr+sZA@mail.gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am 30.08.23 um 20:53 schrieb Chia-I Wu:
+On Wed, Aug 30, 2023 at 11:53:29AM -0700, Chia-I Wu wrote:
 > On Sun, Jul 23, 2023 at 6:24 PM Sasha Levin <sashal@kernel.org> wrote:
->> From: Lang Yu <Lang.Yu@amd.com>
->>
->> [ Upstream commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 ]
->>
->> When using cpu to update page tables, vm update fences are unused.
->> Install stub fence into these fence pointers instead of NULL
->> to avoid NULL dereference when calling dma_fence_wait() on them.
->>
->> Suggested-by: Christian König <christian.koenig@amd.com>
->> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
->> Reviewed-by: Christian König <christian.koenig@amd.com>
->> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
->> Signed-off-by: Sasha Levin <sashal@kernel.org>
->> ---
->>   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
->>   1 file changed, 4 insertions(+), 2 deletions(-)
-> We start getting this warning spew on chromeos
-
-Yeah because the older kernels still kept track of the last VM fence in 
-the syncobj.
-
-This patch here should probably not have been back ported.
-
-Why was that done anyway? The upstream commit doesn't have a CC stable 
-and this is only a bug fix for a new feature not present on older kernels.
-
-Regards,
-Christian.
-
-
-> , likely from
+> >
+> > From: Lang Yu <Lang.Yu@amd.com>
+> >
+> > [ Upstream commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 ]
+> >
+> > When using cpu to update page tables, vm update fences are unused.
+> > Install stub fence into these fence pointers instead of NULL
+> > to avoid NULL dereference when calling dma_fence_wait() on them.
+> >
+> > Suggested-by: Christian König <christian.koenig@amd.com>
+> > Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+> > Reviewed-by: Christian König <christian.koenig@amd.com>
+> > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> > Signed-off-by: Sasha Levin <sashal@kernel.org>
+> > ---
+> >  drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
+> >  1 file changed, 4 insertions(+), 2 deletions(-)
+> 
+> We start getting this warning spew on chromeos, likely from
 > dma_fence_is_later because the stub fence is on a different timeline:
->
+> 
 > [  273.334767] WARNING: CPU: 1 PID: 13383 at
 > include/linux/dma-fence.h:478 amdgpu_sync_keep_later+0x95/0xbd
 > [  273.334769] Modules linked in: snd_seq_dummy snd_seq snd_seq_device
@@ -136,7 +101,7 @@ Christian.
 > videobuf2_memops videobuf2_v4l2
 > [  273.334795]  videobuf2_common joydev
 > [  273.334799] CPU: 1 PID: 13383 Comm: chrome:cs0 Tainted: G        W
->         5.10.192-23384-g3d3f0f0c5e4f #1
+>        5.10.192-23384-g3d3f0f0c5e4f #1
 > fe1e7e3b7510aa7b8e01701478119255f825a36f
 > [  273.334800] Hardware name: Google Dewatt/Dewatt, BIOS
 > Google_Dewatt.14500.347.0 03/30/2023
@@ -189,3 +154,6 @@ Christian.
 > [  273.334952] R13: 00007e70f8693380 R14: 00007e70f8693248 R15: 0000000000000013
 > [  273.334954] ---[ end trace fc066a0fcea39e8c ]---
 
+Thanks, I'll go revert this now.
+
+greg k-h
