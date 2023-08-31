@@ -2,96 +2,97 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF6A378F0ED
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 18:10:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E08C78F0F6
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 18:12:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346680AbjHaQKK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 12:10:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36492 "EHLO
+        id S237577AbjHaQMq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 12:12:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243358AbjHaQKJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 12:10:09 -0400
-Received: from mail-il1-x12a.google.com (mail-il1-x12a.google.com [IPv6:2607:f8b0:4864:20::12a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54A701A3;
-        Thu, 31 Aug 2023 09:10:06 -0700 (PDT)
-Received: by mail-il1-x12a.google.com with SMTP id e9e14a558f8ab-349a94f3d69so5458885ab.1;
-        Thu, 31 Aug 2023 09:10:06 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693498205; x=1694103005; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=41c/fNK1qQC2XK9KwuU0p8MqEE5Km30gP6fWHcjfMQo=;
-        b=TN6J36xxtrovuQiFOCdK8U0oyxsATKW8WNbGxPn65zV+Gkj+1VgOwxJJBK9mGSma5o
-         YHbibb0ilD0aI1f7Nd1il6rSsDZqtikkuMMwNeWqXL21n2wkf71lCADyJE6LjrJhakae
-         RVmpcbsH0mIva8Ubx2nBbcwouNWYWu4WTgWIVO0N6muDoXV9OTY9wAYUkB4E9+e+pVN+
-         LkzAsKgHrcJGpUGKKty75tO9x3vqnUg5s9yXtp0Gc71mj0GfpJEwm7J6ABLsWEKOnTb4
-         syCdUiQDXP+BvUkQIihD3+s3Y4nyp22UPPQFUPQm6ZlxV6xcrHL8Da2s+Afvdb3KDGde
-         xY+A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693498205; x=1694103005;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=41c/fNK1qQC2XK9KwuU0p8MqEE5Km30gP6fWHcjfMQo=;
-        b=cad3vSQXs1kRc0nnSW4I4ZRK4t8Mq//LyiW1Q5C/2GeEQvpcL2ZkCTfWYqrLs26FZB
-         9dHhe4pQU6jPrt7BvL8otn457H37EA7n+oBHJPAxN8KSC01LBQoe7jKeM/haj4jGVg2L
-         xRZA8UdfMYF1JXZFzfMhVoush04X5/X3875kA3ZrrJ08jEvlI7CCJPdoRsJhgSbkMfSu
-         GMElwl9YpH0hj/IFwENMxfBkLCho78OoGMSNf/AillZA2LfVNp34PYqeh2zPgc+tearN
-         InpK85mjy7icZKwaDS8eUKHeJ3Sk+uHDJMmewwtgKXjA/x/wFerjPBf/2v1WwANSsRHc
-         1ISw==
-X-Gm-Message-State: AOJu0YyF1QNJL6Uiv1cYZWwoRI6DkC8jKz7+pE6iJDSKbxEJ9Zw6mMPg
-        CvHOz9V6DAjkYXJ1avO9VkiTkfyDvt8=
-X-Google-Smtp-Source: AGHT+IGIk5fg7IzlO0S8uOjOP4VIcjkOGCNo8gyiNl5yp19xKSOvib6enwnc/oDThB57xVEIL0ilLA==
-X-Received: by 2002:a05:6e02:f41:b0:348:b07e:fdac with SMTP id y1-20020a056e020f4100b00348b07efdacmr251422ilj.3.1693498205551;
-        Thu, 31 Aug 2023 09:10:05 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id f5-20020a056e0204c500b003489ccea184sm514510ils.10.2023.08.31.09.10.04
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 09:10:04 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Thu, 31 Aug 2023 09:10:02 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 4.19 0/1] 4.19.294-rc1 review
-Message-ID: <fbefb0cd-e056-4504-b0b2-ebd778d4996f@roeck-us.net>
-References: <20230831110828.433348914@linuxfoundation.org>
+        with ESMTP id S236397AbjHaQMq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 12:12:46 -0400
+Received: from fanzine2.igalia.com (fanzine2.igalia.com [213.97.179.56])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 980501BF
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 09:12:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=igalia.com;
+        s=20170329; h=Content-Transfer-Encoding:MIME-Version:Message-Id:Date:Subject:
+        Cc:To:From:Sender:Reply-To:Content-Type:Content-ID:Content-Description:
+        Resent-Date:Resent-From:Resent-Sender:Resent-To:Resent-Cc:Resent-Message-ID:
+        In-Reply-To:References:List-Id:List-Help:List-Unsubscribe:List-Subscribe:
+        List-Post:List-Owner:List-Archive;
+        bh=6u5hMjCmUgd0xjXq9PV5DeXBX6O3VlwK8t4h81c1Zeg=; b=FB5X2tg3OXPaHHhurzRgs+u1W8
+        idR+XXsvx9yapwJfYgjIze8fEthggfmb9xsQkX5HodFCXD5Q0M4dYKE3Awjq2NOaVhQpTSQqnmBxI
+        FKx7QvvvXqHtS+slYKd6c55+N423VTz7Umbg46jcLe5RZ2/KqKlcJDo2iYM1r1G0VUX0OJ51PG1Ak
+        N3PmP2s8GsxO8xz1CgoLAiFiMzK8ZLG/O7AsBruLslJw2MxGIUvD03c5OxgNtiOQQPcZcdNGLWb73
+        Sa9tvS3Qh9Fj/RV8we957mgQBUKjPNLPrINeURrrGH1lp/ojiOOYtH140JG/u6V9VvXkvbTWQ0VZ0
+        dEF+VDtQ==;
+Received: from [38.44.68.151] (helo=killbill.home)
+        by fanzine2.igalia.com with esmtpsa 
+        (Cipher TLS1.3:ECDHE_X25519__RSA_PSS_RSAE_SHA256__AES_256_GCM:256) (Exim)
+        id 1qbkHW-000WXH-Pk; Thu, 31 Aug 2023 18:12:30 +0200
+From:   Melissa Wen <mwen@igalia.com>
+To:     amd-gfx@lists.freedesktop.org,
+        Harry Wentland <harry.wentland@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        sunpeng.li@amd.com, Alex Deucher <alexander.deucher@amd.com>,
+        dri-devel@lists.freedesktop.org, christian.koenig@amd.com,
+        Xinhui.Pan@amd.com, airlied@gmail.com, daniel@ffwll.ch
+Cc:     Xaver Hugl <xaver.hugl@gmail.com>,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Krunoslav Kovac <krunoslav.kovac@amd.com>,
+        kernel-dev@igalia.com, stable@vger.kernel.org
+Subject: [PATCH v2] drm/amd/display: enable cursor degamma for DCN3+ DRM legacy gamma
+Date:   Thu, 31 Aug 2023 15:12:28 -0100
+Message-Id: <20230831161228.206735-1-mwen@igalia.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230831110828.433348914@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 31, 2023 at 01:09:48PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.294 release.
-> There are 1 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 02 Sep 2023 11:08:22 +0000.
-> Anything received after that time might be too late.
-> 
+For DRM legacy gamma, AMD display manager applies implicit sRGB degamma
+using a pre-defined sRGB transfer function. It works fine for DCN2
+family where degamma ROM and custom curves go to the same color block.
+But, on DCN3+, degamma is split into two blocks: degamma ROM for
+pre-defined TFs and `gamma correction` for user/custom curves and
+degamma ROM settings doesn't apply to cursor plane. To get DRM legacy
+gamma working as expected, enable cursor degamma ROM for implict sRGB
+degamma on HW with this configuration.
 
-arch/arm/mach-ep93xx/timer-ep93xx.c:12:10: fatal error: platform.h: No such file or directory
-   12 | #include "platform.h"
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2803
+Fixes: 96b020e2163f ("drm/amd/display: check attr flag before set cursor degamma on DCN3+")
+Signed-off-by: Melissa Wen <mwen@igalia.com>
+---
+v2: cc'ing stable
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-"ARM: ep93xx: fix missing-prototype warnings" needs to be reverted in
-v4.19.y as well.
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+index df568a7cd005..b97cbc4e5477 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm_plane.c
+@@ -1270,6 +1270,13 @@ void amdgpu_dm_plane_handle_cursor_update(struct drm_plane *plane,
+ 	attributes.rotation_angle    = 0;
+ 	attributes.attribute_flags.value = 0;
+ 
++	/* Enable cursor degamma ROM on DCN3+ for implicit sRGB degamma in DRM
++	 * legacy gamma setup.
++	 */
++	if (crtc_state->cm_is_degamma_srgb &&
++	    adev->dm.dc->caps.color.dpp.gamma_corr)
++		attributes.attribute_flags.bits.ENABLE_CURSOR_DEGAMMA = 1;
++
+ 	attributes.pitch = afb->base.pitches[0] / afb->base.format->cpp[0];
+ 
+ 	if (crtc_state->stream) {
+-- 
+2.40.1
 
-Thanks,
-Guenter
