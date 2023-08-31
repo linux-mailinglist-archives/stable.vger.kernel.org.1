@@ -2,224 +2,145 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87AC378ECA1
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:56:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 063FA78ECA9
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 14:00:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244003AbjHaL4w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:56:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55290 "EHLO
+        id S243658AbjHaMAQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 08:00:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234377AbjHaL4v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:56:51 -0400
-Received: from mail-pl1-x635.google.com (mail-pl1-x635.google.com [IPv6:2607:f8b0:4864:20::635])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3336C5
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:56:48 -0700 (PDT)
-Received: by mail-pl1-x635.google.com with SMTP id d9443c01a7336-1c1f8aaab9aso5328775ad.1
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:56:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693483008; x=1694087808; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=fgK90A5bVlf3Jb9PlLUBf/SNOLWTKrT4fJpWT5NCqpI=;
-        b=ZDWxiMzQ9U/G5LdW7vgKRXl4P5rpJq+8MZN6jAphbINLih5SJps1ri+9KXS2HkF9/D
-         xIr9fRrXQW9YdyZoEwcNXG044jejFj/ylxlxhSjoeCB3VRa2bDiRWR/VkKWiIvDgqaCw
-         iMPlAnRDILnH0ATUzfGoBGQORXtlOweEKPgdxbJOm3Sj4EMBfo+b3s8RSPZKqvLLKJ7/
-         BB/4NHawR6gzw5sjB1q+EiyglgamY6j5+tli1CA+EDhHPumkcXCXArojnS+SqJcZgk1h
-         HsSABMcojd77mCZHX2dF1mJA6bZW9BDHRBJNjXUkOvQAZD8ZxXx23X11TlmODqolTU2K
-         BAzw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693483008; x=1694087808;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=fgK90A5bVlf3Jb9PlLUBf/SNOLWTKrT4fJpWT5NCqpI=;
-        b=SVjFyTT4GY/27QIe5HNMcQqH+SMfxnyLKKrdy/qepXwjnQV06cWBo8hLCvR6rZXgLi
-         tuVkC0IMOOS8BxHGdK1ixQQnny47PmfjSb1DPGMotK6zecFswr7XT48T98niCcztzPPO
-         V7LaK86/9te361QwT+6OccdosCMCB9C/Crk/Kio8sV42vrk//3ZjsVODKEg2itCdRL0T
-         sISXY9BGyi3kKdSn/hC3pUDgWariPnoj3H00uI2NXV/LEd+Kg3dn3hnx3l+CntagaoAc
-         cHtwwukC4Bq0A4p+4vkFCFbKS9qpSHm6c1/0TYSZo/SzEBh1a+jTCwyoSH6O8Zf88Kn2
-         j9nQ==
-X-Gm-Message-State: AOJu0YzdcVemIPpwtxagPZWH43c6IfNmYdvDOryOEcfBSTqRPDJkdkS2
-        b+KQ2yn8LoD96fv1juWpvG6rMLXzmsfr/yVH3PE=
-X-Google-Smtp-Source: AGHT+IFlQSMdVCGZks5yFoaev5n2e3+bYN44SSXYiPcX4YJxVhpd6TbNGyYyfDifp9gBl+q2K9mbiA==
-X-Received: by 2002:a17:902:d4c9:b0:1c0:d777:3224 with SMTP id o9-20020a170902d4c900b001c0d7773224mr5154755plg.50.1693483007682;
-        Thu, 31 Aug 2023 04:56:47 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x18-20020a17090300d200b001b2069072ccsm1130899plc.18.2023.08.31.04.56.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 04:56:46 -0700 (PDT)
-Message-ID: <64f07ffe.170a0220.65cda.1cab@mx.google.com>
-Date:   Thu, 31 Aug 2023 04:56:46 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S243632AbjHaMAQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 08:00:16 -0400
+Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6DCE43;
+        Thu, 31 Aug 2023 05:00:08 -0700 (PDT)
+Received: by mail.gandi.net (Postfix) with ESMTPSA id AE01F60014;
+        Thu, 31 Aug 2023 12:00:02 +0000 (UTC)
+From:   Remi Pommarel <repk@triplefau.lt>
+To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Paolo Abeni <pabeni@redhat.com>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Remi Pommarel <repk@triplefau.lt>, stable@vger.kernel.org
+Subject: [PATCH net] net: stmmac: remove unneeded stmmac_poll_controller
+Date:   Thu, 31 Aug 2023 14:00:04 +0200
+Message-Id: <20230831120004.6919-1-repk@triplefau.lt>
+X-Mailer: git-send-email 2.40.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.50
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.50)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-GND-Sasl: repk@triplefau.lt
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.50)
+Using netconsole netpoll_poll_dev could be called from interrupt
+context, thus using disable_irq() would cause the following kernel
+warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.50/
+  BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
+  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
+  CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
+  Hardware name: aml (r1) (DT)
+  Call trace:
+   dump_backtrace+0x0/0x270
+   show_stack+0x14/0x20
+   dump_stack_lvl+0x8c/0xac
+   dump_stack+0x18/0x30
+   ___might_sleep+0x150/0x194
+   __might_sleep+0x64/0xbc
+   synchronize_irq+0x8c/0x150
+   disable_irq+0x2c/0x40
+   stmmac_poll_controller+0x140/0x1a0
+   netpoll_poll_dev+0x6c/0x220
+   netpoll_send_skb+0x308/0x390
+   netpoll_send_udp+0x418/0x760
+   write_msg+0x118/0x140 [netconsole]
+   console_unlock+0x404/0x500
+   vprintk_emit+0x118/0x250
+   dev_vprintk_emit+0x19c/0x1cc
+   dev_printk_emit+0x90/0xa8
+   __dev_printk+0x78/0x9c
+   _dev_warn+0xa4/0xbc
+   ath10k_warn+0xe8/0xf0 [ath10k_core]
+   ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
+   ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
+   __napi_poll+0x58/0x1f4
+   net_rx_action+0x504/0x590
+   _stext+0x1b8/0x418
+   run_ksoftirqd+0x74/0xa4
+   smpboot_thread_fn+0x210/0x3c0
+   kthread+0x1fc/0x210
+   ret_from_fork+0x10/0x20
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.50
-Git Commit: a2943d2d9a00ae7c5c1fde2b2e7e9cdb47e7db05
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+Since [0] .ndo_poll_controller is only needed if driver doesn't or
+partially use NAPI. Because stmmac does so, stmmac_poll_controller
+can be removed fixing the above warning.
 
-Warnings Detected:
+[0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
 
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
+Cc: <stable@vger.kernel.org> # 5.15.x
+Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 ---
-For more info write to <info@kernelci.org>
+ .../net/ethernet/stmicro/stmmac/stmmac_main.c | 30 -------------------
+ 1 file changed, 30 deletions(-)
+
+diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+index 4727f7be4f86..9b5c0ebf0519 100644
+--- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
++++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
+@@ -5938,33 +5938,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
+ 	return IRQ_HANDLED;
+ }
+ 
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-/* Polling receive - used by NETCONSOLE and other diagnostic tools
+- * to allow network I/O with interrupts disabled.
+- */
+-static void stmmac_poll_controller(struct net_device *dev)
+-{
+-	struct stmmac_priv *priv = netdev_priv(dev);
+-	int i;
+-
+-	/* If adapter is down, do nothing */
+-	if (test_bit(STMMAC_DOWN, &priv->state))
+-		return;
+-
+-	if (priv->plat->multi_msi_en) {
+-		for (i = 0; i < priv->plat->rx_queues_to_use; i++)
+-			stmmac_msi_intr_rx(0, &priv->dma_conf.rx_queue[i]);
+-
+-		for (i = 0; i < priv->plat->tx_queues_to_use; i++)
+-			stmmac_msi_intr_tx(0, &priv->dma_conf.tx_queue[i]);
+-	} else {
+-		disable_irq(dev->irq);
+-		stmmac_interrupt(dev->irq, dev);
+-		enable_irq(dev->irq);
+-	}
+-}
+-#endif
+-
+ /**
+  *  stmmac_ioctl - Entry point for the Ioctl
+  *  @dev: Device pointer.
+@@ -6800,9 +6773,6 @@ static const struct net_device_ops stmmac_netdev_ops = {
+ 	.ndo_eth_ioctl = stmmac_ioctl,
+ 	.ndo_setup_tc = stmmac_setup_tc,
+ 	.ndo_select_queue = stmmac_select_queue,
+-#ifdef CONFIG_NET_POLL_CONTROLLER
+-	.ndo_poll_controller = stmmac_poll_controller,
+-#endif
+ 	.ndo_set_mac_address = stmmac_set_mac_address,
+ 	.ndo_vlan_rx_add_vid = stmmac_vlan_rx_add_vid,
+ 	.ndo_vlan_rx_kill_vid = stmmac_vlan_rx_kill_vid,
+-- 
+2.40.0
+
