@@ -2,102 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 06A2378F252
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 20:14:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AFF8078F253
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 20:14:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245080AbjHaSOP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 14:14:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55192 "EHLO
+        id S1343903AbjHaSOk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 14:14:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232944AbjHaSOP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 14:14:15 -0400
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DAA2E5F
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:14:13 -0700 (PDT)
+        with ESMTP id S232944AbjHaSOk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 14:14:40 -0400
+Received: from smtp-fw-52005.amazon.com (smtp-fw-52005.amazon.com [52.119.213.156])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF9FEE5F
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:14:37 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1693505654; x=1725041654;
+  t=1693505678; x=1725041678;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=SaJZSiuBZksibfTJ4SNjQp3OxNIr6K2lqUr4AjALD1M=;
-  b=lPzUfV/k62Zj1T9fp2jZRcMgi6irjO+EnGPEgk0u7O70a7/pZtlwi9o0
-   POaO4s32+ukMJq8GtTxheQYElz1mKkVEuzFYVNGaVDXdLbivsxyTphW+d
-   D6GX5VZlZqNClLpYJYCE3+ogvHc+SLqX4cG2YknBb6ZNTgALtFj/JSzO5
-   s=;
+  bh=5nbz9dGyWpP5ey0v693rABf4c1f6rHdtF9EF7ICVjTU=;
+  b=FHZd7mqeClpp+lMaoAIQKYLqRI4MDdPpStwl6PhQvjO9Bkt3V65PI0G2
+   BFRa/GLo4hOIQuQ6xCy1qvr/jrZ+QxLhZKz67zWxsZhqHIMk0AAzDQdtD
+   AQwo1NBL0IyE+S2uoWhYmcJQb47yenuRtbXzabO82a46C0Zy0E4s9tN6R
+   o=;
 X-IronPort-AV: E=Sophos;i="6.02,217,1688428800"; 
-   d="scan'208";a="669728731"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-cadc3fbd.us-west-2.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 18:14:13 +0000
-Received: from EX19MTAUEC001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
-        by email-inbound-relay-pdx-2b-m6i4x-cadc3fbd.us-west-2.amazon.com (Postfix) with ESMTPS id 0A7C6A09E7;
-        Thu, 31 Aug 2023 18:14:11 +0000 (UTC)
+   d="scan'208";a="602065972"
+Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-9694bb9e.us-east-1.amazon.com) ([10.43.8.6])
+  by smtp-border-fw-52005.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 18:14:36 +0000
+Received: from EX19MTAUEB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1e-m6i4x-9694bb9e.us-east-1.amazon.com (Postfix) with ESMTPS id 4A77C805D8;
+        Thu, 31 Aug 2023 18:14:33 +0000 (UTC)
 Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Thu, 31 Aug 2023 18:14:11 +0000
+ 15.2.1118.37; Thu, 31 Aug 2023 18:14:30 +0000
 Received: from dev-dsk-luizcap-1d-37beaf15.us-east-1.amazon.com (10.39.210.33)
  by EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Thu, 31 Aug 2023 18:14:09 +0000
+ 15.2.1118.37; Thu, 31 Aug 2023 18:14:29 +0000
 From:   Luiz Capitulino <luizcap@amazon.com>
 To:     <stable@vger.kernel.org>, <juri.lelli@redhat.com>,
         <longman@redhat.com>, <neelx@redhat.com>
 CC:     <tj@kernel.org>, <lizefan.x@bytedance.com>, <hannes@cmpxchg.org>,
-        <lcapitulino@gmail.com>, Aaron Tomlin <atomlin@atomlin.com>,
-        Mukesh Ojha <quic_mojha@quicinc.com>,
+        <lcapitulino@gmail.com>,
+        =?UTF-8?q?Michal=20Koutn=C3=BD?= <mkoutny@suse.com>,
         Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATH 6.1.y 2/5] cgroup/cpuset: no need to explicitly init a global static variable
-Date:   Thu, 31 Aug 2023 18:13:03 +0000
-Message-ID: <fd743ff8b4f3a5367814c967347b63a8e681ff0a.1693505570.git.luizcap@amazon.com>
+Subject: [PATH 6.1.y 3/5] cgroup/cpuset: Skip task update if hotplug doesn't affect current cpuset
+Date:   Thu, 31 Aug 2023 18:13:04 +0000
+Message-ID: <4aa99a5713f910d87e813971457b88cddb0f02c7.1693505570.git.luizcap@amazon.com>
 X-Mailer: git-send-email 2.40.1
 In-Reply-To: <cover.1693505570.git.luizcap@amazon.com>
 References: <cover.1693505570.git.luizcap@amazon.com>
 MIME-Version: 1.0
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
 X-Originating-IP: [10.39.210.33]
-X-ClientProxiedBy: EX19D045UWC002.ant.amazon.com (10.13.139.230) To
+X-ClientProxiedBy: EX19D037UWC001.ant.amazon.com (10.13.139.197) To
  EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Daniel Vacek <neelx@redhat.com>
+From: Waiman Long <longman@redhat.com>
 
-Commit 21786e5cb375a1e58a9175fee423e1d7f892d965 upstream.
+Commit df59b72cd8fb8ca00301f47e65853efed195d23f upstream.
 
-cpuset_rwsem is a static variable defined with DEFINE_STATIC_PERCPU_RWSEM().
-It's initialized at build time and so there's no need for explicit runtime
-init leaking one percpu int.
+If a hotplug event doesn't affect the current cpuset, there is no point
+to call hotplug_update_tasks() or hotplug_update_tasks_legacy(). So
+just skip it.
 
-Signed-off-by: Daniel Vacek <neelx@redhat.com>
-Reviewed-by: Aaron Tomlin <atomlin@atomlin.com>
-Acked-by: Mukesh Ojha <quic_mojha@quicinc.com>
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Michal Koutný <mkoutny@suse.com>
 Signed-off-by: Tejun Heo <tj@kernel.org>
 Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
 ---
- kernel/cgroup/cpuset.c | 2 --
- 1 file changed, 2 deletions(-)
+ kernel/cgroup/cpuset.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 0496b88fcd63..4baae4b3c9a0 100644
+index 4baae4b3c9a0..8664b9c1edc8 100644
 --- a/kernel/cgroup/cpuset.c
 +++ b/kernel/cgroup/cpuset.c
-@@ -3391,8 +3391,6 @@ struct cgroup_subsys cpuset_cgrp_subsys = {
+@@ -3613,6 +3613,8 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
+ update_tasks:
+ 	cpus_updated = !cpumask_equal(&new_cpus, cs->effective_cpus);
+ 	mems_updated = !nodes_equal(new_mems, cs->effective_mems);
++	if (!cpus_updated && !mems_updated)
++		goto unlock;	/* Hotplug doesn't affect this cpuset */
  
- int __init cpuset_init(void)
- {
--	BUG_ON(percpu_init_rwsem(&cpuset_rwsem));
--
- 	BUG_ON(!alloc_cpumask_var(&top_cpuset.cpus_allowed, GFP_KERNEL));
- 	BUG_ON(!alloc_cpumask_var(&top_cpuset.effective_cpus, GFP_KERNEL));
- 	BUG_ON(!zalloc_cpumask_var(&top_cpuset.subparts_cpus, GFP_KERNEL));
+ 	if (mems_updated)
+ 		check_insane_mems_config(&new_mems);
+@@ -3624,6 +3626,7 @@ static void cpuset_hotplug_update_tasks(struct cpuset *cs, struct tmpmasks *tmp)
+ 		hotplug_update_tasks_legacy(cs, &new_cpus, &new_mems,
+ 					    cpus_updated, mems_updated);
+ 
++unlock:
+ 	percpu_up_write(&cpuset_rwsem);
+ }
+ 
 -- 
 2.40.1
 
