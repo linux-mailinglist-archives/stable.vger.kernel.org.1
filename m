@@ -2,290 +2,117 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA83878F22F
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 19:51:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 46E7878F250
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 20:13:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237488AbjHaRwA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 13:52:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39954 "EHLO
+        id S237210AbjHaSNi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 14:13:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50428 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234217AbjHaRv7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 13:51:59 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04D21B8
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 10:51:56 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1bf11b1c7d0so15668865ad.0
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 10:51:55 -0700 (PDT)
+        with ESMTP id S232944AbjHaSNh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 14:13:37 -0400
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4876E63
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:13:34 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693504315; x=1694109115; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=ngf6C5raX0hxh/eUWDqhn/KanhqV7JRSGVSI6G8x4DQ=;
-        b=qAm1saB9QLE2hCMQMJlmJYakY+22mzSAcEKz8cO85hRz6IST3lBFbk6sysFqTCHqYT
-         7vFYBzfcCeum8l+7o403wWiql7wXn2AZ4u4+JgAn4BchMQgH+iQGKjDltOkRX87O10+K
-         eAvBY75bcTpWjekNh6R1EUdSsXi3BXeaHIAoJnbaXcBOV/Y5n9/cia0RfkjiN26X0OmD
-         9Tnyroc/6J58gXWnzh8IWChsC5WYxc0bxMOU3XeKhYGSZZ0eR7wkorG2+voPZw45x3Eo
-         Ced2KcUXdEstnZlCSO7XStrk8IVup676BDHSm/5h2G6qoN9VsYOwpaZ90ZTf0L4Vxi0V
-         qGQQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693504315; x=1694109115;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=ngf6C5raX0hxh/eUWDqhn/KanhqV7JRSGVSI6G8x4DQ=;
-        b=XD7kRswdUwQ3uS89pZL8hDEIckk9F0zWa9M4OS3tLBY55Grs69PH3+EUn+E3Uk3Pvq
-         G8E9/vYWUkdk4aA7EBjbA3Dv7sE26LXrTQPVhxXrguDw5WaKJox03to/wfQMw5jtiLsX
-         7k+L30z60XyOyOW+mFLwdXkmfOvRDaCkxA/7NeW9oCtyEjSHAM66gQ7SVShszNdJ6yVd
-         SWeE5bzLQiWIeUNwO4jUqTqvpvtoSo7+9mlZ02200QoLz9PIjBkZ2no8F65m1jbc6p7R
-         VLe33/FIKkcBXw8lGVpMlWHsxMVCNSJAStCfLzSYqSWMWoqQWkmBvuYzn6eVHn8mf+qy
-         cJQA==
-X-Gm-Message-State: AOJu0YxRzgQou02IEymNnVMqitAztelvp/SvE9ruER3ppVenjwyqB3bM
-        gGqAuQes4wcEQIgzNmrDXfjdS5uqfC/wuJgp4N0=
-X-Google-Smtp-Source: AGHT+IF2ANgpNqsVouEEKRa7uN+W8fDm7z/QuCHMh0Acl4l8gXXFJK08Uq85oz1USWWOXF+M+/sM+g==
-X-Received: by 2002:a17:90b:a0c:b0:261:219b:13b3 with SMTP id gg12-20020a17090b0a0c00b00261219b13b3mr222849pjb.16.1693504315035;
-        Thu, 31 Aug 2023 10:51:55 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id gv9-20020a17090b11c900b0026f39c90111sm1615535pjb.20.2023.08.31.10.51.53
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 10:51:54 -0700 (PDT)
-Message-ID: <64f0d33a.170a0220.22795.338c@mx.google.com>
-Date:   Thu, 31 Aug 2023 10:51:54 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1693505615; x=1725041615;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=HdbG0+hIU4uAEWs7h5jH0T2ajrx7/ktUXU4xM8qsj0o=;
+  b=G2nsSE/rOPlP9CsJzXC3c2WniimPJhghcDMkAfoT3axx9k1YPioQFKT+
+   UM5cS1aEc6yb4zB8yjUFqqW6Dkij/iIMowa/sEAQCW4aCXE4uVQUrJH6Z
+   mA29pR1HvOqgvj6ZImh7652UQy741eNswlBAQ6rWoqlDBKMjXNu7fsHdj
+   E=;
+X-IronPort-AV: E=Sophos;i="6.02,217,1688428800"; 
+   d="scan'208";a="669728573"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-pdx-2b-m6i4x-f253a3a3.us-west-2.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 18:13:35 +0000
+Received: from EX19MTAUEC001.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan3.pdx.amazon.com [10.236.137.198])
+        by email-inbound-relay-pdx-2b-m6i4x-f253a3a3.us-west-2.amazon.com (Postfix) with ESMTPS id C6A958A0C6;
+        Thu, 31 Aug 2023 18:13:33 +0000 (UTC)
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Thu, 31 Aug 2023 18:13:33 +0000
+Received: from dev-dsk-luizcap-1d-37beaf15.us-east-1.amazon.com (10.39.210.33)
+ by EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Thu, 31 Aug 2023 18:13:31 +0000
+From:   Luiz Capitulino <luizcap@amazon.com>
+To:     <stable@vger.kernel.org>, <juri.lelli@redhat.com>,
+        <longman@redhat.com>, <neelx@redhat.com>
+CC:     <tj@kernel.org>, <lizefan.x@bytedance.com>, <hannes@cmpxchg.org>,
+        <lcapitulino@gmail.com>, Luiz Capitulino <luizcap@amazon.com>
+Subject: [PATH 6.1.y 0/5] Backport "sched cpuset: Bring back cpuset_mutex"
+Date:   Thu, 31 Aug 2023 18:13:01 +0000
+Message-ID: <cover.1693505570.git.luizcap@amazon.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.293-3-gcb2cdf2272086
-Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.293-3-gcb2cdf2272086)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.39.210.33]
+X-ClientProxiedBy: EX19D045UWC003.ant.amazon.com (10.13.139.198) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (=
-v4.19.293-3-gcb2cdf2272086)
+Hi,
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.293-3-gcb2cdf2272086/
+When using KVM on systems that require iTLB multihit mitigation enabled[1],
+we're observing very high latency (70ms+) in KVM_CREATE_VM ioctl() in 6.1
+kernel in comparison to older stable kernels such as 5.10. This is true even
+when using favordynmods mount option.
 
-Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.293-3-gcb2cdf2272086
-Git Commit: cb2cdf2272086683c41f5bb61390600f01227b6e
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+We debugged this down to the cpuset controller trying to acquire cpuset_rwsem
+in cpuset_can_attach(). This happens because KVM creates a worker thread which
+calls cgroup_attach_task_all() during KVM_CREATE_VM. I don't know if
+favordynmods is supposed to cover this case or not, but removing cpuset_rwsem
+certainly solves the issue.
 
-Build Failures Detected:
+For the backport I tried to pick as many dependent commits as required to avoid
+conflicts. I would highly appreciate review from cgroup people.
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
+Tests performed:
+ * Measured latency in KVM_CREATE_VM ioctl(), it goes down to less than 1ms
+ * Ran the cgroup kselftest tests, got same results with or without this series
+    * However, some tests such as test_memcontrol and test_kmem are failing
+      in 6.1. This probably needs to be looked at
+    * To make test_cpuset_prs.sh work, I had to increase the timeout on line
+      592 to 1 second. With this change, the test runs and passes
+ * I run our downstream test suite against our downstream 6.1 kernel with this
+   series applied, it passed
 
-Warnings Detected:
+ [1] For the case where the CPU is not vulnerable to iTLB multihit we can
+     simply disable the iTLB multihit mitigation in KVM which avoids this
+     whole situation. Disabling the mitigation is possible since upstream
+     commit 0b210faf337 which I plan to backport soon
 
-arc:
+Daniel Vacek (1):
+  cgroup/cpuset: no need to explicitly init a global static variable
 
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
+Juri Lelli (1):
+  sched/cpuset: Bring back cpuset_mutex
 
-arm:
+Waiman Long (3):
+  cgroup/cpuset: Optimize cpuset_attach() on v2
+  cgroup/cpuset: Skip task update if hotplug doesn't affect current
+    cpuset
+  cgroup/cpuset: Include offline CPUs when tasks' cpumasks in top_cpuset
+    are updated
 
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
+ include/linux/cpuset.h |   8 +-
+ kernel/cgroup/cpuset.c | 211 +++++++++++++++++++++++------------------
+ kernel/sched/core.c    |  22 +++--
+ 3 files changed, 139 insertions(+), 102 deletions(-)
 
-mips:
+-- 
+2.40.1
 
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-2 warnings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
