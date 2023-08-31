@@ -2,175 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C80C178E9C9
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 11:51:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED19B78E9E0
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 12:04:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230258AbjHaJvw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 05:51:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50682 "EHLO
+        id S244239AbjHaKEv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 06:04:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233717AbjHaJvv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 05:51:51 -0400
-Received: from mail-pl1-x634.google.com (mail-pl1-x634.google.com [IPv6:2607:f8b0:4864:20::634])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 760F8CED
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 02:51:47 -0700 (PDT)
-Received: by mail-pl1-x634.google.com with SMTP id d9443c01a7336-1bc3d94d40fso4465845ad.3
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 02:51:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693475506; x=1694080306; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=81tlim6z/D1KyNqXqu+BL5H2ESlpuBqw+FoJUlKxrAw=;
-        b=mm3J4oKSoLmBCjASQFuZUYDO6NhVydtjcck626cLK+LIqEK4IWJBnTJ71G8Qt1yu8+
-         SZ6aXLdH0x6f0Uk/T/ZBERTAqPC6djB/q5DF1ZWRSKQLhJJq/xDdLr46gcZRQ373ff7i
-         mOsGbiIgFrgbBKR65TUjNy9QBQNsSMdqN8Yt7zo2Kl9+1FwPNT8t7pfGcHTy3x16ZzGK
-         Yv7okvAfH+6Eg9Caz87UJmLxOsfPLQ/x5fit8rLfgV1l+XKbAR2cAxbbgEsWwnFF4RBs
-         FmPdrp4zNxlOGGTqhK2ctgMTjXtc9iDCqsOZuLEqaesJMkiFSWnx5eeYib9IHNeuXQuW
-         KIsQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693475506; x=1694080306;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=81tlim6z/D1KyNqXqu+BL5H2ESlpuBqw+FoJUlKxrAw=;
-        b=BeD6E5sW/YudrpLn0f/8r8Vhx4qjw7n8Odd/9vHVOmcdDb80BjTk8SNnu1yyr4CFXK
-         JDhFnH+Eom0lssO4HIF52bqZ2X8pSkmZGxwunlljOhUA9IH/t7hb//OP4UWVUVStXPlL
-         0w3Gf8xH4RRLcaTYDvXL6W0HhS4W1/wEZ6dc9MzPjochF/jL6muRapM663xPleHH24Hd
-         Sk/QAs8BZtZDOlXGhJYSn0yvLMYxek39Dltorvd4Z6W2/HKdR7JnUMn5XNSd3oG6oFg9
-         Vtiqwb4g+PUXa8I1sVftbSJ8m0OPkA2PMqHSKAcO/HE7C0FIAzcSUvaTT4mUJwYpqult
-         04Vw==
-X-Gm-Message-State: AOJu0YzIJ5mG3hyBCfLa6Gl5KTqodLvyqOHa4FnlkPGIR2/aeC0Pwk34
-        Lw84gX24GPVf9fedqNtye2Z+TeTmMNzEmPud4NM=
-X-Google-Smtp-Source: AGHT+IHnnIq3Ety+Mvw3e2vgaDbXI/bvUhhkvjULeGaZIbZ+htPJJVj9KN3UIzOyrdDaomFierNSbQ==
-X-Received: by 2002:a17:903:32c1:b0:1bb:7f71:df43 with SMTP id i1-20020a17090332c100b001bb7f71df43mr5685127plr.34.1693475506395;
-        Thu, 31 Aug 2023 02:51:46 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id 6-20020a170902c14600b001b7cbc5871csm899300plj.53.2023.08.31.02.51.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 02:51:45 -0700 (PDT)
-Message-ID: <64f062b1.170a0220.6b6dd.178c@mx.google.com>
-Date:   Thu, 31 Aug 2023 02:51:45 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229733AbjHaKEv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 06:04:51 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33A45CEE;
+        Thu, 31 Aug 2023 03:04:48 -0700 (PDT)
+Received: from compute1.internal (compute1.nyi.internal [10.202.2.41])
+        by mailout.nyi.internal (Postfix) with ESMTP id CC4595C0094;
+        Thu, 31 Aug 2023 06:04:45 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute1.internal (MEProxy); Thu, 31 Aug 2023 06:04:45 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1693476285; x=1693562685; bh=3Bxg+078KgJz5tyNgD/JmbFy76+3swKXt6B
+        GQD9tQ3o=; b=xQaKSO/slhT3iA6z7K5DoGuYaIFmdHmzjpEo0OmEiUFCe4VqLi1
+        xU6xeQdztTvQFeaH/AfVmqolCmgFZvEOTNITKudVAa956Q/5yA6eGWh41wiMOI8x
+        gT5YyXsGBaGDCRgfSY2z5Y1LoiotjF5ZEroa5bW/lTJNwMKXey5sce2CQ+BGsk5c
+        vulklhbn4WCP1/koVDm3jTQn9SeX2QG6kRNkfzCm0ixri46ljbKecFa4U3faxS7X
+        I6MYBozS+vrqSgIgqruc58RES+kXRq0+heaBLB3gQ8bZ8m25KIzn5t6OlYvEMYVk
+        wP8OwtVgbC4lfhTwDAzNdfwP9PJyui/efGw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1693476285; x=1693562685; bh=3Bxg+078KgJz5tyNgD/JmbFy76+3swKXt6B
+        GQD9tQ3o=; b=iZqLyH1wWf1q38vMPMgm18pJKTKFDes4WE2z36cbp7XPNyN3mct
+        GRyOX2+EibJYON8+OHzOfQ0apZwy2Uaf6mPPF+AQERGPw4grTA7Cizk8ElpHqipN
+        F/Pb9CW11XMYHBRnMLIlctSYfR7JkiE1i4epHorM/+59Ff1uZR175D3+ufl+RGml
+        r3ooSFRWDc93kxePIDZEWICdYBGsCZ3bJ11sesWxIDJULk0mwyKLufcCA5MTCPNv
+        HzffujUf7yeB2lwlE1ZgsujxWUiUJf03Wm1Tb1wiVz8U2YpcJByPwwNouVdTq4wN
+        G7kCrdApfeVAVUtbHtmZh9jz+uX3nlfuubQ==
+X-ME-Sender: <xms:vWXwZC5R80CMhc2NqPXLLWQmCsYNIZAMB4INNYpn5kJ-UpevC4-Q4Q>
+    <xme:vWXwZL4A50RvpyCJNS9k6Kcioso7gByj0B5sIALzPowYUAxlE83F7fUCDWWImWT-m
+    h3SPYXIOWmMqu_J9I0>
+X-ME-Received: <xmr:vWXwZBddjksLpDu2OdNMJIyjlB7hnFN8M70VruPerbW6mLhPvZkPoLmTVf4Ql4C7ogI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudegtddgvdegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtfeejnecuhfhrohhmpeflihgr
+    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+    cuggftrfgrthhtvghrnhepudfhkeevvddtueekfeefgfetlefgueegueeltddtieejgeei
+    heevgfehgfdvfeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:vWXwZPK4VxsqzirdmzYzIkS3ak87x8UypnEQwm_vi_LtHzhqKqtpQg>
+    <xmx:vWXwZGLv3gtGxxurFIh3H3zHTuBlvjCpi1nsfEDSlxC0nxInnEgcEA>
+    <xmx:vWXwZAyVPITB9rQZ-eY82o6uN71I1q-xhzMzrk_jW64_q8WyAybPKA>
+    <xmx:vWXwZIh3luAq_2MkqKsF5ZB-PFtgOUw2yOa8J2EGDHr4SlEjo6E2qg>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 31 Aug 2023 06:04:43 -0400 (EDT)
+Message-ID: <c2bdde51-4dcc-59ac-5f54-bcf43152fc92@flygoat.com>
+Date:   Thu, 31 Aug 2023 18:04:39 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.129
-Subject: stable-rc/linux-5.15.y build: 11 builds: 0 failed, 11 passed,
- 1 warning (v5.15.129)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
+Content-Language: en-GB
+To:     Huacai Chen <chenhuacai@kernel.org>, bhelgaas@google.com
+Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        kw@linux.com, lpieralisi@kernel.org, stable@vger.kernel.org
+References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
+ <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
+ <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
+ <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com>
+ <CAAhV-H67ehyqtm4ocOTWQPGBioWjQjLoyN5H9hALdq0oXdzWVg@mail.gmail.com>
+ <62a7b292-ea1e-fb88-79cb-e7968d350a5e@flygoat.com>
+ <CAAhV-H4DRFrsWOusyVPo5U_F-fwcfUUktGe31x9S3=E7vci=pQ@mail.gmail.com>
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+In-Reply-To: <CAAhV-H4DRFrsWOusyVPo5U_F-fwcfUUktGe31x9S3=E7vci=pQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-6.3 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_PASS,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 11 builds: 0 failed, 11 passed, 1 warning (v5=
-.15.129)
-
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.129/
-
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.129
-Git Commit: 9e43368a3393dd40002cecb63e13af285be270fc
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 6 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-riscv:
-
-x86_64:
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
 
 
-Warnings summary:
+在 2023/8/31 17:42, Huacai Chen 写道:
+> On Thu, Aug 31, 2023 at 4:58 PM Jiaxun Yang <jiaxun.yang@flygoat.com> wrote:
+>>
+>>
+>> 在 2023/8/31 14:22, Huacai Chen 写道:
+>>
+>> [...]
+>>> But it is worth to try, and you can walk the children to set mrrs when
+>>> the quirk runs on bridges, I think.
+>> No, this will break hotplug, I had managed to get hotplug work on 2K1000.
+>> Also we have no guarantee on order of discovering devices.
+>>>> but the old quirk should run on every single device.
+>>> Your current patch has a drawback that both quirks will run for MIPS,
+>>> and their order is random (though it may cause nothing, but not
+>>> elegant).
+>> Actually loongson_mrrs_quirk is declared by DECLARE_PCI_FIXUP_EARLY but
+>> loongson_old_mrrs_quirk is declared by DECLARE_PCI_FIXUP_ENABLE,
+>> which means loongson_old_mrrs_quirk always runs after loongson_mrrs_quirk as
+>> expected.
+> Then I think it is better to put this quirk in arch/mips/loongson64/,
+> just as pci_fixup_radeon().
 
-    1    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
+Hmm, spiting two quirks with similar functionality into two places 
+doesn't sound
+like a good idea.
 
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
+PCI folks, what do you think?
 
-Detailed per-defconfig build reports:
+Thanks.
+- Jiaxun
 
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----
-For more info write to <info@kernelci.org>
+[...]
