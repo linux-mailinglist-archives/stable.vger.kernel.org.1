@@ -2,98 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8D37C78EB88
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8AC6E78EB80
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:10:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230510AbjHaLLK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:11:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43930 "EHLO
+        id S1345796AbjHaLK7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:10:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50156 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244193AbjHaLLK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:10 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B378CE4
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:44 -0700 (PDT)
+        with ESMTP id S1345950AbjHaLK6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:10:58 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2509BE5B
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:28 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A9FA963963
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BA0A0C433C7;
-        Thu, 31 Aug 2023 11:10:29 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E14363B0A
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B29C433C7;
+        Thu, 31 Aug 2023 11:10:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480230;
-        bh=cRuq4F/BwwutsMpRy7D3viz1/yWkQWjlRKwGHoICyNA=;
+        s=korg; t=1693480211;
+        bh=KI6+Cv5eu9Uo73sYMUfNBMM5epdBoUn4KN7WdXFTgHE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z415ZdLXxs1sdTgPSidS7m2yfckgAsBLyAoFnFoyPOlc/qbMrUZqGVvO0eArLX0l2
-         dg+m+28ipRfJyWNv7MSu22GoN+iNDsenF5azBdo44vtHZtkutRfO1QK1IJc0JPOHGF
-         MgCaY5wHtsHJ2/NB37b0hprz7Vz7hPAkODE1qL8g=
+        b=NsEZW8eKDDfRxVxoxDPlJqVjNjcWkqSeoAbcrVixFjAWzUmc2Q4LcqZqfyQ2NooRU
+         uGb+VAyyhwi91HLWlnKXaaok2vQUPh1GxymCQd1bRW8kNCOmHly7t8VT3bLlqOU2zN
+         Qfqr42ipmPmbepBwi+NNlwww8PxTFtzXK+Is23Nw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Loic Poulain <loic.poulain@linaro.org>,
-        kernel test robot <lkp@intel.com>,
-        Nathan Chancellor <natechancellor@gmail.com>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.10 05/11] mhi: pci_generic: Fix implicit conversion warning
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 5.4 3/3] Revert "MIPS: Alchemy: fix dbdma2"
 Date:   Thu, 31 Aug 2023 13:09:57 +0200
-Message-ID: <20230831110830.674039666@linuxfoundation.org>
+Message-ID: <20230831110829.025549068@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230831110830.455765526@linuxfoundation.org>
-References: <20230831110830.455765526@linuxfoundation.org>
+In-Reply-To: <20230831110828.874071888@linuxfoundation.org>
+References: <20230831110828.874071888@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+5.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Loic Poulain <loic.poulain@linaro.org>
+From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-commit 4ea6fa2cb921cb17812501a27c3761037d64a217 upstream.
+This reverts commit a365600bba27c35d0d93fd490b01919fbd7d4848 which is
+commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 upstream.
 
-Fix the following warning with explicit cast:
+It breaks the build, so should be dropped.
 
-warning: implicit conversion from 'unsigned long long' to
-'dma_addr_t' (aka 'unsigned int')
-mhi_cntrl->iova_stop = DMA_BIT_MASK(info->dma_data_width);
-
-Fixes: 855a70c12021 ("bus: mhi: Add MHI PCI support for WWAN modems")
-Signed-off-by: Loic Poulain <loic.poulain@linaro.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Reviewed-by: Nathan Chancellor <natechancellor@gmail.com>
-Reviewed-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Cc: Guenter Roeck <linux@roeck-us.net>
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/5b30ff73-46cb-1d1e-3823-f175dbfbd91b@roeck-us.net
+Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bus/mhi/host/pci_generic.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/mips/alchemy/common/dbdma.c |   27 ++++++++++++---------------
+ 1 file changed, 12 insertions(+), 15 deletions(-)
 
---- a/drivers/bus/mhi/host/pci_generic.c
-+++ b/drivers/bus/mhi/host/pci_generic.c
-@@ -273,7 +273,7 @@ static int mhi_pci_probe(struct pci_dev
- 	mhi_cntrl_config = info->config;
- 	mhi_cntrl->cntrl_dev = &pdev->dev;
- 	mhi_cntrl->iova_start = 0;
--	mhi_cntrl->iova_stop = DMA_BIT_MASK(info->dma_data_width);
-+	mhi_cntrl->iova_stop = (dma_addr_t)DMA_BIT_MASK(info->dma_data_width);
- 	mhi_cntrl->fw_image = info->fw;
- 	mhi_cntrl->edl_image = info->edl;
+--- a/arch/mips/alchemy/common/dbdma.c
++++ b/arch/mips/alchemy/common/dbdma.c
+@@ -30,7 +30,6 @@
+  *
+  */
  
+-#include <linux/dma-map-ops.h> /* for dma_default_coherent */
+ #include <linux/init.h>
+ #include <linux/kernel.h>
+ #include <linux/slab.h>
+@@ -624,18 +623,17 @@ u32 au1xxx_dbdma_put_source(u32 chanid,
+ 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
+ 
+ 	/*
+-	 * There is an erratum on certain Au1200/Au1550 revisions that could
+-	 * result in "stale" data being DMA'ed. It has to do with the snoop
+-	 * logic on the cache eviction buffer.  dma_default_coherent is set
+-	 * to false on these parts.
++	 * There is an errata on the Au1200/Au1550 parts that could result
++	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
++	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
++	 * these parts. If it is fixed in the future, these dma_cache_inv will
++	 * just be nothing more than empty macros. See io.h.
+ 	 */
+-	if (!dma_default_coherent)
+-		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
++	dma_cache_wback_inv((unsigned long)buf, nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	wmb(); /* drain writebuffer */
+ 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
+-	wmb(); /* force doorbell write out to dma engine */
+ 
+ 	/* Get next descriptor pointer. */
+ 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+@@ -687,18 +685,17 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dm
+ 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
+ #endif
+ 	/*
+-	 * There is an erratum on certain Au1200/Au1550 revisions that could
+-	 * result in "stale" data being DMA'ed. It has to do with the snoop
+-	 * logic on the cache eviction buffer.  dma_default_coherent is set
+-	 * to false on these parts.
++	 * There is an errata on the Au1200/Au1550 parts that could result in
++	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
++	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
++	 * parts. If it is fixed in the future, these dma_cache_inv will just
++	 * be nothing more than empty macros. See io.h.
+ 	 */
+-	if (!dma_default_coherent)
+-		dma_cache_inv(KSEG0ADDR(buf), nbytes);
++	dma_cache_inv((unsigned long)buf, nbytes);
+ 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
+ 	wmb(); /* drain writebuffer */
+ 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
+ 	ctp->chan_ptr->ddma_dbell = 0;
+-	wmb(); /* force doorbell write out to dma engine */
+ 
+ 	/* Get next descriptor pointer. */
+ 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
 
 
