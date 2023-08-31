@@ -2,79 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87AF678F2FE
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 21:01:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A74B78F310
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 21:07:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347102AbjHaTBz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 15:01:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52336 "EHLO
+        id S231875AbjHaTHl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 15:07:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347101AbjHaTBw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 15:01:52 -0400
-Received: from mail-out.m-online.net (mail-out.m-online.net [212.18.0.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE989E67
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 12:01:49 -0700 (PDT)
-Received: from frontend01.mail.m-online.net (unknown [192.168.8.182])
-        by mail-out.m-online.net (Postfix) with ESMTP id 4Rc9W85fh1z1sCHT;
-        Thu, 31 Aug 2023 21:01:39 +0200 (CEST)
-Received: from localhost (dynscan1.mnet-online.de [192.168.6.68])
-        by mail.m-online.net (Postfix) with ESMTP id 4Rc9W73sV1z1qqlY;
-        Thu, 31 Aug 2023 21:01:39 +0200 (CEST)
-X-Virus-Scanned: amavis at mnet-online.de
-Received: from mail.mnet-online.de ([192.168.8.182])
- by localhost (dynscan1.mail.m-online.net [192.168.6.68]) (amavis, port 10024)
- with ESMTP id 3t2LcBBBC5P6; Thu, 31 Aug 2023 21:01:38 +0200 (CEST)
-X-Auth-Info: lXkH32dCcJBd+12DFQPqBK2TsYUkx9qeK/d1QE75ehLNaJXCOJQ9jpTXTWJ0N5Py
-Received: from igel.home (aftr-62-216-205-244.dynamic.mnet-online.de [62.216.205.244])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mail.mnet-online.de (Postfix) with ESMTPSA;
-        Thu, 31 Aug 2023 21:01:38 +0200 (CEST)
-Received: by igel.home (Postfix, from userid 1000)
-        id 3B0CF2C1069; Thu, 31 Aug 2023 21:01:38 +0200 (CEST)
-From:   Andreas Schwab <schwab@linux-m68k.org>
-To:     Michael Ellerman <mpe@ellerman.id.au>
-Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linuxppc-dev@lists.ozlabs.org
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-In-Reply-To: <87y1hr22o1.fsf@mail.lhotse> (Michael Ellerman's message of "Thu,
-        31 Aug 2023 15:37:02 +1000")
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
-        <20230819004356.1454718-2-Liam.Howlett@oracle.com>
-        <87bkeotin8.fsf@igel.home> <87y1hr22o1.fsf@mail.lhotse>
-X-Yow:  Everything will be ALL RIGHT if we can just remember things about
- ALGEBRA.. or SOCCER..  or SOCIALISM..
-Date:   Thu, 31 Aug 2023 21:01:38 +0200
-Message-ID: <87cyz3594d.fsf@igel.home>
-User-Agent: Gnus/5.13 (Gnus v5.13)
+        with ESMTP id S1347121AbjHaTHk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 15:07:40 -0400
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2DAFE65
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 12:07:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
+  t=1693508858; x=1725044858;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=gsFNpv5zZJVRNl1Pflvx15Ararl81nw7oojjZ/8dhU0=;
+  b=U8UjQNUuy2qpQahbHmyTYqJr5GdLV16sYjunlmUKUoyvN1C6UvpzMTEE
+   9ZCmi8vrXrIlk7RXWzoJRDBk57R/uH4gPFCfsgoCNK5ZiHDwnj3V9Pn/i
+   57VsrjQjo5CBE+vrZzy0uTHU6cIxO/bW1P9PDL1VGenri/Sb5rzic7yaB
+   k=;
+X-IronPort-AV: E=Sophos;i="6.02,217,1688428800"; 
+   d="scan'208";a="669738483"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-0aba4706.us-east-1.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 19:07:31 +0000
+Received: from EX19MTAUEC001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1e-m6i4x-0aba4706.us-east-1.amazon.com (Postfix) with ESMTPS id 36E58A3730;
+        Thu, 31 Aug 2023 19:07:28 +0000 (UTC)
+Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
+ EX19MTAUEC001.ant.amazon.com (10.252.135.222) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Thu, 31 Aug 2023 19:07:27 +0000
+Received: from [192.168.9.185] (10.106.178.24) by
+ EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Thu, 31 Aug 2023 19:07:25 +0000
+Message-ID: <2211557e-2f16-9752-2d47-56e5fb5ec02c@amazon.com>
+Date:   Thu, 31 Aug 2023 15:07:22 -0400
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=3.2 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
-        RCVD_IN_MSPIKE_WL,RCVD_IN_SBL_CSS,RCVD_IN_SORBS_WEB,SPF_HELO_NONE,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
-X-Spam-Level: ***
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATH 6.1.y 0/5] Backport "sched cpuset: Bring back cpuset_mutex"
+Content-Language: en-US
+From:   Luiz Capitulino <luizcap@amazon.com>
+To:     Greg KH <gregkh@linuxfoundation.org>
+CC:     <stable@vger.kernel.org>, <juri.lelli@redhat.com>,
+        <longman@redhat.com>, <neelx@redhat.com>, <tj@kernel.org>,
+        <lizefan.x@bytedance.com>, <hannes@cmpxchg.org>,
+        <lcapitulino@gmail.com>
+References: <cover.1693505570.git.luizcap@amazon.com>
+ <2023083107-agent-overload-e3e7@gregkh>
+ <7d4dac9e-a95a-1dcc-4723-79de0097e26f@amazon.com>
+In-Reply-To: <7d4dac9e-a95a-1dcc-4723-79de0097e26f@amazon.com>
+Content-Type: text/plain; charset="UTF-8"; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Originating-IP: [10.106.178.24]
+X-ClientProxiedBy: EX19D035UWB002.ant.amazon.com (10.13.138.97) To
+ EX19D028UEC003.ant.amazon.com (10.252.137.159)
+X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Aug 31 2023, Michael Ellerman wrote:
 
-> Andreas Schwab <schwab@linux-m68k.org> writes:
->> This breaks booting on ppc32:
->
-> Does enabling CONFIG_DEBUG_ATOMIC_SLEEP fix the crash?
 
-Yes, it does.
+On 2023-08-31 14:31, Luiz Capitulino wrote:
+> 
+> 
+> On 2023-08-31 14:22, Greg KH wrote:
+> 
+>>
+>>
+>>
+>> On Thu, Aug 31, 2023 at 06:13:01PM +0000, Luiz Capitulino wrote:
+>>> Hi,
+>>>
+>>> When using KVM on systems that require iTLB multihit mitigation enabled[1],
+>>> we're observing very high latency (70ms+) in KVM_CREATE_VM ioctl() in 6.1
+>>> kernel in comparison to older stable kernels such as 5.10. This is true even
+>>> when using favordynmods mount option.
+>>>
+>>> We debugged this down to the cpuset controller trying to acquire cpuset_rwsem
+>>> in cpuset_can_attach(). This happens because KVM creates a worker thread which
+>>> calls cgroup_attach_task_all() during KVM_CREATE_VM. I don't know if
+>>> favordynmods is supposed to cover this case or not, but removing cpuset_rwsem
+>>> certainly solves the issue.
+>>>
+>>> For the backport I tried to pick as many dependent commits as required to avoid
+>>> conflicts. I would highly appreciate review from cgroup people.
+>>>
+>>> Tests performed:
+>>>   * Measured latency in KVM_CREATE_VM ioctl(), it goes down to less than 1ms
+>>>   * Ran the cgroup kselftest tests, got same results with or without this series
+>>>      * However, some tests such as test_memcontrol and test_kmem are failing
+>>>        in 6.1. This probably needs to be looked at
+>>>      * To make test_cpuset_prs.sh work, I had to increase the timeout on line
+>>>        592 to 1 second. With this change, the test runs and passes
+>>>   * I run our downstream test suite against our downstream 6.1 kernel with this
+>>>     series applied, it passed
+>>>
+>>>   [1] For the case where the CPU is not vulnerable to iTLB multihit we can
+>>>       simply disable the iTLB multihit mitigation in KVM which avoids this
+>>>       whole situation. Disabling the mitigation is possible since upstream
+>>>       commit 0b210faf337 which I plan to backport soon
+>>
+>> Please try 6.1.50, I think you will find that this issue is resolved
+>> there, right?
+> 
+> It should, since the most important is dropping cpuset_rwsem from
+> cpuset. I'll double check to be sure.
 
--- 
-Andreas Schwab, schwab@linux-m68k.org
-GPG Key fingerprint = 7578 EB47 D4E5 4D69 2510  2552 DF73 E780 A9DA AEC1
-"And now for something completely different."
+Quick test passed. We'll be doing more testing in the next days and I'll
+report if there are any issues.
+
+- Luiz
+
+> 
+> Thank you very much for the quick reply. I queued this series before my
+> vacation and didn't check back before sending it today.
+> 
+> - Luiz
+> 
+>>
+>> if not, please rebase your series on top of that, as obviously, it does
+>> not still apply anymore.
+>>
+>> thanks,
+>>
+>> greg k-h
