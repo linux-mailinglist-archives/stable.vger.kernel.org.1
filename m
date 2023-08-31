@@ -2,50 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E79FD78EB81
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:10:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3418A78EB7B
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:10:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345805AbjHaLLB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:11:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50246 "EHLO
+        id S1343754AbjHaLKr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:10:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345708AbjHaLLA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:00 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79596E64
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:34 -0700 (PDT)
+        with ESMTP id S1345708AbjHaLKr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:10:47 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BE2CE7E;
+        Thu, 31 Aug 2023 04:10:18 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E784BB82218
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5AE59C433C8;
-        Thu, 31 Aug 2023 11:10:21 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED78863A6C;
+        Thu, 31 Aug 2023 11:10:08 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF4F6C433C7;
+        Thu, 31 Aug 2023 11:10:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480221;
-        bh=Y42TQKGNVXsLlWjN8531LhC8l0CK9d4ka9VqYqeP8c4=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MWjqwapVtulNSGaHpcZaNCsqWuVOq9k9pVUjsDluSmSzUqP+zmIlyi3XQmUR8W26v
-         FDM+cd1xpg3nHwGXP7ckDZSFT5WadHxALwICkARkpSLKSs9IQB3hRIc2+brZUfVrIY
-         erjtW05ZBteDyrXM2l0rWE9Fc6/bpPa7wIn6SKdM=
+        s=korg; t=1693480208;
+        bh=C8mJdh9rCO6kTZ6zW5t3/ttkSd6LuHAND1Dut0RKW08=;
+        h=From:To:Cc:Subject:Date:From;
+        b=EuxEhOCP8R7OXu1dsFwMV/dKUyDiULuHHbrznnlwWV6UEl+KpmGGb1NIkQot0ib+i
+         CItgF914JS2opRQWDpDJbr9+2LdD6Ge9x2vlEjC+TaTBceTyDcMV0jaN35ddzkplvn
+         Y4SsN0gn82x/TOGEzalG744UrNpRteuPHad2Uu4s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Ard Biesheuvel <ardb@kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>
-Subject: [PATCH 5.10 02/11] arm64: module-plts: inline linux/moduleloader.h
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: [PATCH 5.4 0/3] 5.4.256-rc1 review
 Date:   Thu, 31 Aug 2023 13:09:54 +0200
-Message-ID: <20230831110830.552941530@linuxfoundation.org>
+Message-ID: <20230831110828.874071888@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230831110830.455765526@linuxfoundation.org>
-References: <20230831110830.455765526@linuxfoundation.org>
+MIME-Version: 1.0
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
-MIME-Version: 1.0
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.256-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-5.4.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 5.4.256-rc1
+X-KernelTest-Deadline: 2023-09-02T11:08+00:00
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -56,38 +62,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.10-stable review patch.  If anyone has any objections, please let me know.
+This is the start of the stable review cycle for the 5.4.256 release.
+There are 3 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-------------------
+Responses should be made by Sat, 02 Sep 2023 11:08:22 +0000.
+Anything received after that time might be too late.
 
-From: Arnd Bergmann <arnd@arndb.de>
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.4.256-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.4.y
+and the diffstat can be found below.
 
-commit 60a0aab7463ee69296692d980b96510ccce3934e upstream.
+thanks,
 
-module_frob_arch_sections() is declared in moduleloader.h, but
-that is not included before the definition:
+greg k-h
 
-arch/arm64/kernel/module-plts.c:286:5: error: no previous prototype for 'module_frob_arch_sections' [-Werror=missing-prototypes]
+-------------
+Pseudo-Shortlog of commits:
 
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Acked-by: Ard Biesheuvel <ardb@kernel.org>
-Link: https://lore.kernel.org/r/20230516160642.523862-11-arnd@kernel.org
-Signed-off-by: Catalin Marinas <catalin.marinas@arm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
----
- arch/arm64/kernel/module-plts.c |    1 +
- 1 file changed, 1 insertion(+)
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 5.4.256-rc1
 
---- a/arch/arm64/kernel/module-plts.c
-+++ b/arch/arm64/kernel/module-plts.c
-@@ -7,6 +7,7 @@
- #include <linux/ftrace.h>
- #include <linux/kernel.h>
- #include <linux/module.h>
-+#include <linux/moduleloader.h>
- #include <linux/sort.h>
- 
- static struct plt_entry __get_adrp_add_pair(u64 dst, u64 pc,
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Revert "MIPS: Alchemy: fix dbdma2"
+
+YueHaibing <yuehaibing@huawei.com>
+    powerpc/pmac/smp: Drop unnecessary volatile qualifier
+
+Ilie Halip <ilie.halip@gmail.com>
+    powerpc/pmac/smp: Avoid unused-variable warnings
+
+
+-------------
+
+Diffstat:
+
+ Makefile                              |  4 ++--
+ arch/mips/alchemy/common/dbdma.c      | 27 ++++++++++++---------------
+ arch/powerpc/platforms/powermac/smp.c |  8 ++++----
+ 3 files changed, 18 insertions(+), 21 deletions(-)
 
 
