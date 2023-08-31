@@ -2,115 +2,101 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1573378E8EB
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 10:58:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3604B78E931
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 11:18:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234829AbjHaI6l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 04:58:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
+        id S242544AbjHaJSt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 05:18:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36004 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229715AbjHaI6k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 04:58:40 -0400
-Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1E8CE6;
-        Thu, 31 Aug 2023 01:58:38 -0700 (PDT)
-Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
-        by mailout.nyi.internal (Postfix) with ESMTP id 445505C00EF;
-        Thu, 31 Aug 2023 04:58:37 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute3.internal (MEProxy); Thu, 31 Aug 2023 04:58:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
-        cc:cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
-        1693472317; x=1693558717; bh=GO+RB/XjbQvZQe1MEUlBwDOw8njnoFbRMlk
-        s6o1U5dw=; b=n2qaDeb/UbimrdbrMvWZDVeSrHCybiKua/Ds0tnvtcnDD+fAU/H
-        MLidxqDFUemvZt4Nef/MLcJbsRAXEk7gKZfq8R+XW1DGiVlp8A9M1UDv1igiNpzD
-        mxaEiSdHC36/jxKMc6Qt7QWGaw8ad0QQRpI5C0bjNYBFJBlE4x2LsCqZmW8oBM0y
-        aYBIkoiTEwoNDmx25o3vSFTBvLKB+vW4QwqJe75TWM393SyWPgbzVhi2ANIBybGi
-        MnI+stDpGYR+tsIdesb92RarDs2XNvYBweyn8Ma5I3zQ9vB73N2HSqIOQWslTfhy
-        YR9JdbCkRPolC0nlqBiV6fvZ4OfGHTIf1Xg==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1693472317; x=1693558717; bh=GO+RB/XjbQvZQe1MEUlBwDOw8njnoFbRMlk
-        s6o1U5dw=; b=wWCYcoiHIWSq6hvrKzB6e7q/Au0spKWXt3QQFGqdXB+iKS7I5q0
-        YAD+isxn3z2fvMaAMJoaO9dQ0DaDikza3c2HMz85dr2RtQJfPq7pIo4MctLzdSPo
-        jX2EJ1uWH1nd3KGi+A0PNhe/kFOTUrp8HAdwsve/bCxDHCSeL2X/GFhX5BwdAxXZ
-        AJfOOW8xb1pXyNuxe/P2RkSM8hDFd/LawAjpnB/Ly3Lh6qoP8RLyco7YnI5BINaE
-        nYx0YokHgRvzh/h28BNST9da5SzbDnQUXX4lViJ0+a2K6r+7YUqToiwAEktU6a5F
-        wfcIiDfwQdSYS0AJXtCDhcYd89mrKWFe93Q==
-X-ME-Sender: <xms:PVbwZPBZQcINLZAud8gAT3wGw16aUcZAiqu7F-TuunQNL81YnV-dvQ>
-    <xme:PVbwZFgH171shnitFFRpMjcdhFaN5icYBNPXlKIVZG0hEnFeEM87oReuA09_vdvQk
-    rGEc1KuDPrsiwIiUI8>
-X-ME-Received: <xmr:PVbwZKmIpxGdxy7a3OeTqXWTnX8eMJ52WNpo8yytOSgWfnOp97pZWMu6TbRJq2gYOnI>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudegtddguddtucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtfeejnecuhfhrohhmpeflihgr
-    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
-    cuggftrfgrthhtvghrnhepudfhkeevvddtueekfeefgfetlefgueegueeltddtieejgeei
-    heevgfehgfdvfeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
-    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
-X-ME-Proxy: <xmx:PVbwZBxyzNeDwwFLAuITfW_174_Sjg1Q03UsPYOkL1jeAZc4sNXHHg>
-    <xmx:PVbwZESCpUZsAgxq4gR_dHFZOfwKLHZJPQKf32YtegEp6CjasFPKPg>
-    <xmx:PVbwZEYrGFf-4w_aacbqYwOqS6Xfhy3vK_OVftGcoMXEJmBX0PU_iA>
-    <xmx:PVbwZJIIkHoosWFpMmksaFrfEfNg2SeL7N6PgOBB__S82vWtp5K6Mw>
-Feedback-ID: ifd894703:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 31 Aug 2023 04:58:33 -0400 (EDT)
-Message-ID: <62a7b292-ea1e-fb88-79cb-e7968d350a5e@flygoat.com>
-Date:   Thu, 31 Aug 2023 16:58:32 +0800
+        with ESMTP id S235660AbjHaJSs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 05:18:48 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E194CF7;
+        Thu, 31 Aug 2023 02:18:41 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qbdp1-0004V0-9q; Thu, 31 Aug 2023 11:18:39 +0200
+Message-ID: <8666bff5-e9ba-f472-d44f-82bdff35eecd@leemhuis.info>
+Date:   Thu, 31 Aug 2023 11:18:38 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
-Content-Language: en-GB
-To:     Huacai Chen <chenhuacai@kernel.org>
-Cc:     linux-pci@vger.kernel.org, bhelgaas@google.com,
-        linux-kernel@vger.kernel.org, kw@linux.com, lpieralisi@kernel.org,
+User-Agent: Mozilla Thunderbird
+Subject: Re: New kernel warning after updating from LTS 5.15.110 to 5.15.112
+ (and 5.15.113)
+Content-Language: en-US, de-DE
+From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+To:     Linux Regressions <regressions@lists.linux.dev>
+Cc:     Linux Kernel Integrity <linux-integrity@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
         stable@vger.kernel.org
-References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
- <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
- <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
- <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com>
- <CAAhV-H67ehyqtm4ocOTWQPGBioWjQjLoyN5H9hALdq0oXdzWVg@mail.gmail.com>
-From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
-In-Reply-To: <CAAhV-H67ehyqtm4ocOTWQPGBioWjQjLoyN5H9hALdq0oXdzWVg@mail.gmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>,
+          Linux regressions mailing list 
+          <regressions@lists.linux.dev>
+References: <fe6f7aa0-56c2-3729-ce8c-0f2d943b33f4@alliedtelesis.co.nz>
+ <ZHQIFLWvrWUNMVxb@debian.me>
+ <6e470461-1a9b-ec51-bac5-f2beb1dc11c9@alliedtelesis.co.nz>
+ <2b09d2ed-0852-bbc9-b792-aad92235c7fa@gmail.com>
+ <03daca5c-e468-8889-4dc2-e625a664d571@alliedtelesis.co.nz>
+ <ec5245bd-3103-f0c7-d3ef-85aabb4d4712@alliedtelesis.co.nz>
+ <ZH6TIjXeXJVMvSKa@debian.me> <2023060606-unlatch-yiddish-a45f@gregkh>
+ <ac5b76af-87dc-b04d-6035-8eda8ba5ed12@kunbus.com>
+ <2023060736-immodest-doormat-f957@gregkh>
+ <2d7ed7bb-38ba-8840-6629-d210937b8513@leemhuis.info>
+In-Reply-To: <2d7ed7bb-38ba-8840-6629-d210937b8513@leemhuis.info>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1693473521;0f0897b6;
+X-HE-SMSGID: 1qbdp1-0004V0-9q
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,T_SPF_TEMPERROR autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+[TLDR: This mail in primarily relevant for Linux kernel regression
+tracking. See link in footer if these mails annoy you.]
 
+On 20.06.23 14:41, Linux regression tracking #update (Thorsten Leemhuis)
+wrote:
+> On 07.06.23 19:49, Greg KH wrote:
+>> On Wed, Jun 07, 2023 at 05:47:57PM +0200, Lino Sanfilippo wrote:
+>>> On 06.06.23 08:45, Greg KH wrote:
+>>>>>
+>>>>> Lino, it looks like this regression is caused by (backported) commit of yours.
+>>>>> Would you like to take a look on it?
+> 
+>>>>> Anyway, telling regzbot:
+>>>>>
+>>>>> #regzbot introduced: 51162b05a44cb5
+>>>>
+>>>> There's some tpm backports to 5.15.y that were suspect and I'll look
+>>>> into reverting them and see if this was one of the ones that was on that
+>>>> list.  Give me a few days...
+>>>
+>>> Could you please consider to apply (mainline) commit 0c7e66e5fd69 ("tpm, tpm_tis: Request threaded
+>>> interrupt handler") to 5.15.y?
+>>>
+>>> As Chris confirmed it fixes the regression caused by 51162b05a44cb5 ("tpm, tpm_tis: Claim locality
+>>> before writing interrupt registers").
+>>>
+>>> Commit 0c7e66e5fd69 is also needed for 5.10.y, 6.1.y and 6.3.y.
+>>
+>> Now queued up, thanks.
+> 
+> #regzbot fix: 0c7e66e5fd69
+> #regzbot ignore-activity
 
-在 2023/8/31 14:22, Huacai Chen 写道:
+Brown paperback fix: should have used a stable commit id. Sory for the noise
 
-[...]
-> But it is worth to try, and you can walk the children to set mrrs when
-> the quirk runs on bridges, I think.
-No, this will break hotplug, I had managed to get hotplug work on 2K1000.
-Also we have no guarantee on order of discovering devices.
->> but the old quirk should run on every single device.
-> Your current patch has a drawback that both quirks will run for MIPS,
-> and their order is random (though it may cause nothing, but not
-> elegant).
-Actually loongson_mrrs_quirk is declared by DECLARE_PCI_FIXUP_EARLY but
-loongson_old_mrrs_quirk is declared by DECLARE_PCI_FIXUP_ENABLE,
-which means loongson_old_mrrs_quirk always runs after loongson_mrrs_quirk as
-expected.
+#regzbot fix: 4c3dda6b7cfd73fe818e424fe89ea19674ddb
+#regzbot ignore-activity
 
-Thanks
-- Jiaxun
-
-[...]
+Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+--
+Everything you wanna know about Linux kernel regression tracking:
+https://linux-regtracking.leemhuis.info/about/#tldr
+That page also explains what to do if mails like this annoy you.
