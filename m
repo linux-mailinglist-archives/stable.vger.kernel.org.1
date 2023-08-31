@@ -2,131 +2,106 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D96A778F320
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 21:13:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B9E078F36F
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 21:39:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347153AbjHaTNi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 15:13:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38320 "EHLO
+        id S238280AbjHaTjJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 15:39:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347154AbjHaTNh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 15:13:37 -0400
-Received: from NAM12-MW2-obe.outbound.protection.outlook.com (mail-mw2nam12on2046.outbound.protection.outlook.com [40.107.244.46])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A99E65;
-        Thu, 31 Aug 2023 12:13:29 -0700 (PDT)
+        with ESMTP id S229558AbjHaTjJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 15:39:09 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2067.outbound.protection.outlook.com [40.107.102.67])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FD01BF;
+        Thu, 31 Aug 2023 12:39:06 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=jEIe7DDraeu1r3ulY4IBVYqrxkscJ+bdpGCNulBlkzw4ut7jtImDMh7Gfx1LzXr5fIotNp+hFVoYhqB9jHxjUOlT2KVRyY1euIcBK8L2yqfTiCINcMKY/52CyNort04c6D3Y7lhFln+2/efzBV6Hth7MuHLeU5nH0NKQCP7N3/DlsKztElGZHNZPIVAvruO4HM1pjem9fKyDqRD3uXr9f9ZYoTcfVOO0SX9DzuYL4n2GyMcmTGBfA/EIQwe+R422j+OENB94khGP4O00et0Nk91YzAduqfhvBPBM1k1bRC1jeIxqXL4/TsPGrWm1fO5GKaqrVbJpUgLKD3eq7NhrLw==
+ b=jAKqX01R/LepbLxLfsnHr4+wmr/s0vga78Qlm8l99tHmp+royrrIax9zcXD43n7E4BETQS+Rv9PM6T6dSyLC0WqDKVJCFdj8sxLFAfalCHapGLOO0Hitu6yB9rLpodoYNtjhJxsA+pXg2OrIdzvlfLUaj5nRKCA0dQE8ocAxtcYBq+aNFyM64bcvsqcSRTb/S9dofTis8QHCfxIBWjCyKqErbhalfLozFTpsJMQs7v1hMOhZFDcpst5vB5L1cy6scHUOH0e20rxkg/SX1QYfOJEqqmldC2/EEfyU3GODckgnora+9zlq7kPmiXWHVDfP4VuKEumClN3hX7SP9jF6Gg==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=FrmuSdUNU4k0o/rBQBYgfGGhhSJn6cpsR2j+tBK1jhQ=;
- b=Xo74BM/bFLWS7ADB9JuC1hHkNLvWB2xdgNUw7iCocb2rmtHBZD1/ASMA8Pd+TASE1NGWwi4e0FUSeu0lxLKpbp8S3AHQpxB0VWHCGm7WO68CK2YEUXmnFwPEKo1kY3h4ntFWVKlW9OTCIhTVbUXVwg7ff8W9jwYeepkqzaywT+NbIzSHjOqNR96QolYkTRZETzxpAbQ30yVs/YaAgbOiXImjiTc9m+qHqV8mgRSs4ZDM85vAIJ3App+IOKQ9lOV7nUIGHIi8OyAG9At1wFrc9svT5VBFEnqghynn2Nt79ZCDkEPWqnd1TmkOc5d86Xj1Q3VXS2zI4ElUcgUPe68yvg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=amd.com; dmarc=pass action=none header.from=amd.com; dkim=pass
- header.d=amd.com; arc=none
+ bh=RHoFikkHZlk/NJWt/jLlG914P/y7IVqyTmQ+TUyD6zw=;
+ b=Ujt3HAffSsU8jQMVv5AQs3ceHGH6oMLNyBXmZG2R2BDHykqC99HRuIoqsFUijq3GSlvq/9U+yn2HXtlFG30X74ZrCW2Cu6X/9ZYXQH+WNXX4fFCoyfzhIsmTpVdZJM4RxQG6jiIAerkMhXg8mPUPrdSOExswrRFYtWm5dPsD79X2PMbNYgIWCgYD0DmJelQP/Vuuz4fomCsKWdB02AafLMM9YcJJ0PkQBBZGswPhaA5uTneopCvwHiOONimbB2Bi2Or0VN4iMzCdDSkYAsdeqosSD4C4IuCAPTqSA0PzZamON+4R/cU6UBGw7zqplN03hUjIJCxuv93GjY1uaMl+IQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=FrmuSdUNU4k0o/rBQBYgfGGhhSJn6cpsR2j+tBK1jhQ=;
- b=EyfF7GISGdlG5eJxD+vIkxT50AyIt1nMUuN+ALOGP1oCryVJMe0ANlesc2HQedarO0NxG0duAZYVv8SfyfIFeuBaKaaD5BalHlbnukxoJKt7ZJXYl0PL1TNIC1wlzvcQOfF30J6xGRwCKtZKJIa6Y0GVsf2vQo/OrGPBzpOaRn0=
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=amd.com;
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com (2603:10b6:5:358::13)
- by DS0PR12MB7995.namprd12.prod.outlook.com (2603:10b6:8:14e::7) with
+ bh=RHoFikkHZlk/NJWt/jLlG914P/y7IVqyTmQ+TUyD6zw=;
+ b=3JaXazPJdW2anDu5luSKwBJbApkObUqOP/cxQKF6Sh8fOHjNXAuIQ8LPR+ODyARgS+yenOvU06i2LOvdsO8sne4TCXTxzCILASIiiGpiBQfWo734EW/DD70GKDXaSB5+Fbaw0W/ykbRhPMq3amKCUVN54LvKlrJQ72PvD+CwHHQ=
+Received: from SJ2PR07CA0003.namprd07.prod.outlook.com (2603:10b6:a03:505::26)
+ by PH7PR12MB9068.namprd12.prod.outlook.com (2603:10b6:510:1f4::7) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6699.35; Thu, 31 Aug
- 2023 19:13:26 +0000
-Received: from CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::121e:5e68:c78a:1f2f]) by CO6PR12MB5427.namprd12.prod.outlook.com
- ([fe80::121e:5e68:c78a:1f2f%3]) with mapi id 15.20.6745.021; Thu, 31 Aug 2023
- 19:13:26 +0000
-Message-ID: <9689ecc6-5570-41c4-99d9-19ce4fcea8c3@amd.com>
-Date:   Thu, 31 Aug 2023 15:13:20 -0400
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] Revert "drm/amd/display: Remove v_startup workaround for
- dcn3+"
-Content-Language: en-US
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     stable@vger.kernel.org, Leo Li <sunpeng.li@amd.com>,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.22; Thu, 31 Aug
+ 2023 19:39:03 +0000
+Received: from CO1PEPF000044F3.namprd05.prod.outlook.com
+ (2603:10b6:a03:505:cafe::7) by SJ2PR07CA0003.outlook.office365.com
+ (2603:10b6:a03:505::26) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.20 via Frontend
+ Transport; Thu, 31 Aug 2023 19:39:01 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ CO1PEPF000044F3.mail.protection.outlook.com (10.167.241.73) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6745.17 via Frontend Transport; Thu, 31 Aug 2023 19:39:00 +0000
+Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Thu, 31 Aug
+ 2023 14:38:58 -0500
+From:   Hamza Mahfooz <hamza.mahfooz@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>
+CC:     Fangzhi Zuo <jerry.zuo@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        <stable@vger.kernel.org>, Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
         Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        =?UTF-8?Q?Christian_K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Alex Deucher" <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
         "Pan, Xinhui" <Xinhui.Pan@amd.com>,
         David Airlie <airlied@gmail.com>,
         Daniel Vetter <daniel@ffwll.ch>, Jun Lei <jun.lei@amd.com>,
         Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        "Nicholas Kazlauskas" <nicholas.kazlauskas@amd.com>,
         Wenjing Liu <wenjing.liu@amd.com>,
         Alvin Lee <Alvin.Lee2@amd.com>,
         Sung Joon Kim <sungjoon.kim@amd.com>,
-        Daniel Miess <daniel.miess@amd.com>,
-        Leo Chen <sancchen@amd.com>, Gabe Teeger <gabe.teeger@amd.com>,
-        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org
-References: <20230829201042.322173-1-hamza.mahfooz@amd.com>
-From:   Harry Wentland <harry.wentland@amd.com>
-In-Reply-To: <20230829201042.322173-1-hamza.mahfooz@amd.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-ClientProxiedBy: YQBPR0101CA0273.CANPRD01.PROD.OUTLOOK.COM
- (2603:10b6:c01:68::22) To CO6PR12MB5427.namprd12.prod.outlook.com
- (2603:10b6:5:358::13)
+        "Daniel Miess" <daniel.miess@amd.com>,
+        Gabe Teeger <gabe.teeger@amd.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 1/2] Revert "drm/amd/display: Remove v_startup workaround for dcn3+"
+Date:   Thu, 31 Aug 2023 15:38:41 -0400
+Message-ID: <20230831193844.154254-1-hamza.mahfooz@amd.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB03.amd.com (10.181.40.144) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CO6PR12MB5427:EE_|DS0PR12MB7995:EE_
-X-MS-Office365-Filtering-Correlation-Id: eb6450d5-0957-4139-d9e3-08dbaa5659c2
+X-MS-TrafficTypeDiagnostic: CO1PEPF000044F3:EE_|PH7PR12MB9068:EE_
+X-MS-Office365-Filtering-Correlation-Id: d913baeb-609d-4a44-ebb0-08dbaa59ed1a
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: Vd3oEacZ2XMqGGhXn9Y9eowrrr1AlA/KNhpOIbIT+fHl2igzm4xaOTWZeLumz54WZgcO76/D2vbItBLEirv9QZ4MOcZDFo0EJOr8z1XkvxGBEboj3TfUO6dPcQNelDS++EchJxzJXdsAXQJasjPc2FOUwY8IK6cM7P1/i165rZOoCcQMUOVXn0J3h/VAlA9pv+vW4h0uLSe3p44t10pvuL4apwL7dxTvPh1Er+k4+nmvSOKIzZhZSRln9tzr5PJCXTnxdrSUjhEnvNhsCzCCkxWwu9UQ+bOBMpVgHUyjphsTxdQIHvXxiXcivDMES3PJwtZNV/VEwBqfIBOFKBUVGvNa92fQ4Q0+aGvD0ADJ4Ftye6/D4k/8IBxSaQd4z3QCcrZIcUsDXBrt67yMjf8p2oUu9JvTS02pQ9b19gkZpoGS2mZknr4IqkLi2A1Zs/ETUQm1KBtHE5Z6pD7Q7pmJFk8pQwiBM3R2wenFwp2Gj64QTBFo6h7XDq/SA9eEIWQ7K1T6ygBLLgU6YMeWJuWNsmP+qy6QQWGOTFaWCbIlTMRSeuySiko2kYysImjS7YlC9L7qVZ5Wzsy3k99OWqtWRCgn7/DeFbrYrV6Cs7EvGktraY9Q3pZDNGfhL4iGWIy1oERttCqE2UqEik3ZWxX38g==
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CO6PR12MB5427.namprd12.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(376002)(366004)(136003)(396003)(39860400002)(186009)(1800799009)(451199024)(41300700001)(53546011)(6666004)(38100700002)(478600001)(2616005)(31696002)(6506007)(86362001)(83380400001)(966005)(6512007)(6486002)(26005)(36756003)(66556008)(66476007)(316002)(66946007)(54906003)(2906002)(5660300002)(8676002)(8936002)(4326008)(44832011)(31686004)(43740500002)(45980500001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?VWQ4UVlnWkZEYWdYS1JKeGoxTXpZN0k3M3ZXSVJJQWkzMEhvUnpGMGxVNWhD?=
- =?utf-8?B?WS9naEc2eWg2ME1oZWZ6RkhWSEpZMGxEUExBS1NCMFdRZ1l0YlhubU5XQWhm?=
- =?utf-8?B?S3kxOHVxbE9hWjVPOGZOMlBuMktSbVM2TG1JLzlIZnJlZ3VoNUFiL0xveHpC?=
- =?utf-8?B?cDJva3pmRXBJNW9wbm9XbFFxQXhmRXBUaVZuUE8zYWgwOXVYYjhVWHB2MUxZ?=
- =?utf-8?B?TVc2d1E1UEtVTnBCUWQ2cUFiOHdySk5TSDJieEdJckFwcXJQekNSM1grVGVq?=
- =?utf-8?B?Y1BDTXB5S0NURUxkUlpXNXUwc3NqZllmOEdDamNxZUpkTXVYWnNpWTVBMElo?=
- =?utf-8?B?NG9jdTBhSzFSZWRrQTZSQ1BUYWVTbytCdTFmeFpqSTFhUnFOZXNzYXJvRFFr?=
- =?utf-8?B?UUNLaEtMYVVzN2hIdWhOb2E3d3dFWjRCcVpwN3d4M3FtaVM3WmE0MC9TMFZm?=
- =?utf-8?B?S1NSV0ZrUGw2M2R0OXcxai9YdU1nNTZHVk9WUnVTY1hNM1hxVmUyaDJKNlB0?=
- =?utf-8?B?UFZ1dWFFK3kwUjVDaXhFQnEzUDJIQ1ZsQTUwVUxzeDhuR1FvRmZuMjFUUW1P?=
- =?utf-8?B?U0dIMlBTRFlyTjQzZGdtNzlsd2NNc0tHNzJVbHVjbm9udDBzQzE0MXFIWitn?=
- =?utf-8?B?ZlE5eGNQTG9UcTQ1MXBINW1IY29KNEpvSW4zc2tia0QrN1doUDg5QW05bXNZ?=
- =?utf-8?B?c0hwQll4azE0WHJwUU1HdllKS244NkNrdjZRUk14NWJYQVlWSzhmeWxYK3lx?=
- =?utf-8?B?WU9tUTc5NnF4ZW9oZS8yaHhOUERaY3Q3TGExaVB3MlY0dnorOFZPUnFvZS96?=
- =?utf-8?B?T3hnZXBuZkxhSTFaMklET2JqK08vUEhvajhCYWphaXFKMmRkVDFqNFJJREk1?=
- =?utf-8?B?MUpMSjkySHhlYjlqSXFOa2VkUVErVXBaSnNRekQvT2FDZ095SUJWRFFjdTVk?=
- =?utf-8?B?R2FLamhaZERVR0pVbXh1cVlrMS96WFZsMzJ5NFhrQXdiNDlzdmsyWFRaT05O?=
- =?utf-8?B?UzhZODkwdzErR0Z5ZVdPNFMrdCtWWVhkNmxsbE04RXJRbWFKbjMyTmVwYWw5?=
- =?utf-8?B?d3ljR0p5cnlQb2g1OG4yWnBSVmhxWVFXZEUyaE9KQWl3RjVFbi9TakpMZmVB?=
- =?utf-8?B?V0owOXY0WUJzTXQ5ckgyOUlQOVhhTWtKRThKVjJURWlZeXNEZm9OOGpQdjJh?=
- =?utf-8?B?T3M4eWdMVU1sZ09wQ0pXeWM5SHlwZ3JuYkxmK2svVnhmSExpemhkWUdQSm1V?=
- =?utf-8?B?cWZFY1VPL0Z0US9Sbk9iRVZMdVU1V0xjTjUvRXNRZlVOSXFhVUZzcWtwVnhP?=
- =?utf-8?B?TnY1SzZIZDlOUzJQTXJlK3Fxb3AyY0hsclBLYmFuSnRibk5zZXBQUmJneWRC?=
- =?utf-8?B?QlliYWtMd0l6MjE4R3JpbUl5ZnZDV0lIQUVyTXJQR3l0K0RCMDBMOXJIVXpq?=
- =?utf-8?B?d2NBVGNiLyt3UW1ZSGhIT3o4V2VGVjZxVWtDdXB3QVZSMnQ2TDhCRU9Ma04r?=
- =?utf-8?B?SGVxM0ZhWXhxMENpbHd4QVlnMWVkT2RrR3JnZkd6S0RCZDNnSkZ2MXlnYlpq?=
- =?utf-8?B?NnAxbitlZ1RSVmJvL0g1U1hlOHlrL0pGb1VHUFZMVnhMamFndWF2bGVjZk0x?=
- =?utf-8?B?ekZ3NDI0dXZKazBMT3NMM3Q0WXNsUHJLbDRmUDRyYkp4YzNLSGlvSzU3Uld2?=
- =?utf-8?B?MThPYy9EMStvcUNQV1d4Tm9LR2tCL09BbTVhSUJMcXc4WmE2ejQ4Q05pc3NP?=
- =?utf-8?B?cEhHS0xxVDZWcEJEaEVOaVo2d3BJU0hUdVk2ZWtKS2xkMGRLWGFnc3NDSXBt?=
- =?utf-8?B?eUhIZU85NExEUzVlUjNpYWtQV1AwZlJoWkVIemtRdmxsYlRRZ285R1lSZWlw?=
- =?utf-8?B?cjU4U3FoellZT3NrOUwvWk0yUThBcXBHcXhidnBZcTVpd3BJd2s3bkt4TjRx?=
- =?utf-8?B?S2l6UkhENElMclVVKzZHWlc3blNpVFRrbzNLMEZmUGdxeXpyT3EyaDhEck1w?=
- =?utf-8?B?SzNHWFU2S29oeS8zSVc3dlMyLzhsdHdvd2d5MnZyak5BbzZWbG9YazZqZ2wr?=
- =?utf-8?B?Y1ZzeXorTklVc1ZuWmgvSStpMGVnazBwVUxOL3BBSmZPOUZIQk5sNGNxOWJv?=
- =?utf-8?Q?/RLZyZBRQAZhlJMlGtnEXysAy?=
+X-Microsoft-Antispam-Message-Info: rnrww5mWuzDtEgm+kZlvtCI1zhHDpG9oNYMGRl6o5Pvpw2BpF4ZtuWZmQ92quNOlE06yFtwcBwc440hAa+9pFggwRhDSDikO2joKAKZ5y0g03FiZmngszA104zKqvtaVenLE3Ch9p0+cQYqHjzt71hrJs3QL/dR+bFnUIyLnCnqeCty145M4bdI5T4JQUyy4WQx00t4tn4r1GIEzgKq7CvUMQfariz4a+GRCqwuvVsI+92Uc7wFnnOjQKhoB/1uAd1XdK2cwzx6c+mG0MuZ76NZyecf4/lvSkke36tOScxWMohPG21nBXbLb7CrW3E95CI2ADyIkDT4qo+z+3Lak8CyR0zb08SQm9eU+ivOuSdav5Y/cWfkAgt/YaSygc8OIHp1LnhblPiARXOJGUiL4DBcfTxG0AbCpM4AG58MRWwYRoqp3WXn2Rh51oARuu9K4BL3FcXG0zXf5MUhOoVtxYk4jUCB3yxAKmAsm3NdeoM42WtnOeRvfFPwknbcjmN+7AwpCcQfnYEVb7JIJdcPPe5bnpjue1beH+7ifxlpHIXnfkrJH/GfMr3f6HVhdEQHXauddWyJxJ8PiEvxIndyoSabgZtaCSHxEmz/YfP6cLEV3or2uFB5uzueGDp3KZ4MPVwj8wTTLze9MuZoDQRgNDFeEOvGHqQXaN/Iowdm8XXHbaLKTkTmVP38PK2R6y54jZvsW6uRebfX9rpTNmwtgOfmSwHeV7WzVm6E5Fl5rJipA16Op66am8i8P2syv5zUNbQSkBEgn8Sa1aw4DrLX+yzYCElUZdI8BSPpwR6uVXfk=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(39860400002)(346002)(376002)(396003)(451199024)(1800799009)(82310400011)(186009)(36840700001)(46966006)(40470700004)(6666004)(2906002)(5660300002)(86362001)(316002)(6916009)(478600001)(44832011)(2616005)(47076005)(4326008)(36860700001)(8676002)(8936002)(966005)(40460700003)(1076003)(26005)(82740400003)(40480700001)(41300700001)(336012)(426003)(36756003)(356005)(81166007)(70206006)(70586007)(83380400001)(54906003)(16526019)(16060500005)(36900700001);DIR:OUT;SFP:1101;
 X-OriginatorOrg: amd.com
-X-MS-Exchange-CrossTenant-Network-Message-Id: eb6450d5-0957-4139-d9e3-08dbaa5659c2
-X-MS-Exchange-CrossTenant-AuthSource: CO6PR12MB5427.namprd12.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 19:13:25.9403
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 31 Aug 2023 19:39:00.8426
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
+X-MS-Exchange-CrossTenant-Network-Message-Id: d913baeb-609d-4a44-ebb0-08dbaa59ed1a
 X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: WLv8OzesFxnpBYYfMhiDLyKcHLxVsP4Fb35Ih5uedQ6rXE9U/x0sUuIsAOVCGStPyNIMElcvpsWtg7jwyc49mg==
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS0PR12MB7995
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: CO1PEPF000044F3.namprd05.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH7PR12MB9068
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
         RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
@@ -137,88 +112,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 2023-08-29 16:10, Hamza Mahfooz wrote:
-> This reverts commit 3a31e8b89b7240d9a17ace8a1ed050bdcb560f9e.
-> 
+This reverts commit 3a31e8b89b7240d9a17ace8a1ed050bdcb560f9e.
 
-This isn't a straight-up revert. Please split it into a revert (git revert),
-followed by a patch to limit the revert to < DCN_VERSION_3_1.
+We still need to call dcn20_adjust_freesync_v_startup() for older DCN3+
+ASICs otherwise it can cause DP to HDMI 2.1 PCONs to fail to light up.
 
-Harry
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2809
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+---
+ .../drm/amd/display/dc/dml/dcn20/dcn20_fpu.c  | 24 ++++---------------
+ 1 file changed, 4 insertions(+), 20 deletions(-)
 
-> We still need to call dcn20_adjust_freesync_v_startup() for older DCN3+
-> ASICs otherwise it can cause DP to HDMI 2.1 PCONs to fail to light up.
-> So, reintroduce the reverted code and limit it to ASICs older than
-> DCN31.
-> 
-> Cc: stable@vger.kernel.org
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2809
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-> ---
->  .../drm/amd/display/dc/dml/dcn20/dcn20_fpu.c  | 24 ++++---------------
->  1 file changed, 4 insertions(+), 20 deletions(-)
-> 
-> diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-> index 0989a0152ae8..0841176e8d6c 100644
-> --- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-> +++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
-> @@ -1099,6 +1099,10 @@ void dcn20_calculate_dlg_params(struct dc *dc,
->  		context->res_ctx.pipe_ctx[i].plane_res.bw.dppclk_khz =
->  						pipes[pipe_idx].clks_cfg.dppclk_mhz * 1000;
->  		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
-> +		if (dc->ctx->dce_version < DCN_VERSION_3_1 &&
-> +		    context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
-> +			dcn20_adjust_freesync_v_startup(&context->res_ctx.pipe_ctx[i].stream->timing,
-> +							&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
->  
->  		pipe_idx++;
->  	}
-> @@ -1927,7 +1931,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
->  	int vlevel = 0;
->  	int pipe_split_from[MAX_PIPES];
->  	int pipe_cnt = 0;
-> -	int i = 0;
->  	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
->  	DC_LOGGER_INIT(dc->ctx->logger);
->  
-> @@ -1951,15 +1954,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
->  	dcn20_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
->  	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
->  
-> -	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-> -		if (!context->res_ctx.pipe_ctx[i].stream)
-> -			continue;
-> -		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
-> -			dcn20_adjust_freesync_v_startup(
-> -				&context->res_ctx.pipe_ctx[i].stream->timing,
-> -				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
-> -	}
-> -
->  	BW_VAL_TRACE_END_WATERMARKS();
->  
->  	goto validate_out;
-> @@ -2232,7 +2226,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
->  	int vlevel = 0;
->  	int pipe_split_from[MAX_PIPES];
->  	int pipe_cnt = 0;
-> -	int i = 0;
->  	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
->  	DC_LOGGER_INIT(dc->ctx->logger);
->  
-> @@ -2261,15 +2254,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
->  	dcn21_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
->  	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
->  
-> -	for (i = 0; i < dc->res_pool->pipe_count; i++) {
-> -		if (!context->res_ctx.pipe_ctx[i].stream)
-> -			continue;
-> -		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
-> -			dcn20_adjust_freesync_v_startup(
-> -				&context->res_ctx.pipe_ctx[i].stream->timing,
-> -				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
-> -	}
-> -
->  	BW_VAL_TRACE_END_WATERMARKS();
->  
->  	goto validate_out;
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+index 0989a0152ae8..1bfdf0271fdf 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn20/dcn20_fpu.c
+@@ -1099,6 +1099,10 @@ void dcn20_calculate_dlg_params(struct dc *dc,
+ 		context->res_ctx.pipe_ctx[i].plane_res.bw.dppclk_khz =
+ 						pipes[pipe_idx].clks_cfg.dppclk_mhz * 1000;
+ 		context->res_ctx.pipe_ctx[i].pipe_dlg_param = pipes[pipe_idx].pipe.dest;
++		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
++			dcn20_adjust_freesync_v_startup(
++				&context->res_ctx.pipe_ctx[i].stream->timing,
++				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+ 
+ 		pipe_idx++;
+ 	}
+@@ -1927,7 +1931,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
+ 	int vlevel = 0;
+ 	int pipe_split_from[MAX_PIPES];
+ 	int pipe_cnt = 0;
+-	int i = 0;
+ 	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
+ 	DC_LOGGER_INIT(dc->ctx->logger);
+ 
+@@ -1951,15 +1954,6 @@ static bool dcn20_validate_bandwidth_internal(struct dc *dc, struct dc_state *co
+ 	dcn20_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
+ 	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
+ 
+-	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (!context->res_ctx.pipe_ctx[i].stream)
+-			continue;
+-		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
+-			dcn20_adjust_freesync_v_startup(
+-				&context->res_ctx.pipe_ctx[i].stream->timing,
+-				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+-	}
+-
+ 	BW_VAL_TRACE_END_WATERMARKS();
+ 
+ 	goto validate_out;
+@@ -2232,7 +2226,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
+ 	int vlevel = 0;
+ 	int pipe_split_from[MAX_PIPES];
+ 	int pipe_cnt = 0;
+-	int i = 0;
+ 	display_e2e_pipe_params_st *pipes = kzalloc(dc->res_pool->pipe_count * sizeof(display_e2e_pipe_params_st), GFP_ATOMIC);
+ 	DC_LOGGER_INIT(dc->ctx->logger);
+ 
+@@ -2261,15 +2254,6 @@ bool dcn21_validate_bandwidth_fp(struct dc *dc,
+ 	dcn21_calculate_wm(dc, context, pipes, &pipe_cnt, pipe_split_from, vlevel, fast_validate);
+ 	dcn20_calculate_dlg_params(dc, context, pipes, pipe_cnt, vlevel);
+ 
+-	for (i = 0; i < dc->res_pool->pipe_count; i++) {
+-		if (!context->res_ctx.pipe_ctx[i].stream)
+-			continue;
+-		if (context->res_ctx.pipe_ctx[i].stream->adaptive_sync_infopacket.valid)
+-			dcn20_adjust_freesync_v_startup(
+-				&context->res_ctx.pipe_ctx[i].stream->timing,
+-				&context->res_ctx.pipe_ctx[i].pipe_dlg_param.vstartup_start);
+-	}
+-
+ 	BW_VAL_TRACE_END_WATERMARKS();
+ 
+ 	goto validate_out;
+-- 
+2.41.0
 
