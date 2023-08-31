@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 151E378EB76
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:10:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D941178EB79
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:10:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244252AbjHaLK3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:10:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45914 "EHLO
+        id S1345091AbjHaLKo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:10:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245577AbjHaLK3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:10:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58A6310DA
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:02 -0700 (PDT)
+        with ESMTP id S1343754AbjHaLKo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:10:44 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 300FE170A
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 0602663963
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:09:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E3BAFC433C8;
-        Thu, 31 Aug 2023 11:09:51 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 7FB21B82261
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:09:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C96A9C433C8;
+        Thu, 31 Aug 2023 11:09:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480192;
-        bh=fiLhJLlvsYfkfgDCT/5Pgw8wj3UWjzTvuz+EISGZXAo=;
+        s=korg; t=1693480195;
+        bh=5TadUomiqk7fVpi2MJx42Ho6ckobVlotU+wrsWJtACw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x6/dT5quwe+hBsb5UjXaQg8feVNH4VFzJTyB2RfdU+ZMrzcNYFjt03a1zTszo18AB
-         /p2uodYY2GdvPRz4gcEiHdfKTjyDtthOK/lgNC7lRfkODhTs6aGaTpDICkqOzZ2p2A
-         8rXcUuakAqboDni47Owe0LGzxhvc7YwuCl64Lo7k=
+        b=XoDS4NvbMj23wWug5v/U+S9no2esS1boCjyQPkip6b2IvqOz77rNOEdGx/nNdYi//
+         h0bG6x7yQBTHofMHstBcsM9HIoDsFnRdofptJ0GYsRbTWZAKlEY1pR0LAmm1pVQAX8
+         HY/+VQgL2pIyr4MS8s93t5RXapm80h817m33KqG4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 4.14 1/2] Revert "MIPS: Alchemy: fix dbdma2"
-Date:   Thu, 31 Aug 2023 13:09:42 +0200
-Message-ID: <20230831110828.631297885@linuxfoundation.org>
+        Alexander Sverdlin <alexander.sverdlin@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 4.14 2/2] Revert "ARM: ep93xx: fix missing-prototype warnings"
+Date:   Thu, 31 Aug 2023 13:09:43 +0200
+Message-ID: <20230831110828.673811945@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230831110828.577111137@linuxfoundation.org>
 References: <20230831110828.577111137@linuxfoundation.org>
@@ -46,10 +46,9 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -62,79 +61,39 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-This reverts commit 10130470bb0003b784f4656cc3ef2b9dc396ebdd which is
-commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 upstream.
+This reverts commit 2e50d55578b05664b11538f0a280541c100caefe which is
+commit 419013740ea1e4343d8ade535d999f59fa28e460 upstream.
 
-It breaks the build, so should be dropped.
+It breaks the build, so should be reverted.
 
 Reported-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/5b30ff73-46cb-1d1e-3823-f175dbfbd91b@roeck-us.net
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://lore.kernel.org/r/98dbc981-56fa-4919-afcc-fdf63e0a1c53@roeck-us.net
+Cc: Alexander Sverdlin <alexander.sverdlin@gmail.com>
+Cc: Arnd Bergmann <arnd@arndb.de>
 Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/alchemy/common/dbdma.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ arch/arm/mach-ep93xx/timer-ep93xx.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -30,7 +30,6 @@
-  *
-  */
+--- a/arch/arm/mach-ep93xx/timer-ep93xx.c
++++ b/arch/arm/mach-ep93xx/timer-ep93xx.c
+@@ -9,7 +9,6 @@
+ #include <linux/io.h>
+ #include <asm/mach/time.h>
+ #include "soc.h"
+-#include "platform.h"
  
--#include <linux/dma-map-ops.h> /* for dma_default_coherent */
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -624,18 +623,17 @@ u32 au1xxx_dbdma_put_source(u32 chanid,
- 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
+ /*************************************************************************
+  * Timer handling for EP93xx
+@@ -61,7 +60,7 @@ static u64 notrace ep93xx_read_sched_clo
+ 	return ret;
+ }
  
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result
-+	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
-+	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
-+	 * these parts. If it is fixed in the future, these dma_cache_inv will
-+	 * just be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_wback_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
+-static u64 ep93xx_clocksource_read(struct clocksource *c)
++u64 ep93xx_clocksource_read(struct clocksource *c)
+ {
+ 	u64 ret;
  
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
-@@ -687,18 +685,17 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dm
- 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
- #endif
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result in
-+	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
-+	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
-+	 * parts. If it is fixed in the future, these dma_cache_inv will just
-+	 * be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
- 
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
 
 
