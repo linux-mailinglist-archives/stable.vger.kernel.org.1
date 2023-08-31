@@ -2,68 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BCA578EDEB
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 15:00:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FC0578EDFA
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 15:02:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240844AbjHaNAn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 09:00:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44924 "EHLO
+        id S1345515AbjHaNCd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 09:02:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229716AbjHaNAn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 09:00:43 -0400
-Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 720E61A4
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 06:00:40 -0700 (PDT)
-Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c1ff5b741cso5926215ad.2
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 06:00:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693486839; x=1694091639; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=PHtN9PUA9z38hHHNNou6LqtGZjxNsSpOSHa/ebEmviQ=;
-        b=QgBauU0nuvFDNLUTvVBW+WFWt/f+LxzPWzvR+x+UBtftV7gNFI7PwrsSdCdcLpQxfC
-         IsyNaJHf/EpCpCJEJqrkO/BRZGLYy5g0CBrPDoB2ME2IBASzzhRz4SyAUkgV/gRrXmTq
-         60IbaoQK+AcE6H9w0Ls730d1IneoGqMF7PGFujuZnUCa3RscRMbQfkK6R1a4Vli5tM60
-         5UKDJ8lbzHASphSzECqpOPXxYeyfGbPNlLjTG4oHcDr/9C9MEOEz7OcxRBM0QPoiLIqj
-         NYvFNtHn+QEEW6+QfnmRu5sJGsIf2NEW3FLf3LNDqzv25UzIWo6qKTIg1B+JzhhpmU7T
-         182w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693486839; x=1694091639;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=PHtN9PUA9z38hHHNNou6LqtGZjxNsSpOSHa/ebEmviQ=;
-        b=V9canmVgQ0J27Efo8SWrVmBBzy9VoT/GxLtDKJTOrC4DGFjr/DctcDHa2qXJSu8Qic
-         Oypxn85pdif/h5VanQ0aLBJ4f6Iz0J3d3D45VkxGj24AELetuinMwsp4CgiNpTWAoeBh
-         JOxWd1C6yz9zobF6JVpb9Tl1f9+nAHkusvDQqkoZgKRIMMcZPxeb1CtA7Iv4sjLTGqIj
-         1vwZwocEFqAbwu60xf4R7jLppdK4xGr2bdZoY12EoghIcbetRHZoNdsuCxrXR1ItqKB5
-         Sh7uL8ERwmI04vuGUNwgIr7PftVm3OZeg+9U9WNtvG2ZkV8fV/iwx/Ot7v7riNYm9FCR
-         GmWg==
-X-Gm-Message-State: AOJu0YzVe2miIFCqHrcXH/29gNih2y/W66z2+uWNg4SdA2aFckqBzBlR
-        rIdOLMiZEVOU5bkv0pOb5xGPIkB/N53qItf/Jqo=
-X-Google-Smtp-Source: AGHT+IHlEdMdHBTXe84l9kDLtheW/kC5iytnDBUSIb1QaCjju4ptyUIbkunsxwP9WynxIc4xPh09+Q==
-X-Received: by 2002:a17:902:d4c3:b0:1bf:1367:b80a with SMTP id o3-20020a170902d4c300b001bf1367b80amr5595391plg.21.1693486839373;
-        Thu, 31 Aug 2023 06:00:39 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id w4-20020a170902d3c400b001bf044dc1a6sm1216606plb.39.2023.08.31.06.00.38
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 06:00:38 -0700 (PDT)
-Message-ID: <64f08ef6.170a0220.c0760.20a7@mx.google.com>
-Date:   Thu, 31 Aug 2023 06:00:38 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S229716AbjHaNCc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 09:02:32 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FFBE42;
+        Thu, 31 Aug 2023 06:02:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693486949; x=1725022949;
+  h=message-id:date:mime-version:subject:from:to:cc:
+   references:in-reply-to:content-transfer-encoding;
+  bh=qpkS7vq/1gFCqsZT0u6VttxuNzwL+XaL9SmeaCXn5zA=;
+  b=FslnwOHv/mmLELmm+m8/zwTMWGO6yfsGV+lkU1g1FTJ0THZnHoPDWGPZ
+   lJGtTVjbqtXubp4hDWsfuMmRPLfBl1ACRGDClpw4NTBXK8rNeYnQw597l
+   uCSSAy1WXAxw03wSGNOV/moo7bsrNfifAE1I9wZ7VYNJ72YO3s33fZOTH
+   xTjqma7Lg648xEVJ/6lC8ZhVdLPVfNmxnea8Vi1GbbJlyK0sJbCWKMbYn
+   FsvmuxXpGKgN7SQBSoYkQFxtdSOmC1+KIlKW9hr14vxCV39Q/tlu1iojr
+   u21J8iIhKcMRe507tEISGXYcyyi7p1+W6qIwFV3OpPSaZB1rPmnDS9kax
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="375874406"
+X-IronPort-AV: E=Sophos;i="6.02,216,1688454000"; 
+   d="scan'208";a="375874406"
+Received: from fmsmga006.fm.intel.com ([10.253.24.20])
+  by fmsmga103.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 06:02:26 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10818"; a="986230419"
+X-IronPort-AV: E=Sophos;i="6.02,216,1688454000"; 
+   d="scan'208";a="986230419"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.57.245])
+  by fmsmga006-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 31 Aug 2023 06:02:22 -0700
+Message-ID: <f8a6bdee-4abb-b69d-874e-c0a13e2ac4a9@intel.com>
+Date:   Thu, 31 Aug 2023 16:02:16 +0300
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-4.19.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v4.19.293-2-g633535b7dfa95
-Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
- 20 warnings (v4.19.293-2-g633535b7dfa95)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.0
+Subject: Re: [PATCH v2] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+Content-Language: en-US
+From:   Adrian Hunter <adrian.hunter@intel.com>
+To:     Sven van Ashbrook <svenva@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>, ulf.hansson@linaro.org
+Cc:     jason.lai@genesyslogic.com.tw, skardach@google.com,
+        Renius Chen <reniuschengl@gmail.com>,
+        linux-mmc@vger.kernel.org, greg.tu@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, SeanHY.chen@genesyslogic.com.tw,
+        ben.chuang@genesyslogic.com.tw, victor.shih@genesyslogic.com.tw,
+        stable@vger.kernel.org
+References: <20230823174134.v2.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
+ <e22c4a5f-c592-7121-7173-eef669ebdf89@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <e22c4a5f-c592-7121-7173-eef669ebdf89@intel.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-7.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_MED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,221 +72,196 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 20 warnings (=
-v4.19.293-2-g633535b7dfa95)
+On 24/08/23 14:46, Adrian Hunter wrote:
+> Hi
+> 
+> Looks OK - a few minor comments below
+> 
+> On 23/08/23 20:41, Sven van Ashbrook wrote:
+>> To improve the r/w performance of GL9763E, the current driver inhibits LPM
+>> negotiation while the device is active.
+>>
+>> This prevents a large number of SoCs from suspending, notably x86 systems
+> 
+> If possible, can you give example of which SoCs / products
+> 
+>> which use S0ix as the suspend mechanism:
+>> 1. Userspace initiates s2idle suspend (e.g. via writing to
+>>    /sys/power/state)
+>> 2. This switches the runtime_pm device state to active, which disables
+>>    LPM negotiation, then calls the "regular" suspend callback
+>> 3. With LPM negotiation disabled, the bus cannot enter low-power state
+>> 4. On a large number of SoCs, if the bus not in a low-power state, S0ix
+>>    cannot be entered, which in turn prevents the SoC from entering
+>>    suspend.
+>>
+>> Fix by re-enabling LPM negotiation in the device's suspend callback.
+>>
+>> Suggested-by: Stanislaw Kardach <skardach@google.com>
+>> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+>> Cc: stable@vger.kernel.org
+>> Signed-off-by: Sven van Ashbrook <svenva@chromium.org>
+>>      # on gladios device
+>>      # on 15590.0.0 with v5.10 and upstream (v6.4) kernels
+>>
+> 
+> 3 extraneous lines here - please remove
+> 
+>> ---
+>>
+>> Changes in v2:
+>> - improved symmetry and error path in s2idle suspend callback (internal review)
+>>
+>>  drivers/mmc/host/sdhci-pci-gli.c | 102 +++++++++++++++++++------------
+>>  1 file changed, 64 insertions(+), 38 deletions(-)
+>>
+>> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+>> index 1792665c9494a..19f577cc8bceb 100644
+>> --- a/drivers/mmc/host/sdhci-pci-gli.c
+>> +++ b/drivers/mmc/host/sdhci-pci-gli.c
+>> @@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+>>  	return value;
+>>  }
+>>  
+>> -#ifdef CONFIG_PM_SLEEP
+>> -static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+>> -{
+>> -	struct sdhci_pci_slot *slot = chip->slots[0];
+>> -
+>> -	pci_free_irq_vectors(slot->chip->pdev);
+>> -	gli_pcie_enable_msi(slot);
+>> -
+>> -	return sdhci_pci_resume_host(chip);
+>> -}
+>> -
+>> -static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
+>> -{
+>> -	struct sdhci_pci_slot *slot = chip->slots[0];
+>> -	int ret;
+>> -
+>> -	ret = sdhci_pci_gli_resume(chip);
+>> -	if (ret)
+>> -		return ret;
+>> -
+>> -	return cqhci_resume(slot->host->mmc);
+>> -}
+>> -
+>> -static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
+>> -{
+>> -	struct sdhci_pci_slot *slot = chip->slots[0];
+>> -	int ret;
+>> -
+>> -	ret = cqhci_suspend(slot->host->mmc);
+>> -	if (ret)
+>> -		return ret;
+>> -
+>> -	return sdhci_suspend_host(slot->host);
+>> -}
+>> -#endif
+>> -
+>>  static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
+>>  					  struct mmc_ios *ios)
+>>  {
+>> @@ -1029,6 +993,68 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
+>>  }
+>>  #endif
+>>  
+>> +#ifdef CONFIG_PM_SLEEP
+>> +static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+>> +{
+>> +	struct sdhci_pci_slot *slot = chip->slots[0];
+>> +
+>> +	pci_free_irq_vectors(slot->chip->pdev);
+>> +	gli_pcie_enable_msi(slot);
+>> +
+>> +	return sdhci_pci_resume_host(chip);
+>> +}
+>> +
+>> +static int gl9763e_resume(struct sdhci_pci_chip *chip)
+>> +{
+>> +	struct sdhci_pci_slot *slot = chip->slots[0];
+>> +	int ret;
+>> +
+>> +	ret = sdhci_pci_gli_resume(chip);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	ret = cqhci_resume(slot->host->mmc);
+>> +	if (ret)
+>> +		return ret;
+>> +
+>> +	/* Disable LPM negotiation to bring device back in sync
+>> +	 * with its runtime_pm state.
+>> +	 */
+> 
+> I would prefer the comment style:
+> 
+> 	/*
+> 	 * Blah, blah ...
+> 	 * Blah, blah, blah.
+> 	 */
+> 
+>> +	gl9763e_set_low_power_negotiation(slot, false);
+>> +
+>> +	return 0;
+>> +}
+>> +
+>> +static int gl9763e_suspend(struct sdhci_pci_chip *chip)
+>> +{
+>> +	struct sdhci_pci_slot *slot = chip->slots[0];
+>> +	int ret;
+>> +
+>> +	/* Certain SoCs can suspend only with the bus in low-
+> 
+> Ditto re comment style
+> 
+>> +	 * power state, notably x86 SoCs when using S0ix.
+>> +	 * Re-enable LPM negotiation to allow entering L1 state
+>> +	 * and entering system suspend.
+>> +	 */
+>> +	gl9763e_set_low_power_negotiation(slot, true);
+> 
+> Couldn't this be at the end of the function, save
+> an error path
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
-y/kernel/v4.19.293-2-g633535b7dfa95/
+I think the discussion was a little uncertain over
+moving this, so maybe leave it alone.
 
-Tree: stable-rc
-Branch: linux-4.19.y
-Git Describe: v4.19.293-2-g633535b7dfa95
-Git Commit: 633535b7dfa957d38956a45e0804058d1b204750
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+However please consider my other comments.
 
-Build Failures Detected:
+> 
+>> +
+>> +	ret = cqhci_suspend(slot->host->mmc);
+>> +	if (ret)
+>> +		goto err_suspend;
+>> +
+>> +	ret = sdhci_suspend_host(slot->host);
+>> +	if (ret)
+>> +		goto err_suspend_host;
+>> +
+>> +	return 0;
+>> +
+>> +err_suspend_host:
+>> +	cqhci_resume(slot->host->mmc);
+>> +err_suspend:
+>> +	gl9763e_set_low_power_negotiation(slot, false);
+>> +	return ret;
+>> +}
+>> +#endif
+>> +
+>>  static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
+>>  {
+>>  	struct pci_dev *pdev = slot->chip->pdev;
+>> @@ -1113,8 +1139,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
+>>  	.probe_slot	= gli_probe_slot_gl9763e,
+>>  	.ops            = &sdhci_gl9763e_ops,
+>>  #ifdef CONFIG_PM_SLEEP
+>> -	.resume		= sdhci_cqhci_gli_resume,
+>> -	.suspend	= sdhci_cqhci_gli_suspend,
+>> +	.resume		= gl9763e_resume,
+>> +	.suspend	= gl9763e_suspend,
+>>  #endif
+>>  #ifdef CONFIG_PM
+>>  	.runtime_suspend = gl9763e_runtime_suspend,
+> 
 
-riscv:
-    allnoconfig: (gcc-10) FAIL
-    defconfig: (gcc-10) FAIL
-    tinyconfig: (gcc-10) FAIL
-
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig (gcc-10): 3 warnings
-    defconfig+arm64-chromebook (gcc-10): 3 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-    x86_64_defconfig (gcc-10): 2 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 2 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-
-Section mismatches summary:
-
-    3    WARNING: modpost: Found 1 section mismatch(es).
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
-ismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warn=
-ings, 0 section mismatches
-
-Warnings:
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-    aarch64-linux-gnu-ld: warning: -z norelro ignored
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: modpost: Found 1 section mismatch(es).
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
- mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-2 warnings, 0 section mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----
-For more info write to <info@kernelci.org>
