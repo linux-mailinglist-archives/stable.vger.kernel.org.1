@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41F9278EB9C
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1417D78EB99
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239610AbjHaLL6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:11:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40910 "EHLO
+        id S229705AbjHaLLt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343838AbjHaLL5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:57 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8557AE5B
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:11:35 -0700 (PDT)
+        with ESMTP id S243652AbjHaLLs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:48 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AED7810D1
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:11:29 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id BE58863AF7
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:11:25 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF33EC433C7;
-        Thu, 31 Aug 2023 11:11:24 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id A460463B93
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:11:28 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B371FC433C8;
+        Thu, 31 Aug 2023 11:11:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480285;
-        bh=DpEDdn462kkNQLW0LPLdBXKSZyDsySI1BbEu2b97Lsc=;
+        s=korg; t=1693480288;
+        bh=YJ8kmI3PEOs+rJqt8eCIH+aCvZ8c7XhH2r5TcnX3HCU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GyK2oYfwk7VXbdGdAfrh1kKrNGAVICI49uajV2sBke2xVAI7+auQOFUfyQwc7Iu1J
-         mr57ITZFQbX2GOFHKEYFx7G1liLsIqvwZcdqNwgNfGQOVCxPGUSjU5b+XGyrs1Acuz
-         UJCZcL+zK2Ch8//paOeqYdlHKq2AEcFH8BeGMvc8=
+        b=1HX3fWZt1FANML0ftaamN1FL7dEnd5nAvnntNoBebXND7YH2NHmLi60cq+M6lUIRQ
+         J/vW7WrgHxZA+YOtxD7dRrUqz7BXQ2VwU3A0Sc5prP+O5KukGJ4WzJwx2yrVRS/CdX
+         +XdRRYn99860XNbO7EgaCRIIdmnmA2IQFSk2GaN4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Adam Johnston <adam.johnston@arm.com>,
         James Morse <james.morse@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
         Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.5 2/8] module: Expose module_init_layout_section()
-Date:   Thu, 31 Aug 2023 13:10:29 +0200
-Message-ID: <20230831110830.897603224@linuxfoundation.org>
+Subject: [PATCH 6.5 3/8] arm64: module: Use module_init_layout_section() to spot init sections
+Date:   Thu, 31 Aug 2023 13:10:30 +0200
+Message-ID: <20230831110830.930595467@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230831110830.817738361@linuxfoundation.org>
 References: <20230831110830.817738361@linuxfoundation.org>
@@ -46,10 +47,9 @@ X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -62,25 +62,23 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: James Morse <james.morse@arm.com>
 
-commit 2abcc4b5a64a65a2d2287ba0be5c2871c1552416 upstream.
+commit f928f8b1a2496e7af95b860f9acf553f20f68f16 upstream.
 
-module_init_layout_section() choses whether the core module loader
-considers a section as init or not. This affects the placement of the
-exit section when module unloading is disabled. This code will never run,
-so it can be free()d once the module has been initialised.
+Today module_frob_arch_sections() spots init sections from their
+'init' prefix, and uses this to keep the init PLTs separate from the rest.
 
-arm and arm64 need to count the number of PLTs they need before applying
-relocations based on the section name. The init PLTs are stored separately
-so they can be free()d. arm and arm64 both use within_module_init() to
-decide which list of PLTs to use when applying the relocation.
+module_emit_plt_entry() uses within_module_init() to determine if a
+location is in the init text or not, but this depends on whether
+core code thought this was an init section.
 
-Because within_module_init()'s behaviour changes when module unloading
-is disabled, both architecture would need to take this into account when
-counting the PLTs.
+Naturally the logic is different.
 
-Today neither architecture does this, meaning when module unloading is
-disabled there are insufficient PLTs in the init section to load some
-modules, resulting in warnings:
+module_init_layout_section() groups the init and exit text together if
+module unloading is disabled, as the exit code will never run. The result
+is kernels with this configuration can't load all their modules because
+there are not enough PLTs for the combined init+exit section.
+
+This results in the following:
 | WARNING: CPU: 2 PID: 51 at arch/arm64/kernel/module-plts.c:99 module_emit_plt_entry+0x184/0x1cc
 | Modules linked in: crct10dif_common
 | CPU: 2 PID: 51 Comm: modprobe Not tainted 6.5.0-rc4-yocto-standard-dirty #15208
@@ -102,43 +100,32 @@ modules, resulting in warnings:
 |  el0t_64_sync_handler+0xc0/0xc4
 |  el0t_64_sync+0x190/0x194
 
-Instead of duplicating module_init_layout_section()s logic, expose it.
+A previous patch exposed module_init_layout_section(), use that so the
+logic is the same.
 
 Reported-by: Adam Johnston <adam.johnston@arm.com>
+Tested-by: Adam Johnston <adam.johnston@arm.com>
 Fixes: 055f23b74b20 ("module: check for exit sections in layout_sections() instead of module_init_section()")
-Cc: stable@vger.kernel.org
+Cc: <stable@vger.kernel.org> # 5.15.x: 60a0aab7463ee69 arm64: module-plts: inline linux/moduleloader.h
+Cc: <stable@vger.kernel.org> # 5.15.x
 Signed-off-by: James Morse <james.morse@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/moduleloader.h |    5 +++++
- kernel/module/main.c         |    2 +-
- 2 files changed, 6 insertions(+), 1 deletion(-)
+ arch/arm64/kernel/module-plts.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/include/linux/moduleloader.h
-+++ b/include/linux/moduleloader.h
-@@ -42,6 +42,11 @@ bool module_init_section(const char *nam
-  */
- bool module_exit_section(const char *name);
+--- a/arch/arm64/kernel/module-plts.c
++++ b/arch/arm64/kernel/module-plts.c
+@@ -339,7 +339,7 @@ int module_frob_arch_sections(Elf_Ehdr *
+ 		if (nents)
+ 			sort(rels, nents, sizeof(Elf64_Rela), cmp_rela, NULL);
  
-+/* Describes whether within_module_init() will consider this an init section
-+ * or not. This behaviour changes with CONFIG_MODULE_UNLOAD.
-+ */
-+bool module_init_layout_section(const char *sname);
-+
- /*
-  * Apply the given relocation to the (simplified) ELF.  Return -error
-  * or 0.
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1484,7 +1484,7 @@ long module_get_offset_and_type(struct m
- 	return offset | mask;
- }
- 
--static bool module_init_layout_section(const char *sname)
-+bool module_init_layout_section(const char *sname)
- {
- #ifndef CONFIG_MODULE_UNLOAD
- 	if (module_exit_section(sname))
+-		if (!str_has_prefix(secstrings + dstsec->sh_name, ".init"))
++		if (!module_init_layout_section(secstrings + dstsec->sh_name))
+ 			core_plts += count_plts(syms, rels, numrels,
+ 						sechdrs[i].sh_info, dstsec);
+ 		else
 
 
