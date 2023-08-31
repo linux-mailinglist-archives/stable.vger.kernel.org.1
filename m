@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4093978EB87
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 81C2278EB8A
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234436AbjHaLLJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:11:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43968 "EHLO
+        id S232637AbjHaLLM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243898AbjHaLLJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:09 -0400
+        with ESMTP id S232228AbjHaLLL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:11 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4426710E7
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A8C610F5
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id F418DB82266
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:36 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53516C433C7;
-        Thu, 31 Aug 2023 11:10:35 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B9B93B8225D
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:39 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 137CBC433CB;
+        Thu, 31 Aug 2023 11:10:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480235;
-        bh=JtTapC4AtWFBWOhPlICr4Fsm41ax+7d1GoZbQO6vOj0=;
+        s=korg; t=1693480238;
+        bh=mzllhMnAAHIXyBavrmvfylyefR9pAZ7Uo8AfGNj0m2I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tb5uXjX3mRjSQILUT3yJ8eKzZGV3oEkO5xBq5bzDroCrZ7CQgr0KdyWS+48OMr1LD
-         XfTPzZTQ4/k0mV1Cs6iXorKVCEjwxXx4p32+A0N3fu630XDJ8VGRJpld9NFiwijjbC
-         aJfiBXiTJj2kNL1f+i2RSIcDnIPsuQUA27Bioq5I=
+        b=HwAU6uhktacxocMU6CQ+xIzxL+Diqq2IbHzSJ6PN/w+0UF5smD27nWwEyVVOyxTOK
+         zBiMcDsFTqJgKLK0xZKv3kPVMN9aSs9MLG7Pfn0HpObJ2pPN2Gu1/Fi4O1jvTeIrj6
+         PWcCYsF1831iwUEIRu8J7LVKIRZ00Ktu7ieBd7AE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.10 07/11] Revert "MIPS: Alchemy: fix dbdma2"
-Date:   Thu, 31 Aug 2023 13:09:59 +0200
-Message-ID: <20230831110830.744701188@linuxfoundation.org>
+        patches@lists.linux.dev, "Paul E. McKenney" <paulmck@kernel.org>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Subject: [PATCH 5.10 08/11] rcu: Prevent expedited GP from enabling tick on offline CPU
+Date:   Thu, 31 Aug 2023 13:10:00 +0200
+Message-ID: <20230831110830.783476883@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230831110830.455765526@linuxfoundation.org>
 References: <20230831110830.455765526@linuxfoundation.org>
@@ -59,81 +58,82 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-This reverts commit 619672bf2d04cdc1bc3925defd0312c2ef11e5d0 which is
-commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 upstream.
+commit 147f04b14adde831eb4a0a1e378667429732f9e8 upstream.
 
-It breaks the build, so should be dropped.
+If an RCU expedited grace period starts just when a CPU is in the process
+of going offline, so that the outgoing CPU has completed its pass through
+stop-machine but has not yet completed its final dive into the idle loop,
+RCU will attempt to enable that CPU's scheduling-clock tick via a call
+to tick_dep_set_cpu().  For this to happen, that CPU has to have been
+online when the expedited grace period completed its CPU-selection phase.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/5b30ff73-46cb-1d1e-3823-f175dbfbd91b@roeck-us.net
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
-Cc: Sasha Levin <sashal@kernel.org>
+This is pointless:  The outgoing CPU has interrupts disabled, so it cannot
+take a scheduling-clock tick anyway.  In addition, the tick_dep_set_cpu()
+function's eventual call to irq_work_queue_on() will splat as follows:
+
+smpboot: CPU 1 is now offline
+WARNING: CPU: 6 PID: 124 at kernel/irq_work.c:95
++irq_work_queue_on+0x57/0x60
+Modules linked in:
+CPU: 6 PID: 124 Comm: kworker/6:2 Not tainted 5.15.0-rc1+ #3
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
++rel-1.14.0-0-g155821a-rebuilt.opensuse.org 04/01/2014
+Workqueue: rcu_gp wait_rcu_exp_gp
+RIP: 0010:irq_work_queue_on+0x57/0x60
+Code: 8b 05 1d c7 ea 62 a9 00 00 f0 00 75 21 4c 89 ce 44 89 c7 e8
++9b 37 fa ff ba 01 00 00 00 89 d0 c3 4c 89 cf e8 3b ff ff ff eb ee <0f> 0b eb b7
++0f 0b eb db 90 48 c7 c0 98 2a 02 00 65 48 03 05 91
+ 6f
+RSP: 0000:ffffb12cc038fe48 EFLAGS: 00010282
+RAX: 0000000000000001 RBX: 0000000000005208 RCX: 0000000000000020
+RDX: 0000000000000001 RSI: 0000000000000001 RDI: ffff9ad01f45a680
+RBP: 000000000004c990 R08: 0000000000000001 R09: ffff9ad01f45a680
+R10: ffffb12cc0317db0 R11: 0000000000000001 R12: 00000000fffecee8
+R13: 0000000000000001 R14: 0000000000026980 R15: ffffffff9e53ae00
+FS:  0000000000000000(0000) GS:ffff9ad01f580000(0000)
++knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000000000000 CR3: 000000000de0c000 CR4: 00000000000006e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ tick_nohz_dep_set_cpu+0x59/0x70
+ rcu_exp_wait_wake+0x54e/0x870
+ ? sync_rcu_exp_select_cpus+0x1fc/0x390
+ process_one_work+0x1ef/0x3c0
+ ? process_one_work+0x3c0/0x3c0
+ worker_thread+0x28/0x3c0
+ ? process_one_work+0x3c0/0x3c0
+ kthread+0x115/0x140
+ ? set_kthread_struct+0x40/0x40
+ ret_from_fork+0x22/0x30
+---[ end trace c5bf75eb6aa80bc6 ]---
+
+This commit therefore avoids invoking tick_dep_set_cpu() on offlined
+CPUs to limit both futility and false-positive splats.
+
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/alchemy/common/dbdma.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ kernel/rcu/tree_exp.h |    5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -30,7 +30,6 @@
-  *
-  */
- 
--#include <linux/dma-map-ops.h> /* for dma_default_coherent */
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -624,18 +623,17 @@ u32 au1xxx_dbdma_put_source(u32 chanid,
- 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
- 
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result
-+	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
-+	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
-+	 * these parts. If it is fixed in the future, these dma_cache_inv will
-+	 * just be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_wback_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
- 
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
-@@ -687,18 +685,17 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dm
- 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
- #endif
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result in
-+	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
-+	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
-+	 * parts. If it is fixed in the future, these dma_cache_inv will just
-+	 * be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
- 
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+--- a/kernel/rcu/tree_exp.h
++++ b/kernel/rcu/tree_exp.h
+@@ -507,7 +507,10 @@ static void synchronize_rcu_expedited_wa
+ 				if (rdp->rcu_forced_tick_exp)
+ 					continue;
+ 				rdp->rcu_forced_tick_exp = true;
+-				tick_dep_set_cpu(cpu, TICK_DEP_BIT_RCU_EXP);
++				preempt_disable();
++				if (cpu_online(cpu))
++					tick_dep_set_cpu(cpu, TICK_DEP_BIT_RCU_EXP);
++				preempt_enable();
+ 			}
+ 		}
+ 		j = READ_ONCE(jiffies_till_first_fqs);
 
 
