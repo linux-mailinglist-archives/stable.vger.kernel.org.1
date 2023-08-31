@@ -2,145 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 063FA78ECA9
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 14:00:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E3A8978ECCD
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 14:10:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243658AbjHaMAQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 08:00:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41442 "EHLO
+        id S245555AbjHaMK0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 08:10:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45810 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243632AbjHaMAQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 08:00:16 -0400
-Received: from relay3-d.mail.gandi.net (relay3-d.mail.gandi.net [217.70.183.195])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B6DCE43;
-        Thu, 31 Aug 2023 05:00:08 -0700 (PDT)
-Received: by mail.gandi.net (Postfix) with ESMTPSA id AE01F60014;
-        Thu, 31 Aug 2023 12:00:02 +0000 (UTC)
-From:   Remi Pommarel <repk@triplefau.lt>
-To:     Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Paolo Abeni <pabeni@redhat.com>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Remi Pommarel <repk@triplefau.lt>, stable@vger.kernel.org
-Subject: [PATCH net] net: stmmac: remove unneeded stmmac_poll_controller
-Date:   Thu, 31 Aug 2023 14:00:04 +0200
-Message-Id: <20230831120004.6919-1-repk@triplefau.lt>
-X-Mailer: git-send-email 2.40.0
+        with ESMTP id S232305AbjHaMK0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 08:10:26 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 826AFE47;
+        Thu, 31 Aug 2023 05:10:23 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qbgVA-0000Zg-WF; Thu, 31 Aug 2023 14:10:21 +0200
+Message-ID: <e48a555b-46ec-9f6e-f548-94dbe0577e03@leemhuis.info>
+Date:   Thu, 31 Aug 2023 14:10:20 +0200
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-GND-Sasl: repk@triplefau.lt
+User-Agent: Mozilla Thunderbird
+Subject: Re: Fwd: in linux 6.3.7-200.fc38.x86_64 goes vlc in time to switch tv
+ channels to zombie-process
+Content-Language: en-US, de-DE
+To:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Media <linux-media@vger.kernel.org>,
+        Linux Stable <stable@vger.kernel.org>
+References: <a7f997fc-e7cc-cf67-3ac0-80ed30346511@gmail.com>
+ <cdacb249-9d1d-cad9-44a9-ffa7b4b5b887@leemhuis.info>
+ <150a5670-8220-5c2f-351c-181ceeddf307@xs4all.nl>
+ <c362089e-8cdb-c735-762f-7a56552b68c2@leemhuis.info>
+ <3ca18d1d-c286-183b-10fe-f7e9fc42c41a@xs4all.nl>
+From:   "Linux regression tracking (Thorsten Leemhuis)" 
+        <regressions@leemhuis.info>
+Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
+In-Reply-To: <3ca18d1d-c286-183b-10fe-f7e9fc42c41a@xs4all.nl>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1693483823;d121534d;
+X-HE-SMSGID: 1qbgVA-0000Zg-WF
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Using netconsole netpoll_poll_dev could be called from interrupt
-context, thus using disable_irq() would cause the following kernel
-warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
+On 31.08.23 13:47, Hans Verkuil wrote:
+> On 31/08/2023 13:00, Thorsten Leemhuis wrote:
+>> On 31.08.23 12:35, Hans Verkuil wrote:
+>>> On 31/08/2023 11:26, Linux regression tracking #update (Thorsten Leemhuis) wrote:
+>>>> [TLDR: This mail in primarily relevant for Linux kernel regression
+>>>> tracking. See link in footer if these mails annoy you.]
+>>>>
+>>>> On 19.06.23 02:24, Bagas Sanjaya wrote:
+>>>>>
+>>>>> I notice a regression report on Bugzilla [1]. Quoting from it:
+>>>>> [...]
+>>>>>
+>>>>> #regzbot introduced: v6.3.5..v6.3.7 https://bugzilla.kernel.org/show_bug.cgi?id=217566
+>>>>> #regzbot title: switching TV channel causes VLC and firmware loading hang
+>>>>
+>>>> #regzbot fix: 7cfab4c9dc09ca3a9d57c187894055a22bdcd
+>>>> #regzbot ignore-activity
+>>>>
+>>>> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+>>>> --
+>>>> Everything you wanna know about Linux kernel regression tracking:
+>>>> https://linux-regtracking.leemhuis.info/about/#tldr
+>>>> That page also explains what to do if mails like this annoy you.
+>>>
+>>> >From what I can gather from the bugzilla report, whatever the issue was appears
+>>> to be resolved or at least improved in later kernels.
+>>
+>> I'm pretty (but not 100%) sure the initial report in that ticket were
+>> issues caused by a backport of a patch that was reverted later:
+>> https://lore.kernel.org/all/20230609082238.3671398-1-mchehab@kernel.org/
+> 
+> Ah, you have a better memory than I have. That might well be the culprit.
+> I didn't check for changes in the dvb core, I should have done that.
+> 
+> That patch was introduced in 6.3.7 and reverted in 6.3.9.
+> 
+> That doesn't quite match the "#regzbot introduced: v6.3.5..v6.3.7" report,
+> though. I wonder if fedora backported that problematic patch to their v6.3.5
+> release?
 
-  BUG: sleeping function called from invalid context at kernel/irq/manage.c:137
-  in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksoftirqd/0
-  CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00075-g816b502b2298-dirty #117
-  Hardware name: aml (r1) (DT)
-  Call trace:
-   dump_backtrace+0x0/0x270
-   show_stack+0x14/0x20
-   dump_stack_lvl+0x8c/0xac
-   dump_stack+0x18/0x30
-   ___might_sleep+0x150/0x194
-   __might_sleep+0x64/0xbc
-   synchronize_irq+0x8c/0x150
-   disable_irq+0x2c/0x40
-   stmmac_poll_controller+0x140/0x1a0
-   netpoll_poll_dev+0x6c/0x220
-   netpoll_send_skb+0x308/0x390
-   netpoll_send_udp+0x418/0x760
-   write_msg+0x118/0x140 [netconsole]
-   console_unlock+0x404/0x500
-   vprintk_emit+0x118/0x250
-   dev_vprintk_emit+0x19c/0x1cc
-   dev_printk_emit+0x90/0xa8
-   __dev_printk+0x78/0x9c
-   _dev_warn+0xa4/0xbc
-   ath10k_warn+0xe8/0xf0 [ath10k_core]
-   ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
-   ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
-   __napi_poll+0x58/0x1f4
-   net_rx_action+0x504/0x590
-   _stext+0x1b8/0x418
-   run_ksoftirqd+0x74/0xa4
-   smpboot_thread_fn+0x210/0x3c0
-   kthread+0x1fc/0x210
-   ret_from_fork+0x10/0x20
+Nope, as it matches (I'd say). The reporter never bisected this and just
+claimed that 6.3.5 was fine and 6.3.7 was broken (and 6.3.6 iirc was
+never tested). In that case we tell regzbot that the culprit is
+somewhere in that range (which is was[1]), as that's the important thing
+to know in the context of the 6.3.y regression (that it also happened in
+mainline is a different story).
 
-Since [0] .ndo_poll_controller is only needed if driver doesn't or
-partially use NAPI. Because stmmac does so, stmmac_poll_controller
-can be removed fixing the above warning.
+Is this too confusing? Would it be better to handle things differently
+somehow?
 
-[0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
+Ciao, Thorsten
 
-Cc: <stable@vger.kernel.org> # 5.15.x
-Signed-off-by: Remi Pommarel <repk@triplefau.lt>
----
- .../net/ethernet/stmicro/stmmac/stmmac_main.c | 30 -------------------
- 1 file changed, 30 deletions(-)
-
-diff --git a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-index 4727f7be4f86..9b5c0ebf0519 100644
---- a/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-+++ b/drivers/net/ethernet/stmicro/stmmac/stmmac_main.c
-@@ -5938,33 +5938,6 @@ static irqreturn_t stmmac_msi_intr_rx(int irq, void *data)
- 	return IRQ_HANDLED;
- }
- 
--#ifdef CONFIG_NET_POLL_CONTROLLER
--/* Polling receive - used by NETCONSOLE and other diagnostic tools
-- * to allow network I/O with interrupts disabled.
-- */
--static void stmmac_poll_controller(struct net_device *dev)
--{
--	struct stmmac_priv *priv = netdev_priv(dev);
--	int i;
--
--	/* If adapter is down, do nothing */
--	if (test_bit(STMMAC_DOWN, &priv->state))
--		return;
--
--	if (priv->plat->multi_msi_en) {
--		for (i = 0; i < priv->plat->rx_queues_to_use; i++)
--			stmmac_msi_intr_rx(0, &priv->dma_conf.rx_queue[i]);
--
--		for (i = 0; i < priv->plat->tx_queues_to_use; i++)
--			stmmac_msi_intr_tx(0, &priv->dma_conf.tx_queue[i]);
--	} else {
--		disable_irq(dev->irq);
--		stmmac_interrupt(dev->irq, dev);
--		enable_irq(dev->irq);
--	}
--}
--#endif
--
- /**
-  *  stmmac_ioctl - Entry point for the Ioctl
-  *  @dev: Device pointer.
-@@ -6800,9 +6773,6 @@ static const struct net_device_ops stmmac_netdev_ops = {
- 	.ndo_eth_ioctl = stmmac_ioctl,
- 	.ndo_setup_tc = stmmac_setup_tc,
- 	.ndo_select_queue = stmmac_select_queue,
--#ifdef CONFIG_NET_POLL_CONTROLLER
--	.ndo_poll_controller = stmmac_poll_controller,
--#endif
- 	.ndo_set_mac_address = stmmac_set_mac_address,
- 	.ndo_vlan_rx_add_vid = stmmac_vlan_rx_add_vid,
- 	.ndo_vlan_rx_kill_vid = stmmac_vlan_rx_kill_vid,
--- 
-2.40.0
-
+[1] $ git rev-list v6.3.5..v6.3.7 --oneline | grep "Fix use-after-free
+on race condition at dvb_frontend"
+8994830135b3 media: dvb-core: Fix use-after-free on race condition at
+dvb_frontend
