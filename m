@@ -2,112 +2,271 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18C6F78EC69
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:47:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E46078EC84
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:53:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242406AbjHaLro (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:47:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41162 "EHLO
+        id S1346152AbjHaLxF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:53:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231847AbjHaLro (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:47:44 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E488C5;
-        Thu, 31 Aug 2023 04:47:41 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A023060E8A;
-        Thu, 31 Aug 2023 11:47:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C29AC433C8;
-        Thu, 31 Aug 2023 11:47:38 +0000 (UTC)
-Message-ID: <3ca18d1d-c286-183b-10fe-f7e9fc42c41a@xs4all.nl>
-Date:   Thu, 31 Aug 2023 13:47:37 +0200
+        with ESMTP id S1346159AbjHaLw7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:52:59 -0400
+Received: from mail-pl1-x62d.google.com (mail-pl1-x62d.google.com [IPv6:2607:f8b0:4864:20::62d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4B64E69
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:52:34 -0700 (PDT)
+Received: by mail-pl1-x62d.google.com with SMTP id d9443c01a7336-1c22103bce7so4936535ad.1
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:52:34 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693482753; x=1694087553; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=JbM81jx87gmlbWqw5C/NVU2xN+QS7DVa98vu+L/R0Tc=;
+        b=C5IMMlsEJrERc9OFKffBCyEAFEttIvBmxjS/nVkrcNSVF4AArZYdytqH7gvDvDUBFm
+         Izt1XlBgO36VyRt0BdkOZ3AkE14akXemJxHvo/hvaouCaK4Meu9VzmxFUEbhjc9nMSpp
+         eOAuVCDwoTs6IzbPjilM83kaolxMCPHd8Y6lXqL3P/4O+DupUShKcJv2W7abk03nLMtR
+         gAmxNK93XK1V8lrvBgFhgFILyJRoarNCbW+FktL0fZCk+UYyy7m2pDqPD4QSvUCBQ+L1
+         /UVoSlizeziiHTgKLGa1HVWAMVtSFmpIvTfs9z2qjWQrJ4BPRP/46lm94kK6BMfGWQjd
+         aF1w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693482753; x=1694087553;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=JbM81jx87gmlbWqw5C/NVU2xN+QS7DVa98vu+L/R0Tc=;
+        b=IwOssGpapHgKAOX0HJ6T8xCy+sRnBOBKLreHZBKzVuNliRaohCmg4Xk8dw3vXlgWBa
+         YfjhdN/x2z5KCl357XxmgSyPNxn7TrQK3vMjCFuIUy6ehJlWpDOTZGbulorF0hU8sb/j
+         MMMi7mNdeVt+RGL5vzGbPCv4EToRLCLU0AjMQ0tMw8+SGZ/VxLCzrQkLZM/fUEKh680G
+         E5yEGfZ+HzIvHFtXqVOXk8GGYmLYe9aUoyB/aFCcIsZ0R81W/BJf+7+o72KgEqK2sdvN
+         5eIFSAA3KdpNm+EbZ118zPAuJyvJhRytvDX/COeJ28dt1ZopsA5akBExVHIVXWtkFjRu
+         yCFQ==
+X-Gm-Message-State: AOJu0YyE0YIyYBolpxXyNn1nDlbhUGped2X94zgiEOzSkj/T8A407akR
+        q51D34plk6u4PH13KZQpljATKDJlaGagTvvpAUA=
+X-Google-Smtp-Source: AGHT+IFN2Vg462FKddhZidLpejrsfQ13quRpZcaQ2A3a7MZapk6a1E7WiLFTID+S8LwQb5NBCSIYIw==
+X-Received: by 2002:a17:902:e806:b0:1c0:a8f6:f77f with SMTP id u6-20020a170902e80600b001c0a8f6f77fmr5193843plg.52.1693482753543;
+        Thu, 31 Aug 2023 04:52:33 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id o4-20020a170902bcc400b001b7ffca7dbcsm1101341pls.148.2023.08.31.04.52.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Aug 2023 04:52:32 -0700 (PDT)
+Message-ID: <64f07f00.170a0220.743ae.1bf4@mx.google.com>
+Date:   Thu, 31 Aug 2023 04:52:32 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.12.0
-Subject: Re: Fwd: in linux 6.3.7-200.fc38.x86_64 goes vlc in time to switch tv
- channels to zombie-process
-Content-Language: en-US, nl
-To:     Thorsten Leemhuis <regressions@leemhuis.info>,
-        Linux regressions mailing list <regressions@lists.linux.dev>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Media <linux-media@vger.kernel.org>,
-        Linux Stable <stable@vger.kernel.org>
-References: <a7f997fc-e7cc-cf67-3ac0-80ed30346511@gmail.com>
- <cdacb249-9d1d-cad9-44a9-ffa7b4b5b887@leemhuis.info>
- <150a5670-8220-5c2f-351c-181ceeddf307@xs4all.nl>
- <c362089e-8cdb-c735-762f-7a56552b68c2@leemhuis.info>
-From:   Hans Verkuil <hverkuil@xs4all.nl>
-In-Reply-To: <c362089e-8cdb-c735-762f-7a56552b68c2@leemhuis.info>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-10.1 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,NICE_REPLY_A,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.324-3-g9467395c02c9b
+Subject: stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.324-3-g9467395c02c9b)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 31/08/2023 13:00, Thorsten Leemhuis wrote:
-> On 31.08.23 12:35, Hans Verkuil wrote:
->> On 31/08/2023 11:26, Linux regression tracking #update (Thorsten Leemhuis) wrote:
->>> [TLDR: This mail in primarily relevant for Linux kernel regression
->>> tracking. See link in footer if these mails annoy you.]
->>>
->>> On 19.06.23 02:24, Bagas Sanjaya wrote:
->>>>
->>>> I notice a regression report on Bugzilla [1]. Quoting from it:
->>>> [...]
->>>>
->>>> #regzbot introduced: v6.3.5..v6.3.7 https://bugzilla.kernel.org/show_bug.cgi?id=217566
->>>> #regzbot title: switching TV channel causes VLC and firmware loading hang
->>>
->>> #regzbot fix: 7cfab4c9dc09ca3a9d57c187894055a22bdcd
->>> #regzbot ignore-activity
->>>
->>> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
->>> --
->>> Everything you wanna know about Linux kernel regression tracking:
->>> https://linux-regtracking.leemhuis.info/about/#tldr
->>> That page also explains what to do if mails like this annoy you.
->>
->> >From what I can gather from the bugzilla report, whatever the issue was appears
->> to be resolved or at least improved in later kernels.
-> 
-> I'm pretty (but not 100%) sure the initial report in that ticket were
-> issues caused by a backport of a patch that was reverted later:
-> https://lore.kernel.org/all/20230609082238.3671398-1-mchehab@kernel.org/
+stable-rc/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (=
+v4.14.324-3-g9467395c02c9b)
 
-Ah, you have a better memory than I have. That might well be the culprit.
-I didn't check for changes in the dvb core, I should have done that.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.14.=
+y/kernel/v4.14.324-3-g9467395c02c9b/
 
-That patch was introduced in 6.3.7 and reverted in 6.3.9.
+Tree: stable-rc
+Branch: linux-4.14.y
+Git Describe: v4.14.324-3-g9467395c02c9b
+Git Commit: 9467395c02c9be2630558247a1ac6c7da38f81d9
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 6 unique architectures
 
-That doesn't quite match the "#regzbot introduced: v6.3.5..v6.3.7" report,
-though. I wonder if fedora backported that problematic patch to their v6.3.5
-release?
+Warnings Detected:
 
-Regards,
+arc:
 
-	Hans
+arm64:
 
-> 
-> The versions when the problems started and some feedback in the ticket
-> when things started working again (like
-> https://bugzilla.kernel.org/show_bug.cgi?id=217566#c15 – 6.3.9 was when
-> the revert came to 6.3.y) are strong indicators for that.
-> 
-> But yes, more people showed up in the ticket with problems that might or
-> might not be related to the initial problem and things got confusing. I
-> told them to report those problems separately. Ideally somebody would
-> look into that and check if they did, yes, but I chose to ignore things
-> at that point, as regression tracking is quite hard already and I have
-> to draw lines somewhere. I often hate that, but otherwise I don't get
-> much work done. :-/
-> 
-> Ciao, Thorsten
+arm:
 
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
