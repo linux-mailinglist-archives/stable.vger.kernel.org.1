@@ -2,221 +2,171 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 12E8278E7BC
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 10:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 469E978E7E6
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 10:26:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230222AbjHaIRg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 04:17:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54072 "EHLO
+        id S244135AbjHaI0G convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Thu, 31 Aug 2023 04:26:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244830AbjHaIRf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 04:17:35 -0400
-Received: from mail-io1-xd33.google.com (mail-io1-xd33.google.com [IPv6:2607:f8b0:4864:20::d33])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF591A1
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 01:17:31 -0700 (PDT)
-Received: by mail-io1-xd33.google.com with SMTP id ca18e2360f4ac-7926de0478eso42367039f.0
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 01:17:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=purestorage.com; s=google2022; t=1693469851; x=1694074651; darn=vger.kernel.org;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=MET/hQwpeova7Ho1GgzgDeTkiQ/1n+JC7QsFR+YAzPA=;
-        b=RMNs5f1WFrirnZtwwIPAdXnGsNAL4yKRBufYVnB32Mm8ZlWubGHYWAWjapSgn38uWN
-         C2fyT+m/4dKBbvVGQVRdeLjLFNCeZLCDFzkCXbt0LTkZTnj7cSssEE2aR3joc0+Iu3of
-         FIPKeOSWessfrNcU0Gymfq9mwJSc2tuHhtj+lJ7qCKycFiCZdyIcTXhImIOpK+9X8NMk
-         DssKoJssc6hEy3thG19BSYN80PDZKgMDCgZE2kqhOwEUOgpVIvzupPgHT60q2OQFC8CL
-         9jV1blsY5+xBQTF9GIyPR+4JmERSd7MGiLH2yhV9T+y3mwlbY1eFl62Dp2gnP5p4gqHO
-         n/OQ==
+        with ESMTP id S242547AbjHaI0F (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 04:26:05 -0400
+Received: from mail-yw1-f171.google.com (mail-yw1-f171.google.com [209.85.128.171])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AF501CE8;
+        Thu, 31 Aug 2023 01:26:01 -0700 (PDT)
+Received: by mail-yw1-f171.google.com with SMTP id 00721157ae682-59231a1ca9eso7226617b3.1;
+        Thu, 31 Aug 2023 01:26:01 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693469851; x=1694074651;
-        h=references:in-reply-to:message-id:date:subject:cc:to:from
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=MET/hQwpeova7Ho1GgzgDeTkiQ/1n+JC7QsFR+YAzPA=;
-        b=DrWZDptxte316dXPIKrhgmoNbu5wghRb3ya4n5uFB+B/UMYHxGZU1ExGwy4jBgkGyc
-         E+wmlKovJ5e4RdmI3eZ9SiUhTPZeW/JNr9sNEpmDULFLos2qEo/uAYyjAX3pj0J3E+il
-         FeS8VhLfqx5So/5l5g3HWJfd/UZoGyor0PkEcmjV0c9wdNKVr/k7TdRBrhYKmSU+E7E1
-         +c9rnN8VZqkbM9KOtWpiV6ZmcL9cpBwD/d5mlhkRxGUitGoY2+C1snXzAEjvshVRXmph
-         F+4GyaYhG1e8oO7R0j4kxDykeR/BU6q1vFdpSLtREiVH3Qvx9Z1gSQ98VeKg3K3jGhVJ
-         nEmw==
-X-Gm-Message-State: AOJu0Yx+MVbdoFWHNbGLOU5YEt+DGfxahDCLDnA0A9sFZHoR/tAScBRV
-        YxgmkPtwkfhHGFJd8wbWyZrM1g==
-X-Google-Smtp-Source: AGHT+IEmrcoYzrntW7B3jhyZRnwIUzkciWvOSXmi4UX/2NMeseAAguKjuoc//VCN5QB0kFm3teffJA==
-X-Received: by 2002:a5d:9d92:0:b0:791:8f62:31ef with SMTP id ay18-20020a5d9d92000000b007918f6231efmr2154312iob.5.1693469850925;
-        Thu, 31 Aug 2023 01:17:30 -0700 (PDT)
-Received: from dev-mkhalfella2.dev.purestorage.com ([208.88.159.128])
-        by smtp.googlemail.com with ESMTPSA id dm8-20020a0566023b8800b00791e6ae3aa4sm312282iob.23.2023.08.31.01.17.30
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 01:17:30 -0700 (PDT)
-From:   Mohamed Khalfella <mkhalfella@purestorage.com>
-To:     willemdebruijn.kernel@gmail.com
-Cc:     alexanderduyck@fb.com, bpf@vger.kernel.org, brouer@redhat.com,
-        davem@davemloft.net, dhowells@redhat.com, edumazet@google.com,
-        keescook@chromium.org, kuba@kernel.org,
-        linux-kernel@vger.kernel.org, mkhalfella@purestorage.com,
-        netdev@vger.kernel.org, pabeni@redhat.com, willemb@google.com,
-        stable@vger.kernel.org
-Subject: [PATCH v3] skbuff: skb_segment, Call zero copy functions before using skbuff frags
-Date:   Thu, 31 Aug 2023 02:17:02 -0600
-Message-Id: <20230831081702.101342-1-mkhalfella@purestorage.com>
-X-Mailer: git-send-email 2.17.1
-In-Reply-To: <64ed7188a2745_9cf208e1@penguin.notmuch>
-References: <64ed7188a2745_9cf208e1@penguin.notmuch>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,T_SPF_PERMERROR autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        d=1e100.net; s=20221208; t=1693470361; x=1694075161;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=3gECEIQ8q4bEKdtz9WWubbyYY9T718J8FYjKOYpkjsQ=;
+        b=lpU5kXSM5krRHhk+mcnYFiNZpoDhUUPzAqIc2koRA8NcliTNRuL4wQJnCls+HdW3s9
+         8eXvEReJBiWlVIiwG70a9okI0KBZz0oOOYRTmf3gK2+/HYGqBFVZ6s1OfD4o3w88e313
+         raVCaTQddzNpTgHBFUF71T/v6cWn0QR6swqPDSoq9HMiezSzrvcyklFfY2qzHJvMIyye
+         qw2CIOh+3sKsAnLVF9jDWhE2qX+spWpI51Oggrfkmt9P6rXsiF6K1LA7h/R5nbReDe+q
+         ItOSBLhrExl7X7/IddrnZA0+hrBWx+LDC60s7ymHYNvK1TnEM9LNuXGrUT326JcM8Vcf
+         Gd9A==
+X-Gm-Message-State: AOJu0YzZ5e+Am+u7SgPUeMVoWZSjHNTvbosnTuz2+cuVnPiSG60sCKCB
+        dnU0NOmFkNnDW2F11+kDBXERv7APALpGoQ==
+X-Google-Smtp-Source: AGHT+IFfzUILuB4Xi4UdqMtWcIOvPL6mXkpH73lGDKDyiBylA6efSc+Ofe4nuGFEZU0givCpy09tLA==
+X-Received: by 2002:a0d:ea15:0:b0:592:4fb1:be46 with SMTP id t21-20020a0dea15000000b005924fb1be46mr4415583ywe.39.1693470360768;
+        Thu, 31 Aug 2023 01:26:00 -0700 (PDT)
+Received: from mail-yb1-f175.google.com (mail-yb1-f175.google.com. [209.85.219.175])
+        by smtp.gmail.com with ESMTPSA id m125-20020a0de383000000b00583d44b4b30sm276164ywe.99.2023.08.31.01.26.00
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Aug 2023 01:26:00 -0700 (PDT)
+Received: by mail-yb1-f175.google.com with SMTP id 3f1490d57ef6-d776e1f181bso338618276.3;
+        Thu, 31 Aug 2023 01:26:00 -0700 (PDT)
+X-Received: by 2002:a25:f50d:0:b0:d7b:5d30:5f80 with SMTP id
+ a13-20020a25f50d000000b00d7b5d305f80mr4093448ybe.24.1693470360206; Thu, 31
+ Aug 2023 01:26:00 -0700 (PDT)
+MIME-Version: 1.0
+References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
+ <20230819004356.1454718-2-Liam.Howlett@oracle.com> <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
+ <87v8cv22jh.fsf@mail.lhotse>
+In-Reply-To: <87v8cv22jh.fsf@mail.lhotse>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Thu, 31 Aug 2023 10:25:48 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdXMpr0spdprjwsV56nJE3vHGTFaodcnVXUa=GMYaB5yKw@mail.gmail.com>
+Message-ID: <CAMuHMdXMpr0spdprjwsV56nJE3vHGTFaodcnVXUa=GMYaB5yKw@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
+ readers are possible
+To:     Michael Ellerman <mpe@ellerman.id.au>
+Cc:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Commit bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions
-once per nskb") added the call to zero copy functions in skb_segment().
-The change introduced a bug in skb_segment() because skb_orphan_frags()
-may possibly change the number of fragments or allocate new fragments
-altogether leaving nrfrags and frag to point to the old values. This can
-cause a panic with stacktrace like the one below.
+Hi Michael,
 
-[  193.894380] BUG: kernel NULL pointer dereference, address: 00000000000000bc
-[  193.895273] CPU: 13 PID: 18164 Comm: vh-net-17428 Kdump: loaded Tainted: G           O      5.15.123+ #26
-[  193.903919] RIP: 0010:skb_segment+0xb0e/0x12f0
-[  194.021892] Call Trace:
-[  194.027422]  <TASK>
-[  194.072861]  tcp_gso_segment+0x107/0x540
-[  194.082031]  inet_gso_segment+0x15c/0x3d0
-[  194.090783]  skb_mac_gso_segment+0x9f/0x110
-[  194.095016]  __skb_gso_segment+0xc1/0x190
-[  194.103131]  netem_enqueue+0x290/0xb10 [sch_netem]
-[  194.107071]  dev_qdisc_enqueue+0x16/0x70
-[  194.110884]  __dev_queue_xmit+0x63b/0xb30
-[  194.121670]  bond_start_xmit+0x159/0x380 [bonding]
-[  194.128506]  dev_hard_start_xmit+0xc3/0x1e0
-[  194.131787]  __dev_queue_xmit+0x8a0/0xb30
-[  194.138225]  macvlan_start_xmit+0x4f/0x100 [macvlan]
-[  194.141477]  dev_hard_start_xmit+0xc3/0x1e0
-[  194.144622]  sch_direct_xmit+0xe3/0x280
-[  194.147748]  __dev_queue_xmit+0x54a/0xb30
-[  194.154131]  tap_get_user+0x2a8/0x9c0 [tap]
-[  194.157358]  tap_sendmsg+0x52/0x8e0 [tap]
-[  194.167049]  handle_tx_zerocopy+0x14e/0x4c0 [vhost_net]
-[  194.173631]  handle_tx+0xcd/0xe0 [vhost_net]
-[  194.176959]  vhost_worker+0x76/0xb0 [vhost]
-[  194.183667]  kthread+0x118/0x140
-[  194.190358]  ret_from_fork+0x1f/0x30
-[  194.193670]  </TASK>
+On Thu, Aug 31, 2023 at 7:39 AM Michael Ellerman <mpe@ellerman.id.au> wrote:
+> Geert Uytterhoeven <geert@linux-m68k.org> writes:
+> > On Fri, 18 Aug 2023, Liam R. Howlett wrote:
+> >> The current implementation of append may cause duplicate data and/or
+> >> incorrect ranges to be returned to a reader during an update.  Although
+> >> this has not been reported or seen, disable the append write operation
+> >> while the tree is in rcu mode out of an abundance of caution.
+> >>
+> >> During the analysis of the mas_next_slot() the following was
+> >> artificially created by separating the writer and reader code:
+> >>
+> >> Writer:                                 reader:
+> >> mas_wr_append
+> >>    set end pivot
+> >>    updates end metata
+> >>    Detects write to last slot
+> >>    last slot write is to start of slot
+> >>    store current contents in slot
+> >>    overwrite old end pivot
+> >>                                        mas_next_slot():
+> >>                                                read end metadata
+> >>                                                read old end pivot
+> >>                                                return with incorrect range
+> >>    store new value
+> >>
+> >> Alternatively:
+> >>
+> >> Writer:                                 reader:
+> >> mas_wr_append
+> >>    set end pivot
+> >>    updates end metata
+> >>    Detects write to last slot
+> >>    last lost write to end of slot
+> >>    store value
+> >>                                        mas_next_slot():
+> >>                                                read end metadata
+> >>                                                read old end pivot
+> >>                                                read new end pivot
+> >>                                                return with incorrect range
+> >>    set old end pivot
+> >>
+> >> There may be other accesses that are not safe since we are now updating
+> >> both metadata and pointers, so disabling append if there could be rcu
+> >> readers is the safest action.
+> >>
+> >> Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> >> Cc: stable@vger.kernel.org
+> >> Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> >
+> > Thanks for your patch, which is now commit cfeb6ae8bcb96ccf
+> > ("maple_tree: disable mas_wr_append() when other readers are
+> > possible") in v6.5, and is being backported to stable.
+> >
+> > On Renesas RZ/A1 and RZ/A2 (single-core Cortex-A9), this causes the
+> > following warning:
+> >
+> >       clocksource: timer@e803b000: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 28958491609 ns
+> >       sched_clock: 32 bits at 66MHz, resolution 15ns, wraps every 32537631224ns
+> >       /soc/timer@e803b000: used for clocksource
+> >       /soc/timer@e803c000: used for clock events
+> >      +------------[ cut here ]------------
+> >      +WARNING: CPU: 0 PID: 0 at init/main.c:992 start_kernel+0x2f0/0x480
+> >      +Interrupts were enabled early
+> ...
+> >
+> > I do not see this issue on any other platform
+> > (arm/arm64/risc-v/mips/sh/m68k), several of them use the same
+> > RCU configuration.
+>
+> There's something similar on pmac32 / mac99.
+>
+> > Do you have a clue?
+>
+> It seems something in the maple tree code is setting TIF_NEED_RESCHED,
+> and that causes a subsequent call to cond_resched() to call schedule()
+> and enable interrupts.
+>
+> On pmac32 enabling CONFIG_DEBUG_ATOMIC_SLEEP fixes/hides the problem.
+> But I don't see why.
 
-In this case calling skb_orphan_frags() updated nr_frags leaving nrfrags
-local variable in skb_segment() stale. This resulted in the code hitting
-i >= nrfrags prematurely and trying to move to next frag_skb using
-list_skb pointer, which was NULL, and caused kernel panic. Move the call
-to zero copy functions before using frags and nr_frags.
+Enabling CONFIG_DEBUG_ATOMIC_SLEEP on RZ/A1 and RZ/A2 does
+fix the problem.
+But there must be more to it, as some of my test configs had it enabled,
+and others hadn't, while only RZ/A showed the issue.
+I tried disabling it on R-Car M2-W (arm32) and R-Car H3 (arm64), and
+that did not cause the problem to happen...
 
-Fixes: bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions once per nskb")
-Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reported-by: Amit Goyal <agoyal@purestorage.com>
-Cc: stable@vger.kernel.org
----
- net/core/skbuff.c | 34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+Gr{oetje,eeting}s,
 
-diff --git a/net/core/skbuff.c b/net/core/skbuff.c
-index a298992060e6..74a8829a6b59 100644
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4354,21 +4354,20 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 	struct sk_buff *segs = NULL;
- 	struct sk_buff *tail = NULL;
- 	struct sk_buff *list_skb = skb_shinfo(head_skb)->frag_list;
--	skb_frag_t *frag = skb_shinfo(head_skb)->frags;
- 	unsigned int mss = skb_shinfo(head_skb)->gso_size;
- 	unsigned int doffset = head_skb->data - skb_mac_header(head_skb);
--	struct sk_buff *frag_skb = head_skb;
- 	unsigned int offset = doffset;
- 	unsigned int tnl_hlen = skb_tnl_header_len(head_skb);
- 	unsigned int partial_segs = 0;
- 	unsigned int headroom;
- 	unsigned int len = head_skb->len;
-+	struct sk_buff *frag_skb;
-+	skb_frag_t *frag;
- 	__be16 proto;
- 	bool csum, sg;
--	int nfrags = skb_shinfo(head_skb)->nr_frags;
- 	int err = -ENOMEM;
- 	int i = 0;
--	int pos;
-+	int nfrags, pos;
- 
- 	if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
- 	    mss != GSO_BY_FRAGS && mss != skb_headlen(head_skb)) {
-@@ -4445,6 +4444,13 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 	headroom = skb_headroom(head_skb);
- 	pos = skb_headlen(head_skb);
- 
-+	if (skb_orphan_frags(head_skb, GFP_ATOMIC))
-+		return ERR_PTR(-ENOMEM);
-+
-+	nfrags = skb_shinfo(head_skb)->nr_frags;
-+	frag = skb_shinfo(head_skb)->frags;
-+	frag_skb = head_skb;
-+
- 	do {
- 		struct sk_buff *nskb;
- 		skb_frag_t *nskb_frag;
-@@ -4465,6 +4471,10 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		    (skb_headlen(list_skb) == len || sg)) {
- 			BUG_ON(skb_headlen(list_skb) > len);
- 
-+			nskb = skb_clone(list_skb, GFP_ATOMIC);
-+			if (unlikely(!nskb))
-+				goto err;
-+
- 			i = 0;
- 			nfrags = skb_shinfo(list_skb)->nr_frags;
- 			frag = skb_shinfo(list_skb)->frags;
-@@ -4483,12 +4493,8 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 				frag++;
- 			}
- 
--			nskb = skb_clone(list_skb, GFP_ATOMIC);
- 			list_skb = list_skb->next;
- 
--			if (unlikely(!nskb))
--				goto err;
--
- 			if (unlikely(pskb_trim(nskb, len))) {
- 				kfree_skb(nskb);
- 				goto err;
-@@ -4564,12 +4570,16 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 		skb_shinfo(nskb)->flags |= skb_shinfo(head_skb)->flags &
- 					   SKBFL_SHARED_FRAG;
- 
--		if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
--		    skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
-+		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
- 			goto err;
- 
- 		while (pos < offset + len) {
- 			if (i >= nfrags) {
-+				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
-+				    skb_zerocopy_clone(nskb, list_skb,
-+						       GFP_ATOMIC))
-+					goto err;
-+
- 				i = 0;
- 				nfrags = skb_shinfo(list_skb)->nr_frags;
- 				frag = skb_shinfo(list_skb)->frags;
-@@ -4583,10 +4593,6 @@ struct sk_buff *skb_segment(struct sk_buff *head_skb,
- 					i--;
- 					frag--;
- 				}
--				if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
--				    skb_zerocopy_clone(nskb, frag_skb,
--						       GFP_ATOMIC))
--					goto err;
- 
- 				list_skb = list_skb->next;
- 			}
+                        Geert
+
 -- 
-2.17.1
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
