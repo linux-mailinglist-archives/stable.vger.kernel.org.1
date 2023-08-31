@@ -2,49 +2,53 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8AC6E78EB80
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:10:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D213B78EB8F
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:11:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345796AbjHaLK7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:10:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50156 "EHLO
+        id S242499AbjHaLLU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:11:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345950AbjHaLK6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:10:58 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2509BE5B
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:28 -0700 (PDT)
+        with ESMTP id S241505AbjHaLLT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:11:19 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37796E5F
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:10:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 5E14363B0A
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45B29C433C7;
-        Thu, 31 Aug 2023 11:10:11 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E7B6BB82261
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:10:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C4BDC433C9;
+        Thu, 31 Aug 2023 11:10:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480211;
-        bh=KI6+Cv5eu9Uo73sYMUfNBMM5epdBoUn4KN7WdXFTgHE=;
+        s=korg; t=1693480250;
+        bh=L/2edS5FFQtxPrnMyGnR7hKwJt5TpGdGCZjsmcQG8dk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NsEZW8eKDDfRxVxoxDPlJqVjNjcWkqSeoAbcrVixFjAWzUmc2Q4LcqZqfyQ2NooRU
-         uGb+VAyyhwi91HLWlnKXaaok2vQUPh1GxymCQd1bRW8kNCOmHly7t8VT3bLlqOU2zN
-         Qfqr42ipmPmbepBwi+NNlwww8PxTFtzXK+Is23Nw=
+        b=TeYueEyaWEkPNRKwJIXMnjIkcBuSeOfiBjzDu9gY9Gt6koEnek+kEKbVg1blKU2X9
+         AqAC5TG+drWpAXICySAhd4pwE5cN/Cu1Ye4vTgn6UFBeGCatfTT96JFjUlSwq113k2
+         yKwGqYcKT8ZoFQd9lfz+tufpGyjWfdA+ScNWFUqI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        "From: Chia-I Wu" <olvaffe@gmail.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        Lang Yu <Lang.Yu@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 5.4 3/3] Revert "MIPS: Alchemy: fix dbdma2"
-Date:   Thu, 31 Aug 2023 13:09:57 +0200
-Message-ID: <20230831110829.025549068@linuxfoundation.org>
+Subject: [PATCH 5.10 06/11] Revert "drm/amdgpu: install stub fence into potential unused fence pointers"
+Date:   Thu, 31 Aug 2023 13:09:58 +0200
+Message-ID: <20230831110830.709974865@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230831110828.874071888@linuxfoundation.org>
-References: <20230831110828.874071888@linuxfoundation.org>
+In-Reply-To: <20230831110830.455765526@linuxfoundation.org>
+References: <20230831110830.455765526@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -55,85 +59,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.4-stable review patch.  If anyone has any objections, please let me know.
+5.10-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 
-This reverts commit a365600bba27c35d0d93fd490b01919fbd7d4848 which is
-commit 2d645604f69f3a772d58ead702f9a8e84ab2b342 upstream.
+This reverts commit 04bd3a362d2f1788272776bd8b10e5a012e69b77 which is
+commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 upstream.
 
-It breaks the build, so should be dropped.
+It is reported to cause lots of log spam, so it should be dropped for
+now.
 
 Reported-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/5b30ff73-46cb-1d1e-3823-f175dbfbd91b@roeck-us.net
-Cc: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Link: https://lore.kernel.org/r/27d08b24-3581-4451-b8db-5df144784d6a@roeck-us.net
+Reported-by: From: Chia-I Wu <olvaffe@gmail.com>
+Link: https://lore.kernel.org/r/CAPaKu7RTgAMBLHbwtp4zgiBSDrTFtAj07k5qMzkuLQy2Zr+sZA@mail.gmail.com
+Cc: Christian König <christian.koenig@amd.com>
+Cc: Lang Yu <Lang.Yu@amd.com>
+Cc: Alex Deucher <alexander.deucher@amd.com>
 Cc: Sasha Levin <sashal@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/mips/alchemy/common/dbdma.c |   27 ++++++++++++---------------
- 1 file changed, 12 insertions(+), 15 deletions(-)
+ drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c |    6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -30,7 +30,6 @@
-  *
-  */
+--- a/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
++++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c
+@@ -2155,7 +2155,6 @@ struct amdgpu_bo_va *amdgpu_vm_bo_add(st
+ 	amdgpu_vm_bo_base_init(&bo_va->base, vm, bo);
  
--#include <linux/dma-map-ops.h> /* for dma_default_coherent */
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -624,18 +623,17 @@ u32 au1xxx_dbdma_put_source(u32 chanid,
- 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
+ 	bo_va->ref_count = 1;
+-	bo_va->last_pt_update = dma_fence_get_stub();
+ 	INIT_LIST_HEAD(&bo_va->valids);
+ 	INIT_LIST_HEAD(&bo_va->invalids);
  
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result
-+	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
-+	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
-+	 * these parts. If it is fixed in the future, these dma_cache_inv will
-+	 * just be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_wback_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
+@@ -2868,8 +2867,7 @@ int amdgpu_vm_init(struct amdgpu_device
+ 		vm->update_funcs = &amdgpu_vm_cpu_funcs;
+ 	else
+ 		vm->update_funcs = &amdgpu_vm_sdma_funcs;
+-
+-	vm->last_update = dma_fence_get_stub();
++	vm->last_update = NULL;
+ 	vm->last_unlocked = dma_fence_get_stub();
  
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
-@@ -687,18 +685,17 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dm
- 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
- #endif
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result in
-+	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
-+	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
-+	 * parts. If it is fixed in the future, these dma_cache_inv will just
-+	 * be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
+ 	mutex_init(&vm->eviction_lock);
+@@ -3044,7 +3042,7 @@ int amdgpu_vm_make_compute(struct amdgpu
+ 		vm->update_funcs = &amdgpu_vm_sdma_funcs;
+ 	}
+ 	dma_fence_put(vm->last_update);
+-	vm->last_update = dma_fence_get_stub();
++	vm->last_update = NULL;
+ 	vm->is_compute_context = true;
  
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+ 	if (vm->pasid) {
 
 
