@@ -2,57 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C92EB78EB2A
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 12:57:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 706AE78EB3D
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:00:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240574AbjHaK5F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 06:57:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54566 "EHLO
+        id S242890AbjHaLAt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:00:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58434 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239193AbjHaK5E (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 06:57:04 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23CDBCF9;
-        Thu, 31 Aug 2023 03:57:02 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B454D60F12;
-        Thu, 31 Aug 2023 10:57:01 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C16A2C433C7;
-        Thu, 31 Aug 2023 10:57:00 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693479421;
-        bh=caetN6+oskSH08smnopyy2xlFSz88PRY0E9DEwG49oE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=tc/hRlgaXXXcp9mVUDRHyxASla0XvJNGsZi67nx1dEMb7s8NS3ITP2KHUaO5odwFb
-         uDMnjBd9Dgp97/oBrC7V+gWSc6Bu/XknCsbDOL82sFSp9wPwGjSXEr+NndXEyIllzr
-         vKKsVVZARq8N1GKopGBrKsGZ00r3CfdjpCOq8RXM=
-Date:   Thu, 31 Aug 2023 12:56:58 +0200
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Christian =?iso-8859-1?Q?K=F6nig?= 
-        <ckoenig.leichtzumerken@gmail.com>
-Cc:     Chia-I Wu <olvaffe@gmail.com>, Sasha Levin <sashal@kernel.org>,
-        airlied@linux.ie, linux-kernel@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, amd-gfx@lists.freedesktop.org,
-        Alex Deucher <alexander.deucher@amd.com>,
-        stable@vger.kernel.org, Lang Yu <Lang.Yu@amd.com>,
-        Christian =?iso-8859-1?Q?K=F6nig?= <christian.koenig@amd.com>
-Subject: Re: [PATCH AUTOSEL 5.10 13/22] drm/amdgpu: install stub fence into
- potential unused fence pointers
-Message-ID: <2023083145-scoured-celery-2511@gregkh>
-References: <20230724012419.2317649-1-sashal@kernel.org>
- <20230724012419.2317649-13-sashal@kernel.org>
- <CAPaKu7RTgAMBLHbwtp4zgiBSDrTFtAj07k5qMzkuLQy2Zr+sZA@mail.gmail.com>
- <55fc4a28-1e17-44df-2069-a688828080e6@gmail.com>
+        with ESMTP id S235845AbjHaLAs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:00:48 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BF7CE6E;
+        Thu, 31 Aug 2023 04:00:30 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qbfPY-0008MK-Ec; Thu, 31 Aug 2023 13:00:28 +0200
+Message-ID: <c362089e-8cdb-c735-762f-7a56552b68c2@leemhuis.info>
+Date:   Thu, 31 Aug 2023 13:00:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
+User-Agent: Mozilla Thunderbird
+Subject: Re: Fwd: in linux 6.3.7-200.fc38.x86_64 goes vlc in time to switch tv
+ channels to zombie-process
+Content-Language: en-US, de-DE
+To:     Hans Verkuil <hverkuil@xs4all.nl>,
+        Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Media <linux-media@vger.kernel.org>,
+        Linux Stable <stable@vger.kernel.org>
+References: <a7f997fc-e7cc-cf67-3ac0-80ed30346511@gmail.com>
+ <cdacb249-9d1d-cad9-44a9-ffa7b4b5b887@leemhuis.info>
+ <150a5670-8220-5c2f-351c-181ceeddf307@xs4all.nl>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <150a5670-8220-5c2f-351c-181ceeddf307@xs4all.nl>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-In-Reply-To: <55fc4a28-1e17-44df-2069-a688828080e6@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1693479631;0bc01999;
+X-HE-SMSGID: 1qbfPY-0008MK-Ec
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -61,34 +47,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 31, 2023 at 12:27:27PM +0200, Christian König wrote:
-> Am 30.08.23 um 20:53 schrieb Chia-I Wu:
-> > On Sun, Jul 23, 2023 at 6:24 PM Sasha Levin <sashal@kernel.org> wrote:
-> > > From: Lang Yu <Lang.Yu@amd.com>
-> > > 
-> > > [ Upstream commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 ]
-> > > 
-> > > When using cpu to update page tables, vm update fences are unused.
-> > > Install stub fence into these fence pointers instead of NULL
-> > > to avoid NULL dereference when calling dma_fence_wait() on them.
-> > > 
-> > > Suggested-by: Christian König <christian.koenig@amd.com>
-> > > Signed-off-by: Lang Yu <Lang.Yu@amd.com>
-> > > Reviewed-by: Christian König <christian.koenig@amd.com>
-> > > Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> > > Signed-off-by: Sasha Levin <sashal@kernel.org>
-> > > ---
-> > >   drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
-> > >   1 file changed, 4 insertions(+), 2 deletions(-)
-> > We start getting this warning spew on chromeos
+On 31.08.23 12:35, Hans Verkuil wrote:
+> On 31/08/2023 11:26, Linux regression tracking #update (Thorsten Leemhuis) wrote:
+>> [TLDR: This mail in primarily relevant for Linux kernel regression
+>> tracking. See link in footer if these mails annoy you.]
+>>
+>> On 19.06.23 02:24, Bagas Sanjaya wrote:
+>>>
+>>> I notice a regression report on Bugzilla [1]. Quoting from it:
+>>> [...]
+>>>
+>>> #regzbot introduced: v6.3.5..v6.3.7 https://bugzilla.kernel.org/show_bug.cgi?id=217566
+>>> #regzbot title: switching TV channel causes VLC and firmware loading hang
+>>
+>> #regzbot fix: 7cfab4c9dc09ca3a9d57c187894055a22bdcd
+>> #regzbot ignore-activity
+>>
+>> Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
+>> --
+>> Everything you wanna know about Linux kernel regression tracking:
+>> https://linux-regtracking.leemhuis.info/about/#tldr
+>> That page also explains what to do if mails like this annoy you.
 > 
-> Yeah because the older kernels still kept track of the last VM fence in the
-> syncobj.
-> 
-> This patch here should probably not have been back ported.
-> 
-> Why was that done anyway? The upstream commit doesn't have a CC stable and
-> this is only a bug fix for a new feature not present on older kernels.
+>>From what I can gather from the bugzilla report, whatever the issue was appears
+> to be resolved or at least improved in later kernels.
 
-It is part of the AUTOSEL process.
+I'm pretty (but not 100%) sure the initial report in that ticket were
+issues caused by a backport of a patch that was reverted later:
+https://lore.kernel.org/all/20230609082238.3671398-1-mchehab@kernel.org/
 
+The versions when the problems started and some feedback in the ticket
+when things started working again (like
+https://bugzilla.kernel.org/show_bug.cgi?id=217566#c15 – 6.3.9 was when
+the revert came to 6.3.y) are strong indicators for that.
+
+But yes, more people showed up in the ticket with problems that might or
+might not be related to the initial problem and things got confusing. I
+told them to report those problems separately. Ideally somebody would
+look into that and check if they did, yes, but I chose to ignore things
+at that point, as regression tracking is quite hard already and I have
+to draw lines somewhere. I often hate that, but otherwise I don't get
+much work done. :-/
+
+Ciao, Thorsten
