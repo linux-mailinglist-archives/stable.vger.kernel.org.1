@@ -2,78 +2,90 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0BDA78E8B6
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 10:48:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1573378E8EB
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 10:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239767AbjHaIs4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 04:48:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56068 "EHLO
+        id S234829AbjHaI6l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 04:58:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233125AbjHaIs4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 04:48:56 -0400
-Received: from mail-pl1-x62a.google.com (mail-pl1-x62a.google.com [IPv6:2607:f8b0:4864:20::62a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6DB1CCE9
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 01:48:53 -0700 (PDT)
-Received: by mail-pl1-x62a.google.com with SMTP id d9443c01a7336-1c1ff5b741cso4291415ad.2
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 01:48:53 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1693471733; x=1694076533; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cmHxtW5BDCI+klsJLFmGsEYI1Ty7dMZvjkbH7YkXfSw=;
-        b=C0OAPyo8NA1fsXM92yyAdk33esMG8Cu0wq538t7tPVMBGHOOmB9j2HZlpns6mIHMLJ
-         oHCe5SbipRFfS23ZAv92Q6SVMfMStIjZ7ij3KmJZl58G2mUZe0XIriZkJjBlQreDDCQS
-         vK0p99Sqkq2M7rBG+1g1nREd7IiDvuKH4eo12Ui28u6iEqLpyACSEgWA6wex+SliOD2S
-         VKA6aqepxs9XMe3Zihf7EouYCAshEga4I8ZFbgTX8wqnJ1r2oigPDGTAFkNQutyhxjD0
-         tTM+FHO99C6C9qp7hAFZJbn6fwXWxxT5M8WTSTZINNESAcX5buqoGZsAMZpAWbCl8ZiL
-         2vLg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693471733; x=1694076533;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=cmHxtW5BDCI+klsJLFmGsEYI1Ty7dMZvjkbH7YkXfSw=;
-        b=AGpeavm1gRbciZqbs3ARYxUtDjmCckQhy1UCn/b4n6sC2EQUIWgYlBGgu0h4sRV/8G
-         LVR2RqV2EiGhcEUNtO+5cM8KHQTJzE4JVzAquA6N+A5Uk1uF7Aa9AgtLcg1cnExt+JtJ
-         jBpqU1XTdma5z2nDPpf45eeDCRyVLcMjSTKt8uV4PFNu+EnqivFeT2X0OFBUaaOgzNbR
-         3uPpFH2mhiAnQtQa9RX6bHIoBnPFP50TLJjFrplTPn8a0NAgnRJhPI5PlIcaViXLLXGZ
-         TeOtApXY76oEE7W+u8VsHDegYU02mwVtGtz5/PKN6HI3dT0GfBiJn1OoJ1jCMYI6+gA9
-         fmkw==
-X-Gm-Message-State: AOJu0YysIoQPopAAOldADC8elXTsaMJEnJAtvP+JryiCTC7wXnBc9iFP
-        ZYeE5fH5oAysrSrOongC/tix6Q==
-X-Google-Smtp-Source: AGHT+IEU4uV9edU+XNhQL065uaOKU00Or8bYyU1MHRoHn/U6tR5DeM7K54pCViRvbdp7PFa7UZxdnA==
-X-Received: by 2002:a17:902:d34c:b0:1b8:a19e:a3d3 with SMTP id l12-20020a170902d34c00b001b8a19ea3d3mr4068259plk.52.1693471732861;
-        Thu, 31 Aug 2023 01:48:52 -0700 (PDT)
-Received: from [10.84.158.67] ([203.208.167.146])
-        by smtp.gmail.com with ESMTPSA id x2-20020a170902fe8200b001bdf45eb5b6sm786424plm.284.2023.08.31.01.48.38
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 31 Aug 2023 01:48:52 -0700 (PDT)
-Message-ID: <55e2861e-9722-08f8-2c49-966035ff4218@bytedance.com>
-Date:   Thu, 31 Aug 2023 16:48:29 +0800
+        with ESMTP id S229715AbjHaI6k (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 04:58:40 -0400
+Received: from out2-smtp.messagingengine.com (out2-smtp.messagingengine.com [66.111.4.26])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D1E8CE6;
+        Thu, 31 Aug 2023 01:58:38 -0700 (PDT)
+Received: from compute3.internal (compute3.nyi.internal [10.202.2.43])
+        by mailout.nyi.internal (Postfix) with ESMTP id 445505C00EF;
+        Thu, 31 Aug 2023 04:58:37 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute3.internal (MEProxy); Thu, 31 Aug 2023 04:58:37 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1693472317; x=1693558717; bh=GO+RB/XjbQvZQe1MEUlBwDOw8njnoFbRMlk
+        s6o1U5dw=; b=n2qaDeb/UbimrdbrMvWZDVeSrHCybiKua/Ds0tnvtcnDD+fAU/H
+        MLidxqDFUemvZt4Nef/MLcJbsRAXEk7gKZfq8R+XW1DGiVlp8A9M1UDv1igiNpzD
+        mxaEiSdHC36/jxKMc6Qt7QWGaw8ad0QQRpI5C0bjNYBFJBlE4x2LsCqZmW8oBM0y
+        aYBIkoiTEwoNDmx25o3vSFTBvLKB+vW4QwqJe75TWM393SyWPgbzVhi2ANIBybGi
+        MnI+stDpGYR+tsIdesb92RarDs2XNvYBweyn8Ma5I3zQ9vB73N2HSqIOQWslTfhy
+        YR9JdbCkRPolC0nlqBiV6fvZ4OfGHTIf1Xg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1693472317; x=1693558717; bh=GO+RB/XjbQvZQe1MEUlBwDOw8njnoFbRMlk
+        s6o1U5dw=; b=wWCYcoiHIWSq6hvrKzB6e7q/Au0spKWXt3QQFGqdXB+iKS7I5q0
+        YAD+isxn3z2fvMaAMJoaO9dQ0DaDikza3c2HMz85dr2RtQJfPq7pIo4MctLzdSPo
+        jX2EJ1uWH1nd3KGi+A0PNhe/kFOTUrp8HAdwsve/bCxDHCSeL2X/GFhX5BwdAxXZ
+        AJfOOW8xb1pXyNuxe/P2RkSM8hDFd/LawAjpnB/Ly3Lh6qoP8RLyco7YnI5BINaE
+        nYx0YokHgRvzh/h28BNST9da5SzbDnQUXX4lViJ0+a2K6r+7YUqToiwAEktU6a5F
+        wfcIiDfwQdSYS0AJXtCDhcYd89mrKWFe93Q==
+X-ME-Sender: <xms:PVbwZPBZQcINLZAud8gAT3wGw16aUcZAiqu7F-TuunQNL81YnV-dvQ>
+    <xme:PVbwZFgH171shnitFFRpMjcdhFaN5icYBNPXlKIVZG0hEnFeEM87oReuA09_vdvQk
+    rGEc1KuDPrsiwIiUI8>
+X-ME-Received: <xmr:PVbwZKmIpxGdxy7a3OeTqXWTnX8eMJ52WNpo8yytOSgWfnOp97pZWMu6TbRJq2gYOnI>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudegtddguddtucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtfeejnecuhfhrohhmpeflihgr
+    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+    cuggftrfgrthhtvghrnhepudfhkeevvddtueekfeefgfetlefgueegueeltddtieejgeei
+    heevgfehgfdvfeegnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:PVbwZBxyzNeDwwFLAuITfW_174_Sjg1Q03UsPYOkL1jeAZc4sNXHHg>
+    <xmx:PVbwZESCpUZsAgxq4gR_dHFZOfwKLHZJPQKf32YtegEp6CjasFPKPg>
+    <xmx:PVbwZEYrGFf-4w_aacbqYwOqS6Xfhy3vK_OVftGcoMXEJmBX0PU_iA>
+    <xmx:PVbwZJIIkHoosWFpMmksaFrfEfNg2SeL7N6PgOBB__S82vWtp5K6Mw>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 31 Aug 2023 04:58:33 -0400 (EDT)
+Message-ID: <62a7b292-ea1e-fb88-79cb-e7968d350a5e@flygoat.com>
+Date:   Thu, 31 Aug 2023 16:58:32 +0800
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.14.0
-Subject: Re: [External] Re: Fwd: WARNING: CPU: 13 PID: 3837105 at
- kernel/sched/sched.h:1561 __cfsb_csd_unthrottle+0x149/0x160
-To:     Benjamin Segall <bsegall@google.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>
-Cc:     Vincent Guittot <vincent.guittot@linaro.org>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Igor Raits <igor.raits@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>
-References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
- <xm26cyz4ibnb.fsf@google.com>
-From:   Hao Jia <jiahao.os@bytedance.com>
-In-Reply-To: <xm26cyz4ibnb.fsf@google.com>
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
+Content-Language: en-GB
+To:     Huacai Chen <chenhuacai@kernel.org>
+Cc:     linux-pci@vger.kernel.org, bhelgaas@google.com,
+        linux-kernel@vger.kernel.org, kw@linux.com, lpieralisi@kernel.org,
+        stable@vger.kernel.org
+References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
+ <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
+ <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
+ <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com>
+ <CAAhV-H67ehyqtm4ocOTWQPGBioWjQjLoyN5H9hALdq0oXdzWVg@mail.gmail.com>
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+In-Reply-To: <CAAhV-H67ehyqtm4ocOTWQPGBioWjQjLoyN5H9hALdq0oXdzWVg@mail.gmail.com>
 Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -82,193 +94,23 @@ X-Mailing-List: stable@vger.kernel.org
 
 
 
-On 2023/8/31 Benjamin Segall wrote:
-Hi,
+在 2023/8/31 14:22, Huacai Chen 写道:
 
-> Bagas Sanjaya <bagasdotme@gmail.com> writes:
-> 
->> Hi,
->>
->> I notice a regression report on Bugzilla [1]. Quoting from it:
->>
->>> Hello, we recently got a few kernel crashes with following backtrace. Happened on 6.4.12 (and 6.4.11 I think) but did not happen (I think) on 6.4.4.
->>>
->>> [293790.928007] ------------[ cut here ]------------
->>> [293790.929905] rq->clock_update_flags & RQCF_ACT_SKIP
->>> [293790.929919] WARNING: CPU: 13 PID: 3837105 at kernel/sched/sched.h:1561 __cfsb_csd_unthrottle+0x149/0x160
->>> [293790.933694] Modules linked in: [...]
->>> [293790.946262] Unloaded tainted modules: edac_mce_amd(E):1
->>> [293790.956625] CPU: 13 PID: 3837105 Comm: QueryWorker-30f Tainted: G        W   E      6.4.12-1.gdc.el9.x86_64 #1
->>> [293790.957963] Hardware name: RDO OpenStack Compute/RHEL, BIOS edk2-20230301gitf80f052277c8-2.el9 03/01/2023
->>> [293790.959681] RIP: 0010:__cfsb_csd_unthrottle+0x149/0x160
->>
->> See Bugzilla for the full thread.
->>
->> Anyway, I'm adding this regression to regzbot:
->>
->> #regzbot introduced: ebb83d84e49b54 https://bugzilla.kernel.org/show_bug.cgi?id=217843
->>
->> Thanks.
->>
->> [1]: https://bugzilla.kernel.org/show_bug.cgi?id=217843
-> 
-> The code in question is literally "rq_lock; update_rq_clock;
-> rq_clock_start_loop_update (the warning)", which suggests to me that
-> RQCF_ACT_SKIP is somehow leaking from somewhere else?
+[...]
+> But it is worth to try, and you can walk the children to set mrrs when
+> the quirk runs on bridges, I think.
+No, this will break hotplug, I had managed to get hotplug work on 2K1000.
+Also we have no guarantee on order of discovering devices.
+>> but the old quirk should run on every single device.
+> Your current patch has a drawback that both quirks will run for MIPS,
+> and their order is random (though it may cause nothing, but not
+> elegant).
+Actually loongson_mrrs_quirk is declared by DECLARE_PCI_FIXUP_EARLY but
+loongson_old_mrrs_quirk is declared by DECLARE_PCI_FIXUP_ENABLE,
+which means loongson_old_mrrs_quirk always runs after loongson_mrrs_quirk as
+expected.
 
-If I understand correctly, rq->clock_update_flags may be set to 
-RQCF_ACT_SKIP after __schedule() holds the rq lock, and sometimes the rq 
-lock may be released briefly in __schedule(), such as newidle_balance(). 
-At this time Other CPUs hold this rq lock, and then calling 
-rq_clock_start_loop_update() may trigger this warning.
+Thanks
+- Jiaxun
 
-This warning check might be wrong. We need to add assert_clock_updated() 
-to check that the rq clock has been updated before calling 
-rq_clock_start_loop_update().
-
-Maybe some things can be like this?
-
-From: Hao Jia <jiahao.os@bytedance.com>
-Date: Thu, 31 Aug 2023 11:38:54 +0800
-Subject: [PATCH] sched/core: Fix wrong warning check in 
-rq_clock_start_loop_update()
-
-Commit ebb83d84e49b54 ("sched/core: Avoid multiple
-calling update_rq_clock() in __cfsb_csd_unthrottle()")
-add "rq->clock_update_flags & RQCF_ACT_SKIP" warning in
-rq_clock_start_loop_update().
-But this warning is inaccurate and may be triggered
-incorrectly in the following situations:
-
-     CPU0                                      CPU1
-
-__schedule()
-   *rq->clock_update_flags <<= 1;*   unregister_fair_sched_group()
-   pick_next_task_fair+0x4a/0x410      destroy_cfs_bandwidth()
-     newidle_balance+0x115/0x3e0       for_each_possible_cpu(i) *i=0*
-       rq_unpin_lock(this_rq, rf)      __cfsb_csd_unthrottle()
-       raw_spin_rq_unlock(this_rq)
-                                       rq_lock(*CPU0_rq*, &rf)
-                                       rq_clock_start_loop_update()
-                                       rq->clock_update_flags & 
-RQCF_ACT_SKIP <--
-
-       raw_spin_rq_lock(this_rq)
-
-So we remove this wrong check. Add assert_clock_updated() to
-check that rq clock has been updated before calling
-rq_clock_start_loop_update(). And use the variable rq_clock_flags
-in rq_clock_start_loop_update() to record the previous state of
-rq->clock_update_flags. Correspondingly, restore rq->clock_update_flags
-through rq_clock_flags in rq_clock_stop_loop_update() to prevent
-losing its previous information.
-
-Fixes: ebb83d84e49b ("sched/core: Avoid multiple calling 
-update_rq_clock() in __cfsb_csd_unthrottle()")
-Cc: stable@vger.kernel.org
-Reported-by: Igor Raits <igor.raits@gmail.com>
-Reported-by: Bagas Sanjaya <bagasdotme@gmail.com>
-Signed-off-by: Hao Jia <jiahao.os@bytedance.com>
----
-  kernel/sched/fair.c  | 10 ++++++----
-  kernel/sched/sched.h | 12 +++++++-----
-  2 files changed, 13 insertions(+), 9 deletions(-)
-
-diff --git a/kernel/sched/fair.c b/kernel/sched/fair.c
-index 911d0063763c..0f6557c82a4c 100644
---- a/kernel/sched/fair.c
-+++ b/kernel/sched/fair.c
-@@ -5679,6 +5679,7 @@ void unthrottle_cfs_rq(struct cfs_rq *cfs_rq)
-  #ifdef CONFIG_SMP
-  static void __cfsb_csd_unthrottle(void *arg)
-  {
-+	unsigned int rq_clock_flags;
-  	struct cfs_rq *cursor, *tmp;
-  	struct rq *rq = arg;
-  	struct rq_flags rf;
-@@ -5691,7 +5692,7 @@ static void __cfsb_csd_unthrottle(void *arg)
-  	 * Do it once and skip the potential next ones.
-  	 */
-  	update_rq_clock(rq);
--	rq_clock_start_loop_update(rq);
-+	rq_clock_start_loop_update(rq, &rq_clock_flags);
-
-  	/*
-  	 * Since we hold rq lock we're safe from concurrent manipulation of
-@@ -5712,7 +5713,7 @@ static void __cfsb_csd_unthrottle(void *arg)
-
-  	rcu_read_unlock();
-
--	rq_clock_stop_loop_update(rq);
-+	rq_clock_stop_loop_update(rq, &rq_clock_flags);
-  	rq_unlock(rq, &rf);
-  }
-
-@@ -6230,6 +6231,7 @@ static void __maybe_unused 
-update_runtime_enabled(struct rq *rq)
-  /* cpu offline callback */
-  static void __maybe_unused unthrottle_offline_cfs_rqs(struct rq *rq)
-  {
-+	unsigned int rq_clock_flags;
-  	struct task_group *tg;
-
-  	lockdep_assert_rq_held(rq);
-@@ -6239,7 +6241,7 @@ static void __maybe_unused 
-unthrottle_offline_cfs_rqs(struct rq *rq)
-  	 * set_rq_offline(), so we should skip updating
-  	 * the rq clock again in unthrottle_cfs_rq().
-  	 */
--	rq_clock_start_loop_update(rq);
-+	rq_clock_start_loop_update(rq, &rq_clock_flags);
-
-  	rcu_read_lock();
-  	list_for_each_entry_rcu(tg, &task_groups, list) {
-@@ -6264,7 +6266,7 @@ static void __maybe_unused 
-unthrottle_offline_cfs_rqs(struct rq *rq)
-  	}
-  	rcu_read_unlock();
-
--	rq_clock_stop_loop_update(rq);
-+	rq_clock_stop_loop_update(rq, &rq_clock_flags);
-  }
-
-  bool cfs_task_bw_constrained(struct task_struct *p)
-diff --git a/kernel/sched/sched.h b/kernel/sched/sched.h
-index 04846272409c..ff2864f202f5 100644
---- a/kernel/sched/sched.h
-+++ b/kernel/sched/sched.h
-@@ -1558,20 +1558,22 @@ static inline void 
-rq_clock_cancel_skipupdate(struct rq *rq)
-   * when using list_for_each_entry_*)
-   * rq_clock_start_loop_update() can be called after updating the clock
-   * once and before iterating over the list to prevent multiple update.
-+ * And use @rq_clock_flags to record the previous state of 
-rq->clock_update_flags.
-   * After the iterative traversal, we need to call 
-rq_clock_stop_loop_update()
-- * to clear RQCF_ACT_SKIP of rq->clock_update_flags.
-+ * to restore rq->clock_update_flags through @rq_clock_flags.
-   */
--static inline void rq_clock_start_loop_update(struct rq *rq)
-+static inline void rq_clock_start_loop_update(struct rq *rq, unsigned 
-int *rq_clock_flags)
-  {
-  	lockdep_assert_rq_held(rq);
--	SCHED_WARN_ON(rq->clock_update_flags & RQCF_ACT_SKIP);
-+	assert_clock_updated(rq);
-+	*rq_clock_flags = rq->clock_update_flags;
-  	rq->clock_update_flags |= RQCF_ACT_SKIP;
-  }
-
--static inline void rq_clock_stop_loop_update(struct rq *rq)
-+static inline void rq_clock_stop_loop_update(struct rq *rq, unsigned 
-int *rq_clock_flags)
-  {
-  	lockdep_assert_rq_held(rq);
--	rq->clock_update_flags &= ~RQCF_ACT_SKIP;
-+	rq->clock_update_flags = *rq_clock_flags;
-  }
-
-  struct rq_flags {
---
-2.20.1
+[...]
