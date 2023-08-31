@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 239E478EBB4
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A07978EBB8
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:12:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233450AbjHaLMv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:12:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42884 "EHLO
+        id S238930AbjHaLMz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:12:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235755AbjHaLMu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:12:50 -0400
+        with ESMTP id S242380AbjHaLMz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:12:55 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 145CAE79
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:12:28 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEFF310C0
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:12:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id DE8AB63C7F
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:12:24 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F28FCC433C9;
-        Thu, 31 Aug 2023 11:12:23 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id E173863C69
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 11:12:27 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37F3C433C7;
+        Thu, 31 Aug 2023 11:12:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693480344;
-        bh=YObumt3eHckTNvyTsTNsInt8TltWDcWG5NHtU+jJcVo=;
+        s=korg; t=1693480347;
+        bh=yQJMC676pPaGVthmo3w/K7vN6sqttykJGhdR8zRFdCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qk8wJ35J/P7bzQ6aCXkSEcHCykZ4AqaUZqEVBXtJlXNPj2IG+NI2AeU422vNHhFsR
-         sS/2QmTC94UyxbaBwfA0iQjdKZGLuY/eF7t2qshU5nh6QPpRkh807VFaaPz8RD6gjk
-         MmKbqJs+CFQV4p7DS3jUAepwrwb5YLKtbrgLP0HA=
+        b=c+sTKIc5bw0TDQZqCvRNVmqTdjzedX31KMjqO6rL4iMBkOWNjJGkvcIIYieOBw5Bo
+         CM030/qd3aI3GDIDst92Rj7NmX9bLAAdxKIUEQkwth8tFw/jEnTflPZ1wNGnNwshO8
+         JYBY/ju0TqpHX2rf5xXH+QHI7yg2YNvMMk32ZJcw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrea Righi <andrea.righi@canonical.com>,
+        patches@lists.linux.dev, Adam Johnston <adam.johnston@arm.com>,
+        James Morse <james.morse@arm.com>,
         Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.4 2/9] module/decompress: use vmalloc() for zstd decompression workspace
-Date:   Thu, 31 Aug 2023 13:11:29 +0200
-Message-ID: <20230831111127.784527986@linuxfoundation.org>
+Subject: [PATCH 6.4 3/9] module: Expose module_init_layout_section()
+Date:   Thu, 31 Aug 2023 13:11:30 +0200
+Message-ID: <20230831111127.824343401@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230831111127.667900990@linuxfoundation.org>
 References: <20230831111127.667900990@linuxfoundation.org>
@@ -59,73 +60,85 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Andrea Righi <andrea.righi@canonical.com>
+From: James Morse <james.morse@arm.com>
 
-commit a419beac4a070aff63c520f36ebf7cb8a76a8ae5 upstream.
+commit 2abcc4b5a64a65a2d2287ba0be5c2871c1552416 upstream.
 
-Using kmalloc() to allocate the decompression workspace for zstd may
-trigger the following warning when large modules are loaded (i.e., xfs):
+module_init_layout_section() choses whether the core module loader
+considers a section as init or not. This affects the placement of the
+exit section when module unloading is disabled. This code will never run,
+so it can be free()d once the module has been initialised.
 
-[    2.961884] WARNING: CPU: 1 PID: 254 at mm/page_alloc.c:4453 __alloc_pages+0x2c3/0x350
-...
-[    2.989033] Call Trace:
-[    2.989841]  <TASK>
-[    2.990614]  ? show_regs+0x6d/0x80
-[    2.991573]  ? __warn+0x89/0x160
-[    2.992485]  ? __alloc_pages+0x2c3/0x350
-[    2.993520]  ? report_bug+0x17e/0x1b0
-[    2.994506]  ? handle_bug+0x51/0xa0
-[    2.995474]  ? exc_invalid_op+0x18/0x80
-[    2.996469]  ? asm_exc_invalid_op+0x1b/0x20
-[    2.997530]  ? module_zstd_decompress+0xdc/0x2a0
-[    2.998665]  ? __alloc_pages+0x2c3/0x350
-[    2.999695]  ? module_zstd_decompress+0xdc/0x2a0
-[    3.000821]  __kmalloc_large_node+0x7a/0x150
-[    3.001920]  __kmalloc+0xdb/0x170
-[    3.002824]  module_zstd_decompress+0xdc/0x2a0
-[    3.003857]  module_decompress+0x37/0xc0
-[    3.004688]  init_module_from_file+0xd0/0x100
-[    3.005668]  idempotent_init_module+0x11c/0x2b0
-[    3.006632]  __x64_sys_finit_module+0x64/0xd0
-[    3.007568]  do_syscall_64+0x59/0x90
-[    3.008373]  ? ksys_read+0x73/0x100
-[    3.009395]  ? exit_to_user_mode_prepare+0x30/0xb0
-[    3.010531]  ? syscall_exit_to_user_mode+0x37/0x60
-[    3.011662]  ? do_syscall_64+0x68/0x90
-[    3.012511]  ? do_syscall_64+0x68/0x90
-[    3.013364]  entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+arm and arm64 need to count the number of PLTs they need before applying
+relocations based on the section name. The init PLTs are stored separately
+so they can be free()d. arm and arm64 both use within_module_init() to
+decide which list of PLTs to use when applying the relocation.
 
-However, continuous physical memory does not seem to be required in
-module_zstd_decompress(), so use vmalloc() instead, to prevent the
-warning and avoid potential failures at loading compressed modules.
+Because within_module_init()'s behaviour changes when module unloading
+is disabled, both architecture would need to take this into account when
+counting the PLTs.
 
-Fixes: 169a58ad824d ("module/decompress: Support zstd in-kernel decompression")
-Signed-off-by: Andrea Righi <andrea.righi@canonical.com>
+Today neither architecture does this, meaning when module unloading is
+disabled there are insufficient PLTs in the init section to load some
+modules, resulting in warnings:
+| WARNING: CPU: 2 PID: 51 at arch/arm64/kernel/module-plts.c:99 module_emit_plt_entry+0x184/0x1cc
+| Modules linked in: crct10dif_common
+| CPU: 2 PID: 51 Comm: modprobe Not tainted 6.5.0-rc4-yocto-standard-dirty #15208
+| Hardware name: QEMU KVM Virtual Machine, BIOS 0.0.0 02/06/2015
+| pstate: 20400005 (nzCv daif +PAN -UAO -TCO -DIT -SSBS BTYPE=--)
+| pc : module_emit_plt_entry+0x184/0x1cc
+| lr : module_emit_plt_entry+0x94/0x1cc
+| sp : ffffffc0803bba60
+[...]
+| Call trace:
+|  module_emit_plt_entry+0x184/0x1cc
+|  apply_relocate_add+0x2bc/0x8e4
+|  load_module+0xe34/0x1bd4
+|  init_module_from_file+0x84/0xc0
+|  __arm64_sys_finit_module+0x1b8/0x27c
+|  invoke_syscall.constprop.0+0x5c/0x104
+|  do_el0_svc+0x58/0x160
+|  el0_svc+0x38/0x110
+|  el0t_64_sync_handler+0xc0/0xc4
+|  el0t_64_sync+0x190/0x194
+
+Instead of duplicating module_init_layout_section()s logic, expose it.
+
+Reported-by: Adam Johnston <adam.johnston@arm.com>
+Fixes: 055f23b74b20 ("module: check for exit sections in layout_sections() instead of module_init_section()")
+Cc: stable@vger.kernel.org
+Signed-off-by: James Morse <james.morse@arm.com>
 Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module/decompress.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/linux/moduleloader.h |    5 +++++
+ kernel/module/main.c         |    2 +-
+ 2 files changed, 6 insertions(+), 1 deletion(-)
 
---- a/kernel/module/decompress.c
-+++ b/kernel/module/decompress.c
-@@ -241,7 +241,7 @@ static ssize_t module_zstd_decompress(st
- 	}
+--- a/include/linux/moduleloader.h
++++ b/include/linux/moduleloader.h
+@@ -42,6 +42,11 @@ bool module_init_section(const char *nam
+  */
+ bool module_exit_section(const char *name);
  
- 	wksp_size = zstd_dstream_workspace_bound(header.windowSize);
--	wksp = kmalloc(wksp_size, GFP_KERNEL);
-+	wksp = vmalloc(wksp_size);
- 	if (!wksp) {
- 		retval = -ENOMEM;
- 		goto out;
-@@ -284,7 +284,7 @@ static ssize_t module_zstd_decompress(st
- 	retval = new_size;
- 
-  out:
--	kfree(wksp);
-+	vfree(wksp);
- 	return retval;
++/* Describes whether within_module_init() will consider this an init section
++ * or not. This behaviour changes with CONFIG_MODULE_UNLOAD.
++ */
++bool module_init_layout_section(const char *sname);
++
+ /*
+  * Apply the given relocation to the (simplified) ELF.  Return -error
+  * or 0.
+--- a/kernel/module/main.c
++++ b/kernel/module/main.c
+@@ -1491,7 +1491,7 @@ long module_get_offset_and_type(struct m
+ 	return offset | mask;
  }
- #else
+ 
+-static bool module_init_layout_section(const char *sname)
++bool module_init_layout_section(const char *sname)
+ {
+ #ifndef CONFIG_MODULE_UNLOAD
+ 	if (module_exit_section(sname))
 
 
