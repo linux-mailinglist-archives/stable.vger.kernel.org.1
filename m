@@ -2,31 +2,31 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70FA278EC07
-	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:31:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D5BD378EC08
+	for <lists+stable@lfdr.de>; Thu, 31 Aug 2023 13:31:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240863AbjHaLbJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 07:31:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36534 "EHLO
+        id S232483AbjHaLbL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 31 Aug 2023 07:31:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36560 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232716AbjHaLbJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:31:09 -0400
-Received: from out30-119.freemail.mail.aliyun.com (out30-119.freemail.mail.aliyun.com [115.124.30.119])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF974CE4
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:31:06 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R161e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0Vqy4whq_1693481463;
-Received: from e18g06460.et15sqa.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Vqy4whq_1693481463)
+        with ESMTP id S244089AbjHaLbK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 07:31:10 -0400
+Received: from out30-110.freemail.mail.aliyun.com (out30-110.freemail.mail.aliyun.com [115.124.30.110])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F1F0CFC
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 04:31:07 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R151e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045170;MF=hsiangkao@linux.alibaba.com;NM=1;PH=DS;RN=5;SR=0;TI=SMTPD_---0Vqy4wi9_1693481464;
+Received: from e18g06460.et15sqa.tbsite.net(mailfrom:hsiangkao@linux.alibaba.com fp:SMTPD_---0Vqy4wi9_1693481464)
           by smtp.aliyun-inc.com;
-          Thu, 31 Aug 2023 19:31:04 +0800
+          Thu, 31 Aug 2023 19:31:05 +0800
 From:   Gao Xiang <hsiangkao@linux.alibaba.com>
 To:     stable@vger.kernel.org,
         Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     linux-erofs@lists.ozlabs.org,
         Gao Xiang <hsiangkao@linux.alibaba.com>,
         keltargw <keltar.gw@gmail.com>
-Subject: [PATCH 5.4.y] erofs: ensure that the post-EOF tails are all zeroed
-Date:   Thu, 31 Aug 2023 19:29:58 +0800
-Message-Id: <20230831112959.99884-6-hsiangkao@linux.alibaba.com>
+Subject: [PATCH 4.19.y] erofs: ensure that the post-EOF tails are all zeroed
+Date:   Thu, 31 Aug 2023 19:29:59 +0800
+Message-Id: <20230831112959.99884-7-hsiangkao@linux.alibaba.com>
 X-Mailer: git-send-email 2.24.4
 In-Reply-To: <20230831112959.99884-1-hsiangkao@linux.alibaba.com>
 References: <20230831112959.99884-1-hsiangkao@linux.alibaba.com>
@@ -67,16 +67,16 @@ Reported-by: keltargw <keltar.gw@gmail.com>
 Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
 Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 ---
- fs/erofs/zdata.c | 2 ++
+ drivers/staging/erofs/unzip_vle.c | 2 ++
  1 file changed, 2 insertions(+)
 
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index dcc377094f90..fb718c3e3ebd 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -639,6 +639,8 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
- 	cur = end - min_t(erofs_off_t, offset + end - map->m_la, end);
- 	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
+diff --git a/drivers/staging/erofs/unzip_vle.c b/drivers/staging/erofs/unzip_vle.c
+index 83e4d9384bd2..7ccc4a18a900 100644
+--- a/drivers/staging/erofs/unzip_vle.c
++++ b/drivers/staging/erofs/unzip_vle.c
+@@ -675,6 +675,8 @@ static int z_erofs_do_read_page(struct z_erofs_vle_frontend *fe,
+ 	cur = end - min_t(unsigned, offset + end - map->m_la, end);
+ 	if (unlikely(!(map->m_flags & EROFS_MAP_MAPPED))) {
  		zero_user_segment(page, cur, end);
 +		++spiltted;
 +		tight = false;
