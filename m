@@ -2,124 +2,178 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 18D1078F68D
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 03:05:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 697C478F7E8
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 07:14:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235791AbjIABFJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 31 Aug 2023 21:05:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47082 "EHLO
+        id S1345281AbjIAFOC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 01:14:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36152 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232486AbjIABFJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 31 Aug 2023 21:05:09 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3C5A10DE;
-        Thu, 31 Aug 2023 18:04:51 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 536B361DF0;
-        Fri,  1 Sep 2023 01:04:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 64525C433C7;
-        Fri,  1 Sep 2023 01:04:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693530290;
-        bh=fvTxfLUhfAuU7bfbtfdaYACrGVKGUe+QNGoHK+K2ylo=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=gDe/hH1m7pkRXSZQRAm0VU7IQn0tgHn5KB2wON37b5hOrw62LK/u54jC7dF92TwX0
-         qQ5CcOverLysYLfRVpIHiK0SkyjxLjIDUVyCkaD+2JMgz0qfTiOWlquOFiyzw7MaCg
-         +gWkbNFQSfsjVgJUiLbk54HD0WkAgIg5lWnYwBugTfgs+MkfcsyB3S10IugnL69WYJ
-         kSrWdVjKHubWlFYmRvR+86zMWHersGdyydz+g1wgbCZ1js3n9A9G46UTOU5fK2R+J7
-         xqY8L5X3/StoUUfZ7f9REe2XV8Enq0KTvoyu++FsWilM5XRbIvwAjzogSWLRllUN6f
-         wx65epoHrmLBg==
-From:   SeongJae Park <sj@kernel.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org, damon@lists.linux.dev,
-        SeongJae Park <sj@kernel.org>
-Subject: Re: [PATCH 6.4 0/9] 6.4.14-rc1 review
-Date:   Fri,  1 Sep 2023 01:04:47 +0000
-Message-Id: <20230901010447.49402-1-sj@kernel.org>
-X-Mailer: git-send-email 2.25.1
-In-Reply-To: <20230831111127.667900990@linuxfoundation.org>
-References: 
+        with ESMTP id S1348243AbjIAFN4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 01:13:56 -0400
+Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C678310C4
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 22:13:50 -0700 (PDT)
+Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-500913779f5so2945379e87.2
+        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 22:13:50 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693545229; x=1694150029;
+        h=user-agent:in-reply-to:content-disposition:mime-version:references
+         :mail-followup-to:reply-to:message-id:subject:cc:to:from:date
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=af/4U1Rpctq0xn22z8gnl3fN8uEEmTY03VxkSbZqf7w=;
+        b=kf67HKBPIvtTYOmZYUJ3hJCveUUwrF1f2YNWvKMTb/2lYQ9YhW9zi6cYiZXaWzOlXn
+         CEReiB4IsKJQFUNlAbiVG21EL0URZpsvqrQ7Dlslr6x5Czwrn04CEC0eN44ZFG6YcUPP
+         EtZXLdjPg+c9yAlNgyE9X/1lw+fU4vc5ZlKGBywnK1AJrYCc5U5KDfGRqbkjE0q8OVbp
+         l4E3ZIgvee74vPDPqhkkI5Q0/L71GS/DyqIqDuFTaALcXFRxoJ1QmkhVOp4i9WF4kMui
+         OQ/CXeOAGWJmFSjZrGsWR7CKOip9yaQEkod/W2bbHQ1grMQfM7I/fXfD7jgptC3W2YFi
+         QwKw==
+X-Gm-Message-State: AOJu0Yy/CfCYGdnBqU4b66NHOU1iDcqX5FtodQj+PG3eYv+ePaMkJlx9
+        90ZnArPBVObnHEJy450IeR5rYg==
+X-Google-Smtp-Source: AGHT+IH6lMHGk3UIs0Aikzj/5UPchwNn22edRT/IVO/IuY1Z60LnUxSEWtAJ+o7L1HOvG/YdosozOA==
+X-Received: by 2002:a05:6512:2302:b0:4f9:cd02:4aec with SMTP id o2-20020a056512230200b004f9cd024aecmr1069353lfu.29.1693545228858;
+        Thu, 31 Aug 2023 22:13:48 -0700 (PDT)
+Received: from fedora.fritz.box (p549458cf.dip0.t-ipconnect.de. [84.148.88.207])
+        by smtp.gmail.com with ESMTPSA id lh7-20020a170906f8c700b0098e34446464sm1549982ejb.25.2023.08.31.22.13.47
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 31 Aug 2023 22:13:47 -0700 (PDT)
+Date:   Fri, 1 Sep 2023 07:13:45 +0200
+From:   Damian Tometzki <dtometzki@fedoraproject.org>
+To:     Aleksa Sarai <cyphar@cyphar.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        Shuah Khan <shuah@kernel.org>, Jeff Xu <jeffxu@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Daniel Verkamp <dverkamp@chromium.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        stable@vger.kernel.org, linux-api@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        linux-kselftest@vger.kernel.org
+Subject: Re: [PATCH v2 3/5] memfd: improve userspace warnings for missing
+ exec-related flags
+Message-ID: <ZPFzCSIgZ4QuHsSC@fedora.fritz.box>
+Reply-To: Damian Tometzki <dtometzki@fedoraproject.org>
+Mail-Followup-To: Aleksa Sarai <cyphar@cyphar.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Shuah Khan <shuah@kernel.org>, Jeff Xu <jeffxu@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Daniel Verkamp <dverkamp@chromium.org>,
+        Christian Brauner <brauner@kernel.org>,
+        Dominique Martinet <asmadeus@codewreck.org>, stable@vger.kernel.org,
+        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
+        linux-mm@kvack.org, linux-kselftest@vger.kernel.org
+References: <20230814-memfd-vm-noexec-uapi-fixes-v2-0-7ff9e3e10ba6@cyphar.com>
+ <20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com>
+User-Agent: Mutt
+X-Spam-Status: No, score=-1.0 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
+        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello,
-
-On Thu, 31 Aug 2023 13:11:27 +0200 Greg Kroah-Hartman <gregkh@linuxfoundation.org> wrote:
-
-> This is the start of the stable review cycle for the 6.4.14 release.
-> There are 9 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, 14. Aug 18:40, Aleksa Sarai wrote:
+> In order to incentivise userspace to switch to passing MFD_EXEC and
+> MFD_NOEXEC_SEAL, we need to provide a warning on each attempt to call
+> memfd_create() without the new flags. pr_warn_once() is not useful
+> because on most systems the one warning is burned up during the boot
+> process (on my system, systemd does this within the first second of
+> boot) and thus userspace will in practice never see the warnings to push
+> them to switch to the new flags.
 > 
-> Responses should be made by Sat, 02 Sep 2023 11:11:18 +0000.
-> Anything received after that time might be too late.
+> The original patchset[1] used pr_warn_ratelimited(), however there were
+> concerns about the degree of spam in the kernel log[2,3]. The resulting
+> inability to detect every case was flagged as an issue at the time[4].
 > 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.14-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
-> and the diffstat can be found below.
+> While we could come up with an alternative rate-limiting scheme such as
+> only outputting the message if vm.memfd_noexec has been modified, or
+> only outputting the message once for a given task, these alternatives
+> have downsides that don't make sense given how low-stakes a single
+> kernel warning message is. Switching to pr_info_ratelimited() instead
+> should be fine -- it's possible some monitoring tool will be unhappy
+> with a stream of warning-level messages but there's already plenty of
+> info-level message spam in dmesg.
+> 
+> [1]: https://lore.kernel.org/20221215001205.51969-4-jeffxu@google.com/
+> [2]: https://lore.kernel.org/202212161233.85C9783FB@keescook/
+> [3]: https://lore.kernel.org/Y5yS8wCnuYGLHMj4@x1n/
+> [4]: https://lore.kernel.org/f185bb42-b29c-977e-312e-3349eea15383@linuxfoundation.org/
+> 
+> Cc: stable@vger.kernel.org # v6.3+
+> Fixes: 105ff5339f49 ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
+> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+> ---
+>  mm/memfd.c | 2 +-
+>  1 file changed, 1 insertion(+), 1 deletion(-)
+> 
+> diff --git a/mm/memfd.c b/mm/memfd.c
+> index d65485c762de..aa46521057ab 100644
+> --- a/mm/memfd.c
+> +++ b/mm/memfd.c
+> @@ -315,7 +315,7 @@ SYSCALL_DEFINE2(memfd_create,
+>  		return -EINVAL;
+>  
+>  	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
+> -		pr_warn_once(
+> +		pr_info_ratelimited(
+>  			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set\n",
+>  			current->comm, task_pid_nr(current));
+>  	}
+> 
+> -- 
+> 2.41.0
+>
+Hello Sarai,
 
-This rc kernel passes DAMON functionality test[1] on my test machine.
-Attaching the test results summary below.  Please note that I retrieved the
-kernel from linux-stable-rc tree[2].
+i got a lot of messages in dmesg with this. DMESG is unuseable with
+this. 
+[ 1390.349462] __do_sys_memfd_create: 5 callbacks suppressed
+[ 1390.349468] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.350106] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.350366] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.359390] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.359453] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.848813] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.849425] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.849673] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.857629] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1390.857674] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1404.819637] __do_sys_memfd_create: 105 callbacks suppressed
+[ 1404.819641] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1404.819950] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1404.820054] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1404.824240] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1404.824279] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.373186] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.373906] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.374131] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.382397] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.382485] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.499581] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.500077] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.500265] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.512772] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1430.512840] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.388519] __do_sys_memfd_create: 60 callbacks suppressed
+[ 1444.388525] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.389061] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.389335] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.397909] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.397965] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.503514] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.503658] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.503726] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.507841] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1444.507870] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+[ 1449.707966] __do_sys_memfd_create: 25 callbacks suppressed
 
-Tested-by: SeongJae Park <sj@kernel.org>
-
-[1] https://github.com/awslabs/damon-tests/tree/next/corr
-[2] 499afdc4a899 ("Linux 6.4.14-rc1")
-
-Thanks,
-SJ
-
-[...]
-
----
-
- [32m
-ok 1 selftests: damon: debugfs_attrs.sh
-ok 2 selftests: damon: debugfs_schemes.sh
-ok 3 selftests: damon: debugfs_target_ids.sh
-ok 4 selftests: damon: debugfs_empty_targets.sh
-ok 5 selftests: damon: debugfs_huge_count_read_write.sh
-ok 6 selftests: damon: debugfs_duplicate_context_creation.sh
-ok 7 selftests: damon: debugfs_rm_non_contexts.sh
-ok 8 selftests: damon: sysfs.sh
-ok 9 selftests: damon: sysfs_update_removed_scheme_dir.sh
-ok 10 selftests: damon: reclaim.sh
-ok 11 selftests: damon: lru_sort.sh
-ok 1 selftests: damon-tests: kunit.sh
-ok 2 selftests: damon-tests: huge_count_read_write.sh
-ok 3 selftests: damon-tests: buffer_overflow.sh
-ok 4 selftests: damon-tests: rm_contexts.sh
-ok 5 selftests: damon-tests: record_null_deref.sh
-ok 6 selftests: damon-tests: dbgfs_target_ids_read_before_terminate_race.sh
-ok 7 selftests: damon-tests: dbgfs_target_ids_pid_leak.sh
-ok 8 selftests: damon-tests: damo_tests.sh
-ok 9 selftests: damon-tests: masim-record.sh
-ok 10 selftests: damon-tests: build_i386.sh
-ok 11 selftests: damon-tests: build_m68k.sh
-ok 12 selftests: damon-tests: build_arm64.sh
-ok 13 selftests: damon-tests: build_i386_idle_flag.sh
-ok 14 selftests: damon-tests: build_i386_highpte.sh
-ok 15 selftests: damon-tests: build_nomemcg.sh
- [33m
- [92mPASS [39m
-_remote_run_corr.sh SUCCESS
+Best regards
+Damian
+ 
