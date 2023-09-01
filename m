@@ -2,104 +2,181 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D9FF2790058
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 18:01:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5C6407900CA
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 18:36:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238458AbjIAQBK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 12:01:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35900 "EHLO
+        id S1346107AbjIAQgT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 12:36:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238256AbjIAQBJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 12:01:09 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00BFE10E4
-        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 09:01:06 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-34e1757fe8fso572675ab.0
-        for <stable@vger.kernel.org>; Fri, 01 Sep 2023 09:01:06 -0700 (PDT)
+        with ESMTP id S1345991AbjIAQgS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 12:36:18 -0400
+Received: from mail-yb1-xb34.google.com (mail-yb1-xb34.google.com [IPv6:2607:f8b0:4864:20::b34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 091C810EC
+        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 09:36:15 -0700 (PDT)
+Received: by mail-yb1-xb34.google.com with SMTP id 3f1490d57ef6-d7830c5b20aso236353276.0
+        for <stable@vger.kernel.org>; Fri, 01 Sep 2023 09:36:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxfoundation.org; s=google; t=1693584066; x=1694188866; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=WCsm7PXzMA4syA8CcbnCY0pyK9en/7AsjazHCOViui8=;
-        b=KPri6qk70P9io5Y8CK7EJWF9xEMFjN//tviUwc6u9W9omyktH3laEWg6m9vK/2tL22
-         dxNC85spxM3jVn4RHuQui/Hdo7n2ln25m/CS7XEsBFz56qlmuW024Y/w1dL438Rl4Ym9
-         BheGqL+qISJpHd7nOIR04izJKiuVSC/R58ZJ4=
+        d=linaro.org; s=google; t=1693586174; x=1694190974; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=7LEzHt4NZiik9U85JbASFK8/bDKDKmrv1K/mkDPZW1E=;
+        b=ilyo1tBe4hOn4QUrWd+D5ff3cElsRun22YDz8reDZW6mfJHgPKOneMDcweGeVOn+l/
+         v0zH112jSuecxus9TAgwdXebCgMXad7yDN7gTonNjN/5W7EfXqnonY1U2CPRTe8ftr3/
+         ixBMjteORaduQGro03sOz2GHtlInSJoxf91cSUo8AMoMg9hZ1TDQgCp31hRrXPf+sAzk
+         oGaIuPWYZDVD2w+Kaecf16rZg1a0EDa0QtFK8LcPPuBB/2mkknR5HKMKvKkYZEdQ0ecX
+         zprXN0CmqSOywXa3JUmNewTfbB/H9SKF0RmejBiB+A65h39oHjgPdYUuHA9Ip+KFb3Gn
+         mXZQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693584066; x=1694188866;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=WCsm7PXzMA4syA8CcbnCY0pyK9en/7AsjazHCOViui8=;
-        b=Xj21PSTLDqdY1oyEQR4R+j8gvfZbXIkTqhyXwWqpwwL9fxICyrrkWxFQap0yl2Uke6
-         kpaYp/FSDAH41PMHCWXHe4Pljh7Ae228VdQyaQzxW/ogPO5cHMuZz2p6TP1pYLO2QZQU
-         vx+dWGz2jmPYZPsQyuDcCq6tkQFreakYwLJ2dS6cQNg0m0auIWnfd+NLD6M+OxiOL+hl
-         l74W66oEALl/YTlsGK9wA0p+c75qDRowjo0i+DzpMo+UCDjpYK+1Ep3EKG5ifjNtmZfC
-         c49Vwm138NaYX3TyefnikB/EiMqk2gwx3UG3/hpJE9d0/rWeqrx2GDS++S6moo7eQhGU
-         YIWw==
-X-Gm-Message-State: AOJu0YxsmG1aPuMxrUtmsUDHb4wLdCUdOc3WuNrzbz6OCfR5NI00X9yB
-        AvsPPY0jJCpGlSM6eV0n0jnsSg==
-X-Google-Smtp-Source: AGHT+IECl/yIAZ8YZTPgtDkBe82ANt3cbAnEAFiOnhj4JTckTUTkOO2xqK/EcdV8L56q0eNCdCsdHw==
-X-Received: by 2002:a05:6602:3886:b0:792:6be4:3dcb with SMTP id br6-20020a056602388600b007926be43dcbmr2833593iob.2.1693584066384;
-        Fri, 01 Sep 2023 09:01:06 -0700 (PDT)
-Received: from [192.168.1.128] ([38.15.45.1])
-        by smtp.gmail.com with ESMTPSA id ge12-20020a056638680c00b004312e5c9b0dsm1097780jab.139.2023.09.01.09.01.04
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Fri, 01 Sep 2023 09:01:05 -0700 (PDT)
-Message-ID: <73970980-0076-292e-67d3-4563fc0d53ab@linuxfoundation.org>
-Date:   Fri, 1 Sep 2023 10:01:03 -0600
+        d=1e100.net; s=20221208; t=1693586174; x=1694190974;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7LEzHt4NZiik9U85JbASFK8/bDKDKmrv1K/mkDPZW1E=;
+        b=NlRQZWkkoQNqRkuuxtyE4v7aHqWD1ElaoMAW/DoWpKyOmGvjV/CeDDvTQiBQSziJoq
+         Tq7s4vwA5gEhSXn0MWgVR3ZReIBWKfr7zsfpHVy/uEFqmQ9Mjp3QGlcc6cA8mTjoYclH
+         afCVMTh95B5W89EBg4liBpRSLOilP8C/a8ZWAP/ad0/52EFyjzEms/rD+rCbhTSkF16l
+         37BvbRzhMJJekpTzvJW+WXZCS2y/wHQFKiBTkL7KeKcg8VKp+jP1fJ4UzSHdB45Cb7Gz
+         Hh+I5c6xStvhXuPqOMJDG205fex09n9nI2s0hAcmpx3bYaiW1CD+PlLjIyKpSUUxLtEg
+         uUyg==
+X-Gm-Message-State: AOJu0YySy2uI2v7qnip4rcP75I9zDevCxelHFpiXmbdV77Y9XkrDj8oU
+        Wb85LkhrV+8todm7WaQJDclY2wWm6uc8ADk9azIcmA==
+X-Google-Smtp-Source: AGHT+IHPM6b0WFdVup+/QotG7mEFQrLBe/HDdJxJ2M6uo15O9+njzMi1H61REGJ59HMd9LgJTvuinNk6gH9jPMPrr9U=
+X-Received: by 2002:a25:ae89:0:b0:d78:414d:1910 with SMTP id
+ b9-20020a25ae89000000b00d78414d1910mr4401918ybj.25.1693586174181; Fri, 01 Sep
+ 2023 09:36:14 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH 4.19 0/1] 4.19.294-rc1 review
-Content-Language: en-US
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
-        Shuah Khan <skhan@linuxfoundation.org>
-References: <20230831110828.433348914@linuxfoundation.org>
-From:   Shuah Khan <skhan@linuxfoundation.org>
-In-Reply-To: <20230831110828.433348914@linuxfoundation.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230901081812.19121-1-krzysztof.kozlowski@linaro.org> <20230901081812.19121-2-krzysztof.kozlowski@linaro.org>
+In-Reply-To: <20230901081812.19121-2-krzysztof.kozlowski@linaro.org>
+From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Date:   Fri, 1 Sep 2023 19:36:03 +0300
+Message-ID: <CAA8EJpoOVaDptuo9u4CaNRi0gJjt4Mr65Os3XJTf3-Sbk280gQ@mail.gmail.com>
+Subject: Re: [RFT PATCH 2/2] arm64: dts: qcom: msm8996-xiaomi: fix missing
+ clock populate
+To:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Cc:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8/31/23 05:09, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 4.19.294 release.
-> There are 1 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Sat, 02 Sep 2023 11:08:22 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.294-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
-> 
+On Fri, 1 Sept 2023 at 11:18, Krzysztof Kozlowski
+<krzysztof.kozlowski@linaro.org> wrote:
+>
+> Commit 338958e30c68 ("arm64: dts: qcom: msm8996-xiaomi: drop simple-bus
+> from clocks") removed "simple-bus" compatible from "clocks" node, but
+> one of the clocks - divclk1 - is a gpio-gate-clock, which does not have
+> CLK_OF_DECLARE.  This means it will not be instantiated if placed in
+> some subnode.  Move the clocks to the root node, so regular devices will
+> be populated.
 
-Compiled and booted on my test system. No dmesg regressions.
+I don't think this is a good idea. We have other fixed clocks under
+/clocks. And they have been always working. I think the better way
+would be to teach clk-gpio to work with CLK_OF_DECLARE
 
-Tested-by: Shuah Khan <skhan@linuxfoundation.org>
+>
+> Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+> Closes: https://lore.kernel.org/all/CAA8EJprF==p87oN+RiwAiNeURF1JcHGfL2Ez5zxqYPRRbN-hhg@mail.gmail.com/
+> Cc: <stable@vger.kernel.org>
+> Fixes: 338958e30c68 ("arm64: dts: qcom: msm8996-xiaomi: drop simple-bus from clocks")
+> Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> ---
+>  .../boot/dts/qcom/msm8996-xiaomi-common.dtsi  | 32 +++++++++----------
+>  .../boot/dts/qcom/msm8996-xiaomi-gemini.dts   | 16 ++++------
+>  2 files changed, 22 insertions(+), 26 deletions(-)
+>
+> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+> index bcd2397eb373..06f8ff624181 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-common.dtsi
+> @@ -11,26 +11,24 @@
+>  #include <dt-bindings/pinctrl/qcom,pmic-gpio.h>
+>
+>  / {
+> -       clocks {
+> -               divclk1_cdc: divclk1 {
+> -                       compatible = "gpio-gate-clock";
+> -                       clocks = <&rpmcc RPM_SMD_DIV_CLK1>;
+> -                       #clock-cells = <0>;
+> -                       enable-gpios = <&pm8994_gpios 15 GPIO_ACTIVE_HIGH>;
+> +       divclk1_cdc: divclk1 {
+> +               compatible = "gpio-gate-clock";
+> +               clocks = <&rpmcc RPM_SMD_DIV_CLK1>;
+> +               #clock-cells = <0>;
+> +               enable-gpios = <&pm8994_gpios 15 GPIO_ACTIVE_HIGH>;
+>
+> -                       pinctrl-names = "default";
+> -                       pinctrl-0 = <&divclk1_default>;
+> -               };
+> +               pinctrl-names = "default";
+> +               pinctrl-0 = <&divclk1_default>;
+> +       };
+>
+> -               divclk4: divclk4 {
+> -                       compatible = "fixed-clock";
+> -                       #clock-cells = <0>;
+> -                       clock-frequency = <32768>;
+> -                       clock-output-names = "divclk4";
+> +       divclk4: divclk4 {
+> +               compatible = "fixed-clock";
+> +               #clock-cells = <0>;
+> +               clock-frequency = <32768>;
+> +               clock-output-names = "divclk4";
+>
+> -                       pinctrl-names = "default";
+> -                       pinctrl-0 = <&divclk4_pin_a>;
+> -               };
+> +               pinctrl-names = "default";
+> +               pinctrl-0 = <&divclk4_pin_a>;
+>         };
+>
+>         gpio-keys {
+> diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+> index d1066edaea47..f8e9d90afab0 100644
+> --- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+> +++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+> @@ -20,16 +20,14 @@ / {
+>         qcom,pmic-id = <0x20009 0x2000a 0x00 0x00>;
+>         qcom,board-id = <31 0>;
+>
+> -       clocks {
+> -               divclk2_haptics: divclk2 {
+> -                       compatible = "fixed-clock";
+> -                       #clock-cells = <0>;
+> -                       clock-frequency = <32768>;
+> -                       clock-output-names = "divclk2";
+> +       divclk2_haptics: divclk2 {
+> +               compatible = "fixed-clock";
+> +               #clock-cells = <0>;
+> +               clock-frequency = <32768>;
+> +               clock-output-names = "divclk2";
+>
+> -                       pinctrl-names = "default";
+> -                       pinctrl-0 = <&divclk2_pin_a>;
+> -               };
+> +               pinctrl-names = "default";
+> +               pinctrl-0 = <&divclk2_pin_a>;
+>         };
+>  };
+>
+> --
+> 2.34.1
+>
 
-thanks,
--- Shuah
+
+-- 
+With best wishes
+Dmitry
