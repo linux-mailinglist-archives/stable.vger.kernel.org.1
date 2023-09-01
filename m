@@ -2,112 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4150B78F8DD
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 09:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7071578F8E6
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 09:06:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231443AbjIAHDD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 03:03:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34586 "EHLO
+        id S1346055AbjIAHGj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 03:06:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231418AbjIAHDC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 03:03:02 -0400
-Received: from mail-pf1-x435.google.com (mail-pf1-x435.google.com [IPv6:2607:f8b0:4864:20::435])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C78510D2;
-        Fri,  1 Sep 2023 00:03:00 -0700 (PDT)
-Received: by mail-pf1-x435.google.com with SMTP id d2e1a72fcca58-68c0cb00fb3so1418127b3a.2;
-        Fri, 01 Sep 2023 00:03:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693551779; x=1694156579; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=g8wr24to/gtJqJwr7CdrwRS9mfHBCNBSTGsrr1PkE30=;
-        b=Avh+46pFYIpSDZqKE9qT1yn/OoLmY6YVZRSi/1BoU+WLD/1kJOqcTzevLhy6Gkd9DT
-         UZ2dnT91L6/iMpnGw7CdOZhoR8jYxPZ1hUMi6fURRdBZZ9RVGOz6+u5arQpPj/3oP779
-         Zu0zga144I9t08se7ZGOsP+UPc51v4SPP54bn/LXAbWkA8a6ZiBC406RxH1qeLQj/BRS
-         fJZC3QcTKwx7OwxAUdnj9uYb66vLuyoTrOlWUhUVCAHO8hDQddlJC/DWRDBRV7I2AP/8
-         KLpssmMHcT2BK50DTYA7aJy7mJBmNary+WAVXbRg5LihzSC93siK+UEe73hfYiYoAsO5
-         Gu2A==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693551779; x=1694156579;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=g8wr24to/gtJqJwr7CdrwRS9mfHBCNBSTGsrr1PkE30=;
-        b=HtXNilnkcaAjDCjUbOyIw9QHw8ZRVEAXIUkVsDDw1x23Qj0nILo3rNk0j2arYpVEDg
-         uOkbiVkXa45GtS8VJpIWYr9i/6EEjiW00Ym+lClBYaZSYWCzO3HJV0pavACXnQINZ1KT
-         BqSPpdyn0GvlW1NLyq5EFG2/jn5rzLdzPRJXDRHolfwl9SB/mShDL4ciuZUWRJHylh4B
-         hUDUeliUripqG/mbUcykJaZLciX1bQTucJIAotkhjvSduhIhAVjK6rD4PrpB8xJ69AI1
-         W9VGRPuChA59qRC/Iuhq0vHVwduVBaY75pDCuy8a1nqs0mqICpZdi2v2jlAezVZeIUGU
-         Obcw==
-X-Gm-Message-State: AOJu0YwJylGkwE8neW6EjtredgDN/OFtk/9RU9uAHnB8AR1i8nDZUFCk
-        oPHA+B1EdYlrohA7baAwY4I=
-X-Google-Smtp-Source: AGHT+IFH62BQFrdwj6BomF4htUKGs5yvT3G/DWOQ60wYI1H0qhLDmCweZYjyFwA9jl5MEse1SfZ63g==
-X-Received: by 2002:a05:6a00:189e:b0:68a:61a9:7e43 with SMTP id x30-20020a056a00189e00b0068a61a97e43mr2047516pfh.29.1693551779208;
-        Fri, 01 Sep 2023 00:02:59 -0700 (PDT)
-Received: from debian.me ([103.124.138.83])
-        by smtp.gmail.com with ESMTPSA id c5-20020aa781c5000000b0068a3dd6c1dasm2378796pfn.142.2023.09.01.00.02.57
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Sep 2023 00:02:58 -0700 (PDT)
-Received: by debian.me (Postfix, from userid 1000)
-        id C2EF18F03D47; Fri,  1 Sep 2023 14:02:50 +0700 (WIB)
-Date:   Fri, 1 Sep 2023 14:02:50 +0700
-From:   Bagas Sanjaya <bagasdotme@gmail.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 0/9] 6.4.14-rc1 review
-Message-ID: <ZPGMmjfiMKt1jMAL@debian.me>
-References: <20230831111127.667900990@linuxfoundation.org>
+        with ESMTP id S231418AbjIAHGi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 03:06:38 -0400
+Received: from mailout3.samsung.com (mailout3.samsung.com [203.254.224.33])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C00CC5
+        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 00:06:34 -0700 (PDT)
+Received: from epcas5p2.samsung.com (unknown [182.195.41.40])
+        by mailout3.samsung.com (KnoxPortal) with ESMTP id 20230901070631epoutp039a1d3069d119c491b8ade8463b4181f8~AtJAtnifj2719827198epoutp03S
+        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 07:06:31 +0000 (GMT)
+DKIM-Filter: OpenDKIM Filter v2.11.0 mailout3.samsung.com 20230901070631epoutp039a1d3069d119c491b8ade8463b4181f8~AtJAtnifj2719827198epoutp03S
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
+        s=mail20170921; t=1693551991;
+        bh=007ZtfqUYfDpf2svNAZ7ZRCqhQb3uKTf4ztNFGUDLwk=;
+        h=Date:Subject:To:Cc:From:In-Reply-To:References:From;
+        b=MiUcErxuBxfEiuQ9f3UFcW5YjEO8EWxpe8Hy726rtpZ06TNwoUhLyXAAGSRieanxQ
+         ks49aDqxRPJ3csDRYjv+6te3i5H88gSxldUIh0Hof25u9lSLi/UqqzfLzmY/k1JT3f
+         bz2MW6lDLW7ve/fGf6+NxUbXY3Tc2pWjcAXA30mw=
+Received: from epsnrtp3.localdomain (unknown [182.195.42.164]) by
+        epcas5p2.samsung.com (KnoxPortal) with ESMTP id
+        20230901070630epcas5p2d2565ed2fc0c61b5cdb29fb67c8c1826~AtI---g220883908839epcas5p2j;
+        Fri,  1 Sep 2023 07:06:30 +0000 (GMT)
+Received: from epsmges5p3new.samsung.com (unknown [182.195.38.174]) by
+        epsnrtp3.localdomain (Postfix) with ESMTP id 4RcTbR5YLqz4x9Q1; Fri,  1 Sep
+        2023 07:06:27 +0000 (GMT)
+Received: from epcas5p1.samsung.com ( [182.195.41.39]) by
+        epsmges5p3new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        96.49.09635.37D81F46; Fri,  1 Sep 2023 16:06:27 +0900 (KST)
+Received: from epsmtrp2.samsung.com (unknown [182.195.40.14]) by
+        epcas5p4.samsung.com (KnoxPortal) with ESMTPA id
+        20230901070627epcas5p4cb281d7a6326da7cc255271562474459~AtI9I-jWM1564715647epcas5p4Q;
+        Fri,  1 Sep 2023 07:06:27 +0000 (GMT)
+Received: from epsmgms1p1new.samsung.com (unknown [182.195.42.41]) by
+        epsmtrp2.samsung.com (KnoxPortal) with ESMTP id
+        20230901070627epsmtrp28a386b44e92beff20bfcbce61601c4e1~AtI9IKqVu1034410344epsmtrp2P;
+        Fri,  1 Sep 2023 07:06:27 +0000 (GMT)
+X-AuditID: b6c32a4b-2f5ff700000025a3-f9-64f18d731d32
+Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
+        epsmgms1p1new.samsung.com (Symantec Messaging Gateway) with SMTP id
+        8D.2B.08742.37D81F46; Fri,  1 Sep 2023 16:06:27 +0900 (KST)
+Received: from [107.122.11.51] (unknown [107.122.11.51]) by
+        epsmtip1.samsung.com (KnoxPortal) with ESMTPA id
+        20230901070625epsmtip1bc8a5aa12befdbd744e2de56feafd4b5~AtI7UxeI83245732457epsmtip16;
+        Fri,  1 Sep 2023 07:06:25 +0000 (GMT)
+Message-ID: <6e21ae88-fd9d-a77c-c360-741326b209e6@samsung.com>
+Date:   Fri, 1 Sep 2023 12:36:24 +0530
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="L55yot6n5WpZHRsh"
-Content-Disposition: inline
-In-Reply-To: <20230831111127.667900990@linuxfoundation.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0)
+        Gecko/20100101 Thunderbird/91.8.1
+Subject: Re: [PATCH v2 1/2] nvme: fix memory corruption for passthrough
+ metadata
+Content-Language: en-US
+To:     Vincent Fu <vincent.fu@samsung.com>
+Cc:     "ankit.kumar@samsung.com" <ankit.kumar@samsung.com>,
+        "axboe@kernel.dk" <axboe@kernel.dk>,
+        "gost.dev@samsung.com" <gost.dev@samsung.com>,
+        "hch@lst.de" <hch@lst.de>,
+        "joshiiitr@gmail.com" <joshiiitr@gmail.com>,
+        "kbusch@kernel.org" <kbusch@kernel.org>,
+        "linux-nvme@lists.infradead.org" <linux-nvme@lists.infradead.org>,
+        "sagi@grimberg.me" <sagi@grimberg.me>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "vincentfu@gmail.com" <vincentfu@gmail.com>
+From:   KANCHAN JOSHI/Host Software /SSIR/Staff Engineer/Samsung
+         Electronics <joshi.k@samsung.com>
+In-Reply-To: <20230831140834.85315-1-vincent.fu@samsung.com>
+Content-Transfer-Encoding: 7bit
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFtrBJsWRmVeSWpSXmKPExsWy7bCmum5x78cUg+4tWhZrrvxmt1h9t5/N
+        4uaBnUwWK1cfZbI4//Ywk8WkQ9cYLeYve8puse71exaLBRsfMVo87u5gtNjQJujA7bFz1l12
+        j/P3NrJ4XD5b6rFpVSebx+Yl9R67bzawefRtWcXo8XmTXABHVLZNRmpiSmqRQmpecn5KZl66
+        rZJ3cLxzvKmZgaGuoaWFuZJCXmJuqq2Si0+ArltmDtCZSgpliTmlQKGAxOJiJX07m6L80pJU
+        hYz84hJbpdSClJwCkwK94sTc4tK8dL281BIrQwMDI1OgwoTsjJaLegXvOSquzLrF3MDYwd7F
+        yMkhIWAiMWlWI5gtJLCbUaKr272LkQvI/sQosbu9kQXC+cYocfZEAzNMx+3nt9khEnsZJXYt
+        2sgK4bxllHg46R+Qw8HBK2AnceBtAUgDi4CKxPyXIJM4gcKCEidnPgGzRQWSJH5dncMIYgsL
+        BEks2d8HdgazgLjErSfzmUBsEQF1iUPf+8DmMwtcYpb48vUhWDMbUPOJ659ZQHZxCthITLgv
+        B9ErL7H97RxmkHoJgR0cEif6FjNBXO0isXPtWqgPhCVeHd8C9b+UxOd3e9kg7GSJSzPPQdWX
+        SDzecxDKtpdoPdXPDLKLWUBTYv0ufYhdfBK9v58wgYQlBHglOtqEIKoVJe5NesoKYYtLPJyx
+        BMr2kNj76Co0pPczSjx+6zOBUWEWUqjMQvL9LCTfzEJYvICRZRWjZGpBcW56arFpgXFeajk8
+        tpPzczcxgpOwlvcOxkcPPugdYmTiYDzEKMHBrCTCG2v2LkWINyWxsiq1KD++qDQntfgQoykw
+        eiYyS4km5wPzQF5JvKGJpYGJmZmZiaWxmaGSOO/r1rkpQgLpiSWp2ampBalFMH1MHJxSDUx7
+        tslPZv36/aHG0vliSk3WS2JnJ2YsZtQrTI66xNx2YcL/7PtzFv5PuCnHoMi2a8Zsyc5FuW2h
+        KxdNZ51d8C78TbCVxCUb97BO//tJ7ps1GL1bdkiG3/tSLDq3vUfyvv3/I39vzEoLMtj0bMOR
+        VR3P1abtYTl8TTJxvtslM1n9dp2EHg0Ovd/v/v0+8XOzRV+D53fVsvqFkws8We2/NYS5PT6u
+        y71tnmTBn/DlfWtSLs05n+0sVPdq19x1ettWWjGt3MlUsedlv8kf39nC3z3tZP5fuMmyuy1f
+        1n9vFJvj01eb/8YWzvJTvx/0wm5eItuiH4vPi5x59bzD6fnU+ZZVoWVzk0Ifl+TvKhe13cSn
+        xFKckWioxVxUnAgAeTdhAUsEAAA=
+X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFprCIsWRmVeSWpSXmKPExsWy7bCSnG5x78cUg9cfhCzWXPnNbrH6bj+b
+        xc0DO5ksVq4+ymRx/u1hJotJh64xWsxf9pTdYt3r9ywWCzY+YrR43N3BaLGhTdCB22PnrLvs
+        HufvbWTxuHy21GPTqk42j81L6j1232xg8+jbsorR4/MmuQCOKC6blNSczLLUIn27BK6Mlot6
+        Be85Kq7MusXcwNjB3sXIySEhYCJx+/ltMFtIYDejRHN/LERcXKL52g+oGmGJlf+eA9lcQDWv
+        GSVe9kwBcjg4eAXsJA68LQCpYRFQkZj/spEFxOYVEJQ4OfMJmC0qkCSx534jE4gtLBAksWR/
+        H9hMZqD5t57MB4uLCKhLHPrexwoyn1ngGrPE6el32SAO2s8o8XqXIIjNBjRo7frLjCB7OQVs
+        JCbcl4OYYybRtbWLEcKWl9j+dg7zBEahWUjOmIVk3SwkLbOQtCxgZFnFKJlaUJybnltsWGCY
+        l1quV5yYW1yal66XnJ+7iREccVqaOxi3r/qgd4iRiYPxEKMEB7OSCG+s2bsUId6UxMqq1KL8
+        +KLSnNTiQ4zSHCxK4rziL3pThATSE0tSs1NTC1KLYLJMHJxSDUxbZfp557DvamoquHA4S3xu
+        Wsx2EwG72+9ln0/nUplu9bJa32p17JpWdZnNRX8LzgiYqlaK+f1qXPj7PI9yFCvzOuuojDu2
+        qVJfqnaffi1XMOMUT3xidMS2MMmPOz89/areyZ524DzfhtkSN//Yz+9eX7rCVuQj347M2K3Z
+        z5cLLS5ndtc+8aFUKb/xa82xwC1plzT+blLwOLe71OTKmhk1S6cnaIXbxMjX3y28ZBhdZeUn
+        2S/5ZY/tShNOv+iNE9wNX/2s8dC9/OKEFf/tP+oBv+7a22xddOOmm9/M89GPvfPSrqi8kdjZ
+        v+qnuK5ewISnJyZ+/PjEosN2ivt30eAgV6WEfbKKqRpPapPedymxFGckGmoxFxUnAgATdoi5
+        JwMAAA==
+X-CMS-MailID: 20230901070627epcas5p4cb281d7a6326da7cc255271562474459
+X-Msg-Generator: CA
+Content-Type: text/plain; charset="utf-8"
+CMS-TYPE: 105P
+DLP-Filter: Pass
+X-CFilter-Loop: Reflected
+X-CMS-RootMailID: 20230831140919uscas1p2384b869cd6ec943769c647d34c532972
+References: <20230814070213.161033-2-joshi.k@samsung.com>
+        <CGME20230831140919uscas1p2384b869cd6ec943769c647d34c532972@uscas1p2.samsung.com>
+        <20230831140834.85315-1-vincent.fu@samsung.com>
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 8/31/2023 7:39 PM, Vincent Fu wrote:
+> I think the metadata size check is too strict. Commands where the metadata size
+> is too small should result in errors but when the metadata size is larger than
+> needed they should still go through.
 
---L55yot6n5WpZHRsh
-Content-Type: text/plain; charset=utf-8
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Indeed.
+I will fold that change in the next version.
 
-On Thu, Aug 31, 2023 at 01:11:27PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.14 release.
-> There are 9 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->=20
+> In any case, I tested this patch on a QEMU NVMe device (which supports PI by
+> default).
+> 
+> I formatted the device with a 512+16 lbaf with a separate buffer for metadata:
+> 
+> nvme format /dev/ng0n1 -m 0 -i 1 -p 0 --lbaf 2 --force
+> 
+> Using the latest fio I wrote some data to it:
+> 
+> ./fio --name=difdix --ioengine=io_uring_cmd --cmd_type=nvme \
+>    --filename=/dev/ng0n1 --rw=write --bs=512 --md_per_io_size=16 --pi_act=1 \
+>    --pi_chk=APPTAG --apptag=0x8888 --apptag_mask=0xFFFF --number_ios=128
+> 
+> Then I wrote a small program to read 4096 bytes from the device with only a
+> 16-byte (instead of 64-byte) metadata buffer. Without this patch the kernel
+> crashes. With the patch the read fails with an error message in the kernel log.
+> 
+> Tested-by: Vincent Fu <vincent.fu@samsung.com>
 
-Successfully compiled and installed bindeb-pkgs on my computer (Acer
-Aspire E15, Intel Core i3 Haswell). No noticeable regressions.
-
-Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
-
---=20
-An old man doll... just what I always wanted! - Clara
-
---L55yot6n5WpZHRsh
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZPGMlAAKCRD2uYlJVVFO
-o7nKAQDCT2WUu7n/CoP/jDSM6zFSNP5PklxV3TlWaCgqiYdftQD8CvqE67J686xO
-TKeWBGHuncY0L57Qi+O1X8LR73IUUgw=
-=7eRH
------END PGP SIGNATURE-----
-
---L55yot6n5WpZHRsh--
+Thanks.
