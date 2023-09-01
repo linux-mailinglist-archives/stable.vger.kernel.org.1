@@ -2,103 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B8AEF790213
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 20:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CB28790214
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 20:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232021AbjIASf0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 14:35:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50564 "EHLO
+        id S241719AbjIASfk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 14:35:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231890AbjIASfZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 14:35:25 -0400
-Received: from smtp-fw-33001.amazon.com (smtp-fw-33001.amazon.com [207.171.190.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12712107
-        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 11:35:23 -0700 (PDT)
+        with ESMTP id S231890AbjIASfj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 14:35:39 -0400
+Received: from smtp-fw-80009.amazon.com (smtp-fw-80009.amazon.com [99.78.197.220])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02B7A107
+        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 11:35:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
   d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1693593324; x=1725129324;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=cYtaq5iMz0ESadhzBAILT/+mTDYrPD/8ev09ZQ+hv4M=;
-  b=iEKyGr3O9nmd7sXBdh6dG8jBNaP7SbRh/NytZDqcs8KnXcBPhtVAMc+6
-   HJs2Xk9za59qkPmMQvnV6znlFARAJ9f4YZ7irw8IiwTQqvLXRfrN1eBtq
-   7M7Me4xpWY45+7t9goZYqkA3Ql+/3JFUvT1W9XcSvuoVfj80Ahe6dapNR
-   8=;
+  t=1693593336; x=1725129336;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=c0TPIzm5wQC5Qqkp2V3TnhA4xNEOCSKE0Y+YeIEVApo=;
+  b=bxCFQwcb9cAzqtEtgpO+UaSdohdjXZI9MbVSYbaEoU3xep/C+edIPVi/
+   7kmymNj4dPRlYLix42fnOq09Rps7TWdC8Wn3TlFLKo4Nj/aA/GDkSjYXn
+   I84jwtA5kRPcZnILxuFz0GVAlG/5ovehPFT4jfk3kIAXd6JtX5yPUSBe3
+   Q=;
 X-IronPort-AV: E=Sophos;i="6.02,220,1688428800"; 
-   d="scan'208";a="302680700"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-iad-1d-m6i4x-25ac6bd5.us-east-1.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-33001.sea14.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2023 18:35:17 +0000
-Received: from EX19MTAUEB001.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1d-m6i4x-25ac6bd5.us-east-1.amazon.com (Postfix) with ESMTPS id 2262647846;
-        Fri,  1 Sep 2023 18:35:14 +0000 (UTC)
+   d="scan'208";a="26445388"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1a-m6i4x-96feee09.us-east-1.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-80009.pdx80.corp.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2023 18:35:36 +0000
+Received: from EX19MTAUEA002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
+        by email-inbound-relay-iad-1a-m6i4x-96feee09.us-east-1.amazon.com (Postfix) with ESMTPS id 9FF3B47B63;
+        Fri,  1 Sep 2023 18:35:33 +0000 (UTC)
 Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEB001.ant.amazon.com (10.252.135.108) with Microsoft SMTP Server
+ EX19MTAUEA002.ant.amazon.com (10.252.134.9) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Fri, 1 Sep 2023 18:35:14 +0000
+ 15.2.1118.37; Fri, 1 Sep 2023 18:35:33 +0000
 Received: from dev-dsk-luizcap-1d-37beaf15.us-east-1.amazon.com (10.39.210.33)
  by EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
  (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Fri, 1 Sep 2023 18:35:13 +0000
+ 15.2.1118.37; Fri, 1 Sep 2023 18:35:31 +0000
 From:   Luiz Capitulino <luizcap@amazon.com>
 To:     <stable@vger.kernel.org>, <seanjc@google.com>,
         <christophe.jaillet@wanadoo.fr>
 CC:     <lcapitulino@gmail.com>, Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATH 6.1.y 0/2] Backport KVM's nx_huge_pages=never module parameter
-Date:   Fri, 1 Sep 2023 18:34:51 +0000
-Message-ID: <cover.1693593288.git.luizcap@amazon.com>
+Subject: [PATH 6.1.y 1/2] KVM: x86/mmu: Use kstrtobool() instead of strtobool()
+Date:   Fri, 1 Sep 2023 18:34:52 +0000
+Message-ID: <8c1fdd1cb24d042d02c4f2660c0690604448a2f4.1693593288.git.luizcap@amazon.com>
 X-Mailer: git-send-email 2.40.1
+In-Reply-To: <cover.1693593288.git.luizcap@amazon.com>
+References: <cover.1693593288.git.luizcap@amazon.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 Content-Type: text/plain
 X-Originating-IP: [10.39.210.33]
-X-ClientProxiedBy: EX19D041UWA001.ant.amazon.com (10.13.139.124) To
+X-ClientProxiedBy: EX19D046UWB004.ant.amazon.com (10.13.139.164) To
  EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-As part of the mitigation for the iTLB multihit vulnerability, KVM creates
-a worker thread in KVM_CREATE_VM ioctl(). This thread calls
-cgroup_attach_task_all() which takes cgroup_threadgroup_rwsem for writing
-which may incur 100ms+ latency since upstream commit
-6a010a49b63ac8465851a79185d8deff966f8e1a.
+Commit 11b36fe7d4500c8ef73677c087f302fd713101c2 upstream.
 
-However, if the CPU is not vulnerable to iTLB multihit one could just
-disable the mitigation (and the worker thread creation) with the
-newly added KVM module parameter nx_huge_pages=never. This avoids the issue
-altogether.
+strtobool() is the same as kstrtobool().
+However, the latter is more used within the kernel.
 
-While there's an alternative solution for this issue already supported
-in 6.1-stable (ie. cgroup's favordynmods), disabling the mitigation in
-KVM is probably preferable if the workload is not impacted by dynamic
-cgroup operations since one doesn't need to decide between the trade-off
-in using favordynmods, the thread creation code path is avoided at
-KVM_CREATE_VM and you avoid creating a thread which does nothing.
+In order to remove strtobool() and slightly simplify kstrtox.h, switch to
+the other function name.
 
-Tests performed:
+While at it, include the corresponding header file (<linux/kstrtox.h>)
 
-* Measured KVM_CREATE_VM latency and confirmed it goes down to less than 1ms
-* We've been performing latency measurements internally w/ this parameter
-  for some weeks now
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/670882aa04dbdd171b46d3b20ffab87158454616.1673689135.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
+---
+ arch/x86/kvm/mmu/mmu.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-Christophe JAILLET (1):
-  KVM: x86/mmu: Use kstrtobool() instead of strtobool()
-
-Sean Christopherson (1):
-  KVM: x86/mmu: Add "never" option to allow sticky disabling of
-    nx_huge_pages
-
- arch/x86/kvm/mmu/mmu.c | 42 +++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 37 insertions(+), 5 deletions(-)
-
+diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
+index beca03556379..c089242008b3 100644
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -42,6 +42,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/hash.h>
+ #include <linux/kern_levels.h>
++#include <linux/kstrtox.h>
+ #include <linux/kthread.h>
+ 
+ #include <asm/page.h>
+@@ -6667,7 +6668,7 @@ static int set_nx_huge_pages(const char *val, const struct kernel_param *kp)
+ 		new_val = 1;
+ 	else if (sysfs_streq(val, "auto"))
+ 		new_val = get_nx_auto_mode();
+-	else if (strtobool(val, &new_val) < 0)
++	else if (kstrtobool(val, &new_val) < 0)
+ 		return -EINVAL;
+ 
+ 	__set_nx_huge_pages(new_val);
 -- 
 2.40.1
 
