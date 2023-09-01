@@ -2,178 +2,138 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 697C478F7E8
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 07:14:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFB0478F84C
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 08:02:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345281AbjIAFOC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 01:14:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36152 "EHLO
+        id S1348317AbjIAGCf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 02:02:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51424 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1348243AbjIAFN4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 01:13:56 -0400
-Received: from mail-lf1-f43.google.com (mail-lf1-f43.google.com [209.85.167.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C678310C4
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 22:13:50 -0700 (PDT)
-Received: by mail-lf1-f43.google.com with SMTP id 2adb3069b0e04-500913779f5so2945379e87.2
-        for <stable@vger.kernel.org>; Thu, 31 Aug 2023 22:13:50 -0700 (PDT)
+        with ESMTP id S1348314AbjIAGCe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 02:02:34 -0400
+Received: from mail-ej1-x62e.google.com (mail-ej1-x62e.google.com [IPv6:2a00:1450:4864:20::62e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FB5110CA;
+        Thu, 31 Aug 2023 23:02:31 -0700 (PDT)
+Received: by mail-ej1-x62e.google.com with SMTP id a640c23a62f3a-99cdb0fd093so192768966b.1;
+        Thu, 31 Aug 2023 23:02:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693548150; x=1694152950; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=szgK28PtaN+FU2kNtru/isvknJO6EUq+kNUlT5T4kY4=;
+        b=kQnPKXx6LbpKvpwmALFyCdJeZSkOon4+VCHilxVXvxLEMRunYoEqdwN+Wt1N+6ebTq
+         PeG3l77LxW4pEC9cpwYrnalhoova7WZk03lutZUknFa4L+Qde2h6FCWav42XxtKB5Qnf
+         xb5lluVG0frpPIkzich26lwagDuhcn/FQhsIK3Im+9WGeKH2Bq43tSsla3hdf+sdsBj8
+         h4/hFLKPQiRIWop98ag54C7G+7g+Bn3rrIfq/BDljMJBRuHHfMHj/E/azhHco+caSHFQ
+         HmlY8AKi1xCqJiZpgCWFEIoG8I0sLgyZJ2m175gBw191L0PPOcIRkOimMBqy49IRO8/Y
+         Nxlg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693545229; x=1694150029;
-        h=user-agent:in-reply-to:content-disposition:mime-version:references
-         :mail-followup-to:reply-to:message-id:subject:cc:to:from:date
+        d=1e100.net; s=20221208; t=1693548150; x=1694152950;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
          :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=af/4U1Rpctq0xn22z8gnl3fN8uEEmTY03VxkSbZqf7w=;
-        b=kf67HKBPIvtTYOmZYUJ3hJCveUUwrF1f2YNWvKMTb/2lYQ9YhW9zi6cYiZXaWzOlXn
-         CEReiB4IsKJQFUNlAbiVG21EL0URZpsvqrQ7Dlslr6x5Czwrn04CEC0eN44ZFG6YcUPP
-         EtZXLdjPg+c9yAlNgyE9X/1lw+fU4vc5ZlKGBywnK1AJrYCc5U5KDfGRqbkjE0q8OVbp
-         l4E3ZIgvee74vPDPqhkkI5Q0/L71GS/DyqIqDuFTaALcXFRxoJ1QmkhVOp4i9WF4kMui
-         OQ/CXeOAGWJmFSjZrGsWR7CKOip9yaQEkod/W2bbHQ1grMQfM7I/fXfD7jgptC3W2YFi
-         QwKw==
-X-Gm-Message-State: AOJu0Yy/CfCYGdnBqU4b66NHOU1iDcqX5FtodQj+PG3eYv+ePaMkJlx9
-        90ZnArPBVObnHEJy450IeR5rYg==
-X-Google-Smtp-Source: AGHT+IH6lMHGk3UIs0Aikzj/5UPchwNn22edRT/IVO/IuY1Z60LnUxSEWtAJ+o7L1HOvG/YdosozOA==
-X-Received: by 2002:a05:6512:2302:b0:4f9:cd02:4aec with SMTP id o2-20020a056512230200b004f9cd024aecmr1069353lfu.29.1693545228858;
-        Thu, 31 Aug 2023 22:13:48 -0700 (PDT)
-Received: from fedora.fritz.box (p549458cf.dip0.t-ipconnect.de. [84.148.88.207])
-        by smtp.gmail.com with ESMTPSA id lh7-20020a170906f8c700b0098e34446464sm1549982ejb.25.2023.08.31.22.13.47
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 31 Aug 2023 22:13:47 -0700 (PDT)
-Date:   Fri, 1 Sep 2023 07:13:45 +0200
-From:   Damian Tometzki <dtometzki@fedoraproject.org>
-To:     Aleksa Sarai <cyphar@cyphar.com>
-Cc:     Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuah@kernel.org>, Jeff Xu <jeffxu@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Daniel Verkamp <dverkamp@chromium.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        stable@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] memfd: improve userspace warnings for missing
- exec-related flags
-Message-ID: <ZPFzCSIgZ4QuHsSC@fedora.fritz.box>
-Reply-To: Damian Tometzki <dtometzki@fedoraproject.org>
-Mail-Followup-To: Aleksa Sarai <cyphar@cyphar.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Shuah Khan <shuah@kernel.org>, Jeff Xu <jeffxu@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Daniel Verkamp <dverkamp@chromium.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Dominique Martinet <asmadeus@codewreck.org>, stable@vger.kernel.org,
-        linux-api@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-mm@kvack.org, linux-kselftest@vger.kernel.org
-References: <20230814-memfd-vm-noexec-uapi-fixes-v2-0-7ff9e3e10ba6@cyphar.com>
- <20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com>
+        bh=szgK28PtaN+FU2kNtru/isvknJO6EUq+kNUlT5T4kY4=;
+        b=FinGFx3pKvJD5deTTaNPDXfb5cHkQ/m1g/NRlFG+1HJkKm5+GvewHjnV/OlNCz+7WS
+         6mrGVilGYfrRX4hoIAh/1varkB5DpKgb9bC3ARINHwdpsqdICEaoZ+jEJjmAeJQM1wc+
+         FdH3DALIII2GLtz4LfKhvCaLomP1Z+1UtOL++tve3b1d6Z71qPpl6z/3WPPh4+0WX+dp
+         /96fPRRX7IWmS/bcDN657GMP7sZzl0vAiRGfGtFQMJ5/RN9YcpCbKQ2VJLI5rsnT47eK
+         3aFZDBNrjwfGH9JQ0gwQERpBXfoIrM70/NuvpXNM5D2xrAI9ysH1v3BX/39oggtYInAJ
+         94bg==
+X-Gm-Message-State: AOJu0Yyp+zUro/JebLSHzywyU4RIB5+pEp0CAZ11OrQOYplu1hWCSmzr
+        7v76EtVj+HdTz+poOJAcVb8=
+X-Google-Smtp-Source: AGHT+IHEUGe0z8VierR0iSKfteFbT/T7ZDzjLe13f9z2w3FINUU5xeaDGfrxriHiwmLpr9zPAqvGAA==
+X-Received: by 2002:a17:907:b609:b0:9a5:d2c6:c578 with SMTP id vl9-20020a170907b60900b009a5d2c6c578mr898754ejc.11.1693548149577;
+        Thu, 31 Aug 2023 23:02:29 -0700 (PDT)
+Received: from [192.168.178.25] ([185.254.126.42])
+        by smtp.gmail.com with ESMTPSA id rk17-20020a170907215100b00985ed2f1584sm1560268ejb.187.2023.08.31.23.02.21
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 31 Aug 2023 23:02:25 -0700 (PDT)
+Message-ID: <44fd45f9-8e2c-f9a2-fe89-97329734e13c@gmail.com>
+Date:   Fri, 1 Sep 2023 08:02:18 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com>
-User-Agent: Mutt
-X-Spam-Status: No, score=-1.0 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,
-        SPF_HELO_NONE,SPF_SOFTFAIL autolearn=no autolearn_force=no
-        version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH AUTOSEL 5.10 13/22] drm/amdgpu: install stub fence into
+ potential unused fence pointers
+Content-Language: en-US
+To:     Chia-I Wu <olvaffe@gmail.com>, Greg KH <gregkh@linuxfoundation.org>
+Cc:     Sasha Levin <sashal@kernel.org>, airlied@linux.ie,
+        linux-kernel@vger.kernel.org, dri-devel@lists.freedesktop.org,
+        amd-gfx@lists.freedesktop.org,
+        Alex Deucher <alexander.deucher@amd.com>,
+        stable@vger.kernel.org, Lang Yu <Lang.Yu@amd.com>,
+        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>
+References: <20230724012419.2317649-1-sashal@kernel.org>
+ <20230724012419.2317649-13-sashal@kernel.org>
+ <CAPaKu7RTgAMBLHbwtp4zgiBSDrTFtAj07k5qMzkuLQy2Zr+sZA@mail.gmail.com>
+ <55fc4a28-1e17-44df-2069-a688828080e6@gmail.com>
+ <2023083145-scoured-celery-2511@gregkh>
+ <c657653e-24d8-5790-a91c-4c13bb9eaeb0@gmail.com>
+ <2023083144-railroad-daybreak-7f41@gregkh>
+ <CAPaKu7Q2vq5m6Av6L2LthnFy5w2XtjKUYF8Z2__0hVp0vj2L1A@mail.gmail.com>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
+In-Reply-To: <CAPaKu7Q2vq5m6Av6L2LthnFy5w2XtjKUYF8Z2__0hVp0vj2L1A@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 14. Aug 18:40, Aleksa Sarai wrote:
-> In order to incentivise userspace to switch to passing MFD_EXEC and
-> MFD_NOEXEC_SEAL, we need to provide a warning on each attempt to call
-> memfd_create() without the new flags. pr_warn_once() is not useful
-> because on most systems the one warning is burned up during the boot
-> process (on my system, systemd does this within the first second of
-> boot) and thus userspace will in practice never see the warnings to push
-> them to switch to the new flags.
-> 
-> The original patchset[1] used pr_warn_ratelimited(), however there were
-> concerns about the degree of spam in the kernel log[2,3]. The resulting
-> inability to detect every case was flagged as an issue at the time[4].
-> 
-> While we could come up with an alternative rate-limiting scheme such as
-> only outputting the message if vm.memfd_noexec has been modified, or
-> only outputting the message once for a given task, these alternatives
-> have downsides that don't make sense given how low-stakes a single
-> kernel warning message is. Switching to pr_info_ratelimited() instead
-> should be fine -- it's possible some monitoring tool will be unhappy
-> with a stream of warning-level messages but there's already plenty of
-> info-level message spam in dmesg.
-> 
-> [1]: https://lore.kernel.org/20221215001205.51969-4-jeffxu@google.com/
-> [2]: https://lore.kernel.org/202212161233.85C9783FB@keescook/
-> [3]: https://lore.kernel.org/Y5yS8wCnuYGLHMj4@x1n/
-> [4]: https://lore.kernel.org/f185bb42-b29c-977e-312e-3349eea15383@linuxfoundation.org/
-> 
-> Cc: stable@vger.kernel.org # v6.3+
-> Fixes: 105ff5339f49 ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
-> Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-> ---
->  mm/memfd.c | 2 +-
->  1 file changed, 1 insertion(+), 1 deletion(-)
-> 
-> diff --git a/mm/memfd.c b/mm/memfd.c
-> index d65485c762de..aa46521057ab 100644
-> --- a/mm/memfd.c
-> +++ b/mm/memfd.c
-> @@ -315,7 +315,7 @@ SYSCALL_DEFINE2(memfd_create,
->  		return -EINVAL;
->  
->  	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
-> -		pr_warn_once(
-> +		pr_info_ratelimited(
->  			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set\n",
->  			current->comm, task_pid_nr(current));
->  	}
-> 
-> -- 
-> 2.41.0
+Am 31.08.23 um 20:55 schrieb Chia-I Wu:
+> On Thu, Aug 31, 2023 at 7:01 AM Greg KH <gregkh@linuxfoundation.org> wrote:
+>> On Thu, Aug 31, 2023 at 03:26:28PM +0200, Christian König wrote:
+>>> Am 31.08.23 um 12:56 schrieb Greg KH:
+>>>> On Thu, Aug 31, 2023 at 12:27:27PM +0200, Christian König wrote:
+>>>>> Am 30.08.23 um 20:53 schrieb Chia-I Wu:
+>>>>>> On Sun, Jul 23, 2023 at 6:24 PM Sasha Levin <sashal@kernel.org> wrote:
+>>>>>>> From: Lang Yu <Lang.Yu@amd.com>
+>>>>>>>
+>>>>>>> [ Upstream commit 187916e6ed9d0c3b3abc27429f7a5f8c936bd1f0 ]
+>>>>>>>
+>>>>>>> When using cpu to update page tables, vm update fences are unused.
+>>>>>>> Install stub fence into these fence pointers instead of NULL
+>>>>>>> to avoid NULL dereference when calling dma_fence_wait() on them.
+>>>>>>>
+>>>>>>> Suggested-by: Christian König <christian.koenig@amd.com>
+>>>>>>> Signed-off-by: Lang Yu <Lang.Yu@amd.com>
+>>>>>>> Reviewed-by: Christian König <christian.koenig@amd.com>
+>>>>>>> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+>>>>>>> Signed-off-by: Sasha Levin <sashal@kernel.org>
+>>>>>>> ---
+>>>>>>>     drivers/gpu/drm/amd/amdgpu/amdgpu_vm.c | 6 ++++--
+>>>>>>>     1 file changed, 4 insertions(+), 2 deletions(-)
+>>>>>> We start getting this warning spew on chromeos
+>>>>> Yeah because the older kernels still kept track of the last VM fence in the
+>>>>> syncobj.
+>>>>>
+>>>>> This patch here should probably not have been back ported.
+>>>>>
+>>>>> Why was that done anyway? The upstream commit doesn't have a CC stable and
+>>>>> this is only a bug fix for a new feature not present on older kernels.
+>>>> It is part of the AUTOSEL process.
+>>> Could we prevent patches from being backported by adding a Fixes: tag?
+>> Yes, that will show exactly where the patch should be backported to.
+> This is also AUTOSEL'ed to 5.15.  That might need a revert as well,
+> depending on when the amdgpu feature landed.
+
+Both the feature and the bug fix landed in 6.5.
+
+The bug fix should have never been backported to any older kernel at all 
+as far as I can see.
+
+Regards,
+Christian.
+
 >
-Hello Sarai,
+>
+>> thanks,
+>>
+>> greg k-h
 
-i got a lot of messages in dmesg with this. DMESG is unuseable with
-this. 
-[ 1390.349462] __do_sys_memfd_create: 5 callbacks suppressed
-[ 1390.349468] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.350106] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.350366] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.359390] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.359453] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.848813] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.849425] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.849673] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.857629] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1390.857674] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1404.819637] __do_sys_memfd_create: 105 callbacks suppressed
-[ 1404.819641] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1404.819950] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1404.820054] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1404.824240] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1404.824279] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.373186] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.373906] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.374131] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.382397] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.382485] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.499581] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.500077] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.500265] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.512772] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1430.512840] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.388519] __do_sys_memfd_create: 60 callbacks suppressed
-[ 1444.388525] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.389061] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.389335] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.397909] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.397965] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.503514] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.503658] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.503726] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.507841] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1444.507870] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-[ 1449.707966] __do_sys_memfd_create: 25 callbacks suppressed
-
-Best regards
-Damian
- 
