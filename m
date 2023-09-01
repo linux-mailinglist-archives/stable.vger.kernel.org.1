@@ -2,243 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4927C78F9C4
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 10:18:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D60778F9C8
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 10:18:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233669AbjIAISN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 04:18:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56832 "EHLO
+        id S237944AbjIAISX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 04:18:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230164AbjIAISM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 04:18:12 -0400
-Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872AE12D
-        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 01:18:07 -0700 (PDT)
-Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-48cfdfa7893so660739e0c.0
-        for <stable@vger.kernel.org>; Fri, 01 Sep 2023 01:18:07 -0700 (PDT)
+        with ESMTP id S236268AbjIAISW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 04:18:22 -0400
+Received: from mail-ed1-x52d.google.com (mail-ed1-x52d.google.com [IPv6:2a00:1450:4864:20::52d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7ADE410EB
+        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 01:18:19 -0700 (PDT)
+Received: by mail-ed1-x52d.google.com with SMTP id 4fb4d7f45d1cf-51a52a7d859so6121610a12.0
+        for <stable@vger.kernel.org>; Fri, 01 Sep 2023 01:18:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693556286; x=1694161086; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=z+KKL+WFIFHs2TSwkta4cDHNYwLWptckS2+uJrcQGO8=;
-        b=aY8xm17NYuQJ6clYVKbwMvF/Uw2TvOe8CXDTXeoEUDpqHyngc0vCkIqqAA2WBP3tOx
-         MIOAXJTP5qX5/N5rUa4QffyXgMlcfSV6JrfeIIdC0lv0uqc+cNtlKIpYWTuoUPOmEqIp
-         /E2Mcj7TVnA6sfg1m63WXBwS33LE1BVXIiwc2lgcITUbLOfOMRlsKyTDd2EHI/f8RpoT
-         toYn1laBsfzdfVO+SrW1JCUozitF/4DGKnckD8pJ5djt8W2rbFxKfpXuqvJ4uuY/rpRd
-         ezla/HiBJZ0D82MLu8pSIKECP/VdGU7TAyFO2HJxVsV8o1ovl4iKivMw6zxXOCzKdqEX
-         oPSg==
+        d=linaro.org; s=google; t=1693556298; x=1694161098; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=hPnBKmoj2QhKcVODKMBJIDW9pFuru0q8Pgaqmd29Dcs=;
+        b=rw+AMRkAJFgA/VorALwUfMcCqUmj63UDHZI8qhKF1EBe+Frc2uQEXOF/mEdTZBz6m/
+         lqsCCQQTffg0ygmAeXeJAQzo+70fsIkG4qFUBeCJtEm3qy7QoX13isHUPDIMeczLRV93
+         e65z+FecMQT7ugN/ZLZpq4MaOjhXzRDT9cuSJmRwJL10TNurvskYGwc/zD3pwz8vMaZc
+         eu1Q3wV78DYeI/lGjCpUqnIJnQw4mLzjWUvDY6oBBmQCrvV5tT0nevdd0unJnTPjqeXu
+         0QckxDcyFJdrSrIV4V4d7R7kjuWN7tVPM95NkryU0/s1uYvDE7qkp+jj0fkLcE3EFx0L
+         LO0A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693556286; x=1694161086;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=z+KKL+WFIFHs2TSwkta4cDHNYwLWptckS2+uJrcQGO8=;
-        b=df4DldOzg33Oiguu7EPHfVCsE6qZer3BJ90e2CKhQArTw+nFDPKDAwEJsH04e6VyJR
-         ieOw2HXdMLk7rt0osQfrnaAa2iht52fi7ntshPjSDucmkKC4azf5a2igCqiCr9PCvEOa
-         /6l7FC1Hh1qKkeAzdAolZTOtO+wq2GMJghtqECf7WMAEvQ2ipZ4McqVPj39BgrFU4LUi
-         JHy00gVvKpSFYpivPVJVSTKr7odp9JnlF99RTtshw0Ea6Q3mr8GqyroAH7yfUQVb9fEe
-         mPtvYV+zLhoe5fN7+f3BibG+SLybFs8IHty0V7ZWVXFshDeqQd+Z5XVeK7rayMo09Pm7
-         Ya4w==
-X-Gm-Message-State: AOJu0YxxZRoDFDm9pWfzQugNUzikYIoOcG89wqtivB3Z50+iehNthxer
-        QtPRGTPeywzOK2VMVYQaNxIEY7qvWcpw3jaGpS/xzg==
-X-Google-Smtp-Source: AGHT+IHFPQUKt9qsuwJKT3ZWlOx8dXC8j9SqrsOuIVXsAlDAhky/xIIJUVxlRG5/dxM2PISpB31qnwSzJUYjx+SW31g=
-X-Received: by 2002:a1f:4a02:0:b0:48d:2bcf:f959 with SMTP id
- x2-20020a1f4a02000000b0048d2bcff959mr1902993vka.3.1693556286477; Fri, 01 Sep
- 2023 01:18:06 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1693556298; x=1694161098;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=hPnBKmoj2QhKcVODKMBJIDW9pFuru0q8Pgaqmd29Dcs=;
+        b=bv3rFaZjE5VeTXiEI0gJGfoKSYjXqOaPkc3eI6CNvQJUJNOPrkxJrAc9lz1xlUsRcp
+         pNm6qOnMjzOYJR/+8PQO5vVXbFGDlHaGYaIGRvfDDa1iUR43IlIQdVTEZio37G8ria59
+         8Gix2DAcfwtyNC9SPCv0bzUsv4Q7i+jPo4usI/86gkBBi+ttL2YHnGt8Ccya6X5bFFtH
+         s/uRLDPkqsw3orWc6xu0nBYzPk0sIyletU+Tkg8V27++UsEycOYIJmhEzhYyOIWtEmqA
+         cMrzygu8/YQ4A1/OE2tBa1W4Ful3pnmyh6qcKLG9ppXjLG9SUW/Rovdzg7VUxB+QaChc
+         esIA==
+X-Gm-Message-State: AOJu0YxDZJEgD5Ndc5qEk3DeOPK3ZmmZc8ay0BgBUbp5RGCf5HF61WES
+        iTZetF8z2EUnYPrDOyiWm5E36w==
+X-Google-Smtp-Source: AGHT+IGHY/GfuZiBDwDoGN9ntKm58k7HJCv8+cMHykyj8S7fvdlAdcHLP0T8RRNwTlmAdDeJoiikOQ==
+X-Received: by 2002:a17:907:6e20:b0:9a1:e5bf:c907 with SMTP id sd32-20020a1709076e2000b009a1e5bfc907mr5623717ejc.2.1693556297840;
+        Fri, 01 Sep 2023 01:18:17 -0700 (PDT)
+Received: from krzk-bin.. (77-252-46-238.static.ip.netia.com.pl. [77.252.46.238])
+        by smtp.gmail.com with ESMTPSA id b6-20020a170906d10600b009a57d30df89sm1676657ejz.132.2023.09.01.01.18.16
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Fri, 01 Sep 2023 01:18:17 -0700 (PDT)
+From:   Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+To:     Andy Gross <agross@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Rob Herring <robh+dt@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
+        Conor Dooley <conor+dt@kernel.org>,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org
+Cc:     Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        stable@vger.kernel.org
+Subject: [RFT PATCH 1/2] arm64: dts: qcom: apq8096-db820c: fix missing clock populate
+Date:   Fri,  1 Sep 2023 10:18:11 +0200
+Message-Id: <20230901081812.19121-1-krzysztof.kozlowski@linaro.org>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-References: <20230831110831.079963475@linuxfoundation.org>
-In-Reply-To: <20230831110831.079963475@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Fri, 1 Sep 2023 13:47:52 +0530
-Message-ID: <CA+G9fYvNKR3eefurkQQGOjF_6xzsGQK1TWDaZuFgTdw28mdghQ@mail.gmail.com>
-Subject: Re: [PATCH 6.1 00/10] 6.1.51-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 31 Aug 2023 at 16:41, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.1.51 release.
-> There are 10 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Sat, 02 Sep 2023 11:08:22 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.1.51-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Commit 704e26678c8d ("arm64: dts: qcom: apq8096-db820c: drop simple-bus
+from clocks") removed "simple-bus" compatible from "clocks" node, but
+one of the clocks - divclk1 - is a gpio-gate-clock, which does not have
+CLK_OF_DECLARE.  This means it will not be instantiated if placed in
+some subnode.  Move the clocks to the root node, so regular devices will
+be populated.
 
+Reported-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Closes: https://lore.kernel.org/all/CAA8EJprF==p87oN+RiwAiNeURF1JcHGfL2Ez5zxqYPRRbN-hhg@mail.gmail.com/
+Cc: <stable@vger.kernel.org>
+Fixes: 704e26678c8d ("arm64: dts: qcom: apq8096-db820c: drop simple-bus from clocks")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+---
+ arch/arm64/boot/dts/qcom/apq8096-db820c.dts | 32 ++++++++++-----------
+ 1 file changed, 15 insertions(+), 17 deletions(-)
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+diff --git a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+index 385b178314db..3067a4091a7a 100644
+--- a/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
++++ b/arch/arm64/boot/dts/qcom/apq8096-db820c.dts
+@@ -62,25 +62,23 @@ chosen {
+ 		stdout-path = "serial0:115200n8";
+ 	};
+ 
+-	clocks {
+-		divclk4: divclk4 {
+-			compatible = "fixed-clock";
+-			#clock-cells = <0>;
+-			clock-frequency = <32768>;
+-			clock-output-names = "divclk4";
++	div1_mclk: divclk1 {
++		compatible = "gpio-gate-clock";
++		pinctrl-0 = <&audio_mclk>;
++		pinctrl-names = "default";
++		clocks = <&rpmcc RPM_SMD_DIV_CLK1>;
++		#clock-cells = <0>;
++		enable-gpios = <&pm8994_gpios 15 0>;
++	};
+ 
+-			pinctrl-names = "default";
+-			pinctrl-0 = <&divclk4_pin_a>;
+-		};
++	divclk4: divclk4 {
++		compatible = "fixed-clock";
++		#clock-cells = <0>;
++		clock-frequency = <32768>;
++		clock-output-names = "divclk4";
+ 
+-		div1_mclk: divclk1 {
+-			compatible = "gpio-gate-clock";
+-			pinctrl-0 = <&audio_mclk>;
+-			pinctrl-names = "default";
+-			clocks = <&rpmcc RPM_SMD_DIV_CLK1>;
+-			#clock-cells = <0>;
+-			enable-gpios = <&pm8994_gpios 15 0>;
+-		};
++		pinctrl-names = "default";
++		pinctrl-0 = <&divclk4_pin_a>;
+ 	};
+ 
+ 	gpio-keys {
+-- 
+2.34.1
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-
-## Build
-* kernel: 6.1.51-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.1.y
-* git commit: 1767553758a66ae5cc765f89bc22c22273b382a4
-* git describe: v6.1.50-11-g1767553758a6
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.5=
-0-11-g1767553758a6
-
-## Test Regressions (compared to v6.1.50)
-
-## Metric Regressions (compared to v6.1.50)
-
-## Test Fixes (compared to v6.1.50)
-
-## Metric Fixes (compared to v6.1.50)
-
-## Test result summary
-total: 136400, pass: 115230, fail: 2624, skip: 18376, xfail: 170
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 144 total, 142 passed, 2 failed
-* arm64: 56 total, 53 passed, 3 failed
-* i386: 37 total, 32 passed, 5 failed
-* mips: 30 total, 28 passed, 2 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 38 total, 36 passed, 2 failed
-* riscv: 15 total, 12 passed, 3 failed
-* s390: 16 total, 14 passed, 2 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 45 total, 39 passed, 6 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
