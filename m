@@ -2,89 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 547A878FF6D
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 16:46:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6579978FFD4
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 17:20:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238199AbjIAOqE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 10:46:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49638 "EHLO
+        id S1350168AbjIAPU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 11:20:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36912 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233245AbjIAOqD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 10:46:03 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658C618C
-        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 07:46:00 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 7232FCE223A
-        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 14:45:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8A259C433C7;
-        Fri,  1 Sep 2023 14:45:55 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693579556;
-        bh=fHjow/WvUbfNkCkvz2bMa0XT3GQibJuyW+vSz+Li4fY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=eFbMIu5gdrCnPboulPiG7l8r7tCTP5eBWyhSQ83+gMW6pQJMWB/pdFVZDgLvgtvii
-         PSS+5EOaWAFSEgK2qMCURXqDAf0B8G0Ac+7UXXoBg0Su/XXWDtoLIT+LO7/S/qQiRS
-         IZA7U7upKJS6v3yUKp/AyYXgBX8Y6Agv8MR+BH+OASGNE2+mKivpMnonQ/wjYcGT33
-         FSIp5BtbJ4w6esUdhSYWYOCkUGF00q9FXfBoc/TFTbA0+X1ZwjF/UgKAvM5pG8WgwP
-         1yuNO5twePVxt1r+vVVBIbJg0kWGLyp5dZhbyqxAJVinz1SNI7k26Vpi8CMsNf5IKp
-         cTpyyPmUc5fqQ==
-Date:   Fri, 1 Sep 2023 10:45:50 -0400
-From:   Keith Busch <kbusch@kernel.org>
-To:     Kanchan Joshi <joshi.k@samsung.com>
-Cc:     hch@lst.de, axboe@kernel.dk, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org, vincentfu@gmail.com,
-        ankit.kumar@samsung.com, joshiiitr@gmail.com, gost.dev@samsung.com,
-        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
-Subject: Re: [PATCH v2 1/2] nvme: fix memory corruption for passthrough
- metadata
-Message-ID: <ZPH5Hjsqntn7tBCh@kbusch-mbp>
-References: <20230814070213.161033-1-joshi.k@samsung.com>
- <CGME20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9@epcas5p3.samsung.com>
- <20230814070213.161033-2-joshi.k@samsung.com>
+        with ESMTP id S231660AbjIAPU1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 11:20:27 -0400
+Received: from mail-il1-x129.google.com (mail-il1-x129.google.com [IPv6:2607:f8b0:4864:20::129])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D71D610EF
+        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 08:20:22 -0700 (PDT)
+Received: by mail-il1-x129.google.com with SMTP id e9e14a558f8ab-34e1757fe8fso507695ab.0
+        for <stable@vger.kernel.org>; Fri, 01 Sep 2023 08:20:22 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linuxfoundation.org; s=google; t=1693581622; x=1694186422; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=xY8BsCECr54L+c95O61jCyM46mbHUvE324/fO6bwAIw=;
+        b=gKdnM6CB5HluKNsp/Y1gUD25dmNlR+jSQF+xa9D72zGRRgJjz7levUhbT0sOtzv+fJ
+         gWN1M+dlaHPX6+zLig2k9ZOpoR1UY3kwwTq9s/q6jMFKJ+3be1kdR3E+duPXz7itvZCd
+         IhQE2OqxGX/fVEUhFBMPNAv5JM9Hc5MOmJ0cQ=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693581622; x=1694186422;
+        h=content-transfer-encoding:in-reply-to:from:content-language
+         :references:cc:to:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=xY8BsCECr54L+c95O61jCyM46mbHUvE324/fO6bwAIw=;
+        b=bfpWVvG3TALmUeTx1UJm7zssgRf87Na+iDghecN6hunwgfpW4wHDjDRSgmXmLDiqMv
+         iN0bNAtAA93MdtggQ0rekIlPssc0QWqLsPCWP36W2metZ77kukGqeKIxgIj7XmWksity
+         1cnDhCWkkBdxkuYfShW/X0ZZDi0UBOXHjtzoWFGvyhutHqxncWj+ccFUaGUtBcg5P/ZB
+         eoeGfHr6/xvV3+ItJjElCoxG0HNh8PpOcNe/D3ZcTy11sttG9LS06Okz+K0UG+47rvOZ
+         WCsezyGBmgwjtpPa0zfCbzpYFNYMeK6EzZW0UW++dvJPY3c1CroLj85dgZOrIsaLc9aD
+         9Adg==
+X-Gm-Message-State: AOJu0Yx/19MGaQgbPV2F4Bd/5m94Bna6AyHT9XXYwECxmf5Y0EgSRJ9h
+        j0EmbPo1ZJxXG4UD/rC8OQ2NQg==
+X-Google-Smtp-Source: AGHT+IGG3Ew+TxuHNK6QM0bToaGrJd2wXKh0rSJlX3Vov9MjzbOCzhl1ncGLiQIV6zyXr1scCg295g==
+X-Received: by 2002:a05:6602:1588:b0:792:9b50:3c3d with SMTP id e8-20020a056602158800b007929b503c3dmr3192707iow.1.1693581622276;
+        Fri, 01 Sep 2023 08:20:22 -0700 (PDT)
+Received: from [192.168.1.128] ([38.15.45.1])
+        by smtp.gmail.com with ESMTPSA id s10-20020a02cf2a000000b0042b320c13aasm1118332jar.89.2023.09.01.08.20.20
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Fri, 01 Sep 2023 08:20:21 -0700 (PDT)
+Message-ID: <b761de93-f4e3-2395-07d8-7f8c86da1ff7@linuxfoundation.org>
+Date:   Fri, 1 Sep 2023 09:20:20 -0600
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230814070213.161033-2-joshi.k@samsung.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH 6.5 0/8] 6.5.1-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org,
+        Shuah Khan <skhan@linuxfoundation.org>
+References: <20230831110830.817738361@linuxfoundation.org>
+Content-Language: en-US
+From:   Shuah Khan <skhan@linuxfoundation.org>
+In-Reply-To: <20230831110830.817738361@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 14, 2023 at 12:32:12PM +0530, Kanchan Joshi wrote:
-> +static bool nvme_validate_passthru_meta(struct nvme_ctrl *ctrl,
-> +					struct nvme_ns *ns,
-> +					struct nvme_command *c,
-> +					__u64 meta, __u32 meta_len)
-> +{
-> +	/*
-> +	 * User may specify smaller meta-buffer with a larger data-buffer.
-> +	 * Driver allocated meta buffer will also be small.
-> +	 * Device can do larger dma into that, overwriting unrelated kernel
-> +	 * memory.
-> +	 */
+On 8/31/23 05:10, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.1 release.
+> There are 8 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 02 Sep 2023 11:08:22 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.1-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
+> 
 
-What if the user doesn't specify metadata or length for a command that
-uses it? The driver won't set MPTR in that case, causing the device to
-access NULL.
+Compiled and booted on my test system. No dmesg regressions.
 
-And similiar to this problem, what if the metadata is extended rather
-than separate, and the user's buffer is too short? That will lead to the
-same type of problem you're trying to fix here?
+Tested-by: Shuah Khan <skhan@linuxfoundation.org>
 
-My main concern, though, is forward and backward compatibility. Even
-when metadata is enabled, there are IO commands that don't touch it, so
-some tool that erroneously requested it will stop working. Or perhaps
-some other future opcode will have some other metadata use that doesn't
-match up exactly with how read/write/compare/append use it. As much as
-I'd like to avoid bad user commands from crashing, these kinds of checks
-can become problematic for maintenance. I realize we already do similiar
-sanity checks in nvme_submit_io(), but that one is confined to only 3
-opcodes where this interface you're changing is much more flexible.
+thanks,
+-- Shuah
+
