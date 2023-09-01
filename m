@@ -2,204 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA25D790216
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 20:36:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6697790218
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 20:38:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350602AbjIASgZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 14:36:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46662 "EHLO
+        id S1350603AbjIASif (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 14:38:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231890AbjIASgZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 14:36:25 -0400
-Received: from smtp-fw-52003.amazon.com (smtp-fw-52003.amazon.com [52.119.213.152])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5995E40
-        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 11:36:18 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1693593379; x=1725129379;
-  h=from:to:cc:subject:date:message-id:in-reply-to:
-   references:mime-version:content-transfer-encoding;
-  bh=1cTLvj7H7WhEuIo9NYvXZHO6rQ8i9D8TBzfevb1WG5k=;
-  b=JKFQy8CUJ43edAcilkZgGUvyoEMzxWPA/u3dV3/gFtKJ246byxCyVBZn
-   5VuBCWp2HImCHIaode4Yme2aVY39uV13dqtEpWSjgPuzMglQ+5QBjC9m9
-   n+sTbibg4mKsadr5yFqKWV1XxeZki8hYF8H+HUMxgV+xE+nDN7kWATMKT
-   k=;
-X-IronPort-AV: E=Sophos;i="6.02,220,1688428800"; 
-   d="scan'208";a="605649499"
-Received: from iad12-co-svc-p1-lb1-vlan3.amazon.com (HELO email-inbound-relay-pdx-2a-m6i4x-8a14c045.us-west-2.amazon.com) ([10.43.8.6])
-  by smtp-border-fw-52003.iad7.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2023 18:36:16 +0000
-Received: from EX19MTAUEC002.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
-        by email-inbound-relay-pdx-2a-m6i4x-8a14c045.us-west-2.amazon.com (Postfix) with ESMTPS id AEFE380427;
-        Fri,  1 Sep 2023 18:36:13 +0000 (UTC)
-Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Fri, 1 Sep 2023 18:35:52 +0000
-Received: from dev-dsk-luizcap-1d-37beaf15.us-east-1.amazon.com (10.39.210.33)
- by EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Fri, 1 Sep 2023 18:35:50 +0000
-From:   Luiz Capitulino <luizcap@amazon.com>
-To:     <stable@vger.kernel.org>, <seanjc@google.com>,
-        <christophe.jaillet@wanadoo.fr>
-CC:     <lcapitulino@gmail.com>, Li RongQing <lirongqing@baidu.com>,
-        Yong He <zhuangel570@gmail.com>,
-        Robert Hoo <robert.hoo.linux@gmail.com>,
-        Kai Huang <kai.huang@intel.com>,
-        Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATH 6.1.y 2/2] KVM: x86/mmu: Add "never" option to allow sticky disabling of nx_huge_pages
-Date:   Fri, 1 Sep 2023 18:34:53 +0000
-Message-ID: <896dfcaf899a30ddf187ba3eccc1c8d47365b973.1693593288.git.luizcap@amazon.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <cover.1693593288.git.luizcap@amazon.com>
-References: <cover.1693593288.git.luizcap@amazon.com>
+        with ESMTP id S231890AbjIASif (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 14:38:35 -0400
+Received: from NAM11-CO1-obe.outbound.protection.outlook.com (mail-co1nam11on2088.outbound.protection.outlook.com [40.107.220.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E386B107;
+        Fri,  1 Sep 2023 11:38:31 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=LMo2eZper8fEdGBGtdI9qCzT4anLJTQWbcqjLlUO4gO32aBgyQoc4jxSAxO+TMp0OZJZUYRatkgZejjY3CjvQLiFvniq0ni26+kst0lQK2fIJyi2eoWrrhz1qHbPDx/p7D5btAhTBYLJHeGO9F9Wf0WNk3CxER5MwNkycKNApXVsv3vMLFdmf5GDEX2KOH7bG5W+GN8wjDEHI3cofB/CfCXMao1byrCRnTK9I7IY3aT1EIZ34klVUcMGxS4kgTSXXhp5pX0haQKqGY/oLKV79MyAogHyFDMKWnNWgLk52e/UToJa+4Ts35yi9hcq+a5VSWPti4X8161lp2pDEsQqwQ==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=jUXT4ReyLXJxz3/14FJusModeCnTpnXJv+fFQL6CiQE=;
+ b=deyZY4xwX4y97zmscyRJ1zO3mnG2hmD15dCxKJjKnooOfZulTvKbg5+FqDOc5ISCSwP5ya3JXaHYe1Uyx8Cqgvh+0PNxkl9H19kc/ATwqmWs5Rso2hAIdDI4kUZWqQXdpMA7vquCo+pAKsPNDO1NWaffB/byCURoAhiOr4zHv6DMf+u8XRMB80zH2VPz5+MTlf1nA/29IYbrm8Mm+wxKscapdkJPQvODBKUpfMYAvlhxLy365k/aP8HstkCpBJJVrZ5tE3lbhfKF53R6+FPNdleDwtTdLeXi2o52NFDtsgzWvl8ro+Hu8arChXCEZvu4OtZJ/GX4uBxxkrFNL9FCyQ==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.117.160) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=jUXT4ReyLXJxz3/14FJusModeCnTpnXJv+fFQL6CiQE=;
+ b=OUFKnVaLSk2ITgPmxAPa5EpfRVN9IGHjIzuiWgV7oNk95Vplx3JMjTfX61NdysiA8Hfj4R7Azjc83zQH4+GACi9r4LDjeXZCZMC6fRM/Nl5VY/Eufl6uWma+LMHcA445HFFM04s4HP6QnFL5fL3L9E8psnl0j5u1O1FAaplHgXQURJNAgBRBjJjlE3rK6hXrtZknY+jjkXUDf/MYAGtX07kDs6g23wCAEw8nEdsxMtjuy/OhJyvsoDm4yAPJws1+PRTAbju9vgI+IZwaDhnW2Q7+gkXPOQzQLGlsUEyCasWEEmcRfWH0Jpa4acHep/he/z5MuPj39fVnsyyCF8lTCA==
+Received: from DS7PR06CA0012.namprd06.prod.outlook.com (2603:10b6:8:2a::22) by
+ MW4PR12MB5641.namprd12.prod.outlook.com (2603:10b6:303:186::5) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6745.27; Fri, 1 Sep 2023 18:38:29 +0000
+Received: from DS1PEPF00017092.namprd03.prod.outlook.com
+ (2603:10b6:8:2a:cafe::20) by DS7PR06CA0012.outlook.office365.com
+ (2603:10b6:8:2a::22) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.27 via Frontend
+ Transport; Fri, 1 Sep 2023 18:38:29 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.117.160) by
+ DS1PEPF00017092.mail.protection.outlook.com (10.167.17.135) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6745.20 via Frontend Transport; Fri, 1 Sep 2023 18:38:29 +0000
+Received: from rnnvmail203.nvidia.com (10.129.68.9) by mail.nvidia.com
+ (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Fri, 1 Sep 2023
+ 11:38:15 -0700
+Received: from rnnvmail202.nvidia.com (10.129.68.7) by rnnvmail203.nvidia.com
+ (10.129.68.9) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Fri, 1 Sep 2023
+ 11:38:15 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.129.68.7) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37 via Frontend
+ Transport; Fri, 1 Sep 2023 11:38:14 -0700
+From:   Jon Hunter <jonathanh@nvidia.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>,
+        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 4.19 0/2] 4.19.294-rc2 review
+In-Reply-To: <20230831172214.759342877@linuxfoundation.org>
+References: <20230831172214.759342877@linuxfoundation.org>
+X-NVConfidentiality: public
+Content-Type: text/plain; charset="utf-8"
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.39.210.33]
-X-ClientProxiedBy: EX19D045UWC003.ant.amazon.com (10.13.139.198) To
- EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Message-ID: <242a73bb-c355-43e8-9fb0-0d7634d23c6f@rnnvmail202.nvidia.com>
+Date:   Fri, 1 Sep 2023 11:38:14 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF00017092:EE_|MW4PR12MB5641:EE_
+X-MS-Office365-Filtering-Correlation-Id: d242dfdf-c4dc-4e7d-9e45-08dbab1aa32b
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: g7oOhps2UQU/pJmIz4d0ppudKaa+XG0uWhhTN/RZEIzRkzxbCOUmrnKraOSMwySec4pHDG6GlpTLv/WaYc33yYbMq8KYNqp+lc0S2TjCfgJRZwZ5PgPUB3b2pyy9PVilrgf9Zo3tFB3tXlIyQfwTCA6aOR/nCdyzR1LPEDal3s2ljNZvOX86oIYvEa6I7UbYvt/iuHrM0MMh0cBVwGFw0s5e4uhlvng3M4IV0wFiPhtjDi/sySUgWWjSCEa760ya6mn2skUMR9TmvZlMsGWNzxRONOge5f69lmIiChV9aXUdmQGQynmg7JiaHaPrIFk3hM8kz9HGNY8wFIkPcoVVTtDOH1xF8f0xY51aNTY0YAg87yVGYuISzCpfxAAvaaT3fWElggy/sIBSgJu1Mm3t/ERmRAL4elTMj3/8A8khwe77KDAy1y6l/HBcKpQIeorZoEANB/Zw9SfVdxTqDeLjBc7mqkzzjXkjV7GYk/Ouyif7gTifWxKOy0iR+CZJPrJFJD/wbk7wE+r6ShBJAg2uCamwmAC1UvAmioKiOrRRl/bNRhdVwYILuE+EhSvSP7MQ/f/9xErK0QCyIJIZX2Nor7LsbEzgBotXhQ8arEDQgOeGsgaeQIcsuAIu1RVsNdcYMV3dpgoPHxKSesNaY/U+5Wrw8iA93RzXuLYp3e5X1h/nIUxmBTpgXS9s0Pc1SsI85qFXl8t89fzpF5YYx4e6DJCRFKpg8JGarcwQ94k11/swNaisRA5KogHz0zKqjgFsHJMT/0aw/dqVobUwK3Tt4aqLQyAopL2T+fGdKIofg/E=
+X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(376002)(396003)(346002)(39860400002)(136003)(186009)(1800799009)(82310400011)(451199024)(40470700004)(36840700001)(46966006)(41300700001)(40460700003)(316002)(7416002)(2906002)(82740400003)(426003)(26005)(336012)(356005)(40480700001)(5660300002)(7636003)(8936002)(8676002)(4326008)(6916009)(47076005)(36860700001)(966005)(478600001)(31696002)(86362001)(31686004)(70586007)(70206006)(54906003);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 01 Sep 2023 18:38:29.6538
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: d242dfdf-c4dc-4e7d-9e45-08dbab1aa32b
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF00017092.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: MW4PR12MB5641
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Sean Christopherson <seanjc@google.com>
+On Thu, 31 Aug 2023 19:30:20 +0200, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 4.19.294 release.
+> There are 2 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Sat, 02 Sep 2023 17:22:08 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v4.x/stable-review/patch-4.19.294-rc2.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-4.19.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Commit 0b210faf337314e4bc88e796218bc70c72a51209 upstream.
+All tests passing for Tegra ...
 
-[ Resolved a small conflict in arch/x86/kvm/mmu/mmu.c::kvm_mmu_post_init_vm()
-  which is due kvm_nx_lpage_recovery_worker() being renamed in upstream
-  commit 55c510e26ab6181c132327a8b90c864e6193ce27 ]
+Test results for stable-v4.19:
+    11 builds:	11 pass, 0 fail
+    22 boots:	22 pass, 0 fail
+    40 tests:	40 pass, 0 fail
 
-Add a "never" option to the nx_huge_pages module param to allow userspace
-to do a one-way hard disabling of the mitigation, and don't create the
-per-VM recovery threads when the mitigation is hard disabled.  Letting
-userspace pinky swear that userspace doesn't want to enable NX mitigation
-(without reloading KVM) allows certain use cases to avoid the latency
-problems associated with spawning a kthread for each VM.
+Linux version:	4.19.294-rc2-gcb2cdf227208
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra20-ventana,
+                tegra210-p2371-2180, tegra30-cardhu-a04
 
-E.g. in FaaS use cases, the guest kernel is trusted and the host may
-create 100+ VMs per logical CPU, which can result in 100ms+ latencies when
-a burst of VMs is created.
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Reported-by: Li RongQing <lirongqing@baidu.com>
-Closes: https://lore.kernel.org/all/1679555884-32544-1-git-send-email-lirongqing@baidu.com
-Cc: Yong He <zhuangel570@gmail.com>
-Cc: Robert Hoo <robert.hoo.linux@gmail.com>
-Cc: Kai Huang <kai.huang@intel.com>
-Reviewed-by: Robert Hoo <robert.hoo.linux@gmail.com>
-Acked-by: Kai Huang <kai.huang@intel.com>
-Tested-by: Luiz Capitulino <luizcap@amazon.com>
-Reviewed-by: Li RongQing <lirongqing@baidu.com>
-Link: https://lore.kernel.org/r/20230602005859.784190-1-seanjc@google.com
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
----
- arch/x86/kvm/mmu/mmu.c | 41 ++++++++++++++++++++++++++++++++++++-----
- 1 file changed, 36 insertions(+), 5 deletions(-)
-
-diff --git a/arch/x86/kvm/mmu/mmu.c b/arch/x86/kvm/mmu/mmu.c
-index c089242008b3..7a6df4b62c1b 100644
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -56,6 +56,8 @@
- 
- extern bool itlb_multihit_kvm_mitigation;
- 
-+static bool nx_hugepage_mitigation_hard_disabled;
-+
- int __read_mostly nx_huge_pages = -1;
- static uint __read_mostly nx_huge_pages_recovery_period_ms;
- #ifdef CONFIG_PREEMPT_RT
-@@ -65,12 +67,13 @@ static uint __read_mostly nx_huge_pages_recovery_ratio = 0;
- static uint __read_mostly nx_huge_pages_recovery_ratio = 60;
- #endif
- 
-+static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp);
- static int set_nx_huge_pages(const char *val, const struct kernel_param *kp);
- static int set_nx_huge_pages_recovery_param(const char *val, const struct kernel_param *kp);
- 
- static const struct kernel_param_ops nx_huge_pages_ops = {
- 	.set = set_nx_huge_pages,
--	.get = param_get_bool,
-+	.get = get_nx_huge_pages,
- };
- 
- static const struct kernel_param_ops nx_huge_pages_recovery_param_ops = {
-@@ -6645,6 +6648,14 @@ static void mmu_destroy_caches(void)
- 	kmem_cache_destroy(mmu_page_header_cache);
- }
- 
-+static int get_nx_huge_pages(char *buffer, const struct kernel_param *kp)
-+{
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return sprintf(buffer, "never\n");
-+
-+	return param_get_bool(buffer, kp);
-+}
-+
- static bool get_nx_auto_mode(void)
- {
- 	/* Return true when CPU has the bug, and mitigations are ON */
-@@ -6661,15 +6672,29 @@ static int set_nx_huge_pages(const char *val, const struct kernel_param *kp)
- 	bool old_val = nx_huge_pages;
- 	bool new_val;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return -EPERM;
-+
- 	/* In "auto" mode deploy workaround only if CPU has the bug. */
--	if (sysfs_streq(val, "off"))
-+	if (sysfs_streq(val, "off")) {
- 		new_val = 0;
--	else if (sysfs_streq(val, "force"))
-+	} else if (sysfs_streq(val, "force")) {
- 		new_val = 1;
--	else if (sysfs_streq(val, "auto"))
-+	} else if (sysfs_streq(val, "auto")) {
- 		new_val = get_nx_auto_mode();
--	else if (kstrtobool(val, &new_val) < 0)
-+	} else if (sysfs_streq(val, "never")) {
-+		new_val = 0;
-+
-+		mutex_lock(&kvm_lock);
-+		if (!list_empty(&vm_list)) {
-+			mutex_unlock(&kvm_lock);
-+			return -EBUSY;
-+		}
-+		nx_hugepage_mitigation_hard_disabled = true;
-+		mutex_unlock(&kvm_lock);
-+	} else if (kstrtobool(val, &new_val) < 0) {
- 		return -EINVAL;
-+	}
- 
- 	__set_nx_huge_pages(new_val);
- 
-@@ -6800,6 +6825,9 @@ static int set_nx_huge_pages_recovery_param(const char *val, const struct kernel
- 	uint old_period, new_period;
- 	int err;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return -EPERM;
-+
- 	was_recovery_enabled = calc_nx_huge_pages_recovery_period(&old_period);
- 
- 	err = param_set_uint(val, kp);
-@@ -6923,6 +6951,9 @@ int kvm_mmu_post_init_vm(struct kvm *kvm)
- {
- 	int err;
- 
-+	if (nx_hugepage_mitigation_hard_disabled)
-+		return 0;
-+
- 	err = kvm_vm_create_worker_thread(kvm, kvm_nx_lpage_recovery_worker, 0,
- 					  "kvm-nx-lpage-recovery",
- 					  &kvm->arch.nx_lpage_recovery_thread);
--- 
-2.40.1
-
+Jon
