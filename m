@@ -2,118 +2,112 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 009DC78FEB2
-	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 16:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F2AE078FEB5
+	for <lists+stable@lfdr.de>; Fri,  1 Sep 2023 16:03:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1347754AbjIAOCS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 10:02:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40558 "EHLO
+        id S236976AbjIAODx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 10:03:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50612 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230454AbjIAOCR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 10:02:17 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFF8710EC;
-        Fri,  1 Sep 2023 07:02:14 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id F03C7CE2399;
-        Fri,  1 Sep 2023 14:02:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 957D2C433C9;
-        Fri,  1 Sep 2023 14:02:09 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693576931;
-        bh=xzO5OH5Qe2Y2j815wjyuTSS67nTGI2J0u9LP7ckN3VI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=D/6GSgOgfF6CcOKgPU5RN5AWuG8ROJ0vKyJHcU2JIM3qiL6CYSAFAiRRK3ym59i3C
-         BXBN6JpNHZcbELGVnd4qXScx8fnfzWZEdfDrRhTdjm/sjJg9ThzbwUWPb1AvFwPpOL
-         TlN3INvMHrZX/8CmEpIOeMqrx0+I4EKAYU7fhDyaGvIYDfxVTZYfgN1IterV450nOZ
-         1zuHdwdVuPzaU3Fm4iBVU43fgt8J81o4d0BVbXEwVm7eU6autgjskuwZquJKu18m0U
-         23Wg2EjyaTqIqKXZbHkJiPHKFuPcJehoKloiB4QTrO7U9swoxgCbobxIi11WLwPTAa
-         HNEuBoGV8vT7A==
-Date:   Fri, 1 Sep 2023 23:02:06 +0900
-From:   Masami Hiramatsu (Google) <mhiramat@kernel.org>
-To:     Chuang Wang <nashuiliang@gmail.com>
-Cc:     stable@vger.kernel.org, Steven Rostedt <rostedt@goodmis.org>,
-        Masami Hiramatsu <mhiramat@kernel.org>,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
-Subject: Re: [PATCH] tracing: Fix the unusable problem caused by non-empty
- pipe_cpumask
-Message-Id: <20230901230206.9bf0250291acd7bfbde46b53@kernel.org>
-In-Reply-To: <20230901072626.278880-1-nashuiliang@gmail.com>
-References: <20230901072626.278880-1-nashuiliang@gmail.com>
-X-Mailer: Sylpheed 3.7.0 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S230454AbjIAODx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 10:03:53 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 565EF10EB
+        for <stable@vger.kernel.org>; Fri,  1 Sep 2023 07:03:50 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693577030; x=1725113030;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=bNiEa0jL19K8lIItY6lSay6eWCAU+ZIE8PmKYRxuxwU=;
+  b=hT493RhnZ7ykmVU+7pfNFzKe6oA/Bpp/jdNr+fAhB9ZMv9CnPdLeevzL
+   pWIEM+ZJCp2YUE9wPoFkYatiY+0Yei/8hcNfMoXLXdWUq5PrZnN1XpC0U
+   ZqmAXurv49b0LNbfoRH3cIrPVMoF1tWzwlSO1go3Tblc4VOtt5nZEbcYJ
+   kHTbsUaCZm0LnOmf8vZpd1/BGnl+WO+YT/zyGOLCJ4HzxlDyAs5MMqKjS
+   E/Tw3tmqoEsBtKjxVFK+c1yBVmMIeaqEOoXwOs1vMswaLCVk/XGuK4cg1
+   h46dc9GOvuKDTeSBM6ylVChAXH1pgo6O22dwQ34hoyj44aFMMaWMGO8Aa
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="375126737"
+X-IronPort-AV: E=Sophos;i="6.02,219,1688454000"; 
+   d="scan'208";a="375126737"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2023 07:03:47 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10819"; a="854714922"
+X-IronPort-AV: E=Sophos;i="6.02,219,1688454000"; 
+   d="scan'208";a="854714922"
+Received: from ideak-desk.fi.intel.com ([10.237.72.78])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 01 Sep 2023 07:03:46 -0700
+From:   Imre Deak <imre.deak@intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     Tejun Heo <tj@kernel.org>, Heiner Kallweit <hkallweit1@gmail.com>,
+        stable@vger.kernel.org
+Subject: [PATCH 1/2] drm/i915: Schedule the HPD poll init work on an unbound workqueue
+Date:   Fri,  1 Sep 2023 17:04:02 +0300
+Message-Id: <20230901140403.2821777-1-imre.deak@intel.com>
+X-Mailer: git-send-email 2.37.2
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri,  1 Sep 2023 15:26:26 +0800
-Chuang Wang <nashuiliang@gmail.com> wrote:
+Disabling HPD polling from i915_hpd_poll_init_work() involves probing
+all display connectors explicitly to account for lost hotplug
+interrupts. On some platforms (mostly pre-ICL) with HDMI connectors the
+I2C EDID bit-banging using udelay() triggers in turn the
 
-> There is a problem in the linux-6.5 when I execute the following
-> command:
-> 
->  $ perf ftrace -t irqsoff
->  failed to open trace_pipe
-> 
-> At the same time, when I open this file, the same error occurs.
-> 
-> Therefore, after carefully looking at the code, the open function of
-> 'trace_pipe' returns -EBUSY in open_pipe_on_cpu() because no clearing
-> operation was performed when 'trace_array->pipe_cpumask' was allocated.
-> 
-> With this patch, Use zalloc_cpumask_var() to ensure that
-> 'trace_array->pipe_cpumask' is reset to 0 when allocated.
+ workqueue: i915_hpd_poll_init_work [i915] hogged CPU for >10000us 4 times, consider switching to WQ_UNBOUND
 
-Good catch. This looks good to me.
+warning.
 
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
+Fix the above by scheduling i915_hpd_poll_init_work() on a WQ_UNBOUND
+workqueue. It's ok to use a system WQ, since i915_hpd_poll_init_work()
+is properly flushed in intel_hpd_cancel_work().
 
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: c2489bb7e6be ("tracing: Introduce pipe_cpumask to avoid race on trace_pipes")
-> Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
-> ---
->  kernel/trace/trace.c | 4 ++--
->  1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> index d8233d34b5a0..c0b8a72f3466 100644
-> --- a/kernel/trace/trace.c
-> +++ b/kernel/trace/trace.c
-> @@ -9461,7 +9461,7 @@ static struct trace_array *trace_array_create(const char *name)
->  	if (!alloc_cpumask_var(&tr->tracing_cpumask, GFP_KERNEL))
->  		goto out_free_tr;
->  
-> -	if (!alloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
-> +	if (!zalloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
->  		goto out_free_tr;
->  
->  	tr->trace_flags = global_trace.trace_flags & ~ZEROED_TRACE_FLAGS;
-> @@ -10406,7 +10406,7 @@ __init static int tracer_alloc_buffers(void)
->  	if (trace_create_savedcmd() < 0)
->  		goto out_free_temp_buffer;
->  
-> -	if (!alloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
-> +	if (!zalloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
->  		goto out_free_savedcmd;
->  
->  	/* TODO: make the number of buffers hot pluggable with CPUS */
-> -- 
-> 2.39.2
-> 
+The connector probing from drm_mode_config::output_poll_work resulting
+in the same warning is fixed by the next patch.
 
+Cc: Tejun Heo <tj@kernel.org>
+Cc: Heiner Kallweit <hkallweit1@gmail.com>
+CC: stable@vger.kernel.org # 6.5
+Suggested-by: Tejun Heo <tj@kernel.org>
+Suggested-by: Heiner Kallweit <hkallweit1@gmail.com>
+Reported-by: Heiner Kallweit <hkallweit1@gmail.com>
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9245
+Link: https://lore.kernel.org/all/f7e21caa-e98d-e5b5-932a-fe12d27fde9b@gmail.com
+Signed-off-by: Imre Deak <imre.deak@intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_hotplug.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
+diff --git a/drivers/gpu/drm/i915/display/intel_hotplug.c b/drivers/gpu/drm/i915/display/intel_hotplug.c
+index e8562f6f8bb44..accc2fec562a0 100644
+--- a/drivers/gpu/drm/i915/display/intel_hotplug.c
++++ b/drivers/gpu/drm/i915/display/intel_hotplug.c
+@@ -774,7 +774,7 @@ void intel_hpd_poll_enable(struct drm_i915_private *dev_priv)
+ 	 * As well, there's no issue if we race here since we always reschedule
+ 	 * this worker anyway
+ 	 */
+-	queue_work(dev_priv->unordered_wq,
++	queue_work(system_unbound_wq,
+ 		   &dev_priv->display.hotplug.poll_init_work);
+ }
+ 
+@@ -803,7 +803,7 @@ void intel_hpd_poll_disable(struct drm_i915_private *dev_priv)
+ 		return;
+ 
+ 	WRITE_ONCE(dev_priv->display.hotplug.poll_enabled, false);
+-	queue_work(dev_priv->unordered_wq,
++	queue_work(system_unbound_wq,
+ 		   &dev_priv->display.hotplug.poll_init_work);
+ }
+ 
 -- 
-Masami Hiramatsu (Google) <mhiramat@kernel.org>
+2.37.2
+
