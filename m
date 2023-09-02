@@ -2,45 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 699F67904A0
-	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 03:26:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39A1E7904E3
+	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 05:44:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242875AbjIBB0C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 1 Sep 2023 21:26:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35828 "EHLO
+        id S229885AbjIBDoS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 1 Sep 2023 23:44:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53268 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjIBB0B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 21:26:01 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 931BFA0;
-        Fri,  1 Sep 2023 18:25:58 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 32AF160C0D;
-        Sat,  2 Sep 2023 01:25:58 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8572C433C8;
-        Sat,  2 Sep 2023 01:25:56 +0000 (UTC)
-Date:   Fri, 1 Sep 2023 21:26:07 -0400
-From:   Steven Rostedt <rostedt@goodmis.org>
-To:     "Masami Hiramatsu (Google)" <mhiramat@kernel.org>
-Cc:     Chuang Wang <nashuiliang@gmail.com>, stable@vger.kernel.org,
-        Zheng Yejian <zhengyejian1@huawei.com>,
-        linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org,
-        Brian Foster <bfoster@redhat.com>
-Subject: Re: [PATCH] tracing: Fix the unusable problem caused by non-empty
- pipe_cpumask
-Message-ID: <20230901212607.1f8608de@gandalf.local.home>
-In-Reply-To: <20230901230206.9bf0250291acd7bfbde46b53@kernel.org>
-References: <20230901072626.278880-1-nashuiliang@gmail.com>
-        <20230901230206.9bf0250291acd7bfbde46b53@kernel.org>
-X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
+        with ESMTP id S229764AbjIBDoR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 1 Sep 2023 23:44:17 -0400
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D85D10F9;
+        Fri,  1 Sep 2023 20:44:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=TdcWiGkGWr+rD1ctZwNIbhg9pqLP9aJ0pJ+X3QdH5dA=; b=ftV/XKbOKQGkLA3auixsF08xzH
+        oufphC6h59y/YuB+p4zlLX/RdPyKSu1OJLjy0aRck84oBbY2bJTtbCIuodLbeOazuvZpts8v2JZCy
+        cBjDMAGdQMUDZyyZw8plGhtZKFKVm+vqDhaYcWlfhKELBPVHWLN8jlsSckQBgzq6ES/2ejHgpjRYx
+        Z0whfqn+uo0dxqCv+fXdN4Ey7JPun/ScHB7zi8wmYnBWhJP3cwi/zvkRd4a9ZkS/pSYPpSJ1kQ+3+
+        KfGEC0oe2KH9Yz3AdY6ER9+9k8imbR15Usmvrb2IqROxg+Hs9sQETySC4K5mDjvQ3kCmdbGE8E37r
+        VTi+tFUA==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qcHYD-002jnC-2K;
+        Sat, 02 Sep 2023 03:43:57 +0000
+Date:   Sat, 2 Sep 2023 04:43:57 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christian Brauner <brauner@kernel.org>,
+        Mateusz Guzik <mjguzik@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] file: always lock position
+Message-ID: <20230902034357.GH3390869@ZenIV>
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-pyjama-papier-9e4cdf5359cb@brauner>
+ <CAHk-=wj2XZqex6kzz7SbdVHwP9fFoOvHSzHj--0KuxyrVO+3-w@mail.gmail.com>
+ <20230803095311.ijpvhx3fyrbkasul@f>
+ <CAHk-=whQ51+rKrnUYeuw3EgJMv2RJrwd7UO9qCgOkUdJzcirWw@mail.gmail.com>
+ <20230803-libellen-klebrig-0a9e19dfa7dd@brauner>
+ <CAHk-=wi97khTatMKCvJD4tBkf6rMKTP=fLQDnok7MGEEewSz9g@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-6.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_HI,SPF_HELO_NONE,SPF_PASS
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHk-=wi97khTatMKCvJD4tBkf6rMKTP=fLQDnok7MGEEewSz9g@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -48,78 +60,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 1 Sep 2023 23:02:06 +0900
-Masami Hiramatsu (Google) <mhiramat@kernel.org> wrote:
+On Thu, Aug 03, 2023 at 11:35:53AM -0700, Linus Torvalds wrote:
 
-> On Fri,  1 Sep 2023 15:26:26 +0800
-> Chuang Wang <nashuiliang@gmail.com> wrote:
-> 
-> > There is a problem in the linux-6.5 when I execute the following
-> > command:
-> > 
-> >  $ perf ftrace -t irqsoff
-> >  failed to open trace_pipe
-> > 
-> > At the same time, when I open this file, the same error occurs.
-> > 
-> > Therefore, after carefully looking at the code, the open function of
-> > 'trace_pipe' returns -EBUSY in open_pipe_on_cpu() because no clearing
-> > operation was performed when 'trace_array->pipe_cpumask' was allocated.
-> > 
-> > With this patch, Use zalloc_cpumask_var() to ensure that
-> > 'trace_array->pipe_cpumask' is reset to 0 when allocated.  
+> And yes, those exist. See at least 'adfs_dir_ops', and
+> 'ceph_dir_fops'. They may be broken, but people actually did do things
+> like that historically, maybe there's a reason adfs and ceph allow it.
 
+Huh?
 
-Brian Foster beat you to it.
+	adfs is a red herring - there is a method called 'read' in
+struct adfs_dir_ops, but it has nothing to do with read(2) or anything
+of that sort; it is *used* by adfs_iterate() (via adfs_read_inode()),
+but the only file_operations that sucker has is
+const struct file_operations adfs_dir_operations = {
+        .read           = generic_read_dir,
+	.llseek         = generic_file_llseek,
+	.iterate_shared = adfs_iterate,
+	.fsync          = generic_file_fsync,
+};
 
-  https://lore.kernel.org/linux-trace-kernel/20230831125500.986862-1-bfoster@redhat.com
+and generic_read_dir() is "fail with -EISDIR".
 
+ceph one is real, and it's... not nice.  They do have a genuine
+->read() on directories, which acts as if it had been a regular
+file contents generated by sprintf() (at the first read(2)).
+Format:
+                                "entries:   %20lld\n"
+                                " files:    %20lld\n"
+                                " subdirs:  %20lld\n"
+                                "rentries:  %20lld\n"
+                                " rfiles:   %20lld\n"
+                                " rsubdirs: %20lld\n"
+                                "rbytes:    %20lld\n"
+                                "rctime:    %10lld.%09ld\n",
+and yes, it does go stale.  Just close and reopen...
 
-> 
-> Good catch. This looks good to me.
-> 
-> Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-> 
+File position is an offset in that string.  Shared with position
+used by getdents()...
 
-Masami, I'll add your Reviewed-by to that commit.
+It gets better - if you open a directory, then fork and have
+both child and parent read from it, well...
+        if (!dfi->dir_info) {
+                dfi->dir_info = kmalloc(bufsize, GFP_KERNEL);  
+                if (!dfi->dir_info)
+                        return -ENOMEM;
+No locking whatsoever.  No priveleges needed either...
 
-Thanks!
+Frankly, my preference would be to remove that kludge, but
+short of that we would need at least some exclusion for
+those allocations and if we do that, we might just as well
+have ceph_readdir() fail if we'd ever done ceph_read_dir()
+on the same struct file and vice versa.
 
--- Steve
+They are really not mixible.
 
-> > 
-> > Cc: stable@vger.kernel.org
-> > Fixes: c2489bb7e6be ("tracing: Introduce pipe_cpumask to avoid race on trace_pipes")
-> > Signed-off-by: Chuang Wang <nashuiliang@gmail.com>
-> > ---
-> >  kernel/trace/trace.c | 4 ++--
-> >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > 
-> > diff --git a/kernel/trace/trace.c b/kernel/trace/trace.c
-> > index d8233d34b5a0..c0b8a72f3466 100644
-> > --- a/kernel/trace/trace.c
-> > +++ b/kernel/trace/trace.c
-> > @@ -9461,7 +9461,7 @@ static struct trace_array *trace_array_create(const char *name)
-> >  	if (!alloc_cpumask_var(&tr->tracing_cpumask, GFP_KERNEL))
-> >  		goto out_free_tr;
-> >  
-> > -	if (!alloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
-> > +	if (!zalloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
-> >  		goto out_free_tr;
-> >  
-> >  	tr->trace_flags = global_trace.trace_flags & ~ZEROED_TRACE_FLAGS;
-> > @@ -10406,7 +10406,7 @@ __init static int tracer_alloc_buffers(void)
-> >  	if (trace_create_savedcmd() < 0)
-> >  		goto out_free_temp_buffer;
-> >  
-> > -	if (!alloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
-> > +	if (!zalloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
-> >  		goto out_free_savedcmd;
-> >  
-> >  	/* TODO: make the number of buffers hot pluggable with CPUS */
-> > -- 
-> > 2.39.2
-> >   
-> 
-> 
+As far as I can tell, ceph is the only place in mainline where
+we have ->iterate_shared along with non-failing ->read.  Nothing
+mixes it with ->read_iter, ->write or ->write_iter.
 
+lseek() is there, of course, and that's enough to kill the "special
+fdget variant for directory syscalls" kind of approach.  But read()
+and write() on directories are very much not something people
+legitimately do.
