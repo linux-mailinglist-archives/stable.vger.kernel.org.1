@@ -2,49 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 937347905EF
-	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 09:45:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 53A4C7905F9
+	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 09:52:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234691AbjIBHps (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 2 Sep 2023 03:45:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57992 "EHLO
+        id S242298AbjIBHwA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 2 Sep 2023 03:52:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55860 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232177AbjIBHpr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 03:45:47 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 775351722;
-        Sat,  2 Sep 2023 00:45:20 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 4B030CE25A9;
-        Sat,  2 Sep 2023 07:45:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 394D7C433C9;
-        Sat,  2 Sep 2023 07:45:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693640711;
-        bh=igYFzeu09JXMCYReR1pVMS95JjRHTi+y4Ts88ORpSUs=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wJsnc5L985T5bg+ibk3/kGrxNZm/+MU7ZPc6Nl/8FzBaE0YR5pp525s7TH2CPCdRt
-         6ZCApl7lOU9/Q0TzS8ePOwRAXtFHOMPrWewYluQTXXA1hwkKtKuHoP+jwdo7Rxf1Ku
-         oRUztxd8xQUktnQkViY2NNPD3WAYMg/0JAM2m1dk=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org
-Cc:     lwn@lwn.net, jslaby@suse.cz,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 4.14.325
-Date:   Sat,  2 Sep 2023 09:45:07 +0200
-Message-ID: <2023090206-cogwheel-backshift-547d@gregkh>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <2023090206-dimness-twelve-1bff@gregkh>
-References: <2023090206-dimness-twelve-1bff@gregkh>
+        with ESMTP id S233441AbjIBHwA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 03:52:00 -0400
+Received: from mail-oa1-x36.google.com (mail-oa1-x36.google.com [IPv6:2001:4860:4864:20::36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 00971B4
+        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 00:51:54 -0700 (PDT)
+Received: by mail-oa1-x36.google.com with SMTP id 586e51a60fabf-1c0fcbf7ae4so1924616fac.0
+        for <stable@vger.kernel.org>; Sat, 02 Sep 2023 00:51:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693641114; x=1694245914; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=t++X2nWEaKIEmrsLxkEqvpHSGVIkJCVo39DL2UleSzA=;
+        b=lDPKfgNS/N3ukjcM4HLic410kMK7IdD57eXBfs5fYypTjhphQ5o+mC9iBDTgpd1GoF
+         a27t5gwfHmWZ01lpgWaegJgbYFR7gfJVZhjD9evLOqNqaFIqt6iX2C2c8HgvE6vqk5Z2
+         w2EkPZtq0oEleXBbDu5HZ+gD8hMawaR8uGvplwlGWlEQsABUgTS97mXz0FHh6utA0ssO
+         TGVNXmB30BkGyGjq51ncs45V2LmO9jCa7+qhWtafCsCZZDJXYmerwE4+Z99L7sY45tp7
+         Ns5bW5iLmO1RK2/neDlXwVG+B+CC3jddZqMhVZhbkpFgar3M5tRkJhG92KOdEsIJgsk/
+         hM3g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693641114; x=1694245914;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=t++X2nWEaKIEmrsLxkEqvpHSGVIkJCVo39DL2UleSzA=;
+        b=Fa4xXWS/xch9fBHDA7qStdqolWPsoDS/3Gm3e7TMDY86vIOlu+cDpq/hYl4KaryjXD
+         DsgkDT1mir4BgfqATsAAi8cUP78mML6r9bQ3ny7OQlOrPAalsoW6sIGl/V33DVcmPdG0
+         QSpjFI265+PMBjxDT3/yFiSbR3IGWroC5JCBa5Cv6t+XN7/jZjjjrVV5/Uqw0QCMm8eU
+         Em5oysh1+FdhBSSszijDP4UOZyfZZRWlUUbP1zolXvUeoHlzoZ9hWzCsYTdWTMvWaZ76
+         ILfl/JX5kAM9Mf66XD/fxl4a7KTEAOaj/pBmQyZkaNm+X4SorTNDyCInnXVLI8Vw++k1
+         C3Ow==
+X-Gm-Message-State: AOJu0YytKpAZGfFMCf+SqL2jY9gs8/XE+YCOkLk2wg+6IBNal7+xHvbN
+        unrUqttkHctbWroH2TL1j3czORLVFXVttiAS3qs=
+X-Google-Smtp-Source: AGHT+IG1NUDGb5SvvJq2WWRjqxSZyrzFYbtHUrAbufr0Q6ADy2lEFHJuDLZqQsPW190JUjRbpKNv6w==
+X-Received: by 2002:a05:6870:c18b:b0:1d0:da52:4235 with SMTP id h11-20020a056870c18b00b001d0da524235mr6095556oad.26.1693641113829;
+        Sat, 02 Sep 2023 00:51:53 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id z28-20020a637e1c000000b0055b5f206ea2sm3913507pgc.39.2023.09.02.00.51.52
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 02 Sep 2023 00:51:53 -0700 (PDT)
+Message-ID: <64f2e999.630a0220.4d0e4.822e@mx.google.com>
+Date:   Sat, 02 Sep 2023 00:51:53 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-4.14.y
+X-Kernelci-Tree: stable
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.14.325
+Subject: stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed,
+ 21 warnings (v4.14.325)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -52,99 +71,202 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-diff --git a/Makefile b/Makefile
-index d1c052d0232f..9aa13e67a218 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 4
- PATCHLEVEL = 14
--SUBLEVEL = 324
-+SUBLEVEL = 325
- EXTRAVERSION =
- NAME = Petit Gorille
- 
-diff --git a/arch/arm/mach-ep93xx/timer-ep93xx.c b/arch/arm/mach-ep93xx/timer-ep93xx.c
-index b07956883e16..de998830f534 100644
---- a/arch/arm/mach-ep93xx/timer-ep93xx.c
-+++ b/arch/arm/mach-ep93xx/timer-ep93xx.c
-@@ -9,7 +9,6 @@
- #include <linux/io.h>
- #include <asm/mach/time.h>
- #include "soc.h"
--#include "platform.h"
- 
- /*************************************************************************
-  * Timer handling for EP93xx
-@@ -61,7 +60,7 @@ static u64 notrace ep93xx_read_sched_clock(void)
- 	return ret;
- }
- 
--static u64 ep93xx_clocksource_read(struct clocksource *c)
-+u64 ep93xx_clocksource_read(struct clocksource *c)
- {
- 	u64 ret;
- 
-diff --git a/arch/mips/alchemy/common/dbdma.c b/arch/mips/alchemy/common/dbdma.c
-index 122f8c0d258e..fc482d900ddd 100644
---- a/arch/mips/alchemy/common/dbdma.c
-+++ b/arch/mips/alchemy/common/dbdma.c
-@@ -30,7 +30,6 @@
-  *
-  */
- 
--#include <linux/dma-map-ops.h> /* for dma_default_coherent */
- #include <linux/init.h>
- #include <linux/kernel.h>
- #include <linux/slab.h>
-@@ -624,18 +623,17 @@ u32 au1xxx_dbdma_put_source(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 		dp->dscr_cmd0 &= ~DSCR_CMD0_IE;
- 
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result
-+	 * in "stale" data being DMA'ed. It has to do with the snoop logic on
-+	 * the cache eviction buffer.  DMA_NONCOHERENT is on by default for
-+	 * these parts. If it is fixed in the future, these dma_cache_inv will
-+	 * just be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_wback_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_wback_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
- 
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
-@@ -687,18 +685,17 @@ u32 au1xxx_dbdma_put_dest(u32 chanid, dma_addr_t buf, int nbytes, u32 flags)
- 			  dp->dscr_source1, dp->dscr_dest0, dp->dscr_dest1);
- #endif
- 	/*
--	 * There is an erratum on certain Au1200/Au1550 revisions that could
--	 * result in "stale" data being DMA'ed. It has to do with the snoop
--	 * logic on the cache eviction buffer.  dma_default_coherent is set
--	 * to false on these parts.
-+	 * There is an errata on the Au1200/Au1550 parts that could result in
-+	 * "stale" data being DMA'ed. It has to do with the snoop logic on the
-+	 * cache eviction buffer.  DMA_NONCOHERENT is on by default for these
-+	 * parts. If it is fixed in the future, these dma_cache_inv will just
-+	 * be nothing more than empty macros. See io.h.
- 	 */
--	if (!dma_default_coherent)
--		dma_cache_inv(KSEG0ADDR(buf), nbytes);
-+	dma_cache_inv((unsigned long)buf, nbytes);
- 	dp->dscr_cmd0 |= DSCR_CMD0_V;	/* Let it rip */
- 	wmb(); /* drain writebuffer */
- 	dma_cache_wback_inv((unsigned long)dp, sizeof(*dp));
- 	ctp->chan_ptr->ddma_dbell = 0;
--	wmb(); /* force doorbell write out to dma engine */
- 
- 	/* Get next descriptor pointer. */
- 	ctp->put_ptr = phys_to_virt(DSCR_GET_NXTPTR(dp->dscr_nxtptr));
+stable/linux-4.14.y build: 16 builds: 0 failed, 16 passed, 21 warnings (v4.=
+14.325)
+
+Full Build Summary: https://kernelci.org/build/stable/branch/linux-4.14.y/k=
+ernel/v4.14.325/
+
+Tree: stable
+Branch: linux-4.14.y
+Git Describe: v4.14.325
+Git Commit: d6c4816748dd21e69b7dd79faf282a57d0378680
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e.git
+Built: 6 unique architectures
+
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+    allnoconfig (gcc-10): 3 warnings
+    i386_defconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+
+mips:
+
+x86_64:
+    allnoconfig (gcc-10): 3 warnings
+    tinyconfig (gcc-10): 3 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
+
+
+Warnings summary:
+
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    4    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h=
+' differs from latest kernel version at 'arch/x86/include/asm/insn.h'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic su=
+ffix given and no register operands; using default for `btr'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
+tion mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section =
+mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section m=
+ismatches
+
+Warnings:
+    arch/x86/entry/entry_32.S:480: Warning: no instruction mnemonic suffix =
+given and no register operands; using default for `btr'
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 section=
+ mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    Warning: synced file at 'tools/objtool/arch/x86/include/asm/insn.h' dif=
+fers from latest kernel version at 'arch/x86/include/asm/insn.h'
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
