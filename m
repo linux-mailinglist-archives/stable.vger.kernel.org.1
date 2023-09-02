@@ -2,104 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7220879097B
-	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 22:20:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4F0C7909B5
+	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 23:08:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233869AbjIBUUn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 2 Sep 2023 16:20:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46798 "EHLO
+        id S234974AbjIBVIz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 2 Sep 2023 17:08:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231805AbjIBUUm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 16:20:42 -0400
-Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B74A0CD6
-        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 13:20:39 -0700 (PDT)
-Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-68a42d06d02so128681b3a.0
-        for <stable@vger.kernel.org>; Sat, 02 Sep 2023 13:20:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693686039; x=1694290839; darn=vger.kernel.org;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=BJG4Fbd4u57q10EH/XnH8VDwsn8D+1qRD6SbZ6z/dUU=;
-        b=cDA0JKrOGscMAzFHvuKiy6YZp9hI/BciIoC8JIC7bt8v5NpD0EowULV3KcpEqudx1U
-         7/YNdGTSdgfX+VR6scS89vjYK73IHU3i5rjG9jdvQrGMkKrJ4FRCV7CTXL4FOgo9+ZEQ
-         FL1pj2AClcj0gIh9LX/gS7L+QWoTLlbZ/6eWUJfg+EvP15ZqDR+qmb94WrOYYSbOHDmA
-         WjR0ih/Mg5zLGwBZd59uC9S5qNM6hIUrLJiYzPyXtV+PcUFFXAtj/QawgprRbEOsy/L/
-         ivBK+XzWqHCU6l3F4PU7V0wNW8CdgbQFNFtKxnDeOh0PqYzJl4ZePq6dUlY2lJgkjGNf
-         lZHg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693686039; x=1694290839;
-        h=content-disposition:mime-version:message-id:subject:to:from:date
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=BJG4Fbd4u57q10EH/XnH8VDwsn8D+1qRD6SbZ6z/dUU=;
-        b=PUAWMDJkZXBu0FLYWxtCDUA0UKaAB43czTw5TNpf94yBVofImxiKAxlZV+vy1nfcBD
-         mB5txsUnwy2+Fzusxc3mAtkO6k1m/NGjSsrehLTH2DwgvaD9wFq/43QDos1rEYrxyJD0
-         sj33HVgF1oSxbJkhsmhSV7TraZY4Pw/Ka501/9Q7BuvFOeuCkqyZeJqfwCKg6+zMPYCD
-         8Iyw3KXQw/9nA0ttmiW0V+8vzVHLLp6nMdzywVeL0kO2BDnKowX45IpY9lu7krg/orN2
-         TkbUTYNeG/ZaY0AhyTrwN1upY5TeAOvIMVNNkXx3Oyd/j9vV6Fq6KlGIfUgtCHVUyOHr
-         443Q==
-X-Gm-Message-State: AOJu0Yz/lxtLUGXLPxrsmHF9yPTJ+iqBPMIs0WPu9/ui8WiPFaqcbGHu
-        9NCfZw9i/usaAfZfyLsdEM1c1AHAS79Y4U3I
-X-Google-Smtp-Source: AGHT+IH8QxbKgWfELkzRqBhnAClSLe3KmrOt0CLKbCm4BVdLpfHPizo0Va7EjKcyrXnGCLQM47AdeQ==
-X-Received: by 2002:a05:6a20:3246:b0:137:57fc:4f9d with SMTP id hm6-20020a056a20324600b0013757fc4f9dmr4863054pzc.10.1693686038787;
-        Sat, 02 Sep 2023 13:20:38 -0700 (PDT)
-Received: from westworld (209-147-138-147.nat.asu.edu. [209.147.138.147])
-        by smtp.gmail.com with ESMTPSA id f21-20020a170902e99500b001bdd7579b5dsm4962874plb.240.2023.09.02.13.20.38
-        for <stable@vger.kernel.org>
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Sep 2023 13:20:38 -0700 (PDT)
-Date:   Sat, 2 Sep 2023 13:20:36 -0700
-From:   Kyle Zeng <zengyhkyle@gmail.com>
-To:     stable@vger.kernel.org
-Subject: [PATCH] configfs: fix a race in configfs_lookup()
-Message-ID: <ZPOZFHHA0abVmGx+@westworld>
+        with ESMTP id S234956AbjIBVIz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 17:08:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A7F81708
+        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 14:08:50 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C612AB80906
+        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 21:08:48 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39650C433C7;
+        Sat,  2 Sep 2023 21:08:47 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693688927;
+        bh=Tn6ITRKPIpTdyBBpv3uqkvIBRkCWh2m0qspb6RQ1Sj0=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T1956iph61WQxX4QTt8O8GisvN6eNaCoqxIStiEyhb3WjyPF9xJcRAxLQTx34EuFQ
+         wraSJd1i3B4iXpHk771Ejh8AYmZFcPB9FrvAfXWsBHt28RlIH5lcpzTSne0MsJ4dlW
+         JuPDP2SXEq/Genczv6YvRav2X/lkxxsPgL2oqZ3s=
+Date:   Sat, 2 Sep 2023 23:08:43 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Kyle Zeng <zengyhkyle@gmail.com>
+Cc:     stable@vger.kernel.org
+Subject: Re: [PATCH] configfs: fix a race in configfs_lookup()
+Message-ID: <2023090247-sneezing-latch-af81@gregkh>
+References: <ZPOZFHHA0abVmGx+@westworld>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <ZPOZFHHA0abVmGx+@westworld>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit c42dd069be8dfc9b2239a5c89e73bbd08ab35de0 upstream.
-Backporting the patch to stable-v5.10.y to avoid race condition between configfs_dir_lseek and
-configfs_lookup since they both operate ->s_childre and configfs_lookup
-forgets to obtain the lock.
-The patch deviates from the original patch because of code change.
-The idea is to hold the configfs_dirent_lock when traversing
-->s_children, which follows the core idea of the original patch.
+On Sat, Sep 02, 2023 at 01:20:36PM -0700, Kyle Zeng wrote:
+> commit c42dd069be8dfc9b2239a5c89e73bbd08ab35de0 upstream.
+> Backporting the patch to stable-v5.10.y to avoid race condition between configfs_dir_lseek and
+> configfs_lookup since they both operate ->s_childre and configfs_lookup
+> forgets to obtain the lock.
+> The patch deviates from the original patch because of code change.
+> The idea is to hold the configfs_dirent_lock when traversing
+> ->s_children, which follows the core idea of the original patch.
+> 
+> 
+> Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
+> ---
+>  fs/configfs/dir.c | 2 ++
+>  1 file changed, 2 insertions(+)
 
+You lost all the original signed-off-by lines of the original, AND you
+lost the authorship of the original commit.  And you didn't cc: anyone
+involved in the original patch, to get their review, or objection to it
+being backported.
 
-Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
----
- fs/configfs/dir.c | 2 ++
- 1 file changed, 2 insertions(+)
+Take a look at many of the backports that happen on the stable list for
+examples of how to do this properly.
 
-diff --git a/fs/configfs/dir.c b/fs/configfs/dir.c
-index 12388ed4faa5..0b7e9ab517d5 100644
---- a/fs/configfs/dir.c
-+++ b/fs/configfs/dir.c
-@@ -479,6 +479,7 @@ static struct dentry * configfs_lookup(struct inode *dir,
- 	if (!configfs_dirent_is_ready(parent_sd))
- 		goto out;
- 
-+	spin_lock(&configfs_dirent_lock);
- 	list_for_each_entry(sd, &parent_sd->s_children, s_sibling) {
- 		if (sd->s_type & CONFIGFS_NOT_PINNED) {
- 			const unsigned char * name = configfs_get_name(sd);
-@@ -491,6 +492,7 @@ static struct dentry * configfs_lookup(struct inode *dir,
- 			break;
- 		}
- 	}
-+	spin_unlock(&configfs_dirent_lock);
- 
- 	if (!found) {
- 		/*
--- 
-2.34.1
+Here are 2 examples from this weekend alone that are good examples of
+how to do this properly:
+	https://lore.kernel.org/r/20230902151000.3817-1-konishi.ryusuke@gmail.com
+	https://lore.kernel.org/r/cover.1693593288.git.luizcap@amazon.com
 
+Also, how did you test this change?  is this something that you have
+actually hit in real life?
+
+thanks,
+
+greg k-h
