@@ -2,96 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 200997904F7
-	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 06:21:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2870B79050B
+	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 06:44:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242096AbjIBEVC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 2 Sep 2023 00:21:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49980 "EHLO
+        id S1351488AbjIBEoW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 2 Sep 2023 00:44:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51150 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241797AbjIBEVC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 00:21:02 -0400
-Received: from mail-io1-xd34.google.com (mail-io1-xd34.google.com [IPv6:2607:f8b0:4864:20::d34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7941E1704;
-        Fri,  1 Sep 2023 21:20:59 -0700 (PDT)
-Received: by mail-io1-xd34.google.com with SMTP id ca18e2360f4ac-792975085b2so98914739f.1;
-        Fri, 01 Sep 2023 21:20:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693628459; x=1694233259; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7hEjY9vj5E7uMkH5SH9VhgI6wy3KF5lzRxFg6Q1w1GA=;
-        b=cslQOB2exznmbXSnyjbBtL1t07fK3jOINg2CgIb5yeH6/WUZqjF6yTL/HLORb99xhg
-         TOA32o8mMQQOHyShnL55UUYQo21hG0VSFh1HaKMLMNNtkOGeyZaJQtT34gtCFaATqZQr
-         2krs2W9udXHwYVoIa/doUiem6lV0gjaGzFmOW5QksPtU47tgf9SBRCBTAUG+8lJXW3YU
-         407YuHmleg/2E8GrA5ikvJi6S8L/RWiXOw6PBq3XKmDUNo/0c6rI58yLTl1oPSZP3xBr
-         BXA7Ar4kbKZlDhRqqQVXRw65vyLe4i0Tsokx5gS7UJXWOJ1cvlLonVYnhhFIOJH14cpU
-         DR2w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693628459; x=1694233259;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=7hEjY9vj5E7uMkH5SH9VhgI6wy3KF5lzRxFg6Q1w1GA=;
-        b=J7Gd+HYgoLqqZ5IIbtPEicsnCUmxx1EQnJPlDZH+B1Tv2Ih7VIUKWRZKQi/ZC2xi6J
-         blog7+MZzcRM9X5owSn47O17L0zBF/F+586JJea+Dz0YUr4N18UEaPLUsx1eP6XDxO/j
-         3HB7muYo6yKgALuXPH1BXQtjNczdIQrzkaB2Kf386xPvXd6pDpDAbylP+soXntiE2ze4
-         wnh8En6zmnT1Oph/qUMDpYXeq8ouooOkdy4vQlt9n9b0k3aZMlei/bFMIJcPWN2rO73j
-         kQB6kLKdMTwa4/XkuRztl/4YIlfC5wLpTiGJ7HJFqlOPaVwIyZP+duoPXw6EjzzJKXex
-         mbeg==
-X-Gm-Message-State: AOJu0Yz/dJFcCYFH184JFKwy/W+jToNZbO/DWa73ETxIYk6kmj7FqV8l
-        l/iiVVwCKK9cyS205nIWVvw=
-X-Google-Smtp-Source: AGHT+IH74zWwDIm0Q2OgSJlKWeZM4fba5zvlPeF5Ox1th7OCd0uzHDYgWyALsE45xB3K4A58kKybjg==
-X-Received: by 2002:a6b:7b09:0:b0:795:1c0b:d31c with SMTP id l9-20020a6b7b09000000b007951c0bd31cmr4657585iop.21.1693628458873;
-        Fri, 01 Sep 2023 21:20:58 -0700 (PDT)
-Received: from server.roeck-us.net ([2600:1700:e321:62f0:329c:23ff:fee3:9d7c])
-        by smtp.gmail.com with ESMTPSA id y8-20020a5d9b08000000b00786fe5039b8sm1556644ion.46.2023.09.01.21.20.58
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 01 Sep 2023 21:20:58 -0700 (PDT)
-Sender: Guenter Roeck <groeck7@gmail.com>
-Date:   Fri, 1 Sep 2023 21:20:57 -0700
-From:   Guenter Roeck <linux@roeck-us.net>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 5.15 0/9] 5.15.130-rc1 review
-Message-ID: <1fefc96c-08b0-4ccd-9167-d5d7d4b77f9f@roeck-us.net>
-References: <20230831110830.039135096@linuxfoundation.org>
+        with ESMTP id S1351477AbjIBEoV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 00:44:21 -0400
+Received: from zeniv.linux.org.uk (zeniv.linux.org.uk [IPv6:2a03:a000:7:0:5054:ff:fe1c:15ff])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41E0C10F8;
+        Fri,  1 Sep 2023 21:44:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=linux.org.uk; s=zeniv-20220401; h=Sender:In-Reply-To:Content-Type:
+        MIME-Version:References:Message-ID:Subject:Cc:To:From:Date:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=jZEmoopfjFAadS37fL5Ohwd3FkpsxLZbrexmwjaT+jI=; b=T+Ak+8mknlf10plUIf8cqsZHYT
+        Hg/jAlgEkRr5Sz7ydWcfTVC1vmPXaNFtla9tmSsHcPbSnJ9Jw6nfEzIwSfj05ridaggvrDJvMPZ/r
+        Qrk1HiNzp+/cOUnUIk1RjKU0Do84Os+H7z4LvGUSIY9O+7QNZgDO1jSBN8ffJ7wgaCEPWw1hMCDae
+        btCN/lhV1hmg9QJjiXwQZE+9gDRViUuWHPodrOlFX1kXdtL2GkyQNuETbziCmksUXyHEBJqtE7FGh
+        mGQ1eU0yZvqgxdyX1TNZEG9PqTcK4uE7jsPLgaigyR4qKzzWgL3oPLVjr5mctPGk/3nEln0guwAel
+        QiB7hSkw==;
+Received: from viro by zeniv.linux.org.uk with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qcIUV-002kR1-1A;
+        Sat, 02 Sep 2023 04:44:11 +0000
+Date:   Sat, 2 Sep 2023 05:44:11 +0100
+From:   Al Viro <viro@zeniv.linux.org.uk>
+To:     Linus Torvalds <torvalds@linux-foundation.org>
+Cc:     Christian Brauner <brauner@kernel.org>,
+        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Aleksa Sarai <cyphar@cyphar.com>,
+        Seth Forshee <sforshee@kernel.org>,
+        linux-fsdevel@vger.kernel.org, stable@vger.kernel.org
+Subject: Re: [PATCH] file: always lock position
+Message-ID: <20230902044411.GI3390869@ZenIV>
+References: <20230724-vfs-fdget_pos-v1-1-a4abfd7103f3@kernel.org>
+ <CAHk-=whfJhag+iEscftpVq=dHTeL7rQopCvH+Pcs8vJHCGNvXQ@mail.gmail.com>
+ <20230724-scheren-absegnen-8c807c760ba1@brauner>
+ <CAHk-=whwUTsixPwyBiuA25F2mAzARTU_-BijfmJ3MzkKLOYDmA@mail.gmail.com>
+ <CAHk-=whtPzpL1D-VMHU9M6jbwSqFuXsc5u_6ePanVkBCNAYjMQ@mail.gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230831110830.039135096@linuxfoundation.org>
-X-Spam-Status: No, score=-1.2 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+In-Reply-To: <CAHk-=whtPzpL1D-VMHU9M6jbwSqFuXsc5u_6ePanVkBCNAYjMQ@mail.gmail.com>
+Sender: Al Viro <viro@ftp.linux.org.uk>
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Aug 31, 2023 at 01:10:08PM +0200, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.130 release.
-> There are 9 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
+On Mon, Jul 24, 2023 at 09:51:05AM -0700, Linus Torvalds wrote:
+> On Mon, 24 Jul 2023 at 09:36, Linus Torvalds
+> <torvalds@linux-foundation.org> wrote:
+> >
+> > There are magic rules with "total_refs == inflight_refs", and that
+> > total_refs thing is very much the file count, ie
+> >
+> >                 total_refs = file_count(u->sk.sk_socket->file);
+> >
+> > where we had some nasty bugs with files coming back to life.
 > 
-> Responses should be made by Sat, 02 Sep 2023 11:08:22 +0000.
-> Anything received after that time might be too late.
+> Ok, I don't think this is an issue here. It really is that "only
+> in-flight refs remaining" that is a special case, and even
+> pidfd_getfd() shouldn't be able to change that.
 > 
+> But the magic code is all in fget_task(), and those need to be checked.
+> 
+> You can see how proc does things properly: it does do "fget_task()",
+> but then it only uses it to copy the path part, and just does fput()
+> afterwards.
+> 
+> The bpf code does something like that too, and seems ok (ie it gets
+> the file in order to copy data from it, not to install it).
 
-Build results:
-	total: 155 pass: 155 fail: 0
-Qemu test results:
-	total: 501 pass: 501 fail: 0
+Aside of fget_task() use, it has this:
+        rcu_read_lock();
+        for (;; curr_fd++) {
+                struct file *f;
+                f = task_lookup_next_fd_rcu(curr_task, &curr_fd);
+                if (!f)
+                        break;
+                if (!get_file_rcu(f))
+                        continue;
 
-Tested-by: Guenter Roeck <linux@roeck-us.net>
+                /* set info->fd */
+                info->fd = curr_fd;
+                rcu_read_unlock();
+                return f;
+        }
 
-Guenter
+curr_task is not cached current here - it can be an arbitrary thread.
+And what we do to the file reference we get here is
+
+        ctx.meta = &meta;
+        ctx.task = info->task;
+        ctx.fd = info->fd;
+        ctx.file = file;
+        return bpf_iter_run_prog(prog, &ctx);
+
+I think it can't be used to shove it into any descriptor table, but
+then there's forming an SCM_RIGHTS datagram and sending it, etc. -
+it might be worth looking into.
