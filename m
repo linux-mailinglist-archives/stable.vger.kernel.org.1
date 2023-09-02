@@ -2,301 +2,104 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 209FB790737
-	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 12:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E0AC479074D
+	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 12:22:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351954AbjIBKEa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 2 Sep 2023 06:04:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50634 "EHLO
+        id S1351966AbjIBKWm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 2 Sep 2023 06:22:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36240 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234809AbjIBKE3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 06:04:29 -0400
-Received: from mail-pg1-x531.google.com (mail-pg1-x531.google.com [IPv6:2607:f8b0:4864:20::531])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A1BA10F0
-        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 03:04:24 -0700 (PDT)
-Received: by mail-pg1-x531.google.com with SMTP id 41be03b00d2f7-565e395e7a6so1628538a12.0
-        for <stable@vger.kernel.org>; Sat, 02 Sep 2023 03:04:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1693649064; x=1694253864; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=KMQHyfaBtvNv68giCwIqCtMaPuI4TD9BaJS9mhZRHzQ=;
-        b=MY8ExCidrIV+Jl/vMKxD+XhwAgUIepHvpRVVnCciMDPeglitG5gRB9CkBgiQ2NJmTF
-         yxbdAztCpPzKxVxNUFCnjpmNGEf58t9ylUB2f1MMZyaM1TkYY9ECFUgieh4dVaWiCxtS
-         /aVGI84/jnA+Fj/50PVoMckntWGEKjG4u6+7n++4Vahm6WTWBOB92L+2lvz0mBZT3LSo
-         ZFgASYLxegT2LCoB30KKgTiSksh/no4i026v5ps7ijV/B6fvAN/9g0F0yCNWzUhUjeSK
-         EYn6XYmN6m9Xr+t15sAybmHpKmcSSYRN1ATRlGNiz1+vx4K7KQTNZx1AVhdIh7ZOFCUh
-         6eSw==
+        with ESMTP id S234809AbjIBKWm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 06:22:42 -0400
+Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2CF8F10FA
+        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 03:22:39 -0700 (PDT)
+Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-401b5516104so26800025e9.2
+        for <stable@vger.kernel.org>; Sat, 02 Sep 2023 03:22:39 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693649064; x=1694253864;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1693650157; x=1694254957;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=KMQHyfaBtvNv68giCwIqCtMaPuI4TD9BaJS9mhZRHzQ=;
-        b=fAeYSqnOeyJbXW4ik3go9obyjdxlHrAVqg3/5zltYf78YpKQdSfvu/eOdYI30u+9BS
-         xrb0IrkeZEwQ91GCoGRUAUqduzcEwLuQ31WqFfaPkRzx7E10pHvhbVWTZRJelzGStcke
-         +K4ObaZM3yXh1RRc9pTWWMVZ/R79v9KjtHDpnI4xgf19B7VEf5ODrtN5Jpps628dnvaJ
-         rHRFFC+JD1l45Nnja8IAYa3W3886Rja6MRXRftC0yROCktiC2DH9oB2/NJvFm7RQsX1m
-         tSQwS6P+ncR8NLNjRboaCDOOQQWSELjh3wVuoWJVxBKmHJJ7mPqaBOf7KWIbGkcB8LEv
-         IKNQ==
-X-Gm-Message-State: AOJu0YxKXKpNaq/ZFTCglk5/kRIFa6eB6AwiEOg87cW6TA9aUXzQgAHe
-        5ue66fWk6tXBeZuJF9GMNqy0ql0fJDGcMpA7GZM=
-X-Google-Smtp-Source: AGHT+IHAkU5IB+TNrm3zIqdoisX8F5EywYwPtgwUS8P+hI43mU8Bb4d88LI795dOi2mM57sL93w1cg==
-X-Received: by 2002:a17:90a:e57:b0:26b:29b4:bfbb with SMTP id p23-20020a17090a0e5700b0026b29b4bfbbmr3796163pja.30.1693649063595;
-        Sat, 02 Sep 2023 03:04:23 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id p12-20020a170902eacc00b001bf095dfb79sm4333537pld.235.2023.09.02.03.04.22
+        bh=AvgTrek8o6c39JOMk/it1QOlaUNhXa2qIFx7TRqmowA=;
+        b=La8a9Qc7egMDy6PBum1cPpG64m3QCI5uX7VzsGyNPCjBZX7kjUjCY47LMNiJYAtkjh
+         HJ1Kdi65xR6EP0C1o0PqHlnJZ7vJMWXWGDRvdPrB2PMDb4PfsjWEVgNlshjjLkWjO/O8
+         fa/OD2PdGSBwOQNIfq4Duz6tkw4PnTrz/RNgL1zCaje421HIU6F9aa0P1jgKOh6WKnE9
+         n7X59FQPaDCDIpT3JToXKmWknpquVkSrmTD4DezQDpuVTVsiOLc5k7sT/J1366QI4wsK
+         XpzmOAljx7DhnOtejuEm9yD9YIChcjzNaKkynBzcXTyhQ3bJuf9UwhzmkfHoJ2I8pCc2
+         0Yjw==
+X-Gm-Message-State: AOJu0Yx0AhlDbF6akaYqge6EncXKbVzEjik3GyxK8y7s/Rh8nszL1gm5
+        nQdRrPfmlUOHFfWxfg+5Lg/7OAL/hOZRtg==
+X-Google-Smtp-Source: AGHT+IHX0yFeJcCilwoYtLdIUOroxaO4DLwZIhMKKXDxp9fyCLXloAJCbckOYv+Ixga8Np43RPEBUQ==
+X-Received: by 2002:a05:600c:243:b0:401:4542:5ed8 with SMTP id 3-20020a05600c024300b0040145425ed8mr3788724wmj.0.1693650157157;
+        Sat, 02 Sep 2023 03:22:37 -0700 (PDT)
+Received: from white.. ([94.204.198.68])
+        by smtp.googlemail.com with ESMTPSA id n18-20020a1c7212000000b003fefaf299b6sm7437513wmc.38.2023.09.02.03.22.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sat, 02 Sep 2023 03:04:22 -0700 (PDT)
-Message-ID: <64f308a6.170a0220.b8f62.8f5d@mx.google.com>
-Date:   Sat, 02 Sep 2023 03:04:22 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        Sat, 02 Sep 2023 03:22:36 -0700 (PDT)
+From:   "Denis Efremov (Oracle)" <efremov@linux.com>
+To:     stable@vger.kernel.org
+Cc:     Zheng Wang <zyytlz.wz@163.com>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Denis Efremov <efremov@linux.com>
+Subject: [PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
+Date:   Sat,  2 Sep 2023 14:21:56 +0400
+Message-ID: <20230902102200.24474-1-efremov@linux.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.4.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.4.256
-Subject: stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed,
- 26 warnings (v5.4.256)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.4.y build: 17 builds: 0 failed, 17 passed, 26 warnings (v=
-5.4.256)
+From: Zheng Wang <zyytlz.wz@163.com>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.4.y=
-/kernel/v5.4.256/
+[ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
 
-Tree: stable-rc
-Branch: linux-5.4.y
-Git Describe: v5.4.256
-Git Commit: 0c2544add9fc25c0e54a2167d6a2cfd2e696cf58
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+In btsdio_probe, the data->work is bound with btsdio_work. It will be
+started in btsdio_send_frame.
 
-Warnings Detected:
+If the btsdio_remove runs with a unfinished work, there may be a race
+condition that hdev is freed but used in btsdio_work. Fix it by
+canceling the work before do cleanup in btsdio_remove.
 
-arc:
-
-arm64:
-    defconfig (gcc-10): 2 warnings
-    defconfig+arm64-chromebook (gcc-10): 2 warnings
-
-arm:
-
-i386:
-    allnoconfig (gcc-10): 2 warnings
-    i386_defconfig (gcc-10): 2 warnings
-    tinyconfig (gcc-10): 2 warnings
-
-mips:
-
-riscv:
-
-x86_64:
-    allnoconfig (gcc-10): 4 warnings
-    tinyconfig (gcc-10): 4 warnings
-    x86_64_defconfig (gcc-10): 4 warnings
-    x86_64_defconfig+x86-chromebook (gcc-10): 4 warnings
-
-
-Warnings summary:
-
-    7    ld: warning: creating DT_TEXTREL in a PIE
-    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
-d-only section `.head.text'
-    4    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer=
- to integer of different size [-Wpointer-to-int-cast]
-    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
-d-only section `.head.text'
-    2    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpolin=
-e, please patch it in with alternatives and annotate it with ANNOTATE_NOSPE=
-C_ALTERNATIVE.
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: un=
-supported intra-function call
-    2    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic s=
-uffix given and no register operands; using default for `sysret'
-
-Section mismatches summary:
-
-    1    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section =
-mismatch in reference from the variable __ksymtab_vic_init_cascaded to the =
-function .init.text:vic_init_cascaded()
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sec=
-tion mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sectio=
-n mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
-mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warn=
-ings, 0 section mismatches
-
-Warnings:
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-    arch/arm64/include/asm/memory.h:238:15: warning: cast from pointer to i=
-nteger of different size [-Wpointer-to-int-cast]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 secti=
-on mismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
-Section mismatches:
-    WARNING: vmlinux.o(___ksymtab_gpl+vic_init_cascaded+0x0): Section misma=
-tch in reference from the variable __ksymtab_vic_init_cascaded to the funct=
-ion .init.text:vic_init_cascaded()
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
-ismatches
-
-Warnings:
-    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 section=
- mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.S:1756: Warning: no instruction mnemonic suffix=
- given and no register operands; using default for `sysret'
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x151: unsuppo=
-rted intra-function call
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 s=
-ection mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-4 warnings, 0 section mismatches
-
-Warnings:
-    arch/x86/entry/entry_64.o: warning: objtool: .entry.text+0x1c1: unsuppo=
-rted intra-function call
-    arch/x86/entry/entry_64.o: warning: objtool: If this is a retpoline, pl=
-ease patch it in with alternatives and annotate it with ANNOTATE_NOSPEC_ALT=
-ERNATIVE.
-    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
-y section `.head.text'
-    ld: warning: creating DT_TEXTREL in a PIE
-
+Fixes: CVE-2023-1989
+Fixes: ddbaf13e3609 ("[Bluetooth] Add generic driver for Bluetooth SDIO devices")
+Cc: stable@vger.kernel.org
+Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+[ Denis: Added CVE-2023-1989 and fixes tags. ]
+Signed-off-by: Denis Efremov (Oracle) <efremov@linux.com>
 ---
-For more info write to <info@kernelci.org>
+
+CVE-2023-1989 is 1e9ac114c4428fdb7ff4635b45d4f46017e8916f.
+However, the fix was reverted and replaced with 73f7b171b7.
+In stable branches we've got only the original fix and its
+revert. I'm sending the replacement fix. One can find a
+reference to the new fix 73f7b171b7 in the revert commit
+db2bf510bd5d.
+
+ drivers/bluetooth/btsdio.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
+index 795be33f2892..f19d31ee37ea 100644
+--- a/drivers/bluetooth/btsdio.c
++++ b/drivers/bluetooth/btsdio.c
+@@ -357,6 +357,7 @@ static void btsdio_remove(struct sdio_func *func)
+ 	if (!data)
+ 		return;
+ 
++	cancel_work_sync(&data->work);
+ 	hdev = data->hdev;
+ 
+ 	sdio_set_drvdata(func, NULL);
+-- 
+2.42.0
+
