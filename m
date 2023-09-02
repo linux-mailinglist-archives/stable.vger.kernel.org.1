@@ -2,84 +2,83 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32B96790A3B
-	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 00:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9D51F790A3F
+	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 01:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235157AbjIBW66 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 2 Sep 2023 18:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57926 "EHLO
+        id S235198AbjIBXHK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 2 Sep 2023 19:07:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59556 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230444AbjIBW65 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 18:58:57 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD66ACF6;
-        Sat,  2 Sep 2023 15:58:54 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 861BCB808BB;
-        Sat,  2 Sep 2023 22:58:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD5DBC433C7;
-        Sat,  2 Sep 2023 22:58:51 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1693695532;
-        bh=Pc7GpWIHklekXAoIIEgvXTBTXk0POLNq+rx6i3iVkpk=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=uWkk4/925oGsoUT/g2nfGusbL8Se07i/a4cb8oypyPMgWKTz1VKBLf34/LqJCxEM2
-         eQf44uz/MUwsaZPVMCDL3/y/oCeZePc/HgtNCGU8tQlQQEt2fWNZ3jdhQQSueCyhV/
-         VL+4t/bm5/BaCWpPLvOwKFrMUeTkTvA3O85omhwg=
-Date:   Sat, 2 Sep 2023 15:58:50 -0700
-From:   Andrew Morton <akpm@linux-foundation.org>
-To:     Damian Tometzki <dtometzki@fedoraproject.org>
-Cc:     Aleksa Sarai <cyphar@cyphar.com>, Shuah Khan <shuah@kernel.org>,
-        Jeff Xu <jeffxu@google.com>, Kees Cook <keescook@chromium.org>,
-        Daniel Verkamp <dverkamp@chromium.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        stable@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] memfd: improve userspace warnings for missing
- exec-related flags
-Message-Id: <20230902155850.ca1d32c16862cbe54ebd36ef@linux-foundation.org>
-In-Reply-To: <ZPFzCSIgZ4QuHsSC@fedora.fritz.box>
-References: <20230814-memfd-vm-noexec-uapi-fixes-v2-0-7ff9e3e10ba6@cyphar.com>
-        <20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com>
-        <ZPFzCSIgZ4QuHsSC@fedora.fritz.box>
-X-Mailer: Sylpheed 3.8.0beta1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
-Mime-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
+        with ESMTP id S229571AbjIBXHJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 19:07:09 -0400
+X-Greylist: delayed 173 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sat, 02 Sep 2023 16:07:06 PDT
+Received: from cmx-mtlrgo001.bell.net (mta-mtl-005.bell.net [209.71.208.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8887CFE
+        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 16:07:06 -0700 (PDT)
+X-RG-CM-BuS: 0
+X-RG-CM-SC: 0
+X-RG-CM: Clean
+X-Originating-IP: [142.198.135.111]
+X-RG-Env-Sender: dave.anglin@bell.net
+X-RG-Rigid: 64C3528203335C88
+X-CM-Envelope: MS4xfCZV9U/yPgj7+HROGzGHBlXsIEzaEWiNhhVFpnpBSAz36lUysIlGYAK827DlBqvrkWyMXamUYceL0m2BvmQzZS9w3At3H8iwbXr+QHJUXx7bo5iXHXCC
+ Hv+gZgEB/5R12RMf3MrYbx7Ow6sGmgghsp7rSwDqsKxyN45TvgNhJ90xMhl7vKvkYUh9cJTzY177y3J4x+5oWtwF/zL2bn293728lcqmTVaGu8gPf0/DNtKG
+ fsPd2jg8Y7Qdl5c28sRpQNigD0a/LuFZ9U6I5BXLvnzN75OqKm4HB7RucklibJyE85qax8f/emdGElJfGJxo4oqtIxLDX7yVxbQMOczw9hMTROMFaYqqDXvU
+ P7zAuPzB+m7Om5IRBJg9j2eKI6yvSXOWBsFiOxf6N8SOHn4aaNigb/2pwVilxXFs9CH1phpMPtdiszsr/lcQbQ/u2fArsIFzUDkTbOvh7toxpqHQyNs=
+X-CM-Analysis: v=2.4 cv=W7Nb6Tak c=1 sm=1 tr=0 ts=64f3bf69
+ a=m0hBPjpnfWKpZW+YOe+Hqw==:117 a=m0hBPjpnfWKpZW+YOe+Hqw==:17
+ a=IkcTkHD0fZMA:10 a=FBHGMhGWAAAA:8 a=ZjPAgu6vkrefqVqYoh8A:9 a=QEXdDO2ut3YA:10
+ a=9gvnlMMaQFpL9xblJ6ne:22
+Received: from [192.168.2.49] (142.198.135.111) by cmx-mtlrgo001.bell.net (5.8.814) (authenticated as dave.anglin@bell.net)
+        id 64C3528203335C88; Sat, 2 Sep 2023 19:04:09 -0400
+Message-ID: <8f6006a7-1819-a2fb-e928-7f26ba7df6ec@bell.net>
+Date:   Sat, 2 Sep 2023 19:04:10 -0400
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [STABLE] stable backport request for 6.1 for io_uring
+Content-Language: en-US
+To:     Jens Axboe <axboe@kernel.dk>, Helge Deller <deller@gmx.de>,
+        stable@vger.kernel.org,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>, linux-parisc@vger.kernel.org
+Cc:     Vidra.Jonas@seznam.cz, Sam James <sam@gentoo.org>
+References: <ZO0X64s72JpFJnRM@p100>
+ <5aa6799a-d577-4485-88e0-545f6459c74e@kernel.dk>
+From:   John David Anglin <dave.anglin@bell.net>
+In-Reply-To: <5aa6799a-d577-4485-88e0-545f6459c74e@kernel.dk>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-4.1 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_LOW,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, 1 Sep 2023 07:13:45 +0200 Damian Tometzki <dtometzki@fedoraproject.org> wrote:
+On 2023-08-30 12:17 p.m., Jens Axboe wrote:
+> On 8/28/23 3:55 PM, Helge Deller wrote:
+>> Hello Greg, Hello Jens, Hello stable team,
+>>
+>> would you please accept some backports to v6.1-stable for io_uring()?
+>> io_uring() fails on parisc because of some missing upstream patches.
+>> Since 6.1 is currently used in debian and gentoo as main kernel we
+>> face some build errors due to the missing patches.
+> Fine with me.
+This is probably not a problem with the backport but I see this fail in liburing tests:
 
-> >  	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
-> > -		pr_warn_once(
-> > +		pr_info_ratelimited(
-> >  			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set\n",
-> >  			current->comm, task_pid_nr(current));
-> >  	}
-> > 
-> > -- 
-> > 2.41.0
-> >
-> Hello Sarai,
-> 
-> i got a lot of messages in dmesg with this. DMESG is unuseable with
-> this. 
-> [ 1390.349462] __do_sys_memfd_create: 5 callbacks suppressed
-> [ 1390.349468] pipewire-pulse[2930]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
-> [ 1390.350106] pipewire[2712]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set
+Running test wq-aff.t open: No such file or directory
+test sqpoll failed
+Test wq-aff.t failed with ret 1
+Running test xattr.t 0 sec [0]
+Running test statx.t 0 sec [0]
+Running test sq-full-cpp.t 0 sec [0]
+Tests failed (1): <wq-aff.t>
 
-OK, thanks, I'll revert this.  Spamming everyone even harder isn't a
-good way to get developers to fix their stuff.
+Dave
+
+-- 
+John David Anglin  dave.anglin@bell.net
 
