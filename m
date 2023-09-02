@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 11AB479064B
-	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 10:38:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 718F779064C
+	for <lists+stable@lfdr.de>; Sat,  2 Sep 2023 10:38:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351836AbjIBIip (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 2 Sep 2023 04:38:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40118 "EHLO
+        id S1351838AbjIBIiu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 2 Sep 2023 04:38:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239611AbjIBIip (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 04:38:45 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5443710F4
-        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 01:38:42 -0700 (PDT)
+        with ESMTP id S239611AbjIBIiu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 2 Sep 2023 04:38:50 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E8A910F5
+        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 01:38:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id D9B4360C2E
-        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 08:38:41 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1008C433C7;
-        Sat,  2 Sep 2023 08:38:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 66E37B8275D
+        for <stable@vger.kernel.org>; Sat,  2 Sep 2023 08:38:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B33C1C433C7;
+        Sat,  2 Sep 2023 08:38:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693643921;
-        bh=ILac3GMhiIso2/NE4rmDaERSgUfwwV1CuPFMNrsUong=;
+        s=korg; t=1693643924;
+        bh=QZyspqrze5X5GF9hFBz5Pky01OXqG5HocW+LDAsXpWo=;
         h=Subject:To:Cc:From:Date:From;
-        b=kCHhGAOqeM7dS4dAaFjRDcbLCOy+R8r7eypp40UnNVnHDteuJqG+ldkfZ+4+zZ/hi
-         JgG+DD8l7fkk35CJ1Xg2rl5aec6z/vdH5lux4Mn723VnjJqtQsixzJH6zWxpAQ/YEN
-         32ZcJpXfRZRG/QLnTr9bK3NmL+59Qwrgyv41cu64=
-Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix init call orders for UAC1" failed to apply to 5.10-stable tree
+        b=ezhddbllhf5DBimcPkc1g+H1qWDeG4K8qS9wA5DRE9B3h3k58brWpGSX74DaKkpNy
+         rqv0XBP5TV1RaLcDxvoG0v/bc22l/ojeO1aKZMm4TjG2ytMtJi6IWioRRXlNwMO8a4
+         aMvCbCH52Gp/xG1XTfW+QHKAj8YiiX8SL9D9R2wI=
+Subject: FAILED: patch "[PATCH] ALSA: usb-audio: Fix init call orders for UAC1" failed to apply to 5.4-stable tree
 To:     tiwai@suse.de, joakim.tjernlund@infinera.com,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 02 Sep 2023 10:38:38 +0200
-Message-ID: <2023090238-unmatched-revival-80f8@gregkh>
+Date:   Sat, 02 Sep 2023 10:38:40 +0200
+Message-ID: <2023090239-backfield-economist-e789@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5fadc941d07530d681f3b7ec91e56d8445bc3825
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090238-unmatched-revival-80f8@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090239-backfield-economist-e789@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
