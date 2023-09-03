@@ -2,118 +2,86 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DF83790D40
-	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 19:29:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41877790D65
+	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 20:04:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231607AbjICR3X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 3 Sep 2023 13:29:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33204 "EHLO
+        id S245314AbjICSE3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 3 Sep 2023 14:04:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345820AbjICR3V (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 13:29:21 -0400
-Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 129BCF9
-        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 10:29:04 -0700 (PDT)
+        with ESMTP id S229665AbjICSE3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 14:04:29 -0400
+Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12FB1DF;
+        Sun,  3 Sep 2023 11:04:26 -0700 (PDT)
+Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bf55a81eeaso1617235ad.0;
+        Sun, 03 Sep 2023 11:04:26 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-  d=amazon.com; i=@amazon.com; q=dns/txt; s=amazon201209;
-  t=1693762145; x=1725298145;
-  h=message-id:date:mime-version:subject:to:cc:references:
-   from:in-reply-to:content-transfer-encoding;
-  bh=T9oPe7Oz1dqEpZGMgetHt+XPQ8QmWPBXIaXoqOeHKmM=;
-  b=pP3Kw+P8VQSMR5F0NqbVd9oCEg5IuxIc2mzEgpL2qualzZQYr5B0MkzF
-   WcQy39/1ss+pYpVKx7s1jjjcC8zHLeDfE6qNsED0yUzAr7GKEa3jjimjK
-   PSnCez58c62oQEe2DBWIfbRlnoWlqCFsVW8g7Mk5wyNIePu6h5cqkMAvJ
-   M=;
-X-IronPort-AV: E=Sophos;i="6.02,225,1688428800"; 
-   d="scan'208";a="670128187"
-Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1e-m6i4x-7dc0ecf1.us-east-1.amazon.com) ([10.25.36.210])
-  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 03 Sep 2023 17:28:59 +0000
-Received: from EX19MTAUEC002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan2.iad.amazon.com [10.40.163.34])
-        by email-inbound-relay-iad-1e-m6i4x-7dc0ecf1.us-east-1.amazon.com (Postfix) with ESMTPS id 0626480750;
-        Sun,  3 Sep 2023 17:28:56 +0000 (UTC)
-Received: from EX19D028UEC003.ant.amazon.com (10.252.137.159) by
- EX19MTAUEC002.ant.amazon.com (10.252.135.253) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Sun, 3 Sep 2023 17:28:44 +0000
-Received: from [192.168.199.102] (10.252.141.22) by
- EX19D028UEC003.ant.amazon.com (10.252.137.159) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.37; Sun, 3 Sep 2023 17:28:42 +0000
-Message-ID: <018ce439-26b3-eab0-27b7-db6a33a4fa15@amazon.com>
-Date:   Sun, 3 Sep 2023 13:28:33 -0400
+        d=gmail.com; s=20221208; t=1693764265; x=1694369065; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ee/3hlXRZIaJVPE2zhwt71URwtmHV6mucybKD81AfEg=;
+        b=kYaXKOtSgYYutr/3gkv0djwYshK+ECv9lkz2W4sp1Necp+rsYX4zoUHVClLzKVlK4+
+         S2oiV9Qxz7RvqGhibpVW+x8nXPyC8gmnHwnZ8JXIwEUuRhxEa7WIl/1IKqImJ8hegpXZ
+         N1zsuBEK7JAHesQyV5oh+36FCBR6iTRSIVwFK+C0eb9RfJIbr4U0E2/5jVOYb1yk8E1C
+         z36HaUwqJwHm3sByuK3+tw4QNvdLDZ6+eYi/gTJq7tEpWBtTeRgkeoWRosEDyExvY5Fj
+         eLfW8M0phpO/u7z9DGqfJYN0fvDpi5K24mRsUvZ0ovmTJr2V9u0+jekNVlAuEHwcu0KN
+         1sBg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693764265; x=1694369065;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ee/3hlXRZIaJVPE2zhwt71URwtmHV6mucybKD81AfEg=;
+        b=e6XynMqfwhcYsFRWCzdprjlEK/UhamNd99WQwgnvRZLGI8H8m1n12b/H7Gc04oBcue
+         qK3ZqKv1yLSfeBd6xmJWynY1rA+lHdEuK36EKF+7Wta/8tlsTuXLt5It650OeTkhV13m
+         xIW4kTEEyDzqKELaxztbZZIJT2w4Mu/4JaVJMVDxIxj58D6d0acxMN8YCmGaFg1mxqEn
+         0vjhc6ass0pc0prZa5+ZsCNQZFS6lqt+URCQ8Rx+tEXIcONGbJpkeL11AXzcImBAuRk7
+         hSlNVeZI0tqUrSX2C9OvYO718UPEyRDzaUEKIcBkdhqH9F6/OvCX90L7btMwju92spvs
+         OgBg==
+X-Gm-Message-State: AOJu0Yz1x+CkEBB4ieo9hdeH4dVUUMqYuS0m9G+4cfCcxxasY/HJzjVG
+        A7MzFsvfu2MEWDHq3vFeMp8=
+X-Google-Smtp-Source: AGHT+IG9fjM74F18bgzQQ3ahAdybvZ4+SffiFXWeHpZ0+rt8xktOOMAZ/ok779aWyfjxQwTU0WQeLQ==
+X-Received: by 2002:a17:902:f7cd:b0:1c0:8044:750b with SMTP id h13-20020a170902f7cd00b001c08044750bmr5903407plw.47.1693764265355;
+        Sun, 03 Sep 2023 11:04:25 -0700 (PDT)
+Received: from localhost.localdomain ([45.64.12.149])
+        by smtp.gmail.com with ESMTPSA id jf10-20020a170903268a00b001bbb25dd3a7sm6142712plb.187.2023.09.03.11.04.22
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 03 Sep 2023 11:04:24 -0700 (PDT)
+From:   Mighty <bavishimithil@gmail.com>
+To:     linus.walleij@linaro.org
+Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
+        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
+Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
+Date:   Sun,  3 Sep 2023 23:34:17 +0530
+Message-Id: <20230903180417.22-1-bavishimithil@gmail.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20220524075448.140238-1-linus.walleij@linaro.org>
+References: <20220524075448.140238-1-linus.walleij@linaro.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATH 6.1.y 0/2] Backport KVM's nx_huge_pages=never module
- parameter
-To:     Greg KH <gregkh@linuxfoundation.org>
-CC:     <stable@vger.kernel.org>, <seanjc@google.com>,
-        <christophe.jaillet@wanadoo.fr>, <lcapitulino@gmail.com>
-References: <cover.1693593288.git.luizcap@amazon.com>
- <2023090211-tainted-gonad-f78f@gregkh>
-Content-Language: en-US
-From:   Luiz Capitulino <luizcap@amazon.com>
-In-Reply-To: <2023090211-tainted-gonad-f78f@gregkh>
-Content-Type: text/plain; charset="UTF-8"; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Originating-IP: [10.252.141.22]
-X-ClientProxiedBy: EX19D043UWC001.ant.amazon.com (10.13.139.202) To
- EX19D028UEC003.ant.amazon.com (10.252.137.159)
-X-Spam-Status: No, score=-5.9 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_MED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Mon, Aug 28, 2023 at 11:48 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
+> 2) If the channel has a horrible non linear and none invertable conversion
+>    to standard units and events support the you might need PROCESSED to
+>    provide the useful value, but RAW to give you clue what the current value
+>    is for setting an event (light sensors are usual place we see this).
 
-On 2023-09-02 03:27, Greg KH wrote:
+In this very specific case yes, it is being used as a current sense shunt for a light+prox sensor (gp2ap002), so I do think that it might be case 2 instead of 3. But with no other devices using the twl6030/32 gpadc for any features it could also be due to it not being updated like case 3. Also the fact that the adc would break in cases when its not just a light sensor as well, we just dont have any such devices yet.
+I'm pretty lost at how the code handles RAW and PROCESSED anyways, cant seem to find a proper rescaler. Ideally BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE) should be there in it, but since SCALE isnt used anywhere in the driver it wouldnt break any functionality, but it would lose logic. We'd have to look into the working of the gpadc again to understand how the factors fit in there.
 
-> 
-> 
-> 
-> On Fri, Sep 01, 2023 at 06:34:51PM +0000, Luiz Capitulino wrote:
->> Hi,
->>
->> As part of the mitigation for the iTLB multihit vulnerability, KVM creates
->> a worker thread in KVM_CREATE_VM ioctl(). This thread calls
->> cgroup_attach_task_all() which takes cgroup_threadgroup_rwsem for writing
->> which may incur 100ms+ latency since upstream commit
->> 6a010a49b63ac8465851a79185d8deff966f8e1a.
->>
->> However, if the CPU is not vulnerable to iTLB multihit one could just
->> disable the mitigation (and the worker thread creation) with the
->> newly added KVM module parameter nx_huge_pages=never. This avoids the issue
->> altogether.
->>
->> While there's an alternative solution for this issue already supported
->> in 6.1-stable (ie. cgroup's favordynmods), disabling the mitigation in
->> KVM is probably preferable if the workload is not impacted by dynamic
->> cgroup operations since one doesn't need to decide between the trade-off
->> in using favordynmods, the thread creation code path is avoided at
->> KVM_CREATE_VM and you avoid creating a thread which does nothing.
->>
->> Tests performed:
->>
->> * Measured KVM_CREATE_VM latency and confirmed it goes down to less than 1ms
->> * We've been performing latency measurements internally w/ this parameter
->>    for some weeks now
-> 
-> What about the 6.4.y kernel for these changes?  Anyone moving from 6.1
-> to 6.4 will have a regression, right?
-> 
-> Or you can wait a week or so for 6.4.y to go end-of-life, your choice :)
+Regards,
+Mithil
 
-I can do this backport for 6.4.y if that's better for stable users. Will
-submit the patches next week.
-
-- Luiz
-
-> 
-> thanks,
-> 
-> greg k-h
