@@ -2,66 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41877790D65
-	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 20:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 763DE790F45
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 01:53:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245314AbjICSE3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 3 Sep 2023 14:04:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59996 "EHLO
+        id S229653AbjICXx4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 3 Sep 2023 19:53:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229665AbjICSE3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 14:04:29 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12FB1DF;
-        Sun,  3 Sep 2023 11:04:26 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bf55a81eeaso1617235ad.0;
-        Sun, 03 Sep 2023 11:04:26 -0700 (PDT)
+        with ESMTP id S241294AbjICXxz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 19:53:55 -0400
+Received: from mail-pf1-x430.google.com (mail-pf1-x430.google.com [IPv6:2607:f8b0:4864:20::430])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BAEF101;
+        Sun,  3 Sep 2023 16:53:52 -0700 (PDT)
+Received: by mail-pf1-x430.google.com with SMTP id d2e1a72fcca58-68a6f6a66e1so416772b3a.2;
+        Sun, 03 Sep 2023 16:53:52 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693764265; x=1694369065; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=ee/3hlXRZIaJVPE2zhwt71URwtmHV6mucybKD81AfEg=;
-        b=kYaXKOtSgYYutr/3gkv0djwYshK+ECv9lkz2W4sp1Necp+rsYX4zoUHVClLzKVlK4+
-         S2oiV9Qxz7RvqGhibpVW+x8nXPyC8gmnHwnZ8JXIwEUuRhxEa7WIl/1IKqImJ8hegpXZ
-         N1zsuBEK7JAHesQyV5oh+36FCBR6iTRSIVwFK+C0eb9RfJIbr4U0E2/5jVOYb1yk8E1C
-         z36HaUwqJwHm3sByuK3+tw4QNvdLDZ6+eYi/gTJq7tEpWBtTeRgkeoWRosEDyExvY5Fj
-         eLfW8M0phpO/u7z9DGqfJYN0fvDpi5K24mRsUvZ0ovmTJr2V9u0+jekNVlAuEHwcu0KN
-         1sBg==
+        d=gmail.com; s=20221208; t=1693785232; x=1694390032; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=En7shv5RznWiN618VRf5jIWIIiTRux7CMSCgdYT+gbc=;
+        b=r6EWGVZea04yj2y/tzmSb6fmz3pfuPVkMp4Dn0u1yZgpj6SbtbonAqUxLlSw5yaBU2
+         MqFZ+CwV5VyNwVwA4QPS7K0AbOJBjmrvCNG+fwioJOnTtzLh/81gkM/LIYLap7AIsTSW
+         CKMO2z22NForbnBJmrPDhNSG8qOxCLb4KjfOSsCUszW0KlRUSX2Ig6FNAdf/exd2Z+O0
+         FQNXgAUvKS6VJ8AHsohCmUIsDtqAM+rENz/S4pUYymcR4Sq6JbbngvRiY+bPSzvkGyFd
+         8a6nlcYd8wHQA6E9FCD4OmaOQNaZOP//LOpgoi+x6EdSRK0iddIX8WoZhF+hT4SoaCue
+         fIJQ==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693764265; x=1694369065;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=ee/3hlXRZIaJVPE2zhwt71URwtmHV6mucybKD81AfEg=;
-        b=e6XynMqfwhcYsFRWCzdprjlEK/UhamNd99WQwgnvRZLGI8H8m1n12b/H7Gc04oBcue
-         qK3ZqKv1yLSfeBd6xmJWynY1rA+lHdEuK36EKF+7Wta/8tlsTuXLt5It650OeTkhV13m
-         xIW4kTEEyDzqKELaxztbZZIJT2w4Mu/4JaVJMVDxIxj58D6d0acxMN8YCmGaFg1mxqEn
-         0vjhc6ass0pc0prZa5+ZsCNQZFS6lqt+URCQ8Rx+tEXIcONGbJpkeL11AXzcImBAuRk7
-         hSlNVeZI0tqUrSX2C9OvYO718UPEyRDzaUEKIcBkdhqH9F6/OvCX90L7btMwju92spvs
-         OgBg==
-X-Gm-Message-State: AOJu0Yz1x+CkEBB4ieo9hdeH4dVUUMqYuS0m9G+4cfCcxxasY/HJzjVG
-        A7MzFsvfu2MEWDHq3vFeMp8=
-X-Google-Smtp-Source: AGHT+IG9fjM74F18bgzQQ3ahAdybvZ4+SffiFXWeHpZ0+rt8xktOOMAZ/ok779aWyfjxQwTU0WQeLQ==
-X-Received: by 2002:a17:902:f7cd:b0:1c0:8044:750b with SMTP id h13-20020a170902f7cd00b001c08044750bmr5903407plw.47.1693764265355;
-        Sun, 03 Sep 2023 11:04:25 -0700 (PDT)
-Received: from localhost.localdomain ([45.64.12.149])
-        by smtp.gmail.com with ESMTPSA id jf10-20020a170903268a00b001bbb25dd3a7sm6142712plb.187.2023.09.03.11.04.22
+        d=1e100.net; s=20221208; t=1693785232; x=1694390032;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=En7shv5RznWiN618VRf5jIWIIiTRux7CMSCgdYT+gbc=;
+        b=PPL15fzgvOoEsB3RypBlh5vVmAJPTWQo0GAM70ugs0VJEHlX6rxaHARGMfJgMYxamV
+         J20cyPnfYboD3CoYhpHIr+xPwOZ2XEAjZOPHMOVdl3gpudc1Z7nDMQY7IVHOOJ+e5e7e
+         VmxTiCvdEOHhZBMEJNCXSvej64DNAPzp14XJd+eUBISZCJQ7Vpzycljoi2ALwDJ7coTV
+         HU/cjdttsYi2TZRbq00NQvBji4tnCvTlXxQHdWxIZNlOh9BojFD68a9H+DNnzuzRHxUj
+         aBPzeYwEV8gDHNpf9jMMKJO1kaiNdd97d2wZWpgcfaDV9jIkpqCTMeFrXb44QjfeLOat
+         R3KQ==
+X-Gm-Message-State: AOJu0YzZCA8jWTUWEhFN3KT4Fn/diMbx2Bx6qz1L1RwVpS7DO98DGLMb
+        ezwrAgKAZJWovNy9gVp7NYeCf2aBQPk=
+X-Google-Smtp-Source: AGHT+IGm6EYy4vOR7gv128qJdDcksmxif5Nj1+AHpsS8Qk2RNLwtKGxN0iXCvRxgSCg7w/ftCmn0gA==
+X-Received: by 2002:a05:6a00:c93:b0:68a:8552:c024 with SMTP id a19-20020a056a000c9300b0068a8552c024mr8343381pfv.7.1693785231720;
+        Sun, 03 Sep 2023 16:53:51 -0700 (PDT)
+Received: from debian.me ([103.124.138.83])
+        by smtp.gmail.com with ESMTPSA id v23-20020aa78097000000b0063f0068cf6csm6154011pff.198.2023.09.03.16.53.50
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Sun, 03 Sep 2023 11:04:24 -0700 (PDT)
-From:   Mighty <bavishimithil@gmail.com>
-To:     linus.walleij@linaro.org
-Cc:     jic23@kernel.org, lars@metafoo.de, liambeguin@gmail.com,
-        linux-iio@vger.kernel.org, peda@axentia.se, stable@vger.kernel.org
-Subject: Re: [PATCH] iio: afe: rescale: Fix logic bug
-Date:   Sun,  3 Sep 2023 23:34:17 +0530
-Message-Id: <20230903180417.22-1-bavishimithil@gmail.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20220524075448.140238-1-linus.walleij@linaro.org>
-References: <20220524075448.140238-1-linus.walleij@linaro.org>
+        Sun, 03 Sep 2023 16:53:51 -0700 (PDT)
+Received: by debian.me (Postfix, from userid 1000)
+        id 67D50808C6CC; Mon,  4 Sep 2023 06:53:46 +0700 (WIB)
+Date:   Mon, 4 Sep 2023 06:53:45 +0700
+From:   Bagas Sanjaya <bagasdotme@gmail.com>
+To:     Kenta Sato <tosainu.maple@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
+Cc:     Jisheng Zhang <jszhang@kernel.org>,
+        Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux USB <linux-usb@vger.kernel.org>,
+        Linux Stable <stable@vger.kernel.org>
+Subject: Re: usb: dwc3: some USB devices not working after 6.4.8
+Message-ID: <ZPUciRLUcjDywMVS@debian.me>
+References: <CAF1eZtsBzGb_UxOqZpNiEsk8Uk7DkqPh5AnYRRNc_kkr-tFasQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="NWjaryHgLzn1Za+x"
+Content-Disposition: inline
+In-Reply-To: <CAF1eZtsBzGb_UxOqZpNiEsk8Uk7DkqPh5AnYRRNc_kkr-tFasQ@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -72,16 +78,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Aug 28, 2023 at 11:48 PM Jonathan Cameron <jic23@kernel.org> wrote:
 
-> 2) If the channel has a horrible non linear and none invertable conversion
->    to standard units and events support the you might need PROCESSED to
->    provide the useful value, but RAW to give you clue what the current value
->    is for setting an event (light sensors are usual place we see this).
+--NWjaryHgLzn1Za+x
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-In this very specific case yes, it is being used as a current sense shunt for a light+prox sensor (gp2ap002), so I do think that it might be case 2 instead of 3. But with no other devices using the twl6030/32 gpadc for any features it could also be due to it not being updated like case 3. Also the fact that the adc would break in cases when its not just a light sensor as well, we just dont have any such devices yet.
-I'm pretty lost at how the code handles RAW and PROCESSED anyways, cant seem to find a proper rescaler. Ideally BIT(IIO_CHAN_INFO_RAW) | BIT(IIO_CHAN_INFO_SCALE) should be there in it, but since SCALE isnt used anywhere in the driver it wouldnt break any functionality, but it would lose logic. We'd have to look into the working of the gpadc again to understand how the factors fit in there.
+On Sun, Sep 03, 2023 at 09:19:13PM +0900, Kenta Sato wrote:
+> Hi,
+>=20
+> I am using the FriendlyElec NanoPi R4S board.
+> When I update the kernel from 6.4.7 to 6.4.11, 6.4.13, and 6.5.1, it
+> doesn't recognize some USB devices.
+>=20
+> The board has two USB 3.0 ports. I connected 1) BUFFALO USB Flash Disk
+> (high-speed) and 2) NETGEAR A6210 (SuperSpeed) to each port.
+> 1) is often not recognized. On the other hand, 2) was working while I
+> was testing.
+> Regardless of whether a USB device is connected, I could see the below
+> message on dmesg:
+>=20
+> [    0.740993] phy phy-ff7c0000.phy.8: phy poweron failed --> -110
+> [    0.741585] dwc3 fe800000.usb: error -ETIMEDOUT: failed to initialize =
+core
+> [    0.742334] dwc3: probe of fe800000.usb failed with error -110
+> [    0.751635] rockchip-usb2phy ff770000.syscon:usb2phy@e460:
+> Requested PHY is disabled
+>=20
+> Is there any idea on this?
+>=20
+> The cause seems to be related to this commit. I tried reverting this
+> change and the issue seemed to be solved.
+>=20
+> >From 317d6e4c12b46bde61248ea4ab5e19f68cbd1c57 Mon Sep 17 00:00:00 2001
+> From: Jisheng Zhang <jszhang@kernel.org>
+> Date: Wed, 28 Jun 2023 00:20:18 +0800
+> Subject: usb: dwc3: don't reset device side if dwc3 was configured as
+>  host-only
+>=20
+> commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7 upstream.
+>=20
+> Commit c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
+> system_suspend in host mode") replaces check for HOST only dr_mode with
+> current_dr_role. But during booting, the current_dr_role isn't
+> initialized, thus the device side reset is always issued even if dwc3
+> was configured as host-only. What's more, on some platforms with host
+> only dwc3, aways issuing device side reset by accessing device register
+> block can cause kernel panic.
+>=20
+> Fixes: c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
+> system_suspend in host mode")
+> Cc: stable <stable@kernel.org>
+> Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> Link: https://lore.kernel.org/r/20230627162018.739-1-jszhang@kernel.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/usb/dwc3/core.c | 4 ++--
+>  1 file changed, 2 insertions(+), 2 deletions(-)
+>=20
+> https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/commit/?=
+h=3Dv6.4.8&id=3D317d6e4c12b46bde61248ea4ab5e19f68cbd1c57
+>=20
 
-Regards,
-Mithil
+Thanks for the regression report. I'm adding it to regzbot:
 
+#regzbot ^introduced: e835c0a4e23c38
+#regzbot title: some USB devices unrecognized caused by not resetting dwc3 =
+device if it is host-only
+
+--=20
+An old man doll... just what I always wanted! - Clara
+
+--NWjaryHgLzn1Za+x
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZPUcggAKCRD2uYlJVVFO
+o1hSAQCdVlX3JRtbf9fuGmqaqWlzqB1jA0yt7UJbFL9BEKbWTgD+LnaQcHUbX3Sm
+3F8xdtN2oU5Bw4DhNY7wTPzDUYeyOwE=
+=+CFB
+-----END PGP SIGNATURE-----
+
+--NWjaryHgLzn1Za+x--
