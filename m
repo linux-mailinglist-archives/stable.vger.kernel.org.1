@@ -2,102 +2,173 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 63D55790C50
-	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 15:50:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6951790CCF
+	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 17:49:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229627AbjICNut (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 3 Sep 2023 09:50:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51616 "EHLO
+        id S243451AbjICPtf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 3 Sep 2023 11:49:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229931AbjICNut (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 09:50:49 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 591D5100;
-        Sun,  3 Sep 2023 06:50:44 -0700 (PDT)
+        with ESMTP id S229970AbjICPte (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 11:49:34 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B84E3DE;
+        Sun,  3 Sep 2023 08:49:31 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E6790B80C90;
-        Sun,  3 Sep 2023 13:50:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EDE93C433C8;
-        Sun,  3 Sep 2023 13:50:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693749041;
-        bh=OBxNsGKoUDtlW8pENZ7IbyW9q6GSCF5PP1cEAU8DTCw=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=kqLBhlVjj5m2rxxImAYwv/xuMKP5etgsAO4Nd2y6Z32C6mcv4A2pTlhO2nWk8/P+Y
-         t+UmYzJgUzKURr8VRoSysuM9KBAFfWoI5P2r8aIWjTrJW/oCLGSO3RceurVOT2OV9n
-         VL0nV9qgOwt++hjR/w85csNqBsmjlcWifnFXEcbw=
-Date:   Sun, 3 Sep 2023 15:50:38 +0200
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     John David Anglin <dave.anglin@bell.net>,
-        Helge Deller <deller@gmx.de>, stable@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>, linux-parisc@vger.kernel.org,
-        Vidra.Jonas@seznam.cz, Sam James <sam@gentoo.org>
-Subject: Re: [STABLE] stable backport request for 6.1 for io_uring
-Message-ID: <2023090325-clover-extortion-1e2e@gregkh>
-References: <ZO0X64s72JpFJnRM@p100>
- <5aa6799a-d577-4485-88e0-545f6459c74e@kernel.dk>
- <8f6006a7-1819-a2fb-e928-7f26ba7df6ec@bell.net>
- <d9ed50b2-dfef-4825-be42-beac7277c447@kernel.dk>
- <2023090358-anemia-trusting-fa33@gregkh>
- <64efa654-300d-421b-9fd7-817a381f4ba7@kernel.dk>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <64efa654-300d-421b-9fd7-817a381f4ba7@kernel.dk>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 4D40660AE9;
+        Sun,  3 Sep 2023 15:49:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F47BC433C9;
+        Sun,  3 Sep 2023 15:49:30 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693756170;
+        bh=WsXrA3tLMy413A76asPTUrb5YGRKB9CKxI4KdziubVs=;
+        h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
+        b=rCETWxs5maUpD+IQOvbKxtAVWHyInT7D34kFd+rK2vbVlRL30+M3zr9YmugqOvMTo
+         SbZA8V5zbkci3pqIkfGoGwvqDL09jRUzQ8O5+hS6VvNEeL6T3uxVgjW9xQqpAB0Ebi
+         a0vB3q30nHFS0Qtfyn6a1X7tT3veOz+xq4V5+9eWsir6j7m2btCftKlsuXtyxkc6yn
+         I14bWq1NTdhnPCJud2rIwoRnw5cAVbP7toAvFEZc6NWSBw3vh3KlJf82cz+aYIuDGm
+         TZuf2fhKQuwMF+imSaDmVQUFVifilCzYfux59yM/d9miXEi/M7Yytx4bQ+MOx/f0HH
+         UONOyYJJrux6w==
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 4BBAD27C0054;
+        Sun,  3 Sep 2023 11:49:29 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Sun, 03 Sep 2023 11:49:29 -0400
+X-ME-Sender: <xms:CKv0ZAjt9qDPuhs8WuZ4sCFCZjN1JkA_jFVhW722UxzKLESrjPvhBg>
+    <xme:CKv0ZJA4bh3CmOk_1hPJjEYSrl3dXoR1si5mhgtwJ8a2CRFOM2FgANxSzkAnLBwpj
+    JHepDDcwlfWPqgmexE>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudegiedgleegucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusehkvghrnhgvlhdrohhrgheqnecuggftrf
+    grthhtvghrnhepvdeviefgtedugeevieelvdfgveeuvdfgteegfeeiieejjeffgeeghedu
+    gedtveehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghrnhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduvdekhedujedt
+    vdegqddvkeejtddtvdeigedqrghrnhgupeepkhgvrhhnvghlrdhorhhgsegrrhhnuggsrd
+    guvg
+X-ME-Proxy: <xmx:CKv0ZIHN34rqFL95_5akZqoFo4fGTbSwLDEvqk76EUdDk88BfS8ZDA>
+    <xmx:CKv0ZBTSu8k5KVk3B0SH1ZKJipx_hbPaYEeKIFPFRq1xOmcwsbTSew>
+    <xmx:CKv0ZNwuauI6crW9BPDXmVCF72Mvgc7f_OkGuow1abUCRG1Pok0p3g>
+    <xmx:Cav0ZF9f8gXXERddwMpvOqZ2f-FPY1JIYgKpKkRywhw0gaDuBWlpqQ>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id AB15BB60089; Sun,  3 Sep 2023 11:49:28 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-701-g9b2f44d3ee-fm-20230823.001-g9b2f44d3
+Mime-Version: 1.0
+Message-Id: <33c2292b-08cb-44c7-9438-07d4060976ab@app.fastmail.com>
+In-Reply-To: <20230901192615.89591-1-abbotti@mev.co.uk>
+References: <20230901192615.89591-1-abbotti@mev.co.uk>
+Date:   Sun, 03 Sep 2023 11:49:08 -0400
+From:   "Arnd Bergmann" <arnd@kernel.org>
+To:     "Ian Abbott" <abbotti@mev.co.uk>, linux-kernel@vger.kernel.org
+Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Hartley Sweeten" <hsweeten@visionengravers.com>,
+        "Niklas Schnelle" <schnelle@linux.ibm.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] comedi: Fix driver module dependencies since HAS_IOPORT changes
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 03, 2023 at 07:25:11AM -0600, Jens Axboe wrote:
-> On 9/2/23 11:32 PM, Greg Kroah-Hartman wrote:
-> > On Sat, Sep 02, 2023 at 06:45:56PM -0600, Jens Axboe wrote:
-> >> On 9/2/23 5:04 PM, John David Anglin wrote:
-> >>> On 2023-08-30 12:17 p.m., Jens Axboe wrote:
-> >>>> On 8/28/23 3:55 PM, Helge Deller wrote:
-> >>>>> Hello Greg, Hello Jens, Hello stable team,
-> >>>>>
-> >>>>> would you please accept some backports to v6.1-stable for io_uring()?
-> >>>>> io_uring() fails on parisc because of some missing upstream patches.
-> >>>>> Since 6.1 is currently used in debian and gentoo as main kernel we
-> >>>>> face some build errors due to the missing patches.
-> >>>> Fine with me.
-> >>> This is probably not a problem with the backport but I see this fail in liburing tests:
-> >>>
-> >>> Running test wq-aff.t open: No such file or directory
-> >>> test sqpoll failed
-> >>> Test wq-aff.t failed with ret 1
-> >>> Running test xattr.t 0 sec [0]
-> >>> Running test statx.t 0 sec [0]
-> >>> Running test sq-full-cpp.t 0 sec [0]
-> >>> Tests failed (1): <wq-aff.t>
-> >>
-> >> That's because 6.1-stable is missing:
-> >>
-> >> commit ebdfefc09c6de7897962769bd3e63a2ff443ebf5
-> >> Author: Jens Axboe <axboe@kernel.dk>
-> >> Date:   Sun Aug 13 11:05:36 2023 -0600
-> >>
-> >>     io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used
-> >>
-> >> which went in recently and hasn't been backported to stable yet.
-> > 
-> > We can add that now to the stable queues if you want, otherwise we are
-> > supposed to wait until -rc1.
+On Fri, Sep 1, 2023, at 15:26, Ian Abbott wrote:
+> Commit b5c75b68b7de ("comedi: add HAS_IOPORT dependencies") changed the
+> "select" directives to "depend on" directives for several config
+> stanzas, but the options they depended on could not be selected,
+> breaking previously selected options.
+
+Right, I think that correctly describes the regression, sorry I didn't
+catch that during the submission.
+
+>  Change them back to "select"
+> directives and add "depends on HAS_IOPORT" to config entries for modules
+> that either use inb()/outb() and friends directly, or (recursively)
+> depend on modules that do so.
+
+This also describes a correct solution to the problem, but from looking
+at your patch, I think it's not exactly what you do.
+
 > 
-> It's fine to wait for -rc1, it's not an urgent fix by any stretch. I
-> just always queue up test cases when a fix is headed upstream. Hence not
-> unusual that a test or two will fail until the kernel side (and stable
-> too) catches up.
+>  config COMEDI_PCL711
+>  	tristate "Advantech PCL-711/711b and ADlink ACL-8112 ISA card support"
+> -	depends on HAS_IOPORT
+> -	depends on COMEDI_8254
+> +	select COMEDI_8254
 
-Ok, thanks for the info, will wait on these until -rc1 is out.
+If COMEDI_8254 depends on HAS_IOPORT, you must not drop the 'depends on'
+here, otherwise you get build failures from missing dependencies.
 
-greg k-h
+Same thing for a lot of the ones below. You should only change the
+select, but not remove the 'depends on HAS_IOPORT' in any of these,
+unless the entire Kconfig file already has this.
+
+> @@ -512,7 +500,7 @@ config COMEDI_NI_ATMIO16D
+> 
+>  config COMEDI_NI_LABPC_ISA
+>  	tristate "NI Lab-PC and compatibles ISA support"
+> -	depends on COMEDI_NI_LABPC
+> +	select COMEDI_NI_LABPC
+>  	help
+>  	  Enable support for National Instruments Lab-PC and compatibles
+>  	  Lab-PC-1200, Lab-PC-1200AI, Lab-PC+.
+
+I was confused a bit by this, as the changelog doesn't mention
+COMEDI_NI_LABPC, but I saw that this needs the same change
+recursively, same as COMEDI_DAS08.
+
+> @@ -576,7 +564,7 @@ endif # COMEDI_ISA_DRIVERS
+> 
+>  menuconfig COMEDI_PCI_DRIVERS
+>  	tristate "Comedi PCI drivers"
+> -	depends on PCI && HAS_IOPORT
+> +	depends on PCI
+>  	help
+>  	  Enable support for comedi PCI drivers.
+>
+> @@ -587,6 +575,7 @@ if COMEDI_PCI_DRIVERS
+> 
+>  config COMEDI_8255_PCI
+>  	tristate "Generic PCI based 8255 digital i/o board support"
+> +	depends on HAS_IOPORT
+>  	select COMEDI_8255
+>  	help
+>  	  Enable support for PCI based 8255 digital i/o boards. This driver
+
+This change looks unrelated to both your description and
+the bug, as you are just moving around the dependencies,
+though I might be missing something.
+
+If this addresses another problem for you, maybe split it out
+into a separate patch and describe why you move the dependencies.
+
+Are you trying to make sure that it's possible to build PCI
+IIO drivers that don't depend on HAS_IOPORT on targets that
+don't provide it?
+
+> @@ -735,8 +738,8 @@ config COMEDI_ADL_PCI9111
+> 
+>  config COMEDI_ADL_PCI9118
+>  	tristate "ADLink PCI-9118DG, PCI-9118HG, PCI-9118HR support"
+> +	depends on HAS_IOPORT
+>  	depends on HAS_DMA
+> -	depends on COMEDI_8254
+>  	help
+>  	  Enable support for ADlink PCI-9118DG, PCI-9118HG, PCI-9118HR cards
+
+I don't see why you'd remove the 'depends on COMEDI_8254' here
+rather than turning it back into 'select' as it was originally.
+
+It might be easier to revert the original patch, and then follow
+up with a fixed version.
+
+      Arnd
