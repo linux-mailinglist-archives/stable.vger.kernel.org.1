@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DD3E790BF1
-	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 14:42:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E157790BF2
+	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 14:43:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237150AbjICMm7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 3 Sep 2023 08:42:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53210 "EHLO
+        id S237164AbjICMnT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 3 Sep 2023 08:43:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42976 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231726AbjICMm6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 08:42:58 -0400
+        with ESMTP id S231726AbjICMnS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 08:43:18 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D0C510F
-        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 05:42:55 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98FA710F
+        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 05:43:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id B0FEA60D32
-        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 12:42:54 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21E6FC433C8;
-        Sun,  3 Sep 2023 12:42:52 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 2225E60D32
+        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 12:43:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E02C433C8;
+        Sun,  3 Sep 2023 12:43:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693744974;
-        bh=RisZRCvPRF9LLBQ7UmvR60KfJ2jl1PzqxA9zDCOw4fM=;
+        s=korg; t=1693744993;
+        bh=l3UZ2M4vq1m5c/hn3H64DLg6dd0eDsC4VzZaAha4wGM=;
         h=Subject:To:Cc:From:Date:From;
-        b=KWHDvkMkrCdzBbFxQ0G5JJzwwqKgF1fSgPlY/nULmctw4vj/TXWwEkB0CdaRPvL0r
-         xkrXtrV6gQGWhLAOAy+/uDfBkqhXS/emfI7U2LtNmmGvmgYQEklU3vaPyxzwQUtHad
-         Y3RRC4L0w+Im1ww3dMmGCtcoIL0hxLvXV5CiMrjk=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix regression with GPIO configuration" failed to apply to 6.4-stable tree
+        b=V5tkXyWvKrdyqHfUZGZ5HpSdcARKRbtfwRAT1e2e70YvuECQdyuAZ4S7quULh/sLu
+         g2o5T6teKClY51wIHVFh3iqw13raxXZv15VnfRBrfAYIDtffc2eyeohf0lgcxRUfBD
+         dFGT9X/kk6cTbmYXu1Ulsi79yznIF207Wsqo/4Zk=
+Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix regression with GPIO configuration" failed to apply to 6.1-stable tree
 To:     hvilleneuve@dimonoff.com, andy.shevchenko@gmail.com,
         gregkh@linuxfoundation.org, lech.perczak@camlingroup.com,
         robh@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 03 Sep 2023 14:42:06 +0200
-Message-ID: <2023090306-enjoyer-uncheck-5b6d@gregkh>
+Date:   Sun, 03 Sep 2023 14:42:12 +0200
+Message-ID: <2023090312-showoff-unmanaged-1587@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -50,19 +50,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 0499942928341d572a42199580433c2b0725211e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090306-enjoyer-uncheck-5b6d@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090312-showoff-unmanaged-1587@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
