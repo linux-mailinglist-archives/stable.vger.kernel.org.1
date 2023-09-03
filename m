@@ -2,352 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E157790BF2
-	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 14:43:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1C305790C13
+	for <lists+stable@lfdr.de>; Sun,  3 Sep 2023 15:12:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237164AbjICMnT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 3 Sep 2023 08:43:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42976 "EHLO
+        id S237489AbjICNMm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 3 Sep 2023 09:12:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231726AbjICMnS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 08:43:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98FA710F
-        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 05:43:14 -0700 (PDT)
+        with ESMTP id S237477AbjICNMk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 09:12:40 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D547138
+        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 06:12:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 2225E60D32
-        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 12:43:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E02C433C8;
-        Sun,  3 Sep 2023 12:43:03 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id DD179CE0AC4
+        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 13:12:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2746C433C9;
+        Sun,  3 Sep 2023 13:12:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693744993;
-        bh=l3UZ2M4vq1m5c/hn3H64DLg6dd0eDsC4VzZaAha4wGM=;
-        h=Subject:To:Cc:From:Date:From;
-        b=V5tkXyWvKrdyqHfUZGZ5HpSdcARKRbtfwRAT1e2e70YvuECQdyuAZ4S7quULh/sLu
-         g2o5T6teKClY51wIHVFh3iqw13raxXZv15VnfRBrfAYIDtffc2eyeohf0lgcxRUfBD
-         dFGT9X/kk6cTbmYXu1Ulsi79yznIF207Wsqo/4Zk=
-Subject: FAILED: patch "[PATCH] serial: sc16is7xx: fix regression with GPIO configuration" failed to apply to 6.1-stable tree
-To:     hvilleneuve@dimonoff.com, andy.shevchenko@gmail.com,
-        gregkh@linuxfoundation.org, lech.perczak@camlingroup.com,
-        robh@kernel.org
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 03 Sep 2023 14:42:12 +0200
-Message-ID: <2023090312-showoff-unmanaged-1587@gregkh>
+        s=korg; t=1693746753;
+        bh=3T/Vq+P7C37rdn8gay3+642xll2VcZkRZrcmNXNNxlQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=cU0Ufg6DIAFn75VLGTeV4Mv3CQXD9j2croA09xi/62RaiLNnwRsW5v9ztq8/Ie4qP
+         sIngNYN+H8JFW3lF27DafIH7S8rQfYmrca5Qz5o7yMNyPLh+S04vH+PTd8MGZa93Gh
+         Ru9ONQstDXGafzRpIYdi/jrEurIpyxiWX9m1X/TE=
+Date:   Sun, 3 Sep 2023 14:50:41 +0200
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc:     stable@vger.kernel.org, Andrew Morton <akpm@linux-foundation.org>
+Subject: Re: [PATCH 4.19 5.4 5.10 5.15 6.1] nilfs2: fix general protection
+ fault in nilfs_lookup_dirty_data_buffers()
+Message-ID: <2023090333-crouch-caucus-fb22@gregkh>
+References: <20230902151000.3817-1-konishi.ryusuke@gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230902151000.3817-1-konishi.ryusuke@gmail.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sun, Sep 03, 2023 at 12:10:00AM +0900, Ryusuke Konishi wrote:
+> commit f83913f8c5b882a312e72b7669762f8a5c9385e4 upstream.
+> 
+> A syzbot stress test reported that create_empty_buffers() called from
+> nilfs_lookup_dirty_data_buffers() can cause a general protection fault.
+> 
+> Analysis using its reproducer revealed that the back reference "mapping"
+> from a page/folio has been changed to NULL after dirty page/folio gang
+> lookup in nilfs_lookup_dirty_data_buffers().
+> 
+> Fix this issue by excluding pages/folios from being collected if, after
+> acquiring a lock on each page/folio, its back reference "mapping" differs
+> from the pointer to the address space struct that held the page/folio.
+> 
+> Link: https://lkml.kernel.org/r/20230805132038.6435-1-konishi.ryusuke@gmail.com
+> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+> Reported-by: syzbot+0ad741797f4565e7e2d2@syzkaller.appspotmail.com
+> Closes: https://lkml.kernel.org/r/0000000000002930a705fc32b231@google.com
+> Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+> Cc: <stable@vger.kernel.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+> ---
+> Please apply this patch to the above stable trees instead of the patch
+> that could not be applied to them.  This patch resolves the conflict
+> caused by the recent page to folio conversion applied in
+> nilfs_lookup_dirty_data_buffers().  The general protection fault reported
+> by syzbot reproduces on these stable kernels before the page/folio
+> conversion is applied.  This fixes it.
+> 
+> With this tweak, this patch is applicable from v4.15 to v6.2.  Also,
+> this patch has been tested against the -stable trees of each version in
+> the subject prefix.
 
-The patch below does not apply to the 6.1-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
-
-To reproduce the conflict and resubmit, you may use the following commands:
-
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
-git checkout FETCH_HEAD
-git cherry-pick -x 0499942928341d572a42199580433c2b0725211e
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090312-showoff-unmanaged-1587@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
-
-Possible dependencies:
-
-
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 0499942928341d572a42199580433c2b0725211e Mon Sep 17 00:00:00 2001
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Date: Mon, 7 Aug 2023 17:45:54 -0400
-Subject: [PATCH] serial: sc16is7xx: fix regression with GPIO configuration
-
-Commit 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
-and commit 21144bab4f11 ("sc16is7xx: Handle modem status lines")
-changed the function of the GPIOs pins to act as modem control
-lines without any possibility of selecting GPIO function.
-
-As a consequence, applications that depends on GPIO lines configured
-by default as GPIO pins no longer work as expected.
-
-Also, the change to select modem control lines function was done only
-for channel A of dual UART variants (752/762). This was not documented
-in the log message.
-
-Allow to specify GPIO or modem control line function in the device
-tree, and for each of the ports (A or B).
-
-Do so by using the new device-tree property named
-"nxp,modem-control-line-ports" (property added in separate patch).
-
-When registering GPIO chip controller, mask-out GPIO pins declared as
-modem control lines according to this new DT property.
-
-Fixes: 679875d1d880 ("sc16is7xx: Separate GPIOs from modem control lines")
-Fixes: 21144bab4f11 ("sc16is7xx: Handle modem status lines")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20230807214556.540627-5-hugo@hugovil.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 93b4137daa8b..b45e34e3910d 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -236,7 +236,8 @@
- 
- /* IOControl register bits (Only 750/760) */
- #define SC16IS7XX_IOCONTROL_LATCH_BIT	(1 << 0) /* Enable input latching */
--#define SC16IS7XX_IOCONTROL_MODEM_BIT	(1 << 1) /* Enable GPIO[7:4] as modem pins */
-+#define SC16IS7XX_IOCONTROL_MODEM_A_BIT	(1 << 1) /* Enable GPIO[7:4] as modem A pins */
-+#define SC16IS7XX_IOCONTROL_MODEM_B_BIT	(1 << 2) /* Enable GPIO[3:0] as modem B pins */
- #define SC16IS7XX_IOCONTROL_SRESET_BIT	(1 << 3) /* Software Reset */
- 
- /* EFCR register bits */
-@@ -301,12 +302,12 @@
- /* Misc definitions */
- #define SC16IS7XX_FIFO_SIZE		(64)
- #define SC16IS7XX_REG_SHIFT		2
-+#define SC16IS7XX_GPIOS_PER_BANK	4
- 
- struct sc16is7xx_devtype {
- 	char	name[10];
- 	int	nr_gpio;
- 	int	nr_uart;
--	int	has_mctrl;
- };
- 
- #define SC16IS7XX_RECONF_MD		(1 << 0)
-@@ -336,7 +337,9 @@ struct sc16is7xx_port {
- 	struct clk			*clk;
- #ifdef CONFIG_GPIOLIB
- 	struct gpio_chip		gpio;
-+	unsigned long			gpio_valid_mask;
- #endif
-+	u8				mctrl_mask;
- 	unsigned char			buf[SC16IS7XX_FIFO_SIZE];
- 	struct kthread_worker		kworker;
- 	struct task_struct		*kworker_task;
-@@ -447,35 +450,30 @@ static const struct sc16is7xx_devtype sc16is74x_devtype = {
- 	.name		= "SC16IS74X",
- 	.nr_gpio	= 0,
- 	.nr_uart	= 1,
--	.has_mctrl	= 0,
- };
- 
- static const struct sc16is7xx_devtype sc16is750_devtype = {
- 	.name		= "SC16IS750",
--	.nr_gpio	= 4,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 1,
--	.has_mctrl	= 1,
- };
- 
- static const struct sc16is7xx_devtype sc16is752_devtype = {
- 	.name		= "SC16IS752",
--	.nr_gpio	= 0,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 2,
--	.has_mctrl	= 1,
- };
- 
- static const struct sc16is7xx_devtype sc16is760_devtype = {
- 	.name		= "SC16IS760",
--	.nr_gpio	= 4,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 1,
--	.has_mctrl	= 1,
- };
- 
- static const struct sc16is7xx_devtype sc16is762_devtype = {
- 	.name		= "SC16IS762",
--	.nr_gpio	= 0,
-+	.nr_gpio	= 8,
- 	.nr_uart	= 2,
--	.has_mctrl	= 1,
- };
- 
- static bool sc16is7xx_regmap_volatile(struct device *dev, unsigned int reg)
-@@ -1350,8 +1348,98 @@ static int sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
- 
- 	return 0;
- }
-+
-+static int sc16is7xx_gpio_init_valid_mask(struct gpio_chip *chip,
-+					  unsigned long *valid_mask,
-+					  unsigned int ngpios)
-+{
-+	struct sc16is7xx_port *s = gpiochip_get_data(chip);
-+
-+	*valid_mask = s->gpio_valid_mask;
-+
-+	return 0;
-+}
-+
-+static int sc16is7xx_setup_gpio_chip(struct sc16is7xx_port *s)
-+{
-+	struct device *dev = s->p[0].port.dev;
-+
-+	if (!s->devtype->nr_gpio)
-+		return 0;
-+
-+	switch (s->mctrl_mask) {
-+	case 0:
-+		s->gpio_valid_mask = GENMASK(7, 0);
-+		break;
-+	case SC16IS7XX_IOCONTROL_MODEM_A_BIT:
-+		s->gpio_valid_mask = GENMASK(3, 0);
-+		break;
-+	case SC16IS7XX_IOCONTROL_MODEM_B_BIT:
-+		s->gpio_valid_mask = GENMASK(7, 4);
-+		break;
-+	default:
-+		break;
-+	}
-+
-+	if (s->gpio_valid_mask == 0)
-+		return 0;
-+
-+	s->gpio.owner		 = THIS_MODULE;
-+	s->gpio.parent		 = dev;
-+	s->gpio.label		 = dev_name(dev);
-+	s->gpio.init_valid_mask	 = sc16is7xx_gpio_init_valid_mask;
-+	s->gpio.direction_input	 = sc16is7xx_gpio_direction_input;
-+	s->gpio.get		 = sc16is7xx_gpio_get;
-+	s->gpio.direction_output = sc16is7xx_gpio_direction_output;
-+	s->gpio.set		 = sc16is7xx_gpio_set;
-+	s->gpio.base		 = -1;
-+	s->gpio.ngpio		 = s->devtype->nr_gpio;
-+	s->gpio.can_sleep	 = 1;
-+
-+	return gpiochip_add_data(&s->gpio, s);
-+}
- #endif
- 
-+/*
-+ * Configure ports designated to operate as modem control lines.
-+ */
-+static int sc16is7xx_setup_mctrl_ports(struct sc16is7xx_port *s)
-+{
-+	int i;
-+	int ret;
-+	int count;
-+	u32 mctrl_port[2];
-+	struct device *dev = s->p[0].port.dev;
-+
-+	count = device_property_count_u32(dev, "nxp,modem-control-line-ports");
-+	if (count < 0 || count > ARRAY_SIZE(mctrl_port))
-+		return 0;
-+
-+	ret = device_property_read_u32_array(dev, "nxp,modem-control-line-ports",
-+					     mctrl_port, count);
-+	if (ret)
-+		return ret;
-+
-+	s->mctrl_mask = 0;
-+
-+	for (i = 0; i < count; i++) {
-+		/* Use GPIO lines as modem control lines */
-+		if (mctrl_port[i] == 0)
-+			s->mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_A_BIT;
-+		else if (mctrl_port[i] == 1)
-+			s->mctrl_mask |= SC16IS7XX_IOCONTROL_MODEM_B_BIT;
-+	}
-+
-+	if (s->mctrl_mask)
-+		regmap_update_bits(
-+			s->regmap,
-+			SC16IS7XX_IOCONTROL_REG << SC16IS7XX_REG_SHIFT,
-+			SC16IS7XX_IOCONTROL_MODEM_A_BIT |
-+			SC16IS7XX_IOCONTROL_MODEM_B_BIT, s->mctrl_mask);
-+
-+	return 0;
-+}
-+
- static const struct serial_rs485 sc16is7xx_rs485_supported = {
- 	.flags = SER_RS485_ENABLED | SER_RS485_RTS_AFTER_SEND,
- 	.delay_rts_before_send = 1,
-@@ -1464,12 +1552,6 @@ static int sc16is7xx_probe(struct device *dev,
- 				     SC16IS7XX_EFCR_RXDISABLE_BIT |
- 				     SC16IS7XX_EFCR_TXDISABLE_BIT);
- 
--		/* Use GPIO lines as modem status registers */
--		if (devtype->has_mctrl)
--			sc16is7xx_port_write(&s->p[i].port,
--					     SC16IS7XX_IOCONTROL_REG,
--					     SC16IS7XX_IOCONTROL_MODEM_BIT);
--
- 		/* Initialize kthread work structs */
- 		kthread_init_work(&s->p[i].tx_work, sc16is7xx_tx_proc);
- 		kthread_init_work(&s->p[i].reg_work, sc16is7xx_reg_proc);
-@@ -1507,23 +1589,14 @@ static int sc16is7xx_probe(struct device *dev,
- 				s->p[u].irda_mode = true;
- 	}
- 
-+	ret = sc16is7xx_setup_mctrl_ports(s);
-+	if (ret)
-+		goto out_ports;
-+
- #ifdef CONFIG_GPIOLIB
--	if (devtype->nr_gpio) {
--		/* Setup GPIO cotroller */
--		s->gpio.owner		 = THIS_MODULE;
--		s->gpio.parent		 = dev;
--		s->gpio.label		 = dev_name(dev);
--		s->gpio.direction_input	 = sc16is7xx_gpio_direction_input;
--		s->gpio.get		 = sc16is7xx_gpio_get;
--		s->gpio.direction_output = sc16is7xx_gpio_direction_output;
--		s->gpio.set		 = sc16is7xx_gpio_set;
--		s->gpio.base		 = -1;
--		s->gpio.ngpio		 = devtype->nr_gpio;
--		s->gpio.can_sleep	 = 1;
--		ret = gpiochip_add_data(&s->gpio, s);
--		if (ret)
--			goto out_ports;
--	}
-+	ret = sc16is7xx_setup_gpio_chip(s);
-+	if (ret)
-+		goto out_ports;
- #endif
- 
- 	/*
-@@ -1546,7 +1619,7 @@ static int sc16is7xx_probe(struct device *dev,
- 		return 0;
- 
- #ifdef CONFIG_GPIOLIB
--	if (devtype->nr_gpio)
-+	if (s->gpio_valid_mask)
- 		gpiochip_remove(&s->gpio);
- #endif
- 
-@@ -1570,7 +1643,7 @@ static void sc16is7xx_remove(struct device *dev)
- 	int i;
- 
- #ifdef CONFIG_GPIOLIB
--	if (s->devtype->nr_gpio)
-+	if (s->gpio_valid_mask)
- 		gpiochip_remove(&s->gpio);
- #endif
- 
-
