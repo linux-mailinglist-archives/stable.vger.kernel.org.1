@@ -2,131 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79365791749
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 14:41:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A0587917AA
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 14:58:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236921AbjIDMlq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 08:41:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50006 "EHLO
+        id S229788AbjIDM6E (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 08:58:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49436 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232080AbjIDMlq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 08:41:46 -0400
-Received: from smtpout.efficios.com (unknown [IPv6:2607:5300:203:b2ee::31e5])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D105EEC;
-        Mon,  4 Sep 2023 05:41:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
-        s=smtpout1; t=1693831299;
-        bh=/dE3ky6X9Lqj+ivhwmVls4BhitsFtdKNWMXYtinGEUg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=BkhUEVHanVywyz+zebtKGkpF215y1bX8y0GSA8OUsTD36R0EmlktYKtbbwx5KasgZ
-         2Y/DEHAKO+iiAoyBnk8sZJ3TkN7RCritvve8j7c8o255HaLH2BqBBvrV/+MMzAhO5K
-         OStyRB1Ku905SbYvw/msLXDx0mz9BS8343Ur0YpL57l4MHrYFYJyiv4PIWgiYYv1c7
-         XjWoIJxMevzEL7bGBkakwVY3ER/ruoubo4akIfc4+AgkMG6erDcKUe83B+o91BQRrD
-         xeIXdq3zOf7LLNxkyj8gT54EoxFyQzVgnzRwV3bPg92Knr/IPdrLl/0fcpQeWiKVCy
-         /MnzJvECn32GQ==
-Received: from [IPV6:2606:6d00:100:4000:cacb:9855:de1f:ded2] (unknown [IPv6:2606:6d00:100:4000:cacb:9855:de1f:ded2])
-        by smtpout.efficios.com (Postfix) with ESMTPSA id 4RfStq4G3Xz1NXL;
-        Mon,  4 Sep 2023 08:41:39 -0400 (EDT)
-Message-ID: <a60cf690-2af7-1eee-c1c1-3433d16a1939@efficios.com>
-Date:   Mon, 4 Sep 2023 08:42:53 -0400
+        with ESMTP id S236868AbjIDM6D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 08:58:03 -0400
+Received: from mail-lj1-f177.google.com (mail-lj1-f177.google.com [209.85.208.177])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4FFB0CD1
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 05:57:59 -0700 (PDT)
+Received: by mail-lj1-f177.google.com with SMTP id 38308e7fff4ca-2bcbfb3705dso21559221fa.1
+        for <stable@vger.kernel.org>; Mon, 04 Sep 2023 05:57:59 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693832277; x=1694437077;
+        h=content-transfer-encoding:mime-version:references:in-reply-to
+         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=kP6axYWQh7IIQgU34+jYVnXWJpapDY8Z6JPbK/ak5xE=;
+        b=gDjq22vJpnlJR+oFDxD5aMJwXFmCSKlS362vy4gBAP+bEXJt8k/bflTpQQTyVfP8uu
+         kHsy/qFWAJLJzCa/wOV/1F2xDzui68jyVpqScJ+GeW7UDVqznXxqg8ExkSklPH2Jw0dO
+         IjNgC54vtSaVR6PUb9szsIxq/pHFMOm3ryMPwCER+iv2XCxWVgMasNf4li5qzoUDk28p
+         Dmo+Gl+3HFlhYpO7DAgeQUOaCHCLBRhaXKJ/ua77nmMVeP7Ezf63+bDAAQAqzAC5jXMv
+         Oi57JadQkQIrrkgnRBlEW9EEVyIkvFlvnOeKBpoz/1hOyXiNSmzNrspj983Yj1DuwCbL
+         9/xA==
+X-Gm-Message-State: AOJu0YxmXpoMUaX8oKrd4tGlHLHA58usXcESbmZYTTv4wIIs3TLX75xJ
+        mX+QsXUhvA16BqKB0Tr0sPk=
+X-Google-Smtp-Source: AGHT+IEwXj2VGEnU3VSX+SaG8doejrnx//uDuTUp5BXJsxaYxYBtJNccuwb4ML6aDkyVpeSQDTsgVA==
+X-Received: by 2002:a05:651c:210:b0:2b9:5fd2:763a with SMTP id y16-20020a05651c021000b002b95fd2763amr6780335ljn.35.1693832277303;
+        Mon, 04 Sep 2023 05:57:57 -0700 (PDT)
+Received: from salami.fritz.box ([80.111.96.134])
+        by smtp.gmail.com with ESMTPSA id y11-20020a1c4b0b000000b003fe2b081661sm17000960wma.30.2023.09.04.05.57.56
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Sep 2023 05:57:56 -0700 (PDT)
+From:   =?UTF-8?q?Andr=C3=A9=20Draszik?= <git@andred.net>
+To:     andre.draszik@gmail.com
+Cc:     =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
+        stable@vger.kernel.org
+Subject: [PATCH] Revert "fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT"
+Date:   Mon,  4 Sep 2023 13:57:47 +0100
+Message-Id: <20230904125747.102023-2-git@andred.net>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230904125747.102023-1-git@andred.net>
+References: <20230904125747.102023-1-git@andred.net>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v3] Fix srcu_struct node grpmask overflow on 64-bit
- systems
-Content-Language: en-US
-To:     Denis Arefev <arefev@swemel.ru>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org,
-        lvc-project@linuxtesting.org, linux-kernel@vger.kernel.org,
-        trufanov@swemel.ru, vfh@swemel.ru,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-References: <20230904122114.66757-1-arefev@swemel.ru>
-From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-In-Reply-To: <20230904122114.66757-1-arefev@swemel.ru>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RDNS_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/4/23 08:21, Denis Arefev wrote:
-> The value of an arithmetic expression 1 << (cpu - sdp->mynode->grplo)
-> is subject to overflow due to a failure to cast operands to a larger
-> data type before performing arithmetic.
-> 
-> The maximum result of this subtraction is defined by the RCU_FANOUT
-> or other srcu level-spread values assigned by rcu_init_levelspread(),
-> which can indeed cause the signed 32-bit integer literal ("1") to overflow
-> when shifted by any value greater than 31.
+From: André Draszik <andre.draszik@linaro.org>
 
-We could expand on this:
+This reverts commit 3066ff93476c35679cb07a97cce37d9bb07632ff.
 
-The maximum result of this subtraction is defined by the RCU_FANOUT
-or other srcu level-spread values assigned by rcu_init_levelspread(),
-which can indeed cause the signed 32-bit integer literal ("1") to overflow
-when shifted by any value greater than 31 on a 64-bit system.
+This patch breaks all existing userspace by requiring updates as
+mentioned in the commit message, which is not allowed.
 
-Moreover, when the subtraction value is 31, the 1 << 31 expression results
-in 0xffffffff80000000 when the signed integer is promoted to unsigned long
-on 64-bit systems due to type promotion rules, which is certainly not the
-intended result.
+Revert to restore compatibility with existing userspace
+implementations.
 
-> 
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Cc: <stable@vger.kernel.org>
+Signed-off-by: André Draszik <andre.draszik@linaro.org>
+---
+ fs/fuse/inode.c | 5 +----
+ 1 file changed, 1 insertion(+), 4 deletions(-)
 
-With the commit message updated with my comment above, please also add:
-
-Fixes: c7e88067c1 ("srcu: Exact tracking of srcu_data structures containing callbacks")
-Cc: <stable@vger.kernel.org> # v4.11
-Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-
-Thanks!
-
-Mathieu
-
-> 
-> Signed-off-by: Denis Arefev <arefev@swemel.ru>
-> ---
-> v3: Changed the name of the patch, as suggested by
-> Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> v2: Added fixes to the srcu_schedule_cbs_snp function as suggested by
-> Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
->   kernel/rcu/srcutree.c | 4 ++--
->   1 file changed, 2 insertions(+), 2 deletions(-)
-> 
-> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-> index 20d7a238d675..6c18e6005ae1 100644
-> --- a/kernel/rcu/srcutree.c
-> +++ b/kernel/rcu/srcutree.c
-> @@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct srcu_struct *ssp, gfp_t gfp_flags)
->   				snp->grplo = cpu;
->   			snp->grphi = cpu;
->   		}
-> -		sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
-> +		sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
->   	}
->   	smp_store_release(&ssp->srcu_sup->srcu_size_state, SRCU_SIZE_WAIT_BARRIER);
->   	return true;
-> @@ -833,7 +833,7 @@ static void srcu_schedule_cbs_snp(struct srcu_struct *ssp, struct srcu_node *snp
->   	int cpu;
->   
->   	for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
-> -		if (!(mask & (1 << (cpu - snp->grplo))))
-> +		if (!(mask & (1UL << (cpu - snp->grplo))))
->   			continue;
->   		srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
->   	}
-
+diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
+index 549358ffea8b..0b966b0e0962 100644
+--- a/fs/fuse/inode.c
++++ b/fs/fuse/inode.c
+@@ -1132,10 +1132,7 @@ static void process_init_reply(struct fuse_mount *fm, struct fuse_args *args,
+ 		process_init_limits(fc, arg);
+ 
+ 		if (arg->minor >= 6) {
+-			u64 flags = arg->flags;
+-
+-			if (flags & FUSE_INIT_EXT)
+-				flags |= (u64) arg->flags2 << 32;
++			u64 flags = arg->flags | (u64) arg->flags2 << 32;
+ 
+ 			ra_pages = arg->max_readahead / PAGE_SIZE;
+ 			if (flags & FUSE_ASYNC_READ)
 -- 
-Mathieu Desnoyers
-EfficiOS Inc.
-https://www.efficios.com
+2.40.1
 
