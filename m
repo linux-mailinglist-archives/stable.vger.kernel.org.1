@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3478A791D12
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 42CFA791D0C
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234302AbjIDSen (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:34:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58938 "EHLO
+        id S1345463AbjIDSed (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345095AbjIDSem (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1BC44CD7
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:39 -0700 (PDT)
+        with ESMTP id S1347626AbjIDSe1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:27 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 231E3CCB
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id AF92F619A5
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C798BC433C8;
-        Mon,  4 Sep 2023 18:34:37 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id D84FAB80EF4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:22 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D64BC433C9;
+        Mon,  4 Sep 2023 18:34:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852478;
-        bh=6b3kURLGSQEFL3jOlN9Qik3tkLuAQ9MQrSWOZc9rNYU=;
+        s=korg; t=1693852461;
+        bh=Oar6EGpn+1vy520vivIstBo/BiGHT9OAIkhOyCZpmBE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wWVmfQ7D9UE9GLcepqAzRJXiHtwFIhbmBdl+djT+GB6yYrGBMN9tRuFzuQxue4phC
-         7GZ78sJjO8iConwgoXK0/WVnCU4wyXstr+y7YlBv3p0NFQ6s+qBp4zk8MNMYAahZkK
-         fitG9cq7kCzAy82FPMvLvAJ0Q4O4dsqxfIOeFCSY=
+        b=ZvxH7me8c4IBHFZDACcU8dPTji11mzlV0qZvvhVV/cibKFmSSRt/XoxHctQ2LZtRg
+         YefLIW2Msq4QZdSQLtG5dlktJlrCJeWmV6vMOVc+g8X2kXHZaXi4nBUT8FQywwAGvZ
+         243BBpFh8AUWG6r0mVhc3RNVx/cGgiTAZH3ntZDg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Luke Lu <luke.lu@libre.computer>,
-        Neil Armstrong <neil.armstrong@linaro.org>
-Subject: [PATCH 6.1 14/31] usb: dwc3: meson-g12a: do post init to fix broken usb after resumption
-Date:   Mon,  4 Sep 2023 19:30:22 +0100
-Message-ID: <20230904182947.720942250@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>
+Subject: [PATCH 6.4 25/32] serial: sc16is7xx: fix bug when first setting GPIO direction
+Date:   Mon,  4 Sep 2023 19:30:23 +0100
+Message-ID: <20230904182949.047459450@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,49 +56,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luke Lu <luke.lu@libre.computer>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 1fa206bb764f37d2ab4bf671e483153ef0659b34 upstream.
+commit 9baeea723c0fb9c3ba9a336369f758ed9bc6831d upstream.
 
-Device connected to usb otg port of GXL-based boards can not be
-recognised after resumption, doesn't recover even if disconnect and
-reconnect the device. dmesg shows it disconnects during resumption.
+When configuring a pin as an output pin with a value of logic 0, we
+end up as having a value of logic 1 on the output pin. Setting a
+logic 0 a second time (or more) after that will correctly output a
+logic 0 on the output pin.
 
-[   41.492911] usb 1-2: USB disconnect, device number 3
-[   41.499346] usb 1-2: unregistering device
-[   41.511939] usb 1-2: unregistering interface 1-2:1.0
+By default, all GPIO pins are configured as inputs. When we enter
+sc16is7xx_gpio_direction_output() for the first time, we first set the
+desired value in IOSTATE, and then we configure the pin as an output.
+The datasheet states that writing to IOSTATE register will trigger a
+transfer of the value to the I/O pin configured as output, so if the
+pin is configured as an input, nothing will be transferred.
 
-Calling usb_post_init() will fix this issue, and it's tested and
-verified on libretech's aml-s905x-cc board.
+Therefore, set the direction first in IODIR, and then set the desired
+value in IOSTATE.
 
-Cc: stable@vger.kernel.org # v5.8+
-Fixes: c99993376f72 ("usb: dwc3: Add Amlogic G12A DWC3 glue")
-Signed-off-by: Luke Lu <luke.lu@libre.computer>
-Acked-by: Neil Armstrong <neil.armstrong@linaro.org>
-Link: https://lore.kernel.org/r/20230809212911.18903-1-luke.lu@libre.computer
+This is what is done in NXP application note AN10587.
+
+Fixes: dfeae619d781 ("serial: sc16is7xx")
+Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+Link: https://lore.kernel.org/r/20230807214556.540627-6-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/dwc3/dwc3-meson-g12a.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/tty/serial/sc16is7xx.c |   11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
 
---- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-+++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-@@ -938,6 +938,12 @@ static int __maybe_unused dwc3_meson_g12
- 			return ret;
- 	}
- 
-+	if (priv->drvdata->usb_post_init) {
-+		ret = priv->drvdata->usb_post_init(priv);
-+		if (ret)
-+			return ret;
-+	}
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1342,9 +1342,18 @@ static int sc16is7xx_gpio_direction_outp
+ 		state |= BIT(offset);
+ 	else
+ 		state &= ~BIT(offset);
+-	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
 +
++	/*
++	 * If we write IOSTATE first, and then IODIR, the output value is not
++	 * transferred to the corresponding I/O pin.
++	 * The datasheet states that each register bit will be transferred to
++	 * the corresponding I/O pin programmed as output when writing to
++	 * IOSTATE. Therefore, configure direction first with IODIR, and then
++	 * set value after with IOSTATE.
++	 */
+ 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
+ 			      BIT(offset));
++	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
+ 
  	return 0;
  }
- 
 
 
