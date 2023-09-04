@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A292B791D1A
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBD4B791D0A
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345421AbjIDSfE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:35:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53314 "EHLO
+        id S243850AbjIDSeV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:34:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242766AbjIDSfE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:04 -0400
+        with ESMTP id S1345095AbjIDSeV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:21 -0400
 Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A30BCDB
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:01 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23453CFD
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CD1AD6199A
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:00 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC980C433C8;
-        Mon,  4 Sep 2023 18:34:59 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id B5F1761999
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC0B3C433C8;
+        Mon,  4 Sep 2023 18:34:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852500;
-        bh=uOl8bCqQp8PKjdS9X2+5MsGUoeyiQSqC5HOShuKtQsQ=;
+        s=korg; t=1693852456;
+        bh=qPv+J2MtLhc2sW9xiEiFXcH60bYQCFjr845EZ9jl1UY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0ZTvOdbA+Kqaofa3aC0EfK62LMn+uFbJ8py7z2PEMi0U4TWqKwn/MTGxRBvoXUGO1
-         Y/GRKFWXVrr9kDiEEWknozvpmYQd7iM09s70VledrtzRn/Ib5NGWXMmVILfy8Ff3PE
-         gdfnz8CHgdqEf4Ot3wYAWt2Kg8RQrhWJJxet4QVQ=
+        b=qdXYaE45wPWPSsz1tNrBFLCe4/yUa4UFx41dGFXmm+RVIX45nTP0U+Dva0YDLODbi
+         c6VZtjQE+vbuMWmAI1dBX+6NRQRdjYn8+h0JJl5QaEhhNAIgvRUwRUabHfcKNVBmcU
+         Z5rKRkA+htXI20sdrq2LvPqKTAod2nrk4tSehMeg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rajendra Nayak <quic_rjendra@quicinc.com>,
-        Matthias Kaehlcke <mka@chromium.org>,
-        Johan Hovold <johan+linaro@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>
-Subject: [PATCH 6.1 21/31] serial: qcom-geni: fix opp vote on shutdown
+        patches@lists.linux.dev, "Angus Ainslie (Purism)" <angus@akkea.ca>,
+        Christian Bach <christian.bach@scs.ch>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Fabio Estevam <festevam@denx.de>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.4 31/32] usb: typec: tcpci: clear the fault status bit
 Date:   Mon,  4 Sep 2023 19:30:29 +0100
-Message-ID: <20230904182948.052674627@linuxfoundation.org>
+Message-ID: <20230904182949.317789509@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,62 +58,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Johan Hovold <johan+linaro@kernel.org>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-commit 8ece7b754bc34ffd7fcc8269ccb9128e72ca76d8 upstream.
+commit 23e60c8daf5ec2ab1b731310761b668745fcf6ed upstream.
 
-The operating-performance-point vote needs to be dropped when shutting
-down the port to avoid wasting power by keeping resources like power
-domains in an unnecessarily high performance state (e.g. when a UART
-connected Bluetooth controller is not in use).
+According the "USB Type-C Port Controller Interface Specification v2.0"
+the TCPC sets the fault status register bit-7
+(AllRegistersResetToDefault) once the registers have been reset to
+their default values.
 
-Fixes: a5819b548af0 ("tty: serial: qcom_geni_serial: Use OPP API to set clk/perf state")
-Cc: stable@vger.kernel.org      # 5.9
-Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
-Cc: Matthias Kaehlcke <mka@chromium.org>
-Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
-Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230714130214.14552-2-johan+linaro@kernel.org
+This triggers an alert(-irq) on PTN5110 devices albeit we do mask the
+fault-irq, which may cause a kernel hang. Fix this generically by writing
+a one to the corresponding bit-7.
+
+Cc: stable@vger.kernel.org
+Fixes: 74e656d6b055 ("staging: typec: Type-C Port Controller Interface driver (tcpci)")
+Reported-by: "Angus Ainslie (Purism)" <angus@akkea.ca>
+Closes: https://lore.kernel.org/all/20190508002749.14816-2-angus@akkea.ca/
+Reported-by: Christian Bach <christian.bach@scs.ch>
+Closes: https://lore.kernel.org/regressions/ZR0P278MB07737E5F1D48632897D51AC3EB329@ZR0P278MB0773.CHEP278.PROD.OUTLOOK.COM/t/
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230816172502.1155079-1-festevam@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/qcom_geni_serial.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/usb/typec/tcpm/tcpci.c |    4 ++++
+ include/linux/usb/tcpci.h      |    1 +
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -129,6 +129,7 @@ struct qcom_geni_serial_port {
- 	u32 tx_fifo_width;
- 	u32 rx_fifo_depth;
- 	bool setup;
-+	unsigned long clk_rate;
- 	int (*handle_rx)(struct uart_port *uport, u32 bytes, bool drop);
- 	unsigned int baud;
- 	void *rx_fifo;
-@@ -1061,6 +1062,7 @@ static void qcom_geni_serial_set_termios
- 			baud * sampling_rate, clk_rate, clk_div);
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -602,6 +602,10 @@ static int tcpci_init(struct tcpc_dev *t
+ 	if (time_after(jiffies, timeout))
+ 		return -ETIMEDOUT;
  
- 	uport->uartclk = clk_rate;
-+	port->clk_rate = clk_rate;
- 	dev_pm_opp_set_rate(uport->dev, clk_rate);
- 	ser_clk_cfg = SER_CLK_EN;
- 	ser_clk_cfg |= clk_div << CLK_DIV_SHFT;
-@@ -1330,10 +1332,13 @@ static void qcom_geni_serial_pm(struct u
++	ret = tcpci_write16(tcpci, TCPC_FAULT_STATUS, TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT);
++	if (ret < 0)
++		return ret;
++
+ 	/* Handle vendor init */
+ 	if (tcpci->data->init) {
+ 		ret = tcpci->data->init(tcpci, tcpci->data);
+--- a/include/linux/usb/tcpci.h
++++ b/include/linux/usb/tcpci.h
+@@ -103,6 +103,7 @@
+ #define TCPC_POWER_STATUS_SINKING_VBUS	BIT(0)
  
- 	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF) {
- 		geni_icc_enable(&port->se);
-+		if (port->clk_rate)
-+			dev_pm_opp_set_rate(uport->dev, port->clk_rate);
- 		geni_se_resources_on(&port->se);
- 	} else if (new_state == UART_PM_STATE_OFF &&
- 			old_state == UART_PM_STATE_ON) {
- 		geni_se_resources_off(&port->se);
-+		dev_pm_opp_set_rate(uport->dev, 0);
- 		geni_icc_disable(&port->se);
- 	}
- }
+ #define TCPC_FAULT_STATUS		0x1f
++#define TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT BIT(7)
+ 
+ #define TCPC_ALERT_EXTENDED		0x21
+ 
 
 
