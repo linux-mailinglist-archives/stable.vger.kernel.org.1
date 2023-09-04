@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA0F6791D2F
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:36:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 17C20791D1F
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241941AbjIDSgE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34494 "EHLO
+        id S241422AbjIDSfS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:35:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244355AbjIDSgE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:36:04 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 053B3CFD
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:59 -0700 (PDT)
+        with ESMTP id S244040AbjIDSfS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:18 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED388B2
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 5EB59CE0D97
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:57 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 500BBC433C7;
-        Mon,  4 Sep 2023 18:35:55 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 8320A619A3
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:14 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9913AC433C7;
+        Mon,  4 Sep 2023 18:35:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852555;
-        bh=D1M75R9RoVXwLz+mwAUonWEFESUioxM2yYwcib54U68=;
+        s=korg; t=1693852514;
+        bh=nmENlKBYg/DefFnU74uPsUqtHHL5MEvsMQx2mkPsmpc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BXmB+G1cHHHOMr5iVCWESewdxJIcuFqoTVJLbb/tAJQGuoKqPNGz2h9Y9T/kJrWuf
-         uq4TkYUTLZncqHjoAEI/E9qZKMx5nhDjPiF6pcWWeLKI4XXaywdWioxJg2WB6BkpCL
-         LkauczL3FJAX3KxdJn5fK/dFJbKvsggiJLwJPDYs=
+        b=x1zKE6RwC2MRHSTo5HQYLGu817Bf0ZV8ibmn5h0NGEx7joNE296BODfb6r0NLisU5
+         lb457hHcs37QCsOnESJ43tGJlQJWn4FZCXMZsliOYW+KPBXetRY9z/lyJ9lwIlEPxj
+         ClDzPkKpylHcfvdwFhreFpGReLRAXhXvxQUhmQCI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        zdi-disclosures@trendmicro.com
-Subject: [PATCH 5.15 02/28] ksmbd: fix wrong DataOffset validation of create context
-Date:   Mon,  4 Sep 2023 19:30:33 +0100
-Message-ID: <20230904182945.298741789@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.1 26/31] tcpm: Avoid soft reset when partner does not support get_status
+Date:   Mon,  4 Sep 2023 19:30:34 +0100
+Message-ID: <20230904182948.260874246@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
-References: <20230904182945.178705038@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,37 +56,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit 17d5b135bb720832364e8f55f6a887a3c7ec8fdb upstream.
+commit 78e0ea4277546debf7e96797ac3b768539cc44f6 upstream.
 
-If ->DataOffset of create context is 0, DataBuffer size is not correctly
-validated. This patch change wrong validation code and consider tag
-length in request.
+When partner does not support get_status message, tcpm right now
+responds with soft reset message. This causes PD renegotiation to
+happen and resets PPS link. Avoid soft resetting the link when
+partner does not support get_status message to mitigate PPS resets.
+
+[  208.926752] Setting voltage/current limit 9500 mV 2450 mA
+[  208.930407] set_auto_vbus_discharge_threshold mode:3 pps_active:y vbus:9500 ret:0
+[  208.930418] state change SNK_TRANSITION_SINK -> SNK_READY [rev3 POWER_NEGOTIATION]
+[  208.930455] AMS POWER_NEGOTIATION finished
+
+// ALERT message from the Source
+[  213.948442] PD RX, header: 0x19a6 [1]
+[  213.948451] state change SNK_READY -> GET_STATUS_SEND [rev3 GETTING_SOURCE_SINK_STATUS]
+[  213.948457] PD TX, header: 0x492
+[  213.950402] PD TX complete, status: 0
+[  213.950427] pending state change GET_STATUS_SEND -> GET_STATUS_SEND_TIMEOUT @ 60 ms [rev3 GETTING_SOURCE_SINK_STATUS]
+
+// NOT_SUPPORTED from the Source
+[  213.959954] PD RX, header: 0xbb0 [1]
+
+// sink sends SOFT_RESET
+[  213.959958] state change GET_STATUS_SEND -> SNK_SOFT_RESET [rev3 GETTING_SOURCE_SINK_STATUS]
+[  213.959962] AMS GETTING_SOURCE_SINK_STATUS finished
+[  213.959964] AMS SOFT_RESET_AMS start
+[  213.959966] state change SNK_SOFT_RESET -> AMS_START [rev3 SOFT_RESET_AMS]
+[  213.959969] state change AMS_START -> SOFT_RESET_SEND [rev3 SOFT_RESET_AMS]
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21824
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: 8dea75e11380 ("usb: typec: tcpm: Protocol Error handling")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230820044449.1005889-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/ksmbd/oplock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/fs/ksmbd/oplock.c
-+++ b/fs/ksmbd/oplock.c
-@@ -1485,7 +1485,7 @@ struct create_context *smb2_find_context
- 		    name_len < 4 ||
- 		    name_off + name_len > cc_len ||
- 		    (value_off & 0x7) != 0 ||
--		    (value_off && (value_off < name_off + name_len)) ||
-+		    (value_len && value_off < name_off + (name_len < 8 ? 8 : name_len)) ||
- 		    ((u64)value_off + value_len > cc_len))
- 			return ERR_PTR(-EINVAL);
- 
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2747,6 +2747,13 @@ static void tcpm_pd_ctrl_request(struct
+ 			port->sink_cap_done = true;
+ 			tcpm_set_state(port, ready_state(port), 0);
+ 			break;
++		/*
++		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
++		 * prevent redundant power re-negotiation
++		 */
++		case GET_STATUS_SEND:
++			tcpm_set_state(port, ready_state(port), 0);
++			break;
+ 		case SRC_READY:
+ 		case SNK_READY:
+ 			if (port->vdm_state > VDM_STATE_READY) {
 
 
