@@ -2,118 +2,142 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0378791D43
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:36:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9887791D98
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 21:30:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348148AbjIDSgy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:36:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58134 "EHLO
+        id S231172AbjIDTan (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 15:30:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245223AbjIDSgy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:36:54 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D29BD9E
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:36:50 -0700 (PDT)
+        with ESMTP id S232664AbjIDTa3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 15:30:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E239C197;
+        Mon,  4 Sep 2023 12:30:24 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 38C7DCE0D97
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:36:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30B1EC433C8;
-        Mon,  4 Sep 2023 18:36:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852607;
-        bh=wae8oRWCUfyLmG08ax0nOWDdbodyrHL9sfmdv/SRmYU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XHPClUmD9z9BdJukiP7z4d8BWiOWFDAPFZ8M8X0kBh7/mugJZNqlPSUjqsI8JJ38z
-         zeiJYErl5lhFc/qaiGFwtYSB4FF/rDY/DOdHKgkS+Cpb5HFTKMbw3Vno+DW9pwC2H/
-         FQv/+zP7lNlnTnnCuQ6e8O2UnP0N2v9rzQpkcOX0=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     stable@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Angus Ainslie (Purism)" <angus@akkea.ca>,
-        Christian Bach <christian.bach@scs.ch>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Fabio Estevam <festevam@denx.de>,
-        Guenter Roeck <linux@roeck-us.net>
-Subject: [PATCH 5.15 28/28] usb: typec: tcpci: clear the fault status bit
-Date:   Mon,  4 Sep 2023 19:30:59 +0100
-Message-ID: <20230904182946.552737588@linuxfoundation.org>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
-References: <20230904182945.178705038@linuxfoundation.org>
-User-Agent: quilt/0.67
-X-stable: review
-X-Patchwork-Hint: ignore
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9B22EB80F4B;
+        Mon,  4 Sep 2023 19:30:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49755C433C8;
+        Mon,  4 Sep 2023 19:30:22 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1693855822;
+        bh=KAXqIdsJ4MWqpglVN2x0udyPOU08vRRH/RZh/bp6tXA=;
+        h=Date:To:From:Subject:From;
+        b=aHHLqI2qdBDbGKj6FjBsW5k/+2yuiAQcosmYMmemQSTzZ59M5vgED2JrFv5pOlFqL
+         TuA8mSMDV8OZUv/aDb8Jevhj0Pi4RuWhjEzhcgciP3Wdpn8pKxrHNk0cwQKOmI7ImW
+         5kwRbbX/vTOH+jNDEIm9x+8o6NlXXf6juBk4Nyus=
+Date:   Mon, 04 Sep 2023 12:30:21 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org, urezki@gmail.com,
+        thunder.leizhen@huaweicloud.com, stable@vger.kernel.org,
+        qiang.zhang1211@gmail.com, paulmck@kernel.org,
+        joel@joelfernandes.org, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: + mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch added to mm-hotfixes-unstable branch
+Message-Id: <20230904193022.49755C433C8@smtp.kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
 
-------------------
+The patch titled
+     Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+has been added to the -mm mm-hotfixes-unstable branch.  Its filename is
+     mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+This patch will shortly appear at
+     https://git.kernel.org/pub/scm/linux/kernel/git/akpm/25-new.git/tree/patches/mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
 
-commit 23e60c8daf5ec2ab1b731310761b668745fcf6ed upstream.
+This patch will later appear in the mm-hotfixes-unstable branch at
+    git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-According the "USB Type-C Port Controller Interface Specification v2.0"
-the TCPC sets the fault status register bit-7
-(AllRegistersResetToDefault) once the registers have been reset to
-their default values.
+Before you just go and hit "reply", please:
+   a) Consider who else should be cc'ed
+   b) Prefer to cc a suitable mailing list as well
+   c) Ideally: find the original patch on the mailing list and do a
+      reply-to-all to that, adding suitable additional cc's
 
-This triggers an alert(-irq) on PTN5110 devices albeit we do mask the
-fault-irq, which may cause a kernel hang. Fix this generically by writing
-a one to the corresponding bit-7.
+*** Remember to use Documentation/process/submit-checklist.rst when testing your code ***
 
-Cc: stable@vger.kernel.org
-Fixes: 74e656d6b055 ("staging: typec: Type-C Port Controller Interface driver (tcpci)")
-Reported-by: "Angus Ainslie (Purism)" <angus@akkea.ca>
-Closes: https://lore.kernel.org/all/20190508002749.14816-2-angus@akkea.ca/
-Reported-by: Christian Bach <christian.bach@scs.ch>
-Closes: https://lore.kernel.org/regressions/ZR0P278MB07737E5F1D48632897D51AC3EB329@ZR0P278MB0773.CHEP278.PROD.OUTLOOK.COM/t/
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230816172502.1155079-1-festevam@gmail.com
-Signed-off-by: Fabio Estevam <festevam@denx.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+The -mm tree is included into linux-next via the mm-everything
+branch at git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+and is updated there every 2-3 working days
+
+------------------------------------------------------
+From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+Date: Mon, 4 Sep 2023 18:08:04 +0000
+
+It is unsafe to dump vmalloc area information when trying to do so from
+some contexts.  Add a safer trylock version of the same function to do a
+best-effort VMA finding and use it from vmalloc_dump_obj().
+
+[applied test robot feedback on unused function fix.]
+[applied Uladzislau feedback on locking.]
+Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernandes.org
+Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
- drivers/usb/typec/tcpm/tcpci.c |    4 ++++
- include/linux/usb/tcpci.h      |    1 +
- 2 files changed, 5 insertions(+)
 
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -615,6 +615,10 @@ static int tcpci_init(struct tcpc_dev *t
- 	if (time_after(jiffies, timeout))
- 		return -ETIMEDOUT;
- 
-+	ret = tcpci_write16(tcpci, TCPC_FAULT_STATUS, TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT);
-+	if (ret < 0)
-+		return ret;
+ mm/vmalloc.c |   26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+--- a/mm/vmalloc.c~mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug
++++ a/mm/vmalloc.c
+@@ -4278,14 +4278,32 @@ void pcpu_free_vm_areas(struct vm_struct
+ #ifdef CONFIG_PRINTK
+ bool vmalloc_dump_obj(void *object)
+ {
+-	struct vm_struct *vm;
+ 	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
++	const void *caller;
++	struct vm_struct *vm;
++	struct vmap_area *va;
++	unsigned long addr;
++	unsigned int nr_pages;
 +
- 	/* Handle vendor init */
- 	if (tcpci->data->init) {
- 		ret = tcpci->data->init(tcpci, tcpci->data);
---- a/include/linux/usb/tcpci.h
-+++ b/include/linux/usb/tcpci.h
-@@ -103,6 +103,7 @@
- #define TCPC_POWER_STATUS_SINKING_VBUS	BIT(0)
++	if (!spin_trylock(&vmap_area_lock))
++		return false;
++	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
++	if (!va) {
++		spin_unlock(&vmap_area_lock);
++		return false;
++	}
  
- #define TCPC_FAULT_STATUS		0x1f
-+#define TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT BIT(7)
- 
- #define TCPC_ALERT_EXTENDED		0x21
- 
+-	vm = find_vm_area(objp);
+-	if (!vm)
++	vm = va->vm;
++	if (!vm) {
++		spin_unlock(&vmap_area_lock);
+ 		return false;
++	}
++	addr = (unsigned long)vm->addr;
++	caller = vm->caller;
++	nr_pages = vm->nr_pages;
++	spin_unlock(&vmap_area_lock);
+ 	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+-		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
++		nr_pages, addr, caller);
+ 	return true;
+ }
+ #endif
+_
 
+Patches currently in -mm which might be from joel@joelfernandes.org are
+
+mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
 
