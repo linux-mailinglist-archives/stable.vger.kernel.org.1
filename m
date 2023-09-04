@@ -2,47 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 76B9D791CDB
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EE1CD791D26
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239998AbjIDScV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:32:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33124 "EHLO
+        id S238284AbjIDSfj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:35:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44452 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242920AbjIDScU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:20 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430F6CFB
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:17 -0700 (PDT)
+        with ESMTP id S235962AbjIDSfj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:39 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 351D39E
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:36 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 057B5B80EF6
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C501C433C8;
-        Mon,  4 Sep 2023 18:32:14 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id DC6F0B80E64
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 264B3C433C7;
+        Mon,  4 Sep 2023 18:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852334;
-        bh=2+qURPBgHJnqYVBXZ0u3jugQWKPi6ZrwEo2q7HAYwNE=;
+        s=korg; t=1693852533;
+        bh=uAyA6GhJDhfvnQSa/zJFPBohN0zANS0YLosAgdDSSxY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h1RlEwKl2bUxvY2B9tJTCdFmaC1cpNK+zuc6d+Lpa1u0AGfdaryF1ODVfIuDeWQqR
-         V7fL0C5fNRBthRX/8HIYgw6YmnKWNmYBg5xx6E+Syrm1Res7ofCdluGQVbBfR4KUeE
-         21vEFx5No+RY531Tjjg60TpAkef+vinH2tkUgwzQ=
+        b=j1WHTNcvl2F7XZz0FfLFH1yX9I4KBUIDYMXvEfIsYA/9jTbEa/3XRJgx93j59yxgh
+         8y74BX4mSSZIWwEe5H7dbFL6EDHeF+lc7ZUsW5Ms8gHgePLeCbpKIet2TeTmzf3v3C
+         dpne1aUqOUSE0Dmdy5Xefaya3aWUDcQHW02VuXqM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.5 30/34] dt-bindings: sc16is7xx: Add property to change GPIO function
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Joshua Kinard <kumba@gentoo.org>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.1 09/31] rtc: ds1685: use EXPORT_SYMBOL_GPL for ds1685_rtc_poweroff
 Date:   Mon,  4 Sep 2023 19:30:17 +0100
-Message-ID: <20230904182950.012208411@linuxfoundation.org>
+Message-ID: <20230904182947.456489965@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
-References: <20230904182948.594404081@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,106 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 4cf478dc5d707e56aefa258c049872eff054a353 upstream.
+commit 95e7ebc6823170256a8ce19fad87912805bfa001 upstream.
 
-Some variants in this series of UART controllers have GPIO pins that
-are shared between GPIO and modem control lines.
+ds1685_rtc_poweroff is only used externally via symbol_get, which was
+only ever intended for very internal symbols like this one.  Use
+EXPORT_SYMBOL_GPL for it so that symbol_get can enforce only being used
+on EXPORT_SYMBOL_GPL symbols.
 
-The pin mux mode (GPIO or modem control lines) can be set for each
-ports (channels) supported by the variant.
-
-This adds a property to the device tree to set the GPIO pin mux to
-modem control lines on selected ports if needed.
-
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20230807214556.540627-4-hugo@hugovil.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Joshua Kinard <kumba@gentoo.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt |   46 +++++++++++++
- 1 file changed, 46 insertions(+)
+ drivers/rtc/rtc-ds1685.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-+++ b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-@@ -23,6 +23,9 @@ Optional properties:
-     1 = active low.
- - irda-mode-ports: An array that lists the indices of the port that
- 		   should operate in IrDA mode.
-+- nxp,modem-control-line-ports: An array that lists the indices of the port that
-+				should have shared GPIO lines configured as
-+				modem control lines.
+--- a/drivers/rtc/rtc-ds1685.c
++++ b/drivers/rtc/rtc-ds1685.c
+@@ -1434,7 +1434,7 @@ ds1685_rtc_poweroff(struct platform_devi
+ 		unreachable();
+ 	}
+ }
+-EXPORT_SYMBOL(ds1685_rtc_poweroff);
++EXPORT_SYMBOL_GPL(ds1685_rtc_poweroff);
+ /* ----------------------------------------------------------------------- */
  
- Example:
-         sc16is750: sc16is750@51 {
-@@ -35,6 +38,26 @@ Example:
-                 #gpio-cells = <2>;
-         };
  
-+	sc16is752: sc16is752@53 {
-+		compatible = "nxp,sc16is752";
-+		reg = <0x53>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
-+		gpio-controller; /* Port 0 as GPIOs */
-+		#gpio-cells = <2>;
-+	};
-+
-+	sc16is752: sc16is752@54 {
-+		compatible = "nxp,sc16is752";
-+		reg = <0x54>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
-+	};
-+
- * spi as bus
- 
- Required properties:
-@@ -59,6 +82,9 @@ Optional properties:
-     1 = active low.
- - irda-mode-ports: An array that lists the indices of the port that
- 		   should operate in IrDA mode.
-+- nxp,modem-control-line-ports: An array that lists the indices of the port that
-+				should have shared GPIO lines configured as
-+				modem control lines.
- 
- Example:
- 	sc16is750: sc16is750@0 {
-@@ -70,3 +96,23 @@ Example:
- 		gpio-controller;
- 		#gpio-cells = <2>;
- 	};
-+
-+	sc16is752: sc16is752@1 {
-+		compatible = "nxp,sc16is752";
-+		reg = <1>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
-+		gpio-controller; /* Port 0 as GPIOs */
-+		#gpio-cells = <2>;
-+	};
-+
-+	sc16is752: sc16is752@2 {
-+		compatible = "nxp,sc16is752";
-+		reg = <2>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
-+	};
 
 
