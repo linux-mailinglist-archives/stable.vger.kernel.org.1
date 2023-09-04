@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 870D8790F99
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 03:25:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 41986790FE9
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 04:08:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233984AbjIDBZR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 3 Sep 2023 21:25:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48900 "EHLO
+        id S231822AbjIDCIs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 3 Sep 2023 22:08:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230418AbjIDBZQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 21:25:16 -0400
-Received: from TWMBX03.aspeed.com (mail.aspeedtech.com [211.20.114.72])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED7EBF0;
-        Sun,  3 Sep 2023 18:25:09 -0700 (PDT)
-Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX03.aspeed.com
- (192.168.0.62) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Mon, 4 Sep
- 2023 09:25:06 +0800
-Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
- (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
- Transport; Mon, 4 Sep 2023 09:25:06 +0800
-From:   Tommy Huang <tommy_huang@aspeedtech.com>
-To:     <brendan.higgins@linux.dev>, <andi.shyti@kernel.org>,
-        <p.zabel@pengutronix.de>, <linux-i2c@vger.kernel.org>,
-        <openbmc@lists.ozlabs.org>
-CC:     <benh@kernel.crashing.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-aspeed@lists.ozlabs.org>, <jae.hyun.yoo@linux.intel.com>,
-        <linux-kernel@vger.kernel.org>, <BMC-SW@aspeedtech.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH] i2c: aspeed: Reset the i2c controller when timeout occurs
-Date:   Mon, 4 Sep 2023 09:25:05 +0800
-Message-ID: <20230904012505.340455-1-tommy_huang@aspeedtech.com>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S230319AbjIDCIr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 3 Sep 2023 22:08:47 -0400
+X-Greylist: delayed 162 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 03 Sep 2023 19:08:43 PDT
+Received: from mo-csw-fb.securemx.jp (mo-csw-fb1801.securemx.jp [210.130.202.160])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CE3AA9
+        for <stable@vger.kernel.org>; Sun,  3 Sep 2023 19:08:43 -0700 (PDT)
+Received: by mo-csw-fb.securemx.jp (mx-mo-csw-fb1801) id 384261En1501091; Mon, 4 Sep 2023 11:06:01 +0900
+Received: by mo-csw.securemx.jp (mx-mo-csw1800) id 38425ePM3329831; Mon, 4 Sep 2023 11:05:41 +0900
+X-Iguazu-Qid: 2yAaEO0URQNLxWl940
+X-Iguazu-QSIG: v=2; s=0; t=1693793140; q=2yAaEO0URQNLxWl940; m=geEFo7xm1tX5fsfk8eN+5BnXb138i6Mf0xCJVcwY+go=
+Received: from imx12-a.toshiba.co.jp ([38.106.60.135])
+        by relay.securemx.jp (mx-mr1803) id 38425dwn1923936
+        (version=TLSv1.2 cipher=ECDHE-RSA-AES128-GCM-SHA256 bits=128 verify=NOT);
+        Mon, 4 Sep 2023 11:05:39 +0900
+From:   Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+To:     stable@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, sashal@kernel.org,
+        Yang Li <yang.lee@linux.alibaba.com>,
+        Abaci Robot <abaci@linux.alibaba.com>,
+        Steve French <stfrench@microsoft.com>,
+        Nobuhiro Iwamatsu <nobuhiro1.iwamatsu@toshiba.co.jp>
+Subject: [PATCH for 5.4, 5.10, 5.15] cifs: Remove duplicated include in cifsglob.h
+Date:   Mon,  4 Sep 2023 11:05:29 +0900
+X-TSB-HOP2: ON
+Message-Id: <20230904020529.343589-1-nobuhiro1.iwamatsu@toshiba.co.jp>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-Content-Transfer-Encoding: 7BIT
-Content-Type:   text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_FAIL,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -45,42 +46,35 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Reset the i2c controller when an i2c transfer timeout occurs.
-The remaining interrupts and device should be reset to avoid
-unpredictable controller behavior.
+From: Yang Li <yang.lee@linux.alibaba.com>
 
-Fixes: 2e57b7cebb98 ("i2c: aspeed: Add multi-master use case support")
-Cc: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
-Cc: <stable@vger.kernel.org> # v5.1+
+commit d74f4a3f6d88a2416564bc6bf937e423a4ae8f8e upstream.
 
-Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+./fs/cifs/cifsglob.h: linux/scatterlist.h is included more than once.
+
+Link: https://bugzilla.openanolis.cn/show_bug.cgi?id=3459
+Fixes: f7f291e14dde ("cifs: fix oops during encryption")
+Reported-by: Abaci Robot <abaci@linux.alibaba.com>
+Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
+Signed-off-by: Steve French <stfrench@microsoft.com>
+Signed-off-by: Nobuhiro Iwamatsu (CIP) <nobuhiro1.iwamatsu@toshiba.co.jp>
 ---
- drivers/i2c/busses/i2c-aspeed.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ fs/cifs/cifsglob.h | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
-index 2e5acfeb76c8..5a416b39b818 100644
---- a/drivers/i2c/busses/i2c-aspeed.c
-+++ b/drivers/i2c/busses/i2c-aspeed.c
-@@ -698,13 +698,16 @@ static int aspeed_i2c_master_xfer(struct i2c_adapter *adap,
- 
- 	if (time_left == 0) {
- 		/*
--		 * If timed out and bus is still busy in a multi master
--		 * environment, attempt recovery at here.
-+		 * In a multi-master setup, if a timeout occurs, attempt
-+		 * recovery. But if the bus is idle, we still need to reset the
-+		 * i2c controller to clear the remaining interrupts.
- 		 */
- 		if (bus->multi_master &&
- 		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
- 		     ASPEED_I2CD_BUS_BUSY_STS))
- 			aspeed_i2c_recover_bus(bus);
-+		else
-+			aspeed_i2c_reset(bus);
- 
- 		/*
- 		 * If timed out and the state is still pending, drop the pending
+diff --git a/fs/cifs/cifsglob.h b/fs/cifs/cifsglob.h
+index 92a7628560ccb0..80b570026c2c0d 100644
+--- a/fs/cifs/cifsglob.h
++++ b/fs/cifs/cifsglob.h
+@@ -29,7 +29,6 @@
+ #include "cifs_fs_sb.h"
+ #include "cifsacl.h"
+ #include <crypto/internal/hash.h>
+-#include <linux/scatterlist.h>
+ #include <uapi/linux/cifs/cifs_mount.h>
+ #include "smb2pdu.h"
+ #include "smb2glob.h"
 -- 
-2.25.1
+2.40.1
+
 
