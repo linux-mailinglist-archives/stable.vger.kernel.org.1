@@ -2,165 +2,147 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F3A2B791C55
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:08:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4EFD7791C9A
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:13:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353395AbjIDSIP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:08:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45578 "EHLO
+        id S231133AbjIDSN2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:13:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243473AbjIDSIP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:08:15 -0400
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0030E6
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:08:11 -0700 (PDT)
-Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-7955636f500so66673339f.1
-        for <stable@vger.kernel.org>; Mon, 04 Sep 2023 11:08:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1693850891; x=1694455691; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0tEFwq12UF5zCmmOpDsVAwQyIeVifd7dDTHpnacK0UQ=;
-        b=PTcBrWDTKRVwDJCh5irhuLEFhYUxsCnlwhsHqwYC9Sp0jahhxdX6GwDHbmTDHsvkSz
-         8U3jcti9oj7DdR42hKGOba0N9st/4c7q5TihNvTLd9BO7OTUdpc0X0dPcdNJ+tUusclR
-         MvMPCECcle8HeKPBRT9GibPeVCwbLkQTGWmv4=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693850891; x=1694455691;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0tEFwq12UF5zCmmOpDsVAwQyIeVifd7dDTHpnacK0UQ=;
-        b=eVkAb2OAmj5N4pdRJ+PYXDzn6k5sbaRG801vHXV0Nk58j7rF1HgRx17B9B5bRcgp/m
-         8ODL8R50euPZ0Gv1fc0umc12JBJIOVasEhW4x8WqJsHemCla9/k++ng4yz0jC9OxCp/5
-         SNJBHlHlmaL0keADd3Ja8g8/HNuU1IIiKVhYXEkxrtsYWZ4r7eNHtD0CWP0uOJcSlOYP
-         1Kn3fu9/914UoWc3pMEANJWeBaavhDd3BbzT2BwScOKWqs2PcR9QRprUNvbfXse1NU8U
-         SsR5EO2+bFWQwQ3RiwNhftm1qNU6rQKX594NnnN38ZvdqnVkYC6l9v+0jC9J2TciqwVs
-         p95w==
-X-Gm-Message-State: AOJu0Yw1N8q4a2+V5bMJ5dgNPx2C/vMBq6TM20vZ21kSJnMqbM/ofEkL
-        EVlnUKAHJMgbiEOh6hQgritCCA==
-X-Google-Smtp-Source: AGHT+IEHZt1WRuZqA2Wmfc55FNOuRsD84phTBzjghuiQXLfZnRv1pVitPty4syUUp7DZ6Ov+pU33MA==
-X-Received: by 2002:a5e:a618:0:b0:794:c9a2:5fe3 with SMTP id q24-20020a5ea618000000b00794c9a25fe3mr12586673ioi.4.1693850891310;
-        Mon, 04 Sep 2023 11:08:11 -0700 (PDT)
-Received: from joelboxx5.corp.google.com (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id g15-20020a02b70f000000b0042bb13cb80fsm3520216jam.120.2023.09.04.11.08.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Sep 2023 11:08:10 -0700 (PDT)
-From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
-To:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>
-Cc:     Zqiang <qiang.zhang1211@gmail.com>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        rcu@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
-        stable@vger.kernel.org, Joel Fernandes <joel@joelfernandes.org>,
-        linux-mm@kvack.org
-Subject: [PATCH v3 2/2] rcu: Dump vmalloc memory info safely
-Date:   Mon,  4 Sep 2023 18:08:05 +0000
-Message-ID: <20230904180806.1002832-2-joel@joelfernandes.org>
-X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
-In-Reply-To: <20230904180806.1002832-1-joel@joelfernandes.org>
-References: <20230904180806.1002832-1-joel@joelfernandes.org>
+        with ESMTP id S229959AbjIDSN1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:13:27 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C00A91712;
+        Mon,  4 Sep 2023 11:12:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D451961862;
+        Mon,  4 Sep 2023 18:12:17 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B968BC433C7;
+        Mon,  4 Sep 2023 18:12:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693851137;
+        bh=giqsozg8yzFsr9l35aF4ia0ZabVHrLqwjYV8WecnZiw=;
+        h=From:To:Cc:Subject:Date:From;
+        b=hfk1W9JfuxXT30Bmh0QGLo7Q6ZN8QHP1h7lo0+PkEYgbV+P0fyZupCI5PzjzzfvJo
+         bA1cc+XFws0Kb3tzwtk6RAFDWHfcBJQxOEDY8o9py0b/qPWymEvXE0UATbOfqXyVcC
+         ak51nGuh9NnWcNqbKfFqSaSNZRHJ0u52+sjKeymQ43jNKrtd1R/amFj0U5WanDxXUM
+         V90E7lsNyDOUjKVkTpZIEtYT5WGmof/zIz1BADG6TusZDf+14NHIp9XbFZdx5gQiSv
+         jTx7LmRD2R+BnECfHiO0WLTKglGyDS1GexDvdF9sipdj/nuj3SM3rbGEbG5my0nqtG
+         3+HEcypemvb6Q==
+From:   Jarkko Sakkinen <jarkko@kernel.org>
+To:     linux-integrity@vger.kernel.org
+Cc:     Jarkko Sakkinen <jarkko@kernel.org>, stable@vger.kernel.org,
+        Todd Brandt <todd.e.brandt@intel.com>,
+        Patrick Steinhardt <ps@pks.im>,
+        Raymond Jay Golo <rjgolo@gmail.com>,
+        Ronan Pigott <ronan@rjp.ie>,
+        Jerry Snitselaar <jsnitsel@redhat.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        linux-kernel@vger.kernel.org (open list)
+Subject: [PATCH v4] tpm: Enable hwrng only for Pluton on AMD CPUs
+Date:   Mon,  4 Sep 2023 21:12:10 +0300
+Message-Id: <20230822231510.2263255-1-jarkko@kernel.org>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
+Content-Type: text/plain; charset="utf-8"
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+X-Spam-Status: No, score=-7.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_HI,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zqiang <qiang.zhang1211@gmail.com>
+The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
+all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
+reported systems the TPM doesn't reply at bootup and returns back the
+command code. This makes the TPM fail probe on Lenovo Legion Y540 laptop.
 
-Currently, for double invoke call_rcu(), will dump rcu_head objects
-memory info, if the objects is not allocated from the slab allocator,
-the vmalloc_dump_obj() will be invoke and the vmap_area_lock spinlock
-need to be held, since the call_rcu() can be invoked in interrupt context,
-therefore, there is a possibility of spinlock deadlock scenarios.
+Since only Microsoft Pluton is the only known combination of AMD CPU and
+fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
+aware of this, print also info message to the klog.
 
-And in Preempt-RT kernel, the rcutorture test also trigger the following
-lockdep warning:
-
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
-preempt_count: 1, expected: 0
-RCU nest depth: 1, expected: 1
-3 locks held by swapper/0/1:
- #0: ffffffffb534ee80 (fullstop_mutex){+.+.}-{4:4}, at: torture_init_begin+0x24/0xa0
- #1: ffffffffb5307940 (rcu_read_lock){....}-{1:3}, at: rcu_torture_init+0x1ec7/0x2370
- #2: ffffffffb536af40 (vmap_area_lock){+.+.}-{3:3}, at: find_vmap_area+0x1f/0x70
-irq event stamp: 565512
-hardirqs last  enabled at (565511): [<ffffffffb379b138>] __call_rcu_common+0x218/0x940
-hardirqs last disabled at (565512): [<ffffffffb5804262>] rcu_torture_init+0x20b2/0x2370
-softirqs last  enabled at (399112): [<ffffffffb36b2586>] __local_bh_enable_ip+0x126/0x170
-softirqs last disabled at (399106): [<ffffffffb43fef59>] inet_register_protosw+0x9/0x1d0
-Preemption disabled at:
-[<ffffffffb58040c3>] rcu_torture_init+0x1f13/0x2370
-CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.5.0-rc4-rt2-yocto-preempt-rt+ #15
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-Call Trace:
- <TASK>
- dump_stack_lvl+0x68/0xb0
- dump_stack+0x14/0x20
- __might_resched+0x1aa/0x280
- ? __pfx_rcu_torture_err_cb+0x10/0x10
- rt_spin_lock+0x53/0x130
- ? find_vmap_area+0x1f/0x70
- find_vmap_area+0x1f/0x70
- vmalloc_dump_obj+0x20/0x60
- mem_dump_obj+0x22/0x90
- __call_rcu_common+0x5bf/0x940
- ? debug_smp_processor_id+0x1b/0x30
- call_rcu_hurry+0x14/0x20
- rcu_torture_init+0x1f82/0x2370
- ? __pfx_rcu_torture_leak_cb+0x10/0x10
- ? __pfx_rcu_torture_leak_cb+0x10/0x10
- ? __pfx_rcu_torture_init+0x10/0x10
- do_one_initcall+0x6c/0x300
- ? debug_smp_processor_id+0x1b/0x30
- kernel_init_freeable+0x2b9/0x540
- ? __pfx_kernel_init+0x10/0x10
- kernel_init+0x1f/0x150
- ret_from_fork+0x40/0x50
- ? __pfx_kernel_init+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
- </TASK>
-
-The previous patch fixes this by using the deadlock-safe best-effort
-version of find_vm_area. However, in case of failure print the fact that
-the pointer was a vmalloc pointer so that we print at least something.
-
-Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: rcu@vger.kernel.org
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
 Cc: stable@vger.kernel.org
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
+Reported-by: Patrick Steinhardt <ps@pks.im>
+Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+Reported-by: Ronan Pigott <ronan@rjp.ie>
+Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
+Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
 ---
- mm/util.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+v4:
+* Report the victim: Lenovo Legion Y540
+* Add reported-by's back due popular request.
+v3:
+* Forgot to amend config flags.
+v2:
+* CONFIG_X86
+* Removed "Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>"
+* Removed "Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>"
+---
+ drivers/char/tpm/tpm_crb.c | 33 ++++++++-------------------------
+ 1 file changed, 8 insertions(+), 25 deletions(-)
 
-diff --git a/mm/util.c b/mm/util.c
-index dd12b9531ac4..406634f26918 100644
---- a/mm/util.c
-+++ b/mm/util.c
-@@ -1071,7 +1071,9 @@ void mem_dump_obj(void *object)
- 	if (vmalloc_dump_obj(object))
- 		return;
+diff --git a/drivers/char/tpm/tpm_crb.c b/drivers/char/tpm/tpm_crb.c
+index 65ff4d2fbe8d..ea085b14ab7c 100644
+--- a/drivers/char/tpm/tpm_crb.c
++++ b/drivers/char/tpm/tpm_crb.c
+@@ -463,28 +463,6 @@ static bool crb_req_canceled(struct tpm_chip *chip, u8 status)
+ 	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
+ }
  
--	if (virt_addr_valid(object))
-+	if (is_vmalloc_addr(object))
-+		type = "vmalloc memory";
-+	else if (virt_addr_valid(object))
- 		type = "non-slab/vmalloc memory";
- 	else if (object == NULL)
- 		type = "NULL pointer";
+-static int crb_check_flags(struct tpm_chip *chip)
+-{
+-	u32 val;
+-	int ret;
+-
+-	ret = crb_request_locality(chip, 0);
+-	if (ret)
+-		return ret;
+-
+-	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
+-	if (ret)
+-		goto release;
+-
+-	if (val == 0x414D4400U /* AMD */)
+-		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
+-
+-release:
+-	crb_relinquish_locality(chip, 0);
+-
+-	return ret;
+-}
+-
+ static const struct tpm_class_ops tpm_crb = {
+ 	.flags = TPM_OPS_AUTO_STARTUP,
+ 	.status = crb_status,
+@@ -827,9 +805,14 @@ static int crb_acpi_add(struct acpi_device *device)
+ 	if (rc)
+ 		goto out;
+ 
+-	rc = crb_check_flags(chip);
+-	if (rc)
+-		goto out;
++#ifdef CONFIG_X86
++	/* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
++	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
++	    priv->sm != ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
++		dev_info(dev, "Disabling hwrng\n");
++		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
++	}
++#endif /* CONFIG_X86 */
+ 
+ 	rc = tpm_chip_register(chip);
+ 
 -- 
-2.42.0.283.g2d96d420d3-goog
+2.39.2
 
