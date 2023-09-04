@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 70ECE791CE3
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8EC01791D0D
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244723AbjIDScn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:32:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52610 "EHLO
+        id S236087AbjIDSed (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:34:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38118 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244036AbjIDScm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:42 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DF45CCE2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:37 -0700 (PDT)
+        with ESMTP id S1345095AbjIDSeb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:31 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 086D7CE2
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:27 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 7E12C6198B
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:37 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B31DC433C7;
-        Mon,  4 Sep 2023 18:32:36 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9B6BEB80E6F
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:25 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03DFDC433C7;
+        Mon,  4 Sep 2023 18:34:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852356;
-        bh=DtWOswN7Ra1ErFw5xHmG/W/zX+RL+W2PR5Pp7hWgaxg=;
+        s=korg; t=1693852464;
+        bh=64e37i4ndX5t9oEQgDe6Np7d4UglnE3NMgn3bNf+saY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b/JAWMByc6qSI0PLv+AghCbFse0pg31ubIfJFrsB3YyuEMcR3hPjqzyjcHylaVmfM
-         wm7h4r/yeD0pmEnD/mzVLOV08HFU1kqO4sA3GXnta9t58nTfxRhtK9DJycpjiNkfke
-         HXzKBk0YNzvF65b44Ndl+P30EkV9ivK6AixYrGPE=
+        b=dgghW3HdbPby2+xztr1+bGcTJv5SANBbdCu7Q+O0DWDPN5gSJWE+7aN0J/p+DvF6k
+         XjR6vQkUxl6b+ZQMXNFEG45cJ67UNzRGUaj2E9xtOm3Ukv7VNo3dMuex+guUPIVn/K
+         F4d079f2nydvEASAkZSK45zFOk7J7po3jlAXQY74=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Eckelmann <sven@narfation.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.5 22/34] wifi: ath11k: Dont drop tx_status when peer cannot be found
+        patches@lists.linux.dev, keltargw <keltar.gw@gmail.com>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.1 01/31] erofs: ensure that the post-EOF tails are all zeroed
 Date:   Mon,  4 Sep 2023 19:30:09 +0100
-Message-ID: <20230904182949.627712680@linuxfoundation.org>
+Message-ID: <20230904182947.070801380@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
-References: <20230904182948.594404081@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 400ece6c7f346b0a30867bd00b03b5b2563d4357 upstream.
+commit e4c1cf523d820730a86cae2c6d55924833b6f7ac upstream.
 
-When a station idles for a long time, hostapd will try to send a QoS Null
-frame to the station as "poll". NL80211_CMD_PROBE_CLIENT is used for this
-purpose. And the skb will be added to ack_status_frame - waiting for a
-completion via ieee80211_report_ack_skb().
+This was accidentally fixed up in commit e4c1cf523d82 but we can't
+take the full change due to other dependancy issues, so here is just
+the actual bugfix that is needed.
 
-But when the peer was already removed before the tx_complete arrives, the
-peer will be missing. And when using dev_kfree_skb_any (instead of going
-through mac80211), the entry will stay inside ack_status_frames. This IDR
-will therefore run full after 8K request were generated for such clients.
-At this point, the access point will then just stall and not allow any new
-clients because idr_alloc() for ack_status_frame will fail.
+[Background]
 
-ieee80211_free_txskb() on the other hand will (when required) call
-ieee80211_report_ack_skb() and make sure that (when required) remove the
-entry from the ack_status_frame.
+keltargw reported an issue [1] that with mmaped I/Os, sometimes the
+tail of the last page (after file ends) is not filled with zeroes.
 
-Tested-on: IPQ6018 hw1.0 WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+The root cause is that such tail page could be wrongly selected for
+inplace I/Os so the zeroed part will then be filled with compressed
+data instead of zeroes.
 
-Fixes: 6257c702264c ("wifi: ath11k: fix tx status reporting in encap offload mode")
-Fixes: 94739d45c388 ("ath11k: switch to using ieee80211_tx_status_ext()")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230802-ath11k-ack_status_leak-v2-1-c0af729d6229@narfation.org
+A simple fix is to avoid doing inplace I/Os for such tail parts,
+actually that was already fixed upstream in commit e4c1cf523d82
+("erofs: tidy up z_erofs_do_read_page()") by accident.
+
+[1] https://lore.kernel.org/r/3ad8b469-25db-a297-21f9-75db2d6ad224@linux.alibaba.com
+
+Reported-by: keltargw <keltar.gw@gmail.com>
+Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_tx.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/erofs/zdata.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -369,7 +369,7 @@ ath11k_dp_tx_htt_tx_complete_buf(struct
- 			   "dp_tx: failed to find the peer with peer_id %d\n",
- 			    ts->peer_id);
- 		spin_unlock_bh(&ab->base_lock);
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -869,6 +869,8 @@ hitted:
+ 	cur = end - min_t(erofs_off_t, offset + end - map->m_la, end);
+ 	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
+ 		zero_user_segment(page, cur, end);
++		++spiltted;
++		tight = false;
+ 		goto next_part;
  	}
- 	spin_unlock_bh(&ab->base_lock);
-@@ -624,7 +624,7 @@ static void ath11k_dp_tx_complete_msdu(s
- 			   "dp_tx: failed to find the peer with peer_id %d\n",
- 			    ts->peer_id);
- 		spin_unlock_bh(&ab->base_lock);
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
- 	}
- 	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
+ 	if (map->m_flags & EROFS_MAP_FRAGMENT) {
 
 
