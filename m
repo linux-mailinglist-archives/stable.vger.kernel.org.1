@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1047B791D01
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8822791CE1
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241517AbjIDSeA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:34:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56516 "EHLO
+        id S244313AbjIDSch (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:32:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239229AbjIDSeA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:00 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A787CB2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:33:57 -0700 (PDT)
+        with ESMTP id S244036AbjIDSch (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:37 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B183CD7
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:34 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 0DE7CCE0F99
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:33:56 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 006DEC433C7;
-        Mon,  4 Sep 2023 18:33:53 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id B59B1B80EF6
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1799AC433C9;
+        Mon,  4 Sep 2023 18:32:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852434;
-        bh=6qVooQDnwh204JJ2OfCS1ffLdXqMVCPBfekBu1J26iA=;
+        s=korg; t=1693852351;
+        bh=ecZbuySjneIeKT5xo/xr0xRYFgYc75eFEmjBP4SfmvY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EHC7al11iqAEUCkz2h63QSZu6CPtRdoBx6XcQUZ5DDcjZW6N4GIePwILWPA7YEjFS
-         yEy81KC8gw1F0ybFZiCKG5nT1Q7eTl1fJG+rXWx8JywPprbkBrL22VYR/8SR8WwgD3
-         W+lBguoNdgi0mO5DZrO6WtbfVtQMuhlOfSl2Y424=
+        b=jyv6ftlAxr5hOVUFagXtcvWroG+mot2t+m6W4JFYlj3nGdGX5rgeVDyJ6BuM0mSVd
+         A9yG3lxPnWMjxO4/465PA41qeALUXCDR9R9lQpE7hzQ7heSA+Vq6/7ztd319tCy/Vo
+         XlmMfouPD+eOGvNz77eOhtYu5tzZkgv+mEMxG4LQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.4 08/32] net: enetc: use EXPORT_SYMBOL_GPL for enetc_phc_index
-Date:   Mon,  4 Sep 2023 19:30:06 +0100
-Message-ID: <20230904182948.274012928@linuxfoundation.org>
+        patches@lists.linux.dev, Shayne Chen <shayne.chen@mediatek.com>,
+        Deren Wu <deren.wu@mediatek.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Felix Fietkau <nbd@nbd.name>
+Subject: [PATCH 6.5 20/34] wifi: mt76: mt7921: fix skb leak by txs missing in AMSDU
+Date:   Mon,  4 Sep 2023 19:30:07 +0100
+Message-ID: <20230904182949.541342088@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
-References: <20230904182947.899158313@linuxfoundation.org>
+In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
+References: <20230904182948.594404081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,38 +57,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Deren Wu <deren.wu@mediatek.com>
 
-commit 569820befb16ffc755ab7af71f4f08cc5f68f0fe upstream.
+commit b642f4c5f3de0a8f47808d32b1ebd9c427a42a66 upstream.
 
-enetc_phc_index is only used via symbol_get, which was only ever
-intended for very internal symbols like this one.  Use EXPORT_SYMBOL_GPL
-for it so that symbol_get can enforce only being used on
-EXPORT_SYMBOL_GPL symbols.
+txs may be dropped if the frame is aggregated in AMSDU. When the problem
+shows up, some SKBs would be hold in driver to cause network stopped
+temporarily. Even if the problem can be recovered by txs timeout handling,
+mt7921 still need to disable txs in AMSDU to avoid this issue.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 163f4d22c118 ("mt76: mt7921: add MAC support")
+Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Deren Wu <deren.wu@mediatek.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_ptp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |    7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
-@@ -8,7 +8,7 @@
- #include "enetc.h"
+--- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
++++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
+@@ -495,6 +495,7 @@ void mt76_connac2_mac_write_txwi(struct
+ 				    BSS_CHANGED_BEACON_ENABLED));
+ 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
+ 					 BSS_CHANGED_FILS_DISCOVERY));
++	bool amsdu_en = wcid->amsdu;
  
- int enetc_phc_index = -1;
--EXPORT_SYMBOL(enetc_phc_index);
-+EXPORT_SYMBOL_GPL(enetc_phc_index);
+ 	if (vif) {
+ 		struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
+@@ -554,12 +555,14 @@ void mt76_connac2_mac_write_txwi(struct
+ 	txwi[4] = 0;
  
- static struct ptp_clock_info enetc_ptp_caps = {
- 	.owner		= THIS_MODULE,
+ 	val = FIELD_PREP(MT_TXD5_PID, pid);
+-	if (pid >= MT_PACKET_ID_FIRST)
++	if (pid >= MT_PACKET_ID_FIRST) {
+ 		val |= MT_TXD5_TX_STATUS_HOST;
++		amsdu_en = amsdu_en && !is_mt7921(dev);
++	}
+ 
+ 	txwi[5] = cpu_to_le32(val);
+ 	txwi[6] = 0;
+-	txwi[7] = wcid->amsdu ? cpu_to_le32(MT_TXD7_HW_AMSDU) : 0;
++	txwi[7] = amsdu_en ? cpu_to_le32(MT_TXD7_HW_AMSDU) : 0;
+ 
+ 	if (is_8023)
+ 		mt76_connac2_mac_write_txwi_8023(txwi, skb, wcid);
 
 
