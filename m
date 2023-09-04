@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 470E1791CC7
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:31:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C2318791CE9
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239390AbjIDSb0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:31:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55854 "EHLO
+        id S237384AbjIDSc5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:32:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59572 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238091AbjIDSbZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:31:25 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E526B2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:31:22 -0700 (PDT)
+        with ESMTP id S240120AbjIDSc5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:57 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D309B2
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:54 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 11E7D60BBA
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:31:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EFD3BC433C9;
-        Mon,  4 Sep 2023 18:31:20 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id D020B61989
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:53 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55A7C433C8;
+        Mon,  4 Sep 2023 18:32:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852281;
-        bh=hy3SIzgNojkFRRbn2HVtmhyjIMqhEakruqTcFgL+1Wk=;
+        s=korg; t=1693852373;
+        bh=rjikq4wDQ55f+RTG/gClM25jalKnthsg+WKHQ00cOXQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ERxqdN/dF7/2iwv23Kn9xcFQO6bc981iaGMO05khDenCk13dwMvquiegnlhjg2vX1
-         p8Y6uAcLyflLICKduTsOBhUAOkZnJc0A+Vx+18BQd/9RMGVEY3cYtMEjh03J/JIoIe
-         KgxfDXRJh3XCvNI4uDh0AK1EQoLe6QM1otZ3m/Uw=
+        b=fathZn10jS41dTaDo20cMzf+QaOWrCTklh5xI8muhj2QOyhPdLgfIU36toPbpJV7O
+         FjrCukdFsuUO4EFYC02fK+q4Sf+InBAwakiuiT//uMNL2sgg067WTIUn7NnrHTVKdn
+         HVDM84WXn5tUmO1wGfQwFmLYg0bHeKLHNzzc/nck=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 6.5 11/34] modules: only allow symbol_get of EXPORT_SYMBOL_GPL modules
-Date:   Mon,  4 Sep 2023 19:29:58 +0100
-Message-ID: <20230904182949.104100132@linuxfoundation.org>
+        patches@lists.linux.dev, keltargw <keltar.gw@gmail.com>,
+        Gao Xiang <hsiangkao@linux.alibaba.com>
+Subject: [PATCH 6.4 01/32] erofs: ensure that the post-EOF tails are all zeroed
+Date:   Mon,  4 Sep 2023 19:29:59 +0100
+Message-ID: <20230904182947.968480005@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
-References: <20230904182948.594404081@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,62 +55,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Gao Xiang <hsiangkao@linux.alibaba.com>
 
-commit 9011e49d54dcc7653ebb8a1e05b5badb5ecfa9f9 upstream.
+commit e4c1cf523d820730a86cae2c6d55924833b6f7ac upstream.
 
-It has recently come to my attention that nvidia is circumventing the
-protection added in 262e6ae7081d ("modules: inherit
-TAINT_PROPRIETARY_MODULE") by importing exports from their proprietary
-modules into an allegedly GPL licensed module and then rexporting them.
+This was accidentally fixed up in commit e4c1cf523d82 but we can't
+take the full change due to other dependancy issues, so here is just
+the actual bugfix that is needed.
 
-Given that symbol_get was only ever intended for tightly cooperating
-modules using very internal symbols it is logical to restrict it to
-being used on EXPORT_SYMBOL_GPL and prevent nvidia from costly DMCA
-Circumvention of Access Controls law suites.
+[Background]
 
-All symbols except for four used through symbol_get were already exported
-as EXPORT_SYMBOL_GPL, and the remaining four ones were switched over in
-the preparation patches.
+keltargw reported an issue [1] that with mmaped I/Os, sometimes the
+tail of the last page (after file ends) is not filled with zeroes.
 
-Fixes: 262e6ae7081d ("modules: inherit TAINT_PROPRIETARY_MODULE")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+The root cause is that such tail page could be wrongly selected for
+inplace I/Os so the zeroed part will then be filled with compressed
+data instead of zeroes.
+
+A simple fix is to avoid doing inplace I/Os for such tail parts,
+actually that was already fixed upstream in commit e4c1cf523d82
+("erofs: tidy up z_erofs_do_read_page()") by accident.
+
+[1] https://lore.kernel.org/r/3ad8b469-25db-a297-21f9-75db2d6ad224@linux.alibaba.com
+
+Reported-by: keltargw <keltar.gw@gmail.com>
+Fixes: 3883a79abd02 ("staging: erofs: introduce VLE decompression support")
+Signed-off-by: Gao Xiang <hsiangkao@linux.alibaba.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/module/main.c |   14 +++++++++++---
- 1 file changed, 11 insertions(+), 3 deletions(-)
+ fs/erofs/zdata.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1295,12 +1295,20 @@ void *__symbol_get(const char *symbol)
- 	};
- 
- 	preempt_disable();
--	if (!find_symbol(&fsa) || strong_try_module_get(fsa.owner)) {
--		preempt_enable();
--		return NULL;
-+	if (!find_symbol(&fsa))
-+		goto fail;
-+	if (fsa.license != GPL_ONLY) {
-+		pr_warn("failing symbol_get of non-GPLONLY symbol %s.\n",
-+			symbol);
-+		goto fail;
+--- a/fs/erofs/zdata.c
++++ b/fs/erofs/zdata.c
+@@ -993,6 +993,8 @@ hitted:
+ 	cur = end - min_t(erofs_off_t, offset + end - map->m_la, end);
+ 	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
+ 		zero_user_segment(page, cur, end);
++		++spiltted;
++		tight = false;
+ 		goto next_part;
  	}
-+	if (strong_try_module_get(fsa.owner))
-+		goto fail;
- 	preempt_enable();
- 	return (void *)kernel_symbol_value(fsa.sym);
-+fail:
-+	preempt_enable();
-+	return NULL;
- }
- EXPORT_SYMBOL_GPL(__symbol_get);
- 
+ 	if (map->m_flags & EROFS_MAP_FRAGMENT) {
 
 
