@@ -2,47 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DEA8791D2D
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B8ED791D4B
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:37:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238130AbjIDSf6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:35:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35738 "EHLO
+        id S238056AbjIDShS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:37:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60176 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346213AbjIDSf6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:58 -0400
+        with ESMTP id S239417AbjIDShR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:37:17 -0400
 Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5043CD7
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:53 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9F2ECCB
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:37:12 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 089E3CE0F9C
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:52 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E58AAC433C9;
-        Mon,  4 Sep 2023 18:35:49 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 1FEB6CE0F94
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:37:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D427C433C8;
+        Mon,  4 Sep 2023 18:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852550;
-        bh=clDGOKIbw9jIbe1jrNYIgDig+t09hU/V35mBuUJWH4c=;
+        s=korg; t=1693852629;
+        bh=cjE8BKqW98OYJva888/in6VaCuXfu0n2Bbzqmr6qLro=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eqw3F5oDNfeiXCWmKLjKrcuX4YD3EfS1O+CLSFfvjbdqz7j2baWROxVqtsfLcD3ad
-         4K5XpErNnetp6qkfgV5MX/UADRmvK0g/739fNIe2ce7AK6SmHICyxj+56qi2pDGaYO
-         uASZ4v09S8wjO6eLnOG3+k06XdPyBdquTZcSSIGc=
+        b=UfqjuOXwmG/7W4Y5A0oKO5Y1IaaUtGf1GVI3bfUSy21UrKtSVsRTQVvVGJpieD3vW
+         z9VpbzGfc40SMl6UmFLFXgM7XCIIuHFlPPJokspzViT0Qi6L8gmFrXM9iEleWuBalN
+         kLjLAX8pDnH8XIr7BcunkgU+FdVZdKBSrv9SHKm4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Conor Dooley <conor.dooley@microchip.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>,
-        Rob Herring <robh@kernel.org>
-Subject: [PATCH 6.1 27/31] dt-bindings: sc16is7xx: Add property to change GPIO function
-Date:   Mon,  4 Sep 2023 19:30:35 +0100
-Message-ID: <20230904182948.302658549@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Manuel Lauss <manuel.lauss@gmail.com>,
+        Arnd Bergmann <arnd@arndb.de>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 5.15 05/28] mmc: au1xmmc: force non-modular build and remove symbol_get usage
+Date:   Mon,  4 Sep 2023 19:30:36 +0100
+Message-ID: <20230904182945.436340403@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
+References: <20230904182945.178705038@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -58,111 +57,143 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 4cf478dc5d707e56aefa258c049872eff054a353 upstream.
+commit d4a5c59a955bba96b273ec1a5885bada24c56979 upstream.
 
-Some variants in this series of UART controllers have GPIO pins that
-are shared between GPIO and modem control lines.
+au1xmmc is split somewhat awkwardly into the main mmc subsystem driver,
+and callbacks in platform_data that sit under arch/mips/ and are
+always built in.  The latter than call mmc_detect_change through
+symbol_get.  Remove the use of symbol_get by requiring the driver
+to be built in.  In the future the interrupt handlers for card
+insert/eject detection should probably be moved into the main driver,
+and which point it can be built modular again.
 
-The pin mux mode (GPIO or modem control lines) can be set for each
-ports (channels) supported by the variant.
-
-This adds a property to the device tree to set the GPIO pin mux to
-modem control lines on selected ports if needed.
-
-Cc: stable@vger.kernel.org # 6.1.x
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Acked-by: Rob Herring <robh@kernel.org>
-Link: https://lore.kernel.org/r/20230807214556.540627-4-hugo@hugovil.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Acked-by: Manuel Lauss <manuel.lauss@gmail.com>
+Reviewed-by: Arnd Bergmann <arnd@arndb.de>
+[mcgrof: squashed in depends on MMC=y suggested by Arnd]
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- .../bindings/serial/nxp,sc16is7xx.txt         | 46 +++++++++++++++++++
- 1 file changed, 46 insertions(+)
+ arch/mips/alchemy/devboards/db1000.c |    8 +-------
+ arch/mips/alchemy/devboards/db1200.c |   19 ++-----------------
+ arch/mips/alchemy/devboards/db1300.c |   10 +---------
+ drivers/mmc/host/Kconfig             |    5 +++--
+ 4 files changed, 7 insertions(+), 35 deletions(-)
 
-diff --git a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-index 0fa8e3e43bf8..1a7e4bff0456 100644
---- a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-+++ b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-@@ -23,6 +23,9 @@ Optional properties:
-     1 = active low.
- - irda-mode-ports: An array that lists the indices of the port that
- 		   should operate in IrDA mode.
-+- nxp,modem-control-line-ports: An array that lists the indices of the port that
-+				should have shared GPIO lines configured as
-+				modem control lines.
+--- a/arch/mips/alchemy/devboards/db1000.c
++++ b/arch/mips/alchemy/devboards/db1000.c
+@@ -14,7 +14,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/leds.h>
+ #include <linux/mmc/host.h>
+-#include <linux/module.h>
+ #include <linux/platform_device.h>
+ #include <linux/pm.h>
+ #include <linux/spi/spi.h>
+@@ -167,12 +166,7 @@ static struct platform_device db1x00_aud
  
- Example:
-         sc16is750: sc16is750@51 {
-@@ -35,6 +38,26 @@ Example:
-                 #gpio-cells = <2>;
-         };
+ static irqreturn_t db1100_mmc_cd(int irq, void *ptr)
+ {
+-	void (*mmc_cd)(struct mmc_host *, unsigned long);
+-	/* link against CONFIG_MMC=m */
+-	mmc_cd = symbol_get(mmc_detect_change);
+-	mmc_cd(ptr, msecs_to_jiffies(500));
+-	symbol_put(mmc_detect_change);
+-
++	mmc_detect_change(ptr, msecs_to_jiffies(500));
+ 	return IRQ_HANDLED;
+ }
  
-+	sc16is752: sc16is752@53 {
-+		compatible = "nxp,sc16is752";
-+		reg = <0x53>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
-+		gpio-controller; /* Port 0 as GPIOs */
-+		#gpio-cells = <2>;
-+	};
-+
-+	sc16is752: sc16is752@54 {
-+		compatible = "nxp,sc16is752";
-+		reg = <0x54>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
-+	};
-+
- * spi as bus
+--- a/arch/mips/alchemy/devboards/db1200.c
++++ b/arch/mips/alchemy/devboards/db1200.c
+@@ -10,7 +10,6 @@
+ #include <linux/gpio.h>
+ #include <linux/i2c.h>
+ #include <linux/init.h>
+-#include <linux/module.h>
+ #include <linux/interrupt.h>
+ #include <linux/io.h>
+ #include <linux/leds.h>
+@@ -340,14 +339,7 @@ static irqreturn_t db1200_mmc_cd(int irq
  
- Required properties:
-@@ -59,6 +82,9 @@ Optional properties:
-     1 = active low.
- - irda-mode-ports: An array that lists the indices of the port that
- 		   should operate in IrDA mode.
-+- nxp,modem-control-line-ports: An array that lists the indices of the port that
-+				should have shared GPIO lines configured as
-+				modem control lines.
+ static irqreturn_t db1200_mmc_cdfn(int irq, void *ptr)
+ {
+-	void (*mmc_cd)(struct mmc_host *, unsigned long);
+-
+-	/* link against CONFIG_MMC=m */
+-	mmc_cd = symbol_get(mmc_detect_change);
+-	if (mmc_cd) {
+-		mmc_cd(ptr, msecs_to_jiffies(200));
+-		symbol_put(mmc_detect_change);
+-	}
++	mmc_detect_change(ptr, msecs_to_jiffies(200));
  
- Example:
- 	sc16is750: sc16is750@0 {
-@@ -70,3 +96,23 @@ Example:
- 		gpio-controller;
- 		#gpio-cells = <2>;
- 	};
-+
-+	sc16is752: sc16is752@1 {
-+		compatible = "nxp,sc16is752";
-+		reg = <1>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
-+		gpio-controller; /* Port 0 as GPIOs */
-+		#gpio-cells = <2>;
-+	};
-+
-+	sc16is752: sc16is752@2 {
-+		compatible = "nxp,sc16is752";
-+		reg = <2>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
-+	};
--- 
-2.42.0
-
+ 	msleep(100);	/* debounce */
+ 	if (irq == DB1200_SD0_INSERT_INT)
+@@ -431,14 +423,7 @@ static irqreturn_t pb1200_mmc1_cd(int ir
+ 
+ static irqreturn_t pb1200_mmc1_cdfn(int irq, void *ptr)
+ {
+-	void (*mmc_cd)(struct mmc_host *, unsigned long);
+-
+-	/* link against CONFIG_MMC=m */
+-	mmc_cd = symbol_get(mmc_detect_change);
+-	if (mmc_cd) {
+-		mmc_cd(ptr, msecs_to_jiffies(200));
+-		symbol_put(mmc_detect_change);
+-	}
++	mmc_detect_change(ptr, msecs_to_jiffies(200));
+ 
+ 	msleep(100);	/* debounce */
+ 	if (irq == PB1200_SD1_INSERT_INT)
+--- a/arch/mips/alchemy/devboards/db1300.c
++++ b/arch/mips/alchemy/devboards/db1300.c
+@@ -17,7 +17,6 @@
+ #include <linux/interrupt.h>
+ #include <linux/ata_platform.h>
+ #include <linux/mmc/host.h>
+-#include <linux/module.h>
+ #include <linux/mtd/mtd.h>
+ #include <linux/mtd/platnand.h>
+ #include <linux/platform_device.h>
+@@ -459,14 +458,7 @@ static irqreturn_t db1300_mmc_cd(int irq
+ 
+ static irqreturn_t db1300_mmc_cdfn(int irq, void *ptr)
+ {
+-	void (*mmc_cd)(struct mmc_host *, unsigned long);
+-
+-	/* link against CONFIG_MMC=m.  We can only be called once MMC core has
+-	 * initialized the controller, so symbol_get() should always succeed.
+-	 */
+-	mmc_cd = symbol_get(mmc_detect_change);
+-	mmc_cd(ptr, msecs_to_jiffies(200));
+-	symbol_put(mmc_detect_change);
++	mmc_detect_change(ptr, msecs_to_jiffies(200));
+ 
+ 	msleep(100);	/* debounce */
+ 	if (irq == DB1300_SD1_INSERT_INT)
+--- a/drivers/mmc/host/Kconfig
++++ b/drivers/mmc/host/Kconfig
+@@ -523,11 +523,12 @@ config MMC_ALCOR
+ 	  of Alcor Micro PCI-E card reader
+ 
+ config MMC_AU1X
+-	tristate "Alchemy AU1XX0 MMC Card Interface support"
++	bool "Alchemy AU1XX0 MMC Card Interface support"
+ 	depends on MIPS_ALCHEMY
++	depends on MMC=y
+ 	help
+ 	  This selects the AMD Alchemy(R) Multimedia card interface.
+-	  If you have a Alchemy platform with a MMC slot, say Y or M here.
++	  If you have a Alchemy platform with a MMC slot, say Y here.
+ 
+ 	  If unsure, say N.
+ 
 
 
