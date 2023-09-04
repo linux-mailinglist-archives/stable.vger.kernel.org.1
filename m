@@ -2,43 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 337FF791D40
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:36:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07066791D41
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:36:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344401AbjIDSgq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:36:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49070 "EHLO
+        id S234563AbjIDSgt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:36:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49114 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234563AbjIDSgp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:36:45 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 084BACD4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:36:42 -0700 (PDT)
+        with ESMTP id S243526AbjIDSgs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:36:48 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A685CCB
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:36:45 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id A9713B80EF4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:36:40 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B12BC433C7;
-        Mon,  4 Sep 2023 18:36:38 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id DAC39CE0F9A
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:36:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C0805C433C9;
+        Mon,  4 Sep 2023 18:36:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852599;
-        bh=H88vkn5Q5PdM+QbiVSmXhsspPVVKWRrI8nCSfiDuVaY=;
+        s=korg; t=1693852602;
+        bh=xfxC+50VhMH8kJTDAoHg7YrcRDYDVy977XMeS1Q92HI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uvRkthUnS8c++XNDh2CNi6KO4cnBjxaLIpEpc1e6BTbBdqw4vcgOGaS1zRvCk9RjR
-         YjwKSdWO0Z7nmiuVoqcKfMc9AtYfqF0nIjreGWpOb6pwZIUtQTpZ9tDNNKTMTXMrEJ
-         A+N7ux7fa1BpaXkWJkrH0Vmtkf/ohtGjK5gmgj2Y=
+        b=kPopdPcK+mz1/+RLGPBdElGH+a3e/h4y6mmZ9KjFJ6G5sMxRd/h6HFjjkL/x2mHvA
+         2g0wOfMOZIsALO9Jm0QioItu1M6ihHQ+Ucq4cmeuyJ7act6HzSX8BHAhP/nV8qDnw9
+         eoQi60UVOALaXft3CkHMu20OqTUuu1AWEPpifk8M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 5.15 25/28] nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
-Date:   Mon,  4 Sep 2023 19:30:56 +0100
-Message-ID: <20230904182946.402593672@linuxfoundation.org>
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 5.15 26/28] pinctrl: amd: Dont show `Invalid config param` errors
+Date:   Mon,  4 Sep 2023 19:30:57 +0100
+Message-ID: <20230904182946.454168754@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
 References: <20230904182945.178705038@linuxfoundation.org>
@@ -61,75 +60,46 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit cdaac8e7e5a059f9b5e816cda257f08d0abffacd upstream.
+commit 87b549efcb0f7934b0916d2a00607a878b6f1e0f upstream.
 
-A syzbot stress test using a corrupted disk image reported that
-mark_buffer_dirty() called from __nilfs_mark_inode_dirty() or
-nilfs_palloc_commit_alloc_entry() may output a kernel warning, and can
-panic if the kernel is booted with panic_on_warn.
+On some systems amd_pinconf_set() is called with parameters
+0x8 (PIN_CONFIG_DRIVE_PUSH_PULL) or 0x14 (PIN_CONFIG_PERSIST_STATE)
+which are not supported by pinctrl-amd.
 
-This is because nilfs2 keeps buffer pointers in local structures for some
-metadata and reuses them, but such buffers may be forcibly discarded by
-nilfs_clear_dirty_page() in some critical situations.
+Don't show an err message when called with an invalid parameter,
+downgrade this to debug instead.
 
-This issue is reported to appear after commit 28a65b49eb53 ("nilfs2: do
-not write dirty data after degenerating to read-only"), but the issue has
-potentially existed before.
-
-Fix this issue by checking the uptodate flag when attempting to reuse an
-internally held buffer, and reloading the metadata instead of reusing the
-buffer if the flag was lost.
-
-Link: https://lkml.kernel.org/r/20230818131804.7758-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000003da75f05fdeffd12@google.com
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 3.10+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org # 6.1
+Fixes: 635a750d958e1 ("pinctrl: amd: Use amd_pinconf_set() for all config options")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230717201652.17168-1-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/alloc.c |    3 ++-
- fs/nilfs2/inode.c |    7 +++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/pinctrl/pinctrl-amd.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/fs/nilfs2/alloc.c
-+++ b/fs/nilfs2/alloc.c
-@@ -205,7 +205,8 @@ static int nilfs_palloc_get_block(struct
- 	int ret;
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -752,7 +752,7 @@ static int amd_pinconf_get(struct pinctr
+ 		break;
  
- 	spin_lock(lock);
--	if (prev->bh && blkoff == prev->blkoff) {
-+	if (prev->bh && blkoff == prev->blkoff &&
-+	    likely(buffer_uptodate(prev->bh))) {
- 		get_bh(prev->bh);
- 		*bhp = prev->bh;
- 		spin_unlock(lock);
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1029,7 +1029,7 @@ int nilfs_load_inode_block(struct inode
- 	int err;
+ 	default:
+-		dev_err(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
++		dev_dbg(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
+ 			param);
+ 		return -ENOTSUPP;
+ 	}
+@@ -805,7 +805,7 @@ static int amd_pinconf_set(struct pinctr
+ 			break;
  
- 	spin_lock(&nilfs->ns_inode_lock);
--	if (ii->i_bh == NULL) {
-+	if (ii->i_bh == NULL || unlikely(!buffer_uptodate(ii->i_bh))) {
- 		spin_unlock(&nilfs->ns_inode_lock);
- 		err = nilfs_ifile_get_inode_block(ii->i_root->ifile,
- 						  inode->i_ino, pbh);
-@@ -1038,7 +1038,10 @@ int nilfs_load_inode_block(struct inode
- 		spin_lock(&nilfs->ns_inode_lock);
- 		if (ii->i_bh == NULL)
- 			ii->i_bh = *pbh;
--		else {
-+		else if (unlikely(!buffer_uptodate(ii->i_bh))) {
-+			__brelse(ii->i_bh);
-+			ii->i_bh = *pbh;
-+		} else {
- 			brelse(*pbh);
- 			*pbh = ii->i_bh;
+ 		default:
+-			dev_err(&gpio_dev->pdev->dev,
++			dev_dbg(&gpio_dev->pdev->dev,
+ 				"Invalid config param %04x\n", param);
+ 			ret = -ENOTSUPP;
  		}
 
 
