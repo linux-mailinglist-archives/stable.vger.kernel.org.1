@@ -2,133 +2,195 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6231F7911CA
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 09:09:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ECEE37911DC
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 09:14:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344320AbjIDHJc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 03:09:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50418 "EHLO
+        id S1352334AbjIDHPB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 03:15:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230299AbjIDHJb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 03:09:31 -0400
-Received: from mout-p-101.mailbox.org (mout-p-101.mailbox.org [IPv6:2001:67c:2050:0:465::101])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 950FDA0;
-        Mon,  4 Sep 2023 00:09:27 -0700 (PDT)
-Received: from smtp202.mailbox.org (smtp202.mailbox.org [IPv6:2001:67c:2050:b231:465::202])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange ECDHE (P-384) server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        by mout-p-101.mailbox.org (Postfix) with ESMTPS id 4RfKWQ2KsXz9sT0;
-        Mon,  4 Sep 2023 09:09:22 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=cyphar.com; s=MBO0001;
-        t=1693811362;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=cq7qOZE8xlGiGZJPTa8yzpYZ1oFjZWMPNorQyVEd/Xg=;
-        b=LDCQEZVL0xpuZmPp1oz1O/PrYOZ21hPWBxqRc4Q6Au/AfG71IKLuV1NhN635Elh/nQTX7j
-        zjLu379c2FzrJtB2pxXNxRqBWW9LVFKSHx4zPU9MnrZGVWwxTkinJ/Kkmny3h+JOVmOmlZ
-        11iYEFzePn1nolFhGHj76p853EtiII8ssmRyg0UtozDlf1qScHpkYqfuxiUXKYitkKyga+
-        TZ73c4jLGPrdgFtMFlbQzJVGd1Iid7kHBh9wY8gg4R6oT1G1urbcf9D9SL5zw7pWFC+D0b
-        +HyFq7Y5NdknCZrbt1yM0qHEQH4oQmxIfBOt/V2NiDICipNOhLVfcGrZCWAxZg==
-Date:   Mon, 4 Sep 2023 17:09:09 +1000
-From:   Aleksa Sarai <cyphar@cyphar.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Damian Tometzki <dtometzki@fedoraproject.org>,
-        Shuah Khan <shuah@kernel.org>, Jeff Xu <jeffxu@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Daniel Verkamp <dverkamp@chromium.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        stable@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] memfd: improve userspace warnings for missing
- exec-related flags
-Message-ID: <20230904.070506-tidy.dividend.mousy.flasks-BFYX3RqFch3q@cyphar.com>
-References: <20230814-memfd-vm-noexec-uapi-fixes-v2-0-7ff9e3e10ba6@cyphar.com>
- <20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com>
- <ZPFzCSIgZ4QuHsSC@fedora.fritz.box>
- <20230902155850.ca1d32c16862cbe54ebd36ef@linux-foundation.org>
+        with ESMTP id S231152AbjIDHPA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 03:15:00 -0400
+Received: from mail-yb1-xb2f.google.com (mail-yb1-xb2f.google.com [IPv6:2607:f8b0:4864:20::b2f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6613399;
+        Mon,  4 Sep 2023 00:14:57 -0700 (PDT)
+Received: by mail-yb1-xb2f.google.com with SMTP id 3f1490d57ef6-d71dd633f33so951546276.2;
+        Mon, 04 Sep 2023 00:14:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693811696; x=1694416496; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=8iBmqK88tNHvKxoyD/68KKJGPMcQoSmzChGypgNtlxI=;
+        b=V1pfnAAQZ1hbaAfFWGAqWF13gi72E8HRMaFqG7brVCgzfjl/UTsfj5oK/ksl11JxMt
+         bqL7L8lPDVbEKvalOqwmLN04c/pnOwvtsGBcihtckGHw/bXB/L5Yr5E+HELAKgHV3PXx
+         h3IRM8wETr/n4XcXgiAN2Z6Vfg3I+MhTxGDgjhlx2jGQwH7WU6YkNFU5Imq+E0k6+efy
+         Y0YnPGY5sxhdUBO3cUYt+g/nM+O/EEtZaHgusmXIkA3+zZ3vAifoFehUC4HaS4GpxGj9
+         vusa5s/QRkmvyOfSAAb6LkxOWOi8nyUbQ9jkavuyNqEvZ4v9jwPovwNWtc1d/AOdNTpB
+         dAyQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693811696; x=1694416496;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=8iBmqK88tNHvKxoyD/68KKJGPMcQoSmzChGypgNtlxI=;
+        b=g3QAcX5C+Zbx4vh+AtclbVxFRWJwlieQzDXcZy2wKocXI/y+K3g/RukGc1BYUxdhSV
+         H85gdyxLQK3QG0V9VMD+bbR2zZXra9NjMoXThSedJcF3EOAo6DgGsOd4v9bFYDJpsF7X
+         gopc4mbh+tJXiCwNXLwStQpWpUZDiEL/2fsfjMFVDVdEOQ3VU0kkN3maLjMVNCQQzg78
+         b6uCadC988KIW9j1/ZeVURzNRFQrlGa3G3z9Yq6v95UBmGfgL47zmizsiyqhDJUNLef2
+         9RHU6MuY6ZGZvb7/ZHdOLR6amkJPDzyfEnXGo1ti5ygqd7HUSz2ekLa6cfzqtP+noamW
+         xTZw==
+X-Gm-Message-State: AOJu0YyoUzDvH4iadZQSR7bUyAuwHavlG1XGV0397W4bUyxFexbsi/ct
+        hW5CSReEUe4kgfJLuqIHDGy8hRcM41V8oA==
+X-Google-Smtp-Source: AGHT+IF5Bh45ZgxD2YqR02X1d6V6cMGzgk4tl+8ldECKWKtSpddCNFT7fX/8l5G9un3fuJfT1d/TvA==
+X-Received: by 2002:a25:cad0:0:b0:d77:c0b9:b182 with SMTP id a199-20020a25cad0000000b00d77c0b9b182mr9360458ybg.46.1693811696532;
+        Mon, 04 Sep 2023 00:14:56 -0700 (PDT)
+Received: from PLK-D0032.dom2.local ([157.25.98.166])
+        by smtp.gmail.com with ESMTPSA id 82-20020a251955000000b00d74b144004bsm2207565ybz.12.2023.09.04.00.14.54
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Sep 2023 00:14:56 -0700 (PDT)
+From:   Tomasz Rostanski <tomasz.rostanski@gmail.com>
+X-Google-Original-From: Tomasz Rostanski <tomasz.rostanski@thalesgroup.com>
+Cc:     stable@vger.kernel.org, Balaji Prakash J <bjagadee@codeaurora.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [PATCH 1/5] usb: dwc3: reference clock period configuration
+Date:   Mon,  4 Sep 2023 09:14:22 +0200
+Message-ID: <20230904071432.32309-1-tomasz.rostanski@thalesgroup.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="nnx76nxb2yfdk3in"
-Content-Disposition: inline
-In-Reply-To: <20230902155850.ca1d32c16862cbe54ebd36ef@linux-foundation.org>
-X-Rspamd-Queue-Id: 4RfKWQ2KsXz9sT0
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
+To:     unlisted-recipients:; (no To-header on input)
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Balaji Prakash J <bjagadee@codeaurora.org>
 
---nnx76nxb2yfdk3in
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Set reference clock period when it differs from dwc3 default hardware
+set.
 
-On 2023-09-02, Andrew Morton <akpm@linux-foundation.org> wrote:
-> On Fri, 1 Sep 2023 07:13:45 +0200 Damian Tometzki <dtometzki@fedoraprojec=
-t.org> wrote:
->=20
-> > >  	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
-> > > -		pr_warn_once(
-> > > +		pr_info_ratelimited(
-> > >  			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEA=
-L set\n",
-> > >  			current->comm, task_pid_nr(current));
-> > >  	}
-> > >=20
-> > > --=20
-> > > 2.41.0
-> > >
-> > Hello Sarai,
-> >=20
-> > i got a lot of messages in dmesg with this. DMESG is unuseable with
-> > this.=20
-> > [ 1390.349462] __do_sys_memfd_create: 5 callbacks suppressed
-> > [ 1390.349468] pipewire-pulse[2930]: memfd_create() called without MFD_=
-EXEC or MFD_NOEXEC_SEAL set
-> > [ 1390.350106] pipewire[2712]: memfd_create() called without MFD_EXEC o=
-r MFD_NOEXEC_SEAL set
->=20
-> OK, thanks, I'll revert this.  Spamming everyone even harder isn't a
-> good way to get developers to fix their stuff.
+We could calculate clock period based on reference clock frequency. But
+this information is not always available. This is the case of PCI bus
+attached USB host. For that reason we use a custom property.
 
-Sorry, I'm on vacation. I will send a follow-up patch to remove this
-logging entirely -- if we can't do rate-limited logging then logging a
-single message effectively at boot time makes no sense. I had hoped that
-this wouldn't be too much (given there is a fair amount of INFO-level
-spam in the kernel log) but I guess the default ratelimit (5Hz) is too
-liberal.
+Tested (USB2 only) on IPQ6010 SoC based board with 24 MHz reference
+clock while hardware default is 19.2 MHz.
 
-Perhaps we can re-consider adding some logging in the future, when more
-programs have migrated. The only other "reasonable" way to reduce the
-logging would be to add something to task_struct so we only log once per
-task, but obviously that's massively overkill.
+[ baruch: rewrite commit message; drop GFLADJ code; remove 'quirk-' from
+  property name; mention tested hardware ]
 
-(FWIW, I don't think the logging was ever necessary. There's nothing
-wrong with running an older program that doesn't pass the flags.)
+Acked-by: Felipe Balbi <balbi@kernel.org>
+Signed-off-by: Balaji Prakash J <bjagadee@codeaurora.org>
+Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+Nacked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/9f399bdf1ff752e31ab7497e3d5ce19bbb3ff247.1630389452.git.baruch@tkos.co.il
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/usb/dwc3/core.c | 29 +++++++++++++++++++++++++++++
+ drivers/usb/dwc3/core.h |  6 ++++++
+ 2 files changed, 35 insertions(+)
 
---=20
-Aleksa Sarai
-Senior Software Engineer (Containers)
-SUSE Linux GmbH
-<https://www.cyphar.com/>
+diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+index 6377b9cf81a5..7908c151b95d 100644
+--- a/drivers/usb/dwc3/core.c
++++ b/drivers/usb/dwc3/core.c
+@@ -26,6 +26,7 @@
+ #include <linux/acpi.h>
+ #include <linux/pinctrl/consumer.h>
+ #include <linux/reset.h>
++#include <linux/bitfield.h>
+ 
+ #include <linux/usb/ch9.h>
+ #include <linux/usb/gadget.h>
+@@ -343,6 +344,29 @@ static void dwc3_frame_length_adjustment(struct dwc3 *dwc)
+ 	}
+ }
+ 
++/**
++ * dwc3_ref_clk_period - Reference clock period configuration
++ *		Default reference clock period depends on hardware
++ *		configuration. For systems with reference clock that differs
++ *		from the default, this will set clock period in DWC3_GUCTL
++ *		register.
++ * @dwc: Pointer to our controller context structure
++ * @ref_clk_per: reference clock period in ns
++ */
++static void dwc3_ref_clk_period(struct dwc3 *dwc)
++{
++	u32 reg;
++
++	if (dwc->ref_clk_per == 0)
++		return;
++
++	reg = dwc3_readl(dwc->regs, DWC3_GUCTL);
++	reg &= ~DWC3_GUCTL_REFCLKPER_MASK;
++	reg |=  FIELD_PREP(DWC3_GUCTL_REFCLKPER_MASK, dwc->ref_clk_per);
++	dwc3_writel(dwc->regs, DWC3_GUCTL, reg);
++}
++
++
+ /**
+  * dwc3_free_one_event_buffer - Frees one event buffer
+  * @dwc: Pointer to our controller context structure
+@@ -1021,6 +1045,9 @@ static int dwc3_core_init(struct dwc3 *dwc)
+ 	/* Adjust Frame Length */
+ 	dwc3_frame_length_adjustment(dwc);
+ 
++	/* Adjust Reference Clock Period */
++	dwc3_ref_clk_period(dwc);
++
+ 	dwc3_set_incr_burst_type(dwc);
+ 
+ 	usb_phy_set_suspend(dwc->usb2_phy, 0);
+@@ -1404,6 +1431,8 @@ static void dwc3_get_properties(struct dwc3 *dwc)
+ 				    &dwc->hsphy_interface);
+ 	device_property_read_u32(dev, "snps,quirk-frame-length-adjustment",
+ 				 &dwc->fladj);
++	device_property_read_u32(dev, "snps,ref-clock-period-ns",
++				 &dwc->ref_clk_per);
+ 
+ 	dwc->dis_metastability_quirk = device_property_read_bool(dev,
+ 				"snps,dis_metastability_quirk");
+diff --git a/drivers/usb/dwc3/core.h b/drivers/usb/dwc3/core.h
+index 3dcb5b744f7c..968608bd98e3 100644
+--- a/drivers/usb/dwc3/core.h
++++ b/drivers/usb/dwc3/core.h
+@@ -385,6 +385,10 @@
+ #define DWC3_GFLADJ_30MHZ_SDBND_SEL		BIT(7)
+ #define DWC3_GFLADJ_30MHZ_MASK			0x3f
+ 
++/* Global User Control Register*/
++#define DWC3_GUCTL_REFCLKPER_MASK		0xffc00000
++#define DWC3_GUCTL_REFCLKPER_SEL		22
++
+ /* Global User Control Register 2 */
+ #define DWC3_GUCTL2_RST_ACTBITLATER		BIT(14)
+ 
+@@ -969,6 +973,7 @@ struct dwc3_scratchpad_array {
+  * @regs: base address for our registers
+  * @regs_size: address space size
+  * @fladj: frame length adjustment
++ * @ref_clk_per: reference clock period configuration
+  * @irq_gadget: peripheral controller's IRQ number
+  * @otg_irq: IRQ number for OTG IRQs
+  * @current_otg_role: current role of operation while using the OTG block
+@@ -1153,6 +1158,7 @@ struct dwc3 {
+ 	struct power_supply	*usb_psy;
+ 
+ 	u32			fladj;
++	u32			ref_clk_per;
+ 	u32			irq_gadget;
+ 	u32			otg_irq;
+ 	u32			current_otg_role;
+-- 
+2.41.0
 
---nnx76nxb2yfdk3in
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iHUEABYKAB0WIQS2TklVsp+j1GPyqQYol/rSt+lEbwUCZPWCkAAKCRAol/rSt+lE
-b5gWAP4/tAjH570jwrKkdsMIvm/7W9rAOvo1QLnJCd9r8MsX7QD9GDs3+9jWfNMB
-lIppOxMkHE1/QyB4f/KzZwzay2OayQQ=
-=/tpV
------END PGP SIGNATURE-----
-
---nnx76nxb2yfdk3in--
