@@ -2,56 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2DE2791D28
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BDAE791CEB
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346391AbjIDSfo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:35:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52692 "EHLO
+        id S240120AbjIDSdI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:33:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43502 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346213AbjIDSfn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:43 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF289CCB;
-        Mon,  4 Sep 2023 11:35:39 -0700 (PDT)
+        with ESMTP id S245410AbjIDSdD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:33:03 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E640CCDA
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:59 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 15337CE0F94;
-        Mon,  4 Sep 2023 18:35:38 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE6D2C433C7;
-        Mon,  4 Sep 2023 18:35:35 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 868B56198B
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:59 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCA8C433C7;
+        Mon,  4 Sep 2023 18:32:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852536;
-        bh=SyuDroYlUjmqAN+iaXoz0BggnRh4MyWDYfMjfzmQwHQ=;
-        h=From:To:Cc:Subject:Date:From;
-        b=ClGLrqu9WFE+f2UoJPVzQMwIaw6kJfKn7YmtrP8/jmicVgeXRFvjBYGSGSy0SYhZK
-         9LXChZ1zwzJuQnjO+8CidrfhHGm6gc2el670KiW6K48SuomnGrTo0iRjpJPTNm5N92
-         FrQAbet4iby2abQXpi1Rei/0vmFgJuXO71KrTq4I=
+        s=korg; t=1693852379;
+        bh=hPby2hFyhHNVArWbIVUOVWbeA3xEzl1bNefD2B7+DkA=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=xAQLnwILIGniCRzIXFYJAFE/deyr3hHD7zRf3cp+pfwG7Kk/oQz0+UHHcjDv/nLjJ
+         qlmBBkOdbkin/+Hv8kBWWyaPbsaxJyOu33k9r8w0TNR2Oq4YwpqJJBwh1oG3IFyTq2
+         lXTMaV9pAU+IGGPMFgWSC0UIr1uWlBMS9SNZNuT4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: [PATCH 6.1 00/31] 6.1.52-rc1 review
-Date:   Mon,  4 Sep 2023 19:30:08 +0100
-Message-ID: <20230904182946.999390199@linuxfoundation.org>
+        patches@lists.linux.dev, Martin Kohn <m.kohn@welotec.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.4 11/32] USB: serial: option: add Quectel EM05G variant (0x030e)
+Date:   Mon,  4 Sep 2023 19:30:09 +0100
+Message-ID: <20230904182948.405081224@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-MIME-Version: 1.0
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
-X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.52-rc1.gz
-X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
-X-KernelTest-Branch: linux-6.1.y
-X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
-X-KernelTest-Version: 6.1.52-rc1
-X-KernelTest-Deadline: 2023-09-06T18:29+00:00
+MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -63,170 +55,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This is the start of the stable review cycle for the 6.1.52 release.
-There are 31 patches in this series, all will be posted as a response
-to this one.  If anyone has any issues with these being applied, please
-let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
-Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
-Anything received after that time might be too late.
+------------------
 
-The whole patch series can be found in one patch at:
-	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.52-rc1.gz
-or in the git tree and branch at:
-	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-and the diffstat can be found below.
+From: Martin Kohn <m.kohn@welotec.com>
 
-thanks,
+commit 873854c02364ebb991fc06f7148c14dfb5419e1b upstream.
 
-greg k-h
+Add Quectel EM05G with product ID 0x030e.
+Interface 4 is used for qmi.
 
--------------
-Pseudo-Shortlog of commits:
+T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
+D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=2c7c ProdID=030e Rev= 3.18
+S:  Manufacturer=Quectel
+S:  Product=Quectel EM05-G
+C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
+E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
+E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
+E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
+E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
+E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
 
-Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-    Linux 6.1.52-rc1
+Signed-off-by: Martin Kohn <m.kohn@welotec.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+---
+ drivers/usb/serial/option.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-Mario Limonciello <mario.limonciello@amd.com>
-    pinctrl: amd: Don't show `Invalid config param` errors
-
-Marco Felsch <m.felsch@pengutronix.de>
-    usb: typec: tcpci: clear the fault status bit
-
-Ryusuke Konishi <konishi.ryusuke@gmail.com>
-    nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
-
-Ryusuke Konishi <konishi.ryusuke@gmail.com>
-    nilfs2: fix general protection fault in nilfs_lookup_dirty_data_buffers()
-
-Hugo Villeneuve <hvilleneuve@dimonoff.com>
-    dt-bindings: sc16is7xx: Add property to change GPIO function
-
-Badhri Jagan Sridharan <badhri@google.com>
-    tcpm: Avoid soft reset when partner does not support get_status
-
-Juerg Haefliger <juerg.haefliger@canonical.com>
-    fsi: master-ast-cf: Add MODULE_FIRMWARE macro
-
-Wang Ming <machel@vivo.com>
-    firmware: stratix10-svc: Fix an NULL vs IS_ERR() bug in probe
-
-Hugo Villeneuve <hvilleneuve@dimonoff.com>
-    serial: sc16is7xx: fix bug when first setting GPIO direction
-
-Hugo Villeneuve <hvilleneuve@dimonoff.com>
-    serial: sc16is7xx: fix broken port 0 uart init
-
-Johan Hovold <johan+linaro@kernel.org>
-    serial: qcom-geni: fix opp vote on shutdown
-
-Deren Wu <deren.wu@mediatek.com>
-    wifi: mt76: mt7921: fix skb leak by txs missing in AMSDU
-
-Deren Wu <deren.wu@mediatek.com>
-    wifi: mt76: mt7921: do not support one stream on secondary antenna only
-
-Zheng Wang <zyytlz.wz@163.com>
-    Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
-
-Nam Cao <namcaov@gmail.com>
-    staging: rtl8712: fix race condition
-
-Aaron Armstrong Skomra <aaron.skomra@wacom.com>
-    HID: wacom: remove the battery when the EKR is off
-
-Xu Yang <xu.yang_2@nxp.com>
-    usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
-
-Luke Lu <luke.lu@libre.computer>
-    usb: dwc3: meson-g12a: do post init to fix broken usb after resumption
-
-Takashi Iwai <tiwai@suse.de>
-    ALSA: usb-audio: Fix init call orders for UAC1
-
-Slark Xiao <slark_xiao@163.com>
-    USB: serial: option: add FOXCONN T99W368/T99W373 product
-
-Martin Kohn <m.kohn@welotec.com>
-    USB: serial: option: add Quectel EM05G variant (0x030e)
-
-Christoph Hellwig <hch@lst.de>
-    modules: only allow symbol_get of EXPORT_SYMBOL_GPL modules
-
-Christoph Hellwig <hch@lst.de>
-    rtc: ds1685: use EXPORT_SYMBOL_GPL for ds1685_rtc_poweroff
-
-Christoph Hellwig <hch@lst.de>
-    net: enetc: use EXPORT_SYMBOL_GPL for enetc_phc_index
-
-Christoph Hellwig <hch@lst.de>
-    mmc: au1xmmc: force non-modular build and remove symbol_get usage
-
-Arnd Bergmann <arnd@arndb.de>
-    ARM: pxa: remove use of symbol_get()
-
-Namjae Jeon <linkinjeon@kernel.org>
-    ksmbd: reduce descriptor size if remaining bytes is less than request size
-
-Namjae Jeon <linkinjeon@kernel.org>
-    ksmbd: replace one-element array with flex-array member in struct smb2_ea_info
-
-Namjae Jeon <linkinjeon@kernel.org>
-    ksmbd: fix slub overflow in ksmbd_decode_ntlmssp_auth_blob()
-
-Namjae Jeon <linkinjeon@kernel.org>
-    ksmbd: fix wrong DataOffset validation of create context
-
-Gao Xiang <xiang@kernel.org>
-    erofs: ensure that the post-EOF tails are all zeroed
-
-
--------------
-
-Diffstat:
-
- .../devicetree/bindings/serial/nxp,sc16is7xx.txt   | 46 ++++++++++++++++++++++
- Makefile                                           |  4 +-
- arch/arm/mach-pxa/sharpsl_pm.c                     |  2 -
- arch/arm/mach-pxa/spitz.c                          | 14 +------
- arch/mips/alchemy/devboards/db1000.c               |  8 +---
- arch/mips/alchemy/devboards/db1200.c               | 19 +--------
- arch/mips/alchemy/devboards/db1300.c               | 10 +----
- drivers/bluetooth/btsdio.c                         |  1 +
- drivers/firmware/stratix10-svc.c                   |  2 +-
- drivers/fsi/fsi-master-ast-cf.c                    |  1 +
- drivers/hid/wacom.h                                |  1 +
- drivers/hid/wacom_sys.c                            | 25 ++++++++++--
- drivers/hid/wacom_wac.c                            |  1 +
- drivers/hid/wacom_wac.h                            |  1 +
- drivers/mmc/host/Kconfig                           |  5 ++-
- drivers/net/ethernet/freescale/enetc/enetc_ptp.c   |  2 +-
- .../net/wireless/mediatek/mt76/mt76_connac_mac.c   |  7 +++-
- drivers/net/wireless/mediatek/mt76/mt7921/main.c   |  2 +-
- drivers/pinctrl/pinctrl-amd.c                      |  4 +-
- drivers/rtc/rtc-ds1685.c                           |  2 +-
- drivers/staging/rtl8712/os_intfs.c                 |  1 +
- drivers/staging/rtl8712/usb_intf.c                 |  1 -
- drivers/tty/serial/qcom_geni_serial.c              |  5 +++
- drivers/tty/serial/sc16is7xx.c                     | 17 +++++++-
- drivers/usb/chipidea/ci_hdrc_imx.c                 | 10 +++--
- drivers/usb/chipidea/usbmisc_imx.c                 |  6 ++-
- drivers/usb/dwc3/dwc3-meson-g12a.c                 |  6 +++
- drivers/usb/serial/option.c                        |  7 ++++
- drivers/usb/typec/tcpm/tcpci.c                     |  4 ++
- drivers/usb/typec/tcpm/tcpm.c                      |  7 ++++
- fs/erofs/zdata.c                                   |  2 +
- fs/nilfs2/alloc.c                                  |  3 +-
- fs/nilfs2/inode.c                                  |  7 +++-
- fs/nilfs2/segment.c                                |  5 +++
- fs/smb/server/auth.c                               |  3 ++
- fs/smb/server/oplock.c                             |  2 +-
- fs/smb/server/smb2pdu.c                            |  2 +-
- fs/smb/server/smb2pdu.h                            |  2 +-
- fs/smb/server/transport_rdma.c                     | 25 ++++++++----
- include/linux/usb/tcpci.h                          |  1 +
- kernel/module/main.c                               | 14 +++++--
- sound/usb/stream.c                                 | 11 +++++-
- 42 files changed, 209 insertions(+), 89 deletions(-)
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -259,6 +259,7 @@ static void option_instat_callback(struc
+ #define QUECTEL_PRODUCT_EM05G			0x030a
+ #define QUECTEL_PRODUCT_EM060K			0x030b
+ #define QUECTEL_PRODUCT_EM05G_CS		0x030c
++#define QUECTEL_PRODUCT_EM05GV2			0x030e
+ #define QUECTEL_PRODUCT_EM05CN_SG		0x0310
+ #define QUECTEL_PRODUCT_EM05G_SG		0x0311
+ #define QUECTEL_PRODUCT_EM05CN			0x0312
+@@ -1188,6 +1189,8 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(6) | ZLP },
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G, 0xff),
+ 	  .driver_info = RSVD(6) | ZLP },
++	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05GV2, 0xff),
++	  .driver_info = RSVD(4) | ZLP },
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_CS, 0xff),
+ 	  .driver_info = RSVD(6) | ZLP },
+ 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_GR, 0xff),
 
 
