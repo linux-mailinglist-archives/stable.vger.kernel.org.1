@@ -2,165 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF4D0791C44
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:01:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A9401791C54
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:08:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238313AbjIDSBL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:01:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53776 "EHLO
+        id S1350211AbjIDSIO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:08:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231892AbjIDSBK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:01:10 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16DFEDD;
-        Mon,  4 Sep 2023 11:01:07 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 337D6B80ED9;
-        Mon,  4 Sep 2023 18:01:05 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B4DC433C8;
-        Mon,  4 Sep 2023 18:01:01 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693850463;
-        bh=ZO4d1HawvJ//3ptwuwm7onPYcLR7YnU0KtC0ZhmK0kQ=;
-        h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
-        b=euqAD0ji2Pw8IAPMadKYJapR9GhENHWAyoLQTeF5iaEwYKY4v7adIY/4UD+yqj8q2
-         Gcy/9FXv5lBDSdvGJDaFqHF9o56D/f4wNnJka314gE+CVU+5zXCvSwfC4vMN7J7kcb
-         xlYuPfy6WImRtm+H4u+YoprHwtFiwsJYmHeAUhnA8lmmsvE7S5uaRPzeGPfYfYC206
-         eLFgCtFTJ2qxMWq4C5TOlVCDppfIwzI7i1vt7x+cGXDr7pauvcyO60EHFkBTI0iRIi
-         NpsR3VvfIXzW4y9AdNjFDOdgMf7JILKh9LNmcywhgS5lM2UrUwQYU7M/djc1VxJhhJ
-         LOEk2lReGNnBw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 04 Sep 2023 21:00:59 +0300
-Message-Id: <CVABVIQB3858.CWOHMN527J67@suppilovahvero>
-To:     "Mario Limonciello" <mario.limonciello@amd.com>,
-        "Paul Menzel" <pmenzel@molgen.mpg.de>
-Cc:     <linux-integrity@vger.kernel.org>,
-        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
-        "Todd Brandt" <todd.e.brandt@intel.com>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
-        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
-        "Raymond Jay Golo" <rjgolo@gmail.com>
-Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-X-Mailer: aerc 0.14.0
-References: <20230822231510.2263255-1-jarkko@kernel.org>
- <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
- <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
- <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
- <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
- <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
-In-Reply-To: <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        with ESMTP id S237851AbjIDSIN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:08:13 -0400
+Received: from mail-il1-x12b.google.com (mail-il1-x12b.google.com [IPv6:2607:f8b0:4864:20::12b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7F5132
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:08:10 -0700 (PDT)
+Received: by mail-il1-x12b.google.com with SMTP id e9e14a558f8ab-34ccc0fca24so5282405ab.0
+        for <stable@vger.kernel.org>; Mon, 04 Sep 2023 11:08:10 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1693850890; x=1694455690; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=Zr3sV+XQtYagsN7Oqrbp+58+EQW5Ic/xyDIjYG4JLi4=;
+        b=wu0/UY692LRIqexHVpewnKeH3ODnHZPiZarbI9nRtFjwhqZWEorAW2YMIjHDL70FF9
+         KeHeSJ9YelYck0j8A9FZ5+D60L9SGX4enUT3KCuvbpMLEvwUt2bMxvpXLG2F65PKXu4O
+         vS6pf8RdiFlW0pJDsMvLokkTXqoncECmwO9os=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693850890; x=1694455690;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=Zr3sV+XQtYagsN7Oqrbp+58+EQW5Ic/xyDIjYG4JLi4=;
+        b=A5F29biRe/L9d2Ysriym4NRghJbNg5gOVURzBHFHcFTTK9MbR9QRRI5chwe+OneRUf
+         UhqaVu0Xi9vqnYyqK3V3MbQifyHouzZRR6HT6jTFZrpQvrwPEt2KjpiRnaWyhiyTyWJz
+         Ay5k8sXrwMxOV5RsKS4yaf/0Kgzwrt9CCnxDAlq6n6R21xAIXoT1J4DCgHhWQuBXYvMY
+         KCm2TXcrQoP+qMAFbhY3m3lJrafHn/x4MNfzk98NulreMps1NWjv/C2jNUdCMfDydNWB
+         zCFv3vDsi9gVq5BMiJgmgH+igYkjfGATyvWlUB+cIWGYpvC9lXUBaniHZk0W432OcZVu
+         HzoQ==
+X-Gm-Message-State: AOJu0YxqTwptj0uOOdXbWbVWC6SVP/UrKOU4YavwtVNRK86k9b6Gjz0d
+        ADEeAazj3mONDgJYYD2J0GAzqw==
+X-Google-Smtp-Source: AGHT+IFbD+DaAQ3YbgG2+T0I0C6EZ5+DKMrgMuUdKzBowVD9B/0AeNCAjrN71tih8W71+pJaIVm+PA==
+X-Received: by 2002:a92:d90b:0:b0:34c:e5c2:918b with SMTP id s11-20020a92d90b000000b0034ce5c2918bmr11118950iln.13.1693850890063;
+        Mon, 04 Sep 2023 11:08:10 -0700 (PDT)
+Received: from joelboxx5.corp.google.com (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id g15-20020a02b70f000000b0042bb13cb80fsm3520216jam.120.2023.09.04.11.08.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Sep 2023 11:08:09 -0700 (PDT)
+From:   "Joel Fernandes (Google)" <joel@joelfernandes.org>
+To:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>
+Cc:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        Zhen Lei <thunder.leizhen@huaweicloud.com>,
+        rcu@vger.kernel.org, Zqiang <qiang.zhang1211@gmail.com>,
+        stable@vger.kernel.org, linux-mm@kvack.org
+Subject: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area() for debug
+Date:   Mon,  4 Sep 2023 18:08:04 +0000
+Message-ID: <20230904180806.1002832-1-joel@joelfernandes.org>
+X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon Aug 28, 2023 at 3:35 AM EEST, Mario Limonciello wrote:
-> On 8/27/2023 13:12, Jarkko Sakkinen wrote:
-> > On Wed Aug 23, 2023 at 9:58 PM EEST, Mario Limonciello wrote:
-> >> On 8/23/2023 12:40, Jarkko Sakkinen wrote:
-> >>> On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
-> >>>> Dear Jarkko,
-> >>>>
-> >>>>
-> >>>> Thank you for your patch.
-> >>>>
-> >>>>
-> >>>> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
-> >>>>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable R=
-NG for
-> >>>>> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  =
-On the
-> >>>>> reported systems the TPM doesn't reply at bootup and returns back t=
-he
-> >>>>> command code. This makes the TPM fail probe.
-> >>>>>
-> >>>>> Since only Microsoft Pluton is the only known combination of AMD CP=
-U and
-> >>>>> fTPM from other vendor, disable hwrng otherwise. In order to make s=
-ysadmin
-> >>>>> aware of this, print also info message to the klog.
-> >>>>>
-> >>>>> Cc: stable@vger.kernel.org
-> >>>>> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> >>>>> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> >>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
-> >>>>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >>>>
-> >>>> Mario=E2=80=99s patch also had the three reporters below listed:
-> >>>>
-> >>>> Reported-by: Patrick Steinhardt <ps@pks.im>
-> >>>> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> >>>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> >>>
-> >>> The problem here is that checkpatch throws three warnings:
-> >>>
-> >>> WARNING: Reported-by: should be immediately followed by Closes: with =
-a URL to the report
-> >>> #19:
-> >>> Reported-by: Patrick Steinhardt <ps@pks.im>
-> >>> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> >>>
-> >>> WARNING: Reported-by: should be immediately followed by Closes: with =
-a URL to the report
-> >>> #20:
-> >>> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> >>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> >>>
-> >>> WARNING: Reported-by: should be immediately followed by Closes: with =
-a URL to the report
-> >>> #21:
-> >>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> >>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> >>>
-> >>
-> >> FWIW I observed the same checkpatch warning when I submitted my versio=
-n
-> >> of the patch.  I figured it's better to ignore the warning and attribu=
-te
-> >> everyone who reported the issue affected them.
-> >=20
-> > OK so:
-> >=20
-> > 1. checkpatch.pl is part of the kernel process.
-> > 2. Bugzilla is not part of the kernel process.
-> >=20
-> > Why emphasis on 1?
-> >=20
-> > BR, Jarkko
->
-> The reason I submitted it this way is because of this quote from the=20
-> documentation [1].
->
-> "Check your patches with the patch style checker prior to submission=20
-> (scripts/checkpatch.pl). Note, though, that the style checker should be=
-=20
-> viewed as a guide, not as a replacement for human judgment. If your code=
-=20
-> looks better with a violation then its probably best left alone."
->
-> I wanted the patch to capture and attribute all those that reported it=20
-> not just the "first one".  Like I said previously, it's better to have a=
-=20
-> collection of people to ping to notify if something needs to be reverted.
->
-> [1]=20
-> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#st=
-yle-check-your-changes
+It is unsafe to dump vmalloc area information when trying to do so from
+some contexts. Add a safer trylock version of the same function to do a
+best-effort VMA finding and use it from vmalloc_dump_obj().
 
-Please denote also that kernel bugzilla is not mentioned in the page
-that you put as a reference, and only reporter in the LKML has been
-Todd.
+[applied test robot feedback on unused function fix.]
+[applied Uladzislau feedback on locking.]
 
-BR, Jarkko
+Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: rcu@vger.kernel.org
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+Cc: stable@vger.kernel.org
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+---
+ mm/vmalloc.c | 26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+index 93cf99aba335..2c6a0e2ff404 100644
+--- a/mm/vmalloc.c
++++ b/mm/vmalloc.c
+@@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
+ #ifdef CONFIG_PRINTK
+ bool vmalloc_dump_obj(void *object)
+ {
+-	struct vm_struct *vm;
+ 	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
++	const void *caller;
++	struct vm_struct *vm;
++	struct vmap_area *va;
++	unsigned long addr;
++	unsigned int nr_pages;
+ 
+-	vm = find_vm_area(objp);
+-	if (!vm)
++	if (!spin_trylock(&vmap_area_lock))
++		return false;
++	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
++	if (!va) {
++		spin_unlock(&vmap_area_lock);
+ 		return false;
++	}
++
++	vm = va->vm;
++	if (!vm) {
++		spin_unlock(&vmap_area_lock);
++		return false;
++	}
++	addr = (unsigned long)vm->addr;
++	caller = vm->caller;
++	nr_pages = vm->nr_pages;
++	spin_unlock(&vmap_area_lock);
+ 	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+-		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
++		nr_pages, addr, caller);
+ 	return true;
+ }
+ #endif
+-- 
+2.42.0.283.g2d96d420d3-goog
+
