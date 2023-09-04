@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 09832791CF5
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 76B9D791CDB
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244046AbjIDSd1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:33:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43622 "EHLO
+        id S239998AbjIDScV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:32:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344000AbjIDSd0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:33:26 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C02B2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:33:23 -0700 (PDT)
+        with ESMTP id S242920AbjIDScU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:20 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 430F6CFB
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:17 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 456DAB80E6F
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:33:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ADE2FC433C7;
-        Mon,  4 Sep 2023 18:33:20 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 057B5B80EF6
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C501C433C8;
+        Mon,  4 Sep 2023 18:32:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852401;
-        bh=FckQCz+74Uql689iJDSNgXqLAFJTbCu+hoSIYFpAP4M=;
+        s=korg; t=1693852334;
+        bh=2+qURPBgHJnqYVBXZ0u3jugQWKPi6ZrwEo2q7HAYwNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XOIJFpN9eofSWSTfCrhPqMVLGJ+mLrlH72uUtwIjqzCOU6jV5gGLPlotFF7DSfl0n
-         psbtdFic6olyYV2pHPs3g3jrH731UzzZeFXQwY0+qMTAPqqZgtmB1QpXOMSDnq3JTz
-         +D3uH7yCvgtv8C+uwqeEY5VSAkly4tz3KSHxxzQY=
+        b=h1RlEwKl2bUxvY2B9tJTCdFmaC1cpNK+zuc6d+Lpa1u0AGfdaryF1ODVfIuDeWQqR
+         V7fL0C5fNRBthRX/8HIYgw6YmnKWNmYBg5xx6E+Syrm1Res7ofCdluGQVbBfR4KUeE
+         21vEFx5No+RY531Tjjg60TpAkef+vinH2tkUgwzQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shayne Chen <shayne.chen@mediatek.com>,
-        Deren Wu <deren.wu@mediatek.com>,
-        Simon Horman <simon.horman@corigine.com>,
-        Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.4 19/32] wifi: mt76: mt7921: fix skb leak by txs missing in AMSDU
+        patches@lists.linux.dev,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH 6.5 30/34] dt-bindings: sc16is7xx: Add property to change GPIO function
 Date:   Mon,  4 Sep 2023 19:30:17 +0100
-Message-ID: <20230904182948.784609521@linuxfoundation.org>
+Message-ID: <20230904182950.012208411@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
-References: <20230904182947.899158313@linuxfoundation.org>
+In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
+References: <20230904182948.594404081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,56 +58,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit b642f4c5f3de0a8f47808d32b1ebd9c427a42a66 upstream.
+commit 4cf478dc5d707e56aefa258c049872eff054a353 upstream.
 
-txs may be dropped if the frame is aggregated in AMSDU. When the problem
-shows up, some SKBs would be hold in driver to cause network stopped
-temporarily. Even if the problem can be recovered by txs timeout handling,
-mt7921 still need to disable txs in AMSDU to avoid this issue.
+Some variants in this series of UART controllers have GPIO pins that
+are shared between GPIO and modem control lines.
 
-Cc: stable@vger.kernel.org
-Fixes: 163f4d22c118 ("mt76: mt7921: add MAC support")
-Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The pin mux mode (GPIO or modem control lines) can be set for each
+ports (channels) supported by the variant.
+
+This adds a property to the device tree to set the GPIO pin mux to
+modem control lines on selected ports if needed.
+
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20230807214556.540627-4-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt |   46 +++++++++++++
+ 1 file changed, 46 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -495,6 +495,7 @@ void mt76_connac2_mac_write_txwi(struct
- 				    BSS_CHANGED_BEACON_ENABLED));
- 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
- 					 BSS_CHANGED_FILS_DISCOVERY));
-+	bool amsdu_en = wcid->amsdu;
+--- a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
++++ b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+@@ -23,6 +23,9 @@ Optional properties:
+     1 = active low.
+ - irda-mode-ports: An array that lists the indices of the port that
+ 		   should operate in IrDA mode.
++- nxp,modem-control-line-ports: An array that lists the indices of the port that
++				should have shared GPIO lines configured as
++				modem control lines.
  
- 	if (vif) {
- 		struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
-@@ -554,12 +555,14 @@ void mt76_connac2_mac_write_txwi(struct
- 	txwi[4] = 0;
+ Example:
+         sc16is750: sc16is750@51 {
+@@ -35,6 +38,26 @@ Example:
+                 #gpio-cells = <2>;
+         };
  
- 	val = FIELD_PREP(MT_TXD5_PID, pid);
--	if (pid >= MT_PACKET_ID_FIRST)
-+	if (pid >= MT_PACKET_ID_FIRST) {
- 		val |= MT_TXD5_TX_STATUS_HOST;
-+		amsdu_en = amsdu_en && !is_mt7921(dev);
-+	}
++	sc16is752: sc16is752@53 {
++		compatible = "nxp,sc16is752";
++		reg = <0x53>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
++		gpio-controller; /* Port 0 as GPIOs */
++		#gpio-cells = <2>;
++	};
++
++	sc16is752: sc16is752@54 {
++		compatible = "nxp,sc16is752";
++		reg = <0x54>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
++	};
++
+ * spi as bus
  
- 	txwi[5] = cpu_to_le32(val);
- 	txwi[6] = 0;
--	txwi[7] = wcid->amsdu ? cpu_to_le32(MT_TXD7_HW_AMSDU) : 0;
-+	txwi[7] = amsdu_en ? cpu_to_le32(MT_TXD7_HW_AMSDU) : 0;
+ Required properties:
+@@ -59,6 +82,9 @@ Optional properties:
+     1 = active low.
+ - irda-mode-ports: An array that lists the indices of the port that
+ 		   should operate in IrDA mode.
++- nxp,modem-control-line-ports: An array that lists the indices of the port that
++				should have shared GPIO lines configured as
++				modem control lines.
  
- 	if (is_8023)
- 		mt76_connac2_mac_write_txwi_8023(txwi, skb, wcid);
+ Example:
+ 	sc16is750: sc16is750@0 {
+@@ -70,3 +96,23 @@ Example:
+ 		gpio-controller;
+ 		#gpio-cells = <2>;
+ 	};
++
++	sc16is752: sc16is752@1 {
++		compatible = "nxp,sc16is752";
++		reg = <1>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
++		gpio-controller; /* Port 0 as GPIOs */
++		#gpio-cells = <2>;
++	};
++
++	sc16is752: sc16is752@2 {
++		compatible = "nxp,sc16is752";
++		reg = <2>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
++	};
 
 
