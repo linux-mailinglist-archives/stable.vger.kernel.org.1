@@ -2,101 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 30094791835
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 15:33:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B77A2791839
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 15:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231623AbjIDNdk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 09:33:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50772 "EHLO
+        id S1343587AbjIDNeb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 09:34:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343587AbjIDNdh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 09:33:37 -0400
-Received: from mail-wm1-f52.google.com (mail-wm1-f52.google.com [209.85.128.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB918CE5;
-        Mon,  4 Sep 2023 06:33:31 -0700 (PDT)
-Received: by mail-wm1-f52.google.com with SMTP id 5b1f17b1804b1-401b5516104so14317015e9.2;
-        Mon, 04 Sep 2023 06:33:31 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693834410; x=1694439210;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=E5+wmWmgq56dJme4hT4eR6efR4KKOLOFEcKhP5GIfQA=;
-        b=bGlALo2aLpGzkCw6rQr+L/D3hOAFJFIrRHPndPp+fIMwjDu6UWhu+UsAXLsBH/zaht
-         B8GCuAKF5G+3aWwZtoPVsgKssdG2LHiZim/cJofhKe1C1YFKct4MsGfa4l4J4wXAmhoq
-         Cp7GI49zj7jhxCBjbUZY3boAOB+DyDNMMMLkUddGMtloqt41ZLh39nW1OxnI0nNpSXGS
-         WADGVb8+vIx2zuID/r9KAsrgUhbQFCBgf9gScj9gIImOUc/den7NUSNt9FdR4Dw2Npa7
-         LDEKpTep8Yn0Z11GOtM9CFpTxqfZWdsxrMfxPIbVyzNTmAziIAZTqw+UQzE2RyH1zkJn
-         M/KA==
-X-Gm-Message-State: AOJu0YwFWxtuSl5teWoY2/Me3Acz9CouW9oBm0r023T9YUk4SaixX0K4
-        oe8lkNCdRPtZlwKIaXMhyvwUnxEZaIefOw==
-X-Google-Smtp-Source: AGHT+IFxbB18mEtudWSY8KF+q0LrNp0V4UKPHFpHBoHRs0sEGdrZ23pWrQxQRXPPTt7rRTaq0B8qrQ==
-X-Received: by 2002:a05:600c:2194:b0:401:b204:3b85 with SMTP id e20-20020a05600c219400b00401b2043b85mr7579256wme.36.1693834410047;
-        Mon, 04 Sep 2023 06:33:30 -0700 (PDT)
-Received: from salami.fritz.box ([80.111.96.134])
-        by smtp.gmail.com with ESMTPSA id q13-20020a7bce8d000000b003fe4548188bsm17278519wmj.48.2023.09.04.06.33.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Sep 2023 06:33:29 -0700 (PDT)
-From:   =?UTF-8?q?Andr=C3=A9=20Draszik?= <git@andred.net>
-To:     linux-kernel@vger.kernel.org
-Cc:     linux-fsdevel@vger.kernel.org,
-        =?UTF-8?q?Andr=C3=A9=20Draszik?= <andre.draszik@linaro.org>,
-        Bernd Schubert <bschubert@ddn.com>,
-        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org
-Subject: [RESEND PATCH] Revert "fuse: Apply flags2 only when userspace set the FUSE_INIT_EXT"
-Date:   Mon,  4 Sep 2023 14:33:21 +0100
-Message-Id: <20230904133321.104584-1-git@andred.net>
-X-Mailer: git-send-email 2.40.1
-MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S239095AbjIDNeb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 09:34:31 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED06FCD7
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 06:34:27 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 517B6CE0E0E
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 13:34:26 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5EA8DC433C8;
+        Mon,  4 Sep 2023 13:34:24 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693834464;
+        bh=XlE4k0vgthfsdyvbT2GloP3TGTyr0FTxoWOtRyXD1+E=;
+        h=In-Reply-To:References:Date:From:To:Cc:Subject:From;
+        b=XoLeSKXsbzkYNFMTlGbsAh2EBCLnITpizjH/MgGpP18H8gdwzf1KLCLYexD8whhsA
+         IH9wfDimDpM+CBREKTGDW3y257C0qG76vHjNrSHz+FwwWI5ccXsjh6PBQGV6wBDBXy
+         sqmHJrB7fqMtzobqvziiwcVUVajz0pnkzhvX+GRew/kcNBqYLB0NYBpVgAIoHrKljv
+         O26vKdI/+NBq4x9+5gzgE6KwZHXZJWsUhDalEPEeusNwT4EMEn9+oW9suXhna/ynKU
+         Q/Lm1fMDWmv/zMERJCz9TG/2E7Z/Nxk0wvvYoQO52QoM8uIbHKdmUC66TkbuUPJheW
+         FDKwdmldC1lWg==
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailauth.nyi.internal (Postfix) with ESMTP id 4E12127C006B;
+        Mon,  4 Sep 2023 09:34:23 -0400 (EDT)
+Received: from imap51 ([10.202.2.101])
+  by compute6.internal (MEProxy); Mon, 04 Sep 2023 09:34:23 -0400
+X-ME-Sender: <xms:3tz1ZPeCoKIpGVtEiBwhvOu3urZSo2w4D_PEXgVAK9DZAPno0nG1vw>
+    <xme:3tz1ZFPJq6l5JTVXE92Uz3ZVM2DUBYxfvL2MmtQJ3d5gf2L4Dz3Cop2aVJbLlcfyu
+    mTr4rVxeUBVU9nfHRc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudegkedgieejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepofgfggfkjghffffhvfevufgtsehttdertderredtnecuhfhrohhmpedftehr
+    nhguuceuvghrghhmrghnnhdfuceorghrnhgusehkvghrnhgvlhdrohhrgheqnecuggftrf
+    grthhtvghrnhepvdeviefgtedugeevieelvdfgveeuvdfgteegfeeiieejjeffgeeghedu
+    gedtveehnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomh
+    eprghrnhguodhmvghsmhhtphgruhhthhhpvghrshhonhgrlhhithihqdduvdekhedujedt
+    vdegqddvkeejtddtvdeigedqrghrnhgupeepkhgvrhhnvghlrdhorhhgsegrrhhnuggsrd
+    guvg
+X-ME-Proxy: <xmx:3tz1ZIii6R7w8Av4ouO9z_nouBELw47M-asu5pOmNsWAlkCjY9Jakg>
+    <xmx:3tz1ZA_QwxvaL2vO79XNX4pCmVrHgLmypRXDwqw-Le6tGkFjoTc3kA>
+    <xmx:3tz1ZLvUZMtNb7ixhW-zE_nLqqe6AltCS2BoYKvDFEECuM-2NDXjpA>
+    <xmx:39z1ZLKEATaB4MCY8CPiZcGEZElm4-yEJ6upMGAZk2iqfnbcEbHf3g>
+Feedback-ID: i36794607:Fastmail
+Received: by mailuser.nyi.internal (Postfix, from userid 501)
+        id C0C96B60089; Mon,  4 Sep 2023 09:34:22 -0400 (EDT)
+X-Mailer: MessagingEngine.com Webmail Interface
+User-Agent: Cyrus-JMAP/3.9.0-alpha0-701-g9b2f44d3ee-fm-20230823.001-g9b2f44d3
+Mime-Version: 1.0
+Message-Id: <8728313c-997a-46c1-8225-d57369e9292c@app.fastmail.com>
+In-Reply-To: <ab5baa69-ae3c-4973-8563-670395a3c976@mev.co.uk>
+References: <20230901192615.89591-1-abbotti@mev.co.uk>
+ <33c2292b-08cb-44c7-9438-07d4060976ab@app.fastmail.com>
+ <f0e88ae3-d38e-40d1-900c-395ddc9c8231@mev.co.uk>
+ <65d620b2644e2d60b041815fa4bb544a818ae55a.camel@linux.ibm.com>
+ <ab5baa69-ae3c-4973-8563-670395a3c976@mev.co.uk>
+Date:   Mon, 04 Sep 2023 09:34:01 -0400
+From:   "Arnd Bergmann" <arnd@kernel.org>
+To:     "Ian Abbott" <abbotti@mev.co.uk>,
+        "Niklas Schnelle" <schnelle@linux.ibm.com>,
+        linux-kernel@vger.kernel.org
+Cc:     "Greg Kroah-Hartman" <gregkh@linuxfoundation.org>,
+        "Hartley Sweeten" <hsweeten@visionengravers.com>,
+        stable@vger.kernel.org
+Subject: Re: [PATCH] comedi: Fix driver module dependencies since HAS_IOPORT changes
+Content-Type: text/plain
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: André Draszik <andre.draszik@linaro.org>
+On Mon, Sep 4, 2023, at 08:01, Ian Abbott wrote:
+> On 04/09/2023 12:23, Niklas Schnelle wrote:
+>> On Mon, 2023-09-04 at 11:10 +0100, Ian Abbott wrote:
+>
+> Thanks for the confirmation.  Will it be safe to assume that anything 
+> that selects ISA will also select HAS_IOPORT?  That is trivially the 
+> case for arch/{alpha,arm,x86}; arch/mips explicitly selects HAS_IOPORT 
+> if ISA is selected; arch/powerpc explicitly selects HAS_IOPORT if PCI is 
+> selected and it is only possible to configure ISA if PPC_CHRP is 
+> configured which selects FORCE_PCI and therefore selects PCI and 
+> therefore selects HAS_IOPORT; arch/um does not select HAS_IOPORT and 
+> although it has a 'config ISA', nothing appears to select it.  None of 
+> the remaining arch/* have 'select ISA'.
 
-This reverts commit 3066ff93476c35679cb07a97cce37d9bb07632ff.
+Yes, I think that will always be a safe assumption, ISA without port I/O
+is just not a sensible configuration. A few of the later ISA devices use
+PCI style memory mapped I/O, but I can't think of any driver that doesn't
+also require port I/O, and you wouldn't find ISA slots in a system that
+lacks support for port I/O.
 
-This patch breaks all existing userspace by requiring updates as
-mentioned in the commit message, which is not allowed.
-
-Revert to restore compatibility with existing userspace
-implementations.
-
-Cc: Bernd Schubert <bschubert@ddn.com>
-Cc: Miklos Szeredi <mszeredi@redhat.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: André Draszik <andre.draszik@linaro.org>
-
----
-resend because of missing people in Cc
----
- fs/fuse/inode.c | 5 +----
- 1 file changed, 1 insertion(+), 4 deletions(-)
-
-diff --git a/fs/fuse/inode.c b/fs/fuse/inode.c
-index 549358ffea8b..0b966b0e0962 100644
---- a/fs/fuse/inode.c
-+++ b/fs/fuse/inode.c
-@@ -1132,10 +1132,7 @@ static void process_init_reply(struct fuse_mount *fm, struct fuse_args *args,
- 		process_init_limits(fc, arg);
- 
- 		if (arg->minor >= 6) {
--			u64 flags = arg->flags;
--
--			if (flags & FUSE_INIT_EXT)
--				flags |= (u64) arg->flags2 << 32;
-+			u64 flags = arg->flags | (u64) arg->flags2 << 32;
- 
- 			ra_pages = arg->max_readahead / PAGE_SIZE;
- 			if (flags & FUSE_ASYNC_READ)
--- 
-2.40.1
-
+      Arnd
