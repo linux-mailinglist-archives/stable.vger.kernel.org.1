@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0F677791CCE
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:31:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9102A791CCF
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:31:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240126AbjIDSbr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:31:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39160 "EHLO
+        id S236646AbjIDSbt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:31:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39168 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235234AbjIDSbq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:31:46 -0400
+        with ESMTP id S235234AbjIDSbt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:31:49 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86B7FCD4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:31:43 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4BF96CC8
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:31:46 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 5AE10B80EF5
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:31:42 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4017C433C7;
-        Mon,  4 Sep 2023 18:31:40 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 146D0B80EF5
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:31:45 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EA3CC433C8;
+        Mon,  4 Sep 2023 18:31:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852301;
-        bh=qKbzh1jPhrKCf5aq29IX2pdp/UA1IUVy9b1+XZiwOsU=;
+        s=korg; t=1693852303;
+        bh=TNNy8Qjy57OkYRPEy89X89oWn1rE2hipgfzRTIUgSZQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sIGP0uAb/rOoBX9kSxCL6OqVlZFe6Vca0rLQA+XMzicEHCY6cqmcNcjRfBrtfAL+q
-         K9PTo5ca1MqZaQQvfesFTtLgWxFwYOgO9YaTvWui/I+8tZggtdEe1cz0Nd8xVOq6cd
-         dggS+0215q7CqoB/EThgS9JN8b9nuk4qJqtIdLHM=
+        b=DtnjzuUHm6l9aU3E/3MznFldJvLcOOlqfc39LjVMSMiNupn0IJgHyX8lZCs7MAfEA
+         REzMsPlYRu99EIq4uzNQkaeG3zBGDlvefxy+XIQR07lWPD0wu8vrqdWmpQVWxagxpl
+         vIF/atEjnjmRmZ6hdD7e8/Wtf0+HBxz/pgLnCRhA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
         Steve French <stfrench@microsoft.com>,
         zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.5 03/34] ksmbd: fix wrong DataOffset validation of create context
-Date:   Mon,  4 Sep 2023 19:29:50 +0100
-Message-ID: <20230904182948.761647974@linuxfoundation.org>
+Subject: [PATCH 6.5 04/34] ksmbd: fix slub overflow in ksmbd_decode_ntlmssp_auth_blob()
+Date:   Mon,  4 Sep 2023 19:29:51 +0100
+Message-ID: <20230904182948.806499601@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
 References: <20230904182948.594404081@linuxfoundation.org>
@@ -62,31 +62,32 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 17d5b135bb720832364e8f55f6a887a3c7ec8fdb upstream.
+commit 4b081ce0d830b684fdf967abc3696d1261387254 upstream.
 
-If ->DataOffset of create context is 0, DataBuffer size is not correctly
-validated. This patch change wrong validation code and consider tag
-length in request.
+If authblob->SessionKey.Length is bigger than session key
+size(CIFS_KEY_SIZE), slub overflow can happen in key exchange codes.
+cifs_arc4_crypt copy to session key array from SessionKey from client.
 
 Cc: stable@vger.kernel.org
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21824
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21940
 Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
 Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/smb/server/oplock.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/smb/server/auth.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1492,7 +1492,7 @@ struct create_context *smb2_find_context
- 		    name_len < 4 ||
- 		    name_off + name_len > cc_len ||
- 		    (value_off & 0x7) != 0 ||
--		    (value_off && (value_off < name_off + name_len)) ||
-+		    (value_len && value_off < name_off + (name_len < 8 ? 8 : name_len)) ||
- 		    ((u64)value_off + value_len > cc_len))
- 			return ERR_PTR(-EINVAL);
+--- a/fs/smb/server/auth.c
++++ b/fs/smb/server/auth.c
+@@ -355,6 +355,9 @@ int ksmbd_decode_ntlmssp_auth_blob(struc
+ 		if (blob_len < (u64)sess_key_off + sess_key_len)
+ 			return -EINVAL;
  
++		if (sess_key_len > CIFS_KEY_SIZE)
++			return -EINVAL;
++
+ 		ctx_arc4 = kmalloc(sizeof(*ctx_arc4), GFP_KERNEL);
+ 		if (!ctx_arc4)
+ 			return -ENOMEM;
 
 
