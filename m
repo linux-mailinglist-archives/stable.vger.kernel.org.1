@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C01F7791D16
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5A7FC791D08
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235496AbjIDSex (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:34:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40874 "EHLO
+        id S233588AbjIDSeS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:34:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60384 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232399AbjIDSex (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40E6FCC8
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:50 -0700 (PDT)
+        with ESMTP id S1345463AbjIDSeR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:17 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39532CD4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:13 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id CAFBB6199A
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DF53CC433C8;
-        Mon,  4 Sep 2023 18:34:48 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E105BB80EF4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:11 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59C37C433C7;
+        Mon,  4 Sep 2023 18:34:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852489;
-        bh=FAJJSBiEsxxd0ktJBPuEGYtnrzeACx6L4VbH5hEI8Xw=;
+        s=korg; t=1693852450;
+        bh=EuR6tBiiji8hAkc73u6gPcn9rvRTFQuZDcwjLTTUngc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OtqzSOiXBJPf4OSPwzMjcNtzi3DZz14W89eZNLWtKz5j06m4V2qns1n9sk22qoMuQ
-         X1JroyQdT2Dl12gER+YH3050tkN6g4f/Nhibfp3sk+vu42PTtBXxpOLddCi0oUb1Py
-         puGcB/xu4BrFoQXFKZ0OaAkosEMCI2MS0XDgxVN0=
+        b=OIC1ezjc7zcF4YZ/bUMjQph0L1DXiH0wJkZRxBeIJefXk49DqVgj16A5ztkPCBR1S
+         8zZGJtJpoGrdb3P5Wy5G0/oRKLEFjEDfv7st2s+uRlrA2vO5rtbhC0YBJJFuP2AS3L
+         EbTeLMA+DT9hT2NK01HW7gvgT/xCb2qZ66dfP1F8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Wang <zyytlz.wz@163.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        "Denis Efremov (Oracle)" <efremov@linux.com>
-Subject: [PATCH 6.1 18/31] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
-Date:   Mon,  4 Sep 2023 19:30:26 +0100
-Message-ID: <20230904182947.917790680@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>,
+        Rob Herring <robh@kernel.org>
+Subject: [PATCH 6.4 29/32] dt-bindings: sc16is7xx: Add property to change GPIO function
+Date:   Mon,  4 Sep 2023 19:30:27 +0100
+Message-ID: <20230904182949.217959381@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,42 +58,106 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 upstream.
+commit 4cf478dc5d707e56aefa258c049872eff054a353 upstream.
 
-In btsdio_probe, the data->work is bound with btsdio_work. It will be
-started in btsdio_send_frame.
+Some variants in this series of UART controllers have GPIO pins that
+are shared between GPIO and modem control lines.
 
-If the btsdio_remove runs with a unfinished work, there may be a race
-condition that hdev is freed but used in btsdio_work. Fix it by
-canceling the work before do cleanup in btsdio_remove.
+The pin mux mode (GPIO or modem control lines) can be set for each
+ports (channels) supported by the variant.
 
-Fixes: CVE-2023-1989
-Fixes: ddbaf13e3609 ("[Bluetooth] Add generic driver for Bluetooth SDIO devices")
-Cc: stable@vger.kernel.org
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-[ Denis: Added CVE-2023-1989 and fixes tags. ]
-Signed-off-by: Denis Efremov (Oracle) <efremov@linux.com>
+This adds a property to the device tree to set the GPIO pin mux to
+modem control lines on selected ports if needed.
+
+Cc: stable@vger.kernel.org # 6.1.x
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Acked-by: Conor Dooley <conor.dooley@microchip.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Acked-by: Rob Herring <robh@kernel.org>
+Link: https://lore.kernel.org/r/20230807214556.540627-4-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btsdio.c |    1 +
- 1 file changed, 1 insertion(+)
+ Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt |   46 +++++++++++++
+ 1 file changed, 46 insertions(+)
 
---- a/drivers/bluetooth/btsdio.c
-+++ b/drivers/bluetooth/btsdio.c
-@@ -357,6 +357,7 @@ static void btsdio_remove(struct sdio_fu
- 	if (!data)
- 		return;
+--- a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
++++ b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
+@@ -23,6 +23,9 @@ Optional properties:
+     1 = active low.
+ - irda-mode-ports: An array that lists the indices of the port that
+ 		   should operate in IrDA mode.
++- nxp,modem-control-line-ports: An array that lists the indices of the port that
++				should have shared GPIO lines configured as
++				modem control lines.
  
-+	cancel_work_sync(&data->work);
- 	hdev = data->hdev;
+ Example:
+         sc16is750: sc16is750@51 {
+@@ -35,6 +38,26 @@ Example:
+                 #gpio-cells = <2>;
+         };
  
- 	sdio_set_drvdata(func, NULL);
++	sc16is752: sc16is752@53 {
++		compatible = "nxp,sc16is752";
++		reg = <0x53>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
++		gpio-controller; /* Port 0 as GPIOs */
++		#gpio-cells = <2>;
++	};
++
++	sc16is752: sc16is752@54 {
++		compatible = "nxp,sc16is752";
++		reg = <0x54>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
++	};
++
+ * spi as bus
+ 
+ Required properties:
+@@ -59,6 +82,9 @@ Optional properties:
+     1 = active low.
+ - irda-mode-ports: An array that lists the indices of the port that
+ 		   should operate in IrDA mode.
++- nxp,modem-control-line-ports: An array that lists the indices of the port that
++				should have shared GPIO lines configured as
++				modem control lines.
+ 
+ Example:
+ 	sc16is750: sc16is750@0 {
+@@ -70,3 +96,23 @@ Example:
+ 		gpio-controller;
+ 		#gpio-cells = <2>;
+ 	};
++
++	sc16is752: sc16is752@1 {
++		compatible = "nxp,sc16is752";
++		reg = <1>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
++		gpio-controller; /* Port 0 as GPIOs */
++		#gpio-cells = <2>;
++	};
++
++	sc16is752: sc16is752@2 {
++		compatible = "nxp,sc16is752";
++		reg = <2>;
++		clocks = <&clk20m>;
++		interrupt-parent = <&gpio3>;
++		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
++		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
++	};
 
 
