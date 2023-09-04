@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17C20791D1F
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73CAA791D30
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:36:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241422AbjIDSfS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:35:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52322 "EHLO
+        id S1347722AbjIDSgI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:36:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244040AbjIDSfS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:18 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED388B2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:14 -0700 (PDT)
+        with ESMTP id S1343500AbjIDSgH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:36:07 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B459FCC8
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:36:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 8320A619A3
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9913AC433C7;
-        Mon,  4 Sep 2023 18:35:13 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 1AC63CE0F99
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:36:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 129CDC433C8;
+        Mon,  4 Sep 2023 18:35:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852514;
-        bh=nmENlKBYg/DefFnU74uPsUqtHHL5MEvsMQx2mkPsmpc=;
+        s=korg; t=1693852558;
+        bh=mfqutrtLQsLyzTb1/B6Dl7jx6N0Q4ILXvVNJOB83Zgs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x1zKE6RwC2MRHSTo5HQYLGu817Bf0ZV8ibmn5h0NGEx7joNE296BODfb6r0NLisU5
-         lb457hHcs37QCsOnESJ43tGJlQJWn4FZCXMZsliOYW+KPBXetRY9z/lyJ9lwIlEPxj
-         ClDzPkKpylHcfvdwFhreFpGReLRAXhXvxQUhmQCI=
+        b=jksDvh+IdOlH71ScVHsHi/lrKtSt/Vg0B3jkU/aRoEq920/RC3OeZlOq2Wjheyrye
+         poMaZKqQIFzDrSuVAzwQRaA64zKbFgmglGRl8nJJ7VxY6/D1pPMclUTd+ZspjwqJI2
+         HjT8qhF1VqkD0RCxrcLhPrzXAT5O5Aldq0xKnlAI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.1 26/31] tcpm: Avoid soft reset when partner does not support get_status
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 5.15 03/28] ksmbd: replace one-element array with flex-array member in struct smb2_ea_info
 Date:   Mon,  4 Sep 2023 19:30:34 +0100
-Message-ID: <20230904182948.260874246@linuxfoundation.org>
+Message-ID: <20230904182945.344449804@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
+References: <20230904182945.178705038@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,66 +55,73 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 78e0ea4277546debf7e96797ac3b768539cc44f6 upstream.
+commit 0ba5439d9afa2722e7728df56f272c89987540a4 upstream.
 
-When partner does not support get_status message, tcpm right now
-responds with soft reset message. This causes PD renegotiation to
-happen and resets PPS link. Avoid soft resetting the link when
-partner does not support get_status message to mitigate PPS resets.
+UBSAN complains about out-of-bounds array indexes on 1-element arrays in
+struct smb2_ea_info.
 
-[  208.926752] Setting voltage/current limit 9500 mV 2450 mA
-[  208.930407] set_auto_vbus_discharge_threshold mode:3 pps_active:y vbus:9500 ret:0
-[  208.930418] state change SNK_TRANSITION_SINK -> SNK_READY [rev3 POWER_NEGOTIATION]
-[  208.930455] AMS POWER_NEGOTIATION finished
-
-// ALERT message from the Source
-[  213.948442] PD RX, header: 0x19a6 [1]
-[  213.948451] state change SNK_READY -> GET_STATUS_SEND [rev3 GETTING_SOURCE_SINK_STATUS]
-[  213.948457] PD TX, header: 0x492
-[  213.950402] PD TX complete, status: 0
-[  213.950427] pending state change GET_STATUS_SEND -> GET_STATUS_SEND_TIMEOUT @ 60 ms [rev3 GETTING_SOURCE_SINK_STATUS]
-
-// NOT_SUPPORTED from the Source
-[  213.959954] PD RX, header: 0xbb0 [1]
-
-// sink sends SOFT_RESET
-[  213.959958] state change GET_STATUS_SEND -> SNK_SOFT_RESET [rev3 GETTING_SOURCE_SINK_STATUS]
-[  213.959962] AMS GETTING_SOURCE_SINK_STATUS finished
-[  213.959964] AMS SOFT_RESET_AMS start
-[  213.959966] state change SNK_SOFT_RESET -> AMS_START [rev3 SOFT_RESET_AMS]
-[  213.959969] state change AMS_START -> SOFT_RESET_SEND [rev3 SOFT_RESET_AMS]
+UBSAN: array-index-out-of-bounds in fs/smb/server/smb2pdu.c:4335:15
+index 1 is out of range for type 'char [1]'
+CPU: 1 PID: 354 Comm: kworker/1:4 Not tainted 6.5.0-rc4 #1
+Hardware name: VMware, Inc. VMware Virtual Platform/440BX Desktop
+Reference Platform, BIOS 6.00 07/22/2020
+Workqueue: ksmbd-io handle_ksmbd_work [ksmbd]
+Call Trace:
+ <TASK>
+ __dump_stack linux/lib/dump_stack.c:88
+ dump_stack_lvl+0x48/0x70 linux/lib/dump_stack.c:106
+ dump_stack+0x10/0x20 linux/lib/dump_stack.c:113
+ ubsan_epilogue linux/lib/ubsan.c:217
+ __ubsan_handle_out_of_bounds+0xc6/0x110 linux/lib/ubsan.c:348
+ smb2_get_ea linux/fs/smb/server/smb2pdu.c:4335
+ smb2_get_info_file linux/fs/smb/server/smb2pdu.c:4900
+ smb2_query_info+0x63ae/0x6b20 linux/fs/smb/server/smb2pdu.c:5275
+ __process_request linux/fs/smb/server/server.c:145
+ __handle_ksmbd_work linux/fs/smb/server/server.c:213
+ handle_ksmbd_work+0x348/0x10b0 linux/fs/smb/server/server.c:266
+ process_one_work+0x85a/0x1500 linux/kernel/workqueue.c:2597
+ worker_thread+0xf3/0x13a0 linux/kernel/workqueue.c:2748
+ kthread+0x2b7/0x390 linux/kernel/kthread.c:389
+ ret_from_fork+0x44/0x90 linux/arch/x86/kernel/process.c:145
+ ret_from_fork_asm+0x1b/0x30 linux/arch/x86/entry/entry_64.S:304
+ </TASK>
 
 Cc: stable@vger.kernel.org
-Fixes: 8dea75e11380 ("usb: typec: tcpm: Protocol Error handling")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230820044449.1005889-1-badhri@google.com
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ fs/ksmbd/smb2pdu.c |    2 +-
+ fs/ksmbd/smb2pdu.h |    2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2747,6 +2747,13 @@ static void tcpm_pd_ctrl_request(struct
- 			port->sink_cap_done = true;
- 			tcpm_set_state(port, ready_state(port), 0);
- 			break;
-+		/*
-+		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
-+		 * prevent redundant power re-negotiation
-+		 */
-+		case GET_STATUS_SEND:
-+			tcpm_set_state(port, ready_state(port), 0);
-+			break;
- 		case SRC_READY:
- 		case SNK_READY:
- 			if (port->vdm_state > VDM_STATE_READY) {
+--- a/fs/ksmbd/smb2pdu.c
++++ b/fs/ksmbd/smb2pdu.c
+@@ -4289,7 +4289,7 @@ static int smb2_get_ea(struct ksmbd_work
+ 		if (!strncmp(name, XATTR_USER_PREFIX, XATTR_USER_PREFIX_LEN))
+ 			name_len -= XATTR_USER_PREFIX_LEN;
+ 
+-		ptr = (char *)(&eainfo->name + name_len + 1);
++		ptr = eainfo->name + name_len + 1;
+ 		buf_free_len -= (offsetof(struct smb2_ea_info, name) +
+ 				name_len + 1);
+ 		/* bailout if xattr can't fit in buf_free_len */
+--- a/fs/ksmbd/smb2pdu.h
++++ b/fs/ksmbd/smb2pdu.h
+@@ -1567,7 +1567,7 @@ struct smb2_ea_info {
+ 	__u8   Flags;
+ 	__u8   EaNameLength;
+ 	__le16 EaValueLength;
+-	char name[1];
++	char name[];
+ 	/* optionally followed by value */
+ } __packed; /* level 15 Query */
+ 
 
 
