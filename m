@@ -2,98 +2,88 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E95E79198F
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 16:21:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4A9F77919A3
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 16:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344863AbjIDOVf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 10:21:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52102 "EHLO
+        id S240693AbjIDO2m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 10:28:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230410AbjIDOVe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 10:21:34 -0400
-Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 805D0CE2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 07:21:31 -0700 (PDT)
-Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-401d10e3e54so15273185e9.2
-        for <stable@vger.kernel.org>; Mon, 04 Sep 2023 07:21:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693837290; x=1694442090; darn=vger.kernel.org;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=OAcjEaQ03QxynV9tKADAkHVqUqNcfebZXOmuLK4FPho=;
-        b=mA5gQHqRtgiVwhABT9dJOeX4kqcBHiS8wQCyo+Jt1qL8+/exY9QSpFpiPkeCQ6AEIF
-         dLLSPXW3J/SXdrkcJc2wft6Jqjr85eCSrL1tRC8RzaFFyClZ+pL2wIKLL3Kw7nH9l8yh
-         NiHBOkDIqrKLbgy/KTUSeeKWElxwbUmMz0v+P8BLyCJJeG0u9nOZaXiiviAIam/u2fAw
-         Si+rd+9w2Znks3BhwgrRj0xNlxW1j6/tOXPlV87AGbK8FPbYdsXQnQqF27E9l23xV7JI
-         eyesXer5aTnxOkPoYUvZClarAUKh6F89W9flWazhrkaL4AmiN3Yg/CDIv7eveNNyqXSn
-         fjBQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693837290; x=1694442090;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=OAcjEaQ03QxynV9tKADAkHVqUqNcfebZXOmuLK4FPho=;
-        b=UFrPueQY0WkywVwazVawiuC8TjiRWQVtDz7mjPu2+bD/xYDfChxppQAH+B0OkkRFIV
-         jHBVZ2Sl3Q/khWOn8EHq0Un6uZ5a6l2suVvgMT5QRVAV4gK/0taS28ocL/fTZ1f55ipU
-         iytpTh+kZYsdajh6Tg5geN3C94RQLCVxDDAUMxiC9TA8tjyMUbEfy4WMEt0aOxiBzshZ
-         kZ2A6IjiL5bnqydaA9kv6gV6yOf9Y27/KRTYThCAy0uCWEUAM4dgVF7PR90KwS8xqXR3
-         u60u93mEUgWML6zIu8iVmVc+7r/RKNNN0Dwhp1J6YNUfbt203OktMBejVM6eCGPojQ6d
-         79ZA==
-X-Gm-Message-State: AOJu0YxDBmu9ZLxShW6CsGB4a3XE0PG77f4B2QuhBll4lHAkqwix4ChG
-        iJhBEq+4KIa5bppcr6+zrK4jvA==
-X-Google-Smtp-Source: AGHT+IGtMj48VMQSdt+G1JW9Gh5UCwO9E7RWRmh29Dykg73w4Ek0hjDhbMLkfpZ2GrZ+USx4wbjgfw==
-X-Received: by 2002:a5d:6591:0:b0:319:785a:fce5 with SMTP id q17-20020a5d6591000000b00319785afce5mr7510178wru.38.1693837289935;
-        Mon, 04 Sep 2023 07:21:29 -0700 (PDT)
-Received: from salami.fritz.box ([80.111.96.134])
-        by smtp.gmail.com with ESMTPSA id d17-20020a056000115100b00313de682eb3sm14542159wrx.65.2023.09.04.07.21.28
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Sep 2023 07:21:29 -0700 (PDT)
-Message-ID: <10e2fc00466d3e5fc8142139ee979a71872292e6.camel@linaro.org>
-Subject: Re: [RESEND PATCH] Revert "fuse: Apply flags2 only when userspace
- set the FUSE_INIT_EXT"
-From:   =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
-To:     Miklos Szeredi <miklos@szeredi.hu>
-Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Bernd Schubert <bschubert@ddn.com>,
-        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org
-Date:   Mon, 04 Sep 2023 15:21:28 +0100
-In-Reply-To: <CAJfpegtSEjO9yi6ccG1KNi+C73xFuECnpo1DQsD9E5QhttwoRA@mail.gmail.com>
-References: <20230904133321.104584-1-git@andred.net>
-         <CAJfpegtSEjO9yi6ccG1KNi+C73xFuECnpo1DQsD9E5QhttwoRA@mail.gmail.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.49.2-3 
+        with ESMTP id S233999AbjIDO2h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 10:28:37 -0400
+Received: from smtp64.ord1d.emailsrvr.com (smtp64.ord1d.emailsrvr.com [184.106.54.64])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FE8CCE2
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 07:28:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+        s=20221208-6x11dpa4; t=1693837711;
+        bh=XJpws83PAeltUvDGI90D5dKMClclXtIXCy296ciNP6Q=;
+        h=Date:From:Subject:To:From;
+        b=lCcK27klLgm9Obrnk9gQsfj1fiaqG9UUFhg68/rhTpFA/XUwUoyB70BqA7618SI0o
+         iluFnSqJnCAJmzHk8g8oMmib62orTjakmXGuB9pgfhnN2WU9gy4GpRM2cuSyZ7KL2H
+         KlyRCSZfuR/W2vkvidE3wE/CfKz9WEhCUjXVApVM=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp9.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 3BFF8C00EE;
+        Mon,  4 Sep 2023 10:28:30 -0400 (EDT)
+Message-ID: <aaf05569-1564-43de-8706-d604e583bf42@mev.co.uk>
+Date:   Mon, 4 Sep 2023 15:28:29 +0100
 MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Content-Language: en-GB
+From:   Ian Abbott <abbotti@mev.co.uk>
+Subject: [REGRESSION] comedi: add HAS_IOPORT dependencies
+Organization: MEV Ltd.
+To:     Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@kernel.org>
+Cc:     Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Classification-ID: 61c97e35-feac-47a7-8abd-1087e1289693-1-1
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, 2023-09-04 at 15:41 +0200, Miklos Szeredi wrote:
-> On Mon, 4 Sept 2023 at 15:34, Andr=C3=A9 Draszik <git@andred.net> wrote:
-> >=20
-> > From: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
-> >=20
-> > This reverts commit 3066ff93476c35679cb07a97cce37d9bb07632ff.
-> >=20
-> > This patch breaks all existing userspace by requiring updates as
-> > mentioned in the commit message, which is not allowed.
->=20
-> It might break something, but you need to tell us what that is, please.
+Hi,
 
-In my case, it's Android.
+Commit b5c75b68b7de ("comedi: add HAS_IOPORT dependencies") in v6.5-rc1 
+onwards makes it impossible to select some comedi configuration options 
+that were previously selectable.  In addition to adding 'depends on 
+HAS_IOPORT' directives (which is OK for most of the options), it also 
+changes 'select COMEDI_8254', 'select COMEDI_DAS08', 'select 
+COMEDI_NI_LABPC', and 'select COMEDI_AMPLC_DIO200' directives to 
+'depends on' directives.  Since there is no other way to select those 
+options it renders the options that depend on them permanently disabled.
+It also adds a dependency on HAS_IOPORT to COMEDI_PCI_DRIVERS even 
+though several configuration options that depend on COMEDI_PCI_DRIVERS 
+are for drivers that neither use I/O ports nor depend on modules that 
+call the I/O port functions (inb()/outb() and friends).
 
-More generally this breaks all user-spaces that haven't been updated. Not
-breaking user-space is one of the top rules the kernel has, if not the topm=
-ost.
+Arnd Bergmann recommends[1] reverting the patch and following up with a 
+fixed version.  I intend to do that.  Niklas Schnelle confirms[2] that 
+it will not break anything.
 
+[1] Link: 
+https://lore.kernel.org/all/33c2292b-08cb-44c7-9438-07d4060976ab@app.fastmail.com
 
-Cheers,
-Andre
+[2] Link: 
+https://lore.kernel.org/all/65d620b2644e2d60b041815fa4bb544a818ae55a.camel@linux.ibm.com
 
+#regzbot introduced: b5c75b68b7de
 
+-- 
+-=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
+-=( registered in England & Wales.  Regd. number: 02862268.  )=-
+-=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
+-=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
