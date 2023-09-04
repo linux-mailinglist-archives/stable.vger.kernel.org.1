@@ -2,62 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6035F791CB0
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 47711791CC4
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:27:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238300AbjIDSSj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39350 "EHLO
+        id S238031AbjIDS1j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:27:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42608 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233831AbjIDSSj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:18:39 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB1B7E58;
-        Mon,  4 Sep 2023 11:18:31 -0700 (PDT)
+        with ESMTP id S234322AbjIDS1i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:27:38 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587EF1B6
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:27:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 87A9C61579;
-        Mon,  4 Sep 2023 18:18:31 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F73DC433C7;
-        Mon,  4 Sep 2023 18:18:28 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693851510;
-        bh=O1G6eZndmvslxpQpIwW/X18fv1FKROKBk+P5V4gCaIQ=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=Z4I3SLKlKiEQdWw7sdOeXXQ9PppfGvXZDL9q8A93iXmygwFRGWpXQzIFihRdtUSdT
-         XhbA+ie0akmWqEIc7GqgBlycoqJljhQiBfFP6X8wrZgx4jtn8OoshPOvMyk6qjUT8b
-         cbq6lUhyn/FBv7J5eAGILbEQiX1VQp8W/kEG4WpzLZ4So9SNEIbct3cx3/WWOSaO1i
-         rIY9Xm2Q/W6P+ftEU1Bnr/bdwaTCSltifQsCmZW3M5twmTyFPATu8bHb0DqqIO1PRm
-         OoNfF3ci4e7m4l9m4sHLJWggL+seuo12f3yzfE/mwvRwsPtKVc7vwJRC+2LH8rB1bo
-         r3jtoA9X0FFaw==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 04 Sep 2023 21:18:26 +0300
-Message-Id: <CVAC8VQPD3PK.1CBS5QTWDSS2C@suppilovahvero>
-Cc:     <linux-integrity@vger.kernel.org>,
-        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
-        "Todd Brandt" <todd.e.brandt@intel.com>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
-        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
-        "Raymond Jay Golo" <rjgolo@gmail.com>
-Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Jarkko Sakkinen" <jarkko@kernel.org>,
-        "Mario Limonciello" <mario.limonciello@amd.com>,
-        "Paul Menzel" <pmenzel@molgen.mpg.de>
-X-Mailer: aerc 0.14.0
-References: <20230822231510.2263255-1-jarkko@kernel.org>
- <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
- <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
- <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
- <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
- <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
- <CVABVIQB3858.CWOHMN527J67@suppilovahvero>
-In-Reply-To: <CVABVIQB3858.CWOHMN527J67@suppilovahvero>
+        by sin.source.kernel.org (Postfix) with ESMTPS id B2AF8CE0E30
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:27:33 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BC4C433C7;
+        Mon,  4 Sep 2023 18:27:31 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693852052;
+        bh=VRvflhTgBKLPFHrHNirijX+rhN18a8EI11DsFwhv4II=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=GBmxNghtCnSBOH7fiE3ceDMSfHuJ8fdlG7yJa7SBC2+5ZyyVT89SltTNEprWJ5Z2A
+         j2uA9CSlYI7WN6UwDxXJk2r+/UP8vGkX1sABEsMLOzj7SFlwGjhnpf0UOXCJ5sHE3p
+         M4utdCsZ1n3ITDw/b+2CWd3VFtkExhCHMwVtIuLY=
+Date:   Mon, 4 Sep 2023 19:27:29 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Fabio Estevam <festevam@denx.de>
+Cc:     m.felsch@pengutronix.de, angus@akkea.ca, christian.bach@scs.ch,
+        linux@roeck-us.net, stable@vger.kernel.org
+Subject: Re: FAILED: patch "[PATCH] usb: typec: tcpci: clear the fault status
+ bit" failed to apply to 5.15-stable tree
+Message-ID: <2023090422-whiff-monastery-6158@gregkh>
+References: <2023090314-headroom-doorbell-3ac8@gregkh>
+ <cdbcbbf136a2dac254a4ad4ee6b6f5ce@denx.de>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cdbcbbf136a2dac254a4ad4ee6b6f5ce@denx.de>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -68,111 +53,19 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon Sep 4, 2023 at 9:00 PM EEST, Jarkko Sakkinen wrote:
-> On Mon Aug 28, 2023 at 3:35 AM EEST, Mario Limonciello wrote:
-> > On 8/27/2023 13:12, Jarkko Sakkinen wrote:
-> > > On Wed Aug 23, 2023 at 9:58 PM EEST, Mario Limonciello wrote:
-> > >> On 8/23/2023 12:40, Jarkko Sakkinen wrote:
-> > >>> On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
-> > >>>> Dear Jarkko,
-> > >>>>
-> > >>>>
-> > >>>> Thank you for your patch.
-> > >>>>
-> > >>>>
-> > >>>> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
-> > >>>>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable=
- RNG for
-> > >>>>> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.=
-  On the
-> > >>>>> reported systems the TPM doesn't reply at bootup and returns back=
- the
-> > >>>>> command code. This makes the TPM fail probe.
-> > >>>>>
-> > >>>>> Since only Microsoft Pluton is the only known combination of AMD =
-CPU and
-> > >>>>> fTPM from other vendor, disable hwrng otherwise. In order to make=
- sysadmin
-> > >>>>> aware of this, print also info message to the klog.
-> > >>>>>
-> > >>>>> Cc: stable@vger.kernel.org
-> > >>>>> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-> > >>>>> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-> > >>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
-> > >>>>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > >>>>
-> > >>>> Mario=E2=80=99s patch also had the three reporters below listed:
-> > >>>>
-> > >>>> Reported-by: Patrick Steinhardt <ps@pks.im>
-> > >>>> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> > >>>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> > >>>
-> > >>> The problem here is that checkpatch throws three warnings:
-> > >>>
-> > >>> WARNING: Reported-by: should be immediately followed by Closes: wit=
-h a URL to the report
-> > >>> #19:
-> > >>> Reported-by: Patrick Steinhardt <ps@pks.im>
-> > >>> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> > >>>
-> > >>> WARNING: Reported-by: should be immediately followed by Closes: wit=
-h a URL to the report
-> > >>> #20:
-> > >>> Reported-by: Ronan Pigott <ronan@rjp.ie>
-> > >>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> > >>>
-> > >>> WARNING: Reported-by: should be immediately followed by Closes: wit=
-h a URL to the report
-> > >>> #21:
-> > >>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-> > >>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-> > >>>
-> > >>
-> > >> FWIW I observed the same checkpatch warning when I submitted my vers=
-ion
-> > >> of the patch.  I figured it's better to ignore the warning and attri=
-bute
-> > >> everyone who reported the issue affected them.
-> > >=20
-> > > OK so:
-> > >=20
-> > > 1. checkpatch.pl is part of the kernel process.
-> > > 2. Bugzilla is not part of the kernel process.
-> > >=20
-> > > Why emphasis on 1?
-> > >=20
-> > > BR, Jarkko
-> >
-> > The reason I submitted it this way is because of this quote from the=20
-> > documentation [1].
-> >
-> > "Check your patches with the patch style checker prior to submission=20
-> > (scripts/checkpatch.pl). Note, though, that the style checker should be=
-=20
-> > viewed as a guide, not as a replacement for human judgment. If your cod=
-e=20
-> > looks better with a violation then its probably best left alone."
-> >
-> > I wanted the patch to capture and attribute all those that reported it=
-=20
-> > not just the "first one".  Like I said previously, it's better to have =
-a=20
-> > collection of people to ping to notify if something needs to be reverte=
-d.
-> >
-> > [1]=20
-> > https://www.kernel.org/doc/html/latest/process/submitting-patches.html#=
-style-check-your-changes
->
-> Please denote also that kernel bugzilla is not mentioned in the page
-> that you put as a reference, and only reporter in the LKML has been
-> Todd.
+On Mon, Sep 04, 2023 at 10:47:05AM -0300, Fabio Estevam wrote:
+> On 03/09/2023 13:57, gregkh@linuxfoundation.org wrote:
+> > The patch below does not apply to the 5.15-stable tree.
+> > If someone wants it applied there, or to any other stable or longterm
+> > tree, then please email the backport, including the original git commit
+> > id to <stable@vger.kernel.org>.
+> 
+> The reason that it fails to apply against 5.15 is due to the missing commit:
+> 
+> 7963d4d71011 ("usb: typec: tcpci: move tcpci.h to include/linux/usb/")
+> 
+> I have submitted it as part of a series that applies cleanly against 5.15.
 
-Also the bugzilla is ambiguous because in this thread I get a picture
-that any possible commenter is a reporter, and at the same time bugzilla
-has a *specific field* for a reporter.
+Thanks all now queued up.
 
-How do the comments and the field for the reporter relate, and how they
-should be interpreted?
-
-BR, Jarkko
+greg k-h
