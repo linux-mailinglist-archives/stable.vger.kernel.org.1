@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4306791D0F
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DBE791CF8
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345555AbjIDSee (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:34:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60270 "EHLO
+        id S245410AbjIDSdi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:33:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345095AbjIDSee (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:34 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0B63B2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:30 -0700 (PDT)
+        with ESMTP id S234419AbjIDSdh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:33:37 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BF43FE5C
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:33:32 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EF8B61862
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:30 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 825E0C433C7;
-        Mon,  4 Sep 2023 18:34:29 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 22535CE0F9C
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:33:31 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14B10C433C7;
+        Mon,  4 Sep 2023 18:33:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852469;
-        bh=cL+/1utYn+bKPobpMAzOAd2OI827l4qcqeR/ndAHbbw=;
+        s=korg; t=1693852409;
+        bh=Skflz2U0gV/+k9HlhJdAUaeBIJs7+IjUBDG8+UJCRBw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m7/FS0H6C8AtY8sFR9XOVS3V5waIQimEAYDoCTXVDgQJba1FwQYOBl3eUeNwAkxtD
-         iYX/xV3SAgQj5yMwlVrFuuTWn5JCn+rAqYa/irJU2cXQZCj/SIoH+MPbIspm+ML9BR
-         1H1Lgy7QvVakkYruhVlko+PwUPD/wtxst+HdLlok=
+        b=azO5pMZhL5C2kLKjON1d73xMIHrTX37LleC/4TwI2nmnQpg2esMsYTHk/XTo6sjr1
+         MSMW4dHEQPp5JpIJw9/oEKAKxUhl5nYcKyJN6nw4Hcm7wc5ONumESl6CgMl525AQZu
+         SD2/VvycQ0Pb4/ALJ/gkD3e620hckZrzYJLx4EPg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kohn <m.kohn@welotec.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 11/31] USB: serial: option: add Quectel EM05G variant (0x030e)
+        patches@lists.linux.dev, Sven Eckelmann <sven@narfation.org>,
+        Kalle Valo <quic_kvalo@quicinc.com>
+Subject: [PATCH 6.4 21/32] wifi: ath11k: Dont drop tx_status when peer cannot be found
 Date:   Mon,  4 Sep 2023 19:30:19 +0100
-Message-ID: <20230904182947.565097279@linuxfoundation.org>
+Message-ID: <20230904182948.878923493@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,69 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kohn <m.kohn@welotec.com>
+From: Sven Eckelmann <sven@narfation.org>
 
-commit 873854c02364ebb991fc06f7148c14dfb5419e1b upstream.
+commit 400ece6c7f346b0a30867bd00b03b5b2563d4357 upstream.
 
-Add Quectel EM05G with product ID 0x030e.
-Interface 4 is used for qmi.
+When a station idles for a long time, hostapd will try to send a QoS Null
+frame to the station as "poll". NL80211_CMD_PROBE_CLIENT is used for this
+purpose. And the skb will be added to ack_status_frame - waiting for a
+completion via ieee80211_report_ack_skb().
 
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=030e Rev= 3.18
-S:  Manufacturer=Quectel
-S:  Product=Quectel EM05-G
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
+But when the peer was already removed before the tx_complete arrives, the
+peer will be missing. And when using dev_kfree_skb_any (instead of going
+through mac80211), the entry will stay inside ack_status_frames. This IDR
+will therefore run full after 8K request were generated for such clients.
+At this point, the access point will then just stall and not allow any new
+clients because idr_alloc() for ack_status_frame will fail.
 
-Signed-off-by: Martin Kohn <m.kohn@welotec.com>
+ieee80211_free_txskb() on the other hand will (when required) call
+ieee80211_report_ack_skb() and make sure that (when required) remove the
+entry from the ack_status_frame.
+
+Tested-on: IPQ6018 hw1.0 WLAN.HK.2.5.0.1-01100-QCAHKSWPL_SILICONZ-1
+
+Fixes: 6257c702264c ("wifi: ath11k: fix tx status reporting in encap offload mode")
+Fixes: 94739d45c388 ("ath11k: switch to using ieee80211_tx_status_ext()")
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Signed-off-by: Sven Eckelmann <sven@narfation.org>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230802-ath11k-ack_status_leak-v2-1-c0af729d6229@narfation.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/net/wireless/ath/ath11k/dp_tx.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -259,6 +259,7 @@ static void option_instat_callback(struc
- #define QUECTEL_PRODUCT_EM05G			0x030a
- #define QUECTEL_PRODUCT_EM060K			0x030b
- #define QUECTEL_PRODUCT_EM05G_CS		0x030c
-+#define QUECTEL_PRODUCT_EM05GV2			0x030e
- #define QUECTEL_PRODUCT_EM05CN_SG		0x0310
- #define QUECTEL_PRODUCT_EM05G_SG		0x0311
- #define QUECTEL_PRODUCT_EM05CN			0x0312
-@@ -1190,6 +1191,8 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(6) | ZLP },
- 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_GR, 0xff),
- 	  .driver_info = RSVD(6) | ZLP },
-+	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05GV2, 0xff),
-+	  .driver_info = RSVD(4) | ZLP },
- 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_CS, 0xff),
- 	  .driver_info = RSVD(6) | ZLP },
- 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_RS, 0xff),
+--- a/drivers/net/wireless/ath/ath11k/dp_tx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
+@@ -369,7 +369,7 @@ ath11k_dp_tx_htt_tx_complete_buf(struct
+ 			   "dp_tx: failed to find the peer with peer_id %d\n",
+ 			    ts->peer_id);
+ 		spin_unlock_bh(&ab->base_lock);
+-		dev_kfree_skb_any(msdu);
++		ieee80211_free_txskb(ar->hw, msdu);
+ 		return;
+ 	}
+ 	spin_unlock_bh(&ab->base_lock);
+@@ -624,7 +624,7 @@ static void ath11k_dp_tx_complete_msdu(s
+ 			   "dp_tx: failed to find the peer with peer_id %d\n",
+ 			    ts->peer_id);
+ 		spin_unlock_bh(&ab->base_lock);
+-		dev_kfree_skb_any(msdu);
++		ieee80211_free_txskb(ar->hw, msdu);
+ 		return;
+ 	}
+ 	arsta = (struct ath11k_sta *)peer->sta->drv_priv;
 
 
