@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01BC3791D34
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:36:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9A19791D2A
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348941AbjIDSgR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:36:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46758 "EHLO
+        id S1344837AbjIDSfv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:35:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243664AbjIDSgP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:36:15 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0F1B1CD4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:36:09 -0700 (PDT)
+        with ESMTP id S231511AbjIDSfs (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:48 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DE99CCB
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:44 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D549BB80EF4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:36:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A847C433C8;
-        Mon,  4 Sep 2023 18:36:06 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 4B5BBB80EF4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:43 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 954B9C433C8;
+        Mon,  4 Sep 2023 18:35:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852566;
-        bh=LshZ4vWiOpypdIcF0TZc1apHldQrTHKDmzgAyOUIxhs=;
+        s=korg; t=1693852541;
+        bh=x/xYAlTFSUSnfS9ae8K6sPHHDJL7FLTSnRBRo4/nv9E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JA+KymiIsIDMiV9QQgjJxNS7XtkenNs++Z0AiBQ0ft2t+e23KJLkqd1J/v0K5VTQs
-         yCebbnJaz/4/8uS+bSzFvzlXpslf3EGrZh3OSouf8vMrvrdagaenEpfkUV51WyhZl2
-         eKGHyXFurL45KRVaoZwrFwWsUh4btK4YUZiTZ4e4=
+        b=LYAAgp/5MlMvMenR9I/1ZKtPX9BG/P/LZsunOHbeggByHbHKdNnkyI0SY7cuQ1yTh
+         jyp7Bksfc6JCBcalh3kUDye6AALScDYNYsJb4jJ4fUYiIkp2+KIczmxmagplD/4UaD
+         N/N0pSkItV9OsEk+noc7JLk6DTP+Uv8RUcs+RfyE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>
-Subject: [PATCH 5.15 06/28] net: enetc: use EXPORT_SYMBOL_GPL for enetc_phc_index
+        patches@lists.linux.dev,
+        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
+        syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com,
+        Andrew Morton <akpm@linux-foundation.org>
+Subject: [PATCH 6.1 29/31] nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
 Date:   Mon,  4 Sep 2023 19:30:37 +0100
-Message-ID: <20230904182945.483354410@linuxfoundation.org>
+Message-ID: <20230904182948.386653183@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
-References: <20230904182945.178705038@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,38 +57,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-5.15-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
 
-commit 569820befb16ffc755ab7af71f4f08cc5f68f0fe upstream.
+commit cdaac8e7e5a059f9b5e816cda257f08d0abffacd upstream.
 
-enetc_phc_index is only used via symbol_get, which was only ever
-intended for very internal symbols like this one.  Use EXPORT_SYMBOL_GPL
-for it so that symbol_get can enforce only being used on
-EXPORT_SYMBOL_GPL symbols.
+A syzbot stress test using a corrupted disk image reported that
+mark_buffer_dirty() called from __nilfs_mark_inode_dirty() or
+nilfs_palloc_commit_alloc_entry() may output a kernel warning, and can
+panic if the kernel is booted with panic_on_warn.
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Jakub Kicinski <kuba@kernel.org>
-Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
+This is because nilfs2 keeps buffer pointers in local structures for some
+metadata and reuses them, but such buffers may be forcibly discarded by
+nilfs_clear_dirty_page() in some critical situations.
+
+This issue is reported to appear after commit 28a65b49eb53 ("nilfs2: do
+not write dirty data after degenerating to read-only"), but the issue has
+potentially existed before.
+
+Fix this issue by checking the uptodate flag when attempting to reuse an
+internally held buffer, and reloading the metadata instead of reusing the
+buffer if the flag was lost.
+
+Link: https://lkml.kernel.org/r/20230818131804.7758-1-konishi.ryusuke@gmail.com
+Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Reported-by: syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com
+Closes: https://lkml.kernel.org/r/0000000000003da75f05fdeffd12@google.com
+Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
+Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+Cc: <stable@vger.kernel.org> # 3.10+
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/freescale/enetc/enetc_ptp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ fs/nilfs2/alloc.c |    3 ++-
+ fs/nilfs2/inode.c |    7 +++++--
+ 2 files changed, 7 insertions(+), 3 deletions(-)
 
---- a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
-@@ -8,7 +8,7 @@
- #include "enetc.h"
+--- a/fs/nilfs2/alloc.c
++++ b/fs/nilfs2/alloc.c
+@@ -205,7 +205,8 @@ static int nilfs_palloc_get_block(struct
+ 	int ret;
  
- int enetc_phc_index = -1;
--EXPORT_SYMBOL(enetc_phc_index);
-+EXPORT_SYMBOL_GPL(enetc_phc_index);
+ 	spin_lock(lock);
+-	if (prev->bh && blkoff == prev->blkoff) {
++	if (prev->bh && blkoff == prev->blkoff &&
++	    likely(buffer_uptodate(prev->bh))) {
+ 		get_bh(prev->bh);
+ 		*bhp = prev->bh;
+ 		spin_unlock(lock);
+--- a/fs/nilfs2/inode.c
++++ b/fs/nilfs2/inode.c
+@@ -1025,7 +1025,7 @@ int nilfs_load_inode_block(struct inode
+ 	int err;
  
- static struct ptp_clock_info enetc_ptp_caps = {
- 	.owner		= THIS_MODULE,
+ 	spin_lock(&nilfs->ns_inode_lock);
+-	if (ii->i_bh == NULL) {
++	if (ii->i_bh == NULL || unlikely(!buffer_uptodate(ii->i_bh))) {
+ 		spin_unlock(&nilfs->ns_inode_lock);
+ 		err = nilfs_ifile_get_inode_block(ii->i_root->ifile,
+ 						  inode->i_ino, pbh);
+@@ -1034,7 +1034,10 @@ int nilfs_load_inode_block(struct inode
+ 		spin_lock(&nilfs->ns_inode_lock);
+ 		if (ii->i_bh == NULL)
+ 			ii->i_bh = *pbh;
+-		else {
++		else if (unlikely(!buffer_uptodate(ii->i_bh))) {
++			__brelse(ii->i_bh);
++			ii->i_bh = *pbh;
++		} else {
+ 			brelse(*pbh);
+ 			*pbh = ii->i_bh;
+ 		}
 
 
