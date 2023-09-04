@@ -2,111 +2,165 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 10005791C02
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 19:26:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AF4D0791C44
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:01:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345866AbjIDR0Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 13:26:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52950 "EHLO
+        id S238313AbjIDSBL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:01:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53776 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353361AbjIDR0P (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 13:26:15 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A064F173F;
-        Mon,  4 Sep 2023 10:26:00 -0700 (PDT)
-Received: from pps.filterd (m0279864.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 384GvLDc007055;
-        Mon, 4 Sep 2023 17:25:55 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=rHR17i34maR8MoM9D8VghM9Ml7jDe5VxjJcIip/f/SQ=;
- b=psLVvELwmLDHpWD7VMoW9DU/pinKK+72d4Sv4Qp0xhC7Jtw7IKc+YzYXeGTVifwm4M7r
- ECbjVBp8nStjk6iW4ALoZmdYkmMrN9k8QJ2aAlu9NJtU7hc0jHMTU23fxNNcGLIDiM0/
- p5ImDK/WYYsc7qp3xHUAyG4pcsgtbkbcOzIuoAu2ST2tiVp8IqqI6l6q7wn+M7Fa3PHW
- xrs9s/lr9xstEiJKL0rF0UdQcnn/OmxIcfnR/YFST+C14Blue8RxQ9Ns+ACJc+GgxZMD
- zOyft5yZSvKVOnslAovn1cUcxLNIz8RCdIz/0Z09ASV6QwIsk5529XYCgSFeOJGS5bZM wA== 
-Received: from nalasppmta02.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3sux7tv7fd-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 04 Sep 2023 17:25:55 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-        by NALASPPMTA02.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 384HPsDd008864
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Mon, 4 Sep 2023 17:25:54 GMT
-Received: from hu-viswanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Mon, 4 Sep 2023 10:25:49 -0700
-From:   Vignesh Viswanathan <quic_viswanat@quicinc.com>
-To:     <agross@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>
-CC:     <quic_kathirav@quicinc.com>, <quic_anusha@quicinc.com>,
-        <quic_sjaganat@quicinc.com>, <quic_srichara@quicinc.com>,
-        <quic_varada@quicinc.com>,
-        Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2 4/4] arm64: dts: qcom: ipq9574: Fix hwlock index for SMEM
-Date:   Mon, 4 Sep 2023 22:55:15 +0530
-Message-ID: <20230904172516.479866-5-quic_viswanat@quicinc.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230904172516.479866-1-quic_viswanat@quicinc.com>
-References: <20230904172516.479866-1-quic_viswanat@quicinc.com>
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01a.na.qualcomm.com (10.52.223.231) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: CGRI8mjzcpW295a2MW3-vW8cKm3WziPI
-X-Proofpoint-GUID: CGRI8mjzcpW295a2MW3-vW8cKm3WziPI
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-04_10,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 spamscore=0
- adultscore=0 malwarescore=0 priorityscore=1501 phishscore=0
- impostorscore=0 clxscore=1015 mlxscore=0 mlxlogscore=641 suspectscore=0
- lowpriorityscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309040156
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S231892AbjIDSBK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:01:10 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 16DFEDD;
+        Mon,  4 Sep 2023 11:01:07 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 337D6B80ED9;
+        Mon,  4 Sep 2023 18:01:05 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9B4DC433C8;
+        Mon,  4 Sep 2023 18:01:01 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693850463;
+        bh=ZO4d1HawvJ//3ptwuwm7onPYcLR7YnU0KtC0ZhmK0kQ=;
+        h=Date:To:Cc:Subject:From:References:In-Reply-To:From;
+        b=euqAD0ji2Pw8IAPMadKYJapR9GhENHWAyoLQTeF5iaEwYKY4v7adIY/4UD+yqj8q2
+         Gcy/9FXv5lBDSdvGJDaFqHF9o56D/f4wNnJka314gE+CVU+5zXCvSwfC4vMN7J7kcb
+         xlYuPfy6WImRtm+H4u+YoprHwtFiwsJYmHeAUhnA8lmmsvE7S5uaRPzeGPfYfYC206
+         eLFgCtFTJ2qxMWq4C5TOlVCDppfIwzI7i1vt7x+cGXDr7pauvcyO60EHFkBTI0iRIi
+         NpsR3VvfIXzW4y9AdNjFDOdgMf7JILKh9LNmcywhgS5lM2UrUwQYU7M/djc1VxJhhJ
+         LOEk2lReGNnBw==
+Mime-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 04 Sep 2023 21:00:59 +0300
+Message-Id: <CVABVIQB3858.CWOHMN527J67@suppilovahvero>
+To:     "Mario Limonciello" <mario.limonciello@amd.com>,
+        "Paul Menzel" <pmenzel@molgen.mpg.de>
+Cc:     <linux-integrity@vger.kernel.org>,
+        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
+        "Todd Brandt" <todd.e.brandt@intel.com>,
+        "Peter Huewe" <peterhuewe@gmx.de>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
+        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
+        "Raymond Jay Golo" <rjgolo@gmail.com>
+Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+X-Mailer: aerc 0.14.0
+References: <20230822231510.2263255-1-jarkko@kernel.org>
+ <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+ <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
+ <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
+ <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
+ <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
+In-Reply-To: <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-in SMEM region shared by the Host and FW.
+On Mon Aug 28, 2023 at 3:35 AM EEST, Mario Limonciello wrote:
+> On 8/27/2023 13:12, Jarkko Sakkinen wrote:
+> > On Wed Aug 23, 2023 at 9:58 PM EEST, Mario Limonciello wrote:
+> >> On 8/23/2023 12:40, Jarkko Sakkinen wrote:
+> >>> On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
+> >>>> Dear Jarkko,
+> >>>>
+> >>>>
+> >>>> Thank you for your patch.
+> >>>>
+> >>>>
+> >>>> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
+> >>>>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable R=
+NG for
+> >>>>> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  =
+On the
+> >>>>> reported systems the TPM doesn't reply at bootup and returns back t=
+he
+> >>>>> command code. This makes the TPM fail probe.
+> >>>>>
+> >>>>> Since only Microsoft Pluton is the only known combination of AMD CP=
+U and
+> >>>>> fTPM from other vendor, disable hwrng otherwise. In order to make s=
+ysadmin
+> >>>>> aware of this, print also info message to the klog.
+> >>>>>
+> >>>>> Cc: stable@vger.kernel.org
+> >>>>> Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
+> >>>>> Reported-by: Todd Brandt <todd.e.brandt@intel.com>
+> >>>>> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=3D217804
+> >>>>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >>>>
+> >>>> Mario=E2=80=99s patch also had the three reporters below listed:
+> >>>>
+> >>>> Reported-by: Patrick Steinhardt <ps@pks.im>
+> >>>> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> >>>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> >>>
+> >>> The problem here is that checkpatch throws three warnings:
+> >>>
+> >>> WARNING: Reported-by: should be immediately followed by Closes: with =
+a URL to the report
+> >>> #19:
+> >>> Reported-by: Patrick Steinhardt <ps@pks.im>
+> >>> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> >>>
+> >>> WARNING: Reported-by: should be immediately followed by Closes: with =
+a URL to the report
+> >>> #20:
+> >>> Reported-by: Ronan Pigott <ronan@rjp.ie>
+> >>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> >>>
+> >>> WARNING: Reported-by: should be immediately followed by Closes: with =
+a URL to the report
+> >>> #21:
+> >>> Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
+> >>> Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
+> >>>
+> >>
+> >> FWIW I observed the same checkpatch warning when I submitted my versio=
+n
+> >> of the patch.  I figured it's better to ignore the warning and attribu=
+te
+> >> everyone who reported the issue affected them.
+> >=20
+> > OK so:
+> >=20
+> > 1. checkpatch.pl is part of the kernel process.
+> > 2. Bugzilla is not part of the kernel process.
+> >=20
+> > Why emphasis on 1?
+> >=20
+> > BR, Jarkko
+>
+> The reason I submitted it this way is because of this quote from the=20
+> documentation [1].
+>
+> "Check your patches with the patch style checker prior to submission=20
+> (scripts/checkpatch.pl). Note, though, that the style checker should be=
+=20
+> viewed as a guide, not as a replacement for human judgment. If your code=
+=20
+> looks better with a violation then its probably best left alone."
+>
+> I wanted the patch to capture and attribute all those that reported it=20
+> not just the "first one".  Like I said previously, it's better to have a=
+=20
+> collection of people to ping to notify if something needs to be reverted.
+>
+> [1]=20
+> https://www.kernel.org/doc/html/latest/process/submitting-patches.html#st=
+yle-check-your-changes
 
-Fix the SMEM hwlock index to 3 for IPQ9574.
+Please denote also that kernel bugzilla is not mentioned in the page
+that you put as a reference, and only reporter in the LKML has been
+Todd.
 
-Cc: stable@vger.kernel.org
-Fixes: 46384ac7a618 ("arm64: dts: qcom: ipq9574: Add SMEM support")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
----
- arch/arm64/boot/dts/qcom/ipq9574.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/arch/arm64/boot/dts/qcom/ipq9574.dtsi b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-index f22f7e78850d..cc0e4a2b67d2 100644
---- a/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-+++ b/arch/arm64/boot/dts/qcom/ipq9574.dtsi
-@@ -195,7 +195,7 @@ tz_region: tz@4a600000 {
- 		smem@4aa00000 {
- 			compatible = "qcom,smem";
- 			reg = <0x0 0x4aa00000 0x0 0x100000>;
--			hwlocks = <&tcsr_mutex 0>;
-+			hwlocks = <&tcsr_mutex 3>;
- 			no-map;
- 		};
- 
--- 
-2.41.0
-
+BR, Jarkko
