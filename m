@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C020D791CE7
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2F74791D23
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233600AbjIDScx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:32:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59460 "EHLO
+        id S233562AbjIDSf3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:35:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58760 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244677AbjIDScx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:53 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C438DCD4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:48 -0700 (PDT)
+        with ESMTP id S244040AbjIDSf3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:29 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0DEA9E
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6378861987
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79712C433C8;
-        Mon,  4 Sep 2023 18:32:47 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 13CF7CE0F94
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3C48C433C8;
+        Mon,  4 Sep 2023 18:35:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852367;
-        bh=No/Q1j5aATnfFGusfko6aL7gjhwkOwt74HQZbFDyQFA=;
+        s=korg; t=1693852522;
+        bh=s1ayyN+hlj4vegq5Uv9oDwQn3xRt4Ks4GMkqvqTqjg4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dHpts1JgsIwt4Cd8krjXUTLY/EdfvnijwX0J/pTkiPHZireeq/+giOqxcCox/2yFx
-         Cg5HJtjFidJwg1q8be7I6YXz+lEaWdT8BHoWQ5pr4x8WCSGvylGDTlRQlGZCNq40ad
-         AkmS6MeL6fdUGKlB9ugD7buMG/KV1y7Tk8jecveI=
+        b=HEqK1uJmHkS/5qnovLebeQyo1cb0PUHUCHz0RjSrCTvxMyOjcHNc/tC1uoOR8X/pO
+         ebcCvKRIxYL8dXnzyg90UjyJUfeoyP8+7yszCISyVWeDlbjAJ8mcpUmn01qBB9ePIb
+         5RShW1OjBxY5ZbEn8zeJqcwZLVangWpOxaQ2KFYk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>
-Subject: [PATCH 6.5 26/34] serial: sc16is7xx: fix bug when first setting GPIO direction
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>
+Subject: [PATCH 6.1 05/31] ksmbd: reduce descriptor size if remaining bytes is less than request size
 Date:   Mon,  4 Sep 2023 19:30:13 +0100
-Message-ID: <20230904182949.807617742@linuxfoundation.org>
+Message-ID: <20230904182947.248062359@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
-References: <20230904182948.594404081@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,63 +55,108 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 9baeea723c0fb9c3ba9a336369f758ed9bc6831d upstream.
+commit e628bf939aafb61fbc56e9bdac8795cea5127e25 upstream.
 
-When configuring a pin as an output pin with a value of logic 0, we
-end up as having a value of logic 1 on the output pin. Setting a
-logic 0 a second time (or more) after that will correctly output a
-logic 0 on the output pin.
+Create 3 kinds of files to reproduce this problem.
 
-By default, all GPIO pins are configured as inputs. When we enter
-sc16is7xx_gpio_direction_output() for the first time, we first set the
-desired value in IOSTATE, and then we configure the pin as an output.
-The datasheet states that writing to IOSTATE register will trigger a
-transfer of the value to the I/O pin configured as output, so if the
-pin is configured as an input, nothing will be transferred.
+dd if=/dev/urandom of=127k.bin bs=1024 count=127
+dd if=/dev/urandom of=128k.bin bs=1024 count=128
+dd if=/dev/urandom of=129k.bin bs=1024 count=129
 
-Therefore, set the direction first in IODIR, and then set the desired
-value in IOSTATE.
+When copying files from ksmbd share to windows or cifs.ko, The following
+error message happen from windows client.
 
-This is what is done in NXP application note AN10587.
+"The file '129k.bin' is too large for the destination filesystem."
 
-Fixes: dfeae619d781 ("serial: sc16is7xx")
+We can see the error logs from ksmbd debug prints
+
+[48394.611537] ksmbd: RDMA r/w request 0x0: token 0x669d, length 0x20000
+[48394.612054] ksmbd: smb_direct: RDMA write, len 0x20000, needed credits 0x1
+[48394.612572] ksmbd: filename 129k.bin, offset 131072, len 131072
+[48394.614189] ksmbd: nbytes 1024, offset 132096 mincount 0
+[48394.614585] ksmbd: Failed to process 8 [-22]
+
+And we can reproduce it with cifs.ko,
+e.g. dd if=129k.bin of=/dev/null bs=128KB count=2
+
+This problem is that ksmbd rdma return error if remaining bytes is less
+than Length of Buffer Descriptor V1 Structure.
+
+smb_direct_rdma_xmit()
+...
+     if (desc_buf_len == 0 || total_length > buf_len ||
+           total_length > t->max_rdma_rw_size)
+               return -EINVAL;
+
+This patch reduce descriptor size with remaining bytes and remove the
+check for total_length and buf_len.
+
 Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-Link: https://lore.kernel.org/r/20230807214556.540627-6-hugo@hugovil.com
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |   11 ++++++++++-
- 1 file changed, 10 insertions(+), 1 deletion(-)
+ fs/smb/server/transport_rdma.c |   25 ++++++++++++++++++-------
+ 1 file changed, 18 insertions(+), 7 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1342,9 +1342,18 @@ static int sc16is7xx_gpio_direction_outp
- 		state |= BIT(offset);
- 	else
- 		state &= ~BIT(offset);
--	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
-+
-+	/*
-+	 * If we write IOSTATE first, and then IODIR, the output value is not
-+	 * transferred to the corresponding I/O pin.
-+	 * The datasheet states that each register bit will be transferred to
-+	 * the corresponding I/O pin programmed as output when writing to
-+	 * IOSTATE. Therefore, configure direction first with IODIR, and then
-+	 * set value after with IOSTATE.
-+	 */
- 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
- 			      BIT(offset));
-+	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
+--- a/fs/smb/server/transport_rdma.c
++++ b/fs/smb/server/transport_rdma.c
+@@ -1366,24 +1366,35 @@ static int smb_direct_rdma_xmit(struct s
+ 	LIST_HEAD(msg_list);
+ 	char *desc_buf;
+ 	int credits_needed;
+-	unsigned int desc_buf_len;
+-	size_t total_length = 0;
++	unsigned int desc_buf_len, desc_num = 0;
  
- 	return 0;
- }
+ 	if (t->status != SMB_DIRECT_CS_CONNECTED)
+ 		return -ENOTCONN;
+ 
++	if (buf_len > t->max_rdma_rw_size)
++		return -EINVAL;
++
+ 	/* calculate needed credits */
+ 	credits_needed = 0;
+ 	desc_buf = buf;
+ 	for (i = 0; i < desc_len / sizeof(*desc); i++) {
++		if (!buf_len)
++			break;
++
+ 		desc_buf_len = le32_to_cpu(desc[i].length);
++		if (!desc_buf_len)
++			return -EINVAL;
++
++		if (desc_buf_len > buf_len) {
++			desc_buf_len = buf_len;
++			desc[i].length = cpu_to_le32(desc_buf_len);
++			buf_len = 0;
++		}
+ 
+ 		credits_needed += calc_rw_credits(t, desc_buf, desc_buf_len);
+ 		desc_buf += desc_buf_len;
+-		total_length += desc_buf_len;
+-		if (desc_buf_len == 0 || total_length > buf_len ||
+-		    total_length > t->max_rdma_rw_size)
+-			return -EINVAL;
++		buf_len -= desc_buf_len;
++		desc_num++;
+ 	}
+ 
+ 	ksmbd_debug(RDMA, "RDMA %s, len %#x, needed credits %#x\n",
+@@ -1395,7 +1406,7 @@ static int smb_direct_rdma_xmit(struct s
+ 
+ 	/* build rdma_rw_ctx for each descriptor */
+ 	desc_buf = buf;
+-	for (i = 0; i < desc_len / sizeof(*desc); i++) {
++	for (i = 0; i < desc_num; i++) {
+ 		msg = kzalloc(offsetof(struct smb_direct_rdma_rw_msg, sg_list) +
+ 			      sizeof(struct scatterlist) * SG_CHUNK_SIZE, GFP_KERNEL);
+ 		if (!msg) {
 
 
