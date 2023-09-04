@@ -2,184 +2,240 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 15B13791596
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 12:17:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FE827915C9
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 12:42:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234117AbjIDKRZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 06:17:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47386 "EHLO
+        id S230247AbjIDKmT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 06:42:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232168AbjIDKRZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 06:17:25 -0400
-X-Greylist: delayed 416 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 04 Sep 2023 03:17:21 PDT
-Received: from smtp96.ord1d.emailsrvr.com (smtp96.ord1d.emailsrvr.com [184.106.54.96])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 739EFBD;
-        Mon,  4 Sep 2023 03:17:21 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
-        s=20221208-6x11dpa4; t=1693822225;
-        bh=j5N50ZOaven0TtBbPbaqupFjo5/8G/SbgCKNAaTubJk=;
-        h=Date:Subject:To:From:From;
-        b=P5NLg8SdX3/jqP3cb0k9scIzf2qVBxnZMz7OcCEcSqs1VmgSo3078LqplVDwzYeD2
-         foY5tRECPIK346kMeTJwPi+/nHDXf+7wgSaOdcyWkvpBOcA9y0gwDrUb9I2BAdw+U5
-         DV0yoiZ/wxTqsoC083/VI0It29cj9w/++feXlkgA=
-X-Auth-ID: abbotti@mev.co.uk
-Received: by smtp13.relay.ord1d.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id 61F8DC008E;
-        Mon,  4 Sep 2023 06:10:24 -0400 (EDT)
-Message-ID: <f0e88ae3-d38e-40d1-900c-395ddc9c8231@mev.co.uk>
-Date:   Mon, 4 Sep 2023 11:10:23 +0100
+        with ESMTP id S233006AbjIDKmT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 06:42:19 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1E4318F;
+        Mon,  4 Sep 2023 03:42:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693824135; x=1725360135;
+  h=message-id:date:mime-version:subject:to:cc:references:
+   from:in-reply-to:content-transfer-encoding;
+  bh=NmjbENqzKSzQkxAGRkl0EHa0SKlj9pMr5261k013CkQ=;
+  b=fCGHlZ/mVthEN72D+Gq/68PPzJORKJhePmds8QTRVhIsFyZap4tgIQfv
+   2bN/4yPCiympaJGIZkWF0XykihXeu6zVIscD7coHpCOBYfhJVpwhk2K5k
+   f/o7XlcNIpcym33k8DTWadEEcbODi99DuuTebOHN4scxO+fIyfnwVQOK9
+   H6LTWiMFmXXThcW6DLqPO+nLtFNlj8Zs5uZXZtEvfyiz1QBo757xgKE02
+   BAv/4ttkyrQuu/HjS19WMu74NBKmCEA2dnult+npt4mG7WKCp1nFrJJEw
+   L6HH8w+7VFmGNQfnXdeNlS4y5S/YkWlrrKrKsogfVqs867QkMxdb4nU15
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="375465152"
+X-IronPort-AV: E=Sophos;i="6.02,226,1688454000"; 
+   d="scan'208";a="375465152"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2023 03:39:22 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10822"; a="806223682"
+X-IronPort-AV: E=Sophos;i="6.02,226,1688454000"; 
+   d="scan'208";a="806223682"
+Received: from ahunter6-mobl1.ger.corp.intel.com (HELO [10.0.2.15]) ([10.252.59.119])
+  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 04 Sep 2023 03:39:18 -0700
+Message-ID: <8d88df6b-20c8-cc8e-c08a-e9f09466dc41@intel.com>
+Date:   Mon, 4 Sep 2023 13:39:15 +0300
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH] comedi: Fix driver module dependencies since HAS_IOPORT
- changes
-To:     Arnd Bergmann <arnd@kernel.org>, linux-kernel@vger.kernel.org
-Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Hartley Sweeten <hsweeten@visionengravers.com>,
-        Niklas Schnelle <schnelle@linux.ibm.com>,
-        stable@vger.kernel.org
-References: <20230901192615.89591-1-abbotti@mev.co.uk>
- <33c2292b-08cb-44c7-9438-07d4060976ab@app.fastmail.com>
-Content-Language: en-GB
-From:   Ian Abbott <abbotti@mev.co.uk>
-Organization: MEV Ltd.
-In-Reply-To: <33c2292b-08cb-44c7-9438-07d4060976ab@app.fastmail.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Firefox/102.0 Thunderbird/102.15.0
+Subject: Re: [PATCH v3] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+Content-Language: en-US
+To:     Sven van Ashbrook <svenva@chromium.org>,
+        LKML <linux-kernel@vger.kernel.org>, ulf.hansson@linaro.org
+Cc:     ben.chuang@genesyslogic.com.tw, jason.lai@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com, skardach@google.com,
+        Renius Chen <reniuschengl@gmail.com>,
+        rafael.j.wysocki@intel.com, linux-mmc@vger.kernel.org,
+        stable@vger.kernel.org, SeanHY.chen@genesyslogic.com.tw,
+        victor.shih@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw
+References: <20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
+From:   Adrian Hunter <adrian.hunter@intel.com>
+Organization: Intel Finland Oy, Registered Address: PL 281, 00181 Helsinki,
+ Business Identity Code: 0357606 - 4, Domiciled in Helsinki
+In-Reply-To: <20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Classification-ID: fc562194-64da-424b-94ba-e20d3275efaf-1-1
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 03/09/2023 16:49, Arnd Bergmann wrote:
-> On Fri, Sep 1, 2023, at 15:26, Ian Abbott wrote:
->> Commit b5c75b68b7de ("comedi: add HAS_IOPORT dependencies") changed the
->> "select" directives to "depend on" directives for several config
->> stanzas, but the options they depended on could not be selected,
->> breaking previously selected options.
+On 31/08/23 19:00, Sven van Ashbrook wrote:
+> To improve the r/w performance of GL9763E, the current driver inhibits LPM
+> negotiation while the device is active.
 > 
-> Right, I think that correctly describes the regression, sorry I didn't
-> catch that during the submission.
+> This prevents a large number of SoCs from suspending, notably x86 systems
+> which commonly use S0ix as the suspend mechanism - for example, Intel
+> Alder Lake and Raptor Lake processors.
 > 
->>   Change them back to "select"
->> directives and add "depends on HAS_IOPORT" to config entries for modules
->> that either use inb()/outb() and friends directly, or (recursively)
->> depend on modules that do so.
+> Failure description:
+> 1. Userspace initiates s2idle suspend (e.g. via writing to
+>    /sys/power/state)
+> 2. This switches the runtime_pm device state to active, which disables
+>    LPM negotiation, then calls the "regular" suspend callback
+> 3. With LPM negotiation disabled, the bus cannot enter low-power state
+> 4. On a large number of SoCs, if the bus not in a low-power state, S0ix
+>    cannot be entered, which in turn prevents the SoC from entering
+>    suspend.
 > 
-> This also describes a correct solution to the problem, but from looking
-> at your patch, I think it's not exactly what you do.
+> Fix by re-enabling LPM negotiation in the device's suspend callback.
 > 
->>
->>   config COMEDI_PCL711
->>   	tristate "Advantech PCL-711/711b and ADlink ACL-8112 ISA card support"
->> -	depends on HAS_IOPORT
->> -	depends on COMEDI_8254
->> +	select COMEDI_8254
+> Suggested-by: Stanislaw Kardach <skardach@google.com>
+> Fixes: f9e5b33934ce ("mmc: host: Improve I/O read/write performance for GL9763E")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Sven van Ashbrook <svenva@chromium.org>
+
+Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+
+> ---
 > 
-> If COMEDI_8254 depends on HAS_IOPORT, you must not drop the 'depends on'
-> here, otherwise you get build failures from missing dependencies.
+> Changes in v3:
+> - applied maintainer feedback from https://lore.kernel.org/lkml/CACT4zj-BaX4tHji8B8gS5jiKkd-2BcwfzHM4fS-OUn0f8DSxcw@mail.gmail.com/T/#m7cea7b6b987d1ab1ca95feedf2c6f9da5783da5c
 > 
-> Same thing for a lot of the ones below. You should only change the
-> select, but not remove the 'depends on HAS_IOPORT' in any of these,
-> unless the entire Kconfig file already has this.
-
-I assumed it was OK because it is only selectable if 'ISA' is selected 
-and all the other ISA card drivers that use inb()/outb() and friends do 
-not depend on 'HAS_IOPORT' either.
-
->> @@ -512,7 +500,7 @@ config COMEDI_NI_ATMIO16D
->>
->>   config COMEDI_NI_LABPC_ISA
->>   	tristate "NI Lab-PC and compatibles ISA support"
->> -	depends on COMEDI_NI_LABPC
->> +	select COMEDI_NI_LABPC
->>   	help
->>   	  Enable support for National Instruments Lab-PC and compatibles
->>   	  Lab-PC-1200, Lab-PC-1200AI, Lab-PC+.
+> Changes in v2:
+> - improved symmetry and error path in s2idle suspend callback (internal review)
 > 
-> I was confused a bit by this, as the changelog doesn't mention
-> COMEDI_NI_LABPC, but I saw that this needs the same change
-> recursively, same as COMEDI_DAS08.
+>  drivers/mmc/host/sdhci-pci-gli.c | 104 ++++++++++++++++++++-----------
+>  1 file changed, 66 insertions(+), 38 deletions(-)
 > 
->> @@ -576,7 +564,7 @@ endif # COMEDI_ISA_DRIVERS
->>
->>   menuconfig COMEDI_PCI_DRIVERS
->>   	tristate "Comedi PCI drivers"
->> -	depends on PCI && HAS_IOPORT
->> +	depends on PCI
->>   	help
->>   	  Enable support for comedi PCI drivers.
->>
->> @@ -587,6 +575,7 @@ if COMEDI_PCI_DRIVERS
->>
->>   config COMEDI_8255_PCI
->>   	tristate "Generic PCI based 8255 digital i/o board support"
->> +	depends on HAS_IOPORT
->>   	select COMEDI_8255
->>   	help
->>   	  Enable support for PCI based 8255 digital i/o boards. This driver
-> 
-> This change looks unrelated to both your description and
-> the bug, as you are just moving around the dependencies,
-> though I might be missing something.
-
-I'm just moving the 'HAS_IOPORT' dependency down from 
-'COMEDI_PCI_DRIVERS' to its dependents.  Not all comedi PCI drivers use 
-I/O ports, although some of the drivers that do not use I/O ports do 
-depend on 'COMEDI_8254' and 'COMEDI_8255' which do depend on 'HAS_IOPORT'.
-
-> If this addresses another problem for you, maybe split it out
-> into a separate patch and describe why you move the dependencies.
-
-I'm just correcting one patch with one patch, so don't really want to 
-split it.  I could improve the patch description though.
-
-> Are you trying to make sure that it's possible to build PCI
-> IIO drivers that don't depend on HAS_IOPORT on targets that
-> don't provide it?
-
-Yes (well, PCI comedi drivers rather than IIO drivers).  I still need to 
-do something about the PCI drivers that depend on COMEDI_8254 or 
-COMEDI_8255 but don't actually use the I/O port functionality of the 
-comedi_8254 and comedi_8255 modules, but that can be done in other patch 
-that modifies the drivers.
-
-> 
->> @@ -735,8 +738,8 @@ config COMEDI_ADL_PCI9111
->>
->>   config COMEDI_ADL_PCI9118
->>   	tristate "ADLink PCI-9118DG, PCI-9118HG, PCI-9118HR support"
->> +	depends on HAS_IOPORT
->>   	depends on HAS_DMA
->> -	depends on COMEDI_8254
->>   	help
->>   	  Enable support for ADlink PCI-9118DG, PCI-9118HG, PCI-9118HR cards
-> 
-> I don't see why you'd remove the 'depends on COMEDI_8254' here
-> rather than turning it back into 'select' as it was originally.
-
-Oops!  That's an error on my part.  Thanks for catching it!
-
-> 
-> It might be easier to revert the original patch, and then follow
-> up with a fixed version.
-
-Will any random config builds break in 6.5 stable if the original patch 
-is reverted, or is the 'HAS_IOPORT' stuff still in preparation for 
-future use?
-
-> 
->        Arnd
-
-Cheers,
-Ian
-
--- 
--=( Ian Abbott <abbotti@mev.co.uk> || MEV Ltd. is a company  )=-
--=( registered in England & Wales.  Regd. number: 02862268.  )=-
--=( Regd. addr.: S11 & 12 Building 67, Europa Business Park, )=-
--=( Bird Hall Lane, STOCKPORT, SK3 0XA, UK. || www.mev.co.uk )=-
+> diff --git a/drivers/mmc/host/sdhci-pci-gli.c b/drivers/mmc/host/sdhci-pci-gli.c
+> index 1792665c9494a..a4ccb6c3e27a6 100644
+> --- a/drivers/mmc/host/sdhci-pci-gli.c
+> +++ b/drivers/mmc/host/sdhci-pci-gli.c
+> @@ -745,42 +745,6 @@ static u32 sdhci_gl9750_readl(struct sdhci_host *host, int reg)
+>  	return value;
+>  }
+>  
+> -#ifdef CONFIG_PM_SLEEP
+> -static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+> -{
+> -	struct sdhci_pci_slot *slot = chip->slots[0];
+> -
+> -	pci_free_irq_vectors(slot->chip->pdev);
+> -	gli_pcie_enable_msi(slot);
+> -
+> -	return sdhci_pci_resume_host(chip);
+> -}
+> -
+> -static int sdhci_cqhci_gli_resume(struct sdhci_pci_chip *chip)
+> -{
+> -	struct sdhci_pci_slot *slot = chip->slots[0];
+> -	int ret;
+> -
+> -	ret = sdhci_pci_gli_resume(chip);
+> -	if (ret)
+> -		return ret;
+> -
+> -	return cqhci_resume(slot->host->mmc);
+> -}
+> -
+> -static int sdhci_cqhci_gli_suspend(struct sdhci_pci_chip *chip)
+> -{
+> -	struct sdhci_pci_slot *slot = chip->slots[0];
+> -	int ret;
+> -
+> -	ret = cqhci_suspend(slot->host->mmc);
+> -	if (ret)
+> -		return ret;
+> -
+> -	return sdhci_suspend_host(slot->host);
+> -}
+> -#endif
+> -
+>  static void gl9763e_hs400_enhanced_strobe(struct mmc_host *mmc,
+>  					  struct mmc_ios *ios)
+>  {
+> @@ -1029,6 +993,70 @@ static int gl9763e_runtime_resume(struct sdhci_pci_chip *chip)
+>  }
+>  #endif
+>  
+> +#ifdef CONFIG_PM_SLEEP
+> +static int sdhci_pci_gli_resume(struct sdhci_pci_chip *chip)
+> +{
+> +	struct sdhci_pci_slot *slot = chip->slots[0];
+> +
+> +	pci_free_irq_vectors(slot->chip->pdev);
+> +	gli_pcie_enable_msi(slot);
+> +
+> +	return sdhci_pci_resume_host(chip);
+> +}
+> +
+> +static int gl9763e_resume(struct sdhci_pci_chip *chip)
+> +{
+> +	struct sdhci_pci_slot *slot = chip->slots[0];
+> +	int ret;
+> +
+> +	ret = sdhci_pci_gli_resume(chip);
+> +	if (ret)
+> +		return ret;
+> +
+> +	ret = cqhci_resume(slot->host->mmc);
+> +	if (ret)
+> +		return ret;
+> +
+> +	/*
+> +	 * Disable LPM negotiation to bring device back in sync
+> +	 * with its runtime_pm state.
+> +	 */
+> +	gl9763e_set_low_power_negotiation(slot, false);
+> +
+> +	return 0;
+> +}
+> +
+> +static int gl9763e_suspend(struct sdhci_pci_chip *chip)
+> +{
+> +	struct sdhci_pci_slot *slot = chip->slots[0];
+> +	int ret;
+> +
+> +	/*
+> +	 * Certain SoCs can suspend only with the bus in low-
+> +	 * power state, notably x86 SoCs when using S0ix.
+> +	 * Re-enable LPM negotiation to allow entering L1 state
+> +	 * and entering system suspend.
+> +	 */
+> +	gl9763e_set_low_power_negotiation(slot, true);
+> +
+> +	ret = cqhci_suspend(slot->host->mmc);
+> +	if (ret)
+> +		goto err_suspend;
+> +
+> +	ret = sdhci_suspend_host(slot->host);
+> +	if (ret)
+> +		goto err_suspend_host;
+> +
+> +	return 0;
+> +
+> +err_suspend_host:
+> +	cqhci_resume(slot->host->mmc);
+> +err_suspend:
+> +	gl9763e_set_low_power_negotiation(slot, false);
+> +	return ret;
+> +}
+> +#endif
+> +
+>  static int gli_probe_slot_gl9763e(struct sdhci_pci_slot *slot)
+>  {
+>  	struct pci_dev *pdev = slot->chip->pdev;
+> @@ -1113,8 +1141,8 @@ const struct sdhci_pci_fixes sdhci_gl9763e = {
+>  	.probe_slot	= gli_probe_slot_gl9763e,
+>  	.ops            = &sdhci_gl9763e_ops,
+>  #ifdef CONFIG_PM_SLEEP
+> -	.resume		= sdhci_cqhci_gli_resume,
+> -	.suspend	= sdhci_cqhci_gli_suspend,
+> +	.resume		= gl9763e_resume,
+> +	.suspend	= gl9763e_suspend,
+>  #endif
+>  #ifdef CONFIG_PM
+>  	.runtime_suspend = gl9763e_runtime_suspend,
 
