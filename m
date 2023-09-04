@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33846791CE8
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 362BC791CFF
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241152AbjIDSc5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:32:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59562 "EHLO
+        id S232597AbjIDSd4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:33:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56394 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245410AbjIDSc4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:56 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 06708CDA
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:53 -0700 (PDT)
+        with ESMTP id S245418AbjIDSdz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:33:55 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AB8BB2
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:33:51 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id BD4C1B80E64
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:51 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 330A3C433C9;
-        Mon,  4 Sep 2023 18:32:50 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 162FBB80EF5
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:33:50 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F91FC433C7;
+        Mon,  4 Sep 2023 18:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852370;
-        bh=/TBthkgy0UogWNb4IfOMDFb4TpXXazwygIov2QjPpmo=;
+        s=korg; t=1693852428;
+        bh=A6bJvNsyvx24pWgFp4SbmolLT5J59xiYBH6fAO1H9iI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rDdN0oOvEqgDeyiaVtympDwlfaG5XE2mDH4f6Nq/l/CGTq3gevASVj9yFJDObusgA
-         pd82HNjS7sk8sZ2NXbkR0MhierHH1ok+aOJCPIZQrB+5yFypi3vTvzhSBdOMHAqg8e
-         4vR7/jfWwrJFykkUOgyR1ZbU+9YIgYX/w5GTSjHM=
+        b=FsfuQ0dTeD4Eb+pV/eie1Em5Rbw6z+P7tdD9FiQn6BZNfhukz3of/Mny5WDYzDYNy
+         ww+VVv9v7py+BRJPyaLiZ/tL8x0Yzyffo8Kls/11n9U7pc5hnkPt4t4IuDrpZyTYBp
+         KwIdFS2Mce6LMtzSAf92VOUk1Q3xxfYjIX0i1uqE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aaron Skomra <skomra@gmail.com>,
-        Aaron Armstrong Skomra <aaron.skomra@wacom.com>,
-        Jason Gerecke <jason.gerecke@wacom.com>,
-        Jiri Kosina <jkosina@suse.cz>
-Subject: [PATCH 6.5 17/34] HID: wacom: remove the battery when the EKR is off
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Christoph Hellwig <hch@lst.de>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.4 06/32] ARM: pxa: remove use of symbol_get()
 Date:   Mon,  4 Sep 2023 19:30:04 +0100
-Message-ID: <20230904182949.383267145@linuxfoundation.org>
+Message-ID: <20230904182948.188208982@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
-References: <20230904182948.594404081@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,134 +56,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aaron Armstrong Skomra <aaron.skomra@wacom.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-commit 9ac6678b95b0dd9458a7a6869f46e51cd55a1d84 upstream.
+commit 0faa29c4207e6e29cfc81b427df60e326c37083a upstream.
 
-Currently the EKR battery remains even after we stop getting information
-from the device. This can lead to a stale battery persisting indefinitely
-in userspace.
+The spitz board file uses the obscure symbol_get() function
+to optionally call a function from sharpsl_pm.c if that is
+built. However, the two files are always built together
+these days, and have been for a long time, so this can
+be changed to a normal function call.
 
-The remote sends a heartbeat every 10 seconds. Delete the battery if we
-miss two heartbeats (after 21 seconds). Restore the battery once we see
-a heartbeat again.
-
-Signed-off-by: Aaron Skomra <skomra@gmail.com>
-Signed-off-by: Aaron Armstrong Skomra <aaron.skomra@wacom.com>
-Reviewed-by: Jason Gerecke <jason.gerecke@wacom.com>
-Fixes: 9f1015d45f62 ("HID: wacom: EKR: attach the power_supply on first connection")
-CC: stable@vger.kernel.org
-Signed-off-by: Jiri Kosina <jkosina@suse.cz>
+Link: https://lore.kernel.org/lkml/20230731162639.GA9441@lst.de/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/wacom.h     |    1 +
- drivers/hid/wacom_sys.c |   25 +++++++++++++++++++++----
- drivers/hid/wacom_wac.c |    1 +
- drivers/hid/wacom_wac.h |    1 +
- 4 files changed, 24 insertions(+), 4 deletions(-)
+ arch/arm/mach-pxa/sharpsl_pm.c |    2 --
+ arch/arm/mach-pxa/spitz.c      |   14 +-------------
+ 2 files changed, 1 insertion(+), 15 deletions(-)
 
---- a/drivers/hid/wacom.h
-+++ b/drivers/hid/wacom.h
-@@ -150,6 +150,7 @@ struct wacom_remote {
- 		struct input_dev *input;
- 		bool registered;
- 		struct wacom_battery battery;
-+		ktime_t active_time;
- 	} remotes[WACOM_MAX_REMOTES];
+--- a/arch/arm/mach-pxa/sharpsl_pm.c
++++ b/arch/arm/mach-pxa/sharpsl_pm.c
+@@ -216,8 +216,6 @@ void sharpsl_battery_kick(void)
+ {
+ 	schedule_delayed_work(&sharpsl_bat, msecs_to_jiffies(125));
+ }
+-EXPORT_SYMBOL(sharpsl_battery_kick);
+-
+ 
+ static void sharpsl_battery_thread(struct work_struct *private_)
+ {
+--- a/arch/arm/mach-pxa/spitz.c
++++ b/arch/arm/mach-pxa/spitz.c
+@@ -9,7 +9,6 @@
+  */
+ 
+ #include <linux/kernel.h>
+-#include <linux/module.h>	/* symbol_get ; symbol_put */
+ #include <linux/platform_device.h>
+ #include <linux/delay.h>
+ #include <linux/gpio_keys.h>
+@@ -518,17 +517,6 @@ static struct gpiod_lookup_table spitz_a
+ 	},
  };
  
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2523,6 +2523,18 @@ fail:
- 	return;
- }
+-static void spitz_bl_kick_battery(void)
+-{
+-	void (*kick_batt)(void);
+-
+-	kick_batt = symbol_get(sharpsl_battery_kick);
+-	if (kick_batt) {
+-		kick_batt();
+-		symbol_put(sharpsl_battery_kick);
+-	}
+-}
+-
+ static struct gpiod_lookup_table spitz_lcdcon_gpio_table = {
+ 	.dev_id = "spi2.1",
+ 	.table = {
+@@ -556,7 +544,7 @@ static struct corgi_lcd_platform_data sp
+ 	.max_intensity		= 0x2f,
+ 	.default_intensity	= 0x1f,
+ 	.limit_mask		= 0x0b,
+-	.kick_battery		= spitz_bl_kick_battery,
++	.kick_battery		= sharpsl_battery_kick,
+ };
  
-+static void wacom_remote_destroy_battery(struct wacom *wacom, int index)
-+{
-+	struct wacom_remote *remote = wacom->remote;
-+
-+	if (remote->remotes[index].battery.battery) {
-+		devres_release_group(&wacom->hdev->dev,
-+				     &remote->remotes[index].battery.bat_desc);
-+		remote->remotes[index].battery.battery = NULL;
-+		remote->remotes[index].active_time = 0;
-+	}
-+}
-+
- static void wacom_remote_destroy_one(struct wacom *wacom, unsigned int index)
- {
- 	struct wacom_remote *remote = wacom->remote;
-@@ -2537,9 +2549,7 @@ static void wacom_remote_destroy_one(str
- 			remote->remotes[i].registered = false;
- 			spin_unlock_irqrestore(&remote->remote_lock, flags);
- 
--			if (remote->remotes[i].battery.battery)
--				devres_release_group(&wacom->hdev->dev,
--						     &remote->remotes[i].battery.bat_desc);
-+			wacom_remote_destroy_battery(wacom, i);
- 
- 			if (remote->remotes[i].group.name)
- 				devres_release_group(&wacom->hdev->dev,
-@@ -2547,7 +2557,6 @@ static void wacom_remote_destroy_one(str
- 
- 			remote->remotes[i].serial = 0;
- 			remote->remotes[i].group.name = NULL;
--			remote->remotes[i].battery.battery = NULL;
- 			wacom->led.groups[i].select = WACOM_STATUS_UNKNOWN;
- 		}
- 	}
-@@ -2632,6 +2641,9 @@ static int wacom_remote_attach_battery(s
- 	if (remote->remotes[index].battery.battery)
- 		return 0;
- 
-+	if (!remote->remotes[index].active_time)
-+		return 0;
-+
- 	if (wacom->led.groups[index].select == WACOM_STATUS_UNKNOWN)
- 		return 0;
- 
-@@ -2647,6 +2659,7 @@ static void wacom_remote_work(struct wor
- {
- 	struct wacom *wacom = container_of(work, struct wacom, remote_work);
- 	struct wacom_remote *remote = wacom->remote;
-+	ktime_t kt = ktime_get();
- 	struct wacom_remote_data data;
- 	unsigned long flags;
- 	unsigned int count;
-@@ -2673,6 +2686,10 @@ static void wacom_remote_work(struct wor
- 		serial = data.remote[i].serial;
- 		if (data.remote[i].connected) {
- 
-+			if (kt - remote->remotes[i].active_time > WACOM_REMOTE_BATTERY_TIMEOUT
-+			    && remote->remotes[i].active_time != 0)
-+				wacom_remote_destroy_battery(wacom, i);
-+
- 			if (remote->remotes[i].serial == serial) {
- 				wacom_remote_attach_battery(wacom, i);
- 				continue;
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1134,6 +1134,7 @@ static int wacom_remote_irq(struct wacom
- 	if (index < 0 || !remote->remotes[index].registered)
- 		goto out;
- 
-+	remote->remotes[i].active_time = ktime_get();
- 	input = remote->remotes[index].input;
- 
- 	input_report_key(input, BTN_0, (data[9] & 0x01));
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -13,6 +13,7 @@
- #define WACOM_NAME_MAX		64
- #define WACOM_MAX_REMOTES	5
- #define WACOM_STATUS_UNKNOWN	255
-+#define WACOM_REMOTE_BATTERY_TIMEOUT	21000000000ll
- 
- /* packet length for individual models */
- #define WACOM_PKGLEN_BBFUN	 9
+ static struct spi_board_info spitz_spi_devices[] = {
 
 
