@@ -2,62 +2,71 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D729791933
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 15:58:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E95E79198F
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 16:21:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231589AbjIDN6N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 09:58:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41454 "EHLO
+        id S1344863AbjIDOVf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 10:21:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52102 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229489AbjIDN6N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 09:58:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2299FCD7;
-        Mon,  4 Sep 2023 06:58:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id A59B861772;
-        Mon,  4 Sep 2023 13:58:08 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 11538C433C7;
-        Mon,  4 Sep 2023 13:58:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693835888;
-        bh=Xmt5MQmExYsuinsLeYQbE2KBIh/St74DYmxoosZ1jLQ=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=fhDeo3gOzqU4OFKcwKNkrKOmS3RQKUaJnlzmpg+4Pb3HkTwfEveRNbznbW3c+lkhl
-         DTXLNZabNrbxDSqme6B/dZonaOY4id7UbsTjXkN6dtP3uSmJ6ONEJQga+nVkvImFbY
-         cSbF62H/a46nQQEHap2ZTU4EE/CtulVinBDf5NtukhJ3JJji9Wy/0/yQ5eXAZzn/3c
-         F2rYLFIXgrNUjxkQ729/lQJPknE2cPnboIm/3JnLdgkNYrwQrHPABN8K39rqpNGLXt
-         BBJ1YiaGCHpVF3Lv5KF51S86GRlQScqoK7HKOeJbTKfi3Q5kE02W6iU6VGB4CY2WOM
-         LvqMUAtkrtmdA==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id 96602CE02BC; Mon,  4 Sep 2023 06:58:07 -0700 (PDT)
-Date:   Mon, 4 Sep 2023 06:58:07 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc:     Denis Arefev <arefev@swemel.ru>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org,
-        lvc-project@linuxtesting.org, linux-kernel@vger.kernel.org,
-        trufanov@swemel.ru, vfh@swemel.ru,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] Fix srcu_struct node grpmask overflow on 64-bit
- systems
-Message-ID: <751d2afd-fc91-400d-8889-187031f2bbf0@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20230904122114.66757-1-arefev@swemel.ru>
- <a60cf690-2af7-1eee-c1c1-3433d16a1939@efficios.com>
- <40593b16-8232-27fc-808a-37bad7457dc0@efficios.com>
+        with ESMTP id S230410AbjIDOVe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 10:21:34 -0400
+Received: from mail-wm1-x32e.google.com (mail-wm1-x32e.google.com [IPv6:2a00:1450:4864:20::32e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 805D0CE2
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 07:21:31 -0700 (PDT)
+Received: by mail-wm1-x32e.google.com with SMTP id 5b1f17b1804b1-401d10e3e54so15273185e9.2
+        for <stable@vger.kernel.org>; Mon, 04 Sep 2023 07:21:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1693837290; x=1694442090; darn=vger.kernel.org;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=OAcjEaQ03QxynV9tKADAkHVqUqNcfebZXOmuLK4FPho=;
+        b=mA5gQHqRtgiVwhABT9dJOeX4kqcBHiS8wQCyo+Jt1qL8+/exY9QSpFpiPkeCQ6AEIF
+         dLLSPXW3J/SXdrkcJc2wft6Jqjr85eCSrL1tRC8RzaFFyClZ+pL2wIKLL3Kw7nH9l8yh
+         NiHBOkDIqrKLbgy/KTUSeeKWElxwbUmMz0v+P8BLyCJJeG0u9nOZaXiiviAIam/u2fAw
+         Si+rd+9w2Znks3BhwgrRj0xNlxW1j6/tOXPlV87AGbK8FPbYdsXQnQqF27E9l23xV7JI
+         eyesXer5aTnxOkPoYUvZClarAUKh6F89W9flWazhrkaL4AmiN3Yg/CDIv7eveNNyqXSn
+         fjBQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693837290; x=1694442090;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=OAcjEaQ03QxynV9tKADAkHVqUqNcfebZXOmuLK4FPho=;
+        b=UFrPueQY0WkywVwazVawiuC8TjiRWQVtDz7mjPu2+bD/xYDfChxppQAH+B0OkkRFIV
+         jHBVZ2Sl3Q/khWOn8EHq0Un6uZ5a6l2suVvgMT5QRVAV4gK/0taS28ocL/fTZ1f55ipU
+         iytpTh+kZYsdajh6Tg5geN3C94RQLCVxDDAUMxiC9TA8tjyMUbEfy4WMEt0aOxiBzshZ
+         kZ2A6IjiL5bnqydaA9kv6gV6yOf9Y27/KRTYThCAy0uCWEUAM4dgVF7PR90KwS8xqXR3
+         u60u93mEUgWML6zIu8iVmVc+7r/RKNNN0Dwhp1J6YNUfbt203OktMBejVM6eCGPojQ6d
+         79ZA==
+X-Gm-Message-State: AOJu0YxDBmu9ZLxShW6CsGB4a3XE0PG77f4B2QuhBll4lHAkqwix4ChG
+        iJhBEq+4KIa5bppcr6+zrK4jvA==
+X-Google-Smtp-Source: AGHT+IGtMj48VMQSdt+G1JW9Gh5UCwO9E7RWRmh29Dykg73w4Ek0hjDhbMLkfpZ2GrZ+USx4wbjgfw==
+X-Received: by 2002:a5d:6591:0:b0:319:785a:fce5 with SMTP id q17-20020a5d6591000000b00319785afce5mr7510178wru.38.1693837289935;
+        Mon, 04 Sep 2023 07:21:29 -0700 (PDT)
+Received: from salami.fritz.box ([80.111.96.134])
+        by smtp.gmail.com with ESMTPSA id d17-20020a056000115100b00313de682eb3sm14542159wrx.65.2023.09.04.07.21.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 04 Sep 2023 07:21:29 -0700 (PDT)
+Message-ID: <10e2fc00466d3e5fc8142139ee979a71872292e6.camel@linaro.org>
+Subject: Re: [RESEND PATCH] Revert "fuse: Apply flags2 only when userspace
+ set the FUSE_INIT_EXT"
+From:   =?ISO-8859-1?Q?Andr=E9?= Draszik <andre.draszik@linaro.org>
+To:     Miklos Szeredi <miklos@szeredi.hu>
+Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
+        Bernd Schubert <bschubert@ddn.com>,
+        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org
+Date:   Mon, 04 Sep 2023 15:21:28 +0100
+In-Reply-To: <CAJfpegtSEjO9yi6ccG1KNi+C73xFuECnpo1DQsD9E5QhttwoRA@mail.gmail.com>
+References: <20230904133321.104584-1-git@andred.net>
+         <CAJfpegtSEjO9yi6ccG1KNi+C73xFuECnpo1DQsD9E5QhttwoRA@mail.gmail.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.49.2-3 
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <40593b16-8232-27fc-808a-37bad7457dc0@efficios.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -65,97 +74,26 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 04, 2023 at 08:58:48AM -0400, Mathieu Desnoyers wrote:
-> On 9/4/23 08:42, Mathieu Desnoyers wrote:
-> > On 9/4/23 08:21, Denis Arefev wrote:
-> > > The value of an arithmetic expression 1 << (cpu - sdp->mynode->grplo)
-> > > is subject to overflow due to a failure to cast operands to a larger
-> > > data type before performing arithmetic.
-> > > 
-> > > The maximum result of this subtraction is defined by the RCU_FANOUT
-> > > or other srcu level-spread values assigned by rcu_init_levelspread(),
-> > > which can indeed cause the signed 32-bit integer literal ("1") to
-> > > overflow
-> > > when shifted by any value greater than 31.
-> > 
-> > We could expand on this:
-> > 
-> > The maximum result of this subtraction is defined by the RCU_FANOUT
-> > or other srcu level-spread values assigned by rcu_init_levelspread(),
-> > which can indeed cause the signed 32-bit integer literal ("1") to overflow
-> > when shifted by any value greater than 31 on a 64-bit system.
-> > 
-> > Moreover, when the subtraction value is 31, the 1 << 31 expression results
-> > in 0xffffffff80000000 when the signed integer is promoted to unsigned long
-> > on 64-bit systems due to type promotion rules, which is certainly not the
-> > intended result.
+On Mon, 2023-09-04 at 15:41 +0200, Miklos Szeredi wrote:
+> On Mon, 4 Sept 2023 at 15:34, Andr=C3=A9 Draszik <git@andred.net> wrote:
+> >=20
+> > From: Andr=C3=A9 Draszik <andre.draszik@linaro.org>
+> >=20
+> > This reverts commit 3066ff93476c35679cb07a97cce37d9bb07632ff.
+> >=20
+> > This patch breaks all existing userspace by requiring updates as
+> > mentioned in the commit message, which is not allowed.
+>=20
+> It might break something, but you need to tell us what that is, please.
 
-Thank you both!  Could you please also add something to the effect of:
-"Given default Kconfig options, this bug affects only systems with more
-than 512 CPUs."?
+In my case, it's Android.
 
-							Thanx, Paul
+More generally this breaks all user-spaces that haven't been updated. Not
+breaking user-space is one of the top rules the kernel has, if not the topm=
+ost.
 
-> > > Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> > 
-> > With the commit message updated with my comment above, please also add:
-> > 
-> > Fixes: c7e88067c1 ("srcu: Exact tracking of srcu_data structures
-> > containing callbacks")
-> > Cc: <stable@vger.kernel.org> # v4.11
-> 
-> Sorry, the line above should read:
-> 
-> Cc: <stable@vger.kernel.org> # v4.11+
-> 
-> Thanks,
-> 
-> Mathieu
-> 
-> > Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> > 
-> > Thanks!
-> > 
-> > Mathieu
-> > 
-> > > 
-> > > Signed-off-by: Denis Arefev <arefev@swemel.ru>
-> > > ---
-> > > v3: Changed the name of the patch, as suggested by
-> > > Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> > > v2: Added fixes to the srcu_schedule_cbs_snp function as suggested by
-> > > Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> > >   kernel/rcu/srcutree.c | 4 ++--
-> > >   1 file changed, 2 insertions(+), 2 deletions(-)
-> > > 
-> > > diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-> > > index 20d7a238d675..6c18e6005ae1 100644
-> > > --- a/kernel/rcu/srcutree.c
-> > > +++ b/kernel/rcu/srcutree.c
-> > > @@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct
-> > > srcu_struct *ssp, gfp_t gfp_flags)
-> > >                   snp->grplo = cpu;
-> > >               snp->grphi = cpu;
-> > >           }
-> > > -        sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
-> > > +        sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
-> > >       }
-> > >       smp_store_release(&ssp->srcu_sup->srcu_size_state,
-> > > SRCU_SIZE_WAIT_BARRIER);
-> > >       return true;
-> > > @@ -833,7 +833,7 @@ static void srcu_schedule_cbs_snp(struct
-> > > srcu_struct *ssp, struct srcu_node *snp
-> > >       int cpu;
-> > >       for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
-> > > -        if (!(mask & (1 << (cpu - snp->grplo))))
-> > > +        if (!(mask & (1UL << (cpu - snp->grplo))))
-> > >               continue;
-> > >           srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
-> > >       }
-> > 
-> 
-> -- 
-> Mathieu Desnoyers
-> EfficiOS Inc.
-> https://www.efficios.com
-> 
+
+Cheers,
+Andre
+
+
