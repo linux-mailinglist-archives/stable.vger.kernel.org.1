@@ -2,90 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62B067919EF
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 16:45:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31D1A791A09
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 16:52:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351148AbjIDOpZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 10:45:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48474 "EHLO
+        id S236416AbjIDOwm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 10:52:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238456AbjIDOpY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 10:45:24 -0400
-Received: from wout4-smtp.messagingengine.com (wout4-smtp.messagingengine.com [64.147.123.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 847F4CFB;
-        Mon,  4 Sep 2023 07:45:19 -0700 (PDT)
-Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
-        by mailout.west.internal (Postfix) with ESMTP id B71963200913;
-        Mon,  4 Sep 2023 10:45:16 -0400 (EDT)
-Received: from mailfrontend2 ([10.202.2.163])
-  by compute6.internal (MEProxy); Mon, 04 Sep 2023 10:45:17 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.fm; h=
-        cc:cc:content-transfer-encoding:content-type:content-type:date
-        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1693838716; x=1693925116; bh=UXbFDq1oZDIMG9Mkcwavte+MHov3QwCgv8a
-        c7QV3jZM=; b=OROO0sbUJhxt7X9b456JaNaDhJX4Jc3bQLBw6dYNnv61IC3nRNZ
-        VY+I4UqWTQOfpj5gJASRJCoiF6NoN6LegZxZvXVIS19BI6vlEqFpiDDxjMxBuk8E
-        HiBfJ5NZUdso695NoN4gA5Xq6TdnJGgpyDMGYkLPnfGQMcaL7F2hmoi2EbvOViWU
-        EUuzXgTr+2ur59mMo9z4VR9TT1l9Mt+zuAhLDZHr5ZehiNWkUfj2LgWM+dWvzZn/
-        YPx/6GfYkaeeOzi8o0xYteLt5MScfI1DWQMy/LoZHzW4WY2uFmAzWmf1OAsQoBgE
-        M0ortEhcRo4gu7VHjgsstqL2y1UCgH3WKgQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:content-type:date:date:feedback-id:feedback-id
-        :from:from:in-reply-to:in-reply-to:message-id:mime-version
-        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1693838716; x=1693925116; bh=UXbFDq1oZDIMG9Mkcwavte+MHov3QwCgv8a
-        c7QV3jZM=; b=rjZlC68E5wZiLPToh9DU61asKPr6I4EuL6FRGw7z6Uoqw1Ucg6c
-        W7VMWXabKysxOWBoR9L8DEA0Kn83vhJixJa6IyqXWH6QCcFlCiccCpQ4wRmOS1Ac
-        0xIQS4FSpw2rVl0VlufH2yzhrv4vrQ/SNSwP10halPnVby56r+/hXTxIsHReAwMc
-        wOKXnfwjuIUFkYhXbyG7fx/EQS5I3DUvLI37SAcvrpWRqRG9wHyXY3j447a2HbkI
-        G+AG8a88H8FLV3MXwcvOfYUz1LocYN4Z1+b3oGQLnAs47azmLJqn3xcXjAd1hjsP
-        fcnyZTt4zHBov5toiSjni/vD2J9Jj9WqdWg==
-X-ME-Sender: <xms:fO31ZFgmdwfxaPK-Tu-hYbwb6kh7LmUd5nj6kSHDlWrpE-WXq3Tqqg>
-    <xme:fO31ZKB_RCsS0GK_4506__73IwNG8S2jLDFWv0wktphS1Yo4HAoV6f2_UpwaztW2u
-    UaZLba0vcDf5Wbg>
-X-ME-Received: <xmr:fO31ZFFvtFVJiWcyPEsyh58fiozf-kArB_MzdzkFCSvVE46WuK3enrsGUrObwNwvRr2puzwpNlBBaPdB3nURh7aynh-4gSgk6Uo_qvsVV9CXMEk3ETbN>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudegkedgkeduucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtkeertddtfeejnecuhfhrohhmpeeuvghr
-    nhguucfutghhuhgsvghrthcuoegsvghrnhgurdhstghhuhgsvghrthesfhgrshhtmhgrih
-    hlrdhfmheqnecuggftrfgrthhtvghrnhepfffhtddvveeivdduuedujeetffekkeelgfdv
-    fefgueffieefjefgjeffhedttdefnecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepsggvrhhnugdrshgthhhusggvrhhtsehfrghsthhmrghilhdr
-    fhhm
-X-ME-Proxy: <xmx:fO31ZKSXZbvdY0WEvmjEBGxd0Ezh4BmYN5wXXaOanGSCA6ZeZBGxFA>
-    <xmx:fO31ZCyt8k_aryUfIZJ51NiD_Wz4D9bHqlPwEbUW4eqk015T1EZmhg>
-    <xmx:fO31ZA7gX18624EIFkUQRFd5tI7SenWnGv1shNNFijFPrJeEuDTNyQ>
-    <xmx:fO31ZJq3Hm_PbQxiZn0_miQf3LZS1fYJoIOAe4cGE_wPtYF2UjzhKA>
-Feedback-ID: id8a24192:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Mon,
- 4 Sep 2023 10:45:15 -0400 (EDT)
-Message-ID: <5d7b63eb-d2be-d089-48eb-ac2f3d698f8d@fastmail.fm>
-Date:   Mon, 4 Sep 2023 16:45:13 +0200
+        with ESMTP id S229890AbjIDOwm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 10:52:42 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47EDE1A5;
+        Mon,  4 Sep 2023 07:52:39 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 7D344CE0D92;
+        Mon,  4 Sep 2023 14:52:37 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F0E9C433C7;
+        Mon,  4 Sep 2023 14:52:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693839155;
+        bh=TSlMgpm/uNhrzTcMQQ9fFSzba/GKlp3xUmzXJFOo9ew=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=yqOXqs9edBCS3GiLWO3OlKliit9yHokRd2TWxUyKuVeKIOA/I7YXHkF/g4DAWhXlr
+         78oThFLg1oSos+GZa+IcfSK953+BSpnkNRyGt0huHm3M0skFFVpu/P8rI4Po5PwxL5
+         aoR8FWafBgJga5Sc0Xpcodw1uFHHsDlmRe786/U0=
+Date:   Mon, 4 Sep 2023 15:52:32 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Tomasz Rostanski <tomasz.rostanski@gmail.com>
+Cc:     stable@vger.kernel.org, Balaji Prakash J <bjagadee@codeaurora.org>,
+        Felipe Balbi <balbi@kernel.org>,
+        Baruch Siach <baruch@tkos.co.il>,
+        Rob Herring <robh@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 1/5] usb: dwc3: reference clock period configuration
+Message-ID: <2023090417-silk-parting-36d8@gregkh>
+References: <20230904071432.32309-1-tomasz.rostanski@thalesgroup.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [RESEND PATCH] Revert "fuse: Apply flags2 only when userspace set
- the FUSE_INIT_EXT"
-To:     =?UTF-8?Q?Andr=c3=a9_Draszik?= <andre.draszik@linaro.org>,
-        Miklos Szeredi <miklos@szeredi.hu>
-Cc:     linux-kernel@vger.kernel.org, linux-fsdevel@vger.kernel.org,
-        Bernd Schubert <bschubert@ddn.com>,
-        Miklos Szeredi <mszeredi@redhat.com>, stable@vger.kernel.org
-References: <20230904133321.104584-1-git@andred.net>
- <CAJfpegtSEjO9yi6ccG1KNi+C73xFuECnpo1DQsD9E5QhttwoRA@mail.gmail.com>
- <10e2fc00466d3e5fc8142139ee979a71872292e6.camel@linaro.org>
-Content-Language: en-US, de-DE
-From:   Bernd Schubert <bernd.schubert@fastmail.fm>
-In-Reply-To: <10e2fc00466d3e5fc8142139ee979a71872292e6.camel@linaro.org>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230904071432.32309-1-tomasz.rostanski@thalesgroup.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -93,35 +55,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 9/4/23 16:21, André Draszik wrote:
-> On Mon, 2023-09-04 at 15:41 +0200, Miklos Szeredi wrote:
->> On Mon, 4 Sept 2023 at 15:34, André Draszik <git@andred.net> wrote:
->>>
->>> From: André Draszik <andre.draszik@linaro.org>
->>>
->>> This reverts commit 3066ff93476c35679cb07a97cce37d9bb07632ff.
->>>
->>> This patch breaks all existing userspace by requiring updates as
->>> mentioned in the commit message, which is not allowed.
->>
->> It might break something, but you need to tell us what that is, please.
+On Mon, Sep 04, 2023 at 09:14:22AM +0200, Tomasz Rostanski wrote:
+> From: Balaji Prakash J <bjagadee@codeaurora.org>
 > 
-> In my case, it's Android.
+> Set reference clock period when it differs from dwc3 default hardware
+> set.
 > 
-> More generally this breaks all user-spaces that haven't been updated. Not
-> breaking user-space is one of the top rules the kernel has, if not the topmost.
+> We could calculate clock period based on reference clock frequency. But
+> this information is not always available. This is the case of PCI bus
+> attached USB host. For that reason we use a custom property.
+> 
+> Tested (USB2 only) on IPQ6010 SoC based board with 24 MHz reference
+> clock while hardware default is 19.2 MHz.
+> 
+> [ baruch: rewrite commit message; drop GFLADJ code; remove 'quirk-' from
+>   property name; mention tested hardware ]
+> 
+> Acked-by: Felipe Balbi <balbi@kernel.org>
+> Signed-off-by: Balaji Prakash J <bjagadee@codeaurora.org>
+> Signed-off-by: Baruch Siach <baruch@tkos.co.il>
+> Nacked-by: Rob Herring <robh@kernel.org>
+> Link: https://lore.kernel.org/r/9f399bdf1ff752e31ab7497e3d5ce19bbb3ff247.1630389452.git.baruch@tkos.co.il
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  drivers/usb/dwc3/core.c | 29 +++++++++++++++++++++++++++++
+>  drivers/usb/dwc3/core.h |  6 ++++++
+>  2 files changed, 35 insertions(+)
 
+What is the git commit id of this change (and all the others in this
+series?)
 
-Hmm, I guess Android is using one of the extended flags in the mean time.
-Do you have more data what exactly fails? I had posted this patch last year,
-when it was still rather early introduction of FUSE_INIT_EXT, hoping there was
-nothing in production yet using these flags. But virtiofsd was already using it,
-so the patch got delayed (I had actually assumed it would just get dropped).
+What stable tree(s) are you wanting this to be applied to?
 
+And you forgot to sign off on the patches as well, that is required.
 
-Sorry for the trouble!
+thanks,
 
-
-Bernd
+greg k-h
