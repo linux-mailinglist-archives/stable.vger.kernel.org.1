@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E6B9791CF9
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 48EC7791D10
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234419AbjIDSdj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:33:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49352 "EHLO
+        id S1345616AbjIDSek (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:34:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231215AbjIDSdj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:33:39 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3FA6CFD
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:33:34 -0700 (PDT)
+        with ESMTP id S234302AbjIDSej (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:39 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AF4B2
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:35 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 600DFB80EF4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:33:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6F9C433C7;
-        Mon,  4 Sep 2023 18:33:31 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 48A8FCE0F99
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:34 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4139BC433C8;
+        Mon,  4 Sep 2023 18:34:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852412;
-        bh=Eu5mRGy6M2+FbQ85sl6wDyAUqf8QBQ5vHpDFa47wAK0=;
+        s=korg; t=1693852472;
+        bh=DEi5asxBIsL3HboGrVYs5o4TEBToaj5LmgzYEG6K+lE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OGRPxs27zhTQBEk9gTRn+4M3ewqKrV+rxLMTNjIcLKP06AvUlZUxnyadqaBMUTMq4
-         10PpUXkg/ByBWKYv/I5yKmbIH6J2tpvUWDiHN0gCb1Zc+IHkE6iIbxjt2mXNApQ7Lf
-         /mpnjEIhwjtyEIybrWZ27qnPvqtDlwzUbUhxWEjE=
+        b=JAP83IQXWrhbOUwHUb2sRNFsNB4HnA6fiBBUVuEp8eijdENTyA/+LLX5yyqLcKR98
+         1bCwDBd4C4uR+QjfRvq6b8R+joSEF3COQjaQi38VG/12fwwgvBuY0aHAZYn+iPoQfS
+         /V9Oa+QD0JmODYz32Q+5zmE7ZgWNwtkT47JQIOY0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Eckelmann <sven@narfation.org>,
-        Kalle Valo <quic_kvalo@quicinc.com>
-Subject: [PATCH 6.4 22/32] wifi: ath11k: Cleanup mac80211 references on failure during tx_complete
+        patches@lists.linux.dev, Slark Xiao <slark_xiao@163.com>,
+        Johan Hovold <johan@kernel.org>
+Subject: [PATCH 6.1 12/31] USB: serial: option: add FOXCONN T99W368/T99W373 product
 Date:   Mon,  4 Sep 2023 19:30:20 +0100
-Message-ID: <20230904182948.921341287@linuxfoundation.org>
+Message-ID: <20230904182947.618752953@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
-References: <20230904182947.899158313@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,59 +55,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Eckelmann <sven@narfation.org>
+From: Slark Xiao <slark_xiao@163.com>
 
-commit 29d15589f084d71a4ea8c544039c5839db0236e2 upstream.
+commit 4d9488b294e1f8353bbcadc4c7172a7f7490199b upstream.
 
-When a function is using functions from mac80211 to free an skb then it
-should do it consistently and not switch to the generic dev_kfree_skb_any
-(or similar functions). Otherwise (like in the error handlers), mac80211
-will will not be aware of the freed skb and thus not clean up related
-information in its internal data structures.
+The difference of T99W368 and T99W373 is the chip solution.
+T99W368 is designed based on Qualcomm SDX65 and T99W373 is SDX62.
 
-Not doing so lead in the past to filled up structure which then prevented
-new clients to connect.
+Test evidence as below:
+T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e0f0 Rev=05.04
+S:  Manufacturer=FII
+S:  Product=OLYMPIC USB WWAN Adapter
+S:  SerialNumber=78ada8c4
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
 
-Fixes: d5c65159f289 ("ath11k: driver for Qualcomm IEEE 802.11ax devices")
-Fixes: 6257c702264c ("wifi: ath11k: fix tx status reporting in encap offload mode")
+T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
+D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
+P:  Vendor=0489 ProdID=e0ee Rev=05.04
+S:  Manufacturer=FII
+S:  Product=OLYMPIC USB WWAN Adapter
+S:  SerialNumber=78ada8d5
+C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
+I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
+I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
+I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
+I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
+I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+
+Both of them share the same port configuration:
+0&1: MBIM, 2: Modem, 3:GNSS, 4:NMEA, 5:Diag
+GNSS port don't use serial driver.
+
+Signed-off-by: Slark Xiao <slark_xiao@163.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Sven Eckelmann <sven@narfation.org>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230802-ath11k-ack_status_leak-v2-2-c0af729d6229@narfation.org
+Signed-off-by: Johan Hovold <johan@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_tx.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/usb/serial/option.c |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/drivers/net/wireless/ath/ath11k/dp_tx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_tx.c
-@@ -344,7 +344,7 @@ ath11k_dp_tx_htt_tx_complete_buf(struct
- 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
- 
- 	if (!skb_cb->vif) {
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
- 	}
- 
-@@ -566,12 +566,12 @@ static void ath11k_dp_tx_complete_msdu(s
- 	dma_unmap_single(ab->dev, skb_cb->paddr, msdu->len, DMA_TO_DEVICE);
- 
- 	if (unlikely(!rcu_access_pointer(ab->pdevs_active[ar->pdev_idx]))) {
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
- 	}
- 
- 	if (unlikely(!skb_cb->vif)) {
--		dev_kfree_skb_any(msdu);
-+		ieee80211_free_txskb(ar->hw, msdu);
- 		return;
- 	}
- 
+--- a/drivers/usb/serial/option.c
++++ b/drivers/usb/serial/option.c
+@@ -2235,6 +2235,10 @@ static const struct usb_device_id option
+ 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
+ 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
+ 	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
++	  .driver_info = RSVD(3) },
++	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
++	  .driver_info = RSVD(3) },
+ 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
+ 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
+ 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
 
 
