@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55744791CEC
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E71B8791D18
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244677AbjIDSdJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:33:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43542 "EHLO
+        id S232399AbjIDSfB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:35:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40972 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244742AbjIDSdH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:33:07 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EEC9CCB
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:33:04 -0700 (PDT)
+        with ESMTP id S242766AbjIDSfB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:01 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFB7FCD4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:57 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id E730CB80EF4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:33:02 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5CF73C433C8;
-        Mon,  4 Sep 2023 18:33:01 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 57A15CE0D97
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:56 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68614C433C8;
+        Mon,  4 Sep 2023 18:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852381;
-        bh=KAZI5Fwf9+pqsjcj89GCyBN81RJ5qAJdWTInBSKSIok=;
+        s=korg; t=1693852494;
+        bh=hE4lDAafTrw+NTvZJAYfnYATW/2VaRSOOvhXDDwSxNA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YQF5C39BXvGL+RDH2pqAd8pYTttDa8KX97/Fxru9UOOc6KvRRzC1OJL/0DaVxwxwJ
-         NRqBs0uvO+HzuuTqdI/dVN8zfvyOyj7s1zHpI6dBXub4EfEYxeggF7HrDwN3cn7VAg
-         A/sL7wqxGcP4lCgA8TZMZCU0H9wWWx6rSiNC/hcI=
+        b=MGO27SerouQHFxBZMNlwUyFsOZnFjTrN/x2254Zsi0DJHMtuWHo+QhwLRaKKGh6Rc
+         35vSP/3Yak7Tm6JOvJKNBVzh5me4q2y4zsd7tWVyoxbsbkDEeuS+bCavIMJAZ39kab
+         lf79kTyJ8t4w4+q+BqKV0ZpjABTZcoK9oi4wOEfg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Slark Xiao <slark_xiao@163.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.4 12/32] USB: serial: option: add FOXCONN T99W368/T99W373 product
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
+        zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.1 02/31] ksmbd: fix wrong DataOffset validation of create context
 Date:   Mon,  4 Sep 2023 19:30:10 +0100
-Message-ID: <20230904182948.454834550@linuxfoundation.org>
+Message-ID: <20230904182947.115465529@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
-References: <20230904182947.899158313@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,70 +56,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-commit 4d9488b294e1f8353bbcadc4c7172a7f7490199b upstream.
+commit 17d5b135bb720832364e8f55f6a887a3c7ec8fdb upstream.
 
-The difference of T99W368 and T99W373 is the chip solution.
-T99W368 is designed based on Qualcomm SDX65 and T99W373 is SDX62.
+If ->DataOffset of create context is 0, DataBuffer size is not correctly
+validated. This patch change wrong validation code and consider tag
+length in request.
 
-Test evidence as below:
-T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e0f0 Rev=05.04
-S:  Manufacturer=FII
-S:  Product=OLYMPIC USB WWAN Adapter
-S:  SerialNumber=78ada8c4
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-
-T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e0ee Rev=05.04
-S:  Manufacturer=FII
-S:  Product=OLYMPIC USB WWAN Adapter
-S:  SerialNumber=78ada8d5
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-
-Both of them share the same port configuration:
-0&1: MBIM, 2: Modem, 3:GNSS, 4:NMEA, 5:Diag
-GNSS port don't use serial driver.
-
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21824
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ fs/smb/server/oplock.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2235,6 +2235,10 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
- 	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
-+	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
-+	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+--- a/fs/smb/server/oplock.c
++++ b/fs/smb/server/oplock.c
+@@ -1492,7 +1492,7 @@ struct create_context *smb2_find_context
+ 		    name_len < 4 ||
+ 		    name_off + name_len > cc_len ||
+ 		    (value_off & 0x7) != 0 ||
+-		    (value_off && (value_off < name_off + name_len)) ||
++		    (value_len && value_off < name_off + (name_len < 8 ? 8 : name_len)) ||
+ 		    ((u64)value_off + value_len > cc_len))
+ 			return ERR_PTR(-EINVAL);
+ 
 
 
