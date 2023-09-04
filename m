@@ -2,51 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA1FA791D1B
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D298A791D0B
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242766AbjIDSfI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:35:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53500 "EHLO
+        id S230084AbjIDSec (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:34:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38032 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235358AbjIDSfI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:08 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08F95B8
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:04 -0700 (PDT)
+        with ESMTP id S1346151AbjIDSe1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:27 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D4B5E56
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:22 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 92E6D619A3
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:03 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8EACC433C7;
-        Mon,  4 Sep 2023 18:35:02 +0000 (UTC)
+        by sin.source.kernel.org (Postfix) with ESMTPS id 9760ECE0F94
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:20 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87CD8C433C7;
+        Mon,  4 Sep 2023 18:34:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852503;
-        bh=N5gBKegULs+Kc4qF01v8ke2QsxlHdd0t3Y3hXFGJZho=;
+        s=korg; t=1693852458;
+        bh=bDc5onCl9IePtLHNnQ1WvrkrBQa9RH+iP/b/7EuMacQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N5EKMqJcBmLQmkvdG/vbqQCPpYsb1t/DSqyj1Mxp/2zh/wdKofGQ15ZP2475lsNlE
-         LaD+/3Jii20Z4UIBu77byeYClecKWrJCsMXSZ8dVBjnvSAwcA5E9P5rcurYgzmwK/f
-         J0Undk1sFcJiplKgAYYooRs19OFjXjZksA1nAKXE=
+        b=KUcfmje5Wv8qqW506j7ClIQm1VwFgryc3j/s4sXdXMr12La5i6T/GBMWoGsOV0IEr
+         V+8mB2SuECXw+uA0/JUz+0KcPTjhLdAfPVrWUBgT+HUb/ZUfHp0h4rl1oO2Eqw3t6y
+         Bc6MRvyloeJzsnX30FZE+t1ryI3eguRkwNGTa57c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Lech Perczak <lech.perczak@camlingroup.com>
-Subject: [PATCH 6.1 22/31] serial: sc16is7xx: fix broken port 0 uart init
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Linus Walleij <linus.walleij@linaro.org>
+Subject: [PATCH 6.4 32/32] pinctrl: amd: Dont show `Invalid config param` errors
 Date:   Mon,  4 Sep 2023 19:30:30 +0100
-Message-ID: <20230904182948.095271875@linuxfoundation.org>
+Message-ID: <20230904182949.372339204@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -58,68 +56,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit 2861ed4d6e6d1a2c9de9bf5b0abd996c2dc673d0 upstream.
+commit 87b549efcb0f7934b0916d2a00607a878b6f1e0f upstream.
 
-The sc16is7xx_config_rs485() function is called only for the second
-port (index 1, channel B), causing initialization problems for the
-first port.
+On some systems amd_pinconf_set() is called with parameters
+0x8 (PIN_CONFIG_DRIVE_PUSH_PULL) or 0x14 (PIN_CONFIG_PERSIST_STATE)
+which are not supported by pinctrl-amd.
 
-For the sc16is7xx driver, port->membase and port->mapbase are not set,
-and their default values are 0. And we set port->iobase to the device
-index. This means that when the first device is registered using the
-uart_add_one_port() function, the following values will be in the port
-structure:
-    port->membase = 0
-    port->mapbase = 0
-    port->iobase  = 0
+Don't show an err message when called with an invalid parameter,
+downgrade this to debug instead.
 
-Therefore, the function uart_configure_port() in serial_core.c will
-exit early because of the following check:
-	/*
-	 * If there isn't a port here, don't do anything further.
-	 */
-	if (!port->iobase && !port->mapbase && !port->membase)
-		return;
-
-Typically, I2C and SPI drivers do not set port->membase and
-port->mapbase.
-
-The max310x driver sets port->membase to ~0 (all ones). By
-implementing the same change in this driver, uart_configure_port() is
-now correctly executed for all ports.
-
-Fixes: dfeae619d781 ("serial: sc16is7xx")
-Cc: stable@vger.kernel.org
-Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
-Reviewed-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
-Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
-Link: https://lore.kernel.org/r/20230807214556.540627-2-hugo@hugovil.com
+Cc: stable@vger.kernel.org # 6.1
+Fixes: 635a750d958e1 ("pinctrl: amd: Use amd_pinconf_set() for all config options")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230717201652.17168-1-mario.limonciello@amd.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/tty/serial/sc16is7xx.c |    6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/pinctrl/pinctrl-amd.c |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1439,6 +1439,12 @@ static int sc16is7xx_probe(struct device
- 		s->p[i].port.fifosize	= SC16IS7XX_FIFO_SIZE;
- 		s->p[i].port.flags	= UPF_FIXED_TYPE | UPF_LOW_LATENCY;
- 		s->p[i].port.iobase	= i;
-+		/*
-+		 * Use all ones as membase to make sure uart_configure_port() in
-+		 * serial_core.c does not abort for SPI/I2C devices where the
-+		 * membase address is not applicable.
-+		 */
-+		s->p[i].port.membase	= (void __iomem *)~0;
- 		s->p[i].port.iotype	= UPIO_PORT;
- 		s->p[i].port.uartclk	= freq;
- 		s->p[i].port.rs485_config = sc16is7xx_config_rs485;
+--- a/drivers/pinctrl/pinctrl-amd.c
++++ b/drivers/pinctrl/pinctrl-amd.c
+@@ -748,7 +748,7 @@ static int amd_pinconf_get(struct pinctr
+ 		break;
+ 
+ 	default:
+-		dev_err(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
++		dev_dbg(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
+ 			param);
+ 		return -ENOTSUPP;
+ 	}
+@@ -798,7 +798,7 @@ static int amd_pinconf_set(struct pinctr
+ 			break;
+ 
+ 		default:
+-			dev_err(&gpio_dev->pdev->dev,
++			dev_dbg(&gpio_dev->pdev->dev,
+ 				"Invalid config param %04x\n", param);
+ 			ret = -ENOTSUPP;
+ 		}
 
 
