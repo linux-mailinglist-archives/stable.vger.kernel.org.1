@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1C2A791D2C
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC45791D44
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:36:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231511AbjIDSfz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:35:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52734 "EHLO
+        id S1347179AbjIDSg5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:36:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58170 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1349195AbjIDSfy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:54 -0400
+        with ESMTP id S236346AbjIDSgz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:36:55 -0400
 Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141D9CFE
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:50 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B69969E
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:36:52 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D2C23B80EF4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:48 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30FDAC433C8;
-        Mon,  4 Sep 2023 18:35:47 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 87895B80EF4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:36:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0E11C433C8;
+        Mon,  4 Sep 2023 18:36:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852547;
-        bh=vPoJtaSEVFzg7EiRbTqC/VCe5updU5/Yuld/6tZnWYg=;
+        s=korg; t=1693852610;
+        bh=8ptofNUWLkErs0orxWI2bRH4Cndt2V+p2Sg5QVUh+Tw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lcvb+WN4gdsxYHz0bpNwRuI5fTcOmW/9IP/DAq8vZTIsqupyTUw+LFqgTMMKY0iPv
-         mavZDABTOY2S4DnXaiMfozaWJAGew1yidzF40alowQRNGeIp4NcUThwP2p4XXSU/O9
-         8S2N6nro2tzMMxLlRxESbhIDOjt3G9thuiXqQPSg=
+        b=rkCvTmRwenblOttXM/A+l9qnAxP0liRuhOb5iFACmb1EWFYNtziSKfP63z3BCHE6v
+         h6C16bb03eOHkTP9tzBe36Ri4hBQM98lFzFts3D3+myM0E+eFnx7pz02ywuTwSC4kE
+         5UhVIHFOYQouGtbDL0PwVaQnARim9BfXLSpz/XlY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Linus Walleij <linus.walleij@linaro.org>
-Subject: [PATCH 6.1 31/31] pinctrl: amd: Dont show `Invalid config param` errors
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 5.15 08/28] modules: only allow symbol_get of EXPORT_SYMBOL_GPL modules
 Date:   Mon,  4 Sep 2023 19:30:39 +0100
-Message-ID: <20230904182948.472544024@linuxfoundation.org>
+Message-ID: <20230904182945.570534362@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
+References: <20230904182945.178705038@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,50 +55,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+5.15-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mario Limonciello <mario.limonciello@amd.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 87b549efcb0f7934b0916d2a00607a878b6f1e0f upstream.
+commit 9011e49d54dcc7653ebb8a1e05b5badb5ecfa9f9 upstream.
 
-On some systems amd_pinconf_set() is called with parameters
-0x8 (PIN_CONFIG_DRIVE_PUSH_PULL) or 0x14 (PIN_CONFIG_PERSIST_STATE)
-which are not supported by pinctrl-amd.
+It has recently come to my attention that nvidia is circumventing the
+protection added in 262e6ae7081d ("modules: inherit
+TAINT_PROPRIETARY_MODULE") by importing exports from their proprietary
+modules into an allegedly GPL licensed module and then rexporting them.
 
-Don't show an err message when called with an invalid parameter,
-downgrade this to debug instead.
+Given that symbol_get was only ever intended for tightly cooperating
+modules using very internal symbols it is logical to restrict it to
+being used on EXPORT_SYMBOL_GPL and prevent nvidia from costly DMCA
+Circumvention of Access Controls law suites.
 
-Cc: stable@vger.kernel.org # 6.1
-Fixes: 635a750d958e1 ("pinctrl: amd: Use amd_pinconf_set() for all config options")
-Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
-Link: https://lore.kernel.org/r/20230717201652.17168-1-mario.limonciello@amd.com
-Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
+All symbols except for four used through symbol_get were already exported
+as EXPORT_SYMBOL_GPL, and the remaining four ones were switched over in
+the preparation patches.
+
+Fixes: 262e6ae7081d ("modules: inherit TAINT_PROPRIETARY_MODULE")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pinctrl/pinctrl-amd.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ kernel/module.c |   14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
 
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -748,7 +748,7 @@ static int amd_pinconf_get(struct pinctr
- 		break;
+--- a/kernel/module.c
++++ b/kernel/module.c
+@@ -2220,12 +2220,20 @@ void *__symbol_get(const char *symbol)
+ 	};
  
- 	default:
--		dev_err(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
-+		dev_dbg(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
- 			param);
- 		return -ENOTSUPP;
+ 	preempt_disable();
+-	if (!find_symbol(&fsa) || strong_try_module_get(fsa.owner)) {
+-		preempt_enable();
+-		return NULL;
++	if (!find_symbol(&fsa))
++		goto fail;
++	if (fsa.license != GPL_ONLY) {
++		pr_warn("failing symbol_get of non-GPLONLY symbol %s.\n",
++			symbol);
++		goto fail;
  	}
-@@ -798,7 +798,7 @@ static int amd_pinconf_set(struct pinctr
- 			break;
++	if (strong_try_module_get(fsa.owner))
++		goto fail;
+ 	preempt_enable();
+ 	return (void *)kernel_symbol_value(fsa.sym);
++fail:
++	preempt_enable();
++	return NULL;
+ }
+ EXPORT_SYMBOL_GPL(__symbol_get);
  
- 		default:
--			dev_err(&gpio_dev->pdev->dev,
-+			dev_dbg(&gpio_dev->pdev->dev,
- 				"Invalid config param %04x\n", param);
- 			ret = -ENOTSUPP;
- 		}
 
 
