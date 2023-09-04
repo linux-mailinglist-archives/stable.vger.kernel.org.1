@@ -2,44 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48EC7791D10
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3EFD1791CDE
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345616AbjIDSek (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:34:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60378 "EHLO
+        id S242920AbjIDSca (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:32:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234302AbjIDSej (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:39 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E2AF4B2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:35 -0700 (PDT)
+        with ESMTP id S243928AbjIDSc3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:29 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560FACFE
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:25 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 48A8FCE0F99
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:34 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4139BC433C8;
-        Mon,  4 Sep 2023 18:34:32 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 16616B80E6F
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:24 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8323DC433C8;
+        Mon,  4 Sep 2023 18:32:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852472;
-        bh=DEi5asxBIsL3HboGrVYs5o4TEBToaj5LmgzYEG6K+lE=;
+        s=korg; t=1693852342;
+        bh=/D2oWlurk+vQcABddTKQsSN63JMMHmLNjsADOxKnP14=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JAP83IQXWrhbOUwHUb2sRNFsNB4HnA6fiBBUVuEp8eijdENTyA/+LLX5yyqLcKR98
-         1bCwDBd4C4uR+QjfRvq6b8R+joSEF3COQjaQi38VG/12fwwgvBuY0aHAZYn+iPoQfS
-         /V9Oa+QD0JmODYz32Q+5zmE7ZgWNwtkT47JQIOY0=
+        b=sKD4UVmkVC+Gt/CDup4byyHlX8m/Nudn3mOeEXpkOcw5jPNJRYoHDSSV8lJdw0TTd
+         54ALnAldY5B/M0W0fwCNm+vfPBnpw9BwCSwoGAroas8D5M+u8VIFhauORxxJoK5iyF
+         GPN+sw6/c4BjBI/3P+Pl2DnspWLg9UhfLorUN0Pg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Slark Xiao <slark_xiao@163.com>,
-        Johan Hovold <johan@kernel.org>
-Subject: [PATCH 6.1 12/31] USB: serial: option: add FOXCONN T99W368/T99W373 product
+        patches@lists.linux.dev, "Angus Ainslie (Purism)" <angus@akkea.ca>,
+        Christian Bach <christian.bach@scs.ch>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Fabio Estevam <festevam@denx.de>,
+        Guenter Roeck <linux@roeck-us.net>
+Subject: [PATCH 6.5 33/34] usb: typec: tcpci: clear the fault status bit
 Date:   Mon,  4 Sep 2023 19:30:20 +0100
-Message-ID: <20230904182947.618752953@linuxfoundation.org>
+Message-ID: <20230904182950.141825343@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
+References: <20230904182948.594404081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,70 +58,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Slark Xiao <slark_xiao@163.com>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-commit 4d9488b294e1f8353bbcadc4c7172a7f7490199b upstream.
+commit 23e60c8daf5ec2ab1b731310761b668745fcf6ed upstream.
 
-The difference of T99W368 and T99W373 is the chip solution.
-T99W368 is designed based on Qualcomm SDX65 and T99W373 is SDX62.
+According the "USB Type-C Port Controller Interface Specification v2.0"
+the TCPC sets the fault status register bit-7
+(AllRegistersResetToDefault) once the registers have been reset to
+their default values.
 
-Test evidence as below:
-T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  7 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e0f0 Rev=05.04
-S:  Manufacturer=FII
-S:  Product=OLYMPIC USB WWAN Adapter
-S:  SerialNumber=78ada8c4
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
+This triggers an alert(-irq) on PTN5110 devices albeit we do mask the
+fault-irq, which may cause a kernel hang. Fix this generically by writing
+a one to the corresponding bit-7.
 
-T:  Bus=01 Lev=02 Prnt=05 Port=00 Cnt=01 Dev#=  8 Spd=480 MxCh= 0
-D:  Ver= 2.10 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=0489 ProdID=e0ee Rev=05.04
-S:  Manufacturer=FII
-S:  Product=OLYMPIC USB WWAN Adapter
-S:  SerialNumber=78ada8d5
-C:  #Ifs= 6 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:  If#=0x0 Alt= 0 #EPs= 1 Cls=02(commc) Sub=0e Prot=00 Driver=cdc_mbim
-I:  If#=0x1 Alt= 1 #EPs= 2 Cls=0a(data ) Sub=00 Prot=02 Driver=cdc_mbim
-I:  If#=0x2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x3 Alt= 0 #EPs= 1 Cls=ff(vend.) Sub=ff Prot=ff Driver=(none)
-I:  If#=0x4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=40 Driver=option
-I:  If#=0x5 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=30 Driver=option
-
-Both of them share the same port configuration:
-0&1: MBIM, 2: Modem, 3:GNSS, 4:NMEA, 5:Diag
-GNSS port don't use serial driver.
-
-Signed-off-by: Slark Xiao <slark_xiao@163.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Johan Hovold <johan@kernel.org>
+Fixes: 74e656d6b055 ("staging: typec: Type-C Port Controller Interface driver (tcpci)")
+Reported-by: "Angus Ainslie (Purism)" <angus@akkea.ca>
+Closes: https://lore.kernel.org/all/20190508002749.14816-2-angus@akkea.ca/
+Reported-by: Christian Bach <christian.bach@scs.ch>
+Closes: https://lore.kernel.org/regressions/ZR0P278MB07737E5F1D48632897D51AC3EB329@ZR0P278MB0773.CHEP278.PROD.OUTLOOK.COM/t/
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Fabio Estevam <festevam@denx.de>
+Reviewed-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230816172502.1155079-1-festevam@gmail.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/serial/option.c |    4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/typec/tcpm/tcpci.c |    4 ++++
+ include/linux/usb/tcpci.h      |    1 +
+ 2 files changed, 5 insertions(+)
 
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -2235,6 +2235,10 @@ static const struct usb_device_id option
- 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
- 	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
-+	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
-+	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
+--- a/drivers/usb/typec/tcpm/tcpci.c
++++ b/drivers/usb/typec/tcpm/tcpci.c
+@@ -602,6 +602,10 @@ static int tcpci_init(struct tcpc_dev *t
+ 	if (time_after(jiffies, timeout))
+ 		return -ETIMEDOUT;
+ 
++	ret = tcpci_write16(tcpci, TCPC_FAULT_STATUS, TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT);
++	if (ret < 0)
++		return ret;
++
+ 	/* Handle vendor init */
+ 	if (tcpci->data->init) {
+ 		ret = tcpci->data->init(tcpci, tcpci->data);
+--- a/include/linux/usb/tcpci.h
++++ b/include/linux/usb/tcpci.h
+@@ -103,6 +103,7 @@
+ #define TCPC_POWER_STATUS_SINKING_VBUS	BIT(0)
+ 
+ #define TCPC_FAULT_STATUS		0x1f
++#define TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT BIT(7)
+ 
+ #define TCPC_ALERT_EXTENDED		0x21
+ 
 
 
