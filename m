@@ -2,47 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 47711791CC4
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:27:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67549791CD5
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238031AbjIDS1j (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:27:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42608 "EHLO
+        id S241757AbjIDScI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:32:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34332 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234322AbjIDS1i (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:27:38 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 587EF1B6
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:27:35 -0700 (PDT)
+        with ESMTP id S230250AbjIDScH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:07 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED6A0CC8;
+        Mon,  4 Sep 2023 11:32:03 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id B2AF8CE0E30
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:27:33 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9BC4C433C7;
-        Mon,  4 Sep 2023 18:27:31 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 6665FB80E6F;
+        Mon,  4 Sep 2023 18:32:02 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56D00C433C7;
+        Mon,  4 Sep 2023 18:32:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852052;
-        bh=VRvflhTgBKLPFHrHNirijX+rhN18a8EI11DsFwhv4II=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=GBmxNghtCnSBOH7fiE3ceDMSfHuJ8fdlG7yJa7SBC2+5ZyyVT89SltTNEprWJ5Z2A
-         j2uA9CSlYI7WN6UwDxXJk2r+/UP8vGkX1sABEsMLOzj7SFlwGjhnpf0UOXCJ5sHE3p
-         M4utdCsZ1n3ITDw/b+2CWd3VFtkExhCHMwVtIuLY=
-Date:   Mon, 4 Sep 2023 19:27:29 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Fabio Estevam <festevam@denx.de>
-Cc:     m.felsch@pengutronix.de, angus@akkea.ca, christian.bach@scs.ch,
-        linux@roeck-us.net, stable@vger.kernel.org
-Subject: Re: FAILED: patch "[PATCH] usb: typec: tcpci: clear the fault status
- bit" failed to apply to 5.15-stable tree
-Message-ID: <2023090422-whiff-monastery-6158@gregkh>
-References: <2023090314-headroom-doorbell-3ac8@gregkh>
- <cdbcbbf136a2dac254a4ad4ee6b6f5ce@denx.de>
+        s=korg; t=1693852320;
+        bh=pdOqGC+wSVldeehX2uUSELjHSqM2s/tCnZEKJzFZcnM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=gKeMjbH4h8dmhewMcmw4S6ZOWVmz8dKt9D1YxA7KMXCiNjD8114n/lAThBKbU9EeZ
+         Jk7f23xtAQ0FzR7aWjo5MnHj8hY82jYN37E4rZje9GWX57hAgzbmFPbsjZL/NZaY5/
+         BFsncn8zHXDCP/vVC+6Eq3rRk6uGDJielgbLsn1I=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     stable@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
+        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
+Subject: [PATCH 6.5 00/34] 6.5.2-rc1 review
+Date:   Mon,  4 Sep 2023 19:29:47 +0100
+Message-ID: <20230904182948.594404081@linuxfoundation.org>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <cdbcbbf136a2dac254a4ad4ee6b6f5ce@denx.de>
+User-Agent: quilt/0.67
+X-stable: review
+X-Patchwork-Hint: ignore
+X-KernelTest-Patch: http://kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.2-rc1.gz
+X-KernelTest-Tree: git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git
+X-KernelTest-Branch: linux-6.5.y
+X-KernelTest-Patches: git://git.kernel.org/pub/scm/linux/kernel/git/stable/stable-queue.git
+X-KernelTest-Version: 6.5.2-rc1
+X-KernelTest-Deadline: 2023-09-06T18:29+00:00
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -53,19 +63,182 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 04, 2023 at 10:47:05AM -0300, Fabio Estevam wrote:
-> On 03/09/2023 13:57, gregkh@linuxfoundation.org wrote:
-> > The patch below does not apply to the 5.15-stable tree.
-> > If someone wants it applied there, or to any other stable or longterm
-> > tree, then please email the backport, including the original git commit
-> > id to <stable@vger.kernel.org>.
-> 
-> The reason that it fails to apply against 5.15 is due to the missing commit:
-> 
-> 7963d4d71011 ("usb: typec: tcpci: move tcpci.h to include/linux/usb/")
-> 
-> I have submitted it as part of a series that applies cleanly against 5.15.
+This is the start of the stable review cycle for the 6.5.2 release.
+There are 34 patches in this series, all will be posted as a response
+to this one.  If anyone has any issues with these being applied, please
+let me know.
 
-Thanks all now queued up.
+Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
+Anything received after that time might be too late.
+
+The whole patch series can be found in one patch at:
+	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.2-rc1.gz
+or in the git tree and branch at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
+and the diffstat can be found below.
+
+thanks,
 
 greg k-h
+
+-------------
+Pseudo-Shortlog of commits:
+
+Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+    Linux 6.5.2-rc1
+
+Mario Limonciello <mario.limonciello@amd.com>
+    pinctrl: amd: Don't show `Invalid config param` errors
+
+Marco Felsch <m.felsch@pengutronix.de>
+    usb: typec: tcpci: clear the fault status bit
+
+Ryusuke Konishi <konishi.ryusuke@gmail.com>
+    nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
+
+Brian Foster <bfoster@redhat.com>
+    tracing: Zero the pipe cpumask on alloc to avoid spurious -EBUSY
+
+Hugo Villeneuve <hvilleneuve@dimonoff.com>
+    dt-bindings: sc16is7xx: Add property to change GPIO function
+
+Badhri Jagan Sridharan <badhri@google.com>
+    tcpm: Avoid soft reset when partner does not support get_status
+
+Juerg Haefliger <juerg.haefliger@canonical.com>
+    fsi: master-ast-cf: Add MODULE_FIRMWARE macro
+
+Wang Ming <machel@vivo.com>
+    firmware: stratix10-svc: Fix an NULL vs IS_ERR() bug in probe
+
+Hugo Villeneuve <hvilleneuve@dimonoff.com>
+    serial: sc16is7xx: fix bug when first setting GPIO direction
+
+Hugo Villeneuve <hvilleneuve@dimonoff.com>
+    serial: sc16is7xx: fix broken port 0 uart init
+
+Johan Hovold <johan+linaro@kernel.org>
+    serial: qcom-geni: fix opp vote on shutdown
+
+Sven Eckelmann <sven@narfation.org>
+    wifi: ath11k: Cleanup mac80211 references on failure during tx_complete
+
+Sven Eckelmann <sven@narfation.org>
+    wifi: ath11k: Don't drop tx_status when peer cannot be found
+
+Sascha Hauer <s.hauer@pengutronix.de>
+    wifi: rtw88: usb: kill and free rx urbs on probe failure
+
+Deren Wu <deren.wu@mediatek.com>
+    wifi: mt76: mt7921: fix skb leak by txs missing in AMSDU
+
+Deren Wu <deren.wu@mediatek.com>
+    wifi: mt76: mt7921: do not support one stream on secondary antenna only
+
+Nam Cao <namcaov@gmail.com>
+    staging: rtl8712: fix race condition
+
+Aaron Armstrong Skomra <aaron.skomra@wacom.com>
+    HID: wacom: remove the battery when the EKR is off
+
+Xu Yang <xu.yang_2@nxp.com>
+    usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
+
+Luke Lu <luke.lu@libre.computer>
+    usb: dwc3: meson-g12a: do post init to fix broken usb after resumption
+
+Takashi Iwai <tiwai@suse.de>
+    ALSA: usb-audio: Fix init call orders for UAC1
+
+Slark Xiao <slark_xiao@163.com>
+    USB: serial: option: add FOXCONN T99W368/T99W373 product
+
+Martin Kohn <m.kohn@welotec.com>
+    USB: serial: option: add Quectel EM05G variant (0x030e)
+
+Christoph Hellwig <hch@lst.de>
+    modules: only allow symbol_get of EXPORT_SYMBOL_GPL modules
+
+Christoph Hellwig <hch@lst.de>
+    rtc: ds1685: use EXPORT_SYMBOL_GPL for ds1685_rtc_poweroff
+
+Christoph Hellwig <hch@lst.de>
+    net: enetc: use EXPORT_SYMBOL_GPL for enetc_phc_index
+
+Christoph Hellwig <hch@lst.de>
+    mmc: au1xmmc: force non-modular build and remove symbol_get usage
+
+Arnd Bergmann <arnd@arndb.de>
+    ARM: pxa: remove use of symbol_get()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: reduce descriptor size if remaining bytes is less than request size
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: replace one-element array with flex-array member in struct smb2_ea_info
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: fix slub overflow in ksmbd_decode_ntlmssp_auth_blob()
+
+Namjae Jeon <linkinjeon@kernel.org>
+    ksmbd: fix wrong DataOffset validation of create context
+
+Gao Xiang <xiang@kernel.org>
+    erofs: ensure that the post-EOF tails are all zeroed
+
+Lang Yu <Lang.Yu@amd.com>
+    drm/amdgpu: correct vmhub index in GMC v10/11
+
+
+-------------
+
+Diffstat:
+
+ .../devicetree/bindings/serial/nxp,sc16is7xx.txt   | 46 ++++++++++++++++++++++
+ Makefile                                           |  4 +-
+ arch/arm/mach-pxa/sharpsl_pm.c                     |  2 -
+ arch/arm/mach-pxa/spitz.c                          | 14 +------
+ arch/mips/alchemy/devboards/db1000.c               |  8 +---
+ arch/mips/alchemy/devboards/db1200.c               | 19 +--------
+ arch/mips/alchemy/devboards/db1300.c               | 10 +----
+ drivers/firmware/stratix10-svc.c                   |  2 +-
+ drivers/fsi/fsi-master-ast-cf.c                    |  1 +
+ drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c             |  4 +-
+ drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c             |  4 +-
+ drivers/hid/wacom.h                                |  1 +
+ drivers/hid/wacom_sys.c                            | 25 ++++++++++--
+ drivers/hid/wacom_wac.c                            |  1 +
+ drivers/hid/wacom_wac.h                            |  1 +
+ drivers/mmc/host/Kconfig                           |  5 ++-
+ drivers/net/ethernet/freescale/enetc/enetc_ptp.c   |  2 +-
+ drivers/net/wireless/ath/ath11k/dp_tx.c            | 10 ++---
+ .../net/wireless/mediatek/mt76/mt76_connac_mac.c   |  7 +++-
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c   |  2 +-
+ drivers/net/wireless/realtek/rtw88/usb.c           |  5 ++-
+ drivers/pinctrl/pinctrl-amd.c                      |  4 +-
+ drivers/rtc/rtc-ds1685.c                           |  2 +-
+ drivers/staging/rtl8712/os_intfs.c                 |  1 +
+ drivers/staging/rtl8712/usb_intf.c                 |  1 -
+ drivers/tty/serial/qcom_geni_serial.c              |  5 +++
+ drivers/tty/serial/sc16is7xx.c                     | 17 +++++++-
+ drivers/usb/chipidea/ci_hdrc_imx.c                 | 10 +++--
+ drivers/usb/chipidea/usbmisc_imx.c                 |  6 ++-
+ drivers/usb/dwc3/dwc3-meson-g12a.c                 |  6 +++
+ drivers/usb/serial/option.c                        |  7 ++++
+ drivers/usb/typec/tcpm/tcpci.c                     |  4 ++
+ drivers/usb/typec/tcpm/tcpm.c                      |  7 ++++
+ fs/erofs/zdata.c                                   |  2 +
+ fs/nilfs2/alloc.c                                  |  3 +-
+ fs/nilfs2/inode.c                                  |  7 +++-
+ fs/smb/server/auth.c                               |  3 ++
+ fs/smb/server/oplock.c                             |  2 +-
+ fs/smb/server/smb2pdu.c                            |  2 +-
+ fs/smb/server/smb2pdu.h                            |  2 +-
+ fs/smb/server/transport_rdma.c                     | 25 ++++++++----
+ include/linux/usb/tcpci.h                          |  1 +
+ kernel/module/main.c                               | 14 +++++--
+ kernel/trace/trace.c                               |  4 +-
+ sound/usb/stream.c                                 | 11 +++++-
+ 45 files changed, 220 insertions(+), 99 deletions(-)
+
+
