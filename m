@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE447791CDA
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D10F791D25
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242700AbjIDScS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:32:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33054 "EHLO
+        id S241491AbjIDSfh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:35:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242787AbjIDScR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:17 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E30ACDA
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:14 -0700 (PDT)
+        with ESMTP id S238284AbjIDSfg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:36 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A0459E
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:33 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id 474E6B80E64
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:13 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32E2C433C7;
-        Mon,  4 Sep 2023 18:32:11 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 048D8B80EF4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:32 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 616F4C433C7;
+        Mon,  4 Sep 2023 18:35:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852332;
-        bh=6QjL+/B+1whQ3hlTC0wFN6MCSWB+tyi50rIdx7Yn1aQ=;
+        s=korg; t=1693852530;
+        bh=Fu2I4m8Ro4nmbVdW+GzuWxvmlCyeEPoBPL2y+7U1fAA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jEjOzDq8TNsMPOG4dFznihRzSrEMv0jec0xlnbvleY33FLfBOAKDWE3e0DSmB1iae
-         6o6LaKWyyR+uOlWPv4YREy6uTn30uQeQHZVNCQbL2znyBZ3kMNypxiVDoMcJVteD3F
-         WtlQWqeMUYr/TS/NGMH+9jc0PastVoFZauFkWtxw=
+        b=n7YD+49NQ5V6mqFhxmkGdiGqHR3RAXeI6k9SznTINyd+yT7QE5Uiz+dMGiI7F0DYF
+         RC6zX7RXTWIYBTyU0enXSkVqflmgYO2z2gePpeJKWQiBihZf7Z7pRZtQvzyh8xd+/s
+         zh4Rio5FgQhT8qpMyGw5WEAKKhIIR+UnIp5T1qog=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Badhri Jagan Sridharan <badhri@google.com>,
-        Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Subject: [PATCH 6.5 29/34] tcpm: Avoid soft reset when partner does not support get_status
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>
+Subject: [PATCH 6.1 08/31] net: enetc: use EXPORT_SYMBOL_GPL for enetc_phc_index
 Date:   Mon,  4 Sep 2023 19:30:16 +0100
-Message-ID: <20230904182949.966875432@linuxfoundation.org>
+Message-ID: <20230904182947.406960699@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
-References: <20230904182948.594404081@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,66 +56,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Badhri Jagan Sridharan <badhri@google.com>
+From: Christoph Hellwig <hch@lst.de>
 
-commit 78e0ea4277546debf7e96797ac3b768539cc44f6 upstream.
+commit 569820befb16ffc755ab7af71f4f08cc5f68f0fe upstream.
 
-When partner does not support get_status message, tcpm right now
-responds with soft reset message. This causes PD renegotiation to
-happen and resets PPS link. Avoid soft resetting the link when
-partner does not support get_status message to mitigate PPS resets.
+enetc_phc_index is only used via symbol_get, which was only ever
+intended for very internal symbols like this one.  Use EXPORT_SYMBOL_GPL
+for it so that symbol_get can enforce only being used on
+EXPORT_SYMBOL_GPL symbols.
 
-[  208.926752] Setting voltage/current limit 9500 mV 2450 mA
-[  208.930407] set_auto_vbus_discharge_threshold mode:3 pps_active:y vbus:9500 ret:0
-[  208.930418] state change SNK_TRANSITION_SINK -> SNK_READY [rev3 POWER_NEGOTIATION]
-[  208.930455] AMS POWER_NEGOTIATION finished
-
-// ALERT message from the Source
-[  213.948442] PD RX, header: 0x19a6 [1]
-[  213.948451] state change SNK_READY -> GET_STATUS_SEND [rev3 GETTING_SOURCE_SINK_STATUS]
-[  213.948457] PD TX, header: 0x492
-[  213.950402] PD TX complete, status: 0
-[  213.950427] pending state change GET_STATUS_SEND -> GET_STATUS_SEND_TIMEOUT @ 60 ms [rev3 GETTING_SOURCE_SINK_STATUS]
-
-// NOT_SUPPORTED from the Source
-[  213.959954] PD RX, header: 0xbb0 [1]
-
-// sink sends SOFT_RESET
-[  213.959958] state change GET_STATUS_SEND -> SNK_SOFT_RESET [rev3 GETTING_SOURCE_SINK_STATUS]
-[  213.959962] AMS GETTING_SOURCE_SINK_STATUS finished
-[  213.959964] AMS SOFT_RESET_AMS start
-[  213.959966] state change SNK_SOFT_RESET -> AMS_START [rev3 SOFT_RESET_AMS]
-[  213.959969] state change AMS_START -> SOFT_RESET_SEND [rev3 SOFT_RESET_AMS]
-
-Cc: stable@vger.kernel.org
-Fixes: 8dea75e11380 ("usb: typec: tcpm: Protocol Error handling")
-Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
-Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Link: https://lore.kernel.org/r/20230820044449.1005889-1-badhri@google.com
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Luis Chamberlain <mcgrof@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/usb/typec/tcpm/tcpm.c |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/freescale/enetc/enetc_ptp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2753,6 +2753,13 @@ static void tcpm_pd_ctrl_request(struct
- 			port->sink_cap_done = true;
- 			tcpm_set_state(port, ready_state(port), 0);
- 			break;
-+		/*
-+		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
-+		 * prevent redundant power re-negotiation
-+		 */
-+		case GET_STATUS_SEND:
-+			tcpm_set_state(port, ready_state(port), 0);
-+			break;
- 		case SRC_READY:
- 		case SNK_READY:
- 			if (port->vdm_state > VDM_STATE_READY) {
+--- a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
++++ b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
+@@ -8,7 +8,7 @@
+ #include "enetc.h"
+ 
+ int enetc_phc_index = -1;
+-EXPORT_SYMBOL(enetc_phc_index);
++EXPORT_SYMBOL_GPL(enetc_phc_index);
+ 
+ static struct ptp_clock_info enetc_ptp_caps = {
+ 	.owner		= THIS_MODULE,
 
 
