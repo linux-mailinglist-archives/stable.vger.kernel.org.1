@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7E0E791CF2
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:33:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BE447791CDA
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:32:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232413AbjIDSdZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:33:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43610 "EHLO
+        id S242700AbjIDScS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:32:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243495AbjIDSdY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:33:24 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72AC7CD4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:33:21 -0700 (PDT)
+        with ESMTP id S242787AbjIDScR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:32:17 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E30ACDA
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:32:14 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id CFC2BCE0D97
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:33:19 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DBF98C433C8;
-        Mon,  4 Sep 2023 18:33:17 +0000 (UTC)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 474E6B80E64
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:32:13 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A32E2C433C7;
+        Mon,  4 Sep 2023 18:32:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852398;
-        bh=LUIAJI6ePxc8ZXtbBu9aR2a8b6IyvXvwdzBnKJ5Izz8=;
+        s=korg; t=1693852332;
+        bh=6QjL+/B+1whQ3hlTC0wFN6MCSWB+tyi50rIdx7Yn1aQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k+IXotmRHeQknNZqnq4sXNGIlHnSu5wLM5Wzu5EnSg7hq2H3psG5FdPiD9w3IQIBU
-         doJy4jp8bJVtF41L7M/BErOe9hs++ByKuEKA8h76a2OMaj0msyyNdLGFw+8LwBX39w
-         lSDPxe4n8b8VGVI3VFen01umfdMnlub2MgYJsqAA=
+        b=jEjOzDq8TNsMPOG4dFznihRzSrEMv0jec0xlnbvleY33FLfBOAKDWE3e0DSmB1iae
+         6o6LaKWyyR+uOlWPv4YREy6uTn30uQeQHZVNCQbL2znyBZ3kMNypxiVDoMcJVteD3F
+         WtlQWqeMUYr/TS/NGMH+9jc0PastVoFZauFkWtxw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Knox Chiou <knoxchiou@google.com>,
-        Deren Wu <deren.wu@mediatek.com>, Felix Fietkau <nbd@nbd.name>
-Subject: [PATCH 6.4 18/32] wifi: mt76: mt7921: do not support one stream on secondary antenna only
+        patches@lists.linux.dev,
+        Badhri Jagan Sridharan <badhri@google.com>,
+        Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Subject: [PATCH 6.5 29/34] tcpm: Avoid soft reset when partner does not support get_status
 Date:   Mon,  4 Sep 2023 19:30:16 +0100
-Message-ID: <20230904182948.742996299@linuxfoundation.org>
+Message-ID: <20230904182949.966875432@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
-References: <20230904182947.899158313@linuxfoundation.org>
+In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
+References: <20230904182948.594404081@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,46 +56,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Deren Wu <deren.wu@mediatek.com>
+From: Badhri Jagan Sridharan <badhri@google.com>
 
-commit d616d3680264beb9a9d2c4fc681064b06f447eeb upstream.
+commit 78e0ea4277546debf7e96797ac3b768539cc44f6 upstream.
 
-mt7921 support following antenna combiantions only.
-* primary + secondary (2x2)
-* primary only        (1x1)
+When partner does not support get_status message, tcpm right now
+responds with soft reset message. This causes PD renegotiation to
+happen and resets PPS link. Avoid soft resetting the link when
+partner does not support get_status message to mitigate PPS resets.
 
-Since we cannot work on secondary antenna only, return error if the
-antenna bitmap is 0x2 in .set_antenna().
+[  208.926752] Setting voltage/current limit 9500 mV 2450 mA
+[  208.930407] set_auto_vbus_discharge_threshold mode:3 pps_active:y vbus:9500 ret:0
+[  208.930418] state change SNK_TRANSITION_SINK -> SNK_READY [rev3 POWER_NEGOTIATION]
+[  208.930455] AMS POWER_NEGOTIATION finished
 
-For example:
-iw phy0 set antenna 3 3 /* valid */
-iw phy0 set antenna 1 1 /* valid */
-iw phy0 set antenna 2 2 /* invalid */
+// ALERT message from the Source
+[  213.948442] PD RX, header: 0x19a6 [1]
+[  213.948451] state change SNK_READY -> GET_STATUS_SEND [rev3 GETTING_SOURCE_SINK_STATUS]
+[  213.948457] PD TX, header: 0x492
+[  213.950402] PD TX complete, status: 0
+[  213.950427] pending state change GET_STATUS_SEND -> GET_STATUS_SEND_TIMEOUT @ 60 ms [rev3 GETTING_SOURCE_SINK_STATUS]
+
+// NOT_SUPPORTED from the Source
+[  213.959954] PD RX, header: 0xbb0 [1]
+
+// sink sends SOFT_RESET
+[  213.959958] state change GET_STATUS_SEND -> SNK_SOFT_RESET [rev3 GETTING_SOURCE_SINK_STATUS]
+[  213.959962] AMS GETTING_SOURCE_SINK_STATUS finished
+[  213.959964] AMS SOFT_RESET_AMS start
+[  213.959966] state change SNK_SOFT_RESET -> AMS_START [rev3 SOFT_RESET_AMS]
+[  213.959969] state change AMS_START -> SOFT_RESET_SEND [rev3 SOFT_RESET_AMS]
 
 Cc: stable@vger.kernel.org
-Fixes: e0f9fdda81bd ("mt76: mt7921: add ieee80211_ops")
-Suggested-by: Knox Chiou <knoxchiou@google.com>
-Signed-off-by: Deren Wu <deren.wu@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 8dea75e11380 ("usb: typec: tcpm: Protocol Error handling")
+Signed-off-by: Badhri Jagan Sridharan <badhri@google.com>
+Acked-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
+Link: https://lore.kernel.org/r/20230820044449.1005889-1-badhri@google.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7921/main.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/usb/typec/tcpm/tcpm.c |    7 +++++++
+ 1 file changed, 7 insertions(+)
 
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1363,7 +1363,7 @@ mt7921_set_antenna(struct ieee80211_hw *
- 		return -EINVAL;
- 
- 	if ((BIT(hweight8(tx_ant)) - 1) != tx_ant)
--		tx_ant = BIT(ffs(tx_ant) - 1) - 1;
-+		return -EINVAL;
- 
- 	mt7921_mutex_acquire(dev);
- 
+--- a/drivers/usb/typec/tcpm/tcpm.c
++++ b/drivers/usb/typec/tcpm/tcpm.c
+@@ -2753,6 +2753,13 @@ static void tcpm_pd_ctrl_request(struct
+ 			port->sink_cap_done = true;
+ 			tcpm_set_state(port, ready_state(port), 0);
+ 			break;
++		/*
++		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
++		 * prevent redundant power re-negotiation
++		 */
++		case GET_STATUS_SEND:
++			tcpm_set_state(port, ready_state(port), 0);
++			break;
+ 		case SRC_READY:
+ 		case SNK_READY:
+ 			if (port->vdm_state > VDM_STATE_READY) {
 
 
