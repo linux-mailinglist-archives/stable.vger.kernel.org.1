@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 56C0A791D09
-	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:34:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A292B791D1A
+	for <lists+stable@lfdr.de>; Mon,  4 Sep 2023 20:35:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234451AbjIDSeT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 14:34:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60426 "EHLO
+        id S1345421AbjIDSfE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 14:35:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53314 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230084AbjIDSeT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:34:19 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [IPv6:2604:1380:4601:e00::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1609B2
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:34:15 -0700 (PDT)
+        with ESMTP id S242766AbjIDSfE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 14:35:04 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A30BCDB
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 11:35:01 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id B7848B80EF6
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:34:14 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 191A8C433C8;
-        Mon,  4 Sep 2023 18:34:12 +0000 (UTC)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id CD1AD6199A
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 18:35:00 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC980C433C8;
+        Mon,  4 Sep 2023 18:34:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693852453;
-        bh=a1YIc4viVpczIatkauAZ6dbEP+4olw0WuxXodl+6JSM=;
+        s=korg; t=1693852500;
+        bh=uOl8bCqQp8PKjdS9X2+5MsGUoeyiQSqC5HOShuKtQsQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z/SsJnDsWesty3zKUK87IL8Kbg7axMu3l6GYCN0UlkWMcK5SUxVEkgbSKSxZZfhL2
-         nUW/+LQS3YP4o+dN2Q3p84fSDjQQzzsiU3XBKIHl5fRVzpROhlMdZAqR2QToUclsYe
-         xRaAPFG5MmNYjnin8hShGlWXn1LB9pHCmtDUifH8=
+        b=0ZTvOdbA+Kqaofa3aC0EfK62LMn+uFbJ8py7z2PEMi0U4TWqKwn/MTGxRBvoXUGO1
+         Y/GRKFWXVrr9kDiEEWknozvpmYQd7iM09s70VledrtzRn/Ib5NGWXMmVILfy8Ff3PE
+         gdfnz8CHgdqEf4Ot3wYAWt2Kg8RQrhWJJxet4QVQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Ryusuke Konishi <konishi.ryusuke@gmail.com>,
-        syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 30/32] nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
-Date:   Mon,  4 Sep 2023 19:30:28 +0100
-Message-ID: <20230904182949.269476529@linuxfoundation.org>
+        patches@lists.linux.dev, Rajendra Nayak <quic_rjendra@quicinc.com>,
+        Matthias Kaehlcke <mka@chromium.org>,
+        Johan Hovold <johan+linaro@kernel.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>
+Subject: [PATCH 6.1 21/31] serial: qcom-geni: fix opp vote on shutdown
+Date:   Mon,  4 Sep 2023 19:30:29 +0100
+Message-ID: <20230904182948.052674627@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
-References: <20230904182947.899158313@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+References: <20230904182946.999390199@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -57,79 +57,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryusuke Konishi <konishi.ryusuke@gmail.com>
+From: Johan Hovold <johan+linaro@kernel.org>
 
-commit cdaac8e7e5a059f9b5e816cda257f08d0abffacd upstream.
+commit 8ece7b754bc34ffd7fcc8269ccb9128e72ca76d8 upstream.
 
-A syzbot stress test using a corrupted disk image reported that
-mark_buffer_dirty() called from __nilfs_mark_inode_dirty() or
-nilfs_palloc_commit_alloc_entry() may output a kernel warning, and can
-panic if the kernel is booted with panic_on_warn.
+The operating-performance-point vote needs to be dropped when shutting
+down the port to avoid wasting power by keeping resources like power
+domains in an unnecessarily high performance state (e.g. when a UART
+connected Bluetooth controller is not in use).
 
-This is because nilfs2 keeps buffer pointers in local structures for some
-metadata and reuses them, but such buffers may be forcibly discarded by
-nilfs_clear_dirty_page() in some critical situations.
-
-This issue is reported to appear after commit 28a65b49eb53 ("nilfs2: do
-not write dirty data after degenerating to read-only"), but the issue has
-potentially existed before.
-
-Fix this issue by checking the uptodate flag when attempting to reuse an
-internally held buffer, and reloading the metadata instead of reusing the
-buffer if the flag was lost.
-
-Link: https://lkml.kernel.org/r/20230818131804.7758-1-konishi.ryusuke@gmail.com
-Signed-off-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Reported-by: syzbot+cdfcae656bac88ba0e2d@syzkaller.appspotmail.com
-Closes: https://lkml.kernel.org/r/0000000000003da75f05fdeffd12@google.com
-Fixes: 8c26c4e2694a ("nilfs2: fix issue with flush kernel thread after remount in RO mode because of driver's internal error or metadata corruption")
-Tested-by: Ryusuke Konishi <konishi.ryusuke@gmail.com>
-Cc: <stable@vger.kernel.org> # 3.10+
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: a5819b548af0 ("tty: serial: qcom_geni_serial: Use OPP API to set clk/perf state")
+Cc: stable@vger.kernel.org      # 5.9
+Cc: Rajendra Nayak <quic_rjendra@quicinc.com>
+Cc: Matthias Kaehlcke <mka@chromium.org>
+Signed-off-by: Johan Hovold <johan+linaro@kernel.org>
+Acked-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230714130214.14552-2-johan+linaro@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- fs/nilfs2/alloc.c |    3 ++-
- fs/nilfs2/inode.c |    7 +++++--
- 2 files changed, 7 insertions(+), 3 deletions(-)
+ drivers/tty/serial/qcom_geni_serial.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
---- a/fs/nilfs2/alloc.c
-+++ b/fs/nilfs2/alloc.c
-@@ -205,7 +205,8 @@ static int nilfs_palloc_get_block(struct
- 	int ret;
+--- a/drivers/tty/serial/qcom_geni_serial.c
++++ b/drivers/tty/serial/qcom_geni_serial.c
+@@ -129,6 +129,7 @@ struct qcom_geni_serial_port {
+ 	u32 tx_fifo_width;
+ 	u32 rx_fifo_depth;
+ 	bool setup;
++	unsigned long clk_rate;
+ 	int (*handle_rx)(struct uart_port *uport, u32 bytes, bool drop);
+ 	unsigned int baud;
+ 	void *rx_fifo;
+@@ -1061,6 +1062,7 @@ static void qcom_geni_serial_set_termios
+ 			baud * sampling_rate, clk_rate, clk_div);
  
- 	spin_lock(lock);
--	if (prev->bh && blkoff == prev->blkoff) {
-+	if (prev->bh && blkoff == prev->blkoff &&
-+	    likely(buffer_uptodate(prev->bh))) {
- 		get_bh(prev->bh);
- 		*bhp = prev->bh;
- 		spin_unlock(lock);
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1025,7 +1025,7 @@ int nilfs_load_inode_block(struct inode
- 	int err;
+ 	uport->uartclk = clk_rate;
++	port->clk_rate = clk_rate;
+ 	dev_pm_opp_set_rate(uport->dev, clk_rate);
+ 	ser_clk_cfg = SER_CLK_EN;
+ 	ser_clk_cfg |= clk_div << CLK_DIV_SHFT;
+@@ -1330,10 +1332,13 @@ static void qcom_geni_serial_pm(struct u
  
- 	spin_lock(&nilfs->ns_inode_lock);
--	if (ii->i_bh == NULL) {
-+	if (ii->i_bh == NULL || unlikely(!buffer_uptodate(ii->i_bh))) {
- 		spin_unlock(&nilfs->ns_inode_lock);
- 		err = nilfs_ifile_get_inode_block(ii->i_root->ifile,
- 						  inode->i_ino, pbh);
-@@ -1034,7 +1034,10 @@ int nilfs_load_inode_block(struct inode
- 		spin_lock(&nilfs->ns_inode_lock);
- 		if (ii->i_bh == NULL)
- 			ii->i_bh = *pbh;
--		else {
-+		else if (unlikely(!buffer_uptodate(ii->i_bh))) {
-+			__brelse(ii->i_bh);
-+			ii->i_bh = *pbh;
-+		} else {
- 			brelse(*pbh);
- 			*pbh = ii->i_bh;
- 		}
+ 	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF) {
+ 		geni_icc_enable(&port->se);
++		if (port->clk_rate)
++			dev_pm_opp_set_rate(uport->dev, port->clk_rate);
+ 		geni_se_resources_on(&port->se);
+ 	} else if (new_state == UART_PM_STATE_OFF &&
+ 			old_state == UART_PM_STATE_ON) {
+ 		geni_se_resources_off(&port->se);
++		dev_pm_opp_set_rate(uport->dev, 0);
+ 		geni_icc_disable(&port->se);
+ 	}
+ }
 
 
