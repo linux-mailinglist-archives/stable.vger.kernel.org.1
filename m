@@ -2,55 +2,55 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96C677924FC
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:01:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 023867924D4
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230426AbjIEQAk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 12:00:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53204 "EHLO
+        id S233130AbjIEP74 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36364 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347370AbjIEE2L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 00:28:11 -0400
-Received: from mail-qk1-x732.google.com (mail-qk1-x732.google.com [IPv6:2607:f8b0:4864:20::732])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 319311B6;
-        Mon,  4 Sep 2023 21:28:08 -0700 (PDT)
-Received: by mail-qk1-x732.google.com with SMTP id af79cd13be357-76df3d8fb4eso126439485a.1;
-        Mon, 04 Sep 2023 21:28:08 -0700 (PDT)
+        with ESMTP id S1348511AbjIEEnj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 00:43:39 -0400
+Received: from mail-pg1-x52f.google.com (mail-pg1-x52f.google.com [IPv6:2607:f8b0:4864:20::52f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A2521B9;
+        Mon,  4 Sep 2023 21:43:36 -0700 (PDT)
+Received: by mail-pg1-x52f.google.com with SMTP id 41be03b00d2f7-563f8e8a53dso917479a12.3;
+        Mon, 04 Sep 2023 21:43:36 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693888087; x=1694492887; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1693889015; x=1694493815; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=uWgaTVmGKK/1LEN6gPVAr1vwp0h/BBNqjSFG08wB/fM=;
-        b=TEvtPcyKRTrCKgVJxO2F2cHv6qwFtgK1b+TyzheKEVAxuOt1j7/QgQjsf1TUz7iL7i
-         sMZ9yTeUNndOd+ggtSiucMW1s6LGVSedJT8RGMJqtAMa5G1fN4/LSysETsankTHvhF7g
-         gXrWKddQCJv8mr3MHDGnHhLk1H2z7+8jAMw/0LI8BVSK7DkS7Di9yJjHqdZuloGfqT0c
-         D+2yiysTjzgarH6LockWrwcUvrf5+ccQ8VI9e9LTvNJ8qnVepWNfSuHcS3UlIjNL5dWD
-         zQj4PCIFGlj5J8QsUZ+y09UfRTAR+XfMY9vdQtaWYqiQo28W9BVn+nTm2zhRPIAAQ3gn
-         hmQQ==
+        bh=J0V2FgytkL6qM48rXQ4oVsdXH0Mo9LDUYeEyaMnuyp8=;
+        b=PSz090PlTguY8CdCTjFVbe+kRuf3TKPKoiG/6wml6O2Vxqq34n6n6QdR8XRB2eXLJT
+         6mkQ8FXnKZyJhgX8lo3xavk0nEl6ZupAI8EGvAENEI2t6goxBI4i6JsAqHONRN9kAX1q
+         IwU2OJ9Ch5hdm4JL6RFK4aDZfwd9l7dn7gaf2lJeOwaFFZ0quK89ADQEutwu9ZhxWH2K
+         djg8jq64gIl53Upi+7XtFFCnM4Q7JKovvYj3eWx9VJxOarYy9mm+g1vO7JwNS9BQYcMC
+         BBMpQAPYWB97XXawoQyUOVLEngsGIBJByKY+hkBMYCG3ZZWNpXFsLpvJ7ZacmrW/P2zt
+         ZVLw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693888087; x=1694492887;
+        d=1e100.net; s=20221208; t=1693889015; x=1694493815;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=uWgaTVmGKK/1LEN6gPVAr1vwp0h/BBNqjSFG08wB/fM=;
-        b=JHrpJ7qQXPw87HMsjrNjZA4JGIAgV+2zcRA2BKqcqr2DsWqJBUvEsMvffSoMhqQsUg
-         p2CzPyVkhxDxA99DA7Ig0M/FFOshf42UttEQ68/l3GWGRB/OhcfkAwpyIeejLlDiijlj
-         xqrzAMnJJM191VzTPp4cR5eO+7qK3T/0vbx7J5plUOs5Ub9vzGkjV9HkoLIXw/yGFq4Q
-         sxZJLpG29P0ixLPc6M5G8gTixsWIm8Wuh/7+4pi+FTDlgphHb/Ke1zO5oQnBedN3jqNS
-         MG9013cpqToD+/x6Ndd4IK6kNW+kGybcEKdfmJm6/PCXDVtgPJEwwaCFkyY6y5dA5ZvK
-         6OzA==
-X-Gm-Message-State: AOJu0YzUCaMTsm+jgBBtMvCOI32HSr0mcIJdnNsHoX5b7dymm/PFa5MH
-        WIF5ttBgPhoLoyzm7oVH8j4=
-X-Google-Smtp-Source: AGHT+IHYmroJtrEm5/Z1B1aI2s4sLP9zuqfgFu+4gX/0vKDvIhcALhkfGYKpGlwOu0KgUF+GqAZXUg==
-X-Received: by 2002:a05:620a:461f:b0:767:de7c:b60 with SMTP id br31-20020a05620a461f00b00767de7c0b60mr15733201qkb.9.1693888087229;
-        Mon, 04 Sep 2023 21:28:07 -0700 (PDT)
+        bh=J0V2FgytkL6qM48rXQ4oVsdXH0Mo9LDUYeEyaMnuyp8=;
+        b=S8fL597HjtpVtQxm7TCBu1E0MURl34IqK3rX6x5z8yeZAXC7XSbHv4ZZoIzdevSLGK
+         HCGcXNs7LTE0I731iUdX/qmmZi+Nxp2nUIRf4DNL3qAPRBLdq9u4tAYngbsvj9xd+1Cc
+         9iXWOBuNxffdCA96nUMnwowMZpldvf8BrtWuGkh8sN8q4pB9BmKbNP7XYbQdNy4pn4c7
+         cLX5DaIWLIA4ChbxasYUWK79H1m7dFNwc/HS/DBNUwfkfx2WPzkIlyQUbmAvfhlGy10M
+         36zjl17Axj6jnVfOmFe/mHMmnCiXrFV92rX+2P0xSG6fGnaHaqLufxherDAkIfBXUkvI
+         AwDg==
+X-Gm-Message-State: AOJu0Yxab9n/cBiN3MoI3FMS96ZRUld4k50PXcGHgJL2j9g+eiNDxPRr
+        v9l89Pq2em9PFA6CpHxs9CA=
+X-Google-Smtp-Source: AGHT+IEnU+MIeffFTI+Kg7b5FgdzaHIO67u2BytPQHqVVH4istZfGmO7HzXkoOlBjNODUrLKv9bTZw==
+X-Received: by 2002:a05:6a20:9183:b0:13d:bf07:7444 with SMTP id v3-20020a056a20918300b0013dbf077444mr11402794pzd.0.1693889015324;
+        Mon, 04 Sep 2023 21:43:35 -0700 (PDT)
 Received: from debian.me ([103.124.138.83])
-        by smtp.gmail.com with ESMTPSA id y27-20020a63b51b000000b0056606274e54sm8377370pge.31.2023.09.04.21.28.06
+        by smtp.gmail.com with ESMTPSA id jd5-20020a170903260500b001bb8895848bsm8343417plb.71.2023.09.04.21.43.34
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Sep 2023 21:28:06 -0700 (PDT)
+        Mon, 04 Sep 2023 21:43:34 -0700 (PDT)
 Received: by debian.me (Postfix, from userid 1000)
-        id EC2DC83750AD; Tue,  5 Sep 2023 11:28:03 +0700 (WIB)
-Date:   Tue, 5 Sep 2023 11:28:03 +0700
+        id AE2B180E14C8; Tue,  5 Sep 2023 11:43:31 +0700 (WIB)
+Date:   Tue, 5 Sep 2023 11:43:31 +0700
 From:   Bagas Sanjaya <bagasdotme@gmail.com>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         stable@vger.kernel.org
@@ -60,14 +60,14 @@ Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
         lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
         f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
         srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-Subject: Re: [PATCH 6.4 00/32] 6.4.15-rc1 review
-Message-ID: <ZPauU72HlP_dvnGy@debian.me>
-References: <20230904182947.899158313@linuxfoundation.org>
+Subject: Re: [PATCH 6.5 00/34] 6.5.2-rc1 review
+Message-ID: <ZPax8-wQGxLMxvoE@debian.me>
+References: <20230904182948.594404081@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="yVkkHyRm0iPHqxli"
+        protocol="application/pgp-signature"; boundary="qNCG87IULPT+hZbQ"
 Content-Disposition: inline
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -79,14 +79,14 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---yVkkHyRm0iPHqxli
+--qNCG87IULPT+hZbQ
 Content-Type: text/plain; charset=utf-8
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 04, 2023 at 07:29:58PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.4.15 release.
-> There are 32 patches in this series, all will be posted as a response
+On Mon, Sep 04, 2023 at 07:29:47PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.5.2 release.
+> There are 34 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 >=20
@@ -99,15 +99,15 @@ Tested-by: Bagas Sanjaya <bagasdotme@gmail.com>
 --=20
 An old man doll... just what I always wanted! - Clara
 
---yVkkHyRm0iPHqxli
+--qNCG87IULPT+hZbQ
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZPauTQAKCRD2uYlJVVFO
-o3r+AP9h62zr6s9K35mx/rdIZyM29OCsEzKqH6W8hX9yxhlWaAD9Fb7Nd9yAp6+L
-95NzBDP+jkfCfOLwYTv5g/bX6/ANoQM=
-=db7D
+iHUEABYKAB0WIQSSYQ6Cy7oyFNCHrUH2uYlJVVFOowUCZPax7QAKCRD2uYlJVVFO
+oybNAP9b3aeerA2Jw6GE3bfYmmvJe3AZQr3cxuCDeO2GjA3oogEAlqQ+B3O+QO7L
+PZQSgZb1Syhhsw2JsbO4jDiA9ry2RwU=
+=pT0D
 -----END PGP SIGNATURE-----
 
---yVkkHyRm0iPHqxli--
+--qNCG87IULPT+hZbQ--
