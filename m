@@ -2,203 +2,148 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 162A1792480
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 270F27924F2
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:01:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231561AbjIEP7F (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48804 "EHLO
+        id S233886AbjIEQA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 12:00:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354314AbjIEKlc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 06:41:32 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.126])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E011199;
-        Tue,  5 Sep 2023 03:41:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693910489; x=1725446489;
-  h=date:from:to:cc:subject:message-id:
-   content-transfer-encoding:mime-version;
-  bh=P7PT+TjivkSQxFH4lsFAmrAuaPkuLMh7mWrYlXX7Q5c=;
-  b=gVBCkbQ1r+PQI8+DeTcRaYAKe8Bvj4D8k1GaaT1sZeLRzWIqT9o2hWsg
-   Tfkt8HjPMunPVMlcOZfPImPfoBqd2oSVo0x8ch6+OvYnI7Nr77NqnWbuf
-   hpT6wcWAEhvEwm97H9H+opdXPbglyhuFale99nEcmKJgUI24FTPnc5Cmu
-   q8o9BttKdhr8uXUa3JC/qQtALgowh7zqBLB7HOr+WDOoI37DYE9OCE9sB
-   Xr4iTv/qoKFFbltihLHFL3CbtDJ1WZD+sx+b7O210e1XZD1wSA0Daj9pt
-   B6Sqqkkl0J66DFB1Hm96sZuN2V2wWsBRhmHJL8s4twj1Yixwzt/UL/B0G
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="361791710"
-X-IronPort-AV: E=Sophos;i="6.02,229,1688454000"; 
-   d="scan'208";a="361791710"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by orsmga106.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 03:41:28 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10823"; a="741063363"
-X-IronPort-AV: E=Sophos;i="6.02,229,1688454000"; 
-   d="scan'208";a="741063363"
-Received: from fmsmsx602.amr.corp.intel.com ([10.18.126.82])
-  by orsmga002.jf.intel.com with ESMTP/TLS/AES256-GCM-SHA384; 05 Sep 2023 03:41:28 -0700
-Received: from fmsmsx612.amr.corp.intel.com (10.18.126.92) by
- fmsmsx602.amr.corp.intel.com (10.18.126.82) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 5 Sep 2023 03:41:28 -0700
-Received: from fmsmsx610.amr.corp.intel.com (10.18.126.90) by
- fmsmsx612.amr.corp.intel.com (10.18.126.92) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27; Tue, 5 Sep 2023 03:41:27 -0700
-Received: from fmsedg601.ED.cps.intel.com (10.1.192.135) by
- fmsmsx610.amr.corp.intel.com (10.18.126.90) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
- 15.1.2507.27 via Frontend Transport; Tue, 5 Sep 2023 03:41:27 -0700
-Received: from NAM10-DM6-obe.outbound.protection.outlook.com (104.47.58.101)
- by edgegateway.intel.com (192.55.55.70) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.1.2507.27; Tue, 5 Sep 2023 03:41:27 -0700
+        with ESMTP id S1354375AbjIELIS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 07:08:18 -0400
+Received: from NAM04-DM6-obe.outbound.protection.outlook.com (mail-dm6nam04on2048.outbound.protection.outlook.com [40.107.102.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFBDA1AB;
+        Tue,  5 Sep 2023 04:08:12 -0700 (PDT)
 ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=ecj2owj1KF5FmL2W6wbnW7Rqx5S7ZXtk5yxbvmWKKXTNIpqVm8eta9n3uMtpS/8vJo1mwmlOfRKWsRbePpU8vfnpeANLweSmFG2a6XMcbO4y7Q7d4D8SAmvUZ9U9kPo34aPa8d/s2LtI6rtnyvJHVeyvdmie0QH5Nii0ireKnOYSjxfaNqVHk/EZesmIG50EPy7Vd7f8Vsyobi9UvYjNH/mmOjdPXWVeghiCtKpFF/tZJbdLPirsvTxn5SuoHT3UhIzk16YgeLAVRXRuHCQKluQpR54LH/4nCU2qmD+Ae5X71LUZF+I5ttJY1af/831lY1enTzlSIDFp8VxfrOzSSg==
+ b=ge2QYSjn57Lh9+dFcUov/pudprZeMInx+rEfu0if7iQ6zJQVp0go5hDWdCDwp7ci7XAmoy4jOP4p1WCUNDE6+dQOr8VW2rlgfn6/By150BDRlSDmfcTH4fUOECzSuMViMtSXWDYraFhEyZS8sy3cewPE2IsWiTQZtKVxDJK20S3LMz46QKXwwSU5Grskx1qk3dHLBLGRHTea+pwnEe8KArvPIpYkH+KOJroGA2xd57VrOq2hY/C6kAirMv5auZRMoZg+fFSwqbFoEGeODMn3ycWMiq6W+cxcb0KK8piRWIpHxXXBst6tDe5qx7sQtGrDas30jaOuHIYoT1uxcTRSFw==
 ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
  s=arcselector9901;
  h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=NSpOuBnlp+/XlQb3XTqL8qeLlNgLkhY/JsoUeyDhIo4=;
- b=XH0O0yvx4+vB09YHqKx+xIGPxpxOhQO0N3+k+oVN2VpoL7LlHNl8LYeR4zCjbcavZHoAv1Ewu28+tDkYlV/HcyEIvjCZWLX7u1zwLZSXB8YYxIEzjP+ZfSYx7lrRbWmJpCOfjMMoqYdGgwrZ9UNvSSAX0hKk34grBIT8DigAWFNIIshYCvLrStQIgESOZevyK7VxI41wcQi5HMoV8hGZWOsQEFw8tEJDvr6aPU3HbxmgrpESBNdi+eJDcl4GkNwYundhNCd9qf4BcuFj8+WBROG2NEa8BEDGvdSHhzQqw88TNo6b4r6t1eevo8TqFh6foIFpd5TjGt1Eto0Ijgr5sw==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass
- smtp.mailfrom=intel.com; dmarc=pass action=none header.from=intel.com;
- dkim=pass header.d=intel.com; arc=none
-Authentication-Results: dkim=none (message not signed)
- header.d=none;dmarc=none action=none header.from=intel.com;
-Received: from CY5PR11MB6366.namprd11.prod.outlook.com (2603:10b6:930:3a::8)
- by IA0PR11MB7696.namprd11.prod.outlook.com (2603:10b6:208:403::13) with
+ bh=0/63/5LI+OR2/Qe8suMLA2eR6JvsyVY3e8vCVfMr3D0=;
+ b=NMyVxa5M6TTtreLYmKORInCAQ/H1EDv3+NrgGHir+j1JZrZlNRUE9kcd74x6AbL5e1/Uk+S2tTcB45mbZ6T3IDsbj0ucAIoCmxRcIj0pSy8SmV+3FM2K7Pgts6Q2G+oQCZNzpKAxUBsxpMr4jknL4A4iUPGo8nqRqUnA93CkDPnur4pNrLCX3SPgu6eqYEQPAy2/tgQWU/yRoBNrRXVNVbXn8eT0gIfkZeVXIj1i+fKO39+EuZof3B7PhaEafVtEBCxRGoxl6rmrQQbx234gq3vi80b/n7Jbnt05Rw+lfwFWgyHPmokEvD6JjTOjUgdigUzJ1OfTLVqF4I0CkojlGw==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 216.228.118.232) smtp.rcpttodomain=linuxfoundation.org
+ smtp.mailfrom=nvidia.com; dmarc=pass (p=reject sp=reject pct=100) action=none
+ header.from=nvidia.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
+ s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=0/63/5LI+OR2/Qe8suMLA2eR6JvsyVY3e8vCVfMr3D0=;
+ b=HvWVQdL/4CZJZ5Lw10MWCLQx8ZwW/UIsE3irxfbI930S8n1M2OoFnwc5LOsWvrluKil7A5Z8gHAneDJnK8RxF/zbL+6h6UtBYfhoTZG4IU37K6Xa/i8aXH6+7crVOpv2pjnfrodQK9xfrTVRmw+XPYukfQtl5cBvr/cxseRRPYM0IyRh0h8nyz3SRRbccwUCg4wwwyIlyZ3/TvXOCl/d0XNs2B72Xb5mSDhoWHKTrwq/oQGEH4p1f1tGJxIj9/MRbPg1+zmxVcXEPQo8yiBCApF68LIilicjo2noFUDtmCjwXV+EwAo3LZDT23D4cOALYffvtQoUIF/vRhjgndiJtg==
+Received: from SA0PR11CA0193.namprd11.prod.outlook.com (2603:10b6:806:1bc::18)
+ by BY5PR12MB4099.namprd12.prod.outlook.com (2603:10b6:a03:20f::21) with
  Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.28; Tue, 5 Sep
- 2023 10:41:25 +0000
-Received: from CY5PR11MB6366.namprd11.prod.outlook.com
- ([fe80::f8a8:855c:2d19:9ac1]) by CY5PR11MB6366.namprd11.prod.outlook.com
- ([fe80::f8a8:855c:2d19:9ac1%6]) with mapi id 15.20.6745.030; Tue, 5 Sep 2023
- 10:41:24 +0000
-Date:   Tue, 5 Sep 2023 11:41:14 +0100
-From:   Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-To:     Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>, <linux-crypto@vger.kernel.org>
-CC:     <qat-linux@intel.com>, <stable@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Bug in rsa-pkcs1pad in 6.1 and 5.15
-Message-ID: <ZPcFyp4jdE3uSeqW@gcabiddu-mobl1.ger.corp.intel.com>
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33; Tue, 5 Sep
+ 2023 11:08:08 +0000
+Received: from SA2PEPF000015CC.namprd03.prod.outlook.com
+ (2603:10b6:806:1bc:cafe::76) by SA0PR11CA0193.outlook.office365.com
+ (2603:10b6:806:1bc::18) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.33 via Frontend
+ Transport; Tue, 5 Sep 2023 11:08:08 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.118.232)
+ smtp.mailfrom=nvidia.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=nvidia.com;
+Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
+ 216.228.118.232 as permitted sender) receiver=protection.outlook.com;
+ client-ip=216.228.118.232; helo=mail.nvidia.com; pr=C
+Received: from mail.nvidia.com (216.228.118.232) by
+ SA2PEPF000015CC.mail.protection.outlook.com (10.167.241.202) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6768.25 via Frontend Transport; Tue, 5 Sep 2023 11:08:08 +0000
+Received: from drhqmail202.nvidia.com (10.126.190.181) by mail.nvidia.com
+ (10.127.129.5) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Tue, 5 Sep 2023
+ 04:08:03 -0700
+Received: from drhqmail201.nvidia.com (10.126.190.180) by
+ drhqmail202.nvidia.com (10.126.190.181) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.986.37; Tue, 5 Sep 2023 04:08:03 -0700
+Received: from jonathanh-vm-01.nvidia.com (10.127.8.9) by mail.nvidia.com
+ (10.126.190.180) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37 via Frontend
+ Transport; Tue, 5 Sep 2023 04:08:03 -0700
+From:   Jon Hunter <jonathanh@nvidia.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+CC:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        <patches@lists.linux.dev>, <linux-kernel@vger.kernel.org>,
+        <torvalds@linux-foundation.org>, <akpm@linux-foundation.org>,
+        <linux@roeck-us.net>, <shuah@kernel.org>, <patches@kernelci.org>,
+        <lkft-triage@lists.linaro.org>, <pavel@denx.de>,
+        <jonathanh@nvidia.com>, <f.fainelli@gmail.com>,
+        <sudipm.mukherjee@gmail.com>, <srw@sladewatkins.net>,
+        <rwarsow@gmx.de>, <conor@kernel.org>,
+        <linux-tegra@vger.kernel.org>, <stable@vger.kernel.org>
+Subject: Re: [PATCH 5.15 00/28] 5.15.131-rc1 review
+In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
+References: <20230904182945.178705038@linuxfoundation.org>
+X-NVConfidentiality: public
 Content-Type: text/plain; charset="utf-8"
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-Organization: Intel Research and Development Ireland Ltd - Co. Reg. #308263 -
- Collinstown Industrial Park, Leixlip, County Kildare - Ireland
-X-ClientProxiedBy: DBBPR09CA0006.eurprd09.prod.outlook.com
- (2603:10a6:10:c0::18) To CY5PR11MB6366.namprd11.prod.outlook.com
- (2603:10b6:930:3a::8)
+Content-Transfer-Encoding: 7bit
 MIME-Version: 1.0
+Message-ID: <4e9b3e34-640d-4048-983b-05410a8a6fe3@drhqmail201.nvidia.com>
+Date:   Tue, 5 Sep 2023 04:08:03 -0700
+X-NV-OnPremToCloud: ExternallySecured
+X-EOPAttributedMessage: 0
 X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY5PR11MB6366:EE_|IA0PR11MB7696:EE_
-X-MS-Office365-Filtering-Correlation-Id: ba70726d-fd68-45c8-ba65-08dbadfca6d8
+X-MS-TrafficTypeDiagnostic: SA2PEPF000015CC:EE_|BY5PR12MB4099:EE_
+X-MS-Office365-Filtering-Correlation-Id: 786362ec-050c-453a-c864-08dbae0062c8
 X-MS-Exchange-SenderADCheck: 1
 X-MS-Exchange-AntiSpam-Relay: 0
 X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: TvO4cZeR80vJwwaqe1S23Jk2OGm0MtzoEWlPLQyaLz4WbL/XHm+VUj4yMV1YFQerfpOLicYbJzPftZRldwtRjEkVzvatzTTJzx3AwHmmIz5ptKmr4so8N+QVYnB2jB76A7U4aU0OpjX0hn+iyLXLJxeRvzddlUhier0rtLSJ/VYElBJGgc9W6L9MXNZ6X9SdmEdya1kEv5pbw0PFiWPVOej3WhrV/LjKO6kviruMCgLrSncn4ikKEBflYFIL9wu4MRv5qq8xI0wRvFyhia4k1+mrSn7vgdPHuPaTobgirFu/yx44nMlEokZCfAn5Z67qjHfb4WRBS1LaZcKtQxqOOfDuo1opTGLb4QuBMxP3m8u/7SABXQvcb6WDs3psLlpqCdCotb74/7MxmFjrKVuoZl8QnC+bNipgTNvyRRFvufFhFAFYG7sqNgAt/fRxlSq58qBpNZlUxIkWZ7AyzUiCykNBUX9XYVMbTz6w2uVmsvQ1KofOM4MgUEaqFzGOzTfKYzSpo7CYJ21l4e0hOrdmGIwJcu3W1NOPWvHpPeMds0Dav/a0sdCASabHhFHMKrjTclk854h7iov0QQdWbhsteqqasnZqoeH52iJafqdlPtc=
-X-Forefront-Antispam-Report: CIP:255.255.255.255;CTRY:;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:CY5PR11MB6366.namprd11.prod.outlook.com;PTR:;CAT:NONE;SFS:(13230031)(346002)(39860400002)(376002)(366004)(396003)(136003)(451199024)(186009)(1800799009)(83380400001)(82960400001)(44832011)(5660300002)(86362001)(41300700001)(38100700002)(66556008)(26005)(66946007)(66476007)(478600001)(6506007)(110136005)(6666004)(966005)(6512007)(4326008)(8676002)(8936002)(316002)(6486002)(2906002)(36916002)(473944003);DIR:OUT;SFP:1102;
-X-MS-Exchange-AntiSpam-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-MessageData-0: =?utf-8?B?eEdVM0FXU01IcnRrVTR6SW16WVV6TUF3aG5OMjNwK3NvWHZoMmxVdnpEUGRu?=
- =?utf-8?B?VEZqVnkxMlVRbGxwZE5Ib0l6VjkreXNXUE5MOUJNWU1BZVRwSDV0eWlQYTI2?=
- =?utf-8?B?VDVOWmRRQVBpeGZMRktoMHFvaUEvMERDRjAwUXF3RGE4NzljdTdtdDNzM25o?=
- =?utf-8?B?V1gzZUl0UDlaS2pxZklaR3k5UVNXM0ZDTjQ1SzcwQm1XOEN5QzVQdWR1UWpU?=
- =?utf-8?B?bWQxMjQrY2lEOGpCdTdraWxoZlhBK1FWRmgxZER6RmlGcTFnRmpZZlpJMGVu?=
- =?utf-8?B?MjRuQ1ZTNG9UN3FGT0FiUEE3bmZ0dVh0VWt2ak45dkEwZ0dqQ3BhdmdBdDlw?=
- =?utf-8?B?UjVPb1NMYm8vcFFPdGZiMVBXNkhVWmp5YTZPbWtPeVJIMVhyM253MVNvY2RH?=
- =?utf-8?B?QXYyOGVMRG1jaFNaYnFXbWJXRzJvTWJ0VVFsYXNmc1k4Mjg2NzlyckpjTGEr?=
- =?utf-8?B?cXdmam9NSEFOZG03TjlxM1NXeXN4My9WK0xWQjRrSVN6TFRiT2FQb3dDRWhU?=
- =?utf-8?B?WHhoUGc5MkZHZm5KT3IyalpjYUhSV2JrbTQwdy81VlhmaXFiaGMyc29YZ0dN?=
- =?utf-8?B?NHVyUm0zRE5xN21ENk5qdmt2dGMrdHErbUJOemliZXdHdmVsTk5zR3BlTkVn?=
- =?utf-8?B?Z1JDbW9nSzEwb216aTdOYWFwWlFOSGpVUmVvQXZwV3gxekN1Z2hzdEJuSWFm?=
- =?utf-8?B?Rm9TNEpoSjdwRnpRVzdhTUVwSDRrVXpkWnpGeWJFbWFNWENlYlZFQnpmZE1R?=
- =?utf-8?B?aEVtb3laaytza1hTLzNMOHluaVpYOGhlaUU1SXIwR040SmRINzZmTjZxUFFM?=
- =?utf-8?B?SzZXMmFYdzlWanZvSDhiV29zNStzWmVCNmtHTkV6U05uSElCNiszKzI2OXlY?=
- =?utf-8?B?WERsNm00dmVuck5YNmFYa21CT0t1K3BIY0dOaDh2R000TFNIT0VLdFExOVpJ?=
- =?utf-8?B?aEx6dVVWaEdtSEJSVU92b1VMQTV2TmFQeE1Gamp6N0VtaFRLMkQxSXg5TTY5?=
- =?utf-8?B?MmRTMGppUTBuWlh1ZWtIai8zbXMyZ3FzUmVZVUpYMDcyY2RUcmtDSmhvdnVr?=
- =?utf-8?B?TnJUb2l6SHpNeHVDWGwyVjFiWEpzVU5OeEFRbXIxVE9vWHkwbDBvZ0g3dWRx?=
- =?utf-8?B?R1hEenV5NzlBS0svb0tQeVc0dzFZeThVdmppRjM4R2I1eHF5cWRwODNKQjMw?=
- =?utf-8?B?VnBQU1N0Y1NXM2NQTktDZEUxZ0c1T3hzcGxVNjIvajNadFZqQzNVQXN2SUU2?=
- =?utf-8?B?K0lOY0lCWEFXc2V3ZG52UHRhNUEvRDhiREpFUm1CVExoOW8rd29OYnVkelI2?=
- =?utf-8?B?ZytrVytaSnV1UzNHb1IzbElPbmNoTkZ1dGliNm5NNHVMUFdLcFFuNk0xZW0r?=
- =?utf-8?B?WUJ2clRQL3R4d3VMMitMUTI1NUtjRkt4amxESGxWU01HcURyZDF6TDd2SXFm?=
- =?utf-8?B?K0wzZEFBM0VqaVpJVlBlVjFBeWJOa2pFTG9YSXRoNDM3aFE3KzNOdnFHRWw0?=
- =?utf-8?B?V0VJVGwyV0t1VFA2RmZrcGtDbVgzdWh0WE5hRU52NWRVby9hbHVxSGFycXZF?=
- =?utf-8?B?T2RxY2R3WlNLc2R6RjhkU1hyVktnTTlqbnhBb2RWcmFJRHFvd21GVkRDeW5M?=
- =?utf-8?B?ckk4cWxodkFqZlk1SGtnUG9QaUx3bVdXYm56Z0tlTGdMdkpSQTcyU1BJeUhR?=
- =?utf-8?B?eFBRbUplM1RZUnovNnpuNHNJMTJoOXJLaFk2Vkw5N2xpVGRWWCtrWnhiQmdl?=
- =?utf-8?B?K0hEcUtwbDFIbTdJdmRIUDNXeUlRSHA1UGdJWGg1eEhFcWFqOWczWnVEclhx?=
- =?utf-8?B?c3FoQnNXMEY0dnpzNE5LL0ZpaHlrUnlCMTJGZ2paZE9UaHpmMlhHaWFtQmFG?=
- =?utf-8?B?Rm5ZbUdKNGNtR0JJUFFqWjZpakpweXAvOVlPaUFqY003SWp4dlZPNTZidVJa?=
- =?utf-8?B?czVoRHljRjhObUxVQ0RHQllxYWxZUmN2R3BVOWRJSjlpZXZmZVRKeGFXZ3BV?=
- =?utf-8?B?Wlg2d0FGaEVrZjE4THdJTHljS0swM2JLSWhJVzdvMXFIM0NuYjVyaVlLTGFM?=
- =?utf-8?B?YisrNS9BamF1bnBlQnhnSW9SbElGM2I5dlpyQ01JNlFRWkR5bGY2QXVlY2Rm?=
- =?utf-8?B?V1RlU1ZkTVRKOFFOa3Y0SnhoRGxwZGIrT3laVm1WUE5sV1lqQXZjK2dFckNS?=
- =?utf-8?B?M2c9PQ==?=
-X-MS-Exchange-CrossTenant-Network-Message-Id: ba70726d-fd68-45c8-ba65-08dbadfca6d8
-X-MS-Exchange-CrossTenant-AuthSource: CY5PR11MB6366.namprd11.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Internal
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2023 10:41:24.6562
+X-Microsoft-Antispam-Message-Info: 25lhQoLesUL8+/59rAXjsCjVKNEo6n4Ul9peECpEqMr38g9qqD4ShgF70pWQRE7JWgOz+luD9ZLl/Bsw1tarRKe3JSeVSFp75/wWliUpotpfgJomW/mr8yEAxDWnNBTxzwpVpZYEtKZsRFpn+4XPHkc+ZQEgA0CMDwIma2phmP1kSluevuPWRV7W5wSA0TX0C1rlncUG2cPAcAGZ2LZixS0jQ6ADgF7/mN3zKFlZFnHxhcXVDW/EFc9PBsgt15Ez3TvKEnkY/7qVygQHqz2Qq8elj46qx3CHNh5YZV/1i9C3U+pevqGow5g5QwNwkFjQR3qJJxlVdagVmcGmxL7z4s6hljV2w9ys9dIMoYdFbFeTXyPvvcAlPiUa2ZEL1zi2+wvnEX1QkQLbAmqUve6EOI0a4U4ghLDlzTS5QBlCoeDY4vLoICG853QkPcZg3qPDIoJkRAQ+ct2vizfp2D2/zKDf01RkFRDL+q6YbQVyFb/TzMiiVkRZ/EVQaVXq2kgwpL2kLn+wFLjF9Ffh9TCOvgK/nvX+obpNKihxhKAaWoL4a9lA+u2nVkh+KveQ0feD09XS7RDEu6YP2OMKOGni0Y1zhFIAZCNL4MN5g17bCPVO08e3EMDxJGxKcbX5t5eoS7vJOPSXj/PHAkaJ+Kc+UuRyZlYmsVm1Iysf51jAFinABunmTH7pQRHeoy0xk0KFVs2vxF4Zp4dqHuoM8Eyqlcl4mcmOF6z2sBNWwdpzPWbJIeduDKG/qFaW/H3Tt2eGRzgGNJ3M2gsYanNeqpo/YVkIPEa1us2uwU6wMK15uWU=
+X-Forefront-Antispam-Report: CIP:216.228.118.232;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc7edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(39860400002)(396003)(376002)(136003)(346002)(82310400011)(1800799009)(451199024)(186009)(46966006)(36840700001)(40470700004)(40460700003)(40480700001)(82740400003)(7636003)(26005)(478600001)(356005)(316002)(6916009)(966005)(54906003)(70206006)(70586007)(41300700001)(47076005)(36860700001)(426003)(336012)(31686004)(7416002)(2906002)(31696002)(86362001)(5660300002)(4326008)(8676002)(8936002);DIR:OUT;SFP:1101;
+X-OriginatorOrg: Nvidia.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 05 Sep 2023 11:08:08.2365
  (UTC)
-X-MS-Exchange-CrossTenant-FromEntityHeader: Hosted
-X-MS-Exchange-CrossTenant-Id: 46c98d88-e344-4ed4-8496-4ed7712e255d
-X-MS-Exchange-CrossTenant-MailboxType: HOSTED
-X-MS-Exchange-CrossTenant-UserPrincipalName: nWlLo07LQ3HB8zPIxe4jVAOTymClig6UJnjkalY9pnVe8v57GeGWWYPu8lRLcYoyw1zxVWhDWunIpJqBK+0xso1JAmawGayk64G/csg4j24=
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: IA0PR11MB7696
-X-OriginatorOrg: intel.com
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+X-MS-Exchange-CrossTenant-Network-Message-Id: 786362ec-050c-453a-c864-08dbae0062c8
+X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.118.232];Helo=[mail.nvidia.com]
+X-MS-Exchange-CrossTenant-AuthSource: SA2PEPF000015CC.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: BY5PR12MB4099
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-There is a missing backport in the stables 6.1.x and 5.15.x that
-combined with a backported patch as a dependency in the QAT driver
-causes a kernel crash at boot under certain conditions.
+On Mon, 04 Sep 2023 19:30:31 +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.131 release.
+> There are 28 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.131-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-In 6.1/5.15, the function pkcs1pad_create() in rsa-pkcs1pad.c [1] sets the
-reqsize of its akcipher_instance using the value in the akcipher_alg of
-the selected akcipher implementation. This assumes that the reqsize
-field has been set for the akcipher implementation when the akcipher_alg
-has been instantiated. The reqsize field is then used to allocate to
-allocate memory for pkcs1pad requests.
+All tests passing for Tegra ...
 
-In commit 80e62ad58db0 ("crypto: qat - Use helper to set reqsize"), the
-reqsize for the rsa implementation in the QAT driver is moved from being
-set in the akcipher_alg to being set when the tfm is initialized. This
-means that the implementation of rsa-pkcs1pad won’t allocate any space
-for the akcipher request when using the QAT driver.
+Test results for stable-v5.15:
+    11 builds:	11 pass, 0 fail
+    28 boots:	28 pass, 0 fail
+    102 tests:	102 pass, 0 fail
 
-This issue occurs only when CONFIG_CRYPTO_MANAGER_DISABLE_TESTS is not
-set. When the crypto self-test is run, the correct value of the reqsize
-is stored in the akcipher_alg in the qat driver by the first call to
-akcipher_set_reqsize() and then when pkcs1pad_create() is executed, it
-finds the correct value.
+Linux version:	5.15.131-rc1-gbec292fb85c5
+Boards tested:	tegra124-jetson-tk1, tegra186-p2771-0000,
+                tegra194-p2972-0000, tegra194-p3509-0000+p3668-0000,
+                tegra20-ventana, tegra210-p2371-2180,
+                tegra210-p3450-0000, tegra30-cardhu-a04
 
-Options:
-  1. Cherry-pick 5b11d1a360ea ("crypto: rsa-pkcs1pad - Use helper to set
-     reqsize") to both 6.1.x and 5.15.x trees.
-  2. Revert upstream commit 80e62ad58db0 ("crypto: qat - Use helper
-     to set reqsize").
-     In 6.1 revert da1729e6619c414f34ce679247721603ebb957dc
-     In 5.15 revert 3894f5880f968f81c6f3ed37d96bdea01441a8b7
+Tested-by: Jon Hunter <jonathanh@nvidia.com>
 
-Option #1 is preferred as the same problem might be impacting other
-akcipher implementations besides QAT. Option #2 is just specific to the
-QAT driver.
-
-@Herbert, can you have a quick look in case I missed something? I tried
-both options in 6.1.51 and they appear to resolve the problem.
-
-Thanks,
-
-[1] https://elixir.bootlin.com/linux/v6.1.51/source/crypto/rsa-pkcs1pad.c#L673
-
--- 
-Giovanni
+Jon
