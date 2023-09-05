@@ -2,245 +2,497 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C2F67924ED
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92A8C792469
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:58:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230144AbjIEQAS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 12:00:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37010 "EHLO
+        id S230491AbjIEP65 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:58:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353881AbjIEI2r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 04:28:47 -0400
-Received: from mail-vs1-xe32.google.com (mail-vs1-xe32.google.com [IPv6:2607:f8b0:4864:20::e32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85CA6CCB
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 01:28:43 -0700 (PDT)
-Received: by mail-vs1-xe32.google.com with SMTP id ada2fe7eead31-44d3e4ad403so962933137.0
-        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 01:28:43 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693902522; x=1694507322; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=eLVlLYXm43et59ODiKK6ekSSR9heDIXhgIR04XcWgxo=;
-        b=uQrEEXnxuoU2H1wi1LZ1zuholBNmIFo3tqKWertwgDjUHIhQQcqsZH/T9KWhxrkNOe
-         g2f5l+fKiQiGjh5+Nj5GKDGwQgwo/pi3p4La7jWhLvYUqIc+SN3AYGkiLqPqkWMy6LDw
-         6xURt7Uqe34FtIONJ4rckFDVxso4J3AFUn6AhWg7CYhP/SdmUCR4ZetU7ZquGmSk1f1q
-         hHqM1PwTEelJhPtHbms6wLnAPkLtLeCxR0+Gvll9sBLAzC4fOuWST4ChzeYhkwznNXf3
-         EoOrpXd1Yw+ovmsYxi8cnZVWFH0/PvUPBqeeCwS2otZOEtW6fogHTnc1neXuSxIhQYLN
-         bk0Q==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693902522; x=1694507322;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=eLVlLYXm43et59ODiKK6ekSSR9heDIXhgIR04XcWgxo=;
-        b=A9A34B9FZDpIyoC4aCItl6OD2/fuV7Bwhzz4FWLFCu3QugM3Br+5rOvkYOYzRLSrgW
-         E0c85pNyFcGeVl1ut6Eay+5IiZAE5oziIsbh/q/PC+9CzviXaLi9TOstccN2VvpVsQGc
-         qf44V3yEYcA6sZZYu57ge30zb5w+tVQoqCcMFtWf9mjYUTo9cUa+x6iePJ4ZZfaOsuPz
-         2mcfc5MTXxT74KbstLmJr61WnOw42ECekh1Jz35i12oi3KzR4kNGRNBqWQ+0/BonGXG2
-         oLJwnDwWU6XpeDd/UB1O8ffGTq+t6pR0M6eU37RE6a+EYMyyE2pCTEA01b0atbRC2hWu
-         TSxQ==
-X-Gm-Message-State: AOJu0Yxrnd/v0XUIxfV821jaqvEJo1V1ghlpdTRjEikLjBGw3UEuBKqv
-        8ei9s/Ir4F2AAEHr945WpExQJwNKLcCHiC1dJ2bzWQ==
-X-Google-Smtp-Source: AGHT+IGL8pgqFDTwFbkEIpOfSyXCLO20l9z11J7mChyhzMGqbFg7zCWL1ivXwG5Mf6e7Mq08MS4vXaERVY/M67z3K6E=
-X-Received: by 2002:a67:e9da:0:b0:44e:a558:5ec4 with SMTP id
- q26-20020a67e9da000000b0044ea5585ec4mr10817714vso.9.1693902522605; Tue, 05
- Sep 2023 01:28:42 -0700 (PDT)
+        with ESMTP id S1354002AbjIEJJn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 05:09:43 -0400
+Received: from smtp115.iad3a.emailsrvr.com (smtp115.iad3a.emailsrvr.com [173.203.187.115])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2CE8D8
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 02:09:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=mev.co.uk;
+        s=20221208-6x11dpa4; t=1693904978;
+        bh=5cLe5BPfRWm8KB0ubnDMK28673t8pSe8CSh5sRqpJWc=;
+        h=From:To:Subject:Date:From;
+        b=kt2Uml4TkYYv/3crDIL0cOzr3WtFApxE/FI9B3U+bcQX19TmGm2cbvGYQQOtFqK2H
+         ytlV2+MY2mOpJH8JWgpPLyDu4wagD0cRH8aMkGv+pkLfhp/q4whmq/sw1lhjtvY9Xt
+         P8AZ7DP1z6rlfY7C4S9VMrvbjjNaKCTFm1Y1jTcw=
+X-Auth-ID: abbotti@mev.co.uk
+Received: by smtp15.relay.iad3a.emailsrvr.com (Authenticated sender: abbotti-AT-mev.co.uk) with ESMTPSA id E6D9D393A;
+        Tue,  5 Sep 2023 05:09:36 -0400 (EDT)
+From:   Ian Abbott <abbotti@mev.co.uk>
+To:     linux-kernel@vger.kernel.org
+Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Ian Abbott <abbotti@mev.co.uk>,
+        H Hartley Sweeten <hsweeten@visionengravers.com>,
+        Niklas Schnelle <schnelle@linux.ibm.com>,
+        Arnd Bergmann <arnd@kernel.org>, stable@vger.kernel.org
+Subject: [PATCH] Revert "comedi: add HAS_IOPORT dependencies"
+Date:   Tue,  5 Sep 2023 10:09:22 +0100
+Message-Id: <20230905090922.3314-1-abbotti@mev.co.uk>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-References: <20230904182947.899158313@linuxfoundation.org>
-In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 5 Sep 2023 13:58:31 +0530
-Message-ID: <CA+G9fYteSobTv4ASoYX=1Z=V1B4grPpeYSkJq+1WDFBeQP4nyg@mail.gmail.com>
-Subject: Re: [PATCH 6.4 00/32] 6.4.15-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
+Content-Transfer-Encoding: 8bit
+X-Classification-ID: 96df25fe-3c66-4793-b5a9-34e615b711d4-1-1
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 5 Sept 2023 at 00:04, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 6.4.15 release.
-> There are 32 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
-6.4.15-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-6.4.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+This reverts commit b5c75b68b7ded84d4c82118974ce3975a4dcaa74.
 
+The commit makes it impossible to select configuration options that
+depend on COMEDI_8254, COMEDI_DAS08, COMEDI_NI_LABPC, or
+COMEDI_AMPLC_DIO200 options due to changing 'select' directives to
+'depends on' directives and there being no other way to select those
+codependent configuration options.
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Fixes: b5c75b68b7de ("comedi: add HAS_IOPORT dependencies")
+Cc: Niklas Schnelle <schnelle@linux.ibm.com>
+Cc: Arnd Bergmann <arnd@kernel.org>
+Cc: <stable@vger.kernel.org> # v6.5+
+Acked-by: Arnd Bergmann <arnd@kernel.org>
+Signed-off-by: Ian Abbott <abbotti@mev.co.uk>
+---
+ drivers/comedi/Kconfig | 103 ++++++++++++++---------------------------
+ 1 file changed, 35 insertions(+), 68 deletions(-)
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+diff --git a/drivers/comedi/Kconfig b/drivers/comedi/Kconfig
+index 7a8d402f05be..9af280735cba 100644
+--- a/drivers/comedi/Kconfig
++++ b/drivers/comedi/Kconfig
+@@ -67,7 +67,6 @@ config COMEDI_TEST
+ 
+ config COMEDI_PARPORT
+ 	tristate "Parallel port support"
+-	depends on HAS_IOPORT
+ 	help
+ 	  Enable support for the standard parallel port.
+ 	  A cheap and easy way to get a few more digital I/O lines. Steal
+@@ -80,7 +79,6 @@ config COMEDI_PARPORT
+ config COMEDI_SSV_DNP
+ 	tristate "SSV Embedded Systems DIL/Net-PC support"
+ 	depends on X86_32 || COMPILE_TEST
+-	depends on HAS_IOPORT
+ 	help
+ 	  Enable support for SSV Embedded Systems DIL/Net-PC
+ 
+@@ -91,7 +89,6 @@ endif # COMEDI_MISC_DRIVERS
+ 
+ menuconfig COMEDI_ISA_DRIVERS
+ 	bool "Comedi ISA and PC/104 drivers"
+-	depends on ISA
+ 	help
+ 	  Enable comedi ISA and PC/104 drivers to be built
+ 
+@@ -103,8 +100,7 @@ if COMEDI_ISA_DRIVERS
+ 
+ config COMEDI_PCL711
+ 	tristate "Advantech PCL-711/711b and ADlink ACL-8112 ISA card support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Advantech PCL-711 and 711b, ADlink ACL-8112
+ 
+@@ -165,9 +161,8 @@ config COMEDI_PCL730
+ 
+ config COMEDI_PCL812
+ 	tristate "Advantech PCL-812/813 and ADlink ACL-8112/8113/8113/8216"
+-	depends on HAS_IOPORT
+ 	select COMEDI_ISADMA if ISA_DMA_API
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Advantech PCL-812/PG, PCL-813/B, ADLink
+ 	  ACL-8112DG/HG/PG, ACL-8113, ACL-8216, ICP DAS A-821PGH/PGL/PGL-NDA,
+@@ -178,9 +173,8 @@ config COMEDI_PCL812
+ 
+ config COMEDI_PCL816
+ 	tristate "Advantech PCL-814 and PCL-816 ISA card support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_ISADMA if ISA_DMA_API
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Advantech PCL-814 and PCL-816 ISA cards
+ 
+@@ -189,9 +183,8 @@ config COMEDI_PCL816
+ 
+ config COMEDI_PCL818
+ 	tristate "Advantech PCL-718 and PCL-818 ISA card support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_ISADMA if ISA_DMA_API
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Advantech PCL-818 ISA cards
+ 	  PCL-818L, PCL-818H, PCL-818HD, PCL-818HG, PCL-818 and PCL-718
+@@ -210,7 +203,7 @@ config COMEDI_PCM3724
+ 
+ config COMEDI_AMPLC_DIO200_ISA
+ 	tristate "Amplicon PC212E/PC214E/PC215E/PC218E/PC272E"
+-	depends on COMEDI_AMPLC_DIO200
++	select COMEDI_AMPLC_DIO200
+ 	help
+ 	  Enable support for Amplicon PC212E, PC214E, PC215E, PC218E and
+ 	  PC272E ISA DIO boards
+@@ -262,8 +255,7 @@ config COMEDI_DAC02
+ 
+ config COMEDI_DAS16M1
+ 	tristate "MeasurementComputing CIO-DAS16/M1DAS-16 ISA card support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for Measurement Computing CIO-DAS16/M1 ISA cards.
+@@ -273,7 +265,7 @@ config COMEDI_DAS16M1
+ 
+ config COMEDI_DAS08_ISA
+ 	tristate "DAS-08 compatible ISA and PC/104 card support"
+-	depends on COMEDI_DAS08
++	select COMEDI_DAS08
+ 	help
+ 	  Enable support for Keithley Metrabyte/ComputerBoards DAS08
+ 	  and compatible ISA and PC/104 cards:
+@@ -286,9 +278,8 @@ config COMEDI_DAS08_ISA
+ 
+ config COMEDI_DAS16
+ 	tristate "DAS-16 compatible ISA and PC/104 card support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_ISADMA if ISA_DMA_API
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for Keithley Metrabyte/ComputerBoards DAS16
+@@ -305,8 +296,7 @@ config COMEDI_DAS16
+ 
+ config COMEDI_DAS800
+ 	tristate "DAS800 and compatible ISA card support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Keithley Metrabyte DAS800 and compatible ISA cards
+ 	  Keithley Metrabyte DAS-800, DAS-801, DAS-802
+@@ -318,9 +308,8 @@ config COMEDI_DAS800
+ 
+ config COMEDI_DAS1800
+ 	tristate "DAS1800 and compatible ISA card support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_ISADMA if ISA_DMA_API
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for DAS1800 and compatible ISA cards
+ 	  Keithley Metrabyte DAS-1701ST, DAS-1701ST-DA, DAS-1701/AO,
+@@ -334,8 +323,7 @@ config COMEDI_DAS1800
+ 
+ config COMEDI_DAS6402
+ 	tristate "DAS6402 and compatible ISA card support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for DAS6402 and compatible ISA cards
+ 	  Computerboards, Keithley Metrabyte DAS6402 and compatibles
+@@ -414,8 +402,7 @@ config COMEDI_FL512
+ 
+ config COMEDI_AIO_AIO12_8
+ 	tristate "I/O Products PC/104 AIO12-8 Analog I/O Board support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for I/O Products PC/104 AIO12-8 Analog I/O Board
+@@ -469,9 +456,8 @@ config COMEDI_ADQ12B
+ 
+ config COMEDI_NI_AT_A2150
+ 	tristate "NI AT-A2150 ISA card support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_ISADMA if ISA_DMA_API
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for National Instruments AT-A2150 cards
+ 
+@@ -480,8 +466,7 @@ config COMEDI_NI_AT_A2150
+ 
+ config COMEDI_NI_AT_AO
+ 	tristate "NI AT-AO-6/10 EISA card support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for National Instruments AT-AO-6/10 cards
+ 
+@@ -512,7 +497,7 @@ config COMEDI_NI_ATMIO16D
+ 
+ config COMEDI_NI_LABPC_ISA
+ 	tristate "NI Lab-PC and compatibles ISA support"
+-	depends on COMEDI_NI_LABPC
++	select COMEDI_NI_LABPC
+ 	help
+ 	  Enable support for National Instruments Lab-PC and compatibles
+ 	  Lab-PC-1200, Lab-PC-1200AI, Lab-PC+.
+@@ -576,7 +561,7 @@ endif # COMEDI_ISA_DRIVERS
+ 
+ menuconfig COMEDI_PCI_DRIVERS
+ 	tristate "Comedi PCI drivers"
+-	depends on PCI && HAS_IOPORT
++	depends on PCI
+ 	help
+ 	  Enable support for comedi PCI drivers.
+ 
+@@ -725,8 +710,7 @@ config COMEDI_ADL_PCI8164
+ 
+ config COMEDI_ADL_PCI9111
+ 	tristate "ADLink PCI-9111HR support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for ADlink PCI9111 cards
+ 
+@@ -736,7 +720,7 @@ config COMEDI_ADL_PCI9111
+ config COMEDI_ADL_PCI9118
+ 	tristate "ADLink PCI-9118DG, PCI-9118HG, PCI-9118HR support"
+ 	depends on HAS_DMA
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for ADlink PCI-9118DG, PCI-9118HG, PCI-9118HR cards
+ 
+@@ -745,8 +729,7 @@ config COMEDI_ADL_PCI9118
+ 
+ config COMEDI_ADV_PCI1710
+ 	tristate "Advantech PCI-171x and PCI-1731 support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Advantech PCI-1710, PCI-1710HG, PCI-1711,
+ 	  PCI-1713 and PCI-1731
+@@ -790,8 +773,7 @@ config COMEDI_ADV_PCI1760
+ 
+ config COMEDI_ADV_PCI_DIO
+ 	tristate "Advantech PCI DIO card support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for Advantech PCI DIO cards
+@@ -804,7 +786,7 @@ config COMEDI_ADV_PCI_DIO
+ 
+ config COMEDI_AMPLC_DIO200_PCI
+ 	tristate "Amplicon PCI215/PCI272/PCIe215/PCIe236/PCIe296 DIO support"
+-	depends on COMEDI_AMPLC_DIO200
++	select COMEDI_AMPLC_DIO200
+ 	help
+ 	  Enable support for Amplicon PCI215, PCI272, PCIe215, PCIe236
+ 	  and PCIe296 DIO boards.
+@@ -832,8 +814,7 @@ config COMEDI_AMPLC_PC263_PCI
+ 
+ config COMEDI_AMPLC_PCI224
+ 	tristate "Amplicon PCI224 and PCI234 support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Amplicon PCI224 and PCI234 AO boards
+ 
+@@ -842,8 +823,7 @@ config COMEDI_AMPLC_PCI224
+ 
+ config COMEDI_AMPLC_PCI230
+ 	tristate "Amplicon PCI230 and PCI260 support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for Amplicon PCI230 and PCI260 Multifunction I/O
+@@ -862,7 +842,7 @@ config COMEDI_CONTEC_PCI_DIO
+ 
+ config COMEDI_DAS08_PCI
+ 	tristate "DAS-08 PCI support"
+-	depends on COMEDI_DAS08
++	select COMEDI_DAS08
+ 	help
+ 	  Enable support for PCI DAS-08 cards.
+ 
+@@ -949,8 +929,7 @@ config COMEDI_CB_PCIDAS64
+ 
+ config COMEDI_CB_PCIDAS
+ 	tristate "MeasurementComputing PCI-DAS support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for ComputerBoards/MeasurementComputing PCI-DAS with
+@@ -974,8 +953,7 @@ config COMEDI_CB_PCIDDA
+ 
+ config COMEDI_CB_PCIMDAS
+ 	tristate "MeasurementComputing PCIM-DAS1602/16, PCIe-DAS1602/16 support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for ComputerBoards/MeasurementComputing PCI Migration
+@@ -995,8 +973,7 @@ config COMEDI_CB_PCIMDDA
+ 
+ config COMEDI_ME4000
+ 	tristate "Meilhaus ME-4000 support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Meilhaus PCI data acquisition cards
+ 	  ME-4650, ME-4670i, ME-4680, ME-4680i and ME-4680is
+@@ -1054,7 +1031,7 @@ config COMEDI_NI_670X
+ 
+ config COMEDI_NI_LABPC_PCI
+ 	tristate "NI Lab-PC PCI-1200 support"
+-	depends on COMEDI_NI_LABPC
++	select COMEDI_NI_LABPC
+ 	help
+ 	  Enable support for National Instruments Lab-PC PCI-1200.
+ 
+@@ -1076,7 +1053,6 @@ config COMEDI_NI_PCIDIO
+ config COMEDI_NI_PCIMIO
+ 	tristate "NI PCI-MIO-E series and M series support"
+ 	depends on HAS_DMA
+-	depends on HAS_IOPORT
+ 	select COMEDI_NI_TIOCMD
+ 	select COMEDI_8255
+ 	help
+@@ -1098,8 +1074,7 @@ config COMEDI_NI_PCIMIO
+ 
+ config COMEDI_RTD520
+ 	tristate "Real Time Devices PCI4520/DM7520 support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for Real Time Devices PCI4520/DM7520
+ 
+@@ -1139,8 +1114,7 @@ if COMEDI_PCMCIA_DRIVERS
+ 
+ config COMEDI_CB_DAS16_CS
+ 	tristate "CB DAS16 series PCMCIA support"
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	help
+ 	  Enable support for the ComputerBoards/MeasurementComputing PCMCIA
+ 	  cards DAS16/16, PCM-DAS16D/12 and PCM-DAS16s/16
+@@ -1150,7 +1124,7 @@ config COMEDI_CB_DAS16_CS
+ 
+ config COMEDI_DAS08_CS
+ 	tristate "CB DAS08 PCMCIA support"
+-	depends on COMEDI_DAS08
++	select COMEDI_DAS08
+ 	help
+ 	  Enable support for the ComputerBoards/MeasurementComputing DAS-08
+ 	  PCMCIA card
+@@ -1160,7 +1134,6 @@ config COMEDI_DAS08_CS
+ 
+ config COMEDI_NI_DAQ_700_CS
+ 	tristate "NI DAQCard-700 PCMCIA support"
+-	depends on HAS_IOPORT
+ 	help
+ 	  Enable support for the National Instruments PCMCIA DAQCard-700 DIO
+ 
+@@ -1169,7 +1142,6 @@ config COMEDI_NI_DAQ_700_CS
+ 
+ config COMEDI_NI_DAQ_DIO24_CS
+ 	tristate "NI DAQ-Card DIO-24 PCMCIA support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for the National Instruments PCMCIA DAQ-Card DIO-24
+@@ -1179,7 +1151,7 @@ config COMEDI_NI_DAQ_DIO24_CS
+ 
+ config COMEDI_NI_LABPC_CS
+ 	tristate "NI DAQCard-1200 PCMCIA support"
+-	depends on COMEDI_NI_LABPC
++	select COMEDI_NI_LABPC
+ 	help
+ 	  Enable support for the National Instruments PCMCIA DAQCard-1200
+ 
+@@ -1188,7 +1160,6 @@ config COMEDI_NI_LABPC_CS
+ 
+ config COMEDI_NI_MIO_CS
+ 	tristate "NI DAQCard E series PCMCIA support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_NI_TIO
+ 	select COMEDI_8255
+ 	help
+@@ -1201,7 +1172,6 @@ config COMEDI_NI_MIO_CS
+ 
+ config COMEDI_QUATECH_DAQP_CS
+ 	tristate "Quatech DAQP PCMCIA data capture card support"
+-	depends on HAS_IOPORT
+ 	help
+ 	  Enable support for the Quatech DAQP PCMCIA data capture cards
+ 	  DAQP-208 and DAQP-308
+@@ -1278,14 +1248,12 @@ endif # COMEDI_USB_DRIVERS
+ 
+ config COMEDI_8254
+ 	tristate
+-	depends on HAS_IOPORT
+ 
+ config COMEDI_8255
+ 	tristate
+ 
+ config COMEDI_8255_SA
+ 	tristate "Standalone 8255 support"
+-	depends on HAS_IOPORT
+ 	select COMEDI_8255
+ 	help
+ 	  Enable support for 8255 digital I/O as a standalone driver.
+@@ -1317,7 +1285,7 @@ config COMEDI_KCOMEDILIB
+ 	  called kcomedilib.
+ 
+ config COMEDI_AMPLC_DIO200
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	tristate
+ 
+ config COMEDI_AMPLC_PC236
+@@ -1326,7 +1294,7 @@ config COMEDI_AMPLC_PC236
+ 
+ config COMEDI_DAS08
+ 	tristate
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 
+ config COMEDI_ISADMA
+@@ -1334,8 +1302,7 @@ config COMEDI_ISADMA
+ 
+ config COMEDI_NI_LABPC
+ 	tristate
+-	depends on HAS_IOPORT
+-	depends on COMEDI_8254
++	select COMEDI_8254
+ 	select COMEDI_8255
+ 
+ config COMEDI_NI_LABPC_ISADMA
+-- 
+2.40.1
 
-## Build
-* kernel: 6.4.15-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-6.4.y
-* git commit: 9d9f43e3652f3df0f5a4b81d201bbcc97b88c7d5
-* git describe: v6.4.14-33-g9d9f43e3652f
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.4.y/build/v6.4.1=
-4-33-g9d9f43e3652f
-
-## Test Regressions (compared to v6.4.14)
-
-## Metric Regressions (compared to v6.4.14)
-
-## Test Fixes (compared to v6.4.14)
-
-## Metric Fixes (compared to v6.4.14)
-
-## Test result summary
-total: 142519, pass: 123130, fail: 2060, skip: 17149, xfail: 180
-
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 141 total, 139 passed, 2 failed
-* arm64: 53 total, 50 passed, 3 failed
-* i386: 41 total, 39 passed, 2 failed
-* mips: 28 total, 26 passed, 2 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 36 total, 34 passed, 2 failed
-* riscv: 25 total, 22 passed, 3 failed
-* s390: 16 total, 14 passed, 2 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 44 total, 40 passed, 4 failed
-
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-kvm
-* kselftest-lib
-* kselftest-livepatch
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* libhugetlbfs
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* network-basic-tests
-* perf
-* rcutorture
-* v4l2-compliance
-
---
-Linaro LKFT
-https://lkft.linaro.org
