@@ -2,152 +2,136 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 48AD0792D04
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 20:02:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D827A792CDA
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:56:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234499AbjIESCO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 14:02:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49808 "EHLO
+        id S238199AbjIER4f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 13:56:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36736 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231941AbjIESCN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 14:02:13 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5FBBB4C2D;
-        Tue,  5 Sep 2023 11:01:40 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6534160BBD;
-        Tue,  5 Sep 2023 17:14:53 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B86DCC433C9;
-        Tue,  5 Sep 2023 17:14:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1693934092;
-        bh=88ESnMi5OGM3fC2Q8pfhu7vwtQJFuTQnkMgYdQEMf6E=;
-        h=Date:To:From:Subject:From;
-        b=E2lkVELZL/l217PH5yXY2YhiPG7unmHW/YVHL50KeBGp2fgLI6+Gb5BNYBGUxvh8K
-         aKkmlQrenly6RTD97rFmgKEyBUzTcq4+G1mi/ZREBcqJfEVoz29XFUbL/zOnmbmC0U
-         NOL2tf64yZjjXNg6Z5/K4f79xeLYUEpSTDbLqIK4=
-Date:   Tue, 05 Sep 2023 10:14:52 -0700
-To:     mm-commits@vger.kernel.org, willy@infradead.org, urezki@gmail.com,
-        thunder.leizhen@huaweicloud.com, stable@vger.kernel.org,
-        paulmck@kernel.org, joel@joelfernandes.org,
-        qiang.zhang1211@gmail.com, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] rcu-dump-vmalloc-memory-info-safely.patch removed from -mm tree
-Message-Id: <20230905171452.B86DCC433C9@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S240161AbjIER4S (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 13:56:18 -0400
+Received: from mail-pf1-x450.google.com (mail-pf1-x450.google.com [IPv6:2607:f8b0:4864:20::450])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D3971A50F
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 10:49:37 -0700 (PDT)
+Received: by mail-pf1-x450.google.com with SMTP id d2e1a72fcca58-68a3cae6d3aso2837084b3a.0
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 10:49:37 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693936063; x=1694540863;
+        h=to:from:subject:message-id:in-reply-to:date:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=JC4emxi/+91e6/de8rNAFQ4RT3D4NiRRQ3Rn+uvpGxs=;
+        b=aPyFiYMMIBb6Tk21D/TIpl//tcQXPkAL212PYZXHRT2vUVcVTh25rdWdkeYgN3shEm
+         9Hzv5/fuklcutmu1FEEOxsOTZTniXdrTOTc2HPipfhdDdeWGUqRdYiu9sxAgKhIDOA5L
+         +8Z8SFXsiyZFLIk3O4XqwzY4NE2wEZN1cTMSa1iFLMHVl9eX7pbst6ZPLDrGjj9NyMMo
+         DQnvTkJUZ1qRMuUXA3+1AwlcCblmdXkISkuLUDClbL80ESWbAz/jqZdwMVJm/hTT9fYL
+         kLGhFxzz8DpTG+acwYZJ28ZOgc30OY9BXf14iEd0i5AyWuU/i8ruz3P1TCrLOgzYbu24
+         f0mQ==
+X-Gm-Message-State: AOJu0YwFC0dd9aWhgXCVbgWmuOdwKZsFv/0SUykXwk4eFHLn2ZFBE/DL
+        tzzO+RFCYcB+S7YOwoHnt/dCo/fmHaeE76Nzj/t30xXS1sCr
+X-Google-Smtp-Source: AGHT+IHVoTWcD6YUsfA9tfQOyJ0G1pEtnNjMqA02rEokMU4PiBHYiHZgMjHt0KwxaTfuqqvt1Y/Tilb/0X/B7+9cJlCiEdn4ZbNA
+MIME-Version: 1.0
+X-Received: by 2002:a17:90b:8c:b0:26b:b78:c94f with SMTP id
+ bb12-20020a17090b008c00b0026b0b78c94fmr3267961pjb.7.1693935364108; Tue, 05
+ Sep 2023 10:36:04 -0700 (PDT)
+Date:   Tue, 05 Sep 2023 10:36:03 -0700
+In-Reply-To: <000000000000273d0105ff97bf56@google.com>
+X-Google-Appengine-App-Id: s~syzkaller
+X-Google-Appengine-App-Id-Alias: syzkaller
+Message-ID: <000000000000a677fc0604a00fef@google.com>
+Subject: Re: [syzbot] [mm?] WARNING in try_grab_page
+From:   syzbot <syzbot+9b82859567f2e50c123e@syzkaller.appspotmail.com>
+To:     akpm@linux-foundation.org, axboe@kernel.dk, davem@davemloft.net,
+        david@redhat.com, dhowells@redhat.com, edumazet@google.com,
+        gregkh@linuxfoundation.org, herbert@gondor.apana.org.au,
+        jlayton@kernel.org, kuba@kernel.org, linux-crypto@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
+        nspmangalore@gmail.com, pabeni@redhat.com, patches@lists.linux.dev,
+        rohiths.msft@gmail.com, sashal@kernel.org, stable@vger.kernel.org,
+        stfrench@microsoft.com, svens@linux.ibm.com,
+        syzkaller-bugs@googlegroups.com, willy@infradead.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=0.9 required=5.0 tests=BAYES_00,FROM_LOCAL_HEX,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SORTED_RECIPS,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+syzbot has found a reproducer for the following issue on:
 
-The quilt patch titled
-     Subject: rcu: dump vmalloc memory info safely
-has been removed from the -mm tree.  Its filename was
-     rcu-dump-vmalloc-memory-info-safely.patch
+HEAD commit:    3f86ed6ec0b3 Merge tag 'arc-6.6-rc1' of git://git.kernel.o..
+git tree:       upstream
+console+strace: https://syzkaller.appspot.com/x/log.txt?x=139ce690680000
+kernel config:  https://syzkaller.appspot.com/x/.config?x=ff0db7a15ba54ead
+dashboard link: https://syzkaller.appspot.com/bug?extid=9b82859567f2e50c123e
+compiler:       Debian clang version 15.0.6, GNU ld (GNU Binutils for Debian) 2.40
+syz repro:      https://syzkaller.appspot.com/x/repro.syz?x=10b0c620680000
+C reproducer:   https://syzkaller.appspot.com/x/repro.c?x=152da4e7a80000
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Downloadable assets:
+disk image: https://storage.googleapis.com/syzbot-assets/6f4f710c5033/disk-3f86ed6e.raw.xz
+vmlinux: https://storage.googleapis.com/syzbot-assets/555548fedbdc/vmlinux-3f86ed6e.xz
+kernel image: https://storage.googleapis.com/syzbot-assets/c06d7c39bbc0/bzImage-3f86ed6e.xz
+mounted in repro: https://storage.googleapis.com/syzbot-assets/120cc7b707b8/mount_0.gz
 
-------------------------------------------------------
-From: Zqiang <qiang.zhang1211@gmail.com>
-Subject: rcu: dump vmalloc memory info safely
-Date: Mon, 4 Sep 2023 18:08:05 +0000
+IMPORTANT: if you fix the issue, please add the following tag to the commit:
+Reported-by: syzbot+9b82859567f2e50c123e@syzkaller.appspotmail.com
 
-Currently, for double invoke call_rcu(), will dump rcu_head objects memory
-info, if the objects is not allocated from the slab allocator, the
-vmalloc_dump_obj() will be invoke and the vmap_area_lock spinlock need to
-be held, since the call_rcu() can be invoked in interrupt context,
-therefore, there is a possibility of spinlock deadlock scenarios.
-
-And in Preempt-RT kernel, the rcutorture test also trigger the following
-lockdep warning:
-
-BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
-preempt_count: 1, expected: 0
-RCU nest depth: 1, expected: 1
-3 locks held by swapper/0/1:
- #0: ffffffffb534ee80 (fullstop_mutex){+.+.}-{4:4}, at: torture_init_begin+0x24/0xa0
- #1: ffffffffb5307940 (rcu_read_lock){....}-{1:3}, at: rcu_torture_init+0x1ec7/0x2370
- #2: ffffffffb536af40 (vmap_area_lock){+.+.}-{3:3}, at: find_vmap_area+0x1f/0x70
-irq event stamp: 565512
-hardirqs last  enabled at (565511): [<ffffffffb379b138>] __call_rcu_common+0x218/0x940
-hardirqs last disabled at (565512): [<ffffffffb5804262>] rcu_torture_init+0x20b2/0x2370
-softirqs last  enabled at (399112): [<ffffffffb36b2586>] __local_bh_enable_ip+0x126/0x170
-softirqs last disabled at (399106): [<ffffffffb43fef59>] inet_register_protosw+0x9/0x1d0
-Preemption disabled at:
-[<ffffffffb58040c3>] rcu_torture_init+0x1f13/0x2370
-CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.5.0-rc4-rt2-yocto-preempt-rt+ #15
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+XFS (loop0): Quotacheck needed: Please wait.
+XFS (loop0): Quotacheck: Done.
+------------[ cut here ]------------
+WARNING: CPU: 1 PID: 5030 at mm/gup.c:229 try_grab_page+0x287/0x460
+Modules linked in:
+CPU: 1 PID: 5030 Comm: syz-executor118 Not tainted 6.5.0-syzkaller-11704-g3f86ed6ec0b3 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:try_grab_page+0x287/0x460 mm/gup.c:229
+Code: 01 49 8d 7e 60 be 04 00 00 00 e8 54 41 18 00 f0 41 83 46 60 01 42 80 3c 2b 00 0f 85 6a ff ff ff e9 6d ff ff ff e8 b9 55 be ff <0f> 0b bb f4 ff ff ff eb b6 e8 ab 55 be ff 49 ff ce e9 ca fd ff ff
+RSP: 0018:ffffc90003a6ee88 EFLAGS: 00010293
+RAX: ffffffff81cf4377 RBX: 0000000000000000 RCX: ffff888025da0000
+RDX: 0000000000000000 RSI: 0000000000000000 RDI: 0000000000000001
+RBP: 000000000000000e R08: ffffffff81cf418c R09: 1ffffd400039097e
+R10: dffffc0000000000 R11: fffff9400039097f R12: ffffea0001c84bf4
+R13: dffffc0000000000 R14: ffffea0001c84bc0 R15: ffffea0001c84bc0
+FS:  0000555555acb380(0000) GS:ffff8880b9900000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 0000000020008000 CR3: 00000000736e9000 CR4: 00000000003506e0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
 Call Trace:
  <TASK>
- dump_stack_lvl+0x68/0xb0
- dump_stack+0x14/0x20
- __might_resched+0x1aa/0x280
- ? __pfx_rcu_torture_err_cb+0x10/0x10
- rt_spin_lock+0x53/0x130
- ? find_vmap_area+0x1f/0x70
- find_vmap_area+0x1f/0x70
- vmalloc_dump_obj+0x20/0x60
- mem_dump_obj+0x22/0x90
- __call_rcu_common+0x5bf/0x940
- ? debug_smp_processor_id+0x1b/0x30
- call_rcu_hurry+0x14/0x20
- rcu_torture_init+0x1f82/0x2370
- ? __pfx_rcu_torture_leak_cb+0x10/0x10
- ? __pfx_rcu_torture_leak_cb+0x10/0x10
- ? __pfx_rcu_torture_init+0x10/0x10
- do_one_initcall+0x6c/0x300
- ? debug_smp_processor_id+0x1b/0x30
- kernel_init_freeable+0x2b9/0x540
- ? __pfx_kernel_init+0x10/0x10
- kernel_init+0x1f/0x150
- ret_from_fork+0x40/0x50
- ? __pfx_kernel_init+0x10/0x10
- ret_from_fork_asm+0x1b/0x30
+ follow_page_pte+0x560/0x18f0 mm/gup.c:651
+ follow_pud_mask mm/gup.c:765 [inline]
+ follow_p4d_mask mm/gup.c:782 [inline]
+ follow_page_mask+0x7dc/0xe20 mm/gup.c:832
+ __get_user_pages+0x643/0x15e0 mm/gup.c:1237
+ __get_user_pages_locked mm/gup.c:1504 [inline]
+ get_dump_page+0x146/0x2b0 mm/gup.c:2018
+ dump_user_range+0x126/0x910 fs/coredump.c:913
+ elf_core_dump+0x3b75/0x4490 fs/binfmt_elf.c:2142
+ do_coredump+0x1b73/0x2ab0 fs/coredump.c:764
+ get_signal+0x145e/0x1840 kernel/signal.c:2878
+ arch_do_signal_or_restart+0x96/0x860 arch/x86/kernel/signal.c:309
+ exit_to_user_mode_loop+0x6a/0x100 kernel/entry/common.c:168
+ exit_to_user_mode_prepare+0xb1/0x140 kernel/entry/common.c:204
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
+ syscall_exit_to_user_mode+0x64/0x280 kernel/entry/common.c:296
+ do_syscall_64+0x4d/0xc0 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7fb68edcf0f9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 21 18 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b8 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007ffc8b18d558 EFLAGS: 00000246 ORIG_RAX: 000000000000004d
+RAX: ffffffffffffffe5 RBX: 0000000000000003 RCX: 00007fb68edcf0f9
+RDX: 0000000000000000 RSI: 0000000100000001 RDI: 0000000000000006
+RBP: 0000000000000000 R08: 0000000000000000 R09: 0000555500000000
+R10: 0000000000000000 R11: 0000000000000246 R12: 00000000000f4240
+R13: 00007ffc8b18d7c8 R14: 0000000000000001 R15: 00007ffc8b18d590
  </TASK>
 
-The previous patch fixes this by using the deadlock-safe best-effort
-version of find_vm_area.  However, in case of failure print the fact that
-the pointer was a vmalloc pointer so that we print at least something.
 
-Link: https://lkml.kernel.org/r/20230904180806.1002832-2-joel@joelfernandes.org
-Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 ---
-
- mm/util.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
-
---- a/mm/util.c~rcu-dump-vmalloc-memory-info-safely
-+++ a/mm/util.c
-@@ -1068,7 +1068,9 @@ void mem_dump_obj(void *object)
- 	if (vmalloc_dump_obj(object))
- 		return;
- 
--	if (virt_addr_valid(object))
-+	if (is_vmalloc_addr(object))
-+		type = "vmalloc memory";
-+	else if (virt_addr_valid(object))
- 		type = "non-slab/vmalloc memory";
- 	else if (object == NULL)
- 		type = "NULL pointer";
-_
-
-Patches currently in -mm which might be from qiang.zhang1211@gmail.com are
-
-
+If you want syzbot to run the reproducer, reply with:
+#syz test: git://repo/address.git branch-or-commit-hash
+If you attach or paste a git patch, syzbot will apply it before testing.
