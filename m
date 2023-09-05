@@ -2,240 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4AC5A79249B
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 909F279244F
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:58:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231932AbjIEP7S (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59568 "EHLO
+        id S230009AbjIEP6p (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:58:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41320 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354211AbjIEKKR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 06:10:17 -0400
-Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53469B4
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 03:10:13 -0700 (PDT)
-Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-7a4ee7f9c37so967038241.0
-        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 03:10:13 -0700 (PDT)
+        with ESMTP id S1354227AbjIEKM2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 06:12:28 -0400
+Received: from mail-ed1-x529.google.com (mail-ed1-x529.google.com [IPv6:2a00:1450:4864:20::529])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 35E2A18D
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 03:12:24 -0700 (PDT)
+Received: by mail-ed1-x529.google.com with SMTP id 4fb4d7f45d1cf-52c9f1bd05dso3344499a12.3
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 03:12:24 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693908612; x=1694513412; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=D1NVo9wK9uR6XB7OEqVjA5/FypKBWn8rSsF+XNP2y7I=;
-        b=a72jylmkIoYnjXaDvFcKy0oR94ab7vefso8+72n1KVQv3ey8XA9jDeCQSDIIS9bKTR
-         vpfWhlwWdXdQ5vn8do1cohTJanoTZSiM57cxIOmojT0Il7PoXI34fxCyQ7tg339ZpwxT
-         12TSBWO0BQ2hQ4HvuQLvBUhe58Ve1hjcOa2aJFrFqCMAoVpAzbU3/Dd3pvBcpSqX3F4W
-         YaEQCxvqXUvBU24Uerx9yW0b4MhgbSmqwK0F0a1ln6BdVQUC9vr0R85YF3XFKToRkEJm
-         ErhwghiGEq/82KK+h95gjISYCAM82MTR8Ma2vctvn/j66VO1SKn2dPJxnJ/i2TlvwA8H
-         uMLw==
+        d=gmail.com; s=20221208; t=1693908742; x=1694513542; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=e86Wy3ATT/OU246cW5x4ED89M09p8uuT794yspAsqs0=;
+        b=q7g300DHyOJ4TuiF4Masc0kdl9J7bRU8aQD5W59NiRLDS3ESHRi6dUMLqC/rRqiFam
+         +UQ5oYoxxrnqmrrh7VR3P2hpe0QizU5p3NViZw832D6Us8xVW4ieg7UegrnIhafUzpEm
+         nUGOzZ8K23bdxfeTqvQZPcE+1BJTnwnsisWQKLfONIHenhPnWSH0wlOkqHCONpMj2EQ0
+         k6TubCN4rX9bxjqRagCSL6UOShCf9ne/CORJIq4V5JCrimXVlS8sDmzy6e+lP/+rGDqw
+         2zzeU6rDGA431oCD0aWefS5d9nNGB48bX2U1uetpBqGODDfQINu/uEYUNWolGEdeaBdH
+         vw9A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693908612; x=1694513412;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=D1NVo9wK9uR6XB7OEqVjA5/FypKBWn8rSsF+XNP2y7I=;
-        b=AIa+941+AGxNuHs0CaHAsdnumiJbUfiRxLA8awLQ4znm+TWWRWDIeYnulYJyCEPGUu
-         1oy4BfFZdURAwVhIQfpweghNg3ZfDPTTJBBGmHqj1IpPw8SH/DUeIz6iZz3O9PShpTQ1
-         9H5x//SqrQW3Cz16zWBPqaYiT+r8p54OtZPr4UutmcSGFGpySArgi3Yut3QrKZmPHJoS
-         uG8C49F0noo+YBmsgTrFWbh1TW50aD+XjHZlhyYDlIb/idKPS3KRoGFDSAZxtukxStZh
-         JIhVxJ+jTSu4BxadslWm9IkmaVeu37Ay/HtAuMvzeJCwcFUZXKoBt5NzPYuv+d0jr0EQ
-         Ka/g==
-X-Gm-Message-State: AOJu0YwMfQWJLU2xt1R58QfQ6CGTKKhe/Lakf5+IlB4Ua7C4JjV/JWx7
-        D92Be8MdQFU/XBtSudUQXGLh+CAiMY1TCJcTKpPyfw==
-X-Google-Smtp-Source: AGHT+IE1V6bh5Wpm7L8b3xz92pn+LrSd3K1fkSSS8XT9JUjoqIZlkLmMmgJwNcjHVjrcuXzyd/kx7ikhguuSfU0jKJI=
-X-Received: by 2002:a05:6102:2454:b0:44e:d28f:e49c with SMTP id
- g20-20020a056102245400b0044ed28fe49cmr10435179vss.23.1693908612436; Tue, 05
- Sep 2023 03:10:12 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1693908742; x=1694513542;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=e86Wy3ATT/OU246cW5x4ED89M09p8uuT794yspAsqs0=;
+        b=C3/2qMuWWHDlRMruCu3E78HRUIwa+EO+3eCOfyDynFa5ZZvBQD0lrBe2oYa5pOuFeZ
+         pD/g/q7uIX1jF5ZH5LpIZJ6oexa5C3rge94icTfLoez3GK/MCtY0se4ayMPEJSuZfebw
+         WNZ2Hm9eIg6K/z4fGXOkmP6VixObpAMSMnGnWja0LpIGfd4KKd+kgxhB+woK2lMDe1VP
+         Ko6fKNj/wj8Q+bL3kuyZ/UWIEHsSNQ5PAGtR1Ynqjh0m1zJ8wd1P2jBHjyzmFtYKtQa1
+         0lB5sX16YUYxSumr+OKRpcwgxl859edtv54CNnGPjquQYFXZ204PjFmNpyc66Cc6mCsu
+         ymEg==
+X-Gm-Message-State: AOJu0YwZJ1mkiYUFqMbUG/AQUsnbdlrwaDYxlxpVZWI9qdCJvmcloV0L
+        hC7/BF6saOg264tcGiONFi9k7OPzxXYUQXQ0vQk=
+X-Google-Smtp-Source: AGHT+IFtEs9mWFBpsEix5UrjaXNdwrMvnwAb1slyKTXl/nh9oMhqDvJ0A0+iT+S2hQ1QIcGFmai0uRh3p878HQXM3/A=
+X-Received: by 2002:a17:906:3185:b0:9a1:c00e:60c5 with SMTP id
+ 5-20020a170906318500b009a1c00e60c5mr9033774ejy.48.1693908742368; Tue, 05 Sep
+ 2023 03:12:22 -0700 (PDT)
 MIME-Version: 1.0
-References: <20230904182945.178705038@linuxfoundation.org>
-In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
-From:   Naresh Kamboju <naresh.kamboju@linaro.org>
-Date:   Tue, 5 Sep 2023 15:40:00 +0530
-Message-ID: <CA+G9fYsXyPe92z8Urfn46vSypOd9EYYGh1Ei1YTkHWJdGmBUJw@mail.gmail.com>
-Subject: Re: [PATCH 5.15 00/28] 5.15.131-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
+From:   Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Date:   Tue, 5 Sep 2023 12:12:11 +0200
+Message-ID: <CAKXUXMzR4830pmUfWnwVjGk94inpQ0iz_uXiOnrE2kyV7SUPpg@mail.gmail.com>
+Subject: Include bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute
+ checks") into linux-4.14.y
+To:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Sasha Levin <sashal@kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>, llvm@lists.linux.dev,
+        linux- stable <stable@vger.kernel.org>
+Cc:     Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        eb-gft-team@globallogic.com
 Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 5 Sept 2023 at 00:06, Greg Kroah-Hartman
-<gregkh@linuxfoundation.org> wrote:
->
-> This is the start of the stable review cycle for the 5.15.131 release.
-> There are 28 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
->         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
-5.15.131-rc1.gz
-> or in the git tree and branch at:
->         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
--rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Dear Andrey, dear Nick, dear Greg, dear Sasha,
 
 
-Results from Linaro=E2=80=99s test farm.
-No regressions on arm64, arm, x86_64, and i386.
+Compiling the kernel with UBSAN enabled and with gcc-8 and later fails when:
 
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
+  commit 1e1b6d63d634 ("lib/string.c: implement stpcpy") is applied, and
+  commit bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") is
+  not applied.
 
-## Build
-* kernel: 5.15.131-rc1
-* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
-* git branch: linux-5.15.y
-* git commit: bec292fb85c525832713d1aa73f07c39a477e2ab
-* git describe: v5.15.130-29-gbec292fb85c5
-* test details:
-https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
-.130-29-gbec292fb85c5
+To reproduce, run:
 
-## Test Regressions (compared to v5.15.130)
+  tuxmake -r docker -a arm64 -t gcc-13 -k allnoconfig --kconfig-add
+CONFIG_UBSAN=y
 
-## Metric Regressions (compared to v5.15.130)
+It then fails with:
 
-## Test Fixes (compared to v5.15.130)
+  aarch64-linux-gnu-ld: lib/string.o: in function `stpcpy':
+  string.c:(.text+0x694): undefined reference to
+`__ubsan_handle_nonnull_return_v1'
+  string.c:(.text+0x694): relocation truncated to fit:
+R_AARCH64_CALL26 against undefined symbol
+`__ubsan_handle_nonnull_return_v1'
 
-## Metric Fixes (compared to v5.15.130)
+Below you find a complete list of architectures, compiler versions and kernel
+versions that I have tested with.
 
-## Test result summary
-total: 91910, pass: 75958, fail: 2130, skip: 13741, xfail: 81
+As commit bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") is
+included in v4.16, and commit 1e1b6d63d634 ("lib/string.c: implement stpcpy") is
+included in v5.9, this is not an issue that can happen on any mainline release
+or the stable releases v4.19.y and later.
 
-## Build Summary
-* arc: 5 total, 5 passed, 0 failed
-* arm: 112 total, 111 passed, 1 failed
-* arm64: 41 total, 40 passed, 1 failed
-* i386: 32 total, 31 passed, 1 failed
-* mips: 27 total, 26 passed, 1 failed
-* parisc: 4 total, 4 passed, 0 failed
-* powerpc: 27 total, 26 passed, 1 failed
-* riscv: 11 total, 10 passed, 1 failed
-* s390: 12 total, 11 passed, 1 failed
-* sh: 14 total, 12 passed, 2 failed
-* sparc: 8 total, 8 passed, 0 failed
-* x86_64: 37 total, 36 passed, 1 failed
+In the v4.14.y branch, however, commit 1e1b6d63d634 ("lib/string.c: implement
+stpcpy") was included with v4.14.200 as commit b6d38137c19f and commit
+bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") from
+mainline was not included yet. Hence, this reported failure with UBSAN can be
+observed on v4.14.y with recent gcc versions.
 
-## Test suites summary
-* boot
-* kselftest-android
-* kselftest-arm64
-* kselftest-breakpoints
-* kselftest-capabilities
-* kselftest-cgroup
-* kselftest-clone3
-* kselftest-core
-* kselftest-cpu-hotplug
-* kselftest-cpufreq
-* kselftest-drivers-dma-buf
-* kselftest-efivarfs
-* kselftest-exec
-* kselftest-filesystems
-* kselftest-filesystems-binderfs
-* kselftest-filesystems-epoll
-* kselftest-firmware
-* kselftest-fpu
-* kselftest-ftrace
-* kselftest-futex
-* kselftest-gpio
-* kselftest-intel_pstate
-* kselftest-ipc
-* kselftest-ir
-* kselftest-kcmp
-* kselftest-kexec
-* kselftest-lib
-* kselftest-membarrier
-* kselftest-memfd
-* kselftest-memory-hotplug
-* kselftest-mincore
-* kselftest-mount
-* kselftest-mqueue
-* kselftest-net
-* kselftest-net-forwarding
-* kselftest-net-mptcp
-* kselftest-netfilter
-* kselftest-nsfs
-* kselftest-openat2
-* kselftest-pid_namespace
-* kselftest-pidfd
-* kselftest-proc
-* kselftest-pstore
-* kselftest-ptrace
-* kselftest-rseq
-* kselftest-rtc
-* kselftest-seccomp
-* kselftest-sigaltstack
-* kselftest-size
-* kselftest-splice
-* kselftest-static_keys
-* kselftest-sync
-* kselftest-sysctl
-* kselftest-tc-testing
-* kselftest-timens
-* kselftest-timers
-* kselftest-tmpfs
-* kselftest-tpm2
-* kselftest-user
-* kselftest-user_events
-* kselftest-vDSO
-* kselftest-vm
-* kselftest-watchdog
-* kselftest-x86
-* kselftest-zram
-* kunit
-* kvm-unit-tests
-* libgpiod
-* log-parser-boot
-* log-parser-test
-* ltp-cap_bounds
-* ltp-commands
-* ltp-containers
-* ltp-controllers
-* ltp-cpuhotplug
-* ltp-crypto
-* ltp-cve
-* ltp-dio
-* ltp-fcntl-locktests
-* ltp-filecaps
-* ltp-fs
-* ltp-fs_bind
-* ltp-fs_perms_simple
-* ltp-fsx
-* ltp-hugetlb
-* ltp-io
-* ltp-ipc
-* ltp-math
-* ltp-mm
-* ltp-nptl
-* ltp-pty
-* ltp-sched
-* ltp-securebits
-* ltp-smoke
-* ltp-syscalls
-* ltp-tracing
-* perf
-* rcutorture
+Greg, once checked and confirmed by Andrey or Nick, could you please include
+commit bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") into
+the linux-4.14.y branch?
 
---
-Linaro LKFT
-https://lkft.linaro.org
+The commit applies directly, without any change, on v4.14.200 to v4.14.325.
+
+With that, future versions of v4.14.y will have a working UBSAN with the recent
+gcc compiler versions.
+
+Note: For any users, intending to run UBSAN on versions 4.14.200 to v4.14.325,
+e.g., for bisecting UBSAN-detected kernel bugs on the linux-4.14.y branch, they
+would simply need to apply commit bac7a1fff792 on those release versions.
+
+
+Appendix of my full testing record:
+
+For arm64 and x86-64 architecture, I tested this whole matrix of combinations of
+building v4.14.200, i.e., the first version that failed with the reported build
+failure and v4.14.325, i.e., the latest v4.14 release version at the time of
+writing.
+
+On v4.14.200 and on v4.14.325:
+
+  x86_64:
+    gcc-7:     unsupported configuration (according to tuxmake)
+    gcc-8:     affected and resolved by cherry-picking bac7a1fff792
+    gcc-9:     affected and resolved by cherry-picking bac7a1fff792
+    gcc-10:    affected and resolved by cherry-picking bac7a1fff792
+    gcc-11:
+      v4.14.200 fails with an unrelated build error on this compiler and arch
+      v4.14.325 affected and resolved by cherry-picking bac7a1fff792
+    gcc-12:
+      v4.14.200 fails with an unrelated build error on this compiler and arch
+      v4.14.325 affected and resolved by cherry-picking bac7a1fff792
+    gcc-13:
+      v4.14.200 fails with an unrelated build error on this compiler and arch
+      v4.14.325 affected and resolved by cherry-picking bac7a1fff792
+    clang-9:   unsupported configuration (according to tuxmake)
+    clang-10:  not affected, builds with and without cherry-picking bac7a1fff792
+    clang-17:  not affected, builds with and without cherry-picking bac7a1fff792
+
+  arm64:
+    gcc-7:     unsupported configuration (according to tuxmake)
+    gcc-8:     affected and resolved by cherry-picking bac7a1fff792
+    gcc-9:     affected and resolved by cherry-picking bac7a1fff792
+    gcc-10:    affected and resolved by cherry-picking bac7a1fff792
+    gcc-11:    affected and resolved by cherry-picking bac7a1fff792
+    gcc-12:    affected and resolved by cherry-picking bac7a1fff792
+    gcc-13:    affected and resolved by cherry-picking bac7a1fff792
+    clang-9:   unsupported configuration (according to tuxmake)
+    clang-10:  not affected, builds with and without cherry-picking bac7a1fff792
+    clang-17:  not affected, builds with and without cherry-picking bac7a1fff792
+
+
+Best regards,
+
+Lukas
