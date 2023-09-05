@@ -2,102 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FDA6792D0F
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 20:07:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B8081792D23
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 20:11:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236432AbjIESH3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 14:07:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47974 "EHLO
+        id S235235AbjIESLK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 14:11:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239376AbjIESHR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 14:07:17 -0400
-Received: from mail-wr1-x434.google.com (mail-wr1-x434.google.com [IPv6:2a00:1450:4864:20::434])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD3E61981;
-        Tue,  5 Sep 2023 10:51:50 -0700 (PDT)
-Received: by mail-wr1-x434.google.com with SMTP id ffacd0b85a97d-31c65820134so2436101f8f.1;
-        Tue, 05 Sep 2023 10:51:50 -0700 (PDT)
+        with ESMTP id S240876AbjIESLC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 14:11:02 -0400
+Received: from mail-qt1-f180.google.com (mail-qt1-f180.google.com [209.85.160.180])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 39B2E2CF22
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 10:33:01 -0700 (PDT)
+Received: by mail-qt1-f180.google.com with SMTP id d75a77b69052e-4141d8a4959so17227411cf.0
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 10:33:01 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693936253; x=1694541053; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=TI5XKlmo+CJsjgSI4p71LCm2s0UeJLQRpJFQV+gA8+A=;
-        b=LaVPn3BdH5D+SRs1Q9W3qGQ3p9QeYjp539BHACkCt89VAMV73BZk5HEy2OAMjx8eu7
-         R+VIxG46l/oeM3o81Utg4hDBK1L5Lh0nZv3/8owYtL40khm39HZRkuOBNwwfZP/HZXZ5
-         /sV0kIGENmRcykSFWAg3881gZdWz5vOQeNLgazseR5MXl9uj/Ls9C9N7MPj/xCai/3eA
-         AOBx7nxqqFiWOqw2sOeNQgEbaJOU2xLE039bCiVeYIQUi0YlbU0c6sPRF6wgT0ku+PHI
-         I5moUIxXrOaGe+P0b5nvlIHdwxLweHXZpZXBYuGZf25dcrowQh4zH45/4uFLCuCWhdSB
-         uebw==
+        d=linuxtx.org; s=google; t=1693934755; x=1694539555; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=7h1pOWAWn2f3/0pIwmJa14UCgmY4tfc3A2xWVFCKn/A=;
+        b=XQuE7DjXgAUV80wvKkCiJKB/kLjkUUFV99pNMAo9IrXwXB+jXOmfMCB6s/QLXV41Zg
+         T+PAGSYS+x6cnOL1onGTjhO//lkBJwALRwdvt4KpEPnnZjP9d9t2xqc1IYx46cFNIJvQ
+         TRd1EzhFvKhY0BqAY1w+hZZIbEpTtIaV1UI5k=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693936253; x=1694541053;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+        d=1e100.net; s=20221208; t=1693934755; x=1694539555;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=TI5XKlmo+CJsjgSI4p71LCm2s0UeJLQRpJFQV+gA8+A=;
-        b=jcFycGGW85bL8QX76ax1i6RWenfgPVnHDHUEDkVfx0ffJlxSOT0zZA5u1/97BONXcp
-         UUQeFtMmZdkCNRJSFD3nL7CKSRI5rSkmnnX4LZvNMixYEQwDRALQIDAxpwORfCwsU9BR
-         cbIDTAEw+PA1ig2uYZxYaqBU9YBLe/zTbTy4jf1aqschygOjL2vsTgSPc2O0bvIMwqel
-         NNGlk8nfWWXjzWnZ2UvaBLpPtRoxvVm7tnSUxj/DSDlfzHlblZXaE8W9tE6ITCuxkiBx
-         GioBo052glqpqnMX3C4rTTN4SlkEa2qnulUsx8VT7vaSgLUlH713RwYXw7sT02MNKOrn
-         lk5g==
-X-Gm-Message-State: AOJu0YxvaUGyOIqxCJ/EtSuqC8bQWWwje3xxji3VNWriHEpc4LWy6Omt
-        uX4ajb1gq1uQL2UgtP6QSmEoI20QRcL/79Nu2EBIcX+nKUN8tA==
-X-Google-Smtp-Source: AGHT+IG1w4iLh436pA73EaV+2xRNxHjpHWMG2DVf1y31ClKfzTSnb6cWKD3jqo09RmxUQh6Pj8ePlAmpOKwmfK004yU=
-X-Received: by 2002:a2e:910d:0:b0:2bc:b0c3:9e8d with SMTP id
- m13-20020a2e910d000000b002bcb0c39e8dmr216569ljg.41.1693932290913; Tue, 05 Sep
- 2023 09:44:50 -0700 (PDT)
+        bh=7h1pOWAWn2f3/0pIwmJa14UCgmY4tfc3A2xWVFCKn/A=;
+        b=kQQAcHJDbLp+XEBQtlsnjsBMopDN0+mnqW7vPxWiHTBBicnrqgASYJwnbFpfCjEB/C
+         OMo4N3MSsKLdFS1+eqnh41qe3YkRQpwVU3mHmhsu255UI3QFFH77Q58WALwtnwE/jeaf
+         rP7ArTlZfgiye4Ml6Nol31MyTdDH2GLvNCYaJEmZpfa4gXEsCcy66XG8CR+Pdl1d1kAH
+         joCYPRfeleThi3LzzPPsm2ONOwQgATvttR27AGKp8hmR3NhNvigXeCJsk00Y2B5nNf96
+         7QIRuR5eoFPPockTxXZq3LenoVfS8euomW0jP42CcctpAoIRXdOPDGgbNXH/4D+3VSMx
+         7vsg==
+X-Gm-Message-State: AOJu0YwKLiTo0zOyJ7kXwVQ4XupX7T5pLBSJFpE9NhCiEGw8i6yB9wDH
+        BaPkRqoE21a7I8E1mWWElT07j/IV53d3J3jx1Nv0P7ES
+X-Google-Smtp-Source: AGHT+IHyoieeDB0PNwVvLRlAczgv2xHwUxOdj1W5kcWlyPok77Aa/jXmKT28xB8W4J/4Y/qekumOfQ==
+X-Received: by 2002:a9d:4b05:0:b0:6b2:9bdb:a84a with SMTP id q5-20020a9d4b05000000b006b29bdba84amr15026049otf.32.1693933771878;
+        Tue, 05 Sep 2023 10:09:31 -0700 (PDT)
+Received: from fedora64.linuxtx.org ([99.47.93.78])
+        by smtp.gmail.com with ESMTPSA id t25-20020a9d66d9000000b006b89596bc61sm5666307otm.61.2023.09.05.10.09.31
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Sep 2023 10:09:31 -0700 (PDT)
+Sender: Justin Forbes <jmforbes@linuxtx.org>
+Date:   Tue, 5 Sep 2023 12:09:29 -0500
+From:   Justin Forbes <jforbes@fedoraproject.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Subject: Re: [PATCH 6.4 00/32] 6.4.15-rc1 review
+Message-ID: <ZPdgyWKSJkXf7Q/z@fedora64.linuxtx.org>
+References: <20230904182947.899158313@linuxfoundation.org>
 MIME-Version: 1.0
-References: <8af186ba-5f64-2102-8f9c-3969b0906893@gmail.com>
- <faa245bf-e925-45b0-9827-b0c9c117e06c@leemhuis.info> <ZPc8v9-lHF4jAcxL@kbusch-mbp>
- <2a379b3a-6ff3-444b-bbad-0fba0bc3a28b@leemhuis.info> <ZPdF3uqbJNSZADzv@kbusch-mbp>
- <CA+4wXKCi+idhPQHx3ywdEDHqRmOyBbhz4Gj4gGr_dDvWBWohQQ@mail.gmail.com> <ZPdYgK0ebgHtDTXd@kbusch-mbp>
-In-Reply-To: <ZPdYgK0ebgHtDTXd@kbusch-mbp>
-From:   =?UTF-8?Q?Cl=C3=A1udio_Sampaio?= <patola@gmail.com>
-Date:   Tue, 5 Sep 2023 18:44:38 +0200
-Message-ID: <CA+4wXKAe3==K1CoSvmRpbmPcR9QK+EuzDB-cNteNB34Cgur_0w@mail.gmail.com>
-Subject: Re: Fwd: Lexar NM790 SSDs are not recognized anymore after 6.1.50 LTS
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux NVMe <linux-nvme@lists.infradead.org>,
-        Linux Stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
+X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Thorsten and Keith,
+On Mon, Sep 04, 2023 at 07:29:58PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.15 release.
+> There are 32 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.15-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-Thanks for the details. I'm still unsure if responding by email is
-better or adding to the ticket, but here it goes: I have tried for
-days both with complete power off of the machine and cycle-booting all
-kernels in succession and without exception, 6.1.x LTS and the patched
-6.5.1 kernel always recognize and operate the NVME, whilst the other
-kernels also fail with the same error message. As this is my
-"production" desktop, though, during the week it's more difficult to
-me to perform tests with it, but I will try to do it in a more
-methodic way and also with 6.5.1 vanilla.
+Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
+x86_64), and boot tested x86_64. No regressions noted.
 
-As for the reason the Lexar doesn't catch the quirk default, I can't
-say I catch the complex logic of the driver activation, but I found
-out how to "fix" for my case because there are three other Lexar
-models in the pci.c file: NM610, NM620 and NM760 (this one with an
-additional quirk marked on it on the code,
-NVME_QUIRK_IGNORE_DEV_SUBNQN) -- so I guess whatever justifies the
-exception for them also justifies for my model, NM790. Might even be
-the case that I would need NVME_QUIRK_IGNORE_DEV_SUBNQN (not sure what
-it does) like in the NM760 case, but it activates correctly without
-it.
-
---=20
-Cl=C3=A1udio "Patola" Sampaio
-MakerLinux Labs - Campinas, SP
-Resume Gmail - YOUTUBE!
-Facebook - Facebook da MakerLinux - Lattes
+Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
