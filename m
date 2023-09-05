@@ -2,142 +2,110 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D9C77924B7
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D77B579247C
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232431AbjIEP7b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56954 "EHLO
+        id S231473AbjIEP7D (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354009AbjIEJLb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 05:11:31 -0400
-Received: from smtp-out2.suse.de (smtp-out2.suse.de [195.135.220.29])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 686F0D8;
-        Tue,  5 Sep 2023 02:11:26 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out2.suse.de (Postfix) with ESMTPS id 264EC1F74D;
-        Tue,  5 Sep 2023 09:11:25 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1693905085; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=v79WjEoDs9F3Vjum42PGJ2z1rLJctnjtDsFsxwG5ncw=;
-        b=YwCV9ly9uMbP4j/3wlPUUVRkCgsnK1naBjvvJPu4QBUMKwCOEgjaPZlqrvgy603pTk8hlk
-        coK14ruzlL73hUQUgNmR88ZDkdIXjiAjCM/edY46kkdfypsGJxiuvkBtZdL3eOQkf8SC3X
-        f4wfQ5CTl9QdaSASXxJ0rYZo7QGOAQE=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1693905085;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=v79WjEoDs9F3Vjum42PGJ2z1rLJctnjtDsFsxwG5ncw=;
-        b=BoCEOx9hi3vLZ2Hors/zNhmhQX/Iy59H63pmpDIj9rxrwzvt9S6IElLpLmEQ/zEDcOiCow
-        XDcu+G2NGV120lAg==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 18D8013499;
-        Tue,  5 Sep 2023 09:11:25 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id hQf6Bb3w9mR7JgAAMHmgww
-        (envelope-from <jack@suse.cz>); Tue, 05 Sep 2023 09:11:25 +0000
-Received: by quack3.suse.cz (Postfix, from userid 1000)
-        id A6B15A0776; Tue,  5 Sep 2023 11:11:24 +0200 (CEST)
-Date:   Tue, 5 Sep 2023 11:11:24 +0200
-From:   Jan Kara <jack@suse.cz>
-To:     Eric Biggers <ebiggers@kernel.org>
-Cc:     Jan Kara <jack@suse.com>, linux-fscrypt@vger.kernel.org,
-        linux-fsdevel@vger.kernel.org, linux-ext4@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net, stable@vger.kernel.org
-Subject: Re: [PATCH] quota: explicitly forbid quota files from being encrypted
-Message-ID: <20230905091124.giawwm3tu6fm2buq@quack3>
-References: <20230905003227.326998-1-ebiggers@kernel.org>
+        with ESMTP id S1354093AbjIEJgf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 05:36:35 -0400
+Received: from mail-wm1-x32a.google.com (mail-wm1-x32a.google.com [IPv6:2a00:1450:4864:20::32a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24C191A7;
+        Tue,  5 Sep 2023 02:36:31 -0700 (PDT)
+Received: by mail-wm1-x32a.google.com with SMTP id 5b1f17b1804b1-402cc6b8bedso19405235e9.1;
+        Tue, 05 Sep 2023 02:36:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693906589; x=1694511389; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=YN74zXxSunmC1J1XCmYDd1Mc9iKNJ+pIChJ9we9c978=;
+        b=JN1HjS5PuVsQpxCCIVgVNnv98BGzfV6jICqmd1W8TBpPBk0g56sqaNke+xCGyqu2Fx
+         F0t87QuCL/MZAJ82Gcgm4FDErRUQTZbe0MPgJAomX0aEskUBkXm15qW3ADAXxh2XjllX
+         /ZMN/AP4X/eCZxB3LcwvpObA/xyh8P8WPFERH5oafD21MGHKKPQXilM90zkMdXwmKron
+         BJZe31G90+rY+eSYd74jO3jJoSUjckSRQE77AIGpDHi2q3ZVwmJcI9TVHasCtY8Er7br
+         AepzsYxmB3W8g48UDs8cuURW8/4IFGsadC6DRzoC/SFV6BrkBeHSSmsDyVPmELQSNH8q
+         g7LA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693906589; x=1694511389;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=YN74zXxSunmC1J1XCmYDd1Mc9iKNJ+pIChJ9we9c978=;
+        b=k+UDTyggNVRwtiqwqmU/2EwwEN+kP14SBbw6rDO4/5vMNN+ALakwWiWsouIArmq/58
+         QQ9ObgThIS2oxeXzWgOkPuJc0THhq5N/T2MkL3oMbh6+ylmbhglnqv+FmxAm0dkc2icl
+         kjhRggGSnL1NTKuiMRj/ONaBL5bGQTLdXmUzZD38puCmnNhgATMS4/cwYG4IqyHyv6TN
+         tQlsG8e6SPt+MrbSGE8w/5WkZwruvjxo5CSl24PDUZnGd8KodZqV43f5/8WgFok7vKQp
+         7oagqHaycamJ/HhwQujMKogbe9rFWC/mFPNjfPo+wllKwx5ZGaWLHN8mKFJvDquFJbY4
+         jRxA==
+X-Gm-Message-State: AOJu0YxBKGuPKFCA/YqJFshCns3tWJZOo9zWvH4gzuBvnTwI8Z6HVIFy
+        kAnLyQCXRjiugoH0vLDN5Ic=
+X-Google-Smtp-Source: AGHT+IEX3lGhBHiQY6i51kVXIPsNIJpgoOagjFoCu+G51Cy78QGjFeHnRZ+SJcKliEm3g4SK0jGHCQ==
+X-Received: by 2002:a05:600c:28c:b0:401:db0b:48dc with SMTP id 12-20020a05600c028c00b00401db0b48dcmr9500781wmk.37.1693906589310;
+        Tue, 05 Sep 2023 02:36:29 -0700 (PDT)
+Received: from debian ([63.135.72.41])
+        by smtp.gmail.com with ESMTPSA id e10-20020a05600c438a00b00402d34ea099sm2614344wmn.29.2023.09.05.02.36.28
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Sep 2023 02:36:28 -0700 (PDT)
+Date:   Tue, 5 Sep 2023 10:36:27 +0100
+From:   "Sudip Mukherjee (Codethink)" <sudipm.mukherjee@gmail.com>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com, srw@sladewatkins.net,
+        rwarsow@gmx.de, conor@kernel.org
+Subject: Re: [PATCH 5.15 00/28] 5.15.131-rc1 review
+Message-ID: <ZPb2m6bxirMCA2cf@debian>
+References: <20230904182945.178705038@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230905003227.326998-1-ebiggers@kernel.org>
+In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon 04-09-23 17:32:27, Eric Biggers wrote:
-> From: Eric Biggers <ebiggers@google.com>
-> 
-> Since commit d7e7b9af104c ("fscrypt: stop using keyrings subsystem for
-> fscrypt_master_key"), xfstest generic/270 causes a WARNING when run on
-> f2fs with test_dummy_encryption in the mount options:
-> 
-> $ kvm-xfstests -c f2fs/encrypt generic/270
-> [...]
-> WARNING: CPU: 1 PID: 2453 at fs/crypto/keyring.c:240 fscrypt_destroy_keyring+0x1f5/0x260
-> 
-> The cause of the WARNING is that not all encrypted inodes have been
-> evicted before fscrypt_destroy_keyring() is called, which violates an
-> assumption.  This happens because the test uses an external quota file,
-> which gets automatically encrypted due to test_dummy_encryption.
-> 
-> Encryption of quota files has never really been supported.  On ext4,
-> ext4_quota_read() does not decrypt the data, so encrypted quota files
-> are always considered invalid on ext4.  On f2fs, f2fs_quota_read() uses
-> the pagecache, so trying to use an encrypted quota file gets farther,
-> resulting in the issue described above being possible.  But this was
-> never intended to be possible, and there is no use case for it.
-> 
-> Therefore, make the quota support layer explicitly reject using
-> IS_ENCRYPTED inodes when quotaon is attempted.
-> 
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Eric Biggers <ebiggers@google.com>
+Hi Greg,
 
-Looks good. I'll queue this patch into my tree and send it to Linus for
-RC2.
+On Mon, Sep 04, 2023 at 07:30:31PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.131 release.
+> There are 28 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
 
-								Honza
+Build test (gcc version 12.3.1 20230829):
+mips: 62 configs -> no failure
+arm: 99 configs -> no failure
+arm64: 3 configs -> no failure
+x86_64: 4 configs -> no failure
+alpha allmodconfig -> no failure
+csky allmodconfig -> no failure
+powerpc allmodconfig -> no failure
+riscv allmodconfig -> no failure
+s390 allmodconfig -> no failure
+xtensa allmodconfig -> no failure
 
-> ---
->  fs/quota/dquot.c | 14 ++++++++++++++
->  1 file changed, 14 insertions(+)
-> 
-> diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-> index 9e72bfe8bbad9..7e268cd2727cc 100644
-> --- a/fs/quota/dquot.c
-> +++ b/fs/quota/dquot.c
-> @@ -2339,6 +2339,20 @@ static int vfs_setup_quota_inode(struct inode *inode, int type)
->  	if (sb_has_quota_loaded(sb, type))
->  		return -EBUSY;
->  
-> +	/*
-> +	 * Quota files should never be encrypted.  They should be thought of as
-> +	 * filesystem metadata, not user data.  New-style internal quota files
-> +	 * cannot be encrypted by users anyway, but old-style external quota
-> +	 * files could potentially be incorrectly created in an encrypted
-> +	 * directory, hence this explicit check.  Some reasons why encrypted
-> +	 * quota files don't work include: (1) some filesystems that support
-> +	 * encryption don't handle it in their quota_read and quota_write, and
-> +	 * (2) cleaning up encrypted quota files at unmount would need special
-> +	 * consideration, as quota files are cleaned up later than user files.
-> +	 */
-> +	if (IS_ENCRYPTED(inode))
-> +		return -EINVAL;
-> +
->  	dqopt->files[type] = igrab(inode);
->  	if (!dqopt->files[type])
->  		return -EIO;
-> 
-> base-commit: 708283abf896dd4853e673cc8cba70acaf9bf4ea
-> -- 
-> 2.42.0
-> 
+Boot test:
+x86_64: Booted on my test laptop. No regression.
+x86_64: Booted on qemu. No regression. [1]
+arm64: Booted on rpi4b (4GB model). No regression. [2]
+mips: Booted on ci20 board. No regression. [3]
+
+[1]. https://openqa.qa.codethink.co.uk/tests/4932
+[2]. https://openqa.qa.codethink.co.uk/tests/4950
+[3]. https://openqa.qa.codethink.co.uk/tests/4949
+
+Tested-by: Sudip Mukherjee <sudip.mukherjee@codethink.co.uk>
+
 -- 
-Jan Kara <jack@suse.com>
-SUSE Labs, CR
+Regards
+Sudip
