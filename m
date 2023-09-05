@@ -2,114 +2,241 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C41F7925DE
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:24:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8DC2A7926A2
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:28:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233053AbjIEP7x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55984 "EHLO
+        id S233920AbjIEQAb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 12:00:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40862 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353850AbjIEIU6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 04:20:58 -0400
-Received: from mail-lf1-x143.google.com (mail-lf1-x143.google.com [IPv6:2a00:1450:4864:20::143])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50377CFB
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 01:20:53 -0700 (PDT)
-Received: by mail-lf1-x143.google.com with SMTP id 2adb3069b0e04-4ff09632194so3790822e87.2
-        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 01:20:53 -0700 (PDT)
+        with ESMTP id S1353992AbjIEJDS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 05:03:18 -0400
+Received: from mail-vk1-xa2c.google.com (mail-vk1-xa2c.google.com [IPv6:2607:f8b0:4864:20::a2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B0D7E8
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 02:03:15 -0700 (PDT)
+Received: by mail-vk1-xa2c.google.com with SMTP id 71dfb90a1353d-49351972caeso138102e0c.1
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 02:03:15 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693902051; x=1694506851; darn=vger.kernel.org;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
-        b=WyyvPMEfe4FOVqHOIWdr/B2P0p03RPzGq0eAy6olIuEmDr190DF60UMTUjSzD3ICzN
-         0WsAegs64/BiRqCpXkN1qURw3kJmTI2wMa8rTaukjr0/l9jhm+3ubCn9+y0oKw0Vf/Ks
-         YIRtHy/tktgd0JCbt9j66zUkqNxhaH1k0FzKmAu+yKNICqHvkjDH6q7yKGNLfZeY066C
-         rjUXbiHJ42XZriL2gTX15/F6y+Se4qD3ChTlmHmU/A+Bl1kzMG1cMn1BnC25iR+qjjlJ
-         Ikwy1nXebC5hCeU4AgcZQ4VZpVOWulwi6FywqPblj59NiPYUSn0tuU6Bbo6p4XZRvT/F
-         gtfQ==
+        d=linaro.org; s=google; t=1693904594; x=1694509394; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=t5qOg4HkZB7J4a0HNsI8RkNIcR0paBtfkrDWP5S65t4=;
+        b=gWLW/kIcWVDaxlEKDwwaXM7G/fhi5f8ArNVqChI5o/TFfccNzp9B3NWj7aoDhfrZZq
+         99dq9XZ/2kyz98oRmez8Nh7weB65aF/KRXgqyDfe/MxibDYyYim2dD1wX6+p8NV9pmc4
+         7hvDS9lx4jjJJnLoPxYO/p+Eo3cgvGIpD50v1QoWRZW+HUDPxlsX4/wG/vKxIJf14FH/
+         fDUwdQYO/oK7qpxO28IKbDSsU55GHNmAY6+DZhk4qdrtPeriKJv0Ym5XFb4gIbmYcP2o
+         OcpGV/U+0ePYGMVQ6AtAc5Ue3lRam/iGmcVebiV2IyOMLtlD+8jyN2HNXz/89ulaQEHq
+         sVxA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693902051; x=1694506851;
-        h=content-transfer-encoding:to:subject:message-id:date:from:reply-to
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=CvUmRYKO5rN5JiKdYLn9/Xxm/soJiVGtQm650JnL3Yc=;
-        b=kJl+f/Xi5isDm2sJj0keerrcI9Pp7WAQVIltqiWIIogoyhH31nQkcB8ifNrS/oKhpz
-         XndURSqYbu58Ig3tCuu6fg4rAf4fsAG1qRuwWgHgyAylbuPZ6Dwv3GE41KKhGyC/bz0F
-         /vx5CBYO0u6/92wUNRqs6VOwn0zwSAWlcG7DO9wiZy8rp7ogg+DvAWqesfNwRKJW8n1R
-         Kt/QSpJc486/yrDb9pnGpbkW9Te1AMnMTLAL+cMENj2YCzaauQKg8MtTUXPzVSYlkonq
-         cJz75e9NGcdnFXXD+7l2DVYL/L3UbmEwXkQ71DvHOPI8m6f9jg06pjYFc/3BPFtCdCGB
-         OyiQ==
-X-Gm-Message-State: AOJu0Yzvj/4hEngIHtXt5Bjmpm4O0GqLAob8/Y/dr1WBR3qqYOSMI8oP
-        lJODHE1Fe9N1CdQL0oHB608mpxZfVT5Orr7niTM=
-X-Google-Smtp-Source: AGHT+IHc9ajH3Rii9UZwOOqLrsXanmcTWvKjiURPKmJK5D52sTkbD7l1BRzq/bCfrfUZjlWt/04s1jIBCk3z7CpHIFE=
-X-Received: by 2002:a19:6755:0:b0:501:bf37:1fc0 with SMTP id
- e21-20020a196755000000b00501bf371fc0mr624754lfj.33.1693902050884; Tue, 05 Sep
- 2023 01:20:50 -0700 (PDT)
+        d=1e100.net; s=20221208; t=1693904594; x=1694509394;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=t5qOg4HkZB7J4a0HNsI8RkNIcR0paBtfkrDWP5S65t4=;
+        b=TynENlUZWUvNPAEFa/rs5/2NV/GtEc+BHAWWkqZvz9Wg4oqqVOERY7hyEjbFyjmBpG
+         nNeY/IKciQ5TnVr6mNHnuDFvziNr4lAo5HMuGL/8LWsKtPa05FhjwnusMYmO/VxlwEuj
+         VzJCnmZp/gXLX0vGqKZum3BEVTLbTDR4aQN7WwA8ufELl33DylOJ/saJA5dYgE699UN1
+         vu9ntpSRe6Kts3jP0XLPeM6TyQnSAfKEjIVRHRk5E09uSZW0L3I0V8aupbDGC0a9icPE
+         /vyDRKJwhXVQ63OyNsHTh6V81hW7ulH66Z0gfBiVdtR6insdznYtYkJm/Gf3z5BFxiYe
+         CPsg==
+X-Gm-Message-State: AOJu0YwfXQapuZCZZVa6kF2HE58vDi/PSZnG0LFTPRnwAbtn+eMpZlC0
+        81RZf991xGWNWBaULtVb31E8p1HxGVmIscDGxST+RQ==
+X-Google-Smtp-Source: AGHT+IE/JeKQpe2NYCRMXps9nPwUSyozHnjM8BHFtGiJZJvehyehLDv7iP4ytqnn/heiMGqrtQ38a31EpDrLueylcQ0=
+X-Received: by 2002:a1f:4946:0:b0:48d:ae0:c53 with SMTP id w67-20020a1f4946000000b0048d0ae00c53mr6148810vka.10.1693904594042;
+ Tue, 05 Sep 2023 02:03:14 -0700 (PDT)
 MIME-Version: 1.0
-Received: by 2002:a54:3ac4:0:b0:22f:40f:e031 with HTTP; Tue, 5 Sep 2023
- 01:20:50 -0700 (PDT)
-Reply-To: wuwumoneytransfer5000@hotmail.com
-From:   "(IMF) SCAM VICTIMS" <mimichi4500@gmail.com>
-Date:   Tue, 5 Sep 2023 01:20:50 -0700
-Message-ID: <CAGhkD8USA9d9+1HDw3AKO0o45v_Z8cjdpcgnjTbVjdDUbiyg2w@mail.gmail.com>
-Subject: Betrugsopfer
-To:     undisclosed-recipients:;
+References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 5 Sep 2023 14:33:02 +0530
+Message-ID: <CA+G9fYs9uetjpoAhVoTXPspGTs7x6BGoXWq8BuDKpx-06oHKLQ@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/31] 6.1.52-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
 Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UNDISC_FREEM autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Sehr geehrter E-Mail-Besitzer,
+On Tue, 5 Sept 2023 at 00:05, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.52 release.
+> There are 31 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.52-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
 
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Der Internationale W=C3=A4hrungsfonds (IWF) entsch=C3=A4digt alle Betrugsop=
-fer
-und Ihre E-Mail-Adresse wurde auf der Liste der Betrugsopfer gefunden.
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-Dieses Western Union-B=C3=BCro wurde vom IWF beauftragt Ihnen Ihre
-Verg=C3=BCtung per Western Union Money Transfer zu =C3=BCberweisen.
+## Build
+* kernel: 6.1.52-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-6.1.y
+* git commit: d0abe9b6003aae74696bf546c325193113e4b56e
+* git describe: v6.1.51-32-gd0abe9b6003a
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-6.1.y/build/v6.1.5=
+1-32-gd0abe9b6003a
 
-Wir haben uns jedoch entschieden Ihre eigene Zahlung =C3=BCber Geldtransfer
-der Westunion in H=C3=B6he von =E2=82=AC5,000, pro Tag vorzunehmen bis die
-Gesamtsumme von =E2=82=AC1,500.000.00, vollst=C3=A4ndig an Sie =C3=BCberwie=
-sen wurde.
+## Test Regressions (compared to v6.1.51)
 
-Wir k=C3=B6nnen die Zahlung m=C3=B6glicherweise nicht nur mit Ihrer
-E-Mail-Adresse senden daher ben=C3=B6tigen wir Ihre Informationen dar=C3=BC=
-ber
-wohin wir das Geld an Sie senden wie z. B.:
+## Metric Regressions (compared to v6.1.51)
 
+## Test Fixes (compared to v6.1.51)
 
-Name des Adressaten ________________
+## Metric Fixes (compared to v6.1.51)
 
-Adresse________________
+## Test result summary
+total: 123742, pass: 105963, fail: 2366, skip: 15262, xfail: 151
 
-Land__________________
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 146 total, 144 passed, 2 failed
+* arm64: 52 total, 49 passed, 3 failed
+* i386: 40 total, 38 passed, 2 failed
+* mips: 30 total, 28 passed, 2 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 37 total, 35 passed, 2 failed
+* riscv: 14 total, 12 passed, 2 failed
+* s390: 15 total, 13 passed, 2 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 46 total, 42 passed, 4 failed
 
-Telefonnummer________________
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-kvm
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+* v4l2-compliance
 
-Angeh=C3=A4ngte Kopie Ihres Ausweises______________
-
-Das Alter ________________________
-
-
-Wir beginnen mit der =C3=9Cbertragung sobald wir Ihre Informationen
-erhalten haben: Kontakt E-Mail: ( wuwumoneytransfer5000@hotmail.com)
-
-
-Getreu,
-
-
-Herr Anthony Duru,
-
-Direktor von Geldtransfer der Westunion
+--
+Linaro LKFT
+https://lkft.linaro.org
