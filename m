@@ -2,74 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 43B6779246B
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:58:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 376567924B1
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231146AbjIEP66 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49888 "EHLO
+        id S232394AbjIEP73 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55066 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353664AbjIEHJX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 03:09:23 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D960D1B4;
-        Tue,  5 Sep 2023 00:09:19 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-401da71b7c5so21746475e9.2;
-        Tue, 05 Sep 2023 00:09:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693897758; x=1694502558; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=9EkFXVhb7l8seeMvEs227a8hKeXNE+yg3rnGUe+wdzY=;
-        b=hjET8OsUE9oYwgDsf34tQMxG6pIOKu4swCcGBzqw+n55lNjmCGnwMffFY3hLl1qQ3n
-         8mW7rFFBOQ64G7Sv0isG2G3+NVD7+cdJOUCiZYTb3QOQdGchPj4Rj/TkQYLzDUDD427P
-         ybi6lK3d9eqNB6XlLnPvZAbJ3WaTLjPZ5k0quxGBvDNRvqzJ8+QAbNG8ln8DXYHVaDhK
-         wf0iHt3GbfW3dU5G7A38/M9hfrfZvNsS5zMqT6azZ4UmAtrBYtN1ehZqBTkF4qU4O+Jf
-         0SfhKw4UNLyyZSi2OuSe5ml7oRoawdI+zCw20+22+t1scGRTUu2EAbSkzpaJtHphk6Uk
-         p7Xw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693897758; x=1694502558;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=9EkFXVhb7l8seeMvEs227a8hKeXNE+yg3rnGUe+wdzY=;
-        b=fZWmXwhVuW9RqUYtaoOYYGUNqVg+7J9U6uNyvFlZBNMPBJTJSARyoSD8xnxBkUA2W4
-         WeApKdUXYr6PKKLXVaNGayHRctJtt+CPDU9KPjPuVGxpJv/eyawOeWCenHKo18aXPls0
-         vWgGTPydxt8ZqPy1AlsbPUOBDPnj+/H7V4qgG9eYVsnhi/MrGVkMcp2NqkNd0WaDNxlP
-         Tz5PAyzkfzUzmopt2bvJfr7/lfsfryt9KARTtWLy2d2MkmIVaP58N4zn8O+BZap7b0QC
-         u+f/cb8UK1MNWAoBfLqCCkiWA7bICajBtw5AChVIRsVBvUBYXhbIU1ZM0ffrJ9HB46LQ
-         JUjQ==
-X-Gm-Message-State: AOJu0YznjMODF+YEwCPbgVyN+Vx+NToDlk0nY5W4qKawcHtOdhQjH2Re
-        YfGwxpqL1gZNgrzeTaq2iD8=
-X-Google-Smtp-Source: AGHT+IEfTqNOZjPICJomY8nLIu9YJ5nBcAfu1xIgEX8N4KNWkLjQi/7KkTSjdA9RqJI3eLIva8UBaw==
-X-Received: by 2002:a1c:6a19:0:b0:401:bf56:8bb2 with SMTP id f25-20020a1c6a19000000b00401bf568bb2mr8200417wmc.10.1693897758167;
-        Tue, 05 Sep 2023 00:09:18 -0700 (PDT)
-Received: from localhost ([2a00:23c5:dc8c:8701:1663:9a35:5a7b:1d76])
-        by smtp.gmail.com with ESMTPSA id l3-20020a1ced03000000b003feae747ff2sm19385673wmh.35.2023.09.05.00.09.16
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 00:09:16 -0700 (PDT)
-Date:   Tue, 5 Sep 2023 08:09:16 +0100
-From:   Lorenzo Stoakes <lstoakes@gmail.com>
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        rcu@vger.kernel.org, Zqiang <qiang.zhang1211@gmail.com>,
-        stable@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
- for debug
-Message-ID: <571d4a4a-0674-4c84-b714-8e7582699e30@lucifer.local>
-References: <20230904180806.1002832-1-joel@joelfernandes.org>
+        with ESMTP id S1353687AbjIEHOx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 03:14:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30E7BCC2
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 00:14:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id C2088B80932
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 07:14:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3327AC433C8;
+        Tue,  5 Sep 2023 07:14:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693898086;
+        bh=PZloC2cOQQ3LO2YUAwJI9sm1uo3q+HxM4cjpDG/uvDo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=L2U7lgLEh2SoHZVVePbz04UTORFhMGPsC2S7DdgJwq24cMsjWlOQ5IJN8+VFhp5SE
+         0C+EriYFAircPTj0yLOp7oJ4UGIj5VxK+tPPAt3PwIQpFRvh8Go490FebXRStPJFCA
+         NCjxi1DhQpK4gp1n7K4eBQ87d1/21QtYbZqlmHpE=
+Date:   Tue, 5 Sep 2023 08:14:42 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Li Nan <linan666@huaweicloud.com>
+Cc:     Vladislav Efanov <VEfanov@ispras.ru>, stable@vger.kernel.org,
+        Jan Kara <jack@suse.com>, lvc-project@linuxtesting.org,
+        Jan Kara <jack@suse.cz>, yangerkun <yangerkun@huawei.com>,
+        linan122@huawei.com
+Subject: Re: [PATCH 5.10 1/1] udf: Handle error when adding extent to a file
+Message-ID: <2023090520-dwelled-dullness-c3c5@gregkh>
+References: <20230815113453.2213555-1-VEfanov@ispras.ru>
+ <4c28f962-0830-1138-7b91-ef6685a56afa@huaweicloud.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230904180806.1002832-1-joel@joelfernandes.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+In-Reply-To: <4c28f962-0830-1138-7b91-ef6685a56afa@huaweicloud.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -78,84 +54,12 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 04, 2023 at 06:08:04PM +0000, Joel Fernandes (Google) wrote:
-> It is unsafe to dump vmalloc area information when trying to do so from
-> some contexts. Add a safer trylock version of the same function to do a
-> best-effort VMA finding and use it from vmalloc_dump_obj().
+On Tue, Sep 05, 2023 at 02:57:48PM +0800, Li Nan wrote:
+> Hi Greg,
+> 
+> Our syzbot found the this issue on v5.10, could you please pick it up
+> for v5.10?
 
-It'd be nice to have more details as to precisely which contexts and what this
-resolves.
+What issue?  Pick what up?
 
->
-> [applied test robot feedback on unused function fix.]
-> [applied Uladzislau feedback on locking.]
->
-> Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-> Cc: Paul E. McKenney <paulmck@kernel.org>
-> Cc: rcu@vger.kernel.org
-> Cc: Zqiang <qiang.zhang1211@gmail.com>
-> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> ---
->  mm/vmalloc.c | 26 ++++++++++++++++++++++----
->  1 file changed, 22 insertions(+), 4 deletions(-)
->
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 93cf99aba335..2c6a0e2ff404 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
->  #ifdef CONFIG_PRINTK
->  bool vmalloc_dump_obj(void *object)
->  {
-> -	struct vm_struct *vm;
->  	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-> +	const void *caller;
-> +	struct vm_struct *vm;
-> +	struct vmap_area *va;
-> +	unsigned long addr;
-> +	unsigned int nr_pages;
->
-> -	vm = find_vm_area(objp);
-> -	if (!vm)
-> +	if (!spin_trylock(&vmap_area_lock))
-> +		return false;
-
-It'd be good to have a comment here explaining why we must trylock here. I am
-also concerned that in the past this function would return false only if the
-address was not a vmalloc one, but now it might just return false due to lock
-contention and the user has no idea which it is?
-
-I'd want to at least output "vmalloc region cannot lookup lock contention"
-vs. the below cannot find case.
-
-Under heavy lock contention aren't you potentially breaking the ability to
-introspect vmalloc addresses? Wouldn't it be better to explicitly detect the
-contexts under which acquiring this spinlock is not appropriate?
-
-> +	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
-> +	if (!va) {
-> +		spin_unlock(&vmap_area_lock);
->  		return false;
-> +	}
-> +
-> +	vm = va->vm;
-> +	if (!vm) {
-> +		spin_unlock(&vmap_area_lock);
-> +		return false;
-> +	}
-> +	addr = (unsigned long)vm->addr;
-> +	caller = vm->caller;
-> +	nr_pages = vm->nr_pages;
-> +	spin_unlock(&vmap_area_lock);
->  	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
-> -		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
-> +		nr_pages, addr, caller);
->  	return true;
->  }
->  #endif
-> --
-> 2.42.0.283.g2d96d420d3-goog
->
+There's no context here :(
