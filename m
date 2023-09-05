@@ -2,53 +2,70 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C747F792E5E
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 21:09:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36055792D4B
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 20:18:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239573AbjIETJp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 15:09:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53510 "EHLO
+        id S241035AbjIESSp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 14:18:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241782AbjIETJk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 15:09:40 -0400
-X-Greylist: delayed 1544 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 12:09:13 PDT
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5924B18C
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 12:09:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FFCDC433CC;
-        Tue,  5 Sep 2023 18:08:43 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693937324;
-        bh=DsJzk6xx6CavASRR1dxStG5SMWcoSQ3cSGg9aSgEsew=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=cJWseShIE2CRSSnEGQPhm8lnyYoee/AxQWutbrjDl/Q5jMyc8tB/zNPKECius25hF
-         2jCY0NENG1CTC/r8lGG+lzMtFmEAerhu4dkFT8Hrl46e9Aq9M0j/XV3FsfdHyKNobk
-         /X6CeJ4wjmtgyp8KGZRGItZqdOuxdU60H+DwJeabNuZ/1hyi2dbw/Wf00R4uDMigGu
-         vVtDebVlcdyuMu4BsrnD9buyfytqGOVNy+WsEgF/0ShIDgT8FKsp5R9KA420wBR1DK
-         d0eTERRe9TvmKExfQ1DJ7jVKkQLikMgfc8ukLrbscG9+nIKK8oQIy3VXIl2Yyd/AQx
-         kIQwfStEgwTVA==
-Date:   Tue, 5 Sep 2023 12:08:40 -0600
-From:   Keith Busch <kbusch@kernel.org>
-To:     Kanchan Joshi <joshi.k@samsung.com>
-Cc:     hch@lst.de, axboe@kernel.dk, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org, vincentfu@gmail.com,
-        ankit.kumar@samsung.com, joshiiitr@gmail.com, gost.dev@samsung.com,
-        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
-Subject: Re: [PATCH v2 1/2] nvme: fix memory corruption for passthrough
- metadata
-Message-ID: <ZPduqCASmcNxUUep@kbusch-mbp>
-References: <20230814070213.161033-1-joshi.k@samsung.com>
- <CGME20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9@epcas5p3.samsung.com>
- <20230814070213.161033-2-joshi.k@samsung.com>
- <ZPH5Hjsqntn7tBCh@kbusch-mbp>
- <20230905051825.GA4073@green245>
+        with ESMTP id S243067AbjIESSa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 14:18:30 -0400
+Received: from mail-oo1-xc36.google.com (mail-oo1-xc36.google.com [IPv6:2607:f8b0:4864:20::c36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A829B3596
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 11:16:58 -0700 (PDT)
+Received: by mail-oo1-xc36.google.com with SMTP id 006d021491bc7-573429f5874so1727204eaf.0
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 11:16:58 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=chromium.org; s=google; t=1693937725; x=1694542525; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Tt9PKqPXCDGH5CQZjgxSAl72LaGp51mOxNh82fgNfgg=;
+        b=ZvmWpeX01mrbexpHZfPwDca8I7dEtVdTfcx2Fgkr1GXaSRNbKWHSJ25QKSaEjJU6A4
+         7s/MC8zL0KIeFPWzl3DLP/fWDVdMBLGlFyy1jqQIFjPAlWV7x4j0+AMhjiD7b9SNJPTt
+         sZaaT4XOz+xRSLODX57sv79LYOHkCPDg2W568=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693937725; x=1694542525;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Tt9PKqPXCDGH5CQZjgxSAl72LaGp51mOxNh82fgNfgg=;
+        b=U4xLL5ZiELsZSvzFDHrvZAkk9EB7K0fVejuSzuWXlUYUe+fJa/K4eNbXC7OxsSqpmI
+         3auzKfY5BkZxm4PaW8RWUQAS32XoO8/oKpkftOgq9ha4Qs5pq+ilPZhKtwS5vC6Fz14h
+         /ghVIT3mQRzp1oWhAhLKuE52gfVIdcc3sPU7yAPMWACO8urNSXP0nEPb6bXJYvjYor8+
+         29Tf77xQuoWZqiB81UzEKO+rKiLdH/nq1R9RmRUnp66kcotO94pUIGYRI8GQgxUJWn9y
+         Ilikll+/2yxg9bFcgxdjmlTwRRX/ysdyoASq9VipwTftovhOmz/LSiMeDvP/hIygR6cc
+         RZSg==
+X-Gm-Message-State: AOJu0YyoJDl2hQmZbWj0ziVw3m+aTTJ5n3VUQgD+a5NjaakvCimQfuRj
+        34rkVKHF+gD2nMWG54GqQlR7ygR2KgW8UHxKGicwcg==
+X-Google-Smtp-Source: AGHT+IH6wFs61SzfavhRJHdqzadeJsEMO8uYIE8BSkLub8a8wUWtujiulH3kJVHf72S40Tz2pll1hvNVgedDiohHwhA=
+X-Received: by 2002:a4a:3416:0:b0:573:bf68:8dbc with SMTP id
+ b22-20020a4a3416000000b00573bf688dbcmr12139050ooa.7.1693937725545; Tue, 05
+ Sep 2023 11:15:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230905051825.GA4073@green245>
+References: <20230831160055.v3.1.I7ed1ca09797be2dd76ca914c57d88b32d24dac88@changeid>
+ <8d88df6b-20c8-cc8e-c08a-e9f09466dc41@intel.com>
+In-Reply-To: <8d88df6b-20c8-cc8e-c08a-e9f09466dc41@intel.com>
+From:   Sven van Ashbrook <svenva@chromium.org>
+Date:   Tue, 5 Sep 2023 11:15:14 -0700
+Message-ID: <CAG-rBig796Yc9iyTiLOLt2R9PW9SoOFtuks3a1usu4XwvkzAOQ@mail.gmail.com>
+Subject: Re: [PATCH v3] mmc: sdhci-pci-gli: fix LPM negotiation so x86/S0ix
+ SoCs can suspend
+To:     ulf.hansson@linaro.org, ben.chuang@genesyslogic.com.tw,
+        jasonlai.genesyslogic@gmail.com
+Cc:     LKML <linux-kernel@vger.kernel.org>,
+        Adrian Hunter <adrian.hunter@intel.com>,
+        jason.lai@genesyslogic.com.tw, skardach@google.com,
+        Renius Chen <reniuschengl@gmail.com>,
+        rafael.j.wysocki@intel.com, linux-mmc@vger.kernel.org,
+        stable@vger.kernel.org, SeanHY.chen@genesyslogic.com.tw,
+        victor.shih@genesyslogic.com.tw, greg.tu@genesyslogic.com.tw
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,50 +73,14 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 10:48:25AM +0530, Kanchan Joshi wrote:
-> On Fri, Sep 01, 2023 at 10:45:50AM -0400, Keith Busch wrote:
-> > And similiar to this problem, what if the metadata is extended rather
-> > than separate, and the user's buffer is too short? That will lead to the
-> > same type of problem you're trying to fix here?
-> 
-> No.
-> For extended metadata, userspace is using its own buffer. Since
-> intermediate kernel buffer does not exist, I do not have a problem to
-> solve.
+What do we need for Ulf to add this to the maintainer git? There are
+released devices waiting for this fix, but picking from list generates
+lots of paperwork, so I'd prefer to pick from git.
 
-We still use kernel memory if the user buffer is unaligned. If the user
-space provides an short unaligned buffer, the device will corrupt kernel
-memory.
- 
-> > My main concern, though, is forward and backward compatibility. Even
-> > when metadata is enabled, there are IO commands that don't touch it, so
-> > some tool that erroneously requested it will stop working. Or perhaps
-> > some other future opcode will have some other metadata use that doesn't
-> > match up exactly with how read/write/compare/append use it. As much as
-> > I'd like to avoid bad user commands from crashing, these kinds of checks
-> > can become problematic for maintenance.
-> 
-> For forward compatibility - if we have commands that need to specify
-> metadata in a different way (than what is possible from this interface),
-> we anyway need a new passthrough command structure.
+We have a LGTM from Jason Lai, do we need one from Ben Chuang as well?
 
-Not sure about that. The existing struct is flexible enough to describe
-any possible nvme command.
-
-More specifically about compatibility is that this patch assumes an
-"nlb" field exists inside an opaque structure at DW12 offset, and that
-field defines how large the metadata buffer needs to be. Some vendor
-specific or future opcode may have DW12 mean something completely
-different, but still need to access metadata this patch may prevent from
-working.
-
-> Moreover, it's really about caring _only_ for cases when kernel
-> allocates
-> memory for metadata. And those cases are specific (i.e., when
-> metadata and metalen are not zero). We don't have to think in terms of
-> opcode (existing or future), no?
-
-It looks like a little work, but I don't see why blk-integrity must use
-kernel memory. Introducing an API like 'bio_integrity_map_user()' might
-also address your concern, as long as the user buffer is aligned. It
-sounds like we're assuming user buffers are aligned, at least.
+On Mon, Sep 4, 2023 at 3:42=E2=80=AFAM Adrian Hunter <adrian.hunter@intel.c=
+om> wrote:
+>
+> Acked-by: Adrian Hunter <adrian.hunter@intel.com>
+>
