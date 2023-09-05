@@ -2,248 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D59A379282A
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:42:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EBF5A792A74
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232167AbjIEP7k (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50246 "EHLO
+        id S232233AbjIEQhe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 12:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44936 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354742AbjIEOAU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 10:00:20 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71A02C9;
-        Tue,  5 Sep 2023 07:00:16 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 04AD360A05;
-        Tue,  5 Sep 2023 14:00:16 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5931DC433C8;
-        Tue,  5 Sep 2023 14:00:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693922415;
-        bh=764yMbuNMe5JetI5MaMMRQb1mxEqxLpU0jdCUiYvO2w=;
-        h=Date:From:To:Cc:Subject:Reply-To:References:In-Reply-To:From;
-        b=pcJUcT6A1q+IhvNaKBGuS9tB/gTtXUinjnY0zK98Lc08Eq4tFiS2LRoCEeHFKlj7d
-         vxZbhDMM63vF+tNq2YKA/0FRk1KAgTcSLrqftS4PtfB3M0lpO1JcqQJgKqo4yol6vR
-         oNh/XUI/gs0795wz3iJ+kPWe+ba12B+RzzD08vpd01C4YJRVZX/HOuYgQ6WroLadK1
-         1nX/1tA5k5GTEEqhMogAUdNpIat6kidxD0gy5vizMmVOJBa9EEfw4o/TJbwAjW4sL/
-         Efsx6n6UqqlIh8dryApUAG90RvtSRqhYRKSOL2XjBm8IWo2zfGf5FaT7YLYVPTNa8U
-         KMWUmiznTNDlQ==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id EECEACE0CF9; Tue,  5 Sep 2023 07:00:14 -0700 (PDT)
-Date:   Tue, 5 Sep 2023 07:00:14 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-Cc:     Denis Arefev <arefev@swemel.ru>,
-        Lai Jiangshan <jiangshanlai@gmail.com>,
-        Josh Triplett <josh@joshtriplett.org>,
-        Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org,
-        lvc-project@linuxtesting.org, linux-kernel@vger.kernel.org,
-        trufanov@swemel.ru, vfh@swemel.ru,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>
-Subject: Re: [PATCH v3] Fix srcu_struct node grpmask overflow on 64-bit
- systems
-Message-ID: <ba1292b4-8feb-4359-9bfc-120082359a17@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20230904122114.66757-1-arefev@swemel.ru>
- <a60cf690-2af7-1eee-c1c1-3433d16a1939@efficios.com>
- <40593b16-8232-27fc-808a-37bad7457dc0@efficios.com>
- <751d2afd-fc91-400d-8889-187031f2bbf0@paulmck-laptop>
- <7beb35c3-217a-d3c3-8e75-a1212500d2ac@efficios.com>
- <98c676a6-3c11-48f1-b7cb-81356c362680@paulmck-laptop>
- <2613d958-8e8a-c302-8779-8719a10c82e5@efficios.com>
+        with ESMTP id S1355459AbjIEQbE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 12:31:04 -0400
+Received: from mail-ed1-f45.google.com (mail-ed1-f45.google.com [209.85.208.45])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10F4A8A64
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 09:26:16 -0700 (PDT)
+Received: by mail-ed1-f45.google.com with SMTP id 4fb4d7f45d1cf-52e297c7c39so3067193a12.2
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 09:26:15 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1693931002; x=1694535802; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SDmEkkiomzbm/t0kyOHY3bm7nezdvpUGCm1Gee0mEtE=;
+        b=rKAyFEokIAk5jlSgz0W1AHRb3taw1IiK++1vpkGim6fNFcUWlgBoGy5xQ74jUP2SFT
+         O3ZK0CGGBUNVmNr72B8Zece47lLhbWvv03pkUsN0Lld4SNnUKXZ1csqbdTmZi+MdAFwu
+         RRCWlXy/dvZuy8RinTrV+bspxkRUfwM59LY/SDIHhxxkXjP4l1BB2IRRy/7PG6A7fuVY
+         k76zGwpXviKwhsXk3/r9IKztqGE3S3Or2k3LX8N3wH/DfrTEzc2mY9lZ4NGsZvXnGGrf
+         evaz8NPExpTP8jiMFaHX6XgN38+/btlzuimZdb3NqLxTDDii6wCOSft809jk9AMe8d5F
+         xj8A==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693931002; x=1694535802;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=SDmEkkiomzbm/t0kyOHY3bm7nezdvpUGCm1Gee0mEtE=;
+        b=ar96cHy7hORSa8LZgUpG62r7FYFTPbbJ16kjZ1cgz2dQA4uTphog934k3mLlTAGSTe
+         3XLsdzASLkErqydTCJq3TchV37rJkKDobHhwZLpVUIQIbbVbxc7fHGaylgmk34JjNMXU
+         qJfl0EM+c/n7vwpEEtwDiAhrUnj3KWWwUEdSEC56/zH6CTurztjlPDwleXKOtlkRKsxD
+         al6xwoKSNsSDwFf4eKrhmCwaAtet/kj95P/PbFJVPt9uNb7cNrMJW2zwJZRYalzzrVuu
+         BfoA35JvDHKXnlEYXuDf+CIlKT5AWDyaCWoW5ptqfmT5QEGFsAt302xbf6hEkHxGrDjN
+         StHA==
+X-Gm-Message-State: AOJu0YxQ3SxRpa+8QncFMTNcH3ZIvEtnxh72yRnp9cJzfcDP6/yaLKRQ
+        9splpqlAbgNeIwrTzpUI3SqqrknsQkKOCZt4av98TA==
+X-Google-Smtp-Source: AGHT+IG95JkmN66/glE3KZ9evrj4ynCBfjln8sFmAB+NvGPgcflf1KTh5SG7UN7y6QuRyekGl9BiHg==
+X-Received: by 2002:a17:907:7714:b0:9a2:1df2:8e08 with SMTP id kw20-20020a170907771400b009a21df28e08mr219686ejc.45.1693930070557;
+        Tue, 05 Sep 2023 09:07:50 -0700 (PDT)
+Received: from [192.168.37.232] (178235177232.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.232])
+        by smtp.gmail.com with ESMTPSA id rl21-20020a170907217500b0099315454e76sm7701782ejb.211.2023.09.05.09.07.48
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Sep 2023 09:07:50 -0700 (PDT)
+Message-ID: <5446a3fd-59bc-4297-b3c4-204d014ac3cd@linaro.org>
+Date:   Tue, 5 Sep 2023 18:07:47 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <2613d958-8e8a-c302-8779-8719a10c82e5@efficios.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v2 1/2] arm64: dts: qcom: ipq6018: Fix tcsr_mutex register
+ size
+Content-Language: en-US
+To:     Vignesh Viswanathan <quic_viswanat@quicinc.com>, agross@kernel.org,
+        andersson@kernel.org, robh+dt@kernel.org,
+        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
+        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
+        linux-kernel@vger.kernel.org, ohad@wizery.com,
+        baolin.wang@linux.alibaba.com, linux-remoteproc@vger.kernel.org
+Cc:     quic_kathirav@quicinc.com, quic_anusha@quicinc.com,
+        quic_sjaganat@quicinc.com, quic_srichara@quicinc.com,
+        quic_varada@quicinc.com, stable@vger.kernel.org
+References: <20230905095535.1263113-1-quic_viswanat@quicinc.com>
+ <20230905095535.1263113-2-quic_viswanat@quicinc.com>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230905095535.1263113-2-quic_viswanat@quicinc.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 09:43:04AM -0400, Mathieu Desnoyers wrote:
-> On 9/5/23 09:38, Paul E. McKenney wrote:
-> > On Tue, Sep 05, 2023 at 08:57:53AM -0400, Mathieu Desnoyers wrote:
-> > > On 9/4/23 09:58, Paul E. McKenney wrote:
-> > > > On Mon, Sep 04, 2023 at 08:58:48AM -0400, Mathieu Desnoyers wrote:
-> > > > > On 9/4/23 08:42, Mathieu Desnoyers wrote:
-> > > > > > On 9/4/23 08:21, Denis Arefev wrote:
-> > > > > > > The value of an arithmetic expression 1 << (cpu - sdp->mynode->grplo)
-> > > > > > > is subject to overflow due to a failure to cast operands to a larger
-> > > > > > > data type before performing arithmetic.
-> > > > > > > 
-> > > > > > > The maximum result of this subtraction is defined by the RCU_FANOUT
-> > > > > > > or other srcu level-spread values assigned by rcu_init_levelspread(),
-> > > > > > > which can indeed cause the signed 32-bit integer literal ("1") to
-> > > > > > > overflow
-> > > > > > > when shifted by any value greater than 31.
-> > > > > > 
-> > > > > > We could expand on this:
-> > > > > > 
-> > > > > > The maximum result of this subtraction is defined by the RCU_FANOUT
-> > > > > > or other srcu level-spread values assigned by rcu_init_levelspread(),
-> > > > > > which can indeed cause the signed 32-bit integer literal ("1") to overflow
-> > > > > > when shifted by any value greater than 31 on a 64-bit system.
-> > > > > > 
-> > > > > > Moreover, when the subtraction value is 31, the 1 << 31 expression results
-> > > > > > in 0xffffffff80000000 when the signed integer is promoted to unsigned long
-> > > > > > on 64-bit systems due to type promotion rules, which is certainly not the
-> > > > > > intended result.
-> > > > 
-> > > > Thank you both!  Could you please also add something to the effect of:
-> > > > "Given default Kconfig options, this bug affects only systems with more
-> > > > than 512 CPUs."?
-> > > 
-> > > Hi Paul,
-> > > 
-> > > I'm trying to understand this "NR_CPUS > 512 CPUs" default Kconfig lower
-> > > bound from kernel/rcu/Kconfig and rcu_node_tree.h. Is that on a 32-bit or
-> > > 64-bit architecture ? Also, I suspect that something like x86-64 MAXSMP (or
-> > > an explicit NR_CPUS) needs to be selected over a default Kconfig to support
-> > > that many CPUs.
-> > 
-> > 64-bit only.  I believe that 32-bit kernels are unaffected by this bug.
-> > 
-> > The trick is that RCU reshapes the rcu_node tree in rcu_init_geometry(),
-> > which is invoked during early boot from rcu_init().  This reshaping is
-> > based on nr_cpu_ids.  So if NR_CPUS is (say) 4096, there will be enough
-> > rcu_node structures allocated at build time to accommodate 4096 CPUs
-> > (259 of them, 256 leaf nodes, four internal nodes, and one root node),
-> > but only assuming dense numbering of CPUs.  If rcu_init_geometry() sees
-> > that nr_cpu_ids is (say) 64, it will use only five of them, that is,
-> > four leaf nodes and one root node.  The leaf nodes will need to shift
-> > by at most 16, and the root node by at most 4.
-> > 
-> > But the possibility of sparse CPU numbering (perhaps to your point)
-> > means that the bug can occur in 64-bit kernels booted on systems with
-> > 512 CPUs or fewer if that system has sparse CPU IDs.  For example,
-> > there have been systems that disable all but one hardware thread per
-> > core, but leave places in the CPU numbering for those disabled threads.
-> > Such a system with four hardware threads per core could have a CPU 516
-> > (and thus be affected by this bug) with as few as 129 CPUs.
-> > 
-> > So a better request would be for something like: "Given default Kconfig
-> > options, this bug affects only 64-bit systems having at least one CPU
-> > for which smp_processor_id() returns 512 or greater."
-> > 
-> > Does that help, or am I missing your point?
+On 5.09.2023 11:55, Vignesh Viswanathan wrote:
+> IPQ6018's TCSR Mutex HW lock register has 32 locks of size 4KB each.
+> Total size of the TCSR Mutex registers is 128KB.
 > 
-> This is a good point, although not the one I was trying to make. See my
-> explanation about impact of having exactly 512 wrt signed integer type
-> promotion in a separate email. So your last phrasing "returns 512 or
-> greater" is better. Previously it appeared that only systems with _more
-> than_ 512 cpus were affected, which was off-by-one considering that systems
-> with exactly 512 cpus are an issue as well.
+> Fix size of the tcsr_mutex hwlock register to 0x20000.
+> 
+> Changes in v2:
+>  - Drop change to remove qcom,ipq6018-tcsr-mutex compatible string
+>  - Added Fixes and stable tags
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 5bf635621245 ("arm64: dts: ipq6018: Add a few device nodes")
+> Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+> ---
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-If 512 CPUs is an issue, then so also is 497 CPUs.  Both result in a
-32-bit shift.  If having the upper 33 bits act as a unit is OK (and I
-*think* that it is), then you need that 513th CPU (or, better, a CPU
-whose smp_processor_id() return value is at least 513) to make something
-bad happen.
-
-I would also be OK with noting that with 497 or more CPUs, strange
-things start happening.  My intent was definitely that there only be
-a single bit set in sdp->grpmask, after all!  The fact that it might
-(or might not) happen to work notwithstanding.  ;-)
-
-							Thanx, Paul
-
-> Thanks,
-> 
-> Mathieu
-> 
-> 
-> > 
-> > 							Thanx, Paul
-> > 
-> > > Thanks,
-> > > 
-> > > Mathieu
-> > > 
-> > > 
-> > > > 
-> > > > 							Thanx, Paul
-> > > > 
-> > > > > > > Found by Linux Verification Center (linuxtesting.org) with SVACE.
-> > > > > > 
-> > > > > > With the commit message updated with my comment above, please also add:
-> > > > > > 
-> > > > > > Fixes: c7e88067c1 ("srcu: Exact tracking of srcu_data structures
-> > > > > > containing callbacks")
-> > > > > > Cc: <stable@vger.kernel.org> # v4.11
-> > > > > 
-> > > > > Sorry, the line above should read:
-> > > > > 
-> > > > > Cc: <stable@vger.kernel.org> # v4.11+
-> > > > > 
-> > > > > Thanks,
-> > > > > 
-> > > > > Mathieu
-> > > > > 
-> > > > > > Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> > > > > > 
-> > > > > > Thanks!
-> > > > > > 
-> > > > > > Mathieu
-> > > > > > 
-> > > > > > > 
-> > > > > > > Signed-off-by: Denis Arefev <arefev@swemel.ru>
-> > > > > > > ---
-> > > > > > > v3: Changed the name of the patch, as suggested by
-> > > > > > > Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> > > > > > > v2: Added fixes to the srcu_schedule_cbs_snp function as suggested by
-> > > > > > > Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
-> > > > > > >     kernel/rcu/srcutree.c | 4 ++--
-> > > > > > >     1 file changed, 2 insertions(+), 2 deletions(-)
-> > > > > > > 
-> > > > > > > diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
-> > > > > > > index 20d7a238d675..6c18e6005ae1 100644
-> > > > > > > --- a/kernel/rcu/srcutree.c
-> > > > > > > +++ b/kernel/rcu/srcutree.c
-> > > > > > > @@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct
-> > > > > > > srcu_struct *ssp, gfp_t gfp_flags)
-> > > > > > >                     snp->grplo = cpu;
-> > > > > > >                 snp->grphi = cpu;
-> > > > > > >             }
-> > > > > > > -        sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
-> > > > > > > +        sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
-> > > > > > >         }
-> > > > > > >         smp_store_release(&ssp->srcu_sup->srcu_size_state,
-> > > > > > > SRCU_SIZE_WAIT_BARRIER);
-> > > > > > >         return true;
-> > > > > > > @@ -833,7 +833,7 @@ static void srcu_schedule_cbs_snp(struct
-> > > > > > > srcu_struct *ssp, struct srcu_node *snp
-> > > > > > >         int cpu;
-> > > > > > >         for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
-> > > > > > > -        if (!(mask & (1 << (cpu - snp->grplo))))
-> > > > > > > +        if (!(mask & (1UL << (cpu - snp->grplo))))
-> > > > > > >                 continue;
-> > > > > > >             srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
-> > > > > > >         }
-> > > > > > 
-> > > > > 
-> > > > > -- 
-> > > > > Mathieu Desnoyers
-> > > > > EfficiOS Inc.
-> > > > > https://www.efficios.com
-> > > > > 
-> > > 
-> > > -- 
-> > > Mathieu Desnoyers
-> > > EfficiOS Inc.
-> > > https://www.efficios.com
-> > > 
-> 
-> -- 
-> Mathieu Desnoyers
-> EfficiOS Inc.
-> https://www.efficios.com
-> 
+Konrad
