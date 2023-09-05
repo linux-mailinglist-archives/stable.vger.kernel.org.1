@@ -2,358 +2,105 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87E977924B9
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 139F4792498
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232570AbjIEP7e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48280 "EHLO
+        id S229578AbjIEP7P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354875AbjIEPX2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 11:23:28 -0400
-Received: from sin.source.kernel.org (sin.source.kernel.org [145.40.73.55])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3532198
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 08:23:24 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by sin.source.kernel.org (Postfix) with ESMTPS id 99A22CE10E7
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 15:23:22 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F205C433C7;
-        Tue,  5 Sep 2023 15:23:20 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693927400;
-        bh=b8FXi5LVOEJ45GJEfo/UiUAsAx/HMkBVqH0nN5nHXFs=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=K1tYCEHexNxmxcgaemhfzAVT3mDlnxjFMCMW6GUUaaXkN0XjAhRopDkITbvKnZvF+
-         B6qGzEzg96qIZVfJumcDs9i9kPw+yM+pcpLGIHkelti9ZdW+ljVE9O/SCmQSfKjEQu
-         +6mNh57PspluAWn5LIyG4LpbnR1yGBKETlmX3Fh4i7ug4hvgwWMDa4rtxnrb+bwMnM
-         mMhkucq8nbGhSSik1WAeQ5IB5yHn3vPQcJBhrPvd88aCFfCbPyXVzq0Daj/T8eUkjY
-         FPycfq0xhgoHAxarkV/ixuSL+K4Zc0OCW/RJGyB/qP/EtZvfAvXSo0LMggRGSBDXpj
-         n+iYuOZgryU6A==
-Date:   Tue, 5 Sep 2023 08:23:19 -0700
-From:   Jakub Kicinski <kuba@kernel.org>
-To:     Serguei Ivantsov <manowar@gsc-game.com>
-Cc:     stable@vger.kernel.org, regressions@lists.linux.dev,
-        drbd-dev@lists.linbit.com, David Howells <dhowells@redhat.com>
-Subject: Re: DRBD broken in kernel 6.5 and 6.5.1
-Message-ID: <20230905082319.74537cdd@kernel.org>
-In-Reply-To: <CAKH+VT2PQc3NoMZ0Lj13-mRu=kqSHJx_OSQtURB=xvo18jXq1g@mail.gmail.com>
-References: <CAKH+VT2PQc3NoMZ0Lj13-mRu=kqSHJx_OSQtURB=xvo18jXq1g@mail.gmail.com>
+        with ESMTP id S1354933AbjIEP5D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 11:57:03 -0400
+Received: from mail-ot1-x32f.google.com (mail-ot1-x32f.google.com [IPv6:2607:f8b0:4864:20::32f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BE2C12A
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 08:56:59 -0700 (PDT)
+Received: by mail-ot1-x32f.google.com with SMTP id 46e09a7af769-6bdcbde9676so2182650a34.3
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 08:56:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1693929418; x=1694534218; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ThqjLVnbKtocXxKP/wk16gVb0uDcHwyfytUbqO9ZePQ=;
+        b=5wuk35+Jnsmfdfk8pT0uMAGpahZOfRo0q7Tlf9UcFAX+5U1UtY2iZYPFeAdnHPrKpS
+         1Fimpi/xHbzTFXzUEuxYKPFNaDckzkdRjDk95ohoNTBG2+Fljxd3izUlgA60x8ri9qZo
+         BgD992XtaGoxFmkQwFYygrgqA2oBVN97Rz0jNgRCMleuequLJTsmT5LLbZTQQdNFJVEl
+         4dQ4i/wIkIwSZ7wxe72d27UbR0JJgZss0vBmqTJX1jSr43sdGuI4kYIPK5ADxjmOoXzV
+         FgzpU78XEWN9X6DR9zG0bS/wzZgVmPNwgvuRcOvAlCpzL8LllKRwW4LvyGs2RxfZkTjg
+         tSzQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693929418; x=1694534218;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ThqjLVnbKtocXxKP/wk16gVb0uDcHwyfytUbqO9ZePQ=;
+        b=D1/gYswo5tmwG4DzKvsGhTn68cxUnJnJzeDv/Si61GY/DmNWLJmFWdzfgT8S4s31oZ
+         MzbO6Fx4gF6BpazSnCTh2cDWU98XfZ/I/DYV+y3F2mryE78mduvzMCxQZ9mgfPevSpOh
+         PtbAtcbOCyPSYaUMc/TFJmFWVju0tfOGMYgQU90boOsS9XVf+wYStQrppBU5TreI2IH/
+         4FT6g+OHk3jCNOHAkk8D2lDidYhEqyAthMqwbU2sS38a2g3ERAA21KI1YyA27gL6kymk
+         vvIm6cJmnrRlr2gGkqfzFZm9BXnAsnwMHsfGPLQNEn1dWRsRB4O18nx9rADY4ulnyWoJ
+         JKpw==
+X-Gm-Message-State: AOJu0YyhecdTViHLJ9fFl06teWvF7Ju26f+Gn69dcVstfKEpocffbwEW
+        umOu5bnLDSLd3Jgh++Owk6d7mXOcNMo/LMV6r3iVYg==
+X-Google-Smtp-Source: AGHT+IEykypgti740Y9Zguj1KwhddZ/MtrTqVC7bHeDUfNC7kmbpd/QpzCpX/NjATKNPnssd70RGnfMB2COzAW39eKc=
+X-Received: by 2002:a9d:66c7:0:b0:6bc:bc3e:f40b with SMTP id
+ t7-20020a9d66c7000000b006bcbc3ef40bmr14551486otm.19.1693929418610; Tue, 05
+ Sep 2023 08:56:58 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=US-ASCII
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+References: <CAKXUXMzR4830pmUfWnwVjGk94inpQ0iz_uXiOnrE2kyV7SUPpg@mail.gmail.com>
+ <2023090548-flattery-wrath-8ace@gregkh>
+In-Reply-To: <2023090548-flattery-wrath-8ace@gregkh>
+From:   Nick Desaulniers <ndesaulniers@google.com>
+Date:   Tue, 5 Sep 2023 08:56:47 -0700
+Message-ID: <CAKwvOdnUdfG9=P0gaUxou-xYB24sOzF+HhPrm75EWLETOViuNw@mail.gmail.com>
+Subject: Re: Include bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute
+ checks") into linux-4.14.y
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Lukas Bulwahn <lukas.bulwahn@gmail.com>
+Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
+        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Sasha Levin <sashal@kernel.org>,
+        kasan-dev <kasan-dev@googlegroups.com>, llvm@lists.linux.dev,
+        linux- stable <stable@vger.kernel.org>,
+        Alexander Potapenko <glider@google.com>,
+        Andrey Konovalov <andreyknvl@gmail.com>,
+        Dmitry Vyukov <dvyukov@google.com>,
+        Vincenzo Frascino <vincenzo.frascino@arm.com>,
+        eb-gft-team@globallogic.com
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        USER_IN_DEF_DKIM_WL,USER_IN_DEF_SPF_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-CC: David
+On Tue, Sep 5, 2023 at 3:21=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> On Tue, Sep 05, 2023 at 12:12:11PM +0200, Lukas Bulwahn wrote:
+> > Greg, once checked and confirmed by Andrey or Nick, could you please in=
+clude
+> > commit bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute check=
+s") into
+> > the linux-4.14.y branch?
 
-On Sat, 2 Sep 2023 22:31:06 +0200 Serguei Ivantsov wrote:
-> Hello,
-> 
-> After upgrading the kernel to 6.5 the system can't connect to the peer
-> (6.4.11) anymore.
-> I checked 6.5.1 - same issue.
-> All previous kernels including 6.4.14 are working just fine.
-> Checking the 6.5 changelog, I found commit
-> 9ae440b8fdd6772b6c007fa3d3766530a09c9045 which mentioned some changes to
-> DRBD.
+Seems fine to me (OK2BACKPORT); I didn't see any follow up fixes to
+bac7a1fff792.
 
-I don't see anything obviously wrong here, maybe David has better
-ideas. Can you try this?
-
-diff --git a/drivers/block/drbd/drbd_main.c b/drivers/block/drbd/drbd_main.c
-index 79ab532aabaf..c607d4304608 100644
---- a/drivers/block/drbd/drbd_main.c
-+++ b/drivers/block/drbd/drbd_main.c
-@@ -1539,8 +1539,6 @@ static int _drbd_send_page(struct drbd_peer_device *peer_device, struct page *pa
- 		    int offset, size_t size, unsigned msg_flags)
- {
- 	struct socket *socket = peer_device->connection->data.socket;
--	struct msghdr msg = { .msg_flags = msg_flags, };
--	struct bio_vec bvec;
- 	int len = size;
- 	int err = -EIO;
- 
-@@ -1551,10 +1549,13 @@ static int _drbd_send_page(struct drbd_peer_device *peer_device, struct page *pa
- 	 * __page_cache_release a page that would actually still be referenced
- 	 * by someone, leading to some obscure delayed Oops somewhere else. */
- 	if (!drbd_disable_sendpage && sendpage_ok(page))
--		msg.msg_flags |= MSG_NOSIGNAL | MSG_SPLICE_PAGES;
-+		msg_flags |= MSG_SPLICE_PAGES;
- 
-+	msg_flags |= MSG_NOSIGNAL;
- 	drbd_update_congested(peer_device->connection);
- 	do {
-+		struct msghdr msg = { .msg_flags = msg_flags, };
-+		struct bio_vec bvec;
- 		int sent;
- 
- 		bvec_set_page(&bvec, page, offset, len);
+>
+> Now queued up, thanks.
+>
+> greg k-h
 
 
-> On the 6.5.X system I have the following in the kernel log (drbd_send_block()
-> failed):
-> 
-> [    2.473497] drbd: initialized. Version: 8.4.11 (api:1/proto:86-101)
-> 
-> [    2.475394] drbd: built-in
-> 
-> [    2.477254] drbd: registered as block device major 147
-> 
-> [    7.421400] drbd drbd0: Starting worker thread (from drbdsetup-84 [3844])
-> 
-> [    7.421509] drbd drbd0/0 drbd0: disk( Diskless -> Attaching )
-> 
-> [    7.421552] drbd drbd0: Method to ensure write ordering: flush
-> 
-> [    7.421554] drbd drbd0/0 drbd0: max BIO size = 131072
-> 
-> [    7.421557] drbd drbd0/0 drbd0: drbd_bm_resize called with capacity ==
-> 1845173184
-> 
-> [    7.428017] drbd drbd0/0 drbd0: resync bitmap: bits=230646648
-> words=3603854 pages=7039
-> 
-> [    7.467370] drbd0: detected capacity change from 0 to 1845173184
-> 
-> [    7.467372] drbd drbd0/0 drbd0: size = 880 GB (922586592 KB)
-> 
-> [    7.486005] drbd drbd0/0 drbd0: recounting of set bits took additional 0
-> jiffies
-> 
-> [    7.486010] drbd drbd0/0 drbd0: 0 KB (0 bits) marked out-of-sync by on
-> disk bit-map.
-> 
-> [    7.486017] drbd drbd0/0 drbd0: disk( Attaching -> UpToDate )
-> 
-> [    7.486021] drbd drbd0/0 drbd0: attached to UUIDs
-> 32DDB2019708F68A:0000000000000000:7D97648599B446DD:7D96648599B446DD
-> 
-> [    7.486863] drbd drbd0: conn( StandAlone -> Unconnected )
-> 
-> [    7.486871] drbd drbd0: Starting receiver thread (from drbd_w_drbd0
-> [3847])
-> 
-> [    7.486918] drbd drbd0: receiver (re)started
-> 
-> [    7.486929] drbd drbd0: conn( Unconnected -> WFConnection )
-> 
-> [   12.340212] drbd drbd0: initial packet S crossed
-> 
-> [   22.310856] drbd drbd0: Handshake successful: Agreed network protocol
-> version 101
-> 
-> [   22.311087] drbd drbd0: Feature flags enabled on protocol level: 0xf
-> TRIM THIN_RESYNC WRITE_SAME WRITE_ZEROES.
-> 
-> [   22.311425] drbd drbd0: conn( WFConnection -> WFReportParams )
-> 
-> [   22.311621] drbd drbd0: Starting ack_recv thread (from drbd_r_drbd0
-> [4071])
-> 
-> [   22.400702] drbd drbd0/0 drbd0: drbd_sync_handshake:
-> 
-> [   22.400869] drbd drbd0/0 drbd0: self
-> 32DDB2019708F68A:0000000000000000:7D97648599B446DD:7D96648599B446DD bits:0
-> flags:0
-> 
-> [   22.401205] drbd drbd0/0 drbd0: peer
-> 32DDB2019708F68A:0000000000000000:7D97648599B446DC:7D96648599B446DD bits:0
-> flags:0
-> 
-> [   22.401538] drbd drbd0/0 drbd0: uuid_compare()=0 by rule 40
-> 
-> [   22.401709] drbd drbd0/0 drbd0: peer( Unknown -> Secondary ) conn(
-> WFReportParams -> Connected ) pdsk( DUnknown -> UpToDate )
-> 
-> [   22.415394] drbd drbd0/0 drbd0: role( Secondary -> Primary )
-> 
-> [   22.506540] drbd drbd0/0 drbd0: _drbd_send_page: size=4096 len=4096
-> sent=-5
-> 
-> [   22.506773] drbd drbd0: peer( Secondary -> Unknown ) conn( Connected ->
-> NetworkFailure ) pdsk( UpToDate -> DUnknown )
-> 
-> [   22.507109] drbd drbd0/0 drbd0: new current UUID
-> 7F8B15C04AF49C4D:32DDB2019708F68B:7D97648599B446DD:7D96648599B446DD
-> 
-> [   22.507451] drbd drbd0: ack_receiver terminated
-> 
-> [   22.507588] drbd drbd0: Terminating drbd_a_drbd0
-> 
-> [   22.600693] drbd drbd0: Connection closed
-> 
-> [   22.600937] drbd drbd0: conn( NetworkFailure -> Unconnected )
-> 
-> [   22.601115] drbd drbd0: receiver terminated
-> 
-> [   22.601238] drbd drbd0: Restarting receiver thread
-> 
-> [   22.601378] drbd drbd0: receiver (re)started
-> 
-> [   22.601508] drbd drbd0: conn( Unconnected -> WFConnection )
-> 
-> [   23.260624] drbd drbd0: Handshake successful: Agreed network protocol
-> version 101
-> 
-> [   23.260859] drbd drbd0: Feature flags enabled on protocol level: 0xf
-> TRIM THIN_RESYNC WRITE_SAME WRITE_ZEROES.
-> 
-> [   23.261187] drbd drbd0: conn( WFConnection -> WFReportParams )
-> 
-> [   23.261367] drbd drbd0: Starting ack_recv thread (from drbd_r_drbd0
-> [4071])
-> 
-> [   23.340593] drbd drbd0/0 drbd0: drbd_sync_handshake:
-> 
-> [   23.340771] drbd drbd0/0 drbd0: self
-> 7F8B15C04AF49C4D:32DDB2019708F68B:7D97648599B446DD:7D96648599B446DD bits:1
-> flags:0
-> 
-> [   23.341192] drbd drbd0/0 drbd0: peer
-> 32DDB2019708F68A:0000000000000000:7D97648599B446DC:7D96648599B446DD bits:0
-> flags:0
-> 
-> [   23.341649] drbd drbd0/0 drbd0: uuid_compare()=1 by rule 70
-> 
-> [   23.341824] drbd drbd0/0 drbd0: peer( Unknown -> Secondary ) conn(
-> WFReportParams -> WFBitMapS ) pdsk( DUnknown -> Consistent )
-> 
-> [   23.344911] drbd drbd0/0 drbd0: send bitmap stats [Bytes(packets)]:
-> plain 0(0), RLE 23(1), total 23; compression: 100.0%
-> 
-> [   23.396792] drbd drbd0/0 drbd0: receive bitmap stats [Bytes(packets)]:
-> plain 0(0), RLE 23(1), total 23; compression: 100.0%
-> 
-> [   23.397210] drbd drbd0/0 drbd0: helper command: /sbin/drbdadm
-> before-resync-source minor-0
-> 
-> [   23.407965] drbd drbd0/0 drbd0: helper command: /sbin/drbdadm
-> before-resync-source minor-0 exit code 0 (0x0)
-> 
-> [   23.417547] drbd drbd0/0 drbd0: conn( WFBitMapS -> SyncSource ) pdsk(
-> Consistent -> Inconsistent )
-> 
-> [   23.426697] drbd drbd0/0 drbd0: Began resync as SyncSource (will sync 4
-> KB [1 bits set]).
-> 
-> [   23.435638] drbd drbd0/0 drbd0: updated sync UUID
-> 7F8B15C04AF49C4D:32DEB2019708F68B:32DDB2019708F68B:7D97648599B446DD
-> 
-> [   23.488608] drbd drbd0/0 drbd0: _drbd_send_page: size=4096 len=4096
-> sent=-5
-> 
-> [   23.498182] drbd drbd0/0 drbd0: drbd_send_block() failed
-> 
-> [   23.508498] drbd drbd0: peer( Secondary -> Unknown ) conn( SyncSource ->
-> NetworkFailure )
-> 
-> [   23.517597] drbd drbd0: ack_receiver terminated
-> 
-> [   23.527513] drbd drbd0: Terminating drbd_a_drbd0
-> 
-> [   23.690598] drbd drbd0: Connection closed
-> 
-> [   23.701857] drbd drbd0: conn( NetworkFailure -> Unconnected )
-> 
-> [   23.712017] drbd drbd0: receiver terminated
-> 
-> [   23.721597] drbd drbd0: Restarting receiver thread
-> 
-> 
-> 
-> On the peer:
-> 
-> 
-> [349071.038278] drbd drbd0: conn( Unconnected -> WFConnection )
-> 
-> [349071.558245] drbd drbd0: Handshake successful: Agreed network protocol
-> version 101
-> 
-> [349071.562105] drbd drbd0: Feature flags enabled on protocol level: 0xf
-> TRIM THIN_RESYNC WRITE_SAME WRITE_ZEROES.
-> 
-> [349071.569889] drbd drbd0: conn( WFConnection -> WFReportParams )
-> 
-> [349071.573802] drbd drbd0: Starting ack_recv thread (from drbd_r_drbd0
-> [2660])
-> 
-> [349071.688547] drbd drbd0/0 drbd0: drbd_sync_handshake:
-> 
-> [349071.692323] drbd drbd0/0 drbd0: self
-> 3375B2019708F68A:0000000000000000:7D97648599B446DC:7D96648599B446DD bits:1
-> flags:0
-> 
-> [349071.699871] drbd drbd0/0 drbd0: peer
-> 7F8B15C04AF49C4D:3375B2019708F68B:3374B2019708F68B:3373B2019708F68B bits:1
-> flags:0
-> 
-> [349071.707687] drbd drbd0/0 drbd0: uuid_compare()=-1 by rule 50
-> 
-> [349071.711563] drbd drbd0/0 drbd0: Becoming sync target due to disk states.
-> 
-> [349071.715381] drbd drbd0/0 drbd0: peer( Unknown -> Primary ) conn(
-> WFReportParams -> WFBitMapT ) pdsk( DUnknown -> UpToDate )
-> 
-> [349071.723039] drbd drbd0/0 drbd0: receive bitmap stats [Bytes(packets)]:
-> plain 0(0), RLE 23(1), total 23; compression: 100.0%
-> 
-> [349071.732489] drbd drbd0/0 drbd0: send bitmap stats [Bytes(packets)]:
-> plain 0(0), RLE 23(1), total 23; compression: 100.0%
-> 
-> [349071.740178] drbd drbd0/0 drbd0: conn( WFBitMapT -> WFSyncUUID )
-> 
-> [349071.787113] drbd drbd0/0 drbd0: updated sync uuid
-> 3376B2019708F68A:0000000000000000:7D97648599B446DC:7D96648599B446DD
-> 
-> [349071.794907] drbd drbd0/0 drbd0: helper command: /sbin/drbdadm
-> before-resync-target minor-0
-> 
-> [349071.800006] drbd drbd0/0 drbd0: helper command: /sbin/drbdadm
-> before-resync-target minor-0 exit code 0 (0x0)
-> 
-> [349071.807737] drbd drbd0/0 drbd0: conn( WFSyncUUID -> SyncTarget )
-> 
-> [349071.811639] drbd drbd0/0 drbd0: Began resync as SyncTarget (will sync 4
-> KB [1 bits set]).
-> 
-> [349071.916117] drbd drbd0: sock was shut down by peer
-> 
-> [349071.919955] drbd drbd0: peer( Primary -> Unknown ) conn( SyncTarget ->
-> BrokenPipe ) pdsk( UpToDate -> DUnknown )
-> 
-> [349071.927796] drbd drbd0: short read (expected size 4096)
-> 
-> [349071.931812] drbd drbd0: error receiving RSDataReply, e: -5 l: 4096!
-> 
-> [349071.935864] drbd drbd0: ack_receiver terminated
-> 
-> [349071.939906] drbd drbd0: Terminating drbd_a_drbd0
-> 
-> [349072.088385] drbd drbd0: Connection closed
-> 
-> [349072.092398] drbd drbd0: conn( BrokenPipe -> Unconnected )
-> 
-> [349072.096436] drbd drbd0: receiver terminated
-> 
-> [349072.100469] drbd drbd0: Restarting receiver thread
-> 
-> [349072.104454] drbd drbd0: receiver (re)started
-> 
-> [349072.108373] drbd drbd0: conn( Unconnected -> WFConnection )
-> 
-> 
-> --
-> 
->  Best Regards,
-> 
->  Serguei
 
+--=20
+Thanks,
+~Nick Desaulniers
