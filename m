@@ -2,91 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 42C5F792C37
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:11:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1913A792B0A
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:02:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239538AbjIERJI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 13:09:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35888 "EHLO
+        id S229446AbjIEQqX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 12:46:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45676 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1347804AbjIEREK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 13:04:10 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF0646A1
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 09:21:33 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1693930812;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=kiG7LMI58PbxxQ7NC4rZfW+AyfhbvsaLPh/UOZNP78k=;
-        b=hNWWMdeDPkr2CfN4TkOlf2pPNFc/bSbm9t9S7V7Z6q5yXdtGHnGWOPNqfodHuRMAk1Je9W
-        w1GUSRNe0qO2bAcGz/Jhz/vOPBVRrWNcG8M8KLwGTrfNK+M8JngbHVdr5n2TyzyeSlpsgf
-        VahIldVh47nG9/uiExegXX5c9IpDtxI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-657-j9vJhjXcOjWqfSdsL5P9pA-1; Tue, 05 Sep 2023 12:20:09 -0400
-X-MC-Unique: j9vJhjXcOjWqfSdsL5P9pA-1
-Received: from smtp.corp.redhat.com (int-mx04.intmail.prod.int.rdu2.redhat.com [10.11.54.4])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        with ESMTP id S243131AbjIEQjc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 12:39:32 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755F076BE;
+        Tue,  5 Sep 2023 09:35:33 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 8B0A11C09CC6;
-        Tue,  5 Sep 2023 16:20:08 +0000 (UTC)
-Received: from oldenburg.str.redhat.com (unknown [10.2.16.42])
-        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8C0EF2026D68;
-        Tue,  5 Sep 2023 16:20:06 +0000 (UTC)
-From:   Florian Weimer <fweimer@redhat.com>
-To:     Andrew Morton <akpm@linux-foundation.org>
-Cc:     Damian Tometzki <dtometzki@fedoraproject.org>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Shuah Khan <shuah@kernel.org>, Jeff Xu <jeffxu@google.com>,
-        Kees Cook <keescook@chromium.org>,
-        Daniel Verkamp <dverkamp@chromium.org>,
-        Christian Brauner <brauner@kernel.org>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        stable@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org
-Subject: Re: [PATCH v2 3/5] memfd: improve userspace warnings for missing
- exec-related flags
-References: <20230814-memfd-vm-noexec-uapi-fixes-v2-0-7ff9e3e10ba6@cyphar.com>
-        <20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com>
-        <ZPFzCSIgZ4QuHsSC@fedora.fritz.box>
-        <20230902155850.ca1d32c16862cbe54ebd36ef@linux-foundation.org>
-Date:   Tue, 05 Sep 2023 18:20:05 +0200
-In-Reply-To: <20230902155850.ca1d32c16862cbe54ebd36ef@linux-foundation.org>
-        (Andrew Morton's message of "Sat, 2 Sep 2023 15:58:50 -0700")
-Message-ID: <8734zs7ft6.fsf@oldenburg.str.redhat.com>
-User-Agent: Gnus/5.13 (Gnus v5.13) Emacs/28.2 (gnu/linux)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EF0A60B99;
+        Tue,  5 Sep 2023 16:34:12 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC1FC433C7;
+        Tue,  5 Sep 2023 16:34:11 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693931651;
+        bh=X5L10YoHz2zVk5p4qYnAUloFN9ZU4ucYAmPjaaoOySo=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=ZiRm+ulKAd/8crD2KbxWsd8Z1u6QSPzvjsg3PZi/Ay9sIVGqFZh1oiDzQ3Iuh1tHJ
+         q2s5rvZgpGwFwt7+D9xghQlwMy5cya4SYELzWd5VinCDXVWABFJ/oyHVo62d5UyzXp
+         8qhJO2iairFbbwQ+eEVxTK9It94jANP8iPShHeR6dRwnPdLUBjctZN2V1srDCPdN5J
+         C0Z8vTh3s//RVWM9P1Wy0qmpqbSWEXj6uBT/yVxsSqgXHdNIC2whzwI5baDILCe21A
+         LPPE9/6G9J0KwHuvHBjd0aoO4zgl+aYA34WVJf7FZQIZcUc2/ekrBPr0sYhkiV1Ady
+         xiG14GAhJs2pg==
+Date:   Tue, 5 Sep 2023 10:34:08 -0600
+From:   Keith Busch <kbusch@kernel.org>
+To:     =?iso-8859-1?Q?Cl=E1udio?= Sampaio <patola@gmail.com>
+Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux NVMe <linux-nvme@lists.infradead.org>,
+        Linux Stable <stable@vger.kernel.org>
+Subject: Re: Fwd: Lexar NM790 SSDs are not recognized anymore after 6.1.50 LTS
+Message-ID: <ZPdYgK0ebgHtDTXd@kbusch-mbp>
+References: <8af186ba-5f64-2102-8f9c-3969b0906893@gmail.com>
+ <faa245bf-e925-45b0-9827-b0c9c117e06c@leemhuis.info>
+ <ZPc8v9-lHF4jAcxL@kbusch-mbp>
+ <2a379b3a-6ff3-444b-bbad-0fba0bc3a28b@leemhuis.info>
+ <ZPdF3uqbJNSZADzv@kbusch-mbp>
+ <CA+4wXKCi+idhPQHx3ywdEDHqRmOyBbhz4Gj4gGr_dDvWBWohQQ@mail.gmail.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.4
+Content-Type: text/plain; charset=iso-8859-1
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <CA+4wXKCi+idhPQHx3ywdEDHqRmOyBbhz4Gj4gGr_dDvWBWohQQ@mail.gmail.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-* Andrew Morton:
+On Tue, Sep 05, 2023 at 05:50:06PM +0200, Cláudio Sampaio wrote:
+> Hi Thorsten and Keith,
+> 
+> Thanks for the details. I'm still unsure if responding by email is better
+> or adding to the ticket, but here it goes: I have tried for days both with
+> complete power off of the machine and cycle-booting all kernels in
+> succession and without exception, 6.1.x LTS and the patched 6.5.1 kernel
+> always recognize and operate the NVME, whilst the other kernels also fail
+> with the same error message. As this is my "production" desktop, though,
+> during the week it's more difficult to me to perform tests with it, but I
+> will try to do it in a more methodic way and also with 6.5.1 vanilla.
+> 
+> As for the reason the Lexar doesn't catch the quirk default, I can't say I
+> catch the complex logic of the driver activation, but I found out how to
+> "fix" for my case because there are three other Lexar models in the pci.c
+> file: NM610, NM620 and NM760 (this one with an additional quirk marked on
+> it on the code, NVME_QUIRK_IGNORE_DEV_SUBNQN) -- so I guess whatever
+> justifies the exception for them also justifies for my model, NM790. Might
+> even be the case that I would need NVME_QUIRK_IGNORE_DEV_SUBNQN (not sure
+> what it does) like in the NM760 case, but it activates correctly without it.
 
-> OK, thanks, I'll revert this.  Spamming everyone even harder isn't a
-> good way to get developers to fix their stuff.
+The existing Lexar quirks for the identifier existed before the default
+kernel behavior changed with respect to how identifiers are considered.
 
-Is this really buggy userspace?  Are future kernels going to require
-some of these flags?
+But the report says the device failed to enumerate with a "device not
+ready" error message. That error message happens *before* identifiers
+are checked, so the quirk should be a no-op with respect to that error
+message. And the driver abandons the device after printing that message,
+so no futher action should be taken no matter what quirk you've set.
 
-That's going to break lots of applications which use memfd_create to
-enable run-time code generation on locked-down systems because it looked
-like a stable interface (=E2=80=9Cdon't break userspace=E2=80=9D and all th=
-at).
-
-Thanks,
-Florian
-
+In order for this quirk to have any effect at all, the error you should
+have seen should look like a "duplicate IDs" message.
