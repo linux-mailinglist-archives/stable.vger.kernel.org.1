@@ -2,98 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1913A792B0A
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:02:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 131F5792C66
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:29:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229446AbjIEQqX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 12:46:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45676 "EHLO
+        id S237821AbjIER3R (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 13:29:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243131AbjIEQjc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 12:39:32 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [139.178.84.217])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 755F076BE;
-        Tue,  5 Sep 2023 09:35:33 -0700 (PDT)
+        with ESMTP id S240692AbjIER2H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 13:28:07 -0400
+Received: from sin.source.kernel.org (sin.source.kernel.org [IPv6:2604:1380:40e1:4800::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7075F5065F;
+        Tue,  5 Sep 2023 09:51:47 -0700 (PDT)
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits))
         (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 6EF0A60B99;
-        Tue,  5 Sep 2023 16:34:12 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FC1FC433C7;
-        Tue,  5 Sep 2023 16:34:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1693931651;
-        bh=X5L10YoHz2zVk5p4qYnAUloFN9ZU4ucYAmPjaaoOySo=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZiRm+ulKAd/8crD2KbxWsd8Z1u6QSPzvjsg3PZi/Ay9sIVGqFZh1oiDzQ3Iuh1tHJ
-         q2s5rvZgpGwFwt7+D9xghQlwMy5cya4SYELzWd5VinCDXVWABFJ/oyHVo62d5UyzXp
-         8qhJO2iairFbbwQ+eEVxTK9It94jANP8iPShHeR6dRwnPdLUBjctZN2V1srDCPdN5J
-         C0Z8vTh3s//RVWM9P1Wy0qmpqbSWEXj6uBT/yVxsSqgXHdNIC2whzwI5baDILCe21A
-         LPPE9/6G9J0KwHuvHBjd0aoO4zgl+aYA34WVJf7FZQIZcUc2/ekrBPr0sYhkiV1Ady
-         xiG14GAhJs2pg==
-Date:   Tue, 5 Sep 2023 10:34:08 -0600
-From:   Keith Busch <kbusch@kernel.org>
-To:     =?iso-8859-1?Q?Cl=E1udio?= Sampaio <patola@gmail.com>
-Cc:     Linux regressions mailing list <regressions@lists.linux.dev>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux NVMe <linux-nvme@lists.infradead.org>,
-        Linux Stable <stable@vger.kernel.org>
-Subject: Re: Fwd: Lexar NM790 SSDs are not recognized anymore after 6.1.50 LTS
-Message-ID: <ZPdYgK0ebgHtDTXd@kbusch-mbp>
-References: <8af186ba-5f64-2102-8f9c-3969b0906893@gmail.com>
- <faa245bf-e925-45b0-9827-b0c9c117e06c@leemhuis.info>
- <ZPc8v9-lHF4jAcxL@kbusch-mbp>
- <2a379b3a-6ff3-444b-bbad-0fba0bc3a28b@leemhuis.info>
- <ZPdF3uqbJNSZADzv@kbusch-mbp>
- <CA+4wXKCi+idhPQHx3ywdEDHqRmOyBbhz4Gj4gGr_dDvWBWohQQ@mail.gmail.com>
+        by sin.source.kernel.org (Postfix) with ESMTPS id CC8F4CE1288;
+        Tue,  5 Sep 2023 16:41:16 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C81B1C433C7;
+        Tue,  5 Sep 2023 16:41:13 +0000 (UTC)
+Date:   Tue, 5 Sep 2023 12:41:32 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     Tze-nan Wu <Tze-nan.Wu@mediatek.com>
+Cc:     <mhiramat@kernel.org>, <bobule.chang@mediatek.com>,
+        <wsd_upstream@mediatek.com>, <cheng-jui.wang@mediatek.com>,
+        <stable@vger.kernel.org>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        <linux-kernel@vger.kernel.org>,
+        <linux-trace-kernel@vger.kernel.org>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-mediatek@lists.infradead.org>
+Subject: Re: [PATCH] ring-buffer: Do not read at &event->array[0] if it
+ across the page
+Message-ID: <20230905124132.672be4c0@gandalf.local.home>
+In-Reply-To: <20230905142319.32582-1-Tze-nan.Wu@mediatek.com>
+References: <20230905142319.32582-1-Tze-nan.Wu@mediatek.com>
+X-Mailer: Claws Mail 3.19.1 (GTK+ 2.24.33; x86_64-pc-linux-gnu)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=iso-8859-1
-Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <CA+4wXKCi+idhPQHx3ywdEDHqRmOyBbhz4Gj4gGr_dDvWBWohQQ@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=US-ASCII
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 05:50:06PM +0200, Cláudio Sampaio wrote:
-> Hi Thorsten and Keith,
-> 
-> Thanks for the details. I'm still unsure if responding by email is better
-> or adding to the ticket, but here it goes: I have tried for days both with
-> complete power off of the machine and cycle-booting all kernels in
-> succession and without exception, 6.1.x LTS and the patched 6.5.1 kernel
-> always recognize and operate the NVME, whilst the other kernels also fail
-> with the same error message. As this is my "production" desktop, though,
-> during the week it's more difficult to me to perform tests with it, but I
-> will try to do it in a more methodic way and also with 6.5.1 vanilla.
-> 
-> As for the reason the Lexar doesn't catch the quirk default, I can't say I
-> catch the complex logic of the driver activation, but I found out how to
-> "fix" for my case because there are three other Lexar models in the pci.c
-> file: NM610, NM620 and NM760 (this one with an additional quirk marked on
-> it on the code, NVME_QUIRK_IGNORE_DEV_SUBNQN) -- so I guess whatever
-> justifies the exception for them also justifies for my model, NM790. Might
-> even be the case that I would need NVME_QUIRK_IGNORE_DEV_SUBNQN (not sure
-> what it does) like in the NM760 case, but it activates correctly without it.
+On Tue, 5 Sep 2023 22:23:15 +0800
+Tze-nan Wu <Tze-nan.Wu@mediatek.com> wrote:
 
-The existing Lexar quirks for the identifier existed before the default
-kernel behavior changed with respect to how identifiers are considered.
+> resend again due to forget cc stable@vger.kernel.org
 
-But the report says the device failed to enumerate with a "device not
-ready" error message. That error message happens *before* identifiers
-are checked, so the quirk should be a no-op with respect to that error
-message. And the driver abandons the device after printing that message,
-so no futher action should be taken no matter what quirk you've set.
+You don't need to Cc' stable. I'll add the Cc if I feel it is the right
+patch for the solution.
 
-In order for this quirk to have any effect at all, the error you should
-have seen should look like a "duplicate IDs" message.
+-- Steve
