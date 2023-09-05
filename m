@@ -2,98 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8EF7792F81
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 22:08:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2348792FA8
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 22:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239646AbjIEUIk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 16:08:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
+        id S240330AbjIEUNg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 16:13:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37060 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232910AbjIEUIj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 16:08:39 -0400
-X-Greylist: delayed 3696 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 13:08:36 PDT
+        with ESMTP id S243365AbjIEUNO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 16:13:14 -0400
+X-Greylist: delayed 253 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 13:12:50 PDT
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95D89CC;
-        Tue,  5 Sep 2023 13:08:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 324E8C43395;
-        Tue,  5 Sep 2023 18:12:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1693937542;
-        bh=Cyge68y4cOxdgZX5nOi6xxJiDLYqCX3/U9yRL+loHu4=;
-        h=Date:To:From:Subject:From;
-        b=crveIJDcgJdn0DLGGB27lvI8GuOW1yuLRi7ziEetgfx0wjJR/zl4/cmk1wSIHPtr1
-         +zMfK353wbezWeJATf/kbXKRYuTOPxMcXbY3r3XAxse3Hwkn0+t6KH33zcwoaPvEKu
-         7sERAk1EcrFJbno9aNqtJV/YHUEB4Wudyo31mWT4=
-Date:   Tue, 05 Sep 2023 11:12:21 -0700
-To:     mm-commits@vger.kernel.org, stable@vger.kernel.org,
-        shuah@kernel.org, keescook@chromium.org, jeffxu@google.com,
-        dverkamp@chromium.org, dtometzki@fedoraproject.org,
-        cyphar@cyphar.com, brauner@kernel.org, akpm@linux-foundation.org,
-        akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] revert-memfd-improve-userspace-warnings-for-missing-exec-related-flags.patch removed from -mm tree
-Message-Id: <20230905181222.324E8C43395@smtp.kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DFAD11709
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 13:12:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AD5BC433B8;
+        Tue,  5 Sep 2023 18:26:52 +0000 (UTC)
+Received: from rostedt by gandalf with local (Exim 4.96)
+        (envelope-from <rostedt@goodmis.org>)
+        id 1qdalb-000zOA-2p;
+        Tue, 05 Sep 2023 14:27:11 -0400
+Message-ID: <20230905182711.692687042@goodmis.org>
+User-Agent: quilt/0.66
+Date:   Tue, 05 Sep 2023 14:26:08 -0400
+From:   Steven Rostedt <rostedt@goodmis.org>
+To:     linux-kernel@vger.kernel.org, linux-trace-kernel@vger.kernel.org
+Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Ajay Kaher <akaher@vmware.com>,
+        kernel test robot <oliver.sang@intel.com>,
+        Ching-lin Yu <chinglinyu@google.com>, stable@vger.kernel.org
+Subject: [PATCH 1/2] tracefs: Add missing lockdown check to tracefs_create_dir()
+References: <20230905182607.505212458@goodmis.org>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
+X-Spam-Status: No, score=-1.6 required=5.0 tests=BAYES_00,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-The quilt patch titled
-     Subject: revert "memfd: improve userspace warnings for missing exec-related flags".
-has been removed from the -mm tree.  Its filename was
-     revert-memfd-improve-userspace-warnings-for-missing-exec-related-flags.patch
+The function tracefs_create_dir() was missing a lockdown check and was
+called by the RV code. This gave an inconsistent behavior of this function
+returning success while other tracefs functions failed. This caused the
+inode being freed by the wrong kmem_cache.
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+Link: https://lore.kernel.org/all/202309050916.58201dc6-oliver.sang@intel.com/
 
-------------------------------------------------------
-From: Andrew Morton <akpm@linux-foundation.org>
-Subject: revert "memfd: improve userspace warnings for missing exec-related flags".
-Date: Sat Sep  2 03:59:31 PM PDT 2023
-
-This warning is telling userspace developers to pass MFD_EXEC and
-MFD_NOEXEC_SEAL to memfd_create().  Commit 434ed3350f57 ("memfd: improve
-userspace warnings for missing exec-related flags") made the warning more
-frequent and visible in the hope that this would accelerate the fixing of
-errant userspace.
-
-But the overall effect is to generate far too much dmesg noise.
-
-Fixes: 434ed3350f57 ("memfd: improve userspace warnings for missing exec-related flags")
-Reported-by: Damian Tometzki <dtometzki@fedoraproject.org>
-Closes: https://lkml.kernel.org/r/ZPFzCSIgZ4QuHsSC@fedora.fritz.box
-Cc: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Daniel Verkamp <dverkamp@chromium.org>
-Cc: Jeff Xu <jeffxu@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Cc: stable@vger.kernel.org
+Fixes: bf8e602186ec4 ("tracing: Do not create tracefs files if tracefs lockdown is in effect")
+Reported-by: kernel test robot <oliver.sang@intel.com>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
+ fs/tracefs/inode.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
- mm/memfd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
---- a/mm/memfd.c~revert-memfd-improve-userspace-warnings-for-missing-exec-related-flags
-+++ a/mm/memfd.c
-@@ -316,7 +316,7 @@ SYSCALL_DEFINE2(memfd_create,
- 		return -EINVAL;
+diff --git a/fs/tracefs/inode.c b/fs/tracefs/inode.c
+index de5b72216b1a..3b8dd938b1c8 100644
+--- a/fs/tracefs/inode.c
++++ b/fs/tracefs/inode.c
+@@ -673,6 +673,9 @@ static struct dentry *__create_dir(const char *name, struct dentry *parent,
+  */
+ struct dentry *tracefs_create_dir(const char *name, struct dentry *parent)
+ {
++	if (security_locked_down(LOCKDOWN_TRACEFS))
++		return NULL;
++
+ 	return __create_dir(name, parent, &simple_dir_inode_operations);
+ }
  
- 	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
--		pr_info_ratelimited(
-+		pr_warn_once(
- 			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set\n",
- 			current->comm, task_pid_nr(current));
- 	}
-_
-
-Patches currently in -mm which might be from akpm@linux-foundation.org are
-
-mm-shmem-fix-race-in-shmem_undo_range-w-thp-fix.patch
-
+-- 
+2.40.1
