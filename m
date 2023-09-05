@@ -2,80 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD3B67924B6
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4AC5A79249B
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232511AbjIEP7c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48626 "EHLO
+        id S231932AbjIEP7S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59568 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354147AbjIEJ4x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 05:56:53 -0400
-Received: from mx0a-0031df01.pphosted.com (mx0a-0031df01.pphosted.com [205.220.168.131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3FC518C;
-        Tue,  5 Sep 2023 02:56:49 -0700 (PDT)
-Received: from pps.filterd (m0279867.ppops.net [127.0.0.1])
-        by mx0a-0031df01.pphosted.com (8.17.1.19/8.17.1.19) with ESMTP id 3859PmAU004368;
-        Tue, 5 Sep 2023 09:56:42 GMT
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=quicinc.com; h=from : to : cc :
- subject : date : message-id : in-reply-to : references : mime-version :
- content-transfer-encoding : content-type; s=qcppdkim1;
- bh=w+hMWE0inat5/A4JRfciMK6nSLqo0OmJo2FFkWmjUgk=;
- b=LpUy5pfnPP5bKIP8lIFxWA0XI2dlfuz187SWi2ocSBLck6+wHL6nL3NNYjBAtR+Oi29m
- pToixJrqZwOMwrF5ytx/HhHYKbFEUbc5tDArnwNpyzYOJMlZ/gBx+6N48JyX0BajvlZS
- nqDWiCOjOitp/QuZGrqdVFd0lzKnBLid93aZdf2reRuK8hpZSP4Es0s+lyGc9ckGeUI9
- um9XHA3CkOP/ZAAfAntUvuAVx0SolfDOrF60rd/dIp7cGZCSlvHku888exSziAQEXcfb
- l8YASB/IBOvfolRbQarZj29Pnxjxsvfxlx1j3BYW0dlQvlqEeiy4rWbNFvqOW2+CddOS cg== 
-Received: from nalasppmta04.qualcomm.com (Global_NAT1.qualcomm.com [129.46.96.20])
-        by mx0a-0031df01.pphosted.com (PPS) with ESMTPS id 3swpreh3na-1
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 05 Sep 2023 09:56:42 +0000
-Received: from nalasex01c.na.qualcomm.com (nalasex01c.na.qualcomm.com [10.47.97.35])
-        by NALASPPMTA04.qualcomm.com (8.17.1.5/8.17.1.5) with ESMTPS id 3859ufEE013365
-        (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NOT);
-        Tue, 5 Sep 2023 09:56:41 GMT
-Received: from hu-viswanat-blr.qualcomm.com (10.80.80.8) by
- nalasex01c.na.qualcomm.com (10.47.97.35) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.30; Tue, 5 Sep 2023 02:56:35 -0700
-From:   Vignesh Viswanathan <quic_viswanat@quicinc.com>
-To:     <agross@kernel.org>, <andersson@kernel.org>,
-        <konrad.dybcio@linaro.org>, <robh+dt@kernel.org>,
-        <krzysztof.kozlowski+dt@linaro.org>, <conor+dt@kernel.org>,
-        <linux-arm-msm@vger.kernel.org>, <devicetree@vger.kernel.org>,
-        <linux-kernel@vger.kernel.org>, <ohad@wizery.com>,
-        <baolin.wang@linux.alibaba.com>, <linux-remoteproc@vger.kernel.org>
-CC:     <quic_kathirav@quicinc.com>, <quic_anusha@quicinc.com>,
-        <quic_sjaganat@quicinc.com>, <quic_srichara@quicinc.com>,
-        <quic_varada@quicinc.com>,
-        Vignesh Viswanathan <quic_viswanat@quicinc.com>,
-        <stable@vger.kernel.org>
-Subject: [PATCH v2 2/2] hwspinlock: qcom: Remove IPQ6018 SOC specific compatible
-Date:   Tue, 5 Sep 2023 15:25:35 +0530
-Message-ID: <20230905095535.1263113-3-quic_viswanat@quicinc.com>
-X-Mailer: git-send-email 2.41.0
-In-Reply-To: <20230905095535.1263113-1-quic_viswanat@quicinc.com>
-References: <20230905095535.1263113-1-quic_viswanat@quicinc.com>
+        with ESMTP id S1354211AbjIEKKR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 06:10:17 -0400
+Received: from mail-ua1-x92c.google.com (mail-ua1-x92c.google.com [IPv6:2607:f8b0:4864:20::92c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53469B4
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 03:10:13 -0700 (PDT)
+Received: by mail-ua1-x92c.google.com with SMTP id a1e0cc1a2514c-7a4ee7f9c37so967038241.0
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 03:10:13 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1693908612; x=1694513412; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=D1NVo9wK9uR6XB7OEqVjA5/FypKBWn8rSsF+XNP2y7I=;
+        b=a72jylmkIoYnjXaDvFcKy0oR94ab7vefso8+72n1KVQv3ey8XA9jDeCQSDIIS9bKTR
+         vpfWhlwWdXdQ5vn8do1cohTJanoTZSiM57cxIOmojT0Il7PoXI34fxCyQ7tg339ZpwxT
+         12TSBWO0BQ2hQ4HvuQLvBUhe58Ve1hjcOa2aJFrFqCMAoVpAzbU3/Dd3pvBcpSqX3F4W
+         YaEQCxvqXUvBU24Uerx9yW0b4MhgbSmqwK0F0a1ln6BdVQUC9vr0R85YF3XFKToRkEJm
+         ErhwghiGEq/82KK+h95gjISYCAM82MTR8Ma2vctvn/j66VO1SKn2dPJxnJ/i2TlvwA8H
+         uMLw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693908612; x=1694513412;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=D1NVo9wK9uR6XB7OEqVjA5/FypKBWn8rSsF+XNP2y7I=;
+        b=AIa+941+AGxNuHs0CaHAsdnumiJbUfiRxLA8awLQ4znm+TWWRWDIeYnulYJyCEPGUu
+         1oy4BfFZdURAwVhIQfpweghNg3ZfDPTTJBBGmHqj1IpPw8SH/DUeIz6iZz3O9PShpTQ1
+         9H5x//SqrQW3Cz16zWBPqaYiT+r8p54OtZPr4UutmcSGFGpySArgi3Yut3QrKZmPHJoS
+         uG8C49F0noo+YBmsgTrFWbh1TW50aD+XjHZlhyYDlIb/idKPS3KRoGFDSAZxtukxStZh
+         JIhVxJ+jTSu4BxadslWm9IkmaVeu37Ay/HtAuMvzeJCwcFUZXKoBt5NzPYuv+d0jr0EQ
+         Ka/g==
+X-Gm-Message-State: AOJu0YwMfQWJLU2xt1R58QfQ6CGTKKhe/Lakf5+IlB4Ua7C4JjV/JWx7
+        D92Be8MdQFU/XBtSudUQXGLh+CAiMY1TCJcTKpPyfw==
+X-Google-Smtp-Source: AGHT+IE1V6bh5Wpm7L8b3xz92pn+LrSd3K1fkSSS8XT9JUjoqIZlkLmMmgJwNcjHVjrcuXzyd/kx7ikhguuSfU0jKJI=
+X-Received: by 2002:a05:6102:2454:b0:44e:d28f:e49c with SMTP id
+ g20-20020a056102245400b0044ed28fe49cmr10435179vss.23.1693908612436; Tue, 05
+ Sep 2023 03:10:12 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-Content-Type: text/plain
-X-Originating-IP: [10.80.80.8]
-X-ClientProxiedBy: nasanex01b.na.qualcomm.com (10.46.141.250) To
- nalasex01c.na.qualcomm.com (10.47.97.35)
-X-QCInternal: smtphost
-X-Proofpoint-Virus-Version: vendor=nai engine=6200 definitions=5800 signatures=585085
-X-Proofpoint-ORIG-GUID: hkx8xRX6TLbakPIdwH7rQgeA0xlOnQ4p
-X-Proofpoint-GUID: hkx8xRX6TLbakPIdwH7rQgeA0xlOnQ4p
-X-Proofpoint-Virus-Version: vendor=baseguard
- engine=ICAP:2.0.267,Aquarius:18.0.957,Hydra:6.0.601,FMLib:17.11.176.26
- definitions=2023-09-05_07,2023-08-31_01,2023-05-22_02
-X-Proofpoint-Spam-Details: rule=outbound_notspam policy=outbound score=0 bulkscore=0 mlxlogscore=955
- spamscore=0 suspectscore=0 impostorscore=0 malwarescore=0 phishscore=0
- clxscore=1015 lowpriorityscore=0 priorityscore=1501 mlxscore=0
- adultscore=0 classifier=spam adjust=0 reason=mlx scancount=1
- engine=8.12.0-2308100000 definitions=main-2309050088
+References: <20230904182945.178705038@linuxfoundation.org>
+In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
+From:   Naresh Kamboju <naresh.kamboju@linaro.org>
+Date:   Tue, 5 Sep 2023 15:40:00 +0530
+Message-ID: <CA+G9fYsXyPe92z8Urfn46vSypOd9EYYGh1Ei1YTkHWJdGmBUJw@mail.gmail.com>
+Subject: Re: [PATCH 5.15 00/28] 5.15.131-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -83,37 +72,170 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-IPQ6018 has 32 tcsr_mutex hwlock registers with stride 0x1000.
-The compatible string qcom,ipq6018-tcsr-mutex is mapped to
-of_msm8226_tcsr_mutex which has 32 locks configured with stride of 0x80
-and doesn't match the HW present in IPQ6018.
+On Tue, 5 Sept 2023 at 00:06, Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 5.15.131 release.
+> There are 28 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-=
+5.15.131-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-5.15.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-Remove IPQ6018 specific compatible string so that it fallsback to
-of_tcsr_mutex data which maps to the correct configuration for IPQ6018.
 
-Changes in v2:
- - Updated commit message
- - Added Fixes and stable tags
+Results from Linaro=E2=80=99s test farm.
+No regressions on arm64, arm, x86_64, and i386.
 
-Cc: stable@vger.kernel.org
-Fixes: 5d4753f741d8 ("hwspinlock: qcom: add support for MMIO on older SoCs")
-Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
----
- drivers/hwspinlock/qcom_hwspinlock.c | 1 -
- 1 file changed, 1 deletion(-)
+Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
 
-diff --git a/drivers/hwspinlock/qcom_hwspinlock.c b/drivers/hwspinlock/qcom_hwspinlock.c
-index a0fd67fd2934..814dfe8697bf 100644
---- a/drivers/hwspinlock/qcom_hwspinlock.c
-+++ b/drivers/hwspinlock/qcom_hwspinlock.c
-@@ -115,7 +115,6 @@ static const struct of_device_id qcom_hwspinlock_of_match[] = {
- 	{ .compatible = "qcom,sfpb-mutex", .data = &of_sfpb_mutex },
- 	{ .compatible = "qcom,tcsr-mutex", .data = &of_tcsr_mutex },
- 	{ .compatible = "qcom,apq8084-tcsr-mutex", .data = &of_msm8226_tcsr_mutex },
--	{ .compatible = "qcom,ipq6018-tcsr-mutex", .data = &of_msm8226_tcsr_mutex },
- 	{ .compatible = "qcom,msm8226-tcsr-mutex", .data = &of_msm8226_tcsr_mutex },
- 	{ .compatible = "qcom,msm8974-tcsr-mutex", .data = &of_msm8226_tcsr_mutex },
- 	{ .compatible = "qcom,msm8994-tcsr-mutex", .data = &of_msm8226_tcsr_mutex },
--- 
-2.41.0
+## Build
+* kernel: 5.15.131-rc1
+* git: https://gitlab.com/Linaro/lkft/mirrors/stable/linux-stable-rc
+* git branch: linux-5.15.y
+* git commit: bec292fb85c525832713d1aa73f07c39a477e2ab
+* git describe: v5.15.130-29-gbec292fb85c5
+* test details:
+https://qa-reports.linaro.org/lkft/linux-stable-rc-linux-5.15.y/build/v5.15=
+.130-29-gbec292fb85c5
 
+## Test Regressions (compared to v5.15.130)
+
+## Metric Regressions (compared to v5.15.130)
+
+## Test Fixes (compared to v5.15.130)
+
+## Metric Fixes (compared to v5.15.130)
+
+## Test result summary
+total: 91910, pass: 75958, fail: 2130, skip: 13741, xfail: 81
+
+## Build Summary
+* arc: 5 total, 5 passed, 0 failed
+* arm: 112 total, 111 passed, 1 failed
+* arm64: 41 total, 40 passed, 1 failed
+* i386: 32 total, 31 passed, 1 failed
+* mips: 27 total, 26 passed, 1 failed
+* parisc: 4 total, 4 passed, 0 failed
+* powerpc: 27 total, 26 passed, 1 failed
+* riscv: 11 total, 10 passed, 1 failed
+* s390: 12 total, 11 passed, 1 failed
+* sh: 14 total, 12 passed, 2 failed
+* sparc: 8 total, 8 passed, 0 failed
+* x86_64: 37 total, 36 passed, 1 failed
+
+## Test suites summary
+* boot
+* kselftest-android
+* kselftest-arm64
+* kselftest-breakpoints
+* kselftest-capabilities
+* kselftest-cgroup
+* kselftest-clone3
+* kselftest-core
+* kselftest-cpu-hotplug
+* kselftest-cpufreq
+* kselftest-drivers-dma-buf
+* kselftest-efivarfs
+* kselftest-exec
+* kselftest-filesystems
+* kselftest-filesystems-binderfs
+* kselftest-filesystems-epoll
+* kselftest-firmware
+* kselftest-fpu
+* kselftest-ftrace
+* kselftest-futex
+* kselftest-gpio
+* kselftest-intel_pstate
+* kselftest-ipc
+* kselftest-ir
+* kselftest-kcmp
+* kselftest-kexec
+* kselftest-lib
+* kselftest-membarrier
+* kselftest-memfd
+* kselftest-memory-hotplug
+* kselftest-mincore
+* kselftest-mount
+* kselftest-mqueue
+* kselftest-net
+* kselftest-net-forwarding
+* kselftest-net-mptcp
+* kselftest-netfilter
+* kselftest-nsfs
+* kselftest-openat2
+* kselftest-pid_namespace
+* kselftest-pidfd
+* kselftest-proc
+* kselftest-pstore
+* kselftest-ptrace
+* kselftest-rseq
+* kselftest-rtc
+* kselftest-seccomp
+* kselftest-sigaltstack
+* kselftest-size
+* kselftest-splice
+* kselftest-static_keys
+* kselftest-sync
+* kselftest-sysctl
+* kselftest-tc-testing
+* kselftest-timens
+* kselftest-timers
+* kselftest-tmpfs
+* kselftest-tpm2
+* kselftest-user
+* kselftest-user_events
+* kselftest-vDSO
+* kselftest-vm
+* kselftest-watchdog
+* kselftest-x86
+* kselftest-zram
+* kunit
+* kvm-unit-tests
+* libgpiod
+* log-parser-boot
+* log-parser-test
+* ltp-cap_bounds
+* ltp-commands
+* ltp-containers
+* ltp-controllers
+* ltp-cpuhotplug
+* ltp-crypto
+* ltp-cve
+* ltp-dio
+* ltp-fcntl-locktests
+* ltp-filecaps
+* ltp-fs
+* ltp-fs_bind
+* ltp-fs_perms_simple
+* ltp-fsx
+* ltp-hugetlb
+* ltp-io
+* ltp-ipc
+* ltp-math
+* ltp-mm
+* ltp-nptl
+* ltp-pty
+* ltp-sched
+* ltp-securebits
+* ltp-smoke
+* ltp-syscalls
+* ltp-tracing
+* perf
+* rcutorture
+
+--
+Linaro LKFT
+https://lkft.linaro.org
