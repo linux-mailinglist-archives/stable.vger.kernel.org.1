@@ -2,181 +2,111 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F6797924F0
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7C4E2792460
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233472AbjIEQAL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 12:00:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59118 "EHLO
+        id S230355AbjIEP6w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:58:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34478 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354785AbjIEOYB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 10:24:01 -0400
-Received: from mailgw01.mediatek.com (unknown [60.244.123.138])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C153D189;
-        Tue,  5 Sep 2023 07:23:56 -0700 (PDT)
-X-UUID: d4b5e6924bf711eea33bb35ae8d461a2-20230905
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=mediatek.com; s=dk;
-        h=Content-Type:MIME-Version:Message-ID:Date:Subject:CC:To:From; bh=zAwm/IYGf6NFCXp4FoAerIpc2O3P6mE2ikN67xCGKfM=;
-        b=NvQdIWQmpzHE0sOdolYcSFeeHZrWsU80pO3MgdJEz42TsBQ2UKfVnzRemqKfVXoSMVR3rISh2IonYOo1ty76HU3iu4CHecF3eIPAcEBHpEBOX5QSzSlTTt8jNzhk0heWWA0wfmTADZNcYG76IW+3NKn64W8B3KL569QzG88nazU=;
-X-CID-P-RULE: Release_Ham
-X-CID-O-INFO: VERSION:1.1.31,REQID:eeb17bee-1028-4acd-8af4-b660a635af47,IP:0,U
-        RL:0,TC:0,Content:-5,EDM:0,RT:0,SF:0,FILE:0,BULK:0,RULE:Release_Ham,ACTION
-        :release,TS:-5
-X-CID-META: VersionHash:0ad78a4,CLOUDID:d7e9abc2-1e57-4345-9d31-31ad9818b39f,B
-        ulkID:nil,BulkQuantity:0,Recheck:0,SF:102,TC:nil,Content:0,EDM:-3,IP:nil,U
-        RL:11|1,File:nil,Bulk:nil,QS:nil,BEC:nil,COL:0,OSI:0,OSA:0,AV:0,LES:1,SPR:
-        NO,DKR:0,DKP:0,BRR:0,BRE:0
-X-CID-BVR: 0
-X-CID-BAS: 0,_,0,_
-X-CID-FACTOR: TF_CID_SPAM_SNR,TF_CID_SPAM_ULN
-X-UUID: d4b5e6924bf711eea33bb35ae8d461a2-20230905
-Received: from mtkmbs13n2.mediatek.inc [(172.21.101.108)] by mailgw01.mediatek.com
-        (envelope-from <tze-nan.wu@mediatek.com>)
-        (Generic MTA with TLSv1.2 ECDHE-RSA-AES256-GCM-SHA384 256/256)
-        with ESMTP id 1034999915; Tue, 05 Sep 2023 22:23:49 +0800
-Received: from mtkmbs13n2.mediatek.inc (172.21.101.108) by
- mtkmbs10n2.mediatek.inc (172.21.101.183) with Microsoft SMTP Server
- (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.2.1118.26; Tue, 5 Sep 2023 22:23:47 +0800
-Received: from mtksdccf07.mediatek.inc (172.21.84.99) by
- mtkmbs13n2.mediatek.inc (172.21.101.73) with Microsoft SMTP Server id
- 15.2.1118.26 via Frontend Transport; Tue, 5 Sep 2023 22:23:47 +0800
-From:   Tze-nan Wu <Tze-nan.Wu@mediatek.com>
-To:     <rostedt@goodmis.org>, <mhiramat@kernel.org>
-CC:     <bobule.chang@mediatek.com>, <wsd_upstream@mediatek.com>,
-        <cheng-jui.wang@mediatek.com>,
-        Tze-nan Wu <Tze-nan.Wu@mediatek.com>, <stable@vger.kernel.org>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        <linux-kernel@vger.kernel.org>,
-        <linux-trace-kernel@vger.kernel.org>,
-        <linux-arm-kernel@lists.infradead.org>,
-        <linux-mediatek@lists.infradead.org>
-Subject: [PATCH] ring-buffer: Do not read at &event->array[0] if it across the page
-Date:   Tue, 5 Sep 2023 22:23:15 +0800
-Message-ID: <20230905142319.32582-1-Tze-nan.Wu@mediatek.com>
-X-Mailer: git-send-email 2.18.0
+        with ESMTP id S1354811AbjIEOfx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 10:35:53 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B71E189;
+        Tue,  5 Sep 2023 07:35:49 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id E4823B811FC;
+        Tue,  5 Sep 2023 14:35:47 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EA49C433C9;
+        Tue,  5 Sep 2023 14:35:46 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693924546;
+        bh=mUv7viaR4QlhOU9eEIWkBwFQjliy5qzSydoTR+5jNRg=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=hItTlG6DKaq9eTGg36u1qPRFPWE7r53/vFnmWFG1YNX5mUCJdUifX9YQvIYQ1ATUE
+         eqS0b7zftUsg5F2Nf/uN46t4/4aQin9iB4CZ2qWMozK8cNz+GyIa8ezllt9ZM0eb7F
+         z6jMAxFMQpsX9w43ofaVynlSikqa9QuU9PVJfXM2mXEVtqfJbVHZYOBX5DT8/Zg5yx
+         XX4ysi/YOe7MD+EjzgneNQYFVH2C4/kU7ZYjRb2z61UAp1cDj06m+XtFxat7IAAmze
+         33AslZb7VQSaLqi7TsinuXOukVbAwWXoU3itXfffHYgTY2WphsrSYBNAD635T+rqsq
+         ZAVH7WdcaGm1g==
+Date:   Tue, 5 Sep 2023 08:35:43 -0600
+From:   Keith Busch <kbusch@kernel.org>
+To:     Linux regressions mailing list <regressions@lists.linux.dev>
+Cc:     Bagas Sanjaya <bagasdotme@gmail.com>, Jens Axboe <axboe@kernel.dk>,
+        Christoph Hellwig <hch@lst.de>,
+        Sagi Grimberg <sagi@grimberg.me>,
+        Claudio Sampaio <patola@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux NVMe <linux-nvme@lists.infradead.org>,
+        Linux Stable <stable@vger.kernel.org>
+Subject: Re: Fwd: Lexar NM790 SSDs are not recognized anymore after 6.1.50 LTS
+Message-ID: <ZPc8v9-lHF4jAcxL@kbusch-mbp>
+References: <8af186ba-5f64-2102-8f9c-3969b0906893@gmail.com>
+ <faa245bf-e925-45b0-9827-b0c9c117e06c@leemhuis.info>
 MIME-Version: 1.0
-Content-Type: text/plain
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,SPF_HELO_PASS,SPF_PASS,
-        UNPARSEABLE_RELAY autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
+Content-Transfer-Encoding: 8bit
+In-Reply-To: <faa245bf-e925-45b0-9827-b0c9c117e06c@leemhuis.info>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-While reading from the tracing/trace, the ftrace reader rarely encounters
-a KASAN invalid access issue.
-It is likely that the writer has disrupted the ring_buffer that the reader
-is currently parsing. the kasan report is as below:
+On Tue, Sep 05, 2023 at 01:37:36PM +0200, Linux regression tracking (Thorsten Leemhuis) wrote:
+> On 04.09.23 13:07, Bagas Sanjaya wrote:
+> > 
+> > I notice a regression report on Bugzilla [1]. Quoting from it:
+> >
+> >> I bought a new 4 TB Lexar NM790 and I was using kernel 6.3.13 at the time. It wasn't recognized, with these messages in dmesg:
+> >>
+> >> [ 358.950147] nvme nvme0: pci function 0000:06:00.0
+> >> [ 358.958327] nvme nvme0: Device not ready; aborting initialisation, CSTS=0x0
+> >>
+> >> My other NVMe appears correctly in the nvme list though.
+> >>
+> >>
+> >> So I tried using other kernels I had installed at the time: 6.3.7, 6.4.10, 6.5.0rc6, 6.5.0, 6.5.1 and none of these recognized the disk.
+> >> I installed the 6.1.50 lts kernel from arch repositories (I can compile my own too if this would be an issue) and then the device was correctly recognized:
+> >>
+> >> [    4.654613] nvme 0000:06:00.0: platform quirk: setting simple suspend
+> >> [    4.654632] nvme nvme0: pci function 0000:06:00.0
+> >> [    4.667290] nvme nvme0: allocated 40 MiB host memory buffer.
+> >> [    4.709473] nvme nvme0: 16/0/0 default/read/poll queues
+> 
+> FWIW, the quoted mail missed one crucial detail:
+> """
+>  Claudio Sampaio 2023-09-02 19:04:29 UTC
+> 
+> Adding the two lines
+> 
+> │ 3457   { PCI_DEVICE(0x1d97, 0x1602), /* Lexar NM790 */
+> │ 3458   │ .driver_data = NVME_QUIRK_BOGUS_NID, },
+> 
+> in file drivers/nvme/host/pci.c made my NVMe work correctly. Compiled a
+> new 6.5.1 kernel and everything works.
+> """
+> 
+> @NVME maintainers: is there anything more you need from Claudio at this
+> point?
 
-[name:report&]BUG: KASAN: invalid-access in rb_iter_head_event+0x27c/0x3d0
-[name:report&]Read of size 4 at addr 71ffff8111a18000 by task xxxx
-[name:report_sw_tags&]Pointer tag: [71], memory tag: [0f]
-[name:report&]
-CPU: 2 PID: 380 Comm: xxxx
-Call trace:
-dump_backtrace+0x168/0x1b0
-show_stack+0x2c/0x3c
-dump_stack_lvl+0xa4/0xd4
-print_report+0x268/0x9b0
-kasan_report+0xdc/0x148
-kasan_tag_mismatch+0x28/0x3c
-__hwasan_tag_mismatch+0x2c/0x58
-rb_event_length() [inline]
-rb_iter_head_event+0x27c/0x3d0
-ring_buffer_iter_peek+0x23c/0x6e0
-__find_next_entry+0x1ac/0x3d8
-s_next+0x1f0/0x310
-seq_read_iter+0x4e8/0x77c
-seq_read+0xf8/0x150
-vfs_read+0x1a8/0x4cc
+Yes: it doesn't really make any sense. The report says the device
+stopped showing up with message:
 
-In some edge cases, ftrace reader could access to an invalid address,
-specifically when reading 4 bytes beyond the end of the currently page.
-While issue happened, the dump of rb_iter_head_event is shown as below:
+  nvme nvme0: Device not ready; aborting initialisation, CSTS=0x0
 
-    in function rb_iter_head_event:
-          - iter->head = 0xFEC
-          - iter->next_event = 0xFEC
-          - commit = 0xFF0
-          - read_stamp = 0x2955AC46DB0
-          - page_stamp = 0x2955AC2439A
-          - iter->head_page->page = 0x71FFFF8111A17000
-          - iter->head_page->time_stamp = 0x2956A142267
-          - iter->head_page->page->commit = 0xFF0
-          - the content in iter->head_page->page
-                0x71FFFF8111A17FF0: 01010075 00002421 0A123B7C FFFFFFC0
+That (a) happens long before the mentioned quirk is considered by the
+driver, and (b) the "quirk" behavior is now the default in 6.5 and
+several of the listed stable kernels anyway.
 
-In rb_iter_head_event, reader will call rb_event_length with argument
-(struct ring_buffer_event *event = 0x71FFFF8111A17FFC).
-Since the content data start at address 0x71FFFF8111A17FFC are 0xFFFFFFC0.
-event->type will be interpret as 0x0, than the reader will try to get the
-length by accessing event->array[0], which is an invalid address:
-    &event->array[0] = 0x71FFFF8111A18000
-
-Cc: stable@vger.kernel.org
-Signed-off-by: Tze-nan Wu <Tze-nan.Wu@mediatek.com>
----
-resend again due to forget cc stable@vger.kernel.org
-
-Following patch may not become a solution, it merely checks if the address
-to be accessed is valid or not within the rb_event_length before access.
-And not sure if there is any side-effect it can lead to.
-
-I am curious about what a better solution for this issue would look like.
-Should we address the problem from the writer or the reader?
-
-Also I wonder if the cause of the issue is exactly as I suspected.
-Any Suggestion will be appreciated.
-
-Test below can reproduce the issue in 2 hours on kernel-6.1.24:
-    $cd /sys/kernel/tracing/
-    # make the reader and writer race more through resize the buffer to 8kb
-    $echo 8 > buffer_size_kn
-    # enable all events
-    $echo 1 > event/enable
-    # enable trace
-    $echo 1 > tracing_on
- 
-    # write and run a script that keep reading trace
-    $./read_trace.sh
-
-    ``` read_trace.sh
-       while :
-       do
-           cat /sys/kernel/tracing/trace > /dev/null
-       done
-
-    ```
----
- kernel/trace/ring_buffer.c | 4 ++++
- 1 file changed, 4 insertions(+)
-
-diff --git a/kernel/trace/ring_buffer.c b/kernel/trace/ring_buffer.c
-index 78502d4c7214..ed5ddc3a134b 100644
---- a/kernel/trace/ring_buffer.c
-+++ b/kernel/trace/ring_buffer.c
-@@ -200,6 +200,8 @@ rb_event_length(struct ring_buffer_event *event)
- 		if (rb_null_event(event))
- 			/* undefined */
- 			return -1;
-+		if (((unsigned long)event & 0xfffUL) >= PAGE_SIZE - 4)
-+			return -1;
- 		return  event->array[0] + RB_EVNT_HDR_SIZE;
- 
- 	case RINGBUF_TYPE_TIME_EXTEND:
-@@ -209,6 +211,8 @@ rb_event_length(struct ring_buffer_event *event)
- 		return RB_LEN_TIME_STAMP;
- 
- 	case RINGBUF_TYPE_DATA:
-+		if ((((unsigned long)event & 0xfffUL) >= PAGE_SIZE - 4) && !event->type_len)
-+			return -1;
- 		return rb_event_data_length(event);
- 	default:
- 		WARN_ON_ONCE(1);
--- 
-2.18.0
-
+It more likely sounds like the device is flaky and either never becomes
+ready due to some unspecified internal firmware condition, or
+inaccurately reports how long it actually needs to become ready in
+worst-case-scenario.
