@@ -2,92 +2,74 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6EA0E7924A5
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 98E5B7924C5
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230352AbjIEP7Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33962 "EHLO
+        id S232760AbjIEP7m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32770 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353767AbjIEIBd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 04:01:33 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A62FDF;
-        Tue,  5 Sep 2023 01:01:30 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 2EFFA6600B9D;
-        Tue,  5 Sep 2023 09:01:28 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1693900888;
-        bh=PU+U/dEE7kc5FeBeCNzM0RHGNzET0eI/w37N7m0QFpg=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=YyzpakIFbIqNDKTvVbkaOuSGBfTwR7NrFX6P/xPmhOIXzsroeFPpIGhdHN6v8zdZd
-         oK3uNbuVHuRkS5WTUDHxjHxZrZd53dyQAZWLpjLLIuS6syzFZVYhairWC6dVJFyzqk
-         3GRXKbmzsGI620yScWx2pBSlIrFSQUfkdGMZUqp70+Wc61F4rIIT18GmbnXQ4GIwUf
-         0wQAK1nbuCx+X+YJoh+OZBXxWA/8efeYBCNpdtWPLyOz7p6437ltiyUbYhRVWocx7i
-         MAb8KEExg6F545YX2dgPIxZdRYVPR4wfnfrkCJcZ+w8DDOV0Jw++AHEKYFJmBi2VfV
-         9v3opMBOo+Z7A==
-Message-ID: <e54394b3-eb52-f36b-3ba4-8a4262b5f5e5@collabora.com>
-Date:   Tue, 5 Sep 2023 10:01:26 +0200
+        with ESMTP id S1353784AbjIEIKh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 04:10:37 -0400
+Received: from mail.venturelinkbiz.com (mail.venturelinkbiz.com [51.195.119.142])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC2849B
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 01:10:33 -0700 (PDT)
+Received: by mail.venturelinkbiz.com (Postfix, from userid 1002)
+        id 9CAF1461BB; Tue,  5 Sep 2023 08:10:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=venturelinkbiz.com;
+        s=mail; t=1693901432;
+        bh=JBV4b8UUo1MSngn/QBoedt1Dv52bT8rWeq4R22MtJMs=;
+        h=Date:From:To:Subject:From;
+        b=ZxYHlBpIplW8vg1oZhExYd+5Qhn2VEqfnYuMVgSMZ3fpYcPyEdbQFn+9iVeiad7x0
+         MHfJMIjD3yApQVhonzSoNPVitvAg/gsYjXNmdiB/D9G9mk6jrumeU1HUQHX4/90dYV
+         yCQuQ8J8xN2sBOZ3F6yyHT5o24Yz4+Anm3MQlQrAtsa1jKv29oGlnS5MSDu4vpKenr
+         vy6DYwj80C/0QJaG5tNjvdW8OnVZogcC+ESuNX9TxmY3L3pKl+7/RUlx+vr0cYZ+23
+         /aEgz6iBRvUSVEVDASkOzuP0pCmNoLdMW9xHvdlAtw4Dg5QN+MGS9BK5cHK8Vzu1TF
+         Z/RsbjaSsytzw==
+Received: by mail.venturelinkbiz.com for <stable@vger.kernel.org>; Tue,  5 Sep 2023 08:10:21 GMT
+Message-ID: <20230905064500-0.1.27.5yc4.0.3iurvbbrcd@venturelinkbiz.com>
+Date:   Tue,  5 Sep 2023 08:10:21 GMT
+From:   "Michal Rmoutil" <michal.rmoutil@venturelinkbiz.com>
+To:     <stable@vger.kernel.org>
+Subject: =?UTF-8?Q?Efektivn=C3=AD_sledov=C3=A1n=C3=AD_a_optimalizace_v=C3=BDroby_pro_va=C5=A1i_spole=C4=8Dnost?=
+X-Mailer: mail.venturelinkbiz.com
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v3 2/2] arm64: dts: mediatek: mt8195-demo: update and
- reorder reserved memory regions
-Content-Language: en-US
-To:     Macpaul Lin <macpaul.lin@mediatek.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Fabien Parent <fparent@baylibre.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     Bear Wang <bear.wang@mediatek.com>,
-        Pablo Sun <pablo.sun@mediatek.com>,
-        Macpaul Lin <macpaul@gmail.com>, stable@vger.kernel.org
-References: <20230825114623.16884-1-macpaul.lin@mediatek.com>
- <20230905034511.11232-1-macpaul.lin@mediatek.com>
- <20230905034511.11232-2-macpaul.lin@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230905034511.11232-2-macpaul.lin@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=3.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H2,RCVD_IN_SBL_CSS,SPF_HELO_NONE,SPF_PASS,URIBL_CSS_A,
+        URIBL_DBL_SPAM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ***
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Il 05/09/23 05:45, Macpaul Lin ha scritto:
-> The dts file of the MediaTek MT8195 demo board has been updated to include
-> new reserved memory regions.
-> These reserved memory regions are:
->   - SCP
->   - VPU,
->   - Sound DMA
->   - APU.
-> 
-> These regions are defined with the "shared-dma-pool" compatible property.
-> In addition, the existing reserved memory regions have been reordered by
-> their addresses to improve readability and maintainability of the DTS
-> file.
-> 
-> Cc: stable@vger.kernel.org      # 6.1, 6.4, 6.5
-> Fixes: e4a417520101 ("arm64: dts: mediatek: mt8195-demo: fix the memory size of node secmon")
-> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
+Dobr=C3=A9 r=C3=A1no,
+
+m=C3=A1te mo=C5=BEnost sledovat stav ka=C5=BEd=C3=A9ho stroje a v=C3=BDro=
+bn=C3=ADho procesu z kancel=C3=A1=C5=99e, konferen=C4=8Dn=C3=AD m=C3=ADst=
+nosti nebo dokonce z domova =C4=8Di na cest=C3=A1ch =E2=80=93 na va=C5=A1=
+em telefonu?
+
+Poskytujeme rychle implementovateln=C3=BD a snadno pou=C5=BEiteln=C3=BD n=
+=C3=A1stroj, kter=C3=BD zachyt=C3=AD i n=C4=9Bkolikasekundov=C3=BD mikrop=
+rostoj a okam=C5=BEit=C4=9B p=C5=99epo=C4=8D=C3=ADt=C3=A1 vyu=C5=BEit=C3=AD=
+ stroje v kontextu dan=C3=A9 v=C3=BDrobn=C3=AD zak=C3=A1zky.
+
+Kdykoli vid=C3=ADte stav objedn=C3=A1vky a jste informov=C3=A1ni o p=C5=99=
+=C3=ADpadn=C3=A9m sn=C3=AD=C5=BEen=C3=AD efektivity. Syst=C3=A9m s=C3=A1m=
+ analyzuje data a p=C5=99ipravuje cenn=C3=A9 reporty, co=C5=BE oper=C3=A1=
+tor=C5=AFm umo=C5=BE=C5=88uje soust=C5=99edit se na v=C3=BDrobn=C3=AD c=C3=
+=ADl.
+
+C=C3=ADl je jednoduch=C3=BD: jeden pohled =E2=80=93 cel=C3=A1 tov=C3=A1rn=
+a. =C4=8Cek=C3=A1m na odpov=C4=9B=C4=8F, jestli vid=C3=ADte mo=C5=BEnost =
+vyu=C5=BEit=C3=AD takov=C3=A9ho n=C3=A1stroje ve va=C5=A1=C3=AD firm=C4=9B=
+=2E
 
 
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
-
+Pozdravy
+Michal Rmoutil
