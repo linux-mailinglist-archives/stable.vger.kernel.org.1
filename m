@@ -2,94 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40BC47924EB
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4BAA47924DE
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231392AbjIEQAP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 12:00:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
+        id S233273AbjIEQAE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 12:00:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354513AbjIEMKK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 08:10:10 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 470361AB;
-        Tue,  5 Sep 2023 05:10:07 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qdUsf-0006J5-Ge; Tue, 05 Sep 2023 14:10:05 +0200
-Message-ID: <1d79cc64-46d8-42ab-8219-e45e8d19532f@leemhuis.info>
-Date:   Tue, 5 Sep 2023 14:10:04 +0200
+        with ESMTP id S1354618AbjIEM4n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 08:56:43 -0400
+Received: from smtpout.efficios.com (unknown [IPv6:2607:5300:203:b2ee::31e5])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A961E9;
+        Tue,  5 Sep 2023 05:56:39 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=efficios.com;
+        s=smtpout1; t=1693918598;
+        bh=455XTvC9ol/LhrdApr3vB/fUeAmbr04fqAzjMIGtI98=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=azEd68gv6XhyBJ5BYvepfRRBcO1bi1xUu9m9kZ0GWGdMASBhIWWqQQjTlZXWv5o1L
+         ZJ7p96OPgm+iEyhmR5RvjsI/wjsU/pvKT0AxiLjvsw1w929Rkesu1zOL6Co1DhWsX8
+         THxfZERNoD86M1gAzwup6mJnPGN6suW4p0iHbuVDkWDWPAdU8P33Km2JUTzuEIs+9O
+         Ktd9944/Ra6eTui31IB1bJPp3ig+NZ+UskJvvHteoT1YO/WHLCOo5+l4ZKmy/y8s+7
+         onVbzIOcbMzzw5eodILtMrlR9Cu/eER6SrZOW2TSzXXeISLNUCtswgyTRAE1zMrwWf
+         K2zCeoLPSv1Bw==
+Received: from [172.16.0.134] (192-222-143-198.qc.cable.ebox.net [192.222.143.198])
+        by smtpout.efficios.com (Postfix) with ESMTPSA id 4Rg59f0yrdz1N0T;
+        Tue,  5 Sep 2023 08:56:38 -0400 (EDT)
+Message-ID: <7beb35c3-217a-d3c3-8e75-a1212500d2ac@efficios.com>
+Date:   Tue, 5 Sep 2023 08:57:53 -0400
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Don't fill the kernel log with memfd_create messages
-Content-Language: en-US, de-DE
-To:     Linux kernel regressions list <regressions@lists.linux.dev>
-Cc:     stable@vger.kernel.org, linux-api@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-mm@kvack.org,
-        linux-kselftest@vger.kernel.org
-References: <1693408388.rwssx8r1h9.none.ref@localhost>
- <1693408388.rwssx8r1h9.none@localhost>
- <14b4a922-a31a-a329-0264-3d8bd101ee6b@suse.cz>
-From:   "Linux regression tracking #update (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <14b4a922-a31a-a329-0264-3d8bd101ee6b@suse.cz>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1693915807;afc559ae;
-X-HE-SMSGID: 1qdUsf-0006J5-Ge
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3] Fix srcu_struct node grpmask overflow on 64-bit
+ systems
+Content-Language: en-US
+To:     paulmck@kernel.org
+Cc:     Denis Arefev <arefev@swemel.ru>,
+        Lai Jiangshan <jiangshanlai@gmail.com>,
+        Josh Triplett <josh@joshtriplett.org>,
+        Steven Rostedt <rostedt@goodmis.org>, rcu@vger.kernel.org,
+        lvc-project@linuxtesting.org, linux-kernel@vger.kernel.org,
+        trufanov@swemel.ru, vfh@swemel.ru,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>
+References: <20230904122114.66757-1-arefev@swemel.ru>
+ <a60cf690-2af7-1eee-c1c1-3433d16a1939@efficios.com>
+ <40593b16-8232-27fc-808a-37bad7457dc0@efficios.com>
+ <751d2afd-fc91-400d-8889-187031f2bbf0@paulmck-laptop>
+From:   Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+In-Reply-To: <751d2afd-fc91-400d-8889-187031f2bbf0@paulmck-laptop>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,RDNS_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-[TLDR: This mail in primarily relevant for Linux kernel regression
-tracking. See link in footer if these mails annoy you.]
-
-On 04.09.23 15:31, Vlastimil Babka wrote:
-> On 8/30/23 17:52, Alex Xu (Hello71) wrote:
->> Hi all,
->>
->> Recently "memfd: improve userspace warnings for missing exec-related 
->> flags" was merged. On my system, this is a regression, not an 
->> improvement, because the entire 256k kernel log buffer (default on x86) 
->> is filled with these warnings and "__do_sys_memfd_create: 122 callbacks 
->> suppressed". I haven't investigated too closely, but the most likely 
->> cause is Wayland libraries.
->>
->> This is too serious of a consequence for using an old API, especially 
->> considering how recently the flags were added. The vast majority of 
->> software has not had time to add the flags: glibc does not define the 
->> macros until 2.38 which was released less than one month ago, man-pages 
->> does not document the flags, and according to Debian Code Search, only 
->> systemd, stress-ng, and strace actually pass either of these flags.
->>
->> Furthermore, since old kernels reject unknown flags, it's not just a 
->> matter of defining and passing the flag; every program needs to 
->> add logic to handle EINVAL and try again.
->>
->> Some other way needs to be found to encourage userspace to add the 
->> flags; otherwise, this message will be patched out because the kernel 
->> log becomes unusable after running unupdated programs, which will still 
->> exist even after upstreams are fixed. In particular, AppImages, 
->> flatpaks, snaps, and similar app bundles contain vendored Wayland 
->> libraries which can be difficult or impossible to update.
+On 9/4/23 09:58, Paul E. McKenney wrote:
+> On Mon, Sep 04, 2023 at 08:58:48AM -0400, Mathieu Desnoyers wrote:
+>> On 9/4/23 08:42, Mathieu Desnoyers wrote:
+>>> On 9/4/23 08:21, Denis Arefev wrote:
+>>>> The value of an arithmetic expression 1 << (cpu - sdp->mynode->grplo)
+>>>> is subject to overflow due to a failure to cast operands to a larger
+>>>> data type before performing arithmetic.
+>>>>
+>>>> The maximum result of this subtraction is defined by the RCU_FANOUT
+>>>> or other srcu level-spread values assigned by rcu_init_levelspread(),
+>>>> which can indeed cause the signed 32-bit integer literal ("1") to
+>>>> overflow
+>>>> when shifted by any value greater than 31.
+>>>
+>>> We could expand on this:
+>>>
+>>> The maximum result of this subtraction is defined by the RCU_FANOUT
+>>> or other srcu level-spread values assigned by rcu_init_levelspread(),
+>>> which can indeed cause the signed 32-bit integer literal ("1") to overflow
+>>> when shifted by any value greater than 31 on a 64-bit system.
+>>>
+>>> Moreover, when the subtraction value is 31, the 1 << 31 expression results
+>>> in 0xffffffff80000000 when the signed integer is promoted to unsigned long
+>>> on 64-bit systems due to type promotion rules, which is certainly not the
+>>> intended result.
 > 
-> It's being reverted:
-> https://lore.kernel.org/all/20230902230530.6B663C433C8@smtp.kernel.org/
+> Thank you both!  Could you please also add something to the effect of:
+> "Given default Kconfig options, this bug affects only systems with more
+> than 512 CPUs."?
 
-in that case:
+Hi Paul,
 
-#regzbot fix: revert "memfd: improve userspace warnings for missing
-exec-related flags".
-#regzbot ignore-activity
+I'm trying to understand this "NR_CPUS > 512 CPUs" default Kconfig lower 
+bound from kernel/rcu/Kconfig and rcu_node_tree.h. Is that on a 32-bit 
+or 64-bit architecture ? Also, I suspect that something like x86-64 
+MAXSMP (or an explicit NR_CPUS) needs to be selected over a default 
+Kconfig to support that many CPUs.
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-That page also explains what to do if mails like this annoy you.
+Thanks,
+
+Mathieu
+
+
+> 
+> 							Thanx, Paul
+> 
+>>>> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+>>>
+>>> With the commit message updated with my comment above, please also add:
+>>>
+>>> Fixes: c7e88067c1 ("srcu: Exact tracking of srcu_data structures
+>>> containing callbacks")
+>>> Cc: <stable@vger.kernel.org> # v4.11
+>>
+>> Sorry, the line above should read:
+>>
+>> Cc: <stable@vger.kernel.org> # v4.11+
+>>
+>> Thanks,
+>>
+>> Mathieu
+>>
+>>> Reviewed-by: Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>>>
+>>> Thanks!
+>>>
+>>> Mathieu
+>>>
+>>>>
+>>>> Signed-off-by: Denis Arefev <arefev@swemel.ru>
+>>>> ---
+>>>> v3: Changed the name of the patch, as suggested by
+>>>> Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>>>> v2: Added fixes to the srcu_schedule_cbs_snp function as suggested by
+>>>> Mathieu Desnoyers <mathieu.desnoyers@efficios.com>
+>>>>    kernel/rcu/srcutree.c | 4 ++--
+>>>>    1 file changed, 2 insertions(+), 2 deletions(-)
+>>>>
+>>>> diff --git a/kernel/rcu/srcutree.c b/kernel/rcu/srcutree.c
+>>>> index 20d7a238d675..6c18e6005ae1 100644
+>>>> --- a/kernel/rcu/srcutree.c
+>>>> +++ b/kernel/rcu/srcutree.c
+>>>> @@ -223,7 +223,7 @@ static bool init_srcu_struct_nodes(struct
+>>>> srcu_struct *ssp, gfp_t gfp_flags)
+>>>>                    snp->grplo = cpu;
+>>>>                snp->grphi = cpu;
+>>>>            }
+>>>> -        sdp->grpmask = 1 << (cpu - sdp->mynode->grplo);
+>>>> +        sdp->grpmask = 1UL << (cpu - sdp->mynode->grplo);
+>>>>        }
+>>>>        smp_store_release(&ssp->srcu_sup->srcu_size_state,
+>>>> SRCU_SIZE_WAIT_BARRIER);
+>>>>        return true;
+>>>> @@ -833,7 +833,7 @@ static void srcu_schedule_cbs_snp(struct
+>>>> srcu_struct *ssp, struct srcu_node *snp
+>>>>        int cpu;
+>>>>        for (cpu = snp->grplo; cpu <= snp->grphi; cpu++) {
+>>>> -        if (!(mask & (1 << (cpu - snp->grplo))))
+>>>> +        if (!(mask & (1UL << (cpu - snp->grplo))))
+>>>>                continue;
+>>>>            srcu_schedule_cbs_sdp(per_cpu_ptr(ssp->sda, cpu), delay);
+>>>>        }
+>>>
+>>
+>> -- 
+>> Mathieu Desnoyers
+>> EfficiOS Inc.
+>> https://www.efficios.com
+>>
+
+-- 
+Mathieu Desnoyers
+EfficiOS Inc.
+https://www.efficios.com
+
