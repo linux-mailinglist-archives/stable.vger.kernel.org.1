@@ -2,87 +2,84 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 578C07924BE
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1CE327924D6
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232678AbjIEP7h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50810 "EHLO
+        id S233156AbjIEP75 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1353742AbjIEHtj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 03:49:39 -0400
-Received: from dggsgout11.his.huawei.com (dggsgout11.his.huawei.com [45.249.212.51])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40288CCF
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 00:49:35 -0700 (PDT)
-Received: from mail02.huawei.com (unknown [172.30.67.143])
-        by dggsgout11.his.huawei.com (SkyGuard) with ESMTP id 4RfyMG4WNDz4f3m6r
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 15:49:30 +0800 (CST)
-Received: from [10.174.179.247] (unknown [10.174.179.247])
-        by APP4 (Coremail) with SMTP id gCh0CgAH5KaF3fZk61SmCQ--.12953S3;
-        Tue, 05 Sep 2023 15:49:29 +0800 (CST)
-Message-ID: <b1f154a9-0f05-f82d-d6ec-cb56ac2ca5ea@huaweicloud.com>
-Date:   Tue, 5 Sep 2023 15:49:25 +0800
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:91.0) Gecko/20100101
- Thunderbird/91.10.0
-Subject: Re: [PATCH 5.10 1/1] udf: Handle error when adding extent to a file
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Li Nan <linan666@huaweicloud.com>
+        with ESMTP id S1353763AbjIEH62 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 03:58:28 -0400
+Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5C67CCB
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 00:58:24 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by ams.source.kernel.org (Postfix) with ESMTPS id 9F096B81097
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 07:58:23 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A54CC433C7;
+        Tue,  5 Sep 2023 07:58:21 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693900702;
+        bh=qWYiuro0IBAZbKAsGtvI+npn7YR44el7AXVbk7AqHNU=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=H5axDHXJ+pChXgbrBGB1qjGvHi4HkTVA1Uzfuwl5xAvb4HDTt3Y/SKolBa5qQncSV
+         ql4NCxV6zOt65oZmAP6exOn9UOoyce7o7hC1nPX/4w3uHQJC0MJI6lqeV5a+yVx8tx
+         NnmMpV0L/8o4fXBRL6vT7dysr/gT4tNGm7JG/60g=
+Date:   Tue, 5 Sep 2023 08:58:18 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Li Nan <linan666@huaweicloud.com>
 Cc:     Vladislav Efanov <VEfanov@ispras.ru>, stable@vger.kernel.org,
         Jan Kara <jack@suse.com>, lvc-project@linuxtesting.org,
         Jan Kara <jack@suse.cz>, yangerkun <yangerkun@huawei.com>
+Subject: Re: [PATCH 5.10 1/1] udf: Handle error when adding extent to a file
+Message-ID: <2023090529-despite-levers-6bef@gregkh>
 References: <20230815113453.2213555-1-VEfanov@ispras.ru>
  <4c28f962-0830-1138-7b91-ef6685a56afa@huaweicloud.com>
  <2023090520-dwelled-dullness-c3c5@gregkh>
-From:   Li Nan <linan666@huaweicloud.com>
-In-Reply-To: <2023090520-dwelled-dullness-c3c5@gregkh>
-Content-Type: text/plain; charset=UTF-8; format=flowed
+ <b1f154a9-0f05-f82d-d6ec-cb56ac2ca5ea@huaweicloud.com>
+MIME-Version: 1.0
+Content-Type: text/plain; charset=utf-8
+Content-Disposition: inline
 Content-Transfer-Encoding: 8bit
-X-CM-TRANSID: gCh0CgAH5KaF3fZk61SmCQ--.12953S3
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjp_UUUYq7AC8VAFwI0_Gr0_Xr1l1xkIjI8I6I8E
-        6xAIw20EY4v20xvaj40_Wr0E3s1l1IIY67AEw4v_Jr0_Jr4l8cAvFVAK0II2c7xJM28Cjx
-        kF64kEwVA0rcxSw2x7M28EF7xvwVC0I7IYx2IY67AKxVWDJVCq3wA2z4x0Y4vE2Ix0cI8I
-        cVCY1x0267AKxVW8Jr0_Cr1UM28EF7xvwVC2z280aVAFwI0_GcCE3s1l84ACjcxK6I8E87
-        Iv6xkF7I0E14v26rxl6s0DM2vYz4IE04k24VAvwVAKI4IrM2AIxVAIcxkEcVAq07x20xvE
-        ncxIr21l5I8CrVACY4xI64kE6c02F40Ex7xfMcIj6xIIjxv20xvE14v26r1j6r18McIj6I
-        8E87Iv67AKxVWUJVW8JwAm72CE4IkC6x0Yz7v_Jr0_Gr1lF7xvr2IY64vIr41lF7I21c0E
-        jII2zVCS5cI20VAGYxC7Mxk0xIA0c2IEe2xFo4CEbIxvr21l42xK82IYc2Ij64vIr41l4I
-        8I3I0E4IkC6x0Yz7v_Jr0_Gr1lx2IqxVAqx4xG67AKxVWUJVWUGwC20s026x8GjcxK67AK
-        xVWUGVWUWwC2zVAF1VAY17CE14v26r1q6r43MIIYrxkI7VAKI48JMIIF0xvE2Ix0cI8IcV
-        AFwI0_Jr0_JF4lIxAIcVC0I7IYx2IY6xkF7I0E14v26r1j6r4UMIIF0xvE42xK8VAvwI8I
-        cIk0rVWrJr0_WFyUJwCI42IY6I8E87Iv67AKxVWUJVW8JwCI42IY6I8E87Iv6xkF7I0E14
-        v26r4j6r4UJbIYCTnIWIevJa73UjIFyTuYvjfUOlksUUUUU
-X-CM-SenderInfo: polqt0awwwqx5xdzvxpfor3voofrz/
-X-CFilter-Loop: Reflected
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <b1f154a9-0f05-f82d-d6ec-cb56ac2ca5ea@huaweicloud.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-在 2023/9/5 15:14, Greg Kroah-Hartman 写道:
-> On Tue, Sep 05, 2023 at 02:57:48PM +0800, Li Nan wrote:
->> Hi Greg,
->>
->> Our syzbot found the this issue on v5.10, could you please pick it up
->> for v5.10?
+On Tue, Sep 05, 2023 at 03:49:25PM +0800, Li Nan wrote:
 > 
-> What issue?  Pick what up?
+> 在 2023/9/5 15:14, Greg Kroah-Hartman 写道:
+> > On Tue, Sep 05, 2023 at 02:57:48PM +0800, Li Nan wrote:
+> > > Hi Greg,
+> > > 
+> > > Our syzbot found the this issue on v5.10, could you please pick it up
+> > > for v5.10?
+> > 
+> > What issue?  Pick what up?
+> > 
+> > There's no context here :(
+> > .
 > 
-> There's no context here :(
-> .
+> I am so sorry I forgot to attach the patch. The patch is:
+> https://lore.kernel.org/all/20230815113453.2213555-1-VEfanov@ispras.ru/
 
-I am so sorry I forgot to attach the patch. The patch is:
-https://lore.kernel.org/all/20230815113453.2213555-1-VEfanov@ispras.ru/
+Odd, I missed that somehow.
 
-It fix the bug:
-https://patchew.org/linux/20230120091028.1591622-1-VEfanov@ispras.ru/
+Anyway, no, sorry, I can't just take it for 5.10, as you would have a
+regression if you moved to a newer kernel release.  Please submit a
+working version for all stable kernels 5.10 and newer, if you want us to
+be able to accept this.
 
--- 
-Thanks,
-Nan
+thanks,
 
+greg k-h
