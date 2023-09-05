@@ -2,118 +2,115 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F196779326A
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 01:19:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A12F67932C3
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 01:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236814AbjIEXT5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 19:19:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33134 "EHLO
+        id S243806AbjIEX71 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 19:59:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36722 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235667AbjIEXT5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 19:19:57 -0400
-Received: from omta040.useast.a.cloudfilter.net (omta040.useast.a.cloudfilter.net [44.202.169.39])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB6A8B0
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 16:19:49 -0700 (PDT)
-Received: from eig-obgw-6004a.ext.cloudfilter.net ([10.0.30.197])
-        by cmsmtp with ESMTP
-        id dURIqfAG5yYOwdfKmqf0rE; Tue, 05 Sep 2023 23:19:48 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id dfKlqnnDX1K5PdfKmqaoDX; Tue, 05 Sep 2023 23:19:48 +0000
-X-Authority-Analysis: v=2.4 cv=Zsf+lv3G c=1 sm=1 tr=0 ts=64f7b794
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=p7jOmeLXvMC8TC+tQDu9RvHbBiEzuSXvM48zB+Ctpnc=; b=giZh8UMOGxuepkjSEVzaj1hcXR
-        3Z2CAaNwldKZxtSo+Gou9TfNdJJ48AJgvvCDS0iOaY1yR7vd4O/vKS2fCzeBzHiGo1wNbThCD/54I
-        sooHAjFLGLklOpn18U9+K1LrdD+BYSCVmG5+RVs/zsL4Go7UUhf3wrcS2xVY124UaZ7rohunToeJw
-        bPm3hH5/633XWwmrJixFM+pPcKXLhrX9Qx8U4GkLWpFSHOzQ3n54gnHSa1g6CuaNRvkJGJu5NyGk+
-        Jl+AbZOBaFXV5jU7b5+kW2XBmXzMlXB1Y3KFW6kWcReZUOVUHUEo8NHVcPKqmeWpOtutNnG9FX4jj
-        mr/8NfGQ==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:54310 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <re@w6rz.net>)
-        id 1qdfKk-002p7k-05;
-        Tue, 05 Sep 2023 17:19:46 -0600
-Subject: Re: [PATCH 5.15 00/28] 5.15.131-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230904182945.178705038@linuxfoundation.org>
-In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <a3a98d35-bc3b-2619-c616-c8e74b57ea9b@w6rz.net>
-Date:   Tue, 5 Sep 2023 16:19:43 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
-MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qdfKk-002p7k-05
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:54310
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 36
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfHgfQO+M0sBxODwIDT92+KWQajFEYbfVVdy8oBKpDjoGQbrCz4CFTRrsDEa/wtFnyr4ZTYmtFxl20p7IFfYHADmg+WcQYT+SxPHT5ATYDvKFLzoMBLtZ
- esxmi3/80wzR018kSPS8gVsKq2IKbRrQByKaqIenU9Os7yQ0Gtp6wWWLN4x58ijBNnSR3sKQ6tvkbQ==
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+        with ESMTP id S233081AbjIEX7W (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 19:59:22 -0400
+Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A049CCE0
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 16:59:18 -0700 (PDT)
+Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d7493fcd829so2625534276.3
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 16:59:18 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1693958357; x=1694563157; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=SzJfFJBh10albvAF7xPhTVf2fYkrZEg2s13Q8JWYNz8=;
+        b=GZ4A9EzfHc9bXdApH3uxKjEiDhHjdwKkHS401uf1guoKZ3xJRXXfyFTmIUiGEijxDF
+         nPA52X5QDv5FAZM8H9MnNMcdzf4+FKfilt+5PJAkssvr8hX8BpxbskWLpYCrn1dFT1Tz
+         X8nUq66tctLBkKEueXtgP+HffHCEpl+VGUP54FOD7d/op3vIOzdhIGjJ3K/X/C73wt+c
+         pak4PsDlPoQq5wiE73BQKXJka6sFG3i/3txx5P5g6m09zM9L9nymHTyGQmEwUhRtVlFj
+         DCBGchnU7Ci+5kljUvOklzJxDMCYT2QNpr9IHyWuCgV6K6dBwIMYgvE4uEcpNZm0hW/+
+         am7g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693958357; x=1694563157;
+        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SzJfFJBh10albvAF7xPhTVf2fYkrZEg2s13Q8JWYNz8=;
+        b=hgvlyk9famVErZWNYhQ9nJaq7Mcn9Ix3f0QwYRv5kbchdcIYkSjZ7wLaS+t5RHrjNw
+         UweHJe/8z1RQEXiio8t+SLWoK8QTdCcBlZaJV1RDhISt5im2fOrwr80L2B6IIQilprcX
+         6i4u6hg5GGuMaUsYXzS1DB3/g/D3mV6lTCPMCUn3zSFgaWEbA9Ism1QrWWuddOrZY1aU
+         Xex8oXHmQz+VUR1c7DRoVe8/banCUbg9BwOGHh/41S+yOa21ALJCR0ytc9dX07sVRyRu
+         9IvIaEnISQ4jSD3Xs7FnLquJkQHeHuB4cJr8DhZzss3i1Wph+3wgDA4TDsD7QApLQV7s
+         F+3g==
+X-Gm-Message-State: AOJu0YzNiDPagxSOEogb1X1mRJNjvagJ/1IaOWw903Rkeo3+rYfUp+Sk
+        RifkbZdk0DnSoYIlJ+T6RCimycxVyn2zypo5i78MHe5OnAb6qpRAwuQ8Fc0dXDHnC3A818TEHid
+        Lff6Qm/eWTHodf5kI0nJr6ycxLuK7FMagtu+UhSdHtwILsSqBXbP0//M373Y=
+X-Google-Smtp-Source: AGHT+IFmTO68fo4qa2oEHn9gaVkksWliqtaXAItVBHwS/hsMjrc8PKxyC2MiduaC44YucvzOxteglOgM9A==
+X-Received: from jrife.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:9f])
+ (user=jrife job=sendgmr) by 2002:a25:69cd:0:b0:d0b:d8cd:e661 with SMTP id
+ e196-20020a2569cd000000b00d0bd8cde661mr331445ybc.12.1693958357578; Tue, 05
+ Sep 2023 16:59:17 -0700 (PDT)
+Date:   Tue,  5 Sep 2023 18:58:46 -0500
+Mime-Version: 1.0
+X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
+Message-ID: <20230905235846.142217-1-jrife@google.com>
+Subject: [PATCH] net: Avoid address overwrite in kernel_connect
+From:   Jordan Rife <jrife@google.com>
+To:     stable@vger.kernel.org
+Cc:     dborkman@kernel.org, Jordan Rife <jrife@google.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/4/23 11:30 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 5.15.131 release.
-> There are 28 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.131-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+commit 0bdf399 upstream.
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+This fix applies to all stable kernel versions 4.19+.
 
-Tested-by: Ron Economos <re@w6rz.net>
+BPF programs that run on connect can rewrite the connect address. For
+the connect system call this isn't a problem, because a copy of the address
+is made when it is moved into kernel space. However, kernel_connect
+simply passes through the address it is given, so the caller may observe
+its address value unexpectedly change.
+
+A practical example where this is problematic is where NFS is combined
+with a system such as Cilium which implements BPF-based load balancing.
+A common pattern in software-defined storage systems is to have an NFS
+mount that connects to a persistent virtual IP which in turn maps to an
+ephemeral server IP. This is usually done to achieve high availability:
+if your server goes down you can quickly spin up a replacement and remap
+the virtual IP to that endpoint. With BPF-based load balancing, mounts
+will forget the virtual IP address when the address rewrite occurs
+because a pointer to the only copy of that address is passed down the
+stack. Server failover then breaks, because clients have forgotten the
+virtual IP address. Reconnects fail and mounts remain broken. This patch
+was tested by setting up a scenario like this and ensuring that NFS
+reconnects worked after applying the patch.
+
+Signed-off-by: Jordan Rife <jrife@google.com>
+---
+ net/socket.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
+
+diff --git a/net/socket.c b/net/socket.c
+index ce70c01eb2f3e..db9d908198f21 100644
+--- a/net/socket.c
++++ b/net/socket.c
+@@ -3468,7 +3468,11 @@ EXPORT_SYMBOL(kernel_accept);
+ int kernel_connect(struct socket *sock, struct sockaddr *addr, int addrlen,
+ 		   int flags)
+ {
+-	return sock->ops->connect(sock, addr, addrlen, flags);
++	struct sockaddr_storage address;
++
++	memcpy(&address, addr, addrlen);
++
++	return sock->ops->connect(sock, (struct sockaddr *)&address, addrlen, flags);
+ }
+ EXPORT_SYMBOL(kernel_connect);
+ 
+-- 
+2.42.0.283.g2d96d420d3-goog
 
