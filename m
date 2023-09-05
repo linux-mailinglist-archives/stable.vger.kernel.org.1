@@ -2,59 +2,69 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94F6A7924F5
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:01:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 45C0B792483
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234013AbjIEQAf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 12:00:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54960 "EHLO
+        id S231620AbjIEP7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40960 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354250AbjIEKVM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 06:21:12 -0400
-Received: from ams.source.kernel.org (ams.source.kernel.org [145.40.68.75])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2BDAECE
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 03:21:09 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by ams.source.kernel.org (Postfix) with ESMTPS id D381BB81131
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 10:21:07 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 22BE0C433C7;
-        Tue,  5 Sep 2023 10:21:06 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1693909266;
-        bh=M9uDru181L36pppGynsLKQXzHe9CGLvj0S3GGexNgSk=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=V/FBhenhIby7vAtcLwg7b695fH5lqIrug5x/bB1BwPOtUZfMoU7bLqAEibZUrNVZ/
-         PwN/aTt0loTKTs5IgopNcB2DlI+rbvHsoWH6npsIdX/Ysq7Z4oPzDF+QypfeMAXe89
-         mLDQyQD4XO3erz/4bnKOmu5JVpSzB+tK1oZK9ofA=
-Date:   Tue, 5 Sep 2023 11:21:03 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Lukas Bulwahn <lukas.bulwahn@gmail.com>
-Cc:     Andrey Ryabinin <aryabinin@virtuozzo.com>,
-        Andrey Ryabinin <ryabinin.a.a@gmail.com>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        kasan-dev <kasan-dev@googlegroups.com>, llvm@lists.linux.dev,
-        linux- stable <stable@vger.kernel.org>,
-        Alexander Potapenko <glider@google.com>,
-        Andrey Konovalov <andreyknvl@gmail.com>,
-        Dmitry Vyukov <dvyukov@google.com>,
-        Vincenzo Frascino <vincenzo.frascino@arm.com>,
-        eb-gft-team@globallogic.com
-Subject: Re: Include bac7a1fff792 ("lib/ubsan: remove
- returns-nonnull-attribute checks") into linux-4.14.y
-Message-ID: <2023090548-flattery-wrath-8ace@gregkh>
-References: <CAKXUXMzR4830pmUfWnwVjGk94inpQ0iz_uXiOnrE2kyV7SUPpg@mail.gmail.com>
+        with ESMTP id S1354294AbjIEKga (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 06:36:30 -0400
+Received: from mail-ej1-x631.google.com (mail-ej1-x631.google.com [IPv6:2a00:1450:4864:20::631])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2303C199
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 03:36:27 -0700 (PDT)
+Received: by mail-ej1-x631.google.com with SMTP id a640c23a62f3a-9a63b2793ecso343519566b.2
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 03:36:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=futuring-girl-com.20230601.gappssmtp.com; s=20230601; t=1693910185; x=1694514985; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=n//JsbAqJl43/3z76uxSBfdA6pqPBsVtnNqowg+JJfc=;
+        b=QN0cnNRJlEdtnlq56z8uS0V5xZBsFoQ3N1cZo/p3AwlDTLm+0Ia3mYHvKj1hKusykD
+         yN5ORex2YP8ZfbJ54xm3L+J4cEbZOdUhAkAMhg0rIVZSfTN+ggvhD4N0nwjWUDuCoA4y
+         ICYo7PjyGD9uscE6qTMEikel/MXHoOuZRQ566HGz/6tBqEbc7NNvoA809KvXeVRhf30W
+         T0L0YVE5RO+4OoOlkrZ+qD9cKjDC+B4YHxyALhqj6tAHNqHMGWInV5dp6F8EyLO867pO
+         HUcDYM2XrKCsou1TWDQqZsvGpOh32c1XxrFuh9DlPLTKYLPPCJz7JrhcpDPX6Fo+a+B7
+         B7sg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693910185; x=1694514985;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=n//JsbAqJl43/3z76uxSBfdA6pqPBsVtnNqowg+JJfc=;
+        b=c5r7DTqmw302Z0vOrYlCWWXkWTVhPWNqGJ4nQgq8EJP1J+WDlJhkfZU+609t14nykb
+         KLxyGIWOnKLdX0WWdN/COqnbLwQ/TRCN/4dfaVWC+PFJiRfmZjdrACfYYc4objgucg3m
+         9CinKnO+Ynm73SOYdBTbc0sPZZ1qAGTXPMqeOjuDlK+hgxd9Tnp0OocrWMzr73di0c0S
+         GAUGyyFKpwz03O9T2KhUGoUkO3t2IGjhj4DG+Gkou84WUCuj8wOASSbhoO4SWzuKAE+K
+         y6uA4pree5xJcVSAW1FO3N/m/QMXFS6pI+zsdZmG07rEzHRX5/7covSHjoQjkN1aWP8j
+         eWNg==
+X-Gm-Message-State: AOJu0Yxds+f8RLNNPvZOhoUynH1QOJMnExnmXgOByPdQtuiM75AtiZZL
+        3PHL2hdwBYXqDaurBdsAHmCZnqmo+5XcfEcB3z7wbg==
+X-Google-Smtp-Source: AGHT+IGk65q316yA74m9Njl60GqhKD5C+6Jk5pCTD3ZA10kctBccJ5mubYoybICOrFhMVMZNtx67xxH9l03lI4UlA2w=
+X-Received: by 2002:a17:907:2c44:b0:9a1:bcac:8174 with SMTP id
+ hf4-20020a1709072c4400b009a1bcac8174mr8805350ejc.37.1693910185521; Tue, 05
+ Sep 2023 03:36:25 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAKXUXMzR4830pmUfWnwVjGk94inpQ0iz_uXiOnrE2kyV7SUPpg@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+References: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+From:   Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
+Date:   Tue, 5 Sep 2023 19:36:14 +0900
+Message-ID: <CAKL4bV6sKyfTe9G-fY464EFenGC97DaUrkNE36fR=GM5uNA1fg@mail.gmail.com>
+Subject: Re: [PATCH 6.1 00/31] 6.1.52-rc1 review
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
+        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
+        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
+        jonathanh@nvidia.com, f.fainelli@gmail.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -62,48 +72,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 12:12:11PM +0200, Lukas Bulwahn wrote:
-> Dear Andrey, dear Nick, dear Greg, dear Sasha,
-> 
-> 
-> Compiling the kernel with UBSAN enabled and with gcc-8 and later fails when:
-> 
->   commit 1e1b6d63d634 ("lib/string.c: implement stpcpy") is applied, and
->   commit bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") is
->   not applied.
-> 
-> To reproduce, run:
-> 
->   tuxmake -r docker -a arm64 -t gcc-13 -k allnoconfig --kconfig-add
-> CONFIG_UBSAN=y
-> 
-> It then fails with:
-> 
->   aarch64-linux-gnu-ld: lib/string.o: in function `stpcpy':
->   string.c:(.text+0x694): undefined reference to
-> `__ubsan_handle_nonnull_return_v1'
->   string.c:(.text+0x694): relocation truncated to fit:
-> R_AARCH64_CALL26 against undefined symbol
-> `__ubsan_handle_nonnull_return_v1'
-> 
-> Below you find a complete list of architectures, compiler versions and kernel
-> versions that I have tested with.
-> 
-> As commit bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") is
-> included in v4.16, and commit 1e1b6d63d634 ("lib/string.c: implement stpcpy") is
-> included in v5.9, this is not an issue that can happen on any mainline release
-> or the stable releases v4.19.y and later.
-> 
-> In the v4.14.y branch, however, commit 1e1b6d63d634 ("lib/string.c: implement
-> stpcpy") was included with v4.14.200 as commit b6d38137c19f and commit
-> bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") from
-> mainline was not included yet. Hence, this reported failure with UBSAN can be
-> observed on v4.14.y with recent gcc versions.
-> 
-> Greg, once checked and confirmed by Andrey or Nick, could you please include
-> commit bac7a1fff792 ("lib/ubsan: remove returns-nonnull-attribute checks") into
-> the linux-4.14.y branch?
+Hi Greg
 
-Now queued up, thanks.
+On Tue, Sep 5, 2023 at 3:35=E2=80=AFAM Greg Kroah-Hartman
+<gregkh@linuxfoundation.org> wrote:
+>
+> This is the start of the stable review cycle for the 6.1.52 release.
+> There are 31 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+>
+> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
+> Anything received after that time might be too late.
+>
+> The whole patch series can be found in one patch at:
+>         https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-=
+6.1.52-rc1.gz
+> or in the git tree and branch at:
+>         git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable=
+-rc.git linux-6.1.y
+> and the diffstat can be found below.
+>
+> thanks,
+>
+> greg k-h
 
-greg k-h
+6.1.52-rc1 tested.
+
+Build successfully completed.
+Boot successfully completed.
+No dmesg regressions.
+Video output normal.
+Sound output normal.
+
+Lenovo ThinkPad X1 Carbon Gen10(Intel i7-1260P(x86_64) arch linux)
+
+Thanks
+
+Tested-by: Takeshi Ogasawara <takeshi.ogasawara@futuring-girl.com>
