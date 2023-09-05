@@ -2,92 +2,179 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC1A479247A
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:59:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00318792462
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:58:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231389AbjIEP7C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:59:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52418 "EHLO
+        id S230411AbjIEP6y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 11:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56188 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354438AbjIELhw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 07:37:52 -0400
-Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 10C9A1AB;
-        Tue,  5 Sep 2023 04:37:45 -0700 (PDT)
-Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
-        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
-        id 1qdUNJ-0007xD-Bz; Tue, 05 Sep 2023 13:37:41 +0200
-Message-ID: <faa245bf-e925-45b0-9827-b0c9c117e06c@leemhuis.info>
-Date:   Tue, 5 Sep 2023 13:37:36 +0200
+        with ESMTP id S1354450AbjIELrP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 07:47:15 -0400
+Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B06B1AB
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 04:47:11 -0700 (PDT)
+Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7927f241772so96430039f.1
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 04:47:11 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1693914430; x=1694519230; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
+        bh=+kMHasHVGTn26MkV0Q3sK5DIWqCalskCsDPU3m7M6q0=;
+        b=LC+h8u6cF0c0fLz/EIVeetNf8OEC2QS079RJZ8N9WcXC6VmZ2pYTkzD7WOafMP7Fn+
+         GJ6sG4Q66AxRqaNEOAgonm8+2zQAZtlo+QaO2Rk+535guRHEdPp5r4h+jJo8ME0JkFvv
+         h52rJZiAXrwfDr7Gnlzg8XeyArkWE02SjP4bU=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693914430; x=1694519230;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=+kMHasHVGTn26MkV0Q3sK5DIWqCalskCsDPU3m7M6q0=;
+        b=lAmC7x5d/WbTKzBtKGHKlXhSGr065UkbtJ+8JG0aqWRjy3C7otJ03sVa7vGOsc/vQE
+         wlcK0kuxXJq3WHaFRnjWjnmAF154g6ltw9ngf4TgrbLGFLa69JA3H15rQda7Mcfq+e70
+         7blC6uLJeVwTsBVSyk+L98yOdvqPP1SB78fiOoqjVtR8NOJ8kLTXZ5QY33oXWRld1jGU
+         SkHUUmCRxmWhjDBLL2IspgL4Hk6vgGS5zexH9s7RvthdysF8Z8OkK5W8jViS0Nj2W6xx
+         2tDK4K08IA+moEfOjZ8XhT6+VbnZrsMwe5SuNA54TrrOLG+wQNXrUsPistn61hiI81h0
+         hkXw==
+X-Gm-Message-State: AOJu0YzWZMW6vpx+Jf/28XM7czPj1plUrU7cYXIGKacX93gcKSPQvl+k
+        oTQSLE85PzyyMu9rZ+v2WFm0HQ==
+X-Google-Smtp-Source: AGHT+IHDwYBN4jbjbJ2InS/JWRLSveg7Bkkv+CFcAJjUWQW7JPDz2+SoDzDcEpMiiPdIjwRdBiw2KQ==
+X-Received: by 2002:a5e:dc49:0:b0:785:5917:a35f with SMTP id s9-20020a5edc49000000b007855917a35fmr14731736iop.8.1693914430477;
+        Tue, 05 Sep 2023 04:47:10 -0700 (PDT)
+Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
+        by smtp.gmail.com with ESMTPSA id k26-20020a6b401a000000b0077e3566a801sm4266287ioa.29.2023.09.05.04.47.09
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Tue, 05 Sep 2023 04:47:09 -0700 (PDT)
+Date:   Tue, 5 Sep 2023 11:47:09 +0000
+From:   Joel Fernandes <joel@joelfernandes.org>
+To:     Lorenzo Stoakes <lstoakes@gmail.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Zhen Lei <thunder.leizhen@huaweicloud.com>,
+        rcu@vger.kernel.org, Zqiang <qiang.zhang1211@gmail.com>,
+        stable@vger.kernel.org, linux-mm@kvack.org
+Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
+ for debug
+Message-ID: <20230905114709.GA3881391@google.com>
+References: <20230904180806.1002832-1-joel@joelfernandes.org>
+ <571d4a4a-0674-4c84-b714-8e7582699e30@lucifer.local>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: Fwd: Lexar NM790 SSDs are not recognized anymore after 6.1.50 LTS
-To:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>,
-        Christoph Hellwig <hch@lst.de>,
-        Sagi Grimberg <sagi@grimberg.me>,
-        Claudio Sampaio <patola@gmail.com>
-Cc:     Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux NVMe <linux-nvme@lists.infradead.org>,
-        Linux Stable <stable@vger.kernel.org>
-References: <8af186ba-5f64-2102-8f9c-3969b0906893@gmail.com>
-Content-Language: en-US, de-DE
-From:   "Linux regression tracking (Thorsten Leemhuis)" 
-        <regressions@leemhuis.info>
-Reply-To: Linux regressions mailing list <regressions@lists.linux.dev>
-In-Reply-To: <8af186ba-5f64-2102-8f9c-3969b0906893@gmail.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1693913865;cc8632e6;
-X-HE-SMSGID: 1qdUNJ-0007xD-Bz
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,T_SPF_TEMPERROR autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <571d4a4a-0674-4c84-b714-8e7582699e30@lucifer.local>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 04.09.23 13:07, Bagas Sanjaya wrote:
+On Tue, Sep 05, 2023 at 08:09:16AM +0100, Lorenzo Stoakes wrote:
+> On Mon, Sep 04, 2023 at 06:08:04PM +0000, Joel Fernandes (Google) wrote:
+> > It is unsafe to dump vmalloc area information when trying to do so from
+> > some contexts. Add a safer trylock version of the same function to do a
+> > best-effort VMA finding and use it from vmalloc_dump_obj().
 > 
-> I notice a regression report on Bugzilla [1]. Quoting from it:
->
->> I bought a new 4 TB Lexar NM790 and I was using kernel 6.3.13 at the time. It wasn't recognized, with these messages in dmesg:
->>
->> [ 358.950147] nvme nvme0: pci function 0000:06:00.0
->> [ 358.958327] nvme nvme0: Device not ready; aborting initialisation, CSTS=0x0
->>
->> My other NVMe appears correctly in the nvme list though.
->>
->>
->> So I tried using other kernels I had installed at the time: 6.3.7, 6.4.10, 6.5.0rc6, 6.5.0, 6.5.1 and none of these recognized the disk.
->> I installed the 6.1.50 lts kernel from arch repositories (I can compile my own too if this would be an issue) and then the device was correctly recognized:
->>
->> [    4.654613] nvme 0000:06:00.0: platform quirk: setting simple suspend
->> [    4.654632] nvme nvme0: pci function 0000:06:00.0
->> [    4.667290] nvme nvme0: allocated 40 MiB host memory buffer.
->> [    4.709473] nvme nvme0: 16/0/0 default/read/poll queues
+> It'd be nice to have more details as to precisely which contexts and what this
+> resolves.
 
-FWIW, the quoted mail missed one crucial detail:
-"""
- Claudio Sampaio 2023-09-02 19:04:29 UTC
+True. I was hoping the 'trylock' mention would be sufficient (example hardirq
+context interrupting a lock-held region) but you're right.
 
-Adding the two lines
+> > [applied test robot feedback on unused function fix.]
+> > [applied Uladzislau feedback on locking.]
+> >
+> > Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+> > Cc: Paul E. McKenney <paulmck@kernel.org>
+> > Cc: rcu@vger.kernel.org
+> > Cc: Zqiang <qiang.zhang1211@gmail.com>
+> > Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> > Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+> > Cc: stable@vger.kernel.org
+> > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> > ---
+> >  mm/vmalloc.c | 26 ++++++++++++++++++++++----
+> >  1 file changed, 22 insertions(+), 4 deletions(-)
+> >
+> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > index 93cf99aba335..2c6a0e2ff404 100644
+> > --- a/mm/vmalloc.c
+> > +++ b/mm/vmalloc.c
+> > @@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
+> >  #ifdef CONFIG_PRINTK
+> >  bool vmalloc_dump_obj(void *object)
+> >  {
+> > -	struct vm_struct *vm;
+> >  	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
+> > +	const void *caller;
+> > +	struct vm_struct *vm;
+> > +	struct vmap_area *va;
+> > +	unsigned long addr;
+> > +	unsigned int nr_pages;
+> >
+> > -	vm = find_vm_area(objp);
+> > -	if (!vm)
+> > +	if (!spin_trylock(&vmap_area_lock))
+> > +		return false;
+> 
+> It'd be good to have a comment here explaining why we must trylock here. I am
+> also concerned that in the past this function would return false only if the
+> address was not a vmalloc one, but now it might just return false due to lock
+> contention and the user has no idea which it is?
+> 
+> I'd want to at least output "vmalloc region cannot lookup lock contention"
+> vs. the below cannot find case.
 
-│ 3457   { PCI_DEVICE(0x1d97, 0x1602), /* Lexar NM790 */
-│ 3458   │ .driver_data = NVME_QUIRK_BOGUS_NID, },
+In the patch 2/2 we do print if the address looks like a vmalloc address even
+if the vmalloc look up fails.
 
-in file drivers/nvme/host/pci.c made my NVMe work correctly. Compiled a
-new 6.5.1 kernel and everything works.
-"""
+Also the reporter's usecase is not a common one. We only attempt to dump
+information if there was a debug objects failure (example if somebody did a
+double call_rcu). In such a situation, the patch will prevent a deadlock and
+still print something about the address.
 
-@NVME maintainers: is there anything more you need from Claudio at this
-point?
+> Under heavy lock contention aren't you potentially breaking the ability to
+> introspect vmalloc addresses? Wouldn't it be better to explicitly detect the
+> contexts under which acquiring this spinlock is not appropriate?
 
-Ciao, Thorsten (wearing his 'the Linux kernel's regression tracker' hat)
---
-Everything you wanna know about Linux kernel regression tracking:
-https://linux-regtracking.leemhuis.info/about/#tldr
-If I did something stupid, please tell me, as explained on that page.
+Yes this is a good point, but there's another case as well: PREEMPT_RT can
+sleep on lock contention (as spinlocks are sleeping) and we can't sleep from
+call_rcu() as it may be called in contexts that cannot sleep. So we handle
+that also using trylock.
+
+Thanks for the review!
+
+ - Joel
+
+
+> 
+> > +	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
+> > +	if (!va) {
+> > +		spin_unlock(&vmap_area_lock);
+> >  		return false;
+> > +	}
+> > +
+> > +	vm = va->vm;
+> > +	if (!vm) {
+> > +		spin_unlock(&vmap_area_lock);
+> > +		return false;
+> > +	}
+> > +	addr = (unsigned long)vm->addr;
+> > +	caller = vm->caller;
+> > +	nr_pages = vm->nr_pages;
+> > +	spin_unlock(&vmap_area_lock);
+> >  	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+> > -		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
+> > +		nr_pages, addr, caller);
+> >  	return true;
+> >  }
+> >  #endif
+> > --
+> > 2.42.0.283.g2d96d420d3-goog
+> >
