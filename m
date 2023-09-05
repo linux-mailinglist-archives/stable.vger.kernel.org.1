@@ -2,118 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D35A279324C
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 01:13:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D6534793285
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 01:27:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234725AbjIEXNu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 19:13:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35618 "EHLO
+        id S235493AbjIEX1l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 19:27:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38754 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229509AbjIEXNu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 19:13:50 -0400
-Received: from omta038.useast.a.cloudfilter.net (omta038.useast.a.cloudfilter.net [44.202.169.37])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98973199
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 16:13:46 -0700 (PDT)
-Received: from eig-obgw-6003a.ext.cloudfilter.net ([10.0.30.151])
-        by cmsmtp with ESMTP
-        id dCnPqSxloWU1cdfEvq7ktx; Tue, 05 Sep 2023 23:13:45 +0000
-Received: from box5620.bluehost.com ([162.241.219.59])
-        by cmsmtp with ESMTPS
-        id dfEuqaJGpuuY2dfEvqnxlC; Tue, 05 Sep 2023 23:13:45 +0000
-X-Authority-Analysis: v=2.4 cv=INcRtyjG c=1 sm=1 tr=0 ts=64f7b629
- a=30941lsx5skRcbJ0JMGu9A==:117 a=30941lsx5skRcbJ0JMGu9A==:17
- a=OWjo9vPv0XrRhIrVQ50Ab3nP57M=:19 a=dLZJa+xiwSxG16/P+YVxDGlgEgI=:19
- a=IkcTkHD0fZMA:10 a=zNV7Rl7Rt7sA:10 a=-Ou01B_BuAIA:10 a=VwQbUJbxAAAA:8
- a=HaFmDPmJAAAA:8 a=49j0FZ7RFL9ueZfULrUA:9 a=QEXdDO2ut3YA:10
- a=AjGcO6oz07-iQ99wixmX:22 a=nmWuMzfKamIsx3l42hEX:22
-DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed; d=w6rz.net;
-        s=default; h=Content-Transfer-Encoding:Content-Type:MIME-Version:Date:
-        Message-ID:From:In-Reply-To:References:Cc:To:Subject:Sender:Reply-To:
-        Content-ID:Content-Description:Resent-Date:Resent-From:Resent-Sender:
-        Resent-To:Resent-Cc:Resent-Message-ID:List-Id:List-Help:List-Unsubscribe:
-        List-Subscribe:List-Post:List-Owner:List-Archive;
-        bh=ZE9CVRS/2hnivVzeWWqlzVC9OYL8SAsLo1p1uo+C9Y0=; b=TPTSUIFPMRxpIfl1Nr9dt2eRWe
-        u/ieUln2WsIWe3ANSd8NEi+tPzCTy3vd4hndC7mxIYsnzqiuuXX96tQNJGk9IQLdOkICDOlfPHBDe
-        TZ1RxLXc5eMM5+qyxAz4weuj+lPQWN7dMIQqoisVr+4CeNI+3jLhIHuQIql2U0nPGCHFi6yGlKLCz
-        iMxkqBkZ62l1FMe89t7jz51CAU9fOfN0Zc9ymNnxwNMYw3reavi1pj77P5MFmabzAR3fODA+XmAuw
-        QZTeILQo5YYQFkOGgRelzmh6sPswBnj4cChGONN8RJfecPwfVKK6dae8dq3k63w2QjxAXQn3qLXdF
-        ZPw06/Lw==;
-Received: from c-73-162-232-9.hsd1.ca.comcast.net ([73.162.232.9]:54302 helo=[10.0.1.47])
-        by box5620.bluehost.com with esmtpsa  (TLS1.2) tls TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256
-        (Exim 4.96)
-        (envelope-from <re@w6rz.net>)
-        id 1qdfEt-002mcG-06;
-        Tue, 05 Sep 2023 17:13:43 -0600
-Subject: Re: [PATCH 6.1 00/31] 6.1.52-rc1 review
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        with ESMTP id S232289AbjIEX1l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 19:27:41 -0400
+X-Greylist: delayed 484 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Tue, 05 Sep 2023 16:27:24 PDT
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62A1E9E
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 16:27:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1757BC433C8;
+        Tue,  5 Sep 2023 23:19:18 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1693955959;
+        bh=tkLbpV5CYYO3vwi6utL6T6ePfooLRu8OIzUvsyy5lUw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=u6NcJsYZn2RyIAvQigeFmahcfloKDTk7xZoLkOrk1UmsjkW6yHUSfdAEiGeOa8BQO
+         usPjt9dvhzbV5AnjFq/p1CyiZdZl8vzXfS+ZLM0HDi3zdsDNAmbzFp7xz0Kg7f1fEx
+         TRD9p/tvbbyIw8kmHYcEDCX/JhDDVkjbvoH4jn34Y3U/TKpOCNq4PoDbOO6329Yf4G
+         N4yDzef4zY/eg4Tr4jpkG90tHwY4AoK03DZBhFcgYPDTpJiO9+x7ui1RcyVvRHjV3h
+         /9R+PI2dI6qobu60856oGC1ytxE4XZ0EkqdrS4zBtGrkDgQxdwBXEDeL1dfgtWm4lB
+         qtBXT/gKuedFg==
+Date:   Wed, 6 Sep 2023 01:19:15 +0200
+From:   Andi Shyti <andi.shyti@kernel.org>
+To:     Tommy Huang <tommy_huang@aspeedtech.com>
+Cc:     brendan.higgins@linux.dev, p.zabel@pengutronix.de,
+        linux-i2c@vger.kernel.org, openbmc@lists.ozlabs.org,
+        benh@kernel.crashing.org, joel@jms.id.au, andrew@aj.id.au,
+        linux-arm-kernel@lists.infradead.org,
+        linux-aspeed@lists.ozlabs.org, jae.hyun.yoo@linux.intel.com,
+        linux-kernel@vger.kernel.org, BMC-SW@aspeedtech.com,
         stable@vger.kernel.org
-Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
-        torvalds@linux-foundation.org, akpm@linux-foundation.org,
-        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
-        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
-        f.fainelli@gmail.com, sudipm.mukherjee@gmail.com,
-        srw@sladewatkins.net, rwarsow@gmx.de, conor@kernel.org
-References: <20230904182946.999390199@linuxfoundation.org>
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
-From:   Ron Economos <re@w6rz.net>
-Message-ID: <e6340979-a219-74cc-d584-a9a289a085f9@w6rz.net>
-Date:   Tue, 5 Sep 2023 16:13:40 -0700
-User-Agent: Mozilla/5.0 (X11; Linux armv7l; rv:78.0) Gecko/20100101
- Thunderbird/78.14.0
+Subject: Re: [PATCH] i2c: aspeed: Reset the i2c controller when timeout occurs
+Message-ID: <20230905231915.rv2ysvxa3bshekjq@zenone.zhora.eu>
+References: <20230904012505.340455-1-tommy_huang@aspeedtech.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8; format=flowed
-Content-Transfer-Encoding: 7bit
-Content-Language: en-US
-X-AntiAbuse: This header was added to track abuse, please include it with any abuse report
-X-AntiAbuse: Primary Hostname - box5620.bluehost.com
-X-AntiAbuse: Original Domain - vger.kernel.org
-X-AntiAbuse: Originator/Caller UID/GID - [47 12] / [47 12]
-X-AntiAbuse: Sender Address Domain - w6rz.net
-X-BWhitelist: no
-X-Source-IP: 73.162.232.9
-X-Source-L: No
-X-Exim-ID: 1qdfEt-002mcG-06
-X-Source: 
-X-Source-Args: 
-X-Source-Dir: 
-X-Source-Sender: c-73-162-232-9.hsd1.ca.comcast.net ([10.0.1.47]) [73.162.232.9]:54302
-X-Source-Auth: re@w6rz.net
-X-Email-Count: 19
-X-Org:  HG=bhshared;ORG=bluehost;
-X-Source-Cap: d3NpeHJ6bmU7d3NpeHJ6bmU7Ym94NTYyMC5ibHVlaG9zdC5jb20=
-X-Local-Domain: yes
-X-CMAE-Envelope: MS4xfFlBKZ1yJSw9TN6b+08TIDfesnlx5OHAddWLHoCt16MlARC2+pMkDsbgdWv8QT9nK6qNC9r45iOFsGbWNHJ/GEbNi9IaWKrAcSXsVy9tMYA5NFG4sOww
- NjA/kxal+sv6zqO1E1e1FQjuR6cFd0scql2/cmvJSgFLEDwxXO0ae8/K8QwzS9vU+doFpOwxr6NSSQ==
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230904012505.340455-1-tommy_huang@aspeedtech.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/4/23 11:30 AM, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.52 release.
-> There are 31 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
->
-> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
-> Anything received after that time might be too late.
->
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.52-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
-> and the diffstat can be found below.
->
-> thanks,
->
-> greg k-h
+Hi Tommy,
 
-Built and booted successfully on RISC-V RV64 (HiFive Unmatched).
+Thanks for fixing what I asked, I'm going to review here:
 
-Tested-by: Ron Economos <re@w6rz.net>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org> 
 
+But still there are 3 things I will ask you for your next
+patches:
+
+  1. Please add a version to the patch, this is patch version 2,
+     so that the title should be "[PATCH v2] i2c...."
+
+     You can have that with git-format-patch:
+
+        git format-patch -v 2 ....
+
+On Mon, Sep 04, 2023 at 09:25:05AM +0800, Tommy Huang wrote:
+> Reset the i2c controller when an i2c transfer timeout occurs.
+> The remaining interrupts and device should be reset to avoid
+> unpredictable controller behavior.
+> 
+> Fixes: 2e57b7cebb98 ("i2c: aspeed: Add multi-master use case support")
+> Cc: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+> Cc: <stable@vger.kernel.org> # v5.1+
+> 
+> Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+
+  2. Don't leave blank lines between tags. But I think Wolfram
+     can fix this before pushing.
+
+> ---
+
+  3. After the '---' it comes the freedom of speach section where
+     you can write anything. Please add the changelog, something
+     like:
+
+       v1 -> v2
+        - Fixed comment...
+	- Fixed commit log...
+	- etc.
+
+     This is important for reviewers in order to understand what
+     has changed from patch v1 to patch v2.
+
+Please, before your next patch, read first the
+Documentation/process/submitting-patches.rst document.
+
+Thanks,
+Andi
+
+>  drivers/i2c/busses/i2c-aspeed.c | 7 +++++--
+>  1 file changed, 5 insertions(+), 2 deletions(-)
+> 
+> diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
+> index 2e5acfeb76c8..5a416b39b818 100644
+> --- a/drivers/i2c/busses/i2c-aspeed.c
+> +++ b/drivers/i2c/busses/i2c-aspeed.c
+> @@ -698,13 +698,16 @@ static int aspeed_i2c_master_xfer(struct i2c_adapter *adap,
+>  
+>  	if (time_left == 0) {
+>  		/*
+> -		 * If timed out and bus is still busy in a multi master
+> -		 * environment, attempt recovery at here.
+> +		 * In a multi-master setup, if a timeout occurs, attempt
+> +		 * recovery. But if the bus is idle, we still need to reset the
+> +		 * i2c controller to clear the remaining interrupts.
+>  		 */
+>  		if (bus->multi_master &&
+>  		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
+>  		     ASPEED_I2CD_BUS_BUSY_STS))
+>  			aspeed_i2c_recover_bus(bus);
+> +		else
+> +			aspeed_i2c_reset(bus);
+>  
+>  		/*
+>  		 * If timed out and the state is still pending, drop the pending
+> -- 
+> 2.25.1
+> 
