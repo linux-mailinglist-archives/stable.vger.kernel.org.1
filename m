@@ -2,179 +2,118 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00318792462
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 17:58:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DD917924DB
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 18:00:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230411AbjIEP6y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 11:58:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56188 "EHLO
+        id S230238AbjIEQAA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 12:00:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1354450AbjIELrP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 07:47:15 -0400
-Received: from mail-io1-xd2c.google.com (mail-io1-xd2c.google.com [IPv6:2607:f8b0:4864:20::d2c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B06B1AB
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 04:47:11 -0700 (PDT)
-Received: by mail-io1-xd2c.google.com with SMTP id ca18e2360f4ac-7927f241772so96430039f.1
-        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 04:47:11 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1693914430; x=1694519230; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=+kMHasHVGTn26MkV0Q3sK5DIWqCalskCsDPU3m7M6q0=;
-        b=LC+h8u6cF0c0fLz/EIVeetNf8OEC2QS079RJZ8N9WcXC6VmZ2pYTkzD7WOafMP7Fn+
-         GJ6sG4Q66AxRqaNEOAgonm8+2zQAZtlo+QaO2Rk+535guRHEdPp5r4h+jJo8ME0JkFvv
-         h52rJZiAXrwfDr7Gnlzg8XeyArkWE02SjP4bU=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693914430; x=1694519230;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=+kMHasHVGTn26MkV0Q3sK5DIWqCalskCsDPU3m7M6q0=;
-        b=lAmC7x5d/WbTKzBtKGHKlXhSGr065UkbtJ+8JG0aqWRjy3C7otJ03sVa7vGOsc/vQE
-         wlcK0kuxXJq3WHaFRnjWjnmAF154g6ltw9ngf4TgrbLGFLa69JA3H15rQda7Mcfq+e70
-         7blC6uLJeVwTsBVSyk+L98yOdvqPP1SB78fiOoqjVtR8NOJ8kLTXZ5QY33oXWRld1jGU
-         SkHUUmCRxmWhjDBLL2IspgL4Hk6vgGS5zexH9s7RvthdysF8Z8OkK5W8jViS0Nj2W6xx
-         2tDK4K08IA+moEfOjZ8XhT6+VbnZrsMwe5SuNA54TrrOLG+wQNXrUsPistn61hiI81h0
-         hkXw==
-X-Gm-Message-State: AOJu0YzWZMW6vpx+Jf/28XM7czPj1plUrU7cYXIGKacX93gcKSPQvl+k
-        oTQSLE85PzyyMu9rZ+v2WFm0HQ==
-X-Google-Smtp-Source: AGHT+IHDwYBN4jbjbJ2InS/JWRLSveg7Bkkv+CFcAJjUWQW7JPDz2+SoDzDcEpMiiPdIjwRdBiw2KQ==
-X-Received: by 2002:a5e:dc49:0:b0:785:5917:a35f with SMTP id s9-20020a5edc49000000b007855917a35fmr14731736iop.8.1693914430477;
-        Tue, 05 Sep 2023 04:47:10 -0700 (PDT)
-Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id k26-20020a6b401a000000b0077e3566a801sm4266287ioa.29.2023.09.05.04.47.09
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 04:47:09 -0700 (PDT)
-Date:   Tue, 5 Sep 2023 11:47:09 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Lorenzo Stoakes <lstoakes@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        rcu@vger.kernel.org, Zqiang <qiang.zhang1211@gmail.com>,
-        stable@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
- for debug
-Message-ID: <20230905114709.GA3881391@google.com>
-References: <20230904180806.1002832-1-joel@joelfernandes.org>
- <571d4a4a-0674-4c84-b714-8e7582699e30@lucifer.local>
+        with ESMTP id S1354499AbjIEMBg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 08:01:36 -0400
+Received: from wp530.webpack.hosteurope.de (wp530.webpack.hosteurope.de [80.237.130.52])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40A0D1AB;
+        Tue,  5 Sep 2023 05:01:33 -0700 (PDT)
+Received: from [2a02:8108:8980:2478:8cde:aa2c:f324:937e]; authenticated
+        by wp530.webpack.hosteurope.de running ExIM with esmtpsa (TLS1.3:ECDHE_RSA_AES_128_GCM_SHA256:128)
+        id 1qdUkM-0004Lb-5r; Tue, 05 Sep 2023 14:01:30 +0200
+Message-ID: <8dc067e5-d81f-4c5b-be76-bf0c1227b71e@leemhuis.info>
+Date:   Tue, 5 Sep 2023 14:01:27 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <571d4a4a-0674-4c84-b714-8e7582699e30@lucifer.local>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
+Content-Language: en-US, de-DE
+To:     Jarkko Sakkinen <jarkko@kernel.org>,
+        Mario Limonciello <mario.limonciello@amd.com>
+Cc:     linux-integrity@vger.kernel.org,
+        Jerry Snitselaar <jsnitsel@redhat.com>, stable@vger.kernel.org,
+        Todd Brandt <todd.e.brandt@intel.com>,
+        Peter Huewe <peterhuewe@gmx.de>,
+        Jason Gunthorpe <jgg@ziepe.ca>, linux-kernel@vger.kernel.org,
+        Patrick Steinhardt <ps@pks.im>, Ronan Pigott <ronan@rjp.ie>,
+        Raymond Jay Golo <rjgolo@gmail.com>,
+        Linux kernel regressions list <regressions@lists.linux.dev>,
+        Dusty Mabe <dusty@dustymabe.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Paul Menzel <pmenzel@molgen.mpg.de>
+References: <20230822231510.2263255-1-jarkko@kernel.org>
+ <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+ <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
+ <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
+ <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
+ <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
+ <fcf2f600-d1f0-de14-956b-4d4f3f0cb3fa@leemhuis.info>
+ <116dd56f-695f-4ecd-dace-805db83f5c3e@leemhuis.info>
+ <CVAHNI7PWVDL.W8194GZA0SMK@suppilovahvero>
+From:   Thorsten Leemhuis <regressions@leemhuis.info>
+In-Reply-To: <CVAHNI7PWVDL.W8194GZA0SMK@suppilovahvero>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-bounce-key: webpack.hosteurope.de;regressions@leemhuis.info;1693915293;db139137;
+X-HE-SMSGID: 1qdUkM-0004Lb-5r
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 08:09:16AM +0100, Lorenzo Stoakes wrote:
-> On Mon, Sep 04, 2023 at 06:08:04PM +0000, Joel Fernandes (Google) wrote:
-> > It is unsafe to dump vmalloc area information when trying to do so from
-> > some contexts. Add a safer trylock version of the same function to do a
-> > best-effort VMA finding and use it from vmalloc_dump_obj().
-> 
-> It'd be nice to have more details as to precisely which contexts and what this
-> resolves.
+On 05.09.23 00:32, Jarkko Sakkinen wrote:
+> On Fri Sep 1, 2023 at 11:49 AM EEST, Thorsten Leemhuis wrote:
+>> On 29.08.23 10:38, Linux regression tracking (Thorsten Leemhuis) wrote:
+>>> On 28.08.23 02:35, Mario Limonciello wrote:
+>>>> On 8/27/2023 13:12, Jarkko Sakkinen wrote:
+>>>>> On Wed Aug 23, 2023 at 9:58 PM EEST, Mario Limonciello wrote:
+>>>>>> On 8/23/2023 12:40, Jarkko Sakkinen wrote:
+>>>>>>> On Wed Aug 23, 2023 at 11:23 AM EEST, Paul Menzel wrote:
+>>>>>>>> Am 23.08.23 um 01:15 schrieb Jarkko Sakkinen:
+>>>>>>>>> The vendor check introduced by commit 554b841d4703 ("tpm: Disable
+>>>>>>>>> RNG for
+>>>>>>>>> all AMD fTPMs") doesn't work properly on a number of Intel fTPMs. 
+>>>>>>>>> On the
+>>>>>>>>> reported systems the TPM doesn't reply at bootup and returns back the
+>>>>>>>>> command code. This makes the TPM fail probe.
+> [...]
+>> Hmmm. Quite a bit progress to fix the issue was made in the first week
+>> after Todd's report; Jarkko apparently even applied the earlier patch
+>> from Mario to his master branch:
+>> https://git.kernel.org/pub/scm/linux/kernel/git/jarkko/linux-tpmdd.git/commit/?id=b1a62d41bdc1d15b0641759717e8c3651f0a810c
+>> But since then (aka in the past week) there was not much progress.
 
-True. I was hoping the 'trylock' mention would be sufficient (example hardirq
-context interrupting a lock-held region) but you're right.
+Jarkko, many thx for picking this up and submitting it to Linus, much
+appreciated. Sorry again for prodding things, but I felt I had to. Hope
+you didn't mind too much.
 
-> > [applied test robot feedback on unused function fix.]
-> > [applied Uladzislau feedback on locking.]
-> >
-> > Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-> > Cc: Paul E. McKenney <paulmck@kernel.org>
-> > Cc: rcu@vger.kernel.org
-> > Cc: Zqiang <qiang.zhang1211@gmail.com>
-> > Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > ---
-> >  mm/vmalloc.c | 26 ++++++++++++++++++++++----
-> >  1 file changed, 22 insertions(+), 4 deletions(-)
-> >
-> > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > index 93cf99aba335..2c6a0e2ff404 100644
-> > --- a/mm/vmalloc.c
-> > +++ b/mm/vmalloc.c
-> > @@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
-> >  #ifdef CONFIG_PRINTK
-> >  bool vmalloc_dump_obj(void *object)
-> >  {
-> > -	struct vm_struct *vm;
-> >  	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-> > +	const void *caller;
-> > +	struct vm_struct *vm;
-> > +	struct vmap_area *va;
-> > +	unsigned long addr;
-> > +	unsigned int nr_pages;
-> >
-> > -	vm = find_vm_area(objp);
-> > -	if (!vm)
-> > +	if (!spin_trylock(&vmap_area_lock))
-> > +		return false;
-> 
-> It'd be good to have a comment here explaining why we must trylock here. I am
-> also concerned that in the past this function would return false only if the
-> address was not a vmalloc one, but now it might just return false due to lock
-> contention and the user has no idea which it is?
-> 
-> I'd want to at least output "vmalloc region cannot lookup lock contention"
-> vs. the below cannot find case.
+> Could it be possible to extend the actual kernel documentation
+> to give at least some guidelines how a maintainer should deal
+> with the bugzilla?
 
-In the patch 2/2 we do print if the address looks like a vmalloc address even
-if the vmalloc look up fails.
+I guess it's best if that is done by somebody that cares about bugzilla
+(I don't fall into that group[1]) and knows the official status.
 
-Also the reporter's usecase is not a common one. We only attempt to dump
-information if there was a debug objects failure (example if somebody did a
-double call_rcu). In such a situation, the patch will prevent a deadlock and
-still print something about the address.
+But FWIW, I wonder what you actually want to see documented. From
+https://lore.kernel.org/all/CVAC8VQPD3PK.1CBS5QTWDSS2C@suppilovahvero/
+it sounds like you had trouble with Link:/Closes: tag and Reported-by.
+From what I can see I don't think bugzilla.kernel.org needs special
+documentation in that area:
 
-> Under heavy lock contention aren't you potentially breaking the ability to
-> introspect vmalloc addresses? Wouldn't it be better to explicitly detect the
-> contexts under which acquiring this spinlock is not appropriate?
+ * just use Link:/Closes: to reports to public reports that might be
+helpful later in case somebody wants to look at the backstory of a
+commit, wherever those reports may be (lore, bugzilla.kernel.org,
+https://gitlab.freedesktop.org/drm/intel/-/issues,
+https://github.com/thesofproject/linux/issues, ...)
 
-Yes this is a good point, but there's another case as well: PREEMPT_RT can
-sleep on lock contention (as spinlocks are sleeping) and we can't sleep from
-call_rcu() as it may be called in contexts that cannot sleep. So we handle
-that also using trylock.
+ * use Reported-by: to give credit to anyone that deserves it, as it is
+a nice way to say thx while motivate people to help again in the future.
+That usually will include the initial reporter, but might also include
+people that replied to a report from somebody else and helped
+perceptible with debugging or fixing.
 
-Thanks for the review!
+Ciao, Thorsten
 
- - Joel
-
-
-> 
-> > +	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
-> > +	if (!va) {
-> > +		spin_unlock(&vmap_area_lock);
-> >  		return false;
-> > +	}
-> > +
-> > +	vm = va->vm;
-> > +	if (!vm) {
-> > +		spin_unlock(&vmap_area_lock);
-> > +		return false;
-> > +	}
-> > +	addr = (unsigned long)vm->addr;
-> > +	caller = vm->caller;
-> > +	nr_pages = vm->nr_pages;
-> > +	spin_unlock(&vmap_area_lock);
-> >  	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
-> > -		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
-> > +		nr_pages, addr, caller);
-> >  	return true;
-> >  }
-> >  #endif
-> > --
-> > 2.42.0.283.g2d96d420d3-goog
-> >
+[1] I only sometimes help people that report regressions to
+bugzilla.kernel.org that otherwise would likely would fall through the
+cracks (among others because many reports are never forwarded to the
+proper developers otherwise).
