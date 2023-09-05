@@ -2,98 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9B43B792CA6
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:43:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FDD1792C97
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 19:40:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234353AbjIERoA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 13:44:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52754 "EHLO
+        id S239618AbjIERkU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 13:40:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235547AbjIERnn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 13:43:43 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 141A51E7FA
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 10:24:24 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d7e904674aeso2264679276.3
-        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 10:24:24 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linuxtx.org; s=google; t=1693934595; x=1694539395; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=aKkV/gdpVbXWeDor+5ZiimyzgnnKqYGNlXMHbycLo6g=;
-        b=Sf+jdMuaPfsCdzWXKPn0A28gnVqGF8lQXsAlda1VOlgqRkPjxIG3BwAi2a6L3Nebp2
-         bJyhFdg1np5gGf6hptvhDxQsG4PEL+COrYYlk/At5vOfAtGbLI793sZa2FsrTvxeuU5k
-         +1oaIgPPU9VkBrdl3xp60xAkJ2vuFtPjWp04c=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693934595; x=1694539395;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=aKkV/gdpVbXWeDor+5ZiimyzgnnKqYGNlXMHbycLo6g=;
-        b=V8xtJaSJYOAEeaIRg17Y9Z7jigPwN+svYCgI8wnbpdlM+aPJetxfUGTTEOyBbBFA3/
-         FUcSQlCpQcycFi0BhCKt6ShK2/OZer9dqMlfhS/Foo5BK5JkCv+u/52G2+w5KrVqKHnR
-         GlNqFJmR1SWE/O7nHRr81XE5qYFrec7Y+ymyhhzLwg8DhcjK84cYzdq2NrbERplrDfso
-         eFebdel95O3ykwgp6mIwf2HiSMPnqSi6IDeH8ilsS8gHP/+6pY32irtYi5EmjzCs/JQb
-         VXajGdqZ5KWR+rslzYHHNoecsMEMc9kV+uMFSo4CF3Id8oKGTAB7TzdbBMaax2pNdK4A
-         lAUg==
-X-Gm-Message-State: AOJu0YyAQ7ThbI6nX7dbMFSSivYxrvZzSCO3dUakk1QLZH91RQJXPMfJ
-        8GZo/FBv6CkUnB6nu8+e+FC5V5ATk1oKcMen6Y+10uXS
-X-Google-Smtp-Source: AGHT+IEzhtU1JZMoj8kA++Rihq9U3PC0Oyza2Z9UchGDwNwhqqyrJHcKEMD0nUuF32FRQAGsyfAr5A==
-X-Received: by 2002:a05:6870:78e:b0:1bb:9c27:c7e6 with SMTP id en14-20020a056870078e00b001bb9c27c7e6mr16121041oab.41.1693933906036;
-        Tue, 05 Sep 2023 10:11:46 -0700 (PDT)
-Received: from fedora64.linuxtx.org ([99.47.93.78])
-        by smtp.gmail.com with ESMTPSA id g1-20020a056870c38100b001bb919237cesm6736729oao.3.2023.09.05.10.11.45
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Tue, 05 Sep 2023 10:11:45 -0700 (PDT)
-Sender: Justin Forbes <jmforbes@linuxtx.org>
-Date:   Tue, 5 Sep 2023 12:11:44 -0500
-From:   Justin Forbes <jforbes@fedoraproject.org>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        linux-kernel@vger.kernel.org, torvalds@linux-foundation.org,
-        akpm@linux-foundation.org, linux@roeck-us.net, shuah@kernel.org,
-        patches@kernelci.org, lkft-triage@lists.linaro.org, pavel@denx.de,
-        jonathanh@nvidia.com, f.fainelli@gmail.com,
-        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
-        conor@kernel.org
-Subject: Re: [PATCH 6.5 00/34] 6.5.2-rc1 review
-Message-ID: <ZPdhUB3R/vYp+zxz@fedora64.linuxtx.org>
-References: <20230904182948.594404081@linuxfoundation.org>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230904182948.594404081@linuxfoundation.org>
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_EF,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+        with ESMTP id S240385AbjIERjt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 13:39:49 -0400
+Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EC383A3F3;
+        Tue,  5 Sep 2023 10:16:38 -0700 (PDT)
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (2048 bits))
+        (No client certificate requested)
+        by dfw.source.kernel.org (Postfix) with ESMTPS id ED30060C37;
+        Tue,  5 Sep 2023 17:14:51 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4A04DC433C7;
+        Tue,  5 Sep 2023 17:14:51 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
+        s=korg; t=1693934091;
+        bh=4kH156gC5NtbFa8I9tM0rjb82yRM0ElPBO49A+k/lyo=;
+        h=Date:To:From:Subject:From;
+        b=D5UhXufIoqs7bTXGUzj5pU+1ANwpicFMxeqF3Tz2xuTJQRKL+DJ0BwnIHnwpi05kG
+         lm6NfvSBofuby3Qrh6B3vrnhi+RKjWASDyJlCwsGI6Fx6gDLciQi+Wrtx5I4e5ypSQ
+         UsLZiXsWbjPLXBe315iuMhqoRkETP8kC0z51E4xM=
+Date:   Tue, 05 Sep 2023 10:14:50 -0700
+To:     mm-commits@vger.kernel.org, willy@infradead.org, urezki@gmail.com,
+        thunder.leizhen@huaweicloud.com, stable@vger.kernel.org,
+        qiang.zhang1211@gmail.com, paulmck@kernel.org,
+        joel@joelfernandes.org, akpm@linux-foundation.org
+From:   Andrew Morton <akpm@linux-foundation.org>
+Subject: [merged mm-hotfixes-stable] mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch removed from -mm tree
+Message-Id: <20230905171451.4A04DC433C7@smtp.kernel.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 04, 2023 at 07:29:47PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.5.2 release.
-> There are 34 patches in this series, all will be posted as a response
-> to this one.  If anyone has any issues with these being applied, please
-> let me know.
-> 
-> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
-> Anything received after that time might be too late.
-> 
-> The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.5.2-rc1.gz
-> or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.5.y
-> and the diffstat can be found below.
-> 
-> thanks,
-> 
-> greg k-h
 
-Tested rc1 against the Fedora build system (aarch64, ppc64le, s390x,
-x86_64), and boot tested x86_64. No regressions noted.
+The quilt patch titled
+     Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+has been removed from the -mm tree.  Its filename was
+     mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
 
-Tested-by: Justin M. Forbes <jforbes@fedoraproject.org>
+This patch was dropped because it was merged into the mm-hotfixes-stable branch
+of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+
+------------------------------------------------------
+From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+Date: Mon, 4 Sep 2023 18:08:04 +0000
+
+It is unsafe to dump vmalloc area information when trying to do so from
+some contexts.  Add a safer trylock version of the same function to do a
+best-effort VMA finding and use it from vmalloc_dump_obj().
+
+[applied test robot feedback on unused function fix.]
+[applied Uladzislau feedback on locking.]
+Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernandes.org
+Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+Cc: Paul E. McKenney <paulmck@kernel.org>
+Cc: Zqiang <qiang.zhang1211@gmail.com>
+Cc: <stable@vger.kernel.org>
+Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+---
+
+ mm/vmalloc.c |   26 ++++++++++++++++++++++----
+ 1 file changed, 22 insertions(+), 4 deletions(-)
+
+--- a/mm/vmalloc.c~mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug
++++ a/mm/vmalloc.c
+@@ -4278,14 +4278,32 @@ void pcpu_free_vm_areas(struct vm_struct
+ #ifdef CONFIG_PRINTK
+ bool vmalloc_dump_obj(void *object)
+ {
+-	struct vm_struct *vm;
+ 	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
++	const void *caller;
++	struct vm_struct *vm;
++	struct vmap_area *va;
++	unsigned long addr;
++	unsigned int nr_pages;
++
++	if (!spin_trylock(&vmap_area_lock))
++		return false;
++	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
++	if (!va) {
++		spin_unlock(&vmap_area_lock);
++		return false;
++	}
+ 
+-	vm = find_vm_area(objp);
+-	if (!vm)
++	vm = va->vm;
++	if (!vm) {
++		spin_unlock(&vmap_area_lock);
+ 		return false;
++	}
++	addr = (unsigned long)vm->addr;
++	caller = vm->caller;
++	nr_pages = vm->nr_pages;
++	spin_unlock(&vmap_area_lock);
+ 	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+-		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
++		nr_pages, addr, caller);
+ 	return true;
+ }
+ #endif
+_
+
+Patches currently in -mm which might be from joel@joelfernandes.org are
+
+
