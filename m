@@ -2,50 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9BA20791FBA
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 02:09:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D8CFA791FBC
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 02:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236864AbjIEAJX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 4 Sep 2023 20:09:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41084 "EHLO
+        id S242539AbjIEAJm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 4 Sep 2023 20:09:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49998 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239087AbjIEAJW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 20:09:22 -0400
-Received: from mail-io1-xd2a.google.com (mail-io1-xd2a.google.com [IPv6:2607:f8b0:4864:20::d2a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 391BFCD4
-        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 17:09:18 -0700 (PDT)
-Received: by mail-io1-xd2a.google.com with SMTP id ca18e2360f4ac-794e0e8b588so90812539f.1
-        for <stable@vger.kernel.org>; Mon, 04 Sep 2023 17:09:18 -0700 (PDT)
+        with ESMTP id S242361AbjIEAJl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 4 Sep 2023 20:09:41 -0400
+Received: from mail-io1-xd36.google.com (mail-io1-xd36.google.com [IPv6:2607:f8b0:4864:20::d36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1969E1B4
+        for <stable@vger.kernel.org>; Mon,  4 Sep 2023 17:09:38 -0700 (PDT)
+Received: by mail-io1-xd36.google.com with SMTP id ca18e2360f4ac-79536bc669dso77537239f.3
+        for <stable@vger.kernel.org>; Mon, 04 Sep 2023 17:09:38 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1693872557; x=1694477357; darn=vger.kernel.org;
+        d=joelfernandes.org; s=google; t=1693872577; x=1694477377; darn=vger.kernel.org;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=hmNwuhUjd0buiuTyS5n0pAwdKJtMm9VI1Ify1HAs5hM=;
-        b=IfvGegKRymI8F84tcIb9Gn4gNmf/07fovlaztTYuKyEBz0gdP2Q4GkHprQ5RnQ4Mfk
-         94Qd3sCnf/xvp7wQhyeHjqeAV+rH6oQeM9oSDpS5R7GFLNgoIBfFA+kIkSM20bwCoGYI
-         p6a+gxbMqUUPCTE1U91iR3bwwmRb3m8J4zcBo=
+        bh=otKgkzyWUDGh27y2Rs72bFcGYMbP5/W8N5JOO8p4hSw=;
+        b=RYfRxHiu5Mj/tp2lVpOuu436wZW9xcDn7II/foi7Fljv3zY/vII+O5KkyGuya01QxL
+         iBSnq1yLfnEN+UCOtGmkcIhHeZ2qtII9z7vF7Qp/xaHj4XpnrIrHGJiWQ4dXtFL9mord
+         kqZbBNupkVtaEUdx6olSDwzvdDJezCLnLYal8=
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693872557; x=1694477357;
+        d=1e100.net; s=20221208; t=1693872577; x=1694477377;
         h=in-reply-to:content-disposition:mime-version:references:message-id
          :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
          :message-id:reply-to;
-        bh=hmNwuhUjd0buiuTyS5n0pAwdKJtMm9VI1Ify1HAs5hM=;
-        b=axPJW30aKIL+tfgjDpLb2C8VUT8C/D8rfgQJ6g8HkuxwH7Xes6BO7y7tsuL7eotxwX
-         VR2u/Dir7wHAlvKugHigK6INurVSoOA3ZRTlJrcJWelSR/65q/kfBqvNlJ+nOVH89bTY
-         9tE563kVUuG6qpy6ismttyZKP1aCc1RkdzS3VB0RlAOeoykmEpwlzYbNdgsNakkYnGG7
-         UPFAkXWKAFZvSH46fH9BFyaZSi5yzDlBS4yN7I4rQdLegDealTeN8MhrObDHVUhIBYiD
-         0PWWC9MBdoVvrBhBw7rcKi093ZjTG0Kthmtcr+H2G/aHslzBRaS3v20bAf/bIVlA1bEy
-         LTZQ==
-X-Gm-Message-State: AOJu0YwDIb706tVG301u8HYzLkh1ap1ejUR98LDuHJop4wh6jwIPbIkq
-        G/C9cATIDysRllCzWtRPdZoWdg==
-X-Google-Smtp-Source: AGHT+IGKCZuIndNgxFzx7SJEXaj+cGm17bxMdKn5HC4RwSHQN90fsbzBIo4h6t8MhvrbtU6MfRq32A==
-X-Received: by 2002:a6b:d607:0:b0:791:385d:69cf with SMTP id w7-20020a6bd607000000b00791385d69cfmr12005104ioa.18.1693872557562;
-        Mon, 04 Sep 2023 17:09:17 -0700 (PDT)
+        bh=otKgkzyWUDGh27y2Rs72bFcGYMbP5/W8N5JOO8p4hSw=;
+        b=kLDHMEhBI0QleyCtzo4QOmEnemr3LmIUI79Grx67BiGohijInlCJV2nvAfsPRvvIUP
+         SNwjrHPDff9es0cS1HjdfZb2iUo2fwWYNF8+3Z4nndrXthGtb5EOUgQT4iB1sjhZSz+n
+         nNuHXvVAsj4sGkkBBqdQKjCHyReALuiyQb63d7kiq7/Rzn70PQJmWo8MwKYf/DRoDReu
+         bphMUSoHp2Pcb6Z8T3rmpiIydeCKfEARQYXp3nARX/j8tm6kPfhYHOlLobO2+uRCPoqK
+         R6CdjOnos+NZQzftNQiI4jLKqYvlkqz5vLK/YAnlxMhg0Rw2BzLIyYowAI/Jx3gb9EiV
+         EPzA==
+X-Gm-Message-State: AOJu0YwW3T3UPdkAA+8rFv4tZEmErY0oKrEdvoGxIT/CJoi/9ZWxz+/F
+        xgOBnB2rJq65yG3FHYqXcdh4oA==
+X-Google-Smtp-Source: AGHT+IFEOG4zzjOlyN77CxR7BrlgzRJt1K/MuK1tUHEe4Im0K8EPI6b67QDCAR8Ou3Q68vESTV668A==
+X-Received: by 2002:a05:6602:1b02:b0:785:ff35:f340 with SMTP id dk2-20020a0566021b0200b00785ff35f340mr14336669iob.14.1693872577492;
+        Mon, 04 Sep 2023 17:09:37 -0700 (PDT)
 Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id i37-20020a056638382500b0042bb09e9345sm3722913jav.90.2023.09.04.17.09.16
+        by smtp.gmail.com with ESMTPSA id b19-20020a5ea713000000b00783737db8ebsm3949910iod.38.2023.09.04.17.09.36
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 04 Sep 2023 17:09:17 -0700 (PDT)
-Date:   Tue, 5 Sep 2023 00:09:16 +0000
+        Mon, 04 Sep 2023 17:09:37 -0700 (PDT)
+Date:   Tue, 5 Sep 2023 00:09:36 +0000
 From:   Joel Fernandes <joel@joelfernandes.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
@@ -55,26 +55,25 @@ Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
         jonathanh@nvidia.com, f.fainelli@gmail.com,
         sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
         conor@kernel.org
-Subject: Re: [PATCH 6.1 00/31] 6.1.52-rc1 review
-Message-ID: <20230905000916.GC1104186@google.com>
-References: <20230904182946.999390199@linuxfoundation.org>
+Subject: Re: [PATCH 6.4 00/32] 6.4.15-rc1 review
+Message-ID: <20230905000936.GD1104186@google.com>
+References: <20230904182947.899158313@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230904182946.999390199@linuxfoundation.org>
+In-Reply-To: <20230904182947.899158313@linuxfoundation.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon, Sep 04, 2023 at 07:30:08PM +0100, Greg Kroah-Hartman wrote:
-> This is the start of the stable review cycle for the 6.1.52 release.
-> There are 31 patches in this series, all will be posted as a response
+On Mon, Sep 04, 2023 at 07:29:58PM +0100, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 6.4.15 release.
+> There are 32 patches in this series, all will be posted as a response
 > to this one.  If anyone has any issues with these being applied, please
 > let me know.
 > 
@@ -82,9 +81,9 @@ On Mon, Sep 04, 2023 at 07:30:08PM +0100, Greg Kroah-Hartman wrote:
 > Anything received after that time might be too late.
 > 
 > The whole patch series can be found in one patch at:
-> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.1.52-rc1.gz
+> 	https://www.kernel.org/pub/linux/kernel/v6.x/stable-review/patch-6.4.15-rc1.gz
 > or in the git tree and branch at:
-> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.1.y
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-6.4.y
 > and the diffstat can be found below.
 
 For RCU,
@@ -103,7 +102,7 @@ thanks,
 > Pseudo-Shortlog of commits:
 > 
 > Greg Kroah-Hartman <gregkh@linuxfoundation.org>
->     Linux 6.1.52-rc1
+>     Linux 6.4.15-rc1
 > 
 > Mario Limonciello <mario.limonciello@amd.com>
 >     pinctrl: amd: Don't show `Invalid config param` errors
@@ -113,9 +112,6 @@ thanks,
 > 
 > Ryusuke Konishi <konishi.ryusuke@gmail.com>
 >     nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
-> 
-> Ryusuke Konishi <konishi.ryusuke@gmail.com>
->     nilfs2: fix general protection fault in nilfs_lookup_dirty_data_buffers()
 > 
 > Hugo Villeneuve <hvilleneuve@dimonoff.com>
 >     dt-bindings: sc16is7xx: Add property to change GPIO function
@@ -138,14 +134,20 @@ thanks,
 > Johan Hovold <johan+linaro@kernel.org>
 >     serial: qcom-geni: fix opp vote on shutdown
 > 
+> Sven Eckelmann <sven@narfation.org>
+>     wifi: ath11k: Cleanup mac80211 references on failure during tx_complete
+> 
+> Sven Eckelmann <sven@narfation.org>
+>     wifi: ath11k: Don't drop tx_status when peer cannot be found
+> 
+> Sascha Hauer <s.hauer@pengutronix.de>
+>     wifi: rtw88: usb: kill and free rx urbs on probe failure
+> 
 > Deren Wu <deren.wu@mediatek.com>
 >     wifi: mt76: mt7921: fix skb leak by txs missing in AMSDU
 > 
 > Deren Wu <deren.wu@mediatek.com>
 >     wifi: mt76: mt7921: do not support one stream on secondary antenna only
-> 
-> Zheng Wang <zyytlz.wz@163.com>
->     Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
 > 
 > Nam Cao <namcaov@gmail.com>
 >     staging: rtl8712: fix race condition
@@ -210,7 +212,6 @@ thanks,
 >  arch/mips/alchemy/devboards/db1000.c               |  8 +---
 >  arch/mips/alchemy/devboards/db1200.c               | 19 +--------
 >  arch/mips/alchemy/devboards/db1300.c               | 10 +----
->  drivers/bluetooth/btsdio.c                         |  1 +
 >  drivers/firmware/stratix10-svc.c                   |  2 +-
 >  drivers/fsi/fsi-master-ast-cf.c                    |  1 +
 >  drivers/hid/wacom.h                                |  1 +
@@ -219,8 +220,10 @@ thanks,
 >  drivers/hid/wacom_wac.h                            |  1 +
 >  drivers/mmc/host/Kconfig                           |  5 ++-
 >  drivers/net/ethernet/freescale/enetc/enetc_ptp.c   |  2 +-
+>  drivers/net/wireless/ath/ath11k/dp_tx.c            | 10 ++---
 >  .../net/wireless/mediatek/mt76/mt76_connac_mac.c   |  7 +++-
 >  drivers/net/wireless/mediatek/mt76/mt7921/main.c   |  2 +-
+>  drivers/net/wireless/realtek/rtw88/usb.c           |  5 ++-
 >  drivers/pinctrl/pinctrl-amd.c                      |  4 +-
 >  drivers/rtc/rtc-ds1685.c                           |  2 +-
 >  drivers/staging/rtl8712/os_intfs.c                 |  1 +
@@ -236,7 +239,6 @@ thanks,
 >  fs/erofs/zdata.c                                   |  2 +
 >  fs/nilfs2/alloc.c                                  |  3 +-
 >  fs/nilfs2/inode.c                                  |  7 +++-
->  fs/nilfs2/segment.c                                |  5 +++
 >  fs/smb/server/auth.c                               |  3 ++
 >  fs/smb/server/oplock.c                             |  2 +-
 >  fs/smb/server/smb2pdu.c                            |  2 +-
@@ -245,6 +247,6 @@ thanks,
 >  include/linux/usb/tcpci.h                          |  1 +
 >  kernel/module/main.c                               | 14 +++++--
 >  sound/usb/stream.c                                 | 11 +++++-
->  42 files changed, 209 insertions(+), 89 deletions(-)
+>  42 files changed, 212 insertions(+), 95 deletions(-)
 > 
 > 
