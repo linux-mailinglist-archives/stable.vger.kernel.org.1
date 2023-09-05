@@ -2,44 +2,109 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72966792D0B
-	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 20:06:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 870DD792D2F
+	for <lists+stable@lfdr.de>; Tue,  5 Sep 2023 20:13:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239782AbjIESGl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 14:06:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48292 "EHLO
+        id S231128AbjIESNN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 14:13:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239893AbjIESG3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 14:06:29 -0400
-Received: from dfw.source.kernel.org (dfw.source.kernel.org [IPv6:2604:1380:4641:c500::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89EEE8B7BD;
-        Tue,  5 Sep 2023 10:16:06 -0700 (PDT)
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by dfw.source.kernel.org (Postfix) with ESMTPS id 721E160A7C;
-        Tue,  5 Sep 2023 17:14:49 +0000 (UTC)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAC5AC433C9;
-        Tue,  5 Sep 2023 17:14:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linux-foundation.org;
-        s=korg; t=1693934088;
-        bh=g46WQTgnVD+NKavsDzWNsF7gxzaaE1uUSpJuae89Y0M=;
-        h=Date:To:From:Subject:From;
-        b=HiVETZkePPf9KUZK9m/U+sTvMpnB/zeWYg66aSSQiZeff5mwuNruZMSF+CNEmfrU3
-         VT98Pn05WwrF12bcb/y1Glq+eukaoH6rB5HZJHMT9u72sS7fMnmuZWwYxzAKQjWB7s
-         rlYjGYVMeH1RWF7B8uuu0CiOZTWDizD2W+lKuqgw=
-Date:   Tue, 05 Sep 2023 10:14:47 -0700
-To:     mm-commits@vger.kernel.org, yosryahmed@google.com,
-        stable@vger.kernel.org, songmuchun@bytedance.com,
-        shakeelb@google.com, roman.gushchin@linux.dev, nphamcs@gmail.com,
-        mhocko@suse.com, hannes@cmpxchg.org, akpm@linux-foundation.org
-From:   Andrew Morton <akpm@linux-foundation.org>
-Subject: [merged mm-hotfixes-stable] memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up.patch removed from -mm tree
-Message-Id: <20230905171448.BAC5AC433C9@smtp.kernel.org>
+        with ESMTP id S241504AbjIESM7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 14:12:59 -0400
+Received: from mail-oa1-f44.google.com (mail-oa1-f44.google.com [209.85.160.44])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E1E8A5E1;
+        Tue,  5 Sep 2023 10:43:19 -0700 (PDT)
+Received: by mail-oa1-f44.google.com with SMTP id 586e51a60fabf-1c4f4d67f5bso1969748fac.0;
+        Tue, 05 Sep 2023 10:43:19 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693935678; x=1694540478; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=YELGGBpTDEfwH2BWA1tm1kg/BSwTA+/6M2vnKw0Uoc0=;
+        b=Ai3ZGQSdjiDp1JME6dS6FJfNjAjWyJRvP+wKHd0VGfijUmaG5bXvIomBXoEUySwlf/
+         HfXfb8vss2PWbv56f3aum1VD3SV31wkuXrKl3FfLjc7kfVt/ejM4D4i3mJa6R1GL1GcE
+         a7o1eP+3liEQW83gNDnjkAgVvDEXcHlZKzIq0wjK1clRroVYDoi8QqBnknbv3mE1MJyE
+         zcaWC/h/wVIYVsQOhXE68lR2GXTOj1il1nLmId/jpnuzzAGG9UWTQvXxpENxxnvWWdPs
+         8/ANj/8Q4aV8GYyHXJkn12LOFMpqbQuXUAznxjuBMbn5WTGqUxb8V/a/tp0u5gLDlOGk
+         f3dw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693935678; x=1694540478;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=YELGGBpTDEfwH2BWA1tm1kg/BSwTA+/6M2vnKw0Uoc0=;
+        b=a6sqLk0kWap5M1i6g54gXWNSFnTK8O2kOnmg9/MTznXd9Cl02/yiyG70PrqN8llcl2
+         nS/en0PnvvNjgQc+uh/TDyOPsQf1U2TghhBqmt1ZsQjesrXXDIoHpe7rpu8IfmPP2XR6
+         9rXocP8wzrX3pyOViDJHJpVJBDqyW3vsX+2WKr1DDQQhfoWRCKfEEjlzOGxXObGnURvy
+         ryvncpyymoMFn8GKDdy3Iy0lBhj7rnSRVnlRfpv79vqOtfIGzRSaEW8/0R2Dk60p9MRM
+         wRh3Eq2pO0GudskkbnhhVStfUPcyKhYAUhbYVDu3nwqNBrHoubq386qKtskvjgOF558M
+         +Wvw==
+X-Gm-Message-State: AOJu0YxkCuEyHM+7a/7m3PKQN7A/Pz5JKGPphOhsGlEsccMGdxFPZaZ1
+        28uiA/9XvmEoFUCg/hcshtUCMRvc51yKQw==
+X-Google-Smtp-Source: AGHT+IFL115JTm64yJKklHYP2uGdndHcgobAuaCS0Y03VGuhwnLeB8psGDQKTOYvpSB58H/V8TRqjw==
+X-Received: by 2002:a05:620a:1105:b0:76f:1318:d7d1 with SMTP id o5-20020a05620a110500b0076f1318d7d1mr12259567qkk.75.1693935234595;
+        Tue, 05 Sep 2023 10:33:54 -0700 (PDT)
+Received: from [10.69.73.253] ([192.19.223.252])
+        by smtp.gmail.com with ESMTPSA id x19-20020ae9f813000000b0076ca9f79e1fsm4242779qkh.46.2023.09.05.10.33.51
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Tue, 05 Sep 2023 10:33:53 -0700 (PDT)
+Message-ID: <14ce43b7-d577-48ef-8ce6-561f6526a9bf@gmail.com>
+Date:   Tue, 5 Sep 2023 10:33:50 -0700
+MIME-Version: 1.0
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 5.15 00/28] 5.15.131-rc1 review
+Content-Language: en-US
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        stable@vger.kernel.org
+Cc:     patches@lists.linux.dev, linux-kernel@vger.kernel.org,
+        torvalds@linux-foundation.org, akpm@linux-foundation.org,
+        linux@roeck-us.net, shuah@kernel.org, patches@kernelci.org,
+        lkft-triage@lists.linaro.org, pavel@denx.de, jonathanh@nvidia.com,
+        sudipm.mukherjee@gmail.com, srw@sladewatkins.net, rwarsow@gmx.de,
+        conor@kernel.org
+References: <20230904182945.178705038@linuxfoundation.org>
+From:   Florian Fainelli <f.fainelli@gmail.com>
+Autocrypt: addr=f.fainelli@gmail.com; keydata=
+ xsDiBEjPuBIRBACW9MxSJU9fvEOCTnRNqG/13rAGsj+vJqontvoDSNxRgmafP8d3nesnqPyR
+ xGlkaOSDuu09rxuW+69Y2f1TzjFuGpBk4ysWOR85O2Nx8AJ6fYGCoeTbovrNlGT1M9obSFGQ
+ X3IzRnWoqlfudjTO5TKoqkbOgpYqIo5n1QbEjCCwCwCg3DOH/4ug2AUUlcIT9/l3pGvoRJ0E
+ AICDzi3l7pmC5IWn2n1mvP5247urtHFs/uusE827DDj3K8Upn2vYiOFMBhGsxAk6YKV6IP0d
+ ZdWX6fqkJJlu9cSDvWtO1hXeHIfQIE/xcqvlRH783KrihLcsmnBqOiS6rJDO2x1eAgC8meAX
+ SAgsrBhcgGl2Rl5gh/jkeA5ykwbxA/9u1eEuL70Qzt5APJmqVXR+kWvrqdBVPoUNy/tQ8mYc
+ nzJJ63ng3tHhnwHXZOu8hL4nqwlYHRa9eeglXYhBqja4ZvIvCEqSmEukfivk+DlIgVoOAJbh
+ qIWgvr3SIEuR6ayY3f5j0f2ejUMYlYYnKdiHXFlF9uXm1ELrb0YX4GMHz80nRmxvcmlhbiBG
+ YWluZWxsaSA8Zi5mYWluZWxsaUBnbWFpbC5jb20+wmYEExECACYCGyMGCwkIBwMCBBUCCAME
+ FgIDAQIeAQIXgAUCVF/S8QUJHlwd3wAKCRBhV5kVtWN2DvCVAJ4u4/bPF4P3jxb4qEY8I2gS
+ 6hG0gACffNWlqJ2T4wSSn+3o7CCZNd7SLSDOw00ESM+4EhAQAL/o09boR9D3Vk1Tt7+gpYr3
+ WQ6hgYVON905q2ndEoA2J0dQxJNRw3snabHDDzQBAcqOvdi7YidfBVdKi0wxHhSuRBfuOppu
+ pdXkb7zxuPQuSveCLqqZWRQ+Cc2QgF7SBqgznbe6Ngout5qXY5Dcagk9LqFNGhJQzUGHAsIs
+ hap1f0B1PoUyUNeEInV98D8Xd/edM3mhO9nRpUXRK9Bvt4iEZUXGuVtZLT52nK6Wv2EZ1TiT
+ OiqZlf1P+vxYLBx9eKmabPdm3yjalhY8yr1S1vL0gSA/C6W1o/TowdieF1rWN/MYHlkpyj9c
+ Rpc281gAO0AP3V1G00YzBEdYyi0gaJbCEQnq8Vz1vDXFxHzyhgGz7umBsVKmYwZgA8DrrB0M
+ oaP35wuGR3RJcaG30AnJpEDkBYHznI2apxdcuTPOHZyEilIRrBGzDwGtAhldzlBoBwE3Z3MY
+ 31TOpACu1ZpNOMysZ6xiE35pWkwc0KYm4hJA5GFfmWSN6DniimW3pmdDIiw4Ifcx8b3mFrRO
+ BbDIW13E51j9RjbO/nAaK9ndZ5LRO1B/8Fwat7bLzmsCiEXOJY7NNpIEpkoNoEUfCcZwmLrU
+ +eOTPzaF6drw6ayewEi5yzPg3TAT6FV3oBsNg3xlwU0gPK3v6gYPX5w9+ovPZ1/qqNfOrbsE
+ FRuiSVsZQ5s3AAMFD/9XjlnnVDh9GX/r/6hjmr4U9tEsM+VQXaVXqZuHKaSmojOLUCP/YVQo
+ 7IiYaNssCS4FCPe4yrL4FJJfJAsbeyDykMN7wAnBcOkbZ9BPJPNCbqU6dowLOiy8AuTYQ48m
+ vIyQ4Ijnb6GTrtxIUDQeOBNuQC/gyyx3nbL/lVlHbxr4tb6YkhkO6shjXhQh7nQb33FjGO4P
+ WU11Nr9i/qoV8QCo12MQEo244RRA6VMud06y/E449rWZFSTwGqb0FS0seTcYNvxt8PB2izX+
+ HZA8SL54j479ubxhfuoTu5nXdtFYFj5Lj5x34LKPx7MpgAmj0H7SDhpFWF2FzcC1bjiW9mjW
+ HaKaX23Awt97AqQZXegbfkJwX2Y53ufq8Np3e1542lh3/mpiGSilCsaTahEGrHK+lIusl6mz
+ Joil+u3k01ofvJMK0ZdzGUZ/aPMZ16LofjFA+MNxWrZFrkYmiGdv+LG45zSlZyIvzSiG2lKy
+ kuVag+IijCIom78P9jRtB1q1Q5lwZp2TLAJlz92DmFwBg1hyFzwDADjZ2nrDxKUiybXIgZp9
+ aU2d++ptEGCVJOfEW4qpWCCLPbOT7XBr+g/4H3qWbs3j/cDDq7LuVYIe+wchy/iXEJaQVeTC
+ y5arMQorqTFWlEOgRA8OP47L9knl9i4xuR0euV6DChDrguup2aJVU8JPBBgRAgAPAhsMBQJU
+ X9LxBQkeXB3fAAoJEGFXmRW1Y3YOj4UAn3nrFLPZekMeqX5aD/aq/dsbXSfyAKC45Go0YyxV
+ HGuUuzv+GKZ6nsysJw==
+In-Reply-To: <20230904182945.178705038@linuxfoundation.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -47,143 +112,29 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The quilt patch titled
-     Subject: memcontrol: ensure memcg acquired by id is properly set up
-has been removed from the -mm tree.  Its filename was
-     memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up.patch
 
-This patch was dropped because it was merged into the mm-hotfixes-stable branch
-of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+On 9/4/2023 11:30 AM, Greg Kroah-Hartman wrote:
+> This is the start of the stable review cycle for the 5.15.131 release.
+> There are 28 patches in this series, all will be posted as a response
+> to this one.  If anyone has any issues with these being applied, please
+> let me know.
+> 
+> Responses should be made by Wed, 06 Sep 2023 18:29:29 +0000.
+> Anything received after that time might be too late.
+> 
+> The whole patch series can be found in one patch at:
+> 	https://www.kernel.org/pub/linux/kernel/v5.x/stable-review/patch-5.15.131-rc1.gz
+> or in the git tree and branch at:
+> 	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable-rc.git linux-5.15.y
+> and the diffstat can be found below.
+> 
+> thanks,
+> 
+> greg k-h
 
-------------------------------------------------------
-From: Johannes Weiner <hannes@cmpxchg.org>
-Subject: memcontrol: ensure memcg acquired by id is properly set up
-Date: Wed, 23 Aug 2023 15:54:30 -0700
+On ARCH_BRCMSTB using 32-bit and 64-bit kernels, build tested on 
+BMIPS_GENERIC:
 
-In the eviction recency check, we attempt to retrieve the memcg to which
-the folio belonged when it was evicted, by the memcg id stored in the
-shadow entry.  However, there is a chance that the retrieved memcg is not
-the original memcg that has been killed, but a new one which happens to
-have the same id.
-
-This is a somewhat unfortunate, but acceptable and rare inaccuracy in the
-heuristics.  However, if we retrieve this new memcg between its allocation
-and when it is properly attached to the memcg hierarchy, we could run into
-the following NULL pointer exception during the memcg hierarchy traversal
-done in mem_cgroup_get_nr_swap_pages():
-
-[ 155757.793456] BUG: kernel NULL pointer dereference, address: 00000000000000c0
-[ 155757.807568] #PF: supervisor read access in kernel mode
-[ 155757.818024] #PF: error_code(0x0000) - not-present page
-[ 155757.828482] PGD 401f77067 P4D 401f77067 PUD 401f76067 PMD 0
-[ 155757.839985] Oops: 0000 [#1] SMP
-[ 155757.887870] RIP: 0010:mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-[ 155757.899377] Code: 29 19 4a 02 48 39 f9 74 63 48 8b 97 c0 00 00 00 48 8b b7 58 02 00 00 48 2b b7 c0 01 00 00 48 39 f0 48 0f 4d c6 48 39 d1 74 42 <48> 8b b2 c0 00 00 00 48 8b ba 58 02 00 00 48 2b ba c0 01 00 00 48
-[ 155757.937125] RSP: 0018:ffffc9002ecdfbc8 EFLAGS: 00010286
-[ 155757.947755] RAX: 00000000003a3b1c RBX: 000007ffffffffff RCX: ffff888280183000
-[ 155757.962202] RDX: 0000000000000000 RSI: 0007ffffffffffff RDI: ffff888bbc2d1000
-[ 155757.976648] RBP: 0000000000000001 R08: 000000000000000b R09: ffff888ad9cedba0
-[ 155757.991094] R10: ffffea0039c07900 R11: 0000000000000010 R12: ffff888b23a7b000
-[ 155758.005540] R13: 0000000000000000 R14: ffff888bbc2d1000 R15: 000007ffffc71354
-[ 155758.019991] FS:  00007f6234c68640(0000) GS:ffff88903f9c0000(0000) knlGS:0000000000000000
-[ 155758.036356] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[ 155758.048023] CR2: 00000000000000c0 CR3: 0000000a83eb8004 CR4: 00000000007706e0
-[ 155758.062473] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[ 155758.076924] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[ 155758.091376] PKRU: 55555554
-[ 155758.096957] Call Trace:
-[ 155758.102016]  <TASK>
-[ 155758.106502]  ? __die+0x78/0xc0
-[ 155758.112793]  ? page_fault_oops+0x286/0x380
-[ 155758.121175]  ? exc_page_fault+0x5d/0x110
-[ 155758.129209]  ? asm_exc_page_fault+0x22/0x30
-[ 155758.137763]  ? mem_cgroup_get_nr_swap_pages+0x3d/0xb0
-[ 155758.148060]  workingset_test_recent+0xda/0x1b0
-[ 155758.157133]  workingset_refault+0xca/0x1e0
-[ 155758.165508]  filemap_add_folio+0x4d/0x70
-[ 155758.173538]  page_cache_ra_unbounded+0xed/0x190
-[ 155758.182919]  page_cache_sync_ra+0xd6/0x1e0
-[ 155758.191738]  filemap_read+0x68d/0xdf0
-[ 155758.199495]  ? mlx5e_napi_poll+0x123/0x940
-[ 155758.207981]  ? __napi_schedule+0x55/0x90
-[ 155758.216095]  __x64_sys_pread64+0x1d6/0x2c0
-[ 155758.224601]  do_syscall_64+0x3d/0x80
-[ 155758.232058]  entry_SYSCALL_64_after_hwframe+0x46/0xb0
-[ 155758.242473] RIP: 0033:0x7f62c29153b5
-[ 155758.249938] Code: e8 48 89 75 f0 89 7d f8 48 89 4d e0 e8 b4 e6 f7 ff 41 89 c0 4c 8b 55 e0 48 8b 55 e8 48 8b 75 f0 8b 7d f8 b8 11 00 00 00 0f 05 <48> 3d 00 f0 ff ff 77 33 44 89 c7 48 89 45 f8 e8 e7 e6 f7 ff 48 8b
-[ 155758.288005] RSP: 002b:00007f6234c5ffd0 EFLAGS: 00000293 ORIG_RAX: 0000000000000011
-[ 155758.303474] RAX: ffffffffffffffda RBX: 00007f628c4e70c0 RCX: 00007f62c29153b5
-[ 155758.318075] RDX: 000000000003c041 RSI: 00007f61d2986000 RDI: 0000000000000076
-[ 155758.332678] RBP: 00007f6234c5fff0 R08: 0000000000000000 R09: 0000000064d5230c
-[ 155758.347452] R10: 000000000027d450 R11: 0000000000000293 R12: 000000000003c041
-[ 155758.362044] R13: 00007f61d2986000 R14: 00007f629e11b060 R15: 000000000027d450
-[ 155758.376661]  </TASK>
-
-This patch fixes the issue by moving the memcg's id publication from the
-alloc stage to online stage, ensuring that any memcg acquired via id must
-be connected to the memcg tree.
-
-Link: https://lkml.kernel.org/r/20230823225430.166925-1-nphamcs@gmail.com
-Fixes: f78dfc7b77d5 ("workingset: fix confusion around eviction vs refault container")
-Signed-off-by: Johannes Weiner <hannes@cmpxchg.org>
-Co-developed-by: Nhat Pham <nphamcs@gmail.com>
-Signed-off-by: Nhat Pham <nphamcs@gmail.com>
-Acked-by: Shakeel Butt <shakeelb@google.com>
-Cc: Yosry Ahmed <yosryahmed@google.com>
-Cc: Michal Hocko <mhocko@suse.com>
-Cc: Roman Gushchin <roman.gushchin@linux.dev>
-Cc: Muchun Song <songmuchun@bytedance.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
----
-
- mm/memcontrol.c |   22 +++++++++++++++++-----
- 1 file changed, 17 insertions(+), 5 deletions(-)
-
---- a/mm/memcontrol.c~memcontrol-ensure-memcg-acquired-by-id-is-properly-set-up
-+++ a/mm/memcontrol.c
-@@ -5326,7 +5326,6 @@ static struct mem_cgroup *mem_cgroup_all
- 	INIT_LIST_HEAD(&memcg->deferred_split_queue.split_queue);
- 	memcg->deferred_split_queue.split_queue_len = 0;
- #endif
--	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
- 	lru_gen_init_memcg(memcg);
- 	return memcg;
- fail:
-@@ -5398,14 +5397,27 @@ static int mem_cgroup_css_online(struct
- 	if (alloc_shrinker_info(memcg))
- 		goto offline_kmem;
- 
--	/* Online state pins memcg ID, memcg ID pins CSS */
--	refcount_set(&memcg->id.ref, 1);
--	css_get(css);
--
- 	if (unlikely(mem_cgroup_is_root(memcg)))
- 		queue_delayed_work(system_unbound_wq, &stats_flush_dwork,
- 				   FLUSH_TIME);
- 	lru_gen_online_memcg(memcg);
-+
-+	/* Online state pins memcg ID, memcg ID pins CSS */
-+	refcount_set(&memcg->id.ref, 1);
-+	css_get(css);
-+
-+	/*
-+	 * Ensure mem_cgroup_from_id() works once we're fully online.
-+	 *
-+	 * We could do this earlier and require callers to filter with
-+	 * css_tryget_online(). But right now there are no users that
-+	 * need earlier access, and the workingset code relies on the
-+	 * cgroup tree linkage (mem_cgroup_get_nr_swap_pages()). So
-+	 * publish it here at the end of onlining. This matches the
-+	 * regular ID destruction during offlining.
-+	 */
-+	idr_replace(&mem_cgroup_idr, memcg, memcg->id.id);
-+
- 	return 0;
- offline_kmem:
- 	memcg_offline_kmem(memcg);
-_
-
-Patches currently in -mm which might be from hannes@cmpxchg.org are
-
-
+Tested-by: Florian Fainelli <florian.fainelli@broadcom.com>
+-- 
+Florian
