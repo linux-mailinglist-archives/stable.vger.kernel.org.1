@@ -2,112 +2,64 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2460F7938E5
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 11:52:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20BE5793945
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 12:02:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237798AbjIFJwR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 05:52:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44854 "EHLO
+        id S234881AbjIFKCh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 06:02:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237802AbjIFJwQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 05:52:16 -0400
-Received: from mail-ed1-x52f.google.com (mail-ed1-x52f.google.com [IPv6:2a00:1450:4864:20::52f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F44F171D
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 02:52:11 -0700 (PDT)
-Received: by mail-ed1-x52f.google.com with SMTP id 4fb4d7f45d1cf-523100882f2so4963475a12.2
-        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 02:52:11 -0700 (PDT)
+        with ESMTP id S234340AbjIFKCh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 06:02:37 -0400
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EFF7D10C6;
+        Wed,  6 Sep 2023 03:02:31 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693993930; x=1694598730; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=/qWVul6xDGsij/8JsKoLuS8R6GKh6yAK3ZG4punNQiw=;
-        b=YGo34iCM/KSAoTKJk7FhEVfVSi1Pe9WcqAcFKevpjBG8KEriPt5ZZd5iUNqf6nPtD2
-         PO/beznbObLzOqkGkREo4RB3Ra842QRUQ9v95OodlPKN4HG/mR3qzi5GZ9ad7ohudfbs
-         YgQUTNGp+cjlIzhKP/+fYMI38qiimEOsPCV3TDAnvMdVUBPEjPpgEEHTnz3WA/5AS2Ry
-         FTXBd/DHrB8t06K2UGj+0dUU6ePzIGwBZPj7MYTIiM4MhCo54XEu0egTSya5h1wnWRQo
-         sTGdPAqjzAqxoplghDebSsLoa2tStBrwguNzl+xS3BP9Y3d4V23sfzDbnqJ8p1t/OM0Z
-         qc5w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693993930; x=1694598730;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=/qWVul6xDGsij/8JsKoLuS8R6GKh6yAK3ZG4punNQiw=;
-        b=g5gWpenD/TBA0Hm4cG/p+Xh8UdeWAI7SChvOw7TInl9ZqOtlrv1s7OD5TzK43T7APU
-         02xN/ku+8xzPf/AB/0h/DSCacnIdBLWVybff0Hs5LClEbS+EMyxhKqOWUr9MB5XO2bT8
-         9MAh+1hDezkiqbu5p2daCSXgwW9WIVM+2t/I1NkJcBx1V4ZTEaVv6+4X8FFaOVys69I5
-         gebYU9DASAanDu4t5eSzG+mnZGJqSxUFfypY+ozDT8Z1wXFixcEg7jKz7KCvIXl95Oxw
-         eUJHO7QEanZuTk78Zi+K1GJCAIqHX/aCwzpEZZMHmbbiI3MnKTJtmfS+NkxSVirEt8lz
-         1bUg==
-X-Gm-Message-State: AOJu0YwxqyNtbD8/eHdWbxHLq0KphY5SpqKJMT8WUj4scyx5SHDjL1jb
-        R9HoxYy7pu0qDoncRPCbeXfjTg==
-X-Google-Smtp-Source: AGHT+IH231i0wuCxooeSb/AxFtQWIGNYHtouLcNPXNMY/3XuVLuYi1hb99K4CjnZ2gvopsgR1m1ixA==
-X-Received: by 2002:a17:906:538a:b0:9a5:c919:55ca with SMTP id g10-20020a170906538a00b009a5c91955camr2062468ejo.65.1693993929749;
-        Wed, 06 Sep 2023 02:52:09 -0700 (PDT)
-Received: from [192.168.37.154] (178235177204.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.204])
-        by smtp.gmail.com with ESMTPSA id lu7-20020a170906fac700b00992e14af9b9sm8652189ejb.134.2023.09.06.02.52.07
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Sep 2023 02:52:09 -0700 (PDT)
-Message-ID: <c3880fac-7ed4-4981-87a5-8243a81f7342@linaro.org>
-Date:   Wed, 6 Sep 2023 11:52:06 +0200
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1693994552; x=1725530552;
+  h=date:from:to:subject:message-id:references:mime-version:
+   in-reply-to;
+  bh=SvyNfD68Y16T72HXr/DBzEfCJwP0KoIHuliGPwsla28=;
+  b=oDSuhuAb5O2LhbeaIMEAFzDb9LcPJm7sNN0qdeTV3H0ITX2BhFdmqT+2
+   WwI+kvG5xmJXn8Ks/6ouaMfRMdszI7oDf2efmP5f72tlCrzmrGLnHnxb/
+   cWndlbxffb1nwVS3+R8KZLTSUcXY5tNEpAibX069fFxHUDGzK9HZmHzcD
+   Q=;
+X-IronPort-AV: E=Sophos;i="6.02,231,1688428800"; 
+   d="scan'208";a="670626137"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1d-m6i4x-d8e96288.us-east-1.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 10:02:24 +0000
+Received: from EX19MTAUWB002.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+        by email-inbound-relay-iad-1d-m6i4x-d8e96288.us-east-1.amazon.com (Postfix) with ESMTPS id 70D1180FEB;
+        Wed,  6 Sep 2023 10:02:21 +0000 (UTC)
+Received: from EX19MTAUWC001.ant.amazon.com (10.250.64.145) by
+ EX19MTAUWB002.ant.amazon.com (10.250.64.231) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Wed, 6 Sep 2023 10:02:20 +0000
+Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
+ by mail-relay.amazon.com (10.250.64.145) with Microsoft SMTP Server id
+ 15.2.1118.37 via Frontend Transport; Wed, 6 Sep 2023 10:02:20 +0000
+Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
+        id 4AA5081E; Wed,  6 Sep 2023 10:02:20 +0000 (UTC)
+Date:   Wed, 6 Sep 2023 10:02:20 +0000
+From:   Maximilian Heyne <mheyne@amazon.de>
+To:     <stable@vger.kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        <virtualization@lists.linux-foundation.org>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH] virtio-mmio: fix memory leak of vm_dev
+Message-ID: <20230906100220.GA31628@dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com>
+References: <20230905094228.97125-1-mheyne@amazon.de>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH v2 1/4] arm64: dts: qcom: ipq5332: Fix hwlock index for
- SMEM
-Content-Language: en-US
-To:     Vignesh Viswanathan <quic_viswanat@quicinc.com>, agross@kernel.org,
-        andersson@kernel.org, robh+dt@kernel.org,
-        krzysztof.kozlowski+dt@linaro.org, conor+dt@kernel.org,
-        linux-arm-msm@vger.kernel.org, devicetree@vger.kernel.org,
-        linux-kernel@vger.kernel.org
-Cc:     quic_kathirav@quicinc.com, quic_anusha@quicinc.com,
-        quic_sjaganat@quicinc.com, quic_srichara@quicinc.com,
-        quic_varada@quicinc.com, stable@vger.kernel.org
-References: <20230904172516.479866-1-quic_viswanat@quicinc.com>
- <20230904172516.479866-2-quic_viswanat@quicinc.com>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230904172516.479866-2-quic_viswanat@quicinc.com>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
+Content-Type: text/plain; charset="us-ascii"
+Content-Disposition: inline
+In-Reply-To: <20230905094228.97125-1-mheyne@amazon.de>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,T_SPF_PERMERROR autolearn=ham autolearn_force=no
         version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -115,20 +67,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 4.09.2023 19:25, Vignesh Viswanathan wrote:
-> SMEM uses lock index 3 of the TCSR Mutex hwlock for allocations
-> in SMEM region shared by the Host and FW.
+On Tue, Sep 05, 2023 at 09:42:28AM +0000, Maximilian Heyne wrote:
+> With the recent removal of vm_dev from devres its memory is only freed
+> via the callback virtio_mmio_release_dev. However, this only takes
+> effect after device_add is called by register_virtio_device. Until then
+> it's an unmanaged resource and must be explicitly freed on error exit.
 > 
-> Fix the SMEM hwlock index to 3 for IPQ5332.
+> This bug was discovered and resolved using Coverity Static Analysis
+> Security Testing (SAST) by Synopsys, Inc.
 > 
 > Cc: stable@vger.kernel.org
-> Fixes: d56dd7f935e1 ("arm64: dts: qcom: ipq5332: add SMEM support")
-> Signed-off-by: Vignesh Viswanathan <quic_viswanat@quicinc.com>
+> Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 > ---
-Your downstream says otherwise [1]. Perhaps you need to fix it there
-as well?
+> Please note that I have only compile tested this code.
+> 
+>  drivers/virtio/virtio_mmio.c | 7 ++++++-
+>  1 file changed, 6 insertions(+), 1 deletion(-)
+> 
+> diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+> index 97760f611295..b2a48d07e973 100644
+> --- a/drivers/virtio/virtio_mmio.c
+> +++ b/drivers/virtio/virtio_mmio.c
+> @@ -631,13 +631,16 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+>  	spin_lock_init(&vm_dev->lock);
+>  
+>  	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
+> -	if (IS_ERR(vm_dev->base))
+> +	if (IS_ERR(vm_dev->base)) {
+> +		kfree(vm_dev);
+>  		return PTR_ERR(vm_dev->base);
 
-Konrad
+I have a use-after-free here. Will send a v2 where this is fixed.
 
-[1] https://git.codelinaro.org/clo/qsdk/oss/kernel/linux-ipq-5.4/-/blob/NHSS.QSDK.12.4.r1/arch/arm64/boot/dts/qcom/ipq5332.dtsi
+> +	}
+>  
+>  	/* Check magic value */
+>  	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
+>  	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
+>  		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
+> +		kfree(vm_dev);
+>  		return -ENODEV;
+>  	}
+>  
+> @@ -646,6 +649,7 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+>  	if (vm_dev->version < 1 || vm_dev->version > 2) {
+>  		dev_err(&pdev->dev, "Version %ld not supported!\n",
+>  				vm_dev->version);
+> +		kfree(vm_dev);
+>  		return -ENXIO;
+>  	}
+>  
+> @@ -655,6 +659,7 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+>  		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
+>  		 * with no function. End probing now with no error reported.
+>  		 */
+> +		kfree(vm_dev);
+>  		return -ENODEV;
+>  	}
+>  	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
+> -- 
+> 2.40.1
+> 
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
 
