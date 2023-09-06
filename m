@@ -2,110 +2,141 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F32CD7932CA
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 02:03:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4007D7932CE
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 02:07:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236879AbjIFADs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 20:03:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43550 "EHLO
+        id S241344AbjIFAHI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 20:07:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232504AbjIFADr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 20:03:47 -0400
-Received: from mail-pl1-x649.google.com (mail-pl1-x649.google.com [IPv6:2607:f8b0:4864:20::649])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6ADC31AB
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 17:03:44 -0700 (PDT)
-Received: by mail-pl1-x649.google.com with SMTP id d9443c01a7336-1bf525c269cso30900995ad.1
-        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 17:03:44 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693958624; x=1694563424; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:from:to:cc:subject:date:message-id:reply-to;
-        bh=FGAB1MO2HHzJgJgBozr6g7Uu4eIWXaKZdm2RFBtZLPU=;
-        b=znZOxeuKuWnjm8XB2F6XRB8jn7l7QfyUepzLuFHxv9+NV5+ozIpRvcrr5sssWJYGxz
-         ZeNofVLnKr8gixWPtat8mQNmA0vKkdaMAGrMUlctvOhfTLrszESuce6If2JwT9Ktp28V
-         2qGsrszP5dYPccmev/XqvoC76rUAYK/zCnbh7MAcOvbwm1uU27uydqXncJZxz/yXd2X5
-         yOol5JDFoRBjm4nh67WBocZ078Kgfuo7KicZLiqQV8w11e0uXMY6CiWpcL+WvL/p4+Db
-         WecsNBBv7EeaUUmS3FXDPq5D6ZqapZusxVWYTewcvBOChQJWEmLdsDnGPIJyu6k89+h/
-         SbdA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693958624; x=1694563424;
-        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
-         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=FGAB1MO2HHzJgJgBozr6g7Uu4eIWXaKZdm2RFBtZLPU=;
-        b=ha3WhYdsDMEcCO2ae5ACLweBQU6fC5Fl8v2dFYdhWrCCnwoYeaF2NSfsxAi1pGop+S
-         LhLFhIRw6f+3ytdOousheura3P0C/nYF4SWy8hZEmmqi8XTH0q078Wbtvalh/vjPzift
-         ExjqhqGowTqqi29Qe+kgJV6jVv9RoeGzjY4ziD1rsZbOrXA6TBQ9GpZ30jYUTbE8NAUO
-         6JhdyPnE3YjUdAcdVkDQ5bxqosNjDaaK9K7FkiCPM9uJBfGjLTFqEklrQe+1kNQUUbwe
-         oQfI+S1m85Bn02G4Ns3pJyj2E1UM0CWg8vFDFlYTGiVgTnqMbiqdEQOnbx5l9zaZM27Y
-         VcrA==
-X-Gm-Message-State: AOJu0YxgbZr13wYXe6+a9/SZouBLi3kYk3kwvs42unmFWsPjNpDqCCUx
-        IjmG5lhCrTey/OEhGdlrJ/hN0BthWWY=
-X-Google-Smtp-Source: AGHT+IFxPM6iyCiExg8LHg80qP5o6h3X7HEzlad7OgyXqlM4MTnPU+zyFvwv7tnpDtfnI3tpv+Pal7RkZ+I=
-X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
- (user=seanjc job=sendgmr) by 2002:a17:902:b490:b0:1c1:fc5c:b32e with SMTP id
- y16-20020a170902b49000b001c1fc5cb32emr4264049plr.10.1693958623334; Tue, 05
- Sep 2023 17:03:43 -0700 (PDT)
-Date:   Tue, 5 Sep 2023 17:03:41 -0700
-In-Reply-To: <20230905145412.12011-1-luizcap@amazon.com>
-Mime-Version: 1.0
-References: <20230905145412.12011-1-luizcap@amazon.com>
-Message-ID: <ZPfB3XGhP13xC9Ba@google.com>
-Subject: Re: [PATH 6.4.y] KVM: x86/mmu: Add "never" option to allow sticky
- disabling of nx_huge_pages
-From:   Sean Christopherson <seanjc@google.com>
-To:     Luiz Capitulino <luizcap@amazon.com>
-Cc:     stable@vger.kernel.org, lcapitulino@gmail.com,
-        Li RongQing <lirongqing@baidu.com>,
-        Yong He <zhuangel570@gmail.com>,
-        Robert Hoo <robert.hoo.linux@gmail.com>,
-        Kai Huang <kai.huang@intel.com>
-Content-Type: text/plain; charset="us-ascii"
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S232504AbjIFAHG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 20:07:06 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566431B4;
+        Tue,  5 Sep 2023 17:07:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1693958822; x=1725494822;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=1x+98I6W75YklJUUnjenc5YlfMOD4nUpx0ccD0PvGnA=;
+  b=K/IZQYIaW/py1JY1alPDfCIZep4mn6zen52qawKPF78Xm9nNlYMTV1Z9
+   t7oTVkNoQvt/5CVCrZPQdUio3sMtY7Ea/iaYSvraG6VDe1zODUK/BSYgI
+   mG0feNjcGw0de9MsDkCBmHymibHe+QigiO2rdXMSKHjUtbWhT1w98q46D
+   elxrjzfj1+TrudCsgn2WIKzhOsgy1gSvsIRUXBmeZGGSt0FEpGM/c/5Lb
+   stU6rOWKTsVFKTI9DCSIDLwQrtiebdanhn1fnM/0TVbWeIQxRzCw4Ult4
+   YkKyIdhZJw4f7pfdUZVcPJwvrKI5xTcV3VblVAUyPJIe57/i3WqGolfK1
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="374324904"
+X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
+   d="scan'208";a="374324904"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 17:06:42 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="776374246"
+X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
+   d="scan'208";a="776374246"
+Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
+  by orsmga001.jf.intel.com with ESMTP; 05 Sep 2023 17:06:42 -0700
+From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+To:     rafael@kernel.org, rui.zhang@intel.com
+Cc:     linux-pm@vger.kernel.org, sumeet.r.pawnikar@intel.com,
+        linux-kernel@vger.kernel.org,
+        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
+        stable@vger.kernel.org
+Subject: [PATCH] powercap: intel_rapl: Fix setting of Power Limit 4 to 0
+Date:   Tue,  5 Sep 2023 17:06:40 -0700
+Message-Id: <20230906000640.2919607-1-srinivas.pandruvada@linux.intel.com>
+X-Mailer: git-send-email 2.40.1
+MIME-Version: 1.0
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023, Luiz Capitulino wrote:
-> From: Sean Christopherson <seanjc@google.com>
-> 
-> Commit 0b210faf337314e4bc88e796218bc70c72a51209 upstream.
-> 
-> Add a "never" option to the nx_huge_pages module param to allow userspace
-> to do a one-way hard disabling of the mitigation, and don't create the
-> per-VM recovery threads when the mitigation is hard disabled.  Letting
-> userspace pinky swear that userspace doesn't want to enable NX mitigation
-> (without reloading KVM) allows certain use cases to avoid the latency
-> problems associated with spawning a kthread for each VM.
-> 
-> E.g. in FaaS use cases, the guest kernel is trusted and the host may
-> create 100+ VMs per logical CPU, which can result in 100ms+ latencies when
-> a burst of VMs is created.
-> 
-> Reported-by: Li RongQing <lirongqing@baidu.com>
-> Closes: https://lore.kernel.org/all/1679555884-32544-1-git-send-email-lirongqing@baidu.com
-> Cc: Yong He <zhuangel570@gmail.com>
-> Cc: Robert Hoo <robert.hoo.linux@gmail.com>
-> Cc: Kai Huang <kai.huang@intel.com>
-> Reviewed-by: Robert Hoo <robert.hoo.linux@gmail.com>
-> Acked-by: Kai Huang <kai.huang@intel.com>
-> Tested-by: Luiz Capitulino <luizcap@amazon.com>
-> Reviewed-by: Li RongQing <lirongqing@baidu.com>
-> Link: https://lore.kernel.org/r/20230602005859.784190-1-seanjc@google.com
-> Signed-off-by: Sean Christopherson <seanjc@google.com>
-> Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
-> ---
->  arch/x86/kvm/mmu/mmu.c | 41 ++++++++++++++++++++++++++++++++++++-----
->  1 file changed, 36 insertions(+), 5 deletions(-)
-> 
-> I submitted this backport for 6.1.y[1] but we agreed that having it for 6.4.y
-> is desirable to allow upgrade path.
+System runs at minimum performance, once powercap RAPL package domain
+"enabled" flag is toggled.
 
-Heh, I would have personally just let 6.4 suffer, but since you went through the
-effort:
+Setting RAPL package domain enabled flag to 0, results in setting of
+power limit 4 (PL4) MSR 0x601 to 0. This implies disabling PL4 limit.
+The PL4 limit controls the peak power. This can significantly change
+the performance. Even worse, when the enabled flag is set to 1 again.
+This will set PL4 MSR value to 0x01, which means reduce peak power to
+0.125W. This will force the system to run at the lowest possible
+performance.
 
-Acked-by: Sean Christopherson <seanjc@google.com>
+This is caused by a change which assumes that there is an enable bit
+in the PL4 MSR like other power limits.
+
+In functions set_floor_freq_default() and rapl_remove_package(), call
+rapl_write_pl_data with PL_ENABLE and PL_CLAMP for only power limit 1
+and 2. Similarly don't read PL_ENABLE for PL4 to check the presence of
+power limit 4. Power limit 4 support is based on CPU model in this
+driver. No additional checks can be done.
+
+Fixes: 9050a9cd5e4c ("powercap: intel_rapl: Cleanup Power Limits support")
+Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
+Cc: stable@vger.kernel.org # v6.5+
+---
+ drivers/powercap/intel_rapl_common.c | 14 ++++----------
+ 1 file changed, 4 insertions(+), 10 deletions(-)
+
+diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
+index 5c2e6d5eea2a..0afedf7ad872 100644
+--- a/drivers/powercap/intel_rapl_common.c
++++ b/drivers/powercap/intel_rapl_common.c
+@@ -184,8 +184,6 @@ static int get_pl_prim(struct rapl_domain *rd, int pl, enum pl_prims prim)
+ 	case POWER_LIMIT4:
+ 		if (prim == PL_LIMIT)
+ 			return POWER_LIMIT4;
+-		if (prim == PL_ENABLE)
+-			return PL4_ENABLE;
+ 		/* PL4 would be around two times PL2, use same prim as PL2. */
+ 		if (prim == PL_MAX_POWER)
+ 			return MAX_POWER;
+@@ -1033,17 +1031,13 @@ static void package_power_limit_irq_restore(struct rapl_package *rp)
+ 
+ static void set_floor_freq_default(struct rapl_domain *rd, bool mode)
+ {
+-	int i;
+-
+ 	/* always enable clamp such that p-state can go below OS requested
+ 	 * range. power capping priority over guranteed frequency.
+ 	 */
+ 	rapl_write_pl_data(rd, POWER_LIMIT1, PL_CLAMP, mode);
+ 
+-	for (i = POWER_LIMIT2; i < NR_POWER_LIMITS; i++) {
+-		rapl_write_pl_data(rd, i, PL_ENABLE, mode);
+-		rapl_write_pl_data(rd, i, PL_CLAMP, mode);
+-	}
++	rapl_write_pl_data(rd, POWER_LIMIT2, PL_ENABLE, mode);
++	rapl_write_pl_data(rd, POWER_LIMIT2, PL_CLAMP, mode);
+ }
+ 
+ static void set_floor_freq_atom(struct rapl_domain *rd, bool enable)
+@@ -1458,7 +1452,7 @@ static void rapl_detect_powerlimit(struct rapl_domain *rd)
+ 			}
+ 		}
+ 
+-		if (rapl_read_pl_data(rd, i, PL_ENABLE, false, &val64))
++		if (i != POWER_LIMIT4 && rapl_read_pl_data(rd, i, PL_ENABLE, false, &val64))
+ 			rd->rpl[i].name = NULL;
+ 	}
+ }
+@@ -1510,7 +1504,7 @@ void rapl_remove_package(struct rapl_package *rp)
+ 	for (rd = rp->domains; rd < rp->domains + rp->nr_domains; rd++) {
+ 		int i;
+ 
+-		for (i = POWER_LIMIT1; i < NR_POWER_LIMITS; i++) {
++		for (i = POWER_LIMIT1; i <= POWER_LIMIT2; i++) {
+ 			rapl_write_pl_data(rd, i, PL_ENABLE, 0);
+ 			rapl_write_pl_data(rd, i, PL_CLAMP, 0);
+ 		}
+-- 
+2.34.1
+
