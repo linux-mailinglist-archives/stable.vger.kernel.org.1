@@ -2,96 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21408793C7C
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 14:20:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86A04793C7E
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 14:21:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233486AbjIFMUw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 08:20:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35672 "EHLO
+        id S237680AbjIFMVN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 08:21:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229639AbjIFMUv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 08:20:51 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C811717
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 05:19:59 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694002798;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=uZKt9lI2eKMSpsKvogAyk1sc6dUffx4XcKcIj6uI1IU=;
-        b=LgOkfpE6GPrHys6/7iDlGy2trBJTg46CXcyE02zLaPOCqlm78g1q3PYOaxF1lrvNyxNmzk
-        r1o1iNBWFZn8kTpoBBgwfJ+I4IYdka7RpMncYio4ArWLa6qMzxuyWQ8aNDUw88ZkH2VCmD
-        tje2i2bclv4Ov07E9TjkeygCu4uoqig=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-594-XCpOrwpZPFmzHbIxIzHNPA-1; Wed, 06 Sep 2023 08:19:55 -0400
-X-MC-Unique: XCpOrwpZPFmzHbIxIzHNPA-1
-Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
-        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04C68800969;
-        Wed,  6 Sep 2023 12:19:55 +0000 (UTC)
-Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (unknown [10.72.112.106])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id EEEA3404119;
-        Wed,  6 Sep 2023 12:19:51 +0000 (UTC)
-From:   xiubli@redhat.com
-To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
-Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
-        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH] ceph: remove the incorrect caps check in _file_size()
-Date:   Wed,  6 Sep 2023 20:17:47 +0800
-Message-ID: <20230906121747.618289-1-xiubli@redhat.com>
+        with ESMTP id S229639AbjIFMVN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 08:21:13 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.136])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB8291717
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 05:21:09 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694002869; x=1725538869;
+  h=date:from:to:cc:subject:message-id:mime-version:
+   in-reply-to;
+  bh=fHYfpkIsS+BNTwBAGWqNHnu7ZNRge45RP0BTI0HTUWk=;
+  b=HGItOAVa0MI5REtrSFw5oQHgPlZFf/jmZ7tFPPhIqPRwrOtIJBQs+0dq
+   I3OpdeAFjOBAwvKtaQ3eSNP0N/495llSK883YyeYn+LPtKNvbdBsDZdvL
+   o+wIHGPm7UlfkYtReboawK4Gl2bIuJSaapfUYE2Bz/UyY1mMq7q6Ft8Vi
+   eads9Aj0clZcndrcWICpN4k7Kkgr8Qa3MOxF8YXhBg6mQwA3uMR2zn3zp
+   sbO/z3+AStQ1evZlGs5/8uMFnLIhmwJ+MZ40OeiGU8og4+LofdvurLaXI
+   Rk5ds+6w617Iz97hjWEWob/ek8hybhFGWDNBxgRSEYiqtHcH6lydKKV/s
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="356536361"
+X-IronPort-AV: E=Sophos;i="6.02,231,1688454000"; 
+   d="scan'208";a="356536361"
+Received: from fmsmga008.fm.intel.com ([10.253.24.58])
+  by fmsmga106.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 05:21:08 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="806985490"
+X-IronPort-AV: E=Sophos;i="6.02,231,1688454000"; 
+   d="scan'208";a="806985490"
+Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
+  by fmsmga008.fm.intel.com with ESMTP; 06 Sep 2023 05:21:03 -0700
+Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qdrWn-0000CF-11;
+        Wed, 06 Sep 2023 12:21:01 +0000
+Date:   Wed, 6 Sep 2023 20:20:56 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Deepak Rathore <deeratho@cisco.com>
+Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
+Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
+ btsdio_remove due to race condition
+Message-ID: <ZPhuqHNxhF8AhdL4@0091dd92274c>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906121525.3946250-1-deeratho@cisco.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Xiubo Li <xiubli@redhat.com>
+Hi,
 
-When truncating the inode the MDS will acquire the xlock for the
-ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
-But when the client just releases and flushes the 'Fw' caps to MDS,
-for exmaple, and once the MDS receives the caps flushing msg it
-just thought the revocation has finished. Then the MDS will continue
-truncating the inode and then issued the truncate notification to
-all the clients. While just before the clients receives the cap
-flushing ack they receive the truncation notification, the clients
-will detecte that the 'issued | dirty' is still holding the 'Fw'
-caps.
+Thanks for your patch.
 
-Cc: stable@vger.kernel.org
-URL: https://tracker.ceph.com/issues/56693
-Signed-off-by: Xiubo Li <xiubli@redhat.com>
----
- fs/ceph/inode.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
+FYI: kernel test robot notices the stable kernel rule is not satisfied.
 
-diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
-index ea6f966dacd5..8017b9e5864f 100644
---- a/fs/ceph/inode.c
-+++ b/fs/ceph/inode.c
-@@ -769,9 +769,7 @@ int ceph_fill_file_size(struct inode *inode, int issued,
- 			ci->i_truncate_seq = truncate_seq;
- 
- 			/* the MDS should have revoked these caps */
--			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
--					       CEPH_CAP_FILE_RD |
--					       CEPH_CAP_FILE_WR |
-+			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
- 					       CEPH_CAP_FILE_LAZYIO));
- 			/*
- 			 * If we hold relevant caps, or in the case where we're
+The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
+
+Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
+Subject: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
+Link: https://lore.kernel.org/stable/20230906121525.3946250-1-deeratho%40cisco.com
+
 -- 
-2.41.0
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
+
+
 
