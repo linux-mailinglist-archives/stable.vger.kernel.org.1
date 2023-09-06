@@ -2,302 +2,169 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 705B27940C5
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 17:51:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5BE794152
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 18:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242711AbjIFPwA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 11:52:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35306 "EHLO
+        id S230349AbjIFQUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 12:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46996 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229804AbjIFPv7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 11:51:59 -0400
-Received: from mailout2.samsung.com (mailout2.samsung.com [203.254.224.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F817BC
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 08:51:50 -0700 (PDT)
-Received: from epcas5p3.samsung.com (unknown [182.195.41.41])
-        by mailout2.samsung.com (KnoxPortal) with ESMTP id 20230906155146epoutp020da908e52cc6e2e433a986953de9a26b~CWiC0ntuh2258022580epoutp025
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 15:51:46 +0000 (GMT)
-DKIM-Filter: OpenDKIM Filter v2.11.0 mailout2.samsung.com 20230906155146epoutp020da908e52cc6e2e433a986953de9a26b~CWiC0ntuh2258022580epoutp025
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=samsung.com;
-        s=mail20170921; t=1694015506;
-        bh=sxN51W/pBg4OCNSibW/ZkoB/sWYG6d5RbZNa3rgTCHI=;
-        h=Date:From:To:Cc:Subject:In-Reply-To:References:From;
-        b=GKIE/sf8pYxrDxtLRGOxrLQ8Uk9oiDbnWIG6mvDFKbst8DOMj4eM8U8BM4UPVgKAz
-         cRJhxdwzXzEuE4WqUk9rE6YFpXqWM42FWghSCtlKUDmFRmvFdhv3Df6QW2UWOb7au7
-         FtVQLwmjShgTuQ3IyOFmcMDWNo3VNBbcSTEZRyFg=
-Received: from epsnrtp2.localdomain (unknown [182.195.42.163]) by
-        epcas5p4.samsung.com (KnoxPortal) with ESMTP id
-        20230906155145epcas5p4b0bf927e41201a294f84fcf57cb51e2a~CWiCQrYNw1406514065epcas5p4M;
-        Wed,  6 Sep 2023 15:51:45 +0000 (GMT)
-Received: from epsmgec5p1-new.samsung.com (unknown [182.195.38.182]) by
-        epsnrtp2.localdomain (Postfix) with ESMTP id 4Rgn1D0VK6z4x9Pt; Wed,  6 Sep
-        2023 15:51:44 +0000 (GMT)
-Received: from epcas5p2.samsung.com ( [182.195.41.40]) by
-        epsmgec5p1-new.samsung.com (Symantec Messaging Gateway) with SMTP id
-        95.BE.19094.F00A8F46; Thu,  7 Sep 2023 00:51:43 +0900 (KST)
-Received: from epsmtrp1.samsung.com (unknown [182.195.40.13]) by
-        epcas5p1.samsung.com (KnoxPortal) with ESMTPA id
-        20230906155143epcas5p1779c6552d70ec247881bdc2da9036c22~CWh-21Att0717307173epcas5p1i;
-        Wed,  6 Sep 2023 15:51:43 +0000 (GMT)
-Received: from epsmgmcp1.samsung.com (unknown [182.195.42.82]) by
-        epsmtrp1.samsung.com (KnoxPortal) with ESMTP id
-        20230906155143epsmtrp17573a916c5106d541c2b64bf8f36d1ec~CWh-2KTzh0673606736epsmtrp1h;
-        Wed,  6 Sep 2023 15:51:43 +0000 (GMT)
-X-AuditID: b6c32a50-64fff70000004a96-e3-64f8a00f6a53
-Received: from epsmtip1.samsung.com ( [182.195.34.30]) by
-        epsmgmcp1.samsung.com (Symantec Messaging Gateway) with SMTP id
-        CD.D8.18916.E00A8F46; Thu,  7 Sep 2023 00:51:43 +0900 (KST)
-Received: from green245 (unknown [107.99.41.245]) by epsmtip1.samsung.com
-        (KnoxPortal) with ESMTPA id
-        20230906155141epsmtip1f28a5696eaf14079a65994f0d12fdd68~CWh_R9dKp2740727407epsmtip1O;
-        Wed,  6 Sep 2023 15:51:41 +0000 (GMT)
-Date:   Wed, 6 Sep 2023 21:18:15 +0530
-From:   Kanchan Joshi <joshi.k@samsung.com>
-To:     Keith Busch <kbusch@kernel.org>
-Cc:     hch@lst.de, axboe@kernel.dk, sagi@grimberg.me,
-        linux-nvme@lists.infradead.org, vincentfu@gmail.com,
-        ankit.kumar@samsung.com, joshiiitr@gmail.com, gost.dev@samsung.com,
-        stable@vger.kernel.org, Vincent Fu <vincent.fu@samsung.com>
-Subject: Re: [PATCH v2 1/2] nvme: fix memory corruption for passthrough
- metadata
-Message-ID: <20230906154815.GA23984@green245>
+        with ESMTP id S240570AbjIFQUS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 12:20:18 -0400
+X-Greylist: delayed 1240 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Sep 2023 09:20:12 PDT
+Received: from outbound-ip7a.ess.barracuda.com (outbound-ip7a.ess.barracuda.com [209.222.82.174])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 918821992
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 09:20:12 -0700 (PDT)
+Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2169.outbound.protection.outlook.com [104.47.73.169]) by mx-outbound15-108.us-east-2a.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Wed, 06 Sep 2023 16:20:04 +0000
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=mL+q7w3iTYzLCH/BggCQwisKV7yEVRrlDsxlpDoZd0xCNsmH4AXbL76o+RooUSldJQZ+7xsaSLM0RP8OLF4yzyDl4C9QDO32XmitcugvHKkju+tAGbmwGfWqT+eO+Nstnw7b2cACv5o9HV4x/Xl1BmVw9gdYgnBK3/2o0ig0bWboLoukfFmh8txfw07y7FPQAzE7CbWNd46dzXKatmtoVUErhupXGuWWubt395QfaREOwRBYCEtqDaXMkbhUUiE+fy/hTI2yZEuWYbbqbek6+CJ4zd79hV3i69cAS0BxaLTvD9/B61pC4nHZT8/yAa0Od1SeDifHNsKhtedvBIabTw==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=yK3hOy8hyTa3VkGdrsisXQORbcXjZsHVaCS+xdbvHc4=;
+ b=FEEKzm6ApW7w3x1uD3r36Ftl3osTWB75MxaM97Np000JN8BOgi90Z0LpuFmZGDW9Zf/+E9A9Ng33H/bwrF/E+uieDVFrXK3OllRSMds5E15gfFRhhZ7/8ihJkJKB0wcsnC8/SdfhJwA5t0yslWe4fR5PKuLvvXb2KyoqvcNOy9ZUiaGkvcCT4wWDA2nbo2mM2El9IRB/1j5KvGpHJ7SH50wC5PwQ+AJE3gFse9zgZ3sqLqMGGM3386Vi7gYu8bIKEgBkenRfmIvynL9879eRjWeFjFXwSsDlaZZK7X39jrFFa1SlsYVUIvRa8OJSf03mRzjSxhQUfaxn8thBdXzLRA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 50.222.100.11) smtp.rcpttodomain=ddn.com smtp.mailfrom=ddn.com; dmarc=pass
+ (p=reject sp=reject pct=100) action=none header.from=ddn.com; dkim=none
+ (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=yK3hOy8hyTa3VkGdrsisXQORbcXjZsHVaCS+xdbvHc4=;
+ b=cCEntQRAruSW4b1cHKuOQQy8IMuILBRm26juKqE330uyZzdnfBqUxPMLKEC7mRxJwdcwN4ZB36C67e3tt6BFeQEPcH1mUgt1s06CGDpn4JOoWN2BOhvzPxVGX9jyNNn5vxE4Aoefd92bb+8AS0DF8Of3S7Bnv8ITaE+azzMrW/c=
+Received: from DM5PR08CA0032.namprd08.prod.outlook.com (2603:10b6:4:60::21) by
+ PH0PR19MB4843.namprd19.prod.outlook.com (2603:10b6:510:74::12) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6745.34; Wed, 6 Sep 2023 15:59:16 +0000
+Received: from DM6NAM04FT033.eop-NAM04.prod.protection.outlook.com
+ (2603:10b6:4:60:cafe::2f) by DM5PR08CA0032.outlook.office365.com
+ (2603:10b6:4:60::21) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.36 via Frontend
+ Transport; Wed, 6 Sep 2023 15:59:16 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 50.222.100.11)
+ smtp.mailfrom=ddn.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=ddn.com;
+Received-SPF: Pass (protection.outlook.com: domain of ddn.com designates
+ 50.222.100.11 as permitted sender) receiver=protection.outlook.com;
+ client-ip=50.222.100.11; helo=uww-mx01.datadirectnet.com; pr=C
+Received: from uww-mx01.datadirectnet.com (50.222.100.11) by
+ DM6NAM04FT033.mail.protection.outlook.com (10.13.158.142) with Microsoft SMTP
+ Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.20.6768.26 via Frontend Transport; Wed, 6 Sep 2023 15:59:16 +0000
+Received: from localhost (unknown [10.68.0.8])
+        by uww-mx01.datadirectnet.com (Postfix) with ESMTP id 0CA0C20C684B;
+        Wed,  6 Sep 2023 10:00:21 -0600 (MDT)
+From:   Bernd Schubert <bschubert@ddn.com>
+To:     linux-btrfs@vger.kernel.org
+Cc:     bernd.schubert@fastmail.fm, miklos@szeredi.hu, dsingh@ddn.com,
+        Bernd Schubert <bschubert@ddn.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Goldwyn Rodrigues <rgoldwyn@suse.com>,
+        David Sterba <dsterba@suse.com>, linux-fsdevel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: [PATCH 1/1] btrfs: file_remove_privs needs an exclusive lock
+Date:   Wed,  6 Sep 2023 17:59:03 +0200
+Message-Id: <20230906155903.3287672-2-bschubert@ddn.com>
+X-Mailer: git-send-email 2.34.1
+In-Reply-To: <20230906155903.3287672-1-bschubert@ddn.com>
+References: <20230906155903.3287672-1-bschubert@ddn.com>
 MIME-Version: 1.0
-In-Reply-To: <ZPduqCASmcNxUUep@kbusch-mbp>
-User-Agent: Mutt/1.9.4 (2018-02-28)
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFlrHJsWRmVeSWpSXmKPExsWy7bCmhi7/gh8pBvsPWlusufKb3WL13X42
-        i5sHdjJZrFx9lMni/NvDTBaTDl1jtJi/7Cm7xbrX71ksFmx8xGjxuLuD0WJDm6ADt8fOWXfZ
-        Pc7f28jicflsqcemVZ1sHpuX1HvsvtnA5tG3ZRWjx+dNcgEcUdk2GamJKalFCql5yfkpmXnp
-        tkrewfHO8aZmBoa6hpYW5koKeYm5qbZKLj4Bum6ZOUBnKimUJeaUAoUCEouLlfTtbIryS0tS
-        FTLyi0tslVILUnIKTAr0ihNzi0vz0vXyUkusDA0MjEyBChOyM6a+vc5S8Ne64tz2j2wNjDu0
-        uhg5OSQETCRa/pxl7mLk4hAS2MMoMf/LXijnE6PE1yUrWOGcvoufgBwOsJZ1S8oh4jsZJTb+
-        m8AKMkpI4BmjxPEf1iA2i4CKxL/LvWwg9WwCmhIXJpeChEUElCXuzp8JNpNZ4C2jxO73r5hB
-        EsICQRJL9vexg9i8AroSTY9/sUHYghInZz5hAbE5BbQkfn96zghiiwINOrDtOBPECys5JLY8
-        rYGwXSSurd7JCmELS7w6voUdwpaSeNnfBmUnS1yaeQ6qt0Ti8Z6DULa9ROupfrB7mAUyJDb/
-        72eFsPkken8/YYL4nVeio00IolxR4t6kp1CrxCUezlgCZXtIXF42FRqIc5gkXi+4xTiBUW4W
-        kndmIVkBYVtJdH5oArI5gGxpieX/OCBMTYn1u/QXMLKuYpRKLSjOTU9NNi0w1M1LLYfHcXJ+
-        7iZGcMLVCtjBuHrDX71DjEwcjIcYJTiYlUR438l/SxHiTUmsrEotyo8vKs1JLT7EaAqMn4nM
-        UqLJ+cCUn1cSb2hiaWBiZmZmYmlsZqgkzvu6dW6KkEB6YklqdmpqQWoRTB8TB6dUA5O3X7uZ
-        sc3tiSs6319ZuTL/fKRruPkTuUM8zxXCo/VWfzh/WuryPe23n261lPIfueT/kseIccOM6v08
-        pkkO/tYbFs9jDjdtC7jcJHCmpKixo8efldV3p9hu5g+Kbat0dpYW71STvaVqx87PkdkqtMa2
-        bApjX0jJ0STuc0xzk/sqBIIuHfqxgZNXtcHAXktHJeJk5NQ3zPPuei99lXL4i1lE1rOuqXFl
-        y752VN5Qd5wt97TULvTPbX3391k1okqsr36kHOdTU8zY+Mr3sZJmDutylYCUrwpVy9kkKo6U
-        Lft4Q33GjH8qxpbVzfOPu3jPcjhosSun8qD4Uk2d258f7TUu6tpcs5Q3YM+35pD9SizFGYmG
-        WsxFxYkAeyytUkEEAAA=
-X-Brightmail-Tracker: H4sIAAAAAAAAA+NgFvrBLMWRmVeSWpSXmKPExsWy7bCSnC7/gh8pBtv3MlqsufKb3WL13X42
-        i5sHdjJZrFx9lMni/NvDTBaTDl1jtJi/7Cm7xbrX71ksFmx8xGjxuLuD0WJDm6ADt8fOWXfZ
-        Pc7f28jicflsqcemVZ1sHpuX1HvsvtnA5tG3ZRWjx+dNcgEcUVw2Kak5mWWpRfp2CVwZ9/c/
-        YCtYb1mx94dDA2OLRhcjB4eEgInEuiXlXYxcHEIC2xkluvauZe9i5ASKi0s0X/sBZQtLrPz3
-        nB2i6AmjxMwVB8ASLAIqEv8u97KBDGIT0JS4MLkUJCwioCxxd/5MVpB6ZoG3jBK7379iBkkI
-        CwRJLNnfB9bLK6Ar0fT4FxvE0AVMEjuvdrBBJAQlTs58wgJiMwuYSczb/JAZZAGzgLTE8n8c
-        IGFOAS2J35+eM4LYokDLDmw7zjSBUXAWku5ZSLpnIXQvYGRexSiaWlCcm56bXGCoV5yYW1ya
-        l66XnJ+7iREcOVpBOxiXrf+rd4iRiYPxEKMEB7OSCO87+W8pQrwpiZVVqUX58UWlOanFhxil
-        OViUxHmVczpThATSE0tSs1NTC1KLYLJMHJxSDUyKN2besxW981RxWfyMdSvZ9qRkp/nzm8ma
-        fTwo5vk9t+SgVBHz2cffs0W+aLLF+vT0s0970vF+0aa1F8I3SOyqfKJo/fbZ+m8R69KSd1l3
-        mO00Uo9WONWzpuXH5cVsCzTvvPrxcOHt5qN/lB3fTevenLu3uLn0q+oLmUNuPfuvTXYzrAwI
-        nZnlJrHx66ySK18OSDvP82XxqlK+o5SuMmfJhDiDlP/NKSnbOI3N/s9MfnZVzvukPA/D85kf
-        WKJmXhYU2/Sown/Ljp9PbpQcO1YW0rhi5asv2glT959Mn8qwaA6vzsuH36a3HV/6c6/i1MUf
-        hAUi1zyMYnrxpkxo3oKk12t67Q/qZch71HK8yaryVGIpzkg01GIuKk4EAAo2J4gLAwAA
-X-CMS-MailID: 20230906155143epcas5p1779c6552d70ec247881bdc2da9036c22
-X-Msg-Generator: CA
-Content-Type: multipart/mixed;
-        boundary="----nvFln8z3L_krFSQI_duuyTsYVGNcxCMU6qftyQwhOSKtHzaF=_c7280_"
-CMS-TYPE: 105P
-DLP-Filter: Pass
-X-CFilter-Loop: Reflected
-X-CMS-RootMailID: 20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9
-References: <20230814070213.161033-1-joshi.k@samsung.com>
-        <CGME20230814070548epcas5p34eb8f36ab460ee2bf55030ce856844b9@epcas5p3.samsung.com>
-        <20230814070213.161033-2-joshi.k@samsung.com> <ZPH5Hjsqntn7tBCh@kbusch-mbp>
-        <20230905051825.GA4073@green245> <ZPduqCASmcNxUUep@kbusch-mbp>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DM6NAM04FT033:EE_|PH0PR19MB4843:EE_
+Content-Type: text/plain
+X-MS-Office365-Filtering-Correlation-Id: 496fca2b-7158-4387-ce3f-08dbaef23905
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: 7HHXFyaTRa/a/TDjfSHYCJ119i62U6ct26kihTE6NcS/ks868XTS6Vn92RR7jVPfWNyrCIxtuBtQ3J/cJ0yxWS8jqFpKFdUNuJLKecqXaDOWTXsuXIIWuPyfMvmonZJqjFyRUpVZc+xryE+hBunpwxxOEmLi5ne2Fu+O6+ccrdmI8ecCI4onemGV1SE8gRd15bvY+AW4N9DGC/zigt7FrodFyyCeXGvnNahZYnOXlVeKZ56WQVdwcOma7J38elYXzHBjb2f7yhKrvXASFJ0zvU0t4YrULmwCbp4jcx71W2aaO38qB8jvondeh6rtuqcZKYykhv++Kgm3Uejr7HZg+oK0Z5xO2mOA12KUnrOmEcene1B2kFvQmZWUSJSmqjtn4dXyEr9pjLZEAFFx4KwvvUosCi3F90YO+VZa2dolqTZ29inoKF19CAcRIn4VTe8G0rAKfgYpURZC2pDbJp6H1/vCpxEI4XXzcpYtct/6Zi682l+Cm0WGUKHhI9gGYj9UIdcK7D81ek/Z1zrJlr2Vvwxys35xYr6MvYAxpHX+9SFoGJEN7BA0D8BD9k7o8a76WbB77kv5AJdaOyMDR1jT1eZ6nNg71hTNgUIpgtdFDZoXXRscU+J1w4tHNCuNA7uuKV2a01d0uv/2wAw4MpvwoSvDZ5Koe0JsgdT2NHl11nGk649Bf7rB7KfnIiicPipIR3AsoM87tO4ybnyUjMq1JHnEJ3nKpsTs6ZNTn3EzYG0oLHNizeeGHximDVbwW+I2
+X-Forefront-Antispam-Report: CIP:50.222.100.11;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:uww-mx01.datadirectnet.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(136003)(39850400004)(396003)(376002)(451199024)(186009)(82310400011)(1800799009)(46966006)(36840700001)(1076003)(2616005)(40480700001)(4326008)(41300700001)(47076005)(5660300002)(8676002)(336012)(6266002)(83380400001)(36756003)(86362001)(8936002)(2906002)(26005)(6916009)(316002)(6666004)(356005)(82740400003)(81166007)(70206006)(70586007)(478600001)(54906003)(36860700001)(36900700001);DIR:OUT;SFP:1101;
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
+X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: JhKw0zawtRLzQ6KxXA9S/3m/2QEMVt3JUltLikMfE7BKV5Hn+Vh5doRp8H/AYBp6xjv4RP4wo/CxiLnTrZsiL0OegruyMBp0hYI2i3bt0VYxzwhtLNJlB9qXZsvycP74icV7gy2hori4kz+htEbz4ujcaj/2YZqtBk7jTlT8psTo2ePGCmb4mJ1ey5zKJRXchOC6roE9os523aueGEYHe4X7oE+33cSmP32BT9fmfLZCSqs9fuyfdGuN4uXSOZ5zu4uCSiv2A6YVyFB/dXj7glFNFHha5TGff1DFCew08BO7qGd/3YkDNUhCLzpRbN1gNFkPmRqMHomChAjjifJhsuhFvsEiBMpvqvR6Paqg9nyN1+xCwK7hSywJKvYsSPwx0KiiFPkja4av7rj5lw2ygPhcIhs68+9xeysmGACCXpZSKNAGBIrjQSuHf8a96qJgiURTloI5FHdhMPAAVHINs+e5SAcwwsDGYYlC+Ae+ke91zDke7VN8R7EVTVSbwH/npNKMdDVkUsJOj863Mbp68d5MwHaBYTQo50HT+uCPvAvI8U3WVGGkK0GuZXdEHNGZ3ZRJchohfZk1GlVxnywPYwHEydJXVTKKtMs5Z9xtrLwwt8awSNhaPfzssvSLnzywiDl55pgfR716XgwoCzKgTMRqgsX3Ei7TbFhDXJfbC59r5H3xrm3ExuN4wYXAYDHqiW7nvOJV00bVl/ykNOU5UWtFad1pYX7V03BpizAkoSGU+B0DSZDoh406Z4xRa5WFH2r75zzJnRMV1y4w6Oz36Mntj/p1BhDUsvcokVbm/qPt8v3A2F/GtytyXhyQGnXUVta/y327+ula9Z1556/rO8Npg/s24SrlfYtqjIs7G/ffvGJ77oDMDttj9v/PkhXYs4mj4aVVmo3GTfCjZxaaOqHCf2lQvvDAytgxns4P/Ws=
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 15:59:16.4276
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 496fca2b-7158-4387-ce3f-08dbaef23905
+X-MS-Exchange-CrossTenant-Id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=753b6e26-6fd3-43e6-8248-3f1735d59bb4;Ip=[50.222.100.11];Helo=[uww-mx01.datadirectnet.com]
+X-MS-Exchange-CrossTenant-AuthSource: DM6NAM04FT033.eop-NAM04.prod.protection.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR19MB4843
+X-OriginatorOrg: ddn.com
+X-BESS-ID: 1694017203-103948-4714-266-1
+X-BESS-VER: 2019.1_20230901.1930
+X-BESS-Apparent-Source-IP: 104.47.73.169
+X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVobmloZAVgZQMCnJ1CwpxTzZMN
+        nCwjwxycDS1MQs1cjCItHExDgxNdlCqTYWAFnRPDlBAAAA
+X-BESS-Outbound-Spam-Score: 0.00
+X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.250646 [from 
+        cloudscan9-78.us-east-2a.ess.aws.cudaops.com]
+        Rule breakdown below
+         pts rule name              description
+        ---- ---------------------- --------------------------------
+        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
+        0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn't match header 
+X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_MISMATCH_TO
+X-BESS-BRTS-Status: 1
+X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
+        autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-------nvFln8z3L_krFSQI_duuyTsYVGNcxCMU6qftyQwhOSKtHzaF=_c7280_
-Content-Type: text/plain; charset="utf-8"; format="flowed"
-Content-Disposition: inline
+file_remove_privs might call into notify_change(), which
+requires to hold an exclusive lock.
 
-On Tue, Sep 05, 2023 at 12:08:40PM -0600, Keith Busch wrote:
->On Tue, Sep 05, 2023 at 10:48:25AM +0530, Kanchan Joshi wrote:
->> On Fri, Sep 01, 2023 at 10:45:50AM -0400, Keith Busch wrote:
->> > And similiar to this problem, what if the metadata is extended rather
->> > than separate, and the user's buffer is too short? That will lead to the
->> > same type of problem you're trying to fix here?
->>
->> No.
->> For extended metadata, userspace is using its own buffer. Since
->> intermediate kernel buffer does not exist, I do not have a problem to
->> solve.
->
->We still use kernel memory if the user buffer is unaligned. If the user
->space provides an short unaligned buffer, the device will corrupt kernel
->memory.
+Fixes: e9adabb9712e ("btrfs: use shared lock for direct writes within EOF")
+Cc: Christoph Hellwig <hch@infradead.org>
+Cc: Goldwyn Rodrigues <rgoldwyn@suse.com>
+Cc: Miklos Szeredi <miklos@szeredi.hu>
+Cc: Dharmendra Singh <dsingh@ddn.com>
+Cc: David Sterba <dsterba@suse.com>
+Cc: linux-btrfs@vger.kernel.org
+Cc: linux-fsdevel@vger.kernel.org
+Cc: stable@vger.kernel.org
+Signed-off-by: Bernd Schubert <bschubert@ddn.com>
+---
+ fs/btrfs/file.c | 14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-Ah yes. blk_rq_map_user_iov() does make a copy of user-buffer in that
-case.
-
->> > My main concern, though, is forward and backward compatibility. Even
->> > when metadata is enabled, there are IO commands that don't touch it, so
->> > some tool that erroneously requested it will stop working. Or perhaps
->> > some other future opcode will have some other metadata use that doesn't
->> > match up exactly with how read/write/compare/append use it. As much as
->> > I'd like to avoid bad user commands from crashing, these kinds of checks
->> > can become problematic for maintenance.
->>
->> For forward compatibility - if we have commands that need to specify
->> metadata in a different way (than what is possible from this interface),
->> we anyway need a new passthrough command structure.
->
->Not sure about that. The existing struct is flexible enough to describe
->any possible nvme command.
->
->More specifically about compatibility is that this patch assumes an
->"nlb" field exists inside an opaque structure at DW12 offset, and that
->field defines how large the metadata buffer needs to be. Some vendor
->specific or future opcode may have DW12 mean something completely
->different, but still need to access metadata this patch may prevent from
->working.
-
-Right. It almost had me dropping the effort.
-But given the horrible bug at hand, added an untested patch [1] that
-handles all the shortcomings you mentioned. Please take a look.
-
->> Moreover, it's really about caring _only_ for cases when kernel
->> allocates
->> memory for metadata. And those cases are specific (i.e., when
->> metadata and metalen are not zero). We don't have to think in terms of
->> opcode (existing or future), no?
->
->It looks like a little work, but I don't see why blk-integrity must use
->kernel memory. Introducing an API like 'bio_integrity_map_user()' might
->also address your concern, as long as the user buffer is aligned. It
->sounds like we're assuming user buffers are aligned, at least.
-
-Would you really prefer to have nvme_add_user_metadata() changed to do
-away with allocation and use userspace meta-buffer directly?
-Even with that route, extended-lba-with-short-unaligned-buffer remains 
-unhandled. That will still require similar checks that I would like
-to avoid but cannnot.
-
-So how about this -
-
-[1]
-diff --git a/drivers/nvme/host/ioctl.c b/drivers/nvme/host/ioctl.c
-index d8ff796fd5f2..d09b5691da3e 100644
---- a/drivers/nvme/host/ioctl.c
-+++ b/drivers/nvme/host/ioctl.c
-@@ -320,6 +320,67 @@ static int nvme_submit_io(struct nvme_ns *ns, struct nvme_user_io __user *uio)
-                        meta_len, lower_32_bits(io.slba), NULL, 0, 0);
- }
-
-+static inline bool nvme_nlb_in_cdw12(u8 opcode)
-+{
-+       switch(opcode) {
-+               case nvme_cmd_read:
-+               case nvme_cmd_write:
-+               case nvme_cmd_compare:
-+               case nvme_cmd_zone_append:
-+                       return true;
-+       }
-+       return false;
-+}
+diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
+index fd03e689a6be..c4b304a2948e 100644
+--- a/fs/btrfs/file.c
++++ b/fs/btrfs/file.c
+@@ -1466,8 +1466,12 @@ static ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 	if (iocb->ki_flags & IOCB_NOWAIT)
+ 		ilock_flags |= BTRFS_ILOCK_TRY;
+ 
+-	/* If the write DIO is within EOF, use a shared lock */
+-	if (iocb->ki_pos + iov_iter_count(from) <= i_size_read(inode))
++	/* If the write DIO is within EOF, use a shared lock and also only
++	 * if security bits will likely not be dropped. Either will need
++	 * to be rechecked after the lock was acquired.
++	 */
++	if (iocb->ki_pos + iov_iter_count(from) <= i_size_read(inode) &&
++	    IS_NOSEC(inode))
+ 		ilock_flags |= BTRFS_ILOCK_SHARED;
+ 
+ relock:
+@@ -1475,6 +1479,12 @@ static ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
+ 	if (err < 0)
+ 		return err;
+ 
++	if (ilock_flags & BTRFS_ILOCK_SHARED && !IS_NOSEC(inode)) {
++		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
++		ilock_flags &= ~BTRFS_ILOCK_SHARED;
++		goto relock;
++	}
 +
-+static bool nvme_validate_passthru_meta(struct nvme_ctrl *ctrl,
-+                                       struct nvme_ns *ns,
-+                                       struct nvme_command *c,
-+                                       __u64 meta, __u32 meta_len,
-+                                       unsigned data_len)
-+{
-+       /*
-+        * User may specify smaller meta-buffer with a larger data-buffer.
-+        * Driver allocated meta buffer will also be small.
-+        * Device can do larger dma into that, overwriting unrelated kernel
-+        * memory.
-+        */
-+       if (ns && (meta_len || meta || ns->features & NVME_NS_EXT_LBAS)) {
-+               u16 nlb, control;
-+               unsigned dlen, mlen;
-+
-+               /* Exclude commands that do not have nlb in cdw12 */
-+               if (!nvme_nlb_in_cdw12(c->common.opcode))
-+                       return true;
-+
-+               control = upper_16_bits(le32_to_cpu(c->common.cdw12));
-+               /* Exclude when meta transfer from/to host is not done */
-+               if (control & NVME_RW_PRINFO_PRACT && ns->ms == ns->pi_size)
-+                       return true;
-+
-+               nlb = lower_16_bits(le32_to_cpu(c->common.cdw12));
-+               mlen = (nlb + 1) * ns->ms;
-+
-+               /* sanity for interleaved buffer */
-+               if (ns->features & NVME_NS_EXT_LBAS) {
-+                       dlen = (nlb + 1) << ns->lba_shift;
-+                       if (data_len < (dlen + mlen))
-+                               goto out_false;
-+                       return true;
-+               }
-+               /* sanity for separate meta buffer */
-+               if (meta_len < mlen)
-+                       goto out_false;
-+
-+               return true;
-+out_false:
-+               dev_err(ctrl->device,
-+                       "%s: metadata length is small!\n", current->comm);
-+               return false;
-+       }
-+
-+       return true;
-+}
-+
- static bool nvme_validate_passthru_nsid(struct nvme_ctrl *ctrl,
-                                        struct nvme_ns *ns, __u32 nsid)
- {
-@@ -364,6 +425,10 @@ static int nvme_user_cmd(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
-        c.common.cdw14 = cpu_to_le32(cmd.cdw14);
-        c.common.cdw15 = cpu_to_le32(cmd.cdw15);
+ 	err = generic_write_checks(iocb, from);
+ 	if (err <= 0) {
+ 		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
+-- 
+2.39.2
 
-+       if (!nvme_validate_passthru_meta(ctrl, ns, &c, cmd.metadata,
-+                                        cmd.metadata_len, cmd.data_len))
-+               return -EINVAL;
-+
-        if (!nvme_cmd_allowed(ns, &c, 0, open_for_write))
-                return -EACCES;
-
-@@ -411,6 +476,10 @@ static int nvme_user_cmd64(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
-        c.common.cdw14 = cpu_to_le32(cmd.cdw14);
-        c.common.cdw15 = cpu_to_le32(cmd.cdw15);
-
-+       if (!nvme_validate_passthru_meta(ctrl, ns, &c, cmd.metadata,
-+                                        cmd.metadata_len, cmd.data_len))
-+               return -EINVAL;
-+
-        if (!nvme_cmd_allowed(ns, &c, flags, open_for_write))
-                return -EACCES;
-
-@@ -593,6 +662,10 @@ static int nvme_uring_cmd_io(struct nvme_ctrl *ctrl, struct nvme_ns *ns,
-        d.metadata_len = READ_ONCE(cmd->metadata_len);
-        d.timeout_ms = READ_ONCE(cmd->timeout_ms);
-
-+       if (!nvme_validate_passthru_meta(ctrl, ns, &c, d.metadata,
-+                                        d.metadata_len, d.data_len))
-+               return -EINVAL;
-+
-        if (issue_flags & IO_URING_F_NONBLOCK) {
-                rq_flags |= REQ_NOWAIT;
-                blk_flags = BLK_MQ_REQ_NOWAIT;
---
-2.25.1
-
-------nvFln8z3L_krFSQI_duuyTsYVGNcxCMU6qftyQwhOSKtHzaF=_c7280_
-Content-Type: text/plain; charset="utf-8"
-
-
-------nvFln8z3L_krFSQI_duuyTsYVGNcxCMU6qftyQwhOSKtHzaF=_c7280_--
