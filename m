@@ -2,183 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22C02796DA9
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 01:40:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9E3CB796DBA
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 01:49:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232248AbjIFXku (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 19:40:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53784 "EHLO
+        id S245008AbjIFXtk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 19:49:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230205AbjIFXku (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 19:40:50 -0400
-Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33BA3E66
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 16:40:46 -0700 (PDT)
-Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-64c1d487e72so2397416d6.0
-        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 16:40:46 -0700 (PDT)
+        with ESMTP id S244988AbjIFXtj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 19:49:39 -0400
+Received: from mail-pj1-x1033.google.com (mail-pj1-x1033.google.com [IPv6:2607:f8b0:4864:20::1033])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9FAB61BD2;
+        Wed,  6 Sep 2023 16:49:19 -0700 (PDT)
+Received: by mail-pj1-x1033.google.com with SMTP id 98e67ed59e1d1-271914b8aa4so286625a91.1;
+        Wed, 06 Sep 2023 16:49:19 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1694043645; x=1694648445; darn=vger.kernel.org;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=DRFCUp1EgKStwtQrssEYAgdj2N9VkIEfiBYPju9CrRw=;
-        b=cgJn1MaptXmK+FnH7d2Tmqn7i5tPreOiZe/Ldu2y5TArL1LyLAcaTO24SuFstqlaNp
-         S3xYzz6kQTEX/jhRzzqZhuJx463U5VlzBwxbkyYw7JIwKuwBOk8WsCY/MtbZNeNtimGf
-         1MK+UmD6coIS3ZJ9I1wRAyNSSfIAXINc6jplg=
+        d=gmail.com; s=20221208; t=1694044159; x=1694648959; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=pMprcsF/w05ofZ2dhMr2I/QYh1PPq3C9aqSR8/FhUVw=;
+        b=LDO5mJTqGJGKvS9GdPiI5SZFkQn9HSPNCexTPRQnW0XYW5CmfBsCEMHVlEamRK3VOT
+         2MAEJYfenGAc5Pdb8xmIqFxC3lDjqfMNunYBFltJPirrHj/9DkNUHZpucqQX0m39XFe5
+         NljTyL6FL5iZXF0CUyyzHiDqGuhGHpb90XnFtpkUiN1NN5R9b4nXjcEDAdYS6g3pqgHm
+         27QsAJvT0sGbOsHNkLU9aIF86q/UyAQmEgxMMVpjZZ8DD72OfGTH+vkkjPbdtWtiMwag
+         EfkM/hWAiuhaMsM/mpXsG93Bxv5R49sLXbldJlPm+PpiIik8GttGchAbwPGVEGJHq15F
+         hR6g==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694043645; x=1694648445;
-        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
-         :from:content-transfer-encoding:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=DRFCUp1EgKStwtQrssEYAgdj2N9VkIEfiBYPju9CrRw=;
-        b=dTq2U8VvTtcWTS+0ROpzhJOKPH0qFxNwqE75A71FhkXqQe/1v6EbPOKIvtCnqTdwiq
-         Fv74zXOpsFs/55GEkh2BQlbZdJeMRIkbBv1j6zH7ojnsl4WqZehOgnuHX0AWMnFOMbvf
-         Wvldg8Fm6z3mnOrenHLksDIHxYQn3GVgoG3sR4qtb8w45XYegohbV5Y768p7C9SdOM4Z
-         SuzKvKMC6PP344Ris4o8r8i8HxthPt72Q/e2teyCD4ViEi/hW6+/nQvqPtvdjoS5c2jz
-         0Zpd+B6idez5zIDKvgqhn5EdnPQM1nFqAEjhMB9V6RX67SjDIq6DRqCVwW09GgD9N3d2
-         CdRw==
-X-Gm-Message-State: AOJu0Yzri0I9D/dbxrKJAq0jAk4vvbjaJGYRpAaBWAdsSJd2PsQXYR9k
-        UkfWw8L9SQUHwonH/JSviyMNfA==
-X-Google-Smtp-Source: AGHT+IGhsdEfD5ztLaWrvVOZaisxBDSfdAxOEiVkQZGer7K/GGeg15/nfhi/lRo4HWni4JqF5NTDLg==
-X-Received: by 2002:a05:6214:1710:b0:64f:92dc:3de3 with SMTP id db16-20020a056214171000b0064f92dc3de3mr18245434qvb.6.1694043645278;
-        Wed, 06 Sep 2023 16:40:45 -0700 (PDT)
-Received: from smtpclient.apple ([45.88.220.67])
-        by smtp.gmail.com with ESMTPSA id p17-20020a0ce191000000b0064f4d3bc78csm5762918qvl.61.2023.09.06.16.40.44
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Sep 2023 16:40:44 -0700 (PDT)
-Content-Type: text/plain; charset=utf-8
-Content-Transfer-Encoding: quoted-printable
-From:   Joel Fernandes <joel@joelfernandes.org>
-Mime-Version: 1.0 (1.0)
-Subject: Re: [merged mm-hotfixes-stable] mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch removed from -mm tree
-Date:   Wed, 6 Sep 2023 19:40:33 -0400
-Message-Id: <2E4C860E-EB96-477E-B980-42DE61FF9AAF@joelfernandes.org>
-References: <CAA5enKZDKA9=gHJL1J=UVGFiB_LLBuR_4XHTasHauaFjeORHCQ@mail.gmail.com>
-Cc:     linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org,
-        willy@infradead.org, urezki@gmail.com,
-        thunder.leizhen@huaweicloud.com, stable@vger.kernel.org,
-        qiang.zhang1211@gmail.com, paulmck@kernel.org,
-        akpm@linux-foundation.org
-In-Reply-To: <CAA5enKZDKA9=gHJL1J=UVGFiB_LLBuR_4XHTasHauaFjeORHCQ@mail.gmail.com>
-To:     Lorenzo Stoakes <lstoakes@gmail.com>
-X-Mailer: iPhone Mail (20B101)
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+        d=1e100.net; s=20221208; t=1694044159; x=1694648959;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=pMprcsF/w05ofZ2dhMr2I/QYh1PPq3C9aqSR8/FhUVw=;
+        b=BTu7EZXN2ETxnNczeDcW1JIL1lnz6UxTxG+7OQ8xTKnx/8VejGdzp53p3+WQ2+QPHB
+         ZXmxJbhpFsQynhPGmZTSFr36QlVs2HvnIEnZFeuFY/cY0wJdIucpgSahjSlm1Gi0Y1aE
+         4VVo1pbX+qKEiDaZl+awEhUP/GAMjFrkgDp3fjhy9hGKLBbKCaeiZuu67d0fdRsYQlj2
+         rcQlhtj1Wtok0GUzn/Wr1NCwiNWpcyM6Pyb+Tvptu+GQdHDgSpDYaEHazIaJ55Uh9tic
+         jh/s/pCZ5VHv9QkxwKBBIaqSpi7jvHH780YlVMmmAhRb3a5jCs7a5wRv+VGA+YT1ay20
+         L4Tg==
+X-Gm-Message-State: AOJu0Yw4ZiI9J+vgSorVIEIXkolq4/6KrrCRsvQhu97oUoc6XqSyuHzw
+        gcKUkHS4J9MRO73ONzTIhjgYxSjuQyJ7X2wG13Osn1wNu5o=
+X-Google-Smtp-Source: AGHT+IFodavs1CDtQlfvRud2q8DQ5YoN2U9ZtTpqMZ6+1rz+m0J9Q0IqHAfvCCVJ3GqFFojwPwo22ThxDS+IRx3FmmU=
+X-Received: by 2002:a17:90a:a58f:b0:267:7743:9857 with SMTP id
+ b15-20020a17090aa58f00b0026777439857mr15232997pjq.17.1694044158600; Wed, 06
+ Sep 2023 16:49:18 -0700 (PDT)
+MIME-Version: 1.0
+From:   Adam Ford <aford173@gmail.com>
+Date:   Wed, 6 Sep 2023 18:49:07 -0500
+Message-ID: <CAHCN7x+GLhYyEMq0h0Sa3m9JMuZf0g7=FpT==uFOg=w7OQ=qUw@mail.gmail.com>
+Subject: of: property: Simplify of_link_to_phandle()
+To:     stable <stable@vger.kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+Stable Group,
 
+Please apply commit 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
+to the 6.1.y stable branch.  It was originally part of a series that
+was only partially applied to 6.1.  Being partially applied left 6.1.y
+in a state where a bunch of peripherals were deferred indefinitely on
+the am3517-evm.
 
-> On Sep 6, 2023, at 3:14 PM, Lorenzo Stoakes <lstoakes@gmail.com> wrote:
->=20
-> =EF=BB=BFOn Wed, 6 Sept 2023 at 16:09, Andrew Morton <akpm@linux-foundatio=
-n.org> wrote:
->>=20
->>=20
->> The quilt patch titled
->>     Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
->> has been removed from the -mm tree.  Its filename was
->>     mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
->>=20
->> This patch was dropped because it was merged into the mm-hotfixes-stable b=
-ranch
->> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
->=20
-> Hmm, I had outstanding review on this :/ I guess I will have to send a
-> follow up patch to address those concerns...
+wl12xx_buf platform: supplier 48002000.scm not ready
+wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
+48050000.dss platform: supplier display@0 not ready
+48064800.ehci platform: supplier hsusb1_phy not ready
+backlight platform: supplier 48002000.scm not ready
+display@0 platform: supplier backlight not ready
+dmtimer-pwm@11 platform: supplier 48002000.scm not ready
+hsusb1_phy platform: supplier 48002000.scm not ready
+gpio-leds platform: supplier 48002000.scm not ready
+480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
 
-That works me because we also had some disagreements on some of the suggesti=
-ons!
+With the above commit applied, it appears to address most of the
+deferred peripherals.
 
-Looking forward to your patch and discussing it!
-
-Cheers,
-
- - Joel
-
-
->=20
->=20
->>=20
->> ------------------------------------------------------
->> From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
->> Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
->> Date: Mon, 4 Sep 2023 18:08:04 +0000
->>=20
->> It is unsafe to dump vmalloc area information when trying to do so from
->> some contexts.  Add a safer trylock version of the same function to do a
->> best-effort VMA finding and use it from vmalloc_dump_obj().
->>=20
->> [applied test robot feedback on unused function fix.]
->> [applied Uladzislau feedback on locking.]
->> Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernand=
-es.org
->> Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
->> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
->> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
->> Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
->> Cc: Paul E. McKenney <paulmck@kernel.org>
->> Cc: Zqiang <qiang.zhang1211@gmail.com>
->> Cc: <stable@vger.kernel.org>
->> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
->> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
->> ---
->>=20
->> mm/vmalloc.c |   26 ++++++++++++++++++++++----
->> 1 file changed, 22 insertions(+), 4 deletions(-)
->>=20
->> --- a/mm/vmalloc.c~mm-vmalloc-add-a-safer-version-of-find_vm_area-for-deb=
-ug
->> +++ a/mm/vmalloc.c
->> @@ -4278,14 +4278,32 @@ void pcpu_free_vm_areas(struct vm_struct
->> #ifdef CONFIG_PRINTK
->> bool vmalloc_dump_obj(void *object)
->> {
->> -       struct vm_struct *vm;
->>        void *objp =3D (void *)PAGE_ALIGN((unsigned long)object);
->> +       const void *caller;
->> +       struct vm_struct *vm;
->> +       struct vmap_area *va;
->> +       unsigned long addr;
->> +       unsigned int nr_pages;
->> +
->> +       if (!spin_trylock(&vmap_area_lock))
->> +               return false;
->> +       va =3D __find_vmap_area((unsigned long)objp, &vmap_area_root);
->> +       if (!va) {
->> +               spin_unlock(&vmap_area_lock);
->> +               return false;
->> +       }
->>=20
->> -       vm =3D find_vm_area(objp);
->> -       if (!vm)
->> +       vm =3D va->vm;
->> +       if (!vm) {
->> +               spin_unlock(&vmap_area_lock);
->>                return false;
->> +       }
->> +       addr =3D (unsigned long)vm->addr;
->> +       caller =3D vm->caller;
->> +       nr_pages =3D vm->nr_pages;
->> +       spin_unlock(&vmap_area_lock);
->>        pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS=
-\n",
->> -               vm->nr_pages, (unsigned long)vm->addr, vm->caller);
->> +               nr_pages, addr, caller);
->>        return true;
->> }
->> #endif
->> _
->>=20
->> Patches currently in -mm which might be from joel@joelfernandes.org are
->>=20
->>=20
->=20
->=20
-> --
-> Lorenzo Stoakes
-> https://ljs.io
+Fixes: eaf9b5612a47 ("driver core: fw_devlink: Don't purge child
+fwnode's consumer links")
+Signed-off-by:  Adam Ford <aford173@gmail.com>
