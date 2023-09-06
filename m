@@ -2,69 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 496FF793719
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 10:24:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F6479373E
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 10:38:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235052AbjIFIYq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 04:24:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33028 "EHLO
+        id S231225AbjIFIiY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 04:38:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54294 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230355AbjIFIYq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 04:24:46 -0400
-Received: from mail-yb1-xb36.google.com (mail-yb1-xb36.google.com [IPv6:2607:f8b0:4864:20::b36])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32418CF0
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 01:24:40 -0700 (PDT)
-Received: by mail-yb1-xb36.google.com with SMTP id 3f1490d57ef6-d7bb34576b9so2877058276.3
-        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 01:24:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693988679; x=1694593479; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=8FgxJYQb5sLipJEPTb1HHkrkVVLFLdqlnrCZ9IiecQk=;
-        b=MmM4ZCAgZx94pWC1CAvsO5FauPVtAFvh4gfbQBlYRM/b5ffbs57TxE+9Ipb3FjhaJg
-         hC72qAlYdFSeY3JK6vICWvWoI8ApUL4VAuc79qErsw6LnB/8G4eklPvZpYfDxaEYW/3r
-         UfkoWv8YKMqnsSHP231mkmOw8AWiwIf5v71WoBj9I2lGgbK+nEaKOt6VWvSNrR03o0JB
-         I6EkrxUEwK9sbVzr1u6hLrVu8FXX01gzCqKQ8Z6sfTydtd9pttGVT96xDl/Il2D2XTkI
-         Lyf5BxNWzChTeZwyqgxbN5poPyiFjDUyZLI1C1D89I6zkcMkgfjCPmagRGoq9pngBWEj
-         3R4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693988679; x=1694593479;
-        h=cc:to:subject:message-id:date:from:in-reply-to:references
-         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=8FgxJYQb5sLipJEPTb1HHkrkVVLFLdqlnrCZ9IiecQk=;
-        b=GZNPvQhKGjbEL+cgbUMbbLFOS2QwE4UdkT7CHBBmtLiD7mmTr+9vQzROMfBH6ImIYf
-         wAtkoep8HB4ylmYrH9n3+dPP+BxDWY4StTXaOPlxpbfHFAgzYP3GsyjKBcrIE+wEyGku
-         fsv5Rskq+Y2k/bb7GU+fBsB/fwkp8aIecrWKjaG9kijZG95n5Cf6rlP8hRW/1RrT2ThN
-         WbjJiVCqeDnwVTR3vG/4BHHRyUcwUaiVb7hZK9qMo+sjPpvEZRWgzESMVdb4oTwoIPXw
-         A/xKtTTQMNWHgZ9qjYRoG653fH2pMdK2rQX0aVky227jLUmcq0TPUqigXwCnMCAydonS
-         tZ2g==
-X-Gm-Message-State: AOJu0YwoRjjW4wJc1HStxJamZuIQLZl1KMUg94mSI1B7vpGAENgvdid3
-        IECv1KQpnAw3dDatxcXyCXySAXrfz3irNTD0zxTC8Q==
-X-Google-Smtp-Source: AGHT+IH6dwGRkIdDTuRt/pJIYHdJLKEfCH3A3hLT0H8bBotdEyhTza76gcd+4blN/xWaXY/M85goEM/KfWPQg7cULj0=
-X-Received: by 2002:a25:26cd:0:b0:d0c:3be2:b626 with SMTP id
- m196-20020a2526cd000000b00d0c3be2b626mr17084269ybm.30.1693988679382; Wed, 06
- Sep 2023 01:24:39 -0700 (PDT)
+        with ESMTP id S231931AbjIFIiY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 04:38:24 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 335ECE45
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 01:38:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79997C433C8;
+        Wed,  6 Sep 2023 08:38:20 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1693989500;
+        bh=3zE0giBClwa2X7EBKs8nAsXJOGJGAgNY0pTHG5rQr1s=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=T9N3oSK/sHb8hMYpEc4O/dOLI7BdXK81QgpxbempNx9Jn9PQcSBWMIKqPK/jpEfEw
+         1sw4T/jaKdNIPkl+jIKXia3ZOOg+FIDMmVyL8z7rMoBzqPEoLYfaIY8eQrS5/Z5A2U
+         RsaXPAz/d7dAEju7d4XeykK2hrjz7N3JWQ0eWWyw=
+Date:   Wed, 6 Sep 2023 09:38:17 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Keyon Jie <yang.jie@linux.intel.com>
+Cc:     Doug Smythies <dsmythies@telus.net>, stable@vger.kernel.org,
+        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
+Subject: Re: [PATCH] cpufreq: intel_pstate: set stale CPU frequency to minimum
+Message-ID: <2023090607-virus-earshot-268d@gregkh>
+References: <20230906001646.338935-1-yang.jie@linux.intel.com>
 MIME-Version: 1.0
-References: <20230906075823.7957-1-dmitry.baryshkov@linaro.org>
- <20230906075823.7957-2-dmitry.baryshkov@linaro.org> <4f6ec540-9cf7-4505-ada8-2e203eaafca6@linaro.org>
-In-Reply-To: <4f6ec540-9cf7-4505-ada8-2e203eaafca6@linaro.org>
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Date:   Wed, 6 Sep 2023 11:24:28 +0300
-Message-ID: <CAA8EJprxvPSvmkz_RU6yc-VxwDubZWe54-OjWQGgA0qvFrAiCg@mail.gmail.com>
-Subject: Re: [PATCH 1/4] phy: qcom-qmp-combo: correct sm8550 PHY programming
-To:     neil.armstrong@linaro.org
-Cc:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>,
-        Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
-Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906001646.338935-1-yang.jie@linux.intel.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -72,72 +44,34 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 6 Sept 2023 at 11:02, Neil Armstrong <neil.armstrong@linaro.org> wrote:
->
-> On 06/09/2023 09:58, Dmitry Baryshkov wrote:
-> > Move PCS_USB3_POWER_STATE_CONFIG1 register programming from pcs_tbl to
-> > the pcs_usb_tbl, where it belongs. Also, while we are at it, correct the
-> > offset of this register to point to 0x00, as expected.
->
-> Konrad already sent this https://lore.kernel.org/all/20230829-topic-8550_usbphy-v1-1-599ddbfa094a@linaro.org/
+On Tue, Sep 05, 2023 at 05:16:46PM -0700, Keyon Jie wrote:
+> From: Doug Smythies <dsmythies@telus.net>
+> 
+> commit d51847acb018d83186e4af67bc93f9a00a8644f7 upstream.
+> 
+> This fix applies to all stable kernel versions 5.18+.
+> 
+> The intel_pstate CPU frequency scaling driver does not
+> use policy->cur and it is 0.
+> When the CPU frequency is outdated arch_freq_get_on_cpu()
+> will default to the nominal clock frequency when its call to
+> cpufreq_quick_getpolicy_cur returns the never updated 0.
+> Thus, the listed frequency might be outside of currently
+> set limits. Some users are complaining about the high
+> reported frequency, albeit stale, when their system is
+> idle and/or it is above the reduced maximum they have set.
+> 
+> This patch will maintain policy_cur for the intel_pstate
+> driver at the current minimum CPU frequency.
+> 
+> Reported-by: Yang Jie <yang.jie@linux.intel.com>
+> Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217597
+> Signed-off-by: Doug Smythies <dsmythies@telus.net>
+> [ rjw: White space damage fixes and comment adjustment ]
+> Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+> Signed-off-by: Keyon Jie <yang.jie@linux.intel.com>
+> ---
+>  drivers/cpufreq/intel_pstate.c | 5 +++++
+>  1 file changed, 5 insertions(+)
 
-Not quite. Or we'd need to land a separate fix for the register address.
-
->
-> >
-> > Fixes: 49742e9edab3 ("phy: qcom-qmp-combo: Add support for SM8550")
-> > Fixes: 39bbf82d8c2b ("phy: qcom-qmp: pcs-usb: Add v6 register offsets")
-> > Cc: Abel Vesa <abel.vesa@linaro.org>
-> > Cc: stable@vger.kernel.org
-> > Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-> > ---
-> >   drivers/phy/qualcomm/phy-qcom-qmp-combo.c      | 2 +-
-> >   drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h | 2 +-
-> >   2 files changed, 2 insertions(+), 2 deletions(-)
-> >
-> > diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> > index cbb28afce135..41b9be56eead 100644
-> > --- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> > +++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-> > @@ -859,7 +859,6 @@ static const struct qmp_phy_init_tbl sm8550_usb3_pcs_tbl[] = {
-> >       QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_PCS_TX_RX_CONFIG, 0x0c),
-> >       QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_EQ_CONFIG1, 0x4b),
-> >       QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_EQ_CONFIG5, 0x10),
-> > -     QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1, 0x68),
-> >   };
-> >
-> >   static const struct qmp_phy_init_tbl sm8550_usb3_pcs_usb_tbl[] = {
-> > @@ -867,6 +866,7 @@ static const struct qmp_phy_init_tbl sm8550_usb3_pcs_usb_tbl[] = {
-> >       QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RXEQTRAINING_DFE_TIME_S2, 0x07),
-> >       QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_L, 0x40),
-> >       QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_H, 0x00),
-> > +     QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1, 0x68),
-> >   };
-> >
-> >   static const struct qmp_phy_init_tbl qmp_v4_dp_serdes_tbl[] = {
-> > diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h b/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-> > index 9510e63ba9d8..5409ddcd3eb5 100644
-> > --- a/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-> > +++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-> > @@ -12,7 +12,6 @@
-> >   #define QPHY_USB_V6_PCS_LOCK_DETECT_CONFIG3         0xcc
-> >   #define QPHY_USB_V6_PCS_LOCK_DETECT_CONFIG6         0xd8
-> >   #define QPHY_USB_V6_PCS_REFGEN_REQ_CONFIG1          0xdc
-> > -#define QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1     0x90
-> >   #define QPHY_USB_V6_PCS_RX_SIGDET_LVL                       0x188
-> >   #define QPHY_USB_V6_PCS_RCVR_DTCT_DLY_P1U2_L                0x190
-> >   #define QPHY_USB_V6_PCS_RCVR_DTCT_DLY_P1U2_H                0x194
-> > @@ -23,6 +22,7 @@
-> >   #define QPHY_USB_V6_PCS_EQ_CONFIG1                  0x1dc
-> >   #define QPHY_USB_V6_PCS_EQ_CONFIG5                  0x1ec
-> >
-> > +#define QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1     0x00
-> >   #define QPHY_USB_V6_PCS_USB3_LFPS_DET_HIGH_COUNT_VAL        0x18
-> >   #define QPHY_USB_V6_PCS_USB3_RXEQTRAINING_DFE_TIME_S2       0x3c
-> >   #define QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_L             0x40
->
-
-
--- 
-With best wishes
-Dmitry
+What stable kernel(s) is this for?
