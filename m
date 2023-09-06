@@ -2,70 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 517D6793A80
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 12:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA987793AB8
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 13:08:57 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233309AbjIFK7v (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 06:59:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35528 "EHLO
+        id S235567AbjIFLI7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 07:08:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235829AbjIFK7u (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 06:59:50 -0400
-Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 204271BB;
-        Wed,  6 Sep 2023 03:59:40 -0700 (PDT)
-Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d7b9de8139fso3011849276.1;
-        Wed, 06 Sep 2023 03:59:40 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1693997979; x=1694602779; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=0TRaWE9RdpS1f61w4iMZcHsGOS8rUsx58CiFxRqJCtY=;
-        b=i6/DRY844oKLl1KbkSsms3OlLC0yG3F8xeDTp+8BeUbGsaDxuUxh1LE4rvNyYUmvOO
-         00SuKcU+u5s+L9QUtc7TNokEYbWhEL7GYfbvosI33WvwBmsHgBIJkhN54qP0bNBQvynl
-         Jw/InX8990BvlD8sSg+DT1D+a/5CiE/Z+IcscgnS88gN/jT0aiJQqex/x7mAndgzXzyn
-         pXPIpH34cImIZFP3AmgedTWkoEoaclSibEi3PeA/jmlgG+uBznWTsF6Jb6auN4pTHwww
-         kuLCIqBCptMzHGeQx32XM2e1PIEjHpYdS5vfLW/DzN0ZsfwVOaZ9Tk1jL5880ixizY7u
-         w7rw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693997979; x=1694602779;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=0TRaWE9RdpS1f61w4iMZcHsGOS8rUsx58CiFxRqJCtY=;
-        b=IpAlW4rkCyI7RHSqc4QUmU8xiC6RUrAfwHcPULsTWD4y3vPHK+P4S7F2jc7ItCeNxy
-         mKX1DeActVhp+qYRFmUdNnJC2gSekRaNFCZqoZSTMKLdiEjNc4NBqv/66f9en27oELtM
-         jCkQsHaM+z6Xf/Sq3ffAt67NjCRvYE0ntL+OATXAsOZu0eaaSt2EwbUuCwRSw1gYNYmZ
-         tTJ/Vb//JuHAoG0J2/umxEB9vtW87UzXST0TZcZkIf62lIngnJv5/YV6jIq1EvggmKj5
-         tdzeVzUIBEXGIKTwyR8FvYao2o2b6+bW36IYJj7I9eyxeVAAkfJ2Df8lgMkBvZRWYzdK
-         v/yw==
-X-Gm-Message-State: AOJu0YwXKNtKdetCnS0nucuY2XE4bXHB55/JafZ2wJ8uxTpCRICZBXWn
-        BvUi38kUzKsyv9GHs+2zdpSNrD6e5RjxWE169vI=
-X-Google-Smtp-Source: AGHT+IGDVLUdQ05ge/G4dn3Y38GXLHKZ7EF0tbkdsL28txPHQxHktzsEeW+78m6I3GUAbE9DNyViC+klXVifYe3z/QM=
-X-Received: by 2002:a05:6902:188:b0:d7f:95f6:e13e with SMTP id
- t8-20020a056902018800b00d7f95f6e13emr3169281ybh.33.1693997979142; Wed, 06 Sep
- 2023 03:59:39 -0700 (PDT)
+        with ESMTP id S230042AbjIFLI6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 07:08:58 -0400
+Received: from esa4.hc3370-68.iphmx.com (esa4.hc3370-68.iphmx.com [216.71.155.144])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2AD8CF1;
+        Wed,  6 Sep 2023 04:08:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=simple/simple;
+  d=citrix.com; s=securemail; t=1693998531;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=EjoL1liNmMORk3s/gwWZ5XM6fEQ6JOyB1f/12zKspDI=;
+  b=U75GZguwXHzSWQrxzKPmyPplEjopfpKxCUhu+vwOnG4jGx7z9om2HfqJ
+   Ufc3CVGbHjQ8jvmmomqfbTOsMBZhXYuDPjHfgqCRvP9XuP3h1fIFJn+sg
+   DsZpS0b5Z3/n1CrBijvGoVL95wJkvkx16GB04Q9o+2o+5ob3H0t+RI1hg
+   M=;
+Authentication-Results: esa4.hc3370-68.iphmx.com; dkim=none (message not signed) header.i=none
+X-SBRS: 4.0
+X-MesageID: 124515739
+X-Ironport-Server: esa4.hc3370-68.iphmx.com
+X-Remote-IP: 162.221.156.123
+X-Policy: $RELAYED
+IronPort-Data: A9a23:rWFnfqLk+bzNBpLJFE+R4JUlxSXFcZb7ZxGr2PjKsXjdYENShjAHy
+ mVJDGqOOPjZZDahLtEga9mwo0xQvJLXndc2SQdlqX01Q3x08seUXt7xwmUcnc+xBpaaEB84t
+ ZV2hv3odp1coqr0/0/1WlTZhSAgk/rOHvykU7Ss1hlZHWdMUD0mhQ9oh9k3i4tphcnRKw6Ws
+ Jb5rta31GWNglaYCUpKrfrZwP9TlK6q4mhA7wRgPakjUGL2zBH5MrpOfcldEFOgKmVkNrbSb
+ /rOyri/4lTY838FYj9yuu+mGqGiaue60Tmm0hK6aYD76vRxjnVaPpIAHOgdcS9qZwChxLid/
+ jnvWauYEm/FNoWU8AgUvoIx/ytWZcWq85efSZSzXFD6I+QrvBIAzt03ZHzaM7H09c5lWmtL/
+ +EVBgoVYyGJ2uWk5eiVRPdV05FLwMnDZOvzu1llxDDdS/0nXYrCU+PB4towMDUY354UW6yEP
+ oxANGQpNU6bC/FMEg5/5JYWhuCznT/7ejJVsk2coa4f6GnP1g1hlrPqNbI5f/TTH5kIxxvH/
+ TOuE2LRKCEVd/eH9z6/wmvrm+rdwgPyZrsWG+jtnhJtqALKnTFCYPEMbnOxofS9hUe3QPpQL
+ Esb/idopq83nGSoUND5WDW7rWSCsxpaXMBfe8U+6QeQ2u/M6AexGGcJVHhCZcYguctwQiYlv
+ neSg9rjATFHrrKYUzSe+62SoDf0PjIaRVLufgddE1FDuYO65thu0FSWFI0L/LOJYsPdC2r6x
+ jqXoQYEn7gih5MMxYDh017Zumf5znTWdTId6gLSV2Ojywp2Yo+5eoClgWTmAeZ8wJWxFQfY4
+ iVd8ySKxKVXVMzWynTRKAkYNOvxj8tpJgEwlrKG83MJ0z22s0CucolLiN2VDBc4a51UEdMFj
+ aK6hO+w2HOxFCH6BUOUS9jrYyjP8UQHPY2+Ps04lvIUPvBMmPavpUmCn3K40WH3i1QLmqoiI
+ 5qdesvEJS9EWP82l2roF7lGiuBDKsUCKYX7H8uTI/OPi+f2WZJoYe1dbAvmgh4RsstoXzk5A
+ /4AbpDXmn2zocX1YzXN8J57ELz5BSFTOHwCkOQOLrTrClM/SAkc5wr5netJl3pNw/4EyY8lP
+ xiVBidl9bYIrSGddF/TOy84OdsCn/9X9BoGAMDlBn7ws1BLXGplxP53m0cfFVX/yNFe8A==
+IronPort-HdrOrdr: A9a23:qt3OuqzEJPG5QmFUVHuVKrPwIL1zdoMgy1knxilNoRw8SKKlfq
+ eV7ZAmPH7P+VAssR4b+exoVJPtfZq+z+8R3WByB8bAYOCOggLBR+sO0WKL+UyGJ8SUzI9gPM
+ lbHJSWcOeAb2RHsQ==
+X-Talos-CUID: 9a23:wPGEoWM1vftNZe5DSnJt8UQJF+4fanDsxirXMWriJ2h3cejA
+X-Talos-MUID: 9a23:s0SKQgT95U3iOQ8KRXTGtD4hH99W556eEQcQlIdZm8C6DCh/bmI=
+X-IronPort-AV: E=Sophos;i="6.02,231,1688443200"; 
+   d="scan'208";a="124515739"
+From:   Ross Lagerwall <ross.lagerwall@citrix.com>
+To:     <linux-pci@vger.kernel.org>
+CC:     Bjorn Helgaas <bhelgaas@google.com>,
+        Ross Lagerwall <ross.lagerwall@citrix.com>,
+        Kalle Valo <kvalo@kernel.org>, <stable@vger.kernel.org>
+Subject: [PATCH] PCI: Free released resource
+Date:   Wed, 6 Sep 2023 12:08:46 +0100
+Message-ID: <20230906110846.225369-1-ross.lagerwall@citrix.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-References: <CAHCN7xJjK=BaNHa=+OKzOmFtNRYKX_APTp5Zj3g-X_iQcpyK6g@mail.gmail.com>
- <ZPZ2zTS9loj06u31@debian.me> <20230905061739.GX11676@atomide.com>
-In-Reply-To: <20230905061739.GX11676@atomide.com>
-From:   Adam Ford <aford173@gmail.com>
-Date:   Wed, 6 Sep 2023 05:59:27 -0500
-Message-ID: <CAHCN7xJo=pJkcChHm9AsNQGCJuHXgpRKKRK9ckEwdk3U-41ukw@mail.gmail.com>
-Subject: Re: 6.1.y Regression found on AM3517
-To:     Tony Lindgren <tony@atomide.com>
-Cc:     Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux OMAP <linux-omap@vger.kernel.org>,
-        Saravana Kannan <saravanak@google.com>,
-        Linux Stable <stable@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+Content-Transfer-Encoding: 8bit
+Content-Type: text/plain
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
         autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -73,81 +75,31 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 5, 2023 at 11:25=E2=80=AFAM Tony Lindgren <tony@atomide.com> wr=
-ote:
->
-> * Bagas Sanjaya <bagasdotme@gmail.com> [230905 00:31]:
-> > On Mon, Sep 04, 2023 at 11:37:46AM -0500, Adam Ford wrote:
-> > > I have an AM3517-EVM board that I am trying to use the latest 6.1.y
-> > > stable, currently 6.1.51.
-> > >
-> > > With git bisect, I narrowed the regression between 6.1.15 and 6.1.16 =
-to commit
-> > > eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's
-> > > consumer links")
-> > >
-> > > In the regression, 48002000.scm appears as not ready.  This affects a
-> > > variety of dependent peripherals making them unavailable:
-> > >
-> > > wl12xx_buf platform: supplier 48002000.scm not ready
-> > > wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
-> > > 48050000.dss platform: supplier display@0 not ready
-> > > 48064800.ehci platform: supplier hsusb1_phy not ready
-> > > backlight platform: supplier 48002000.scm not ready
-> > > display@0 platform: supplier backlight not ready
-> > > dmtimer-pwm@11 platform: supplier 48002000.scm not ready
-> > > hsusb1_phy platform: supplier 48002000.scm not ready
-> > > gpio-leds platform: supplier 48002000.scm not ready
-> > > 480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
-> > >
-> > > If I build 6.1.51 but I checkout drivers/base/core.c from commit
-> > > 2455b81afe68 ("driver core: fw_devlink: Add DL_FLAG_CYCLE support to
-> > > device links"),
-> > > the regression is gone.
->
-> Adam, maybe check if 6.1 stable series is missing something to be
-> backported from this mailing list thread:
->
-> https://lore.kernel.org/lkml/20230207014207.1678715-2-saravanak@google.co=
-m/
->
-> That email thread version seemed to work for me based on my reply in the
-> thread. I recall issues with the earlier revisions but don't remember
-> what fixed them.
+release_resource() doesn't actually free the resource or resource list
+entry so free the resource list entry to avoid a leak.
 
-Tony,
+Fixes: e54223275ba1 ("PCI: Release resource invalidated by coalescing")
+Signed-off-by: Ross Lagerwall <ross.lagerwall@citrix.com>
+Reported-by: Kalle Valo <kvalo@kernel.org>
+Closes: https://lore.kernel.org/r/878r9sga1t.fsf@kernel.org/
+Tested-by: Kalle Valo <kvalo@kernel.org>
+Cc: stable@vger.kernel.org      # v5.16+
+---
+ drivers/pci/probe.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-Indeed, it does appear that a patch was missing from the back-ported series=
-.
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index ab2a4a3a4c06..795534589b98 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -997,6 +997,7 @@ static int pci_register_host_bridge(struct pci_host_bridge *bridge)
+ 		res = window->res;
+ 		if (!res->flags && !res->start && !res->end) {
+ 			release_resource(res);
++			resource_list_destroy_entry(window);
+ 			continue;
+ 		}
+ 
+-- 
+2.41.0
 
-Applying commit 4a032827daa8 ("of: property: Simplify
-of_link_to_phandle()") to the 6.1.y branch appears
-to fix the regression.
-
-Thanks for the pointer to the series.
-
-Stable group,
-
-Do I need to send a separate e-mail requesting the backporting of that
-commit to the 6.1.y branch?
-
-adam
->
-> > > I checked the 6.5 kernel, and it appears fine, so I think there is a
-> > > possible backport commit missing, and I was hoping Saravana or Tony
-> > > might have a suggestion as to which one(s) I should try.  I don't kno=
-w
-> > > if this is found on other OMAP3 boards, but I wouldn't be surprised.
-> > >
-> >
-> > Thanks for the regression report. I'm adding it to regzbot as stable-sp=
-ecific
-> > entry:
-> >
-> > #regzbot ^introduced: eaf9b5612a47f0
-> > #regzbot title: keeping consumer links of child fwnode doesn't prepare =
-AM3517-EVM suppliers
->
-> Regards,
->
-> Tony
