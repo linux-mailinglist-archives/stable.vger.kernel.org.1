@@ -2,115 +2,87 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A12F67932C3
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 01:59:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0676F7932C7
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 02:01:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243806AbjIEX71 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 19:59:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36722 "EHLO
+        id S240716AbjIFABq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 20:01:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35520 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233081AbjIEX7W (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 19:59:22 -0400
-Received: from mail-yb1-xb49.google.com (mail-yb1-xb49.google.com [IPv6:2607:f8b0:4864:20::b49])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A049CCE0
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 16:59:18 -0700 (PDT)
-Received: by mail-yb1-xb49.google.com with SMTP id 3f1490d57ef6-d7493fcd829so2625534276.3
-        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 16:59:18 -0700 (PDT)
+        with ESMTP id S236879AbjIFABp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 20:01:45 -0400
+Received: from mail-yw1-x1149.google.com (mail-yw1-x1149.google.com [IPv6:2607:f8b0:4864:20::1149])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42A501AB
+        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 17:01:42 -0700 (PDT)
+Received: by mail-yw1-x1149.google.com with SMTP id 00721157ae682-594e8207103so33361527b3.2
+        for <stable@vger.kernel.org>; Tue, 05 Sep 2023 17:01:42 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=google.com; s=20221208; t=1693958357; x=1694563157; darn=vger.kernel.org;
-        h=cc:to:from:subject:message-id:mime-version:date:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=SzJfFJBh10albvAF7xPhTVf2fYkrZEg2s13Q8JWYNz8=;
-        b=GZ4A9EzfHc9bXdApH3uxKjEiDhHjdwKkHS401uf1guoKZ3xJRXXfyFTmIUiGEijxDF
-         nPA52X5QDv5FAZM8H9MnNMcdzf4+FKfilt+5PJAkssvr8hX8BpxbskWLpYCrn1dFT1Tz
-         X8nUq66tctLBkKEueXtgP+HffHCEpl+VGUP54FOD7d/op3vIOzdhIGjJ3K/X/C73wt+c
-         pak4PsDlPoQq5wiE73BQKXJka6sFG3i/3txx5P5g6m09zM9L9nymHTyGQmEwUhRtVlFj
-         DCBGchnU7Ci+5kljUvOklzJxDMCYT2QNpr9IHyWuCgV6K6dBwIMYgvE4uEcpNZm0hW/+
-         am7g==
+        d=google.com; s=20221208; t=1693958501; x=1694563301; darn=vger.kernel.org;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:from:to:cc:subject:date:message-id:reply-to;
+        bh=NGU0Ldc06VPvpAP7m0sVwOLJkd4koSpzj+Ua2QIatXY=;
+        b=0e8GNSCt+QzjxjaNSRYvTMKflo6TIP4hHH41c09+DfpJb8AdfEuu6bgXVB5a3soNAU
+         QCU3J3o88zJoQB0kgg/GQI152V8e4WCdX31IgCZ+jCXDSpkcu9w72LSvAEhmoULZVK9Y
+         St4JwIlY5N8Z6UaGVohdYdWp4LMjB4ReGHNLjAi3pypRfDD3H3RRDJt71l3xFQglamLa
+         bOpvz/NHumebz6ucIvgl4zsoYbr+KbEgTxSfKA1aXgTZcGrb7LA9N6xcNpR7e8I6dLDX
+         LQPJRoM5u4wvnjCNhd9gdj4VFAhX+f2IOQwYPXf42bCai4TCyxuKVz1WvNJA92ua14/X
+         xFuw==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693958357; x=1694563157;
-        h=cc:to:from:subject:message-id:mime-version:date:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SzJfFJBh10albvAF7xPhTVf2fYkrZEg2s13Q8JWYNz8=;
-        b=hgvlyk9famVErZWNYhQ9nJaq7Mcn9Ix3f0QwYRv5kbchdcIYkSjZ7wLaS+t5RHrjNw
-         UweHJe/8z1RQEXiio8t+SLWoK8QTdCcBlZaJV1RDhISt5im2fOrwr80L2B6IIQilprcX
-         6i4u6hg5GGuMaUsYXzS1DB3/g/D3mV6lTCPMCUn3zSFgaWEbA9Ism1QrWWuddOrZY1aU
-         Xex8oXHmQz+VUR1c7DRoVe8/banCUbg9BwOGHh/41S+yOa21ALJCR0ytc9dX07sVRyRu
-         9IvIaEnISQ4jSD3Xs7FnLquJkQHeHuB4cJr8DhZzss3i1Wph+3wgDA4TDsD7QApLQV7s
-         F+3g==
-X-Gm-Message-State: AOJu0YzNiDPagxSOEogb1X1mRJNjvagJ/1IaOWw903Rkeo3+rYfUp+Sk
-        RifkbZdk0DnSoYIlJ+T6RCimycxVyn2zypo5i78MHe5OnAb6qpRAwuQ8Fc0dXDHnC3A818TEHid
-        Lff6Qm/eWTHodf5kI0nJr6ycxLuK7FMagtu+UhSdHtwILsSqBXbP0//M373Y=
-X-Google-Smtp-Source: AGHT+IFmTO68fo4qa2oEHn9gaVkksWliqtaXAItVBHwS/hsMjrc8PKxyC2MiduaC44YucvzOxteglOgM9A==
-X-Received: from jrife.c.googlers.com ([fda3:e722:ac3:cc00:2b:ff92:c0a8:9f])
- (user=jrife job=sendgmr) by 2002:a25:69cd:0:b0:d0b:d8cd:e661 with SMTP id
- e196-20020a2569cd000000b00d0bd8cde661mr331445ybc.12.1693958357578; Tue, 05
- Sep 2023 16:59:17 -0700 (PDT)
-Date:   Tue,  5 Sep 2023 18:58:46 -0500
+        d=1e100.net; s=20221208; t=1693958501; x=1694563301;
+        h=cc:to:from:subject:message-id:references:mime-version:in-reply-to
+         :date:x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=NGU0Ldc06VPvpAP7m0sVwOLJkd4koSpzj+Ua2QIatXY=;
+        b=UhA0fWsERLYQErlJy7aV2XGIK1aX/hgoNNPRR740TWXN5dDwvQCJ7KcUSk3meuHIgY
+         L6faU1fzANaL/Bu1fZzjZEGxApssBynWyh5XKWuyXgj05mmuzVP5mNyysxcjl+0mhpEp
+         8oItncqUTsjeJiQmVlVv6pYPas2OWoTYNAEr6+pVZ+QT00B/YcpreOZEWjTGmFUMPzzO
+         2hGeJYlyiTFvBxA/RaRYBQp8jGDeYfj9i4ITXwBILUQ+ypZeh709WjapjxyAdsrYUAvh
+         NSdv6l99m8Oumw7g9VlKGjmvCbxzMWfQfkCT9vxPNfF3SGL6lbeoKxnNFG6wFvG/F/jI
+         p0/g==
+X-Gm-Message-State: AOJu0YxdEOxvv93L2393wphv0ZAL5Sk8ZxVp4+JMR0o7ET9yX7nSH7dE
+        KjMDeW3cdiOyWr2sYLu/Ct6A7I0Q6/k=
+X-Google-Smtp-Source: AGHT+IHUC5/1q0YTww8LSntOwfWI8TlOXS94/btDD6oA2HWc9MrndIr3CmTZDzqtk8bL10J8OvfW1mho/5E=
+X-Received: from zagreus.c.googlers.com ([fda3:e722:ac3:cc00:7f:e700:c0a8:5c37])
+ (user=seanjc job=sendgmr) by 2002:a81:b70a:0:b0:583:a3c1:6b5a with SMTP id
+ v10-20020a81b70a000000b00583a3c16b5amr346458ywh.4.1693958501557; Tue, 05 Sep
+ 2023 17:01:41 -0700 (PDT)
+Date:   Tue, 5 Sep 2023 17:01:39 -0700
+In-Reply-To: <8c1fdd1cb24d042d02c4f2660c0690604448a2f4.1693593288.git.luizcap@amazon.com>
 Mime-Version: 1.0
-X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
-Message-ID: <20230905235846.142217-1-jrife@google.com>
-Subject: [PATCH] net: Avoid address overwrite in kernel_connect
-From:   Jordan Rife <jrife@google.com>
-To:     stable@vger.kernel.org
-Cc:     dborkman@kernel.org, Jordan Rife <jrife@google.com>
-Content-Type: text/plain; charset="UTF-8"
+References: <cover.1693593288.git.luizcap@amazon.com> <8c1fdd1cb24d042d02c4f2660c0690604448a2f4.1693593288.git.luizcap@amazon.com>
+Message-ID: <ZPfBY5rnDwEIDR90@google.com>
+Subject: Re: [PATH 6.1.y 1/2] KVM: x86/mmu: Use kstrtobool() instead of strtobool()
+From:   Sean Christopherson <seanjc@google.com>
+To:     Luiz Capitulino <luizcap@amazon.com>
+Cc:     stable@vger.kernel.org, christophe.jaillet@wanadoo.fr,
+        lcapitulino@gmail.com
+Content-Type: text/plain; charset="us-ascii"
 X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL autolearn=ham
-        autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-commit 0bdf399 upstream.
+On Fri, Sep 01, 2023, Luiz Capitulino wrote:
+> From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> 
+> Commit 11b36fe7d4500c8ef73677c087f302fd713101c2 upstream.
+> 
+> strtobool() is the same as kstrtobool().
+> However, the latter is more used within the kernel.
+> 
+> In order to remove strtobool() and slightly simplify kstrtox.h, switch to
+> the other function name.
+> 
+> While at it, include the corresponding header file (<linux/kstrtox.h>)
+> 
+> Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+> Link: https://lore.kernel.org/r/670882aa04dbdd171b46d3b20ffab87158454616.1673689135.git.christophe.jaillet@wanadoo.fr
+> Signed-off-by: Sean Christopherson <seanjc@google.com>
+> Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
+> ---
 
-This fix applies to all stable kernel versions 4.19+.
-
-BPF programs that run on connect can rewrite the connect address. For
-the connect system call this isn't a problem, because a copy of the address
-is made when it is moved into kernel space. However, kernel_connect
-simply passes through the address it is given, so the caller may observe
-its address value unexpectedly change.
-
-A practical example where this is problematic is where NFS is combined
-with a system such as Cilium which implements BPF-based load balancing.
-A common pattern in software-defined storage systems is to have an NFS
-mount that connects to a persistent virtual IP which in turn maps to an
-ephemeral server IP. This is usually done to achieve high availability:
-if your server goes down you can quickly spin up a replacement and remap
-the virtual IP to that endpoint. With BPF-based load balancing, mounts
-will forget the virtual IP address when the address rewrite occurs
-because a pointer to the only copy of that address is passed down the
-stack. Server failover then breaks, because clients have forgotten the
-virtual IP address. Reconnects fail and mounts remain broken. This patch
-was tested by setting up a scenario like this and ensuring that NFS
-reconnects worked after applying the patch.
-
-Signed-off-by: Jordan Rife <jrife@google.com>
----
- net/socket.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
-
-diff --git a/net/socket.c b/net/socket.c
-index ce70c01eb2f3e..db9d908198f21 100644
---- a/net/socket.c
-+++ b/net/socket.c
-@@ -3468,7 +3468,11 @@ EXPORT_SYMBOL(kernel_accept);
- int kernel_connect(struct socket *sock, struct sockaddr *addr, int addrlen,
- 		   int flags)
- {
--	return sock->ops->connect(sock, addr, addrlen, flags);
-+	struct sockaddr_storage address;
-+
-+	memcpy(&address, addr, addrlen);
-+
-+	return sock->ops->connect(sock, (struct sockaddr *)&address, addrlen, flags);
- }
- EXPORT_SYMBOL(kernel_connect);
- 
--- 
-2.42.0.283.g2d96d420d3-goog
-
+Acked-by: Sean Christopherson <seanjc@google.com>
