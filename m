@@ -2,89 +2,96 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20B60793C70
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 14:16:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21408793C7C
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 14:20:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232151AbjIFMQv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 08:16:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56874 "EHLO
+        id S233486AbjIFMUw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 08:20:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35672 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229844AbjIFMQv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 08:16:51 -0400
-X-Greylist: delayed 64 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Sep 2023 05:16:47 PDT
-Received: from bgl-iport-3.cisco.com (bgl-iport-3.cisco.com [72.163.197.27])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 758AEE6B
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 05:16:47 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=cisco.com; i=@cisco.com; l=953; q=dns/txt; s=iport;
-  t=1694002607; x=1695212207;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=gES3+T26u+tLqP9cQSQIuVsJrE4pu6xWCWGay5+Pns8=;
-  b=HEKoFRSptQLl6Ge50bchrbgvwXkE8nbwytS4rEx95I8nDJGgRvfkKY7D
-   pNfk9qDqs9Mrz6jqL5P1kubRyqhjwp5bbNshM545+hiwGmK4Rkh9H2tt8
-   zH5wbF71Tet6w1x0CwCZ40iC5BmJQdXjeSfPthak4ddfHIXxT8q5KON3b
-   0=;
-X-CSE-ConnectionGUID: ppqVUXfZQb+dAzQaTInr6w==
-X-CSE-MsgGUID: 8Dj8x8B8ThO3xaDuW4zREQ==
-X-IronPort-AV: E=Sophos;i="6.02,231,1688428800"; 
-   d="scan'208";a="17595644"
-Received: from vla196-nat.cisco.com (HELO bgl-core-2.cisco.com) ([72.163.197.24])
-  by bgl-iport-3.cisco.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 12:15:40 +0000
-Received: from bgl-ads-3413.cisco.com (bgl-ads-3413.cisco.com [173.39.60.50])
-        by bgl-core-2.cisco.com (8.15.2/8.15.2) with ESMTPS id 386CFepC020275
-        (version=TLSv1.2 cipher=DHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO);
-        Wed, 6 Sep 2023 12:15:40 GMT
-Received: by bgl-ads-3413.cisco.com (Postfix, from userid 1795984)
-        id 61F15CC129C; Wed,  6 Sep 2023 17:45:40 +0530 (IST)
-From:   Deepak Rathore <deeratho@cisco.com>
-To:     stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, deeratho@cisco.com
-Subject: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
-Date:   Wed,  6 Sep 2023 17:45:25 +0530
-Message-Id: <20230906121525.3946250-1-deeratho@cisco.com>
-X-Mailer: git-send-email 2.35.6
+        with ESMTP id S229639AbjIFMUv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 08:20:51 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 45C811717
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 05:19:59 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694002798;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=uZKt9lI2eKMSpsKvogAyk1sc6dUffx4XcKcIj6uI1IU=;
+        b=LgOkfpE6GPrHys6/7iDlGy2trBJTg46CXcyE02zLaPOCqlm78g1q3PYOaxF1lrvNyxNmzk
+        r1o1iNBWFZn8kTpoBBgwfJ+I4IYdka7RpMncYio4ArWLa6qMzxuyWQ8aNDUw88ZkH2VCmD
+        tje2i2bclv4Ov07E9TjkeygCu4uoqig=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-594-XCpOrwpZPFmzHbIxIzHNPA-1; Wed, 06 Sep 2023 08:19:55 -0400
+X-MC-Unique: XCpOrwpZPFmzHbIxIzHNPA-1
+Received: from smtp.corp.redhat.com (int-mx10.intmail.prod.int.rdu2.redhat.com [10.11.54.10])
+        (using TLSv1.2 with cipher AECDH-AES256-SHA (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 04C68800969;
+        Wed,  6 Sep 2023 12:19:55 +0000 (UTC)
+Received: from li-a71a4dcc-35d1-11b2-a85c-951838863c8d.ibm.com.com (unknown [10.72.112.106])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id EEEA3404119;
+        Wed,  6 Sep 2023 12:19:51 +0000 (UTC)
+From:   xiubli@redhat.com
+To:     idryomov@gmail.com, ceph-devel@vger.kernel.org
+Cc:     jlayton@kernel.org, vshankar@redhat.com, mchangir@redhat.com,
+        Xiubo Li <xiubli@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH] ceph: remove the incorrect caps check in _file_size()
+Date:   Wed,  6 Sep 2023 20:17:47 +0800
+Message-ID: <20230906121747.618289-1-xiubli@redhat.com>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Outbound-SMTP-Client: 173.39.60.50, bgl-ads-3413.cisco.com
-X-Outbound-Node: bgl-core-2.cisco.com
-X-Spam-Status: No, score=-9.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIMWL_WL_MED,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NONE,USER_IN_DEF_DKIM_WL
-        autolearn=ham autolearn_force=no version=3.4.6
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.10
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zheng Wang <zyytlz.wz@163.com>
+From: Xiubo Li <xiubli@redhat.com>
 
-[ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
+When truncating the inode the MDS will acquire the xlock for the
+ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
+But when the client just releases and flushes the 'Fw' caps to MDS,
+for exmaple, and once the MDS receives the caps flushing msg it
+just thought the revocation has finished. Then the MDS will continue
+truncating the inode and then issued the truncate notification to
+all the clients. While just before the clients receives the cap
+flushing ack they receive the truncation notification, the clients
+will detecte that the 'issued | dirty' is still holding the 'Fw'
+caps.
 
-In btsdio_probe, the data->work is bound with btsdio_work. It will be
-started in btsdio_send_frame.
+Cc: stable@vger.kernel.org
+URL: https://tracker.ceph.com/issues/56693
+Signed-off-by: Xiubo Li <xiubli@redhat.com>
+---
+ fs/ceph/inode.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-If the btsdio_remove runs with a unfinished work, there may be a race
-condition that hdev is freed but used in btsdio_work. Fix it by
-canceling the work before do cleanup in btsdio_remove.
-
-Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Deepak Rathore <deeratho@cisco.com>
-
-diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
-index 795be33f2892..f19d31ee37ea 100644
---- a/drivers/bluetooth/btsdio.c
-+++ b/drivers/bluetooth/btsdio.c
-@@ -357,6 +357,7 @@ static void btsdio_remove(struct sdio_func *func)
- 	if (!data)
- 		return;
+diff --git a/fs/ceph/inode.c b/fs/ceph/inode.c
+index ea6f966dacd5..8017b9e5864f 100644
+--- a/fs/ceph/inode.c
++++ b/fs/ceph/inode.c
+@@ -769,9 +769,7 @@ int ceph_fill_file_size(struct inode *inode, int issued,
+ 			ci->i_truncate_seq = truncate_seq;
  
-+	cancel_work_sync(&data->work);
- 	hdev = data->hdev;
- 
- 	sdio_set_drvdata(func, NULL);
+ 			/* the MDS should have revoked these caps */
+-			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_EXCL |
+-					       CEPH_CAP_FILE_RD |
+-					       CEPH_CAP_FILE_WR |
++			WARN_ON_ONCE(issued & (CEPH_CAP_FILE_RD |
+ 					       CEPH_CAP_FILE_LAZYIO));
+ 			/*
+ 			 * If we hold relevant caps, or in the case where we're
 -- 
-2.35.6
+2.41.0
 
