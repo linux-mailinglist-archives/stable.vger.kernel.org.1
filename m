@@ -2,136 +2,224 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40A837945F2
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 00:05:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 13B4C794621
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 00:22:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237234AbjIFWFe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 18:05:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52068 "EHLO
+        id S245035AbjIFWWF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 18:22:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233043AbjIFWFd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 18:05:33 -0400
-Received: from galois.linutronix.de (Galois.linutronix.de [IPv6:2a0a:51c0:0:12e:550::1])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C73199B;
-        Wed,  6 Sep 2023 15:05:29 -0700 (PDT)
-Date:   Wed, 06 Sep 2023 22:05:27 -0000
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020; t=1694037928;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=m7/fUUpYqFk4M/8PGlLLkdCItc/Hb8xKEbbgT9CcLlc=;
-        b=omoJepwEIOPqXQs4qZ+rqM/grNNdfUOFNrpRQwOZPU6cEdXMVwwd+qwBM+7afMqyfgD2yY
-        HbxLioeVKmBNFYATsFKf1qucfTuuCm4nCxKzvPS59tarfAeSDJCBQlcXksYQDNoRsdELA8
-        HlY3A1G+8AOUmAf7I83pvEPQJmzx7e0pgDNVVM+4aW56FTHkIIobD9eqlUBCHJVgcFhIlM
-        VCtBqbaI+tQmJlxqtoDWF9bu8gisjPmTg7ahrHCNy7vUIsYKlAUPQil18B/n3lnMA2ytK0
-        L+UpJd5BoZvHywuV7YU51Po9IOtg4qqZTchoRsFRUlc7nZ9BTCF1N3eITEOY2A==
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=linutronix.de;
-        s=2020e; t=1694037928;
-        h=from:from:sender:sender:reply-to:reply-to:subject:subject:date:date:
-         message-id:message-id:to:to:cc:cc:mime-version:mime-version:
-         content-type:content-type:  content-transfer-encoding:content-transfer-encoding;
-        bh=m7/fUUpYqFk4M/8PGlLLkdCItc/Hb8xKEbbgT9CcLlc=;
-        b=bzrWn7qLnqw+w/JgdtHnpHrsAqDgvKNbEsC4Db/zrRetNLN4PsvypNImWfxqwDaq4J6V9Z
-        S/7qh6bg5wkufHAA==
-From:   "tip-bot2 for Jack Wang" <tip-bot2@linutronix.de>
-Sender: tip-bot2@linutronix.de
-Reply-to: linux-kernel@vger.kernel.org
-To:     linux-tip-commits@vger.kernel.org
-Subject: [tip: x86/urgent] x86/sgx: Break up long non-preemptible delays in
- sgx_vepc_release()
-Cc:     Yu Zhang <yu.zhang@ionos.com>, Jack Wang <jinpu.wang@ionos.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kai Huang <kai.huang@intel.com>,
-        Haitao Huang <haitao.huang@linux.intel.com>,
-        stable@vger.kernel.org, x86@kernel.org,
-        linux-kernel@vger.kernel.org
-MIME-Version: 1.0
-Message-ID: <169403792746.27769.2304744998713665329.tip-bot2@tip-bot2>
-Robot-ID: <tip-bot2@linutronix.de>
-Robot-Unsubscribe: Contact <mailto:tglx@linutronix.de> to get blacklisted from these emails
+        with ESMTP id S238543AbjIFWWE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 18:22:04 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DA3DA19B5
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 15:22:00 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c0d5b16aacso2748995ad.1
+        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 15:22:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694038920; x=1694643720; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=RlkET+58XAf13lkKUo7LHsEBne9gohRGpznvn40uOJs=;
+        b=iFipQvFyLqBySn3eXfHZyvuMjQAgwBaWULdMeoXYdOceeqcnY2omFS5g8ecw2SEEju
+         IX5xyV2cokrXkPhu6DRcukwxKrM5BP0JZ4rtBR81Q7ksbUdgK4442m06qh1WyXoexcTa
+         RyziEiuRqeZPT7gKtpoyea3gJHGOF4rRUdiGPf5Ysp0exw6BtAoNyTLPf5QjiA5Ej0lU
+         oKWnpSWyNkOeEJE3x8qj8jViSVbkeRWiSuOP4oc3ycsL+M7xYbwiPLhxrtNwDsKEmpkr
+         AldIb5HoX7aja2yJbWfzJdokPYE153B/Gje10Zpj8qxdPzzn4607FVlUVNqp7YTJZ0S7
+         gd5g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694038920; x=1694643720;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RlkET+58XAf13lkKUo7LHsEBne9gohRGpznvn40uOJs=;
+        b=NbORD8ulHtORhvJZAJ3Nnylhasl+A8tM1FnYdgNKiREOQqYAx7XZ0abt79Rs74H36H
+         vSE8N7mcZ6319WSuoP02/Fv3VfE2Mypx36a7R4g8bUmNU+YoGzvkB+qz3E7+xOmIiZd6
+         uoYwDJGy/zJiJznS0ymsLXpQ3lOavvrYOSVl5koXih3htULETx3LAykULnYCEPUFxXsk
+         lCyVjhpYKC6Z/hUrE3vfGQHP93M3dQO4y9RV/L5EXxYGtOb8vlYCHhw+cE4xbqYWgVLk
+         WgMRwMf1sCaT8UNb/9cKo82rlNwSQ+SZCxUAnstCYKp2Dt/nQ+kOgpD+6+rg3HOAvsty
+         roYA==
+X-Gm-Message-State: AOJu0YwFBD2QO50kzvo0dnY1/VEZ2hRpTufh7RAp46itb67f0tWbUdDi
+        fYL6bkK/PZVmfX6iDMZSPcKWBBSbVdLdmXrFmnl2Cw==
+X-Google-Smtp-Source: AGHT+IEddWZ0Jgoc1ESxtM7wroEbUYxZPZ+O5+ys8IjJ0l0ePrI79w57AkOhTkkPeWySbCKXnR5W4Q==
+X-Received: by 2002:a17:902:8c92:b0:1bf:6ad7:2286 with SMTP id t18-20020a1709028c9200b001bf6ad72286mr13918760plo.43.1694038919844;
+        Wed, 06 Sep 2023 15:21:59 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id e18-20020a17090301d200b001bd41b70b60sm11563266plh.45.2023.09.06.15.21.58
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Sep 2023 15:21:59 -0700 (PDT)
+Message-ID: <64f8fb87.170a0220.f707.9ba6@mx.google.com>
+Date:   Wed, 06 Sep 2023 15:21:59 -0700 (PDT)
 Content-Type: text/plain; charset="utf-8"
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+MIME-Version: 1.0
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-6.1.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v6.1.52
+Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
+ 1 warning (v6.1.52)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The following commit has been merged into the x86/urgent branch of tip:
+stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
+1.52)
 
-Commit-ID:     3d7d72a34e05b23e21bafc8bfb861e73c86b31f3
-Gitweb:        https://git.kernel.org/tip/3d7d72a34e05b23e21bafc8bfb861e73c86b31f3
-Author:        Jack Wang <jinpu.wang@ionos.com>
-AuthorDate:    Wed, 06 Sep 2023 15:17:12 +02:00
-Committer:     Ingo Molnar <mingo@kernel.org>
-CommitterDate: Wed, 06 Sep 2023 23:55:09 +02:00
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
+/kernel/v6.1.52/
 
-x86/sgx: Break up long non-preemptible delays in sgx_vepc_release()
+Tree: stable-rc
+Branch: linux-6.1.y
+Git Describe: v6.1.52
+Git Commit: 59b13c2b647e464dd85622c89d7f16c15d681e96
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-On large enclaves we hit the softlockup warning with following call trace:
+Warnings Detected:
 
-	xa_erase()
-	sgx_vepc_release()
-	__fput()
-	task_work_run()
-	do_exit()
+arc:
 
-The latency issue is similar to the one fixed in:
+arm64:
 
-  8795359e35bc ("x86/sgx: Silence softlockup detection when releasing large enclaves")
+arm:
 
-The test system has 64GB of enclave memory, and all is assigned to a single VM.
-Release of 'vepc' takes a longer time and causes long latencies, which triggers
-the softlockup warning.
+i386:
 
-Add cond_resched() to give other tasks a chance to run and reduce
-latencies, which also avoids the softlockup detector.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-[ mingo: Rewrote the changelog. ]
+riscv:
 
-Fixes: 540745ddbc70 ("x86/sgx: Introduce virtual EPC for use by KVM guests")
-Reported-by: Yu Zhang <yu.zhang@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Yu Zhang <yu.zhang@ionos.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Acked-by: Haitao Huang <haitao.huang@linux.intel.com>
-Cc: stable@vger.kernel.org
+x86_64:
+
+
+Warnings summary:
+
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+0 warnings, 0 section mismatches
+
 ---
- arch/x86/kernel/cpu/sgx/virt.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/arch/x86/kernel/cpu/sgx/virt.c b/arch/x86/kernel/cpu/sgx/virt.c
-index c3e37ea..7aaa365 100644
---- a/arch/x86/kernel/cpu/sgx/virt.c
-+++ b/arch/x86/kernel/cpu/sgx/virt.c
-@@ -204,6 +204,7 @@ static int sgx_vepc_release(struct inode *inode, struct file *file)
- 			continue;
- 
- 		xa_erase(&vepc->page_array, index);
-+		cond_resched();
- 	}
- 
- 	/*
-@@ -222,6 +223,7 @@ static int sgx_vepc_release(struct inode *inode, struct file *file)
- 			list_add_tail(&epc_page->list, &secs_pages);
- 
- 		xa_erase(&vepc->page_array, index);
-+		cond_resched();
- 	}
- 
- 	/*
-@@ -243,6 +245,7 @@ static int sgx_vepc_release(struct inode *inode, struct file *file)
- 
- 		if (sgx_vepc_free_page(epc_page))
- 			list_add_tail(&epc_page->list, &secs_pages);
-+		cond_resched();
- 	}
- 
- 	if (!list_empty(&secs_pages))
+For more info write to <info@kernelci.org>
