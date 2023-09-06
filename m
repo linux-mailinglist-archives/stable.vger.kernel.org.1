@@ -2,129 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D621F794392
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 21:08:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E2E279439F
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 21:14:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243393AbjIFTIp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 15:08:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39926 "EHLO
+        id S243953AbjIFTOL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 15:14:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40426 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230383AbjIFTIo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 15:08:44 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4143E59;
-        Wed,  6 Sep 2023 12:08:39 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694027320; x=1725563320;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=WKPmR5sUcVInlzOsBWGN0yyVHkQ64GK5zzE2PBLyes0=;
-  b=Zeqm5uXvun+N3h/oJeKG8By0AO9DwDSPPVCwaBz1NgtEvbOs/R2srC8O
-   OlIGIXN/CX2nhficS72+8Lktze09Qg1mgJDyTt+7w9FQJqeJFqwhYYtiE
-   BhZYo0gF1EGZEXb6DI0izhFRrmq3ZjoMeuUnsL7ddMHAs8lhZNA5LYzCD
-   rHlKOwqvVxYoMhrAraxC571c8qUNCbJK3ps6POxfQw1Oevr6dXUsuwv9Z
-   TMnh1f2io7IdOeRvqNstkBiO8ExOJciehXI89Ncqj7zaL/E1FdyfVWwAd
-   +OkC4FsZfEYfNKn5CZ0X32+d3mNroQkXRB5hoJzJFaP3+poSCE6UzKTxg
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="374551075"
-X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="374551075"
-Received: from orsmga007.jf.intel.com ([10.7.209.58])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 12:08:29 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="735181564"
-X-IronPort-AV: E=Sophos;i="6.02,232,1688454000"; 
-   d="scan'208";a="735181564"
-Received: from spandruv-desk.jf.intel.com ([10.54.75.14])
-  by orsmga007.jf.intel.com with ESMTP; 06 Sep 2023 12:08:27 -0700
-From:   Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-To:     rafael@kernel.org, rui.zhang@intel.com
-Cc:     linux-pm@vger.kernel.org, sumeet.r.pawnikar@intel.com,
-        linux-kernel@vger.kernel.org,
-        Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>,
-        stable@vger.kernel.org
-Subject: [PATCH v2] powercap: intel_rapl: Fix invalid setting of Power Limit 4
-Date:   Wed,  6 Sep 2023 12:08:16 -0700
-Message-Id: <20230906190816.2966001-1-srinivas.pandruvada@linux.intel.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S242790AbjIFTOK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 15:14:10 -0400
+Received: from mail-pj1-x102a.google.com (mail-pj1-x102a.google.com [IPv6:2607:f8b0:4864:20::102a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6500C185;
+        Wed,  6 Sep 2023 12:14:06 -0700 (PDT)
+Received: by mail-pj1-x102a.google.com with SMTP id 98e67ed59e1d1-26f57f02442so140971a91.0;
+        Wed, 06 Sep 2023 12:14:06 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694027645; x=1694632445; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=RD1cBDwzQS7RHR7A8DsRWlW49ZPHUgxJFs6IoxvXlZM=;
+        b=TzHwJq/BpbfDN4qmB+VXqRPbSG3ZEMs97aTWDSAFJj4K+BUOYOkh16VQPuU0xm0AjX
+         6QJbnxKYRF13892E4Ly1eqnrrAz1YlLufDTEtLnOmYwB3CrXR1lnAx4+uN4FrAPk9q1A
+         GK2Fa0P1YsudfEJ7NUv7lP+29k1hmKPO8x4pqC7izM84EiNJi9JZqoIJIblbvjeEmOT2
+         L7WQRsAX2WHlqY3OSJKyWeHjiTu2ZJp9zNUFKqbSPsv/44CmA6Vdo6CTxZSlmqoo+4Wn
+         Ee0pbwS4L8C0u5L9b8JNMc5nxQwj0DhoiIp+893tiV8uS+51tgtghRO4RuOOo9dH1zXq
+         IXqw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694027645; x=1694632445;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=RD1cBDwzQS7RHR7A8DsRWlW49ZPHUgxJFs6IoxvXlZM=;
+        b=QOHRUo/EVogNKM2uuAmxZwSSzLvWQR1Pf0SotHB5qA2oTW3en0y5neFkpqNkak68ay
+         dcFJ/jRS+IbgJx29vUqk0V5pDkc/OuMqZdfrtQnkhzpFLIwmN8OzTcV2I1eZDWcqsS0q
+         30GF775HUsYbFQcSCBwNhx77xtZFr2h3g4zJN8CZ2a/oE/qfPBV02F6paeondR3zxFy3
+         QcN+AvD7J7qMlb/FxGOnn4aFRxSo6+gY/74D/TOe0DV8bJopmKUVJPbTNTBTooNl+GBI
+         d5E2LQudHu6AGG+6Pw4QIQAeZp4wb9vNe7RGQnVssh7+aychjuhLq738UEvyb6gjRW2J
+         4rFQ==
+X-Gm-Message-State: AOJu0YylcrS/2Nn8MyG8Oht7dOUoq/L21s03C6sfJnnbDVvgtWx3dEvd
+        0q8aktowf1GVCtyJpG80cex2ciJZ78EwCqQufV2WehVM
+X-Google-Smtp-Source: AGHT+IG+XGUeEHNmXhMlyzE5FZt9081fD0ungmbnMpKKY7l1v+6U0cj0QS2dgx/SqNJPkjEEBIOvf9QmRKdbh6Af1XU=
+X-Received: by 2002:a17:90b:3c6:b0:268:38f5:86ac with SMTP id
+ go6-20020a17090b03c600b0026838f586acmr13283165pjb.24.1694027645546; Wed, 06
+ Sep 2023 12:14:05 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230905171451.4A04DC433C7@smtp.kernel.org>
+In-Reply-To: <20230905171451.4A04DC433C7@smtp.kernel.org>
+From:   Lorenzo Stoakes <lstoakes@gmail.com>
+Date:   Wed, 6 Sep 2023 20:13:54 +0100
+Message-ID: <CAA5enKZDKA9=gHJL1J=UVGFiB_LLBuR_4XHTasHauaFjeORHCQ@mail.gmail.com>
+Subject: Re: [merged mm-hotfixes-stable] mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
+ removed from -mm tree
+To:     linux-kernel@vger.kernel.org
+Cc:     mm-commits@vger.kernel.org, willy@infradead.org, urezki@gmail.com,
+        thunder.leizhen@huaweicloud.com, stable@vger.kernel.org,
+        qiang.zhang1211@gmail.com, paulmck@kernel.org,
+        joel@joelfernandes.org, akpm@linux-foundation.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-System runs at minimum performance, once powercap RAPL package domain
-enabled flag is changed from 1 to 0 to 1. 
+On Wed, 6 Sept 2023 at 16:09, Andrew Morton <akpm@linux-foundation.org> wrote:
+>
+>
+> The quilt patch titled
+>      Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+> has been removed from the -mm tree.  Its filename was
+>      mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
+>
+> This patch was dropped because it was merged into the mm-hotfixes-stable branch
+> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
 
-Setting RAPL package domain enabled flag to 0, results in setting of
-power limit 4 (PL4) MSR 0x601 to 0. This implies disabling PL4 limit.
-The PL4 limit controls the peak power. So setting 0, results in some
-undesirable performance, which depends on hardware implementation.
+Hmm, I had outstanding review on this :/ I guess I will have to send a
+follow up patch to address those concerns...
 
-Even worse, when the enabled flag is set to 1 again. This will set PL4
-MSR value to 0x01, which means reduce peak power to 0.125W. This will
-force system to run at the lowest possible performance on every PL4
-supported system.
 
-Setting enabled flag should only affect the "enable" bit, not other
-bits. Here it is changing power limit.
+>
+> ------------------------------------------------------
+> From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+> Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+> Date: Mon, 4 Sep 2023 18:08:04 +0000
+>
+> It is unsafe to dump vmalloc area information when trying to do so from
+> some contexts.  Add a safer trylock version of the same function to do a
+> best-effort VMA finding and use it from vmalloc_dump_obj().
+>
+> [applied test robot feedback on unused function fix.]
+> [applied Uladzislau feedback on locking.]
+> Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernandes.org
+> Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+> Cc: Paul E. McKenney <paulmck@kernel.org>
+> Cc: Zqiang <qiang.zhang1211@gmail.com>
+> Cc: <stable@vger.kernel.org>
+> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+> ---
+>
+>  mm/vmalloc.c |   26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
+>
+> --- a/mm/vmalloc.c~mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug
+> +++ a/mm/vmalloc.c
+> @@ -4278,14 +4278,32 @@ void pcpu_free_vm_areas(struct vm_struct
+>  #ifdef CONFIG_PRINTK
+>  bool vmalloc_dump_obj(void *object)
+>  {
+> -       struct vm_struct *vm;
+>         void *objp = (void *)PAGE_ALIGN((unsigned long)object);
+> +       const void *caller;
+> +       struct vm_struct *vm;
+> +       struct vmap_area *va;
+> +       unsigned long addr;
+> +       unsigned int nr_pages;
+> +
+> +       if (!spin_trylock(&vmap_area_lock))
+> +               return false;
+> +       va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
+> +       if (!va) {
+> +               spin_unlock(&vmap_area_lock);
+> +               return false;
+> +       }
+>
+> -       vm = find_vm_area(objp);
+> -       if (!vm)
+> +       vm = va->vm;
+> +       if (!vm) {
+> +               spin_unlock(&vmap_area_lock);
+>                 return false;
+> +       }
+> +       addr = (unsigned long)vm->addr;
+> +       caller = vm->caller;
+> +       nr_pages = vm->nr_pages;
+> +       spin_unlock(&vmap_area_lock);
+>         pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+> -               vm->nr_pages, (unsigned long)vm->addr, vm->caller);
+> +               nr_pages, addr, caller);
+>         return true;
+>  }
+>  #endif
+> _
+>
+> Patches currently in -mm which might be from joel@joelfernandes.org are
+>
+>
 
-This is caused by a change which assumes that there is an enable bit in
-the PL4 MSR like other power limits. Although PL4 enable/disable bit is
-present with TPMI RAPL interface, it is not present with the MSR
-interface.
 
-There is a rapl_primitive_info defined for non existent PL4 enable bit
-and then it is used with the commit 9050a9cd5e4c ("powercap: intel_rapl:
-Cleanup Power Limits support") to enable PL4. This is wrong, hence remove
-this rapl primitive for PL4. Also in the function
-rapl_detect_powerlimit(), PL_ENABLE is used to check for the presence of
-power limits. Replace PL_ENABLE with PL_LIMIT, as PL_LIMIT must be
-present. Without this change, PL4 controls will not be available in the
-sysfs once rapl primitive for PL4 is removed.
-
-Fixes: 9050a9cd5e4c ("powercap: intel_rapl: Cleanup Power Limits support")
-Suggested-by: Zhang Rui <rui.zhang@intel.com>
-Signed-off-by: Srinivas Pandruvada <srinivas.pandruvada@linux.intel.com>
-Tested-by: Sumeet Pawnikar <sumeet.r.pawnikar@intel.com>
-Cc: stable@vger.kernel.org # v6.5+
----
-v2
-- Remove RAPL primitive for PL4 instead as suggedted by Rui
-- Replace PL_ENABLE with PL_LIMIT for domain detect
-- Update change log and header
-
- drivers/powercap/intel_rapl_common.c | 4 +---
- 1 file changed, 1 insertion(+), 3 deletions(-)
-
-diff --git a/drivers/powercap/intel_rapl_common.c b/drivers/powercap/intel_rapl_common.c
-index 5c2e6d5eea2a..40a2cc649c79 100644
---- a/drivers/powercap/intel_rapl_common.c
-+++ b/drivers/powercap/intel_rapl_common.c
-@@ -658,8 +658,6 @@ static struct rapl_primitive_info rpi_msr[NR_RAPL_PRIMITIVES] = {
- 			    RAPL_DOMAIN_REG_LIMIT, ARBITRARY_UNIT, 0),
- 	[PL2_CLAMP] = PRIMITIVE_INFO_INIT(PL2_CLAMP, POWER_LIMIT2_CLAMP, 48,
- 			    RAPL_DOMAIN_REG_LIMIT, ARBITRARY_UNIT, 0),
--	[PL4_ENABLE] = PRIMITIVE_INFO_INIT(PL4_ENABLE, POWER_LIMIT4_MASK, 0,
--				RAPL_DOMAIN_REG_PL4, ARBITRARY_UNIT, 0),
- 	[TIME_WINDOW1] = PRIMITIVE_INFO_INIT(TIME_WINDOW1, TIME_WINDOW1_MASK, 17,
- 			    RAPL_DOMAIN_REG_LIMIT, TIME_UNIT, 0),
- 	[TIME_WINDOW2] = PRIMITIVE_INFO_INIT(TIME_WINDOW2, TIME_WINDOW2_MASK, 49,
-@@ -1458,7 +1456,7 @@ static void rapl_detect_powerlimit(struct rapl_domain *rd)
- 			}
- 		}
- 
--		if (rapl_read_pl_data(rd, i, PL_ENABLE, false, &val64))
-+		if (rapl_read_pl_data(rd, i, PL_LIMIT, false, &val64))
- 			rd->rpl[i].name = NULL;
- 	}
- }
--- 
-2.34.1
-
+--
+Lorenzo Stoakes
+https://ljs.io
