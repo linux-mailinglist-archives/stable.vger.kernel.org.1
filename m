@@ -2,46 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 36F477942AE
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 20:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E927F7942FB
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 20:21:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234620AbjIFSDw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 14:03:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44302 "EHLO
+        id S240188AbjIFSVn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 14:21:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45778 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240648AbjIFSDv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 14:03:51 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4D3CE6
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 11:03:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2426DC433C8;
-        Wed,  6 Sep 2023 18:03:44 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694023426;
-        bh=BksDX/EqGMjehidLlpV5WbFqi6cPrWGy+7MlxssF/cY=;
-        h=From:To:Cc:Subject:Date:From;
-        b=suqa+9Kz5W9c6lCVLuEgxe0TuOTmO0gxzT/Guh7ivTEv8Zfo0zcjntFEsJ4anTdiL
-         MdXw4souNn8lTxCwKu5mpS6Kgx9u2CLQpcogj8acmm4dmSQhGWauLQR6fHC589qS6d
-         B5ggJM0Sv7B84gz/nNEI/wCm/SP5Sr4R3dZaxMPxg35iPxknD/sThjRB4I+V0zV+O+
-         M6ayp5wGJEgEpSDjIsIcUrN0p9HmzUs6cYN2yN5DPNkx6LdCnn8dyeX5px4R8brsfi
-         oiV/hPebjVSaDMBnf9ryDh9d7ISruxNMc8MQfdjJ/9aNgETZmWl2CFF6SKrbn1KioV
-         ETEWQ7P1ghoJw==
-From:   Will Deacon <will@kernel.org>
-To:     stable@vger.kernel.org
-Cc:     gregkh@linuxfoundation.org, linux-arm-kernel@lists.infradead.org,
-        Joey Gouly <joey.gouly@arm.com>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Mark Rutland <mark.rutland@arm.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Will Deacon <will@kernel.org>, John Hsu <John.Hsu@mediatek.com>
-Subject: [STABLE PATCH 5.15.y] arm64: lib: Import latest version of Arm Optimized Routines' strncmp
-Date:   Wed,  6 Sep 2023 19:03:36 +0100
-Message-Id: <20230906180336.4973-1-will@kernel.org>
-X-Mailer: git-send-email 2.20.1
+        with ESMTP id S237740AbjIFSVn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 14:21:43 -0400
+Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CADEB10CA;
+        Wed,  6 Sep 2023 11:21:36 -0700 (PDT)
+Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-76dc7b0da9fso8719385a.1;
+        Wed, 06 Sep 2023 11:21:36 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694024496; x=1694629296; darn=vger.kernel.org;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:from:to:cc:subject:date:message-id:reply-to;
+        bh=zklSHdsI2UWJPNn1ecr8Eo6vQMjVOJa/0zR4bl3TAqc=;
+        b=I4AfqcsyHgvp/9XkeB99SsAy4veuUaDrizA78uwUUwxNCDBpVp5AHH7RK/BOX9RYLu
+         Cb2FF0FDDWsk+MZvegfm8+9B2UxIOJXLQ4zQLurZLTzwFag3a9gm+abt+xZR3C+xDrOW
+         bn9eGcvlRLbPEJP3mMPabyiwOn3biErJrazNfQcTQAUnj82HFGfIr+fdK5yv2Y+YpSn6
+         jjJcgnnRQPMrML2CEUvLmXAyEuniOsgrMZd/xKzSkLr2oKRaK4FIUul87U4Ysr9BoIje
+         MfbE/ixwHrOW8WKjICw6I+g9RhQjddCxB2yzsOOKYyQS3ksSu9XS10/kcNfTsiDQt8MI
+         TeSw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694024496; x=1694629296;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=zklSHdsI2UWJPNn1ecr8Eo6vQMjVOJa/0zR4bl3TAqc=;
+        b=J9hm5rqRfA3Zhpog8o4346ky9DdNaZVAvxqBmraS/3MtpdUEIJEkMdelFBU+jIgJY1
+         77RhZBmrZu1IZwuutq4bpQ3oQqMuYrgwpGGDcJ8Z1aZg0QrYGejdfmV7qXv/6d7hiVlI
+         U5hXdq2njhWgyN8hiYXfr8m/4cxtV+vECZCA7aRxnshx/gI4++HyWBJbIvt56RKsfQ3P
+         R7mBomqDA0HIf8+Jnasg+anlKs7EEoLkznHcWpo/xK2E+PRB39N2YLtqkkxrOg9HUKU9
+         j5cX79mif/GytHzxkCifkfvepu+vuwY8XRwYYQP8u8R239FfyRU55W3YwZKlUfwUHt1v
+         /Oxg==
+X-Gm-Message-State: AOJu0YyKaWkTkPVWdfldVWJEKUd/ut6aol2CVVCILltwXU+ARbffwZ6c
+        fE5BIL+cfTxZkH2YYmgWVb8=
+X-Google-Smtp-Source: AGHT+IGHLnABm96FdDRUcT50m1IX58j6HqwLhDE/W1lxdQtnCSL26QzqbxI+re/ZCl4UzGIAe5nrRQ==
+X-Received: by 2002:a05:620a:248a:b0:76e:f5c5:1bac with SMTP id i10-20020a05620a248a00b0076ef5c51bacmr19230155qkn.48.1694024495823;
+        Wed, 06 Sep 2023 11:21:35 -0700 (PDT)
+Received: from pm2-ws13.praxislan02.com (207-172-141-204.s8906.c3-0.slvr-cbr1.lnh-slvr.md.cable.rcncustomer.com. [207.172.141.204])
+        by smtp.gmail.com with ESMTPSA id f9-20020a05620a15a900b0076ee82f7726sm5090024qkk.132.2023.09.06.11.21.34
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Wed, 06 Sep 2023 11:21:34 -0700 (PDT)
+From:   Jason Andryuk <jandryuk@gmail.com>
+To:     Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     Roger Pau Monne <roger.pau@citrix.com>, stable@vger.kernel.org,
+        Jason Andryuk <jandryuk@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running as Xen dom0
+Date:   Wed,  6 Sep 2023 14:21:23 -0400
+Message-ID: <20230906182125.48642-1-jandryuk@gmail.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,396 +77,122 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Joey Gouly <joey.gouly@arm.com>
+From: Roger Pau Monne <roger.pau@citrix.com>
 
-commit 387d828adffcf1eb949f3141079c479793c59aac upstream.
+The Processor _PDC buffer bits notify ACPI of the OS capabilities, and
+so ACPI can adjust the return of other Processor methods taking the OS
+capabilities into account.
 
-Import the latest version of the Arm Optimized Routines strncmp function based
-on the upstream code of string/aarch64/strncmp.S at commit 189dfefe37d5 from:
-  https://github.com/ARM-software/optimized-routines
+When Linux is running as a Xen dom0, it's the hypervisor the entity
+in charge of processor power management, and hence Xen needs to make
+sure the capabilities reported in the _PDC buffer match the
+capabilities of the driver in Xen.
 
-This latest version includes MTE support.
+Introduce a small helper to sanitize the buffer when running as Xen
+dom0.
 
-Note that for simplicity Arm have chosen to contribute this code to Linux under
-GPLv2 rather than the original MIT OR Apache-2.0 WITH LLVM-exception license.
-Arm is the sole copyright holder for this code.
+When Xen supports HWP, this serves as the equivalent of commit
+a21211672c9a ("ACPI / processor: Request native thermal interrupt
+handling via _OSC") to avoid SMM crashes.  Xen will set bit 12 in the
+_PDC bits and the _PDC call will apply it.
 
-Signed-off-by: Joey Gouly <joey.gouly@arm.com>
-Cc: Robin Murphy <robin.murphy@arm.com>
-Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Catalin Marinas <catalin.marinas@arm.com>
-Cc: Will Deacon <will@kernel.org>
-Acked-by: Mark Rutland <mark.rutland@arm.com>
-Acked-by: Catalin Marinas <catalin.marinas@arm.com>
-Link: https://lore.kernel.org/r/20220301101435.19327-3-joey.gouly@arm.com
-(cherry picked from commit 387d828adffcf1eb949f3141079c479793c59aac)
-Cc: <stable@vger.kernel.org> # 5.15.y only
-Fixes: 020b199bc70d ("arm64: Import latest version of Cortex Strings' strncmp")
-Reported-by: John Hsu <John.Hsu@mediatek.com>
-Link: https://lore.kernel.org/all/e9f30f7d5b7d72a3521da31ab2002b49a26f542e.camel@mediatek.com/
-Signed-off-by: Will Deacon <will@kernel.org>
+[ jandryuk: Mention Xen HWP's need.  Move local variables ]
+Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
 ---
+v2:
+Move local variables in acpi_processor_eval_pdc() to reuse in both conditions.
+---
+ arch/x86/include/asm/xen/hypervisor.h |  6 ++++++
+ arch/x86/xen/enlighten.c              | 19 +++++++++++++++++++
+ drivers/acpi/processor_pdc.c          | 22 ++++++++++++++++------
+ 3 files changed, 41 insertions(+), 6 deletions(-)
 
-This is a clean cherry-pick of the latest MTE-safe strncmp()
-implementation for arm64 which landed in v5.18 and somewhat accidentally
-fixed an out-of-bounds read introduced in v5.14.
-An alternative would be to disable the optimised code altogether, but
-given that this is self-contained and applies cleanly, I'd favour being
-consistent with more recent kernels.
-
- arch/arm64/lib/strncmp.S | 244 +++++++++++++++++++++++----------------
- 1 file changed, 146 insertions(+), 98 deletions(-)
-
-diff --git a/arch/arm64/lib/strncmp.S b/arch/arm64/lib/strncmp.S
-index e42bcfcd37e6..a4884b97e9a8 100644
---- a/arch/arm64/lib/strncmp.S
-+++ b/arch/arm64/lib/strncmp.S
-@@ -1,9 +1,9 @@
- /* SPDX-License-Identifier: GPL-2.0-only */
- /*
-- * Copyright (c) 2013-2021, Arm Limited.
-+ * Copyright (c) 2013-2022, Arm Limited.
-  *
-  * Adapted from the original at:
-- * https://github.com/ARM-software/optimized-routines/blob/e823e3abf5f89ecb/string/aarch64/strncmp.S
-+ * https://github.com/ARM-software/optimized-routines/blob/189dfefe37d54c5b/string/aarch64/strncmp.S
-  */
+diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
+index 5fc35f889cd1..0f88a7e450d3 100644
+--- a/arch/x86/include/asm/xen/hypervisor.h
++++ b/arch/x86/include/asm/xen/hypervisor.h
+@@ -63,4 +63,10 @@ void __init xen_pvh_init(struct boot_params *boot_params);
+ void __init mem_map_via_hcall(struct boot_params *boot_params_p);
+ #endif
  
- #include <linux/linkage.h>
-@@ -11,14 +11,14 @@
- 
- /* Assumptions:
-  *
-- * ARMv8-a, AArch64
-+ * ARMv8-a, AArch64.
-+ * MTE compatible.
-  */
- 
- #define L(label) .L ## label
- 
- #define REP8_01 0x0101010101010101
- #define REP8_7f 0x7f7f7f7f7f7f7f7f
--#define REP8_80 0x8080808080808080
- 
- /* Parameters and result.  */
- #define src1		x0
-@@ -39,10 +39,24 @@
- #define tmp3		x10
- #define zeroones	x11
- #define pos		x12
--#define limit_wd	x13
--#define mask		x14
--#define endloop		x15
-+#define mask		x13
-+#define endloop		x14
- #define count		mask
-+#define offset		pos
-+#define neg_offset	x15
-+
-+/* Define endian dependent shift operations.
-+   On big-endian early bytes are at MSB and on little-endian LSB.
-+   LS_FW means shifting towards early bytes.
-+   LS_BK means shifting towards later bytes.
-+   */
-+#ifdef __AARCH64EB__
-+#define LS_FW lsl
-+#define LS_BK lsr
++#ifdef CONFIG_XEN_DOM0
++void xen_sanitize_pdc(uint32_t *buf);
 +#else
-+#define LS_FW lsr
-+#define LS_BK lsl
++static inline void xen_sanitize_pdc(uint32_t *buf) { BUG(); }
 +#endif
- 
- SYM_FUNC_START_WEAK_PI(strncmp)
- 	cbz	limit, L(ret0)
-@@ -52,9 +66,6 @@ SYM_FUNC_START_WEAK_PI(strncmp)
- 	and	count, src1, #7
- 	b.ne	L(misaligned8)
- 	cbnz	count, L(mutual_align)
--	/* Calculate the number of full and partial words -1.  */
--	sub	limit_wd, limit, #1	/* limit != 0, so no underflow.  */
--	lsr	limit_wd, limit_wd, #3	/* Convert to Dwords.  */
- 
- 	/* NUL detection works on the principle that (X - 1) & (~X) & 0x80
- 	   (=> (X - 1) & ~(X | 0x7f)) is non-zero iff a byte is zero, and
-@@ -64,30 +75,45 @@ L(loop_aligned):
- 	ldr	data1, [src1], #8
- 	ldr	data2, [src2], #8
- L(start_realigned):
--	subs	limit_wd, limit_wd, #1
-+	subs	limit, limit, #8
- 	sub	tmp1, data1, zeroones
- 	orr	tmp2, data1, #REP8_7f
- 	eor	diff, data1, data2	/* Non-zero if differences found.  */
--	csinv	endloop, diff, xzr, pl	/* Last Dword or differences.  */
-+	csinv	endloop, diff, xzr, hi	/* Last Dword or differences.  */
- 	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
- 	ccmp	endloop, #0, #0, eq
- 	b.eq	L(loop_aligned)
- 	/* End of main loop */
- 
--	/* Not reached the limit, must have found the end or a diff.  */
--	tbz	limit_wd, #63, L(not_limit)
--
--	/* Limit % 8 == 0 => all bytes significant.  */
--	ands	limit, limit, #7
--	b.eq	L(not_limit)
--
--	lsl	limit, limit, #3	/* Bits -> bytes.  */
--	mov	mask, #~0
--#ifdef __AARCH64EB__
--	lsr	mask, mask, limit
-+L(full_check):
-+#ifndef __AARCH64EB__
-+	orr	syndrome, diff, has_nul
-+	add	limit, limit, 8	/* Rewind limit to before last subs. */
-+L(syndrome_check):
-+	/* Limit was reached. Check if the NUL byte or the difference
-+	   is before the limit. */
-+	rev	syndrome, syndrome
-+	rev	data1, data1
-+	clz	pos, syndrome
-+	rev	data2, data2
-+	lsl	data1, data1, pos
-+	cmp	limit, pos, lsr #3
-+	lsl	data2, data2, pos
-+	/* But we need to zero-extend (char is unsigned) the value and then
-+	   perform a signed 32-bit subtraction.  */
-+	lsr	data1, data1, #56
-+	sub	result, data1, data2, lsr #56
-+	csel result, result, xzr, hi
-+	ret
- #else
--	lsl	mask, mask, limit
--#endif
-+	/* Not reached the limit, must have found the end or a diff.  */
-+	tbz	limit, #63, L(not_limit)
-+	add	tmp1, limit, 8
-+	cbz	limit, L(not_limit)
 +
-+	lsl	limit, tmp1, #3	/* Bits -> bytes.  */
-+	mov	mask, #~0
-+	lsr	mask, mask, limit
- 	bic	data1, data1, mask
- 	bic	data2, data2, mask
- 
-@@ -95,25 +121,6 @@ L(start_realigned):
- 	orr	has_nul, has_nul, mask
- 
- L(not_limit):
--	orr	syndrome, diff, has_nul
--
--#ifndef	__AARCH64EB__
--	rev	syndrome, syndrome
--	rev	data1, data1
--	/* The MS-non-zero bit of the syndrome marks either the first bit
--	   that is different, or the top bit of the first zero byte.
--	   Shifting left now will bring the critical information into the
--	   top bits.  */
--	clz	pos, syndrome
--	rev	data2, data2
--	lsl	data1, data1, pos
--	lsl	data2, data2, pos
--	/* But we need to zero-extend (char is unsigned) the value and then
--	   perform a signed 32-bit subtraction.  */
--	lsr	data1, data1, #56
--	sub	result, data1, data2, lsr #56
--	ret
--#else
- 	/* For big-endian we cannot use the trick with the syndrome value
- 	   as carry-propagation can corrupt the upper bits if the trailing
- 	   bytes in the string contain 0x01.  */
-@@ -134,10 +141,11 @@ L(not_limit):
- 	rev	has_nul, has_nul
- 	orr	syndrome, diff, has_nul
- 	clz	pos, syndrome
--	/* The MS-non-zero bit of the syndrome marks either the first bit
--	   that is different, or the top bit of the first zero byte.
-+	/* The most-significant-non-zero bit of the syndrome marks either the
-+	   first bit that is different, or the top bit of the first zero byte.
- 	   Shifting left now will bring the critical information into the
- 	   top bits.  */
-+L(end_quick):
- 	lsl	data1, data1, pos
- 	lsl	data2, data2, pos
- 	/* But we need to zero-extend (char is unsigned) the value and then
-@@ -159,22 +167,12 @@ L(mutual_align):
- 	neg	tmp3, count, lsl #3	/* 64 - bits(bytes beyond align). */
- 	ldr	data2, [src2], #8
- 	mov	tmp2, #~0
--	sub	limit_wd, limit, #1	/* limit != 0, so no underflow.  */
--#ifdef __AARCH64EB__
--	/* Big-endian.  Early bytes are at MSB.  */
--	lsl	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
--#else
--	/* Little-endian.  Early bytes are at LSB.  */
--	lsr	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
--#endif
--	and	tmp3, limit_wd, #7
--	lsr	limit_wd, limit_wd, #3
--	/* Adjust the limit. Only low 3 bits used, so overflow irrelevant.  */
--	add	limit, limit, count
--	add	tmp3, tmp3, count
-+	LS_FW	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
-+	/* Adjust the limit and ensure it doesn't overflow.  */
-+	adds	limit, limit, count
-+	csinv	limit, limit, xzr, lo
- 	orr	data1, data1, tmp2
- 	orr	data2, data2, tmp2
--	add	limit_wd, limit_wd, tmp3, lsr #3
- 	b	L(start_realigned)
- 
- 	.p2align 4
-@@ -197,13 +195,11 @@ L(done):
- 	/* Align the SRC1 to a dword by doing a bytewise compare and then do
- 	   the dword loop.  */
- L(try_misaligned_words):
--	lsr	limit_wd, limit, #3
--	cbz	count, L(do_misaligned)
-+	cbz	count, L(src1_aligned)
- 
- 	neg	count, count
- 	and	count, count, #7
- 	sub	limit, limit, count
--	lsr	limit_wd, limit, #3
- 
- L(page_end_loop):
- 	ldrb	data1w, [src1], #1
-@@ -214,48 +210,100 @@ L(page_end_loop):
- 	subs	count, count, #1
- 	b.hi	L(page_end_loop)
- 
--L(do_misaligned):
--	/* Prepare ourselves for the next page crossing.  Unlike the aligned
--	   loop, we fetch 1 less dword because we risk crossing bounds on
--	   SRC2.  */
--	mov	count, #8
--	subs	limit_wd, limit_wd, #1
--	b.lo	L(done_loop)
-+	/* The following diagram explains the comparison of misaligned strings.
-+	   The bytes are shown in natural order. For little-endian, it is
-+	   reversed in the registers. The "x" bytes are before the string.
-+	   The "|" separates data that is loaded at one time.
-+	   src1     | a a a a a a a a | b b b c c c c c | . . .
-+	   src2     | x x x x x a a a   a a a a a b b b | c c c c c . . .
+ #endif /* _ASM_X86_XEN_HYPERVISOR_H */
+diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
+index b8db2148c07d..9f7fc11330a3 100644
+--- a/arch/x86/xen/enlighten.c
++++ b/arch/x86/xen/enlighten.c
+@@ -346,3 +346,22 @@ void xen_arch_unregister_cpu(int num)
+ }
+ EXPORT_SYMBOL(xen_arch_unregister_cpu);
+ #endif
 +
-+	   After shifting in each step, the data looks like this:
-+	                STEP_A              STEP_B              STEP_C
-+	   data1    a a a a a a a a     b b b c c c c c     b b b c c c c c
-+	   data2    a a a a a a a a     b b b 0 0 0 0 0     0 0 0 c c c c c
++#ifdef CONFIG_XEN_DOM0
++void xen_sanitize_pdc(uint32_t *buf)
++{
++	struct xen_platform_op op = {
++		.cmd			= XENPF_set_processor_pminfo,
++		.interface_version	= XENPF_INTERFACE_VERSION,
++		.u.set_pminfo.id	= -1,
++		.u.set_pminfo.type	= XEN_PM_PDC,
++	};
++	int ret;
 +
-+	   The bytes with "0" are eliminated from the syndrome via mask.
-+
-+	   Align SRC2 down to 16 bytes. This way we can read 16 bytes at a
-+	   time from SRC2. The comparison happens in 3 steps. After each step
-+	   the loop can exit, or read from SRC1 or SRC2. */
-+L(src1_aligned):
-+	/* Calculate offset from 8 byte alignment to string start in bits. No
-+	   need to mask offset since shifts are ignoring upper bits. */
-+	lsl	offset, src2, #3
-+	bic	src2, src2, #0xf
-+	mov	mask, -1
-+	neg	neg_offset, offset
-+	ldr	data1, [src1], #8
-+	ldp	tmp1, tmp2, [src2], #16
-+	LS_BK	mask, mask, neg_offset
-+	and	neg_offset, neg_offset, #63	/* Need actual value for cmp later. */
-+	/* Skip the first compare if data in tmp1 is irrelevant. */
-+	tbnz	offset, 6, L(misaligned_mid_loop)
-+
- L(loop_misaligned):
--	and	tmp2, src2, #0xff8
--	eor	tmp2, tmp2, #0xff8
--	cbz	tmp2, L(page_end_loop)
-+	/* STEP_A: Compare full 8 bytes when there is enough data from SRC2.*/
-+	LS_FW	data2, tmp1, offset
-+	LS_BK	tmp1, tmp2, neg_offset
-+	subs	limit, limit, #8
-+	orr	data2, data2, tmp1	/* 8 bytes from SRC2 combined from two regs.*/
-+	sub	has_nul, data1, zeroones
-+	eor	diff, data1, data2	/* Non-zero if differences found.  */
-+	orr	tmp3, data1, #REP8_7f
-+	csinv	endloop, diff, xzr, hi	/* If limit, set to all ones. */
-+	bic	has_nul, has_nul, tmp3	/* Non-zero if NUL byte found in SRC1. */
-+	orr	tmp3, endloop, has_nul
-+	cbnz	tmp3, L(full_check)
- 
- 	ldr	data1, [src1], #8
--	ldr	data2, [src2], #8
--	sub	tmp1, data1, zeroones
--	orr	tmp2, data1, #REP8_7f
--	eor	diff, data1, data2	/* Non-zero if differences found.  */
--	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
--	ccmp	diff, #0, #0, eq
--	b.ne	L(not_limit)
--	subs	limit_wd, limit_wd, #1
--	b.pl	L(loop_misaligned)
-+L(misaligned_mid_loop):
-+	/* STEP_B: Compare first part of data1 to second part of tmp2. */
-+	LS_FW	data2, tmp2, offset
-+#ifdef __AARCH64EB__
-+	/* For big-endian we do a byte reverse to avoid carry-propagation
-+	problem described above. This way we can reuse the has_nul in the
-+	next step and also use syndrome value trick at the end. */
-+	rev	tmp3, data1
-+	#define data1_fixed tmp3
-+#else
-+	#define data1_fixed data1
++	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
++	ret = HYPERVISOR_platform_op(&op);
++	if (ret)
++		pr_info("sanitize of _PDC buffer bits from Xen failed: %d\n",
++		        ret);
++}
 +#endif
-+	sub	has_nul, data1_fixed, zeroones
-+	orr	tmp3, data1_fixed, #REP8_7f
-+	eor	diff, data2, data1	/* Non-zero if differences found.  */
-+	bic	has_nul, has_nul, tmp3	/* Non-zero if NUL terminator.  */
-+#ifdef __AARCH64EB__
-+	rev	has_nul, has_nul
-+#endif
-+	cmp	limit, neg_offset, lsr #3
-+	orr	syndrome, diff, has_nul
-+	bic	syndrome, syndrome, mask	/* Ignore later bytes. */
-+	csinv	tmp3, syndrome, xzr, hi	/* If limit, set to all ones. */
-+	cbnz	tmp3, L(syndrome_check)
- 
--L(done_loop):
--	/* We found a difference or a NULL before the limit was reached.  */
--	and	limit, limit, #7
--	cbz	limit, L(not_limit)
--	/* Read the last word.  */
--	sub	src1, src1, 8
--	sub	src2, src2, 8
--	ldr	data1, [src1, limit]
--	ldr	data2, [src2, limit]
--	sub	tmp1, data1, zeroones
--	orr	tmp2, data1, #REP8_7f
--	eor	diff, data1, data2	/* Non-zero if differences found.  */
--	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
--	ccmp	diff, #0, #0, eq
--	b.ne	L(not_limit)
-+	/* STEP_C: Compare second part of data1 to first part of tmp1. */
-+	ldp	tmp1, tmp2, [src2], #16
-+	cmp	limit, #8
-+	LS_BK	data2, tmp1, neg_offset
-+	eor	diff, data2, data1	/* Non-zero if differences found.  */
-+	orr	syndrome, diff, has_nul
-+	and	syndrome, syndrome, mask	/* Ignore earlier bytes. */
-+	csinv	tmp3, syndrome, xzr, hi	/* If limit, set to all ones. */
-+	cbnz	tmp3, L(syndrome_check)
+diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
+index 18fb04523f93..9393dd4a3158 100644
+--- a/drivers/acpi/processor_pdc.c
++++ b/drivers/acpi/processor_pdc.c
+@@ -122,6 +122,11 @@ static acpi_status
+ acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
+ {
+ 	acpi_status status = AE_OK;
++	union acpi_object *obj;
++	u32 *buffer = NULL;
 +
-+	ldr	data1, [src1], #8
-+	sub	limit, limit, #8
-+	b	L(loop_misaligned)
-+
-+#ifdef	__AARCH64EB__
-+L(syndrome_check):
-+	clz	pos, syndrome
-+	cmp	pos, limit, lsl #3
-+	b.lo	L(end_quick)
-+#endif
++	obj = pdc_in->pointer;
++	buffer = (u32 *)(obj->buffer.pointer);
  
- L(ret0):
- 	mov	result, #0
- 	ret
+ 	if (boot_option_idle_override == IDLE_NOMWAIT) {
+ 		/*
+@@ -129,14 +134,19 @@ acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
+ 		 * mode will be disabled in the parameter of _PDC object.
+ 		 * Of course C1_FFH access mode will also be disabled.
+ 		 */
+-		union acpi_object *obj;
+-		u32 *buffer = NULL;
 -
- SYM_FUNC_END_PI(strncmp)
- EXPORT_SYMBOL_NOHWKASAN(strncmp)
+-		obj = pdc_in->pointer;
+-		buffer = (u32 *)(obj->buffer.pointer);
+ 		buffer[2] &= ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
+-
+ 	}
++
++	if (xen_initial_domain()) {
++		/*
++		 * When Linux is running as Xen dom0, the hypervisor is the
++		 * entity in charge of the processor power management, and so
++		 * Xen needs to check the OS capabilities reported in the _PDC
++		 * buffer matches what the hypervisor driver supports.
++		 */
++		xen_sanitize_pdc(buffer);
++	}
++
+ 	status = acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
+ 
+ 	if (ACPI_FAILURE(status))
 -- 
-2.42.0.283.g2d96d420d3-goog
+2.41.0
 
