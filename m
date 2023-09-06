@@ -2,219 +2,158 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0984279467E
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 00:46:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 147287946D3
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 01:10:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244389AbjIFWqP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 18:46:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47798 "EHLO
+        id S234578AbjIFXKS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 19:10:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244232AbjIFWqP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 18:46:15 -0400
-Received: from mail-io1-xd32.google.com (mail-io1-xd32.google.com [IPv6:2607:f8b0:4864:20::d32])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0CC9E71
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 15:46:10 -0700 (PDT)
-Received: by mail-io1-xd32.google.com with SMTP id ca18e2360f4ac-7926b7f8636so8097139f.1
-        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 15:46:10 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1694040370; x=1694645170; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=Omk8h6qAI8/QBggIcV1LJ4IashJ7NgP8xYw8aRJySEM=;
-        b=wBLGQYfYnStAMjWybLWIuTKmyEVxrVrNb+Fu4BQt7bOBO27XqhdYLEzaG1dH/nMGgE
-         GAMYU7fvyM0cdp2c/ByVRaWGXCwps83zryfdwaa8a/3c4T3iyMjLRtUgyodQRq2RG9Ff
-         iMdvUrRRu8NQKLFwEU1DDw/TKZlVOe6rvonkE=
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694040370; x=1694645170;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Omk8h6qAI8/QBggIcV1LJ4IashJ7NgP8xYw8aRJySEM=;
-        b=e8kjriAMf3KL7f8vHEhziNjXSMgv1nS2yALNKGXUnmBvM9okWjtNElriB1ZshSBGMR
-         ntK3AQchJPIPKaYETUTKQyxM1tFJ7Yras6UYLM9hvCcBruU7Lj9i5YB/13LfyQKAQVN1
-         NYXsRf1Er0ry5YjccwfIfUOoY+1GvaGHfa5FjSwZN01nlsFBni4LDFH8buwyaVrUid1C
-         wMfkaeC/5HEgvEnYuRYttNV0xi5ihjf7rDQa1ndTglFJ2WNlnJQU/YY98IZ6x5nAs+WW
-         KElfAEUKlod50Bfxg6w2V7M4tIDs4Lf44QRPNHYh5MxIRjx4WCTkCmA8ULs6UXlYJ2xw
-         IRbw==
-X-Gm-Message-State: AOJu0Yw93+/x3AZ9qUn/Lg3yLGJmA5xdyOrHnE9kGQWhB/X6IcTSaNcP
-        tSKcqVgjGZFgWlhGzWS3Gu2ChQ==
-X-Google-Smtp-Source: AGHT+IHp8evXSLOC7rntt6cZ3sHD+jrdtq6uVSsSZMx3E8qry9hjqQhqNWKp8kFBoRxi1VB+KVux7w==
-X-Received: by 2002:a05:6602:70f:b0:790:aed5:d0b0 with SMTP id f15-20020a056602070f00b00790aed5d0b0mr1178474iox.0.1694040370078;
-        Wed, 06 Sep 2023 15:46:10 -0700 (PDT)
-Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id s17-20020a6bd311000000b00790d72848efsm5210392iob.15.2023.09.06.15.46.08
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 15:46:09 -0700 (PDT)
-Date:   Wed, 6 Sep 2023 22:46:08 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Lorenzo Stoakes <lstoakes@gmail.com>
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        rcu@vger.kernel.org, Zqiang <qiang.zhang1211@gmail.com>,
-        stable@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
- for debug
-Message-ID: <20230906224608.GB1646335@google.com>
-References: <20230904180806.1002832-1-joel@joelfernandes.org>
- <571d4a4a-0674-4c84-b714-8e7582699e30@lucifer.local>
- <20230905114709.GA3881391@google.com>
- <CAA5enKbvrvTx=d6MgLZjupnsEuoCnRN8e9p+ffnJV1rJS+HkXA@mail.gmail.com>
+        with ESMTP id S232142AbjIFXKS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 19:10:18 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C2819AE;
+        Wed,  6 Sep 2023 16:10:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694041814; x=1725577814;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=fEw9pa/NdSdFIzoYPpsMEnIibMq4wIaQI1Ds5infKOM=;
+  b=E5rzABPYSUURtvuKavD2wZ4b1H84KsKUutiZMZiJe3II2r483z5XAlGM
+   7WHQIbxwevRaRyqlCp80h4pDIM60/dacXQI+UjnARlHePz1q9tF6g0EAR
+   pduio5XivamZs0wulZBJHPrCMmnLa8RpkaNgiORxFJ0A9TSdeQX0JF6g1
+   zZFRMS/JovbQH74h/JWerVXby5VYq8Px9cQOroyK9KIC6R3iYHXZBBPGw
+   hhz7L0hk5WfLgJKuTX6QhqPpAM4nFRF+EKfxp9XnTQEzzfE5JhIWGsiPS
+   NKy0ghWtHHpi49rkPSfHDbbWd2zz8jicA8icHZ34e1zOeto4WCcMoNCWi
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="408215572"
+X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
+   d="scan'208";a="408215572"
+Received: from fmsmga007.fm.intel.com ([10.253.24.52])
+  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 16:10:13 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="744866586"
+X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
+   d="scan'208";a="744866586"
+Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
+  by fmsmga007.fm.intel.com with ESMTP; 06 Sep 2023 16:10:09 -0700
+Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qe1ew-0000gB-2m;
+        Wed, 06 Sep 2023 23:10:06 +0000
+Date:   Thu, 7 Sep 2023 07:09:16 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Jason Andryuk <jandryuk@gmail.com>,
+        Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>
+Cc:     oe-kbuild-all@lists.linux.dev,
+        Roger Pau Monne <roger.pau@citrix.com>,
+        stable@vger.kernel.org, Jason Andryuk <jandryuk@gmail.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Subject: Re: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when
+ running as Xen dom0
+Message-ID: <202309070625.dJUDcGZg-lkp@intel.com>
+References: <20230906182125.48642-1-jandryuk@gmail.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <CAA5enKbvrvTx=d6MgLZjupnsEuoCnRN8e9p+ffnJV1rJS+HkXA@mail.gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+In-Reply-To: <20230906182125.48642-1-jandryuk@gmail.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 08:23:18PM +0100, Lorenzo Stoakes wrote:
-> On Tue, 5 Sept 2023 at 12:47, Joel Fernandes <joel@joelfernandes.org> wrote:
-> >
-> > On Tue, Sep 05, 2023 at 08:09:16AM +0100, Lorenzo Stoakes wrote:
-> > > On Mon, Sep 04, 2023 at 06:08:04PM +0000, Joel Fernandes (Google) wrote:
-> > > > It is unsafe to dump vmalloc area information when trying to do so from
-> > > > some contexts. Add a safer trylock version of the same function to do a
-> > > > best-effort VMA finding and use it from vmalloc_dump_obj().
-> > >
-> > > It'd be nice to have more details as to precisely which contexts and what this
-> > > resolves.
-> >
-> > True. I was hoping the 'trylock' mention would be sufficient (example hardirq
-> > context interrupting a lock-held region) but you're right.
-> >
-> > > > [applied test robot feedback on unused function fix.]
-> > > > [applied Uladzislau feedback on locking.]
-> > > >
-> > > > Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-> > > > Cc: Paul E. McKenney <paulmck@kernel.org>
-> > > > Cc: rcu@vger.kernel.org
-> > > > Cc: Zqiang <qiang.zhang1211@gmail.com>
-> > > > Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> > > > Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-> > > > Cc: stable@vger.kernel.org
-> > > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-> > > > ---
-> > > >  mm/vmalloc.c | 26 ++++++++++++++++++++++----
-> > > >  1 file changed, 22 insertions(+), 4 deletions(-)
-> > > >
-> > > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> > > > index 93cf99aba335..2c6a0e2ff404 100644
-> > > > --- a/mm/vmalloc.c
-> > > > +++ b/mm/vmalloc.c
-> > > > @@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
-> > > >  #ifdef CONFIG_PRINTK
-> > > >  bool vmalloc_dump_obj(void *object)
-> > > >  {
-> > > > -   struct vm_struct *vm;
-> > > >     void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-> > > > +   const void *caller;
-> > > > +   struct vm_struct *vm;
-> > > > +   struct vmap_area *va;
-> > > > +   unsigned long addr;
-> > > > +   unsigned int nr_pages;
-> > > >
-> > > > -   vm = find_vm_area(objp);
-> > > > -   if (!vm)
-> > > > +   if (!spin_trylock(&vmap_area_lock))
-> > > > +           return false;
-> > >
-> > > It'd be good to have a comment here explaining why we must trylock here. I am
-> > > also concerned that in the past this function would return false only if the
-> > > address was not a vmalloc one, but now it might just return false due to lock
-> > > contention and the user has no idea which it is?
-> > >
-> > > I'd want to at least output "vmalloc region cannot lookup lock contention"
-> > > vs. the below cannot find case.
-> >
-> > In the patch 2/2 we do print if the address looks like a vmalloc address even
-> > if the vmalloc look up fails.
-> 
-> No, you output exactly what was output before, only changing what it
-> means and in no way differentiating between couldn't find vmalloc
-> area/couldn't get lock.
+Hi Jason,
 
-2/2 does this:
-                         -     if (virt_addr_valid(object))
-                         +     if (is_vmalloc_addr(object))
-                         +             type = "vmalloc memory";
-                         +     else if (virt_addr_valid(object))
-                                       type = "non-slab/vmalloc memory";
+kernel test robot noticed the following build errors:
 
-This code is executed only if vmalloc_dump_obj() returns false. The
-is_vmalloc_addr() was added by 2/2 which is newly added right?
+[auto build test ERROR on tip/x86/core]
+[also build test ERROR on v6.5]
+[cannot apply to rafael-pm/linux-next linus/master next-20230906]
+[If your patch is applied to the wrong git tree, kindly drop us a note.
+And when submitting patch, we suggest to use '--base' as documented in
+https://git-scm.com/docs/git-format-patch#_base_tree_information]
 
-You are right we are not differentiating between trylock failure and failure to
-find the vmalloc area. I was just saying, even though we don't differentiate,
-we do print "vmalloc memory" right? That wasn't being printed before.
+url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Andryuk/acpi-processor-sanitize-_PDC-buffer-bits-when-running-as-Xen-dom0/20230907-022235
+base:   tip/x86/core
+patch link:    https://lore.kernel.org/r/20230906182125.48642-1-jandryuk%40gmail.com
+patch subject: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running as Xen dom0
+config: x86_64-randconfig-r011-20230907 (https://download.01.org/0day-ci/archive/20230907/202309070625.dJUDcGZg-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230907/202309070625.dJUDcGZg-lkp@intel.com/reproduce)
 
-> > Also the reporter's usecase is not a common one. We only attempt to dump
-> > information if there was a debug objects failure (example if somebody did a
-> > double call_rcu). In such a situation, the patch will prevent a deadlock and
-> > still print something about the address.
-> 
-> Right, but the function still purports to do X but does Y.
-> 
-> >
-> > > Under heavy lock contention aren't you potentially breaking the ability to
-> > > introspect vmalloc addresses? Wouldn't it be better to explicitly detect the
-> > > contexts under which acquiring this spinlock is not appropriate?
-> >
-> > Yes this is a good point, but there's another case as well: PREEMPT_RT can
-> > sleep on lock contention (as spinlocks are sleeping) and we can't sleep from
-> > call_rcu() as it may be called in contexts that cannot sleep. So we handle
-> > that also using trylock.
-> 
-> Right so somebody now has to find this email to realise that. I hate
-> implicit knowledge like this, it needs a comment. It also furthers the
-> point that it'd be useful to differentiate between the two.
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309070625.dJUDcGZg-lkp@intel.com/
 
-This is a valid point, and I acknowledged it in last email. A code comment could
-indeed be useful.
+All errors (new ones prefixed by >>):
 
-So I guess from an agreement standpoint, I agree:
-
-1/2 could use an additional comment explaining why we need trylock (sighting
-the RT sleeping lock issue).
-
-2/2 could update the existing code to convert "non-slab/vmalloc" to
-"non-slab/non-vmalloc". Note: that's an *existing* issue.
-
-The issue in 2/2 is not a new one so that can certainly be a separate patch.
-And while at it, we could update the comment in that patch as well.
-
-But the whole differentiating between trylock vs vmalloc area lookup failure
-is not that useful -- just my opinion fwiw! I honestly feel differentiating
-between trylock vs vmalloc area lookup failure complicates the code because
-it will require passing this information down from vmalloc_dump_obj() to the
-caller AFAICS and I am not sure if the person reading the debug will really
-care much. But I am OK with whatever the -mm community wants and I am happy
-to send out a new patch on top with the above that I agree on since Andrew
-took these 2 (but for the stuff I don't agree, I would appreciate if you
-could send a patch for review and I am happy to review it!).
-
-As you mentioned, this series is a stability fix and we can put touch-ups on
-top of it if needed, and there is also plenty of time till the next merge
-window. Allow me a few days and I'll do the new patch on top (I'd say dont
-bother to spend your time on it, I'll do it).
-
-thanks,
-
- - Joel
+   drivers/acpi/processor_pdc.c: In function 'acpi_processor_eval_pdc':
+>> drivers/acpi/processor_pdc.c:147:17: error: implicit declaration of function 'xen_sanitize_pdc' [-Werror=implicit-function-declaration]
+     147 |                 xen_sanitize_pdc(buffer);
+         |                 ^~~~~~~~~~~~~~~~
+   cc1: some warnings being treated as errors
 
 
-> 
-> 
-> -- 
-> Lorenzo Stoakes
-> https://ljs.io
+vim +/xen_sanitize_pdc +147 drivers/acpi/processor_pdc.c
+
+   116	
+   117	/*
+   118	 * _PDC is required for a BIOS-OS handshake for most of the newer
+   119	 * ACPI processor features.
+   120	 */
+   121	static acpi_status
+   122	acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
+   123	{
+   124		acpi_status status = AE_OK;
+   125		union acpi_object *obj;
+   126		u32 *buffer = NULL;
+   127	
+   128		obj = pdc_in->pointer;
+   129		buffer = (u32 *)(obj->buffer.pointer);
+   130	
+   131		if (boot_option_idle_override == IDLE_NOMWAIT) {
+   132			/*
+   133			 * If mwait is disabled for CPU C-states, the C2C3_FFH access
+   134			 * mode will be disabled in the parameter of _PDC object.
+   135			 * Of course C1_FFH access mode will also be disabled.
+   136			 */
+   137			buffer[2] &= ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
+   138		}
+   139	
+   140		if (xen_initial_domain()) {
+   141			/*
+   142			 * When Linux is running as Xen dom0, the hypervisor is the
+   143			 * entity in charge of the processor power management, and so
+   144			 * Xen needs to check the OS capabilities reported in the _PDC
+   145			 * buffer matches what the hypervisor driver supports.
+   146			 */
+ > 147			xen_sanitize_pdc(buffer);
+   148		}
+   149	
+   150		status = acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
+   151	
+   152		if (ACPI_FAILURE(status))
+   153			acpi_handle_debug(handle,
+   154			    "Could not evaluate _PDC, using legacy perf control\n");
+   155	
+   156		return status;
+   157	}
+   158	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
