@@ -2,120 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 67427793756
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 10:46:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BFC957937D3
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 11:14:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235682AbjIFIqr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 04:46:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49582 "EHLO
+        id S234002AbjIFJOe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 05:14:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37548 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235613AbjIFIqq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 04:46:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E64CE9
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 01:46:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1693989959;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=HiO4dpO0VY1hu4txDNG3Nh8hvwZDWTPnz7X+5XzDdqw=;
-        b=Wd+1C1ofL9t1wQ2EFqW+/TEbAKBA35lk14YN6tuHJBh7AzQ7TEau5qUcMvNokJx1ladDJb
-        JiqGYAvmzfT4DRtj0NTaaiqh00opWQrCxe9WZt3bUbt7+9S63e1b8YBOcMcr8HCFOXQYJW
-        40UW5lx0+qZYLvxCs8aD5odZ0GgXMvg=
-Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
- [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-122-hvm5EoZiO_aT1TLl6c8blA-1; Wed, 06 Sep 2023 04:45:58 -0400
-X-MC-Unique: hvm5EoZiO_aT1TLl6c8blA-1
-Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-315af0252c2so1930680f8f.0
-        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 01:45:58 -0700 (PDT)
+        with ESMTP id S236326AbjIFJOe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 05:14:34 -0400
+Received: from mail-ej1-x62f.google.com (mail-ej1-x62f.google.com [IPv6:2a00:1450:4864:20::62f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA9B81AB;
+        Wed,  6 Sep 2023 02:14:27 -0700 (PDT)
+Received: by mail-ej1-x62f.google.com with SMTP id a640c23a62f3a-99c1d03e124so482822966b.2;
+        Wed, 06 Sep 2023 02:14:27 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1693991666; x=1694596466; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=H/i9Rx6cJePLlrXqQQE3rJ8pHiKqveK77lqYog72tc4=;
+        b=VUsH8kdpgDGA58taeHDc9QrB+SJh2NhOV16uTZ1P5zHlLg0y92x9V4LHv3MPoIP4Hz
+         O+5RpxNmTiUOHNTUWEQETE5cLAPqievlcbXL17DbrZqIvL0F8hwyChZ32gxY9XNEAZ3i
+         Q59F6VcoIVqDzXK42o/NyoeHrSS6Cih2M5OZOAaGJYFWZnl5n4b1YieM+Z3JsCnx7ul+
+         sj+wMapYlQJ7HZNoEd5YhV/JyED53slKr5WFzxUMKdco+jgeeAgRGEAZFNW31lhlYWRg
+         zz45/NPNP6043iYrzZhbWytbnbJjAJ496cXFHoKhUDBababs0cP8x+8G+OKxKPshqLK+
+         y/8A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693989957; x=1694594757;
-        h=content-transfer-encoding:in-reply-to:organization:from:references
-         :cc:to:content-language:subject:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+        d=1e100.net; s=20221208; t=1693991666; x=1694596466;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=HiO4dpO0VY1hu4txDNG3Nh8hvwZDWTPnz7X+5XzDdqw=;
-        b=fMCbyxgFgG4N50/h7qbOSk9B73LtzPS8zqOtFLsDWr1kY5BZtC10sedzjapLtBeCWy
-         MLB/vafel4pd4HPzeHPrsmLU4JkYblWmFNvkELmBpABGDsL4p0jFD7x3eXLwAme7UFOz
-         g/RkOp2+VgAgxS0eiGaOPTFmfwCV8ekVmStr3wLbZDzh8anLxaNJFFl61UquCRnnkt7E
-         Y6upZo7roz75O5ki93SI0x7oB4aiH+MqPrGxRlt4RRbpYeEhMGSgHjE/4221yyT8/P0K
-         8sZ+srVr3ktciF3Gh3k+4Mh0aGxMhE7g3fAbLlTH9s3quBtXaUTr1kVQ/eyyKrE+vRcQ
-         a+/Q==
-X-Gm-Message-State: AOJu0YzcFPvwYaq7I1Z+ZdEApV5Acz1ts683edU0c6IZlGSVcxeVafdH
-        Ix1T7IaH17K9dpVEsUqqhGmjvifrTSBL8qS7sgGDDMZv6CQrnn/M8bmCBNiqCz4hxweWbP42rBu
-        htVGhDzyGGgq5DUIs
-X-Received: by 2002:a5d:464a:0:b0:314:3a3d:5d1f with SMTP id j10-20020a5d464a000000b003143a3d5d1fmr1841535wrs.19.1693989957074;
-        Wed, 06 Sep 2023 01:45:57 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGQmR4iZGBEiYiY4s675XAQ+S5BoOwlY5W6/yYJfzgEBy039rqvKU8y1+dEwqdV6Ytm0AzESA==
-X-Received: by 2002:a5d:464a:0:b0:314:3a3d:5d1f with SMTP id j10-20020a5d464a000000b003143a3d5d1fmr1841522wrs.19.1693989956711;
-        Wed, 06 Sep 2023 01:45:56 -0700 (PDT)
-Received: from ?IPV6:2003:cb:c70c:6c00:92a4:6f8:ff7e:6853? (p200300cbc70c6c0092a406f8ff7e6853.dip0.t-ipconnect.de. [2003:cb:c70c:6c00:92a4:6f8:ff7e:6853])
-        by smtp.gmail.com with ESMTPSA id m15-20020a056000180f00b003142ea7a661sm19636219wrh.21.2023.09.06.01.45.55
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Wed, 06 Sep 2023 01:45:55 -0700 (PDT)
-Message-ID: <f7ca2e61-825a-f6cb-09b0-3b12e2c308ac@redhat.com>
-Date:   Wed, 6 Sep 2023 10:45:54 +0200
+        bh=H/i9Rx6cJePLlrXqQQE3rJ8pHiKqveK77lqYog72tc4=;
+        b=XdNCNaltqwC8V60v8B7Ohqi9h4gVJGjvgH7VQvCJRoZFWKjmFy/LXdiQD6j5F8hISS
+         fvbN/6XURszmvQNff0XkeQBgIU44KX66x5lA+M9pyVJvzOlJH7duZ8cWfADGfIQvVad6
+         3rLbLwKgkM7/Fa7ViF8chSul/1dsvwBw9IrWpsdbjW/BHBDrWxrPbS4y2tQR0kx+6Qpe
+         4fOsfoWJUTRwSxtNNwQU3OKyEP1ZBwkwWkCbTaIBhkYa3j7A4IBbNwEDMer9tEo5XdVm
+         iwtfGMeQ4EN64FeDGyVE4V2nCGw9yTh5CHWaV+sOQif2Q04O5nOE4BuMuL+0WDQ46aIV
+         TWOA==
+X-Gm-Message-State: AOJu0YytzHlIqdy+Cf1avWRjRqhvAjC8o8WXZ8ylYiYcsVivi/wYx/D3
+        6QuUGP13XRiURS8QbKIL9/ixYysVvjSMSyYEmMPcBjOH7aI=
+X-Google-Smtp-Source: AGHT+IHoJKKd/cmbZPfgEY/YExtF4EVPHtK38KTRdm0zAE4+KN5GgQiRXE7NO6CnE5tz1JCfDh147sB1Cs1cmmCMzeY=
+X-Received: by 2002:a17:907:d1c:b0:9a1:e58d:73b8 with SMTP id
+ gn28-20020a1709070d1c00b009a1e58d73b8mr2147910ejc.72.1693991665979; Wed, 06
+ Sep 2023 02:14:25 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-Subject: Re: [PATCH v2] LoongArch: add p?d_leaf() definitions
-Content-Language: en-US
-To:     Hongchen Zhang <zhanghongchen@loongson.cn>,
-        Huacai Chen <chenhuacai@kernel.org>,
-        WANG Xuerui <kernel@xen0n.name>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        "Mike Rapoport IBM)" <rppt@kernel.org>,
-        Feiyang Chen <chenfeiyang@loongson.cn>,
-        Qi Zheng <zhengqi.arch@bytedance.com>,
-        "Matthew Wilcox Oracle)" <willy@infradead.org>,
-        Kefeng Wang <wangkefeng.wang@huawei.com>,
-        Jiaxun Yang <jiaxun.yang@flygoat.com>
-Cc:     loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, loongson-kernel@lists.loongnix.cn
-References: <20230906084351.3533-1-zhanghongchen@loongson.cn>
-From:   David Hildenbrand <david@redhat.com>
-Organization: Red Hat
-In-Reply-To: <20230906084351.3533-1-zhanghongchen@loongson.cn>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <20230905073724.52272-1-fabio.porcedda@gmail.com>
+In-Reply-To: <20230905073724.52272-1-fabio.porcedda@gmail.com>
+From:   Daniele Palmas <dnlplm@gmail.com>
+Date:   Wed, 6 Sep 2023 11:02:22 +0200
+Message-ID: <CAGRyCJEzKn13gbBYfoF9H5XKJ_OSXJh0+h3U6SMa6c5S6kAVtQ@mail.gmail.com>
+Subject: Re: [PATCH] USB: serial: option: add Telit LE910C4-WWX 0x1035 composition
+To:     Fabio Porcedda <fabio.porcedda@gmail.com>
+Cc:     Johan Hovold <johan@kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org, stable@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,HK_RANDOM_ENVFROM,
+        HK_RANDOM_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 06.09.23 10:43, Hongchen Zhang wrote:
-> When I do LTP test, LTP test case ksm06 caused panic at
-> 	break_ksm_pmd_entry
-> 	  -> pmd_leaf (Huge page table but False)
-> 	  -> pte_present (panic)
-> 
-> The reason is pmd_leaf is not defined, So like
-> commit 501b81046701 ("mips: mm: add p?d_leaf() definitions")
-> add p?d_leaf() definition for LoongArch.
-> 
-> v2: add Fixes: in commit message.
+Il giorno mar 5 set 2023 alle ore 09:37 Fabio Porcedda
+<fabio.porcedda@gmail.com> ha scritto:
+>
+> Add support for the following Telit LE910C4-WWX composition:
+>
+> 0x1035: TTY, TTY, ECM
+>
+> Signed-off-by: Fabio Porcedda <fabio.porcedda@gmail.com>
+> Cc: stable@vger.kernel.org
 
-This belongs under the "---". I assume whoever picks that up can fix it up.
-
-> 
-> Fixes: 09cfefb7fa70 ("LoongArch: Add memory management")
-> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-> ---
-
-Acked-by: David Hildenbrand <david@redhat.com>
-
-We should CC stable. I assume whoever picks that up can fix it up.
-
--- 
-Cheers,
-
-David / dhildenb
-
+Reviewed-by: Daniele Palmas <dnlplm@gmail.com>
