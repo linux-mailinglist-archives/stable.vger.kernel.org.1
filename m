@@ -2,197 +2,150 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E927F7942FB
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 20:21:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DFAD79438E
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 21:06:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240188AbjIFSVn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 14:21:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45778 "EHLO
+        id S239603AbjIFTGn convert rfc822-to-8bit (ORCPT
+        <rfc822;lists+stable@lfdr.de>); Wed, 6 Sep 2023 15:06:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237740AbjIFSVn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 14:21:43 -0400
-Received: from mail-qk1-x730.google.com (mail-qk1-x730.google.com [IPv6:2607:f8b0:4864:20::730])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CADEB10CA;
-        Wed,  6 Sep 2023 11:21:36 -0700 (PDT)
-Received: by mail-qk1-x730.google.com with SMTP id af79cd13be357-76dc7b0da9fso8719385a.1;
-        Wed, 06 Sep 2023 11:21:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694024496; x=1694629296; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=zklSHdsI2UWJPNn1ecr8Eo6vQMjVOJa/0zR4bl3TAqc=;
-        b=I4AfqcsyHgvp/9XkeB99SsAy4veuUaDrizA78uwUUwxNCDBpVp5AHH7RK/BOX9RYLu
-         Cb2FF0FDDWsk+MZvegfm8+9B2UxIOJXLQ4zQLurZLTzwFag3a9gm+abt+xZR3C+xDrOW
-         bn9eGcvlRLbPEJP3mMPabyiwOn3biErJrazNfQcTQAUnj82HFGfIr+fdK5yv2Y+YpSn6
-         jjJcgnnRQPMrML2CEUvLmXAyEuniOsgrMZd/xKzSkLr2oKRaK4FIUul87U4Ysr9BoIje
-         MfbE/ixwHrOW8WKjICw6I+g9RhQjddCxB2yzsOOKYyQS3ksSu9XS10/kcNfTsiDQt8MI
-         TeSw==
+        with ESMTP id S230383AbjIFTGk (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 15:06:40 -0400
+Received: from mail-yw1-f173.google.com (mail-yw1-f173.google.com [209.85.128.173])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 751F0E59;
+        Wed,  6 Sep 2023 12:06:36 -0700 (PDT)
+Received: by mail-yw1-f173.google.com with SMTP id 00721157ae682-5920efd91c7so1809307b3.2;
+        Wed, 06 Sep 2023 12:06:36 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694024496; x=1694629296;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=zklSHdsI2UWJPNn1ecr8Eo6vQMjVOJa/0zR4bl3TAqc=;
-        b=J9hm5rqRfA3Zhpog8o4346ky9DdNaZVAvxqBmraS/3MtpdUEIJEkMdelFBU+jIgJY1
-         77RhZBmrZu1IZwuutq4bpQ3oQqMuYrgwpGGDcJ8Z1aZg0QrYGejdfmV7qXv/6d7hiVlI
-         U5hXdq2njhWgyN8hiYXfr8m/4cxtV+vECZCA7aRxnshx/gI4++HyWBJbIvt56RKsfQ3P
-         R7mBomqDA0HIf8+Jnasg+anlKs7EEoLkznHcWpo/xK2E+PRB39N2YLtqkkxrOg9HUKU9
-         j5cX79mif/GytHzxkCifkfvepu+vuwY8XRwYYQP8u8R239FfyRU55W3YwZKlUfwUHt1v
-         /Oxg==
-X-Gm-Message-State: AOJu0YyKaWkTkPVWdfldVWJEKUd/ut6aol2CVVCILltwXU+ARbffwZ6c
-        fE5BIL+cfTxZkH2YYmgWVb8=
-X-Google-Smtp-Source: AGHT+IGHLnABm96FdDRUcT50m1IX58j6HqwLhDE/W1lxdQtnCSL26QzqbxI+re/ZCl4UzGIAe5nrRQ==
-X-Received: by 2002:a05:620a:248a:b0:76e:f5c5:1bac with SMTP id i10-20020a05620a248a00b0076ef5c51bacmr19230155qkn.48.1694024495823;
-        Wed, 06 Sep 2023 11:21:35 -0700 (PDT)
-Received: from pm2-ws13.praxislan02.com (207-172-141-204.s8906.c3-0.slvr-cbr1.lnh-slvr.md.cable.rcncustomer.com. [207.172.141.204])
-        by smtp.gmail.com with ESMTPSA id f9-20020a05620a15a900b0076ee82f7726sm5090024qkk.132.2023.09.06.11.21.34
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 11:21:34 -0700 (PDT)
-From:   Jason Andryuk <jandryuk@gmail.com>
-To:     Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     Roger Pau Monne <roger.pau@citrix.com>, stable@vger.kernel.org,
-        Jason Andryuk <jandryuk@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running as Xen dom0
-Date:   Wed,  6 Sep 2023 14:21:23 -0400
-Message-ID: <20230906182125.48642-1-jandryuk@gmail.com>
-X-Mailer: git-send-email 2.41.0
+        d=1e100.net; s=20221208; t=1694027195; x=1694631995;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=Hr7cLgUZCclofomOdxpQVhNfG1jKUPi2HnqwisL8720=;
+        b=dFeUIem4ioHWxmv0UHjOK0O5qM8vmFeL/0VlulfvLSGXDDXLT5dozYVZOce4rmIZlz
+         RUx1xeDlh6QPWSfAEUdrlGYG8IhkmLsTJLaGG+eDI1+893hhAfh4GRYKpsvXXG5CiXAy
+         MDhRc57H046duSixq8c3OpdbTqm+yoFZFeyT//96AMNweOt/2J3YhFiMdC12//afeKFx
+         lI2I6blH1XZeipTY7PSzhU/rtO+FY85/BwBNMk0pNAiVI+hXJMPqursB7mlrHyfxYAiJ
+         lVWiom5cfh4st2PkCdXKXjpeHeV8N4LcP4ic3bMjOOB1Y5yZFpCzvFcmR0E+eMOWoiEe
+         Vd+A==
+X-Gm-Message-State: AOJu0Yw31Rz5lwWmzp/nL/U08uNY6Gi5ahUNf/n2RH/f6OhEBVehFwy1
+        Frunw5s3bitIXS6OuD7RGIEKWvMkc/726g==
+X-Google-Smtp-Source: AGHT+IEYLksrmP27A7LLEl9wreOXL9OC9W9fyxL9g12q4xJm1463tomIab6qsn0eiHMTKibW07at7Q==
+X-Received: by 2002:a0d:cf04:0:b0:573:d3cd:3d2a with SMTP id r4-20020a0dcf04000000b00573d3cd3d2amr16695468ywd.28.1694027195495;
+        Wed, 06 Sep 2023 12:06:35 -0700 (PDT)
+Received: from mail-yb1-f171.google.com (mail-yb1-f171.google.com. [209.85.219.171])
+        by smtp.gmail.com with ESMTPSA id p189-20020a815bc6000000b0054bfc94a10dsm3906178ywb.47.2023.09.06.12.06.34
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Sep 2023 12:06:35 -0700 (PDT)
+Received: by mail-yb1-f171.google.com with SMTP id 3f1490d57ef6-d7b91422da8so158292276.2;
+        Wed, 06 Sep 2023 12:06:34 -0700 (PDT)
+X-Received: by 2002:a25:7691:0:b0:d6b:8ea4:b8a1 with SMTP id
+ r139-20020a257691000000b00d6b8ea4b8a1mr18126841ybc.12.1694027194758; Wed, 06
+ Sep 2023 12:06:34 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
+ <20230819004356.1454718-2-Liam.Howlett@oracle.com> <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
+ <20230906152325.dblzauybyoq5kd35@revolver>
+In-Reply-To: <20230906152325.dblzauybyoq5kd35@revolver>
+From:   Geert Uytterhoeven <geert@linux-m68k.org>
+Date:   Wed, 6 Sep 2023 21:06:22 +0200
+X-Gmail-Original-Message-ID: <CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com>
+Message-ID: <CAMuHMdWpvpWoDa=Ox-do92czYRvkok6_x6pYUH+ZouMcJbXy+Q@mail.gmail.com>
+Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
+ readers are possible
+To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>
+Cc:     Andrew Morton <akpm@linux-foundation.org>,
+        maple-tree@lists.infradead.org, linux-mm@kvack.org,
+        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        linux-renesas-soc@vger.kernel.org,
+        Shanker Donthineni <sdonthineni@nvidia.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: 8BIT
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Roger Pau Monne <roger.pau@citrix.com>
+Hi Liam,
 
-The Processor _PDC buffer bits notify ACPI of the OS capabilities, and
-so ACPI can adjust the return of other Processor methods taking the OS
-capabilities into account.
+On Wed, Sep 6, 2023 at 5:24 PM Liam R. Howlett <Liam.Howlett@oracle.com> wrote:
+> * Geert Uytterhoeven <geert@linux-m68k.org> [230829 12:42]:
+> > On Fri, 18 Aug 2023, Liam R. Howlett wrote:
+> > > The current implementation of append may cause duplicate data and/or
+> > > incorrect ranges to be returned to a reader during an update.  Although
+> > > this has not been reported or seen, disable the append write operation
+> > > while the tree is in rcu mode out of an abundance of caution.
+>
+> ...
+> > >
+> > > Fixes: 54a611b60590 ("Maple Tree: add new data structure")
+> > > Cc: stable@vger.kernel.org
+> > > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
+> >
+> > Thanks for your patch, which is now commit cfeb6ae8bcb96ccf
+> > ("maple_tree: disable mas_wr_append() when other readers are
+> > possible") in v6.5, and is being backported to stable.
+> >
+> > On Renesas RZ/A1 and RZ/A2 (single-core Cortex-A9), this causes the
+> > following warning:
+> >
+> >      clocksource: timer@e803b000: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 28958491609 ns
+> >      sched_clock: 32 bits at 66MHz, resolution 15ns, wraps every 32537631224ns
+> >      /soc/timer@e803b000: used for clocksource
+> >      /soc/timer@e803c000: used for clock events
+> >     +------------[ cut here ]------------
+> >     +WARNING: CPU: 0 PID: 0 at init/main.c:992 start_kernel+0x2f0/0x480
+> >     +Interrupts were enabled early
+>
+> Note that the maple tree is involved in tracking the interrupts, see
+> kernel/irq/irqdesc.c irq_insert_desc(), etc.
+>
+> >     +CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0-rza2mevb-10197-g99b80d6b92b5 #237
+>
+> I cannot find commit id 99b80d6b92b5.
 
-When Linux is running as a Xen dom0, it's the hypervisor the entity
-in charge of processor power management, and hence Xen needs to make
-sure the capabilities reported in the _PDC buffer match the
-capabilities of the driver in Xen.
+That's my local tree, based on renesas-drivers-2023-08-29-v6.5.
 
-Introduce a small helper to sanitize the buffer when running as Xen
-dom0.
+>
+> >     +Hardware name: Generic R7S9210 (Flattened Device Tree)
+> >     + unwind_backtrace from show_stack+0x10/0x14
+> >     + show_stack from dump_stack_lvl+0x24/0x3c
+> >     + dump_stack_lvl from __warn+0x74/0xb8
+> >     + __warn from warn_slowpath_fmt+0x78/0xb0
+> >     + warn_slowpath_fmt from start_kernel+0x2f0/0x480
+> >     + start_kernel from 0x0
+> >     +---[ end trace 0000000000000000 ]---
+> >      Console: colour dummy device 80x30
+> >      printk: console [tty0] enabled
+> >      Calibrating delay loop (skipped) preset value.. 1056.00 BogoMIPS (lpj=5280000)
+> >
+> > Reverting this commit fixes the issue.
+>
+> I have set up testing with qemu for powerpc 32b, and reverting this
+> patch does not fix it for me.  Did you revert the patch or bisect to the
+> issue?
 
-When Xen supports HWP, this serves as the equivalent of commit
-a21211672c9a ("ACPI / processor: Request native thermal interrupt
-handling via _OSC") to avoid SMM crashes.  Xen will set bit 12 in the
-_PDC bits and the _PDC call will apply it.
+I did bisect the issue (on RZ/A) to cfeb6ae8bcb96ccf.
+Reverting that commit on top of my local tree fixed the issue.
 
-[ jandryuk: Mention Xen HWP's need.  Move local variables ]
-Signed-off-by: Roger Pau Monné <roger.pau@citrix.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Jason Andryuk <jandryuk@gmail.com>
----
-v2:
-Move local variables in acpi_processor_eval_pdc() to reuse in both conditions.
----
- arch/x86/include/asm/xen/hypervisor.h |  6 ++++++
- arch/x86/xen/enlighten.c              | 19 +++++++++++++++++++
- drivers/acpi/processor_pdc.c          | 22 ++++++++++++++++------
- 3 files changed, 41 insertions(+), 6 deletions(-)
+> It also happens on 0e0e9bd5f7b9 (I ran git checkout cfeb6ae8bcb96ccf^ to
+> get the commit immediately before cfeb6ae8bcb96ccf).
 
-diff --git a/arch/x86/include/asm/xen/hypervisor.h b/arch/x86/include/asm/xen/hypervisor.h
-index 5fc35f889cd1..0f88a7e450d3 100644
---- a/arch/x86/include/asm/xen/hypervisor.h
-+++ b/arch/x86/include/asm/xen/hypervisor.h
-@@ -63,4 +63,10 @@ void __init xen_pvh_init(struct boot_params *boot_params);
- void __init mem_map_via_hcall(struct boot_params *boot_params_p);
- #endif
- 
-+#ifdef CONFIG_XEN_DOM0
-+void xen_sanitize_pdc(uint32_t *buf);
-+#else
-+static inline void xen_sanitize_pdc(uint32_t *buf) { BUG(); }
-+#endif
-+
- #endif /* _ASM_X86_XEN_HYPERVISOR_H */
-diff --git a/arch/x86/xen/enlighten.c b/arch/x86/xen/enlighten.c
-index b8db2148c07d..9f7fc11330a3 100644
---- a/arch/x86/xen/enlighten.c
-+++ b/arch/x86/xen/enlighten.c
-@@ -346,3 +346,22 @@ void xen_arch_unregister_cpu(int num)
- }
- EXPORT_SYMBOL(xen_arch_unregister_cpu);
- #endif
-+
-+#ifdef CONFIG_XEN_DOM0
-+void xen_sanitize_pdc(uint32_t *buf)
-+{
-+	struct xen_platform_op op = {
-+		.cmd			= XENPF_set_processor_pminfo,
-+		.interface_version	= XENPF_INTERFACE_VERSION,
-+		.u.set_pminfo.id	= -1,
-+		.u.set_pminfo.type	= XEN_PM_PDC,
-+	};
-+	int ret;
-+
-+	set_xen_guest_handle(op.u.set_pminfo.pdc, buf);
-+	ret = HYPERVISOR_platform_op(&op);
-+	if (ret)
-+		pr_info("sanitize of _PDC buffer bits from Xen failed: %d\n",
-+		        ret);
-+}
-+#endif
-diff --git a/drivers/acpi/processor_pdc.c b/drivers/acpi/processor_pdc.c
-index 18fb04523f93..9393dd4a3158 100644
---- a/drivers/acpi/processor_pdc.c
-+++ b/drivers/acpi/processor_pdc.c
-@@ -122,6 +122,11 @@ static acpi_status
- acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
- {
- 	acpi_status status = AE_OK;
-+	union acpi_object *obj;
-+	u32 *buffer = NULL;
-+
-+	obj = pdc_in->pointer;
-+	buffer = (u32 *)(obj->buffer.pointer);
- 
- 	if (boot_option_idle_override == IDLE_NOMWAIT) {
- 		/*
-@@ -129,14 +134,19 @@ acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
- 		 * mode will be disabled in the parameter of _PDC object.
- 		 * Of course C1_FFH access mode will also be disabled.
- 		 */
--		union acpi_object *obj;
--		u32 *buffer = NULL;
--
--		obj = pdc_in->pointer;
--		buffer = (u32 *)(obj->buffer.pointer);
- 		buffer[2] &= ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
--
- 	}
-+
-+	if (xen_initial_domain()) {
-+		/*
-+		 * When Linux is running as Xen dom0, the hypervisor is the
-+		 * entity in charge of the processor power management, and so
-+		 * Xen needs to check the OS capabilities reported in the _PDC
-+		 * buffer matches what the hypervisor driver supports.
-+		 */
-+		xen_sanitize_pdc(buffer);
-+	}
-+
- 	status = acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
- 
- 	if (ACPI_FAILURE(status))
+That is not the case on Renesas RZ/A (which is arm32).
+
+Gr{oetje,eeting}s,
+
+                        Geert
+
 -- 
-2.41.0
+Geert Uytterhoeven -- There's lots of Linux beyond ia32 -- geert@linux-m68k.org
 
+In personal conversations with technical people, I call myself a hacker. But
+when I'm talking to journalists I just say "programmer" or something like that.
+                                -- Linus Torvalds
