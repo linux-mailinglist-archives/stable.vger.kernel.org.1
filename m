@@ -2,66 +2,67 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB9257943BB
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 21:18:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C60F7943C4
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 21:23:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244180AbjIFTS7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 15:18:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58214 "EHLO
+        id S229974AbjIFTXi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 15:23:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59450 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244181AbjIFTS4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 15:18:56 -0400
-Received: from mail-pj1-x102b.google.com (mail-pj1-x102b.google.com [IPv6:2607:f8b0:4864:20::102b])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 596621BDD;
-        Wed,  6 Sep 2023 12:18:47 -0700 (PDT)
-Received: by mail-pj1-x102b.google.com with SMTP id 98e67ed59e1d1-26f7f71b9a7so137847a91.0;
-        Wed, 06 Sep 2023 12:18:47 -0700 (PDT)
+        with ESMTP id S244101AbjIFTXg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 15:23:36 -0400
+Received: from mail-pg1-x535.google.com (mail-pg1-x535.google.com [IPv6:2607:f8b0:4864:20::535])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61CF51990;
+        Wed,  6 Sep 2023 12:23:30 -0700 (PDT)
+Received: by mail-pg1-x535.google.com with SMTP id 41be03b00d2f7-573ccec985dso171073a12.2;
+        Wed, 06 Sep 2023 12:23:30 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694027927; x=1694632727; darn=vger.kernel.org;
+        d=gmail.com; s=20221208; t=1694028210; x=1694633010; darn=vger.kernel.org;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:from:to:cc:subject:date:message-id:reply-to;
-        bh=ld+kZKXpmR6Fg6T3EwuKq7UToW9GAZ6Oid2qQccKGn4=;
-        b=c9R4j171TidhoiDVUvDUWBbKiHfN4FIk4JTmjXLYVfe2L2D8brDHi1E78AarTJiv9I
-         2tcZ0YhH7Jrgp8XQpfqty31F2FvxPYx/uKNchf30fUJTIA50oE3CbzaHf2THA5qZPIhr
-         mst5vRx20GD5reF6xvzwyvHGk8wKQdRAO9Of3hLNS7LMXjjWAU9wW0laEcKD0WSsGVnF
-         5Pulywlbz9bHsI85dKmwMQjgNrqjiMyAlyka/DYp0lsGDCM/pfjETGmMR3knDtBkxKT8
-         V1BsTDYYlBfLM+dRig2fgn3NwNkW7A/4inBE6JHeXlCRXJdpyuFPrDejbWcclO9S0mTY
-         ueSw==
+        bh=ZikwxwV5OUPtPOXuowNsFclCwHU3dah79qe2K+yR5dQ=;
+        b=siy/7ni49PoKCppR47a/dCxOhi6B4u7VFfChFvUeH+3BLcaKbEn4U04pZs+BZe6tFG
+         ZxddLXKR4tdJFGQ7ikPgOOw8dorvz5spsnVL9yu7zLSsWQ7pLv6nDpxVFKVx3LGd5Xrk
+         VifJhyqre9lGk22iPJ2QEVcSJPY7hSOLxHeXkUSgU5JoIqVM31rgfzaiJKYLLxR3BTm/
+         ry11lzmZNOjeo1YAEzaw+VatxCgpRy+lLwsghy5v9rax2K+zDXTSa4HkGl7WxEAKtRA9
+         zzj5T02af03mNjnyiqc3unFgfVckZinynZm6IvUNqrUvqdDlCZtCdNG9hB31ep1vlvMk
+         R9Eg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694027927; x=1694632727;
+        d=1e100.net; s=20221208; t=1694028210; x=1694633010;
         h=cc:to:subject:message-id:date:from:in-reply-to:references
          :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
          :reply-to;
-        bh=ld+kZKXpmR6Fg6T3EwuKq7UToW9GAZ6Oid2qQccKGn4=;
-        b=MUkXK5apMjcIecHlJNSsyugdvbEg6uO8Qnp8STvo4I4+a/dZCYW8ftjdGi3PWFSbvw
-         pjXc51lUu8D20kD0ZMBvKocRBpigiGVgkqnJc52U5KSqv8Okbp9NfELp+aiDzHNJ7Ket
-         B1f1IUyRXTTAqVlrRdyuZjXdoxMFpk3/uvXDY1J7iwQGk7ONIgKUD54kQavvL88IZYUN
-         tpzCNcF2OeNOjhI06Tx5ca70OWZuXeIovNuNDnqqLzFO3jWCYIV01izT056sSRXMfyy9
-         f+l7cGgWxaaIGqaQMJ2JFqLj2mZPscgdxzqCSPGBUInfdYzhdevFVcETclre3fWLEj2Z
-         oplw==
-X-Gm-Message-State: AOJu0YxrlExSFIAPZ2q8PJ4weXExrWUuU//+jAhrwqkvzhBhghgErCof
-        M9B+7/H7YFVX3pDKbFQ93VBxsTGfl5XN2Oh2dgs=
-X-Google-Smtp-Source: AGHT+IFCSbdVUxgWJzLrxfSRiUW/eGGPUL3k2TslBDvsE7l8uuX8RUCbiQ6bvVk/sJCtoLIKnw8hmybmgwnySCP/7jY=
-X-Received: by 2002:a17:90a:be16:b0:268:29cf:3231 with SMTP id
- a22-20020a17090abe1600b0026829cf3231mr15346826pjs.3.1694027926627; Wed, 06
- Sep 2023 12:18:46 -0700 (PDT)
+        bh=ZikwxwV5OUPtPOXuowNsFclCwHU3dah79qe2K+yR5dQ=;
+        b=NrPhgzfGUtNAfCWHeUd35Wm7EHXmzL5O45feuflNSalzyEnPDnX5d8T4DsuN9GzjkO
+         1uPiHqhk8sNaUTr/WCESj7EE9RFHwLTqBfq8RJqJlajAO3Qh44xwOGhFyPxWobkeel00
+         DyUp8kJL02gIB+9srSn/70Gct28/PJ8q3k6Hpr31Y1CaPxHKp+Mpi4yI2yVNV/Y9TJlj
+         0yUpoDOrpbPuXmeZ7lJTzVAEFpk21mEcPj+i0NiRr1qTIGFhhbzXxrch538hXAaHH460
+         HHMrzx7bs8Zm15AThWF842QwR901Ie1h7cbEXFbfYH2yi8ObQvAECdSO/VdEo9N1S9mX
+         0CSw==
+X-Gm-Message-State: AOJu0Yyhe7gaW2OHSX7m13LYWoP524p92YymkUiGg+dDy/wH3Rj6MzUD
+        DWC0qBWfQLUEfxbDQXq4AhQZiVQeHdOY6d4kj/A=
+X-Google-Smtp-Source: AGHT+IGnviK2d0b1xWwIrS7FexAWR6yZvrg5Gplwuz5Tq21PdCFksCodt7+vh6io+9iy1mO1TT9B7BRlZKXqfR5VFok=
+X-Received: by 2002:a17:90a:d58d:b0:268:b7a2:62e8 with SMTP id
+ v13-20020a17090ad58d00b00268b7a262e8mr16476118pju.7.1694028209835; Wed, 06
+ Sep 2023 12:23:29 -0700 (PDT)
 MIME-Version: 1.0
 References: <20230904180806.1002832-1-joel@joelfernandes.org>
- <20230904180806.1002832-2-joel@joelfernandes.org> <9e329429-73a5-4926-af4f-edcf9e547101@lucifer.local>
- <20230905114841.GB3881391@google.com>
-In-Reply-To: <20230905114841.GB3881391@google.com>
+ <571d4a4a-0674-4c84-b714-8e7582699e30@lucifer.local> <20230905114709.GA3881391@google.com>
+In-Reply-To: <20230905114709.GA3881391@google.com>
 From:   Lorenzo Stoakes <lstoakes@gmail.com>
-Date:   Wed, 6 Sep 2023 20:18:35 +0100
-Message-ID: <CAA5enKafgfqNE0DWg7tcd-iNGeE0Aud5VcmmWzdguK9Psq0uhQ@mail.gmail.com>
-Subject: Re: [PATCH v3 2/2] rcu: Dump vmalloc memory info safely
+Date:   Wed, 6 Sep 2023 20:23:18 +0100
+Message-ID: <CAA5enKbvrvTx=d6MgLZjupnsEuoCnRN8e9p+ffnJV1rJS+HkXA@mail.gmail.com>
+Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
+ for debug
 To:     Joel Fernandes <joel@joelfernandes.org>
 Cc:     linux-kernel@vger.kernel.org,
         Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
         "Paul E. McKenney" <paulmck@kernel.org>,
         Vlastimil Babka <vbabka@suse.cz>,
-        Zqiang <qiang.zhang1211@gmail.com>,
         Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        rcu@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+        rcu@vger.kernel.org, Zqiang <qiang.zhang1211@gmail.com>,
         stable@vger.kernel.org, linux-mm@kvack.org
 Content-Type: text/plain; charset="UTF-8"
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
@@ -74,116 +75,133 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, 5 Sept 2023 at 12:48, Joel Fernandes <joel@joelfernandes.org> wrote:
+On Tue, 5 Sept 2023 at 12:47, Joel Fernandes <joel@joelfernandes.org> wrote:
 >
-> On Tue, Sep 05, 2023 at 08:00:44AM +0100, Lorenzo Stoakes wrote:
-> > On Mon, Sep 04, 2023 at 06:08:05PM +0000, Joel Fernandes (Google) wrote:
-> > > From: Zqiang <qiang.zhang1211@gmail.com>
-> > >
-> > > Currently, for double invoke call_rcu(), will dump rcu_head objects
-> > > memory info, if the objects is not allocated from the slab allocator,
-> > > the vmalloc_dump_obj() will be invoke and the vmap_area_lock spinlock
-> > > need to be held, since the call_rcu() can be invoked in interrupt context,
-> > > therefore, there is a possibility of spinlock deadlock scenarios.
-> > >
-> > > And in Preempt-RT kernel, the rcutorture test also trigger the following
-> > > lockdep warning:
-> > >
-> > > BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
-> > > in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
-> > > preempt_count: 1, expected: 0
-> > > RCU nest depth: 1, expected: 1
-> > > 3 locks held by swapper/0/1:
-> > >  #0: ffffffffb534ee80 (fullstop_mutex){+.+.}-{4:4}, at: torture_init_begin+0x24/0xa0
-> > >  #1: ffffffffb5307940 (rcu_read_lock){....}-{1:3}, at: rcu_torture_init+0x1ec7/0x2370
-> > >  #2: ffffffffb536af40 (vmap_area_lock){+.+.}-{3:3}, at: find_vmap_area+0x1f/0x70
-> > > irq event stamp: 565512
-> > > hardirqs last  enabled at (565511): [<ffffffffb379b138>] __call_rcu_common+0x218/0x940
-> > > hardirqs last disabled at (565512): [<ffffffffb5804262>] rcu_torture_init+0x20b2/0x2370
-> > > softirqs last  enabled at (399112): [<ffffffffb36b2586>] __local_bh_enable_ip+0x126/0x170
-> > > softirqs last disabled at (399106): [<ffffffffb43fef59>] inet_register_protosw+0x9/0x1d0
-> > > Preemption disabled at:
-> > > [<ffffffffb58040c3>] rcu_torture_init+0x1f13/0x2370
-> > > CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.5.0-rc4-rt2-yocto-preempt-rt+ #15
-> > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-> > > Call Trace:
-> > >  <TASK>
-> > >  dump_stack_lvl+0x68/0xb0
-> > >  dump_stack+0x14/0x20
-> > >  __might_resched+0x1aa/0x280
-> > >  ? __pfx_rcu_torture_err_cb+0x10/0x10
-> > >  rt_spin_lock+0x53/0x130
-> > >  ? find_vmap_area+0x1f/0x70
-> > >  find_vmap_area+0x1f/0x70
-> > >  vmalloc_dump_obj+0x20/0x60
-> > >  mem_dump_obj+0x22/0x90
-> > >  __call_rcu_common+0x5bf/0x940
-> > >  ? debug_smp_processor_id+0x1b/0x30
-> > >  call_rcu_hurry+0x14/0x20
-> > >  rcu_torture_init+0x1f82/0x2370
-> > >  ? __pfx_rcu_torture_leak_cb+0x10/0x10
-> > >  ? __pfx_rcu_torture_leak_cb+0x10/0x10
-> > >  ? __pfx_rcu_torture_init+0x10/0x10
-> > >  do_one_initcall+0x6c/0x300
-> > >  ? debug_smp_processor_id+0x1b/0x30
-> > >  kernel_init_freeable+0x2b9/0x540
-> > >  ? __pfx_kernel_init+0x10/0x10
-> > >  kernel_init+0x1f/0x150
-> > >  ret_from_fork+0x40/0x50
-> > >  ? __pfx_kernel_init+0x10/0x10
-> > >  ret_from_fork_asm+0x1b/0x30
-> > >  </TASK>
-> > >
-> > > The previous patch fixes this by using the deadlock-safe best-effort
-> > > version of find_vm_area. However, in case of failure print the fact that
-> > > the pointer was a vmalloc pointer so that we print at least something.
+> On Tue, Sep 05, 2023 at 08:09:16AM +0100, Lorenzo Stoakes wrote:
+> > On Mon, Sep 04, 2023 at 06:08:04PM +0000, Joel Fernandes (Google) wrote:
+> > > It is unsafe to dump vmalloc area information when trying to do so from
+> > > some contexts. Add a safer trylock version of the same function to do a
+> > > best-effort VMA finding and use it from vmalloc_dump_obj().
+> >
+> > It'd be nice to have more details as to precisely which contexts and what this
+> > resolves.
+>
+> True. I was hoping the 'trylock' mention would be sufficient (example hardirq
+> context interrupting a lock-held region) but you're right.
+>
+> > > [applied test robot feedback on unused function fix.]
+> > > [applied Uladzislau feedback on locking.]
 > > >
 > > > Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
 > > > Cc: Paul E. McKenney <paulmck@kernel.org>
 > > > Cc: rcu@vger.kernel.org
-> > > Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+> > > Cc: Zqiang <qiang.zhang1211@gmail.com>
+> > > Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
 > > > Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
 > > > Cc: stable@vger.kernel.org
-> > > Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
 > > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 > > > ---
-> > >  mm/util.c | 4 +++-
-> > >  1 file changed, 3 insertions(+), 1 deletion(-)
+> > >  mm/vmalloc.c | 26 ++++++++++++++++++++++----
+> > >  1 file changed, 22 insertions(+), 4 deletions(-)
 > > >
-> > > diff --git a/mm/util.c b/mm/util.c
-> > > index dd12b9531ac4..406634f26918 100644
-> > > --- a/mm/util.c
-> > > +++ b/mm/util.c
-> > > @@ -1071,7 +1071,9 @@ void mem_dump_obj(void *object)
-> > >     if (vmalloc_dump_obj(object))
-> > >             return;
+> > > diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> > > index 93cf99aba335..2c6a0e2ff404 100644
+> > > --- a/mm/vmalloc.c
+> > > +++ b/mm/vmalloc.c
+> > > @@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
+> > >  #ifdef CONFIG_PRINTK
+> > >  bool vmalloc_dump_obj(void *object)
+> > >  {
+> > > -   struct vm_struct *vm;
+> > >     void *objp = (void *)PAGE_ALIGN((unsigned long)object);
+> > > +   const void *caller;
+> > > +   struct vm_struct *vm;
+> > > +   struct vmap_area *va;
+> > > +   unsigned long addr;
+> > > +   unsigned int nr_pages;
 > > >
-> > > -   if (virt_addr_valid(object))
-> > > +   if (is_vmalloc_addr(object))
-> > > +           type = "vmalloc memory";
-> > > +   else if (virt_addr_valid(object))
-> > >             type = "non-slab/vmalloc memory";
+> > > -   vm = find_vm_area(objp);
+> > > -   if (!vm)
+> > > +   if (!spin_trylock(&vmap_area_lock))
+> > > +           return false;
 > >
-> > I think you should update this to say non-slab/non-vmalloc memory (as much
-> > as that description sucks!) as this phrasing in the past meant to say
-> > 'non-slab or vmalloc memory' (already confusing phrasing) so better to be
-> > clear.
+> > It'd be good to have a comment here explaining why we must trylock here. I am
+> > also concerned that in the past this function would return false only if the
+> > address was not a vmalloc one, but now it might just return false due to lock
+> > contention and the user has no idea which it is?
+> >
+> > I'd want to at least output "vmalloc region cannot lookup lock contention"
+> > vs. the below cannot find case.
 >
-> True, though the issue you mentioned it is in existing code, a respin of this
-> patch could update it to say non-vmalloc. Good point, thanks for reviewing!
+> In the patch 2/2 we do print if the address looks like a vmalloc address even
+> if the vmalloc look up fails.
 
-No it's not, you're changing the meaning, because you changed the code
-that determines the output...
+No, you output exactly what was output before, only changing what it
+means and in no way differentiating between couldn't find vmalloc
+area/couldn't get lock.
 
-This has been merged now despite my outstanding comments (!) so I
-guess I'll have to send a follow up patch to address this.
+>
+> Also the reporter's usecase is not a common one. We only attempt to dump
+> information if there was a debug objects failure (example if somebody did a
+> double call_rcu). In such a situation, the patch will prevent a deadlock and
+> still print something about the address.
+
+Right, but the function still purports to do X but does Y.
+
+>
+> > Under heavy lock contention aren't you potentially breaking the ability to
+> > introspect vmalloc addresses? Wouldn't it be better to explicitly detect the
+> > contexts under which acquiring this spinlock is not appropriate?
+>
+> Yes this is a good point, but there's another case as well: PREEMPT_RT can
+> sleep on lock contention (as spinlocks are sleeping) and we can't sleep from
+> call_rcu() as it may be called in contexts that cannot sleep. So we handle
+> that also using trylock.
+
+Right so somebody now has to find this email to realise that. I hate
+implicit knowledge like this, it needs a comment. It also furthers the
+point that it'd be useful to differentiate between the two.
+
+>
+> Thanks for the review!
+
+This got merged despite my outstanding comments so I guess I'll have
+to follow up with a patch.
 
 >
 >  - Joel
 >
+>
+> >
+> > > +   va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
+> > > +   if (!va) {
+> > > +           spin_unlock(&vmap_area_lock);
+> > >             return false;
+> > > +   }
+> > > +
+> > > +   vm = va->vm;
+> > > +   if (!vm) {
+> > > +           spin_unlock(&vmap_area_lock);
+> > > +           return false;
+> > > +   }
+> > > +   addr = (unsigned long)vm->addr;
+> > > +   caller = vm->caller;
+> > > +   nr_pages = vm->nr_pages;
+> > > +   spin_unlock(&vmap_area_lock);
+> > >     pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+> > > -           vm->nr_pages, (unsigned long)vm->addr, vm->caller);
+> > > +           nr_pages, addr, caller);
+> > >     return true;
+> > >  }
+> > >  #endif
+> > > --
+> > > 2.42.0.283.g2d96d420d3-goog
+> > >
+
+This reads like another 'nice review and I agree but I won't change
+anything!'...
 
 
-
---
+-- 
 Lorenzo Stoakes
 https://ljs.io
