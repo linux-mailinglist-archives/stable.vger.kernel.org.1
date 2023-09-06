@@ -2,169 +2,151 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E5BE794152
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 18:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1837079413D
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 18:12:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230349AbjIFQUS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 12:20:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46996 "EHLO
+        id S241778AbjIFQMS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 12:12:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56598 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240570AbjIFQUS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 12:20:18 -0400
-X-Greylist: delayed 1240 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Wed, 06 Sep 2023 09:20:12 PDT
-Received: from outbound-ip7a.ess.barracuda.com (outbound-ip7a.ess.barracuda.com [209.222.82.174])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 918821992
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 09:20:12 -0700 (PDT)
-Received: from NAM04-MW2-obe.outbound.protection.outlook.com (mail-mw2nam04lp2169.outbound.protection.outlook.com [104.47.73.169]) by mx-outbound15-108.us-east-2a.ess.aws.cudaops.com (version=TLSv1.2 cipher=ECDHE-RSA-AES256-GCM-SHA384 bits=256 verify=NO); Wed, 06 Sep 2023 16:20:04 +0000
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=mL+q7w3iTYzLCH/BggCQwisKV7yEVRrlDsxlpDoZd0xCNsmH4AXbL76o+RooUSldJQZ+7xsaSLM0RP8OLF4yzyDl4C9QDO32XmitcugvHKkju+tAGbmwGfWqT+eO+Nstnw7b2cACv5o9HV4x/Xl1BmVw9gdYgnBK3/2o0ig0bWboLoukfFmh8txfw07y7FPQAzE7CbWNd46dzXKatmtoVUErhupXGuWWubt395QfaREOwRBYCEtqDaXMkbhUUiE+fy/hTI2yZEuWYbbqbek6+CJ4zd79hV3i69cAS0BxaLTvD9/B61pC4nHZT8/yAa0Od1SeDifHNsKhtedvBIabTw==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=yK3hOy8hyTa3VkGdrsisXQORbcXjZsHVaCS+xdbvHc4=;
- b=FEEKzm6ApW7w3x1uD3r36Ftl3osTWB75MxaM97Np000JN8BOgi90Z0LpuFmZGDW9Zf/+E9A9Ng33H/bwrF/E+uieDVFrXK3OllRSMds5E15gfFRhhZ7/8ihJkJKB0wcsnC8/SdfhJwA5t0yslWe4fR5PKuLvvXb2KyoqvcNOy9ZUiaGkvcCT4wWDA2nbo2mM2El9IRB/1j5KvGpHJ7SH50wC5PwQ+AJE3gFse9zgZ3sqLqMGGM3386Vi7gYu8bIKEgBkenRfmIvynL9879eRjWeFjFXwSsDlaZZK7X39jrFFa1SlsYVUIvRa8OJSf03mRzjSxhQUfaxn8thBdXzLRA==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 50.222.100.11) smtp.rcpttodomain=ddn.com smtp.mailfrom=ddn.com; dmarc=pass
- (p=reject sp=reject pct=100) action=none header.from=ddn.com; dkim=none
- (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ddn.com; s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=yK3hOy8hyTa3VkGdrsisXQORbcXjZsHVaCS+xdbvHc4=;
- b=cCEntQRAruSW4b1cHKuOQQy8IMuILBRm26juKqE330uyZzdnfBqUxPMLKEC7mRxJwdcwN4ZB36C67e3tt6BFeQEPcH1mUgt1s06CGDpn4JOoWN2BOhvzPxVGX9jyNNn5vxE4Aoefd92bb+8AS0DF8Of3S7Bnv8ITaE+azzMrW/c=
-Received: from DM5PR08CA0032.namprd08.prod.outlook.com (2603:10b6:4:60::21) by
- PH0PR19MB4843.namprd19.prod.outlook.com (2603:10b6:510:74::12) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6745.34; Wed, 6 Sep 2023 15:59:16 +0000
-Received: from DM6NAM04FT033.eop-NAM04.prod.protection.outlook.com
- (2603:10b6:4:60:cafe::2f) by DM5PR08CA0032.outlook.office365.com
- (2603:10b6:4:60::21) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.36 via Frontend
- Transport; Wed, 6 Sep 2023 15:59:16 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 50.222.100.11)
- smtp.mailfrom=ddn.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=ddn.com;
-Received-SPF: Pass (protection.outlook.com: domain of ddn.com designates
- 50.222.100.11 as permitted sender) receiver=protection.outlook.com;
- client-ip=50.222.100.11; helo=uww-mx01.datadirectnet.com; pr=C
-Received: from uww-mx01.datadirectnet.com (50.222.100.11) by
- DM6NAM04FT033.mail.protection.outlook.com (10.13.158.142) with Microsoft SMTP
- Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6768.26 via Frontend Transport; Wed, 6 Sep 2023 15:59:16 +0000
-Received: from localhost (unknown [10.68.0.8])
-        by uww-mx01.datadirectnet.com (Postfix) with ESMTP id 0CA0C20C684B;
-        Wed,  6 Sep 2023 10:00:21 -0600 (MDT)
-From:   Bernd Schubert <bschubert@ddn.com>
-To:     linux-btrfs@vger.kernel.org
-Cc:     bernd.schubert@fastmail.fm, miklos@szeredi.hu, dsingh@ddn.com,
-        Bernd Schubert <bschubert@ddn.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Goldwyn Rodrigues <rgoldwyn@suse.com>,
-        David Sterba <dsterba@suse.com>, linux-fsdevel@vger.kernel.org,
-        stable@vger.kernel.org
-Subject: [PATCH 1/1] btrfs: file_remove_privs needs an exclusive lock
-Date:   Wed,  6 Sep 2023 17:59:03 +0200
-Message-Id: <20230906155903.3287672-2-bschubert@ddn.com>
-X-Mailer: git-send-email 2.34.1
-In-Reply-To: <20230906155903.3287672-1-bschubert@ddn.com>
-References: <20230906155903.3287672-1-bschubert@ddn.com>
+        with ESMTP id S241875AbjIFQMR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 12:12:17 -0400
+Received: from out4-smtp.messagingengine.com (out4-smtp.messagingengine.com [66.111.4.28])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B1EF1981;
+        Wed,  6 Sep 2023 09:12:10 -0700 (PDT)
+Received: from compute4.internal (compute4.nyi.internal [10.202.2.44])
+        by mailout.nyi.internal (Postfix) with ESMTP id 5E91C5C0109;
+        Wed,  6 Sep 2023 12:12:06 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute4.internal (MEProxy); Wed, 06 Sep 2023 12:12:06 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=flygoat.com; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm2; t=
+        1694016726; x=1694103126; bh=PDsWyZ1OtV7q37pB2ldP/+uk/pTRCDAceza
+        sAlKiBEo=; b=NlN0XnNXLB+QlOdjP23UHlJGBw4E4qmFCpXjF3NEcc+ZeEQBzuo
+        aBokvneuw1h5R7UibZIiDuNuX9YVzej6NFgsVbnMF0FcGZtyPtz7L5+p+gxHo2Gh
+        MYQ5XfsKigjKGA5ZdGhKdqsQOWUcf6xL6sdHWDy/hRXxHpg8KDjwt2EJm1W9qgQ6
+        /Le+lLhJja3Z2E7NXHPf0MRZzM7EWwdGO7jIA64PGzTAjUbBNXuFf+GPdnjwmcxV
+        DmH6zhZPrv4jQpz7e+Ly1UHl0otln3XqlnP56XfHGzcB/X9dBjMCJg56bXwpJ/eG
+        x61Y5VYuodu+iSe8V10Z/cH848ZKWKP0JOg==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1694016726; x=1694103126; bh=PDsWyZ1OtV7q37pB2ldP/+uk/pTRCDAceza
+        sAlKiBEo=; b=KArhhK8bOWX21kk9EkV4H3RRgrn0a7odD3yfLaPf3f0nDfBUNzt
+        Z4nmxaFbYF+/F6uk1yvZhZq5nLrKbr+peBOE/qX98XK3qRUWz6ncU1O/T6GUuWV5
+        8IjZETxqwOlIOk7i67XHQCnI1GRMz7PSoNJlR9qDEL+ztU00mW/3C1XFklRj/n3O
+        RDqAGZYOK2N/zPK5pQyNQ5VsAMbynkuNbDAaSz7yRUxqYuB5Ri9cZ43CkAzR2mAt
+        xxJERcokaHEP2fPNG9SFjSztd0HMg4XcOZ6ziZjh9v9tNtvPZVYVIr15sK6v3z8I
+        LcdntpRp2EFK8Fh1T74Y8hhuORYfti7BRYQ==
+X-ME-Sender: <xms:1qT4ZAhqFQJYs9GxFl9AOpo-Td3i3bsvmh1T_gK6IIXmwyBa5UHo5Q>
+    <xme:1qT4ZJBxtxfnykMVgSvGZg9eBpeLhsplj850KH_k_-RlbTg3GQApc0LxmLX4SWlyP
+    nMPfrcpOIjk098jj1M>
+X-ME-Received: <xmr:1qT4ZIESQ3F8gCGdjjxdfSWcv5CnFTN1DmywxoXdOM-KCACe4bJkNumPqYgDb9zh0A>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehfedgleejucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffhvfevfhgjtgfgsehtkeertddtfeejnecuhfhrohhmpeflihgr
+    gihunhcujggrnhhguceojhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomheqne
+    cuggftrfgrthhtvghrnhepgfejfeegtdehudeiudeifeefkeeigfelueeuvdeihfejudel
+    heetvdehheffjeeinecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrghmpehmrghilh
+    hfrhhomhepjhhirgiguhhnrdihrghnghesfhhlhihgohgrthdrtghomh
+X-ME-Proxy: <xmx:1qT4ZBQz_q28aZOsyC4Zne9ysEf9NzyJE5qf1nssMaBVm-bwNfoiDw>
+    <xmx:1qT4ZNx70yHr8qamJ9wLQbA5jglaqQGPQhJq1Bi8JSQWezJTdatriQ>
+    <xmx:1qT4ZP4ACuB4C8gPwACpHPfHAc2nijdyBjUse-7AMgVe8oT7m-uTdg>
+    <xmx:1qT4ZAp4H12Y32INuVD0Tqpxb_UrZfwl4iitTaryQeUgFCvRsfM6rA>
+Feedback-ID: ifd894703:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
+ 6 Sep 2023 12:12:02 -0400 (EDT)
+Message-ID: <8c598a6f-98fc-c769-cbcb-90820a4a4872@flygoat.com>
+Date:   Thu, 7 Sep 2023 00:11:59 +0800
 MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH v2] pci: loongson: Workaround MIPS firmware MRRS settings
+From:   Jiaxun Yang <jiaxun.yang@flygoat.com>
+To:     Huacai Chen <chenhuacai@kernel.org>, bhelgaas@google.com,
+        kw@linux.com, lpieralisi@kernel.org
+Cc:     linux-pci@vger.kernel.org, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230725061008.1504292-1-jiaxun.yang@flygoat.com>
+ <e9c103dc-98ac-9a51-7291-f5da1467b2ff@flygoat.com>
+ <CAAhV-H7_OjTaU_wn6mUW0-JSrXS+=A2rXCiBc8cyce5ob49BLg@mail.gmail.com>
+ <861a809d-3df1-327e-e033-87506f6d89e5@flygoat.com>
+ <CAAhV-H67ehyqtm4ocOTWQPGBioWjQjLoyN5H9hALdq0oXdzWVg@mail.gmail.com>
+ <62a7b292-ea1e-fb88-79cb-e7968d350a5e@flygoat.com>
+ <CAAhV-H4DRFrsWOusyVPo5U_F-fwcfUUktGe31x9S3=E7vci=pQ@mail.gmail.com>
+ <c2bdde51-4dcc-59ac-5f54-bcf43152fc92@flygoat.com>
+Content-Language: en-GB
+In-Reply-To: <c2bdde51-4dcc-59ac-5f54-bcf43152fc92@flygoat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: DM6NAM04FT033:EE_|PH0PR19MB4843:EE_
-Content-Type: text/plain
-X-MS-Office365-Filtering-Correlation-Id: 496fca2b-7158-4387-ce3f-08dbaef23905
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: 7HHXFyaTRa/a/TDjfSHYCJ119i62U6ct26kihTE6NcS/ks868XTS6Vn92RR7jVPfWNyrCIxtuBtQ3J/cJ0yxWS8jqFpKFdUNuJLKecqXaDOWTXsuXIIWuPyfMvmonZJqjFyRUpVZc+xryE+hBunpwxxOEmLi5ne2Fu+O6+ccrdmI8ecCI4onemGV1SE8gRd15bvY+AW4N9DGC/zigt7FrodFyyCeXGvnNahZYnOXlVeKZ56WQVdwcOma7J38elYXzHBjb2f7yhKrvXASFJ0zvU0t4YrULmwCbp4jcx71W2aaO38qB8jvondeh6rtuqcZKYykhv++Kgm3Uejr7HZg+oK0Z5xO2mOA12KUnrOmEcene1B2kFvQmZWUSJSmqjtn4dXyEr9pjLZEAFFx4KwvvUosCi3F90YO+VZa2dolqTZ29inoKF19CAcRIn4VTe8G0rAKfgYpURZC2pDbJp6H1/vCpxEI4XXzcpYtct/6Zi682l+Cm0WGUKHhI9gGYj9UIdcK7D81ek/Z1zrJlr2Vvwxys35xYr6MvYAxpHX+9SFoGJEN7BA0D8BD9k7o8a76WbB77kv5AJdaOyMDR1jT1eZ6nNg71hTNgUIpgtdFDZoXXRscU+J1w4tHNCuNA7uuKV2a01d0uv/2wAw4MpvwoSvDZ5Koe0JsgdT2NHl11nGk649Bf7rB7KfnIiicPipIR3AsoM87tO4ybnyUjMq1JHnEJ3nKpsTs6ZNTn3EzYG0oLHNizeeGHximDVbwW+I2
-X-Forefront-Antispam-Report: CIP:50.222.100.11;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:uww-mx01.datadirectnet.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(346002)(136003)(39850400004)(396003)(376002)(451199024)(186009)(82310400011)(1800799009)(46966006)(36840700001)(1076003)(2616005)(40480700001)(4326008)(41300700001)(47076005)(5660300002)(8676002)(336012)(6266002)(83380400001)(36756003)(86362001)(8936002)(2906002)(26005)(6916009)(316002)(6666004)(356005)(82740400003)(81166007)(70206006)(70586007)(478600001)(54906003)(36860700001)(36900700001);DIR:OUT;SFP:1101;
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-ChunkCount: 1
-X-MS-Exchange-AntiSpam-ExternalHop-MessageData-0: JhKw0zawtRLzQ6KxXA9S/3m/2QEMVt3JUltLikMfE7BKV5Hn+Vh5doRp8H/AYBp6xjv4RP4wo/CxiLnTrZsiL0OegruyMBp0hYI2i3bt0VYxzwhtLNJlB9qXZsvycP74icV7gy2hori4kz+htEbz4ujcaj/2YZqtBk7jTlT8psTo2ePGCmb4mJ1ey5zKJRXchOC6roE9os523aueGEYHe4X7oE+33cSmP32BT9fmfLZCSqs9fuyfdGuN4uXSOZ5zu4uCSiv2A6YVyFB/dXj7glFNFHha5TGff1DFCew08BO7qGd/3YkDNUhCLzpRbN1gNFkPmRqMHomChAjjifJhsuhFvsEiBMpvqvR6Paqg9nyN1+xCwK7hSywJKvYsSPwx0KiiFPkja4av7rj5lw2ygPhcIhs68+9xeysmGACCXpZSKNAGBIrjQSuHf8a96qJgiURTloI5FHdhMPAAVHINs+e5SAcwwsDGYYlC+Ae+ke91zDke7VN8R7EVTVSbwH/npNKMdDVkUsJOj863Mbp68d5MwHaBYTQo50HT+uCPvAvI8U3WVGGkK0GuZXdEHNGZ3ZRJchohfZk1GlVxnywPYwHEydJXVTKKtMs5Z9xtrLwwt8awSNhaPfzssvSLnzywiDl55pgfR716XgwoCzKgTMRqgsX3Ei7TbFhDXJfbC59r5H3xrm3ExuN4wYXAYDHqiW7nvOJV00bVl/ykNOU5UWtFad1pYX7V03BpizAkoSGU+B0DSZDoh406Z4xRa5WFH2r75zzJnRMV1y4w6Oz36Mntj/p1BhDUsvcokVbm/qPt8v3A2F/GtytyXhyQGnXUVta/y327+ula9Z1556/rO8Npg/s24SrlfYtqjIs7G/ffvGJ77oDMDttj9v/PkhXYs4mj4aVVmo3GTfCjZxaaOqHCf2lQvvDAytgxns4P/Ws=
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 06 Sep 2023 15:59:16.4276
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: 496fca2b-7158-4387-ce3f-08dbaef23905
-X-MS-Exchange-CrossTenant-Id: 753b6e26-6fd3-43e6-8248-3f1735d59bb4
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=753b6e26-6fd3-43e6-8248-3f1735d59bb4;Ip=[50.222.100.11];Helo=[uww-mx01.datadirectnet.com]
-X-MS-Exchange-CrossTenant-AuthSource: DM6NAM04FT033.eop-NAM04.prod.protection.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: PH0PR19MB4843
-X-OriginatorOrg: ddn.com
-X-BESS-ID: 1694017203-103948-4714-266-1
-X-BESS-VER: 2019.1_20230901.1930
-X-BESS-Apparent-Source-IP: 104.47.73.169
-X-BESS-Parts: H4sIAAAAAAACA4uuVkqtKFGyUioBkjpK+cVKVobmloZAVgZQMCnJ1CwpxTzZMN
-        nCwjwxycDS1MQs1cjCItHExDgxNdlCqTYWAFnRPDlBAAAA
-X-BESS-Outbound-Spam-Score: 0.00
-X-BESS-Outbound-Spam-Report: Code version 3.2, rules version 3.2.2.250646 [from 
-        cloudscan9-78.us-east-2a.ess.aws.cudaops.com]
-        Rule breakdown below
-         pts rule name              description
-        ---- ---------------------- --------------------------------
-        0.00 BSF_BESS_OUTBOUND      META: BESS Outbound 
-        0.00 BSF_SC0_MISMATCH_TO    META: Envelope rcpt doesn't match header 
-X-BESS-Outbound-Spam-Status: SCORE=0.00 using account:ESS124931 scores of KILL_LEVEL=7.0 tests=BSF_BESS_OUTBOUND, BSF_SC0_MISMATCH_TO
-X-BESS-BRTS-Status: 1
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=unavailable autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-file_remove_privs might call into notify_change(), which
-requires to hold an exclusive lock.
 
-Fixes: e9adabb9712e ("btrfs: use shared lock for direct writes within EOF")
-Cc: Christoph Hellwig <hch@infradead.org>
-Cc: Goldwyn Rodrigues <rgoldwyn@suse.com>
-Cc: Miklos Szeredi <miklos@szeredi.hu>
-Cc: Dharmendra Singh <dsingh@ddn.com>
-Cc: David Sterba <dsterba@suse.com>
-Cc: linux-btrfs@vger.kernel.org
-Cc: linux-fsdevel@vger.kernel.org
-Cc: stable@vger.kernel.org
-Signed-off-by: Bernd Schubert <bschubert@ddn.com>
----
- fs/btrfs/file.c | 14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/fs/btrfs/file.c b/fs/btrfs/file.c
-index fd03e689a6be..c4b304a2948e 100644
---- a/fs/btrfs/file.c
-+++ b/fs/btrfs/file.c
-@@ -1466,8 +1466,12 @@ static ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
- 	if (iocb->ki_flags & IOCB_NOWAIT)
- 		ilock_flags |= BTRFS_ILOCK_TRY;
- 
--	/* If the write DIO is within EOF, use a shared lock */
--	if (iocb->ki_pos + iov_iter_count(from) <= i_size_read(inode))
-+	/* If the write DIO is within EOF, use a shared lock and also only
-+	 * if security bits will likely not be dropped. Either will need
-+	 * to be rechecked after the lock was acquired.
-+	 */
-+	if (iocb->ki_pos + iov_iter_count(from) <= i_size_read(inode) &&
-+	    IS_NOSEC(inode))
- 		ilock_flags |= BTRFS_ILOCK_SHARED;
- 
- relock:
-@@ -1475,6 +1479,12 @@ static ssize_t btrfs_direct_write(struct kiocb *iocb, struct iov_iter *from)
- 	if (err < 0)
- 		return err;
- 
-+	if (ilock_flags & BTRFS_ILOCK_SHARED && !IS_NOSEC(inode)) {
-+		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
-+		ilock_flags &= ~BTRFS_ILOCK_SHARED;
-+		goto relock;
-+	}
-+
- 	err = generic_write_checks(iocb, from);
- 	if (err <= 0) {
- 		btrfs_inode_unlock(BTRFS_I(inode), ilock_flags);
--- 
-2.39.2
+在 2023/8/31 18:04, Jiaxun Yang 写道:
+>
+>
+> 在 2023/8/31 17:42, Huacai Chen 写道:
+>> On Thu, Aug 31, 2023 at 4:58 PM Jiaxun Yang <jiaxun.yang@flygoat.com> 
+>> wrote:
+>>>
+>>>
+>>> 在 2023/8/31 14:22, Huacai Chen 写道:
+>>>
+>>> [...]
+>>>> But it is worth to try, and you can walk the children to set mrrs when
+>>>> the quirk runs on bridges, I think.
+>>> No, this will break hotplug, I had managed to get hotplug work on 
+>>> 2K1000.
+>>> Also we have no guarantee on order of discovering devices.
+>>>>> but the old quirk should run on every single device.
+>>>> Your current patch has a drawback that both quirks will run for MIPS,
+>>>> and their order is random (though it may cause nothing, but not
+>>>> elegant).
+>>> Actually loongson_mrrs_quirk is declared by DECLARE_PCI_FIXUP_EARLY but
+>>> loongson_old_mrrs_quirk is declared by DECLARE_PCI_FIXUP_ENABLE,
+>>> which means loongson_old_mrrs_quirk always runs after 
+>>> loongson_mrrs_quirk as
+>>> expected.
+>> Then I think it is better to put this quirk in arch/mips/loongson64/,
+>> just as pci_fixup_radeon().
+
+Huacai, if you are happy with changes in this patch, do you mind to give 
+out a
+conditional R-b tag?
+
+Since this regression is in tree for a while, I really don't want to see 
+it lapse into
+next release.
+
+>
+> Hmm, spiting two quirks with similar functionality into two places 
+> doesn't sound
+> like a good idea.
+>
+> PCI folks, what do you think?
+Bjorn, Lorenzo and Krzysztof, do you mind to give some input on this fix?
+
+Thanks
+- Jiaxun
+
+>
+> Thanks.
+> - Jiaxun
+>
+> [...]
 
