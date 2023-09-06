@@ -2,1003 +2,447 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D816E7944AD
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 22:38:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A797944B8
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 22:47:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232242AbjIFUi5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 16:38:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50016 "EHLO
+        id S244233AbjIFUry (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 16:47:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244529AbjIFUim (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 16:38:42 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADA921FDA;
-        Wed,  6 Sep 2023 13:38:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A2AC433C9;
-        Wed,  6 Sep 2023 20:38:11 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694032692;
-        bh=eI+sItqSRlrjwmEV0DO3xD0S30tF68tzWCKurlb2kIg=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q1F15HqLdYuMrEsR/lpSNkXg8TQ5/ha/MKmf7D+K58f4GomC/wDfH6oTdtoTQvQaF
-         IMmFL7oNw2bQhz3nLV3fRxGapFWry13kRIl8y+6hcWyKt7sLmV1PET01xW52XN4E5h
-         pg9HbBlCyRYjxEWSykvk9UAxGkJ+iNg10o4SzT3o=
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
-        torvalds@linux-foundation.org, stable@vger.kernel.org
-Cc:     lwn@lwn.net, jslaby@suse.cz,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: Linux 6.1.52
-Date:   Wed,  6 Sep 2023 21:38:00 +0100
-Message-ID: <2023090600-heavily-salutary-95d2@gregkh>
-X-Mailer: git-send-email 2.42.0
-In-Reply-To: <2023090600-arena-unvented-8658@gregkh>
-References: <2023090600-arena-unvented-8658@gregkh>
+        with ESMTP id S239264AbjIFUry (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 16:47:54 -0400
+Received: from foss.arm.com (foss.arm.com [217.140.110.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id C957AE9
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 13:47:49 -0700 (PDT)
+Received: from usa-sjc-imap-foss1.foss.arm.com (unknown [10.121.207.14])
+        by usa-sjc-mx-foss1.foss.arm.com (Postfix) with ESMTP id 8369B106F;
+        Wed,  6 Sep 2023 13:48:27 -0700 (PDT)
+Received: from [10.57.5.192] (unknown [10.57.5.192])
+        by usa-sjc-imap-foss1.foss.arm.com (Postfix) with ESMTPSA id E80113F67D;
+        Wed,  6 Sep 2023 13:47:47 -0700 (PDT)
+Message-ID: <58dcf114-ac4c-7b1b-e557-da6e8b1b6d4d@arm.com>
+Date:   Wed, 6 Sep 2023 21:47:42 +0100
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (Windows NT 10.0; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [STABLE PATCH 5.15.y] arm64: lib: Import latest version of Arm
+ Optimized Routines' strncmp
+Content-Language: en-GB
+To:     Will Deacon <will@kernel.org>, stable@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, linux-arm-kernel@lists.infradead.org,
+        Joey Gouly <joey.gouly@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        John Hsu <John.Hsu@mediatek.com>
+References: <20230906180336.4973-1-will@kernel.org>
+From:   Robin Murphy <robin.murphy@arm.com>
+In-Reply-To: <20230906180336.4973-1-will@kernel.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-diff --git a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-index 0fa8e3e43bf8..1a7e4bff0456 100644
---- a/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-+++ b/Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt
-@@ -23,6 +23,9 @@ Optional properties:
-     1 = active low.
- - irda-mode-ports: An array that lists the indices of the port that
- 		   should operate in IrDA mode.
-+- nxp,modem-control-line-ports: An array that lists the indices of the port that
-+				should have shared GPIO lines configured as
-+				modem control lines.
- 
- Example:
-         sc16is750: sc16is750@51 {
-@@ -35,6 +38,26 @@ Example:
-                 #gpio-cells = <2>;
-         };
- 
-+	sc16is752: sc16is752@53 {
-+		compatible = "nxp,sc16is752";
-+		reg = <0x53>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
-+		gpio-controller; /* Port 0 as GPIOs */
-+		#gpio-cells = <2>;
-+	};
-+
-+	sc16is752: sc16is752@54 {
-+		compatible = "nxp,sc16is752";
-+		reg = <0x54>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
-+	};
-+
- * spi as bus
- 
- Required properties:
-@@ -59,6 +82,9 @@ Optional properties:
-     1 = active low.
- - irda-mode-ports: An array that lists the indices of the port that
- 		   should operate in IrDA mode.
-+- nxp,modem-control-line-ports: An array that lists the indices of the port that
-+				should have shared GPIO lines configured as
-+				modem control lines.
- 
- Example:
- 	sc16is750: sc16is750@0 {
-@@ -70,3 +96,23 @@ Example:
- 		gpio-controller;
- 		#gpio-cells = <2>;
- 	};
-+
-+	sc16is752: sc16is752@1 {
-+		compatible = "nxp,sc16is752";
-+		reg = <1>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <1>; /* Port 1 as modem control lines */
-+		gpio-controller; /* Port 0 as GPIOs */
-+		#gpio-cells = <2>;
-+	};
-+
-+	sc16is752: sc16is752@2 {
-+		compatible = "nxp,sc16is752";
-+		reg = <2>;
-+		clocks = <&clk20m>;
-+		interrupt-parent = <&gpio3>;
-+		interrupts = <7 IRQ_TYPE_EDGE_FALLING>;
-+		nxp,modem-control-line-ports = <0 1>; /* Ports 0 and 1 as modem control lines */
-+	};
-diff --git a/Makefile b/Makefile
-index e7c344d5af15..82aaa3ae7395 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0
- VERSION = 6
- PATCHLEVEL = 1
--SUBLEVEL = 51
-+SUBLEVEL = 52
- EXTRAVERSION =
- NAME = Curry Ramen
- 
-diff --git a/arch/arm/mach-pxa/sharpsl_pm.c b/arch/arm/mach-pxa/sharpsl_pm.c
-index a829baf8d922..05c0a0f6fe63 100644
---- a/arch/arm/mach-pxa/sharpsl_pm.c
-+++ b/arch/arm/mach-pxa/sharpsl_pm.c
-@@ -220,8 +220,6 @@ void sharpsl_battery_kick(void)
- {
- 	schedule_delayed_work(&sharpsl_bat, msecs_to_jiffies(125));
- }
--EXPORT_SYMBOL(sharpsl_battery_kick);
--
- 
- static void sharpsl_battery_thread(struct work_struct *private_)
- {
-diff --git a/arch/arm/mach-pxa/spitz.c b/arch/arm/mach-pxa/spitz.c
-index 9964729cd428..937f56bbaf6c 100644
---- a/arch/arm/mach-pxa/spitz.c
-+++ b/arch/arm/mach-pxa/spitz.c
-@@ -9,7 +9,6 @@
-  */
- 
- #include <linux/kernel.h>
--#include <linux/module.h>	/* symbol_get ; symbol_put */
- #include <linux/platform_device.h>
- #include <linux/delay.h>
- #include <linux/gpio_keys.h>
-@@ -510,17 +509,6 @@ static struct ads7846_platform_data spitz_ads7846_info = {
- 	.wait_for_sync		= spitz_ads7846_wait_for_hsync,
- };
- 
--static void spitz_bl_kick_battery(void)
--{
--	void (*kick_batt)(void);
--
--	kick_batt = symbol_get(sharpsl_battery_kick);
--	if (kick_batt) {
--		kick_batt();
--		symbol_put(sharpsl_battery_kick);
--	}
--}
--
- static struct gpiod_lookup_table spitz_lcdcon_gpio_table = {
- 	.dev_id = "spi2.1",
- 	.table = {
-@@ -548,7 +536,7 @@ static struct corgi_lcd_platform_data spitz_lcdcon_info = {
- 	.max_intensity		= 0x2f,
- 	.default_intensity	= 0x1f,
- 	.limit_mask		= 0x0b,
--	.kick_battery		= spitz_bl_kick_battery,
-+	.kick_battery		= sharpsl_battery_kick,
- };
- 
- static struct spi_board_info spitz_spi_devices[] = {
-diff --git a/arch/mips/alchemy/devboards/db1000.c b/arch/mips/alchemy/devboards/db1000.c
-index 2c52ee27b4f2..50de86eb8784 100644
---- a/arch/mips/alchemy/devboards/db1000.c
-+++ b/arch/mips/alchemy/devboards/db1000.c
-@@ -14,7 +14,6 @@
- #include <linux/interrupt.h>
- #include <linux/leds.h>
- #include <linux/mmc/host.h>
--#include <linux/module.h>
- #include <linux/platform_device.h>
- #include <linux/pm.h>
- #include <linux/spi/spi.h>
-@@ -167,12 +166,7 @@ static struct platform_device db1x00_audio_dev = {
- 
- static irqreturn_t db1100_mmc_cd(int irq, void *ptr)
- {
--	void (*mmc_cd)(struct mmc_host *, unsigned long);
--	/* link against CONFIG_MMC=m */
--	mmc_cd = symbol_get(mmc_detect_change);
--	mmc_cd(ptr, msecs_to_jiffies(500));
--	symbol_put(mmc_detect_change);
--
-+	mmc_detect_change(ptr, msecs_to_jiffies(500));
- 	return IRQ_HANDLED;
- }
- 
-diff --git a/arch/mips/alchemy/devboards/db1200.c b/arch/mips/alchemy/devboards/db1200.c
-index 1864eb935ca5..76080c71a2a7 100644
---- a/arch/mips/alchemy/devboards/db1200.c
-+++ b/arch/mips/alchemy/devboards/db1200.c
-@@ -10,7 +10,6 @@
- #include <linux/gpio.h>
- #include <linux/i2c.h>
- #include <linux/init.h>
--#include <linux/module.h>
- #include <linux/interrupt.h>
- #include <linux/io.h>
- #include <linux/leds.h>
-@@ -340,14 +339,7 @@ static irqreturn_t db1200_mmc_cd(int irq, void *ptr)
- 
- static irqreturn_t db1200_mmc_cdfn(int irq, void *ptr)
- {
--	void (*mmc_cd)(struct mmc_host *, unsigned long);
--
--	/* link against CONFIG_MMC=m */
--	mmc_cd = symbol_get(mmc_detect_change);
--	if (mmc_cd) {
--		mmc_cd(ptr, msecs_to_jiffies(200));
--		symbol_put(mmc_detect_change);
--	}
-+	mmc_detect_change(ptr, msecs_to_jiffies(200));
- 
- 	msleep(100);	/* debounce */
- 	if (irq == DB1200_SD0_INSERT_INT)
-@@ -431,14 +423,7 @@ static irqreturn_t pb1200_mmc1_cd(int irq, void *ptr)
- 
- static irqreturn_t pb1200_mmc1_cdfn(int irq, void *ptr)
- {
--	void (*mmc_cd)(struct mmc_host *, unsigned long);
--
--	/* link against CONFIG_MMC=m */
--	mmc_cd = symbol_get(mmc_detect_change);
--	if (mmc_cd) {
--		mmc_cd(ptr, msecs_to_jiffies(200));
--		symbol_put(mmc_detect_change);
--	}
-+	mmc_detect_change(ptr, msecs_to_jiffies(200));
- 
- 	msleep(100);	/* debounce */
- 	if (irq == PB1200_SD1_INSERT_INT)
-diff --git a/arch/mips/alchemy/devboards/db1300.c b/arch/mips/alchemy/devboards/db1300.c
-index e70e529ddd91..ff61901329c6 100644
---- a/arch/mips/alchemy/devboards/db1300.c
-+++ b/arch/mips/alchemy/devboards/db1300.c
-@@ -17,7 +17,6 @@
- #include <linux/interrupt.h>
- #include <linux/ata_platform.h>
- #include <linux/mmc/host.h>
--#include <linux/module.h>
- #include <linux/mtd/mtd.h>
- #include <linux/mtd/platnand.h>
- #include <linux/platform_device.h>
-@@ -459,14 +458,7 @@ static irqreturn_t db1300_mmc_cd(int irq, void *ptr)
- 
- static irqreturn_t db1300_mmc_cdfn(int irq, void *ptr)
- {
--	void (*mmc_cd)(struct mmc_host *, unsigned long);
--
--	/* link against CONFIG_MMC=m.  We can only be called once MMC core has
--	 * initialized the controller, so symbol_get() should always succeed.
--	 */
--	mmc_cd = symbol_get(mmc_detect_change);
--	mmc_cd(ptr, msecs_to_jiffies(200));
--	symbol_put(mmc_detect_change);
-+	mmc_detect_change(ptr, msecs_to_jiffies(200));
- 
- 	msleep(100);	/* debounce */
- 	if (irq == DB1300_SD1_INSERT_INT)
-diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c
-index 795be33f2892..f19d31ee37ea 100644
---- a/drivers/bluetooth/btsdio.c
-+++ b/drivers/bluetooth/btsdio.c
-@@ -357,6 +357,7 @@ static void btsdio_remove(struct sdio_func *func)
- 	if (!data)
- 		return;
- 
-+	cancel_work_sync(&data->work);
- 	hdev = data->hdev;
- 
- 	sdio_set_drvdata(func, NULL);
-diff --git a/drivers/firmware/stratix10-svc.c b/drivers/firmware/stratix10-svc.c
-index 2d674126160f..cab11af28c23 100644
---- a/drivers/firmware/stratix10-svc.c
-+++ b/drivers/firmware/stratix10-svc.c
-@@ -756,7 +756,7 @@ svc_create_memory_pool(struct platform_device *pdev,
- 	paddr = begin;
- 	size = end - begin;
- 	va = devm_memremap(dev, paddr, size, MEMREMAP_WC);
--	if (!va) {
-+	if (IS_ERR(va)) {
- 		dev_err(dev, "fail to remap shared memory\n");
- 		return ERR_PTR(-EINVAL);
- 	}
-diff --git a/drivers/fsi/fsi-master-ast-cf.c b/drivers/fsi/fsi-master-ast-cf.c
-index 5f608ef8b53c..cde281ec89d7 100644
---- a/drivers/fsi/fsi-master-ast-cf.c
-+++ b/drivers/fsi/fsi-master-ast-cf.c
-@@ -1441,3 +1441,4 @@ static struct platform_driver fsi_master_acf = {
- 
- module_platform_driver(fsi_master_acf);
- MODULE_LICENSE("GPL");
-+MODULE_FIRMWARE(FW_FILE_NAME);
-diff --git a/drivers/hid/wacom.h b/drivers/hid/wacom.h
-index 4da50e19808e..166a76c9bcad 100644
---- a/drivers/hid/wacom.h
-+++ b/drivers/hid/wacom.h
-@@ -150,6 +150,7 @@ struct wacom_remote {
- 		struct input_dev *input;
- 		bool registered;
- 		struct wacom_battery battery;
-+		ktime_t active_time;
- 	} remotes[WACOM_MAX_REMOTES];
- };
- 
-diff --git a/drivers/hid/wacom_sys.c b/drivers/hid/wacom_sys.c
-index aff4a21a46b6..af163e8dfec0 100644
---- a/drivers/hid/wacom_sys.c
-+++ b/drivers/hid/wacom_sys.c
-@@ -2527,6 +2527,18 @@ static void wacom_wireless_work(struct work_struct *work)
- 	return;
- }
- 
-+static void wacom_remote_destroy_battery(struct wacom *wacom, int index)
-+{
-+	struct wacom_remote *remote = wacom->remote;
-+
-+	if (remote->remotes[index].battery.battery) {
-+		devres_release_group(&wacom->hdev->dev,
-+				     &remote->remotes[index].battery.bat_desc);
-+		remote->remotes[index].battery.battery = NULL;
-+		remote->remotes[index].active_time = 0;
-+	}
-+}
-+
- static void wacom_remote_destroy_one(struct wacom *wacom, unsigned int index)
- {
- 	struct wacom_remote *remote = wacom->remote;
-@@ -2541,9 +2553,7 @@ static void wacom_remote_destroy_one(struct wacom *wacom, unsigned int index)
- 			remote->remotes[i].registered = false;
- 			spin_unlock_irqrestore(&remote->remote_lock, flags);
- 
--			if (remote->remotes[i].battery.battery)
--				devres_release_group(&wacom->hdev->dev,
--						     &remote->remotes[i].battery.bat_desc);
-+			wacom_remote_destroy_battery(wacom, i);
- 
- 			if (remote->remotes[i].group.name)
- 				devres_release_group(&wacom->hdev->dev,
-@@ -2551,7 +2561,6 @@ static void wacom_remote_destroy_one(struct wacom *wacom, unsigned int index)
- 
- 			remote->remotes[i].serial = 0;
- 			remote->remotes[i].group.name = NULL;
--			remote->remotes[i].battery.battery = NULL;
- 			wacom->led.groups[i].select = WACOM_STATUS_UNKNOWN;
- 		}
- 	}
-@@ -2636,6 +2645,9 @@ static int wacom_remote_attach_battery(struct wacom *wacom, int index)
- 	if (remote->remotes[index].battery.battery)
- 		return 0;
- 
-+	if (!remote->remotes[index].active_time)
-+		return 0;
-+
- 	if (wacom->led.groups[index].select == WACOM_STATUS_UNKNOWN)
- 		return 0;
- 
-@@ -2651,6 +2663,7 @@ static void wacom_remote_work(struct work_struct *work)
- {
- 	struct wacom *wacom = container_of(work, struct wacom, remote_work);
- 	struct wacom_remote *remote = wacom->remote;
-+	ktime_t kt = ktime_get();
- 	struct wacom_remote_data data;
- 	unsigned long flags;
- 	unsigned int count;
-@@ -2677,6 +2690,10 @@ static void wacom_remote_work(struct work_struct *work)
- 		serial = data.remote[i].serial;
- 		if (data.remote[i].connected) {
- 
-+			if (kt - remote->remotes[i].active_time > WACOM_REMOTE_BATTERY_TIMEOUT
-+			    && remote->remotes[i].active_time != 0)
-+				wacom_remote_destroy_battery(wacom, i);
-+
- 			if (remote->remotes[i].serial == serial) {
- 				wacom_remote_attach_battery(wacom, i);
- 				continue;
-diff --git a/drivers/hid/wacom_wac.c b/drivers/hid/wacom_wac.c
-index 15cd0cabee2a..c1270db12178 100644
---- a/drivers/hid/wacom_wac.c
-+++ b/drivers/hid/wacom_wac.c
-@@ -1129,6 +1129,7 @@ static int wacom_remote_irq(struct wacom_wac *wacom_wac, size_t len)
- 	if (index < 0 || !remote->remotes[index].registered)
- 		goto out;
- 
-+	remote->remotes[i].active_time = ktime_get();
- 	input = remote->remotes[index].input;
- 
- 	input_report_key(input, BTN_0, (data[9] & 0x01));
-diff --git a/drivers/hid/wacom_wac.h b/drivers/hid/wacom_wac.h
-index ee21bb260f22..2e7cc5e7a0cb 100644
---- a/drivers/hid/wacom_wac.h
-+++ b/drivers/hid/wacom_wac.h
-@@ -13,6 +13,7 @@
- #define WACOM_NAME_MAX		64
- #define WACOM_MAX_REMOTES	5
- #define WACOM_STATUS_UNKNOWN	255
-+#define WACOM_REMOTE_BATTERY_TIMEOUT	21000000000ll
- 
- /* packet length for individual models */
- #define WACOM_PKGLEN_BBFUN	 9
-diff --git a/drivers/mmc/host/Kconfig b/drivers/mmc/host/Kconfig
-index fb1062a6394c..9b5a2cb110b3 100644
---- a/drivers/mmc/host/Kconfig
-+++ b/drivers/mmc/host/Kconfig
-@@ -528,11 +528,12 @@ config MMC_ALCOR
- 	  of Alcor Micro PCI-E card reader
- 
- config MMC_AU1X
--	tristate "Alchemy AU1XX0 MMC Card Interface support"
-+	bool "Alchemy AU1XX0 MMC Card Interface support"
- 	depends on MIPS_ALCHEMY
-+	depends on MMC=y
- 	help
- 	  This selects the AMD Alchemy(R) Multimedia card interface.
--	  If you have a Alchemy platform with a MMC slot, say Y or M here.
-+	  If you have a Alchemy platform with a MMC slot, say Y here.
- 
- 	  If unsure, say N.
- 
-diff --git a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
-index 17c097cef7d4..5243fc031058 100644
---- a/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
-+++ b/drivers/net/ethernet/freescale/enetc/enetc_ptp.c
-@@ -8,7 +8,7 @@
- #include "enetc.h"
- 
- int enetc_phc_index = -1;
--EXPORT_SYMBOL(enetc_phc_index);
-+EXPORT_SYMBOL_GPL(enetc_phc_index);
- 
- static struct ptp_clock_info enetc_ptp_caps = {
- 	.owner		= THIS_MODULE,
-diff --git a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-index 68511597599e..f7d392fce8c2 100644
---- a/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c
-@@ -465,6 +465,7 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 				    BSS_CHANGED_BEACON_ENABLED));
- 	bool inband_disc = !!(changed & (BSS_CHANGED_UNSOL_BCAST_PROBE_RESP |
- 					 BSS_CHANGED_FILS_DISCOVERY));
-+	bool amsdu_en = wcid->amsdu;
- 
- 	if (vif) {
- 		struct mt76_vif *mvif = (struct mt76_vif *)vif->drv_priv;
-@@ -524,12 +525,14 @@ void mt76_connac2_mac_write_txwi(struct mt76_dev *dev, __le32 *txwi,
- 	txwi[4] = 0;
- 
- 	val = FIELD_PREP(MT_TXD5_PID, pid);
--	if (pid >= MT_PACKET_ID_FIRST)
-+	if (pid >= MT_PACKET_ID_FIRST) {
- 		val |= MT_TXD5_TX_STATUS_HOST;
-+		amsdu_en = amsdu_en && !is_mt7921(dev);
-+	}
- 
- 	txwi[5] = cpu_to_le32(val);
- 	txwi[6] = 0;
--	txwi[7] = wcid->amsdu ? cpu_to_le32(MT_TXD7_HW_AMSDU) : 0;
-+	txwi[7] = amsdu_en ? cpu_to_le32(MT_TXD7_HW_AMSDU) : 0;
- 
- 	if (is_8023)
- 		mt76_connac2_mac_write_txwi_8023(txwi, skb, wcid);
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7921/main.c b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-index 60fbbd1ac2f7..172ba7199485 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7921/main.c
-@@ -1280,7 +1280,7 @@ mt7921_set_antenna(struct ieee80211_hw *hw, u32 tx_ant, u32 rx_ant)
- 		return -EINVAL;
- 
- 	if ((BIT(hweight8(tx_ant)) - 1) != tx_ant)
--		tx_ant = BIT(ffs(tx_ant) - 1) - 1;
-+		return -EINVAL;
- 
- 	mt7921_mutex_acquire(dev);
- 
-diff --git a/drivers/pinctrl/pinctrl-amd.c b/drivers/pinctrl/pinctrl-amd.c
-index be6838c252f0..2b6d996e393e 100644
---- a/drivers/pinctrl/pinctrl-amd.c
-+++ b/drivers/pinctrl/pinctrl-amd.c
-@@ -748,7 +748,7 @@ static int amd_pinconf_get(struct pinctrl_dev *pctldev,
- 		break;
- 
- 	default:
--		dev_err(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
-+		dev_dbg(&gpio_dev->pdev->dev, "Invalid config param %04x\n",
- 			param);
- 		return -ENOTSUPP;
- 	}
-@@ -798,7 +798,7 @@ static int amd_pinconf_set(struct pinctrl_dev *pctldev, unsigned int pin,
- 			break;
- 
- 		default:
--			dev_err(&gpio_dev->pdev->dev,
-+			dev_dbg(&gpio_dev->pdev->dev,
- 				"Invalid config param %04x\n", param);
- 			ret = -ENOTSUPP;
- 		}
-diff --git a/drivers/rtc/rtc-ds1685.c b/drivers/rtc/rtc-ds1685.c
-index 5db9c737c022..db7216f14164 100644
---- a/drivers/rtc/rtc-ds1685.c
-+++ b/drivers/rtc/rtc-ds1685.c
-@@ -1434,7 +1434,7 @@ ds1685_rtc_poweroff(struct platform_device *pdev)
- 		unreachable();
- 	}
- }
--EXPORT_SYMBOL(ds1685_rtc_poweroff);
-+EXPORT_SYMBOL_GPL(ds1685_rtc_poweroff);
- /* ----------------------------------------------------------------------- */
- 
- 
-diff --git a/drivers/staging/rtl8712/os_intfs.c b/drivers/staging/rtl8712/os_intfs.c
-index 003e97205124..3ea70d042f9a 100644
---- a/drivers/staging/rtl8712/os_intfs.c
-+++ b/drivers/staging/rtl8712/os_intfs.c
-@@ -323,6 +323,7 @@ int r8712_init_drv_sw(struct _adapter *padapter)
- 	mp871xinit(padapter);
- 	init_default_value(padapter);
- 	r8712_InitSwLeds(padapter);
-+	mutex_init(&padapter->mutex_start);
- 	return ret;
- }
- 
-diff --git a/drivers/staging/rtl8712/usb_intf.c b/drivers/staging/rtl8712/usb_intf.c
-index 37364d3101e2..df05213f922f 100644
---- a/drivers/staging/rtl8712/usb_intf.c
-+++ b/drivers/staging/rtl8712/usb_intf.c
-@@ -567,7 +567,6 @@ static int r871xu_drv_init(struct usb_interface *pusb_intf,
- 	if (rtl871x_load_fw(padapter))
- 		goto deinit_drv_sw;
- 	init_completion(&padapter->rx_filter_ready);
--	mutex_init(&padapter->mutex_start);
- 	return 0;
- 
- deinit_drv_sw:
-diff --git a/drivers/tty/serial/qcom_geni_serial.c b/drivers/tty/serial/qcom_geni_serial.c
-index 6f6c4e9b7743..d6f682ed1581 100644
---- a/drivers/tty/serial/qcom_geni_serial.c
-+++ b/drivers/tty/serial/qcom_geni_serial.c
-@@ -129,6 +129,7 @@ struct qcom_geni_serial_port {
- 	u32 tx_fifo_width;
- 	u32 rx_fifo_depth;
- 	bool setup;
-+	unsigned long clk_rate;
- 	int (*handle_rx)(struct uart_port *uport, u32 bytes, bool drop);
- 	unsigned int baud;
- 	void *rx_fifo;
-@@ -1061,6 +1062,7 @@ static void qcom_geni_serial_set_termios(struct uart_port *uport,
- 			baud * sampling_rate, clk_rate, clk_div);
- 
- 	uport->uartclk = clk_rate;
-+	port->clk_rate = clk_rate;
- 	dev_pm_opp_set_rate(uport->dev, clk_rate);
- 	ser_clk_cfg = SER_CLK_EN;
- 	ser_clk_cfg |= clk_div << CLK_DIV_SHFT;
-@@ -1330,10 +1332,13 @@ static void qcom_geni_serial_pm(struct uart_port *uport,
- 
- 	if (new_state == UART_PM_STATE_ON && old_state == UART_PM_STATE_OFF) {
- 		geni_icc_enable(&port->se);
-+		if (port->clk_rate)
-+			dev_pm_opp_set_rate(uport->dev, port->clk_rate);
- 		geni_se_resources_on(&port->se);
- 	} else if (new_state == UART_PM_STATE_OFF &&
- 			old_state == UART_PM_STATE_ON) {
- 		geni_se_resources_off(&port->se);
-+		dev_pm_opp_set_rate(uport->dev, 0);
- 		geni_icc_disable(&port->se);
- 	}
- }
-diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
-index 93cf5f788817..8411a0f312db 100644
---- a/drivers/tty/serial/sc16is7xx.c
-+++ b/drivers/tty/serial/sc16is7xx.c
-@@ -1345,9 +1345,18 @@ static int sc16is7xx_gpio_direction_output(struct gpio_chip *chip,
- 		state |= BIT(offset);
- 	else
- 		state &= ~BIT(offset);
--	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
-+
-+	/*
-+	 * If we write IOSTATE first, and then IODIR, the output value is not
-+	 * transferred to the corresponding I/O pin.
-+	 * The datasheet states that each register bit will be transferred to
-+	 * the corresponding I/O pin programmed as output when writing to
-+	 * IOSTATE. Therefore, configure direction first with IODIR, and then
-+	 * set value after with IOSTATE.
-+	 */
- 	sc16is7xx_port_update(port, SC16IS7XX_IODIR_REG, BIT(offset),
- 			      BIT(offset));
-+	sc16is7xx_port_write(port, SC16IS7XX_IOSTATE_REG, state);
- 
- 	return 0;
- }
-@@ -1439,6 +1448,12 @@ static int sc16is7xx_probe(struct device *dev,
- 		s->p[i].port.fifosize	= SC16IS7XX_FIFO_SIZE;
- 		s->p[i].port.flags	= UPF_FIXED_TYPE | UPF_LOW_LATENCY;
- 		s->p[i].port.iobase	= i;
-+		/*
-+		 * Use all ones as membase to make sure uart_configure_port() in
-+		 * serial_core.c does not abort for SPI/I2C devices where the
-+		 * membase address is not applicable.
-+		 */
-+		s->p[i].port.membase	= (void __iomem *)~0;
- 		s->p[i].port.iotype	= UPIO_PORT;
- 		s->p[i].port.uartclk	= freq;
- 		s->p[i].port.rs485_config = sc16is7xx_config_rs485;
-diff --git a/drivers/usb/chipidea/ci_hdrc_imx.c b/drivers/usb/chipidea/ci_hdrc_imx.c
-index 60b4de0a4f76..caa91117ba42 100644
---- a/drivers/usb/chipidea/ci_hdrc_imx.c
-+++ b/drivers/usb/chipidea/ci_hdrc_imx.c
-@@ -175,10 +175,12 @@ static struct imx_usbmisc_data *usbmisc_get_init_data(struct device *dev)
- 	if (of_usb_get_phy_mode(np) == USBPHY_INTERFACE_MODE_ULPI)
- 		data->ulpi = 1;
- 
--	of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
--			&data->emp_curr_control);
--	of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
--			&data->dc_vol_level_adjust);
-+	if (of_property_read_u32(np, "samsung,picophy-pre-emp-curr-control",
-+			&data->emp_curr_control))
-+		data->emp_curr_control = -1;
-+	if (of_property_read_u32(np, "samsung,picophy-dc-vol-level-adjust",
-+			&data->dc_vol_level_adjust))
-+		data->dc_vol_level_adjust = -1;
- 
- 	return data;
- }
-diff --git a/drivers/usb/chipidea/usbmisc_imx.c b/drivers/usb/chipidea/usbmisc_imx.c
-index 2318c7906acd..a2cb4f48c84c 100644
---- a/drivers/usb/chipidea/usbmisc_imx.c
-+++ b/drivers/usb/chipidea/usbmisc_imx.c
-@@ -657,13 +657,15 @@ static int usbmisc_imx7d_init(struct imx_usbmisc_data *data)
- 			usbmisc->base + MX7D_USBNC_USB_CTRL2);
- 		/* PHY tuning for signal quality */
- 		reg = readl(usbmisc->base + MX7D_USB_OTG_PHY_CFG1);
--		if (data->emp_curr_control && data->emp_curr_control <=
-+		if (data->emp_curr_control >= 0 &&
-+			data->emp_curr_control <=
- 			(TXPREEMPAMPTUNE0_MASK >> TXPREEMPAMPTUNE0_BIT)) {
- 			reg &= ~TXPREEMPAMPTUNE0_MASK;
- 			reg |= (data->emp_curr_control << TXPREEMPAMPTUNE0_BIT);
- 		}
- 
--		if (data->dc_vol_level_adjust && data->dc_vol_level_adjust <=
-+		if (data->dc_vol_level_adjust >= 0 &&
-+			data->dc_vol_level_adjust <=
- 			(TXVREFTUNE0_MASK >> TXVREFTUNE0_BIT)) {
- 			reg &= ~TXVREFTUNE0_MASK;
- 			reg |= (data->dc_vol_level_adjust << TXVREFTUNE0_BIT);
-diff --git a/drivers/usb/dwc3/dwc3-meson-g12a.c b/drivers/usb/dwc3/dwc3-meson-g12a.c
-index eaea944ebd2c..10298b91731e 100644
---- a/drivers/usb/dwc3/dwc3-meson-g12a.c
-+++ b/drivers/usb/dwc3/dwc3-meson-g12a.c
-@@ -938,6 +938,12 @@ static int __maybe_unused dwc3_meson_g12a_resume(struct device *dev)
- 			return ret;
- 	}
- 
-+	if (priv->drvdata->usb_post_init) {
-+		ret = priv->drvdata->usb_post_init(priv);
-+		if (ret)
-+			return ret;
-+	}
-+
- 	return 0;
- }
- 
-diff --git a/drivers/usb/serial/option.c b/drivers/usb/serial/option.c
-index 119641761c3b..f13930b4534c 100644
---- a/drivers/usb/serial/option.c
-+++ b/drivers/usb/serial/option.c
-@@ -259,6 +259,7 @@ static void option_instat_callback(struct urb *urb);
- #define QUECTEL_PRODUCT_EM05G			0x030a
- #define QUECTEL_PRODUCT_EM060K			0x030b
- #define QUECTEL_PRODUCT_EM05G_CS		0x030c
-+#define QUECTEL_PRODUCT_EM05GV2			0x030e
- #define QUECTEL_PRODUCT_EM05CN_SG		0x0310
- #define QUECTEL_PRODUCT_EM05G_SG		0x0311
- #define QUECTEL_PRODUCT_EM05CN			0x0312
-@@ -1190,6 +1191,8 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = RSVD(6) | ZLP },
- 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_GR, 0xff),
- 	  .driver_info = RSVD(6) | ZLP },
-+	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05GV2, 0xff),
-+	  .driver_info = RSVD(4) | ZLP },
- 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_CS, 0xff),
- 	  .driver_info = RSVD(6) | ZLP },
- 	{ USB_DEVICE_INTERFACE_CLASS(QUECTEL_VENDOR_ID, QUECTEL_PRODUCT_EM05G_RS, 0xff),
-@@ -2232,6 +2235,10 @@ static const struct usb_device_id option_ids[] = {
- 	  .driver_info = RSVD(0) | RSVD(1) | RSVD(6) },
- 	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0db, 0xff),			/* Foxconn T99W265 MBIM */
- 	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0ee, 0xff),			/* Foxconn T99W368 MBIM */
-+	  .driver_info = RSVD(3) },
-+	{ USB_DEVICE_INTERFACE_CLASS(0x0489, 0xe0f0, 0xff),			/* Foxconn T99W373 MBIM */
-+	  .driver_info = RSVD(3) },
- 	{ USB_DEVICE(0x1508, 0x1001),						/* Fibocom NL668 (IOT version) */
- 	  .driver_info = RSVD(4) | RSVD(5) | RSVD(6) },
- 	{ USB_DEVICE(0x1782, 0x4d10) },						/* Fibocom L610 (AT mode) */
-diff --git a/drivers/usb/typec/tcpm/tcpci.c b/drivers/usb/typec/tcpm/tcpci.c
-index 72f8d1e87600..816945913ed0 100644
---- a/drivers/usb/typec/tcpm/tcpci.c
-+++ b/drivers/usb/typec/tcpm/tcpci.c
-@@ -593,6 +593,10 @@ static int tcpci_init(struct tcpc_dev *tcpc)
- 	if (time_after(jiffies, timeout))
- 		return -ETIMEDOUT;
- 
-+	ret = tcpci_write16(tcpci, TCPC_FAULT_STATUS, TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT);
-+	if (ret < 0)
-+		return ret;
-+
- 	/* Handle vendor init */
- 	if (tcpci->data->init) {
- 		ret = tcpci->data->init(tcpci, tcpci->data);
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index d5950ef9d1f3..5f45b82dd191 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -2747,6 +2747,13 @@ static void tcpm_pd_ctrl_request(struct tcpm_port *port,
- 			port->sink_cap_done = true;
- 			tcpm_set_state(port, ready_state(port), 0);
- 			break;
-+		/*
-+		 * Some port partners do not support GET_STATUS, avoid soft reset the link to
-+		 * prevent redundant power re-negotiation
-+		 */
-+		case GET_STATUS_SEND:
-+			tcpm_set_state(port, ready_state(port), 0);
-+			break;
- 		case SRC_READY:
- 		case SNK_READY:
- 			if (port->vdm_state > VDM_STATE_READY) {
-diff --git a/fs/erofs/zdata.c b/fs/erofs/zdata.c
-index 361f3c29897e..1b91ac5be961 100644
---- a/fs/erofs/zdata.c
-+++ b/fs/erofs/zdata.c
-@@ -869,6 +869,8 @@ static int z_erofs_do_read_page(struct z_erofs_decompress_frontend *fe,
- 	cur = end - min_t(erofs_off_t, offset + end - map->m_la, end);
- 	if (!(map->m_flags & EROFS_MAP_MAPPED)) {
- 		zero_user_segment(page, cur, end);
-+		++spiltted;
-+		tight = false;
- 		goto next_part;
- 	}
- 	if (map->m_flags & EROFS_MAP_FRAGMENT) {
-diff --git a/fs/nilfs2/alloc.c b/fs/nilfs2/alloc.c
-index 6ce8617b562d..7342de296ec3 100644
---- a/fs/nilfs2/alloc.c
-+++ b/fs/nilfs2/alloc.c
-@@ -205,7 +205,8 @@ static int nilfs_palloc_get_block(struct inode *inode, unsigned long blkoff,
- 	int ret;
- 
- 	spin_lock(lock);
--	if (prev->bh && blkoff == prev->blkoff) {
-+	if (prev->bh && blkoff == prev->blkoff &&
-+	    likely(buffer_uptodate(prev->bh))) {
- 		get_bh(prev->bh);
- 		*bhp = prev->bh;
- 		spin_unlock(lock);
-diff --git a/fs/nilfs2/inode.c b/fs/nilfs2/inode.c
-index d4c0895a8811..f625872321cc 100644
---- a/fs/nilfs2/inode.c
-+++ b/fs/nilfs2/inode.c
-@@ -1025,7 +1025,7 @@ int nilfs_load_inode_block(struct inode *inode, struct buffer_head **pbh)
- 	int err;
- 
- 	spin_lock(&nilfs->ns_inode_lock);
--	if (ii->i_bh == NULL) {
-+	if (ii->i_bh == NULL || unlikely(!buffer_uptodate(ii->i_bh))) {
- 		spin_unlock(&nilfs->ns_inode_lock);
- 		err = nilfs_ifile_get_inode_block(ii->i_root->ifile,
- 						  inode->i_ino, pbh);
-@@ -1034,7 +1034,10 @@ int nilfs_load_inode_block(struct inode *inode, struct buffer_head **pbh)
- 		spin_lock(&nilfs->ns_inode_lock);
- 		if (ii->i_bh == NULL)
- 			ii->i_bh = *pbh;
--		else {
-+		else if (unlikely(!buffer_uptodate(ii->i_bh))) {
-+			__brelse(ii->i_bh);
-+			ii->i_bh = *pbh;
-+		} else {
- 			brelse(*pbh);
- 			*pbh = ii->i_bh;
- 		}
-diff --git a/fs/nilfs2/segment.c b/fs/nilfs2/segment.c
-index 21e8260112c8..a4a147a983e0 100644
---- a/fs/nilfs2/segment.c
-+++ b/fs/nilfs2/segment.c
-@@ -725,6 +725,11 @@ static size_t nilfs_lookup_dirty_data_buffers(struct inode *inode,
- 		struct page *page = pvec.pages[i];
- 
- 		lock_page(page);
-+		if (unlikely(page->mapping != mapping)) {
-+			/* Exclude pages removed from the address space */
-+			unlock_page(page);
-+			continue;
-+		}
- 		if (!page_has_buffers(page))
- 			create_empty_buffers(page, i_blocksize(inode), 0);
- 		unlock_page(page);
-diff --git a/fs/smb/server/auth.c b/fs/smb/server/auth.c
-index 5e5e120edcc2..15e5684e328c 100644
---- a/fs/smb/server/auth.c
-+++ b/fs/smb/server/auth.c
-@@ -355,6 +355,9 @@ int ksmbd_decode_ntlmssp_auth_blob(struct authenticate_message *authblob,
- 		if (blob_len < (u64)sess_key_off + sess_key_len)
- 			return -EINVAL;
- 
-+		if (sess_key_len > CIFS_KEY_SIZE)
-+			return -EINVAL;
-+
- 		ctx_arc4 = kmalloc(sizeof(*ctx_arc4), GFP_KERNEL);
- 		if (!ctx_arc4)
- 			return -ENOMEM;
-diff --git a/fs/smb/server/oplock.c b/fs/smb/server/oplock.c
-index 4b210cdd7556..c81aee9ce7ec 100644
---- a/fs/smb/server/oplock.c
-+++ b/fs/smb/server/oplock.c
-@@ -1492,7 +1492,7 @@ struct create_context *smb2_find_context_vals(void *open_req, const char *tag, i
- 		    name_len < 4 ||
- 		    name_off + name_len > cc_len ||
- 		    (value_off & 0x7) != 0 ||
--		    (value_off && (value_off < name_off + name_len)) ||
-+		    (value_len && value_off < name_off + (name_len < 8 ? 8 : name_len)) ||
- 		    ((u64)value_off + value_len > cc_len))
- 			return ERR_PTR(-EINVAL);
- 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index f8ca44622d90..9b621fd993bb 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -4322,7 +4322,7 @@ static int smb2_get_ea(struct ksmbd_work *work, struct ksmbd_file *fp,
- 		if (!strncmp(name, XATTR_USER_PREFIX, XATTR_USER_PREFIX_LEN))
- 			name_len -= XATTR_USER_PREFIX_LEN;
- 
--		ptr = (char *)(&eainfo->name + name_len + 1);
-+		ptr = eainfo->name + name_len + 1;
- 		buf_free_len -= (offsetof(struct smb2_ea_info, name) +
- 				name_len + 1);
- 		/* bailout if xattr can't fit in buf_free_len */
-diff --git a/fs/smb/server/smb2pdu.h b/fs/smb/server/smb2pdu.h
-index dd10f8031606..665a83737854 100644
---- a/fs/smb/server/smb2pdu.h
-+++ b/fs/smb/server/smb2pdu.h
-@@ -410,7 +410,7 @@ struct smb2_ea_info {
- 	__u8   Flags;
- 	__u8   EaNameLength;
- 	__le16 EaValueLength;
--	char name[1];
-+	char name[];
- 	/* optionally followed by value */
- } __packed; /* level 15 Query */
- 
-diff --git a/fs/smb/server/transport_rdma.c b/fs/smb/server/transport_rdma.c
-index c06efc020bd9..7578200f63b1 100644
---- a/fs/smb/server/transport_rdma.c
-+++ b/fs/smb/server/transport_rdma.c
-@@ -1366,24 +1366,35 @@ static int smb_direct_rdma_xmit(struct smb_direct_transport *t,
- 	LIST_HEAD(msg_list);
- 	char *desc_buf;
- 	int credits_needed;
--	unsigned int desc_buf_len;
--	size_t total_length = 0;
-+	unsigned int desc_buf_len, desc_num = 0;
- 
- 	if (t->status != SMB_DIRECT_CS_CONNECTED)
- 		return -ENOTCONN;
- 
-+	if (buf_len > t->max_rdma_rw_size)
-+		return -EINVAL;
-+
- 	/* calculate needed credits */
- 	credits_needed = 0;
- 	desc_buf = buf;
- 	for (i = 0; i < desc_len / sizeof(*desc); i++) {
-+		if (!buf_len)
-+			break;
-+
- 		desc_buf_len = le32_to_cpu(desc[i].length);
-+		if (!desc_buf_len)
-+			return -EINVAL;
-+
-+		if (desc_buf_len > buf_len) {
-+			desc_buf_len = buf_len;
-+			desc[i].length = cpu_to_le32(desc_buf_len);
-+			buf_len = 0;
-+		}
- 
- 		credits_needed += calc_rw_credits(t, desc_buf, desc_buf_len);
- 		desc_buf += desc_buf_len;
--		total_length += desc_buf_len;
--		if (desc_buf_len == 0 || total_length > buf_len ||
--		    total_length > t->max_rdma_rw_size)
--			return -EINVAL;
-+		buf_len -= desc_buf_len;
-+		desc_num++;
- 	}
- 
- 	ksmbd_debug(RDMA, "RDMA %s, len %#x, needed credits %#x\n",
-@@ -1395,7 +1406,7 @@ static int smb_direct_rdma_xmit(struct smb_direct_transport *t,
- 
- 	/* build rdma_rw_ctx for each descriptor */
- 	desc_buf = buf;
--	for (i = 0; i < desc_len / sizeof(*desc); i++) {
-+	for (i = 0; i < desc_num; i++) {
- 		msg = kzalloc(offsetof(struct smb_direct_rdma_rw_msg, sg_list) +
- 			      sizeof(struct scatterlist) * SG_CHUNK_SIZE, GFP_KERNEL);
- 		if (!msg) {
-diff --git a/include/linux/usb/tcpci.h b/include/linux/usb/tcpci.h
-index 17657451c762..77eb40b918d7 100644
---- a/include/linux/usb/tcpci.h
-+++ b/include/linux/usb/tcpci.h
-@@ -103,6 +103,7 @@
- #define TCPC_POWER_STATUS_SINKING_VBUS	BIT(0)
- 
- #define TCPC_FAULT_STATUS		0x1f
-+#define TCPC_FAULT_STATUS_ALL_REG_RST_TO_DEFAULT BIT(7)
- 
- #define TCPC_ALERT_EXTENDED		0x21
- 
-diff --git a/kernel/module/main.c b/kernel/module/main.c
-index 7a6f43d2b775..7a376e26de85 100644
---- a/kernel/module/main.c
-+++ b/kernel/module/main.c
-@@ -1214,12 +1214,20 @@ void *__symbol_get(const char *symbol)
- 	};
- 
- 	preempt_disable();
--	if (!find_symbol(&fsa) || strong_try_module_get(fsa.owner)) {
--		preempt_enable();
--		return NULL;
-+	if (!find_symbol(&fsa))
-+		goto fail;
-+	if (fsa.license != GPL_ONLY) {
-+		pr_warn("failing symbol_get of non-GPLONLY symbol %s.\n",
-+			symbol);
-+		goto fail;
- 	}
-+	if (strong_try_module_get(fsa.owner))
-+		goto fail;
- 	preempt_enable();
- 	return (void *)kernel_symbol_value(fsa.sym);
-+fail:
-+	preempt_enable();
-+	return NULL;
- }
- EXPORT_SYMBOL_GPL(__symbol_get);
- 
-diff --git a/sound/usb/stream.c b/sound/usb/stream.c
-index f10f4e6d3fb8..3d4add94e367 100644
---- a/sound/usb/stream.c
-+++ b/sound/usb/stream.c
-@@ -1093,6 +1093,7 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
- 	int i, altno, err, stream;
- 	struct audioformat *fp = NULL;
- 	struct snd_usb_power_domain *pd = NULL;
-+	bool set_iface_first;
- 	int num, protocol;
- 
- 	dev = chip->dev;
-@@ -1223,11 +1224,19 @@ static int __snd_usb_parse_audio_interface(struct snd_usb_audio *chip,
- 				return err;
- 		}
- 
-+		set_iface_first = false;
-+		if (protocol == UAC_VERSION_1 ||
-+		    (chip->quirk_flags & QUIRK_FLAG_SET_IFACE_FIRST))
-+			set_iface_first = true;
-+
- 		/* try to set the interface... */
- 		usb_set_interface(chip->dev, iface_no, 0);
-+		if (set_iface_first)
-+			usb_set_interface(chip->dev, iface_no, altno);
- 		snd_usb_init_pitch(chip, fp);
- 		snd_usb_init_sample_rate(chip, fp, fp->rate_max);
--		usb_set_interface(chip->dev, iface_no, altno);
-+		if (!set_iface_first)
-+			usb_set_interface(chip->dev, iface_no, altno);
- 	}
- 	return 0;
- }
+On 2023-09-06 19:03, Will Deacon wrote:
+> From: Joey Gouly <joey.gouly@arm.com>
+> 
+> commit 387d828adffcf1eb949f3141079c479793c59aac upstream.
+> 
+> Import the latest version of the Arm Optimized Routines strncmp function based
+> on the upstream code of string/aarch64/strncmp.S at commit 189dfefe37d5 from:
+>    https://github.com/ARM-software/optimized-routines
+> 
+> This latest version includes MTE support.
+> 
+> Note that for simplicity Arm have chosen to contribute this code to Linux under
+> GPLv2 rather than the original MIT OR Apache-2.0 WITH LLVM-exception license.
+> Arm is the sole copyright holder for this code.
+> 
+> Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+> Cc: Robin Murphy <robin.murphy@arm.com>
+> Cc: Mark Rutland <mark.rutland@arm.com>
+> Cc: Catalin Marinas <catalin.marinas@arm.com>
+> Cc: Will Deacon <will@kernel.org>
+> Acked-by: Mark Rutland <mark.rutland@arm.com>
+> Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+> Link: https://lore.kernel.org/r/20220301101435.19327-3-joey.gouly@arm.com
+> (cherry picked from commit 387d828adffcf1eb949f3141079c479793c59aac)
+> Cc: <stable@vger.kernel.org> # 5.15.y only
+> Fixes: 020b199bc70d ("arm64: Import latest version of Cortex Strings' strncmp")
+> Reported-by: John Hsu <John.Hsu@mediatek.com>
+> Link: https://lore.kernel.org/all/e9f30f7d5b7d72a3521da31ab2002b49a26f542e.camel@mediatek.com/
+> Signed-off-by: Will Deacon <will@kernel.org>
+> ---
+> 
+> This is a clean cherry-pick of the latest MTE-safe strncmp()
+> implementation for arm64 which landed in v5.18 and somewhat accidentally
+> fixed an out-of-bounds read introduced in v5.14.
+> An alternative would be to disable the optimised code altogether, but
+> given that this is self-contained and applies cleanly, I'd favour being
+> consistent with more recent kernels.
+
+Ack to that; it's also consistent with the upstream project where it 
+seems this bug wasn't found before the code was replaced with the new 
+version either, so a more specific fix never existed.
+
+Cheers,
+Robin.
+
+>   arch/arm64/lib/strncmp.S | 244 +++++++++++++++++++++++----------------
+>   1 file changed, 146 insertions(+), 98 deletions(-)
+> 
+> diff --git a/arch/arm64/lib/strncmp.S b/arch/arm64/lib/strncmp.S
+> index e42bcfcd37e6..a4884b97e9a8 100644
+> --- a/arch/arm64/lib/strncmp.S
+> +++ b/arch/arm64/lib/strncmp.S
+> @@ -1,9 +1,9 @@
+>   /* SPDX-License-Identifier: GPL-2.0-only */
+>   /*
+> - * Copyright (c) 2013-2021, Arm Limited.
+> + * Copyright (c) 2013-2022, Arm Limited.
+>    *
+>    * Adapted from the original at:
+> - * https://github.com/ARM-software/optimized-routines/blob/e823e3abf5f89ecb/string/aarch64/strncmp.S
+> + * https://github.com/ARM-software/optimized-routines/blob/189dfefe37d54c5b/string/aarch64/strncmp.S
+>    */
+>   
+>   #include <linux/linkage.h>
+> @@ -11,14 +11,14 @@
+>   
+>   /* Assumptions:
+>    *
+> - * ARMv8-a, AArch64
+> + * ARMv8-a, AArch64.
+> + * MTE compatible.
+>    */
+>   
+>   #define L(label) .L ## label
+>   
+>   #define REP8_01 0x0101010101010101
+>   #define REP8_7f 0x7f7f7f7f7f7f7f7f
+> -#define REP8_80 0x8080808080808080
+>   
+>   /* Parameters and result.  */
+>   #define src1		x0
+> @@ -39,10 +39,24 @@
+>   #define tmp3		x10
+>   #define zeroones	x11
+>   #define pos		x12
+> -#define limit_wd	x13
+> -#define mask		x14
+> -#define endloop		x15
+> +#define mask		x13
+> +#define endloop		x14
+>   #define count		mask
+> +#define offset		pos
+> +#define neg_offset	x15
+> +
+> +/* Define endian dependent shift operations.
+> +   On big-endian early bytes are at MSB and on little-endian LSB.
+> +   LS_FW means shifting towards early bytes.
+> +   LS_BK means shifting towards later bytes.
+> +   */
+> +#ifdef __AARCH64EB__
+> +#define LS_FW lsl
+> +#define LS_BK lsr
+> +#else
+> +#define LS_FW lsr
+> +#define LS_BK lsl
+> +#endif
+>   
+>   SYM_FUNC_START_WEAK_PI(strncmp)
+>   	cbz	limit, L(ret0)
+> @@ -52,9 +66,6 @@ SYM_FUNC_START_WEAK_PI(strncmp)
+>   	and	count, src1, #7
+>   	b.ne	L(misaligned8)
+>   	cbnz	count, L(mutual_align)
+> -	/* Calculate the number of full and partial words -1.  */
+> -	sub	limit_wd, limit, #1	/* limit != 0, so no underflow.  */
+> -	lsr	limit_wd, limit_wd, #3	/* Convert to Dwords.  */
+>   
+>   	/* NUL detection works on the principle that (X - 1) & (~X) & 0x80
+>   	   (=> (X - 1) & ~(X | 0x7f)) is non-zero iff a byte is zero, and
+> @@ -64,30 +75,45 @@ L(loop_aligned):
+>   	ldr	data1, [src1], #8
+>   	ldr	data2, [src2], #8
+>   L(start_realigned):
+> -	subs	limit_wd, limit_wd, #1
+> +	subs	limit, limit, #8
+>   	sub	tmp1, data1, zeroones
+>   	orr	tmp2, data1, #REP8_7f
+>   	eor	diff, data1, data2	/* Non-zero if differences found.  */
+> -	csinv	endloop, diff, xzr, pl	/* Last Dword or differences.  */
+> +	csinv	endloop, diff, xzr, hi	/* Last Dword or differences.  */
+>   	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
+>   	ccmp	endloop, #0, #0, eq
+>   	b.eq	L(loop_aligned)
+>   	/* End of main loop */
+>   
+> -	/* Not reached the limit, must have found the end or a diff.  */
+> -	tbz	limit_wd, #63, L(not_limit)
+> -
+> -	/* Limit % 8 == 0 => all bytes significant.  */
+> -	ands	limit, limit, #7
+> -	b.eq	L(not_limit)
+> -
+> -	lsl	limit, limit, #3	/* Bits -> bytes.  */
+> -	mov	mask, #~0
+> -#ifdef __AARCH64EB__
+> -	lsr	mask, mask, limit
+> +L(full_check):
+> +#ifndef __AARCH64EB__
+> +	orr	syndrome, diff, has_nul
+> +	add	limit, limit, 8	/* Rewind limit to before last subs. */
+> +L(syndrome_check):
+> +	/* Limit was reached. Check if the NUL byte or the difference
+> +	   is before the limit. */
+> +	rev	syndrome, syndrome
+> +	rev	data1, data1
+> +	clz	pos, syndrome
+> +	rev	data2, data2
+> +	lsl	data1, data1, pos
+> +	cmp	limit, pos, lsr #3
+> +	lsl	data2, data2, pos
+> +	/* But we need to zero-extend (char is unsigned) the value and then
+> +	   perform a signed 32-bit subtraction.  */
+> +	lsr	data1, data1, #56
+> +	sub	result, data1, data2, lsr #56
+> +	csel result, result, xzr, hi
+> +	ret
+>   #else
+> -	lsl	mask, mask, limit
+> -#endif
+> +	/* Not reached the limit, must have found the end or a diff.  */
+> +	tbz	limit, #63, L(not_limit)
+> +	add	tmp1, limit, 8
+> +	cbz	limit, L(not_limit)
+> +
+> +	lsl	limit, tmp1, #3	/* Bits -> bytes.  */
+> +	mov	mask, #~0
+> +	lsr	mask, mask, limit
+>   	bic	data1, data1, mask
+>   	bic	data2, data2, mask
+>   
+> @@ -95,25 +121,6 @@ L(start_realigned):
+>   	orr	has_nul, has_nul, mask
+>   
+>   L(not_limit):
+> -	orr	syndrome, diff, has_nul
+> -
+> -#ifndef	__AARCH64EB__
+> -	rev	syndrome, syndrome
+> -	rev	data1, data1
+> -	/* The MS-non-zero bit of the syndrome marks either the first bit
+> -	   that is different, or the top bit of the first zero byte.
+> -	   Shifting left now will bring the critical information into the
+> -	   top bits.  */
+> -	clz	pos, syndrome
+> -	rev	data2, data2
+> -	lsl	data1, data1, pos
+> -	lsl	data2, data2, pos
+> -	/* But we need to zero-extend (char is unsigned) the value and then
+> -	   perform a signed 32-bit subtraction.  */
+> -	lsr	data1, data1, #56
+> -	sub	result, data1, data2, lsr #56
+> -	ret
+> -#else
+>   	/* For big-endian we cannot use the trick with the syndrome value
+>   	   as carry-propagation can corrupt the upper bits if the trailing
+>   	   bytes in the string contain 0x01.  */
+> @@ -134,10 +141,11 @@ L(not_limit):
+>   	rev	has_nul, has_nul
+>   	orr	syndrome, diff, has_nul
+>   	clz	pos, syndrome
+> -	/* The MS-non-zero bit of the syndrome marks either the first bit
+> -	   that is different, or the top bit of the first zero byte.
+> +	/* The most-significant-non-zero bit of the syndrome marks either the
+> +	   first bit that is different, or the top bit of the first zero byte.
+>   	   Shifting left now will bring the critical information into the
+>   	   top bits.  */
+> +L(end_quick):
+>   	lsl	data1, data1, pos
+>   	lsl	data2, data2, pos
+>   	/* But we need to zero-extend (char is unsigned) the value and then
+> @@ -159,22 +167,12 @@ L(mutual_align):
+>   	neg	tmp3, count, lsl #3	/* 64 - bits(bytes beyond align). */
+>   	ldr	data2, [src2], #8
+>   	mov	tmp2, #~0
+> -	sub	limit_wd, limit, #1	/* limit != 0, so no underflow.  */
+> -#ifdef __AARCH64EB__
+> -	/* Big-endian.  Early bytes are at MSB.  */
+> -	lsl	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
+> -#else
+> -	/* Little-endian.  Early bytes are at LSB.  */
+> -	lsr	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
+> -#endif
+> -	and	tmp3, limit_wd, #7
+> -	lsr	limit_wd, limit_wd, #3
+> -	/* Adjust the limit. Only low 3 bits used, so overflow irrelevant.  */
+> -	add	limit, limit, count
+> -	add	tmp3, tmp3, count
+> +	LS_FW	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
+> +	/* Adjust the limit and ensure it doesn't overflow.  */
+> +	adds	limit, limit, count
+> +	csinv	limit, limit, xzr, lo
+>   	orr	data1, data1, tmp2
+>   	orr	data2, data2, tmp2
+> -	add	limit_wd, limit_wd, tmp3, lsr #3
+>   	b	L(start_realigned)
+>   
+>   	.p2align 4
+> @@ -197,13 +195,11 @@ L(done):
+>   	/* Align the SRC1 to a dword by doing a bytewise compare and then do
+>   	   the dword loop.  */
+>   L(try_misaligned_words):
+> -	lsr	limit_wd, limit, #3
+> -	cbz	count, L(do_misaligned)
+> +	cbz	count, L(src1_aligned)
+>   
+>   	neg	count, count
+>   	and	count, count, #7
+>   	sub	limit, limit, count
+> -	lsr	limit_wd, limit, #3
+>   
+>   L(page_end_loop):
+>   	ldrb	data1w, [src1], #1
+> @@ -214,48 +210,100 @@ L(page_end_loop):
+>   	subs	count, count, #1
+>   	b.hi	L(page_end_loop)
+>   
+> -L(do_misaligned):
+> -	/* Prepare ourselves for the next page crossing.  Unlike the aligned
+> -	   loop, we fetch 1 less dword because we risk crossing bounds on
+> -	   SRC2.  */
+> -	mov	count, #8
+> -	subs	limit_wd, limit_wd, #1
+> -	b.lo	L(done_loop)
+> +	/* The following diagram explains the comparison of misaligned strings.
+> +	   The bytes are shown in natural order. For little-endian, it is
+> +	   reversed in the registers. The "x" bytes are before the string.
+> +	   The "|" separates data that is loaded at one time.
+> +	   src1     | a a a a a a a a | b b b c c c c c | . . .
+> +	   src2     | x x x x x a a a   a a a a a b b b | c c c c c . . .
+> +
+> +	   After shifting in each step, the data looks like this:
+> +	                STEP_A              STEP_B              STEP_C
+> +	   data1    a a a a a a a a     b b b c c c c c     b b b c c c c c
+> +	   data2    a a a a a a a a     b b b 0 0 0 0 0     0 0 0 c c c c c
+> +
+> +	   The bytes with "0" are eliminated from the syndrome via mask.
+> +
+> +	   Align SRC2 down to 16 bytes. This way we can read 16 bytes at a
+> +	   time from SRC2. The comparison happens in 3 steps. After each step
+> +	   the loop can exit, or read from SRC1 or SRC2. */
+> +L(src1_aligned):
+> +	/* Calculate offset from 8 byte alignment to string start in bits. No
+> +	   need to mask offset since shifts are ignoring upper bits. */
+> +	lsl	offset, src2, #3
+> +	bic	src2, src2, #0xf
+> +	mov	mask, -1
+> +	neg	neg_offset, offset
+> +	ldr	data1, [src1], #8
+> +	ldp	tmp1, tmp2, [src2], #16
+> +	LS_BK	mask, mask, neg_offset
+> +	and	neg_offset, neg_offset, #63	/* Need actual value for cmp later. */
+> +	/* Skip the first compare if data in tmp1 is irrelevant. */
+> +	tbnz	offset, 6, L(misaligned_mid_loop)
+> +
+>   L(loop_misaligned):
+> -	and	tmp2, src2, #0xff8
+> -	eor	tmp2, tmp2, #0xff8
+> -	cbz	tmp2, L(page_end_loop)
+> +	/* STEP_A: Compare full 8 bytes when there is enough data from SRC2.*/
+> +	LS_FW	data2, tmp1, offset
+> +	LS_BK	tmp1, tmp2, neg_offset
+> +	subs	limit, limit, #8
+> +	orr	data2, data2, tmp1	/* 8 bytes from SRC2 combined from two regs.*/
+> +	sub	has_nul, data1, zeroones
+> +	eor	diff, data1, data2	/* Non-zero if differences found.  */
+> +	orr	tmp3, data1, #REP8_7f
+> +	csinv	endloop, diff, xzr, hi	/* If limit, set to all ones. */
+> +	bic	has_nul, has_nul, tmp3	/* Non-zero if NUL byte found in SRC1. */
+> +	orr	tmp3, endloop, has_nul
+> +	cbnz	tmp3, L(full_check)
+>   
+>   	ldr	data1, [src1], #8
+> -	ldr	data2, [src2], #8
+> -	sub	tmp1, data1, zeroones
+> -	orr	tmp2, data1, #REP8_7f
+> -	eor	diff, data1, data2	/* Non-zero if differences found.  */
+> -	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
+> -	ccmp	diff, #0, #0, eq
+> -	b.ne	L(not_limit)
+> -	subs	limit_wd, limit_wd, #1
+> -	b.pl	L(loop_misaligned)
+> +L(misaligned_mid_loop):
+> +	/* STEP_B: Compare first part of data1 to second part of tmp2. */
+> +	LS_FW	data2, tmp2, offset
+> +#ifdef __AARCH64EB__
+> +	/* For big-endian we do a byte reverse to avoid carry-propagation
+> +	problem described above. This way we can reuse the has_nul in the
+> +	next step and also use syndrome value trick at the end. */
+> +	rev	tmp3, data1
+> +	#define data1_fixed tmp3
+> +#else
+> +	#define data1_fixed data1
+> +#endif
+> +	sub	has_nul, data1_fixed, zeroones
+> +	orr	tmp3, data1_fixed, #REP8_7f
+> +	eor	diff, data2, data1	/* Non-zero if differences found.  */
+> +	bic	has_nul, has_nul, tmp3	/* Non-zero if NUL terminator.  */
+> +#ifdef __AARCH64EB__
+> +	rev	has_nul, has_nul
+> +#endif
+> +	cmp	limit, neg_offset, lsr #3
+> +	orr	syndrome, diff, has_nul
+> +	bic	syndrome, syndrome, mask	/* Ignore later bytes. */
+> +	csinv	tmp3, syndrome, xzr, hi	/* If limit, set to all ones. */
+> +	cbnz	tmp3, L(syndrome_check)
+>   
+> -L(done_loop):
+> -	/* We found a difference or a NULL before the limit was reached.  */
+> -	and	limit, limit, #7
+> -	cbz	limit, L(not_limit)
+> -	/* Read the last word.  */
+> -	sub	src1, src1, 8
+> -	sub	src2, src2, 8
+> -	ldr	data1, [src1, limit]
+> -	ldr	data2, [src2, limit]
+> -	sub	tmp1, data1, zeroones
+> -	orr	tmp2, data1, #REP8_7f
+> -	eor	diff, data1, data2	/* Non-zero if differences found.  */
+> -	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
+> -	ccmp	diff, #0, #0, eq
+> -	b.ne	L(not_limit)
+> +	/* STEP_C: Compare second part of data1 to first part of tmp1. */
+> +	ldp	tmp1, tmp2, [src2], #16
+> +	cmp	limit, #8
+> +	LS_BK	data2, tmp1, neg_offset
+> +	eor	diff, data2, data1	/* Non-zero if differences found.  */
+> +	orr	syndrome, diff, has_nul
+> +	and	syndrome, syndrome, mask	/* Ignore earlier bytes. */
+> +	csinv	tmp3, syndrome, xzr, hi	/* If limit, set to all ones. */
+> +	cbnz	tmp3, L(syndrome_check)
+> +
+> +	ldr	data1, [src1], #8
+> +	sub	limit, limit, #8
+> +	b	L(loop_misaligned)
+> +
+> +#ifdef	__AARCH64EB__
+> +L(syndrome_check):
+> +	clz	pos, syndrome
+> +	cmp	pos, limit, lsl #3
+> +	b.lo	L(end_quick)
+> +#endif
+>   
+>   L(ret0):
+>   	mov	result, #0
+>   	ret
+> -
+>   SYM_FUNC_END_PI(strncmp)
+>   EXPORT_SYMBOL_NOHWKASAN(strncmp)
