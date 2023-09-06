@@ -2,158 +2,183 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 147287946D3
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 01:10:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22C02796DA9
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 01:40:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234578AbjIFXKS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 19:10:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45070 "EHLO
+        id S232248AbjIFXku (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 19:40:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232142AbjIFXKS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 19:10:18 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.88])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46C2819AE;
-        Wed,  6 Sep 2023 16:10:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694041814; x=1725577814;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=fEw9pa/NdSdFIzoYPpsMEnIibMq4wIaQI1Ds5infKOM=;
-  b=E5rzABPYSUURtvuKavD2wZ4b1H84KsKUutiZMZiJe3II2r483z5XAlGM
-   7WHQIbxwevRaRyqlCp80h4pDIM60/dacXQI+UjnARlHePz1q9tF6g0EAR
-   pduio5XivamZs0wulZBJHPrCMmnLa8RpkaNgiORxFJ0A9TSdeQX0JF6g1
-   zZFRMS/JovbQH74h/JWerVXby5VYq8Px9cQOroyK9KIC6R3iYHXZBBPGw
-   hhz7L0hk5WfLgJKuTX6QhqPpAM4nFRF+EKfxp9XnTQEzzfE5JhIWGsiPS
-   NKy0ghWtHHpi49rkPSfHDbbWd2zz8jicA8icHZ34e1zOeto4WCcMoNCWi
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="408215572"
-X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
-   d="scan'208";a="408215572"
-Received: from fmsmga007.fm.intel.com ([10.253.24.52])
-  by fmsmga101.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 16:10:13 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="744866586"
-X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
-   d="scan'208";a="744866586"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by fmsmga007.fm.intel.com with ESMTP; 06 Sep 2023 16:10:09 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qe1ew-0000gB-2m;
-        Wed, 06 Sep 2023 23:10:06 +0000
-Date:   Thu, 7 Sep 2023 07:09:16 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jason Andryuk <jandryuk@gmail.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     oe-kbuild-all@lists.linux.dev,
-        Roger Pau Monne <roger.pau@citrix.com>,
-        stable@vger.kernel.org, Jason Andryuk <jandryuk@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when
- running as Xen dom0
-Message-ID: <202309070625.dJUDcGZg-lkp@intel.com>
-References: <20230906182125.48642-1-jandryuk@gmail.com>
-MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906182125.48642-1-jandryuk@gmail.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        with ESMTP id S230205AbjIFXku (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 19:40:50 -0400
+Received: from mail-qv1-xf32.google.com (mail-qv1-xf32.google.com [IPv6:2607:f8b0:4864:20::f32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 33BA3E66
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 16:40:46 -0700 (PDT)
+Received: by mail-qv1-xf32.google.com with SMTP id 6a1803df08f44-64c1d487e72so2397416d6.0
+        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 16:40:46 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=joelfernandes.org; s=google; t=1694043645; x=1694648445; darn=vger.kernel.org;
+        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
+         :from:content-transfer-encoding:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=DRFCUp1EgKStwtQrssEYAgdj2N9VkIEfiBYPju9CrRw=;
+        b=cgJn1MaptXmK+FnH7d2Tmqn7i5tPreOiZe/Ldu2y5TArL1LyLAcaTO24SuFstqlaNp
+         S3xYzz6kQTEX/jhRzzqZhuJx463U5VlzBwxbkyYw7JIwKuwBOk8WsCY/MtbZNeNtimGf
+         1MK+UmD6coIS3ZJ9I1wRAyNSSfIAXINc6jplg=
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694043645; x=1694648445;
+        h=to:in-reply-to:cc:references:message-id:date:subject:mime-version
+         :from:content-transfer-encoding:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=DRFCUp1EgKStwtQrssEYAgdj2N9VkIEfiBYPju9CrRw=;
+        b=dTq2U8VvTtcWTS+0ROpzhJOKPH0qFxNwqE75A71FhkXqQe/1v6EbPOKIvtCnqTdwiq
+         Fv74zXOpsFs/55GEkh2BQlbZdJeMRIkbBv1j6zH7ojnsl4WqZehOgnuHX0AWMnFOMbvf
+         Wvldg8Fm6z3mnOrenHLksDIHxYQn3GVgoG3sR4qtb8w45XYegohbV5Y768p7C9SdOM4Z
+         SuzKvKMC6PP344Ris4o8r8i8HxthPt72Q/e2teyCD4ViEi/hW6+/nQvqPtvdjoS5c2jz
+         0Zpd+B6idez5zIDKvgqhn5EdnPQM1nFqAEjhMB9V6RX67SjDIq6DRqCVwW09GgD9N3d2
+         CdRw==
+X-Gm-Message-State: AOJu0Yzri0I9D/dbxrKJAq0jAk4vvbjaJGYRpAaBWAdsSJd2PsQXYR9k
+        UkfWw8L9SQUHwonH/JSviyMNfA==
+X-Google-Smtp-Source: AGHT+IGhsdEfD5ztLaWrvVOZaisxBDSfdAxOEiVkQZGer7K/GGeg15/nfhi/lRo4HWni4JqF5NTDLg==
+X-Received: by 2002:a05:6214:1710:b0:64f:92dc:3de3 with SMTP id db16-20020a056214171000b0064f92dc3de3mr18245434qvb.6.1694043645278;
+        Wed, 06 Sep 2023 16:40:45 -0700 (PDT)
+Received: from smtpclient.apple ([45.88.220.67])
+        by smtp.gmail.com with ESMTPSA id p17-20020a0ce191000000b0064f4d3bc78csm5762918qvl.61.2023.09.06.16.40.44
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Sep 2023 16:40:44 -0700 (PDT)
+Content-Type: text/plain; charset=utf-8
+Content-Transfer-Encoding: quoted-printable
+From:   Joel Fernandes <joel@joelfernandes.org>
+Mime-Version: 1.0 (1.0)
+Subject: Re: [merged mm-hotfixes-stable] mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch removed from -mm tree
+Date:   Wed, 6 Sep 2023 19:40:33 -0400
+Message-Id: <2E4C860E-EB96-477E-B980-42DE61FF9AAF@joelfernandes.org>
+References: <CAA5enKZDKA9=gHJL1J=UVGFiB_LLBuR_4XHTasHauaFjeORHCQ@mail.gmail.com>
+Cc:     linux-kernel@vger.kernel.org, mm-commits@vger.kernel.org,
+        willy@infradead.org, urezki@gmail.com,
+        thunder.leizhen@huaweicloud.com, stable@vger.kernel.org,
+        qiang.zhang1211@gmail.com, paulmck@kernel.org,
+        akpm@linux-foundation.org
+In-Reply-To: <CAA5enKZDKA9=gHJL1J=UVGFiB_LLBuR_4XHTasHauaFjeORHCQ@mail.gmail.com>
+To:     Lorenzo Stoakes <lstoakes@gmail.com>
+X-Mailer: iPhone Mail (20B101)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Jason,
-
-kernel test robot noticed the following build errors:
-
-[auto build test ERROR on tip/x86/core]
-[also build test ERROR on v6.5]
-[cannot apply to rafael-pm/linux-next linus/master next-20230906]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
-
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Andryuk/acpi-processor-sanitize-_PDC-buffer-bits-when-running-as-Xen-dom0/20230907-022235
-base:   tip/x86/core
-patch link:    https://lore.kernel.org/r/20230906182125.48642-1-jandryuk%40gmail.com
-patch subject: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running as Xen dom0
-config: x86_64-randconfig-r011-20230907 (https://download.01.org/0day-ci/archive/20230907/202309070625.dJUDcGZg-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230907/202309070625.dJUDcGZg-lkp@intel.com/reproduce)
-
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309070625.dJUDcGZg-lkp@intel.com/
-
-All errors (new ones prefixed by >>):
-
-   drivers/acpi/processor_pdc.c: In function 'acpi_processor_eval_pdc':
->> drivers/acpi/processor_pdc.c:147:17: error: implicit declaration of function 'xen_sanitize_pdc' [-Werror=implicit-function-declaration]
-     147 |                 xen_sanitize_pdc(buffer);
-         |                 ^~~~~~~~~~~~~~~~
-   cc1: some warnings being treated as errors
 
 
-vim +/xen_sanitize_pdc +147 drivers/acpi/processor_pdc.c
+> On Sep 6, 2023, at 3:14 PM, Lorenzo Stoakes <lstoakes@gmail.com> wrote:
+>=20
+> =EF=BB=BFOn Wed, 6 Sept 2023 at 16:09, Andrew Morton <akpm@linux-foundatio=
+n.org> wrote:
+>>=20
+>>=20
+>> The quilt patch titled
+>>     Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+>> has been removed from the -mm tree.  Its filename was
+>>     mm-vmalloc-add-a-safer-version-of-find_vm_area-for-debug.patch
+>>=20
+>> This patch was dropped because it was merged into the mm-hotfixes-stable b=
+ranch
+>> of git://git.kernel.org/pub/scm/linux/kernel/git/akpm/mm
+>=20
+> Hmm, I had outstanding review on this :/ I guess I will have to send a
+> follow up patch to address those concerns...
 
-   116	
-   117	/*
-   118	 * _PDC is required for a BIOS-OS handshake for most of the newer
-   119	 * ACPI processor features.
-   120	 */
-   121	static acpi_status
-   122	acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
-   123	{
-   124		acpi_status status = AE_OK;
-   125		union acpi_object *obj;
-   126		u32 *buffer = NULL;
-   127	
-   128		obj = pdc_in->pointer;
-   129		buffer = (u32 *)(obj->buffer.pointer);
-   130	
-   131		if (boot_option_idle_override == IDLE_NOMWAIT) {
-   132			/*
-   133			 * If mwait is disabled for CPU C-states, the C2C3_FFH access
-   134			 * mode will be disabled in the parameter of _PDC object.
-   135			 * Of course C1_FFH access mode will also be disabled.
-   136			 */
-   137			buffer[2] &= ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
-   138		}
-   139	
-   140		if (xen_initial_domain()) {
-   141			/*
-   142			 * When Linux is running as Xen dom0, the hypervisor is the
-   143			 * entity in charge of the processor power management, and so
-   144			 * Xen needs to check the OS capabilities reported in the _PDC
-   145			 * buffer matches what the hypervisor driver supports.
-   146			 */
- > 147			xen_sanitize_pdc(buffer);
-   148		}
-   149	
-   150		status = acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
-   151	
-   152		if (ACPI_FAILURE(status))
-   153			acpi_handle_debug(handle,
-   154			    "Could not evaluate _PDC, using legacy perf control\n");
-   155	
-   156		return status;
-   157	}
-   158	
+That works me because we also had some disagreements on some of the suggesti=
+ons!
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Looking forward to your patch and discussing it!
+
+Cheers,
+
+ - Joel
+
+
+>=20
+>=20
+>>=20
+>> ------------------------------------------------------
+>> From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
+>> Subject: mm/vmalloc: add a safer version of find_vm_area() for debug
+>> Date: Mon, 4 Sep 2023 18:08:04 +0000
+>>=20
+>> It is unsafe to dump vmalloc area information when trying to do so from
+>> some contexts.  Add a safer trylock version of the same function to do a
+>> best-effort VMA finding and use it from vmalloc_dump_obj().
+>>=20
+>> [applied test robot feedback on unused function fix.]
+>> [applied Uladzislau feedback on locking.]
+>> Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernand=
+es.org
+>> Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+>> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+>> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+>> Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+>> Cc: Paul E. McKenney <paulmck@kernel.org>
+>> Cc: Zqiang <qiang.zhang1211@gmail.com>
+>> Cc: <stable@vger.kernel.org>
+>> Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
+>> Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+>> ---
+>>=20
+>> mm/vmalloc.c |   26 ++++++++++++++++++++++----
+>> 1 file changed, 22 insertions(+), 4 deletions(-)
+>>=20
+>> --- a/mm/vmalloc.c~mm-vmalloc-add-a-safer-version-of-find_vm_area-for-deb=
+ug
+>> +++ a/mm/vmalloc.c
+>> @@ -4278,14 +4278,32 @@ void pcpu_free_vm_areas(struct vm_struct
+>> #ifdef CONFIG_PRINTK
+>> bool vmalloc_dump_obj(void *object)
+>> {
+>> -       struct vm_struct *vm;
+>>        void *objp =3D (void *)PAGE_ALIGN((unsigned long)object);
+>> +       const void *caller;
+>> +       struct vm_struct *vm;
+>> +       struct vmap_area *va;
+>> +       unsigned long addr;
+>> +       unsigned int nr_pages;
+>> +
+>> +       if (!spin_trylock(&vmap_area_lock))
+>> +               return false;
+>> +       va =3D __find_vmap_area((unsigned long)objp, &vmap_area_root);
+>> +       if (!va) {
+>> +               spin_unlock(&vmap_area_lock);
+>> +               return false;
+>> +       }
+>>=20
+>> -       vm =3D find_vm_area(objp);
+>> -       if (!vm)
+>> +       vm =3D va->vm;
+>> +       if (!vm) {
+>> +               spin_unlock(&vmap_area_lock);
+>>                return false;
+>> +       }
+>> +       addr =3D (unsigned long)vm->addr;
+>> +       caller =3D vm->caller;
+>> +       nr_pages =3D vm->nr_pages;
+>> +       spin_unlock(&vmap_area_lock);
+>>        pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS=
+\n",
+>> -               vm->nr_pages, (unsigned long)vm->addr, vm->caller);
+>> +               nr_pages, addr, caller);
+>>        return true;
+>> }
+>> #endif
+>> _
+>>=20
+>> Patches currently in -mm which might be from joel@joelfernandes.org are
+>>=20
+>>=20
+>=20
+>=20
+> --
+> Lorenzo Stoakes
+> https://ljs.io
