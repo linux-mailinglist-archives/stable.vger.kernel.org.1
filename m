@@ -2,107 +2,91 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B670A7932DA
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 02:17:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1883D793307
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 02:49:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230251AbjIFARj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Tue, 5 Sep 2023 20:17:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59928 "EHLO
+        id S233624AbjIFAtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Tue, 5 Sep 2023 20:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49274 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229469AbjIFARi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 20:17:38 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.120])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 86AF71B4
-        for <stable@vger.kernel.org>; Tue,  5 Sep 2023 17:17:35 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693959455; x=1725495455;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=fsprNLE92UYWoVyvlzfMcV9/C+yTh2UuD5M65H8LqoE=;
-  b=kfBUKWyedfppq9jOzT52B5wU/xIcR1GrcmzsRg6HtKeuwb/aF/ulfDzY
-   Y0WX1zzHBLZQFL0lYhNADHcUmm6hJuEc0vq42DHFNJyNFeyvWPhs6nw7r
-   o6MDGl3BPuU07mrAU8Hm22y6F+UNw2qVENsW288ho41M5M4FFea39dzBD
-   gPZiQC+7thIih6dt+jNOdijWzkX5ua6fLxkyOv4fI2d6oj5qTGtlMpAzG
-   JpoiTg9uyWoEP4+HWuofNRAzyRle+wPcvqNPasv8CgR2lW/SBsihgG9Jt
-   S9KXEI6CSJ9vOABzegCAfiPxXNUkMZgI4U0HyAnpHImDv7wgjs9TDaMr+
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="375833568"
-X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
-   d="scan'208";a="375833568"
-Received: from orsmga003.jf.intel.com ([10.7.209.27])
-  by fmsmga104.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 17:17:34 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="691108819"
-X-IronPort-AV: E=Sophos;i="6.02,230,1688454000"; 
-   d="scan'208";a="691108819"
-Received: from yjie-desk1.jf.intel.com ([10.24.100.126])
-  by orsmga003-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 05 Sep 2023 17:17:34 -0700
-From:   Keyon Jie <yang.jie@linux.intel.com>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Doug Smythies <dsmythies@telus.net>, stable@vger.kernel.org
-Cc:     Yang Jie <yang.jie@linux.intel.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>
-Subject: [PATCH] cpufreq: intel_pstate: set stale CPU frequency to minimum
-Date:   Tue,  5 Sep 2023 17:16:46 -0700
-Message-Id: <20230906001646.338935-1-yang.jie@linux.intel.com>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S230312AbjIFAtU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Tue, 5 Sep 2023 20:49:20 -0400
+Received: from TWMBX02.aspeed.com (mail.aspeedtech.com [211.20.114.72])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BA07CDB;
+        Tue,  5 Sep 2023 17:49:14 -0700 (PDT)
+Received: from TWMBX02.aspeed.com (192.168.0.24) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server (TLS) id 15.0.1497.2; Wed, 6 Sep
+ 2023 08:49:12 +0800
+Received: from twmbx02.aspeed.com (192.168.10.10) by TWMBX02.aspeed.com
+ (192.168.0.24) with Microsoft SMTP Server id 15.0.1497.2 via Frontend
+ Transport; Wed, 6 Sep 2023 08:49:12 +0800
+From:   Tommy Huang <tommy_huang@aspeedtech.com>
+To:     <brendan.higgins@linux.dev>, <andi.shyti@kernel.org>,
+        <p.zabel@pengutronix.de>, <linux-i2c@vger.kernel.org>,
+        <openbmc@lists.ozlabs.org>
+CC:     <benh@kernel.crashing.org>, <joel@jms.id.au>, <andrew@aj.id.au>,
+        <linux-arm-kernel@lists.infradead.org>,
+        <linux-aspeed@lists.ozlabs.org>, <linux-kernel@vger.kernel.org>,
+        <BMC-SW@aspeedtech.com>, <jae.hyun.yoo@linux.intel.com>,
+        <stable@vger.kernel.org>
+Subject: [PATCH v3] i2c: aspeed: Reset the i2c controller when timeout occurs
+Date:   Wed, 6 Sep 2023 08:49:10 +0800
+Message-ID: <20230906004910.4157305-1-tommy_huang@aspeedtech.com>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.3 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,SPF_HELO_NONE,
-        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 7BIT
+Content-Type:   text/plain; charset=US-ASCII
+Received-SPF: Fail (TWMBX02.aspeed.com: domain of tommy_huang@aspeedtech.com
+ does not designate 192.168.10.10 as permitted sender)
+ receiver=TWMBX02.aspeed.com; client-ip=192.168.10.10;
+ helo=twmbx02.aspeed.com;
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_FAIL,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Doug Smythies <dsmythies@telus.net>
+Reset the i2c controller when an i2c transfer timeout occurs.
+The remaining interrupts and device should be reset to avoid
+unpredictable controller behavior.
 
-commit d51847acb018d83186e4af67bc93f9a00a8644f7 upstream.
-
-This fix applies to all stable kernel versions 5.18+.
-
-The intel_pstate CPU frequency scaling driver does not
-use policy->cur and it is 0.
-When the CPU frequency is outdated arch_freq_get_on_cpu()
-will default to the nominal clock frequency when its call to
-cpufreq_quick_getpolicy_cur returns the never updated 0.
-Thus, the listed frequency might be outside of currently
-set limits. Some users are complaining about the high
-reported frequency, albeit stale, when their system is
-idle and/or it is above the reduced maximum they have set.
-
-This patch will maintain policy_cur for the intel_pstate
-driver at the current minimum CPU frequency.
-
-Reported-by: Yang Jie <yang.jie@linux.intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217597
-Signed-off-by: Doug Smythies <dsmythies@telus.net>
-[ rjw: White space damage fixes and comment adjustment ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
-Signed-off-by: Keyon Jie <yang.jie@linux.intel.com>
+Fixes: 2e57b7cebb98 ("i2c: aspeed: Add multi-master use case support")
+Cc: Jae Hyun Yoo <jae.hyun.yoo@linux.intel.com>
+Cc: <stable@vger.kernel.org> # v5.1+
+Signed-off-by: Tommy Huang <tommy_huang@aspeedtech.com>
+Reviewed-by: Andi Shyti <andi.shyti@kernel.org>
 ---
- drivers/cpufreq/intel_pstate.c | 5 +++++
- 1 file changed, 5 insertions(+)
+V3: Submit this patch for clearing patch style typo.
+---
+ drivers/i2c/busses/i2c-aspeed.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/cpufreq/intel_pstate.c b/drivers/cpufreq/intel_pstate.c
-index d51f90f55c05..fbe3a4098743 100644
---- a/drivers/cpufreq/intel_pstate.c
-+++ b/drivers/cpufreq/intel_pstate.c
-@@ -2574,6 +2574,11 @@ static int intel_pstate_set_policy(struct cpufreq_policy *policy)
- 			intel_pstate_clear_update_util_hook(policy->cpu);
- 		intel_pstate_hwp_set(policy->cpu);
- 	}
-+	/*
-+	 * policy->cur is never updated with the intel_pstate driver, but it
-+	 * is used as a stale frequency value. So, keep it within limits.
-+	 */
-+	policy->cur = policy->min;
+diff --git a/drivers/i2c/busses/i2c-aspeed.c b/drivers/i2c/busses/i2c-aspeed.c
+index 2e5acfeb76c8..5a416b39b818 100644
+--- a/drivers/i2c/busses/i2c-aspeed.c
++++ b/drivers/i2c/busses/i2c-aspeed.c
+@@ -698,13 +698,16 @@ static int aspeed_i2c_master_xfer(struct i2c_adapter *adap,
  
- 	mutex_unlock(&intel_pstate_limits_lock);
+ 	if (time_left == 0) {
+ 		/*
+-		 * If timed out and bus is still busy in a multi master
+-		 * environment, attempt recovery at here.
++		 * In a multi-master setup, if a timeout occurs, attempt
++		 * recovery. But if the bus is idle, we still need to reset the
++		 * i2c controller to clear the remaining interrupts.
+ 		 */
+ 		if (bus->multi_master &&
+ 		    (readl(bus->base + ASPEED_I2C_CMD_REG) &
+ 		     ASPEED_I2CD_BUS_BUSY_STS))
+ 			aspeed_i2c_recover_bus(bus);
++		else
++			aspeed_i2c_reset(bus);
  
+ 		/*
+ 		 * If timed out and the state is still pending, drop the pending
 -- 
-2.34.1
+2.25.1
 
