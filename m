@@ -2,73 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 52C3E7935E6
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 09:06:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B61C7935F7
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 09:11:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229445AbjIFHG7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 03:06:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43778 "EHLO
+        id S230155AbjIFHLr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 03:11:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229927AbjIFHG6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 03:06:58 -0400
-Received: from smtp-relay-internal-0.canonical.com (smtp-relay-internal-0.canonical.com [185.125.188.122])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA08FE50
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 00:06:52 -0700 (PDT)
-Received: from mail-wm1-f71.google.com (mail-wm1-f71.google.com [209.85.128.71])
+        with ESMTP id S230350AbjIFHLq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 03:11:46 -0400
+Received: from smtp-relay-internal-1.canonical.com (smtp-relay-internal-1.canonical.com [185.125.188.123])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 276FF83
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 00:11:42 -0700 (PDT)
+Received: from mail-wr1-f71.google.com (mail-wr1-f71.google.com [209.85.221.71])
         (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
          key-exchange X25519 server-signature RSA-PSS (2048 bits) server-digest SHA256)
         (No client certificate requested)
-        by smtp-relay-internal-0.canonical.com (Postfix) with ESMTPS id 19A433F460
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 07:06:51 +0000 (UTC)
+        by smtp-relay-internal-1.canonical.com (Postfix) with ESMTPS id A0E173F17D
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 07:11:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=canonical.com;
-        s=20210705; t=1693984011;
-        bh=s66oUGo8hrMsvdXnZfYlr16tvYjZz8ogiPF8h0o69fc=;
+        s=20210705; t=1693984300;
+        bh=cU9VFPzW+Bp14ddGSVp6unLZ7Sxa3lrbEIU0KLlZ/F0=;
         h=From:To:Cc:Subject:Date:Message-Id:In-Reply-To:References:
          MIME-Version;
-        b=BXlU7NtbSnwDwSFH3sGI+fX5Es0BxMHwa2JGgswPXL92wTDYEaDordqyOZ/F1E7gD
-         WJhWiHxiW6JNr/e7iPFsFV87O/e5sUeUh3uOTVrZBmwbiP/qNAPrl+UpVG6ABvSiPQ
-         28y7L51jTxqgZ44cHa1JvmU8CtDsijOvPGRxbiiWy2X9t12jfcrbhh4T5MMt3v+0tW
-         0YXKaYoshcAqMd5mnYCv5UeLn8I8RIAfVnqmJ6bp43buLKzukv+UAb8V+oEWcFybz1
-         cAGXksogD/EShF25OTM8sKewdp8MhnyhipM+CV/Js16fsnuFcBXWGBgxnnKuUyaT+5
-         v4T3VKaP7YYsA==
-Received: by mail-wm1-f71.google.com with SMTP id 5b1f17b1804b1-401d8873904so21448295e9.0
-        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 00:06:51 -0700 (PDT)
+        b=da5H7scRaEiPyT1KFMO6S0P8WuHxV4D8zE7LVKRjH6latKfIdlyCgu2vtA6nBe9FN
+         2sNl12YCAljR/bGzpeuvE/cjYawxzgv/6OITQOrHaUvUmuuRDWKRLrZ63KcQh1i6xL
+         IAHefzLfAkpn4EQqmGkhIghuE0DX/4dL4OtZI/8Zu6xp3dJJuSqJqxnsUZU7e+UavP
+         iU8snpQWm4xGleYNQj5LHHO+ZdsC3VmxWuhLiERmlk3srfyroLj6DgVXf2XSZP7hoV
+         cPqjKuD8FO9hLTcL+UEfMj+GH3fQhJfPm5qoJ1Oo7wByiDb9H+MJ7knroST+HiRDXc
+         vnmPzhFmKXwFQ==
+Received: by mail-wr1-f71.google.com with SMTP id ffacd0b85a97d-31f3eaa5c5eso1795634f8f.3
+        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 00:11:40 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693984010; x=1694588810;
+        d=1e100.net; s=20221208; t=1693984300; x=1694589100;
         h=content-transfer-encoding:mime-version:references:in-reply-to
          :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
          :subject:date:message-id:reply-to;
-        bh=s66oUGo8hrMsvdXnZfYlr16tvYjZz8ogiPF8h0o69fc=;
-        b=Wy8yQR2LkD/7EPRnhSvGTSbYpgZd53dxZAaQf/shPlBpAJRkvuNZjb8QeOTUmTGPYr
-         mFCGDGID8DSb7jEX87X2ro+Lzai/7aLPvvz6idjs1ab3CUeWCQ/npKf2J61Mf/e//Bey
-         4Gt4xKbJk/tsO+VtbnKyglqCJkcFI9D9GDZ5QL6z8WNjrtOy4AfMGchoZKCdwWoI6kp2
-         ItF92O8b8z9YdLOsN5nBpbF0xMmMPXo0DQrLL9OU7XGKMNY6NeJLFuWIiJXbV+StrU+N
-         iHX+ePf1wOocd9E7k6jkN4o0QZiBjyd7PQ7EWlhQG5EZRbJSvqU7CI/jMemsr7uDxO8R
-         SgZg==
-X-Gm-Message-State: AOJu0Yx1oBI4P1w7d4I9EiFs5MnArrnHUsmvKoXBmmnmEfjHwdfr5RFU
-        8UI2cDKx7FxvSI/zuLvW3dJNSudbR3Tr/ml3ZgTFWjQIbIz4epQ+Ddlh3zvedJy8NB5EcdeTShN
-        8YWRv6Q+Zpo+/TeSUv4+W/h8F+aPuP2Hiqic/HGiFUQ==
-X-Received: by 2002:a05:600c:2349:b0:3fb:c9f4:1506 with SMTP id 9-20020a05600c234900b003fbc9f41506mr1604473wmq.1.1693984010753;
-        Wed, 06 Sep 2023 00:06:50 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IET6m6j6p5u5NO5LJ5GNZGqya7D2uJkXi2gdcbXVf2lzlm52fzoCF42F5MQc6CAPoLrtMgCjA==
-X-Received: by 2002:a05:600c:2349:b0:3fb:c9f4:1506 with SMTP id 9-20020a05600c234900b003fbc9f41506mr1604451wmq.1.1693984010346;
-        Wed, 06 Sep 2023 00:06:50 -0700 (PDT)
+        bh=cU9VFPzW+Bp14ddGSVp6unLZ7Sxa3lrbEIU0KLlZ/F0=;
+        b=RVZMe5ODiO5vcjA3GaZ2v5KXg93iUZb80450MjQR/qsrZHX0x/lGlRx5c9wd9vFnxN
+         RIsV3avno6a9loc7k5RrC/wNGKrE61jl4KVky/dGptzQdIIVj9ZrqaZDC5oyVsMlhK2L
+         PVMvSr7+MLGwNjHJWWn/IXPVn+e6fsTLuy2Wy0FZ3ooLJwhtytpdqSwjmoRJzKFgmW4u
+         1yTA7w7D5tdfdojFbaETg7JVziET9GYTpHjtlMTRTCwfZ+0LCl57/zbA2pcK+27QVULp
+         JuH7FpJLsr8i5Pz0o2mtruuQRXKOGeqHxTt0fBkCF6fKufh+2YWLQa1JUSg72VAMsEnR
+         tADQ==
+X-Gm-Message-State: AOJu0YyfyUXV408R6cq1BNMgFf4hBe2vBmRopbRkFsBO5moGR+DMuzZo
+        CeoxUrIFetd1PmfLXhLzgD0rcoBtPYA39y80+Rcc/hJXrm/cU5mGjTviFTaRfLYbuQUxJmhOjYK
+        N3Lx1MYVoi06iZqZZhDl0PnSnTY1c46upD/mnHwAbGA==
+X-Received: by 2002:a05:6000:1092:b0:319:6fff:f2c1 with SMTP id y18-20020a056000109200b003196ffff2c1mr1418890wrw.38.1693984300345;
+        Wed, 06 Sep 2023 00:11:40 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IHCzXU+TPwMJkUNoKeEaDZ0ctOlQdns5DrLhlHQh9jfylPzAdxKZ7oaSX7pSsjXCstELfMrpg==
+X-Received: by 2002:a05:6000:1092:b0:319:6fff:f2c1 with SMTP id y18-20020a056000109200b003196ffff2c1mr1418881wrw.38.1693984300007;
+        Wed, 06 Sep 2023 00:11:40 -0700 (PDT)
 Received: from localhost ([194.191.244.86])
-        by smtp.gmail.com with ESMTPSA id a2-20020adff7c2000000b003177074f830sm19532309wrq.59.2023.09.06.00.06.49
+        by smtp.gmail.com with ESMTPSA id f3-20020a5d6643000000b00318147fd2d3sm19519369wrw.41.2023.09.06.00.11.39
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 00:06:50 -0700 (PDT)
+        Wed, 06 Sep 2023 00:11:39 -0700 (PDT)
 From:   Juerg Haefliger <juerg.haefliger@canonical.com>
 To:     stable@vger.kernel.org
 Cc:     Juerg Haefliger <juerg.haefliger@canonical.com>,
         Hilda Wu <hildawu@realtek.com>,
         Max Chou <max.chou@realtek.com>,
         Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Subject: [PATCH 6.4.y] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for RTL8852C
-Date:   Wed,  6 Sep 2023 09:06:43 +0200
-Message-Id: <20230906070643.36088-1-juerg.haefliger@canonical.com>
+Subject: [PATCH 6.5.y] Bluetooth: btrtl: Load FW v2 otherwise FW v1 for RTL8852C
+Date:   Wed,  6 Sep 2023 09:11:29 +0200
+Message-Id: <20230906071129.37071-1-juerg.haefliger@canonical.com>
 X-Mailer: git-send-email 2.39.2
-In-Reply-To: <2023083022-salvage-resume-3b5d@gregkh>
-References: <2023083022-salvage-resume-3b5d@gregkh>
+In-Reply-To: <2023083021-unease-catfish-92ad@gregkh>
+References: <2023083021-unease-catfish-92ad@gregkh>
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
@@ -97,7 +97,7 @@ Signed-off-by: Juerg Haefliger <juerg.haefliger@canonical.com>
  1 file changed, 45 insertions(+), 25 deletions(-)
 
 diff --git a/drivers/bluetooth/btrtl.c b/drivers/bluetooth/btrtl.c
-index 2915c82d719d..c22c1d10cc46 100644
+index d978e7cea873..8824686bb09d 100644
 --- a/drivers/bluetooth/btrtl.c
 +++ b/drivers/bluetooth/btrtl.c
 @@ -101,21 +101,21 @@ static const struct id_table ic_id_table[] = {
@@ -337,14 +337,12 @@ index 2915c82d719d..c22c1d10cc46 100644
  	if (btrtl_dev->fw_len < 0) {
  		rtl_dev_err(hdev, "firmware file %s not found",
  			    btrtl_dev->ic_info->fw_name);
-@@ -1382,6 +1401,7 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bs_config.bin");
+@@ -1398,4 +1417,5 @@ MODULE_FIRMWARE("rtl_bt/rtl8852bs_config.bin");
  MODULE_FIRMWARE("rtl_bt/rtl8852bu_fw.bin");
  MODULE_FIRMWARE("rtl_bt/rtl8852bu_config.bin");
  MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw.bin");
 +MODULE_FIRMWARE("rtl_bt/rtl8852cu_fw_v2.bin");
  MODULE_FIRMWARE("rtl_bt/rtl8852cu_config.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8851bu_fw.bin");
- MODULE_FIRMWARE("rtl_bt/rtl8851bu_config.bin");
 -- 
 2.39.2
 
