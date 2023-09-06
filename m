@@ -2,81 +2,120 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 71835793761
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 10:48:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 67427793756
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 10:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231710AbjIFIsR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 04:48:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41512 "EHLO
+        id S235682AbjIFIqr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 04:46:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235803AbjIFIsQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 04:48:16 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 63E8010C6
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 01:48:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1693990080; x=1725526080;
-  h=date:from:to:cc:subject:message-id:mime-version:
-   in-reply-to;
-  bh=TggOEzEDryBlOwrPosesuTsOkoaDpapkrKi2Dhg7Ems=;
-  b=TdOv/1Lfwe6e+qPSfah8z1CNIugYH/EkJ65nirXXkuXe/meM3tib/tpq
-   /VDo6Aq0/mtEZ+NXaM0zRfynel6Waog4wkSBxEGqD/Dil+EIyNJAZ+xxJ
-   hthoFjp32e4L0WxuqhO6hoNyfGAfbD6K8hE8LTdEz8RXOwlu4zciUX9wl
-   NU5k7ELQFgGai71o481pRedql3Jvi6JSSWpCdtyd1c79Pwk+RNLE60igg
-   SYIRIzQ2VtpoWlB/E6Yi9kpJObYP9szh26cf7iwcFkpkT5qfaDwYtfhIR
-   vK3JeYE7mIRp3ixq+c759hvoTeYbs7qFODW96dpgLUWGwBRkzrr2TFEyz
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="463391343"
-X-IronPort-AV: E=Sophos;i="6.02,231,1688454000"; 
-   d="scan'208";a="463391343"
-Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 01:47:59 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10824"; a="915186176"
-X-IronPort-AV: E=Sophos;i="6.02,231,1688454000"; 
-   d="scan'208";a="915186176"
-Received: from lkp-server02.sh.intel.com (HELO e0b2ea88afd5) ([10.239.97.151])
-  by orsmga005.jf.intel.com with ESMTP; 06 Sep 2023 01:47:58 -0700
-Received: from kbuild by e0b2ea88afd5 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qdoCS-0002bm-2l;
-        Wed, 06 Sep 2023 08:47:50 +0000
-Date:   Wed, 6 Sep 2023 16:45:43 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Hongchen Zhang <zhanghongchen@loongson.cn>
-Cc:     stable@vger.kernel.org, oe-kbuild-all@lists.linux.dev
-Subject: Re: [PATCH v2] LoongArch: add p?d_leaf() definitions
-Message-ID: <ZPg8Nx11gZQrXUKK@e5f9ae3a7ebf>
+        with ESMTP id S235613AbjIFIqq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 04:46:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E64CE9
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 01:46:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1693989959;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=HiO4dpO0VY1hu4txDNG3Nh8hvwZDWTPnz7X+5XzDdqw=;
+        b=Wd+1C1ofL9t1wQ2EFqW+/TEbAKBA35lk14YN6tuHJBh7AzQ7TEau5qUcMvNokJx1ladDJb
+        JiqGYAvmzfT4DRtj0NTaaiqh00opWQrCxe9WZt3bUbt7+9S63e1b8YBOcMcr8HCFOXQYJW
+        40UW5lx0+qZYLvxCs8aD5odZ0GgXMvg=
+Received: from mail-wr1-f72.google.com (mail-wr1-f72.google.com
+ [209.85.221.72]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-122-hvm5EoZiO_aT1TLl6c8blA-1; Wed, 06 Sep 2023 04:45:58 -0400
+X-MC-Unique: hvm5EoZiO_aT1TLl6c8blA-1
+Received: by mail-wr1-f72.google.com with SMTP id ffacd0b85a97d-315af0252c2so1930680f8f.0
+        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 01:45:58 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1693989957; x=1694594757;
+        h=content-transfer-encoding:in-reply-to:organization:from:references
+         :cc:to:content-language:subject:user-agent:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=HiO4dpO0VY1hu4txDNG3Nh8hvwZDWTPnz7X+5XzDdqw=;
+        b=fMCbyxgFgG4N50/h7qbOSk9B73LtzPS8zqOtFLsDWr1kY5BZtC10sedzjapLtBeCWy
+         MLB/vafel4pd4HPzeHPrsmLU4JkYblWmFNvkELmBpABGDsL4p0jFD7x3eXLwAme7UFOz
+         g/RkOp2+VgAgxS0eiGaOPTFmfwCV8ekVmStr3wLbZDzh8anLxaNJFFl61UquCRnnkt7E
+         Y6upZo7roz75O5ki93SI0x7oB4aiH+MqPrGxRlt4RRbpYeEhMGSgHjE/4221yyT8/P0K
+         8sZ+srVr3ktciF3Gh3k+4Mh0aGxMhE7g3fAbLlTH9s3quBtXaUTr1kVQ/eyyKrE+vRcQ
+         a+/Q==
+X-Gm-Message-State: AOJu0YzcFPvwYaq7I1Z+ZdEApV5Acz1ts683edU0c6IZlGSVcxeVafdH
+        Ix1T7IaH17K9dpVEsUqqhGmjvifrTSBL8qS7sgGDDMZv6CQrnn/M8bmCBNiqCz4hxweWbP42rBu
+        htVGhDzyGGgq5DUIs
+X-Received: by 2002:a5d:464a:0:b0:314:3a3d:5d1f with SMTP id j10-20020a5d464a000000b003143a3d5d1fmr1841535wrs.19.1693989957074;
+        Wed, 06 Sep 2023 01:45:57 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGQmR4iZGBEiYiY4s675XAQ+S5BoOwlY5W6/yYJfzgEBy039rqvKU8y1+dEwqdV6Ytm0AzESA==
+X-Received: by 2002:a5d:464a:0:b0:314:3a3d:5d1f with SMTP id j10-20020a5d464a000000b003143a3d5d1fmr1841522wrs.19.1693989956711;
+        Wed, 06 Sep 2023 01:45:56 -0700 (PDT)
+Received: from ?IPV6:2003:cb:c70c:6c00:92a4:6f8:ff7e:6853? (p200300cbc70c6c0092a406f8ff7e6853.dip0.t-ipconnect.de. [2003:cb:c70c:6c00:92a4:6f8:ff7e:6853])
+        by smtp.gmail.com with ESMTPSA id m15-20020a056000180f00b003142ea7a661sm19636219wrh.21.2023.09.06.01.45.55
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Sep 2023 01:45:55 -0700 (PDT)
+Message-ID: <f7ca2e61-825a-f6cb-09b0-3b12e2c308ac@redhat.com>
+Date:   Wed, 6 Sep 2023 10:45:54 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH v2] LoongArch: add p?d_leaf() definitions
+Content-Language: en-US
+To:     Hongchen Zhang <zhanghongchen@loongson.cn>,
+        Huacai Chen <chenhuacai@kernel.org>,
+        WANG Xuerui <kernel@xen0n.name>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Mike Rapoport IBM)" <rppt@kernel.org>,
+        Feiyang Chen <chenfeiyang@loongson.cn>,
+        Qi Zheng <zhengqi.arch@bytedance.com>,
+        "Matthew Wilcox Oracle)" <willy@infradead.org>,
+        Kefeng Wang <wangkefeng.wang@huawei.com>,
+        Jiaxun Yang <jiaxun.yang@flygoat.com>
+Cc:     loongarch@lists.linux.dev, linux-kernel@vger.kernel.org,
+        stable@vger.kernel.org, loongson-kernel@lists.loongnix.cn
+References: <20230906084351.3533-1-zhanghongchen@loongson.cn>
+From:   David Hildenbrand <david@redhat.com>
+Organization: Red Hat
 In-Reply-To: <20230906084351.3533-1-zhanghongchen@loongson.cn>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+On 06.09.23 10:43, Hongchen Zhang wrote:
+> When I do LTP test, LTP test case ksm06 caused panic at
+> 	break_ksm_pmd_entry
+> 	  -> pmd_leaf (Huge page table but False)
+> 	  -> pte_present (panic)
+> 
+> The reason is pmd_leaf is not defined, So like
+> commit 501b81046701 ("mips: mm: add p?d_leaf() definitions")
+> add p?d_leaf() definition for LoongArch.
+> 
+> v2: add Fixes: in commit message.
 
-Thanks for your patch.
+This belongs under the "---". I assume whoever picks that up can fix it up.
 
-FYI: kernel test robot notices the stable kernel rule is not satisfied.
+> 
+> Fixes: 09cfefb7fa70 ("LoongArch: Add memory management")
+> Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+> ---
 
-The check is based on https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html/#option-1
+Acked-by: David Hildenbrand <david@redhat.com>
 
-Rule: add the tag "Cc: stable@vger.kernel.org" in the sign-off area to have the patch automatically included in the stable tree.
-Subject: [PATCH v2] LoongArch: add p?d_leaf() definitions
-Link: https://lore.kernel.org/stable/20230906084351.3533-1-zhanghongchen%40loongson.cn
+We should CC stable. I assume whoever picks that up can fix it up.
 
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+Cheers,
 
-
+David / dhildenb
 
