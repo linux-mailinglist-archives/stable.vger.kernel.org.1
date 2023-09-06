@@ -2,48 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA719794487
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 22:29:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7AC579449E
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 22:37:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244436AbjIFU3B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 16:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41590 "EHLO
+        id S241626AbjIFUhx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 16:37:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244416AbjIFU3A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 16:29:00 -0400
+        with ESMTP id S244552AbjIFUhu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 16:37:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1649519A8;
-        Wed,  6 Sep 2023 13:28:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 614A5C433CA;
-        Wed,  6 Sep 2023 20:28:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694032133;
-        bh=U8kPmxYsMjIvqPNRkmxE87s2iwa4XFCy1WNJhmiR+g0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=n3wRmNTYXjbtSV5VmZXeq4bxuNw4aFB79zhPbqQ+U1x5UngfJl02ovzH/QDFvp7p9
-         sPb4GKOJRi5GEnvxDLaRXKWOzx/Obtuurm4G/MsugmdUDS6SvD8ljiH8o4Ss4x1S00
-         AHxF7upt4D7flaGRmf8PrWRLKqOIj7/l38FBd2ORwErbxHmbDulz/VdEEk3TM5iACu
-         TrNRekNLSKW/InToobL/L7lDeDtGxoULqS0Js87i/dt9ADgiM8UfrQp8tR++t8cFnq
-         Rj63GCBlw/K6VQOpch/1ZMnLrgYgtu46WIaGoj3oJDB5IcmK4pG5BFvB0G3AGnqbzV
-         fKBbSTrExaIVg==
-Received: (nullmailer pid 243952 invoked by uid 1000);
-        Wed, 06 Sep 2023 20:28:51 -0000
-Date:   Wed, 6 Sep 2023 15:28:51 -0500
-From:   Rob Herring <robh@kernel.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     stable@vger.kernel.org, linux-security-module@vger.kernel.org,
-        devicetree@vger.kernel.org, frowand.list@gmail.com,
-        robh+dt@kernel.org, sashal@kernel.org, dmitry.kasatkin@gmail.com,
-        gregkh@linuxfoundation.org, linux-integrity@vger.kernel.org,
-        zohar@linux.ibm.com
-Subject: Re: [PATCH 5.15] of: kexec: Mark ima_{free,stable}_kexec_buffer() as
- __init
-Message-ID: <169403211998.243709.4772468997015448407.robh@kernel.org>
-References: <20230905-5-15-of-kexec-modpost-warning-v1-1-4138b2e96b4e@kernel.org>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4D8B81BE3;
+        Wed,  6 Sep 2023 13:37:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 752DEC433C7;
+        Wed,  6 Sep 2023 20:37:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694032660;
+        bh=WNCTFefz3CcpzqKSotqoAygswWbEwTNxu8p3XslG08E=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Omou1izHD182NcmjOiMK/LG3FaV5ctirRXTFyaBG16tE7r5v1ka/Mo9Q/79wcsjbj
+         SE1oESgM34xqU2afWZz8xc7kw49cHLzrs3/12QDfPg9UOPCtGVjYv/ARz1dUEb5Dl6
+         DUJbVp3yD2RR78ZfNfo2JTSt2rhMrePIrZ+9Bd3k=
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     linux-kernel@vger.kernel.org, akpm@linux-foundation.org,
+        torvalds@linux-foundation.org, stable@vger.kernel.org
+Cc:     lwn@lwn.net, jslaby@suse.cz,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Linux 6.5.2
+Date:   Wed,  6 Sep 2023 21:37:35 +0100
+Message-ID: <2023090636-powwow-racism-2b6e@gregkh>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230905-5-15-of-kexec-modpost-warning-v1-1-4138b2e96b4e@kernel.org>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
@@ -53,37 +43,150 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+I'm announcing the release of the 6.5.2 kernel.
 
-On Tue, 05 Sep 2023 13:36:11 -0700, Nathan Chancellor wrote:
-> This commit has no direct upstream equivalent.
-> 
-> After commit d48016d74836 ("mm,ima,kexec,of: use memblock_free_late from
-> ima_free_kexec_buffer") in 5.15, there is a modpost warning for certain
-> configurations:
-> 
->   WARNING: modpost: vmlinux.o(.text+0xb14064): Section mismatch in reference from the function ima_free_kexec_buffer() to the function .init.text:__memblock_free_late()
->   The function ima_free_kexec_buffer() references
->   the function __init __memblock_free_late().
->   This is often because ima_free_kexec_buffer lacks a __init
->   annotation or the annotation of __memblock_free_late is wrong.
-> 
-> In mainline, there is no issue because ima_free_kexec_buffer() is marked
-> as __init, which was done as part of commit b69a2afd5afc ("x86/kexec:
-> Carry forward IMA measurement log on kexec") in 6.0, which is not
-> suitable for stable.
-> 
-> Mark ima_free_kexec_buffer() and its single caller
-> ima_load_kexec_buffer() as __init in 5.15, as ima_load_kexec_buffer() is
-> only called from ima_init(), which is __init, clearing up the warning.
-> 
-> Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> ---
->  drivers/of/kexec.c                 | 2 +-
->  include/linux/of.h                 | 2 +-
->  security/integrity/ima/ima.h       | 2 +-
->  security/integrity/ima/ima_kexec.c | 2 +-
->  4 files changed, 4 insertions(+), 4 deletions(-)
-> 
+All users of the 6.5 kernel series must upgrade.
 
-Acked-by: Rob Herring <robh@kernel.org>
+The updated 6.5.y git tree can be found at:
+	git://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stable.git linux-6.5.y
+and can be browsed at the normal kernel.org git web browser:
+	https://git.kernel.org/?p=linux/kernel/git/stable/linux-stable.git;a=summary
+
+thanks,
+
+greg k-h
+
+------------
+
+ Documentation/devicetree/bindings/serial/nxp,sc16is7xx.txt |   46 +++++++++++++
+ Makefile                                                   |    2 
+ arch/arm/mach-pxa/sharpsl_pm.c                             |    2 
+ arch/arm/mach-pxa/spitz.c                                  |   14 ---
+ arch/mips/alchemy/devboards/db1000.c                       |    8 --
+ arch/mips/alchemy/devboards/db1200.c                       |   19 -----
+ arch/mips/alchemy/devboards/db1300.c                       |   10 --
+ drivers/firmware/stratix10-svc.c                           |    2 
+ drivers/fsi/fsi-master-ast-cf.c                            |    1 
+ drivers/gpu/drm/amd/amdgpu/gmc_v10_0.c                     |    4 -
+ drivers/gpu/drm/amd/amdgpu/gmc_v11_0.c                     |    4 -
+ drivers/hid/wacom.h                                        |    1 
+ drivers/hid/wacom_sys.c                                    |   25 +++++--
+ drivers/hid/wacom_wac.c                                    |    1 
+ drivers/hid/wacom_wac.h                                    |    1 
+ drivers/mmc/host/Kconfig                                   |    5 -
+ drivers/net/ethernet/freescale/enetc/enetc_ptp.c           |    2 
+ drivers/net/wireless/ath/ath11k/dp_tx.c                    |   10 +-
+ drivers/net/wireless/mediatek/mt76/mt76_connac_mac.c       |    7 +
+ drivers/net/wireless/mediatek/mt76/mt7921/main.c           |    2 
+ drivers/net/wireless/realtek/rtw88/usb.c                   |    5 +
+ drivers/pinctrl/pinctrl-amd.c                              |    4 -
+ drivers/rtc/rtc-ds1685.c                                   |    2 
+ drivers/staging/rtl8712/os_intfs.c                         |    1 
+ drivers/staging/rtl8712/usb_intf.c                         |    1 
+ drivers/tty/serial/qcom_geni_serial.c                      |    5 +
+ drivers/tty/serial/sc16is7xx.c                             |   17 ++++
+ drivers/usb/chipidea/ci_hdrc_imx.c                         |   10 +-
+ drivers/usb/chipidea/usbmisc_imx.c                         |    6 +
+ drivers/usb/dwc3/dwc3-meson-g12a.c                         |    6 +
+ drivers/usb/serial/option.c                                |    7 +
+ drivers/usb/typec/tcpm/tcpci.c                             |    4 +
+ drivers/usb/typec/tcpm/tcpm.c                              |    7 +
+ fs/erofs/zdata.c                                           |    2 
+ fs/nilfs2/alloc.c                                          |    3 
+ fs/nilfs2/inode.c                                          |    7 +
+ fs/smb/server/auth.c                                       |    3 
+ fs/smb/server/oplock.c                                     |    2 
+ fs/smb/server/smb2pdu.c                                    |    2 
+ fs/smb/server/smb2pdu.h                                    |    2 
+ fs/smb/server/transport_rdma.c                             |   25 +++++--
+ include/linux/usb/tcpci.h                                  |    1 
+ kernel/module/main.c                                       |   14 +++
+ kernel/trace/trace.c                                       |    4 -
+ sound/usb/stream.c                                         |   11 ++-
+ 45 files changed, 219 insertions(+), 98 deletions(-)
+
+Aaron Armstrong Skomra (1):
+      HID: wacom: remove the battery when the EKR is off
+
+Arnd Bergmann (1):
+      ARM: pxa: remove use of symbol_get()
+
+Badhri Jagan Sridharan (1):
+      tcpm: Avoid soft reset when partner does not support get_status
+
+Brian Foster (1):
+      tracing: Zero the pipe cpumask on alloc to avoid spurious -EBUSY
+
+Christoph Hellwig (4):
+      mmc: au1xmmc: force non-modular build and remove symbol_get usage
+      net: enetc: use EXPORT_SYMBOL_GPL for enetc_phc_index
+      rtc: ds1685: use EXPORT_SYMBOL_GPL for ds1685_rtc_poweroff
+      modules: only allow symbol_get of EXPORT_SYMBOL_GPL modules
+
+Deren Wu (2):
+      wifi: mt76: mt7921: do not support one stream on secondary antenna only
+      wifi: mt76: mt7921: fix skb leak by txs missing in AMSDU
+
+Gao Xiang (1):
+      erofs: ensure that the post-EOF tails are all zeroed
+
+Greg Kroah-Hartman (1):
+      Linux 6.5.2
+
+Hugo Villeneuve (3):
+      serial: sc16is7xx: fix broken port 0 uart init
+      serial: sc16is7xx: fix bug when first setting GPIO direction
+      dt-bindings: sc16is7xx: Add property to change GPIO function
+
+Johan Hovold (1):
+      serial: qcom-geni: fix opp vote on shutdown
+
+Juerg Haefliger (1):
+      fsi: master-ast-cf: Add MODULE_FIRMWARE macro
+
+Lang Yu (1):
+      drm/amdgpu: correct vmhub index in GMC v10/11
+
+Luke Lu (1):
+      usb: dwc3: meson-g12a: do post init to fix broken usb after resumption
+
+Marco Felsch (1):
+      usb: typec: tcpci: clear the fault status bit
+
+Mario Limonciello (1):
+      pinctrl: amd: Don't show `Invalid config param` errors
+
+Martin Kohn (1):
+      USB: serial: option: add Quectel EM05G variant (0x030e)
+
+Nam Cao (1):
+      staging: rtl8712: fix race condition
+
+Namjae Jeon (4):
+      ksmbd: fix wrong DataOffset validation of create context
+      ksmbd: fix slub overflow in ksmbd_decode_ntlmssp_auth_blob()
+      ksmbd: replace one-element array with flex-array member in struct smb2_ea_info
+      ksmbd: reduce descriptor size if remaining bytes is less than request size
+
+Ryusuke Konishi (1):
+      nilfs2: fix WARNING in mark_buffer_dirty due to discarded buffer reuse
+
+Sascha Hauer (1):
+      wifi: rtw88: usb: kill and free rx urbs on probe failure
+
+Slark Xiao (1):
+      USB: serial: option: add FOXCONN T99W368/T99W373 product
+
+Sven Eckelmann (2):
+      wifi: ath11k: Don't drop tx_status when peer cannot be found
+      wifi: ath11k: Cleanup mac80211 references on failure during tx_complete
+
+Takashi Iwai (1):
+      ALSA: usb-audio: Fix init call orders for UAC1
+
+Wang Ming (1):
+      firmware: stratix10-svc: Fix an NULL vs IS_ERR() bug in probe
+
+Xu Yang (1):
+      usb: chipidea: imx: improve logic if samsung,picophy-* parameter is 0
 
