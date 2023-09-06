@@ -2,55 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58F0A7942A4
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 20:03:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 36F477942AE
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 20:03:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241011AbjIFSDB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 14:03:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39512 "EHLO
+        id S234620AbjIFSDw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 14:03:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234620AbjIFSDB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 14:03:01 -0400
+        with ESMTP id S240648AbjIFSDv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 14:03:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D86C5CE4;
-        Wed,  6 Sep 2023 11:02:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75F92C433C7;
-        Wed,  6 Sep 2023 18:02:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B4D3CE6
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 11:03:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2426DC433C8;
+        Wed,  6 Sep 2023 18:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694023376;
-        bh=Rf86S0GxTyXZ08IQT9es7jcFEFfLoJuIUfMNM+bYPLc=;
-        h=Date:From:To:Subject:Reply-To:References:In-Reply-To:From;
-        b=dVW1AL5/IjlphjmPLz01KHytT9q/aoqrNGTecd8pbLCpoCoWhpvLoY4MftEygnvrp
-         /iKtee9Rm9V5gU6gNM9kYs4dQwSNDW9dceyzhzmvpcOJB6JdIcoFJby15SWszaXOUL
-         hGt2tH9Szao2Ts2p5ydOtFRunLANdqAXcrhaXzZkDJbYm0XyvtRr1NVGsKV0Esu8zx
-         nVK+W1RYFgdeO4FGNAvZ3LgJRHYy+KlpMj/upMH/2oa4fXGOim9bPH2a8NQhlk0twN
-         D1RG0pgOizDVJynjb23riIQGMkmF1VHtmiRoOwRMzpd6OHVfrSFmnkKJVE3FdLfxhq
-         d11CX9A7Jzz+A==
-Received: by paulmck-ThinkPad-P17-Gen-1.home (Postfix, from userid 1000)
-        id E881ACE0809; Wed,  6 Sep 2023 11:02:55 -0700 (PDT)
-Date:   Wed, 6 Sep 2023 11:02:55 -0700
-From:   "Paul E. McKenney" <paulmck@kernel.org>
-To:     "Liam R. Howlett" <Liam.Howlett@oracle.com>,
-        Geert Uytterhoeven <geert@linux-m68k.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        maple-tree@lists.infradead.org, linux-mm@kvack.org,
-        linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        linux-renesas-soc@vger.kernel.org,
-        Shanker Donthineni <sdonthineni@nvidia.com>
-Subject: Re: [PATCH v2 1/2] maple_tree: Disable mas_wr_append() when other
- readers are possible
-Message-ID: <495849d6-1dc6-4f38-bce7-23c50df3a99f@paulmck-laptop>
-Reply-To: paulmck@kernel.org
-References: <20230819004356.1454718-1-Liam.Howlett@oracle.com>
- <20230819004356.1454718-2-Liam.Howlett@oracle.com>
- <3f86d58e-7f36-c6b4-c43a-2a7bcffd3bd@linux-m68k.org>
- <20230906152325.dblzauybyoq5kd35@revolver>
- <ad298077-fca8-437e-b9e3-66e31424afb1@paulmck-laptop>
- <20230906172954.oq4vogeuco25zam7@revolver>
+        s=k20201202; t=1694023426;
+        bh=BksDX/EqGMjehidLlpV5WbFqi6cPrWGy+7MlxssF/cY=;
+        h=From:To:Cc:Subject:Date:From;
+        b=suqa+9Kz5W9c6lCVLuEgxe0TuOTmO0gxzT/Guh7ivTEv8Zfo0zcjntFEsJ4anTdiL
+         MdXw4souNn8lTxCwKu5mpS6Kgx9u2CLQpcogj8acmm4dmSQhGWauLQR6fHC589qS6d
+         B5ggJM0Sv7B84gz/nNEI/wCm/SP5Sr4R3dZaxMPxg35iPxknD/sThjRB4I+V0zV+O+
+         M6ayp5wGJEgEpSDjIsIcUrN0p9HmzUs6cYN2yN5DPNkx6LdCnn8dyeX5px4R8brsfi
+         oiV/hPebjVSaDMBnf9ryDh9d7ISruxNMc8MQfdjJ/9aNgETZmWl2CFF6SKrbn1KioV
+         ETEWQ7P1ghoJw==
+From:   Will Deacon <will@kernel.org>
+To:     stable@vger.kernel.org
+Cc:     gregkh@linuxfoundation.org, linux-arm-kernel@lists.infradead.org,
+        Joey Gouly <joey.gouly@arm.com>,
+        Robin Murphy <robin.murphy@arm.com>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, John Hsu <John.Hsu@mediatek.com>
+Subject: [STABLE PATCH 5.15.y] arm64: lib: Import latest version of Arm Optimized Routines' strncmp
+Date:   Wed,  6 Sep 2023 19:03:36 +0100
+Message-Id: <20230906180336.4973-1-will@kernel.org>
+X-Mailer: git-send-email 2.20.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906172954.oq4vogeuco25zam7@revolver>
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -61,184 +50,396 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 01:29:54PM -0400, Liam R. Howlett wrote:
-> * Paul E. McKenney <paulmck@kernel.org> [230906 13:24]:
-> > On Wed, Sep 06, 2023 at 11:23:25AM -0400, Liam R. Howlett wrote:
-> > > (Adding Paul & Shanker to Cc list.. please see below for why)
-> > > 
-> > > Apologies on the late response, I was away and have been struggling to
-> > > get a working PPC32 test environment.
-> > > 
-> > > * Geert Uytterhoeven <geert@linux-m68k.org> [230829 12:42]:
-> > > > 	Hi Liam,
-> > > > 
-> > > > On Fri, 18 Aug 2023, Liam R. Howlett wrote:
-> > > > > The current implementation of append may cause duplicate data and/or
-> > > > > incorrect ranges to be returned to a reader during an update.  Although
-> > > > > this has not been reported or seen, disable the append write operation
-> > > > > while the tree is in rcu mode out of an abundance of caution.
-> > > 
-> > > ...
-> > > > > 
-> > > > > Fixes: 54a611b60590 ("Maple Tree: add new data structure")
-> > > > > Cc: stable@vger.kernel.org
-> > > > > Signed-off-by: Liam R. Howlett <Liam.Howlett@oracle.com>
-> > > > 
-> > > > Thanks for your patch, which is now commit cfeb6ae8bcb96ccf
-> > > > ("maple_tree: disable mas_wr_append() when other readers are
-> > > > possible") in v6.5, and is being backported to stable.
-> > > > 
-> > > > On Renesas RZ/A1 and RZ/A2 (single-core Cortex-A9), this causes the
-> > > > following warning:
-> > > > 
-> > > >      clocksource: timer@e803b000: mask: 0xffffffff max_cycles: 0xffffffff, max_idle_ns: 28958491609 ns
-> > > >      sched_clock: 32 bits at 66MHz, resolution 15ns, wraps every 32537631224ns
-> > > >      /soc/timer@e803b000: used for clocksource
-> > > >      /soc/timer@e803c000: used for clock events
-> > > >     +------------[ cut here ]------------
-> > > >     +WARNING: CPU: 0 PID: 0 at init/main.c:992 start_kernel+0x2f0/0x480
-> > > >     +Interrupts were enabled early
-> > > 
-> > > Note that the maple tree is involved in tracking the interrupts, see
-> > > kernel/irq/irqdesc.c irq_insert_desc(), etc.
-> > > 
-> > > >     +CPU: 0 PID: 0 Comm: swapper Not tainted 6.5.0-rza2mevb-10197-g99b80d6b92b5 #237
-> > > 
-> > > I cannot find commit id 99b80d6b92b5.
-> > > 
-> > > >     +Hardware name: Generic R7S9210 (Flattened Device Tree)
-> > > >     + unwind_backtrace from show_stack+0x10/0x14
-> > > >     + show_stack from dump_stack_lvl+0x24/0x3c
-> > > >     + dump_stack_lvl from __warn+0x74/0xb8
-> > > >     + __warn from warn_slowpath_fmt+0x78/0xb0
-> > > >     + warn_slowpath_fmt from start_kernel+0x2f0/0x480
-> > > >     + start_kernel from 0x0
-> > > >     +---[ end trace 0000000000000000 ]---
-> > > >      Console: colour dummy device 80x30
-> > > >      printk: console [tty0] enabled
-> > > >      Calibrating delay loop (skipped) preset value.. 1056.00 BogoMIPS (lpj=5280000)
-> > > > 
-> > > > Reverting this commit fixes the issue.
-> > > 
-> > > I have set up testing with qemu for powerpc 32b, and reverting this
-> > > patch does not fix it for me.  Did you revert the patch or bisect to the
-> > > issue?
-> > > 
-> > > It also happens on 0e0e9bd5f7b9 (I ran git checkout cfeb6ae8bcb96ccf^ to
-> > > get the commit immediately before cfeb6ae8bcb96ccf).  My qemu command is
-> > > as follows:
-> > > 
-> > > qemu-system-ppc -L pc-bios -boot c -prom-env "boot-device=hd:,\yaboot"
-> > > -prom-env "boot-args=conf=hd:,\yaboot.conf" -M mac99,via=pmu -m 2048
-> > > -hda powerpc32.img -nographic -kernel <file>
-> > > 
-> > > 
-> > > > 
-> > > > RCU-related configs:
-> > > > 
-> > > >     $ grep RCU .config
-> > > >     # RCU Subsystem
-> > > >     CONFIG_TINY_RCU=y
-> > > >     # CONFIG_RCU_EXPERT is not set
-> > > >     CONFIG_TINY_SRCU=y
-> > > >     # end of RCU Subsystem
-> > > >     # RCU Debugging
-> > > >     # CONFIG_RCU_SCALE_TEST is not set
-> > > >     # CONFIG_RCU_TORTURE_TEST is not set
-> > > >     # CONFIG_RCU_REF_SCALE_TEST is not set
-> > > >     # CONFIG_RCU_TRACE is not set
-> > > >     # CONFIG_RCU_EQS_DEBUG is not set
-> > > >     # end of RCU Debugging
-> > > 
-> > > I used the configuration from debian 8 and ran 'make oldconfig' to build
-> > > my kernel.  I have attached the configuration.
-> > > 
-> > > > 
-> > > > CONFIG_MAPLE_RCU_DISABLED is not defined (and should BTW be renamed,
-> > > > as CONFIG_* is reserved for kernel configuration options).
-> > > 
-> > > Thanks, I'll add it to my list of work.
-> > > 
-> > > > 
-> > > > I do not see this issue on any other platform
-> > > > (arm/arm64/risc-v/mips/sh/m68k), several of them use the same
-> > > > RCU configuration.
-> > > > 
-> > > > Do you have a clue?
-> > > 
-> > > It appears to be something to do with struct maple_tree sparse_irqs.  If
-> > > you drop the rcu flag from that maple tree, then my configuration boots
-> > > without the warning.
-> > > 
-> > > I *think* this is because we will reuse a lot more nodes.  And I *think*
-> > > the rcu flag is not needed, since there is a comment about reading the
-> > > tree being protected by the mutex sparse_irq_lock within the
-> > > kernel/irq/irqdesc.c file.  Shanker, can you comment on that?
-> > > 
-> > > I wonder if there is a limit to the number of RCU free events before
-> > > something is triggered to flush them out which could trigger IRQ
-> > > enabling? Paul, could this be the case?
-> > 
-> > Are you asking if call_rcu() will re-enable interrupts in the following
-> > use case?
-> > 
-> > 	local_irq_disable();
-> > 	call_rcu(&p->rh, my_cb_func);
-> > 	local_irq_enable();
-> > 
-> > If so, the answer is "no" (and yes, there might be a bug, but then again
-> > I just double-checked).  However, if interrupts are enabled across a
-> > call_rcu() invocation, it will do some additional work to encourage
-> > the grace period.  Even if interrupts are disabled across a call_rcu()
-> > invocation, it will still do either a raise_softirq() or a wakeup,
-> > depending on configuration, to encourage the grace period.  And in
-> > the case of call_rcu() from an interrupt handler, that raise_softirq()
-> > could result in the RCU_SOFTIRQ handler running upon return from that
-> > interrupt, and if there are a great many callbacks ready to invoke,
-> > this RCU_SOFTIRQ handler might take quite some time.  Plus that
-> > handler could itself be interrupted.
-> > 
-> > If long-running RCU_SOFTIRQ handlers are a problem, you can boot with
-> > rcutree.use_softirq=0, which puts that handler into a kthread, which
-> > in turn give the scheduler more control.  However, this will also turn
-> > a lightweight raise_softirq() into a rather heavier weight wakeup.
-> > Choose wisely!  ;-)
-> > 
-> > Or am I missing your point?
-> 
-> This is very early in the boot sequence when interrupts have not been
-> enabled.  What we are seeing is a WARN_ON() that is triggered by
-> interrupts being enabled before they should be enabled.
-> 
-> I was wondering if, for example, I called call_rcu() a lot *before*
-> interrupts were enabled, that something could trigger that would either
-> enable interrupts or indicate the task needs rescheduling?
+From: Joey Gouly <joey.gouly@arm.com>
 
-You aren't doing call_rcu() enough to hit OOM, are you?  The actual RCU
-callback invocations won't happen until some time after the scheduler
-starts up.
+commit 387d828adffcf1eb949f3141079c479793c59aac upstream.
 
-> Specifically the rescheduling part is suspect.  I tracked down the call
-> to a mutex_lock() which calls cond_resched(), so could rcu be
-> 'encouraging' the rcu window by a reschedule request?
+Import the latest version of the Arm Optimized Routines strncmp function based
+on the upstream code of string/aarch64/strncmp.S at commit 189dfefe37d5 from:
+  https://github.com/ARM-software/optimized-routines
 
-During boot before interrupts are enabled, RCU has not yet spawned any of
-its kthreads.  Therefore, all of its attempts to do wakeups would notice
-a NULL task_struct pointer and refrain from actually doing the wakeup.
-If it did do the wakeup, you would see a NULL-pointer exception.  See
-for example, invoke_rcu_core_kthread(), though that won't happen unless
-you booted with rcutree.use_softirq=0.
+This latest version includes MTE support.
 
-Besides, since when did doing a wakeup enable interrupts?  That would
-make it hard to do wakeups from hardware interrupt handlers, not?
+Note that for simplicity Arm have chosen to contribute this code to Linux under
+GPLv2 rather than the original MIT OR Apache-2.0 WITH LLVM-exception license.
+Arm is the sole copyright holder for this code.
 
-But why not put some WARN_ON_ONCE(!irqs_disabled()) calls in the areas
-of greatest suspicion, starting from the stack trace generated by that
-mutex_lock()?  A stray interrupt-enable could be pretty much anywhere.
+Signed-off-by: Joey Gouly <joey.gouly@arm.com>
+Cc: Robin Murphy <robin.murphy@arm.com>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Catalin Marinas <catalin.marinas@arm.com>
+Cc: Will Deacon <will@kernel.org>
+Acked-by: Mark Rutland <mark.rutland@arm.com>
+Acked-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20220301101435.19327-3-joey.gouly@arm.com
+(cherry picked from commit 387d828adffcf1eb949f3141079c479793c59aac)
+Cc: <stable@vger.kernel.org> # 5.15.y only
+Fixes: 020b199bc70d ("arm64: Import latest version of Cortex Strings' strncmp")
+Reported-by: John Hsu <John.Hsu@mediatek.com>
+Link: https://lore.kernel.org/all/e9f30f7d5b7d72a3521da31ab2002b49a26f542e.camel@mediatek.com/
+Signed-off-by: Will Deacon <will@kernel.org>
+---
 
-But where are those call_rcu() invocations?  Before rcu_init()?
-Presumably before init is spawned and the early_init() calls.
+This is a clean cherry-pick of the latest MTE-safe strncmp()
+implementation for arm64 which landed in v5.18 and somewhat accidentally
+fixed an out-of-bounds read introduced in v5.14.
+An alternative would be to disable the optimised code altogether, but
+given that this is self-contained and applies cleanly, I'd favour being
+consistent with more recent kernels.
 
-And what is the RCU-related Kconfig and boot-parameter setup?
+ arch/arm64/lib/strncmp.S | 244 +++++++++++++++++++++++----------------
+ 1 file changed, 146 insertions(+), 98 deletions(-)
 
-							Thanx, Paul
+diff --git a/arch/arm64/lib/strncmp.S b/arch/arm64/lib/strncmp.S
+index e42bcfcd37e6..a4884b97e9a8 100644
+--- a/arch/arm64/lib/strncmp.S
++++ b/arch/arm64/lib/strncmp.S
+@@ -1,9 +1,9 @@
+ /* SPDX-License-Identifier: GPL-2.0-only */
+ /*
+- * Copyright (c) 2013-2021, Arm Limited.
++ * Copyright (c) 2013-2022, Arm Limited.
+  *
+  * Adapted from the original at:
+- * https://github.com/ARM-software/optimized-routines/blob/e823e3abf5f89ecb/string/aarch64/strncmp.S
++ * https://github.com/ARM-software/optimized-routines/blob/189dfefe37d54c5b/string/aarch64/strncmp.S
+  */
+ 
+ #include <linux/linkage.h>
+@@ -11,14 +11,14 @@
+ 
+ /* Assumptions:
+  *
+- * ARMv8-a, AArch64
++ * ARMv8-a, AArch64.
++ * MTE compatible.
+  */
+ 
+ #define L(label) .L ## label
+ 
+ #define REP8_01 0x0101010101010101
+ #define REP8_7f 0x7f7f7f7f7f7f7f7f
+-#define REP8_80 0x8080808080808080
+ 
+ /* Parameters and result.  */
+ #define src1		x0
+@@ -39,10 +39,24 @@
+ #define tmp3		x10
+ #define zeroones	x11
+ #define pos		x12
+-#define limit_wd	x13
+-#define mask		x14
+-#define endloop		x15
++#define mask		x13
++#define endloop		x14
+ #define count		mask
++#define offset		pos
++#define neg_offset	x15
++
++/* Define endian dependent shift operations.
++   On big-endian early bytes are at MSB and on little-endian LSB.
++   LS_FW means shifting towards early bytes.
++   LS_BK means shifting towards later bytes.
++   */
++#ifdef __AARCH64EB__
++#define LS_FW lsl
++#define LS_BK lsr
++#else
++#define LS_FW lsr
++#define LS_BK lsl
++#endif
+ 
+ SYM_FUNC_START_WEAK_PI(strncmp)
+ 	cbz	limit, L(ret0)
+@@ -52,9 +66,6 @@ SYM_FUNC_START_WEAK_PI(strncmp)
+ 	and	count, src1, #7
+ 	b.ne	L(misaligned8)
+ 	cbnz	count, L(mutual_align)
+-	/* Calculate the number of full and partial words -1.  */
+-	sub	limit_wd, limit, #1	/* limit != 0, so no underflow.  */
+-	lsr	limit_wd, limit_wd, #3	/* Convert to Dwords.  */
+ 
+ 	/* NUL detection works on the principle that (X - 1) & (~X) & 0x80
+ 	   (=> (X - 1) & ~(X | 0x7f)) is non-zero iff a byte is zero, and
+@@ -64,30 +75,45 @@ L(loop_aligned):
+ 	ldr	data1, [src1], #8
+ 	ldr	data2, [src2], #8
+ L(start_realigned):
+-	subs	limit_wd, limit_wd, #1
++	subs	limit, limit, #8
+ 	sub	tmp1, data1, zeroones
+ 	orr	tmp2, data1, #REP8_7f
+ 	eor	diff, data1, data2	/* Non-zero if differences found.  */
+-	csinv	endloop, diff, xzr, pl	/* Last Dword or differences.  */
++	csinv	endloop, diff, xzr, hi	/* Last Dword or differences.  */
+ 	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
+ 	ccmp	endloop, #0, #0, eq
+ 	b.eq	L(loop_aligned)
+ 	/* End of main loop */
+ 
+-	/* Not reached the limit, must have found the end or a diff.  */
+-	tbz	limit_wd, #63, L(not_limit)
+-
+-	/* Limit % 8 == 0 => all bytes significant.  */
+-	ands	limit, limit, #7
+-	b.eq	L(not_limit)
+-
+-	lsl	limit, limit, #3	/* Bits -> bytes.  */
+-	mov	mask, #~0
+-#ifdef __AARCH64EB__
+-	lsr	mask, mask, limit
++L(full_check):
++#ifndef __AARCH64EB__
++	orr	syndrome, diff, has_nul
++	add	limit, limit, 8	/* Rewind limit to before last subs. */
++L(syndrome_check):
++	/* Limit was reached. Check if the NUL byte or the difference
++	   is before the limit. */
++	rev	syndrome, syndrome
++	rev	data1, data1
++	clz	pos, syndrome
++	rev	data2, data2
++	lsl	data1, data1, pos
++	cmp	limit, pos, lsr #3
++	lsl	data2, data2, pos
++	/* But we need to zero-extend (char is unsigned) the value and then
++	   perform a signed 32-bit subtraction.  */
++	lsr	data1, data1, #56
++	sub	result, data1, data2, lsr #56
++	csel result, result, xzr, hi
++	ret
+ #else
+-	lsl	mask, mask, limit
+-#endif
++	/* Not reached the limit, must have found the end or a diff.  */
++	tbz	limit, #63, L(not_limit)
++	add	tmp1, limit, 8
++	cbz	limit, L(not_limit)
++
++	lsl	limit, tmp1, #3	/* Bits -> bytes.  */
++	mov	mask, #~0
++	lsr	mask, mask, limit
+ 	bic	data1, data1, mask
+ 	bic	data2, data2, mask
+ 
+@@ -95,25 +121,6 @@ L(start_realigned):
+ 	orr	has_nul, has_nul, mask
+ 
+ L(not_limit):
+-	orr	syndrome, diff, has_nul
+-
+-#ifndef	__AARCH64EB__
+-	rev	syndrome, syndrome
+-	rev	data1, data1
+-	/* The MS-non-zero bit of the syndrome marks either the first bit
+-	   that is different, or the top bit of the first zero byte.
+-	   Shifting left now will bring the critical information into the
+-	   top bits.  */
+-	clz	pos, syndrome
+-	rev	data2, data2
+-	lsl	data1, data1, pos
+-	lsl	data2, data2, pos
+-	/* But we need to zero-extend (char is unsigned) the value and then
+-	   perform a signed 32-bit subtraction.  */
+-	lsr	data1, data1, #56
+-	sub	result, data1, data2, lsr #56
+-	ret
+-#else
+ 	/* For big-endian we cannot use the trick with the syndrome value
+ 	   as carry-propagation can corrupt the upper bits if the trailing
+ 	   bytes in the string contain 0x01.  */
+@@ -134,10 +141,11 @@ L(not_limit):
+ 	rev	has_nul, has_nul
+ 	orr	syndrome, diff, has_nul
+ 	clz	pos, syndrome
+-	/* The MS-non-zero bit of the syndrome marks either the first bit
+-	   that is different, or the top bit of the first zero byte.
++	/* The most-significant-non-zero bit of the syndrome marks either the
++	   first bit that is different, or the top bit of the first zero byte.
+ 	   Shifting left now will bring the critical information into the
+ 	   top bits.  */
++L(end_quick):
+ 	lsl	data1, data1, pos
+ 	lsl	data2, data2, pos
+ 	/* But we need to zero-extend (char is unsigned) the value and then
+@@ -159,22 +167,12 @@ L(mutual_align):
+ 	neg	tmp3, count, lsl #3	/* 64 - bits(bytes beyond align). */
+ 	ldr	data2, [src2], #8
+ 	mov	tmp2, #~0
+-	sub	limit_wd, limit, #1	/* limit != 0, so no underflow.  */
+-#ifdef __AARCH64EB__
+-	/* Big-endian.  Early bytes are at MSB.  */
+-	lsl	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
+-#else
+-	/* Little-endian.  Early bytes are at LSB.  */
+-	lsr	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
+-#endif
+-	and	tmp3, limit_wd, #7
+-	lsr	limit_wd, limit_wd, #3
+-	/* Adjust the limit. Only low 3 bits used, so overflow irrelevant.  */
+-	add	limit, limit, count
+-	add	tmp3, tmp3, count
++	LS_FW	tmp2, tmp2, tmp3	/* Shift (count & 63).  */
++	/* Adjust the limit and ensure it doesn't overflow.  */
++	adds	limit, limit, count
++	csinv	limit, limit, xzr, lo
+ 	orr	data1, data1, tmp2
+ 	orr	data2, data2, tmp2
+-	add	limit_wd, limit_wd, tmp3, lsr #3
+ 	b	L(start_realigned)
+ 
+ 	.p2align 4
+@@ -197,13 +195,11 @@ L(done):
+ 	/* Align the SRC1 to a dword by doing a bytewise compare and then do
+ 	   the dword loop.  */
+ L(try_misaligned_words):
+-	lsr	limit_wd, limit, #3
+-	cbz	count, L(do_misaligned)
++	cbz	count, L(src1_aligned)
+ 
+ 	neg	count, count
+ 	and	count, count, #7
+ 	sub	limit, limit, count
+-	lsr	limit_wd, limit, #3
+ 
+ L(page_end_loop):
+ 	ldrb	data1w, [src1], #1
+@@ -214,48 +210,100 @@ L(page_end_loop):
+ 	subs	count, count, #1
+ 	b.hi	L(page_end_loop)
+ 
+-L(do_misaligned):
+-	/* Prepare ourselves for the next page crossing.  Unlike the aligned
+-	   loop, we fetch 1 less dword because we risk crossing bounds on
+-	   SRC2.  */
+-	mov	count, #8
+-	subs	limit_wd, limit_wd, #1
+-	b.lo	L(done_loop)
++	/* The following diagram explains the comparison of misaligned strings.
++	   The bytes are shown in natural order. For little-endian, it is
++	   reversed in the registers. The "x" bytes are before the string.
++	   The "|" separates data that is loaded at one time.
++	   src1     | a a a a a a a a | b b b c c c c c | . . .
++	   src2     | x x x x x a a a   a a a a a b b b | c c c c c . . .
++
++	   After shifting in each step, the data looks like this:
++	                STEP_A              STEP_B              STEP_C
++	   data1    a a a a a a a a     b b b c c c c c     b b b c c c c c
++	   data2    a a a a a a a a     b b b 0 0 0 0 0     0 0 0 c c c c c
++
++	   The bytes with "0" are eliminated from the syndrome via mask.
++
++	   Align SRC2 down to 16 bytes. This way we can read 16 bytes at a
++	   time from SRC2. The comparison happens in 3 steps. After each step
++	   the loop can exit, or read from SRC1 or SRC2. */
++L(src1_aligned):
++	/* Calculate offset from 8 byte alignment to string start in bits. No
++	   need to mask offset since shifts are ignoring upper bits. */
++	lsl	offset, src2, #3
++	bic	src2, src2, #0xf
++	mov	mask, -1
++	neg	neg_offset, offset
++	ldr	data1, [src1], #8
++	ldp	tmp1, tmp2, [src2], #16
++	LS_BK	mask, mask, neg_offset
++	and	neg_offset, neg_offset, #63	/* Need actual value for cmp later. */
++	/* Skip the first compare if data in tmp1 is irrelevant. */
++	tbnz	offset, 6, L(misaligned_mid_loop)
++
+ L(loop_misaligned):
+-	and	tmp2, src2, #0xff8
+-	eor	tmp2, tmp2, #0xff8
+-	cbz	tmp2, L(page_end_loop)
++	/* STEP_A: Compare full 8 bytes when there is enough data from SRC2.*/
++	LS_FW	data2, tmp1, offset
++	LS_BK	tmp1, tmp2, neg_offset
++	subs	limit, limit, #8
++	orr	data2, data2, tmp1	/* 8 bytes from SRC2 combined from two regs.*/
++	sub	has_nul, data1, zeroones
++	eor	diff, data1, data2	/* Non-zero if differences found.  */
++	orr	tmp3, data1, #REP8_7f
++	csinv	endloop, diff, xzr, hi	/* If limit, set to all ones. */
++	bic	has_nul, has_nul, tmp3	/* Non-zero if NUL byte found in SRC1. */
++	orr	tmp3, endloop, has_nul
++	cbnz	tmp3, L(full_check)
+ 
+ 	ldr	data1, [src1], #8
+-	ldr	data2, [src2], #8
+-	sub	tmp1, data1, zeroones
+-	orr	tmp2, data1, #REP8_7f
+-	eor	diff, data1, data2	/* Non-zero if differences found.  */
+-	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
+-	ccmp	diff, #0, #0, eq
+-	b.ne	L(not_limit)
+-	subs	limit_wd, limit_wd, #1
+-	b.pl	L(loop_misaligned)
++L(misaligned_mid_loop):
++	/* STEP_B: Compare first part of data1 to second part of tmp2. */
++	LS_FW	data2, tmp2, offset
++#ifdef __AARCH64EB__
++	/* For big-endian we do a byte reverse to avoid carry-propagation
++	problem described above. This way we can reuse the has_nul in the
++	next step and also use syndrome value trick at the end. */
++	rev	tmp3, data1
++	#define data1_fixed tmp3
++#else
++	#define data1_fixed data1
++#endif
++	sub	has_nul, data1_fixed, zeroones
++	orr	tmp3, data1_fixed, #REP8_7f
++	eor	diff, data2, data1	/* Non-zero if differences found.  */
++	bic	has_nul, has_nul, tmp3	/* Non-zero if NUL terminator.  */
++#ifdef __AARCH64EB__
++	rev	has_nul, has_nul
++#endif
++	cmp	limit, neg_offset, lsr #3
++	orr	syndrome, diff, has_nul
++	bic	syndrome, syndrome, mask	/* Ignore later bytes. */
++	csinv	tmp3, syndrome, xzr, hi	/* If limit, set to all ones. */
++	cbnz	tmp3, L(syndrome_check)
+ 
+-L(done_loop):
+-	/* We found a difference or a NULL before the limit was reached.  */
+-	and	limit, limit, #7
+-	cbz	limit, L(not_limit)
+-	/* Read the last word.  */
+-	sub	src1, src1, 8
+-	sub	src2, src2, 8
+-	ldr	data1, [src1, limit]
+-	ldr	data2, [src2, limit]
+-	sub	tmp1, data1, zeroones
+-	orr	tmp2, data1, #REP8_7f
+-	eor	diff, data1, data2	/* Non-zero if differences found.  */
+-	bics	has_nul, tmp1, tmp2	/* Non-zero if NUL terminator.  */
+-	ccmp	diff, #0, #0, eq
+-	b.ne	L(not_limit)
++	/* STEP_C: Compare second part of data1 to first part of tmp1. */
++	ldp	tmp1, tmp2, [src2], #16
++	cmp	limit, #8
++	LS_BK	data2, tmp1, neg_offset
++	eor	diff, data2, data1	/* Non-zero if differences found.  */
++	orr	syndrome, diff, has_nul
++	and	syndrome, syndrome, mask	/* Ignore earlier bytes. */
++	csinv	tmp3, syndrome, xzr, hi	/* If limit, set to all ones. */
++	cbnz	tmp3, L(syndrome_check)
++
++	ldr	data1, [src1], #8
++	sub	limit, limit, #8
++	b	L(loop_misaligned)
++
++#ifdef	__AARCH64EB__
++L(syndrome_check):
++	clz	pos, syndrome
++	cmp	pos, limit, lsl #3
++	b.lo	L(end_quick)
++#endif
+ 
+ L(ret0):
+ 	mov	result, #0
+ 	ret
+-
+ SYM_FUNC_END_PI(strncmp)
+ EXPORT_SYMBOL_NOHWKASAN(strncmp)
+-- 
+2.42.0.283.g2d96d420d3-goog
+
