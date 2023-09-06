@@ -2,134 +2,76 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F5E27936A3
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 09:58:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A5667936A7
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 09:58:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230320AbjIFH6c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 03:58:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39050 "EHLO
+        id S232256AbjIFH6s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 03:58:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229530AbjIFH6b (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 03:58:31 -0400
-Received: from mail-lj1-x22f.google.com (mail-lj1-x22f.google.com [IPv6:2a00:1450:4864:20::22f])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 47D4A1AB
-        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 00:58:27 -0700 (PDT)
-Received: by mail-lj1-x22f.google.com with SMTP id 38308e7fff4ca-2bcc14ea414so53165171fa.0
-        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 00:58:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1693987105; x=1694591905; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=YHc26rbE/qo/UM6quw+dspiLGabdEhZRaP8hO5pgiG8=;
-        b=uraw6Fz4ja3MX2qUsl9uoru+1oyXnxx3zuklXaVg8Sg8qyxGM/peZ8dFM8KhzxrxjP
-         UDOlrBqPBPz+6FpRM47L+nz/UJCEZzST8z7MzPTCsDN7yvwvcgUvpLnzgs/FozjjTmy/
-         escnGdrTGaJa0CrDc9Z3R2kQRYltgcQnBxyP0o7SrOOeNpobxBcL0s8+QkGf9Rq5rvM4
-         wdAaJ97LYxSLsQLjKV/+9fWKwaRHG+LE/q1GFoQvSKxWXUpuwkXsX5iYwZoiIp1UhPdN
-         LnCcMStRCLss6G6QStZnZvBUUSJos5z2motJ0szcZgURWlr3hNjugJ3fjvmKsyUHQs4a
-         N4HQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1693987105; x=1694591905;
-        h=content-transfer-encoding:mime-version:references:in-reply-to
-         :message-id:date:subject:cc:to:from:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=YHc26rbE/qo/UM6quw+dspiLGabdEhZRaP8hO5pgiG8=;
-        b=PV7hDyXDcThL6hgIZnj9Vx7Jx1J4JN1NVUG5JN6MaoLdYOrKQlY5w9LTKoKhlj12pZ
-         1+XqOJdJ2+Ti4mMqZKRSga2yRzva10rqjBntXVYdliooW/anNe2rNsy2jiARRO7+K1gj
-         jKVq+dTLmmKXp3FH3PJHEEAExnQh/OzYX0h2f/zGLNbw446x0/bkzk4vooJeTS9w3xN2
-         sgqIf6ej7VnHi/Drbo2WprwHgCcC5LrrkmR0Zc1Gl+hcQlaMhxLHWJfGBQL7bwBVfViG
-         2SqseDRni9FB6XURTKKhLpqWEfnkhTjpCxzhon6OrgM5fXc+MFpDcAwuQAvwnZpuECll
-         2QXg==
-X-Gm-Message-State: AOJu0YxlMM55OzsOU96sLq+a8LIEA1cp/MP3LcPduzt+hMxIjjW/MHmD
-        /y/uY+/FQD/6Ak3aCNBgbiDSUQ==
-X-Google-Smtp-Source: AGHT+IGp7BZYEgMUGR3DjqEsHV/nzt71UbvNkQBbbU3WFAmFxPu83Ovuo+ghKPpKmXnQzEb8VLDR4g==
-X-Received: by 2002:a05:651c:21b:b0:2bb:b528:87b1 with SMTP id y27-20020a05651c021b00b002bbb52887b1mr1377393ljn.50.1693987105661;
-        Wed, 06 Sep 2023 00:58:25 -0700 (PDT)
-Received: from umbar.unikie.fi ([192.130.178.91])
-        by smtp.gmail.com with ESMTPSA id z10-20020a2e7e0a000000b002b9ec22d9fasm3268324ljc.29.2023.09.06.00.58.24
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Wed, 06 Sep 2023 00:58:25 -0700 (PDT)
-From:   Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-To:     Andy Gross <agross@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>,
-        Kishon Vijay Abraham I <kishon@kernel.org>
-Cc:     Philipp Zabel <p.zabel@pengutronix.de>,
-        linux-arm-msm@vger.kernel.org, linux-phy@lists.infradead.org,
-        Abel Vesa <abel.vesa@linaro.org>, stable@vger.kernel.org
-Subject: [PATCH 1/4] phy: qcom-qmp-combo: correct sm8550 PHY programming
-Date:   Wed,  6 Sep 2023 10:58:20 +0300
-Message-Id: <20230906075823.7957-2-dmitry.baryshkov@linaro.org>
-X-Mailer: git-send-email 2.39.2
-In-Reply-To: <20230906075823.7957-1-dmitry.baryshkov@linaro.org>
-References: <20230906075823.7957-1-dmitry.baryshkov@linaro.org>
+        with ESMTP id S230070AbjIFH6s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 03:58:48 -0400
+Received: from muru.com (muru.com [72.249.23.125])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 176F61AB;
+        Wed,  6 Sep 2023 00:58:44 -0700 (PDT)
+Received: from localhost (localhost [127.0.0.1])
+        by muru.com (Postfix) with ESMTPS id 32ACC8050;
+        Wed,  6 Sep 2023 07:58:43 +0000 (UTC)
+Date:   Wed, 6 Sep 2023 10:58:41 +0300
+From:   Tony Lindgren <tony@atomide.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Subject: Re: AM3517 Timer busy regression on 6.1.y branch
+Message-ID: <20230906075841.GB11676@atomide.com>
+References: <CAHCN7xLQH8cksj8OxpvqAF_7uk_Gn-5+ROd7MfUo75EL580+iw@mail.gmail.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7xLQH8cksj8OxpvqAF_7uk_Gn-5+ROd7MfUo75EL580+iw@mail.gmail.com>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,SPF_HELO_NONE,
+        SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Move PCS_USB3_POWER_STATE_CONFIG1 register programming from pcs_tbl to
-the pcs_usb_tbl, where it belongs. Also, while we are at it, correct the
-offset of this register to point to 0x00, as expected.
+Hi,
 
-Fixes: 49742e9edab3 ("phy: qcom-qmp-combo: Add support for SM8550")
-Fixes: 39bbf82d8c2b ("phy: qcom-qmp: pcs-usb: Add v6 register offsets")
-Cc: Abel Vesa <abel.vesa@linaro.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
----
- drivers/phy/qualcomm/phy-qcom-qmp-combo.c      | 2 +-
- drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+* Adam Ford <aford173@gmail.com> [230905 15:02]:
+> Tony et al
+> ,
+> I am trying to run the 6.1.y branch on an AM3517-EVM.
+> 
+> There are two GPT that throw an error:
+> 
+>  ti-sysc: probe of 48318000.target-module failed with error -16
+>  ti-sysc: probe of 49032000.target-module failed with error -16
 
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-index cbb28afce135..41b9be56eead 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-combo.c
-@@ -859,7 +859,6 @@ static const struct qmp_phy_init_tbl sm8550_usb3_pcs_tbl[] = {
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_PCS_TX_RX_CONFIG, 0x0c),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_EQ_CONFIG1, 0x4b),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_EQ_CONFIG5, 0x10),
--	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1, 0x68),
- };
- 
- static const struct qmp_phy_init_tbl sm8550_usb3_pcs_usb_tbl[] = {
-@@ -867,6 +866,7 @@ static const struct qmp_phy_init_tbl sm8550_usb3_pcs_usb_tbl[] = {
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RXEQTRAINING_DFE_TIME_S2, 0x07),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_L, 0x40),
- 	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_H, 0x00),
-+	QMP_PHY_INIT_CFG(QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1, 0x68),
- };
- 
- static const struct qmp_phy_init_tbl qmp_v4_dp_serdes_tbl[] = {
-diff --git a/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h b/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-index 9510e63ba9d8..5409ddcd3eb5 100644
---- a/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-+++ b/drivers/phy/qualcomm/phy-qcom-qmp-pcs-usb-v6.h
-@@ -12,7 +12,6 @@
- #define QPHY_USB_V6_PCS_LOCK_DETECT_CONFIG3		0xcc
- #define QPHY_USB_V6_PCS_LOCK_DETECT_CONFIG6		0xd8
- #define QPHY_USB_V6_PCS_REFGEN_REQ_CONFIG1		0xdc
--#define QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1	0x90
- #define QPHY_USB_V6_PCS_RX_SIGDET_LVL			0x188
- #define QPHY_USB_V6_PCS_RCVR_DTCT_DLY_P1U2_L		0x190
- #define QPHY_USB_V6_PCS_RCVR_DTCT_DLY_P1U2_H		0x194
-@@ -23,6 +22,7 @@
- #define QPHY_USB_V6_PCS_EQ_CONFIG1			0x1dc
- #define QPHY_USB_V6_PCS_EQ_CONFIG5			0x1ec
- 
-+#define QPHY_USB_V6_PCS_USB3_POWER_STATE_CONFIG1	0x00
- #define QPHY_USB_V6_PCS_USB3_LFPS_DET_HIGH_COUNT_VAL	0x18
- #define QPHY_USB_V6_PCS_USB3_RXEQTRAINING_DFE_TIME_S2	0x3c
- #define QPHY_USB_V6_PCS_USB3_RCVR_DTCT_DLY_U3_L		0x40
--- 
-2.39.2
+These two timers are in use as clocksource and clockevent reserved
+by timer-ti-dm-systimer.
 
+> I did some minor investigation and found sysc_check_active_timer() is
+> returning the busy condition.
+> 
+> I tracked this back a bit further and found that if I revert commit
+> a12315d6d270  ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC
+> specific"), this error condition goes away.
+> 
+> It almost looks to me like sysc_check_active_timer is defaulting to
+> -EBUSY when the SoC is not 3430, but the sysc_soc_match[] doesn't
+> appear to match to AM3517.
+> 
+> I think the proper solution is to treat the AM35* as 3430.  Do you
+> agree with that approach?
+> 
+> If so, I'll submit a patch with a fixes tag. I am also wondering how
+> far back I should mark the fixes tag.
+
+Yes am3517 is very similar to 3430. Sounds like the patch would
+be needed also against the current kernels, right?
+
+Regards,
+
+Tony
