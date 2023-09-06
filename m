@@ -2,123 +2,121 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58722793FE2
-	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 17:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE96D794006
+	for <lists+stable@lfdr.de>; Wed,  6 Sep 2023 17:11:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242286AbjIFPDv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 11:03:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59218 "EHLO
+        id S241817AbjIFPLV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 11:11:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242322AbjIFPDv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 11:03:51 -0400
-Received: from wout3-smtp.messagingengine.com (wout3-smtp.messagingengine.com [64.147.123.19])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F06A619A8;
-        Wed,  6 Sep 2023 08:03:37 -0700 (PDT)
-Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
-        by mailout.west.internal (Postfix) with ESMTP id 40E453200904;
-        Wed,  6 Sep 2023 11:03:36 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute2.internal (MEProxy); Wed, 06 Sep 2023 11:03:37 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=sent.com; h=cc
-        :cc:content-transfer-encoding:content-type:date:date:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:reply-to:sender:subject:subject:to:to; s=fm1; t=
-        1694012615; x=1694099015; bh=X7/kZB7lpmBCw2k1unMB2GujXf55nXH6oT8
-        ByqeAnAs=; b=s56TOG/g3wW3xdiIqMGnd+ngS6IcPFOJrgFciXKXnjSSlKj8Inc
-        gmOg53MxNHCTU+4MczmgLmSph3GPf+dxfRb5d6RJmtabLNp16TcmtIQeYj53m14O
-        T9BvHZZ5HcHgHl2ccLvCgVbR73GsLu1VXPNu3K4/bCMRea5wTpWW5oZ1x1+N4HlC
-        3IYNRuCZ5ehUJ3fAsJRaVmkV/AAy2x85yhX4BDK94tR7AWi73acL19o92+oj+JaQ
-        bxr3F/dwKY/UI39cMU59sNCk+jk8xeMn9LMBSBDkK3iJu8rw5/KD7x8+nf1+Jlo6
-        C9z4I3J/habuZfvWzbufCWdsbiCRpIWnEpQ==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-transfer-encoding
-        :content-type:date:date:feedback-id:feedback-id:from:from
-        :in-reply-to:in-reply-to:message-id:mime-version:references
-        :reply-to:reply-to:sender:subject:subject:to:to:x-me-proxy
-        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
-        1694012615; x=1694099015; bh=X7/kZB7lpmBCw2k1unMB2GujXf55nXH6oT8
-        ByqeAnAs=; b=dsbymiPbH/noxVmpwQtJWj92IfMyXpQwtT4715YnPxEu8wfhQ42
-        K/L4u3Gk9fzKNgeCzhS3sqGqqIn2mvqETe1CUukPuAINgN+pmvIlIKnWQOAU6C7i
-        V6BNXA4eyYrWCUB+JCg9pY1yEPjtOqcwNGDY6C5T+uXMqDP2hQ6F+PAOyiLMN1TI
-        lPtzNPQ1+eAkE2XV7vOH5lSQdPC7Qm3rHP9+4DITK2enroBBmsRHzh/gaNAvNeaE
-        a4nIdAya9YboYqVIE3dYeHcqGgD3oxb1oiG7d3MC8X3KYlchpUuk+QwYKS8RSkJi
-        aSdUgeOU/Bs85BZdWwyEJXsRdfOqvu990nw==
-X-ME-Sender: <xms:x5T4ZEgdUmO5xtmL8fK-F1K7l-Tzm8y0-W3jQEJf9edgrE1L_rbELQ>
-    <xme:x5T4ZNBDm8Zq9TSDHrOIxEs3Q_y2XPDLTMlMLfGF5yMgNc4Oz4V19cH_UWtguMgaC
-    nty5TA20q_CKkieLg>
-X-ME-Received: <xmr:x5T4ZMEXKepRL1GBC6gIzp6EkD1-lWq43AYLbo4gBdtW3AhZg74w_Ofq6ZTSTM4ihACjE6pYY8vHXNBnBKVp8W7NayfxKHh3ZOe6B1kOexA0OBmhf8g_a2e1>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehfedgkeefucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    goufhorhhtvggutfgvtghiphdvucdlgedtmdenucfjughrpefhvfevufffkffojghfrhgg
-    gfestdhqredtredttdenucfhrhhomhepkghiucgjrghnuceoiihirdihrghnsehsvghnth
-    drtghomheqnecuggftrfgrthhtvghrnhepgeeghedugfduuddvleehheetgeeltdetieev
-    uefhffevkefhveeufeeiieejgedvnecuvehluhhsthgvrhfuihiivgepvdenucfrrghrrg
-    hmpehmrghilhhfrhhomhepiihirdihrghnsehsvghnthdrtghomh
-X-ME-Proxy: <xmx:x5T4ZFTvpSfz6hwl9nz9mJGvG37WNxdrH0kE7HOWooiuHl8cFRYm2g>
-    <xmx:x5T4ZBwjYKxh5Pbtt8jHrNeFh2zfvT4ME-aNOzFYDsmWH_pECV9Grw>
-    <xmx:x5T4ZD63MOtJmF4CJB0FsmZoTZMlvxs8pd1uhtQRhWh2NLxzyCDG2w>
-    <xmx:x5T4ZGq0xX0W3K7rDi664LxRTh0UKuQ8QnB_x_3LuEVcftRSmHraOA>
-Feedback-ID: iccd040f4:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Wed,
- 6 Sep 2023 11:03:34 -0400 (EDT)
-From:   Zi Yan <zi.yan@sent.com>
-To:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
-        linux-mips@vger.kernel.org
-Cc:     Zi Yan <ziy@nvidia.com>, Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        David Hildenbrand <david@redhat.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Muchun Song <muchun.song@linux.dev>,
-        "Mike Rapoport (IBM)" <rppt@kernel.org>, stable@vger.kernel.org
-Subject: [PATCH v2 5/5] mips: use nth_page() in place of direct struct page manipulation.
-Date:   Wed,  6 Sep 2023 11:03:09 -0400
-Message-Id: <20230906150309.114360-6-zi.yan@sent.com>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230906150309.114360-1-zi.yan@sent.com>
-References: <20230906150309.114360-1-zi.yan@sent.com>
-Reply-To: Zi Yan <ziy@nvidia.com>
+        with ESMTP id S230239AbjIFPLV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 11:11:21 -0400
+Received: from mail-yb1-xb32.google.com (mail-yb1-xb32.google.com [IPv6:2607:f8b0:4864:20::b32])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 527921700;
+        Wed,  6 Sep 2023 08:11:17 -0700 (PDT)
+Received: by mail-yb1-xb32.google.com with SMTP id 3f1490d57ef6-d7d50ba994eso3235755276.1;
+        Wed, 06 Sep 2023 08:11:17 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694013076; x=1694617876; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=CGLaZ/BpYw1pfzgNoJ0OmRihvbN7TgiaQmCR6kr9Qys=;
+        b=jgmWd5joUCWvPec9Q4SKdi25KDfIduCouoQBKiyjzZH+OFV6LycREmqc0NmwhHzJM6
+         7Fn9PwzRmlbYIZnTV7BgNdV0hv4UyUOD8DzaZMjWFml4oHEfOZ+xVo2qxqFKtfMLuiJn
+         3IysRIQymB3H+hkdmF6wuRz2hfkeang5m9XWsKF/TL3kdjzVHgSUvaeYoQwDhS7+3uOt
+         3rVbOlRSC+cT9/hBg47s427H6iLlr68zzNIx8u9C7Ldl4iGWHwPOJAV3D7q86JEVzRkx
+         5kh9+pToGzH6SSJ1F6Vk/LdSHP4/QS7awKTnnIGZ4oD4xngKPNvLRJ6HVKUE4ZGysLzd
+         AdYg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694013076; x=1694617876;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=CGLaZ/BpYw1pfzgNoJ0OmRihvbN7TgiaQmCR6kr9Qys=;
+        b=WJdWA+wXVDGVRe8HNv1D07tE/ylH7wTvV4YRQLQYYC65ivNzilMNTdq9CJc4s2pBe7
+         xB3SvvJ43JXbPjA1c/hU7kaawQWtWhRE0z/MGMLU9gxjC0i/i9Uawx7s5qOr5OnvGNud
+         +FEYIo7NJEBpwe4BSALlL7yREurKkaemhwfzmt9aKQPPApZ6Y+sbxBaIAZxpl2Nz1L7N
+         RhX3oypmy4d3nP8spyRFy17Bc29i9utP4AfxN799Xga8rJzMZBigvSx/mLzNLdp7V3w+
+         aLmDHSTAinJW0zQPDWA0VDCJL+KGbgxkGAi/yhNEBkL9sd4tzLvNmvJH8LRy31Q2wCGP
+         Jqnw==
+X-Gm-Message-State: AOJu0Yzs5Jxl8Ai7cxA1Y9M7zKC5M7iF30oMp2LT+CJjhYLqqSGBaB0Q
+        TUlG/ARCuuLmE0p81pxFJV2emzVaCfPmmPdPEk22Ax8vfmU=
+X-Google-Smtp-Source: AGHT+IFM0roff/XAgsTp2ky591OvLn1odaARLWbDii/KKiM6+Uicl8eg2eZOVxONe7v3hjgAHIhoGLoDN7kNu7j7Y24=
+X-Received: by 2002:a25:9290:0:b0:d7f:1bd7:c83c with SMTP id
+ y16-20020a259290000000b00d7f1bd7c83cmr8944421ybl.13.1694013076355; Wed, 06
+ Sep 2023 08:11:16 -0700 (PDT)
 MIME-Version: 1.0
+References: <CAHCN7xLQH8cksj8OxpvqAF_7uk_Gn-5+ROd7MfUo75EL580+iw@mail.gmail.com>
+ <20230906075841.GB11676@atomide.com>
+In-Reply-To: <20230906075841.GB11676@atomide.com>
+From:   Adam Ford <aford173@gmail.com>
+Date:   Wed, 6 Sep 2023 10:11:04 -0500
+Message-ID: <CAHCN7xLkDEBDejgrmdZ-UHVbA9umL35TT=oXUJMwKNLJFYjH2A@mail.gmail.com>
+Subject: Re: AM3517 Timer busy regression on 6.1.y branch
+To:     Tony Lindgren <tony@atomide.com>
+Cc:     Linux-OMAP <linux-omap@vger.kernel.org>,
+        stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
 Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Zi Yan <ziy@nvidia.com>
+On Wed, Sep 6, 2023 at 9:40=E2=80=AFAM Tony Lindgren <tony@atomide.com> wro=
+te:
+>
+> Hi,
+>
+> * Adam Ford <aford173@gmail.com> [230905 15:02]:
+> > Tony et al
+> > ,
+> > I am trying to run the 6.1.y branch on an AM3517-EVM.
+> >
+> > There are two GPT that throw an error:
+> >
+> >  ti-sysc: probe of 48318000.target-module failed with error -16
+> >  ti-sysc: probe of 49032000.target-module failed with error -16
+>
+> These two timers are in use as clocksource and clockevent reserved
+> by timer-ti-dm-systimer.
+>
+> > I did some minor investigation and found sysc_check_active_timer() is
+> > returning the busy condition.
+> >
+> > I tracked this back a bit further and found that if I revert commit
+> > a12315d6d270  ("bus: ti-sysc: Make omap3 gpt12 quirk handling SoC
+> > specific"), this error condition goes away.
+> >
+> > It almost looks to me like sysc_check_active_timer is defaulting to
+> > -EBUSY when the SoC is not 3430, but the sysc_soc_match[] doesn't
+> > appear to match to AM3517.
+> >
+> > I think the proper solution is to treat the AM35* as 3430.  Do you
+> > agree with that approach?
+> >
+> > If so, I'll submit a patch with a fixes tag. I am also wondering how
+> > far back I should mark the fixes tag.
+>
+> Yes am3517 is very similar to 3430. Sounds like the patch would
+> be needed also against the current kernels, right?
 
-__flush_dcache_pages() is called during hugetlb migration via
-migrate_pages() -> migrate_hugetlbs() -> unmap_and_move_huge_page()
--> move_to_new_folio() -> flush_dcache_folio(). And with hugetlb and
-without sparsemem vmemmap, struct page is not guaranteed to be contiguous
-beyond a section. Use nth_page() instead.
+I submitted a patch against the mainline kernel [1] with fixes tags to
+hopefully back-port them to 6.1.y.  Any feedback and/or assistance you
+can help to move them forward would be appreciated.
 
-Fixes: 15fa3e8e3269 ("mips: implement the new page table range API")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Zi Yan <ziy@nvidia.com>
----
- arch/mips/mm/cache.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+adam
 
-diff --git a/arch/mips/mm/cache.c b/arch/mips/mm/cache.c
-index 02042100e267..7f830634dbe7 100644
---- a/arch/mips/mm/cache.c
-+++ b/arch/mips/mm/cache.c
-@@ -117,7 +117,7 @@ void __flush_dcache_pages(struct page *page, unsigned i=
-nt nr)
- 	 * get faulted into the tlb (and thus flushed) anyways.
- 	 */
- 	for (i =3D 0; i < nr; i++) {
--		addr =3D (unsigned long)kmap_local_page(page + i);
-+		addr =3D (unsigned long)kmap_local_page(nth_page(page, i));
- 		flush_data_cache_page(addr);
- 		kunmap_local((void *)addr);
- 	}
---=20
-2.40.1
+[1] - https://patchwork.kernel.org/project/linux-omap/patch/20230906093244.=
+99292-1-aford173@gmail.com/
 
+>
+> Regards,
+>
+> Tony
