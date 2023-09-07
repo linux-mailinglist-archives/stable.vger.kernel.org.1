@@ -2,93 +2,114 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5762A79757E
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:52:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F597973A5
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235514AbjIGPr1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 11:47:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37826 "EHLO
+        id S229662AbjIGP2w (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 11:28:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345353AbjIGPfb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:35:31 -0400
-Received: from mxout1.routing.net (mxout1.routing.net [IPv6:2a03:2900:1:a::a])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658B71FC9;
-        Thu,  7 Sep 2023 08:35:08 -0700 (PDT)
-Received: from mxbox3.masterlogin.de (unknown [192.168.10.78])
-        by mxout1.routing.net (Postfix) with ESMTP id 04FFB4081B;
-        Thu,  7 Sep 2023 11:20:35 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
-        s=20200217; t=1694085635;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=bmzyT3vhoavJV5YD/9bjCpBgNAP4o0u/rneto0+CusE=;
-        b=w2FAf1f6NYSPYwdHbMqEXFMlOVdC4HmF1Q212UWEGrvaarckAZKkNtvCHUdLCSOkVipCza
-        Ooe2QjKtAInOu1Qw0vq5sGegkzD3DyUtuvitA1FJ0oYh0f41J0DtoO6oUXy+UblT8QEd0e
-        daPaIchb0Lp+CpS0c9Icp9+HxKt+47Y=
-Received: from frank-G5.. (fttx-pool-217.61.150.154.bambit.de [217.61.150.154])
-        by mxbox3.masterlogin.de (Postfix) with ESMTPSA id 0FBA2360465;
-        Thu,  7 Sep 2023 11:20:34 +0000 (UTC)
-From:   Frank Wunderlich <linux@fw-web.de>
-To:     linux-mediatek@lists.infradead.org
-Cc:     Frank Wunderlich <frank-w@public-files.de>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Daniel Golle <daniel@makrotopia.org>, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
-        stable@vger.kernel.org
-Subject: [PATCH] thermal/drivers/mediatek: Fix control buffer enablement on MT7896
-Date:   Thu,  7 Sep 2023 13:20:18 +0200
-Message-Id: <20230907112018.52811-1-linux@fw-web.de>
-X-Mailer: git-send-email 2.34.1
+        with ESMTP id S231872AbjIGPV7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:21:59 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F305910FF
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 08:21:26 -0700 (PDT)
+Received: from compute6.internal (compute6.nyi.internal [10.202.2.47])
+        by mailout.west.internal (Postfix) with ESMTP id 8F08E320014C;
+        Thu,  7 Sep 2023 07:25:51 -0400 (EDT)
+Received: from mailfrontend2 ([10.202.2.163])
+  by compute6.internal (MEProxy); Thu, 07 Sep 2023 07:25:52 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1694085951; x=1694172351; bh=W5
+        vuJ08TvL1U4+rtaznt8Bmunuc83FEgxq5YkhRFO0U=; b=T2wVvVsSPQ78DfRs0N
+        72P5Yi1xovUwOs44PhN7cN7ijyexxaHelbf1BZPFCTeDVgMjmRNYw3I+3Nl6W/Gh
+        DZA1ofnxxeZrJmPbE1cMHtM7buw6/A5cBYTD2kqOLi+QTzh2UnHPoegZI91K5udE
+        D1I340f/huzSAPiLD7yjuSFdApRZxrB0tg0n4qIOaVQ+iAvs06V3BwBUZ7vt4I7O
+        z7ghvRspS3RYRMT6EvsOcdgLueLW60aSjGjYvf58K2uixLcP5Jw6vGRC1Rp9md6o
+        j4taEaXMVU7a5BoJ3wFBtyRyZUkMjV04xhQa05FQgvlb7UQFXYgELuaFO2Nn4UOM
+        IwKA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1694085951; x=1694172351; bh=W5vuJ08TvL1U4
+        +rtaznt8Bmunuc83FEgxq5YkhRFO0U=; b=FgkGd7ON4oqNlxLjDcENf3++DgmWd
+        aIcHEflJ7zTDSiDsFKN3JmWLfo4UtwFnu21EuB2vBwGi6MNY03c9+gE+Ct3ScUVy
+        RcZmeg8R5Lry7dwyg7ZxAqIVKMMS7q0a7qSOP4WWqyVqPrWCPGsjwjX+HsLITSv7
+        FrEnl+ATYL8IiIoWyimss4at6iScPFRItC+Qx3af9NqhEd9QQ+6V2/Y4GxV8+NsH
+        SX+3TjS2EeWRcFup7DlajPJpp7tw/NMX9FZzZWaQuQ8nHLrb2AMqn3tijk5jKmWx
+        VWWdDgKNzBahygvxX3q9hf/l4HAZv6oin84w1f+kNpD/3LBdR3vHp7EFA==
+X-ME-Sender: <xms:PrP5ZLCG7EFtzWNIJ8UmNv1IOjlZWglHbJ9k_3VwRlpzV2ALEICJDw>
+    <xme:PrP5ZBiV7aRXjXkAT20LDGgbLAIDUR4jsJ-STGBzsDysZPVowEBQ4roaPPIsFQs3u
+    VBxStxt9u31Kg>
+X-ME-Received: <xmr:PrP5ZGljnObXHpwxSJ1AsFN6PbM1Mw_mLq2-GndmpYHxCxi2L5CF9hbdPnU>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehhedgfeekucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:PrP5ZNwVlqlPMmyzQcotDtM3nEzWOKNsU2tespNeT_HernjwTwW6qw>
+    <xmx:PrP5ZAS7njcrCT53NT01uiJu3r81k4OVlpcvfqzS2vhBKFNq0uhqIQ>
+    <xmx:PrP5ZAbVMavy95Znt8ugbXBymnO1CtsxQ3yX5WbeRJ4Kupfov55LnA>
+    <xmx:P7P5ZDH4vmkF8Xw5znpeE783Og7ZZbXSz6IvUXxLaSNOrwwVSk0wBw>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Sep 2023 07:25:50 -0400 (EDT)
+Date:   Thu, 7 Sep 2023 12:25:46 +0100
+From:   Greg KH <greg@kroah.com>
+To:     Luiz Capitulino <luizcap@amazon.com>
+Cc:     stable@vger.kernel.org, seanjc@google.com,
+        christophe.jaillet@wanadoo.fr, lcapitulino@gmail.com
+Subject: Re: [PATH 6.1.y 0/2] Backport KVM's nx_huge_pages=never module
+ parameter
+Message-ID: <2023090738-cartridge-disown-4374@gregkh>
+References: <cover.1693593288.git.luizcap@amazon.com>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Mail-ID: e7eeb8e1-00de-41f6-a5df-ce2e9164136e
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <cover.1693593288.git.luizcap@amazon.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Frank Wunderlich <frank-w@public-files.de>
+On Fri, Sep 01, 2023 at 06:34:51PM +0000, Luiz Capitulino wrote:
+> Hi,
+> 
+> As part of the mitigation for the iTLB multihit vulnerability, KVM creates
+> a worker thread in KVM_CREATE_VM ioctl(). This thread calls
+> cgroup_attach_task_all() which takes cgroup_threadgroup_rwsem for writing
+> which may incur 100ms+ latency since upstream commit
+> 6a010a49b63ac8465851a79185d8deff966f8e1a.
+> 
+> However, if the CPU is not vulnerable to iTLB multihit one could just
+> disable the mitigation (and the worker thread creation) with the
+> newly added KVM module parameter nx_huge_pages=never. This avoids the issue
+> altogether.
+> 
+> While there's an alternative solution for this issue already supported
+> in 6.1-stable (ie. cgroup's favordynmods), disabling the mitigation in
+> KVM is probably preferable if the workload is not impacted by dynamic
+> cgroup operations since one doesn't need to decide between the trade-off
+> in using favordynmods, the thread creation code path is avoided at
+> KVM_CREATE_VM and you avoid creating a thread which does nothing.
+> 
+> Tests performed:
+> 
+> * Measured KVM_CREATE_VM latency and confirmed it goes down to less than 1ms
+> * We've been performing latency measurements internally w/ this parameter
+>   for some weeks now
 
-Reading thermal sensor on mt7986 devices returns invalid temperature:
+ALl now queued up, thanks.
 
-bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
- -274000
-
-Fix this by adding missing members in mtk_thermal_data struct which were
-used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
-
-Cc: stable@vger.kernel.org
-Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
-Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
----
- drivers/thermal/mediatek/auxadc_thermal.c | 3 +++
- 1 file changed, 3 insertions(+)
-
-diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
-index 843214d30bd8..967b9a1aead4 100644
---- a/drivers/thermal/mediatek/auxadc_thermal.c
-+++ b/drivers/thermal/mediatek/auxadc_thermal.c
-@@ -690,6 +690,9 @@ static const struct mtk_thermal_data mt7986_thermal_data = {
- 	.adcpnp = mt7986_adcpnp,
- 	.sensor_mux_values = mt7986_mux_values,
- 	.version = MTK_THERMAL_V3,
-+	.apmixed_buffer_ctl_reg = APMIXED_SYS_TS_CON1,
-+	.apmixed_buffer_ctl_mask = GENMASK(31, 6) | BIT(3),
-+	.apmixed_buffer_ctl_set = BIT(0),
- };
- 
- static bool mtk_thermal_temp_is_valid(int temp)
--- 
-2.34.1
-
+greg k-h
