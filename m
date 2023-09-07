@@ -2,40 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2B36B797717
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:21:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9CDC797777
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:26:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241533AbjIGQVW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57214 "EHLO
+        id S240155AbjIGQ0X (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:26:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241872AbjIGQVE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:21:04 -0400
+        with ESMTP id S231166AbjIGQ0M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:26:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E96416A55
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:17:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30C7AC4AF6C;
-        Thu,  7 Sep 2023 15:00:05 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694098805;
-        bh=rVx1j7Ld77a2/avNN0CXdbhj3VFJHwTNAUWNhlgg0xY=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=MXunPGnPAO1DIAgy5L8TPbDhK83LE0HLOQ4EJ4Cjs6bV+iMIsC62RBr9dbhCzZ0Yu
-         8JdgAgR4FVn8bwoxkLIw14IGkqviesZRqmSDK9ietbRPKDkEz0zC03NVr5i0Udm3Ml
-         pHB6lLd70mn78dHedJajwpTnzpWKG5dsKKyZDY5Q=
-Date:   Thu, 7 Sep 2023 16:00:01 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Vladislav Efanov <VEfanov@ispras.ru>
-Cc:     stable@vger.kernel.org, Jan Kara <jack@suse.com>,
-        lvc-project@linuxtesting.org, Jan Kara <jack@suse.cz>
-Subject: Re: [PATCH 5.10/5.15/6.1 1/1] udf: Check consistency of Space Bitmap
- Descriptor
-Message-ID: <2023090755-gloomy-amnesty-1951@gregkh>
-References: <20230905120837.836080-1-VEfanov@ispras.ru>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA7117280;
+        Thu,  7 Sep 2023 09:22:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A20AAC32795;
+        Thu,  7 Sep 2023 15:43:41 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694101422;
+        bh=m1gBSKQyE+///fvwwSS0gZyVVINTrFGUxYc7GN99hFQ=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=RKDREBu7Ri/TBCS3RdVmYicZUH1M0HiMIBj5/560Zl/4T/VKtf2xaFy5SlXnwfbIG
+         RVvFLTu8N2uJLaozhwpGRc/aghcDZHZYY5cIKOj/Shipswf699cWsHv3OweqRp5WhN
+         n4ztztPI19UKNWTIR9sADBaJRdivAy01DX2JGBbNWtTINVXm9xMq2HdOdMRaspJiCy
+         07AOXNLt2DpXJHUVy4fSg+Y5f7Eg2s5WLynkny5iT6gKccE8IaWBtXrW3/C0lK/ajp
+         49YVIRbrPdvTOCVgdK0uczhfyqd1Xe+KBQnsSATA8PEh6D4r3aWJM2WksgZAiegbBj
+         VUVtMv7AtSI8w==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
+        syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com,
+        Takeshi Misawa <jeliantsurux@gmail.com>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Ian Kent <raven@themaw.net>,
+        Matthew Wilcox <willy@infradead.org>,
+        Andrei Vagin <avagin@gmail.com>, autofs@vger.kernel.org,
+        Christian Brauner <brauner@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH AUTOSEL 6.5 2/6] autofs: fix memory leak of waitqueues in autofs_catatonic_mode
+Date:   Thu,  7 Sep 2023 11:43:33 -0400
+Message-Id: <20230907154338.3421582-2-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230907154338.3421582-1-sashal@kernel.org>
+References: <20230907154338.3421582-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230905120837.836080-1-VEfanov@ispras.ru>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.5.2
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -46,11 +58,104 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 03:08:36PM +0300, Vladislav Efanov wrote:
-> From: Vladislav Efanov <VEfanov@ispras.ru>
-> 
-> commit 1e0d4adf17e7ef03281d7b16555e7c1508c8ed2d upstream
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-All now queued up, thanks.
+[ Upstream commit ccbe77f7e45dfb4420f7f531b650c00c6e9c7507 ]
 
-greg k-h
+Syzkaller reports a memory leak:
+
+BUG: memory leak
+unreferenced object 0xffff88810b279e00 (size 96):
+  comm "syz-executor399", pid 3631, jiffies 4294964921 (age 23.870s)
+  hex dump (first 32 bytes):
+    00 00 00 00 00 00 00 00 08 9e 27 0b 81 88 ff ff  ..........'.....
+    08 9e 27 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ..'.............
+  backtrace:
+    [<ffffffff814cfc90>] kmalloc_trace+0x20/0x90 mm/slab_common.c:1046
+    [<ffffffff81bb75ca>] kmalloc include/linux/slab.h:576 [inline]
+    [<ffffffff81bb75ca>] autofs_wait+0x3fa/0x9a0 fs/autofs/waitq.c:378
+    [<ffffffff81bb88a7>] autofs_do_expire_multi+0xa7/0x3e0 fs/autofs/expire.c:593
+    [<ffffffff81bb8c33>] autofs_expire_multi+0x53/0x80 fs/autofs/expire.c:619
+    [<ffffffff81bb6972>] autofs_root_ioctl_unlocked+0x322/0x3b0 fs/autofs/root.c:897
+    [<ffffffff81bb6a95>] autofs_root_ioctl+0x25/0x30 fs/autofs/root.c:910
+    [<ffffffff81602a9c>] vfs_ioctl fs/ioctl.c:51 [inline]
+    [<ffffffff81602a9c>] __do_sys_ioctl fs/ioctl.c:870 [inline]
+    [<ffffffff81602a9c>] __se_sys_ioctl fs/ioctl.c:856 [inline]
+    [<ffffffff81602a9c>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
+    [<ffffffff84608225>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+    [<ffffffff84608225>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
+    [<ffffffff84800087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+
+autofs_wait_queue structs should be freed if their wait_ctr becomes zero.
+Otherwise they will be lost.
+
+In this case an AUTOFS_IOC_EXPIRE_MULTI ioctl is done, then a new
+waitqueue struct is allocated in autofs_wait(), its initial wait_ctr
+equals 2. After that wait_event_killable() is interrupted (it returns
+-ERESTARTSYS), so that 'wq->name.name == NULL' condition may be not
+satisfied. Actually, this condition can be satisfied when
+autofs_wait_release() or autofs_catatonic_mode() is called and, what is
+also important, wait_ctr is decremented in those places. Upon the exit of
+autofs_wait(), wait_ctr is decremented to 1. Then the unmounting process
+begins: kill_sb calls autofs_catatonic_mode(), which should have freed the
+waitqueues, but it only decrements its usage counter to zero which is not
+a correct behaviour.
+
+edit:imk
+This description is of course not correct. The umount performed as a result
+of an expire is a umount of a mount that has been automounted, it's not the
+autofs mount itself. They happen independently, usually after everything
+mounted within the autofs file system has been expired away. If everything
+hasn't been expired away the automount daemon can still exit leaving mounts
+in place. But expires done in both cases will result in a notification that
+calls autofs_wait_release() with a result status. The problem case is the
+summary execution of of the automount daemon. In this case any waiting
+processes won't be woken up until either they are terminated or the mount
+is umounted.
+end edit: imk
+
+So in catatonic mode we should free waitqueues which counter becomes zero.
+
+edit: imk
+Initially I was concerned that the calling of autofs_wait_release() and
+autofs_catatonic_mode() was not mutually exclusive but that can't be the
+case (obviously) because the queue entry (or entries) is removed from the
+list when either of these two functions are called. Consequently the wait
+entry will be freed by only one of these functions or by the woken process
+in autofs_wait() depending on the order of the calls.
+end edit: imk
+
+Reported-by: syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com
+Suggested-by: Takeshi Misawa <jeliantsurux@gmail.com>
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Signed-off-by: Ian Kent <raven@themaw.net>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: Andrei Vagin <avagin@gmail.com>
+Cc: autofs@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Message-Id: <169112719161.7590.6700123246297365841.stgit@donald.themaw.net>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/autofs/waitq.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
+
+diff --git a/fs/autofs/waitq.c b/fs/autofs/waitq.c
+index 54c1f8b8b0757..efdc76732faed 100644
+--- a/fs/autofs/waitq.c
++++ b/fs/autofs/waitq.c
+@@ -32,8 +32,9 @@ void autofs_catatonic_mode(struct autofs_sb_info *sbi)
+ 		wq->status = -ENOENT; /* Magic is gone - report failure */
+ 		kfree(wq->name.name - wq->offset);
+ 		wq->name.name = NULL;
+-		wq->wait_ctr--;
+ 		wake_up_interruptible(&wq->queue);
++		if (!--wq->wait_ctr)
++			kfree(wq);
+ 		wq = nwq;
+ 	}
+ 	fput(sbi->pipe);	/* Close the pipe */
+-- 
+2.40.1
+
