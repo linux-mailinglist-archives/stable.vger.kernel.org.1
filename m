@@ -2,113 +2,93 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5374B7973B3
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5762A79757E
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:52:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242245AbjIGP3C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 11:29:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
+        id S235514AbjIGPr1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 11:47:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231864AbjIGPV7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:21:59 -0400
-Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39EE1700;
-        Thu,  7 Sep 2023 08:21:26 -0700 (PDT)
-Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
-        by mailout.west.internal (Postfix) with ESMTP id 4628B3200921;
-        Thu,  7 Sep 2023 06:11:47 -0400 (EDT)
-Received: from mailfrontend1 ([10.202.2.162])
-  by compute5.internal (MEProxy); Thu, 07 Sep 2023 06:11:48 -0400
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
-        :cc:content-type:content-type:date:date:from:from:in-reply-to
-        :in-reply-to:message-id:mime-version:references:reply-to:sender
-        :subject:subject:to:to; s=fm1; t=1694081506; x=1694167906; bh=EZ
-        T6EnA3YabROgKZ7V+W9exHIuOjPiCl6NxOF1soN9U=; b=xAbnZGGnS26+dKZuFM
-        JJ9Q/LP83Fk2oA7vUHJgxjPuMktibog+u9gFMPqITJcZTLADYfgGjYfuyA+hIgpy
-        UZ0PJ7YnaKlDjpwHqZdZipYvLmuNtiyrdBEAjyaJjqU6pTabR7ItN36z3lwhpmXs
-        fvtiu0mTHRzZpFj+I45yd9bxVW5zKED/+1aCZxcyb3ZHIcAuoJ3tpNsPmKev+cCb
-        yNuoZy9vW1r0nXPmLM0PNfhWBwCiMRsfOKcdCT7P3LiIwHLYXW5Qa8awoYbQu9XA
-        fkpuw6HrCJhhvMXFhaZnWBSYl/eRazd8A2AkeBiJPfTx8oJgT1nYcQarGfpiUTzZ
-        3nlw==
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
-        messagingengine.com; h=cc:cc:content-type:content-type:date:date
-        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
-        :message-id:mime-version:references:reply-to:sender:subject
-        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
-        :x-sasl-enc; s=fm1; t=1694081506; x=1694167906; bh=EZT6EnA3YabRO
-        gKZ7V+W9exHIuOjPiCl6NxOF1soN9U=; b=WeI7TMT0kmnj7BpJTHA+/mKJxHLnA
-        OabayLtZUBFxbF1MUNKkaCwqHQoIsSRelpkuxhRSXzyOmyOkbZ8tAGBCrZXRoqsp
-        KRsFDkq6APoFkXAfBI8tinW/iz8wqVUN8vjDX1Hs6wTDVnhvsZnfyiJH2IKjlZ9Z
-        7geKfsxeBgrXB2KI33HelMATDyF+Cr5EZw0yAZFypceWTzdzwMwDIA6HLjME71eM
-        qn3VBBhUJ0utdR6tOvutgpbDX2zNr8iWYdsHm5bw2usx2eP0EAZWHILjxaLoD9eA
-        YVFGeVbkzAuynBV9RfFqV3VVpEb68L2XQCiIWoFLw0PdKu2svW34JKQuQ==
-X-ME-Sender: <xms:4aH5ZHsHds3V0ipUOOV1zJyBPznKR_WsO-5nW6tiU9MGH5ewW08mPQ>
-    <xme:4aH5ZIfNU11SHBEaMmaEvGDQ-BGvbuv_sEUOiV6JICfG0dgR-EQeQkgvEBa5ppOk1
-    bvgIt-Fz2fu2A>
-X-ME-Received: <xmr:4aH5ZKwkKolW7ggAF7C6NgoEx-SDMCFAms8NDKFUIHhALKjqoIN4NsutmNc>
-X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehhedgvdehucetufdoteggodetrfdotf
-    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
-    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
-    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
-    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
-    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
-    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
-    hhrdgtohhm
-X-ME-Proxy: <xmx:4aH5ZGORV396Z-xwS_71WoNaFIqg28zD8p-KPpF8Fj8skpK8C00n0Q>
-    <xmx:4aH5ZH-dbwLMRZTS323_B-WH-sLWA7btzK0cRLr3vsZrnQMceLZ1yg>
-    <xmx:4aH5ZGXFACVuo9kvBS59nBceVR1ZW3XNUP31J6zjtjW-2JUIN5t1Qg>
-    <xmx:4qH5ZHxBMEYMGjScKU9TdoNo-gxPzpvdOYz_xoq1S84DA6O9teoiZg>
-Feedback-ID: i787e41f1:Fastmail
-Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
- 7 Sep 2023 06:11:45 -0400 (EDT)
-Date:   Thu, 7 Sep 2023 11:11:44 +0100
-From:   Greg KH <greg@kroah.com>
-To:     Adam Ford <aford173@gmail.com>
-Cc:     stable <stable@vger.kernel.org>, Tony Lindgren <tony@atomide.com>,
-        Linux-OMAP <linux-omap@vger.kernel.org>
-Subject: Re: of: property: Simplify of_link_to_phandle()
-Message-ID: <2023090715-charity-numerous-f6f0@gregkh>
-References: <CAHCN7x+GLhYyEMq0h0Sa3m9JMuZf0g7=FpT==uFOg=w7OQ=qUw@mail.gmail.com>
+        with ESMTP id S1345353AbjIGPfb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:35:31 -0400
+Received: from mxout1.routing.net (mxout1.routing.net [IPv6:2a03:2900:1:a::a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 658B71FC9;
+        Thu,  7 Sep 2023 08:35:08 -0700 (PDT)
+Received: from mxbox3.masterlogin.de (unknown [192.168.10.78])
+        by mxout1.routing.net (Postfix) with ESMTP id 04FFB4081B;
+        Thu,  7 Sep 2023 11:20:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=mailerdienst.de;
+        s=20200217; t=1694085635;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=bmzyT3vhoavJV5YD/9bjCpBgNAP4o0u/rneto0+CusE=;
+        b=w2FAf1f6NYSPYwdHbMqEXFMlOVdC4HmF1Q212UWEGrvaarckAZKkNtvCHUdLCSOkVipCza
+        Ooe2QjKtAInOu1Qw0vq5sGegkzD3DyUtuvitA1FJ0oYh0f41J0DtoO6oUXy+UblT8QEd0e
+        daPaIchb0Lp+CpS0c9Icp9+HxKt+47Y=
+Received: from frank-G5.. (fttx-pool-217.61.150.154.bambit.de [217.61.150.154])
+        by mxbox3.masterlogin.de (Postfix) with ESMTPSA id 0FBA2360465;
+        Thu,  7 Sep 2023 11:20:34 +0000 (UTC)
+From:   Frank Wunderlich <linux@fw-web.de>
+To:     linux-mediatek@lists.infradead.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Golle <daniel@makrotopia.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        stable@vger.kernel.org
+Subject: [PATCH] thermal/drivers/mediatek: Fix control buffer enablement on MT7896
+Date:   Thu,  7 Sep 2023 13:20:18 +0200
+Message-Id: <20230907112018.52811-1-linux@fw-web.de>
+X-Mailer: git-send-email 2.34.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <CAHCN7x+GLhYyEMq0h0Sa3m9JMuZf0g7=FpT==uFOg=w7OQ=qUw@mail.gmail.com>
-X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
-        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,
-        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Mail-ID: e7eeb8e1-00de-41f6-a5df-ce2e9164136e
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 06:49:07PM -0500, Adam Ford wrote:
-> Stable Group,
-> 
-> Please apply commit 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
-> to the 6.1.y stable branch.  It was originally part of a series that
-> was only partially applied to 6.1.  Being partially applied left 6.1.y
-> in a state where a bunch of peripherals were deferred indefinitely on
-> the am3517-evm.
-> 
-> wl12xx_buf platform: supplier 48002000.scm not ready
-> wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
-> 48050000.dss platform: supplier display@0 not ready
-> 48064800.ehci platform: supplier hsusb1_phy not ready
-> backlight platform: supplier 48002000.scm not ready
-> display@0 platform: supplier backlight not ready
-> dmtimer-pwm@11 platform: supplier 48002000.scm not ready
-> hsusb1_phy platform: supplier 48002000.scm not ready
-> gpio-leds platform: supplier 48002000.scm not ready
-> 480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
-> 
-> With the above commit applied, it appears to address most of the
-> deferred peripherals.
-> 
-> Fixes: eaf9b5612a47 ("driver core: fw_devlink: Don't purge child
-> fwnode's consumer links")
-> Signed-off-by:  Adam Ford <aford173@gmail.com>
+From: Frank Wunderlich <frank-w@public-files.de>
 
-Now queued up, thanks.
+Reading thermal sensor on mt7986 devices returns invalid temperature:
 
-greg k-h
+bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
+ -274000
+
+Fix this by adding missing members in mtk_thermal_data struct which were
+used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
+
+Cc: stable@vger.kernel.org
+Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
+Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+---
+ drivers/thermal/mediatek/auxadc_thermal.c | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
+index 843214d30bd8..967b9a1aead4 100644
+--- a/drivers/thermal/mediatek/auxadc_thermal.c
++++ b/drivers/thermal/mediatek/auxadc_thermal.c
+@@ -690,6 +690,9 @@ static const struct mtk_thermal_data mt7986_thermal_data = {
+ 	.adcpnp = mt7986_adcpnp,
+ 	.sensor_mux_values = mt7986_mux_values,
+ 	.version = MTK_THERMAL_V3,
++	.apmixed_buffer_ctl_reg = APMIXED_SYS_TS_CON1,
++	.apmixed_buffer_ctl_mask = GENMASK(31, 6) | BIT(3),
++	.apmixed_buffer_ctl_set = BIT(0),
+ };
+ 
+ static bool mtk_thermal_temp_is_valid(int temp)
+-- 
+2.34.1
+
