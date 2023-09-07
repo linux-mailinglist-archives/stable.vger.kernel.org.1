@@ -2,44 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E247797B95
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 20:22:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E468797B99
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 20:22:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343867AbjIGSWF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 14:22:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33408 "EHLO
+        id S1343915AbjIGSWK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 14:22:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33396 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1343852AbjIGSWD (ORCPT
+        with ESMTP id S1343855AbjIGSWD (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 14:22:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42BC0BC;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A85CB4;
         Thu,  7 Sep 2023 11:21:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17127C116A6;
-        Thu,  7 Sep 2023 10:17:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694081852;
-        bh=D0YOmx6OmWNMjeQsTguLfhAxPqjOL7Fqu32QbhYTxuc=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=xFnH3zyxOjdc/5PApRBOvRxsczKfMFO53DMNu+7ggCtE6+fkwfmdo2vpIReLjKM8r
-         bgL7WDhHKggA/SmDHlNcKXhkBLk2rDDDpbTlwNGUXxPJIeoRDA9qJNTMHIQGWFsWt+
-         q+YvS982eyZA9HKSi9Hwwfw4iM/RNd1MnFaKWiiE=
-Date:   Thu, 7 Sep 2023 11:17:30 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Thorsten Leemhuis <regressions@leemhuis.info>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Linux kernel regressions list <regressions@lists.linux.dev>,
-        LKML <linux-kernel@vger.kernel.org>,
-        Mario Limonciello <mario.limonciello@amd.com>
-Subject: Re: Consider picking up "tpm: Enable hwrng only for Pluton on AMD
- CPUs" rather sooner than later
-Message-ID: <2023090722-molehill-ranking-65e8@gregkh>
-References: <a8d206b6-d1d8-4c9a-b82c-724c2def0491@leemhuis.info>
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66CABC4E661;
+        Thu,  7 Sep 2023 15:44:05 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694101446;
+        bh=mUT2reE7EMvn7LtX1plghvraYIcagBbeHJ1sSlUt9/I=;
+        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
+        b=hikXuSIu4c4SJ8/z1rWsWq5yibml4+EQoxVTNCXc7wvWJoKPcDXBXFZVMZ/pi7GGq
+         HEpVVE+F6+z/5c9WQxQGdEMzYRLV6juks/QT2QL76C8bgQZybxL2PegqJ0v57TFFa/
+         oenJMgrWpIk70udlNGPFRC8YLbYweI+EIae+xU9Glpo62ZtwLn/RFh6PQBN4zMDo7R
+         vSlH/jirb5NnKyjPLm9aoVtjdt6I8Q9hJ96+JQKRuJWva/7qVbntANNuJVZQE9x106
+         LdPqC1yDWFTkj83fU6u/Z1WZNHdz+GJyOa/nR6yGQrJ3XmzLjVI5BEjw0zPVGjW1HX
+         WQ8ReIMVU21yg==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
+        Sasha Levin <sashal@kernel.org>, clm@fb.com,
+        josef@toxicpanda.com, linux-btrfs@vger.kernel.org
+Subject: [PATCH AUTOSEL 6.1 3/4] btrfs: output extra debug info if we failed to find an inline backref
+Date:   Thu,  7 Sep 2023 11:43:59 -0400
+Message-Id: <20230907154400.3421858-3-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
+In-Reply-To: <20230907154400.3421858-1-sashal@kernel.org>
+References: <20230907154400.3421858-1-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <a8d206b6-d1d8-4c9a-b82c-724c2def0491@leemhuis.info>
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.1.52
+Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -50,14 +52,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 01:21:07PM +0200, Thorsten Leemhuis wrote:
-> Hi stable team, JFYI, the recently mainline commit 8f7f35e5aa6f21 ("tpm:
-> Enable hwrng only for Pluton on AMD CPUs") from Jarkko contains a stable
-> tag, but it might be worth picking up rather sooner than later, as it
-> fixes a regression that seems to annoy quite a few users of 6.1.y, 6.4.y
-> and 6.5; that's why at least Fedora is already working on picking the
-> fix up ahead of the stable-tree.
+From: Qu Wenruo <wqu@suse.com>
 
-Now queued up, thanks.
+[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
 
-greg k-h
+[BUG]
+Syzbot reported several warning triggered inside
+lookup_inline_extent_backref().
+
+[CAUSE]
+As usual, the reproducer doesn't reliably trigger locally here, but at
+least we know the WARN_ON() is triggered when an inline backref can not
+be found, and it can only be triggered when @insert is true. (I.e.
+inserting a new inline backref, which means the backref should already
+exist)
+
+[ENHANCEMENT]
+After the WARN_ON(), dump all the parameters and the extent tree
+leaf to help debug.
+
+Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
+Signed-off-by: Qu Wenruo <wqu@suse.com>
+Reviewed-by: David Sterba <dsterba@suse.com>
+Signed-off-by: David Sterba <dsterba@suse.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/btrfs/extent-tree.c | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
+index f2ee70c03f0d5..c9a46cf9eed19 100644
+--- a/fs/btrfs/extent-tree.c
++++ b/fs/btrfs/extent-tree.c
+@@ -863,6 +863,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
+ 		err = -ENOENT;
+ 		goto out;
+ 	} else if (WARN_ON(ret)) {
++		btrfs_print_leaf(path->nodes[0]);
++		btrfs_err(fs_info,
++"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
++			  bytenr, num_bytes, parent, root_objectid, owner,
++			  offset);
+ 		err = -EIO;
+ 		goto out;
+ 	}
+-- 
+2.40.1
+
