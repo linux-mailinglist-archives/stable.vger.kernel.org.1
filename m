@@ -2,46 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E023797769
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:25:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C56AF7978D4
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:56:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238546AbjIGQZc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:25:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
+        id S244892AbjIGQ4I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:56:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57706 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240939AbjIGQYG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:24:06 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A503C272B;
-        Thu,  7 Sep 2023 09:21:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001EAC116D6;
-        Thu,  7 Sep 2023 11:30:31 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694086232;
-        bh=BQqmAsnKsYCURZdBUxzJ5oq3xlzAgdnhH5VorW6j2es=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=r6lYQANfxUUFWoyZp/V5KNiQHdM+KGxHUGVv4pBcJQhRwOn4+5pLAvcr3hecL4Ucm
-         nSg2sGI4ndAzw8OGj7Eb+6ZKbKjlRgaDPgZXIzgENndX8qklFZbFfz3Vv0QA2YGdTv
-         edRhLRXleubbSps3JiKxCVXgJ8r6e62wLhHU06hA=
-Date:   Thu, 7 Sep 2023 12:30:29 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Rob Herring <robh@kernel.org>
-Cc:     Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org,
-        linux-security-module@vger.kernel.org, devicetree@vger.kernel.org,
-        frowand.list@gmail.com, robh+dt@kernel.org, sashal@kernel.org,
-        dmitry.kasatkin@gmail.com, linux-integrity@vger.kernel.org,
-        zohar@linux.ibm.com
-Subject: Re: [PATCH 5.15] of: kexec: Mark ima_{free,stable}_kexec_buffer() as
- __init
-Message-ID: <2023090723-mocha-overfed-f6df@gregkh>
-References: <20230905-5-15-of-kexec-modpost-warning-v1-1-4138b2e96b4e@kernel.org>
- <169403211998.243709.4772468997015448407.robh@kernel.org>
+        with ESMTP id S244074AbjIGQ4G (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:56:06 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 382873AB6;
+        Thu,  7 Sep 2023 09:30:48 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 187F366072FF;
+        Thu,  7 Sep 2023 12:36:34 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1694086594;
+        bh=Vhc77ifX7M3g+lCWDsu/+wMkglBynYFDlJsEf7eaeo0=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=B8QYA3uZMulnxcm3a7jBXxbDn0D5I077mcoANx7R4rdo6NU6XKHmMtGawG9Hmhltu
+         ISSvZUUpQyd1jwCA2Z6psUES1HsTbsorsGGS5Ak0P7ZIaiRRn3OATiquZzXWRr8CgW
+         4e/VNJdBf46Aw6bewdBCb2fzvth1+ByvPYHXZPoYDRDvthWD2AI+WViSgQPj7jEjTC
+         5F0flJ78pRAG6lOta/sziXQ8u/TPnBg9jEYugz1Rokifx8RNpBpvMtgiUGZHbqu299
+         u5LdEPe5HkK0ceAmVckpm52ive1ZLhbf2GwGx+PGUwl7ZfMwlxCsMPLCWZBVHK5iQf
+         AyPbEDKS8HYJw==
+Message-ID: <f033e528-28da-9bbf-1112-9c0e9dd10a5b@collabora.com>
+Date:   Thu, 7 Sep 2023 13:36:31 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <169403211998.243709.4772468997015448407.robh@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] thermal/drivers/mediatek: Fix control buffer enablement
+ on MT7896
+Content-Language: en-US
+To:     Frank Wunderlich <linux@fw-web.de>,
+        linux-mediatek@lists.infradead.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Daniel Golle <daniel@makrotopia.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        stable@vger.kernel.org
+References: <20230907112018.52811-1-linux@fw-web.de>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230907112018.52811-1-linux@fw-web.de>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,42 +66,21 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 03:28:51PM -0500, Rob Herring wrote:
+Il 07/09/23 13:20, Frank Wunderlich ha scritto:
+> From: Frank Wunderlich <frank-w@public-files.de>
 > 
-> On Tue, 05 Sep 2023 13:36:11 -0700, Nathan Chancellor wrote:
-> > This commit has no direct upstream equivalent.
-> > 
-> > After commit d48016d74836 ("mm,ima,kexec,of: use memblock_free_late from
-> > ima_free_kexec_buffer") in 5.15, there is a modpost warning for certain
-> > configurations:
-> > 
-> >   WARNING: modpost: vmlinux.o(.text+0xb14064): Section mismatch in reference from the function ima_free_kexec_buffer() to the function .init.text:__memblock_free_late()
-> >   The function ima_free_kexec_buffer() references
-> >   the function __init __memblock_free_late().
-> >   This is often because ima_free_kexec_buffer lacks a __init
-> >   annotation or the annotation of __memblock_free_late is wrong.
-> > 
-> > In mainline, there is no issue because ima_free_kexec_buffer() is marked
-> > as __init, which was done as part of commit b69a2afd5afc ("x86/kexec:
-> > Carry forward IMA measurement log on kexec") in 6.0, which is not
-> > suitable for stable.
-> > 
-> > Mark ima_free_kexec_buffer() and its single caller
-> > ima_load_kexec_buffer() as __init in 5.15, as ima_load_kexec_buffer() is
-> > only called from ima_init(), which is __init, clearing up the warning.
-> > 
-> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
-> > ---
-> >  drivers/of/kexec.c                 | 2 +-
-> >  include/linux/of.h                 | 2 +-
-> >  security/integrity/ima/ima.h       | 2 +-
-> >  security/integrity/ima/ima_kexec.c | 2 +-
-> >  4 files changed, 4 insertions(+), 4 deletions(-)
-> > 
+> Reading thermal sensor on mt7986 devices returns invalid temperature:
 > 
-> Acked-by: Rob Herring <robh@kernel.org>
+> bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
+>   -274000
 > 
+> Fix this by adding missing members in mtk_thermal_data struct which were
+> used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
+> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
 
-Now queued up, thanks.
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-greg k-h
+
