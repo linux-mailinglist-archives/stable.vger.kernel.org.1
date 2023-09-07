@@ -2,38 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60F30797747
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:24:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E023797769
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:25:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234149AbjIGQYI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:24:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33344 "EHLO
+        id S238546AbjIGQZc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:25:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242886AbjIGQWz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:22:55 -0400
+        with ESMTP id S240939AbjIGQYG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:24:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A5B59EC1
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:20:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62D75C116D4;
-        Thu,  7 Sep 2023 11:27:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A503C272B;
+        Thu,  7 Sep 2023 09:21:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 001EAC116D6;
+        Thu,  7 Sep 2023 11:30:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694086037;
-        bh=e+9qa6M/dTtZ1dNCdvp+v5IEGyPLkIJIM5U5qWZ1C5A=;
+        s=korg; t=1694086232;
+        bh=BQqmAsnKsYCURZdBUxzJ5oq3xlzAgdnhH5VorW6j2es=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=BWC/i64rvdTg/rBaQS/hSkh501w42vQQQosmo/zwIDVxs9YWRnDbH1yZASgCX8/vO
-         FWQgGW7pq9ktKdCY2/xeDoyG9ulKVHkrpilb2XfcnAI1Jw6oK8yYBIzmfRS6DZZoNt
-         zAYZw4S4smUlGPdI6+9DJLup9nF7DTxCbQbBQfbE=
-Date:   Thu, 7 Sep 2023 12:27:15 +0100
+        b=r6lYQANfxUUFWoyZp/V5KNiQHdM+KGxHUGVv4pBcJQhRwOn4+5pLAvcr3hecL4Ucm
+         nSg2sGI4ndAzw8OGj7Eb+6ZKbKjlRgaDPgZXIzgENndX8qklFZbFfz3Vv0QA2YGdTv
+         edRhLRXleubbSps3JiKxCVXgJ8r6e62wLhHU06hA=
+Date:   Thu, 7 Sep 2023 12:30:29 +0100
 From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Jordan Rife <jrife@google.com>
-Cc:     stable@vger.kernel.org, dborkman@kernel.org
-Subject: Re: [PATCH] net: Avoid address overwrite in kernel_connect
-Message-ID: <2023090743-cheek-zebra-a175@gregkh>
-References: <20230905235846.142217-1-jrife@google.com>
+To:     Rob Herring <robh@kernel.org>
+Cc:     Nathan Chancellor <nathan@kernel.org>, stable@vger.kernel.org,
+        linux-security-module@vger.kernel.org, devicetree@vger.kernel.org,
+        frowand.list@gmail.com, robh+dt@kernel.org, sashal@kernel.org,
+        dmitry.kasatkin@gmail.com, linux-integrity@vger.kernel.org,
+        zohar@linux.ibm.com
+Subject: Re: [PATCH 5.15] of: kexec: Mark ima_{free,stable}_kexec_buffer() as
+ __init
+Message-ID: <2023090723-mocha-overfed-f6df@gregkh>
+References: <20230905-5-15-of-kexec-modpost-warning-v1-1-4138b2e96b4e@kernel.org>
+ <169403211998.243709.4772468997015448407.robh@kernel.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230905235846.142217-1-jrife@google.com>
+In-Reply-To: <169403211998.243709.4772468997015448407.robh@kernel.org>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -44,16 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Tue, Sep 05, 2023 at 06:58:46PM -0500, Jordan Rife wrote:
-> commit 0bdf399 upstream.
+On Wed, Sep 06, 2023 at 03:28:51PM -0500, Rob Herring wrote:
+> 
+> On Tue, 05 Sep 2023 13:36:11 -0700, Nathan Chancellor wrote:
+> > This commit has no direct upstream equivalent.
+> > 
+> > After commit d48016d74836 ("mm,ima,kexec,of: use memblock_free_late from
+> > ima_free_kexec_buffer") in 5.15, there is a modpost warning for certain
+> > configurations:
+> > 
+> >   WARNING: modpost: vmlinux.o(.text+0xb14064): Section mismatch in reference from the function ima_free_kexec_buffer() to the function .init.text:__memblock_free_late()
+> >   The function ima_free_kexec_buffer() references
+> >   the function __init __memblock_free_late().
+> >   This is often because ima_free_kexec_buffer lacks a __init
+> >   annotation or the annotation of __memblock_free_late is wrong.
+> > 
+> > In mainline, there is no issue because ima_free_kexec_buffer() is marked
+> > as __init, which was done as part of commit b69a2afd5afc ("x86/kexec:
+> > Carry forward IMA measurement log on kexec") in 6.0, which is not
+> > suitable for stable.
+> > 
+> > Mark ima_free_kexec_buffer() and its single caller
+> > ima_load_kexec_buffer() as __init in 5.15, as ima_load_kexec_buffer() is
+> > only called from ima_init(), which is __init, clearing up the warning.
+> > 
+> > Signed-off-by: Nathan Chancellor <nathan@kernel.org>
+> > ---
+> >  drivers/of/kexec.c                 | 2 +-
+> >  include/linux/of.h                 | 2 +-
+> >  security/integrity/ima/ima.h       | 2 +-
+> >  security/integrity/ima/ima_kexec.c | 2 +-
+> >  4 files changed, 4 insertions(+), 4 deletions(-)
+> > 
+> 
+> Acked-by: Rob Herring <robh@kernel.org>
+> 
 
-Nit, next time use more sha1 characters, the kernel documentation shows
-how many we usually rely on.
-
-> This fix applies to all stable kernel versions 4.19+.
-
-Why not also 4.14?
-
-Anyway, now queued up, thanks.
+Now queued up, thanks.
 
 greg k-h
