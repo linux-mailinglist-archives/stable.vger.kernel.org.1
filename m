@@ -2,116 +2,176 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A7CF0797DA9
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 23:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BA0D2797DBB
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 23:09:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240656AbjIGVBt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 17:01:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36488 "EHLO
+        id S231843AbjIGVJG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 17:09:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230091AbjIGVBr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 17:01:47 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AC7841BCE;
-        Thu,  7 Sep 2023 14:01:36 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694120496; x=1725656496;
-  h=message-id:subject:from:to:cc:date:in-reply-to:
-   references:content-transfer-encoding:mime-version;
-  bh=1TJX2fxitiy8P/tUl0ZPLXAl8DRdzkpD4eQW3906Ids=;
-  b=k2HQjPCO7BDi+LS02F6wqf3qzBsKFQeW6xSJcoRa9vwAWfwRMYIqoJVE
-   8lHRelKrvdO+4+bGSI92aAmyTS/3j1PAxenQ3swzMUvktpXaUgzRltNJv
-   pdp0qKt41KW2qtk7K6D+/tE+qSLeRrosm9cmMVcG5yCfcw3OOoFg0leCR
-   TOUvbMrTTZupKVqFkTq7xzv5krUQUqvgfwG2sJWx+VSFnpDJ0PyQUcLbw
-   2KVVeEzuqAmcDXsBcSq1UAC8dgBcmiY/r7yy/Rew2qvxesPBZW0eN+sXq
-   9kODFHXWt6WF25e1vT5i/16oiHWSCEeZhomJxWWb/rpGwLj6n2sSch8rC
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="367736355"
-X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
-   d="scan'208";a="367736355"
-Received: from fmsmga008.fm.intel.com ([10.253.24.58])
-  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 14:01:11 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="807690341"
-X-IronPort-AV: E=Sophos;i="6.02,236,1688454000"; 
-   d="scan'208";a="807690341"
-Received: from ayushgup-mobl.amr.corp.intel.com (HELO [10.209.118.125]) ([10.209.118.125])
-  by fmsmga008-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 14:01:10 -0700
-Message-ID: <171e6a9435a33885a73b48762f86954e447c26c2.camel@linux.intel.com>
-Subject: Re: [External] Re: Fwd: WARNING: CPU: 13 PID: 3837105 at
- kernel/sched/sched.h:1561 __cfsb_csd_unthrottle+0x149/0x160
-From:   Tim Chen <tim.c.chen@linux.intel.com>
-To:     Hao Jia <jiahao.os@bytedance.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Benjamin Segall <bsegall@google.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Igor Raits <igor.raits@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>
-Date:   Thu, 07 Sep 2023 14:01:10 -0700
-In-Reply-To: <3544d5e3-3070-9ddc-fa6c-a05ed35dfd14@bytedance.com>
-References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
-         <xm26cyz4ibnb.fsf@google.com>
-         <55e2861e-9722-08f8-2c49-966035ff4218@bytedance.com>
-         <20230904222351.GC2568@noisy.programming.kicks-ass.net>
-         <3544d5e3-3070-9ddc-fa6c-a05ed35dfd14@bytedance.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.44.4 (3.44.4-2.fc36) 
+        with ESMTP id S230155AbjIGVJE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 17:09:04 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C149F92;
+        Thu,  7 Sep 2023 14:09:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB75C433C7;
+        Thu,  7 Sep 2023 21:09:00 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694120940;
+        bh=eqSktRiuy/QbTz225cenObSEu4zXAWGERCnQTGrRrfE=;
+        h=From:To:Cc:Subject:Date:From;
+        b=Ts1JfLQY21vtuMZdknT3et1azyEQcCxP+WzhR6Uu/nXTQAwaKn5xh1Iab+N5DdUse
+         IfTnDoEO8+3DippRol5d+wUXhFFwOxkpks642UbFxXX4w5LzBYKOJSFic592mqOxrx
+         lxd5Agseuk9t3S51wwblrNCiZyPRAzBD883Lpv4s/8IyV2iBEaYada9+R5mtIgZ65/
+         kkMy60c4HWLjF+5WfMScNd22Y7eI/RvyYfkA/cjCT5SJFNAfKuLVAjBwgwGatNJm8C
+         iJxYLG2GZuxTGwDTMr7m9Dh4zTSQ4QwEu6lJz+c+bivn5K+j+vOPtTpaOao6Ji/0Zy
+         0o4WQWDdsBW1g==
+From:   Jaegeuk Kim <jaegeuk@kernel.org>
+To:     linux-kernel@vger.kernel.org,
+        linux-f2fs-devel@lists.sourceforge.net
+Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, stable@vger.kernel.org,
+        syzbot+d342e330a37b48c094b7@syzkaller.appspotmail.com
+Subject: [PATCH] f2fs: split initial and dynamic conditions for extent_cache
+Date:   Thu,  7 Sep 2023 14:08:58 -0700
+Message-ID: <20230907210859.3698691-1-jaegeuk@kernel.org>
+X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
 MIME-Version: 1.0
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 2023-09-07 at 16:59 +0800, Hao Jia wrote:
->=20
-> On 2023/9/5 Peter Zijlstra wrote:
-> > On Thu, Aug 31, 2023 at 04:48:29PM +0800, Hao Jia wrote:
-> >=20
-> > > If I understand correctly, rq->clock_update_flags may be set to
-> > > RQCF_ACT_SKIP after __schedule() holds the rq lock, and sometimes the=
- rq
-> > > lock may be released briefly in __schedule(), such as newidle_balance=
-(). At
-> > > this time Other CPUs hold this rq lock, and then calling
-> > > rq_clock_start_loop_update() may trigger this warning.
-> > >=20
-> > > This warning check might be wrong. We need to add assert_clock_update=
-d() to
-> > > check that the rq clock has been updated before calling
-> > > rq_clock_start_loop_update().
-> > >=20
-> > > Maybe some things can be like this?
-> >=20
-> > Urgh, aside from it being white space mangled, I think this is entirely
-> > going in the wrong direction.
-> >=20
-> > Leaking ACT_SKIP is dodgy as heck.. it's entirely too late to think
-> > clearly though, I'll have to try again tomorrow.
+Let's allocate the extent_cache tree without dynamic conditions to avoid a
+missing condition causing a panic as below.
 
-I am trying to understand why this is an ACT_SKIP leak.
-Before call to __cfsb_csd_unthrottle(), is it possible someone
-else lock the runqueue, set ACT_SKIP and release rq_lock?
-And then that someone never update the rq_clock?=20
+ # create a file w/ a compressed flag
+ # disable the compression
+ # panic while updating extent_cache
 
->=20
-> Hi Peter,
->=20
-> Do you think this fix method is correct? Or should we go back to the=20
-> beginning and move update_rq_clock() from unthrottle_cfs_rq()?
->=20
-If anyone who locked the runqueue set ACT_SKIP also will update rq_clock,
-I think your change is okay.  Otherwise rq_clock could be missing update.
+F2FS-fs (dm-64): Swapfile: last extent is not aligned to section
+F2FS-fs (dm-64): Swapfile (3) is not align to section: 1) creat(), 2) ioctl(F2FS_IOC_SET_PIN_FILE), 3) fallocate(2097152 * N)
+Adding 124996k swap on ./swap-file.  Priority:0 extents:2 across:17179494468k
+==================================================================
+BUG: KASAN: null-ptr-deref in instrument_atomic_read_write out/common/include/linux/instrumented.h:101 [inline]
+BUG: KASAN: null-ptr-deref in atomic_try_cmpxchg_acquire out/common/include/asm-generic/atomic-instrumented.h:705 [inline]
+BUG: KASAN: null-ptr-deref in queued_write_lock out/common/include/asm-generic/qrwlock.h:92 [inline]
+BUG: KASAN: null-ptr-deref in __raw_write_lock out/common/include/linux/rwlock_api_smp.h:211 [inline]
+BUG: KASAN: null-ptr-deref in _raw_write_lock+0x5a/0x110 out/common/kernel/locking/spinlock.c:295
+Write of size 4 at addr 0000000000000030 by task syz-executor154/3327
 
-Thanks.
+CPU: 0 PID: 3327 Comm: syz-executor154 Tainted: G           O      5.10.185 #1
+Hardware name: emulation qemu-x86/qemu-x86, BIOS 2023.01-21885-gb3cc1cd24d 01/01/2023
+Call Trace:
+ __dump_stack out/common/lib/dump_stack.c:77 [inline]
+ dump_stack_lvl+0x17e/0x1c4 out/common/lib/dump_stack.c:118
+ __kasan_report+0x16c/0x260 out/common/mm/kasan/report.c:415
+ kasan_report+0x51/0x70 out/common/mm/kasan/report.c:428
+ kasan_check_range+0x2f3/0x340 out/common/mm/kasan/generic.c:186
+ __kasan_check_write+0x14/0x20 out/common/mm/kasan/shadow.c:37
+ instrument_atomic_read_write out/common/include/linux/instrumented.h:101 [inline]
+ atomic_try_cmpxchg_acquire out/common/include/asm-generic/atomic-instrumented.h:705 [inline]
+ queued_write_lock out/common/include/asm-generic/qrwlock.h:92 [inline]
+ __raw_write_lock out/common/include/linux/rwlock_api_smp.h:211 [inline]
+ _raw_write_lock+0x5a/0x110 out/common/kernel/locking/spinlock.c:295
+ __drop_extent_tree+0xdf/0x2f0 out/common/fs/f2fs/extent_cache.c:1155
+ f2fs_drop_extent_tree+0x17/0x30 out/common/fs/f2fs/extent_cache.c:1172
+ f2fs_insert_range out/common/fs/f2fs/file.c:1600 [inline]
+ f2fs_fallocate+0x19fd/0x1f40 out/common/fs/f2fs/file.c:1764
+ vfs_fallocate+0x514/0x9b0 out/common/fs/open.c:310
+ ksys_fallocate out/common/fs/open.c:333 [inline]
+ __do_sys_fallocate out/common/fs/open.c:341 [inline]
+ __se_sys_fallocate out/common/fs/open.c:339 [inline]
+ __x64_sys_fallocate+0xb8/0x100 out/common/fs/open.c:339
+ do_syscall_64+0x35/0x50 out/common/arch/x86/entry/common.c:46
 
-Tim
+Cc: stable@vger.kernel.org
+Fixes: 72840cccc0a1 ("f2fs: allocate the extent_cache by default")
+Reported-by: syzbot+d342e330a37b48c094b7@syzkaller.appspotmail.com
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+---
+ fs/f2fs/extent_cache.c | 53 +++++++++++++++++-------------------------
+ 1 file changed, 21 insertions(+), 32 deletions(-)
+
+diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
+index 0e2d49140c07..ad8dfac73bd4 100644
+--- a/fs/f2fs/extent_cache.c
++++ b/fs/f2fs/extent_cache.c
+@@ -74,40 +74,14 @@ static void __set_extent_info(struct extent_info *ei,
+ 	}
+ }
+ 
+-static bool __may_read_extent_tree(struct inode *inode)
+-{
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+-
+-	if (!test_opt(sbi, READ_EXTENT_CACHE))
+-		return false;
+-	if (is_inode_flag_set(inode, FI_NO_EXTENT))
+-		return false;
+-	if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
+-			 !f2fs_sb_has_readonly(sbi))
+-		return false;
+-	return S_ISREG(inode->i_mode);
+-}
+-
+-static bool __may_age_extent_tree(struct inode *inode)
+-{
+-	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
+-
+-	if (!test_opt(sbi, AGE_EXTENT_CACHE))
+-		return false;
+-	if (is_inode_flag_set(inode, FI_COMPRESSED_FILE))
+-		return false;
+-	if (file_is_cold(inode))
+-		return false;
+-
+-	return S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode);
+-}
+-
+ static bool __init_may_extent_tree(struct inode *inode, enum extent_type type)
+ {
+ 	if (type == EX_READ)
+-		return __may_read_extent_tree(inode);
+-	else if (type == EX_BLOCK_AGE)
+-		return __may_age_extent_tree(inode);
++		return test_opt(F2FS_I_SB(inode), READ_EXTENT_CACHE) &&
++			S_ISREG(inode->i_mode);
++	if (type == EX_BLOCK_AGE)
++		return test_opt(F2FS_I_SB(inode), AGE_EXTENT_CACHE) &&
++			(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode));
+ 	return false;
+ }
+ 
+@@ -120,7 +94,22 @@ static bool __may_extent_tree(struct inode *inode, enum extent_type type)
+ 	if (list_empty(&F2FS_I_SB(inode)->s_list))
+ 		return false;
+ 
+-	return __init_may_extent_tree(inode, type);
++	if (!__init_may_extent_tree(inode, type))
++		return false;
++
++	if (type == EX_READ) {
++		if (is_inode_flag_set(inode, FI_NO_EXTENT))
++			return false;
++		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
++				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
++			return false;
++	} else if (type == EX_BLOCK_AGE) {
++		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE))
++			return false;
++		if (file_is_cold(inode))
++			return false;
++	}
++	return true;
+ }
+ 
+ static void __try_update_largest_extent(struct extent_tree *et,
+-- 
+2.42.0.283.g2d96d420d3-goog
+
