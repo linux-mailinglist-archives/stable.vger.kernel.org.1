@@ -2,78 +2,72 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 34CC0797718
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:21:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 90EE8797921
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 19:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241556AbjIGQVW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:21:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33542 "EHLO
+        id S236898AbjIGRDO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 13:03:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241914AbjIGQVE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:21:04 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5286B6A59;
-        Thu,  7 Sep 2023 09:17:50 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 84A5E2185A;
-        Thu,  7 Sep 2023 06:53:15 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
-        t=1694069595; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JftswgzMi1yTthK09YjvkREc+mptG29T3G2e3TGgDE4=;
-        b=kJqlzL9IxHHlFpgqGzCQAkKVpNMWEPdMi/9IGRgS4jRjb/fUf1NNaKhMiJvUkzgLkS9vaT
-        +G5yS0ORsUL7K8FL8X/aUIZiznw8eUPN1p408P/a9JbTZ8GjA2Yq8Td0UfZtuuHd0urrJJ
-        ZUki1w6+YKbBfcUFjWrcrrGkp95bC3Q=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
-        s=susede2_ed25519; t=1694069595;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=JftswgzMi1yTthK09YjvkREc+mptG29T3G2e3TGgDE4=;
-        b=SxMHmyMT1ihgn5YPNa64XVJGnNxHRuAFWX8DeGPEKYxW4TpVZEaE6O+aZKm0oncN+KWQvj
-        sUoxgnv6PACUsWDw==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4C5611358B;
-        Thu,  7 Sep 2023 06:53:15 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id tKHvEVtz+WR0fAAAMHmgww
-        (envelope-from <vbabka@suse.cz>); Thu, 07 Sep 2023 06:53:15 +0000
-Message-ID: <49ff5505-5a4a-1ad5-8552-6e79a91ee8c9@suse.cz>
-Date:   Thu, 7 Sep 2023 08:53:14 +0200
+        with ESMTP id S230511AbjIGRDN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 13:03:13 -0400
+Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3FDCDE
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 10:02:48 -0700 (PDT)
+Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9a5dff9d2d9so144989966b.3
+        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 10:02:48 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694106114; x=1694710914; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=3F5qdrNMRQPlna2b5xgS4IlqRcKmNFR4cjR9i9vXjTo=;
+        b=WBqdw6zDs9TMSGgR9zZZp4mKpVLy8GBNbFCKH4g654xOvGCcu7X5xXNplsut5k4zns
+         eMGcRl/oWZFy9lSlgjpivgy90ptIwZq4gBqG1J2uV3ioQPEr7ZDSvspRkOINV4Wn+9CU
+         FTtkXV/wL2Mj3k67xAtCNnheakRRsv7FOmIme8ov2elotF1yStAua88yxbnPKXvaNqX+
+         2RIC7xGATipqqymovE0F+AilXsg01LYS17NZmHGpzLvt0U+DIXGdwEtYOZljDWW66E4j
+         LA34m34nx0UshMeJ/m/ctqQvXLeGkeyQQGVKUILaDYG5xEGuyYXcCHE3YzxD7YmoEf3s
+         xJQg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694106114; x=1694710914;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=3F5qdrNMRQPlna2b5xgS4IlqRcKmNFR4cjR9i9vXjTo=;
+        b=H8Pu7zhviuoGb9ZaBrlpyRhH4SzyeMji91ANINwtxUdJGyUYlYTip+cu+c+RY2YIBr
+         kmsuIuWSPm8Sk0BfDydhFj99HzLrlYsRyS4gc8DKI+7g3f6bns1yx9cZADBq4/xCOYbK
+         xPnWQtlYhWkLq2ocKpT24myQTyzKKQbBbgtmQKrQ79YEMgo40/eszHGGk5j0LS5XDB2S
+         7lfzDSZlfQXvd4iKRJsjcaXk4LIck5f4KgzSTt5BX00pfPA1/BRCWtfu1Tm0LHT3otDO
+         zFh7ZuTxwrpnIuU6y+6iWIhQ1wAfXOb3854aP2gjHqeKhu5bQV/Abr9NgMhLKgFOz7V5
+         RWPQ==
+X-Gm-Message-State: AOJu0Yz4HjKulCfNx9oZZm7M7YC0Jc8BH9kPPN7jka5QIAi/zuSsZPTH
+        PF74Qf38qyoifX9w2Gsryrqv8pMLkQoJNw==
+X-Google-Smtp-Source: AGHT+IHbPtdiWTpEoOIk0yKaSTCjbk/QTr5OWN0TH26+HgSw2j2dCVX7TlqBvkQWqm+MnLaTeRFHaQ==
+X-Received: by 2002:a17:906:768d:b0:9a6:3d19:df7 with SMTP id o13-20020a170906768d00b009a63d190df7mr4251180ejm.17.1694070228534;
+        Thu, 07 Sep 2023 00:03:48 -0700 (PDT)
+Received: from [192.168.178.25] ([134.19.111.81])
+        by smtp.gmail.com with ESMTPSA id g4-20020a170906594400b0099b76c3041csm10004261ejr.7.2023.09.07.00.03.47
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Sep 2023 00:03:48 -0700 (PDT)
+Message-ID: <f9db3fc9-2247-8998-0587-1cadc051be18@gmail.com>
+Date:   Thu, 7 Sep 2023 09:03:47 +0200
 MIME-Version: 1.0
 User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
- for debug
-To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>
-Cc:     Zhen Lei <thunder.leizhen@huaweicloud.com>, rcu@vger.kernel.org,
-        Zqiang <qiang.zhang1211@gmail.com>, stable@vger.kernel.org,
-        linux-mm@kvack.org
-References: <20230904180806.1002832-1-joel@joelfernandes.org>
+ Thunderbird/102.15.0
+Subject: Re: [PATCH] drm/radeon: make fence wait in suballocator
+ uninterrruptable
 Content-Language: en-US
-From:   Vlastimil Babka <vbabka@suse.cz>
-In-Reply-To: <20230904180806.1002832-1-joel@joelfernandes.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=ham
+To:     Alex Deucher <alexander.deucher@amd.com>,
+        amd-gfx@lists.freedesktop.org
+Cc:     Simon Pilkington <simonp.git@gmail.com>, stable@vger.kernel.org
+References: <20230906195517.1345717-1-alexander.deucher@amd.com>
+From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
+In-Reply-To: <20230906195517.1345717-1-alexander.deucher@amd.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -81,79 +75,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+Am 06.09.23 um 21:55 schrieb Alex Deucher:
+> Commit 254986e324ad ("drm/radeon: Use the drm suballocation manager implementation.")
+> made the fence wait in amdgpu_sa_bo_new() interruptible but there is no
+> code to handle an interrupt. This caused the kernel to randomly explode
+> in high-VRAM-pressure situations so make it uninterruptible again.
+>
+> Fixes: 254986e324ad ("drm/radeon: Use the drm suballocation manager implementation.")
+> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2769
+> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+> CC: stable@vger.kernel.org # 6.4+
+> CC: Simon Pilkington <simonp.git@gmail.com>
 
-On 9/4/23 20:08, Joel Fernandes (Google) wrote:
-> It is unsafe to dump vmalloc area information when trying to do so from
-> some contexts. Add a safer trylock version of the same function to do a
-> best-effort VMA finding and use it from vmalloc_dump_obj().
+Reviewed-by: Christian König <christian.koenig@amd.com>
 
-I was a bit confused by the subject which suggests a new function is added,
-but it seems open-coded in its only caller. I assume it's due to evolution
-of the series. Something like:
+Going to push this to drm-misc-fixes in a minute.
 
-mm/vmalloc: use trylock for vmap_area_lock in vmalloc_dump_obj()
+Regards,
+Christian.
 
-?
-
-I also notice it's trying hard to copy everything from "vm" to temporary
-variables before unlocking, presumably to prevent use-after-free, so should
-that be also mentioned in the changelog?
-
-> [applied test robot feedback on unused function fix.]
-> [applied Uladzislau feedback on locking.]
-> 
-> Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-> Cc: Paul E. McKenney <paulmck@kernel.org>
-> Cc: rcu@vger.kernel.org
-> Cc: Zqiang <qiang.zhang1211@gmail.com>
-> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-> Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-> Cc: stable@vger.kernel.org
-> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
 > ---
->  mm/vmalloc.c | 26 ++++++++++++++++++++++----
->  1 file changed, 22 insertions(+), 4 deletions(-)
-> 
-> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-> index 93cf99aba335..2c6a0e2ff404 100644
-> --- a/mm/vmalloc.c
-> +++ b/mm/vmalloc.c
-> @@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
->  #ifdef CONFIG_PRINTK
->  bool vmalloc_dump_obj(void *object)
->  {
-> -	struct vm_struct *vm;
->  	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-> +	const void *caller;
-> +	struct vm_struct *vm;
-> +	struct vmap_area *va;
-> +	unsigned long addr;
-> +	unsigned int nr_pages;
->  
-> -	vm = find_vm_area(objp);
-> -	if (!vm)
-> +	if (!spin_trylock(&vmap_area_lock))
-> +		return false;
-> +	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
-> +	if (!va) {
-> +		spin_unlock(&vmap_area_lock);
->  		return false;
-> +	}
-> +
-> +	vm = va->vm;
-> +	if (!vm) {
-> +		spin_unlock(&vmap_area_lock);
-> +		return false;
-> +	}
-> +	addr = (unsigned long)vm->addr;
-> +	caller = vm->caller;
-> +	nr_pages = vm->nr_pages;
-> +	spin_unlock(&vmap_area_lock);
->  	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
-> -		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
-> +		nr_pages, addr, caller);
->  	return true;
->  }
->  #endif
+>   drivers/gpu/drm/radeon/radeon_sa.c | 2 +-
+>   1 file changed, 1 insertion(+), 1 deletion(-)
+>
+> diff --git a/drivers/gpu/drm/radeon/radeon_sa.c b/drivers/gpu/drm/radeon/radeon_sa.c
+> index c87a57c9c592..22dd8b445685 100644
+> --- a/drivers/gpu/drm/radeon/radeon_sa.c
+> +++ b/drivers/gpu/drm/radeon/radeon_sa.c
+> @@ -123,7 +123,7 @@ int radeon_sa_bo_new(struct radeon_sa_manager *sa_manager,
+>   		     unsigned int size, unsigned int align)
+>   {
+>   	struct drm_suballoc *sa = drm_suballoc_new(&sa_manager->base, size,
+> -						   GFP_KERNEL, true, align);
+> +						   GFP_KERNEL, false, align);
+>   
+>   	if (IS_ERR(sa)) {
+>   		*sa_bo = NULL;
 
