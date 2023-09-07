@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22474797A6C
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 19:39:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34A4E79775C
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:24:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245285AbjIGRjw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 13:39:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53588 "EHLO
+        id S233097AbjIGQYd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:24:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51642 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245287AbjIGRje (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 13:39:34 -0400
+        with ESMTP id S245096AbjIGQXp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:23:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8D41717
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 10:38:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B95C07616;
-        Thu,  7 Sep 2023 10:10:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3EEC9036
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:20:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CB4C116A2;
+        Thu,  7 Sep 2023 10:13:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694081430;
-        bh=Gy+nNJ0uithChmmt+Ut4858HgdKnAF2QzF7M2lzCMxc=;
+        s=korg; t=1694081596;
+        bh=ggt85MkVm5n/VVtzdg9a/WsdfVNY9sXa/fHTsqlpB6A=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ELinZhVfVzk2K0ghT180Bfc3ujysfyBuEfTvVTovPxOCprt57+G4d6wUKmepkDAjr
-         YRAazxpvVjMypV+5Kral/OI18OLcDgTHBCJBUBJ+H3JnZmfOpk3i2PWtA77o0BbMYt
-         r5MopTugkVpjKmdRRoOh0cWfNBohzUWk1DRkwHq0=
-Date:   Thu, 7 Sep 2023 11:10:28 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Jens Axboe <axboe@kernel.dk>
-Cc:     stable <stable@vger.kernel.org>
-Subject: Re: 6.4-stable backport request
-Message-ID: <2023090721-update-nacho-ad33@gregkh>
-References: <7ca1d2ea-b4f4-4284-bc17-6e413f5e12b5@kernel.dk>
+        b=GkKm3QhxDEuD42TctXPpi8WL57hNdxZ/RQhVkBljvD5Ufxes0Oj/7rbWal1Ex2evh
+         nidHMr1PAah0GTdz6zEzZwzt1GQm6N7BTtye8Ty0AFllW9GwfNrxmjMAtVW9+kaNuM
+         GMFHAqnsuHxX4Ugm5SCMe0GlYHRMwvGhzuDQVdT8=
+Date:   Thu, 7 Sep 2023 11:13:14 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Mario Limonciello <mario.limonciello@amd.com>
+Cc:     stable@vger.kernel.org,
+        Michael Larabel <Michael@michaellarabel.com>
+Subject: Re: Kernel 6.5 black screen regression
+Message-ID: <2023090729-struggle-poison-4ebc@gregkh>
+References: <074d84cd-e802-4900-ad70-b9402de43e64@amd.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <7ca1d2ea-b4f4-4284-bc17-6e413f5e12b5@kernel.dk>
+In-Reply-To: <074d84cd-e802-4900-ad70-b9402de43e64@amd.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -44,19 +45,23 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 06:32:11PM -0600, Jens Axboe wrote:
-> Hi Greg / stable team,
+On Wed, Sep 06, 2023 at 12:55:29PM -0500, Mario Limonciello wrote:
+> Hi,
 > 
-> Can you queue up this commit:
+> The following patch fixes a regression reported by Michael Larabel on an
+> Acer Phoenix laptop where there is a black screen in GNOME with kernel 6.5.
 > 
-> commit 106397376c0369fcc01c58dd189ff925a2724a57
-> Author: David Jeffery <djeffery@redhat.com>
-> Date:   Fri Jul 21 17:57:15 2023 +0800
-> 
->     sbitmap: fix batching wakeup
-> 
-> for 6.4-stable? It'll cherry pick cleanly.
+> It's marked CC to stable, but I checked the stable queue and didn't see it
+> so I wanted to make sure it wasn't missed.
 
-Now queued up, thanks.
+The fixes tag in that commit is odd, it says it fixes something that is
+NOT in 6.5, so are you sure about this?
+
+> a7c0cad0dc06 ("drm/amd/display: ensure async flips are only accepted for
+> fast updates")
+> 
+> Reported-by: Michael Larabel <Michael@MichaelLarabel.com>
+
+Ok, now queued up, thanks.
 
 greg k-h
