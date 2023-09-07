@@ -2,45 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9C07A79778E
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22474797A6C
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 19:39:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231904AbjIGQ1G (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:27:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33528 "EHLO
+        id S245285AbjIGRjw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 13:39:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53588 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238557AbjIGQZf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:25:35 -0400
+        with ESMTP id S245287AbjIGRje (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 13:39:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C13A59C3;
-        Thu,  7 Sep 2023 09:21:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B859C433B8;
-        Thu,  7 Sep 2023 09:30:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E8D41717
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 10:38:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96B95C07616;
+        Thu,  7 Sep 2023 10:10:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694079052;
-        bh=TiT32MSj3JgzYk5BqsCOQEiIdDx5M2GTmRAd61MVr/c=;
+        s=korg; t=1694081430;
+        bh=Gy+nNJ0uithChmmt+Ut4858HgdKnAF2QzF7M2lzCMxc=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NtmptFt7CZxUCwzDgfsKsOiT32m5Si5FKAR0ogW+EzRFOCFC0FgYO2FtoYoIp7YpM
-         zbn7CXxNH0mtEw+3N6P0ogEhTQ6+cXJsHqdaqMQ2w6I9fvmyQbiIy2Gbh68h69K9LY
-         UR627ly2qJQkQUS2mmYA4J4R1uU8Cc87wiiJ48bQ=
-Date:   Thu, 7 Sep 2023 10:30:50 +0100
+        b=ELinZhVfVzk2K0ghT180Bfc3ujysfyBuEfTvVTovPxOCprt57+G4d6wUKmepkDAjr
+         YRAazxpvVjMypV+5Kral/OI18OLcDgTHBCJBUBJ+H3JnZmfOpk3i2PWtA77o0BbMYt
+         r5MopTugkVpjKmdRRoOh0cWfNBohzUWk1DRkwHq0=
+Date:   Thu, 7 Sep 2023 11:10:28 +0100
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Stefan Lippers-Hollmann <s.l-h@gmx.de>
-Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Christoph Hellwig <hch@lst.de>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.5 11/34] modules: only allow symbol_get of
- EXPORT_SYMBOL_GPL modules
-Message-ID: <2023090719-virtuous-snowflake-d015@gregkh>
-References: <20230904182948.594404081@linuxfoundation.org>
- <20230904182949.104100132@linuxfoundation.org>
- <20230907084135.02d97441@mir>
+To:     Jens Axboe <axboe@kernel.dk>
+Cc:     stable <stable@vger.kernel.org>
+Subject: Re: 6.4-stable backport request
+Message-ID: <2023090721-update-nacho-ad33@gregkh>
+References: <7ca1d2ea-b4f4-4284-bc17-6e413f5e12b5@kernel.dk>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <20230907084135.02d97441@mir>
+In-Reply-To: <7ca1d2ea-b4f4-4284-bc17-6e413f5e12b5@kernel.dk>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -51,64 +44,19 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 08:41:35AM +0200, Stefan Lippers-Hollmann wrote:
-> Hi
+On Wed, Sep 06, 2023 at 06:32:11PM -0600, Jens Axboe wrote:
+> Hi Greg / stable team,
 > 
-> On 2023-09-04, Greg Kroah-Hartman wrote:
-> > 6.5-stable review patch.  If anyone has any objections, please let me know.
-> >
-> > ------------------
-> >
-> > From: Christoph Hellwig <hch@lst.de>
-> >
-> > commit 9011e49d54dcc7653ebb8a1e05b5badb5ecfa9f9 upstream.
-> >
-> > It has recently come to my attention that nvidia is circumventing the
-> > protection added in 262e6ae7081d ("modules: inherit
-> > TAINT_PROPRIETARY_MODULE") by importing exports from their proprietary
-> > modules into an allegedly GPL licensed module and then rexporting them.
-> >
-> > Given that symbol_get was only ever intended for tightly cooperating
-> > modules using very internal symbols it is logical to restrict it to
-> > being used on EXPORT_SYMBOL_GPL and prevent nvidia from costly DMCA
-> > Circumvention of Access Controls law suites.
-> >
-> > All symbols except for four used through symbol_get were already exported
-> > as EXPORT_SYMBOL_GPL, and the remaining four ones were switched over in
-> > the preparation patches.
+> Can you queue up this commit:
 > 
-> This patch, as part of v6.5.2, breaks the in-kernel ds3000 module
-> (for a TeVii s480 v2 DVB-S2 card, which is a PCIe card attaching two
-> onboard TeVii s660 cards via an onboard USB2 controller (MCS9990),
-> https://www.linuxtv.org/wiki/index.php/TeVii_S480) from loading.
+> commit 106397376c0369fcc01c58dd189ff925a2724a57
+> Author: David Jeffery <djeffery@redhat.com>
+> Date:   Fri Jul 21 17:57:15 2023 +0800
+> 
+>     sbitmap: fix batching wakeup
+> 
+> for 6.4-stable? It'll cherry pick cleanly.
 
-This is also broken in Linus's tree, right?
-
-> [    2.896589] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' registered.
-> [    2.901085] failing symbol_get of non-GPLONLY symbol ds3000_attach.
-> [    2.901089] DVB: Unable to find symbol ds3000_attach()
-
-This is odd, where is that call coming from?  I don't see any call to
-symbol_get in the dvb code, where is this happening?
-
-Anyway, does the patch below fix this?
-
-thanks,
+Now queued up, thanks.
 
 greg k-h
-
-----------------
-
-diff --git a/drivers/media/dvb-frontends/ds3000.c b/drivers/media/dvb-frontends/ds3000.c
-index 20fcf31af165..515aa7c7baf2 100644
---- a/drivers/media/dvb-frontends/ds3000.c
-+++ b/drivers/media/dvb-frontends/ds3000.c
-@@ -859,7 +859,7 @@ struct dvb_frontend *ds3000_attach(const struct ds3000_config *config,
- 	ds3000_set_voltage(&state->frontend, SEC_VOLTAGE_OFF);
- 	return &state->frontend;
- }
--EXPORT_SYMBOL(ds3000_attach);
-+EXPORT_SYMBOL_GPL(ds3000_attach);
- 
- static int ds3000_set_carrier_offset(struct dvb_frontend *fe,
- 					s32 carrier_offset_khz)
