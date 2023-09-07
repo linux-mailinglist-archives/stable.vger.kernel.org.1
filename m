@@ -2,53 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3100B7975ED
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:00:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 34CC0797718
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:21:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231720AbjIGQAo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:00:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55786 "EHLO
+        id S241556AbjIGQVW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:21:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241705AbjIGP7T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:59:19 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F33B04236;
-        Thu,  7 Sep 2023 08:48:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 786F9C4E66F;
-        Thu,  7 Sep 2023 15:44:40 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694101482;
-        bh=fTnjjyGSt3qHdzUXYLFRQafrAkrjo/LylaMxUatY+qA=;
-        h=From:To:Cc:Subject:Date:From;
-        b=p/7qav2Bi4JQf3OF0lat4l4zuvXmuPvNJYZBvdH7pf1jVOXiipNLypItH6k4pEhwl
-         mVBXYKj7AJH/0X2LEtwoBiqR5IW0OX5JKbSi9iKe6im/gnuUdmozkl/VmTZJ2v6Euf
-         x8cXlS7kRKviGWPxWh56XrPJq0kHcRq/zBagZ5ssYZ9xJ5K3kpAfmdSpUT9tZ/ieKM
-         Vw+Xv9fwVZZVuouw0RYRHTCk5aRt5y75tc5ZAP9n6cR0o+hyBOUsDNjBfHbUUGHJPU
-         8uLMV0EaDpV1LYn3CjnoitFMfZqnW5dlgYfRU+6xf+P9F0cC/pdStHloihfxQOHAHS
-         UaUBTsopNg0Dg==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Fedor Pchelkin <pchelkin@ispras.ru>,
-        syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com,
-        Takeshi Misawa <jeliantsurux@gmail.com>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Ian Kent <raven@themaw.net>,
-        Matthew Wilcox <willy@infradead.org>,
-        Andrei Vagin <avagin@gmail.com>, autofs@vger.kernel.org,
-        Christian Brauner <brauner@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH AUTOSEL 4.14 1/2] autofs: fix memory leak of waitqueues in autofs_catatonic_mode
-Date:   Thu,  7 Sep 2023 11:44:35 -0400
-Message-Id: <20230907154438.3422099-1-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S241914AbjIGQVE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:21:04 -0400
+Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5286B6A59;
+        Thu,  7 Sep 2023 09:17:50 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out1.suse.de (Postfix) with ESMTPS id 84A5E2185A;
+        Thu,  7 Sep 2023 06:53:15 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1694069595; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JftswgzMi1yTthK09YjvkREc+mptG29T3G2e3TGgDE4=;
+        b=kJqlzL9IxHHlFpgqGzCQAkKVpNMWEPdMi/9IGRgS4jRjb/fUf1NNaKhMiJvUkzgLkS9vaT
+        +G5yS0ORsUL7K8FL8X/aUIZiznw8eUPN1p408P/a9JbTZ8GjA2Yq8Td0UfZtuuHd0urrJJ
+        ZUki1w6+YKbBfcUFjWrcrrGkp95bC3Q=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1694069595;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=JftswgzMi1yTthK09YjvkREc+mptG29T3G2e3TGgDE4=;
+        b=SxMHmyMT1ihgn5YPNa64XVJGnNxHRuAFWX8DeGPEKYxW4TpVZEaE6O+aZKm0oncN+KWQvj
+        sUoxgnv6PACUsWDw==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 4C5611358B;
+        Thu,  7 Sep 2023 06:53:15 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id tKHvEVtz+WR0fAAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Thu, 07 Sep 2023 06:53:15 +0000
+Message-ID: <49ff5505-5a4a-1ad5-8552-6e79a91ee8c9@suse.cz>
+Date:   Thu, 7 Sep 2023 08:53:14 +0200
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.325
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
+ for debug
+To:     "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Uladzislau Rezki <urezki@gmail.com>,
+        Christoph Hellwig <hch@infradead.org>,
+        Lorenzo Stoakes <lstoakes@gmail.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>
+Cc:     Zhen Lei <thunder.leizhen@huaweicloud.com>, rcu@vger.kernel.org,
+        Zqiang <qiang.zhang1211@gmail.com>, stable@vger.kernel.org,
+        linux-mm@kvack.org
+References: <20230904180806.1002832-1-joel@joelfernandes.org>
+Content-Language: en-US
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <20230904180806.1002832-1-joel@joelfernandes.org>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -56,104 +81,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+Hi,
 
-[ Upstream commit ccbe77f7e45dfb4420f7f531b650c00c6e9c7507 ]
+On 9/4/23 20:08, Joel Fernandes (Google) wrote:
+> It is unsafe to dump vmalloc area information when trying to do so from
+> some contexts. Add a safer trylock version of the same function to do a
+> best-effort VMA finding and use it from vmalloc_dump_obj().
 
-Syzkaller reports a memory leak:
+I was a bit confused by the subject which suggests a new function is added,
+but it seems open-coded in its only caller. I assume it's due to evolution
+of the series. Something like:
 
-BUG: memory leak
-unreferenced object 0xffff88810b279e00 (size 96):
-  comm "syz-executor399", pid 3631, jiffies 4294964921 (age 23.870s)
-  hex dump (first 32 bytes):
-    00 00 00 00 00 00 00 00 08 9e 27 0b 81 88 ff ff  ..........'.....
-    08 9e 27 0b 81 88 ff ff 00 00 00 00 00 00 00 00  ..'.............
-  backtrace:
-    [<ffffffff814cfc90>] kmalloc_trace+0x20/0x90 mm/slab_common.c:1046
-    [<ffffffff81bb75ca>] kmalloc include/linux/slab.h:576 [inline]
-    [<ffffffff81bb75ca>] autofs_wait+0x3fa/0x9a0 fs/autofs/waitq.c:378
-    [<ffffffff81bb88a7>] autofs_do_expire_multi+0xa7/0x3e0 fs/autofs/expire.c:593
-    [<ffffffff81bb8c33>] autofs_expire_multi+0x53/0x80 fs/autofs/expire.c:619
-    [<ffffffff81bb6972>] autofs_root_ioctl_unlocked+0x322/0x3b0 fs/autofs/root.c:897
-    [<ffffffff81bb6a95>] autofs_root_ioctl+0x25/0x30 fs/autofs/root.c:910
-    [<ffffffff81602a9c>] vfs_ioctl fs/ioctl.c:51 [inline]
-    [<ffffffff81602a9c>] __do_sys_ioctl fs/ioctl.c:870 [inline]
-    [<ffffffff81602a9c>] __se_sys_ioctl fs/ioctl.c:856 [inline]
-    [<ffffffff81602a9c>] __x64_sys_ioctl+0xfc/0x140 fs/ioctl.c:856
-    [<ffffffff84608225>] do_syscall_x64 arch/x86/entry/common.c:50 [inline]
-    [<ffffffff84608225>] do_syscall_64+0x35/0xb0 arch/x86/entry/common.c:80
-    [<ffffffff84800087>] entry_SYSCALL_64_after_hwframe+0x63/0xcd
+mm/vmalloc: use trylock for vmap_area_lock in vmalloc_dump_obj()
 
-autofs_wait_queue structs should be freed if their wait_ctr becomes zero.
-Otherwise they will be lost.
+?
 
-In this case an AUTOFS_IOC_EXPIRE_MULTI ioctl is done, then a new
-waitqueue struct is allocated in autofs_wait(), its initial wait_ctr
-equals 2. After that wait_event_killable() is interrupted (it returns
--ERESTARTSYS), so that 'wq->name.name == NULL' condition may be not
-satisfied. Actually, this condition can be satisfied when
-autofs_wait_release() or autofs_catatonic_mode() is called and, what is
-also important, wait_ctr is decremented in those places. Upon the exit of
-autofs_wait(), wait_ctr is decremented to 1. Then the unmounting process
-begins: kill_sb calls autofs_catatonic_mode(), which should have freed the
-waitqueues, but it only decrements its usage counter to zero which is not
-a correct behaviour.
+I also notice it's trying hard to copy everything from "vm" to temporary
+variables before unlocking, presumably to prevent use-after-free, so should
+that be also mentioned in the changelog?
 
-edit:imk
-This description is of course not correct. The umount performed as a result
-of an expire is a umount of a mount that has been automounted, it's not the
-autofs mount itself. They happen independently, usually after everything
-mounted within the autofs file system has been expired away. If everything
-hasn't been expired away the automount daemon can still exit leaving mounts
-in place. But expires done in both cases will result in a notification that
-calls autofs_wait_release() with a result status. The problem case is the
-summary execution of of the automount daemon. In this case any waiting
-processes won't be woken up until either they are terminated or the mount
-is umounted.
-end edit: imk
-
-So in catatonic mode we should free waitqueues which counter becomes zero.
-
-edit: imk
-Initially I was concerned that the calling of autofs_wait_release() and
-autofs_catatonic_mode() was not mutually exclusive but that can't be the
-case (obviously) because the queue entry (or entries) is removed from the
-list when either of these two functions are called. Consequently the wait
-entry will be freed by only one of these functions or by the woken process
-in autofs_wait() depending on the order of the calls.
-end edit: imk
-
-Reported-by: syzbot+5e53f70e69ff0c0a1c0c@syzkaller.appspotmail.com
-Suggested-by: Takeshi Misawa <jeliantsurux@gmail.com>
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Signed-off-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Signed-off-by: Ian Kent <raven@themaw.net>
-Cc: Matthew Wilcox <willy@infradead.org>
-Cc: Andrei Vagin <avagin@gmail.com>
-Cc: autofs@vger.kernel.org
-Cc: linux-kernel@vger.kernel.org
-Message-Id: <169112719161.7590.6700123246297365841.stgit@donald.themaw.net>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/autofs4/waitq.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
-
-diff --git a/fs/autofs4/waitq.c b/fs/autofs4/waitq.c
-index 961a12dc6dc81..5863532675e3c 100644
---- a/fs/autofs4/waitq.c
-+++ b/fs/autofs4/waitq.c
-@@ -42,8 +42,9 @@ void autofs4_catatonic_mode(struct autofs_sb_info *sbi)
- 		wq->status = -ENOENT; /* Magic is gone - report failure */
- 		kfree(wq->name.name);
- 		wq->name.name = NULL;
--		wq->wait_ctr--;
- 		wake_up_interruptible(&wq->queue);
-+		if (!--wq->wait_ctr)
-+			kfree(wq);
- 		wq = nwq;
- 	}
- 	fput(sbi->pipe);	/* Close the pipe */
--- 
-2.40.1
+> [applied test robot feedback on unused function fix.]
+> [applied Uladzislau feedback on locking.]
+> 
+> Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+> Cc: Paul E. McKenney <paulmck@kernel.org>
+> Cc: rcu@vger.kernel.org
+> Cc: Zqiang <qiang.zhang1211@gmail.com>
+> Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
+> Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+> Cc: stable@vger.kernel.org
+> Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+> ---
+>  mm/vmalloc.c | 26 ++++++++++++++++++++++----
+>  1 file changed, 22 insertions(+), 4 deletions(-)
+> 
+> diff --git a/mm/vmalloc.c b/mm/vmalloc.c
+> index 93cf99aba335..2c6a0e2ff404 100644
+> --- a/mm/vmalloc.c
+> +++ b/mm/vmalloc.c
+> @@ -4274,14 +4274,32 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
+>  #ifdef CONFIG_PRINTK
+>  bool vmalloc_dump_obj(void *object)
+>  {
+> -	struct vm_struct *vm;
+>  	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
+> +	const void *caller;
+> +	struct vm_struct *vm;
+> +	struct vmap_area *va;
+> +	unsigned long addr;
+> +	unsigned int nr_pages;
+>  
+> -	vm = find_vm_area(objp);
+> -	if (!vm)
+> +	if (!spin_trylock(&vmap_area_lock))
+> +		return false;
+> +	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
+> +	if (!va) {
+> +		spin_unlock(&vmap_area_lock);
+>  		return false;
+> +	}
+> +
+> +	vm = va->vm;
+> +	if (!vm) {
+> +		spin_unlock(&vmap_area_lock);
+> +		return false;
+> +	}
+> +	addr = (unsigned long)vm->addr;
+> +	caller = vm->caller;
+> +	nr_pages = vm->nr_pages;
+> +	spin_unlock(&vmap_area_lock);
+>  	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
+> -		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
+> +		nr_pages, addr, caller);
+>  	return true;
+>  }
+>  #endif
 
