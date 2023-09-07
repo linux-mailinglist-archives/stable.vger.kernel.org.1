@@ -2,83 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BE899797783
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:26:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFCA9797B13
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 20:01:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231138AbjIGQ1A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:27:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55172 "EHLO
+        id S245674AbjIGSBv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 14:01:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238953AbjIGQ0J (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:26:09 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4A9716A7D;
-        Thu,  7 Sep 2023 09:22:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2430EC3277F;
-        Thu,  7 Sep 2023 11:51:41 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694087504;
-        bh=zjCLSVlz5LdCpC8IOpacCvdlUauv1FO+yJco6i36Oic=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=SqUytxf6zXbzBIIkpjtKMhcFfrmJPqHiIboWOlhpunBvqIjcLazGaEq1guZ+y0hRI
-         Bu0087gvzOUJwwaOADCNRZLmNLQIVmFe/BX/T/SFl+5+Xg9HD+L/e0JJFX2l6i/koq
-         WnvGt5s1VGrabaFiyZ2/CdJRL4+7a8WixhRxQULr7OzK3B+E3k1Gw3pOz1CKu+2GZq
-         Sd1AlnviH2HtKpNHVOrpwl1YcMdI7rdW+LctE8YH6Q8Vpd0XBFFLqXXb4754DnoLAo
-         zh61V47/eh7v3+V61IOdpGE180+ykPp2csE0qn8tlopWLb4A7wVOKOxR6VW9xMwyzz
-         nBBCZDDex/VoQ==
-Date:   Thu, 7 Sep 2023 12:51:38 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sameer Pujar <spujar@nvidia.com>
-Cc:     lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        thierry.reding@gmail.com, jonathanh@nvidia.com,
-        alsa-devel@alsa-project.org, linux-kernel@vger.kernel.org,
-        linux-tegra@vger.kernel.org, stable@vger.kernel.org
-Subject: Re: [PATCH 2/2] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
-Message-ID: <2c3371b7-3dae-48d7-8cc8-1acfd5bd267c@sirena.org.uk>
-References: <1694069533-7832-1-git-send-email-spujar@nvidia.com>
- <1694069533-7832-3-git-send-email-spujar@nvidia.com>
+        with ESMTP id S244058AbjIGSBv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 14:01:51 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9562B2
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 11:01:31 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694109691; x=1725645691;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=QWmd6zN6mmJiS8VHQ5wb2+PjcdfEbLLEVShSKta4ZhU=;
+  b=Y4yxZDS51pTYxr4EBP4U/XIbd9fuCmcQjbDk0TbwikhX74F8FMdBNN6Z
+   T4ZpchXIAswlwb7jloE+sZ1gFpw9xMmtDTtiAiHEGTneJAx5LVrxy6N4B
+   hiyBCs5BjIeIDQ8arPGH/gjMxqyVxjc5V2+febY61SalobNIWji2+fz/L
+   XjBc/cllnqxQ1uM63bUdUzpM9rh0T4QUgv+xcIfz1Kpj8l2Q8RxDRC5IQ
+   9ZTS0JPmlGpBZ3IV8EniXrEcBrkgNECNzt4yGS2IG57ca2gHRb0JrKeGc
+   c9wz2QAUGz160BCOLIzpd//LMZr+7KwiUO6hZIoH7qc2MGygeKJaSmJSV
+   A==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="443721335"
+X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
+   d="scan'208";a="443721335"
+Received: from orsmga001.jf.intel.com ([10.7.209.18])
+  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 05:17:39 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="777050314"
+X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
+   d="scan'208";a="777050314"
+Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.153])
+  by orsmga001.jf.intel.com with SMTP; 07 Sep 2023 05:17:37 -0700
+Received: by stinkbox (sSMTP sendmail emulation); Thu, 07 Sep 2023 15:17:36 +0300
+From:   Ville Syrjala <ville.syrjala@linux.intel.com>
+To:     intel-gfx@lists.freedesktop.org
+Cc:     stable@vger.kernel.org
+Subject: [PATCH] drm/i915: Only check eDP HPD when AUX CH is shared
+Date:   Thu,  7 Sep 2023 15:17:36 +0300
+Message-ID: <20230907121736.23734-1-ville.syrjala@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="HG1UHo7ZQGFGM8s+"
-Content-Disposition: inline
-In-Reply-To: <1694069533-7832-3-git-send-email-spujar@nvidia.com>
-X-Cookie: In the next world, you're on your own.
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+From: Ville Syrjälä <ville.syrjala@linux.intel.com>
 
---HG1UHo7ZQGFGM8s+
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
+Apparently Acer Chromebook C740 (BDW-ULT) doesn't have the
+eDP HPD line properly connected, and thus fails the new
+HPD check during eDP probe. The result is that we lose the
+eDP output.
 
-On Thu, Sep 07, 2023 at 12:22:13PM +0530, Sameer Pujar wrote:
+I suspect all such machines would all be Chromebooks or other
+Linux exclusive systems as the Windows driver likely wouldn't
+work either. I did check a few other BDW machines here and
+those do have eDP HPD connected, one of them even is a
+different Chromebook (Samus).
 
-> Fixes: 202e2f774543 ("ASoC: tegra: Add audio graph based card driver")
-> Cc: stable@vger.kernel.org
+To account for these funky machines let's skip the HPD check when
+it looks like the eDP port is the only one using that specific AUX
+channel. In case of multiple ports sharing the same AUX CH (eg. on
+Asrock B250M-HDV) we still do the check and thus should correctly
+ignore the eDP port in favor of the other DP port (usually a DP->VGA
+converter).
 
-This is just a performance improvement rather than a correctness fix as
-far as I can tell?
+Cc: stable@vger.kernel.org
+Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9264
+Fixes: cfe5bdfb27fa ("drm/i915: Check HPD live state during eDP probe")
+Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
+---
+ drivers/gpu/drm/i915/display/intel_bios.c | 19 +++++++++++++++++++
+ drivers/gpu/drm/i915/display/intel_bios.h |  1 +
+ drivers/gpu/drm/i915/display/intel_dp.c   |  7 ++++++-
+ 3 files changed, 26 insertions(+), 1 deletion(-)
 
---HG1UHo7ZQGFGM8s+
-Content-Type: application/pgp-signature; name="signature.asc"
+diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
+index 858c959f7bab..aabecd2beb14 100644
+--- a/drivers/gpu/drm/i915/display/intel_bios.c
++++ b/drivers/gpu/drm/i915/display/intel_bios.c
+@@ -3540,6 +3540,25 @@ enum aux_ch intel_bios_dp_aux_ch(const struct intel_bios_encoder_data *devdata)
+ 	return map_aux_ch(devdata->i915, devdata->child.aux_channel);
+ }
+ 
++bool intel_bios_dp_has_shared_aux_ch(const struct intel_bios_encoder_data *devdata)
++{
++	u8 aux_channel;
++	int count = 0;
++
++	if (!devdata || !devdata->child.aux_channel)
++		return false;
++
++	aux_channel = devdata->child.aux_channel;
++
++	list_for_each_entry(devdata, &devdata->i915->display.vbt.display_devices, node) {
++		if (intel_bios_encoder_supports_dp(devdata) &&
++		    aux_channel == devdata->child.aux_channel)
++			count++;
++	}
++
++	return count > 1;
++}
++
+ int intel_bios_dp_boost_level(const struct intel_bios_encoder_data *devdata)
+ {
+ 	if (!devdata || devdata->i915->display.vbt.version < 196 || !devdata->child.iboost)
+diff --git a/drivers/gpu/drm/i915/display/intel_bios.h b/drivers/gpu/drm/i915/display/intel_bios.h
+index 9680e3e92bb5..49e24b7cf675 100644
+--- a/drivers/gpu/drm/i915/display/intel_bios.h
++++ b/drivers/gpu/drm/i915/display/intel_bios.h
+@@ -273,6 +273,7 @@ enum aux_ch intel_bios_dp_aux_ch(const struct intel_bios_encoder_data *devdata);
+ int intel_bios_dp_boost_level(const struct intel_bios_encoder_data *devdata);
+ int intel_bios_dp_max_lane_count(const struct intel_bios_encoder_data *devdata);
+ int intel_bios_dp_max_link_rate(const struct intel_bios_encoder_data *devdata);
++bool intel_bios_dp_has_shared_aux_ch(const struct intel_bios_encoder_data *devdata);
+ int intel_bios_hdmi_boost_level(const struct intel_bios_encoder_data *devdata);
+ int intel_bios_hdmi_ddc_pin(const struct intel_bios_encoder_data *devdata);
+ int intel_bios_hdmi_level_shift(const struct intel_bios_encoder_data *devdata);
+diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
+index 2206b45bc78c..aa5f602b56fb 100644
+--- a/drivers/gpu/drm/i915/display/intel_dp.c
++++ b/drivers/gpu/drm/i915/display/intel_dp.c
+@@ -5889,8 +5889,13 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
+ 	/*
+ 	 * VBT and straps are liars. Also check HPD as that seems
+ 	 * to be the most reliable piece of information available.
++	 *
++	 * ... expect on devices that forgot to hook HPD up for eDP
++	 * (eg. Acer Chromebook C710), so we'll check it only if multiple
++	 * ports are attempting to use the same AUX CH, according to VBT.
+ 	 */
+-	if (!intel_digital_port_connected(encoder)) {
++	if (intel_bios_dp_has_shared_aux_ch(encoder->devdata) &&
++	    !intel_digital_port_connected(encoder)) {
+ 		/*
+ 		 * If this fails, presume the DPCD answer came
+ 		 * from some other port using the same AUX CH.
+-- 
+2.41.0
 
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT5uUoACgkQJNaLcl1U
-h9CANgf/U94AHJ9kaYX/llz+gCrnDPZiKF6ybEtAU8/FafiAXB1qqhJXgW7rYlOv
-w1oreyoLvt7fSSDilpCBjkB95pwSzAsqtuoGj1jvwfszhZtNuKBAILsU3TEQYuyh
-ZJ9sSzvEiWM3QAYyIqSfQuPGbkQ0vZ0uHk3jE/M3t2MB6XvTzijC5HAU5lSqKf5q
-KB+sHqqvMZDdQHADUKo7kgd6CqMEDriZAkoL4OSpYpBQN45gU5qDGzpZi9E9qIz8
-9M5cGuEnzj4Z6Bh8KrFf4xEQOp/rKx47iz3KfkXpVJaBWASm+vqeFfSCR7DGxaKq
-n/GTqlWdCZjilEbg9YapCRGiljEkVA==
-=D621
------END PGP SIGNATURE-----
-
---HG1UHo7ZQGFGM8s+--
