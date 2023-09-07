@@ -2,143 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBEA17978AF
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:52:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9C07A79778E
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:27:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231825AbjIGQwG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:52:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59842 "EHLO
+        id S231904AbjIGQ1G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:27:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244267AbjIGQwG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:52:06 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4551135
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:50:54 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694105388;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=SMcpFOLp6Xfsjbv0O0mv63VovkeJUK+IyPtZQ2Pg9Y0=;
-        b=RqEGrxdDrJ+AVFQBZmHxO41ii9xrOd89ATPKhDICXizjv90qVCHyuQuTQAb6F9FTayH3xe
-        O7ZPg0QWktL7+gyx3y20Hlw4a1ozV8X9640T3G32ap7fGqjVrbmQUXkRXruQAx1uW7k0Q9
-        8oZ6e5r9stXQMrHIOt2H1WFSCxz12wc=
-Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
- [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
- us-mta-570-RiYuo_FfPay-D9M6uCXfsQ-1; Thu, 07 Sep 2023 05:23:20 -0400
-X-MC-Unique: RiYuo_FfPay-D9M6uCXfsQ-1
-Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-501c1d4d0bdso132024e87.1
-        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 02:23:20 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694078599; x=1694683399;
-        h=mime-version:user-agent:content-transfer-encoding:references
-         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=SMcpFOLp6Xfsjbv0O0mv63VovkeJUK+IyPtZQ2Pg9Y0=;
-        b=WcnD3PXaTdopnlcLkkTTBNjMM23u04l7o6zpF+4xnrfDy7Em59UL1ziZFaodHvqQtg
-         Q5m9wpaCaTlLLLN9V2X6zaJWa8Qip4zhbpJZuR59yljzTlucOatNTCVXbUIOcKiUmRcJ
-         gCYacWs3ZB8e8LY9XE6W59FnjU9j3as8tmxREwOutmhbg/vVOe6df+jD/EBsP2JvzzLG
-         Vdt36mHqyPs0qemILf0Qbx3pAGxKcmC8FV+0vNIeVlhACzip6qLfcna7clZNtFg938VE
-         Sl93LkEqmHgJ93M6x3015/bohOBIfdarPpZJ2lfiLfFL9y1zlXxsSG/ckL20RytpGSiQ
-         8rHw==
-X-Gm-Message-State: AOJu0YzVzU/vxxZuhE8+5Y+/qeqTNis0lQK6p38RRKIOoaZefsD+Fkcg
-        b9KPh1kXduLhS+4spKDXJtPTREcnOuzZByhQ0dzghmQEOjyB3lK20JBa4tv/SUlYP1iTdeOA9rD
-        4r4JaRufMUV9Zj+lO77Tc140U
-X-Received: by 2002:a05:6512:6cd:b0:501:b010:e69e with SMTP id u13-20020a05651206cd00b00501b010e69emr9688315lff.1.1694078598861;
-        Thu, 07 Sep 2023 02:23:18 -0700 (PDT)
-X-Google-Smtp-Source: AGHT+IGySjtcDBgK5QfDiRiacyam5Lh1YNwKS/Kf70afMbngXdGiB5n1UmVhiCYRgIn8S8I5u/i9qA==
-X-Received: by 2002:a05:6512:6cd:b0:501:b010:e69e with SMTP id u13-20020a05651206cd00b00501b010e69emr9688291lff.1.1694078598477;
-        Thu, 07 Sep 2023 02:23:18 -0700 (PDT)
-Received: from gerbillo.redhat.com (146-241-251-112.dyn.eolo.it. [146.241.251.112])
-        by smtp.gmail.com with ESMTPSA id f5-20020a50ee85000000b0052595b17fd4sm9377590edr.26.2023.09.07.02.23.17
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 02:23:18 -0700 (PDT)
-Message-ID: <626de62327fa25706ab1aaab32d7ba3a93ab26e4.camel@redhat.com>
-Subject: Re: [PATCH net v2] net: stmmac: remove unneeded
- stmmac_poll_controller
-From:   Paolo Abeni <pabeni@redhat.com>
-To:     Remi Pommarel <repk@triplefau.lt>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
-        Jose Abreu <joabreu@synopsys.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Eric Dumazet <edumazet@google.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Maxime Coquelin <mcoquelin.stm32@gmail.com>
-Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org
-Date:   Thu, 07 Sep 2023 11:23:16 +0200
-In-Reply-To: <20230906091330.6817-1-repk@triplefau.lt>
-References: <20230906091330.6817-1-repk@triplefau.lt>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+        with ESMTP id S238557AbjIGQZf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:25:35 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C13A59C3;
+        Thu,  7 Sep 2023 09:21:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B859C433B8;
+        Thu,  7 Sep 2023 09:30:52 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694079052;
+        bh=TiT32MSj3JgzYk5BqsCOQEiIdDx5M2GTmRAd61MVr/c=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=NtmptFt7CZxUCwzDgfsKsOiT32m5Si5FKAR0ogW+EzRFOCFC0FgYO2FtoYoIp7YpM
+         zbn7CXxNH0mtEw+3N6P0ogEhTQ6+cXJsHqdaqMQ2w6I9fvmyQbiIy2Gbh68h69K9LY
+         UR627ly2qJQkQUS2mmYA4J4R1uU8Cc87wiiJ48bQ=
+Date:   Thu, 7 Sep 2023 10:30:50 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Stefan Lippers-Hollmann <s.l-h@gmx.de>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Christoph Hellwig <hch@lst.de>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.5 11/34] modules: only allow symbol_get of
+ EXPORT_SYMBOL_GPL modules
+Message-ID: <2023090719-virtuous-snowflake-d015@gregkh>
+References: <20230904182948.594404081@linuxfoundation.org>
+ <20230904182949.104100132@linuxfoundation.org>
+ <20230907084135.02d97441@mir>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230907084135.02d97441@mir>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
-        autolearn=ham autolearn_force=no version=3.4.6
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, 2023-09-06 at 11:13 +0200, Remi Pommarel wrote:
-> Using netconsole netpoll_poll_dev could be called from interrupt
-> context, thus using disable_irq() would cause the following kernel
-> warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
->=20
->   BUG: sleeping function called from invalid context at kernel/irq/manage=
-.c:137
->   in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksof=
-tirqd/0
->   CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00=
-075-g816b502b2298-dirty #117
->   Hardware name: aml (r1) (DT)
->   Call trace:
->    dump_backtrace+0x0/0x270
->    show_stack+0x14/0x20
->    dump_stack_lvl+0x8c/0xac
->    dump_stack+0x18/0x30
->    ___might_sleep+0x150/0x194
->    __might_sleep+0x64/0xbc
->    synchronize_irq+0x8c/0x150
->    disable_irq+0x2c/0x40
->    stmmac_poll_controller+0x140/0x1a0
->    netpoll_poll_dev+0x6c/0x220
->    netpoll_send_skb+0x308/0x390
->    netpoll_send_udp+0x418/0x760
->    write_msg+0x118/0x140 [netconsole]
->    console_unlock+0x404/0x500
->    vprintk_emit+0x118/0x250
->    dev_vprintk_emit+0x19c/0x1cc
->    dev_printk_emit+0x90/0xa8
->    __dev_printk+0x78/0x9c
->    _dev_warn+0xa4/0xbc
->    ath10k_warn+0xe8/0xf0 [ath10k_core]
->    ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
->    ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
->    __napi_poll+0x58/0x1f4
->    net_rx_action+0x504/0x590
->    _stext+0x1b8/0x418
->    run_ksoftirqd+0x74/0xa4
->    smpboot_thread_fn+0x210/0x3c0
->    kthread+0x1fc/0x210
->    ret_from_fork+0x10/0x20
->=20
-> Since [0] .ndo_poll_controller is only needed if driver doesn't or
-> partially use NAPI. Because stmmac does so, stmmac_poll_controller
-> can be removed fixing the above warning.
->=20
-> [0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
->=20
-> Cc: <stable@vger.kernel.org> # 5.15.x
-> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
+On Thu, Sep 07, 2023 at 08:41:35AM +0200, Stefan Lippers-Hollmann wrote:
+> Hi
+> 
+> On 2023-09-04, Greg Kroah-Hartman wrote:
+> > 6.5-stable review patch.  If anyone has any objections, please let me know.
+> >
+> > ------------------
+> >
+> > From: Christoph Hellwig <hch@lst.de>
+> >
+> > commit 9011e49d54dcc7653ebb8a1e05b5badb5ecfa9f9 upstream.
+> >
+> > It has recently come to my attention that nvidia is circumventing the
+> > protection added in 262e6ae7081d ("modules: inherit
+> > TAINT_PROPRIETARY_MODULE") by importing exports from their proprietary
+> > modules into an allegedly GPL licensed module and then rexporting them.
+> >
+> > Given that symbol_get was only ever intended for tightly cooperating
+> > modules using very internal symbols it is logical to restrict it to
+> > being used on EXPORT_SYMBOL_GPL and prevent nvidia from costly DMCA
+> > Circumvention of Access Controls law suites.
+> >
+> > All symbols except for four used through symbol_get were already exported
+> > as EXPORT_SYMBOL_GPL, and the remaining four ones were switched over in
+> > the preparation patches.
+> 
+> This patch, as part of v6.5.2, breaks the in-kernel ds3000 module
+> (for a TeVii s480 v2 DVB-S2 card, which is a PCIe card attaching two
+> onboard TeVii s660 cards via an onboard USB2 controller (MCS9990),
+> https://www.linuxtv.org/wiki/index.php/TeVii_S480) from loading.
 
-I'm sorry for the incremental feedback, but we also need a suitable
-Fixes tag, thanks!
+This is also broken in Linus's tree, right?
 
-Paolo
+> [    2.896589] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' registered.
+> [    2.901085] failing symbol_get of non-GPLONLY symbol ds3000_attach.
+> [    2.901089] DVB: Unable to find symbol ds3000_attach()
 
+This is odd, where is that call coming from?  I don't see any call to
+symbol_get in the dvb code, where is this happening?
+
+Anyway, does the patch below fix this?
+
+thanks,
+
+greg k-h
+
+----------------
+
+diff --git a/drivers/media/dvb-frontends/ds3000.c b/drivers/media/dvb-frontends/ds3000.c
+index 20fcf31af165..515aa7c7baf2 100644
+--- a/drivers/media/dvb-frontends/ds3000.c
++++ b/drivers/media/dvb-frontends/ds3000.c
+@@ -859,7 +859,7 @@ struct dvb_frontend *ds3000_attach(const struct ds3000_config *config,
+ 	ds3000_set_voltage(&state->frontend, SEC_VOLTAGE_OFF);
+ 	return &state->frontend;
+ }
+-EXPORT_SYMBOL(ds3000_attach);
++EXPORT_SYMBOL_GPL(ds3000_attach);
+ 
+ static int ds3000_set_carrier_offset(struct dvb_frontend *fe,
+ 					s32 carrier_offset_khz)
