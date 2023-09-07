@@ -2,48 +2,79 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AD3F6797A28
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 19:32:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F2E5797809
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:40:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243823AbjIGRc3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 13:32:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
+        id S239290AbjIGQkU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:40:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243958AbjIGRc2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 13:32:28 -0400
-Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A5810DF
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 10:32:03 -0700 (PDT)
-Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
-        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
-        (Exim 4.92)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qeA5A-00048z-1X; Thu, 07 Sep 2023 10:09:44 +0200
-Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
-        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qeA59-004bse-8X; Thu, 07 Sep 2023 10:09:43 +0200
-Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
-        (envelope-from <sha@pengutronix.de>)
-        id 1qeA58-008rFV-DT; Thu, 07 Sep 2023 10:09:42 +0200
-From:   Sascha Hauer <s.hauer@pengutronix.de>
-To:     linux-wireless@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
-        Ping-Ke Shih <pkshih@realtek.com>,
-        Yanik Fuchs <Yanik.fuchs@mbv.ch>,
-        Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
-Subject: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
-Date:   Thu,  7 Sep 2023 10:09:42 +0200
-Message-Id: <20230907080942.2111305-1-s.hauer@pengutronix.de>
-X-Mailer: git-send-email 2.39.2
+        with ESMTP id S239149AbjIGQjz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:39:55 -0400
+Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D23D4482
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:37:00 -0700 (PDT)
+Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1d4daca8edcso900646fac.2
+        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 09:37:00 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1694104554; x=1694709354; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=l1CUVSUE/g7AfxRwMSaLzU3EKx7ahKOV7VYgsEDqqhY=;
+        b=gqNpP3lsI0yCjtTcK3elMkoPFiEJm36cQ7ZU6MeMISts5Tazo1B6vn4QS7YNae+S1D
+         aTgojZrtOZxdsEhQOP2W3UWvuU24AUGjAvsynGmiYJq0tFAHrinVvDYA0cmeZC1GD8zT
+         aGCykNe5mjWQTv83WWMonQB3ZDl4dTi4lT3oolK3Q1k2nQcipHtuLjeYLmL9ZNAi4LAS
+         R4YkLZfWb+tmbjrIOEscdGt9DI5LZHGbi1hVWntFh/qprqJ4MrjoUojWulYxte8WEvr7
+         ztSjbtsA/HSq6aJfLuCGWbGBZmWlVDhftO4CnceV2TICyShh4MAlb7sWz8MrOtRliQlR
+         mI9w==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694104554; x=1694709354;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=l1CUVSUE/g7AfxRwMSaLzU3EKx7ahKOV7VYgsEDqqhY=;
+        b=GbIWF5EaBVORcJG/m/tz0FBa3goa0eyIruSYddWLCMsGfb5bRpxlQKl/qF3gG1jmOb
+         lptJ72RqUTxwjwoZ5WyTSitzPdKhLUtWKCm+iCXLtBiai2nzo+kZsYO9C9c0DeqlJlMt
+         uKaf7d0Z1ODcYcASF0N3QGAPQNox1yJ0mOyvwMZU+gfAQ0fB0Bb9Yifi895vQ0bfBWuW
+         yR3+HAlw0x09RNapr6OICNvp16X8wmeTAHyWmgkVEpFC2kL2hyak15I2klhPeUIseyoc
+         Y+vuMesK27gVDWHOn5XYyA9gmPM03miCJjwa7E9116rlAub1OtcxcNbrWzeHeGQOtgFo
+         K2tQ==
+X-Gm-Message-State: AOJu0YyEBR5btHZimTbm97d0PD5XRRedqtCsX3Bn9HG0YfQ2yEYTNFUe
+        ZCqbgFgJjLV7KFzl/i7pHajs2IlliHuylehm9sc=
+X-Google-Smtp-Source: AGHT+IEhSwixRwMFJ/PEPA+HuSWv/jCCwwmhpvjeHTvgxdJeu9Oz8P1U41uftIqVJn6ThXvamkVttA==
+X-Received: by 2002:a05:6a21:7889:b0:153:a00b:dca0 with SMTP id bf9-20020a056a21788900b00153a00bdca0mr4104800pzc.11.1694077170404;
+        Thu, 07 Sep 2023 01:59:30 -0700 (PDT)
+Received: from [10.84.158.67] ([203.208.167.147])
+        by smtp.gmail.com with ESMTPSA id t23-20020a1709028c9700b001bdb85291casm12313579plo.208.2023.09.07.01.59.26
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Sep 2023 01:59:29 -0700 (PDT)
+Message-ID: <3544d5e3-3070-9ddc-fa6c-a05ed35dfd14@bytedance.com>
+Date:   Thu, 7 Sep 2023 16:59:22 +0800
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
-X-SA-Exim-Mail-From: sha@pengutronix.de
-X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
-X-PTX-Original-Recipient: stable@vger.kernel.org
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [External] Re: Fwd: WARNING: CPU: 13 PID: 3837105 at
+ kernel/sched/sched.h:1561 __cfsb_csd_unthrottle+0x149/0x160
+To:     Peter Zijlstra <peterz@infradead.org>
+Cc:     Benjamin Segall <bsegall@google.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Igor Raits <igor.raits@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>
+References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
+ <xm26cyz4ibnb.fsf@google.com>
+ <55e2861e-9722-08f8-2c49-966035ff4218@bytedance.com>
+ <20230904222351.GC2568@noisy.programming.kicks-ass.net>
+From:   Hao Jia <jiahao.os@bytedance.com>
+In-Reply-To: <20230904222351.GC2568@noisy.programming.kicks-ass.net>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -51,33 +82,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The MAC address is stored at offset 0x107 in the EEPROM, like correctly
-stated in the comment. Add a two bytes reserved field right before the
-MAC address to shift it from offset 0x105 to 0x107.
 
-With this the MAC address returned from my RTL8723du wifi stick can be
-correctly decoded as "Shenzhen Four Seas Global Link Network Technology
-Co., Ltd."
 
-Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
-Reported-by: Yanik Fuchs <Yanik.fuchs@mbv.ch>
-Cc: stable@vger.kernel.org
----
- drivers/net/wireless/realtek/rtw88/rtw8723d.h | 1 +
- 1 file changed, 1 insertion(+)
+On 2023/9/5 Peter Zijlstra wrote:
+> On Thu, Aug 31, 2023 at 04:48:29PM +0800, Hao Jia wrote:
+> 
+>> If I understand correctly, rq->clock_update_flags may be set to
+>> RQCF_ACT_SKIP after __schedule() holds the rq lock, and sometimes the rq
+>> lock may be released briefly in __schedule(), such as newidle_balance(). At
+>> this time Other CPUs hold this rq lock, and then calling
+>> rq_clock_start_loop_update() may trigger this warning.
+>>
+>> This warning check might be wrong. We need to add assert_clock_updated() to
+>> check that the rq clock has been updated before calling
+>> rq_clock_start_loop_update().
+>>
+>> Maybe some things can be like this?
+> 
+> Urgh, aside from it being white space mangled, I think this is entirely
+> going in the wrong direction.
+> 
+> Leaking ACT_SKIP is dodgy as heck.. it's entirely too late to think
+> clearly though, I'll have to try again tomorrow.
 
-diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-index 3642a2c7f80c9..2434e2480cbe2 100644
---- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-+++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
-@@ -46,6 +46,7 @@ struct rtw8723du_efuse {
- 	u8 vender_id[2];                /* 0x100 */
- 	u8 product_id[2];               /* 0x102 */
- 	u8 usb_option;                  /* 0x104 */
-+	u8 res5[2];			/* 0x105 */
- 	u8 mac_addr[ETH_ALEN];          /* 0x107 */
- };
- 
--- 
-2.39.2
+Hi Peter,
 
+Do you think this fix method is correct? Or should we go back to the 
+beginning and move update_rq_clock() from unthrottle_cfs_rq()?
+
+Thanks,
+Hao
