@@ -2,176 +2,296 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BA0D2797DBB
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 23:09:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BC98797F11
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 01:09:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231843AbjIGVJG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 17:09:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45070 "EHLO
+        id S234516AbjIGXJQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 19:09:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230155AbjIGVJE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 17:09:04 -0400
+        with ESMTP id S236531AbjIGXJN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 19:09:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C149F92;
-        Thu,  7 Sep 2023 14:09:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4FB75C433C7;
-        Thu,  7 Sep 2023 21:09:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D5E091FC1;
+        Thu,  7 Sep 2023 16:08:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D1EFC43391;
+        Thu,  7 Sep 2023 23:08:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694120940;
-        bh=eqSktRiuy/QbTz225cenObSEu4zXAWGERCnQTGrRrfE=;
-        h=From:To:Cc:Subject:Date:From;
-        b=Ts1JfLQY21vtuMZdknT3et1azyEQcCxP+WzhR6Uu/nXTQAwaKn5xh1Iab+N5DdUse
-         IfTnDoEO8+3DippRol5d+wUXhFFwOxkpks642UbFxXX4w5LzBYKOJSFic592mqOxrx
-         lxd5Agseuk9t3S51wwblrNCiZyPRAzBD883Lpv4s/8IyV2iBEaYada9+R5mtIgZ65/
-         kkMy60c4HWLjF+5WfMScNd22Y7eI/RvyYfkA/cjCT5SJFNAfKuLVAjBwgwGatNJm8C
-         iJxYLG2GZuxTGwDTMr7m9Dh4zTSQ4QwEu6lJz+c+bivn5K+j+vOPtTpaOao6Ji/0Zy
-         0o4WQWDdsBW1g==
-From:   Jaegeuk Kim <jaegeuk@kernel.org>
-To:     linux-kernel@vger.kernel.org,
-        linux-f2fs-devel@lists.sourceforge.net
-Cc:     Jaegeuk Kim <jaegeuk@kernel.org>, stable@vger.kernel.org,
-        syzbot+d342e330a37b48c094b7@syzkaller.appspotmail.com
-Subject: [PATCH] f2fs: split initial and dynamic conditions for extent_cache
-Date:   Thu,  7 Sep 2023 14:08:58 -0700
-Message-ID: <20230907210859.3698691-1-jaegeuk@kernel.org>
-X-Mailer: git-send-email 2.42.0.283.g2d96d420d3-goog
+        s=k20201202; t=1694128106;
+        bh=dwU0cggUZuUj8xz1J+Ttvroipumx77lnmqiIHmYTCJI=;
+        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
+        b=vE9d3CO/7Kkl1Yrm2y6KAddQY4uq5Hapa5Xh/xxaU3624hVZKn2ia0Qy0tSJ53cB7
+         uwBGWrjNbt9SjeqqKHGYPZtHWJM8JigFO/g52CkaF6GaoPGLFeWMpw65xJZ1MNxasY
+         asdm8mTc+f0PALotMRjbjTefxGDiO4WpaZS9CyNDAds2RW3+WEYL/I+voAwcDPrQ4P
+         L8H035WDzsW7v+qgW+BGuKHTykonV72zeCCNGAIyoPxiehATWX5HK9gOjVYKbTfnCD
+         P8g0qDfiXilrT0FXyibpuqKEPEgeyjAXZb4UeaTQuMXSzcGg7HTXmq4sMPelLkgsar
+         44LbcctcYxGeQ==
+Received: by mail-lf1-f53.google.com with SMTP id 2adb3069b0e04-501cef42bc9so2455260e87.0;
+        Thu, 07 Sep 2023 16:08:26 -0700 (PDT)
+X-Gm-Message-State: AOJu0YwqEWhW1nh/UZH7VqrjsZXTgpi7sHNSLQ7vmRuDLnaOB9Rh3xql
+        /5oAG0vIFmJE7sImZ82jjbvI+8i4EK8G9yuBlLk=
+X-Google-Smtp-Source: AGHT+IE0owwZKnabFPS9/99R5zr4I9QIppyU7eX2Dd5VukMAFWby5ukuNPdc/8yyiuTSzVS853rFdqGdDhwgkZxKGAU=
+X-Received: by 2002:a05:6512:280d:b0:500:a60d:c677 with SMTP id
+ cf13-20020a056512280d00b00500a60dc677mr547393lfb.59.1694128104311; Thu, 07
+ Sep 2023 16:08:24 -0700 (PDT)
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+References: <20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org>
+In-Reply-To: <20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org>
+From:   Song Liu <song@kernel.org>
+Date:   Thu, 7 Sep 2023 16:08:11 -0700
+X-Gmail-Original-Message-ID: <CAPhsuW5_qAvV0N3o+hOiAnb1=buJ1pLzqYW9D+Bwft6hxJvAeQ@mail.gmail.com>
+Message-ID: <CAPhsuW5_qAvV0N3o+hOiAnb1=buJ1pLzqYW9D+Bwft6hxJvAeQ@mail.gmail.com>
+Subject: Re: [PATCH v7 0/4] kexec: Fix kexec_file_load for llvm16 with PGO
+To:     Ricardo Ribalda <ribalda@chromium.org>
+Cc:     Eric Biederman <ebiederm@xmission.com>,
+        Philipp Rudo <prudo@linux.vnet.ibm.com>,
+        Dave Young <dyoung@redhat.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Tom Rix <trix@redhat.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Nicholas Piggin <npiggin@gmail.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Paul Walmsley <paul.walmsley@sifive.com>,
+        Palmer Dabbelt <palmer@dabbelt.com>,
+        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
+        Philipp Rudo <prudo@redhat.com>, kexec@lists.infradead.org,
+        linux-kernel@vger.kernel.org, Ross Zwisler <zwisler@google.com>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        Simon Horman <horms@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
+        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Let's allocate the extent_cache tree without dynamic conditions to avoid a
-missing condition causing a panic as below.
+Hi Ricardo and folks,
 
- # create a file w/ a compressed flag
- # disable the compression
- # panic while updating extent_cache
+On Fri, May 19, 2023 at 7:48=E2=80=AFAM Ricardo Ribalda <ribalda@chromium.o=
+rg> wrote:
+>
+> When upreving llvm I realised that kexec stopped working on my test
+> platform.
+>
+> The reason seems to be that due to PGO there are multiple .text sections
+> on the purgatory, and kexec does not supports that.
+>
+> Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
 
-F2FS-fs (dm-64): Swapfile: last extent is not aligned to section
-F2FS-fs (dm-64): Swapfile (3) is not align to section: 1) creat(), 2) ioctl(F2FS_IOC_SET_PIN_FILE), 3) fallocate(2097152 * N)
-Adding 124996k swap on ./swap-file.  Priority:0 extents:2 across:17179494468k
-==================================================================
-BUG: KASAN: null-ptr-deref in instrument_atomic_read_write out/common/include/linux/instrumented.h:101 [inline]
-BUG: KASAN: null-ptr-deref in atomic_try_cmpxchg_acquire out/common/include/asm-generic/atomic-instrumented.h:705 [inline]
-BUG: KASAN: null-ptr-deref in queued_write_lock out/common/include/asm-generic/qrwlock.h:92 [inline]
-BUG: KASAN: null-ptr-deref in __raw_write_lock out/common/include/linux/rwlock_api_smp.h:211 [inline]
-BUG: KASAN: null-ptr-deref in _raw_write_lock+0x5a/0x110 out/common/kernel/locking/spinlock.c:295
-Write of size 4 at addr 0000000000000030 by task syz-executor154/3327
+We are seeing WARNINGs like the following while kexec'ing a PGO and
+LTO enabled kernel:
 
-CPU: 0 PID: 3327 Comm: syz-executor154 Tainted: G           O      5.10.185 #1
-Hardware name: emulation qemu-x86/qemu-x86, BIOS 2023.01-21885-gb3cc1cd24d 01/01/2023
-Call Trace:
- __dump_stack out/common/lib/dump_stack.c:77 [inline]
- dump_stack_lvl+0x17e/0x1c4 out/common/lib/dump_stack.c:118
- __kasan_report+0x16c/0x260 out/common/mm/kasan/report.c:415
- kasan_report+0x51/0x70 out/common/mm/kasan/report.c:428
- kasan_check_range+0x2f3/0x340 out/common/mm/kasan/generic.c:186
- __kasan_check_write+0x14/0x20 out/common/mm/kasan/shadow.c:37
- instrument_atomic_read_write out/common/include/linux/instrumented.h:101 [inline]
- atomic_try_cmpxchg_acquire out/common/include/asm-generic/atomic-instrumented.h:705 [inline]
- queued_write_lock out/common/include/asm-generic/qrwlock.h:92 [inline]
- __raw_write_lock out/common/include/linux/rwlock_api_smp.h:211 [inline]
- _raw_write_lock+0x5a/0x110 out/common/kernel/locking/spinlock.c:295
- __drop_extent_tree+0xdf/0x2f0 out/common/fs/f2fs/extent_cache.c:1155
- f2fs_drop_extent_tree+0x17/0x30 out/common/fs/f2fs/extent_cache.c:1172
- f2fs_insert_range out/common/fs/f2fs/file.c:1600 [inline]
- f2fs_fallocate+0x19fd/0x1f40 out/common/fs/f2fs/file.c:1764
- vfs_fallocate+0x514/0x9b0 out/common/fs/open.c:310
- ksys_fallocate out/common/fs/open.c:333 [inline]
- __do_sys_fallocate out/common/fs/open.c:341 [inline]
- __se_sys_fallocate out/common/fs/open.c:339 [inline]
- __x64_sys_fallocate+0xb8/0x100 out/common/fs/open.c:339
- do_syscall_64+0x35/0x50 out/common/arch/x86/entry/common.c:46
+WARNING: CPU: 26 PID: 110894 at kernel/kexec_file.c:919
+kexec_load_purgatory+0x37f/0x390
 
-Cc: stable@vger.kernel.org
-Fixes: 72840cccc0a1 ("f2fs: allocate the extent_cache by default")
-Reported-by: syzbot+d342e330a37b48c094b7@syzkaller.appspotmail.com
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
----
- fs/f2fs/extent_cache.c | 53 +++++++++++++++++-------------------------
- 1 file changed, 21 insertions(+), 32 deletions(-)
+AFAICT, the warning was added by this set, and it was triggered when
+we have many .text sections
+in purgatory.ro. The kexec was actually successful. So I wonder
+whether we really need the
+WARNING here. If we disable LTO (PGO is still enabled), we don't see
+the WARNING any more.
 
-diff --git a/fs/f2fs/extent_cache.c b/fs/f2fs/extent_cache.c
-index 0e2d49140c07..ad8dfac73bd4 100644
---- a/fs/f2fs/extent_cache.c
-+++ b/fs/f2fs/extent_cache.c
-@@ -74,40 +74,14 @@ static void __set_extent_info(struct extent_info *ei,
- 	}
- }
- 
--static bool __may_read_extent_tree(struct inode *inode)
--{
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--
--	if (!test_opt(sbi, READ_EXTENT_CACHE))
--		return false;
--	if (is_inode_flag_set(inode, FI_NO_EXTENT))
--		return false;
--	if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
--			 !f2fs_sb_has_readonly(sbi))
--		return false;
--	return S_ISREG(inode->i_mode);
--}
--
--static bool __may_age_extent_tree(struct inode *inode)
--{
--	struct f2fs_sb_info *sbi = F2FS_I_SB(inode);
--
--	if (!test_opt(sbi, AGE_EXTENT_CACHE))
--		return false;
--	if (is_inode_flag_set(inode, FI_COMPRESSED_FILE))
--		return false;
--	if (file_is_cold(inode))
--		return false;
--
--	return S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode);
--}
--
- static bool __init_may_extent_tree(struct inode *inode, enum extent_type type)
- {
- 	if (type == EX_READ)
--		return __may_read_extent_tree(inode);
--	else if (type == EX_BLOCK_AGE)
--		return __may_age_extent_tree(inode);
-+		return test_opt(F2FS_I_SB(inode), READ_EXTENT_CACHE) &&
-+			S_ISREG(inode->i_mode);
-+	if (type == EX_BLOCK_AGE)
-+		return test_opt(F2FS_I_SB(inode), AGE_EXTENT_CACHE) &&
-+			(S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode));
- 	return false;
- }
- 
-@@ -120,7 +94,22 @@ static bool __may_extent_tree(struct inode *inode, enum extent_type type)
- 	if (list_empty(&F2FS_I_SB(inode)->s_list))
- 		return false;
- 
--	return __init_may_extent_tree(inode, type);
-+	if (!__init_may_extent_tree(inode, type))
-+		return false;
-+
-+	if (type == EX_READ) {
-+		if (is_inode_flag_set(inode, FI_NO_EXTENT))
-+			return false;
-+		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE) &&
-+				 !f2fs_sb_has_readonly(F2FS_I_SB(inode)))
-+			return false;
-+	} else if (type == EX_BLOCK_AGE) {
-+		if (is_inode_flag_set(inode, FI_COMPRESSED_FILE))
-+			return false;
-+		if (file_is_cold(inode))
-+			return false;
-+	}
-+	return true;
- }
- 
- static void __try_update_largest_extent(struct extent_tree *et,
--- 
-2.42.0.283.g2d96d420d3-goog
+I also tested an older kernel (5.19 based), where we also see many
+.text sections with LTO. It
+kexec()'ed fine. (It doesn't have the WARN_ON() in
+kexec_purgatory_setup_sechdrs).
 
+Please help us fix this properly (as I really don't know much about kexec).
+
+Thanks in advance,
+Song
+
+
+Here is readelf -S output on purgatory.ro.
+
+With LTO:
+
+readelf -W -S purgatory.ro
+There are 48 section headers, starting at offset 0x4a10:
+
+Section Headers:
+  [Nr] Name              Type            Address          Off    Size
+ ES Flg Lk Inf Al
+  [ 0]                   NULL            0000000000000000 000000
+000000 00      0   0  0
+  [ 1] .text             PROGBITS        0000000000000000 000040
+0000d0 00  AX  0   0 16
+  [ 2] .data             PROGBITS        0000000000000000 001000
+001000 00  WA  0   0 4096
+  [ 3] .rela.text        RELA            0000000000000000 003788
+000228 18   I 45   1  8
+  [ 4] .rodata           PROGBITS        0000000000000000 002000
+0000e0 00   A  0   0 16
+  [ 5] .rela.rodata      RELA            0000000000000000 0039b0
+000030 18   I 45   4  8
+  [ 6] .bss              NOBITS          0000000000000000 0020e0
+001000 00  WA  0   0 4096
+  [ 7] .text.purgatory   PROGBITS        0000000000000000 0020e0
+0000df 00  AX  0   0 16
+  [ 8] .rela.text.purgatory RELA            0000000000000000 0039e0
+000060 18   I 45   7  8
+  [ 9] .text.warn        PROGBITS        0000000000000000 0021c0
+000001 00  AX  0   0 16
+  [10] .kexec-purgatory  PROGBITS        0000000000000000 0021d0
+000120 00  WA  0   0 16
+  [11] .comment          PROGBITS        0000000000000000 003a40
+000046 01  MS  0   0  1
+  [12] .llvm_addrsig     LOOS+0xfff4c03  0000000000000000 003a86
+000005 00   E  0   0  1
+  [13] .text.sha256_update PROGBITS        0000000000000000 0022f0
+0008eb 00  AX  0   0 16
+  [14] .rela.text.sha256_update RELA            0000000000000000
+003a90 000060 18   I 45  13  8
+  [15] .text.sha224_update PROGBITS        0000000000000000 002be0
+00000c 00  AX  0   0 16
+  [16] .rela.text.sha224_update RELA            0000000000000000
+003af0 000018 18   I 45  15  8
+  [17] .text.sha256_final PROGBITS        0000000000000000 002bf0
+0000cd 00  AX  0   0 16
+  [18] .rela.text.sha256_final RELA            0000000000000000 003b08
+000030 18   I 45  17  8
+  [19] .text.sha224_final PROGBITS        0000000000000000 002cc0
+0000bd 00  AX  0   0 16
+  [20] .rela.text.sha224_final RELA            0000000000000000 003b38
+000030 18   I 45  19  8
+  [21] .text.sha256      PROGBITS        0000000000000000 002d80
+00011d 00  AX  0   0 16
+  [22] .rela.text.sha256 RELA            0000000000000000 003b68
+000030 18   I 45  21  8
+  [23] .modinfo          PROGBITS        0000000000000000 002e9d
+000039 00   A  0   0  1
+  [24] .rodata.SHA256_K  PROGBITS        0000000000000000 002ee0
+000100 00   A  0   0 16
+  [25] .rodata.__sha256_final.padding PROGBITS        0000000000000000
+002fe0 000040 00   A  0   0 16
+  [26] .text.memcmp      PROGBITS        0000000000000000 003020
+00000b 00  AX  0   0 16
+  [27] .text.bcmp        PROGBITS        0000000000000000 003030
+00000b 00  AX  0   0 16
+  [28] .text.strcmp      PROGBITS        0000000000000000 003040
+000041 00  AX  0   0 16
+  [29] .text.strncmp     PROGBITS        0000000000000000 003090
+00003a 00  AX  0   0 16
+  [30] .text.strnlen     PROGBITS        0000000000000000 0030d0
+000039 00  AX  0   0 16
+  [31] .text.atou        PROGBITS        0000000000000000 003110
+000035 00  AX  0   0 16
+  [32] .text.simple_strtoull PROGBITS        0000000000000000 003150
+0000b6 00  AX  0   0 16
+  [33] .text.simple_strtol PROGBITS        0000000000000000 003210
+0001b6 00  AX  0   0 16
+  [34] .text.strlen      PROGBITS        0000000000000000 0033d0
+00001c 00  AX  0   0 16
+  [35] .text.strstr      PROGBITS        0000000000000000 0033f0
+00005f 00  AX  0   0 16
+  [36] .text.strchr      PROGBITS        0000000000000000 003450
+000022 00  AX  0   0 16
+  [37] .text.kstrtoull   PROGBITS        0000000000000000 003480
+000142 00  AX  0   0 16
+  [38] .text.boot_kstrtoul PROGBITS        0000000000000000 0035d0
+00000c 00  AX  0   0 16
+  [39] .rela.text.boot_kstrtoul RELA            0000000000000000
+003b98 000018 18   I 45  38  8
+  [40] .text.memset      PROGBITS        0000000000000000 0035e0
+00001f 00  AX  0   0 16
+  [41] .text.memmove     PROGBITS        0000000000000000 003600
+0000a6 00  AX  0   0 16
+  [42] .text.memcpy      PROGBITS        0000000000000000 0036b0
+0000a6 00  AX  0   0 16
+  [43] .rodata.str1.1    PROGBITS        0000000000000000 003756
+000032 01 AMS  0   0  1
+  [44] .note.GNU-stack   PROGBITS        0000000000000000 003bb0
+000000 00      0   0  1
+  [45] .symtab           SYMTAB          0000000000000000 003bb0
+000948 18     47  68  8
+  [46] .shstrtab         STRTAB          0000000000000000 0044f8
+0002cd 00      0   0  1
+  [47] .strtab           STRTAB          0000000000000000 0047c5
+000248 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  l (large), p (processor specific)
+
+
+Without LTO:
+
+readelf -W -S purgatory.ro
+There are 16 section headers, starting at offset 0x4130:
+
+Section Headers:
+  [Nr] Name              Type            Address          Off    Size
+ ES Flg Lk Inf Al
+  [ 0]                   NULL            0000000000000000 000000
+000000 00      0   0  0
+  [ 1] .text             PROGBITS        0000000000000000 000040
+00131b 00  AX  0   0 16
+  [ 2] .rela.text        RELA            0000000000000000 003290
+000480 18   I 13   1  8
+  [ 3] .kexec-purgatory  PROGBITS        0000000000000000 001360
+000120 00  WA  0   0 16
+  [ 4] .comment          PROGBITS        0000000000000000 003710
+000046 01  MS  0   0  1
+  [ 5] .llvm_addrsig     LOOS+0xfff4c03  0000000000000000 003756
+000005 00   E  0   0  1
+  [ 6] .data             PROGBITS        0000000000000000 002000
+001000 00  WA  0   0 4096
+  [ 7] .rodata           PROGBITS        0000000000000000 003000
+000220 00   A  0   0 16
+  [ 8] .rela.rodata      RELA            0000000000000000 003760
+000030 18   I 13   7  8
+  [ 9] .bss              NOBITS          0000000000000000 003220
+001000 00  WA  0   0 4096
+  [10] .modinfo          PROGBITS        0000000000000000 003220
+000039 00   A  0   0  1
+  [11] .rodata.str1.1    PROGBITS        0000000000000000 003259
+000032 01 AMS  0   0  1
+  [12] .note.GNU-stack   PROGBITS        0000000000000000 003790
+000000 00      0   0  1
+  [13] .symtab           SYMTAB          0000000000000000 003790
+0006d8 18     15  43  8
+  [14] .shstrtab         STRTAB          0000000000000000 003e68
+00009c 00      0   0  1
+  [15] .strtab           STRTAB          0000000000000000 003f04
+00022b 00      0   0  1
+Key to Flags:
+  W (write), A (alloc), X (execute), M (merge), S (strings), I (info),
+  L (link order), O (extra OS processing required), G (group), T (TLS),
+  C (compressed), x (unknown), o (OS specific), E (exclude),
+  l (large), p (processor specific)
+
+[...]
+
+> Ricardo Ribalda (4):
+>       kexec: Support purgatories with .text.hot sections
+>       x86/purgatory: Remove PGO flags
+>       powerpc/purgatory: Remove PGO flags
+>       riscv/purgatory: Remove PGO flags
+>
+>  arch/powerpc/purgatory/Makefile |  5 +++++
+>  arch/riscv/purgatory/Makefile   |  5 +++++
+>  arch/x86/purgatory/Makefile     |  5 +++++
+>  kernel/kexec_file.c             | 14 +++++++++++++-
+>  4 files changed, 28 insertions(+), 1 deletion(-)
+> ---
+> base-commit: 58390c8ce1bddb6c623f62e7ed36383e7fa5c02f
+> change-id: 20230321-kexec_clang16-4510c23d129c
+>
+> Best regards,
+> --
+> Ricardo Ribalda Delgado <ribalda@chromium.org>
+>
