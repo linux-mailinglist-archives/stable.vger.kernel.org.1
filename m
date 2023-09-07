@@ -2,100 +2,98 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2CF8679785E
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:46:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68B1E7977B9
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:31:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239772AbjIGQqe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37784 "EHLO
+        id S237315AbjIGQbs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:31:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242946AbjIGQqV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:46:21 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8F713AA6;
-        Thu,  7 Sep 2023 09:21:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A29C3C4E684;
-        Thu,  7 Sep 2023 15:44:42 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694101483;
-        bh=mV70Cn1O6GxelLkejgcT/F5+bEGe4b38w9qaFFojAYU=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fm9WQSH4yha+y0taIU4Rw5bFMV+FSsGUDuwG5vfiFSIel98GS5LXaDgqm/jQ/Rx8m
-         2xj5GmTHRvhq3k0goMOZVLwdQ31D/ImGk+SK3D2EHFID+RaizPY9QZ4JGveeDgBks7
-         peuC+HOPC7ZRFBvzuJ9Wi4zxM6vL5f6VriBrDyTIkeO4GxjBL0th+MIuQP5k0Fd+Nj
-         lak9BUs8nzQ/JsSEgbC96adroMBUiYFeOUumhcc2AFIBmC2Qhr47PbugcHh8iFGk5g
-         IxCJXp+W2jV8Ic1CpBhLfmJgbagZXy1nKJYwEho/M0HDTszEs6YaB5msb+h7yZB8EQ
-         J79UtDpx67DVw==
-From:   Sasha Levin <sashal@kernel.org>
-To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Qu Wenruo <wqu@suse.com>, David Sterba <dsterba@suse.com>,
-        Sasha Levin <sashal@kernel.org>, clm@fb.com,
-        josef@toxicpanda.com, linux-btrfs@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 2/2] btrfs: output extra debug info if we failed to find an inline backref
-Date:   Thu,  7 Sep 2023 11:44:36 -0400
-Message-Id: <20230907154438.3422099-2-sashal@kernel.org>
-X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230907154438.3422099-1-sashal@kernel.org>
-References: <20230907154438.3422099-1-sashal@kernel.org>
+        with ESMTP id S240353AbjIGQbe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:31:34 -0400
+Received: from mail-ej1-f41.google.com (mail-ej1-f41.google.com [209.85.218.41])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7128B44B3
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:21:29 -0700 (PDT)
+Received: by mail-ej1-f41.google.com with SMTP id a640c23a62f3a-9a648f9d8e3so142886466b.1
+        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 09:21:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=google.com; s=20221208; t=1694103317; x=1694708117; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=GPet9frFOlN+fq8ywCGgPEJ/UelzH3no+zjoxqo7e8I=;
+        b=R0MVQ/cBSJmLgOgsRIfeJs+1IdlKTcwuu0OExS/U3Vk1rJnsh+qTPWXlxLr09KXiJL
+         GOn+330kgVHW1xXZT/mUfbhE87T4fhWzqQtLtXNh+Vj2nZZdilBEVF+gAWaBVj+z2hZG
+         Ge4nucyy0wnDMLEqhiE+YSx4Aaldj2QYLyfQW0rM6C1RWHNmSbZ/wG7AtampKGrGGcY+
+         2RQky1ju+oqLhJtSSfr6T4VBQDZ+YXunH/HE7y4MhUJgR03CHuDgMoWjuIl6WS2htnM2
+         8mN3YY4VXd3HJTSUAOj0+Dt2x0AM7gX+MmY4rqLimp50hDZ3kG3GrmsvwRm8HNOLxutf
+         23lQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694103317; x=1694708117;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=GPet9frFOlN+fq8ywCGgPEJ/UelzH3no+zjoxqo7e8I=;
+        b=ulxfkaI79pLbaXNvoRagQdlR1wZk4/mNcQ0TsGBH5p1CM5tyNy4TlzFEJHUqg2mnZT
+         /HWuFoquTNPmKRSfEakabYSQic6dZu3gsIZLCJvR/wCKTEyAcbv+SjDM9RJanPP6rWQw
+         9OaXcssFG2gUlCYTSXsEuVQ2efQLSkrxLM2+TMwuia8P92RX8AOh1cfl3xVrtsJZpqB9
+         ai0kzsWs8ecfmsEnI4+Vke8SGs5w7Y7W0WZgGdM/C1asfB0TshdaxUZXDkL99o7U6Paa
+         j7QA4sLKqqkEOm75gbwqsCt4P3zg6XOvQBEFGvjkFmxi11dHW3ynyAl84vPl+s2iKt9D
+         4G9A==
+X-Gm-Message-State: AOJu0YyDCcJ0UgHAWvGQraO4aHIoT8gxqMrTjThs2acb6zksPuf3fdLH
+        g1xBo3SZVUX/0G69TDo/TnCMQ4git4+CQK0vvbl1Pg==
+X-Google-Smtp-Source: AGHT+IF/NbTgNtmVVXa6cyt4x/KYgk/3Vvk2bF18WA78zm5uinZw4btDDtKc0+oY5sbqk+/zrkgrPue1IaBpjjVsvgs=
+X-Received: by 2002:a17:906:535d:b0:9a2:295a:9bbe with SMTP id
+ j29-20020a170906535d00b009a2295a9bbemr5111180ejo.17.1694103317070; Thu, 07
+ Sep 2023 09:15:17 -0700 (PDT)
 MIME-Version: 1.0
-X-stable: review
-X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.325
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+References: <20230905235846.142217-1-jrife@google.com> <2023090743-cheek-zebra-a175@gregkh>
+In-Reply-To: <2023090743-cheek-zebra-a175@gregkh>
+From:   Jordan Rife <jrife@google.com>
+Date:   Thu, 7 Sep 2023 09:15:03 -0700
+Message-ID: <CADKFtnRQ-gZGOh2Qj+gcG1oAGgR-J_r2mh14JRCCHD0UUcJubg@mail.gmail.com>
+Subject: Re: [PATCH] net: Avoid address overwrite in kernel_connect
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, dborkman@kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-17.6 required=5.0 tests=BAYES_00,DKIMWL_WL_MED,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,
+        RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS,USER_IN_DEF_DKIM_WL,
+        USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Qu Wenruo <wqu@suse.com>
+> Nit, next time use more sha1 characters, the kernel documentation shows
+how many we usually rely on.
 
-[ Upstream commit 7f72f50547b7af4ddf985b07fc56600a4deba281 ]
+Ack. I'll keep this in mind next time.
 
-[BUG]
-Syzbot reported several warning triggered inside
-lookup_inline_extent_backref().
+> Why not also 4.14?
+The BPF hooks that lead to this problem were introduced after 4.14 in
+this upstream commit (d74bad4e74ee373787a9ae24197c17b7cdc428d5). 4.19
+is the earliest supported kernel version in which this bug appears.
 
-[CAUSE]
-As usual, the reproducer doesn't reliably trigger locally here, but at
-least we know the WARN_ON() is triggered when an inline backref can not
-be found, and it can only be triggered when @insert is true. (I.e.
-inserting a new inline backref, which means the backref should already
-exist)
+Thanks,
+Jordan
 
-[ENHANCEMENT]
-After the WARN_ON(), dump all the parameters and the extent tree
-leaf to help debug.
-
-Link: https://syzkaller.appspot.com/bug?extid=d6f9ff86c1d804ba2bc6
-Signed-off-by: Qu Wenruo <wqu@suse.com>
-Reviewed-by: David Sterba <dsterba@suse.com>
-Signed-off-by: David Sterba <dsterba@suse.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
----
- fs/btrfs/extent-tree.c | 5 +++++
- 1 file changed, 5 insertions(+)
-
-diff --git a/fs/btrfs/extent-tree.c b/fs/btrfs/extent-tree.c
-index e59987385673f..deb01e59da027 100644
---- a/fs/btrfs/extent-tree.c
-+++ b/fs/btrfs/extent-tree.c
-@@ -1703,6 +1703,11 @@ int lookup_inline_extent_backref(struct btrfs_trans_handle *trans,
- 		err = -ENOENT;
- 		goto out;
- 	} else if (WARN_ON(ret)) {
-+		btrfs_print_leaf(path->nodes[0]);
-+		btrfs_err(fs_info,
-+"extent item not found for insert, bytenr %llu num_bytes %llu parent %llu root_objectid %llu owner %llu offset %llu",
-+			  bytenr, num_bytes, parent, root_objectid, owner,
-+			  offset);
- 		err = -EIO;
- 		goto out;
- 	}
--- 
-2.40.1
-
+On Thu, Sep 7, 2023 at 4:27=E2=80=AFAM Greg KH <gregkh@linuxfoundation.org>=
+ wrote:
+>
+> On Tue, Sep 05, 2023 at 06:58:46PM -0500, Jordan Rife wrote:
+> > commit 0bdf399 upstream.
+>
+> Nit, next time use more sha1 characters, the kernel documentation shows
+> how many we usually rely on.
+>
+> > This fix applies to all stable kernel versions 4.19+.
+>
+> Why not also 4.14?
+>
+> Anyway, now queued up, thanks.
+>
+> greg k-h
