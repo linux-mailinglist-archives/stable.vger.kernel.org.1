@@ -2,262 +2,224 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFA6B797837
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:43:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7DFFF797AFB
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 19:58:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242706AbjIGQnf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:43:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54728 "EHLO
+        id S245618AbjIGR6x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 13:58:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244537AbjIGQnN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:43:13 -0400
-Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05715270E;
-        Thu,  7 Sep 2023 09:42:30 -0700 (PDT)
-Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-44ee1123667so1374132137.0;
-        Thu, 07 Sep 2023 09:42:29 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694104886; x=1694709686; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=cI3qPKykEdBORFQX/2gwFAk427YJVxD6Vt6XnXeCVFE=;
-        b=CPlho9F7cPnarIVnLCgNqYLStL2W+QQ/Zm9dd/iKFeT+rihn5rmLPkiC5m6UVzPcEq
-         ycXeiz4u1r2GAXb+bXgSuFtOhA+34CCumFTR7HYLAvEvMbWkHInuYmR2oGfSEh1QUjsK
-         JQuN7ux4IOGqptQKLU0RKnQ75b3hn0/XItOX3csSD7GPthP9kB1jQpSmWWbbbop0Hmc9
-         x6KO3ZrHEwr1asvDisiyKWF1kw/EC4MYNzLQoQvQ5FyCkCFoGGW2Q8EXmw+GJZ4e8bwW
-         L0O6C3BGUG3DJsDkL0FQTdSIkoHS+aofQBKIWOAMasjOH1IPMAUCsikpx9FnvIH4PCNT
-         Qj2g==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694104886; x=1694709686;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=cI3qPKykEdBORFQX/2gwFAk427YJVxD6Vt6XnXeCVFE=;
-        b=lT8vM7gYzk1dox8yU/DUQ40cxltmvvmFhq46ApPQw+XHth5ah5Xpsg8ajI0WiCgzOK
-         gAix49g6y2XJkfT8kihoxQ5iHgwOwADnCxc+E7fH0nnywMnBwdd3jv/xsra5QokNDFav
-         s/CPNBDx8pau+5ing9pH7+FV0u6Oh4dKrmT/NT/VKI3Ary31qc3y0VzRMA8+yRp4TO8i
-         cJsWt8cmgJs4HzqnhWz9wFjlfkSKvDwuOvmgNqGQb8JwIK+eqMQE6kk7+XmQXu1hyynG
-         4w0sn856TTL6PqP9xUdQw9CJ18/zAE364bFYuHpNTVR/poAuMk3hSRFl2dUz/8PzibmK
-         xC3Q==
-X-Gm-Message-State: AOJu0YxU/auIMTELaCgPLgFK0e/8xoPEfKtp/YrIyGWonmCE1hZcKaka
-        +TfWwyABrS9uVdod5scMqaCfyuo93eRLwH+q1e2dWH5sXYE=
-X-Google-Smtp-Source: AGHT+IF2f4clu8FhKmXoRyt84gz3p/VGGZk0W2EEiHKFFPj3WYNiCuC7y3dygDgVnoHXLhkSMaZJGcIsjO8h6WPehI4=
-X-Received: by 2002:a25:b29d:0:b0:d78:2258:f5b8 with SMTP id
- k29-20020a25b29d000000b00d782258f5b8mr3003998ybj.19.1694090091695; Thu, 07
- Sep 2023 05:34:51 -0700 (PDT)
+        with ESMTP id S245616AbjIGR6o (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 13:58:44 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.20])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 351F01BFB
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 10:58:26 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694109506; x=1725645506;
+  h=from:to:cc:subject:date:message-id:in-reply-to:
+   references:mime-version:content-transfer-encoding;
+  bh=njEpN+Vr1vaefmXlej/8cWt4axMoZOs7pgeve2YFRXY=;
+  b=IFPK6DNTLeloG8hdVefaJlPJ/iQulWIIGlJIi8PPHvF3+HuhYL+xTJym
+   MAX85+A2PolQm7Kyx2da912VMAmBQgEIEOrJZuDHgO2iF94FItdX4Lj5M
+   suPBgHRrOfB9ylyRKpnNL3+Ue+FNvkyj6hKSC1ZM1UJX+4a+ZZWJJze1X
+   exEKR3WmMtu0KiYtSf8vF+/MvBfaaBlEQ8Oydfx/3sKcyaKOKVNdog4Q6
+   c5MH4J+2St7BI64cjcNY+t7HkrfjUIjKADNabtzBw5h7ooYGIM7xqKTNK
+   QLfquHAO1TdlUWp4neGDlBKjYeg5ePQHd7zk6Yxn7zQsA1b5NNfhWgMWC
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="367599077"
+X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
+   d="scan'208";a="367599077"
+Received: from fmsmga002.fm.intel.com ([10.253.24.26])
+  by orsmga101.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 06:53:54 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10826"; a="856845182"
+X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
+   d="scan'208";a="856845182"
+Received: from yuyingfa-mobl.ccr.corp.intel.com (HELO fedora..) ([10.249.254.26])
+  by fmsmga002-auth.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 06:53:51 -0700
+From:   =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>
+To:     intel-xe@lists.freedesktop.org, dri-devel@lists.freedesktop.org
+Cc:     =?UTF-8?q?Thomas=20Hellstr=C3=B6m?= 
+        <thomas.hellstrom@linux.intel.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Maxime Ripard <mripard@kernel.org>,
+        Thomas Zimmermann <tzimmermann@suse.de>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>, stable@vger.kernel.org
+Subject: [PATCH v3 1/2] drm/tests: helpers: Avoid a driver uaf
+Date:   Thu,  7 Sep 2023 15:53:38 +0200
+Message-ID: <20230907135339.7971-2-thomas.hellstrom@linux.intel.com>
+X-Mailer: git-send-email 2.41.0
+In-Reply-To: <20230907135339.7971-1-thomas.hellstrom@linux.intel.com>
+References: <20230907135339.7971-1-thomas.hellstrom@linux.intel.com>
 MIME-Version: 1.0
-References: <CAF1eZtsBzGb_UxOqZpNiEsk8Uk7DkqPh5AnYRRNc_kkr-tFasQ@mail.gmail.com>
- <ZPUciRLUcjDywMVS@debian.me> <20230906013209.jlcxluxemyg3va6l@synopsys.com> <ZPio6QD64cjJza29@xhacker>
-In-Reply-To: <ZPio6QD64cjJza29@xhacker>
-From:   Kenta Sato <tosainu.maple@gmail.com>
-Date:   Thu, 7 Sep 2023 21:34:35 +0900
-Message-ID: <CAF1eZttQbY23MHK7tKyaUORc6WAkMWaNqt3VyaBsDuhi0TOmRQ@mail.gmail.com>
-Subject: Re: usb: dwc3: some USB devices not working after 6.4.8
-To:     Jisheng Zhang <jszhang@kernel.org>
-Cc:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux USB <linux-usb@vger.kernel.org>,
-        Linux Stable <stable@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
+when using __drm_kunit_helper_alloc_drm_device() the driver may be
+dereferenced by device-managed resources up until the device is
+freed, which is typically later than the kunit-managed resource code
+frees it. Fix this by simply make the driver device-managed as well.
 
-On Thu, Sep 7, 2023 at 1:41=E2=80=AFAM Jisheng Zhang <jszhang@kernel.org> w=
-rote:
->
-> On Wed, Sep 06, 2023 at 01:32:22AM +0000, Thinh Nguyen wrote:
-> > On Mon, Sep 04, 2023, Bagas Sanjaya wrote:
-> > > On Sun, Sep 03, 2023 at 09:19:13PM +0900, Kenta Sato wrote:
-> > > > Hi,
-> > > >
-> > > > I am using the FriendlyElec NanoPi R4S board.
-> > > > When I update the kernel from 6.4.7 to 6.4.11, 6.4.13, and 6.5.1, i=
-t
-> > > > doesn't recognize some USB devices.
-> > > >
-> > > > The board has two USB 3.0 ports. I connected 1) BUFFALO USB Flash D=
-isk
-> > > > (high-speed) and 2) NETGEAR A6210 (SuperSpeed) to each port.
-> > > > 1) is often not recognized. On the other hand, 2) was working while=
- I
-> > > > was testing.
-> > > > Regardless of whether a USB device is connected, I could see the be=
-low
-> > > > message on dmesg:
->
-> Hi Kenta,
->
->
-> Besides the comments and patch from Thinh, may I know some details of
-> your HW and SW env? Such as
->
-> From HW support points of view, is the usb3.0 ports dual mode or host onl=
-y?
-The board should be designed for host-only as it has two USB 3.0 Type-A por=
-ts.
+In short, the sequence leading to the UAF is as follows:
 
->
-> From SW side, how do you configure the host controller? I.E set dual
-> mode or host only?
-According to the device tree file in the kernel source tree
-(arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi), it is configured
-as host only.
-&usbdrd_dwc3_1 {
-  dr_mode =3D "host";
-  status =3D "okay";
-};
+INIT:
+Code allocates a struct device as a kunit-managed resource.
+Code allocates a drm driver as a kunit-managed resource.
+Code allocates a drm device as a device-managed resource.
 
->
-> Lastly, did you have modifications or local patches to dwc3 driver?
-No, except for reverting the commit I mentioned in the first post.
+EXIT:
+Kunit resource cleanup frees the drm driver
+Kunit resource cleanup puts the struct device, which starts a
+      device-managed resource cleanup
+device-managed cleanup calls drm_dev_put()
+drm_dev_put() dereferences the (now freed) drm driver -> Boom.
 
-Right now I am using the tag 6.5.1 with a few small patches. You can
-find them and config in the link below.
-https://github.com/Tosainu/PKGBUILDs/tree/a460f4826e44d666661f3049413628f30=
-64a2751/core/linux-aarch64
+Related KASAN message:
+[55272.551542] ==================================================================
+[55272.551551] BUG: KASAN: slab-use-after-free in drm_dev_put.part.0+0xd4/0xe0 [drm]
+[55272.551603] Read of size 8 at addr ffff888127502828 by task kunit_try_catch/10353
 
->
-> Thanks in advance
->
-> > > >
-> > > > [    0.740993] phy phy-ff7c0000.phy.8: phy poweron failed --> -110
-> > > > [    0.741585] dwc3 fe800000.usb: error -ETIMEDOUT: failed to initi=
-alize core
-> > > > [    0.742334] dwc3: probe of fe800000.usb failed with error -110
-> > > > [    0.751635] rockchip-usb2phy ff770000.syscon:usb2phy@e460:
-> > > > Requested PHY is disabled
-> > > >
-> > > > Is there any idea on this?
-> > > >
-> > > > The cause seems to be related to this commit. I tried reverting thi=
-s
-> > > > change and the issue seemed to be solved.
-> > > >
-> > > > >From 317d6e4c12b46bde61248ea4ab5e19f68cbd1c57 Mon Sep 17 00:00:00 =
-2001
-> > > > From: Jisheng Zhang <jszhang@kernel.org>
-> > > > Date: Wed, 28 Jun 2023 00:20:18 +0800
-> > > > Subject: usb: dwc3: don't reset device side if dwc3 was configured =
-as
-> > > >  host-only
-> > > >
-> > > > commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7 upstream.
-> > > >
-> > > > Commit c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
-> > > > system_suspend in host mode") replaces check for HOST only dr_mode =
-with
-> > > > current_dr_role. But during booting, the current_dr_role isn't
-> > > > initialized, thus the device side reset is always issued even if dw=
-c3
-> > > > was configured as host-only. What's more, on some platforms with ho=
-st
-> > > > only dwc3, aways issuing device side reset by accessing device regi=
-ster
-> > > > block can cause kernel panic.
-> > > >
-> > > > Fixes: c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
-> > > > system_suspend in host mode")
-> > > > Cc: stable <stable@kernel.org>
-> > > > Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
-> > > > Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
-> > > > Link: https://lore.kernel.org/r/20230627162018.739-1-jszhang@kernel=
-.org
-> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> > > > ---
-> > > >  drivers/usb/dwc3/core.c | 4 ++--
-> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
-> > > >
-> > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/co=
-mmit/?h=3Dv6.4.8&id=3D317d6e4c12b46bde61248ea4ab5e19f68cbd1c57
-> > > >
-> > >
-> > > Thanks for the regression report. I'm adding it to regzbot:
-> > >
-> > > #regzbot ^introduced: e835c0a4e23c38
-> > > #regzbot title: some USB devices unrecognized caused by not resetting=
- dwc3 device if it is host-only
-> > >
-> >
-> > When there's phy reconfiguration, we need follow through a soft reset
-> > sequence. It may be done when we pass to xHCI driver through its
-> > initialization of USBCMD.HCRST. However, looks like we need to do a
-> > soft reset before setting more core parameters in dwc3.
-> >
-> > Can we try to just reset the phy instead to see if it helps? If not, we
-> > may have to teach dwc3 about xHCI's USBCMD.HCRST.
-> >
-> > diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
-> > index 9c6bf054f15d..66186ef34c6d 100644
-> > --- a/drivers/usb/dwc3/core.c
-> > +++ b/drivers/usb/dwc3/core.c
-> > @@ -1104,9 +1104,42 @@ static int dwc3_core_init(struct dwc3 *dwc)
-> >       if (ret)
-> >               goto err_exit_ulpi;
-> >
-> > -     ret =3D dwc3_core_soft_reset(dwc);
-> > -     if (ret)
-> > -             goto err_exit_phy;
-> > +     /*
-> > +      * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings whe=
-re n
-> > +      * is port index. If this is a multiport host, then we need to re=
-set
-> > +      * all active ports.
-> > +      */
-> > +     reg =3D dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
-> > +     reg |=3D DWC3_GUSB3PIPECTL_PHYSOFTRST;
-> > +     dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
-> > +
-> > +     /*
-> > +      * Must meet usb3 phy reset assertion timing,
-> > +      * should be much less than 20ms.
-> > +      */
-> > +     msleep(20);
-> > +
-> > +     reg &=3D ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
-> > +     dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
-> > +
-> > +     reg =3D dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
-> > +     reg |=3D DWC3_GUSB2PHYCFG_PHYSOFTRST;
-> > +     dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
-> > +
-> > +     /*
-> > +      * Must meet usb2 phy reset assertion timing,
-> > +      * should be much less than 20ms.
-> > +      */
-> > +     msleep(20);
-> > +
-> > +     reg &=3D ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
-> > +     dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
-> > +
-> > +     /*
-> > +      * Some platforms may need more time to synchronize the clocks,
-> > +      * 100ms should be enough for all.
-> > +      */
-> > +     msleep(100);
-> >
-> >       if (hw_mode =3D=3D DWC3_GHWPARAMS0_MODE_DRD &&
-> >           !DWC3_VER_IS_WITHIN(DWC3, ANY, 194A)) {
-> >
-> >
-> > --
-> >
-> > Thanks,
-> > Thinh
+[55272.551612] CPU: 4 PID: 10353 Comm: kunit_try_catch Tainted: G     U           N 6.5.0-rc7+ #155
+[55272.551620] Hardware name: ASUS System Product Name/PRIME B560M-A AC, BIOS 0403 01/26/2021
+[55272.551626] Call Trace:
+[55272.551629]  <TASK>
+[55272.551633]  dump_stack_lvl+0x57/0x90
+[55272.551639]  print_report+0xcf/0x630
+[55272.551645]  ? _raw_spin_lock_irqsave+0x5f/0x70
+[55272.551652]  ? drm_dev_put.part.0+0xd4/0xe0 [drm]
+[55272.551694]  kasan_report+0xd7/0x110
+[55272.551699]  ? drm_dev_put.part.0+0xd4/0xe0 [drm]
+[55272.551742]  drm_dev_put.part.0+0xd4/0xe0 [drm]
+[55272.551783]  devres_release_all+0x15d/0x1f0
+[55272.551790]  ? __pfx_devres_release_all+0x10/0x10
+[55272.551797]  device_unbind_cleanup+0x16/0x1a0
+[55272.551802]  device_release_driver_internal+0x3e5/0x540
+[55272.551808]  ? kobject_put+0x5d/0x4b0
+[55272.551814]  bus_remove_device+0x1f1/0x3f0
+[55272.551819]  device_del+0x342/0x910
+[55272.551826]  ? __pfx_device_del+0x10/0x10
+[55272.551830]  ? lock_release+0x339/0x5e0
+[55272.551836]  ? kunit_remove_resource+0x128/0x290 [kunit]
+[55272.551845]  ? __pfx_lock_release+0x10/0x10
+[55272.551851]  platform_device_del.part.0+0x1f/0x1e0
+[55272.551856]  ? _raw_spin_unlock_irqrestore+0x30/0x60
+[55272.551863]  kunit_remove_resource+0x195/0x290 [kunit]
+[55272.551871]  ? _raw_spin_unlock_irqrestore+0x30/0x60
+[55272.551877]  kunit_cleanup+0x78/0x120 [kunit]
+[55272.551885]  ? __kthread_parkme+0xc1/0x1f0
+[55272.551891]  ? __pfx_kunit_try_run_case_cleanup+0x10/0x10 [kunit]
+[55272.551900]  ? __pfx_kunit_generic_run_threadfn_adapter+0x10/0x10 [kunit]
+[55272.551909]  kunit_generic_run_threadfn_adapter+0x4a/0x90 [kunit]
+[55272.551919]  kthread+0x2e7/0x3c0
+[55272.551924]  ? __pfx_kthread+0x10/0x10
+[55272.551929]  ret_from_fork+0x2d/0x70
+[55272.551935]  ? __pfx_kthread+0x10/0x10
+[55272.551940]  ret_from_fork_asm+0x1b/0x30
+[55272.551948]  </TASK>
 
-Thank you,
-kenta
+[55272.551953] Allocated by task 10351:
+[55272.551956]  kasan_save_stack+0x1c/0x40
+[55272.551962]  kasan_set_track+0x21/0x30
+[55272.551966]  __kasan_kmalloc+0x8b/0x90
+[55272.551970]  __kmalloc+0x5e/0x160
+[55272.551976]  kunit_kmalloc_array+0x1c/0x50 [kunit]
+[55272.551984]  drm_exec_test_init+0xfa/0x2c0 [drm_exec_test]
+[55272.551991]  kunit_try_run_case+0xdd/0x250 [kunit]
+[55272.551999]  kunit_generic_run_threadfn_adapter+0x4a/0x90 [kunit]
+[55272.552008]  kthread+0x2e7/0x3c0
+[55272.552012]  ret_from_fork+0x2d/0x70
+[55272.552017]  ret_from_fork_asm+0x1b/0x30
+
+[55272.552024] Freed by task 10353:
+[55272.552027]  kasan_save_stack+0x1c/0x40
+[55272.552032]  kasan_set_track+0x21/0x30
+[55272.552036]  kasan_save_free_info+0x27/0x40
+[55272.552041]  __kasan_slab_free+0x106/0x180
+[55272.552046]  slab_free_freelist_hook+0xb3/0x160
+[55272.552051]  __kmem_cache_free+0xb2/0x290
+[55272.552056]  kunit_remove_resource+0x195/0x290 [kunit]
+[55272.552064]  kunit_cleanup+0x78/0x120 [kunit]
+[55272.552072]  kunit_generic_run_threadfn_adapter+0x4a/0x90 [kunit]
+[55272.552080]  kthread+0x2e7/0x3c0
+[55272.552085]  ret_from_fork+0x2d/0x70
+[55272.552089]  ret_from_fork_asm+0x1b/0x30
+
+[55272.552096] The buggy address belongs to the object at ffff888127502800
+                which belongs to the cache kmalloc-512 of size 512
+[55272.552105] The buggy address is located 40 bytes inside of
+                freed 512-byte region [ffff888127502800, ffff888127502a00)
+
+[55272.552115] The buggy address belongs to the physical page:
+[55272.552119] page:00000000af6c70ff refcount:1 mapcount:0 mapping:0000000000000000 index:0x0 pfn:0x127500
+[55272.552127] head:00000000af6c70ff order:3 entire_mapcount:0 nr_pages_mapped:0 pincount:0
+[55272.552133] anon flags: 0x17ffffc0010200(slab|head|node=0|zone=2|lastcpupid=0x1fffff)
+[55272.552141] page_type: 0xffffffff()
+[55272.552145] raw: 0017ffffc0010200 ffff888100042c80 0000000000000000 dead000000000001
+[55272.552152] raw: 0000000000000000 0000000080200020 00000001ffffffff 0000000000000000
+[55272.552157] page dumped because: kasan: bad access detected
+
+[55272.552163] Memory state around the buggy address:
+[55272.552167]  ffff888127502700: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[55272.552173]  ffff888127502780: fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc fc
+[55272.552178] >ffff888127502800: fa fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[55272.552184]                                   ^
+[55272.552187]  ffff888127502880: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[55272.552193]  ffff888127502900: fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb fb
+[55272.552198] ==================================================================
+[55272.552203] Disabling lock debugging due to kernel taint
+
+v2:
+- Update commit message, add Fixes: tag and Cc stable.
+v3:
+- Further commit message updates (Maxime Ripard).
+
+Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
+Cc: Maxime Ripard <mripard@kernel.org>
+Cc: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: David Airlie <airlied@gmail.com>
+Cc: Daniel Vetter <daniel@ffwll.ch>
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v6.3+
+Fixes: d98780310719 ("drm/tests: helpers: Allow to pass a custom drm_driver")
+Signed-off-by: Thomas Hellström <thomas.hellstrom@linux.intel.com>
+---
+ include/drm/drm_kunit_helpers.h | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/include/drm/drm_kunit_helpers.h b/include/drm/drm_kunit_helpers.h
+index 514c8a7a32f0..ba483c87f0e7 100644
+--- a/include/drm/drm_kunit_helpers.h
++++ b/include/drm/drm_kunit_helpers.h
+@@ -3,6 +3,8 @@
+ #ifndef DRM_KUNIT_HELPERS_H_
+ #define DRM_KUNIT_HELPERS_H_
+ 
++#include <linux/device.h>
++
+ #include <kunit/test.h>
+ 
+ struct drm_device;
+@@ -51,7 +53,7 @@ __drm_kunit_helper_alloc_drm_device(struct kunit *test,
+ {
+ 	struct drm_driver *driver;
+ 
+-	driver = kunit_kzalloc(test, sizeof(*driver), GFP_KERNEL);
++	driver = devm_kzalloc(dev, sizeof(*driver), GFP_KERNEL);
+ 	KUNIT_ASSERT_NOT_NULL(test, driver);
+ 
+ 	driver->driver_features = features;
+-- 
+2.41.0
+
