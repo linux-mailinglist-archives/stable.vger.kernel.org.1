@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D99D17973AD
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 996097973AF
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241319AbjIGP25 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 11:28:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50138 "EHLO
+        id S241800AbjIGP3A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 11:29:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50184 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232230AbjIGPXI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:23:08 -0400
+        with ESMTP id S231927AbjIGPXH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:23:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 148D51700
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 08:22:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BEEE8C4AF7F;
-        Thu,  7 Sep 2023 15:04:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D6CA510FB
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 08:22:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B05A1C4E665;
+        Thu,  7 Sep 2023 15:05:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694099098;
-        bh=aAuGxIK3BTW5QoGBerxCfRipag8JeQlzOSZswrEG1YU=;
+        s=korg; t=1694099103;
+        bh=sMoROgJAnqrW4FCOc1InO8+mRqxsMwlKgS5kwsl0J1Y=;
         h=Subject:To:Cc:From:Date:From;
-        b=y7gH/6FKjpPjUj21FHWAFgBwLRfUmcE/+D2bxLjkmakkFq46XSxG/ZTcKd+ynyiaS
-         cHC2svQsPVzi2RjbnnkSKKSf9KbfxUoP7hHZE7UAjApe44WbgZ9Vn4qMIUo9OYFd22
-         6pf2zLXwpQ3f/GFLszpypOXm+qgAa8wJXqzb3WEA=
-Subject: FAILED: patch "[PATCH] memfd: replace ratcheting feature from vm.memfd_noexec with" failed to apply to 6.5-stable tree
+        b=Ls1yvqviA9dNTRsm3Uf6X7/0ZRQyEu/zaee/eTBOMB5gwZAKu/8ehENAiJuTGVEBq
+         PpckzS/sarLpbjTiVvwfkcdI2Obk5znN1nctu7FeB53YknFi2tNuAQCmG6J47s0u+R
+         ZagQ+WE7EcG9BcV6CxYFzu8GOqDFXrMTIAF8MdkQ=
+Subject: FAILED: patch "[PATCH] memfd: replace ratcheting feature from vm.memfd_noexec with" failed to apply to 6.4-stable tree
 To:     cyphar@cyphar.com, akpm@linux-foundation.org,
         asmadeus@codewreck.org, brauner@kernel.org, dverkamp@chromium.org,
         jeffxu@google.com, keescook@chromium.org, shuah@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 07 Sep 2023 16:04:54 +0100
-Message-ID: <2023090753-unashamed-carnival-1476@gregkh>
+Date:   Thu, 07 Sep 2023 16:05:00 +0100
+Message-ID: <2023090700-zippy-raven-214b@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -46,19 +46,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 9876cfe8ec1cb3c88de31f4d58d57b0e7e22bcc4
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090753-unashamed-carnival-1476@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090700-zippy-raven-214b@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
@@ -66,6 +66,7 @@ Possible dependencies:
 202e14222fad ("memfd: do not -EACCES old memfd_create() users with vm.memfd_noexec=2")
 badbbcd76545 ("selftests/memfd: sysctl: fix MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED")
 72de25913022 ("mm/memfd: sysctl: fix MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED")
+3efd33b75358 ("kernel: pid_namespace: remove unused set_memfd_noexec_scope()")
 
 thanks,
 
