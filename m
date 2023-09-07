@@ -2,79 +2,62 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F2E5797809
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:40:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF88F797765
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:25:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239290AbjIGQkU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:40:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44160 "EHLO
+        id S238492AbjIGQZK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:25:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239149AbjIGQjz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:39:55 -0400
-Received: from mail-oa1-x2e.google.com (mail-oa1-x2e.google.com [IPv6:2001:4860:4864:20::2e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0D23D4482
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:37:00 -0700 (PDT)
-Received: by mail-oa1-x2e.google.com with SMTP id 586e51a60fabf-1d4daca8edcso900646fac.2
-        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 09:37:00 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1694104554; x=1694709354; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=l1CUVSUE/g7AfxRwMSaLzU3EKx7ahKOV7VYgsEDqqhY=;
-        b=gqNpP3lsI0yCjtTcK3elMkoPFiEJm36cQ7ZU6MeMISts5Tazo1B6vn4QS7YNae+S1D
-         aTgojZrtOZxdsEhQOP2W3UWvuU24AUGjAvsynGmiYJq0tFAHrinVvDYA0cmeZC1GD8zT
-         aGCykNe5mjWQTv83WWMonQB3ZDl4dTi4lT3oolK3Q1k2nQcipHtuLjeYLmL9ZNAi4LAS
-         R4YkLZfWb+tmbjrIOEscdGt9DI5LZHGbi1hVWntFh/qprqJ4MrjoUojWulYxte8WEvr7
-         ztSjbtsA/HSq6aJfLuCGWbGBZmWlVDhftO4CnceV2TICyShh4MAlb7sWz8MrOtRliQlR
-         mI9w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694104554; x=1694709354;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=l1CUVSUE/g7AfxRwMSaLzU3EKx7ahKOV7VYgsEDqqhY=;
-        b=GbIWF5EaBVORcJG/m/tz0FBa3goa0eyIruSYddWLCMsGfb5bRpxlQKl/qF3gG1jmOb
-         lptJ72RqUTxwjwoZ5WyTSitzPdKhLUtWKCm+iCXLtBiai2nzo+kZsYO9C9c0DeqlJlMt
-         uKaf7d0Z1ODcYcASF0N3QGAPQNox1yJ0mOyvwMZU+gfAQ0fB0Bb9Yifi895vQ0bfBWuW
-         yR3+HAlw0x09RNapr6OICNvp16X8wmeTAHyWmgkVEpFC2kL2hyak15I2klhPeUIseyoc
-         Y+vuMesK27gVDWHOn5XYyA9gmPM03miCJjwa7E9116rlAub1OtcxcNbrWzeHeGQOtgFo
-         K2tQ==
-X-Gm-Message-State: AOJu0YyEBR5btHZimTbm97d0PD5XRRedqtCsX3Bn9HG0YfQ2yEYTNFUe
-        ZCqbgFgJjLV7KFzl/i7pHajs2IlliHuylehm9sc=
-X-Google-Smtp-Source: AGHT+IEhSwixRwMFJ/PEPA+HuSWv/jCCwwmhpvjeHTvgxdJeu9Oz8P1U41uftIqVJn6ThXvamkVttA==
-X-Received: by 2002:a05:6a21:7889:b0:153:a00b:dca0 with SMTP id bf9-20020a056a21788900b00153a00bdca0mr4104800pzc.11.1694077170404;
-        Thu, 07 Sep 2023 01:59:30 -0700 (PDT)
-Received: from [10.84.158.67] ([203.208.167.147])
-        by smtp.gmail.com with ESMTPSA id t23-20020a1709028c9700b001bdb85291casm12313579plo.208.2023.09.07.01.59.26
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Sep 2023 01:59:29 -0700 (PDT)
-Message-ID: <3544d5e3-3070-9ddc-fa6c-a05ed35dfd14@bytedance.com>
-Date:   Thu, 7 Sep 2023 16:59:22 +0800
+        with ESMTP id S236211AbjIGQX5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:23:57 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEEEE1FDD;
+        Thu,  7 Sep 2023 09:21:00 -0700 (PDT)
+Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
+        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits))
+        (No client certificate requested)
+        (Authenticated sender: kholk11)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id 6248466072F2;
+        Thu,  7 Sep 2023 10:12:31 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1694077952;
+        bh=txj28e2rFnpZ/La9QTIPO2i7dPQpL4MVK8cI2Wz9RV4=;
+        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
+        b=Z6KERubW6Sf7yxuxP8OS2Q8ygMnvH6e/8FLKTuDdX0hX3BxowDU7BeD+FbyysPmCX
+         mducm2u2B8Z5rJqGyXnoZejgKQK9tobFqO1C87HCrDoy87sGlJa0CItY6q+WbkMSLF
+         0QDN8Y8VHKMmX6fvXmfqVwCfKkqsZmgqB25pBGMp72frDopeR3+JHUWz4Pn7c4ToVC
+         bDJWPXk5mEo2chli0T3KFXj31UpsUwLknnBSy3DGtuFqHfHsfniHDSkJahxGUuCZH7
+         Aezx/lcYvT1OOV4BgIRHWto0fhNlHVN3hi7qXJDK6X3JgT/itoXzbj9wLAhNH5OeC0
+         Gw43YRFrU7unQ==
+Message-ID: <adc88393-da14-90ff-82c2-b00a9771856c@collabora.com>
+Date:   Thu, 7 Sep 2023 11:12:28 +0200
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [External] Re: Fwd: WARNING: CPU: 13 PID: 3837105 at
- kernel/sched/sched.h:1561 __cfsb_csd_unthrottle+0x149/0x160
-To:     Peter Zijlstra <peterz@infradead.org>
-Cc:     Benjamin Segall <bsegall@google.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Igor Raits <igor.raits@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>
-References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
- <xm26cyz4ibnb.fsf@google.com>
- <55e2861e-9722-08f8-2c49-966035ff4218@bytedance.com>
- <20230904222351.GC2568@noisy.programming.kicks-ass.net>
-From:   Hao Jia <jiahao.os@bytedance.com>
-In-Reply-To: <20230904222351.GC2568@noisy.programming.kicks-ass.net>
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [RFC] thermal/drivers/mediatek: fix temperature on mt7986
+Content-Language: en-US
+To:     Frank Wunderlich <linux@fw-web.de>,
+        linux-mediatek@lists.infradead.org
+Cc:     Frank Wunderlich <frank-w@public-files.de>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Amit Kucheria <amitk@kernel.org>,
+        Zhang Rui <rui.zhang@intel.com>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
+        Daniel Golle <daniel@makrotopia.org>, linux-pm@vger.kernel.org,
+        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        stable@vger.kernel.org
+References: <20230901063730.7577-1-linux@fw-web.de>
+From:   AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>
+In-Reply-To: <20230901063730.7577-1-linux@fw-web.de>
 Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 7bit
 X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
         DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=unavailable
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -82,33 +65,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-
-
-On 2023/9/5 Peter Zijlstra wrote:
-> On Thu, Aug 31, 2023 at 04:48:29PM +0800, Hao Jia wrote:
+Il 01/09/23 08:37, Frank Wunderlich ha scritto:
+> From: Frank Wunderlich <frank-w@public-files.de>
 > 
->> If I understand correctly, rq->clock_update_flags may be set to
->> RQCF_ACT_SKIP after __schedule() holds the rq lock, and sometimes the rq
->> lock may be released briefly in __schedule(), such as newidle_balance(). At
->> this time Other CPUs hold this rq lock, and then calling
->> rq_clock_start_loop_update() may trigger this warning.
->>
->> This warning check might be wrong. We need to add assert_clock_updated() to
->> check that the rq clock has been updated before calling
->> rq_clock_start_loop_update().
->>
->> Maybe some things can be like this?
+> Reading thermal sensor on mt7986 devices returns invalid temperature:
 > 
-> Urgh, aside from it being white space mangled, I think this is entirely
-> going in the wrong direction.
+> bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
+>   -274000
 > 
-> Leaking ACT_SKIP is dodgy as heck.. it's entirely too late to think
-> clearly though, I'll have to try again tomorrow.
+> Fix this by adding missing members in mtk_thermal_data struct which were
+> used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
+> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
 
-Hi Peter,
+If you resend this commit without the RFC tag I can give you a R-b.
 
-Do you think this fix method is correct? Or should we go back to the 
-beginning and move update_rq_clock() from unthrottle_cfs_rq()?
+This is totally correct, as the buffer control is for version >= THERMAL_V2, and
+the others being V1 don't need it - the only one that was left out is effectively
+just mt7986 (probably because the commits landed around the same time).
 
-Thanks,
-Hao
+Though, since you have to anyway resend this, I would suggest to change the commit
+title to something more effective, like
+
+thermal/drivers/mediatek: Fix control buffer enablement on MT7896
+
+Cheers,
+Angelo
+
+> ---
+>   drivers/thermal/mediatek/auxadc_thermal.c | 3 +++
+>   1 file changed, 3 insertions(+)
+> 
+> diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
+> index f59d36de20a0..ed08767eaa60 100644
+> --- a/drivers/thermal/mediatek/auxadc_thermal.c
+> +++ b/drivers/thermal/mediatek/auxadc_thermal.c
+> @@ -691,6 +691,9 @@ static const struct mtk_thermal_data mt7986_thermal_data = {
+>   	.adcpnp = mt7986_adcpnp,
+>   	.sensor_mux_values = mt7986_mux_values,
+>   	.version = MTK_THERMAL_V3,
+> +	.apmixed_buffer_ctl_reg = APMIXED_SYS_TS_CON1,
+> +	.apmixed_buffer_ctl_mask = GENMASK(31, 6) | BIT(3),
+> +	.apmixed_buffer_ctl_set = BIT(0),
+>   };
+>   
+>   static bool mtk_thermal_temp_is_valid(int temp)
+
+
