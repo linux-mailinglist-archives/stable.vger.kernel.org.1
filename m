@@ -2,153 +2,262 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DFCA9797B13
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 20:01:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFA6B797837
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:43:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245674AbjIGSBv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 14:01:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41500 "EHLO
+        id S242706AbjIGQnf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:43:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244058AbjIGSBv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 14:01:51 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [134.134.136.100])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9562B2
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 11:01:31 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694109691; x=1725645691;
-  h=from:to:cc:subject:date:message-id:mime-version:
-   content-transfer-encoding;
-  bh=QWmd6zN6mmJiS8VHQ5wb2+PjcdfEbLLEVShSKta4ZhU=;
-  b=Y4yxZDS51pTYxr4EBP4U/XIbd9fuCmcQjbDk0TbwikhX74F8FMdBNN6Z
-   T4ZpchXIAswlwb7jloE+sZ1gFpw9xMmtDTtiAiHEGTneJAx5LVrxy6N4B
-   hiyBCs5BjIeIDQ8arPGH/gjMxqyVxjc5V2+febY61SalobNIWji2+fz/L
-   XjBc/cllnqxQ1uM63bUdUzpM9rh0T4QUgv+xcIfz1Kpj8l2Q8RxDRC5IQ
-   9ZTS0JPmlGpBZ3IV8EniXrEcBrkgNECNzt4yGS2IG57ca2gHRb0JrKeGc
-   c9wz2QAUGz160BCOLIzpd//LMZr+7KwiUO6hZIoH7qc2MGygeKJaSmJSV
-   A==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="443721335"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="443721335"
-Received: from orsmga001.jf.intel.com ([10.7.209.18])
-  by orsmga105.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 07 Sep 2023 05:17:39 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="777050314"
-X-IronPort-AV: E=Sophos;i="6.02,235,1688454000"; 
-   d="scan'208";a="777050314"
-Received: from stinkpipe.fi.intel.com (HELO stinkbox) ([10.237.72.153])
-  by orsmga001.jf.intel.com with SMTP; 07 Sep 2023 05:17:37 -0700
-Received: by stinkbox (sSMTP sendmail emulation); Thu, 07 Sep 2023 15:17:36 +0300
-From:   Ville Syrjala <ville.syrjala@linux.intel.com>
-To:     intel-gfx@lists.freedesktop.org
-Cc:     stable@vger.kernel.org
-Subject: [PATCH] drm/i915: Only check eDP HPD when AUX CH is shared
-Date:   Thu,  7 Sep 2023 15:17:36 +0300
-Message-ID: <20230907121736.23734-1-ville.syrjala@linux.intel.com>
-X-Mailer: git-send-email 2.41.0
+        with ESMTP id S244537AbjIGQnN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:43:13 -0400
+Received: from mail-vs1-xe34.google.com (mail-vs1-xe34.google.com [IPv6:2607:f8b0:4864:20::e34])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05715270E;
+        Thu,  7 Sep 2023 09:42:30 -0700 (PDT)
+Received: by mail-vs1-xe34.google.com with SMTP id ada2fe7eead31-44ee1123667so1374132137.0;
+        Thu, 07 Sep 2023 09:42:29 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694104886; x=1694709686; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=cI3qPKykEdBORFQX/2gwFAk427YJVxD6Vt6XnXeCVFE=;
+        b=CPlho9F7cPnarIVnLCgNqYLStL2W+QQ/Zm9dd/iKFeT+rihn5rmLPkiC5m6UVzPcEq
+         ycXeiz4u1r2GAXb+bXgSuFtOhA+34CCumFTR7HYLAvEvMbWkHInuYmR2oGfSEh1QUjsK
+         JQuN7ux4IOGqptQKLU0RKnQ75b3hn0/XItOX3csSD7GPthP9kB1jQpSmWWbbbop0Hmc9
+         x6KO3ZrHEwr1asvDisiyKWF1kw/EC4MYNzLQoQvQ5FyCkCFoGGW2Q8EXmw+GJZ4e8bwW
+         L0O6C3BGUG3DJsDkL0FQTdSIkoHS+aofQBKIWOAMasjOH1IPMAUCsikpx9FnvIH4PCNT
+         Qj2g==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694104886; x=1694709686;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=cI3qPKykEdBORFQX/2gwFAk427YJVxD6Vt6XnXeCVFE=;
+        b=lT8vM7gYzk1dox8yU/DUQ40cxltmvvmFhq46ApPQw+XHth5ah5Xpsg8ajI0WiCgzOK
+         gAix49g6y2XJkfT8kihoxQ5iHgwOwADnCxc+E7fH0nnywMnBwdd3jv/xsra5QokNDFav
+         s/CPNBDx8pau+5ing9pH7+FV0u6Oh4dKrmT/NT/VKI3Ary31qc3y0VzRMA8+yRp4TO8i
+         cJsWt8cmgJs4HzqnhWz9wFjlfkSKvDwuOvmgNqGQb8JwIK+eqMQE6kk7+XmQXu1hyynG
+         4w0sn856TTL6PqP9xUdQw9CJ18/zAE364bFYuHpNTVR/poAuMk3hSRFl2dUz/8PzibmK
+         xC3Q==
+X-Gm-Message-State: AOJu0YxU/auIMTELaCgPLgFK0e/8xoPEfKtp/YrIyGWonmCE1hZcKaka
+        +TfWwyABrS9uVdod5scMqaCfyuo93eRLwH+q1e2dWH5sXYE=
+X-Google-Smtp-Source: AGHT+IF2f4clu8FhKmXoRyt84gz3p/VGGZk0W2EEiHKFFPj3WYNiCuC7y3dygDgVnoHXLhkSMaZJGcIsjO8h6WPehI4=
+X-Received: by 2002:a25:b29d:0:b0:d78:2258:f5b8 with SMTP id
+ k29-20020a25b29d000000b00d782258f5b8mr3003998ybj.19.1694090091695; Thu, 07
+ Sep 2023 05:34:51 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+References: <CAF1eZtsBzGb_UxOqZpNiEsk8Uk7DkqPh5AnYRRNc_kkr-tFasQ@mail.gmail.com>
+ <ZPUciRLUcjDywMVS@debian.me> <20230906013209.jlcxluxemyg3va6l@synopsys.com> <ZPio6QD64cjJza29@xhacker>
+In-Reply-To: <ZPio6QD64cjJza29@xhacker>
+From:   Kenta Sato <tosainu.maple@gmail.com>
+Date:   Thu, 7 Sep 2023 21:34:35 +0900
+Message-ID: <CAF1eZttQbY23MHK7tKyaUORc6WAkMWaNqt3VyaBsDuhi0TOmRQ@mail.gmail.com>
+Subject: Re: usb: dwc3: some USB devices not working after 6.4.8
+To:     Jisheng Zhang <jszhang@kernel.org>
+Cc:     Thinh Nguyen <Thinh.Nguyen@synopsys.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux USB <linux-usb@vger.kernel.org>,
+        Linux Stable <stable@vger.kernel.org>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-0.5 required=5.0 tests=BAYES_00,DATE_IN_PAST_03_06,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Ville Syrjälä <ville.syrjala@linux.intel.com>
+Hi,
 
-Apparently Acer Chromebook C740 (BDW-ULT) doesn't have the
-eDP HPD line properly connected, and thus fails the new
-HPD check during eDP probe. The result is that we lose the
-eDP output.
+On Thu, Sep 7, 2023 at 1:41=E2=80=AFAM Jisheng Zhang <jszhang@kernel.org> w=
+rote:
+>
+> On Wed, Sep 06, 2023 at 01:32:22AM +0000, Thinh Nguyen wrote:
+> > On Mon, Sep 04, 2023, Bagas Sanjaya wrote:
+> > > On Sun, Sep 03, 2023 at 09:19:13PM +0900, Kenta Sato wrote:
+> > > > Hi,
+> > > >
+> > > > I am using the FriendlyElec NanoPi R4S board.
+> > > > When I update the kernel from 6.4.7 to 6.4.11, 6.4.13, and 6.5.1, i=
+t
+> > > > doesn't recognize some USB devices.
+> > > >
+> > > > The board has two USB 3.0 ports. I connected 1) BUFFALO USB Flash D=
+isk
+> > > > (high-speed) and 2) NETGEAR A6210 (SuperSpeed) to each port.
+> > > > 1) is often not recognized. On the other hand, 2) was working while=
+ I
+> > > > was testing.
+> > > > Regardless of whether a USB device is connected, I could see the be=
+low
+> > > > message on dmesg:
+>
+> Hi Kenta,
+>
+>
+> Besides the comments and patch from Thinh, may I know some details of
+> your HW and SW env? Such as
+>
+> From HW support points of view, is the usb3.0 ports dual mode or host onl=
+y?
+The board should be designed for host-only as it has two USB 3.0 Type-A por=
+ts.
 
-I suspect all such machines would all be Chromebooks or other
-Linux exclusive systems as the Windows driver likely wouldn't
-work either. I did check a few other BDW machines here and
-those do have eDP HPD connected, one of them even is a
-different Chromebook (Samus).
+>
+> From SW side, how do you configure the host controller? I.E set dual
+> mode or host only?
+According to the device tree file in the kernel source tree
+(arch/arm64/boot/dts/rockchip/rk3399-nanopi4.dtsi), it is configured
+as host only.
+&usbdrd_dwc3_1 {
+  dr_mode =3D "host";
+  status =3D "okay";
+};
 
-To account for these funky machines let's skip the HPD check when
-it looks like the eDP port is the only one using that specific AUX
-channel. In case of multiple ports sharing the same AUX CH (eg. on
-Asrock B250M-HDV) we still do the check and thus should correctly
-ignore the eDP port in favor of the other DP port (usually a DP->VGA
-converter).
+>
+> Lastly, did you have modifications or local patches to dwc3 driver?
+No, except for reverting the commit I mentioned in the first post.
 
-Cc: stable@vger.kernel.org
-Closes: https://gitlab.freedesktop.org/drm/intel/-/issues/9264
-Fixes: cfe5bdfb27fa ("drm/i915: Check HPD live state during eDP probe")
-Signed-off-by: Ville Syrjälä <ville.syrjala@linux.intel.com>
----
- drivers/gpu/drm/i915/display/intel_bios.c | 19 +++++++++++++++++++
- drivers/gpu/drm/i915/display/intel_bios.h |  1 +
- drivers/gpu/drm/i915/display/intel_dp.c   |  7 ++++++-
- 3 files changed, 26 insertions(+), 1 deletion(-)
+Right now I am using the tag 6.5.1 with a few small patches. You can
+find them and config in the link below.
+https://github.com/Tosainu/PKGBUILDs/tree/a460f4826e44d666661f3049413628f30=
+64a2751/core/linux-aarch64
 
-diff --git a/drivers/gpu/drm/i915/display/intel_bios.c b/drivers/gpu/drm/i915/display/intel_bios.c
-index 858c959f7bab..aabecd2beb14 100644
---- a/drivers/gpu/drm/i915/display/intel_bios.c
-+++ b/drivers/gpu/drm/i915/display/intel_bios.c
-@@ -3540,6 +3540,25 @@ enum aux_ch intel_bios_dp_aux_ch(const struct intel_bios_encoder_data *devdata)
- 	return map_aux_ch(devdata->i915, devdata->child.aux_channel);
- }
- 
-+bool intel_bios_dp_has_shared_aux_ch(const struct intel_bios_encoder_data *devdata)
-+{
-+	u8 aux_channel;
-+	int count = 0;
-+
-+	if (!devdata || !devdata->child.aux_channel)
-+		return false;
-+
-+	aux_channel = devdata->child.aux_channel;
-+
-+	list_for_each_entry(devdata, &devdata->i915->display.vbt.display_devices, node) {
-+		if (intel_bios_encoder_supports_dp(devdata) &&
-+		    aux_channel == devdata->child.aux_channel)
-+			count++;
-+	}
-+
-+	return count > 1;
-+}
-+
- int intel_bios_dp_boost_level(const struct intel_bios_encoder_data *devdata)
- {
- 	if (!devdata || devdata->i915->display.vbt.version < 196 || !devdata->child.iboost)
-diff --git a/drivers/gpu/drm/i915/display/intel_bios.h b/drivers/gpu/drm/i915/display/intel_bios.h
-index 9680e3e92bb5..49e24b7cf675 100644
---- a/drivers/gpu/drm/i915/display/intel_bios.h
-+++ b/drivers/gpu/drm/i915/display/intel_bios.h
-@@ -273,6 +273,7 @@ enum aux_ch intel_bios_dp_aux_ch(const struct intel_bios_encoder_data *devdata);
- int intel_bios_dp_boost_level(const struct intel_bios_encoder_data *devdata);
- int intel_bios_dp_max_lane_count(const struct intel_bios_encoder_data *devdata);
- int intel_bios_dp_max_link_rate(const struct intel_bios_encoder_data *devdata);
-+bool intel_bios_dp_has_shared_aux_ch(const struct intel_bios_encoder_data *devdata);
- int intel_bios_hdmi_boost_level(const struct intel_bios_encoder_data *devdata);
- int intel_bios_hdmi_ddc_pin(const struct intel_bios_encoder_data *devdata);
- int intel_bios_hdmi_level_shift(const struct intel_bios_encoder_data *devdata);
-diff --git a/drivers/gpu/drm/i915/display/intel_dp.c b/drivers/gpu/drm/i915/display/intel_dp.c
-index 2206b45bc78c..aa5f602b56fb 100644
---- a/drivers/gpu/drm/i915/display/intel_dp.c
-+++ b/drivers/gpu/drm/i915/display/intel_dp.c
-@@ -5889,8 +5889,13 @@ static bool intel_edp_init_connector(struct intel_dp *intel_dp,
- 	/*
- 	 * VBT and straps are liars. Also check HPD as that seems
- 	 * to be the most reliable piece of information available.
-+	 *
-+	 * ... expect on devices that forgot to hook HPD up for eDP
-+	 * (eg. Acer Chromebook C710), so we'll check it only if multiple
-+	 * ports are attempting to use the same AUX CH, according to VBT.
- 	 */
--	if (!intel_digital_port_connected(encoder)) {
-+	if (intel_bios_dp_has_shared_aux_ch(encoder->devdata) &&
-+	    !intel_digital_port_connected(encoder)) {
- 		/*
- 		 * If this fails, presume the DPCD answer came
- 		 * from some other port using the same AUX CH.
--- 
-2.41.0
+>
+> Thanks in advance
+>
+> > > >
+> > > > [    0.740993] phy phy-ff7c0000.phy.8: phy poweron failed --> -110
+> > > > [    0.741585] dwc3 fe800000.usb: error -ETIMEDOUT: failed to initi=
+alize core
+> > > > [    0.742334] dwc3: probe of fe800000.usb failed with error -110
+> > > > [    0.751635] rockchip-usb2phy ff770000.syscon:usb2phy@e460:
+> > > > Requested PHY is disabled
+> > > >
+> > > > Is there any idea on this?
+> > > >
+> > > > The cause seems to be related to this commit. I tried reverting thi=
+s
+> > > > change and the issue seemed to be solved.
+> > > >
+> > > > >From 317d6e4c12b46bde61248ea4ab5e19f68cbd1c57 Mon Sep 17 00:00:00 =
+2001
+> > > > From: Jisheng Zhang <jszhang@kernel.org>
+> > > > Date: Wed, 28 Jun 2023 00:20:18 +0800
+> > > > Subject: usb: dwc3: don't reset device side if dwc3 was configured =
+as
+> > > >  host-only
+> > > >
+> > > > commit e835c0a4e23c38531dcee5ef77e8d1cf462658c7 upstream.
+> > > >
+> > > > Commit c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
+> > > > system_suspend in host mode") replaces check for HOST only dr_mode =
+with
+> > > > current_dr_role. But during booting, the current_dr_role isn't
+> > > > initialized, thus the device side reset is always issued even if dw=
+c3
+> > > > was configured as host-only. What's more, on some platforms with ho=
+st
+> > > > only dwc3, aways issuing device side reset by accessing device regi=
+ster
+> > > > block can cause kernel panic.
+> > > >
+> > > > Fixes: c4a5153e87fd ("usb: dwc3: core: Power-off core/PHYs on
+> > > > system_suspend in host mode")
+> > > > Cc: stable <stable@kernel.org>
+> > > > Signed-off-by: Jisheng Zhang <jszhang@kernel.org>
+> > > > Acked-by: Thinh Nguyen <Thinh.Nguyen@synopsys.com>
+> > > > Link: https://lore.kernel.org/r/20230627162018.739-1-jszhang@kernel=
+.org
+> > > > Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> > > > ---
+> > > >  drivers/usb/dwc3/core.c | 4 ++--
+> > > >  1 file changed, 2 insertions(+), 2 deletions(-)
+> > > >
+> > > > https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/co=
+mmit/?h=3Dv6.4.8&id=3D317d6e4c12b46bde61248ea4ab5e19f68cbd1c57
+> > > >
+> > >
+> > > Thanks for the regression report. I'm adding it to regzbot:
+> > >
+> > > #regzbot ^introduced: e835c0a4e23c38
+> > > #regzbot title: some USB devices unrecognized caused by not resetting=
+ dwc3 device if it is host-only
+> > >
+> >
+> > When there's phy reconfiguration, we need follow through a soft reset
+> > sequence. It may be done when we pass to xHCI driver through its
+> > initialization of USBCMD.HCRST. However, looks like we need to do a
+> > soft reset before setting more core parameters in dwc3.
+> >
+> > Can we try to just reset the phy instead to see if it helps? If not, we
+> > may have to teach dwc3 about xHCI's USBCMD.HCRST.
+> >
+> > diff --git a/drivers/usb/dwc3/core.c b/drivers/usb/dwc3/core.c
+> > index 9c6bf054f15d..66186ef34c6d 100644
+> > --- a/drivers/usb/dwc3/core.c
+> > +++ b/drivers/usb/dwc3/core.c
+> > @@ -1104,9 +1104,42 @@ static int dwc3_core_init(struct dwc3 *dwc)
+> >       if (ret)
+> >               goto err_exit_ulpi;
+> >
+> > -     ret =3D dwc3_core_soft_reset(dwc);
+> > -     if (ret)
+> > -             goto err_exit_phy;
+> > +     /*
+> > +      * Note: GUSB3PIPECTL[n] and GUSB2PHYCFG[n] are port settings whe=
+re n
+> > +      * is port index. If this is a multiport host, then we need to re=
+set
+> > +      * all active ports.
+> > +      */
+> > +     reg =3D dwc3_readl(dwc->regs, DWC3_GUSB3PIPECTL(0));
+> > +     reg |=3D DWC3_GUSB3PIPECTL_PHYSOFTRST;
+> > +     dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
+> > +
+> > +     /*
+> > +      * Must meet usb3 phy reset assertion timing,
+> > +      * should be much less than 20ms.
+> > +      */
+> > +     msleep(20);
+> > +
+> > +     reg &=3D ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
+> > +     dwc3_writel(dwc->regs, DWC3_GUSB3PIPECTL(0), reg);
+> > +
+> > +     reg =3D dwc3_readl(dwc->regs, DWC3_GUSB2PHYCFG(0));
+> > +     reg |=3D DWC3_GUSB2PHYCFG_PHYSOFTRST;
+> > +     dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
+> > +
+> > +     /*
+> > +      * Must meet usb2 phy reset assertion timing,
+> > +      * should be much less than 20ms.
+> > +      */
+> > +     msleep(20);
+> > +
+> > +     reg &=3D ~DWC3_GUSB3PIPECTL_PHYSOFTRST;
+> > +     dwc3_writel(dwc->regs, DWC3_GUSB2PHYCFG(0), reg);
+> > +
+> > +     /*
+> > +      * Some platforms may need more time to synchronize the clocks,
+> > +      * 100ms should be enough for all.
+> > +      */
+> > +     msleep(100);
+> >
+> >       if (hw_mode =3D=3D DWC3_GHWPARAMS0_MODE_DRD &&
+> >           !DWC3_VER_IS_WITHIN(DWC3, ANY, 194A)) {
+> >
+> >
+> > --
+> >
+> > Thanks,
+> > Thinh
 
+Thank you,
+kenta
