@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9DA527973AB
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE81C7973A6
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234250AbjIGP24 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 11:28:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48704 "EHLO
+        id S235529AbjIGP2y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 11:28:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49766 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S234291AbjIGPWo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:22:44 -0400
+        with ESMTP id S235297AbjIGPW6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:22:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6C3C6CE7
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 08:22:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DFAFBC4E663;
-        Thu,  7 Sep 2023 15:04:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A363172E
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 08:22:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD7FCC4DE17;
+        Thu,  7 Sep 2023 15:04:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694099091;
-        bh=OY6IrLmPm7EBqRGec4ibe7NSGClkgHvk/9+vp5oKxSo=;
+        s=korg; t=1694099094;
+        bh=sXaG813F0m1dgQHl1cDGt+KmXjJhKGQtyH0fQs1Adpg=;
         h=Subject:To:Cc:From:Date:From;
-        b=Dt0eznoJEktVHjJtOqXFO2kBC6NFI7/X2dXA48JfQnrL8QjO8KKJBe6MOKSsU2cav
-         9foH8H3UDjyQjAu/lUuND0IpucGfg6rozgNk5ww+44LTkI0XfXLGTpozimLMvZgJH/
-         SRiyFz2x8rPb1mJ09hqyhT2jCaBaBq39+F1Gjsfo=
-Subject: FAILED: patch "[PATCH] memfd: do not -EACCES old memfd_create() users with" failed to apply to 6.5-stable tree
+        b=Gk38QfQjPGlXNaCTqoFKaO/u20+7+7h98DSKgK1I/tNBHtX9AlynqrM9ibKdbCPq9
+         HBXgKik3MOXDtz5yu1+hdBj0twSyq9ZdyTAkQawZ0gsDcCg+A0a/vLkGGmdWLN4Qy2
+         QqoPfgFHVX0uC0XKArVNRpSyzGzXMk9hHKBDWUOM=
+Subject: FAILED: patch "[PATCH] memfd: do not -EACCES old memfd_create() users with" failed to apply to 6.4-stable tree
 To:     cyphar@cyphar.com, akpm@linux-foundation.org,
         asmadeus@codewreck.org, brauner@kernel.org, dverkamp@chromium.org,
         jeffxu@google.com, keescook@chromium.org, shuah@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 07 Sep 2023 16:04:45 +0100
-Message-ID: <2023090745-depict-kinswoman-9083@gregkh>
+Date:   Thu, 07 Sep 2023 16:04:47 +0100
+Message-ID: <2023090747-scant-detest-aeed@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -46,19 +46,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 202e14222fadb246dfdf182e67de1518e86a1e20
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090745-depict-kinswoman-9083@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090747-scant-detest-aeed@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
