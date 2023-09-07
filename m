@@ -2,115 +2,143 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF88F797765
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:25:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBEA17978AF
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:52:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238492AbjIGQZK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:25:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53410 "EHLO
+        id S231825AbjIGQwG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:52:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236211AbjIGQX5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:23:57 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [46.235.227.172])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEEEE1FDD;
-        Thu,  7 Sep 2023 09:21:00 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 6248466072F2;
-        Thu,  7 Sep 2023 10:12:31 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1694077952;
-        bh=txj28e2rFnpZ/La9QTIPO2i7dPQpL4MVK8cI2Wz9RV4=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=Z6KERubW6Sf7yxuxP8OS2Q8ygMnvH6e/8FLKTuDdX0hX3BxowDU7BeD+FbyysPmCX
-         mducm2u2B8Z5rJqGyXnoZejgKQK9tobFqO1C87HCrDoy87sGlJa0CItY6q+WbkMSLF
-         0QDN8Y8VHKMmX6fvXmfqVwCfKkqsZmgqB25pBGMp72frDopeR3+JHUWz4Pn7c4ToVC
-         bDJWPXk5mEo2chli0T3KFXj31UpsUwLknnBSy3DGtuFqHfHsfniHDSkJahxGUuCZH7
-         Aezx/lcYvT1OOV4BgIRHWto0fhNlHVN3hi7qXJDK6X3JgT/itoXzbj9wLAhNH5OeC0
-         Gw43YRFrU7unQ==
-Message-ID: <adc88393-da14-90ff-82c2-b00a9771856c@collabora.com>
-Date:   Thu, 7 Sep 2023 11:12:28 +0200
-MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [RFC] thermal/drivers/mediatek: fix temperature on mt7986
-Content-Language: en-US
-To:     Frank Wunderlich <linux@fw-web.de>,
-        linux-mediatek@lists.infradead.org
-Cc:     Frank Wunderlich <frank-w@public-files.de>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
-        Amit Kucheria <amitk@kernel.org>,
-        Zhang Rui <rui.zhang@intel.com>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Amjad Ouled-Ameur <aouledameur@baylibre.com>,
-        Daniel Golle <daniel@makrotopia.org>, linux-pm@vger.kernel.org,
-        linux-kernel@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        with ESMTP id S244267AbjIGQwG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:52:06 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4551135
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 09:50:54 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694105388;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=SMcpFOLp6Xfsjbv0O0mv63VovkeJUK+IyPtZQ2Pg9Y0=;
+        b=RqEGrxdDrJ+AVFQBZmHxO41ii9xrOd89ATPKhDICXizjv90qVCHyuQuTQAb6F9FTayH3xe
+        O7ZPg0QWktL7+gyx3y20Hlw4a1ozV8X9640T3G32ap7fGqjVrbmQUXkRXruQAx1uW7k0Q9
+        8oZ6e5r9stXQMrHIOt2H1WFSCxz12wc=
+Received: from mail-lf1-f69.google.com (mail-lf1-f69.google.com
+ [209.85.167.69]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-570-RiYuo_FfPay-D9M6uCXfsQ-1; Thu, 07 Sep 2023 05:23:20 -0400
+X-MC-Unique: RiYuo_FfPay-D9M6uCXfsQ-1
+Received: by mail-lf1-f69.google.com with SMTP id 2adb3069b0e04-501c1d4d0bdso132024e87.1
+        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 02:23:20 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694078599; x=1694683399;
+        h=mime-version:user-agent:content-transfer-encoding:references
+         :in-reply-to:date:cc:to:from:subject:message-id:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=SMcpFOLp6Xfsjbv0O0mv63VovkeJUK+IyPtZQ2Pg9Y0=;
+        b=WcnD3PXaTdopnlcLkkTTBNjMM23u04l7o6zpF+4xnrfDy7Em59UL1ziZFaodHvqQtg
+         Q5m9wpaCaTlLLLN9V2X6zaJWa8Qip4zhbpJZuR59yljzTlucOatNTCVXbUIOcKiUmRcJ
+         gCYacWs3ZB8e8LY9XE6W59FnjU9j3as8tmxREwOutmhbg/vVOe6df+jD/EBsP2JvzzLG
+         Vdt36mHqyPs0qemILf0Qbx3pAGxKcmC8FV+0vNIeVlhACzip6qLfcna7clZNtFg938VE
+         Sl93LkEqmHgJ93M6x3015/bohOBIfdarPpZJ2lfiLfFL9y1zlXxsSG/ckL20RytpGSiQ
+         8rHw==
+X-Gm-Message-State: AOJu0YzVzU/vxxZuhE8+5Y+/qeqTNis0lQK6p38RRKIOoaZefsD+Fkcg
+        b9KPh1kXduLhS+4spKDXJtPTREcnOuzZByhQ0dzghmQEOjyB3lK20JBa4tv/SUlYP1iTdeOA9rD
+        4r4JaRufMUV9Zj+lO77Tc140U
+X-Received: by 2002:a05:6512:6cd:b0:501:b010:e69e with SMTP id u13-20020a05651206cd00b00501b010e69emr9688315lff.1.1694078598861;
+        Thu, 07 Sep 2023 02:23:18 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IGySjtcDBgK5QfDiRiacyam5Lh1YNwKS/Kf70afMbngXdGiB5n1UmVhiCYRgIn8S8I5u/i9qA==
+X-Received: by 2002:a05:6512:6cd:b0:501:b010:e69e with SMTP id u13-20020a05651206cd00b00501b010e69emr9688291lff.1.1694078598477;
+        Thu, 07 Sep 2023 02:23:18 -0700 (PDT)
+Received: from gerbillo.redhat.com (146-241-251-112.dyn.eolo.it. [146.241.251.112])
+        by smtp.gmail.com with ESMTPSA id f5-20020a50ee85000000b0052595b17fd4sm9377590edr.26.2023.09.07.02.23.17
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Thu, 07 Sep 2023 02:23:18 -0700 (PDT)
+Message-ID: <626de62327fa25706ab1aaab32d7ba3a93ab26e4.camel@redhat.com>
+Subject: Re: [PATCH net v2] net: stmmac: remove unneeded
+ stmmac_poll_controller
+From:   Paolo Abeni <pabeni@redhat.com>
+To:     Remi Pommarel <repk@triplefau.lt>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        Jose Abreu <joabreu@synopsys.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Eric Dumazet <edumazet@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Maxime Coquelin <mcoquelin.stm32@gmail.com>
+Cc:     netdev@vger.kernel.org, linux-kernel@vger.kernel.org,
         stable@vger.kernel.org
-References: <20230901063730.7577-1-linux@fw-web.de>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230901063730.7577-1-linux@fw-web.de>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Date:   Thu, 07 Sep 2023 11:23:16 +0200
+In-Reply-To: <20230906091330.6817-1-repk@triplefau.lt>
+References: <20230906091330.6817-1-repk@triplefau.lt>
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+User-Agent: Evolution 3.46.4 (3.46.4-1.fc37) 
+MIME-Version: 1.0
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Il 01/09/23 08:37, Frank Wunderlich ha scritto:
-> From: Frank Wunderlich <frank-w@public-files.de>
-> 
-> Reading thermal sensor on mt7986 devices returns invalid temperature:
-> 
-> bpi-r3 ~ # cat /sys/class/thermal/thermal_zone0/temp
->   -274000
-> 
-> Fix this by adding missing members in mtk_thermal_data struct which were
-> used in mtk_thermal_turn_on_buffer after commit 33140e668b10.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 33140e668b10 ("thermal/drivers/mediatek: Control buffer enablement tweaks")
-> Signed-off-by: Frank Wunderlich <frank-w@public-files.de>
+On Wed, 2023-09-06 at 11:13 +0200, Remi Pommarel wrote:
+> Using netconsole netpoll_poll_dev could be called from interrupt
+> context, thus using disable_irq() would cause the following kernel
+> warning with CONFIG_DEBUG_ATOMIC_SLEEP enabled:
+>=20
+>   BUG: sleeping function called from invalid context at kernel/irq/manage=
+.c:137
+>   in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 10, name: ksof=
+tirqd/0
+>   CPU: 0 PID: 10 Comm: ksoftirqd/0 Tainted: G        W         5.15.42-00=
+075-g816b502b2298-dirty #117
+>   Hardware name: aml (r1) (DT)
+>   Call trace:
+>    dump_backtrace+0x0/0x270
+>    show_stack+0x14/0x20
+>    dump_stack_lvl+0x8c/0xac
+>    dump_stack+0x18/0x30
+>    ___might_sleep+0x150/0x194
+>    __might_sleep+0x64/0xbc
+>    synchronize_irq+0x8c/0x150
+>    disable_irq+0x2c/0x40
+>    stmmac_poll_controller+0x140/0x1a0
+>    netpoll_poll_dev+0x6c/0x220
+>    netpoll_send_skb+0x308/0x390
+>    netpoll_send_udp+0x418/0x760
+>    write_msg+0x118/0x140 [netconsole]
+>    console_unlock+0x404/0x500
+>    vprintk_emit+0x118/0x250
+>    dev_vprintk_emit+0x19c/0x1cc
+>    dev_printk_emit+0x90/0xa8
+>    __dev_printk+0x78/0x9c
+>    _dev_warn+0xa4/0xbc
+>    ath10k_warn+0xe8/0xf0 [ath10k_core]
+>    ath10k_htt_txrx_compl_task+0x790/0x7fc [ath10k_core]
+>    ath10k_pci_napi_poll+0x98/0x1f4 [ath10k_pci]
+>    __napi_poll+0x58/0x1f4
+>    net_rx_action+0x504/0x590
+>    _stext+0x1b8/0x418
+>    run_ksoftirqd+0x74/0xa4
+>    smpboot_thread_fn+0x210/0x3c0
+>    kthread+0x1fc/0x210
+>    ret_from_fork+0x10/0x20
+>=20
+> Since [0] .ndo_poll_controller is only needed if driver doesn't or
+> partially use NAPI. Because stmmac does so, stmmac_poll_controller
+> can be removed fixing the above warning.
+>=20
+> [0] commit ac3d9dd034e5 ("netpoll: make ndo_poll_controller() optional")
+>=20
+> Cc: <stable@vger.kernel.org> # 5.15.x
+> Signed-off-by: Remi Pommarel <repk@triplefau.lt>
 
-If you resend this commit without the RFC tag I can give you a R-b.
+I'm sorry for the incremental feedback, but we also need a suitable
+Fixes tag, thanks!
 
-This is totally correct, as the buffer control is for version >= THERMAL_V2, and
-the others being V1 don't need it - the only one that was left out is effectively
-just mt7986 (probably because the commits landed around the same time).
-
-Though, since you have to anyway resend this, I would suggest to change the commit
-title to something more effective, like
-
-thermal/drivers/mediatek: Fix control buffer enablement on MT7896
-
-Cheers,
-Angelo
-
-> ---
->   drivers/thermal/mediatek/auxadc_thermal.c | 3 +++
->   1 file changed, 3 insertions(+)
-> 
-> diff --git a/drivers/thermal/mediatek/auxadc_thermal.c b/drivers/thermal/mediatek/auxadc_thermal.c
-> index f59d36de20a0..ed08767eaa60 100644
-> --- a/drivers/thermal/mediatek/auxadc_thermal.c
-> +++ b/drivers/thermal/mediatek/auxadc_thermal.c
-> @@ -691,6 +691,9 @@ static const struct mtk_thermal_data mt7986_thermal_data = {
->   	.adcpnp = mt7986_adcpnp,
->   	.sensor_mux_values = mt7986_mux_values,
->   	.version = MTK_THERMAL_V3,
-> +	.apmixed_buffer_ctl_reg = APMIXED_SYS_TS_CON1,
-> +	.apmixed_buffer_ctl_mask = GENMASK(31, 6) | BIT(3),
-> +	.apmixed_buffer_ctl_set = BIT(0),
->   };
->   
->   static bool mtk_thermal_temp_is_valid(int temp)
-
+Paolo
 
