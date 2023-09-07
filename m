@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B74A7973A7
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E5A0E7973B0
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238328AbjIGP2y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 11:28:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50096 "EHLO
+        id S236785AbjIGP27 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 11:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50090 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232018AbjIGPXH (ORCPT
+        with ESMTP id S232079AbjIGPXH (ORCPT
         <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:23:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8651CCA
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F3610F7
         for <stable@vger.kernel.org>; Thu,  7 Sep 2023 08:22:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93CA2C4AF7D;
-        Thu,  7 Sep 2023 15:04:36 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B1A54C4AF7B;
+        Thu,  7 Sep 2023 15:04:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694099077;
-        bh=P/gJ2htYj0a1P0CE0q1Fg/2lY3og3ZNxCMrrXSAc/Gk=;
+        s=korg; t=1694099083;
+        bh=IodVwTY0fkLMrD4rI6PkKZzwWJQlF/i15P93zM6W7Ms=;
         h=Subject:To:Cc:From:Date:From;
-        b=MiDj+UPGpqsAxxOm818JvYpJlCMJi3AifDt/T2fvA0rh3TWPoULETMHhB1oB5veWQ
-         3Y8ADJAGU3KId6jQx9TQzeEvHJA3vLKgQ65TZfvWTQN28nnnTns5986KzALbmIklsW
-         cDvKGuh0Yaq6uD20eW598V+TNA0HPS9/LZ1zg+Os=
-Subject: FAILED: patch "[PATCH] revert "memfd: improve userspace warnings for missing" failed to apply to 6.5-stable tree
+        b=18eqxrZP8hN8TRrWUtbdl+FP8gbkkLnOeU4H1AabJfRt6SRj2qzxEwV/c7iNdwYnq
+         iIQP/pEgQAM9yWkDqvAxki5x96H7SIE8mcxDZoVo46EaNnXCO6X7hDoRImJ2wKHu/A
+         4eA9yOElk7wvIz1mpoKcMabTKZ9aMoz2ctJmWlzM=
+Subject: FAILED: patch "[PATCH] revert "memfd: improve userspace warnings for missing" failed to apply to 6.4-stable tree
 To:     akpm@linux-foundation.org, brauner@kernel.org, cyphar@cyphar.com,
         dtometzki@fedoraproject.org, dverkamp@chromium.org,
         jeffxu@google.com, keescook@chromium.org, shuah@kernel.org,
         stable@vger.kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Thu, 07 Sep 2023 16:04:34 +0100
-Message-ID: <2023090734-sudoku-catalyze-ef01@gregkh>
+Date:   Thu, 07 Sep 2023 16:04:35 +0100
+Message-ID: <2023090735-lyrically-fabulous-bbb1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -46,19 +46,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 2562d67b1bdf91c7395b0225d60fdeb26b4bc5a0
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090734-sudoku-catalyze-ef01@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090735-lyrically-fabulous-bbb1@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
