@@ -2,101 +2,113 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3EE9E7975FD
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:01:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5374B7973B3
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234607AbjIGQA5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:00:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55788 "EHLO
+        id S242245AbjIGP3C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 11:29:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S244391AbjIGP77 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:59:59 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 861B64EE0;
-        Thu,  7 Sep 2023 08:50:21 -0700 (PDT)
-Received: from [192.168.1.100] (2-237-20-237.ip236.fastwebnet.it [2.237.20.237])
-        (using TLSv1.3 with cipher TLS_AES_128_GCM_SHA256 (128/128 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits))
-        (No client certificate requested)
-        (Authenticated sender: kholk11)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id 128E466072EE;
-        Thu,  7 Sep 2023 10:15:13 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1694078113;
-        bh=Rxr9wSnatrcikI+JJAyDpY5hrb72I1tP/ucCHPKp+4U=;
-        h=Date:Subject:To:Cc:References:From:In-Reply-To:From;
-        b=oAnhasf8H14BX1NPjT3BsrDvEucrf2ZGAoLRd5zQlOXr2R0oZIJjohj6HyskepAZO
-         Y2CLeVG9KcJ2d641YVHNYos39QTXEJOQkclRgbDNhxuBSMkQcamneh5PUmIXF+0vuJ
-         o9KbG1RvRDyJLh/4RJ9VB0bTM240n1lUcoLAIe0iuQrkgGq0vNZC7GFupZHUPZeYmp
-         lHQoVPQYl+B9+YPIUUIZDq1Cy3K6XIu/ePkByJXIN/CxpHv2GExeT35w0BMlCZpsoc
-         WbAgNLd3wGJDhH/5s2ljSs5qYw0z87wfXz+opNESPPgUHCoKrLSzN8LxUyyLqdX9Ye
-         52ifx7/NZ5jYg==
-Message-ID: <99510f2c-82cb-a3ed-764f-9411a16cac09@collabora.com>
-Date:   Thu, 7 Sep 2023 11:15:10 +0200
+        with ESMTP id S231864AbjIGPV7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:21:59 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F39EE1700;
+        Thu,  7 Sep 2023 08:21:26 -0700 (PDT)
+Received: from compute5.internal (compute5.nyi.internal [10.202.2.45])
+        by mailout.west.internal (Postfix) with ESMTP id 4628B3200921;
+        Thu,  7 Sep 2023 06:11:47 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute5.internal (MEProxy); Thu, 07 Sep 2023 06:11:48 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=kroah.com; h=cc
+        :cc:content-type:content-type:date:date:from:from:in-reply-to
+        :in-reply-to:message-id:mime-version:references:reply-to:sender
+        :subject:subject:to:to; s=fm1; t=1694081506; x=1694167906; bh=EZ
+        T6EnA3YabROgKZ7V+W9exHIuOjPiCl6NxOF1soN9U=; b=xAbnZGGnS26+dKZuFM
+        JJ9Q/LP83Fk2oA7vUHJgxjPuMktibog+u9gFMPqITJcZTLADYfgGjYfuyA+hIgpy
+        UZ0PJ7YnaKlDjpwHqZdZipYvLmuNtiyrdBEAjyaJjqU6pTabR7ItN36z3lwhpmXs
+        fvtiu0mTHRzZpFj+I45yd9bxVW5zKED/+1aCZxcyb3ZHIcAuoJ3tpNsPmKev+cCb
+        yNuoZy9vW1r0nXPmLM0PNfhWBwCiMRsfOKcdCT7P3LiIwHLYXW5Qa8awoYbQu9XA
+        fkpuw6HrCJhhvMXFhaZnWBSYl/eRazd8A2AkeBiJPfTx8oJgT1nYcQarGfpiUTzZ
+        3nlw==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-type:content-type:date:date
+        :feedback-id:feedback-id:from:from:in-reply-to:in-reply-to
+        :message-id:mime-version:references:reply-to:sender:subject
+        :subject:to:to:x-me-proxy:x-me-proxy:x-me-sender:x-me-sender
+        :x-sasl-enc; s=fm1; t=1694081506; x=1694167906; bh=EZT6EnA3YabRO
+        gKZ7V+W9exHIuOjPiCl6NxOF1soN9U=; b=WeI7TMT0kmnj7BpJTHA+/mKJxHLnA
+        OabayLtZUBFxbF1MUNKkaCwqHQoIsSRelpkuxhRSXzyOmyOkbZ8tAGBCrZXRoqsp
+        KRsFDkq6APoFkXAfBI8tinW/iz8wqVUN8vjDX1Hs6wTDVnhvsZnfyiJH2IKjlZ9Z
+        7geKfsxeBgrXB2KI33HelMATDyF+Cr5EZw0yAZFypceWTzdzwMwDIA6HLjME71eM
+        qn3VBBhUJ0utdR6tOvutgpbDX2zNr8iWYdsHm5bw2usx2eP0EAZWHILjxaLoD9eA
+        YVFGeVbkzAuynBV9RfFqV3VVpEb68L2XQCiIWoFLw0PdKu2svW34JKQuQ==
+X-ME-Sender: <xms:4aH5ZHsHds3V0ipUOOV1zJyBPznKR_WsO-5nW6tiU9MGH5ewW08mPQ>
+    <xme:4aH5ZIfNU11SHBEaMmaEvGDQ-BGvbuv_sEUOiV6JICfG0dgR-EQeQkgvEBa5ppOk1
+    bvgIt-Fz2fu2A>
+X-ME-Received: <xmr:4aH5ZKwkKolW7ggAF7C6NgoEx-SDMCFAms8NDKFUIHhALKjqoIN4NsutmNc>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehhedgvdehucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepfffhvfevuffkfhggtggujgesthdtredttddtvdenucfhrhhomhepifhrvghg
+    ucfmjfcuoehgrhgvgheskhhrohgrhhdrtghomheqnecuggftrfgrthhtvghrnhepheegvd
+    evvdeljeeugfdtudduhfekledtiefhveejkeejuefhtdeufefhgfehkeetnecuvehluhhs
+    thgvrhfuihiivgeptdenucfrrghrrghmpehmrghilhhfrhhomhepghhrvghgsehkrhhorg
+    hhrdgtohhm
+X-ME-Proxy: <xmx:4aH5ZGORV396Z-xwS_71WoNaFIqg28zD8p-KPpF8Fj8skpK8C00n0Q>
+    <xmx:4aH5ZH-dbwLMRZTS323_B-WH-sLWA7btzK0cRLr3vsZrnQMceLZ1yg>
+    <xmx:4aH5ZGXFACVuo9kvBS59nBceVR1ZW3XNUP31J6zjtjW-2JUIN5t1Qg>
+    <xmx:4qH5ZHxBMEYMGjScKU9TdoNo-gxPzpvdOYz_xoq1S84DA6O9teoiZg>
+Feedback-ID: i787e41f1:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Thu,
+ 7 Sep 2023 06:11:45 -0400 (EDT)
+Date:   Thu, 7 Sep 2023 11:11:44 +0100
+From:   Greg KH <greg@kroah.com>
+To:     Adam Ford <aford173@gmail.com>
+Cc:     stable <stable@vger.kernel.org>, Tony Lindgren <tony@atomide.com>,
+        Linux-OMAP <linux-omap@vger.kernel.org>
+Subject: Re: of: property: Simplify of_link_to_phandle()
+Message-ID: <2023090715-charity-numerous-f6f0@gregkh>
+References: <CAHCN7x+GLhYyEMq0h0Sa3m9JMuZf0g7=FpT==uFOg=w7OQ=qUw@mail.gmail.com>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v3 1/2] arm64: dts: mediatek: mt8195-demo: fix the memory
- size to 8GB
-Content-Language: en-US
-To:     Macpaul Lin <macpaul.lin@mediatek.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Rob Herring <robh+dt@kernel.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski+dt@linaro.org>,
-        Conor Dooley <conor+dt@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Fabien Parent <fparent@baylibre.com>,
-        devicetree@vger.kernel.org, linux-kernel@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org
-Cc:     Bear Wang <bear.wang@mediatek.com>,
-        Pablo Sun <pablo.sun@mediatek.com>,
-        Macpaul Lin <macpaul@gmail.com>, stable@vger.kernel.org
-References: <20230825114623.16884-1-macpaul.lin@mediatek.com>
- <20230905034511.11232-1-macpaul.lin@mediatek.com>
-From:   AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>
-In-Reply-To: <20230905034511.11232-1-macpaul.lin@mediatek.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <CAHCN7x+GLhYyEMq0h0Sa3m9JMuZf0g7=FpT==uFOg=w7OQ=qUw@mail.gmail.com>
+X-Spam-Status: No, score=-0.2 required=5.0 tests=DKIM_SIGNED,DKIM_VALID,
+        DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,
+        SPF_PASS autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Il 05/09/23 05:45, Macpaul Lin ha scritto:
-> The onboard dram of mt8195-demo board is 8GB.
+On Wed, Sep 06, 2023 at 06:49:07PM -0500, Adam Ford wrote:
+> Stable Group,
 > 
-> Cc: stable@vger.kernel.org      # 6.1, 6.4, 6.5
-> Fixes: 6147314aeedc ("arm64: dts: mediatek: Add device-tree for MT8195 Demo board")
-> Signed-off-by: Macpaul Lin <macpaul.lin@mediatek.com>
-
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-
-> ---
->   arch/arm64/boot/dts/mediatek/mt8195-demo.dts | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
+> Please apply commit 4a032827daa8 ("of: property: Simplify of_link_to_phandle()")
+> to the 6.1.y stable branch.  It was originally part of a series that
+> was only partially applied to 6.1.  Being partially applied left 6.1.y
+> in a state where a bunch of peripherals were deferred indefinitely on
+> the am3517-evm.
 > 
-> Changes for v2:
-> Changes for v3:
->   - No change.
+> wl12xx_buf platform: supplier 48002000.scm not ready
+> wl12xx_vmmc2 platform: supplier wl12xx_buf not ready
+> 48050000.dss platform: supplier display@0 not ready
+> 48064800.ehci platform: supplier hsusb1_phy not ready
+> backlight platform: supplier 48002000.scm not ready
+> display@0 platform: supplier backlight not ready
+> dmtimer-pwm@11 platform: supplier 48002000.scm not ready
+> hsusb1_phy platform: supplier 48002000.scm not ready
+> gpio-leds platform: supplier 48002000.scm not ready
+> 480b4000.mmc platform: supplier wl12xx_vmmc2 not ready
 > 
-> diff --git a/arch/arm64/boot/dts/mediatek/mt8195-demo.dts b/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
-> index b2485ddfd33b..ff363ab925e9 100644
-> --- a/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
-> +++ b/arch/arm64/boot/dts/mediatek/mt8195-demo.dts
-> @@ -48,7 +48,7 @@
->   
->   	memory@40000000 {
->   		device_type = "memory";
-> -		reg = <0 0x40000000 0 0x80000000>;
-> +		reg = <0 0x40000000 0x2 0x00000000>;
->   	};
->   
->   	reserved-memory {
+> With the above commit applied, it appears to address most of the
+> deferred peripherals.
+> 
+> Fixes: eaf9b5612a47 ("driver core: fw_devlink: Don't purge child
+> fwnode's consumer links")
+> Signed-off-by:  Adam Ford <aford173@gmail.com>
 
+Now queued up, thanks.
+
+greg k-h
