@@ -2,156 +2,123 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B540E796DE1
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 02:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22758796DF9
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 02:25:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239937AbjIGANh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Wed, 6 Sep 2023 20:13:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47096 "EHLO
+        id S235438AbjIGAZq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Wed, 6 Sep 2023 20:25:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38346 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229753AbjIGANg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 20:13:36 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.93])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02C43199F;
-        Wed,  6 Sep 2023 17:13:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694045613; x=1725581613;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=WlkbumebDoiqA7h5lGLoCyy+L33WG8FJ86yAFQBnwlo=;
-  b=Vp7byVcBnpciHmmv2yagdPIuOSlHuRf92rnKKRZJSxZGTzifHs4EGcTS
-   FzYwv+usoYpyGZzAQ/TIaj2IG1+5IgnvjESqo8fhSSzP6MeUxv7NAQsjc
-   R2e/c/TucrCs7G2I8+CCmYzMoGGsxbmynPAjd4kSVvjwCgMh+MyXbURiQ
-   THoVW/qUgvDbBHie/fUo6uKCuIoYErJZpTY+vdaMsZ2d1yPCgXd1jUy9O
-   nqizCcH5fGHqp1lCBgBFe7TnugF35bT9dLgBvJf7J4yzIBGmdHssaLlf4
-   ooNBoVSTH8mkl5paTiGdF8VVU/vTtdpXILoFP6MtJd1zGOGOM/obrsscX
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="374613201"
-X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
-   d="scan'208";a="374613201"
-Received: from fmsmga002.fm.intel.com ([10.253.24.26])
-  by fmsmga102.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 06 Sep 2023 17:13:26 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10825"; a="856680657"
-X-IronPort-AV: E=Sophos;i="6.02,233,1688454000"; 
-   d="scan'208";a="856680657"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by fmsmga002.fm.intel.com with ESMTP; 06 Sep 2023 17:13:22 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qe2e8-0000j1-0U;
-        Thu, 07 Sep 2023 00:13:20 +0000
-Date:   Thu, 7 Sep 2023 08:12:57 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Jason Andryuk <jandryuk@gmail.com>,
-        Juergen Gross <jgross@suse.com>,
-        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
-        Len Brown <lenb@kernel.org>
-Cc:     llvm@lists.linux.dev, oe-kbuild-all@lists.linux.dev,
-        Roger Pau Monne <roger.pau@citrix.com>,
-        stable@vger.kernel.org, Jason Andryuk <jandryuk@gmail.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
-        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when
- running as Xen dom0
-Message-ID: <202309070741.2n0k8FjN-lkp@intel.com>
-References: <20230906182125.48642-1-jandryuk@gmail.com>
+        with ESMTP id S229753AbjIGAZq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Wed, 6 Sep 2023 20:25:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05F6C19A2
+        for <stable@vger.kernel.org>; Wed,  6 Sep 2023 17:25:02 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694046302;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=z5UGvSiuErQB8lp1gKFnemutfQ3p91ij8pwBcSGcOyE=;
+        b=ggwNTNhI7I0AaJ7NHgDr69gh3Fg8MhgdECkj192riq+emgwu5fEj1GC/ZAzWB34zA7IcFN
+        SkVtDTDBnZs1L8sVTwOpQ3Hc4nc3df9LA/5ySaykP+2pzCa0mfgN5l4iof5dqsYVPXjVsK
+        HzKjRlnnCNhWEtJWODfW3mHeERZJobE=
+Received: from mail-pf1-f198.google.com (mail-pf1-f198.google.com
+ [209.85.210.198]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.3, cipher=TLS_AES_256_GCM_SHA384) id
+ us-mta-461-gUDG7jiUP8mY_ksBqKiHRQ-1; Wed, 06 Sep 2023 20:14:13 -0400
+X-MC-Unique: gUDG7jiUP8mY_ksBqKiHRQ-1
+Received: by mail-pf1-f198.google.com with SMTP id d2e1a72fcca58-68a3ba17c7bso528728b3a.2
+        for <stable@vger.kernel.org>; Wed, 06 Sep 2023 17:14:13 -0700 (PDT)
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20221208; t=1694045652; x=1694650452;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to
+         :content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=z5UGvSiuErQB8lp1gKFnemutfQ3p91ij8pwBcSGcOyE=;
+        b=Nb0I0+5g/7jIniOynwWc79hTGDsHUr8hAA6t1OcnG8U4EdX/B9j8QOhDpVd56opmuL
+         VYECptDHD+bOBHFcXZ0r1VByioWQ3t4TS0caoJxiC965kJJ8Tu38JX7/uQtrrEoS3eWv
+         FYvZehxQF5vumDh1C05WkggU9uVmBsAItKZEuGzNhjmaB0QqXy6lKJjD54H56v2hvBLd
+         bEE0roStPY/DhuaxwgmcfAgV6EvvM/zFPEPn57dAGHOXKvlkvqgK/dbmEx7S8DBitrzh
+         Zu+RcviNRkfOlTq9jRrMwi1K04/kRs3nnTTxGA5yA3A0aZlcsiHRgC8kTTwG2mBdsrOB
+         vS8w==
+X-Gm-Message-State: AOJu0Yzvz4JMYnwP2iMGYUJ8e95mD/NRWn5Y6hUWTbsIMmZujymsx2NK
+        fW4gKfqkX4v4LBpeukLDVWuKmQp3SXnAKNW6VixlLhjAu4SjaE6N8dizZ9GbTk4NtZxxPYCVQjI
+        fj3l9FQXvgE5zyUay
+X-Received: by 2002:a05:6a00:4791:b0:68e:3e1c:53a6 with SMTP id dh17-20020a056a00479100b0068e3e1c53a6mr322215pfb.5.1694045652404;
+        Wed, 06 Sep 2023 17:14:12 -0700 (PDT)
+X-Google-Smtp-Source: AGHT+IFjCMtdsPO+4BElHFINliOrQ9CrFpHp4V8UkiZyLS8l1Yu+STU9YPcr9Y5So8LM1VEnbxUt9w==
+X-Received: by 2002:a05:6a00:4791:b0:68e:3e1c:53a6 with SMTP id dh17-20020a056a00479100b0068e3e1c53a6mr322203pfb.5.1694045652065;
+        Wed, 06 Sep 2023 17:14:12 -0700 (PDT)
+Received: from [10.72.112.106] ([43.228.180.230])
+        by smtp.gmail.com with ESMTPSA id p26-20020a62ab1a000000b0068a690b44basm11354863pff.31.2023.09.06.17.14.08
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Wed, 06 Sep 2023 17:14:11 -0700 (PDT)
+Message-ID: <43d88af6-9955-d65d-1949-c1b4ddec7070@redhat.com>
+Date:   Thu, 7 Sep 2023 08:14:05 +0800
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906182125.48642-1-jandryuk@gmail.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.13.0
+Subject: Re: [PATCH] ceph: remove the incorrect caps check in _file_size()
+Content-Language: en-US
+To:     Greg KH <gregkh@linuxfoundation.org>
+Cc:     idryomov@gmail.com, ceph-devel@vger.kernel.org, jlayton@kernel.org,
+        vshankar@redhat.com, mchangir@redhat.com, stable@vger.kernel.org
+References: <20230906121747.618289-1-xiubli@redhat.com>
+ <2023090626-overgrown-probation-a58d@gregkh>
+From:   Xiubo Li <xiubli@redhat.com>
+In-Reply-To: <2023090626-overgrown-probation-a58d@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,
+        SPF_NONE autolearn=unavailable autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Jason,
 
-kernel test robot noticed the following build errors:
+On 9/6/23 22:45, Greg KH wrote:
+> On Wed, Sep 06, 2023 at 08:17:47PM +0800, xiubli@redhat.com wrote:
+>> From: Xiubo Li <xiubli@redhat.com>
+>>
+>> When truncating the inode the MDS will acquire the xlock for the
+>> ifile Locker, which will revoke the 'Frwsxl' caps from the clients.
+>> But when the client just releases and flushes the 'Fw' caps to MDS,
+>> for exmaple, and once the MDS receives the caps flushing msg it
+>> just thought the revocation has finished. Then the MDS will continue
+>> truncating the inode and then issued the truncate notification to
+>> all the clients. While just before the clients receives the cap
+>> flushing ack they receive the truncation notification, the clients
+>> will detecte that the 'issued | dirty' is still holding the 'Fw'
+>> caps.
+>>
+>> Cc: stable@vger.kernel.org
+>> URL: https://tracker.ceph.com/issues/56693
+>> Signed-off-by: Xiubo Li <xiubli@redhat.com>
+>> ---
+>>   fs/ceph/inode.c | 4 +---
+>>   1 file changed, 1 insertion(+), 3 deletions(-)
+> What commit id does this fix?
 
-[auto build test ERROR on tip/x86/core]
-[also build test ERROR on v6.5]
-[cannot apply to rafael-pm/linux-next linus/master next-20230906]
-[If your patch is applied to the wrong git tree, kindly drop us a note.
-And when submitting patch, we suggest to use '--base' as documented in
-https://git-scm.com/docs/git-format-patch#_base_tree_information]
+Oh, I forgot to mention that in the commit comment, it will fix:
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Jason-Andryuk/acpi-processor-sanitize-_PDC-buffer-bits-when-running-as-Xen-dom0/20230907-022235
-base:   tip/x86/core
-patch link:    https://lore.kernel.org/r/20230906182125.48642-1-jandryuk%40gmail.com
-patch subject: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running as Xen dom0
-config: i386-randconfig-003-20230907 (https://download.01.org/0day-ci/archive/20230907/202309070741.2n0k8FjN-lkp@intel.com/config)
-compiler: clang version 16.0.4 (https://github.com/llvm/llvm-project.git ae42196bc493ffe877a7e3dff8be32035dea4d07)
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230907/202309070741.2n0k8FjN-lkp@intel.com/reproduce)
+b0d7c2231015 ceph: introduce i_truncate_mutex
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309070741.2n0k8FjN-lkp@intel.com/
+Let me update the patch and send out the V2 for it.
 
-All errors (new ones prefixed by >>):
+Thanks
 
->> drivers/acpi/processor_pdc.c:147:3: error: call to undeclared function 'xen_sanitize_pdc'; ISO C99 and later do not support implicit function declarations [-Wimplicit-function-declaration]
-                   xen_sanitize_pdc(buffer);
-                   ^
-   1 error generated.
+- Xiubo
 
 
-vim +/xen_sanitize_pdc +147 drivers/acpi/processor_pdc.c
 
-   116	
-   117	/*
-   118	 * _PDC is required for a BIOS-OS handshake for most of the newer
-   119	 * ACPI processor features.
-   120	 */
-   121	static acpi_status
-   122	acpi_processor_eval_pdc(acpi_handle handle, struct acpi_object_list *pdc_in)
-   123	{
-   124		acpi_status status = AE_OK;
-   125		union acpi_object *obj;
-   126		u32 *buffer = NULL;
-   127	
-   128		obj = pdc_in->pointer;
-   129		buffer = (u32 *)(obj->buffer.pointer);
-   130	
-   131		if (boot_option_idle_override == IDLE_NOMWAIT) {
-   132			/*
-   133			 * If mwait is disabled for CPU C-states, the C2C3_FFH access
-   134			 * mode will be disabled in the parameter of _PDC object.
-   135			 * Of course C1_FFH access mode will also be disabled.
-   136			 */
-   137			buffer[2] &= ~(ACPI_PDC_C_C2C3_FFH | ACPI_PDC_C_C1_FFH);
-   138		}
-   139	
-   140		if (xen_initial_domain()) {
-   141			/*
-   142			 * When Linux is running as Xen dom0, the hypervisor is the
-   143			 * entity in charge of the processor power management, and so
-   144			 * Xen needs to check the OS capabilities reported in the _PDC
-   145			 * buffer matches what the hypervisor driver supports.
-   146			 */
- > 147			xen_sanitize_pdc(buffer);
-   148		}
-   149	
-   150		status = acpi_evaluate_object(handle, "_PDC", pdc_in, NULL);
-   151	
-   152		if (ACPI_FAILURE(status))
-   153			acpi_handle_debug(handle,
-   154			    "Could not evaluate _PDC, using legacy perf control\n");
-   155	
-   156		return status;
-   157	}
-   158	
+> thanks,
+>
+> greg k-h
+>
 
--- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
