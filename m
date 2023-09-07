@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6BB92797781
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:26:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AEC7079774A
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 18:24:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239190AbjIGQ0z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 12:26:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54634 "EHLO
+        id S241323AbjIGQYJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 12:24:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239214AbjIGQ0Q (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:26:16 -0400
+        with ESMTP id S242400AbjIGQWr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 12:22:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C17335A5;
-        Thu,  7 Sep 2023 09:22:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2F7DC116A4;
-        Thu,  7 Sep 2023 10:15:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF6685255;
+        Thu,  7 Sep 2023 09:20:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04096C116A5;
+        Thu,  7 Sep 2023 10:16:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694081733;
-        bh=/VfQ9uuSzbzc4g98IJPGGzTV1REpCA2gHNPbmygK8ls=;
+        s=korg; t=1694081814;
+        bh=+yxi0fgZJulF5cIi8DZ0uhXbDieooxm6LIqEiuMrOAI=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=NdzIeIqYkCsiJSwOwR3HGZR9/Tc7MYl5Slfv8MFZWTLsENNWNTriMgcPA2uBqyDM8
-         sRfGAGr/I9mTGarQ/uxSM/Iy8+Qiq+/0HB7FSr5YzNXePpp2hGuSZEVyiC5NVoOL2x
-         xR1WETO0xZhHoxiabbPGgoq+k+CO/jq8EzJks+js=
-Date:   Thu, 7 Sep 2023 11:15:30 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Giovanni Cabiddu <giovanni.cabiddu@intel.com>
-Cc:     Herbert Xu <herbert@gondor.apana.org.au>, stable@vger.kernel.org,
-        Sasha Levin <sashal@kernel.org>, linux-crypto@vger.kernel.org,
-        qat-linux@intel.com
-Subject: Re: Bug in rsa-pkcs1pad in 6.1 and 5.15
-Message-ID: <2023090724-campfire-unstirred-a36e@gregkh>
-References: <ZPcFyp4jdE3uSeqW@gcabiddu-mobl1.ger.corp.intel.com>
- <ZPhAyty1r8ASyr+F@gondor.apana.org.au>
- <ZPiNIBvrpVz61doJ@gcabiddu-mobl1.ger.corp.intel.com>
+        b=2ulexrK4hboftGDRCTT9HPEaBJLr5SRU/v185Bon4qp9+VIWYxWKXEZ1h/wiiZfzD
+         IG0vXhtNGLnODmebM5MtXHM3Iigh5Hb+KiAqDRcqH0OyRDV5+gXjrKpxqrgQiDzxuZ
+         k3IS8f6aqC+QXRYB0tRiKnXJYBq7j78bBMyeoH4k=
+Date:   Thu, 7 Sep 2023 11:16:51 +0100
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     Deepak Rathore <deeratho@cisco.com>
+Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
+ btsdio_remove due to race condition
+Message-ID: <2023090738-passive-snowless-3b9d@gregkh>
+References: <20230906121525.3946250-1-deeratho@cisco.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <ZPiNIBvrpVz61doJ@gcabiddu-mobl1.ger.corp.intel.com>
+In-Reply-To: <20230906121525.3946250-1-deeratho@cisco.com>
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -48,36 +45,25 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 03:30:56PM +0100, Giovanni Cabiddu wrote:
-> On Wed, Sep 06, 2023 at 05:05:14PM +0800, Herbert Xu wrote:
-> > On Tue, Sep 05, 2023 at 11:41:14AM +0100, Giovanni Cabiddu wrote:
-> > >
-> > > Options:
-> > >   1. Cherry-pick 5b11d1a360ea ("crypto: rsa-pkcs1pad - Use helper to set
-> > >      reqsize") to both 6.1.x and 5.15.x trees.
-> > >   2. Revert upstream commit 80e62ad58db0 ("crypto: qat - Use helper
-> > >      to set reqsize").
-> > >      In 6.1 revert da1729e6619c414f34ce679247721603ebb957dc
-> > >      In 5.15 revert 3894f5880f968f81c6f3ed37d96bdea01441a8b7
-> > > 
-> > > Option #1 is preferred as the same problem might be impacting other
-> > > akcipher implementations besides QAT. Option #2 is just specific to the
-> > > QAT driver.
-> > > 
-> > > @Herbert, can you have a quick look in case I missed something? I tried
-> > > both options in 6.1.51 and they appear to resolve the problem.
-> > 
-> > Yes I think backporting the rsa-pkcs1pad would be the best way
-> > forward.
-> Thanks Herbert.
+On Wed, Sep 06, 2023 at 05:45:25PM +0530, Deepak Rathore wrote:
+> From: Zheng Wang <zyytlz.wz@163.com>
 > 
-> Adding stable to the TO list. Would it be possible to cherry-pick the
-> following upstream commit
+> [ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
 > 
->     5b11d1a360ea ("crypto: rsa-pkcs1pad - Use helper to set reqsize")
+> In btsdio_probe, the data->work is bound with btsdio_work. It will be
+> started in btsdio_send_frame.
 > 
-> to both the 6.1.x and 5.15.x trees?
+> If the btsdio_remove runs with a unfinished work, there may be a race
+> condition that hdev is freed but used in btsdio_work. Fix it by
+> canceling the work before do cleanup in btsdio_remove.
+> 
+> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+> Signed-off-by: Deepak Rathore <deeratho@cisco.com>
+> 
 
-Now queued up, thanks.
+What tree(s) are you wanting this applied to?
+
+thanks,
 
 greg k-h
