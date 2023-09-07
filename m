@@ -2,72 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90EE8797921
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 19:03:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD3F6797A28
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 19:32:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236898AbjIGRDO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 13:03:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57634 "EHLO
+        id S243823AbjIGRc3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 13:32:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55582 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230511AbjIGRDN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 13:03:13 -0400
-Received: from mail-ej1-x633.google.com (mail-ej1-x633.google.com [IPv6:2a00:1450:4864:20::633])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C3FDCDE
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 10:02:48 -0700 (PDT)
-Received: by mail-ej1-x633.google.com with SMTP id a640c23a62f3a-9a5dff9d2d9so144989966b.3
-        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 10:02:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694106114; x=1694710914; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=3F5qdrNMRQPlna2b5xgS4IlqRcKmNFR4cjR9i9vXjTo=;
-        b=WBqdw6zDs9TMSGgR9zZZp4mKpVLy8GBNbFCKH4g654xOvGCcu7X5xXNplsut5k4zns
-         eMGcRl/oWZFy9lSlgjpivgy90ptIwZq4gBqG1J2uV3ioQPEr7ZDSvspRkOINV4Wn+9CU
-         FTtkXV/wL2Mj3k67xAtCNnheakRRsv7FOmIme8ov2elotF1yStAua88yxbnPKXvaNqX+
-         2RIC7xGATipqqymovE0F+AilXsg01LYS17NZmHGpzLvt0U+DIXGdwEtYOZljDWW66E4j
-         LA34m34nx0UshMeJ/m/ctqQvXLeGkeyQQGVKUILaDYG5xEGuyYXcCHE3YzxD7YmoEf3s
-         xJQg==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20221208; t=1694106114; x=1694710914;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=3F5qdrNMRQPlna2b5xgS4IlqRcKmNFR4cjR9i9vXjTo=;
-        b=H8Pu7zhviuoGb9ZaBrlpyRhH4SzyeMji91ANINwtxUdJGyUYlYTip+cu+c+RY2YIBr
-         kmsuIuWSPm8Sk0BfDydhFj99HzLrlYsRyS4gc8DKI+7g3f6bns1yx9cZADBq4/xCOYbK
-         xPnWQtlYhWkLq2ocKpT24myQTyzKKQbBbgtmQKrQ79YEMgo40/eszHGGk5j0LS5XDB2S
-         7lfzDSZlfQXvd4iKRJsjcaXk4LIck5f4KgzSTt5BX00pfPA1/BRCWtfu1Tm0LHT3otDO
-         zFh7ZuTxwrpnIuU6y+6iWIhQ1wAfXOb3854aP2gjHqeKhu5bQV/Abr9NgMhLKgFOz7V5
-         RWPQ==
-X-Gm-Message-State: AOJu0Yz4HjKulCfNx9oZZm7M7YC0Jc8BH9kPPN7jka5QIAi/zuSsZPTH
-        PF74Qf38qyoifX9w2Gsryrqv8pMLkQoJNw==
-X-Google-Smtp-Source: AGHT+IHbPtdiWTpEoOIk0yKaSTCjbk/QTr5OWN0TH26+HgSw2j2dCVX7TlqBvkQWqm+MnLaTeRFHaQ==
-X-Received: by 2002:a17:906:768d:b0:9a6:3d19:df7 with SMTP id o13-20020a170906768d00b009a63d190df7mr4251180ejm.17.1694070228534;
-        Thu, 07 Sep 2023 00:03:48 -0700 (PDT)
-Received: from [192.168.178.25] ([134.19.111.81])
-        by smtp.gmail.com with ESMTPSA id g4-20020a170906594400b0099b76c3041csm10004261ejr.7.2023.09.07.00.03.47
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Sep 2023 00:03:48 -0700 (PDT)
-Message-ID: <f9db3fc9-2247-8998-0587-1cadc051be18@gmail.com>
-Date:   Thu, 7 Sep 2023 09:03:47 +0200
+        with ESMTP id S243958AbjIGRc2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 13:32:28 -0400
+Received: from metis.whiteo.stw.pengutronix.de (metis.whiteo.stw.pengutronix.de [IPv6:2a0a:edc0:2:b01:1d::104])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A5810DF
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 10:32:03 -0700 (PDT)
+Received: from drehscheibe.grey.stw.pengutronix.de ([2a0a:edc0:0:c01:1d::a2])
+        by metis.whiteo.stw.pengutronix.de with esmtps (TLS1.3:ECDHE_RSA_AES_256_GCM_SHA384:256)
+        (Exim 4.92)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qeA5A-00048z-1X; Thu, 07 Sep 2023 10:09:44 +0200
+Received: from [2a0a:edc0:0:1101:1d::28] (helo=dude02.red.stw.pengutronix.de)
+        by drehscheibe.grey.stw.pengutronix.de with esmtp (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qeA59-004bse-8X; Thu, 07 Sep 2023 10:09:43 +0200
+Received: from sha by dude02.red.stw.pengutronix.de with local (Exim 4.94.2)
+        (envelope-from <sha@pengutronix.de>)
+        id 1qeA58-008rFV-DT; Thu, 07 Sep 2023 10:09:42 +0200
+From:   Sascha Hauer <s.hauer@pengutronix.de>
+To:     linux-wireless@vger.kernel.org
+Cc:     linux-kernel@vger.kernel.org, Kalle Valo <kvalo@kernel.org>,
+        Ping-Ke Shih <pkshih@realtek.com>,
+        Yanik Fuchs <Yanik.fuchs@mbv.ch>,
+        Sascha Hauer <s.hauer@pengutronix.de>, stable@vger.kernel.org
+Subject: [PATCH] wifi: rtw88: rtw8723d: Fix MAC address offset in EEPROM
+Date:   Thu,  7 Sep 2023 10:09:42 +0200
+Message-Id: <20230907080942.2111305-1-s.hauer@pengutronix.de>
+X-Mailer: git-send-email 2.39.2
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH] drm/radeon: make fence wait in suballocator
- uninterrruptable
-Content-Language: en-US
-To:     Alex Deucher <alexander.deucher@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     Simon Pilkington <simonp.git@gmail.com>, stable@vger.kernel.org
-References: <20230906195517.1345717-1-alexander.deucher@amd.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <20230906195517.1345717-1-alexander.deucher@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+X-SA-Exim-Connect-IP: 2a0a:edc0:0:c01:1d::a2
+X-SA-Exim-Mail-From: sha@pengutronix.de
+X-SA-Exim-Scanned: No (on metis.whiteo.stw.pengutronix.de); SAEximRunCond expanded to false
+X-PTX-Original-Recipient: stable@vger.kernel.org
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=unavailable
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -75,40 +51,33 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am 06.09.23 um 21:55 schrieb Alex Deucher:
-> Commit 254986e324ad ("drm/radeon: Use the drm suballocation manager implementation.")
-> made the fence wait in amdgpu_sa_bo_new() interruptible but there is no
-> code to handle an interrupt. This caused the kernel to randomly explode
-> in high-VRAM-pressure situations so make it uninterruptible again.
->
-> Fixes: 254986e324ad ("drm/radeon: Use the drm suballocation manager implementation.")
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2769
-> Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-> CC: stable@vger.kernel.org # 6.4+
-> CC: Simon Pilkington <simonp.git@gmail.com>
+The MAC address is stored at offset 0x107 in the EEPROM, like correctly
+stated in the comment. Add a two bytes reserved field right before the
+MAC address to shift it from offset 0x105 to 0x107.
 
-Reviewed-by: Christian König <christian.koenig@amd.com>
+With this the MAC address returned from my RTL8723du wifi stick can be
+correctly decoded as "Shenzhen Four Seas Global Link Network Technology
+Co., Ltd."
 
-Going to push this to drm-misc-fixes in a minute.
+Signed-off-by: Sascha Hauer <s.hauer@pengutronix.de>
+Reported-by: Yanik Fuchs <Yanik.fuchs@mbv.ch>
+Cc: stable@vger.kernel.org
+---
+ drivers/net/wireless/realtek/rtw88/rtw8723d.h | 1 +
+ 1 file changed, 1 insertion(+)
 
-Regards,
-Christian.
-
-> ---
->   drivers/gpu/drm/radeon/radeon_sa.c | 2 +-
->   1 file changed, 1 insertion(+), 1 deletion(-)
->
-> diff --git a/drivers/gpu/drm/radeon/radeon_sa.c b/drivers/gpu/drm/radeon/radeon_sa.c
-> index c87a57c9c592..22dd8b445685 100644
-> --- a/drivers/gpu/drm/radeon/radeon_sa.c
-> +++ b/drivers/gpu/drm/radeon/radeon_sa.c
-> @@ -123,7 +123,7 @@ int radeon_sa_bo_new(struct radeon_sa_manager *sa_manager,
->   		     unsigned int size, unsigned int align)
->   {
->   	struct drm_suballoc *sa = drm_suballoc_new(&sa_manager->base, size,
-> -						   GFP_KERNEL, true, align);
-> +						   GFP_KERNEL, false, align);
->   
->   	if (IS_ERR(sa)) {
->   		*sa_bo = NULL;
+diff --git a/drivers/net/wireless/realtek/rtw88/rtw8723d.h b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+index 3642a2c7f80c9..2434e2480cbe2 100644
+--- a/drivers/net/wireless/realtek/rtw88/rtw8723d.h
++++ b/drivers/net/wireless/realtek/rtw88/rtw8723d.h
+@@ -46,6 +46,7 @@ struct rtw8723du_efuse {
+ 	u8 vender_id[2];                /* 0x100 */
+ 	u8 product_id[2];               /* 0x102 */
+ 	u8 usb_option;                  /* 0x104 */
++	u8 res5[2];			/* 0x105 */
+ 	u8 mac_addr[ETH_ALEN];          /* 0x107 */
+ };
+ 
+-- 
+2.39.2
 
