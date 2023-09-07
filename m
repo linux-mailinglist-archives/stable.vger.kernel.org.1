@@ -2,179 +2,220 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4EA197973AC
-	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:30:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DFFC79757A
+	for <lists+stable@lfdr.de>; Thu,  7 Sep 2023 17:51:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241601AbjIGP27 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 11:28:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48704 "EHLO
+        id S235436AbjIGPrW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 11:47:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49108 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233859AbjIGPWg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:22:36 -0400
-Received: from NAM10-MW2-obe.outbound.protection.outlook.com (mail-mw2nam10on2044.outbound.protection.outlook.com [40.107.94.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A66FEE7F;
-        Thu,  7 Sep 2023 08:22:06 -0700 (PDT)
-ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
- b=YTWG9q4i1WyK79NcEmlLYnb7anQ498O9CKzYS8RsZTkFCSVRKntMn6a3V1sHf2GTgGLH5V1JsN0+XGumA6o8SrMEJKgoWweDI/9vjCDB//FjufVnZ0A4wQsZnJjaYktGVaR2eur6iKYzsNFM8rpakHE7sImBAOMQ8yeXD8ri2XPDrZ0j3hHgOOSCMbEyhqUWMT4dIqSVT7Ij0oJtjkXNm9Ih20aAH9Y9IWNyCYUrIH0WjrdK1MrHiN2bwg2T14A41coDbabJaMM0RDPf4qoaCVnpdioBjrd3FwSx6XvpqYIiHfM0Cy7VnB8LTdf1c6sKeO6Qw6Wvk7oYlscadW/0+w==
-ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
- s=arcselector9901;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
- bh=OJuiGrznQHeTkUH37N+lmE8ZVtAmsvybaRqKwX6kf0c=;
- b=D6Of6PhIDB4lUJiuG3knpVN6rATSU0Tgj2JGOlacLRRZ2olEACpWPTRPtd7N86tygnyLC064/fMAe3B/g/vK6BW1HF1QqcicDibp4Z2eR4jBtlG7KiCQEQ46eIehEINv3aifcBCftdz4IAl1ErWZ+SX53P0jsHOmaImV0uiZeezJ3Ius/i/d61Gn7frM2lYYF6Pvva5hOQpb5s5T0gqTSH08q99jDJ5HyCqBEdeC6KYgJ/e47kapUZqv8z2LGrZg9kujF+suem8eIReUvej4fBq22P993ngZazUhhE3DcUVaGLX6oLDIKHiV/duxUbVz5t1BB95cZwG1GySolCP0Jg==
-ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
- 216.228.117.160) smtp.rcpttodomain=kernel.org smtp.mailfrom=nvidia.com;
- dmarc=pass (p=reject sp=reject pct=100) action=none header.from=nvidia.com;
- dkim=none (message not signed); arc=none
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=Nvidia.com;
- s=selector2;
- h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
- bh=OJuiGrznQHeTkUH37N+lmE8ZVtAmsvybaRqKwX6kf0c=;
- b=Q9Rsa7nDUfONWLXmbCp+bED+v2+9Ma7o2VO23sc51ePZuBc6MYlxu0S8g9+EM9ZVral+Tgez4n6H7XK7XhORRiHbYpBJ/K0J/LRavvbhf4By+y3hseM/CDk94z3BNX4NWaSNrBm+HWMRlXiNUy4mw7Ig2p3bm7L2bCLjR7ZgOyYaQ8WEdarOwV8xxQGuM05EQP8f0ZYEqRF2um070rMkeB2ZBwpvWQpZqMh1ZYhT1v6RSl4Jg1lM6TdEUG3IllAY2o9Pv4BMUY2dUSfB9J5iS74+b9dzv0eVeL9Q6ywsdJsV0IAanRryb47+3Pkkas8iwUlCqarLIlFzac4pAuFRbQ==
-Received: from DM5PR07CA0116.namprd07.prod.outlook.com (2603:10b6:4:ae::45) by
- SJ0PR12MB5453.namprd12.prod.outlook.com (2603:10b6:a03:37f::9) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6745.34; Thu, 7 Sep 2023 06:53:17 +0000
-Received: from CY4PEPF0000FCC4.namprd03.prod.outlook.com
- (2603:10b6:4:ae:cafe::d8) by DM5PR07CA0116.outlook.office365.com
- (2603:10b6:4:ae::45) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6768.30 via Frontend
- Transport; Thu, 7 Sep 2023 06:53:17 +0000
-X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 216.228.117.160)
- smtp.mailfrom=nvidia.com; dkim=none (message not signed)
- header.d=none;dmarc=pass action=none header.from=nvidia.com;
-Received-SPF: Pass (protection.outlook.com: domain of nvidia.com designates
- 216.228.117.160 as permitted sender) receiver=protection.outlook.com;
- client-ip=216.228.117.160; helo=mail.nvidia.com; pr=C
-Received: from mail.nvidia.com (216.228.117.160) by
- CY4PEPF0000FCC4.mail.protection.outlook.com (10.167.242.106) with Microsoft
- SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- 15.20.6768.25 via Frontend Transport; Thu, 7 Sep 2023 06:53:16 +0000
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by mail.nvidia.com
- (10.129.200.66) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.5; Wed, 6 Sep 2023
- 23:53:05 -0700
-Received: from rnnvmail201.nvidia.com (10.129.68.8) by rnnvmail201.nvidia.com
- (10.129.68.8) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.2.986.37; Wed, 6 Sep 2023
- 23:53:05 -0700
-Received: from audio.nvidia.com (10.127.8.10) by mail.nvidia.com (10.129.68.8)
- with Microsoft SMTP Server id 15.2.986.37 via Frontend Transport; Wed, 6 Sep
- 2023 23:53:02 -0700
-From:   Sameer Pujar <spujar@nvidia.com>
-To:     <broonie@kernel.org>, <lgirdwood@gmail.com>, <perex@perex.cz>,
-        <tiwai@suse.com>
-CC:     <thierry.reding@gmail.com>, <jonathanh@nvidia.com>,
-        <spujar@nvidia.com>, <alsa-devel@alsa-project.org>,
-        <linux-kernel@vger.kernel.org>, <linux-tegra@vger.kernel.org>,
-        <stable@vger.kernel.org>
-Subject: [PATCH 2/2] ASoC: tegra: Fix redundant PLLA and PLLA_OUT0 updates
-Date:   Thu, 7 Sep 2023 12:22:13 +0530
-Message-ID: <1694069533-7832-3-git-send-email-spujar@nvidia.com>
-X-Mailer: git-send-email 2.7.4
-In-Reply-To: <1694069533-7832-1-git-send-email-spujar@nvidia.com>
-References: <1694069533-7832-1-git-send-email-spujar@nvidia.com>
+        with ESMTP id S233951AbjIGPgO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 11:36:14 -0400
+Received: from smtp-out2.suse.de (smtp-out2.suse.de [IPv6:2001:67c:2178:6::1d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B282123;
+        Thu,  7 Sep 2023 08:35:52 -0700 (PDT)
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by smtp-out2.suse.de (Postfix) with ESMTPS id 45D511F86C;
+        Thu,  7 Sep 2023 07:10:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.cz; s=susede2_rsa;
+        t=1694070639; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DbVdXW/jNFCFxdW+0x/LfhB7YMcuH/QmkF6mZXOuaLE=;
+        b=3AkW0YDdz/+le3pX62tW9FtHTG97hy9+xiaxNkWWz4qd/7IKfwRUqLtZprB3fdgW9GDEDY
+        LFrgg0Ur4ZlsksnUNEJSaKDkYlfsXc5aiAFCaFJyN9VMpHwJHaZbazm8EnzYx2tb3XR+im
+        I1yAN+SQOBtwGyrpofbtRLJlgDUO2lU=
+DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.cz;
+        s=susede2_ed25519; t=1694070639;
+        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
+         mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=DbVdXW/jNFCFxdW+0x/LfhB7YMcuH/QmkF6mZXOuaLE=;
+        b=vWb+l5pOCouADD9LzFATDdCF4CBnb8ZVlVUDrX4mn6q2mcJltWbN3YfD6sYkyMILlMzFBp
+        ADdgkcIN+z9Pz/AQ==
+Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
+        (No client certificate requested)
+        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 118381358B;
+        Thu,  7 Sep 2023 07:10:39 +0000 (UTC)
+Received: from dovecot-director2.suse.de ([192.168.254.65])
+        by imap2.suse-dmz.suse.de with ESMTPSA
+        id RUqJA293+WRdBgAAMHmgww
+        (envelope-from <vbabka@suse.cz>); Thu, 07 Sep 2023 07:10:39 +0000
+Message-ID: <737d399d-c83a-3e66-ceb7-4ae7ba4acfb4@suse.cz>
+Date:   Thu, 7 Sep 2023 09:10:38 +0200
 MIME-Version: 1.0
-Content-Type: text/plain
-X-NV-OnPremToCloud: ExternallySecured
-X-EOPAttributedMessage: 0
-X-MS-PublicTrafficType: Email
-X-MS-TrafficTypeDiagnostic: CY4PEPF0000FCC4:EE_|SJ0PR12MB5453:EE_
-X-MS-Office365-Filtering-Correlation-Id: e0078b4a-b27d-4d27-2cbf-08dbaf6f1d41
-X-MS-Exchange-SenderADCheck: 1
-X-MS-Exchange-AntiSpam-Relay: 0
-X-Microsoft-Antispam: BCL:0;
-X-Microsoft-Antispam-Message-Info: /yMMYPTWwSQb6pq/cme5dcLtUMgsyTf3UmfXfQVeXoj9L8oRDGCsHOcidOzpX7aeQsVGdH+VloFSLO8Lmf0hKF7GPVVmXoWNo1qiodZFPk0oxX1S3+kXK+EZK/t5TFI/WeVnM3ia9zINwvGNtN2DufK8n4iwU618dwfKQTWJMdmfW8n2xEsABk+HLmNZ5u+n1XFZHZcjS2XJzKbSeyjLFF6Ujtu+TPzaN6OzyNGr47UbWKwgwawNfbR35YtAhn4MQDqbuBJs1NyAuWSF+TX+uoQF3j+oxE4SSRs9jVRCN6cTxIWaYhVW15S4SHRciXeOT6Ff0dMC+Sz6893+owTYe62wNwzt8MKVSyiORE49FvAhv4pDvBQaMkqKw12hJ2ILGN4FTbBKSY7/zoOhPToqQFi//O444OS6du+S9vsJzTOy0n6AzLZJFXmrtGgr2G7uqcYKgRhOGKYYaXeERnmONidJQSzzIWrTahFkyWQ/d64+i/4NozeQb1IBGrdjNDFOul20E/VHPRKnHAa4BPVzQ8yHx8iAUc9/hKr8yxdCIzKdXfX4+TH3kU49cyrJv07igl0uv3E0oWApz9n9Gk9p7aEZdSuUQK/GGrehrro/XBtL6D7tKcCa2+/LQEQYNhuzgEBg1sfbQOKjf/JG0PRn3EKbMwE68kE7KtvvJjnjW3pmn5vvxUpPxoPx10Pkbu+4K5qKqs7ONjM2maNHfm6DKYb81Tyc7488WL2fZMXliT3gKWn8cpVEUbXBZu/E49iw
-X-Forefront-Antispam-Report: CIP:216.228.117.160;CTRY:US;LANG:en;SCL:1;SRV:;IPV:NLI;SFV:NSPM;H:mail.nvidia.com;PTR:dc6edge1.nvidia.com;CAT:NONE;SFS:(13230031)(4636009)(346002)(39860400002)(376002)(136003)(396003)(451199024)(186009)(1800799009)(82310400011)(46966006)(36840700001)(40470700004)(478600001)(70206006)(40480700001)(70586007)(316002)(15650500001)(110136005)(54906003)(83380400001)(8676002)(2906002)(8936002)(41300700001)(4326008)(5660300002)(6666004)(7696005)(40460700003)(2616005)(26005)(36860700001)(336012)(426003)(356005)(36756003)(7636003)(82740400003)(86362001)(47076005);DIR:OUT;SFP:1101;
-X-OriginatorOrg: Nvidia.com
-X-MS-Exchange-CrossTenant-OriginalArrivalTime: 07 Sep 2023 06:53:16.8848
- (UTC)
-X-MS-Exchange-CrossTenant-Network-Message-Id: e0078b4a-b27d-4d27-2cbf-08dbaf6f1d41
-X-MS-Exchange-CrossTenant-Id: 43083d15-7273-40c1-b7db-39efd9ccc17a
-X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=43083d15-7273-40c1-b7db-39efd9ccc17a;Ip=[216.228.117.160];Helo=[mail.nvidia.com]
-X-MS-Exchange-CrossTenant-AuthSource: CY4PEPF0000FCC4.namprd03.prod.outlook.com
-X-MS-Exchange-CrossTenant-AuthAs: Anonymous
-X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
-X-MS-Exchange-Transport-CrossTenantHeadersStamped: SJ0PR12MB5453
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
-        autolearn=no autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH v3 2/2] rcu: Dump vmalloc memory info safely
+Content-Language: en-US
+To:     Lorenzo Stoakes <lstoakes@gmail.com>,
+        Joel Fernandes <joel@joelfernandes.org>
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Zqiang <qiang.zhang1211@gmail.com>,
+        Zhen Lei <thunder.leizhen@huaweicloud.com>,
+        rcu@vger.kernel.org, Matthew Wilcox <willy@infradead.org>,
+        stable@vger.kernel.org, linux-mm@kvack.org
+References: <20230904180806.1002832-1-joel@joelfernandes.org>
+ <20230904180806.1002832-2-joel@joelfernandes.org>
+ <9e329429-73a5-4926-af4f-edcf9e547101@lucifer.local>
+ <20230905114841.GB3881391@google.com>
+ <CAA5enKafgfqNE0DWg7tcd-iNGeE0Aud5VcmmWzdguK9Psq0uhQ@mail.gmail.com>
+From:   Vlastimil Babka <vbabka@suse.cz>
+In-Reply-To: <CAA5enKafgfqNE0DWg7tcd-iNGeE0Aud5VcmmWzdguK9Psq0uhQ@mail.gmail.com>
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_SOFTFAIL autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Tegra audio graph card has many DAI links which connects internal
-AHUB modules and external audio codecs. Since these are DPCM links,
-hw_params() call in the machine driver happens for each connected
-BE link and PLLA is updated every time. This is not really needed
-for all links as only I/O link DAIs derive respective clocks from
-PLLA_OUT0 and thus from PLLA. Hence add checks to limit the clock
-updates to DAIs over I/O links.
+On 9/6/23 21:18, Lorenzo Stoakes wrote:
+> On Tue, 5 Sept 2023 at 12:48, Joel Fernandes <joel@joelfernandes.org> wrote:
+>>
+>> On Tue, Sep 05, 2023 at 08:00:44AM +0100, Lorenzo Stoakes wrote:
+>> > On Mon, Sep 04, 2023 at 06:08:05PM +0000, Joel Fernandes (Google) wrote:
+>> > > From: Zqiang <qiang.zhang1211@gmail.com>
+>> > >
+>> > > Currently, for double invoke call_rcu(), will dump rcu_head objects
+>> > > memory info, if the objects is not allocated from the slab allocator,
+>> > > the vmalloc_dump_obj() will be invoke and the vmap_area_lock spinlock
+>> > > need to be held, since the call_rcu() can be invoked in interrupt context,
+>> > > therefore, there is a possibility of spinlock deadlock scenarios.
+>> > >
+>> > > And in Preempt-RT kernel, the rcutorture test also trigger the following
+>> > > lockdep warning:
+>> > >
+>> > > BUG: sleeping function called from invalid context at kernel/locking/spinlock_rt.c:48
+>> > > in_atomic(): 1, irqs_disabled(): 1, non_block: 0, pid: 1, name: swapper/0
+>> > > preempt_count: 1, expected: 0
+>> > > RCU nest depth: 1, expected: 1
+>> > > 3 locks held by swapper/0/1:
+>> > >  #0: ffffffffb534ee80 (fullstop_mutex){+.+.}-{4:4}, at: torture_init_begin+0x24/0xa0
+>> > >  #1: ffffffffb5307940 (rcu_read_lock){....}-{1:3}, at: rcu_torture_init+0x1ec7/0x2370
+>> > >  #2: ffffffffb536af40 (vmap_area_lock){+.+.}-{3:3}, at: find_vmap_area+0x1f/0x70
+>> > > irq event stamp: 565512
+>> > > hardirqs last  enabled at (565511): [<ffffffffb379b138>] __call_rcu_common+0x218/0x940
+>> > > hardirqs last disabled at (565512): [<ffffffffb5804262>] rcu_torture_init+0x20b2/0x2370
+>> > > softirqs last  enabled at (399112): [<ffffffffb36b2586>] __local_bh_enable_ip+0x126/0x170
+>> > > softirqs last disabled at (399106): [<ffffffffb43fef59>] inet_register_protosw+0x9/0x1d0
+>> > > Preemption disabled at:
+>> > > [<ffffffffb58040c3>] rcu_torture_init+0x1f13/0x2370
+>> > > CPU: 0 PID: 1 Comm: swapper/0 Tainted: G        W          6.5.0-rc4-rt2-yocto-preempt-rt+ #15
+>> > > Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
+>> > > Call Trace:
+>> > >  <TASK>
+>> > >  dump_stack_lvl+0x68/0xb0
+>> > >  dump_stack+0x14/0x20
+>> > >  __might_resched+0x1aa/0x280
+>> > >  ? __pfx_rcu_torture_err_cb+0x10/0x10
+>> > >  rt_spin_lock+0x53/0x130
+>> > >  ? find_vmap_area+0x1f/0x70
+>> > >  find_vmap_area+0x1f/0x70
+>> > >  vmalloc_dump_obj+0x20/0x60
+>> > >  mem_dump_obj+0x22/0x90
+>> > >  __call_rcu_common+0x5bf/0x940
+>> > >  ? debug_smp_processor_id+0x1b/0x30
+>> > >  call_rcu_hurry+0x14/0x20
+>> > >  rcu_torture_init+0x1f82/0x2370
+>> > >  ? __pfx_rcu_torture_leak_cb+0x10/0x10
+>> > >  ? __pfx_rcu_torture_leak_cb+0x10/0x10
+>> > >  ? __pfx_rcu_torture_init+0x10/0x10
+>> > >  do_one_initcall+0x6c/0x300
+>> > >  ? debug_smp_processor_id+0x1b/0x30
+>> > >  kernel_init_freeable+0x2b9/0x540
+>> > >  ? __pfx_kernel_init+0x10/0x10
+>> > >  kernel_init+0x1f/0x150
+>> > >  ret_from_fork+0x40/0x50
+>> > >  ? __pfx_kernel_init+0x10/0x10
+>> > >  ret_from_fork_asm+0x1b/0x30
+>> > >  </TASK>
+>> > >
+>> > > The previous patch fixes this by using the deadlock-safe best-effort
+>> > > version of find_vm_area. However, in case of failure print the fact that
+>> > > the pointer was a vmalloc pointer so that we print at least something.
+>> > >
+>> > > Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
+>> > > Cc: Paul E. McKenney <paulmck@kernel.org>
+>> > > Cc: rcu@vger.kernel.org
+>> > > Reviewed-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+>> > > Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
+>> > > Cc: stable@vger.kernel.org
+>> > > Signed-off-by: Zqiang <qiang.zhang1211@gmail.com>
+>> > > Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+>> > > ---
+>> > >  mm/util.c | 4 +++-
+>> > >  1 file changed, 3 insertions(+), 1 deletion(-)
+>> > >
+>> > > diff --git a/mm/util.c b/mm/util.c
+>> > > index dd12b9531ac4..406634f26918 100644
+>> > > --- a/mm/util.c
+>> > > +++ b/mm/util.c
+>> > > @@ -1071,7 +1071,9 @@ void mem_dump_obj(void *object)
+>> > >     if (vmalloc_dump_obj(object))
+>> > >             return;
+>> > >
+>> > > -   if (virt_addr_valid(object))
+>> > > +   if (is_vmalloc_addr(object))
+>> > > +           type = "vmalloc memory";
+>> > > +   else if (virt_addr_valid(object))
+>> > >             type = "non-slab/vmalloc memory";
+>> >
+>> > I think you should update this to say non-slab/non-vmalloc memory (as much
+>> > as that description sucks!) as this phrasing in the past meant to say
+>> > 'non-slab or vmalloc memory' (already confusing phrasing) so better to be
+>> > clear.
+>>
+>> True, though the issue you mentioned it is in existing code, a respin of this
+>> patch could update it to say non-vmalloc. Good point, thanks for reviewing!
+> 
+> No it's not, you're changing the meaning, because you changed the code
+> that determines the output...
 
-Fixes: 202e2f774543 ("ASoC: tegra: Add audio graph based card driver")
-Cc: stable@vger.kernel.org
-Signed-off-by: Sameer Pujar <spujar@nvidia.com>
----
- sound/soc/tegra/tegra_audio_graph_card.c | 30 ++++++++++++++----------
- 1 file changed, 17 insertions(+), 13 deletions(-)
+I think it has always meant (but clearly it's not unambiguously worded) "not
+slab && not vmalloc", that is before and after this patch. Only in case
+patch 1 is applied and patch 2 not, can the output be wrong in that a
+vmalloc pointer will (in case of trylock fail) be classified as "not slab &&
+not vmalloc", but seems fine to me after patch 2.
 
-diff --git a/sound/soc/tegra/tegra_audio_graph_card.c b/sound/soc/tegra/tegra_audio_graph_card.c
-index 1f2c5018bf5a..4737e776d383 100644
---- a/sound/soc/tegra/tegra_audio_graph_card.c
-+++ b/sound/soc/tegra/tegra_audio_graph_card.c
-@@ -10,6 +10,7 @@
- #include <linux/platform_device.h>
- #include <sound/graph_card.h>
- #include <sound/pcm_params.h>
-+#include <sound/soc-dai.h>
- 
- #define MAX_PLLA_OUT0_DIV 128
- 
-@@ -44,6 +45,21 @@ struct tegra_audio_cdata {
- 	unsigned int plla_out0_rates[NUM_RATE_TYPE];
- };
- 
-+static bool need_clk_update(struct snd_soc_dai *dai)
-+{
-+	if (snd_soc_dai_is_dummy(dai) ||
-+	    !dai->driver->ops ||
-+	    !dai->driver->name)
-+		return false;
-+
-+	if (strstr(dai->driver->name, "I2S") ||
-+	    strstr(dai->driver->name, "DMIC") ||
-+	    strstr(dai->driver->name, "DSPK"))
-+		return true;
-+
-+	return false;
-+}
-+
- /* Setup PLL clock as per the given sample rate */
- static int tegra_audio_graph_update_pll(struct snd_pcm_substream *substream,
- 					struct snd_pcm_hw_params *params)
-@@ -140,19 +156,7 @@ static int tegra_audio_graph_hw_params(struct snd_pcm_substream *substream,
- 	struct snd_soc_dai *cpu_dai = asoc_rtd_to_cpu(rtd, 0);
- 	int err;
- 
--	/*
--	 * This gets called for each DAI link (FE or BE) when DPCM is used.
--	 * We may not want to update PLLA rate for each call. So PLLA update
--	 * must be restricted to external I/O links (I2S, DMIC or DSPK) since
--	 * they actually depend on it. I/O modules update their clocks in
--	 * hw_param() of their respective component driver and PLLA rate
--	 * update here helps them to derive appropriate rates.
--	 *
--	 * TODO: When more HW accelerators get added (like sample rate
--	 * converter, volume gain controller etc., which don't really
--	 * depend on PLLA) we need a better way to filter here.
--	 */
--	if (cpu_dai->driver->ops && rtd->dai_link->no_pcm) {
-+	if (need_clk_update(cpu_dai)) {
- 		err = tegra_audio_graph_update_pll(substream, params);
- 		if (err)
- 			return err;
--- 
-2.17.1
+I guess if we wanted, we could also rewrite it to be more like the kmem
+check in the beginning of mem_dump_obj(), so there would be:
+
+if (is_vmalloc_addr(...)) {
+    vmalloc_dump_obj(...);
+    return;
+}
+
+where vmalloc_dump_obj() itself would print at least "vmalloc memory" with
+no further details in case of trylock failure.
+
+that assumes is_vmalloc_addr() is guaranteed to be true for all addresses
+that __find_vmap_area resolves, otherwise it could miss something compared
+to current code. Is it guaranteed?
+
+> This has been merged now despite my outstanding comments (!) so I
+> guess I'll have to send a follow up patch to address this.
+> 
+>>
+>>  - Joel
+>>
+> 
+> 
+> 
+> --
+> Lorenzo Stoakes
+> https://ljs.io
 
