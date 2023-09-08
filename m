@@ -2,128 +2,134 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 775A9798054
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 03:42:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05983798059
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 03:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231899AbjIHBma (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 21:42:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33886 "EHLO
+        id S231795AbjIHBty (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 21:49:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46580 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231138AbjIHBma (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 21:42:30 -0400
-Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA0919BD
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 18:42:26 -0700 (PDT)
-Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-501bef6e0d3so2671225e87.1
-        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 18:42:26 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694137344; x=1694742144;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=FNhDAr9U/KJFxgkGy8ktzjClHhQu/DsNA4z0+swql8k=;
-        b=GHLFS9P0zlYJGHJt/cHjC2X0PWFrSq6t5zvnyU7UHFb3tpJzZvBxdgxYpf32AzpSf6
-         RtLAi714Xe9YrG5WxdKn2U9uELZNTA1rHCZyX1nfKDzg7RaAr6Po+ZTMpM5X0Lvmr/w6
-         eR+JwbCrfXYHzs3SbOc3uiIwXGbHi/UkHuPe+zvw5pnYbHmvD4bHLvP02q+ChQ/biQ0N
-         bjoL4KDZfde3HdlP8kQPx6Y/yA/4Sv0QUgnN/isvNOcGdrKo02RmXRvI2Io1+TV1WB/k
-         Wu007k0YZoQTRplrMb3hgySMY3wbHGIp5c3g4lJ6rHrKF1o6ZR7qsFNjvfpq4a1k776c
-         azJQ==
-X-Gm-Message-State: AOJu0YyrB8dpMlV0MkD0JPLx1iHZBM7l42EEO8BUyK1C1+WLRwlfI2kb
-        dOzF6aklQ5IBLNqPanY4uSsKK7jLyViKWg==
-X-Google-Smtp-Source: AGHT+IF7PAen8skStxwHFQre2QEKCiEIDPP5xEaeU5hQIF1bfYSgTML7U76wVK1gwSWIvRMXXgVabw==
-X-Received: by 2002:ac2:5b4d:0:b0:4fd:fd97:a77b with SMTP id i13-20020ac25b4d000000b004fdfd97a77bmr691860lfp.50.1694137343807;
-        Thu, 07 Sep 2023 18:42:23 -0700 (PDT)
-Received: from white.. ([94.204.198.68])
-        by smtp.googlemail.com with ESMTPSA id z13-20020a19f70d000000b005007fc9cccasm122899lfe.94.2023.09.07.18.42.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 18:42:23 -0700 (PDT)
-From:   "Denis Efremov (Oracle)" <efremov@linux.com>
-To:     stable@vger.kernel.org
-Cc:     Duoming Zhou <duoming@zju.edu.cn>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Denis Efremov <efremov@linux.com>
-Subject: [PATCH] Input: cyttsp4_core - change del_timer_sync() to timer_shutdown_sync()
-Date:   Fri,  8 Sep 2023 05:41:35 +0400
-Message-ID: <20230908014144.61151-1-efremov@linux.com>
-X-Mailer: git-send-email 2.42.0
-MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
-        autolearn=no autolearn_force=no version=3.4.6
+        with ESMTP id S231138AbjIHBty (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 21:49:54 -0400
+Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938FF1BD2;
+        Thu,  7 Sep 2023 18:49:49 -0700 (PDT)
+X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R461e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0VradabB_1694137785;
+Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0VradabB_1694137785)
+          by smtp.aliyun-inc.com;
+          Fri, 08 Sep 2023 09:49:46 +0800
+Message-ID: <1694137778.7008362-1-xuanzhuo@linux.alibaba.com>
+Subject: Re: [PATCH v2] virtio-mmio: fix memory leak of vm_dev
+Date:   Fri, 8 Sep 2023 09:49:38 +0800
+From:   Xuan Zhuo <xuanzhuo@linux.alibaba.com>
+To:     Maximilian Heyne <mheyne@amazon.de>
+Cc:     Maximilian Heyne <mheyne@amazon.de>, <stable@vger.kernel.org>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        <linux-kernel@vger.kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        <virtualization@lists.linux-foundation.org>
+References: <20230907141716.88863-1-mheyne@amazon.de>
+In-Reply-To: <20230907141716.88863-1-mheyne@amazon.de>
+X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
+        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
+        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Duoming Zhou <duoming@zju.edu.cn>
+On Thu, 7 Sep 2023 14:17:16 +0000, Maximilian Heyne <mheyne@amazon.de> wrote:
+> With the recent removal of vm_dev from devres its memory is only freed
+> via the callback virtio_mmio_release_dev. However, this only takes
+> effect after device_add is called by register_virtio_device. Until then
+> it's an unmanaged resource and must be explicitly freed on error exit.
+>
+> This bug was discovered and resolved using Coverity Static Analysis
+> Security Testing (SAST) by Synopsys, Inc.
+>
+> Cc: <stable@vger.kernel.org>
+> Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 
-The watchdog_timer can schedule tx_timeout_task and watchdog_work
-can also arm watchdog_timer. The process is shown below:
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
------------ timer schedules work ------------
-cyttsp4_watchdog_timer() //timer handler
-  schedule_work(&cd->watchdog_work)
-
------------ work arms timer ------------
-cyttsp4_watchdog_work() //workqueue callback function
-  cyttsp4_start_wd_timer()
-    mod_timer(&cd->watchdog_timer, ...)
-
-Although del_timer_sync() and cancel_work_sync() are called in
-cyttsp4_remove(), the timer and workqueue could still be rearmed.
-As a result, the possible use after free bugs could happen. The
-process is shown below:
-
-  (cleanup routine)           |  (timer and workqueue routine)
-cyttsp4_remove()              | cyttsp4_watchdog_timer() //timer
-  cyttsp4_stop_wd_timer()     |   schedule_work()
-    del_timer_sync()          |
-                              | cyttsp4_watchdog_work() //worker
-                              |   cyttsp4_start_wd_timer()
-                              |     mod_timer()
-    cancel_work_sync()        |
-                              | cyttsp4_watchdog_timer() //timer
-                              |   schedule_work()
-    del_timer_sync()          |
-  kfree(cd) //FREE            |
-                              | cyttsp4_watchdog_work() // reschedule!
-                              |   cd-> //USE
-
-This patch changes del_timer_sync() to timer_shutdown_sync(),
-which could prevent rearming of the timer from the workqueue.
-
-Cc: stable@vger.kernel.org
-Fixes: CVE-2023-4134
-Fixes: 17fb1563d69b ("Input: cyttsp4 - add core driver for Cypress TMA4XX touchscreen devices")
-Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230421082919.8471-1-duoming@zju.edu.cn
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Denis Efremov (Oracle) <efremov@linux.com>
----
-
-I've only added Cc: stable and Fixes tag.
-
- drivers/input/touchscreen/cyttsp4_core.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
-
-diff --git a/drivers/input/touchscreen/cyttsp4_core.c b/drivers/input/touchscreen/cyttsp4_core.c
-index dccbcb942fe5..f999265896f4 100644
---- a/drivers/input/touchscreen/cyttsp4_core.c
-+++ b/drivers/input/touchscreen/cyttsp4_core.c
-@@ -1263,9 +1263,8 @@ static void cyttsp4_stop_wd_timer(struct cyttsp4 *cd)
- 	 * Ensure we wait until the watchdog timer
- 	 * running on a different CPU finishes
- 	 */
--	del_timer_sync(&cd->watchdog_timer);
-+	timer_shutdown_sync(&cd->watchdog_timer);
- 	cancel_work_sync(&cd->watchdog_work);
--	del_timer_sync(&cd->watchdog_timer);
- }
- 
- static void cyttsp4_watchdog_timer(struct timer_list *t)
--- 
-2.42.0
-
+> ---
+>  drivers/virtio/virtio_mmio.c | 19 ++++++++++++++-----
+>  1 file changed, 14 insertions(+), 5 deletions(-)
+>
+> diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+> index 97760f611295..59892a31cf76 100644
+> --- a/drivers/virtio/virtio_mmio.c
+> +++ b/drivers/virtio/virtio_mmio.c
+> @@ -631,14 +631,17 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+>  	spin_lock_init(&vm_dev->lock);
+>
+>  	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
+> -	if (IS_ERR(vm_dev->base))
+> -		return PTR_ERR(vm_dev->base);
+> +	if (IS_ERR(vm_dev->base)) {
+> +		rc = PTR_ERR(vm_dev->base);
+> +		goto free_vm_dev;
+> +	}
+>
+>  	/* Check magic value */
+>  	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
+>  	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
+>  		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
+> -		return -ENODEV;
+> +		rc = -ENODEV;
+> +		goto free_vm_dev;
+>  	}
+>
+>  	/* Check device version */
+> @@ -646,7 +649,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+>  	if (vm_dev->version < 1 || vm_dev->version > 2) {
+>  		dev_err(&pdev->dev, "Version %ld not supported!\n",
+>  				vm_dev->version);
+> -		return -ENXIO;
+> +		rc = -ENXIO;
+> +		goto free_vm_dev;
+>  	}
+>
+>  	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
+> @@ -655,7 +659,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+>  		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
+>  		 * with no function. End probing now with no error reported.
+>  		 */
+> -		return -ENODEV;
+> +		rc = -ENODEV;
+> +		goto free_vm_dev;
+>  	}
+>  	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
+>
+> @@ -685,6 +690,10 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+>  		put_device(&vm_dev->vdev.dev);
+>
+>  	return rc;
+> +
+> +free_vm_dev:
+> +	kfree(vm_dev);
+> +	return rc;
+>  }
+>
+>  static int virtio_mmio_remove(struct platform_device *pdev)
+> --
+> 2.40.1
+>
+>
+>
+>
+> Amazon Development Center Germany GmbH
+> Krausenstr. 38
+> 10117 Berlin
+> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+> Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+> Sitz: Berlin
+> Ust-ID: DE 289 237 879
+>
+>
+>
