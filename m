@@ -2,90 +2,85 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 506E1798EE1
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 21:13:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E870798F03
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 21:28:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234362AbjIHTM4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 15:12:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37832 "EHLO
+        id S235127AbjIHT25 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 15:28:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243170AbjIHTMk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 15:12:40 -0400
-Received: from netrider.rowland.org (netrider.rowland.org [192.131.102.5])
-        by lindbergh.monkeyblade.net (Postfix) with SMTP id 556FE10CF
-        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 12:12:27 -0700 (PDT)
-Received: (qmail 792929 invoked by uid 1000); 8 Sep 2023 15:12:26 -0400
-Date:   Fri, 8 Sep 2023 15:12:26 -0400
-From:   Alan Stern <stern@rowland.harvard.edu>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Kalle Valo <kvalo@kernel.org>, quic_jjohnson@quicinc.com,
-        nbd@nbd.name, lorenzo@kernel.org, ryder.lee@mediatek.com,
-        matthias.bgg@gmail.com, kuba@kernel.org, srini.raju@purelifi.com,
-        stf_xl@wp.pl, helmut.schaa@googlemail.com, pkshih@realtek.com,
-        corentin.chary@gmail.com, hdegoede@redhat.com,
-        markgross@kernel.org, johannes.berg@intel.com,
-        alexander@wetzel-home.de, error27@gmail.com,
-        szymon.heidrich@gmail.com, gustavoars@kernel.org, lynxis@fe80.eu,
-        daniel@makrotopia.org, arnd@arndb.de, shayne.chen@mediatek.com,
-        keescook@chromium.org, tglx@linutronix.de, pabeni@redhat.com,
-        rostedt@goodmis.org, jacob.e.keller@intel.com,
-        ath10k@lists.infradead.org, linux-wireless@vger.kernel.org,
-        ath11k@lists.infradead.org, ath12k@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-mediatek@lists.infradead.org,
-        acpi4asus-user@lists.sourceforge.net,
-        platform-driver-x86@vger.kernel.org, linux-staging@lists.linux.dev
-Subject: Re: [PATCH AUTOSEL 6.5 43/45] Fix nomenclature for USB and PCI
- wireless devices
-Message-ID: <0d2ddf90-2334-4d0c-9f63-018c150e06a9@rowland.harvard.edu>
-References: <20230908181327.3459042-1-sashal@kernel.org>
- <20230908181327.3459042-43-sashal@kernel.org>
+        with ESMTP id S229455AbjIHT24 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 15:28:56 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69D9D8E;
+        Fri,  8 Sep 2023 12:28:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D444EC433C9;
+        Fri,  8 Sep 2023 19:28:50 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694201332;
+        bh=+uyi4zQldHiJmZfU700jHvrjz7N0mC1oRwEtc6spOWs=;
+        h=From:To:Cc:Subject:Date:From;
+        b=JLxzjcdXqsbpngFDcYN6Xas757YLPsumBMLTFAXQc6aX7tWPRtMlN/fwnctCVBz34
+         mGYLfuJZLO8tCyn+McR1rTkm1xbKf9KFKrfrRa0SSkFx6sJ1WlzOrliCaLhDkUT5QN
+         KhdGg+E5Pgj0b4id5WyJyYRuBMTmUToRtwkO+5sGBM2tE0j7+dJV1OCYiRtUW9s6GA
+         njbJGxRIJzRioJYtWSibj4Ag4EW0a91Ro9ynH8Slssl40aDjg0XVaLtmn9KYPbVcLS
+         8RB3nXkVfiZcyWLuQarHTbl3XIq6gCI9wXWCj1alhNFoqf8Bzf4fQJiHhAKacsLxnf
+         0SNW9K8s5jHrQ==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Marek Vasut <marex@denx.de>, Sam Ravnborg <sam@ravnborg.org>,
+        Robert Foss <rfoss@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, andrzej.hajda@intel.com,
+        neil.armstrong@linaro.org, airlied@gmail.com, daniel@ffwll.ch,
+        dri-devel@lists.freedesktop.org
+Subject: [PATCH AUTOSEL 6.5 01/36] drm/bridge: tc358762: Instruct DSI host to generate HSE packets
+Date:   Fri,  8 Sep 2023 15:28:12 -0400
+Message-Id: <20230908192848.3462476-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230908181327.3459042-43-sashal@kernel.org>
-X-Spam-Status: No, score=-1.7 required=5.0 tests=BAYES_00,
-        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,
-        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.5.2
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 08, 2023 at 02:13:24PM -0400, Sasha Levin wrote:
-> From: Alan Stern <stern@rowland.harvard.edu>
-> 
-> [ Upstream commit 5d7cf67f72ae34d38e090bdfa673da4aefe4048e ]
-> 
-> A mouse that uses a USB connection is called a "USB mouse" device (or
-> "USB mouse" for short), not a "mouse USB" device.  By analogy, a WiFi
-> adapter that connects to the host computer via USB is a "USB wireless"
-> device, not a "wireless USB" device.  (The latter term more properly
-> refers to a defunct Wireless USB specification, which described a
-> technology for sending USB protocol messages over an ultra wideband
-> radio link.)
-> 
-> Similarly for a WiFi adapter card that plugs into a PCIe slot: It is a
-> "PCIe wireless" device, not a "wireless PCIe" device.
-> 
-> Rephrase the text in the kernel source where the word ordering is
-> wrong.
-> 
-> Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-> Reviewed-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Kalle Valo <kvalo@kernel.org>
-> Link: https://lore.kernel.org/r/57da7c80-0e48-41b5-8427-884a02648f55@rowland.harvard.edu
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+From: Marek Vasut <marex@denx.de>
 
+[ Upstream commit 362fa8f6e6a05089872809f4465bab9d011d05b3 ]
 
-Is there any real reason to apply this commit to the -stable kernels?
-I did not mark it that way when it was submitted, and it doesn't fix
-any bugs.  In fact, aside from updating some module and device
-description strings, all it does is change a bunch of comments.
+This bridge seems to need the HSE packet, otherwise the image is
+shifted up and corrupted at the bottom. This makes the bridge
+work with Samsung DSIM on i.MX8MM and i.MX8MP.
 
-Does that really fall under the -stable rules for acceptance?
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230615201902.566182-3-marex@denx.de
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ drivers/gpu/drm/bridge/tc358762.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-Alan Stern
+diff --git a/drivers/gpu/drm/bridge/tc358762.c b/drivers/gpu/drm/bridge/tc358762.c
+index 5641395fd310e..11445c50956e1 100644
+--- a/drivers/gpu/drm/bridge/tc358762.c
++++ b/drivers/gpu/drm/bridge/tc358762.c
+@@ -231,7 +231,7 @@ static int tc358762_probe(struct mipi_dsi_device *dsi)
+ 	dsi->lanes = 1;
+ 	dsi->format = MIPI_DSI_FMT_RGB888;
+ 	dsi->mode_flags = MIPI_DSI_MODE_VIDEO | MIPI_DSI_MODE_VIDEO_SYNC_PULSE |
+-			  MIPI_DSI_MODE_LPM;
++			  MIPI_DSI_MODE_LPM | MIPI_DSI_MODE_VIDEO_HSE;
+ 
+ 	ret = tc358762_parse_dt(ctx);
+ 	if (ret < 0)
+-- 
+2.40.1
+
