@@ -2,134 +2,137 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05983798059
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 03:49:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 373987980F1
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 05:28:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231795AbjIHBty (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 21:49:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46580 "EHLO
+        id S232081AbjIHD2q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 23:28:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231138AbjIHBty (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 21:49:54 -0400
-Received: from out30-111.freemail.mail.aliyun.com (out30-111.freemail.mail.aliyun.com [115.124.30.111])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 938FF1BD2;
-        Thu,  7 Sep 2023 18:49:49 -0700 (PDT)
-X-Alimail-AntiSpam: AC=PASS;BC=-1|-1;BR=01201311R461e4;CH=green;DM=||false|;DS=||;FP=0|-1|-1|-1|0|-1|-1|-1;HT=ay29a033018045168;MF=xuanzhuo@linux.alibaba.com;NM=1;PH=DS;RN=8;SR=0;TI=SMTPD_---0VradabB_1694137785;
-Received: from localhost(mailfrom:xuanzhuo@linux.alibaba.com fp:SMTPD_---0VradabB_1694137785)
-          by smtp.aliyun-inc.com;
-          Fri, 08 Sep 2023 09:49:46 +0800
-Message-ID: <1694137778.7008362-1-xuanzhuo@linux.alibaba.com>
-Subject: Re: [PATCH v2] virtio-mmio: fix memory leak of vm_dev
-Date:   Fri, 8 Sep 2023 09:49:38 +0800
-From:   Xuan Zhuo <xuanzhuo@linux.alibaba.com>
-To:     Maximilian Heyne <mheyne@amazon.de>
-Cc:     Maximilian Heyne <mheyne@amazon.de>, <stable@vger.kernel.org>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
-        Jason Wang <jasowang@redhat.com>,
-        Wolfram Sang <wsa+renesas@sang-engineering.com>,
-        <linux-kernel@vger.kernel.org>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        <virtualization@lists.linux-foundation.org>
-References: <20230907141716.88863-1-mheyne@amazon.de>
-In-Reply-To: <20230907141716.88863-1-mheyne@amazon.de>
-X-Spam-Status: No, score=-9.9 required=5.0 tests=BAYES_00,
-        ENV_AND_HDR_SPF_MATCH,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,
-        UNPARSEABLE_RELAY,USER_IN_DEF_SPF_WL autolearn=ham autolearn_force=no
-        version=3.4.6
+        with ESMTP id S231362AbjIHD2p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 23:28:45 -0400
+Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9A41BD8
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 20:28:41 -0700 (PDT)
+Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-53482b44007so1224768a12.2
+        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 20:28:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=bytedance.com; s=google; t=1694143721; x=1694748521; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=Xyga/bR7KnO0AZcMSgesUn85OC4rXik7va8Pa71Uoy8=;
+        b=RDb3prWCyEm3INnTubf050KKcChO0XR3oaywa1MTuAnZfLDqjz+CVHu72S+vX90mKt
+         E2roMImkAokGSAKnjx0oukaDpWGXk2keiYlIZOqM03W0Cb0EBUZ7p+Ru4ieWKDTxxMOJ
+         Q54oFWVTzEyFbr9z3yx6hgoGiyC4AMhqkNDmBIGtM89Y67StAfExDxwQcNQpIFqUqbD1
+         YwUQ6gLQdxsApGfF88FwFNR+twkRZ5necGLlBioWSWUUF6FQsWfDtA4OMeoZLoO6wBv4
+         z4wa9hFpNq+7Dflkp9elfUWKQwxTacx7eble03h9ezKtt2/F/noxkYDPx53I7GHRE1mk
+         ECtQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694143721; x=1694748521;
+        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
+         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
+         :cc:subject:date:message-id:reply-to;
+        bh=Xyga/bR7KnO0AZcMSgesUn85OC4rXik7va8Pa71Uoy8=;
+        b=vDOITCngc6NhL2NaIocuiN6+ghwT6t0tsqvf/hTDTDNZu8UiIQMedONnBYTE48aTe5
+         mOm8W8NP7E+xjPqMxrNt/olE2cagq4lbSI3QDm4szjo7g2DOOG3NRs29SKcdt/Coo+a8
+         HgWcAI5Iqg/S233AtNMdZiavRLAYp9WPWafyPfseI1rhfkW5CtobL/6ZU1WUjMRfaBcd
+         qSHQmT61QwRu6Z+FGUqEURjJG7hX85AzQ+HkOdxOUaZZPlJIV2LbLCeIbEeuS9i9cnt8
+         OYEmKrGVfei21dq1v3yQVQlCymjUaaamaC+mE2LIUaHUVzCYDJbm7ggsht9REKeSuV+V
+         ITsQ==
+X-Gm-Message-State: AOJu0Yy2qPmoECHjOG9A6vYDa3Xof7P5elDfhXx60UOEha9VcuxXOjpE
+        6ZCM55PR3W4+tnmbn0kp4mfjnw==
+X-Google-Smtp-Source: AGHT+IG3Fnhkv/ckb8v3efpkXk9m5bSeAiGH/2YqrB6IQjg0wzVL6kqNDRi12CQ/J7lIdOJcXpjfyA==
+X-Received: by 2002:a05:6a20:158d:b0:14c:e8d4:fb3e with SMTP id h13-20020a056a20158d00b0014ce8d4fb3emr1828439pzj.43.1694143720902;
+        Thu, 07 Sep 2023 20:28:40 -0700 (PDT)
+Received: from [10.84.158.67] ([203.208.167.147])
+        by smtp.gmail.com with ESMTPSA id jf3-20020a170903268300b001bf095dfb79sm453948plb.235.2023.09.07.20.28.37
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Thu, 07 Sep 2023 20:28:40 -0700 (PDT)
+Message-ID: <dd8e6bfb-9d84-6a5d-94cb-4833f5d1943b@bytedance.com>
+Date:   Fri, 8 Sep 2023 11:28:34 +0800
+MIME-Version: 1.0
+User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
+ Gecko/20100101 Thunderbird/102.15.0
+Subject: Re: [External] Re: Fwd: WARNING: CPU: 13 PID: 3837105 at
+ kernel/sched/sched.h:1561 __cfsb_csd_unthrottle+0x149/0x160
+To:     Tim Chen <tim.c.chen@linux.intel.com>,
+        Peter Zijlstra <peterz@infradead.org>
+Cc:     Benjamin Segall <bsegall@google.com>,
+        Bagas Sanjaya <bagasdotme@gmail.com>,
+        Vincent Guittot <vincent.guittot@linaro.org>,
+        Igor Raits <igor.raits@gmail.com>,
+        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
+        Linux Regressions <regressions@lists.linux.dev>,
+        Linux Stable <stable@vger.kernel.org>
+References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
+ <xm26cyz4ibnb.fsf@google.com>
+ <55e2861e-9722-08f8-2c49-966035ff4218@bytedance.com>
+ <20230904222351.GC2568@noisy.programming.kicks-ass.net>
+ <3544d5e3-3070-9ddc-fa6c-a05ed35dfd14@bytedance.com>
+ <171e6a9435a33885a73b48762f86954e447c26c2.camel@linux.intel.com>
+From:   Hao Jia <jiahao.os@bytedance.com>
+In-Reply-To: <171e6a9435a33885a73b48762f86954e447c26c2.camel@linux.intel.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, 7 Sep 2023 14:17:16 +0000, Maximilian Heyne <mheyne@amazon.de> wrote:
-> With the recent removal of vm_dev from devres its memory is only freed
-> via the callback virtio_mmio_release_dev. However, this only takes
-> effect after device_add is called by register_virtio_device. Until then
-> it's an unmanaged resource and must be explicitly freed on error exit.
->
-> This bug was discovered and resolved using Coverity Static Analysis
-> Security Testing (SAST) by Synopsys, Inc.
->
-> Cc: <stable@vger.kernel.org>
-> Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
-> Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 
-Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
-> ---
->  drivers/virtio/virtio_mmio.c | 19 ++++++++++++++-----
->  1 file changed, 14 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
-> index 97760f611295..59892a31cf76 100644
-> --- a/drivers/virtio/virtio_mmio.c
-> +++ b/drivers/virtio/virtio_mmio.c
-> @@ -631,14 +631,17 @@ static int virtio_mmio_probe(struct platform_device *pdev)
->  	spin_lock_init(&vm_dev->lock);
->
->  	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
-> -	if (IS_ERR(vm_dev->base))
-> -		return PTR_ERR(vm_dev->base);
-> +	if (IS_ERR(vm_dev->base)) {
-> +		rc = PTR_ERR(vm_dev->base);
-> +		goto free_vm_dev;
-> +	}
->
->  	/* Check magic value */
->  	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
->  	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
->  		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
-> -		return -ENODEV;
-> +		rc = -ENODEV;
-> +		goto free_vm_dev;
->  	}
->
->  	/* Check device version */
-> @@ -646,7 +649,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
->  	if (vm_dev->version < 1 || vm_dev->version > 2) {
->  		dev_err(&pdev->dev, "Version %ld not supported!\n",
->  				vm_dev->version);
-> -		return -ENXIO;
-> +		rc = -ENXIO;
-> +		goto free_vm_dev;
->  	}
->
->  	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
-> @@ -655,7 +659,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
->  		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
->  		 * with no function. End probing now with no error reported.
->  		 */
-> -		return -ENODEV;
-> +		rc = -ENODEV;
-> +		goto free_vm_dev;
->  	}
->  	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
->
-> @@ -685,6 +690,10 @@ static int virtio_mmio_probe(struct platform_device *pdev)
->  		put_device(&vm_dev->vdev.dev);
->
->  	return rc;
-> +
-> +free_vm_dev:
-> +	kfree(vm_dev);
-> +	return rc;
->  }
->
->  static int virtio_mmio_remove(struct platform_device *pdev)
-> --
-> 2.40.1
->
->
->
->
-> Amazon Development Center Germany GmbH
-> Krausenstr. 38
-> 10117 Berlin
-> Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
-> Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
-> Sitz: Berlin
-> Ust-ID: DE 289 237 879
->
->
->
+On 2023/9/8 Tim Chen wrote:
+> On Thu, 2023-09-07 at 16:59 +0800, Hao Jia wrote:
+>>
+>> On 2023/9/5 Peter Zijlstra wrote:
+>>> On Thu, Aug 31, 2023 at 04:48:29PM +0800, Hao Jia wrote:
+>>>
+>>>> If I understand correctly, rq->clock_update_flags may be set to
+>>>> RQCF_ACT_SKIP after __schedule() holds the rq lock, and sometimes the rq
+>>>> lock may be released briefly in __schedule(), such as newidle_balance(). At
+>>>> this time Other CPUs hold this rq lock, and then calling
+>>>> rq_clock_start_loop_update() may trigger this warning.
+>>>>
+>>>> This warning check might be wrong. We need to add assert_clock_updated() to
+>>>> check that the rq clock has been updated before calling
+>>>> rq_clock_start_loop_update().
+>>>>
+>>>> Maybe some things can be like this?
+>>>
+>>> Urgh, aside from it being white space mangled, I think this is entirely
+>>> going in the wrong direction.
+>>>
+>>> Leaking ACT_SKIP is dodgy as heck.. it's entirely too late to think
+>>> clearly though, I'll have to try again tomorrow.
+> 
+> I am trying to understand why this is an ACT_SKIP leak.
+> Before call to __cfsb_csd_unthrottle(), is it possible someone
+> else lock the runqueue, set ACT_SKIP and release rq_lock?
+> And then that someone never update the rq_clock?
+> 
+
+Yes, we want to set rq->clock_update_flags to RQCF_ACT_SKIP to avoid 
+updating the rq clock multiple times in __cfsb_csd_unthrottle().
+
+But now we find ACT_SKIP leak, so we cannot unconditionally set 
+rq->clock_update_flags to RQCF_ACT_SKIP in rq_clock_start_loop_update().
+
+
+>>
+>> Hi Peter,
+>>
+>> Do you think this fix method is correct? Or should we go back to the
+>> beginning and move update_rq_clock() from unthrottle_cfs_rq()?
+>>
+> If anyone who locked the runqueue set ACT_SKIP also will update rq_clock,
+> I think your change is okay.  Otherwise rq_clock could be missing update.
+> 
+> Thanks.
+> 
+> Tim
