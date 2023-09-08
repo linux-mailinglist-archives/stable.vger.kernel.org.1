@@ -2,252 +2,108 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ABC8F7985D7
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 12:28:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19B56798684
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 13:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234322AbjIHK2H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 06:28:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58100 "EHLO
+        id S238557AbjIHLjB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 07:39:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243187AbjIHK1o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 06:27:44 -0400
-Received: from smtp-out1.suse.de (smtp-out1.suse.de [IPv6:2001:67c:2178:6::1c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 05AAF1FE8;
-        Fri,  8 Sep 2023 03:27:10 -0700 (PDT)
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by smtp-out1.suse.de (Postfix) with ESMTPS id 5362221A1C;
-        Fri,  8 Sep 2023 10:26:22 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=suse.de; s=susede2_rsa;
-        t=1694168782; h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7bIJSmNqVtxlQYeiNxe9gj14ZhgOaLur10AIlpxFXFk=;
-        b=tSLOjbIbYr6HZGt9LW70vAp1u+pa40AUDMVfaGTkf9CujP/w6ToFhZyklYf0zrTVP9LQzo
-        pWvnVVHTt1gO07ovNR9w/iJ+dkcmPJ2EOd09FpHYEOeYObPODkvGV7Sgm9mzxMp1l3gWwq
-        rtWdPxtnsNGUAfRNfC6cnAcRaJExsy4=
-DKIM-Signature: v=1; a=ed25519-sha256; c=relaxed/relaxed; d=suse.de;
-        s=susede2_ed25519; t=1694168782;
-        h=from:from:reply-to:date:date:message-id:message-id:to:to:cc:cc:
-         mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=7bIJSmNqVtxlQYeiNxe9gj14ZhgOaLur10AIlpxFXFk=;
-        b=owy8wzipxNEiBCn/Dd5QjFGiGHJWC5MV9dMuKFcJjPS/diRpsoM8B9Y6wUhJRyZDosGRs5
-        olO32/a5R0KTpDCA==
-Received: from imap2.suse-dmz.suse.de (imap2.suse-dmz.suse.de [192.168.254.74])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature ECDSA (P-521) server-digest SHA512)
-        (No client certificate requested)
-        by imap2.suse-dmz.suse.de (Postfix) with ESMTPS id 1E994131FD;
-        Fri,  8 Sep 2023 10:26:19 +0000 (UTC)
-Received: from dovecot-director2.suse.de ([192.168.254.65])
-        by imap2.suse-dmz.suse.de with ESMTPSA
-        id jt/HNMv2+mTidAAAMHmgww
-        (envelope-from <colyli@suse.de>); Fri, 08 Sep 2023 10:26:19 +0000
-Date:   Fri, 8 Sep 2023 18:26:17 +0800
-From:   Coly Li <colyli@suse.de>
-To:     Mingzhe Zou <mingzhe.zou@easystack.cn>
-Cc:     bcache@lists.ewheeler.net, linux-bcache@vger.kernel.org,
-        zoumingzhe@qq.com, stable@vger.kernel.org
-Subject: Re: [PATCH v2] bcache: fixup lock c->root error
-Message-ID: <moxkbitg22zh4mkfnkhyxyj5eeiqkjvpr6aw7yx5vperpygn5g@fqyaitlpyhpo>
-References: <20230908034108.405-1-mingzhe.zou@easystack.cn>
+        with ESMTP id S229453AbjIHLi6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 07:38:58 -0400
+Received: from smtp-fw-9105.amazon.com (smtp-fw-9105.amazon.com [207.171.188.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F7901BF9;
+        Fri,  8 Sep 2023 04:38:52 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1694173132; x=1725709132;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=JOQos2qmljJVtEePP+1McXoDJjdUpywTYtAMgyf4ge8=;
+  b=Pf2DY+zBtQTwM80lfqm4KETtmgKPJ1kROHT39Vo3eTVrbkvMMOfV8zwa
+   G3+yHFFd1TK4OscYSp9e9p41uZpOtZ3DXgG7czy9TMl1Pn7nSF8hD/cCv
+   7wQ7ta3LPmA52aSPL4iVmMWrFzmX47fR4uPXbs0pqUXx7KKv6tKf3s70L
+   Y=;
+X-IronPort-AV: E=Sophos;i="6.02,237,1688428800"; 
+   d="scan'208";a="671102936"
+Received: from pdx4-co-svc-p1-lb2-vlan2.amazon.com (HELO email-inbound-relay-iad-1d-m6i4x-153b24bc.us-east-1.amazon.com) ([10.25.36.210])
+  by smtp-border-fw-9105.sea19.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2023 11:38:45 +0000
+Received: from EX19D008EUA004.ant.amazon.com (iad12-ws-svc-p26-lb9-vlan3.iad.amazon.com [10.40.163.38])
+        by email-inbound-relay-iad-1d-m6i4x-153b24bc.us-east-1.amazon.com (Postfix) with ESMTPS id BFDBAC3159;
+        Fri,  8 Sep 2023 11:38:42 +0000 (UTC)
+Received: from EX19MTAUEA001.ant.amazon.com (10.252.134.203) by
+ EX19D008EUA004.ant.amazon.com (10.252.50.158) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Fri, 8 Sep 2023 11:38:41 +0000
+Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
+ by mail-relay.amazon.com (10.252.134.102) with Microsoft SMTP Server id
+ 15.2.1118.37 via Frontend Transport; Fri, 8 Sep 2023 11:38:41 +0000
+Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
+        id E815B963; Fri,  8 Sep 2023 11:38:40 +0000 (UTC)
+Date:   Fri, 8 Sep 2023 11:38:40 +0000
+From:   Maximilian Heyne <mheyne@amazon.de>
+To:     Catalin Marinas <catalin.marinas@arm.com>
+CC:     <virtualization@lists.linux-foundation.org>,
+        <stable@vger.kernel.org>, "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: Re: [PATCH v2] virtio-mmio: fix memory leak of vm_dev
+Message-ID: <20230908113840.GA19696@dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com>
+References: <20230907141716.88863-1-mheyne@amazon.de>
+ <ZPn6KZpdPdG2LQqL@arm.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=utf-8
+Content-Type: text/plain; charset="us-ascii"
 Content-Disposition: inline
-Content-Transfer-Encoding: 8bit
-In-Reply-To: <20230908034108.405-1-mingzhe.zou@easystack.cn>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <ZPn6KZpdPdG2LQqL@arm.com>
+User-Agent: Mutt/1.5.21 (2010-09-15)
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,T_SPF_PERMERROR autolearn=ham autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 08, 2023 at 11:41:08AM +0800, Mingzhe Zou wrote:
-> We had a problem with io hung because it was waiting for c->root to
-> release the lock.
+On Thu, Sep 07, 2023 at 05:28:25PM +0100, Catalin Marinas wrote:
+> On Thu, Sep 07, 2023 at 02:17:16PM +0000, Maximilian Heyne wrote:
+> > With the recent removal of vm_dev from devres its memory is only freed
+> > via the callback virtio_mmio_release_dev. However, this only takes
+> > effect after device_add is called by register_virtio_device. Until then
+> > it's an unmanaged resource and must be explicitly freed on error exit.
+> >
+> > This bug was discovered and resolved using Coverity Static Analysis
+> > Security Testing (SAST) by Synopsys, Inc.
+> >
+> > Cc: <stable@vger.kernel.org>
+> > Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+> > Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
 > 
-> crash> cache_set.root -l cache_set.list ffffa03fde4c0050
->   root = 0xffff802ef454c800
-> crash> btree -o 0xffff802ef454c800 | grep rw_semaphore
->   [ffff802ef454c858] struct rw_semaphore lock;
-> crash> struct rw_semaphore ffff802ef454c858
-> struct rw_semaphore {
->   count = {
->     counter = -4294967297
->   },
->   wait_list = {
->     next = 0xffff00006786fc28,
->     prev = 0xffff00005d0efac8
->   },
->   wait_lock = {
->     raw_lock = {
->       {
->         val = {
->           counter = 0
->         },
->         {
->           locked = 0 '\000',
->           pending = 0 '\000'
->         },
->         {
->           locked_pending = 0,
->           tail = 0
->         }
->       }
->     }
->   },
->   osq = {
->     tail = {
->       counter = 0
->     }
->   },
->   owner = 0xffffa03fdc586603
-> }
+> Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+> Tested-by: Catalin Marinas <catalin.marinas@arm.com>
 > 
-> The "counter = -4294967297" means that lock count is -1 and a write lock
-> is being attempted. Then, we found that there is a btree with a counter
-> of 1 in btree_cache_freeable.
+> Thanks.
 > 
-> crash> cache_set -l cache_set.list ffffa03fde4c0050 -o|grep btree_cache
->   [ffffa03fde4c1140] struct list_head btree_cache;
->   [ffffa03fde4c1150] struct list_head btree_cache_freeable;
->   [ffffa03fde4c1160] struct list_head btree_cache_freed;
->   [ffffa03fde4c1170] unsigned int btree_cache_used;
->   [ffffa03fde4c1178] wait_queue_head_t btree_cache_wait;
->   [ffffa03fde4c1190] struct task_struct *btree_cache_alloc_lock;
-> crash> list -H ffffa03fde4c1140|wc -l
-> 973
-> crash> list -H ffffa03fde4c1150|wc -l
-> 1123
-> crash> cache_set.btree_cache_used -l cache_set.list ffffa03fde4c0050
->   btree_cache_used = 2097
-> crash> list -s btree -l btree.list -H ffffa03fde4c1140|grep -E -A2 "^  lock = {" > btree_cache.txt
-> crash> list -s btree -l btree.list -H ffffa03fde4c1150|grep -E -A2 "^  lock = {" > btree_cache_freeable.txt
-> [root@node-3 127.0.0.1-2023-08-04-16:40:28]# pwd
-> /var/crash/127.0.0.1-2023-08-04-16:40:28
-> [root@node-3 127.0.0.1-2023-08-04-16:40:28]# cat btree_cache.txt|grep counter|grep -v "counter = 0"
-> [root@node-3 127.0.0.1-2023-08-04-16:40:28]# cat btree_cache_freeable.txt|grep counter|grep -v "counter = 0"
->       counter = 1
-> 
-> We found that this is a bug in bch_sectors_dirty_init() when locking c->root:
->     (1). Thread X has locked c->root(A) write.
->     (2). Thread Y failed to lock c->root(A), waiting for the lock(c->root A).
->     (3). Thread X bch_btree_set_root() changes c->root from A to B.
->     (4). Thread X releases the lock(c->root A).
->     (5). Thread Y successfully locks c->root(A).
->     (6). Thread Y releases the lock(c->root B).
-> 
->         down_write locked ---(1)----------------------┐
->                 |                                     |
->                 |   down_read waiting ---(2)----┐     |
->                 |           |               ┌-------------┐ ┌-------------┐
->         bch_btree_set_root ===(3)========>> | c->root   A | | c->root   B |
->                 |           |               └-------------┘ └-------------┘
->             up_write ---(4)---------------------┘     |            |
->                             |                         |            |
->                     down_read locked ---(5)-----------┘            |
->                             |                                      |
->                         up_read ---(6)-----------------------------┘
-> 
-> Since c->root may change, the correct steps to lock c->root should be
-> the same as bch_root_usage(), compare after locking.
-> 
-> static unsigned int bch_root_usage(struct cache_set *c)
-> {
->         unsigned int bytes = 0;
->         struct bkey *k;
->         struct btree *b;
->         struct btree_iter iter;
-> 
->         goto lock_root;
-> 
->         do {
->                 rw_unlock(false, b);
-> lock_root:
->                 b = c->root;
->                 rw_lock(false, b, b->level);
->         } while (b != c->root);
-> 
->         for_each_key_filter(&b->keys, k, &iter, bch_ptr_bad)
->                 bytes += bkey_bytes(k);
-> 
->         rw_unlock(false, b);
-> 
->         return (bytes * 100) / btree_bytes(c);
-> }
-> 
-> Fixes: b144e45fc576 ("bcache: make bch_sectors_dirty_init() to be multithreaded")
-> Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
-> Cc: stable@vger.kernel.org
+> --
+> Catalin
 
-Nice catch, added into my for-next queue.
-
-Thanks for fixing up.
-
-Coly Li
+Who would apply this patch? Something seems to have choked my patch so it didn't
+reach lore.kernel.org (message couldn't be delivered due to timeout). Should I
+try to send it again?
 
 
-> ---
->  drivers/md/bcache/writeback.c | 14 +++++++++++---
->  1 file changed, 11 insertions(+), 3 deletions(-)
-> 
-> diff --git a/drivers/md/bcache/writeback.c b/drivers/md/bcache/writeback.c
-> index 24c049067f61..bac916ba08c8 100644
-> --- a/drivers/md/bcache/writeback.c
-> +++ b/drivers/md/bcache/writeback.c
-> @@ -977,14 +977,22 @@ static int bch_btre_dirty_init_thread_nr(void)
->  void bch_sectors_dirty_init(struct bcache_device *d)
->  {
->  	int i;
-> +	struct btree *b = NULL;
->  	struct bkey *k = NULL;
->  	struct btree_iter iter;
->  	struct sectors_dirty_init op;
->  	struct cache_set *c = d->c;
->  	struct bch_dirty_init_state state;
->  
-> +retry_lock:
-> +	b = c->root;
-> +	rw_lock(0, b, b->level);
-> +	if (b != c->root) {
-> +		rw_unlock(0, b);
-> +		goto retry_lock;
-> +	}
-> +
->  	/* Just count root keys if no leaf node */
-> -	rw_lock(0, c->root, c->root->level);
->  	if (c->root->level == 0) {
->  		bch_btree_op_init(&op.op, -1);
->  		op.inode = d->id;
-> @@ -994,7 +1002,7 @@ void bch_sectors_dirty_init(struct bcache_device *d)
->  				    k, &iter, bch_ptr_invalid)
->  			sectors_dirty_init_fn(&op.op, c->root, k);
->  
-> -		rw_unlock(0, c->root);
-> +		rw_unlock(0, b);
->  		return;
->  	}
->  
-> @@ -1030,7 +1038,7 @@ void bch_sectors_dirty_init(struct bcache_device *d)
->  out:
->  	/* Must wait for all threads to stop. */
->  	wait_event(state.wait, atomic_read(&state.started) == 0);
-> -	rw_unlock(0, c->root);
-> +	rw_unlock(0, b);
->  }
->  
->  void bch_cached_dev_writeback_init(struct cached_dev *dc)
-> -- 
-> 2.17.1.windows.2
-> 
 
--- 
-Coly Li
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
+
