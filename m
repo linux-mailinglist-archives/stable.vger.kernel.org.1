@@ -2,73 +2,126 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53BFF798462
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 10:47:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B113F7984A9
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 11:17:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234350AbjIHIr6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 04:47:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53810 "EHLO
+        id S241864AbjIHJRK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 05:17:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230413AbjIHIr6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 04:47:58 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A5911BF8;
-        Fri,  8 Sep 2023 01:47:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E46AC433C7;
-        Fri,  8 Sep 2023 08:47:49 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694162869;
-        bh=RKazeNausWM6tPwdKCpl5s1mIWcdBnzHHJqJ5487TXQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=z62vsB6g3tQAwXvNxqDvT2MSnN2e8BQFvu7VPHVtY3o9dCp3qiV9soyQc3VSY+o9i
-         e63/m30jM9eXsmvxaXQmPRGIZqibL7AGCgl+biR1wzg5HvSxwhG+GI36kYuAg+708p
-         3KDgE6ZAaA0P52ik7aylgzdQzrrwDjZyPyCZirDM=
-Date:   Fri, 8 Sep 2023 09:47:46 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Christoph Hellwig <hch@lst.de>
-Cc:     Stefan Lippers-Hollmann <s.l-h@gmx.de>, stable@vger.kernel.org,
-        patches@lists.linux.dev, Luis Chamberlain <mcgrof@kernel.org>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [PATCH 6.5 11/34] modules: only allow symbol_get of
- EXPORT_SYMBOL_GPL modules
-Message-ID: <2023090813-plug-path-b06f@gregkh>
-References: <20230904182948.594404081@linuxfoundation.org>
- <20230904182949.104100132@linuxfoundation.org>
- <20230907084135.02d97441@mir>
- <2023090719-virtuous-snowflake-d015@gregkh>
- <20230907221737.07f12f38@mir>
- <2023090848-chastise-paycheck-6d4d@gregkh>
- <2023090841-antitrust-reword-d6bc@gregkh>
- <20230908083139.GA9985@lst.de>
- <20230908083538.GA10228@lst.de>
+        with ESMTP id S236197AbjIHJRK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 05:17:10 -0400
+Received: from wout2-smtp.messagingengine.com (wout2-smtp.messagingengine.com [64.147.123.25])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F3FD51FD0;
+        Fri,  8 Sep 2023 02:17:00 -0700 (PDT)
+Received: from compute2.internal (compute2.nyi.internal [10.202.2.46])
+        by mailout.west.internal (Postfix) with ESMTP id 301AE32009A5;
+        Fri,  8 Sep 2023 05:16:57 -0400 (EDT)
+Received: from mailfrontend1 ([10.202.2.162])
+  by compute2.internal (MEProxy); Fri, 08 Sep 2023 05:16:58 -0400
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=fastmail.fm; h=
+        cc:cc:content-transfer-encoding:content-type:content-type:date
+        :date:from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to; s=fm1; t=
+        1694164616; x=1694251016; bh=s594X3Pv8Q20DGgzxtmI6FameSh057YuP7w
+        8HNnn36I=; b=IENODDH7AzFSwGtTbR3rHgPPj2JQzS8oBWBXdbGlhVuufz4koPa
+        sJGlFlndbaiRcHGxxggDPhKl7B85dYhj2B6/j6xfzIW2hM4jowg3EMJa6+S1pXU+
+        7B3YFceQNlNZLl5EUiWB25ar1UEIqFl62eYDG1tbpJC5HsscpBWFHxesa1+fdmom
+        6vYplJLT3nKiZheyW/Qvk1JzKERg6rjrogbj9Vml/zcfAugkpJlR8xj/+HqWb+FH
+        1lFTMleN6ptEyV37EhLqX7t7HqqLgPxBPRgRCVlmmeQNucjGokVrJQV+2miBN5/7
+        JYShFBCPOJlG9Pl9EfLjXO0QhXmdTy9mEHA==
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=
+        messagingengine.com; h=cc:cc:content-transfer-encoding
+        :content-type:content-type:date:date:feedback-id:feedback-id
+        :from:from:in-reply-to:in-reply-to:message-id:mime-version
+        :references:reply-to:sender:subject:subject:to:to:x-me-proxy
+        :x-me-proxy:x-me-sender:x-me-sender:x-sasl-enc; s=fm1; t=
+        1694164616; x=1694251016; bh=s594X3Pv8Q20DGgzxtmI6FameSh057YuP7w
+        8HNnn36I=; b=UQtokjSsACbcBigP/XC3C+rwYfKaW21sebnKTfvoblKcbFOqrkw
+        ye9wdi1JUMuqbAC7trTpLK7mNiOk9btysJt/X3UxE8cJ7CDVvvxncEGggdstt2Hj
+        1YZEIUvpHrY+SaWIqPJ9Ub59TuIqIEwiwdqCi+yGfzd8fYlmhkfBhO5wQpgv6tif
+        MHA33h1oiZBYlByxn6V04uVRb6Xk5PAppLKDvITNXgiyyFjtSyI3+ApIFTvVcGNs
+        NObhBb8DZnZJFUgA14oeuKpO8ino8K/qWFDCXzdm7gzxVjc3Rv/mWur6a3atu0bN
+        qLyvljp2n/LMpGfVBBhc52I/c6DhT41KlfA==
+X-ME-Sender: <xms:iOb6ZOTqNrmGMvNRjj_3stWdXZxbF5F1Ve1FseVBIKMUe_cdFffPqg>
+    <xme:iOb6ZDz3kL2ERV4tip-a-vlpuPwTpMEbk8sgBM6pHSjFGuRc1khSp7MY0AAkIdqbN
+    9_-qr1Ve4M_KMG4>
+X-ME-Received: <xmr:iOb6ZL2Eid8IEISuA9VuE3vQwzOfI0z6ZUrhOZD_Tmj6RpT492-O8mbJtthEOm0_lyNAG0kE0ub5qMsPg54h2MNfjjmToBIFz3ECsMdl3wbsHXcmT1TJ>
+X-ME-Proxy-Cause: gggruggvucftvghtrhhoucdtuddrgedviedrudehjedgudefucetufdoteggodetrfdotf
+    fvucfrrhhofhhilhgvmecuhfgrshhtofgrihhlpdfqfgfvpdfurfetoffkrfgpnffqhgen
+    uceurghilhhouhhtmecufedttdenucesvcftvggtihhpihgvnhhtshculddquddttddmne
+    cujfgurhepkfffgggfuffvvehfhfgjtgfgsehtjeertddtfeejnecuhfhrohhmpeeuvghr
+    nhguucfutghhuhgsvghrthcuoegsvghrnhgurdhstghhuhgsvghrthesfhgrshhtmhgrih
+    hlrdhfmheqnecuggftrfgrthhtvghrnhepkeehveekleekkeejhfehgeeftdffuddujeej
+    ieehheduueelleeghfeukeefvedunecuvehluhhsthgvrhfuihiivgeptdenucfrrghrrg
+    hmpehmrghilhhfrhhomhepsggvrhhnugdrshgthhhusggvrhhtsehfrghsthhmrghilhdr
+    fhhm
+X-ME-Proxy: <xmx:iOb6ZKC-7kPfCCCFIz8BCG1pn7IeIokZxrjbtsfhAcFP_9hkFIeEGQ>
+    <xmx:iOb6ZHiuriNpr8IWWU1TU3mr1PO7ZcBTr739J7p9J6xe9qngRGs44g>
+    <xmx:iOb6ZGq1ponF-bzOVIsE_07ZMUA4mpXVQi5kr1F3_LKtwsEf1oYa3g>
+    <xmx:iOb6ZHjIVr0xP_5ZawYaJcpUYIJX7qxmy789zWfXAvjOJAmc9J-0Zw>
+Feedback-ID: id8a24192:Fastmail
+Received: by mail.messagingengine.com (Postfix) with ESMTPA; Fri,
+ 8 Sep 2023 05:16:55 -0400 (EDT)
+Message-ID: <6db09157-2797-b159-9687-3f8e57e35b28@fastmail.fm>
+Date:   Fri, 8 Sep 2023 11:16:52 +0200
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230908083538.GA10228@lst.de>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.15.0
+Subject: Re: [PATCH 1/1] btrfs: file_remove_privs needs an exclusive lock
+Content-Language: en-US, de-DE
+To:     Christoph Hellwig <hch@infradead.org>,
+        Bernd Schubert <bschubert@ddn.com>
+Cc:     linux-btrfs@vger.kernel.org, miklos@szeredi.hu, dsingh@ddn.com,
+        Goldwyn Rodrigues <rgoldwyn@suse.com>,
+        David Sterba <dsterba@suse.com>, linux-fsdevel@vger.kernel.org,
+        stable@vger.kernel.org
+References: <20230906155903.3287672-1-bschubert@ddn.com>
+ <20230906155903.3287672-2-bschubert@ddn.com> <ZPrZr4PEwnyYCPpC@infradead.org>
+From:   Bernd Schubert <bernd.schubert@fastmail.fm>
+In-Reply-To: <ZPrZr4PEwnyYCPpC@infradead.org>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 08, 2023 at 10:35:38AM +0200, Christoph Hellwig wrote:
-> On Fri, Sep 08, 2023 at 10:31:39AM +0200, Christoph Hellwig wrote:
-> > On Fri, Sep 08, 2023 at 08:07:08AM +0100, Greg Kroah-Hartman wrote:
-> > > And it's over 130 symbols, attached, I'll figure out a way to script
-> > > this...
-> > 
-> > Eww. Sorry for missing this, and I suspect it really should be
-> > entirely reworked in the future.  But for now the scripting sounds
-> > right.  Let me know if you'd done anything, otherwise I can look into
-> > it this afternoon Chilean time.
+
+
+On 9/8/23 10:22, Christoph Hellwig wrote:
+> On Wed, Sep 06, 2023 at 05:59:03PM +0200, Bernd Schubert wrote:
+>> file_remove_privs might call into notify_change(), which
+>> requires to hold an exclusive lock.
 > 
-> .. and it turns out dvb_attach has already been deprecated for 5 years
-> time, it's just that it still has all these users around.
+> Looks good:
+> 
+> Reviewed-by: Christoph Hellwig <hch@lst.de>
+> 
+> FYI, I'd be really curious about benchmarking this against you version
+> that checks xattrs for shared locked writes on files that have xattrs
+> but not security ones or setuid bits.  On the one hand being able to
+> do the shared lock sounds nice, on the other hand even just looking up
+> the xattrs will probably make it slower at least for smaller I/O.
 
-Yeah, apis never seem to go away.  I'm scripting it now, almost done...
 
-greg k-h
+I had checked the history of S_NOSEC and I guess that already tells that
+the xattr lookup is too slow (commit 69b4573296469fd3f70cf7044693074980517067)
+I don't promise that I benchmark it today, but I can
+try to find some time in the next week or the week after. Although I
+guess there won't be any difference with my initial patch, as
+dentry_needs_remove_privs() also checks for IS_NOSEC(inode) - overhead
+was just the additional non inlined function call to
+file_needs_remove_privs(). And if the flag was not set, overhead was
+looking up xattr two times.
+
+
+Bernd
+
+
+
