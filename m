@@ -2,51 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DF855798C31
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 20:05:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 079BA798C7A
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 20:16:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343584AbjIHSFR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 14:05:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43842 "EHLO
+        id S1343602AbjIHSQj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 14:16:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60276 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242720AbjIHSFP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 14:05:15 -0400
+        with ESMTP id S1343608AbjIHSQi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 14:16:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9D79B211C;
-        Fri,  8 Sep 2023 11:04:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 938BEC43140;
-        Fri,  8 Sep 2023 18:04:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2594F212F;
+        Fri,  8 Sep 2023 11:16:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC81C4339A;
+        Fri,  8 Sep 2023 18:13:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694196268;
-        bh=hzWT05k//aibeRjTNa0SEw1MUyA0os3Az8uS4TFF4gQ=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WPcyCfimTjQGqNgMEuhG6d8Qmznmygi6kdLH3HrWWzkkrLI/EoDYLTeDA/g037eFS
-         U+5U75IHQHtr4DB0K3aKLGZH3hcyPR7pN8DxNCZQU7TFpjlQVhhds4Mm1RGIFtabBp
-         KG3BYj0nkb6OPEmgDObBDCNsCboelZF85KFcEvlx2UMuBMo3sxGtqxa1OTMqO3JKbt
-         kgaKnlD6emZZwsVY6vYA1kgTFLU3PlxY7lRRmF8V0eHUDbKu0PG2zKcQRvgh3SLHOC
-         do+GudjMRACeTWp0so3/UWPo03BB9lldXEymTOJI+WiNHfsJQwVN5kuk3iMsxjNxCS
-         a+I8+K4o8PNdw==
+        s=k20201202; t=1694196810;
+        bh=ppRWJhM2IQNdnlit5qe6toabd0+zlRqLBqSc22ui1MM=;
+        h=From:To:Cc:Subject:Date:From;
+        b=puEqh/YnAVlyl3rU3XPqALVlNl1jE1e5o4A54SjrzcJja0u1Ikuof7RxvebnlhNox
+         Ekk8IyliGe4R8UNZOgUNnxmm1bLfzYgMQoojMgRCCDhrMJAZFSTcFdjCyDM8yTLn98
+         dTVHk/DgAyxol7aKDFe5334EAFlMRgq/LhoDI45UI67oGs4rfiFBDLGfGB7oz0bcsL
+         ypfk6KgDqHDpdtFXhw+3qjw0V/unYu1gyNXz0iKQT5LiQOifcj21HPxPrsR9Xog+AG
+         MfEWdh++Yzt6BmK49jyZDpQNhXiIAqqGjeyOa0U1M6xdbU431O3WMADk887a2LWB+z
+         hVBUzj+U2RFxQ==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Tomislav Novak <tnovak@meta.com>,
-        Samuel Gosselin <sgosselin@google.com>,
-        Catalin Marinas <catalin.marinas@arm.com>,
-        Alexei Starovoitov <ast@kernel.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>,
-        mark.rutland@arm.com, linux@armlinux.org.uk, peterz@infradead.org,
-        mingo@redhat.com, acme@kernel.org,
-        linux-arm-kernel@lists.infradead.org,
-        linux-perf-users@vger.kernel.org, bpf@vger.kernel.org
-Subject: [PATCH AUTOSEL 4.14 3/3] hw_breakpoint: fix single-stepping when using bpf_overflow_handler
-Date:   Fri,  8 Sep 2023 14:04:20 -0400
-Message-Id: <20230908180421.3458860-3-sashal@kernel.org>
+Cc:     Maksim Kiselev <bigunclemax@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>, wens@csie.org,
+        jernej.skrabec@gmail.com, samuel@sholland.org,
+        linux-spi@vger.kernel.org, linux-arm-kernel@lists.infradead.org,
+        linux-sunxi@lists.linux.dev
+Subject: [PATCH AUTOSEL 6.5 01/45] spi: sun6i: add quirk for dual and quad SPI modes support
+Date:   Fri,  8 Sep 2023 14:12:42 -0400
+Message-Id: <20230908181327.3459042-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230908180421.3458860-1-sashal@kernel.org>
-References: <20230908180421.3458860-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 4.14.325
+X-stable-base: Linux 6.5.2
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -57,148 +52,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Tomislav Novak <tnovak@meta.com>
+From: Maksim Kiselev <bigunclemax@gmail.com>
 
-[ Upstream commit d11a69873d9a7435fe6a48531e165ab80a8b1221 ]
+[ Upstream commit 0605d9fb411f3337482976842a3901d6c125d298 ]
 
-Arm platforms use is_default_overflow_handler() to determine if the
-hw_breakpoint code should single-step over the breakpoint trigger or
-let the custom handler deal with it.
+New Allwinner's SPI controllers can support dual and quad SPI modes.
+To enable one of these modes, we should set the corresponding bit in
+the SUN6I_BURST_CTL_CNT_REG register. DRM (28 bits) for dual mode and
+Quad_EN (29 bits) for quad transmission.
 
-Since bpf_overflow_handler() currently isn't recognized as a default
-handler, attaching a BPF program to a PERF_TYPE_BREAKPOINT event causes
-it to keep firing (the instruction triggering the data abort exception
-is never skipped). For example:
-
-  # bpftrace -e 'watchpoint:0x10000:4:w { print("hit") }' -c ./test
-  Attaching 1 probe...
-  hit
-  hit
-  [...]
-  ^C
-
-(./test performs a single 4-byte store to 0x10000)
-
-This patch replaces the check with uses_default_overflow_handler(),
-which accounts for the bpf_overflow_handler() case by also testing
-if one of the perf_event_output functions gets invoked indirectly,
-via orig_default_handler.
-
-Signed-off-by: Tomislav Novak <tnovak@meta.com>
-Tested-by: Samuel Gosselin <sgosselin@google.com> # arm64
-Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
-Acked-by: Alexei Starovoitov <ast@kernel.org>
-Link: https://lore.kernel.org/linux-arm-kernel/20220923203644.2731604-1-tnovak@fb.com/
-Link: https://lore.kernel.org/r/20230605191923.1219974-1-tnovak@meta.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Signed-off-by: Maksim Kiselev <bigunclemax@gmail.com>
+Link: https://lore.kernel.org/r/20230624131632.2972546-2-bigunclemax@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/hw_breakpoint.c   |  8 ++++----
- arch/arm64/kernel/hw_breakpoint.c |  4 ++--
- include/linux/perf_event.h        | 22 +++++++++++++++++++---
- 3 files changed, 25 insertions(+), 9 deletions(-)
+ drivers/spi/spi-sun6i.c | 29 +++++++++++++++++++++++++----
+ 1 file changed, 25 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/kernel/hw_breakpoint.c b/arch/arm/kernel/hw_breakpoint.c
-index a8783964ebde9..6f5907970143f 100644
---- a/arch/arm/kernel/hw_breakpoint.c
-+++ b/arch/arm/kernel/hw_breakpoint.c
-@@ -631,7 +631,7 @@ int arch_validate_hwbkpt_settings(struct perf_event *bp)
- 	info->address &= ~alignment_mask;
- 	info->ctrl.len <<= offset;
+diff --git a/drivers/spi/spi-sun6i.c b/drivers/spi/spi-sun6i.c
+index 30d541612253e..cec2747235abf 100644
+--- a/drivers/spi/spi-sun6i.c
++++ b/drivers/spi/spi-sun6i.c
+@@ -83,6 +83,9 @@
+ #define SUN6I_XMIT_CNT_REG		0x34
  
--	if (is_default_overflow_handler(bp)) {
-+	if (uses_default_overflow_handler(bp)) {
- 		/*
- 		 * Mismatch breakpoints are required for single-stepping
- 		 * breakpoints.
-@@ -803,7 +803,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
- 		 * Otherwise, insert a temporary mismatch breakpoint so that
- 		 * we can single-step over the watchpoint trigger.
- 		 */
--		if (!is_default_overflow_handler(wp))
-+		if (!uses_default_overflow_handler(wp))
- 			continue;
- step:
- 		enable_single_step(wp, instruction_pointer(regs));
-@@ -816,7 +816,7 @@ static void watchpoint_handler(unsigned long addr, unsigned int fsr,
- 		info->trigger = addr;
- 		pr_debug("watchpoint fired: address = 0x%x\n", info->trigger);
- 		perf_bp_event(wp, regs);
--		if (is_default_overflow_handler(wp))
-+		if (uses_default_overflow_handler(wp))
- 			enable_single_step(wp, instruction_pointer(regs));
- 	}
+ #define SUN6I_BURST_CTL_CNT_REG		0x38
++#define SUN6I_BURST_CTL_CNT_STC_MASK		GENMASK(23, 0)
++#define SUN6I_BURST_CTL_CNT_DRM			BIT(28)
++#define SUN6I_BURST_CTL_CNT_QUAD_EN		BIT(29)
  
-@@ -891,7 +891,7 @@ static void breakpoint_handler(unsigned long unknown, struct pt_regs *regs)
- 			info->trigger = addr;
- 			pr_debug("breakpoint fired: address = 0x%x\n", addr);
- 			perf_bp_event(bp, regs);
--			if (is_default_overflow_handler(bp))
-+			if (uses_default_overflow_handler(bp))
- 				enable_single_step(bp, addr);
- 			goto unlock;
- 		}
-diff --git a/arch/arm64/kernel/hw_breakpoint.c b/arch/arm64/kernel/hw_breakpoint.c
-index 6e96cea99a4ec..7f608a8d43860 100644
---- a/arch/arm64/kernel/hw_breakpoint.c
-+++ b/arch/arm64/kernel/hw_breakpoint.c
-@@ -662,7 +662,7 @@ static int breakpoint_handler(unsigned long unused, unsigned int esr,
- 		perf_bp_event(bp, regs);
+ #define SUN6I_TXDATA_REG		0x200
+ #define SUN6I_RXDATA_REG		0x300
+@@ -90,6 +93,7 @@
+ struct sun6i_spi_cfg {
+ 	unsigned long		fifo_depth;
+ 	bool			has_clk_ctl;
++	u32			mode_bits;
+ };
  
- 		/* Do we need to handle the stepping? */
--		if (is_default_overflow_handler(bp))
-+		if (uses_default_overflow_handler(bp))
- 			step = 1;
- unlock:
- 		rcu_read_unlock();
-@@ -741,7 +741,7 @@ static u64 get_distance_from_watchpoint(unsigned long addr, u64 val,
- static int watchpoint_report(struct perf_event *wp, unsigned long addr,
- 			     struct pt_regs *regs)
- {
--	int step = is_default_overflow_handler(wp);
-+	int step = uses_default_overflow_handler(wp);
- 	struct arch_hw_breakpoint *info = counter_arch_bp(wp);
+ struct sun6i_spi {
+@@ -266,7 +270,7 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	unsigned int div, div_cdr1, div_cdr2, timeout;
+ 	unsigned int start, end, tx_time;
+ 	unsigned int trig_level;
+-	unsigned int tx_len = 0, rx_len = 0;
++	unsigned int tx_len = 0, rx_len = 0, nbits = 0;
+ 	bool use_dma;
+ 	int ret = 0;
+ 	u32 reg;
+@@ -418,13 +422,29 @@ static int sun6i_spi_transfer_one(struct spi_master *master,
+ 	sun6i_spi_write(sspi, SUN6I_GBL_CTL_REG, reg);
  
- 	info->trigger = addr;
-diff --git a/include/linux/perf_event.h b/include/linux/perf_event.h
-index 5efd8109ad0ab..e175d5e3acd68 100644
---- a/include/linux/perf_event.h
-+++ b/include/linux/perf_event.h
-@@ -985,15 +985,31 @@ extern void perf_event_output(struct perf_event *event,
- 			      struct pt_regs *regs);
- 
- static inline bool
--is_default_overflow_handler(struct perf_event *event)
-+__is_default_overflow_handler(perf_overflow_handler_t overflow_handler)
- {
--	if (likely(event->overflow_handler == perf_event_output_forward))
-+	if (likely(overflow_handler == perf_event_output_forward))
- 		return true;
--	if (unlikely(event->overflow_handler == perf_event_output_backward))
-+	if (unlikely(overflow_handler == perf_event_output_backward))
- 		return true;
- 	return false;
- }
- 
-+#define is_default_overflow_handler(event) \
-+	__is_default_overflow_handler((event)->overflow_handler)
+ 	/* Setup the transfer now... */
+-	if (sspi->tx_buf)
++	if (sspi->tx_buf) {
+ 		tx_len = tfr->len;
++		nbits = tfr->tx_nbits;
++	} else if (tfr->rx_buf) {
++		nbits = tfr->rx_nbits;
++	}
 +
-+#ifdef CONFIG_BPF_SYSCALL
-+static inline bool uses_default_overflow_handler(struct perf_event *event)
-+{
-+	if (likely(is_default_overflow_handler(event)))
-+		return true;
-+
-+	return __is_default_overflow_handler(event->orig_overflow_handler);
-+}
-+#else
-+#define uses_default_overflow_handler(event) \
-+	is_default_overflow_handler(event)
-+#endif
-+
- extern void
- perf_event_header__init_id(struct perf_event_header *header,
- 			   struct perf_sample_data *data,
++	switch (nbits) {
++	case SPI_NBITS_DUAL:
++		reg = SUN6I_BURST_CTL_CNT_DRM;
++		break;
++	case SPI_NBITS_QUAD:
++		reg = SUN6I_BURST_CTL_CNT_QUAD_EN;
++		break;
++	case SPI_NBITS_SINGLE:
++	default:
++		reg = FIELD_PREP(SUN6I_BURST_CTL_CNT_STC_MASK, tx_len);
++	}
+ 
+ 	/* Setup the counters */
++	sun6i_spi_write(sspi, SUN6I_BURST_CTL_CNT_REG, reg);
+ 	sun6i_spi_write(sspi, SUN6I_BURST_CNT_REG, tfr->len);
+ 	sun6i_spi_write(sspi, SUN6I_XMIT_CNT_REG, tx_len);
+-	sun6i_spi_write(sspi, SUN6I_BURST_CTL_CNT_REG, tx_len);
+ 
+ 	if (!use_dma) {
+ 		/* Fill the TX FIFO */
+@@ -623,7 +643,8 @@ static int sun6i_spi_probe(struct platform_device *pdev)
+ 	master->set_cs = sun6i_spi_set_cs;
+ 	master->transfer_one = sun6i_spi_transfer_one;
+ 	master->num_chipselect = 4;
+-	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST;
++	master->mode_bits = SPI_CPOL | SPI_CPHA | SPI_CS_HIGH | SPI_LSB_FIRST |
++			    sspi->cfg->mode_bits;
+ 	master->bits_per_word_mask = SPI_BPW_MASK(8);
+ 	master->dev.of_node = pdev->dev.of_node;
+ 	master->auto_runtime_pm = true;
 -- 
 2.40.1
 
