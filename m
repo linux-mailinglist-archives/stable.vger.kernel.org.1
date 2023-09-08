@@ -2,82 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 373987980F1
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 05:28:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F0F6279810C
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 05:50:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232081AbjIHD2q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 23:28:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51892 "EHLO
+        id S233310AbjIHDuC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 23:50:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231362AbjIHD2p (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 23:28:45 -0400
-Received: from mail-pg1-x530.google.com (mail-pg1-x530.google.com [IPv6:2607:f8b0:4864:20::530])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A9A41BD8
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 20:28:41 -0700 (PDT)
-Received: by mail-pg1-x530.google.com with SMTP id 41be03b00d2f7-53482b44007so1224768a12.2
-        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 20:28:41 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=bytedance.com; s=google; t=1694143721; x=1694748521; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=Xyga/bR7KnO0AZcMSgesUn85OC4rXik7va8Pa71Uoy8=;
-        b=RDb3prWCyEm3INnTubf050KKcChO0XR3oaywa1MTuAnZfLDqjz+CVHu72S+vX90mKt
-         E2roMImkAokGSAKnjx0oukaDpWGXk2keiYlIZOqM03W0Cb0EBUZ7p+Ru4ieWKDTxxMOJ
-         Q54oFWVTzEyFbr9z3yx6hgoGiyC4AMhqkNDmBIGtM89Y67StAfExDxwQcNQpIFqUqbD1
-         YwUQ6gLQdxsApGfF88FwFNR+twkRZ5necGLlBioWSWUUF6FQsWfDtA4OMeoZLoO6wBv4
-         z4wa9hFpNq+7Dflkp9elfUWKQwxTacx7eble03h9ezKtt2/F/noxkYDPx53I7GHRE1mk
-         ECtQ==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694143721; x=1694748521;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to:subject
-         :user-agent:mime-version:date:message-id:x-gm-message-state:from:to
-         :cc:subject:date:message-id:reply-to;
-        bh=Xyga/bR7KnO0AZcMSgesUn85OC4rXik7va8Pa71Uoy8=;
-        b=vDOITCngc6NhL2NaIocuiN6+ghwT6t0tsqvf/hTDTDNZu8UiIQMedONnBYTE48aTe5
-         mOm8W8NP7E+xjPqMxrNt/olE2cagq4lbSI3QDm4szjo7g2DOOG3NRs29SKcdt/Coo+a8
-         HgWcAI5Iqg/S233AtNMdZiavRLAYp9WPWafyPfseI1rhfkW5CtobL/6ZU1WUjMRfaBcd
-         qSHQmT61QwRu6Z+FGUqEURjJG7hX85AzQ+HkOdxOUaZZPlJIV2LbLCeIbEeuS9i9cnt8
-         OYEmKrGVfei21dq1v3yQVQlCymjUaaamaC+mE2LIUaHUVzCYDJbm7ggsht9REKeSuV+V
-         ITsQ==
-X-Gm-Message-State: AOJu0Yy2qPmoECHjOG9A6vYDa3Xof7P5elDfhXx60UOEha9VcuxXOjpE
-        6ZCM55PR3W4+tnmbn0kp4mfjnw==
-X-Google-Smtp-Source: AGHT+IG3Fnhkv/ckb8v3efpkXk9m5bSeAiGH/2YqrB6IQjg0wzVL6kqNDRi12CQ/J7lIdOJcXpjfyA==
-X-Received: by 2002:a05:6a20:158d:b0:14c:e8d4:fb3e with SMTP id h13-20020a056a20158d00b0014ce8d4fb3emr1828439pzj.43.1694143720902;
-        Thu, 07 Sep 2023 20:28:40 -0700 (PDT)
-Received: from [10.84.158.67] ([203.208.167.147])
-        by smtp.gmail.com with ESMTPSA id jf3-20020a170903268300b001bf095dfb79sm453948plb.235.2023.09.07.20.28.37
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Sep 2023 20:28:40 -0700 (PDT)
-Message-ID: <dd8e6bfb-9d84-6a5d-94cb-4833f5d1943b@bytedance.com>
-Date:   Fri, 8 Sep 2023 11:28:34 +0800
+        with ESMTP id S230436AbjIHDuC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 23:50:02 -0400
+X-Greylist: delayed 504 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Thu, 07 Sep 2023 20:49:57 PDT
+Received: from mail-m49204.qiye.163.com (mail-m49204.qiye.163.com [45.254.49.204])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A1BC1BDA;
+        Thu,  7 Sep 2023 20:49:57 -0700 (PDT)
+Received: from localhost.localdomain (unknown [218.94.118.90])
+        by mail-m3174.qiye.163.com (Hmail) with ESMTPA id A17034023A;
+        Fri,  8 Sep 2023 11:41:22 +0800 (CST)
+From:   Mingzhe Zou <mingzhe.zou@easystack.cn>
+To:     colyli@suse.de, bcache@lists.ewheeler.net
+Cc:     linux-bcache@vger.kernel.org, zoumingzhe@qq.com,
+        Mingzhe Zou <mingzhe.zou@easystack.cn>, stable@vger.kernel.org
+Subject: [PATCH v2] bcache: fixup lock c->root error
+Date:   Fri,  8 Sep 2023 11:41:08 +0800
+Message-Id: <20230908034108.405-1-mingzhe.zou@easystack.cn>
+X-Mailer: git-send-email 2.25.1
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.15; rv:102.0)
- Gecko/20100101 Thunderbird/102.15.0
-Subject: Re: [External] Re: Fwd: WARNING: CPU: 13 PID: 3837105 at
- kernel/sched/sched.h:1561 __cfsb_csd_unthrottle+0x149/0x160
-To:     Tim Chen <tim.c.chen@linux.intel.com>,
-        Peter Zijlstra <peterz@infradead.org>
-Cc:     Benjamin Segall <bsegall@google.com>,
-        Bagas Sanjaya <bagasdotme@gmail.com>,
-        Vincent Guittot <vincent.guittot@linaro.org>,
-        Igor Raits <igor.raits@gmail.com>,
-        Linux Kernel Mailing List <linux-kernel@vger.kernel.org>,
-        Linux Regressions <regressions@lists.linux.dev>,
-        Linux Stable <stable@vger.kernel.org>
-References: <a5dd536d-041a-2ce9-f4b7-64d8d85c86dc@gmail.com>
- <xm26cyz4ibnb.fsf@google.com>
- <55e2861e-9722-08f8-2c49-966035ff4218@bytedance.com>
- <20230904222351.GC2568@noisy.programming.kicks-ass.net>
- <3544d5e3-3070-9ddc-fa6c-a05ed35dfd14@bytedance.com>
- <171e6a9435a33885a73b48762f86954e447c26c2.camel@linux.intel.com>
-From:   Hao Jia <jiahao.os@bytedance.com>
-In-Reply-To: <171e6a9435a33885a73b48762f86954e447c26c2.camel@linux.intel.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Type: text/plain; charset=UTF-8
+Content-Transfer-Encoding: 8bit
+X-HM-Spam-Status: e1kfGhgUHx5ZQUpXWQgPGg8OCBgUHx5ZQUlOS1dZFg8aDwILHllBWSg2Ly
+        tZV1koWUFJQjdXWS1ZQUlXWQ8JGhUIEh9ZQVkaTRpDVklPT0oYTklLSE8fTlUZERMWGhIXJBQOD1
+        lXWRgSC1lBWUlKQ1VCT1VKSkNVQktZV1kWGg8SFR0UWUFZT0tIVUpKS0hKQ1VKS0tVS1kG
+X-HM-Tid: 0a8a72e14e8b00aekurma17034023a
+X-HM-MType: 1
+X-HM-Sender-Digest: e1kMHhlZQR0aFwgeV1kSHx4VD1lBWUc6PE06ERw6EDE2NVYdDggLCh82
+        SjpPClZVSlVKTUJPSk9PT0NIT0JPVTMWGhIXVRYSFRwBEx5VARQOOx4aCAIIDxoYEFUYFUVZV1kS
+        C1lBWUlKQ1VCT1VKSkNVQktZV1kIAVlBTU5DTTcG
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -85,54 +46,172 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+We had a problem with io hung because it was waiting for c->root to
+release the lock.
 
+crash> cache_set.root -l cache_set.list ffffa03fde4c0050
+  root = 0xffff802ef454c800
+crash> btree -o 0xffff802ef454c800 | grep rw_semaphore
+  [ffff802ef454c858] struct rw_semaphore lock;
+crash> struct rw_semaphore ffff802ef454c858
+struct rw_semaphore {
+  count = {
+    counter = -4294967297
+  },
+  wait_list = {
+    next = 0xffff00006786fc28,
+    prev = 0xffff00005d0efac8
+  },
+  wait_lock = {
+    raw_lock = {
+      {
+        val = {
+          counter = 0
+        },
+        {
+          locked = 0 '\000',
+          pending = 0 '\000'
+        },
+        {
+          locked_pending = 0,
+          tail = 0
+        }
+      }
+    }
+  },
+  osq = {
+    tail = {
+      counter = 0
+    }
+  },
+  owner = 0xffffa03fdc586603
+}
 
-On 2023/9/8 Tim Chen wrote:
-> On Thu, 2023-09-07 at 16:59 +0800, Hao Jia wrote:
->>
->> On 2023/9/5 Peter Zijlstra wrote:
->>> On Thu, Aug 31, 2023 at 04:48:29PM +0800, Hao Jia wrote:
->>>
->>>> If I understand correctly, rq->clock_update_flags may be set to
->>>> RQCF_ACT_SKIP after __schedule() holds the rq lock, and sometimes the rq
->>>> lock may be released briefly in __schedule(), such as newidle_balance(). At
->>>> this time Other CPUs hold this rq lock, and then calling
->>>> rq_clock_start_loop_update() may trigger this warning.
->>>>
->>>> This warning check might be wrong. We need to add assert_clock_updated() to
->>>> check that the rq clock has been updated before calling
->>>> rq_clock_start_loop_update().
->>>>
->>>> Maybe some things can be like this?
->>>
->>> Urgh, aside from it being white space mangled, I think this is entirely
->>> going in the wrong direction.
->>>
->>> Leaking ACT_SKIP is dodgy as heck.. it's entirely too late to think
->>> clearly though, I'll have to try again tomorrow.
-> 
-> I am trying to understand why this is an ACT_SKIP leak.
-> Before call to __cfsb_csd_unthrottle(), is it possible someone
-> else lock the runqueue, set ACT_SKIP and release rq_lock?
-> And then that someone never update the rq_clock?
-> 
+The "counter = -4294967297" means that lock count is -1 and a write lock
+is being attempted. Then, we found that there is a btree with a counter
+of 1 in btree_cache_freeable.
 
-Yes, we want to set rq->clock_update_flags to RQCF_ACT_SKIP to avoid 
-updating the rq clock multiple times in __cfsb_csd_unthrottle().
+crash> cache_set -l cache_set.list ffffa03fde4c0050 -o|grep btree_cache
+  [ffffa03fde4c1140] struct list_head btree_cache;
+  [ffffa03fde4c1150] struct list_head btree_cache_freeable;
+  [ffffa03fde4c1160] struct list_head btree_cache_freed;
+  [ffffa03fde4c1170] unsigned int btree_cache_used;
+  [ffffa03fde4c1178] wait_queue_head_t btree_cache_wait;
+  [ffffa03fde4c1190] struct task_struct *btree_cache_alloc_lock;
+crash> list -H ffffa03fde4c1140|wc -l
+973
+crash> list -H ffffa03fde4c1150|wc -l
+1123
+crash> cache_set.btree_cache_used -l cache_set.list ffffa03fde4c0050
+  btree_cache_used = 2097
+crash> list -s btree -l btree.list -H ffffa03fde4c1140|grep -E -A2 "^  lock = {" > btree_cache.txt
+crash> list -s btree -l btree.list -H ffffa03fde4c1150|grep -E -A2 "^  lock = {" > btree_cache_freeable.txt
+[root@node-3 127.0.0.1-2023-08-04-16:40:28]# pwd
+/var/crash/127.0.0.1-2023-08-04-16:40:28
+[root@node-3 127.0.0.1-2023-08-04-16:40:28]# cat btree_cache.txt|grep counter|grep -v "counter = 0"
+[root@node-3 127.0.0.1-2023-08-04-16:40:28]# cat btree_cache_freeable.txt|grep counter|grep -v "counter = 0"
+      counter = 1
 
-But now we find ACT_SKIP leak, so we cannot unconditionally set 
-rq->clock_update_flags to RQCF_ACT_SKIP in rq_clock_start_loop_update().
+We found that this is a bug in bch_sectors_dirty_init() when locking c->root:
+    (1). Thread X has locked c->root(A) write.
+    (2). Thread Y failed to lock c->root(A), waiting for the lock(c->root A).
+    (3). Thread X bch_btree_set_root() changes c->root from A to B.
+    (4). Thread X releases the lock(c->root A).
+    (5). Thread Y successfully locks c->root(A).
+    (6). Thread Y releases the lock(c->root B).
 
+        down_write locked ---(1)----------------------┐
+                |                                     |
+                |   down_read waiting ---(2)----┐     |
+                |           |               ┌-------------┐ ┌-------------┐
+        bch_btree_set_root ===(3)========>> | c->root   A | | c->root   B |
+                |           |               └-------------┘ └-------------┘
+            up_write ---(4)---------------------┘     |            |
+                            |                         |            |
+                    down_read locked ---(5)-----------┘            |
+                            |                                      |
+                        up_read ---(6)-----------------------------┘
 
->>
->> Hi Peter,
->>
->> Do you think this fix method is correct? Or should we go back to the
->> beginning and move update_rq_clock() from unthrottle_cfs_rq()?
->>
-> If anyone who locked the runqueue set ACT_SKIP also will update rq_clock,
-> I think your change is okay.  Otherwise rq_clock could be missing update.
-> 
-> Thanks.
-> 
-> Tim
+Since c->root may change, the correct steps to lock c->root should be
+the same as bch_root_usage(), compare after locking.
+
+static unsigned int bch_root_usage(struct cache_set *c)
+{
+        unsigned int bytes = 0;
+        struct bkey *k;
+        struct btree *b;
+        struct btree_iter iter;
+
+        goto lock_root;
+
+        do {
+                rw_unlock(false, b);
+lock_root:
+                b = c->root;
+                rw_lock(false, b, b->level);
+        } while (b != c->root);
+
+        for_each_key_filter(&b->keys, k, &iter, bch_ptr_bad)
+                bytes += bkey_bytes(k);
+
+        rw_unlock(false, b);
+
+        return (bytes * 100) / btree_bytes(c);
+}
+
+Fixes: b144e45fc576 ("bcache: make bch_sectors_dirty_init() to be multithreaded")
+Signed-off-by: Mingzhe Zou <mingzhe.zou@easystack.cn>
+Cc: stable@vger.kernel.org
+---
+ drivers/md/bcache/writeback.c | 14 +++++++++++---
+ 1 file changed, 11 insertions(+), 3 deletions(-)
+
+diff --git a/drivers/md/bcache/writeback.c b/drivers/md/bcache/writeback.c
+index 24c049067f61..bac916ba08c8 100644
+--- a/drivers/md/bcache/writeback.c
++++ b/drivers/md/bcache/writeback.c
+@@ -977,14 +977,22 @@ static int bch_btre_dirty_init_thread_nr(void)
+ void bch_sectors_dirty_init(struct bcache_device *d)
+ {
+ 	int i;
++	struct btree *b = NULL;
+ 	struct bkey *k = NULL;
+ 	struct btree_iter iter;
+ 	struct sectors_dirty_init op;
+ 	struct cache_set *c = d->c;
+ 	struct bch_dirty_init_state state;
+ 
++retry_lock:
++	b = c->root;
++	rw_lock(0, b, b->level);
++	if (b != c->root) {
++		rw_unlock(0, b);
++		goto retry_lock;
++	}
++
+ 	/* Just count root keys if no leaf node */
+-	rw_lock(0, c->root, c->root->level);
+ 	if (c->root->level == 0) {
+ 		bch_btree_op_init(&op.op, -1);
+ 		op.inode = d->id;
+@@ -994,7 +1002,7 @@ void bch_sectors_dirty_init(struct bcache_device *d)
+ 				    k, &iter, bch_ptr_invalid)
+ 			sectors_dirty_init_fn(&op.op, c->root, k);
+ 
+-		rw_unlock(0, c->root);
++		rw_unlock(0, b);
+ 		return;
+ 	}
+ 
+@@ -1030,7 +1038,7 @@ void bch_sectors_dirty_init(struct bcache_device *d)
+ out:
+ 	/* Must wait for all threads to stop. */
+ 	wait_event(state.wait, atomic_read(&state.started) == 0);
+-	rw_unlock(0, c->root);
++	rw_unlock(0, b);
+ }
+ 
+ void bch_cached_dev_writeback_init(struct cached_dev *dc)
+-- 
+2.17.1.windows.2
+
