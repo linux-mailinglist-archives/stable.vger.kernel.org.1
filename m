@@ -2,91 +2,153 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DE327992C2
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:20:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0ED3B7992CD
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:22:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345139AbjIHXU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 19:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57090 "EHLO
+        id S1345216AbjIHXWs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 19:22:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345130AbjIHXU0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:20:26 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72ACE133;
-        Fri,  8 Sep 2023 16:20:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96E1AC433C9;
-        Fri,  8 Sep 2023 23:20:19 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694215222;
-        bh=1nkvFtVYE6mG4enJsXLmgOQmQm0V3mHWO63X25P49hQ=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=HahHIcLepJzUpvY5xRx/aiPK5t6LgCPxVAt4TxYErUyBroD+LxGK2g3EU7f1kWGN8
-         19Sg2/QgVL6TnFgLUIJm6WlKRugP/jBu/zwqUtP8jh1i95elk6b/3LT+s6rV4cGbSw
-         UoE9KiYMNJsAr5LVtW4PTJdsTFPj6bBoN3hD/wHbuFdvCY72JP+7KR0z96Ztv+6rKp
-         dtOvS8AHWsMP0cEexjw58VOoWQ3Z9uOIAucGGrw5/h7ePdi109Ty4BkWVcu/V6saSy
-         kOepkWy00kf+VBvFEyuPCiyYYSsxO7s0Wt1pno+OYfXnNCTGuGGhrlpVNh7GYzEdwM
-         sIqyaDI/uyrYg==
-Date:   Sat, 9 Sep 2023 00:20:16 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Cristian Ciocaltea <cristian.ciocaltea@collabora.com>,
-        lgirdwood@gmail.com, perex@perex.cz, tiwai@suse.com,
-        lucas.tanure@collabora.com, pierre-louis.bossart@linux.intel.com,
-        rander.wang@intel.com, kuninori.morimoto.gx@renesas.com,
-        alsa-devel@alsa-project.org
-Subject: Re: [PATCH AUTOSEL 6.4 04/31] ASoC: amd: vangogh: Use
- dmi_first_match() for DMI quirk handling
-Message-ID: <8d75077a-799a-4bf1-b259-a931c00fbc54@sirena.org.uk>
-References: <20230908193201.3462957-1-sashal@kernel.org>
- <20230908193201.3462957-4-sashal@kernel.org>
+        with ESMTP id S1345238AbjIHXWq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:22:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 689062105
+        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 16:21:56 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694215315;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         content-transfer-encoding:content-transfer-encoding:
+         in-reply-to:in-reply-to:references:references;
+        bh=F+MW0YycyfuvGIR5zmiQX89HyMyFCOfpYnvtqX4xsko=;
+        b=HmsWOKAm10Ff06WrpZRcL3o7s7jVSGe6i3KcPELlj1EubVrqTwwWzM7GfxQWnmKcLm4ME+
+        sEm1zjxeImyB6mYlxACzp2PhwcIJY1oEOoYUR3z+nUHk1KnQx2etQBI0Kd41J7PcoQIoF/
+        NagQEx7IS/LwfUqwi/T0BgGdsLnX0H0=
+Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
+ [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
+ (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-250-4Kp_58QdPEuXVXXpHHp0Yg-1; Fri, 08 Sep 2023 19:21:51 -0400
+X-MC-Unique: 4Kp_58QdPEuXVXXpHHp0Yg-1
+Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F127881653D;
+        Fri,  8 Sep 2023 23:21:50 +0000 (UTC)
+Received: from [10.22.33.35] (unknown [10.22.33.35])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id 9B078493112;
+        Fri,  8 Sep 2023 23:21:50 +0000 (UTC)
+Message-ID: <09b69257-afb0-af0a-a3c4-f227b0cf4292@redhat.com>
+Date:   Fri, 8 Sep 2023 19:21:50 -0400
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="HJU+WQ/4Y17Xqo4d"
-Content-Disposition: inline
-In-Reply-To: <20230908193201.3462957-4-sashal@kernel.org>
-X-Cookie: My EARS are GONE!!
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
+ Thunderbird/102.14.0
+Subject: Re: [PATCH] mm/slab_common: fix slab_caches list corruption after
+ kmem_cache_destroy()
+Content-Language: en-US
+To:     Rafael Aquini <aquini@redhat.com>, linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Rafael Aquini <raquini@redhat.com>, stable@vger.kernel.org
+References: <20230908230649.802560-1-aquini@redhat.com>
+From:   Waiman Long <longman@redhat.com>
+In-Reply-To: <20230908230649.802560-1-aquini@redhat.com>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
+X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
+        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
+        version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On 9/8/23 19:06, Rafael Aquini wrote:
+> After the commit in Fixes:, if a module that created a slab cache does not
+> release all of its allocated objects before destroying the cache (at rmmod
+> time), we might end up releasing the kmem_cache object without removing it
+> from the slab_caches list thus corrupting the list as kmem_cache_destroy()
+> ignores the return value from shutdown_cache(), which in turn never removes
+> the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
+> to release all of the cache's slabs.
+>
+> This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
+> as after that ill release the system will immediately trip on list_add,
+> or list_del, assertions similar to the one shown below as soon as another
+> kmem_cache gets created, or destroyed:
+>
+>    [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
+>    [ 1041.219165] ------------[ cut here ]------------
+>    [ 1041.221517] kernel BUG at lib/list_debug.c:62!
+>    [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+>    [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
+>    [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
+>    [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
+>
+> Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
+> is to set slub_debug to poison the released objects and then just run
+> cat /proc/slabinfo after removing the module that leaks slab objects,
+> in which case the kernel will panic:
+>
+>    [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
+>    [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
+>    [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
+>    [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
+>
+> This patch fixes this issue by properly checking shutdown_cache()'s
+> return value before taking the kmem_cache_release() branch.
+>
+> Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
+> Signed-off-by: Rafael Aquini <aquini@redhat.com>
+> Cc: stable@vger.kernel.org
+> ---
+>   mm/slab_common.c | 13 ++++++++-----
+>   1 file changed, 8 insertions(+), 5 deletions(-)
+>
+> diff --git a/mm/slab_common.c b/mm/slab_common.c
+> index cd71f9581e67..31e581dc6e85 100644
+> --- a/mm/slab_common.c
+> +++ b/mm/slab_common.c
+> @@ -479,7 +479,7 @@ void slab_kmem_cache_release(struct kmem_cache *s)
+>   
+>   void kmem_cache_destroy(struct kmem_cache *s)
+>   {
+> -	int refcnt;
+> +	int err;
+>   	bool rcu_set;
+>   
+>   	if (unlikely(!s) || !kasan_check_byte(s))
+> @@ -490,17 +490,20 @@ void kmem_cache_destroy(struct kmem_cache *s)
+>   
+>   	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
+>   
+> -	refcnt = --s->refcount;
+> -	if (refcnt)
+> +	s->refcount--;
+> +	if (s->refcount) {
+> +		err = -EBUSY;
+>   		goto out_unlock;
+> +	}
+>   
+> -	WARN(shutdown_cache(s),
+> +	err = shutdown_cache(s);
+> +	WARN(err,
+>   	     "%s %s: Slab cache still has objects when called from %pS",
+>   	     __func__, s->name, (void *)_RET_IP_);
+>   out_unlock:
+>   	mutex_unlock(&slab_mutex);
+>   	cpus_read_unlock();
+> -	if (!refcnt && !rcu_set)
+> +	if (!err && !rcu_set)
+>   		kmem_cache_release(s);
+>   }
+>   EXPORT_SYMBOL(kmem_cache_destroy);
 
---HJU+WQ/4Y17Xqo4d
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+Thanks for fixing this corner case.
 
-On Fri, Sep 08, 2023 at 03:31:33PM -0400, Sasha Levin wrote:
-> From: Cristian Ciocaltea <cristian.ciocaltea@collabora.com>
->=20
-> [ Upstream commit 3dd26e27ccb4f18b4d25c0a49e1888eca9c6a724 ]
->=20
-> In preparation for supporting ACPI probing, move DMI quirk handling
-> logic at the probe's top, to be able to return as quickly as possible in
-> case there is no DMI matching.
+Reviewed-by: Waiman Long <longman@redhat.com>
 
-As the changelog clearly says this is preparatory work for a new feature
-and therefore not stable material.
-
---HJU+WQ/4Y17Xqo4d
-Content-Type: application/pgp-signature; name="signature.asc"
-
------BEGIN PGP SIGNATURE-----
-
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT7rC8ACgkQJNaLcl1U
-h9ANKAf/Uh5mXAR2JkTFtWmICqsgIMotI0tYYL1EQJOl40jGGQD3LyX7eU5+CWlD
-zUlN60tqi37UvIWJyh1a7n9+L6kdNTPlmBEDO2d+/z+JnQ4hl5s73WQyvXOrzkpQ
-ixmuWHh2exU257IBynFuHNbjys23co5MVDw7qfKl9Sd/XZtjRUURLsqNLrUPGNM7
-DIyXAQODuKM06mjHzuQj3oemcBaYuiEZUmIzK8n3MbtEw0fVqGPfhenP5WNeI2Cf
-5NvlAncOQNmXZVMd8Y+5lowDh8+D+/qYWAhtKTcvONki04i94sGjeKFf/hIeRJ0O
-mOs5udsejjhFwCerwfhXCtxMGyIVJg==
-=9KWO
------END PGP SIGNATURE-----
-
---HJU+WQ/4Y17Xqo4d--
