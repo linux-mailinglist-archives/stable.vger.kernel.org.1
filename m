@@ -2,84 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 04AC2798314
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 09:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1DF127983EB
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 10:22:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234355AbjIHHI4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 03:08:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53254 "EHLO
+        id S236931AbjIHIWQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 04:22:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55302 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232223AbjIHHIz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 03:08:55 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C657F1BC8;
-        Fri,  8 Sep 2023 00:08:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F938C433C7;
-        Fri,  8 Sep 2023 07:08:50 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694156931;
-        bh=Saa1sAIyQPH2fcGeR299juiy+29L73NlSsSTO5GU8xU=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=WyC0U0m52a32GXZMWEnlf4hZ016qfoRdPdCS/kp2SbxbhuM2cROLFZz6/S/yM1xM3
-         qWM8p+LH7Eeqc+283N2KYvm4xM9DXxIAw2qSfIJffEv/VpvSzEvNiZY3wH9CcC14yz
-         hFLcNsSTM34e0O4QfOa195Ae7+cCEakEK4buWtMU=
-Date:   Fri, 8 Sep 2023 08:08:49 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco)" 
-        <deeratho@cisco.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
- btsdio_remove due to race condition
-Message-ID: <2023090826-fabulous-genetics-e912@gregkh>
-References: <20230906121525.3946250-1-deeratho@cisco.com>
- <2023090738-passive-snowless-3b9d@gregkh>
- <DM4PR11MB6189DEDD52F3E17C8C4E3D1BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <DM4PR11MB61890EE125816A786D153C22C4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <2023090820-wielder-angled-3def@gregkh>
- <DM4PR11MB618943BFA18521150923326BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
+        with ESMTP id S236386AbjIHIWP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 04:22:15 -0400
+Received: from bombadil.infradead.org (bombadil.infradead.org [IPv6:2607:7c80:54:3::133])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E77EF1BDA;
+        Fri,  8 Sep 2023 01:22:08 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; q=dns/txt; c=relaxed/relaxed;
+        d=infradead.org; s=bombadil.20210309; h=In-Reply-To:Content-Type:MIME-Version
+        :References:Message-ID:Subject:Cc:To:From:Date:Sender:Reply-To:
+        Content-Transfer-Encoding:Content-ID:Content-Description;
+        bh=6D470cIvCGiPdXU/MnoROZejPxD2v9P20lFztg+Jwq0=; b=matuwfW8dn31iALbrcQUfwHKmQ
+        ofRmFp2j8cU+9E8L6S0FJlFRqUDjYfAp7CEiRgGXCdxYyKk++82wEu/qGJ+ZS80/8OrgxnKQYc7ZI
+        6eCMFjzC8/QELDt6mPdK5yaRS+4/bTZ/hvktWfYzcLt5vnTPiPhEokGlj/O1h/DOc3lbPnUOJ2w4S
+        pOL3/vwPka8Jl+JGdZTkvixyZXVmgoeEPa2vomSP6k+guVN/5/ORjA9jHMbqmkpPvXxSg0cvd0ArY
+        HYrOfISvkJANWVFq3B/GRAnuI7Vq2SwlPBF2W0ECtpyYOhLkRJiKOBZaEJvbx52vsGogzYXZ+bZSd
+        qS940VGg==;
+Received: from hch by bombadil.infradead.org with local (Exim 4.96 #2 (Red Hat Linux))
+        id 1qeWkh-00DJNE-2U;
+        Fri, 08 Sep 2023 08:22:07 +0000
+Date:   Fri, 8 Sep 2023 01:22:07 -0700
+From:   Christoph Hellwig <hch@infradead.org>
+To:     Bernd Schubert <bschubert@ddn.com>
+Cc:     linux-btrfs@vger.kernel.org, bernd.schubert@fastmail.fm,
+        miklos@szeredi.hu, dsingh@ddn.com,
+        Christoph Hellwig <hch@infradead.org>,
+        Goldwyn Rodrigues <rgoldwyn@suse.com>,
+        David Sterba <dsterba@suse.com>, linux-fsdevel@vger.kernel.org,
+        stable@vger.kernel.org
+Subject: Re: [PATCH 1/1] btrfs: file_remove_privs needs an exclusive lock
+Message-ID: <ZPrZr4PEwnyYCPpC@infradead.org>
+References: <20230906155903.3287672-1-bschubert@ddn.com>
+ <20230906155903.3287672-2-bschubert@ddn.com>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
-In-Reply-To: <DM4PR11MB618943BFA18521150923326BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+In-Reply-To: <20230906155903.3287672-2-bschubert@ddn.com>
+X-SRS-Rewrite: SMTP reverse-path rewritten from <hch@infradead.org> by bombadil.infradead.org. See http://www.infradead.org/rpr.html
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-A: http://en.wikipedia.org/wiki/Top_post
-Q: Were do I find info about this thing called top-posting?
-A: Because it messes up the order in which people normally read text.
-Q: Why is top-posting such a bad thing?
-A: Top-posting.
-Q: What is the most annoying thing in e-mail?
+On Wed, Sep 06, 2023 at 05:59:03PM +0200, Bernd Schubert wrote:
+> file_remove_privs might call into notify_change(), which
+> requires to hold an exclusive lock.
 
-A: No.
-Q: Should I include quotations after my reply?
+Looks good:
 
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 
-http://daringfireball.net/2007/07/on_top
-
-On Fri, Sep 08, 2023 at 06:54:06AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
-> Hi Greg,
-> 
-> This change is required to fix kernel CVE: CVE-2023-1989 which is
-> reported in v6.1 kernel version.
-
-Which change?
-
-> It is fixed in upstream starting from v6.3 kernel version and required
-> to fix in 6.1 kernel version as well so we have backported this from
-> v6.3 kernel version to v6.1 and I have sent this patch for review and
-> merging.
-
-Again, what commit are you referring to here.
-
-confused,
-
-greg k-h
+FYI, I'd be really curious about benchmarking this against you version
+that checks xattrs for shared locked writes on files that have xattrs
+but not security ones or setuid bits.  On the one hand being able to
+do the shared lock sounds nice, on the other hand even just looking up
+the xattrs will probably make it slower at least for smaller I/O.
