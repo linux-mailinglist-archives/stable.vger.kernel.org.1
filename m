@@ -2,156 +2,174 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5B24779927F
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 00:53:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 22E5E799283
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 00:54:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343839AbjIHWxW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 18:53:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41110 "EHLO
+        id S244603AbjIHWym (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 18:54:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45584 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242563AbjIHWxV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 18:53:21 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 038CA1FEB;
-        Fri,  8 Sep 2023 15:53:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A35CC433CA;
-        Fri,  8 Sep 2023 22:53:17 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694213597;
-        bh=KwM170Ct57lq4vNZ7xSkyIS4SWaJogcjmhutnsYYUvg=;
-        h=References:In-Reply-To:From:Date:Subject:To:Cc:From;
-        b=a6zALJdvJybZVN96yoS6EZ96AEPRkZIR3J4RfcotR605O+NAX+wNKtlhCkZ7m2Znv
-         i6V/2X6pYg8E2vdc8LrkEoB0MIWoQalZNAUvZZgx+xmYcneTNW67WcPF/2ajJ7qFwi
-         nSTyEdorTmAO+3CGT756wTHvIJ17mSEY9Xosqq7i1j7WrM7VgfKCpBQeF3kXj07jwc
-         a/fA1MYPF1Zxm0UHR0htujt2KUCICJdTImw6i0KfsNo2VMYYWssP1ipoZSdLAWlQlq
-         ijTEdEIp1PjWQuUEsWufaNPGDnt3zZBiGsfrWPOjprVAWSSXuYVBIBBYCypgu9egun
-         AyVyrYTuWbNAw==
-Received: by mail-lf1-f51.google.com with SMTP id 2adb3069b0e04-5007abb15e9so4334362e87.0;
-        Fri, 08 Sep 2023 15:53:17 -0700 (PDT)
-X-Gm-Message-State: AOJu0Yxx0yV0dLIX7sk2urXKR80RiEC6xr5E43zBchKjwTFP6FdP5ooU
-        q4L7+wscFyqO2/aWO8OY60RNugzED9fkcqLszQk=
-X-Google-Smtp-Source: AGHT+IFxzWHrgwn9Er+VZvUvTkc7+KPn5VFwMJdiU1jtuP4KYojqei7vjyha6oz515UbclFjbQ87OxJGnp5Vhfvbj6U=
-X-Received: by 2002:ac2:4bc5:0:b0:4fe:7e1f:766a with SMTP id
- o5-20020ac24bc5000000b004fe7e1f766amr3386244lfq.24.1694213595847; Fri, 08 Sep
- 2023 15:53:15 -0700 (PDT)
+        with ESMTP id S237827AbjIHWyl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 18:54:41 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B711FEB;
+        Fri,  8 Sep 2023 15:54:37 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694213677; x=1725749677;
+  h=date:from:to:cc:subject:message-id:references:
+   mime-version:in-reply-to;
+  bh=eUm4yl2BAMHBo03g5Rb/N9p2aZICoAAK9LpFQ7u8z4s=;
+  b=nvQumfgrSPipWhhM71C8qAHiBqZ8fptuv/w2RFau6bt807L8Pkp9PNrC
+   sn8xK/V1KdLU3M9jox/EhCEsirNNESOIlBP3FtiV1Xz74qCmR/TQn0vco
+   D2M6dtf9aCyBqruUXy1GN1N+ZvAkBjm0HBNtdEyGdzhreiJUxZ/i08iML
+   4erdnxYM80SDPU5qsO7RgyxopWvjx0YDtX68kOLba+amj8Gy4SQAYcUSW
+   28LrxPOH5Sl+AekVf3OfkQrVyZNrmcQb6JUbaCtv69Y9n4AsQpXvqGW2u
+   TT0wulhcDCuh5bo9kNADBDTcUKb5wwW1tJEjFPih3zJb3F240+Eu7DbsP
+   w==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="358066923"
+X-IronPort-AV: E=Sophos;i="6.02,238,1688454000"; 
+   d="scan'208";a="358066923"
+Received: from orsmga002.jf.intel.com ([10.7.209.21])
+  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2023 15:54:37 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="742667451"
+X-IronPort-AV: E=Sophos;i="6.02,238,1688454000"; 
+   d="scan'208";a="742667451"
+Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
+  by orsmga002.jf.intel.com with ESMTP; 08 Sep 2023 15:54:34 -0700
+Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
+        (envelope-from <lkp@intel.com>)
+        id 1qekMy-0002hP-0h;
+        Fri, 08 Sep 2023 22:54:32 +0000
+Date:   Sat, 9 Sep 2023 06:54:07 +0800
+From:   kernel test robot <lkp@intel.com>
+To:     Alfred Piccioni <alpic@google.com>,
+        Paul Moore <paul@paul-moore.com>,
+        Stephen Smalley <stephen.smalley.work@gmail.com>,
+        Eric Paris <eparis@parisplace.org>
+Cc:     oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org,
+        selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
+        Alfred Piccioni <alpic@google.com>
+Subject: Re: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
+Message-ID: <202309090600.NSyo7d2q-lkp@intel.com>
+References: <20230906115928.3749928-1-alpic@google.com>
 MIME-Version: 1.0
-References: <20230321-kexec_clang16-v7-0-b05c520b7296@chromium.org>
- <CAPhsuW5_qAvV0N3o+hOiAnb1=buJ1pLzqYW9D+Bwft6hxJvAeQ@mail.gmail.com>
- <CANiDSCu2YLaXv2DkfzN0GbTF1b79HnqPG=GWqodDr4X9krGjUA@mail.gmail.com>
- <CAPhsuW5JDPk7ZEthu7cowqp6emQOXsWgSvPM+kvnERPq4RR83w@mail.gmail.com> <CANiDSCtbo1ws7hTgeha8+V8g198GN1_NAdWV+9Hi5UZgk0cfUA@mail.gmail.com>
-In-Reply-To: <CANiDSCtbo1ws7hTgeha8+V8g198GN1_NAdWV+9Hi5UZgk0cfUA@mail.gmail.com>
-From:   Song Liu <song@kernel.org>
-Date:   Fri, 8 Sep 2023 15:53:02 -0700
-X-Gmail-Original-Message-ID: <CAPhsuW7N2ZxO5KubvK4O7EganpGeFFMtx4JGE9sGO5OnzWscgg@mail.gmail.com>
-Message-ID: <CAPhsuW7N2ZxO5KubvK4O7EganpGeFFMtx4JGE9sGO5OnzWscgg@mail.gmail.com>
-Subject: Re: [PATCH v7 0/4] kexec: Fix kexec_file_load for llvm16 with PGO
-To:     Ricardo Ribalda <ribalda@chromium.org>
-Cc:     Eric Biederman <ebiederm@xmission.com>,
-        Philipp Rudo <prudo@linux.vnet.ibm.com>,
-        Dave Young <dyoung@redhat.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
-        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
-        "H. Peter Anvin" <hpa@zytor.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Tom Rix <trix@redhat.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Nicholas Piggin <npiggin@gmail.com>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Paul Walmsley <paul.walmsley@sifive.com>,
-        Palmer Dabbelt <palmer@dabbelt.com>,
-        Albert Ou <aou@eecs.berkeley.edu>, Baoquan He <bhe@redhat.com>,
-        Philipp Rudo <prudo@redhat.com>, kexec@lists.infradead.org,
-        linux-kernel@vger.kernel.org, Ross Zwisler <zwisler@google.com>,
-        Steven Rostedt <rostedt@goodmis.org>,
-        Simon Horman <horms@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        llvm@lists.linux.dev, linuxppc-dev@lists.ozlabs.org,
-        linux-riscv@lists.infradead.org, stable@vger.kernel.org,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230906115928.3749928-1-alpic@google.com>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 8, 2023 at 2:52=E2=80=AFPM Ricardo Ribalda <ribalda@chromium.or=
-g> wrote:
->
-> Hi Song
->
-> On Fri, 8 Sept 2023 at 23:48, Song Liu <song@kernel.org> wrote:
-> >
-> > Hi Ricardo,
-> >
-> > Thanks for your kind reply.
-> >
-> > On Fri, Sep 8, 2023 at 2:18=E2=80=AFPM Ricardo Ribalda <ribalda@chromiu=
-m.org> wrote:
-> > >
-> > > Hi Song
-> > >
-> > > On Fri, 8 Sept 2023 at 01:08, Song Liu <song@kernel.org> wrote:
-> > > >
-> > > > Hi Ricardo and folks,
-> > > >
-> > > > On Fri, May 19, 2023 at 7:48=E2=80=AFAM Ricardo Ribalda <ribalda@ch=
-romium.org> wrote:
-> > > > >
-> > > > > When upreving llvm I realised that kexec stopped working on my te=
-st
-> > > > > platform.
-> > > > >
-> > > > > The reason seems to be that due to PGO there are multiple .text s=
-ections
-> > > > > on the purgatory, and kexec does not supports that.
-> > > > >
-> > > > > Signed-off-by: Ricardo Ribalda <ribalda@chromium.org>
-> > > >
-> > > > We are seeing WARNINGs like the following while kexec'ing a PGO and
-> > > > LTO enabled kernel:
-> > > >
-> > > > WARNING: CPU: 26 PID: 110894 at kernel/kexec_file.c:919
-> > > > kexec_load_purgatory+0x37f/0x390
-> > > >
-> > > > AFAICT, the warning was added by this set, and it was triggered whe=
-n
-> > > > we have many .text sections
-> > > > in purgatory.ro. The kexec was actually successful. So I wonder
-> > > > whether we really need the
-> > > > WARNING here. If we disable LTO (PGO is still enabled), we don't se=
-e
-> > > > the WARNING any more.
-> > > >
-> > > > I also tested an older kernel (5.19 based), where we also see many
-> > > > .text sections with LTO. It
-> > > > kexec()'ed fine. (It doesn't have the WARN_ON() in
-> > > > kexec_purgatory_setup_sechdrs).
-> > >
-> > > You have been "lucky" that the code has chosen the correct start
-> > > address, you need to modify the linker script of your kernel to
-> > > disable PGO.
-> > > You need to backport a patch like this:
-> > > https://lore.kernel.org/lkml/CAPhsuW5_qAvV0N3o+hOiAnb1=3DbuJ1pLzqYW9D=
-+Bwft6hxJvAeQ@mail.gmail.com/T/#md68b7f832216b0c56bbec0c9b07332e180b9ba2b
-> >
-> > We already have this commit in our branch. AFAICT, the issue was
-> > triggered by LTO. So something like the following seems fixes it
-> > (I haven't finished the end-to-end test yet). Does this change make
-> > sense to you?
->
-> if the end-to-end works, please send it as a patch to the mailing list.
->
-> Thanks! :)
+Hi Alfred,
 
-OK, it works (AFAICT). Sending the patch.
+kernel test robot noticed the following build errors:
 
-Thanks,
-Song
+[auto build test ERROR on 50a510a78287c15cee644f345ef8bac8977986a7]
+
+url:    https://github.com/intel-lab-lkp/linux/commits/Alfred-Piccioni/SELinux-Check-correct-permissions-for-FS_IOC32_/20230906-200131
+base:   50a510a78287c15cee644f345ef8bac8977986a7
+patch link:    https://lore.kernel.org/r/20230906115928.3749928-1-alpic%40google.com
+patch subject: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
+config: i386-debian-10.3 (https://download.01.org/0day-ci/archive/20230909/202309090600.NSyo7d2q-lkp@intel.com/config)
+compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
+reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230909/202309090600.NSyo7d2q-lkp@intel.com/reproduce)
+
+If you fix the issue in a separate patch/commit (i.e. not just a new version of
+the same patch/commit), kindly add following tags
+| Reported-by: kernel test robot <lkp@intel.com>
+| Closes: https://lore.kernel.org/oe-kbuild-all/202309090600.NSyo7d2q-lkp@intel.com/
+
+All errors (new ones prefixed by >>):
+
+   security/selinux/hooks.c: In function 'selinux_file_ioctl':
+>> security/selinux/hooks.c:3647:9: error: duplicate case value
+    3647 |         case FS_IOC32_GETFLAGS:
+         |         ^~~~
+   security/selinux/hooks.c:3645:9: note: previously used here
+    3645 |         case FS_IOC_GETFLAGS:
+         |         ^~~~
+   security/selinux/hooks.c:3648:9: error: duplicate case value
+    3648 |         case FS_IOC32_GETVERSION:
+         |         ^~~~
+   security/selinux/hooks.c:3646:9: note: previously used here
+    3646 |         case FS_IOC_GETVERSION:
+         |         ^~~~
+   security/selinux/hooks.c:3654:9: error: duplicate case value
+    3654 |         case FS_IOC32_SETFLAGS:
+         |         ^~~~
+   security/selinux/hooks.c:3652:9: note: previously used here
+    3652 |         case FS_IOC_SETFLAGS:
+         |         ^~~~
+   security/selinux/hooks.c:3655:9: error: duplicate case value
+    3655 |         case FS_IOC32_SETVERSION:
+         |         ^~~~
+   security/selinux/hooks.c:3653:9: note: previously used here
+    3653 |         case FS_IOC_SETVERSION:
+         |         ^~~~
+
+
+vim +3647 security/selinux/hooks.c
+
+  3634	
+  3635	static int selinux_file_ioctl(struct file *file, unsigned int cmd,
+  3636				      unsigned long arg)
+  3637	{
+  3638		const struct cred *cred = current_cred();
+  3639		int error = 0;
+  3640	
+  3641		switch (cmd) {
+  3642		case FIONREAD:
+  3643		case FIBMAP:
+  3644		case FIGETBSZ:
+  3645		case FS_IOC_GETFLAGS:
+  3646		case FS_IOC_GETVERSION:
+> 3647		case FS_IOC32_GETFLAGS:
+  3648		case FS_IOC32_GETVERSION:
+  3649			error = file_has_perm(cred, file, FILE__GETATTR);
+  3650			break;
+  3651	
+  3652		case FS_IOC_SETFLAGS:
+  3653		case FS_IOC_SETVERSION:
+  3654		case FS_IOC32_SETFLAGS:
+  3655		case FS_IOC32_SETVERSION:
+  3656			error = file_has_perm(cred, file, FILE__SETATTR);
+  3657			break;
+  3658	
+  3659		/* sys_ioctl() checks */
+  3660		case FIONBIO:
+  3661		case FIOASYNC:
+  3662			error = file_has_perm(cred, file, 0);
+  3663			break;
+  3664	
+  3665		case KDSKBENT:
+  3666		case KDSKBSENT:
+  3667			error = cred_has_capability(cred, CAP_SYS_TTY_CONFIG,
+  3668						    CAP_OPT_NONE, true);
+  3669			break;
+  3670	
+  3671		case FIOCLEX:
+  3672		case FIONCLEX:
+  3673			if (!selinux_policycap_ioctl_skip_cloexec())
+  3674				error = ioctl_has_perm(cred, file, FILE__IOCTL, (u16) cmd);
+  3675			break;
+  3676	
+  3677		/* default case assumes that the command will go
+  3678		 * to the file's ioctl() function.
+  3679		 */
+  3680		default:
+  3681			error = ioctl_has_perm(cred, file, FILE__IOCTL, (u16) cmd);
+  3682		}
+  3683		return error;
+  3684	}
+  3685	
+
+-- 
+0-DAY CI Kernel Test Service
+https://github.com/intel/lkp-tests/wiki
