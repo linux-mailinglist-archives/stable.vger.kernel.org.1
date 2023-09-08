@@ -2,138 +2,168 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EF67D798947
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 16:54:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 559DB798955
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 16:56:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232487AbjIHOyw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 10:54:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43290 "EHLO
+        id S244246AbjIHO4S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 10:56:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54432 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236263AbjIHOyv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 10:54:51 -0400
-Received: from mail-pf1-x432.google.com (mail-pf1-x432.google.com [IPv6:2607:f8b0:4864:20::432])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4C2DD1BFA
-        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 07:54:27 -0700 (PDT)
-Received: by mail-pf1-x432.google.com with SMTP id d2e1a72fcca58-68a3e943762so1988715b3a.1
-        for <stable@vger.kernel.org>; Fri, 08 Sep 2023 07:54:27 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694184867; x=1694789667; darn=vger.kernel.org;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:from:to:cc:subject:date:message-id:reply-to;
-        bh=v0/IfcD+bVp+TwfTl9BonGyGe+3MQ6GUS3Cq64UrgTs=;
-        b=i/prfLoQBAJv5JeNcRoJ0k7D8scN144PeGCyyS0LqUMlyJwGCJ9Toh40FXN1kjxNpS
-         0xFIQ8REKv/o6Qe8uxTEjjBwPTYXxORatEKbKfTpTOINPzclQoMh6E3eHxvsXd/xDWK0
-         GGBM0/SyY0sCKHkWQzvk5KGrjEySG+kWQm7QQ8LNU7IeTi1WBcWTeVj1etOWpAOLAb9d
-         GoqCbVcINuwhPyBOIXU/Afqw5FLsBySQT+g1QzaEMnAuTHlHsPTjKm3O+kLw409svJDv
-         8drIGiIpHrOI53of/ec616ewcAq+GaufzLAfjfN5dR8ACp/3ovufiAfRfXADcFEKFj1O
-         PUow==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694184867; x=1694789667;
-        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
-         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=v0/IfcD+bVp+TwfTl9BonGyGe+3MQ6GUS3Cq64UrgTs=;
-        b=LNxNuedyNIpQfxjkreZh15EWS+81F55NWRq4jMF0zpm+UmH6yrgp4sgIErwehKTTGF
-         8xan1+XogHtc9nnzF23tiJvGqZxCG8P89R+bxoMBnuRqtDZWyMKUTOlV8eU1qX2PJ+7y
-         mU/ypAwBIPvHQWko3ziv242hfd9Ov8VAgX0Na/j3vswyou0b8/99RY4K0YOtQ+LIXCsb
-         bwMYkizlDcA6RpZHNiSQRsRCU1DVEMOS/hViMEuSRzJ6UxYjwg2i6H32wpWpEeJKKlHY
-         wX7gwemn9E/42F0knX5KPzGxou4PTeR3lo5/5De1+KBaAlm6+Qx3XSah2uJ1802RJQJm
-         TtgQ==
-X-Gm-Message-State: AOJu0YzorKCWBI3dGhf80g9Cvs4BQGQIQK5Gcj7wObKaz4J6DjCAof1Z
-        b2Xf//C6PZTyy/5i9TiyEs70
-X-Google-Smtp-Source: AGHT+IHYIFo3OMAOQfRI0s5oC0CJ3wzrb/Rkg+Xten7sB/lRtfVzRDXX2fUj57YnJVr4eUxM1qFMjg==
-X-Received: by 2002:a05:6a00:1825:b0:68e:2dad:13a5 with SMTP id y37-20020a056a00182500b0068e2dad13a5mr2811724pfa.10.1694184866738;
-        Fri, 08 Sep 2023 07:54:26 -0700 (PDT)
-Received: from localhost.localdomain ([117.193.215.15])
-        by smtp.gmail.com with ESMTPSA id t4-20020a62ea04000000b0068a30f6cf32sm1463212pfh.143.2023.09.08.07.54.22
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Fri, 08 Sep 2023 07:54:26 -0700 (PDT)
-From:   Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-To:     jejb@linux.ibm.com, martin.petersen@oracle.com
-Cc:     bvanassche@acm.org, avri.altman@wdc.com, alim.akhtar@samsung.com,
-        andersson@kernel.org, konrad.dybcio@linaro.org,
-        linux-arm-msm@vger.kernel.org, linux-scsi@vger.kernel.org,
-        linux-kernel@vger.kernel.org, quic_cang@quicinc.com,
-        quic_nitirawa@quicinc.com,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        stable@vger.kernel.org
-Subject: [PATCH 1/2] scsi: ufs: ufs-qcom: Update PHY settings only when scaling to higher gears
-Date:   Fri,  8 Sep 2023 20:23:28 +0530
-Message-Id: <20230908145329.154024-1-manivannan.sadhasivam@linaro.org>
-X-Mailer: git-send-email 2.25.1
+        with ESMTP id S244229AbjIHO4M (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 10:56:12 -0400
+Received: from NAM10-BN7-obe.outbound.protection.outlook.com (mail-bn7nam10on2047.outbound.protection.outlook.com [40.107.92.47])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E42C11BF9;
+        Fri,  8 Sep 2023 07:56:06 -0700 (PDT)
+ARC-Seal: i=1; a=rsa-sha256; s=arcselector9901; d=microsoft.com; cv=none;
+ b=caVQBHHWNxPm/JXt3VxzaBt3t7BNSgFBNpB+neHIvuPpcm3bCAEa2kJVTtxVZVehQyaQ065NH8CbknFzlbU8NAVVnCv56eOJylLDTxCcqhxS6BvFLYkB4eQGmPHZ48hK2diBRLSLMYdtQR0UkLWcuO2BbWOI00qhOHmZcK1bLG/orkoVY6x2REHb1eb4/smLJf3vMXkXNl7SF/QXhBUXpYmGaZdbFW/v6GLF3eaYTtq+k+XVkBW2Mx3GhpDBTMWQq/GaZIS34hDBp1+ItkunDNx6gWPEfVBHp6C2tE7/X8vXcAwARlEGjrMJBSiPrTDXaPAoFj2WnfYqUKyvQW9nWA==
+ARC-Message-Signature: i=1; a=rsa-sha256; c=relaxed/relaxed; d=microsoft.com;
+ s=arcselector9901;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-AntiSpam-MessageData-ChunkCount:X-MS-Exchange-AntiSpam-MessageData-0:X-MS-Exchange-AntiSpam-MessageData-1;
+ bh=kYosKuGwEHSV0ARvvNJr9fo0tUJ2iy2V6hiPHh1ZbCk=;
+ b=VzlktNn619nPxV75sn5HOsNwF0JhlVVH8m7tdAvGzqkhaQg8hBGp/B0Vdd1XjV8vXPtdZiqPg2HG4YpqVo7oMp1N8Ue6dapeJQ3OPKqdn4936oo+olCgzb7kEHzQGhKDztknrJHEBsaDerEg79vG6DhRhaK3ElRcoXxLRbrBsyFH8rIg/HeFujEvd3s9DkQxiiVHFw6AYpknp/ZH7cIya6J6c+MoMWaGS1QzyZ+znpnuHgNqQeHJR+qfFhnn531rxoTACoCjav3vdwLzkFD6evKFStEmI7x7ngW6K6BKxI4punxCl4VFH7mIBlPlf+v0EbWArSDGhRaDABQgAMcpzA==
+ARC-Authentication-Results: i=1; mx.microsoft.com 1; spf=pass (sender ip is
+ 165.204.84.17) smtp.rcpttodomain=lists.freedesktop.org smtp.mailfrom=amd.com;
+ dmarc=pass (p=quarantine sp=quarantine pct=100) action=none
+ header.from=amd.com; dkim=none (message not signed); arc=none
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=amd.com; s=selector1;
+ h=From:Date:Subject:Message-ID:Content-Type:MIME-Version:X-MS-Exchange-SenderADCheck;
+ bh=kYosKuGwEHSV0ARvvNJr9fo0tUJ2iy2V6hiPHh1ZbCk=;
+ b=KZ1Qzm4JVsms2yyL6FqAgaIZBaxujR+1HY4N1iaPAbrjkUpmxMS3L1CasBANJB3qQLXD743Skj7bthCysXGsVp30KOfs4tG5omoUHxb3GREzxvG2PohMtVd/GWW6z70Lh7NOtiqrlLlzPySIs18TmRH9VfgAW1+M5sHTGeXG3X8=
+Received: from DM6PR03CA0069.namprd03.prod.outlook.com (2603:10b6:5:100::46)
+ by DS7PR12MB5743.namprd12.prod.outlook.com (2603:10b6:8:72::14) with
+ Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.18; Fri, 8 Sep
+ 2023 14:55:59 +0000
+Received: from DS1PEPF0001708E.namprd03.prod.outlook.com
+ (2603:10b6:5:100:cafe::84) by DM6PR03CA0069.outlook.office365.com
+ (2603:10b6:5:100::46) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id 15.20.6745.34 via Frontend
+ Transport; Fri, 8 Sep 2023 14:55:59 +0000
+X-MS-Exchange-Authentication-Results: spf=pass (sender IP is 165.204.84.17)
+ smtp.mailfrom=amd.com; dkim=none (message not signed)
+ header.d=none;dmarc=pass action=none header.from=amd.com;
+Received-SPF: Pass (protection.outlook.com: domain of amd.com designates
+ 165.204.84.17 as permitted sender) receiver=protection.outlook.com;
+ client-ip=165.204.84.17; helo=SATLEXMB04.amd.com; pr=C
+Received: from SATLEXMB04.amd.com (165.204.84.17) by
+ DS1PEPF0001708E.mail.protection.outlook.com (10.167.17.134) with Microsoft
+ SMTP Server (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id
+ 15.20.6792.11 via Frontend Transport; Fri, 8 Sep 2023 14:55:59 +0000
+Received: from hamza-pc.localhost (10.180.168.240) by SATLEXMB04.amd.com
+ (10.181.40.145) with Microsoft SMTP Server (version=TLS1_2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_128_GCM_SHA256) id 15.1.2507.27; Fri, 8 Sep
+ 2023 09:55:53 -0500
+From:   Hamza Mahfooz <hamza.mahfooz@amd.com>
+To:     <amd-gfx@lists.freedesktop.org>
+CC:     Yifan Zhang <yifan1.zhang@amd.com>, <stable@vger.kernel.org>,
+        "Hamza Mahfooz" <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
+        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
+        "Pan, Xinhui" <Xinhui.Pan@amd.com>,
+        David Airlie <airlied@gmail.com>,
+        Daniel Vetter <daniel@ffwll.ch>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Leo Li <sunpeng.li@amd.com>,
+        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
+        Lijo Lazar <lijo.lazar@amd.com>,
+        Hawking Zhang <Hawking.Zhang@amd.com>,
+        Felix Kuehling <felix.kuehling@amd.com>, Le Ma <le.ma@amd.com>,
+        Candice Li <candice.li@amd.com>, Lang Yu <Lang.Yu@amd.com>,
+        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
+        Victor Zhao <Victor.Zhao@amd.com>,
+        "Mario Limonciello" <mario.limonciello@amd.com>,
+        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
+        Shashank Sharma <shashank.sharma@amd.com>,
+        Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
+        Aurabindo Pillai <aurabindo.pillai@amd.com>,
+        Hersen Wu <hersenxs.wu@amd.com>,
+        Stylon Wang <stylon.wang@amd.com>,
+        Wayne Lin <wayne.lin@amd.com>, Alan Liu <haoping.liu@amd.com>,
+        Luben Tuikov <luben.tuikov@amd.com>,
+        <dri-devel@lists.freedesktop.org>, <linux-kernel@vger.kernel.org>
+Subject: [PATCH v2 1/2] drm/amd/display: fix the white screen issue when >= 64GB DRAM
+Date:   Fri, 8 Sep 2023 10:55:12 -0400
+Message-ID: <20230908145521.39044-1-hamza.mahfooz@amd.com>
+X-Mailer: git-send-email 2.41.0
 MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Type: text/plain
+X-Originating-IP: [10.180.168.240]
+X-ClientProxiedBy: SATLEXMB04.amd.com (10.181.40.145) To SATLEXMB04.amd.com
+ (10.181.40.145)
+X-EOPAttributedMessage: 0
+X-MS-PublicTrafficType: Email
+X-MS-TrafficTypeDiagnostic: DS1PEPF0001708E:EE_|DS7PR12MB5743:EE_
+X-MS-Office365-Filtering-Correlation-Id: 8dba505b-2e6b-44bb-6858-08dbb07bb6a9
+X-MS-Exchange-SenderADCheck: 1
+X-MS-Exchange-AntiSpam-Relay: 0
+X-Microsoft-Antispam: BCL:0;
+X-Microsoft-Antispam-Message-Info: SMG0lj8Nx9+bP/neHfmkH+7uFVRmUDA8bXfM0KHX6hY4XKwRtpI2j8PglBHxt1jNOZ4H7FiADr3oHg5q+qwrgiDSvs1nS5yFuload7QK8F80esicmdH3Re6hNpXMBKuXTfmaN4KhBZIL8C776e55vxWdTAfZh4Df3DbhT+J2h5b8Bd0In3OhqCdOdtjK8qiAbvJgVF+M77nLqF7J1StpF8j6iSWZGr1rlPKEPQK77Foe8+Rknd/ztyIKlMy3UiD6F2oBzTAnoEV6XYF5L2ylDAA9gMT0WfD8RTA9QoZ/OewHIzvSCyEMLRvFzjnNMZ90lF1gU/kNxE+7y+95X4bat4xXARsx0wUXvX4Ui+iFArzQBIattQ8owaw5C+DIfRt6Wt6dluGQl89XIprSL+ishMeTAxdHtFZPw6iuOlQiX+KMfrvulFtSHuCTwQeBwUAk4XiVqeAsf7Tw9QI5ZLQjQd29yEmw0KJNul1Eum89NA1kJa1lTFMsrmnZo4c8vYSYHIJjdR4hUxjHhNG+sumQBeXY2aOgxRkc8RdjXgCyEWeLiuI7HUhJGMZ/J5Yi55puwcFZwUHPldfuw090w0T34qegHvuKVlrPH+meci4lUuTobZY5rO00rBy8Z8YaqFENoKswBEuLF4GhJajknJmil+jIpNWxJdxTuPMqcWH2h/vU1QMGgRit1In+KvSj8bQ+NXVpgTxMKQ+likW3VNRO3VjY32dS2LDQCrV+pXemV9uz72lnvi74IIBMTf1hJrdRal1a3DtNaJpM1VFl84Wv+6wJ2DT0gay/xXxU2WEO1ro=
+X-Forefront-Antispam-Report: CIP:165.204.84.17;CTRY:US;LANG:en;SCL:1;SRV:;IPV:CAL;SFV:NSPM;H:SATLEXMB04.amd.com;PTR:InfoDomainNonexistent;CAT:NONE;SFS:(13230031)(4636009)(136003)(376002)(346002)(39860400002)(396003)(451199024)(186009)(82310400011)(1800799009)(40470700004)(36840700001)(46966006)(356005)(36756003)(36860700001)(40480700001)(40460700003)(1076003)(8676002)(83380400001)(4326008)(8936002)(5660300002)(6666004)(44832011)(2616005)(336012)(16526019)(478600001)(86362001)(426003)(41300700001)(26005)(47076005)(81166007)(966005)(2906002)(82740400003)(70586007)(54906003)(316002)(6916009)(70206006)(16060500005)(36900700001);DIR:OUT;SFP:1101;
+X-OriginatorOrg: amd.com
+X-MS-Exchange-CrossTenant-OriginalArrivalTime: 08 Sep 2023 14:55:59.4297
+ (UTC)
+X-MS-Exchange-CrossTenant-Network-Message-Id: 8dba505b-2e6b-44bb-6858-08dbb07bb6a9
+X-MS-Exchange-CrossTenant-Id: 3dd8961f-e488-4e60-8e11-a82d994e183d
+X-MS-Exchange-CrossTenant-OriginalAttributedTenantConnectingIp: TenantId=3dd8961f-e488-4e60-8e11-a82d994e183d;Ip=[165.204.84.17];Helo=[SATLEXMB04.amd.com]
+X-MS-Exchange-CrossTenant-AuthSource: DS1PEPF0001708E.namprd03.prod.outlook.com
+X-MS-Exchange-CrossTenant-AuthAs: Anonymous
+X-MS-Exchange-CrossTenant-FromEntityHeader: HybridOnPrem
+X-MS-Exchange-Transport-CrossTenantHeadersStamped: DS7PR12MB5743
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FORGED_SPF_HELO,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_PASS,SPF_NONE
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The "hs_gear" variable is used to program the PHY settings (submode) during
-ufs_qcom_power_up_sequence(). Currently, it is being updated every time the
-agreed gear changes. Due to this, if the gear got downscaled before suspend
-(runtime/system), then while resuming, the PHY settings for the lower gear
-will be applied first and later when scaling to max gear with REINIT, the
-PHY settings for the max gear will be applied.
+From: Yifan Zhang <yifan1.zhang@amd.com>
 
-This adds a latency while resuming and also really not needed as the PHY
-gear settings are backwards compatible i.e., we can continue using the PHY
-settings for max gear with lower gear speed.
-
-So let's update the "hs_gear" variable _only_ when the agreed gear is
-greater than the current one. This guarantees that the PHY settings will be
-changed only during probe time and fatal error condition.
-
-Due to this, UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH can now be skipped
-when the PM operation is in progress.
+Dropping bit 31:4 of page table base is wrong, it makes page table
+base points to wrong address if phys addr is beyond 64GB; dropping
+page_table_start/end bit 31:4 is unnecessary since dcn20_vmid_setup
+will do that. Also, while we are at it, cleanup the assignments using
+upper_32_bits()/lower_32_bits() and AMDGPU_GPU_PAGE_SHIFT.
 
 Cc: stable@vger.kernel.org
-Fixes: 96a7141da332 ("scsi: ufs: core: Add support for reinitializing the UFS device")
-Reported-by: Can Guo <quic_cang@quicinc.com>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
+Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
+Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
 ---
- drivers/ufs/core/ufshcd.c   | 3 ++-
- drivers/ufs/host/ufs-qcom.c | 9 +++++++--
- 2 files changed, 9 insertions(+), 3 deletions(-)
+v2: use upper_32_bits()/lower_32_bits() and AMDGPU_GPU_PAGE_SHIFT
+---
+ drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 +++++++++-----
+ 1 file changed, 9 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 34472871610d..1f0a9d96e613 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8782,7 +8782,8 @@ static int ufshcd_probe_hba(struct ufs_hba *hba, bool init_dev_params)
- 	if (ret)
- 		goto out;
+diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+index 1bb1a394f55f..5f14cd9391ca 100644
+--- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
++++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
+@@ -1283,11 +1283,15 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
  
--	if (hba->quirks & UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH) {
-+	if (!hba->pm_op_in_progress &&
-+	    (hba->quirks & UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH)) {
- 		/* Reset the device and controller before doing reinit */
- 		ufshcd_device_reset(hba);
- 		ufshcd_hba_stop(hba);
-diff --git a/drivers/ufs/host/ufs-qcom.c b/drivers/ufs/host/ufs-qcom.c
-index 78689d3479e4..ebb8054a3b3e 100644
---- a/drivers/ufs/host/ufs-qcom.c
-+++ b/drivers/ufs/host/ufs-qcom.c
-@@ -909,8 +909,13 @@ static int ufs_qcom_pwr_change_notify(struct ufs_hba *hba,
- 			return ret;
- 		}
+ 	pt_base = amdgpu_gmc_pd_addr(adev->gart.bo);
  
--		/* Use the agreed gear */
--		host->hs_gear = dev_req_params->gear_tx;
-+		/*
-+		 * Update hs_gear only when the gears are scaled to a higher value. This is because,
-+		 * the PHY gear settings are backwards compatible and we only need to change the PHY
-+		 * settings while scaling to higher gears.
-+		 */
-+		if (dev_req_params->gear_tx > host->hs_gear)
-+			host->hs_gear = dev_req_params->gear_tx;
+-	page_table_start.high_part = (u32)(adev->gmc.gart_start >> 44) & 0xF;
+-	page_table_start.low_part = (u32)(adev->gmc.gart_start >> 12);
+-	page_table_end.high_part = (u32)(adev->gmc.gart_end >> 44) & 0xF;
+-	page_table_end.low_part = (u32)(adev->gmc.gart_end >> 12);
+-	page_table_base.high_part = upper_32_bits(pt_base) & 0xF;
++	page_table_start.high_part = upper_32_bits(adev->gmc.gart_start >>
++						   AMDGPU_GPU_PAGE_SHIFT);
++	page_table_start.low_part = lower_32_bits(adev->gmc.gart_start >>
++						  AMDGPU_GPU_PAGE_SHIFT);
++	page_table_end.high_part = upper_32_bits(adev->gmc.gart_end >>
++						 AMDGPU_GPU_PAGE_SHIFT);
++	page_table_end.low_part = lower_32_bits(adev->gmc.gart_end >>
++						AMDGPU_GPU_PAGE_SHIFT);
++	page_table_base.high_part = upper_32_bits(pt_base);
+ 	page_table_base.low_part = lower_32_bits(pt_base);
  
- 		/* enable the device ref clock before changing to HS mode */
- 		if (!ufshcd_is_hs_mode(&hba->pwr_info) &&
+ 	pa_config->system_aperture.start_addr = (uint64_t)logical_addr_low << 18;
 -- 
-2.25.1
+2.41.0
 
