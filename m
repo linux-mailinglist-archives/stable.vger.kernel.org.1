@@ -2,153 +2,75 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0ED3B7992CD
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:22:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 05D987992D1
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:26:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345216AbjIHXWs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 19:22:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41604 "EHLO
+        id S1345253AbjIHX0U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 19:26:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33110 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1345238AbjIHXWq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:22:46 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 689062105
-        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 16:21:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694215315;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         content-transfer-encoding:content-transfer-encoding:
-         in-reply-to:in-reply-to:references:references;
-        bh=F+MW0YycyfuvGIR5zmiQX89HyMyFCOfpYnvtqX4xsko=;
-        b=HmsWOKAm10Ff06WrpZRcL3o7s7jVSGe6i3KcPELlj1EubVrqTwwWzM7GfxQWnmKcLm4ME+
-        sEm1zjxeImyB6mYlxACzp2PhwcIJY1oEOoYUR3z+nUHk1KnQx2etQBI0Kd41J7PcoQIoF/
-        NagQEx7IS/LwfUqwi/T0BgGdsLnX0H0=
-Received: from mimecast-mx02.redhat.com (mimecast-mx02.redhat.com
- [66.187.233.88]) by relay.mimecast.com with ESMTP with STARTTLS
- (version=TLSv1.2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-250-4Kp_58QdPEuXVXXpHHp0Yg-1; Fri, 08 Sep 2023 19:21:51 -0400
-X-MC-Unique: 4Kp_58QdPEuXVXXpHHp0Yg-1
-Received: from smtp.corp.redhat.com (int-mx09.intmail.prod.int.rdu2.redhat.com [10.11.54.9])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id F127881653D;
-        Fri,  8 Sep 2023 23:21:50 +0000 (UTC)
-Received: from [10.22.33.35] (unknown [10.22.33.35])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id 9B078493112;
-        Fri,  8 Sep 2023 23:21:50 +0000 (UTC)
-Message-ID: <09b69257-afb0-af0a-a3c4-f227b0cf4292@redhat.com>
-Date:   Fri, 8 Sep 2023 19:21:50 -0400
+        with ESMTP id S233550AbjIHX0T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:26:19 -0400
+Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A88C1E45
+        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 16:26:14 -0700 (PDT)
+Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-26ef24b8e5aso1999513a91.0
+        for <stable@vger.kernel.org>; Fri, 08 Sep 2023 16:26:14 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694215574; x=1694820374; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
+         :date:message-id:reply-to;
+        bh=gGBpClnFGmaeheUaj1QZkIDF39Q032+bIV5KSNa+MvM=;
+        b=rcBsdKGsSK0QL/eakh+du4YQfAeR8ULhy7xRrRzFbm/aDX4DEUzLKQa4dy8mIdAo7H
+         oWeJZ845ZRLr60gXc/Y6rFEdwU+jg9ILJP+FKFGU9PhWZLnBGeuo/xypOz7R4ub7msmF
+         YBxMJUf4M3J+akxmpkkFBezvJB6sp65V35f1JsFqAxR2SWYULdIPKm3HUj1lTOx9klvj
+         LsygbOgKTkJYelZM2RP4PNOWpE34RBTttH/I53bfxlaqnvs0agKW1JKxojRbP0KYxbWu
+         k5rVE5liDYk3TxRJvDGmVF13I4K9B1mQingDgH277NAskCRyVGKy2d4BZVfL+xnCyZZM
+         YvYw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694215574; x=1694820374;
+        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=gGBpClnFGmaeheUaj1QZkIDF39Q032+bIV5KSNa+MvM=;
+        b=M1otmQrW03YQtByLhgc9tPoQlAZ023Gr4W+1TuboVmaKIYrje3fKiuJdfZFAke+YHK
+         NvBWblN4kRmIRKdSbcpH0ynbr61o1LP3cyFjl2qlLcjKiyo0h0+E0S8c5OtOpifzABRf
+         /gobxqhmKPc/PVqSFgBwy6e2IYemrNcX2qg3UIo5QyQWAtBARFkSfZw6GNKXroVq1eDW
+         DAY2ojPUi2XmJH4Y1ldQGjgxf6fJvyac1ZidmWsfv3isEEPix1eRQEmAoiKc1SZV8fUg
+         ZpzCwNO82sjliWaSgK3+ryuk8VaIE8HDI9usseFe4nGPiB4zDDRMu+2SDdHkGSHGwg2+
+         8bZg==
+X-Gm-Message-State: AOJu0Yy5WIgBWIl3BXxOf3gOlUegn+jZsF+7sqL1OJgDYe02/3tsAqNe
+        rltaWTn+ibSnyxEMeEkG/CACDfVAEDgNjkOMHlP2S9ZpArY=
+X-Google-Smtp-Source: AGHT+IF5PT5NWdjk1N6eka3FeSEOYnfHP4VrdUoFvXG/bU97UA607JicI/b/ql2XCx9PnCcRPGkJJ8xajR2UWUWRKEE=
+X-Received: by 2002:a17:90b:24b:b0:268:ac3:b1f6 with SMTP id
+ fz11-20020a17090b024b00b002680ac3b1f6mr3777407pjb.24.1694215573604; Fri, 08
+ Sep 2023 16:26:13 -0700 (PDT)
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Subject: Re: [PATCH] mm/slab_common: fix slab_caches list corruption after
- kmem_cache_destroy()
-Content-Language: en-US
-To:     Rafael Aquini <aquini@redhat.com>, linux-mm@kvack.org
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Rafael Aquini <raquini@redhat.com>, stable@vger.kernel.org
-References: <20230908230649.802560-1-aquini@redhat.com>
-From:   Waiman Long <longman@redhat.com>
-In-Reply-To: <20230908230649.802560-1-aquini@redhat.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.9
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=unavailable autolearn_force=no
-        version=3.4.6
+From:   Adam Ford <aford173@gmail.com>
+Date:   Fri, 8 Sep 2023 18:26:02 -0500
+Message-ID: <CAHCN7xLNoqy7NYenfZm_2vLZ94bbmU95jeFvr2FAugTtPn_naA@mail.gmail.com>
+Subject: of: property: fw_devlink: Add a devlink for panel followers
+To:     stable <stable@vger.kernel.org>
+Cc:     Tony Lindgren <tony@atomide.com>
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/8/23 19:06, Rafael Aquini wrote:
-> After the commit in Fixes:, if a module that created a slab cache does not
-> release all of its allocated objects before destroying the cache (at rmmod
-> time), we might end up releasing the kmem_cache object without removing it
-> from the slab_caches list thus corrupting the list as kmem_cache_destroy()
-> ignores the return value from shutdown_cache(), which in turn never removes
-> the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
-> to release all of the cache's slabs.
->
-> This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
-> as after that ill release the system will immediately trip on list_add,
-> or list_del, assertions similar to the one shown below as soon as another
-> kmem_cache gets created, or destroyed:
->
->    [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
->    [ 1041.219165] ------------[ cut here ]------------
->    [ 1041.221517] kernel BUG at lib/list_debug.c:62!
->    [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
->    [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
->    [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
->    [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
->
-> Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
-> is to set slub_debug to poison the released objects and then just run
-> cat /proc/slabinfo after removing the module that leaks slab objects,
-> in which case the kernel will panic:
->
->    [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
->    [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
->    [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
->    [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
->
-> This patch fixes this issue by properly checking shutdown_cache()'s
-> return value before taking the kmem_cache_release() branch.
->
-> Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
-> Signed-off-by: Rafael Aquini <aquini@redhat.com>
-> Cc: stable@vger.kernel.org
-> ---
->   mm/slab_common.c | 13 ++++++++-----
->   1 file changed, 8 insertions(+), 5 deletions(-)
->
-> diff --git a/mm/slab_common.c b/mm/slab_common.c
-> index cd71f9581e67..31e581dc6e85 100644
-> --- a/mm/slab_common.c
-> +++ b/mm/slab_common.c
-> @@ -479,7 +479,7 @@ void slab_kmem_cache_release(struct kmem_cache *s)
->   
->   void kmem_cache_destroy(struct kmem_cache *s)
->   {
-> -	int refcnt;
-> +	int err;
->   	bool rcu_set;
->   
->   	if (unlikely(!s) || !kasan_check_byte(s))
-> @@ -490,17 +490,20 @@ void kmem_cache_destroy(struct kmem_cache *s)
->   
->   	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
->   
-> -	refcnt = --s->refcount;
-> -	if (refcnt)
-> +	s->refcount--;
-> +	if (s->refcount) {
-> +		err = -EBUSY;
->   		goto out_unlock;
-> +	}
->   
-> -	WARN(shutdown_cache(s),
-> +	err = shutdown_cache(s);
-> +	WARN(err,
->   	     "%s %s: Slab cache still has objects when called from %pS",
->   	     __func__, s->name, (void *)_RET_IP_);
->   out_unlock:
->   	mutex_unlock(&slab_mutex);
->   	cpus_read_unlock();
-> -	if (!refcnt && !rcu_set)
-> +	if (!err && !rcu_set)
->   		kmem_cache_release(s);
->   }
->   EXPORT_SYMBOL(kmem_cache_destroy);
+Stable Group,
 
-Thanks for fixing this corner case.
+Please apply commit fbf0ea2da3c7("of: property: fw_devlink: Add a
+devlink for panel followers") to the 6.1.y stable branch. This fixes
+an issue where a display panel is deferred indefinitely on an
+AM3517-EVM.
 
-Reviewed-by: Waiman Long <longman@redhat.com>
+Thank you,
 
+Fixes: eaf9b5612a47 ("driver core: fw_devlink: Don't purge child
+fwnode's consumer links")
+Signed-off-by:  Adam Ford <aford173@gmail.com>
