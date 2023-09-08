@@ -2,75 +2,161 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05D987992D1
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:26:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 277097992E9
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:51:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345253AbjIHX0U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 19:26:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33110 "EHLO
+        id S234423AbjIHXvL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 19:51:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233550AbjIHX0T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:26:19 -0400
-Received: from mail-pj1-x1029.google.com (mail-pj1-x1029.google.com [IPv6:2607:f8b0:4864:20::1029])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A88C1E45
-        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 16:26:14 -0700 (PDT)
-Received: by mail-pj1-x1029.google.com with SMTP id 98e67ed59e1d1-26ef24b8e5aso1999513a91.0
-        for <stable@vger.kernel.org>; Fri, 08 Sep 2023 16:26:14 -0700 (PDT)
+        with ESMTP id S232694AbjIHXvL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:51:11 -0400
+Received: from mail-ej1-x634.google.com (mail-ej1-x634.google.com [IPv6:2a00:1450:4864:20::634])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 41B8718E;
+        Fri,  8 Sep 2023 16:51:07 -0700 (PDT)
+Received: by mail-ej1-x634.google.com with SMTP id a640c23a62f3a-9a9d82d73f9so316525666b.3;
+        Fri, 08 Sep 2023 16:51:07 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694215574; x=1694820374; darn=vger.kernel.org;
-        h=cc:to:subject:message-id:date:from:mime-version:from:to:cc:subject
-         :date:message-id:reply-to;
-        bh=gGBpClnFGmaeheUaj1QZkIDF39Q032+bIV5KSNa+MvM=;
-        b=rcBsdKGsSK0QL/eakh+du4YQfAeR8ULhy7xRrRzFbm/aDX4DEUzLKQa4dy8mIdAo7H
-         oWeJZ845ZRLr60gXc/Y6rFEdwU+jg9ILJP+FKFGU9PhWZLnBGeuo/xypOz7R4ub7msmF
-         YBxMJUf4M3J+akxmpkkFBezvJB6sp65V35f1JsFqAxR2SWYULdIPKm3HUj1lTOx9klvj
-         LsygbOgKTkJYelZM2RP4PNOWpE34RBTttH/I53bfxlaqnvs0agKW1JKxojRbP0KYxbWu
-         k5rVE5liDYk3TxRJvDGmVF13I4K9B1mQingDgH277NAskCRyVGKy2d4BZVfL+xnCyZZM
-         YvYw==
+        d=gmail.com; s=20221208; t=1694217066; x=1694821866; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=rz46q7yCO0bfK6/28GIiUTUVIGvYKbXoVgA69/2My4U=;
+        b=M6tojbXU891Pt3cck1bc5V18F1d63AJDu1FC5z0t5TlIUeju9PncCvbW0MkFNEllTt
+         VWXUWGbVp6Hy6le6HiqEVkbdRh0KnUll+8ncAbQR5XcudIvRmcapagnI4ImLuxshIN95
+         fVqGSCkuzyZJCCAZg6DNELAp3cmjR+LR4oZY4iNFGCSDZRlIaUHKvL+n7D7rJX8iy+zt
+         290QELRFuhhq/KSccezzvL7v/0R+Ig3w+ywSBJds3y8GC6qRb3wbp9ngfO9pcNefKq1r
+         khCF7CherbA8t3Vp9JxhYJj491lTOAmiD59rmAYtQbilfeWIxAWHGy2XSGNzg9p92Fk/
+         JT7A==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694215574; x=1694820374;
-        h=cc:to:subject:message-id:date:from:mime-version:x-gm-message-state
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=gGBpClnFGmaeheUaj1QZkIDF39Q032+bIV5KSNa+MvM=;
-        b=M1otmQrW03YQtByLhgc9tPoQlAZ023Gr4W+1TuboVmaKIYrje3fKiuJdfZFAke+YHK
-         NvBWblN4kRmIRKdSbcpH0ynbr61o1LP3cyFjl2qlLcjKiyo0h0+E0S8c5OtOpifzABRf
-         /gobxqhmKPc/PVqSFgBwy6e2IYemrNcX2qg3UIo5QyQWAtBARFkSfZw6GNKXroVq1eDW
-         DAY2ojPUi2XmJH4Y1ldQGjgxf6fJvyac1ZidmWsfv3isEEPix1eRQEmAoiKc1SZV8fUg
-         ZpzCwNO82sjliWaSgK3+ryuk8VaIE8HDI9usseFe4nGPiB4zDDRMu+2SDdHkGSHGwg2+
-         8bZg==
-X-Gm-Message-State: AOJu0Yy5WIgBWIl3BXxOf3gOlUegn+jZsF+7sqL1OJgDYe02/3tsAqNe
-        rltaWTn+ibSnyxEMeEkG/CACDfVAEDgNjkOMHlP2S9ZpArY=
-X-Google-Smtp-Source: AGHT+IF5PT5NWdjk1N6eka3FeSEOYnfHP4VrdUoFvXG/bU97UA607JicI/b/ql2XCx9PnCcRPGkJJ8xajR2UWUWRKEE=
-X-Received: by 2002:a17:90b:24b:b0:268:ac3:b1f6 with SMTP id
- fz11-20020a17090b024b00b002680ac3b1f6mr3777407pjb.24.1694215573604; Fri, 08
- Sep 2023 16:26:13 -0700 (PDT)
+        d=1e100.net; s=20230601; t=1694217066; x=1694821866;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=rz46q7yCO0bfK6/28GIiUTUVIGvYKbXoVgA69/2My4U=;
+        b=gzYlNoBKKqqZ9cao5kUe0Sc540S05fCi/qDdtOD+9d2Eughnbw56F7htLyd+6IkxFP
+         S9N3yju79ASqk0rl2jJlrJ33b5iwzKJLLA0/fp4QnHYPyH8gwpTt2rBVGKapxteV4lwX
+         HM9wAbEkYxYa6EFXTEzdWC2xckWSHBnPAYIxQemiarwmFkiTdQaK5+cekzt/V0V+p0RY
+         SHG/2Cpz0ih8A0+B8O/2YESvtNuRjyTZvYVchL5VP0mQy3++Jx+k+5agwP+Dr2zfn2jZ
+         4w86pp1Sr+04RnKm9nJIGUHIkMOj1mdjWr2JBAtxo9jyGztfw5gyXdVaItdTgb5fhOhU
+         nTAA==
+X-Gm-Message-State: AOJu0Yyo2S4aak2ENhvbcqClOqcGGmqQSgpMav1kvBwenXjrFudfuq9W
+        5KcKl7Vz6xI49TZfna8qYDgIPRWM1oWGvi0sN/A=
+X-Google-Smtp-Source: AGHT+IGCXV2gz7eM22d1Agkbwn85ii7m8IM9fsCyxitt2Q0YhhrjjYiebZxm8haHgEf2GRFyi5W3lRSLnQJURjobkZk=
+X-Received: by 2002:a17:907:7612:b0:9a9:efa0:fccf with SMTP id
+ jx18-20020a170907761200b009a9efa0fccfmr3053087ejc.0.1694217065631; Fri, 08
+ Sep 2023 16:51:05 -0700 (PDT)
 MIME-Version: 1.0
-From:   Adam Ford <aford173@gmail.com>
-Date:   Fri, 8 Sep 2023 18:26:02 -0500
-Message-ID: <CAHCN7xLNoqy7NYenfZm_2vLZ94bbmU95jeFvr2FAugTtPn_naA@mail.gmail.com>
-Subject: of: property: fw_devlink: Add a devlink for panel followers
-To:     stable <stable@vger.kernel.org>
-Cc:     Tony Lindgren <tony@atomide.com>
+References: <20230907200652.926951-1-jolsa@kernel.org> <2deafa8c-94cb-247a-2a8f-97f756f28898@oracle.com>
+In-Reply-To: <2deafa8c-94cb-247a-2a8f-97f756f28898@oracle.com>
+From:   Andrii Nakryiko <andrii.nakryiko@gmail.com>
+Date:   Fri, 8 Sep 2023 16:50:54 -0700
+Message-ID: <CAEf4BzZ_=AQ2rt1z=FUE6QoHq44Y_fCmh+xjbn-39NhLw5-VNg@mail.gmail.com>
+Subject: Re: [PATCH bpf 1/2] bpf: Add override check to kprobe multi link attach
+To:     Alan Maguire <alan.maguire@oracle.com>
+Cc:     Jiri Olsa <jolsa@kernel.org>, Alexei Starovoitov <ast@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Andrii Nakryiko <andrii@kernel.org>, stable@vger.kernel.org,
+        bpf@vger.kernel.org, Martin KaFai Lau <kafai@fb.com>,
+        Song Liu <songliubraving@fb.com>, Yonghong Song <yhs@fb.com>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@chromium.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Hao Luo <haoluo@google.com>, Djalal Harouni <tixxdz@gmail.com>
 Content-Type: text/plain; charset="UTF-8"
-X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
-        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Stable Group,
+On Fri, Sep 8, 2023 at 6:49=E2=80=AFAM Alan Maguire <alan.maguire@oracle.co=
+m> wrote:
+>
+> On 07/09/2023 21:06, Jiri Olsa wrote:
+> > Currently the multi_kprobe link attach does not check error
+> > injection list for programs with bpf_override_return helper
+> > and allows them to attach anywhere. Adding the missing check.
+> >
+> > Cc: stable@vger.kernel.org
+> > Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
+> > Signed-off-by: Jiri Olsa <jolsa@kernel.org>
+>
+> For the series,
+>
+> Reviewed-by: Alan Maguire <alan.maguire@oracle.com>
+>
+> ...with one small question below...
+>
+> > ---
+> >  kernel/trace/bpf_trace.c | 16 ++++++++++++++++
+> >  1 file changed, 16 insertions(+)
+> >
+> > diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+> > index a7264b2c17ad..c1c1af63ced2 100644
+> > --- a/kernel/trace/bpf_trace.c
+> > +++ b/kernel/trace/bpf_trace.c
+> > @@ -2853,6 +2853,17 @@ static int get_modules_for_addrs(struct module *=
+**mods, unsigned long *addrs, u3
+> >       return arr.mods_cnt;
+> >  }
+> >
+> > +static int addrs_check_error_injection_list(unsigned long *addrs, u32 =
+cnt)
+> > +{
+> > +     u32 i;
+> > +
+> > +     for (i =3D 0; i < cnt; i++) {
+> > +             if (!within_error_injection_list(addrs[i]))
+> > +                     return -EINVAL;
+>
+> do we need a check like trace_kprobe_on_func_entry() to verify that
+> it's a combination of function entry+kprobe override, or is that
+> handled elsewhere/not needed? perf_event_attach_bpf_prog() does
 
-Please apply commit fbf0ea2da3c7("of: property: fw_devlink: Add a
-devlink for panel followers") to the 6.1.y stable branch. This fixes
-an issue where a display panel is deferred indefinitely on an
-AM3517-EVM.
+multi-kprobe programs are always attached at function entry, so I
+believe it's not necessary?
 
-Thank you,
-
-Fixes: eaf9b5612a47 ("driver core: fw_devlink: Don't purge child
-fwnode's consumer links")
-Signed-off-by:  Adam Ford <aford173@gmail.com>
+>
+> /*
+>  * Kprobe override only works if they are on the function entry,
+>  * and only if they are on the opt-in list.
+>  */
+>         if (prog->kprobe_override &&
+>             (!trace_kprobe_on_func_entry(event->tp_event) ||
+>              !trace_kprobe_error_injectable(event->tp_event)))
+>                 return -EINVAL;
+>
+>
+> if this is needed, it might be good to augment the selftest to
+> cover the case of specifying non-entry+kprobe override. thanks!
+>
+> Alan
+>
+>
+> > +     return 0;
+> > +}
+> > +
+> >  int bpf_kprobe_multi_link_attach(const union bpf_attr *attr, struct bp=
+f_prog *prog)
+> >  {
+> >       struct bpf_kprobe_multi_link *link =3D NULL;
+> > @@ -2930,6 +2941,11 @@ int bpf_kprobe_multi_link_attach(const union bpf=
+_attr *attr, struct bpf_prog *pr
+> >                       goto error;
+> >       }
+> >
+> > +     if (prog->kprobe_override && addrs_check_error_injection_list(add=
+rs, cnt)) {
+> > +             err =3D -EINVAL;
+> > +             goto error;
+> > +     }
+> > +
+> >       link =3D kzalloc(sizeof(*link), GFP_KERNEL);
+> >       if (!link) {
+> >               err =3D -ENOMEM;
