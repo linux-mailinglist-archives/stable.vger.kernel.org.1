@@ -2,128 +2,159 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D5CD0798269
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 08:34:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 006517982A8
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 08:47:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234659AbjIHGeK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 02:34:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38084 "EHLO
+        id S229514AbjIHGrx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 02:47:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40746 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233039AbjIHGeK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 02:34:10 -0400
-Received: from mail-wm1-f44.google.com (mail-wm1-f44.google.com [209.85.128.44])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 545E319AE
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 23:34:06 -0700 (PDT)
-Received: by mail-wm1-f44.google.com with SMTP id 5b1f17b1804b1-4018af1038cso18456375e9.0
-        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 23:34:06 -0700 (PDT)
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694154845; x=1694759645;
-        h=content-transfer-encoding:in-reply-to:from:content-language
-         :references:cc:to:subject:reply-to:user-agent:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=7ATHOBy3VUOK0ymvL9cdRrxqeOvpmpKkjY6GO8sO8C8=;
-        b=IRzNmth2qdcJjzHXTA0Sl1g8ahOkgF4Je23072pOFWmztcSnI0pAil02l7cvEcvvSM
-         mpJT5tC/b30KEYp6SXFFP/zzMN1jV4m8s6tbydOCkWHXBK6tdbJ1X07v4wSyPdAZWeGQ
-         o793UagSy0Zsr+TM9llJlU5ncV87l1+Z51XgPk63bugaEjsRgXALU1D1Cz5RtJv7Pbt1
-         uCoab5YAPHEZito6t4eNUwi9gzkeZuMTlOomGZP1dhL/o7vNRgppgHyt+mF3IrvV4L+M
-         3akeaLCwSOleyVpNLuVMJo95yYBqU8ibtd/12yE6/AoJQ95WZwa6e1GFf9KcuRz1gOor
-         Bidw==
-X-Gm-Message-State: AOJu0YyasD1Lc1yvRW5SXFK6rPH4frs5ssig/I2UWY2yKh25CsBWj8k2
-        InDgcND5QKQPQ1uzU5VQnH4=
-X-Google-Smtp-Source: AGHT+IGbDvg9mgF5nPHbyPNmL1QvS0OTFzQpIxyaQn8wJLGgWvy6QsDUAglk3s16qpT9V2Qs9JT/8g==
-X-Received: by 2002:a5d:58c8:0:b0:319:6327:6adb with SMTP id o8-20020a5d58c8000000b0031963276adbmr1124927wrf.70.1694154844533;
-        Thu, 07 Sep 2023 23:34:04 -0700 (PDT)
-Received: from [192.168.70.5] ([94.204.198.68])
-        by smtp.gmail.com with ESMTPSA id o8-20020a1c7508000000b003fe29dc0ff2sm1122049wmc.21.2023.09.07.23.34.03
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Thu, 07 Sep 2023 23:34:04 -0700 (PDT)
-Message-ID: <1070130b-9373-d22f-a0e2-02ba90b0e41f@linux.com>
-Date:   Fri, 8 Sep 2023 10:34:01 +0400
+        with ESMTP id S232457AbjIHGrv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 02:47:51 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 934A01BF0;
+        Thu,  7 Sep 2023 23:46:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB2B2C433C9;
+        Fri,  8 Sep 2023 06:46:58 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694155619;
+        bh=F/+3AoZMSA6jGzbZvILpyJhqzHBMsKrZoIHomJSa4HI=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Digbn9unnTDdYbaZjXuF+eTk9YuXPNpX0HcgtWvI6qysLqfZfbHtE0AqQlEZozKf1
+         3DpBxe5JPnXQuE/su+szL/IPjrneBMc9YyAvAwtT/DnfBFs+QZef1Sadb8iX8GcCPA
+         V2bo2I0EOag6gTdMy2NQE3in9n9efkPUmMKk0kxA=
+Date:   Fri, 8 Sep 2023 07:46:56 +0100
+From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+To:     Stefan Lippers-Hollmann <s.l-h@gmx.de>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Christoph Hellwig <hch@lst.de>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        linux-media@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: Re: [PATCH 6.5 11/34] modules: only allow symbol_get of
+ EXPORT_SYMBOL_GPL modules
+Message-ID: <2023090848-chastise-paycheck-6d4d@gregkh>
+References: <20230904182948.594404081@linuxfoundation.org>
+ <20230904182949.104100132@linuxfoundation.org>
+ <20230907084135.02d97441@mir>
+ <2023090719-virtuous-snowflake-d015@gregkh>
+ <20230907221737.07f12f38@mir>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.14.0
-Reply-To: efremov@linux.com
-Subject: Re: [PATCH] Input: cyttsp4_core - change del_timer_sync() to
- timer_shutdown_sync()
-To:     Greg KH <gregkh@linuxfoundation.org>
-Cc:     stable@vger.kernel.org, Duoming Zhou <duoming@zju.edu.cn>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-References: <20230908014144.61151-1-efremov@linux.com>
- <2023090835-playroom-plastic-494c@gregkh>
-Content-Language: en-US, ru-RU
-From:   "Denis Efremov (Oracle)" <efremov@linux.com>
-In-Reply-To: <2023090835-playroom-plastic-494c@gregkh>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.9 required=5.0 tests=BAYES_00,
-        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
-        NICE_REPLY_A,RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,
-        SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230907221737.07f12f38@mir>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/8/23 10:15, Greg KH wrote:
-> On Fri, Sep 08, 2023 at 05:41:35AM +0400, Denis Efremov (Oracle) wrote:
->> From: Duoming Zhou <duoming@zju.edu.cn>
->>
->> The watchdog_timer can schedule tx_timeout_task and watchdog_work
->> can also arm watchdog_timer. The process is shown below:
->>
->> ----------- timer schedules work ------------
->> cyttsp4_watchdog_timer() //timer handler
->>   schedule_work(&cd->watchdog_work)
->>
->> ----------- work arms timer ------------
->> cyttsp4_watchdog_work() //workqueue callback function
->>   cyttsp4_start_wd_timer()
->>     mod_timer(&cd->watchdog_timer, ...)
->>
->> Although del_timer_sync() and cancel_work_sync() are called in
->> cyttsp4_remove(), the timer and workqueue could still be rearmed.
->> As a result, the possible use after free bugs could happen. The
->> process is shown below:
->>
->>   (cleanup routine)           |  (timer and workqueue routine)
->> cyttsp4_remove()              | cyttsp4_watchdog_timer() //timer
->>   cyttsp4_stop_wd_timer()     |   schedule_work()
->>     del_timer_sync()          |
->>                               | cyttsp4_watchdog_work() //worker
->>                               |   cyttsp4_start_wd_timer()
->>                               |     mod_timer()
->>     cancel_work_sync()        |
->>                               | cyttsp4_watchdog_timer() //timer
->>                               |   schedule_work()
->>     del_timer_sync()          |
->>   kfree(cd) //FREE            |
->>                               | cyttsp4_watchdog_work() // reschedule!
->>                               |   cd-> //USE
->>
->> This patch changes del_timer_sync() to timer_shutdown_sync(),
->> which could prevent rearming of the timer from the workqueue.
->>
->> Cc: stable@vger.kernel.org
->> Fixes: CVE-2023-4134
+On Thu, Sep 07, 2023 at 10:17:37PM +0200, Stefan Lippers-Hollmann wrote:
+> Hi
 > 
-> "CVE" is not a valid Fixes tag :(
+> On 2023-09-07, Greg Kroah-Hartman wrote:
+> > On Thu, Sep 07, 2023 at 08:41:35AM +0200, Stefan Lippers-Hollmann wrote:
+> > > On 2023-09-04, Greg Kroah-Hartman wrote:
+> > > > 6.5-stable review patch.  If anyone has any objections, please let me know.
+> > > >
+> > > > ------------------
+> > > >
+> > > > From: Christoph Hellwig <hch@lst.de>
+> > > >
+> > > > commit 9011e49d54dcc7653ebb8a1e05b5badb5ecfa9f9 upstream.
+> > > >
+> > > > It has recently come to my attention that nvidia is circumventing the
+> > > > protection added in 262e6ae7081d ("modules: inherit
+> > > > TAINT_PROPRIETARY_MODULE") by importing exports from their proprietary
+> > > > modules into an allegedly GPL licensed module and then rexporting them.
+> > > >
+> > > > Given that symbol_get was only ever intended for tightly cooperating
+> > > > modules using very internal symbols it is logical to restrict it to
+> > > > being used on EXPORT_SYMBOL_GPL and prevent nvidia from costly DMCA
+> > > > Circumvention of Access Controls law suites.
+> > > >
+> > > > All symbols except for four used through symbol_get were already exported
+> > > > as EXPORT_SYMBOL_GPL, and the remaining four ones were switched over in
+> > > > the preparation patches.
+> > >
+> > > This patch, as part of v6.5.2, breaks the in-kernel ds3000 module
+> > > (for a TeVii s480 v2 DVB-S2 card, which is a PCIe card attaching two
+> > > onboard TeVii s660 cards via an onboard USB2 controller (MCS9990),
+> > > https://www.linuxtv.org/wiki/index.php/TeVii_S480) from loading.
+> >
+> > This is also broken in Linus's tree, right?
 > 
->> Fixes: 17fb1563d69b ("Input: cyttsp4 - add core driver for Cypress TMA4XX touchscreen devices")
->> Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
->> Link: https://lore.kernel.org/r/20230421082919.8471-1-duoming@zju.edu.cn
->> Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
->> Signed-off-by: Denis Efremov (Oracle) <efremov@linux.com>
->> ---
->>
->> I've only added Cc: stable and Fixes tag.
+> Yes, HEAD as of 6.5.0-12145-g4a0fc73da97e is affected just as well.
+
+Ok, good, thanks for confirming.
+
+> > > [    2.896589] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' registered.
+> > > [    2.901085] failing symbol_get of non-GPLONLY symbol ds3000_attach.
+> > > [    2.901089] DVB: Unable to find symbol ds3000_attach()
+> >
+> > This is odd, where is that call coming from?  I don't see any call to
+> > symbol_get in the dvb code, where is this happening?
+> >
+> > Anyway, does the patch below fix this?
 > 
+> That change alone only moves the issue down to ts2020_attach().
+> 
+> $ dmesg | grep -i -e dvb -e gpl -e symbol
+> [    1.464876] usb 3-1: Product: DVBS2BOX
+> [    1.482143] usb 5-1: Product: DVBS2BOX
+> [    3.692647] dvb-usb: found a 'TeVii S660 USB' in cold state, will try to load a firmware
+> [    3.692951] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
+> [    3.860571] dvb-usb: found a 'TeVii S660 USB' in warm state.
+> [    3.860615] dvb-usb: will pass the complete MPEG2 transport stream to the software demuxer.
+> [    3.860944] dvbdev: DVB: registering new adapter (TeVii S660 USB)
+> [    4.097144] dvb-usb: MAC address: 00:18:XX:XX:XX:XX
+> [    4.097272] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' registered.
+> [    4.111792] failing symbol_get of non-GPLONLY symbol ts2020_attach.
+> [    4.111795] DVB: Unable to find symbol ts2020_attach()
+> [    4.112759] usb 3-1: DVB: registering adapter 0 frontend 0 (Montage Technology DS3000)...
+> [    4.112764] dvbdev: dvb_create_media_entity: media entity 'Montage Technology DS3000' registered.
+> [    4.138938] dvb-usb: schedule remote query interval to 150 msecs.
+> [    4.138942] dvb-usb: TeVii S660 USB successfully initialized and connected.
+> [    4.138988] dvb-usb: found a 'TeVii S660 USB' in cold state, will try to load a firmware
+> [    4.139016] dvb-usb: downloading firmware from file 'dvb-usb-s660.fw'
+> [    4.292614] dvb-usb: found a 'TeVii S660 USB' in warm state.
+> [    4.292679] dvb-usb: will pass the complete MPEG2 transport stream to the software demuxer.
+> [    4.293075] dvbdev: DVB: registering new adapter (TeVii S660 USB)
+> [    4.538876] dvb-usb: MAC address: 00:18:XX:XX:XX:XX
+> [    4.539113] dvbdev: dvb_create_media_entity: media entity 'dvb-demux' registered.
+> [    4.543738] failing symbol_get of non-GPLONLY symbol ts2020_attach.
+> [    4.546349] failing symbol_get of non-GPLONLY symbol ts2020_attach.
+> [    4.546354] DVB: Unable to find symbol ts2020_attach()
+> [    4.548643] usb 5-1: DVB: registering adapter 1 frontend 0 (Montage Technology DS3000)...
+> [    4.548650] dvbdev: dvb_create_media_entity: media entity 'Montage Technology DS3000' registered.
+> [    4.549970] dvb-usb: schedule remote query interval to 150 msecs.
+> [    4.549973] dvb-usb: TeVii S660 USB successfully initialized and connected.
+> [    7.830408] ds3000_firmware_ondemand: Waiting for firmware upload (dvb-fe-ds3000.fw)...
+> [    8.367600] ds3000_firmware_ondemand: Waiting for firmware upload (dvb-fe-ds3000.fw)...
+> 
+> Extending this to approach to ts2020_attach() does fix the problem
+> for me. Searching the web for "failing symbol_get of non-GPLONLY
+> symbol" suggests that there might be further instances within the
+> DVB subsystem https://syzkaller.appspot.com/x/log.txt?x=11faa1eda80000
+> (this was merely gathered by a passive web search, I have no contact
+> to the poster or any further information about it).
 
-Please, don't take this patch. It breaks the build. Sorry, I forgot to check it this time.
-I'll resend a correct backport with the upstream commit info.
+Ugh, it looks like everyone that calls dvb_attach() is going to be
+affected.  I can make up a patch for this later today, unless Christoph
+beats me to it :)
 
-Best Regards,
-Denis
+Also, in commit 8f569c0b4e6b ("media: dvb-core: add helper functions for
+I2C binding"), way back in 2018, it says no one should be using this
+function anymore, but given I see over 700 uses of it, that's obviously
+not changing any time soon :(
 
+> [ now fully functional with EXPORT_SYMBOL_GPL(ds3000_attach) and
+>   EXPORT_SYMBOL_GPL(ts2020_attach) ]
 
+Thanks for testing this.
+
+greg k-h
