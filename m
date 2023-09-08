@@ -2,142 +2,89 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A27257992A8
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 93A387992B7
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231444AbjIHXHo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 19:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
+        id S1344970AbjIHXQe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 19:16:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243330AbjIHXHm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:07:42 -0400
-Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A81C1FE0
-        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 16:06:55 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
-        s=mimecast20190719; t=1694214414;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:
-         content-transfer-encoding:content-transfer-encoding;
-        bh=WGIk1aHDuftDWuM242kRZNF3ZGX4IZN2ja3DENxRTe4=;
-        b=RDyvhg22YRsPUW/E6cRnYB1LOj8dIP3ULwrctMJqMhP1nrpYTWWPUQF2aG2sqquHvxvlk5
-        ++kU81YpZLzqlloFogu+jc6LB/ccQ38qZ3yQ621DWamVwWpSbUitki7btf1Q8+ir5WEbNi
-        77Y0IClf/cJeMB1wuVLspKY+H/NQImI=
-Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
- by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
- us-mta-265-naP80jUdPpC9vJUQx9zLPg-1; Fri, 08 Sep 2023 19:06:53 -0400
-X-MC-Unique: naP80jUdPpC9vJUQx9zLPg-1
-Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
-        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
-        (No client certificate requested)
-        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25D9D3C01BB3;
-        Fri,  8 Sep 2023 23:06:53 +0000 (UTC)
-Received: from optiplex-lnx.redhat.com (unknown [10.22.17.25])
-        by smtp.corp.redhat.com (Postfix) with ESMTP id BA867140E962;
-        Fri,  8 Sep 2023 23:06:52 +0000 (UTC)
-From:   Rafael Aquini <aquini@redhat.com>
-To:     linux-mm@kvack.org
-Cc:     linux-kernel@vger.kernel.org,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Vlastimil Babka <vbabka@suse.cz>,
-        Waiman Long <longman@redhat.com>,
-        Rafael Aquini <raquini@redhat.com>, stable@vger.kernel.org
-Subject: [PATCH] mm/slab_common: fix slab_caches list corruption after kmem_cache_destroy()
-Date:   Fri,  8 Sep 2023 19:06:49 -0400
-Message-ID: <20230908230649.802560-1-aquini@redhat.com>
+        with ESMTP id S1344962AbjIHXQb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:16:31 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4192E133;
+        Fri,  8 Sep 2023 16:16:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A050C433C8;
+        Fri,  8 Sep 2023 23:16:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694214987;
+        bh=/xMWogw6x5eul1RoNtsSEze70Ln3xhtEGKKmYzcwgvA=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=eMAnTqO4ScuE8Mg6TjzvRv7nhKy5KnQeaKoVU5kW/Qv0R+FvNApwDIHzXQ9ejJQPQ
+         nN3hIcggGZXONHsZsFiTBrZD5+/Di1RgvTO76xLK/IvjBnfbAIivaNqsDtymvFiEP+
+         /GGeLHGzGzUSX9XzELc9I+EPIlyTVVOGWTwJcF5qzHfG9uG5JyHatTaxnjfLkIWq+t
+         JHqCKWmjpFJIH/wT9MtuqIzIHvYcwVchCzsxVB62W54z/8hscHiyvsaAngavpzUm+g
+         43qIT1xFK6X4fI2ioYC8GwIb7ehjYDWyr0yiHnQfXPZTo/rEug2HGy24216/OqcUpg
+         h2K12t/rFtZDg==
+Date:   Sat, 9 Sep 2023 00:16:23 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Okan Sahin <okan.sahin@analog.com>, lgirdwood@gmail.com,
+        gregkh@linuxfoundation.org
+Subject: Re: [PATCH AUTOSEL 6.5 04/45] regulator: max77857: Add ADI
+ MAX77857/59/MAX77831 Regulator Support
+Message-ID: <3647b079-0ba0-4057-bdf2-879fc44e19c5@sirena.org.uk>
+References: <20230908181327.3459042-1-sashal@kernel.org>
+ <20230908181327.3459042-4-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="GjWYbzi1IfWrrl53"
+Content-Disposition: inline
+In-Reply-To: <20230908181327.3459042-4-sashal@kernel.org>
+X-Cookie: My EARS are GONE!!
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
-        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-After the commit in Fixes:, if a module that created a slab cache does not
-release all of its allocated objects before destroying the cache (at rmmod
-time), we might end up releasing the kmem_cache object without removing it
-from the slab_caches list thus corrupting the list as kmem_cache_destroy()
-ignores the return value from shutdown_cache(), which in turn never removes
-the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
-to release all of the cache's slabs.
 
-This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
-as after that ill release the system will immediately trip on list_add,
-or list_del, assertions similar to the one shown below as soon as another
-kmem_cache gets created, or destroyed:
+--GjWYbzi1IfWrrl53
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
 
-  [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
-  [ 1041.219165] ------------[ cut here ]------------
-  [ 1041.221517] kernel BUG at lib/list_debug.c:62!
-  [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
-  [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-  [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-  [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
+On Fri, Sep 08, 2023 at 02:12:45PM -0400, Sasha Levin wrote:
 
-Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
-is to set slub_debug to poison the released objects and then just run
-cat /proc/slabinfo after removing the module that leaks slab objects,
-in which case the kernel will panic:
+> ---
+>  drivers/regulator/Kconfig              |  10 +
+>  drivers/regulator/Makefile             |   1 +
+>  drivers/regulator/max77857-regulator.c | 459 +++++++++++++++++++++++++
+>  3 files changed, 470 insertions(+)
+>  create mode 100644 drivers/regulator/max77857-regulator.c
 
-  [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
-  [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
-  [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
-  [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
+This is an entire new driver - this is obviously entirely inappropriate
+for stable.  I thought the output of this bot was supposed to be being
+reviewed by humans before being sent out.  How did this make it to my
+inbox?
 
-This patch fixes this issue by properly checking shutdown_cache()'s
-return value before taking the kmem_cache_release() branch.
+--GjWYbzi1IfWrrl53
+Content-Type: application/pgp-signature; name="signature.asc"
 
-Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
-Signed-off-by: Rafael Aquini <aquini@redhat.com>
-Cc: stable@vger.kernel.org
----
- mm/slab_common.c | 13 ++++++++-----
- 1 file changed, 8 insertions(+), 5 deletions(-)
+-----BEGIN PGP SIGNATURE-----
 
-diff --git a/mm/slab_common.c b/mm/slab_common.c
-index cd71f9581e67..31e581dc6e85 100644
---- a/mm/slab_common.c
-+++ b/mm/slab_common.c
-@@ -479,7 +479,7 @@ void slab_kmem_cache_release(struct kmem_cache *s)
- 
- void kmem_cache_destroy(struct kmem_cache *s)
- {
--	int refcnt;
-+	int err;
- 	bool rcu_set;
- 
- 	if (unlikely(!s) || !kasan_check_byte(s))
-@@ -490,17 +490,20 @@ void kmem_cache_destroy(struct kmem_cache *s)
- 
- 	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
- 
--	refcnt = --s->refcount;
--	if (refcnt)
-+	s->refcount--;
-+	if (s->refcount) {
-+		err = -EBUSY;
- 		goto out_unlock;
-+	}
- 
--	WARN(shutdown_cache(s),
-+	err = shutdown_cache(s);
-+	WARN(err,
- 	     "%s %s: Slab cache still has objects when called from %pS",
- 	     __func__, s->name, (void *)_RET_IP_);
- out_unlock:
- 	mutex_unlock(&slab_mutex);
- 	cpus_read_unlock();
--	if (!refcnt && !rcu_set)
-+	if (!err && !rcu_set)
- 		kmem_cache_release(s);
- }
- EXPORT_SYMBOL(kmem_cache_destroy);
--- 
-2.41.0
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT7q0YACgkQJNaLcl1U
+h9AGjgf/Rx3LgtCztdQQYKCDD3ZWcYoC+7b8FUbbTkER147s+poNE/qTgbXIGLVd
++eJFdT+6y1GUYtkuAkbcGxc0fg7tyKrgWtq/alCC2POvp+HkOCmZLOOCUdOqCZGk
+RCrBe7yT9U2hpx6l7QPcXX+MzVeHPqMO1j7CRub02y8HMUwIbeGlmz1KYP7y2k2q
+XZDNgmINAiN0Pw5qV1UNHxc88BwpItCDJhSifhBYkApBJgv1kCLxWhOo1QVZ7Wd/
+J43rwTqoXw7npOPcBrWlSFScvLYw399JMqw9A0fwrLMRjEZZQTT/JHVsQdUAjmOP
+cijrDsnmJ7q5WLvCHwcIpzimSmNY3g==
+=oRhw
+-----END PGP SIGNATURE-----
 
+--GjWYbzi1IfWrrl53--
