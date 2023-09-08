@@ -2,184 +2,128 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E1B43797FD5
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 02:47:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 775A9798054
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 03:42:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235298AbjIHArY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Thu, 7 Sep 2023 20:47:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45128 "EHLO
+        id S231899AbjIHBma (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Thu, 7 Sep 2023 21:42:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230013AbjIHArX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 20:47:23 -0400
-Received: from mail-il1-x12d.google.com (mail-il1-x12d.google.com [IPv6:2607:f8b0:4864:20::12d])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F141BCD
-        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 17:47:19 -0700 (PDT)
-Received: by mail-il1-x12d.google.com with SMTP id e9e14a558f8ab-34f3264a283so6776135ab.1
-        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 17:47:19 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=joelfernandes.org; s=google; t=1694134038; x=1694738838; darn=vger.kernel.org;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:from:to:cc:subject:date:message-id:reply-to;
-        bh=t6+Cb3bRZZ47LN9y3HtMWq4ggj2G/LWgJo6DkgIzUlc=;
-        b=PUQ19EHM7jYs4sDUiuy+ltS4H/eKCTkfDHvlc0Wrh0nxnRtCYWjUOa4MFYgWS7asas
-         4OrfPv2Bo9Pw0jRNXeFwoZQutP4gLRCCK3Czv1n5RtAbCKneoP3JcckU1CgvkKXE7c7+
-         8of9mrwzz2JXg6Yr9xYd4iyiQP7BcZbVZDs0U=
+        with ESMTP id S231138AbjIHBma (ORCPT
+        <rfc822;stable@vger.kernel.org>); Thu, 7 Sep 2023 21:42:30 -0400
+Received: from mail-lf1-f48.google.com (mail-lf1-f48.google.com [209.85.167.48])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DA0919BD
+        for <stable@vger.kernel.org>; Thu,  7 Sep 2023 18:42:26 -0700 (PDT)
+Received: by mail-lf1-f48.google.com with SMTP id 2adb3069b0e04-501bef6e0d3so2671225e87.1
+        for <stable@vger.kernel.org>; Thu, 07 Sep 2023 18:42:26 -0700 (PDT)
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694134038; x=1694738838;
-        h=in-reply-to:content-disposition:mime-version:references:message-id
-         :subject:cc:to:from:date:x-gm-message-state:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=t6+Cb3bRZZ47LN9y3HtMWq4ggj2G/LWgJo6DkgIzUlc=;
-        b=WlYHCsMu4kM0PTb26mknK7ozPtvdmUlg4ik/wFAe2yctSuX11T4guyAVs+YP+mokWu
-         a5cnI8Y4PfTyWdEhjkMDmDyh1uzmVhhIlk16Ondg+1fdr4zFEuKz5JqFQ5BwlaCUti6W
-         jCqj7CuLPRQqkocchNgfoXQ338bPY1M+6VjRchPK1jWpLVWhcwsfR+FvKiLI2M9CthT0
-         iDqDqQRtVt0EdN3ot246a5Bq2jUl1MyQZhxUDnsakTvBAftQhIKgvCTD2WSZUXMtia5f
-         gnWMmMoASEFR9SUqUCAynYM2YGYfhNR5njR0QUKi0FZP+QvXGvmrvvcJSmz/+F+t3AjX
-         L6yA==
-X-Gm-Message-State: AOJu0YwPo+s8h4vOXq67KMiB7M8jHBbKq1VnSxWqV6gR7z6RwcrKucFU
-        HNGDkowIKcInB2sweSJHO+jzUg==
-X-Google-Smtp-Source: AGHT+IFlR/Sv04z3ajcLWxvVrekQpqo/YeMso2oRkKwCsmdeMdYUZgv6PkHDs2VEqkf0Y0xCQWfyfw==
-X-Received: by 2002:a05:6e02:1ba4:b0:34f:1e9c:45d9 with SMTP id n4-20020a056e021ba400b0034f1e9c45d9mr1238857ili.12.1694134038520;
-        Thu, 07 Sep 2023 17:47:18 -0700 (PDT)
-Received: from localhost (156.190.123.34.bc.googleusercontent.com. [34.123.190.156])
-        by smtp.gmail.com with ESMTPSA id z14-20020a92cd0e000000b0034a921bc93asm158378iln.1.2023.09.07.17.47.17
+        d=1e100.net; s=20230601; t=1694137344; x=1694742144;
+        h=content-transfer-encoding:mime-version:message-id:date:subject:cc
+         :to:from:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=FNhDAr9U/KJFxgkGy8ktzjClHhQu/DsNA4z0+swql8k=;
+        b=GHLFS9P0zlYJGHJt/cHjC2X0PWFrSq6t5zvnyU7UHFb3tpJzZvBxdgxYpf32AzpSf6
+         RtLAi714Xe9YrG5WxdKn2U9uELZNTA1rHCZyX1nfKDzg7RaAr6Po+ZTMpM5X0Lvmr/w6
+         eR+JwbCrfXYHzs3SbOc3uiIwXGbHi/UkHuPe+zvw5pnYbHmvD4bHLvP02q+ChQ/biQ0N
+         bjoL4KDZfde3HdlP8kQPx6Y/yA/4Sv0QUgnN/isvNOcGdrKo02RmXRvI2Io1+TV1WB/k
+         Wu007k0YZoQTRplrMb3hgySMY3wbHGIp5c3g4lJ6rHrKF1o6ZR7qsFNjvfpq4a1k776c
+         azJQ==
+X-Gm-Message-State: AOJu0YyrB8dpMlV0MkD0JPLx1iHZBM7l42EEO8BUyK1C1+WLRwlfI2kb
+        dOzF6aklQ5IBLNqPanY4uSsKK7jLyViKWg==
+X-Google-Smtp-Source: AGHT+IF7PAen8skStxwHFQre2QEKCiEIDPP5xEaeU5hQIF1bfYSgTML7U76wVK1gwSWIvRMXXgVabw==
+X-Received: by 2002:ac2:5b4d:0:b0:4fd:fd97:a77b with SMTP id i13-20020ac25b4d000000b004fdfd97a77bmr691860lfp.50.1694137343807;
+        Thu, 07 Sep 2023 18:42:23 -0700 (PDT)
+Received: from white.. ([94.204.198.68])
+        by smtp.googlemail.com with ESMTPSA id z13-20020a19f70d000000b005007fc9cccasm122899lfe.94.2023.09.07.18.42.22
         (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Thu, 07 Sep 2023 17:47:18 -0700 (PDT)
-Date:   Fri, 8 Sep 2023 00:47:17 +0000
-From:   Joel Fernandes <joel@joelfernandes.org>
-To:     Vlastimil Babka <vbabka@suse.cz>,
-        Andrew Morton <akpm@linux-foundation.org>
-Cc:     linux-kernel@vger.kernel.org, Uladzislau Rezki <urezki@gmail.com>,
-        Christoph Hellwig <hch@infradead.org>,
-        Lorenzo Stoakes <lstoakes@gmail.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        rcu@vger.kernel.org, Zqiang <qiang.zhang1211@gmail.com>,
-        stable@vger.kernel.org, linux-mm@kvack.org
-Subject: Re: [PATCH v3 1/2] mm/vmalloc: Add a safer version of find_vm_area()
- for debug
-Message-ID: <20230908004717.GC4088026@google.com>
-References: <20230904180806.1002832-1-joel@joelfernandes.org>
- <49ff5505-5a4a-1ad5-8552-6e79a91ee8c9@suse.cz>
+        Thu, 07 Sep 2023 18:42:23 -0700 (PDT)
+From:   "Denis Efremov (Oracle)" <efremov@linux.com>
+To:     stable@vger.kernel.org
+Cc:     Duoming Zhou <duoming@zju.edu.cn>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Denis Efremov <efremov@linux.com>
+Subject: [PATCH] Input: cyttsp4_core - change del_timer_sync() to timer_shutdown_sync()
+Date:   Fri,  8 Sep 2023 05:41:35 +0400
+Message-ID: <20230908014144.61151-1-efremov@linux.com>
+X-Mailer: git-send-email 2.42.0
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <49ff5505-5a4a-1ad5-8552-6e79a91ee8c9@suse.cz>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=unavailable autolearn_force=no
-        version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.4 required=5.0 tests=BAYES_00,
+        FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,HEADER_FROM_DIFFERENT_DOMAINS,
+        RCVD_IN_DNSWL_NONE,RCVD_IN_MSPIKE_H2,SPF_HELO_NONE,SPF_PASS
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Thu, Sep 07, 2023 at 08:53:14AM +0200, Vlastimil Babka wrote:
-> Hi,
-> 
-> On 9/4/23 20:08, Joel Fernandes (Google) wrote:
-> > It is unsafe to dump vmalloc area information when trying to do so from
-> > some contexts. Add a safer trylock version of the same function to do a
-> > best-effort VMA finding and use it from vmalloc_dump_obj().
-> 
-> I was a bit confused by the subject which suggests a new function is added,
-> but it seems open-coded in its only caller. I assume it's due to evolution
-> of the series. Something like:
-> 
-> mm/vmalloc: use trylock for vmap_area_lock in vmalloc_dump_obj()
-> 
-> ?
-> 
-> I also notice it's trying hard to copy everything from "vm" to temporary
-> variables before unlocking, presumably to prevent use-after-free, so should
-> that be also mentioned in the changelog?
+From: Duoming Zhou <duoming@zju.edu.cn>
 
-Apologies for the less-than-ideal changelog. Andrew would you mind replacing
-the merged patch with the below one instead? It just contains non-functional
-changes to change log and an additional code comment/print. Thanks!
+The watchdog_timer can schedule tx_timeout_task and watchdog_work
+can also arm watchdog_timer. The process is shown below:
 
----8<-----------------------
+----------- timer schedules work ------------
+cyttsp4_watchdog_timer() //timer handler
+  schedule_work(&cd->watchdog_work)
 
-From: "Joel Fernandes (Google)" <joel@joelfernandes.org>
-Subject: [PATCH v3.1] mm/vmalloc: Add a safer inlined version of find_vm_area() for
- debug
+----------- work arms timer ------------
+cyttsp4_watchdog_work() //workqueue callback function
+  cyttsp4_start_wd_timer()
+    mod_timer(&cd->watchdog_timer, ...)
 
-It is unsafe to dump vmalloc area information when trying to do so from
-some contexts such as PREEMPT_RT or from an IRQ handler that interrupted
-a vmap_area_lock-held region. Add a safer and inlined trylock version of
-find_vm_area() to do a best-effort VMA finding and use it from
-vmalloc_dump_obj().
+Although del_timer_sync() and cancel_work_sync() are called in
+cyttsp4_remove(), the timer and workqueue could still be rearmed.
+As a result, the possible use after free bugs could happen. The
+process is shown below:
 
-While the vmap_area_lock is held, copy interesting attributes from the
-vm_struct before unlocking.
+  (cleanup routine)           |  (timer and workqueue routine)
+cyttsp4_remove()              | cyttsp4_watchdog_timer() //timer
+  cyttsp4_stop_wd_timer()     |   schedule_work()
+    del_timer_sync()          |
+                              | cyttsp4_watchdog_work() //worker
+                              |   cyttsp4_start_wd_timer()
+                              |     mod_timer()
+    cancel_work_sync()        |
+                              | cyttsp4_watchdog_timer() //timer
+                              |   schedule_work()
+    del_timer_sync()          |
+  kfree(cd) //FREE            |
+                              | cyttsp4_watchdog_work() // reschedule!
+                              |   cd-> //USE
 
-[applied test robot feedback on unused function fix.]
-[applied Uladzislau feedback on locking.]
-[applied Vlastimil and Lorenzo feedback on changelog, comment and print
-improvements]
+This patch changes del_timer_sync() to timer_shutdown_sync(),
+which could prevent rearming of the timer from the workqueue.
 
-Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: rcu@vger.kernel.org
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
 Cc: stable@vger.kernel.org
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Fixes: CVE-2023-4134
+Fixes: 17fb1563d69b ("Input: cyttsp4 - add core driver for Cypress TMA4XX touchscreen devices")
+Signed-off-by: Duoming Zhou <duoming@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230421082919.8471-1-duoming@zju.edu.cn
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Denis Efremov (Oracle) <efremov@linux.com>
 ---
- mm/vmalloc.c | 34 ++++++++++++++++++++++++++++++----
- 1 file changed, 30 insertions(+), 4 deletions(-)
 
-diff --git a/mm/vmalloc.c b/mm/vmalloc.c
-index 93cf99aba335..990a0d5efba8 100644
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4274,14 +4274,40 @@ void pcpu_free_vm_areas(struct vm_struct **vms, int nr_vms)
- #ifdef CONFIG_PRINTK
- bool vmalloc_dump_obj(void *object)
- {
--	struct vm_struct *vm;
- 	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-+	const void *caller;
-+	struct vm_struct *vm;
-+	struct vmap_area *va;
-+	unsigned long addr;
-+	unsigned int nr_pages;
-+
-+	/*
-+	 * Use trylock as we don't want to contend since this is debug code and
-+	 * we might run this code in contexts like PREEMPT_RT where spinlock
-+	 * contention may result in sleeping, or from an IRQ handler which
-+	 * might interrupt a vmap_area_lock-held critical section.
-+	 */
-+	if (!spin_trylock(&vmap_area_lock)) {
-+		pr_cont(" [couldn't acquire vmap_area_lock]\n");
-+		return false;
-+	}
-+	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
-+	if (!va) {
-+		spin_unlock(&vmap_area_lock);
-+		return false;
-+	}
- 
--	vm = find_vm_area(objp);
--	if (!vm)
-+	vm = va->vm;
-+	if (!vm) {
-+		spin_unlock(&vmap_area_lock);
- 		return false;
-+	}
-+	addr = (unsigned long)vm->addr;
-+	caller = vm->caller;
-+	nr_pages = vm->nr_pages;
-+	spin_unlock(&vmap_area_lock);
- 	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
--		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
-+		nr_pages, addr, caller);
- 	return true;
+I've only added Cc: stable and Fixes tag.
+
+ drivers/input/touchscreen/cyttsp4_core.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/drivers/input/touchscreen/cyttsp4_core.c b/drivers/input/touchscreen/cyttsp4_core.c
+index dccbcb942fe5..f999265896f4 100644
+--- a/drivers/input/touchscreen/cyttsp4_core.c
++++ b/drivers/input/touchscreen/cyttsp4_core.c
+@@ -1263,9 +1263,8 @@ static void cyttsp4_stop_wd_timer(struct cyttsp4 *cd)
+ 	 * Ensure we wait until the watchdog timer
+ 	 * running on a different CPU finishes
+ 	 */
+-	del_timer_sync(&cd->watchdog_timer);
++	timer_shutdown_sync(&cd->watchdog_timer);
+ 	cancel_work_sync(&cd->watchdog_work);
+-	del_timer_sync(&cd->watchdog_timer);
  }
- #endif
+ 
+ static void cyttsp4_watchdog_timer(struct timer_list *t)
 -- 
-2.42.0.283.g2d96d420d3-goog
+2.42.0
 
