@@ -2,64 +2,56 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 22E5E799283
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 00:54:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A27257992A8
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 01:07:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244603AbjIHWym (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 18:54:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45584 "EHLO
+        id S231444AbjIHXHo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 19:07:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59166 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237827AbjIHWyl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 18:54:41 -0400
-Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.151])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 71B711FEB;
-        Fri,  8 Sep 2023 15:54:37 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
-  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694213677; x=1725749677;
-  h=date:from:to:cc:subject:message-id:references:
-   mime-version:in-reply-to;
-  bh=eUm4yl2BAMHBo03g5Rb/N9p2aZICoAAK9LpFQ7u8z4s=;
-  b=nvQumfgrSPipWhhM71C8qAHiBqZ8fptuv/w2RFau6bt807L8Pkp9PNrC
-   sn8xK/V1KdLU3M9jox/EhCEsirNNESOIlBP3FtiV1Xz74qCmR/TQn0vco
-   D2M6dtf9aCyBqruUXy1GN1N+ZvAkBjm0HBNtdEyGdzhreiJUxZ/i08iML
-   4erdnxYM80SDPU5qsO7RgyxopWvjx0YDtX68kOLba+amj8Gy4SQAYcUSW
-   28LrxPOH5Sl+AekVf3OfkQrVyZNrmcQb6JUbaCtv69Y9n4AsQpXvqGW2u
-   TT0wulhcDCuh5bo9kNADBDTcUKb5wwW1tJEjFPih3zJb3F240+Eu7DbsP
-   w==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="358066923"
-X-IronPort-AV: E=Sophos;i="6.02,238,1688454000"; 
-   d="scan'208";a="358066923"
-Received: from orsmga002.jf.intel.com ([10.7.209.21])
-  by fmsmga107.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 08 Sep 2023 15:54:37 -0700
-X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10827"; a="742667451"
-X-IronPort-AV: E=Sophos;i="6.02,238,1688454000"; 
-   d="scan'208";a="742667451"
-Received: from lkp-server01.sh.intel.com (HELO 59b3c6e06877) ([10.239.97.150])
-  by orsmga002.jf.intel.com with ESMTP; 08 Sep 2023 15:54:34 -0700
-Received: from kbuild by 59b3c6e06877 with local (Exim 4.96)
-        (envelope-from <lkp@intel.com>)
-        id 1qekMy-0002hP-0h;
-        Fri, 08 Sep 2023 22:54:32 +0000
-Date:   Sat, 9 Sep 2023 06:54:07 +0800
-From:   kernel test robot <lkp@intel.com>
-To:     Alfred Piccioni <alpic@google.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Stephen Smalley <stephen.smalley.work@gmail.com>,
-        Eric Paris <eparis@parisplace.org>
-Cc:     oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org,
-        selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        Alfred Piccioni <alpic@google.com>
-Subject: Re: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
-Message-ID: <202309090600.NSyo7d2q-lkp@intel.com>
-References: <20230906115928.3749928-1-alpic@google.com>
+        with ESMTP id S243330AbjIHXHm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 19:07:42 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.129.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A81C1FE0
+        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 16:06:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694214414;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:
+         content-transfer-encoding:content-transfer-encoding;
+        bh=WGIk1aHDuftDWuM242kRZNF3ZGX4IZN2ja3DENxRTe4=;
+        b=RDyvhg22YRsPUW/E6cRnYB1LOj8dIP3ULwrctMJqMhP1nrpYTWWPUQF2aG2sqquHvxvlk5
+        ++kU81YpZLzqlloFogu+jc6LB/ccQ38qZ3yQ621DWamVwWpSbUitki7btf1Q8+ir5WEbNi
+        77Y0IClf/cJeMB1wuVLspKY+H/NQImI=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-265-naP80jUdPpC9vJUQx9zLPg-1; Fri, 08 Sep 2023 19:06:53 -0400
+X-MC-Unique: naP80jUdPpC9vJUQx9zLPg-1
+Received: from smtp.corp.redhat.com (int-mx07.intmail.prod.int.rdu2.redhat.com [10.11.54.7])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 25D9D3C01BB3;
+        Fri,  8 Sep 2023 23:06:53 +0000 (UTC)
+Received: from optiplex-lnx.redhat.com (unknown [10.22.17.25])
+        by smtp.corp.redhat.com (Postfix) with ESMTP id BA867140E962;
+        Fri,  8 Sep 2023 23:06:52 +0000 (UTC)
+From:   Rafael Aquini <aquini@redhat.com>
+To:     linux-mm@kvack.org
+Cc:     linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        Waiman Long <longman@redhat.com>,
+        Rafael Aquini <raquini@redhat.com>, stable@vger.kernel.org
+Subject: [PATCH] mm/slab_common: fix slab_caches list corruption after kmem_cache_destroy()
+Date:   Fri,  8 Sep 2023 19:06:49 -0400
+Message-ID: <20230908230649.802560-1-aquini@redhat.com>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906115928.3749928-1-alpic@google.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+Content-Transfer-Encoding: 8bit
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.7
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,
         SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -67,109 +59,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Alfred,
+After the commit in Fixes:, if a module that created a slab cache does not
+release all of its allocated objects before destroying the cache (at rmmod
+time), we might end up releasing the kmem_cache object without removing it
+from the slab_caches list thus corrupting the list as kmem_cache_destroy()
+ignores the return value from shutdown_cache(), which in turn never removes
+the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
+to release all of the cache's slabs.
 
-kernel test robot noticed the following build errors:
+This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
+as after that ill release the system will immediately trip on list_add,
+or list_del, assertions similar to the one shown below as soon as another
+kmem_cache gets created, or destroyed:
 
-[auto build test ERROR on 50a510a78287c15cee644f345ef8bac8977986a7]
+  [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
+  [ 1041.219165] ------------[ cut here ]------------
+  [ 1041.221517] kernel BUG at lib/list_debug.c:62!
+  [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+  [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
+  [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
+  [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
 
-url:    https://github.com/intel-lab-lkp/linux/commits/Alfred-Piccioni/SELinux-Check-correct-permissions-for-FS_IOC32_/20230906-200131
-base:   50a510a78287c15cee644f345ef8bac8977986a7
-patch link:    https://lore.kernel.org/r/20230906115928.3749928-1-alpic%40google.com
-patch subject: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
-config: i386-debian-10.3 (https://download.01.org/0day-ci/archive/20230909/202309090600.NSyo7d2q-lkp@intel.com/config)
-compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-reproduce (this is a W=1 build): (https://download.01.org/0day-ci/archive/20230909/202309090600.NSyo7d2q-lkp@intel.com/reproduce)
+Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
+is to set slub_debug to poison the released objects and then just run
+cat /proc/slabinfo after removing the module that leaks slab objects,
+in which case the kernel will panic:
 
-If you fix the issue in a separate patch/commit (i.e. not just a new version of
-the same patch/commit), kindly add following tags
-| Reported-by: kernel test robot <lkp@intel.com>
-| Closes: https://lore.kernel.org/oe-kbuild-all/202309090600.NSyo7d2q-lkp@intel.com/
+  [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
+  [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
+  [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
+  [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
 
-All errors (new ones prefixed by >>):
+This patch fixes this issue by properly checking shutdown_cache()'s
+return value before taking the kmem_cache_release() branch.
 
-   security/selinux/hooks.c: In function 'selinux_file_ioctl':
->> security/selinux/hooks.c:3647:9: error: duplicate case value
-    3647 |         case FS_IOC32_GETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3645:9: note: previously used here
-    3645 |         case FS_IOC_GETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3648:9: error: duplicate case value
-    3648 |         case FS_IOC32_GETVERSION:
-         |         ^~~~
-   security/selinux/hooks.c:3646:9: note: previously used here
-    3646 |         case FS_IOC_GETVERSION:
-         |         ^~~~
-   security/selinux/hooks.c:3654:9: error: duplicate case value
-    3654 |         case FS_IOC32_SETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3652:9: note: previously used here
-    3652 |         case FS_IOC_SETFLAGS:
-         |         ^~~~
-   security/selinux/hooks.c:3655:9: error: duplicate case value
-    3655 |         case FS_IOC32_SETVERSION:
-         |         ^~~~
-   security/selinux/hooks.c:3653:9: note: previously used here
-    3653 |         case FS_IOC_SETVERSION:
-         |         ^~~~
+Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
+Signed-off-by: Rafael Aquini <aquini@redhat.com>
+Cc: stable@vger.kernel.org
+---
+ mm/slab_common.c | 13 ++++++++-----
+ 1 file changed, 8 insertions(+), 5 deletions(-)
 
-
-vim +3647 security/selinux/hooks.c
-
-  3634	
-  3635	static int selinux_file_ioctl(struct file *file, unsigned int cmd,
-  3636				      unsigned long arg)
-  3637	{
-  3638		const struct cred *cred = current_cred();
-  3639		int error = 0;
-  3640	
-  3641		switch (cmd) {
-  3642		case FIONREAD:
-  3643		case FIBMAP:
-  3644		case FIGETBSZ:
-  3645		case FS_IOC_GETFLAGS:
-  3646		case FS_IOC_GETVERSION:
-> 3647		case FS_IOC32_GETFLAGS:
-  3648		case FS_IOC32_GETVERSION:
-  3649			error = file_has_perm(cred, file, FILE__GETATTR);
-  3650			break;
-  3651	
-  3652		case FS_IOC_SETFLAGS:
-  3653		case FS_IOC_SETVERSION:
-  3654		case FS_IOC32_SETFLAGS:
-  3655		case FS_IOC32_SETVERSION:
-  3656			error = file_has_perm(cred, file, FILE__SETATTR);
-  3657			break;
-  3658	
-  3659		/* sys_ioctl() checks */
-  3660		case FIONBIO:
-  3661		case FIOASYNC:
-  3662			error = file_has_perm(cred, file, 0);
-  3663			break;
-  3664	
-  3665		case KDSKBENT:
-  3666		case KDSKBSENT:
-  3667			error = cred_has_capability(cred, CAP_SYS_TTY_CONFIG,
-  3668						    CAP_OPT_NONE, true);
-  3669			break;
-  3670	
-  3671		case FIOCLEX:
-  3672		case FIONCLEX:
-  3673			if (!selinux_policycap_ioctl_skip_cloexec())
-  3674				error = ioctl_has_perm(cred, file, FILE__IOCTL, (u16) cmd);
-  3675			break;
-  3676	
-  3677		/* default case assumes that the command will go
-  3678		 * to the file's ioctl() function.
-  3679		 */
-  3680		default:
-  3681			error = ioctl_has_perm(cred, file, FILE__IOCTL, (u16) cmd);
-  3682		}
-  3683		return error;
-  3684	}
-  3685	
-
+diff --git a/mm/slab_common.c b/mm/slab_common.c
+index cd71f9581e67..31e581dc6e85 100644
+--- a/mm/slab_common.c
++++ b/mm/slab_common.c
+@@ -479,7 +479,7 @@ void slab_kmem_cache_release(struct kmem_cache *s)
+ 
+ void kmem_cache_destroy(struct kmem_cache *s)
+ {
+-	int refcnt;
++	int err;
+ 	bool rcu_set;
+ 
+ 	if (unlikely(!s) || !kasan_check_byte(s))
+@@ -490,17 +490,20 @@ void kmem_cache_destroy(struct kmem_cache *s)
+ 
+ 	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
+ 
+-	refcnt = --s->refcount;
+-	if (refcnt)
++	s->refcount--;
++	if (s->refcount) {
++		err = -EBUSY;
+ 		goto out_unlock;
++	}
+ 
+-	WARN(shutdown_cache(s),
++	err = shutdown_cache(s);
++	WARN(err,
+ 	     "%s %s: Slab cache still has objects when called from %pS",
+ 	     __func__, s->name, (void *)_RET_IP_);
+ out_unlock:
+ 	mutex_unlock(&slab_mutex);
+ 	cpus_read_unlock();
+-	if (!refcnt && !rcu_set)
++	if (!err && !rcu_set)
+ 		kmem_cache_release(s);
+ }
+ EXPORT_SYMBOL(kmem_cache_destroy);
 -- 
-0-DAY CI Kernel Test Service
-https://github.com/intel/lkp-tests/wiki
+2.41.0
+
