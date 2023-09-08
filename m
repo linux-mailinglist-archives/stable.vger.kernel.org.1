@@ -2,43 +2,73 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25EF8798B03
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 18:53:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DC909798B4A
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 19:11:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245340AbjIHQxe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 12:53:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57416 "EHLO
+        id S231486AbjIHRLt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 13:11:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S245289AbjIHQxd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 12:53:33 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D63E1FEA
-        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 09:53:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7C5A3C4339A;
-        Fri,  8 Sep 2023 16:52:57 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694191978;
-        bh=sU4v+od5PLBYHh32sV9iILr3OVekzY6/oinl+MuYJc4=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZRtYlNKnhRGmsd2idCI4NELMh7bkJ6beh2B200er3XWCORMnC+np+rTmJLzExQywO
-         ia8cbbdS8n1ATjGZwDn1pVpfNpvvC2pnXWPJSWBukfcth5hVDQYsA2hPvpZsQAnpV+
-         XGKMV1F13PgLxlMW0Kmvnq+It66lsFoSLiVjroX4=
-Date:   Fri, 8 Sep 2023 17:52:31 +0100
-From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-To:     Nathan Chancellor <nathan@kernel.org>
-Cc:     Sasha Levin <sashal@kernel.org>, stable@vger.kernel.org,
-        llvm@lists.linux.dev, bpf@vger.kernel.org,
-        Jiri Olsa <jolsa@kernel.org>, Ian Rogers <irogers@google.com>,
-        Nick Desaulniers <ndesaulniers@google.com>
-Subject: Re: Apply 13e07691a16f and co. to linux-6.1.y
-Message-ID: <2023090821-octopus-unreal-87a2@gregkh>
-References: <20230908161526.GA3344687@dev-arch.thelio-3990X>
+        with ESMTP id S233810AbjIHRLr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 13:11:47 -0400
+Received: from mail-ed1-x52b.google.com (mail-ed1-x52b.google.com [IPv6:2a00:1450:4864:20::52b])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26CB81FD5;
+        Fri,  8 Sep 2023 10:11:41 -0700 (PDT)
+Received: by mail-ed1-x52b.google.com with SMTP id 4fb4d7f45d1cf-529fb2c6583so3037262a12.1;
+        Fri, 08 Sep 2023 10:11:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694193099; x=1694797899; darn=vger.kernel.org;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:from:to:cc:subject:date
+         :message-id:reply-to;
+        bh=ZRZZtDSDbQ7ziD6U8enIVKCW6fBD3XLhOHURnTZwm+I=;
+        b=r27LHMXWq6JFzDriX8S3cF9X1svThjv4/reAkCS3DbEu72buDQ1aYGa1CvFoeZF5aj
+         e9yZ0pMOkcupdXxiv6022expw+GebuThz8p16RxTo7WORyDhnmxrUKP0H7+e0HkkQxKn
+         RHD8ezIKlE1jYuvHOwKKAUPGp4DYClq8hV+Qeg0vgYL71Wdd2OcKzCVMt7GKODJMhW2t
+         BaQyTZACPYm74HCilFHOSnlkAaXT/wZ5torJefR63qsR3Zy0JvV6VX1jGYgBXEwWNkfl
+         JWB5Rdnj+dGNmY4tj21esg3v1XdRsqIKCbrxjSC8NMoxYMxJWrpjM3tI0OtHj4CAKac6
+         CbxQ==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694193099; x=1694797899;
+        h=content-transfer-encoding:cc:to:subject:message-id:date:from
+         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=ZRZZtDSDbQ7ziD6U8enIVKCW6fBD3XLhOHURnTZwm+I=;
+        b=Qcxb9JWVnNmdVtposNsiw9UjB0fifaHYlKG4M2zWmaqumXJ1GVAcyNFckFi8y5KKSk
+         oKRc6ZN1H8l+Pz86awk7oOBqSA1lqcmTlOYfuACjuAau6C3BriT21JugO19Hm9pbAIXD
+         JSmRscEYsUuwC2WXL/Tf51beHJgu92p3Gh/lLOzB6nNO8svoCDfb/1NUFeLDvf4gNnwf
+         dWYqcHDMFvqK3jRv2cagb0RMA6hv1Wavg316gZMcq344xCvVKoOZGgvvvPggDJFkCia8
+         AICIHGfcoLfjC7IXOrWBQxJY5yczGLLnKLGVbCobx5FE0s+gEOBQJ0df3OLRjxCdun3J
+         38Gw==
+X-Gm-Message-State: AOJu0Yx2Q0EzD2RrZiTzKc9oL0daeTAGLJuRfvpQtpkfJbnLL3LsGXNX
+        mCKwdzEPOh/XUCr6hsdFVaHnmBeROP+4qduMBmg=
+X-Google-Smtp-Source: AGHT+IE81vOXgV+267Me6pgBsx7NyiALIoCgSFaF5/bhivgWOBvhVj01wJZJAyOS8B2FCfiqobx9r2YWGa9o39w+McA=
+X-Received: by 2002:a05:6402:1219:b0:523:102f:3ce1 with SMTP id
+ c25-20020a056402121900b00523102f3ce1mr2572978edw.10.1694193099037; Fri, 08
+ Sep 2023 10:11:39 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230908161526.GA3344687@dev-arch.thelio-3990X>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+References: <20230906182125.48642-1-jandryuk@gmail.com> <24a741a4-b305-c817-e8c3-34b213ad0ee5@intel.com>
+In-Reply-To: <24a741a4-b305-c817-e8c3-34b213ad0ee5@intel.com>
+From:   Jason Andryuk <jandryuk@gmail.com>
+Date:   Fri, 8 Sep 2023 13:11:27 -0400
+Message-ID: <CAKf6xpvOG5kunrfQEoDBvrrY+UVUn3+9ovKmqXZo88nh05tt6Q@mail.gmail.com>
+Subject: Re: [PATCH v2] acpi/processor: sanitize _PDC buffer bits when running
+ as Xen dom0
+To:     "Wilczynski, Michal" <michal.wilczynski@intel.com>
+Cc:     Juergen Gross <jgross@suse.com>,
+        Boris Ostrovsky <boris.ostrovsky@oracle.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Len Brown <lenb@kernel.org>,
+        Roger Pau Monne <roger.pau@citrix.com>,
+        stable@vger.kernel.org, Thomas Gleixner <tglx@linutronix.de>,
+        Ingo Molnar <mingo@redhat.com>, Borislav Petkov <bp@alien8.de>,
+        Dave Hansen <dave.hansen@linux.intel.com>, x86@kernel.org,
+        "H. Peter Anvin" <hpa@zytor.com>, xen-devel@lists.xenproject.org,
+        linux-kernel@vger.kernel.org, linux-acpi@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+Content-Transfer-Encoding: quoted-printable
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -47,41 +77,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 08, 2023 at 09:15:26AM -0700, Nathan Chancellor wrote:
-> Hi Greg and Sasha,
-> 
-> Please consider applying the following commits to 6.1 (they all picked
-> cleanly for me):
-> 
-> 630ae80ea1dd ("tools lib subcmd: Add install target")
-> 77dce6890a2a ("tools lib subcmd: Make install_headers clearer")
-> 5d890591db6b ("tools lib subcmd: Add dependency test to install_headers")
-> 0e43662e61f2 ("tools/resolve_btfids: Use pkg-config to locate libelf")
-> af03299d8536 ("tools/resolve_btfids: Install subcmd headers")
-> 13e07691a16f ("tools/resolve_btfids: Alter how HOSTCC is forced")
-> 56a2df7615fa ("tools/resolve_btfids: Compile resolve_btfids as host program")
-> e0975ab92f24 ("tools/resolve_btfids: Tidy HOST_OVERRIDES")
-> 2531ba0e4ae6 ("tools/resolve_btfids: Pass HOSTCFLAGS as EXTRA_CFLAGS to prepare targets")
-> edd75c802855 ("tools/resolve_btfids: Fix setting HOSTCFLAGS")
-> 
-> The most critical change is 13e07691a16f, which resolves a missing
-> EXTRA_CFLAGS to the libsubcmd build. Without that EXTRA_CFLAGS, the
-> Android hermetic toolchain kernel build fails on host distributions
-> using glibc 2.38 and newer. The majority of those commits are strictly
-> needed due to dependency/fixes requirements, the few that are not still
-> seem to be worth bringing in for ease of backporting the rest and do not
-> appear to cause any problems.
-> 
-> I proposed another solution downstream, which may be more palatable if
-> people have concerns about this list of changes and the risk of
-> regressions, but Ian seemed to have some concerns on that thread around
-> that path and suggested this series of backports instead:
-> 
-> https://android-review.googlesource.com/c/kernel/common/+/2745896
-> 
-> While the number of patches seems large, the final changes are pretty
-> well self-contained.
+On Thu, Sep 7, 2023 at 9:20=E2=80=AFAM Wilczynski, Michal
+<michal.wilczynski@intel.com> wrote:
+>
+>
+> Hi,
+>
+> On 9/6/2023 8:21 PM, Jason Andryuk wrote:
+> > From: Roger Pau Monne <roger.pau@citrix.com>
+> >
+> > The Processor _PDC buffer bits notify ACPI of the OS capabilities, and
+> > so ACPI can adjust the return of other Processor methods taking the OS
+> > capabilities into account.
+>
+> _PDC method is deprecated for this purpose, since 2018, and is dropped fr=
+om
+> spec since 6.5
+>
+> We made the switch in linux since 6.6:
+> 95272641338a ("ACPI: processor: Use _OSC to convey OSPM processor support=
+ information")
 
-All now queued up, thanks.
+Thanks for the heads up, Michal.  The patch pre-dated 6.6 and I based
+this one off of 6.5.
 
-greg k-h
+> >
+> > When Linux is running as a Xen dom0, it's the hypervisor the entity
+> > in charge of processor power management, and hence Xen needs to make
+> > sure the capabilities reported in the _PDC buffer match the
+> > capabilities of the driver in Xen.
+>
+> So I guess you would need to sanitize buffer passed to _OSC method instea=
+d ?
+
+I think I'll modify the capabilities in arch_acpi_set_proc_cap_bits()
+and that will handle both _OSC and the _PDC fallback.
+
+Regards,
+Jason
