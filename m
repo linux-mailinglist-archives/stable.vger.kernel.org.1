@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D4CDC798DBB
-	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 20:24:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E36E798DA8
+	for <lists+stable@lfdr.de>; Fri,  8 Sep 2023 20:23:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235556AbjIHSXr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 14:23:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58666 "EHLO
+        id S239661AbjIHSXk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 14:23:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S243659AbjIHSWA (ORCPT
+        with ESMTP id S245207AbjIHSWA (ORCPT
         <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 14:22:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 683C030FA;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98C7330FC;
         Fri,  8 Sep 2023 11:19:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0CB80C433B6;
-        Fri,  8 Sep 2023 18:19:15 +0000 (UTC)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090F3C433C8;
+        Fri,  8 Sep 2023 18:19:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694197157;
-        bh=Ik9/QVGVg+jXasKtm7EkVsxi7Ehspun5iSq48dMCjaM=;
-        h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=d4+27uZhPKFuFdbm6dDXrhyc2XQS/QssFF+43cN5uotznNUXqn9oMEEVoqP6WK3PK
-         E+/ISkEAuMUxPi3OSVqpetVmkO8ma82Ex3jbGc3CGz9kzOAn0HcqdS7e4UbgyPJ5ui
-         IifenxZe3jSe/ADyXaIhmhaO1hBIAZEsryhsTkA8HqkmC/fk/f1TH3ZFHrz8WAipWf
-         GjPfqtm+G1i+9U52cuZ/93DochsND2A3fOzI/vduqva5M6507kCjxmQP9XnGLnTS0L
-         OoaktXs8nSYf+FROCbGp0b6vkd1lz/tMV7UVCq6y1BGIDwPzUws50p6gFDRFhlfZXq
-         8hjZumQh6JDbw==
+        s=k20201202; t=1694197163;
+        bh=qa8M34DwL+aeAx+Hhe8xMA9eIpcdQo/yjxwGIaV7TX0=;
+        h=From:To:Cc:Subject:Date:From;
+        b=QC3kwgu4RN3ZExiFD6v9yX/40DfoFoKke09kemgkB9wQulme82jDV3GIBBGE828Sj
+         r0v23i5ltnFIheYEspIfb/RWdeEn0sGGdgYWWRaJ5ze8xdsxaeK9kButMtwOqrPBhO
+         OMy2Wo+U+9QQR5Z90BeUnY9eJWZPPXJaNhG6tGSmEfQAmUWSrUYbhTiJEUg9Ff4/gC
+         mgL94msqXvAhZQ8UTi0hCaKQXVLB60NUHd16V/vySdYm6symEud7PD0YMFUnVnLb2c
+         kgdN2cOI5O4ulBAgImMpuddhrb1/wbw/mpe2rsdh92+S6cdCygs3iM9z2f6n8paUAJ
+         CbVln8Dq6q4gg==
 From:   Sasha Levin <sashal@kernel.org>
 To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
-Cc:     Bastien Nocera <hadess@hadess.net>,
-        Paul Menzel <pmenzel@molgen.mpg.de>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>, marcel@holtmann.org,
-        johan.hedberg@gmail.com, luiz.dentz@gmail.com,
-        linux-bluetooth@vger.kernel.org
-Subject: [PATCH AUTOSEL 6.1 26/26] Bluetooth: btusb: Fix quirks table naming
-Date:   Fri,  8 Sep 2023 14:18:04 -0400
-Message-Id: <20230908181806.3460164-26-sashal@kernel.org>
+Cc:     Jiri Pirko <jiri@nvidia.com>, Ido Schimmel <idosch@nvidia.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        "David S . Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>, edumazet@google.com,
+        pabeni@redhat.com, jiri@resnulli.us, jacob.e.keller@intel.com,
+        michal.wilczynski@intel.com, shayd@nvidia.com,
+        netdev@vger.kernel.org
+Subject: [PATCH AUTOSEL 5.15 01/15] devlink: remove reload failed checks in params get/set callbacks
+Date:   Fri,  8 Sep 2023 14:19:04 -0400
+Message-Id: <20230908181920.3460520-1-sashal@kernel.org>
 X-Mailer: git-send-email 2.40.1
-In-Reply-To: <20230908181806.3460164-1-sashal@kernel.org>
-References: <20230908181806.3460164-1-sashal@kernel.org>
 MIME-Version: 1.0
 X-stable: review
 X-Patchwork-Hint: Ignore
-X-stable-base: Linux 6.1.52
+X-stable-base: Linux 5.15.131
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
@@ -54,46 +53,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-From: Bastien Nocera <hadess@hadess.net>
+From: Jiri Pirko <jiri@nvidia.com>
 
-[ Upstream commit d831e3612111d385e8629104af5429808ef26e25 ]
+[ Upstream commit 633d76ad01ad0321a1ace3e5cc4fed06753d7ac4 ]
 
-The quirks table was named "blacklist_table" which isn't a good
-description for that table as devices detected using it weren't ignored
-by the driver.
+The checks in question were introduced by:
+commit 6b4db2e528f6 ("devlink: Fix use-after-free after a failed reload").
+That fixed an issue of reload with mlxsw driver.
 
-Rename the table to match what it actually does.
+Back then, that was a valid fix, because there was a limitation
+in place that prevented drivers from registering/unregistering params
+when devlink instance was registered.
 
-Signed-off-by: Bastien Nocera <hadess@hadess.net>
-Reviewed-by: Paul Menzel <pmenzel@molgen.mpg.de>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+It was possible to do the fix differently by changing drivers to
+register/unregister params in appropriate places making sure the ops
+operate only on memory which is allocated and initialized. But that,
+as a dependency, would require to remove the limitation mentioned above.
+
+Eventually, this limitation was lifted by:
+commit 1d18bb1a4ddd ("devlink: allow registering parameters after the instance")
+
+Also, the alternative fix (which also fixed another issue) was done by:
+commit 74cbc3c03c82 ("mlxsw: spectrum_acl_tcam: Move devlink param to TCAM code").
+
+Therefore, the checks are no longer relevant. Each driver should make
+sure to have the params registered only when the memory the ops
+are working with is allocated and initialized.
+
+So remove the checks.
+
+Signed-off-by: Jiri Pirko <jiri@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Reviewed-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/btusb.c | 4 ++--
+ net/core/devlink.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/btusb.c b/drivers/bluetooth/btusb.c
-index d6f405763c56f..7bb774457e129 100644
---- a/drivers/bluetooth/btusb.c
-+++ b/drivers/bluetooth/btusb.c
-@@ -174,7 +174,7 @@ static const struct usb_device_id btusb_table[] = {
- 
- MODULE_DEVICE_TABLE(usb, btusb_table);
- 
--static const struct usb_device_id blacklist_table[] = {
-+static const struct usb_device_id quirks_table[] = {
- 	/* CSR BlueCore devices */
- 	{ USB_DEVICE(0x0a12, 0x0001), .driver_info = BTUSB_CSR },
- 
-@@ -3767,7 +3767,7 @@ static int btusb_probe(struct usb_interface *intf,
- 	if (!id->driver_info) {
- 		const struct usb_device_id *match;
- 
--		match = usb_match_id(intf, blacklist_table);
-+		match = usb_match_id(intf, quirks_table);
- 		if (match)
- 			id = match;
- 	}
+diff --git a/net/core/devlink.c b/net/core/devlink.c
+index b4d7a7f749c18..db76c55e1a6d7 100644
+--- a/net/core/devlink.c
++++ b/net/core/devlink.c
+@@ -4413,7 +4413,7 @@ static int devlink_param_get(struct devlink *devlink,
+ 			     const struct devlink_param *param,
+ 			     struct devlink_param_gset_ctx *ctx)
+ {
+-	if (!param->get || devlink->reload_failed)
++	if (!param->get)
+ 		return -EOPNOTSUPP;
+ 	return param->get(devlink, param->id, ctx);
+ }
+@@ -4422,7 +4422,7 @@ static int devlink_param_set(struct devlink *devlink,
+ 			     const struct devlink_param *param,
+ 			     struct devlink_param_gset_ctx *ctx)
+ {
+-	if (!param->set || devlink->reload_failed)
++	if (!param->set)
+ 		return -EOPNOTSUPP;
+ 	return param->set(devlink, param->id, ctx);
+ }
 -- 
 2.40.1
 
