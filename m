@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 73F80799B55
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:18:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79846799B57
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238149AbjIIVSx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:18:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41002 "EHLO
+        id S238360AbjIIVS6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:18:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41030 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjIIVSw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:18:52 -0400
+        with ESMTP id S230470AbjIIVS6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:18:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 786F0131
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:18:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE1F7C433C7;
-        Sat,  9 Sep 2023 21:18:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E604131
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:18:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D14DC433C9;
+        Sat,  9 Sep 2023 21:18:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294328;
-        bh=dweleWf9bX0PA+1gYpVhWK/vOEz1+IUs3Sg4kq9kqzw=;
+        s=korg; t=1694294333;
+        bh=4Hl3flF/nfNpqqWpiQrls9QxfvZ1WWcQapAOHSqHlqg=;
         h=Subject:To:Cc:From:Date:From;
-        b=Q2M0YRrFt1dQZ+w5h9C17R9OfQWBGxDU3BaPjgPNX/xf0wojoTC5ThF7M7GXVoIpd
-         YUoGLd6w3PxUUElgGmUFKvf9ap4T3+WcD9hUXkO/wxi9ol3BCbEE1ljVwlV8IfYT99
-         CwAKsHO6Noa38G/ZxqdCTnICeo/c1/Kq/vbzj2oE=
-Subject: FAILED: patch "[PATCH] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after" failed to apply to 5.4-stable tree
+        b=Kreg/kPsJbJvPAJehCL1hEhMDcow8IhL95x3CWPdmMO1uIfl++dRLh/8N9Dv9fJQn
+         MDnRxpoogU6szY8N0zlMMdSzcNTnDWauGTQHrXGMW5u/3NyE3nznqer0ed1CuRNnbR
+         fcmiNsTMj0Ja2avcTP0hNwXCi7c+kK6F4y6wlX4M=
+Subject: FAILED: patch "[PATCH] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after" failed to apply to 4.19-stable tree
 To:     konrad.dybcio@linaro.org, hverkuil-cisco@xs4all.nl,
         stanimir.k.varbanov@gmail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:18:37 +0100
-Message-ID: <2023090937-manila-baggy-02be@gregkh>
+Date:   Sat, 09 Sep 2023 22:18:38 +0100
+Message-ID: <2023090937-endorphin-postage-0d99@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x d74e481609808330b4625b3691cf01e1f56e255e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090937-manila-baggy-02be@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090937-endorphin-postage-0d99@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
@@ -68,6 +68,17 @@ fd1ee315dcd4 ("media: venus: cache vb payload to be used by clock scaling")
 c0e284ccfeda ("media: venus: Update clock scaling")
 8dbebb2bd01e ("media: venus: Fix occasionally failures to suspend")
 32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
+d42974e438fe ("media: venus: dec: populate properly timestamps and flags for capture buffers")
+beac82904a87 ("media: venus: make decoder compliant with stateful codec API")
+14ea00d65c65 ("media: venus: helpers: add three more helper functions")
+1e485ee5a724 ("media: venus: helpers: export few helper functions")
+a132459d4009 ("media: venus: core: fix max load for msm8996 and sdm845")
+5792ae7c3dd4 ("media: venus: firmware: check fw size against DT memory region size")
+87e25f4b2c3c ("media: venus: fix reported size of 0-length buffers")
+df381dc8e475 ("media: venus: firmware: add no TZ boot and shutdown routine")
+f9799fcce4bb ("media: venus: firmware: register separate platform_device for firmware loader")
+a4cf7e3c069d ("media: venus: firmware: move load firmware in a separate function")
+5df317c8786b ("media: venus: firmware: add routine to reset ARM9")
 
 thanks,
 
