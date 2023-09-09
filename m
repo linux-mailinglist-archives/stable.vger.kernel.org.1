@@ -2,48 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8C70B7992FC
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 02:00:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 816D5799319
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 02:22:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233629AbjIIAA2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 20:00:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52996 "EHLO
+        id S242746AbjIIAWQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 20:22:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57160 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232798AbjIIAA1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 20:00:27 -0400
+        with ESMTP id S236083AbjIIAWO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 20:22:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43E9718E
-        for <stable@vger.kernel.org>; Fri,  8 Sep 2023 17:00:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPS id CF6D5C433C7;
-        Sat,  9 Sep 2023 00:00:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 550901FE7;
+        Fri,  8 Sep 2023 17:22:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C03C433C7;
+        Sat,  9 Sep 2023 00:22:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694217623;
-        bh=SY5HqVl6vzf2DY6JRXwG/yT139bO6hklB5plKgi+eWo=;
-        h=Subject:From:Date:References:In-Reply-To:To:Cc:From;
-        b=Yb2P/B+v7ZY0CeBYfVtU/NjTCNkiB7ECr7YZYNyovMmDpmNZO73syZCLgr5SjGukh
-         OG4CJ1RAxzk3C5rjWcJachfqyhOiXl2gSoM/KqCckf6eonsKQ18LAhdHKYCBKJWtnA
-         XX0iRadtWdb9R0ogVxLUrKzkGYzY71MW/flJr9+NGJHlQbXpV4+6WK3u/j8oarDGU0
-         V86VdbXGIyelWla+gxcI/s6AodETbEdh6IQwYDItqQ5S4k059tcMEhBMpKtI0QU4i9
-         g94xacjXq01B+btyuNNrtjJXrKVR/NPJewYeOgQui5/gz+cb/2ViKcENH97xA8A6Zv
-         2BeSmcXXJuiuQ==
-Received: from aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (localhost.localdomain [127.0.0.1])
-        by aws-us-west-2-korg-oddjob-1.ci.codeaurora.org (Postfix) with ESMTP id B1B98E53807;
-        Sat,  9 Sep 2023 00:00:23 +0000 (UTC)
-Content-Type: text/plain; charset="utf-8"
+        s=k20201202; t=1694218929;
+        bh=u3+lR6zM4uOEnW5ATNQyJAnRo9KKcwKI2RdGSGX1TWQ=;
+        h=From:To:Cc:Subject:Date:From;
+        b=ZnuyMptc41uqeLS7ru78v+VhQmYpHzV1x8JtBI1kBUGEJezoAVxilfjpaCRVMYrb8
+         aw20+/AT7gYScOd6Nnyyoc8UzYiZ+pbOZ0gmOi+x+CADNQNW4FpbwL3oF7ojRdUe+V
+         HXtOSAn0F/C1wT0fjTIsCKJOK4aXdlGdwPtrzdr8CeSf3F4QJat+cZg4B4h2NOq0qN
+         yXtcY+kFnW8OnWUMKnfN/Slg6hzWQ1gN4PQMN8SP2on+jGWhVgcWUiF7TI2MLm9Xi2
+         lpwVQIRFhse925jH1Z+0qZILDyJRMYKcu2j1nUzdEe2lZ2Dr9BxKYtkbX6o/ZOfy/p
+         BjwGKm3E8PCLw==
+From:   Sasha Levin <sashal@kernel.org>
+To:     linux-kernel@vger.kernel.org, stable@vger.kernel.org
+Cc:     Andrew Kanner <andrew.kanner@gmail.com>,
+        syzbot+6a93efb725385bc4b2e9@syzkaller.appspotmail.com,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Sasha Levin <sashal@kernel.org>, shaggy@kernel.org,
+        mudongliangabcd@gmail.com, liushixin2@huawei.com,
+        wuhoipok@gmail.com, wonguk.lee1023@gmail.com,
+        yogi.kernel@gmail.com, jfs-discussion@lists.sourceforge.net,
+        code@siddh.me
+Subject: [PATCH AUTOSEL 6.5 01/11] fs/jfs: prevent double-free in dbUnmount() after failed jfs_remount()
+Date:   Fri,  8 Sep 2023 20:21:54 -0400
+Message-Id: <20230909002205.3578068-1-sashal@kernel.org>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
+X-stable: review
+X-Patchwork-Hint: Ignore
+X-stable-base: Linux 6.5.2
 Content-Transfer-Encoding: 8bit
-Subject: Re: [PATCH bpf 1/2] bpf: Add override check to kprobe multi link attach
-From:   patchwork-bot+netdevbpf@kernel.org
-Message-Id: <169421762372.9366.5282819170421075658.git-patchwork-notify@kernel.org>
-Date:   Sat, 09 Sep 2023 00:00:23 +0000
-References: <20230907200652.926951-1-jolsa@kernel.org>
-In-Reply-To: <20230907200652.926951-1-jolsa@kernel.org>
-To:     Jiri Olsa <jolsa@kernel.org>
-Cc:     ast@kernel.org, daniel@iogearbox.net, andrii@kernel.org,
-        stable@vger.kernel.org, bpf@vger.kernel.org, kafai@fb.com,
-        songliubraving@fb.com, yhs@fb.com, john.fastabend@gmail.com,
-        kpsingh@chromium.org, sdf@google.com, haoluo@google.com,
-        tixxdz@gmail.com
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -54,31 +55,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hello:
+From: Andrew Kanner <andrew.kanner@gmail.com>
 
-This series was applied to bpf/bpf.git (master)
-by Andrii Nakryiko <andrii@kernel.org>:
+[ Upstream commit cade5397e5461295f3cb87880534b6a07cafa427 ]
 
-On Thu,  7 Sep 2023 22:06:51 +0200 you wrote:
-> Currently the multi_kprobe link attach does not check error
-> injection list for programs with bpf_override_return helper
-> and allows them to attach anywhere. Adding the missing check.
-> 
-> Cc: stable@vger.kernel.org
-> Fixes: 0dcac2725406 ("bpf: Add multi kprobe link")
-> Signed-off-by: Jiri Olsa <jolsa@kernel.org>
-> 
-> [...]
+Syzkaller reported the following issue:
+==================================================================
+BUG: KASAN: double-free in slab_free mm/slub.c:3787 [inline]
+BUG: KASAN: double-free in __kmem_cache_free+0x71/0x110 mm/slub.c:3800
+Free of addr ffff888086408000 by task syz-executor.4/12750
+[...]
+Call Trace:
+ <TASK>
+[...]
+ kasan_report_invalid_free+0xac/0xd0 mm/kasan/report.c:482
+ ____kasan_slab_free+0xfb/0x120
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1781 [inline]
+ slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1807
+ slab_free mm/slub.c:3787 [inline]
+ __kmem_cache_free+0x71/0x110 mm/slub.c:3800
+ dbUnmount+0xf4/0x110 fs/jfs/jfs_dmap.c:264
+ jfs_umount+0x248/0x3b0 fs/jfs/jfs_umount.c:87
+ jfs_put_super+0x86/0x190 fs/jfs/super.c:194
+ generic_shutdown_super+0x130/0x310 fs/super.c:492
+ kill_block_super+0x79/0xd0 fs/super.c:1386
+ deactivate_locked_super+0xa7/0xf0 fs/super.c:332
+ cleanup_mnt+0x494/0x520 fs/namespace.c:1291
+ task_work_run+0x243/0x300 kernel/task_work.c:179
+ resume_user_mode_work include/linux/resume_user_mode.h:49 [inline]
+ exit_to_user_mode_loop+0x124/0x150 kernel/entry/common.c:171
+ exit_to_user_mode_prepare+0xb2/0x140 kernel/entry/common.c:203
+ __syscall_exit_to_user_mode_work kernel/entry/common.c:285 [inline]
+ syscall_exit_to_user_mode+0x26/0x60 kernel/entry/common.c:296
+ do_syscall_64+0x49/0xb0 arch/x86/entry/common.c:86
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
+ </TASK>
 
-Here is the summary with links:
-  - [bpf,1/2] bpf: Add override check to kprobe multi link attach
-    https://git.kernel.org/bpf/bpf/c/41bc46c12a80
-  - [bpf,2/2] selftests/bpf: Add kprobe_multi override test
-    https://git.kernel.org/bpf/bpf/c/7182e56411b9
+Allocated by task 13352:
+ kasan_save_stack mm/kasan/common.c:45 [inline]
+ kasan_set_track+0x3d/0x60 mm/kasan/common.c:52
+ ____kasan_kmalloc mm/kasan/common.c:371 [inline]
+ __kasan_kmalloc+0x97/0xb0 mm/kasan/common.c:380
+ kmalloc include/linux/slab.h:580 [inline]
+ dbMount+0x54/0x980 fs/jfs/jfs_dmap.c:164
+ jfs_mount+0x1dd/0x830 fs/jfs/jfs_mount.c:121
+ jfs_fill_super+0x590/0xc50 fs/jfs/super.c:556
+ mount_bdev+0x26c/0x3a0 fs/super.c:1359
+ legacy_get_tree+0xea/0x180 fs/fs_context.c:610
+ vfs_get_tree+0x88/0x270 fs/super.c:1489
+ do_new_mount+0x289/0xad0 fs/namespace.c:3145
+ do_mount fs/namespace.c:3488 [inline]
+ __do_sys_mount fs/namespace.c:3697 [inline]
+ __se_sys_mount+0x2d3/0x3c0 fs/namespace.c:3674
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
 
-You are awesome, thank you!
+Freed by task 13352:
+ kasan_save_stack mm/kasan/common.c:45 [inline]
+ kasan_set_track+0x3d/0x60 mm/kasan/common.c:52
+ kasan_save_free_info+0x27/0x40 mm/kasan/generic.c:518
+ ____kasan_slab_free+0xd6/0x120 mm/kasan/common.c:236
+ kasan_slab_free include/linux/kasan.h:177 [inline]
+ slab_free_hook mm/slub.c:1781 [inline]
+ slab_free_freelist_hook+0x12e/0x1a0 mm/slub.c:1807
+ slab_free mm/slub.c:3787 [inline]
+ __kmem_cache_free+0x71/0x110 mm/slub.c:3800
+ dbUnmount+0xf4/0x110 fs/jfs/jfs_dmap.c:264
+ jfs_mount_rw+0x545/0x740 fs/jfs/jfs_mount.c:247
+ jfs_remount+0x3db/0x710 fs/jfs/super.c:454
+ reconfigure_super+0x3bc/0x7b0 fs/super.c:935
+ vfs_fsconfig_locked fs/fsopen.c:254 [inline]
+ __do_sys_fsconfig fs/fsopen.c:439 [inline]
+ __se_sys_fsconfig+0xad5/0x1060 fs/fsopen.c:314
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x3d/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+[...]
+
+JFS_SBI(ipbmap->i_sb)->bmap wasn't set to NULL after kfree() in
+dbUnmount().
+
+Syzkaller uses faultinject to reproduce this KASAN double-free
+warning. The issue is triggered if either diMount() or dbMount() fail
+in jfs_remount(), since diUnmount() or dbUnmount() already happened in
+such a case - they will do double-free on next execution: jfs_umount
+or jfs_remount.
+
+Tested on both upstream and jfs-next by syzkaller.
+
+Reported-and-tested-by: syzbot+6a93efb725385bc4b2e9@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/all/000000000000471f2d05f1ce8bad@google.com/T/
+Link: https://syzkaller.appspot.com/bug?extid=6a93efb725385bc4b2e9
+Signed-off-by: Andrew Kanner <andrew.kanner@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
+---
+ fs/jfs/jfs_dmap.c | 1 +
+ 1 file changed, 1 insertion(+)
+
+diff --git a/fs/jfs/jfs_dmap.c b/fs/jfs/jfs_dmap.c
+index a14a0f18a4c40..88afd108c2dd2 100644
+--- a/fs/jfs/jfs_dmap.c
++++ b/fs/jfs/jfs_dmap.c
+@@ -269,6 +269,7 @@ int dbUnmount(struct inode *ipbmap, int mounterror)
+ 
+ 	/* free the memory for the in-memory bmap. */
+ 	kfree(bmp);
++	JFS_SBI(ipbmap->i_sb)->bmap = NULL;
+ 
+ 	return (0);
+ }
 -- 
-Deet-doot-dot, I am a bot.
-https://korg.docs.kernel.org/patchwork/pwbot.html
-
+2.40.1
 
