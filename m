@@ -2,38 +2,63 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79533799822
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F1CB799845
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 15:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233571AbjIIMxy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 08:53:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47138 "EHLO
+        id S233491AbjIINC3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 09:02:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241036AbjIIMxw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:52 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D68FDCE7
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA96C433C7;
-        Sat,  9 Sep 2023 12:53:48 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694264028;
-        bh=97H98MmmQbpw2z+wjUoPw62WlMnt02p93ZIIqhOYFyQ=;
-        h=Subject:To:Cc:From:Date:From;
-        b=PB0V46k4cuB8dNMgUe71fpwuDkkbdgrDrYLbKYDZ6zeJQsG7KKbEF/KcVb97383/H
-         tbTW5bh58YXFZjT4XHyT+0dADrnvLsG5AOqgWm7YjFcvaW7CvmvlIlsZP8JM3WzwV4
-         3NScGED5g8jDjXe/uHi1SjD49W/V0zxEX8X+MbkI=
-Subject: FAILED: patch "[PATCH] io_uring: break out of iowq iopoll on teardown" failed to apply to 5.15-stable tree
-To:     asml.silence@gmail.com, axboe@kernel.dk
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 13:53:46 +0100
-Message-ID: <2023090945-mural-humming-67c0@gregkh>
+        with ESMTP id S232018AbjIINC2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 09:02:28 -0400
+Received: from mail-oo1-xc2a.google.com (mail-oo1-xc2a.google.com [IPv6:2607:f8b0:4864:20::c2a])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF7689C
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 06:02:23 -0700 (PDT)
+Received: by mail-oo1-xc2a.google.com with SMTP id 006d021491bc7-5736caaf151so1739754eaf.3
+        for <stable@vger.kernel.org>; Sat, 09 Sep 2023 06:02:23 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694264543; x=1694869343; darn=vger.kernel.org;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:from:to:cc:subject:date:message-id:reply-to;
+        bh=5EP2QvaTRcaCpTUfCzy97sE7hkb0vHpi9DaQsg1ESww=;
+        b=UhEF5+eXlmc6rwBVWpwZNnC3YZm13QMS0pmxM2S51ETC9i9kop2zLv9bTHMjeHYAbN
+         7NLdzrM4cCtj6EluOpF2H+yguhPPUyKRXx/mVOS5tZGkO4Nry+lKV7OqzUe6b8L42Emw
+         7+rF1PK1fdNiR3Ikza9ZPrWeF2wb2pKVwzrq3lGuFpe12wOAMJBHThrngsGVHnN859YL
+         oPILNVnIHFQAJkO5UHNDjQomNlzy/YQb2LskgawMafjwt3iklPpOJ+Az/Xnc5ZrqdWn5
+         X9mxETBbvvXFYjA3K4eLRcwzW3hOOcbk1yxj0s6jm0BYSg7tuUi8R96OISSu9kCXSt1A
+         zaSg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694264543; x=1694869343;
+        h=cc:to:subject:message-id:date:from:in-reply-to:references
+         :mime-version:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=5EP2QvaTRcaCpTUfCzy97sE7hkb0vHpi9DaQsg1ESww=;
+        b=bomx9c/2l04ZTAMOUJOcsP62fWQIESdBfwEoWmFiPBso+aotp2esxztQ0WKl+HNwip
+         2BOIMIw7fGn8wKk6tXGd0g9EtNspfyp/O9FXAjWask5QbVEXOlz+Drr7MoOXURgPpaP4
+         Gu/VitVYuhbhp8lIlbiBK4tYo3aPH/JiWPrULJ4ioXAMg/rO0wb6uSm4wV83cUCF42v0
+         xdNpgwU5fRYYaNZFw1gopZM90ob32yRgZgBqM31XcpkDdJB9fYzJZPH3c3yPSz6aqeuz
+         TBqHUK0iIx5dgOyg+tHXLVoVr8Wp0tDxVLPK1kvo3I/A6OMmtJheEB1Y/QUx4KBL1Jw5
+         JQSA==
+X-Gm-Message-State: AOJu0Ywb8yjoTC5Wo/MwzFkrctfZKCiiaVzEPiQzZivk+LCMYZVNn52F
+        pfkPqQqXqOxKWGvTYgQjqI7uJLrtR5BT2DauWpb91A==
+X-Google-Smtp-Source: AGHT+IHfu/WgD/wObaJilJM9tjzCDyYm7Gk02NhSsxBB9Kftz5ayy70MUJHKLiYe4OS92PYAcukp5bqlA7NXuxaI718=
+X-Received: by 2002:a05:6358:9315:b0:131:b4c:b871 with SMTP id
+ x21-20020a056358931500b001310b4cb871mr4596392rwa.22.1694264543169; Sat, 09
+ Sep 2023 06:02:23 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+References: <2023090923-conform-underwear-d8bd@gregkh>
+In-Reply-To: <2023090923-conform-underwear-d8bd@gregkh>
+From:   Amit Pundir <amit.pundir@linaro.org>
+Date:   Sat, 9 Sep 2023 18:31:46 +0530
+Message-ID: <CAMi1Hd3scukKpc9iwV+B-eT3ZUO5o7eO72=-eiRsOrwCvtLozA@mail.gmail.com>
+Subject: Re: Patch "arm64: dts: qcom: sdm845-db845c: Mark cont splash memory
+ region as reserved" has been added to the 5.10-stable tree
+To:     gregkh@linuxfoundation.org, stable <stable@vger.kernel.org>
+Cc:     andersson@kernel.org, caleb.connolly@linaro.org,
+        krzysztof.kozlowski@linaro.org, stable-commits@vger.kernel.org
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
         SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -41,110 +66,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+On Sat, 9 Sept 2023 at 18:16, <gregkh@linuxfoundation.org> wrote:
+>
+>
+> This is a note to let you know that I've just added the patch titled
+>
+>     arm64: dts: qcom: sdm845-db845c: Mark cont splash memory region as reserved
+>
+> to the 5.10-stable tree which can be found at:
+>     http://www.kernel.org/git/?p=linux/kernel/git/stable/stable-queue.git;a=summary
+>
+> The filename of the patch is:
+>      arm64-dts-qcom-sdm845-db845c-mark-cont-splash-memory-region-as-reserved.patch
+> and it can be found in the queue-5.10 subdirectory.
+>
+> If you, or anyone else, feels it should not be added to the stable tree,
+> please let <stable@vger.kernel.org> know about it.
+>
 
-The patch below does not apply to the 5.15-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Please skip this patch for 5.10.y. We ran into a boot (mdss crash)
+regression with this patch.
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Regards,
+Amit Pundir
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
-git checkout FETCH_HEAD
-git cherry-pick -x 45500dc4e01c167ee063f3dcc22f51ced5b2b1e9
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090945-mural-humming-67c0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
-
-Possible dependencies:
-
-45500dc4e01c ("io_uring: break out of iowq iopoll on teardown")
-ed29b0b4fd83 ("io_uring: move to separate directory")
-e0deb6a025ae ("io_uring: avoid io-wq -EAGAIN looping for !IOPOLL")
-1d5f5ea7cb7d ("io-wq: remove worker to owner tw dependency")
-d01905db14eb ("io_uring: clean iowq submit work cancellation")
-255657d23704 ("io_uring: clean io_wq_submit_work()'s main loop")
-90fa02883f06 ("io_uring: implement async hybrid mode for pollable requests")
-3b44b3712c5b ("io_uring: split logic of force_nonblock")
-9882131cd9de ("io_uring: kill io_wq_current_is_worker() in iopoll")
-9983028e7660 ("io_uring: optimise req->ctx reloads")
-5e49c973fc39 ("io_uring: clean up io_import_iovec")
-51aac424aef9 ("io_uring: optimise io_import_iovec nonblock passing")
-c88598a92a58 ("io_uring: optimise read/write iov state storing")
-538941e2681c ("io_uring: encapsulate rw state")
-d886e185a128 ("io_uring: control ->async_data with a REQ_F flag")
-30d51dd4ad20 ("io_uring: clean up buffer select")
-ef05d9ebcc92 ("io_uring: kill off ->inflight_entry field")
-6f33b0bc4ea4 ("io_uring: use slist for completion batching")
-c450178d9be9 ("io_uring: dedup CQE flushing non-empty checks")
-4c928904ff77 ("block: move CONFIG_BLOCK guard to top Makefile")
-
-thanks,
-
-greg k-h
-
------------------- original commit in Linus's tree ------------------
-
-From 45500dc4e01c167ee063f3dcc22f51ced5b2b1e9 Mon Sep 17 00:00:00 2001
-From: Pavel Begunkov <asml.silence@gmail.com>
-Date: Thu, 7 Sep 2023 13:50:07 +0100
-Subject: [PATCH] io_uring: break out of iowq iopoll on teardown
-
-io-wq will retry iopoll even when it failed with -EAGAIN. If that
-races with task exit, which sets TIF_NOTIFY_SIGNAL for all its workers,
-such workers might potentially infinitely spin retrying iopoll again and
-again and each time failing on some allocation / waiting / etc. Don't
-keep spinning if io-wq is dying.
-
-Fixes: 561fb04a6a225 ("io_uring: replace workqueue usage with io-wq")
-Cc: stable@vger.kernel.org
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 62f345587df5..1ecc8c748768 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -174,6 +174,16 @@ static void io_worker_ref_put(struct io_wq *wq)
- 		complete(&wq->worker_done);
- }
- 
-+bool io_wq_worker_stopped(void)
-+{
-+	struct io_worker *worker = current->worker_private;
-+
-+	if (WARN_ON_ONCE(!io_wq_current_is_worker()))
-+		return true;
-+
-+	return test_bit(IO_WQ_BIT_EXIT, &worker->wq->state);
-+}
-+
- static void io_worker_cancel_cb(struct io_worker *worker)
- {
- 	struct io_wq_acct *acct = io_wq_get_acct(worker);
-diff --git a/io_uring/io-wq.h b/io_uring/io-wq.h
-index 06d9ca90c577..2b2a6406dd8e 100644
---- a/io_uring/io-wq.h
-+++ b/io_uring/io-wq.h
-@@ -52,6 +52,7 @@ void io_wq_hash_work(struct io_wq_work *work, void *val);
- 
- int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask);
- int io_wq_max_workers(struct io_wq *wq, int *new_count);
-+bool io_wq_worker_stopped(void);
- 
- static inline bool io_wq_is_hashed(struct io_wq_work *work)
- {
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index 0f0ba31c3850..58d8dd34a45f 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -1975,6 +1975,8 @@ void io_wq_submit_work(struct io_wq_work *work)
- 		if (!needs_poll) {
- 			if (!(req->ctx->flags & IORING_SETUP_IOPOLL))
- 				break;
-+			if (io_wq_worker_stopped())
-+				break;
- 			cond_resched();
- 			continue;
- 		}
-
+>
+> From 110e70fccce4f22b53986ae797d665ffb1950aa6 Mon Sep 17 00:00:00 2001
+> From: Amit Pundir <amit.pundir@linaro.org>
+> Date: Wed, 26 Jul 2023 18:57:19 +0530
+> Subject: arm64: dts: qcom: sdm845-db845c: Mark cont splash memory region as reserved
+>
+> From: Amit Pundir <amit.pundir@linaro.org>
+>
+> commit 110e70fccce4f22b53986ae797d665ffb1950aa6 upstream.
+>
+> Adding a reserved memory region for the framebuffer memory
+> (the splash memory region set up by the bootloader).
+>
+> It fixes a kernel panic (arm-smmu: Unhandled context fault
+> at this particular memory region) reported on DB845c running
+> v5.10.y.
+>
+> Cc: stable@vger.kernel.org # v5.10+
+> Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
+> Signed-off-by: Amit Pundir <amit.pundir@linaro.org>
+> Acked-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+> Link: https://lore.kernel.org/r/20230726132719.2117369-2-amit.pundir@linaro.org
+> Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> ---
+>  arch/arm64/boot/dts/qcom/sdm845-db845c.dts |    9 +++++++++
+>  1 file changed, 9 insertions(+)
+>
+> --- a/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+> +++ b/arch/arm64/boot/dts/qcom/sdm845-db845c.dts
+> @@ -85,6 +85,14 @@
+>                 };
+>         };
+>
+> +       reserved-memory {
+> +               /* Cont splash region set up by the bootloader */
+> +               cont_splash_mem: framebuffer@9d400000 {
+> +                       reg = <0x0 0x9d400000 0x0 0x2400000>;
+> +                       no-map;
+> +               };
+> +       };
+> +
+>         lt9611_1v8: lt9611-vdd18-regulator {
+>                 compatible = "regulator-fixed";
+>                 regulator-name = "LT9611_1V8";
+> @@ -482,6 +490,7 @@
+>  };
+>
+>  &mdss {
+> +       memory-region = <&cont_splash_mem>;
+>         status = "okay";
+>  };
+>
+>
+>
+> Patches currently in stable-queue which might be from amit.pundir@linaro.org are
+>
+> queue-5.10/arm64-dts-qcom-sdm845-db845c-mark-cont-splash-memory-region-as-reserved.patch
