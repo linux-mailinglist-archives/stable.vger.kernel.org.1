@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C97B679981D
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2401579981F
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233889AbjIIMxQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 08:53:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52360 "EHLO
+        id S235872AbjIIMxY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 08:53:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233571AbjIIMxO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:14 -0400
+        with ESMTP id S233571AbjIIMxX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8EFDCDE
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13032C433C7;
-        Sat,  9 Sep 2023 12:53:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8D0DCCD6
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DAD01C433C7;
+        Sat,  9 Sep 2023 12:53:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694263990;
-        bh=ldCwN00/2viygq/YNyXoqVk4kaYHbdyJo1uRemV8UtY=;
+        s=korg; t=1694263999;
+        bh=WD3coc/aT7s8QmaZ/JgZ4BbKVcNUuzdRC75MfQpIv1o=;
         h=Subject:To:Cc:From:Date:From;
-        b=tZgczx+9JNPayQe+kzlvxEBAd0Nk/Ayp88WfN9eCkBAsm7lTTo3axVjDehn3iBw17
-         TL4p0QiudjbOEeDAWQdiSPwj/F3JfGw88Vq3bXyxRI3NQzfHiftuSxmFNwzcfdH5rq
-         EGNg5LIYW3vNSTw2K9mpdpxrw+Ag5An8OWaFoXCs=
-Subject: FAILED: patch "[PATCH] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL" failed to apply to 5.10-stable tree
-To:     axboe@kernel.dk
+        b=G7+Zo/1m3DEoQmZSO7csRAHphek0tNOOnFJaU9tc8f987dOkewlgved5jMfnQ4+jo
+         IkHFodOGF0Q5LLNj5N/MFaHWUNKUKCQLKaKP8D3TqUzTUXMabFkC3KyLxsp5ZMH2pY
+         Q9b3aVLL8A/uoiTL3J5VtfNunsZuUXx4xzQbcqaI=
+Subject: FAILED: patch "[PATCH] io_uring/net: don't overflow multishot recv" failed to apply to 6.4-stable tree
+To:     asml.silence@gmail.com, axboe@kernel.dk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 13:52:58 +0100
-Message-ID: <2023090957-cultivate-bobcat-6219@gregkh>
+Date:   Sat, 09 Sep 2023 13:53:09 +0100
+Message-ID: <2023090908-cursor-reshape-7963@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,42 +42,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x ebdfefc09c6de7897962769bd3e63a2ff443ebf5
+git cherry-pick -x b2e74db55dd93d6db22a813c9a775b5dbf87c560
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090957-cultivate-bobcat-6219@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090908-cursor-reshape-7963@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-ebdfefc09c6d ("io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used")
-eb47943f2238 ("io-wq: Drop struct io_wqe")
-dfd63baf892c ("io-wq: Move wq accounting to io_wq")
-da64d6db3bd3 ("io_uring: One wqe per wq")
-01e68ce08a30 ("io_uring/io-wq: stop setting PF_NO_SETAFFINITY on io-wq workers")
-88b80534f60f ("io_uring: make io_sqpoll_wait_sq return void")
-996d3efeb091 ("io-wq: Fix memory leak in worker creation")
-024f15e033a5 ("io_uring: dedup io_run_task_work")
-a6b21fbb4ce3 ("io_uring: move list helpers to a separate file")
-ab1c84d855cf ("io_uring: make io_uring_types.h public")
-48c13d898084 ("io_uring: explain io_wq_work::cancel_seq placement")
-735729844819 ("io_uring: move rsrc related data, core, and commands")
-3b77495a9723 ("io_uring: split provided buffers handling into its own file")
-7aaff708a768 ("io_uring: move cancelation into its own file")
-329061d3e2f9 ("io_uring: move poll handling into its own file")
-cfd22e6b3319 ("io_uring: add opcode name to io_op_defs")
-92ac8beaea1f ("io_uring: include and forward-declaration sanitation")
-c9f06aa7de15 ("io_uring: move io_uring_task (tctx) helpers into its own file")
-a4ad4f748ea9 ("io_uring: move fdinfo helpers to its own file")
-e5550a1447bf ("io_uring: use io_is_uring_fops() consistently")
+b2e74db55dd9 ("io_uring/net: don't overflow multishot recv")
+d86eaed185e9 ("io_uring: cleanup io_aux_cqe() API")
 
 thanks,
 
@@ -85,151 +67,31 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From ebdfefc09c6de7897962769bd3e63a2ff443ebf5 Mon Sep 17 00:00:00 2001
-From: Jens Axboe <axboe@kernel.dk>
-Date: Sun, 13 Aug 2023 11:05:36 -0600
-Subject: [PATCH] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL
- is used
+From b2e74db55dd93d6db22a813c9a775b5dbf87c560 Mon Sep 17 00:00:00 2001
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Fri, 11 Aug 2023 13:53:42 +0100
+Subject: [PATCH] io_uring/net: don't overflow multishot recv
 
-If we setup the ring with SQPOLL, then that polling thread has its
-own io-wq setup. This means that if the application uses
-IORING_REGISTER_IOWQ_AFF to set the io-wq affinity, we should not be
-setting it for the invoking task, but rather the sqpoll task.
+Don't allow overflowing multishot recv CQEs, it might get out of
+hand, hurt performance, and in the worst case scenario OOM the task.
 
-Add an sqpoll helper that parks the thread and updates the affinity,
-and use that one if we're using SQPOLL.
-
-Fixes: fe76421d1da1 ("io_uring: allow user configurable IO thread CPU affinity")
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/discussions/884
+Cc: stable@vger.kernel.org
+Fixes: b3fdea6ecb55c ("io_uring: multishot recv")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/0b295634e8f1b71aa764c984608c22d85f88f75c.1691757663.git.asml.silence@gmail.com
 Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
-index 2da0b1ba6a56..62f345587df5 100644
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1306,13 +1306,16 @@ static int io_wq_cpu_offline(unsigned int cpu, struct hlist_node *node)
- 	return __io_wq_cpu_online(wq, cpu, false);
- }
+diff --git a/io_uring/net.c b/io_uring/net.c
+index 1599493544a5..8c419c01a5db 100644
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -642,7 +642,7 @@ static inline bool io_recv_finish(struct io_kiocb *req, int *ret,
  
--int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask)
-+int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask)
- {
-+	if (!tctx || !tctx->io_wq)
-+		return -EINVAL;
-+
- 	rcu_read_lock();
- 	if (mask)
--		cpumask_copy(wq->cpu_mask, mask);
-+		cpumask_copy(tctx->io_wq->cpu_mask, mask);
- 	else
--		cpumask_copy(wq->cpu_mask, cpu_possible_mask);
-+		cpumask_copy(tctx->io_wq->cpu_mask, cpu_possible_mask);
- 	rcu_read_unlock();
- 
- 	return 0;
-diff --git a/io_uring/io-wq.h b/io_uring/io-wq.h
-index 31228426d192..06d9ca90c577 100644
---- a/io_uring/io-wq.h
-+++ b/io_uring/io-wq.h
-@@ -50,7 +50,7 @@ void io_wq_put_and_exit(struct io_wq *wq);
- void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work);
- void io_wq_hash_work(struct io_wq_work *work, void *val);
- 
--int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask);
-+int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask);
- int io_wq_max_workers(struct io_wq *wq, int *new_count);
- 
- static inline bool io_wq_is_hashed(struct io_wq_work *work)
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index e189158ebbdd..e1a23f4993d3 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -4183,16 +4183,28 @@ static int io_register_enable_rings(struct io_ring_ctx *ctx)
- 	return 0;
- }
- 
-+static __cold int __io_register_iowq_aff(struct io_ring_ctx *ctx,
-+					 cpumask_var_t new_mask)
-+{
-+	int ret;
-+
-+	if (!(ctx->flags & IORING_SETUP_SQPOLL)) {
-+		ret = io_wq_cpu_affinity(current->io_uring, new_mask);
-+	} else {
-+		mutex_unlock(&ctx->uring_lock);
-+		ret = io_sqpoll_wq_cpu_affinity(ctx, new_mask);
-+		mutex_lock(&ctx->uring_lock);
-+	}
-+
-+	return ret;
-+}
-+
- static __cold int io_register_iowq_aff(struct io_ring_ctx *ctx,
- 				       void __user *arg, unsigned len)
- {
--	struct io_uring_task *tctx = current->io_uring;
- 	cpumask_var_t new_mask;
- 	int ret;
- 
--	if (!tctx || !tctx->io_wq)
--		return -EINVAL;
--
- 	if (!alloc_cpumask_var(&new_mask, GFP_KERNEL))
- 		return -ENOMEM;
- 
-@@ -4213,19 +4225,14 @@ static __cold int io_register_iowq_aff(struct io_ring_ctx *ctx,
- 		return -EFAULT;
- 	}
- 
--	ret = io_wq_cpu_affinity(tctx->io_wq, new_mask);
-+	ret = __io_register_iowq_aff(ctx, new_mask);
- 	free_cpumask_var(new_mask);
- 	return ret;
- }
- 
- static __cold int io_unregister_iowq_aff(struct io_ring_ctx *ctx)
- {
--	struct io_uring_task *tctx = current->io_uring;
--
--	if (!tctx || !tctx->io_wq)
--		return -EINVAL;
--
--	return io_wq_cpu_affinity(tctx->io_wq, NULL);
-+	return __io_register_iowq_aff(ctx, NULL);
- }
- 
- static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
-diff --git a/io_uring/sqpoll.c b/io_uring/sqpoll.c
-index 5e329e3cd470..ee2d2c687fda 100644
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -421,3 +421,18 @@ __cold int io_sq_offload_create(struct io_ring_ctx *ctx,
- 	io_sq_thread_finish(ctx);
- 	return ret;
- }
-+
-+__cold int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx,
-+				     cpumask_var_t mask)
-+{
-+	struct io_sq_data *sqd = ctx->sq_data;
-+	int ret = -EINVAL;
-+
-+	if (sqd) {
-+		io_sq_thread_park(sqd);
-+		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
-+		io_sq_thread_unpark(sqd);
-+	}
-+
-+	return ret;
-+}
-diff --git a/io_uring/sqpoll.h b/io_uring/sqpoll.h
-index e1b8d508d22d..8df37e8c9149 100644
---- a/io_uring/sqpoll.h
-+++ b/io_uring/sqpoll.h
-@@ -27,3 +27,4 @@ void io_sq_thread_park(struct io_sq_data *sqd);
- void io_sq_thread_unpark(struct io_sq_data *sqd);
- void io_put_sq_data(struct io_sq_data *sqd);
- void io_sqpoll_wait_sq(struct io_ring_ctx *ctx);
-+int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx, cpumask_var_t mask);
+ 	if (!mshot_finished) {
+ 		if (io_aux_cqe(req, issue_flags & IO_URING_F_COMPLETE_DEFER,
+-			       *ret, cflags | IORING_CQE_F_MORE, true)) {
++			       *ret, cflags | IORING_CQE_F_MORE, false)) {
+ 			io_recv_prep_retry(req);
+ 			/* Known not-empty or unknown state, retry */
+ 			if (cflags & IORING_CQE_F_SOCK_NONEMPTY ||
 
