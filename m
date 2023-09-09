@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8397799B58
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:20:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BDAD799B5D
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:24:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239267AbjIIVUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
+        id S233966AbjIIVYX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:24:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjIIVUJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:20:09 -0400
+        with ESMTP id S230470AbjIIVYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:24:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E42B131
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:20:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59632C433C8;
-        Sat,  9 Sep 2023 21:20:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F5D5195
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:24:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C9987C433C8;
+        Sat,  9 Sep 2023 21:24:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294404;
-        bh=M7ormSILeTpz/bQWTIAkrqg34pXGxBX/hI41ToDfS/0=;
+        s=korg; t=1694294659;
+        bh=RgJ92LBerPxRmyT4LAMdKc/itiHkggqVQSquTWtz85g=;
         h=Subject:To:Cc:From:Date:From;
-        b=X+/HykaLmM+8bgOn+7j+E4TzAwM9+DzfH4t/WKscQFhfEJiCJqqemt0aaOikmKKpO
-         t8KmxAi4N5E9WKjs/ugqNNf7gN/VbshBH4DmHgqTVvifr0Tg2kA96uR8X8E+IsTTOv
-         pkH0NBB1I6gEFlMKrY5cnN7B5UIT329Y00W9DFic=
-Subject: FAILED: patch "[PATCH] scsi: mpt3sas: Perform additional retries if doorbell read" failed to apply to 5.4-stable tree
-To:     ranjan.kumar@broadcom.com, martin.petersen@oracle.com
+        b=qXFr0Mwq5IuGDLMu1L2RWwfgDns3CQNjffZOMkJJ7dJbEeAZEL56iA9IZiGkqLPbk
+         aAp5ODZl7oQtIP+qJjVg5YQwXj4xwDEyzcD5sEtWUKr4uYpvqYZ3NtHb901ZX+pox1
+         PRs9CSHW88shU40VO/6St77JqV1cl+MhV8o0pleU=
+Subject: FAILED: patch "[PATCH] block: fix pin count management when merging same-page" failed to apply to 6.4-stable tree
+To:     hch@lst.de, axboe@kernel.dk, dlemoal@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:20:01 +0100
-Message-ID: <2023090901-refinance-partake-fb8a@gregkh>
+Date:   Sat, 09 Sep 2023 22:24:16 +0100
+Message-ID: <2023090916-opal-democracy-f820@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,23 +42,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x 4ca10f3e31745d35249a727ecd108eb58f0a8c5e
+git cherry-pick -x 5905afc2c7bb713d52c7c7585565feecbb686b44
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090901-refinance-partake-fb8a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090916-opal-democracy-f820@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
-
+5905afc2c7bb ("block: fix pin count management when merging same-page segments")
+403b6fb8dac1 ("block: convert bio_map_user_iov to use iov_iter_extract_pages")
 
 thanks,
 
@@ -66,182 +67,41 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 4ca10f3e31745d35249a727ecd108eb58f0a8c5e Mon Sep 17 00:00:00 2001
-From: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Date: Tue, 29 Aug 2023 14:30:19 +0530
-Subject: [PATCH] scsi: mpt3sas: Perform additional retries if doorbell read
- returns 0
+From 5905afc2c7bb713d52c7c7585565feecbb686b44 Mon Sep 17 00:00:00 2001
+From: Christoph Hellwig <hch@lst.de>
+Date: Tue, 5 Sep 2023 14:47:31 +0200
+Subject: [PATCH] block: fix pin count management when merging same-page
+ segments
 
-The driver retries certain register reads 3 times if the returned value is
-0. This was done because the controller could return 0 for certain
-registers if other registers were being accessed concurrently by the BMC.
+There is no need to unpin the added page when adding it to the bio fails
+as that is done by the loop below.  Instead we want to unpin it when adding
+a single page to the bio more than once as bio_release_pages will only
+unpin it once.
 
-In certain systems with increased BMC interactions, the register values
-returned can be 0 for longer than 3 retries. Change the retry count from 3
-to 30 for the affected registers to prevent problems with out-of-band
-management.
+Fixes: d1916c86ccdc ("block: move same page handling from __bio_add_pc_page to the callers")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
+Link: https://lore.kernel.org/r/20230905124731.328255-1-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-Fixes: b899202901a8 ("scsi: mpt3sas: Add separate function for aero doorbell reads")
-Cc: stable@vger.kernel.org
-Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
-Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
-index 53f5492579cb..5284584e4cd2 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.c
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
-@@ -138,6 +138,9 @@ _base_get_ioc_facts(struct MPT3SAS_ADAPTER *ioc);
- static void
- _base_clear_outstanding_commands(struct MPT3SAS_ADAPTER *ioc);
+diff --git a/block/blk-map.c b/block/blk-map.c
+index 44d74a30ddac..8584babf3ea0 100644
+--- a/block/blk-map.c
++++ b/block/blk-map.c
+@@ -315,12 +315,11 @@ static int bio_map_user_iov(struct request *rq, struct iov_iter *iter,
+ 					n = bytes;
  
-+static u32
-+_base_readl_ext_retry(const volatile void __iomem *addr);
-+
- /**
-  * mpt3sas_base_check_cmd_timeout - Function
-  *		to check timeout and command termination due
-@@ -213,6 +216,20 @@ _base_readl_aero(const volatile void __iomem *addr)
- 	return ret_val;
- }
+ 				if (!bio_add_hw_page(rq->q, bio, page, n, offs,
+-						     max_sectors, &same_page)) {
+-					if (same_page)
+-						bio_release_page(bio, page);
++						     max_sectors, &same_page))
+ 					break;
+-				}
  
-+static u32
-+_base_readl_ext_retry(const volatile void __iomem *addr)
-+{
-+	u32 i, ret_val;
-+
-+	for (i = 0 ; i < 30 ; i++) {
-+		ret_val = readl(addr);
-+		if (ret_val == 0)
-+			continue;
-+	}
-+
-+	return ret_val;
-+}
-+
- static inline u32
- _base_readl(const volatile void __iomem *addr)
- {
-@@ -940,7 +957,7 @@ mpt3sas_halt_firmware(struct MPT3SAS_ADAPTER *ioc)
- 
- 	dump_stack();
- 
--	doorbell = ioc->base_readl(&ioc->chip->Doorbell);
-+	doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 	if ((doorbell & MPI2_IOC_STATE_MASK) == MPI2_IOC_STATE_FAULT) {
- 		mpt3sas_print_fault_code(ioc, doorbell &
- 		    MPI2_DOORBELL_DATA_MASK);
-@@ -6686,7 +6703,7 @@ mpt3sas_base_get_iocstate(struct MPT3SAS_ADAPTER *ioc, int cooked)
- {
- 	u32 s, sc;
- 
--	s = ioc->base_readl(&ioc->chip->Doorbell);
-+	s = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 	sc = s & MPI2_IOC_STATE_MASK;
- 	return cooked ? sc : s;
- }
-@@ -6831,7 +6848,7 @@ _base_wait_for_doorbell_ack(struct MPT3SAS_ADAPTER *ioc, int timeout)
- 					   __func__, count, timeout));
- 			return 0;
- 		} else if (int_status & MPI2_HIS_IOC2SYS_DB_STATUS) {
--			doorbell = ioc->base_readl(&ioc->chip->Doorbell);
-+			doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 			if ((doorbell & MPI2_IOC_STATE_MASK) ==
- 			    MPI2_IOC_STATE_FAULT) {
- 				mpt3sas_print_fault_code(ioc, doorbell);
-@@ -6871,7 +6888,7 @@ _base_wait_for_doorbell_not_used(struct MPT3SAS_ADAPTER *ioc, int timeout)
- 	count = 0;
- 	cntdn = 1000 * timeout;
- 	do {
--		doorbell_reg = ioc->base_readl(&ioc->chip->Doorbell);
-+		doorbell_reg = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 		if (!(doorbell_reg & MPI2_DOORBELL_USED)) {
- 			dhsprintk(ioc,
- 				  ioc_info(ioc, "%s: successful count(%d), timeout(%d)\n",
-@@ -7019,7 +7036,7 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
- 	__le32 *mfp;
- 
- 	/* make sure doorbell is not in use */
--	if ((ioc->base_readl(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
-+	if ((ioc->base_readl_ext_retry(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
- 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
- 		return -EFAULT;
- 	}
-@@ -7068,7 +7085,7 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
- 	}
- 
- 	/* read the first two 16-bits, it gives the total length of the reply */
--	reply[0] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
-+	reply[0] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
- 	    & MPI2_DOORBELL_DATA_MASK);
- 	writel(0, &ioc->chip->HostInterruptStatus);
- 	if ((_base_wait_for_doorbell_int(ioc, 5))) {
-@@ -7076,7 +7093,7 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
- 			__LINE__);
- 		return -EFAULT;
- 	}
--	reply[1] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
-+	reply[1] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
- 	    & MPI2_DOORBELL_DATA_MASK);
- 	writel(0, &ioc->chip->HostInterruptStatus);
- 
-@@ -7087,10 +7104,10 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
- 			return -EFAULT;
- 		}
- 		if (i >=  reply_bytes/2) /* overflow case */
--			ioc->base_readl(&ioc->chip->Doorbell);
-+			ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
- 		else
- 			reply[i] = le16_to_cpu(
--			    ioc->base_readl(&ioc->chip->Doorbell)
-+			    ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
- 			    & MPI2_DOORBELL_DATA_MASK);
- 		writel(0, &ioc->chip->HostInterruptStatus);
- 	}
-@@ -7949,7 +7966,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER *ioc)
- 			goto out;
- 		}
- 
--		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
-+		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
- 		drsprintk(ioc,
- 			  ioc_info(ioc, "wrote magic sequence: count(%d), host_diagnostic(0x%08x)\n",
- 				   count, host_diagnostic));
-@@ -7969,7 +7986,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER *ioc)
- 	for (count = 0; count < (300000000 /
- 		MPI2_HARD_RESET_PCIE_SECOND_READ_DELAY_MICRO_SEC); count++) {
- 
--		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
-+		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
- 
- 		if (host_diagnostic == 0xFFFFFFFF) {
- 			ioc_info(ioc,
-@@ -8359,10 +8376,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPTER *ioc)
- 	ioc->rdpq_array_enable_assigned = 0;
- 	ioc->use_32bit_dma = false;
- 	ioc->dma_mask = 64;
--	if (ioc->is_aero_ioc)
-+	if (ioc->is_aero_ioc) {
- 		ioc->base_readl = &_base_readl_aero;
--	else
-+		ioc->base_readl_ext_retry = &_base_readl_ext_retry;
-+	} else {
- 		ioc->base_readl = &_base_readl;
-+		ioc->base_readl_ext_retry = &_base_readl;
-+	}
- 	r = mpt3sas_base_map_resources(ioc);
- 	if (r)
- 		goto out_free_resources;
-diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.h b/drivers/scsi/mpt3sas/mpt3sas_base.h
-index 05364aa15ecd..10055c7e4a9f 100644
---- a/drivers/scsi/mpt3sas/mpt3sas_base.h
-+++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
-@@ -1618,6 +1618,7 @@ struct MPT3SAS_ADAPTER {
- 	u8		diag_trigger_active;
- 	u8		atomic_desc_capable;
- 	BASE_READ_REG	base_readl;
-+	BASE_READ_REG	base_readl_ext_retry;
- 	struct SL_WH_MASTER_TRIGGER_T diag_trigger_master;
- 	struct SL_WH_EVENT_TRIGGERS_T diag_trigger_event;
- 	struct SL_WH_SCSI_TRIGGERS_T diag_trigger_scsi;
++				if (same_page)
++					bio_release_page(bio, page);
+ 				bytes -= n;
+ 				offs = 0;
+ 			}
 
