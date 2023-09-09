@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4DC5799B7E
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:53:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD00E799B7F
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:53:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343697AbjIIVxk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:53:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50918 "EHLO
+        id S245687AbjIIVxs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:53:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52894 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjIIVxj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:53:39 -0400
+        with ESMTP id S229550AbjIIVxr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:53:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E871C195
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:53:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F8BC433C7;
-        Sat,  9 Sep 2023 21:53:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91746BB
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:53:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB4AFC433C8;
+        Sat,  9 Sep 2023 21:53:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694296414;
-        bh=pXR49leCShkH37SjG1O6iq5rg3zuolR3LsFWYrNmzto=;
+        s=korg; t=1694296423;
+        bh=mKGXDbIHp2xkhT/AR3VGHnkESKliJISwvSa6o2271k4=;
         h=Subject:To:Cc:From:Date:From;
-        b=yd3bbYIT5QwBHYR5tVL0PkIyh2M+xNg1y+eZ/HX0tAmfFQc98a4Nwtd1PMB0yY6nP
-         JKdU+ek34RCRuSLi+hf3dqmtEbqUUmPQy4cbRoPU0GpEsiqX0RmqVkSCNv3RPGDHla
-         QTY4Xzoge9Ye7G36jP8jrvj2wmF9BI/11Ku/64+w=
-Subject: FAILED: patch "[PATCH] arm64: sdei: abort running SDEI handlers during crash" failed to apply to 5.10-stable tree
+        b=TI5OCf3fIEyU1YwMASBRSqbtDIM9Y/Dd1SZ0FN99rbLVRrY5BXTtqmZERxf0hUcey
+         9TrxCZa+Vlde5zljkhdxJyRibx95ldZ4QdbNTHRKqyUOXGdH0Hs15NJjDp7e2Hs//7
+         5QrjuR/LPhbSv+Kan3diA64FSmmCBm4OaZcTTBMs=
+Subject: FAILED: patch "[PATCH] arm64: sdei: abort running SDEI handlers during crash" failed to apply to 5.4-stable tree
 To:     scott@os.amperecomputing.com, james.morse@arm.com,
         mihai.carabas@oracle.com, will@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:53:31 +0100
-Message-ID: <2023090931-unmapped-return-e9dd@gregkh>
+Date:   Sat, 09 Sep 2023 22:53:32 +0100
+Message-ID: <2023090932-vocalist-knickers-2621@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,25 +43,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5cd474e57368f0957c343bb21e309cf82826b1ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090931-unmapped-return-e9dd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090932-vocalist-knickers-2621@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
 5cd474e57368 ("arm64: sdei: abort running SDEI handlers during crash")
 dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
 ac20ffbb0279 ("arm64: scs: use vmapped IRQ and SDEI shadow stacks")
+c457cc800e89 ("Merge tag 'irq-core-2020-10-12' of git://git.kernel.org/pub/scm/linux/kernel/git/tip/tip")
 
 thanks,
 
