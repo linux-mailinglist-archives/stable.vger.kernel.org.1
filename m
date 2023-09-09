@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58491799819
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:52:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5FE5C79981A
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:52:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234820AbjIIMwy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 08:52:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37654 "EHLO
+        id S234979AbjIIMw4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 08:52:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231560AbjIIMwy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:52:54 -0400
+        with ESMTP id S231560AbjIIMw4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:52:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D35BFCE6
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:52:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23ACEC433C7;
-        Sat,  9 Sep 2023 12:52:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77FF1CDE
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:52:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5DDCC433C8;
+        Sat,  9 Sep 2023 12:52:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694263969;
-        bh=3XYitJRhC0hJJb6eOgP7CxsW+vp3nnHcWpjqGD+vL6c=;
+        s=korg; t=1694263972;
+        bh=B/ddGnZzyzynxijuiAgHNYcKXAbrZ/vDK6cFya4Fyyc=;
         h=Subject:To:Cc:From:Date:From;
-        b=Ma/FdtRLgPUgTlzwbs+FdLcRf0Mx7XYHpsSpsBqhreN6RIJp5svhz2HGODxCR+yCb
-         jPpImzjZzbw+9+Ilnl5csXldDgj0WhLwSxs/rEw17qBljXbAVNx5zRL4lhjlct5N5x
-         erD7HGN4ZSuWq3M7i8fGtqHifl1LhB2zgmJDEH8U=
-Subject: FAILED: patch "[PATCH] io_uring: break iopolling on signal" failed to apply to 5.10-stable tree
+        b=oRdIcAWQfGUHD0wZ9/UjFA/8iX9pqSCLh8kn+91dtH+KohAskLNTMXSKcCWBthCxM
+         G8mBi/v623S6npRhSBbsC+PIFzGsKgKLzVlWU/SM4ST313RyxuJka0pCT00EGWZ03r
+         BKqUX1CJhpI33AtBJuqaPPpwBDIenXC9R12mz6/E=
+Subject: FAILED: patch "[PATCH] io_uring: break iopolling on signal" failed to apply to 5.4-stable tree
 To:     asml.silence@gmail.com, axboe@kernel.dk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 13:52:38 +0100
-Message-ID: <2023090938-kilometer-unpinned-f831@gregkh>
+Date:   Sat, 09 Sep 2023 13:52:39 +0100
+Message-ID: <2023090939-bunkmate-clutch-4fc1@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x dc314886cb3d0e4ab2858003e8de2917f8a3ccbd
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090938-kilometer-unpinned-f831@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090939-bunkmate-clutch-4fc1@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
