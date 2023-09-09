@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BADA0799B6F
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:33:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4DC5799B7E
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:53:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232141AbjIIVdH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:33:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
+        id S1343697AbjIIVxk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:53:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjIIVdH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:33:07 -0400
+        with ESMTP id S229550AbjIIVxj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:53:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EDDF195
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:33:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD79EC433C8;
-        Sat,  9 Sep 2023 21:33:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E871C195
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:53:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08F8BC433C7;
+        Sat,  9 Sep 2023 21:53:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694295183;
-        bh=LL5ONTF+7WzWA1nvX5bXq+KIFxa2b6iymWwYKEuCWQg=;
+        s=korg; t=1694296414;
+        bh=pXR49leCShkH37SjG1O6iq5rg3zuolR3LsFWYrNmzto=;
         h=Subject:To:Cc:From:Date:From;
-        b=Eh0Y1LNcZW9ScAC5seW+PO/ohRyjwOcQcpi0ciYw7FEdbKkmMcfr8WcPF9BYq8qwe
-         XnCJLeoQhPXMUX+QlVlpCETX12dw0h62s8nWloeMZZDNBBkiL5tDorkwanb+crwQov
-         wczchq0onRvRa9Mk8BIJWubtiyS4j4zJcdlJZ5A4=
-Subject: FAILED: patch "[PATCH] block: don't add or resize partition on the disk with" failed to apply to 5.15-stable tree
-To:     lilingfeng3@huawei.com, axboe@kernel.dk, hch@lst.de
+        b=yd3bbYIT5QwBHYR5tVL0PkIyh2M+xNg1y+eZ/HX0tAmfFQc98a4Nwtd1PMB0yY6nP
+         JKdU+ek34RCRuSLi+hf3dqmtEbqUUmPQy4cbRoPU0GpEsiqX0RmqVkSCNv3RPGDHla
+         QTY4Xzoge9Ye7G36jP8jrvj2wmF9BI/11Ku/64+w=
+Subject: FAILED: patch "[PATCH] arm64: sdei: abort running SDEI handlers during crash" failed to apply to 5.10-stable tree
+To:     scott@os.amperecomputing.com, james.morse@arm.com,
+        mihai.carabas@oracle.com, will@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:32:47 +0100
-Message-ID: <2023090947-apprehend-immobile-0fb5@gregkh>
+Date:   Sat, 09 Sep 2023 22:53:31 +0100
+Message-ID: <2023090931-unmapped-return-e9dd@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,23 +43,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
-git cherry-pick -x 1a721de8489fa559ff4471f73c58bb74ac5580d3
+git cherry-pick -x 5cd474e57368f0957c343bb21e309cf82826b1ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090947-apprehend-immobile-0fb5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090931-unmapped-return-e9dd@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
-1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
+5cd474e57368 ("arm64: sdei: abort running SDEI handlers during crash")
+dc4e8c07e9e2 ("ACPI: APEI: explicit init of HEST and GHES in apci_init()")
+ac20ffbb0279 ("arm64: scs: use vmapped IRQ and SDEI shadow stacks")
 
 thanks,
 
@@ -66,37 +69,186 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 1a721de8489fa559ff4471f73c58bb74ac5580d3 Mon Sep 17 00:00:00 2001
-From: Li Lingfeng <lilingfeng3@huawei.com>
-Date: Thu, 31 Aug 2023 15:59:00 +0800
-Subject: [PATCH] block: don't add or resize partition on the disk with
- GENHD_FL_NO_PART
+From 5cd474e57368f0957c343bb21e309cf82826b1ef Mon Sep 17 00:00:00 2001
+From: D Scott Phillips <scott@os.amperecomputing.com>
+Date: Mon, 26 Jun 2023 17:29:39 -0700
+Subject: [PATCH] arm64: sdei: abort running SDEI handlers during crash
 
-Commit a33df75c6328 ("block: use an xarray for disk->part_tbl") remove
-disk_expand_part_tbl() in add_partition(), which means all kinds of
-devices will support extended dynamic `dev_t`.
-However, some devices with GENHD_FL_NO_PART are not expected to add or
-resize partition.
-Fix this by adding check of GENHD_FL_NO_PART before add or resize
-partition.
+Interrupts are blocked in SDEI context, per the SDEI spec: "The client
+interrupts cannot preempt the event handler." If we crashed in the SDEI
+handler-running context (as with ACPI's AGDI) then we need to clean up the
+SDEI state before proceeding to the crash kernel so that the crash kernel
+can have working interrupts.
 
-Fixes: a33df75c6328 ("block: use an xarray for disk->part_tbl")
-Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230831075900.1725842-1-lilingfeng@huaweicloud.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Track the active SDEI handler per-cpu so that we can COMPLETE_AND_RESUME
+the handler, discarding the interrupted context.
 
-diff --git a/block/ioctl.c b/block/ioctl.c
-index 648670ddb164..d5f5cd61efd7 100644
---- a/block/ioctl.c
-+++ b/block/ioctl.c
-@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_device *bdev,
- 	struct blkpg_partition p;
- 	long long start, length;
+Fixes: f5df26961853 ("arm64: kernel: Add arch-specific SDEI entry code and CPU masking")
+Signed-off-by: D Scott Phillips <scott@os.amperecomputing.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: James Morse <james.morse@arm.com>
+Tested-by: Mihai Carabas <mihai.carabas@oracle.com>
+Link: https://lore.kernel.org/r/20230627002939.2758-1-scott@os.amperecomputing.com
+Signed-off-by: Will Deacon <will@kernel.org>
+
+diff --git a/arch/arm64/include/asm/sdei.h b/arch/arm64/include/asm/sdei.h
+index 4292d9bafb9d..484cb6972e99 100644
+--- a/arch/arm64/include/asm/sdei.h
++++ b/arch/arm64/include/asm/sdei.h
+@@ -17,6 +17,9 @@
  
-+	if (disk->flags & GENHD_FL_NO_PART)
-+		return -EINVAL;
- 	if (!capable(CAP_SYS_ADMIN))
- 		return -EACCES;
- 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
+ #include <asm/virt.h>
+ 
++DECLARE_PER_CPU(struct sdei_registered_event *, sdei_active_normal_event);
++DECLARE_PER_CPU(struct sdei_registered_event *, sdei_active_critical_event);
++
+ extern unsigned long sdei_exit_mode;
+ 
+ /* Software Delegated Exception entry point from firmware*/
+@@ -29,6 +32,9 @@ asmlinkage void __sdei_asm_entry_trampoline(unsigned long event_num,
+ 						   unsigned long pc,
+ 						   unsigned long pstate);
+ 
++/* Abort a running handler. Context is discarded. */
++void __sdei_handler_abort(void);
++
+ /*
+  * The above entry point does the minimum to call C code. This function does
+  * anything else, before calling the driver.
+diff --git a/arch/arm64/kernel/entry.S b/arch/arm64/kernel/entry.S
+index a40e5e50fa55..6ad61de03d0a 100644
+--- a/arch/arm64/kernel/entry.S
++++ b/arch/arm64/kernel/entry.S
+@@ -986,9 +986,13 @@ SYM_CODE_START(__sdei_asm_handler)
+ 
+ 	mov	x19, x1
+ 
+-#if defined(CONFIG_VMAP_STACK) || defined(CONFIG_SHADOW_CALL_STACK)
++	/* Store the registered-event for crash_smp_send_stop() */
+ 	ldrb	w4, [x19, #SDEI_EVENT_PRIORITY]
+-#endif
++	cbnz	w4, 1f
++	adr_this_cpu dst=x5, sym=sdei_active_normal_event, tmp=x6
++	b	2f
++1:	adr_this_cpu dst=x5, sym=sdei_active_critical_event, tmp=x6
++2:	str	x19, [x5]
+ 
+ #ifdef CONFIG_VMAP_STACK
+ 	/*
+@@ -1055,6 +1059,14 @@ SYM_CODE_START(__sdei_asm_handler)
+ 
+ 	ldr_l	x2, sdei_exit_mode
+ 
++	/* Clear the registered-event seen by crash_smp_send_stop() */
++	ldrb	w3, [x4, #SDEI_EVENT_PRIORITY]
++	cbnz	w3, 1f
++	adr_this_cpu dst=x5, sym=sdei_active_normal_event, tmp=x6
++	b	2f
++1:	adr_this_cpu dst=x5, sym=sdei_active_critical_event, tmp=x6
++2:	str	xzr, [x5]
++
+ alternative_if_not ARM64_UNMAP_KERNEL_AT_EL0
+ 	sdei_handler_exit exit_mode=x2
+ alternative_else_nop_endif
+@@ -1065,4 +1077,15 @@ alternative_else_nop_endif
+ #endif
+ SYM_CODE_END(__sdei_asm_handler)
+ NOKPROBE(__sdei_asm_handler)
++
++SYM_CODE_START(__sdei_handler_abort)
++	mov_q	x0, SDEI_1_0_FN_SDEI_EVENT_COMPLETE_AND_RESUME
++	adr	x1, 1f
++	ldr_l	x2, sdei_exit_mode
++	sdei_handler_exit exit_mode=x2
++	// exit the handler and jump to the next instruction.
++	// Exit will stomp x0-x17, PSTATE, ELR_ELx, and SPSR_ELx.
++1:	ret
++SYM_CODE_END(__sdei_handler_abort)
++NOKPROBE(__sdei_handler_abort)
+ #endif /* CONFIG_ARM_SDE_INTERFACE */
+diff --git a/arch/arm64/kernel/sdei.c b/arch/arm64/kernel/sdei.c
+index 830be01af32d..255d12f881c2 100644
+--- a/arch/arm64/kernel/sdei.c
++++ b/arch/arm64/kernel/sdei.c
+@@ -47,6 +47,9 @@ DEFINE_PER_CPU(unsigned long *, sdei_shadow_call_stack_normal_ptr);
+ DEFINE_PER_CPU(unsigned long *, sdei_shadow_call_stack_critical_ptr);
+ #endif
+ 
++DEFINE_PER_CPU(struct sdei_registered_event *, sdei_active_normal_event);
++DEFINE_PER_CPU(struct sdei_registered_event *, sdei_active_critical_event);
++
+ static void _free_sdei_stack(unsigned long * __percpu *ptr, int cpu)
+ {
+ 	unsigned long *p;
+diff --git a/arch/arm64/kernel/smp.c b/arch/arm64/kernel/smp.c
+index edd63894d61e..960b98b43506 100644
+--- a/arch/arm64/kernel/smp.c
++++ b/arch/arm64/kernel/smp.c
+@@ -1044,10 +1044,8 @@ void crash_smp_send_stop(void)
+ 	 * If this cpu is the only one alive at this point in time, online or
+ 	 * not, there are no stop messages to be sent around, so just back out.
+ 	 */
+-	if (num_other_online_cpus() == 0) {
+-		sdei_mask_local_cpu();
+-		return;
+-	}
++	if (num_other_online_cpus() == 0)
++		goto skip_ipi;
+ 
+ 	cpumask_copy(&mask, cpu_online_mask);
+ 	cpumask_clear_cpu(smp_processor_id(), &mask);
+@@ -1066,7 +1064,9 @@ void crash_smp_send_stop(void)
+ 		pr_warn("SMP: failed to stop secondary CPUs %*pbl\n",
+ 			cpumask_pr_args(&mask));
+ 
++skip_ipi:
+ 	sdei_mask_local_cpu();
++	sdei_handler_abort();
+ }
+ 
+ bool smp_crash_stop_failed(void)
+diff --git a/drivers/firmware/arm_sdei.c b/drivers/firmware/arm_sdei.c
+index f9040bd61081..285fe7ad490d 100644
+--- a/drivers/firmware/arm_sdei.c
++++ b/drivers/firmware/arm_sdei.c
+@@ -1095,3 +1095,22 @@ int sdei_event_handler(struct pt_regs *regs,
+ 	return err;
+ }
+ NOKPROBE_SYMBOL(sdei_event_handler);
++
++void sdei_handler_abort(void)
++{
++	/*
++	 * If the crash happened in an SDEI event handler then we need to
++	 * finish the handler with the firmware so that we can have working
++	 * interrupts in the crash kernel.
++	 */
++	if (__this_cpu_read(sdei_active_critical_event)) {
++	        pr_warn("still in SDEI critical event context, attempting to finish handler.\n");
++	        __sdei_handler_abort();
++	        __this_cpu_write(sdei_active_critical_event, NULL);
++	}
++	if (__this_cpu_read(sdei_active_normal_event)) {
++	        pr_warn("still in SDEI normal event context, attempting to finish handler.\n");
++	        __sdei_handler_abort();
++	        __this_cpu_write(sdei_active_normal_event, NULL);
++	}
++}
+diff --git a/include/linux/arm_sdei.h b/include/linux/arm_sdei.h
+index 14dc461b0e82..255701e1251b 100644
+--- a/include/linux/arm_sdei.h
++++ b/include/linux/arm_sdei.h
+@@ -47,10 +47,12 @@ int sdei_unregister_ghes(struct ghes *ghes);
+ int sdei_mask_local_cpu(void);
+ int sdei_unmask_local_cpu(void);
+ void __init sdei_init(void);
++void sdei_handler_abort(void);
+ #else
+ static inline int sdei_mask_local_cpu(void) { return 0; }
+ static inline int sdei_unmask_local_cpu(void) { return 0; }
+ static inline void sdei_init(void) { }
++static inline void sdei_handler_abort(void) { }
+ #endif /* CONFIG_ARM_SDE_INTERFACE */
+ 
+ 
 
