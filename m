@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EFD79981C
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:10 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C97B679981D
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231560AbjIIMxM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 08:53:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52352 "EHLO
+        id S233889AbjIIMxQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 08:53:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52360 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233571AbjIIMxM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:12 -0400
+        with ESMTP id S233571AbjIIMxO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A10DCE6
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E45EC433C8;
-        Sat,  9 Sep 2023 12:53:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8EFDCDE
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13032C433C7;
+        Sat,  9 Sep 2023 12:53:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694263987;
-        bh=LMilABKbfeZW26vbHKR6zsQKIRT44Jh7QibY5xCPF3k=;
+        s=korg; t=1694263990;
+        bh=ldCwN00/2viygq/YNyXoqVk4kaYHbdyJo1uRemV8UtY=;
         h=Subject:To:Cc:From:Date:From;
-        b=FXrlpoAI84NygdRZ84ADMcf5ItbOeGMpRLKpc9CVQZYSSRqfHXLMxQvrvp0HZQ1XG
-         2AojX59dUY8Q3TZ1yg7Yk1DYviDb3HDOx+nRqtCOeknXFXPsQQWg+XH2TMv5GjavTQ
-         EY7uyzZ7UN76c5YhIKrZt8W/duD0j3n4JfFskq7E=
-Subject: FAILED: patch "[PATCH] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL" failed to apply to 5.15-stable tree
+        b=tZgczx+9JNPayQe+kzlvxEBAd0Nk/Ayp88WfN9eCkBAsm7lTTo3axVjDehn3iBw17
+         TL4p0QiudjbOEeDAWQdiSPwj/F3JfGw88Vq3bXyxRI3NQzfHiftuSxmFNwzcfdH5rq
+         EGNg5LIYW3vNSTw2K9mpdpxrw+Ag5An8OWaFoXCs=
+Subject: FAILED: patch "[PATCH] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL" failed to apply to 5.10-stable tree
 To:     axboe@kernel.dk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 13:52:57 +0100
-Message-ID: <2023090957-publisher-ahead-0003@gregkh>
+Date:   Sat, 09 Sep 2023 13:52:58 +0100
+Message-ID: <2023090957-cultivate-bobcat-6219@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x ebdfefc09c6de7897962769bd3e63a2ff443ebf5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090957-publisher-ahead-0003@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090957-cultivate-bobcat-6219@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
