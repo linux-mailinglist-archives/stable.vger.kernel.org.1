@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 853E2799B65
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:26:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E4E4D799B66
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:26:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237334AbjIIV0z (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:26:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
+        id S229851AbjIIV05 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:26:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40702 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbjIIV0y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:26:54 -0400
+        with ESMTP id S242867AbjIIV05 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:26:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC077195
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:26:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0833BC433C8;
-        Sat,  9 Sep 2023 21:26:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B669F195
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:26:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 054D2C433C7;
+        Sat,  9 Sep 2023 21:26:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294809;
-        bh=PgrTxfqnsCojmEomQEvMRldNYSuQwH3IW0kDlxOuckA=;
+        s=korg; t=1694294812;
+        bh=djKtOON/JGL5VxfO8hgj3gvPA4mtLNbDJnMTcufVAac=;
         h=Subject:To:Cc:From:Date:From;
-        b=yDBtVRYZMD7MNxYw57H49Jipk9CTKQj2MG+c/wKNP66XWNtzf4IMuwH/qC7cyLEO8
-         VWzwBWZC3tMEGrFAE5mWrpp4FRBOcjzzS+XKaQw6pgBASOD6hgbm1B/oC1oU2WggJb
-         eYZpihpgdsjBCwqB0hptx2OEnNObu7IIkKBbrWLM=
-Subject: FAILED: patch "[PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch" failed to apply to 6.1-stable tree
+        b=tvFGdn7Ub+r13aFKJWCkY3399u4sU3XjePC+lknyzt6Uom2i9ZR4xNVWXoOTdXygK
+         yhBvqhaFkdIgJ9dLLk6Gwa6EPvF367X0ATH9c+L2R/sOrDCpJnNeQoGirYS1CncQ1i
+         yNkWzSu9TDDayip+kWbo2/CXuKjh5UL+DunDfQds=
+Subject: FAILED: patch "[PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch" failed to apply to 5.15-stable tree
 To:     arnd@arndb.de, ast@kernel.org, yonghong.song@linux.dev
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:26:42 +0100
-Message-ID: <2023090942-raging-premiere-af0c@gregkh>
+Date:   Sat, 09 Sep 2023 22:26:43 +0100
+Message-ID: <2023090943-judiciary-transport-c1ac@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6a5a148aaf14747570cc634f9cdfcb0393f5617f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090942-raging-premiere-af0c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090943-judiciary-transport-c1ac@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
