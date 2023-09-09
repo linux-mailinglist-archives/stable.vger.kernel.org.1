@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEB01799823
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79533799822
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240174AbjIIMyC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 08:54:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56032 "EHLO
+        id S233571AbjIIMxy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 08:53:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47138 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232272AbjIIMyB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:54:01 -0400
+        with ESMTP id S241036AbjIIMxw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E50ACD6
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7CC0C433C8;
-        Sat,  9 Sep 2023 12:53:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D68FDCE7
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2BA96C433C7;
+        Sat,  9 Sep 2023 12:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694264037;
-        bh=1QjV3cy8aZmFP24c94CVOmt21zvnmeS61mxYcaYUF8w=;
+        s=korg; t=1694264028;
+        bh=97H98MmmQbpw2z+wjUoPw62WlMnt02p93ZIIqhOYFyQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=zKAdjg1VcAwcnQ4SmGKU3T42TM75pAwkkzx6QyzPjZvCknYYIJsBNf2VOUV+AvL/M
-         RVUysXU2hGH1VOEbq2++M3zhVnDvKRjKIiJAIz2nc/qoiEzzk4CqtPc1Y6gMEixBdT
-         D2aq0VAmRDAnNlaW1c5EW3TDdN8N7eO6ggSch/oI=
-Subject: FAILED: patch "[PATCH] io_uring: break out of iowq iopoll on teardown" failed to apply to 5.10-stable tree
+        b=PB0V46k4cuB8dNMgUe71fpwuDkkbdgrDrYLbKYDZ6zeJQsG7KKbEF/KcVb97383/H
+         tbTW5bh58YXFZjT4XHyT+0dADrnvLsG5AOqgWm7YjFcvaW7CvmvlIlsZP8JM3WzwV4
+         3NScGED5g8jDjXe/uHi1SjD49W/V0zxEX8X+MbkI=
+Subject: FAILED: patch "[PATCH] io_uring: break out of iowq iopoll on teardown" failed to apply to 5.15-stable tree
 To:     asml.silence@gmail.com, axboe@kernel.dk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sat, 09 Sep 2023 13:53:46 +0100
-Message-ID: <2023090946-waking-jokester-8c89@gregkh>
+Message-ID: <2023090945-mural-humming-67c0@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x 45500dc4e01c167ee063f3dcc22f51ced5b2b1e9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090946-waking-jokester-8c89@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090945-mural-humming-67c0@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
