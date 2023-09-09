@@ -2,125 +2,146 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 86B21799705
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 11:17:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 44D9779978E
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 13:05:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236736AbjIIJRu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 05:17:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40664 "EHLO
+        id S1344908AbjIILFF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 07:05:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33392 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229957AbjIIJRt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 05:17:49 -0400
-Received: from mx01.omp.ru (mx01.omp.ru [90.154.21.10])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADE41186;
-        Sat,  9 Sep 2023 02:17:44 -0700 (PDT)
-Received: from [192.168.1.103] (178.176.75.159) by msexch01.omp.ru
- (10.188.4.12) with Microsoft SMTP Server (version=TLS1_2,
- cipher=TLS_ECDHE_RSA_WITH_AES_256_CBC_SHA384) id 15.2.986.14; Sat, 9 Sep 2023
- 12:17:37 +0300
-Subject: Re: [PATCH AUTOSEL 5.15 11/19] usb: gadget: fsl_qe_udc: validate
- endpoint index for ch9 udc
-To:     Sasha Levin <sashal@kernel.org>, <linux-kernel@vger.kernel.org>,
-        <stable@vger.kernel.org>
-CC:     Ma Ke <make_ruc2021@163.com>, Li Yang <leoyang.li@nxp.com>,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        <linux-usb@vger.kernel.org>, <linuxppc-dev@lists.ozlabs.org>
-References: <20230909003903.3580394-1-sashal@kernel.org>
- <20230909003903.3580394-11-sashal@kernel.org>
-From:   Sergey Shtylyov <s.shtylyov@omp.ru>
-Organization: Open Mobile Platform
-Message-ID: <7d29c746-91ed-1559-6d48-855791d19e76@omp.ru>
-Date:   Sat, 9 Sep 2023 12:17:37 +0300
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:78.0) Gecko/20100101
- Thunderbird/78.10.1
+        with ESMTP id S1344824AbjIILFD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 07:05:03 -0400
+Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A94CFD
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 04:04:57 -0700 (PDT)
+Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50078e52537so4856840e87.1
+        for <stable@vger.kernel.org>; Sat, 09 Sep 2023 04:04:57 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=linaro.org; s=google; t=1694257496; x=1694862296; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :from:to:cc:subject:date:message-id:reply-to;
+        bh=1XUxNwo0jgK1hqYvQ/OBgnXp62Vg7lM+YHP+s8+7VI8=;
+        b=hcoQ/ZccTWwacp/tp4GaHs9wwFhCNF1y9967vcPDmVAI2H5zMSQcCqhhTKYOS+l949
+         2GTZdiH36g7D5F2sGYap/h+5bBrkrRZZuNoSLSDr7NHfwpk3flg883Vwh4OxD/zUwYJk
+         W0/y5FUd0sMArVKb34KJs4RN1l+uH9iotOiCFYvcQE9htjjcVRvi1JlT3lFy/AuYS8o3
+         P2Nblc7UboBOOmqHcKs64YDu0dbkHQpUmGh/yME3WjYWTfz/OOiDk+rDB0BU91RGU287
+         u5S1q5APIx5vALpYwQUYZiFfo4UY0jWL4eA8LXrL/FvDB64K8oTqM3AEnO8g+eNFsMxl
+         gWuw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694257496; x=1694862296;
+        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
+         :to:content-language:subject:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=1XUxNwo0jgK1hqYvQ/OBgnXp62Vg7lM+YHP+s8+7VI8=;
+        b=PZQ+bdfbfT37T1IdHk4QzPgXfy+oH7Ojw1iS406bVjAVsWhJugtLNUOAeMjlEKB69g
+         9HrdSSA2bG3UjcuZ0WPvTrkD5CtmpunQDYaewSYKj02TAFz6BpAqgNeIS/7thrNlcAAp
+         Qt43Eg+5nm9sDeggD09AStSlLpqXOS5sUuRWnu0HC1bZ3CrR0JmSsC4sW7VAmNCviK7x
+         ffYup6+fkwjQJDz8diLUCFYiLSVM+HkGq4/Z85sHoFtgoXYOn1+5+KlPM7p/SjRKgFFM
+         ZVv6y+mHGwU+KNsu+EeZ73IW7wWGp3jLbtv/dRxsaA6dNnkVahIMC1A/G8hV6XHgmdI5
+         mKwg==
+X-Gm-Message-State: AOJu0Yy0IUcv4qFS8KbGt0EiLUNAogi9nq6sB2Z6UWhusloaCQVYK9OG
+        8RXJU5seo4y938knbJAA4UthnQ==
+X-Google-Smtp-Source: AGHT+IElvzkHK7O75wRqtSaZ+3vi5iwX2B4KJcq4CGw/JKy94J6nuTMOmN7FG9+8KVOQ9x+pCxFMAw==
+X-Received: by 2002:a2e:b015:0:b0:2bc:bf29:18d3 with SMTP id y21-20020a2eb015000000b002bcbf2918d3mr3548096ljk.31.1694257495993;
+        Sat, 09 Sep 2023 04:04:55 -0700 (PDT)
+Received: from [192.168.37.232] (178235177205.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.205])
+        by smtp.gmail.com with ESMTPSA id jj27-20020a170907985b00b009929d998abcsm2177208ejc.209.2023.09.09.04.04.53
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sat, 09 Sep 2023 04:04:55 -0700 (PDT)
+Message-ID: <5722031e-96ab-48f6-9848-086be17fe5bf@linaro.org>
+Date:   Sat, 9 Sep 2023 13:04:52 +0200
 MIME-Version: 1.0
-In-Reply-To: <20230909003903.3580394-11-sashal@kernel.org>
-Content-Type: text/plain; charset="utf-8"
+User-Agent: Mozilla Thunderbird
+Subject: Re: [PATCH 1/2] scsi: ufs: ufs-qcom: Update PHY settings only when
+ scaling to higher gears
 Content-Language: en-US
+To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        jejb@linux.ibm.com, martin.petersen@oracle.com
+Cc:     bvanassche@acm.org, avri.altman@wdc.com, alim.akhtar@samsung.com,
+        andersson@kernel.org, linux-arm-msm@vger.kernel.org,
+        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
+        quic_cang@quicinc.com, quic_nitirawa@quicinc.com,
+        stable@vger.kernel.org
+References: <20230908145329.154024-1-manivannan.sadhasivam@linaro.org>
+From:   Konrad Dybcio <konrad.dybcio@linaro.org>
+Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
+ 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
+ izWDgYvmBE8=
+In-Reply-To: <20230908145329.154024-1-manivannan.sadhasivam@linaro.org>
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 7bit
-X-Originating-IP: [178.176.75.159]
-X-ClientProxiedBy: msexch01.omp.ru (10.188.4.12) To msexch01.omp.ru
- (10.188.4.12)
-X-KSE-ServerInfo: msexch01.omp.ru, 9
-X-KSE-AntiSpam-Interceptor-Info: scan successful
-X-KSE-AntiSpam-Version: 5.9.59, Database issued on: 09/09/2023 08:59:14
-X-KSE-AntiSpam-Status: KAS_STATUS_NOT_DETECTED
-X-KSE-AntiSpam-Method: none
-X-KSE-AntiSpam-Rate: 59
-X-KSE-AntiSpam-Info: Lua profiles 179760 [Sep 08 2023]
-X-KSE-AntiSpam-Info: Version: 5.9.59.0
-X-KSE-AntiSpam-Info: Envelope from: s.shtylyov@omp.ru
-X-KSE-AntiSpam-Info: LuaCore: 530 530 ecb1547b3f72d1df4c71c0b60e67ba6b4aea5432
-X-KSE-AntiSpam-Info: {rep_avail}
-X-KSE-AntiSpam-Info: {Tracking_uf_ne_domains}
-X-KSE-AntiSpam-Info: {Tracking_from_domain_doesnt_match_to}
-X-KSE-AntiSpam-Info: {relay has no DNS name}
-X-KSE-AntiSpam-Info: {SMTP from is not routable}
-X-KSE-AntiSpam-Info: {Found in DNSBL: 178.176.75.159 in (user)
- b.barracudacentral.org}
-X-KSE-AntiSpam-Info: 127.0.0.199:7.1.2;lore.kernel.org:7.1.1;omp.ru:7.1.1;d41d8cd98f00b204e9800998ecf8427e.com:7.1.1;178.176.75.159:7.7.3,7.1.2,7.4.1
-X-KSE-AntiSpam-Info: {cloud_iprep_silent}
-X-KSE-AntiSpam-Info: FromAlignment: s
-X-KSE-AntiSpam-Info: {rdns complete}
-X-KSE-AntiSpam-Info: {fromrtbl complete}
-X-KSE-AntiSpam-Info: ApMailHostAddress: 178.176.75.159
-X-KSE-AntiSpam-Info: Rate: 59
-X-KSE-AntiSpam-Info: Status: not_detected
-X-KSE-AntiSpam-Info: Method: none
-X-KSE-AntiSpam-Info: Auth:dmarc=none header.from=omp.ru;spf=none
- smtp.mailfrom=omp.ru;dkim=none
-X-KSE-Antiphishing-Info: Clean
-X-KSE-Antiphishing-ScanningType: Heuristic
-X-KSE-Antiphishing-Method: None
-X-KSE-Antiphishing-Bases: 09/09/2023 09:03:00
-X-KSE-Antivirus-Interceptor-Info: scan successful
-X-KSE-Antivirus-Info: Clean, bases: 9/9/2023 1:20:00 AM
-X-KSE-Attachment-Filter-Triggered-Rules: Clean
-X-KSE-Attachment-Filter-Triggered-Filters: Clean
-X-KSE-BulkMessagesFiltering-Scan-Result: InTheLimit
-X-Spam-Status: No, score=-3.4 required=5.0 tests=BAYES_00,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 9/9/23 3:38 AM, Sasha Levin wrote:
-
-> From: Ma Ke <make_ruc2021@163.com>
+On 8.09.2023 16:53, Manivannan Sadhasivam wrote:
+> The "hs_gear" variable is used to program the PHY settings (submode) during
+> ufs_qcom_power_up_sequence(). Currently, it is being updated every time the
+> agreed gear changes. Due to this, if the gear got downscaled before suspend
+> (runtime/system), then while resuming, the PHY settings for the lower gear
+> will be applied first and later when scaling to max gear with REINIT, the
+> PHY settings for the max gear will be applied.
 > 
-> [ Upstream commit ce9daa2efc0872a9a68ea51dc8000df05893ef2e ]
+> This adds a latency while resuming and also really not needed as the PHY
+> gear settings are backwards compatible i.e., we can continue using the PHY
+> settings for max gear with lower gear speed.
 > 
-> We should verify the bound of the array to assure that host
-> may not manipulate the index to point past endpoint array.
+> So let's update the "hs_gear" variable _only_ when the agreed gear is
+> greater than the current one. This guarantees that the PHY settings will be
+> changed only during probe time and fatal error condition.
 > 
-> Signed-off-by: Ma Ke <make_ruc2021@163.com>
-> Acked-by: Li Yang <leoyang.li@nxp.com>
-> Link: https://lore.kernel.org/r/20230628081511.186850-1-make_ruc2021@163.com
-> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> Due to this, UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH can now be skipped
+> when the PM operation is in progress.
+> 
+> Cc: stable@vger.kernel.org
+> Fixes: 96a7141da332 ("scsi: ufs: core: Add support for reinitializing the UFS device")
+> Reported-by: Can Guo <quic_cang@quicinc.com>
+> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 > ---
->  drivers/usb/gadget/udc/fsl_qe_udc.c | 2 ++
->  1 file changed, 2 insertions(+)
-> 
-> diff --git a/drivers/usb/gadget/udc/fsl_qe_udc.c b/drivers/usb/gadget/udc/fsl_qe_udc.c
-> index 15db7a3868fe4..aff4050f96dd6 100644
-> --- a/drivers/usb/gadget/udc/fsl_qe_udc.c
-> +++ b/drivers/usb/gadget/udc/fsl_qe_udc.c
-> @@ -1956,6 +1956,8 @@ static void ch9getstatus(struct qe_udc *udc, u8 request_type, u16 value,
->  	} else if ((request_type & USB_RECIP_MASK) == USB_RECIP_ENDPOINT) {
->  		/* Get endpoint status */
->  		int pipe = index & USB_ENDPOINT_NUMBER_MASK;
-> +		if (pipe >= USB_MAX_ENDPOINTS)
-> +			goto stall;
+Would that not increase power consumption?
 
-   Hm, what's the earliest version of gcc needed to compile this
-(*if* statement amongst the variable declarations)?
+I'd presume that the PHY needs to work harder at higher gear
+settings to preserve signal integrity with more data flow.
 
->  		struct qe_ep *target_ep = &udc->eps[pipe];
->  		u16 usep;
->  
+And if so, would that power consumption increase be measurable?
+Or is it so small that it doesn't matter?
 
-MBR, Sergey
+Konrad
