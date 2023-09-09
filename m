@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2861A799B5E
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:24:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C842799B60
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:24:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235192AbjIIVY0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:24:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44902 "EHLO
+        id S232877AbjIIVYc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:24:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53120 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjIIVY0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:24:26 -0400
+        with ESMTP id S230470AbjIIVYc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:24:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4330B195
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:24:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8E5CFC433C9;
-        Sat,  9 Sep 2023 21:24:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0954E195
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:24:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53E7FC433C7;
+        Sat,  9 Sep 2023 21:24:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294661;
-        bh=1oNFG+zcXrdAu0pNqAg5ctUnrzkjLOfd3MKDngU8UDs=;
+        s=korg; t=1694294667;
+        bh=Chdbio1iuTf8NecFddJJKnLIMYSug/nPzaHyMB6EZfw=;
         h=Subject:To:Cc:From:Date:From;
-        b=XjzzfNTOBZkd/zg9k2/8eep6+TbsBLCeKVazFOam+kZ3PbWN2uaJL/ftpOO1Jr26z
-         /93/xcXLKtfECTpX5tC273vKLdMYa++kouTc/Nnl08tl736fihy3ryyCb3WfdzgBTS
-         xc5gzN8X9zxDFUnaiLEKC3E00E/bj5ohughWmw60=
-Subject: FAILED: patch "[PATCH] block: fix pin count management when merging same-page" failed to apply to 5.15-stable tree
+        b=p/tIyG0P1hzxEGONzoEvyukyCXA1fyW73rkKIYI+cYls7myfP0A4OroN74p1PHZsh
+         1piP5tinkj1fIbeQgsc5RGdeU4EYN+u94V7jf2gaYYT30eEPyoP8QLKXg3Q5bTctzk
+         swUhu8TYcGcdONvKeXI0S/Bm/gH1r1ajK4zBVRnI=
+Subject: FAILED: patch "[PATCH] block: fix pin count management when merging same-page" failed to apply to 5.10-stable tree
 To:     hch@lst.de, axboe@kernel.dk, dlemoal@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:24:17 +0100
-Message-ID: <2023090917-doable-levers-3d4c@gregkh>
+Date:   Sat, 09 Sep 2023 22:24:18 +0100
+Message-ID: <2023090918-essence-exemplary-3e4c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5905afc2c7bb713d52c7c7585565feecbb686b44
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090917-doable-levers-3d4c@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090918-essence-exemplary-3e4c@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
