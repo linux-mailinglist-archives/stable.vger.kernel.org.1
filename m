@@ -2,48 +2,51 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 946647997B8
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 13:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 097FA799807
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:37:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235150AbjIILrT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 07:47:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35440 "EHLO
+        id S237294AbjIIMhv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 08:37:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37710 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231737AbjIILrT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 07:47:19 -0400
+        with ESMTP id S235495AbjIIMhv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:37:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12DC5186;
-        Sat,  9 Sep 2023 04:47:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55F03C433C8;
-        Sat,  9 Sep 2023 11:47:14 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694260034;
-        bh=KMWBsdp8nGAV3aRsdcvJzjfRJ3yWDJoFWmXVM+GYvHQ=;
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514CD10DF;
+        Sat,  9 Sep 2023 05:37:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BE3C433C8;
+        Sat,  9 Sep 2023 12:37:26 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694263047;
+        bh=qGZjDTBgBkzg/ggNLT5gnojZC24JKQmDu52+T7uLJug=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=ZSNoAPOjuLmayLiYyEGQIg3zAh8C0IwIA0x8gZvRUmUYhaK5vrCsPXS4GJjFLWnL3
-         DlfGQ83t3IfEJ2370DOacV5C2q4djUG+iZz6j5tUsEyGCh4tE370mXJN/9dSE5jxJl
-         9Jgez7MQpYbqiYCWae7KzGfNdJfhIG6gJITyTdqg=
-Date:   Sat, 9 Sep 2023 12:47:11 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco)" 
-        <deeratho@cisco.com>
-Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
- btsdio_remove due to race condition
-Message-ID: <2023090925-eloquence-derail-1e2b@gregkh>
-References: <20230906121525.3946250-1-deeratho@cisco.com>
- <2023090738-passive-snowless-3b9d@gregkh>
- <DM4PR11MB6189DEDD52F3E17C8C4E3D1BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <DM4PR11MB61890EE125816A786D153C22C4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <2023090820-wielder-angled-3def@gregkh>
- <DM4PR11MB618943BFA18521150923326BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <2023090826-fabulous-genetics-e912@gregkh>
- <DM4PR11MB61897793502F49240BCA903CC4ECA@DM4PR11MB6189.namprd11.prod.outlook.com>
+        b=FmwX/oQEqUe5wXL1aO3V1NKYQ0A/ck4flFqaNEuakd4hntYqN+K0kgt+MsHZ/YZh0
+         1l07NP0HQIkBMKPepR1lfhHoJlWGtKA8HFnBXSUJVvtfRWVec+Cna5PrnNmkFebvzR
+         VxHWez0pt0z6g2oGMAb45G0A2ehJGjYDn1yPIZOKejXhNhHGo48KjnoDo3JZvZ58Gp
+         q6/6bAPydt2gQHkcmX7LS2ly6vvOeZG17043B+KCX/40bJjEDNnqSVxqivz6u0lN1H
+         mRIKuGbnPFWxmiuQ4C3hVlAPoK27GvgVCnbZNvfdZ9qoeHetNyhh3CWU0APeO+Nicc
+         51SpTkwAgy03g==
+Date:   Sat, 9 Sep 2023 13:37:19 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Jernej Skrabec <jernej.skrabec@gmail.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>, anarsoul@gmail.com,
+        tiny.windzz@gmail.com, rafael@kernel.org, wens@csie.org,
+        samuel@sholland.org, linux-pm@vger.kernel.org,
+        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Subject: Re: [PATCH AUTOSEL 6.5 6/6] thermal/drivers/sun8i: Free calibration
+ nvmem after reading it
+Message-ID: <ZPxm/xjvsI24JWkB@finisterre.sirena.org.uk>
+References: <20230909011254.3581788-1-sashal@kernel.org>
+ <20230909011254.3581788-6-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="7PlWSsds2SMqCNWn"
 Content-Disposition: inline
-In-Reply-To: <DM4PR11MB61897793502F49240BCA903CC4ECA@DM4PR11MB6189.namprd11.prod.outlook.com>
+In-Reply-To: <20230909011254.3581788-6-sashal@kernel.org>
+X-Cookie: Save energy:  Drive a smaller shell.
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
@@ -54,46 +57,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sat, Sep 09, 2023 at 08:49:52AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
-> -----Original Message-----
-> From: Greg KH <gregkh@linuxfoundation.org> 
-> Sent: Friday, September 8, 2023 12:39 PM
-> To: Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) <deeratho@cisco.com>
-> Cc: stable@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
-> 
-> > A: http://en.wikipedia.org/wiki/Top_post
-> > Q: Were do I find info about this thing called top-posting?
-> > A: Because it messes up the order in which people normally read text.
-> > Q: Why is top-posting such a bad thing?
-> > A: Top-posting.
-> > Q: What is the most annoying thing in e-mail?
-> 
-> > A: No.
-> > Q: Should I include quotations after my reply?
-> 
-> 
-> > http://daringfireball.net/2007/07/on_top
-> 
-> On Fri, Sep 08, 2023 at 06:54:06AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
-> > Hi Greg,
-> > 
-> > This change is required to fix kernel CVE: CVE-2023-1989 which is 
-> > reported in v6.1 kernel version.
-> 
-> > Which change?
-> 
-> [Deepak]: I am referring below change. This below change is required to fix kernel CVE: CVE-2023-1989 which is reported in v6.1 kernel.
-> 
-> Subject: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
-> 
-> From: Zheng Wang <zyytlz.wz@163.com>
-> 
-> [ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
 
-This commit is already in the 6.1.52 kernel release, why do you want it
-included again?
+--7PlWSsds2SMqCNWn
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-confused,
+On Fri, Sep 08, 2023 at 09:12:54PM -0400, Sasha Levin wrote:
+> From: Mark Brown <broonie@kernel.org>
+>=20
+> [ Upstream commit c51592a95f360aabf2b8a5691c550e1749dc41eb ]
+>=20
+> The sun8i thermal driver reads calibration data via the nvmem API at
+> startup, updating the device configuration and not referencing the data
+> again.  Rather than explicitly freeing the nvmem data the driver relies
+> on devm_ to release it, even though the data is never referenced again.
+> The allocation is still tracked so it's not leaked but this is notable
+> when looking at the code and is a little wasteful so let's instead
+> explicitly free the nvmem after we're done with it.
 
-greg k-h
+This is a minor cleanup which as with so much of what's come in today's
+backports seems very questionable for stable.
+
+--7PlWSsds2SMqCNWn
+Content-Type: application/pgp-signature; name="signature.asc"
+
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT8ZvwACgkQJNaLcl1U
+h9DO1wf6AregOqyWwrojgKItcPaiepe27owCB09CFviVb1yo/L6fFLAgzvLxfsjq
+odUxAh2b6MBpXM8FS4OsKpMu13Q74S9OIKDJSsYSc2tJGMRnGE7tWObGzBpk1LOV
+F9xDN1HQkNEVHONjAcbPptTXnn8Uir0HlcOWOS4X3+ESbR+B+QYlQBjTvDBrXt0K
+XM7Ivd/dsbOoJGs225VpG36d2m9NSVWvgrGw6LqMW7JeBibw4MFgb885JQqZDfrZ
+lVvEW6tcG2GJr9RgXN6h0nuKVoHNXqw/vJ/TigQtDLwWq5yU7lkBTT7O6aT0Y8b/
+8Jlx7VlX6PCSrW++oD8oR4zeVvbMgA==
+=iFpi
+-----END PGP SIGNATURE-----
+
+--7PlWSsds2SMqCNWn--
