@@ -2,146 +2,166 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44D9779978E
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 13:05:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CD7B7997A0
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 13:22:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344908AbjIILFF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 07:05:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33392 "EHLO
+        id S1344958AbjIILWL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 07:22:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58542 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1344824AbjIILFD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 07:05:03 -0400
-Received: from mail-lf1-x131.google.com (mail-lf1-x131.google.com [IPv6:2a00:1450:4864:20::131])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6A94CFD
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 04:04:57 -0700 (PDT)
-Received: by mail-lf1-x131.google.com with SMTP id 2adb3069b0e04-50078e52537so4856840e87.1
-        for <stable@vger.kernel.org>; Sat, 09 Sep 2023 04:04:57 -0700 (PDT)
+        with ESMTP id S1344966AbjIILWK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 07:22:10 -0400
+Received: from mail-wr1-x42d.google.com (mail-wr1-x42d.google.com [IPv6:2a00:1450:4864:20::42d])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7540ECF2;
+        Sat,  9 Sep 2023 04:22:04 -0700 (PDT)
+Received: by mail-wr1-x42d.google.com with SMTP id ffacd0b85a97d-31c5c06e8bbso2844429f8f.1;
+        Sat, 09 Sep 2023 04:22:04 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=linaro.org; s=google; t=1694257496; x=1694862296; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=1XUxNwo0jgK1hqYvQ/OBgnXp62Vg7lM+YHP+s8+7VI8=;
-        b=hcoQ/ZccTWwacp/tp4GaHs9wwFhCNF1y9967vcPDmVAI2H5zMSQcCqhhTKYOS+l949
-         2GTZdiH36g7D5F2sGYap/h+5bBrkrRZZuNoSLSDr7NHfwpk3flg883Vwh4OxD/zUwYJk
-         W0/y5FUd0sMArVKb34KJs4RN1l+uH9iotOiCFYvcQE9htjjcVRvi1JlT3lFy/AuYS8o3
-         P2Nblc7UboBOOmqHcKs64YDu0dbkHQpUmGh/yME3WjYWTfz/OOiDk+rDB0BU91RGU287
-         u5S1q5APIx5vALpYwQUYZiFfo4UY0jWL4eA8LXrL/FvDB64K8oTqM3AEnO8g+eNFsMxl
-         gWuw==
+        d=gmail.com; s=20221208; t=1694258523; x=1694863323; darn=vger.kernel.org;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=olquqCu4VyrAvu6/3+9mCZgrXwhPnHpSc12tu4LETGw=;
+        b=A5sjCcRJ8FSuQkUzSHYBsCG5aZ8sebk0Xs37biWxVDH3dDpfNe4y2lnJvIDg+v3KdT
+         +vilHajhUuJuJ5+FHAV5tpvDerzXeW6sos8SkEIa28lq3DFQ9dFBQeNMGURy8Yi1/swB
+         FkNNsPJjoAQjqzWiKUFR8cnzLst0c5/eaifxbiyBDEruCAdDgJwE1TccXNpI3UVfJg53
+         2rqQNzf9uDaSci7JbNX+j7sz8aBJt3cbVj8lJe4Yh4Uz3JYeACp0iuAbphBaYS5otXef
+         Hfm50IiFEnEA7NYUy0uhJOAGNcm7r+NP3YwZ/Tnx6JSYYhsIiEgauq3AJBl376kk1ewL
+         pFKg==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694257496; x=1694862296;
-        h=content-transfer-encoding:in-reply-to:autocrypt:from:references:cc
-         :to:content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=1XUxNwo0jgK1hqYvQ/OBgnXp62Vg7lM+YHP+s8+7VI8=;
-        b=PZQ+bdfbfT37T1IdHk4QzPgXfy+oH7Ojw1iS406bVjAVsWhJugtLNUOAeMjlEKB69g
-         9HrdSSA2bG3UjcuZ0WPvTrkD5CtmpunQDYaewSYKj02TAFz6BpAqgNeIS/7thrNlcAAp
-         Qt43Eg+5nm9sDeggD09AStSlLpqXOS5sUuRWnu0HC1bZ3CrR0JmSsC4sW7VAmNCviK7x
-         ffYup6+fkwjQJDz8diLUCFYiLSVM+HkGq4/Z85sHoFtgoXYOn1+5+KlPM7p/SjRKgFFM
-         ZVv6y+mHGwU+KNsu+EeZ73IW7wWGp3jLbtv/dRxsaA6dNnkVahIMC1A/G8hV6XHgmdI5
-         mKwg==
-X-Gm-Message-State: AOJu0Yy0IUcv4qFS8KbGt0EiLUNAogi9nq6sB2Z6UWhusloaCQVYK9OG
-        8RXJU5seo4y938knbJAA4UthnQ==
-X-Google-Smtp-Source: AGHT+IElvzkHK7O75wRqtSaZ+3vi5iwX2B4KJcq4CGw/JKy94J6nuTMOmN7FG9+8KVOQ9x+pCxFMAw==
-X-Received: by 2002:a2e:b015:0:b0:2bc:bf29:18d3 with SMTP id y21-20020a2eb015000000b002bcbf2918d3mr3548096ljk.31.1694257495993;
-        Sat, 09 Sep 2023 04:04:55 -0700 (PDT)
-Received: from [192.168.37.232] (178235177205.dynamic-4-waw-k-1-1-0.vectranet.pl. [178.235.177.205])
-        by smtp.gmail.com with ESMTPSA id jj27-20020a170907985b00b009929d998abcsm2177208ejc.209.2023.09.09.04.04.53
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Sat, 09 Sep 2023 04:04:55 -0700 (PDT)
-Message-ID: <5722031e-96ab-48f6-9848-086be17fe5bf@linaro.org>
-Date:   Sat, 9 Sep 2023 13:04:52 +0200
+        d=1e100.net; s=20230601; t=1694258523; x=1694863323;
+        h=in-reply-to:content-disposition:mime-version:references:message-id
+         :subject:cc:to:from:date:sender:x-gm-message-state:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=olquqCu4VyrAvu6/3+9mCZgrXwhPnHpSc12tu4LETGw=;
+        b=QIkoasPFWprcVfkuQGRLG36HWdBqRuLHmC324ysSMlX2/iiNmjuVzvDBl83/yTNS4G
+         YKMqY61WOVEKFaIuV8/3dWJxs43XQwA3m/thMqG/7EV3nTbZxjNOR7mpCgTSURLxHViK
+         IbND6xx9avPjXJJL8rsey+ACbY5U8L6N1nYihIKPxHB7ic2iG6XAex5Oh37GNG3cZXut
+         ysegm/5MV0+JjmYSsmnfZSXKwBS2f3aGpEVGL3hhaSpST/769e0dCPS7MFsAfU3uyUyL
+         J/RYbfxtlfL3o8A2D+0x8rszi8xfWSazw+CYKZBr0gIHm04zYfABJLiQFBwtZhYapDAi
+         7AKg==
+X-Gm-Message-State: AOJu0YyPmPjik7o0C2ouEg6a2NNvQ9K4YSyWoStOGWiqqx/2LkgdZVPB
+        ABWNX+5O/8BZ/sMsz6wkEWY=
+X-Google-Smtp-Source: AGHT+IHdd1TEfGIe6W3hDD4K43tkuCkTYFugghytEE7vKaiJjtAYo5HhIHR34ucLn8EAoi+e3RCv4g==
+X-Received: by 2002:a5d:4486:0:b0:317:5b1b:1a40 with SMTP id j6-20020a5d4486000000b003175b1b1a40mr4423668wrq.49.1694258522490;
+        Sat, 09 Sep 2023 04:22:02 -0700 (PDT)
+Received: from eldamar.lan (c-82-192-242-114.customer.ggaweb.ch. [82.192.242.114])
+        by smtp.gmail.com with ESMTPSA id m24-20020a7bce18000000b003feee8d8011sm7575920wmc.41.2023.09.09.04.22.01
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sat, 09 Sep 2023 04:22:01 -0700 (PDT)
+Sender: Salvatore Bonaccorso <salvatore.bonaccorso@gmail.com>
+Received: by eldamar.lan (Postfix, from userid 1000)
+        id 1094BBE2DE0; Sat,  9 Sep 2023 13:22:01 +0200 (CEST)
+Date:   Sat, 9 Sep 2023 13:22:01 +0200
+From:   Salvatore Bonaccorso <carnil@debian.org>
+To:     "Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco)" 
+        <deeratho@cisco.com>
+Cc:     Greg KH <gregkh@linuxfoundation.org>,
+        "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
+ btsdio_remove due to race condition
+Message-ID: <ZPxVWVEfGnsoLeDc@eldamar.lan>
+References: <20230906121525.3946250-1-deeratho@cisco.com>
+ <2023090738-passive-snowless-3b9d@gregkh>
+ <DM4PR11MB6189DEDD52F3E17C8C4E3D1BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
+ <DM4PR11MB61890EE125816A786D153C22C4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
+ <2023090820-wielder-angled-3def@gregkh>
+ <DM4PR11MB618943BFA18521150923326BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
+ <2023090826-fabulous-genetics-e912@gregkh>
+ <DM4PR11MB61897793502F49240BCA903CC4ECA@DM4PR11MB6189.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-User-Agent: Mozilla Thunderbird
-Subject: Re: [PATCH 1/2] scsi: ufs: ufs-qcom: Update PHY settings only when
- scaling to higher gears
-Content-Language: en-US
-To:     Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        jejb@linux.ibm.com, martin.petersen@oracle.com
-Cc:     bvanassche@acm.org, avri.altman@wdc.com, alim.akhtar@samsung.com,
-        andersson@kernel.org, linux-arm-msm@vger.kernel.org,
-        linux-scsi@vger.kernel.org, linux-kernel@vger.kernel.org,
-        quic_cang@quicinc.com, quic_nitirawa@quicinc.com,
-        stable@vger.kernel.org
-References: <20230908145329.154024-1-manivannan.sadhasivam@linaro.org>
-From:   Konrad Dybcio <konrad.dybcio@linaro.org>
-Autocrypt: addr=konrad.dybcio@linaro.org; keydata=
- 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
- izWDgYvmBE8=
-In-Reply-To: <20230908145329.154024-1-manivannan.sadhasivam@linaro.org>
-Content-Type: text/plain; charset=UTF-8
-Content-Transfer-Encoding: 7bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM4PR11MB61897793502F49240BCA903CC4ECA@DM4PR11MB6189.namprd11.prod.outlook.com>
+X-Spam-Status: No, score=-1.5 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_EF,FREEMAIL_FORGED_FROMDOMAIN,FREEMAIL_FROM,
+        HEADER_FROM_DIFFERENT_DOMAINS,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,
+        SPF_PASS autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On 8.09.2023 16:53, Manivannan Sadhasivam wrote:
-> The "hs_gear" variable is used to program the PHY settings (submode) during
-> ufs_qcom_power_up_sequence(). Currently, it is being updated every time the
-> agreed gear changes. Due to this, if the gear got downscaled before suspend
-> (runtime/system), then while resuming, the PHY settings for the lower gear
-> will be applied first and later when scaling to max gear with REINIT, the
-> PHY settings for the max gear will be applied.
+On Sat, Sep 09, 2023 at 08:49:52AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
+> -----Original Message-----
+> From: Greg KH <gregkh@linuxfoundation.org> 
+> Sent: Friday, September 8, 2023 12:39 PM
+> To: Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) <deeratho@cisco.com>
+> Cc: stable@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
 > 
-> This adds a latency while resuming and also really not needed as the PHY
-> gear settings are backwards compatible i.e., we can continue using the PHY
-> settings for max gear with lower gear speed.
+> > A: http://en.wikipedia.org/wiki/Top_post
+> > Q: Were do I find info about this thing called top-posting?
+> > A: Because it messes up the order in which people normally read text.
+> > Q: Why is top-posting such a bad thing?
+> > A: Top-posting.
+> > Q: What is the most annoying thing in e-mail?
 > 
-> So let's update the "hs_gear" variable _only_ when the agreed gear is
-> greater than the current one. This guarantees that the PHY settings will be
-> changed only during probe time and fatal error condition.
+> > A: No.
+> > Q: Should I include quotations after my reply?
 > 
-> Due to this, UFSHCD_QUIRK_REINIT_AFTER_MAX_GEAR_SWITCH can now be skipped
-> when the PM operation is in progress.
 > 
-> Cc: stable@vger.kernel.org
-> Fixes: 96a7141da332 ("scsi: ufs: core: Add support for reinitializing the UFS device")
-> Reported-by: Can Guo <quic_cang@quicinc.com>
-> Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-> ---
-Would that not increase power consumption?
+> > http://daringfireball.net/2007/07/on_top
+> 
+> On Fri, Sep 08, 2023 at 06:54:06AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
+> > Hi Greg,
+> > 
+> > This change is required to fix kernel CVE: CVE-2023-1989 which is 
+> > reported in v6.1 kernel version.
+> 
+> > Which change?
+> 
+> [Deepak]: I am referring below change. This below change is required to fix kernel CVE: CVE-2023-1989 which is reported in v6.1 kernel.
+> 
+> Subject: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
+> 
+> From: Zheng Wang <zyytlz.wz@163.com>
+> 
+> [ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
+> 
+> In btsdio_probe, the data->work is bound with btsdio_work. It will be started in btsdio_send_frame.
+> 
+> If the btsdio_remove runs with a unfinished work, there may be a race condition that hdev is freed but used in btsdio_work. Fix it by canceling the work before do cleanup in btsdio_remove.
+> 
+> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+> Signed-off-by: Deepak Rathore <deeratho@cisco.com>
+> 
+> diff --git a/drivers/bluetooth/btsdio.c b/drivers/bluetooth/btsdio.c index 795be33f2892..f19d31ee37ea 100644
+> --- a/drivers/bluetooth/btsdio.c
+> +++ b/drivers/bluetooth/btsdio.c
+> @@ -357,6 +357,7 @@ static void btsdio_remove(struct sdio_func *func)
+>  	if (!data)
+>  		return;
+>  
+> +	cancel_work_sync(&data->work);
+>  	hdev = data->hdev;
+>  
+>  	sdio_set_drvdata(func, NULL);
+> --
+> 2.35.6
+> 
+> 
+> > It is fixed in upstream starting from v6.3 kernel version and required 
+> > to fix in 6.1 kernel version as well so we have backported this from
+> > v6.3 kernel version to v6.1 and I have sent this patch for review and 
+> > merging.
+> 
+> > Again, what commit are you referring to here.
+> 
+> > confused,
+> 
+> > greg k-h
+> 
+> [Deepak]: Sorry for the inconvenience that my message did not provide all the details.
+> The kernel CVE: CVE-2023-1989 is fixed in upstream with this commit: https://github.com/torvalds/linux/commit/73f7b171b7c09139eb3c6a5677c200dc1be5f318
+> Starting from v6.3 kernel and we have to fix this in 6.1 kernel as well, so we have backported this from v6.3 kernel version to v6.1 kernel.
 
-I'd presume that the PHY needs to work harder at higher gear
-settings to preserve signal integrity with more data flow.
+This change was already backported to 6.1.y and released in v6.1.52?
 
-And if so, would that power consumption increase be measurable?
-Or is it so small that it doesn't matter?
+It is commit 179c65828593aff1f444e15debd40a477cb23cf4 .
 
-Konrad
+Regards,
+Salvatore
