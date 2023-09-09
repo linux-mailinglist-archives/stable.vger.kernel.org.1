@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1800799B64
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:26:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 853E2799B65
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:26:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237178AbjIIV0x (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:26:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57634 "EHLO
+        id S237334AbjIIV0z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:26:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40700 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229851AbjIIV0v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:26:51 -0400
+        with ESMTP id S229851AbjIIV0y (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:26:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD5F3195
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:26:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F2DFC433C9;
-        Sat,  9 Sep 2023 21:26:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC077195
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:26:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0833BC433C8;
+        Sat,  9 Sep 2023 21:26:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294806;
-        bh=CGecHe4iYG3pewe122fKtZa7q0q5kTe5Y+78KzAE7tc=;
+        s=korg; t=1694294809;
+        bh=PgrTxfqnsCojmEomQEvMRldNYSuQwH3IW0kDlxOuckA=;
         h=Subject:To:Cc:From:Date:From;
-        b=a9A4+NNpzrmdr+ukpcB58YPshsddaASs7+Bq6zVOyh3IrKlv4wn4qL303DK1sZq7e
-         lrG/5niemE/QhsVkFtLCz1B/ssKqWXDP+Zl0N2qWgfZ8h7IbdRmeFKCI07iMctbkRh
-         D3sIUHmpHvZQGvQOJWdnZpoC7hUUMhHU4jdkau0c=
-Subject: FAILED: patch "[PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch" failed to apply to 6.4-stable tree
+        b=yDBtVRYZMD7MNxYw57H49Jipk9CTKQj2MG+c/wKNP66XWNtzf4IMuwH/qC7cyLEO8
+         VWzwBWZC3tMEGrFAE5mWrpp4FRBOcjzzS+XKaQw6pgBASOD6hgbm1B/oC1oU2WggJb
+         eYZpihpgdsjBCwqB0hptx2OEnNObu7IIkKBbrWLM=
+Subject: FAILED: patch "[PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch" failed to apply to 6.1-stable tree
 To:     arnd@arndb.de, ast@kernel.org, yonghong.song@linux.dev
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:26:41 +0100
-Message-ID: <2023090941-predator-relocate-32e5@gregkh>
+Date:   Sat, 09 Sep 2023 22:26:42 +0100
+Message-ID: <2023090942-raging-premiere-af0c@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,24 +42,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.4-stable tree.
+The patch below does not apply to the 6.1-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
 git cherry-pick -x 6a5a148aaf14747570cc634f9cdfcb0393f5617f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090941-predator-relocate-32e5@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090942-raging-premiere-af0c@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
 6a5a148aaf14 ("bpf: fix bpf_probe_read_kernel prototype mismatch")
 1f9a1ea821ff ("bpf: Support new sign-extension load insns")
+06accc8779c1 ("bpf: add support for open-coded iterator loops")
+215bf4962f6c ("bpf: add iterator kfuncs registration and validation logic")
+a461f5adf177 ("bpf: generalize dynptr_get_spi to be usable for iters")
+d0e1ac227945 ("bpf: move kfunc_call_arg_meta higher in the file")
+653ae3a874ac ("bpf: clean up visit_insn()'s instruction processing")
+98ddcf389d1b ("bpf: honor env->test_state_freq flag in is_state_visited()")
+d54e0f6c1adf ("bpf: improve stack slot state printing")
+0d80a619c113 ("bpf: allow ctx writes using BPF_ST_MEM instruction")
+6fcd486b3a0a ("bpf: Refactor RCU enforcement in the verifier.")
+20c09d92faee ("bpf: Introduce kptr_rcu.")
+8d093b4e95a2 ("bpf: Mark cgroups and dfl_cgrp fields as trusted.")
+66e3a13e7c2c ("bpf: Add bpf_dynptr_slice and bpf_dynptr_slice_rdwr")
+05421aecd4ed ("bpf: Add xdp dynptrs")
+b5964b968ac6 ("bpf: Add skb dynptrs")
+d96d937d7c5c ("bpf: Add __uninit kfunc annotation")
+485ec51ef976 ("bpf: Refactor verifier dynptr into get_dynptr_arg_reg")
+8357b366cbb0 ("bpf: Define no-ops for externally called bpf dynptr functions")
+1d18feb2c915 ("bpf: Allow initializing dynptrs in kfuncs")
 
 thanks,
 
