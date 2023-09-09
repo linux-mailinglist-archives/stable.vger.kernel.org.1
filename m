@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CED1799B61
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:24:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ED216799B63
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:26:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240700AbjIIVYg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:24:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53146 "EHLO
+        id S230470AbjIIV0s (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:26:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57624 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjIIVYf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:24:35 -0400
+        with ESMTP id S229851AbjIIV0s (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:26:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 096BE195
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:24:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD78C433C7;
-        Sat,  9 Sep 2023 21:24:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F12FC195
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:26:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 214CFC433C8;
+        Sat,  9 Sep 2023 21:26:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294670;
-        bh=7aEN5HqypXiv06LBr+h8PW7IPfoM13wpXHAbQ3KAK58=;
+        s=korg; t=1694294803;
+        bh=2VDTkMl51oCVFvgMOhrboX4cR9pgcaI1z8e38HqoT98=;
         h=Subject:To:Cc:From:Date:From;
-        b=Sxjnay3pzvtRIL13Y0vw1z6JJZFRlvTWOJ/Ga2o9YouHuVH6yQuNcxgfMjGx1f01e
-         cL89+ooQaKVByhqo9/BIvkoWYYzyE1foFaiyj9r0ZsOmsnCS6aOcFjShJqqYBBvLCe
-         E7kE0CtBqlVnEIkOM2eYNl5gEIIVQb38fSsVAcbQ=
-Subject: FAILED: patch "[PATCH] block: fix pin count management when merging same-page" failed to apply to 5.4-stable tree
-To:     hch@lst.de, axboe@kernel.dk, dlemoal@kernel.org
+        b=MCfpiO9g2GZ0nePVGRZbHAq7efhQjR6iJKY+D5iSa+JpUh2y/QZFgQfHDrFBtVmcC
+         98S9IO4FVytYxYs5Kcr/1eRshTTWxYWLsjHhxY0gZGIDvwlelY9U0dpx+cEP0lKGOJ
+         WbElYgN78FMGBf0HJQFWCipVrwHzcx2mx9jqv96g=
+Subject: FAILED: patch "[PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch" failed to apply to 6.5-stable tree
+To:     arnd@arndb.de, ast@kernel.org, yonghong.song@linux.dev
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:24:19 +0100
-Message-ID: <2023090919-eastcoast-tameness-5f28@gregkh>
+Date:   Sat, 09 Sep 2023 22:26:40 +0100
+Message-ID: <2023090940-recede-unicorn-1885@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,42 +42,24 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 6.5-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
 git checkout FETCH_HEAD
-git cherry-pick -x 5905afc2c7bb713d52c7c7585565feecbb686b44
+git cherry-pick -x 6a5a148aaf14747570cc634f9cdfcb0393f5617f
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090919-eastcoast-tameness-5f28@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090940-recede-unicorn-1885@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
 
 Possible dependencies:
 
-5905afc2c7bb ("block: fix pin count management when merging same-page segments")
-403b6fb8dac1 ("block: convert bio_map_user_iov to use iov_iter_extract_pages")
-f62e52d1276b ("iov_iter: Define flags to qualify page extraction.")
-7ee4ccf57484 ("block: set FOLL_PCI_P2PDMA in bio_map_user_iov()")
-5e3e3f2e15df ("block: set FOLL_PCI_P2PDMA in __bio_iov_iter_get_pages()")
-d82076403cef ("iov_iter: introduce iov_iter_get_pages_[alloc_]flags()")
-91e5adda5cf4 ("block/blk-map: Remove set but unused variable 'added'")
-e88811bc43b9 ("block: use on-stack page vec for <= UIO_FASTIOV")
-eba2d3d79829 ("get rid of non-advancing variants")
-480cb846c27b ("block: convert to advancing variants of iov_iter_get_pages{,_alloc}()")
-3cf42da327f2 ("iov_iter: saner helper for page array allocation")
-8520008417c5 ("fold __pipe_get_pages() into pipe_get_pages()")
-0aa4fc32f540 ("ITER_XARRAY: don't open-code DIV_ROUND_UP()")
-451c0ba9475e ("unify the rest of iov_iter_get_pages()/iov_iter_get_pages_alloc() guts")
-68fe506f3731 ("unify xarray_get_pages() and xarray_get_pages_alloc()")
-acbdeb8320b0 ("unify pipe_get_pages() and pipe_get_pages_alloc()")
-c81ce28df500 ("iov_iter_get_pages(): sanity-check arguments")
-91329559eb07 ("iov_iter_get_pages_alloc(): lift freeing pages array on failure exits into wrapper")
-12d426ab64a1 ("ITER_PIPE: fold data_start() and pipe_space_for_user() together")
-10f525a8cd7a ("ITER_PIPE: cache the type of last buffer")
+6a5a148aaf14 ("bpf: fix bpf_probe_read_kernel prototype mismatch")
+1f9a1ea821ff ("bpf: Support new sign-extension load insns")
 
 thanks,
 
@@ -85,41 +67,123 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 5905afc2c7bb713d52c7c7585565feecbb686b44 Mon Sep 17 00:00:00 2001
-From: Christoph Hellwig <hch@lst.de>
-Date: Tue, 5 Sep 2023 14:47:31 +0200
-Subject: [PATCH] block: fix pin count management when merging same-page
- segments
+From 6a5a148aaf14747570cc634f9cdfcb0393f5617f Mon Sep 17 00:00:00 2001
+From: Arnd Bergmann <arnd@arndb.de>
+Date: Tue, 1 Aug 2023 13:13:58 +0200
+Subject: [PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch
 
-There is no need to unpin the added page when adding it to the bio fails
-as that is done by the loop below.  Instead we want to unpin it when adding
-a single page to the bio more than once as bio_release_pages will only
-unpin it once.
+bpf_probe_read_kernel() has a __weak definition in core.c and another
+definition with an incompatible prototype in kernel/trace/bpf_trace.c,
+when CONFIG_BPF_EVENTS is enabled.
 
-Fixes: d1916c86ccdc ("block: move same page handling from __bio_add_pc_page to the callers")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Link: https://lore.kernel.org/r/20230905124731.328255-1-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Since the two are incompatible, there cannot be a shared declaration in
+a header file, but the lack of a prototype causes a W=1 warning:
 
-diff --git a/block/blk-map.c b/block/blk-map.c
-index 44d74a30ddac..8584babf3ea0 100644
---- a/block/blk-map.c
-+++ b/block/blk-map.c
-@@ -315,12 +315,11 @@ static int bio_map_user_iov(struct request *rq, struct iov_iter *iter,
- 					n = bytes;
+kernel/bpf/core.c:1638:12: error: no previous prototype for 'bpf_probe_read_kernel' [-Werror=missing-prototypes]
+
+On 32-bit architectures, the local prototype
+
+u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
+
+passes arguments in other registers as the one in bpf_trace.c
+
+BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
+            const void *, unsafe_ptr)
+
+which uses 64-bit arguments in pairs of registers.
+
+As both versions of the function are fairly simple and only really
+differ in one line, just move them into a header file as an inline
+function that does not add any overhead for the bpf_trace.c callers
+and actually avoids a function call for the other one.
+
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/all/ac25cb0f-b804-1649-3afb-1dc6138c2716@iogearbox.net/
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20230801111449.185301-1-arnd@kernel.org
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+
+diff --git a/include/linux/bpf.h b/include/linux/bpf.h
+index ceaa8c23287f..abe75063630b 100644
+--- a/include/linux/bpf.h
++++ b/include/linux/bpf.h
+@@ -2661,6 +2661,18 @@ static inline void bpf_dynptr_set_rdonly(struct bpf_dynptr_kern *ptr)
+ }
+ #endif /* CONFIG_BPF_SYSCALL */
  
- 				if (!bio_add_hw_page(rq->q, bio, page, n, offs,
--						     max_sectors, &same_page)) {
--					if (same_page)
--						bio_release_page(bio, page);
-+						     max_sectors, &same_page))
- 					break;
--				}
++static __always_inline int
++bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
++{
++	int ret = -EFAULT;
++
++	if (IS_ENABLED(CONFIG_BPF_EVENTS))
++		ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
++	if (unlikely(ret < 0))
++		memset(dst, 0, size);
++	return ret;
++}
++
+ void __bpf_free_used_btfs(struct bpf_prog_aux *aux,
+ 			  struct btf_mod_pair *used_btfs, u32 len);
  
-+				if (same_page)
-+					bio_release_page(bio, page);
- 				bytes -= n;
- 				offs = 0;
- 			}
+diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
+index baccdec22f19..0f8f036d8bd1 100644
+--- a/kernel/bpf/core.c
++++ b/kernel/bpf/core.c
+@@ -1650,12 +1650,6 @@ bool bpf_opcode_in_insntable(u8 code)
+ }
+ 
+ #ifndef CONFIG_BPF_JIT_ALWAYS_ON
+-u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
+-{
+-	memset(dst, 0, size);
+-	return -EFAULT;
+-}
+-
+ /**
+  *	___bpf_prog_run - run eBPF program on a given context
+  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
+@@ -2066,8 +2060,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 		DST = *(SIZE *)(unsigned long) (SRC + insn->off);	\
+ 		CONT;							\
+ 	LDX_PROBE_MEM_##SIZEOP:						\
+-		bpf_probe_read_kernel(&DST, sizeof(SIZE),		\
+-				      (const void *)(long) (SRC + insn->off));	\
++		bpf_probe_read_kernel_common(&DST, sizeof(SIZE),	\
++			      (const void *)(long) (SRC + insn->off));	\
+ 		DST = *((SIZE *)&DST);					\
+ 		CONT;
+ 
+@@ -2082,7 +2076,7 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
+ 		DST = *(SIZE *)(unsigned long) (SRC + insn->off);	\
+ 		CONT;							\
+ 	LDX_PROBE_MEMSX_##SIZEOP:					\
+-		bpf_probe_read_kernel(&DST, sizeof(SIZE),		\
++		bpf_probe_read_kernel_common(&DST, sizeof(SIZE),		\
+ 				      (const void *)(long) (SRC + insn->off));	\
+ 		DST = *((SIZE *)&DST);					\
+ 		CONT;
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index c92eb8c6ff08..83bde2475ae5 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -223,17 +223,6 @@ const struct bpf_func_proto bpf_probe_read_user_str_proto = {
+ 	.arg3_type	= ARG_ANYTHING,
+ };
+ 
+-static __always_inline int
+-bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
+-{
+-	int ret;
+-
+-	ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
+-	if (unlikely(ret < 0))
+-		memset(dst, 0, size);
+-	return ret;
+-}
+-
+ BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
+ 	   const void *, unsafe_ptr)
+ {
 
