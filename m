@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C4CCA799B6B
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:27:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BADA0799B6F
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:33:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237308AbjIIV1J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:27:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60310 "EHLO
+        id S232141AbjIIVdH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:33:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242999AbjIIV1I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:27:08 -0400
+        with ESMTP id S229550AbjIIVdH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:33:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223A0195
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:27:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68483C433C7;
-        Sat,  9 Sep 2023 21:27:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7EDDF195
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:33:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD79EC433C8;
+        Sat,  9 Sep 2023 21:33:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294823;
-        bh=tTqVQn/+oxXCXonpiVNmifsFjFmpCHgYwlRFMsOwP7I=;
+        s=korg; t=1694295183;
+        bh=LL5ONTF+7WzWA1nvX5bXq+KIFxa2b6iymWwYKEuCWQg=;
         h=Subject:To:Cc:From:Date:From;
-        b=bOztRkiToHx8XZZx5EX18w41nXm2C1WLbG5ZjaRyTcgrPXO8Go7TtpieXLSjVFFxk
-         BuurulAGXRROmR2NTL2mcEbkKIyYC5+mmsdGQGpzTw0zBTbOHABskavRrmDEkR5G/0
-         xu9G2gmRtsXy/XgCxSbmBLBWwLcx9kRC20zstpQg=
-Subject: FAILED: patch "[PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch" failed to apply to 4.14-stable tree
-To:     arnd@arndb.de, ast@kernel.org, yonghong.song@linux.dev
+        b=Eh0Y1LNcZW9ScAC5seW+PO/ohRyjwOcQcpi0ciYw7FEdbKkmMcfr8WcPF9BYq8qwe
+         XnCJLeoQhPXMUX+QlVlpCETX12dw0h62s8nWloeMZZDNBBkiL5tDorkwanb+crwQov
+         wczchq0onRvRa9Mk8BIJWubtiyS4j4zJcdlJZ5A4=
+Subject: FAILED: patch "[PATCH] block: don't add or resize partition on the disk with" failed to apply to 5.15-stable tree
+To:     lilingfeng3@huawei.com, axboe@kernel.dk, hch@lst.de
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:26:48 +0100
-Message-ID: <2023090947-drainer-chatter-7ac5@gregkh>
+Date:   Sat, 09 Sep 2023 22:32:47 +0100
+Message-ID: <2023090947-apprehend-immobile-0fb5@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,42 +42,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
-git cherry-pick -x 6a5a148aaf14747570cc634f9cdfcb0393f5617f
+git cherry-pick -x 1a721de8489fa559ff4471f73c58bb74ac5580d3
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090947-drainer-chatter-7ac5@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090947-apprehend-immobile-0fb5@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
-6a5a148aaf14 ("bpf: fix bpf_probe_read_kernel prototype mismatch")
-1f9a1ea821ff ("bpf: Support new sign-extension load insns")
-06accc8779c1 ("bpf: add support for open-coded iterator loops")
-215bf4962f6c ("bpf: add iterator kfuncs registration and validation logic")
-a461f5adf177 ("bpf: generalize dynptr_get_spi to be usable for iters")
-d0e1ac227945 ("bpf: move kfunc_call_arg_meta higher in the file")
-653ae3a874ac ("bpf: clean up visit_insn()'s instruction processing")
-98ddcf389d1b ("bpf: honor env->test_state_freq flag in is_state_visited()")
-d54e0f6c1adf ("bpf: improve stack slot state printing")
-0d80a619c113 ("bpf: allow ctx writes using BPF_ST_MEM instruction")
-6fcd486b3a0a ("bpf: Refactor RCU enforcement in the verifier.")
-20c09d92faee ("bpf: Introduce kptr_rcu.")
-8d093b4e95a2 ("bpf: Mark cgroups and dfl_cgrp fields as trusted.")
-66e3a13e7c2c ("bpf: Add bpf_dynptr_slice and bpf_dynptr_slice_rdwr")
-05421aecd4ed ("bpf: Add xdp dynptrs")
-b5964b968ac6 ("bpf: Add skb dynptrs")
-d96d937d7c5c ("bpf: Add __uninit kfunc annotation")
-485ec51ef976 ("bpf: Refactor verifier dynptr into get_dynptr_arg_reg")
-8357b366cbb0 ("bpf: Define no-ops for externally called bpf dynptr functions")
-1d18feb2c915 ("bpf: Allow initializing dynptrs in kfuncs")
+1a721de8489f ("block: don't add or resize partition on the disk with GENHD_FL_NO_PART")
 
 thanks,
 
@@ -85,123 +66,37 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 6a5a148aaf14747570cc634f9cdfcb0393f5617f Mon Sep 17 00:00:00 2001
-From: Arnd Bergmann <arnd@arndb.de>
-Date: Tue, 1 Aug 2023 13:13:58 +0200
-Subject: [PATCH] bpf: fix bpf_probe_read_kernel prototype mismatch
+From 1a721de8489fa559ff4471f73c58bb74ac5580d3 Mon Sep 17 00:00:00 2001
+From: Li Lingfeng <lilingfeng3@huawei.com>
+Date: Thu, 31 Aug 2023 15:59:00 +0800
+Subject: [PATCH] block: don't add or resize partition on the disk with
+ GENHD_FL_NO_PART
 
-bpf_probe_read_kernel() has a __weak definition in core.c and another
-definition with an incompatible prototype in kernel/trace/bpf_trace.c,
-when CONFIG_BPF_EVENTS is enabled.
+Commit a33df75c6328 ("block: use an xarray for disk->part_tbl") remove
+disk_expand_part_tbl() in add_partition(), which means all kinds of
+devices will support extended dynamic `dev_t`.
+However, some devices with GENHD_FL_NO_PART are not expected to add or
+resize partition.
+Fix this by adding check of GENHD_FL_NO_PART before add or resize
+partition.
 
-Since the two are incompatible, there cannot be a shared declaration in
-a header file, but the lack of a prototype causes a W=1 warning:
+Fixes: a33df75c6328 ("block: use an xarray for disk->part_tbl")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230831075900.1725842-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-kernel/bpf/core.c:1638:12: error: no previous prototype for 'bpf_probe_read_kernel' [-Werror=missing-prototypes]
-
-On 32-bit architectures, the local prototype
-
-u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
-
-passes arguments in other registers as the one in bpf_trace.c
-
-BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
-            const void *, unsafe_ptr)
-
-which uses 64-bit arguments in pairs of registers.
-
-As both versions of the function are fairly simple and only really
-differ in one line, just move them into a header file as an inline
-function that does not add any overhead for the bpf_trace.c callers
-and actually avoids a function call for the other one.
-
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/all/ac25cb0f-b804-1649-3afb-1dc6138c2716@iogearbox.net/
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Acked-by: Yonghong Song <yonghong.song@linux.dev>
-Link: https://lore.kernel.org/r/20230801111449.185301-1-arnd@kernel.org
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
-
-diff --git a/include/linux/bpf.h b/include/linux/bpf.h
-index ceaa8c23287f..abe75063630b 100644
---- a/include/linux/bpf.h
-+++ b/include/linux/bpf.h
-@@ -2661,6 +2661,18 @@ static inline void bpf_dynptr_set_rdonly(struct bpf_dynptr_kern *ptr)
- }
- #endif /* CONFIG_BPF_SYSCALL */
+diff --git a/block/ioctl.c b/block/ioctl.c
+index 648670ddb164..d5f5cd61efd7 100644
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_device *bdev,
+ 	struct blkpg_partition p;
+ 	long long start, length;
  
-+static __always_inline int
-+bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
-+{
-+	int ret = -EFAULT;
-+
-+	if (IS_ENABLED(CONFIG_BPF_EVENTS))
-+		ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
-+	if (unlikely(ret < 0))
-+		memset(dst, 0, size);
-+	return ret;
-+}
-+
- void __bpf_free_used_btfs(struct bpf_prog_aux *aux,
- 			  struct btf_mod_pair *used_btfs, u32 len);
- 
-diff --git a/kernel/bpf/core.c b/kernel/bpf/core.c
-index baccdec22f19..0f8f036d8bd1 100644
---- a/kernel/bpf/core.c
-+++ b/kernel/bpf/core.c
-@@ -1650,12 +1650,6 @@ bool bpf_opcode_in_insntable(u8 code)
- }
- 
- #ifndef CONFIG_BPF_JIT_ALWAYS_ON
--u64 __weak bpf_probe_read_kernel(void *dst, u32 size, const void *unsafe_ptr)
--{
--	memset(dst, 0, size);
--	return -EFAULT;
--}
--
- /**
-  *	___bpf_prog_run - run eBPF program on a given context
-  *	@regs: is the array of MAX_BPF_EXT_REG eBPF pseudo-registers
-@@ -2066,8 +2060,8 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 		DST = *(SIZE *)(unsigned long) (SRC + insn->off);	\
- 		CONT;							\
- 	LDX_PROBE_MEM_##SIZEOP:						\
--		bpf_probe_read_kernel(&DST, sizeof(SIZE),		\
--				      (const void *)(long) (SRC + insn->off));	\
-+		bpf_probe_read_kernel_common(&DST, sizeof(SIZE),	\
-+			      (const void *)(long) (SRC + insn->off));	\
- 		DST = *((SIZE *)&DST);					\
- 		CONT;
- 
-@@ -2082,7 +2076,7 @@ static u64 ___bpf_prog_run(u64 *regs, const struct bpf_insn *insn)
- 		DST = *(SIZE *)(unsigned long) (SRC + insn->off);	\
- 		CONT;							\
- 	LDX_PROBE_MEMSX_##SIZEOP:					\
--		bpf_probe_read_kernel(&DST, sizeof(SIZE),		\
-+		bpf_probe_read_kernel_common(&DST, sizeof(SIZE),		\
- 				      (const void *)(long) (SRC + insn->off));	\
- 		DST = *((SIZE *)&DST);					\
- 		CONT;
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index c92eb8c6ff08..83bde2475ae5 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -223,17 +223,6 @@ const struct bpf_func_proto bpf_probe_read_user_str_proto = {
- 	.arg3_type	= ARG_ANYTHING,
- };
- 
--static __always_inline int
--bpf_probe_read_kernel_common(void *dst, u32 size, const void *unsafe_ptr)
--{
--	int ret;
--
--	ret = copy_from_kernel_nofault(dst, unsafe_ptr, size);
--	if (unlikely(ret < 0))
--		memset(dst, 0, size);
--	return ret;
--}
--
- BPF_CALL_3(bpf_probe_read_kernel, void *, dst, u32, size,
- 	   const void *, unsafe_ptr)
- {
++	if (disk->flags & GENHD_FL_NO_PART)
++		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
 
