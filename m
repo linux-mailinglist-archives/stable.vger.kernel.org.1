@@ -2,40 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5BF65799849
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 15:04:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B05F799873
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 15:14:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232665AbjIINEH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 09:04:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52296 "EHLO
+        id S232018AbjIINOS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 09:14:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58788 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232018AbjIINEH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 09:04:07 -0400
+        with ESMTP id S1345979AbjIINOS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 09:14:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38E609C
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 06:04:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50820C433C7;
-        Sat,  9 Sep 2023 13:04:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F6DC1B0
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 06:14:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F2BAC433C8;
+        Sat,  9 Sep 2023 13:14:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694264642;
-        bh=hArHBTDzt1KASVs4qhnpUrQsPKXls1OmNwkGJn5e66U=;
+        s=korg; t=1694265252;
+        bh=3/+OFC/6d9JHllzx38du7rtTxB0BReJZJED7Yw0DScE=;
         h=Subject:To:Cc:From:Date:From;
-        b=dxKMH0Qq+waYfaFGBZAN6FF2JVjXI8hLacGaZlEh57DpQ277U8k+TGsVp/Fabgr4f
-         HZpf53jywJ+xCULR9k5F+J2bDT+SI1iUojWTTma1in7O/5N3aj6+qQ4dPuL2OSSBiw
-         xqeLTs5mjM7qnzwCYKkeXX+k7UtPRdz3v16wn5Z0=
-Subject: FAILED: patch "[PATCH] Multi-gen LRU: fix per-zone reclaim" failed to apply to 6.1-stable tree
-To:     kaleshsingh@google.com, akpm@linux-foundation.org,
-        aneesh.kumar@linux.ibm.com,
-        angelogioacchino.delregno@collabora.com, baohua@kernel.org,
-        bgeffon@google.com, heftig@archlinux.org,
-        lecopzer.chen@mediatek.com, matthias.bgg@gmail.com,
-        oleksandr@natalenko.name, quic_charante@quicinc.com,
-        stable@vger.kernel.org, steven@liquorix.net, suleiman@google.com,
-        surenb@google.com, yuzhao@google.com, zhengqi.arch@bytedance.com
+        b=H+1XAuck1uLnD5blJQsOe8Xn01AWQ4+GmOTznAGm0O9u+MGY9OC6I9OgDNZj7ORgG
+         PDXGuly8OAhnMj+WkTH8wzEsnURfxUTQQyBhTIkE4BBjB54+1qh4lWZmVtXYvpGmQi
+         5jGnOvRIZ5gzWO/ATNOK/TZJJFORGPuq5zXErxl4=
+Subject: FAILED: patch "[PATCH] io_uring: break out of iowq iopoll on teardown" failed to apply to 6.1-stable tree
+To:     asml.silence@gmail.com, axboe@kernel.dk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 14:04:00 +0100
-Message-ID: <2023090959-mothproof-scarf-6195@gregkh>
+Date:   Sat, 09 Sep 2023 14:14:09 +0100
+Message-ID: <2023090909-unnatural-giddiness-7f7a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -58,15 +51,14 @@ To reproduce the conflict and resubmit, you may use the following commands:
 
 git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
 git checkout FETCH_HEAD
-git cherry-pick -x 669281ee7ef731fb5204df9d948669bf32a5e68d
+git cherry-pick -x 45500dc4e01c167ee063f3dcc22f51ced5b2b1e9
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090959-mothproof-scarf-6195@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090909-unnatural-giddiness-7f7a@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
 
 Possible dependencies:
 
-669281ee7ef7 ("Multi-gen LRU: fix per-zone reclaim")
-6df1b2212950 ("mm: multi-gen LRU: rename lrugen->lists[] to lrugen->folios[]")
+45500dc4e01c ("io_uring: break out of iowq iopoll on teardown")
 
 thanks,
 
@@ -74,152 +66,66 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From 669281ee7ef731fb5204df9d948669bf32a5e68d Mon Sep 17 00:00:00 2001
-From: Kalesh Singh <kaleshsingh@google.com>
-Date: Tue, 1 Aug 2023 19:56:02 -0700
-Subject: [PATCH] Multi-gen LRU: fix per-zone reclaim
+From 45500dc4e01c167ee063f3dcc22f51ced5b2b1e9 Mon Sep 17 00:00:00 2001
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Thu, 7 Sep 2023 13:50:07 +0100
+Subject: [PATCH] io_uring: break out of iowq iopoll on teardown
 
-MGLRU has a LRU list for each zone for each type (anon/file) in each
-generation:
+io-wq will retry iopoll even when it failed with -EAGAIN. If that
+races with task exit, which sets TIF_NOTIFY_SIGNAL for all its workers,
+such workers might potentially infinitely spin retrying iopoll again and
+again and each time failing on some allocation / waiting / etc. Don't
+keep spinning if io-wq is dying.
 
-	long nr_pages[MAX_NR_GENS][ANON_AND_FILE][MAX_NR_ZONES];
+Fixes: 561fb04a6a225 ("io_uring: replace workqueue usage with io-wq")
+Cc: stable@vger.kernel.org
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 
-The min_seq (oldest generation) can progress independently for each
-type but the max_seq (youngest generation) is shared for both anon and
-file. This is to maintain a common frame of reference.
-
-In order for eviction to advance the min_seq of a type, all the per-zone
-lists in the oldest generation of that type must be empty.
-
-The eviction logic only considers pages from eligible zones for
-eviction or promotion.
-
-    scan_folios() {
-	...
-	for (zone = sc->reclaim_idx; zone >= 0; zone--)  {
-	    ...
-	    sort_folio(); 	// Promote
-	    ...
-	    isolate_folio(); 	// Evict
-	}
-	...
-    }
-
-Consider the system has the movable zone configured and default 4
-generations. The current state of the system is as shown below
-(only illustrating one type for simplicity):
-
-Type: ANON
-
-	Zone    DMA32     Normal    Movable    Device
-
-	Gen 0       0          0        4GB         0
-
-	Gen 1       0        1GB        1MB         0
-
-	Gen 2     1MB        4GB        1MB         0
-
-	Gen 3     1MB        1MB        1MB         0
-
-Now consider there is a GFP_KERNEL allocation request (eligible zone
-index <= Normal), evict_folios() will return without doing any work
-since there are no pages to scan in the eligible zones of the oldest
-generation. Reclaim won't make progress until triggered from a ZONE_MOVABLE
-allocation request; which may not happen soon if there is a lot of free
-memory in the movable zone. This can lead to OOM kills, although there
-is 1GB pages in the Normal zone of Gen 1 that we have not yet tried to
-reclaim.
-
-This issue is not seen in the conventional active/inactive LRU since
-there are no per-zone lists.
-
-If there are no (not enough) folios to scan in the eligible zones, move
-folios from ineligible zone (zone_index > reclaim_index) to the next
-generation. This allows for the progression of min_seq and reclaiming
-from the next generation (Gen 1).
-
-Qualcomm, Mediatek and raspberrypi [1] discovered this issue independently.
-
-[1] https://github.com/raspberrypi/linux/issues/5395
-
-Link: https://lkml.kernel.org/r/20230802025606.346758-1-kaleshsingh@google.com
-Fixes: ac35a4902374 ("mm: multi-gen LRU: minimal implementation")
-Signed-off-by: Kalesh Singh <kaleshsingh@google.com>
-Reported-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Reported-by: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Tested-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com> [mediatek]
-Tested-by: Charan Teja Kalla <quic_charante@quicinc.com>
-Cc: Yu Zhao <yuzhao@google.com>
-Cc: Barry Song <baohua@kernel.org>
-Cc: Brian Geffon <bgeffon@google.com>
-Cc: Jan Alexander Steffens (heftig) <heftig@archlinux.org>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Oleksandr Natalenko <oleksandr@natalenko.name>
-Cc: Qi Zheng <zhengqi.arch@bytedance.com>
-Cc: Steven Barrett <steven@liquorix.net>
-Cc: Suleiman Souhlal <suleiman@google.com>
-Cc: Suren Baghdasaryan <surenb@google.com>
-Cc: Aneesh Kumar K V <aneesh.kumar@linux.ibm.com>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-
-diff --git a/mm/vmscan.c b/mm/vmscan.c
-index 4039620d30fe..489a4fc7d9b1 100644
---- a/mm/vmscan.c
-+++ b/mm/vmscan.c
-@@ -4889,7 +4889,8 @@ static int lru_gen_memcg_seg(struct lruvec *lruvec)
-  *                          the eviction
-  ******************************************************************************/
+diff --git a/io_uring/io-wq.c b/io_uring/io-wq.c
+index 62f345587df5..1ecc8c748768 100644
+--- a/io_uring/io-wq.c
++++ b/io_uring/io-wq.c
+@@ -174,6 +174,16 @@ static void io_worker_ref_put(struct io_wq *wq)
+ 		complete(&wq->worker_done);
+ }
  
--static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
-+static bool sort_folio(struct lruvec *lruvec, struct folio *folio, struct scan_control *sc,
-+		       int tier_idx)
- {
- 	bool success;
- 	int gen = folio_lru_gen(folio);
-@@ -4939,6 +4940,13 @@ static bool sort_folio(struct lruvec *lruvec, struct folio *folio, int tier_idx)
- 		return true;
- 	}
- 
-+	/* ineligible */
-+	if (zone > sc->reclaim_idx) {
-+		gen = folio_inc_gen(lruvec, folio, false);
-+		list_move_tail(&folio->lru, &lrugen->folios[gen][type][zone]);
-+		return true;
-+	}
++bool io_wq_worker_stopped(void)
++{
++	struct io_worker *worker = current->worker_private;
 +
- 	/* waiting for writeback */
- 	if (folio_test_locked(folio) || folio_test_writeback(folio) ||
- 	    (type == LRU_GEN_FILE && folio_test_dirty(folio))) {
-@@ -4987,7 +4995,8 @@ static bool isolate_folio(struct lruvec *lruvec, struct folio *folio, struct sca
- static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
- 		       int type, int tier, struct list_head *list)
++	if (WARN_ON_ONCE(!io_wq_current_is_worker()))
++		return true;
++
++	return test_bit(IO_WQ_BIT_EXIT, &worker->wq->state);
++}
++
+ static void io_worker_cancel_cb(struct io_worker *worker)
  {
--	int gen, zone;
-+	int i;
-+	int gen;
- 	enum vm_event_item item;
- 	int sorted = 0;
- 	int scanned = 0;
-@@ -5003,9 +5012,10 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
+ 	struct io_wq_acct *acct = io_wq_get_acct(worker);
+diff --git a/io_uring/io-wq.h b/io_uring/io-wq.h
+index 06d9ca90c577..2b2a6406dd8e 100644
+--- a/io_uring/io-wq.h
++++ b/io_uring/io-wq.h
+@@ -52,6 +52,7 @@ void io_wq_hash_work(struct io_wq_work *work, void *val);
  
- 	gen = lru_gen_from_seq(lrugen->min_seq[type]);
+ int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask);
+ int io_wq_max_workers(struct io_wq *wq, int *new_count);
++bool io_wq_worker_stopped(void);
  
--	for (zone = sc->reclaim_idx; zone >= 0; zone--) {
-+	for (i = MAX_NR_ZONES; i > 0; i--) {
- 		LIST_HEAD(moved);
- 		int skipped = 0;
-+		int zone = (sc->reclaim_idx + i) % MAX_NR_ZONES;
- 		struct list_head *head = &lrugen->folios[gen][type][zone];
- 
- 		while (!list_empty(head)) {
-@@ -5019,7 +5029,7 @@ static int scan_folios(struct lruvec *lruvec, struct scan_control *sc,
- 
- 			scanned += delta;
- 
--			if (sort_folio(lruvec, folio, tier))
-+			if (sort_folio(lruvec, folio, sc, tier))
- 				sorted += delta;
- 			else if (isolate_folio(lruvec, folio, sc)) {
- 				list_add(&folio->lru, list);
+ static inline bool io_wq_is_hashed(struct io_wq_work *work)
+ {
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index 0f0ba31c3850..58d8dd34a45f 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1975,6 +1975,8 @@ void io_wq_submit_work(struct io_wq_work *work)
+ 		if (!needs_poll) {
+ 			if (!(req->ctx->flags & IORING_SETUP_IOPOLL))
+ 				break;
++			if (io_wq_worker_stopped())
++				break;
+ 			cond_resched();
+ 			continue;
+ 		}
 
