@@ -2,34 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54C03799B56
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:18:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A8397799B58
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:20:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241812AbjIIVSz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:18:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
+        id S239267AbjIIVUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:20:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjIIVSz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:18:55 -0400
+        with ESMTP id S230470AbjIIVUJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:20:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792F1131
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:18:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AA2C433C9;
-        Sat,  9 Sep 2023 21:18:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0E42B131
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:20:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59632C433C8;
+        Sat,  9 Sep 2023 21:20:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294331;
-        bh=5sN3H7AeN/LIwuvKFfQxD7LaVAYXz6b8nJEf/y2KhpQ=;
+        s=korg; t=1694294404;
+        bh=M7ormSILeTpz/bQWTIAkrqg34pXGxBX/hI41ToDfS/0=;
         h=Subject:To:Cc:From:Date:From;
-        b=Rm4HikKyDTfV4Gygp2EdvZPbl0fu82x53NynHXqZhUpPc4424cr1zPAOsOfapXi6U
-         d4iYGlLHO5PJcs3xgvfUApK6sslcCnT8aTu8hK12jKnT+MtpuedPZDxV5ObzbmaB8k
-         nDpqD8zhiF7a0bqTAxshHtCnyVeZuL+xfuT999EY=
-Subject: FAILED: patch "[PATCH] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after" failed to apply to 4.14-stable tree
-To:     konrad.dybcio@linaro.org, hverkuil-cisco@xs4all.nl,
-        stanimir.k.varbanov@gmail.com
+        b=X+/HykaLmM+8bgOn+7j+E4TzAwM9+DzfH4t/WKscQFhfEJiCJqqemt0aaOikmKKpO
+         t8KmxAi4N5E9WKjs/ugqNNf7gN/VbshBH4DmHgqTVvifr0Tg2kA96uR8X8E+IsTTOv
+         pkH0NBB1I6gEFlMKrY5cnN7B5UIT329Y00W9DFic=
+Subject: FAILED: patch "[PATCH] scsi: mpt3sas: Perform additional retries if doorbell read" failed to apply to 5.4-stable tree
+To:     ranjan.kumar@broadcom.com, martin.petersen@oracle.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:18:38 +0100
-Message-ID: <2023090938-ceremony-cinch-9f48@gregkh>
+Date:   Sat, 09 Sep 2023 22:20:01 +0100
+Message-ID: <2023090901-refinance-partake-fb8a@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,42 +42,23 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.14-stable tree.
+The patch below does not apply to the 5.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
 git checkout FETCH_HEAD
-git cherry-pick -x d74e481609808330b4625b3691cf01e1f56e255e
+git cherry-pick -x 4ca10f3e31745d35249a727ecd108eb58f0a8c5e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090938-ceremony-cinch-9f48@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090901-refinance-partake-fb8a@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
 
 Possible dependencies:
 
-d74e48160980 ("media: venus: hfi_venus: Write to VIDC_CTRL_INIT after unmasking interrupts")
-255385ca433c ("media: venus: hfi: Add a 6xx boot logic")
-ff2a7013b3e6 ("media: venus: hfi,pm,firmware: Convert to block relative addressing")
-7482a983dea3 ("media: venus: redesign clocks and pm domains control")
-fd1ee315dcd4 ("media: venus: cache vb payload to be used by clock scaling")
-219031a6e7df ("media: venus: fix build on 32bit environments")
-c0e284ccfeda ("media: venus: Update clock scaling")
-8dbebb2bd01e ("media: venus: Fix occasionally failures to suspend")
-32f0a6ddc8c9 ("media: venus: Use on-chip interconnect API")
-d42974e438fe ("media: venus: dec: populate properly timestamps and flags for capture buffers")
-beac82904a87 ("media: venus: make decoder compliant with stateful codec API")
-14ea00d65c65 ("media: venus: helpers: add three more helper functions")
-1e485ee5a724 ("media: venus: helpers: export few helper functions")
-a132459d4009 ("media: venus: core: fix max load for msm8996 and sdm845")
-5792ae7c3dd4 ("media: venus: firmware: check fw size against DT memory region size")
-87e25f4b2c3c ("media: venus: fix reported size of 0-length buffers")
-df381dc8e475 ("media: venus: firmware: add no TZ boot and shutdown routine")
-f9799fcce4bb ("media: venus: firmware: register separate platform_device for firmware loader")
-a4cf7e3c069d ("media: venus: firmware: move load firmware in a separate function")
-5df317c8786b ("media: venus: firmware: add routine to reset ARM9")
+
 
 thanks,
 
@@ -86,41 +66,182 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From d74e481609808330b4625b3691cf01e1f56e255e Mon Sep 17 00:00:00 2001
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
-Date: Tue, 30 May 2023 14:30:36 +0200
-Subject: [PATCH] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after
- unmasking interrupts
+From 4ca10f3e31745d35249a727ecd108eb58f0a8c5e Mon Sep 17 00:00:00 2001
+From: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Date: Tue, 29 Aug 2023 14:30:19 +0530
+Subject: [PATCH] scsi: mpt3sas: Perform additional retries if doorbell read
+ returns 0
 
-The startup procedure shouldn't be started with interrupts masked, as that
-may entail silent failures.
+The driver retries certain register reads 3 times if the returned value is
+0. This was done because the controller could return 0 for certain
+registers if other registers were being accessed concurrently by the BMC.
 
-Kick off initialization only after the interrupts are unmasked.
+In certain systems with increased BMC interactions, the register values
+returned can be 0 for longer than 3 retries. Change the retry count from 3
+to 30 for the affected registers to prevent problems with out-of-band
+management.
 
-Cc: stable@vger.kernel.org # v4.12+
-Fixes: d96d3f30c0f2 ("[media] media: venus: hfi: add Venus HFI files")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Stanimir Varbanov <stanimir.k.varbanov@gmail.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: b899202901a8 ("scsi: mpt3sas: Add separate function for aero doorbell reads")
+Cc: stable@vger.kernel.org
+Signed-off-by: Ranjan Kumar <ranjan.kumar@broadcom.com>
+Link: https://lore.kernel.org/r/20230829090020.5417-2-ranjan.kumar@broadcom.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 
-diff --git a/drivers/media/platform/qcom/venus/hfi_venus.c b/drivers/media/platform/qcom/venus/hfi_venus.c
-index 918a283bd890..5506a0d196ef 100644
---- a/drivers/media/platform/qcom/venus/hfi_venus.c
-+++ b/drivers/media/platform/qcom/venus/hfi_venus.c
-@@ -453,7 +453,6 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- 	void __iomem *wrapper_base = hdev->core->wrapper_base;
- 	int ret = 0;
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.c b/drivers/scsi/mpt3sas/mpt3sas_base.c
+index 53f5492579cb..5284584e4cd2 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.c
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.c
+@@ -138,6 +138,9 @@ _base_get_ioc_facts(struct MPT3SAS_ADAPTER *ioc);
+ static void
+ _base_clear_outstanding_commands(struct MPT3SAS_ADAPTER *ioc);
  
--	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
- 	if (IS_V6(hdev->core)) {
- 		mask_val = readl(wrapper_base + WRAPPER_INTR_MASK);
- 		mask_val &= ~(WRAPPER_INTR_MASK_A2HWD_BASK_V6 |
-@@ -464,6 +463,7 @@ static int venus_boot_core(struct venus_hfi_device *hdev)
- 	writel(mask_val, wrapper_base + WRAPPER_INTR_MASK);
- 	writel(1, cpu_cs_base + CPU_CS_SCIACMDARG3);
++static u32
++_base_readl_ext_retry(const volatile void __iomem *addr);
++
+ /**
+  * mpt3sas_base_check_cmd_timeout - Function
+  *		to check timeout and command termination due
+@@ -213,6 +216,20 @@ _base_readl_aero(const volatile void __iomem *addr)
+ 	return ret_val;
+ }
  
-+	writel(BIT(VIDC_CTRL_INIT_CTRL_SHIFT), cpu_cs_base + VIDC_CTRL_INIT);
- 	while (!ctrl_status && count < max_tries) {
- 		ctrl_status = readl(cpu_cs_base + CPU_CS_SCIACMDARG0);
- 		if ((ctrl_status & CPU_CS_SCIACMDARG0_ERROR_STATUS_MASK) == 4) {
++static u32
++_base_readl_ext_retry(const volatile void __iomem *addr)
++{
++	u32 i, ret_val;
++
++	for (i = 0 ; i < 30 ; i++) {
++		ret_val = readl(addr);
++		if (ret_val == 0)
++			continue;
++	}
++
++	return ret_val;
++}
++
+ static inline u32
+ _base_readl(const volatile void __iomem *addr)
+ {
+@@ -940,7 +957,7 @@ mpt3sas_halt_firmware(struct MPT3SAS_ADAPTER *ioc)
+ 
+ 	dump_stack();
+ 
+-	doorbell = ioc->base_readl(&ioc->chip->Doorbell);
++	doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 	if ((doorbell & MPI2_IOC_STATE_MASK) == MPI2_IOC_STATE_FAULT) {
+ 		mpt3sas_print_fault_code(ioc, doorbell &
+ 		    MPI2_DOORBELL_DATA_MASK);
+@@ -6686,7 +6703,7 @@ mpt3sas_base_get_iocstate(struct MPT3SAS_ADAPTER *ioc, int cooked)
+ {
+ 	u32 s, sc;
+ 
+-	s = ioc->base_readl(&ioc->chip->Doorbell);
++	s = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 	sc = s & MPI2_IOC_STATE_MASK;
+ 	return cooked ? sc : s;
+ }
+@@ -6831,7 +6848,7 @@ _base_wait_for_doorbell_ack(struct MPT3SAS_ADAPTER *ioc, int timeout)
+ 					   __func__, count, timeout));
+ 			return 0;
+ 		} else if (int_status & MPI2_HIS_IOC2SYS_DB_STATUS) {
+-			doorbell = ioc->base_readl(&ioc->chip->Doorbell);
++			doorbell = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 			if ((doorbell & MPI2_IOC_STATE_MASK) ==
+ 			    MPI2_IOC_STATE_FAULT) {
+ 				mpt3sas_print_fault_code(ioc, doorbell);
+@@ -6871,7 +6888,7 @@ _base_wait_for_doorbell_not_used(struct MPT3SAS_ADAPTER *ioc, int timeout)
+ 	count = 0;
+ 	cntdn = 1000 * timeout;
+ 	do {
+-		doorbell_reg = ioc->base_readl(&ioc->chip->Doorbell);
++		doorbell_reg = ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 		if (!(doorbell_reg & MPI2_DOORBELL_USED)) {
+ 			dhsprintk(ioc,
+ 				  ioc_info(ioc, "%s: successful count(%d), timeout(%d)\n",
+@@ -7019,7 +7036,7 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 	__le32 *mfp;
+ 
+ 	/* make sure doorbell is not in use */
+-	if ((ioc->base_readl(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
++	if ((ioc->base_readl_ext_retry(&ioc->chip->Doorbell) & MPI2_DOORBELL_USED)) {
+ 		ioc_err(ioc, "doorbell is in use (line=%d)\n", __LINE__);
+ 		return -EFAULT;
+ 	}
+@@ -7068,7 +7085,7 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 	}
+ 
+ 	/* read the first two 16-bits, it gives the total length of the reply */
+-	reply[0] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
++	reply[0] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
+ 	    & MPI2_DOORBELL_DATA_MASK);
+ 	writel(0, &ioc->chip->HostInterruptStatus);
+ 	if ((_base_wait_for_doorbell_int(ioc, 5))) {
+@@ -7076,7 +7093,7 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 			__LINE__);
+ 		return -EFAULT;
+ 	}
+-	reply[1] = le16_to_cpu(ioc->base_readl(&ioc->chip->Doorbell)
++	reply[1] = le16_to_cpu(ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
+ 	    & MPI2_DOORBELL_DATA_MASK);
+ 	writel(0, &ioc->chip->HostInterruptStatus);
+ 
+@@ -7087,10 +7104,10 @@ _base_handshake_req_reply_wait(struct MPT3SAS_ADAPTER *ioc, int request_bytes,
+ 			return -EFAULT;
+ 		}
+ 		if (i >=  reply_bytes/2) /* overflow case */
+-			ioc->base_readl(&ioc->chip->Doorbell);
++			ioc->base_readl_ext_retry(&ioc->chip->Doorbell);
+ 		else
+ 			reply[i] = le16_to_cpu(
+-			    ioc->base_readl(&ioc->chip->Doorbell)
++			    ioc->base_readl_ext_retry(&ioc->chip->Doorbell)
+ 			    & MPI2_DOORBELL_DATA_MASK);
+ 		writel(0, &ioc->chip->HostInterruptStatus);
+ 	}
+@@ -7949,7 +7966,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER *ioc)
+ 			goto out;
+ 		}
+ 
+-		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
++		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
+ 		drsprintk(ioc,
+ 			  ioc_info(ioc, "wrote magic sequence: count(%d), host_diagnostic(0x%08x)\n",
+ 				   count, host_diagnostic));
+@@ -7969,7 +7986,7 @@ _base_diag_reset(struct MPT3SAS_ADAPTER *ioc)
+ 	for (count = 0; count < (300000000 /
+ 		MPI2_HARD_RESET_PCIE_SECOND_READ_DELAY_MICRO_SEC); count++) {
+ 
+-		host_diagnostic = ioc->base_readl(&ioc->chip->HostDiagnostic);
++		host_diagnostic = ioc->base_readl_ext_retry(&ioc->chip->HostDiagnostic);
+ 
+ 		if (host_diagnostic == 0xFFFFFFFF) {
+ 			ioc_info(ioc,
+@@ -8359,10 +8376,13 @@ mpt3sas_base_attach(struct MPT3SAS_ADAPTER *ioc)
+ 	ioc->rdpq_array_enable_assigned = 0;
+ 	ioc->use_32bit_dma = false;
+ 	ioc->dma_mask = 64;
+-	if (ioc->is_aero_ioc)
++	if (ioc->is_aero_ioc) {
+ 		ioc->base_readl = &_base_readl_aero;
+-	else
++		ioc->base_readl_ext_retry = &_base_readl_ext_retry;
++	} else {
+ 		ioc->base_readl = &_base_readl;
++		ioc->base_readl_ext_retry = &_base_readl;
++	}
+ 	r = mpt3sas_base_map_resources(ioc);
+ 	if (r)
+ 		goto out_free_resources;
+diff --git a/drivers/scsi/mpt3sas/mpt3sas_base.h b/drivers/scsi/mpt3sas/mpt3sas_base.h
+index 05364aa15ecd..10055c7e4a9f 100644
+--- a/drivers/scsi/mpt3sas/mpt3sas_base.h
++++ b/drivers/scsi/mpt3sas/mpt3sas_base.h
+@@ -1618,6 +1618,7 @@ struct MPT3SAS_ADAPTER {
+ 	u8		diag_trigger_active;
+ 	u8		atomic_desc_capable;
+ 	BASE_READ_REG	base_readl;
++	BASE_READ_REG	base_readl_ext_retry;
+ 	struct SL_WH_MASTER_TRIGGER_T diag_trigger_master;
+ 	struct SL_WH_EVENT_TRIGGERS_T diag_trigger_event;
+ 	struct SL_WH_SCSI_TRIGGERS_T diag_trigger_scsi;
 
