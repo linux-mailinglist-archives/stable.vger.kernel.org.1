@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B172799B80
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:53:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 20CBD799B81
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:53:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344617AbjIIVxv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:53:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52910 "EHLO
+        id S1344636AbjIIVxy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:53:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49104 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229550AbjIIVxv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:53:51 -0400
+        with ESMTP id S229550AbjIIVxx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:53:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F2D1BB
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:53:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B727DC433C7;
-        Sat,  9 Sep 2023 21:53:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 874D4BB
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:53:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D2BD7C433C7;
+        Sat,  9 Sep 2023 21:53:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694296426;
-        bh=f+03fpvdj6SoWA14l49IzbtciO9x/WgU/uJY8GrJazA=;
+        s=korg; t=1694296429;
+        bh=w9aUZ/wKXC8nUDSQSUEjPrrUxrDIJn+Bcr+p1XDl4vw=;
         h=Subject:To:Cc:From:Date:From;
-        b=dcVNrX+RVwx6u/YjzQPv/NSdV2dVY5e1n4RA8W7OcBPRg6tImFqFiBZufgyxWowB3
-         VXRAXksW2YETmVNLXWXIdXBqdHwtoVlnO0GRp5JRNRjBbluilsc1Hx0gT3d/g9mPBh
-         akl6iIZGPWAzCULyKM49P/NjRbLsPz/CLaSrC360=
-Subject: FAILED: patch "[PATCH] arm64: sdei: abort running SDEI handlers during crash" failed to apply to 4.19-stable tree
+        b=GbhkdXLKWud7I6bX4Klnza0cglZ4BctlE76T3wynAPDj0BoiyYzjbZMWnA0VjsQm7
+         lZRZl8ywjVNLBwHhYLbmNiJTDoFgrLGGE5jS7yoQI6KJxyngDM1AT78ASlfhCBsiEl
+         ahhqWzWBin4vGmrunsrxfcGuBvPsZ5OvRwnDtdQc=
+Subject: FAILED: patch "[PATCH] arm64: sdei: abort running SDEI handlers during crash" failed to apply to 4.14-stable tree
 To:     scott@os.amperecomputing.com, james.morse@arm.com,
         mihai.carabas@oracle.com, will@kernel.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 22:53:33 +0100
-Message-ID: <2023090933-prong-impound-90c8@gregkh>
+Date:   Sat, 09 Sep 2023 22:53:34 +0100
+Message-ID: <2023090934-covenant-breeches-6db3@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x 5cd474e57368f0957c343bb21e309cf82826b1ef
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090933-prong-impound-90c8@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090934-covenant-breeches-6db3@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
