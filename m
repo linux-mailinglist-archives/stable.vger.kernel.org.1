@@ -2,55 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 097FA799807
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:37:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E5C9799818
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:52:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237294AbjIIMhv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 08:37:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37710 "EHLO
+        id S232873AbjIIMwq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 08:52:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54942 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235495AbjIIMhv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:37:51 -0400
+        with ESMTP id S231560AbjIIMwp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:52:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 514CD10DF;
-        Sat,  9 Sep 2023 05:37:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3BE3C433C8;
-        Sat,  9 Sep 2023 12:37:26 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694263047;
-        bh=qGZjDTBgBkzg/ggNLT5gnojZC24JKQmDu52+T7uLJug=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=FmwX/oQEqUe5wXL1aO3V1NKYQ0A/ck4flFqaNEuakd4hntYqN+K0kgt+MsHZ/YZh0
-         1l07NP0HQIkBMKPepR1lfhHoJlWGtKA8HFnBXSUJVvtfRWVec+Cna5PrnNmkFebvzR
-         VxHWez0pt0z6g2oGMAb45G0A2ehJGjYDn1yPIZOKejXhNhHGo48KjnoDo3JZvZ58Gp
-         q6/6bAPydt2gQHkcmX7LS2ly6vvOeZG17043B+KCX/40bJjEDNnqSVxqivz6u0lN1H
-         mRIKuGbnPFWxmiuQ4C3hVlAPoK27GvgVCnbZNvfdZ9qoeHetNyhh3CWU0APeO+Nicc
-         51SpTkwAgy03g==
-Date:   Sat, 9 Sep 2023 13:37:19 +0100
-From:   Mark Brown <broonie@kernel.org>
-To:     Sasha Levin <sashal@kernel.org>
-Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Jernej Skrabec <jernej.skrabec@gmail.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>, anarsoul@gmail.com,
-        tiny.windzz@gmail.com, rafael@kernel.org, wens@csie.org,
-        samuel@sholland.org, linux-pm@vger.kernel.org,
-        linux-arm-kernel@lists.infradead.org, linux-sunxi@lists.linux.dev,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Subject: Re: [PATCH AUTOSEL 6.5 6/6] thermal/drivers/sun8i: Free calibration
- nvmem after reading it
-Message-ID: <ZPxm/xjvsI24JWkB@finisterre.sirena.org.uk>
-References: <20230909011254.3581788-1-sashal@kernel.org>
- <20230909011254.3581788-6-sashal@kernel.org>
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FC1FCD6
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:52:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7B6B3C433C7;
+        Sat,  9 Sep 2023 12:52:40 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694263960;
+        bh=roKHUddYX1qhvdKXQQ/nXdr4U29dthla5QqsqaMp7J4=;
+        h=Subject:To:Cc:From:Date:From;
+        b=jX+MGD9A8iHJb99MFS5Hb8pT4hJG381LOrE/LLfYM3U3IMmJfIRxOl+M+Bez+MhpN
+         VhyQ2gV0hSXNvbKMd1cq2cSFLCGBSALHS5KMmovuKB6l3RSLKZ18Kb/nGWQnezQ8c2
+         yRIAe1PoTI2PlxgsSW3iVAe4ccb4d0Gvx4IAWHz0=
+Subject: FAILED: patch "[PATCH] io_uring: break iopolling on signal" failed to apply to 5.15-stable tree
+To:     asml.silence@gmail.com, axboe@kernel.dk
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sat, 09 Sep 2023 13:52:38 +0100
+Message-ID: <2023090938-retriever-jaws-74d8@gregkh>
 MIME-Version: 1.0
-Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="7PlWSsds2SMqCNWn"
-Content-Disposition: inline
-In-Reply-To: <20230909011254.3581788-6-sashal@kernel.org>
-X-Cookie: Save energy:  Drive a smaller shell.
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=ANSI_X3.4-1968
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -58,40 +42,76 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---7PlWSsds2SMqCNWn
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-Content-Transfer-Encoding: quoted-printable
+The patch below does not apply to the 5.15-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-On Fri, Sep 08, 2023 at 09:12:54PM -0400, Sasha Levin wrote:
-> From: Mark Brown <broonie@kernel.org>
->=20
-> [ Upstream commit c51592a95f360aabf2b8a5691c550e1749dc41eb ]
->=20
-> The sun8i thermal driver reads calibration data via the nvmem API at
-> startup, updating the device configuration and not referencing the data
-> again.  Rather than explicitly freeing the nvmem data the driver relies
-> on devm_ to release it, even though the data is never referenced again.
-> The allocation is still tracked so it's not leaked but this is notable
-> when looking at the code and is a little wasteful so let's instead
-> explicitly free the nvmem after we're done with it.
+To reproduce the conflict and resubmit, you may use the following commands:
 
-This is a minor cleanup which as with so much of what's come in today's
-backports seems very questionable for stable.
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git checkout FETCH_HEAD
+git cherry-pick -x dc314886cb3d0e4ab2858003e8de2917f8a3ccbd
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090938-retriever-jaws-74d8@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
---7PlWSsds2SMqCNWn
-Content-Type: application/pgp-signature; name="signature.asc"
+Possible dependencies:
 
------BEGIN PGP SIGNATURE-----
+dc314886cb3d ("io_uring: break iopolling on signal")
+ed29b0b4fd83 ("io_uring: move to separate directory")
+5ba3c874eb8a ("io_uring: make io_do_iopoll return number of reqs")
+87a115fb715b ("io_uring: force_nonspin")
+b688f11e86c9 ("io_uring: utilize the io batching infrastructure for more efficient polled IO")
+5a72e899ceb4 ("block: add a struct io_comp_batch argument to fops->iopoll()")
+013a7f954381 ("block: provide helpers for rq_list manipulation")
+afd7de03c526 ("block: remove some blk_mq_hw_ctx debugfs entries")
+3e08773c3841 ("block: switch polling to be bio based")
+6ce913fe3eee ("block: rename REQ_HIPRI to REQ_POLLED")
+d729cf9acb93 ("io_uring: don't sleep when polling for I/O")
+ef99b2d37666 ("block: replace the spin argument to blk_iopoll with a flags argument")
+28a1ae6b9dab ("blk-mq: remove blk_qc_t_valid")
+efbabbe121f9 ("blk-mq: remove blk_qc_t_to_tag and blk_qc_t_is_internal")
+c6699d6fe0ff ("blk-mq: factor out a "classic" poll helper")
+f70299f0d58e ("blk-mq: factor out a blk_qc_to_hctx helper")
+71fc3f5e2c00 ("block: don't try to poll multi-bio I/Os in __blkdev_direct_IO")
+4c928904ff77 ("block: move CONFIG_BLOCK guard to top Makefile")
+349302da8352 ("block: improve batched tag allocation")
+0f38d7664615 ("blk-mq: cleanup blk_mq_submit_bio")
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT8ZvwACgkQJNaLcl1U
-h9DO1wf6AregOqyWwrojgKItcPaiepe27owCB09CFviVb1yo/L6fFLAgzvLxfsjq
-odUxAh2b6MBpXM8FS4OsKpMu13Q74S9OIKDJSsYSc2tJGMRnGE7tWObGzBpk1LOV
-F9xDN1HQkNEVHONjAcbPptTXnn8Uir0HlcOWOS4X3+ESbR+B+QYlQBjTvDBrXt0K
-XM7Ivd/dsbOoJGs225VpG36d2m9NSVWvgrGw6LqMW7JeBibw4MFgb885JQqZDfrZ
-lVvEW6tcG2GJr9RgXN6h0nuKVoHNXqw/vJ/TigQtDLwWq5yU7lkBTT7O6aT0Y8b/
-8Jlx7VlX6PCSrW++oD8oR4zeVvbMgA==
-=iFpi
------END PGP SIGNATURE-----
+thanks,
 
---7PlWSsds2SMqCNWn--
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From dc314886cb3d0e4ab2858003e8de2917f8a3ccbd Mon Sep 17 00:00:00 2001
+From: Pavel Begunkov <asml.silence@gmail.com>
+Date: Wed, 9 Aug 2023 16:20:21 +0100
+Subject: [PATCH] io_uring: break iopolling on signal
+
+Don't keep spinning iopoll with a signal set. It'll eventually return
+back, e.g. by virtue of need_resched(), but it's not a nice user
+experience.
+
+Cc: stable@vger.kernel.org
+Fixes: def596e9557c9 ("io_uring: support for IO polling")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/eeba551e82cad12af30c3220125eb6cb244cc94c.1691594339.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+
+diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
+index d0888907527d..ad4ffd3a876f 100644
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1673,6 +1673,9 @@ static int io_iopoll_check(struct io_ring_ctx *ctx, long min)
+ 			break;
+ 		nr_events += ret;
+ 		ret = 0;
++
++		if (task_sigpending(current))
++			return -EINTR;
+ 	} while (nr_events < min && !need_resched());
+ 
+ 	return ret;
+
