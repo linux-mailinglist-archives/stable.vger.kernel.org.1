@@ -2,36 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 783EB799608
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 05:23:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01A8A79960A
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 05:23:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236800AbjIIDXl (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Fri, 8 Sep 2023 23:23:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59142 "EHLO
+        id S237227AbjIIDXm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Fri, 8 Sep 2023 23:23:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59148 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233066AbjIIDXh (ORCPT
+        with ESMTP id S234638AbjIIDXh (ORCPT
         <rfc822;stable@vger.kernel.org>); Fri, 8 Sep 2023 23:23:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CACFB1FE3;
-        Fri,  8 Sep 2023 20:23:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F4E3C433B6;
-        Sat,  9 Sep 2023 03:23:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BFE621FF6;
+        Fri,  8 Sep 2023 20:23:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97E63C433CA;
+        Sat,  9 Sep 2023 03:23:32 +0000 (UTC)
 Received: from rostedt by gandalf with local (Exim 4.96)
         (envelope-from <rostedt@goodmis.org>)
-        id 1qeoZZ-000YhA-2g;
-        Fri, 08 Sep 2023 23:23:49 -0400
-Message-ID: <20230909032349.643873432@goodmis.org>
+        id 1qeoZb-000Yl7-0v;
+        Fri, 08 Sep 2023 23:23:51 -0400
+Message-ID: <20230909032351.104588615@goodmis.org>
 User-Agent: quilt/0.66
-Date:   Fri, 08 Sep 2023 23:16:23 -0400
+Date:   Fri, 08 Sep 2023 23:16:30 -0400
 From:   Steven Rostedt <rostedt@goodmis.org>
 To:     linux-kernel@vger.kernel.org
 Cc:     Masami Hiramatsu <mhiramat@kernel.org>,
         Mark Rutland <mark.rutland@arm.com>,
         Andrew Morton <akpm@linux-foundation.org>,
-        stable@vger.kernel.org, Zheng Yejian <zhengyejian1@huawei.com>,
-        Linux Kernel Functional Testing <lkft@linaro.org>,
-        Naresh Kamboju <naresh.kamboju@linaro.org>
-Subject: [for-linus][PATCH 08/15] tracing: Have event inject files inc the trace array ref count
+        stable@vger.kernel.org, Sven Schnelle <svens@linux.ibm.com>
+Subject: [for-linus][PATCH 15/15] tracing/synthetic: Fix order of struct trace_dynamic_info
 References: <20230909031615.047488015@goodmis.org>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
@@ -46,41 +44,85 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: "Steven Rostedt (Google)" <rostedt@goodmis.org>
 
-The event inject files add events for a specific trace array. For an
-instance, if the file is opened and the instance is deleted, reading or
-writing to the file will cause a use after free.
+To make handling BIG and LITTLE endian better the offset/len of dynamic
+fields of the synthetic events was changed into a structure of:
 
-Up the ref count of the trace_array when a event inject file is opened.
+ struct trace_dynamic_info {
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+	u16	offset;
+	u16	len;
+ #else
+	u16	len;
+	u16	offset;
+ #endif
+ };
 
-Link: https://lkml.kernel.org/r/20230907024804.292337868@goodmis.org
-Link: https://lore.kernel.org/all/1cb3aee2-19af-c472-e265-05176fe9bd84@huawei.com/
+to replace the manual changes of:
+
+ data_offset = offset & 0xffff;
+ data_offest = len << 16;
+
+But if you look closely, the above is:
+
+  <len> << 16 | offset
+
+Which in little endian would be in memory:
+
+ offset_lo offset_hi len_lo len_hi
+
+and in big endian:
+
+ len_hi len_lo offset_hi offset_lo
+
+Which if broken into a structure would be:
+
+ struct trace_dynamic_info {
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+	u16	len;
+	u16	offset;
+ #else
+	u16	offset;
+	u16	len;
+ #endif
+ };
+
+Which is the opposite of what was defined.
+
+Fix this and just to be safe also add "__packed".
+
+Link: https://lore.kernel.org/all/20230908154417.5172e343@gandalf.local.home/
+Link: https://lore.kernel.org/linux-trace-kernel/20230908163929.2c25f3dc@gandalf.local.home
 
 Cc: stable@vger.kernel.org
 Cc: Masami Hiramatsu <mhiramat@kernel.org>
 Cc: Mark Rutland <mark.rutland@arm.com>
-Cc: Andrew Morton <akpm@linux-foundation.org>
-Cc: Zheng Yejian <zhengyejian1@huawei.com>
-Fixes: 6c3edaf9fd6a ("tracing: Introduce trace event injection")
-Tested-by: Linux Kernel Functional Testing <lkft@linaro.org>
-Tested-by: Naresh Kamboju <naresh.kamboju@linaro.org>
+Cc: Sven Schnelle <svens@linux.ibm.com>
+Fixes: ddeea494a16f3 ("tracing/synthetic: Use union instead of casts")
 Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
 ---
- kernel/trace/trace_events_inject.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ include/linux/trace_events.h | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/kernel/trace/trace_events_inject.c b/kernel/trace/trace_events_inject.c
-index abe805d471eb..8650562bdaa9 100644
---- a/kernel/trace/trace_events_inject.c
-+++ b/kernel/trace/trace_events_inject.c
-@@ -328,7 +328,8 @@ event_inject_read(struct file *file, char __user *buf, size_t size,
- }
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index 12f875e9e69a..21ae37e49319 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -62,13 +62,13 @@ void trace_event_printf(struct trace_iterator *iter, const char *fmt, ...);
+ /* Used to find the offset and length of dynamic fields in trace events */
+ struct trace_dynamic_info {
+ #ifdef CONFIG_CPU_BIG_ENDIAN
+-	u16	offset;
+ 	u16	len;
++	u16	offset;
+ #else
+-	u16	len;
+ 	u16	offset;
++	u16	len;
+ #endif
+-};
++} __packed;
  
- const struct file_operations event_inject_fops = {
--	.open = tracing_open_generic,
-+	.open = tracing_open_file_tr,
- 	.read = event_inject_read,
- 	.write = event_inject_write,
-+	.release = tracing_release_file_tr,
- };
+ /*
+  * The trace entry - the most basic unit of tracing. This is what
 -- 
 2.40.1
