@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C90CA79981B
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77EFD79981C
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 14:53:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235410AbjIIMxE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 08:53:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35502 "EHLO
+        id S231560AbjIIMxM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 08:53:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231560AbjIIMxE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:04 -0400
+        with ESMTP id S233571AbjIIMxM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 08:53:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F699CE6
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:52:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7C17C433C7;
-        Sat,  9 Sep 2023 12:52:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A10DCE6
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 05:53:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E45EC433C8;
+        Sat,  9 Sep 2023 12:53:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694263979;
-        bh=BCLKwi1Nzb1b9lhjZzDOUdQQaU8CxFYLe23xFtWLXk4=;
+        s=korg; t=1694263987;
+        bh=LMilABKbfeZW26vbHKR6zsQKIRT44Jh7QibY5xCPF3k=;
         h=Subject:To:Cc:From:Date:From;
-        b=ExN/Zc7YoYDlJDIUrrqYKt0w8O3PwomxiVPuKLbFz9sHc+xGGii/lLLrnglXTvIXe
-         h8rkGto5sJiVJ4ZKWGgJ91IR+HSr8wgk4umaTa8JCRdwNrWbCwTZH/sKKky+4kYM3N
-         JrJ6cv1l5yQnWG7BTJoNXJWaHi8tOaEnU/a9cHOA=
-Subject: FAILED: patch "[PATCH] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL" failed to apply to 6.1-stable tree
+        b=FXrlpoAI84NygdRZ84ADMcf5ItbOeGMpRLKpc9CVQZYSSRqfHXLMxQvrvp0HZQ1XG
+         2AojX59dUY8Q3TZ1yg7Yk1DYviDb3HDOx+nRqtCOeknXFXPsQQWg+XH2TMv5GjavTQ
+         EY7uyzZ7UN76c5YhIKrZt8W/duD0j3n4JfFskq7E=
+Subject: FAILED: patch "[PATCH] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL" failed to apply to 5.15-stable tree
 To:     axboe@kernel.dk
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sat, 09 Sep 2023 13:52:56 +0100
-Message-ID: <2023090956-immersion-calorie-81e9@gregkh>
+Date:   Sat, 09 Sep 2023 13:52:57 +0100
+Message-ID: <2023090957-publisher-ahead-0003@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -42,19 +42,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.1-stable tree.
+The patch below does not apply to the 5.15-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
 git checkout FETCH_HEAD
 git cherry-pick -x ebdfefc09c6de7897962769bd3e63a2ff443ebf5
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090956-immersion-calorie-81e9@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090957-publisher-ahead-0003@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
 
 Possible dependencies:
 
@@ -64,6 +64,20 @@ dfd63baf892c ("io-wq: Move wq accounting to io_wq")
 da64d6db3bd3 ("io_uring: One wqe per wq")
 01e68ce08a30 ("io_uring/io-wq: stop setting PF_NO_SETAFFINITY on io-wq workers")
 88b80534f60f ("io_uring: make io_sqpoll_wait_sq return void")
+996d3efeb091 ("io-wq: Fix memory leak in worker creation")
+024f15e033a5 ("io_uring: dedup io_run_task_work")
+a6b21fbb4ce3 ("io_uring: move list helpers to a separate file")
+ab1c84d855cf ("io_uring: make io_uring_types.h public")
+48c13d898084 ("io_uring: explain io_wq_work::cancel_seq placement")
+735729844819 ("io_uring: move rsrc related data, core, and commands")
+3b77495a9723 ("io_uring: split provided buffers handling into its own file")
+7aaff708a768 ("io_uring: move cancelation into its own file")
+329061d3e2f9 ("io_uring: move poll handling into its own file")
+cfd22e6b3319 ("io_uring: add opcode name to io_op_defs")
+92ac8beaea1f ("io_uring: include and forward-declaration sanitation")
+c9f06aa7de15 ("io_uring: move io_uring_task (tctx) helpers into its own file")
+a4ad4f748ea9 ("io_uring: move fdinfo helpers to its own file")
+e5550a1447bf ("io_uring: use io_is_uring_fops() consistently")
 
 thanks,
 
