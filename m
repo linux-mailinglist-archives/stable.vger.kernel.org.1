@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79846799B57
-	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:18:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54C03799B56
+	for <lists+stable@lfdr.de>; Sat,  9 Sep 2023 23:18:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238360AbjIIVS6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sat, 9 Sep 2023 17:18:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41030 "EHLO
+        id S241812AbjIIVSz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sat, 9 Sep 2023 17:18:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41010 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S230470AbjIIVS6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:18:58 -0400
+        with ESMTP id S230470AbjIIVSz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sat, 9 Sep 2023 17:18:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E604131
-        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:18:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7D14DC433C9;
-        Sat,  9 Sep 2023 21:18:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 792F1131
+        for <stable@vger.kernel.org>; Sat,  9 Sep 2023 14:18:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2AA2C433C9;
+        Sat,  9 Sep 2023 21:18:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694294333;
-        bh=4Hl3flF/nfNpqqWpiQrls9QxfvZ1WWcQapAOHSqHlqg=;
+        s=korg; t=1694294331;
+        bh=5sN3H7AeN/LIwuvKFfQxD7LaVAYXz6b8nJEf/y2KhpQ=;
         h=Subject:To:Cc:From:Date:From;
-        b=Kreg/kPsJbJvPAJehCL1hEhMDcow8IhL95x3CWPdmMO1uIfl++dRLh/8N9Dv9fJQn
-         MDnRxpoogU6szY8N0zlMMdSzcNTnDWauGTQHrXGMW5u/3NyE3nznqer0ed1CuRNnbR
-         fcmiNsTMj0Ja2avcTP0hNwXCi7c+kK6F4y6wlX4M=
-Subject: FAILED: patch "[PATCH] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after" failed to apply to 4.19-stable tree
+        b=Rm4HikKyDTfV4Gygp2EdvZPbl0fu82x53NynHXqZhUpPc4424cr1zPAOsOfapXi6U
+         d4iYGlLHO5PJcs3xgvfUApK6sslcCnT8aTu8hK12jKnT+MtpuedPZDxV5ObzbmaB8k
+         nDpqD8zhiF7a0bqTAxshHtCnyVeZuL+xfuT999EY=
+Subject: FAILED: patch "[PATCH] media: venus: hfi_venus: Write to VIDC_CTRL_INIT after" failed to apply to 4.14-stable tree
 To:     konrad.dybcio@linaro.org, hverkuil-cisco@xs4all.nl,
         stanimir.k.varbanov@gmail.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
 Date:   Sat, 09 Sep 2023 22:18:38 +0100
-Message-ID: <2023090937-endorphin-postage-0d99@gregkh>
+Message-ID: <2023090938-ceremony-cinch-9f48@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 4.19-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
 git cherry-pick -x d74e481609808330b4625b3691cf01e1f56e255e
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090937-endorphin-postage-0d99@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023090938-ceremony-cinch-9f48@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
