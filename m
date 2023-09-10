@@ -2,54 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 54521799F05
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 18:48:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D561D799F56
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 20:30:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230177AbjIJQsa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 12:48:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33528 "EHLO
+        id S234005AbjIJSam (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 14:30:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229718AbjIJQsa (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 12:48:30 -0400
-X-Greylist: delayed 574 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Sun, 10 Sep 2023 09:48:26 PDT
-Received: from h8.fbrelay.privateemail.com (h8.fbrelay.privateemail.com [162.0.218.231])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 495FDCC5;
-        Sun, 10 Sep 2023 09:48:26 -0700 (PDT)
-Received: from MTA-08-4.privateemail.com (mta-08.privateemail.com [198.54.118.215])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (2048 bits))
-        (No client certificate requested)
-        by h7.fbrelay.privateemail.com (Postfix) with ESMTPSA id 3C169604C1;
-        Sun, 10 Sep 2023 12:38:50 -0400 (EDT)
-Received: from mta-08.privateemail.com (localhost [127.0.0.1])
-        by mta-08.privateemail.com (Postfix) with ESMTP id 6FF2C1800050;
-        Sun, 10 Sep 2023 12:38:46 -0400 (EDT)
-Received: from hal-station.. (bras-base-toroon4332w-grc-39-74-12-11-94.dsl.bell.ca [74.12.11.94])
-        by mta-08.privateemail.com (Postfix) with ESMTPA;
-        Sun, 10 Sep 2023 12:38:31 -0400 (EDT)
-From:   Hamza Mahfooz <someguy@effective-light.com>
-To:     linux-usb@vger.kernel.org
-Cc:     Hamza Mahfooz <someguy@effective-light.com>,
-        stable@vger.kernel.org,
-        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        Alan Stern <stern@rowland.harvard.edu>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Bastien Nocera <hadess@hadess.net>,
-        Hans de Goede <hdegoede@redhat.com>,
-        =?UTF-8?q?=C5=81ukasz=20Bartosik?= <lb@semihalf.com>,
-        Nicolas Dumazet <ndumazet@google.com>,
-        Jean-Francois Le Fillatre <jflf_kernel@gmx.com>,
-        Mark Pearson <mpearson-lenovo@squebb.ca>,
-        Hannu Hartikainen <hannu@hrtk.in>, linux-kernel@vger.kernel.org
-Subject: [PATCH] USB: add ignore remote wakeup quirk for one of Logitech's receivers
-Date:   Sun, 10 Sep 2023 12:37:48 -0400
-Message-ID: <20230910163751.4210-1-someguy@effective-light.com>
-X-Mailer: git-send-email 2.42.0
+        with ESMTP id S234193AbjIJSal (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 14:30:41 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 975B119C
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 11:30:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9FA19C433C7;
+        Sun, 10 Sep 2023 18:30:35 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694370636;
+        bh=FsEBtgtl/+MROid7j+jrWVVwRxKkE8wXIcvzd61AFe4=;
+        h=Subject:To:Cc:From:Date:From;
+        b=fjVs/9WA/G2BwHDdrvSGGh0YRIHAyi9IZRbd7mItRNcoutasDHgusBDDdddQVll3h
+         ln+Uwc34jqql7ilNYhlEiLhwa8IycVQ8gOAAELCHlGwflQgrbV3F4m33uq9UbN6+B7
+         +s4S9cxBGmAAdVFJsP+gG83QRccWdyUAKSkb8/TI=
+Subject: FAILED: patch "[PATCH] x86/build: Fix linker fill bytes quirk/incompatibility for" failed to apply to 6.1-stable tree
+To:     song@kernel.org, keescook@chromium.org, mingo@kernel.org,
+        peterz@infradead.org
+Cc:     <stable@vger.kernel.org>
+From:   <gregkh@linuxfoundation.org>
+Date:   Sun, 10 Sep 2023 19:30:32 +0100
+Message-ID: <2023091031-reapply-headed-88ad@gregkh>
 MIME-Version: 1.0
+Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
-X-Virus-Scanned: ClamAV using ClamSMTP
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_PASS autolearn=ham
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -57,31 +43,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-This device causes the system to wake up from suspend, as soon as it
-enters it (even if the device attached to the receiver is powered off).
-So, ignore remote wakeup events from it.
 
-Cc: stable@vger.kernel.org
-Signed-off-by: Hamza Mahfooz <someguy@effective-light.com>
----
- drivers/usb/core/quirks.c | 4 ++++
- 1 file changed, 4 insertions(+)
+The patch below does not apply to the 6.1-stable tree.
+If someone wants it applied there, or to any other stable or longterm
+tree, then please email the backport, including the original git commit
+id to <stable@vger.kernel.org>.
 
-diff --git a/drivers/usb/core/quirks.c b/drivers/usb/core/quirks.c
-index 15e9bd180a1d..d2e2a2873f34 100644
---- a/drivers/usb/core/quirks.c
-+++ b/drivers/usb/core/quirks.c
-@@ -264,6 +264,10 @@ static const struct usb_device_id usb_quirk_list[] = {
- 	/* Logitech Harmony 700-series */
- 	{ USB_DEVICE(0x046d, 0xc122), .driver_info = USB_QUIRK_DELAY_INIT },
+To reproduce the conflict and resubmit, you may use the following commands:
+
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.1.y
+git checkout FETCH_HEAD
+git cherry-pick -x 65e710899fd19f435f40268f3a92dfaa11f14470
+# <resolve conflicts, build, test, etc.>
+git commit -s
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091031-reapply-headed-88ad@gregkh' --subject-prefix 'PATCH 6.1.y' HEAD^..
+
+Possible dependencies:
+
+
+
+thanks,
+
+greg k-h
+
+------------------ original commit in Linus's tree ------------------
+
+From 65e710899fd19f435f40268f3a92dfaa11f14470 Mon Sep 17 00:00:00 2001
+From: Song Liu <song@kernel.org>
+Date: Wed, 6 Sep 2023 10:52:15 -0700
+Subject: [PATCH] x86/build: Fix linker fill bytes quirk/incompatibility for
+ ld.lld
+
+With ":text =0xcccc", ld.lld fills unused text area with 0xcccc0000.
+Example objdump -D output:
+
+	ffffffff82b04203:       00 00                   add    %al,(%rax)
+	ffffffff82b04205:       cc                      int3
+	ffffffff82b04206:       cc                      int3
+	ffffffff82b04207:       00 00                   add    %al,(%rax)
+	ffffffff82b04209:       cc                      int3
+	ffffffff82b0420a:       cc                      int3
+
+Replace it with ":text =0xcccccccc", so we get the following instead:
+
+	ffffffff82b04203:       cc                      int3
+	ffffffff82b04204:       cc                      int3
+	ffffffff82b04205:       cc                      int3
+	ffffffff82b04206:       cc                      int3
+	ffffffff82b04207:       cc                      int3
+	ffffffff82b04208:       cc                      int3
+
+gcc/ld doesn't seem to have the same issue. The generated code stays the
+same for gcc/ld.
+
+Signed-off-by: Song Liu <song@kernel.org>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Acked-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Fixes: 7705dc855797 ("x86/vmlinux: Use INT3 instead of NOP for linker fill bytes")
+Link: https://lore.kernel.org/r/20230906175215.2236033-1-song@kernel.org
+
+diff --git a/arch/x86/kernel/vmlinux.lds.S b/arch/x86/kernel/vmlinux.lds.S
+index 83d41c2601d7..f15fb71f280e 100644
+--- a/arch/x86/kernel/vmlinux.lds.S
++++ b/arch/x86/kernel/vmlinux.lds.S
+@@ -156,7 +156,7 @@ SECTIONS
+ 		ALIGN_ENTRY_TEXT_END
+ 		*(.gnu.warning)
  
-+	/* Logitech lightspeed receiver (0xc547) */
-+	{ USB_DEVICE(0x046d, 0xc547), .driver_info =
-+			USB_QUIRK_IGNORE_REMOTE_WAKEUP },
-+
- 	/* Philips PSC805 audio device */
- 	{ USB_DEVICE(0x0471, 0x0155), .driver_info = USB_QUIRK_RESET_RESUME },
+-	} :text =0xcccc
++	} :text = 0xcccccccc
  
--- 
-2.42.0
+ 	/* End of text section, which should occupy whole number of pages */
+ 	_etext = .;
 
