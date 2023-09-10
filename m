@@ -2,33 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5305799DB0
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 12:35:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F26FF799DC2
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 12:57:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346593AbjIJKfm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 06:35:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58116 "EHLO
+        id S234093AbjIJK5I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 06:57:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346592AbjIJKfl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 06:35:41 -0400
+        with ESMTP id S230456AbjIJK5I (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 06:57:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFBFCD6
-        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 03:35:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29D8C433C7;
-        Sun, 10 Sep 2023 10:35:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE282CCC
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 03:57:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4882CC433C7;
+        Sun, 10 Sep 2023 10:57:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694342137;
-        bh=ax/9u3S36vCzoSDzoaZy4QJt+SOCnQcKC9wjrmeCdvo=;
+        s=korg; t=1694343423;
+        bh=lYtRJ0A7tTms46PbYH0+MNh88J8GLgRjEuyAcALUCBs=;
         h=Subject:To:Cc:From:Date:From;
-        b=altzjUe3ZxBumpkr7T5VrM5e/hVrJHPEuji9VE0MLyKfAdQZU2C/tv5ZVid+W3duI
-         ovmjw45wTFoyejGUa/W2+2rD5MvQ576rcTO123tpv8A5dZf58iTfp69yxV/Uw5ejJn
-         EW3TNupunMlgfPWd8VceMw89uMEfanzY01H6EQW0=
-Subject: FAILED: patch "[PATCH] s390/pkey: fix PKEY_TYPE_EP11_AES handling in PKEY_CLR2SECK2" failed to apply to 5.10-stable tree
-To:     dengler@linux.ibm.com, hca@linux.ibm.com, ifranzki@linux.ibm.com
+        b=n3DeCFk2PpW9rYcL1hZhx6hGulY6LvSfr2bytCkYlprl2YkAVd21wx7akE7DhoP1e
+         8NW3NrbuKDLuE7W9A2BzvJma3zthgmex0d7mjLOi2BQwaNJJ8PgYhnEXDBI9Yxz3vk
+         k3EGkeqDqyqgSw8+nhfvf7xjEebeqJjg526qIba4=
+Subject: FAILED: patch "[PATCH] cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug" failed to apply to 4.14-stable tree
+To:     gustavoars@kernel.org, florian.fainelli@broadcom.com,
+        viresh.kumar@linaro.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 10 Sep 2023 11:22:08 +0100
-Message-ID: <2023091008-impending-mortify-766f@gregkh>
+Date:   Sun, 10 Sep 2023 11:23:28 +0100
+Message-ID: <2023091028-annually-maker-4daf@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,23 +44,25 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.10-stable tree.
+The patch below does not apply to the 4.14-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.14.y
 git checkout FETCH_HEAD
-git cherry-pick -x da2863f15945de100b95c72d5656541d30956c5d
+git cherry-pick -x e520d0b6be950ce3738cf4b9bd3b392be818f1dc
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091008-impending-mortify-766f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091028-annually-maker-4daf@gregkh' --subject-prefix 'PATCH 4.14.y' HEAD^..
 
 Possible dependencies:
 
-
+e520d0b6be95 ("cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug")
+a86854d0c599 ("treewide: devm_kzalloc() -> devm_kcalloc()")
+ea125dedbc14 ("Merge tag 'gpio-v4.18-1' of git://git.kernel.org/pub/scm/linux/kernel/git/linusw/linux-gpio")
 
 thanks,
 
@@ -67,196 +70,62 @@ greg k-h
 
 ------------------ original commit in Linus's tree ------------------
 
-From da2863f15945de100b95c72d5656541d30956c5d Mon Sep 17 00:00:00 2001
-From: Holger Dengler <dengler@linux.ibm.com>
-Date: Tue, 25 Jul 2023 11:24:47 +0200
-Subject: [PATCH] s390/pkey: fix PKEY_TYPE_EP11_AES handling in PKEY_CLR2SECK2
- IOCTL
+From e520d0b6be950ce3738cf4b9bd3b392be818f1dc Mon Sep 17 00:00:00 2001
+From: "Gustavo A. R. Silva" <gustavoars@kernel.org>
+Date: Mon, 31 Jul 2023 21:15:48 -0600
+Subject: [PATCH] cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES for the PKEY_CLR2SECK2
-IOCTL to convert an AES clearkey into a securekey of this type.
-Unfortunately, all PKEY_CLR2SECK2 IOCTL requests with type
-PKEY_TYPE_EP11_AES return with an error (-EINVAL). Fix the handling
-for PKEY_TYPE_EP11_AES in PKEY_CLR2SECK2 IOCTL, so that userspace can
-convert clearkey blobs into PKEY_TYPE_EP11_AES securekey blobs.
+Allocate extra space for terminating element at:
 
-Cc: stable@vger.kernel.org # v5.10+
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+drivers/cpufreq/brcmstb-avs-cpufreq.c:
+449         table[i].frequency = CPUFREQ_TABLE_END;
 
-diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index 2661d6a9ea13..7543757c82e2 100644
---- a/drivers/s390/crypto/pkey_api.c
-+++ b/drivers/s390/crypto/pkey_api.c
-@@ -272,7 +272,8 @@ static int pkey_clr2ep11key(const u8 *clrkey, size_t clrkeylen,
- 		card = apqns[i] >> 16;
- 		dom = apqns[i] & 0xFFFF;
- 		rc = ep11_clr2keyblob(card, dom, clrkeylen * 8,
--				      0, clrkey, keybuf, keybuflen);
-+				      0, clrkey, keybuf, keybuflen,
-+				      PKEY_TYPE_EP11);
- 		if (rc == 0)
- 			break;
- 	}
-@@ -775,6 +776,11 @@ static int pkey_clr2seckey2(const struct pkey_apqn *apqns, size_t nr_apqns,
- 		if (*keybufsize < MINEP11AESKEYBLOBSIZE)
- 			return -EINVAL;
- 		break;
-+	case PKEY_TYPE_EP11_AES:
-+		if (*keybufsize < (sizeof(struct ep11kblob_header) +
-+				   MINEP11AESKEYBLOBSIZE))
-+			return -EINVAL;
-+		break;
- 	default:
- 		return -EINVAL;
- 	}
-@@ -793,9 +799,11 @@ static int pkey_clr2seckey2(const struct pkey_apqn *apqns, size_t nr_apqns,
- 	for (i = 0, rc = -ENODEV; i < nr_apqns; i++) {
- 		card = apqns[i].card;
- 		dom = apqns[i].domain;
--		if (ktype == PKEY_TYPE_EP11) {
-+		if (ktype == PKEY_TYPE_EP11 ||
-+		    ktype == PKEY_TYPE_EP11_AES) {
- 			rc = ep11_clr2keyblob(card, dom, ksize, kflags,
--					      clrkey, keybuf, keybufsize);
-+					      clrkey, keybuf, keybufsize,
-+					      ktype);
- 		} else if (ktype == PKEY_TYPE_CCA_DATA) {
- 			rc = cca_clr2seckey(card, dom, ksize,
- 					    clrkey, keybuf);
-@@ -1514,7 +1522,7 @@ static long pkey_unlocked_ioctl(struct file *filp, unsigned int cmd,
- 		apqns = _copy_apqns_from_user(kcs.apqns, kcs.apqn_entries);
- 		if (IS_ERR(apqns))
- 			return PTR_ERR(apqns);
--		kkey = kmalloc(klen, GFP_KERNEL);
-+		kkey = kzalloc(klen, GFP_KERNEL);
- 		if (!kkey) {
- 			kfree(apqns);
- 			return -ENOMEM;
-diff --git a/drivers/s390/crypto/zcrypt_ep11misc.c b/drivers/s390/crypto/zcrypt_ep11misc.c
-index 51f6753e01c5..355d30bc0aac 100644
---- a/drivers/s390/crypto/zcrypt_ep11misc.c
-+++ b/drivers/s390/crypto/zcrypt_ep11misc.c
-@@ -1000,12 +1000,12 @@ static int ep11_cryptsingle(u16 card, u16 domain,
- 	return rc;
- }
+and add code comment to make this clear.
+
+This fixes the following -Warray-bounds warning seen after building
+ARM with multi_v7_defconfig (GCC 13):
+In function 'brcm_avs_get_freq_table',
+    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
+drivers/cpufreq/brcmstb-avs-cpufreq.c:449:28: warning: array subscript 5 is outside array bounds of 'void[60]' [-Warray-bounds=]
+  449 |         table[i].frequency = CPUFREQ_TABLE_END;
+In file included from include/linux/node.h:18,
+                 from include/linux/cpu.h:17,
+                 from include/linux/cpufreq.h:12,
+                 from drivers/cpufreq/brcmstb-avs-cpufreq.c:44:
+In function 'devm_kmalloc_array',
+    inlined from 'devm_kcalloc' at include/linux/device.h:328:9,
+    inlined from 'brcm_avs_get_freq_table' at drivers/cpufreq/brcmstb-avs-cpufreq.c:437:10,
+    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
+include/linux/device.h:323:16: note: at offset 60 into object of size 60 allocated by 'devm_kmalloc'
+  323 |         return devm_kmalloc(dev, bytes, flags);
+      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
+routines on memcpy() and help us make progress towards globally
+enabling -Warray-bounds.
+
+Link: https://github.com/KSPP/linux/issues/324
+Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
+Cc: stable@vger.kernel.org
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+
+diff --git a/drivers/cpufreq/brcmstb-avs-cpufreq.c b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+index 1bdd513bcd19..35fb3a559ea9 100644
+--- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
++++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
+@@ -434,7 +434,11 @@ brcm_avs_get_freq_table(struct device *dev, struct private_data *priv)
+ 	if (ret)
+ 		return ERR_PTR(ret);
  
--static int ep11_unwrapkey(u16 card, u16 domain,
--			  const u8 *kek, size_t keksize,
--			  const u8 *enckey, size_t enckeysize,
--			  u32 mech, const u8 *iv,
--			  u32 keybitsize, u32 keygenflags,
--			  u8 *keybuf, size_t *keybufsize)
-+static int _ep11_unwrapkey(u16 card, u16 domain,
-+			   const u8 *kek, size_t keksize,
-+			   const u8 *enckey, size_t enckeysize,
-+			   u32 mech, const u8 *iv,
-+			   u32 keybitsize, u32 keygenflags,
-+			   u8 *keybuf, size_t *keybufsize)
- {
- 	struct uw_req_pl {
- 		struct pl_head head;
-@@ -1042,7 +1042,6 @@ static int ep11_unwrapkey(u16 card, u16 domain,
- 	struct ep11_cprb *req = NULL, *rep = NULL;
- 	struct ep11_target_dev target;
- 	struct ep11_urb *urb = NULL;
--	struct ep11keyblob *kb;
- 	size_t req_pl_size;
- 	int api, rc = -ENOMEM;
- 	u8 *p;
-@@ -1124,14 +1123,9 @@ static int ep11_unwrapkey(u16 card, u16 domain,
- 		goto out;
- 	}
- 
--	/* copy key blob and set header values */
-+	/* copy key blob */
- 	memcpy(keybuf, rep_pl->data, rep_pl->data_len);
- 	*keybufsize = rep_pl->data_len;
--	kb = (struct ep11keyblob *)keybuf;
--	kb->head.type = TOKTYPE_NON_CCA;
--	kb->head.len = rep_pl->data_len;
--	kb->head.version = TOKVER_EP11_AES;
--	kb->head.bitlen = keybitsize;
- 
- out:
- 	kfree(req);
-@@ -1140,6 +1134,42 @@ static int ep11_unwrapkey(u16 card, u16 domain,
- 	return rc;
- }
- 
-+static int ep11_unwrapkey(u16 card, u16 domain,
-+			  const u8 *kek, size_t keksize,
-+			  const u8 *enckey, size_t enckeysize,
-+			  u32 mech, const u8 *iv,
-+			  u32 keybitsize, u32 keygenflags,
-+			  u8 *keybuf, size_t *keybufsize,
-+			  u8 keybufver)
-+{
-+	struct ep11kblob_header *hdr;
-+	size_t hdr_size, pl_size;
-+	u8 *pl;
-+	int rc;
-+
-+	rc = ep11_kb_split(keybuf, *keybufsize, keybufver,
-+			   &hdr, &hdr_size, &pl, &pl_size);
-+	if (rc)
-+		return rc;
-+
-+	rc = _ep11_unwrapkey(card, domain, kek, keksize, enckey, enckeysize,
-+			     mech, iv, keybitsize, keygenflags,
-+			     pl, &pl_size);
-+	if (rc)
-+		return rc;
-+
-+	*keybufsize = hdr_size + pl_size;
-+
-+	/* update header information */
-+	hdr = (struct ep11kblob_header *)keybuf;
-+	hdr->type = TOKTYPE_NON_CCA;
-+	hdr->len = *keybufsize;
-+	hdr->version = keybufver;
-+	hdr->bitlen = keybitsize;
-+
-+	return 0;
-+}
-+
- static int ep11_wrapkey(u16 card, u16 domain,
- 			const u8 *key, size_t keysize,
- 			u32 mech, const u8 *iv,
-@@ -1274,7 +1304,8 @@ static int ep11_wrapkey(u16 card, u16 domain,
- }
- 
- int ep11_clr2keyblob(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
--		     const u8 *clrkey, u8 *keybuf, size_t *keybufsize)
-+		     const u8 *clrkey, u8 *keybuf, size_t *keybufsize,
-+		     u32 keytype)
- {
- 	int rc;
- 	u8 encbuf[64], *kek = NULL;
-@@ -1321,7 +1352,7 @@ int ep11_clr2keyblob(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
- 	/* Step 3: import the encrypted key value as a new key */
- 	rc = ep11_unwrapkey(card, domain, kek, keklen,
- 			    encbuf, encbuflen, 0, def_iv,
--			    keybitsize, 0, keybuf, keybufsize);
-+			    keybitsize, 0, keybuf, keybufsize, keytype);
- 	if (rc) {
- 		DEBUG_ERR(
- 			"%s importing key value as new key failed,, rc=%d\n",
-diff --git a/drivers/s390/crypto/zcrypt_ep11misc.h b/drivers/s390/crypto/zcrypt_ep11misc.h
-index 2eecbd7be6e5..b611cf64231d 100644
---- a/drivers/s390/crypto/zcrypt_ep11misc.h
-+++ b/drivers/s390/crypto/zcrypt_ep11misc.h
-@@ -113,7 +113,8 @@ int ep11_genaeskey(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
-  * Generate EP11 AES secure key with given clear key value.
-  */
- int ep11_clr2keyblob(u16 cardnr, u16 domain, u32 keybitsize, u32 keygenflags,
--		     const u8 *clrkey, u8 *keybuf, size_t *keybufsize);
-+		     const u8 *clrkey, u8 *keybuf, size_t *keybufsize,
-+		     u32 keytype);
- 
- /*
-  * Build a list of ep11 apqns meeting the following constrains:
+-	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1, sizeof(*table),
++	/*
++	 * We allocate space for the 5 different P-STATES AVS,
++	 * plus extra space for a terminating element.
++	 */
++	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1 + 1, sizeof(*table),
+ 			     GFP_KERNEL);
+ 	if (!table)
+ 		return ERR_PTR(-ENOMEM);
 
