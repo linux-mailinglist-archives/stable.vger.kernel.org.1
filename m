@@ -2,40 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94148799DDF
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 13:25:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4B5BC799DE7
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 13:49:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346644AbjIJLZx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 07:25:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36158 "EHLO
+        id S238999AbjIJLts (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 07:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53928 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233692AbjIJLZw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 07:25:52 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B8E18B
-        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 04:25:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07B3C433C7;
-        Sun, 10 Sep 2023 11:25:47 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694345148;
-        bh=EcpxUfqLkBVeWAfy4FwpHQUXWcbg3gpK704TZzKGdxs=;
-        h=Subject:To:Cc:From:Date:From;
-        b=Pln9axwnLObMLx3cZ6p3/2nPsBLvBn8Y27dgzp0A8/A39FcJFNjLBZL2PActrQS9G
-         6EG4FOIBfd6dv3J2cwg7/9qKH8IIPCNNVRHWzbKLtrmFksq8zxdiHM5DTQVpYVm7uH
-         DAR9UyVrQNNwMj2xvT4JrGn9+oOybzzRPJm2bSqg=
-Subject: FAILED: patch "[PATCH] usb: typec: bus: verify partner exists in" failed to apply to 4.19-stable tree
-To:     rdbabiera@google.com, gregkh@linuxfoundation.org,
-        heikki.krogerus@linux.intel.com, linux@roeck-us.net
-Cc:     <stable@vger.kernel.org>
-From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 10 Sep 2023 12:20:14 +0100
-Message-ID: <2023091014-everyone-scoreless-b562@gregkh>
+        with ESMTP id S229455AbjIJLtr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 07:49:47 -0400
+Received: from mail-oi1-x22f.google.com (mail-oi1-x22f.google.com [IPv6:2607:f8b0:4864:20::22f])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D341CD9
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 04:49:42 -0700 (PDT)
+Received: by mail-oi1-x22f.google.com with SMTP id 5614622812f47-3a9b41ffe11so2677400b6e.2
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 04:49:42 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694346581; x=1694951381; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=jKHoJq8d14zRo3wQI7St7XcsjvnH5P25ItS18i7C0OU=;
+        b=2YVjnyu73ZYFFxGzpE4do3K2W8UU9pTcI12aHf0QOUsujEExSInZPZt4JqGFon6XmJ
+         ATiuTIZFkJmEyoW9UFk8gek/f00tFxHbaKZzYoW8Bm92VgXDn4BQMNUbh/6vuMP1COW/
+         SUnI0dP/5sG2JdBHDvMG4jo8IeQfQqA6njFKrINjUw/3sOFh7NDQI0msoLuLkCdwhPvJ
+         Qyj6vePo6tMI3MgIYDbmgY/2J/84XGSecjwGHOsDmpoIi9GoiSR50nE0QYYS3S33NoiR
+         rTlAv1k28PZ0fG0Mk/YG2eEaRYE5dxEVPaqmsPShRM/zCROg3lZwp5/GELkqTC48GXvS
+         3rWw==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694346581; x=1694951381;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=jKHoJq8d14zRo3wQI7St7XcsjvnH5P25ItS18i7C0OU=;
+        b=OQDIO2bBkfYGbRCO64zgpd968M8e8ZoWaK1+DM/cL9YAwPQE65bl0oWDGDL4hJYWOO
+         9mjtch4UM8j8UNoLtmRynJWoBoVcljsgTrcQAiyyMDBa4vAv0u9JcyxZmu+kq0mJbcva
+         BM8suu1Xk7EgsfhuRn14f6+cI+EZSjvgqdWnsKXX63dkQvhflqGkLlfP57eO4hAT0O4n
+         cLVbmrd11UD7ljsCiCSs/C0Gq5YsOvnsGH5p2LgdM+zS8r2JC9Hs7wjyO6zeqcdVhyl2
+         G5OGptuc9GmjamUY66DvuxWf2moIJYhlxEq9GtiTrjpuqEqcvsUfSbaAvFTV220hA5NI
+         FU4Q==
+X-Gm-Message-State: AOJu0YwInnphWte5wHFLKiuDnFbVNlYnxd8ucHvY1qG5yxHXE8FW7bOM
+        v+be0PoD3+ufbqzpXQtM7RYJ+jPO/JGTmi5lu/E=
+X-Google-Smtp-Source: AGHT+IFbbvoBireeFkTG1ivUjWB0GRg2KAEu9ocQmeavrlSviWf1haaV4xVHsaxTu9qTRr++h8JCzw==
+X-Received: by 2002:a05:6808:2110:b0:3a8:6a03:c0c with SMTP id r16-20020a056808211000b003a86a030c0cmr9696640oiw.27.1694346581534;
+        Sun, 10 Sep 2023 04:49:41 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id z3-20020a637e03000000b0057754ae4eb7sm1429496pgc.39.2023.09.10.04.49.40
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Sun, 10 Sep 2023 04:49:40 -0700 (PDT)
+Message-ID: <64fdad54.630a0220.195c6.25f6@mx.google.com>
+Date:   Sun, 10 Sep 2023 04:49:40 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-Content-Type: text/plain; charset=ANSI_X3.4-1968
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-4.19.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v4.19.294-192-g5f24cff2de7e
+Subject: stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed,
+ 40 warnings (v4.19.294-192-g5f24cff2de7e)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -43,113 +71,283 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
+stable-rc/linux-4.19.y build: 19 builds: 3 failed, 16 passed, 40 warnings (=
+v4.19.294-192-g5f24cff2de7e)
 
-The patch below does not apply to the 4.19-stable tree.
-If someone wants it applied there, or to any other stable or longterm
-tree, then please email the backport, including the original git commit
-id to <stable@vger.kernel.org>.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-4.19.=
+y/kernel/v4.19.294-192-g5f24cff2de7e/
 
-To reproduce the conflict and resubmit, you may use the following commands:
+Tree: stable-rc
+Branch: linux-4.19.y
+Git Describe: v4.19.294-192-g5f24cff2de7e
+Git Commit: 5f24cff2de7e70e91fa4c52215ec5325326d393d
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
-git checkout FETCH_HEAD
-git cherry-pick -x f23643306430f86e2f413ee2b986e0773e79da31
-# <resolve conflicts, build, test, etc.>
-git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091014-everyone-scoreless-b562@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
+Build Failures Detected:
 
-Possible dependencies:
+riscv:
+    allnoconfig: (gcc-10) FAIL
+    defconfig: (gcc-10) FAIL
+    tinyconfig: (gcc-10) FAIL
 
-f23643306430 ("usb: typec: bus: verify partner exists in typec_altmode_attention")
-95b4d51c96a8 ("usb: typec: tcpm: Refactor tcpm_handle_vdm_request")
-8afe9a3548f9 ("usb: typec: tcpm: Refactor tcpm_handle_vdm_request payload handling")
-88d02c9ba2e8 ("usb: typec: tcpm: Ignore unsupported/unknown alternate mode requests")
+Warnings Detected:
 
-thanks,
+arc:
 
-greg k-h
+arm64:
+    defconfig (gcc-10): 7 warnings
+    defconfig+arm64-chromebook (gcc-10): 7 warnings
 
------------------- original commit in Linus's tree ------------------
+arm:
+    imx_v6_v7_defconfig (gcc-10): 2 warnings
+    multi_v5_defconfig (gcc-10): 1 warning
+    multi_v7_defconfig (gcc-10): 1 warning
+    omap2plus_defconfig (gcc-10): 2 warnings
 
-From f23643306430f86e2f413ee2b986e0773e79da31 Mon Sep 17 00:00:00 2001
-From: RD Babiera <rdbabiera@google.com>
-Date: Mon, 14 Aug 2023 18:05:59 +0000
-Subject: [PATCH] usb: typec: bus: verify partner exists in
- typec_altmode_attention
+i386:
+    allnoconfig (gcc-10): 2 warnings
+    i386_defconfig (gcc-10): 4 warnings
+    tinyconfig (gcc-10): 2 warnings
 
-Some usb hubs will negotiate DisplayPort Alt mode with the device
-but will then negotiate a data role swap after entering the alt
-mode. The data role swap causes the device to unregister all alt
-modes, however the usb hub will still send Attention messages
-even after failing to reregister the Alt Mode. type_altmode_attention
-currently does not verify whether or not a device's altmode partner
-exists, which results in a NULL pointer error when dereferencing
-the typec_altmode and typec_altmode_ops belonging to the altmode
-partner.
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
 
-Verify the presence of a device's altmode partner before sending
-the Attention message to the Alt Mode driver.
+riscv:
+    defconfig (gcc-10): 1 warning
 
-Fixes: 8a37d87d72f0 ("usb: typec: Bus type for alternate modes")
-Cc: stable@vger.kernel.org
-Signed-off-by: RD Babiera <rdbabiera@google.com>
-Reviewed-by: Heikki Krogerus <heikki.krogerus@linux.intel.com>
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230814180559.923475-1-rdbabiera@google.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+x86_64:
+    allnoconfig (gcc-10): 2 warnings
+    tinyconfig (gcc-10): 2 warnings
+    x86_64_defconfig (gcc-10): 3 warnings
+    x86_64_defconfig+x86-chromebook (gcc-10): 3 warnings
 
-diff --git a/drivers/usb/typec/bus.c b/drivers/usb/typec/bus.c
-index fe5b9a2e61f5..e95ec7e382bb 100644
---- a/drivers/usb/typec/bus.c
-+++ b/drivers/usb/typec/bus.c
-@@ -183,12 +183,20 @@ EXPORT_SYMBOL_GPL(typec_altmode_exit);
-  *
-  * Notifies the partner of @adev about Attention command.
-  */
--void typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
-+int typec_altmode_attention(struct typec_altmode *adev, u32 vdo)
- {
--	struct typec_altmode *pdev = &to_altmode(adev)->partner->adev;
-+	struct altmode *partner = to_altmode(adev)->partner;
-+	struct typec_altmode *pdev;
-+
-+	if (!partner)
-+		return -ENODEV;
-+
-+	pdev = &partner->adev;
- 
- 	if (pdev->ops && pdev->ops->attention)
- 		pdev->ops->attention(pdev, vdo);
-+
-+	return 0;
- }
- EXPORT_SYMBOL_GPL(typec_altmode_attention);
- 
-diff --git a/drivers/usb/typec/tcpm/tcpm.c b/drivers/usb/typec/tcpm/tcpm.c
-index 5639b9a1e0bf..ab7e3d7249ab 100644
---- a/drivers/usb/typec/tcpm/tcpm.c
-+++ b/drivers/usb/typec/tcpm/tcpm.c
-@@ -1877,7 +1877,8 @@ static void tcpm_handle_vdm_request(struct tcpm_port *port,
- 			}
- 			break;
- 		case ADEV_ATTENTION:
--			typec_altmode_attention(adev, p[1]);
-+			if (typec_altmode_attention(adev, p[1]))
-+				tcpm_log(port, "typec_altmode_attention no port partner altmode");
- 			break;
- 		}
- 	}
-diff --git a/include/linux/usb/typec_altmode.h b/include/linux/usb/typec_altmode.h
-index 350d49012659..28aeef8f9e7b 100644
---- a/include/linux/usb/typec_altmode.h
-+++ b/include/linux/usb/typec_altmode.h
-@@ -67,7 +67,7 @@ struct typec_altmode_ops {
- 
- int typec_altmode_enter(struct typec_altmode *altmode, u32 *vdo);
- int typec_altmode_exit(struct typec_altmode *altmode);
--void typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
-+int typec_altmode_attention(struct typec_altmode *altmode, u32 vdo);
- int typec_altmode_vdm(struct typec_altmode *altmode,
- 		      const u32 header, const u32 *vdo, int count);
- int typec_altmode_notify(struct typec_altmode *altmode, unsigned long conf,
 
+Warnings summary:
+
+    13   include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasi=
+d_required=E2=80=99 defined but not used [-Wunused-function]
+    7    ld: warning: creating DT_TEXTREL in a PIE
+    7    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defi=
+ned but not used [-Wunused-label]
+    6    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    4    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in rea=
+d-only section `.head.text'
+    3    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in rea=
+d-only section `.head.text'
+
+Section mismatches summary:
+
+    3    WARNING: modpost: Found 1 section mismatch(es).
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section =
+mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 sectio=
+n mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 1 warning, 0 section mi=
+smatches
+
+Warnings:
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 7 warnings, 0 section m=
+ismatches
+
+Warnings:
+    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defined b=
+ut not used [-Wunused-label]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 7 warn=
+ings, 0 section mismatches
+
+Warnings:
+    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defined b=
+ut not used [-Wunused-label]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+    aarch64-linux-gnu-ld: warning: -z norelro ignored
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 secti=
+on mismatches
+
+Warnings:
+    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defined b=
+ut not used [-Wunused-label]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defined b=
+ut not used [-Wunused-label]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+
+Section mismatches:
+    WARNING: modpost: Found 1 section mismatch(es).
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sec=
+tion mismatches
+
+Warnings:
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defined b=
+ut not used [-Wunused-label]
+    include/linux/pci-ats.h:70:12: warning: =E2=80=98pci_prg_resp_pasid_req=
+uired=E2=80=99 defined but not used [-Wunused-function]
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section=
+ mismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (riscv, gcc-10) =E2=80=94 FAIL, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 2 warnings, 0 section m=
+ismatches
+
+Warnings:
+    ld: arch/x86/boot/compressed/head_32.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 3 warnings, 0 s=
+ection mismatches
+
+Warnings:
+    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defined b=
+ut not used [-Wunused-label]
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+3 warnings, 0 section mismatches
+
+Warnings:
+    fs/quota/dquot.c:2608:1: warning: label =E2=80=98out=E2=80=99 defined b=
+ut not used [-Wunused-label]
+    ld: arch/x86/boot/compressed/head_64.o: warning: relocation in read-onl=
+y section `.head.text'
+    ld: warning: creating DT_TEXTREL in a PIE
+
+---
+For more info write to <info@kernelci.org>
