@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7DA4799DAF
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 12:35:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C5305799DB0
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 12:35:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235834AbjIJKf1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 06:35:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56114 "EHLO
+        id S1346593AbjIJKfm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 06:35:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S1346592AbjIJKf1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 06:35:27 -0400
+        with ESMTP id S1346592AbjIJKfl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 06:35:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59E40CDA
-        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 03:35:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E063C433C7;
-        Sun, 10 Sep 2023 10:35:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BFBFCD6
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 03:35:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E29D8C433C7;
+        Sun, 10 Sep 2023 10:35:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694342122;
-        bh=F1a/t7AyQxAVkuPtoXXY8suEhSBfRfO315BH6KfGC4k=;
+        s=korg; t=1694342137;
+        bh=ax/9u3S36vCzoSDzoaZy4QJt+SOCnQcKC9wjrmeCdvo=;
         h=Subject:To:Cc:From:Date:From;
-        b=tXz3PPR+s8Hcm/vrENjROQqgSvynnDY1le1XpUcmkHM6yNXA8WDsvx15G1VNFl2IT
-         rdJpBZOiZdTsfBuZiC5QAJcQtJ2AB+y8VhD19oWdc7y4/cwAhIIOqKToEaHJI2oE/l
-         NQeH5Pp2CTssl2ZcbcKiq9CzKeoVMLMb/7uTi92I=
-Subject: FAILED: patch "[PATCH] s390/pkey: fix PKEY_TYPE_EP11_AES handling in PKEY_CLR2SECK2" failed to apply to 5.15-stable tree
+        b=altzjUe3ZxBumpkr7T5VrM5e/hVrJHPEuji9VE0MLyKfAdQZU2C/tv5ZVid+W3duI
+         ovmjw45wTFoyejGUa/W2+2rD5MvQ576rcTO123tpv8A5dZf58iTfp69yxV/Uw5ejJn
+         EW3TNupunMlgfPWd8VceMw89uMEfanzY01H6EQW0=
+Subject: FAILED: patch "[PATCH] s390/pkey: fix PKEY_TYPE_EP11_AES handling in PKEY_CLR2SECK2" failed to apply to 5.10-stable tree
 To:     dengler@linux.ibm.com, hca@linux.ibm.com, ifranzki@linux.ibm.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 10 Sep 2023 11:22:07 +0100
-Message-ID: <2023091007-protract-hummus-2232@gregkh>
+Date:   Sun, 10 Sep 2023 11:22:08 +0100
+Message-ID: <2023091008-impending-mortify-766f@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x da2863f15945de100b95c72d5656541d30956c5d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091007-protract-hummus-2232@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091008-impending-mortify-766f@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
