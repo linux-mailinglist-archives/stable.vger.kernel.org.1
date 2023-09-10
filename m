@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F000A799DDE
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 13:25:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 94148799DDF
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 13:25:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242301AbjIJLZt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 07:25:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46784 "EHLO
+        id S1346644AbjIJLZx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 07:25:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S233692AbjIJLZt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 07:25:49 -0400
+        with ESMTP id S233692AbjIJLZw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 07:25:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0577C18B
-        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 04:25:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35A5DC433C7;
-        Sun, 10 Sep 2023 11:25:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5B8E18B
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 04:25:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C07B3C433C7;
+        Sun, 10 Sep 2023 11:25:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694345144;
-        bh=7UNlBcxZ49mihG+ioeUDXf4NLBpFsBLmhpvonmxMdiQ=;
+        s=korg; t=1694345148;
+        bh=EcpxUfqLkBVeWAfy4FwpHQUXWcbg3gpK704TZzKGdxs=;
         h=Subject:To:Cc:From:Date:From;
-        b=yjmSOt53KuTIAzqEpZtX0gqhi6vlrxqhSh/vim4gRN6remzMXVPGy5f1VSOrU2qHu
-         y9vGIHGx0Urm/6fAHFbbUvinQ/3ckmFAnIDOHUS0pxtWMaszJsDMA9QTEtSbS51rXq
-         YFT/Nl58Pt4NSGIPZIPcIVg4VyPvm8pag+T5jvNI=
-Subject: FAILED: patch "[PATCH] usb: typec: bus: verify partner exists in" failed to apply to 5.4-stable tree
+        b=Pln9axwnLObMLx3cZ6p3/2nPsBLvBn8Y27dgzp0A8/A39FcJFNjLBZL2PActrQS9G
+         6EG4FOIBfd6dv3J2cwg7/9qKH8IIPCNNVRHWzbKLtrmFksq8zxdiHM5DTQVpYVm7uH
+         DAR9UyVrQNNwMj2xvT4JrGn9+oOybzzRPJm2bSqg=
+Subject: FAILED: patch "[PATCH] usb: typec: bus: verify partner exists in" failed to apply to 4.19-stable tree
 To:     rdbabiera@google.com, gregkh@linuxfoundation.org,
         heikki.krogerus@linux.intel.com, linux@roeck-us.net
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 10 Sep 2023 12:20:13 +0100
-Message-ID: <2023091013-thread-badass-2e0d@gregkh>
+Date:   Sun, 10 Sep 2023 12:20:14 +0100
+Message-ID: <2023091014-everyone-scoreless-b562@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,25 +44,26 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.4-stable tree.
+The patch below does not apply to the 4.19-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.4.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-4.19.y
 git checkout FETCH_HEAD
 git cherry-pick -x f23643306430f86e2f413ee2b986e0773e79da31
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091013-thread-badass-2e0d@gregkh' --subject-prefix 'PATCH 5.4.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091014-everyone-scoreless-b562@gregkh' --subject-prefix 'PATCH 4.19.y' HEAD^..
 
 Possible dependencies:
 
 f23643306430 ("usb: typec: bus: verify partner exists in typec_altmode_attention")
 95b4d51c96a8 ("usb: typec: tcpm: Refactor tcpm_handle_vdm_request")
 8afe9a3548f9 ("usb: typec: tcpm: Refactor tcpm_handle_vdm_request payload handling")
+88d02c9ba2e8 ("usb: typec: tcpm: Ignore unsupported/unknown alternate mode requests")
 
 thanks,
 
