@@ -2,33 +2,33 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 378A3799DA4
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 12:29:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 30918799DAB
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 12:35:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346580AbjIJK3B (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 06:29:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53618 "EHLO
+        id S1346584AbjIJKfG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 06:35:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S231314AbjIJK3B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 06:29:01 -0400
+        with ESMTP id S235834AbjIJKfG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 06:35:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19887CCC
-        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 03:28:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB5B2C433C8;
-        Sun, 10 Sep 2023 10:28:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FC31CCC
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 03:34:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D024FC433C8;
+        Sun, 10 Sep 2023 10:34:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694341736;
-        bh=b8KPoLwvy4ZYpElSUxYmHIAVdkz64sULWwShDQtk7Ko=;
+        s=korg; t=1694342098;
+        bh=0rvcr3vd7clb1hlDINyJLAcesmqYe165QxtukVzg2XI=;
         h=Subject:To:Cc:From:Date:From;
-        b=CrTsdqyD8T5LsNJvo8uaXYBlxYCCTvTQY0tNuE/LrYoKo/fbiiOUh1x6oPwQuEOM+
-         4ssmHYMrdF+2vCuCw78DsL/AhOh6O+7Ye62OtYN/sN7cKsKqwGTOmi7QXZSuDm0cKt
-         IM1TaTbCqC516jRqrygh9M4CMTCWxRGEpKzNF5tc=
-Subject: FAILED: patch "[PATCH] s390/pkey: fix PKEY_TYPE_EP11_AES handling in PKEY_CLR2SECK2" failed to apply to 6.5-stable tree
+        b=qEYSOov/7qUstb53Q7lN+FAqBbbdlmuaBrx/854jqAS97BekmpkTv8kE3WY+PUF2N
+         Z6ycLLy9ghHxmOMiqfFonAVbXKNTj7BQy6isWcEOfrH+jCQ3Ymrb3Y9u3DkUR+XQXv
+         CbvpTMvIP/m4PsWoduNWkNzRECBnVwZJAimHxqrY=
+Subject: FAILED: patch "[PATCH] s390/pkey: fix PKEY_TYPE_EP11_AES handling in PKEY_CLR2SECK2" failed to apply to 6.4-stable tree
 To:     dengler@linux.ibm.com, hca@linux.ibm.com, ifranzki@linux.ibm.com
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 10 Sep 2023 11:21:26 +0100
-Message-ID: <2023091026-dose-avert-d89f@gregkh>
+Date:   Sun, 10 Sep 2023 11:22:05 +0100
+Message-ID: <2023091005-silly-corroding-8e37@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -43,19 +43,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 6.5-stable tree.
+The patch below does not apply to the 6.4-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.5.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-6.4.y
 git checkout FETCH_HEAD
 git cherry-pick -x da2863f15945de100b95c72d5656541d30956c5d
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091026-dose-avert-d89f@gregkh' --subject-prefix 'PATCH 6.5.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091005-silly-corroding-8e37@gregkh' --subject-prefix 'PATCH 6.4.y' HEAD^..
 
 Possible dependencies:
 
