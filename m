@@ -2,73 +2,81 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9F05B799FAB
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 22:25:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 79BAE799FE4
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 22:43:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233296AbjIJUZ5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 16:25:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33170 "EHLO
+        id S234155AbjIJUnJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 16:43:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45662 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S229688AbjIJUZ5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 16:25:57 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7203A135;
-        Sun, 10 Sep 2023 13:25:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF664C433C7;
-        Sun, 10 Sep 2023 20:25:52 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694377553;
-        bh=M3XVpYTqMwblDvLDn0+Gp61z7L6XFs9z98lcQBonSEE=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=F2hGKi4a0virIj+5bk4bqBU5xa6SbOIxFosULuH2+EkgrTYMrzI0i9CE84yuKxSyJ
-         7Vi1sgnfUcaLkYQQWc8u0e6kdSgzDZ5eYiw+spV+VsI53R3NMveqrXliFVxNP11hXS
-         W0Ne6Lac9BzyGG2JlZvZqLBJXo2OMSD6jnknjAoc=
-Date:   Sun, 10 Sep 2023 21:25:50 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     Deepak Rathore <deeratho@cisco.com>
-Cc:     stable@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
- btsdio_remove due to race condition
-Message-ID: <2023091012-python-image-6f03@gregkh>
-References: <20230906121525.3946250-1-deeratho@cisco.com>
+        with ESMTP id S229605AbjIJUnJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 16:43:09 -0400
+Received: from mail-qk1-x729.google.com (mail-qk1-x729.google.com [IPv6:2607:f8b0:4864:20::729])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2A95418C;
+        Sun, 10 Sep 2023 13:43:05 -0700 (PDT)
+Received: by mail-qk1-x729.google.com with SMTP id af79cd13be357-76ef8b91a4bso242787585a.2;
+        Sun, 10 Sep 2023 13:43:05 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694378584; x=1694983384; darn=vger.kernel.org;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=9msZ5DbtmGekV4G9H997JGWjDCJ9TtwZbavZxL9DMMc=;
+        b=AUd2wC5+FTFzmaopEK6trMjhEpXTMGApG0BUbb1cRvQNb6fdAJt/jROhAdEtuKdCrI
+         RBJ+5rujB3x+sWXMM0j2C3N21Z+zJbHuR+oxOO4IRvT7JaDCIxroH/RkAIyyM1GtBZcX
+         oycnSsbbNxmRHrjmVaNH0sDnBMkh9+oDewR5bIHqFGczNP36UJh6TwEJZVBXNObUdj97
+         fWW6cMBfZBZA0wVt8hlsEayUs2600vwF34rgSNi7IxhuhT0ds86Z3TfvJZClg/YCBpgl
+         0SOXBFgqdIhsvf8KfNwrgNDEQxrKKf0CHGcshDz+nBMBuCj1Evsd74z+WD62VEAeIV97
+         PlwA==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694378584; x=1694983384;
+        h=content-transfer-encoding:in-reply-to:from:content-language:subject
+         :references:cc:to:user-agent:mime-version:date:message-id
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=9msZ5DbtmGekV4G9H997JGWjDCJ9TtwZbavZxL9DMMc=;
+        b=hgXysp0mNlPxH1bNXeiUN36gfWOFTugaYDdCpYx2jZjRsrilL1fwY7NbLqxK0jhg3S
+         rFgRkxfLkdyIkUQXIn+sLqxFz97ubCKCW4H7XlBxCb8UZSf7rZkKLl7vg78ZCqSSKJEL
+         aUw3v3cQnQA2Y4Y6poW77tbfT/TfeP6HPsZd57+XS1QHhXUdaa6cJSAHohccS0ki/k6R
+         XEPB7Mn07s7tri90XC1WcZz09sgbNYZgwyb0jY1GwkXqoAqNix5Oi+D2sN5b3VeRnkfQ
+         czHk/hxi1C+oMrpPf+7q2vGN5SnbxjzkGrmqpVzzVEZGY72cbu6LlzLW8TveZ6/6gyA+
+         GNjg==
+X-Gm-Message-State: AOJu0YyykIuzaF54Vt+yRGLj3MSbDaztK0IeateepHLaafq3Fb6vKLXL
+        ckA+lofVmoBWLzQQjqsvpw==
+X-Google-Smtp-Source: AGHT+IGFD46wMQVTSgKn/nRK0+OF5Uj0+a2n5PrWm4+i0yeQVx8oqrj3HKfG4ybkZzKzbEaxQ/+V/g==
+X-Received: by 2002:a05:620a:4316:b0:76c:a673:5271 with SMTP id u22-20020a05620a431600b0076ca6735271mr10659649qko.24.1694378584265;
+        Sun, 10 Sep 2023 13:43:04 -0700 (PDT)
+Received: from ?IPV6:2603:6010:7a04:7681:ad4:cff:fe30:e67? (2603-6010-7a04-7681-0ad4-0cff-fe30-0e67.res6.spectrum.com. [2603:6010:7a04:7681:ad4:cff:fe30:e67])
+        by smtp.googlemail.com with ESMTPSA id qz8-20020a05620a8c0800b00770f2a690a8sm1208073qkn.53.2023.09.10.13.43.02
+        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
+        Sun, 10 Sep 2023 13:43:03 -0700 (PDT)
+Message-ID: <d32d6919-47cf-4ddc-955a-0759088220ae@gmail.com>
+Date:   Sun, 10 Sep 2023 15:43:01 -0500
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <20230906121525.3946250-1-deeratho@cisco.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+User-Agent: Mozilla Thunderbird
+To:     gregkh@linuxfoundation.org
+Cc:     Lang.Yu@amd.com, airlied@linux.ie, alexander.deucher@amd.com,
+        amd-gfx@lists.freedesktop.org, christian.koenig@amd.com,
+        dri-devel@lists.freedesktop.org, linux-kernel@vger.kernel.org,
+        olvaffe@gmail.com, sashal@kernel.org, stable@vger.kernel.org
+References: <2023083119-phoney-ascend-d4ec@gregkh>
+Subject: Re: [PATCH AUTOSEL 5.10 13/22] drm/amdgpu: install stub fence into
+ potential unused fence pointers
+Content-Language: en-US
+From:   Bryan Jennings <bryjen423@gmail.com>
+In-Reply-To: <2023083119-phoney-ascend-d4ec@gregkh>
+Content-Type: text/plain; charset=UTF-8; format=flowed
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-1.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Wed, Sep 06, 2023 at 05:45:25PM +0530, Deepak Rathore wrote:
-> From: Zheng Wang <zyytlz.wz@163.com>
-> 
-> [ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
-> 
-> In btsdio_probe, the data->work is bound with btsdio_work. It will be
-> started in btsdio_send_frame.
-> 
-> If the btsdio_remove runs with a unfinished work, there may be a race
-> condition that hdev is freed but used in btsdio_work. Fix it by
-> canceling the work before do cleanup in btsdio_remove.
-> 
-> Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
-> Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-> Signed-off-by: Deepak Rathore <deeratho@cisco.com>
-
-Meta-comment, are you SURE you want this applied?  If so, why was it
-reverted upstream in 6.4 in commit db2bf510bd5d ("Revert "Bluetooth:
-btsdio: fix use after free bug in btsdio_remove due to unfinished
-work"")
-
-What testing did you do that determined this should be added to the
-tree?  How did you come up with just this one commit to be requested to
-be applied to just this one branch?
-
-thanks,
-
-greg k-h-
+This is also causing log spam on 5.15.  It was included in 5.15.128 as 
+commit 4921792e04f2125b5eadef9dbe9417a8354c7eff.  I encountered this and 
+found https://gitlab.freedesktop.org/drm/amd/-/issues/2820 while 
+researching the problem.
