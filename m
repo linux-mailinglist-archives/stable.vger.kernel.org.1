@@ -2,34 +2,34 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E5C91799F53
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 20:30:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BB217799F57
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 20:30:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229851AbjIJSav (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 14:30:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47686 "EHLO
+        id S234193AbjIJSa5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 14:30:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34786 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S232419AbjIJSau (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 14:30:50 -0400
+        with ESMTP id S232419AbjIJSa5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 14:30:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B0F531BD
-        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 11:30:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02F07C433C8;
-        Sun, 10 Sep 2023 18:30:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAC6ACC5
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 11:30:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FD0CC433C7;
+        Sun, 10 Sep 2023 18:30:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694370645;
-        bh=q4S7DiZqfezquhU2/g+KyZ75mcFSYd1NlKEKGGhQoAg=;
+        s=korg; t=1694370649;
+        bh=uxbnUkw5Kg9gM2lPWmlcFPf7+jTzF3WYHDN2VW5475k=;
         h=Subject:To:Cc:From:Date:From;
-        b=Icr+DgaT/2xfqogKaOa0PI+ZosyxoRpQAY8a4fDCsm70btmLOFgJxscMqQREKBU0Q
-         ASDplJsYDi89YHtLHsCMqmlLPsHbs3ExUj3XiY3+KlBKsDZ+IKSTB3EjA9mRQFDJiE
-         i0zQBzfDKWf/qmRjaOVg9I6jyuAXKz/FhTOBZXag=
-Subject: FAILED: patch "[PATCH] x86/build: Fix linker fill bytes quirk/incompatibility for" failed to apply to 5.15-stable tree
+        b=CAUPlgee1zG5PCv70YOjvAe4w9OwCgXieT06pKsciYkcNJcj81zHqEs9eoSnItCMn
+         iekpiMbJKsDbCPyW9wxIErJJht0h45WbwwlKdbMqGpxHh2WIU62B9iQ9mSxmhjk8Ei
+         3N30neVRJYfw1upPoXJr29gWKC9dKXuXIGoCoPJs=
+Subject: FAILED: patch "[PATCH] x86/build: Fix linker fill bytes quirk/incompatibility for" failed to apply to 5.10-stable tree
 To:     song@kernel.org, keescook@chromium.org, mingo@kernel.org,
         peterz@infradead.org
 Cc:     <stable@vger.kernel.org>
 From:   <gregkh@linuxfoundation.org>
-Date:   Sun, 10 Sep 2023 19:30:33 +0100
-Message-ID: <2023091033-scone-precinct-e841@gregkh>
+Date:   Sun, 10 Sep 2023 19:30:34 +0100
+Message-ID: <2023091034-applaud-urologist-8167@gregkh>
 MIME-Version: 1.0
 Content-Type: text/plain; charset=ANSI_X3.4-1968
 Content-Transfer-Encoding: 8bit
@@ -44,19 +44,19 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
-The patch below does not apply to the 5.15-stable tree.
+The patch below does not apply to the 5.10-stable tree.
 If someone wants it applied there, or to any other stable or longterm
 tree, then please email the backport, including the original git commit
 id to <stable@vger.kernel.org>.
 
 To reproduce the conflict and resubmit, you may use the following commands:
 
-git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.15.y
+git fetch https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux.git/ linux-5.10.y
 git checkout FETCH_HEAD
 git cherry-pick -x 65e710899fd19f435f40268f3a92dfaa11f14470
 # <resolve conflicts, build, test, etc.>
 git commit -s
-git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091033-scone-precinct-e841@gregkh' --subject-prefix 'PATCH 5.15.y' HEAD^..
+git send-email --to '<stable@vger.kernel.org>' --in-reply-to '2023091034-applaud-urologist-8167@gregkh' --subject-prefix 'PATCH 5.10.y' HEAD^..
 
 Possible dependencies:
 
