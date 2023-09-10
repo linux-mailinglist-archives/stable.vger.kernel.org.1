@@ -2,134 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 172DC799CDB
-	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 08:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 798A8799D6B
+	for <lists+stable@lfdr.de>; Sun, 10 Sep 2023 11:11:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237352AbjIJG7O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Sun, 10 Sep 2023 02:59:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60638 "EHLO
+        id S1343931AbjIJJL5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Sun, 10 Sep 2023 05:11:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56308 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237311AbjIJG7N (ORCPT
-        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 02:59:13 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E48301BD;
-        Sat,  9 Sep 2023 23:59:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 323ACC433C7;
-        Sun, 10 Sep 2023 06:59:08 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694329149;
-        bh=5gpqg/DpUwN2Pc9g8wvI9fcEXZrb9npPHr+b/QvBmc0=;
-        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=IMlHdAPM3m8+u8Eb0U382WZh9yLqmqmqJtwVqDKz5BL9vhjy0lOHhc2sccyQhU22I
-         hRitRaLY18OGgZSCEU07WjtdFI+Xi6u7xdx667TjwH/E0HHx92DwnGNJsms+ppZTNy
-         0//JfR9x6qNwQOr7nQcVeZzG6Htd5bkO5ZQN9FyA=
-Date:   Sun, 10 Sep 2023 07:59:06 +0100
-From:   Greg KH <gregkh@linuxfoundation.org>
-To:     "Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco)" 
-        <deeratho@cisco.com>
-Cc:     "salvatore.bonaccorso@gmail.com" <salvatore.bonaccorso@gmail.com>,
-        "stable@vger.kernel.org" <stable@vger.kernel.org>,
-        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
-Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
- btsdio_remove due to race condition
-Message-ID: <2023091051-blaspheme-quack-c949@gregkh>
-References: <20230906121525.3946250-1-deeratho@cisco.com>
- <2023090738-passive-snowless-3b9d@gregkh>
- <DM4PR11MB6189DEDD52F3E17C8C4E3D1BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <DM4PR11MB61890EE125816A786D153C22C4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <2023090820-wielder-angled-3def@gregkh>
- <DM4PR11MB618943BFA18521150923326BC4EDA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <2023090826-fabulous-genetics-e912@gregkh>
- <DM4PR11MB61897793502F49240BCA903CC4ECA@DM4PR11MB6189.namprd11.prod.outlook.com>
- <2023090925-eloquence-derail-1e2b@gregkh>
- <DM4PR11MB6189F15AB7DFD11AA02A16C2C4F3A@DM4PR11MB6189.namprd11.prod.outlook.com>
+        with ESMTP id S237286AbjIJJL4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Sun, 10 Sep 2023 05:11:56 -0400
+Received: from mail-lf1-x132.google.com (mail-lf1-x132.google.com [IPv6:2a00:1450:4864:20::132])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4E6ACC7
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 02:11:51 -0700 (PDT)
+Received: by mail-lf1-x132.google.com with SMTP id 2adb3069b0e04-500bbe3ef0eso4135903e87.1
+        for <stable@vger.kernel.org>; Sun, 10 Sep 2023 02:11:51 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=gmail.com; s=20221208; t=1694337109; x=1694941909; darn=vger.kernel.org;
+        h=to:subject:message-id:date:from:reply-to:mime-version:from:to:cc
+         :subject:date:message-id:reply-to;
+        bh=2JxIk8v6+j45HjplK2bvQfVGZCGfurpRwYWShuptrI8=;
+        b=aqrNGez4HfyD8stxKCAMxPAjuhOJVN1vLvCSLMXN8SHyGM4SMUDyA2FuiDJBcPUisR
+         7nDiktF3e2aEvMrubaC18U8TkdoFOTal4ZgAtHL14o28hLlz40icPbGRtJuacemM2Ts9
+         QZhUZRW9t+VhcXl5o1rP1POcIVLcOfatzilt5fmjttXHJd2YSAKghUvor8RAoP2zYOXb
+         LxaMFEKYZ8X6uKlaHwMkNqDCotgm2Rip5uP0CqCv800jb87gHKvKDQfJ8/r7B3dB8F9o
+         cKJjIpDgRDM+uOhWL8jSunf720lmo/eNKps8MnKrcNPZye3NPggNaPz5ZjrNj307Z9eH
+         CLsg==
+X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
+        d=1e100.net; s=20230601; t=1694337109; x=1694941909;
+        h=to:subject:message-id:date:from:reply-to:mime-version
+         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
+        bh=2JxIk8v6+j45HjplK2bvQfVGZCGfurpRwYWShuptrI8=;
+        b=V38hXJPTAi84OobJPSw33u7nsb2JQE8IzoNWvpkzL99+d0UL70cFT9uv15pmJpkZRn
+         OwZggHMFAC9DOZu/nNCmdVa6wJnAWgGTFLIQcuF9Bq1p4V89FAs+7Ev3CiQoiPpl1XTn
+         MYk3519yurLT/nwFa1kINcZuScQaJ09qW3XBwTDAu8JBRSS5kqhM1u228TA+lLjpEiQD
+         EaPEDCaF9fnCgOuSgXsHnJs2rvjd+u4kp1yy5fRhxtVaNXSGZWLplXmrTYe9QL2zGhQD
+         WQIfjBOz5TRq0Q2ETJlzEVci2+M31tzzVZml9HxbJgIZ4sHTXdMd/BOtOTgAnWxrqwoQ
+         +hbg==
+X-Gm-Message-State: AOJu0Yy0Q5gnsGPnX56nPT7jg11dv9mq/B+w28r3tM4iPiCrCAm1pekX
+        rkI4UVXr5VGi0i5zO96ZuMMPdjXtpicv7VPDXUc=
+X-Google-Smtp-Source: AGHT+IGUBa72C9EQhvSUXa6HmNxcIcrndFQKnp9Y1iP1zo5I4ofUKMNDdGFlgKPCpHN8nij05dV9GXzSX4f2MKY6bhk=
+X-Received: by 2002:a05:6512:3ca5:b0:501:be4d:6dc5 with SMTP id
+ h37-20020a0565123ca500b00501be4d6dc5mr3697974lfv.8.1694337109231; Sun, 10 Sep
+ 2023 02:11:49 -0700 (PDT)
 MIME-Version: 1.0
-Content-Type: text/plain; charset=us-ascii
-Content-Disposition: inline
-In-Reply-To: <DM4PR11MB6189F15AB7DFD11AA02A16C2C4F3A@DM4PR11MB6189.namprd11.prod.outlook.com>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Received: by 2002:a05:6022:8420:b0:45:29b7:cb2 with HTTP; Sun, 10 Sep 2023
+ 02:11:48 -0700 (PDT)
+Reply-To: krp2014@live.fr
+From:   "Mrs. Kish Patrick" <mrs.nolinamalook56@gmail.com>
+Date:   Sun, 10 Sep 2023 09:11:48 +0000
+Message-ID: <CAGL=rfH0L8YzWxgR2msRb8yMwGiajvbw0+G2dKx89Yr0SK3wFw@mail.gmail.com>
+Subject: CONTACT
+To:     undisclosed-recipients:;
+Content-Type: text/plain; charset="UTF-8"
+X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_ENVFROM_END_DIGIT,
+        FREEMAIL_FROM,FREEMAIL_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,T_HK_NAME_FM_MR_MRS,
+        UNDISC_FREEM autolearn=no autolearn_force=no version=3.4.6
+X-Spam-Level: ****
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Sun, Sep 10, 2023 at 06:25:22AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
-> -----Original Message-----
-> From: Greg KH <gregkh@linuxfoundation.org> 
-> Sent: Saturday, September 9, 2023 5:17 PM
-> To: Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) <deeratho@cisco.com>
-> Cc: stable@vger.kernel.org; linux-kernel@vger.kernel.org
-> Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
-> 
-> On Sat, Sep 09, 2023 at 08:49:52AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
-> > -----Original Message-----
-> > From: Greg KH <gregkh@linuxfoundation.org>
-> > Sent: Friday, September 8, 2023 12:39 PM
-> > To: Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) 
-> > <deeratho@cisco.com>
-> > Cc: stable@vger.kernel.org; linux-kernel@vger.kernel.org
-> > Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free 
-> > bug in btsdio_remove due to race condition
-> > 
-> > > A: http://en.wikipedia.org/wiki/Top_post
-> > > Q: Were do I find info about this thing called top-posting?
-> > > A: Because it messes up the order in which people normally read text.
-> > > Q: Why is top-posting such a bad thing?
-> > > A: Top-posting.
-> > > Q: What is the most annoying thing in e-mail?
-> > 
-> > > A: No.
-> > > Q: Should I include quotations after my reply?
-> > 
-> > 
-> > > http://daringfireball.net/2007/07/on_top
-> > 
-> > On Fri, Sep 08, 2023 at 06:54:06AM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
-> > > Hi Greg,
-> > > 
-> > > This change is required to fix kernel CVE: CVE-2023-1989 which is 
-> > > reported in v6.1 kernel version.
-> > 
-> > > Which change?
-> > 
-> > [Deepak]: I am referring below change. This below change is required to fix kernel CVE: CVE-2023-1989 which is reported in v6.1 kernel.
-> > 
-> > Subject: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in 
-> > btsdio_remove due to race condition
-> > 
-> > From: Zheng Wang <zyytlz.wz@163.com>
-> > 
-> > [ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
-> 
-> > This commit is already in the 6.1.52 kernel release, why do you want it included again?
-> 
-> > confused,
-> 
-> > greg k-h
-> 
-> Hi Greg, Salvatore,
-> 
-> When I have submitted this patch for review, at that time, 6.1.52 was not released.
-> 
-> It will be good if you can share me guideline or details like how I
-> can share CVE fix patch to upstream for review like what details I
-> need to include in patch for review so from next time, we can save
-> time in query discussion.
+-- 
+Dear Freind,
 
-Why does the random assignment of a CVE number mean anything should be
-done differently than the normal process of getting a stable patch
-merged?
+I have sent you two emails and you did not respond, I even sent
+another message a few days ago with more details still no response
+from you. Please are you still using this email address? I am VERY
+SORRY if sincerely you did not receive those emails, I will resend it
+now as soon as you confirm you never received them.
 
-You have read:
-    https://www.kernel.org/doc/html/latest/process/stable-kernel-rules.html
-
-right?
-
-That should cover it.
-
-thanks,
-
-greg k-h
+Regards,
+Mrs. Kish Patrick
