@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07EA879BAD7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8E23279BE36
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244977AbjIKVIf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40886 "EHLO
+        id S239956AbjIKV6a (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:30 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241479AbjIKPJl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:41 -0400
+        with ESMTP id S240390AbjIKOnF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68A5CCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17ADAC433C7;
-        Mon, 11 Sep 2023 15:09:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BDBACF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6ACBC433C7;
+        Mon, 11 Sep 2023 14:43:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444976;
-        bh=i/VEtmflhIJNrvbR2YTslmERHXgW3zyicCo43Tlutyo=;
+        s=korg; t=1694443381;
+        bh=llvRtMn+ER/VDPIqyY/WvV1RcZsYnDbU3x6uEeGmzXA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bxaEU3O4XbHmLCN5BEaOSK5SIYs2Tiixim8TeWD741VAH3D6+xs3blvS1LUNBeDK0
-         TOCwNElHQP+lYDW9/Pl3RilPto/LvgqBdCUA7QfPR20G/2x8CEDO2ZmpSfVdfX64QL
-         n6EGpi7l4wGR7or6sO6OcsApcXsV8NKVrHrDSKTY=
+        b=bqlsonIYx4c5wHI/KDrc21HObsTtr0lcLXwzAGK0OBN+HTsyPTo/DtUnYdn7DWUP6
+         xMAgC4IICo2LHOUXhnXkgdo2T5j/QV7eLwK8tpQDoNF41KakimC568Ow4264w7tqcy
+         EN2gTkAro1JYyAdOcxok488d5BLWM9K0YP+BrX0U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Yan Zhai <yan@cloudflare.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
+        patches@lists.linux.dev, Chen Jiahao <chenjiahao16@huawei.com>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 183/600] lwt: Check LWTUNNEL_XMIT_CONTINUE strictly
+Subject: [PATCH 6.4 357/737] soc: qcom: smem: Fix incompatible types in comparison
 Date:   Mon, 11 Sep 2023 15:43:36 +0200
-Message-ID: <20230911134639.002095062@linuxfoundation.org>
+Message-ID: <20230911134700.493568041@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,80 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yan Zhai <yan@cloudflare.com>
+From: Chen Jiahao <chenjiahao16@huawei.com>
 
-[ Upstream commit a171fbec88a2c730b108c7147ac5e7b2f5a02b47 ]
+[ Upstream commit 5f908786cf44fcb397cfe0f322ef2f41b0909e2a ]
 
-LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
-such that any positive return value from a xmit hook could cause
-unexpected continue behavior, despite that related skb may have been
-freed. This could be error-prone for future xmit hook ops. One of the
-possible errors is to return statuses of dst_output directly.
+This patch fixes the following sparse error:
 
-To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
-distinguish from dst_output statuses and check the continue
-condition explicitly.
+drivers/soc/qcom/smem.c:738:30: error: incompatible types in comparison expression (different add        ress spaces):
+drivers/soc/qcom/smem.c:738:30:    void *
+drivers/soc/qcom/smem.c:738:30:    void [noderef] __iomem *
 
-Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
-Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Yan Zhai <yan@cloudflare.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Link: https://lore.kernel.org/bpf/96b939b85eda00e8df4f7c080f770970a4c5f698.1692326837.git.yan@cloudflare.com
+In addr_in_range(), "base" is of type void __iomem *, converting
+void *addr to the same type to fix above sparse error.
+
+Fixes: 20bb6c9de1b7 ("soc: qcom: smem: map only partitions used by local HOST")
+Signed-off-by: Chen Jiahao <chenjiahao16@huawei.com>
+Link: https://lore.kernel.org/r/20230801094807.4146779-1-chenjiahao16@huawei.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/lwtunnel.h | 5 ++++-
- net/ipv4/ip_output.c   | 2 +-
- net/ipv6/ip6_output.c  | 2 +-
- 3 files changed, 6 insertions(+), 3 deletions(-)
+ drivers/soc/qcom/smem.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
-index 6f15e6fa154e6..53bd2d02a4f0d 100644
---- a/include/net/lwtunnel.h
-+++ b/include/net/lwtunnel.h
-@@ -16,9 +16,12 @@
- #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
- #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
+diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
+index 6be7ea93c78cf..1e08bb3b1679a 100644
+--- a/drivers/soc/qcom/smem.c
++++ b/drivers/soc/qcom/smem.c
+@@ -723,7 +723,7 @@ EXPORT_SYMBOL(qcom_smem_get_free_space);
  
-+/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
-+ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
-+ */
- enum {
- 	LWTUNNEL_XMIT_DONE,
--	LWTUNNEL_XMIT_CONTINUE,
-+	LWTUNNEL_XMIT_CONTINUE = 0x100,
- };
+ static bool addr_in_range(void __iomem *base, size_t size, void *addr)
+ {
+-	return base && (addr >= base && addr < base + size);
++	return base && ((void __iomem *)addr >= base && (void __iomem *)addr < base + size);
+ }
  
- 
-diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
-index acfe58d2f1dd7..ebd2cea5b7d7a 100644
---- a/net/ipv4/ip_output.c
-+++ b/net/ipv4/ip_output.c
-@@ -214,7 +214,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
-diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
-index 95a55c6630add..34192f7a166fb 100644
---- a/net/ipv6/ip6_output.c
-+++ b/net/ipv6/ip6_output.c
-@@ -112,7 +112,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
- 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
- 		int res = lwtunnel_xmit(skb);
- 
--		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
-+		if (res != LWTUNNEL_XMIT_CONTINUE)
- 			return res;
- 	}
- 
+ /**
 -- 
 2.40.1
 
