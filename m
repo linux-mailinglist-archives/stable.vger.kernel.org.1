@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9209679B1FB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A74679B198
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355427AbjIKV6M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:58:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58122 "EHLO
+        id S1378920AbjIKWiF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:38:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33546 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240198AbjIKOi6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:58 -0400
+        with ESMTP id S241208AbjIKPET (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8F7FE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14623C433CB;
-        Mon, 11 Sep 2023 14:38:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24616125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D9EAC433C8;
+        Mon, 11 Sep 2023 15:04:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443133;
-        bh=Vdd70sNchvJZnufT94Md0AsJmXgYHpv2+ddAJ5YWG/s=;
+        s=korg; t=1694444654;
+        bh=IqexUTo+4g0P+AceFcjRmYB2bvNKcodogTGBQgks5NE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pRtRwhzETbPMz1xhStZq0o2JXH2rY/DzQnRKQz6LYEQP5ibIbu1lqwX49S1efIROR
-         WEXH5qPJe7LcD/jKFdokGD4X7nfVAWOU1WlzbpdUsaH5wwoiDes0CPSDl7n8XUcTX+
-         zVJieh3guZY1UNBH4xj7GxvS+g67OQk/sGsdfSzA=
+        b=ahh5oARqpu2FtZOF1aLsjQmnScWpxU73DV1uyRYyj1xs3uWrJ3E/EsK9TS7nEHWeQ
+         9y2ZLfateI6U9s2Oa2jGxtHgaMuw6GuKU/ooFYoih3bzV7XD88P2HdFZB6ICTMQW26
+         pjw17lSEUR+8MyVohoC6wBec8B+ESquYpvViSsnM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 242/737] Bluetooth: hci_sync: Fix UAF on hci_abort_conn_sync
+Subject: [PATCH 6.1 068/600] sctp: handle invalid error codes without calling BUG()
 Date:   Mon, 11 Sep 2023 15:41:41 +0200
-Message-ID: <20230911134657.365749656@linuxfoundation.org>
+Message-ID: <20230911134635.628775368@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,116 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 5af1f84ed13a416297ab9ced7537f4d5ae7f329a ]
+[ Upstream commit a0067dfcd9418fd3b0632bc59210d120d038a9c6 ]
 
-Connections may be cleanup while waiting for the commands to complete so
-this attempts to check if the connection handle remains valid in case of
-errors that would lead to call hci_conn_failed:
+The sctp_sf_eat_auth() function is supposed to return enum sctp_disposition
+values but if the call to sctp_ulpevent_make_authkey() fails, it returns
+-ENOMEM.
 
-BUG: KASAN: slab-use-after-free in hci_conn_failed+0x1f/0x160
-Read of size 8 at addr ffff888001376958 by task kworker/u3:0/52
+This results in calling BUG() inside the sctp_side_effects() function.
+Calling BUG() is an over reaction and not helpful.  Call WARN_ON_ONCE()
+instead.
 
-CPU: 0 PID: 52 Comm: kworker/u3:0 Not tainted
-6.5.0-rc1-00527-g2dfe76d58d3a #5615
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-1.16.2-1.fc38 04/01/2014
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1d/0x70
- print_report+0xce/0x620
- ? __virt_addr_valid+0xd4/0x150
- ? hci_conn_failed+0x1f/0x160
- kasan_report+0xd1/0x100
- ? hci_conn_failed+0x1f/0x160
- hci_conn_failed+0x1f/0x160
- hci_abort_conn_sync+0x237/0x360
+This code predates git.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 94d9ba9f9888 ("Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 45 ++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+ net/sctp/sm_sideeffect.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index ae5d5193d9ba7..60e213982635c 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5337,27 +5337,20 @@ static int hci_reject_conn_sync(struct hci_dev *hdev, struct hci_conn *conn,
- 
- int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- {
--	int err;
-+	int err = 0;
-+	u16 handle = conn->handle;
- 
- 	switch (conn->state) {
- 	case BT_CONNECTED:
- 	case BT_CONFIG:
--		return hci_disconnect_sync(hdev, conn, reason);
-+		err = hci_disconnect_sync(hdev, conn, reason);
-+		break;
- 	case BT_CONNECT:
- 		err = hci_connect_cancel_sync(hdev, conn, reason);
--		/* Cleanup hci_conn object if it cannot be cancelled as it
--		 * likelly means the controller and host stack are out of sync
--		 * or in case of LE it was still scanning so it can be cleanup
--		 * safely.
--		 */
--		if (err) {
--			hci_dev_lock(hdev);
--			hci_conn_failed(conn, err);
--			hci_dev_unlock(hdev);
--		}
--		return err;
-+		break;
- 	case BT_CONNECT2:
--		return hci_reject_conn_sync(hdev, conn, reason);
-+		err = hci_reject_conn_sync(hdev, conn, reason);
-+		break;
- 	case BT_OPEN:
- 		/* Cleanup bises that failed to be established */
- 		if (test_and_clear_bit(HCI_CONN_BIG_SYNC_FAILED, &conn->flags)) {
-@@ -5368,10 +5361,30 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- 		break;
+diff --git a/net/sctp/sm_sideeffect.c b/net/sctp/sm_sideeffect.c
+index 463c4a58d2c36..970c6a486a9b0 100644
+--- a/net/sctp/sm_sideeffect.c
++++ b/net/sctp/sm_sideeffect.c
+@@ -1251,7 +1251,10 @@ static int sctp_side_effects(enum sctp_event_type event_type,
  	default:
- 		conn->state = BT_CLOSED;
--		break;
-+		return 0;
+ 		pr_err("impossible disposition %d in state %d, event_type %d, event_id %d\n",
+ 		       status, state, event_type, subtype.chunk);
+-		BUG();
++		error = status;
++		if (error >= 0)
++			error = -EINVAL;
++		WARN_ON_ONCE(1);
+ 		break;
  	}
  
--	return 0;
-+	/* Cleanup hci_conn object if it cannot be cancelled as it
-+	 * likelly means the controller and host stack are out of sync
-+	 * or in case of LE it was still scanning so it can be cleanup
-+	 * safely.
-+	 */
-+	if (err) {
-+		struct hci_conn *c;
-+
-+		/* Check if the connection hasn't been cleanup while waiting
-+		 * commands to complete.
-+		 */
-+		c = hci_conn_hash_lookup_handle(hdev, handle);
-+		if (!c || c != conn)
-+			return 0;
-+
-+		hci_dev_lock(hdev);
-+		hci_conn_failed(conn, err);
-+		hci_dev_unlock(hdev);
-+	}
-+
-+	return err;
- }
- 
- static int hci_disconnect_all_sync(struct hci_dev *hdev, u8 reason)
 -- 
 2.40.1
 
