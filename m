@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C9C779BBB3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 332E479B72C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353660AbjIKVsA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41082 "EHLO
+        id S240402AbjIKWXt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:23:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35422 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240792AbjIKOxz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:55 -0400
+        with ESMTP id S241962AbjIKPTG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047F2E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 231C6C433C9;
-        Mon, 11 Sep 2023 14:53:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6410DFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACAE6C433C8;
+        Mon, 11 Sep 2023 15:19:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444030;
-        bh=vcwpRKeDpCon9UW2c/DzoTCz3ubPSE27rMp5Z20Rg2Q=;
+        s=korg; t=1694445542;
+        bh=wPlOxrz3Il636PJa7TBGWgbqKKUXH08Iy0R3q+ex2s8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1QYknI+zqnC//uIXiFXe2UAZg8p/dOfBkSpv+n7tyQCyyy305FkIsySZrWzWJ6XbN
-         nVFqv+VwQela7fkmzRk0PDgRrL++lFTJj3orc4t3ecTUb4bbW557uQTWlROHCgSWGH
-         9RDww/xj3vx2NS0Ol9PQhGPGAWOW3uvYfsio5khE=
+        b=jmeJM4LukKtfzAEHV8kDCT6rW7Ca7LMWiKA6LS4TQFLNaJS1Wu5YP6y4uB9sKIaiQ
+         THRD9tArbWSZsaNzhLqVaFkWgI8FnXnfq/CrWNhf/i7rJW0SGYvCQX6+EIwbTwETtV
+         jhd8YrqwZoUwqCZ3FOfLlIACkJRwN2aDjjXCfqtM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        Eddie James <eajames@linux.ibm.com>,
-        Joel Stanley <joel@jms.id.au>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 557/737] docs: ABI: fix spelling/grammar in SBEFIFO timeout interface
-Date:   Mon, 11 Sep 2023 15:46:56 +0200
-Message-ID: <20230911134706.113728246@linuxfoundation.org>
+        patches@lists.linux.dev, Su Hui <suhui@nfschina.com>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Jeff Layton <jlayton@kernel.org>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 384/600] fs: lockd: avoid possible wrong NULL parameter
+Date:   Mon, 11 Sep 2023 15:46:57 +0200
+Message-ID: <20230911134645.001255820@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Su Hui <suhui@nfschina.com>
 
-[ Upstream commit 2cd9ec2a51474d4c0b4d2a061f2de7da34eff476 ]
+[ Upstream commit de8d38cf44bac43e83bad28357ba84784c412752 ]
 
-Correct spelling problems as identified by codespell.
-Correct one grammar error.
+clang's static analysis warning: fs/lockd/mon.c: line 293, column 2:
+Null pointer passed as 2nd argument to memory copy function.
 
-Fixes: 9a93de620e0a ("docs: ABI: testing: Document the SBEFIFO timeout interface")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Cc: Eddie James <eajames@linux.ibm.com>
-Cc: Joel Stanley <joel@jms.id.au>
-Link: https://lore.kernel.org/r/20230710052305.29611-1-rdunlap@infradead.org
-Signed-off-by: Joel Stanley <joel@jms.id.au>
+Assuming 'hostname' is NULL and calling 'nsm_create_handle()', this will
+pass NULL as 2nd argument to memory copy function 'memcpy()'. So return
+NULL if 'hostname' is invalid.
+
+Fixes: 77a3ef33e2de ("NSM: More clean up of nsm_get_handle()")
+Signed-off-by: Su Hui <suhui@nfschina.com>
+Reviewed-by: Nick Desaulniers <ndesaulniers@google.com>
+Reviewed-by: Jeff Layton <jlayton@kernel.org>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ fs/lockd/mon.c | 3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo b/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo
-index 531fe9d6b40aa..c7393b4dd2d88 100644
---- a/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo
-+++ b/Documentation/ABI/testing/sysfs-bus-fsi-devices-sbefifo
-@@ -5,6 +5,6 @@ Description:
- 		Indicates whether or not this SBE device has experienced a
- 		timeout; i.e. the SBE did not respond within the time allotted
- 		by the driver. A value of 1 indicates that a timeout has
--		ocurred and no transfers have completed since the timeout. A
--		value of 0 indicates that no timeout has ocurred, or if one
--		has, more recent transfers have completed successful.
-+		occurred and no transfers have completed since the timeout. A
-+		value of 0 indicates that no timeout has occurred, or if one
-+		has, more recent transfers have completed successfully.
+diff --git a/fs/lockd/mon.c b/fs/lockd/mon.c
+index 1d9488cf05348..87a0f207df0b9 100644
+--- a/fs/lockd/mon.c
++++ b/fs/lockd/mon.c
+@@ -276,6 +276,9 @@ static struct nsm_handle *nsm_create_handle(const struct sockaddr *sap,
+ {
+ 	struct nsm_handle *new;
+ 
++	if (!hostname)
++		return NULL;
++
+ 	new = kzalloc(sizeof(*new) + hostname_len + 1, GFP_KERNEL);
+ 	if (unlikely(new == NULL))
+ 		return NULL;
 -- 
 2.40.1
 
