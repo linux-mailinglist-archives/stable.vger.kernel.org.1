@@ -2,40 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1F1EA79B113
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9FAD079B175
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358078AbjIKWHm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36810 "EHLO
+        id S1348848AbjIKVbV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55098 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241018AbjIKO7x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:53 -0400
+        with ESMTP id S242279AbjIKP0r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:26:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8595D1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE232C433CA;
-        Mon, 11 Sep 2023 14:59:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67401E4;
+        Mon, 11 Sep 2023 08:26:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83757C433C9;
+        Mon, 11 Sep 2023 15:26:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444389;
-        bh=ZkpMbyM5I6mw4lJ0s4/2GVslqBXkZXe72cnXTRnDXnc=;
+        s=korg; t=1694446002;
+        bh=EUGIBxSdmAjFmieVW7DJwK6CHb+ujANFOaFtxBP9u5g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KTmXBTnANqT0D6qLHtvhEumXb64ety3x6ik21hYJJOgPp9ij9k5RhSrNT9PlRtF5M
-         OdodR+IM7H28IxKTHy4ILTyEvmQQsQT2PEfaWiJtMC6Qwoam2sII86dtJpDClMfb6q
-         eGZILVO0LMEPhQCBKVymopXfozFEwUXSKkIFUcKE=
+        b=AQYXCXI6xTkv8+au38xLCcs/HFJM9f7YDsUedPM35WSq0UVVD3gep8sUUvE9tDznM
+         m47DDEbY72f79wrRjY87O8flym+3+qDRqJErFwBaU8XfqHvBNsJJNz3DU0E2OZRTnj
+         yQvxCd4rl8WaOop5YR+athE2m1Ku21dcFuHVbdHc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>
-Subject: [PATCH 6.4 713/737] cpufreq: brcmstb-avs-cpufreq: Fix -Warray-bounds bug
-Date:   Mon, 11 Sep 2023 15:49:32 +0200
-Message-ID: <20230911134710.436667276@linuxfoundation.org>
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Yoshinori Sato <ysato@users.sourceforge.jp>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 6.1 540/600] backlight/lv5207lp: Compare against struct fb_info.device
+Date:   Mon, 11 Sep 2023 15:49:33 +0200
+Message-ID: <20230911134649.561773969@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,68 +58,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gustavo A. R. Silva <gustavoars@kernel.org>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit e520d0b6be950ce3738cf4b9bd3b392be818f1dc upstream.
+commit 1ca8819320fd84e7d95b04e7668efc5f9fe9fa5c upstream.
 
-Allocate extra space for terminating element at:
+Struct lv5207lp_platform_data refers to a platform device within
+the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
+compares it against the fbdev device in struct fb_info.dev, which
+is different. Fix the test by comparing to struct fb_info.device.
 
-drivers/cpufreq/brcmstb-avs-cpufreq.c:
-449         table[i].frequency = CPUFREQ_TABLE_END;
+Fixes a bug in the backlight driver and prepares fbdev for making
+struct fb_info.dev optional.
 
-and add code comment to make this clear.
+v2:
+	* move renames into separate patch (Javier, Sam, Michael)
 
-This fixes the following -Warray-bounds warning seen after building
-ARM with multi_v7_defconfig (GCC 13):
-In function 'brcm_avs_get_freq_table',
-    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
-drivers/cpufreq/brcmstb-avs-cpufreq.c:449:28: warning: array subscript 5 is outside array bounds of 'void[60]' [-Warray-bounds=]
-  449 |         table[i].frequency = CPUFREQ_TABLE_END;
-In file included from include/linux/node.h:18,
-                 from include/linux/cpu.h:17,
-                 from include/linux/cpufreq.h:12,
-                 from drivers/cpufreq/brcmstb-avs-cpufreq.c:44:
-In function 'devm_kmalloc_array',
-    inlined from 'devm_kcalloc' at include/linux/device.h:328:9,
-    inlined from 'brcm_avs_get_freq_table' at drivers/cpufreq/brcmstb-avs-cpufreq.c:437:10,
-    inlined from 'brcm_avs_cpufreq_init' at drivers/cpufreq/brcmstb-avs-cpufreq.c:623:15:
-include/linux/device.h:323:16: note: at offset 60 into object of size 60 allocated by 'devm_kmalloc'
-  323 |         return devm_kmalloc(dev, bytes, flags);
-      |                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This helps with the ongoing efforts to tighten the FORTIFY_SOURCE
-routines on memcpy() and help us make progress towards globally
-enabling -Warray-bounds.
-
-Link: https://github.com/KSPP/linux/issues/324
-Fixes: de322e085995 ("cpufreq: brcmstb-avs-cpufreq: AVS CPUfreq driver for Broadcom STB SoCs")
-Cc: stable@vger.kernel.org
-Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
-Reviewed-by: Florian Fainelli <florian.fainelli@broadcom.com>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: linux-sh@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.12+
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-6-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/cpufreq/brcmstb-avs-cpufreq.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/video/backlight/lv5207lp.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/cpufreq/brcmstb-avs-cpufreq.c
-+++ b/drivers/cpufreq/brcmstb-avs-cpufreq.c
-@@ -434,7 +434,11 @@ brcm_avs_get_freq_table(struct device *d
- 	if (ret)
- 		return ERR_PTR(ret);
+--- a/drivers/video/backlight/lv5207lp.c
++++ b/drivers/video/backlight/lv5207lp.c
+@@ -67,7 +67,7 @@ static int lv5207lp_backlight_check_fb(s
+ {
+ 	struct lv5207lp *lv = bl_get_data(backlight);
  
--	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1, sizeof(*table),
-+	/*
-+	 * We allocate space for the 5 different P-STATES AVS,
-+	 * plus extra space for a terminating element.
-+	 */
-+	table = devm_kcalloc(dev, AVS_PSTATE_MAX + 1 + 1, sizeof(*table),
- 			     GFP_KERNEL);
- 	if (!table)
- 		return ERR_PTR(-ENOMEM);
+-	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->dev;
++	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->device;
+ }
+ 
+ static const struct backlight_ops lv5207lp_backlight_ops = {
 
 
