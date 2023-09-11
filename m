@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0954A79BCBF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 440D579BCF7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358068AbjIKWHh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43834 "EHLO
+        id S1354001AbjIKVv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57952 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242057AbjIKPVN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:13 -0400
+        with ESMTP id S239464AbjIKOVT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3B64BE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 393B8C433CB;
-        Mon, 11 Sep 2023 15:21:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B463CDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F114AC433C7;
+        Mon, 11 Sep 2023 14:21:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445668;
-        bh=gkXWYgX+wzNqCO0gG/rD3nttrk2iN5XFHFWbj3dmz88=;
+        s=korg; t=1694442073;
+        bh=XPFyBDXuFDUA9D6g1hJjysgzMs07QuFt/hqwFogpTMA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kZPdZyEUD0WzPq42umpqCRUO+AJCfyz+beeSfIRGda3qa09RzDyAYMtQBlK9gJ1Xc
-         rX4EkQf5UH9uhsY8rxr+OU4t9dyZjXt9Z5G51H+X/jHY8PbzlBNkchAJF5hu3nJtqu
-         AcqcjuUirrOBNPuKwnksOeAAdfg5zpnWjBG/lpvY=
+        b=oSVKwbV4DaHOLlmsjaaxiAjK5Qmz8rxUdufyBPBCSCjaGbaK4boWSGLEoOxL1eDA5
+         DrLXmvAhTswKhTMqcNsRjIIr/MxqATsdwDGlxOaeg/Yk/qPcAoFqoFacr25iQI4uue
+         k8MWmeQhr6sQiTs/42eWy67qJFw9Rg+3y+Uix3OM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tom Talpey <tom@talpey.com>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 401/600] RDMA/siw: Fabricate a GID on tun and loopback devices
-Date:   Mon, 11 Sep 2023 15:47:14 +0200
-Message-ID: <20230911134645.511298752@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mohamed Khalfella <mkhalfella@purestorage.com>,
+        Amit Goyal <agoyal@purestorage.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 636/739] skbuff: skb_segment, Call zero copy functions before using skbuff frags
+Date:   Mon, 11 Sep 2023 15:47:15 +0200
+Message-ID: <20230911134708.859536789@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,122 +52,160 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-[ Upstream commit bad5b6e34ffbaacc77ad28a0f482e33b3929e635 ]
+commit 2ea35288c83b3d501a88bc17f2df8f176b5cc96f upstream.
 
-LOOPBACK and NONE (tunnel) devices have all-zero MAC addresses.
-Currently, siw_device_create() falls back to copying the IB device's
-name in those cases, because an all-zero MAC address breaks the RDMA
-core address resolution mechanism.
+Commit bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions
+once per nskb") added the call to zero copy functions in skb_segment().
+The change introduced a bug in skb_segment() because skb_orphan_frags()
+may possibly change the number of fragments or allocate new fragments
+altogether leaving nrfrags and frag to point to the old values. This can
+cause a panic with stacktrace like the one below.
 
-However, at the point when siw_device_create() constructs a GID, the
-ib_device::name field is uninitialized, leaving the MAC address to
-remain in an all-zero state.
+[  193.894380] BUG: kernel NULL pointer dereference, address: 00000000000000bc
+[  193.895273] CPU: 13 PID: 18164 Comm: vh-net-17428 Kdump: loaded Tainted: G           O      5.15.123+ #26
+[  193.903919] RIP: 0010:skb_segment+0xb0e/0x12f0
+[  194.021892] Call Trace:
+[  194.027422]  <TASK>
+[  194.072861]  tcp_gso_segment+0x107/0x540
+[  194.082031]  inet_gso_segment+0x15c/0x3d0
+[  194.090783]  skb_mac_gso_segment+0x9f/0x110
+[  194.095016]  __skb_gso_segment+0xc1/0x190
+[  194.103131]  netem_enqueue+0x290/0xb10 [sch_netem]
+[  194.107071]  dev_qdisc_enqueue+0x16/0x70
+[  194.110884]  __dev_queue_xmit+0x63b/0xb30
+[  194.121670]  bond_start_xmit+0x159/0x380 [bonding]
+[  194.128506]  dev_hard_start_xmit+0xc3/0x1e0
+[  194.131787]  __dev_queue_xmit+0x8a0/0xb30
+[  194.138225]  macvlan_start_xmit+0x4f/0x100 [macvlan]
+[  194.141477]  dev_hard_start_xmit+0xc3/0x1e0
+[  194.144622]  sch_direct_xmit+0xe3/0x280
+[  194.147748]  __dev_queue_xmit+0x54a/0xb30
+[  194.154131]  tap_get_user+0x2a8/0x9c0 [tap]
+[  194.157358]  tap_sendmsg+0x52/0x8e0 [tap]
+[  194.167049]  handle_tx_zerocopy+0x14e/0x4c0 [vhost_net]
+[  194.173631]  handle_tx+0xcd/0xe0 [vhost_net]
+[  194.176959]  vhost_worker+0x76/0xb0 [vhost]
+[  194.183667]  kthread+0x118/0x140
+[  194.190358]  ret_from_fork+0x1f/0x30
+[  194.193670]  </TASK>
 
-Fabricate a random artificial GID for such devices, and ensure this
-artificial GID is returned for all device query operations.
+In this case calling skb_orphan_frags() updated nr_frags leaving nrfrags
+local variable in skb_segment() stale. This resulted in the code hitting
+i >= nrfrags prematurely and trying to move to next frag_skb using
+list_skb pointer, which was NULL, and caused kernel panic. Move the call
+to zero copy functions before using frags and nr_frags.
 
-Link: https://lore.kernel.org/r/168960673260.3007.12378736853793339110.stgit@manet.1015granger.net
-Reported-by: Tom Talpey <tom@talpey.com>
-Fixes: a2d36b02c15d ("RDMA/siw: Enable siw on tunnel devices")
-Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
-Reviewed-by: Tom Talpey <tom@talpey.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions once per nskb")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reported-by: Amit Goyal <agoyal@purestorage.com>
+Cc: stable@vger.kernel.org
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw.h       |  1 +
- drivers/infiniband/sw/siw/siw_main.c  | 22 ++++++++--------------
- drivers/infiniband/sw/siw/siw_verbs.c |  4 ++--
- 3 files changed, 11 insertions(+), 16 deletions(-)
+ net/core/skbuff.c |   34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/infiniband/sw/siw/siw.h b/drivers/infiniband/sw/siw/siw.h
-index 2f3a9cda3850f..8b4a710b82bc1 100644
---- a/drivers/infiniband/sw/siw/siw.h
-+++ b/drivers/infiniband/sw/siw/siw.h
-@@ -74,6 +74,7 @@ struct siw_device {
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4360,21 +4360,20 @@ struct sk_buff *skb_segment(struct sk_bu
+ 	struct sk_buff *segs = NULL;
+ 	struct sk_buff *tail = NULL;
+ 	struct sk_buff *list_skb = skb_shinfo(head_skb)->frag_list;
+-	skb_frag_t *frag = skb_shinfo(head_skb)->frags;
+ 	unsigned int mss = skb_shinfo(head_skb)->gso_size;
+ 	unsigned int doffset = head_skb->data - skb_mac_header(head_skb);
+-	struct sk_buff *frag_skb = head_skb;
+ 	unsigned int offset = doffset;
+ 	unsigned int tnl_hlen = skb_tnl_header_len(head_skb);
+ 	unsigned int partial_segs = 0;
+ 	unsigned int headroom;
+ 	unsigned int len = head_skb->len;
++	struct sk_buff *frag_skb;
++	skb_frag_t *frag;
+ 	__be16 proto;
+ 	bool csum, sg;
+-	int nfrags = skb_shinfo(head_skb)->nr_frags;
+ 	int err = -ENOMEM;
+ 	int i = 0;
+-	int pos;
++	int nfrags, pos;
  
- 	u32 vendor_part_id;
- 	int numa_node;
-+	char raw_gid[ETH_ALEN];
+ 	if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
+ 	    mss != GSO_BY_FRAGS && mss != skb_headlen(head_skb)) {
+@@ -4451,6 +4450,13 @@ normal:
+ 	headroom = skb_headroom(head_skb);
+ 	pos = skb_headlen(head_skb);
  
- 	/* physical port state (only one port per device) */
- 	enum ib_port_state state;
-diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
-index 65b5cda5457ba..f45600d169ae7 100644
---- a/drivers/infiniband/sw/siw/siw_main.c
-+++ b/drivers/infiniband/sw/siw/siw_main.c
-@@ -75,8 +75,7 @@ static int siw_device_register(struct siw_device *sdev, const char *name)
- 		return rv;
- 	}
++	if (skb_orphan_frags(head_skb, GFP_ATOMIC))
++		return ERR_PTR(-ENOMEM);
++
++	nfrags = skb_shinfo(head_skb)->nr_frags;
++	frag = skb_shinfo(head_skb)->frags;
++	frag_skb = head_skb;
++
+ 	do {
+ 		struct sk_buff *nskb;
+ 		skb_frag_t *nskb_frag;
+@@ -4471,6 +4477,10 @@ normal:
+ 		    (skb_headlen(list_skb) == len || sg)) {
+ 			BUG_ON(skb_headlen(list_skb) > len);
  
--	siw_dbg(base_dev, "HWaddr=%pM\n", sdev->netdev->dev_addr);
++			nskb = skb_clone(list_skb, GFP_ATOMIC);
++			if (unlikely(!nskb))
++				goto err;
++
+ 			i = 0;
+ 			nfrags = skb_shinfo(list_skb)->nr_frags;
+ 			frag = skb_shinfo(list_skb)->frags;
+@@ -4489,12 +4499,8 @@ normal:
+ 				frag++;
+ 			}
+ 
+-			nskb = skb_clone(list_skb, GFP_ATOMIC);
+ 			list_skb = list_skb->next;
+ 
+-			if (unlikely(!nskb))
+-				goto err;
 -
-+	siw_dbg(base_dev, "HWaddr=%pM\n", sdev->raw_gid);
- 	return 0;
- }
+ 			if (unlikely(pskb_trim(nskb, len))) {
+ 				kfree_skb(nskb);
+ 				goto err;
+@@ -4570,12 +4576,16 @@ normal:
+ 		skb_shinfo(nskb)->flags |= skb_shinfo(head_skb)->flags &
+ 					   SKBFL_SHARED_FRAG;
  
-@@ -313,24 +312,19 @@ static struct siw_device *siw_device_create(struct net_device *netdev)
- 		return NULL;
+-		if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
+-		    skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
++		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
+ 			goto err;
  
- 	base_dev = &sdev->base_dev;
--
- 	sdev->netdev = netdev;
+ 		while (pos < offset + len) {
+ 			if (i >= nfrags) {
++				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
++				    skb_zerocopy_clone(nskb, list_skb,
++						       GFP_ATOMIC))
++					goto err;
++
+ 				i = 0;
+ 				nfrags = skb_shinfo(list_skb)->nr_frags;
+ 				frag = skb_shinfo(list_skb)->frags;
+@@ -4589,10 +4599,6 @@ normal:
+ 					i--;
+ 					frag--;
+ 				}
+-				if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
+-				    skb_zerocopy_clone(nskb, frag_skb,
+-						       GFP_ATOMIC))
+-					goto err;
  
--	if (netdev->type != ARPHRD_LOOPBACK && netdev->type != ARPHRD_NONE) {
--		addrconf_addr_eui48((unsigned char *)&base_dev->node_guid,
--				    netdev->dev_addr);
-+	if (netdev->addr_len) {
-+		memcpy(sdev->raw_gid, netdev->dev_addr,
-+		       min_t(unsigned int, netdev->addr_len, ETH_ALEN));
- 	} else {
- 		/*
--		 * This device does not have a HW address,
--		 * but connection mangagement lib expects gid != 0
-+		 * This device does not have a HW address, but
-+		 * connection mangagement requires a unique gid.
- 		 */
--		size_t len = min_t(size_t, strlen(base_dev->name), 6);
--		char addr[6] = { };
--
--		memcpy(addr, base_dev->name, len);
--		addrconf_addr_eui48((unsigned char *)&base_dev->node_guid,
--				    addr);
-+		eth_random_addr(sdev->raw_gid);
- 	}
-+	addrconf_addr_eui48((u8 *)&base_dev->node_guid, sdev->raw_gid);
- 
- 	base_dev->uverbs_cmd_mask |= BIT_ULL(IB_USER_VERBS_CMD_POST_SEND);
- 
-diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
-index 906fde1a2a0de..2e4cdcd26fe01 100644
---- a/drivers/infiniband/sw/siw/siw_verbs.c
-+++ b/drivers/infiniband/sw/siw/siw_verbs.c
-@@ -157,7 +157,7 @@ int siw_query_device(struct ib_device *base_dev, struct ib_device_attr *attr,
- 	attr->vendor_part_id = sdev->vendor_part_id;
- 
- 	addrconf_addr_eui48((u8 *)&attr->sys_image_guid,
--			    sdev->netdev->dev_addr);
-+			    sdev->raw_gid);
- 
- 	return 0;
- }
-@@ -218,7 +218,7 @@ int siw_query_gid(struct ib_device *base_dev, u32 port, int idx,
- 
- 	/* subnet_prefix == interface_id == 0; */
- 	memset(gid, 0, sizeof(*gid));
--	memcpy(&gid->raw[0], sdev->netdev->dev_addr, 6);
-+	memcpy(gid->raw, sdev->raw_gid, ETH_ALEN);
- 
- 	return 0;
- }
--- 
-2.40.1
-
+ 				list_skb = list_skb->next;
+ 			}
 
 
