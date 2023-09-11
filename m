@@ -2,41 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8190B79BEBE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4268779BB6E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343515AbjIKVLi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:11:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60464 "EHLO
+        id S1377464AbjIKW03 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:26:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44406 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239237AbjIKOPP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:15:15 -0400
+        with ESMTP id S240568AbjIKOrb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6689DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:15:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BA9CC433C7;
-        Mon, 11 Sep 2023 14:15:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D88D7106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 10BDDC433C7;
+        Mon, 11 Sep 2023 14:47:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441711;
-        bh=RgZvhWmK0NnEGqV9vMA9lC8R2E0ef3gUlfW8BtUPtkM=;
+        s=korg; t=1694443647;
+        bh=1PBabzn6tRMoB2zOKbrufUQhmQk2t/MSSjXbGc+FYRg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1aS3B2b6UDpEmPBPxURk2CDzpgByKUyuEP2EQkycjzCs6kYYptWMX2gXGPD0eZAfW
-         HAtrQjcUlnwxmuCYoP7BetxXD/nYK+DiEQgxu93oLKcaDJX+qh9J3ic9ZdLbCHr9lK
-         y5oO/lXXiEWcYuVxvyYDcMwdRBXPoNXcHcdDknIc=
+        b=tCbUKJAefl9+Kdsei+zvPnxLSNi3sK+bUIDz/GPor3ycGgFDvpizTx40XmJ4PU4Ns
+         3p7qH75Lkab8FEtHy/vuuGVOhpNxEl0JxiESeyIZoka+BPpQV0Kgt1lY4KhJlqoFMG
+         40qiQOY/gdvFn6bPiBq1TX3VjSUBdOEDzROdhxmQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Chan <michael.chan@broadcom.com>,
-        Chandramohan Akula <chandramohan.akula@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 510/739] bnxt_en: Share the bar0 address with the RoCE driver
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Jeff Moyer <jmoyer@redhat.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 6.4 450/737] nvdimm: Fix memleak of pmu attr_groups in unregister_nvdimm_pmu()
 Date:   Mon, 11 Sep 2023 15:45:09 +0200
-Message-ID: <20230911134705.372887360@linuxfoundation.org>
+Message-ID: <20230911134703.168898728@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +53,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandramohan Akula <chandramohan.akula@broadcom.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit 61220e098e858951f1926d66c1490a96351e1c85 ]
+[ Upstream commit 85ae42c72142346645e63c33835da947dfa008b3 ]
 
-Add a parameter in the bnxt_en_dev structure to share the bar0 address
-with RoCE driver.
+Memory pointed by 'nd_pmu->pmu.attr_groups' is allocated in function
+'register_nvdimm_pmu' and is lost after 'kfree(nd_pmu)' call in function
+'unregister_nvdimm_pmu'.
 
-Link: https://lore.kernel.org/r/1689742977-9128-3-git-send-email-selvin.xavier@broadcom.com
-CC: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: f19fba1f79dc ("RDMA/bnxt_re: Fix max_qp count for virtual functions")
+Fixes: 0fab1ba6ad6b ("drivers/nvdimm: Add perf interface to expose nvdimm performance stats")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+Link: https://lore.kernel.org/r/20230817115945.771826-1-konstantin.meskhidze@huawei.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c | 2 +-
- drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h | 1 +
- 2 files changed, 2 insertions(+), 1 deletion(-)
+ drivers/nvdimm/nd_perf.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-index 852eb449ccae2..6ba2b93986333 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.c
-@@ -345,7 +345,7 @@ static void bnxt_set_edev_info(struct bnxt_en_dev *edev, struct bnxt *bp)
- 	edev->hw_ring_stats_size = bp->hw_ring_stats_size;
- 	edev->pf_port_id = bp->pf.port_id;
- 	edev->en_state = bp->state;
--
-+	edev->bar0 = bp->bar0;
- 	edev->ulp_tbl->msix_requested = bnxt_get_ulp_msix_num(bp);
+diff --git a/drivers/nvdimm/nd_perf.c b/drivers/nvdimm/nd_perf.c
+index 433bbb68ae641..14881c4e03e6b 100644
+--- a/drivers/nvdimm/nd_perf.c
++++ b/drivers/nvdimm/nd_perf.c
+@@ -324,6 +324,7 @@ void unregister_nvdimm_pmu(struct nvdimm_pmu *nd_pmu)
+ {
+ 	perf_pmu_unregister(&nd_pmu->pmu);
+ 	nvdimm_pmu_free_hotplug_memory(nd_pmu);
++	kfree(nd_pmu->pmu.attr_groups);
+ 	kfree(nd_pmu);
  }
- 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h
-index 80cbc4b6130aa..6ff77f082e6c7 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_ulp.h
-@@ -81,6 +81,7 @@ struct bnxt_en_dev {
- 							 * mode only. Will be
- 							 * updated in resume.
- 							 */
-+	void __iomem                    *bar0;
- };
- 
- static inline bool bnxt_ulp_registered(struct bnxt_en_dev *edev)
+ EXPORT_SYMBOL_GPL(unregister_nvdimm_pmu);
 -- 
 2.40.1
 
