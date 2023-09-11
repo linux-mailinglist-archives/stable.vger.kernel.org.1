@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8FB9479B5F7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 89E3D79B6CB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240133AbjIKWpv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42600 "EHLO
+        id S239181AbjIKWmv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:42:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47904 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239604AbjIKOY1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:27 -0400
+        with ESMTP id S240895AbjIKO4r (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62DE3DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ABA34C433C8;
-        Mon, 11 Sep 2023 14:24:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3744E4D
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032B6C433C9;
+        Mon, 11 Sep 2023 14:56:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442263;
-        bh=IQqVLD7H1h8AI1V9zPol9HNtqa3hlw0MhSoQ9y/BxBU=;
+        s=korg; t=1694444203;
+        bh=Tgt6m+Z9xxOSgcMLJUxjTEJXwN33FQAi7J9p4H8aByU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tgewablr3ohwbynma6cTkYteOMM/JU5Fo8Az0Q29fxwtaQja9iCu0w8kfg3a7wenI
-         rVfnL6di7O5NglysFojDEeHhs3Ebs/utSbNzcGt5Zz3xdQjd7feCubNBHL3YsXyb7V
-         Vkpl3/Q1Vxi07fOXeyoWIA6GGHv9BuhUjkyB2Bp4=
+        b=bDPkDHqbyn/NxWDM9jnKPg8D0ytjx3v7TCOppV5gtp8xy1EayfvZK9laUODqi6YSC
+         iq3KR48UTdX2hh5cszF6szawwxDNxPXfS4cbkPyMSdHKjmutru59cpim16OQjDU8KQ
+         ljWzwBa9mS1+ugd3AQkhbW4xi2dZriTqNAdaaWW4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Swapnil Patel <swapnil.patel@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.5 667/739] drm/amd/display: register edp_backlight_control() for DCN301
-Date:   Mon, 11 Sep 2023 15:47:46 +0200
-Message-ID: <20230911134709.737442697@linuxfoundation.org>
+        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 608/737] phy/rockchip: inno-hdmi: do not power on rk3328 post pll on reg write
+Date:   Mon, 11 Sep 2023 15:47:47 +0200
+Message-ID: <20230911134707.517612443@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +49,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hamza Mahfooz <hamza.mahfooz@amd.com>
+From: Jonas Karlman <jonas@kwiboo.se>
 
-commit 1611917f39bee1abfc01501238db8ac19649042d upstream.
+[ Upstream commit 19a1d46bd699940a496d3b0d4e142ef99834988c ]
 
-As made mention of in commit 099303e9a9bd ("drm/amd/display: eDP
-intermittent black screen during PnP"), we need to turn off the
-display's backlight before powering off an eDP display. Not doing so
-will result in undefined behaviour according to the eDP spec. So, set
-DCN301's edp_backlight_control() function pointer to
-dce110_edp_backlight_control().
+inno_write is used to configure 0xaa reg, that also hold the
+POST_PLL_POWER_DOWN bit.
+When POST_PLL_REFCLK_SEL_TMDS is configured the power down bit is not
+taken into consideration.
 
-Cc: stable@vger.kernel.org
-Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
-Fixes: 9c75891feef0 ("drm/amd/display: rework recent update PHY state commit")
-Suggested-by: Swapnil Patel <swapnil.patel@amd.com>
-Reviewed-by: Harry Wentland <harry.wentland@amd.com>
-Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fix this by keeping the power down bit until configuration is complete.
+Also reorder the reg write order for consistency.
+
+Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
+Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
+Link: https://lore.kernel.org/r/20230615171005.2251032-5-jonas@kwiboo.se
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
-+++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
-@@ -75,6 +75,7 @@ static const struct hw_sequencer_funcs d
- 	.get_hw_state = dcn10_get_hw_state,
- 	.clear_status_bits = dcn10_clear_status_bits,
- 	.wait_for_mpcc_disconnect = dcn10_wait_for_mpcc_disconnect,
-+	.edp_backlight_control = dce110_edp_backlight_control,
- 	.edp_power_control = dce110_edp_power_control,
- 	.edp_wait_for_hpd_ready = dce110_edp_wait_for_hpd_ready,
- 	.set_cursor_position = dcn10_set_cursor_position,
+diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+index 7d412f771f6c3..fbdc23953b52e 100644
+--- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
++++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
+@@ -1023,9 +1023,10 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
+ 
+ 	inno_write(inno, 0xac, RK3328_POST_PLL_FB_DIV_7_0(cfg->fbdiv));
+ 	if (cfg->postdiv == 1) {
+-		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS);
+ 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
+ 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
++		inno_write(inno, 0xaa, RK3328_POST_PLL_REFCLK_SEL_TMDS |
++			   RK3328_POST_PLL_POWER_DOWN);
+ 	} else {
+ 		v = (cfg->postdiv / 2) - 1;
+ 		v &= RK3328_POST_PLL_POST_DIV_MASK;
+@@ -1033,7 +1034,8 @@ inno_hdmi_phy_rk3328_power_on(struct inno_hdmi_phy *inno,
+ 		inno_write(inno, 0xab, RK3328_POST_PLL_FB_DIV_8(cfg->fbdiv) |
+ 			   RK3328_POST_PLL_PRE_DIV(cfg->prediv));
+ 		inno_write(inno, 0xaa, RK3328_POST_PLL_POST_DIV_ENABLE |
+-			   RK3328_POST_PLL_REFCLK_SEL_TMDS);
++			   RK3328_POST_PLL_REFCLK_SEL_TMDS |
++			   RK3328_POST_PLL_POWER_DOWN);
+ 	}
+ 
+ 	for (v = 0; v < 14; v++)
+-- 
+2.40.1
+
 
 
