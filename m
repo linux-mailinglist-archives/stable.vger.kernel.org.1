@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33A4A79C0AA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE4279B9F0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243825AbjIKVSj (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:18:39 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41192 "EHLO
+        id S1345868AbjIKVWc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241718AbjIKPMu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:50 -0400
+        with ESMTP id S240544AbjIKOq6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6AC73FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD787C433C8;
-        Mon, 11 Sep 2023 15:12:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F254C125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 460DBC433C7;
+        Mon, 11 Sep 2023 14:46:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445165;
-        bh=XYR0PGSK65ZoG38ONkrhyqwym5yY3Je+W6q1ZVlU4W4=;
+        s=korg; t=1694443613;
+        bh=qvFxsfj0g1OknuyMe9kRn6OvDZZIhvydBWTI2Xx3d6g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OL7c8OAHNVOkc0hTVP/hMIx7ug/gPw7LjD5/daBnyxijtK7iLBsH/mdXW2mVJ8b/6
-         QYJcbTJ+6hjdv2ybnJ3G2OZNGxny/YzzlH/0jRh9gF+OMQTlShQmaj+sCvDMsjdole
-         jHtBhS8/yhVZ66MSdSV3nLt/J3eNveB5P7Q4deis=
+        b=Ixt3penLfeRCsAHPG6CI7G3bUt6eeOMYufN5iBg+QLBfshl7v36fKke78OvgfZ2tZ
+         XH+cSyeis4UhG6NWlqwc0dR6U84g+XtLWrLCYOxmfKvcdlUvs/GB5q2ToF5nFCMr+E
+         PqzeTJ+jWeWIs3hShT4eDf8Nn5g9od1Hj6YGO/S4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 248/600] ARM: dts: stm32: Add missing detach mailbox for DHCOM SoM
+Subject: [PATCH 6.4 422/737] clk: qcom: dispcc-sc8280xp: Use ret registers on GDSCs
 Date:   Mon, 11 Sep 2023 15:44:41 +0200
-Message-ID: <20230911134640.914141005@linuxfoundation.org>
+Message-ID: <20230911134702.392444666@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit deb7edbc27a6ec4d8f5edfd8519b7ed13cbd2a52 ]
+[ Upstream commit 20e1d75bc043c5ec1fd8f5169fde17db89eb11c3 ]
 
-Add missing "detach" mailbox to this board to permit the CPU to inform
-the remote processor on a detach. This signal allows the remote processor
-firmware to stop IPC communication and to reinitialize the resources for
-a re-attach.
+The DISP_CC GDSCs have not been instructed to use the ret registers.
+Fix that.
 
-Without this mailbox, detach is not possible and kernel log contains the
-following warning to, so make sure all the STM32MP15xx platform DTs are
-in sync regarding the mailboxes to fix the detach issue and the warning:
-"
-stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
-"
-
-Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230725-topic-8280_dispcc_gdsc-v1-1-236590060531@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/clk/qcom/dispcc-sc8280xp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-index e61df23d361a7..74a11ccc5333f 100644
---- a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-+++ b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-@@ -416,8 +416,8 @@ &iwdg2 {
- &m4_rproc {
- 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
- 			<&vdev0vring1>, <&vdev0buffer>;
--	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
--	mbox-names = "vq0", "vq1", "shutdown";
-+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
-+	mbox-names = "vq0", "vq1", "shutdown", "detach";
- 	interrupt-parent = <&exti>;
- 	interrupts = <68 1>;
- 	status = "okay";
+diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
+index 167470beb3691..30f636b9f0ec8 100644
+--- a/drivers/clk/qcom/dispcc-sc8280xp.c
++++ b/drivers/clk/qcom/dispcc-sc8280xp.c
+@@ -3057,7 +3057,7 @@ static struct gdsc disp0_mdss_gdsc = {
+ 		.name = "disp0_mdss_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc disp1_mdss_gdsc = {
+@@ -3069,7 +3069,7 @@ static struct gdsc disp1_mdss_gdsc = {
+ 		.name = "disp1_mdss_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc disp0_mdss_int2_gdsc = {
+@@ -3081,7 +3081,7 @@ static struct gdsc disp0_mdss_int2_gdsc = {
+ 		.name = "disp0_mdss_int2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc disp1_mdss_int2_gdsc = {
+@@ -3093,7 +3093,7 @@ static struct gdsc disp1_mdss_int2_gdsc = {
+ 		.name = "disp1_mdss_int2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc *disp0_cc_sc8280xp_gdscs[] = {
 -- 
 2.40.1
 
