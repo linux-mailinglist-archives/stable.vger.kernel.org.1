@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2116679C068
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C8B3A79BD8B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359835AbjIKWSu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:18:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54004 "EHLO
+        id S1357830AbjIKWG1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:06:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242310AbjIKP1Z (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:25 -0400
+        with ESMTP id S241069AbjIKPBS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 780E5E4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDEC7C433C9;
-        Mon, 11 Sep 2023 15:27:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD71BE40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F362C433C7;
+        Mon, 11 Sep 2023 15:01:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446041;
-        bh=W1Ao2O0ktT3eDvOpbS2kSJIW2KJvMZLISGRDMW3pIDE=;
+        s=korg; t=1694444473;
+        bh=ZOY9MBmSePNLvhOIfxw19I36B/wamDxKmCcgI6gJYZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=szKwGKDe5tK/4dGZddmKpBuP9gx5ET/Junidje+jPEUv1CCG3WYJnYUXlW7IiSRE+
-         YwfVHj685/ankPW1BHYL55g0AIyx45WCScGBXkh/CapNP5u3FMq9Aw8BwJStZED5KI
-         ejOSkN31wDdilFpeCie5xpy5jkvNlwLkJ3ReqBTU=
+        b=LDR7hXHISMnhzhS3b6lE0T/YQ7Jpm0s7n361jhOQqQJQ2f40/ZrZ/2m0/r816QaIH
+         wX3oXg+D10iujFgS9lmOaKr8tfWdENJoYUB8u2+rdYxm10pxz1QNVL81pJZWIn66+8
+         Bca5lg3t19WCNilyCoi9CqXSHfk7n5sz/+M3PBgo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Charlene Liu <charlene.liu@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Fudong Wang <fudong.wang@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>
-Subject: [PATCH 6.1 561/600] drm/amd/display: Add smu write msg id fail retry process
+        patches@lists.linux.dev, Martin Lau <martin.lau@linux.dev>,
+        Lorenz Bauer <lmb@isovalent.com>,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>
+Subject: [PATCH 6.4 735/737] net: remove duplicate INDIRECT_CALLABLE_DECLARE of udp[6]_ehashfn
 Date:   Mon, 11 Sep 2023 15:49:54 +0200
-Message-ID: <20230911134650.171505598@linuxfoundation.org>
+Message-ID: <20230911134711.052555358@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,73 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fudong Wang <fudong.wang@amd.com>
+From: Lorenz Bauer <lmb@isovalent.com>
 
-commit 72105dcfa3d12b5af49311f857e3490baa225135 upstream.
+commit 74bdfab4fd7c641e55f7fe9d1be9687eeb01df67 upstream.
 
-A benchmark stress test (12-40 machines x 48hours) found that DCN315 has
-cases where DC writes to an indirect register to set the smu clock msg
-id, but when we go to read the same indirect register the returned msg
-id doesn't match with what we just set it to. So, to fix this retry the
-write until the register's value matches with the requested value.
+There are already INDIRECT_CALLABLE_DECLARE in the hashtable
+headers, no need to declare them again.
 
-Cc: stable@vger.kernel.org # 6.1+
-Fixes: f94903996140 ("drm/amd/display: Add DCN315 CLK_MGR")
-Reviewed-by: Charlene Liu <charlene.liu@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Fudong Wang <fudong.wang@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 0f495f761722 ("net: remove duplicate reuseport_lookup functions")
+Suggested-by: Martin Lau <martin.lau@linux.dev>
+Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Link: https://lore.kernel.org/r/20230731-indir-call-v1-1-4cd0aeaee64f@isovalent.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_smu.c |   20 ++++++++++---
- 1 file changed, 16 insertions(+), 4 deletions(-)
+ net/ipv4/inet_hashtables.c  |    2 --
+ net/ipv6/inet6_hashtables.c |    2 --
+ 2 files changed, 4 deletions(-)
 
---- a/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_smu.c
-+++ b/drivers/gpu/drm/amd/display/dc/clk_mgr/dcn315/dcn315_smu.c
-@@ -32,6 +32,7 @@
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -333,8 +333,6 @@ static inline int compute_score(struct s
+ 	return score;
+ }
  
- #define MAX_INSTANCE                                        6
- #define MAX_SEGMENT                                         6
-+#define SMU_REGISTER_WRITE_RETRY_COUNT                      5
+-INDIRECT_CALLABLE_DECLARE(inet_ehashfn_t udp_ehashfn);
+-
+ struct sock *inet_lookup_reuseport(struct net *net, struct sock *sk,
+ 				   struct sk_buff *skb, int doff,
+ 				   __be32 saddr, __be16 sport,
+--- a/net/ipv6/inet6_hashtables.c
++++ b/net/ipv6/inet6_hashtables.c
+@@ -112,8 +112,6 @@ static inline int compute_score(struct s
+ 	return score;
+ }
  
- struct IP_BASE_INSTANCE
- {
-@@ -134,6 +135,8 @@ static int dcn315_smu_send_msg_with_para
- 		unsigned int msg_id, unsigned int param)
- {
- 	uint32_t result;
-+	uint32_t i = 0;
-+	uint32_t read_back_data;
- 
- 	result = dcn315_smu_wait_for_response(clk_mgr, 10, 200000);
- 
-@@ -150,10 +153,19 @@ static int dcn315_smu_send_msg_with_para
- 	/* Set the parameter register for the SMU message, unit is Mhz */
- 	REG_WRITE(MP1_SMN_C2PMSG_37, param);
- 
--	/* Trigger the message transaction by writing the message ID */
--	generic_write_indirect_reg(CTX,
--		REG_NBIO(RSMU_INDEX), REG_NBIO(RSMU_DATA),
--		mmMP1_C2PMSG_3, msg_id);
-+	for (i = 0; i < SMU_REGISTER_WRITE_RETRY_COUNT; i++) {
-+		/* Trigger the message transaction by writing the message ID */
-+		generic_write_indirect_reg(CTX,
-+			REG_NBIO(RSMU_INDEX), REG_NBIO(RSMU_DATA),
-+			mmMP1_C2PMSG_3, msg_id);
-+		read_back_data = generic_read_indirect_reg(CTX,
-+			REG_NBIO(RSMU_INDEX), REG_NBIO(RSMU_DATA),
-+			mmMP1_C2PMSG_3);
-+		if (read_back_data == msg_id)
-+			break;
-+		udelay(2);
-+		smu_print("SMU msg id write fail %x times. \n", i + 1);
-+	}
- 
- 	result = dcn315_smu_wait_for_response(clk_mgr, 10, 200000);
- 
+-INDIRECT_CALLABLE_DECLARE(inet6_ehashfn_t udp6_ehashfn);
+-
+ struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
+ 				    struct sk_buff *skb, int doff,
+ 				    const struct in6_addr *saddr,
 
 
