@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CE79779ACB4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E9C479AFF2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243772AbjIKVSe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:18:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34506 "EHLO
+        id S1358160AbjIKWH7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60326 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239284AbjIKOQf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:35 -0400
+        with ESMTP id S241817AbjIKPPU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F5EBDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6B16C433C7;
-        Mon, 11 Sep 2023 14:16:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBE9FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0624BC433C8;
+        Mon, 11 Sep 2023 15:15:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441791;
-        bh=0yLlJ5V2MOK7k63UcFLdDFmBc3SyYi0nMTlhsACnOtQ=;
+        s=korg; t=1694445316;
+        bh=B7eAnGKCly1DMnmAp/N+QMOlE8FO+wCHtfxRVOMT/KI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1Lw4wuRJJcf+rTqQuGoH/FXjmSKrF/PxutRwmT9Zi/YXflRcnjJaIjfJGPJi3+Uoa
-         eSBey53FO+/xNhw8Oh8S35LVfGUVezVWfkReq/M+pRD7BepNa+KKavnQFQ7j7d90ZQ
-         ydC2hwUuYwx7JSR0tTEo1XSb1slHgK0XTmHkAm7I=
+        b=oqa2Z2GhLtmsYHHucr2u3UBdk1BGxGS+UL0hvzU0bp22S9UIa6IwnWxJbrhQ948u/
+         8U6E6srNnSJUgyS5ZbFwxXQoVW1JwVQkRqsZWkGXIeT27G2jgp5R2+eXAzH0SbOB9t
+         wIVU80LTrozHaRAFbjY9ud7pFOAEoTjRSRB/FFcE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
-        Marek Vasut <marex@denx.de>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>, Jai Luthra <j-luthra@ti.com>
-Subject: [PATCH 6.5 538/739] media: ov5640: Enable MIPI interface in ov5640_set_power_mipi()
-Date:   Mon, 11 Sep 2023 15:45:37 +0200
-Message-ID: <20230911134706.127380675@linuxfoundation.org>
+        patches@lists.linux.dev, Robert Marko <robert.marko@sartura.hr>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 305/600] ARM: dts: qcom: ipq4019: correct SDHCI XO clock
+Date:   Mon, 11 Sep 2023 15:45:38 +0200
+Message-ID: <20230911134642.627948394@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +51,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Robert Marko <robert.marko@sartura.hr>
 
-[ Upstream commit 98cb72d3b9c5e03b10fa993752ecfcbd9c572d8c ]
+[ Upstream commit b5ed7a5c1fdb3981713f7b637b72aa390c3db036 ]
 
-Set OV5640_REG_IO_MIPI_CTRL00 bit 2 to 1 instead of 0, since 1 means
-MIPI CSI2 interface, while 0 means CPI parallel interface.
+Using GCC_DCD_XO_CLK as the XO clock for SDHCI controller is not correct,
+it seems that I somehow made a mistake of passing it instead of the fixed
+XO clock.
 
-In the ov5640_set_power_mipi() the interface should obviously be set
-to MIPI CSI2 since this functions is used to power up the sensor when
-operated in MIPI CSI2 mode. The sensor should not be in CPI mode in
-that case.
-
-This fixes a corner case where capturing the first frame on i.MX8MN
-with CSI/ISI resulted in corrupted frame.
-
-Fixes: aa4bb8b8838f ("media: ov5640: Re-work MIPI startup sequence")
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
-Tested-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com> # [Test on imx6q]
-Signed-off-by: Marek Vasut <marex@denx.de>
-Tested-by: Jai Luthra <j-luthra@ti.com> # [Test on bplay, sk-am62]
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 04b3b72b5b8f ("ARM: dts: qcom: ipq4019: Add SDHCI controller node")
+Signed-off-by: Robert Marko <robert.marko@sartura.hr>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230811110150.229966-1-robert.marko@sartura.hr
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov5640.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/arm/boot/dts/qcom-ipq4019.dtsi | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
-index f6c94e9094761..514f794a27883 100644
---- a/drivers/media/i2c/ov5640.c
-+++ b/drivers/media/i2c/ov5640.c
-@@ -2542,9 +2542,9 @@ static int ov5640_set_power_mipi(struct ov5640_dev *sensor, bool on)
- 	 *		  "ov5640_set_stream_mipi()")
- 	 * [4] = 0	: Power up MIPI HS Tx
- 	 * [3] = 0	: Power up MIPI LS Rx
--	 * [2] = 0	: MIPI interface disabled
-+	 * [2] = 1	: MIPI interface enabled
- 	 */
--	ret = ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x40);
-+	ret = ov5640_write_reg(sensor, OV5640_REG_IO_MIPI_CTRL00, 0x44);
- 	if (ret)
- 		return ret;
+diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+index 02e13d8c222a0..b5e0ed4923b59 100644
+--- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
++++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
+@@ -228,9 +228,12 @@ sdhci: mmc@7824900 {
+ 			interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
+ 			interrupt-names = "hc_irq", "pwr_irq";
+ 			bus-width = <8>;
+-			clocks = <&gcc GCC_SDCC1_AHB_CLK>, <&gcc GCC_SDCC1_APPS_CLK>,
+-				 <&gcc GCC_DCD_XO_CLK>;
+-			clock-names = "iface", "core", "xo";
++			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
++				 <&gcc GCC_SDCC1_APPS_CLK>,
++				 <&xo>;
++			clock-names = "iface",
++				      "core",
++				      "xo";
+ 			status = "disabled";
+ 		};
  
 -- 
 2.40.1
