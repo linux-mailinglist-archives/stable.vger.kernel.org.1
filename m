@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6D25C79B8FC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8BDE279B6FB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233213AbjIKWr4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:47:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38378 "EHLO
+        id S1344339AbjIKVNz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240076AbjIKOfz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:55 -0400
+        with ESMTP id S241131AbjIKPCd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:02:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A15ACF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4B5BC433C8;
-        Mon, 11 Sep 2023 14:35:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CF901B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:02:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D16CEC433C7;
+        Mon, 11 Sep 2023 15:02:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442951;
-        bh=cCaNfwQ8mTaXk/YNXxQGCJmV0hh8qQkSxgmT+1Znboo=;
+        s=korg; t=1694444549;
+        bh=ejScEBix8v37U/Px5Ii/UZy/SyQLpQEOVChhXLKcZn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VdDP/Df2P2OdgeCqcTEOyICuAHPdR8SBfD3Uxuza0LOzyJC52XqGBvqP3laXevIhP
-         fpsQq/3HXDgMpKCs4eLfv+dpHS6aVVIhusCOkz9E9d3PbTy79+TeRQpLiECgzHvUFR
-         RP4JvDs6jakKNROnTZBTElTUwGHA5Mkt5zLcLmQc=
+        b=qpCapTyFltM7vk+aKpPN3xBZyj1ExLnIMRjarQT2Ip3Fjbsw2nBNgh3GymYxapxva
+         Plftiarhxe0zwtkazxALh0iUnknzSr94g0owQOTSJV0fASvers+YimtdxSHoC2Kbhd
+         aTFVpJIvNYYTA0y7QWXNsxHNOb861m3eeeBQWVOs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 205/737] Bluetooth: hci_conn: Always allocate unique handles
-Date:   Mon, 11 Sep 2023 15:41:04 +0200
-Message-ID: <20230911134656.323497620@linuxfoundation.org>
+Subject: [PATCH 6.1 032/600] ASoC: atmel: Fix the 8K sample parameter in I2SC master
+Date:   Mon, 11 Sep 2023 15:41:05 +0200
+Message-ID: <20230911134634.555006317@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,131 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Guiting Shen <aarongt.shen@gmail.com>
 
-[ Upstream commit 9f78191cc9f1b34c2e2afd7b554a83bf034092dd ]
+[ Upstream commit f85739c0b2b0d98a32f5ca4fcc5501d2b76df4f6 ]
 
-This attempts to always allocate a unique handle for connections so they
-can be properly aborted by the likes of hci_abort_conn, so this uses the
-invalid range as a pool of unset handles that way if userspace is trying
-to create multiple connections at once each will be given a unique
-handle which will be considered unset.
+The 8K sample parameter of 12.288Mhz main system bus clock doesn't work
+because the I2SC_MR.IMCKDIV must not be 0 according to the sama5d2
+series datasheet(I2SC Mode Register of Register Summary).
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 66dee21524d9 ("Bluetooth: hci_event: drop only unbound CIS if Set CIG Parameters fails")
+So use the 6.144Mhz instead of 12.288Mhz to support 8K sample.
+
+Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
+Link: https://lore.kernel.org/r/20230715030620.62328-1-aarongt.shen@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/bluetooth/hci_core.h |  2 +-
- net/bluetooth/hci_conn.c         | 25 ++++++++++++++++++++++---
- net/bluetooth/hci_event.c        |  6 +++---
- 3 files changed, 26 insertions(+), 7 deletions(-)
+ sound/soc/atmel/atmel-i2s.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index e30e091ef728e..2db826cdf76fa 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -321,8 +321,8 @@ struct adv_monitor {
+diff --git a/sound/soc/atmel/atmel-i2s.c b/sound/soc/atmel/atmel-i2s.c
+index 425d66edbf867..5e43ff0b537a3 100644
+--- a/sound/soc/atmel/atmel-i2s.c
++++ b/sound/soc/atmel/atmel-i2s.c
+@@ -163,11 +163,14 @@ struct atmel_i2s_gck_param {
  
- #define HCI_MAX_SHORT_NAME_LENGTH	10
+ #define I2S_MCK_12M288		12288000UL
+ #define I2S_MCK_11M2896		11289600UL
++#define I2S_MCK_6M144		6144000UL
  
--#define HCI_CONN_HANDLE_UNSET		0xffff
- #define HCI_CONN_HANDLE_MAX		0x0eff
-+#define HCI_CONN_HANDLE_UNSET(_handle)	(_handle > HCI_CONN_HANDLE_MAX)
- 
- /* Min encryption key size to match with SMP */
- #define HCI_MIN_ENC_KEY_SIZE		7
-diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
-index 7762161a3fc8b..7ced6077488f7 100644
---- a/net/bluetooth/hci_conn.c
-+++ b/net/bluetooth/hci_conn.c
-@@ -991,6 +991,25 @@ static void cis_cleanup(struct hci_conn *conn)
- 	hci_le_remove_cig(hdev, conn->iso_qos.ucast.cig);
- }
- 
-+static u16 hci_conn_hash_alloc_unset(struct hci_dev *hdev)
-+{
-+	struct hci_conn_hash *h = &hdev->conn_hash;
-+	struct hci_conn  *c;
-+	u16 handle = HCI_CONN_HANDLE_MAX + 1;
+ /* mck = (32 * (imckfs+1) / (imckdiv+1)) * fs */
+ static const struct atmel_i2s_gck_param gck_params[] = {
++	/* mck = 6.144Mhz */
++	{  8000, I2S_MCK_6M144,  1, 47},	/* mck =  768 fs */
 +
-+	rcu_read_lock();
-+
-+	list_for_each_entry_rcu(c, &h->list, list) {
-+		/* Find the first unused handle */
-+		if (handle == 0xffff || c->handle != handle)
-+			break;
-+		handle++;
-+	}
-+	rcu_read_unlock();
-+
-+	return handle;
-+}
-+
- struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 			      u8 role)
- {
-@@ -1004,7 +1023,7 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
- 
- 	bacpy(&conn->dst, dst);
- 	bacpy(&conn->src, &hdev->bdaddr);
--	conn->handle = HCI_CONN_HANDLE_UNSET;
-+	conn->handle = hci_conn_hash_alloc_unset(hdev);
- 	conn->hdev  = hdev;
- 	conn->type  = type;
- 	conn->role  = role;
-@@ -1117,7 +1136,7 @@ static void hci_conn_unlink(struct hci_conn *conn)
- 			 */
- 			if ((child->type == SCO_LINK ||
- 			     child->type == ESCO_LINK) &&
--			    child->handle == HCI_CONN_HANDLE_UNSET)
-+			    HCI_CONN_HANDLE_UNSET(child->handle))
- 				hci_conn_del(child);
- 		}
- 
-@@ -1968,7 +1987,7 @@ int hci_conn_check_create_cis(struct hci_conn *conn)
- 		return -EINVAL;
- 
- 	if (!conn->parent || conn->parent->state != BT_CONNECTED ||
--	    conn->state != BT_CONNECT || conn->handle == HCI_CONN_HANDLE_UNSET)
-+	    conn->state != BT_CONNECT || HCI_CONN_HANDLE_UNSET(conn->handle))
- 		return 1;
- 
- 	return 0;
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index e3675d8a23e44..22fb9f9da866b 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3173,7 +3173,7 @@ static void hci_conn_complete_evt(struct hci_dev *hdev, void *data,
- 	 * As the connection handle is set here for the first time, it indicates
- 	 * whether the connection is already set up.
- 	 */
--	if (conn->handle != HCI_CONN_HANDLE_UNSET) {
-+	if (!HCI_CONN_HANDLE_UNSET(conn->handle)) {
- 		bt_dev_err(hdev, "Ignoring HCI_Connection_Complete for existing connection");
- 		goto unlock;
- 	}
-@@ -5008,7 +5008,7 @@ static void hci_sync_conn_complete_evt(struct hci_dev *hdev, void *data,
- 	 * As the connection handle is set here for the first time, it indicates
- 	 * whether the connection is already set up.
- 	 */
--	if (conn->handle != HCI_CONN_HANDLE_UNSET) {
-+	if (!HCI_CONN_HANDLE_UNSET(conn->handle)) {
- 		bt_dev_err(hdev, "Ignoring HCI_Sync_Conn_Complete event for existing connection");
- 		goto unlock;
- 	}
-@@ -5872,7 +5872,7 @@ static void le_conn_complete_evt(struct hci_dev *hdev, u8 status,
- 	 * As the connection handle is set here for the first time, it indicates
- 	 * whether the connection is already set up.
- 	 */
--	if (conn->handle != HCI_CONN_HANDLE_UNSET) {
-+	if (!HCI_CONN_HANDLE_UNSET(conn->handle)) {
- 		bt_dev_err(hdev, "Ignoring HCI_Connection_Complete for existing connection");
- 		goto unlock;
- 	}
+ 	/* mck = 12.288MHz */
+-	{  8000, I2S_MCK_12M288, 0, 47},	/* mck = 1536 fs */
+ 	{ 16000, I2S_MCK_12M288, 1, 47},	/* mck =  768 fs */
+ 	{ 24000, I2S_MCK_12M288, 3, 63},	/* mck =  512 fs */
+ 	{ 32000, I2S_MCK_12M288, 3, 47},	/* mck =  384 fs */
 -- 
 2.40.1
 
