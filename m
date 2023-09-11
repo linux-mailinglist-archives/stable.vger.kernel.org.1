@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3FF5C79B5FD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0EF8479BEA6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357857AbjIKWGi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:06:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54882 "EHLO
+        id S1352957AbjIKVtR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240467AbjIKOpC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:02 -0400
+        with ESMTP id S241674AbjIKPLm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B06A12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5517C433C8;
-        Mon, 11 Sep 2023 14:44:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AC0EFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C43ACC433C8;
+        Mon, 11 Sep 2023 15:11:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443498;
-        bh=pwo55L/GomvOw1VUypRtnDrvKIwAQGw5xeR3n4qtVUw=;
+        s=korg; t=1694445097;
+        bh=dIGGHUi1azd2guTKMWkc60L/IqkyQKrrnuV9anTD3Pw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bxzVFLFJYo9R4uYl4lSizgsWlJpPHDOkWF1kPn5EsCrAZ9oZQfTo6AK+FusGDcfdO
-         1boGl+kK8Ea+QcvGScGAWpNzsi7X1hGAyLCSYmuw2gjXtltxc8zcsLMlzyUpRa481x
-         hyDjklwljnqbn+lq5DwEQJ6WwUWmyUaGTHQ4+EIg=
+        b=p1hnkBtYw//E97btVBkzYEd1/1Twpf86W22y9jg6aZ5olcHK8eEoUCNWWIbSdJP6p
+         eUzOsx9BbjxAcP9sSIvdQpqZU2QuY17WXANJGOChKwPjCP65wQGozYNbM2b5fL+Qr/
+         8BVsIsjgdrDWrq/AV3zOMUgebD6NT/nhLyOG6y5g=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Xueshi Hu <xueshi.hu@smartx.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 399/737] md/raid1: hold the barrier until handle_read_error() finishes
-Date:   Mon, 11 Sep 2023 15:44:18 +0200
-Message-ID: <20230911134701.748793017@linuxfoundation.org>
+Subject: [PATCH 6.1 226/600] arm64: dts: qcom: sm8250-edo: Add gpio line names for TLMM
+Date:   Mon, 11 Sep 2023 15:44:19 +0200
+Message-ID: <20230911134640.283468737@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -42,63 +42,440 @@ MIME-Version: 1.0
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
-        autolearn_force=no version=3.4.6
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS,UPPERCASE_50_75
+        autolearn=no autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xueshi Hu <xueshi.hu@smartx.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit c069da449a13669ffa754fd971747e7e17e7d691 ]
+[ Upstream commit 40b398beabdfe0e9088b13976e56b1dc706fe851 ]
 
-handle_read_error() will call allow_barrier() to match the former barrier
-raising. However, it should put the allow_barrier() at the end to avoid a
-concurrent raid reshape.
+Sony ever so graciously provides GPIO line names in their downstream
+kernel (though sometimes they are not 100% accurate and you can judge
+that by simply looking at them and with what drivers they are used).
 
-Fixes: 689389a06ce7 ("md/raid1: simplify handle_read_error().")
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xueshi Hu <xueshi.hu@smartx.com>
-Link: https://lore.kernel.org/r/20230814135356.1113639-4-xueshi.hu@smartx.com
-Signed-off-by: Song Liu <song@kernel.org>
+Add these to the PDX203&206 DTSIs to better document the hardware.
+
+Diff between 203 and 206:
+<                         "CAM_PWR_A_CS",
+>                         "FRONTC_PWR_EN",
+<                         "CAM4_MCLK",
+<                         "TOF_RST_N",
+>                         "NC",
+>                         "NC",
+<                         "WLC_I2C_SDA",
+<                         "WLC_I2C_SCL", /* GPIO_120 */
+>                         "NC",
+>                         "NC",
+<                         "WLC_INT_N",
+>                         "NC",
+
+Which makes sense, as 203 has a 3D iToF, slightly different camera
+power wiring and WLC (WireLess Charging).
+
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230614-topic-edo_pinsgpiopmic-v2-1-6f90bba54c53@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ .../qcom/sm8250-sony-xperia-edo-pdx203.dts    | 183 ++++++++++++++++++
+ .../qcom/sm8250-sony-xperia-edo-pdx206.dts    | 183 ++++++++++++++++++
+ 2 files changed, 366 insertions(+)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index ebbe41a33b821..975301f2debdd 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -2495,6 +2495,7 @@ static void handle_read_error(struct r1conf *conf, struct r1bio *r1_bio)
- 	struct mddev *mddev = conf->mddev;
- 	struct bio *bio;
- 	struct md_rdev *rdev;
-+	sector_t sector;
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
+index 356a81698731a..84104d2b20101 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
+@@ -14,3 +14,186 @@ / {
+ };
  
- 	clear_bit(R1BIO_ReadError, &r1_bio->state);
- 	/* we got a read error. Maybe the drive is bad.  Maybe just
-@@ -2524,12 +2525,13 @@ static void handle_read_error(struct r1conf *conf, struct r1bio *r1_bio)
- 	}
+ /delete-node/ &vreg_l7f_1p8;
++
++&tlmm {
++	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
++			  "MDM2AP_ERR_FATAL",
++			  "AP_CTI_OUT",
++			  "MDM2AP_STATUS",
++			  "NFC_I2C_SDA",
++			  "NFC_I2C_SCL",
++			  "NFC_EN",
++			  "NFC_CLK_REQ",
++			  "NFC_ESE_PWR_REQ",
++			  "DVDT_WRT_DET_AND",
++			  "SPK_AMP_RESET_N", /* GPIO_10 */
++			  "SPK_AMP_INT_N",
++			  "APPS_I2C_1_SDA",
++			  "APPS_I2C_1_SCL",
++			  "NC",
++			  "TX_GTR_THRES_IN",
++			  "HST_BT_UART_CTS",
++			  "HST_BT_UART_RFR",
++			  "HST_BT_UART_TX",
++			  "HST_BT_UART_RX",
++			  "HST_WLAN_EN", /* GPIO_20 */
++			  "HST_BT_EN",
++			  "RGBC_IR_PWR_EN",
++			  "FP_INT_N",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NFC_ESE_SPI_MISO",
++			  "NFC_ESE_SPI_MOSI",
++			  "NFC_ESE_SPI_SCLK", /* GPIO_30 */
++			  "NFC_ESE_SPI_CS_N",
++			  "WCD_RST_N",
++			  "NC",
++			  "SDM_DEBUG_UART_TX",
++			  "SDM_DEBUG_UART_RX",
++			  "TS_I2C_SDA",
++			  "TS_I2C_SCL",
++			  "TS_INT_N",
++			  "FP_SPI_MISO", /* GPIO_40 */
++			  "FP_SPI_MOSI",
++			  "FP_SPI_SCLK",
++			  "FP_SPI_CS_N",
++			  "APPS_I2C_0_SDA",
++			  "APPS_I2C_0_SCL",
++			  "DISP_ERR_FG",
++			  "UIM2_DETECT_EN",
++			  "NC",
++			  "NC",
++			  "NC", /* GPIO_50 */
++			  "NC",
++			  "MDM_UART_CTS",
++			  "MDM_UART_RFR",
++			  "MDM_UART_TX",
++			  "MDM_UART_RX",
++			  "AP2MDM_STATUS",
++			  "AP2MDM_ERR_FATAL",
++			  "MDM_IPC_HS_UART_TX",
++			  "MDM_IPC_HS_UART_RX",
++			  "NC", /* GPIO_60 */
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "USB_CC_DIR",
++			  "DISP_VSYNC",
++			  "NC",
++			  "NC",
++			  "CAM_PWR_B_CS",
++			  "NC", /* GPIO_70 */
++			  "CAM_PWR_A_CS",
++			  "SBU_SW_SEL",
++			  "SBU_SW_OE",
++			  "FP_RESET_N",
++			  "FP_RESET_N",
++			  "DISP_RESET_N",
++			  "DEBUG_GPIO0",
++			  "TRAY_DET",
++			  "CAM2_RST_N",
++			  "PCIE0_RST_N",
++			  "PCIE0_CLK_REQ_N", /* GPIO_80 */
++			  "PCIE0_WAKE_N",
++			  "DVDT_ENABLE",
++			  "DVDT_WRT_DET_OR",
++			  "NC",
++			  "PCIE2_RST_N",
++			  "PCIE2_CLK_REQ_N",
++			  "PCIE2_WAKE_N",
++			  "MDM_VFR_IRQ0",
++			  "MDM_VFR_IRQ1",
++			  "SW_SERVICE", /* GPIO_90 */
++			  "CAM_SOF",
++			  "CAM1_RST_N",
++			  "CAM0_RST_N",
++			  "CAM0_MCLK",
++			  "CAM1_MCLK",
++			  "CAM2_MCLK",
++			  "CAM3_MCLK",
++			  "CAM4_MCLK",
++			  "TOF_RST_N",
++			  "NC", /* GPIO_100 */
++			  "CCI0_I2C_SDA",
++			  "CCI0_I2C_SCL",
++			  "CCI1_I2C_SDA",
++			  "CCI1_I2C_SCL_",
++			  "CCI2_I2C_SDA",
++			  "CCI2_I2C_SCL",
++			  "CCI3_I2C_SDA",
++			  "CCI3_I2C_SCL",
++			  "CAM3_RST_N",
++			  "NFC_DWL_REQ", /* GPIO_110 */
++			  "NFC_IRQ",
++			  "XVS",
++			  "NC",
++			  "RF_ID_EXTENSION",
++			  "SPK_AMP_I2C_SDA",
++			  "SPK_AMP_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "WLC_I2C_SDA",
++			  "WLC_I2C_SCL", /* GPIO_120 */
++			  "ACC_COVER_OPEN",
++			  "ALS_PROX_INT_N",
++			  "ACCEL_INT",
++			  "WLAN_SW_CTRL",
++			  "CAMSENSOR_I2C_SDA",
++			  "CAMSENSOR_I2C_SCL",
++			  "UDON_SWITCH_SEL",
++			  "WDOG_DISABLE",
++			  "BAROMETER_INT",
++			  "NC", /* GPIO_130 */
++			  "NC",
++			  "FORCED_USB_BOOT",
++			  "NC",
++			  "NC",
++			  "WLC_INT_N",
++			  "NC",
++			  "NC",
++			  "RGBC_IR_INT",
++			  "NC",
++			  "NC", /* GPIO_140 */
++			  "NC",
++			  "BT_SLIMBUS_CLK",
++			  "BT_SLIMBUS_DATA",
++			  "HW_ID_0",
++			  "HW_ID_1",
++			  "WCD_SWR_TX_CLK",
++			  "WCD_SWR_TX_DATA0",
++			  "WCD_SWR_TX_DATA1",
++			  "WCD_SWR_RX_CLK",
++			  "WCD_SWR_RX_DATA0", /* GPIO_150 */
++			  "WCD_SWR_RX_DATA1",
++			  "SDM_DMIC_CLK1",
++			  "SDM_DMIC_DATA1",
++			  "SDM_DMIC_CLK2",
++			  "SDM_DMIC_DATA2",
++			  "SPK_AMP_I2S_CLK",
++			  "SPK_AMP_I2S_WS",
++			  "SPK_AMP_I2S_ASP_DIN",
++			  "SPK_AMP_I2S_ASP_DOUT",
++			  "COMPASS_I2C_SDA", /* GPIO_160 */
++			  "COMPASS_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "SSC_SPI_1_MISO",
++			  "SSC_SPI_1_MOSI",
++			  "SSC_SPI_1_CLK",
++			  "SSC_SPI_1_CS_N",
++			  "NC",
++			  "NC",
++			  "SSC_SENSOR_I2C_SDA", /* GPIO_170 */
++			  "SSC_SENSOR_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "HST_BLE_SNS_UART6_TX",
++			  "HST_BLE_SNS_UART6_RX",
++			  "HST_WLAN_UART_TX",
++			  "HST_WLAN_UART_RX";
++};
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
+index 5ecf7dafb2ec4..4b15de5e65e9b 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
+@@ -30,6 +30,189 @@ g-assist-key {
+ 	};
+ };
  
- 	rdev_dec_pending(rdev, conf->mddev);
--	allow_barrier(conf, r1_bio->sector);
-+	sector = r1_bio->sector;
- 	bio = r1_bio->master_bio;
- 
- 	/* Reuse the old r1_bio so that the IO_BLOCKED settings are preserved */
- 	r1_bio->state = 0;
- 	raid1_read_request(mddev, bio, r1_bio->sectors, r1_bio);
-+	allow_barrier(conf, sector);
- }
- 
- static void raid1d(struct md_thread *thread)
++&tlmm {
++	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
++			  "MDM2AP_ERR_FATAL",
++			  "AP_CTI_OUT",
++			  "MDM2AP_STATUS",
++			  "NFC_I2C_SDA",
++			  "NFC_I2C_SCL",
++			  "NFC_EN",
++			  "NFC_CLK_REQ",
++			  "NFC_ESE_PWR_REQ",
++			  "DVDT_WRT_DET_AND",
++			  "SPK_AMP_RESET_N", /* GPIO_10 */
++			  "SPK_AMP_INT_N",
++			  "APPS_I2C_1_SDA",
++			  "APPS_I2C_1_SCL",
++			  "NC",
++			  "TX_GTR_THRES_IN",
++			  "HST_BT_UART_CTS",
++			  "HST_BT_UART_RFR",
++			  "HST_BT_UART_TX",
++			  "HST_BT_UART_RX",
++			  "HST_WLAN_EN", /* GPIO_20 */
++			  "HST_BT_EN",
++			  "RGBC_IR_PWR_EN",
++			  "FP_INT_N",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NFC_ESE_SPI_MISO",
++			  "NFC_ESE_SPI_MOSI",
++			  "NFC_ESE_SPI_SCLK", /* GPIO_30 */
++			  "NFC_ESE_SPI_CS_N",
++			  "WCD_RST_N",
++			  "NC",
++			  "SDM_DEBUG_UART_TX",
++			  "SDM_DEBUG_UART_RX",
++			  "TS_I2C_SDA",
++			  "TS_I2C_SCL",
++			  "TS_INT_N",
++			  "FP_SPI_MISO", /* GPIO_40 */
++			  "FP_SPI_MOSI",
++			  "FP_SPI_SCLK",
++			  "FP_SPI_CS_N",
++			  "APPS_I2C_0_SDA",
++			  "APPS_I2C_0_SCL",
++			  "DISP_ERR_FG",
++			  "UIM2_DETECT_EN",
++			  "NC",
++			  "NC",
++			  "NC", /* GPIO_50 */
++			  "NC",
++			  "MDM_UART_CTS",
++			  "MDM_UART_RFR",
++			  "MDM_UART_TX",
++			  "MDM_UART_RX",
++			  "AP2MDM_STATUS",
++			  "AP2MDM_ERR_FATAL",
++			  "MDM_IPC_HS_UART_TX",
++			  "MDM_IPC_HS_UART_RX",
++			  "NC", /* GPIO_60 */
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "USB_CC_DIR",
++			  "DISP_VSYNC",
++			  "NC",
++			  "NC",
++			  "CAM_PWR_B_CS",
++			  "NC", /* GPIO_70 */
++			  "FRONTC_PWR_EN",
++			  "SBU_SW_SEL",
++			  "SBU_SW_OE",
++			  "FP_RESET_N",
++			  "FP_RESET_N",
++			  "DISP_RESET_N",
++			  "DEBUG_GPIO0",
++			  "TRAY_DET",
++			  "CAM2_RST_N",
++			  "PCIE0_RST_N",
++			  "PCIE0_CLK_REQ_N", /* GPIO_80 */
++			  "PCIE0_WAKE_N",
++			  "DVDT_ENABLE",
++			  "DVDT_WRT_DET_OR",
++			  "NC",
++			  "PCIE2_RST_N",
++			  "PCIE2_CLK_REQ_N",
++			  "PCIE2_WAKE_N",
++			  "MDM_VFR_IRQ0",
++			  "MDM_VFR_IRQ1",
++			  "SW_SERVICE", /* GPIO_90 */
++			  "CAM_SOF",
++			  "CAM1_RST_N",
++			  "CAM0_RST_N",
++			  "CAM0_MCLK",
++			  "CAM1_MCLK",
++			  "CAM2_MCLK",
++			  "CAM3_MCLK",
++			  "NC",
++			  "NC",
++			  "NC", /* GPIO_100 */
++			  "CCI0_I2C_SDA",
++			  "CCI0_I2C_SCL",
++			  "CCI1_I2C_SDA",
++			  "CCI1_I2C_SCL_",
++			  "CCI2_I2C_SDA",
++			  "CCI2_I2C_SCL",
++			  "CCI3_I2C_SDA",
++			  "CCI3_I2C_SCL",
++			  "CAM3_RST_N",
++			  "NFC_DWL_REQ", /* GPIO_110 */
++			  "NFC_IRQ",
++			  "XVS",
++			  "NC",
++			  "RF_ID_EXTENSION",
++			  "SPK_AMP_I2C_SDA",
++			  "SPK_AMP_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "ACC_COVER_OPEN",
++			  "ALS_PROX_INT_N",
++			  "ACCEL_INT",
++			  "WLAN_SW_CTRL",
++			  "CAMSENSOR_I2C_SDA",
++			  "CAMSENSOR_I2C_SCL",
++			  "UDON_SWITCH_SEL",
++			  "WDOG_DISABLE",
++			  "BAROMETER_INT",
++			  "NC", /* GPIO_130 */
++			  "NC",
++			  "FORCED_USB_BOOT",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "RGBC_IR_INT",
++			  "NC",
++			  "NC", /* GPIO_140 */
++			  "NC",
++			  "BT_SLIMBUS_CLK",
++			  "BT_SLIMBUS_DATA",
++			  "HW_ID_0",
++			  "HW_ID_1",
++			  "WCD_SWR_TX_CLK",
++			  "WCD_SWR_TX_DATA0",
++			  "WCD_SWR_TX_DATA1",
++			  "WCD_SWR_RX_CLK",
++			  "WCD_SWR_RX_DATA0", /* GPIO_150 */
++			  "WCD_SWR_RX_DATA1",
++			  "SDM_DMIC_CLK1",
++			  "SDM_DMIC_DATA1",
++			  "SDM_DMIC_CLK2",
++			  "SDM_DMIC_DATA2",
++			  "SPK_AMP_I2S_CLK",
++			  "SPK_AMP_I2S_WS",
++			  "SPK_AMP_I2S_ASP_DIN",
++			  "SPK_AMP_I2S_ASP_DOUT",
++			  "COMPASS_I2C_SDA", /* GPIO_160 */
++			  "COMPASS_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "SSC_SPI_1_MISO",
++			  "SSC_SPI_1_MOSI",
++			  "SSC_SPI_1_CLK",
++			  "SSC_SPI_1_CS_N",
++			  "NC",
++			  "NC",
++			  "SSC_SENSOR_I2C_SDA", /* GPIO_170 */
++			  "SSC_SENSOR_I2C_SCL",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "NC",
++			  "HST_BLE_SNS_UART6_TX",
++			  "HST_BLE_SNS_UART6_RX",
++			  "HST_WLAN_UART_TX",
++			  "HST_WLAN_UART_RX";
++};
++
+ &vreg_l2f_1p3 {
+ 	regulator-min-microvolt = <1200000>;
+ 	regulator-max-microvolt = <1200000>;
 -- 
 2.40.1
 
