@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0464D79BD9B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BBE2C79BB12
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378623AbjIKWgE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:36:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55302 "EHLO
+        id S237699AbjIKWYR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:24:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239821AbjIKO3f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:29:35 -0400
+        with ESMTP id S238478AbjIKN50 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E5C6F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:29:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83E95C433C7;
-        Mon, 11 Sep 2023 14:29:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B07FCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 927E5C433C7;
+        Mon, 11 Sep 2023 13:57:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442570;
-        bh=qpeaX6xi+dR3AOnu7uDUFbJWKYYdDVKJwNLOKoKjwck=;
+        s=korg; t=1694440641;
+        bh=vfpAmUWmoaDCieMOhaR4AkLH7OJ1LA8Vd98rlAb0QLI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ISO5WxlRyKxcK+7ma/q3FYwf0x4SoGUgQgtzpOiATqQN//H8PO1yHlaoMd7I7+XUT
-         kXZMO2syw6N/lnT/5e02GYlkXyXqBTa9uu9ywNMHzs12mTuEcRiHAJl1hAsoO5fr7S
-         LhZGNmXlnj6fofN90fIg3dRjC7DWSMBot9IVGps4=
+        b=Vkp/FNQZPadj3jgrgurIZTrcDMe4DPQwY4gsqsJk/QC61r3Q+C3by0F2obcaqECLZ
+         +w/MZyP0ZtC3edRd4/bUpxWuSIrf4TwC3VG57dVbM02UeMJ/PLwz3yGK9ORFZwyIYL
+         Ub4Scd7XbYNQZeUyJ0k4h58+B3/V8uNhPc2r1YNA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
+        patches@lists.linux.dev, Yipeng Zou <zouyipeng@huawei.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 072/737] virtio-mem: keep retrying on offline_and_remove_memory() errors in Sub Block Mode (SBM)
-Date:   Mon, 11 Sep 2023 15:38:51 +0200
-Message-ID: <20230911134652.526904325@linuxfoundation.org>
+Subject: [PATCH 6.5 133/739] selftests/bpf: Clean up fmod_ret in bench_rename test script
+Date:   Mon, 11 Sep 2023 15:38:52 +0200
+Message-ID: <20230911134654.803572528@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,184 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Hildenbrand <david@redhat.com>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-[ Upstream commit a31648fd4f96fbe0a4d0aeb16b57a2405c6943c0 ]
+[ Upstream commit 83a89c4b6ae93481d3f618aba6a29d89208d26ed ]
 
-In case offline_and_remove_memory() fails in SBM, we leave a completely
-unplugged Linux memory block stick around until we try plugging memory
-again. We won't try removing that memory block again.
+Running the bench_rename test script, the following error occurs:
 
-offline_and_remove_memory() may, for example, fail if we're racing with
-another alloc_contig_range() user, if allocating temporary memory fails,
-or if some memory notifier rejected the offlining request.
+  # ./benchs/run_bench_rename.sh
+  base      :    0.819 ± 0.012M/s
+  kprobe    :    0.538 ± 0.009M/s
+  kretprobe :    0.503 ± 0.004M/s
+  rawtp     :    0.779 ± 0.020M/s
+  fentry    :    0.726 ± 0.007M/s
+  fexit     :    0.691 ± 0.007M/s
+  benchmark 'rename-fmodret' not found
 
-Let's handle that case better, by simple retrying to offline and remove
-such memory.
+The bench_rename_fmodret has been removed in commit b000def2e052
+("selftests: Remove fmod_ret from test_overhead"), thus remove it
+from the runners in the test script.
 
-Tested using CONFIG_MEMORY_NOTIFIER_ERROR_INJECT.
-
-Signed-off-by: David Hildenbrand <david@redhat.com>
-Message-Id: <20230713145551.2824980-4-david@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: b000def2e052 ("selftests: Remove fmod_ret from test_overhead")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/20230814030727.3010390-1-zouyipeng@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_mem.c | 92 +++++++++++++++++++++++++++++--------
- 1 file changed, 73 insertions(+), 19 deletions(-)
+ tools/testing/selftests/bpf/benchs/run_bench_rename.sh | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/virtio/virtio_mem.c b/drivers/virtio/virtio_mem.c
-index 1a76ba2bc118c..a5cf92e3e5af2 100644
---- a/drivers/virtio/virtio_mem.c
-+++ b/drivers/virtio/virtio_mem.c
-@@ -168,6 +168,13 @@ struct virtio_mem {
- 			/* The number of subblocks per Linux memory block. */
- 			uint32_t sbs_per_mb;
+diff --git a/tools/testing/selftests/bpf/benchs/run_bench_rename.sh b/tools/testing/selftests/bpf/benchs/run_bench_rename.sh
+index 16f774b1cdbed..7b281dbe41656 100755
+--- a/tools/testing/selftests/bpf/benchs/run_bench_rename.sh
++++ b/tools/testing/selftests/bpf/benchs/run_bench_rename.sh
+@@ -2,7 +2,7 @@
  
-+			/*
-+			 * Some of the Linux memory blocks tracked as "partially
-+			 * plugged" are completely unplugged and can be offlined
-+			 * and removed -- which previously failed.
-+			 */
-+			bool have_unplugged_mb;
-+
- 			/* Summary of all memory block states. */
- 			unsigned long mb_count[VIRTIO_MEM_SBM_MB_COUNT];
+ set -eufo pipefail
  
-@@ -765,6 +772,34 @@ static int virtio_mem_sbm_offline_and_remove_mb(struct virtio_mem *vm,
- 	return virtio_mem_offline_and_remove_memory(vm, addr, size);
- }
- 
-+/*
-+ * Try (offlining and) removing memory from Linux in case all subblocks are
-+ * unplugged. Can be called on online and offline memory blocks.
-+ *
-+ * May modify the state of memory blocks in virtio-mem.
-+ */
-+static int virtio_mem_sbm_try_remove_unplugged_mb(struct virtio_mem *vm,
-+						  unsigned long mb_id)
-+{
-+	int rc;
-+
-+	/*
-+	 * Once all subblocks of a memory block were unplugged, offline and
-+	 * remove it.
-+	 */
-+	if (!virtio_mem_sbm_test_sb_unplugged(vm, mb_id, 0, vm->sbm.sbs_per_mb))
-+		return 0;
-+
-+	/* offline_and_remove_memory() works for online and offline memory. */
-+	mutex_unlock(&vm->hotplug_mutex);
-+	rc = virtio_mem_sbm_offline_and_remove_mb(vm, mb_id);
-+	mutex_lock(&vm->hotplug_mutex);
-+	if (!rc)
-+		virtio_mem_sbm_set_mb_state(vm, mb_id,
-+					    VIRTIO_MEM_SBM_MB_UNUSED);
-+	return rc;
-+}
-+
- /*
-  * See virtio_mem_offline_and_remove_memory(): Try to offline and remove a
-  * all Linux memory blocks covered by the big block.
-@@ -1988,20 +2023,10 @@ static int virtio_mem_sbm_unplug_any_sb_online(struct virtio_mem *vm,
- 	}
- 
- unplugged:
--	/*
--	 * Once all subblocks of a memory block were unplugged, offline and
--	 * remove it. This will usually not fail, as no memory is in use
--	 * anymore - however some other notifiers might NACK the request.
--	 */
--	if (virtio_mem_sbm_test_sb_unplugged(vm, mb_id, 0, vm->sbm.sbs_per_mb)) {
--		mutex_unlock(&vm->hotplug_mutex);
--		rc = virtio_mem_sbm_offline_and_remove_mb(vm, mb_id);
--		mutex_lock(&vm->hotplug_mutex);
--		if (!rc)
--			virtio_mem_sbm_set_mb_state(vm, mb_id,
--						    VIRTIO_MEM_SBM_MB_UNUSED);
--	}
--
-+	rc = virtio_mem_sbm_try_remove_unplugged_mb(vm, mb_id);
-+	if (rc)
-+		vm->sbm.have_unplugged_mb = 1;
-+	/* Ignore errors, this is not critical. We'll retry later. */
- 	return 0;
- }
- 
-@@ -2253,12 +2278,13 @@ static int virtio_mem_unplug_request(struct virtio_mem *vm, uint64_t diff)
- 
- /*
-  * Try to unplug all blocks that couldn't be unplugged before, for example,
-- * because the hypervisor was busy.
-+ * because the hypervisor was busy. Further, offline and remove any memory
-+ * blocks where we previously failed.
-  */
--static int virtio_mem_unplug_pending_mb(struct virtio_mem *vm)
-+static int virtio_mem_cleanup_pending_mb(struct virtio_mem *vm)
- {
- 	unsigned long id;
--	int rc;
-+	int rc = 0;
- 
- 	if (!vm->in_sbm) {
- 		virtio_mem_bbm_for_each_bb(vm, id,
-@@ -2280,6 +2306,27 @@ static int virtio_mem_unplug_pending_mb(struct virtio_mem *vm)
- 					    VIRTIO_MEM_SBM_MB_UNUSED);
- 	}
- 
-+	if (!vm->sbm.have_unplugged_mb)
-+		return 0;
-+
-+	/*
-+	 * Let's retry (offlining and) removing completely unplugged Linux
-+	 * memory blocks.
-+	 */
-+	vm->sbm.have_unplugged_mb = false;
-+
-+	mutex_lock(&vm->hotplug_mutex);
-+	virtio_mem_sbm_for_each_mb(vm, id, VIRTIO_MEM_SBM_MB_MOVABLE_PARTIAL)
-+		rc |= virtio_mem_sbm_try_remove_unplugged_mb(vm, id);
-+	virtio_mem_sbm_for_each_mb(vm, id, VIRTIO_MEM_SBM_MB_KERNEL_PARTIAL)
-+		rc |= virtio_mem_sbm_try_remove_unplugged_mb(vm, id);
-+	virtio_mem_sbm_for_each_mb(vm, id, VIRTIO_MEM_SBM_MB_OFFLINE_PARTIAL)
-+		rc |= virtio_mem_sbm_try_remove_unplugged_mb(vm, id);
-+	mutex_unlock(&vm->hotplug_mutex);
-+
-+	if (rc)
-+		vm->sbm.have_unplugged_mb = true;
-+	/* Ignore errors, this is not critical. We'll retry later. */
- 	return 0;
- }
- 
-@@ -2361,9 +2408,9 @@ static void virtio_mem_run_wq(struct work_struct *work)
- 		virtio_mem_refresh_config(vm);
- 	}
- 
--	/* Unplug any leftovers from previous runs */
-+	/* Cleanup any leftovers from previous runs */
- 	if (!rc)
--		rc = virtio_mem_unplug_pending_mb(vm);
-+		rc = virtio_mem_cleanup_pending_mb(vm);
- 
- 	if (!rc && vm->requested_size != vm->plugged_size) {
- 		if (vm->requested_size > vm->plugged_size) {
-@@ -2375,6 +2422,13 @@ static void virtio_mem_run_wq(struct work_struct *work)
- 		}
- 	}
- 
-+	/*
-+	 * Keep retrying to offline and remove completely unplugged Linux
-+	 * memory blocks.
-+	 */
-+	if (!rc && vm->in_sbm && vm->sbm.have_unplugged_mb)
-+		rc = -EBUSY;
-+
- 	switch (rc) {
- 	case 0:
- 		vm->retry_timer_ms = VIRTIO_MEM_RETRY_TIMER_MIN_MS;
+-for i in base kprobe kretprobe rawtp fentry fexit fmodret
++for i in base kprobe kretprobe rawtp fentry fexit
+ do
+ 	summary=$(sudo ./bench -w2 -d5 -a rename-$i | tail -n1 | cut -d'(' -f1 | cut -d' ' -f3-)
+ 	printf "%-10s: %s\n" $i "$summary"
 -- 
 2.40.1
 
