@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C0AFD79B0BB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F04A79AD64
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355202AbjIKV52 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60860 "EHLO
+        id S240099AbjIKU4F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238971AbjIKOIg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:36 -0400
+        with ESMTP id S240296AbjIKOku (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4B01CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36139C433C7;
-        Mon, 11 Sep 2023 14:08:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44D23F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8B03BC433C7;
+        Mon, 11 Sep 2023 14:40:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441311;
-        bh=EO6ome8Ma72Nn/jn2f7wF3EBXEbVoKO9HzwEAA4uGxM=;
+        s=korg; t=1694443245;
+        bh=BzNzAcSsStQ8QclTsW8QSn91l2LbnP3YjC0yAQoCOGw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xxIcBY+4KICikNJv0kHLeOi1/dlXlxbLyoV9Qg99ScRZC/J9bIm9QSjJAAA06bMXv
-         +V2GStug5u9KXz7pBu4rdg4aEy1xneg3ly/OrKhswsqqRLo1GKHaFSNs4f7STTPj0d
-         QovXAv/PyJRMy1shAROun8q0nTkw2M6TCa/tHLVA=
+        b=r7ImUHD1uaQbUATsZKAlSge3Iu0+C9CYAYFRpvQ2WqDS2zScVDlxLU/6S5TjRIipA
+         FcaUsDyV3GhkRiTyZ5DBuHoDeXjVdKPivpyqPn/FhxW2hZpF7Rq9/SnyEaYzKQEf6i
+         yZzGhE3F0RQ2Ws7NtUSxp79UDOOmSWaVrtbI6F9U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 368/739] of: unittest: Fix overlay type in apply/revert check
-Date:   Mon, 11 Sep 2023 15:42:47 +0200
-Message-ID: <20230911134701.435522853@linuxfoundation.org>
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 310/737] ARM: dts: BCM53573: Drop nonexistent #usb-cells
+Date:   Mon, 11 Sep 2023 15:42:49 +0200
+Message-ID: <20230911134659.229077484@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,44 +52,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 6becf8f845ae1f0b1cfed395bbeccbd23654162d ]
+[ Upstream commit 05d2c3d552b8c92fc397377d9d1112fc58e2cd59 ]
 
-The removal check in of_unittest_apply_revert_overlay_check()
-always uses the platform device overlay type, while it should use the
-actual overlay type, as passed as a parameter to the function.
+Such property simply doesn't exist (is not documented or used anywhere).
 
-This has no impact on any current test, as all tests calling
-of_unittest_apply_revert_overlay_check() use the platform device overlay
-type.
+This fixes:
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: usb@d000: Unevaluated properties are not allowed ('#usb-cells' was unexpected)
+        From schema: Documentation/devicetree/bindings/usb/generic-ohci.yaml
 
-Fixes: d5e75500ca401d31 ("of: unitest: Add I2C overlay unit tests.")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/ba0234c41ba808f10112094f88792beeb6dbaedf.1690533838.git.geert+renesas@glider.be
-Signed-off-by: Rob Herring <robh@kernel.org>
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230707114004.2740-2-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/unittest.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/bcm53573.dtsi | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/of/unittest.c b/drivers/of/unittest.c
-index d943bf87c94dd..f6784cce8369b 100644
---- a/drivers/of/unittest.c
-+++ b/drivers/of/unittest.c
-@@ -2182,7 +2182,7 @@ static int __init of_unittest_apply_revert_overlay_check(int overlay_nr,
- 	of_unittest_untrack_overlay(save_ovcs_id);
+diff --git a/arch/arm/boot/dts/bcm53573.dtsi b/arch/arm/boot/dts/bcm53573.dtsi
+index 3f03a381db0f2..3cb71829e8597 100644
+--- a/arch/arm/boot/dts/bcm53573.dtsi
++++ b/arch/arm/boot/dts/bcm53573.dtsi
+@@ -156,8 +156,6 @@ ehci_port2: port@2 {
+ 			};
  
- 	/* unittest device must be again in before state */
--	if (of_unittest_device_exists(unittest_nr, PDEV_OVERLAY) != before) {
-+	if (of_unittest_device_exists(unittest_nr, ovtype) != before) {
- 		unittest(0, "%s with device @\"%s\" %s\n",
- 				overlay_name_from_nr(overlay_nr),
- 				unittest_path(unittest_nr, ovtype),
+ 			ohci: usb@d000 {
+-				#usb-cells = <0>;
+-
+ 				compatible = "generic-ohci";
+ 				reg = <0xd000 0x1000>;
+ 				interrupt-parent = <&gic>;
 -- 
 2.40.1
 
