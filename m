@@ -2,42 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5651179BF5B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 59F4E79BABB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240246AbjIKVkM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:40:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56980 "EHLO
+        id S237876AbjIKVST (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55028 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239027AbjIKOJ4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:56 -0400
+        with ESMTP id S241441AbjIKPIr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A633ACF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC7EC433C8;
-        Mon, 11 Sep 2023 14:09:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8617FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD1D5C433C7;
+        Mon, 11 Sep 2023 15:08:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441391;
-        bh=J8aNdHpwMjkrdOGcTxs4fnYN13J4RABoTf4soBwnJtY=;
+        s=korg; t=1694444923;
+        bh=dI+BDpE42zrX9V7qkes4CBZDwbR04OxiotVmiEGt6gY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zyyE3DZQlLTsaHdMggmP6HUFWU8NlK8LzCooy6wzJbLD5TNLyGUTKWrbV5rL5e2Sp
-         MXOR258R14ZSPTaZr9QB+i/4W6rbFsmTLWJw/wqY5fAnbxfCyDnog5qgisYsl2XLSe
-         gI0ebsYkcIzXCx1mmsJ/QVJ2jZd7NhtM/D+zeSPU=
+        b=MjMDpaRn5dNQZBfPRUfi21kIXW7lyuCkWkr29RgyeZj2y7Qj1CrhFYFFdNNsluofW
+         VodhH2G+lEZMCl/MqmKCSmuCVuCYkhtKgDsjiUk4nlPb34pjy6Bx+rBnwJUGGwDtrq
+         Qun7ir76hIc1bo1pol+7q8YrzK4i++uGvFVErBqk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Patrick Whewell <patrick.whewell@sightlineapplications.com>,
-        Vinod Koul <vkoul@kernel.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Colm Harrington <colm.harrington@oracle.com>,
+        Alan Maguire <alan.maguire@oracle.com>,
+        Yipeng Zou <zouyipeng@huawei.com>,
+        Yonghong Song <yonghong.song@linux.dev>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 396/739] clk: qcom: gcc-sm8250: Fix gcc_sdcc2_apps_clk_src
+Subject: [PATCH 6.1 162/600] selftests/bpf: fix static assert compilation issue for test_cls_*.c
 Date:   Mon, 11 Sep 2023 15:43:15 +0200
-Message-ID: <20230911134702.244797974@linuxfoundation.org>
+Message-ID: <20230911134638.391213489@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,42 +54,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Patrick Whewell <patrick.whewell@sightlineapplications.com>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit 783cb693828ce487cf0bc6ad16cbcf2caae6f8d9 ]
+[ Upstream commit 416c6d01244ecbf0abfdb898fd091b50ef951b48 ]
 
-GPLL9 is not on by default, which causes a "gcc_sdcc2_apps_clk_src: rcg
-didn't update its configuration" error when booting. Set .flags =
-CLK_OPS_PARENT_ENABLE to fix the error.
+commit bdeeed3498c7 ("libbpf: fix offsetof() and container_of() to work with CO-RE")
 
-Fixes: 3e5770921a88 ("clk: qcom: gcc: Add global clock controller driver for SM8250")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Signed-off-by: Patrick Whewell <patrick.whewell@sightlineapplications.com>
-Reviewed-by: Vinod Koul <vkoul@kernel.org>
-Link: https://lore.kernel.org/r/20230802210359.408-1-patrick.whewell@sightlineapplications.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+...was backported to stable trees such as 5.15. The problem is that with older
+LLVM/clang (14/15) - which is often used for older kernels - we see compilation
+failures in BPF selftests now:
+
+In file included from progs/test_cls_redirect_subprogs.c:2:
+progs/test_cls_redirect.c:90:2: error: static assertion expression is not an integral constant expression
+        sizeof(flow_ports_t) !=
+        ^~~~~~~~~~~~~~~~~~~~~~~
+progs/test_cls_redirect.c:91:3: note: cast that performs the conversions of a reinterpret_cast is not allowed in a constant expression
+                offsetofend(struct bpf_sock_tuple, ipv4.dport) -
+                ^
+progs/test_cls_redirect.c:32:3: note: expanded from macro 'offsetofend'
+        (offsetof(TYPE, MEMBER) + sizeof((((TYPE *)0)->MEMBER)))
+         ^
+tools/testing/selftests/bpf/tools/include/bpf/bpf_helpers.h:86:33: note: expanded from macro 'offsetof'
+                                 ^
+In file included from progs/test_cls_redirect_subprogs.c:2:
+progs/test_cls_redirect.c:95:2: error: static assertion expression is not an integral constant expression
+        sizeof(flow_ports_t) !=
+        ^~~~~~~~~~~~~~~~~~~~~~~
+progs/test_cls_redirect.c:96:3: note: cast that performs the conversions of a reinterpret_cast is not allowed in a constant expression
+                offsetofend(struct bpf_sock_tuple, ipv6.dport) -
+                ^
+progs/test_cls_redirect.c:32:3: note: expanded from macro 'offsetofend'
+        (offsetof(TYPE, MEMBER) + sizeof((((TYPE *)0)->MEMBER)))
+         ^
+tools/testing/selftests/bpf/tools/include/bpf/bpf_helpers.h:86:33: note: expanded from macro 'offsetof'
+                                 ^
+2 errors generated.
+make: *** [Makefile:594: tools/testing/selftests/bpf/test_cls_redirect_subprogs.bpf.o] Error 1
+
+The problem is the new offsetof() does not play nice with static asserts.
+Given that the context is a static assert (and CO-RE relocation is not
+needed at compile time), offsetof() usage can be replaced by restoring
+the original offsetof() definition as __builtin_offsetof().
+
+Fixes: bdeeed3498c7 ("libbpf: fix offsetof() and container_of() to work with CO-RE")
+Reported-by: Colm Harrington <colm.harrington@oracle.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Tested-by: Yipeng Zou <zouyipeng@huawei.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20230802073906.3197480-1-alan.maguire@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sm8250.c | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/bpf/progs/test_cls_redirect.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/clk/qcom/gcc-sm8250.c b/drivers/clk/qcom/gcc-sm8250.c
-index b6cf4bc88d4d4..d3c75bb55946a 100644
---- a/drivers/clk/qcom/gcc-sm8250.c
-+++ b/drivers/clk/qcom/gcc-sm8250.c
-@@ -721,6 +721,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_4,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_4),
-+		.flags = CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
+diff --git a/tools/testing/selftests/bpf/progs/test_cls_redirect.h b/tools/testing/selftests/bpf/progs/test_cls_redirect.h
+index 76eab0aacba0c..233b089d1fbac 100644
+--- a/tools/testing/selftests/bpf/progs/test_cls_redirect.h
++++ b/tools/testing/selftests/bpf/progs/test_cls_redirect.h
+@@ -12,6 +12,15 @@
+ #include <linux/ipv6.h>
+ #include <linux/udp.h>
+ 
++/* offsetof() is used in static asserts, and the libbpf-redefined CO-RE
++ * friendly version breaks compilation for older clang versions <= 15
++ * when invoked in a static assert.  Restore original here.
++ */
++#ifdef offsetof
++#undef offsetof
++#define offsetof(type, member) __builtin_offsetof(type, member)
++#endif
++
+ struct gre_base_hdr {
+ 	uint16_t flags;
+ 	uint16_t protocol;
 -- 
 2.40.1
 
