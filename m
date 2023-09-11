@@ -2,52 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 19AE779B9E3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01C3F79B62F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377862AbjIKW26 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:28:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39052 "EHLO
+        id S244571AbjIKVSt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:18:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240888AbjIKO4f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:35 -0400
+        with ESMTP id S242073AbjIKPVl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88305DC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF1A4C433C7;
-        Mon, 11 Sep 2023 14:56:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058E2D3
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A4CC433C8;
+        Mon, 11 Sep 2023 15:21:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444189;
-        bh=O4nPICxaS8ZYv2aCT9jCuMXy+5IWhe/C7MI2aDf7bu4=;
+        s=korg; t=1694445696;
+        bh=OWETa99FvWRO8Sqmt+/JQRDqKI4SoMeTPTcC8RaqZkM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Iv0t16aVAyGYXGfsugcMX0AFcLiL5A0v8zZDbMpZ7aaChDxzbRQB84xykPpX6aXUq
-         U0sLcD6zb+jxW5hAhdFIxlDg2dqgmnAcW2I/R54E92/efoZpTcz/pPz5NylLbqdrFA
-         ahc+Z0oDBJ6n6fs+8zhczIctCWhcJbisKC3K54eY=
+        b=yEIkxn200pwpWOhDt5DH6rYL97uHphQPzXB+AANOuPQ6V1sit5CbOhjvCYmW3TE8w
+         M5FAbTZdQrmK82E9EXmEBdjqBLqQc15l+n0/npU6TaIScbSpB1ld5DmrGpVY5zpnMd
+         XVzhshw5eWHDxEZ5nDR4CE/kyyM9ALuzCz6kW3mk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 613/737] thermal/drivers/mediatek/lvts_thermal: Use offset threshold for IRQ
-Date:   Mon, 11 Sep 2023 15:47:52 +0200
-Message-ID: <20230911134707.654912306@linuxfoundation.org>
+Subject: [PATCH 6.1 440/600] extcon: cht_wc: add POWER_SUPPLY dependency
+Date:   Mon, 11 Sep 2023 15:47:53 +0200
+Message-ID: <20230911134646.637890366@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,84 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit f79e996c7ed27bb196facbcd1c69ee33631d7051 ]
+[ Upstream commit d20a3a8a32e3fa564ff25da860c5fc1a97642dfe ]
 
-There are two kinds of temperature monitoring interrupts available:
-* High Offset, Low Offset
-* Hot, Hot to normal, Cold
+The driver fails to link when CONFIG_POWER_SUPPLY is disabled:
 
-The code currently uses the hot/h2n/cold interrupts, however in a way
-that doesn't work: the cold threshold is left uninitialized, which
-prevents the other thresholds from ever triggering, and the h2n
-interrupt is used as the lower threshold, which prevents the hot
-interrupt from triggering again after the thresholds are updated by the
-thermal framework, since a hot interrupt can only trigger again after
-the hot to normal interrupt has been triggered.
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_psy_get_prop':
+extcon-intel-cht-wc.c:(.text+0x15ccda7): undefined reference to `power_supply_get_drvdata'
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_pwrsrc_event':
+extcon-intel-cht-wc.c:(.text+0x15cd3e9): undefined reference to `power_supply_changed'
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_probe':
+extcon-intel-cht-wc.c:(.text+0x15cd596): undefined reference to `devm_power_supply_register'
 
-But better yet than addressing those issues, is to use the high/low
-offset interrupts instead. This way only two thresholds need to be
-managed, which have a simpler state machine, making them a better match
-to the thermal framework's high and low thresholds.
+It should be possible to change the driver to not require this at
+compile time and still provide other functions, but adding a hard
+Kconfig dependency does not seem to have any practical downsides
+and is simpler since the option is normally enabled anyway.
 
-Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230706153823.201943-4-nfraprado@collabora.com
+Fixes: 66e31186cd2aa ("extcon: intel-cht-wc: Add support for registering a power_supply class-device")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/extcon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index 64748153d181e..80abd10596d85 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -296,9 +296,9 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- 	u32 raw_high = lvts_temp_to_raw(high);
- 
- 	/*
--	 * Hot to normal temperature threshold
-+	 * Low offset temperature threshold
- 	 *
--	 * LVTS_H2NTHRE
-+	 * LVTS_OFFSETL
- 	 *
- 	 * Bits:
- 	 *
-@@ -307,13 +307,13 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- 	if (low != -INT_MAX) {
- 		pr_debug("%s: Setting low limit temperature interrupt: %d\n",
- 			 thermal_zone_device_type(tz), low);
--		writel(raw_low, LVTS_H2NTHRE(base));
-+		writel(raw_low, LVTS_OFFSETL(base));
- 	}
- 
- 	/*
--	 * Hot temperature threshold
-+	 * High offset temperature threshold
- 	 *
--	 * LVTS_HTHRE
-+	 * LVTS_OFFSETH
- 	 *
- 	 * Bits:
- 	 *
-@@ -321,7 +321,7 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- 	 */
- 	pr_debug("%s: Setting high limit temperature interrupt: %d\n",
- 		 thermal_zone_device_type(tz), high);
--	writel(raw_high, LVTS_HTHRE(base));
-+	writel(raw_high, LVTS_OFFSETH(base));
- 
- 	return 0;
- }
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index 290186e44e6bd..4dd52a6a5b48d 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -62,6 +62,7 @@ config EXTCON_INTEL_CHT_WC
+ 	tristate "Intel Cherrytrail Whiskey Cove PMIC extcon driver"
+ 	depends on INTEL_SOC_PMIC_CHTWC
+ 	depends on USB_SUPPORT
++	depends on POWER_SUPPLY
+ 	select USB_ROLE_SWITCH
+ 	help
+ 	  Say Y here to enable extcon support for charger detection / control
 -- 
 2.40.1
 
