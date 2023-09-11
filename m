@@ -2,52 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9AE2D79C023
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9DDEA79C0C8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344493AbjIKVOM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50244 "EHLO
+        id S232982AbjIKWub (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:50:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239429AbjIKOUV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:21 -0400
+        with ESMTP id S241944AbjIKPSi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4772DDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8C7F6C433C7;
-        Mon, 11 Sep 2023 14:20:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8EEBEFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D50BDC433C7;
+        Mon, 11 Sep 2023 15:18:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442016;
-        bh=5FkymuVd601f5pxD1FxsHB3dtRHVkH1yBrLfUCo4s/E=;
+        s=korg; t=1694445514;
+        bh=hqRtZfUQyxEYv/2VdXGPtqiLOzr1BBvSmruJ8OtLDlo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lTpINjYe7JYPKgRLImr87ZFBaVwTsZewECA5/k2T8S6AfRrbHZp3usuARinWf0pJv
-         e/gUBuGWCwc9zNuIFciQ8NuFVOPH7gsK/Vgfk6os0yDXdlG0X7HY8qHCfHENDDdD2W
-         kR61MKQjldcjj0QXmoFKEWWMp8d69rAu+W50l40c=
+        b=axUI8apE53fUwbhV4l6r9urvcrmsbImBtJwxYZ1rdlFzgXQ+xp5skcxJCtATZ7Kys
+         BgZKA49WJN1WHIZBUKGlih4R43NqjNREyWxzbWCb9VlBYSaVPHNfTT8gEs8gZKZlAF
+         RK9vFuxvvGFWE+tEwrmVxCCBqqw+ZAOwTTdADZ+8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        patches@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 609/739] thermal/drivers/mediatek/lvts_thermal: Manage threshold between sensors
+Subject: [PATCH 6.1 375/600] NFSv4.2: Fix READ_PLUS size calculations
 Date:   Mon, 11 Sep 2023 15:46:48 +0200
-Message-ID: <20230911134708.107901812@linuxfoundation.org>
+Message-ID: <20230911134644.746720665@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -56,163 +50,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit 2bba1acf7a4cbe62abbb4c686e0414209ec5943b ]
+[ Upstream commit 8d18f6c5bb864d97a730f471c56cdecf313efe64 ]
 
-Each LVTS thermal controller can have up to four sensors, each capable
-of triggering its own interrupt when its measured temperature crosses
-the configured threshold. The threshold for each sensor is handled
-separately by the thermal framework, since each one is registered with
-its own thermal zone and trips. However, the temperature thresholds are
-configured on the controller, and therefore are shared between all
-sensors on that controller.
+I bump the decode_read_plus_maxsz to account for hole segments, but I
+need to subtract out this increase when calling
+rpc_prepare_reply_pages() so the common case of single data segment
+replies can be directly placed into the xdr pages without needing to be
+shifted around.
 
-When the temperature measured by the sensors is different enough to
-cause the thermal framework to configure different thresholds for each
-one, interrupts start triggering on sensors outside the last threshold
-configured.
-
-To address the issue, track the thresholds required by each sensor and
-only actually set the highest one in the hardware, and disable
-interrupts for all sensors outside the current configured range.
-
-Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
-Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
-Link: https://lore.kernel.org/r/20230706153823.201943-7-nfraprado@collabora.com
+Reported-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: d3b00a802c845 ("NFS: Replace the READ_PLUS decoding code")
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/thermal/mediatek/lvts_thermal.c | 69 +++++++++++++++++++++++++
- 1 file changed, 69 insertions(+)
+ fs/nfs/nfs42xdr.c | 12 +++++++++---
+ 1 file changed, 9 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
-index 064269667fb89..b0d71b74a928e 100644
---- a/drivers/thermal/mediatek/lvts_thermal.c
-+++ b/drivers/thermal/mediatek/lvts_thermal.c
-@@ -67,6 +67,11 @@
- #define LVTS_CALSCALE_CONF			0x300
- #define LVTS_MONINT_CONF			0x8300318C
+diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
+index ef3b150970ff6..75765382cc0e6 100644
+--- a/fs/nfs/nfs42xdr.c
++++ b/fs/nfs/nfs42xdr.c
+@@ -51,10 +51,16 @@
+ 					(1 /* data_content4 */ + \
+ 					 2 /* data_info4.di_offset */ + \
+ 					 1 /* data_info4.di_length */)
++#define NFS42_READ_PLUS_HOLE_SEGMENT_SIZE \
++					(1 /* data_content4 */ + \
++					 2 /* data_info4.di_offset */ + \
++					 2 /* data_info4.di_length */)
++#define READ_PLUS_SEGMENT_SIZE_DIFF	(NFS42_READ_PLUS_HOLE_SEGMENT_SIZE - \
++					 NFS42_READ_PLUS_DATA_SEGMENT_SIZE)
+ #define decode_read_plus_maxsz		(op_decode_hdr_maxsz + \
+ 					 1 /* rpr_eof */ + \
+ 					 1 /* rpr_contents count */ + \
+-					 NFS42_READ_PLUS_DATA_SEGMENT_SIZE)
++					 NFS42_READ_PLUS_HOLE_SEGMENT_SIZE)
+ #define encode_seek_maxsz		(op_encode_hdr_maxsz + \
+ 					 encode_stateid_maxsz + \
+ 					 2 /* offset */ + \
+@@ -781,8 +787,8 @@ static void nfs4_xdr_enc_read_plus(struct rpc_rqst *req,
+ 	encode_putfh(xdr, args->fh, &hdr);
+ 	encode_read_plus(xdr, args, &hdr);
  
-+#define LVTS_MONINT_OFFSET_SENSOR0		0xC
-+#define LVTS_MONINT_OFFSET_SENSOR1		0x180
-+#define LVTS_MONINT_OFFSET_SENSOR2		0x3000
-+#define LVTS_MONINT_OFFSET_SENSOR3		0x3000000
-+
- #define LVTS_INT_SENSOR0			0x0009001F
- #define LVTS_INT_SENSOR1			0x001203E0
- #define LVTS_INT_SENSOR2			0x00247C00
-@@ -112,6 +117,8 @@ struct lvts_sensor {
- 	void __iomem *base;
- 	int id;
- 	int dt_id;
-+	int low_thresh;
-+	int high_thresh;
- };
- 
- struct lvts_ctrl {
-@@ -121,6 +128,8 @@ struct lvts_ctrl {
- 	int num_lvts_sensor;
- 	int mode;
- 	void __iomem *base;
-+	int low_thresh;
-+	int high_thresh;
- };
- 
- struct lvts_domain {
-@@ -292,12 +301,66 @@ static int lvts_get_temp(struct thermal_zone_device *tz, int *temp)
- 	return 0;
+-	rpc_prepare_reply_pages(req, args->pages, args->pgbase,
+-				args->count, hdr.replen);
++	rpc_prepare_reply_pages(req, args->pages, args->pgbase, args->count,
++				hdr.replen - READ_PLUS_SEGMENT_SIZE_DIFF);
+ 	encode_nops(&hdr);
  }
  
-+static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
-+{
-+	u32 masks[] = {
-+		LVTS_MONINT_OFFSET_SENSOR0,
-+		LVTS_MONINT_OFFSET_SENSOR1,
-+		LVTS_MONINT_OFFSET_SENSOR2,
-+		LVTS_MONINT_OFFSET_SENSOR3,
-+	};
-+	u32 value = 0;
-+	int i;
-+
-+	value = readl(LVTS_MONINT(lvts_ctrl->base));
-+
-+	for (i = 0; i < ARRAY_SIZE(masks); i++) {
-+		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
-+		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
-+			value |= masks[i];
-+		else
-+			value &= ~masks[i];
-+	}
-+
-+	writel(value, LVTS_MONINT(lvts_ctrl->base));
-+}
-+
-+static bool lvts_should_update_thresh(struct lvts_ctrl *lvts_ctrl, int high)
-+{
-+	int i;
-+
-+	if (high > lvts_ctrl->high_thresh)
-+		return true;
-+
-+	for (i = 0; i < lvts_ctrl->num_lvts_sensor; i++)
-+		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
-+		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
-+			return false;
-+
-+	return true;
-+}
-+
- static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
- {
- 	struct lvts_sensor *lvts_sensor = thermal_zone_device_priv(tz);
-+	struct lvts_ctrl *lvts_ctrl = container_of(lvts_sensor, struct lvts_ctrl, sensors[lvts_sensor->id]);
- 	void __iomem *base = lvts_sensor->base;
- 	u32 raw_low = lvts_temp_to_raw(low != -INT_MAX ? low : LVTS_MINIMUM_THRESHOLD);
- 	u32 raw_high = lvts_temp_to_raw(high);
-+	bool should_update_thresh;
-+
-+	lvts_sensor->low_thresh = low;
-+	lvts_sensor->high_thresh = high;
-+
-+	should_update_thresh = lvts_should_update_thresh(lvts_ctrl, high);
-+	if (should_update_thresh) {
-+		lvts_ctrl->high_thresh = high;
-+		lvts_ctrl->low_thresh = low;
-+	}
-+	lvts_update_irq_mask(lvts_ctrl);
-+
-+	if (!should_update_thresh)
-+		return 0;
- 
- 	/*
- 	 * Low offset temperature threshold
-@@ -521,6 +584,9 @@ static int lvts_sensor_init(struct device *dev, struct lvts_ctrl *lvts_ctrl,
- 		 */
- 		lvts_sensor[i].msr = lvts_ctrl_data->mode == LVTS_MSR_IMMEDIATE_MODE ?
- 			imm_regs[i] : msr_regs[i];
-+
-+		lvts_sensor[i].low_thresh = INT_MIN;
-+		lvts_sensor[i].high_thresh = INT_MIN;
- 	};
- 
- 	lvts_ctrl->num_lvts_sensor = lvts_ctrl_data->num_lvts_sensor;
-@@ -688,6 +754,9 @@ static int lvts_ctrl_init(struct device *dev, struct lvts_domain *lvts_td,
- 		 */
- 		lvts_ctrl[i].hw_tshut_raw_temp =
- 			lvts_temp_to_raw(lvts_data->lvts_ctrl[i].hw_tshut_temp);
-+
-+		lvts_ctrl[i].low_thresh = INT_MIN;
-+		lvts_ctrl[i].high_thresh = INT_MIN;
- 	}
- 
- 	/*
 -- 
 2.40.1
 
