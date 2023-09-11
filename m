@@ -2,43 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A4B4579BE9B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA3A079BAC3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359467AbjIKWQy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:16:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56270 "EHLO
+        id S239096AbjIKVlL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:41:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240660AbjIKOuR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:50:17 -0400
+        with ESMTP id S241926AbjIKPSG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A81D106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:50:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0FF9C433C8;
-        Mon, 11 Sep 2023 14:50:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 311DAFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 676F7C433C8;
+        Mon, 11 Sep 2023 15:18:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443812;
-        bh=6xTD5ZspalpMsd/HPliRcezRpY098RirDC1t3F/YQ88=;
+        s=korg; t=1694445480;
+        bh=V0GJWpnoLKNj4nHhg5lweOybXCxITJocfRhvjA+g95A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b3DFxVY9D+A72OiN44nGOpabTCcpTGKGpq5iVTMrWeflzHnyslO7KE0TkealbLeYk
-         ct5AMPBB6OZvchn6pFyCPHzpQ68ua9p3+tUrIGw6ty4DQ//oq/ZkPSti54iC80kL6S
-         1j0xzaHU8gONVSwNwZXJtOWPs6E/JroYPuOw4g7A=
+        b=ZkyPPX6nryYYEHm9zClnF8o5UTX1ZSmG1AOyJdriBJruWpdE7Rs5WCIC5YOXSrGd8
+         nMaLLJlXV5whyMr1XO1HniSDrSqU09S085lf1jCTkkejAgGi5rnILTnbH+WKjj6cUj
+         B/Qy5xjmQwXaNFWaQWEBEGCpS2mCA83InL3iWgYg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Peter Chen <peter.chen@kernel.org>,
+        patches@lists.linux.dev, Sven Peter <sven@svenpeter.dev>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Marc Zyngier <maz@kernel.org>,
+        Alyssa Rosenzweig <alyssa@rosenzweig.io>,
+        Eric Curtin <ecurtin@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 509/737] usb: phy: mxs: fix getting wrong state with mxs_phy_is_otg_host()
+Subject: [PATCH 6.1 335/600] PCI: apple: Initialize pcie->nvecs before use
 Date:   Mon, 11 Sep 2023 15:46:08 +0200
-Message-ID: <20230911134704.781630569@linuxfoundation.org>
+Message-ID: <20230911134643.577843800@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,52 +54,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Sven Peter <sven@svenpeter.dev>
 
-[ Upstream commit 5eda42aebb7668b4dcff025cd3ccb0d3d7c53da6 ]
+[ Upstream commit d8650c0c2aa2e413594e4cb0faafa9958c1d7782 ]
 
-The function mxs_phy_is_otg_host() will return true if OTG_ID_VALUE is
-0 at USBPHY_CTRL register. However, OTG_ID_VALUE will not reflect the real
-state if the ID pin is float, such as Host-only or Type-C cases. The value
-of OTG_ID_VALUE is always 1 which means device mode.
-This patch will fix the issue by judging the current mode based on
-last_event. The controller will update last_event in time.
+The apple_pcie_setup_port() function computes ilog2(pcie->nvecs) to set
+up the number of MSIs available for each port. However, it's called
+before apple_msi_init(), which initializes pcie->nvecs.
 
-Fixes: 7b09e67639d6 ("usb: phy: mxs: refine mxs_phy_disconnect_line")
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Acked-by: Peter Chen <peter.chen@kernel.org>
-Link: https://lore.kernel.org/r/20230627110353.1879477-2-xu.yang_2@nxp.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Luckily, pcie->nvecs is part of kzalloc()-ed structure and, as such,
+initialized as zero. ilog2(0) happens to be 0xffffffff which then simply
+configures more MSIs in hardware than we have. This doesn't break
+anything because we never hand out those vectors.
+
+Thus, swap the order of the two calls so that the correctly initialized
+value is then used.
+
+[kwilczynski: commit log]
+Link: https://lore.kernel.org/linux-pci/20230311133453.63246-1-sven@svenpeter.dev
+Fixes: 476c41ed4597 ("PCI: apple: Implement MSI support")
+Signed-off-by: Sven Peter <sven@svenpeter.dev>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Reviewed-by: Marc Zyngier <maz@kernel.org>
+Reviewed-by: Alyssa Rosenzweig <alyssa@rosenzweig.io>
+Reviewed-by: Eric Curtin <ecurtin@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/phy/phy-mxs-usb.c | 10 ++--------
- 1 file changed, 2 insertions(+), 8 deletions(-)
+ drivers/pci/controller/pcie-apple.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/usb/phy/phy-mxs-usb.c b/drivers/usb/phy/phy-mxs-usb.c
-index e1a2b2ea098b5..cceabb9d37e98 100644
---- a/drivers/usb/phy/phy-mxs-usb.c
-+++ b/drivers/usb/phy/phy-mxs-usb.c
-@@ -388,14 +388,8 @@ static void __mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool disconnect)
+diff --git a/drivers/pci/controller/pcie-apple.c b/drivers/pci/controller/pcie-apple.c
+index 66f37e403a09c..2340dab6cd5bd 100644
+--- a/drivers/pci/controller/pcie-apple.c
++++ b/drivers/pci/controller/pcie-apple.c
+@@ -783,6 +783,10 @@ static int apple_pcie_init(struct pci_config_window *cfg)
+ 	cfg->priv = pcie;
+ 	INIT_LIST_HEAD(&pcie->ports);
  
- static bool mxs_phy_is_otg_host(struct mxs_phy *mxs_phy)
- {
--	void __iomem *base = mxs_phy->phy.io_priv;
--	u32 phyctrl = readl(base + HW_USBPHY_CTRL);
--
--	if (IS_ENABLED(CONFIG_USB_OTG) &&
--			!(phyctrl & BM_USBPHY_CTRL_OTG_ID_VALUE))
--		return true;
--
--	return false;
-+	return IS_ENABLED(CONFIG_USB_OTG) &&
-+		mxs_phy->phy.last_event == USB_EVENT_ID;
++	ret = apple_msi_init(pcie);
++	if (ret)
++		return ret;
++
+ 	for_each_child_of_node(dev->of_node, of_port) {
+ 		ret = apple_pcie_setup_port(pcie, of_port);
+ 		if (ret) {
+@@ -792,7 +796,7 @@ static int apple_pcie_init(struct pci_config_window *cfg)
+ 		}
+ 	}
+ 
+-	return apple_msi_init(pcie);
++	return 0;
  }
  
- static void mxs_phy_disconnect_line(struct mxs_phy *mxs_phy, bool on)
+ static int apple_pcie_probe(struct platform_device *pdev)
 -- 
 2.40.1
 
