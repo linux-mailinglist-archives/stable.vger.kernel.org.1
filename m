@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E235E79B971
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F1C6A79BA2C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379570AbjIKWou (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45076 "EHLO
+        id S243529AbjIKWGW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:06:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241250AbjIKPFB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:01 -0400
+        with ESMTP id S238848AbjIKOGE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 03753125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 50299C433C7;
-        Mon, 11 Sep 2023 15:04:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA32ACF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A763C433C8;
+        Mon, 11 Sep 2023 14:05:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444696;
-        bh=aKW+bIkv4Y7IwOjzfsMEwUHiiLMXAp3AOWF2JKji6nM=;
+        s=korg; t=1694441159;
+        bh=hxilh9q+EWJNqjIbr5YG6Th/wpgWc5gg/NDgsBGix5k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sIyG7T/F96jRI5Megp3juaSiPklLR/PwqGYnloPiTYmArn7ewdzHKKuVakEbiMfs/
-         72ixO4bY7kP0SGsk2GsGtT1nAchUi2wATcSqkRxXGzS/yDRYlH/cyYPa9LjBWlpD0t
-         imAgC6cOyIiUqC2tDzMJzmWhm5uRD8jt6evRwjr0=
+        b=n3lKbOuBk9qwAueTCJLWBfZ4ysgoM3tFpId8b+Bs08S6WRUOUUgurlTzjTf4jNY/j
+         wnfTSPyG5B+wjJcqiehepQl1vxBZlAmpK2layqApDSRDecdmERJsYu9wcb7fR/b26f
+         MV9r6pgXqAW8HJHRukPNzC23cvxNmAQ3GSCrKZWY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kohn <m.kohn@welotec.com>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 053/600] net: usb: qmi_wwan: add Quectel EM05GV2
-Date:   Mon, 11 Sep 2023 15:41:26 +0200
-Message-ID: <20230911134635.181911305@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 288/739] md/md-bitmap: remove unnecessary local variable in backlog_store()
+Date:   Mon, 11 Sep 2023 15:41:27 +0200
+Message-ID: <20230911134659.178264863@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,66 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kohn <m.kohn@welotec.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit d4480c9bb9258db9ddf2e632f6ef81e96b41089c ]
+[ Upstream commit b4d129640f194ffc4cc64c3e97f98ae944c072e8 ]
 
-Add support for Quectel EM05GV2 (G=global) with vendor ID
-0x2c7c and product ID 0x030e
+Local variable is definied first in the beginning of backlog_store(),
+there is no need to define it again.
 
-Enabling DTR on this modem was necessary to ensure stable operation.
-Patch for usb: serial: option: is also in progress.
-
-T:  Bus=01 Lev=01 Prnt=01 Port=00 Cnt=01 Dev#=  2 Spd=480  MxCh= 0
-D:  Ver= 2.00 Cls=ef(misc ) Sub=02 Prot=01 MxPS=64 #Cfgs=  1
-P:  Vendor=2c7c ProdID=030e Rev= 3.18
-S:  Manufacturer=Quectel
-S:  Product=Quectel EM05-G
-C:* #Ifs= 5 Cfg#= 1 Atr=a0 MxPwr=500mA
-I:* If#= 0 Alt= 0 #EPs= 2 Cls=ff(vend.) Sub=ff Prot=ff Driver=option
-E:  Ad=81(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=01(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 1 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=83(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=82(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=02(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 2 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=85(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=84(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=03(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 3 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=00 Prot=00 Driver=option
-E:  Ad=87(I) Atr=03(Int.) MxPS=  10 Ivl=32ms
-E:  Ad=86(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=04(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-I:* If#= 4 Alt= 0 #EPs= 3 Cls=ff(vend.) Sub=ff Prot=ff Driver=qmi_wwan
-E:  Ad=89(I) Atr=03(Int.) MxPS=   8 Ivl=32ms
-E:  Ad=88(I) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-E:  Ad=05(O) Atr=02(Bulk) MxPS= 512 Ivl=0ms
-
-Signed-off-by: Martin Kohn <m.kohn@welotec.com>
-Link: https://lore.kernel.org/r/AM0PR04MB57648219DE893EE04FA6CC759701A@AM0PR04MB5764.eurprd04.prod.outlook.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: 8c13ab115b57 ("md/bitmap: don't set max_write_behind if there is no write mostly device")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230706083727.608914-2-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/usb/qmi_wwan.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/md/md-bitmap.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/net/usb/qmi_wwan.c b/drivers/net/usb/qmi_wwan.c
-index 68829a5a93d3e..4fb981b8732ef 100644
---- a/drivers/net/usb/qmi_wwan.c
-+++ b/drivers/net/usb/qmi_wwan.c
-@@ -1422,6 +1422,7 @@ static const struct usb_device_id products[] = {
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0191, 4)},	/* Quectel EG91 */
- 	{QMI_QUIRK_SET_DTR(0x2c7c, 0x0195, 4)},	/* Quectel EG95 */
- 	{QMI_FIXED_INTF(0x2c7c, 0x0296, 4)},	/* Quectel BG96 */
-+	{QMI_QUIRK_SET_DTR(0x2c7c, 0x030e, 4)},	/* Quectel EM05GV2 */
- 	{QMI_QUIRK_SET_DTR(0x2cb7, 0x0104, 4)},	/* Fibocom NL678 series */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b4, 0)},	/* Foxconn T77W968 LTE */
- 	{QMI_FIXED_INTF(0x0489, 0xe0b5, 0)},	/* Foxconn T77W968 LTE with eSIM support*/
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 1ff712889a3b3..697ca41c186c6 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2565,8 +2565,6 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 			mddev_destroy_serial_pool(mddev, NULL, false);
+ 	} else if (backlog && !mddev->serial_info_pool) {
+ 		/* serial_info_pool is needed since backlog is not zero */
+-		struct md_rdev *rdev;
+-
+ 		rdev_for_each(rdev, mddev)
+ 			mddev_create_serial_pool(mddev, rdev, false);
+ 	}
 -- 
 2.40.1
 
