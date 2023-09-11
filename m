@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1135979B5B2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8978A79ADE8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236353AbjIKVrP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:47:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58664 "EHLO
+        id S239848AbjIKUz3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:55:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238599AbjIKOAV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:21 -0400
+        with ESMTP id S239915AbjIKObY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A7A0CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 84882C433C8;
-        Mon, 11 Sep 2023 14:00:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B378F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89B54C433CA;
+        Mon, 11 Sep 2023 14:31:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440816;
-        bh=B3mGKoJXjsHx/Vyoniy5lOqNvAvKiDRlVVns+mXr9ew=;
+        s=korg; t=1694442678;
+        bh=en448N2tMjfD87wHumQy1ONXXNW9qdwnoBO7/kL7zfM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UtOkEdfiAtIGiPWdXDM+r/cbiNcsjDFb+uxYH4ocN6ITkcHBTHsfGR0g4ar1EHUd5
-         8s5SnX1MQ8uos5n+kJI2ZOT4OXMeljlJcEfe1Hu+cNPFFHaNp5od+r1s0bx4wa90nk
-         Wx81AOKWtXgUHiRMHbZWbVZP6W1+GqpLnml6BKo0=
+        b=Y8C/ZwSKNYf8FOpcLt3JSkf+283jSJNT90mJyl3W2h4IKfcdEjPhSk8PNSArbYHbz
+         pXq+jqYuCTFbQKNGASv1QOfq5Z4r86PXa5ZO+hoyk9cZMx6lWkOBv14fbVeu6HhUu6
+         UCx8bupsyPT859duT24sDWcv/g5d1eh+Az8tI4rA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Charlemagne Lasse <charlemagnelasse@gmail.com>,
+        Uros Bizjak <ubizjak@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 168/739] mac80211: make ieee80211_tx_info padding explicit
-Date:   Mon, 11 Sep 2023 15:39:27 +0200
-Message-ID: <20230911134655.870145614@linuxfoundation.org>
+Subject: [PATCH 6.4 109/737] locking/arch: Avoid variable shadowing in local_try_cmpxchg()
+Date:   Mon, 11 Sep 2023 15:39:28 +0200
+Message-ID: <20230911134653.553585474@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +52,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit a7a2ef0c4b3efbd7d6f3fabd87dbbc0b3f2de5af ]
+[ Upstream commit d6b45484c130f4095313ae3edeb4aae662c12fb1 ]
 
-While looking at a bug, I got rather confused by the layout of the
-'status' field in ieee80211_tx_info. Apparently, the intention is that
-status_driver_data[] is used for driver specific data, and fills up the
-size of the union to 40 bytes, just like the other ones.
+Several architectures define arch_try_local_cmpxchg macro using
+internal temporary variables named ___old, __old or _old. Remove
+temporary varible in local_try_cmpxchg to avoid variable shadowing.
 
-This is indeed what actually happens, but only because of the
-combination of two mistakes:
+No functional change intended.
 
- - "void *status_driver_data[18 / sizeof(void *)];" is intended
-   to be 18 bytes long but is actually two bytes shorter because of
-   rounding-down in the division, to a multiple of the pointer
-   size (4 bytes or 8 bytes).
-
- - The other fields combined are intended to be 22 bytes long, but
-   are actually 24 bytes because of padding in front of the
-   unaligned tx_time member, and in front of the pointer array.
-
-The two mistakes cancel out. so the size ends up fine, but it seems
-more helpful to make this explicit, by having a multiple of 8 bytes
-in the size calculation and explicitly describing the padding.
-
-Fixes: ea5907db2a9cc ("mac80211: fix struct ieee80211_tx_info size")
-Fixes: 02219b3abca59 ("mac80211: add WMM admission control support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230623152443.2296825-2-arnd@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: d994f2c8e241 ("locking/arch: Wire up local_try_cmpxchg()")
+Closes: https://lore.kernel.org/lkml/CAFGhKbyxtuk=LoW-E3yLXgcmR93m+Dfo5-u9oQA_YC5Fcy_t9g@mail.gmail.com/
+Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230708090048.63046-1-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ arch/loongarch/include/asm/local.h | 4 ++--
+ arch/mips/include/asm/local.h      | 4 ++--
+ arch/x86/include/asm/local.h       | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 2a55ae932c568..ad41581384d9f 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1192,9 +1192,11 @@ struct ieee80211_tx_info {
- 			u8 ampdu_ack_len;
- 			u8 ampdu_len;
- 			u8 antenna;
-+			u8 pad;
- 			u16 tx_time;
- 			u8 flags;
--			void *status_driver_data[18 / sizeof(void *)];
-+			u8 pad2;
-+			void *status_driver_data[16 / sizeof(void *)];
- 		} status;
- 		struct {
- 			struct ieee80211_tx_rate driver_rates[
+diff --git a/arch/loongarch/include/asm/local.h b/arch/loongarch/include/asm/local.h
+index 83e995b30e472..c49675852bdcd 100644
+--- a/arch/loongarch/include/asm/local.h
++++ b/arch/loongarch/include/asm/local.h
+@@ -63,8 +63,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
+ 
+ static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
+ {
+-	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
+-	return try_cmpxchg_local(&l->a.counter, __old, new);
++	return try_cmpxchg_local(&l->a.counter,
++				 (typeof(l->a.counter) *) old, new);
+ }
+ 
+ #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
+diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
+index 5daf6fe8e3e9a..e6ae3df0349d2 100644
+--- a/arch/mips/include/asm/local.h
++++ b/arch/mips/include/asm/local.h
+@@ -101,8 +101,8 @@ static __inline__ long local_cmpxchg(local_t *l, long old, long new)
+ 
+ static __inline__ bool local_try_cmpxchg(local_t *l, long *old, long new)
+ {
+-	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
+-	return try_cmpxchg_local(&l->a.counter, __old, new);
++	return try_cmpxchg_local(&l->a.counter,
++				 (typeof(l->a.counter) *) old, new);
+ }
+ 
+ #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
+diff --git a/arch/x86/include/asm/local.h b/arch/x86/include/asm/local.h
+index 56d4ef604b919..635132a127782 100644
+--- a/arch/x86/include/asm/local.h
++++ b/arch/x86/include/asm/local.h
+@@ -127,8 +127,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
+ 
+ static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
+ {
+-	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
+-	return try_cmpxchg_local(&l->a.counter, __old, new);
++	return try_cmpxchg_local(&l->a.counter,
++				 (typeof(l->a.counter) *) old, new);
+ }
+ 
+ /* Always has a lock prefix */
 -- 
 2.40.1
 
