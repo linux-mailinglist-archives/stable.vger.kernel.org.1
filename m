@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7AFF979B103
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1195779B57A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353921AbjIKVve (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
+        id S1358231AbjIKWIR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57680 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239999AbjIKOdb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:31 -0400
+        with ESMTP id S238626AbjIKOBG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D74F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C13C433C8;
-        Mon, 11 Sep 2023 14:33:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B7BCCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F91FC433C9;
+        Mon, 11 Sep 2023 14:01:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442807;
-        bh=A95/oHiPNQFEmEbmuTNK/Jj/OkAfuPmIyCIoNbdNFlw=;
+        s=korg; t=1694440861;
+        bh=LEtcJZDUs+ZZFPpT3/7tYltmCkdJEWyC0QEduPwILck=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pULdEaFX0uC3hs8WCjF+vTZqpqrEN6bO3RJzAq5f1pJWNR02c0GfssFt3Bl5WEa6G
-         iBB1s6AsYLeGCbvOC+8Av5WidND1PYYgVTf+xxst8DtY9QUvJfV4SC4UJE6A4B+1qN
-         GgQvkFotvYUj9qHPQjruK4CgIlUsu98KXflzJTu8=
+        b=sS7k/YG96k/3OR3O/gKeepi7+eWb5ZH7g6YjXQKAhMExolvjLegry98UJ+LHBHpRy
+         Ir8yAr0/QU5WvJiNcqHLRM19RNiwRcAKZrXD2Z2bjY1WEIyTwRn5UlxLb8DheeoqvO
+         P903Impu28NvYwyewKeW7JchVb08m3ZoeXh1GXlo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
-        Yonghong Song <yhs@fb.com>, Jiri Olsa <jolsa@kernel.org>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Rob Clark <robdclark@gmail.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 147/737] bpf: Clear the probe_addr for uprobe
-Date:   Mon, 11 Sep 2023 15:40:06 +0200
-Message-ID: <20230911134654.597494992@linuxfoundation.org>
+Subject: [PATCH 6.5 212/739] arm64: defconfig: enable Qualcomm MSM8996 Global Clock Controller as built-in
+Date:   Mon, 11 Sep 2023 15:40:11 +0200
+Message-ID: <20230911134657.112687957@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,79 +52,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yafang Shao <laoar.shao@gmail.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5125e757e62f6c1d5478db4c2b61a744060ddf3f ]
+[ Upstream commit dc015a3a6d6986c41a7bd12fb205a282f685e328 ]
 
-To avoid returning uninitialized or random values when querying the file
-descriptor (fd) and accessing probe_addr, it is necessary to clear the
-variable prior to its use.
+The commit 8f680c287445 ("arm64: defconfig: Switch msm8996 clk drivers
+to module") switched CONFIG_MSM_MMCC_8996 to module, which also resulted
+in CONFIG_MSM_GCC_8996 being switched to module. This breaks useful
+bootflow for Qualcomm MSM8996 / APQ8096 platforms, because the serial is
+not enabled anymore until the GCC module is loaded.
 
-Fixes: 41bdc4b40ed6 ("bpf: introduce bpf subcommand BPF_TASK_FD_QUERY")
-Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
-Acked-by: Yonghong Song <yhs@fb.com>
-Acked-by: Jiri Olsa <jolsa@kernel.org>
-Link: https://lore.kernel.org/r/20230709025630.3735-6-laoar.shao@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Reported-by: Rob Clark <robdclark@gmail.com>
+Fixes: 8f680c287445 ("arm64: defconfig: Switch msm8996 clk drivers to module")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230619125404.562137-1-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/trace_events.h | 3 ++-
- kernel/trace/bpf_trace.c     | 2 +-
- kernel/trace/trace_uprobe.c  | 3 ++-
- 3 files changed, 5 insertions(+), 3 deletions(-)
+ arch/arm64/configs/defconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
-index c55fc453e33b5..6a41ad2ca84cc 100644
---- a/include/linux/trace_events.h
-+++ b/include/linux/trace_events.h
-@@ -875,7 +875,8 @@ extern int  perf_uprobe_init(struct perf_event *event,
- extern void perf_uprobe_destroy(struct perf_event *event);
- extern int bpf_get_uprobe_info(const struct perf_event *event,
- 			       u32 *fd_type, const char **filename,
--			       u64 *probe_offset, bool perf_type_tracepoint);
-+			       u64 *probe_offset, u64 *probe_addr,
-+			       bool perf_type_tracepoint);
- #endif
- extern int  ftrace_profile_set_filter(struct perf_event *event, int event_id,
- 				     char *filter_str);
-diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
-index a53524f3f7d82..3d8d5c383dfe5 100644
---- a/kernel/trace/bpf_trace.c
-+++ b/kernel/trace/bpf_trace.c
-@@ -2391,7 +2391,7 @@ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
- #ifdef CONFIG_UPROBE_EVENTS
- 		if (flags & TRACE_EVENT_FL_UPROBE)
- 			err = bpf_get_uprobe_info(event, fd_type, buf,
--						  probe_offset,
-+						  probe_offset, probe_addr,
- 						  event->attr.type == PERF_TYPE_TRACEPOINT);
- #endif
- 	}
-diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
-index 7b47e9a2c0102..9173fcfc03820 100644
---- a/kernel/trace/trace_uprobe.c
-+++ b/kernel/trace/trace_uprobe.c
-@@ -1416,7 +1416,7 @@ static void uretprobe_perf_func(struct trace_uprobe *tu, unsigned long func,
- 
- int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
- 			const char **filename, u64 *probe_offset,
--			bool perf_type_tracepoint)
-+			u64 *probe_addr, bool perf_type_tracepoint)
- {
- 	const char *pevent = trace_event_name(event->tp_event);
- 	const char *group = event->tp_event->class->system;
-@@ -1433,6 +1433,7 @@ int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
- 				    : BPF_FD_TYPE_UPROBE;
- 	*filename = tu->filename;
- 	*probe_offset = tu->offset;
-+	*probe_addr = 0;
- 	return 0;
- }
- #endif	/* CONFIG_PERF_EVENTS */
+diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
+index a25d783dfb955..28714382ce3f5 100644
+--- a/arch/arm64/configs/defconfig
++++ b/arch/arm64/configs/defconfig
+@@ -1182,6 +1182,7 @@ CONFIG_IPQ_GCC_8074=y
+ CONFIG_IPQ_GCC_9574=y
+ CONFIG_MSM_GCC_8916=y
+ CONFIG_MSM_GCC_8994=y
++CONFIG_MSM_GCC_8996=y
+ CONFIG_MSM_MMCC_8994=m
+ CONFIG_MSM_MMCC_8996=m
+ CONFIG_MSM_MMCC_8998=m
 -- 
 2.40.1
 
