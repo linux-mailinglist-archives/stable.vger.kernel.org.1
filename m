@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 84FDF79B0C6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D5C979ADF1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359506AbjIKWRV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:17:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57242 "EHLO
+        id S1378774AbjIKWhO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241388AbjIKPHk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:40 -0400
+        with ESMTP id S240341AbjIKOmE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3075FFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 78664C433C9;
-        Mon, 11 Sep 2023 15:07:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F75D12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C05D2C433C8;
+        Mon, 11 Sep 2023 14:41:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444855;
-        bh=4okI+ydUurJhT/wlH+GhmgYCtTUtTpcOLlIX0fEWnHk=;
+        s=korg; t=1694443319;
+        bh=Hw9lbiXegzUkAw/cWrGDDp3lbZyh3cEMr3dvdiC9QaM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rejhdVOSfYHx7zHx/rX+LqD3suTBupzWZxxeWwQIxcY34JvG3ZwnkOyZ5ucGPxy/n
-         PGZjDrsdfLt6hpP2kcTphVKtlc3TSboVNX/W31S1n+oQPqsEEuVM9wUY9ixdeepo9S
-         FNwFtKF0bblEPd+5yk+sorEaR8Uo5VDhDLZ1CqyE=
+        b=CRuosbLjxzIUgiqP+SBckgsTG/ByYPyAjDHJwZsXWjvNs8Du3aV6kSvtvlYX6gyPi
+         fUuG4rP2Qs/GAWML/C98c3TR59ODuRqdZqMY9x2n0ft+3IRpU8igTdHLxHH8MDmNvb
+         3j4w8pTqPh5uvubT31rO3Lqplu0ZM91wrlnmMbBE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Nysal Jan K.A" <nysal@linux.ibm.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 123/600] selftests/futex: Order calls to futex_lock_pi
+Subject: [PATCH 6.4 297/737] arm64: dts: qcom: pmr735b: fix thermal zone name
 Date:   Mon, 11 Sep 2023 15:42:36 +0200
-Message-ID: <20230911134637.245592013@linuxfoundation.org>
+Message-ID: <20230911134658.853199008@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,78 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nysal Jan K.A <nysal@linux.ibm.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit fbf4dec702774286db409815ffb077711a96b824 ]
+[ Upstream commit 99f8cf491d546cd668236f573c7d846d3e94f2d6 ]
 
-Observed occassional failures in the futex_wait_timeout test:
+The name of the thermal zone in pmr735b.dtsi (pmr735a-thermal) conflicts
+with the thermal zone in pmr735a.dtsi. Rename the thermal zone according
+to the chip name.
 
-ok 1 futex_wait relative succeeds
-ok 2 futex_wait_bitset realtime succeeds
-ok 3 futex_wait_bitset monotonic succeeds
-ok 4 futex_wait_requeue_pi realtime succeeds
-ok 5 futex_wait_requeue_pi monotonic succeeds
-not ok 6 futex_lock_pi realtime returned 0
-......
-
-The test expects the child thread to complete some steps before
-the parent thread gets to run. There is an implicit expectation
-of the order of invocation of futex_lock_pi between the child thread
-and the parent thread. Make this order explicit. If the order is
-not met, the futex_lock_pi call in the parent thread succeeds and
-will not timeout.
-
-Fixes: f4addd54b161 ("selftests: futex: Expand timeout test")
-Signed-off-by: Nysal Jan K.A <nysal@linux.ibm.com>
-Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
+Fixes: 6f3426b3dea4 ("arm64: dts: qcom: pmr735b: add temp sensor and thermal zone config")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230707123027.1510723-5-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../selftests/futex/functional/futex_wait_timeout.c        | 7 +++++++
- 1 file changed, 7 insertions(+)
+ arch/arm64/boot/dts/qcom/pmr735b.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/futex/functional/futex_wait_timeout.c b/tools/testing/selftests/futex/functional/futex_wait_timeout.c
-index 3651ce17beeb9..d183f878360bc 100644
---- a/tools/testing/selftests/futex/functional/futex_wait_timeout.c
-+++ b/tools/testing/selftests/futex/functional/futex_wait_timeout.c
-@@ -24,6 +24,7 @@
+diff --git a/arch/arm64/boot/dts/qcom/pmr735b.dtsi b/arch/arm64/boot/dts/qcom/pmr735b.dtsi
+index ec24c4478005a..f7473e2473224 100644
+--- a/arch/arm64/boot/dts/qcom/pmr735b.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmr735b.dtsi
+@@ -8,7 +8,7 @@
  
- static long timeout_ns = 100000;	/* 100us default timeout */
- static futex_t futex_pi;
-+static pthread_barrier_t barrier;
- 
- void usage(char *prog)
- {
-@@ -48,6 +49,8 @@ void *get_pi_lock(void *arg)
- 	if (ret != 0)
- 		error("futex_lock_pi failed\n", ret);
- 
-+	pthread_barrier_wait(&barrier);
-+
- 	/* Blocks forever */
- 	ret = futex_wait(&lock, 0, NULL, 0);
- 	error("futex_wait failed\n", ret);
-@@ -130,6 +133,7 @@ int main(int argc, char *argv[])
- 	       basename(argv[0]));
- 	ksft_print_msg("\tArguments: timeout=%ldns\n", timeout_ns);
- 
-+	pthread_barrier_init(&barrier, NULL, 2);
- 	pthread_create(&thread, NULL, get_pi_lock, NULL);
- 
- 	/* initialize relative timeout */
-@@ -163,6 +167,9 @@ int main(int argc, char *argv[])
- 	res = futex_wait_requeue_pi(&f1, f1, &futex_pi, &to, 0);
- 	test_timeout(res, &ret, "futex_wait_requeue_pi monotonic", ETIMEDOUT);
- 
-+	/* Wait until the other thread calls futex_lock_pi() */
-+	pthread_barrier_wait(&barrier);
-+	pthread_barrier_destroy(&barrier);
- 	/*
- 	 * FUTEX_LOCK_PI with CLOCK_REALTIME
- 	 * Due to historical reasons, FUTEX_LOCK_PI supports only realtime
+ / {
+ 	thermal-zones {
+-		pmr735a_thermal: pmr735a-thermal {
++		pmr735b_thermal: pmr735b-thermal {
+ 			polling-delay-passive = <100>;
+ 			polling-delay = <0>;
+ 			thermal-sensors = <&pmr735b_temp_alarm>;
 -- 
 2.40.1
 
