@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 281DE79B424
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 135F879B5BF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236573AbjIKVrQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:47:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38788 "EHLO
+        id S1344253AbjIKVNk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36244 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238416AbjIKN4B (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:01 -0400
+        with ESMTP id S239771AbjIKO2R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 237F9FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 68DE5C433C8;
-        Mon, 11 Sep 2023 13:55:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E70C6F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3BAC8C433C7;
+        Mon, 11 Sep 2023 14:28:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440556;
-        bh=/2+Y+fU+p706aXKEMlhEwmkk8l3f7V6/c1WRodWk/zg=;
+        s=korg; t=1694442493;
+        bh=NZZ0YkFvvhsnlUdYyKDXfPiwC9Ex2Z9QGIdlDCASoL4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yNgsobWrmlEzppU568sUb+MjkkZY6FzzNF/jqyk5uGpQNnh2BZIp+0ncHdloLvPmU
-         TKR6RdBsusrV6fA0qke25YkNRXfIqvp1IRAUELhkXQt81unq452LasKltNP6K8HXFt
-         Xs+QB95qvnh+MJCU2HjLa7QrJKb7EoIBpt1CMqQ0=
+        b=XNkpUvh2Yl5ZvXyib+77PDno4kWy7tQxf8aAYj/FQjYfVEiz5aAH3WhDYTTwKY0ZB
+         ApAbIRsXfiM8xS2jynEN/pHU689Xwo3ScpwvlWaZC5vAflqMbZT9pDQAjGfIIrEss9
+         dKEwsp7SMz89y9xG3R8/Zc97E1IZaAav92z19xPo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
-        Matthew Wang <matthewmwang@chromium.org>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 103/739] wifi: mwifiex: Fix OOB and integer underflow when rx packets
-Date:   Mon, 11 Sep 2023 15:38:22 +0200
-Message-ID: <20230911134653.978477291@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Raphael Gallais-Pou <rgallaispou@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 044/737] staging: fbtft: ili9341: use macro FBTFT_REGISTER_SPI_DRIVER
+Date:   Mon, 11 Sep 2023 15:38:23 +0200
+Message-ID: <20230911134651.673870461@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,129 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Polaris Pi <pinkperfect2021@gmail.com>
+From: Raphael Gallais-Pou <rgallaispou@gmail.com>
 
-[ Upstream commit 11958528161731c58e105b501ed60b83a91ea941 ]
+[ Upstream commit 4912649e1cf0317bf563f91655e04a303cacaf8d ]
 
-Make sure mwifiex_process_mgmt_packet,
-mwifiex_process_sta_rx_packet and mwifiex_process_uap_rx_packet,
-mwifiex_uap_queue_bridged_pkt and mwifiex_process_rx_packet
-not out-of-bounds access the skb->data buffer.
+Using FBTFT_REGISTER_DRIVER resolves to a NULL struct spi_device_id. This
+ultimately causes a warning when the module probes. Fixes it.
 
-Fixes: 2dbaf751b1de ("mwifiex: report received management frames to cfg80211")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-Reviewed-by: Matthew Wang <matthewmwang@chromium.org>
-Reviewed-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230723070741.1544662-1-pinkperfect2021@gmail.com
+Signed-off-by: Raphael Gallais-Pou <rgallaispou@gmail.com>
+Link: https://lore.kernel.org/r/20230718172024.67488-1-rgallaispou@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c | 11 ++++++++++-
- .../net/wireless/marvell/mwifiex/uap_txrx.c   | 19 +++++++++++++++++++
- drivers/net/wireless/marvell/mwifiex/util.c   | 10 +++++++---
- 3 files changed, 36 insertions(+), 4 deletions(-)
+ drivers/staging/fbtft/fb_ili9341.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index 13659b02ba882..f2899d53a43f9 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -86,6 +86,14 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_len = le16_to_cpu(local_rx_pd->rx_pkt_length);
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_off;
+diff --git a/drivers/staging/fbtft/fb_ili9341.c b/drivers/staging/fbtft/fb_ili9341.c
+index 9ccd0823c3ab3..47e72b87d76d9 100644
+--- a/drivers/staging/fbtft/fb_ili9341.c
++++ b/drivers/staging/fbtft/fb_ili9341.c
+@@ -145,7 +145,7 @@ static struct fbtft_display display = {
+ 	},
+ };
  
-+	if (sizeof(*rx_pkt_hdr) + rx_pkt_off > skb->len) {
-+		mwifiex_dbg(priv->adapter, ERROR,
-+			    "wrong rx packet offset: len=%d, rx_pkt_off=%d\n",
-+			    skb->len, rx_pkt_off);
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+	}
-+
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -194,7 +202,8 @@ int mwifiex_process_sta_rx_packet(struct mwifiex_private *priv,
+-FBTFT_REGISTER_DRIVER(DRVNAME, "ilitek,ili9341", &display);
++FBTFT_REGISTER_SPI_DRIVER(DRVNAME, "ilitek", "ili9341", &display);
  
- 	rx_pkt_hdr = (void *)local_rx_pd + rx_pkt_offset;
- 
--	if ((rx_pkt_offset + rx_pkt_length) > (u16) skb->len) {
-+	if ((rx_pkt_offset + rx_pkt_length) > skb->len ||
-+	    sizeof(rx_pkt_hdr->eth803_hdr) + rx_pkt_offset > skb->len) {
- 		mwifiex_dbg(adapter, ERROR,
- 			    "wrong rx packet: len=%d, rx_pkt_offset=%d, rx_pkt_length=%d\n",
- 			    skb->len, rx_pkt_offset, rx_pkt_length);
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index e495f7eaea033..04ff051f5d186 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -103,6 +103,15 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
- 		return;
- 	}
- 
-+	if (sizeof(*rx_pkt_hdr) +
-+	    le16_to_cpu(uap_rx_pd->rx_pkt_offset) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet offset: len=%d,rx_pkt_offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+	}
-+
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
- 		     sizeof(bridge_tunnel_header))) ||
- 	    (!memcmp(&rx_pkt_hdr->rfc1042_hdr, rfc1042_header,
-@@ -367,6 +376,16 @@ int mwifiex_process_uap_rx_packet(struct mwifiex_private *priv,
- 	rx_pkt_type = le16_to_cpu(uap_rx_pd->rx_pkt_type);
- 	rx_pkt_hdr = (void *)uap_rx_pd + le16_to_cpu(uap_rx_pd->rx_pkt_offset);
- 
-+	if (le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-+	    sizeof(rx_pkt_hdr->eth803_hdr) > skb->len) {
-+		mwifiex_dbg(adapter, ERROR,
-+			    "wrong rx packet for struct ethhdr: len=%d, offset=%d\n",
-+			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
-+		priv->stats.rx_dropped++;
-+		dev_kfree_skb_any(skb);
-+		return 0;
-+	}
-+
- 	ether_addr_copy(ta, rx_pkt_hdr->eth803_hdr.h_source);
- 
- 	if ((le16_to_cpu(uap_rx_pd->rx_pkt_offset) +
-diff --git a/drivers/net/wireless/marvell/mwifiex/util.c b/drivers/net/wireless/marvell/mwifiex/util.c
-index 94c2d219835da..745b1d925b217 100644
---- a/drivers/net/wireless/marvell/mwifiex/util.c
-+++ b/drivers/net/wireless/marvell/mwifiex/util.c
-@@ -393,11 +393,15 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 	}
- 
- 	rx_pd = (struct rxpd *)skb->data;
-+	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	if (pkt_len < sizeof(struct ieee80211_hdr) + sizeof(pkt_len)) {
-+		mwifiex_dbg(priv->adapter, ERROR, "invalid rx_pkt_length");
-+		return -1;
-+	}
- 
- 	skb_pull(skb, le16_to_cpu(rx_pd->rx_pkt_offset));
- 	skb_pull(skb, sizeof(pkt_len));
--
--	pkt_len = le16_to_cpu(rx_pd->rx_pkt_length);
-+	pkt_len -= sizeof(pkt_len);
- 
- 	ieee_hdr = (void *)skb->data;
- 	if (ieee80211_is_mgmt(ieee_hdr->frame_control)) {
-@@ -410,7 +414,7 @@ mwifiex_process_mgmt_packet(struct mwifiex_private *priv,
- 		skb->data + sizeof(struct ieee80211_hdr),
- 		pkt_len - sizeof(struct ieee80211_hdr));
- 
--	pkt_len -= ETH_ALEN + sizeof(pkt_len);
-+	pkt_len -= ETH_ALEN;
- 	rx_pd->rx_pkt_length = cpu_to_le16(pkt_len);
- 
- 	cfg80211_rx_mgmt(&priv->wdev, priv->roc_cfg.chan.center_freq,
+ MODULE_ALIAS("spi:" DRVNAME);
+ MODULE_ALIAS("platform:" DRVNAME);
 -- 
 2.40.1
 
