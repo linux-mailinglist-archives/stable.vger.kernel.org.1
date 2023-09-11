@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 02C9579B447
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E610179AEF0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238632AbjIKUz6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52488 "EHLO
+        id S1343738AbjIKVMZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:12:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33772 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239579AbjIKOYF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:05 -0400
+        with ESMTP id S240874AbjIKO4R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DCDB7DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F326C433C9;
-        Mon, 11 Sep 2023 14:24:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8506DC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC008C433C8;
+        Mon, 11 Sep 2023 14:56:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442240;
-        bh=HWO6CR0DKVfPxxI8hqIiVFmUGd/YzANg/Nk8P8/oyns=;
+        s=korg; t=1694444172;
+        bh=e611wtltAL++bViiadXBOZwsEYNprNx33+z1D1cpSy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sxWJY+9hnUTtHrXBMFPrPah8Dm8TRgLLJqLj86fRM98TMmVqbpf0QU7AZ8OGhmdl1
-         rWReHGJ3rKj7ukaWOWQsxt9XZMCq27WnS+RUetQ7kMIh67oGw5XXGWaWkNws/MAwwC
-         hngTBSESSqc71EHX+iNRkI6igJy9mdNP01c4n5Co=
+        b=eGqMsf0t9NiEOuhxgyDB2XiDetL1eZ9PPeX47Wk0RPi1ro3+RAlP+WOm2JRZs2y3k
+         iUNRIX8mbGWew0/MXD07MBkNDOEE+KaEMZTExEJNHu16CMLog/8vEUt65gL/pnb6S5
+         tTB7T0N3oRJOZtTgV5X9HVoxqAiyEEVovKHI1YHo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Helge Deller <deller@gmx.de>
-Subject: [PATCH 6.5 695/739] parisc: Fix /proc/cpuinfo output for lscpu
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Kyle Zeng <zengyhkyle@gmail.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.4 635/737] igmp: limit igmpv3_newpack() packet size to IP_MAX_MTU
 Date:   Mon, 11 Sep 2023 15:48:14 +0200
-Message-ID: <20230911134710.507218503@linuxfoundation.org>
+Message-ID: <20230911134708.268207580@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,65 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Helge Deller <deller@gmx.de>
+From: Eric Dumazet <edumazet@google.com>
 
-commit 9f5ba4b3e1b3c123eeca5d2d09161e8720048b5c upstream.
+commit c3b704d4a4a265660e665df51b129e8425216ed1 upstream.
 
-The lscpu command is broken since commit cab56b51ec0e ("parisc: Fix
-device names in /proc/iomem") added the PA pathname to all PA
-devices, includig the CPUs.
+This is a follow up of commit 915d975b2ffa ("net: deal with integer
+overflows in kmalloc_reserve()") based on David Laight feedback.
 
-lscpu parses /proc/cpuinfo and now believes it found different CPU
-types since every CPU is listed with an unique identifier (PA
-pathname).
+Back in 2010, I failed to realize malicious users could set dev->mtu
+to arbitrary values. This mtu has been since limited to 0x7fffffff but
+regardless of how big dev->mtu is, it makes no sense for igmpv3_newpack()
+to allocate more than IP_MAX_MTU and risk various skb fields overflows.
 
-Fix this problem by simply dropping the PA pathname when listing the
-CPUs in /proc/cpuinfo. There is no need to show the pathname in this
-procfs file.
-
-Fixes: cab56b51ec0e ("parisc: Fix device names in /proc/iomem")
-Signed-off-by: Helge Deller <deller@gmx.de>
-Cc: <stable@vger.kernel.org> # v4.9+
+Fixes: 57e1ab6eaddc ("igmp: refine skb allocations")
+Link: https://lore.kernel.org/netdev/d273628df80f45428e739274ab9ecb72@AcuMS.aculab.com/
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Reported-by: David Laight <David.Laight@ACULAB.COM>
+Cc: Kyle Zeng <zengyhkyle@gmail.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/parisc/kernel/processor.c |   13 ++++++++++---
- 1 file changed, 10 insertions(+), 3 deletions(-)
+ net/ipv4/igmp.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/arch/parisc/kernel/processor.c
-+++ b/arch/parisc/kernel/processor.c
-@@ -378,10 +378,18 @@ int
- show_cpuinfo (struct seq_file *m, void *v)
- {
- 	unsigned long cpu;
-+	char cpu_name[60], *p;
-+
-+	/* strip PA path from CPU name to not confuse lscpu */
-+	strlcpy(cpu_name, per_cpu(cpu_data, 0).dev->name, sizeof(cpu_name));
-+	p = strrchr(cpu_name, '[');
-+	if (p)
-+		*(--p) = 0;
+--- a/net/ipv4/igmp.c
++++ b/net/ipv4/igmp.c
+@@ -353,8 +353,9 @@ static struct sk_buff *igmpv3_newpack(st
+ 	struct flowi4 fl4;
+ 	int hlen = LL_RESERVED_SPACE(dev);
+ 	int tlen = dev->needed_tailroom;
+-	unsigned int size = mtu;
++	unsigned int size;
  
- 	for_each_online_cpu(cpu) {
--		const struct cpuinfo_parisc *cpuinfo = &per_cpu(cpu_data, cpu);
- #ifdef CONFIG_SMP
-+		const struct cpuinfo_parisc *cpuinfo = &per_cpu(cpu_data, cpu);
-+
- 		if (0 == cpuinfo->hpa)
- 			continue;
- #endif
-@@ -426,8 +434,7 @@ show_cpuinfo (struct seq_file *m, void *
- 
- 		seq_printf(m, "model\t\t: %s - %s\n",
- 				 boot_cpu_data.pdc.sys_model_name,
--				 cpuinfo->dev ?
--				 cpuinfo->dev->name : "Unknown");
-+				 cpu_name);
- 
- 		seq_printf(m, "hversion\t: 0x%08x\n"
- 			        "sversion\t: 0x%08x\n",
++	size = min(mtu, IP_MAX_MTU);
+ 	while (1) {
+ 		skb = alloc_skb(size + hlen + tlen,
+ 				GFP_ATOMIC | __GFP_NOWARN);
 
 
