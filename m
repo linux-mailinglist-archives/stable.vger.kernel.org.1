@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 44BD279AD47
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E84C79B22A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353865AbjIKVvQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37352 "EHLO
+        id S1353893AbjIKVvY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40896 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240243AbjIKOjt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:49 -0400
+        with ESMTP id S238865AbjIKOGo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7926BF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFCCBC433C7;
-        Mon, 11 Sep 2023 14:39:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30EBCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E55ECC433C7;
+        Mon, 11 Sep 2023 14:06:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443184;
-        bh=5FStGcfLBJQaZObbOevclynX8LTRrIbVeV7ZaLAm9Jg=;
+        s=korg; t=1694441200;
+        bh=KGDFfqeGMG8RbEVZ3GkPgBiP326N5HGZ/UB6fyJ7kL8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DnXWKu6BfVViSlLUe4pEPlLVSVuff9p+qHliEB13124QfDfIgbkKMuqGL6jFD8HcQ
-         PuZaLMotBAFLH6hxKxv7/gQbvMwjbCBm8x2P8XX/WICurZVmi7ZeDlPW1938wArirD
-         LYHH2+CRwk5jz+uHjW1vCvV0UyWi42rSQ+LMTS6k=
+        b=sCJIp80/8RMAYVk6mbu3mb+aEpaVRjoD14LMr5AsYiMBOfqHluxLshEvn+MRCzj17
+         /ccjyH00d2eJA8zOdgNKv+Kk3JnEygnL8SBXiBd4eRGv7MhI4nmpZxP68A05vokMYt
+         Z+c+trltpHBQ8JRm6+J6b1m49rSG68t7VEyug8bg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Jirman <megi@xff.cz>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 270/737] drm: bridge: dw-mipi-dsi: Fix enable/disable of DSI controller
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jinyoung Choi <j-young.choi@samsung.com>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 330/739] block: dont pass a bio to bio_try_merge_hw_seg
 Date:   Mon, 11 Sep 2023 15:42:09 +0200
-Message-ID: <20230911134658.121174369@linuxfoundation.org>
+Message-ID: <20230911134700.313660557@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,194 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Jirman <megi@xff.cz>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 05aa61334592adb230749ff465b103ee10e63936 ]
+[ Upstream commit ae42f0b3bf65912e122fc2e8d5f6d94b51156dba ]
 
-Before this patch, booting to Linux VT and doing a simple:
+There is no good reason to pass the bio to bio_try_merge_hw_seg.  Just
+pass the current bvec and rename the function to bvec_try_merge_hw_page.
+This will allow reusing this function for supporting multi-page integrity
+payload bvecs.
 
-  echo 2 > /sys/class/graphics/fb0/blank
-  echo 0 > /sys/class/graphics/fb0/blank
-
-would result in failures to re-enable the panel. Mode set callback is
-called only once during boot in this scenario, while calls to
-enable/disable callbacks are balanced afterwards. The driver doesn't
-work unless userspace calls modeset before enabling the CRTC/connector.
-
-This patch moves enabling of the DSI host from mode_set into pre_enable
-callback, and removes some old hacks where this bridge driver is
-directly calling into other bridge driver's callbacks.
-
-pre_enable_prev_first flag is set on the panel's bridge so that panel
-drivers will get their prepare function called between DSI host's
-pre_enable and enable callbacks, so that they get a chance to
-perform panel setup while DSI host is already enabled in command
-mode. Otherwise panel's prepare would be called before DSI host
-is enabled, and any DSI communication used in prepare callback
-would fail.
-
-With all these changes, the enable/disable sequence is now well
-balanced, and host's and panel's callbacks are called in proper order
-documented in the drm_panel API documentation without needing the old
-hacks. (Mainly that panel->prepare is called when DSI host is ready to
-allow the panel driver to send DSI commands and vice versa during
-disable.)
-
-Tested on Pinephone Pro. Trace of the callbacks follows.
-
-Before:
-
-[    1.253882] dw-mipi-dsi-rockchip ff960000.dsi: mode_set
-[    1.290732] panel-himax-hx8394 ff960000.dsi.0: prepare
-[    1.475576] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[    1.475593] panel-himax-hx8394 ff960000.dsi.0: enable
-
-echo 2 > /sys/class/graphics/fb0/blank
-
-[   13.722799] panel-himax-hx8394 ff960000.dsi.0: disable
-[   13.774502] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
-[   13.774526] panel-himax-hx8394 ff960000.dsi.0: unprepare
-
-echo 0 > /sys/class/graphics/fb0/blank
-
-[   17.735796] panel-himax-hx8394 ff960000.dsi.0: prepare
-[   17.923522] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[   17.923540] panel-himax-hx8394 ff960000.dsi.0: enable
-[   17.944330] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
-[   17.944335] panel-himax-hx8394 ff960000.dsi.0: sending command 0xb9 failed: -110
-[   17.944340] panel-himax-hx8394 ff960000.dsi.0: Panel init sequence failed: -110
-
-echo 2 > /sys/class/graphics/fb0/blank
-
-[  431.148583] panel-himax-hx8394 ff960000.dsi.0: disable
-[  431.169259] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
-[  431.169268] panel-himax-hx8394 ff960000.dsi.0: Failed to enter sleep mode: -110
-[  431.169282] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
-[  431.169316] panel-himax-hx8394 ff960000.dsi.0: unprepare
-[  431.169357] pclk_mipi_dsi0 already disabled
-
-echo 0 > /sys/class/graphics/fb0/blank
-
-[  432.796851] panel-himax-hx8394 ff960000.dsi.0: prepare
-[  432.981537] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[  432.981568] panel-himax-hx8394 ff960000.dsi.0: enable
-[  433.002290] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
-[  433.002299] panel-himax-hx8394 ff960000.dsi.0: sending command 0xb9 failed: -110
-[  433.002312] panel-himax-hx8394 ff960000.dsi.0: Panel init sequence failed: -110
-
------------------------------------------------------------------------
-
-After:
-
-[    1.248372] dw-mipi-dsi-rockchip ff960000.dsi: mode_set
-[    1.248704] dw-mipi-dsi-rockchip ff960000.dsi: pre_enable
-[    1.285377] panel-himax-hx8394 ff960000.dsi.0: prepare
-[    1.468392] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[    1.468421] panel-himax-hx8394 ff960000.dsi.0: enable
-
-echo 2 > /sys/class/graphics/fb0/blank
-
-[   16.210357] panel-himax-hx8394 ff960000.dsi.0: disable
-[   16.261315] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
-[   16.261339] panel-himax-hx8394 ff960000.dsi.0: unprepare
-
-echo 0 > /sys/class/graphics/fb0/blank
-
-[   19.161453] dw-mipi-dsi-rockchip ff960000.dsi: pre_enable
-[   19.197869] panel-himax-hx8394 ff960000.dsi.0: prepare
-[   19.382141] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[   19.382158] panel-himax-hx8394 ff960000.dsi.0: enable
-
-       (But depends on functionality intorduced in Linux 6.3, so this patch will
-        not build on older kernels when applied to older stable branches.)
-
-Fixes: 46fc51546d44 ("drm/bridge/synopsys: Add MIPI DSI host controller bridge")
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230617224915.1923630-1-megi@xff.cz
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Jinyoung Choi <j-young.choi@samsung.com>
+Link: https://lore.kernel.org/r/20230724165433.117645-9-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Stable-dep-of: 0ece1d649b6d ("bio-integrity: create multi-page bvecs in bio_integrity_add_page()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c | 28 +++++++++++--------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ block/bio.c | 16 +++++++---------
+ 1 file changed, 7 insertions(+), 9 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-index b2efecf7d1603..4291798bd70f5 100644
---- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-+++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-@@ -265,6 +265,7 @@ struct dw_mipi_dsi {
- 	struct dw_mipi_dsi *master; /* dual-dsi master ptr */
- 	struct dw_mipi_dsi *slave; /* dual-dsi slave ptr */
- 
-+	struct drm_display_mode mode;
- 	const struct dw_mipi_dsi_plat_data *plat_data;
- };
- 
-@@ -332,6 +333,7 @@ static int dw_mipi_dsi_host_attach(struct mipi_dsi_host *host,
- 	if (IS_ERR(bridge))
- 		return PTR_ERR(bridge);
- 
-+	bridge->pre_enable_prev_first = true;
- 	dsi->panel_bridge = bridge;
- 
- 	drm_bridge_add(&dsi->bridge);
-@@ -859,15 +861,6 @@ static void dw_mipi_dsi_bridge_post_atomic_disable(struct drm_bridge *bridge,
- 	 */
- 	dw_mipi_dsi_set_mode(dsi, 0);
- 
--	/*
--	 * TODO Only way found to call panel-bridge post_disable &
--	 * panel unprepare before the dsi "final" disable...
--	 * This needs to be fixed in the drm_bridge framework and the API
--	 * needs to be updated to manage our own call chains...
--	 */
--	if (dsi->panel_bridge->funcs->post_disable)
--		dsi->panel_bridge->funcs->post_disable(dsi->panel_bridge);
--
- 	if (phy_ops->power_off)
- 		phy_ops->power_off(dsi->plat_data->priv_data);
- 
-@@ -942,15 +935,25 @@ static void dw_mipi_dsi_mode_set(struct dw_mipi_dsi *dsi,
- 		phy_ops->power_on(dsi->plat_data->priv_data);
- }
- 
-+static void dw_mipi_dsi_bridge_atomic_pre_enable(struct drm_bridge *bridge,
-+						 struct drm_bridge_state *old_bridge_state)
-+{
-+	struct dw_mipi_dsi *dsi = bridge_to_dsi(bridge);
-+
-+	/* Power up the dsi ctl into a command mode */
-+	dw_mipi_dsi_mode_set(dsi, &dsi->mode);
-+	if (dsi->slave)
-+		dw_mipi_dsi_mode_set(dsi->slave, &dsi->mode);
-+}
-+
- static void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
- 					const struct drm_display_mode *mode,
- 					const struct drm_display_mode *adjusted_mode)
+diff --git a/block/bio.c b/block/bio.c
+index c30f7489e4482..0766584563f6e 100644
+--- a/block/bio.c
++++ b/block/bio.c
+@@ -934,11 +934,10 @@ static bool bvec_try_merge_page(struct bio_vec *bv, struct page *page,
+  * size limit.  This is not for normal read/write bios, but for passthrough
+  * or Zone Append operations that we can't split.
+  */
+-static bool bio_try_merge_hw_seg(struct request_queue *q, struct bio *bio,
+-				 struct page *page, unsigned len,
+-				 unsigned offset, bool *same_page)
++static bool bvec_try_merge_hw_page(struct request_queue *q, struct bio_vec *bv,
++		struct page *page, unsigned len, unsigned offset,
++		bool *same_page)
  {
- 	struct dw_mipi_dsi *dsi = bridge_to_dsi(bridge);
+-	struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
+ 	unsigned long mask = queue_segment_boundary(q);
+ 	phys_addr_t addr1 = page_to_phys(bv->bv_page) + bv->bv_offset;
+ 	phys_addr_t addr2 = page_to_phys(page) + offset + len - 1;
+@@ -967,8 +966,6 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
+ 		struct page *page, unsigned int len, unsigned int offset,
+ 		unsigned int max_sectors, bool *same_page)
+ {
+-	struct bio_vec *bvec;
+-
+ 	if (WARN_ON_ONCE(bio_flagged(bio, BIO_CLONED)))
+ 		return 0;
  
--	dw_mipi_dsi_mode_set(dsi, adjusted_mode);
--	if (dsi->slave)
--		dw_mipi_dsi_mode_set(dsi->slave, adjusted_mode);
-+	/* Store the display mode for later use in pre_enable callback */
-+	drm_mode_copy(&dsi->mode, adjusted_mode);
- }
+@@ -976,7 +973,9 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
+ 		return 0;
  
- static void dw_mipi_dsi_bridge_atomic_enable(struct drm_bridge *bridge,
-@@ -1004,6 +1007,7 @@ static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
- 	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
- 	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
- 	.atomic_reset		= drm_atomic_helper_bridge_reset,
-+	.atomic_pre_enable	= dw_mipi_dsi_bridge_atomic_pre_enable,
- 	.atomic_enable		= dw_mipi_dsi_bridge_atomic_enable,
- 	.atomic_post_disable	= dw_mipi_dsi_bridge_post_atomic_disable,
- 	.mode_set		= dw_mipi_dsi_bridge_mode_set,
+ 	if (bio->bi_vcnt > 0) {
+-		if (bio_try_merge_hw_seg(q, bio, page, len, offset,
++		struct bio_vec *bv = &bio->bi_io_vec[bio->bi_vcnt - 1];
++
++		if (bvec_try_merge_hw_page(q, bv, page, len, offset,
+ 				same_page)) {
+ 			bio->bi_iter.bi_size += len;
+ 			return len;
+@@ -986,8 +985,7 @@ int bio_add_hw_page(struct request_queue *q, struct bio *bio,
+ 		 * If the queue doesn't support SG gaps and adding this segment
+ 		 * would create a gap, disallow it.
+ 		 */
+-		bvec = &bio->bi_io_vec[bio->bi_vcnt - 1];
+-		if (bvec_gap_to_prev(&q->limits, bvec, offset))
++		if (bvec_gap_to_prev(&q->limits, bv, offset))
+ 			return 0;
+ 	}
+ 
 -- 
 2.40.1
 
