@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79C6579AD5A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E12079B533
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355438AbjIKV7e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47874 "EHLO
+        id S1344675AbjIKVTB (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241068AbjIKPBP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:15 -0400
+        with ESMTP id S242311AbjIKP12 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1ED4125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15789C433C8;
-        Mon, 11 Sep 2023 15:01:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4103CE4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88B0EC433C8;
+        Mon, 11 Sep 2023 15:27:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444470;
-        bh=KBMnE5gJ/iYzShpyuMHPlSsWdEoOimTwsBy0LS90T6I=;
+        s=korg; t=1694446043;
+        bh=fRgyktZ/+SUlJj2Sk2XII7uAnvBmrSzqqzv31vKDBcM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LcEggvVTiys53RzUB1jzxecFv0wDihPTJs111JCAbZlYlP56QLw8YS2/2A8m8wAeB
-         jFDBApWJKoWWGt5WS/HI2m5ZzGahg5an7B7VvJlI0tNBLK7fjfFWLLLM4yk06F7nMe
-         vIsHDvpMdRV8T5O/N+MGL0nIYyp8aYW0hTXLukVU=
+        b=hVfwF8gzc0V/LZ9zYJYI31SZA13wwm/JZ7SDbTzIKyL4bqX3/yUqFO+NAf8bx1+4j
+         BbbOFECv+vhBXvI5RE3bQZX6aDQwM6QBOXI7VNlmMyOU8UvWUkfOj/NWyIMAKyd0dV
+         E+5mVWNkcrel9oMH0t0AvuBI3hkHH3d9KcmsRVtQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Damian Tometzki <dtometzki@fedoraproject.org>,
-        Aleksa Sarai <cyphar@cyphar.com>,
-        Christian Brauner <brauner@kernel.org>,
-        Daniel Verkamp <dverkamp@chromium.org>,
-        Jeff Xu <jeffxu@google.com>, Kees Cook <keescook@chromium.org>,
-        Shuah Khan <shuah@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.4 734/737] revert "memfd: improve userspace warnings for missing exec-related flags".
-Date:   Mon, 11 Sep 2023 15:49:53 +0200
-Message-ID: <20230911134711.014652360@linuxfoundation.org>
+        patches@lists.linux.dev, Yonghong Song <yonghong.song@linux.dev>,
+        Alexei Starovoitov <alexei.starovoitov@gmail.com>,
+        Yafang Shao <laoar.shao@gmail.com>,
+        Eduard Zingerman <eddyz87@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>
+Subject: [PATCH 6.1 562/600] bpf: Fix issue in verifying allow_ptr_leaks
+Date:   Mon, 11 Sep 2023 15:49:55 +0200
+Message-ID: <20230911134650.200439213@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,48 +52,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Andrew Morton <akpm@linux-foundation.org>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-commit 2562d67b1bdf91c7395b0225d60fdeb26b4bc5a0 upstream.
+commit d75e30dddf73449bc2d10bb8e2f1a2c446bc67a2 upstream.
 
-This warning is telling userspace developers to pass MFD_EXEC and
-MFD_NOEXEC_SEAL to memfd_create().  Commit 434ed3350f57 ("memfd: improve
-userspace warnings for missing exec-related flags") made the warning more
-frequent and visible in the hope that this would accelerate the fixing of
-errant userspace.
+After we converted the capabilities of our networking-bpf program from
+cap_sys_admin to cap_net_admin+cap_bpf, our networking-bpf program
+failed to start. Because it failed the bpf verifier, and the error log
+is "R3 pointer comparison prohibited".
 
-But the overall effect is to generate far too much dmesg noise.
+A simple reproducer as follows,
 
-Fixes: 434ed3350f57 ("memfd: improve userspace warnings for missing exec-related flags")
-Reported-by: Damian Tometzki <dtometzki@fedoraproject.org>
-Closes: https://lkml.kernel.org/r/ZPFzCSIgZ4QuHsSC@fedora.fritz.box
-Cc: Aleksa Sarai <cyphar@cyphar.com>
-Cc: Christian Brauner <brauner@kernel.org>
-Cc: Daniel Verkamp <dverkamp@chromium.org>
-Cc: Jeff Xu <jeffxu@google.com>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+SEC("cls-ingress")
+int ingress(struct __sk_buff *skb)
+{
+	struct iphdr *iph = (void *)(long)skb->data + sizeof(struct ethhdr);
+
+	if ((long)(iph + 1) > (long)skb->data_end)
+		return TC_ACT_STOLEN;
+	return TC_ACT_OK;
+}
+
+Per discussion with Yonghong and Alexei [1], comparison of two packet
+pointers is not a pointer leak. This patch fixes it.
+
+Our local kernel is 6.1.y and we expect this fix to be backported to
+6.1.y, so stable is CCed.
+
+[1]. https://lore.kernel.org/bpf/CAADnVQ+Nmspr7Si+pxWn8zkE7hX-7s93ugwC+94aXSy4uQ9vBg@mail.gmail.com/
+
+Suggested-by: Yonghong Song <yonghong.song@linux.dev>
+Suggested-by: Alexei Starovoitov <alexei.starovoitov@gmail.com>
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Acked-by: Eduard Zingerman <eddyz87@gmail.com>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230823020703.3790-2-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/memfd.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ kernel/bpf/verifier.c |   17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
---- a/mm/memfd.c
-+++ b/mm/memfd.c
-@@ -315,7 +315,7 @@ SYSCALL_DEFINE2(memfd_create,
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -10401,6 +10401,12 @@ static int check_cond_jmp_op(struct bpf_
  		return -EINVAL;
- 
- 	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
--		pr_info_ratelimited(
-+		pr_warn_once(
- 			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set\n",
- 			current->comm, task_pid_nr(current));
  	}
+ 
++	/* check src2 operand */
++	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
++	if (err)
++		return err;
++
++	dst_reg = &regs[insn->dst_reg];
+ 	if (BPF_SRC(insn->code) == BPF_X) {
+ 		if (insn->imm != 0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -10412,12 +10418,13 @@ static int check_cond_jmp_op(struct bpf_
+ 		if (err)
+ 			return err;
+ 
+-		if (is_pointer_value(env, insn->src_reg)) {
++		src_reg = &regs[insn->src_reg];
++		if (!(reg_is_pkt_pointer_any(dst_reg) && reg_is_pkt_pointer_any(src_reg)) &&
++		    is_pointer_value(env, insn->src_reg)) {
+ 			verbose(env, "R%d pointer comparison prohibited\n",
+ 				insn->src_reg);
+ 			return -EACCES;
+ 		}
+-		src_reg = &regs[insn->src_reg];
+ 	} else {
+ 		if (insn->src_reg != BPF_REG_0) {
+ 			verbose(env, "BPF_JMP/JMP32 uses reserved fields\n");
+@@ -10425,12 +10432,6 @@ static int check_cond_jmp_op(struct bpf_
+ 		}
+ 	}
+ 
+-	/* check src2 operand */
+-	err = check_reg_arg(env, insn->dst_reg, SRC_OP);
+-	if (err)
+-		return err;
+-
+-	dst_reg = &regs[insn->dst_reg];
+ 	is_jmp32 = BPF_CLASS(insn->code) == BPF_JMP32;
+ 
+ 	if (BPF_SRC(insn->code) == BPF_K) {
 
 
