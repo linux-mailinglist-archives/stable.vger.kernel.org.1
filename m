@@ -2,68 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 943F479B670
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 40C5C79B703
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238851AbjIKVEO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46000 "EHLO
+        id S244489AbjIKWZW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:25:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235479AbjIKImS (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 04:42:18 -0400
-Received: from mail-pf1-x42e.google.com (mail-pf1-x42e.google.com [IPv6:2607:f8b0:4864:20::42e])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 643C4125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 01:42:12 -0700 (PDT)
-Received: by mail-pf1-x42e.google.com with SMTP id d2e1a72fcca58-68fc1bbc94eso666622b3a.3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 01:42:12 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694421731; x=1695026531; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=spBe6pkvW3gtGtToIN5PmnoDiM2RGuSjPToGWMDEo3U=;
-        b=hdSH4DvdIK/6Twk4UC3o197aaNjrmnz54ZrqHA8Dz55PzJpIQg3GQdhrs7jn+IzxKn
-         pyEuMigLwXXN6TAjtpVaYFTUegfUY3U4yfdwrnLwduFfyKh/Ir8E7wIRZXROrorBZ+37
-         N1vnV5KdFgck4RgKwZw5CH6zHSuXaKQi3hMr3yF8fBtosTzgIxAwPDiFZ442J5MlWqza
-         7hBkTVLH659MnvcXeKLSw7VVKF+ShJuK1un/Cjr7hQbMDt0VObgchgZQvJJDrsixaIlg
-         xw9wtGVRwqJ2eGN4m+SF8TyG+S8ChntzCTgiw7kuglEHhJXLcUFGpeYSEy9eAK5YEsLW
-         0nFw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694421731; x=1695026531;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=spBe6pkvW3gtGtToIN5PmnoDiM2RGuSjPToGWMDEo3U=;
-        b=hi4URwtXLJeT+Zy3kIwp0OLszY+YRcfvUhr9ctZh4+FQ5CjU2r5yDPL4cS6z5UhEE/
-         HjGr4NQHgrg3v/lSAtVs4pX+Y4gAl79NV7zs52VxgmWa4bGlGeDktB2rTVaHeD0vpa1F
-         /ctG1GRfVmEAEbc0ICwn0DR2NLaSVGF8ce928AaqrG9PMK5CTzK+gU6NtWEaFGcpgNN0
-         rMXVpc9ZDwpaqc3+sMoqZI7FIKejLI9yBAoOgzGR3Y+y9liix80uVqWg57EvH8y57U4i
-         JIgPqTYJ9OvcPKiaohUOq8nggrbOb8Ud78WWk0uxXVEQJ8AaBL2BBWseQghekmaan49G
-         c1xw==
-X-Gm-Message-State: AOJu0YwBSLJTY5uwAk/a5fMocNyc2oTi20w3oIEF+l3asiva1X4/OJu2
-        9R9Qz3UmpYxf2Rg236B4zLghhomvjXLrhPEIWwM=
-X-Google-Smtp-Source: AGHT+IHWkp6FqxSxdd4kyEIsYinsJysHuzRuFg9OSrc7zNXZfNUlpmhqFdaOiHLjTNOPOksNjlpPuQ==
-X-Received: by 2002:a05:6a20:324a:b0:14c:daa9:5e22 with SMTP id hm10-20020a056a20324a00b0014cdaa95e22mr9568699pzc.45.1694421731256;
-        Mon, 11 Sep 2023 01:42:11 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id i8-20020a17090a2ac800b002696aeb72e5sm7625362pjg.2.2023.09.11.01.42.10
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 01:42:10 -0700 (PDT)
-Message-ID: <64fed2e2.170a0220.b7fea.2967@mx.google.com>
-Date:   Mon, 11 Sep 2023 01:42:10 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S235638AbjIKJOf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:14:35 -0400
+Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2224FCCD;
+        Mon, 11 Sep 2023 02:14:31 -0700 (PDT)
+Received: from localhost.localdomain (unknown [59.103.218.185])
+        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
+         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
+        (No client certificate requested)
+        (Authenticated sender: usama.anjum)
+        by madras.collabora.co.uk (Postfix) with ESMTPSA id D6FB06607186;
+        Mon, 11 Sep 2023 10:14:25 +0100 (BST)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
+        s=mail; t=1694423669;
+        bh=9wEA6kj/8qL09liKb87plaPguZEAHq2kFG8kWKL8ugk=;
+        h=From:To:Cc:Subject:Date:From;
+        b=onT3hW2nuSZ+Llw31Ags4TTIrqfFFb7HPREmgpc985AZJ93ChdJGtJX38PPv9X4Qt
+         On1ZuDtOGbUmb9NUIRiSm2GSzUHC/M6hndGMERADezsogGx9Hi+tyD0/KR8//7yZkO
+         SR7YxRL4a+VT3UnkXRNfL94VGhkuslODCcep473JNopjjSN0jocx96CjhEWe3ToSmv
+         2ikbpjxHZK5rnEyHLqmNolnh1JKWgbqGxoPPCqTEZ0cinpUt5rJuSXQOmr6Yr0Omhm
+         6WhsvVEffoTRMR6xrC7/2fOH9IhCDxEqVp9MsJos7mfpBcIBiadJisGCQ0Fl0MORBF
+         a67rTdugS8dlA==
+From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
+To:     "Theodore Ts'o" <tytso@mit.edu>,
+        Andreas Dilger <adilger.kernel@dilger.ca>,
+        Allison Henderson <achender@linux.vnet.ibm.com>
+Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
+        kernel@collabora.com, stable@vger.kernel.org,
+        syzbot+6e5f2db05775244c73b7@syzkaller.appspotmail.com,
+        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org
+Subject: [RFC] ext4: don't' remove already removed extent
+Date:   Mon, 11 Sep 2023 14:13:58 +0500
+Message-Id: <20230911091358.3528530-1-usama.anjum@collabora.com>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.194-314-gda03e749b770
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 6 warnings (v5.10.194-314-gda03e749b770)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -71,170 +55,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 6 warnings (v=
-5.10.194-314-gda03e749b770)
+Syzbot has hit the following bug on current and all older kernels:
+BUG: KASAN: out-of-bounds in ext4_ext_rm_leaf fs/ext4/extents.c:2736 [inline]
+BUG: KASAN: out-of-bounds in ext4_ext_remove_space+0x2482/0x4d90 fs/ext4/extents.c:2958
+Read of size 18446744073709551508 at addr ffff888073aea078 by task syz-executor420/6443
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.194-314-gda03e749b770/
+On investigation, I've found that eh->eh_entries is zero, ex is
+referring to last entry and EXT_LAST_EXTENT(eh) is referring to first.
+Hence EXT_LAST_EXTENT(eh) - ex becomes negative and causes the wrong
+buffer read.
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.194-314-gda03e749b770
-Git Commit: da03e749b77075d4c85bc92169ca9fb0713dcccf
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+element: FFFF8882F8F0D06C       <----- ex
+element: FFFF8882F8F0D060
+element: FFFF8882F8F0D054
+element: FFFF8882F8F0D048
+element: FFFF8882F8F0D03C
+element: FFFF8882F8F0D030
+element: FFFF8882F8F0D024
+element: FFFF8882F8F0D018
+element: FFFF8882F8F0D00C	<------  EXT_FIRST_EXTENT(eh)
+header:  FFFF8882F8F0D000	<------  EXT_LAST_EXTENT(eh) and eh
 
-Warnings Detected:
-
-arc:
-
-arm64:
-    defconfig+arm64-chromebook (gcc-10): 1 warning
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =
-=E2=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=
-=80=99 makes pointer from integer without a cast [-Wint-conversion]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
-ing, 0 section mismatches
-
-Warnings:
-    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =E2=
-=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=80=
-=99 makes pointer from integer without a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
+Cc: stable@vger.kernel.org
+Reported-by: syzbot+6e5f2db05775244c73b7@syzkaller.appspotmail.com
+Closes: https://groups.google.com/g/syzkaller-bugs/c/G6zS-LKgDW0/m/63MgF6V7BAAJ
+Fixes: d583fb87a3ff ("ext4: punch out extents")
+Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
 ---
-For more info write to <info@kernelci.org>
+This patch is only fixing the local issue. There may be bigger bug. Why
+is ex set to last entry if the eh->eh_entries is 0. If any ext4
+developer want to look at the bug, please don't hesitate.
+---
+ fs/ext4/extents.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
+index e4115d338f101..7b7779b4cb87f 100644
+--- a/fs/ext4/extents.c
++++ b/fs/ext4/extents.c
+@@ -2726,7 +2726,7 @@ ext4_ext_rm_leaf(handle_t *handle, struct inode *inode,
+ 		 * If the extent was completely released,
+ 		 * we need to remove it from the leaf
+ 		 */
+-		if (num == 0) {
++		if (num == 0 && eh->eh_entries) {
+ 			if (end != EXT_MAX_BLOCKS - 1) {
+ 				/*
+ 				 * For hole punching, we need to scoot all the
+-- 
+2.40.1
+
