@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E17A079B857
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03BE179BD18
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239690AbjIKVte (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:49:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48572 "EHLO
+        id S1379582AbjIKWo5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240624AbjIKOtO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:49:14 -0400
+        with ESMTP id S239297AbjIKORB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D5D3125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:49:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC23FC433C8;
-        Mon, 11 Sep 2023 14:49:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D57DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66361C433C8;
+        Mon, 11 Sep 2023 14:16:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443750;
-        bh=YJUsdsheENpAcB9cemMUoMnrl1A6howyiYccUgaoEdg=;
+        s=korg; t=1694441816;
+        bh=FafIvUp9whxV9MFJCNEPOGWjyNYCL8nuIQ99sqzmBvk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wNRJsaFgOzlPZg3SD0XIvxAFFiln30VHHLviNSDJsnRcitCWRcZrlmkTcNhYQ11qM
-         petsjHdFkv7N2OcaMnoORjhMZMJ79cDkQQrMsrpFhgolx/q+pDXZecMOZuXTICZQxd
-         XY+o4CgIp6kLLE5X0vjlugRxzh/1M+FZBrBnruLw=
+        b=ihw5H7hjaSg5kDtym7Eyc7AwrX1u9l7HV9xabtqqRGb7YAoBF7gvS8ytiCy6QLcAT
+         8h0+NuGBWqR3Rrs75jyEW/bpmpsgpGgLQJKdK7NMeWZf+vAdPys5fEMdGq4IZvjlrT
+         Hb063o+0WcgQ6YgfMKfHL7hQBSJVyROJXKqOUd+w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Robin Murphy <robin.murphy@arm.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 486/737] iommu: rockchip: Fix directory table address encoding
+        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 546/739] media: ov2680: Add ov2680_fill_format() helper function
 Date:   Mon, 11 Sep 2023 15:45:45 +0200
-Message-ID: <20230911134704.151651254@linuxfoundation.org>
+Message-ID: <20230911134706.343980893@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,158 +53,148 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 6df63b7ebdaf5fcd75dceedf6967d0761e56eca1 ]
+[ Upstream commit 6d6849b2203f3244b575ba01d3e41ee19aa2cadf ]
 
-The physical address to the directory table is currently encoded using
-the following bit layout for IOMMU v2.
+Add a ov2680_fill_format() helper function and use this everywhere were
+a v4l2_mbus_framefmt struct needs to be filled in so that the driver always
+fills it consistently.
 
- 31:12 - Address bit 31:0
- 11: 4 - Address bit 39:32
+This is a preparation patch for fixing ov2680_set_fmt()
+which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
+the passed in v4l2_mbus_framefmt struct.
 
-This is also the bit layout used by the vendor kernel.
+Note that for ov2680_init_cfg() this now simply always fills
+the try_fmt struct of the passed in sd_state. This is correct because
+ov2680_init_cfg() is never called with a NULL sd_state so the old
+sd_state check is not necessary.
 
-However, testing has shown that addresses to the directory/page tables
-and memory pages are all encoded using the same bit layout.
-
-IOMMU v1:
- 31:12 - Address bit 31:0
-
-IOMMU v2:
- 31:12 - Address bit 31:0
- 11: 8 - Address bit 35:32
-  7: 4 - Address bit 39:36
-
-Change to use the mk_dtentries ops to encode the directory table address
-correctly. The value written to DTE_ADDR may include the valid bit set,
-a bit that is ignored and DTE_ADDR reg read it back as 0.
-
-This also update the bit layout comment for the page address and the
-number of nybbles that are read back for DTE_ADDR comment.
-
-These changes render the dte_addr_phys and dma_addr_dte ops unused and
-is removed.
-
-Fixes: 227014b33f62 ("iommu: rockchip: Add internal ops to handle variants")
-Fixes: c55356c534aa ("iommu: rockchip: Add support for iommu v2")
-Fixes: c987b65a574f ("iommu/rockchip: Fix physical address decoding")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Reviewed-by: Robin Murphy <robin.murphy@arm.com>
-Link: https://lore.kernel.org/r/20230617182540.3091374-2-jonas@kwiboo.se
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/rockchip-iommu.c | 43 ++++------------------------------
- 1 file changed, 5 insertions(+), 38 deletions(-)
+ drivers/media/i2c/ov2680.c | 49 +++++++++++++++++++++-----------------
+ 1 file changed, 27 insertions(+), 22 deletions(-)
 
-diff --git a/drivers/iommu/rockchip-iommu.c b/drivers/iommu/rockchip-iommu.c
-index 4054030c32379..ae42959bc4905 100644
---- a/drivers/iommu/rockchip-iommu.c
-+++ b/drivers/iommu/rockchip-iommu.c
-@@ -98,8 +98,6 @@ struct rk_iommu_ops {
- 	phys_addr_t (*pt_address)(u32 dte);
- 	u32 (*mk_dtentries)(dma_addr_t pt_dma);
- 	u32 (*mk_ptentries)(phys_addr_t page, int prot);
--	phys_addr_t (*dte_addr_phys)(u32 addr);
--	u32 (*dma_addr_dte)(dma_addr_t dt_dma);
- 	u64 dma_bit_mask;
- };
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 2b20990f4cf55..c4a46c734d82a 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -54,6 +54,9 @@
+ #define OV2680_WIDTH_MAX		1600
+ #define OV2680_HEIGHT_MAX		1200
  
-@@ -278,8 +276,8 @@ static u32 rk_mk_pte(phys_addr_t page, int prot)
- /*
-  * In v2:
-  * 31:12 - Page address bit 31:0
-- *  11:9 - Page address bit 34:32
-- *   8:4 - Page address bit 39:35
-+ * 11: 8 - Page address bit 35:32
-+ *  7: 4 - Page address bit 39:36
-  *     3 - Security
-  *     2 - Writable
-  *     1 - Readable
-@@ -506,7 +504,7 @@ static int rk_iommu_force_reset(struct rk_iommu *iommu)
++#define OV2680_DEFAULT_WIDTH			800
++#define OV2680_DEFAULT_HEIGHT			600
++
+ enum ov2680_mode_id {
+ 	OV2680_MODE_QUXGA_800_600,
+ 	OV2680_MODE_720P_1280_720,
+@@ -315,7 +318,8 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
+ 	usleep_range(5000, 10000);
+ }
  
- 	/*
- 	 * Check if register DTE_ADDR is working by writing DTE_ADDR_DUMMY
--	 * and verifying that upper 5 nybbles are read back.
-+	 * and verifying that upper 5 (v1) or 7 (v2) nybbles are read back.
- 	 */
- 	for (i = 0; i < iommu->num_mmu; i++) {
- 		dte_addr = rk_ops->pt_address(DTE_ADDR_DUMMY);
-@@ -531,33 +529,6 @@ static int rk_iommu_force_reset(struct rk_iommu *iommu)
+-static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
++static void ov2680_set_bayer_order(struct ov2680_dev *sensor,
++				   struct v4l2_mbus_framefmt *fmt)
+ {
+ 	int hv_flip = 0;
+ 
+@@ -325,7 +329,19 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
+ 	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
+ 		hv_flip += 2;
+ 
+-	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
++	fmt->code = ov2680_hv_flip_bayer_order[hv_flip];
++}
++
++static void ov2680_fill_format(struct ov2680_dev *sensor,
++			       struct v4l2_mbus_framefmt *fmt,
++			       unsigned int width, unsigned int height)
++{
++	memset(fmt, 0, sizeof(*fmt));
++	fmt->width = width;
++	fmt->height = height;
++	fmt->field = V4L2_FIELD_NONE;
++	fmt->colorspace = V4L2_COLORSPACE_SRGB;
++	ov2680_set_bayer_order(sensor, fmt);
+ }
+ 
+ static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
+@@ -340,7 +356,7 @@ static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	ov2680_set_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor, &sensor->fmt);
  	return 0;
  }
  
--static inline phys_addr_t rk_dte_addr_phys(u32 addr)
--{
--	return (phys_addr_t)addr;
--}
--
--static inline u32 rk_dma_addr_dte(dma_addr_t dt_dma)
--{
--	return dt_dma;
--}
--
--#define DT_HI_MASK GENMASK_ULL(39, 32)
--#define DTE_BASE_HI_MASK GENMASK(11, 4)
--#define DT_SHIFT   28
--
--static inline phys_addr_t rk_dte_addr_phys_v2(u32 addr)
--{
--	u64 addr64 = addr;
--	return (phys_addr_t)(addr64 & RK_DTE_PT_ADDRESS_MASK) |
--	       ((addr64 & DTE_BASE_HI_MASK) << DT_SHIFT);
--}
--
--static inline u32 rk_dma_addr_dte_v2(dma_addr_t dt_dma)
--{
--	return (dt_dma & RK_DTE_PT_ADDRESS_MASK) |
--	       ((dt_dma & DT_HI_MASK) >> DT_SHIFT);
--}
--
- static void log_iova(struct rk_iommu *iommu, int index, dma_addr_t iova)
- {
- 	void __iomem *base = iommu->bases[index];
-@@ -577,7 +548,7 @@ static void log_iova(struct rk_iommu *iommu, int index, dma_addr_t iova)
- 	page_offset = rk_iova_page_offset(iova);
+@@ -356,7 +372,7 @@ static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
+ 	if (ret < 0)
+ 		return ret;
  
- 	mmu_dte_addr = rk_iommu_read(base, RK_MMU_DTE_ADDR);
--	mmu_dte_addr_phys = rk_ops->dte_addr_phys(mmu_dte_addr);
-+	mmu_dte_addr_phys = rk_ops->pt_address(mmu_dte_addr);
+-	ov2680_set_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor, &sensor->fmt);
+ 	return 0;
+ }
  
- 	dte_addr_phys = mmu_dte_addr_phys + (4 * dte_index);
- 	dte_addr = phys_to_virt(dte_addr_phys);
-@@ -967,7 +938,7 @@ static int rk_iommu_enable(struct rk_iommu *iommu)
- 
- 	for (i = 0; i < iommu->num_mmu; i++) {
- 		rk_iommu_write(iommu->bases[i], RK_MMU_DTE_ADDR,
--			       rk_ops->dma_addr_dte(rk_domain->dt_dma));
-+			       rk_ops->mk_dtentries(rk_domain->dt_dma));
- 		rk_iommu_base_command(iommu->bases[i], RK_MMU_CMD_ZAP_CACHE);
- 		rk_iommu_write(iommu->bases[i], RK_MMU_INT_MASK, RK_MMU_IRQ_MASK);
+@@ -614,10 +630,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		goto unlock;
  	}
-@@ -1405,8 +1376,6 @@ static struct rk_iommu_ops iommu_data_ops_v1 = {
- 	.pt_address = &rk_dte_pt_address,
- 	.mk_dtentries = &rk_mk_dte,
- 	.mk_ptentries = &rk_mk_pte,
--	.dte_addr_phys = &rk_dte_addr_phys,
--	.dma_addr_dte = &rk_dma_addr_dte,
- 	.dma_bit_mask = DMA_BIT_MASK(32),
- };
  
-@@ -1414,8 +1383,6 @@ static struct rk_iommu_ops iommu_data_ops_v2 = {
- 	.pt_address = &rk_dte_pt_address_v2,
- 	.mk_dtentries = &rk_mk_dte_v2,
- 	.mk_ptentries = &rk_mk_pte_v2,
--	.dte_addr_phys = &rk_dte_addr_phys_v2,
--	.dma_addr_dte = &rk_dma_addr_dte_v2,
- 	.dma_bit_mask = DMA_BIT_MASK(40),
- };
+-	fmt->width = mode->width;
+-	fmt->height = mode->height;
+-	fmt->code = sensor->fmt.code;
+-	fmt->colorspace = sensor->fmt.colorspace;
++	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
  
+ 	sensor->current_mode = mode;
+ 	sensor->fmt = format->format;
+@@ -632,16 +645,11 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ static int ov2680_init_cfg(struct v4l2_subdev *sd,
+ 			   struct v4l2_subdev_state *sd_state)
+ {
+-	struct v4l2_subdev_format fmt = {
+-		.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
+-		: V4L2_SUBDEV_FORMAT_ACTIVE,
+-		.format = {
+-			.width = 800,
+-			.height = 600,
+-		}
+-	};
++	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+ 
+-	return ov2680_set_fmt(sd, sd_state, &fmt);
++	ov2680_fill_format(sensor, &sd_state->pads[0].try_fmt,
++			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
++	return 0;
+ }
+ 
+ static int ov2680_enum_frame_size(struct v4l2_subdev *sd,
+@@ -740,11 +748,8 @@ static int ov2680_mode_init(struct ov2680_dev *sensor)
+ 	const struct ov2680_mode_info *init_mode;
+ 
+ 	/* set initial mode */
+-	sensor->fmt.code = MEDIA_BUS_FMT_SBGGR10_1X10;
+-	sensor->fmt.width = 800;
+-	sensor->fmt.height = 600;
+-	sensor->fmt.field = V4L2_FIELD_NONE;
+-	sensor->fmt.colorspace = V4L2_COLORSPACE_SRGB;
++	ov2680_fill_format(sensor, &sensor->fmt,
++			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
+ 
+ 	sensor->frame_interval.denominator = OV2680_FRAME_RATE;
+ 	sensor->frame_interval.numerator = 1;
 -- 
 2.40.1
 
