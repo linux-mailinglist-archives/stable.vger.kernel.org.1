@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C9FA779BF7C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0194479B9D1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241134AbjIKVG5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38338 "EHLO
+        id S236758AbjIKV0Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:26:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240557AbjIKOrP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:15 -0400
+        with ESMTP id S239231AbjIKOPC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:15:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 042E1106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4CED9C433C7;
-        Mon, 11 Sep 2023 14:47:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4F1FDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECB81C433CA;
+        Mon, 11 Sep 2023 14:14:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443630;
-        bh=EDUm73TArN0Z9ocXzweyb2PH3RRN505/XEyq7dGmVO4=;
+        s=korg; t=1694441697;
+        bh=k01niUOfa4X49YAcwn7p8fyFIbFL1MsBlr8VwOEfzwo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JX6IXCsAI3mlO1/R7NOH+8v8N1SJoq+Z+m8IJBQCSd43dowqxfGwkux/Wy97w9thn
-         heNBGg0FrpT1tDNmwReMKv2pGZKM8bQ5uNo0YSfiWENUGgspwWMr+ilC+8SFpCyS2L
-         lHl79q559YdN/MayQ/2t4Y0rD/TsE0/hA3YwtTp8=
+        b=DNX9BKf8XRPKIe6w3/PRo6QcpTaNuJvaIFQGWhPw5zlyk9G8RWIJXE9hSZPsOSHwk
+         hADTNkCs4+MaXjzSuc1Q9AxxBE8djamrg4cqAirXYpzCgiK9HXukmFf7rHLsxt/aBr
+         JnpK8L9nnEbbXG3NW9D0ZBdZJpg5gvw8QPArxipc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 445/737] clk: imx: imx8ulp: update SPLL2 type
+Subject: [PATCH 6.5 505/739] extcon: cht_wc: add POWER_SUPPLY dependency
 Date:   Mon, 11 Sep 2023 15:45:04 +0200
-Message-ID: <20230911134703.029268592@linuxfoundation.org>
+Message-ID: <20230911134705.239216073@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Peng Fan <peng.fan@nxp.com>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 7653a59be8af043adc4c09473975a860e6055ff9 ]
+[ Upstream commit d20a3a8a32e3fa564ff25da860c5fc1a97642dfe ]
 
-The SPLL2 on iMX8ULP is different with other frac PLLs, it can
-support VCO from 650Mhz to 1Ghz. Following the changes to pllv4,
-use the new type IMX_PLLV4_IMX8ULP_1GHZ.
+The driver fails to link when CONFIG_POWER_SUPPLY is disabled:
 
-Fixes: c43a801a5789 ("clk: imx: Add clock driver for imx8ulp")
-Signed-off-by: Peng Fan <peng.fan@nxp.com>
-Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
-Link: https://lore.kernel.org/r/20230625123340.4067536-2-peng.fan@oss.nxp.com
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_psy_get_prop':
+extcon-intel-cht-wc.c:(.text+0x15ccda7): undefined reference to `power_supply_get_drvdata'
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_pwrsrc_event':
+extcon-intel-cht-wc.c:(.text+0x15cd3e9): undefined reference to `power_supply_changed'
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_probe':
+extcon-intel-cht-wc.c:(.text+0x15cd596): undefined reference to `devm_power_supply_register'
+
+It should be possible to change the driver to not require this at
+compile time and still provide other functions, but adding a hard
+Kconfig dependency does not seem to have any practical downsides
+and is simpler since the option is normally enabled anyway.
+
+Fixes: 66e31186cd2aa ("extcon: intel-cht-wc: Add support for registering a power_supply class-device")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8ulp.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/extcon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/imx/clk-imx8ulp.c b/drivers/clk/imx/clk-imx8ulp.c
-index e308c88cb801c..1b04e2fc78ad5 100644
---- a/drivers/clk/imx/clk-imx8ulp.c
-+++ b/drivers/clk/imx/clk-imx8ulp.c
-@@ -167,7 +167,7 @@ static int imx8ulp_clk_cgc1_init(struct platform_device *pdev)
- 	clks[IMX8ULP_CLK_SPLL2_PRE_SEL]	= imx_clk_hw_mux_flags("spll2_pre_sel", base + 0x510, 0, 1, pll_pre_sels, ARRAY_SIZE(pll_pre_sels), CLK_SET_PARENT_GATE);
- 	clks[IMX8ULP_CLK_SPLL3_PRE_SEL]	= imx_clk_hw_mux_flags("spll3_pre_sel", base + 0x610, 0, 1, pll_pre_sels, ARRAY_SIZE(pll_pre_sels), CLK_SET_PARENT_GATE);
- 
--	clks[IMX8ULP_CLK_SPLL2] = imx_clk_hw_pllv4(IMX_PLLV4_IMX8ULP, "spll2", "spll2_pre_sel", base + 0x500);
-+	clks[IMX8ULP_CLK_SPLL2] = imx_clk_hw_pllv4(IMX_PLLV4_IMX8ULP_1GHZ, "spll2", "spll2_pre_sel", base + 0x500);
- 	clks[IMX8ULP_CLK_SPLL3] = imx_clk_hw_pllv4(IMX_PLLV4_IMX8ULP, "spll3", "spll3_pre_sel", base + 0x600);
- 	clks[IMX8ULP_CLK_SPLL3_VCODIV] = imx_clk_hw_divider("spll3_vcodiv", "spll3", base + 0x604, 0, 6);
- 
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index 0ef1971d22bb0..8de9023c2a387 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -62,6 +62,7 @@ config EXTCON_INTEL_CHT_WC
+ 	tristate "Intel Cherrytrail Whiskey Cove PMIC extcon driver"
+ 	depends on INTEL_SOC_PMIC_CHTWC
+ 	depends on USB_SUPPORT
++	depends on POWER_SUPPLY
+ 	select USB_ROLE_SWITCH
+ 	help
+ 	  Say Y here to enable extcon support for charger detection / control
 -- 
 2.40.1
 
