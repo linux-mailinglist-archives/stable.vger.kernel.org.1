@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DDD8A79B4AB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2493679AD56
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348855AbjIKVb1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55614 "EHLO
+        id S1348615AbjIKV27 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:28:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52024 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241909AbjIKPRh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:37 -0400
+        with ESMTP id S240683AbjIKOvF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EAFFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC44C433C8;
-        Mon, 11 Sep 2023 15:17:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76CFC106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB0C1C433C8;
+        Mon, 11 Sep 2023 14:51:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445452;
-        bh=Krf4GLxGSDGEnyGADgfkBxHUKHBgtYqIact631v+bZ4=;
+        s=korg; t=1694443861;
+        bh=tCOc+fC+3XhhUtxg5IDNLL33nnYkq7ZyZjW6aRakGPU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OSFTJ4l98xuTHVAq5fhbvQbhrF09VB7Xue9CnGFfAXlgIVyrHd1OfwGWgm7cVAfGM
-         KbuBeLO4fwhdrMpj6uqLKfkJgZWyIISABHlTRXGUmGQ3g7irelUO1Y3bNvVIWNFa0J
-         OW2lgfzXTSEK8knGC5MNZ+VcK7g/N1kttygp9Iuk=
+        b=UxpJtExd/k/CWPMrgNNcFW/OShwS8L0YRIE9kEL+37n71zvQ+OPgEQd/LgsOZNVQV
+         kcHZEdTCvxttzhNlSTAnvOp9S+owlpAxbB/LYLuA9vW3Gi6zrxBnxFVNkaYikGlXuW
+         0nG39XRFMvURzKq4qDiLVioVxOZ0F0PEB/Y4+Nk8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
-        Dan Williams <dan.j.williams@intel.com>,
-        Ira Weiny <ira.weiny@intel.com>,
+        patches@lists.linux.dev,
+        "Gustavo A. R. Silva" <gustavoars@kernel.org>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 352/600] PCI: Allow drivers to request exclusive config regions
-Date:   Mon, 11 Sep 2023 15:46:25 +0200
-Message-ID: <20230911134644.069404709@linuxfoundation.org>
+Subject: [PATCH 6.4 527/737] RDMA/irdma: Replace one-element array with flexible-array member
+Date:   Mon, 11 Sep 2023 15:46:26 +0200
+Message-ID: <20230911134705.296161661@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,191 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ira Weiny <ira.weiny@intel.com>
+From: Gustavo A. R. Silva <gustavoars@kernel.org>
 
-[ Upstream commit 278294798ac9118412c9624a801d3f20f2279363 ]
+[ Upstream commit 38313c6d2a02c28162e06753b01bd885caf9386d ]
 
-PCI config space access from user space has traditionally been
-unrestricted with writes being an understood risk for device operation.
+One-element and zero-length arrays are deprecated. So, replace
+one-element array in struct irdma_qvlist_info with flexible-array
+member.
 
-Unfortunately, device breakage or odd behavior from config writes lacks
-indicators that can leave driver writers confused when evaluating
-failures.  This is especially true with the new PCIe Data Object
-Exchange (DOE) mailbox protocol where backdoor shenanigans from user
-space through things such as vendor defined protocols may affect device
-operation without complete breakage.
+A patch for this was sent a while ago[1]. However, it seems that, at
+the time, the changes were partially folded[2][3], and the actual
+flexible-array transformation was omitted. This patch fixes that.
 
-A prior proposal restricted read and writes completely.[1]  Greg and
-Bjorn pointed out that proposal is flawed for a couple of reasons.
-First, lspci should always be allowed and should not interfere with any
-device operation.  Second, setpci is a valuable tool that is sometimes
-necessary and it should not be completely restricted.[2]  Finally
-methods exist for full lock of device access if required.
+The only binary difference seen before/after changes is shown below:
 
-Even though access should not be restricted it would be nice for driver
-writers to be able to flag critical parts of the config space such that
-interference from user space can be detected.
+|  drivers/infiniband/hw/irdma/hw.o
+| @@ -868,7 +868,7 @@
+| drivers/infiniband/hw/irdma/hw.c:484 (discriminator 2)
+|	size += struct_size(iw_qvlist, qv_info, rf->msix_count);
+|      55b:      imul   $0x45c,%rdi,%rdi
+|-     562:      add    $0x10,%rdi
+|+     562:      add    $0x4,%rdi
 
-Introduce pci_request_config_region_exclusive() to mark exclusive config
-regions.  Such regions trigger a warning and kernel taint if accessed
-via user space.
+which is, of course, expected as it reflects the mistake made
+while folding the patch I've mentioned above.
 
-Create pci_warn_once() to restrict the user from spamming the log.
+Worth mentioning is the fact that with this change we save 12 bytes
+of memory, as can be inferred from the diff snapshot above. Notice
+that:
 
-[1] https://lore.kernel.org/all/161663543465.1867664.5674061943008380442.stgit@dwillia2-desk3.amr.corp.intel.com/
-[2] https://lore.kernel.org/all/YF8NGeGv9vYcMfTV@kroah.com/
+$ pahole -C rdma_qv_info idrivers/infiniband/hw/irdma/hw.o
+struct irdma_qv_info {
+	u32                        v_idx;                /*     0     4 */
+	u16                        ceq_idx;              /*     4     2 */
+	u16                        aeq_idx;              /*     6     2 */
+	u8                         itr_idx;              /*     8     1 */
 
-Cc: Bjorn Helgaas <bhelgaas@google.com>
-Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
-Suggested-by: Dan Williams <dan.j.williams@intel.com>
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Acked-by: Bjorn Helgaas <bhelgaas@google.com>
-Link: https://lore.kernel.org/r/20220926215711.2893286-2-ira.weiny@intel.com
-Signed-off-by: Dan Williams <dan.j.williams@intel.com>
-Stable-dep-of: 5e70d0acf082 ("PCI: Add locking to RMW PCI Express Capability Register accessors")
+	/* size: 12, cachelines: 1, members: 4 */
+	/* padding: 3 */
+	/* last cacheline: 12 bytes */
+};
+
+Link: https://lore.kernel.org/linux-hardening/20210525230038.GA175516@embeddedor/ [1]
+Link: https://lore.kernel.org/linux-hardening/bf46b428deef4e9e89b0ea1704b1f0e5@intel.com/ [2]
+Link: https://lore.kernel.org/linux-rdma/20210520143809.819-1-shiraz.saleem@intel.com/T/#u [3]
+Fixes: 44d9e52977a1 ("RDMA/irdma: Implement device initialization definitions")
+Signed-off-by: Gustavo A. R. Silva <gustavoars@kernel.org>
+Link: https://lore.kernel.org/r/ZMpsQrZadBaJGkt4@work
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci-sysfs.c |  7 +++++++
- drivers/pci/probe.c     |  6 ++++++
- include/linux/ioport.h  |  2 ++
- include/linux/pci.h     | 17 +++++++++++++++++
- kernel/resource.c       | 13 ++++++++-----
- 5 files changed, 40 insertions(+), 5 deletions(-)
+ drivers/infiniband/hw/irdma/main.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
-index ba38fc47d35e9..dd0d9d9bc5097 100644
---- a/drivers/pci/pci-sysfs.c
-+++ b/drivers/pci/pci-sysfs.c
-@@ -756,6 +756,13 @@ static ssize_t pci_write_config(struct file *filp, struct kobject *kobj,
- 	if (ret)
- 		return ret;
+diff --git a/drivers/infiniband/hw/irdma/main.h b/drivers/infiniband/hw/irdma/main.h
+index 2323962cdeacb..de2f4c0514118 100644
+--- a/drivers/infiniband/hw/irdma/main.h
++++ b/drivers/infiniband/hw/irdma/main.h
+@@ -239,7 +239,7 @@ struct irdma_qv_info {
  
-+	if (resource_is_exclusive(&dev->driver_exclusive_resource, off,
-+				  count)) {
-+		pci_warn_once(dev, "%s: Unexpected write to kernel-exclusive config offset %llx",
-+			      current->comm, off);
-+		add_taint(TAINT_USER, LOCKDEP_STILL_OK);
-+	}
-+
- 	if (off > dev->cfg_size)
- 		return 0;
- 	if (off + count > dev->cfg_size) {
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index 7170516298b0b..e3a1dc6432bcd 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2306,6 +2306,12 @@ struct pci_dev *pci_alloc_dev(struct pci_bus *bus)
- 	INIT_LIST_HEAD(&dev->bus_list);
- 	dev->dev.type = &pci_dev_type;
- 	dev->bus = pci_bus_get(bus);
-+	dev->driver_exclusive_resource = (struct resource) {
-+		.name = "PCI Exclusive",
-+		.start = 0,
-+		.end = -1,
-+	};
-+
- #ifdef CONFIG_PCI_MSI
- 	raw_spin_lock_init(&dev->msi_lock);
- #endif
-diff --git a/include/linux/ioport.h b/include/linux/ioport.h
-index 27642ca15d932..4ae3c541ea6f4 100644
---- a/include/linux/ioport.h
-+++ b/include/linux/ioport.h
-@@ -318,6 +318,8 @@ extern void __devm_release_region(struct device *dev, struct resource *parent,
- 				  resource_size_t start, resource_size_t n);
- extern int iomem_map_sanity_check(resource_size_t addr, unsigned long size);
- extern bool iomem_is_exclusive(u64 addr);
-+extern bool resource_is_exclusive(struct resource *resource, u64 addr,
-+				  resource_size_t size);
+ struct irdma_qvlist_info {
+ 	u32 num_vectors;
+-	struct irdma_qv_info qv_info[1];
++	struct irdma_qv_info qv_info[];
+ };
  
- extern int
- walk_system_ram_range(unsigned long start_pfn, unsigned long nr_pages,
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 9f617ffdb863f..4ea8de6890bea 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -409,6 +409,7 @@ struct pci_dev {
- 	 */
- 	unsigned int	irq;
- 	struct resource resource[DEVICE_COUNT_RESOURCE]; /* I/O and memory regions + expansion ROMs */
-+	struct resource driver_exclusive_resource;	 /* driver exclusive resource ranges */
- 
- 	bool		match_driver;		/* Skip attaching driver */
- 
-@@ -1408,6 +1409,21 @@ int pci_request_selected_regions(struct pci_dev *, int, const char *);
- int pci_request_selected_regions_exclusive(struct pci_dev *, int, const char *);
- void pci_release_selected_regions(struct pci_dev *, int);
- 
-+static inline __must_check struct resource *
-+pci_request_config_region_exclusive(struct pci_dev *pdev, unsigned int offset,
-+				    unsigned int len, const char *name)
-+{
-+	return __request_region(&pdev->driver_exclusive_resource, offset, len,
-+				name, IORESOURCE_EXCLUSIVE);
-+}
-+
-+static inline void pci_release_config_region(struct pci_dev *pdev,
-+					     unsigned int offset,
-+					     unsigned int len)
-+{
-+	__release_region(&pdev->driver_exclusive_resource, offset, len);
-+}
-+
- /* drivers/pci/bus.c */
- void pci_add_resource(struct list_head *resources, struct resource *res);
- void pci_add_resource_offset(struct list_head *resources, struct resource *res,
-@@ -2487,6 +2503,7 @@ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
- #define pci_crit(pdev, fmt, arg...)	dev_crit(&(pdev)->dev, fmt, ##arg)
- #define pci_err(pdev, fmt, arg...)	dev_err(&(pdev)->dev, fmt, ##arg)
- #define pci_warn(pdev, fmt, arg...)	dev_warn(&(pdev)->dev, fmt, ##arg)
-+#define pci_warn_once(pdev, fmt, arg...) dev_warn_once(&(pdev)->dev, fmt, ##arg)
- #define pci_notice(pdev, fmt, arg...)	dev_notice(&(pdev)->dev, fmt, ##arg)
- #define pci_info(pdev, fmt, arg...)	dev_info(&(pdev)->dev, fmt, ##arg)
- #define pci_dbg(pdev, fmt, arg...)	dev_dbg(&(pdev)->dev, fmt, ##arg)
-diff --git a/kernel/resource.c b/kernel/resource.c
-index 1aeeededdd4c8..8f52f88009652 100644
---- a/kernel/resource.c
-+++ b/kernel/resource.c
-@@ -1693,18 +1693,15 @@ static int strict_iomem_checks;
-  *
-  * Returns true if exclusive to the kernel, otherwise returns false.
-  */
--bool iomem_is_exclusive(u64 addr)
-+bool resource_is_exclusive(struct resource *root, u64 addr, resource_size_t size)
- {
- 	const unsigned int exclusive_system_ram = IORESOURCE_SYSTEM_RAM |
- 						  IORESOURCE_EXCLUSIVE;
- 	bool skip_children = false, err = false;
--	int size = PAGE_SIZE;
- 	struct resource *p;
- 
--	addr = addr & PAGE_MASK;
--
- 	read_lock(&resource_lock);
--	for_each_resource(&iomem_resource, p, skip_children) {
-+	for_each_resource(root, p, skip_children) {
- 		if (p->start >= addr + size)
- 			break;
- 		if (p->end < addr) {
-@@ -1743,6 +1740,12 @@ bool iomem_is_exclusive(u64 addr)
- 	return err;
- }
- 
-+bool iomem_is_exclusive(u64 addr)
-+{
-+	return resource_is_exclusive(&iomem_resource, addr & PAGE_MASK,
-+				     PAGE_SIZE);
-+}
-+
- struct resource_entry *resource_list_create_entry(struct resource *res,
- 						  size_t extra_size)
- {
+ struct irdma_gen_ops {
 -- 
 2.40.1
 
