@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 07A4C79AF05
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C704279AE6E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237602AbjIKVUT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44802 "EHLO
+        id S244975AbjIKVIf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43866 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240720AbjIKOvy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:54 -0400
+        with ESMTP id S239399AbjIKOTo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2643118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F920C433C8;
-        Mon, 11 Sep 2023 14:51:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9560CDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD57DC433CA;
+        Mon, 11 Sep 2023 14:19:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443909;
-        bh=p+/+gcef95wooT0ZI1TLgQCuJwJxGxX8L7lNxwDZs1Q=;
+        s=korg; t=1694441980;
+        bh=5WTbxLJzVrzQhBLG95XrpPJvIZ0moMypaLHPvQgyeR4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kge+G36btWCBC4y3ilocKYF24TG4piED8zjg5LNQkhmoyqzznhsxHrpPdiK+9C7+h
-         IrkufoGbAtHL2IsJJ1Ml4//JcueN+81hUwvubmHzwQ1gAMza0VIBpQk9Vn2xFBjvit
-         khvmoRYFpsVxjRI7xH9ZYrPKgFbeuLiAcrYONj+k=
+        b=O8hFy4afmtmuz1Vj8va3CVtX/eGeC5JYwrfebQD1M1a7Xeyhaz8HvwAbXk+ptPl25
+         7LLasKoS/8pk2y6XDu0HbZw/ZDUZ7W6ao6A96Ixro0F/+xBKrjXeGYAV1/VWQ76exV
+         hS02jYoeOZZFpCJGgu5kp+kOssziD6ZvvZyELz7M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiang Yang <xiangyang3@huawei.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 543/737] IB/uverbs: Fix an potential error pointer dereference
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 603/739] leds: pwm: Fix error code in led_pwm_create_fwnode()
 Date:   Mon, 11 Sep 2023 15:46:42 +0200
-Message-ID: <20230911134705.730696234@linuxfoundation.org>
+Message-ID: <20230911134707.941190174@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiang Yang <xiangyang3@huawei.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 26b7d1a27167e7adf75b150755e05d2bc123ce55 ]
+[ Upstream commit cadb2de2a7fd9e955381307de3eddfcc386c208e ]
 
-smatch reports the warning below:
-drivers/infiniband/core/uverbs_std_types_counters.c:110
-ib_uverbs_handler_UVERBS_METHOD_COUNTERS_READ() error: 'uattr'
-dereferencing possible ERR_PTR()
+Negative -EINVAL was intended, not positive EINVAL.  Fix it.
 
-The return value of uattr maybe ERR_PTR(-ENOENT), fix this by checking
-the value of uattr before using it.
-
-Fixes: ebb6796bd397 ("IB/uverbs: Add read counters support")
-Signed-off-by: Xiang Yang <xiangyang3@huawei.com>
-Link: https://lore.kernel.org/r/20230804022525.1916766-1-xiangyang3@huawei.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 95138e01275e ("leds: pwm: Make error handling more robust")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/a33b981a-b2c4-4dc2-b00a-626a090d2f11@moroto.mountain
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/core/uverbs_std_types_counters.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/leds/leds-pwm.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/core/uverbs_std_types_counters.c b/drivers/infiniband/core/uverbs_std_types_counters.c
-index 999da9c798668..381aa57976417 100644
---- a/drivers/infiniband/core/uverbs_std_types_counters.c
-+++ b/drivers/infiniband/core/uverbs_std_types_counters.c
-@@ -107,6 +107,8 @@ static int UVERBS_HANDLER(UVERBS_METHOD_COUNTERS_READ)(
- 		return ret;
+diff --git a/drivers/leds/leds-pwm.c b/drivers/leds/leds-pwm.c
+index 29194cc382afb..87c199242f3c8 100644
+--- a/drivers/leds/leds-pwm.c
++++ b/drivers/leds/leds-pwm.c
+@@ -146,7 +146,7 @@ static int led_pwm_create_fwnode(struct device *dev, struct led_pwm_priv *priv)
+ 			led.name = to_of_node(fwnode)->name;
  
- 	uattr = uverbs_attr_get(attrs, UVERBS_ATTR_READ_COUNTERS_BUFF);
-+	if (IS_ERR(uattr))
-+		return PTR_ERR(uattr);
- 	read_attr.ncounters = uattr->ptr_attr.len / sizeof(u64);
- 	read_attr.counters_buff = uverbs_zalloc(
- 		attrs, array_size(read_attr.ncounters, sizeof(u64)));
+ 		if (!led.name) {
+-			ret = EINVAL;
++			ret = -EINVAL;
+ 			goto err_child_out;
+ 		}
+ 
 -- 
 2.40.1
 
