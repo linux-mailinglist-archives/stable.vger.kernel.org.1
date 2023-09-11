@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0434E79BBC1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64D9879BE7E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378931AbjIKWiK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:38:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56108 "EHLO
+        id S1358032AbjIKWH0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59804 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238333AbjIKNyD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:54:03 -0400
+        with ESMTP id S239719AbjIKO1H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A0D9CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C37F3C433CA;
-        Mon, 11 Sep 2023 13:53:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C5F7F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C537CC433C8;
+        Mon, 11 Sep 2023 14:27:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440439;
-        bh=jWLGLUtSvxUW8KozbI4+5TnrVEcKTuvg6sXtrRfWgGU=;
+        s=korg; t=1694442422;
+        bh=nlPWUEXLrhthKCsLaM1EPENVpnz+UFgxEKt2cvXdKr0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RNcURoo3XCCRqNPhyUWX317KF7il7VnQEDzMjvB/pcUfJuhxI4K6WojnKLWypyjc8
-         QOtN6qKYXacxyDMCvrxjWAtiXh5/ja4DqNpOX7YvBkNNNELi8l0XAD/WCMKYv4orzg
-         RW9gbyqPyHNVWtkQ0zLR/Y+btu1vU3AZTnN9PfPs=
+        b=AqqXlc6ywbcyhmURm5wzmAYqoR4W8CNwjGDyuamx+yAQ9dtpkpAUg/143WUI2M+3o
+         7txODXpvsJ8Uw8snyVOKjaTlQFirOV4Q5oWyWWcRQsaYUgLOON4FjOG9UUUzMDcyc4
+         7EW9wm1TnmTIET9hp0NXJw4YgcnpB2tKmny7ocFw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sumit Gupta <sumitg@nvidia.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Wang Ming <machel@vivo.com>,
+        Tom Talpey <tom@talpey.com>,
+        Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 062/739] cpufreq: tegra194: remove opp table in exit hook
-Date:   Mon, 11 Sep 2023 15:37:41 +0200
-Message-ID: <20230911134652.842826676@linuxfoundation.org>
+Subject: [PATCH 6.4 003/737] ksmbd: Fix unsigned expression compared with zero
+Date:   Mon, 11 Sep 2023 15:37:42 +0200
+Message-ID: <20230911134650.396046322@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,63 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sumit Gupta <sumitg@nvidia.com>
+From: Wang Ming <machel@vivo.com>
 
-[ Upstream commit de0e85b29edfc68046d587c7d67bbd2bdc31b73f ]
+[ Upstream commit 0266a2f791294e0b4ba36f4a1d89b8615ea3cac0 ]
 
-Add exit hook and remove OPP table when the device gets unregistered.
-This will fix the error messages when the CPU FREQ driver module is
-removed and then re-inserted. It also fixes these messages while
-onlining the first CPU from a policy whose all CPU's were previously
-offlined.
+The return value of the ksmbd_vfs_getcasexattr() is signed.
+However, the return value is being assigned to an unsigned
+variable and subsequently recasted, causing warnings. Use
+a signed type.
 
- debugfs: File 'cpu5' in directory 'opp' already present!
- debugfs: File 'cpu6' in directory 'opp' already present!
- debugfs: File 'cpu7' in directory 'opp' already present!
-
-Fixes: f41e1442ac5b ("cpufreq: tegra194: add OPP support and set bandwidth")
-Signed-off-by: Sumit Gupta <sumitg@nvidia.com>
-[ Viresh: Dropped irrelevant change from it ]
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+Signed-off-by: Wang Ming <machel@vivo.com>
+Acked-by: Tom Talpey <tom@talpey.com>
+Acked-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/tegra194-cpufreq.c | 12 ++++++++++++
- 1 file changed, 12 insertions(+)
+ fs/smb/server/vfs.c | 7 ++++---
+ 1 file changed, 4 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/cpufreq/tegra194-cpufreq.c b/drivers/cpufreq/tegra194-cpufreq.c
-index 4f572eb7842f5..75f1e611d0aab 100644
---- a/drivers/cpufreq/tegra194-cpufreq.c
-+++ b/drivers/cpufreq/tegra194-cpufreq.c
-@@ -520,6 +520,17 @@ static int tegra194_cpufreq_offline(struct cpufreq_policy *policy)
- 	 * Preserve policy->driver_data and don't free resources on light-weight
- 	 * tear down.
- 	 */
-+
-+	return 0;
-+}
-+
-+static int tegra194_cpufreq_exit(struct cpufreq_policy *policy)
-+{
-+	struct device *cpu_dev = get_cpu_device(policy->cpu);
-+
-+	dev_pm_opp_remove_all_dynamic(cpu_dev);
-+	dev_pm_opp_of_cpumask_remove_table(policy->related_cpus);
-+
- 	return 0;
- }
+diff --git a/fs/smb/server/vfs.c b/fs/smb/server/vfs.c
+index 911cb3d294b86..93f73c35a9c5c 100644
+--- a/fs/smb/server/vfs.c
++++ b/fs/smb/server/vfs.c
+@@ -423,7 +423,8 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ {
+ 	char *stream_buf = NULL, *wbuf;
+ 	struct mnt_idmap *idmap = file_mnt_idmap(fp->filp);
+-	size_t size, v_len;
++	size_t size;
++	ssize_t v_len;
+ 	int err = 0;
  
-@@ -550,6 +561,7 @@ static struct cpufreq_driver tegra194_cpufreq_driver = {
- 	.target_index = tegra194_cpufreq_set_target,
- 	.get = tegra194_get_speed,
- 	.init = tegra194_cpufreq_init,
-+	.exit = tegra194_cpufreq_exit,
- 	.online = tegra194_cpufreq_online,
- 	.offline = tegra194_cpufreq_offline,
- 	.attr = cpufreq_generic_attr,
+ 	ksmbd_debug(VFS, "write stream data pos : %llu, count : %zd\n",
+@@ -440,9 +441,9 @@ static int ksmbd_vfs_stream_write(struct ksmbd_file *fp, char *buf, loff_t *pos,
+ 				       fp->stream.name,
+ 				       fp->stream.size,
+ 				       &stream_buf);
+-	if ((int)v_len < 0) {
++	if (v_len < 0) {
+ 		pr_err("not found stream in xattr : %zd\n", v_len);
+-		err = (int)v_len;
++		err = v_len;
+ 		goto out;
+ 	}
+ 
 -- 
 2.40.1
 
