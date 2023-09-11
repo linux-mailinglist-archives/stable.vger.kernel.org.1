@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 66EB779B578
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1BDBD79B0BE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346168AbjIKVXF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:23:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45066 "EHLO
+        id S238581AbjIKViN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:38:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42430 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242166AbjIKPYD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:03 -0400
+        with ESMTP id S239637AbjIKOZE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDDD1D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35D74C433C8;
-        Mon, 11 Sep 2023 15:23:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220FEDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F3AC433C8;
+        Mon, 11 Sep 2023 14:24:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445838;
-        bh=JODkoDCa3jNZIBI6n0a03kP1QAEHKU1iyn79rYkPcBw=;
+        s=korg; t=1694442299;
+        bh=qwhAqAE/5ARGmNqUMFCsiM/sJGf7+NsmsTPPhviAU2c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GKNE+pO23mhSRN0RQ1UtLMA+ZOoEqWWN/9JscBoReCmJvdaAu9i5+wH0aoLW2m0pm
-         r9ifKHyHSPbhgTWmXpq8R55SiVYijL30Z052Dw1Znff88IawbXipbAyHYUajoEWwEi
-         4bejmUTcGLJ5ept2A5hRGTNvYIsDzNVrtMnb41e8=
+        b=bm0OjNksaJzSPDI7y0aG0XonS7TA1GXDFP/c+RhvxcBTMmmZXpLtm10N+tyQuEWQH
+         XJ4/3SxoMgzxbqwJPpfClqsgzW5UrqXGWLoqkEudiEKOa7j7CdEjxUxRZvugKaV1UA
+         rCErXwpIYqoDynFRrudBETmhiH7ccot44qQvMDIM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 482/600] scsi: fcoe: Fix potential deadlock on &fip->ctlr_lock
+        patches@lists.linux.dev, Sven Schnelle <svens@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>
+Subject: [PATCH 6.5 716/739] s390/ipl: add missing secure/has_secure file to ipl type unknown
 Date:   Mon, 11 Sep 2023 15:48:35 +0200
-Message-ID: <20230911134647.867040142@linuxfoundation.org>
+Message-ID: <20230911134711.085388143@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,160 +49,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengfeng Ye <dg573847474@gmail.com>
+From: Sven Schnelle <svens@linux.ibm.com>
 
-[ Upstream commit 1a1975551943f681772720f639ff42fbaa746212 ]
+commit ea5717cb13468323a7c3dd394748301802991f39 upstream.
 
-There is a long call chain that &fip->ctlr_lock is acquired by isr
-fnic_isr_msix_wq_copy() under hard IRQ context. Thus other process context
-code acquiring the lock should disable IRQ, otherwise deadlock could happen
-if the IRQ preempts the execution while the lock is held in process context
-on the same CPU.
+OS installers are relying on /sys/firmware/ipl/has_secure to be
+present on machines supporting secure boot. This file is present
+for all IPL types, but not the unknown type, which prevents a secure
+installation when an LPAR is booted in HMC via FTP(s), because
+this is an unknown IPL type in linux. While at it, also add the secure
+file.
 
-[ISR]
-fnic_isr_msix_wq_copy()
- -> fnic_wq_copy_cmpl_handler()
- -> fnic_fcpio_cmpl_handler()
- -> fnic_fcpio_flogi_reg_cmpl_handler()
- -> fnic_flush_tx()
- -> fnic_send_frame()
- -> fcoe_ctlr_els_send()
- -> spin_lock_bh(&fip->ctlr_lock)
-
-[Process Context]
-1. fcoe_ctlr_timer_work()
- -> fcoe_ctlr_flogi_send()
- -> spin_lock_bh(&fip->ctlr_lock)
-
-2. fcoe_ctlr_recv_work()
- -> fcoe_ctlr_recv_handler()
- -> fcoe_ctlr_recv_els()
- -> fcoe_ctlr_announce()
- -> spin_lock_bh(&fip->ctlr_lock)
-
-3. fcoe_ctlr_recv_work()
- -> fcoe_ctlr_recv_handler()
- -> fcoe_ctlr_recv_els()
- -> fcoe_ctlr_flogi_retry()
- -> spin_lock_bh(&fip->ctlr_lock)
-
-4. -> fcoe_xmit()
- -> fcoe_ctlr_els_send()
- -> spin_lock_bh(&fip->ctlr_lock)
-
-spin_lock_bh() is not enough since fnic_isr_msix_wq_copy() is a
-hardirq.
-
-These flaws were found by an experimental static analysis tool I am
-developing for irq-related deadlock.
-
-The patch fix the potential deadlocks by spin_lock_irqsave() to disable
-hard irq.
-
-Fixes: 794d98e77f59 ("[SCSI] libfcoe: retry rejected FLOGI to another FCF if possible")
-Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
-Link: https://lore.kernel.org/r/20230817074708.7509-1-dg573847474@gmail.com
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Fixes: c9896acc7851 ("s390/ipl: Provide has_secure sysfs attribute")
+Cc: stable@vger.kernel.org
+Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
+Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/scsi/fcoe/fcoe_ctlr.c | 20 ++++++++++++--------
- 1 file changed, 12 insertions(+), 8 deletions(-)
+ arch/s390/kernel/ipl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/scsi/fcoe/fcoe_ctlr.c b/drivers/scsi/fcoe/fcoe_ctlr.c
-index ddc048069af25..8a4124e7d2043 100644
---- a/drivers/scsi/fcoe/fcoe_ctlr.c
-+++ b/drivers/scsi/fcoe/fcoe_ctlr.c
-@@ -319,16 +319,17 @@ static void fcoe_ctlr_announce(struct fcoe_ctlr *fip)
- {
- 	struct fcoe_fcf *sel;
- 	struct fcoe_fcf *fcf;
-+	unsigned long flags;
+--- a/arch/s390/kernel/ipl.c
++++ b/arch/s390/kernel/ipl.c
+@@ -640,6 +640,8 @@ static struct attribute_group ipl_ccw_at
  
- 	mutex_lock(&fip->ctlr_mutex);
--	spin_lock_bh(&fip->ctlr_lock);
-+	spin_lock_irqsave(&fip->ctlr_lock, flags);
+ static struct attribute *ipl_unknown_attrs[] = {
+ 	&sys_ipl_type_attr.attr,
++	&sys_ipl_secure_attr.attr,
++	&sys_ipl_has_secure_attr.attr,
+ 	NULL,
+ };
  
- 	kfree_skb(fip->flogi_req);
- 	fip->flogi_req = NULL;
- 	list_for_each_entry(fcf, &fip->fcfs, list)
- 		fcf->flogi_sent = 0;
- 
--	spin_unlock_bh(&fip->ctlr_lock);
-+	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
- 	sel = fip->sel_fcf;
- 
- 	if (sel && ether_addr_equal(sel->fcf_mac, fip->dest_addr))
-@@ -699,6 +700,7 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr *fip, struct fc_lport *lport,
- {
- 	struct fc_frame *fp;
- 	struct fc_frame_header *fh;
-+	unsigned long flags;
- 	u16 old_xid;
- 	u8 op;
- 	u8 mac[ETH_ALEN];
-@@ -732,11 +734,11 @@ int fcoe_ctlr_els_send(struct fcoe_ctlr *fip, struct fc_lport *lport,
- 		op = FIP_DT_FLOGI;
- 		if (fip->mode == FIP_MODE_VN2VN)
- 			break;
--		spin_lock_bh(&fip->ctlr_lock);
-+		spin_lock_irqsave(&fip->ctlr_lock, flags);
- 		kfree_skb(fip->flogi_req);
- 		fip->flogi_req = skb;
- 		fip->flogi_req_send = 1;
--		spin_unlock_bh(&fip->ctlr_lock);
-+		spin_unlock_irqrestore(&fip->ctlr_lock, flags);
- 		schedule_work(&fip->timer_work);
- 		return -EINPROGRESS;
- 	case ELS_FDISC:
-@@ -1705,10 +1707,11 @@ static int fcoe_ctlr_flogi_send_locked(struct fcoe_ctlr *fip)
- static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
- {
- 	struct fcoe_fcf *fcf;
-+	unsigned long flags;
- 	int error;
- 
- 	mutex_lock(&fip->ctlr_mutex);
--	spin_lock_bh(&fip->ctlr_lock);
-+	spin_lock_irqsave(&fip->ctlr_lock, flags);
- 	LIBFCOE_FIP_DBG(fip, "re-sending FLOGI - reselect\n");
- 	fcf = fcoe_ctlr_select(fip);
- 	if (!fcf || fcf->flogi_sent) {
-@@ -1719,7 +1722,7 @@ static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
- 		fcoe_ctlr_solicit(fip, NULL);
- 		error = fcoe_ctlr_flogi_send_locked(fip);
- 	}
--	spin_unlock_bh(&fip->ctlr_lock);
-+	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
- 	mutex_unlock(&fip->ctlr_mutex);
- 	return error;
- }
-@@ -1736,8 +1739,9 @@ static int fcoe_ctlr_flogi_retry(struct fcoe_ctlr *fip)
- static void fcoe_ctlr_flogi_send(struct fcoe_ctlr *fip)
- {
- 	struct fcoe_fcf *fcf;
-+	unsigned long flags;
- 
--	spin_lock_bh(&fip->ctlr_lock);
-+	spin_lock_irqsave(&fip->ctlr_lock, flags);
- 	fcf = fip->sel_fcf;
- 	if (!fcf || !fip->flogi_req_send)
- 		goto unlock;
-@@ -1764,7 +1768,7 @@ static void fcoe_ctlr_flogi_send(struct fcoe_ctlr *fip)
- 	} else /* XXX */
- 		LIBFCOE_FIP_DBG(fip, "No FCF selected - defer send\n");
- unlock:
--	spin_unlock_bh(&fip->ctlr_lock);
-+	spin_unlock_irqrestore(&fip->ctlr_lock, flags);
- }
- 
- /**
--- 
-2.40.1
-
 
 
