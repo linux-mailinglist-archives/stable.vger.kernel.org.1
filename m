@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CD7B579BAA9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B071379BA04
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354110AbjIKVwb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33176 "EHLO
+        id S238048AbjIKVaj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240745AbjIKOwk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:40 -0400
+        with ESMTP id S241965AbjIKPTM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A6FBF118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EC2ABC433C7;
-        Mon, 11 Sep 2023 14:52:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6F27FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CB9CC433C7;
+        Mon, 11 Sep 2023 15:19:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443955;
-        bh=q5VdpTI7dgKTg9lgnBapJwOidCOoBpgxELjyk8eTehw=;
+        s=korg; t=1694445547;
+        bh=qGcd7qRDux0RXtA1dRWOAh7f0Xz9gPXf5QSalVachBs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=C1RhH4TdlwC4a8KNP66UHq75CI4BO0H+lXXAokWPymu5m2JCZa1jLFGqMqMs3upVe
-         glQP7tT/137R76smgf0b5CoYBqXvY+EHhEb5rWrOsltyzN37X6fcHNnUVJJCzeO8bm
-         6ItWtuF9XBAypBMXq0PrE0XARWvUM/0uNCY10Rtc=
+        b=rqFRv0xzHHbiXl4ZSo8SOJcWBTYHnx/3FO3YGFH0I9Wc8t0kMjaYsY8Be/2gRBRt6
+         rB7RKywo+udNuag5OiGZ3S7kIz55d3xlOJdq0hpe4rU0qBcI6jivpnYj1LYUbWndJI
+         UsL0IX37cBNloHx9otg3PC/eHGvPMTv7Zqd8WODk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Gow <davidgow@google.com>,
-        Maxime Ripard <mripard@kernel.org>,
+        patches@lists.linux.dev, Benjamin Coddington <bcodding@redhat.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 560/737] drivers: base: Free devm resources when unregistering a device
+Subject: [PATCH 6.1 386/600] NFS: Guard against READDIR loop when entry names exceed MAXNAMELEN
 Date:   Mon, 11 Sep 2023 15:46:59 +0200
-Message-ID: <20230911134706.192168034@linuxfoundation.org>
+Message-ID: <20230911134645.069997889@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,66 +50,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Gow <davidgow@google.com>
+From: Benjamin Coddington <bcodding@redhat.com>
 
-[ Upstream commit 699fb50d99039a50e7494de644f96c889279aca3 ]
+[ Upstream commit f67b55b6588bcf9316a1e6e8d529100a5aa3ebe6 ]
 
-In the current code, devres_release_all() only gets called if the device
-has a bus and has been probed.
+Commit 64cfca85bacd asserts the only valid return values for
+nfs2/3_decode_dirent should not include -ENAMETOOLONG, but for a server
+that sends a filename3 which exceeds MAXNAMELEN in a READDIR response the
+client's behavior will be to endlessly retry the operation.
 
-This leads to issues when using bus-less or driver-less devices where
-the device might never get freed if a managed resource holds a reference
-to the device. This is happening in the DRM framework for example.
+We could map -ENAMETOOLONG into -EBADCOOKIE, but that would produce
+truncated listings without any error.  The client should return an error
+for this case to clearly assert that the server implementation must be
+corrected.
 
-We should thus call devres_release_all() in the device_del() function to
-make sure that the device-managed actions are properly executed when the
-device is unregistered, even if it has neither a bus nor a driver.
-
-This is effectively the same change than commit 2f8d16a996da ("devres:
-release resources on device_del()") that got reverted by commit
-a525a3ddeaca ("driver core: free devres in device_release") over
-memory leaks concerns.
-
-This patch effectively combines the two commits mentioned above to
-release the resources both on device_del() and device_release() and get
-the best of both worlds.
-
-Fixes: a525a3ddeaca ("driver core: free devres in device_release")
-Signed-off-by: David Gow <davidgow@google.com>
-Signed-off-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230720-kunit-devm-inconsistencies-test-v3-3-6aa7e074f373@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 64cfca85bacd ("NFS: Return valid errors from nfs2/3_decode_dirent()")
+Signed-off-by: Benjamin Coddington <bcodding@redhat.com>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/core.c | 11 +++++++++++
- 1 file changed, 11 insertions(+)
+ fs/nfs/nfs2xdr.c | 2 +-
+ fs/nfs/nfs3xdr.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/core.c b/drivers/base/core.c
-index 3dff5037943e0..6ceaf50f5a671 100644
---- a/drivers/base/core.c
-+++ b/drivers/base/core.c
-@@ -3817,6 +3817,17 @@ void device_del(struct device *dev)
- 	device_platform_notify_remove(dev);
- 	device_links_purge(dev);
+diff --git a/fs/nfs/nfs2xdr.c b/fs/nfs/nfs2xdr.c
+index 05c3b4b2b3dd8..c190938142960 100644
+--- a/fs/nfs/nfs2xdr.c
++++ b/fs/nfs/nfs2xdr.c
+@@ -949,7 +949,7 @@ int nfs2_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
  
-+	/*
-+	 * If a device does not have a driver attached, we need to clean
-+	 * up any managed resources. We do this in device_release(), but
-+	 * it's never called (and we leak the device) if a managed
-+	 * resource holds a reference to the device. So release all
-+	 * managed resources here, like we do in driver_detach(). We
-+	 * still need to do so again in device_release() in case someone
-+	 * adds a new resource after this point, though.
-+	 */
-+	devres_release_all(dev);
-+
- 	bus_notify(dev, BUS_NOTIFY_REMOVED_DEVICE);
- 	kobject_uevent(&dev->kobj, KOBJ_REMOVE);
- 	glue_dir = get_glue_dir(dev);
+ 	error = decode_filename_inline(xdr, &entry->name, &entry->len);
+ 	if (unlikely(error))
+-		return -EAGAIN;
++		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
+ 
+ 	/*
+ 	 * The type (size and byte order) of nfscookie isn't defined in
+diff --git a/fs/nfs/nfs3xdr.c b/fs/nfs/nfs3xdr.c
+index 3b0b650c9c5ab..60f032be805ae 100644
+--- a/fs/nfs/nfs3xdr.c
++++ b/fs/nfs/nfs3xdr.c
+@@ -1991,7 +1991,7 @@ int nfs3_decode_dirent(struct xdr_stream *xdr, struct nfs_entry *entry,
+ 
+ 	error = decode_inline_filename3(xdr, &entry->name, &entry->len);
+ 	if (unlikely(error))
+-		return -EAGAIN;
++		return error == -ENAMETOOLONG ? -ENAMETOOLONG : -EAGAIN;
+ 
+ 	error = decode_cookie3(xdr, &new_cookie);
+ 	if (unlikely(error))
 -- 
 2.40.1
 
