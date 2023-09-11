@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D479779BB77
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3FBF679BFE1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357934AbjIKWG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39152 "EHLO
+        id S1376655AbjIKWUK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35362 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238682AbjIKOCh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:02:37 -0400
+        with ESMTP id S240083AbjIKOgN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F4B3CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 836E2C433C7;
-        Mon, 11 Sep 2023 14:02:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31F92F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79371C433C8;
+        Mon, 11 Sep 2023 14:36:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440952;
-        bh=ETW/1nhFfISTgB4chXa7ckgy2b3ZW+cHudf9K9WFEG8=;
+        s=korg; t=1694442968;
+        bh=00iuae5JbGwT1LwcMk0YSqpaBvYIEmC1lvCMRwk3MA4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DLlskaH0bNcJ/qt8VJ+Q9HQcfZ+OWw4xoVFxmCwh/DPZiFmjU02hPnpERjy/3LLx9
-         FRENlMOua+sEduHJ8kYtSQtNYubQQ1Wi/VL8Mxy1WUZ9XFe070UC2frKFBS6WQKwNP
-         G2PBONppKv/72IoxEphHGln5Ne3Ze5ObsddHx/Tw=
+        b=DR76MMRxOz6k2FW/0WYrVONF/aGkQeVdIjJbB4vY6XMVQu15IxJzhaG8yb8YBg/Bn
+         nU+lsV/+wUAtiJ635RuTGIk0Jg1A1jkCH0dmuvfquhJAWmHlEr10es3G351LxeNn4r
+         iXAHgAgvLGqfDh3KWKqhBUmbG0OCqJ0U3TmQvmWU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 243/739] ARM: dts: stm32: Add missing detach mailbox for DHCOR SoM
-Date:   Mon, 11 Sep 2023 15:40:42 +0200
-Message-ID: <20230911134657.949786503@linuxfoundation.org>
+Subject: [PATCH 6.4 184/737] wifi: ath12k: fix memcpy array overflow in ath12k_peer_assoc_h_he()
+Date:   Mon, 11 Sep 2023 15:40:43 +0200
+Message-ID: <20230911134655.710692118@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +50,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit 2f38de940f072db369edd3e6e8d82bb8f42c5c9b ]
+[ Upstream commit 603cf6c2fcdcbc38f1daa316794e7268852677a7 ]
 
-Add missing "detach" mailbox to this board to permit the CPU to inform
-the remote processor on a detach. This signal allows the remote processor
-firmware to stop IPC communication and to reinitialize the resources for
-a re-attach.
+Two memory copies in this function copy from a short array into a longer one,
+using the wrong size, which leads to an out-of-bounds access:
 
-Without this mailbox, detach is not possible and kernel log contains the
-following warning to, so make sure all the STM32MP15xx platform DTs are
-in sync regarding the mailboxes to fix the detach issue and the warning:
-"
-stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
-"
+include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+                        __read_overflow2_field(q_size_field, size);
+                        ^
+include/linux/fortify-string.h:592:4: error: call to '__read_overflow2_field' declared with 'warning' attribute: detected read beyond size of field (2nd parameter); maybe use struct_group()? [-Werror,-Wattribute-warning]
+2 errors generated.
 
-Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: d889913205cf7 ("wifi: ath12k: driver for Qualcomm Wi-Fi 7 devices")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230703123737.3420464-1-arnd@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/st/stm32mp15xx-dhcor-som.dtsi | 4 ++--
+ drivers/net/wireless/ath/ath12k/mac.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/st/stm32mp15xx-dhcor-som.dtsi b/arch/arm/boot/dts/st/stm32mp15xx-dhcor-som.dtsi
-index bba19f21e5277..89881a26c6141 100644
---- a/arch/arm/boot/dts/st/stm32mp15xx-dhcor-som.dtsi
-+++ b/arch/arm/boot/dts/st/stm32mp15xx-dhcor-som.dtsi
-@@ -227,8 +227,8 @@ &iwdg2 {
- &m4_rproc {
- 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
- 			<&vdev0vring1>, <&vdev0buffer>;
--	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
--	mbox-names = "vq0", "vq1", "shutdown";
-+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
-+	mbox-names = "vq0", "vq1", "shutdown", "detach";
- 	interrupt-parent = <&exti>;
- 	interrupts = <68 1>;
- 	status = "okay";
+diff --git a/drivers/net/wireless/ath/ath12k/mac.c b/drivers/net/wireless/ath/ath12k/mac.c
+index 58acfe8fdf8c0..faccea2d8148c 100644
+--- a/drivers/net/wireless/ath/ath12k/mac.c
++++ b/drivers/net/wireless/ath/ath12k/mac.c
+@@ -1634,9 +1634,9 @@ static void ath12k_peer_assoc_h_he(struct ath12k *ar,
+ 	arg->peer_nss = min(sta->deflink.rx_nss, max_nss);
+ 
+ 	memcpy(&arg->peer_he_cap_macinfo, he_cap->he_cap_elem.mac_cap_info,
+-	       sizeof(arg->peer_he_cap_macinfo));
++	       sizeof(he_cap->he_cap_elem.mac_cap_info));
+ 	memcpy(&arg->peer_he_cap_phyinfo, he_cap->he_cap_elem.phy_cap_info,
+-	       sizeof(arg->peer_he_cap_phyinfo));
++	       sizeof(he_cap->he_cap_elem.phy_cap_info));
+ 	arg->peer_he_ops = vif->bss_conf.he_oper.params;
+ 
+ 	/* the top most byte is used to indicate BSS color info */
 -- 
 2.40.1
 
