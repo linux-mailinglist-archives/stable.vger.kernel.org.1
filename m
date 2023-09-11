@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 182DE79B4A8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2DCA879B4E9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355233AbjIKV5c (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38888 "EHLO
+        id S1348907AbjIKVbk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51652 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240497AbjIKOpo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:44 -0400
+        with ESMTP id S239166AbjIKONb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55E8BCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F44FC433C8;
-        Mon, 11 Sep 2023 14:45:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E775DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4558C433C8;
+        Mon, 11 Sep 2023 14:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443540;
-        bh=5bsPloSkr1GpG1WwvWZyDoKEE2sHRr2Wc2oM/hnA+yA=;
+        s=korg; t=1694441607;
+        bh=BXmD4Z4TiQ3D1J5g2f4JPlplX7YNEk/33J91fxB/kBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Quzd/pEvQEqbuTVm1jb0c0l5QkpsGKiwgPjR1H+CNFIqO1XooVodAWecD/XMEqTqE
-         T3B/dYJ6ddrsD3jb7kcdMY67S0KWVFzEqVFmEBjTZX5vU+qGUqIfFNdJxQRqxKiufF
-         ES6roQP+E9gVR/ihhOI86fdUwk1nGExsgpQNoLUo=
+        b=YsWeE355tcps1HBghkYxpvYLldY/3MxAKxVyydMCRF2fuHEHy4H5NsbgQ2xCtukmb
+         rGqT/OjvQDiHsAxLsSSm9o+YtIT4iEBwN5Zu5/RDow/XlQnp5LNvRXCzwQbCPWGe6h
+         YVBx1MpMtMiX+BoTtGY2q3fR934etmAfRC0yWasI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Ming Qian <ming.qian@nxp.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 413/737] clk: qcom: gcc-sc8280xp: Add missing GDSCs
+Subject: [PATCH 6.5 473/739] media: amphion: fix UNINIT issues reported by coverity
 Date:   Mon, 11 Sep 2023 15:44:32 +0200
-Message-ID: <20230911134702.154335843@linuxfoundation.org>
+Message-ID: <20230911134704.357217878@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,145 +52,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit 4712eb7ff85bd3dd09c6668b8de4080e02b3eea9 ]
+[ Upstream commit c224d0497a31ea2d173e1ea16af308945bff9037 ]
 
-There are 10 more GDSCs that we've not been caring about, and by extension
-(and perhaps even more importantly), not putting to sleep. Add them.
+using uninitialized value may introduce risk
 
-Fixes: d65d005f9a6c ("clk: qcom: add sc8280xp GCC driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-3-562c1428c10d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8280xp.c | 100 ++++++++++++++++++++++++++++++++
- 1 file changed, 100 insertions(+)
+ drivers/media/platform/amphion/vpu_msgs.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8280xp.c b/drivers/clk/qcom/gcc-sc8280xp.c
-index 43c518e5c986b..57bbd609151cd 100644
---- a/drivers/clk/qcom/gcc-sc8280xp.c
-+++ b/drivers/clk/qcom/gcc-sc8280xp.c
-@@ -6896,6 +6896,96 @@ static struct gdsc emac_1_gdsc = {
- 	.flags = RETAIN_FF_ENABLE,
- };
+diff --git a/drivers/media/platform/amphion/vpu_msgs.c b/drivers/media/platform/amphion/vpu_msgs.c
+index f9eb488d1b5e2..d0ead051f7d18 100644
+--- a/drivers/media/platform/amphion/vpu_msgs.c
++++ b/drivers/media/platform/amphion/vpu_msgs.c
+@@ -32,7 +32,7 @@ static void vpu_session_handle_start_done(struct vpu_inst *inst, struct vpu_rpc_
  
-+static struct gdsc usb4_1_gdsc = {
-+	.gdscr = 0xb8004,
-+	.pd = {
-+		.name = "usb4_1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
-+};
-+
-+static struct gdsc usb4_gdsc = {
-+	.gdscr = 0x2a004,
-+	.pd = {
-+		.name = "usb4_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
-+	.gdscr = 0x7d050,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
-+	.gdscr = 0x7d058,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc = {
-+	.gdscr = 0x7d054,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc = {
-+	.gdscr = 0x7d06c,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
-+	.gdscr = 0x7d05c,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
-+	.gdscr = 0x7d060,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu2_gdsc = {
-+	.gdscr = 0x7d0a0,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu2_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu3_gdsc = {
-+	.gdscr = 0x7d0a4,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu3_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
- static struct clk_regmap *gcc_sc8280xp_clocks[] = {
- 	[GCC_AGGRE_NOC_PCIE0_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie0_tunnel_axi_clk.clkr,
- 	[GCC_AGGRE_NOC_PCIE1_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie1_tunnel_axi_clk.clkr,
-@@ -7376,6 +7466,16 @@ static struct gdsc *gcc_sc8280xp_gdscs[] = {
- 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
- 	[EMAC_0_GDSC] = &emac_0_gdsc,
- 	[EMAC_1_GDSC] = &emac_1_gdsc,
-+	[USB4_1_GDSC] = &usb4_1_gdsc,
-+	[USB4_GDSC] = &usb4_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_SF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_SF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU2_GDSC] = &hlos1_vote_turing_mmu_tbu2_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU3_GDSC] = &hlos1_vote_turing_mmu_tbu3_gdsc,
- };
+ static void vpu_session_handle_mem_request(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_pkt_mem_req_data req_data;
++	struct vpu_pkt_mem_req_data req_data = { 0 };
  
- static const struct clk_rcg_dfs_data gcc_dfs_clocks[] = {
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&req_data);
+ 	vpu_trace(inst->dev, "[%d] %d:%d %d:%d %d:%d\n",
+@@ -80,7 +80,7 @@ static void vpu_session_handle_resolution_change(struct vpu_inst *inst, struct v
+ 
+ static void vpu_session_handle_enc_frame_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_enc_pic_info info;
++	struct vpu_enc_pic_info info = { 0 };
+ 
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&info);
+ 	dev_dbg(inst->dev, "[%d] frame id = %d, wptr = 0x%x, size = %d\n",
+@@ -90,7 +90,7 @@ static void vpu_session_handle_enc_frame_done(struct vpu_inst *inst, struct vpu_
+ 
+ static void vpu_session_handle_frame_request(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_fs_info fs;
++	struct vpu_fs_info fs = { 0 };
+ 
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, &fs);
+ 	call_void_vop(inst, event_notify, VPU_MSG_ID_FRAME_REQ, &fs);
+@@ -107,7 +107,7 @@ static void vpu_session_handle_frame_release(struct vpu_inst *inst, struct vpu_r
+ 		info.type = inst->out_format.type;
+ 		call_void_vop(inst, buf_done, &info);
+ 	} else if (inst->core->type == VPU_CORE_TYPE_DEC) {
+-		struct vpu_fs_info fs;
++		struct vpu_fs_info fs = { 0 };
+ 
+ 		vpu_iface_unpack_msg_data(inst->core, pkt, &fs);
+ 		call_void_vop(inst, event_notify, VPU_MSG_ID_FRAME_RELEASE, &fs);
+@@ -122,7 +122,7 @@ static void vpu_session_handle_input_done(struct vpu_inst *inst, struct vpu_rpc_
+ 
+ static void vpu_session_handle_pic_decoded(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_dec_pic_info info;
++	struct vpu_dec_pic_info info = { 0 };
+ 
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&info);
+ 	call_void_vop(inst, get_one_frame, &info);
+@@ -130,7 +130,7 @@ static void vpu_session_handle_pic_decoded(struct vpu_inst *inst, struct vpu_rpc
+ 
+ static void vpu_session_handle_pic_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_dec_pic_info info;
++	struct vpu_dec_pic_info info = { 0 };
+ 	struct vpu_frame_info frame;
+ 
+ 	memset(&frame, 0, sizeof(frame));
 -- 
 2.40.1
 
