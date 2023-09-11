@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D99B79B589
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F093779B2AA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355664AbjIKWBo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:01:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38596 "EHLO
+        id S1349137AbjIKVco (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33310 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239506AbjIKOW3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:29 -0400
+        with ESMTP id S240817AbjIKOyn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4877FDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91BC7C433C8;
-        Mon, 11 Sep 2023 14:22:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF3AE40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFE1C433C7;
+        Mon, 11 Sep 2023 14:54:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442144;
-        bh=M4tTHqXx16nFH5ld0f22lfW56bAGgQ8MCTIMHIZZn+s=;
+        s=korg; t=1694444078;
+        bh=6k+YPnSfRoqD3a3tB73kKxaDzI83Ua8mKnbg+cZLGJg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TCcoQIgdJbj20HmW/SztMUcr+1Pg/NqqcnFzZIsjULlJelD5TjEPZNfmw8FSLxraF
-         MaG6ta3xbywStymDhBp0ikUknoAe1G2JK/6sTWx0f9ferf3+FEPAY7FQnkLCs1SsEH
-         wWueCNRePMOrlRokuCI+gP7PQFMo0I7zOsRd8NPc=
+        b=g2psPgqd6aGu5ee5lE2aLSuSisP1bQZncsB1NotCYHU3r5V/4Lgd+vRyYW+O7jcQt
+         n/PAF0wZR0hKfGePpTcAp1Nv+qLKUJg3bJB9L/AzqFggOrF8DfifFXLnEAaAtmr4t+
+         mQplckqzUnpkf+j0wlBZtRoRZ9cF6CGhFIZqPl/I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.5 661/739] io_uring/net: dont overflow multishot recv
-Date:   Mon, 11 Sep 2023 15:47:40 +0200
-Message-ID: <20230911134709.571713867@linuxfoundation.org>
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mikhail Kobuk <m.kobuk@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 602/737] tracing: Remove extra space at the end of hwlat_detector/mode
+Date:   Mon, 11 Sep 2023 15:47:41 +0200
+Message-ID: <20230911134707.352776322@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,37 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-commit b2e74db55dd93d6db22a813c9a775b5dbf87c560 upstream.
+[ Upstream commit 2cf0dee989a8b2501929eaab29473b6b1fa11057 ]
 
-Don't allow overflowing multishot recv CQEs, it might get out of
-hand, hurt performance, and in the worst case scenario OOM the task.
+Space is printed after each mode value including the last one:
+$ echo \"$(sudo cat /sys/kernel/tracing/hwlat_detector/mode)\"
+"none [round-robin] per-cpu "
 
-Cc: stable@vger.kernel.org
-Fixes: b3fdea6ecb55c ("io_uring: multishot recv")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/0b295634e8f1b71aa764c984608c22d85f88f75c.1691757663.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
+
+Link: https://lore.kernel.org/linux-trace-kernel/20230825103432.7750-1-m.kobuk@ispras.ru
+
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 8fa826b7344d ("trace/hwlat: Implement the mode config option")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Reviewed-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Acked-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/net.c |    2 +-
+ kernel/trace/trace_hwlat.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/io_uring/net.c
-+++ b/io_uring/net.c
-@@ -642,7 +642,7 @@ static inline bool io_recv_finish(struct
+diff --git a/kernel/trace/trace_hwlat.c b/kernel/trace/trace_hwlat.c
+index 2f37a6e68aa9f..b791524a6536a 100644
+--- a/kernel/trace/trace_hwlat.c
++++ b/kernel/trace/trace_hwlat.c
+@@ -635,7 +635,7 @@ static int s_mode_show(struct seq_file *s, void *v)
+ 	else
+ 		seq_printf(s, "%s", thread_mode_str[mode]);
  
- 	if (!mshot_finished) {
- 		if (io_aux_cqe(req, issue_flags & IO_URING_F_COMPLETE_DEFER,
--			       *ret, cflags | IORING_CQE_F_MORE, true)) {
-+			       *ret, cflags | IORING_CQE_F_MORE, false)) {
- 			io_recv_prep_retry(req);
- 			/* Known not-empty or unknown state, retry */
- 			if (cflags & IORING_CQE_F_SOCK_NONEMPTY ||
+-	if (mode != MODE_MAX)
++	if (mode < MODE_MAX - 1) /* if mode is any but last */
+ 		seq_puts(s, " ");
+ 
+ 	return 0;
+-- 
+2.40.1
+
 
 
