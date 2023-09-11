@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1626479B9E6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C3F479B723
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237059AbjIKWI4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43624 "EHLO
+        id S242022AbjIKVs5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43248 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239357AbjIKOSs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:48 -0400
+        with ESMTP id S241855AbjIKPQR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DD046DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DD28C433C9;
-        Mon, 11 Sep 2023 14:18:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7D9B9FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5625C433C8;
+        Mon, 11 Sep 2023 15:16:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441923;
-        bh=73RjL1uUATAF0mQqdsyACpJlJgjTK2daSsZNWfeR9yw=;
+        s=korg; t=1694445373;
+        bh=wWAAX576/+Vr5q0ErKXH29zxUfchePIUsJRwyzS1aTU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sH2wDWu4IgU39Iy+VRLGbRD4E9ZqkSeyQKckX6qqsPYTsMQ8S72/rLIMvfE74L2+J
-         YV6Z8Gl3x8vT01vJCuxwn4El+iX5fV4pziXpXe5KTlTTfTj0GkuP1AEUuWcbnvU2VW
-         sCHI+K3Hh3n0YGoIpEOauV74GS95F+o2MLpFDM5I=
+        b=cCNpVoHNhCv9v2vEUwlEqQwgJm71V2zikZSxkhuMMKjApAz2q7gAeoWJkjYu+7n7i
+         PFuOcGy2Egb9MJSxkRnf4glosszAqiEGV5C0MxW9X7xIQZ/DYioNFc6x7DEUjeuRUO
+         VBDtnyInmoLOt1jelvN9w9IWYI8a8yG4+3cQ7Pz0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 556/739] f2fs: fix to account gc stats correctly
-Date:   Mon, 11 Sep 2023 15:45:55 +0200
-Message-ID: <20230911134706.614700099@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Geert Uytterhoeven <geert+renesas@glider.be>,
+        Rob Herring <robh@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 323/600] of: overlay: Call of_changeset_init() early
+Date:   Mon, 11 Sep 2023 15:45:56 +0200
+Message-ID: <20230911134643.224885179@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,302 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Geert Uytterhoeven <geert+renesas@glider.be>
 
-[ Upstream commit 9bf1dcbdfdc8892d9cfeaeab02519c0ecf17fe51 ]
+[ Upstream commit a9515ff4fb142b690a0d2b58782b15903b990dba ]
 
-As reported, status debugfs entry shows inconsistent GC stats as below:
+When of_overlay_fdt_apply() fails, the changeset may be partially
+applied, and the caller is still expected to call of_overlay_remove() to
+clean up this partial state.
 
-GC calls: 6008 (BG: 6161)
-  - data segments : 3053 (BG: 3053)
-  - node segments : 2955 (BG: 2955)
+However, of_overlay_apply() calls of_resolve_phandles() before
+init_overlay_changeset().  Hence if the overlay fails to apply due to an
+unresolved symbol, the overlay_changeset.cset.entries list is still
+uninitialized, and cleanup will crash with a NULL-pointer dereference in
+overlay_removal_is_ok().
 
-Total GC calls is larger than BGGC calls, the reason is:
-- f2fs_stat_info.call_count accounts total migrated section count
-by f2fs_gc()
-- f2fs_stat_info.bg_gc accounts total call times of f2fs_gc() from
-background gc_thread
+Fix this by moving the call to of_changeset_init() from
+init_overlay_changeset() to of_overlay_fdt_apply(), where all other
+early initialization is done.
 
-Another issue is gc_foreground_calls sysfs entry shows total GC call
-count rather than FGGC call count.
-
-This patch changes as below for fix:
-- account GC calls and migrated segment count separately
-- support to account migrated section count if it enables large section
-mode
-- fix to show correct value in gc_foreground_calls sysfs entry
-
-Fixes: fc7100ea2a52 ("f2fs: Add f2fs stats to sysfs")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: f948d6d8b792bb90 ("of: overlay: avoid race condition between applying multiple overlays")
+Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
+Link: https://lore.kernel.org/r/4f1d6d74b61cba2599026adb6d1948ae559ce91f.1690533838.git.geert+renesas@glider.be
+Signed-off-by: Rob Herring <robh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/debug.c   | 24 ++++++++++++++++++------
- fs/f2fs/f2fs.h    | 42 +++++++++++++++++++++---------------------
- fs/f2fs/file.c    |  4 ++++
- fs/f2fs/gc.c      | 13 +++++++------
- fs/f2fs/segment.c |  1 +
- fs/f2fs/super.c   |  1 +
- fs/f2fs/sysfs.c   |  4 ++--
- 7 files changed, 54 insertions(+), 35 deletions(-)
+ drivers/of/overlay.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/fs/f2fs/debug.c b/fs/f2fs/debug.c
-index 61c35b59126ec..c7cf453dce838 100644
---- a/fs/f2fs/debug.c
-+++ b/fs/f2fs/debug.c
-@@ -511,12 +511,24 @@ static int stat_show(struct seq_file *s, void *v)
- 		seq_printf(s, "  - Total : %4d\n", si->nr_total_ckpt);
- 		seq_printf(s, "  - Cur time : %4d(ms)\n", si->cur_ckpt_time);
- 		seq_printf(s, "  - Peak time : %4d(ms)\n", si->peak_ckpt_time);
--		seq_printf(s, "GC calls: %d (BG: %d)\n",
--			   si->call_count, si->bg_gc);
--		seq_printf(s, "  - data segments : %d (%d)\n",
--				si->data_segs, si->bg_data_segs);
--		seq_printf(s, "  - node segments : %d (%d)\n",
--				si->node_segs, si->bg_node_segs);
-+		seq_printf(s, "GC calls: %d (gc_thread: %d)\n",
-+			   si->gc_call_count[BACKGROUND] +
-+			   si->gc_call_count[FOREGROUND],
-+			   si->gc_call_count[BACKGROUND]);
-+		if (__is_large_section(sbi)) {
-+			seq_printf(s, "  - data sections : %d (BG: %d)\n",
-+					si->gc_secs[DATA][BG_GC] + si->gc_secs[DATA][FG_GC],
-+					si->gc_secs[DATA][BG_GC]);
-+			seq_printf(s, "  - node sections : %d (BG: %d)\n",
-+					si->gc_secs[NODE][BG_GC] + si->gc_secs[NODE][FG_GC],
-+					si->gc_secs[NODE][BG_GC]);
-+		}
-+		seq_printf(s, "  - data segments : %d (BG: %d)\n",
-+				si->gc_segs[DATA][BG_GC] + si->gc_segs[DATA][FG_GC],
-+				si->gc_segs[DATA][BG_GC]);
-+		seq_printf(s, "  - node segments : %d (BG: %d)\n",
-+				si->gc_segs[NODE][BG_GC] + si->gc_segs[NODE][FG_GC],
-+				si->gc_segs[NODE][BG_GC]);
- 		seq_puts(s, "  - Reclaimed segs :\n");
- 		seq_printf(s, "    - Normal : %d\n", sbi->gc_reclaimed_segs[GC_NORMAL]);
- 		seq_printf(s, "    - Idle CB : %d\n", sbi->gc_reclaimed_segs[GC_IDLE_CB]);
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index a52830927cb49..6114babbb26a0 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -3860,6 +3860,12 @@ void f2fs_destroy_recovery_cache(void);
- /*
-  * debug.c
-  */
-+enum {
-+	BACKGROUND,
-+	FOREGROUND,
-+	MAX_CALL_TYPE
-+};
-+
- #ifdef CONFIG_F2FS_STAT_FS
- struct f2fs_stat_info {
- 	struct list_head stat_list;
-@@ -3885,7 +3891,7 @@ struct f2fs_stat_info {
- 	int nats, dirty_nats, sits, dirty_sits;
- 	int free_nids, avail_nids, alloc_nids;
- 	int total_count, utilization;
--	int bg_gc, nr_wb_cp_data, nr_wb_data;
-+	int nr_wb_cp_data, nr_wb_data;
- 	int nr_rd_data, nr_rd_node, nr_rd_meta;
- 	int nr_dio_read, nr_dio_write;
- 	unsigned int io_skip_bggc, other_skip_bggc;
-@@ -3905,9 +3911,11 @@ struct f2fs_stat_info {
- 	int rsvd_segs, overp_segs;
- 	int dirty_count, node_pages, meta_pages, compress_pages;
- 	int compress_page_hit;
--	int prefree_count, call_count, cp_count, bg_cp_count;
--	int tot_segs, node_segs, data_segs, free_segs, free_secs;
--	int bg_node_segs, bg_data_segs;
-+	int prefree_count, free_segs, free_secs;
-+	int cp_count, bg_cp_count;
-+	int gc_call_count[MAX_CALL_TYPE];
-+	int gc_segs[2][2];
-+	int gc_secs[2][2];
- 	int tot_blks, data_blks, node_blks;
- 	int bg_data_blks, bg_node_blks;
- 	int curseg[NR_CURSEG_TYPE];
-@@ -3931,8 +3939,6 @@ static inline struct f2fs_stat_info *F2FS_STAT(struct f2fs_sb_info *sbi)
+diff --git a/drivers/of/overlay.c b/drivers/of/overlay.c
+index 5289975bad708..4402871b5c0c0 100644
+--- a/drivers/of/overlay.c
++++ b/drivers/of/overlay.c
+@@ -752,8 +752,6 @@ static int init_overlay_changeset(struct overlay_changeset *ovcs)
+ 	if (!of_node_is_root(ovcs->overlay_root))
+ 		pr_debug("%s() ovcs->overlay_root is not root\n", __func__);
  
- #define stat_inc_cp_count(si)		((si)->cp_count++)
- #define stat_inc_bg_cp_count(si)	((si)->bg_cp_count++)
--#define stat_inc_call_count(si)		((si)->call_count++)
--#define stat_inc_bggc_count(si)		((si)->bg_gc++)
- #define stat_io_skip_bggc_count(sbi)	((sbi)->io_skip_bggc++)
- #define stat_other_skip_bggc_count(sbi)	((sbi)->other_skip_bggc++)
- #define stat_inc_dirty_inode(sbi, type)	((sbi)->ndirty_inode[type]++)
-@@ -4017,18 +4023,12 @@ static inline struct f2fs_stat_info *F2FS_STAT(struct f2fs_sb_info *sbi)
- 		if (cur > max)						\
- 			atomic_set(&F2FS_I_SB(inode)->max_aw_cnt, cur);	\
- 	} while (0)
--#define stat_inc_seg_count(sbi, type, gc_type)				\
--	do {								\
--		struct f2fs_stat_info *si = F2FS_STAT(sbi);		\
--		si->tot_segs++;						\
--		if ((type) == SUM_TYPE_DATA) {				\
--			si->data_segs++;				\
--			si->bg_data_segs += (gc_type == BG_GC) ? 1 : 0;	\
--		} else {						\
--			si->node_segs++;				\
--			si->bg_node_segs += (gc_type == BG_GC) ? 1 : 0;	\
--		}							\
--	} while (0)
-+#define stat_inc_gc_call_count(sbi, foreground)				\
-+		(F2FS_STAT(sbi)->gc_call_count[(foreground)]++)
-+#define stat_inc_gc_sec_count(sbi, type, gc_type)			\
-+		(F2FS_STAT(sbi)->gc_secs[(type)][(gc_type)]++)
-+#define stat_inc_gc_seg_count(sbi, type, gc_type)			\
-+		(F2FS_STAT(sbi)->gc_segs[(type)][(gc_type)]++)
+-	of_changeset_init(&ovcs->cset);
+-
+ 	cnt = 0;
  
- #define stat_inc_tot_blk_count(si, blks)				\
- 	((si)->tot_blks += (blks))
-@@ -4057,8 +4057,6 @@ void f2fs_update_sit_info(struct f2fs_sb_info *sbi);
- #else
- #define stat_inc_cp_count(si)				do { } while (0)
- #define stat_inc_bg_cp_count(si)			do { } while (0)
--#define stat_inc_call_count(si)				do { } while (0)
--#define stat_inc_bggc_count(si)				do { } while (0)
- #define stat_io_skip_bggc_count(sbi)			do { } while (0)
- #define stat_other_skip_bggc_count(sbi)			do { } while (0)
- #define stat_inc_dirty_inode(sbi, type)			do { } while (0)
-@@ -4086,7 +4084,9 @@ void f2fs_update_sit_info(struct f2fs_sb_info *sbi);
- #define stat_inc_seg_type(sbi, curseg)			do { } while (0)
- #define stat_inc_block_count(sbi, curseg)		do { } while (0)
- #define stat_inc_inplace_blocks(sbi)			do { } while (0)
--#define stat_inc_seg_count(sbi, type, gc_type)		do { } while (0)
-+#define stat_inc_gc_call_count(sbi, foreground)		do { } while (0)
-+#define stat_inc_gc_sec_count(sbi, type, gc_type)	do { } while (0)
-+#define stat_inc_gc_seg_count(sbi, type, gc_type)	do { } while (0)
- #define stat_inc_tot_blk_count(si, blks)		do { } while (0)
- #define stat_inc_data_blk_count(sbi, blks, gc_type)	do { } while (0)
- #define stat_inc_node_blk_count(sbi, blks, gc_type)	do { } while (0)
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index d9073afe021fd..ea4a094c518f9 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -1728,6 +1728,7 @@ static int f2fs_expand_inode_data(struct inode *inode, loff_t offset,
- 		if (has_not_enough_free_secs(sbi, 0,
- 			GET_SEC_FROM_SEG(sbi, overprovision_segments(sbi)))) {
- 			f2fs_down_write(&sbi->gc_lock);
-+			stat_inc_gc_call_count(sbi, FOREGROUND);
- 			err = f2fs_gc(sbi, &gc_control);
- 			if (err && err != -ENODATA)
- 				goto out_err;
-@@ -2476,6 +2477,7 @@ static int f2fs_ioc_gc(struct file *filp, unsigned long arg)
+ 	/* fragment nodes */
+@@ -1013,6 +1011,7 @@ int of_overlay_fdt_apply(const void *overlay_fdt, u32 overlay_fdt_size,
  
- 	gc_control.init_gc_type = sync ? FG_GC : BG_GC;
- 	gc_control.err_gc_skipped = sync;
-+	stat_inc_gc_call_count(sbi, FOREGROUND);
- 	ret = f2fs_gc(sbi, &gc_control);
- out:
- 	mnt_drop_write_file(filp);
-@@ -2519,6 +2521,7 @@ static int __f2fs_ioc_gc_range(struct file *filp, struct f2fs_gc_range *range)
- 	}
+ 	INIT_LIST_HEAD(&ovcs->ovcs_list);
+ 	list_add_tail(&ovcs->ovcs_list, &ovcs_list);
++	of_changeset_init(&ovcs->cset);
  
- 	gc_control.victim_segno = GET_SEGNO(sbi, range->start);
-+	stat_inc_gc_call_count(sbi, FOREGROUND);
- 	ret = f2fs_gc(sbi, &gc_control);
- 	if (ret) {
- 		if (ret == -EBUSY)
-@@ -3001,6 +3004,7 @@ static int f2fs_ioc_flush_device(struct file *filp, unsigned long arg)
- 		sm->last_victim[ALLOC_NEXT] = end_segno + 1;
- 
- 		gc_control.victim_segno = start_segno;
-+		stat_inc_gc_call_count(sbi, FOREGROUND);
- 		ret = f2fs_gc(sbi, &gc_control);
- 		if (ret == -EAGAIN)
- 			ret = 0;
-diff --git a/fs/f2fs/gc.c b/fs/f2fs/gc.c
-index 01effd3fcb6c7..68c3250fb3d23 100644
---- a/fs/f2fs/gc.c
-+++ b/fs/f2fs/gc.c
-@@ -121,8 +121,8 @@ static int gc_thread_func(void *data)
- 		else
- 			increase_sleep_time(gc_th, &wait_ms);
- do_gc:
--		if (!foreground)
--			stat_inc_bggc_count(sbi->stat_info);
-+		stat_inc_gc_call_count(sbi, foreground ?
-+					FOREGROUND : BACKGROUND);
- 
- 		sync_mode = F2FS_OPTION(sbi).bggc_mode == BGGC_MODE_SYNC;
- 
-@@ -1685,6 +1685,7 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 	int seg_freed = 0, migrated = 0;
- 	unsigned char type = IS_DATASEG(get_seg_entry(sbi, segno)->type) ?
- 						SUM_TYPE_DATA : SUM_TYPE_NODE;
-+	unsigned char data_type = (type == SUM_TYPE_DATA) ? DATA : NODE;
- 	int submitted = 0;
- 
- 	if (__is_large_section(sbi))
-@@ -1766,7 +1767,7 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 							segno, gc_type,
- 							force_migrate);
- 
--		stat_inc_seg_count(sbi, type, gc_type);
-+		stat_inc_gc_seg_count(sbi, data_type, gc_type);
- 		sbi->gc_reclaimed_segs[sbi->gc_mode]++;
- 		migrated++;
- 
-@@ -1783,12 +1784,12 @@ static int do_garbage_collect(struct f2fs_sb_info *sbi,
- 	}
- 
- 	if (submitted)
--		f2fs_submit_merged_write(sbi,
--				(type == SUM_TYPE_NODE) ? NODE : DATA);
-+		f2fs_submit_merged_write(sbi, data_type);
- 
- 	blk_finish_plug(&plug);
- 
--	stat_inc_call_count(sbi->stat_info);
-+	if (migrated)
-+		stat_inc_gc_sec_count(sbi, data_type, gc_type);
- 
- 	return seg_freed;
- }
-diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
-index b127c3d96dbb0..da01b0ad517b0 100644
---- a/fs/f2fs/segment.c
-+++ b/fs/f2fs/segment.c
-@@ -433,6 +433,7 @@ void f2fs_balance_fs(struct f2fs_sb_info *sbi, bool need)
- 			.err_gc_skipped = false,
- 			.nr_free_secs = 1 };
- 		f2fs_down_write(&sbi->gc_lock);
-+		stat_inc_gc_call_count(sbi, FOREGROUND);
- 		f2fs_gc(sbi, &gc_control);
- 	}
- }
-diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
-index 26add77f90621..2bbef48bc5a3a 100644
---- a/fs/f2fs/super.c
-+++ b/fs/f2fs/super.c
-@@ -2206,6 +2206,7 @@ static int f2fs_disable_checkpoint(struct f2fs_sb_info *sbi)
- 			.nr_free_secs = 1 };
- 
- 		f2fs_down_write(&sbi->gc_lock);
-+		stat_inc_gc_call_count(sbi, FOREGROUND);
- 		err = f2fs_gc(sbi, &gc_control);
- 		if (err == -ENODATA) {
- 			err = 0;
-diff --git a/fs/f2fs/sysfs.c b/fs/f2fs/sysfs.c
-index 48b7e0073884a..95a301581b915 100644
---- a/fs/f2fs/sysfs.c
-+++ b/fs/f2fs/sysfs.c
-@@ -974,8 +974,8 @@ F2FS_SBI_GENERAL_RO_ATTR(unusable_blocks_per_sec);
- #ifdef CONFIG_F2FS_STAT_FS
- STAT_INFO_RO_ATTR(cp_foreground_calls, cp_count);
- STAT_INFO_RO_ATTR(cp_background_calls, bg_cp_count);
--STAT_INFO_RO_ATTR(gc_foreground_calls, call_count);
--STAT_INFO_RO_ATTR(gc_background_calls, bg_gc);
-+STAT_INFO_RO_ATTR(gc_foreground_calls, gc_call_count[FOREGROUND]);
-+STAT_INFO_RO_ATTR(gc_background_calls, gc_call_count[BACKGROUND]);
- #endif
- 
- /* FAULT_INFO ATTR */
+ 	/*
+ 	 * Must create permanent copy of FDT because of_fdt_unflatten_tree()
 -- 
 2.40.1
 
