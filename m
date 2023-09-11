@@ -2,44 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41FA379B9F3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7CC4379BB67
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233739AbjIKWs3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:48:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35614 "EHLO
+        id S240344AbjIKVsw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59134 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240965AbjIKO6U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:20 -0400
+        with ESMTP id S242203AbjIKPYx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B8841B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8946C433C8;
-        Mon, 11 Sep 2023 14:58:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 976DFF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DE713C433C7;
+        Mon, 11 Sep 2023 15:24:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444296;
-        bh=0b9jvVATzQ0SWSU+r8d0JzZDfWvkzwKks80cBvHD1V0=;
+        s=korg; t=1694445889;
+        bh=w68OcLwnBurfeqPdOmBRERQSn2eU9RFIjiahhGdWbkk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vR2Q0njEZNJTvxDxZ1G9KIWXNEt0hriLhhG9Cud1ebK8VTsI306KLTcegGSIC11Dd
-         e0Zwk4f5TR30p3RbmwYqS8OBNxdGF60DNbweynNNWXvyZNmCw68oI8no0TpyiCydIY
-         LWnoLY2LXAA9ftonA6Rm/g6ih6l+SZfJC6CyWTxE=
+        b=Vl+OOIiZnQ0i1QtOl5XVMQtzO79SAvU5LLHPR0yfJ4QUf/LHyBtznHw5AiUR/s1NM
+         5bUyMVtROS1RGtD0IoB6eZAS9/maHtp4L0nAyNtvxyjug+L1bCJE3JxlUchveBdnd9
+         22c9a4JDgzMgTT6w4ku/GujFwTBOg9B7/PYIeOYo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dexuan Cui <decui@microsoft.com>,
-        Lorenzo Pieralisi <lpieralisi@kernel.org>,
-        sathyanarayanan.kuppuswamy@linux.intel.com,
-        Michael Kelley <mikelley@microsoft.com>
-Subject: [PATCH 6.4 680/737] PCI: hv: Fix a crash in hv_pci_restore_msi_msg() during hibernation
-Date:   Mon, 11 Sep 2023 15:48:59 +0200
-Message-ID: <20230911134709.532937648@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 507/600] leds: multicolor: Use rounded division when calculating color components
+Date:   Mon, 11 Sep 2023 15:49:00 +0200
+Message-ID: <20230911134648.584497371@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,45 +51,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dexuan Cui <decui@microsoft.com>
+From: Marek Behún <kabel@kernel.org>
 
-commit 04bbe863241a9be7d57fb4cf217ee4a72f480e70 upstream.
+[ Upstream commit 065d099f1be58187e6629273c50b948a02b7e1bf ]
 
-When a Linux VM with an assigned PCI device runs on Hyper-V, if the PCI
-device driver is not loaded yet (i.e. MSI-X/MSI is not enabled on the
-device yet), doing a VM hibernation triggers a panic in
-hv_pci_restore_msi_msg() -> msi_lock_descs(&pdev->dev), because
-pdev->dev.msi.data is still NULL.
+Given channel intensity, LED brightness and max LED brightness, the
+multicolor LED framework helper led_mc_calc_color_components() computes
+the color channel brightness as
 
-Avoid the panic by checking if MSI-X/MSI is enabled.
+    chan_brightness = brightness * chan_intensity / max_brightness
 
-Link: https://lore.kernel.org/r/20230816175939.21566-1-decui@microsoft.com
-Fixes: dc2b453290c4 ("PCI: hv: Rework MSI handling")
-Signed-off-by: Dexuan Cui <decui@microsoft.com>
-Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
-Reviewed-by: sathyanarayanan.kuppuswamy@linux.intel.com
-Reviewed-by: Michael Kelley <mikelley@microsoft.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Consider the situation when (brightness, intensity, max_brightness) is
+for example (16, 15, 255), then chan_brightness is computed to 0
+although the fractional divison would give 0.94, which should be rounded
+to 1.
+
+Use DIV_ROUND_CLOSEST here for the division to give more realistic
+component computation:
+
+    chan_brightness = DIV_ROUND_CLOSEST(brightness * chan_intensity,
+                                        max_brightness)
+
+Fixes: 55d5d3b46b08 ("leds: multicolor: Introduce a multicolor class definition")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Link: https://lore.kernel.org/r/20230801124931.8661-1-kabel@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pci-hyperv.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/leds/led-class-multicolor.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
---- a/drivers/pci/controller/pci-hyperv.c
-+++ b/drivers/pci/controller/pci-hyperv.c
-@@ -3983,6 +3983,9 @@ static int hv_pci_restore_msi_msg(struct
- 	struct msi_desc *entry;
- 	int ret = 0;
+diff --git a/drivers/leds/led-class-multicolor.c b/drivers/leds/led-class-multicolor.c
+index e317408583df9..ec62a48116135 100644
+--- a/drivers/leds/led-class-multicolor.c
++++ b/drivers/leds/led-class-multicolor.c
+@@ -6,6 +6,7 @@
+ #include <linux/device.h>
+ #include <linux/init.h>
+ #include <linux/led-class-multicolor.h>
++#include <linux/math.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+@@ -19,9 +20,10 @@ int led_mc_calc_color_components(struct led_classdev_mc *mcled_cdev,
+ 	int i;
  
-+	if (!pdev->msi_enabled && !pdev->msix_enabled)
-+		return 0;
-+
- 	msi_lock_descs(&pdev->dev);
- 	msi_for_each_desc(entry, &pdev->dev, MSI_DESC_ASSOCIATED) {
- 		irq_data = irq_get_irq_data(entry->irq);
+ 	for (i = 0; i < mcled_cdev->num_colors; i++)
+-		mcled_cdev->subled_info[i].brightness = brightness *
+-					mcled_cdev->subled_info[i].intensity /
+-					led_cdev->max_brightness;
++		mcled_cdev->subled_info[i].brightness =
++			DIV_ROUND_CLOSEST(brightness *
++					  mcled_cdev->subled_info[i].intensity,
++					  led_cdev->max_brightness);
+ 
+ 	return 0;
+ }
+-- 
+2.40.1
+
 
 
