@@ -2,42 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7BB3D79BD67
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CCB4279B90A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345735AbjIKVWD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43284 "EHLO
+        id S243703AbjIKV7J (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53762 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238534AbjIKN6k (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:40 -0400
+        with ESMTP id S239887AbjIKOaz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC4A4CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3FD0AC433C8;
-        Mon, 11 Sep 2023 13:58:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9C3EE4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2DB7AC433C8;
+        Mon, 11 Sep 2023 14:30:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440715;
-        bh=2/8G3vTiEFg/0ADGVCToyghF3HpIPq8J/xmuB2/syQQ=;
+        s=korg; t=1694442650;
+        bh=99NYLAl3ELDwe/Isvz2IYO6IYT2tDbm4Nyrjv2K4fQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BhJMIUuOPnJ2N4KUoc+GE4ISgMpI5yh+lepDVMXqOgd30UHy0XWyzITDSBLK2mLRy
-         SQ631uDOQQvgQoUGotvaLPEZxhjIZf418Y3oX2MyZeuemHtc0LwBZYD/oYrEMnDkvR
-         wjekWBmrMPyHaHgqhf9tt8Go6/qocG2gOpEbumpQ=
+        b=k2OOxemp2t4EiTuhPvLSVtpLuTyMLcqLtRy4DD/jKSxSRyjkQV6slSx49uX0tpTgQ
+         puiG0pGevYsTD89GLPb5G/xbbctddzWhOCI0HjeRDgVxm9tMHU7nlcyZFupdELlI/L
+         W0qjYFIOhd9vmO84WxRH6/+DFRBokiEgv0ainTkc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ping-Ke Shih <pkshih@realtek.com>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 159/739] wifi: rtw89: 8852b: rfk: fine tune IQK parameters to improve performance on 2GHz band
-Date:   Mon, 11 Sep 2023 15:39:18 +0200
-Message-ID: <20230911134655.595112999@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Ahelenia=20Ziemia=C5=84ska?= 
+        <nabijaczleweli@nabijaczleweli.xyz>, Jan Kara <jack@suse.cz>,
+        Amir Goldstein <amir73il@gmail.com>,
+        Christian Brauner <brauner@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 100/737] splice: fsnotify_access(in), fsnotify_modify(out) on success in tee
+Date:   Mon, 11 Sep 2023 15:39:19 +0200
+Message-ID: <20230911134653.307359256@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -49,48 +54,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ping-Ke Shih <pkshih@realtek.com>
+From: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
 
-[ Upstream commit b3bfc4fb1edc8136396ece2d7204c2ee5cae188d ]
+[ Upstream commit 576d498e0ac5caff2d9f6312573ab54d98f12d32 ]
 
-A few samples get bad performance on 2GHz band, so use proper IQK command
-code and select another group to have wider range of calibration value.
+Same logic applies here: this can fill up the pipe, and pollers that rely
+on getting IN_MODIFY notifications never wake up.
 
-Fixes: f2abe804e823 ("wifi: rtw89: 8852b: rfk: add IQK")
-Signed-off-by: Ping-Ke Shih <pkshih@realtek.com>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230803110150.8457-1-pkshih@realtek.com
+Fixes: 983652c69199 ("splice: report related fsnotify events")
+Link: https://lore.kernel.org/linux-fsdevel/jbyihkyk5dtaohdwjyivambb2gffyjs3dodpofafnkkunxq7bu@jngkdxx65pux/t/#u
+Link: https://bugs.debian.org/1039488
+Signed-off-by: Ahelenia Ziemiańska <nabijaczleweli@nabijaczleweli.xyz>
+Acked-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Amir Goldstein <amir73il@gmail.com>
+Message-Id: <10d76dd8c85017ae3cd047c9b9a32e26daefdaa2.1688393619.git.nabijaczleweli@nabijaczleweli.xyz>
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/splice.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-index fa018e1f499b2..259df67836a0e 100644
---- a/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-+++ b/drivers/net/wireless/realtek/rtw89/rtw8852b_rfk.c
-@@ -846,7 +846,7 @@ static bool _iqk_one_shot(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx,
- 	case ID_NBTXK:
- 		rtw89_phy_write32_mask(rtwdev, R_P0_RFCTM, B_P0_RFCTM_EN, 0x0);
- 		rtw89_phy_write32_mask(rtwdev, R_IQK_DIF4, B_IQK_DIF4_TXT, 0x011);
--		iqk_cmd = 0x308 | (1 << (4 + path));
-+		iqk_cmd = 0x408 | (1 << (4 + path));
- 		break;
- 	case ID_NBRXK:
- 		rtw89_phy_write32_mask(rtwdev, R_P0_RFCTM, B_P0_RFCTM_EN, 0x1);
-@@ -1078,7 +1078,7 @@ static bool _iqk_nbtxk(struct rtw89_dev *rtwdev, enum rtw89_phy_idx phy_idx, u8
- {
- 	struct rtw89_iqk_info *iqk_info = &rtwdev->iqk;
- 	bool kfail;
--	u8 gp = 0x3;
-+	u8 gp = 0x2;
+diff --git a/fs/splice.c b/fs/splice.c
+index c08eb445a1d20..3ae2de263e806 100644
+--- a/fs/splice.c
++++ b/fs/splice.c
+@@ -1815,6 +1815,11 @@ long do_tee(struct file *in, struct file *out, size_t len, unsigned int flags)
+ 		}
+ 	}
  
- 	switch (iqk_info->iqk_band[path]) {
- 	case RTW89_BAND_2G:
++	if (ret > 0) {
++		fsnotify_access(in);
++		fsnotify_modify(out);
++	}
++
+ 	return ret;
+ }
+ 
 -- 
 2.40.1
 
