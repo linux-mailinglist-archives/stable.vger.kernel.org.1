@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0606679BD3F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9882279BD7A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240994AbjIKU4p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:56:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50682 "EHLO
+        id S237750AbjIKUvm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238615AbjIKOAw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:52 -0400
+        with ESMTP id S240013AbjIKOeC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC1DECD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D4E5C433C8;
-        Mon, 11 Sep 2023 14:00:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29EE8E4D
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 73E7EC433C7;
+        Mon, 11 Sep 2023 14:33:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440847;
-        bh=+NHC6M940CtvL8NdUoY6hU7gzKla2RSYcuVXvOIG5j4=;
+        s=korg; t=1694442837;
+        bh=hKWinUgWL/fSSilsNXlHPSf46PyCIOLgCmwVLr6e+ow=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ug30iFtKG6c7VV+sUrKSg0bYBxyMslXn3rVgeZQKh7OqNNCw1EcxRTODATWMCitzA
-         Ied5nMQ49UCYVL0z/K7ktpW2PQkIjhNmDmo4JeJpuZhm/TEZ4Cax9ydKczLdeVH2aE
-         pj/zk3bJcxhf/r5X9zTVyFjag8mMGPWNREl+WNAI=
+        b=v391dLlv9yIy9ggnPfXSrCtbXr9VXH0xAH/Sg+54hqEljNhm6VKqx3WPABc1hrfqH
+         /QjkTShJySDk3m4dcttDI/umvE9dUaqcNygF7J7Cv+/Fd04Jxh03vl469/XFxkt/FG
+         P2J5b56Gbj5dVGD+z844wssyoiujEBphdZHp4Irk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Baokun Li <libaokun1@huawei.com>,
+        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 207/739] quota: fix dqput() to follow the guarantees dquot_srcu should provide
-Date:   Mon, 11 Sep 2023 15:40:06 +0200
-Message-ID: <20230911134656.960435457@linuxfoundation.org>
+Subject: [PATCH 6.4 148/737] bpf: Fix an error around PTR_UNTRUSTED
+Date:   Mon, 11 Sep 2023 15:40:07 +0200
+Message-ID: <20230911134654.624103508@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,251 +50,98 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Baokun Li <libaokun1@huawei.com>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit dabc8b20756601b9e1cc85a81d47d3f98ed4d13a ]
+[ Upstream commit 7ce4dc3e4a9d954c8a1fb483c7a527e9b060b860 ]
 
-The dquot_mark_dquot_dirty() using dquot references from the inode
-should be protected by dquot_srcu. quota_off code takes care to call
-synchronize_srcu(&dquot_srcu) to not drop dquot references while they
-are used by other users. But dquot_transfer() breaks this assumption.
-We call dquot_transfer() to drop the last reference of dquot and add
-it to free_dquots, but there may still be other users using the dquot
-at this time, as shown in the function graph below:
+Per discussion with Alexei, the PTR_UNTRUSTED flag should not been
+cleared when we start to walk a new struct, because the struct in
+question may be a struct nested in a union. We should also check and set
+this flag before we walk its each member, in case itself is a union.
+We will clear this flag if the field is BTF_TYPE_SAFE_RCU_OR_NULL.
 
-       cpu1              cpu2
-_________________|_________________
-wb_do_writeback         CHOWN(1)
- ...
-  ext4_da_update_reserve_space
-   dquot_claim_block
-    ...
-     dquot_mark_dquot_dirty // try to dirty old quota
-      test_bit(DQ_ACTIVE_B, &dquot->dq_flags) // still ACTIVE
-      if (test_bit(DQ_MOD_B, &dquot->dq_flags))
-      // test no dirty, wait dq_list_lock
-                    ...
-                     dquot_transfer
-                      __dquot_transfer
-                      dqput_all(transfer_from) // rls old dquot
-                       dqput // last dqput
-                        dquot_release
-                         clear_bit(DQ_ACTIVE_B, &dquot->dq_flags)
-                        atomic_dec(&dquot->dq_count)
-                        put_dquot_last(dquot)
-                         list_add_tail(&dquot->dq_free, &free_dquots)
-                         // add the dquot to free_dquots
-      if (!test_and_set_bit(DQ_MOD_B, &dquot->dq_flags))
-        add dqi_dirty_list // add released dquot to dirty_list
-
-This can cause various issues, such as dquot being destroyed by
-dqcache_shrink_scan() after being added to free_dquots, which can trigger
-a UAF in dquot_mark_dquot_dirty(); or after dquot is added to free_dquots
-and then to dirty_list, it is added to free_dquots again after
-dquot_writeback_dquots() is executed, which causes the free_dquots list to
-be corrupted and triggers a UAF when dqcache_shrink_scan() is called for
-freeing dquot twice.
-
-As Honza said, we need to fix dquot_transfer() to follow the guarantees
-dquot_srcu should provide. But calling synchronize_srcu() directly from
-dquot_transfer() is too expensive (and mostly unnecessary). So we add
-dquot whose last reference should be dropped to the new global dquot
-list releasing_dquots, and then queue work item which would call
-synchronize_srcu() and after that perform the final cleanup of all the
-dquots on releasing_dquots.
-
-Fixes: 4580b30ea887 ("quota: Do not dirty bad dquots")
-Suggested-by: Jan Kara <jack@suse.cz>
-Signed-off-by: Baokun Li <libaokun1@huawei.com>
-Signed-off-by: Jan Kara <jack@suse.cz>
-Message-Id: <20230630110822.3881712-5-libaokun1@huawei.com>
+Fixes: 6fcd486b3a0a ("bpf: Refactor RCU enforcement in the verifier.")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Link: https://lore.kernel.org/r/20230713025642.27477-2-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/quota/dquot.c | 96 +++++++++++++++++++++++++++++++++++++++---------
- 1 file changed, 78 insertions(+), 18 deletions(-)
+ kernel/bpf/btf.c      | 20 +++++++++-----------
+ kernel/bpf/verifier.c |  5 +++++
+ 2 files changed, 14 insertions(+), 11 deletions(-)
 
-diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
-index 88aa747f48008..c7afe433d991a 100644
---- a/fs/quota/dquot.c
-+++ b/fs/quota/dquot.c
-@@ -225,13 +225,22 @@ static void put_quota_format(struct quota_format_type *fmt)
+diff --git a/kernel/bpf/btf.c b/kernel/bpf/btf.c
+index 8b4e92439d1d6..5dd8534b778d1 100644
+--- a/kernel/bpf/btf.c
++++ b/kernel/bpf/btf.c
+@@ -6126,7 +6126,6 @@ static int btf_struct_walk(struct bpf_verifier_log *log, const struct btf *btf,
+ 	const char *tname, *mname, *tag_value;
+ 	u32 vlen, elem_id, mid;
  
- /*
-  * Dquot List Management:
-- * The quota code uses four lists for dquot management: the inuse_list,
-- * free_dquots, dqi_dirty_list, and dquot_hash[] array. A single dquot
-- * structure may be on some of those lists, depending on its current state.
-+ * The quota code uses five lists for dquot management: the inuse_list,
-+ * releasing_dquots, free_dquots, dqi_dirty_list, and dquot_hash[] array.
-+ * A single dquot structure may be on some of those lists, depending on
-+ * its current state.
-  *
-  * All dquots are placed to the end of inuse_list when first created, and this
-  * list is used for invalidate operation, which must look at every dquot.
-  *
-+ * When the last reference of a dquot will be dropped, the dquot will be
-+ * added to releasing_dquots. We'd then queue work item which would call
-+ * synchronize_srcu() and after that perform the final cleanup of all the
-+ * dquots on the list. Both releasing_dquots and free_dquots use the
-+ * dq_free list_head in the dquot struct. When a dquot is removed from
-+ * releasing_dquots, a reference count is always subtracted, and if
-+ * dq_count == 0 at that point, the dquot will be added to the free_dquots.
-+ *
-  * Unused dquots (dq_count == 0) are added to the free_dquots list when freed,
-  * and this list is searched whenever we need an available dquot.  Dquots are
-  * removed from the list as soon as they are used again, and
-@@ -250,6 +259,7 @@ static void put_quota_format(struct quota_format_type *fmt)
- 
- static LIST_HEAD(inuse_list);
- static LIST_HEAD(free_dquots);
-+static LIST_HEAD(releasing_dquots);
- static unsigned int dq_hash_bits, dq_hash_mask;
- static struct hlist_head *dquot_hash;
- 
-@@ -260,6 +270,9 @@ static qsize_t inode_get_rsv_space(struct inode *inode);
- static qsize_t __inode_get_rsv_space(struct inode *inode);
- static int __dquot_initialize(struct inode *inode, int type);
- 
-+static void quota_release_workfn(struct work_struct *work);
-+static DECLARE_DELAYED_WORK(quota_release_work, quota_release_workfn);
-+
- static inline unsigned int
- hashfn(const struct super_block *sb, struct kqid qid)
- {
-@@ -305,12 +318,18 @@ static inline void put_dquot_last(struct dquot *dquot)
- 	dqstats_inc(DQST_FREE_DQUOTS);
- }
- 
-+static inline void put_releasing_dquots(struct dquot *dquot)
-+{
-+	list_add_tail(&dquot->dq_free, &releasing_dquots);
-+}
-+
- static inline void remove_free_dquot(struct dquot *dquot)
- {
- 	if (list_empty(&dquot->dq_free))
- 		return;
- 	list_del_init(&dquot->dq_free);
--	dqstats_dec(DQST_FREE_DQUOTS);
-+	if (!atomic_read(&dquot->dq_count))
-+		dqstats_dec(DQST_FREE_DQUOTS);
- }
- 
- static inline void put_inuse(struct dquot *dquot)
-@@ -552,6 +571,8 @@ static void invalidate_dquots(struct super_block *sb, int type)
- 	struct dquot *dquot, *tmp;
- 
- restart:
-+	flush_delayed_work(&quota_release_work);
-+
- 	spin_lock(&dq_list_lock);
- 	list_for_each_entry_safe(dquot, tmp, &inuse_list, dq_inuse) {
- 		if (dquot->dq_sb != sb)
-@@ -560,6 +581,12 @@ static void invalidate_dquots(struct super_block *sb, int type)
- 			continue;
- 		/* Wait for dquot users */
- 		if (atomic_read(&dquot->dq_count)) {
-+			/* dquot in releasing_dquots, flush and retry */
-+			if (!list_empty(&dquot->dq_free)) {
-+				spin_unlock(&dq_list_lock);
-+				goto restart;
-+			}
-+
- 			atomic_inc(&dquot->dq_count);
- 			spin_unlock(&dq_list_lock);
- 			/*
-@@ -770,6 +797,49 @@ static struct shrinker dqcache_shrinker = {
- 	.seeks = DEFAULT_SEEKS,
- };
- 
-+/*
-+ * Safely release dquot and put reference to dquot.
-+ */
-+static void quota_release_workfn(struct work_struct *work)
-+{
-+	struct dquot *dquot;
-+	struct list_head rls_head;
-+
-+	spin_lock(&dq_list_lock);
-+	/* Exchange the list head to avoid livelock. */
-+	list_replace_init(&releasing_dquots, &rls_head);
-+	spin_unlock(&dq_list_lock);
-+
-+restart:
-+	synchronize_srcu(&dquot_srcu);
-+	spin_lock(&dq_list_lock);
-+	while (!list_empty(&rls_head)) {
-+		dquot = list_first_entry(&rls_head, struct dquot, dq_free);
-+		/* Dquot got used again? */
-+		if (atomic_read(&dquot->dq_count) > 1) {
-+			remove_free_dquot(dquot);
-+			atomic_dec(&dquot->dq_count);
-+			continue;
-+		}
-+		if (dquot_dirty(dquot)) {
-+			spin_unlock(&dq_list_lock);
-+			/* Commit dquot before releasing */
-+			dquot_write_dquot(dquot);
-+			goto restart;
-+		}
-+		if (dquot_active(dquot)) {
-+			spin_unlock(&dq_list_lock);
-+			dquot->dq_sb->dq_op->release_dquot(dquot);
-+			goto restart;
-+		}
-+		/* Dquot is inactive and clean, now move it to free list */
-+		remove_free_dquot(dquot);
-+		atomic_dec(&dquot->dq_count);
-+		put_dquot_last(dquot);
-+	}
-+	spin_unlock(&dq_list_lock);
-+}
-+
- /*
-  * Put reference to dquot
-  */
-@@ -786,7 +856,7 @@ void dqput(struct dquot *dquot)
+-	*flag = 0;
+ again:
+ 	tname = __btf_name_by_offset(btf, t->name_off);
+ 	if (!btf_type_is_struct(t)) {
+@@ -6135,6 +6134,14 @@ static int btf_struct_walk(struct bpf_verifier_log *log, const struct btf *btf,
  	}
- #endif
- 	dqstats_inc(DQST_DROPS);
--we_slept:
-+
- 	spin_lock(&dq_list_lock);
- 	if (atomic_read(&dquot->dq_count) > 1) {
- 		/* We have more than one user... nothing to do */
-@@ -798,25 +868,15 @@ void dqput(struct dquot *dquot)
- 		spin_unlock(&dq_list_lock);
- 		return;
- 	}
-+
- 	/* Need to release dquot? */
--	if (dquot_dirty(dquot)) {
--		spin_unlock(&dq_list_lock);
--		/* Commit dquot before releasing */
--		dquot_write_dquot(dquot);
--		goto we_slept;
--	}
--	if (dquot_active(dquot)) {
--		spin_unlock(&dq_list_lock);
--		dquot->dq_sb->dq_op->release_dquot(dquot);
--		goto we_slept;
--	}
--	atomic_dec(&dquot->dq_count);
- #ifdef CONFIG_QUOTA_DEBUG
- 	/* sanity check */
- 	BUG_ON(!list_empty(&dquot->dq_free));
- #endif
--	put_dquot_last(dquot);
-+	put_releasing_dquots(dquot);
- 	spin_unlock(&dq_list_lock);
-+	queue_delayed_work(system_unbound_wq, &quota_release_work, 1);
- }
- EXPORT_SYMBOL(dqput);
  
+ 	vlen = btf_type_vlen(t);
++	if (BTF_INFO_KIND(t->info) == BTF_KIND_UNION && vlen != 1 && !(*flag & PTR_UNTRUSTED))
++		/*
++		 * walking unions yields untrusted pointers
++		 * with exception of __bpf_md_ptr and other
++		 * unions with a single member
++		 */
++		*flag |= PTR_UNTRUSTED;
++
+ 	if (off + size > t->size) {
+ 		/* If the last element is a variable size array, we may
+ 		 * need to relax the rule.
+@@ -6295,15 +6302,6 @@ static int btf_struct_walk(struct bpf_verifier_log *log, const struct btf *btf,
+ 		 * of this field or inside of this struct
+ 		 */
+ 		if (btf_type_is_struct(mtype)) {
+-			if (BTF_INFO_KIND(mtype->info) == BTF_KIND_UNION &&
+-			    btf_type_vlen(mtype) != 1)
+-				/*
+-				 * walking unions yields untrusted pointers
+-				 * with exception of __bpf_md_ptr and other
+-				 * unions with a single member
+-				 */
+-				*flag |= PTR_UNTRUSTED;
+-
+ 			/* our field must be inside that union or struct */
+ 			t = mtype;
+ 
+@@ -6469,7 +6467,7 @@ bool btf_struct_ids_match(struct bpf_verifier_log *log,
+ 			  bool strict)
+ {
+ 	const struct btf_type *type;
+-	enum bpf_type_flag flag;
++	enum bpf_type_flag flag = 0;
+ 	int err;
+ 
+ 	/* Are we already done? */
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 4fbfe1d086467..cef173614fc8f 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -5893,6 +5893,11 @@ static int check_ptr_to_btf_access(struct bpf_verifier_env *env,
+ 				   type_is_rcu_or_null(env, reg, field_name, btf_id)) {
+ 				/* __rcu tagged pointers can be NULL */
+ 				flag |= MEM_RCU | PTR_MAYBE_NULL;
++
++				/* We always trust them */
++				if (type_is_rcu_or_null(env, reg, field_name, btf_id) &&
++				    flag & PTR_UNTRUSTED)
++					flag &= ~PTR_UNTRUSTED;
+ 			} else if (flag & (MEM_PERCPU | MEM_USER)) {
+ 				/* keep as-is */
+ 			} else {
 -- 
 2.40.1
 
