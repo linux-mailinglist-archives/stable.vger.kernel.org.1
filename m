@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0703379BF0C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681FC79BC1C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378575AbjIKWfk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:35:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47230 "EHLO
+        id S1379621AbjIKWpI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37764 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240444AbjIKOoX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:23 -0400
+        with ESMTP id S241713AbjIKPMl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0294312A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4F819C433C7;
-        Mon, 11 Sep 2023 14:44:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B8B13FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B4ACC433C7;
+        Mon, 11 Sep 2023 15:12:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443458;
-        bh=/V0Q39E5xRjPmOkT3E2DG+0QraO2bbRwJHKbgi5woC4=;
+        s=korg; t=1694445156;
+        bh=nYzCxxoYjmD4cWbJ9F/i+4i0bPUxqMQVmBVrevaXvHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LK3/Wy1YDX/Wa8rMbr/pk53zdC6XnRfOsQ4SlNDnZpfc5dTTsaY4JETGTdg+3HAe+
-         PFxkoK2D0eMiaKEoepaiphqiBjEQL7p6IbpEfE8JXG9+xBJfbF13aImqHZWA/A37N6
-         8k2lpXh7JCDRDSfh+CVZWJR604KXmjFsbFJqpoV8=
+        b=uKrnfgtPjbQBM7+6rgMk426BrvjGxxkK4OcWhzFRbBo2dmySycsFyEGR4XygNPSI4
+         wwTSdF8dFJI+L0I7s1a7TnyzYKQ3oe0EmvtCGfnXQoVIlhOmnAutNFsIt80NzNJDPA
+         5ZtddAnd3NeukES0V3ewPK3cfCtl3zck2t6WgGpA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        syzbot+666c97e4686410e79649@syzkaller.appspotmail.com,
+        Kuniyuki Iwashima <kuniyu@amazon.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 384/737] arm64: dts: qcom: msm8916: Disable audio codecs by default
+Subject: [PATCH 6.1 210/600] netrom: Deny concurrent connect().
 Date:   Mon, 11 Sep 2023 15:44:03 +0200
-Message-ID: <20230911134701.310359800@linuxfoundation.org>
+Message-ID: <20230911134639.818440216@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,100 +52,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Kuniyuki Iwashima <kuniyu@amazon.com>
 
-[ Upstream commit a5cf21b14666c42912327c7bece38711f6e0d708 ]
+[ Upstream commit c2f8fd7949603efb03908e05abbf7726748c8de3 ]
 
-Not every device has something connected to the digital audio codec
-in MSM8916 and/or the analog audio codec in PM8916. Disable those by
-default so the hardware is only powered up when necessary.
+syzkaller reported null-ptr-deref [0] related to AF_NETROM.
+This is another self-accept issue from the strace log. [1]
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230510-msm8916-regulators-v1-4-54d4960a05fc@gerhold.net
-Stable-dep-of: 4facccb44a82 ("arm64: dts: qcom: apq8016-sbc: Rename ov5640 enable-gpios to powerdown-gpios")
+syz-executor creates an AF_NETROM socket and calls connect(), which
+is blocked at that time.  Then, sk->sk_state is TCP_SYN_SENT and
+sock->state is SS_CONNECTING.
+
+  [pid  5059] socket(AF_NETROM, SOCK_SEQPACKET, 0) = 4
+  [pid  5059] connect(4, {sa_family=AF_NETROM, sa_data="..." <unfinished ...>
+
+Another thread calls connect() concurrently, which finally fails
+with -EINVAL.  However, the problem here is the socket state is
+reset even while the first connect() is blocked.
+
+  [pid  5060] connect(4, NULL, 0 <unfinished ...>
+  [pid  5060] <... connect resumed>)      = -1 EINVAL (Invalid argument)
+
+As sk->state is TCP_CLOSE and sock->state is SS_UNCONNECTED, the
+following listen() succeeds.  Then, the first connect() looks up
+itself as a listener and puts skb into the queue with skb->sk itself.
+As a result, the next accept() gets another FD of itself as 3, and
+the first connect() finishes.
+
+  [pid  5060] listen(4, 0 <unfinished ...>
+  [pid  5060] <... listen resumed>)       = 0
+  [pid  5060] accept(4, NULL, NULL <unfinished ...>
+  [pid  5060] <... accept resumed>)       = 3
+  [pid  5059] <... connect resumed>)      = 0
+
+Then, accept4() is called but blocked, which causes the general protection
+fault later.
+
+  [pid  5059] accept4(4, NULL, 0x20000400, SOCK_NONBLOCK <unfinished ...>
+
+After that, another self-accept occurs by accept() and writev().
+
+  [pid  5060] accept(4, NULL, NULL <unfinished ...>
+  [pid  5061] writev(3, [{iov_base=...}] <unfinished ...>
+  [pid  5061] <... writev resumed>)       = 99
+  [pid  5060] <... accept resumed>)       = 6
+
+Finally, the leader thread close()s all FDs.  Since the three FDs
+reference the same socket, nr_release() does the cleanup for it
+three times, and the remaining accept4() causes the following fault.
+
+  [pid  5058] close(3)                    = 0
+  [pid  5058] close(4)                    = 0
+  [pid  5058] close(5)                    = -1 EBADF (Bad file descriptor)
+  [pid  5058] close(6)                    = 0
+  [pid  5058] <... exit_group resumed>)   = ?
+  [   83.456055][ T5059] general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+
+To avoid the issue, we need to return an error for connect() if
+another connect() is in progress, as done in __inet_stream_connect().
+
+[0]:
+general protection fault, probably for non-canonical address 0xdffffc0000000003: 0000 [#1] PREEMPT SMP KASAN
+KASAN: null-ptr-deref in range [0x0000000000000018-0x000000000000001f]
+CPU: 0 PID: 5059 Comm: syz-executor.0 Not tainted 6.5.0-rc5-syzkaller-00194-gace0ab3a4b54 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/26/2023
+RIP: 0010:__lock_acquire+0x109/0x5de0 kernel/locking/lockdep.c:5012
+Code: 45 85 c9 0f 84 cc 0e 00 00 44 8b 05 11 6e 23 0b 45 85 c0 0f 84 be 0d 00 00 48 ba 00 00 00 00 00 fc ff df 4c 89 d1 48 c1 e9 03 <80> 3c 11 00 0f 85 e8 40 00 00 49 81 3a a0 69 48 90 0f 84 96 0d 00
+RSP: 0018:ffffc90003d6f9e0 EFLAGS: 00010006
+RAX: ffff8880244c8000 RBX: 1ffff920007adf6c RCX: 0000000000000003
+RDX: dffffc0000000000 RSI: 0000000000000000 RDI: 0000000000000018
+RBP: 0000000000000001 R08: 0000000000000001 R09: 0000000000000001
+R10: 0000000000000018 R11: 0000000000000000 R12: 0000000000000000
+R13: 0000000000000000 R14: 0000000000000000 R15: 0000000000000000
+FS:  00007f51d519a6c0(0000) GS:ffff8880b9800000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00007f51d5158d58 CR3: 000000002943f000 CR4: 00000000003506f0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ lock_acquire kernel/locking/lockdep.c:5761 [inline]
+ lock_acquire+0x1ae/0x510 kernel/locking/lockdep.c:5726
+ __raw_spin_lock_irqsave include/linux/spinlock_api_smp.h:110 [inline]
+ _raw_spin_lock_irqsave+0x3a/0x50 kernel/locking/spinlock.c:162
+ prepare_to_wait+0x47/0x380 kernel/sched/wait.c:269
+ nr_accept+0x20d/0x650 net/netrom/af_netrom.c:798
+ do_accept+0x3a6/0x570 net/socket.c:1872
+ __sys_accept4_file net/socket.c:1913 [inline]
+ __sys_accept4+0x99/0x120 net/socket.c:1943
+ __do_sys_accept4 net/socket.c:1954 [inline]
+ __se_sys_accept4 net/socket.c:1951 [inline]
+ __x64_sys_accept4+0x96/0x100 net/socket.c:1951
+ do_syscall_x64 arch/x86/entry/common.c:50 [inline]
+ do_syscall_64+0x38/0xb0 arch/x86/entry/common.c:80
+ entry_SYSCALL_64_after_hwframe+0x63/0xcd
+RIP: 0033:0x7f51d447cae9
+Code: 28 00 00 00 75 05 48 83 c4 28 c3 e8 e1 20 00 00 90 48 89 f8 48 89 f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01 f0 ff ff 73 01 c3 48 c7 c1 b0 ff ff ff f7 d8 64 89 01 48
+RSP: 002b:00007f51d519a0c8 EFLAGS: 00000246 ORIG_RAX: 0000000000000120
+RAX: ffffffffffffffda RBX: 00007f51d459bf80 RCX: 00007f51d447cae9
+RDX: 0000000020000400 RSI: 0000000000000000 RDI: 0000000000000004
+RBP: 00007f51d44c847a R08: 0000000000000000 R09: 0000000000000000
+R10: 0000000000000800 R11: 0000000000000246 R12: 0000000000000000
+R13: 000000000000000b R14: 00007f51d459bf80 R15: 00007ffc25c34e48
+ </TASK>
+
+Link: https://syzkaller.appspot.com/text?tag=CrashLog&x=152cdb63a80000 [1]
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-by: syzbot+666c97e4686410e79649@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?extid=666c97e4686410e79649
+Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts       | 5 +++++
- arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts | 5 +++++
- arch/arm64/boot/dts/qcom/msm8916.dtsi          | 1 +
- arch/arm64/boot/dts/qcom/pm8916.dtsi           | 1 +
- 4 files changed, 12 insertions(+)
+ net/netrom/af_netrom.c | 5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index 7261cfc99f9fa..73c51fa101c8b 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -310,6 +310,10 @@ &lpass {
- 	status = "okay";
- };
+diff --git a/net/netrom/af_netrom.c b/net/netrom/af_netrom.c
+index 5a4cb796150f5..ec5747969f964 100644
+--- a/net/netrom/af_netrom.c
++++ b/net/netrom/af_netrom.c
+@@ -660,6 +660,11 @@ static int nr_connect(struct socket *sock, struct sockaddr *uaddr,
+ 		goto out_release;
+ 	}
  
-+&lpass_codec {
-+	status = "okay";
-+};
++	if (sock->state == SS_CONNECTING) {
++		err = -EALREADY;
++		goto out_release;
++	}
 +
- &mdss {
- 	status = "okay";
- };
-@@ -399,6 +403,7 @@ &usb_hs_phy {
- };
+ 	sk->sk_state   = TCP_CLOSE;
+ 	sock->state = SS_UNCONNECTED;
  
- &wcd_codec {
-+	status = "okay";
- 	clocks = <&gcc GCC_CODEC_DIGCODEC_CLK>;
- 	clock-names = "mclk";
- 	qcom,mbhc-vthreshold-low = <75 150 237 450 500>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-index baa7bb86cdd5b..8197710372ad1 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-@@ -218,6 +218,10 @@ &lpass {
- 	status = "okay";
- };
- 
-+&lpass_codec {
-+	status = "okay";
-+};
-+
- &pm8916_resin {
- 	status = "okay";
- 	linux,code = <KEY_VOLUMEDOWN>;
-@@ -302,6 +306,7 @@ &usb_hs_phy {
- };
- 
- &wcd_codec {
-+	status = "okay";
- 	qcom,micbias-lvl = <2800>;
- 	qcom,mbhc-vthreshold-low = <75 150 237 450 500>;
- 	qcom,mbhc-vthreshold-high = <75 150 237 450 500>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916.dtsi b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-index bf88c10ff55b0..9ab55e723aa6c 100644
---- a/arch/arm64/boot/dts/qcom/msm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916.dtsi
-@@ -1552,6 +1552,7 @@ lpass_codec: audio-codec@771c000 {
- 				 <&gcc GCC_CODEC_DIGCODEC_CLK>;
- 			clock-names = "ahbix-clk", "mclk";
- 			#sound-dai-cells = <1>;
-+			status = "disabled";
- 		};
- 
- 		sdhc_1: mmc@7824900 {
-diff --git a/arch/arm64/boot/dts/qcom/pm8916.dtsi b/arch/arm64/boot/dts/qcom/pm8916.dtsi
-index f4fb1a92ab55a..33ca1002fb754 100644
---- a/arch/arm64/boot/dts/qcom/pm8916.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pm8916.dtsi
-@@ -178,6 +178,7 @@ wcd_codec: audio-codec@f000 {
- 			vdd-cdc-tx-rx-cx-supply = <&pm8916_l5>;
- 			vdd-micbias-supply = <&pm8916_l13>;
- 			#sound-dai-cells = <1>;
-+			status = "disabled";
- 		};
- 	};
- };
 -- 
 2.40.1
 
