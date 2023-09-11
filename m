@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2112E79BFC0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F5CF79B82B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235456AbjIKVKQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:10:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34522 "EHLO
+        id S235509AbjIKVKR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:10:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239288AbjIKOQl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:41 -0400
+        with ESMTP id S241793AbjIKPOj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25EDEDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6894FC433C7;
-        Mon, 11 Sep 2023 14:16:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 08A36FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5306FC433C8;
+        Mon, 11 Sep 2023 15:14:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441796;
-        bh=tQA/G8/GCFZTwxNQonlssuelAucNG4eTjpEESAJhKCM=;
+        s=korg; t=1694445274;
+        bh=gjtaWRS4iCVwGr0QJYek1EEKC6Zmjl7dNrZShyHWqcE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Qg3nSCbCMklhYhXTfjc6zKdHs3mML8HfTq7XTIvQ6F8UeG2+6yjTG4Qk4Y/uKmg/M
-         wMP9c7ftD8qX+Vo518fGjC1eZfqmfBvqcHgHYS23teNaqdpoQijjG1qAKvnzd9P8uh
-         4pg/+3bGig2X5Uz/9J2flCGBvtTYfC2oHlDrWpAU=
+        b=oF40JuCESR49B7QNej1gZvxwLQ2CExfGYcakZR4P2Mw2IGF00WdREfvI48sRqqODp
+         ySfwlnKVf2meq+4PemSjHC34M3aphdNEuJmAbPtViuUx+j7pxqf/F7x8gdHELxLx+0
+         v7VcAs3Plx5BLeWaHHM3GJzyE7+FwuZ/zR+4WalI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lu Baolu <baolu.lu@linux.intel.com>,
-        Yanfei Xu <yanfei.xu@intel.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 522/739] iommu/vt-d: Fix to flush cache of PASID directory table
+        patches@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 288/600] drm/repaper: Reduce temporary buffer size in repaper_fb_dirty()
 Date:   Mon, 11 Sep 2023 15:45:21 +0200
-Message-ID: <20230911134705.693220497@linuxfoundation.org>
+Message-ID: <20230911134642.111093075@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yanfei Xu <yanfei.xu@intel.com>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit 8a3b8e63f8371c1247b7aa24ff9c5312f1a6948b ]
+[ Upstream commit fedf429e071f6dbbe7a69dfc342492e037692018 ]
 
-Even the PCI devices don't support pasid capability, PASID table is
-mandatory for a PCI device in scalable mode. However flushing cache
-of pasid directory table for these devices are not taken after pasid
-table is allocated as the "size" of table is zero. Fix it by
-calculating the size by page order.
+As the temporary buffer is no longer used to store 8-bit grayscale data,
+its size can be reduced to the size needed to store the monochrome
+bitmap data.
 
-Found this when reading the code, no real problem encountered for now.
-
-Fixes: 194b3348bdbb ("iommu/vt-d: Fix PASID directory pointer coherency")
-Suggested-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Yanfei Xu <yanfei.xu@intel.com>
-Link: https://lore.kernel.org/r/20230616081045.721873-1-yanfei.xu@intel.com
-Signed-off-by: Lu Baolu <baolu.lu@linux.intel.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 24c6bedefbe71de9 ("drm/repaper: Use format helper for xrgb8888 to monochrome conversion")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220317081830.1211400-6-geert@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/intel/pasid.c | 2 +-
+ drivers/gpu/drm/tiny/repaper.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/intel/pasid.c b/drivers/iommu/intel/pasid.c
-index c5d479770e12e..49fc5a038a145 100644
---- a/drivers/iommu/intel/pasid.c
-+++ b/drivers/iommu/intel/pasid.c
-@@ -129,7 +129,7 @@ int intel_pasid_alloc_table(struct device *dev)
- 	info->pasid_table = pasid_table;
+diff --git a/drivers/gpu/drm/tiny/repaper.c b/drivers/gpu/drm/tiny/repaper.c
+index e62f4d16b2c6b..7e2b0e2241358 100644
+--- a/drivers/gpu/drm/tiny/repaper.c
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -533,7 +533,7 @@ static int repaper_fb_dirty(struct drm_framebuffer *fb)
+ 	DRM_DEBUG("Flushing [FB:%d] st=%ums\n", fb->base.id,
+ 		  epd->factored_stage_time);
  
- 	if (!ecap_coherent(info->iommu->ecap))
--		clflush_cache_range(pasid_table->table, size);
-+		clflush_cache_range(pasid_table->table, (1 << order) * PAGE_SIZE);
- 
- 	return 0;
- }
+-	buf = kmalloc_array(fb->width, fb->height, GFP_KERNEL);
++	buf = kmalloc(fb->width * fb->height / 8, GFP_KERNEL);
+ 	if (!buf) {
+ 		ret = -ENOMEM;
+ 		goto out_exit;
 -- 
 2.40.1
 
