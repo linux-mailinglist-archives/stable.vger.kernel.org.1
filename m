@@ -2,43 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 590B479AF25
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5895879AF1B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345842AbjIKVWa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34988 "EHLO
+        id S232400AbjIKUxj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:53:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241096AbjIKPBv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:51 -0400
+        with ESMTP id S240085AbjIKOgT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3C34C125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 55E73C433C8;
-        Mon, 11 Sep 2023 15:01:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFC53F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 059D1C433C8;
+        Mon, 11 Sep 2023 14:36:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444506;
-        bh=gPjyesZZ/t769mjN2hyEQUuXhQqHVE/8RRftuUGBXCU=;
+        s=korg; t=1694442974;
+        bh=VBS+QXAL3inaCLRDVb8/E1fRSp6iJ6QTkaSIBD4Fdy8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0IDHoh0/KAna9zSh1TKfE0XWrIx2UnnOT3x/PK0K7VKERUQ7yU/cFWud1eZ2vninN
-         8r9Tkh5woglByRDjaRaqG1WO7UVGq3sMw4rQF7g2Yz5Al6mduKrPjZiortfnLhn+TT
-         M/O3//zZw0psI92bunN8FVPIwy6FTsA1hTGlgJDg=
+        b=XyClLwDzvwxsCMxgj0g+MeZ159VQg8pASAACTbfn6DgKRN06FEuziYpBDfyIaxXfV
+         QUo8vrmT+rrwl4gHYMUyLSKTsKI+pWHihR0eNnQnjwor13zlqfH1CmP0saOCDaxsHD
+         cRiaO3hkk77FEtk71Gthj8JqDlpNrW6jCaTdbpSc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
-        Jun Lei <jun.lei@amd.com>,
-        Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        Daniel Miess <daniel.miess@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 002/600] Partially revert "drm/amd/display: Fix possible underflow for displays with large vblank"
+Subject: [PATCH 6.4 176/737] can: gs_usb: gs_usb_receive_bulk_callback(): count RX overflow errors also in case of OOM
 Date:   Mon, 11 Sep 2023 15:40:35 +0200
-Message-ID: <20230911134633.699445714@linuxfoundation.org>
+Message-ID: <20230911134655.453430561@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,47 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Miess <daniel.miess@amd.com>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit a99a4ff6ef205d125002fc7e0857074e4e6597b6 ]
+[ Upstream commit 6c8bc15f02b85bc8f47074110d8fd8caf7a1e42d ]
 
-This partially reverts commit de231189e7bf ("drm/amd/display: Fix
-possible underflow for displays with large vblank").
+In case of an RX overflow error from the CAN controller and an OOM
+where no skb can be allocated, the error counters are not incremented.
 
-[Why]
-The increased value of VBlankNomDefaultUS causes underflow at the
-desktop of an IP KVM setup
+Fix this by first incrementing the error counters and then allocate
+the skb.
 
-[How]
-Change the value from 800 back to 668
-
-Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
-Reviewed-by: Jun Lei <jun.lei@amd.com>
-Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
-Signed-off-by: Daniel Miess <daniel.miess@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-7-c3b9154ec605@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/usb/gs_usb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-index 8a88605827a84..551a63f7064bb 100644
---- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-+++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
-@@ -32,7 +32,7 @@
- #include "dml/display_mode_vba.h"
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index bd9eb066ecf15..129ef60a577c8 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -633,6 +633,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
  
- struct _vcs_dpi_ip_params_st dcn3_14_ip = {
--	.VBlankNomDefaultUS = 800,
-+	.VBlankNomDefaultUS = 668,
- 	.gpuvm_enable = 1,
- 	.gpuvm_max_page_table_levels = 1,
- 	.hostvm_enable = 1,
+ 	if (hf->flags & GS_CAN_FLAG_OVERFLOW) {
++		stats->rx_over_errors++;
++		stats->rx_errors++;
++
+ 		skb = alloc_can_err_skb(netdev, &cf);
+ 		if (!skb)
+ 			goto resubmit_urb;
+@@ -640,8 +643,6 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		cf->can_id |= CAN_ERR_CRTL;
+ 		cf->len = CAN_ERR_DLC;
+ 		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
+-		stats->rx_over_errors++;
+-		stats->rx_errors++;
+ 		netif_rx(skb);
+ 	}
+ 
 -- 
 2.40.1
 
