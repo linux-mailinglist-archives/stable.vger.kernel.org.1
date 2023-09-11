@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC6E279BEBC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E21579BAC8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343723AbjIKVMX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:12:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53860 "EHLO
+        id S232383AbjIKUwf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42536 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238737AbjIKOD7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:59 -0400
+        with ESMTP id S241150AbjIKPCy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:02:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8F3B3E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6F55C433C8;
-        Mon, 11 Sep 2023 14:03:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6486B125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:02:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB003C433C8;
+        Mon, 11 Sep 2023 15:02:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441035;
-        bh=SXJYh6wsceYCbVS3jhtsyKA2fxPGn69o5QUeJFNH9bU=;
+        s=korg; t=1694444569;
+        bh=9AUgelcjlaRblRA2hwkDeL4KGprjuwruiin/nMkf7Qs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZAwFyNugsExu1WbjuBojHcC2oYzjBjrS/w/HRe6pJrU16KeeF6km3GqNIpl5C4KbP
-         MedxzSR6anXsKPnFWRqxjGhXy+r+6h166oBubm8bpvTuKkYe/BoQ6ZyZnN/i4FDOHc
-         S4q3kLAiZRPDeXpMsf1Bd/u4eDrjwHJGJSpm3hdM=
+        b=jdCdQYQXxR+BoYCMwny0q4i+aMeXoQlhVdGTwBcvxXpVxoG76TuiCuzD7RbEuFoMQ
+         z3PMQaRGBgPqepuV7ELMLUYBNFlmcBvAdaO0Qiqx5s0+nPdGJHmjXnfzF3nfSdrS23
+         9g/9WtVRFMStcv+W+xKJ8TXw9iSTKvTIoRY8gvAs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Bjorn Andersson <quic_bjorande@quicinc.com>,
-        Bjorn Andersson <andersson@kernel.org>,
+        Konstantin Shelekhin <k.shelekhin@ftml.net>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 272/739] arm64: dts: qcom: sc8180x: Fix LLCC reg property
+Subject: [PATCH 6.1 038/600] platform/x86: huawei-wmi: Silence ambient light sensor
 Date:   Mon, 11 Sep 2023 15:41:11 +0200
-Message-ID: <20230911134658.726911978@linuxfoundation.org>
+Message-ID: <20230911134634.724632018@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bjorn Andersson <quic_bjorande@quicinc.com>
+From: Konstantin Shelekhin <k.shelekhin@ftml.net>
 
-[ Upstream commit 74cf6675c35ec3034053a69926f4d98e52852eb0 ]
+[ Upstream commit c21733754cd6ecbca346f2adf9b17d4cfa50504f ]
 
-The LLCC binding and driver was recently corrected to handle the stride
-varying between platforms. Switch to the new format to ensure accesses
-are done in the right place.
+Currently huawei-wmi causes a lot of spam in dmesg on my
+Huawei MateBook X Pro 2022:
 
-Fixes: 8575f197b077 ("arm64: dts: qcom: Introduce the SC8180x platform")
-Signed-off-by: Bjorn Andersson <quic_bjorande@quicinc.com>
-Link: https://lore.kernel.org/r/20230612220632.1885175-1-quic_bjorande@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  ...
+  [36409.328463] input input9: Unknown key pressed, code: 0x02c1
+  [36411.335104] input input9: Unknown key pressed, code: 0x02c1
+  [36412.338674] input input9: Unknown key pressed, code: 0x02c1
+  [36414.848564] input input9: Unknown key pressed, code: 0x02c1
+  [36416.858706] input input9: Unknown key pressed, code: 0x02c1
+  ...
+
+Fix that by ignoring events generated by ambient light sensor.
+
+This issue was reported on GitHub and resolved with the following merge
+request:
+
+  https://github.com/aymanbagabas/Huawei-WMI/pull/70
+
+I've contacted the mainter of this repo and he gave me the "go ahead" to
+send this patch to the maling list.
+
+Signed-off-by: Konstantin Shelekhin <k.shelekhin@ftml.net>
+Link: https://lore.kernel.org/r/20230722155922.173856-1-k.shelekhin@ftml.net
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sc8180x.dtsi | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/platform/x86/huawei-wmi.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/arch/arm64/boot/dts/qcom/sc8180x.dtsi b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-index 8a6d9e0914ad9..9aac5861a9132 100644
---- a/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sc8180x.dtsi
-@@ -2542,8 +2542,11 @@ usb_sec_dpphy: dp-phy@88ef200 {
- 
- 		system-cache-controller@9200000 {
- 			compatible = "qcom,sc8180x-llcc";
--			reg = <0 0x09200000 0 0x50000>, <0 0x09600000 0 0x50000>;
--			reg-names = "llcc_base", "llcc_broadcast_base";
-+			reg = <0 0x09200000 0 0x50000>, <0 0x09280000 0 0x50000>,
-+			      <0 0x09300000 0 0x50000>, <0 0x09380000 0 0x50000>,
-+			      <0 0x09600000 0 0x50000>;
-+			reg-names = "llcc0_base", "llcc1_base", "llcc2_base",
-+				    "llcc3_base", "llcc_broadcast_base";
- 			interrupts = <GIC_SPI 582 IRQ_TYPE_LEVEL_HIGH>;
- 		};
+diff --git a/drivers/platform/x86/huawei-wmi.c b/drivers/platform/x86/huawei-wmi.c
+index b85050e4a0d65..ae5daecff1771 100644
+--- a/drivers/platform/x86/huawei-wmi.c
++++ b/drivers/platform/x86/huawei-wmi.c
+@@ -86,6 +86,8 @@ static const struct key_entry huawei_wmi_keymap[] = {
+ 	{ KE_IGNORE, 0x293, { KEY_KBDILLUMTOGGLE } },
+ 	{ KE_IGNORE, 0x294, { KEY_KBDILLUMUP } },
+ 	{ KE_IGNORE, 0x295, { KEY_KBDILLUMUP } },
++	// Ignore Ambient Light Sensoring
++	{ KE_KEY,    0x2c1, { KEY_RESERVED } },
+ 	{ KE_END,	 0 }
+ };
  
 -- 
 2.40.1
