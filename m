@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8F0BC79B4B0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 73F4A79B4C5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378666AbjIKWgX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:36:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41718 "EHLO
+        id S1378844AbjIKWhg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240068AbjIKOfe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:34 -0400
+        with ESMTP id S241170AbjIKPDa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0AF6F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0E5D6C433C9;
-        Mon, 11 Sep 2023 14:35:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED23125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 791B8C433C8;
+        Mon, 11 Sep 2023 15:03:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442928;
-        bh=IKIhk2F3jHeY7OftrYuO3p4qg2FepWdzRMD3WOscyis=;
+        s=korg; t=1694444605;
+        bh=IOwUX6DX6gPbRLkc3sHj0FOCsJE8wHgOyN2KWdCK3UQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P9MaG7AeO7g5WgPEMvfid6nv2TsfM9XQqzxlo1rAzcsTww5OZJSXYcwmPeDGBhvcz
-         F8Tse0pIiRE67wp8g3j+iHySmk2r8RldAyHSRtNYMtwZRm1YQYC/RhgPKvvn0a4TDs
-         QbDtEDSQTvx9vOR0BmfZm2zTasO075Gx5QmG9Ndw=
+        b=h1qckHnmUlJU/j4y+iCPFqMTJh7bBD/mv4QLmYnveNpWn0nhYq3dqbGSXGCwvj6Rz
+         C1wDLChphpJ8YqUTfmbpRxDbMa3j8mFwvcx9VkRhDdrJT6zDgFLZs33vFaOiQqzFAo
+         tsJbjQl7PdvGNg2epZitWXg4tFMDV7BrYK5cJk9U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Yuanjun Gong <ruc_gongyuanjun@163.com>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 197/737] Bluetooth: nokia: fix value check in nokia_bluetooth_serdev_probe()
+Subject: [PATCH 6.1 023/600] ethernet: atheros: fix return value check in atl1c_tso_csum()
 Date:   Mon, 11 Sep 2023 15:40:56 +0200
-Message-ID: <20230911134656.104048224@linuxfoundation.org>
+Message-ID: <20230911134634.297009164@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,43 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Yuanjun Gong <ruc_gongyuanjun@163.com>
 
-[ Upstream commit e8b5aed31355072faac8092ead4938ddec3111fd ]
+[ Upstream commit 8d01da0a1db237c44c92859ce3612df7af8d3a53 ]
 
-in nokia_bluetooth_serdev_probe(), check the return value of
-clk_prepare_enable() and return the error code if
-clk_prepare_enable() returns an unexpected value.
+in atl1c_tso_csum, it should check the return value of pskb_trim(),
+and return an error code if an unexpected value is returned
+by pskb_trim().
 
-Fixes: 7bb318680e86 ("Bluetooth: add nokia driver")
 Signed-off-by: Yuanjun Gong <ruc_gongyuanjun@163.com>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bluetooth/hci_nokia.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/atheros/atl1c/atl1c_main.c | 7 +++++--
+ 1 file changed, 5 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/bluetooth/hci_nokia.c b/drivers/bluetooth/hci_nokia.c
-index 05f7f6de6863d..97da0b2bfd17e 100644
---- a/drivers/bluetooth/hci_nokia.c
-+++ b/drivers/bluetooth/hci_nokia.c
-@@ -734,7 +734,11 @@ static int nokia_bluetooth_serdev_probe(struct serdev_device *serdev)
- 		return err;
- 	}
+diff --git a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+index 40c781695d581..7762e532c6a4f 100644
+--- a/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
++++ b/drivers/net/ethernet/atheros/atl1c/atl1c_main.c
+@@ -2104,8 +2104,11 @@ static int atl1c_tso_csum(struct atl1c_adapter *adapter,
+ 			real_len = (((unsigned char *)ip_hdr(skb) - skb->data)
+ 					+ ntohs(ip_hdr(skb)->tot_len));
  
--	clk_prepare_enable(sysclk);
-+	err = clk_prepare_enable(sysclk);
-+	if (err) {
-+		dev_err(dev, "could not enable sysclk: %d", err);
-+		return err;
-+	}
- 	btdev->sysclk_speed = clk_get_rate(sysclk);
- 	clk_disable_unprepare(sysclk);
+-			if (real_len < skb->len)
+-				pskb_trim(skb, real_len);
++			if (real_len < skb->len) {
++				err = pskb_trim(skb, real_len);
++				if (err)
++					return err;
++			}
  
+ 			hdr_len = skb_tcp_all_headers(skb);
+ 			if (unlikely(skb->len == hdr_len)) {
 -- 
 2.40.1
 
