@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E404179ADB0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7A74079B007
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238668AbjIKWix (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:38:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45106 "EHLO
+        id S1350682AbjIKVkl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:40:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58172 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242172AbjIKPYL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:11 -0400
+        with ESMTP id S239694AbjIKO0d (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B4DED8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AFE3BC433C9;
-        Mon, 11 Sep 2023 15:24:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 53B70DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F555C433C8;
+        Mon, 11 Sep 2023 14:26:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445847;
-        bh=58fUs7/FqwL/y4qcT32wK+TzgvTBDx+st2nXVNi67lg=;
+        s=korg; t=1694442388;
+        bh=BML5QJbF1wpznZpZWR/4jQSZRGTU5a8LjED5AQTOPsY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CHD5UXFTGRaDe+7U24tDxTA7b+2BsuZwvyDbAFDy4lkZpclD0ofScWCObonQQ5b9l
-         S2GhVUA/QTeE2+1PcWaHwiOIjloK9N7cnuwRBKMhfohg0UHp5Bojt1GPox09ZgLQMc
-         TnIOQ80HFzAAvkl0nGsjFLV4bMRUm9kk5BhvhlMY=
+        b=YdWcHCY8k7AnxrMymOb7GGCMzhpOQehykFTKjQNRUD4+hNWMzQVZy5uG+FEGzDrPf
+         1KBlD08E2qcj5nG/Bz8/8r5tE1OO/1vFC64ZK62WTy71k47o4P/QkLMH8Mhi99xeMN
+         kHkOPPTIDF/BIK/HMn40ShWm/w3ie8R4C9yCIfeo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com,
-        Maxime Ripard <mripard@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-        Benjamin Tissoires <bentiss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 493/600] HID: uclogic: Correct devm device reference for hidinput input_dev name
+        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
+        Yunying Sun <yunying.sun@intel.com>,
+        Kan Liang <kan.liang@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>
+Subject: [PATCH 6.5 727/739] perf/x86/uncore: Correct the number of CHAs on EMR
 Date:   Mon, 11 Sep 2023 15:48:46 +0200
-Message-ID: <20230911134648.183713509@linuxfoundation.org>
+Message-ID: <20230911134711.376785081@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,74 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: Kan Liang <kan.liang@linux.intel.com>
 
-[ Upstream commit dd613a4e45f8d35f49a63a2064e5308fa5619e29 ]
+commit 6f7f984fa85b305799076a1bcec941b9377587de upstream.
 
-Reference the HID device rather than the input device for the devm
-allocation of the input_dev name. Referencing the input_dev would lead to a
-use-after-free when the input_dev was unregistered and subsequently fires a
-uevent that depends on the name. At the point of firing the uevent, the
-name would be freed by devres management.
+Starting from SPR, the basic uncore PMON information is retrieved from
+the discovery table (resides in an MMIO space populated by BIOS). It is
+called the discovery method. The existing value of the type->num_boxes
+is from the discovery table.
 
-Use devm_kasprintf to simplify the logic for allocating memory and
-formatting the input_dev name string.
+On some SPR variants, there is a firmware bug that makes the value from the
+discovery table incorrect. We use the value from the
+SPR_MSR_UNC_CBO_CONFIG MSR to replace the one from the discovery table:
 
-Reported-by: syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/
-Reported-by: Maxime Ripard <mripard@kernel.org>
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
-Fixes: cce2dbdf258e ("HID: uclogic: name the input nodes based on their tool")
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230824061308.222021-2-sergeantsagara@protonmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+   38776cc45eb7 ("perf/x86/uncore: Correct the number of CHAs on SPR")
+
+Unfortunately, the SPR_MSR_UNC_CBO_CONFIG isn't available for the EMR
+XCC (Always returns 0), but the above firmware bug doesn't impact the
+EMR XCC.
+
+Don't let the value from the MSR replace the existing value from the
+discovery table.
+
+Fixes: 38776cc45eb7 ("perf/x86/uncore: Correct the number of CHAs on SPR")
+Reported-by: Stephane Eranian <eranian@google.com>
+Reported-by: Yunying Sun <yunying.sun@intel.com>
+Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Tested-by: Yunying Sun <yunying.sun@intel.com>
+Link: https://lore.kernel.org/r/20230905134248.496114-1-kan.liang@linux.intel.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-uclogic-core.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ arch/x86/events/intel/uncore_snbep.c |   12 +++++++++++-
+ 1 file changed, 11 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
-index bfbb51f8b5beb..39114d5c55a0e 100644
---- a/drivers/hid/hid-uclogic-core.c
-+++ b/drivers/hid/hid-uclogic-core.c
-@@ -85,10 +85,8 @@ static int uclogic_input_configured(struct hid_device *hdev,
- {
- 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
- 	struct uclogic_params *params = &drvdata->params;
--	char *name;
- 	const char *suffix = NULL;
- 	struct hid_field *field;
--	size_t len;
- 	size_t i;
- 	const struct uclogic_params_frame *frame;
+--- a/arch/x86/events/intel/uncore_snbep.c
++++ b/arch/x86/events/intel/uncore_snbep.c
+@@ -6474,8 +6474,18 @@ void spr_uncore_cpu_init(void)
  
-@@ -146,14 +144,9 @@ static int uclogic_input_configured(struct hid_device *hdev,
- 		}
+ 	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
+ 	if (type) {
++		/*
++		 * The value from the discovery table (stored in the type->num_boxes
++		 * of UNCORE_SPR_CHA) is incorrect on some SPR variants because of a
++		 * firmware bug. Using the value from SPR_MSR_UNC_CBO_CONFIG to replace it.
++		 */
+ 		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
+-		type->num_boxes = num_cbo;
++		/*
++		 * The MSR doesn't work on the EMR XCC, but the firmware bug doesn't impact
++		 * the EMR XCC. Don't let the value from the MSR replace the existing value.
++		 */
++		if (num_cbo)
++			type->num_boxes = num_cbo;
  	}
- 
--	if (suffix) {
--		len = strlen(hdev->name) + 2 + strlen(suffix);
--		name = devm_kzalloc(&hi->input->dev, len, GFP_KERNEL);
--		if (name) {
--			snprintf(name, len, "%s %s", hdev->name, suffix);
--			hi->input->name = name;
--		}
--	}
-+	if (suffix)
-+		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
-+						 "%s %s", hdev->name, suffix);
- 
- 	return 0;
+ 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
  }
--- 
-2.40.1
-
 
 
