@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ECF1879B7C7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3408D79B986
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348819AbjIKVbI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56174 "EHLO
+        id S1357914AbjIKWGx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:06:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33366 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241921AbjIKPRy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:54 -0400
+        with ESMTP id S239327AbjIKORx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB385FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03897C433C8;
-        Mon, 11 Sep 2023 15:17:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42543DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86EECC433C8;
+        Mon, 11 Sep 2023 14:17:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445469;
-        bh=u3vJVSw60ug4CtJz4x+6lUe6UKP1yOxIXa5xX3tOXKE=;
+        s=korg; t=1694441868;
+        bh=2ygl7oXEb6RAByZR6F1Ar0dIi5Z7Ze0rBqxNN3DZnP0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MH25p2sVCDATXe6BR6SgSyRa2jkvaYRwJ6Mru+E0P6SvwLYQzG1BwOf8Jbx9Gf0Wh
-         YBiP32cFWauWnHzvgt8nEI3xhxt2KK+2Mq8WPdX3CVyf0pAjWLpj5Nan2rq3RZFaAi
-         HSkfSxFlstvUogUCx3qB6dIjooBKKpcbADu9w/VA=
+        b=jYI1m79blvoiT0OOLMo1Gqtr66Cp8AKOGvfALU5FUoPTu7eqvGUB5znRQuGVnJkND
+         /5PAao1E5Q4LeRShwemo39bwrXY65I7qQiFQojVMU8TyKMBwt05FDoQ+pB2xE9RQsZ
+         ZfYz4AMPIRszcGhukrekeIk7DssJQRgJEyxggWpQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 331/600] clk: qcom: gcc-sc8280xp: Add missing GDSC flags
+Subject: [PATCH 6.5 565/739] scsi: core: Use 32-bit hostnum in scsi_host_lookup()
 Date:   Mon, 11 Sep 2023 15:46:04 +0200
-Message-ID: <20230911134643.459548803@linuxfoundation.org>
+Message-ID: <20230911134706.858812979@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,150 +51,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-[ Upstream commit 2fd02de27054576a4a8c89302e2f77122c55e957 ]
+[ Upstream commit 62ec2092095b678ff89ce4ba51c2938cd1e8e630 ]
 
-All of the 8280's GCC GDSCs can and should use the retain registers so
-as not to lose their state when entering lower power modes.
+Change scsi_host_lookup() hostnum argument type from unsigned short to
+unsigned int to match the type used everywhere else.
 
-Fixes: d65d005f9a6c ("clk: qcom: add sc8280xp GCC driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-1-562c1428c10d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 6d49f63b415c ("[SCSI] Make host_no an unsigned int")
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://lore.kernel.org/r/a02497e7-c12b-ef15-47fc-3f0a0b00ffce@cybernetics.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8280xp.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/scsi/hosts.c     | 4 ++--
+ include/scsi/scsi_host.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8280xp.c b/drivers/clk/qcom/gcc-sc8280xp.c
-index 04a99dbaa57e0..43c518e5c986b 100644
---- a/drivers/clk/qcom/gcc-sc8280xp.c
-+++ b/drivers/clk/qcom/gcc-sc8280xp.c
-@@ -6760,7 +6760,7 @@ static struct gdsc pcie_0_tunnel_gdsc = {
- 		.name = "pcie_0_tunnel_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE,
- };
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index 198edf03f9297..d7f51b84f3c78 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -537,7 +537,7 @@ EXPORT_SYMBOL(scsi_host_alloc);
+ static int __scsi_host_match(struct device *dev, const void *data)
+ {
+ 	struct Scsi_Host *p;
+-	const unsigned short *hostnum = data;
++	const unsigned int *hostnum = data;
  
- static struct gdsc pcie_1_tunnel_gdsc = {
-@@ -6771,7 +6771,7 @@ static struct gdsc pcie_1_tunnel_gdsc = {
- 		.name = "pcie_1_tunnel_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE,
- };
- 
- /*
-@@ -6786,7 +6786,7 @@ static struct gdsc pcie_2a_gdsc = {
- 		.name = "pcie_2a_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_2b_gdsc = {
-@@ -6797,7 +6797,7 @@ static struct gdsc pcie_2b_gdsc = {
- 		.name = "pcie_2b_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_3a_gdsc = {
-@@ -6808,7 +6808,7 @@ static struct gdsc pcie_3a_gdsc = {
- 		.name = "pcie_3a_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_3b_gdsc = {
-@@ -6819,7 +6819,7 @@ static struct gdsc pcie_3b_gdsc = {
- 		.name = "pcie_3b_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_4_gdsc = {
-@@ -6830,7 +6830,7 @@ static struct gdsc pcie_4_gdsc = {
- 		.name = "pcie_4_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc ufs_card_gdsc = {
-@@ -6839,6 +6839,7 @@ static struct gdsc ufs_card_gdsc = {
- 		.name = "ufs_card_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc ufs_phy_gdsc = {
-@@ -6847,6 +6848,7 @@ static struct gdsc ufs_phy_gdsc = {
- 		.name = "ufs_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_mp_gdsc = {
-@@ -6855,6 +6857,7 @@ static struct gdsc usb30_mp_gdsc = {
- 		.name = "usb30_mp_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_prim_gdsc = {
-@@ -6863,6 +6866,7 @@ static struct gdsc usb30_prim_gdsc = {
- 		.name = "usb30_prim_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_sec_gdsc = {
-@@ -6871,6 +6875,7 @@ static struct gdsc usb30_sec_gdsc = {
- 		.name = "usb30_sec_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc emac_0_gdsc = {
-@@ -6879,6 +6884,7 @@ static struct gdsc emac_0_gdsc = {
- 		.name = "emac_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc emac_1_gdsc = {
-@@ -6887,6 +6893,7 @@ static struct gdsc emac_1_gdsc = {
- 		.name = "emac_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct clk_regmap *gcc_sc8280xp_clocks[] = {
+ 	p = class_to_shost(dev);
+ 	return p->host_no == *hostnum;
+@@ -554,7 +554,7 @@ static int __scsi_host_match(struct device *dev, const void *data)
+  *	that scsi_host_get() took. The put_device() below dropped
+  *	the reference from class_find_device().
+  **/
+-struct Scsi_Host *scsi_host_lookup(unsigned short hostnum)
++struct Scsi_Host *scsi_host_lookup(unsigned int hostnum)
+ {
+ 	struct device *cdev;
+ 	struct Scsi_Host *shost = NULL;
+diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
+index 70b7475dcf56b..a2b8d30c4c803 100644
+--- a/include/scsi/scsi_host.h
++++ b/include/scsi/scsi_host.h
+@@ -769,7 +769,7 @@ extern void scsi_remove_host(struct Scsi_Host *);
+ extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
+ extern int scsi_host_busy(struct Scsi_Host *shost);
+ extern void scsi_host_put(struct Scsi_Host *t);
+-extern struct Scsi_Host *scsi_host_lookup(unsigned short);
++extern struct Scsi_Host *scsi_host_lookup(unsigned int hostnum);
+ extern const char *scsi_host_state_name(enum scsi_host_state);
+ extern void scsi_host_complete_all_commands(struct Scsi_Host *shost,
+ 					    enum scsi_host_status status);
 -- 
 2.40.1
 
