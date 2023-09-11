@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6739379BBE0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B71C779B8ED
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236806AbjIKVkp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:40:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44726 "EHLO
+        id S1377499AbjIKW0i (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:26:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58186 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241261AbjIKPFR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:17 -0400
+        with ESMTP id S240167AbjIKOiS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AD9125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32A7C433CB;
-        Mon, 11 Sep 2023 15:05:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F35CF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1E53C433CA;
+        Mon, 11 Sep 2023 14:38:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444713;
-        bh=gU1882pj9OpII++LCNyI2/kg9lVdpEzeoEMbMm9Eo2E=;
+        s=korg; t=1694443094;
+        bh=rOhADxcN4T/4HeOas3SR6QRHhB25peYjjC0kMKeGsyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ma4ABkzHV3Xt1ticPOaq9XHLEnUiaOJ7Amn2Cbdb4rUpi6iUV+Gz0hpVEct0QFNBg
-         lm+M0/t1Sm20hHGJcdgL2duk0QZG0zxqE1kBo+lld+sX0brioZfz7ln6u3PBPEj131
-         /Wlxwv7wjk3az0xovA2JnUy7zOK9yCTRR6R/pHjQ=
+        b=KP3gEI9BQklcyKyDTPfaqUMtMY/fhbVRFHwbBehHDZ65F6pdL91cus+PeKN5HipWJ
+         2osvvg/epeUiwOTPuErUOe5Y7PsdilRdUoe+NAQ1dpiHgsOduat+TCBTsg+W5qZZ8G
+         nkBGRsgRbxwcZo1ZwFdcJtpPyLfmOwqdUoeE+e9I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Sean Christopherson <seanjc@google.com>,
-        Luiz Capitulino <luizcap@amazon.com>
-Subject: [PATCH 6.1 082/600] KVM: x86/mmu: Use kstrtobool() instead of strtobool()
+        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 256/737] octeontx2-pf: Fix PFC TX scheduler free
 Date:   Mon, 11 Sep 2023 15:41:55 +0200
-Message-ID: <20230911134636.036424575@linuxfoundation.org>
+Message-ID: <20230911134657.741156714@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +51,71 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Suman Ghosh <sumang@marvell.com>
 
-commit 11b36fe7d4500c8ef73677c087f302fd713101c2 upstream.
+[ Upstream commit a9ac2e18779597f280d68a5b5f5bdd51a34080fa ]
 
-strtobool() is the same as kstrtobool().
-However, the latter is more used within the kernel.
+During PFC TX schedulers free, flag TXSCHQ_FREE_ALL was being set
+which caused free up all schedulers other than the PFC schedulers.
+This patch fixes that to free only the PFC Tx schedulers.
 
-In order to remove strtobool() and slightly simplify kstrtox.h, switch to
-the other function name.
-
-While at it, include the corresponding header file (<linux/kstrtox.h>)
-
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Link: https://lore.kernel.org/r/670882aa04dbdd171b46d3b20ffab87158454616.1673689135.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Sean Christopherson <seanjc@google.com>
-Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 99c969a83d82 ("octeontx2-pf: Add egress PFC support")
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230824081032.436432-2-sumang@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kvm/mmu/mmu.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../ethernet/marvell/octeontx2/nic/otx2_common.c  |  1 +
+ .../ethernet/marvell/octeontx2/nic/otx2_dcbnl.c   | 15 ++++-----------
+ 2 files changed, 5 insertions(+), 11 deletions(-)
 
---- a/arch/x86/kvm/mmu/mmu.c
-+++ b/arch/x86/kvm/mmu/mmu.c
-@@ -42,6 +42,7 @@
- #include <linux/uaccess.h>
- #include <linux/hash.h>
- #include <linux/kern_levels.h>
-+#include <linux/kstrtox.h>
- #include <linux/kthread.h>
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+index dd97731f81698..011355e73696e 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_common.c
+@@ -773,6 +773,7 @@ void otx2_txschq_free_one(struct otx2_nic *pfvf, u16 lvl, u16 schq)
  
- #include <asm/page.h>
-@@ -6667,7 +6668,7 @@ static int set_nx_huge_pages(const char
- 		new_val = 1;
- 	else if (sysfs_streq(val, "auto"))
- 		new_val = get_nx_auto_mode();
--	else if (strtobool(val, &new_val) < 0)
-+	else if (kstrtobool(val, &new_val) < 0)
- 		return -EINVAL;
+ 	mutex_unlock(&pfvf->mbox.lock);
+ }
++EXPORT_SYMBOL(otx2_txschq_free_one);
  
- 	__set_nx_huge_pages(new_val);
+ void otx2_txschq_stop(struct otx2_nic *pfvf)
+ {
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+index ccaf97bb1ce03..6492749dd7c89 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+@@ -125,19 +125,12 @@ int otx2_pfc_txschq_alloc(struct otx2_nic *pfvf)
+ 
+ static int otx2_pfc_txschq_stop_one(struct otx2_nic *pfvf, u8 prio)
+ {
+-	struct nix_txsch_free_req *free_req;
++	int lvl;
+ 
+-	mutex_lock(&pfvf->mbox.lock);
+ 	/* free PFC TLx nodes */
+-	free_req = otx2_mbox_alloc_msg_nix_txsch_free(&pfvf->mbox);
+-	if (!free_req) {
+-		mutex_unlock(&pfvf->mbox.lock);
+-		return -ENOMEM;
+-	}
+-
+-	free_req->flags = TXSCHQ_FREE_ALL;
+-	otx2_sync_mbox_msg(&pfvf->mbox);
+-	mutex_unlock(&pfvf->mbox.lock);
++	for (lvl = 0; lvl < pfvf->hw.txschq_link_cfg_lvl; lvl++)
++		otx2_txschq_free_one(pfvf, lvl,
++				     pfvf->pfc_schq_list[lvl][prio]);
+ 
+ 	pfvf->pfc_alloc_status[prio] = false;
+ 	return 0;
+-- 
+2.40.1
+
 
 
