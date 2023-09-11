@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A6B8779AF0B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 01D1579B453
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234337AbjIKVEs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
+        id S1343864AbjIKVMv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:12:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238428AbjIKN41 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:27 -0400
+        with ESMTP id S238383AbjIKNzH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C03910E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5479FC433C9;
-        Mon, 11 Sep 2023 13:56:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABA55CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2AE2C433C9;
+        Mon, 11 Sep 2023 13:55:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440581;
-        bh=b7wzlfxVBpfudyafhR238ZfXu7tRbJlXHXYYpap+hqs=;
+        s=korg; t=1694440503;
+        bh=RgBh0AohFzH+eH19dmWsGzvN2c49s1A7H0EqP6rIjaE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B09gK8FV24lmJTugeTloKwSyRxdMNcmU666P2Ivk+vESJRXegVDd75sn1AGauNFof
-         dUK7cG1qIKcB/ugjUI/UasRf691+vNb1QFw+/og4vN504FZXj5+to79f3S/a/Pz/e6
-         O1xDP5CPXTRAOEM6sOgnp1l4mruQ+WCcLnGLc0L4=
+        b=gl/791OQzs2YuX0fmxnUt5Diz7i/soprBE887UcYCivNpRdbI/PrVZcil3SSJz9uy
+         oU1Q7EEJlNBVIBwlpTcc5oVpk9NPc5JETONi9IcPH6ebMF49DHl6/2xLsPJm6pjzEs
+         C0tKWoRWJmSNwKYx+5Ip2a3ny3tJgTAbThuAYHNY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Guenter Roeck <linux@roeck-us.net>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 076/739] hwrng: pic32 - use devm_clk_get_enabled
-Date:   Mon, 11 Sep 2023 15:37:55 +0200
-Message-ID: <20230911134653.238864477@linuxfoundation.org>
+Subject: [PATCH 6.5 077/739] regmap: maple: Use alloc_flags for memory allocations
+Date:   Mon, 11 Sep 2023 15:37:56 +0200
+Message-ID: <20230911134653.267104159@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -54,82 +55,131 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Guenter Roeck <linux@roeck-us.net>
 
-[ Upstream commit 6755ad74aac0fb1c79b14724feb81b2f6ff25847 ]
+[ Upstream commit b0393e1fe40e962574613a5cdc4a470d6c1de023 ]
 
-Use devm_clk_get_enabled in the pic32 driver. Ensure that the clock is
-enabled as long as the driver is registered with the hwrng core.
+REGCACHE_MAPLE needs to allocate memory for regmap operations.
+This results in lockdep splats if used with fast_io since fast_io uses
+spinlocks for locking.
 
-Fixes: 7ea39973d1e5 ("hwrng: pic32 - Use device-managed registration API")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
+in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 167, name: kunit_try_catch
+preempt_count: 1, expected: 0
+1 lock held by kunit_try_catch/167:
+ #0: 838e9c10 (regmap_kunit:86:(config)->lock){....}-{2:2}, at: regmap_lock_spinlock+0x14/0x1c
+irq event stamp: 146
+hardirqs last  enabled at (145): [<8078bfa8>] crng_make_state+0x1a0/0x294
+hardirqs last disabled at (146): [<80c5f62c>] _raw_spin_lock_irqsave+0x7c/0x80
+softirqs last  enabled at (0): [<80110cc4>] copy_process+0x810/0x216c
+softirqs last disabled at (0): [<00000000>] 0x0
+CPU: 0 PID: 167 Comm: kunit_try_catch Tainted: G                 N 6.5.0-rc1-00028-gc4be22597a36-dirty #6
+Hardware name: Generic DT based system
+ unwind_backtrace from show_stack+0x18/0x1c
+ show_stack from dump_stack_lvl+0x38/0x5c
+ dump_stack_lvl from __might_resched+0x188/0x2d0
+ __might_resched from __kmem_cache_alloc_node+0x1f4/0x258
+ __kmem_cache_alloc_node from __kmalloc+0x48/0x170
+ __kmalloc from regcache_maple_write+0x194/0x248
+ regcache_maple_write from _regmap_write+0x88/0x140
+ _regmap_write from regmap_write+0x44/0x68
+ regmap_write from basic_read_write+0x8c/0x27c
+ basic_read_write from kunit_generic_run_threadfn_adapter+0x1c/0x28
+ kunit_generic_run_threadfn_adapter from kthread+0xf8/0x120
+ kthread from ret_from_fork+0x14/0x3c
+Exception stack(0x881a5fb0 to 0x881a5ff8)
+5fa0:                                     00000000 00000000 00000000 00000000
+5fc0: 00000000 00000000 00000000 00000000 00000000 00000000 00000000 00000000
+5fe0: 00000000 00000000 00000000 00000000 00000013 00000000
+
+Use map->alloc_flags instead of GFP_KERNEL for memory allocations to fix
+the problem.
+
+Fixes: f033c26de5a5 ("regmap: Add maple tree based register cache")
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/20230720172021.2617326-1-linux@roeck-us.net
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/pic32-rng.c | 19 +++++--------------
- 1 file changed, 5 insertions(+), 14 deletions(-)
+ drivers/base/regmap/regcache-maple.c | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/drivers/char/hw_random/pic32-rng.c b/drivers/char/hw_random/pic32-rng.c
-index 99c8bd0859a14..e04a054e89307 100644
---- a/drivers/char/hw_random/pic32-rng.c
-+++ b/drivers/char/hw_random/pic32-rng.c
-@@ -36,7 +36,6 @@
- struct pic32_rng {
- 	void __iomem	*base;
- 	struct hwrng	rng;
--	struct clk	*clk;
- };
+diff --git a/drivers/base/regmap/regcache-maple.c b/drivers/base/regmap/regcache-maple.c
+index 283c2e02a2985..41edd6a430eb4 100644
+--- a/drivers/base/regmap/regcache-maple.c
++++ b/drivers/base/regmap/regcache-maple.c
+@@ -74,7 +74,7 @@ static int regcache_maple_write(struct regmap *map, unsigned int reg,
+ 	rcu_read_unlock();
  
- /*
-@@ -70,6 +69,7 @@ static int pic32_rng_read(struct hwrng *rng, void *buf, size_t max,
- static int pic32_rng_probe(struct platform_device *pdev)
- {
- 	struct pic32_rng *priv;
-+	struct clk *clk;
- 	u32 v;
- 	int ret;
+ 	entry = kmalloc((last - index + 1) * sizeof(unsigned long),
+-			GFP_KERNEL);
++			map->alloc_flags);
+ 	if (!entry)
+ 		return -ENOMEM;
  
-@@ -81,13 +81,9 @@ static int pic32_rng_probe(struct platform_device *pdev)
- 	if (IS_ERR(priv->base))
- 		return PTR_ERR(priv->base);
+@@ -92,7 +92,7 @@ static int regcache_maple_write(struct regmap *map, unsigned int reg,
+ 	mas_lock(&mas);
  
--	priv->clk = devm_clk_get(&pdev->dev, NULL);
--	if (IS_ERR(priv->clk))
--		return PTR_ERR(priv->clk);
--
--	ret = clk_prepare_enable(priv->clk);
--	if (ret)
--		return ret;
-+	clk = devm_clk_get_enabled(&pdev->dev, NULL);
-+	if (IS_ERR(clk))
-+		return PTR_ERR(clk);
+ 	mas_set_range(&mas, index, last);
+-	ret = mas_store_gfp(&mas, entry, GFP_KERNEL);
++	ret = mas_store_gfp(&mas, entry, map->alloc_flags);
  
- 	/* enable TRNG in enhanced mode */
- 	v = TRNGEN | TRNGMOD;
-@@ -98,15 +94,11 @@ static int pic32_rng_probe(struct platform_device *pdev)
+ 	mas_unlock(&mas);
  
- 	ret = devm_hwrng_register(&pdev->dev, &priv->rng);
- 	if (ret)
--		goto err_register;
-+		return ret;
+@@ -134,7 +134,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
  
- 	platform_set_drvdata(pdev, priv);
+ 			lower = kmemdup(entry, ((min - mas.index) *
+ 						sizeof(unsigned long)),
+-					GFP_KERNEL);
++					map->alloc_flags);
+ 			if (!lower) {
+ 				ret = -ENOMEM;
+ 				goto out_unlocked;
+@@ -148,7 +148,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
+ 			upper = kmemdup(&entry[max + 1],
+ 					((mas.last - max) *
+ 					 sizeof(unsigned long)),
+-					GFP_KERNEL);
++					map->alloc_flags);
+ 			if (!upper) {
+ 				ret = -ENOMEM;
+ 				goto out_unlocked;
+@@ -162,7 +162,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
+ 		/* Insert new nodes with the saved data */
+ 		if (lower) {
+ 			mas_set_range(&mas, lower_index, lower_last);
+-			ret = mas_store_gfp(&mas, lower, GFP_KERNEL);
++			ret = mas_store_gfp(&mas, lower, map->alloc_flags);
+ 			if (ret != 0)
+ 				goto out;
+ 			lower = NULL;
+@@ -170,7 +170,7 @@ static int regcache_maple_drop(struct regmap *map, unsigned int min,
  
- 	return 0;
--
--err_register:
--	clk_disable_unprepare(priv->clk);
--	return ret;
- }
+ 		if (upper) {
+ 			mas_set_range(&mas, upper_index, upper_last);
+-			ret = mas_store_gfp(&mas, upper, GFP_KERNEL);
++			ret = mas_store_gfp(&mas, upper, map->alloc_flags);
+ 			if (ret != 0)
+ 				goto out;
+ 			upper = NULL;
+@@ -320,7 +320,7 @@ static int regcache_maple_insert_block(struct regmap *map, int first,
+ 	unsigned long *entry;
+ 	int i, ret;
  
- static int pic32_rng_remove(struct platform_device *pdev)
-@@ -114,7 +106,6 @@ static int pic32_rng_remove(struct platform_device *pdev)
- 	struct pic32_rng *rng = platform_get_drvdata(pdev);
+-	entry = kcalloc(last - first + 1, sizeof(unsigned long), GFP_KERNEL);
++	entry = kcalloc(last - first + 1, sizeof(unsigned long), map->alloc_flags);
+ 	if (!entry)
+ 		return -ENOMEM;
  
- 	writel(0, rng->base + RNGCON);
--	clk_disable_unprepare(rng->clk);
- 	return 0;
- }
+@@ -331,7 +331,7 @@ static int regcache_maple_insert_block(struct regmap *map, int first,
+ 
+ 	mas_set_range(&mas, map->reg_defaults[first].reg,
+ 		      map->reg_defaults[last].reg);
+-	ret = mas_store_gfp(&mas, entry, GFP_KERNEL);
++	ret = mas_store_gfp(&mas, entry, map->alloc_flags);
+ 
+ 	mas_unlock(&mas);
  
 -- 
 2.40.1
