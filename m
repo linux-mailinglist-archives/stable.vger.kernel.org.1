@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51C5879B7E9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C621179BE3E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354222AbjIKVwy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33108 "EHLO
+        id S1359444AbjIKWQr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:16:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239061AbjIKOKz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:55 -0400
+        with ESMTP id S240354AbjIKOmR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80B86CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4E0BC433C8;
-        Mon, 11 Sep 2023 14:10:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 716FA12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BAFC8C433C7;
+        Mon, 11 Sep 2023 14:42:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441451;
-        bh=0w1O3C+x8+cRw99KeV6noexjKSJfMGhXM6VMdW0WnPo=;
+        s=korg; t=1694443333;
+        bh=c4cI8ZbK4t/EU8dwkUlZ3exNZqhFw9BkaXEicfIIUcA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LkT+7vzLSz1eHJHEniNoHu0xzjp6Tb7TJQ0471epqxGOnTAXSp0tLXZI+7R4FJoAY
-         ogBKnMBNq2RV2ZZeLBe8QQe0U1E0k6LNX52gkRH9gc0hsZNgBhCfRkNrDOKXakL8LU
-         mNUwEedtJquUI6rgbTmJyTj4m3kpbbmyc/pksV78=
+        b=uUuX3heEwRnvwrBPKCZX0t+3PdaU1GUEhxrcSwy+Lnm3lMY0U8ZDlnuXVzcXxyK1b
+         Jwt30bDCepyXbyZ6QbS3FXYGJUN+LuBiSoaOzyoo6bS4gb/nN3gXa2gtxLa5SCN0Zl
+         s0g6b2+o3Fprw1IxmF/38yKCnHueibbC3VZK1mqA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 400/739] clk: qcom: reset: Use the correct type of sleep/delay based on length
-Date:   Mon, 11 Sep 2023 15:43:19 +0200
-Message-ID: <20230911134702.354178891@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 341/737] md/md-bitmap: remove unnecessary local variable in backlog_store()
+Date:   Mon, 11 Sep 2023 15:43:20 +0200
+Message-ID: <20230911134700.055116392@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 181b66ee7cdd824797fc99b53bec29cf5630a04f ]
+[ Upstream commit b4d129640f194ffc4cc64c3e97f98ae944c072e8 ]
 
-Use the fsleep() helper that (based on the length of the delay, see: [1])
-chooses the correct sleep/delay functions.
+Local variable is definied first in the beginning of backlog_store(),
+there is no need to define it again.
 
-[1] https://www.kernel.org/doc/Documentation/timers/timers-howto.txt
-
-Fixes: 2cb8a39b6781 ("clk: qcom: reset: Allow specifying custom reset delay")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230726-topic-qcom_reset-v3-1-5958facd5db2@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 8c13ab115b57 ("md/bitmap: don't set max_write_behind if there is no write mostly device")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230706083727.608914-2-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/reset.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/md/md-bitmap.c | 2 --
+ 1 file changed, 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/reset.c b/drivers/clk/qcom/reset.c
-index 0e914ec7aeae1..e45e32804d2c7 100644
---- a/drivers/clk/qcom/reset.c
-+++ b/drivers/clk/qcom/reset.c
-@@ -16,7 +16,8 @@ static int qcom_reset(struct reset_controller_dev *rcdev, unsigned long id)
- 	struct qcom_reset_controller *rst = to_qcom_reset_controller(rcdev);
- 
- 	rcdev->ops->assert(rcdev, id);
--	udelay(rst->reset_map[id].udelay ?: 1); /* use 1 us as default */
-+	fsleep(rst->reset_map[id].udelay ?: 1); /* use 1 us as default */
-+
- 	rcdev->ops->deassert(rcdev, id);
- 	return 0;
- }
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index ea226a37b110a..4934d8f0cf11a 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2527,8 +2527,6 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 			mddev_destroy_serial_pool(mddev, NULL, false);
+ 	} else if (backlog && !mddev->serial_info_pool) {
+ 		/* serial_info_pool is needed since backlog is not zero */
+-		struct md_rdev *rdev;
+-
+ 		rdev_for_each(rdev, mddev)
+ 			mddev_create_serial_pool(mddev, rdev, false);
+ 	}
 -- 
 2.40.1
 
