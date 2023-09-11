@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3CDD79B4AE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DEC1479B097
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353096AbjIKWnW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40144 "EHLO
+        id S1378965AbjIKWiR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41968 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240800AbjIKOyM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:12 -0400
+        with ESMTP id S239490AbjIKOWE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C0735E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14600C433C7;
-        Mon, 11 Sep 2023 14:54:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 767EEDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB033C433C7;
+        Mon, 11 Sep 2023 14:21:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444047;
-        bh=eRo51FvllvhJKbAaFeg83tWH55RVDbKxOOw6WpEjwNc=;
+        s=korg; t=1694442119;
+        bh=3fQL52jfQXozh+Lkudu0Nbb68wI0NrQUWhPsmAqGOGM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=elGKyC+gEb/zX9Dfj3Q1iJ2U+y5u50g5CHKcmJYqUm1N5zq5YmdGxD+oOOrxoQjKA
-         NSkQ8Ff5yCZzjGsqBvuHGR+84s2j3yS8Zthugb02zDIiCVek6wyOqugTdRQc0SZP1F
-         OpVE5vrQKLpSNT4eqRUXZG2KhhvwP+KL9sM7ATXg=
+        b=ccQZfoO1L1dwINTHxJSYODzOlitdUf4Rduk1QUBiDDtIAEG4nMbWp8HTr0DHTu8N8
+         o/ZDwKIdjWYpKRHogo5V4/k05EYG6nMDCNLIg1bvWIJThLp8HsxDd7oUK3MK9oNiW7
+         hN0ChJEHAnODAbHg6+p0PiSqrdS49DmEp2lBXgk4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
-        Bernard Metzler <bmt@zurich.ibm.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 592/737] RDMA/siw: Balance the reference of cep->kref in the error path
-Date:   Mon, 11 Sep 2023 15:47:31 +0200
-Message-ID: <20230911134707.066439016@linuxfoundation.org>
+        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
+        "GONG, Ruiqi" <gongruiqi@huaweicloud.com>,
+        Corey Minyard <minyard@acm.org>, GONG@vger.kernel.org
+Subject: [PATCH 6.5 653/739] ipmi_si: fix a memleak in try_smi_init()
+Date:   Mon, 11 Sep 2023 15:47:32 +0200
+Message-ID: <20230911134709.345060503@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,54 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoqing Jiang <guoqing.jiang@linux.dev>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit b056327bee09e6b86683d3f709a438ccd6031d72 ]
+commit 6cf1a126de2992b4efe1c3c4d398f8de4aed6e3f upstream.
 
-The siw_connect can go to err in below after cep is allocated successfully:
+Kmemleak reported the following leak info in try_smi_init():
 
-1. If siw_cm_alloc_work returns failure. In this case socket is not
-assoicated with cep so siw_cep_put can't be called by siw_socket_disassoc.
-We need to call siw_cep_put twice since cep->kref is increased once after
-it was initialized.
+unreferenced object 0xffff00018ecf9400 (size 1024):
+  comm "modprobe", pid 2707763, jiffies 4300851415 (age 773.308s)
+  backtrace:
+    [<000000004ca5b312>] __kmalloc+0x4b8/0x7b0
+    [<00000000953b1072>] try_smi_init+0x148/0x5dc [ipmi_si]
+    [<000000006460d325>] 0xffff800081b10148
+    [<0000000039206ea5>] do_one_initcall+0x64/0x2a4
+    [<00000000601399ce>] do_init_module+0x50/0x300
+    [<000000003c12ba3c>] load_module+0x7a8/0x9e0
+    [<00000000c246fffe>] __se_sys_init_module+0x104/0x180
+    [<00000000eea99093>] __arm64_sys_init_module+0x24/0x30
+    [<0000000021b1ef87>] el0_svc_common.constprop.0+0x94/0x250
+    [<0000000070f4f8b7>] do_el0_svc+0x48/0xe0
+    [<000000005a05337f>] el0_svc+0x24/0x3c
+    [<000000005eb248d6>] el0_sync_handler+0x160/0x164
+    [<0000000030a59039>] el0_sync+0x160/0x180
 
-2. If siw_cm_queue_work can't find a work, which means siw_cep_get is not
-called in siw_cm_queue_work, so cep->kref is increased twice by siw_cep_get
-and when associate socket with cep after it was initialized. So we need to
-call siw_cep_put three times (one in siw_socket_disassoc).
+The problem was that when an error occurred before handlers registration
+and after allocating `new_smi->si_sm`, the variable wouldn't be freed in
+the error handling afterwards since `shutdown_smi()` hadn't been
+registered yet. Fix it by adding a `kfree()` in the error handling path
+in `try_smi_init()`.
 
-3. siw_send_mpareqrep returns error, this scenario is similar as 2.
-
-So we need to remove one siw_cep_put in the error path.
-
-Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
-Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
-Link: https://lore.kernel.org/r/20230821133255.31111-2-guoqing.jiang@linux.dev
-Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org # 4.19+
+Fixes: 7960f18a5647 ("ipmi_si: Convert over to a shutdown handler")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Co-developed-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
+Signed-off-by: GONG, Ruiqi <gongruiqi@huaweicloud.com>
+Message-Id: <20230629123328.2402075-1-gongruiqi@huaweicloud.com>
+Signed-off-by: Corey Minyard <minyard@acm.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/sw/siw/siw_cm.c | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/char/ipmi/ipmi_si_intf.c |    5 +++++
+ 1 file changed, 5 insertions(+)
 
-diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
-index da530c0404da4..a2605178f4eda 100644
---- a/drivers/infiniband/sw/siw/siw_cm.c
-+++ b/drivers/infiniband/sw/siw/siw_cm.c
-@@ -1501,7 +1501,6 @@ int siw_connect(struct iw_cm_id *id, struct iw_cm_conn_param *params)
+--- a/drivers/char/ipmi/ipmi_si_intf.c
++++ b/drivers/char/ipmi/ipmi_si_intf.c
+@@ -2082,6 +2082,11 @@ static int try_smi_init(struct smi_info
+ 		new_smi->io.io_cleanup = NULL;
+ 	}
  
- 		cep->cm_id = NULL;
- 		id->rem_ref(id);
--		siw_cep_put(cep);
++	if (rv && new_smi->si_sm) {
++		kfree(new_smi->si_sm);
++		new_smi->si_sm = NULL;
++	}
++
+ 	return rv;
+ }
  
- 		qp->cep = NULL;
- 		siw_cep_put(cep);
--- 
-2.40.1
-
 
 
