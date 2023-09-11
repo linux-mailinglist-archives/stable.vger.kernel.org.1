@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 95C3C79B461
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 018B379ACCE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244789AbjIKVI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34712 "EHLO
+        id S1353742AbjIKVtx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59822 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240391AbjIKOnI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:08 -0400
+        with ESMTP id S241431AbjIKPIe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7406B12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6BF0C433C7;
-        Mon, 11 Sep 2023 14:43:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7FECFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F37CCC433C8;
+        Mon, 11 Sep 2023 15:08:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443384;
-        bh=877QMO+/1Lg3IkRYaDprbZONg2MXelTG7+acoLa1848=;
+        s=korg; t=1694444909;
+        bh=ESi3CjJuNILH7eOljagiROc5UjYRbefeZD+FBqtLNPc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JMv6a8JM2MCawqj4WeD7qSnLZKlP6BDH6c+qWIkU+fy+mwEcPQzycKmKdNBxQC6jD
-         RAEGgpISJ+0UNz02xabwYbk7HykNRryq/TF4ERxAv6FaEDGg5AR9XA1KAclBHazzYh
-         hIL0RmryO0Uy3o6kSDFtav6GZPwdRafTioUSqyiU=
+        b=EQwTEyO70UVi7T+hTUEKyRtb4MZOFNqQkyrmZJHYZM79XAm45HecZ0gXnjOFbN+Tq
+         vkVCjhhp1ZnO/hAbbRQ6tiF7OOR0+Y1HNbb1jUv96ARwAf/R0b6HGXfmIezsJAQuaR
+         y0m+53OKVyHxgZL6hAmJENokYsFk31ucwmya2fB4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 331/737] arm64: dts: qcom: sdm845: Add missing RPMh power domain to GCC
-Date:   Mon, 11 Sep 2023 15:43:10 +0200
-Message-ID: <20230911134659.788760623@linuxfoundation.org>
+Subject: [PATCH 6.1 158/600] can: gs_usb: gs_usb_receive_bulk_callback(): count RX overflow errors also in case of OOM
+Date:   Mon, 11 Sep 2023 15:43:11 +0200
+Message-ID: <20230911134638.273310588@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Marc Kleine-Budde <mkl@pengutronix.de>
 
-[ Upstream commit 4b6ea15c0a1122422b44bf6c47a3c22fc8d46777 ]
+[ Upstream commit 6c8bc15f02b85bc8f47074110d8fd8caf7a1e42d ]
 
-GCC and it's GDSCs are under the RPMh CX power domain. So let's add the
-missing RPMh power domain to the GCC node.
+In case of an RX overflow error from the CAN controller and an OOM
+where no skb can be allocated, the error counters are not incremented.
 
-Fixes: 6d4cf750d03a ("arm64: dts: sdm845: Add minimal dts/dtsi files for sdm845 SoC and MTP")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Co-developed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230720054100.9940-4-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix this by first incrementing the error counters and then allocate
+the skb.
+
+Fixes: d08e973a77d1 ("can: gs_usb: Added support for the GS_USB CAN devices")
+Link: https://lore.kernel.org/all/20230718-gs_usb-cleanups-v1-7-c3b9154ec605@pengutronix.de
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/net/can/usb/gs_usb.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 1bfb938e284fb..43b1471f5826d 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -1207,6 +1207,7 @@ gcc: clock-controller@100000 {
- 			#clock-cells = <1>;
- 			#reset-cells = <1>;
- 			#power-domain-cells = <1>;
-+			power-domains = <&rpmhpd SDM845_CX>;
- 		};
+diff --git a/drivers/net/can/usb/gs_usb.c b/drivers/net/can/usb/gs_usb.c
+index 5858cbafbc965..264a0f764e011 100644
+--- a/drivers/net/can/usb/gs_usb.c
++++ b/drivers/net/can/usb/gs_usb.c
+@@ -626,6 +626,9 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 	}
  
- 		qfprom@784000 {
+ 	if (hf->flags & GS_CAN_FLAG_OVERFLOW) {
++		stats->rx_over_errors++;
++		stats->rx_errors++;
++
+ 		skb = alloc_can_err_skb(netdev, &cf);
+ 		if (!skb)
+ 			goto resubmit_urb;
+@@ -633,8 +636,6 @@ static void gs_usb_receive_bulk_callback(struct urb *urb)
+ 		cf->can_id |= CAN_ERR_CRTL;
+ 		cf->len = CAN_ERR_DLC;
+ 		cf->data[1] = CAN_ERR_CRTL_RX_OVERFLOW;
+-		stats->rx_over_errors++;
+-		stats->rx_errors++;
+ 		netif_rx(skb);
+ 	}
+ 
 -- 
 2.40.1
 
