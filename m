@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1D5D679B66F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:13 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 379E179B60F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379522AbjIKWok (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59926 "EHLO
+        id S1346050AbjIKVWx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240224AbjIKOjZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:25 -0400
+        with ESMTP id S241296AbjIKPGG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D8DD7CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3163CC433C8;
-        Mon, 11 Sep 2023 14:39:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD8BE40;
+        Mon, 11 Sep 2023 08:06:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7BF2C433C7;
+        Mon, 11 Sep 2023 15:06:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443161;
-        bh=ReduVnEAJWgxRUXfNEtdm70Vu3KnoQ9BO0sbkXhYCog=;
+        s=korg; t=1694444761;
+        bh=esm69iuRQACi1l3kV/rSJP+4DAXFLFoir62lsDfT7MI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WK2PBj9zC9cXhDNLgRyV5UXcJ/bqhLpYAMrd5EXJa88uiGisastuTOdXC0LfmO6Rs
-         Hg1ijrSO+q0qXUHrqtaKxoUNW55uHA6L1Z/9MHTUT/bvMeiiLPn1iV6MVb8FQzmUrF
-         5Lv2tiVdaqruUN7rQI1r41jHhn+bSV1vFwPEsf8M=
+        b=uTizd1eq6iffpoXJNzJkXKuUDwFqyhTlo2TKk0CuZUoS7OG3gMBlDRbVefEdSIJVZ
+         kFZkyV7S8EnWX3FbzPPy25Wl8GMD+Qn5uiKyyDYEfR+Ji5bCGqx9ToRddu3z0+jvf4
+         OcB4d9YmUVOEqFHSAwlJV490yVKxubAnu3qPLwl4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@gmail.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Shuah Khan <shuah@kernel.org>,
+        Andy Lutomirski <luto@amacapital.net>,
+        Will Drewry <wad@chromium.org>,
+        linux-kselftest@vger.kernel.org, Kees Cook <keescook@chromium.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 280/737] arm64: defconfig: enable Qualcomm MSM8996 Global Clock Controller as built-in
+Subject: [PATCH 6.1 106/600] selftests/harness: Actually report SKIP for signal tests
 Date:   Mon, 11 Sep 2023 15:42:19 +0200
-Message-ID: <20230911134658.390650596@linuxfoundation.org>
+Message-ID: <20230911134636.727403296@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,43 +52,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+From: Kees Cook <keescook@chromium.org>
 
-[ Upstream commit dc015a3a6d6986c41a7bd12fb205a282f685e328 ]
+[ Upstream commit b3d46e11fec0c5a8972e5061bb1462119ae5736d ]
 
-The commit 8f680c287445 ("arm64: defconfig: Switch msm8996 clk drivers
-to module") switched CONFIG_MSM_MMCC_8996 to module, which also resulted
-in CONFIG_MSM_GCC_8996 being switched to module. This breaks useful
-bootflow for Qualcomm MSM8996 / APQ8096 platforms, because the serial is
-not enabled anymore until the GCC module is loaded.
+Tests that were expecting a signal were not correctly checking for a
+SKIP condition. Move the check before the signal checking when
+processing test result.
 
-Reported-by: Rob Clark <robdclark@gmail.com>
-Fixes: 8f680c287445 ("arm64: defconfig: Switch msm8996 clk drivers to module")
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230619125404.562137-1-dmitry.baryshkov@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: Andy Lutomirski <luto@amacapital.net>
+Cc: Will Drewry <wad@chromium.org>
+Cc: linux-kselftest@vger.kernel.org
+Fixes: 9847d24af95c ("selftests/harness: Refactor XFAIL into SKIP")
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/configs/defconfig | 1 +
- 1 file changed, 1 insertion(+)
+ tools/testing/selftests/kselftest_harness.h | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/configs/defconfig b/arch/arm64/configs/defconfig
-index a24609e14d50e..d3cea343a4c3d 100644
---- a/arch/arm64/configs/defconfig
-+++ b/arch/arm64/configs/defconfig
-@@ -1159,6 +1159,7 @@ CONFIG_IPQ_GCC_8074=y
- CONFIG_IPQ_GCC_9574=y
- CONFIG_MSM_GCC_8916=y
- CONFIG_MSM_GCC_8994=y
-+CONFIG_MSM_GCC_8996=y
- CONFIG_MSM_MMCC_8994=m
- CONFIG_MSM_MMCC_8996=m
- CONFIG_MSM_MMCC_8998=m
+diff --git a/tools/testing/selftests/kselftest_harness.h b/tools/testing/selftests/kselftest_harness.h
+index 25f4d54067c0e..584687c3286dd 100644
+--- a/tools/testing/selftests/kselftest_harness.h
++++ b/tools/testing/selftests/kselftest_harness.h
+@@ -937,7 +937,11 @@ void __wait_for_test(struct __test_metadata *t)
+ 		fprintf(TH_LOG_STREAM,
+ 			"# %s: Test terminated by timeout\n", t->name);
+ 	} else if (WIFEXITED(status)) {
+-		if (t->termsig != -1) {
++		if (WEXITSTATUS(status) == 255) {
++			/* SKIP */
++			t->passed = 1;
++			t->skip = 1;
++		} else if (t->termsig != -1) {
+ 			t->passed = 0;
+ 			fprintf(TH_LOG_STREAM,
+ 				"# %s: Test exited normally instead of by signal (code: %d)\n",
+@@ -949,11 +953,6 @@ void __wait_for_test(struct __test_metadata *t)
+ 			case 0:
+ 				t->passed = 1;
+ 				break;
+-			/* SKIP */
+-			case 255:
+-				t->passed = 1;
+-				t->skip = 1;
+-				break;
+ 			/* Other failure, assume step report. */
+ 			default:
+ 				t->passed = 0;
 -- 
 2.40.1
 
