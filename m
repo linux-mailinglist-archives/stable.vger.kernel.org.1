@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBF2679B072
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DFDF79AF1A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230132AbjIKUvy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44708 "EHLO
+        id S243022AbjIKU66 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38280 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241258AbjIKPFM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:12 -0400
+        with ESMTP id S240127AbjIKOhN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2FA20125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 784B1C433C7;
-        Mon, 11 Sep 2023 15:05:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23A0F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442CBC433C8;
+        Mon, 11 Sep 2023 14:37:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444707;
-        bh=BL/7UfwrE7ej1HGdqhpKqpKXFmcgwccml/WlNbZcaXI=;
+        s=korg; t=1694443028;
+        bh=qX6ElHOxShOMBww12w07i8hXQ7ocn+/ua5kHcH+HVAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N2g7/Dp70oUyzEXooIh3VL8p5Wl7kZsi599k9wjkFGOYvtiUMS8aQX+/0QbWn1Czf
-         +89KgN5g/URRR6u/iBHy0FRNe45Zr0o84P4mRBZNl+fR5AFLyJx4fo3SGRTzyhraEB
-         6L/YCS2XpWfUcCtp2qmkNsy3WFndH65wFFNraKM8=
+        b=StHRk/X9pOkg29CCizty5FA6GkcQ9L4hnsbEYI7CO7ve9M/aWDNCO8lG4I5qik2Q5
+         dzBezOizwJfZ8wCuAOTm21r5uZAKO5KHbV2x0iWgmIjJ2gZbG6jy6yzCfhUiHTnrGt
+         eXtHVfMwq2oOCo/EsdjSH9WcAKjHUyvXANis4awk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abaci Robot <abaci@linux.alibaba.com>,
-        Yang Li <yang.lee@linux.alibaba.com>,
-        Hans de Goede <hdegoede@redhat.com>,
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 057/600] platform/x86/amd/pmf: Fix unsigned comparison with less than zero
-Date:   Mon, 11 Sep 2023 15:41:30 +0200
-Message-ID: <20230911134635.310640506@linuxfoundation.org>
+Subject: [PATCH 6.4 232/737] wifi: ath9k: fix races between ath9k_wmi_cmd and ath9k_wmi_ctrl_rx
+Date:   Mon, 11 Sep 2023 15:41:31 +0200
+Message-ID: <20230911134657.078143245@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,46 +52,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yang Li <yang.lee@linux.alibaba.com>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit 785c00993dc4c4bb2f7b0f3a3f29c03a6f7aab2e ]
+[ Upstream commit b674fb513e2e7a514fcde287c0f73915d393fdb6 ]
 
-The return value from the call to amd_pmf_get_pprof_modes() is int.
-However, the return value is being assigned to an unsigned char
-variable 'mode', so making 'mode' an int.
+Currently, the synchronization between ath9k_wmi_cmd() and
+ath9k_wmi_ctrl_rx() is exposed to a race condition which, although being
+rather unlikely, can lead to invalid behaviour of ath9k_wmi_cmd().
 
-silence the warning:
-./drivers/platform/x86/amd/pmf/sps.c:183:5-9: WARNING: Unsigned expression compared with zero: mode < 0
+Consider the following scenario:
 
-Reported-by: Abaci Robot <abaci@linux.alibaba.com>
-Closes: https://bugzilla.openanolis.cn/show_bug.cgi?id=5995
-Signed-off-by: Yang Li <yang.lee@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230727014315.51375-1-yang.lee@linux.alibaba.com
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+CPU0					CPU1
+
+ath9k_wmi_cmd(...)
+  mutex_lock(&wmi->op_mutex)
+  ath9k_wmi_cmd_issue(...)
+  wait_for_completion_timeout(...)
+  ---
+  timeout
+  ---
+					/* the callback is being processed
+					 * before last_seq_id became zero
+					 */
+					ath9k_wmi_ctrl_rx(...)
+					  spin_lock_irqsave(...)
+					  /* wmi->last_seq_id check here
+					   * doesn't detect timeout yet
+					   */
+					  spin_unlock_irqrestore(...)
+  /* last_seq_id is zeroed to
+   * indicate there was a timeout
+   */
+  wmi->last_seq_id = 0
+  mutex_unlock(&wmi->op_mutex)
+  return -ETIMEDOUT
+
+ath9k_wmi_cmd(...)
+  mutex_lock(&wmi->op_mutex)
+  /* the buffer is replaced with
+   * another one
+   */
+  wmi->cmd_rsp_buf = rsp_buf
+  wmi->cmd_rsp_len = rsp_len
+  ath9k_wmi_cmd_issue(...)
+    spin_lock_irqsave(...)
+    spin_unlock_irqrestore(...)
+  wait_for_completion_timeout(...)
+					/* the continuation of the
+					 * callback left after the first
+					 * ath9k_wmi_cmd call
+					 */
+					  ath9k_wmi_rsp_callback(...)
+					    /* copying data designated
+					     * to already timeouted
+					     * WMI command into an
+					     * inappropriate wmi_cmd_buf
+					     */
+					    memcpy(...)
+					    complete(&wmi->cmd_wait)
+  /* awakened by the bogus callback
+   * => invalid return result
+   */
+  mutex_unlock(&wmi->op_mutex)
+  return 0
+
+To fix this, update last_seq_id on timeout path inside ath9k_wmi_cmd()
+under the wmi_lock. Move ath9k_wmi_rsp_callback() under wmi_lock inside
+ath9k_wmi_ctrl_rx() so that the wmi->cmd_wait can be completed only for
+initially designated wmi_cmd call, otherwise the path would be rejected
+with last_seq_id check.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230425192607.18015-1-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/platform/x86/amd/pmf/sps.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/net/wireless/ath/ath9k/wmi.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/platform/x86/amd/pmf/sps.c b/drivers/platform/x86/amd/pmf/sps.c
-index fd448844de206..b2cf62937227c 100644
---- a/drivers/platform/x86/amd/pmf/sps.c
-+++ b/drivers/platform/x86/amd/pmf/sps.c
-@@ -121,7 +121,8 @@ int amd_pmf_get_pprof_modes(struct amd_pmf_dev *pmf)
+diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+index d652c647d56b5..04f363cb90fe5 100644
+--- a/drivers/net/wireless/ath/ath9k/wmi.c
++++ b/drivers/net/wireless/ath/ath9k/wmi.c
+@@ -242,10 +242,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
+ 		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 		goto free_skb;
+ 	}
+-	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
  
- int amd_pmf_power_slider_update_event(struct amd_pmf_dev *dev)
- {
--	u8 mode, flag = 0;
-+	u8 flag = 0;
-+	int mode;
- 	int src;
+ 	/* WMI command response */
+ 	ath9k_wmi_rsp_callback(wmi, skb);
++	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
  
- 	mode = amd_pmf_get_pprof_modes(dev);
+ free_skb:
+ 	kfree_skb(skb);
+@@ -308,8 +308,8 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 	struct ath_common *common = ath9k_hw_common(ah);
+ 	u16 headroom = sizeof(struct htc_frame_hdr) +
+ 		       sizeof(struct wmi_cmd_hdr);
++	unsigned long time_left, flags;
+ 	struct sk_buff *skb;
+-	unsigned long time_left;
+ 	int ret = 0;
+ 
+ 	if (ah->ah_flags & AH_UNPLUGGED)
+@@ -345,7 +345,9 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 	if (!time_left) {
+ 		ath_dbg(common, WMI, "Timeout waiting for WMI command: %s\n",
+ 			wmi_cmd_to_name(cmd_id));
++		spin_lock_irqsave(&wmi->wmi_lock, flags);
+ 		wmi->last_seq_id = 0;
++		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 		mutex_unlock(&wmi->op_mutex);
+ 		return -ETIMEDOUT;
+ 	}
 -- 
 2.40.1
 
