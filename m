@@ -2,35 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C3A3779B598
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1570579AEBB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349009AbjIKVcO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57834 "EHLO
+        id S1348552AbjIKV1U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238775AbjIKOEm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:42 -0400
+        with ESMTP id S238718AbjIKODd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 753CBCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDB1AC433C7;
-        Mon, 11 Sep 2023 14:04:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90155CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DB0ECC433C9;
+        Mon, 11 Sep 2023 14:03:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441078;
-        bh=fGCCIdqhajnq4S+Jgv6zzCAZBpKOGioy/tSNbrH3pyY=;
+        s=korg; t=1694441009;
+        bh=j5r23vyFoahWPtJBp2HtwAd3GdslrbFEH+evg+6jg8s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KEjAv0gvvw19nieYb6QzlJ+zip1odaOheuDOxTIotlUzpNhTHdnvADrB9we5ywo6v
-         /nugZmAA7ekwDXvYUmuopoI621KkIpKiA+5S7+2RGlveWkpiI0EYqIFxHmVTgNbAZO
-         pzNgIDrcdK+vuJa3B95ixG9cA9NvBvQ3rk1zTw10=
+        b=Z2cmpgFOrTteMBoZl4DeT/FSpqQcu3HUSIblbFHzAH9EtjNqrEaflmqKXRPG6zo2a
+         i0WWLXfKsqPV2qIfh0BzMJuZ1R/uciWti2+1bpcJ3S3Uc3bCpFZBhUPHh2SBtVRWGB
+         KRpXK6sZG2wvCiPgJxWnUwxonaLpJ1+E/R+CxN9Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 261/739] block: dont allow enabling a cache on devices that dont support it
-Date:   Mon, 11 Sep 2023 15:41:00 +0200
-Message-ID: <20230911134658.434582650@linuxfoundation.org>
+        patches@lists.linux.dev, Chen-Yu Tsai <wenst@chromium.org>,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>, Robert Foss <rfoss@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 264/739] drm/bridge: anx7625: Use common macros for DP power sequencing commands
+Date:   Mon, 11 Sep 2023 15:41:03 +0200
+Message-ID: <20230911134658.514115413@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -38,9 +40,10 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -53,87 +56,50 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Chen-Yu Tsai <wenst@chromium.org>
 
-[ Upstream commit 43c9835b144c7ce29efe142d662529662a9eb376 ]
+[ Upstream commit 2ba776f903cb7157e80b5f314fb0b4faf6ea6958 ]
 
-Currently the write_cache attribute allows enabling the QUEUE_FLAG_WC
-flag on devices that never claimed the capability.
+The DRM DP code has macros for the DP power sequencing commands. Use
+them in the anx7625 driver instead of raw numbers.
 
-Fix that by adding a QUEUE_FLAG_HW_WC flag that is set by
-blk_queue_write_cache and guards re-enabling the cache through sysfs.
-
-Note that any rescan that calls blk_queue_write_cache will still
-re-enable the write cache as in the current code.
-
-Fixes: 93e9d8e836cb ("block: add ability to flag write back caching on a device")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230707094239.107968-3-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 548b512e144f ("drm/bridge: anx7625: send DPCD command to downstream")
+Fixes: 27f26359de9b ("drm/bridge: anx7625: Set downstream sink into normal status")
+Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Signed-off-by: Robert Foss <rfoss@kernel.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230710090929.1873646-1-wenst@chromium.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c   |  7 +++++--
- block/blk-sysfs.c      | 11 +++++++----
- include/linux/blkdev.h |  1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/gpu/drm/bridge/analogix/anx7625.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 4dd59059b788e..0046b447268f9 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -830,10 +830,13 @@ EXPORT_SYMBOL(blk_set_queue_depth);
-  */
- void blk_queue_write_cache(struct request_queue *q, bool wc, bool fua)
- {
--	if (wc)
-+	if (wc) {
-+		blk_queue_flag_set(QUEUE_FLAG_HW_WC, q);
- 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else
-+	} else {
-+		blk_queue_flag_clear(QUEUE_FLAG_HW_WC, q);
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
-+	}
- 	if (fua)
- 		blk_queue_flag_set(QUEUE_FLAG_FUA, q);
- 	else
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 0cde6598fb2f4..63e4812623361 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -449,13 +449,16 @@ static ssize_t queue_wc_show(struct request_queue *q, char *page)
- static ssize_t queue_wc_store(struct request_queue *q, const char *page,
- 			      size_t count)
- {
--	if (!strncmp(page, "write back", 10))
-+	if (!strncmp(page, "write back", 10)) {
-+		if (!test_bit(QUEUE_FLAG_HW_WC, &q->queue_flags))
-+			return -EINVAL;
- 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else if (!strncmp(page, "write through", 13) ||
--		 !strncmp(page, "none", 4))
-+	} else if (!strncmp(page, "write through", 13) ||
-+		 !strncmp(page, "none", 4)) {
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
--	else
-+	} else {
- 		return -EINVAL;
-+	}
+diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
+index 8b985efdc086b..9db3784cb554f 100644
+--- a/drivers/gpu/drm/bridge/analogix/anx7625.c
++++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
+@@ -931,8 +931,8 @@ static void anx7625_dp_start(struct anx7625_data *ctx)
  
- 	return count;
- }
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 87d94be7825af..56f7f79137921 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -538,6 +538,7 @@ struct request_queue {
- #define QUEUE_FLAG_ADD_RANDOM	10	/* Contributes to random pool */
- #define QUEUE_FLAG_SYNCHRONOUS	11	/* always completes in submit context */
- #define QUEUE_FLAG_SAME_FORCE	12	/* force complete on same CPU */
-+#define QUEUE_FLAG_HW_WC	18	/* Write back caching supported */
- #define QUEUE_FLAG_INIT_DONE	14	/* queue is initialized */
- #define QUEUE_FLAG_STABLE_WRITES 15	/* don't modify blks until WB is done */
- #define QUEUE_FLAG_POLL		16	/* IO polling enabled if set */
+ 	dev_dbg(dev, "set downstream sink into normal\n");
+ 	/* Downstream sink enter into normal mode */
+-	data = 1;
+-	ret = anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, 0x000600, 1, &data);
++	data = DP_SET_POWER_D0;
++	ret = anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, DP_SET_POWER, 1, &data);
+ 	if (ret < 0)
+ 		dev_err(dev, "IO error : set sink into normal mode fail\n");
+ 
+@@ -971,8 +971,8 @@ static void anx7625_dp_stop(struct anx7625_data *ctx)
+ 
+ 	dev_dbg(dev, "notify downstream enter into standby\n");
+ 	/* Downstream monitor enter into standby mode */
+-	data = 2;
+-	ret |= anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, 0x000600, 1, &data);
++	data = DP_SET_POWER_D3;
++	ret |= anx7625_aux_trans(ctx, DP_AUX_NATIVE_WRITE, DP_SET_POWER, 1, &data);
+ 	if (ret < 0)
+ 		DRM_DEV_ERROR(dev, "IO error : mute video fail\n");
+ 
 -- 
 2.40.1
 
