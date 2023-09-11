@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA3FF79B374
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D169679B06B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233257AbjIKVFN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:05:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33508 "EHLO
+        id S240861AbjIKVjt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:39:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40410 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238437AbjIKN4j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:39 -0400
+        with ESMTP id S239868AbjIKOal (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA0D210E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D288DC433C8;
-        Mon, 11 Sep 2023 13:56:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B7E3BE4D
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D516C433C8;
+        Mon, 11 Sep 2023 14:30:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440593;
-        bh=u+8rHKdStjfy8a9A0eoFsSmT5YNo/LplZxLhCEjMUS4=;
+        s=korg; t=1694442636;
+        bh=Qx4Ko2zLTen7TSlh8f0ILRjVMEANggugSShoim7qRtU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aTXXaHGQt9PuhhOxaW4vmi02EtR+WcOiuKzQxYtdwHGJ0NFQVk1odY//qtXjGqgPI
-         EwjReRoKVsE2IRzH0Vs9aCKJxI3lFOAP/i7Xh/+gFJV2lfx/XSHK2o0igSR+Jzy+jN
-         sbL/3kYOM3ZJtDu0H8Tuunta23OdwfEtjAbtKNTA=
+        b=1EKDzpQcVPj5n9qUMMa7O4EuuSqF/v2N+PSW+nRU116KuGFWVQqLJqIrcsjR9NTAR
+         bySQlIsbHYiAiUChDOgJN3+94bLrmBXWc2TnXhDLJZXSkc2Hsx0/HhCqIzKvLY8Z2M
+         WrXpbCcNeVlx8DCyqdffkM4mfD2/5tBFJs/J/hrs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Florent Revest <revest@chromium.org>,
-        syzbot+d769eed29cc42d75e2a3@syzkaller.appspotmail.com,
-        syzbot+610ec0671f51e838436e@syzkaller.appspotmail.com,
-        Herbert Xu <herbert@gondor.apana.org.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 117/739] crypto: api - Use work queue in crypto_destroy_instance
+        patches@lists.linux.dev,
+        Saurabh Sengar <ssengar@linux.microsoft.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Wei Liu <wei.liu@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 057/737] x86/hyperv: add noop functions to x86_init mpparse functions
 Date:   Mon, 11 Sep 2023 15:38:36 +0200
-Message-ID: <20230911134654.364730067@linuxfoundation.org>
+Message-ID: <20230911134652.082161784@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,97 +51,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Herbert Xu <herbert@gondor.apana.org.au>
+From: Saurabh Sengar <ssengar@linux.microsoft.com>
 
-[ Upstream commit 9ae4577bc077a7e32c3c7d442c95bc76865c0f17 ]
+[ Upstream commit 9e2d0c336524706fb327e9b87477f5f3337ad7a6 ]
 
-The function crypto_drop_spawn expects to be called in process
-context.  However, when an instance is unregistered while it still
-has active users, the last user may cause the instance to be freed
-in atomic context.
+Hyper-V can run VMs at different privilege "levels" known as Virtual
+Trust Levels (VTL). Sometimes, it chooses to run two different VMs
+at different levels but they share some of their address space. In
+such setups VTL2 (higher level VM) has visibility of all of the
+VTL0 (level 0) memory space.
 
-Fix this by delaying the freeing to a work queue.
+When the CONFIG_X86_MPPARSE is enabled for VTL2, the VTL2 kernel
+performs a search within the low memory to locate MP tables. However,
+in systems where VTL0 manages the low memory and may contain valid
+tables, this scanning can result in incorrect MP table information
+being provided to the VTL2 kernel, mistakenly considering VTL0's MP
+table as its own
 
-Fixes: 6bfd48096ff8 ("[CRYPTO] api: Added spawns")
-Reported-by: Florent Revest <revest@chromium.org>
-Reported-by: syzbot+d769eed29cc42d75e2a3@syzkaller.appspotmail.com
-Reported-by: syzbot+610ec0671f51e838436e@syzkaller.appspotmail.com
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
-Tested-by: Florent Revest <revest@chromium.org>
-Acked-by: Florent Revest <revest@chromium.org>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Add noop functions to avoid MP parse scan by VTL2.
+
+Signed-off-by: Saurabh Sengar <ssengar@linux.microsoft.com>
+Acked-by: Dave Hansen <dave.hansen@linux.intel.com>
+Link: https://lore.kernel.org/r/1687537688-5397-1-git-send-email-ssengar@linux.microsoft.com
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- crypto/algapi.c         | 16 ++++++++++++++--
- include/crypto/algapi.h |  3 +++
- 2 files changed, 17 insertions(+), 2 deletions(-)
+ arch/x86/hyperv/hv_vtl.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/crypto/algapi.c b/crypto/algapi.c
-index 5e7cd603d489c..4fe95c4480473 100644
---- a/crypto/algapi.c
-+++ b/crypto/algapi.c
-@@ -17,6 +17,7 @@
- #include <linux/rtnetlink.h>
- #include <linux/slab.h>
- #include <linux/string.h>
-+#include <linux/workqueue.h>
+diff --git a/arch/x86/hyperv/hv_vtl.c b/arch/x86/hyperv/hv_vtl.c
+index 85d38b9f35861..db5d2ea39fc0d 100644
+--- a/arch/x86/hyperv/hv_vtl.c
++++ b/arch/x86/hyperv/hv_vtl.c
+@@ -25,6 +25,10 @@ void __init hv_vtl_init_platform(void)
+ 	x86_init.irqs.pre_vector_init = x86_init_noop;
+ 	x86_init.timers.timer_init = x86_init_noop;
  
- #include "internal.h"
- 
-@@ -74,15 +75,26 @@ static void crypto_free_instance(struct crypto_instance *inst)
- 	inst->alg.cra_type->free(inst);
- }
- 
--static void crypto_destroy_instance(struct crypto_alg *alg)
-+static void crypto_destroy_instance_workfn(struct work_struct *w)
- {
--	struct crypto_instance *inst = (void *)alg;
-+	struct crypto_instance *inst = container_of(w, struct crypto_instance,
-+						    free_work);
- 	struct crypto_template *tmpl = inst->tmpl;
- 
- 	crypto_free_instance(inst);
- 	crypto_tmpl_put(tmpl);
- }
- 
-+static void crypto_destroy_instance(struct crypto_alg *alg)
-+{
-+	struct crypto_instance *inst = container_of(alg,
-+						    struct crypto_instance,
-+						    alg);
++	/* Avoid searching for BIOS MP tables */
++	x86_init.mpparse.find_smp_config = x86_init_noop;
++	x86_init.mpparse.get_smp_config = x86_init_uint_noop;
 +
-+	INIT_WORK(&inst->free_work, crypto_destroy_instance_workfn);
-+	schedule_work(&inst->free_work);
-+}
-+
- /*
-  * This function adds a spawn to the list secondary_spawns which
-  * will be used at the end of crypto_remove_spawns to unregister
-diff --git a/include/crypto/algapi.h b/include/crypto/algapi.h
-index 6156161b181f1..ca86f4c6ba439 100644
---- a/include/crypto/algapi.h
-+++ b/include/crypto/algapi.h
-@@ -12,6 +12,7 @@
- #include <linux/cache.h>
- #include <linux/crypto.h>
- #include <linux/types.h>
-+#include <linux/workqueue.h>
- 
- /*
-  * Maximum values for blocksize and alignmask, used to allocate
-@@ -82,6 +83,8 @@ struct crypto_instance {
- 		struct crypto_spawn *spawns;
- 	};
- 
-+	struct work_struct free_work;
-+
- 	void *__ctx[] CRYPTO_MINALIGN_ATTR;
- };
- 
+ 	x86_platform.get_wallclock = get_rtc_noop;
+ 	x86_platform.set_wallclock = set_rtc_noop;
+ 	x86_platform.get_nmi_reason = hv_get_nmi_reason;
 -- 
 2.40.1
 
