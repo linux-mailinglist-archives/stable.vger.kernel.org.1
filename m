@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AF62F79B49F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F2FB79B3B0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232861AbjIKUwM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35310 "EHLO
+        id S242627AbjIKU6I (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55982 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239247AbjIKOPf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:15:35 -0400
+        with ESMTP id S241781AbjIKPOZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CA69DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:15:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1AFFC433C9;
-        Mon, 11 Sep 2023 14:15:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26EBDFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BE8FC433C8;
+        Mon, 11 Sep 2023 15:14:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441731;
-        bh=OxR4SBW6LnLzbazRH15RJEaPNIxwVaeqUzMfB54J1pM=;
+        s=korg; t=1694445260;
+        bh=ZVuSkgCoN5olPjdIxgp71sjNdG+Ad9fmpqrwBto8vUU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=muzmPB6PvaB25ph936eeGbGVXLTYlhgnmLOVSDc+XOKC9aeY+aTAFgbtHoNTUR2/n
-         F9pYa7J7CNG6gISnNvVype2mUiSMiSmtiX05dfJ8ZSoztDlD9AFz2X6y9MgzlAU1zX
-         wHWN/do05zyPUPoydU3OBs9jvLzO6KIR3qmnJn10=
+        b=U4JhuFXd6Zjh2MPTqFCdXLPTmH31GvHzx1KT3ATKxGL14nAp8heI+Qr/paRPzpbaG
+         MkqFCnYVQURJFGzbxQh+Up/DnpJdfZNttcY5blSC8yR3fitLjwE2/dXdnT2N+Gr7ke
+         AFR8gHL776/StQ5f7H+Nx64DTUBXAJK9bhFCr98w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Junxian Huang <huangjunxian6@hisilicon.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Yangtao Li <frank.li@vivo.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 516/739] RDMA/hns: Fix inaccurate error label name in init instance
-Date:   Mon, 11 Sep 2023 15:45:15 +0200
-Message-ID: <20230911134705.530579189@linuxfoundation.org>
+Subject: [PATCH 6.1 283/600] drm/tegra: dpaux: Fix incorrect return value of platform_get_irq
+Date:   Mon, 11 Sep 2023 15:45:16 +0200
+Message-ID: <20230911134641.963823446@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,59 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Yangtao Li <frank.li@vivo.com>
 
-[ Upstream commit c9c0bd3c177d93d80968f720304087ba83fe8f74 ]
+[ Upstream commit 2a1ca44b654346cadfc538c4fb32eecd8daf3140 ]
 
-This patch fixes inaccurate error label name in init instance.
+When platform_get_irq fails, we should return dpaux->irq
+instead of -ENXIO.
 
-Fixes: 70f92521584f ("RDMA/hns: Use the reserved loopback QPs to free MR before destroying MPT")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20230804012711.808069-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: 6b6b604215c6 ("drm/tegra: Add eDP support")
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230710032355.72914-13-frank.li@vivo.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/gpu/drm/tegra/dpaux.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index f95551b6d4072..1d998298e28fc 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -6723,14 +6723,14 @@ static int __hns_roce_hw_v2_init_instance(struct hnae3_handle *handle)
- 	ret = hns_roce_init(hr_dev);
- 	if (ret) {
- 		dev_err(hr_dev->dev, "RoCE Engine init failed!\n");
--		goto error_failed_cfg;
-+		goto error_failed_roce_init;
- 	}
+diff --git a/drivers/gpu/drm/tegra/dpaux.c b/drivers/gpu/drm/tegra/dpaux.c
+index 7dc681e2ee90b..d773ef4854188 100644
+--- a/drivers/gpu/drm/tegra/dpaux.c
++++ b/drivers/gpu/drm/tegra/dpaux.c
+@@ -468,7 +468,7 @@ static int tegra_dpaux_probe(struct platform_device *pdev)
  
- 	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08) {
- 		ret = free_mr_init(hr_dev);
- 		if (ret) {
- 			dev_err(hr_dev->dev, "failed to init free mr!\n");
--			goto error_failed_roce_init;
-+			goto error_failed_free_mr_init;
- 		}
- 	}
+ 	dpaux->irq = platform_get_irq(pdev, 0);
+ 	if (dpaux->irq < 0)
+-		return -ENXIO;
++		return dpaux->irq;
  
-@@ -6738,10 +6738,10 @@ static int __hns_roce_hw_v2_init_instance(struct hnae3_handle *handle)
- 
- 	return 0;
- 
--error_failed_roce_init:
-+error_failed_free_mr_init:
- 	hns_roce_exit(hr_dev);
- 
--error_failed_cfg:
-+error_failed_roce_init:
- 	kfree(hr_dev->priv);
- 
- error_failed_kzalloc:
+ 	if (!pdev->dev.pm_domain) {
+ 		dpaux->rst = devm_reset_control_get(&pdev->dev, "dpaux");
 -- 
 2.40.1
 
