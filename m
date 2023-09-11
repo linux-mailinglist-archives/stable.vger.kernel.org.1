@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4C07379BA20
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E93E079BFA2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378673AbjIKWg3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:36:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44448 "EHLO
+        id S1376444AbjIKWTl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240967AbjIKO60 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:26 -0400
+        with ESMTP id S242206AbjIKPY5 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:57 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6974D1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7BEEC433C8;
-        Mon, 11 Sep 2023 14:58:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5AC93D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A596DC433C8;
+        Mon, 11 Sep 2023 15:24:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444302;
-        bh=VDV8+2IrKuRhEfBw9rwEOsU/woqgO7tD6cWih1lxahU=;
+        s=korg; t=1694445892;
+        bh=mWGlbHWIWuug5W5Yc+SLkCTb0X8cpfcCk0tUN1YKrBY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=A3NAoOiEwsssEYJl+/F9pm7FpJpeXA0ElZ4GmY3qDIcMkmbdEtWe4xYS9sMkuemNI
-         hTccBx486v1SuI0zW1Duhx8VTD3IMCpPNKSwO7gmUTf8Tb8vZ9YN5jinsAN7q+Qp/x
-         0A7TZf9q05Xi0ZEXJKClDm9XbINvWkNBSQetBfQc=
+        b=VajQ4pl4oB9vXmq9NBu5mlI7Ptq1cX+h+vf+9sFKVqrBI3eAcF6p1ATN9EgNTPSMK
+         o/cFR3aU8ObnmOq/qmfiiQjmh7sQ9VigYazI7IHTCpSBV3lc4XIc0IPQ6yWqj9S8Bk
+         NvitBxjiagWXQOT2/zfSzjnRqXPjBt3uypzSYPEE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yuan Y Lu <yuan.y.lu@intel.com>,
-        Logan Gunthorpe <logang@deltatee.com>,
-        Dave Jiang <dave.jiang@intel.com>, Jon Mason <jdmason@kudzu.us>
-Subject: [PATCH 6.4 682/737] ntb: Drop packets when qp link is down
+        patches@lists.linux.dev,
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 508/600] leds: Fix BUG_ON check for LED_COLOR_ID_MULTI that is always false
 Date:   Mon, 11 Sep 2023 15:49:01 +0200
-Message-ID: <20230911134709.587921852@linuxfoundation.org>
+Message-ID: <20230911134648.613915667@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,46 +51,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Jiang <dave.jiang@intel.com>
+From: Marek Behún <kabel@kernel.org>
 
-commit f195a1a6fe416882984f8bd6c61afc1383171860 upstream.
+[ Upstream commit c3f853184bed04105682383c2971798c572226b5 ]
 
-Currently when the transport receive packets after netdev has closed the
-transport returns error and triggers tx errors to be incremented and
-carrier to be stopped. There is no reason to return error if the device is
-already closed. Drop the packet and return 0.
+At the time we call
+    BUG_ON(props.color == LED_COLOR_ID_MULTI);
+the props variable is still initialized to zero.
 
-Fixes: e26a5843f7f5 ("NTB: Split ntb_hw_intel and ntb_transport drivers")
-Reported-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Tested-by: Yuan Y Lu <yuan.y.lu@intel.com>
-Reviewed-by: Logan Gunthorpe <logang@deltatee.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
-Signed-off-by: Jon Mason <jdmason@kudzu.us>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Call the BUG_ON only after we parse fwnode into props.
+
+Fixes: 77dce3a22e89 ("leds: disallow /sys/class/leds/*:multi:* for now")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Link: https://lore.kernel.org/r/20230801151623.30387-1-kabel@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ntb/ntb_transport.c |    6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ drivers/leds/led-core.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/ntb/ntb_transport.c
-+++ b/drivers/ntb/ntb_transport.c
-@@ -2276,9 +2276,13 @@ int ntb_transport_tx_enqueue(struct ntb_
- 	struct ntb_queue_entry *entry;
- 	int rc;
+diff --git a/drivers/leds/led-core.c b/drivers/leds/led-core.c
+index 4a97cb7457888..aad8bc44459fe 100644
+--- a/drivers/leds/led-core.c
++++ b/drivers/leds/led-core.c
+@@ -419,15 +419,15 @@ int led_compose_name(struct device *dev, struct led_init_data *init_data,
+ 	struct fwnode_handle *fwnode = init_data->fwnode;
+ 	const char *devicename = init_data->devicename;
  
--	if (!qp || !qp->link_is_up || !len)
-+	if (!qp || !len)
+-	/* We want to label LEDs that can produce full range of colors
+-	 * as RGB, not multicolor */
+-	BUG_ON(props.color == LED_COLOR_ID_MULTI);
+-
+ 	if (!led_classdev_name)
  		return -EINVAL;
  
-+	/* If the qp link is down already, just ignore. */
-+	if (!qp->link_is_up)
-+		return 0;
+ 	led_parse_fwnode_props(dev, fwnode, &props);
+ 
++	/* We want to label LEDs that can produce full range of colors
++	 * as RGB, not multicolor */
++	BUG_ON(props.color == LED_COLOR_ID_MULTI);
 +
- 	entry = ntb_list_rm(&qp->ntb_tx_free_q_lock, &qp->tx_free_q);
- 	if (!entry) {
- 		qp->tx_err_no_buf++;
+ 	if (props.label) {
+ 		/*
+ 		 * If init_data.devicename is NULL, then it indicates that
+-- 
+2.40.1
+
 
 
