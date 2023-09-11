@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDA1879BBDB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C44B879B79E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378778AbjIKWhP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35132 "EHLO
+        id S1377494AbjIKW0h (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:26:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51650 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240493AbjIKOpj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:39 -0400
+        with ESMTP id S239165AbjIKON3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C41D5CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1734DC433C7;
-        Mon, 11 Sep 2023 14:45:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE98ADE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D0BC433C7;
+        Mon, 11 Sep 2023 14:13:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443534;
-        bh=WGhxy49RBZBYYtdqLmidXYta9R1HDi9LfT99xDy+2oQ=;
+        s=korg; t=1694441604;
+        bh=DBw4hxpdAQwaDF7Vs6exqp4HTlT/LL7Z2lNIymlye9w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FXaoYLe1loenbGpfeU4YJZ5MWEpwPeBxyR5V6qywDgOdUOw9r+Rw6PI04kQHnIdgw
-         xyevFVqVxEUb3EOPLQVLm6nhOCWTintXPyvMund2Gl4herp1pT+O52Cbfd/WcvxLEk
-         Ft+5Cpi+1kOJIsDVH5+U5xaum7dZ8foqINLL6n/g=
+        b=fAyXCatERQZNFk7RZ91t+jDLacV/iTGX96LHmN5iMp3ozFFn4KdD8Jjq/NB2cUqBA
+         RDDxHqDFNuA8uasUqO+9WtgpTxaLyi5HEbGBsBCteAf8Rtp2Jd8q0MvHTjPSyYsIH9
+         CQZp0n1Y6rTI1RAaf9Q4A5cFnUoQgJplpBD0QI40=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Ming Qian <ming.qian@nxp.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 411/737] clk: qcom: gcc-sc8280xp: Add missing GDSC flags
-Date:   Mon, 11 Sep 2023 15:44:30 +0200
-Message-ID: <20230911134702.100859047@linuxfoundation.org>
+Subject: [PATCH 6.5 472/739] media: amphion: fix REVERSE_INULL issues reported by coverity
+Date:   Mon, 11 Sep 2023 15:44:31 +0200
+Message-ID: <20230911134704.328940244@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,150 +52,63 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit 2fd02de27054576a4a8c89302e2f77122c55e957 ]
+[ Upstream commit 79d3bafaecc13bccab1ebbd28a15e669c5a4cdaf ]
 
-All of the 8280's GCC GDSCs can and should use the retain registers so
-as not to lose their state when entering lower power modes.
+null-checking of a pointor is suggested before dereferencing it
 
-Fixes: d65d005f9a6c ("clk: qcom: add sc8280xp GCC driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-1-562c1428c10d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8280xp.c | 21 ++++++++++++++-------
- 1 file changed, 14 insertions(+), 7 deletions(-)
+ drivers/media/platform/amphion/venc.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8280xp.c b/drivers/clk/qcom/gcc-sc8280xp.c
-index 04a99dbaa57e0..43c518e5c986b 100644
---- a/drivers/clk/qcom/gcc-sc8280xp.c
-+++ b/drivers/clk/qcom/gcc-sc8280xp.c
-@@ -6760,7 +6760,7 @@ static struct gdsc pcie_0_tunnel_gdsc = {
- 		.name = "pcie_0_tunnel_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE,
- };
+diff --git a/drivers/media/platform/amphion/venc.c b/drivers/media/platform/amphion/venc.c
+index 58480e2755ec4..4eb57d793a9c0 100644
+--- a/drivers/media/platform/amphion/venc.c
++++ b/drivers/media/platform/amphion/venc.c
+@@ -268,7 +268,7 @@ static int venc_g_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
+ {
+ 	struct vpu_inst *inst = to_inst(file);
+ 	struct venc_t *venc = inst->priv;
+-	struct v4l2_fract *timeperframe = &parm->parm.capture.timeperframe;
++	struct v4l2_fract *timeperframe;
  
- static struct gdsc pcie_1_tunnel_gdsc = {
-@@ -6771,7 +6771,7 @@ static struct gdsc pcie_1_tunnel_gdsc = {
- 		.name = "pcie_1_tunnel_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE,
- };
+ 	if (!parm)
+ 		return -EINVAL;
+@@ -279,6 +279,7 @@ static int venc_g_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
+ 	if (!vpu_helper_check_type(inst, parm->type))
+ 		return -EINVAL;
  
- /*
-@@ -6786,7 +6786,7 @@ static struct gdsc pcie_2a_gdsc = {
- 		.name = "pcie_2a_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
++	timeperframe = &parm->parm.capture.timeperframe;
+ 	parm->parm.capture.capability = V4L2_CAP_TIMEPERFRAME;
+ 	parm->parm.capture.readbuffers = 0;
+ 	timeperframe->numerator = venc->params.frame_rate.numerator;
+@@ -291,7 +292,7 @@ static int venc_s_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
+ {
+ 	struct vpu_inst *inst = to_inst(file);
+ 	struct venc_t *venc = inst->priv;
+-	struct v4l2_fract *timeperframe = &parm->parm.capture.timeperframe;
++	struct v4l2_fract *timeperframe;
+ 	unsigned long n, d;
  
- static struct gdsc pcie_2b_gdsc = {
-@@ -6797,7 +6797,7 @@ static struct gdsc pcie_2b_gdsc = {
- 		.name = "pcie_2b_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
+ 	if (!parm)
+@@ -303,6 +304,7 @@ static int venc_s_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
+ 	if (!vpu_helper_check_type(inst, parm->type))
+ 		return -EINVAL;
  
- static struct gdsc pcie_3a_gdsc = {
-@@ -6808,7 +6808,7 @@ static struct gdsc pcie_3a_gdsc = {
- 		.name = "pcie_3a_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_3b_gdsc = {
-@@ -6819,7 +6819,7 @@ static struct gdsc pcie_3b_gdsc = {
- 		.name = "pcie_3b_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc pcie_4_gdsc = {
-@@ -6830,7 +6830,7 @@ static struct gdsc pcie_4_gdsc = {
- 		.name = "pcie_4_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = VOTABLE | ALWAYS_ON,
-+	.flags = VOTABLE | RETAIN_FF_ENABLE | ALWAYS_ON,
- };
- 
- static struct gdsc ufs_card_gdsc = {
-@@ -6839,6 +6839,7 @@ static struct gdsc ufs_card_gdsc = {
- 		.name = "ufs_card_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc ufs_phy_gdsc = {
-@@ -6847,6 +6848,7 @@ static struct gdsc ufs_phy_gdsc = {
- 		.name = "ufs_phy_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_mp_gdsc = {
-@@ -6855,6 +6857,7 @@ static struct gdsc usb30_mp_gdsc = {
- 		.name = "usb30_mp_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_prim_gdsc = {
-@@ -6863,6 +6866,7 @@ static struct gdsc usb30_prim_gdsc = {
- 		.name = "usb30_prim_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc usb30_sec_gdsc = {
-@@ -6871,6 +6875,7 @@ static struct gdsc usb30_sec_gdsc = {
- 		.name = "usb30_sec_gdsc",
- 	},
- 	.pwrsts = PWRSTS_RET_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc emac_0_gdsc = {
-@@ -6879,6 +6884,7 @@ static struct gdsc emac_0_gdsc = {
- 		.name = "emac_0_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc emac_1_gdsc = {
-@@ -6887,6 +6893,7 @@ static struct gdsc emac_1_gdsc = {
- 		.name = "emac_1_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
- };
- 
- static struct clk_regmap *gcc_sc8280xp_clocks[] = {
++	timeperframe = &parm->parm.capture.timeperframe;
+ 	if (!timeperframe->numerator)
+ 		timeperframe->numerator = venc->params.frame_rate.numerator;
+ 	if (!timeperframe->denominator)
 -- 
 2.40.1
 
