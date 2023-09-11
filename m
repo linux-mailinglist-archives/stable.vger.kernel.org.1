@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D98C79B46C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 03FC179AF2A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240300AbjIKWWy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:22:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38840 "EHLO
+        id S1344168AbjIKVN3 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:29 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39826 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239457AbjIKOVH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:07 -0400
+        with ESMTP id S240770AbjIKOxU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7BD4ADE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C5704C433C8;
-        Mon, 11 Sep 2023 14:21:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A7B118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91D8DC433D9;
+        Mon, 11 Sep 2023 14:53:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442062;
-        bh=1VEtgVc+QofyJqL/EVLd5ATzkLeSlTNGgWwGVPkuFQ4=;
+        s=korg; t=1694443996;
+        bh=0uQ5coB8JkwXZZP2mGozqlDZECEjDxJihQ+wpYX+nNQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=J4K2fTDHCIjZod41nTT6RqhvKHPmjYhQ6VUJ5oeFLZ3q/UShgGjFmqgFXm27NhHc0
-         C/mIHY51CKjysD68Y0NFa9wu5uyHYjk7mzRHpbANNAipUZ1u6d1QcO2Gt3jsAarill
-         vOHOPrsgjoJK3UFUIzHnhoRw1is0zg/VwTzGHTfo=
+        b=EoaARjYnzikXnDs9Kxpy/ixV9MkEkT0AJyvqhyQ2rDW35//N/64SLJkA85bkXbGvK
+         +JlvHUKPuDycSNXXYgIniJaymzSucwpbSy5ZRBDZSv+5BuCuNLMh+kD/U5frIQzFt6
+         rYPjceiA5XqCH2ap+DIqN3BmnSqyODyU9ljZotq8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Kyle Zeng <zengyhkyle@gmail.com>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.5 632/739] netfilter: ipset: add the missing IP_SET_HASH_WITH_NET0 macro for ip_set_hash_netportnet.c
-Date:   Mon, 11 Sep 2023 15:47:11 +0200
-Message-ID: <20230911134708.745700047@linuxfoundation.org>
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 573/737] media: i2c: rdacm21: Fix uninitialized value
+Date:   Mon, 11 Sep 2023 15:47:12 +0200
+Message-ID: <20230911134706.544411130@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <zengyhkyle@gmail.com>
+From: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
 
-commit 050d91c03b28ca479df13dfb02bcd2c60dd6a878 upstream.
+[ Upstream commit 33c7ae8f49e3413c81e879e1fdfcea4c5516e37b ]
 
-The missing IP_SET_HASH_WITH_NET0 macro in ip_set_hash_netportnet can
-lead to the use of wrong `CIDR_POS(c)` for calculating array offsets,
-which can lead to integer underflow. As a result, it leads to slab
-out-of-bound access.
-This patch adds back the IP_SET_HASH_WITH_NET0 macro to
-ip_set_hash_netportnet to address the issue.
+Fix the following smatch warning:
 
-Fixes: 886503f34d63 ("netfilter: ipset: actually allow allowable CIDR 0 in hash:net,port,net")
-Suggested-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
-Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+drivers/media/i2c/rdacm21.c:373 ov10640_check_id() error: uninitialized
+symbol 'val'.
+
+Initialize 'val' to 0 in the ov10640_check_id() function.
+
+Fixes: 2b821698dc73 ("media: i2c: rdacm21: Power up OV10640 before OV490")
+Reported-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/netfilter/ipset/ip_set_hash_netportnet.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/media/i2c/rdacm21.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/net/netfilter/ipset/ip_set_hash_netportnet.c
-+++ b/net/netfilter/ipset/ip_set_hash_netportnet.c
-@@ -36,6 +36,7 @@ MODULE_ALIAS("ip_set_hash:net,port,net")
- #define IP_SET_HASH_WITH_PROTO
- #define IP_SET_HASH_WITH_NETS
- #define IPSET_NET_COUNT 2
-+#define IP_SET_HASH_WITH_NET0
+diff --git a/drivers/media/i2c/rdacm21.c b/drivers/media/i2c/rdacm21.c
+index 9ccc56c30d3b0..d269c541ebe4c 100644
+--- a/drivers/media/i2c/rdacm21.c
++++ b/drivers/media/i2c/rdacm21.c
+@@ -351,7 +351,7 @@ static void ov10640_power_up(struct rdacm21_device *dev)
+ static int ov10640_check_id(struct rdacm21_device *dev)
+ {
+ 	unsigned int i;
+-	u8 val;
++	u8 val = 0;
  
- /* IPv4 variant */
- 
+ 	/* Read OV10640 ID to test communications. */
+ 	for (i = 0; i < OV10640_PID_TIMEOUT; ++i) {
+-- 
+2.40.1
+
 
 
