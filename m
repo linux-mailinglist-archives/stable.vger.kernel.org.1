@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBC8E79B8B4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E9A0779B5FC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376716AbjIKWUT (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:19 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48800 "EHLO
+        id S243063AbjIKU7C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241485AbjIKPJq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:46 -0400
+        with ESMTP id S239064AbjIKOLC (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:02 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 55042FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9BAC6C433C9;
-        Mon, 11 Sep 2023 15:09:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F534CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:57 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 856ECC433C7;
+        Mon, 11 Sep 2023 14:10:56 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444982;
-        bh=z1Mpkfdkg+2aiFXbDLkD9ejiRnBGXQUQtM4xHhYXSxQ=;
+        s=korg; t=1694441456;
+        bh=kDIGIiClBgJvcdok2deF5vZxFLuFeH6YuVjCFPKFYhQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZdhcOi2w/RNy0evuB39meVLGqAq5u4MYiUEpDy82xs/8/+eVKhkjmWKY2ELS1JE+L
-         kyx20MJsKPyka+akAfUzP0bjBpu9LXoHmHTbXiY3Rg9m0ib2pvrRJU6aNpiTqnbMBa
-         pBUAovZZAOi1XqfPwKptvsA3LR5O4qFeeN+Y9opU=
+        b=JlfyT86ydXhXRnzYr8OsE8IbKrxhjReKoRW2n5wgDRc8Lm3dfYrXcgqxAYsEK9mWI
+         ILutj2LHY1CEGVzd4fCJCUzjr4nUC5fysu8Lx5qHC94k1EcLrP1mYyGOz/gGzD4P08
+         DfVuGUuCCGsr4TIaMQvlD3H3zVd3zW1y0AbG4+uk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 185/600] net: annotate data-races around sk->sk_lingertime
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Jeff Moyer <jmoyer@redhat.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 6.5 419/739] nvdimm: Fix dereference after free in register_nvdimm_pmu()
 Date:   Mon, 11 Sep 2023 15:43:38 +0200
-Message-ID: <20230911134639.077046455@linuxfoundation.org>
+Message-ID: <20230911134702.881144721@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,135 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit bc1fb82ae11753c5dec53c667a055dc37796dbd2 ]
+[ Upstream commit 08ca6906a4b7e48f8e93b7c1f49a742a415be6d5 ]
 
-sk_getsockopt() runs locklessly. This means sk->sk_lingertime
-can be read while other threads are changing its value.
+'nd_pmu->pmu.attr_groups' is dereferenced in function
+'nvdimm_pmu_free_hotplug_memory' call after it has been freed. Because in
+function 'nvdimm_pmu_free_hotplug_memory' memory pointed by the fields of
+'nd_pmu->pmu.attr_groups' is deallocated it is necessary to call 'kfree'
+after 'nvdimm_pmu_free_hotplug_memory'.
 
-Other reads also happen without socket lock being held,
-and must be annotated.
-
-Remove preprocessor logic using BITS_PER_LONG, compilers
-are smart enough to figure this by themselves.
-
-v2: fixed a clang W=1 (-Wtautological-constant-out-of-range-compare) warning
-    (Jakub)
-
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 0fab1ba6ad6b ("drivers/nvdimm: Add perf interface to expose nvdimm performance stats")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+Link: https://lore.kernel.org/r/20230817114103.754977-1-konstantin.meskhidze@huawei.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c |  2 +-
- net/bluetooth/sco.c |  2 +-
- net/core/sock.c     | 18 +++++++++---------
- net/sched/em_meta.c |  2 +-
- net/smc/af_smc.c    |  2 +-
- 5 files changed, 13 insertions(+), 13 deletions(-)
+ drivers/nvdimm/nd_perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 699e4f400df29..5cd2e775915be 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1394,7 +1394,7 @@ static int iso_sock_release(struct socket *sock)
+diff --git a/drivers/nvdimm/nd_perf.c b/drivers/nvdimm/nd_perf.c
+index 14881c4e03e6b..2b6dc80d8fb5b 100644
+--- a/drivers/nvdimm/nd_perf.c
++++ b/drivers/nvdimm/nd_perf.c
+@@ -308,8 +308,8 @@ int register_nvdimm_pmu(struct nvdimm_pmu *nd_pmu, struct platform_device *pdev)
  
- 	iso_sock_close(sk);
- 
--	if (sock_flag(sk, SOCK_LINGER) && sk->sk_lingertime &&
-+	if (sock_flag(sk, SOCK_LINGER) && READ_ONCE(sk->sk_lingertime) &&
- 	    !(current->flags & PF_EXITING)) {
- 		lock_sock(sk);
- 		err = bt_sock_wait_state(sk, BT_CLOSED, sk->sk_lingertime);
-diff --git a/net/bluetooth/sco.c b/net/bluetooth/sco.c
-index 1755f91a66f6a..6d4168cfeb563 100644
---- a/net/bluetooth/sco.c
-+++ b/net/bluetooth/sco.c
-@@ -1255,7 +1255,7 @@ static int sco_sock_release(struct socket *sock)
- 
- 	sco_sock_close(sk);
- 
--	if (sock_flag(sk, SOCK_LINGER) && sk->sk_lingertime &&
-+	if (sock_flag(sk, SOCK_LINGER) && READ_ONCE(sk->sk_lingertime) &&
- 	    !(current->flags & PF_EXITING)) {
- 		lock_sock(sk);
- 		err = bt_sock_wait_state(sk, BT_CLOSED, sk->sk_lingertime);
-diff --git a/net/core/sock.c b/net/core/sock.c
-index 8b91d9f911336..fc475845c94d5 100644
---- a/net/core/sock.c
-+++ b/net/core/sock.c
-@@ -793,7 +793,7 @@ EXPORT_SYMBOL(sock_set_reuseport);
- void sock_no_linger(struct sock *sk)
- {
- 	lock_sock(sk);
--	sk->sk_lingertime = 0;
-+	WRITE_ONCE(sk->sk_lingertime, 0);
- 	sock_set_flag(sk, SOCK_LINGER);
- 	release_sock(sk);
- }
-@@ -1219,15 +1219,15 @@ int sk_setsockopt(struct sock *sk, int level, int optname,
- 			ret = -EFAULT;
- 			break;
- 		}
--		if (!ling.l_onoff)
-+		if (!ling.l_onoff) {
- 			sock_reset_flag(sk, SOCK_LINGER);
--		else {
--#if (BITS_PER_LONG == 32)
--			if ((unsigned int)ling.l_linger >= MAX_SCHEDULE_TIMEOUT/HZ)
--				sk->sk_lingertime = MAX_SCHEDULE_TIMEOUT;
-+		} else {
-+			unsigned long t_sec = ling.l_linger;
-+
-+			if (t_sec >= MAX_SCHEDULE_TIMEOUT / HZ)
-+				WRITE_ONCE(sk->sk_lingertime, MAX_SCHEDULE_TIMEOUT);
- 			else
--#endif
--				sk->sk_lingertime = (unsigned int)ling.l_linger * HZ;
-+				WRITE_ONCE(sk->sk_lingertime, t_sec * HZ);
- 			sock_set_flag(sk, SOCK_LINGER);
- 		}
- 		break;
-@@ -1678,7 +1678,7 @@ int sk_getsockopt(struct sock *sk, int level, int optname,
- 	case SO_LINGER:
- 		lv		= sizeof(v.ling);
- 		v.ling.l_onoff	= sock_flag(sk, SOCK_LINGER);
--		v.ling.l_linger	= sk->sk_lingertime / HZ;
-+		v.ling.l_linger	= READ_ONCE(sk->sk_lingertime) / HZ;
- 		break;
- 
- 	case SO_BSDCOMPAT:
-diff --git a/net/sched/em_meta.c b/net/sched/em_meta.c
-index b1f1b49d35edf..6f2f135aab676 100644
---- a/net/sched/em_meta.c
-+++ b/net/sched/em_meta.c
-@@ -502,7 +502,7 @@ META_COLLECTOR(int_sk_lingertime)
- 		*err = -1;
- 		return;
+ 	rc = perf_pmu_register(&nd_pmu->pmu, nd_pmu->pmu.name, -1);
+ 	if (rc) {
+-		kfree(nd_pmu->pmu.attr_groups);
+ 		nvdimm_pmu_free_hotplug_memory(nd_pmu);
++		kfree(nd_pmu->pmu.attr_groups);
+ 		return rc;
  	}
--	dst->value = sk->sk_lingertime / HZ;
-+	dst->value = READ_ONCE(sk->sk_lingertime) / HZ;
- }
  
- META_COLLECTOR(int_sk_err_qlen)
-diff --git a/net/smc/af_smc.c b/net/smc/af_smc.c
-index 84219c5121bc2..f774d840759d6 100644
---- a/net/smc/af_smc.c
-+++ b/net/smc/af_smc.c
-@@ -1807,7 +1807,7 @@ void smc_close_non_accepted(struct sock *sk)
- 	lock_sock(sk);
- 	if (!sk->sk_lingertime)
- 		/* wait for peer closing */
--		sk->sk_lingertime = SMC_MAX_STREAM_WAIT_TIMEOUT;
-+		WRITE_ONCE(sk->sk_lingertime, SMC_MAX_STREAM_WAIT_TIMEOUT);
- 	__smc_release(smc);
- 	release_sock(sk);
- 	sock_put(sk); /* sock_hold above */
 -- 
 2.40.1
 
