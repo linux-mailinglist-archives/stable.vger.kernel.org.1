@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9594079B701
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDA1E79BD57
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350862AbjIKVlx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:41:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38980 "EHLO
+        id S1378961AbjIKWiR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:38:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238446AbjIKN4t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:49 -0400
+        with ESMTP id S239853AbjIKOa2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7359910E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5E78C433C8;
-        Mon, 11 Sep 2023 13:56:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E144CE4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 34B59C433C8;
+        Mon, 11 Sep 2023 14:30:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440605;
-        bh=FqPRaSRt/ahvt2OvH9QTY1QDA+ktWuIE/LdBW7Qrk4o=;
+        s=korg; t=1694442619;
+        bh=rd7KSJsH78cGCtTeXRmYut/5qqOZeh2p/mEI0opbtq0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vEQGbekuB/SDIoysqz99ppCP2cRMFdn9B+80NJsaMk+xZb8Ky2rHBS/hujid51Czy
-         occnLL12q/Y22jbBB7ASv/0i7zCecv7olZK2XarXeuAuGPD3ueVs3pkc0tSJ9SfCKJ
-         EodO5HH5fdVmsYO9Y+NgUaN754iY1m5d95NDdyAk=
+        b=KpzKtP9reS6J13hvX0pEstRZtJ+M7c2VsPlWsJGC2FO1AU6MlkKqUgTUhkArWrCZQ
+         3xVcToCHkiIFtrwppRMqZuKkhUOIfyjofiZoGGLrqeF7Dmpm6Zxq9pMQwpTKhAZ3oY
+         LDFlpLAhC6fBMcta0mlEYE5cT4NFVkFdnsh9g4pw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Manish Rangankar <mrangankar@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 121/739] Bluetooth: ISO: Fix not checking for valid CIG/CIS IDs
+Subject: [PATCH 6.4 061/737] scsi: qedi: Fix potential deadlock on &qedi_percpu->p_work_lock
 Date:   Mon, 11 Sep 2023 15:38:40 +0200
-Message-ID: <20230911134654.476710350@linuxfoundation.org>
+Message-ID: <20230911134652.204642753@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit b7f923b1ef6a2e76013089d30c9552257056360a ]
+[ Upstream commit dd64f80587190265ca8a0f4be6c64c2fda6d3ac2 ]
 
-Valid range of CIG/CIS are 0x00 to 0xEF, so this checks they are
-properly checked before attempting to use HCI_OP_LE_SET_CIG_PARAMS.
+As &qedi_percpu->p_work_lock is acquired by hard IRQ qedi_msix_handler(),
+other acquisitions of the same lock under process context should disable
+IRQ, otherwise deadlock could happen if the IRQ preempts the execution
+while the lock is held in process context on the same CPU.
 
-Fixes: ccf74f2390d6 ("Bluetooth: Add BTPROTO_ISO socket type")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+qedi_cpu_offline() is one such function which acquires the lock in process
+context.
+
+[Deadlock Scenario]
+qedi_cpu_offline()
+    ->spin_lock(&p->p_work_lock)
+        <irq>
+        ->qedi_msix_handler()
+        ->edi_process_completions()
+        ->spin_lock_irqsave(&p->p_work_lock, flags); (deadlock here)
+
+This flaw was found by an experimental static analysis tool I am developing
+for IRQ-related deadlocks.
+
+The tentative patch fix the potential deadlock by spin_lock_irqsave()
+under process context.
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230726125655.4197-1-dg573847474@gmail.com
+Acked-by: Manish Rangankar <mrangankar@marvell.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/iso.c | 6 ++++++
- 1 file changed, 6 insertions(+)
+ drivers/scsi/qedi/qedi_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/net/bluetooth/iso.c b/net/bluetooth/iso.c
-index 5db4d68c96d5c..fa3765bc8a5cd 100644
---- a/net/bluetooth/iso.c
-+++ b/net/bluetooth/iso.c
-@@ -1216,6 +1216,12 @@ static bool check_io_qos(struct bt_iso_io_qos *qos)
+diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
+index ef62dbbc1868e..1106d26113888 100644
+--- a/drivers/scsi/qedi/qedi_main.c
++++ b/drivers/scsi/qedi/qedi_main.c
+@@ -1977,8 +1977,9 @@ static int qedi_cpu_offline(unsigned int cpu)
+ 	struct qedi_percpu_s *p = this_cpu_ptr(&qedi_percpu);
+ 	struct qedi_work *work, *tmp;
+ 	struct task_struct *thread;
++	unsigned long flags;
  
- static bool check_ucast_qos(struct bt_iso_qos *qos)
- {
-+	if (qos->ucast.cig > 0xef && qos->ucast.cig != BT_ISO_QOS_CIG_UNSET)
-+		return false;
-+
-+	if (qos->ucast.cis > 0xef && qos->ucast.cis != BT_ISO_QOS_CIS_UNSET)
-+		return false;
-+
- 	if (qos->ucast.sca > 0x07)
- 		return false;
+-	spin_lock_bh(&p->p_work_lock);
++	spin_lock_irqsave(&p->p_work_lock, flags);
+ 	thread = p->iothread;
+ 	p->iothread = NULL;
  
+@@ -1989,7 +1990,7 @@ static int qedi_cpu_offline(unsigned int cpu)
+ 			kfree(work);
+ 	}
+ 
+-	spin_unlock_bh(&p->p_work_lock);
++	spin_unlock_irqrestore(&p->p_work_lock, flags);
+ 	if (thread)
+ 		kthread_stop(thread);
+ 	return 0;
 -- 
 2.40.1
 
