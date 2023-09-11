@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EEB3279B4C7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A56F979B2B6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378799AbjIKWhZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47802 "EHLO
+        id S1355385AbjIKV6A (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35544 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240690AbjIKOvO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:14 -0400
+        with ESMTP id S239369AbjIKOTF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D73C118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E9D0C433C9;
-        Mon, 11 Sep 2023 14:51:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5689DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18175C433C7;
+        Mon, 11 Sep 2023 14:18:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443869;
-        bh=nhIqEEbyQ09JhteE4bQa5LoAsyibY3Z3B/qd1Tgugp4=;
+        s=korg; t=1694441940;
+        bh=mghLdZhVXHiWOKJrjjWPBLyVbnl5BjhVdqA438YxjsE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BkEya7lN8bRnY2avK6swgPzLXPKGjmIKJQhE+LYdlc4shvO8Ww7bXKG+/r7tPRK8/
-         p3R45kEEK0ZbhTZFpOyqu9uTlKOvc87pqm1ihtdGLQ0ZSeYcKJnvkJsftHONeOf2Rc
-         c9adElqUPlLNPoZnb0dox5svunzv8oSbYaFAt/P0=
+        b=msiYY/JbIVxFWw+rwG6tnB2NS1+esCCB797ZeQbqX9x2tu6Bb77Mc+YDT5Fvedn+J
+         J4ToooboeUjIWyVCUTF+p+6hs8JKsi14Tgb+X8rl4U4Ecug+gxXltGcer/sbU3sk19
+         BF+osGA/chsLSbfMTr9Hcpu0cyP976MgHmlyVqSU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
-        Randy Dunlap <rdunlap@infradead.org>,
+        patches@lists.linux.dev,
+        Paul Gortmaker <paul.gortmaker@windriver.com>,
+        Thomas Gleixner <tglx@linutronix.de>,
+        Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Wen Yang <wenyang.linux@foxmail.com>,
+        Frederic Weisbecker <frederic@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 530/737] dma-buf/sync_file: Fix docs syntax
+Subject: [PATCH 6.5 590/739] tick/rcu: Fix false positive "softirq work is pending" messages
 Date:   Mon, 11 Sep 2023 15:46:29 +0200
-Message-ID: <20230911134705.380451702@linuxfoundation.org>
+Message-ID: <20230911134707.581318743@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +54,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rob Clark <robdclark@chromium.org>
+From: Paul Gortmaker <paul.gortmaker@windriver.com>
 
-[ Upstream commit 05d56d8079d510a2994039470f65bea85f0075ee ]
+[ Upstream commit 96c1fa04f089a7e977a44e4e8fdc92e81be20bef ]
 
-Fixes the warning:
+In commit 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle") the
+new function report_idle_softirq() was created by breaking code out of the
+existing can_stop_idle_tick() for kernels v5.18 and newer.
 
-  include/uapi/linux/sync_file.h:77: warning: Function parameter or member 'num_fences' not described in 'sync_file_info'
+In doing so, the code essentially went from a one conditional:
 
-Fixes: 2d75c88fefb2 ("staging/android: refactor SYNC IOCTLs")
-Signed-off-by: Rob Clark <robdclark@chromium.org>
-Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
-Link: https://lore.kernel.org/r/20230724145000.125880-1-robdclark@gmail.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	if (a && b && c)
+		warn();
+
+to a three conditional:
+
+	if (!a)
+		return;
+	if (!b)
+		return;
+	if (!c)
+		return;
+	warn();
+
+But that conversion got the condition for the RT specific
+local_bh_blocked() wrong. The original condition was:
+
+   	!local_bh_blocked()
+
+but the conversion failed to negate it so it ended up as:
+
+        if (!local_bh_blocked())
+		return false;
+
+This issue lay dormant until another fixup for the same commit was added
+in commit a7e282c77785 ("tick/rcu: Fix bogus ratelimit condition").
+This commit realized the ratelimit was essentially set to zero instead
+of ten, and hence *no* softirq pending messages would ever be issued.
+
+Once this commit was backported via linux-stable, both the v6.1 and v6.4
+preempt-rt kernels started printing out 10 instances of this at boot:
+
+  NOHZ tick-stop error: local softirq work is pending, handler #80!!!
+
+Remove the negation and return when local_bh_blocked() evaluates to true to
+bring the correct behaviour back.
+
+Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
+Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
+Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
+Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Wen Yang <wenyang.linux@foxmail.com>
+Acked-by: Frederic Weisbecker <frederic@kernel.org>
+Link: https://lore.kernel.org/r/20230818200757.1808398-1-paul.gortmaker@windriver.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/uapi/linux/sync_file.h | 2 +-
+ kernel/time/tick-sched.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/uapi/linux/sync_file.h b/include/uapi/linux/sync_file.h
-index 7e42a5b7558bf..ff0a931833e25 100644
---- a/include/uapi/linux/sync_file.h
-+++ b/include/uapi/linux/sync_file.h
-@@ -56,7 +56,7 @@ struct sync_fence_info {
-  * @name:	name of fence
-  * @status:	status of fence. 1: signaled 0:active <0:error
-  * @flags:	sync_file_info flags
-- * @num_fences	number of fences in the sync_file
-+ * @num_fences:	number of fences in the sync_file
-  * @pad:	padding for 64-bit alignment, should always be zero
-  * @sync_fence_info: pointer to array of struct &sync_fence_info with all
-  *		 fences in the sync_file
+diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
+index 4df14db4da490..87015e9deacc9 100644
+--- a/kernel/time/tick-sched.c
++++ b/kernel/time/tick-sched.c
+@@ -1045,7 +1045,7 @@ static bool report_idle_softirq(void)
+ 		return false;
+ 
+ 	/* On RT, softirqs handling may be waiting on some lock */
+-	if (!local_bh_blocked())
++	if (local_bh_blocked())
+ 		return false;
+ 
+ 	pr_warn("NOHZ tick-stop error: local softirq work is pending, handler #%02x!!!\n",
 -- 
 2.40.1
 
