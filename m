@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 171D579BA63
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9630479B61A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239033AbjIKWef (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:34:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47088 "EHLO
+        id S1359439AbjIKWQn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:16:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47596 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239392AbjIKOTg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:36 -0400
+        with ESMTP id S241982AbjIKPTm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26475DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B631C433C9;
-        Mon, 11 Sep 2023 14:19:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 702F5FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B8AA2C433C8;
+        Mon, 11 Sep 2023 15:19:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441971;
-        bh=95obcNaR33gsGKV0eKqUxu6hgJrybVLrURpk0qdtMhM=;
+        s=korg; t=1694445578;
+        bh=kaVwl+jKpeMoxSN1H9wBfbRC3e1J2KkVLqNYRha7BU8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aU6pzTvQNDzd0qLno6fjPq7uu9nVBB6eBUnAqW314nz5+G1zrE+IbeT/SMUDxbeDL
-         tu6hCBt/a8MMRpVnmPtvWw46BiLhnalcfI177GG644ddDNLtzr3OrfoNQtdeK/yTih
-         4pD7et6XvE0pVKKb8gUpjVLg0w3kqyBf01AqVaUQ=
+        b=hppv+FeklSBXQPT2tQiRjsjDA4+O7smpHrzz3PrZ9Kv1X48DHAxbUKvi+wFHy1qTw
+         95B0DFiAntaiWOsa0zvblZztI/aUqJWVVJuW44NYVTHJQrJx5YQNe0qbtcZRRm21io
+         Kw1kU+rN3JB1OelD5+pYVrzduRq3osBiCsm8sdms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 600/739] rpmsg: glink: Add check for kstrdup
+Subject: [PATCH 6.1 366/600] powerpc/perf: Convert fsl_emb notifier to state machine callbacks
 Date:   Mon, 11 Sep 2023 15:46:39 +0200
-Message-ID: <20230911134707.860064863@linuxfoundation.org>
+Message-ID: <20230911134644.484662346@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit b5c9ee8296a3760760c7b5d2e305f91412adc795 ]
+[ Upstream commit 34daf445f82bd3a4df852bb5f1dffd792ac830a0 ]
 
-Add check for the return value of kstrdup() and return the error
-if it fails in order to avoid NULL pointer dereference.
+  CC      arch/powerpc/perf/core-fsl-emb.o
+arch/powerpc/perf/core-fsl-emb.c:675:6: error: no previous prototype for 'hw_perf_event_setup' [-Werror=missing-prototypes]
+  675 | void hw_perf_event_setup(int cpu)
+      |      ^~~~~~~~~~~~~~~~~~~
 
-Fixes: b4f8e52b89f6 ("rpmsg: Introduce Qualcomm RPM glink driver")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Link: https://lore.kernel.org/r/20230619030631.12361-1-jiasheng@iscas.ac.cn
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Looks like fsl_emb was completely missed by commit 3f6da3905398 ("perf:
+Rework and fix the arch CPU-hotplug hooks")
+
+So, apply same changes as commit 3f6da3905398 ("perf: Rework and fix
+the arch CPU-hotplug hooks") then commit 57ecde42cc74 ("powerpc/perf:
+Convert book3s notifier to state machine callbacks")
+
+While at it, also fix following error:
+
+arch/powerpc/perf/core-fsl-emb.c: In function 'perf_event_interrupt':
+arch/powerpc/perf/core-fsl-emb.c:648:13: error: variable 'found' set but not used [-Werror=unused-but-set-variable]
+  648 |         int found = 0;
+      |             ^~~~~
+
+Fixes: 3f6da3905398 ("perf: Rework and fix the arch CPU-hotplug hooks")
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/603e1facb32608f88f40b7d7b9094adc50e7b2dc.1692349125.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/rpmsg/qcom_glink_native.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ arch/powerpc/perf/core-fsl-emb.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/rpmsg/qcom_glink_native.c b/drivers/rpmsg/qcom_glink_native.c
-index 1beb40a1d3df2..e4015db99899d 100644
---- a/drivers/rpmsg/qcom_glink_native.c
-+++ b/drivers/rpmsg/qcom_glink_native.c
-@@ -221,6 +221,10 @@ static struct glink_channel *qcom_glink_alloc_channel(struct qcom_glink *glink,
+diff --git a/arch/powerpc/perf/core-fsl-emb.c b/arch/powerpc/perf/core-fsl-emb.c
+index ee721f420a7ba..1a53ab08447cb 100644
+--- a/arch/powerpc/perf/core-fsl-emb.c
++++ b/arch/powerpc/perf/core-fsl-emb.c
+@@ -645,7 +645,6 @@ static void perf_event_interrupt(struct pt_regs *regs)
+ 	struct cpu_hw_events *cpuhw = this_cpu_ptr(&cpu_hw_events);
+ 	struct perf_event *event;
+ 	unsigned long val;
+-	int found = 0;
  
- 	channel->glink = glink;
- 	channel->name = kstrdup(name, GFP_KERNEL);
-+	if (!channel->name) {
-+		kfree(channel);
-+		return ERR_PTR(-ENOMEM);
-+	}
+ 	for (i = 0; i < ppmu->n_counter; ++i) {
+ 		event = cpuhw->event[i];
+@@ -654,7 +653,6 @@ static void perf_event_interrupt(struct pt_regs *regs)
+ 		if ((int)val < 0) {
+ 			if (event) {
+ 				/* event has overflowed */
+-				found = 1;
+ 				record_and_restart(event, val, regs);
+ 			} else {
+ 				/*
+@@ -672,11 +670,13 @@ static void perf_event_interrupt(struct pt_regs *regs)
+ 	isync();
+ }
  
- 	init_completion(&channel->open_req);
- 	init_completion(&channel->open_ack);
+-void hw_perf_event_setup(int cpu)
++static int fsl_emb_pmu_prepare_cpu(unsigned int cpu)
+ {
+ 	struct cpu_hw_events *cpuhw = &per_cpu(cpu_hw_events, cpu);
+ 
+ 	memset(cpuhw, 0, sizeof(*cpuhw));
++
++	return 0;
+ }
+ 
+ int register_fsl_emb_pmu(struct fsl_emb_pmu *pmu)
+@@ -689,6 +689,8 @@ int register_fsl_emb_pmu(struct fsl_emb_pmu *pmu)
+ 		pmu->name);
+ 
+ 	perf_pmu_register(&fsl_emb_pmu, "cpu", PERF_TYPE_RAW);
++	cpuhp_setup_state(CPUHP_PERF_POWER, "perf/powerpc:prepare",
++			  fsl_emb_pmu_prepare_cpu, NULL);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
