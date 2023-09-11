@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3F0C979B222
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 672F079B230
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358271AbjIKWI0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53196 "EHLO
+        id S240062AbjIKU4B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57050 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241080AbjIKPB3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:29 -0400
+        with ESMTP id S240026AbjIKOea (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9CC2125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42CABC433C8;
-        Mon, 11 Sep 2023 15:01:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2F10FE4D
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77AFFC433C8;
+        Mon, 11 Sep 2023 14:34:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444484;
-        bh=w5/ykC5htjhcK9bK3UMZZD8F750ZMJkQD1hfYSzo1xk=;
+        s=korg; t=1694442865;
+        bh=gZKVpqwzR+M3Qhg+9wYwC3MXJ+ySZoWqKR7Iw8qAQsc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0Xs+ACBp8ISVrE9nvetQ92wDqXT+9ZFyHNyjLzfG9SnPjKxgaa28aC6g5hvCz4lws
-         cUocQjl0L22/sQHmHqhlcodz3/wB7LtnWsj/k+Yr/0DKYGTilOnLcGad4Kn8mz8pEy
-         N/VaL5MY4GvCqFPOoimLoD0vXxtmhdtweuYiTTl0=
+        b=rUygmEnSzFO6NKqR+p7wDjS2o4VngOlqpl1B5nqMJT7NhYcbVrDnjKDuELVH/Dd+V
+         qZk/+5qKeKUptnjkvAxwInC6iqDqRaBk9YrMpJQkVYhqFE0d94M5HcUAgBD7l2cBif
+         AlL6oL7tmZK1ScC+Eq9Vhxh9zw55ekk1L3lMMA2M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev, Zhang Shurong <zhang_shurong@foxmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 001/600] Revert "bridge: Add extack warning when enabling STP in netns."
+Subject: [PATCH 6.4 175/737] spi: tegra20-sflash: fix to check return value of platform_get_irq() in tegra_sflash_probe()
 Date:   Mon, 11 Sep 2023 15:40:34 +0200
-Message-ID: <20230911134633.668244209@linuxfoundation.org>
+Message-ID: <20230911134655.420699470@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,69 +50,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Zhang Shurong <zhang_shurong@foxmail.com>
 
-[ Upstream commit 7ebd00a5a20c48e6020d49a3b2afb3cdfd2da8b7 ]
+[ Upstream commit 29a449e765ff70a5bd533be94babb6d36985d096 ]
 
-This reverts commit 56a16035bb6effb37177867cea94c13a8382f745.
+The platform_get_irq might be failed and return a negative result. So
+there should have an error handling code.
 
-Since the previous commit, STP works on bridge in netns.
+Fixed this by adding an error handling code.
 
-  # unshare -n
-  # ip link add br0 type bridge
-  # ip link add veth0 type veth peer name veth1
-
-  # ip link set veth0 master br0 up
-  [   50.558135] br0: port 1(veth0) entered blocking state
-  [   50.558366] br0: port 1(veth0) entered disabled state
-  [   50.558798] veth0: entered allmulticast mode
-  [   50.564401] veth0: entered promiscuous mode
-
-  # ip link set veth1 master br0 up
-  [   54.215487] br0: port 2(veth1) entered blocking state
-  [   54.215657] br0: port 2(veth1) entered disabled state
-  [   54.215848] veth1: entered allmulticast mode
-  [   54.219577] veth1: entered promiscuous mode
-
-  # ip link set br0 type bridge stp_state 1
-  # ip link set br0 up
-  [   61.960726] br0: port 2(veth1) entered blocking state
-  [   61.961097] br0: port 2(veth1) entered listening state
-  [   61.961495] br0: port 1(veth0) entered blocking state
-  [   61.961653] br0: port 1(veth0) entered listening state
-  [   63.998835] br0: port 2(veth1) entered blocking state
-  [   77.437113] br0: port 1(veth0) entered learning state
-  [   86.653501] br0: received packet on veth0 with own address as source address (addr:6e:0f:e7:6f:5f:5f, vlan:0)
-  [   92.797095] br0: port 1(veth0) entered forwarding state
-  [   92.797398] br0: topology change detected, propagating
-
-Let's remove the warning.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Fixes: 8528547bcc33 ("spi: tegra: add spi driver for sflash controller")
+Signed-off-by: Zhang Shurong <zhang_shurong@foxmail.com>
+Link: https://lore.kernel.org/r/tencent_71FC162D589E4788C2152AAC84CD8D5C6D06@qq.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_stp_if.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/spi/spi-tegra20-sflash.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_stp_if.c b/net/bridge/br_stp_if.c
-index b65962682771f..75204d36d7f90 100644
---- a/net/bridge/br_stp_if.c
-+++ b/net/bridge/br_stp_if.c
-@@ -201,9 +201,6 @@ int br_stp_set_enabled(struct net_bridge *br, unsigned long val,
- {
- 	ASSERT_RTNL();
+diff --git a/drivers/spi/spi-tegra20-sflash.c b/drivers/spi/spi-tegra20-sflash.c
+index 4286310628a2b..0c5507473f972 100644
+--- a/drivers/spi/spi-tegra20-sflash.c
++++ b/drivers/spi/spi-tegra20-sflash.c
+@@ -455,7 +455,11 @@ static int tegra_sflash_probe(struct platform_device *pdev)
+ 		goto exit_free_master;
+ 	}
  
--	if (!net_eq(dev_net(br->dev), &init_net))
--		NL_SET_ERR_MSG_MOD(extack, "STP does not work in non-root netns");
--
- 	if (br_mrp_enabled(br)) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "STP can't be enabled if MRP is already enabled");
+-	tsd->irq = platform_get_irq(pdev, 0);
++	ret = platform_get_irq(pdev, 0);
++	if (ret < 0)
++		goto exit_free_master;
++	tsd->irq = ret;
++
+ 	ret = request_irq(tsd->irq, tegra_sflash_isr, 0,
+ 			dev_name(&pdev->dev), tsd);
+ 	if (ret < 0) {
 -- 
 2.40.1
 
