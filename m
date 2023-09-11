@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E77679B503
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 346D979B117
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:51:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353933AbjIKVvh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45846 "EHLO
+        id S244468AbjIKVIP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239846AbjIKOaT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:30:19 -0400
+        with ESMTP id S238502AbjIKN6E (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4B402F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97706C433C8;
-        Mon, 11 Sep 2023 14:30:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56621CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 93FB5C433C8;
+        Mon, 11 Sep 2023 13:57:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442614;
-        bh=AOdd3BkDwF3JSM4FGZVHHZ+9wHLz3JJ0xrm0pARvO3g=;
+        s=korg; t=1694440679;
+        bh=tgCPPIlXMFVGhMXkdJCCfH2NAppjkEO+gaaq47ShdU0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=b58YHbrxUxKK0MUfRKa5LapwMtKqXA75eTIrhijr6lmr7cT5frk3HHy10e85bcrYx
-         tkCA/O6iH7Mwm0mx61c5XelEvEtVy8ni06E4y2Nc7uAK7xSpVwVSKolkWGb7KeQB0s
-         UPPtm5em94uB/BsT0vdHppldAbnwbHW3qZ2KVltA=
+        b=xrDJ5S0gqqozW7XcLEUOLcQwTbwyfc0PG3fnNs0AyjmMREHcZPYoWNFsjeLvL3DeW
+         dzdagDElZMomwLtILoZj/p08morKbpxpk2ADejadjJW5bZ3pBVMVlri2ukN2DCvpYi
+         uQwdky0oEdgdZNnIPphjFJyu3pO3SUO8SWoFUGcs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Jan Kara <jack@suse.cz>, David Jeffery <djeffery@redhat.com>,
-        Ming Lei <ming.lei@redhat.com>,
-        Gabriel Krisman Bertazi <krisman@suse.de>,
-        Keith Busch <kbusch@kernel.org>, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 086/737] sbitmap: fix batching wakeup
-Date:   Mon, 11 Sep 2023 15:39:05 +0200
-Message-ID: <20230911134652.907130519@linuxfoundation.org>
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Oliver Neukum <oneukum@suse.com>
+Subject: [PATCH 6.5 147/739] USB: core: Unite old scheme and new scheme descriptor reads
+Date:   Mon, 11 Sep 2023 15:39:06 +0200
+Message-ID: <20230911134655.228161326@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,83 +49,332 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Jeffery <djeffery@redhat.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 106397376c0369fcc01c58dd189ff925a2724a57 upstream.
+commit 85d07c55621676d47d873d2749b88f783cd4d5a1 upstream.
 
-Current code supposes that it is enough to provide forward progress by
-just waking up one wait queue after one completion batch is done.
+In preparation for reworking the usb_get_device_descriptor() routine,
+it is desirable to unite the two different code paths responsible for
+initially determining endpoint 0's maximum packet size in a newly
+discovered USB device.  Making this determination presents a
+chicken-and-egg sort of problem, in that the only way to learn the
+maxpacket value is to get it from the device descriptor retrieved from
+the device, but communicating with the device to retrieve a descriptor
+requires us to know beforehand the ep0 maxpacket size.
 
-Unfortunately this way isn't enough, cause waiter can be added to wait
-queue just after it is woken up.
+In practice this problem is solved in two different ways, referred to
+in hub.c as the "old scheme" and the "new scheme".  The old scheme
+(which is the approach recommended by the USB-2 spec) involves asking
+the device to send just the first eight bytes of its device
+descriptor.  Such a transfer uses packets containing no more than
+eight bytes each, and every USB device must have an ep0 maxpacket size
+>= 8, so this should succeed.  Since the bMaxPacketSize0 field of the
+device descriptor lies within the first eight bytes, this is all we
+need.
 
-Follows one example(64 depth, wake_batch is 8)
+The new scheme is an imitation of the technique used in an early
+Windows USB implementation, giving it the happy advantage of working
+with a wide variety of devices (some of them at the time would not
+work with the old scheme, although that's probably less true now).  It
+involves making an initial guess of the ep0 maxpacket size, asking the
+device to send up to 64 bytes worth of its device descriptor (which is
+only 18 bytes long), and then resetting the device to clear any error
+condition that might have resulted from the guess being wrong.  The
+initial guess is determined by the connection speed; it should be
+correct in all cases other than full speed, for which the allowed
+values are 8, 16, 32, and 64 (in this case the initial guess is 64).
 
-1) all 64 tags are active
+The reason for this patch is that the old- and new-scheme parts of
+hub_port_init() use different code paths, one involving
+usb_get_device_descriptor() and one not, for their initial reads of
+the device descriptor.  Since these reads have essentially the same
+purpose and are made under essentially the same circumstances, this is
+illogical.  It makes more sense to have both of them use a common
+subroutine.
 
-2) in each wait queue, there is only one single waiter
+This subroutine does basically what the new scheme's code did, because
+that approach is more general than the one used by the old scheme.  It
+only needs to know how many bytes to transfer and whether or not it is
+being called for the first iteration of a retry loop (in case of
+certain time-out errors).  There are two main differences from the
+former code:
 
-3) each time one completion batch(8 completions) wakes up just one
-   waiter in each wait queue, then immediately one new sleeper is added
-   to this wait queue
+	We initialize the bDescriptorType field of the transfer buffer
+	to 0 before performing the transfer, to avoid possibly
+	accessing an uninitialized value afterward.
 
-4) after 64 completions, 8 waiters are wakeup, and there are still 8
-   waiters in each wait queue
+	We read the device descriptor into a temporary buffer rather
+	than storing it directly into udev->descriptor, which the old
+	scheme implementation used to do.
 
-5) after another 8 active tags are completed, only one waiter can be
-   wakeup, and the other 7 can't be waken up anymore.
+Since the whole point of this first read of the device descriptor is
+to determine the bMaxPacketSize0 value, that is what the new routine
+returns (or an error code).  The value is stored in a local variable
+rather than in udev->descriptor.  As a side effect, this necessitates
+moving a section of code that checks the bcdUSB field for SuperSpeed
+devices until after the full device descriptor has been retrieved.
 
-Turns out it isn't easy to fix this problem, so simply wakeup enough
-waiters for single batch.
-
-Cc: Kemeng Shi <shikemeng@huaweicloud.com>
-Cc: Chengming Zhou <zhouchengming@bytedance.com>
-Cc: Jan Kara <jack@suse.cz>
-Signed-off-by: David Jeffery <djeffery@redhat.com>
-Signed-off-by: Ming Lei <ming.lei@redhat.com>
-Reviewed-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Reviewed-by: Keith Busch <kbusch@kernel.org>
-Link: https://lore.kernel.org/r/20230721095715.232728-1-ming.lei@redhat.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: Oliver Neukum <oneukum@suse.com>
+Link: https://lore.kernel.org/r/495cb5d4-f956-4f4a-a875-1e67e9489510@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- lib/sbitmap.c |   15 +++++++--------
- 1 file changed, 7 insertions(+), 8 deletions(-)
+ drivers/usb/core/hub.c |  173 ++++++++++++++++++++++++++-----------------------
+ 1 file changed, 94 insertions(+), 79 deletions(-)
 
---- a/lib/sbitmap.c
-+++ b/lib/sbitmap.c
-@@ -550,7 +550,7 @@ EXPORT_SYMBOL_GPL(sbitmap_queue_min_shal
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -4718,6 +4718,67 @@ static int hub_enable_device(struct usb_
+ 	return hcd->driver->enable_device(hcd, udev);
+ }
  
- static void __sbitmap_queue_wake_up(struct sbitmap_queue *sbq, int nr)
- {
--	int i, wake_index;
-+	int i, wake_index, woken;
- 
- 	if (!atomic_read(&sbq->ws_active))
- 		return;
-@@ -567,13 +567,12 @@ static void __sbitmap_queue_wake_up(stru
- 		 */
- 		wake_index = sbq_index_inc(wake_index);
- 
--		/*
--		 * It is sufficient to wake up at least one waiter to
--		 * guarantee forward progress.
--		 */
--		if (waitqueue_active(&ws->wait) &&
--		    wake_up_nr(&ws->wait, nr))
--			break;
-+		if (waitqueue_active(&ws->wait)) {
-+			woken = wake_up_nr(&ws->wait, nr);
-+			if (woken == nr)
++/*
++ * Get the bMaxPacketSize0 value during initialization by reading the
++ * device's device descriptor.  Since we don't already know this value,
++ * the transfer is unsafe and it ignores I/O errors, only testing for
++ * reasonable received values.
++ *
++ * For "old scheme" initialization, size will be 8 so we read just the
++ * start of the device descriptor, which should work okay regardless of
++ * the actual bMaxPacketSize0 value.  For "new scheme" initialization,
++ * size will be 64 (and buf will point to a sufficiently large buffer),
++ * which might not be kosher according to the USB spec but it's what
++ * Windows does and what many devices expect.
++ *
++ * Returns: bMaxPacketSize0 or a negative error code.
++ */
++static int get_bMaxPacketSize0(struct usb_device *udev,
++		struct usb_device_descriptor *buf, int size, bool first_time)
++{
++	int i, rc;
++
++	/*
++	 * Retry on all errors; some devices are flakey.
++	 * 255 is for WUSB devices, we actually need to use
++	 * 512 (WUSB1.0[4.8.1]).
++	 */
++	for (i = 0; i < GET_MAXPACKET0_TRIES; ++i) {
++		/* Start with invalid values in case the transfer fails */
++		buf->bDescriptorType = buf->bMaxPacketSize0 = 0;
++		rc = usb_control_msg(udev, usb_rcvaddr0pipe(),
++				USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
++				USB_DT_DEVICE << 8, 0,
++				buf, size,
++				initial_descriptor_timeout);
++		switch (buf->bMaxPacketSize0) {
++		case 8: case 16: case 32: case 64: case 255:
++			if (buf->bDescriptorType == USB_DT_DEVICE) {
++				rc = buf->bMaxPacketSize0;
 +				break;
-+			nr -= woken;
++			}
++			fallthrough;
++		default:
++			if (rc >= 0)
++				rc = -EPROTO;
++			break;
 +		}
++
++		/*
++		 * Some devices time out if they are powered on
++		 * when already connected. They need a second
++		 * reset, so return early. But only on the first
++		 * attempt, lest we get into a time-out/reset loop.
++		 */
++		if (rc > 0 || (rc == -ETIMEDOUT && first_time &&
++				udev->speed > USB_SPEED_FULL))
++			break;
++	}
++	return rc;
++}
++
++#define GET_DESCRIPTOR_BUFSIZE	64
++
+ /* Reset device, (re)assign address, get device descriptor.
+  * Device connection must be stable, no more debouncing needed.
+  * Returns device in USB_STATE_ADDRESS, except on error.
+@@ -4742,6 +4803,12 @@ hub_port_init(struct usb_hub *hub, struc
+ 	int			devnum = udev->devnum;
+ 	const char		*driver_name;
+ 	bool			do_new_scheme;
++	int			maxp0;
++	struct usb_device_descriptor	*buf;
++
++	buf = kmalloc(GET_DESCRIPTOR_BUFSIZE, GFP_NOIO);
++	if (!buf)
++		return -ENOMEM;
+ 
+ 	/* root hub ports have a slightly longer reset period
+ 	 * (from USB 2.0 spec, section 7.1.7.5)
+@@ -4861,9 +4928,6 @@ hub_port_init(struct usb_hub *hub, struc
+ 		}
+ 
+ 		if (do_new_scheme) {
+-			struct usb_device_descriptor *buf;
+-			int r = 0;
+-
+ 			retval = hub_enable_device(udev);
+ 			if (retval < 0) {
+ 				dev_err(&udev->dev,
+@@ -4872,52 +4936,8 @@ hub_port_init(struct usb_hub *hub, struc
+ 				goto fail;
+ 			}
+ 
+-#define GET_DESCRIPTOR_BUFSIZE	64
+-			buf = kmalloc(GET_DESCRIPTOR_BUFSIZE, GFP_NOIO);
+-			if (!buf) {
+-				retval = -ENOMEM;
+-				continue;
+-			}
+-
+-			/* Retry on all errors; some devices are flakey.
+-			 * 255 is for WUSB devices, we actually need to use
+-			 * 512 (WUSB1.0[4.8.1]).
+-			 */
+-			for (operations = 0; operations < GET_MAXPACKET0_TRIES;
+-					++operations) {
+-				buf->bMaxPacketSize0 = 0;
+-				r = usb_control_msg(udev, usb_rcvaddr0pipe(),
+-					USB_REQ_GET_DESCRIPTOR, USB_DIR_IN,
+-					USB_DT_DEVICE << 8, 0,
+-					buf, GET_DESCRIPTOR_BUFSIZE,
+-					initial_descriptor_timeout);
+-				switch (buf->bMaxPacketSize0) {
+-				case 8: case 16: case 32: case 64: case 255:
+-					if (buf->bDescriptorType ==
+-							USB_DT_DEVICE) {
+-						r = 0;
+-						break;
+-					}
+-					fallthrough;
+-				default:
+-					if (r == 0)
+-						r = -EPROTO;
+-					break;
+-				}
+-				/*
+-				 * Some devices time out if they are powered on
+-				 * when already connected. They need a second
+-				 * reset. But only on the first attempt,
+-				 * lest we get into a time out/reset loop
+-				 */
+-				if (r == 0 || (r == -ETIMEDOUT &&
+-						retries == 0 &&
+-						udev->speed > USB_SPEED_FULL))
+-					break;
+-			}
+-			udev->descriptor.bMaxPacketSize0 =
+-					buf->bMaxPacketSize0;
+-			kfree(buf);
++			maxp0 = get_bMaxPacketSize0(udev, buf,
++					GET_DESCRIPTOR_BUFSIZE, retries == 0);
+ 
+ 			retval = hub_port_reset(hub, port1, udev, delay, false);
+ 			if (retval < 0)		/* error or disconnect */
+@@ -4928,14 +4948,13 @@ hub_port_init(struct usb_hub *hub, struc
+ 				retval = -ENODEV;
+ 				goto fail;
+ 			}
+-			if (r) {
+-				if (r != -ENODEV)
++			if (maxp0 < 0) {
++				if (maxp0 != -ENODEV)
+ 					dev_err(&udev->dev, "device descriptor read/64, error %d\n",
+-							r);
+-				retval = -EMSGSIZE;
++							maxp0);
++				retval = maxp0;
+ 				continue;
+ 			}
+-#undef GET_DESCRIPTOR_BUFSIZE
+ 		}
+ 
+ 		/*
+@@ -4981,19 +5000,17 @@ hub_port_init(struct usb_hub *hub, struc
+ 				break;
+ 		}
+ 
+-		retval = usb_get_device_descriptor(udev, 8);
+-		if (retval < 8) {
++		/* !do_new_scheme || wusb */
++		maxp0 = get_bMaxPacketSize0(udev, buf, 8, retries == 0);
++		if (maxp0 < 0) {
++			retval = maxp0;
+ 			if (retval != -ENODEV)
+ 				dev_err(&udev->dev,
+ 					"device descriptor read/8, error %d\n",
+ 					retval);
+-			if (retval >= 0)
+-				retval = -EMSGSIZE;
+ 		} else {
+ 			u32 delay;
+ 
+-			retval = 0;
+-
+ 			delay = udev->parent->hub_delay;
+ 			udev->hub_delay = min_t(u32, delay,
+ 						USB_TP_TRANSMISSION_DELAY_MAX);
+@@ -5010,27 +5027,10 @@ hub_port_init(struct usb_hub *hub, struc
+ 	if (retval)
+ 		goto fail;
+ 
+-	/*
+-	 * Some superspeed devices have finished the link training process
+-	 * and attached to a superspeed hub port, but the device descriptor
+-	 * got from those devices show they aren't superspeed devices. Warm
+-	 * reset the port attached by the devices can fix them.
+-	 */
+-	if ((udev->speed >= USB_SPEED_SUPER) &&
+-			(le16_to_cpu(udev->descriptor.bcdUSB) < 0x0300)) {
+-		dev_err(&udev->dev, "got a wrong device descriptor, "
+-				"warm reset device\n");
+-		hub_port_reset(hub, port1, udev,
+-				HUB_BH_RESET_TIME, true);
+-		retval = -EINVAL;
+-		goto fail;
+-	}
+-
+-	if (udev->descriptor.bMaxPacketSize0 == 0xff ||
+-			udev->speed >= USB_SPEED_SUPER)
++	if (maxp0 == 0xff || udev->speed >= USB_SPEED_SUPER)
+ 		i = 512;
+ 	else
+-		i = udev->descriptor.bMaxPacketSize0;
++		i = maxp0;
+ 	if (usb_endpoint_maxp(&udev->ep0.desc) != i) {
+ 		if (udev->speed == USB_SPEED_LOW ||
+ 				!(i == 8 || i == 16 || i == 32 || i == 64)) {
+@@ -5056,6 +5056,20 @@ hub_port_init(struct usb_hub *hub, struc
+ 		goto fail;
  	}
  
- 	if (wake_index != atomic_read(&sbq->wake_index))
++	/*
++	 * Some superspeed devices have finished the link training process
++	 * and attached to a superspeed hub port, but the device descriptor
++	 * got from those devices show they aren't superspeed devices. Warm
++	 * reset the port attached by the devices can fix them.
++	 */
++	if ((udev->speed >= USB_SPEED_SUPER) &&
++			(le16_to_cpu(udev->descriptor.bcdUSB) < 0x0300)) {
++		dev_err(&udev->dev, "got a wrong device descriptor, warm reset device\n");
++		hub_port_reset(hub, port1, udev, HUB_BH_RESET_TIME, true);
++		retval = -EINVAL;
++		goto fail;
++	}
++
+ 	usb_detect_quirks(udev);
+ 
+ 	if (udev->wusb == 0 && le16_to_cpu(udev->descriptor.bcdUSB) >= 0x0201) {
+@@ -5078,6 +5092,7 @@ fail:
+ 		hub_port_disable(hub, port1, 0);
+ 		update_devnum(udev, devnum);	/* for disconnect processing */
+ 	}
++	kfree(buf);
+ 	return retval;
+ }
+ 
 
 
