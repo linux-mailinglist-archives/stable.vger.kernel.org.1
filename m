@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 60E2879B527
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6BE3279B0A6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348485AbjIKV04 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:26:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59714 "EHLO
+        id S242365AbjIKU5x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:57:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239799AbjIKO3G (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:29:06 -0400
+        with ESMTP id S238386AbjIKNzK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CA6AF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:29:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6B15C433C7;
-        Mon, 11 Sep 2023 14:29:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B478FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4F6DC433C7;
+        Mon, 11 Sep 2023 13:55:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442542;
-        bh=wbNhwX2DaQ+VF0sU5+dfxJ9hes5s8wF2GtT6QHnpVfI=;
+        s=korg; t=1694440506;
+        bh=JqL5N+Cq3gxhLx0eYtaKxpvLpm5//cvRVyKcgfFYTQk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lQDzS38chrFghu2C98MmWNN8qGkZeMW4l9hdMR7+tcL4a8dIR+jZ/aHh6xNvDlQNG
-         ZuXarPRWi2ZyxFAdr23XzWREzRT0He3tiTpTN38g3QmAQnMTR+4yGeZzdLL4P+RumQ
-         dD1V5YDyOCCnFlRWkdklW9stQH5Q4rTlaXhOwk9E=
+        b=KnHOotjzToSM6WQvDf+Bph/A0FVtEEhC3SPOhIua4JF9FT+dV9SSfBQPTnaGxtbN/
+         NhQGeIZc33U48NotrzeaQ4HTkUdZ+a7fpnLh5vlQ8yIotzouBfdX0q19/d035Xhanc
+         yssmHAjjYHgwebIUPGh/tlkqN93MoNFqdD4wRQyw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 026/737] ASoC: rt5682-sdw: fix for JD event handling in ClockStop Mode0
+        patches@lists.linux.dev,
+        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
+        Shayne Chen <shayne.chen@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 086/739] wifi: mt76: mt7996: use correct phy for background radar event
 Date:   Mon, 11 Sep 2023 15:38:05 +0200
-Message-ID: <20230911134651.119197501@linuxfoundation.org>
+Message-ID: <20230911134653.510371462@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
 
-[ Upstream commit 02fb23d72720df2b6be3f29fc5787ca018eb92c3 ]
+[ Upstream commit 9ffe0d5690ed916e09baad2cc9ee7ec65b110038 ]
 
-When the system suspends, peripheral Imp-defined interrupt is disabled.
-When system level resume is invoked, the peripheral Imp-defined interrupts
-should be enabled to handle JD events.
+If driver directly uses the band_idx reported from the radar event to
+access mt76_phy array, it will get the wrong phy for background radar.
+Fix this by adjusting the statement.
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Reported-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20230721090643.128213-1-shumingf@realtek.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt5682-sdw.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt5682-sdw.c b/sound/soc/codecs/rt5682-sdw.c
-index 23f17f70d7e9b..9622aaf1b3e63 100644
---- a/sound/soc/codecs/rt5682-sdw.c
-+++ b/sound/soc/codecs/rt5682-sdw.c
-@@ -753,8 +753,15 @@ static int __maybe_unused rt5682_dev_resume(struct device *dev)
- 	if (!rt5682->first_hw_init)
- 		return 0;
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index cd54e81d73044..62a02b03d83ba 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -339,7 +339,11 @@ mt7996_mcu_rx_radar_detected(struct mt7996_dev *dev, struct sk_buff *skb)
+ 	if (r->band_idx >= ARRAY_SIZE(dev->mt76.phys))
+ 		return;
  
--	if (!slave->unattach_request)
-+	if (!slave->unattach_request) {
-+		if (rt5682->disable_irq == true) {
-+			mutex_lock(&rt5682->disable_irq_lock);
-+			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
-+			rt5682->disable_irq = false;
-+			mutex_unlock(&rt5682->disable_irq_lock);
-+		}
- 		goto regmap_sync;
-+	}
+-	mphy = dev->mt76.phys[r->band_idx];
++	if (dev->rdd2_phy && r->band_idx == MT_RX_SEL2)
++		mphy = dev->rdd2_phy->mt76;
++	else
++		mphy = dev->mt76.phys[r->band_idx];
++
+ 	if (!mphy)
+ 		return;
  
- 	time = wait_for_completion_timeout(&slave->initialization_complete,
- 				msecs_to_jiffies(RT5682_PROBE_TIMEOUT));
 -- 
 2.40.1
 
