@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AAD7679BAC7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B87179BEEE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243153AbjIKU7M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45092 "EHLO
+        id S235051AbjIKWue (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:50:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43064 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241184AbjIKPDo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:44 -0400
+        with ESMTP id S238840AbjIKOFv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2EF22125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 738C3C433C7;
-        Mon, 11 Sep 2023 15:03:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E16E6CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3262FC433C8;
+        Mon, 11 Sep 2023 14:05:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444619;
-        bh=LyAXghCpPbICLiBCjjN4zYAA7Qlhl1D5XbBW5TMWgGw=;
+        s=korg; t=1694441146;
+        bh=wZ8W5Pw+t5QogEnkbMD3G40478hFniQH/Ww/ZOy+NQg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jsujhMc/3KRRCpMoFAsoAqMR2ejAOT+IQwH/TSIka4vZTjBfQ0nrpujylffTOxU3Y
-         wjge9Lyt/iasJ1uBWOJA250OXtAEjDyCtp10pzLMST8g+mDaK7hdnfQF1UCszh6wmw
-         sVAcnPYWJNvIBSykFX+lk1D3Zm5RirWInXAv9PiY=
+        b=xlv+5r/1sINOubk7NT9Yp7Vr86R39vkZVStRjk63P9P1gqCF5cQP8ndlsUEUh3DJk
+         bzgCUCNlFluvQ/gOEL2Slwx5Dq3xA3DwFi6C5Q6szM5NLGTbFlliRm+gQzUcWOf188
+         VuHCxE8ElLQXDNGEKU2t6E1BkDLEZDUpjuNsSmyg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ani Sinha <anisinha@redhat.com>,
-        Wei Liu <wei.liu@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 049/600] vmbus_testing: fix wrong python syntax for integer value comparison
-Date:   Mon, 11 Sep 2023 15:41:22 +0200
-Message-ID: <20230911134635.049714069@linuxfoundation.org>
+        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 284/739] ASoC: fsl: fsl_qmc_audio: Fix snd_pcm_format_t values handling
+Date:   Mon, 11 Sep 2023 15:41:23 +0200
+Message-ID: <20230911134659.059968641@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +50,116 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ani Sinha <anisinha@redhat.com>
+From: Herve Codina <herve.codina@bootlin.com>
 
-[ Upstream commit ed0cf84e9cc42e6310961c87709621f1825c2bb8 ]
+[ Upstream commit 5befe22b3eebd07b334b2917f6d14ce7ee4c8404 ]
 
-It is incorrect in python to compare integer values using the "is" keyword.
-The "is" keyword in python is used to compare references to two objects,
-not their values. Newer version of python3 (version 3.8) throws a warning
-when such incorrect comparison is made. For value comparison, "==" should
-be used.
+Running sparse on fsl_qmc_audio (make C=1) raises the following warnings:
+ fsl_qmc_audio.c:387:26: warning: restricted snd_pcm_format_t degrades to integer
+ fsl_qmc_audio.c:389:59: warning: incorrect type in argument 1 (different base types)
+ fsl_qmc_audio.c:389:59:    expected restricted snd_pcm_format_t [usertype] format
+ fsl_qmc_audio.c:389:59:    got unsigned int [assigned] i
+ fsl_qmc_audio.c:564:26: warning: restricted snd_pcm_format_t degrades to integer
+ fsl_qmc_audio.c:569:50: warning: incorrect type in argument 1 (different base types)
+ fsl_qmc_audio.c:569:50:    expected restricted snd_pcm_format_t [usertype] format
+ fsl_qmc_audio.c:569:50:    got int [assigned] i
+ fsl_qmc_audio.c:573:62: warning: incorrect type in argument 1 (different base types)
+ fsl_qmc_audio.c:573:62:    expected restricted snd_pcm_format_t [usertype] format
+ fsl_qmc_audio.c:573:62:    got int [assigned] i
 
-Fix this in the code and suppress the following warning:
+These warnings are due to snd_pcm_format_t values handling done in the
+driver. Some macros and functions exist to handle safely these values.
 
-/usr/sbin/vmbus_testing:167: SyntaxWarning: "is" with a literal. Did you mean "=="?
+Use dedicated macros and functions to remove these warnings.
 
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Link: https://lore.kernel.org/r/20230705134408.6302-1-anisinha@redhat.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Fixes: 075c7125b11c ("ASoC: fsl: Add support for QMC audio")
+Signed-off-by: Herve Codina <herve.codina@bootlin.com>
+Link: https://lore.kernel.org/r/20230726161620.495298-1-herve.codina@bootlin.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/hv/vmbus_testing | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/fsl/fsl_qmc_audio.c | 28 ++++++++++++++--------------
+ 1 file changed, 14 insertions(+), 14 deletions(-)
 
-diff --git a/tools/hv/vmbus_testing b/tools/hv/vmbus_testing
-index e7212903dd1d9..4467979d8f699 100755
---- a/tools/hv/vmbus_testing
-+++ b/tools/hv/vmbus_testing
-@@ -164,7 +164,7 @@ def recursive_file_lookup(path, file_map):
- def get_all_devices_test_status(file_map):
+diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
+index 7cbb8e4758ccc..56d6b0b039a2e 100644
+--- a/sound/soc/fsl/fsl_qmc_audio.c
++++ b/sound/soc/fsl/fsl_qmc_audio.c
+@@ -372,8 +372,8 @@ static int qmc_dai_hw_rule_format_by_channels(struct qmc_dai *qmc_dai,
+ 	struct snd_mask *f_old = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
+ 	unsigned int channels = params_channels(params);
+ 	unsigned int slot_width;
++	snd_pcm_format_t format;
+ 	struct snd_mask f_new;
+-	unsigned int i;
  
-         for device in file_map:
--                if (get_test_state(locate_state(device, file_map)) is 1):
-+                if (get_test_state(locate_state(device, file_map)) == 1):
-                         print("Testing = ON for: {}"
-                               .format(device.split("/")[5]))
-                 else:
-@@ -203,7 +203,7 @@ def write_test_files(path, value):
- def set_test_state(state_path, state_value, quiet):
+ 	if (!channels || channels > nb_ts) {
+ 		dev_err(qmc_dai->dev, "channels %u not supported\n",
+@@ -384,10 +384,10 @@ static int qmc_dai_hw_rule_format_by_channels(struct qmc_dai *qmc_dai,
+ 	slot_width = (nb_ts / channels) * 8;
  
-         write_test_files(state_path, state_value)
--        if (get_test_state(state_path) is 1):
-+        if (get_test_state(state_path) == 1):
-                 if (not quiet):
-                         print("Testing = ON for device: {}"
-                               .format(state_path.split("/")[5]))
+ 	snd_mask_none(&f_new);
+-	for (i = 0; i <= SNDRV_PCM_FORMAT_LAST; i++) {
+-		if (snd_mask_test(f_old, i)) {
+-			if (snd_pcm_format_physical_width(i) <= slot_width)
+-				snd_mask_set(&f_new, i);
++	pcm_for_each_format(format) {
++		if (snd_mask_test_format(f_old, format)) {
++			if (snd_pcm_format_physical_width(format) <= slot_width)
++				snd_mask_set_format(&f_new, format);
+ 		}
+ 	}
+ 
+@@ -551,26 +551,26 @@ static const struct snd_soc_dai_ops qmc_dai_ops = {
+ 
+ static u64 qmc_audio_formats(u8 nb_ts)
+ {
+-	u64 formats;
+-	unsigned int chan_width;
+ 	unsigned int format_width;
+-	int i;
++	unsigned int chan_width;
++	snd_pcm_format_t format;
++	u64 formats_mask;
+ 
+ 	if (!nb_ts)
+ 		return 0;
+ 
+-	formats = 0;
++	formats_mask = 0;
+ 	chan_width = nb_ts * 8;
+-	for (i = 0; i <= SNDRV_PCM_FORMAT_LAST; i++) {
++	pcm_for_each_format(format) {
+ 		/*
+ 		 * Support format other than little-endian (ie big-endian or
+ 		 * without endianness such as 8bit formats)
+ 		 */
+-		if (snd_pcm_format_little_endian(i) == 1)
++		if (snd_pcm_format_little_endian(format) == 1)
+ 			continue;
+ 
+ 		/* Support physical width multiple of 8bit */
+-		format_width = snd_pcm_format_physical_width(i);
++		format_width = snd_pcm_format_physical_width(format);
+ 		if (format_width == 0 || format_width % 8)
+ 			continue;
+ 
+@@ -581,9 +581,9 @@ static u64 qmc_audio_formats(u8 nb_ts)
+ 		if (format_width > chan_width || chan_width % format_width)
+ 			continue;
+ 
+-		formats |= (1ULL << i);
++		formats_mask |= pcm_format_to_bits(format);
+ 	}
+-	return formats;
++	return formats_mask;
+ }
+ 
+ static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *np,
 -- 
 2.40.1
 
