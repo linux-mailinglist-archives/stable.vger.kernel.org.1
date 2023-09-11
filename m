@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9754A79AD4F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E83079B522
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348735AbjIKVad (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44606 "EHLO
+        id S235541AbjIKWvc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:51:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37538 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241954AbjIKPSw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:52 -0400
+        with ESMTP id S239468AbjIKOV0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A18EFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4EDCC433C8;
-        Mon, 11 Sep 2023 15:18:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 047BBDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4DA47C433C8;
+        Mon, 11 Sep 2023 14:21:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445528;
-        bh=tIGQ3zOs2/+RBI6Z6/VwcDlN1+uiVLed1A5nyT5scik=;
+        s=korg; t=1694442081;
+        bh=/vZHaWQ3lfcwnLMbFmLRX/oHZLwnoEc3/bPAkrQP0IU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zHi1HegtLri1oA03dJtQAT+Hp5p438ln7chXdVRVyKz5rtzVHuhvDflSIZ5cnOn3N
-         Dxsi9e9xoq9U34JsL30tXD6p200Y/Zw+6hL60LAgg3YMMsPBtpCxyPERdFt81/nZw8
-         pe2No/x3lK9DpNDF4Yjne8lx9sa4k5196CZdjPPU=
+        b=FrggVBELwQmrPw7C4HH97bpSaapFsOCE1kxC/fC/hWQzyDs+RsQJTtKR2p68baAZM
+         t/n6in850fmoeCfayfff6EuKysismvi6JS1ZwwSTdMu/ZMtKboxhPyNlZdWAl1wQSJ
+         ESd3zyVSgn1sGm+JeXDziRWxeYnNz6H5bcijJN18=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nicholas Piggin <npiggin@gmail.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 379/600] powerpc/pseries: Fix hcall tracepoints with JUMP_LABEL=n
+        patches@lists.linux.dev,
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 613/739] leds: trigger: tty: Do not use LED_ON/OFF constants, use led_blink_set_oneshot instead
 Date:   Mon, 11 Sep 2023 15:46:52 +0200
-Message-ID: <20230911134644.859913570@linuxfoundation.org>
+Message-ID: <20230911134708.219926881@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,39 +51,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nicholas Piggin <npiggin@gmail.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit 750bd41aeaeb1f0e0128aa4f8fcd6dd759713641 ]
+[ Upstream commit 730094577e0c37e1bc40be37cbd41f71b0a8a2a4 ]
 
-With JUMP_LABEL=n, hcall_tracepoint_refcount's address is being tested
-instead of its value. This results in the tracing slowpath always being
-taken unnecessarily.
+The tty LED trigger uses the obsolete LED_ON & LED_OFF constants when
+setting LED brightness. This is bad because the LED_ON constant is equal
+to 1, and so when activating the tty LED trigger on a LED class device
+with max_brightness greater than 1, the LED is dimmer than it can be
+(when max_brightness is 255, the LED is very dimm indeed; some devices
+translate 1/255 to 0, so the LED is OFF all the time).
 
-Fixes: 9a10ccb29c0a2 ("powerpc/pseries: move hcall_tracepoint_refcount out of .toc")
-Signed-off-by: Nicholas Piggin <npiggin@gmail.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230509091600.70994-1-npiggin@gmail.com
+Instead of directly setting brightness to a specific value, use the
+led_blink_set_oneshot() function from LED core to configure the blink.
+This function takes the current configured brightness as blink
+brightness if not zero, and max brightness otherwise.
+
+This also changes the behavior of the TTY LED trigger. Previously if
+rx/tx stats kept changing, the LED was ON all the time they kept
+changing. With this patch the LED will blink on TTY activity.
+
+Fixes: fd4a641ac88f ("leds: trigger: implement a tty trigger")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Link: https://lore.kernel.org/r/20230802090753.13611-1-kabel@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/platforms/pseries/hvCall.S | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/leds/trigger/ledtrig-tty.c | 12 ++++++++----
+ 1 file changed, 8 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/platforms/pseries/hvCall.S b/arch/powerpc/platforms/pseries/hvCall.S
-index 762eb15d3bd42..fc50b9c27c1ba 100644
---- a/arch/powerpc/platforms/pseries/hvCall.S
-+++ b/arch/powerpc/platforms/pseries/hvCall.S
-@@ -89,6 +89,7 @@ BEGIN_FTR_SECTION;						\
- 	b	1f;						\
- END_FTR_SECTION(0, 1);						\
- 	LOAD_REG_ADDR(r12, hcall_tracepoint_refcount) ;		\
-+	ld	r12,0(r12);					\
- 	std	r12,32(r1);					\
- 	cmpdi	r12,0;						\
- 	bne-	LABEL;						\
+diff --git a/drivers/leds/trigger/ledtrig-tty.c b/drivers/leds/trigger/ledtrig-tty.c
+index f62db7e520b52..8ae0d2d284aff 100644
+--- a/drivers/leds/trigger/ledtrig-tty.c
++++ b/drivers/leds/trigger/ledtrig-tty.c
+@@ -7,6 +7,8 @@
+ #include <linux/tty.h>
+ #include <uapi/linux/serial.h>
+ 
++#define LEDTRIG_TTY_INTERVAL	50
++
+ struct ledtrig_tty_data {
+ 	struct led_classdev *led_cdev;
+ 	struct delayed_work dwork;
+@@ -122,17 +124,19 @@ static void ledtrig_tty_work(struct work_struct *work)
+ 
+ 	if (icount.rx != trigger_data->rx ||
+ 	    icount.tx != trigger_data->tx) {
+-		led_set_brightness_sync(trigger_data->led_cdev, LED_ON);
++		unsigned long interval = LEDTRIG_TTY_INTERVAL;
++
++		led_blink_set_oneshot(trigger_data->led_cdev, &interval,
++				      &interval, 0);
+ 
+ 		trigger_data->rx = icount.rx;
+ 		trigger_data->tx = icount.tx;
+-	} else {
+-		led_set_brightness_sync(trigger_data->led_cdev, LED_OFF);
+ 	}
+ 
+ out:
+ 	mutex_unlock(&trigger_data->mutex);
+-	schedule_delayed_work(&trigger_data->dwork, msecs_to_jiffies(100));
++	schedule_delayed_work(&trigger_data->dwork,
++			      msecs_to_jiffies(LEDTRIG_TTY_INTERVAL * 2));
+ }
+ 
+ static struct attribute *ledtrig_tty_attrs[] = {
 -- 
 2.40.1
 
