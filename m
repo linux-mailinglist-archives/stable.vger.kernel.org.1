@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE0B779B80D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DAA9879BDCA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379623AbjIKWpJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40512 "EHLO
+        id S241846AbjIKWYl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:24:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47694 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240254AbjIKOkA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:00 -0400
+        with ESMTP id S238907AbjIKOHo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CFF2F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2E0EC433C8;
-        Mon, 11 Sep 2023 14:39:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 494D2E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92E71C433C7;
+        Mon, 11 Sep 2023 14:07:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443195;
-        bh=PZoi0ETf+2H8Y2TJSCyzA8aUYeDFbt1gYyfTp4oudqg=;
+        s=korg; t=1694441260;
+        bh=TDaBuXMyCoo57jtLVaisMhhF0dmZ6KACD7e+H1RAJ9c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=lj1ySVrsPkkA5gmbKbYqhNy3AOlcciZkFTqygmLDISywHlWZU6kyICJB4OJc6DVXG
-         YBQWmAPZVEnJyXtltNNPsZY8Ro/EwazPbF0GiNHCLr/IwF9oGe5ii9h18kVGF4tWdb
-         LrE6Mbh/zb7EmU6XTJGxva9rNoZNIJqccdYTHhN0=
+        b=DkU+bSePm69FNKKp88ZFBs9SwOK2TKjsw2xEgYpaxIydZ8cyEEvmtzYxmYiZNmY82
+         ORNwJe2xEdjt36wmqIKDHylzCcgNIAFba6bGq8sSc9EWPV6dxhQu6E+cLrWPxsaF45
+         mpc4Tw4c4wWjSj0q7C47FgIWVs8PRTqFAQQka85U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Marijn Suijten <marijn.suijten@somainline.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 291/737] arm64: dts: qcom: sdm845-tama: Set serial indices and stdout-path
+Subject: [PATCH 6.5 351/739] drm/msm/a690: Switch to a660_gmu.bin
 Date:   Mon, 11 Sep 2023 15:42:30 +0200
-Message-ID: <20230911134658.690314153@linuxfoundation.org>
+Message-ID: <20230911134700.925818544@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,50 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit 9acc60c3e2d449243e4c2126e3b56f1c4f7fd3bc ]
+[ Upstream commit 18ff50e582a08eb365729b7c5507a86c41f2edf8 ]
 
-UART6 is used for debug (routed via uSD pins) and UART9 is connected
-to the bluetooth chip.
+There isn't actually a a690_gmu.bin.  But it appears that the normal
+a660_gmu.bin works fine.  Normally all the devices within a sub-
+generation (or "family") will use the same fw, and a690 is in the a660
+family.
 
-Set indexed aliases to make the GENI UART driver happy and route serial
-traffic through the debug uart by default.
-
-Fixes: 30a7f99befc6 ("arm64: dts: qcom: Add support for SONY Xperia XZ2 / XZ2C / XZ3 (Tama platform)")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Reviewed-by: Marijn Suijten <marijn.suijten@somainline.org>
-Link: https://lore.kernel.org/r/20230627-topic-tama_uart-v1-1-0fa790248db8@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Fixes: 5e7665b5e484 ("drm/msm/adreno: Add Adreno A690 support")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/552406/
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi | 9 +++++++++
- 1 file changed, 9 insertions(+)
+ drivers/gpu/drm/msm/adreno/adreno_device.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-index 420ffede3e804..25e06add95652 100644
---- a/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845-sony-xperia-tama.dtsi
-@@ -15,6 +15,15 @@ / {
- 	qcom,msm-id = <321 0x20001>; /* SDM845 v2.1 */
- 	qcom,board-id = <8 0>;
- 
-+	aliases {
-+		serial0 = &uart6;
-+		serial1 = &uart9;
-+	};
-+
-+	chosen {
-+		stdout-path = "serial0:115200n8";
-+	};
-+
- 	gpio-keys {
- 		compatible = "gpio-keys";
- 
+diff --git a/drivers/gpu/drm/msm/adreno/adreno_device.c b/drivers/gpu/drm/msm/adreno/adreno_device.c
+index ce8d0b2475bf1..6e3c1368c5e15 100644
+--- a/drivers/gpu/drm/msm/adreno/adreno_device.c
++++ b/drivers/gpu/drm/msm/adreno/adreno_device.c
+@@ -371,7 +371,7 @@ static const struct adreno_info gpulist[] = {
+ 		.rev = ADRENO_REV(6, 9, 0, ANY_ID),
+ 		.fw = {
+ 			[ADRENO_FW_SQE] = "a660_sqe.fw",
+-			[ADRENO_FW_GMU] = "a690_gmu.bin",
++			[ADRENO_FW_GMU] = "a660_gmu.bin",
+ 		},
+ 		.gmem = SZ_4M,
+ 		.inactive_period = DRM_MSM_INACTIVE_PERIOD,
 -- 
 2.40.1
 
