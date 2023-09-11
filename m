@@ -2,37 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 58EAA79BD76
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5856C79B7C2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241908AbjIKWXi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:23:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45016 "EHLO
+        id S239984AbjIKUzr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:55:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239735AbjIKO1c (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:32 -0400
+        with ESMTP id S239737AbjIKO1i (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 713D9CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7596C433C9;
-        Mon, 11 Sep 2023 14:27:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B250F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66684C433C8;
+        Mon, 11 Sep 2023 14:27:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442448;
-        bh=nVpfSkFjdWzUxA/cC2PYaBxwG1unQgUolpHtC9exKI0=;
+        s=korg; t=1694442453;
+        bh=7ENhgbNkz0dP5Mu7AiQ5k1peGyLVntQFOO4Bn0+d8T0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CiyUHkkE1oi0aqIvojB0lK2GVHdreCfVu8408oyyBIAsmAPprLPtO3H3SLG9xTOrs
-         LMbLp/JVdui90xdr50CdQokb2zA/YpDzBG+c3vjGBQRmZeantY+NF6ekZeZd+CpySf
-         j8gYgIxZJdgIjspNFxuG9YElxtU8vTGRf3uwMF6U=
+        b=fTIvsxyRbrBwIabhW/Q7I61O+lMjuKxfC69jMv+VUcehLAgLZ8IjLEGdoexLPMzZb
+         V20Q6PhydmeIQ+LG8vV+a4Nsl4PNaCgbfGtABNMDOeKEhLKf8X0R6HQoBsWlpNEUa0
+         lGmd1ap+qGsh/oHE9eWUyJYd2dqsFJVfJg3v5ytY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shuming Fan <shumingf@realtek.com>,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+        patches@lists.linux.dev, Guiting Shen <aarongt.shen@gmail.com>,
         Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 029/737] ASoC: rt711: fix for JD event handling in ClockStop Mode0
-Date:   Mon, 11 Sep 2023 15:38:08 +0200
-Message-ID: <20230911134651.209329077@linuxfoundation.org>
+Subject: [PATCH 6.4 031/737] ASoC: atmel: Fix the 8K sample parameter in I2SC master
+Date:   Mon, 11 Sep 2023 15:38:10 +0200
+Message-ID: <20230911134651.269839373@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,44 +54,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Shuming Fan <shumingf@realtek.com>
+From: Guiting Shen <aarongt.shen@gmail.com>
 
-[ Upstream commit b69de265bd0e877015a00fbba453ef72af162e0f ]
+[ Upstream commit f85739c0b2b0d98a32f5ca4fcc5501d2b76df4f6 ]
 
-When the system suspends, peripheral Imp-defined interrupt is disabled.
-When system level resume is invoked, the peripheral Imp-defined interrupts
-should be enabled to handle JD events.
+The 8K sample parameter of 12.288Mhz main system bus clock doesn't work
+because the I2SC_MR.IMCKDIV must not be 0 according to the sama5d2
+series datasheet(I2SC Mode Register of Register Summary).
 
-Signed-off-by: Shuming Fan <shumingf@realtek.com>
-Reported-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20230721090654.128230-1-shumingf@realtek.com
+So use the 6.144Mhz instead of 12.288Mhz to support 8K sample.
+
+Signed-off-by: Guiting Shen <aarongt.shen@gmail.com>
+Link: https://lore.kernel.org/r/20230715030620.62328-1-aarongt.shen@gmail.com
 Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/rt711-sdw.c | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ sound/soc/atmel/atmel-i2s.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/sound/soc/codecs/rt711-sdw.c b/sound/soc/codecs/rt711-sdw.c
-index 4fe68bcf2a7c2..9545b8a7eb192 100644
---- a/sound/soc/codecs/rt711-sdw.c
-+++ b/sound/soc/codecs/rt711-sdw.c
-@@ -541,8 +541,15 @@ static int __maybe_unused rt711_dev_resume(struct device *dev)
- 	if (!rt711->first_hw_init)
- 		return 0;
+diff --git a/sound/soc/atmel/atmel-i2s.c b/sound/soc/atmel/atmel-i2s.c
+index 49930baf5e4d6..69a88dc651652 100644
+--- a/sound/soc/atmel/atmel-i2s.c
++++ b/sound/soc/atmel/atmel-i2s.c
+@@ -163,11 +163,14 @@ struct atmel_i2s_gck_param {
  
--	if (!slave->unattach_request)
-+	if (!slave->unattach_request) {
-+		if (rt711->disable_irq == true) {
-+			mutex_lock(&rt711->disable_irq_lock);
-+			sdw_write_no_pm(slave, SDW_SCP_INTMASK1, SDW_SCP_INT1_IMPL_DEF);
-+			rt711->disable_irq = false;
-+			mutex_unlock(&rt711->disable_irq_lock);
-+		}
- 		goto regmap_sync;
-+	}
+ #define I2S_MCK_12M288		12288000UL
+ #define I2S_MCK_11M2896		11289600UL
++#define I2S_MCK_6M144		6144000UL
  
- 	time = wait_for_completion_timeout(&slave->initialization_complete,
- 				msecs_to_jiffies(RT711_PROBE_TIMEOUT));
+ /* mck = (32 * (imckfs+1) / (imckdiv+1)) * fs */
+ static const struct atmel_i2s_gck_param gck_params[] = {
++	/* mck = 6.144Mhz */
++	{  8000, I2S_MCK_6M144,  1, 47},	/* mck =  768 fs */
++
+ 	/* mck = 12.288MHz */
+-	{  8000, I2S_MCK_12M288, 0, 47},	/* mck = 1536 fs */
+ 	{ 16000, I2S_MCK_12M288, 1, 47},	/* mck =  768 fs */
+ 	{ 24000, I2S_MCK_12M288, 3, 63},	/* mck =  512 fs */
+ 	{ 32000, I2S_MCK_12M288, 3, 47},	/* mck =  384 fs */
 -- 
 2.40.1
 
