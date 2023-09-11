@@ -2,40 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1104479BD4B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6739379BBE0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345675AbjIKVVx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52626 "EHLO
+        id S236806AbjIKVkp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:40:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241351AbjIKPHH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:07 -0400
+        with ESMTP id S241261AbjIKPFR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A20F2CCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9586C433C8;
-        Mon, 11 Sep 2023 15:07:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7AD9125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F32A7C433CB;
+        Mon, 11 Sep 2023 15:05:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444822;
-        bh=dpfVlXJKU7P4kTV5umabutpazSfnvJLO7+WbpsIGtUM=;
+        s=korg; t=1694444713;
+        bh=gU1882pj9OpII++LCNyI2/kg9lVdpEzeoEMbMm9Eo2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Hq6OjxaR9gR9Je4sXqQtT35WPA+r/vrk7ZZBsihV3Cth2Ao6jJONpe0YlVHcW4lMJ
-         GK5MH87BuMzLUANDmRXRDpRmW32fKT+Yzf2429NGiTMaPO0jDzwjDowwVAGcyglAXs
-         jBLCnaqSjdnEiv3y47rvvKUc8NPTS0Y/fD02Sn6k=
+        b=ma4ABkzHV3Xt1ticPOaq9XHLEnUiaOJ7Amn2Cbdb4rUpi6iUV+Gz0hpVEct0QFNBg
+         lm+M0/t1Sm20hHGJcdgL2duk0QZG0zxqE1kBo+lld+sX0brioZfz7ln6u3PBPEj131
+         /Wlxwv7wjk3az0xovA2JnUy7zOK9yCTRR6R/pHjQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Todd Brandt <todd.e.brandt@intel.com>,
-        Patrick Steinhardt <ps@pks.im>,
-        Raymond Jay Golo <rjgolo@gmail.com>,
-        Ronan Pigott <ronan@rjp.ie>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: [PATCH 6.1 081/600] tpm: Enable hwrng only for Pluton on AMD CPUs
-Date:   Mon, 11 Sep 2023 15:41:54 +0200
-Message-ID: <20230911134636.007048439@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Sean Christopherson <seanjc@google.com>,
+        Luiz Capitulino <luizcap@amazon.com>
+Subject: [PATCH 6.1 082/600] KVM: x86/mmu: Use kstrtobool() instead of strtobool()
+Date:   Mon, 11 Sep 2023 15:41:55 +0200
+Message-ID: <20230911134636.036424575@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -58,82 +55,45 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-commit 8f7f35e5aa6f2182eabcfa3abef4d898a48e9aa8 upstream.
+commit 11b36fe7d4500c8ef73677c087f302fd713101c2 upstream.
 
-The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
-all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
-reported systems the TPM doesn't reply at bootup and returns back the
-command code. This makes the TPM fail probe on Lenovo Legion Y540 laptop.
+strtobool() is the same as kstrtobool().
+However, the latter is more used within the kernel.
 
-Since only Microsoft Pluton is the only known combination of AMD CPU and
-fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
-aware of this, print also info message to the klog.
+In order to remove strtobool() and slightly simplify kstrtox.h, switch to
+the other function name.
 
-Cc: stable@vger.kernel.org
-Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
-Reported-by: Patrick Steinhardt <ps@pks.im>
-Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-Reported-by: Ronan Pigott <ronan@rjp.ie>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+While at it, include the corresponding header file (<linux/kstrtox.h>)
+
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Link: https://lore.kernel.org/r/670882aa04dbdd171b46d3b20ffab87158454616.1673689135.git.christophe.jaillet@wanadoo.fr
+Signed-off-by: Sean Christopherson <seanjc@google.com>
+Signed-off-by: Luiz Capitulino <luizcap@amazon.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_crb.c |   33 ++++++++-------------------------
- 1 file changed, 8 insertions(+), 25 deletions(-)
+ arch/x86/kvm/mmu/mmu.c |    3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/char/tpm/tpm_crb.c
-+++ b/drivers/char/tpm/tpm_crb.c
-@@ -463,28 +463,6 @@ static bool crb_req_canceled(struct tpm_
- 	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
- }
+--- a/arch/x86/kvm/mmu/mmu.c
++++ b/arch/x86/kvm/mmu/mmu.c
+@@ -42,6 +42,7 @@
+ #include <linux/uaccess.h>
+ #include <linux/hash.h>
+ #include <linux/kern_levels.h>
++#include <linux/kstrtox.h>
+ #include <linux/kthread.h>
  
--static int crb_check_flags(struct tpm_chip *chip)
--{
--	u32 val;
--	int ret;
--
--	ret = crb_request_locality(chip, 0);
--	if (ret)
--		return ret;
--
--	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
--	if (ret)
--		goto release;
--
--	if (val == 0x414D4400U /* AMD */)
--		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
--
--release:
--	crb_relinquish_locality(chip, 0);
--
--	return ret;
--}
--
- static const struct tpm_class_ops tpm_crb = {
- 	.flags = TPM_OPS_AUTO_STARTUP,
- 	.status = crb_status,
-@@ -826,9 +804,14 @@ static int crb_acpi_add(struct acpi_devi
- 	if (rc)
- 		goto out;
+ #include <asm/page.h>
+@@ -6667,7 +6668,7 @@ static int set_nx_huge_pages(const char
+ 		new_val = 1;
+ 	else if (sysfs_streq(val, "auto"))
+ 		new_val = get_nx_auto_mode();
+-	else if (strtobool(val, &new_val) < 0)
++	else if (kstrtobool(val, &new_val) < 0)
+ 		return -EINVAL;
  
--	rc = crb_check_flags(chip);
--	if (rc)
--		goto out;
-+#ifdef CONFIG_X86
-+	/* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
-+	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
-+	    priv->sm != ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
-+		dev_info(dev, "Disabling hwrng\n");
-+		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
-+	}
-+#endif /* CONFIG_X86 */
- 
- 	rc = tpm_chip_register(chip);
- 
+ 	__set_nx_huge_pages(new_val);
 
 
