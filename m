@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D79EC79B239
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D13D79AEDE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242217AbjIKU5p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34966 "EHLO
+        id S242495AbjIKU57 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:57:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46646 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241885AbjIKPRI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:08 -0400
+        with ESMTP id S239349AbjIKOSe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 566F8120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3F64C433C7;
-        Mon, 11 Sep 2023 15:17:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F75BDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B548AC433C8;
+        Mon, 11 Sep 2023 14:18:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445424;
-        bh=1JEZFi+4AE5J4LIQhuM5D8gEKY5sQkP59e3kd63Ffzk=;
+        s=korg; t=1694441909;
+        bh=fMFQk2xA5ht0o7iEAvhQ+Eml2ROTqeAm3D9ekscxgQc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uQAFbzKPDHDri4du6u8Cyruz14R24rWxEldiupEkwfqFmrdxWy3iZc/iyebfTEzp+
-         RsoP1wr6NxUDe7JYhMANrlVAAyWTPq+55shCBb3nBN4YuSHoSXtjxgZ3KNimFmJyUh
-         PK/AzG6SITDBpV6pJ57vVFwpJL4Osk4+ya6OTVKg=
+        b=E46e7DSfkjj7cnCQFECQzPwpD21Xfu8FC9KawDa9b2J77feih1FhI7YBck+O59C55
+         464zF1enzN72P0fuiQ7aM+2c+fprXSBC2J7RzwnKIdy7HETHbOTa5HfPB0cgymffI4
+         b3MkRlURQjKsyveuw0VEfZcU9yERJomtzIgIwN2o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kemeng Shi <shikemeng@huaweicloud.com>,
-        "Ritesh Harjani (IBM)" <ritesh.list@gmail.com>,
-        Theodore Tso <tytso@mit.edu>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 343/600] ext4: avoid potential data overflow in next_linear_group
-Date:   Mon, 11 Sep 2023 15:46:16 +0200
-Message-ID: <20230911134643.814470184@linuxfoundation.org>
+        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 578/739] RDMA/siw: Balance the reference of cep->kref in the error path
+Date:   Mon, 11 Sep 2023 15:46:17 +0200
+Message-ID: <20230911134707.249583503@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +51,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kemeng Shi <shikemeng@huaweicloud.com>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-[ Upstream commit 60c672b7f2d1e5dd1774f2399b355c9314e709f8 ]
+[ Upstream commit b056327bee09e6b86683d3f709a438ccd6031d72 ]
 
-ngroups is ext4_group_t (unsigned int) while next_linear_group treat it
-in int. If ngroups is bigger than max number described by int, it will
-be treat as a negative number. Then "return group + 1 >= ngroups ? 0 :
-group + 1;" may keep returning 0.
-Switch int to ext4_group_t in next_linear_group to fix the overflow.
+The siw_connect can go to err in below after cep is allocated successfully:
 
-Fixes: 196e402adf2e ("ext4: improve cr 0 / cr 1 group scanning")
-Signed-off-by: Kemeng Shi <shikemeng@huaweicloud.com>
-Reviewed-by: Ritesh Harjani (IBM) <ritesh.list@gmail.com>
-Link: https://lore.kernel.org/r/20230801143204.2284343-3-shikemeng@huaweicloud.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+1. If siw_cm_alloc_work returns failure. In this case socket is not
+assoicated with cep so siw_cep_put can't be called by siw_socket_disassoc.
+We need to call siw_cep_put twice since cep->kref is increased once after
+it was initialized.
+
+2. If siw_cm_queue_work can't find a work, which means siw_cep_get is not
+called in siw_cm_queue_work, so cep->kref is increased twice by siw_cep_get
+and when associate socket with cep after it was initialized. So we need to
+call siw_cep_put three times (one in siw_socket_disassoc).
+
+3. siw_send_mpareqrep returns error, this scenario is similar as 2.
+
+So we need to remove one siw_cep_put in the error path.
+
+Fixes: 6c52fdc244b5 ("rdma/siw: connection management")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Link: https://lore.kernel.org/r/20230821133255.31111-2-guoqing.jiang@linux.dev
+Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/mballoc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/siw/siw_cm.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/fs/ext4/mballoc.c b/fs/ext4/mballoc.c
-index 20d02cc0a17aa..016925b1a0908 100644
---- a/fs/ext4/mballoc.c
-+++ b/fs/ext4/mballoc.c
-@@ -966,8 +966,9 @@ static inline int should_optimize_scan(struct ext4_allocation_context *ac)
-  * Return next linear group for allocation. If linear traversal should not be
-  * performed, this function just returns the same group
-  */
--static int
--next_linear_group(struct ext4_allocation_context *ac, int group, int ngroups)
-+static ext4_group_t
-+next_linear_group(struct ext4_allocation_context *ac, ext4_group_t group,
-+		  ext4_group_t ngroups)
- {
- 	if (!should_optimize_scan(ac))
- 		goto inc_and_return;
+diff --git a/drivers/infiniband/sw/siw/siw_cm.c b/drivers/infiniband/sw/siw/siw_cm.c
+index da530c0404da4..a2605178f4eda 100644
+--- a/drivers/infiniband/sw/siw/siw_cm.c
++++ b/drivers/infiniband/sw/siw/siw_cm.c
+@@ -1501,7 +1501,6 @@ int siw_connect(struct iw_cm_id *id, struct iw_cm_conn_param *params)
+ 
+ 		cep->cm_id = NULL;
+ 		id->rem_ref(id);
+-		siw_cep_put(cep);
+ 
+ 		qp->cep = NULL;
+ 		siw_cep_put(cep);
 -- 
 2.40.1
 
