@@ -2,81 +2,94 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1592B79B241
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2997B79AEEA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355154AbjIKV5O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53786 "EHLO
+        id S237487AbjIKUvc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239893AbjIKObB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:01 -0400
-Received: from mout.gmx.net (mout.gmx.net [212.227.15.15])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91AEDE4D;
-        Mon, 11 Sep 2023 07:30:56 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=gmx.de;
- s=s31663417; t=1694442654; x=1695047454; i=rwarsow@gmx.de;
- bh=kqEiy54vHn9A4hNDsY9RHpQci3bLlNR1YiGevJHTVVY=;
- h=X-UI-Sender-Class:Date:From:To:Cc:Subject;
- b=uf3gdlve24u9lyCpemVAxC1VET+HgN1VCnUvOop78pCXTjVEfxRya6vSsC3J4PRLFHQq5iJ
- K8XJNOmT/Rg87EzqFfh5pPkV9ggPm5JQSzZ70r6X/JDw1pYQ7tUtDEJT+tU4E8brQgWjC155e
- DaW37iqVL989WA95O+Bjkyqts0IwVd0hJDE0d0bTL1QjtVFTRAfy9FxYipbv+9ceCJ5T4IHMs
- qnJKnJp7K7EEzkxWbpksX7hf2/EYWCwVYm4X5fr8vCQBUSxkLgQKxjSC08hjliJm15gW3Ak2W
- mLNMSr9+Ba6rFcFcWCSg4GGgWyuW6Od4rtgghVW2tyX7zMD1mG2w==
-X-UI-Sender-Class: 724b4f7f-cbec-4199-ad4e-598c01a50d3a
-Received: from [192.168.100.20] ([46.142.34.50]) by mail.gmx.net (mrgmx004
- [212.227.17.190]) with ESMTPSA (Nemesis) id 1MmDEg-1pxoTu1HpA-00iEBd; Mon, 11
- Sep 2023 16:30:54 +0200
-Message-ID: <800b38d5-c66a-bb9b-1d86-385dd796b34f@gmx.de>
-Date:   Mon, 11 Sep 2023 16:30:53 +0200
+        with ESMTP id S239989AbjIKOdU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:20 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0497AE40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C047C433C9;
+        Mon, 11 Sep 2023 14:33:14 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694442795;
+        bh=9pIep38oZQZsSeBWdzXla9OdjotRw0G9/ta7/enYxA8=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=Q0IPmpkTUSiHulpSzpsU/nPbP4qb3EBJNytqqP38YD5TOKDdD7peHYiVGogc3/+Ro
+         2hbM3ukPumfzPeLZCxqFz5vc6lwfIwWBGAGOHbn2pIRoGyAkjaC5Hu/uEdxY9HBx7H
+         evgYV5afGsJjeju6qJ/WJTdJwKDeIVO2o+FVESVB7aADju6mnxtlui9FW4Z9y4yvfd
+         NxUvCBnxuWc0A4b4w9LNQaljg6hnNeKfuLIDIraMDwnZUPlFb44h6BQ6PLhOOJvPwX
+         TlL9MAlKbbrUQ2MTuSUsaharw8BTbQBvhmGYf6ViSgxSlicalcW348jV+yZlbGFlD2
+         P5EWajx0ATNDg==
+Date:   Mon, 11 Sep 2023 15:33:01 +0100
+From:   Mark Brown <broonie@kernel.org>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Alexander Danilenko <al.b.danilenko@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.5 134/739] spi: tegra114: Remove unnecessary
+ NULL-pointer checks
+Message-ID: <ZP8lHSmZVOvbI3wN@finisterre.sirena.org.uk>
+References: <20230911134650.921299741@linuxfoundation.org>
+ <20230911134654.832694547@linuxfoundation.org>
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.13.0
-From:   Ronald Warsow <rwarsow@gmx.de>
-To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        stable@vger.kernel.org
-Cc:     linux-kernel@vger.kernel.org
-Content-Language: de-DE, en-US
-Subject: Re: [PATCH 6.5 000/739] 6.5.3-rc1 review
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 7bit
-X-Provags-ID: V03:K1:jx3m3w0du9Nmk20OGQaMPYAk/aAHTmJHb4zV8o6DROZNTjxQrjJ
- Wfe8l4igtZuWpAEEJTmEv7y1gdFevXYo9ag/TrkFd1Y7bBZZSKzqJvT5g4t9e201EQSsKuc
- ITuJH/4eQ0mixlQcyM+oYcDXvwPHjMBtGqXoGO31I2VGPikhKFRKo32Z7xoTAddShINKZze
- yOsKN1w11iNr9mTMeD0TA==
-UI-OutboundReport: notjunk:1;M01:P0:jEE64T2UVY4=;AtX7Q+Q2xBzwRKEYY7RcT5D86ij
- CLYS+rqMA+rGjsSYfr2f6iup3wbGgV19hGRmjIp18GTe6hF7GpUNzy6uUeQXCjsj6PcclCd/u
- me7rmgIoIp3XYRtI/zGk+ska1STBYRpbVk8qYODHpCJvncfVLinuPNbsrIuuk2x1vvKHTZdfV
- dL2CLz5gu3oHztVqXzhr2lePPk2navUY3li9Fg977w3LN8DCEuvtCFrRg3EgMmuu3yvM4aPdt
- jS9mudFwOzx4fgEbKrA4DZV0Hnvp6DrV17F39MJC5Go4TYMiPwfTq2p2cqEa5a+ZNN1fXca6i
- a5XCBu36Q4VSWa6R5OZuEPpGZdP4XvoYLtzQj+/1uT6hfezOBOF2cS+1vwuM82tBrpPhQkye6
- YYETZbJchNddXvlRJ7kClP/b30amA4HAoqduZVZtQpLt0B6MAG6kw9lFxxGaIdJNH8VXOuFJW
- HluJ9BmBymysCwMipqQUCT2sgZ61YZ5EUY8WndimBEJQQDqCEwL0kFrdKQ/ACACEOjhWmU9TW
- PGfRUeZKHc0UyVvIsWCR4GzVcGJ919GYa/iRVfR2zJQgGPDx2ePY9aLFQXAPzvt6XO4a2p0vL
- /KsWGE4FIN2mzhE40YGTTaIWa10T82pVamRBbdClYZM/XzJaUZskKI1y0b1MEbiTvdRd7mjO9
- hlakBfuQQQUAlCPwMHv/sgZjTMSIdazlzJgy7K2ZfcDcL4/g5Bf/ZYZ4X1DHVs5fTPlXvyaZ3
- Ffrbvmbcb+NR2mbBMrn7xV712vbrC/YwpiJiPuz0oFxSRleetDR2wxTPjRrSRAFWJb9GePbZe
- GEPnrSJku4nS7hOvSBxjPBfOp2y535rONADjZs5rQn3eWyir4o68r/pYoWUA1dN4JTlimULMt
- sd/xIhn4Br8S6yuQOQF/lG6RIPv83ZwYwl7d/uSgd3iwm8aouRftgay7rGwn/2X4AeHHMggbL
- oPWRdw==
-X-Spam-Status: No, score=-2.8 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,RCVD_IN_DNSWL_LOW,
-        RCVD_IN_MSPIKE_H4,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_PASS
-        autolearn=ham autolearn_force=no version=3.4.6
+Content-Type: multipart/signed; micalg=pgp-sha512;
+        protocol="application/pgp-signature"; boundary="afYEVH52ZC8muFvY"
+Content-Disposition: inline
+In-Reply-To: <20230911134654.832694547@linuxfoundation.org>
+X-Cookie: Save energy:  Drive a smaller shell.
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi Greg
 
-6.5.3-rc1
+--afYEVH52ZC8muFvY
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+Content-Transfer-Encoding: quoted-printable
 
-compiles, boots and runs here on x86_64
-(Intel Rocket Lake, i5-11400)
+On Mon, Sep 11, 2023 at 03:38:53PM +0200, Greg Kroah-Hartman wrote:
+> 6.5-stable review patch.  If anyone has any objections, please let me kno=
+w.
+>=20
+> ------------------
+>=20
+> From: Alexander Danilenko <al.b.danilenko@gmail.com>
+>=20
+> [ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
+>=20
+> cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
+> so there is no sense in checking them for NULL.
+>=20
+> Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Thanks
+This is a code cleanup, why is it a stable candidate?  It's not a
+warning fix or anything.
 
-Tested-by: Ronald Warsow <rwarsow@gmx.de>
+--afYEVH52ZC8muFvY
+Content-Type: application/pgp-signature; name="signature.asc"
 
+-----BEGIN PGP SIGNATURE-----
+
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT/JRwACgkQJNaLcl1U
+h9ClyQgAhmMdoPmUDlad8cDgodBr+fXJLkEq6jaJfpkyEauibGQeRCjdDknl9V9c
+bV1K+LUYBdMajIDxro65oFoRrFJLbuN08t6Wmkp2wBQx2RAhVSAK1vxVEFK2Ipe6
+gqK8jZlCGoP927koOd3r/yiYZYA96eAU9dPjJBZaWxKy+NKJGsr1Z6Htn/QVPylr
+ykI1ujodM0GEW7Vm8hnyL4abCNvojzVH28D21UfVvGGd/gq4ej4RTQWv54CU5TAJ
+qPiHRJrXwiMWLPyl5fW2eF+dWIORlneFxAcW+YoJqPcELj9s4c1F028JRvui0fy2
+aglhK5NGIeyetTelWR1zS6FgxPXcgQ==
+=gmau
+-----END PGP SIGNATURE-----
+
+--afYEVH52ZC8muFvY--
