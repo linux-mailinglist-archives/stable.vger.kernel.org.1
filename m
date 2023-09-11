@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3282E79B055
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9E2F79B0A4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344597AbjIKVOd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45452 "EHLO
+        id S235711AbjIKVFn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:05:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45468 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241313AbjIKPGZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:25 -0400
+        with ESMTP id S241314AbjIKPG1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D2B001B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23180C433C7;
-        Mon, 11 Sep 2023 15:06:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1171FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02CCCC433C7;
+        Mon, 11 Sep 2023 15:06:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444780;
-        bh=mcGG5Ew2Bk95Lvmg5GUvZPDFYBBcJUQ5j3r1FKiDrcM=;
+        s=korg; t=1694444783;
+        bh=0VVpdrm9ugHOxSs+8k0XTVk0T+PRLO7T3wF49ux9T18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B/STiCjFttdBngBGOevKKzBZvk73m6q7vwO2pFR4QqKt2noPtGVYESDFN4k5clcY1
-         vg5oJ4eqBNNN6WNn6L5H03LstvBLZ/BzxQ0R8yTA4NNfGzBZm02ULE4JGMjuwYXeaz
-         uYZbmbaC1yTt6yEHphjayRsjdHN5QwDts0bChMsY=
+        b=W9woBFXMdsCFHzxt97sy3n1nCvwWs6ZTmlMlcmroN+tIGNZ9G4Y2hC7QoN1ysx8lb
+         xe2NJM0Lw/g2QLlUWUSn3pjfNflqAgDK/QG41MWNokaqvn3JcI3UPzVfmZojDcSOWP
+         h2M2mcqLhpmw0WTeuYYt+X+ypPOR2Uki0ooikHTs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -33,9 +33,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         "Shaopeng Tan (Fujitsu)" <tan.shaopeng@fujitsu.com>,
         Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 112/600] selftests/resctrl: Add resctrl.h into build deps
-Date:   Mon, 11 Sep 2023 15:42:25 +0200
-Message-ID: <20230911134636.905691492@linuxfoundation.org>
+Subject: [PATCH 6.1 113/600] selftests/resctrl: Dont leak buffer in fill_cache()
+Date:   Mon, 11 Sep 2023 15:42:26 +0200
+Message-ID: <20230911134636.936494694@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -61,14 +61,19 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 8e289f4542890168705219e54f0231dccfabddbe ]
+[ Upstream commit 2d320b1029ee7329ee0638181be967789775b962 ]
 
-Makefile only lists *.c as build dependencies for the resctrl_tests
-executable which excludes resctrl.h.
+The error path in fill_cache() does return before the allocated buffer
+is freed leaking the buffer.
 
-Add *.h to wildcard() to include resctrl.h.
+The leak was introduced when fill_cache_read() started to return errors
+in commit c7b607fa9325 ("selftests/resctrl: Fix null pointer
+dereference on open failed"), before that both fill functions always
+returned 0.
 
-Fixes: 591a6e8588fc ("selftests/resctrl: Add basic resctrl file system operations and data")
+Move free() earlier to prevent the mem leak.
+
+Fixes: c7b607fa9325 ("selftests/resctrl: Fix null pointer dereference on open failed")
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 Reviewed-by: Reinette Chatre <reinette.chatre@intel.com>
 Tested-by: Babu Moger <babu.moger@amd.com>
@@ -76,19 +81,28 @@ Tested-by: Shaopeng Tan (Fujitsu) <tan.shaopeng@fujitsu.com>
 Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/resctrl/Makefile | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/testing/selftests/resctrl/fill_buf.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/resctrl/Makefile b/tools/testing/selftests/resctrl/Makefile
-index 73d53257df42f..5073dbc961258 100644
---- a/tools/testing/selftests/resctrl/Makefile
-+++ b/tools/testing/selftests/resctrl/Makefile
-@@ -7,4 +7,4 @@ TEST_GEN_PROGS := resctrl_tests
+diff --git a/tools/testing/selftests/resctrl/fill_buf.c b/tools/testing/selftests/resctrl/fill_buf.c
+index c20d0a7ecbe63..ab1d91328d67b 100644
+--- a/tools/testing/selftests/resctrl/fill_buf.c
++++ b/tools/testing/selftests/resctrl/fill_buf.c
+@@ -184,12 +184,13 @@ fill_cache(unsigned long long buf_size, int malloc_and_init, int memflush,
+ 	else
+ 		ret = fill_cache_write(start_ptr, end_ptr, resctrl_val);
  
- include ../lib.mk
++	free(startptr);
++
+ 	if (ret) {
+ 		printf("\n Error in fill cache read/write...\n");
+ 		return -1;
+ 	}
  
--$(OUTPUT)/resctrl_tests: $(wildcard *.c)
-+$(OUTPUT)/resctrl_tests: $(wildcard *.[ch])
+-	free(startptr);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
