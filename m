@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E107779B7DF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6CFAD79C057
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355556AbjIKWAr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:00:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57818 "EHLO
+        id S232724AbjIKWrn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:47:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242067AbjIKPVc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:32 -0400
+        with ESMTP id S239591AbjIKOYN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A1E7EBE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ED0A2C433C8;
-        Mon, 11 Sep 2023 15:21:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3068EDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788A8C433C8;
+        Mon, 11 Sep 2023 14:24:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445688;
-        bh=Sif3HuVy/Cl595s7itlCMYRWlsmlQsVoVm8KFl4aLM8=;
+        s=korg; t=1694442248;
+        bh=vpRa5oAZ88UFx1KSM94pXMrh7Mx29kKq7yHjq2q12PQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YZEr8v/8PBaii2yRUBheMyYg7lboiko0tmKxRVu3fc9XBxc11N/EkULtNsIpr3l60
-         hrpwo3SWpN70G/MdFqqWK1+gQLT+4GvP/jex6jduFRODEOXofiNOGVSKAOLtLUctw4
-         zYJCyt+1pEZ6hcqR+QvQEPnLn7q9gi3C132nFQXg=
+        b=2mPESp63BSH0YBIUucmwVKYrrHOWqPmHnw7aa7e1UbcMmnDHfUnaKwJN+qWMpvbsX
+         e4KConRWPULooz01OMsI3HD5EdEZqcx0iTD/YUYPZYRGTNEr94xaWGw0de/nkcakxB
+         tO6wUXeTD41AeFJDd65p0zCU1O3ndF3146QDjEDA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 437/600] driver core: test_async: fix an error code
-Date:   Mon, 11 Sep 2023 15:47:50 +0200
-Message-ID: <20230911134646.551603693@linuxfoundation.org>
+        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
+        Alexandre Belloni <alexandre.belloni@bootlin.com>
+Subject: [PATCH 6.5 672/739] i3c: master: svc: fix probe failure when no i3c device exist
+Date:   Mon, 11 Sep 2023 15:47:51 +0200
+Message-ID: <20230911134709.874593468@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +50,70 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Frank Li <Frank.Li@nxp.com>
 
-[ Upstream commit 22d2381bbd70a5853c2ee77522f4965139672db9 ]
+commit 6e13d6528be2f7e801af63c8153b87293f25d736 upstream.
 
-The test_platform_device_register_node() function should return error
-pointers instead of NULL.  That is what the callers are expecting.
+I3C masters are expected to support hot-join. This means at initialization
+time we might not yet discover any device and this should not be treated
+as a fatal error.
 
-Fixes: 57ea974fb871 ("driver core: Rewrite test_async_driver_probe to cover serialization and NUMA affinity")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Link: https://lore.kernel.org/r/1e11ed19-e1f6-43d8-b352-474134b7c008@moroto.mountain
+During the DAA procedure which happens at probe time, if no device has
+joined, all CCC will be NACKed (from a bus perspective). This leads to an
+early return with an error code which fails the probe of the master.
+
+Let's avoid this by just telling the core through an I3C_ERROR_M2
+return command code that no device was discovered, which is a valid
+situation. This way the master will no longer bail out and fail to probe
+for a wrong reason.
+
+Cc: stable@vger.kernel.org
+Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
+Signed-off-by: Frank Li <Frank.Li@nxp.com>
+Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/r/20230831141324.2841525-1-Frank.Li@nxp.com
+Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/base/test/test_async_driver_probe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/i3c/master/svc-i3c-master.c |   14 ++++++++++++--
+ 1 file changed, 12 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/base/test/test_async_driver_probe.c b/drivers/base/test/test_async_driver_probe.c
-index 929410d0dd6fe..3465800baa6c8 100644
---- a/drivers/base/test/test_async_driver_probe.c
-+++ b/drivers/base/test/test_async_driver_probe.c
-@@ -84,7 +84,7 @@ test_platform_device_register_node(char *name, int id, int nid)
+--- a/drivers/i3c/master/svc-i3c-master.c
++++ b/drivers/i3c/master/svc-i3c-master.c
+@@ -789,6 +789,10 @@ static int svc_i3c_master_do_daa_locked(
+ 				 */
+ 				break;
+ 			} else if (SVC_I3C_MSTATUS_NACKED(reg)) {
++				/* No I3C devices attached */
++				if (dev_nb == 0)
++					break;
++
+ 				/*
+ 				 * A slave device nacked the address, this is
+ 				 * allowed only once, DAA will be stopped and
+@@ -1263,11 +1267,17 @@ static int svc_i3c_master_send_ccc_cmd(s
+ {
+ 	struct svc_i3c_master *master = to_svc_i3c_master(m);
+ 	bool broadcast = cmd->id < 0x80;
++	int ret;
  
- 	pdev = platform_device_alloc(name, id);
- 	if (!pdev)
--		return NULL;
-+		return ERR_PTR(-ENOMEM);
+ 	if (broadcast)
+-		return svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
++		ret = svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
+ 	else
+-		return svc_i3c_master_send_direct_ccc_cmd(master, cmd);
++		ret = svc_i3c_master_send_direct_ccc_cmd(master, cmd);
++
++	if (ret)
++		cmd->err = I3C_ERROR_M2;
++
++	return ret;
+ }
  
- 	if (nid != NUMA_NO_NODE)
- 		set_dev_node(&pdev->dev, nid);
--- 
-2.40.1
-
+ static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
 
 
