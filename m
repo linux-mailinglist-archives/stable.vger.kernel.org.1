@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EA0C579B85B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 246B179B825
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377840AbjIKW2w (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:28:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33230 "EHLO
+        id S1350808AbjIKVlb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:41:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239010AbjIKOJd (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:33 -0400
+        with ESMTP id S241380AbjIKPHc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 085D7CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 536B8C433C7;
-        Mon, 11 Sep 2023 14:09:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB993FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCE6C433C8;
+        Mon, 11 Sep 2023 15:07:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441368;
-        bh=7NRndwjmq56dDKJMStVxFX2I1a8KyvjPxamWP+vx2wY=;
+        s=korg; t=1694444847;
+        bh=rh3l9Ofqf5Dw/EkjsaxfloDaysEqYC80xcP163eDBFU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IxVLGQkC1MNgguSBDRqs4ZqnjyemKhOcdRuV7kR3uRIBujKqyv0WuHA8FEiLJ04NH
-         n4U4h1CiK34r1pZu5y1KGEEp+ZFkq48VYwjIDHqLNTs3NJ4CRT1GwagiLpf7MTjJBE
-         mHuSDxrk2LL/F4I2i3M69aiaJhSKOYWgbiUzPloA=
+        b=EqROTuPxQ3zol+w4yJNMaEsnadCqItJan5ER6qAFE9D8xkZBkmwAo4ChkD+DRrJz1
+         Wmt1URB1supDeZocngFOOCcZPK5qt088fVfuhxyly6M5XhD+qoyzbQazDOab0VhGhk
+         LsgDFteCA7yovJG1mZzF9kODyv4nIgg0lE/eKZ/E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexander Lobakin <alobakin@pm.me>,
+        Quentin Monnet <quentin@isovalent.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 371/739] ALSA: ump: Fill group names for legacy rawmidi substreams
-Date:   Mon, 11 Sep 2023 15:42:50 +0200
-Message-ID: <20230911134701.523251053@linuxfoundation.org>
+Subject: [PATCH 6.1 138/600] bpftool: Define a local bpf_perf_link to fix accessing its fields
+Date:   Mon, 11 Sep 2023 15:42:51 +0200
+Message-ID: <20230911134637.683033717@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,61 +51,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Alexander Lobakin <alobakin@pm.me>
 
-[ Upstream commit 1761f4cc114af531020ea190df6a24dd288a8221 ]
+[ Upstream commit 67a43462ee2405c94e985a747bdcb8e3a0d66203 ]
 
-To make it clearer which legacy substream corresponds to which UMP
-group, fill the subname field of each substream object with the group
-number and the endpoint name, e.g. "Group 1 (My Device)".
+When building bpftool with !CONFIG_PERF_EVENTS:
 
-Ideally speaking, we should have some better link information to the
-derived UMP, but it's another feature extension.
+skeleton/pid_iter.bpf.c:47:14: error: incomplete definition of type 'struct bpf_perf_link'
+        perf_link = container_of(link, struct bpf_perf_link, link);
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:74:22: note: expanded from macro 'container_of'
+                ((type *)(__mptr - offsetof(type, member)));    \
+                                   ^~~~~~~~~~~~~~~~~~~~~~
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:68:60: note: expanded from macro 'offsetof'
+ #define offsetof(TYPE, MEMBER)  ((unsigned long)&((TYPE *)0)->MEMBER)
+                                                  ~~~~~~~~~~~^
+skeleton/pid_iter.bpf.c:44:9: note: forward declaration of 'struct bpf_perf_link'
+        struct bpf_perf_link *perf_link;
+               ^
 
-Fixes: 0b5288f5fe63 ("ALSA: ump: Add legacy raw MIDI support")
-Link: https://lore.kernel.org/r/20230824075108.29958-3-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
+&bpf_perf_link is being defined and used only under the ifdef.
+Define struct bpf_perf_link___local with the `preserve_access_index`
+attribute inside the pid_iter BPF prog to allow compiling on any
+configs. CO-RE will substitute it with the real struct bpf_perf_link
+accesses later on.
+container_of() uses offsetof(), which does the necessary CO-RE
+relocation if the field is specified with `preserve_access_index` - as
+is the case for struct bpf_perf_link___local.
+
+Fixes: cbdaf71f7e65 ("bpftool: Add bpf_cookie to link output")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Alexander Lobakin <alobakin@pm.me>
+Signed-off-by: Quentin Monnet <quentin@isovalent.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230707095425.168126-3-quentin@isovalent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/core/ump.c | 15 +++++++++++++++
- 1 file changed, 15 insertions(+)
+ tools/bpf/bpftool/skeleton/pid_iter.bpf.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/sound/core/ump.c b/sound/core/ump.c
-index 2cffd36863390..beb439f25b09e 100644
---- a/sound/core/ump.c
-+++ b/sound/core/ump.c
-@@ -1123,6 +1123,16 @@ static void process_legacy_input(struct snd_ump_endpoint *ump, const u32 *src,
- 	spin_unlock_irqrestore(&ump->legacy_locks[dir], flags);
- }
+diff --git a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
+index e2af8e5fb29ec..3a4c4f7d83d86 100644
+--- a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
++++ b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
+@@ -15,6 +15,11 @@ enum bpf_obj_type {
+ 	BPF_OBJ_BTF,
+ };
  
-+static void fill_substream_names(struct snd_ump_endpoint *ump,
-+				 struct snd_rawmidi *rmidi, int dir)
-+{
-+	struct snd_rawmidi_substream *s;
++struct bpf_perf_link___local {
++	struct bpf_link link;
++	struct file *perf_file;
++} __attribute__((preserve_access_index));
 +
-+	list_for_each_entry(s, &rmidi->streams[dir].substreams, list)
-+		snprintf(s->name, sizeof(s->name), "Group %d (%s)",
-+			 s->number + 1, ump->info.name);
-+}
-+
- int snd_ump_attach_legacy_rawmidi(struct snd_ump_endpoint *ump,
- 				  char *id, int device)
+ struct perf_event___local {
+ 	u64 bpf_cookie;
+ } __attribute__((preserve_access_index));
+@@ -45,10 +50,10 @@ static __always_inline __u32 get_obj_id(void *ent, enum bpf_obj_type type)
+ /* could be used only with BPF_LINK_TYPE_PERF_EVENT links */
+ static __u64 get_bpf_cookie(struct bpf_link *link)
  {
-@@ -1156,6 +1166,11 @@ int snd_ump_attach_legacy_rawmidi(struct snd_ump_endpoint *ump,
- 	rmidi->ops = &snd_ump_legacy_ops;
- 	rmidi->private_data = ump;
- 	ump->legacy_rmidi = rmidi;
-+	if (input)
-+		fill_substream_names(ump, rmidi, SNDRV_RAWMIDI_STREAM_INPUT);
-+	if (output)
-+		fill_substream_names(ump, rmidi, SNDRV_RAWMIDI_STREAM_OUTPUT);
-+
- 	ump_dbg(ump, "Created a legacy rawmidi #%d (%s)\n", device, id);
- 	return 0;
++	struct bpf_perf_link___local *perf_link;
+ 	struct perf_event___local *event;
+-	struct bpf_perf_link *perf_link;
+ 
+-	perf_link = container_of(link, struct bpf_perf_link, link);
++	perf_link = container_of(link, struct bpf_perf_link___local, link);
+ 	event = BPF_CORE_READ(perf_link, perf_file, private_data);
+ 	return BPF_CORE_READ(event, bpf_cookie);
  }
 -- 
 2.40.1
