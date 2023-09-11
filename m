@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C73AE79B532
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D7C7279ADD1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238938AbjIKVkf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:40:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46166 "EHLO
+        id S236920AbjIKWeG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:34:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239751AbjIKO16 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:58 -0400
+        with ESMTP id S238408AbjIKNzu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EAE8DF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33DA0C433C8;
-        Mon, 11 Sep 2023 14:27:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04F55FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D5E2C433C7;
+        Mon, 11 Sep 2023 13:55:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442473;
-        bh=XK2pJ0tu36OttgdUCty2/wAOvIUdXUwg1FOpwaru6Qg=;
+        s=korg; t=1694440545;
+        bh=9tqaolkp0gDEJMetlaUSlJ5ZRF2bADD70NiGL1Rh+sQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=seQGoh+jvXNYfuuhvo95LpYfztMm7o69QeGDCQJJC7UdwpS/f2Bimzqy8ltX055SR
-         0OdzFkqLBMkZ2J115IMd1jUH41Y+AiYTQ6ouZfOfLRMEdXVGLTtlv6MYJXvYBFdMHz
-         9ERRZl0U0tuaOS+iWcJ4sf+sQBkkm+dPNrna1UNI=
+        b=IgtKEWvMxPaQQEpBO2Z2+LknQJG44ZLl+XfrPXUsFegpcWBJZYPEzQOl932nLPwag
+         V3+AKqXMcrTjR8uyQV8qvx3j/Vz3KHWllsFEv5duZePMenzWLUv21s49qEBheuOWvW
+         bDkRwcSgVPlUeo/BE6UeGFjHP8Sk1H4pkzOGVXQU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jane Jian <Jane.Jian@amd.com>,
-        Lijo Lazar <lijo.lazar@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        patches@lists.linux.dev,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 038/737] drm/amd/smu: use AverageGfxclkFrequency* to replace previous GFX Curr Clock
-Date:   Mon, 11 Sep 2023 15:38:17 +0200
-Message-ID: <20230911134651.485709588@linuxfoundation.org>
+Subject: [PATCH 6.5 099/739] can: tcan4x5x: Remove reserved register 0x814 from writable table
+Date:   Mon, 11 Sep 2023 15:38:18 +0200
+Message-ID: <20230911134653.867419538@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jane Jian <Jane.Jian@amd.com>
+From: Markus Schneider-Pargmann <msp@baylibre.com>
 
-[ Upstream commit 4a37c55b859a69f429bfa7fab4fc43ee470b60ed ]
+[ Upstream commit fbe534f7bf213d485b0ed5362b24a41bf3e18803 ]
 
-Report current GFX clock also from average clock value as the original
-CurrClock data is not valid/accurate any more as per FW team
+The mentioned register is not writable. It is reserved and should not be
+written.
 
-Signed-off-by: Jane Jian <Jane.Jian@amd.com>
-Reviewed-by: Lijo Lazar <lijo.lazar@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: 39dbb21b6a29 ("can: tcan4x5x: Specify separate read/write ranges")
+Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://lore.kernel.org/all/20230728141923.162477-3-msp@baylibre.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/can/m_can/tcan4x5x-regmap.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-index d7f09af2fb018..419a247dfbbf2 100644
---- a/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-+++ b/drivers/gpu/drm/amd/pm/swsmu/smu13/smu_v13_0_0_ppt.c
-@@ -1323,7 +1323,7 @@ static ssize_t smu_v13_0_0_get_gpu_metrics(struct smu_context *smu,
- 	gpu_metrics->average_vclk1_frequency = metrics->AverageVclk1Frequency;
- 	gpu_metrics->average_dclk1_frequency = metrics->AverageDclk1Frequency;
- 
--	gpu_metrics->current_gfxclk = metrics->CurrClock[PPCLK_GFXCLK];
-+	gpu_metrics->current_gfxclk = gpu_metrics->average_gfxclk_frequency;
- 	gpu_metrics->current_socclk = metrics->CurrClock[PPCLK_SOCCLK];
- 	gpu_metrics->current_uclk = metrics->CurrClock[PPCLK_UCLK];
- 	gpu_metrics->current_vclk0 = metrics->CurrClock[PPCLK_VCLK_0];
+diff --git a/drivers/net/can/m_can/tcan4x5x-regmap.c b/drivers/net/can/m_can/tcan4x5x-regmap.c
+index 2b218ce04e9f2..fafa6daa67e69 100644
+--- a/drivers/net/can/m_can/tcan4x5x-regmap.c
++++ b/drivers/net/can/m_can/tcan4x5x-regmap.c
+@@ -95,7 +95,6 @@ static const struct regmap_range tcan4x5x_reg_table_wr_range[] = {
+ 	regmap_reg_range(0x000c, 0x0010),
+ 	/* Device configuration registers and Interrupt Flags*/
+ 	regmap_reg_range(0x0800, 0x080c),
+-	regmap_reg_range(0x0814, 0x0814),
+ 	regmap_reg_range(0x0820, 0x0820),
+ 	regmap_reg_range(0x0830, 0x0830),
+ 	/* M_CAN */
 -- 
 2.40.1
 
