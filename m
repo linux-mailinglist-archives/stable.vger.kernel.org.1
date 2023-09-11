@@ -2,45 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BD83879B351
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5795479AEE5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377775AbjIKW2g (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:28:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50814 "EHLO
+        id S230140AbjIKUvG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240463AbjIKOoy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:54 -0400
+        with ESMTP id S241483AbjIKPJo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F49912A;
-        Mon, 11 Sep 2023 07:44:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5B86BC433C9;
-        Mon, 11 Sep 2023 14:44:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 922E0E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AC7CEC433C7;
+        Mon, 11 Sep 2023 15:09:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443489;
-        bh=z4ImYPeW9GjYS/F95A4H1O0+loZWDA5MHpNBy8hULSI=;
+        s=korg; t=1694444979;
+        bh=sX2uwmEVEKVibcAYUFcqQWlwx5ZhJ1o8lDZRuihExxc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mVNdpZvFmdc16BZi3tNyK2aumPjIpehkhaew3353OUtMF5jkUMW/3zuERwyAIlAnT
-         vWM1UEsYgL//Ywzf+RLrVs9TWRe1jhjqh2mQpzVKOkp4dgHs8YmF0zA/k81j+PE78D
-         E9F7QmoI93FDR+s92MfiSi+/f1B6rbg+V9Sr6FXo=
+        b=X1wSHyYYF+lATt5dSPFY2xjhxGbEsf6Wi/32qwKlMcu2RhyvWIvrY2ZNBOSBOyJQV
+         UJ/cix09RhAeuGRUmdPMXNW5xnzTIGeiAA3V4fj2Wha+FuElyJcDkZHwFPFdXOum3r
+         Y3A1b+4WTJtGlOB/2MGnXfY7ilNsYHHSA+P9J6SU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Daniel Vetter <daniel.vetter@ffwll.ch>,
-        Rob Clark <robdclark@gmail.com>,
-        Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        linux-arm-msm@vger.kernel.org, freedreno@lists.freedesktop.org,
-        dorum@noisolation.com, Daniel Vetter <daniel.vetter@intel.com>,
+        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
+        Joseph Qi <joseph.qi@linux.alibaba.com>,
+        Joel Becker <jlbec@evilplan.org>,
+        Kurt Hackel <kurt.hackel@oracle.com>,
+        Mark Fasheh <mark@fasheh.com>,
+        Junxiao Bi <junxiao.bi@oracle.com>,
+        Changwei Ge <gechangwei@live.cn>, Gang He <ghe@suse.com>,
+        Jun Piao <piaojun@huawei.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 358/737] drm/msm/mdp5: Dont leak some plane state
+Subject: [PATCH 6.1 184/600] fs: ocfs2: namei: check return value of ocfs2_add_entry()
 Date:   Mon, 11 Sep 2023 15:43:37 +0200
-Message-ID: <20230911134700.526532808@linuxfoundation.org>
+Message-ID: <20230911134639.033193789@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,57 +58,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Vetter <daniel.vetter@ffwll.ch>
+From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
 
-[ Upstream commit fd0ad3b2365c1c58aa5a761c18efc4817193beb6 ]
+[ Upstream commit 6b72e5f9e79360fce4f2be7fe81159fbdf4256a5 ]
 
-Apparently no one noticed that mdp5 plane states leak like a sieve
-ever since we introduced plane_state->commit refcount a few years ago
-in 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too
-early by tracking commits, v3.")
+Process result of ocfs2_add_entry() in case we have an error
+value.
 
-Fix it by using the right helpers.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: 21a01abbe32a ("drm/atomic: Fix freeing connector/plane state too early by tracking commits, v3.")
-Cc: Maarten Lankhorst <maarten.lankhorst@linux.intel.com>
-Cc: Daniel Vetter <daniel.vetter@ffwll.ch>
-Cc: Rob Clark <robdclark@gmail.com>
-Cc: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Cc: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Cc: linux-arm-msm@vger.kernel.org
-Cc: freedreno@lists.freedesktop.org
-Reported-and-tested-by: dorum@noisolation.com
-Cc: dorum@noisolation.com
-Signed-off-by: Daniel Vetter <daniel.vetter@intel.com>
-Reviewed-by: Rob Clark <robdclark@gmail.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/551236/
-Link: https://lore.kernel.org/r/20230803204521.928582-1-daniel.vetter@ffwll.ch
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lkml.kernel.org/r/20230803145417.177649-1-artem.chernyshev@red-soft.ru
+Fixes: ccd979bdbce9 ("[PATCH] OCFS2: The Second Oracle Cluster Filesystem")
+Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Reviewed-by: Joseph Qi <joseph.qi@linux.alibaba.com>
+Cc: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+Cc: Joel Becker <jlbec@evilplan.org>
+Cc: Kurt Hackel <kurt.hackel@oracle.com>
+Cc: Mark Fasheh <mark@fasheh.com>
+Cc: Junxiao Bi <junxiao.bi@oracle.com>
+Cc: Changwei Ge <gechangwei@live.cn>
+Cc: Gang He <ghe@suse.com>
+Cc: Jun Piao <piaojun@huawei.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ fs/ocfs2/namei.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-index bd2c4ac456017..0d5ff03cb0910 100644
---- a/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-+++ b/drivers/gpu/drm/msm/disp/mdp5/mdp5_plane.c
-@@ -130,8 +130,7 @@ static void mdp5_plane_destroy_state(struct drm_plane *plane,
- {
- 	struct mdp5_plane_state *pstate = to_mdp5_plane_state(state);
+diff --git a/fs/ocfs2/namei.c b/fs/ocfs2/namei.c
+index 1c7ac433667df..04a8505bd97af 100644
+--- a/fs/ocfs2/namei.c
++++ b/fs/ocfs2/namei.c
+@@ -1535,6 +1535,10 @@ static int ocfs2_rename(struct user_namespace *mnt_userns,
+ 		status = ocfs2_add_entry(handle, new_dentry, old_inode,
+ 					 OCFS2_I(old_inode)->ip_blkno,
+ 					 new_dir_bh, &target_insert);
++		if (status < 0) {
++			mlog_errno(status);
++			goto bail;
++		}
+ 	}
  
--	if (state->fb)
--		drm_framebuffer_put(state->fb);
-+	__drm_atomic_helper_plane_destroy_state(state);
- 
- 	kfree(pstate);
- }
+ 	old_inode->i_ctime = current_time(old_inode);
 -- 
 2.40.1
 
