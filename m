@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED00279AD41
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ACEA979AED7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357974AbjIKWHH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45732 "EHLO
+        id S1344751AbjIKVOn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238496AbjIKN5w (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:52 -0400
+        with ESMTP id S238483AbjIKN5c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C87F2CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CC9EC433C8;
-        Mon, 11 Sep 2023 13:57:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E152BCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1FB0DC433C7;
+        Mon, 11 Sep 2023 13:57:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440667;
-        bh=Ia9n5HC5jxwgTRbW0C+1fpl5tYFoJmKpkWzvMJm20wU=;
+        s=korg; t=1694440647;
+        bh=rNy+Pite8bb3hRMkLlH4K1oWTfaGm5oNM/37R0qeLpU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=esnzm7rmCWqEmK8dqzzwtiDs4A2eJKQgVtKKMTuTIw/eVUQI3EO7Hp7ftfAmadR2P
-         1E3iHmEA3td5z5W6pOKaSW/Dn+5EVAqAsBllQoTMgM4fqE61/D4SIpe49zInC7n4fl
-         xyYlFUhLQvkM7CIfxO9lPqj/iFIHPzt1zWWl+ZJ8=
+        b=T97cVLTuzDaNJg0O2qQq743Ne2zsdgMk7NEKvUrgvEytA82GOObdcujtaATwq1yXr
+         YW0yev37l9WUt+mveY79zOmfxH3vYOb5Scc4TFVdrxmgRa7NtW8uGEdt0uT2baDyN6
+         7ZC7NMwCy5P/KfWG5XHQF1Jly87fjTCDDhdIXljI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Aditya Kumar Singh <quic_adisi@quicinc.com>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Yu Liao <liaoyu15@huawei.com>,
+        Sebastian Reichel <sebastian.reichel@collabora.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 105/739] wifi: ath11k: fix band selection for ppdu received in channel 177 of 5 GHz
-Date:   Mon, 11 Sep 2023 15:38:24 +0200
-Message-ID: <20230911134654.032019422@linuxfoundation.org>
+Subject: [PATCH 6.5 108/739] power: supply: qcom_pmi8998_charger: fix uninitialized variable
+Date:   Mon, 11 Sep 2023 15:38:27 +0200
+Message-ID: <20230911134654.115614313@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -55,44 +55,44 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Aditya Kumar Singh <quic_adisi@quicinc.com>
+From: Yu Liao <liaoyu15@huawei.com>
 
-[ Upstream commit 72c8caf904aed2caed5d6e75233294b6159ddb5d ]
+[ Upstream commit 13a0d1088c8fea1565e30a169188b59bdd77759e ]
 
-5 GHz band channel 177 support was added with the commit e5e94d10c856 ("wifi:
-ath11k: add channel 177 into 5 GHz channel list"). However, during processing
-for the received ppdu in ath11k_dp_rx_h_ppdu(), channel number is checked only
-till 173. This leads to driver code checking for channel and then fetching the
-band from it which is extra effort since firmware has already given the channel
-number in the metadata.
+smatch warnings:
+  drivers/power/supply/qcom_pmi8998_charger.c:565 smb2_status_change_work() error: uninitialized symbol 'usb_online'.
 
-Fix this issue by checking the channel number till 177 since we support
-it now.
+usb_online is used uninitialized whenever smb2_get_prop_usb_online()
+returns a negative value.
 
-Found via code review. Compile tested only.
+Thus, fix the issue by initializing usb_online to 0.
 
-Fixes: e5e94d10c856 ("wifi: ath11k: add channel 177 into 5 GHz channel list")
-Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230726044624.20507-1-quic_adisi@quicinc.com
+Fixes: 8648aeb5d7b7 ("power: supply: add Qualcomm PMI8998 SMB2 Charger driver")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/r/202307280638.556PrzIS-lkp@intel.com/
+Signed-off-by: Yu Liao <liaoyu15@huawei.com>
+Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org
+Link: https://lore.kernel.org/r/20230802023130.2516232-1-liaoyu15@huawei.com
+Signed-off-by: Sebastian Reichel <sebastian.reichel@collabora.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/power/supply/qcom_pmi8998_charger.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
-index 5c76664ba0dd9..1e488eed282b5 100644
---- a/drivers/net/wireless/ath/ath11k/dp_rx.c
-+++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
-@@ -2408,7 +2408,7 @@ static void ath11k_dp_rx_h_ppdu(struct ath11k *ar, struct hal_rx_desc *rx_desc,
- 		rx_status->freq = center_freq;
- 	} else if (channel_num >= 1 && channel_num <= 14) {
- 		rx_status->band = NL80211_BAND_2GHZ;
--	} else if (channel_num >= 36 && channel_num <= 173) {
-+	} else if (channel_num >= 36 && channel_num <= 177) {
- 		rx_status->band = NL80211_BAND_5GHZ;
- 	} else {
- 		spin_lock_bh(&ar->data_lock);
+diff --git a/drivers/power/supply/qcom_pmi8998_charger.c b/drivers/power/supply/qcom_pmi8998_charger.c
+index d16c5ee172496..cac89d233c388 100644
+--- a/drivers/power/supply/qcom_pmi8998_charger.c
++++ b/drivers/power/supply/qcom_pmi8998_charger.c
+@@ -556,7 +556,8 @@ static int smb2_set_current_limit(struct smb2_chip *chip, unsigned int val)
+ static void smb2_status_change_work(struct work_struct *work)
+ {
+ 	unsigned int charger_type, current_ua;
+-	int usb_online, count, rc;
++	int usb_online = 0;
++	int count, rc;
+ 	struct smb2_chip *chip;
+ 
+ 	chip = container_of(work, struct smb2_chip, status_change_work.work);
 -- 
 2.40.1
 
