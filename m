@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D60F379BB4A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04B7379B791
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353635AbjIKVry (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58832 "EHLO
+        id S1344777AbjIKVOo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240324AbjIKOlX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:23 -0400
+        with ESMTP id S238993AbjIKOJO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD0D7123
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C169C433C8;
-        Mon, 11 Sep 2023 14:41:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 44329E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 88CC0C433C8;
+        Mon, 11 Sep 2023 14:09:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443279;
-        bh=hZWZaipPJhAovle27WUzS0C9lPoQqXyiRvKWkT7k9ik=;
+        s=korg; t=1694441348;
+        bh=/jhstnW1Moz508jcFEAyMIm9GELwt+HbWLMotMqvo6k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=PellNwVEnkt8o6x2E+84J95YQbCYu8sV/Pm3iJeexTUSSxuffLFb6ihAw44J1O2Kp
-         TUbcxUyquN3VE6n7D11F60S5ZbSqn7af0+n6orWiNmfhubLEVnio64gB/9CgSxUJXp
-         1X9dlpPxlQ3mzAuiJJoBHpzsgv6zKtOsn+DHQDpE=
+        b=h3RhHvODnSRDR4/59SE17DKoeohEU2Pfd1XLOE8QemX3S+GaNBQWwkFd23tvgh5nw
+         z3GtserOl+b9f4a+cvZ7i5s6yiRvAeP1++fLJsSaJwqxZ8QQ6Eo90qsbZGpZic2oNN
+         LE8VyKxNvMUUh+YP1C7n7FrKr1IkkDitfGTjI1Jw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 321/737] block: cleanup queue_wc_store
-Date:   Mon, 11 Sep 2023 15:43:00 +0200
-Message-ID: <20230911134659.524174442@linuxfoundation.org>
+        patches@lists.linux.dev, Alibek Omarov <a1ba.omarov@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Heiko Stuebner <heiko@sntech.de>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 382/739] clk: rockchip: rk3568: Fix PLL rate setting for 78.75MHz
+Date:   Mon, 11 Sep 2023 15:43:01 +0200
+Message-ID: <20230911134701.854774412@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,55 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Alibek Omarov <a1ba.omarov@gmail.com>
 
-[ Upstream commit c4e21bcd0f9d01f9c5d6c52007f5541871a5b1de ]
+[ Upstream commit dafebd0f9a4f56b10d7fbda0bff1f540d16a2ea4 ]
 
-Get rid of the local queue_wc_store variable and handling setting and
-clearing the QUEUE_FLAG_WC flag diretly instead the if / else if.
+PLL rate on RK356x is calculated through the simple formula:
+((24000000 / _refdiv) * _fbdiv) / (_postdiv1 * _postdiv2)
 
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230707094239.107968-2-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Stable-dep-of: 43c9835b144c ("block: don't allow enabling a cache on devices that don't support it")
+The PLL rate setting for 78.75MHz seems to be copied from 96MHz
+so this patch fixes it and configures it properly.
+
+Signed-off-by: Alibek Omarov <a1ba.omarov@gmail.com>
+Fixes: 842f4cb72639 ("clk: rockchip: Add more PLL rates for rk3568")
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/r/20230614134750.1056293-1-a1ba.omarov@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-sysfs.c | 14 +++-----------
- 1 file changed, 3 insertions(+), 11 deletions(-)
+ drivers/clk/rockchip/clk-rk3568.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index a642085838531..50a0094300f2d 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -517,21 +517,13 @@ static ssize_t queue_wc_show(struct request_queue *q, char *page)
- static ssize_t queue_wc_store(struct request_queue *q, const char *page,
- 			      size_t count)
- {
--	int set = -1;
--
- 	if (!strncmp(page, "write back", 10))
--		set = 1;
-+		blk_queue_flag_set(QUEUE_FLAG_WC, q);
- 	else if (!strncmp(page, "write through", 13) ||
- 		 !strncmp(page, "none", 4))
--		set = 0;
--
--	if (set == -1)
--		return -EINVAL;
--
--	if (set)
--		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
-+	else
-+		return -EINVAL;
- 
- 	return count;
- }
+diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
+index f85902e2590c7..2f54f630c8b65 100644
+--- a/drivers/clk/rockchip/clk-rk3568.c
++++ b/drivers/clk/rockchip/clk-rk3568.c
+@@ -81,7 +81,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
+ 	RK3036_PLL_RATE(108000000, 2, 45, 5, 1, 1, 0),
+ 	RK3036_PLL_RATE(100000000, 1, 150, 6, 6, 1, 0),
+ 	RK3036_PLL_RATE(96000000, 1, 96, 6, 4, 1, 0),
+-	RK3036_PLL_RATE(78750000, 1, 96, 6, 4, 1, 0),
++	RK3036_PLL_RATE(78750000, 4, 315, 6, 4, 1, 0),
+ 	RK3036_PLL_RATE(74250000, 2, 99, 4, 4, 1, 0),
+ 	{ /* sentinel */ },
+ };
 -- 
 2.40.1
 
