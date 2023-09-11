@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 33D5879B497
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 83BD879B3C3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238342AbjIKVGY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49994 "EHLO
+        id S241262AbjIKVHD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238218AbjIKNvi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:51:38 -0400
+        with ESMTP id S238306AbjIKNxo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CADAFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:51:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9375BC433C8;
-        Mon, 11 Sep 2023 13:51:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E393CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67B56C433C7;
+        Mon, 11 Sep 2023 13:53:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440294;
-        bh=yXx3pYfh17CXs5b75PhfO8pKACKgtAcavbuddS8ASH8=;
+        s=korg; t=1694440419;
+        bh=WDCmjdq37sYOXg9Sf1BXi57Wj3kEgHl15mTI9pjXnhs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sD0zevAZYuIB9omEWddK6fjg7BpPLVzonE15K/WtqEpvwu8jZoivWcZjPqZTCAthA
-         sbWQ7vAaHzwR6Jm0Ayxf3u0bOhwa/WrSKekAjGYj6VuoYBeAlVkAR1aTidlqIyKroC
-         eF0ZbcMNFjwY7ZaZYu3oWxoNZJkZ9iLK+7Y/gLNo=
+        b=ksdWJ5rqxbvTaUtV1CRl58xVhzh6/k1MtLMcvjulumpw3vBMjCpMYmWTOAw+IemL+
+         t/y8Y0az2C/tEdbupkRFgoFYprB3A14wS79IcNxLrHtgSW9o2fWFAGZCUcyVFAtbgY
+         UgeEoMU9HsCWqyw9SLDHQoBjpXAyAGZ3VYGIIsEY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        butt3rflyh4ck <butterflyhuangxx@gmail.com>,
-        Edward Shishkin <edward.shishkin@gmail.com>,
+        "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>,
+        Seth Jenkins <sethjenkins@google.com>,
         Christian Brauner <brauner@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 011/739] reiserfs: Check the return value from __getblk()
-Date:   Mon, 11 Sep 2023 15:36:50 +0200
-Message-ID: <20230911134651.320528290@linuxfoundation.org>
+Subject: [PATCH 6.5 018/739] tmpfs: verify {g,u}id mount options correctly
+Date:   Mon, 11 Sep 2023 15:36:57 +0200
+Message-ID: <20230911134651.546426576@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -57,47 +56,96 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Matthew Wilcox <willy@infradead.org>
+From: Christian Brauner <brauner@kernel.org>
 
-[ Upstream commit ba38980add7ffc9e674ada5b4ded4e7d14e76581 ]
+[ Upstream commit 0200679fc7953177941e41c2a4241d0b6c2c5de8 ]
 
-__getblk() can return a NULL pointer if we run out of memory or if we
-try to access beyond the end of the device; check it and handle it
-appropriately.
+A while ago we received the following report:
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/lkml/CAFcO6XOacq3hscbXevPQP7sXRoYFz34ZdKPYjmd6k5sZuhGFDw@mail.gmail.com/
-Tested-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2") # probably introduced in 2002
-Acked-by: Edward Shishkin <edward.shishkin@gmail.com>
+"The other outstanding issue I noticed comes from the fact that
+fsconfig syscalls may occur in a different userns than that which
+called fsopen. That means that resolving the uid/gid via
+current_user_ns() can save a kuid that isn't mapped in the associated
+namespace when the filesystem is finally mounted. This means that it
+is possible for an unprivileged user to create files owned by any
+group in a tmpfs mount (since we can set the SUID bit on the tmpfs
+directory), or a tmpfs that is owned by any user, including the root
+group/user."
+
+The contract for {g,u}id mount options and {g,u}id values in general set
+from userspace has always been that they are translated according to the
+caller's idmapping. In so far, tmpfs has been doing the correct thing.
+But since tmpfs is mountable in unprivileged contexts it is also
+necessary to verify that the resulting {k,g}uid is representable in the
+namespace of the superblock to avoid such bugs as above.
+
+The new mount api's cross-namespace delegation abilities are already
+widely used. After having talked to a bunch of userspace this is the
+most faithful solution with minimal regression risks. I know of one
+users - systemd - that makes use of the new mount api in this way and
+they don't set unresolable {g,u}ids. So the regression risk is minimal.
+
+Link: https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com
+Fixes: f32356261d44 ("vfs: Convert ramfs, shmem, tmpfs, devtmpfs, rootfs to use the new mount API")
+Reviewed-by: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
+Reported-by: Seth Jenkins <sethjenkins@google.com>
+Message-Id: <20230801-vfs-fs_context-uidgid-v1-1-daf46a050bbf@kernel.org>
 Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/reiserfs/journal.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ mm/shmem.c | 28 ++++++++++++++++++++++++----
+ 1 file changed, 24 insertions(+), 4 deletions(-)
 
-diff --git a/fs/reiserfs/journal.c b/fs/reiserfs/journal.c
-index 479aa4a57602f..015bfe4e45241 100644
---- a/fs/reiserfs/journal.c
-+++ b/fs/reiserfs/journal.c
-@@ -2326,7 +2326,7 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	int i, j;
+diff --git a/mm/shmem.c b/mm/shmem.c
+index d963c747dabca..79a998b38ac85 100644
+--- a/mm/shmem.c
++++ b/mm/shmem.c
+@@ -3641,6 +3641,8 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
+ 	unsigned long long size;
+ 	char *rest;
+ 	int opt;
++	kuid_t kuid;
++	kgid_t kgid;
  
- 	bh = __getblk(dev, block, bufsize);
--	if (buffer_uptodate(bh))
-+	if (!bh || buffer_uptodate(bh))
- 		return (bh);
- 
- 	if (block + BUFNR > max_block) {
-@@ -2336,6 +2336,8 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	j = 1;
- 	for (i = 1; i < blocks; i++) {
- 		bh = __getblk(dev, block + i, bufsize);
-+		if (!bh)
-+			break;
- 		if (buffer_uptodate(bh)) {
- 			brelse(bh);
- 			break;
+ 	opt = fs_parse(fc, shmem_fs_parameters, param, &result);
+ 	if (opt < 0)
+@@ -3676,14 +3678,32 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
+ 		ctx->mode = result.uint_32 & 07777;
+ 		break;
+ 	case Opt_uid:
+-		ctx->uid = make_kuid(current_user_ns(), result.uint_32);
+-		if (!uid_valid(ctx->uid))
++		kuid = make_kuid(current_user_ns(), result.uint_32);
++		if (!uid_valid(kuid))
+ 			goto bad_value;
++
++		/*
++		 * The requested uid must be representable in the
++		 * filesystem's idmapping.
++		 */
++		if (!kuid_has_mapping(fc->user_ns, kuid))
++			goto bad_value;
++
++		ctx->uid = kuid;
+ 		break;
+ 	case Opt_gid:
+-		ctx->gid = make_kgid(current_user_ns(), result.uint_32);
+-		if (!gid_valid(ctx->gid))
++		kgid = make_kgid(current_user_ns(), result.uint_32);
++		if (!gid_valid(kgid))
+ 			goto bad_value;
++
++		/*
++		 * The requested gid must be representable in the
++		 * filesystem's idmapping.
++		 */
++		if (!kgid_has_mapping(fc->user_ns, kgid))
++			goto bad_value;
++
++		ctx->gid = kgid;
+ 		break;
+ 	case Opt_huge:
+ 		ctx->huge = result.uint_32;
 -- 
 2.40.1
 
