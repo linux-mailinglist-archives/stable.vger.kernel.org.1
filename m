@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EFF0279BA19
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3745F79BFD1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241170AbjIKWj4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:39:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34690 "EHLO
+        id S1344648AbjIKVOj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240547AbjIKOrB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:01 -0400
+        with ESMTP id S239220AbjIKOOu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ED07B106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3AD53C433C7;
-        Mon, 11 Sep 2023 14:46:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8AF24CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CE968C433C8;
+        Mon, 11 Sep 2023 14:14:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443616;
-        bh=PEjxvchKhZr18vEW16DxTW/vdY87UFrKg9G7yWtnPiA=;
+        s=korg; t=1694441686;
+        bh=ElddiEsio7muf1ZcC/KOEeCvtK9EVcMfY514OmJHmAI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aqqEOqSfYDmqCBFNz730AJvaXSZGH/M7efKUEd3aT7FDNaLxkleDDCw+A0lI3D1LP
-         GMvfidzIgERlyhHzcp5WWUX7KXViPJTH3iELrlv0VDhKQfn6see/4PXJgbRh9ZjXyV
-         1UoPqOYLThCWWAXIhsiTDUvyRsocv7GhvHvQWI1I=
+        b=x8SJYgbr5AGpFcgSiFiCPIGbRyw2/r6t4oxEZB0nEiD48j+RCujfvSxYQSUcB0ijC
+         W8901AaGw4hXOWgkDsZ+4Bn/9BOej/UMM+SsaL1cmQ5xwar/2wKyr5nlh9q9yO5KOs
+         D8a0cEeRguNoFlZxDpNnx0HNhC3wU2VQNKlIIGSs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Taniya Das <quic_tdas@quicinc.com>,
-        Imran Shaik <quic_imrashai@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Rob Clark <robdclark@chromium.org>,
+        Randy Dunlap <rdunlap@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 440/737] clk: qcom: gcc-qdu1000: Fix gcc_pcie_0_pipe_clk_src clock handling
-Date:   Mon, 11 Sep 2023 15:44:59 +0200
-Message-ID: <20230911134702.889725707@linuxfoundation.org>
+Subject: [PATCH 6.5 501/739] dma-buf/sync_file: Fix docs syntax
+Date:   Mon, 11 Sep 2023 15:45:00 +0200
+Message-ID: <20230911134705.129731507@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,82 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Imran Shaik <quic_imrashai@quicinc.com>
+From: Rob Clark <robdclark@chromium.org>
 
-[ Upstream commit b311f5d3c4749259043a9a458a8db07915210142 ]
+[ Upstream commit 05d56d8079d510a2994039470f65bea85f0075ee ]
 
-Fix the gcc pcie pipe clock handling as per the clk_regmap_phy_mux_ops
-implementation to let the clock framework automatically park the clock
-at XO when the clock is switched off and restore the parent when the
-clock is switched on.
+Fixes the warning:
 
-Fixes: 1c9efb0bc040 ("clk: qcom: Add QDU1000 and QRU1000 GCC support")
-Co-developed-by: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Taniya Das <quic_tdas@quicinc.com>
-Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230803105741.2292309-3-quic_imrashai@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+  include/uapi/linux/sync_file.h:77: warning: Function parameter or member 'num_fences' not described in 'sync_file_info'
+
+Fixes: 2d75c88fefb2 ("staging/android: refactor SYNC IOCTLs")
+Signed-off-by: Rob Clark <robdclark@chromium.org>
+Reviewed-by: Randy Dunlap <rdunlap@infradead.org>
+Link: https://lore.kernel.org/r/20230724145000.125880-1-robdclark@gmail.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-qdu1000.c | 23 ++++++-----------------
- 1 file changed, 6 insertions(+), 17 deletions(-)
+ include/uapi/linux/sync_file.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
-index 5051769ad90c7..c00d26a3e6df5 100644
---- a/drivers/clk/qcom/gcc-qdu1000.c
-+++ b/drivers/clk/qcom/gcc-qdu1000.c
-@@ -1,6 +1,6 @@
- // SPDX-License-Identifier: GPL-2.0-only
- /*
-- * Copyright (c) 2022, Qualcomm Innovation Center, Inc. All rights reserved.
-+ * Copyright (c) 2022-2023, Qualcomm Innovation Center, Inc. All rights reserved.
-  */
- 
- #include <linux/clk-provider.h>
-@@ -370,16 +370,6 @@ static const struct clk_parent_data gcc_parent_data_6[] = {
- 	{ .index = DT_TCXO_IDX },
- };
- 
--static const struct parent_map gcc_parent_map_7[] = {
--	{ P_PCIE_0_PIPE_CLK, 0 },
--	{ P_BI_TCXO, 2 },
--};
--
--static const struct clk_parent_data gcc_parent_data_7[] = {
--	{ .index = DT_PCIE_0_PIPE_CLK_IDX },
--	{ .index = DT_TCXO_IDX },
--};
--
- static const struct parent_map gcc_parent_map_8[] = {
- 	{ P_BI_TCXO, 0 },
- 	{ P_GCC_GPLL0_OUT_MAIN, 1 },
-@@ -439,16 +429,15 @@ static struct clk_regmap_mux gcc_pcie_0_phy_aux_clk_src = {
- 	},
- };
- 
--static struct clk_regmap_mux gcc_pcie_0_pipe_clk_src = {
-+static struct clk_regmap_phy_mux gcc_pcie_0_pipe_clk_src = {
- 	.reg = 0x9d064,
--	.shift = 0,
--	.width = 2,
--	.parent_map = gcc_parent_map_7,
- 	.clkr = {
- 		.hw.init = &(const struct clk_init_data) {
- 			.name = "gcc_pcie_0_pipe_clk_src",
--			.parent_data = gcc_parent_data_7,
--			.num_parents = ARRAY_SIZE(gcc_parent_data_7),
-+			.parent_data = &(const struct clk_parent_data){
-+				.index = DT_PCIE_0_PIPE_CLK_IDX,
-+			},
-+			.num_parents = 1,
- 			.ops = &clk_regmap_phy_mux_ops,
- 		},
- 	},
+diff --git a/include/uapi/linux/sync_file.h b/include/uapi/linux/sync_file.h
+index 7e42a5b7558bf..ff0a931833e25 100644
+--- a/include/uapi/linux/sync_file.h
++++ b/include/uapi/linux/sync_file.h
+@@ -56,7 +56,7 @@ struct sync_fence_info {
+  * @name:	name of fence
+  * @status:	status of fence. 1: signaled 0:active <0:error
+  * @flags:	sync_file_info flags
+- * @num_fences	number of fences in the sync_file
++ * @num_fences:	number of fences in the sync_file
+  * @pad:	padding for 64-bit alignment, should always be zero
+  * @sync_fence_info: pointer to array of struct &sync_fence_info with all
+  *		 fences in the sync_file
 -- 
 2.40.1
 
