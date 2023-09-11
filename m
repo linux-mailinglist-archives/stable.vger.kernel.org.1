@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DCA879B4E9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 85DC079AFDB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348907AbjIKVbk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51652 "EHLO
+        id S1349239AbjIKVcz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50696 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239166AbjIKONb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:31 -0400
+        with ESMTP id S241700AbjIKPMV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E775DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4558C433C8;
-        Mon, 11 Sep 2023 14:13:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8A3BFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35F63C433C7;
+        Mon, 11 Sep 2023 15:12:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441607;
-        bh=BXmD4Z4TiQ3D1J5g2f4JPlplX7YNEk/33J91fxB/kBU=;
+        s=korg; t=1694445136;
+        bh=QrPimQbrYNmYBLNuTBqMCeCwghgw9+VOcN+ZwzAQaqY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YsWeE355tcps1HBghkYxpvYLldY/3MxAKxVyydMCRF2fuHEHy4H5NsbgQ2xCtukmb
-         rGqT/OjvQDiHsAxLsSSm9o+YtIT4iEBwN5Zu5/RDow/XlQnp5LNvRXCzwQbCPWGe6h
-         YVBx1MpMtMiX+BoTtGY2q3fR934etmAfRC0yWasI=
+        b=nJ08X7WT/idpLGrviCsmGWjRQqEw+LthYHWmctFocOBvpG4SYFar5uAqTRZp+naRa
+         i0c8q/yYKIDVB24QOD1CXtneWyt7kQWlJP8sVawZnE8bsu6tyx8bB/tYbI/53ui5V6
+         3tk8v+teH3ScsFH1ZIZ6kz240VaROJt4Qfz7p9qY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-        Ming Qian <ming.qian@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 473/739] media: amphion: fix UNINIT issues reported by coverity
+Subject: [PATCH 6.1 239/600] arm64: dts: qcom: pmk8350: fix ADC-TM compatible string
 Date:   Mon, 11 Sep 2023 15:44:32 +0200
-Message-ID: <20230911134704.357217878@linuxfoundation.org>
+Message-ID: <20230911134640.656369761@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,83 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit c224d0497a31ea2d173e1ea16af308945bff9037 ]
+[ Upstream commit 435a73d7377ceb29c1a22d2711dd85c831b40c45 ]
 
-using uninitialized value may introduce risk
+The commit b2de43136058 ("arm64: dts: qcom: pmk8350: Add peripherals for
+pmk8350") for the ADC TM (thermal monitoring device) have used the
+compatible string from the vendor kernel ("qcom,adc-tm7"). Use the
+proper compatible string that is defined in the upstream kernel
+("qcom,spmi-adc-tm5-gen2").
 
-Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: b2de43136058 ("arm64: dts: qcom: pmk8350: Add peripherals for pmk8350")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230707123027.1510723-6-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_msgs.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ arch/arm64/boot/dts/qcom/pmk8350.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_msgs.c b/drivers/media/platform/amphion/vpu_msgs.c
-index f9eb488d1b5e2..d0ead051f7d18 100644
---- a/drivers/media/platform/amphion/vpu_msgs.c
-+++ b/drivers/media/platform/amphion/vpu_msgs.c
-@@ -32,7 +32,7 @@ static void vpu_session_handle_start_done(struct vpu_inst *inst, struct vpu_rpc_
+diff --git a/arch/arm64/boot/dts/qcom/pmk8350.dtsi b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+index f0d256d99e62e..29cfb6fca9bf7 100644
+--- a/arch/arm64/boot/dts/qcom/pmk8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
+@@ -44,7 +44,7 @@ pmk8350_vadc: adc@3100 {
+ 		};
  
- static void vpu_session_handle_mem_request(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
- {
--	struct vpu_pkt_mem_req_data req_data;
-+	struct vpu_pkt_mem_req_data req_data = { 0 };
- 
- 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&req_data);
- 	vpu_trace(inst->dev, "[%d] %d:%d %d:%d %d:%d\n",
-@@ -80,7 +80,7 @@ static void vpu_session_handle_resolution_change(struct vpu_inst *inst, struct v
- 
- static void vpu_session_handle_enc_frame_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
- {
--	struct vpu_enc_pic_info info;
-+	struct vpu_enc_pic_info info = { 0 };
- 
- 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&info);
- 	dev_dbg(inst->dev, "[%d] frame id = %d, wptr = 0x%x, size = %d\n",
-@@ -90,7 +90,7 @@ static void vpu_session_handle_enc_frame_done(struct vpu_inst *inst, struct vpu_
- 
- static void vpu_session_handle_frame_request(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
- {
--	struct vpu_fs_info fs;
-+	struct vpu_fs_info fs = { 0 };
- 
- 	vpu_iface_unpack_msg_data(inst->core, pkt, &fs);
- 	call_void_vop(inst, event_notify, VPU_MSG_ID_FRAME_REQ, &fs);
-@@ -107,7 +107,7 @@ static void vpu_session_handle_frame_release(struct vpu_inst *inst, struct vpu_r
- 		info.type = inst->out_format.type;
- 		call_void_vop(inst, buf_done, &info);
- 	} else if (inst->core->type == VPU_CORE_TYPE_DEC) {
--		struct vpu_fs_info fs;
-+		struct vpu_fs_info fs = { 0 };
- 
- 		vpu_iface_unpack_msg_data(inst->core, pkt, &fs);
- 		call_void_vop(inst, event_notify, VPU_MSG_ID_FRAME_RELEASE, &fs);
-@@ -122,7 +122,7 @@ static void vpu_session_handle_input_done(struct vpu_inst *inst, struct vpu_rpc_
- 
- static void vpu_session_handle_pic_decoded(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
- {
--	struct vpu_dec_pic_info info;
-+	struct vpu_dec_pic_info info = { 0 };
- 
- 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&info);
- 	call_void_vop(inst, get_one_frame, &info);
-@@ -130,7 +130,7 @@ static void vpu_session_handle_pic_decoded(struct vpu_inst *inst, struct vpu_rpc
- 
- static void vpu_session_handle_pic_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
- {
--	struct vpu_dec_pic_info info;
-+	struct vpu_dec_pic_info info = { 0 };
- 	struct vpu_frame_info frame;
- 
- 	memset(&frame, 0, sizeof(frame));
+ 		pmk8350_adc_tm: adc-tm@3400 {
+-			compatible = "qcom,adc-tm7";
++			compatible = "qcom,spmi-adc-tm5-gen2";
+ 			reg = <0x3400>;
+ 			interrupts = <0x0 0x34 0x0 IRQ_TYPE_EDGE_RISING>;
+ 			#address-cells = <1>;
 -- 
 2.40.1
 
