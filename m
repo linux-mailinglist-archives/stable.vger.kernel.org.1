@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 88CA479B2CA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0F90079B538
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244314AbjIKVIN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42952 "EHLO
+        id S235968AbjIKWd6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:33:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35260 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238822AbjIKOFm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:42 -0400
+        with ESMTP id S241228AbjIKPEh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 58E7FCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A2029C433C7;
-        Mon, 11 Sep 2023 14:05:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C705B125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D35C433C7;
+        Mon, 11 Sep 2023 15:04:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441138;
-        bh=VvUOTrbQQPycn5pjl9ipF8pwAnqHRWW8D87Y27N6a1s=;
+        s=korg; t=1694444671;
+        bh=pdP9r4lYMpW82qrC38bgOaH3K3Jr4WxbtUEkAUpOv3A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CpbPzbOaKcMNsK5x8tY9JHF86oy4flPXe0YoMAgwyXFK3N/AR8rBC7tD95SH2h6Fo
-         7px9wxXhQkFin4YM2Kn3UmxP/KZwGFfKKx+gSjmvD/Kn/7PZAVBglq0rE2kfYd9hHk
-         mUfitTf3SHWH9221T3DSvYTLSqSArdX8n6rQXdlQ=
+        b=COask8eH+wMWA6OpVKp+LTe+DnsREZ1Jg64rmJTwwr6QBjM7jrZEDit8mS1TSpn7u
+         iyyQUJQ+oTvrOigXakWd6Fb6BEx+bZpn6/GHJi4nCXjerZcomg06rCWzxwl26inoRc
+         8d1pomkBtu8B2YqvxPxlV/Z9ScT3zz+TVmGaViOo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chen Jiahao <chenjiahao16@huawei.com>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 308/739] soc: qcom: smem: Fix incompatible types in comparison
+        patches@lists.linux.dev, "Gong, Sishuai" <sishuai@purdue.edu>,
+        Takashi Iwai <tiwai@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 074/600] ALSA: seq: oss: Fix racy open/close of MIDI devices
 Date:   Mon, 11 Sep 2023 15:41:47 +0200
-Message-ID: <20230911134659.722436957@linuxfoundation.org>
+Message-ID: <20230911134635.802215959@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +49,131 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen Jiahao <chenjiahao16@huawei.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 5f908786cf44fcb397cfe0f322ef2f41b0909e2a ]
+[ Upstream commit 297224fc0922e7385573a30c29ffdabb67f27b7d ]
 
-This patch fixes the following sparse error:
+Although snd_seq_oss_midi_open() and snd_seq_oss_midi_close() can be
+called concurrently from different code paths, we have no proper data
+protection against races.  Introduce open_mutex to each seq_oss_midi
+object for avoiding the races.
 
-drivers/soc/qcom/smem.c:738:30: error: incompatible types in comparison expression (different add        ress spaces):
-drivers/soc/qcom/smem.c:738:30:    void *
-drivers/soc/qcom/smem.c:738:30:    void [noderef] __iomem *
-
-In addr_in_range(), "base" is of type void __iomem *, converting
-void *addr to the same type to fix above sparse error.
-
-Fixes: 20bb6c9de1b7 ("soc: qcom: smem: map only partitions used by local HOST")
-Signed-off-by: Chen Jiahao <chenjiahao16@huawei.com>
-Link: https://lore.kernel.org/r/20230801094807.4146779-1-chenjiahao16@huawei.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Reported-by: "Gong, Sishuai" <sishuai@purdue.edu>
+Closes: https://lore.kernel.org/r/7DC9AF71-F481-4ABA-955F-76C535661E33@purdue.edu
+Link: https://lore.kernel.org/r/20230612125533.27461-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/smem.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ sound/core/seq/oss/seq_oss_midi.c | 35 +++++++++++++++++++------------
+ 1 file changed, 22 insertions(+), 13 deletions(-)
 
-diff --git a/drivers/soc/qcom/smem.c b/drivers/soc/qcom/smem.c
-index b0d59e815c3b7..a516b8b5efac9 100644
---- a/drivers/soc/qcom/smem.c
-+++ b/drivers/soc/qcom/smem.c
-@@ -724,7 +724,7 @@ EXPORT_SYMBOL_GPL(qcom_smem_get_free_space);
+diff --git a/sound/core/seq/oss/seq_oss_midi.c b/sound/core/seq/oss/seq_oss_midi.c
+index 07efb38f58ac1..f2940b29595f0 100644
+--- a/sound/core/seq/oss/seq_oss_midi.c
++++ b/sound/core/seq/oss/seq_oss_midi.c
+@@ -37,6 +37,7 @@ struct seq_oss_midi {
+ 	struct snd_midi_event *coder;	/* MIDI event coder */
+ 	struct seq_oss_devinfo *devinfo;	/* assigned OSSseq device */
+ 	snd_use_lock_t use_lock;
++	struct mutex open_mutex;
+ };
  
- static bool addr_in_range(void __iomem *base, size_t size, void *addr)
- {
--	return base && (addr >= base && addr < base + size);
-+	return base && ((void __iomem *)addr >= base && (void __iomem *)addr < base + size);
+ 
+@@ -172,6 +173,7 @@ snd_seq_oss_midi_check_new_port(struct snd_seq_port_info *pinfo)
+ 	mdev->flags = pinfo->capability;
+ 	mdev->opened = 0;
+ 	snd_use_lock_init(&mdev->use_lock);
++	mutex_init(&mdev->open_mutex);
+ 
+ 	/* copy and truncate the name of synth device */
+ 	strscpy(mdev->name, pinfo->name, sizeof(mdev->name));
+@@ -322,15 +324,17 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
+ 	int perm;
+ 	struct seq_oss_midi *mdev;
+ 	struct snd_seq_port_subscribe subs;
++	int err;
+ 
+ 	mdev = get_mididev(dp, dev);
+ 	if (!mdev)
+ 		return -ENODEV;
+ 
++	mutex_lock(&mdev->open_mutex);
+ 	/* already used? */
+ 	if (mdev->opened && mdev->devinfo != dp) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return -EBUSY;
++		err = -EBUSY;
++		goto unlock;
+ 	}
+ 
+ 	perm = 0;
+@@ -340,14 +344,14 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
+ 		perm |= PERM_READ;
+ 	perm &= mdev->flags;
+ 	if (perm == 0) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return -ENXIO;
++		err = -ENXIO;
++		goto unlock;
+ 	}
+ 
+ 	/* already opened? */
+ 	if ((mdev->opened & perm) == perm) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return 0;
++		err = 0;
++		goto unlock;
+ 	}
+ 
+ 	perm &= ~mdev->opened;
+@@ -372,13 +376,17 @@ snd_seq_oss_midi_open(struct seq_oss_devinfo *dp, int dev, int fmode)
+ 	}
+ 
+ 	if (! mdev->opened) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return -ENXIO;
++		err = -ENXIO;
++		goto unlock;
+ 	}
+ 
+ 	mdev->devinfo = dp;
++	err = 0;
++
++ unlock:
++	mutex_unlock(&mdev->open_mutex);
+ 	snd_use_lock_free(&mdev->use_lock);
+-	return 0;
++	return err;
  }
  
- /**
+ /*
+@@ -393,10 +401,9 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
+ 	mdev = get_mididev(dp, dev);
+ 	if (!mdev)
+ 		return -ENODEV;
+-	if (! mdev->opened || mdev->devinfo != dp) {
+-		snd_use_lock_free(&mdev->use_lock);
+-		return 0;
+-	}
++	mutex_lock(&mdev->open_mutex);
++	if (!mdev->opened || mdev->devinfo != dp)
++		goto unlock;
+ 
+ 	memset(&subs, 0, sizeof(subs));
+ 	if (mdev->opened & PERM_WRITE) {
+@@ -415,6 +422,8 @@ snd_seq_oss_midi_close(struct seq_oss_devinfo *dp, int dev)
+ 	mdev->opened = 0;
+ 	mdev->devinfo = NULL;
+ 
++ unlock:
++	mutex_unlock(&mdev->open_mutex);
+ 	snd_use_lock_free(&mdev->use_lock);
+ 	return 0;
+ }
 -- 
 2.40.1
 
