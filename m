@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 902B879BE59
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B757B79BEB5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241633AbjIKVRq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:17:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34254 "EHLO
+        id S233719AbjIKWs2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:48:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239432AbjIKOU1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:27 -0400
+        with ESMTP id S240742AbjIKOwh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FC24DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 383FAC433C8;
-        Mon, 11 Sep 2023 14:20:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD0D0118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ECEF8C433C8;
+        Mon, 11 Sep 2023 14:52:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442022;
-        bh=DUXz/J4vrzBx1nF0Hn/nCNSrZz8+RQOp7ptd7JrsGr0=;
+        s=korg; t=1694443952;
+        bh=1woqxBXQZISVvj6jkOdEA+MbJFqRdKVI7QI23C7L2xI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hud4CmBq2yGkIn/ZRnIRbMejFig1sobdJsWKdIMcGfZ2U72l84FVqPTFSkKSqUASj
-         EakdCWmDVBJDfcdTCkU9VOXwNI0e8KC3X8qMxiBBvsSTXcN/QLeM/2x07l+3DFsEOy
-         L6F2BvDs76/38E1ZnkeWQVZJi5CvNS/sj/7kMLS8=
+        b=R71vOJ6lzatexPfMYgdJfWBTv1f1Mv5hkYbRXgs+k0YlSypdB8qD0oyvKY41Jh7AV
+         TCu/Am6HV/BK5XGLElqXNCxtj47iF61YaUDnOqKaRjAXYjT3h6vNRpxMWzyvf7HOWX
+         FZhnzvRxH3STmtKEIDb0mbH0+ahWbFEPoaQDdFl8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
-        Linus Walleij <linus.walleij@linaro.org>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 619/739] dmaengine: ste_dma40: Add missing IRQ check in d40_probe
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 559/737] USB: gadget: f_mass_storage: Fix unused variable warning
 Date:   Mon, 11 Sep 2023 15:46:58 +0200
-Message-ID: <20230911134708.391358649@linuxfoundation.org>
+Message-ID: <20230911134706.166117530@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: ruanjinjie <ruanjinjie@huawei.com>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-[ Upstream commit c05ce6907b3d6e148b70f0bb5eafd61dcef1ddc1 ]
+[ Upstream commit 55c3e571d2a0aabef4f1354604443f1c415d2e85 ]
 
-Check for the return value of platform_get_irq(): if no interrupt
-is specified, it wouldn't make sense to call request_irq().
+Fix a "variable set but not used" warning in f_mass_storage.c.  rc is
+used if	verbose debugging is enabled but not otherwise.
 
-Fixes: 8d318a50b3d7 ("DMAENGINE: Support for ST-Ericssons DMA40 block v3")
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-Reviewed-by: Linus Walleij <linus.walleij@linaro.org>
-Link: https://lore.kernel.org/r/20230724144108.2582917-1-ruanjinjie@huawei.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Fixes: d5e2b67aae79 ("USB: g_mass_storage: template f_mass_storage.c file created")
+Link: https://lore.kernel.org/r/cfed16c7-aa46-494b-ba84-b0e0dc99be3a@rowland.harvard.edu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/ste_dma40.c | 4 ++++
- 1 file changed, 4 insertions(+)
+ drivers/usb/gadget/function/f_mass_storage.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/dma/ste_dma40.c b/drivers/dma/ste_dma40.c
-index 825001bde42c4..89e82508c1339 100644
---- a/drivers/dma/ste_dma40.c
-+++ b/drivers/dma/ste_dma40.c
-@@ -3590,6 +3590,10 @@ static int __init d40_probe(struct platform_device *pdev)
- 	spin_lock_init(&base->lcla_pool.lock);
+diff --git a/drivers/usb/gadget/function/f_mass_storage.c b/drivers/usb/gadget/function/f_mass_storage.c
+index 3a30feb47073f..e927d82f0890d 100644
+--- a/drivers/usb/gadget/function/f_mass_storage.c
++++ b/drivers/usb/gadget/function/f_mass_storage.c
+@@ -927,7 +927,7 @@ static void invalidate_sub(struct fsg_lun *curlun)
+ {
+ 	struct file	*filp = curlun->filp;
+ 	struct inode	*inode = file_inode(filp);
+-	unsigned long	rc;
++	unsigned long __maybe_unused	rc;
  
- 	base->irq = platform_get_irq(pdev, 0);
-+	if (base->irq < 0) {
-+		ret = base->irq;
-+		goto destroy_cache;
-+	}
- 
- 	ret = request_irq(base->irq, d40_handle_interrupt, 0, D40_NAME, base);
- 	if (ret) {
+ 	rc = invalidate_mapping_pages(inode->i_mapping, 0, -1);
+ 	VLDBG(curlun, "invalidate_mapping_pages -> %ld\n", rc);
 -- 
 2.40.1
 
