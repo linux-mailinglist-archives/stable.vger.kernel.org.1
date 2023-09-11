@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4965E79B49B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16BB579B2C6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241182AbjIKVG6 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:06:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41322 "EHLO
+        id S1376411AbjIKWTb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241084AbjIKPBe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:34 -0400
+        with ESMTP id S238685AbjIKOCp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:02:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76830125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BCCC7C433C9;
-        Mon, 11 Sep 2023 15:01:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2149CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 451B2C433C9;
+        Mon, 11 Sep 2023 14:02:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444490;
-        bh=1UGwEQrFE3rUPrY26es/KUVUgjqF1Vl5uy50RnZ2Gls=;
+        s=korg; t=1694440961;
+        bh=KacDDA+5vXT6yIpwAFwkOjwQRhGz2SI/W8pAputJ2lI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1eN+6AU+iD7MqcxR0XhDNhJiA5ghOGlOz81Nh+0qo7BvUpERwWT+eeMH1V1tKOkFO
-         7upGGmBlhBc9vV2c0RyTyoet2OvqW3hZhY7uy6jbONCPEJVI4VmuEV9ANJLtmOhn39
-         bbvugaSFObNyHoDMYj4S7UX+ihFmEqtFh4DI8hbw=
+        b=zWGsg6VQwBJzmmRTQpJp6ArRX3iyVdsIXCDC3+NzL7q47Gy+L9b1NQ/Er5YLku5yh
+         ewNX0lhRnmz9YhUhqcxojPakXZ1UlD7cveF1hD9MX9hH38iGnzpPOWXF/i2cxGyhQN
+         EJ+IgH6taqVA7yy5fX63kGHY5skMnveGsLddyz5U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Alexander Stein <alexander.stein@ew.tq-group.com>,
-        ming_qian <ming.qian@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 011/600] media: amphion: use dev_err_probe
-Date:   Mon, 11 Sep 2023 15:40:44 +0200
-Message-ID: <20230911134633.951087821@linuxfoundation.org>
+Subject: [PATCH 6.5 246/739] ARM: dts: BCM53573: Drop nonexistent "default-off" LED trigger
+Date:   Mon, 11 Sep 2023 15:40:45 +0200
+Message-ID: <20230911134658.030947566@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,46 +52,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Stein <alexander.stein@ew.tq-group.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 517f088385e1b8015606143e6212cb30f8714070 ]
+[ Upstream commit be7e1e5b0f67c58ec4be0a54db23b6a4fa6e2116 ]
 
-This simplifies the code and silences -517 error messages. Also
-the reason is listed in /sys/kernel/debug/devices_deferred.
+There is no such trigger documented or implemented in Linux. It was a
+copy & paste mistake.
 
-Signed-off-by: Alexander Stein <alexander.stein@ew.tq-group.com>
-Reviewed-by: ming_qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+This fixes:
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: leds: led-wlan:linux,default-trigger: 'oneOf' conditional failed, one must be fixed:
+        'default-off' is not one of ['backlight', 'default-on', 'heartbeat', 'disk-activity', 'disk-read', 'disk-write', 'timer', 'pattern', 'audio-micmute', 'audio-mute', 'bluetooth-power', 'flash', 'kbd-capslock', 'mtd', 'nand-disk', 'none', 'torch', 'usb-gadget', 'usb-host', 'usbport']
+        'default-off' does not match '^cpu[0-9]*$'
+        'default-off' does not match '^hci[0-9]+-power$'
+        'default-off' does not match '^mmc[0-9]+$'
+        'default-off' does not match '^phy[0-9]+tx$'
+        From schema: Documentation/devicetree/bindings/leds/leds-gpio.yaml
+
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230707114004.2740-1-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_mbox.c | 9 ++++-----
- 1 file changed, 4 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts | 1 -
+ arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-810.dts  | 2 --
+ 2 files changed, 3 deletions(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_mbox.c b/drivers/media/platform/amphion/vpu_mbox.c
-index bf759eb2fd46d..b6d5b4844f672 100644
---- a/drivers/media/platform/amphion/vpu_mbox.c
-+++ b/drivers/media/platform/amphion/vpu_mbox.c
-@@ -46,11 +46,10 @@ static int vpu_mbox_request_channel(struct device *dev, struct vpu_mbox *mbox)
- 	cl->rx_callback = vpu_mbox_rx_callback;
+diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+index 0734aa249b8e0..b9dd508444198 100644
+--- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
++++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dts
+@@ -26,7 +26,6 @@ leds {
+ 		led-wlan {
+ 			label = "bcm53xx:blue:wlan";
+ 			gpios = <&chipcommon 10 GPIO_ACTIVE_LOW>;
+-			linux,default-trigger = "default-off";
+ 		};
  
- 	ch = mbox_request_channel_byname(cl, mbox->name);
--	if (IS_ERR(ch)) {
--		dev_err(dev, "Failed to request mbox chan %s, ret : %ld\n",
--			mbox->name, PTR_ERR(ch));
--		return PTR_ERR(ch);
--	}
-+	if (IS_ERR(ch))
-+		return dev_err_probe(dev, PTR_ERR(ch),
-+				     "Failed to request mbox chan %s\n",
-+				     mbox->name);
+ 		led-system {
+diff --git a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-810.dts b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-810.dts
+index e6fb6cbe69633..cb22ae2a02e54 100644
+--- a/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-810.dts
++++ b/arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-810.dts
+@@ -26,7 +26,6 @@ leds-0 {
+ 		led-5ghz {
+ 			label = "bcm53xx:blue:5ghz";
+ 			gpios = <&chipcommon 11 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "default-off";
+ 		};
  
- 	mbox->ch = ch;
- 	return 0;
+ 		led-system {
+@@ -42,7 +41,6 @@ leds-1 {
+ 		led-2ghz {
+ 			label = "bcm53xx:blue:2ghz";
+ 			gpios = <&pcie0_chipcommon 3 GPIO_ACTIVE_HIGH>;
+-			linux,default-trigger = "default-off";
+ 		};
+ 	};
+ 
 -- 
 2.40.1
 
