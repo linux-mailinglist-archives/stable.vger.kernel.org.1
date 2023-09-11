@@ -2,68 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C073F79BCA1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B92979B838
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343965AbjIKVNB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53044 "EHLO
+        id S1344486AbjIKVOK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54480 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S237891AbjIKNTT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:19:19 -0400
-Received: from mail-ot1-x336.google.com (mail-ot1-x336.google.com [IPv6:2607:f8b0:4864:20::336])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8EBFEB;
-        Mon, 11 Sep 2023 06:19:14 -0700 (PDT)
-Received: by mail-ot1-x336.google.com with SMTP id 46e09a7af769-6bd8639e7e5so3288375a34.1;
-        Mon, 11 Sep 2023 06:19:14 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694438354; x=1695043154; darn=vger.kernel.org;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:from:to:cc:subject:date
-         :message-id:reply-to;
-        bh=dZAzIIMzf1qPGHHQFdp02fgFY8ovyjwDuzAUQe5+kww=;
-        b=Nd4oHenOHfHGXOPqHZ2VN4aefvLQBjoKU1RkgClvfYM54W7ADDIVhdzIZ/VJgEwdMe
-         SebwEdM1UgrzQJhJ73ljlqdq7Hrk6eVyeNHuZUG4E3ALESGq2r4QUI05F7OpYDNw3/08
-         5YojrUBHPVbnJKO3UHWcC30BMboRgj6fy8+6TzDZ47DZgMSmX2culGDDUTwBozrxYQ02
-         QLam8zpEq3R6Ny36DwE0TJT+qTVkJTpjqfu1WfT1Y5NAzt6p3Znd7GMtVJtkG1qPQ/lK
-         HWsSVrnC7Igw84jTsmZAclhpWpDYen/b+4AONJUv+3NxY4g+ZLMj7OUsyajyxGhGEKbA
-         yd0w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694438354; x=1695043154;
-        h=content-transfer-encoding:cc:to:subject:message-id:date:from
-         :in-reply-to:references:mime-version:x-gm-message-state:from:to:cc
-         :subject:date:message-id:reply-to;
-        bh=dZAzIIMzf1qPGHHQFdp02fgFY8ovyjwDuzAUQe5+kww=;
-        b=QRtQk3dyzPKWGlurVUQugdjVldYRHkjtDl+P952qDSJ+Gavskgfc/2I6kWkjOS6JS9
-         tkwSyVzBVxtAPdxGyVOiKURZBMK4uU96IrPhqBsQ51QQH3Ff1870g6ZSTjFzUeRVSwop
-         h582LSdfJC9wd1xt07mQlNd9CjzCHGnpwk2DRFXK6jkQ1TSySgAhkow73x0PlLbRFucg
-         bywZJNZAiuOnHdq+RE4zmSalNC6IvvWNi/xQfVbew8ubKXyQh3ofo+cbgNxAzi/MDIMx
-         UOPfq6uTXSS6wQ2bTBvmzqImZEhD7DXljHqsNWHfdV5wd6t/toohmdurHT02qUv+ZF1P
-         uPRw==
-X-Gm-Message-State: AOJu0YycR1TbyZiUJtZ9gKg+WL+yyL2V22wkBA1LD8ZuPA8qgEizwAeO
-        Yarw+L4p/oNOnt9imINWBf3h9YzIYXGyp4mG1MM=
-X-Google-Smtp-Source: AGHT+IF8qbD6uz9otQZQEGtQsPL1DHxdrKK0dBiU8LawxxVZ1ppEHEbFpM8gS5aweNPYJmJhdCoyODSPMja4C28SAFU=
-X-Received: by 2002:a05:6830:2088:b0:6c0:b3fb:2e65 with SMTP id
- y8-20020a056830208800b006c0b3fb2e65mr10241850otq.16.1694438354175; Mon, 11
- Sep 2023 06:19:14 -0700 (PDT)
+        with ESMTP id S237933AbjIKNXQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:23:16 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD322193;
+        Mon, 11 Sep 2023 06:23:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 20A65C433C7;
+        Mon, 11 Sep 2023 13:23:10 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
+        s=korg; t=1694438591;
+        bh=9c86DeoJl8jPh2wNBHyQjlcM9oD3W5Uj+epx+7R7eJw=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=0MaO5HNviSut7sksefXMT1eJkSifD0wIZPiLIQ9+wNjQcbNLI603jBv4CT38SU5QQ
+         bKUIZtO4FEfTBt5ixp5VUc8pXfOO/We0js9r9O91G2Za1KUxzwn+VB2cWopAyy+FfD
+         DzXNY+yhXmFN3Jv62Oojj+2328hWqQh+X17okHeU=
+Date:   Mon, 11 Sep 2023 15:23:06 +0200
+From:   Greg KH <gregkh@linuxfoundation.org>
+To:     "Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco)" 
+        <deeratho@cisco.com>
+Cc:     "stable@vger.kernel.org" <stable@vger.kernel.org>,
+        "linux-kernel@vger.kernel.org" <linux-kernel@vger.kernel.org>
+Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in
+ btsdio_remove due to race condition
+Message-ID: <2023091116-disband-modulator-e451@gregkh>
+References: <20230906121525.3946250-1-deeratho@cisco.com>
+ <2023091012-python-image-6f03@gregkh>
+ <DM4PR11MB61891026BF701EB7254CECF4C4F2A@DM4PR11MB6189.namprd11.prod.outlook.com>
 MIME-Version: 1.0
-References: <20230906115928.3749928-1-alpic@google.com> <202309090600.NSyo7d2q-lkp@intel.com>
-In-Reply-To: <202309090600.NSyo7d2q-lkp@intel.com>
-From:   Stephen Smalley <stephen.smalley.work@gmail.com>
-Date:   Mon, 11 Sep 2023 09:19:02 -0400
-Message-ID: <CAEjxPJ4GOq3E4zqXbEMKUxqewopyeU5nmUg89rL+P5YsuEBi7A@mail.gmail.com>
-Subject: Re: [PATCH V2] SELinux: Check correct permissions for FS_IOC32_*
-To:     kernel test robot <lkp@intel.com>
-Cc:     Alfred Piccioni <alpic@google.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Eric Paris <eparis@parisplace.org>,
-        oe-kbuild-all@lists.linux.dev, stable@vger.kernel.org,
-        selinux@vger.kernel.org, linux-kernel@vger.kernel.org,
-        LSM List <linux-security-module@vger.kernel.org>
-Content-Type: text/plain; charset="UTF-8"
-Content-Transfer-Encoding: quoted-printable
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <DM4PR11MB61891026BF701EB7254CECF4C4F2A@DM4PR11MB6189.namprd11.prod.outlook.com>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -72,136 +49,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Fri, Sep 8, 2023 at 6:54=E2=80=AFPM kernel test robot <lkp@intel.com> wr=
-ote:
->
-> Hi Alfred,
->
-> kernel test robot noticed the following build errors:
->
-> [auto build test ERROR on 50a510a78287c15cee644f345ef8bac8977986a7]
->
-> url:    https://github.com/intel-lab-lkp/linux/commits/Alfred-Piccioni/SE=
-Linux-Check-correct-permissions-for-FS_IOC32_/20230906-200131
-> base:   50a510a78287c15cee644f345ef8bac8977986a7
-> patch link:    https://lore.kernel.org/r/20230906115928.3749928-1-alpic%4=
-0google.com
-> patch subject: [PATCH V2] SELinux: Check correct permissions for FS_IOC32=
-_*
-> config: i386-debian-10.3 (https://download.01.org/0day-ci/archive/2023090=
-9/202309090600.NSyo7d2q-lkp@intel.com/config)
-> compiler: gcc-12 (Debian 12.2.0-14) 12.2.0
-> reproduce (this is a W=3D1 build): (https://download.01.org/0day-ci/archi=
-ve/20230909/202309090600.NSyo7d2q-lkp@intel.com/reproduce)
->
-> If you fix the issue in a separate patch/commit (i.e. not just a new vers=
-ion of
-> the same patch/commit), kindly add following tags
-> | Reported-by: kernel test robot <lkp@intel.com>
-> | Closes: https://lore.kernel.org/oe-kbuild-all/202309090600.NSyo7d2q-lkp=
-@intel.com/
->
-> All errors (new ones prefixed by >>):
->
->    security/selinux/hooks.c: In function 'selinux_file_ioctl':
-> >> security/selinux/hooks.c:3647:9: error: duplicate case value
->     3647 |         case FS_IOC32_GETFLAGS:
->          |         ^~~~
->    security/selinux/hooks.c:3645:9: note: previously used here
->     3645 |         case FS_IOC_GETFLAGS:
->          |         ^~~~
->    security/selinux/hooks.c:3648:9: error: duplicate case value
->     3648 |         case FS_IOC32_GETVERSION:
->          |         ^~~~
->    security/selinux/hooks.c:3646:9: note: previously used here
->     3646 |         case FS_IOC_GETVERSION:
->          |         ^~~~
->    security/selinux/hooks.c:3654:9: error: duplicate case value
->     3654 |         case FS_IOC32_SETFLAGS:
->          |         ^~~~
->    security/selinux/hooks.c:3652:9: note: previously used here
->     3652 |         case FS_IOC_SETFLAGS:
->          |         ^~~~
->    security/selinux/hooks.c:3655:9: error: duplicate case value
->     3655 |         case FS_IOC32_SETVERSION:
->          |         ^~~~
->    security/selinux/hooks.c:3653:9: note: previously used here
->     3653 |         case FS_IOC_SETVERSION:
->          |         ^~~~
+On Mon, Sep 11, 2023 at 01:17:47PM +0000, Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) wrote:
+> -----Original Message-----
+> From: Greg KH <gregkh@linuxfoundation.org> 
+> Sent: Monday, September 11, 2023 1:56 AM
+> To: Deepak Rathore -X (deeratho - E-INFO CHIPS INC at Cisco) <deeratho@cisco.com>
+> Cc: stable@vger.kernel.org; linux-kernel@vger.kernel.org
+> Subject: Re: [v6.1.52][PATCH] Bluetooth: btsdio: fix use after free bug in btsdio_remove due to race condition
+> 
+> On Wed, Sep 06, 2023 at 05:45:25PM +0530, Deepak Rathore wrote:
+> > From: Zheng Wang <zyytlz.wz@163.com>
+> > 
+> > [ Upstream commit 73f7b171b7c09139eb3c6a5677c200dc1be5f318 ]
+> > 
+> > In btsdio_probe, the data->work is bound with btsdio_work. It will be 
+> > started in btsdio_send_frame.
+> > 
+> > If the btsdio_remove runs with a unfinished work, there may be a race 
+> > condition that hdev is freed but used in btsdio_work. Fix it by 
+> > canceling the work before do cleanup in btsdio_remove.
+> > 
+> > Signed-off-by: Zheng Wang <zyytlz.wz@163.com>
+> > Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+> > Signed-off-by: Deepak Rathore <deeratho@cisco.com>
+> 
+> > Meta-comment, are you SURE you want this applied?  If so, why was it reverted upstream in 6.4 in commit db2bf510bd5d ("Revert "Bluetooth:
+> > btsdio: fix use after free bug in btsdio_remove due to unfinished
+> > work"")
+> 
+> > What testing did you do that determined this should be added to the tree?  How did you come up with just this one commit to be requested to be applied to just this one branch?
+> 
+> > thanks,
+> 
+> > greg k-h-
+> 
+> Hi Greg,
+> 
+> Yes. I am sure that this fix should be applied to v6.1 stable branch. Our CVERT tool reported kernel CVE CVE-2023-1989 on v6.1 kernel and this fix is also missing in upstream kernel v6.1 as well.
 
-Not sure of the right way to fix this while addressing the original
-issue that this patch was intended to fix. Looking in fs/ioctl.c, I
-see that the some FS_IOC32 values are remapped to the corresponding
-FS_IOC values by the compat ioctl syscall entrypoint. Also notice this
-comment there:
+I have no idea what a CVERT tool is, only that you can almost guarantee
+that it will not work well for kernel cves given the way that cves are
+broken for the kernel.  But good luck with it!  :)
 
-        /* RED-PEN how should LSM module know it's handling 32bit? */
-        error =3D security_file_ioctl(f.file, cmd, arg);
-        if (error)
-                goto out;
+> In the reverted upstream commit db2bf510bd5d ("Revert "Bluetooth: btsdio: fix use after free bug in btsdio_remove due to unfinished work""), it is clearly mentioned that this commit db2bf510bd5d is causing null-ptr-def problem and fixed bug by this patch have resolved by another commit 73f7b171b7c0. I have backported same commit 73f7b171b7c0 and sent this for review. Please see the below commit message of commit db2bf510bd5d:
 
-So perhaps this is a defect in LSM that needs to be addressed?
+So, can you verify that the latest 6.1.y released kernel is correct now?
 
+thanks,
 
->
->
-> vim +3647 security/selinux/hooks.c
->
->   3634
->   3635  static int selinux_file_ioctl(struct file *file, unsigned int cmd=
-,
->   3636                                unsigned long arg)
->   3637  {
->   3638          const struct cred *cred =3D current_cred();
->   3639          int error =3D 0;
->   3640
->   3641          switch (cmd) {
->   3642          case FIONREAD:
->   3643          case FIBMAP:
->   3644          case FIGETBSZ:
->   3645          case FS_IOC_GETFLAGS:
->   3646          case FS_IOC_GETVERSION:
-> > 3647          case FS_IOC32_GETFLAGS:
->   3648          case FS_IOC32_GETVERSION:
->   3649                  error =3D file_has_perm(cred, file, FILE__GETATTR=
-);
->   3650                  break;
->   3651
->   3652          case FS_IOC_SETFLAGS:
->   3653          case FS_IOC_SETVERSION:
->   3654          case FS_IOC32_SETFLAGS:
->   3655          case FS_IOC32_SETVERSION:
->   3656                  error =3D file_has_perm(cred, file, FILE__SETATTR=
-);
->   3657                  break;
->   3658
->   3659          /* sys_ioctl() checks */
->   3660          case FIONBIO:
->   3661          case FIOASYNC:
->   3662                  error =3D file_has_perm(cred, file, 0);
->   3663                  break;
->   3664
->   3665          case KDSKBENT:
->   3666          case KDSKBSENT:
->   3667                  error =3D cred_has_capability(cred, CAP_SYS_TTY_C=
-ONFIG,
->   3668                                              CAP_OPT_NONE, true);
->   3669                  break;
->   3670
->   3671          case FIOCLEX:
->   3672          case FIONCLEX:
->   3673                  if (!selinux_policycap_ioctl_skip_cloexec())
->   3674                          error =3D ioctl_has_perm(cred, file, FILE=
-__IOCTL, (u16) cmd);
->   3675                  break;
->   3676
->   3677          /* default case assumes that the command will go
->   3678           * to the file's ioctl() function.
->   3679           */
->   3680          default:
->   3681                  error =3D ioctl_has_perm(cred, file, FILE__IOCTL,=
- (u16) cmd);
->   3682          }
->   3683          return error;
->   3684  }
->   3685
+greg k-h
