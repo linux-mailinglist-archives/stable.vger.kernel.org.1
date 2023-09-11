@@ -2,224 +2,157 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B1C7179B9F8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1024379B941
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348900AbjIKVbh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40364 "EHLO
+        id S1354162AbjIKVwo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:52:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242867AbjIKQ0x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 12:26:53 -0400
-Received: from mail-pl1-x62c.google.com (mail-pl1-x62c.google.com [IPv6:2607:f8b0:4864:20::62c])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8846CCD
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 09:26:48 -0700 (PDT)
-Received: by mail-pl1-x62c.google.com with SMTP id d9443c01a7336-1bf1935f6c2so31743975ad.1
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 09:26:48 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694449607; x=1695054407; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=lB+aT3baRmx1y7qSoRSjMWsuPmySo4646v7ooJkRBN4=;
-        b=vIdwkLSz8P/NBJe+sJogCLXn5L24xlTqOp8RCxX5r6GBFgBne2olX5TeqjCMWtTRMI
-         NSCcruBYVWu+fuyPi3XounKOh0Befoar6aDPDliOcktKWlHfaP+RyQvNdADfbqnCfX6U
-         v4QwCViNSmxV4/aSlcTRbelRLNqr4YmfX2vSBR0NWVNmR8DuN2JpZnZWyJGUKDiBmunW
-         1PX/GCKzId3fIwVcaH2/X+uGvxxDHfBYhYkjn9utNmFCankzz9qYSlYLqS+7TvAfbzb7
-         V03+KtOaURF+pg0OajYFlaAY/Cms1TSpaZ67YJKp917d03bZ4gEy8QW4vaM9SmKZHMND
-         fTOw==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694449607; x=1695054407;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=lB+aT3baRmx1y7qSoRSjMWsuPmySo4646v7ooJkRBN4=;
-        b=lSTGa61vLtGn8Wzzc/8rurz/8uw5YuPThFI1mOdIpaP3G7+EtU1leHXlOTUNZlKWsT
-         s40eyXliWdpYe769IF2RgQWY917WTuKHyoxPD+GTJsoAj++MWWrceKH+BWeFhsAKYQKU
-         808bZ/2KEDK7l6QxEkCTGPQTFb+YWzZuF1OePf20UOCsjFvGSDXgmY1krECCyhTVIQC5
-         Y/a9lCjaFTalvW2TjJTilotQQCCahiif3FCapXSudKBIkd8ejzPaK02V7U2aS6wwlVYd
-         aIFB++pwYhcuQM9aPpj4iYOu+AFjb5JOXt10CSZuStv2DoBFBkbHirJcrak3nh58dSXE
-         3HGQ==
-X-Gm-Message-State: AOJu0YxezaMT+5HbFTG//F5gCNjskPmFZrAizsHFhpC5DD6nz3Yw6cLa
-        Q77IaBUT5fIrpK1jZmgmmBCvT7L2kJ1FMcJtuRw=
-X-Google-Smtp-Source: AGHT+IErJswMVVYL9Q9nZ1131ssXCDAHzYOn3brMaWxg6lLa4T1Q/pHoqfWjtlxgK2g6KhXbk5ZZww==
-X-Received: by 2002:a17:903:32c8:b0:1c3:9928:7b28 with SMTP id i8-20020a17090332c800b001c399287b28mr142638plr.6.1694449607643;
-        Mon, 11 Sep 2023 09:26:47 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id p9-20020a170902e74900b001c3721897fcsm6615598plf.277.2023.09.11.09.26.46
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 09:26:47 -0700 (PDT)
-Message-ID: <64ff3fc7.170a0220.5c634.0e61@mx.google.com>
-Date:   Mon, 11 Sep 2023 09:26:47 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S243083AbjIKQsq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 12:48:46 -0400
+Received: from us-smtp-delivery-124.mimecast.com (us-smtp-delivery-124.mimecast.com [170.10.133.124])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTP id B671BE3
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 09:47:55 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=redhat.com;
+        s=mimecast20190719; t=1694450874;
+        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
+         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
+         in-reply-to:in-reply-to:references:references;
+        bh=SlE5hxD39QAwP7iSa7A3UcuUWfmPcVu6XAYVvHUfNKU=;
+        b=jQJRFw7dlS6CJbiiyVAu3Hm9bh2nhDHvf/3uLiZMNVb9kQsvd0WjSIbxTkDCfcWzHtocdy
+        kVshMD/3Ph/zhmkvwAL9vQbeKwLtc46tO1ibF47lkP4LtTzN8LovcG0hzEqvfZncckWcD0
+        N+a8LEMRS/QTfCm7cqihYdd3dfn29PE=
+Received: from mimecast-mx02.redhat.com (mx-ext.redhat.com [66.187.233.73])
+ by relay.mimecast.com with ESMTP with STARTTLS (version=TLSv1.2,
+ cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ us-mta-642-dKd75GJuOlmpkmOBMSDFWw-1; Mon, 11 Sep 2023 12:47:51 -0400
+X-MC-Unique: dKd75GJuOlmpkmOBMSDFWw-1
+Received: from smtp.corp.redhat.com (int-mx06.intmail.prod.int.rdu2.redhat.com [10.11.54.6])
+        (using TLSv1.2 with cipher ECDHE-RSA-AES256-GCM-SHA384 (256/256 bits))
+        (No client certificate requested)
+        by mimecast-mx02.redhat.com (Postfix) with ESMTPS id 9D42D3C19371;
+        Mon, 11 Sep 2023 16:47:50 +0000 (UTC)
+Received: from optiplex-fbsd (unknown [10.22.48.12])
+        by smtp.corp.redhat.com (Postfix) with ESMTPS id 8A13D2156702;
+        Mon, 11 Sep 2023 16:47:49 +0000 (UTC)
+Date:   Mon, 11 Sep 2023 12:47:47 -0400
+From:   Rafael Aquini <aquini@redhat.com>
+To:     Vlastimil Babka <vbabka@suse.cz>
+Cc:     linux-mm@kvack.org, linux-kernel@vger.kernel.org,
+        Andrew Morton <akpm@linux-foundation.org>,
+        Waiman Long <longman@redhat.com>,
+        Rafael Aquini <raquini@redhat.com>, stable@vger.kernel.org
+Subject: Re: [PATCH] mm/slab_common: fix slab_caches list corruption after
+ kmem_cache_destroy()
+Message-ID: <ZP9Es3zK1XCY7i6-@optiplex-fbsd>
+References: <20230908230649.802560-1-aquini@redhat.com>
+ <afaa8691-0be9-4574-a87d-aab68c7a49b3@suse.cz>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-6.1.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v6.1.52-601-g6e71673725ca
-Subject: stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed,
- 1 warning (v6.1.52-601-g6e71673725ca)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_NONE,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <afaa8691-0be9-4574-a87d-aab68c7a49b3@suse.cz>
+X-Scanned-By: MIMEDefang 3.1 on 10.11.54.6
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_NONE,
+        RCVD_IN_MSPIKE_H3,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,SPF_NONE
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-6.1.y build: 20 builds: 0 failed, 20 passed, 1 warning (v6.=
-1.52-601-g6e71673725ca)
+On Mon, Sep 11, 2023 at 05:06:15PM +0200, Vlastimil Babka wrote:
+> On 9/9/23 01:06, Rafael Aquini wrote:
+> > After the commit in Fixes:, if a module that created a slab cache does not
+> > release all of its allocated objects before destroying the cache (at rmmod
+> > time), we might end up releasing the kmem_cache object without removing it
+> > from the slab_caches list thus corrupting the list as kmem_cache_destroy()
+> > ignores the return value from shutdown_cache(), which in turn never removes
+> > the kmem_cache object from slabs_list in case __kmem_cache_shutdown() fails
+> > to release all of the cache's slabs.
+> > 
+> > This is easily observable on a kernel built with CONFIG_DEBUG_LIST=y
+> > as after that ill release the system will immediately trip on list_add,
+> > or list_del, assertions similar to the one shown below as soon as another
+> > kmem_cache gets created, or destroyed:
+> > 
+> >   [ 1041.213632] list_del corruption. next->prev should be ffff89f596fb5768, but was 52f1e5016aeee75d. (next=ffff89f595a1b268)
+> >   [ 1041.219165] ------------[ cut here ]------------
+> >   [ 1041.221517] kernel BUG at lib/list_debug.c:62!
+> >   [ 1041.223452] invalid opcode: 0000 [#1] PREEMPT SMP PTI
+> >   [ 1041.225408] CPU: 2 PID: 1852 Comm: rmmod Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
+> >   [ 1041.228244] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
+> >   [ 1041.231212] RIP: 0010:__list_del_entry_valid+0xae/0xb0
+> > 
+> > Another quick way to trigger this issue, in a kernel with CONFIG_SLUB=y,
+> > is to set slub_debug to poison the released objects and then just run
+> > cat /proc/slabinfo after removing the module that leaks slab objects,
+> > in which case the kernel will panic:
+> > 
+> >   [   50.954843] general protection fault, probably for non-canonical address 0xa56b6b6b6b6b6b8b: 0000 [#1] PREEMPT SMP PTI
+> >   [   50.961545] CPU: 2 PID: 1495 Comm: cat Kdump: loaded Tainted: G    B   W  OE      6.5.0 #15
+> >   [   50.966808] Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS edk2-20230524-3.fc37 05/24/2023
+> >   [   50.972663] RIP: 0010:get_slabinfo+0x42/0xf0
+> > 
+> > This patch fixes this issue by properly checking shutdown_cache()'s
+> > return value before taking the kmem_cache_release() branch.
+> > 
+> > Fixes: 0495e337b703 ("mm/slab_common: Deleting kobject in kmem_cache_destroy() without holding slab_mutex/cpu_hotplug_lock")
+> > Signed-off-by: Rafael Aquini <aquini@redhat.com>
+> > Cc: stable@vger.kernel.org
+> 
+> Thanks, added to slab.git. Tweaked the code a bit:
+> 
+> https://git.kernel.org/pub/scm/linux/kernel/git/vbabka/slab.git/commit/?h=slab/for-6.6/hotfixes&id=46a9ea6681907a3be6b6b0d43776dccc62cad6cf
+>
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-6.1.y=
-/kernel/v6.1.52-601-g6e71673725ca/
+Thank you, Vlastimil.
 
-Tree: stable-rc
-Branch: linux-6.1.y
-Git Describe: v6.1.52-601-g6e71673725ca
-Git Commit: 6e71673725ca14f97b45c5aeeceb462e3cafc16a
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+ 
+> > ---
+> >  mm/slab_common.c | 13 ++++++++-----
+> >  1 file changed, 8 insertions(+), 5 deletions(-)
+> > 
+> > diff --git a/mm/slab_common.c b/mm/slab_common.c
+> > index cd71f9581e67..31e581dc6e85 100644
+> > --- a/mm/slab_common.c
+> > +++ b/mm/slab_common.c
+> > @@ -479,7 +479,7 @@ void slab_kmem_cache_release(struct kmem_cache *s)
+> >  
+> >  void kmem_cache_destroy(struct kmem_cache *s)
+> >  {
+> > -	int refcnt;
+> > +	int err;
+> >  	bool rcu_set;
+> >  
+> >  	if (unlikely(!s) || !kasan_check_byte(s))
+> > @@ -490,17 +490,20 @@ void kmem_cache_destroy(struct kmem_cache *s)
+> >  
+> >  	rcu_set = s->flags & SLAB_TYPESAFE_BY_RCU;
+> >  
+> > -	refcnt = --s->refcount;
+> > -	if (refcnt)
+> > +	s->refcount--;
+> > +	if (s->refcount) {
+> > +		err = -EBUSY;
+> >  		goto out_unlock;
+> > +	}
+> >  
+> > -	WARN(shutdown_cache(s),
+> > +	err = shutdown_cache(s);
+> > +	WARN(err,
+> >  	     "%s %s: Slab cache still has objects when called from %pS",
+> >  	     __func__, s->name, (void *)_RET_IP_);
+> >  out_unlock:
+> >  	mutex_unlock(&slab_mutex);
+> >  	cpus_read_unlock();
+> > -	if (!refcnt && !rcu_set)
+> > +	if (!err && !rcu_set)
+> >  		kmem_cache_release(s);
+> >  }
+> >  EXPORT_SYMBOL(kmem_cache_destroy);
+> 
+> 
 
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-
-
-Warnings summary:
-
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
