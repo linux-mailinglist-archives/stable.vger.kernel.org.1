@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E226579BC8E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F3E579C04E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240202AbjIKU4U (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:56:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42508 "EHLO
+        id S1345802AbjIKVWX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238519AbjIKN6X (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:23 -0400
+        with ESMTP id S239940AbjIKOb6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DEACD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:19 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC83C433C9;
-        Mon, 11 Sep 2023 13:58:18 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 510EBF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9105FC433C8;
+        Mon, 11 Sep 2023 14:31:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440698;
-        bh=wFz8VkyA+LhA40IUrwxxMX8GkqpRUT5A76CmuDfDnmg=;
+        s=korg; t=1694442712;
+        bh=3WItYjx6EVcy3ON/hR2hdQTFgQO8S8zuOhCJaQQoGCE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CuycfLjaYkxFKFJvdjGaDVI2yvnq6K8werH9NmUsirv5wksdEd/TTB0tHITLo5/m+
-         SiX9/Lot8v7T9+o6zrq0IaYUIZ5eRKEL9Q3FoTsQ9skgw20w7zLpKXAr1s2uYiJ8zT
-         eGVIAkACZKotWJJdECl4CTwGUCTCghTf0gJOD0mg=
+        b=IeYyvWWyXS2s17R1nVOWbvE4X29TF3dB1FZrgOP3snTM85O9an/cXnFKIVLKA3D5r
+         q4pEm1JyBxJGne38ot/4T5VQVYzLy9AkyUp8PtBOJlxZPV/bGMtB1QicbDvUMeVhz1
+         pBiHkkBpRGskdUQ+ZrDnKF1nugO1bnpZVhk8Csdo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
-        Simon Horman <horms@kernel.org>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 154/739] net: lan966x: Fix return value check for vcap_get_rule()
-Date:   Mon, 11 Sep 2023 15:39:13 +0200
-Message-ID: <20230911134655.444407013@linuxfoundation.org>
+        patches@lists.linux.dev, Vidya Sagar <vidyas@nvidia.com>,
+        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
+        Jon Hunter <jonathanh@nvidia.com>
+Subject: [PATCH 6.4 095/737] Revert "PCI: tegra194: Enable support for 256 Byte payload"
+Date:   Mon, 11 Sep 2023 15:39:14 +0200
+Message-ID: <20230911134653.166625790@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,52 +51,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruan Jinjie <ruanjinjie@huawei.com>
+From: Vidya Sagar <vidyas@nvidia.com>
 
-[ Upstream commit ab104318f63997113b0ce7ac288e51359925ed79 ]
+commit ebfde1584d9f037b6309fc682c96e22dac7bcb7a upstream.
 
-As Simon Horman suggests, update vcap_get_rule() to always
-return an ERR_PTR() and update the error detection conditions to
-use IS_ERR(), so use IS_ERR() to fix the return value issue.
+After commit 4fb8e46c1bc4 ("PCI: tegra194: Enable support for 256 Byte
+payload"), we initialize MPS=256 for tegra194 Root Ports before enumerating
+the hierarchy.
 
-Fixes: 72df3489fb10 ("net: lan966x: Add ptp trap rules")
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-Suggested-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Consider an Endpoint that supports only MPS=128.  In the default situation
+(CONFIG_PCIE_BUS_DEFAULT set and no "pci=pcie_bus_*" parameter), Linux
+tries to configure the MPS of every device to match the upstream bridge.
+If the Endpoint is directly below the Root Port, Linux can reduce the Root
+Port MPS to 128 to match the Endpoint.  But if there's a switch in the
+middle, Linux doesn't reduce the Root Port MPS because other devices below
+the switch may already be configured with MPS larger than 128.
+
+This scenario results in uncorrectable Malformed TLP errors if the Root
+Port sends TLPs with payloads larger than 128 bytes.  These errors can
+be avoided by using the "pci=pcie_bus_safe" parameter, but it doesn't
+seem to be a good idea to always have this parameter even for basic
+functionality to work.
+
+Revert commit 4fb8e46c1bc4 ("PCI: tegra194: Enable support for 256 Byte
+payload") so the Root Ports default to MPS=128, which all devices
+support.
+
+If peer-to-peer DMA is not required, one can use "pci=pcie_bus_perf" to
+get the benefit of larger MPS settings.
+
+[bhelgaas: commit log; kwilczynski: retain "u16 val_16" declaration at
+the top, add missing acked by tag]
+Fixes: 4fb8e46c1bc4 ("PCI: tegra194: Enable support for 256 Byte payload")
+Link: https://lore.kernel.org/linux-pci/20230619102604.3735001-1-vidyas@nvidia.com
+Signed-off-by: Vidya Sagar <vidyas@nvidia.com>
+Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
+Acked-by: Jon Hunter <jonathanh@nvidia.com>
+Cc: stable@vger.kernel.org # v6.0-rc1+
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/pci/controller/dwc/pcie-tegra194.c |   10 ----------
+ 1 file changed, 10 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-index 266a21a2d1246..1da2b1f82ae93 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-@@ -59,7 +59,7 @@ static int lan966x_ptp_add_trap(struct lan966x_port *port,
- 	int err;
+--- a/drivers/pci/controller/dwc/pcie-tegra194.c
++++ b/drivers/pci/controller/dwc/pcie-tegra194.c
+@@ -883,11 +883,6 @@ static int tegra_pcie_dw_host_init(struc
+ 		pcie->pcie_cap_base = dw_pcie_find_capability(&pcie->pci,
+ 							      PCI_CAP_ID_EXP);
  
- 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
--	if (vrule) {
-+	if (!IS_ERR(vrule)) {
- 		u32 value, mask;
+-	val_16 = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_DEVCTL);
+-	val_16 &= ~PCI_EXP_DEVCTL_PAYLOAD;
+-	val_16 |= PCI_EXP_DEVCTL_PAYLOAD_256B;
+-	dw_pcie_writew_dbi(pci, pcie->pcie_cap_base + PCI_EXP_DEVCTL, val_16);
+-
+ 	val = dw_pcie_readl_dbi(pci, PCI_IO_BASE);
+ 	val &= ~(IO_BASE_IO_DECODE | IO_BASE_IO_DECODE_BIT8);
+ 	dw_pcie_writel_dbi(pci, PCI_IO_BASE, val);
+@@ -1876,11 +1871,6 @@ static void pex_ep_event_pex_rst_deasser
+ 	pcie->pcie_cap_base = dw_pcie_find_capability(&pcie->pci,
+ 						      PCI_CAP_ID_EXP);
  
- 		/* Just modify the ingress port mask and exit */
-@@ -106,7 +106,7 @@ static int lan966x_ptp_del_trap(struct lan966x_port *port,
- 	int err;
- 
- 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
--	if (!vrule)
-+	if (IS_ERR(vrule))
- 		return -EEXIST;
- 
- 	vcap_rule_get_key_u32(vrule, VCAP_KF_IF_IGR_PORT_MASK, &value, &mask);
--- 
-2.40.1
-
+-	val_16 = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base + PCI_EXP_DEVCTL);
+-	val_16 &= ~PCI_EXP_DEVCTL_PAYLOAD;
+-	val_16 |= PCI_EXP_DEVCTL_PAYLOAD_256B;
+-	dw_pcie_writew_dbi(pci, pcie->pcie_cap_base + PCI_EXP_DEVCTL, val_16);
+-
+ 	/* Clear Slot Clock Configuration bit if SRNS configuration */
+ 	if (pcie->enable_srns) {
+ 		val_16 = dw_pcie_readw_dbi(pci, pcie->pcie_cap_base +
 
 
