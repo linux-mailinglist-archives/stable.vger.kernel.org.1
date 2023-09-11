@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A36B379BFFB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 16F5E79B61F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242480AbjIKU56 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46982 "EHLO
+        id S1358085AbjIKWHm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52800 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241878AbjIKPQz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:55 -0400
+        with ESMTP id S239338AbjIKOSQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B91FFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BB879C433C7;
-        Mon, 11 Sep 2023 15:16:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E4F05DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 38FC6C433C7;
+        Mon, 11 Sep 2023 14:18:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445410;
-        bh=0CuxGKHs2pjK+xD40JpGNxYv0G6imNDuxcCJ7kobijY=;
+        s=korg; t=1694441891;
+        bh=TAq68fyOYYBgGQdRO1d0HisWKQWKt/P9858ocE14wto=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fJKEhL+SJkGAtdEc6aj0JcXUZ2tiAUhNT5pk+BMDpnuF4wS/JrBQ87DaqwzzVZrsx
-         ZmkjKMpSdme4BPD7mAL++OVxGK5zQGe2/HMXU1n2AQWwDCmItTGGu6F1Q1KXOcIZnM
-         CqPlwDgm011k2h4NIV/mPoLddXOf7n4+9fmetQBo=
+        b=ahz0C7XDitCLH73jP57Fe3N6kLsW5Bi8l+PeHp+LDyDhVJe8EJu+U/44LuKLQeIzh
+         Xa0TP/b+ytw0vtOTD5A6IJJlx7WyhunL4/yiZE3C+KOc2jAQ//aXNJhpjj8bUPGdhr
+         i8tYtc+TZPp0L83wNthvyR1ST2Z7Zir3ufEv17mY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ira Weiny <ira.weiny@intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Lukas Wunner <lukas@wunner.de>,
-        Dan Williams <dan.j.williams@intel.com>,
+        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 338/600] PCI/DOE: Fix destroy_work_on_stack() race
+Subject: [PATCH 6.5 572/739] serial: tegra: handle clk prepare error in tegra_uart_hw_init()
 Date:   Mon, 11 Sep 2023 15:46:11 +0200
-Message-ID: <20230911134643.668118999@linuxfoundation.org>
+Message-ID: <20230911134707.072159735@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,63 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ira Weiny <ira.weiny@intel.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit e3a3a097eaebaf234a482b4d2f9f18fe989208c1 ]
+[ Upstream commit 5abd01145d0cc6cd1b7c2fe6ee0b9ea0fa13671e ]
 
-The following debug object splat was observed in testing:
+In tegra_uart_hw_init(), the return value of clk_prepare_enable() should
+be checked since it might fail.
 
-  ODEBUG: free active (active state 0) object: 0000000097d23782 object type: work_struct hint: doe_statemachine_work+0x0/0x510
-  WARNING: CPU: 1 PID: 71 at lib/debugobjects.c:514 debug_print_object+0x7d/0xb0
-  ...
-  Workqueue: pci 0000:36:00.0 DOE [1 doe_statemachine_work
-  RIP: 0010:debug_print_object+0x7d/0xb0
-  ...
-  Call Trace:
-   ? debug_print_object+0x7d/0xb0
-   ? __pfx_doe_statemachine_work+0x10/0x10
-   debug_object_free.part.0+0x11b/0x150
-   doe_statemachine_work+0x45e/0x510
-   process_one_work+0x1d4/0x3c0
-
-This occurs because destroy_work_on_stack() was called after signaling
-the completion in the calling thread.  This creates a race between
-destroy_work_on_stack() and the task->work struct going out of scope in
-pci_doe().
-
-Signal the work complete after destroying the work struct.  This is safe
-because signal_task_complete() is the final thing the work item does and
-the workqueue code is careful not to access the work struct after.
-
-Fixes: abf04be0e707 ("PCI/DOE: Fix memory leak with CONFIG_DEBUG_OBJECTS=y")
-Link: https://lore.kernel.org/r/20230726-doe-fix-v1-1-af07e614d4dd@intel.com
-Signed-off-by: Ira Weiny <ira.weiny@intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Lukas Wunner <lukas@wunner.de>
-Acked-by: Dan Williams <dan.j.williams@intel.com>
+Fixes: e9ea096dd225 ("serial: tegra: add serial driver")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Link: https://lore.kernel.org/r/20230817105406.228674-1-yiyang13@huawei.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/doe.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/tty/serial/serial-tegra.c | 6 +++++-
+ 1 file changed, 5 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/pci/doe.c b/drivers/pci/doe.c
-index e5e9b287b9766..c1776f82b7fce 100644
---- a/drivers/pci/doe.c
-+++ b/drivers/pci/doe.c
-@@ -223,8 +223,8 @@ static int pci_doe_recv_resp(struct pci_doe_mb *doe_mb, struct pci_doe_task *tas
- static void signal_task_complete(struct pci_doe_task *task, int rv)
- {
- 	task->rv = rv;
--	task->complete(task);
- 	destroy_work_on_stack(&task->work);
-+	task->complete(task);
- }
+diff --git a/drivers/tty/serial/serial-tegra.c b/drivers/tty/serial/serial-tegra.c
+index 1cf08b33456c9..37e1e05bc87e6 100644
+--- a/drivers/tty/serial/serial-tegra.c
++++ b/drivers/tty/serial/serial-tegra.c
+@@ -998,7 +998,11 @@ static int tegra_uart_hw_init(struct tegra_uart_port *tup)
+ 	tup->ier_shadow = 0;
+ 	tup->current_baud = 0;
  
- static void signal_task_abort(struct pci_doe_task *task, int rv)
+-	clk_prepare_enable(tup->uart_clk);
++	ret = clk_prepare_enable(tup->uart_clk);
++	if (ret) {
++		dev_err(tup->uport.dev, "could not enable clk\n");
++		return ret;
++	}
+ 
+ 	/* Reset the UART controller to clear all previous status.*/
+ 	reset_control_assert(tup->rst);
 -- 
 2.40.1
 
