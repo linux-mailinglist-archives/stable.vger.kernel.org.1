@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDC0C79ADC9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DDF279AEF8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244068AbjIKVIK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44260 "EHLO
+        id S1353928AbjIKVvg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241859AbjIKPQ0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:26 -0400
+        with ESMTP id S240644AbjIKOts (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:49:48 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E397FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 63953C433C8;
-        Mon, 11 Sep 2023 15:16:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB3E4125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:49:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 202F1C433C7;
+        Mon, 11 Sep 2023 14:49:43 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445381;
-        bh=bS13qU6jXAVrbAkRfKlabA0DKQXR/kd/AA5uuuujQwM=;
+        s=korg; t=1694443784;
+        bh=vK9cmj/kVQNYttGmpe1dAbeka/bzJeZqpW92JrES1iA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GjM6+CvwycLlZeMgRql/frw7h0ik+dvFxNHtj6Q1M7rapY8bfUtq1gtYQ1byTnXj/
-         kuhjEt69YFL7wGnyljfH7zycGogV+uaVaLuOKC9Cfu3zVzCgCNZ69+y8teM+/z0yZw
-         s/k3cpfb2/yxrMI8NNUbMfLrkdnLRdFvbpWrHmso=
+        b=a/jfrCZ5ch2B6ib8aD5CoIdsLbiEtG4cwbTjRc4p8mbSIB44kq+lnQaWWvBVYydzM
+         z6TK2I+uLVpo33hpHRoRcPKJ7e+fWbHwHDGIR6iDQ9JIM3P3HxnUKGw7Dy8KZMucLF
+         F8V/hahz0udFmn95Gm6jIgztlW/jKdSp9BYlglY8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
-        Corey Minyard <minyard@acm.org>,
+        patches@lists.linux.dev,
+        Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 326/600] ipmi:ssif: Add check for kstrdup
+Subject: [PATCH 6.4 500/737] media: rkvdec: increase max supported height for H.264
 Date:   Mon, 11 Sep 2023 15:45:59 +0200
-Message-ID: <20230911134643.311856295@linuxfoundation.org>
+Message-ID: <20230911134704.539066048@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 
-[ Upstream commit c5586d0f711e9744d0cade39b0c4a2d116a333ca ]
+[ Upstream commit f000e6ca2d60fefd02a180a57df2c4162fa0c1b7 ]
 
-Add check for the return value of kstrdup() and return the error
-if it fails in order to avoid NULL pointer dereference.
+After testing it is possible for the hardware to decode H264
+bistream with a height up to 2560.
 
-Fixes: c4436c9149c5 ("ipmi_ssif: avoid registering duplicate ssif interface")
-Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
-Message-Id: <20230619092802.35384-1-jiasheng@iscas.ac.cn>
-Signed-off-by: Corey Minyard <minyard@acm.org>
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Fixes: cd33c830448ba ("media: rkvdec: Add the rkvdec driver")
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/ipmi/ipmi_ssif.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/staging/media/rkvdec/rkvdec.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/char/ipmi/ipmi_ssif.c b/drivers/char/ipmi/ipmi_ssif.c
-index d48061ec27dd9..e94d0750d5cc5 100644
---- a/drivers/char/ipmi/ipmi_ssif.c
-+++ b/drivers/char/ipmi/ipmi_ssif.c
-@@ -1603,6 +1603,11 @@ static int ssif_add_infos(struct i2c_client *client)
- 	info->addr_src = SI_ACPI;
- 	info->client = client;
- 	info->adapter_name = kstrdup(client->adapter->name, GFP_KERNEL);
-+	if (!info->adapter_name) {
-+		kfree(info);
-+		return -ENOMEM;
-+	}
-+
- 	info->binfo.addr = client->addr;
- 	list_add_tail(&info->link, &ssif_infos);
- 	return 0;
+diff --git a/drivers/staging/media/rkvdec/rkvdec.c b/drivers/staging/media/rkvdec/rkvdec.c
+index 134e2b9fa7d9a..84a41792cb4b8 100644
+--- a/drivers/staging/media/rkvdec/rkvdec.c
++++ b/drivers/staging/media/rkvdec/rkvdec.c
+@@ -120,7 +120,7 @@ static const struct rkvdec_coded_fmt_desc rkvdec_coded_fmts[] = {
+ 			.max_width = 4096,
+ 			.step_width = 16,
+ 			.min_height = 48,
+-			.max_height = 2304,
++			.max_height = 2560,
+ 			.step_height = 16,
+ 		},
+ 		.ctrls = &rkvdec_h264_ctrls,
 -- 
 2.40.1
 
