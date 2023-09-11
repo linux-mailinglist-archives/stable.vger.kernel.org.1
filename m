@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 53A1579BB90
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 25E5C79B655
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377368AbjIKW0O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:26:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52634 "EHLO
+        id S1348511AbjIKV1H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54096 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241359AbjIKPHJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:09 -0400
+        with ESMTP id S240267AbjIKOkN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 69110CCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B21D7C433CA;
-        Mon, 11 Sep 2023 15:07:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA284F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0E25C433C7;
+        Mon, 11 Sep 2023 14:40:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444825;
-        bh=VgHPwdaW0ydVwsksWvs6oAUr9FD2GTJkyfoTjfh8ajI=;
+        s=korg; t=1694443209;
+        bh=t5Wmpz+4scCeVw8T9XeplcT46A8dK2hvJ7SaESP3wIA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Kphybn8Ohjkcwu50DhworbcGPtS8SaJrpto6SZ02QnEGZJS3Uo+Gm5gYvlpnyISY5
-         eoxEBHC2AT3oOfJiKOFprEiwNN+jzkFI5n75nyCSOvvsYRECvNBNMYyW0LmOa9T3Pt
-         CS2aEw5Uj/IsMd6t7HdgjemgSpRvKo6Hq/UgV1OM=
+        b=s350EjbhUT2o3nfSG681++aqtGE9QSrM1Yitxnlez/gN6RiFWpNi9ga0FMcrfCR1x
+         XhQaKZemsixqiWD4SEoVOPcCjIGCgL4m+0m82ajnCfxgW7Pe/tWFajsHTLVCYP4m/S
+         InXVQ7bnawCxKIV+JCn4fHQ1mPcnfQooCnrJ3ss8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xu Yang <xu.yang_2@nxp.com>,
-        Frank Li <Frank.Li@nxp.com>, Will Deacon <will@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 122/600] perf/imx_ddr: dont enable counter0 if none of 4 counters are used
+Subject: [PATCH 6.4 296/737] arm64: dts: qcom: pm8350b: fix thermal zone name
 Date:   Mon, 11 Sep 2023 15:42:35 +0200
-Message-ID: <20230911134637.216126205@linuxfoundation.org>
+Message-ID: <20230911134658.826245715@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,92 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xu Yang <xu.yang_2@nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit f4e2bd91ddf5e8543cbe7ad80b3fba3d2dc63fa3 ]
+[ Upstream commit aad41d9e6c44dfe299cddab97528a5333f17bdfe ]
 
-In current driver, counter0 will be enabled after ddr_perf_pmu_enable()
-is called even though none of the 4 counters are used. This will cause
-counter0 continue to count until ddr_perf_pmu_disabled() is called. If
-pmu is not disabled all the time, the pmu interrupt will be asserted
-from time to time due to counter0 will overflow and irq handler will
-clear it. It's not an expected behavior. This patch will not enable
-counter0 if none of 4 counters are used.
+The name of the thermal zone in pm8350b.dtsi (pm8350c-thermal) conflicts
+with the thermal zone in pm8350c.dtsi. Rename the thermal zone according
+to the chip name.
 
-Fixes: 9a66d36cc7ac ("drivers/perf: imx_ddr: Add DDR performance counter support to perf")
-Signed-off-by: Xu Yang <xu.yang_2@nxp.com>
-Reviewed-by: Frank Li <Frank.Li@nxp.com>
-Link: https://lore.kernel.org/r/20230811015438.1999307-2-xu.yang_2@nxp.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Fixes: 5c1399299d9d ("arm64: dts: qcom: pm8350b: add temp sensor and thermal zone config")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230707123027.1510723-4-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/perf/fsl_imx8_ddr_perf.c | 24 +++++++++---------------
- 1 file changed, 9 insertions(+), 15 deletions(-)
+ arch/arm64/boot/dts/qcom/pm8350b.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/perf/fsl_imx8_ddr_perf.c b/drivers/perf/fsl_imx8_ddr_perf.c
-index 8e058e08fe810..cd4ce2b4906d1 100644
---- a/drivers/perf/fsl_imx8_ddr_perf.c
-+++ b/drivers/perf/fsl_imx8_ddr_perf.c
-@@ -102,6 +102,7 @@ struct ddr_pmu {
- 	const struct fsl_ddr_devtype_data *devtype_data;
- 	int irq;
- 	int id;
-+	int active_counter;
- };
+diff --git a/arch/arm64/boot/dts/qcom/pm8350b.dtsi b/arch/arm64/boot/dts/qcom/pm8350b.dtsi
+index f1c7bd9d079c2..05c1058988927 100644
+--- a/arch/arm64/boot/dts/qcom/pm8350b.dtsi
++++ b/arch/arm64/boot/dts/qcom/pm8350b.dtsi
+@@ -8,7 +8,7 @@
  
- static ssize_t ddr_perf_identifier_show(struct device *dev,
-@@ -496,6 +497,10 @@ static void ddr_perf_event_start(struct perf_event *event, int flags)
- 
- 	ddr_perf_counter_enable(pmu, event->attr.config, counter, true);
- 
-+	if (!pmu->active_counter++)
-+		ddr_perf_counter_enable(pmu, EVENT_CYCLES_ID,
-+			EVENT_CYCLES_COUNTER, true);
-+
- 	hwc->state = 0;
- }
- 
-@@ -550,6 +555,10 @@ static void ddr_perf_event_stop(struct perf_event *event, int flags)
- 	ddr_perf_counter_enable(pmu, event->attr.config, counter, false);
- 	ddr_perf_event_update(event);
- 
-+	if (!--pmu->active_counter)
-+		ddr_perf_counter_enable(pmu, EVENT_CYCLES_ID,
-+			EVENT_CYCLES_COUNTER, false);
-+
- 	hwc->state |= PERF_HES_STOPPED;
- }
- 
-@@ -568,25 +577,10 @@ static void ddr_perf_event_del(struct perf_event *event, int flags)
- 
- static void ddr_perf_pmu_enable(struct pmu *pmu)
- {
--	struct ddr_pmu *ddr_pmu = to_ddr_pmu(pmu);
--
--	/* enable cycle counter if cycle is not active event list */
--	if (ddr_pmu->events[EVENT_CYCLES_COUNTER] == NULL)
--		ddr_perf_counter_enable(ddr_pmu,
--				      EVENT_CYCLES_ID,
--				      EVENT_CYCLES_COUNTER,
--				      true);
- }
- 
- static void ddr_perf_pmu_disable(struct pmu *pmu)
- {
--	struct ddr_pmu *ddr_pmu = to_ddr_pmu(pmu);
--
--	if (ddr_pmu->events[EVENT_CYCLES_COUNTER] == NULL)
--		ddr_perf_counter_enable(ddr_pmu,
--				      EVENT_CYCLES_ID,
--				      EVENT_CYCLES_COUNTER,
--				      false);
- }
- 
- static int ddr_perf_init(struct ddr_pmu *pmu, void __iomem *base,
+ / {
+ 	thermal-zones {
+-		pm8350b_thermal: pm8350c-thermal {
++		pm8350b_thermal: pm8350b-thermal {
+ 			polling-delay-passive = <100>;
+ 			polling-delay = <0>;
+ 			thermal-sensors = <&pm8350b_temp_alarm>;
 -- 
 2.40.1
 
