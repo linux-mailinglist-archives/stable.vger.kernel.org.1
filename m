@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9769779AF97
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B9FC779AD58
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351607AbjIKVsm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33664 "EHLO
+        id S235502AbjIKVFC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:05:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37924 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240020AbjIKOeR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:17 -0400
+        with ESMTP id S238706AbjIKODR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 27A5DE4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70E41C433C8;
-        Mon, 11 Sep 2023 14:34:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 61D7CCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:03:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 31A51C433C7;
+        Mon, 11 Sep 2023 14:03:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442851;
-        bh=F6AZMM/EEc9r+/YtzwMJ9xYjBtFJjsHpFfRHRW6xv4w=;
+        s=korg; t=1694440992;
+        bh=C68iTZBEjbJN5ogy6Ct7d62itQTgMMpQ1/yY17/qf5Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=x61rgCJbOGVvDtiyzJmFwSJs4FfyeXyAIKlabRcCbBtD+wkfrfgtAS7grQHxNXZwy
-         78fBLjs/winB+R2TO+gvir807izw8ECoMJEuygUVugYweqJG/yYktMlUFtn526Z0BC
-         abGJ1U9YQUFlitvNP8whmZ7tjnwaVZZZc2u6mJt8=
+        b=LYfWNGVQjhcHnwSKPc+CfroMiZNvbi+bujnfr/2tZQhjMANcJJynZQd0Su2cVJJC6
+         3KQcrlHeVBeUGRxELCykCj9Ec4RZHK6C9aCPOXb8FoWpQJVD3m/TPff8n2V4LAd7Ul
+         /TwSfFts0Aj3vgM5cCBv42n/hXJO7kHnkkYiXmoQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
-        Joe Stringer <joe@cilium.io>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Lorenz Bauer <lmb@isovalent.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 170/737] bpf, net: Support SO_REUSEPORT sockets with bpf_sk_assign
-Date:   Mon, 11 Sep 2023 15:40:29 +0200
-Message-ID: <20230911134655.271918148@linuxfoundation.org>
+Subject: [PATCH 6.5 231/739] arm64: dts: qcom: sm8350: Use proper CPU compatibles
+Date:   Mon, 11 Sep 2023 15:40:30 +0200
+Message-ID: <20230911134657.622904395@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,334 +50,107 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenz Bauer <lmb@isovalent.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 9c02bec95954252c3c01bfbb3f7560e0b95ca955 ]
+[ Upstream commit 4390730cc12af25f7c997f477795f5f4200149c0 ]
 
-Currently the bpf_sk_assign helper in tc BPF context refuses SO_REUSEPORT
-sockets. This means we can't use the helper to steer traffic to Envoy,
-which configures SO_REUSEPORT on its sockets. In turn, we're blocked
-from removing TPROXY from our setup.
+The Kryo names (once again) turned out to be fake. The CPUs report:
 
-The reason that bpf_sk_assign refuses such sockets is that the
-bpf_sk_lookup helpers don't execute SK_REUSEPORT programs. Instead,
-one of the reuseport sockets is selected by hash. This could cause
-dispatch to the "wrong" socket:
+0x412fd050 (CA55 r2p0) (0 - 3)
+0x411fd410 (CA78 r1p1) (4 - 6)
+0x411fd440 (CX1  r1p1) (7)
 
-    sk = bpf_sk_lookup_tcp(...) // select SO_REUSEPORT by hash
-    bpf_sk_assign(skb, sk) // SK_REUSEPORT wasn't executed
+Use the compatibles that reflect that.
 
-Fixing this isn't as simple as invoking SK_REUSEPORT from the lookup
-helpers unfortunately. In the tc context, L2 headers are at the start
-of the skb, while SK_REUSEPORT expects L3 headers instead.
-
-Instead, we execute the SK_REUSEPORT program when the assigned socket
-is pulled out of the skb, further up the stack. This creates some
-trickiness with regards to refcounting as bpf_sk_assign will put both
-refcounted and RCU freed sockets in skb->sk. reuseport sockets are RCU
-freed. We can infer that the sk_assigned socket is RCU freed if the
-reuseport lookup succeeds, but convincing yourself of this fact isn't
-straight forward. Therefore we defensively check refcounting on the
-sk_assign sock even though it's probably not required in practice.
-
-Fixes: 8e368dc72e86 ("bpf: Fix use of sk->sk_reuseport from sk_assign")
-Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
-Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Joe Stringer <joe@cilium.io>
-Link: https://lore.kernel.org/bpf/CACAyw98+qycmpQzKupquhkxbvWK4OFyDuuLMBNROnfWMZxUWeA@mail.gmail.com/
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
-Link: https://lore.kernel.org/r/20230720-so-reuseport-v6-7-7021b683cdae@isovalent.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: b7e8f433a673 ("arm64: dts: qcom: Add basic devicetree support for SM8350 SoC")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230706-topic-sm8350-cpu-compat-v1-1-f8d6a1869781@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet6_hashtables.h | 56 +++++++++++++++++++++++++++++++---
- include/net/inet_hashtables.h  | 49 +++++++++++++++++++++++++++--
- include/net/sock.h             |  7 +++--
- include/uapi/linux/bpf.h       |  3 --
- net/core/filter.c              |  2 --
- net/ipv4/udp.c                 |  8 +++--
- net/ipv6/udp.c                 |  8 +++--
- tools/include/uapi/linux/bpf.h |  3 --
- 8 files changed, 115 insertions(+), 21 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8350.dtsi | 16 ++++++++--------
+ 1 file changed, 8 insertions(+), 8 deletions(-)
 
-diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
-index f89320b6fee31..475e672b4facc 100644
---- a/include/net/inet6_hashtables.h
-+++ b/include/net/inet6_hashtables.h
-@@ -94,6 +94,46 @@ static inline struct sock *__inet6_lookup(struct net *net,
- 				     daddr, hnum, dif, sdif);
- }
+diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+index 35b68de50e227..435a807841158 100644
+--- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
+@@ -48,7 +48,7 @@ cpus {
  
-+static inline
-+struct sock *inet6_steal_sock(struct net *net, struct sk_buff *skb, int doff,
-+			      const struct in6_addr *saddr, const __be16 sport,
-+			      const struct in6_addr *daddr, const __be16 dport,
-+			      bool *refcounted, inet6_ehashfn_t *ehashfn)
-+{
-+	struct sock *sk, *reuse_sk;
-+	bool prefetched;
-+
-+	sk = skb_steal_sock(skb, refcounted, &prefetched);
-+	if (!sk)
-+		return NULL;
-+
-+	if (!prefetched)
-+		return sk;
-+
-+	if (sk->sk_protocol == IPPROTO_TCP) {
-+		if (sk->sk_state != TCP_LISTEN)
-+			return sk;
-+	} else if (sk->sk_protocol == IPPROTO_UDP) {
-+		if (sk->sk_state != TCP_CLOSE)
-+			return sk;
-+	} else {
-+		return sk;
-+	}
-+
-+	reuse_sk = inet6_lookup_reuseport(net, sk, skb, doff,
-+					  saddr, sport, daddr, ntohs(dport),
-+					  ehashfn);
-+	if (!reuse_sk)
-+		return sk;
-+
-+	/* We've chosen a new reuseport sock which is never refcounted. This
-+	 * implies that sk also isn't refcounted.
-+	 */
-+	WARN_ON_ONCE(*refcounted);
-+
-+	return reuse_sk;
-+}
-+
- static inline struct sock *__inet6_lookup_skb(struct inet_hashinfo *hashinfo,
- 					      struct sk_buff *skb, int doff,
- 					      const __be16 sport,
-@@ -101,14 +141,20 @@ static inline struct sock *__inet6_lookup_skb(struct inet_hashinfo *hashinfo,
- 					      int iif, int sdif,
- 					      bool *refcounted)
- {
--	struct sock *sk = skb_steal_sock(skb, refcounted);
--
-+	struct net *net = dev_net(skb_dst(skb)->dev);
-+	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
-+	struct sock *sk;
-+
-+	sk = inet6_steal_sock(net, skb, doff, &ip6h->saddr, sport, &ip6h->daddr, dport,
-+			      refcounted, inet6_ehashfn);
-+	if (IS_ERR(sk))
-+		return NULL;
- 	if (sk)
- 		return sk;
+ 		CPU0: cpu@0 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-a55";
+ 			reg = <0x0 0x0>;
+ 			clocks = <&cpufreq_hw 0>;
+ 			enable-method = "psci";
+@@ -72,7 +72,7 @@ L3_0: l3-cache {
  
--	return __inet6_lookup(dev_net(skb_dst(skb)->dev), hashinfo, skb,
--			      doff, &ipv6_hdr(skb)->saddr, sport,
--			      &ipv6_hdr(skb)->daddr, ntohs(dport),
-+	return __inet6_lookup(net, hashinfo, skb,
-+			      doff, &ip6h->saddr, sport,
-+			      &ip6h->daddr, ntohs(dport),
- 			      iif, sdif, refcounted);
- }
+ 		CPU1: cpu@100 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-a55";
+ 			reg = <0x0 0x100>;
+ 			clocks = <&cpufreq_hw 0>;
+ 			enable-method = "psci";
+@@ -91,7 +91,7 @@ L2_100: l2-cache {
  
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index ddfa2e67fdb51..a1b8eb147ce73 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -442,6 +442,46 @@ static inline struct sock *inet_lookup(struct net *net,
- 	return sk;
- }
+ 		CPU2: cpu@200 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-a55";
+ 			reg = <0x0 0x200>;
+ 			clocks = <&cpufreq_hw 0>;
+ 			enable-method = "psci";
+@@ -110,7 +110,7 @@ L2_200: l2-cache {
  
-+static inline
-+struct sock *inet_steal_sock(struct net *net, struct sk_buff *skb, int doff,
-+			     const __be32 saddr, const __be16 sport,
-+			     const __be32 daddr, const __be16 dport,
-+			     bool *refcounted, inet_ehashfn_t *ehashfn)
-+{
-+	struct sock *sk, *reuse_sk;
-+	bool prefetched;
-+
-+	sk = skb_steal_sock(skb, refcounted, &prefetched);
-+	if (!sk)
-+		return NULL;
-+
-+	if (!prefetched)
-+		return sk;
-+
-+	if (sk->sk_protocol == IPPROTO_TCP) {
-+		if (sk->sk_state != TCP_LISTEN)
-+			return sk;
-+	} else if (sk->sk_protocol == IPPROTO_UDP) {
-+		if (sk->sk_state != TCP_CLOSE)
-+			return sk;
-+	} else {
-+		return sk;
-+	}
-+
-+	reuse_sk = inet_lookup_reuseport(net, sk, skb, doff,
-+					 saddr, sport, daddr, ntohs(dport),
-+					 ehashfn);
-+	if (!reuse_sk)
-+		return sk;
-+
-+	/* We've chosen a new reuseport sock which is never refcounted. This
-+	 * implies that sk also isn't refcounted.
-+	 */
-+	WARN_ON_ONCE(*refcounted);
-+
-+	return reuse_sk;
-+}
-+
- static inline struct sock *__inet_lookup_skb(struct inet_hashinfo *hashinfo,
- 					     struct sk_buff *skb,
- 					     int doff,
-@@ -450,13 +490,18 @@ static inline struct sock *__inet_lookup_skb(struct inet_hashinfo *hashinfo,
- 					     const int sdif,
- 					     bool *refcounted)
- {
--	struct sock *sk = skb_steal_sock(skb, refcounted);
-+	struct net *net = dev_net(skb_dst(skb)->dev);
- 	const struct iphdr *iph = ip_hdr(skb);
-+	struct sock *sk;
+ 		CPU3: cpu@300 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-a55";
+ 			reg = <0x0 0x300>;
+ 			clocks = <&cpufreq_hw 0>;
+ 			enable-method = "psci";
+@@ -129,7 +129,7 @@ L2_300: l2-cache {
  
-+	sk = inet_steal_sock(net, skb, doff, iph->saddr, sport, iph->daddr, dport,
-+			     refcounted, inet_ehashfn);
-+	if (IS_ERR(sk))
-+		return NULL;
- 	if (sk)
- 		return sk;
+ 		CPU4: cpu@400 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-a78";
+ 			reg = <0x0 0x400>;
+ 			clocks = <&cpufreq_hw 1>;
+ 			enable-method = "psci";
+@@ -148,7 +148,7 @@ L2_400: l2-cache {
  
--	return __inet_lookup(dev_net(skb_dst(skb)->dev), hashinfo, skb,
-+	return __inet_lookup(net, hashinfo, skb,
- 			     doff, iph->saddr, sport,
- 			     iph->daddr, dport, inet_iif(skb), sdif,
- 			     refcounted);
-diff --git a/include/net/sock.h b/include/net/sock.h
-index d0d796d51a504..299c484bd4035 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2826,20 +2826,23 @@ sk_is_refcounted(struct sock *sk)
-  * skb_steal_sock - steal a socket from an sk_buff
-  * @skb: sk_buff to steal the socket from
-  * @refcounted: is set to true if the socket is reference-counted
-+ * @prefetched: is set to true if the socket was assigned from bpf
-  */
- static inline struct sock *
--skb_steal_sock(struct sk_buff *skb, bool *refcounted)
-+skb_steal_sock(struct sk_buff *skb, bool *refcounted, bool *prefetched)
- {
- 	if (skb->sk) {
- 		struct sock *sk = skb->sk;
+ 		CPU5: cpu@500 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-a78";
+ 			reg = <0x0 0x500>;
+ 			clocks = <&cpufreq_hw 1>;
+ 			enable-method = "psci";
+@@ -167,7 +167,7 @@ L2_500: l2-cache {
  
- 		*refcounted = true;
--		if (skb_sk_is_prefetched(skb))
-+		*prefetched = skb_sk_is_prefetched(skb);
-+		if (*prefetched)
- 			*refcounted = sk_is_refcounted(sk);
- 		skb->destructor = NULL;
- 		skb->sk = NULL;
- 		return sk;
- 	}
-+	*prefetched = false;
- 	*refcounted = false;
- 	return NULL;
- }
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index c994ff5b157cd..dc6db5c246dbe 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -4145,9 +4145,6 @@ union bpf_attr {
-  *		**-EOPNOTSUPP** if the operation is not supported, for example
-  *		a call from outside of TC ingress.
-  *
-- *		**-ESOCKTNOSUPPORT** if the socket type is not supported
-- *		(reuseport).
-- *
-  * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u64 flags)
-  *	Description
-  *		Helper is overloaded depending on BPF program type. This
-diff --git a/net/core/filter.c b/net/core/filter.c
-index a9e93d528869f..d5ca1f4c75b3e 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7335,8 +7335,6 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
- 		return -EOPNOTSUPP;
- 	if (unlikely(dev_net(skb->dev) != sock_net(sk)))
- 		return -ENETUNREACH;
--	if (unlikely(sk_fullsock(sk) && sk->sk_reuseport))
--		return -ESOCKTNOSUPPORT;
- 	if (sk_unhashed(sk))
- 		return -EOPNOTSUPP;
- 	if (sk_is_refcounted(sk) &&
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index aaba742f6d103..dd4259d998fc9 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2459,7 +2459,11 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 	if (udp4_csum_init(skb, uh, proto))
- 		goto csum_error;
+ 		CPU6: cpu@600 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-a78";
+ 			reg = <0x0 0x600>;
+ 			clocks = <&cpufreq_hw 1>;
+ 			enable-method = "psci";
+@@ -186,7 +186,7 @@ L2_600: l2-cache {
  
--	sk = skb_steal_sock(skb, &refcounted);
-+	sk = inet_steal_sock(net, skb, sizeof(struct udphdr), saddr, uh->source, daddr, uh->dest,
-+			     &refcounted, udp_ehashfn);
-+	if (IS_ERR(sk))
-+		goto no_sk;
-+
- 	if (sk) {
- 		struct dst_entry *dst = skb_dst(skb);
- 		int ret;
-@@ -2480,7 +2484,7 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 	sk = __udp4_lib_lookup_skb(skb, uh->source, uh->dest, udptable);
- 	if (sk)
- 		return udp_unicast_rcv_skb(sk, skb, uh);
--
-+no_sk:
- 	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb))
- 		goto drop;
- 	nf_reset_ct(skb);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index 19f5a2fc8f378..3a36cc48353f2 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -992,7 +992,11 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 		goto csum_error;
- 
- 	/* Check if the socket is already available, e.g. due to early demux */
--	sk = skb_steal_sock(skb, &refcounted);
-+	sk = inet6_steal_sock(net, skb, sizeof(struct udphdr), saddr, uh->source, daddr, uh->dest,
-+			      &refcounted, udp6_ehashfn);
-+	if (IS_ERR(sk))
-+		goto no_sk;
-+
- 	if (sk) {
- 		struct dst_entry *dst = skb_dst(skb);
- 		int ret;
-@@ -1026,7 +1030,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 			goto report_csum_error;
- 		return udp6_unicast_rcv_skb(sk, skb, uh);
- 	}
--
-+no_sk:
- 	reason = SKB_DROP_REASON_NO_SOCKET;
- 
- 	if (!uh->check)
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index c994ff5b157cd..dc6db5c246dbe 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -4145,9 +4145,6 @@ union bpf_attr {
-  *		**-EOPNOTSUPP** if the operation is not supported, for example
-  *		a call from outside of TC ingress.
-  *
-- *		**-ESOCKTNOSUPPORT** if the socket type is not supported
-- *		(reuseport).
-- *
-  * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u64 flags)
-  *	Description
-  *		Helper is overloaded depending on BPF program type. This
+ 		CPU7: cpu@700 {
+ 			device_type = "cpu";
+-			compatible = "qcom,kryo685";
++			compatible = "arm,cortex-x1";
+ 			reg = <0x0 0x700>;
+ 			clocks = <&cpufreq_hw 2>;
+ 			enable-method = "psci";
 -- 
 2.40.1
 
