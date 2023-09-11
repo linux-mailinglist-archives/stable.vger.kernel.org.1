@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0760D79BB0C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B6179B9B3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237432AbjIKV7X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
+        id S237578AbjIKVD6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:03:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52586 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238857AbjIKOGZ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:25 -0400
+        with ESMTP id S241348AbjIKPHD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3675120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E61C7C433C7;
-        Mon, 11 Sep 2023 14:06:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3EA0CCC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C8AAC433C8;
+        Mon, 11 Sep 2023 15:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441180;
-        bh=OJ0JVI/R068BfEcwIEc2CSn7/li1VdXA+EPea4HnHSc=;
+        s=korg; t=1694444819;
+        bh=bPHvTui2hCQALH1L5NIsw/zRaWovT5y39lqwc8AGHyM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uqAV8YQ0RW4YCRwCYTGP0G0k3YY53mPAKVt4EbDXR0ZaDMo350DRd8j3sl+eY7so5
-         KaIDBs60XyFLtItmRE43AO0PE1twbUFCbVhQUoaCaMiFPuL0b+sF/fOxFDaJBouq5D
-         yCLf88+EALKRlBsHfFUjzBfJtz6dq8rhdOvOuX1o=
+        b=Fcn/GjR3OGh10kuVj7KwXGE26tpKUvV/rgpZhEz2b5aUo7gnpyBVQkQsrCrZDZpPW
+         R6cOKugjwEolInvdhR5itzlXrOXMfFeTaXoUgJ/flJIOhWffEiVw+A96JDMXd/6bba
+         FmFoOFYmv0s3FPBBnUPfAz/3CLemJ6gjWLAWaqPw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gaosheng Cui <cuigaosheng1@huawei.com>,
-        Paul Moore <paul@paul-moore.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 323/739] audit: fix possible soft lockup in __audit_inode_child()
-Date:   Mon, 11 Sep 2023 15:42:02 +0200
-Message-ID: <20230911134700.125716126@linuxfoundation.org>
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.1 090/600] Revert "net: macsec: preserve ingress frame ordering"
+Date:   Mon, 11 Sep 2023 15:42:03 +0200
+Message-ID: <20230911134636.266650766@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,84 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gaosheng Cui <cuigaosheng1@huawei.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit b59bc6e37237e37eadf50cd5de369e913f524463 ]
+commit d3287e4038ca4f81e02067ab72d087af7224c68b upstream.
 
-Tracefs or debugfs maybe cause hundreds to thousands of PATH records,
-too many PATH records maybe cause soft lockup.
+This reverts commit ab046a5d4be4c90a3952a0eae75617b49c0cb01b.
 
-For example:
-  1. CONFIG_KASAN=y && CONFIG_PREEMPTION=n
-  2. auditctl -a exit,always -S open -k key
-  3. sysctl -w kernel.watchdog_thresh=5
-  4. mkdir /sys/kernel/debug/tracing/instances/test
+It was trying to work around an issue at the crypto layer by excluding
+ASYNC implementations of gcm(aes), because a bug in the AESNI version
+caused reordering when some requests bypassed the cryptd queue while
+older requests were still pending on the queue.
 
-There may be a soft lockup as follows:
-  watchdog: BUG: soft lockup - CPU#45 stuck for 7s! [mkdir:15498]
-  Kernel panic - not syncing: softlockup: hung tasks
-  Call trace:
-   dump_backtrace+0x0/0x30c
-   show_stack+0x20/0x30
-   dump_stack+0x11c/0x174
-   panic+0x27c/0x494
-   watchdog_timer_fn+0x2bc/0x390
-   __run_hrtimer+0x148/0x4fc
-   __hrtimer_run_queues+0x154/0x210
-   hrtimer_interrupt+0x2c4/0x760
-   arch_timer_handler_phys+0x48/0x60
-   handle_percpu_devid_irq+0xe0/0x340
-   __handle_domain_irq+0xbc/0x130
-   gic_handle_irq+0x78/0x460
-   el1_irq+0xb8/0x140
-   __audit_inode_child+0x240/0x7bc
-   tracefs_create_file+0x1b8/0x2a0
-   trace_create_file+0x18/0x50
-   event_create_dir+0x204/0x30c
-   __trace_add_new_event+0xac/0x100
-   event_trace_add_tracer+0xa0/0x130
-   trace_array_create_dir+0x60/0x140
-   trace_array_create+0x1e0/0x370
-   instance_mkdir+0x90/0xd0
-   tracefs_syscall_mkdir+0x68/0xa0
-   vfs_mkdir+0x21c/0x34c
-   do_mkdirat+0x1b4/0x1d4
-   __arm64_sys_mkdirat+0x4c/0x60
-   el0_svc_common.constprop.0+0xa8/0x240
-   do_el0_svc+0x8c/0xc0
-   el0_svc+0x20/0x30
-   el0_sync_handler+0xb0/0xb4
-   el0_sync+0x160/0x180
+This was fixed by commit 38b2f68b4264 ("crypto: aesni - Fix cryptd
+reordering problem on gcm"), which pre-dates ab046a5d4be4.
 
-Therefore, we add cond_resched() to __audit_inode_child() to fix it.
+Herbert Xu confirmed that all ASYNC implementations are expected to
+maintain the ordering of completions wrt requests, so we can use them
+in MACsec.
 
-Fixes: 5195d8e217a7 ("audit: dynamically allocate audit_names when not enough space is in the names array")
-Signed-off-by: Gaosheng Cui <cuigaosheng1@huawei.com>
-Signed-off-by: Paul Moore <paul@paul-moore.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+On my test machine, this restores the performance of a single netperf
+instance, from 1.4Gbps to 4.4Gbps.
+
+Link: https://lore.kernel.org/netdev/9328d206c5d9f9239cae27e62e74de40b258471d.1692279161.git.sd@queasysnail.net/T/
+Link: https://lore.kernel.org/netdev/1b0cec71-d084-8153-2ba4-72ce71abeb65@byu.edu/
+Link: https://lore.kernel.org/netdev/d335ddaa-18dc-f9f0-17ee-9783d3b2ca29@mailbox.tu-dresden.de/
+Fixes: ab046a5d4be4 ("net: macsec: preserve ingress frame ordering")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/11c952469d114db6fb29242e1d9545e61f52f512.1693757159.git.sd@queasysnail.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/auditsc.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/net/macsec.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/auditsc.c b/kernel/auditsc.c
-index addeed3df15d3..8dfd581cd5543 100644
---- a/kernel/auditsc.c
-+++ b/kernel/auditsc.c
-@@ -2456,6 +2456,8 @@ void __audit_inode_child(struct inode *parent,
- 		}
- 	}
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -1331,8 +1331,7 @@ static struct crypto_aead *macsec_alloc_
+ 	struct crypto_aead *tfm;
+ 	int ret;
  
-+	cond_resched();
-+
- 	/* is there a matching child entry? */
- 	list_for_each_entry(n, &context->names_list, list) {
- 		/* can only match entries that have a name */
--- 
-2.40.1
-
+-	/* Pick a sync gcm(aes) cipher to ensure order is preserved. */
+-	tfm = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
++	tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
+ 
+ 	if (IS_ERR(tfm))
+ 		return tfm;
 
 
