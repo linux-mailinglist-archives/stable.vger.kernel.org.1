@@ -2,49 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DF6E79AD5D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E2CD79B451
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240382AbjIKVEe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34240 "EHLO
+        id S240737AbjIKWJy (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:09:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35438 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239431AbjIKOUY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:24 -0400
+        with ESMTP id S241964AbjIKPTK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 23189DE;
-        Mon, 11 Sep 2023 07:20:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40CB2C433C9;
-        Mon, 11 Sep 2023 14:20:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320CBFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB9FC433C7;
+        Mon, 11 Sep 2023 15:19:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442019;
-        bh=JpP4gv6uEdrlOpykRilY6IteShTWWrRS6fPBzRzDhlo=;
+        s=korg; t=1694445544;
+        bh=yF89L4lwPpyIZH/usPwqNNjALLbUHCvk1iSyvAJ9yzg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k4RQXLvaOUJnISX/OR2Sf9Bzsr18ukNxpfucYz6N5aV91fbWfUQM8Rxx2EKmuWHlc
-         In78hfPIaRxa1vfJvsiv3YYk8JWxytbviWufSwdp/HmVWsK6HHoaG+TQyw7dj1ONfA
-         QvUd/AWSZ3w6N8Ma1TXERcaxeiQrnolLbq9T//4E=
+        b=EWF9hORjjfnDjJCy0p1YasjdYTAMe8zP52hBWP3ZB+9tPyrJV8SxxK5rYlyco+izr
+         7PmD8WicQebs4PjkbT62DrsSxVZbFjXb9+GfpPlFnTeOWZXMsejbS8HnP2j38XG4Hu
+         +K6/4Y5Dw+xcM1ijL/EkENsloRuQkCH5loJUvUjY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Randy Dunlap <rdunlap@infradead.org>,
-        kernel test robot <lkp@intel.com>,
-        Richard Weinberger <richard@nod.at>,
-        Anton Ivanov <anton.ivanov@cambridgegreys.com>,
-        Johannes Berg <johannes@sipsolutions.net>,
-        linux-um@lists.infradead.org, Tejun Heo <tj@kernel.org>,
-        Takashi Iwai <tiwai@suse.de>, Jaroslav Kysela <perex@perex.cz>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        Nicolas Schier <nicolas@fjasle.eu>,
-        linux-kbuild@vger.kernel.org, alsa-devel@alsa-project.org,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Tom Haynes <loghyr@gmail.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 618/739] um: Fix hostaudio build errors
-Date:   Mon, 11 Sep 2023 15:46:57 +0200
-Message-ID: <20230911134708.362272167@linuxfoundation.org>
+Subject: [PATCH 6.1 385/600] NFSD: da_addr_body field missing in some GETDEVICEINFO replies
+Date:   Mon, 11 Sep 2023 15:46:58 +0200
+Message-ID: <20230911134645.032211950@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,150 +51,141 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Randy Dunlap <rdunlap@infradead.org>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit db4bfcba7bb8d10f00bba2a3da6b9a9c2a1d7b71 ]
+[ Upstream commit 6372e2ee629894433fe6107d7048536a3280a284 ]
 
-Use "select" to ensure that the required kconfig symbols are set
-as expected.
-Drop HOSTAUDIO since it is now equivalent to UML_SOUND.
+The XDR specification in RFC 8881 looks like this:
 
-Set CONFIG_SOUND=m in ARCH=um defconfig files to maintain the
-status quo of the default configs.
+struct device_addr4 {
+	layouttype4	da_layout_type;
+	opaque		da_addr_body<>;
+};
 
-Allow SOUND with UML regardless of HAS_IOMEM. Otherwise there is a
-kconfig warning for unmet dependencies. (This was not an issue when
-SOUND was defined in arch/um/drivers/Kconfig. I have done 50 randconfig
-builds and didn't find any issues.)
+struct GETDEVICEINFO4resok {
+	device_addr4	gdir_device_addr;
+	bitmap4		gdir_notification;
+};
 
-This fixes build errors when CONFIG_SOUND is not set:
+union GETDEVICEINFO4res switch (nfsstat4 gdir_status) {
+case NFS4_OK:
+	GETDEVICEINFO4resok gdir_resok4;
+case NFS4ERR_TOOSMALL:
+	count4		gdir_mincount;
+default:
+	void;
+};
 
-ld: arch/um/drivers/hostaudio_kern.o: in function `hostaudio_cleanup_module':
-hostaudio_kern.c:(.exit.text+0xa): undefined reference to `unregister_sound_mixer'
-ld: hostaudio_kern.c:(.exit.text+0x15): undefined reference to `unregister_sound_dsp'
-ld: arch/um/drivers/hostaudio_kern.o: in function `hostaudio_init_module':
-hostaudio_kern.c:(.init.text+0x19): undefined reference to `register_sound_dsp'
-ld: hostaudio_kern.c:(.init.text+0x31): undefined reference to `register_sound_mixer'
-ld: hostaudio_kern.c:(.init.text+0x49): undefined reference to `unregister_sound_dsp'
+Looking at nfsd4_encode_getdeviceinfo() ....
 
-and this kconfig warning:
-WARNING: unmet direct dependencies detected for SOUND
+When the client provides a zero gd_maxcount, then the Linux NFS
+server implementation encodes the da_layout_type field and then
+skips the da_addr_body field completely, proceeding directly to
+encode gdir_notification field.
 
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
-Fixes: d886e87cb82b ("sound: make OSS sound core optional")
-Signed-off-by: Randy Dunlap <rdunlap@infradead.org>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: lore.kernel.org/r/202307141416.vxuRVpFv-lkp@intel.com
-Cc: Richard Weinberger <richard@nod.at>
-Cc: Anton Ivanov <anton.ivanov@cambridgegreys.com>
-Cc: Johannes Berg <johannes@sipsolutions.net>
-Cc: linux-um@lists.infradead.org
-Cc: Tejun Heo <tj@kernel.org>
-Cc: Takashi Iwai <tiwai@suse.de>
-Cc: Jaroslav Kysela <perex@perex.cz>
-Cc: Masahiro Yamada <masahiroy@kernel.org>
-Cc: Nathan Chancellor <nathan@kernel.org>
-Cc: Nick Desaulniers <ndesaulniers@google.com>
-Cc: Nicolas Schier <nicolas@fjasle.eu>
-Cc: linux-kbuild@vger.kernel.org
-Cc: alsa-devel@alsa-project.org
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Signed-off-by: Richard Weinberger <richard@nod.at>
+There does not appear to be an option in the specification to skip
+encoding da_addr_body. Moreover, Section 18.40.3 says:
+
+> If the client wants to just update or turn off notifications, it
+> MAY send a GETDEVICEINFO operation with gdia_maxcount set to zero.
+> In that event, if the device ID is valid, the reply's da_addr_body
+> field of the gdir_device_addr field will be of zero length.
+
+Since the layout drivers are responsible for encoding the
+da_addr_body field, put this fix inside the ->encode_getdeviceinfo
+methods.
+
+Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Cc: Tom Haynes <loghyr@gmail.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/um/configs/i386_defconfig   |  1 +
- arch/um/configs/x86_64_defconfig |  1 +
- arch/um/drivers/Kconfig          | 16 +++-------------
- arch/um/drivers/Makefile         |  2 +-
- sound/Kconfig                    |  2 +-
- 5 files changed, 7 insertions(+), 15 deletions(-)
+ fs/nfsd/blocklayoutxdr.c    |  9 +++++++++
+ fs/nfsd/flexfilelayoutxdr.c |  9 +++++++++
+ fs/nfsd/nfs4xdr.c           | 25 +++++++++++--------------
+ 3 files changed, 29 insertions(+), 14 deletions(-)
 
-diff --git a/arch/um/configs/i386_defconfig b/arch/um/configs/i386_defconfig
-index 630be793759e2..e543cbac87925 100644
---- a/arch/um/configs/i386_defconfig
-+++ b/arch/um/configs/i386_defconfig
-@@ -34,6 +34,7 @@ CONFIG_TTY_CHAN=y
- CONFIG_XTERM_CHAN=y
- CONFIG_CON_CHAN="pts"
- CONFIG_SSL_CHAN="pts"
-+CONFIG_SOUND=m
- CONFIG_UML_SOUND=m
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
-diff --git a/arch/um/configs/x86_64_defconfig b/arch/um/configs/x86_64_defconfig
-index 8540d33702726..939cb12318cae 100644
---- a/arch/um/configs/x86_64_defconfig
-+++ b/arch/um/configs/x86_64_defconfig
-@@ -32,6 +32,7 @@ CONFIG_TTY_CHAN=y
- CONFIG_XTERM_CHAN=y
- CONFIG_CON_CHAN="pts"
- CONFIG_SSL_CHAN="pts"
-+CONFIG_SOUND=m
- CONFIG_UML_SOUND=m
- CONFIG_DEVTMPFS=y
- CONFIG_DEVTMPFS_MOUNT=y
-diff --git a/arch/um/drivers/Kconfig b/arch/um/drivers/Kconfig
-index 36911b1fddcf0..b94b2618e7d84 100644
---- a/arch/um/drivers/Kconfig
-+++ b/arch/um/drivers/Kconfig
-@@ -111,24 +111,14 @@ config SSL_CHAN
+diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
+index 442543304930b..2455dc8be18a8 100644
+--- a/fs/nfsd/blocklayoutxdr.c
++++ b/fs/nfsd/blocklayoutxdr.c
+@@ -82,6 +82,15 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int len = sizeof(__be32), ret, i;
+ 	__be32 *p;
  
- config UML_SOUND
- 	tristate "Sound support"
-+	depends on SOUND
-+	select SOUND_OSS_CORE
- 	help
- 	  This option enables UML sound support.  If enabled, it will pull in
--	  soundcore and the UML hostaudio relay, which acts as a intermediary
-+	  the UML hostaudio relay, which acts as a intermediary
- 	  between the host's dsp and mixer devices and the UML sound system.
- 	  It is safe to say 'Y' here.
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	p = xdr_reserve_space(xdr, len + sizeof(__be32));
+ 	if (!p)
+ 		return nfserr_resource;
+diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
+index e81d2a5cf381e..bb205328e043d 100644
+--- a/fs/nfsd/flexfilelayoutxdr.c
++++ b/fs/nfsd/flexfilelayoutxdr.c
+@@ -85,6 +85,15 @@ nfsd4_ff_encode_getdeviceinfo(struct xdr_stream *xdr,
+ 	int addr_len;
+ 	__be32 *p;
  
--config SOUND
--	tristate
--	default UML_SOUND
--
--config SOUND_OSS_CORE
--	bool
--	default UML_SOUND
--
--config HOSTAUDIO
--	tristate
--	default UML_SOUND
--
- endmenu
++	/*
++	 * See paragraph 5 of RFC 8881 S18.40.3.
++	 */
++	if (!gdp->gd_maxcount) {
++		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
++			return nfserr_resource;
++		return nfs_ok;
++	}
++
+ 	/* len + padding for two strings */
+ 	addr_len = 16 + da->netaddr.netid_len + da->netaddr.addr_len;
+ 	ver_len = 20;
+diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
+index 8f90a87ee9ca0..89a579be042e5 100644
+--- a/fs/nfsd/nfs4xdr.c
++++ b/fs/nfsd/nfs4xdr.c
+@@ -4571,20 +4571,17 @@ nfsd4_encode_getdeviceinfo(struct nfsd4_compoundres *resp, __be32 nfserr,
  
- menu "UML Network Devices"
-diff --git a/arch/um/drivers/Makefile b/arch/um/drivers/Makefile
-index a461a950f0518..0e6af81096fd5 100644
---- a/arch/um/drivers/Makefile
-+++ b/arch/um/drivers/Makefile
-@@ -54,7 +54,7 @@ obj-$(CONFIG_UML_NET) += net.o
- obj-$(CONFIG_MCONSOLE) += mconsole.o
- obj-$(CONFIG_MMAPPER) += mmapper_kern.o 
- obj-$(CONFIG_BLK_DEV_UBD) += ubd.o 
--obj-$(CONFIG_HOSTAUDIO) += hostaudio.o
-+obj-$(CONFIG_UML_SOUND) += hostaudio.o
- obj-$(CONFIG_NULL_CHAN) += null.o 
- obj-$(CONFIG_PORT_CHAN) += port.o
- obj-$(CONFIG_PTY_CHAN) += pty.o
-diff --git a/sound/Kconfig b/sound/Kconfig
-index 0ddfb717b81dc..466e848689bd1 100644
---- a/sound/Kconfig
-+++ b/sound/Kconfig
-@@ -1,7 +1,7 @@
- # SPDX-License-Identifier: GPL-2.0-only
- menuconfig SOUND
- 	tristate "Sound card support"
--	depends on HAS_IOMEM
-+	depends on HAS_IOMEM || UML
- 	help
- 	  If you have a sound card in your computer, i.e. if it can say more
- 	  than an occasional beep, say Y.
+ 	*p++ = cpu_to_be32(gdev->gd_layout_type);
+ 
+-	/* If maxcount is 0 then just update notifications */
+-	if (gdev->gd_maxcount != 0) {
+-		ops = nfsd4_layout_ops[gdev->gd_layout_type];
+-		nfserr = ops->encode_getdeviceinfo(xdr, gdev);
+-		if (nfserr) {
+-			/*
+-			 * We don't bother to burden the layout drivers with
+-			 * enforcing gd_maxcount, just tell the client to
+-			 * come back with a bigger buffer if it's not enough.
+-			 */
+-			if (xdr->buf->len + 4 > gdev->gd_maxcount)
+-				goto toosmall;
+-			return nfserr;
+-		}
++	ops = nfsd4_layout_ops[gdev->gd_layout_type];
++	nfserr = ops->encode_getdeviceinfo(xdr, gdev);
++	if (nfserr) {
++		/*
++		 * We don't bother to burden the layout drivers with
++		 * enforcing gd_maxcount, just tell the client to
++		 * come back with a bigger buffer if it's not enough.
++		 */
++		if (xdr->buf->len + 4 > gdev->gd_maxcount)
++			goto toosmall;
++		return nfserr;
+ 	}
+ 
+ 	if (gdev->gd_notify_types) {
 -- 
 2.40.1
 
