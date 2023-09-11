@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 21F4179BD32
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2AA2E79B7B3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344130AbjIKVNX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52176 "EHLO
+        id S1378899AbjIKWhz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37682 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241519AbjIKPKb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:31 -0400
+        with ESMTP id S240421AbjIKOnw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1143EFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 59587C433C7;
-        Mon, 11 Sep 2023 15:10:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C873312A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1AD59C433C9;
+        Mon, 11 Sep 2023 14:43:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445026;
-        bh=a2QnJnAmslut7NoI9oQoLQ7w47GYevXFzbBTZq3JA7o=;
+        s=korg; t=1694443427;
+        bh=9wRYceQ0amP6mznS87dMhggFH9fPJzVTxTNUcKT4rNE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UIVNAJUxjueBI9zBrPK/htaOLVfAOO+YaP6JysAzBEKr/vnpJ/whvYzyPrZMWtHyu
-         3JC2xJ24/jYq6dZX9dCi/pSoWiCjHKEwhs+o1Ceeexp4w/MSyo80oieUpRJvd0tvi/
-         bK+E+n3OxhzC8Snx7lhjqiQg70NoqEMqRWdGbHg0=
+        b=nBWYYyFFhwv5+BkQxtfImUGx177jpn1psBb1q1qkgujgPNzKbZscAsPujvgj5yT9/
+         TyMcIvHVUxzeIMRpN800fNvXnJtWdYjzL8Gd3HtdfHLIY4NIWtA8k8M4OVgsklxmjS
+         GIFTock2D2QuJ5ueTs3b6FalinY5CqV8Vkw6i/PY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jinjie Ruan <ruanjinjie@huawei.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 200/600] net: arcnet: Do not call kfree_skb() under local_irq_disable()
+Subject: [PATCH 6.4 374/737] drm/mediatek: Remove freeing not dynamic allocated memory
 Date:   Mon, 11 Sep 2023 15:43:53 +0200
-Message-ID: <20230911134639.519082713@linuxfoundation.org>
+Message-ID: <20230911134701.001353135@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +55,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jinjie Ruan <ruanjinjie@huawei.com>
+From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
 
-[ Upstream commit 786c96e92fb9e854cb8b0cb7399bb2fb28e15c4b ]
+[ Upstream commit 27b9e2ea3f2757da26bb8280e46f7fdbb1acb219 ]
 
-It is not allowed to call kfree_skb() from hardware interrupt
-context or with hardware interrupts being disabled.
-So replace kfree_skb() with dev_kfree_skb_irq() under
-local_irq_disable(). Compile tested only.
+Fixing the coverity issue of:
+mtk_drm_cmdq_pkt_destroy frees address of mtk_crtc->cmdq_handle
 
-Fixes: 05fcd31cc472 ("arcnet: add err_skb package for package status feedback")
-Signed-off-by: Jinjie Ruan <ruanjinjie@huawei.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+So remove the free function.
+
+Fixes: 7627122fd1c0 ("drm/mediatek: Add cmdq_handle in mtk_crtc")
+Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230714094908.13087-2-jason-jh.lin@mediatek.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/arcnet/arcnet.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/mediatek/mtk_drm_crtc.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/net/arcnet/arcnet.c b/drivers/net/arcnet/arcnet.c
-index 1bad1866ae462..a48220f91a2df 100644
---- a/drivers/net/arcnet/arcnet.c
-+++ b/drivers/net/arcnet/arcnet.c
-@@ -468,7 +468,7 @@ static void arcnet_reply_tasklet(struct tasklet_struct *t)
+diff --git a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+index d40142842f85c..8d44f3df116fa 100644
+--- a/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
++++ b/drivers/gpu/drm/mediatek/mtk_drm_crtc.c
+@@ -116,10 +116,9 @@ static int mtk_drm_cmdq_pkt_create(struct cmdq_client *client, struct cmdq_pkt *
+ 	dma_addr_t dma_addr;
  
- 	ret = sock_queue_err_skb(sk, ackskb);
- 	if (ret)
--		kfree_skb(ackskb);
-+		dev_kfree_skb_irq(ackskb);
+ 	pkt->va_base = kzalloc(size, GFP_KERNEL);
+-	if (!pkt->va_base) {
+-		kfree(pkt);
++	if (!pkt->va_base)
+ 		return -ENOMEM;
+-	}
++
+ 	pkt->buf_size = size;
+ 	pkt->cl = (void *)client;
  
- 	local_irq_enable();
- };
+@@ -129,7 +128,6 @@ static int mtk_drm_cmdq_pkt_create(struct cmdq_client *client, struct cmdq_pkt *
+ 	if (dma_mapping_error(dev, dma_addr)) {
+ 		dev_err(dev, "dma map failed, size=%u\n", (u32)(u64)size);
+ 		kfree(pkt->va_base);
+-		kfree(pkt);
+ 		return -ENOMEM;
+ 	}
+ 
+@@ -145,7 +143,6 @@ static void mtk_drm_cmdq_pkt_destroy(struct cmdq_pkt *pkt)
+ 	dma_unmap_single(client->chan->mbox->dev, pkt->pa_base, pkt->buf_size,
+ 			 DMA_TO_DEVICE);
+ 	kfree(pkt->va_base);
+-	kfree(pkt);
+ }
+ #endif
+ 
 -- 
 2.40.1
 
