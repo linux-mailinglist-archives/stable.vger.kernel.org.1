@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D29BD79BC35
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EF27E79B652
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241418AbjIKVgv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:36:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60386 "EHLO
+        id S243497AbjIKVsu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241627AbjIKPLG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:06 -0400
+        with ESMTP id S240344AbjIKOmJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBCE4E54
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3CF0BC433CA;
-        Mon, 11 Sep 2023 15:11:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 14713CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:05 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 598A6C433C8;
+        Mon, 11 Sep 2023 14:42:04 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445060;
-        bh=f1JDb962a1sccUP21vsYzSdIGr6iWapx/L1izDQ52m8=;
+        s=korg; t=1694443324;
+        bh=ScS/Ry+ese+/uDJsmT7eenqzsrNJCGg44aJVMO4/dCY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xOhZ0F8sYdIbublPCn/CD92DHgRDA6CNkaE7a7tPsJxrViRxo1EGSDvLEJxaz7iM8
-         ZKGu0LPearMQgHZz8JH0GFXfT6Fr2x7R736XokiOsCYKxAUwjA5fVLxKQ4puhoiKCY
-         hGDj2FOgHbATikpnLgGG5ZXZByLnBcQhKiOx4COY=
+        b=M3lbMeSJKmKCeTP/oVQObZfRABBWxx/aHsb5sC2rXQihsSbp800d2Pgv246ysIhYQ
+         yunv/jsd5AP/wTh9ZITHmzPPV9YHZbvSAtlE2Z7xEOC+TYFUuz16zEJ67rjz+gj3cb
+         jh0ifFZuZeKH31mslVkudHWqbbeEoHW6JsOoefw8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masahiro Yamada <masahiroy@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 163/600] kbuild: rust_is_available: remove -v option
-Date:   Mon, 11 Sep 2023 15:43:16 +0200
-Message-ID: <20230911134638.419419447@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 338/737] md: restore noio_flag for the last mddev_resume()
+Date:   Mon, 11 Sep 2023 15:43:17 +0200
+Message-ID: <20230911134659.974403087@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,215 +49,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Masahiro Yamada <masahiroy@kernel.org>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit d824d2f98565e7c4cb1b862c230198fbe1a968be ]
+[ Upstream commit e24ed04389f9619e0aaef615a8948633c182a8b0 ]
 
-The -v option is passed when this script is invoked from Makefile,
-but not when invoked from Kconfig.
+memalloc_noio_save() is called for the first mddev_suspend(), and
+repeated mddev_suspend() only increase 'suspended'. However,
+memalloc_noio_restore() is also called for the first mddev_resume(),
+which means that memory reclaim will be enabled before the last
+mddev_resume() is called, while the array is still suspended.
 
-As you can see in scripts/Kconfig.include, the 'success' macro suppresses
-stdout and stderr anyway, so this script does not need to be quiet.
+Fix this problem by restore 'noio_flag' for the last mddev_resume().
 
-Signed-off-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Miguel Ojeda <ojeda@kernel.org>
-Tested-by: Miguel Ojeda <ojeda@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20230109061436.3146442-1-masahiroy@kernel.org
-[ Reworded prefix to match the others in the patch series. ]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Link: https://lore.kernel.org/r/20230616001631.463536-2-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
-Stable-dep-of: dee3a6b819c9 ("kbuild: rust_is_available: fix version check when CC has multiple arguments")
+Fixes: 78f57ef9d50a ("md: use memalloc scope APIs in mddev_suspend()/mddev_resume()")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230628012931.88911-3-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Makefile                     |  4 +-
- scripts/rust_is_available.sh | 96 +++++++++++++++---------------------
- 2 files changed, 42 insertions(+), 58 deletions(-)
+ drivers/md/md.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
 
-diff --git a/Makefile b/Makefile
-index 82aaa3ae7395b..c627e0bdb19f9 100644
---- a/Makefile
-+++ b/Makefile
-@@ -1291,7 +1291,7 @@ prepare0: archprepare
- # All the preparing..
- prepare: prepare0
- ifdef CONFIG_RUST
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh -v
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh
- 	$(Q)$(MAKE) $(build)=rust
- endif
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index 32d7ba8069aef..a2904e10ae35e 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -477,11 +477,13 @@ EXPORT_SYMBOL_GPL(mddev_suspend);
  
-@@ -1817,7 +1817,7 @@ $(DOC_TARGETS):
- # "Is Rust available?" target
- PHONY += rustavailable
- rustavailable:
--	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh -v && echo "Rust is available!"
-+	$(Q)$(CONFIG_SHELL) $(srctree)/scripts/rust_is_available.sh && echo "Rust is available!"
- 
- # Documentation target
- #
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index aebbf19139709..f43a010eaf305 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -2,8 +2,6 @@
- # SPDX-License-Identifier: GPL-2.0
- #
- # Tests whether a suitable Rust toolchain is available.
--#
--# Pass `-v` for human output and more checks (as warnings).
- 
- set -e
- 
-@@ -23,21 +21,17 @@ get_canonical_version()
- 
- # Check that the Rust compiler exists.
- if ! command -v "$RUSTC" >/dev/null; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust compiler '$RUSTC' could not be found."
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust compiler '$RUSTC' could not be found."
-+	echo >&2 "***"
- 	exit 1
- fi
- 
- # Check that the Rust bindings generator exists.
- if ! command -v "$BINDGEN" >/dev/null; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust bindings generator '$BINDGEN' could not be found."
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust bindings generator '$BINDGEN' could not be found."
-+	echo >&2 "***"
- 	exit 1
- fi
- 
-@@ -53,16 +47,14 @@ rust_compiler_min_version=$($min_tool_version rustc)
- rust_compiler_cversion=$(get_canonical_version $rust_compiler_version)
- rust_compiler_min_cversion=$(get_canonical_version $rust_compiler_min_version)
- if [ "$rust_compiler_cversion" -lt "$rust_compiler_min_cversion" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust compiler '$RUSTC' is too old."
--		echo >&2 "***   Your version:    $rust_compiler_version"
--		echo >&2 "***   Minimum version: $rust_compiler_min_version"
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust compiler '$RUSTC' is too old."
-+	echo >&2 "***   Your version:    $rust_compiler_version"
-+	echo >&2 "***   Minimum version: $rust_compiler_min_version"
-+	echo >&2 "***"
- 	exit 1
- fi
--if [ "$1" = -v ] && [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion" ]; then
-+if [ "$rust_compiler_cversion" -gt "$rust_compiler_min_cversion" ]; then
- 	echo >&2 "***"
- 	echo >&2 "*** Rust compiler '$RUSTC' is too new. This may or may not work."
- 	echo >&2 "***   Your version:     $rust_compiler_version"
-@@ -82,16 +74,14 @@ rust_bindings_generator_min_version=$($min_tool_version bindgen)
- rust_bindings_generator_cversion=$(get_canonical_version $rust_bindings_generator_version)
- rust_bindings_generator_min_cversion=$(get_canonical_version $rust_bindings_generator_min_version)
- if [ "$rust_bindings_generator_cversion" -lt "$rust_bindings_generator_min_cversion" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Rust bindings generator '$BINDGEN' is too old."
--		echo >&2 "***   Your version:    $rust_bindings_generator_version"
--		echo >&2 "***   Minimum version: $rust_bindings_generator_min_version"
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Rust bindings generator '$BINDGEN' is too old."
-+	echo >&2 "***   Your version:    $rust_bindings_generator_version"
-+	echo >&2 "***   Minimum version: $rust_bindings_generator_min_version"
-+	echo >&2 "***"
- 	exit 1
- fi
--if [ "$1" = -v ] && [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cversion" ]; then
-+if [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cversion" ]; then
- 	echo >&2 "***"
- 	echo >&2 "*** Rust bindings generator '$BINDGEN' is too new. This may or may not work."
- 	echo >&2 "***   Your version:     $rust_bindings_generator_version"
-@@ -110,13 +100,11 @@ bindgen_libclang_min_version=$($min_tool_version llvm)
- bindgen_libclang_cversion=$(get_canonical_version $bindgen_libclang_version)
- bindgen_libclang_min_cversion=$(get_canonical_version $bindgen_libclang_min_version)
- if [ "$bindgen_libclang_cversion" -lt "$bindgen_libclang_min_cversion" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN') is too old."
--		echo >&2 "***   Your version:    $bindgen_libclang_version"
--		echo >&2 "***   Minimum version: $bindgen_libclang_min_version"
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN') is too old."
-+	echo >&2 "***   Your version:    $bindgen_libclang_version"
-+	echo >&2 "***   Minimum version: $bindgen_libclang_min_version"
-+	echo >&2 "***"
- 	exit 1
- fi
- 
-@@ -125,21 +113,19 @@ fi
- #
- # In the future, we might be able to perform a full version check, see
- # https://github.com/rust-lang/rust-bindgen/issues/2138.
--if [ "$1" = -v ]; then
--	cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
--	if [ "$cc_name" = Clang ]; then
--		clang_version=$( \
--			LC_ALL=C "$CC" --version 2>/dev/null \
--				| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
--		)
--		if [ "$clang_version" != "$bindgen_libclang_version" ]; then
--			echo >&2 "***"
--			echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN')"
--			echo >&2 "*** version does not match Clang's. This may be a problem."
--			echo >&2 "***   libclang version: $bindgen_libclang_version"
--			echo >&2 "***   Clang version:    $clang_version"
--			echo >&2 "***"
--		fi
-+cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
-+if [ "$cc_name" = Clang ]; then
-+	clang_version=$( \
-+		LC_ALL=C "$CC" --version 2>/dev/null \
-+			| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
-+	)
-+	if [ "$clang_version" != "$bindgen_libclang_version" ]; then
-+		echo >&2 "***"
-+		echo >&2 "*** libclang (used by the Rust bindings generator '$BINDGEN')"
-+		echo >&2 "*** version does not match Clang's. This may be a problem."
-+		echo >&2 "***   libclang version: $bindgen_libclang_version"
-+		echo >&2 "***   Clang version:    $clang_version"
-+		echo >&2 "***"
- 	fi
- fi
- 
-@@ -150,11 +136,9 @@ rustc_sysroot=$("$RUSTC" $KRUSTFLAGS --print sysroot)
- rustc_src=${RUST_LIB_SRC:-"$rustc_sysroot/lib/rustlib/src/rust/library"}
- rustc_src_core="$rustc_src/core/src/lib.rs"
- if [ ! -e "$rustc_src_core" ]; then
--	if [ "$1" = -v ]; then
--		echo >&2 "***"
--		echo >&2 "*** Source code for the 'core' standard library could not be found"
--		echo >&2 "*** at '$rustc_src_core'."
--		echo >&2 "***"
--	fi
-+	echo >&2 "***"
-+	echo >&2 "*** Source code for the 'core' standard library could not be found"
-+	echo >&2 "*** at '$rustc_src_core'."
-+	echo >&2 "***"
- 	exit 1
- fi
+ void mddev_resume(struct mddev *mddev)
+ {
+-	/* entred the memalloc scope from mddev_suspend() */
+-	memalloc_noio_restore(mddev->noio_flag);
+ 	lockdep_assert_held(&mddev->reconfig_mutex);
+ 	if (--mddev->suspended)
+ 		return;
++
++	/* entred the memalloc scope from mddev_suspend() */
++	memalloc_noio_restore(mddev->noio_flag);
++
+ 	percpu_ref_resurrect(&mddev->active_io);
+ 	wake_up(&mddev->sb_wait);
+ 	mddev->pers->quiesce(mddev, 0);
 -- 
 2.40.1
 
