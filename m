@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 246B179B825
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DCB4A79BB05
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350808AbjIKVlb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:41:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53352 "EHLO
+        id S1349278AbjIKVdC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:33:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241380AbjIKPHc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:32 -0400
+        with ESMTP id S240300AbjIKOk6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB993FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DCE6C433C8;
-        Mon, 11 Sep 2023 15:07:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ABB93F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 03D47C433C8;
+        Mon, 11 Sep 2023 14:40:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444847;
-        bh=rh3l9Ofqf5Dw/EkjsaxfloDaysEqYC80xcP163eDBFU=;
+        s=korg; t=1694443254;
+        bh=qrmYj+CBpNU6DEFXYT/6Ul4hQ9jEIqsMoVqpoGqU+ts=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EqROTuPxQ3zol+w4yJNMaEsnadCqItJan5ER6qAFE9D8xkZBkmwAo4ChkD+DRrJz1
-         Wmt1URB1supDeZocngFOOCcZPK5qt088fVfuhxyly6M5XhD+qoyzbQazDOab0VhGhk
-         LsgDFteCA7yovJG1mZzF9kODyv4nIgg0lE/eKZ/E=
+        b=RxAuEgdMy6Ni+Hd6U/USRaNfO/JcqOanWujfDnt9/8MG0+VXA770cB5F4+imgwDi4
+         CW2U8xMEt2JcWeUFwT+4DTyB2AQrOr9sm0pzYW8tUVswIBQ1ktn3Bx2342pZZ8kGyD
+         WxxBgilHSAgUmokXKnqNhyd6pV96vRrnZ5jaI/Ms=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Alexander Lobakin <alobakin@pm.me>,
-        Quentin Monnet <quentin@isovalent.com>,
+        patches@lists.linux.dev, Jon Hunter <jonathanh@nvidia.com>,
+        Thierry Reding <treding@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 138/600] bpftool: Define a local bpf_perf_link to fix accessing its fields
-Date:   Mon, 11 Sep 2023 15:42:51 +0200
-Message-ID: <20230911134637.683033717@linuxfoundation.org>
+Subject: [PATCH 6.4 313/737] arm64: tegra: Fix HSUART for Jetson AGX Orin
+Date:   Mon, 11 Sep 2023 15:42:52 +0200
+Message-ID: <20230911134659.310234432@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <alobakin@pm.me>
+From: Jon Hunter <jonathanh@nvidia.com>
 
-[ Upstream commit 67a43462ee2405c94e985a747bdcb8e3a0d66203 ]
+[ Upstream commit 861dbb2b15b1049113887fb95e856f7123eea0cc ]
 
-When building bpftool with !CONFIG_PERF_EVENTS:
+After commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
+reset-names") was applied, the HSUART failed to probe and the following
+error is seen:
 
-skeleton/pid_iter.bpf.c:47:14: error: incomplete definition of type 'struct bpf_perf_link'
-        perf_link = container_of(link, struct bpf_perf_link, link);
-                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:74:22: note: expanded from macro 'container_of'
-                ((type *)(__mptr - offsetof(type, member)));    \
-                                   ^~~~~~~~~~~~~~~~~~~~~~
-tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:68:60: note: expanded from macro 'offsetof'
- #define offsetof(TYPE, MEMBER)  ((unsigned long)&((TYPE *)0)->MEMBER)
-                                                  ~~~~~~~~~~~^
-skeleton/pid_iter.bpf.c:44:9: note: forward declaration of 'struct bpf_perf_link'
-        struct bpf_perf_link *perf_link;
-               ^
+ serial-tegra 3100000.serial: Couldn't get the reset
+ serial-tegra: probe of 3100000.serial failed with error -2
 
-&bpf_perf_link is being defined and used only under the ifdef.
-Define struct bpf_perf_link___local with the `preserve_access_index`
-attribute inside the pid_iter BPF prog to allow compiling on any
-configs. CO-RE will substitute it with the real struct bpf_perf_link
-accesses later on.
-container_of() uses offsetof(), which does the necessary CO-RE
-relocation if the field is specified with `preserve_access_index` - as
-is the case for struct bpf_perf_link___local.
+Commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
+reset-names") is correct because the "reset-names" property is not
+needed for 8250 UARTs. However, the "reset-names" is required for the
+HSUART and should have been populated as part of commit ff578db7b693
+("arm64: tegra: Enable UART instance on 40-pin header") that
+enabled the HSUART for Jetson AGX Orin. Fix this by populating the
+"reset-names" property for the HSUART on Jetson AGX Orin.
 
-Fixes: cbdaf71f7e65 ("bpftool: Add bpf_cookie to link output")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Alexander Lobakin <alobakin@pm.me>
-Signed-off-by: Quentin Monnet <quentin@isovalent.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230707095425.168126-3-quentin@isovalent.com
+Fixes: ff578db7b693 ("arm64: tegra: Enable UART instance on 40-pin header")
+Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
+Signed-off-by: Thierry Reding <treding@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/skeleton/pid_iter.bpf.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-index e2af8e5fb29ec..3a4c4f7d83d86 100644
---- a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-+++ b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-@@ -15,6 +15,11 @@ enum bpf_obj_type {
- 	BPF_OBJ_BTF,
- };
+diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts b/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts
+index caa9e952a149c..a1194c4e15f0e 100644
+--- a/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts
++++ b/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts
+@@ -2010,6 +2010,7 @@ interrupt-controller@2a40000 {
  
-+struct bpf_perf_link___local {
-+	struct bpf_link link;
-+	struct file *perf_file;
-+} __attribute__((preserve_access_index));
-+
- struct perf_event___local {
- 	u64 bpf_cookie;
- } __attribute__((preserve_access_index));
-@@ -45,10 +50,10 @@ static __always_inline __u32 get_obj_id(void *ent, enum bpf_obj_type type)
- /* could be used only with BPF_LINK_TYPE_PERF_EVENT links */
- static __u64 get_bpf_cookie(struct bpf_link *link)
- {
-+	struct bpf_perf_link___local *perf_link;
- 	struct perf_event___local *event;
--	struct bpf_perf_link *perf_link;
+ 		serial@3100000 {
+ 			compatible = "nvidia,tegra194-hsuart";
++			reset-names = "serial";
+ 			status = "okay";
+ 		};
  
--	perf_link = container_of(link, struct bpf_perf_link, link);
-+	perf_link = container_of(link, struct bpf_perf_link___local, link);
- 	event = BPF_CORE_READ(perf_link, perf_file, private_data);
- 	return BPF_CORE_READ(event, bpf_cookie);
- }
 -- 
 2.40.1
 
