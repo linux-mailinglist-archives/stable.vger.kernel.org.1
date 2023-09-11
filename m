@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03CD979BC08
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 689CA79BBDD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376352AbjIKWTS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:19:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47258 "EHLO
+        id S1377544AbjIKW06 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:26:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47298 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242125AbjIKPXH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:07 -0400
+        with ESMTP id S240954AbjIKO6A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 124BBF9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 54059C433C8;
-        Mon, 11 Sep 2023 15:23:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7D21B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E9C433C9;
+        Mon, 11 Sep 2023 14:57:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445781;
-        bh=fOC0Vx12doIgBKBQwYJoTJ0wCavcGap+Ix4WIa9fTqw=;
+        s=korg; t=1694444276;
+        bh=wl+gMjPD3zQrC/q4pQoLBrfiuMgJQ5qijoqFMXrS3Os=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zn7Rp3GXRjUd6+aFrd0VzRrnSFf/wxBjFiMYE7rpkGFR+4PvtNBf9JaSwhvVvWxbw
-         na5+XlzU4McYBYmX7NWT+JKKE5XI8BttAoJXXACsefcjPa6rr4A5ooh2htntAHab9/
-         ud/pXnezmY3zk1nYA2W7e+iJgSN+KwaQHuwqAf3I=
+        b=SshwLrOTOIffmN9Kr9cBb/zOoK4YZd4M/JG9oU2yZvOGiinA9w6CxxpzJI5RJGSi9
+         JFIc1f3rnDULoXPptC5rrbn5O4x1bvcM5xLOh1+2ByEP9xayKLfr3LnC4+oJ00ocPM
+         NpsMhMcFfLsEhtCLHTkACvQzMGGXcTFOcfWP9o04=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 470/600] media: ov2680: Add ov2680_fill_format() helper function
-Date:   Mon, 11 Sep 2023 15:48:23 +0200
-Message-ID: <20230911134647.520356448@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Chaitanya Kulkarni <kch@nvidia.com>,
+        Pankaj Gupta <pankaj.gupta@amd.com>,
+        Hou Tao <houtao1@huawei.com>, Dave Jiang <dave.jiang@intel.com>
+Subject: [PATCH 6.4 645/737] virtio_pmem: add the missing REQ_OP_WRITE for flush bio
+Date:   Mon, 11 Sep 2023 15:48:24 +0200
+Message-ID: <20230911134708.550166726@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,150 +51,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Hou Tao <houtao1@huawei.com>
 
-[ Upstream commit 6d6849b2203f3244b575ba01d3e41ee19aa2cadf ]
+commit c1dbd8a849183b9c12d257ad3043ecec50db50b3 upstream.
 
-Add a ov2680_fill_format() helper function and use this everywhere were
-a v4l2_mbus_framefmt struct needs to be filled in so that the driver always
-fills it consistently.
+When doing mkfs.xfs on a pmem device, the following warning was
+reported:
 
-This is a preparation patch for fixing ov2680_set_fmt()
-which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
-the passed in v4l2_mbus_framefmt struct.
+ ------------[ cut here ]------------
+ WARNING: CPU: 2 PID: 384 at block/blk-core.c:751 submit_bio_noacct
+ Modules linked in:
+ CPU: 2 PID: 384 Comm: mkfs.xfs Not tainted 6.4.0-rc7+ #154
+ Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
+ RIP: 0010:submit_bio_noacct+0x340/0x520
+ ......
+ Call Trace:
+  <TASK>
+  ? submit_bio_noacct+0xd5/0x520
+  submit_bio+0x37/0x60
+  async_pmem_flush+0x79/0xa0
+  nvdimm_flush+0x17/0x40
+  pmem_submit_bio+0x370/0x390
+  __submit_bio+0xbc/0x190
+  submit_bio_noacct_nocheck+0x14d/0x370
+  submit_bio_noacct+0x1ef/0x520
+  submit_bio+0x55/0x60
+  submit_bio_wait+0x5a/0xc0
+  blkdev_issue_flush+0x44/0x60
 
-Note that for ov2680_init_cfg() this now simply always fills
-the try_fmt struct of the passed in sd_state. This is correct because
-ov2680_init_cfg() is never called with a NULL sd_state so the old
-sd_state check is not necessary.
+The root cause is that submit_bio_noacct() needs bio_op() is either
+WRITE or ZONE_APPEND for flush bio and async_pmem_flush() doesn't assign
+REQ_OP_WRITE when allocating flush bio, so submit_bio_noacct just fail
+the flush bio.
 
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Simply fix it by adding the missing REQ_OP_WRITE for flush bio. And we
+could fix the flush order issue and do flush optimization later.
+
+Cc: stable@vger.kernel.org # 6.3+
+Fixes: b4a6bb3a67aa ("block: add a sanity check for non-write flush/fua bios")
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
+Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Tested-by: Pankaj Gupta <pankaj.gupta@amd.com>
+Signed-off-by: Hou Tao <houtao1@huawei.com>
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2680.c | 49 +++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ drivers/nvdimm/nd_virtio.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 4f7ff23ef8973..6e0e8d21d189f 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -54,6 +54,9 @@
- #define OV2680_WIDTH_MAX		1600
- #define OV2680_HEIGHT_MAX		1200
+diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
+index c6a648fd8744..1f8c667c6f1e 100644
+--- a/drivers/nvdimm/nd_virtio.c
++++ b/drivers/nvdimm/nd_virtio.c
+@@ -105,7 +105,8 @@ int async_pmem_flush(struct nd_region *nd_region, struct bio *bio)
+ 	 * parent bio. Otherwise directly call nd_region flush.
+ 	 */
+ 	if (bio && bio->bi_iter.bi_sector != -1) {
+-		struct bio *child = bio_alloc(bio->bi_bdev, 0, REQ_PREFLUSH,
++		struct bio *child = bio_alloc(bio->bi_bdev, 0,
++					      REQ_OP_WRITE | REQ_PREFLUSH,
+ 					      GFP_ATOMIC);
  
-+#define OV2680_DEFAULT_WIDTH			800
-+#define OV2680_DEFAULT_HEIGHT			600
-+
- enum ov2680_mode_id {
- 	OV2680_MODE_QUXGA_800_600,
- 	OV2680_MODE_720P_1280_720,
-@@ -315,7 +318,8 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
- 	usleep_range(5000, 10000);
- }
- 
--static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
-+static void ov2680_set_bayer_order(struct ov2680_dev *sensor,
-+				   struct v4l2_mbus_framefmt *fmt)
- {
- 	int hv_flip = 0;
- 
-@@ -325,7 +329,19 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
- 	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
- 		hv_flip += 2;
- 
--	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
-+	fmt->code = ov2680_hv_flip_bayer_order[hv_flip];
-+}
-+
-+static void ov2680_fill_format(struct ov2680_dev *sensor,
-+			       struct v4l2_mbus_framefmt *fmt,
-+			       unsigned int width, unsigned int height)
-+{
-+	memset(fmt, 0, sizeof(*fmt));
-+	fmt->width = width;
-+	fmt->height = height;
-+	fmt->field = V4L2_FIELD_NONE;
-+	fmt->colorspace = V4L2_COLORSPACE_SRGB;
-+	ov2680_set_bayer_order(sensor, fmt);
- }
- 
- static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
-@@ -340,7 +356,7 @@ static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
- 	if (ret < 0)
- 		return ret;
- 
--	ov2680_set_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor, &sensor->fmt);
- 	return 0;
- }
- 
-@@ -356,7 +372,7 @@ static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
- 	if (ret < 0)
- 		return ret;
- 
--	ov2680_set_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor, &sensor->fmt);
- 	return 0;
- }
- 
-@@ -614,10 +630,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- 		goto unlock;
- 	}
- 
--	fmt->width = mode->width;
--	fmt->height = mode->height;
--	fmt->code = sensor->fmt.code;
--	fmt->colorspace = sensor->fmt.colorspace;
-+	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
- 
- 	sensor->current_mode = mode;
- 	sensor->fmt = format->format;
-@@ -632,16 +645,11 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- static int ov2680_init_cfg(struct v4l2_subdev *sd,
- 			   struct v4l2_subdev_state *sd_state)
- {
--	struct v4l2_subdev_format fmt = {
--		.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
--		: V4L2_SUBDEV_FORMAT_ACTIVE,
--		.format = {
--			.width = 800,
--			.height = 600,
--		}
--	};
-+	struct ov2680_dev *sensor = to_ov2680_dev(sd);
- 
--	return ov2680_set_fmt(sd, sd_state, &fmt);
-+	ov2680_fill_format(sensor, &sd_state->pads[0].try_fmt,
-+			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
-+	return 0;
- }
- 
- static int ov2680_enum_frame_size(struct v4l2_subdev *sd,
-@@ -740,11 +748,8 @@ static int ov2680_mode_init(struct ov2680_dev *sensor)
- 	const struct ov2680_mode_info *init_mode;
- 
- 	/* set initial mode */
--	sensor->fmt.code = MEDIA_BUS_FMT_SBGGR10_1X10;
--	sensor->fmt.width = 800;
--	sensor->fmt.height = 600;
--	sensor->fmt.field = V4L2_FIELD_NONE;
--	sensor->fmt.colorspace = V4L2_COLORSPACE_SRGB;
-+	ov2680_fill_format(sensor, &sensor->fmt,
-+			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
- 
- 	sensor->frame_interval.denominator = OV2680_FRAME_RATE;
- 	sensor->frame_interval.numerator = 1;
+ 		if (!child)
 -- 
-2.40.1
+2.42.0
 
 
 
