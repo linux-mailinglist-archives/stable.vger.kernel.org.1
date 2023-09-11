@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CDB3579B4E8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:43 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E656D79B13A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:51:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376566AbjIKWT5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:19:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33314 "EHLO
+        id S1345297AbjIKVT0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240638AbjIKOth (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:49:37 -0400
+        with ESMTP id S240655AbjIKOuI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:50:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57DA4125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:49:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A3490C433C8;
-        Mon, 11 Sep 2023 14:49:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 42ABA125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:50:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8DE51C433C7;
+        Mon, 11 Sep 2023 14:50:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443773;
-        bh=KuaKsOLL4k3GVJyAUMGQRxlr+WNO6CuoS/U+E15ct5E=;
+        s=korg; t=1694443803;
+        bh=YL8mHk3BLDxct53VLsAZl4GeNdZUOH2I7XEjYFD+fEI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M0mIGnc671TX/dN9Oxqe2bu11VfBCSjkNb1JL478uVEoEWOD1+tyyzsls6GHkCpy1
-         i+biot3mlbDbz57ZoH7Lrp8Q+W6nan0jrgymFcWQDOhmHQt9C1VdDE0FWvqhSjyD28
-         KywXQNO0q6loBHqv/UQzImKqQfTPOA/Iqv238zVc=
+        b=diKEplWRqBa01CRl8i/uk074aFG2G1kln4cyGJm4YvrSEwujJeSjZoJU+/lJOkf7+
+         VTluEhUbfoAyC34LsyNDTw9iVboe76Cw3I1wJdpBi/zQqYdVXXzeNejqGB2akaNMda
+         QIg37Qy2doi7MidYUoUZXS6CP0vMzxhY5lppwzHo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniil Dulov <d.dulov@aladdin.ru>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
         Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 488/737] media: dib7000p: Fix potential division by zero
-Date:   Mon, 11 Sep 2023 15:45:47 +0200
-Message-ID: <20230911134704.206012953@linuxfoundation.org>
+Subject: [PATCH 6.4 489/737] media: dvb-usb: m920x: Fix a potential memory leak in m920x_i2c_xfer()
+Date:   Mon, 11 Sep 2023 15:45:48 +0200
+Message-ID: <20230911134704.237346262@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,37 +55,47 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Daniil Dulov <d.dulov@aladdin.ru>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit a1db7b2c5533fc67e2681eb5efc921a67bc7d5b8 ]
+[ Upstream commit ea9ef6c2e001c5dc94bee35ebd1c8a98621cf7b8 ]
 
-Variable loopdiv can be assigned 0, then it is used as a denominator,
-without checking it for 0.
+'read' is freed when it is known to be NULL, but not when a read error
+occurs.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+Revert the logic to avoid a small leak, should a m920x_read() call fail.
 
-Fixes: 713d54a8bd81 ("[media] DiB7090: add support for the dib7090 based")
-Signed-off-by: Daniil Dulov <d.dulov@aladdin.ru>
+Fixes: a2ab06d7c4d6 ("media: m920x: don't use stack on USB reads")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-[hverkuil: (bw != NULL) -> bw]
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/dvb-frontends/dib7000p.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/usb/dvb-usb/m920x.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/dvb-frontends/dib7000p.c b/drivers/media/dvb-frontends/dib7000p.c
-index a90d2f51868ff..632534eff0ffa 100644
---- a/drivers/media/dvb-frontends/dib7000p.c
-+++ b/drivers/media/dvb-frontends/dib7000p.c
-@@ -497,7 +497,7 @@ static int dib7000p_update_pll(struct dvb_frontend *fe, struct dibx000_bandwidth
- 	prediv = reg_1856 & 0x3f;
- 	loopdiv = (reg_1856 >> 6) & 0x3f;
+diff --git a/drivers/media/usb/dvb-usb/m920x.c b/drivers/media/usb/dvb-usb/m920x.c
+index fea5bcf72a31a..c88a202daf5fc 100644
+--- a/drivers/media/usb/dvb-usb/m920x.c
++++ b/drivers/media/usb/dvb-usb/m920x.c
+@@ -277,7 +277,6 @@ static int m920x_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int nu
+ 			char *read = kmalloc(1, GFP_KERNEL);
+ 			if (!read) {
+ 				ret = -ENOMEM;
+-				kfree(read);
+ 				goto unlock;
+ 			}
  
--	if ((bw != NULL) && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
-+	if (loopdiv && bw && (bw->pll_prediv != prediv || bw->pll_ratio != loopdiv)) {
- 		dprintk("Updating pll (prediv: old =  %d new = %d ; loopdiv : old = %d new = %d)\n", prediv, bw->pll_prediv, loopdiv, bw->pll_ratio);
- 		reg_1856 &= 0xf000;
- 		reg_1857 = dib7000p_read_word(state, 1857);
+@@ -288,8 +287,10 @@ static int m920x_i2c_xfer(struct i2c_adapter *adap, struct i2c_msg msg[], int nu
+ 
+ 				if ((ret = m920x_read(d->udev, M9206_I2C, 0x0,
+ 						      0x20 | stop,
+-						      read, 1)) != 0)
++						      read, 1)) != 0) {
++					kfree(read);
+ 					goto unlock;
++				}
+ 				msg[i].buf[j] = read[0];
+ 			}
+ 
 -- 
 2.40.1
 
