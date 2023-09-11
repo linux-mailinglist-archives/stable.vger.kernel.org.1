@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D7A9179B39C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CEFA779AE62
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239309AbjIKWnB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57372 "EHLO
+        id S238579AbjIKUyH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:54:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241288AbjIKPFv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:51 -0400
+        with ESMTP id S238877AbjIKOHF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B8CA125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B6928C433C8;
-        Mon, 11 Sep 2023 15:05:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FDC2CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8AE8AC433C7;
+        Mon, 11 Sep 2023 14:06:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444747;
-        bh=GzQQLjqrWDC/OpNTsk6JlGOCrwiZZoOzm68wdK1wEUs=;
+        s=korg; t=1694441220;
+        bh=qsGumP/73cJp4SfzLyAQnioon6+eKLpiV0auLK07XY0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pnmXr9ODG/USZB7uBvUjgiyvYA7aj7TQSlWqSaRdPRjHRjLiDPP6tr7AkUKd1g40x
-         EZHr0gtpcsnrOOIbdj7epV4HR3TvDUQodOS+3KlrdcKUf1tg9isPbLX5h69phzbUcX
-         DIDpwutVZ9m7o5iQjAEmsXQQ9ioGNRmd3IL2572w=
+        b=dfBqrWtRzOFtcw2vUgFRcPyIscSSNVnU9YqfqQhGRUSiO//xgt8T2gR86ikOQeAdJ
+         wzFOD4+unzZPy9Pj43NZRR99kuW1oc7NnOOZTjYVLifXiG5n2Gja17ex2llmKQ/iJP
+         jdxmPFySyUrMVv/jCqSAaw6EVcHoT1uLIS3oxwtw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        butt3rflyh4ck <butterflyhuangxx@gmail.com>,
-        Edward Shishkin <edward.shishkin@gmail.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
+        Nishanth Menon <nm@ti.com>, Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 101/600] reiserfs: Check the return value from __getblk()
-Date:   Mon, 11 Sep 2023 15:42:14 +0200
-Message-ID: <20230911134636.584036459@linuxfoundation.org>
+Subject: [PATCH 6.5 336/739] bus: ti-sysc: Fix build warning for 64-bit build
+Date:   Mon, 11 Sep 2023 15:42:15 +0200
+Message-ID: <20230911134700.486896443@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,51 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox <willy@infradead.org>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit ba38980add7ffc9e674ada5b4ded4e7d14e76581 ]
+[ Upstream commit e1e1e9bb9d943ec690670a609a5f660ca10eaf85 ]
 
-__getblk() can return a NULL pointer if we run out of memory or if we
-try to access beyond the end of the device; check it and handle it
-appropriately.
+Fix "warning: cast from pointer to integer of different size" on 64-bit
+builds.
 
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Link: https://lore.kernel.org/lkml/CAFcO6XOacq3hscbXevPQP7sXRoYFz34ZdKPYjmd6k5sZuhGFDw@mail.gmail.com/
-Tested-by: butt3rflyh4ck <butterflyhuangxx@gmail.com>
-Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2") # probably introduced in 2002
-Acked-by: Edward Shishkin <edward.shishkin@gmail.com>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Note that this is a cosmetic fix at this point as the driver is not yet
+used for 64-bit systems.
+
+Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
+Reviewed-by: Dhruva Gole <d-gole@ti.com>
+Reviewed-by: Nishanth Menon <nm@ti.com>
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/reiserfs/journal.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/bus/ti-sysc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/reiserfs/journal.c b/fs/reiserfs/journal.c
-index 9f62da7471c9e..eb81b4170cb51 100644
---- a/fs/reiserfs/journal.c
-+++ b/fs/reiserfs/journal.c
-@@ -2326,7 +2326,7 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	int i, j;
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 4cb23b9e06ea4..dbc37b3b84a8d 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -3106,7 +3106,7 @@ static int sysc_init_static_data(struct sysc *ddata)
  
- 	bh = __getblk(dev, block, bufsize);
--	if (buffer_uptodate(bh))
-+	if (!bh || buffer_uptodate(bh))
- 		return (bh);
+ 	match = soc_device_match(sysc_soc_match);
+ 	if (match && match->data)
+-		sysc_soc->soc = (int)match->data;
++		sysc_soc->soc = (enum sysc_soc)match->data;
  
- 	if (block + BUFNR > max_block) {
-@@ -2336,6 +2336,8 @@ static struct buffer_head *reiserfs_breada(struct block_device *dev,
- 	j = 1;
- 	for (i = 1; i < blocks; i++) {
- 		bh = __getblk(dev, block + i, bufsize);
-+		if (!bh)
-+			break;
- 		if (buffer_uptodate(bh)) {
- 			brelse(bh);
- 			break;
+ 	/*
+ 	 * Check and warn about possible old incomplete dtb. We now want to see
 -- 
 2.40.1
 
