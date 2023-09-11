@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6289F79B510
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5028E79B479
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239148AbjIKWjD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:39:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42538 "EHLO
+        id S240884AbjIKWWd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:22:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37056 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239678AbjIKO0M (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:12 -0400
+        with ESMTP id S240979AbjIKO6q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8E0E1DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8995C433C7;
-        Mon, 11 Sep 2023 14:26:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5B4E41B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C6AC433C7;
+        Mon, 11 Sep 2023 14:58:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442368;
-        bh=ciYGroQR3Iy9K/wZhr3sRhSgpbq8Tce3KzkAo2+zmXc=;
+        s=korg; t=1694444322;
+        bh=GwVu1r/HLFVAcWk2ISz3RQdx5Q/iFYndl8LO9ZZmprI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WfS/UYxPVWLp5/8K+JpkO/I83rfuaVoS/oQGSCF2+b8PtwKLtB3vyiwX6UGmBXjtO
-         f7L50ifMVPBJcW+e0MRV3IUL7ZPPGohrNvNXYpANWNKfP3n9X771QTElAcFVSNbUXj
-         HRv4qS37yZamycmWlXCoVbhHqCk9y8sqlOpX84Ec=
+        b=TbSIW3jRE/UVYeWB3Ro16i6YHNN1Kgl8oCNQQOyvNkcfxnc/Q54EziT0+0Y+Xu8Jn
+         sEXw4X80vlxVyRySvQddZbmj5lpk65EDPk/7xBXnjGPivlBZkCk06XEg/chyP3svYs
+         WBMqCID1ceq/Mvf+I0KXM1X1yKKGJDSdTKhXCFqs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 730/739] Bluetooth: HCI: Introduce HCI_QUIRK_BROKEN_LE_CODED
-Date:   Mon, 11 Sep 2023 15:48:49 +0200
-Message-ID: <20230911134711.455104155@linuxfoundation.org>
+        syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com,
+        Gabriel Krisman Bertazi <krisman@suse.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 671/737] io_uring: Dont set affinity on a dying sqpoll thread
+Date:   Mon, 11 Sep 2023 15:48:50 +0200
+Message-ID: <20230911134709.282715658@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,110 +51,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 253f3399f4c09ce6f4e67350f839be0361b4d5ff ]
+commit bd6fc5da4c51107e1e0cec4a3a07963d1dae2c84 upstream.
 
-This introduces HCI_QUIRK_BROKEN_LE_CODED which is used to indicate
-that LE Coded PHY shall not be used, it is then set for some Intel
-models that claim to support it but when used causes many problems.
+Syzbot reported a null-ptr-deref of sqd->thread inside
+io_sqpoll_wq_cpu_affinity.  It turns out the sqd->thread can go away
+from under us during io_uring_register, in case the process gets a
+fatal signal during io_uring_register.
 
-Cc: stable@vger.kernel.org # 6.4.y+
-Link: https://github.com/bluez/bluez/issues/577
-Link: https://github.com/bluez/bluez/issues/582
-Link: https://lore.kernel.org/linux-bluetooth/CABBYNZKco-v7wkjHHexxQbgwwSz-S=GZ=dZKbRE1qxT1h4fFbQ@mail.gmail.com/T/#
-Fixes: 288c90224eec ("Bluetooth: Enable all supported LE PHY by default")
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+It is not particularly hard to hit the race, and while I am not sure
+this is the exact case hit by syzbot, it solves it.  Finally, checking
+->thread is enough to close the race because we locked sqd while
+"parking" the thread, thus preventing it from going away.
+
+I reproduced it fairly consistently with a program that does:
+
+int main(void) {
+  ...
+  io_uring_queue_init(RING_LEN, &ring1, IORING_SETUP_SQPOLL);
+  while (1) {
+    io_uring_register_iowq_aff(ring, 1, &mask);
+  }
+}
+
+Executed in a loop with timeout to trigger SIGTERM:
+  while true; do timeout 1 /a.out ; done
+
+This will hit the following BUG() in very few attempts.
+
+BUG: kernel NULL pointer dereference, address: 00000000000007a8
+PGD 800000010e949067 P4D 800000010e949067 PUD 10e46e067 PMD 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 15715 Comm: dead-sqpoll Not tainted 6.5.0-rc7-next-20230825-g193296236fa0-dirty #23
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+RIP: 0010:io_sqpoll_wq_cpu_affinity+0x27/0x70
+Code: 90 90 90 0f 1f 44 00 00 55 53 48 8b 9f 98 03 00 00 48 85 db 74 4f
+48 89 df 48 89 f5 e8 e2 f8 ff ff 48 8b 43 38 48 85 c0 74 22 <48> 8b b8
+a8 07 00 00 48 89 ee e8 ba b1 00 00 48 89 df 89 c5 e8 70
+RSP: 0018:ffffb04040ea7e70 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff93c010749e40 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffffffa7653331 RDI: 00000000ffffffff
+RBP: ffffb04040ea7eb8 R08: 0000000000000000 R09: c0000000ffffdfff
+R10: ffff93c01141b600 R11: ffffb04040ea7d18 R12: ffff93c00ea74840
+R13: 0000000000000011 R14: 0000000000000000 R15: ffff93c00ea74800
+FS:  00007fb7c276ab80(0000) GS:ffff93c36f200000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000007a8 CR3: 0000000111634003 CR4: 0000000000370ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x154/0x440
+ ? do_user_addr_fault+0x174/0x7b0
+ ? exc_page_fault+0x63/0x140
+ ? asm_exc_page_fault+0x22/0x30
+ ? io_sqpoll_wq_cpu_affinity+0x27/0x70
+ __io_register_iowq_aff+0x2b/0x60
+ __io_uring_register+0x614/0xa70
+ __x64_sys_io_uring_register+0xaa/0x1a0
+ do_syscall_64+0x3a/0x90
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+RIP: 0033:0x7fb7c226fec9
+Code: 2e 00 b8 ca 00 00 00 0f 05 eb a5 66 0f 1f 44 00 00 48 89 f8 48 89
+f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+f0 ff ff 73 01 c3 48 8b 0d 97 7f 2d 00 f7 d8 64 89 01 48
+RSP: 002b:00007ffe2c0674f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb7c226fec9
+RDX: 00007ffe2c067530 RSI: 0000000000000011 RDI: 0000000000000003
+RBP: 00007ffe2c0675d0 R08: 00007ffe2c067550 R09: 00007ffe2c067550
+R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe2c067750 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+CR2: 00000000000007a8
+---[ end trace 0000000000000000 ]---
+
+Reported-by: syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com
+Fixes: ebdfefc09c6d ("io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/87v8cybuo6.fsf@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/bluetooth/btintel.c      |  6 ++++++
- include/net/bluetooth/hci.h      | 10 ++++++++++
- include/net/bluetooth/hci_core.h |  4 +++-
- net/bluetooth/hci_sync.c         |  5 ++++-
- 4 files changed, 23 insertions(+), 2 deletions(-)
+ io_uring/sqpoll.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bluetooth/btintel.c b/drivers/bluetooth/btintel.c
-index d9349ba48281e..7ba60151a16a6 100644
---- a/drivers/bluetooth/btintel.c
-+++ b/drivers/bluetooth/btintel.c
-@@ -2658,6 +2658,9 @@ static int btintel_setup_combined(struct hci_dev *hdev)
- 			set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED,
- 				&hdev->quirks);
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -430,7 +430,9 @@ __cold int io_sqpoll_wq_cpu_affinity(str
  
-+			/* These variants don't seem to support LE Coded PHY */
-+			set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
-+
- 			/* Setup MSFT Extension support */
- 			btintel_set_msft_opcode(hdev, ver.hw_variant);
+ 	if (sqd) {
+ 		io_sq_thread_park(sqd);
+-		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
++		/* Don't set affinity for a dying thread */
++		if (sqd->thread)
++			ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
+ 		io_sq_thread_unpark(sqd);
+ 	}
  
-@@ -2729,6 +2732,9 @@ static int btintel_setup_combined(struct hci_dev *hdev)
- 		 */
- 		set_bit(HCI_QUIRK_WIDEBAND_SPEECH_SUPPORTED, &hdev->quirks);
- 
-+		/* These variants don't seem to support LE Coded PHY */
-+		set_bit(HCI_QUIRK_BROKEN_LE_CODED, &hdev->quirks);
-+
- 		/* Set Valid LE States quirk */
- 		set_bit(HCI_QUIRK_VALID_LE_STATES, &hdev->quirks);
- 
-diff --git a/include/net/bluetooth/hci.h b/include/net/bluetooth/hci.h
-index 9ae6f60c96bf2..3ff822ebb3a47 100644
---- a/include/net/bluetooth/hci.h
-+++ b/include/net/bluetooth/hci.h
-@@ -319,6 +319,16 @@ enum {
- 	 * This quirk must be set before hci_register_dev is called.
- 	 */
- 	HCI_QUIRK_USE_MSFT_EXT_ADDRESS_FILTER,
-+
-+	/*
-+	 * When this quirk is set, LE Coded PHY shall not be used. This is
-+	 * required for some Intel controllers which erroneously claim to
-+	 * support it but it causes problems with extended scanning.
-+	 *
-+	 * This quirk can be set before hci_register_dev is called or
-+	 * during the hdev->setup vendor callback.
-+	 */
-+	HCI_QUIRK_BROKEN_LE_CODED,
- };
- 
- /* HCI device flags */
-diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
-index 2a9cdbdb8a81e..c0a87558aea71 100644
---- a/include/net/bluetooth/hci_core.h
-+++ b/include/net/bluetooth/hci_core.h
-@@ -1770,7 +1770,9 @@ void hci_conn_del_sysfs(struct hci_conn *conn);
- #define scan_2m(dev) (((dev)->le_tx_def_phys & HCI_LE_SET_PHY_2M) || \
- 		      ((dev)->le_rx_def_phys & HCI_LE_SET_PHY_2M))
- 
--#define le_coded_capable(dev) (((dev)->le_features[1] & HCI_LE_PHY_CODED))
-+#define le_coded_capable(dev) (((dev)->le_features[1] & HCI_LE_PHY_CODED) && \
-+			       !test_bit(HCI_QUIRK_BROKEN_LE_CODED, \
-+					 &(dev)->quirks))
- 
- #define scan_coded(dev) (((dev)->le_tx_def_phys & HCI_LE_SET_PHY_CODED) || \
- 			 ((dev)->le_rx_def_phys & HCI_LE_SET_PHY_CODED))
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index bc84b4617e824..402b8522c2228 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -4684,7 +4684,10 @@ static const struct {
- 			 "advertised, but not supported."),
- 	HCI_QUIRK_BROKEN(SET_RPA_TIMEOUT,
- 			 "HCI LE Set Random Private Address Timeout command is "
--			 "advertised, but not supported.")
-+			 "advertised, but not supported."),
-+	HCI_QUIRK_BROKEN(LE_CODED,
-+			 "HCI LE Coded PHY feature bit is set, "
-+			 "but its usage is not supported.")
- };
- 
- /* This function handles hdev setup stage:
--- 
-2.40.1
-
 
 
