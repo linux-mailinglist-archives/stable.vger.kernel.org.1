@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 32C1F79BE0F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8729379BAAF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230525AbjIKUwa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40626 "EHLO
+        id S1379447AbjIKWoL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38350 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241758AbjIKPNv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:51 -0400
+        with ESMTP id S240560AbjIKOrT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 19A63FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FBB3C433C7;
-        Mon, 11 Sep 2023 15:13:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB085106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E023C433C8;
+        Mon, 11 Sep 2023 14:47:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445226;
-        bh=HKOs8UeyV12+Wm0i0c6vsn/uBVcZW/3U83NFA01hwwo=;
+        s=korg; t=1694443633;
+        bh=a9EX2WBfgG1fqeyTJU8pZe6sXUcqDqL2WYREXuikm2o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t/PONLEj0cWV+SmlLm2VIN2+Wdf/ByyzOWYLUCRT3RIUIAijbvpECGmSX+t2amIqH
-         9guCX+Ur9rJj6bfD/RxHcJPG/a7RE9YIOVy7P1QzsicUCVQkuPkOvlTBE1uofjpdqW
-         RKKwunp/8CbEPwM+wFqqUMMZATslvvML1o86Dfr4=
+        b=J4tYxaJJP+lGN2BVxzDYiKv1RKgbkliB3HS8BZadZnJcFqpPpTfomOKM+HRIOVjWt
+         dk2z28HEAq2lvYw7Kw+QlZk1KhZLHsjqUvRlMLw1/U4R2op0ioYhHf8c0oDbzfuiy6
+         QwSzv0Hx7ZLkXStJvZZyjt36VmKo+8f/dfWEyKks=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 272/600] arm64: dts: qcom: sdm845: Fix the min frequency of "ice_core_clk"
+Subject: [PATCH 6.4 446/737] clk: imx8mp: fix sai4 clock
 Date:   Mon, 11 Sep 2023 15:45:05 +0200
-Message-ID: <20230911134641.637555147@linuxfoundation.org>
+Message-ID: <20230911134703.059980799@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,41 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Marco Felsch <m.felsch@pengutronix.de>
 
-[ Upstream commit bbbef6e24bc4493602df68b052f6f48d48e3184a ]
+[ Upstream commit c30f600f1f41dcf5ef0fb02e9a201f9b2e8f31bd ]
 
-Minimum frequency of the "ice_core_clk" should be 75MHz as specified in the
-downstream vendor devicetree. So fix it!
+The reference manual don't mention a SAI4 hardware block. This would be
+clock slice 78 which is skipped (TRM, page 237). Remove any reference to
+this clock to align the driver with the reality.
 
-https://git.codelinaro.org/clo/la/kernel/msm-4.9/-/blob/LA.UM.7.3.r1-09300-sdm845.0/arch/arm64/boot/dts/qcom/sdm845.dtsi
-
-Fixes: 433f9a57298f ("arm64: dts: sdm845: add Inline Crypto Engine registers and clock")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230720054100.9940-5-manivannan.sadhasivam@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 9c140d992676 ("clk: imx: Add support for i.MX8MP clock driver")
+Acked-by: Stephen Boyd <sboyd@kernel.org>
+Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
+Link: https://lore.kernel.org/r/20230731142150.3186650-1-m.felsch@pengutronix.de
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-imx8mp.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-index 375c86633b5b9..52c9f5639f8a2 100644
---- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
-@@ -2521,7 +2521,7 @@ ufs_mem_hc: ufshc@1d84000 {
- 				<0 0>,
- 				<0 0>,
- 				<0 0>,
--				<0 300000000>;
-+				<75000000 300000000>;
+diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
+index 1469249386dd8..670aa2bab3017 100644
+--- a/drivers/clk/imx/clk-imx8mp.c
++++ b/drivers/clk/imx/clk-imx8mp.c
+@@ -178,10 +178,6 @@ static const char * const imx8mp_sai3_sels[] = {"osc_24m", "audio_pll1_out", "au
+ 						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
+ 						"clk_ext3", "clk_ext4", };
  
- 			status = "disabled";
- 		};
+-static const char * const imx8mp_sai4_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
+-						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
+-						"clk_ext1", "clk_ext2", };
+-
+ static const char * const imx8mp_sai5_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
+ 						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
+ 						"clk_ext2", "clk_ext3", };
+@@ -567,7 +563,6 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
+ 	hws[IMX8MP_CLK_SAI1] = imx8m_clk_hw_composite("sai1", imx8mp_sai1_sels, ccm_base + 0xa580);
+ 	hws[IMX8MP_CLK_SAI2] = imx8m_clk_hw_composite("sai2", imx8mp_sai2_sels, ccm_base + 0xa600);
+ 	hws[IMX8MP_CLK_SAI3] = imx8m_clk_hw_composite("sai3", imx8mp_sai3_sels, ccm_base + 0xa680);
+-	hws[IMX8MP_CLK_SAI4] = imx8m_clk_hw_composite("sai4", imx8mp_sai4_sels, ccm_base + 0xa700);
+ 	hws[IMX8MP_CLK_SAI5] = imx8m_clk_hw_composite("sai5", imx8mp_sai5_sels, ccm_base + 0xa780);
+ 	hws[IMX8MP_CLK_SAI6] = imx8m_clk_hw_composite("sai6", imx8mp_sai6_sels, ccm_base + 0xa800);
+ 	hws[IMX8MP_CLK_ENET_QOS] = imx8m_clk_hw_composite("enet_qos", imx8mp_enet_qos_sels, ccm_base + 0xa880);
 -- 
 2.40.1
 
