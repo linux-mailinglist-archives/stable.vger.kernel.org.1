@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0B10679B0CB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CD92179AC88
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348975AbjIKVcC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52180 "EHLO
+        id S237232AbjIKUvZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35390 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240148AbjIKOhu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:50 -0400
+        with ESMTP id S240088AbjIKOgV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26F5DF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6D5E6C433C7;
-        Mon, 11 Sep 2023 14:37:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB450F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0B18C433C7;
+        Mon, 11 Sep 2023 14:36:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443065;
-        bh=8lA31x8XKI6F5gNAdU0Cb9eZQKsj1VHA02fri5jwt84=;
+        s=korg; t=1694442977;
+        bh=fqGR8d0iW3E4EAuVBMINA3mxo88L/gRoZIgkheAZLyc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xCQmenIp/pjlPqG2pNtgPOsPYKmH7/4KQ0bTm0IOL2bDhkMt5Uvfx4s3oBDI9UdDH
-         MeZpbGT4fQWW0sdzjPcEuE9ytG5v5FNxJXfRk4gTRU5Scus//jxvX2s5FN3CjNaogp
-         HDVXtaL5uhb+J7FIUTLpL0u8uyPW5nQu21xDkK6o=
+        b=Ts6r+RZ311BUYLlgVAyrZ6Wyy6tmIVV1o25zER2hBfLSe0ZEw94qDrsO57tAFm8jF
+         6g3FWEapgHo2bDNSlcUocRqAnmArh/2gyoa/OV5zgSfLHWvYapHB+Pk7hmqQtLiIOC
+         5rWzBudmQp5tuPf01L63TgogAwL11X7ajscuHYv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Menglong Dong <imagedong@tencent.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 206/737] Bluetooth: hci_event: drop only unbound CIS if Set CIG Parameters fails
-Date:   Mon, 11 Sep 2023 15:41:05 +0200
-Message-ID: <20230911134656.351107644@linuxfoundation.org>
+Subject: [PATCH 6.4 207/737] net: tcp: fix unexcepted socket die when snd_wnd is 0
+Date:   Mon, 11 Sep 2023 15:41:06 +0200
+Message-ID: <20230911134656.377704269@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,76 +55,81 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Pauli Virtanen <pav@iki.fi>
+From: Menglong Dong <imagedong@tencent.com>
 
-[ Upstream commit 66dee21524d9ac6461ec3052652b7bc0603ee0c5 ]
+[ Upstream commit e89688e3e97868451a5d05b38a9d2633d6785cd4 ]
 
-When user tries to connect a new CIS when its CIG is not configurable,
-that connection shall fail, but pre-existing connections shall not be
-affected.  However, currently hci_cc_le_set_cig_params deletes all CIS
-of the CIG on error so it doesn't work, even though controller shall not
-change CIG/CIS configuration if the command fails.
+In tcp_retransmit_timer(), a window shrunk connection will be regarded
+as timeout if 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX'. This is not
+right all the time.
 
-Fix by failing on command error only the connections that are not yet
-bound, so that we keep the previous CIS configuration like the
-controller does.
+The retransmits will become zero-window probes in tcp_retransmit_timer()
+if the 'snd_wnd==0'. Therefore, the icsk->icsk_rto will come up to
+TCP_RTO_MAX sooner or later.
 
-Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+However, the timer can be delayed and be triggered after 122877ms, not
+TCP_RTO_MAX, as I tested.
+
+Therefore, 'tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX' is always true
+once the RTO come up to TCP_RTO_MAX, and the socket will die.
+
+Fix this by replacing the 'tcp_jiffies32' with '(u32)icsk->icsk_timeout',
+which is exact the timestamp of the timeout.
+
+However, "tp->rcv_tstamp" can restart from idle, then tp->rcv_tstamp
+could already be a long time (minutes or hours) in the past even on the
+first RTO. So we double check the timeout with the duration of the
+retransmission.
+
+Meanwhile, making "2 * TCP_RTO_MAX" as the timeout to avoid the socket
+dying too soon.
+
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Link: https://lore.kernel.org/netdev/CADxym3YyMiO+zMD4zj03YPM3FBi-1LHi6gSD2XT8pyAMM096pg@mail.gmail.com/
+Signed-off-by: Menglong Dong <imagedong@tencent.com>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_event.c | 29 ++++++++++++++++++++++++-----
- 1 file changed, 24 insertions(+), 5 deletions(-)
+ net/ipv4/tcp_timer.c | 18 +++++++++++++++++-
+ 1 file changed, 17 insertions(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_event.c b/net/bluetooth/hci_event.c
-index 22fb9f9da866b..866d2cd43bf78 100644
---- a/net/bluetooth/hci_event.c
-+++ b/net/bluetooth/hci_event.c
-@@ -3803,6 +3803,22 @@ static u8 hci_cc_le_read_buffer_size_v2(struct hci_dev *hdev, void *data,
- 	return rp->status;
+diff --git a/net/ipv4/tcp_timer.c b/net/ipv4/tcp_timer.c
+index 366c3c25ebe20..db90bd2d4ed66 100644
+--- a/net/ipv4/tcp_timer.c
++++ b/net/ipv4/tcp_timer.c
+@@ -441,6 +441,22 @@ static void tcp_fastopen_synack_timer(struct sock *sk, struct request_sock *req)
+ 			  req->timeout << req->num_timeout, TCP_RTO_MAX);
  }
  
-+static void hci_unbound_cis_failed(struct hci_dev *hdev, u8 cig, u8 status)
++static bool tcp_rtx_probe0_timed_out(const struct sock *sk,
++				     const struct sk_buff *skb)
 +{
-+	struct hci_conn *conn, *tmp;
++	const struct tcp_sock *tp = tcp_sk(sk);
++	const int timeout = TCP_RTO_MAX * 2;
++	u32 rcv_delta, rtx_delta;
 +
-+	lockdep_assert_held(&hdev->lock);
++	rcv_delta = inet_csk(sk)->icsk_timeout - tp->rcv_tstamp;
++	if (rcv_delta <= timeout)
++		return false;
 +
-+	list_for_each_entry_safe(conn, tmp, &hdev->conn_hash.list, list) {
-+		if (conn->type != ISO_LINK || !bacmp(&conn->dst, BDADDR_ANY) ||
-+		    conn->state == BT_OPEN || conn->iso_qos.ucast.cig != cig)
-+			continue;
++	rtx_delta = (u32)msecs_to_jiffies(tcp_time_stamp(tp) -
++			(tp->retrans_stamp ?: tcp_skb_timestamp(skb)));
 +
-+		if (HCI_CONN_HANDLE_UNSET(conn->handle))
-+			hci_conn_failed(conn, status);
-+	}
++	return rtx_delta > timeout;
 +}
-+
- static u8 hci_cc_le_set_cig_params(struct hci_dev *hdev, void *data,
- 				   struct sk_buff *skb)
- {
-@@ -3823,12 +3839,15 @@ static u8 hci_cc_le_set_cig_params(struct hci_dev *hdev, void *data,
  
- 	hci_dev_lock(hdev);
- 
-+	/* BLUETOOTH CORE SPECIFICATION Version 5.4 | Vol 4, Part E page 2554
-+	 *
-+	 * If the Status return parameter is non-zero, then the state of the CIG
-+	 * and its CIS configurations shall not be changed by the command. If
-+	 * the CIG did not already exist, it shall not be created.
-+	 */
- 	if (status) {
--		while ((conn = hci_conn_hash_lookup_cig(hdev, rp->cig_id))) {
--			conn->state = BT_CLOSED;
--			hci_connect_cfm(conn, status);
--			hci_conn_del(conn);
--		}
-+		/* Keep current configuration, fail only the unbound CIS */
-+		hci_unbound_cis_failed(hdev, rp->cig_id, status);
- 		goto unlock;
- 	}
- 
+ /**
+  *  tcp_retransmit_timer() - The TCP retransmit timeout handler
+@@ -506,7 +522,7 @@ void tcp_retransmit_timer(struct sock *sk)
+ 					    tp->snd_una, tp->snd_nxt);
+ 		}
+ #endif
+-		if (tcp_jiffies32 - tp->rcv_tstamp > TCP_RTO_MAX) {
++		if (tcp_rtx_probe0_timed_out(sk, skb)) {
+ 			tcp_write_err(sk);
+ 			goto out;
+ 		}
 -- 
 2.40.1
 
