@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1980679BD5B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2EEBF79B880
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242311AbjIKVTC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59152 "EHLO
+        id S1345631AbjIKVVl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:21:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58610 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240584AbjIKOsJ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:09 -0400
+        with ESMTP id S239307AbjIKORP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A73FD125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3F96C433C8;
-        Mon, 11 Sep 2023 14:48:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4AAD6DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90777C433C8;
+        Mon, 11 Sep 2023 14:17:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443684;
-        bh=BSs5hLRa7tl1+G17eWh6bGNvim3QxAAfYvMIWFr5ryg=;
+        s=korg; t=1694441830;
+        bh=Yxcyd3ItiVqUcgnYjKbLNffm35bshZuSw5zClTa+OX0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a/xLJTcCEXUfkzz2wsI+xGJ9egH1dHyagaFNBq5NU7XmkHqjzNhEIaSQdu/sAC4Er
-         QnI+DQk6Md2eVYhrHGg2D6ksrr+BIurBteibhdnogKV3nBq8Jc1DMnIdyUzeWE77Bg
-         ykR3Hpckf7iJ2Z09sp9Qnc36nDPne7SiFBBNrL+I=
+        b=a/zxSvO4XIYhKsKn+e6V5qeHw7lxtWouca3zrZe9mUvrREhBiw0xxMjR9Vb9tyjNo
+         r6KO55ZxXqWBgC8i53O+mqBDchTojq8fh7SWuFwGOZ950Tt3LYvcm10MwsB+cLMQIA
+         uNXsVudn/4k9q2yARtB6iAUIbobMVoDi/i5b4sN0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 465/737] powerpc: Dont include lppaca.h in paca.h
+Subject: [PATCH 6.5 525/739] media: cec: core: add adap_unconfigured() callback
 Date:   Mon, 11 Sep 2023 15:45:24 +0200
-Message-ID: <20230911134703.579835649@linuxfoundation.org>
+Message-ID: <20230911134705.775077059@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,136 +50,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Ellerman <mpe@ellerman.id.au>
+From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 
-[ Upstream commit 1aa000667669fa855853decbb1c69e974d8ff716 ]
+[ Upstream commit 948a77aaecf202f722cf2264025f9987e5bd5c26 ]
 
-By adding a forward declaration for struct lppaca we can untangle paca.h
-and lppaca.h. Also move get_lppaca() into lppaca.h for consistency.
+The adap_configured() callback was called with the adap->lock mutex
+held if the 'configured' argument was false, and without the adap->lock
+mutex held if that argument was true.
 
-Add includes of lppaca.h to some files that need it.
+That was very confusing, and so split this up in a adap_unconfigured()
+callback and a high-level configured() callback.
 
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230823055317.751786-3-mpe@ellerman.id.au
-Stable-dep-of: eac030b22ea1 ("powerpc/pseries: Rework lppaca_shared_proc() to avoid DEBUG_PREEMPT")
+This also makes it easier to understand when the mutex is held: all
+low-level adap_* callbacks are called with the mutex held. All other
+callbacks are called without that mutex held.
+
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: f1b57164305d ("media: cec: add optional adap_configured callback")
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/lppaca.h         | 4 ++++
- arch/powerpc/include/asm/paca.h           | 6 +-----
- arch/powerpc/include/asm/paravirt.h       | 1 +
- arch/powerpc/include/asm/plpar_wrappers.h | 1 +
- arch/powerpc/kvm/book3s_hv_ras.c          | 1 +
- arch/powerpc/mm/book3s64/slb.c            | 1 +
- arch/powerpc/xmon/xmon.c                  | 1 +
- 7 files changed, 10 insertions(+), 5 deletions(-)
+ drivers/media/cec/core/cec-adap.c | 4 ++--
+ include/media/cec.h               | 5 +++--
+ 2 files changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/arch/powerpc/include/asm/lppaca.h b/arch/powerpc/include/asm/lppaca.h
-index 34d44cb17c874..fe278172e9d42 100644
---- a/arch/powerpc/include/asm/lppaca.h
-+++ b/arch/powerpc/include/asm/lppaca.h
-@@ -134,6 +134,10 @@ static inline bool lppaca_shared_proc(struct lppaca *l)
- 	return !!(l->__old_status & LPPACA_OLD_SHARED_PROC);
+diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
+index a9b73fb33888d..09ca83c233299 100644
+--- a/drivers/media/cec/core/cec-adap.c
++++ b/drivers/media/cec/core/cec-adap.c
+@@ -1348,7 +1348,7 @@ static void cec_adap_unconfigure(struct cec_adapter *adap)
+ 	cec_flush(adap);
+ 	wake_up_interruptible(&adap->kthread_waitq);
+ 	cec_post_state_event(adap);
+-	call_void_op(adap, adap_configured, false);
++	call_void_op(adap, adap_unconfigured);
  }
  
-+#ifdef CONFIG_PPC_PSERIES
-+#define get_lppaca()	(get_paca()->lppaca_ptr)
-+#endif
-+
  /*
-  * SLB shadow buffer structure as defined in the PAPR.  The save_area
-  * contains adjacent ESID and VSID pairs for each shadowed SLB.  The
-diff --git a/arch/powerpc/include/asm/paca.h b/arch/powerpc/include/asm/paca.h
-index da0377f465973..46ac4647b5fb9 100644
---- a/arch/powerpc/include/asm/paca.h
-+++ b/arch/powerpc/include/asm/paca.h
-@@ -15,7 +15,6 @@
- #include <linux/cache.h>
- #include <linux/string.h>
- #include <asm/types.h>
--#include <asm/lppaca.h>
- #include <asm/mmu.h>
- #include <asm/page.h>
- #ifdef CONFIG_PPC_BOOK3E_64
-@@ -47,14 +46,11 @@ extern unsigned int debug_smp_processor_id(void); /* from linux/smp.h */
- #define get_paca()	local_paca
- #endif
+@@ -1539,7 +1539,7 @@ static int cec_config_thread_func(void *arg)
+ 	adap->kthread_config = NULL;
+ 	complete(&adap->config_completion);
+ 	mutex_unlock(&adap->lock);
+-	call_void_op(adap, adap_configured, true);
++	call_void_op(adap, configured);
+ 	return 0;
  
--#ifdef CONFIG_PPC_PSERIES
--#define get_lppaca()	(get_paca()->lppaca_ptr)
--#endif
--
- #define get_slb_shadow()	(get_paca()->slb_shadow_ptr)
+ unconfigure:
+diff --git a/include/media/cec.h b/include/media/cec.h
+index 6556cc161dc0a..9c007f83569aa 100644
+--- a/include/media/cec.h
++++ b/include/media/cec.h
+@@ -113,12 +113,12 @@ struct cec_fh {
+ #define CEC_FREE_TIME_TO_USEC(ft)		((ft) * 2400)
  
- struct task_struct;
- struct rtas_args;
-+struct lppaca;
+ struct cec_adap_ops {
+-	/* Low-level callbacks */
++	/* Low-level callbacks, called with adap->lock held */
+ 	int (*adap_enable)(struct cec_adapter *adap, bool enable);
+ 	int (*adap_monitor_all_enable)(struct cec_adapter *adap, bool enable);
+ 	int (*adap_monitor_pin_enable)(struct cec_adapter *adap, bool enable);
+ 	int (*adap_log_addr)(struct cec_adapter *adap, u8 logical_addr);
+-	void (*adap_configured)(struct cec_adapter *adap, bool configured);
++	void (*adap_unconfigured)(struct cec_adapter *adap);
+ 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
+ 			     u32 signal_free_time, struct cec_msg *msg);
+ 	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
+@@ -131,6 +131,7 @@ struct cec_adap_ops {
+ 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
  
- /*
-  * Defines the layout of the paca.
-diff --git a/arch/powerpc/include/asm/paravirt.h b/arch/powerpc/include/asm/paravirt.h
-index f5ba1a3c41f8e..e08513d731193 100644
---- a/arch/powerpc/include/asm/paravirt.h
-+++ b/arch/powerpc/include/asm/paravirt.h
-@@ -6,6 +6,7 @@
- #include <asm/smp.h>
- #ifdef CONFIG_PPC64
- #include <asm/paca.h>
-+#include <asm/lppaca.h>
- #include <asm/hvcall.h>
- #endif
+ 	/* High-level CEC message callback, called without adap->lock held */
++	void (*configured)(struct cec_adapter *adap);
+ 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
+ };
  
-diff --git a/arch/powerpc/include/asm/plpar_wrappers.h b/arch/powerpc/include/asm/plpar_wrappers.h
-index 8239c0af5eb2b..fe3d0ea0058ac 100644
---- a/arch/powerpc/include/asm/plpar_wrappers.h
-+++ b/arch/powerpc/include/asm/plpar_wrappers.h
-@@ -9,6 +9,7 @@
- 
- #include <asm/hvcall.h>
- #include <asm/paca.h>
-+#include <asm/lppaca.h>
- #include <asm/page.h>
- 
- static inline long poll_pending(void)
-diff --git a/arch/powerpc/kvm/book3s_hv_ras.c b/arch/powerpc/kvm/book3s_hv_ras.c
-index ccfd969656306..82be6d87514b7 100644
---- a/arch/powerpc/kvm/book3s_hv_ras.c
-+++ b/arch/powerpc/kvm/book3s_hv_ras.c
-@@ -9,6 +9,7 @@
- #include <linux/kvm.h>
- #include <linux/kvm_host.h>
- #include <linux/kernel.h>
-+#include <asm/lppaca.h>
- #include <asm/opal.h>
- #include <asm/mce.h>
- #include <asm/machdep.h>
-diff --git a/arch/powerpc/mm/book3s64/slb.c b/arch/powerpc/mm/book3s64/slb.c
-index 6956f637a38c1..f2708c8629a52 100644
---- a/arch/powerpc/mm/book3s64/slb.c
-+++ b/arch/powerpc/mm/book3s64/slb.c
-@@ -13,6 +13,7 @@
- #include <asm/mmu.h>
- #include <asm/mmu_context.h>
- #include <asm/paca.h>
-+#include <asm/lppaca.h>
- #include <asm/ppc-opcode.h>
- #include <asm/cputable.h>
- #include <asm/cacheflush.h>
-diff --git a/arch/powerpc/xmon/xmon.c b/arch/powerpc/xmon/xmon.c
-index 70c4c59a1a8f4..70ce51b8a9291 100644
---- a/arch/powerpc/xmon/xmon.c
-+++ b/arch/powerpc/xmon/xmon.c
-@@ -58,6 +58,7 @@
- #ifdef CONFIG_PPC64
- #include <asm/hvcall.h>
- #include <asm/paca.h>
-+#include <asm/lppaca.h>
- #endif
- 
- #include "nonstdio.h"
 -- 
 2.40.1
 
