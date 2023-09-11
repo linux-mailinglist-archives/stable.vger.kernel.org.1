@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CC0CE79BA56
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4634279B720
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:27 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344406AbjIKVOB (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:01 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42116 "EHLO
+        id S1379393AbjIKWnx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51634 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240472AbjIKOpN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:13 -0400
+        with ESMTP id S239164AbjIKON0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89C4012A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0803C433C9;
-        Mon, 11 Sep 2023 14:45:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC40CDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F555C433C8;
+        Mon, 11 Sep 2023 14:13:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443509;
-        bh=R6R7i7V7O3o3XHJtcE2VDGeToADJdzPAQLkEogX96FM=;
+        s=korg; t=1694441601;
+        bh=VS3RU8xZ2ZA4uIdWoA13uHNVsAPmc6wfzasWdDK+vu4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xKZ/pf7BKjZcXv9jPwNeskwB4ZoMFzKeJhjSVjcp3kK4pN4vNty97DWEJRldLflKI
-         eUJP/BTN//Xjn5G23FW8VTbKZzJF9w4kpauDgkLWfZ3C257i3o1wMqystUMZw16cxH
-         Ds9eTZy6946aZESo14qMs+95kwA7Nj4EIqz22N0A=
+        b=pG2BQ/aM4+mlpr0PFMS+tgZ7eqD6VI9PvvWfAfG27ugodWFlZCwEUH29BeYp5o84r
+         IbiTFwSDaZyib1SiHd2oMt0afgcTCSzAq1rkWEkU5ijcUNJ+kBGeWYSLhFsSdvjezr
+         YgY1nw8NT88VxlaPaVBnLuOY9TX5zhyqRmFljRro=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Xingui Yang <yangxingui@huawei.com>,
+        Xiang Chen <chenxiang66@hisilicon.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 403/737] ASoC: SOF: amd: clear dsp to host interrupt status
+Subject: [PATCH 6.5 463/739] scsi: hisi_sas: Fix normally completed I/O analysed as failed
 Date:   Mon, 11 Sep 2023 15:44:22 +0200
-Message-ID: <20230911134701.881543872@linuxfoundation.org>
+Message-ID: <20230911134704.084589785@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +51,92 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+From: Xingui Yang <yangxingui@huawei.com>
 
-[ Upstream commit 38592ae6dc9f84b7a994c43de2136b8115ca30f6 ]
+[ Upstream commit f5393a5602cacfda2014e0ff8220e5a7564e7cd1 ]
 
-DSP_SW_INTR_STAT_OFFSET is a common interrupt register which will be
-accessed by both ACP firmware and driver. This register contains register
-bits corresponds to host to dsp interrupts and vice versa.
+The PIO read command has no response frame and the struct iu[1024] won't be
+filled. I/Os which are normally completed will be treated as failed in
+sas_ata_task_done() when iu contains abnormal dirty data.
 
-when dsp to host interrupt is reported, only clear dsp to host
-interrupt bit in DSP_SW_INTR_STAT_OFFSET.
+Consequently ending_fis should not be filled by iu when the response frame
+hasn't been written to memory.
 
-Fixes: 2e7c6652f9b8 ("ASoC: SOF: amd: Fix for handling spurious interrupts from DSP")
-
-Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
-Link: https://lore.kernel.org/r/20230823073340.2829821-7-Vijendar.Mukunda@amd.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: d380f55503ed ("scsi: hisi_sas: Don't bother clearing status buffer IU in task prep")
+Signed-off-by: Xingui Yang <yangxingui@huawei.com>
+Signed-off-by: Xiang Chen <chenxiang66@hisilicon.com>
+Link: https://lore.kernel.org/r/1689045300-44318-2-git-send-email-chenxiang66@hisilicon.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/sof/amd/acp.c | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/scsi/hisi_sas/hisi_sas_v2_hw.c | 11 +++++++++--
+ drivers/scsi/hisi_sas/hisi_sas_v3_hw.c |  6 ++++--
+ 2 files changed, 13 insertions(+), 4 deletions(-)
 
-diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
-index 2ae76bcd3590c..973bd81059852 100644
---- a/sound/soc/sof/amd/acp.c
-+++ b/sound/soc/sof/amd/acp.c
-@@ -351,9 +351,9 @@ static irqreturn_t acp_irq_handler(int irq, void *dev_id)
- 	unsigned int val;
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+index 87d8e408ccd1c..404aa7e179cba 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v2_hw.c
+@@ -2026,6 +2026,11 @@ static void slot_err_v2_hw(struct hisi_hba *hisi_hba,
+ 	u16 dma_tx_err_type = le16_to_cpu(err_record->dma_tx_err_type);
+ 	u16 sipc_rx_err_type = le16_to_cpu(err_record->sipc_rx_err_type);
+ 	u32 dma_rx_err_type = le32_to_cpu(err_record->dma_rx_err_type);
++	struct hisi_sas_complete_v2_hdr *complete_queue =
++			hisi_hba->complete_hdr[slot->cmplt_queue];
++	struct hisi_sas_complete_v2_hdr *complete_hdr =
++			&complete_queue[slot->cmplt_queue_slot];
++	u32 dw0 = le32_to_cpu(complete_hdr->dw0);
+ 	int error = -1;
  
- 	val = snd_sof_dsp_read(sdev, ACP_DSP_BAR, base + DSP_SW_INTR_STAT_OFFSET);
--	if (val) {
--		val |= ACP_DSP_TO_HOST_IRQ;
--		snd_sof_dsp_write(sdev, ACP_DSP_BAR, base + DSP_SW_INTR_STAT_OFFSET, val);
-+	if (val & ACP_DSP_TO_HOST_IRQ) {
-+		snd_sof_dsp_write(sdev, ACP_DSP_BAR, base + DSP_SW_INTR_STAT_OFFSET,
-+				  ACP_DSP_TO_HOST_IRQ);
- 		return IRQ_WAKE_THREAD;
+ 	if (err_phase == 1) {
+@@ -2310,7 +2315,8 @@ static void slot_err_v2_hw(struct hisi_hba *hisi_hba,
+ 			break;
+ 		}
+ 		}
+-		hisi_sas_sata_done(task, slot);
++		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
++			hisi_sas_sata_done(task, slot);
  	}
- 
+ 		break;
+ 	default:
+@@ -2443,7 +2449,8 @@ static void slot_complete_v2_hw(struct hisi_hba *hisi_hba,
+ 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
+ 	{
+ 		ts->stat = SAS_SAM_STAT_GOOD;
+-		hisi_sas_sata_done(task, slot);
++		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
++			hisi_sas_sata_done(task, slot);
+ 		break;
+ 	}
+ 	default:
+diff --git a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+index 20e1607c62828..2f33e6b4a92fb 100644
+--- a/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
++++ b/drivers/scsi/hisi_sas/hisi_sas_v3_hw.c
+@@ -2257,7 +2257,8 @@ slot_err_v3_hw(struct hisi_hba *hisi_hba, struct sas_task *task,
+ 			ts->stat = SAS_OPEN_REJECT;
+ 			ts->open_rej_reason = SAS_OREJ_RSVD_RETRY;
+ 		}
+-		hisi_sas_sata_done(task, slot);
++		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
++			hisi_sas_sata_done(task, slot);
+ 		break;
+ 	case SAS_PROTOCOL_SMP:
+ 		ts->stat = SAS_SAM_STAT_CHECK_CONDITION;
+@@ -2384,7 +2385,8 @@ static void slot_complete_v3_hw(struct hisi_hba *hisi_hba,
+ 	case SAS_PROTOCOL_STP:
+ 	case SAS_PROTOCOL_SATA | SAS_PROTOCOL_STP:
+ 		ts->stat = SAS_SAM_STAT_GOOD;
+-		hisi_sas_sata_done(task, slot);
++		if (dw0 & CMPLT_HDR_RSPNS_XFRD_MSK)
++			hisi_sas_sata_done(task, slot);
+ 		break;
+ 	default:
+ 		ts->stat = SAS_SAM_STAT_CHECK_CONDITION;
 -- 
 2.40.1
 
