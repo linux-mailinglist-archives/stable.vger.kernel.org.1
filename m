@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97D4A79B2EE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 526B579B57E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358181AbjIKWIE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53466 "EHLO
+        id S1377567AbjIKW1M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:27:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238273AbjIKNxC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:02 -0400
+        with ESMTP id S238279AbjIKNxH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97A75FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E00F5C433CA;
-        Mon, 11 Sep 2023 13:52:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 264D9FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F6A9C433C7;
+        Mon, 11 Sep 2023 13:53:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440377;
-        bh=ilZCwAvPOfOn1lBO1hgtl/m3+pNzJHqeVBmc4+yUISU=;
+        s=korg; t=1694440382;
+        bh=h0ZK7sZAUV7zGqWGCiXihXvv9PRj+ZUj5xt0E5rfOrc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y8j8Fndz4YWoe6Nfd8tHDHXytO5xirhOv82Z207+kTiJO6m8P698TNwLLoBTrk2Nm
-         P9wSuUeQqvFCblz4JMMpr68LmA+YAAqHDrl6VCosSABoQBNkqQnskzCrx7Yu2muLyw
-         0OfTNNX9mRjK7qQF57MB9Cussk3SWBZ+Mpfjozsg=
+        b=b0npOG4iS49RQcjmFFHJjHdWYVgJ4QztS/YabyJ18ibcDrw4qPw+MHz7hobyp7SwY
+         6iK1baQEr8G384VuGu7iS33/O9gor62LM2xFwHqkSePk8o1NO/fvoUf/ZQJfyscNce
+         rqOgksgPKafg7Sp0hMx0B68kZhfAuTEQT+aGdWLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ard Biesheuvel <ardb@kernel.org>,
-        "Borislav Petkov (AMD)" <bp@alien8.de>,
+        patches@lists.linux.dev, Cyril Hrubis <chrubis@suse.cz>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
+        Petr Vorel <pvorel@suse.cz>, Mel Gorman <mgorman@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 039/739] x86/decompressor: Dont rely on upper 32 bits of GPRs being preserved
-Date:   Mon, 11 Sep 2023 15:37:18 +0200
-Message-ID: <20230911134652.194374204@linuxfoundation.org>
+Subject: [PATCH 6.5 041/739] sched/rt: Fix sysctl_sched_rr_timeslice intial value
+Date:   Mon, 11 Sep 2023 15:37:20 +0200
+Message-ID: <20230911134652.254458257@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -39,7 +40,6 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,108 +55,73 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Ard Biesheuvel <ardb@kernel.org>
+From: Cyril Hrubis <chrubis@suse.cz>
 
-[ Upstream commit 264b82fdb4989cf6a44a2bcd0c6ea05e8026b2ac ]
+[ Upstream commit c7fcb99877f9f542c918509b2801065adcaf46fa ]
 
-The 4-to-5 level mode switch trampoline disables long mode and paging in
-order to be able to flick the LA57 bit. According to section 3.4.1.1 of
-the x86 architecture manual [0], 64-bit GPRs might not retain the upper
-32 bits of their contents across such a mode switch.
+There is a 10% rounding error in the intial value of the
+sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
 
-Given that RBP, RBX and RSI are live at this point, preserve them on the
-stack, along with the return address that might be above 4G as well.
+This was found with LTP test sched_rr_get_interval01:
 
-[0] Intel® 64 and IA-32 Architectures Software Developer’s Manual, Volume 1: Basic Architecture
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
+sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
+sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
+sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
 
-  "Because the upper 32 bits of 64-bit general-purpose registers are
-   undefined in 32-bit modes, the upper 32 bits of any general-purpose
-   register are not preserved when switching from 64-bit mode to a 32-bit
-   mode (to protected mode or compatibility mode). Software must not
-   depend on these bits to maintain a value after a 64-bit to 32-bit
-   mode switch."
+What this test does is to compare the return value from the
+sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
+fails if they do not match.
 
-Fixes: 194a9749c73d650c ("x86/boot/compressed/64: Handle 5-level paging boot if kernel is above 4G")
-Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
-Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
-Link: https://lore.kernel.org/r/20230807162720.545787-2-ardb@kernel.org
+The problem it found is the intial sysctl file value which was computed as:
+
+static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
+
+which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
+introduces 10% rounding error for CONFIG_HZ_300:
+
+(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
+
+(1000 / 300) * (100 * 300 / 1000)
+
+3 * 30 = 90
+
+This can be easily fixed by reversing the order of the multiplication
+and division. After this fix we get:
+
+(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
+
+(1000 * (100 * 300 / 1000)) / 300
+
+(1000 * 30) / 300 = 100
+
+Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
+Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Reviewed-by: Petr Vorel <pvorel@suse.cz>
+Acked-by: Mel Gorman <mgorman@suse.de>
+Tested-by: Petr Vorel <pvorel@suse.cz>
+Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/boot/compressed/head_64.S | 30 +++++++++++++++++++++++-------
- 1 file changed, 23 insertions(+), 7 deletions(-)
+ kernel/sched/rt.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/x86/boot/compressed/head_64.S b/arch/x86/boot/compressed/head_64.S
-index 03c4328a88cbd..f732426d3b483 100644
---- a/arch/x86/boot/compressed/head_64.S
-+++ b/arch/x86/boot/compressed/head_64.S
-@@ -459,11 +459,25 @@ SYM_CODE_START(startup_64)
- 	/* Save the trampoline address in RCX */
- 	movq	%rax, %rcx
+diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
+index 00e0e50741153..185d3d749f6b6 100644
+--- a/kernel/sched/rt.c
++++ b/kernel/sched/rt.c
+@@ -25,7 +25,7 @@ unsigned int sysctl_sched_rt_period = 1000000;
+ int sysctl_sched_rt_runtime = 950000;
  
-+	/* Set up 32-bit addressable stack */
-+	leaq	TRAMPOLINE_32BIT_STACK_END(%rcx), %rsp
-+
-+	/*
-+	 * Preserve live 64-bit registers on the stack: this is necessary
-+	 * because the architecture does not guarantee that GPRs will retain
-+	 * their full 64-bit values across a 32-bit mode switch.
-+	 */
-+	pushq	%rbp
-+	pushq	%rbx
-+	pushq	%rsi
-+
- 	/*
--	 * Load the address of trampoline_return() into RDI.
--	 * It will be used by the trampoline to return to the main code.
-+	 * Push the 64-bit address of trampoline_return() onto the new stack.
-+	 * It will be used by the trampoline to return to the main code. Due to
-+	 * the 32-bit mode switch, it cannot be kept it in a register either.
- 	 */
- 	leaq	trampoline_return(%rip), %rdi
-+	pushq	%rdi
- 
- 	/* Switch to compatibility mode (CS.L = 0 CS.D = 1) via far return */
- 	pushq	$__KERNEL32_CS
-@@ -471,6 +485,11 @@ SYM_CODE_START(startup_64)
- 	pushq	%rax
- 	lretq
- trampoline_return:
-+	/* Restore live 64-bit registers */
-+	popq	%rsi
-+	popq	%rbx
-+	popq	%rbp
-+
- 	/* Restore the stack, the 32-bit trampoline uses its own stack */
- 	leaq	rva(boot_stack_end)(%rbx), %rsp
- 
-@@ -582,7 +601,7 @@ SYM_FUNC_END(.Lrelocated)
- /*
-  * This is the 32-bit trampoline that will be copied over to low memory.
-  *
-- * RDI contains the return address (might be above 4G).
-+ * Return address is at the top of the stack (might be above 4G).
-  * ECX contains the base address of the trampoline memory.
-  * Non zero RDX means trampoline needs to enable 5-level paging.
-  */
-@@ -592,9 +611,6 @@ SYM_CODE_START(trampoline_32bit_src)
- 	movl	%eax, %ds
- 	movl	%eax, %ss
- 
--	/* Set up new stack */
--	leal	TRAMPOLINE_32BIT_STACK_END(%ecx), %esp
--
- 	/* Disable paging */
- 	movl	%cr0, %eax
- 	btrl	$X86_CR0_PG_BIT, %eax
-@@ -671,7 +687,7 @@ SYM_CODE_END(trampoline_32bit_src)
- 	.code64
- SYM_FUNC_START_LOCAL_NOALIGN(.Lpaging_enabled)
- 	/* Return from the trampoline */
--	jmp	*%rdi
-+	retq
- SYM_FUNC_END(.Lpaging_enabled)
- 
- 	/*
+ #ifdef CONFIG_SYSCTL
+-static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
++static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
+ static int sched_rt_handler(struct ctl_table *table, int write, void *buffer,
+ 		size_t *lenp, loff_t *ppos);
+ static int sched_rr_handler(struct ctl_table *table, int write, void *buffer,
 -- 
 2.40.1
 
