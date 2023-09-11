@@ -2,51 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DBD979BC87
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B28D979B918
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359614AbjIKWSI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45724 "EHLO
+        id S1378876AbjIKWhr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53312 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238495AbjIKN5t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:49 -0400
+        with ESMTP id S239793AbjIKO2w (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061FCCD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 28B9FC433C8;
-        Mon, 11 Sep 2023 13:57:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 59A4CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A18F1C433C8;
+        Mon, 11 Sep 2023 14:28:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440664;
-        bh=MFRJk2M72hhoSOSI4JTeQ4TdNaa79t1gaK4AZyTnMeY=;
+        s=korg; t=1694442528;
+        bh=P9A5ZPQZIEMvdalrDAPqYvT10XdOJtKBWcA7+fJFKzI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B8PAvXo2F5CXjdaT7yJxW8LsuU8BeyH1B+MST2xySMPA/NgQzVebkXhxOMhtTjJ2Y
-         rIiJMNGnwRvr2a8AJmfjqHiqB+s8ZJIf1ceyZ7idXqbpmRApUgH5/JyyIuJDexNDM4
-         0oEh2O+TmUU6y5JGshH0YVK00Y9MQVz+nQJditqI=
+        b=tDNFKJv86XiOeRSpXTIIXPlQoBEWrs2vgm4zuVHy9aZWc3DFdWva5Rr/7Ih39LVl3
+         UaajIJN0D1Uv+VPdfYeCRzVivpM9iuCE6UtQI+ARxEyY5bMPSfmORGejr6pUK1/XAs
+         KJYe1hPWXbSFoMHKYjAKTTh2pbc2lnDhELkK4EGg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        =?UTF-8?q?Fran=C3=A7ois=20Valenduc?= <francoisvalenduc@gmail.com>,
-        Alexandru Radovici <msg4alex@gmail.com>,
-        Matthew Leach <dev@mattleach.net>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 114/739] kbuild: rust_is_available: add check for `bindgen` invocation
-Date:   Mon, 11 Sep 2023 15:38:33 +0200
-Message-ID: <20230911134654.281239063@linuxfoundation.org>
+        patches@lists.linux.dev, Kees Cook <keescook@chromium.org>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Franky Lin <franky.lin@broadcom.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 055/737] wifi: brcmfmac: Fix field-spanning write in brcmf_scan_params_v2_to_v1()
+Date:   Mon, 11 Sep 2023 15:38:34 +0200
+Message-ID: <20230911134652.020995979@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -58,91 +51,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 52cae7f28ed6c3992489f16bb355f5b623f0912e ]
+[ Upstream commit 16e455a465fca91907af0108f3d013150386df30 ]
 
-`scripts/rust_is_available.sh` calls `bindgen` with a special
-header in order to check whether the `libclang` version in use
-is suitable.
+Using brcmfmac with 6.5-rc3 on a brcmfmac43241b4-sdio triggers
+a backtrace caused by the following field-spanning warning:
 
-However, the invocation itself may fail if, for instance, `bindgen`
-cannot locate `libclang`. This is fine for Kconfig (since the
-script will still fail and therefore disable Rust as it should),
-but it is pretty confusing for users of the `rustavailable` target
-given the error will be unrelated:
+memcpy: detected field-spanning write (size 120) of single field
+  "&params_le->channel_list[0]" at
+  drivers/net/wireless/broadcom/brcm80211/brcmfmac/cfg80211.c:1072 (size 2)
 
-    ./scripts/rust_is_available.sh: 21: arithmetic expression: expecting primary: "100000 *  + 100 *  + "
-    make: *** [Makefile:1816: rustavailable] Error 2
+The driver still works after this warning. The warning was introduced by the
+new field-spanning write checks which were enabled recently.
 
-Instead, run the `bindgen` invocation independently in a previous
-step, saving its output and return code. If it fails, then show
-the user a proper error message. Otherwise, continue as usual
-with the saved output.
+Fix this by replacing the channel_list[1] declaration at the end of
+the struct with a flexible array declaration.
 
-Since the previous patch we show a reference to the docs, and
-the docs now explain how `bindgen` looks for `libclang`,
-thus the error message can leverage the documentation, avoiding
-duplication here (and making users aware of the setup guide in
-the documentation).
+Most users of struct brcmf_scan_params_le calculate the size to alloc
+using the size of the non flex-array part of the struct + needed extra
+space, so they do not care about sizeof(struct brcmf_scan_params_le).
 
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/rust-for-linux/CAKwvOdm5JT4wbdQQYuW+RT07rCi6whGBM2iUAyg8A1CmLXG6Nw@mail.gmail.com/
-Reported-by: François Valenduc <francoisvalenduc@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/934
-Reported-by: Alexandru Radovici <msg4alex@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/pull/921
-Reported-by: Matthew Leach <dev@mattleach.net>
-Closes: https://lore.kernel.org/rust-for-linux/20230507084116.1099067-1-dev@mattleach.net/
-Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20230616001631.463536-6-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+brcmf_notify_escan_complete() however uses the struct on the stack,
+expecting there to be room for at least 1 entry in the channel-list
+to store the special -1 abort channel-id.
+
+To make this work use an anonymous union with a padding member
+added + the actual channel_list flexible array.
+
+Cc: Kees Cook <keescook@chromium.org>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Reviewed-by: Kees Cook <keescook@chromium.org>
+Reviewed-by: Franky Lin <franky.lin@broadcom.com>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230729140500.27892-1-hdegoede@redhat.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ .../net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h  | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 0c9be438e4cd3..c965895d80b97 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -90,8 +90,28 @@ if [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cvers
- fi
+diff --git a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+index 792adaf880b44..bece26741d3a3 100644
+--- a/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
++++ b/drivers/net/wireless/broadcom/brcm80211/brcmfmac/fwil_types.h
+@@ -398,7 +398,12 @@ struct brcmf_scan_params_le {
+ 				 * fixed parameter portion is assumed, otherwise
+ 				 * ssid in the fixed portion is ignored
+ 				 */
+-	__le16 channel_list[1];	/* list of chanspecs */
++	union {
++		__le16 padding;	/* Reserve space for at least 1 entry for abort
++				 * which uses an on stack brcmf_scan_params_le
++				 */
++		DECLARE_FLEX_ARRAY(__le16, channel_list);	/* chanspecs */
++	};
+ };
  
- # Check that the `libclang` used by the Rust bindings generator is suitable.
-+#
-+# In order to do that, first invoke `bindgen` to get the `libclang` version
-+# found by `bindgen`. This step may already fail if, for instance, `libclang`
-+# is not found, thus inform the user in such a case.
-+bindgen_libclang_output=$( \
-+	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null
-+) || bindgen_libclang_code=$?
-+if [ -n "$bindgen_libclang_code" ]; then
-+	echo >&2 "***"
-+	echo >&2 "*** Running '$BINDGEN' to check the libclang version (used by the Rust"
-+	echo >&2 "*** bindings generator) failed with code $bindgen_libclang_code. This may be caused by"
-+	echo >&2 "*** a failure to locate libclang. See output and docs below for details:"
-+	echo >&2 "***"
-+	echo >&2 "$bindgen_libclang_output"
-+	echo >&2 "***"
-+	exit 1
-+fi
-+
-+# `bindgen` returned successfully, thus use the output to check that the version
-+# of the `libclang` found by the Rust bindings generator is suitable.
- bindgen_libclang_version=$( \
--	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null \
-+	echo "$bindgen_libclang_output" \
- 		| grep -F 'clang version ' \
- 		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
- 		| head -n 1 \
+ struct brcmf_scan_params_v2_le {
 -- 
 2.40.1
 
