@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 964A079B2AD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0AAAB79B5A7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344072AbjIKVNN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36796 "EHLO
+        id S233978AbjIKUwi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240986AbjIKO7A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:00 -0400
+        with ESMTP id S242227AbjIKPZ2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3D5231B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 865B9C433C9;
-        Mon, 11 Sep 2023 14:58:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E6EDB
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07B7C433C9;
+        Mon, 11 Sep 2023 15:25:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444335;
-        bh=b7ZS+5AJMCj19q/uDGw7aBsssowOCA2Lj1cZJdvEXGA=;
+        s=korg; t=1694445923;
+        bh=eBHw5kdM/WHSJk2Yu1FRPJ3qIYZm5bbBLz6ZB2RF6JI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mJ8HHpEKIN7ZbYVZXKcD+dKI+I6WY3FC4Iaow0oc8pDBk9jU2PnrZln0OMmaIrOLX
-         c4svUFE9ZpqgO8A5Z6tdtVXYeCnltlKc+yFw7Hnr78QQC/M8ULr145KCOvno9Sk3En
-         dVGaY5Vk77TY1FwzANI6/SEsfi6SbsepMh+NIN1s=
+        b=FW47I3o9Zj6xTeMsplFPNHfoWj67j/vkoxCVBO6ELPIzNMb8me0XPGq0Yj0WAUcfK
+         /2wMTNvUCDu+kIJqzbSibn48z/4pe0isj7hOKXvRlYi1yIdVtDJR0b7UqdTya7GHHQ
+         CLzGR/LjX1KbWvxmcmF1pxMz0dF7uRStCG4XCZSs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jann Horn <jannh@google.com>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.4 693/737] dccp: Fix out of bounds access in DCCP error handler
-Date:   Mon, 11 Sep 2023 15:49:12 +0200
-Message-ID: <20230911134709.888011087@linuxfoundation.org>
+        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
+        Pablo Neira Ayuso <pablo@netfilter.org>
+Subject: [PATCH 6.1 520/600] netfilter: xt_u32: validate user space input
+Date:   Mon, 11 Sep 2023 15:49:13 +0200
+Message-ID: <20230911134648.955635800@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,88 +49,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jann Horn <jannh@google.com>
+From: Wander Lairson Costa <wander@redhat.com>
 
-commit 977ad86c2a1bcaf58f01ab98df5cc145083c489c upstream.
+commit 69c5d284f67089b4750d28ff6ac6f52ec224b330 upstream.
 
-There was a previous attempt to fix an out-of-bounds access in the DCCP
-error handlers, but that fix assumed that the error handlers only want
-to access the first 8 bytes of the DCCP header. Actually, they also look
-at the DCCP sequence number, which is stored beyond 8 bytes, so an
-explicit pskb_may_pull() is required.
+The xt_u32 module doesn't validate the fields in the xt_u32 structure.
+An attacker may take advantage of this to trigger an OOB read by setting
+the size fields with a value beyond the arrays boundaries.
 
-Fixes: 6706a97fec96 ("dccp: fix out of bound access in dccp_v4_err()")
-Fixes: 1aa9d1a0e7ee ("ipv6: dccp: fix out of bound access in dccp_v6_err()")
+Add a checkentry function to validate the structure.
+
+This was originally reported by the ZDI project (ZDI-CAN-18408).
+
+Fixes: 1b50b8a371e9 ("[NETFILTER]: Add u32 match")
 Cc: stable@vger.kernel.org
-Signed-off-by: Jann Horn <jannh@google.com>
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Wander Lairson Costa <wander@redhat.com>
+Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/dccp/ipv4.c |   13 +++++++++----
- net/dccp/ipv6.c |   15 ++++++++++-----
- 2 files changed, 19 insertions(+), 9 deletions(-)
+ net/netfilter/xt_u32.c |   21 +++++++++++++++++++++
+ 1 file changed, 21 insertions(+)
 
---- a/net/dccp/ipv4.c
-+++ b/net/dccp/ipv4.c
-@@ -255,12 +255,17 @@ static int dccp_v4_err(struct sk_buff *s
- 	int err;
- 	struct net *net = dev_net(skb->dev);
+--- a/net/netfilter/xt_u32.c
++++ b/net/netfilter/xt_u32.c
+@@ -96,11 +96,32 @@ static bool u32_mt(const struct sk_buff
+ 	return ret ^ data->invert;
+ }
  
--	/* Only need dccph_dport & dccph_sport which are the first
--	 * 4 bytes in dccp header.
-+	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
-+	 * which is in byte 7 of the dccp header.
- 	 * Our caller (icmp_socket_deliver()) already pulled 8 bytes for us.
-+	 *
-+	 * Later on, we want to access the sequence number fields, which are
-+	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
- 	 */
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
-+	dh = (struct dccp_hdr *)(skb->data + offset);
-+	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
++static int u32_mt_checkentry(const struct xt_mtchk_param *par)
++{
++	const struct xt_u32 *data = par->matchinfo;
++	const struct xt_u32_test *ct;
++	unsigned int i;
++
++	if (data->ntests > ARRAY_SIZE(data->tests))
 +		return -EINVAL;
-+	iph = (struct iphdr *)skb->data;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 
- 	sk = __inet_lookup_established(net, &dccp_hashinfo,
---- a/net/dccp/ipv6.c
-+++ b/net/dccp/ipv6.c
-@@ -74,7 +74,7 @@ static inline __u64 dccp_v6_init_sequenc
- static int dccp_v6_err(struct sk_buff *skb, struct inet6_skb_parm *opt,
- 			u8 type, u8 code, int offset, __be32 info)
- {
--	const struct ipv6hdr *hdr = (const struct ipv6hdr *)skb->data;
-+	const struct ipv6hdr *hdr;
- 	const struct dccp_hdr *dh;
- 	struct dccp_sock *dp;
- 	struct ipv6_pinfo *np;
-@@ -83,12 +83,17 @@ static int dccp_v6_err(struct sk_buff *s
- 	__u64 seq;
- 	struct net *net = dev_net(skb->dev);
- 
--	/* Only need dccph_dport & dccph_sport which are the first
--	 * 4 bytes in dccp header.
-+	/* For the first __dccp_basic_hdr_len() check, we only need dh->dccph_x,
-+	 * which is in byte 7 of the dccp header.
- 	 * Our caller (icmpv6_notify()) already pulled 8 bytes for us.
-+	 *
-+	 * Later on, we want to access the sequence number fields, which are
-+	 * beyond 8 bytes, so we have to pskb_may_pull() ourselves.
- 	 */
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_sport) > 8);
--	BUILD_BUG_ON(offsetofend(struct dccp_hdr, dccph_dport) > 8);
-+	dh = (struct dccp_hdr *)(skb->data + offset);
-+	if (!pskb_may_pull(skb, offset + __dccp_basic_hdr_len(dh)))
-+		return -EINVAL;
-+	hdr = (const struct ipv6hdr *)skb->data;
- 	dh = (struct dccp_hdr *)(skb->data + offset);
- 
- 	sk = __inet6_lookup_established(net, &dccp_hashinfo,
++
++	for (i = 0; i < data->ntests; ++i) {
++		ct = &data->tests[i];
++
++		if (ct->nnums > ARRAY_SIZE(ct->location) ||
++		    ct->nvalues > ARRAY_SIZE(ct->value))
++			return -EINVAL;
++	}
++
++	return 0;
++}
++
+ static struct xt_match xt_u32_mt_reg __read_mostly = {
+ 	.name       = "u32",
+ 	.revision   = 0,
+ 	.family     = NFPROTO_UNSPEC,
+ 	.match      = u32_mt,
++	.checkentry = u32_mt_checkentry,
+ 	.matchsize  = sizeof(struct xt_u32),
+ 	.me         = THIS_MODULE,
+ };
 
 
