@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EC63D79ACC4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EDFAA79AFFC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235592AbjIKVTJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:19:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60458 "EHLO
+        id S1358100AbjIKWHr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43076 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239235AbjIKOPN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:15:13 -0400
+        with ESMTP id S241770AbjIKPOD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0779ADE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:15:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 504A7C433C7;
-        Mon, 11 Sep 2023 14:15:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6EE46FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B7448C433C9;
+        Mon, 11 Sep 2023 15:13:57 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441708;
-        bh=8QpAyrumpHXhrt+HTRxTuiPNqaUOXHA0b36GtoVTQhM=;
+        s=korg; t=1694445238;
+        bh=zq5UzGm1X5lbfhr5dtx0FBvlih1UpFEaamieQvrYkpQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=USib0tradcJSQKbRuy08EEV7zZ2qjxU49hpRwR7syQb6nhiDFzZ6k7IfhswA3fPzZ
-         hjWIZJxO9iZfveIKMi1KV3/9slbOL3skH634A6mpXyvFcaBq/VIVGoc76R2GGWiTLL
-         j+49qNF5NS8Ne+iVsEjgoMTRv/uHeJi40azuQg5g=
+        b=FXPVwZhnEjoJphVazlQmS0t+RSN29H42Q+uX6p3W7lIQl0KY51r5BtU0ywzlWlMII
+         b2gL8d0j4+lYWbZh6RLIbZQ8XEryOZ8/b7bs/uHe7iQqMZA8dBpsznMFi0MQEybgt2
+         y5gQcQTVX8tmTw982RD4bZ3PgL4L+wg4ELKGzN2s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Chan <michael.chan@broadcom.com>,
-        Chandramohan Akula <chandramohan.akula@broadcom.com>,
-        Selvin Xavier <selvin.xavier@broadcom.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 509/739] bnxt_en: Update HW interface headers
-Date:   Mon, 11 Sep 2023 15:45:08 +0200
-Message-ID: <20230911134705.345979272@linuxfoundation.org>
+        patches@lists.linux.dev, Xiao Ni <xni@redhat.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 276/600] md: Change active_io to percpu
+Date:   Mon, 11 Sep 2023 15:45:09 +0200
+Message-ID: <20230911134641.753916703@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,94 +49,190 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chandramohan Akula <chandramohan.akula@broadcom.com>
+From: Xiao Ni <xni@redhat.com>
 
-[ Upstream commit cf1694f09894e760f4e2cf068ee6519d11cd0ede ]
+[ Upstream commit 72adae23a72cb12e2ef0dcd7c0aa042867f27998 ]
 
-Updating the HW structures for the doorbell pacing related
-information. Newly added interface structures will be used in
-the followup patches.
+Now the type of active_io is atomic. It's used to count how many ios are
+in the submitting process and it's added and decreased very time. But it
+only needs to check if it's zero when suspending the raid. So we can
+switch atomic to percpu to improve the performance.
 
-Link: https://lore.kernel.org/r/1689742977-9128-2-git-send-email-selvin.xavier@broadcom.com
-CC: Michael Chan <michael.chan@broadcom.com>
-Signed-off-by: Chandramohan Akula <chandramohan.akula@broadcom.com>
-Signed-off-by: Selvin Xavier <selvin.xavier@broadcom.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Stable-dep-of: f19fba1f79dc ("RDMA/bnxt_re: Fix max_qp count for virtual functions")
+After switching active_io to percpu type, we use the state of active_io
+to judge if the raid device is suspended. And we don't need to wake up
+->sb_wait in md_handle_request anymore. It's done in the callback function
+which is registered when initing active_io. The argument mddev->suspended
+is only used to count how many users are trying to set raid to suspend
+state.
+
+Signed-off-by: Xiao Ni <xni@redhat.com>
+Signed-off-by: Song Liu <song@kernel.org>
+Stable-dep-of: e24ed04389f9 ("md: restore 'noio_flag' for the last mddev_resume()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/bnxt/bnxt_hsi.h | 54 +++++++++++++++++++
- 1 file changed, 54 insertions(+)
+ drivers/md/md.c | 43 ++++++++++++++++++++++++-------------------
+ drivers/md/md.h |  2 +-
+ 2 files changed, 25 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/bnxt/bnxt_hsi.h b/drivers/net/ethernet/broadcom/bnxt/bnxt_hsi.h
-index b31de4cf6534b..a2d3a80236c4f 100644
---- a/drivers/net/ethernet/broadcom/bnxt/bnxt_hsi.h
-+++ b/drivers/net/ethernet/broadcom/bnxt/bnxt_hsi.h
-@@ -3721,6 +3721,60 @@ struct hwrm_func_backing_store_qcaps_v2_output {
- 	u8	valid;
- };
+diff --git a/drivers/md/md.c b/drivers/md/md.c
+index abb6c03c85b29..1c44294c625a4 100644
+--- a/drivers/md/md.c
++++ b/drivers/md/md.c
+@@ -370,10 +370,7 @@ static DEFINE_SPINLOCK(all_mddevs_lock);
  
-+/* hwrm_func_dbr_pacing_qcfg_input (size:128b/16B) */
-+struct hwrm_func_dbr_pacing_qcfg_input {
-+	__le16  req_type;
-+	__le16  cmpl_ring;
-+	__le16  seq_id;
-+	__le16  target_id;
-+	__le64  resp_addr;
-+};
+ static bool is_md_suspended(struct mddev *mddev)
+ {
+-	if (mddev->suspended)
+-		return true;
+-	else
+-		return false;
++	return percpu_ref_is_dying(&mddev->active_io);
+ }
+ /* Rather than calling directly into the personality make_request function,
+  * IO requests come here first so that we can check if the device is
+@@ -400,12 +397,10 @@ static bool is_suspended(struct mddev *mddev, struct bio *bio)
+ void md_handle_request(struct mddev *mddev, struct bio *bio)
+ {
+ check_suspended:
+-	rcu_read_lock();
+ 	if (is_suspended(mddev, bio)) {
+ 		DEFINE_WAIT(__wait);
+ 		/* Bail out if REQ_NOWAIT is set for the bio */
+ 		if (bio->bi_opf & REQ_NOWAIT) {
+-			rcu_read_unlock();
+ 			bio_wouldblock_error(bio);
+ 			return;
+ 		}
+@@ -414,23 +409,19 @@ void md_handle_request(struct mddev *mddev, struct bio *bio)
+ 					TASK_UNINTERRUPTIBLE);
+ 			if (!is_suspended(mddev, bio))
+ 				break;
+-			rcu_read_unlock();
+ 			schedule();
+-			rcu_read_lock();
+ 		}
+ 		finish_wait(&mddev->sb_wait, &__wait);
+ 	}
+-	atomic_inc(&mddev->active_io);
+-	rcu_read_unlock();
++	if (!percpu_ref_tryget_live(&mddev->active_io))
++		goto check_suspended;
+ 
+ 	if (!mddev->pers->make_request(mddev, bio)) {
+-		atomic_dec(&mddev->active_io);
+-		wake_up(&mddev->sb_wait);
++		percpu_ref_put(&mddev->active_io);
+ 		goto check_suspended;
+ 	}
+ 
+-	if (atomic_dec_and_test(&mddev->active_io) && is_md_suspended(mddev))
+-		wake_up(&mddev->sb_wait);
++	percpu_ref_put(&mddev->active_io);
+ }
+ EXPORT_SYMBOL(md_handle_request);
+ 
+@@ -478,11 +469,10 @@ void mddev_suspend(struct mddev *mddev)
+ 	lockdep_assert_held(&mddev->reconfig_mutex);
+ 	if (mddev->suspended++)
+ 		return;
+-	synchronize_rcu();
+ 	wake_up(&mddev->sb_wait);
+ 	set_bit(MD_ALLOW_SB_UPDATE, &mddev->flags);
+-	smp_mb__after_atomic();
+-	wait_event(mddev->sb_wait, atomic_read(&mddev->active_io) == 0);
++	percpu_ref_kill(&mddev->active_io);
++	wait_event(mddev->sb_wait, percpu_ref_is_zero(&mddev->active_io));
+ 	mddev->pers->quiesce(mddev, 1);
+ 	clear_bit_unlock(MD_ALLOW_SB_UPDATE, &mddev->flags);
+ 	wait_event(mddev->sb_wait, !test_bit(MD_UPDATING_SB, &mddev->flags));
+@@ -500,6 +490,7 @@ void mddev_resume(struct mddev *mddev)
+ 	lockdep_assert_held(&mddev->reconfig_mutex);
+ 	if (--mddev->suspended)
+ 		return;
++	percpu_ref_resurrect(&mddev->active_io);
+ 	wake_up(&mddev->sb_wait);
+ 	mddev->pers->quiesce(mddev, 0);
+ 
+@@ -678,7 +669,6 @@ void mddev_init(struct mddev *mddev)
+ 	timer_setup(&mddev->safemode_timer, md_safemode_timeout, 0);
+ 	atomic_set(&mddev->active, 1);
+ 	atomic_set(&mddev->openers, 0);
+-	atomic_set(&mddev->active_io, 0);
+ 	spin_lock_init(&mddev->lock);
+ 	atomic_set(&mddev->flush_pending, 0);
+ 	init_waitqueue_head(&mddev->sb_wait);
+@@ -5786,6 +5776,12 @@ static void md_safemode_timeout(struct timer_list *t)
+ }
+ 
+ static int start_dirty_degraded;
++static void active_io_release(struct percpu_ref *ref)
++{
++	struct mddev *mddev = container_of(ref, struct mddev, active_io);
 +
-+/* hwrm_func_dbr_pacing_qcfg_output (size:512b/64B) */
-+struct hwrm_func_dbr_pacing_qcfg_output {
-+	__le16  error_code;
-+	__le16  req_type;
-+	__le16  seq_id;
-+	__le16  resp_len;
-+	u8      flags;
-+#define FUNC_DBR_PACING_QCFG_RESP_FLAGS_DBR_NQ_EVENT_ENABLED     0x1UL
-+	u8      unused_0[7];
-+	__le32  dbr_stat_db_fifo_reg;
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_MASK    0x3UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_SFT     0
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_PCIE_CFG  0x0UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_GRC       0x1UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_BAR0      0x2UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_BAR1      0x3UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_LAST     \
-+		FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SPACE_BAR1
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_MASK          0xfffffffcUL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_STAT_DB_FIFO_REG_ADDR_SFT           2
-+	__le32  dbr_stat_db_fifo_reg_watermark_mask;
-+	u8      dbr_stat_db_fifo_reg_watermark_shift;
-+	u8      unused_1[3];
-+	__le32  dbr_stat_db_fifo_reg_fifo_room_mask;
-+	u8      dbr_stat_db_fifo_reg_fifo_room_shift;
-+	u8      unused_2[3];
-+	__le32  dbr_throttling_aeq_arm_reg;
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_MASK    0x3UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_SFT     0
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_PCIE_CFG  0x0UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_GRC       0x1UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_BAR0      0x2UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_BAR1      0x3UL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_LAST	\
-+		FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SPACE_BAR1
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_MASK          0xfffffffcUL
-+#define FUNC_DBR_PACING_QCFG_RESP_DBR_THROTTLING_AEQ_ARM_REG_ADDR_SFT           2
-+	u8      dbr_throttling_aeq_arm_reg_val;
-+	u8      unused_3[7];
-+	__le32  primary_nq_id;
-+	__le32  pacing_threshold;
-+	u8      unused_4[7];
-+	u8      valid;
-+};
++	wake_up(&mddev->sb_wait);
++}
+ 
+ int md_run(struct mddev *mddev)
+ {
+@@ -5866,10 +5862,15 @@ int md_run(struct mddev *mddev)
+ 		nowait = nowait && bdev_nowait(rdev->bdev);
+ 	}
+ 
++	err = percpu_ref_init(&mddev->active_io, active_io_release,
++				PERCPU_REF_ALLOW_REINIT, GFP_KERNEL);
++	if (err)
++		return err;
 +
- /* hwrm_func_drv_if_change_input (size:192b/24B) */
- struct hwrm_func_drv_if_change_input {
- 	__le16	req_type;
+ 	if (!bioset_initialized(&mddev->bio_set)) {
+ 		err = bioset_init(&mddev->bio_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
+ 		if (err)
+-			return err;
++			goto exit_active_io;
+ 	}
+ 	if (!bioset_initialized(&mddev->sync_set)) {
+ 		err = bioset_init(&mddev->sync_set, BIO_POOL_SIZE, 0, BIOSET_NEED_BVECS);
+@@ -6057,6 +6058,8 @@ int md_run(struct mddev *mddev)
+ 	bioset_exit(&mddev->sync_set);
+ exit_bio_set:
+ 	bioset_exit(&mddev->bio_set);
++exit_active_io:
++	percpu_ref_exit(&mddev->active_io);
+ 	return err;
+ }
+ EXPORT_SYMBOL_GPL(md_run);
+@@ -6283,6 +6286,7 @@ void md_stop(struct mddev *mddev)
+ 	 */
+ 	__md_stop_writes(mddev);
+ 	__md_stop(mddev);
++	percpu_ref_exit(&mddev->active_io);
+ 	bioset_exit(&mddev->bio_set);
+ 	bioset_exit(&mddev->sync_set);
+ }
+@@ -7852,6 +7856,7 @@ static void md_free_disk(struct gendisk *disk)
+ 	struct mddev *mddev = disk->private_data;
+ 
+ 	percpu_ref_exit(&mddev->writes_pending);
++	percpu_ref_exit(&mddev->active_io);
+ 	bioset_exit(&mddev->bio_set);
+ 	bioset_exit(&mddev->sync_set);
+ 
+diff --git a/drivers/md/md.h b/drivers/md/md.h
+index b4e2d8b87b611..64f8182a3dfc6 100644
+--- a/drivers/md/md.h
++++ b/drivers/md/md.h
+@@ -315,7 +315,7 @@ struct mddev {
+ 	unsigned long			sb_flags;
+ 
+ 	int				suspended;
+-	atomic_t			active_io;
++	struct percpu_ref		active_io;
+ 	int				ro;
+ 	int				sysfs_active; /* set when sysfs deletes
+ 						       * are happening, so run/
 -- 
 2.40.1
 
