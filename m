@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 440D579BCF7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2939D79B92D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354001AbjIKVv7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57952 "EHLO
+        id S1345486AbjIKVU4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:20:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34402 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239464AbjIKOVT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:19 -0400
+        with ESMTP id S240774AbjIKOx3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B463CDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:13 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F114AC433C7;
-        Mon, 11 Sep 2023 14:21:12 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F416F118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E75DC433C7;
+        Mon, 11 Sep 2023 14:53:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442073;
-        bh=XPFyBDXuFDUA9D6g1hJjysgzMs07QuFt/hqwFogpTMA=;
+        s=korg; t=1694444004;
+        bh=rfMiuZx2ORAiiXxIXbIi+5kBj7sgkYIfHb41+OR2lTU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oSVKwbV4DaHOLlmsjaaxiAjK5Qmz8rxUdufyBPBCSCjaGbaK4boWSGLEoOxL1eDA5
-         DrLXmvAhTswKhTMqcNsRjIIr/MxqATsdwDGlxOaeg/Yk/qPcAoFqoFacr25iQI4uue
-         k8MWmeQhr6sQiTs/42eWy67qJFw9Rg+3y+Uix3OM=
+        b=elK1dP+C6oipXF2Xz1De1eRwkQLL3QAyWUjPZOLztpzRk8bEUdd8CrbvZDuKrf0+c
+         U5e+ARkkwZe3ux8UpHb2suJ22Xzq3cysOHcAF/utnqZLvsUaHphuorGBVD3XcLs05x
+         E89OZaRs1n4cdCuJdCiw0V4AnNzpUR31hi5S7Sgs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mohamed Khalfella <mkhalfella@purestorage.com>,
-        Amit Goyal <agoyal@purestorage.com>,
-        Eric Dumazet <edumazet@google.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 636/739] skbuff: skb_segment, Call zero copy functions before using skbuff frags
+        patches@lists.linux.dev, Chunhai Guo <guochunhai@vivo.com>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 576/737] f2fs: Only lfs mode is allowed with zoned block device feature
 Date:   Mon, 11 Sep 2023 15:47:15 +0200
-Message-ID: <20230911134708.859536789@linuxfoundation.org>
+Message-ID: <20230911134706.623916253@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,160 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mohamed Khalfella <mkhalfella@purestorage.com>
+From: Chunhai Guo <guochunhai@vivo.com>
 
-commit 2ea35288c83b3d501a88bc17f2df8f176b5cc96f upstream.
+[ Upstream commit 2bd4df8fcbc72f58ce3c62ed021ab291ca42de0b ]
 
-Commit bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions
-once per nskb") added the call to zero copy functions in skb_segment().
-The change introduced a bug in skb_segment() because skb_orphan_frags()
-may possibly change the number of fragments or allocate new fragments
-altogether leaving nrfrags and frag to point to the old values. This can
-cause a panic with stacktrace like the one below.
+Now f2fs support four block allocation modes: lfs, adaptive,
+fragment:segment, fragment:block. Only lfs mode is allowed with zoned block
+device feature.
 
-[  193.894380] BUG: kernel NULL pointer dereference, address: 00000000000000bc
-[  193.895273] CPU: 13 PID: 18164 Comm: vh-net-17428 Kdump: loaded Tainted: G           O      5.15.123+ #26
-[  193.903919] RIP: 0010:skb_segment+0xb0e/0x12f0
-[  194.021892] Call Trace:
-[  194.027422]  <TASK>
-[  194.072861]  tcp_gso_segment+0x107/0x540
-[  194.082031]  inet_gso_segment+0x15c/0x3d0
-[  194.090783]  skb_mac_gso_segment+0x9f/0x110
-[  194.095016]  __skb_gso_segment+0xc1/0x190
-[  194.103131]  netem_enqueue+0x290/0xb10 [sch_netem]
-[  194.107071]  dev_qdisc_enqueue+0x16/0x70
-[  194.110884]  __dev_queue_xmit+0x63b/0xb30
-[  194.121670]  bond_start_xmit+0x159/0x380 [bonding]
-[  194.128506]  dev_hard_start_xmit+0xc3/0x1e0
-[  194.131787]  __dev_queue_xmit+0x8a0/0xb30
-[  194.138225]  macvlan_start_xmit+0x4f/0x100 [macvlan]
-[  194.141477]  dev_hard_start_xmit+0xc3/0x1e0
-[  194.144622]  sch_direct_xmit+0xe3/0x280
-[  194.147748]  __dev_queue_xmit+0x54a/0xb30
-[  194.154131]  tap_get_user+0x2a8/0x9c0 [tap]
-[  194.157358]  tap_sendmsg+0x52/0x8e0 [tap]
-[  194.167049]  handle_tx_zerocopy+0x14e/0x4c0 [vhost_net]
-[  194.173631]  handle_tx+0xcd/0xe0 [vhost_net]
-[  194.176959]  vhost_worker+0x76/0xb0 [vhost]
-[  194.183667]  kthread+0x118/0x140
-[  194.190358]  ret_from_fork+0x1f/0x30
-[  194.193670]  </TASK>
-
-In this case calling skb_orphan_frags() updated nr_frags leaving nrfrags
-local variable in skb_segment() stale. This resulted in the code hitting
-i >= nrfrags prematurely and trying to move to next frag_skb using
-list_skb pointer, which was NULL, and caused kernel panic. Move the call
-to zero copy functions before using frags and nr_frags.
-
-Fixes: bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions once per nskb")
-Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
-Reported-by: Amit Goyal <agoyal@purestorage.com>
-Cc: stable@vger.kernel.org
-Reviewed-by: Eric Dumazet <edumazet@google.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6691d940b0e0 ("f2fs: introduce fragment allocation mode mount option")
+Signed-off-by: Chunhai Guo <guochunhai@vivo.com>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/core/skbuff.c |   34 ++++++++++++++++++++--------------
- 1 file changed, 20 insertions(+), 14 deletions(-)
+ fs/f2fs/super.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
---- a/net/core/skbuff.c
-+++ b/net/core/skbuff.c
-@@ -4360,21 +4360,20 @@ struct sk_buff *skb_segment(struct sk_bu
- 	struct sk_buff *segs = NULL;
- 	struct sk_buff *tail = NULL;
- 	struct sk_buff *list_skb = skb_shinfo(head_skb)->frag_list;
--	skb_frag_t *frag = skb_shinfo(head_skb)->frags;
- 	unsigned int mss = skb_shinfo(head_skb)->gso_size;
- 	unsigned int doffset = head_skb->data - skb_mac_header(head_skb);
--	struct sk_buff *frag_skb = head_skb;
- 	unsigned int offset = doffset;
- 	unsigned int tnl_hlen = skb_tnl_header_len(head_skb);
- 	unsigned int partial_segs = 0;
- 	unsigned int headroom;
- 	unsigned int len = head_skb->len;
-+	struct sk_buff *frag_skb;
-+	skb_frag_t *frag;
- 	__be16 proto;
- 	bool csum, sg;
--	int nfrags = skb_shinfo(head_skb)->nr_frags;
- 	int err = -ENOMEM;
- 	int i = 0;
--	int pos;
-+	int nfrags, pos;
- 
- 	if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
- 	    mss != GSO_BY_FRAGS && mss != skb_headlen(head_skb)) {
-@@ -4451,6 +4450,13 @@ normal:
- 	headroom = skb_headroom(head_skb);
- 	pos = skb_headlen(head_skb);
- 
-+	if (skb_orphan_frags(head_skb, GFP_ATOMIC))
-+		return ERR_PTR(-ENOMEM);
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index 3d91b5313947f..72b7ea71f55df 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -860,11 +860,6 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 			if (!name)
+ 				return -ENOMEM;
+ 			if (!strcmp(name, "adaptive")) {
+-				if (f2fs_sb_has_blkzoned(sbi)) {
+-					f2fs_warn(sbi, "adaptive mode is not allowed with zoned block device feature");
+-					kfree(name);
+-					return -EINVAL;
+-				}
+ 				F2FS_OPTION(sbi).fs_mode = FS_MODE_ADAPTIVE;
+ 			} else if (!strcmp(name, "lfs")) {
+ 				F2FS_OPTION(sbi).fs_mode = FS_MODE_LFS;
+@@ -1329,6 +1324,11 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 			F2FS_OPTION(sbi).discard_unit =
+ 					DISCARD_UNIT_SECTION;
+ 		}
 +
-+	nfrags = skb_shinfo(head_skb)->nr_frags;
-+	frag = skb_shinfo(head_skb)->frags;
-+	frag_skb = head_skb;
-+
- 	do {
- 		struct sk_buff *nskb;
- 		skb_frag_t *nskb_frag;
-@@ -4471,6 +4477,10 @@ normal:
- 		    (skb_headlen(list_skb) == len || sg)) {
- 			BUG_ON(skb_headlen(list_skb) > len);
- 
-+			nskb = skb_clone(list_skb, GFP_ATOMIC);
-+			if (unlikely(!nskb))
-+				goto err;
-+
- 			i = 0;
- 			nfrags = skb_shinfo(list_skb)->nr_frags;
- 			frag = skb_shinfo(list_skb)->frags;
-@@ -4489,12 +4499,8 @@ normal:
- 				frag++;
- 			}
- 
--			nskb = skb_clone(list_skb, GFP_ATOMIC);
- 			list_skb = list_skb->next;
- 
--			if (unlikely(!nskb))
--				goto err;
--
- 			if (unlikely(pskb_trim(nskb, len))) {
- 				kfree_skb(nskb);
- 				goto err;
-@@ -4570,12 +4576,16 @@ normal:
- 		skb_shinfo(nskb)->flags |= skb_shinfo(head_skb)->flags &
- 					   SKBFL_SHARED_FRAG;
- 
--		if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
--		    skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
-+		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
- 			goto err;
- 
- 		while (pos < offset + len) {
- 			if (i >= nfrags) {
-+				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
-+				    skb_zerocopy_clone(nskb, list_skb,
-+						       GFP_ATOMIC))
-+					goto err;
-+
- 				i = 0;
- 				nfrags = skb_shinfo(list_skb)->nr_frags;
- 				frag = skb_shinfo(list_skb)->frags;
-@@ -4589,10 +4599,6 @@ normal:
- 					i--;
- 					frag--;
- 				}
--				if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
--				    skb_zerocopy_clone(nskb, frag_skb,
--						       GFP_ATOMIC))
--					goto err;
- 
- 				list_skb = list_skb->next;
- 			}
++		if (F2FS_OPTION(sbi).fs_mode != FS_MODE_LFS) {
++			f2fs_info(sbi, "Only lfs mode is allowed with zoned block device feature");
++			return -EINVAL;
++		}
+ #else
+ 		f2fs_err(sbi, "Zoned block device support is not enabled");
+ 		return -EINVAL;
+-- 
+2.40.1
+
 
 
