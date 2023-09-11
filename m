@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E92679BD55
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C38B779B6B9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241035AbjIKU4s (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:56:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33518 "EHLO
+        id S1352120AbjIKVso (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37368 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241205AbjIKPEO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:14 -0400
+        with ESMTP id S238808AbjIKOF1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77EEB125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BDA0AC433C7;
-        Mon, 11 Sep 2023 15:04:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28F66CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6A797C433C7;
+        Mon, 11 Sep 2023 14:05:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444649;
-        bh=phpVBx9nMIUktAkaDqbbM24mFDQEHITVmlKQsOQuE2A=;
+        s=korg; t=1694441120;
+        bh=fjHb2cmfOUVNqULBj7i150BIIHcjrFpvyYFGW7QM7N8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gpgoh7acPC1R1TRQpaLJ0As6444NhQEaSPqvRYQLOUVTlNXd4Vlpg842B4/Gd01e9
-         N6hx6xWp7vp/6GoRCMf0IojRax6O+jlWQMcSUZqxgGveXjG7zx68RD2SfIcWqfAEiE
-         NHz5ovKG2T7SRApOI5cUImZt1Q7Py6eaPp89Z+cI=
+        b=m4S7Sukl5KyDrDY9F6Fva8znqQB9bvOAOioqScG1khtYDn+UMNkUjZlCLxoMW+cZ7
+         3MAvKhPPU0awR3QOYEetnyv20x7lcesQoUmpMr1ZI+g4bUVYKa91FubiyPVfhDOyY6
+         sVP8iDChPCP+bzf3QR0sJfJPKZQzEkrCHWJBl4jE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shyam Prasad N <sprasad@microsoft.com>,
-        Steve French <stfrench@microsoft.com>,
+        patches@lists.linux.dev,
+        Marijn Suijten <marijn.suijten@somainline.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 067/600] cifs: fix max_credits implementation
-Date:   Mon, 11 Sep 2023 15:41:40 +0200
-Message-ID: <20230911134635.599572606@linuxfoundation.org>
+Subject: [PATCH 6.5 302/739] drm/msm/dpu: inline DSC_BLK and DSC_BLK_1_2 macros
+Date:   Mon, 11 Sep 2023 15:41:41 +0200
+Message-ID: <20230911134659.562010993@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,121 +51,428 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shyam Prasad N <sprasad@microsoft.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 5e90aa21eb1372736e08cee0c0bf47735c5c4b95 ]
+[ Upstream commit 194347df5844e76bfc437e4aff2e1ece62af39c2 ]
 
-The current implementation of max_credits on the client does
-not work because the CreditRequest logic for several commands
-does not take max_credits into account.
+To simplify making changes to the hardware block definitions, expand
+corresponding macros. This way making all the changes are more obvious
+and visible in the source files.
 
-Still, we can end up asking the server for more credits, depending
-on the number of credits in flight. For this, we need to
-limit the credits while parsing the responses too.
-
-Signed-off-by: Shyam Prasad N <sprasad@microsoft.com>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Tested-by: Marijn Suijten <marijn.suijten@somainline.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/545370/
+Link: https://lore.kernel.org/r/20230704022136.130522-14-dmitry.baryshkov@linaro.org
+Stable-dep-of: e550ad0e5c3d ("drm/msm/dpu: fix DSC 1.2 block lengths")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/client/smb2ops.c |  2 ++
- fs/smb/client/smb2pdu.c | 32 ++++++++++++++++++++++++++++----
- 2 files changed, 30 insertions(+), 4 deletions(-)
+ .../msm/disp/dpu1/catalog/dpu_3_0_msm8998.h   |  9 ++++-
+ .../msm/disp/dpu1/catalog/dpu_4_0_sdm845.h    | 17 +++++++--
+ .../msm/disp/dpu1/catalog/dpu_5_0_sm8150.h    | 21 +++++++++--
+ .../msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h   | 31 +++++++++++++---
+ .../msm/disp/dpu1/catalog/dpu_6_0_sm8250.h    | 21 +++++++++--
+ .../msm/disp/dpu1/catalog/dpu_6_4_sm6350.h    |  6 ++-
+ .../msm/disp/dpu1/catalog/dpu_6_9_sm6375.h    |  6 ++-
+ .../msm/disp/dpu1/catalog/dpu_7_0_sm8350.h    | 25 +++++++++++--
+ .../msm/disp/dpu1/catalog/dpu_7_2_sc7280.h    |  7 +++-
+ .../msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h  | 37 ++++++++++++++++---
+ .../msm/disp/dpu1/catalog/dpu_8_1_sm8450.h    | 25 +++++++++++--
+ .../msm/disp/dpu1/catalog/dpu_9_0_sm8550.h    | 25 +++++++++++--
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 15 --------
+ 13 files changed, 189 insertions(+), 56 deletions(-)
 
-diff --git a/fs/smb/client/smb2ops.c b/fs/smb/client/smb2ops.c
-index bcd4c3a507601..6b020d80bb949 100644
---- a/fs/smb/client/smb2ops.c
-+++ b/fs/smb/client/smb2ops.c
-@@ -34,6 +34,8 @@ static int
- change_conf(struct TCP_Server_Info *server)
- {
- 	server->credits += server->echo_credits + server->oplock_credits;
-+	if (server->credits > server->max_credits)
-+		server->credits = server->max_credits;
- 	server->oplock_credits = server->echo_credits = 0;
- 	switch (server->credits) {
- 	case 0:
-diff --git a/fs/smb/client/smb2pdu.c b/fs/smb/client/smb2pdu.c
-index ba46156e32680..ae17d78f6ba17 100644
---- a/fs/smb/client/smb2pdu.c
-+++ b/fs/smb/client/smb2pdu.c
-@@ -1312,7 +1312,12 @@ SMB2_sess_alloc_buffer(struct SMB2_sess_data *sess_data)
- 	}
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
+index 7d0d0e74c3b08..be8e7e54df8af 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_3_0_msm8998.h
+@@ -127,8 +127,13 @@ static const struct dpu_pingpong_cfg msm8998_pp[] = {
+ };
  
- 	/* enough to enable echos and oplocks and one max size write */
--	req->hdr.CreditRequest = cpu_to_le16(130);
-+	if (server->credits >= server->max_credits)
-+		req->hdr.CreditRequest = cpu_to_le16(0);
-+	else
-+		req->hdr.CreditRequest = cpu_to_le16(
-+			min_t(int, server->max_credits -
-+			      server->credits, 130));
+ static const struct dpu_dsc_cfg msm8998_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000, 0),
+-	DSC_BLK("dsc_1", DSC_1, 0x80400, 0),
++	{
++		.name = "dsc_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x140,
++	}, {
++		.name = "dsc_1", .id = DSC_1,
++		.base = 0x80400, .len = 0x140,
++	},
+ };
  
- 	/* only one of SMB2 signing flags may be set in SMB2 request */
- 	if (server->sign)
-@@ -1907,7 +1912,12 @@ SMB2_tcon(const unsigned int xid, struct cifs_ses *ses, const char *tree,
- 	rqst.rq_nvec = 2;
+ static const struct dpu_dspp_cfg msm8998_dspp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
+index b6098141bb9bb..5cdfeb3dcb395 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
+@@ -136,10 +136,19 @@ static const struct dpu_pingpong_cfg sdm845_pp[] = {
+ };
  
- 	/* Need 64 for max size write so ask for more in case not there yet */
--	req->hdr.CreditRequest = cpu_to_le16(64);
-+	if (server->credits >= server->max_credits)
-+		req->hdr.CreditRequest = cpu_to_le16(0);
-+	else
-+		req->hdr.CreditRequest = cpu_to_le16(
-+			min_t(int, server->max_credits -
-+			      server->credits, 64));
+ static const struct dpu_dsc_cfg sdm845_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000, 0),
+-	DSC_BLK("dsc_1", DSC_1, 0x80400, 0),
+-	DSC_BLK("dsc_2", DSC_2, 0x80800, 0),
+-	DSC_BLK("dsc_3", DSC_3, 0x80c00, 0),
++	{
++		.name = "dsc_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x140,
++	}, {
++		.name = "dsc_1", .id = DSC_1,
++		.base = 0x80400, .len = 0x140,
++	}, {
++		.name = "dsc_2", .id = DSC_2,
++		.base = 0x80800, .len = 0x140,
++	}, {
++		.name = "dsc_3", .id = DSC_3,
++		.base = 0x80c00, .len = 0x140,
++	},
+ };
  
- 	rc = cifs_send_recv(xid, ses, server,
- 			    &rqst, &resp_buftype, flags, &rsp_iov);
-@@ -4291,6 +4301,7 @@ smb2_async_readv(struct cifs_readdata *rdata)
- 	struct TCP_Server_Info *server;
- 	struct cifs_tcon *tcon = tlink_tcon(rdata->cfile->tlink);
- 	unsigned int total_len;
-+	int credit_request;
+ static const struct dpu_intf_cfg sdm845_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
+index b5f7513542678..53c7f89cf23e6 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
+@@ -155,10 +155,23 @@ static const struct dpu_merge_3d_cfg sm8150_merge_3d[] = {
+ };
  
- 	cifs_dbg(FYI, "%s: offset=%llu bytes=%u\n",
- 		 __func__, rdata->offset, rdata->bytes);
-@@ -4322,7 +4333,13 @@ smb2_async_readv(struct cifs_readdata *rdata)
- 	if (rdata->credits.value > 0) {
- 		shdr->CreditCharge = cpu_to_le16(DIV_ROUND_UP(rdata->bytes,
- 						SMB2_MAX_BUFFER_SIZE));
--		shdr->CreditRequest = cpu_to_le16(le16_to_cpu(shdr->CreditCharge) + 8);
-+		credit_request = le16_to_cpu(shdr->CreditCharge) + 8;
-+		if (server->credits >= server->max_credits)
-+			shdr->CreditRequest = cpu_to_le16(0);
-+		else
-+			shdr->CreditRequest = cpu_to_le16(
-+				min_t(int, server->max_credits -
-+						server->credits, credit_request));
+ static const struct dpu_dsc_cfg sm8150_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_1", DSC_1, 0x80400, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_2", DSC_2, 0x80800, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_3", DSC_3, 0x80c00, BIT(DPU_DSC_OUTPUT_CTRL)),
++	{
++		.name = "dsc_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_1", .id = DSC_1,
++		.base = 0x80400, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_2", .id = DSC_2,
++		.base = 0x80800, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_3", .id = DSC_3,
++		.base = 0x80c00, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	},
+ };
  
- 		rc = adjust_credits(server, &rdata->credits, rdata->bytes);
- 		if (rc)
-@@ -4532,6 +4549,7 @@ smb2_async_writev(struct cifs_writedata *wdata,
- 	unsigned int total_len;
- 	struct cifs_io_parms _io_parms;
- 	struct cifs_io_parms *io_parms = NULL;
-+	int credit_request;
+ static const struct dpu_intf_cfg sm8150_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index 8ed2b263c5ea3..27457060f53be 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -154,12 +154,31 @@ static const struct dpu_merge_3d_cfg sc8180x_merge_3d[] = {
+ };
  
- 	if (!wdata->server)
- 		server = wdata->server = cifs_pick_channel(tcon->ses);
-@@ -4649,7 +4667,13 @@ smb2_async_writev(struct cifs_writedata *wdata,
- 	if (wdata->credits.value > 0) {
- 		shdr->CreditCharge = cpu_to_le16(DIV_ROUND_UP(wdata->bytes,
- 						    SMB2_MAX_BUFFER_SIZE));
--		shdr->CreditRequest = cpu_to_le16(le16_to_cpu(shdr->CreditCharge) + 8);
-+		credit_request = le16_to_cpu(shdr->CreditCharge) + 8;
-+		if (server->credits >= server->max_credits)
-+			shdr->CreditRequest = cpu_to_le16(0);
-+		else
-+			shdr->CreditRequest = cpu_to_le16(
-+				min_t(int, server->max_credits -
-+						server->credits, credit_request));
+ static const struct dpu_dsc_cfg sc8180x_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_1", DSC_1, 0x80400, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_2", DSC_2, 0x80800, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_3", DSC_3, 0x80c00, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_4", DSC_4, 0x81000, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_5", DSC_5, 0x81400, BIT(DPU_DSC_OUTPUT_CTRL)),
++	{
++		.name = "dsc_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_1", .id = DSC_1,
++		.base = 0x80400, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_2", .id = DSC_2,
++		.base = 0x80800, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_3", .id = DSC_3,
++		.base = 0x80c00, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_4", .id = DSC_4,
++		.base = 0x81000, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_5", .id = DSC_5,
++		.base = 0x81400, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	},
+ };
  
- 		rc = adjust_credits(server, &wdata->credits, io_parms->length);
- 		if (rc)
+ static const struct dpu_intf_cfg sc8180x_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+index daebd21700413..e2d068bde9b71 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+@@ -156,10 +156,23 @@ static const struct dpu_merge_3d_cfg sm8250_merge_3d[] = {
+ };
+ 
+ static const struct dpu_dsc_cfg sm8250_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_1", DSC_1, 0x80400, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_2", DSC_2, 0x80800, BIT(DPU_DSC_OUTPUT_CTRL)),
+-	DSC_BLK("dsc_3", DSC_3, 0x80c00, BIT(DPU_DSC_OUTPUT_CTRL)),
++	{
++		.name = "dsc_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_1", .id = DSC_1,
++		.base = 0x80400, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_2", .id = DSC_2,
++		.base = 0x80800, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	}, {
++		.name = "dsc_3", .id = DSC_3,
++		.base = 0x80c00, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	},
+ };
+ 
+ static const struct dpu_intf_cfg sm8250_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h
+index 06eba23b02364..d6e84c2e3ea23 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h
+@@ -98,7 +98,11 @@ static struct dpu_pingpong_cfg sm6350_pp[] = {
+ };
+ 
+ static const struct dpu_dsc_cfg sm6350_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000, BIT(DPU_DSC_OUTPUT_CTRL)),
++	{
++		.name = "dsc_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	},
+ };
+ 
+ static const struct dpu_intf_cfg sm6350_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h
+index 241fa6746674d..06944b3686d6a 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h
+@@ -67,7 +67,11 @@ static const struct dpu_pingpong_cfg sm6375_pp[] = {
+ };
+ 
+ static const struct dpu_dsc_cfg sm6375_dsc[] = {
+-	DSC_BLK("dsc_0", DSC_0, 0x80000, BIT(DPU_DSC_OUTPUT_CTRL)),
++	{
++		.name = "dsc_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x140,
++		.features = BIT(DPU_DSC_OUTPUT_CTRL),
++	},
+ };
+ 
+ static const struct dpu_intf_cfg sm6375_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+index 8da424eaee6a2..a7baef8d9c490 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+@@ -159,10 +159,27 @@ static const struct dpu_merge_3d_cfg sm8350_merge_3d[] = {
+  * its own different sub block address.
+  */
+ static const struct dpu_dsc_cfg sm8350_dsc[] = {
+-	DSC_BLK_1_2("dce_0_0", DSC_0, 0x80000, 0x29c, 0, dsc_sblk_0),
+-	DSC_BLK_1_2("dce_0_1", DSC_1, 0x80000, 0x29c, 0, dsc_sblk_1),
+-	DSC_BLK_1_2("dce_1_0", DSC_2, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_0),
+-	DSC_BLK_1_2("dce_1_1", DSC_3, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_1),
++	{
++		.name = "dce_0_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_0_1", .id = DSC_1,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_1,
++	}, {
++		.name = "dce_1_0", .id = DSC_2,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_1_1", .id = DSC_3,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_1,
++	},
+ };
+ 
+ static const struct dpu_intf_cfg sm8350_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+index 900fee410e113..9bfea24105629 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+@@ -104,7 +104,12 @@ static const struct dpu_pingpong_cfg sc7280_pp[] = {
+ 
+ /* NOTE: sc7280 only has one DSC hard slice encoder */
+ static const struct dpu_dsc_cfg sc7280_dsc[] = {
+-	DSC_BLK_1_2("dce_0_0", DSC_0, 0x80000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_0),
++	{
++		.name = "dce_0_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_0,
++	},
+ };
+ 
+ static const struct dpu_wb_cfg sc7280_wb[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
+index f6ce6b090f718..16310d3d24dce 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
+@@ -148,12 +148,37 @@ static const struct dpu_merge_3d_cfg sc8280xp_merge_3d[] = {
+  * its own different sub block address.
+  */
+ static const struct dpu_dsc_cfg sc8280xp_dsc[] = {
+-	DSC_BLK_1_2("dce_0_0", DSC_0, 0x80000, 0x29c, 0, dsc_sblk_0),
+-	DSC_BLK_1_2("dce_0_1", DSC_1, 0x80000, 0x29c, 0, dsc_sblk_1),
+-	DSC_BLK_1_2("dce_1_0", DSC_2, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_0),
+-	DSC_BLK_1_2("dce_1_1", DSC_3, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_1),
+-	DSC_BLK_1_2("dce_2_0", DSC_4, 0x82000, 0x29c, 0, dsc_sblk_0),
+-	DSC_BLK_1_2("dce_2_1", DSC_5, 0x82000, 0x29c, 0, dsc_sblk_1),
++	{
++		.name = "dce_0_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_0_1", .id = DSC_1,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_1,
++	}, {
++		.name = "dce_1_0", .id = DSC_2,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_1_1", .id = DSC_3,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_1,
++	}, {
++		.name = "dce_2_0", .id = DSC_4,
++		.base = 0x82000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_2_1", .id = DSC_5,
++		.base = 0x82000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_1,
++	},
+ };
+ 
+ /* TODO: INTF 3, 8 and 7 are used for MST, marked as INTF_NONE for now */
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
+index 8d13c369213c0..ed5a9f9e2d331 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
+@@ -167,10 +167,27 @@ static const struct dpu_merge_3d_cfg sm8450_merge_3d[] = {
+  * its own different sub block address.
+  */
+ static const struct dpu_dsc_cfg sm8450_dsc[] = {
+-	DSC_BLK_1_2("dce_0_0", DSC_0, 0x80000, 0x29c, 0, dsc_sblk_0),
+-	DSC_BLK_1_2("dce_0_1", DSC_1, 0x80000, 0x29c, 0, dsc_sblk_1),
+-	DSC_BLK_1_2("dce_1_0", DSC_2, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_0),
+-	DSC_BLK_1_2("dce_1_1", DSC_3, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_1),
++	{
++		.name = "dce_0_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_0_1", .id = DSC_1,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_1,
++	}, {
++		.name = "dce_1_0", .id = DSC_2,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_1_1", .id = DSC_3,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_1,
++	},
+ };
+ 
+ static const struct dpu_intf_cfg sm8450_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
+index 89a2ac1e840d5..3f91f230636db 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
+@@ -171,10 +171,27 @@ static const struct dpu_merge_3d_cfg sm8550_merge_3d[] = {
+  * its own different sub block address.
+  */
+ static const struct dpu_dsc_cfg sm8550_dsc[] = {
+-	DSC_BLK_1_2("dce_0_0", DSC_0, 0x80000, 0x29c, 0, dsc_sblk_0),
+-	DSC_BLK_1_2("dce_0_1", DSC_1, 0x80000, 0x29c, 0, dsc_sblk_1),
+-	DSC_BLK_1_2("dce_1_0", DSC_2, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_0),
+-	DSC_BLK_1_2("dce_1_1", DSC_3, 0x81000, 0x29c, BIT(DPU_DSC_NATIVE_42x_EN), dsc_sblk_1),
++	{
++		.name = "dce_0_0", .id = DSC_0,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_0_1", .id = DSC_1,
++		.base = 0x80000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2),
++		.sblk = &dsc_sblk_1,
++	}, {
++		.name = "dce_1_0", .id = DSC_2,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_0,
++	}, {
++		.name = "dce_1_1", .id = DSC_3,
++		.base = 0x81000, .len = 0x29c,
++		.features = BIT(DPU_DSC_HW_REV_1_2) | BIT(DPU_DSC_NATIVE_42x_EN),
++		.sblk = &dsc_sblk_1,
++	},
+ };
+ 
+ static const struct dpu_intf_cfg sm8550_intf[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+index 8b17a4a9b438c..6d4252b2b215e 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+@@ -526,21 +526,6 @@ static const struct dpu_dsc_sub_blks dsc_sblk_1 = {
+ 	.ctl = {.base = 0xF80, .len = 0x10},
+ };
+ 
+-#define DSC_BLK(_name, _id, _base, _features) \
+-	{\
+-	.name = _name, .id = _id, \
+-	.base = _base, .len = 0x140, \
+-	.features = _features, \
+-	}
+-
+-#define DSC_BLK_1_2(_name, _id, _base, _len, _features, _sblk) \
+-	{\
+-	.name = _name, .id = _id, \
+-	.base = _base, .len = _len, \
+-	.features = BIT(DPU_DSC_HW_REV_1_2) | _features, \
+-	.sblk = &_sblk, \
+-	}
+-
+ /*************************************************************
+  * INTF sub blocks config
+  *************************************************************/
 -- 
 2.40.1
 
