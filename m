@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57C3F79B763
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AE6FD79BFF8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239826AbjIKWXH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:23:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38250 "EHLO
+        id S1379565AbjIKWot (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55892 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241010AbjIKO7m (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:42 -0400
+        with ESMTP id S242176AbjIKPYS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 177611B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F8FC433C7;
-        Mon, 11 Sep 2023 14:59:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 329C8D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3E1CDC433C8;
+        Mon, 11 Sep 2023 15:24:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444377;
-        bh=tJNTCdtpib/KK2gyg3XfEe3ucrvGenG0VB7lO13AOG8=;
+        s=korg; t=1694445852;
+        bh=aV/I8juPyPyfTlbXrY3gqXAIo/N7V7xqpERtbR+Zsm0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Iw/NTuJCy3gPK2w7LRh/qkUyzawe1QuK1HkWbRjovRAKl+Gr9WnYOiQ1TxVo8PM6M
-         lqo4CFVnrUGioi+uwMXU3gVfU9RIS4Tkblh0YTMsUs9regv1IzXy9uEpzCCd1QwKy/
-         u8zlkJIBxFqAxC2+BVWiL0plPotxGtzJpeVUp5AI=
+        b=p+PvOH/M8v1EMJ3+3nqaIIYgbGm9hWr5z2qSfv3/Axnq7HIYRAVLCrxKo9tyjycJq
+         vse1LCf45TsZ/wewdHsxpQwwagxTPr/OYC/y1DOR53vrrT8zkoMWK5kDrJ18Ug4VXn
+         LPgaUqyfvAcYzAAL91bRnhVZxBoY/lwgXHMFrJLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Naveen N Rao <naveen@kernel.org>,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>
-Subject: [PATCH 6.4 669/737] powerpc/ftrace: Fix dropping weak symbols with older toolchains
+        patches@lists.linux.dev,
+        Mario Limonciello <mario.limonciello@amd.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 495/600] platform/x86/amd/pmf: Fix a missing cleanup path
 Date:   Mon, 11 Sep 2023 15:48:48 +0200
-Message-ID: <20230911134709.229009217@linuxfoundation.org>
+Message-ID: <20230911134648.241497826@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Naveen N Rao <naveen@kernel.org>
+From: Mario Limonciello <mario.limonciello@amd.com>
 
-commit f6834c8c59a8e977a6f6e4f96c5d28dfa5db8430 upstream.
+[ Upstream commit 4dbd6e61adc7e52dd1c9165f0ccaa90806611e40 ]
 
-The minimum level of gcc supported for building the kernel is v5.1.
-v5.x releases of gcc emitted a three instruction sequence for
--mprofile-kernel:
-	mflr	r0
-	std	r0, 16(r1)
-	bl	_mcount
+On systems that support slider notifications but don't otherwise support
+granular slider the SPS cleanup path doesn't run.
 
-It is only with the v6.x releases that gcc started emitting the two
-instruction sequence for -mprofile-kernel, omitting the second store
-instruction.
+This means that loading/unloading/loading leads to failures because
+the sysfs files don't get setup properly when reloaded.
 
-With the older three instruction sequence, the actual ftrace location
-can be the 5th instruction into a function. Update the allowed offset
-for ftrace location from 12 to 16 to accommodate the same.
+Add the missing cleanup path.
 
-Cc: stable@vger.kernel.org
-Fixes: 7af82ff90a2b06 ("powerpc/ftrace: Ignore weak functions")
-Signed-off-by: Naveen N Rao <naveen@kernel.org>
-Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/7b265908a9461e38fc756ef9b569703860a80621.1687166935.git.naveen@kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 33c9ab5b493a ("platform/x86/amd/pmf: Notify OS power slider update")
+Signed-off-by: Mario Limonciello <mario.limonciello@amd.com>
+Link: https://lore.kernel.org/r/20230823185421.23959-1-mario.limonciello@amd.com
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/include/asm/ftrace.h | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/platform/x86/amd/pmf/core.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
-index 91c049d51d0e..2edc6269b1a3 100644
---- a/arch/powerpc/include/asm/ftrace.h
-+++ b/arch/powerpc/include/asm/ftrace.h
-@@ -12,7 +12,7 @@
+diff --git a/drivers/platform/x86/amd/pmf/core.c b/drivers/platform/x86/amd/pmf/core.c
+index 8a38cd94a605d..d10c097380c56 100644
+--- a/drivers/platform/x86/amd/pmf/core.c
++++ b/drivers/platform/x86/amd/pmf/core.c
+@@ -322,7 +322,8 @@ static void amd_pmf_init_features(struct amd_pmf_dev *dev)
  
- /* Ignore unused weak functions which will have larger offsets */
- #ifdef CONFIG_MPROFILE_KERNEL
--#define FTRACE_MCOUNT_MAX_OFFSET	12
-+#define FTRACE_MCOUNT_MAX_OFFSET	16
- #elif defined(CONFIG_PPC32)
- #define FTRACE_MCOUNT_MAX_OFFSET	8
- #endif
+ static void amd_pmf_deinit_features(struct amd_pmf_dev *dev)
+ {
+-	if (is_apmf_func_supported(dev, APMF_FUNC_STATIC_SLIDER_GRANULAR)) {
++	if (is_apmf_func_supported(dev, APMF_FUNC_STATIC_SLIDER_GRANULAR) ||
++	    is_apmf_func_supported(dev, APMF_FUNC_OS_POWER_SLIDER_UPDATE)) {
+ 		power_supply_unreg_notifier(&dev->pwr_src_notifier);
+ 		amd_pmf_deinit_sps(dev);
+ 	}
 -- 
-2.42.0
+2.40.1
 
 
 
