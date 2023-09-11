@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A9F279B2B9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27F3379B45C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239268AbjIKVaG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36356 "EHLO
+        id S1353196AbjIKVuD (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:50:03 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58600 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240735AbjIKOwR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:17 -0400
+        with ESMTP id S241902AbjIKPRZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 723BE118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B355FC433C8;
-        Mon, 11 Sep 2023 14:52:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7AF16FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF9C6C433C7;
+        Mon, 11 Sep 2023 15:17:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443932;
-        bh=j8ch/LwteBJ3IAKAoIlCQ8R82TWW5G2YuF5QwadcvpA=;
+        s=korg; t=1694445441;
+        bh=bqhz2TyPUzEuUDyKP2kMi63DqpqS3m5rxzpIX9XyCTg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UaRUKKXnHRuOSQ/jWUknfkJWO5IaQL/GC499CKIOvIbpQQVHS+vllAg5UqSWElsck
-         RbUmEVh5uWdssrqTj8VIrq8FE7ze3S0X3NpDfnelg20jMcKpQmFtOSSVJPQJ7c1zrA
-         OesQrf3Sydy1cLvD65tM1sfZKotVd7oX00uEOsEs=
+        b=UgiJBRnb/QcC16KFXTnKB5HcriFj918K1jZ/ZOqlbUCwDOWHFyIX0bP1K+GX/MgWe
+         B9dLFJ1WNCp9bgAM6xcF2FkyimtSY74GqNb0S2SHYPzXaLF0HQYvtsdtdWuNypYr5/
+         bfHHrZn3mhTm+9VX0O/VJrsx9GeJeSucW5TxC1fw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev, Luca Weiss <luca.weiss@fairphone.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 522/737] RDMA/rxe: Fix rxe_modify_srq
+Subject: [PATCH 6.1 348/600] clk: qcom: gcc-sm6350: Fix gcc_sdcc2_apps_clk_src
 Date:   Mon, 11 Sep 2023 15:46:21 +0200
-Message-ID: <20230911134705.159218425@linuxfoundation.org>
+Message-ID: <20230911134643.956511866@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,166 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Luca Weiss <luca.weiss@fairphone.com>
 
-[ Upstream commit cc28f351155def8db209647f2e20a59a7080825b ]
+[ Upstream commit df04d166d1f346dbf740bbea64a3bed3e7f14c8d ]
 
-This patch corrects an error in rxe_modify_srq where if the
-caller changes the srq size the actual new value is not returned
-to the caller since it may be larger than what is requested.
-Additionally it open codes the subroutine rcv_wqe_size() which
-adds very little value, and makes some whitespace changes.
+GPLL7 is not on by default, which causes a "gcc_sdcc2_apps_clk_src: rcg
+didn't update its configuration" error when booting. Set .flags =
+CLK_OPS_PARENT_ENABLE to fix the error.
 
-Fixes: 8700e3e7c485 ("Soft RoCE driver")
-Link: https://lore.kernel.org/r/20230620140142.9452-1-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 131abae905df ("clk: qcom: Add SM6350 GCC driver")
+Signed-off-by: Luca Weiss <luca.weiss@fairphone.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230804-sm6350-sdcc2-v1-1-3d946927d37d@fairphone.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_loc.h |  6 ---
- drivers/infiniband/sw/rxe/rxe_srq.c | 60 +++++++++++++++++------------
- 2 files changed, 36 insertions(+), 30 deletions(-)
+ drivers/clk/qcom/gcc-sm6350.c | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_loc.h b/drivers/infiniband/sw/rxe/rxe_loc.h
-index 804b15e929dd9..5b32724a95c8d 100644
---- a/drivers/infiniband/sw/rxe/rxe_loc.h
-+++ b/drivers/infiniband/sw/rxe/rxe_loc.h
-@@ -138,12 +138,6 @@ static inline int qp_mtu(struct rxe_qp *qp)
- 		return IB_MTU_4096;
- }
- 
--static inline int rcv_wqe_size(int max_sge)
--{
--	return sizeof(struct rxe_recv_wqe) +
--		max_sge * sizeof(struct ib_sge);
--}
--
- void free_rd_atomic_resource(struct resp_res *res);
- 
- static inline void rxe_advance_resp_resource(struct rxe_qp *qp)
-diff --git a/drivers/infiniband/sw/rxe/rxe_srq.c b/drivers/infiniband/sw/rxe/rxe_srq.c
-index 27ca82ec0826b..3661cb627d28a 100644
---- a/drivers/infiniband/sw/rxe/rxe_srq.c
-+++ b/drivers/infiniband/sw/rxe/rxe_srq.c
-@@ -45,40 +45,41 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		      struct ib_srq_init_attr *init, struct ib_udata *udata,
- 		      struct rxe_create_srq_resp __user *uresp)
- {
--	int err;
--	int srq_wqe_size;
- 	struct rxe_queue *q;
--	enum queue_type type;
-+	int wqe_size;
-+	int err;
- 
--	srq->ibsrq.event_handler	= init->event_handler;
--	srq->ibsrq.srq_context		= init->srq_context;
--	srq->limit		= init->attr.srq_limit;
--	srq->srq_num		= srq->elem.index;
--	srq->rq.max_wr		= init->attr.max_wr;
--	srq->rq.max_sge		= init->attr.max_sge;
-+	srq->ibsrq.event_handler = init->event_handler;
-+	srq->ibsrq.srq_context = init->srq_context;
-+	srq->limit = init->attr.srq_limit;
-+	srq->srq_num = srq->elem.index;
-+	srq->rq.max_wr = init->attr.max_wr;
-+	srq->rq.max_sge = init->attr.max_sge;
- 
--	srq_wqe_size		= rcv_wqe_size(srq->rq.max_sge);
-+	wqe_size = sizeof(struct rxe_recv_wqe) +
-+			srq->rq.max_sge*sizeof(struct ib_sge);
- 
- 	spin_lock_init(&srq->rq.producer_lock);
- 	spin_lock_init(&srq->rq.consumer_lock);
- 
--	type = QUEUE_TYPE_FROM_CLIENT;
--	q = rxe_queue_init(rxe, &srq->rq.max_wr, srq_wqe_size, type);
-+	q = rxe_queue_init(rxe, &srq->rq.max_wr, wqe_size,
-+			   QUEUE_TYPE_FROM_CLIENT);
- 	if (!q) {
- 		rxe_dbg_srq(srq, "Unable to allocate queue\n");
--		return -ENOMEM;
-+		err = -ENOMEM;
-+		goto err_out;
- 	}
- 
--	srq->rq.queue = q;
--
- 	err = do_mmap_info(rxe, uresp ? &uresp->mi : NULL, udata, q->buf,
- 			   q->buf_size, &q->ip);
- 	if (err) {
--		vfree(q->buf);
--		kfree(q);
--		return err;
-+		rxe_dbg_srq(srq, "Unable to init mmap info for caller\n");
-+		goto err_free;
- 	}
- 
-+	srq->rq.queue = q;
-+	init->attr.max_wr = srq->rq.max_wr;
-+
- 	if (uresp) {
- 		if (copy_to_user(&uresp->srq_num, &srq->srq_num,
- 				 sizeof(uresp->srq_num))) {
-@@ -88,6 +89,12 @@ int rxe_srq_from_init(struct rxe_dev *rxe, struct rxe_srq *srq,
- 	}
- 
- 	return 0;
-+
-+err_free:
-+	vfree(q->buf);
-+	kfree(q);
-+err_out:
-+	return err;
- }
- 
- int rxe_srq_chk_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
-@@ -145,9 +152,10 @@ int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		      struct ib_srq_attr *attr, enum ib_srq_attr_mask mask,
- 		      struct rxe_modify_srq_cmd *ucmd, struct ib_udata *udata)
- {
--	int err;
- 	struct rxe_queue *q = srq->rq.queue;
- 	struct mminfo __user *mi = NULL;
-+	int wqe_size;
-+	int err;
- 
- 	if (mask & IB_SRQ_MAX_WR) {
- 		/*
-@@ -156,12 +164,16 @@ int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
- 		 */
- 		mi = u64_to_user_ptr(ucmd->mmap_info_addr);
- 
--		err = rxe_queue_resize(q, &attr->max_wr,
--				       rcv_wqe_size(srq->rq.max_sge), udata, mi,
--				       &srq->rq.producer_lock,
-+		wqe_size = sizeof(struct rxe_recv_wqe) +
-+				srq->rq.max_sge*sizeof(struct ib_sge);
-+
-+		err = rxe_queue_resize(q, &attr->max_wr, wqe_size,
-+				       udata, mi, &srq->rq.producer_lock,
- 				       &srq->rq.consumer_lock);
- 		if (err)
--			goto err2;
-+			goto err_free;
-+
-+		srq->rq.max_wr = attr->max_wr;
- 	}
- 
- 	if (mask & IB_SRQ_LIMIT)
-@@ -169,7 +181,7 @@ int rxe_srq_from_attr(struct rxe_dev *rxe, struct rxe_srq *srq,
- 
- 	return 0;
- 
--err2:
-+err_free:
- 	rxe_queue_cleanup(q);
- 	srq->rq.queue = NULL;
- 	return err;
+diff --git a/drivers/clk/qcom/gcc-sm6350.c b/drivers/clk/qcom/gcc-sm6350.c
+index 9b4e4bb059635..cf4a7b6e0b23a 100644
+--- a/drivers/clk/qcom/gcc-sm6350.c
++++ b/drivers/clk/qcom/gcc-sm6350.c
+@@ -641,6 +641,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.name = "gcc_sdcc2_apps_clk_src",
+ 		.parent_data = gcc_parent_data_8,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_8),
++		.flags = CLK_OPS_PARENT_ENABLE,
+ 		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
 -- 
 2.40.1
 
