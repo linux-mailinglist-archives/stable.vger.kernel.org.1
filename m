@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2C8AA79BEBA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E226579BC8E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233496AbjIKUvM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34974 "EHLO
+        id S240202AbjIKU4U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239937AbjIKObv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:51 -0400
+        with ESMTP id S238519AbjIKN6X (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 81319F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CECFCC433C9;
-        Mon, 11 Sep 2023 14:31:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 25DEACD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6FC83C433C9;
+        Mon, 11 Sep 2023 13:58:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442707;
-        bh=Yyx3O1ax8jEd7guDYMeB4OQsVpqZaU0RRC4MGs/Gj3I=;
+        s=korg; t=1694440698;
+        bh=wFz8VkyA+LhA40IUrwxxMX8GkqpRUT5A76CmuDfDnmg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V7e5C2LKVZPZviiiWCX7R1SL9ajS0afZKQABWx2KkoI0E/YB3ArhRTJmTJxFGZQHX
-         /mWXxxhaghqHxfKutuEeNRcCb3Y/ke27kMfYckIhGQI+kMegmdaD8LRDET8mKPVg4I
-         Fj8ov3dgCZf1BDO0ZXlWZ3iaRlWZSCW0qmk1xJnQ=
+        b=CuycfLjaYkxFKFJvdjGaDVI2yvnq6K8werH9NmUsirv5wksdEd/TTB0tHITLo5/m+
+         SiX9/Lot8v7T9+o6zrq0IaYUIZ5eRKEL9Q3FoTsQ9skgw20w7zLpKXAr1s2uYiJ8zT
+         eGVIAkACZKotWJJdECl4CTwGUCTCghTf0gJOD0mg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Werner Sembach <wse@tuxedocomputers.com>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Subject: [PATCH 6.4 093/737] Input: i8042 - add quirk for TUXEDO Gemini 17 Gen1/Clevo PD70PN
-Date:   Mon, 11 Sep 2023 15:39:12 +0200
-Message-ID: <20230911134653.111380191@linuxfoundation.org>
+        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
+        Simon Horman <horms@kernel.org>,
+        Leon Romanovsky <leonro@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 154/739] net: lan966x: Fix return value check for vcap_get_rule()
+Date:   Mon, 11 Sep 2023 15:39:13 +0200
+Message-ID: <20230911134655.444407013@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +52,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Werner Sembach <wse@tuxedocomputers.com>
+From: Ruan Jinjie <ruanjinjie@huawei.com>
 
-commit eb09074bdb05ffd6bfe77f8b4a41b76ef78c997b upstream.
+[ Upstream commit ab104318f63997113b0ce7ac288e51359925ed79 ]
 
-The touchpad of this device is both connected via PS/2 and i2c. This causes
-strange behavior when both driver fight for control. The easy fix is to
-prevent the PS/2 driver from accessing the mouse port as the full feature
-set of the touchpad is only supported in the i2c interface anyway.
+As Simon Horman suggests, update vcap_get_rule() to always
+return an ERR_PTR() and update the error detection conditions to
+use IS_ERR(), so use IS_ERR() to fix the return value issue.
 
-The strange behavior in this case is, that when an external screen is
-connected and the notebook is closed, the pointer on the external screen is
-moving to the lower right corner. When the notebook is opened again, this
-movement stops, but the touchpad clicks are unresponsive afterwards until
-reboot.
-
-Signed-off-by: Werner Sembach <wse@tuxedocomputers.com>
-Cc: stable@vger.kernel.org
-Link: https://lore.kernel.org/r/20230607173331.851192-1-wse@tuxedocomputers.com
-Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 72df3489fb10 ("net: lan966x: Add ptp trap rules")
+Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
+Suggested-by: Simon Horman <horms@kernel.org>
+Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/input/serio/i8042-acpipnpio.h |    7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/drivers/input/serio/i8042-acpipnpio.h
-+++ b/drivers/input/serio/i8042-acpipnpio.h
-@@ -1281,6 +1281,13 @@ static const struct dmi_system_id i8042_
- 		.driver_data = (void *)(SERIO_QUIRK_NOMUX | SERIO_QUIRK_RESET_ALWAYS |
- 					SERIO_QUIRK_NOLOOP | SERIO_QUIRK_NOPNP)
- 	},
-+	/* See comment on TUXEDO InfinityBook S17 Gen6 / Clevo NS70MU above */
-+	{
-+		.matches = {
-+			DMI_MATCH(DMI_BOARD_NAME, "PD5x_7xPNP_PNR_PNN_PNT"),
-+		},
-+		.driver_data = (void *)(SERIO_QUIRK_NOAUX)
-+	},
- 	{
- 		.matches = {
- 			DMI_MATCH(DMI_BOARD_NAME, "X170SM"),
+diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+index 266a21a2d1246..1da2b1f82ae93 100644
+--- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
++++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
+@@ -59,7 +59,7 @@ static int lan966x_ptp_add_trap(struct lan966x_port *port,
+ 	int err;
+ 
+ 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
+-	if (vrule) {
++	if (!IS_ERR(vrule)) {
+ 		u32 value, mask;
+ 
+ 		/* Just modify the ingress port mask and exit */
+@@ -106,7 +106,7 @@ static int lan966x_ptp_del_trap(struct lan966x_port *port,
+ 	int err;
+ 
+ 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
+-	if (!vrule)
++	if (IS_ERR(vrule))
+ 		return -EEXIST;
+ 
+ 	vcap_rule_get_key_u32(vrule, VCAP_KF_IF_IGR_PORT_MASK, &value, &mask);
+-- 
+2.40.1
+
 
 
