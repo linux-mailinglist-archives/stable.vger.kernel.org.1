@@ -2,37 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D4F179B512
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EC53D79B093
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237434AbjIKWAN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:00:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51672 "EHLO
+        id S241582AbjIKWkE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:40:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41990 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240936AbjIKO5a (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:30 -0400
+        with ESMTP id S242212AbjIKPZK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D38701B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:25 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 24B08C433C7;
-        Mon, 11 Sep 2023 14:57:24 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD30FD8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01AF2C433C8;
+        Mon, 11 Sep 2023 15:25:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444245;
-        bh=8mBdNcV2OXjl1W13GJmhkQeO0uulzeXtOZapwcACkqw=;
+        s=korg; t=1694445906;
+        bh=083G70o8nkbEnI0lyk8I8GlG23saf5sKaP8eH1vFqko=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q3kD4PLJQ4B8IOD705ylpM5v0QL11G9BevpJ18n53fIliQyfnLltB4lymJYQRy+nL
-         um2K44PfFw/CN8uj9sL9Vl9wk8Owp54AEm+PLOgRrqOuKpHL/MtUQZH2e1kNuqrovT
-         9WJIxh9vDncghErrldf17fFTcs1UssAbLZnYB304=
+        b=SSWIB+hvOWA0C7ccRkf9JSYJIYf/Nm1EpHU6MPG7SLCaCc8cP/AYDz3j8YgEhLQO9
+         yc6vyXNwI+tqnNxE5IgpHjHtagrsTQYYQG/HZHg9J8H9qH4qBJvcU83sgT4Pl3j+kH
+         QnrJacPhJDhinQNSApP1lzwbM+M9yY7hEIVB1rJY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.4 661/737] io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used
+        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 487/600] amba: bus: fix refcount leak
 Date:   Mon, 11 Sep 2023 15:48:40 +0200
-Message-ID: <20230911134708.989375812@linuxfoundation.org>
+Message-ID: <20230911134648.013040131@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -48,152 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jens Axboe <axboe@kernel.dk>
+From: Peng Fan <peng.fan@nxp.com>
 
-commit ebdfefc09c6de7897962769bd3e63a2ff443ebf5 upstream.
+[ Upstream commit e312cbdc11305568554a9e18a2ea5c2492c183f3 ]
 
-If we setup the ring with SQPOLL, then that polling thread has its
-own io-wq setup. This means that if the application uses
-IORING_REGISTER_IOWQ_AFF to set the io-wq affinity, we should not be
-setting it for the invoking task, but rather the sqpoll task.
+commit 5de1540b7bc4 ("drivers/amba: create devices from device tree")
+increases the refcount of of_node, but not releases it in
+amba_device_release, so there is refcount leak. By using of_node_put
+to avoid refcount leak.
 
-Add an sqpoll helper that parks the thread and updates the affinity,
-and use that one if we're using SQPOLL.
-
-Fixes: fe76421d1da1 ("io_uring: allow user configurable IO thread CPU affinity")
-Cc: stable@vger.kernel.org # 5.10+
-Link: https://github.com/axboe/liburing/discussions/884
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 5de1540b7bc4 ("drivers/amba: create devices from device tree")
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230821023928.3324283-1-peng.fan@oss.nxp.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io-wq.c    |    9 ++++++---
- io_uring/io-wq.h    |    2 +-
- io_uring/io_uring.c |   29 ++++++++++++++++++-----------
- io_uring/sqpoll.c   |   15 +++++++++++++++
- io_uring/sqpoll.h   |    1 +
- 5 files changed, 41 insertions(+), 15 deletions(-)
+ drivers/amba/bus.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/io_uring/io-wq.c
-+++ b/io_uring/io-wq.c
-@@ -1285,13 +1285,16 @@ static int io_wq_cpu_offline(unsigned in
- 	return __io_wq_cpu_online(wq, cpu, false);
- }
- 
--int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask)
-+int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask)
+diff --git a/drivers/amba/bus.c b/drivers/amba/bus.c
+index 110a535648d2e..0aa2d3111ae6e 100644
+--- a/drivers/amba/bus.c
++++ b/drivers/amba/bus.c
+@@ -534,6 +534,7 @@ static void amba_device_release(struct device *dev)
  {
-+	if (!tctx || !tctx->io_wq)
-+		return -EINVAL;
-+
- 	rcu_read_lock();
- 	if (mask)
--		cpumask_copy(wq->cpu_mask, mask);
-+		cpumask_copy(tctx->io_wq->cpu_mask, mask);
- 	else
--		cpumask_copy(wq->cpu_mask, cpu_possible_mask);
-+		cpumask_copy(tctx->io_wq->cpu_mask, cpu_possible_mask);
- 	rcu_read_unlock();
+ 	struct amba_device *d = to_amba_device(dev);
  
- 	return 0;
---- a/io_uring/io-wq.h
-+++ b/io_uring/io-wq.h
-@@ -50,7 +50,7 @@ void io_wq_put_and_exit(struct io_wq *wq
- void io_wq_enqueue(struct io_wq *wq, struct io_wq_work *work);
- void io_wq_hash_work(struct io_wq_work *work, void *val);
- 
--int io_wq_cpu_affinity(struct io_wq *wq, cpumask_var_t mask);
-+int io_wq_cpu_affinity(struct io_uring_task *tctx, cpumask_var_t mask);
- int io_wq_max_workers(struct io_wq *wq, int *new_count);
- 
- static inline bool io_wq_is_hashed(struct io_wq_work *work)
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -4177,16 +4177,28 @@ static int io_register_enable_rings(stru
- 	return 0;
- }
- 
-+static __cold int __io_register_iowq_aff(struct io_ring_ctx *ctx,
-+					 cpumask_var_t new_mask)
-+{
-+	int ret;
-+
-+	if (!(ctx->flags & IORING_SETUP_SQPOLL)) {
-+		ret = io_wq_cpu_affinity(current->io_uring, new_mask);
-+	} else {
-+		mutex_unlock(&ctx->uring_lock);
-+		ret = io_sqpoll_wq_cpu_affinity(ctx, new_mask);
-+		mutex_lock(&ctx->uring_lock);
-+	}
-+
-+	return ret;
-+}
-+
- static __cold int io_register_iowq_aff(struct io_ring_ctx *ctx,
- 				       void __user *arg, unsigned len)
- {
--	struct io_uring_task *tctx = current->io_uring;
- 	cpumask_var_t new_mask;
- 	int ret;
- 
--	if (!tctx || !tctx->io_wq)
--		return -EINVAL;
--
- 	if (!alloc_cpumask_var(&new_mask, GFP_KERNEL))
- 		return -ENOMEM;
- 
-@@ -4207,19 +4219,14 @@ static __cold int io_register_iowq_aff(s
- 		return -EFAULT;
- 	}
- 
--	ret = io_wq_cpu_affinity(tctx->io_wq, new_mask);
-+	ret = __io_register_iowq_aff(ctx, new_mask);
- 	free_cpumask_var(new_mask);
- 	return ret;
- }
- 
- static __cold int io_unregister_iowq_aff(struct io_ring_ctx *ctx)
- {
--	struct io_uring_task *tctx = current->io_uring;
--
--	if (!tctx || !tctx->io_wq)
--		return -EINVAL;
--
--	return io_wq_cpu_affinity(tctx->io_wq, NULL);
-+	return __io_register_iowq_aff(ctx, NULL);
- }
- 
- static __cold int io_register_iowq_max_workers(struct io_ring_ctx *ctx,
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -421,3 +421,18 @@ err:
- 	io_sq_thread_finish(ctx);
- 	return ret;
- }
-+
-+__cold int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx,
-+				     cpumask_var_t mask)
-+{
-+	struct io_sq_data *sqd = ctx->sq_data;
-+	int ret = -EINVAL;
-+
-+	if (sqd) {
-+		io_sq_thread_park(sqd);
-+		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
-+		io_sq_thread_unpark(sqd);
-+	}
-+
-+	return ret;
-+}
---- a/io_uring/sqpoll.h
-+++ b/io_uring/sqpoll.h
-@@ -27,3 +27,4 @@ void io_sq_thread_park(struct io_sq_data
- void io_sq_thread_unpark(struct io_sq_data *sqd);
- void io_put_sq_data(struct io_sq_data *sqd);
- void io_sqpoll_wait_sq(struct io_ring_ctx *ctx);
-+int io_sqpoll_wq_cpu_affinity(struct io_ring_ctx *ctx, cpumask_var_t mask);
++	of_node_put(d->dev.of_node);
+ 	if (d->res.parent)
+ 		release_resource(&d->res);
+ 	mutex_destroy(&d->periphid_lock);
+-- 
+2.40.1
+
 
 
