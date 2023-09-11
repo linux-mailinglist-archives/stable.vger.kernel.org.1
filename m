@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 39E0679B9CC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E35479B81F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359215AbjIKWQA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:16:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40296 "EHLO
+        id S236737AbjIKV7V (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241975AbjIKPT3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:29 -0400
+        with ESMTP id S240756AbjIKOw6 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:58 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A08C9120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E6EBAC433C8;
-        Mon, 11 Sep 2023 15:19:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872F5118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:53 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E50C433C8;
+        Mon, 11 Sep 2023 14:52:52 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445564;
-        bh=TpNBNzXT/uSJ9dMQM6sPRHQG/IY1FUeUhE0EiniZNs0=;
+        s=korg; t=1694443973;
+        bh=gB0kA3w3sqVFr9qyQHWlCZFF8QsL2a/y/GtTrxj5E0o=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RRsiAu3njuvUPZJFKlH4qLQzKygXcbt15CIRIE5/e3sg/9tzdDYwR5ReSRY3zZ0TZ
-         kSgYluylZvPFpt7th+3EMjpBuAypg/GO8ZHVcOaMkSGV79/0RQA4+BIR0uGnvxN8VJ
-         v+FhxlqqrniijGG8yJMbzSJYADQyCSimNU9l9WxI=
+        b=nzhgfk2Ob52Ogor3JR6mlELHWPOaA1yA6p1mBzY+lvnPoTolDeoxCDIqno53rNFyc
+         9GBaMttWzgsBOWvVMvt8yXooRTHeydO+00fGk8qFtebsacdi2bg1enLnnGmCbR8l2G
+         04wzFQbcwklHg6zRH0WeYTlRbFD1oPBgcjXQRfDk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
-        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
         Sakari Ailus <sakari.ailus@linux.intel.com>,
         Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 391/600] media: ov5640: fix low resolution image abnormal issue
-Date:   Mon, 11 Sep 2023 15:47:04 +0200
-Message-ID: <20230911134645.218889461@linuxfoundation.org>
+Subject: [PATCH 6.4 566/737] media: ov2680: Fix ov2680_bayer_order()
+Date:   Mon, 11 Sep 2023 15:47:05 +0200
+Message-ID: <20230911134706.358517264@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,66 +54,119 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Guoniu.zhou <guoniu.zhou@nxp.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit a828002f38c5ee49d3f0c0e64c0f0caa1aec8dc2 ]
+[ Upstream commit 50a7bad4e0a37d7018ab6fe843dd84bc6b2ecf72 ]
 
-OV5640 will output abnormal image data when work at low resolution
-(320x240, 176x144 and 160x120) after switching from high resolution,
-such as 1080P, the time interval between high and low switching must
-be less than 1000ms in order to OV5640 don't enter suspend state during
-the time.
+The index into ov2680_hv_flip_bayer_order[] should be 0-3, but
+ov2680_bayer_order() was using 0 + BIT(2) + (BIT(2) << 1) as
+max index, while the intention was to use: 0 + 1 + 2 as max index.
 
-The reason is by 0x3824 value don't restore to initialize value when
-do resolution switching. In high resolution setting array, 0x3824 is
-set to 0x04, but low resolution setting array remove 0x3824 in commit
-db15c1957a2d ("media: ov5640: Remove duplicated mode settings"). So
-when do resolution switching from high to low, such as 1080P to 320x240,
-and the time interval is less than auto suspend delay time which means
-global initialize setting array will not be loaded, the output image
-data are abnormal. Hence move 0x3824 from ov5640_init_setting[] table
-to ov5640_setting_low_res[] table and also move 0x4407 0x460b, 0x460c
-to avoid same issue.
+Fix the index calculation in ov2680_bayer_order(), while at it
+also just use the ctrl values rather then reading them back using
+a slow i2c-read transaction.
 
-Fixes: db15c1957a2d ("media: ov5640: Remove duplicated mode settings")
-Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
-Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+This also allows making the function void, since there now are
+no more i2c-reads to error check.
+
+Note the check for the ctrls being NULL is there to allow
+adding an ov2680_fill_format() helper later, which will call
+ov2680_set_bayer_order() during probe() before the ctrls are created.
+
+[Sakari Ailus: Change all users of ov2680_set_bayer_order() here]
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
 Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
 Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov5640.c | 7 +++----
- 1 file changed, 3 insertions(+), 4 deletions(-)
+ drivers/media/i2c/ov2680.c | 33 ++++++++++++++-------------------
+ 1 file changed, 14 insertions(+), 19 deletions(-)
 
-diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
-index 267f514023e72..cc23ff2067f6a 100644
---- a/drivers/media/i2c/ov5640.c
-+++ b/drivers/media/i2c/ov5640.c
-@@ -557,9 +557,7 @@ static const struct reg_value ov5640_init_setting[] = {
- 	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0}, {0x3000, 0x00, 0, 0},
- 	{0x3002, 0x1c, 0, 0}, {0x3004, 0xff, 0, 0}, {0x3006, 0xc3, 0, 0},
- 	{0x302e, 0x08, 0, 0}, {0x4300, 0x3f, 0, 0},
--	{0x501f, 0x00, 0, 0}, {0x4407, 0x04, 0, 0},
--	{0x440e, 0x00, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
--	{0x4837, 0x0a, 0, 0}, {0x3824, 0x02, 0, 0},
-+	{0x501f, 0x00, 0, 0}, {0x440e, 0x00, 0, 0}, {0x4837, 0x0a, 0, 0},
- 	{0x5000, 0xa7, 0, 0}, {0x5001, 0xa3, 0, 0}, {0x5180, 0xff, 0, 0},
- 	{0x5181, 0xf2, 0, 0}, {0x5182, 0x00, 0, 0}, {0x5183, 0x14, 0, 0},
- 	{0x5184, 0x25, 0, 0}, {0x5185, 0x24, 0, 0}, {0x5186, 0x09, 0, 0},
-@@ -623,7 +621,8 @@ static const struct reg_value ov5640_setting_low_res[] = {
- 	{0x3a0a, 0x00, 0, 0}, {0x3a0b, 0xf6, 0, 0}, {0x3a0e, 0x03, 0, 0},
- 	{0x3a0d, 0x04, 0, 0}, {0x3a14, 0x03, 0, 0}, {0x3a15, 0xd8, 0, 0},
- 	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0},
--	{0x4407, 0x04, 0, 0}, {0x5001, 0xa3, 0, 0},
-+	{0x4407, 0x04, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
-+	{0x3824, 0x02, 0, 0}, {0x5001, 0xa3, 0, 0},
- };
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 42efd60c6a96b..7d072448c8530 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -315,26 +315,17 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
+ 	usleep_range(5000, 10000);
+ }
  
- static const struct reg_value ov5640_setting_720P_1280_720[] = {
+-static int ov2680_bayer_order(struct ov2680_dev *sensor)
++static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
+ {
+-	u32 format1;
+-	u32 format2;
+-	u32 hv_flip;
+-	int ret;
+-
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT1, &format1);
+-	if (ret < 0)
+-		return ret;
++	int hv_flip = 0;
+ 
+-	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT2, &format2);
+-	if (ret < 0)
+-		return ret;
++	if (sensor->ctrls.vflip && sensor->ctrls.vflip->val)
++		hv_flip += 1;
+ 
+-	hv_flip = (format2 & BIT(2)  << 1) | (format1 & BIT(2));
++	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
++		hv_flip += 2;
+ 
+ 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
+-
+-	return 0;
+ }
+ 
+ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+@@ -345,7 +336,8 @@ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+@@ -356,7 +348,8 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+@@ -367,7 +360,8 @@ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+@@ -378,7 +372,8 @@ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
+ 	if (ret < 0)
+ 		return ret;
+ 
+-	return ov2680_bayer_order(sensor);
++	ov2680_set_bayer_order(sensor);
++	return 0;
+ }
+ 
+ static int ov2680_test_pattern_set(struct ov2680_dev *sensor, int value)
 -- 
 2.40.1
 
