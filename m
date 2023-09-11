@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6BDB79AE8F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7197B79B495
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376699AbjIKWUR (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
+        id S1344008AbjIKVNF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238990AbjIKOJH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:07 -0400
+        with ESMTP id S240325AbjIKOl1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F652CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D0BC433C7;
-        Mon, 11 Sep 2023 14:09:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85259E6
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC37EC433C7;
+        Mon, 11 Sep 2023 14:41:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441343;
-        bh=nvUEg4ZmPNvL3LaD0GnnAMQ3vl07PrKgZMS+I8GmAew=;
+        s=korg; t=1694443282;
+        bh=dgQHAwIsE17afQZcqUWDFxeXdYajhjq/vVkbBUbEXKw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WLFb8k1aHVFkaLSZUJrLOskGN2hQ5dh7XhY+5X4RdYcoR4ojwmFjPR3CXgKPLL1un
-         mrR7/KsdYghwOmqkXjAQ7jQ4j8u9yPEuVfJi0w8fdxCf3KSrqhS/k5SMeMY0rserWF
-         2Gu50D73HXWek4X1eTcSk5az/+oA8K407RAlHhtM=
+        b=a/HnYe/8eWfTjIV4dNkQrc2badcv+2BD+97l7zE8F6RtQL2l5E9syqdYeZ0V8K7W1
+         /QJ2qzqKjFibpXIssLC0T9secm1xy+YeEjzIf60anTBKhrCB0ZiuNCnwaVj6dGYPl0
+         NRbCRc/aRT1vwf8s/aL3VeK2zaNs58Oy9Zdc2l/s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 380/739] clk: qcom: gcc-sc8280xp: Add missing GDSCs
-Date:   Mon, 11 Sep 2023 15:42:59 +0200
-Message-ID: <20230911134701.791298308@linuxfoundation.org>
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 322/737] block: dont allow enabling a cache on devices that dont support it
+Date:   Mon, 11 Sep 2023 15:43:01 +0200
+Message-ID: <20230911134659.550490012@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,145 +49,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit 4712eb7ff85bd3dd09c6668b8de4080e02b3eea9 ]
+[ Upstream commit 43c9835b144c7ce29efe142d662529662a9eb376 ]
 
-There are 10 more GDSCs that we've not been caring about, and by extension
-(and perhaps even more importantly), not putting to sleep. Add them.
+Currently the write_cache attribute allows enabling the QUEUE_FLAG_WC
+flag on devices that never claimed the capability.
 
-Fixes: d65d005f9a6c ("clk: qcom: add sc8280xp GCC driver")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-3-562c1428c10d@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fix that by adding a QUEUE_FLAG_HW_WC flag that is set by
+blk_queue_write_cache and guards re-enabling the cache through sysfs.
+
+Note that any rescan that calls blk_queue_write_cache will still
+re-enable the write cache as in the current code.
+
+Fixes: 93e9d8e836cb ("block: add ability to flag write back caching on a device")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230707094239.107968-3-hch@lst.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc8280xp.c | 100 ++++++++++++++++++++++++++++++++
- 1 file changed, 100 insertions(+)
+ block/blk-settings.c   |  7 +++++--
+ block/blk-sysfs.c      | 11 +++++++----
+ include/linux/blkdev.h |  1 +
+ 3 files changed, 13 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc8280xp.c b/drivers/clk/qcom/gcc-sc8280xp.c
-index 64bea886322d4..3e1a62fa3a074 100644
---- a/drivers/clk/qcom/gcc-sc8280xp.c
-+++ b/drivers/clk/qcom/gcc-sc8280xp.c
-@@ -6897,6 +6897,96 @@ static struct gdsc emac_1_gdsc = {
- 	.flags = RETAIN_FF_ENABLE,
- };
+diff --git a/block/blk-settings.c b/block/blk-settings.c
+index 4dd59059b788e..0046b447268f9 100644
+--- a/block/blk-settings.c
++++ b/block/blk-settings.c
+@@ -830,10 +830,13 @@ EXPORT_SYMBOL(blk_set_queue_depth);
+  */
+ void blk_queue_write_cache(struct request_queue *q, bool wc, bool fua)
+ {
+-	if (wc)
++	if (wc) {
++		blk_queue_flag_set(QUEUE_FLAG_HW_WC, q);
+ 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
+-	else
++	} else {
++		blk_queue_flag_clear(QUEUE_FLAG_HW_WC, q);
+ 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
++	}
+ 	if (fua)
+ 		blk_queue_flag_set(QUEUE_FLAG_FUA, q);
+ 	else
+diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
+index 50a0094300f2d..b7fc4cf3f992c 100644
+--- a/block/blk-sysfs.c
++++ b/block/blk-sysfs.c
+@@ -517,13 +517,16 @@ static ssize_t queue_wc_show(struct request_queue *q, char *page)
+ static ssize_t queue_wc_store(struct request_queue *q, const char *page,
+ 			      size_t count)
+ {
+-	if (!strncmp(page, "write back", 10))
++	if (!strncmp(page, "write back", 10)) {
++		if (!test_bit(QUEUE_FLAG_HW_WC, &q->queue_flags))
++			return -EINVAL;
+ 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
+-	else if (!strncmp(page, "write through", 13) ||
+-		 !strncmp(page, "none", 4))
++	} else if (!strncmp(page, "write through", 13) ||
++		 !strncmp(page, "none", 4)) {
+ 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
+-	else
++	} else {
+ 		return -EINVAL;
++	}
  
-+static struct gdsc usb4_1_gdsc = {
-+	.gdscr = 0xb8004,
-+	.pd = {
-+		.name = "usb4_1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
-+};
-+
-+static struct gdsc usb4_gdsc = {
-+	.gdscr = 0x2a004,
-+	.pd = {
-+		.name = "usb4_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = RETAIN_FF_ENABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
-+	.gdscr = 0x7d050,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
-+	.gdscr = 0x7d058,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc = {
-+	.gdscr = 0x7d054,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc = {
-+	.gdscr = 0x7d06c,
-+	.pd = {
-+		.name = "hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
-+	.gdscr = 0x7d05c,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
-+	.gdscr = 0x7d060,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu2_gdsc = {
-+	.gdscr = 0x7d0a0,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu2_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
-+static struct gdsc hlos1_vote_turing_mmu_tbu3_gdsc = {
-+	.gdscr = 0x7d0a4,
-+	.pd = {
-+		.name = "hlos1_vote_turing_mmu_tbu3_gdsc",
-+	},
-+	.pwrsts = PWRSTS_OFF_ON,
-+	.flags = VOTABLE,
-+};
-+
- static struct clk_regmap *gcc_sc8280xp_clocks[] = {
- 	[GCC_AGGRE_NOC_PCIE0_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie0_tunnel_axi_clk.clkr,
- 	[GCC_AGGRE_NOC_PCIE1_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie1_tunnel_axi_clk.clkr,
-@@ -7377,6 +7467,16 @@ static struct gdsc *gcc_sc8280xp_gdscs[] = {
- 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
- 	[EMAC_0_GDSC] = &emac_0_gdsc,
- 	[EMAC_1_GDSC] = &emac_1_gdsc,
-+	[USB4_1_GDSC] = &usb4_1_gdsc,
-+	[USB4_GDSC] = &usb4_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_SF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc,
-+	[HLOS1_VOTE_MMNOC_MMU_TBU_SF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU2_GDSC] = &hlos1_vote_turing_mmu_tbu2_gdsc,
-+	[HLOS1_VOTE_TURING_MMU_TBU3_GDSC] = &hlos1_vote_turing_mmu_tbu3_gdsc,
- };
- 
- static const struct clk_rcg_dfs_data gcc_dfs_clocks[] = {
+ 	return count;
+ }
+diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
+index 67e942d776bd8..2e2cd4b824e7f 100644
+--- a/include/linux/blkdev.h
++++ b/include/linux/blkdev.h
+@@ -546,6 +546,7 @@ struct request_queue {
+ #define QUEUE_FLAG_ADD_RANDOM	10	/* Contributes to random pool */
+ #define QUEUE_FLAG_SYNCHRONOUS	11	/* always completes in submit context */
+ #define QUEUE_FLAG_SAME_FORCE	12	/* force complete on same CPU */
++#define QUEUE_FLAG_HW_WC	18	/* Write back caching supported */
+ #define QUEUE_FLAG_INIT_DONE	14	/* queue is initialized */
+ #define QUEUE_FLAG_STABLE_WRITES 15	/* don't modify blks until WB is done */
+ #define QUEUE_FLAG_POLL		16	/* IO polling enabled if set */
 -- 
 2.40.1
 
