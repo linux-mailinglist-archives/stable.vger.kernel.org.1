@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4F13479B80F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9EE2779C06F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235327AbjIKWug (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:50:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47764 "EHLO
+        id S242125AbjIKWXq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:23:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56550 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238927AbjIKOHs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:48 -0400
+        with ESMTP id S241326AbjIKPGr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:06:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 622D0E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62CD6C433C9;
-        Mon, 11 Sep 2023 14:07:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2ED67FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:06:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EB6DC433C8;
+        Mon, 11 Sep 2023 15:06:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441262;
-        bh=g5Qqjn5D4Pjev7pGxRsD6K1SR/bwDQHcHGIymFeTu8A=;
+        s=korg; t=1694444802;
+        bh=9pP3mGhXVRXjg7VX7ypppd7P70ZFS6op7fOktIAZKvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZFcxvHp+FVCmWJSufBzpOPwJ3fJpJ6PBE3IpE6EHYdX0pdVMXM1ic44DYfXZvdcm6
-         qpTu7tlALdSJ/3hiDZv3Cvmj1UIs48/zWnvz7jZxlY8yV1tjbGs/mTPnZmZkU/2g8D
-         gxJpeNdQBzbun+N80riB3/AcbIzLvx9oAIS9UcNY=
+        b=duUHhnABYfgQVWCZEYsloqmvKU0pL6FRZS3lwyhGL4LvQ+6czc2AHg8mCMhuwpYNR
+         2eeAe/C3C3KfxA81eba11ASbcP0/XIg7YcxekQofE2aj4jDPJ1kcZKQASfjbldyZNR
+         KoMFJ/ETRJv3S8gomroUpg+mV7QqNYabyQJxw3fc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        kernel test robot <lkp@intel.com>,
-        Tony Lindgren <tony@atomide.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 352/739] bus: ti-sysc: Fix cast to enum warning
-Date:   Mon, 11 Sep 2023 15:42:31 +0200
-Message-ID: <20230911134700.954660368@linuxfoundation.org>
+        patches@lists.linux.dev, Mark Brown <broonie@kernel.org>,
+        Catalin Marinas <catalin.marinas@arm.com>,
+        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 120/600] arm64/fpsimd: Only provide the length to cpufeature for xCR registers
+Date:   Mon, 11 Sep 2023 15:42:33 +0200
+Message-ID: <20230911134637.156474801@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +50,101 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Mark Brown <broonie@kernel.org>
 
-[ Upstream commit de44bf2f7683347f75690ef6cf61a1d5ba8f0891 ]
+[ Upstream commit 01948b09edc3fecf8486c57c2d2fb8b80886f3d0 ]
 
-Fix warning for "cast to smaller integer type 'enum sysc_soc' from 'const
-void *'".
+For both SVE and SME we abuse the generic register field comparison
+support in the cpufeature code as part of our detection of unsupported
+variations in the vector lengths available to PEs, reporting the maximum
+vector lengths via ZCR_EL1.LEN and SMCR_EL1.LEN.  Since these are
+configuration registers rather than identification registers the
+assumptions the cpufeature code makes about how unknown bitfields behave
+are invalid, leading to warnings when SME features like FA64 are enabled
+and we hotplug a CPU:
 
-Cc: Nishanth Menon <nm@ti.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308150723.ziuGCdM3-lkp@intel.com/
-Fixes: e1e1e9bb9d94 ("bus: ti-sysc: Fix build warning for 64-bit build")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+  CPU features: SANITY CHECK: Unexpected variation in SYS_SMCR_EL1. Boot CPU: 0x0000000000000f, CPU3: 0x0000008000000f
+  CPU features: Unsupported CPU feature variation detected.
+
+SVE has no controls other than the vector length so is not yet impacted
+but the same issue will apply there if any are defined.
+
+Since the only field we are interested in having the cpufeature code
+handle is the length field and we use a custom read function to obtain
+the value we can avoid these warnings by filtering out all other bits
+when we return the register value, if we're doing that we don't need to
+bother reading the register at all and can simply use the RDVL/RDSVL
+value we were filling in instead.
+
+Fixes: 2e0f2478ea37 ("arm64/sve: Probe SVE capabilities and usable vector lengths")
+FixeS: b42990d3bf77 ("arm64/sme: Identify supported SME vector lengths at boot")
+Signed-off-by: Mark Brown <broonie@kernel.org>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Link: https://lore.kernel.org/r/20230731-arm64-sme-fa64-hotplug-v2-1-7714c00dd902@kernel.org
+Signed-off-by: Will Deacon <will@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/kernel/fpsimd.c | 22 ++++------------------
+ 1 file changed, 4 insertions(+), 18 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index dbc37b3b84a8d..c95fa4335fee2 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3106,7 +3106,7 @@ static int sysc_init_static_data(struct sysc *ddata)
+diff --git a/arch/arm64/kernel/fpsimd.c b/arch/arm64/kernel/fpsimd.c
+index 4aa579ff3125d..8c226d79abdfc 100644
+--- a/arch/arm64/kernel/fpsimd.c
++++ b/arch/arm64/kernel/fpsimd.c
+@@ -1133,9 +1133,6 @@ void sve_kernel_enable(const struct arm64_cpu_capabilities *__always_unused p)
+  */
+ u64 read_zcr_features(void)
+ {
+-	u64 zcr;
+-	unsigned int vq_max;
+-
+ 	/*
+ 	 * Set the maximum possible VL, and write zeroes to all other
+ 	 * bits to see if they stick.
+@@ -1143,12 +1140,8 @@ u64 read_zcr_features(void)
+ 	sve_kernel_enable(NULL);
+ 	write_sysreg_s(ZCR_ELx_LEN_MASK, SYS_ZCR_EL1);
  
- 	match = soc_device_match(sysc_soc_match);
- 	if (match && match->data)
--		sysc_soc->soc = (enum sysc_soc)match->data;
-+		sysc_soc->soc = (enum sysc_soc)(uintptr_t)match->data;
+-	zcr = read_sysreg_s(SYS_ZCR_EL1);
+-	zcr &= ~(u64)ZCR_ELx_LEN_MASK; /* find sticky 1s outside LEN field */
+-	vq_max = sve_vq_from_vl(sve_get_vl());
+-	zcr |= vq_max - 1; /* set LEN field to maximum effective value */
+-
+-	return zcr;
++	/* Return LEN value that would be written to get the maximum VL */
++	return sve_vq_from_vl(sve_get_vl()) - 1;
+ }
+ 
+ void __init sve_setup(void)
+@@ -1292,9 +1285,6 @@ void fa64_kernel_enable(const struct arm64_cpu_capabilities *__always_unused p)
+  */
+ u64 read_smcr_features(void)
+ {
+-	u64 smcr;
+-	unsigned int vq_max;
+-
+ 	sme_kernel_enable(NULL);
  
  	/*
- 	 * Check and warn about possible old incomplete dtb. We now want to see
+@@ -1303,12 +1293,8 @@ u64 read_smcr_features(void)
+ 	write_sysreg_s(read_sysreg_s(SYS_SMCR_EL1) | SMCR_ELx_LEN_MASK,
+ 		       SYS_SMCR_EL1);
+ 
+-	smcr = read_sysreg_s(SYS_SMCR_EL1);
+-	smcr &= ~(u64)SMCR_ELx_LEN_MASK; /* Only the LEN field */
+-	vq_max = sve_vq_from_vl(sme_get_vl());
+-	smcr |= vq_max - 1; /* set LEN field to maximum effective value */
+-
+-	return smcr;
++	/* Return LEN value that would be written to get the maximum VL */
++	return sve_vq_from_vl(sme_get_vl()) - 1;
+ }
+ 
+ void __init sme_setup(void)
 -- 
 2.40.1
 
