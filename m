@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD8EA79BE95
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D59A779BFBF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238350AbjIKWmq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:42:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
+        id S1344855AbjIKVOz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43664 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240499AbjIKOpu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:50 -0400
+        with ESMTP id S239171AbjIKONh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4BBCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F36AC433C8;
-        Mon, 11 Sep 2023 14:45:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5A694DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 89824C433C7;
+        Mon, 11 Sep 2023 14:13:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443545;
-        bh=CRVQlkBuc+PzznrLnPBmU5vntMsuqilIQ5XYOqpoh4g=;
+        s=korg; t=1694441612;
+        bh=sA8IZQz3pJ9aMwFGwXkYekvwr9qpePhhu37wJJCSf5s=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N5qoq0nbUGrVDasBHe/Y7bgunz5A4IxteImIndBBRtrbXskbhaRI4m+H2DvfbllVU
-         XD7DU48OxI2t0MJG4KZnYXKBerEWVQxIh5CBFyKt4I2uGZ7m3o5NELIgyUKR+43wQr
-         tT3qPdf5Jf5RVmQhctrnwqBeO3jbiG1+zQwFtN1M=
+        b=UubU0r2pGIWS2vvtgjYU1GCzXUZsB21oIFd/rOnFaPXH1UIUOFnEBxaPTvdK8rbcq
+         oaIICQvzh/K9G0tTrMVUL10Anr+Ifwy/MUQEmlW2foBoj2pk/HFbLhY3uUL0VoMdfw
+         Gu4qq4tJt3hQddBWqx5e3JwCbaojp9Ez33kiQwtc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alibek Omarov <a1ba.omarov@gmail.com>,
-        Sascha Hauer <s.hauer@pengutronix.de>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Ming Qian <ming.qian@nxp.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 415/737] clk: rockchip: rk3568: Fix PLL rate setting for 78.75MHz
+Subject: [PATCH 6.5 475/739] media: amphion: ensure the bitops dont cross boundaries
 Date:   Mon, 11 Sep 2023 15:44:34 +0200
-Message-ID: <20230911134702.206290166@linuxfoundation.org>
+Message-ID: <20230911134704.411648657@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +52,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alibek Omarov <a1ba.omarov@gmail.com>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit dafebd0f9a4f56b10d7fbda0bff1f540d16a2ea4 ]
+[ Upstream commit 5bd28eae48589694ff4e5badb03bf75dae695b3f ]
 
-PLL rate on RK356x is calculated through the simple formula:
-((24000000 / _refdiv) * _fbdiv) / (_postdiv1 * _postdiv2)
+the supported_instance_count determine the instance index range,
+it shouldn't exceed the bits number of instance_mask,
+otherwise the bitops of instance_mask may cross boundaries
 
-The PLL rate setting for 78.75MHz seems to be copied from 96MHz
-so this patch fixes it and configures it properly.
-
-Signed-off-by: Alibek Omarov <a1ba.omarov@gmail.com>
-Fixes: 842f4cb72639 ("clk: rockchip: Add more PLL rates for rk3568")
-Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
-Link: https://lore.kernel.org/r/20230614134750.1056293-1-a1ba.omarov@gmail.com
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/rockchip/clk-rk3568.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/platform/amphion/vpu_core.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
-index f85902e2590c7..2f54f630c8b65 100644
---- a/drivers/clk/rockchip/clk-rk3568.c
-+++ b/drivers/clk/rockchip/clk-rk3568.c
-@@ -81,7 +81,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
- 	RK3036_PLL_RATE(108000000, 2, 45, 5, 1, 1, 0),
- 	RK3036_PLL_RATE(100000000, 1, 150, 6, 6, 1, 0),
- 	RK3036_PLL_RATE(96000000, 1, 96, 6, 4, 1, 0),
--	RK3036_PLL_RATE(78750000, 1, 96, 6, 4, 1, 0),
-+	RK3036_PLL_RATE(78750000, 4, 315, 6, 4, 1, 0),
- 	RK3036_PLL_RATE(74250000, 2, 99, 4, 4, 1, 0),
- 	{ /* sentinel */ },
- };
+diff --git a/drivers/media/platform/amphion/vpu_core.c b/drivers/media/platform/amphion/vpu_core.c
+index 7863b7b53494c..2bb9f187e163c 100644
+--- a/drivers/media/platform/amphion/vpu_core.c
++++ b/drivers/media/platform/amphion/vpu_core.c
+@@ -88,6 +88,8 @@ static int vpu_core_boot_done(struct vpu_core *core)
+ 
+ 		core->supported_instance_count = min(core->supported_instance_count, count);
+ 	}
++	if (core->supported_instance_count >= BITS_PER_TYPE(core->instance_mask))
++		core->supported_instance_count = BITS_PER_TYPE(core->instance_mask);
+ 	core->fw_version = fw_version;
+ 	vpu_core_set_state(core, VPU_CORE_ACTIVE);
+ 
 -- 
 2.40.1
 
