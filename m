@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6599379B6D8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA3C179BB80
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348522AbjIKV1K (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54262 "EHLO
+        id S245623AbjIKVLM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:11:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238946AbjIKOIE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:04 -0400
+        with ESMTP id S241443AbjIKPIu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88903CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF6E0C433C8;
-        Mon, 11 Sep 2023 14:07:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6FE77FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9362C433C8;
+        Mon, 11 Sep 2023 15:08:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441280;
-        bh=/P2dSr24EPMb+O8+dVhEMQxW7QMvV7AgZ/Rm4Bj9KVo=;
+        s=korg; t=1694444926;
+        bh=DZ/Dd3srd0wRNzvLTG6LrWf3rpmmH+umQQ5pVsreoso=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h7wrNnEKkeG6qPTP8k81nZumJgiEp1FCkoVDAEQWE+371NusbZtVr9d2deKh6webW
-         Azm7w7u0GfvBIZiVnBsDjCkJlDYCU8DB4Mx4jF4sFeFTWNm2bW9wjYRgVYkkY3Joip
-         MiQO1rvHYDW870rcUrlYe3TJ9dpdSK0zdF5jx+5w=
+        b=0eo4JH3M0eMpTqrEGNQsgrNJmRXpwOCDROI1Eanks5K55qwljF/UKpsypNrKJHS50
+         WfTMWUEeLbWjnGXNhSoALsNmMfj22XKtXnFkssJpmOFygoQP+HZsH58inZfbKTSmk4
+         60aDUKT7tsuWwrLYM00FKjHbP8Wa1aICiFjCvUzQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Xueshi Hu <xueshi.hu@smartx.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
+        Ingo Franzki <ifranzki@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 358/739] md/raid1: free the r1bio before waiting for blocked rdev
-Date:   Mon, 11 Sep 2023 15:42:37 +0200
-Message-ID: <20230911134701.138464290@linuxfoundation.org>
+Subject: [PATCH 6.1 126/600] s390/pkey: fix PKEY_TYPE_EP11_AES handling for sysfs attributes
+Date:   Mon, 11 Sep 2023 15:42:39 +0200
+Message-ID: <20230911134637.335245023@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,57 +51,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xueshi Hu <xueshi.hu@smartx.com>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-[ Upstream commit 992db13a4aee766c8bfbf046ad15c2db5fa7cab8 ]
+[ Upstream commit b9352e4b9b9eff949bcc6907b8569b3a1d992f1e ]
 
-Raid1 reshape will change mempool and r1conf::raid_disks which are
-needed to free r1bio. allow_barrier() make a concurrent raid1_reshape()
-possible. So, free the in-flight r1bio before waiting blocked rdev.
+Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
+private keys")' introduced a new PKEY_TYPE_EP11_AES securekey type as
+a supplement to the existing PKEY_TYPE_EP11 (which won't work in
+environments with session-bound keys). The pkey EP11 securekey
+attributes use PKEY_TYPE_EP11_AES (instead of PKEY_TYPE_EP11)
+keyblobs, to make the generated keyblobs usable also in environments,
+where session-bound keys are required.
 
-Fixes: 6bfe0b499082 ("md: support blocking writes to an array on device failure")
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xueshi Hu <xueshi.hu@smartx.com>
-Link: https://lore.kernel.org/r/20230814135356.1113639-3-xueshi.hu@smartx.com
-Signed-off-by: Song Liu <song@kernel.org>
+There should be no negative impacts to userspace because the internal
+structure of the keyblobs is opaque. The increased size of the
+generated keyblobs is reflected by the changed size of the attributes.
+
+Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ arch/s390/include/uapi/asm/pkey.h | 2 +-
+ drivers/s390/crypto/pkey_api.c    | 6 +++---
+ 2 files changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index dd25832eb0452..f6a33c7824a70 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -1373,6 +1373,7 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
- 		return;
+diff --git a/arch/s390/include/uapi/asm/pkey.h b/arch/s390/include/uapi/asm/pkey.h
+index 924b876f992c1..29c6fd369761e 100644
+--- a/arch/s390/include/uapi/asm/pkey.h
++++ b/arch/s390/include/uapi/asm/pkey.h
+@@ -26,7 +26,7 @@
+ #define MAXCLRKEYSIZE	32	   /* a clear key value may be up to 32 bytes */
+ #define MAXAESCIPHERKEYSIZE 136  /* our aes cipher keys have always 136 bytes */
+ #define MINEP11AESKEYBLOBSIZE 256  /* min EP11 AES key blob size  */
+-#define MAXEP11AESKEYBLOBSIZE 320  /* max EP11 AES key blob size */
++#define MAXEP11AESKEYBLOBSIZE 336  /* max EP11 AES key blob size */
+ 
+ /* Minimum size of a key blob */
+ #define MINKEYBLOBSIZE	SECKEYBLOBSIZE
+diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
+index 79568da580c67..2b92ec20ed68e 100644
+--- a/drivers/s390/crypto/pkey_api.c
++++ b/drivers/s390/crypto/pkey_api.c
+@@ -1947,7 +1947,7 @@ static struct attribute_group ccacipher_attr_group = {
+  * (i.e. off != 0 or count < key blob size) -EINVAL is returned.
+  * This function and the sysfs attributes using it provide EP11 key blobs
+  * padded to the upper limit of MAXEP11AESKEYBLOBSIZE which is currently
+- * 320 bytes.
++ * 336 bytes.
+  */
+ static ssize_t pkey_ep11_aes_attr_read(enum pkey_key_size keybits,
+ 				       bool is_xts, char *buf, loff_t off,
+@@ -1976,7 +1976,7 @@ static ssize_t pkey_ep11_aes_attr_read(enum pkey_key_size keybits,
+ 		card = apqns[i] >> 16;
+ 		dom = apqns[i] & 0xFFFF;
+ 		rc = ep11_genaeskey(card, dom, keybits, 0, buf, &keysize,
+-				    PKEY_TYPE_EP11);
++				    PKEY_TYPE_EP11_AES);
+ 		if (rc == 0)
+ 			break;
  	}
- 
-+ retry_write:
- 	r1_bio = alloc_r1bio(mddev, bio);
- 	r1_bio->sectors = max_write_sectors;
- 
-@@ -1388,7 +1389,6 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
- 	 */
- 
- 	disks = conf->raid_disks * 2;
-- retry_write:
- 	blocked_rdev = NULL;
- 	rcu_read_lock();
- 	max_sectors = r1_bio->sectors;
-@@ -1468,7 +1468,7 @@ static void raid1_write_request(struct mddev *mddev, struct bio *bio,
- 		for (j = 0; j < i; j++)
- 			if (r1_bio->bios[j])
- 				rdev_dec_pending(conf->mirrors[j].rdev, mddev);
--		r1_bio->state = 0;
-+		free_r1bio(r1_bio);
- 		allow_barrier(conf, bio->bi_iter.bi_sector);
- 
- 		if (bio->bi_opf & REQ_NOWAIT) {
+@@ -1987,7 +1987,7 @@ static ssize_t pkey_ep11_aes_attr_read(enum pkey_key_size keybits,
+ 		keysize = MAXEP11AESKEYBLOBSIZE;
+ 		buf += MAXEP11AESKEYBLOBSIZE;
+ 		rc = ep11_genaeskey(card, dom, keybits, 0, buf, &keysize,
+-				    PKEY_TYPE_EP11);
++				    PKEY_TYPE_EP11_AES);
+ 		if (rc == 0)
+ 			return 2 * MAXEP11AESKEYBLOBSIZE;
+ 	}
 -- 
 2.40.1
 
