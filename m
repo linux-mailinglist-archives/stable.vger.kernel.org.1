@@ -2,43 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9625979B321
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 063B579AD3E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237673AbjIKV4m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:56:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48996 "EHLO
+        id S1355811AbjIKWCF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:02:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41082 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236177AbjIKJxt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:53:49 -0400
+        with ESMTP id S236209AbjIKJ5x (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:57:53 -0400
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E8F86CE6;
-        Mon, 11 Sep 2023 02:53:44 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 072A1E67;
+        Mon, 11 Sep 2023 02:57:49 -0700 (PDT)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id A24FA1C0006; Mon, 11 Sep 2023 11:53:43 +0200 (CEST)
-Date:   Mon, 11 Sep 2023 11:53:43 +0200
+        id CE4371C0004; Mon, 11 Sep 2023 11:57:47 +0200 (CEST)
+Date:   Mon, 11 Sep 2023 11:57:47 +0200
 From:   Pavel Machek <pavel@denx.de>
 To:     Sasha Levin <sashal@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chen-Yu Tsai <wenst@chromium.org>, CK Hu <ck.hu@mediatek.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
-        p.zabel@pengutronix.de, airlied@gmail.com, daniel@ffwll.ch,
-        matthias.bgg@gmail.com, dri-devel@lists.freedesktop.org,
-        linux-mediatek@lists.infradead.org,
-        linux-arm-kernel@lists.infradead.org
-Subject: Re: [PATCH AUTOSEL 6.1 18/22] drm/mediatek: dp: Change logging to
- dev for mtk_dp_aux_transfer()
-Message-ID: <ZP7jp1UDgJMqJzO4@duo.ucw.cz>
-References: <20230908193407.3463368-1-sashal@kernel.org>
- <20230908193407.3463368-18-sashal@kernel.org>
+        Tejun Heo <tj@kernel.org>
+Subject: Re: [PATCH AUTOSEL 4.19 12/14] workqueue: Call
+ wq_update_unbound_numa() on all CPUs in NUMA node on CPU hotplug
+Message-ID: <ZP7kmzEAizx8MU/Z@duo.ucw.cz>
+References: <20230909004045.3581014-1-sashal@kernel.org>
+ <20230909004045.3581014-12-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="4qeMU1aw+NQuf6wD"
+        protocol="application/pgp-signature"; boundary="8J4fcvWLIF2OKCkg"
 Content-Disposition: inline
-In-Reply-To: <20230908193407.3463368-18-sashal@kernel.org>
+In-Reply-To: <20230909004045.3581014-12-sashal@kernel.org>
 X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
         autolearn_force=no version=3.4.6
@@ -49,45 +41,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---4qeMU1aw+NQuf6wD
+--8J4fcvWLIF2OKCkg
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+> When a CPU went online or offline, wq_update_unbound_numa() was called on=
+ly
+> on the CPU which was going up or down. This works fine because all CPUs on
+> the same NUMA node share the same pool_workqueue slot - one CPU updating =
+it
+> updates it for everyone in the node.
 >=20
-> [ Upstream commit fd70e2019bfbcb0ed90c5e23839bf510ce6acf8f ]
->=20
-> Change logging from drm_{err,info}() to dev_{err,info}() in functions
-> mtk_dp_aux_transfer() and mtk_dp_aux_do_transfer(): this will be
-> essential to avoid getting NULL pointer kernel panics if any kind
-> of error happens during AUX transfers happening before the bridge
-> is attached.
->=20
-> This may potentially start happening in a later commit implementing
-> aux-bus support, as AUX transfers will be triggered from the panel
-> driver (for EDID) before the mtk-dp bridge gets attached, and it's
-> done in preparation for the same.
+> However, future changes will make each CPU use a separate pool_workqueue
+> even when they're sharing the same worker_pool, which requires updating
+> pool_workqueue's for all CPUs which may be sharing the same pool_workqueue
+> on hotplug.
 
-This is preparation for patches we are not going to apply to
-stable. Please drop.
+Yes, but we are not porting those future changes to stable, right?
+Please drop.
 
 BR,
-								Pavel
+									Pavel
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---4qeMU1aw+NQuf6wD
+--8J4fcvWLIF2OKCkg
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7jpwAKCRAw5/Bqldv6
-8vYyAJ9Nk540JZqEdAv0hwqmNlfia7uUQgCggql3UPEMcq+KKIag1e2oo6SCcaU=
-=O3KV
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7kmwAKCRAw5/Bqldv6
+8kQaAKCveu4EhlskbQXvPfbu0S7DAWgihQCfbXge4GJr46GZ+Q5jsPQOv1RldeE=
+=8awX
 -----END PGP SIGNATURE-----
 
---4qeMU1aw+NQuf6wD--
+--8J4fcvWLIF2OKCkg--
