@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ED9A579AFE7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0718F79B5D9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355215AbjIKV53 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55864 "EHLO
+        id S238875AbjIKVGf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:06:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58212 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238343AbjIKNyO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:54:14 -0400
+        with ESMTP id S239698AbjIKO0h (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BABCFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:54:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D4B4EC433C8;
-        Mon, 11 Sep 2023 13:54:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE78CCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40DA8C433C9;
+        Mon, 11 Sep 2023 14:26:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440450;
-        bh=cw9IngoCM6TR0OEcqt9Nrl3EMBDOLJEnq2fi10ovQg8=;
+        s=korg; t=1694442393;
+        bh=sNqsJWHwYZbIQqeabJa8QNGGCKUbqeMN3F31TD8w430=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TLoaomEX7mLafLA8Hv1GX1lHFLEYh4D2L69bCK7KmwxGZMntFiNqT6E7lxPX222nX
-         8OWx1ehNY4Yo1s4zPCYyhVyOiXBpI2sE4CQeRW7ai5Q5hiRu8MhBKME0ftMwnOYDMV
-         G+D+dp4UqJehgZID43BRKg0OWgNT4TeLL7q53qtY=
+        b=m2eDrRBQsSp+mFWcTz1MYhOj0xkLKm1NEZMIwHJtmR9laHPbTzzPsnu0l+QIS4s/O
+         8J44rjMq14LhbcDl/A6XXZV2AzujY6wp8od3Fb0oh96/Pkpqe2xj/tqqwsDhYxm4b3
+         hieM7tLunyhCFgslCphNKOVpY4xTGKvx/TIu35zU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Alexander Lobakin <alobakin@pm.me>,
-        Quentin Monnet <quentin@isovalent.com>,
+        patches@lists.linux.dev, Simon Horman <simon.horman@corigine.com>,
+        Dominique Martinet <asmadeus@codewreck.org>,
+        Eric Van Hensbergen <ericvh@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 066/739] bpftool: Define a local bpf_perf_link to fix accessing its fields
-Date:   Mon, 11 Sep 2023 15:37:45 +0200
-Message-ID: <20230911134652.950916647@linuxfoundation.org>
+Subject: [PATCH 6.4 010/737] 9p: virtio: make sure offs is initialized in zc_request
+Date:   Mon, 11 Sep 2023 15:37:49 +0200
+Message-ID: <20230911134650.609078636@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alexander Lobakin <alobakin@pm.me>
+From: Dominique Martinet <asmadeus@codewreck.org>
 
-[ Upstream commit 67a43462ee2405c94e985a747bdcb8e3a0d66203 ]
+[ Upstream commit 4a73edab69d3a6623f03817fe950a2d9585f80e4 ]
 
-When building bpftool with !CONFIG_PERF_EVENTS:
+Similarly to the previous patch: offs can be used in handle_rerrors
+without initializing on small payloads; in this case handle_rerrors will
+not use it because of the size check, but it doesn't hurt to make sure
+it is zero to please scan-build.
 
-skeleton/pid_iter.bpf.c:47:14: error: incomplete definition of type 'struct bpf_perf_link'
-        perf_link = container_of(link, struct bpf_perf_link, link);
-                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:74:22: note: expanded from macro 'container_of'
-                ((type *)(__mptr - offsetof(type, member)));    \
-                                   ^~~~~~~~~~~~~~~~~~~~~~
-tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:68:60: note: expanded from macro 'offsetof'
- #define offsetof(TYPE, MEMBER)  ((unsigned long)&((TYPE *)0)->MEMBER)
-                                                  ~~~~~~~~~~~^
-skeleton/pid_iter.bpf.c:44:9: note: forward declaration of 'struct bpf_perf_link'
-        struct bpf_perf_link *perf_link;
-               ^
+This fixes the following warning:
+net/9p/trans_virtio.c:539:3: warning: 3rd function call argument is an uninitialized value [core.CallAndMessage]
+                handle_rerror(req, in_hdr_len, offs, in_pages);
+                ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-&bpf_perf_link is being defined and used only under the ifdef.
-Define struct bpf_perf_link___local with the `preserve_access_index`
-attribute inside the pid_iter BPF prog to allow compiling on any
-configs. CO-RE will substitute it with the real struct bpf_perf_link
-accesses later on.
-container_of() uses offsetof(), which does the necessary CO-RE
-relocation if the field is specified with `preserve_access_index` - as
-is the case for struct bpf_perf_link___local.
-
-Fixes: cbdaf71f7e65 ("bpftool: Add bpf_cookie to link output")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Alexander Lobakin <alobakin@pm.me>
-Signed-off-by: Quentin Monnet <quentin@isovalent.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230707095425.168126-3-quentin@isovalent.com
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Signed-off-by: Dominique Martinet <asmadeus@codewreck.org>
+Signed-off-by: Eric Van Hensbergen <ericvh@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/skeleton/pid_iter.bpf.c | 9 +++++++--
- 1 file changed, 7 insertions(+), 2 deletions(-)
+ net/9p/trans_virtio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-index e2af8e5fb29ec..3a4c4f7d83d86 100644
---- a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-+++ b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
-@@ -15,6 +15,11 @@ enum bpf_obj_type {
- 	BPF_OBJ_BTF,
- };
+diff --git a/net/9p/trans_virtio.c b/net/9p/trans_virtio.c
+index 2c9495ccda6ba..f3f6782894239 100644
+--- a/net/9p/trans_virtio.c
++++ b/net/9p/trans_virtio.c
+@@ -428,7 +428,7 @@ p9_virtio_zc_request(struct p9_client *client, struct p9_req_t *req,
+ 	struct page **in_pages = NULL, **out_pages = NULL;
+ 	struct virtio_chan *chan = client->trans;
+ 	struct scatterlist *sgs[4];
+-	size_t offs;
++	size_t offs = 0;
+ 	int need_drop = 0;
+ 	int kicked = 0;
  
-+struct bpf_perf_link___local {
-+	struct bpf_link link;
-+	struct file *perf_file;
-+} __attribute__((preserve_access_index));
-+
- struct perf_event___local {
- 	u64 bpf_cookie;
- } __attribute__((preserve_access_index));
-@@ -45,10 +50,10 @@ static __always_inline __u32 get_obj_id(void *ent, enum bpf_obj_type type)
- /* could be used only with BPF_LINK_TYPE_PERF_EVENT links */
- static __u64 get_bpf_cookie(struct bpf_link *link)
- {
-+	struct bpf_perf_link___local *perf_link;
- 	struct perf_event___local *event;
--	struct bpf_perf_link *perf_link;
- 
--	perf_link = container_of(link, struct bpf_perf_link, link);
-+	perf_link = container_of(link, struct bpf_perf_link___local, link);
- 	event = BPF_CORE_READ(perf_link, perf_file, private_data);
- 	return BPF_CORE_READ(event, bpf_cookie);
- }
 -- 
 2.40.1
 
