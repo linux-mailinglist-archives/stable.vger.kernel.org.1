@@ -2,45 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B7F079B122
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:51:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D85B779B184
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235184AbjIKVF1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:05:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44820 "EHLO
+        id S237195AbjIKVbC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59376 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240726AbjIKOv7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:59 -0400
+        with ESMTP id S241940AbjIKPS2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9AE2A118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2B9CC433C8;
-        Mon, 11 Sep 2023 14:51:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87B8EFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BFA7AC433C7;
+        Mon, 11 Sep 2023 15:18:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443915;
-        bh=fktS4vv5nKA85dUZuPFDYsPZYPMLwfhHbAdCnOXscA0=;
+        s=korg; t=1694445503;
+        bh=EsbgawzGW9ko4Opn5PZChhyMAWx+5AnQtX3WMDY8WZo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VsvkRsPwZ5bsmzStu32A+I4hpGzf28CNsQFx4UBm/oz+yOzCWC4NGibbxmLbu80MG
-         6PhEcVXvw7sewy08ou8yyrQCBZig9B06+H4VAXiIYu6n5HWOqqWxvfxpg0Ons0gTRl
-         jfobO1r8gezzhG0ZeVG45yJsbLLWtx4SpGDlvxHM=
+        b=dzAfk6D25JPnK54GQB6kgtxOEKeWyzpX8gZMun5BA1X7D/pu8Ik2EsX7h5DAxAPg0
+         9dJ1vzykZ3E2cdS1X+Olx4MYjSvm+8Ut0JUjzySAvoLUB2SrADEB7GYwrCyMV2eL9E
+         Cqjab+/MDBsxV3rbH4cqSkTcB5kcI//7+GXuluNg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 545/737] iommu/qcom: Disable and reset context bank before programming
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Simon Horman <simon.horman@corigine.com>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 371/600] wifi: ath10k: Use RMW accessors for changing LNKCTL
 Date:   Mon, 11 Sep 2023 15:46:44 +0200
-Message-ID: <20230911134705.785257082@linuxfoundation.org>
+Message-ID: <20230911134644.632672723@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,49 +53,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 9f3fef23d9b5a858a6e6d5f478bb1b6b76265e76 ]
+[ Upstream commit f139492a09f15254fa261245cdbd65555cdf39e3 ]
 
-Writing	the new	TTBRs, TCRs and MAIRs on a previously enabled
-context bank may trigger a context fault, resulting in firmware
-driven AP resets: change the domain initialization programming
-sequence to disable the context bank(s) and to also clear the
-related fault address (CB_FAR) and fault status (CB_FSR)
-registers before writing new values to TTBR0/1, TCR/TCR2, MAIR0/1.
+Don't assume that only the driver would be accessing LNKCTL. ASPM policy
+changes can trigger write to LNKCTL outside of driver's control.
 
-Fixes: 0ae349a0f33f ("iommu/qcom: Add qcom_iommu")
-Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230622092742.74819-4-angelogioacchino.delregno@collabora.com
-Signed-off-by: Will Deacon <will@kernel.org>
+Use RMW capability accessors which does proper locking to avoid losing
+concurrent updates to the register value. On restore, clear the ASPMC field
+properly.
+
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 76d870ed09ab ("ath10k: enable ASPM")
+Link: https://lore.kernel.org/r/20230717120503.15276-11-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
+Acked-by: Kalle Valo <kvalo@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/arm/arm-smmu/qcom_iommu.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/iommu/arm/arm-smmu/qcom_iommu.c b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-index a503ed758ec30..3e551ca6afdb9 100644
---- a/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-+++ b/drivers/iommu/arm/arm-smmu/qcom_iommu.c
-@@ -273,6 +273,13 @@ static int qcom_iommu_init_domain(struct iommu_domain *domain,
- 			ctx->secure_init = true;
- 		}
+diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
+index 728d607289c36..522691ba4c5d2 100644
+--- a/drivers/net/wireless/ath/ath10k/pci.c
++++ b/drivers/net/wireless/ath/ath10k/pci.c
+@@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
+ 	ath10k_pci_irq_enable(ar);
+ 	ath10k_pci_rx_post(ar);
  
-+		/* Disable context bank before programming */
-+		iommu_writel(ctx, ARM_SMMU_CB_SCTLR, 0);
-+
-+		/* Clear context bank fault address fault status registers */
-+		iommu_writel(ctx, ARM_SMMU_CB_FAR, 0);
-+		iommu_writel(ctx, ARM_SMMU_CB_FSR, ARM_SMMU_FSR_FAULT);
-+
- 		/* TTBRs */
- 		iommu_writeq(ctx, ARM_SMMU_CB_TTBR0,
- 				pgtbl_cfg.arm_lpae_s1_cfg.ttbr |
+-	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+-				   ar_pci->link_ctl);
++	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_ASPMC,
++					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
+ 
+ 	return 0;
+ }
+@@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
+ 
+ 	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+ 				  &ar_pci->link_ctl);
+-	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
+-				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
++	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
++				   PCI_EXP_LNKCTL_ASPMC);
+ 
+ 	/*
+ 	 * Bring the target up cleanly.
 -- 
 2.40.1
 
