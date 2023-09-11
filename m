@@ -2,48 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBB8379B3B2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E91A379B206
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241197AbjIKV3J (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:29:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58412 "EHLO
+        id S1378781AbjIKWhQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240786AbjIKOxq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:46 -0400
+        with ESMTP id S241960AbjIKPTF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22ABA118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6EE8FC433C7;
-        Mon, 11 Sep 2023 14:53:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BAA6FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D8753C433C9;
+        Mon, 11 Sep 2023 15:18:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444021;
-        bh=fyw+3XP10gEP9AcZSmgBKZgo9A/EhEzkbUMpO7L/l0M=;
+        s=korg; t=1694445539;
+        bh=6slj85iEh4AzrU90GsAnmePikJobfQkAbF4GmzX/I/A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CDLh2yiXrbUDDe7DGXf/Wl2r6e4KbqsTESk3VtiuzzqNEngJDPa3kGM75ruQHM3m+
-         vmvzpGwy0VnPx2lvMziVX8LVHb6ECjuHlOxrRSHFwLT9xwTwDb/9/gtDZz0LX9p6cA
-         YI9d2TxIraoWdTUvsq3EgclNOuvMhGty1ddUGKu0=
+        b=MwhMBsHb1YA3IqP6vMDhn/bzMEejizUhMWIdChsbBPg73H/nMkPHlaBhC+A5QTFxV
+         gdKcplLzSUVou9Y373SczB0Pvlq85x7Dk8n8bmxiNz0rr1jDfh2ZRTfgXZk3bGnWJE
+         hPr6Ks+5SaTGOeD5XMe7EpNGvzpyiIXG2Xzw4ESw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Fabian=20W=C3=BCthrich?= <me@fabwu.ch>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 554/737] media: ipu-bridge: Fix null pointer deref on SSDB/PLD parsing warnings
-Date:   Mon, 11 Sep 2023 15:46:53 +0200
-Message-ID: <20230911134706.031981888@linuxfoundation.org>
+        patches@lists.linux.dev, Aleksei Filippov <halip0503@gmail.com>,
+        Dave Kleikamp <dave.kleikamp@oracle.com>,
+        Sasha Levin <sashal@kernel.org>,
+        syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
+Subject: [PATCH 6.1 383/600] jfs: validate max amount of blocks before allocation.
+Date:   Mon, 11 Sep 2023 15:46:56 +0200
+Message-ID: <20230911134644.973517721@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -55,50 +51,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Alexei Filippov <halip0503@gmail.com>
 
-[ Upstream commit 284be5693163343e1cf17c03917eecd1d6681bcf ]
+[ Upstream commit 0225e10972fa809728b8d4c1bd2772b3ec3fdb57 ]
 
-When ipu_bridge_parse_rotation() and ipu_bridge_parse_orientation() run
-sensor->adev is not set yet.
+The lack of checking bmp->db_max_freebud in extBalloc() can lead to
+shift out of bounds, so this patch prevents undefined behavior, because
+bmp->db_max_freebud == -1 only if there is no free space.
 
-So if either of the dev_warn() calls about unknown values are hit this
-will lead to a NULL pointer deref.
-
-Set sensor->adev earlier, with a borrowed ref to avoid making unrolling
-on errors harder, to fix this.
-
-Fixes: 485aa3df0dff ("media: ipu3-cio2: Parse sensor orientation and rotation")
-Cc: Fabian Wüthrich <me@fabwu.ch>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Aleksei Filippov <halip0503@gmail.com>
+Signed-off-by: Dave Kleikamp <dave.kleikamp@oracle.com>
+Fixes: 1da177e4c3f4 ("Linux-2.6.12-rc2")
+Reported-and-tested-by: syzbot+5f088f29593e6b4c8db8@syzkaller.appspotmail.com
+Closes: https://syzkaller.appspot.com/bug?id=01abadbd6ae6a08b1f1987aa61554c6b3ac19ff2
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/intel/ipu3/cio2-bridge.c | 5 +++++
+ fs/jfs/jfs_extent.c | 5 +++++
  1 file changed, 5 insertions(+)
 
-diff --git a/drivers/media/pci/intel/ipu3/cio2-bridge.c b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-index 3c2accfe54551..7fba87736b6b8 100644
---- a/drivers/media/pci/intel/ipu3/cio2-bridge.c
-+++ b/drivers/media/pci/intel/ipu3/cio2-bridge.c
-@@ -308,6 +308,11 @@ static int cio2_bridge_connect_sensor(const struct cio2_sensor_config *cfg,
- 		}
- 
- 		sensor = &bridge->sensors[bridge->n_sensors];
-+		/*
-+		 * Borrow our adev ref to the sensor for now, on success
-+		 * acpi_dev_get(adev) is done further below.
-+		 */
-+		sensor->adev = adev;
- 
- 		ret = cio2_bridge_read_acpi_buffer(adev, "SSDB",
- 						   &sensor->ssdb,
+diff --git a/fs/jfs/jfs_extent.c b/fs/jfs/jfs_extent.c
+index ae99a7e232eeb..a82751e6c47f9 100644
+--- a/fs/jfs/jfs_extent.c
++++ b/fs/jfs/jfs_extent.c
+@@ -311,6 +311,11 @@ extBalloc(struct inode *ip, s64 hint, s64 * nblocks, s64 * blkno)
+ 	 * blocks in the map. in that case, we'll start off with the
+ 	 * maximum free.
+ 	 */
++
++	/* give up if no space left */
++	if (bmp->db_maxfreebud == -1)
++		return -ENOSPC;
++
+ 	max = (s64) 1 << bmp->db_maxfreebud;
+ 	if (*nblocks >= max && *nblocks > nbperpage)
+ 		nb = nblks = (max > nbperpage) ? max : nbperpage;
 -- 
 2.40.1
 
