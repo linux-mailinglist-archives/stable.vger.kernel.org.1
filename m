@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8E8E179B1C3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA97179B3FA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243132AbjIKU7I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34046 "EHLO
+        id S235840AbjIKV7P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240436AbjIKOoN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:13 -0400
+        with ESMTP id S241642AbjIKPLJ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:09 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A30C012A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2798C433C8;
-        Mon, 11 Sep 2023 14:44:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1FA21E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 35794C433C7;
+        Mon, 11 Sep 2023 15:11:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443447;
-        bh=KvJBMAsfDScA9E6sWQO69EwOzLrs9oGcu547XJQolcQ=;
+        s=korg; t=1694445063;
+        bh=5EAASnXOBw5vby7O6JYuTHGOjvrd1iC889JLKGFYDzI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=aAdYj2Latnrvo/R/GUM7p382ee/5LzsFbZe2mVnV5tZQuqdTYNIJX0YUzgPaTSza8
-         rYJFX27jW4jYmTxfCbX2telNB89tV70eBTTRGM6dqc5dxT980fMgM7kzacdq1I2Mjm
-         iZ22prXbP+vTcEiuMFEYYGJLqmbQWusP3oQMiVRo=
+        b=pQ5CwQBjU7j7u1nuZXQUAQl0AcTj9Yo6q+FCxpKt8Te97fm4SDhDN8nDDxvK+dQRw
+         JFhqwoXGIkkY53x+waRdtaiKU5TUJqsQsCA73LvT/U33ba59vBtkAlg6HcyU1UwpOo
+         h4Oh68JaiUJvGuh/IvdvsJFL/Y2tVU743NVewdJ8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-        kernel test robot <lkp@intel.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev, Suman Ghosh <sumang@marvell.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 380/737] drm/mediatek: Fix void-pointer-to-enum-cast warning
-Date:   Mon, 11 Sep 2023 15:43:59 +0200
-Message-ID: <20230911134701.188288395@linuxfoundation.org>
+Subject: [PATCH 6.1 207/600] cteonxt2-pf: Fix backpressure config for multiple PFC priorities to work simultaneously
+Date:   Mon, 11 Sep 2023 15:44:00 +0200
+Message-ID: <20230911134639.727068189@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,73 +51,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Suman Ghosh <sumang@marvell.com>
 
-[ Upstream commit 89cba955f879b1c6a9a71f67c8fb92ea8f5dfdc4 ]
+[ Upstream commit 597d0ec0e4ca6a912affea4cc94df08959e9ec74 ]
 
-1. Fix build warning message in mtk_disp_ovl_adaptor.c
->> drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c:415:10:
-  warning: cast to smaller integer type 'enum mtk_ovl_adaptor_comp_type'
-  from 'const void *' [-Wvoid-pointer-to-enum-cast]
+MAC (CGX or RPM) asserts backpressure at TL3 or TL2 node of the egress
+hierarchical scheduler tree depending on link level config done. If
+there are multiple PFC priorities enabled at a time and for all such
+flows to backoff, each priority will have to assert backpressure at
+different TL3/TL2 scheduler nodes and these flows will need to submit
+egress pkts to these nodes.
 
-  type = (enum mtk_ovl_adaptor_comp_type)of_id->data;
+Current PFC configuration has an issue where in only one backpressure
+scheduler node is being allocated which is resulting in only one PFC
+priority to work. This patch fixes this issue.
 
-         ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-         1 warning generated.
-
-2. Also fix the same warning message in mtk_drm_drv.c
->> drivers/gpu/drm/mediatek/mtk_drm_drv.c:832:15:
-   warning: cast to smaller integer type 'enum mtk_ddp_comp_type'
-   from 'const void *' [-Wvoid-pointer-to-enum-cast]
-
-   comp_type = (enum mtk_ddp_comp_type)of_id->data;
-
-               ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-               1 warning generated.
-
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Fixes: 453c3364632a ("drm/mediatek: Add ovl_adaptor support for MT8195")
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202305042054.ZtWME9OU-lkp@intel.com/
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230621075421.1982-1-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 99c969a83d82 ("octeontx2-pf: Add egress PFC support")
+Signed-off-by: Suman Ghosh <sumang@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230824081032.436432-4-sumang@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c | 2 +-
- drivers/gpu/drm/mediatek/mtk_drm_drv.c          | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-index c0a38f5217eee..f2f6a5c01a6d2 100644
---- a/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-+++ b/drivers/gpu/drm/mediatek/mtk_disp_ovl_adaptor.c
-@@ -426,7 +426,7 @@ static int ovl_adaptor_comp_init(struct device *dev, struct component_match **ma
- 			continue;
- 		}
+diff --git a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+index 6492749dd7c89..bfddbff7bcdfb 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
++++ b/drivers/net/ethernet/marvell/octeontx2/nic/otx2_dcbnl.c
+@@ -70,7 +70,7 @@ static int otx2_pfc_txschq_alloc_one(struct otx2_nic *pfvf, u8 prio)
+ 	 * link config level. These rest of the scheduler can be
+ 	 * same as hw.txschq_list.
+ 	 */
+-	for (lvl = 0; lvl < pfvf->hw.txschq_link_cfg_lvl; lvl++)
++	for (lvl = 0; lvl <= pfvf->hw.txschq_link_cfg_lvl; lvl++)
+ 		req->schq[lvl] = 1;
  
--		type = (enum mtk_ovl_adaptor_comp_type)of_id->data;
-+		type = (enum mtk_ovl_adaptor_comp_type)(uintptr_t)of_id->data;
- 		id = ovl_adaptor_comp_get_id(dev, node, type);
- 		if (id < 0) {
- 			dev_warn(dev, "Skipping unknown component %pOF\n",
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index fc217e0acd45d..30d10f21562f4 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -832,7 +832,7 @@ static int mtk_drm_probe(struct platform_device *pdev)
- 			continue;
- 		}
+ 	rc = otx2_sync_mbox_msg(&pfvf->mbox);
+@@ -83,7 +83,7 @@ static int otx2_pfc_txschq_alloc_one(struct otx2_nic *pfvf, u8 prio)
+ 		return PTR_ERR(rsp);
  
--		comp_type = (enum mtk_ddp_comp_type)of_id->data;
-+		comp_type = (enum mtk_ddp_comp_type)(uintptr_t)of_id->data;
+ 	/* Setup transmit scheduler list */
+-	for (lvl = 0; lvl < pfvf->hw.txschq_link_cfg_lvl; lvl++) {
++	for (lvl = 0; lvl <= pfvf->hw.txschq_link_cfg_lvl; lvl++) {
+ 		if (!rsp->schq[lvl])
+ 			return -ENOSPC;
  
- 		if (comp_type == MTK_DISP_MUTEX) {
- 			int id;
+@@ -128,7 +128,7 @@ static int otx2_pfc_txschq_stop_one(struct otx2_nic *pfvf, u8 prio)
+ 	int lvl;
+ 
+ 	/* free PFC TLx nodes */
+-	for (lvl = 0; lvl < pfvf->hw.txschq_link_cfg_lvl; lvl++)
++	for (lvl = 0; lvl <= pfvf->hw.txschq_link_cfg_lvl; lvl++)
+ 		otx2_txschq_free_one(pfvf, lvl,
+ 				     pfvf->pfc_schq_list[lvl][prio]);
+ 
 -- 
 2.40.1
 
