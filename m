@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7E21579C0D1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D385D79BCEE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353967AbjIKVvs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34018 "EHLO
+        id S237289AbjIKWio (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:38:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35358 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239730AbjIKO1U (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:20 -0400
+        with ESMTP id S238350AbjIKNyX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:54:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9CE89F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E2DC8C433C9;
-        Mon, 11 Sep 2023 14:27:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB3E5CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:54:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 39812C433C9;
+        Mon, 11 Sep 2023 13:54:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442436;
-        bh=iOFxcw4MFz2SrrmS3mg80kL38IkTocbmSWZcUIAsluc=;
+        s=korg; t=1694440458;
+        bh=xDNl72eyRMY7FunEv5tvNOCajkThdn9sL6uX164hbZs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Nb3E87zfSF5M5QHDlUN+c4nc9FBMFI71gAB0iSlVofb0/4T7bbeQPnGOw+xAGEv0J
-         QVUCT5qrlkhdvE3KeSnrmC02OPtFsA/CUdm4K2V6stsekv0A3owzY83TtJ5YKNsE3O
-         fpLFLoQRs9pTkCRJDq8mmY+h8RRqNu1EqC9SsoBY=
+        b=xASjlNMd4rOAYihd7hjvG/yFuqSkRk8msUwb25e3dC4yaiGXeKm84PYqNLt8O+d39
+         c0oy6dckX63VdZFdYk2+QzC4+xPpXeYgsy0RYOiCUZOSHFUJwqaUkqWKNiNOoq6Li/
+         RXRU/9+uG6MHuMrPYvtiV1Ng2J6Qn4UJwQAI+++E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nikolay Burykin <burikin@ivk.ru>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexander Lobakin <alobakin@pm.me>,
+        Quentin Monnet <quentin@isovalent.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 008/737] media: pci: cx23885: fix error handling for cx23885 ATSC boards
+Subject: [PATCH 6.5 068/739] bpftool: Use a local bpf_perf_event_value to fix accessing its fields
 Date:   Mon, 11 Sep 2023 15:37:47 +0200
-Message-ID: <20230911134650.547446437@linuxfoundation.org>
+Message-ID: <20230911134653.003969946@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,65 +51,139 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikolay Burykin <burikin@ivk.ru>
+From: Alexander Lobakin <alobakin@pm.me>
 
-[ Upstream commit 4aaa96b59df5fac41ba891969df6b092061ea9d7 ]
+[ Upstream commit 658ac06801315b739774a15796ff06913ef5cad5 ]
 
-After having been assigned to NULL value at cx23885-dvb.c:1202,
-pointer '0' is dereferenced at cx23885-dvb.c:2469.
+Fix the following error when building bpftool:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+  CLANG   profiler.bpf.o
+  CLANG   pid_iter.bpf.o
+skeleton/profiler.bpf.c:18:21: error: invalid application of 'sizeof' to an incomplete type 'struct bpf_perf_event_value'
+        __uint(value_size, sizeof(struct bpf_perf_event_value));
+                           ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:13:39: note: expanded from macro '__uint'
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helper_defs.h:7:8: note: forward declaration of 'struct bpf_perf_event_value'
+struct bpf_perf_event_value;
+       ^
 
-Signed-off-by: Nikolay Burykin <burikin@ivk.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+struct bpf_perf_event_value is being used in the kernel only when
+CONFIG_BPF_EVENTS is enabled, so it misses a BTF entry then.
+Define struct bpf_perf_event_value___local with the
+`preserve_access_index` attribute inside the pid_iter BPF prog to
+allow compiling on any configs. It is a full mirror of a UAPI
+structure, so is compatible both with and w/o CO-RE.
+bpf_perf_event_read_value() requires a pointer of the original type,
+so a cast is needed.
+
+Fixes: 47c09d6a9f67 ("bpftool: Introduce "prog profile" command")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Alexander Lobakin <alobakin@pm.me>
+Signed-off-by: Quentin Monnet <quentin@isovalent.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230707095425.168126-5-quentin@isovalent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/pci/cx23885/cx23885-dvb.c | 12 ------------
- 1 file changed, 12 deletions(-)
+ tools/bpf/bpftool/skeleton/profiler.bpf.c | 27 ++++++++++++++---------
+ 1 file changed, 17 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/media/pci/cx23885/cx23885-dvb.c b/drivers/media/pci/cx23885/cx23885-dvb.c
-index 8fd5b6ef24282..7551ca4a322a4 100644
---- a/drivers/media/pci/cx23885/cx23885-dvb.c
-+++ b/drivers/media/pci/cx23885/cx23885-dvb.c
-@@ -2459,16 +2459,10 @@ static int dvb_register(struct cx23885_tsport *port)
- 			request_module("%s", info.type);
- 			client_tuner = i2c_new_client_device(&dev->i2c_bus[1].i2c_adap, &info);
- 			if (!i2c_client_has_driver(client_tuner)) {
--				module_put(client_demod->dev.driver->owner);
--				i2c_unregister_device(client_demod);
--				port->i2c_client_demod = NULL;
- 				goto frontend_detach;
- 			}
- 			if (!try_module_get(client_tuner->dev.driver->owner)) {
- 				i2c_unregister_device(client_tuner);
--				module_put(client_demod->dev.driver->owner);
--				i2c_unregister_device(client_demod);
--				port->i2c_client_demod = NULL;
- 				goto frontend_detach;
- 			}
- 			port->i2c_client_tuner = client_tuner;
-@@ -2505,16 +2499,10 @@ static int dvb_register(struct cx23885_tsport *port)
- 			request_module("%s", info.type);
- 			client_tuner = i2c_new_client_device(&dev->i2c_bus[1].i2c_adap, &info);
- 			if (!i2c_client_has_driver(client_tuner)) {
--				module_put(client_demod->dev.driver->owner);
--				i2c_unregister_device(client_demod);
--				port->i2c_client_demod = NULL;
- 				goto frontend_detach;
- 			}
- 			if (!try_module_get(client_tuner->dev.driver->owner)) {
- 				i2c_unregister_device(client_tuner);
--				module_put(client_demod->dev.driver->owner);
--				i2c_unregister_device(client_demod);
--				port->i2c_client_demod = NULL;
- 				goto frontend_detach;
- 			}
- 			port->i2c_client_tuner = client_tuner;
+diff --git a/tools/bpf/bpftool/skeleton/profiler.bpf.c b/tools/bpf/bpftool/skeleton/profiler.bpf.c
+index ce5b65e07ab10..2f80edc682f11 100644
+--- a/tools/bpf/bpftool/skeleton/profiler.bpf.c
++++ b/tools/bpf/bpftool/skeleton/profiler.bpf.c
+@@ -4,6 +4,12 @@
+ #include <bpf/bpf_helpers.h>
+ #include <bpf/bpf_tracing.h>
+ 
++struct bpf_perf_event_value___local {
++	__u64 counter;
++	__u64 enabled;
++	__u64 running;
++} __attribute__((preserve_access_index));
++
+ /* map of perf event fds, num_cpu * num_metric entries */
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
+@@ -15,14 +21,14 @@ struct {
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
+ 	__uint(key_size, sizeof(u32));
+-	__uint(value_size, sizeof(struct bpf_perf_event_value));
++	__uint(value_size, sizeof(struct bpf_perf_event_value___local));
+ } fentry_readings SEC(".maps");
+ 
+ /* accumulated readings */
+ struct {
+ 	__uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
+ 	__uint(key_size, sizeof(u32));
+-	__uint(value_size, sizeof(struct bpf_perf_event_value));
++	__uint(value_size, sizeof(struct bpf_perf_event_value___local));
+ } accum_readings SEC(".maps");
+ 
+ /* sample counts, one per cpu */
+@@ -39,7 +45,7 @@ const volatile __u32 num_metric = 1;
+ SEC("fentry/XXX")
+ int BPF_PROG(fentry_XXX)
+ {
+-	struct bpf_perf_event_value *ptrs[MAX_NUM_MATRICS];
++	struct bpf_perf_event_value___local *ptrs[MAX_NUM_MATRICS];
+ 	u32 key = bpf_get_smp_processor_id();
+ 	u32 i;
+ 
+@@ -53,10 +59,10 @@ int BPF_PROG(fentry_XXX)
+ 	}
+ 
+ 	for (i = 0; i < num_metric && i < MAX_NUM_MATRICS; i++) {
+-		struct bpf_perf_event_value reading;
++		struct bpf_perf_event_value___local reading;
+ 		int err;
+ 
+-		err = bpf_perf_event_read_value(&events, key, &reading,
++		err = bpf_perf_event_read_value(&events, key, (void *)&reading,
+ 						sizeof(reading));
+ 		if (err)
+ 			return 0;
+@@ -68,14 +74,14 @@ int BPF_PROG(fentry_XXX)
+ }
+ 
+ static inline void
+-fexit_update_maps(u32 id, struct bpf_perf_event_value *after)
++fexit_update_maps(u32 id, struct bpf_perf_event_value___local *after)
+ {
+-	struct bpf_perf_event_value *before, diff;
++	struct bpf_perf_event_value___local *before, diff;
+ 
+ 	before = bpf_map_lookup_elem(&fentry_readings, &id);
+ 	/* only account samples with a valid fentry_reading */
+ 	if (before && before->counter) {
+-		struct bpf_perf_event_value *accum;
++		struct bpf_perf_event_value___local *accum;
+ 
+ 		diff.counter = after->counter - before->counter;
+ 		diff.enabled = after->enabled - before->enabled;
+@@ -93,7 +99,7 @@ fexit_update_maps(u32 id, struct bpf_perf_event_value *after)
+ SEC("fexit/XXX")
+ int BPF_PROG(fexit_XXX)
+ {
+-	struct bpf_perf_event_value readings[MAX_NUM_MATRICS];
++	struct bpf_perf_event_value___local readings[MAX_NUM_MATRICS];
+ 	u32 cpu = bpf_get_smp_processor_id();
+ 	u32 i, zero = 0;
+ 	int err;
+@@ -102,7 +108,8 @@ int BPF_PROG(fexit_XXX)
+ 	/* read all events before updating the maps, to reduce error */
+ 	for (i = 0; i < num_metric && i < MAX_NUM_MATRICS; i++) {
+ 		err = bpf_perf_event_read_value(&events, cpu + i * num_cpu,
+-						readings + i, sizeof(*readings));
++						(void *)(readings + i),
++						sizeof(*readings));
+ 		if (err)
+ 			return 0;
+ 	}
 -- 
 2.40.1
 
