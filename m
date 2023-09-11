@@ -2,36 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 302E079B6F3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3D19979B87B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358220AbjIKWIQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39482 "EHLO
+        id S239233AbjIKWmz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:42:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58400 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241797AbjIKPOr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:47 -0400
+        with ESMTP id S241874AbjIKPQt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5960EFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A0785C433CA;
-        Mon, 11 Sep 2023 15:14:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E994EFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:44 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E84CC433C7;
+        Mon, 11 Sep 2023 15:16:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445283;
-        bh=i4j6f1xaMXy4i4Pdci6UVcZS7WhrKAdqO00Jn8vd2uM=;
+        s=korg; t=1694445404;
+        bh=XcTKGLAp+5dh+5pLKZRXbbiz/rpnpH0ZbWMmUz00J0M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cSUut/NeeoPAnd0Y5XyuDyzWZ/w3KRkhbzRmHqq1KvhJjtFWnq6sN98hq4itICHJM
-         tuCjxSz04JcVc9KAkSf/u/h+o4UMOcCXzidl4ype4vm8Y08hkIjKUtCbF4/mXF5epX
-         JEZjPSLJClDMwhM4i+KoHIhJvPX1BU09ukZH0AZA=
+        b=uKK5rV7eB2H+79I5Yns+0nbz8s5cZuBV7Fvg78kWsKO81DbxgpHYSElO35pOhnm4v
+         7Z2ku8lKoW0uEWQZUyuXd+rLgZalpFdCz0sLBJq+iDZi0/Ll5HVWdBSjCxrIVD11ZC
+         QMh+4il/0EUEEj2x1tAPxax/YJoYbQpGfU4DtSZs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nayna Jain <nayna@linux.ibm.com>,
-        Mimi Zohar <zohar@linux.ibm.com>,
+        patches@lists.linux.dev, Jiasheng Jiang <jiasheng@iscas.ac.cn>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 290/600] ima: Remove deprecated IMA_TRUSTED_KEYRING Kconfig
-Date:   Mon, 11 Sep 2023 15:45:23 +0200
-Message-ID: <20230911134642.168426895@linuxfoundation.org>
+Subject: [PATCH 6.1 291/600] drm: xlnx: zynqmp_dpsub: Add missing check for dma_set_mask
+Date:   Mon, 11 Sep 2023 15:45:24 +0200
+Message-ID: <20230911134642.197965232@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -54,43 +55,37 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Nayna Jain <nayna@linux.ibm.com>
+From: Jiasheng Jiang <jiasheng@iscas.ac.cn>
 
-[ Upstream commit 5087fd9e80e539d2163accd045b73da64de7de95 ]
+[ Upstream commit 1832fba7f9780aff67c96ad30f397c2d76141833 ]
 
-Time to remove "IMA_TRUSTED_KEYRING".
+Add check for dma_set_mask() and return the error if it fails.
 
-Fixes: f4dc37785e9b ("integrity: define '.evm' as a builtin 'trusted' keyring") # v4.5+
-Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
-Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
+Fixes: d76271d22694 ("drm: xlnx: DRM/KMS driver for Xilinx ZynqMP DisplayPort Subsystem")
+Signed-off-by: Jiasheng Jiang <jiasheng@iscas.ac.cn>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Reviewed-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- security/integrity/ima/Kconfig | 12 ------------
- 1 file changed, 12 deletions(-)
+ drivers/gpu/drm/xlnx/zynqmp_dpsub.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
-index 60a511c6b583e..c17660bf5f347 100644
---- a/security/integrity/ima/Kconfig
-+++ b/security/integrity/ima/Kconfig
-@@ -248,18 +248,6 @@ config IMA_APPRAISE_MODSIG
- 	   The modsig keyword can be used in the IMA policy to allow a hook
- 	   to accept such signatures.
+diff --git a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+index 1de2d927c32b0..fcaa958d841c9 100644
+--- a/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
++++ b/drivers/gpu/drm/xlnx/zynqmp_dpsub.c
+@@ -201,7 +201,9 @@ static int zynqmp_dpsub_probe(struct platform_device *pdev)
+ 	dpsub->dev = &pdev->dev;
+ 	platform_set_drvdata(pdev, dpsub);
  
--config IMA_TRUSTED_KEYRING
--	bool "Require all keys on the .ima keyring be signed (deprecated)"
--	depends on IMA_APPRAISE && SYSTEM_TRUSTED_KEYRING
--	depends on INTEGRITY_ASYMMETRIC_KEYS
--	select INTEGRITY_TRUSTED_KEYRING
--	default y
--	help
--	   This option requires that all keys added to the .ima
--	   keyring be signed by a key on the system trusted keyring.
--
--	   This option is deprecated in favor of INTEGRITY_TRUSTED_KEYRING
--
- config IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
- 	bool "Permit keys validly signed by a built-in or secondary CA cert (EXPERIMENTAL)"
- 	depends on SYSTEM_TRUSTED_KEYRING
+-	dma_set_mask(dpsub->dev, DMA_BIT_MASK(ZYNQMP_DISP_MAX_DMA_BIT));
++	ret = dma_set_mask(dpsub->dev, DMA_BIT_MASK(ZYNQMP_DISP_MAX_DMA_BIT));
++	if (ret)
++		return ret;
+ 
+ 	/* Try the reserved memory. Proceed if there's none. */
+ 	of_reserved_mem_device_init(&pdev->dev);
 -- 
 2.40.1
 
