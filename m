@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EBA1979BC1A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E5A279BA71
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378806AbjIKWha (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35854 "EHLO
+        id S1353840AbjIKVvC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239834AbjIKO36 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:29:58 -0400
+        with ESMTP id S238545AbjIKN64 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8571BF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:29:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C644C433C7;
-        Mon, 11 Sep 2023 14:29:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8583CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C872C433C8;
+        Mon, 11 Sep 2023 13:58:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442594;
-        bh=iybcmXumYn8jC5NqrMTTUK+tY5tn7BlvP+gTJjDSsJE=;
+        s=korg; t=1694440732;
+        bh=pVcDo/YzhpoPCb27SfHpRkYixWN3Trqw+YeHdCS+jTg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RMyP4qWwTxS7Ae1Zw0iaNgkVWRByz3A+C1bCUmULbL2X61/xOPllTR0y2RS2/L03h
-         28y6arzHwK8zUBctakXev+fASGmDSPJarJBcpZhXZFeD9wpLvNoI7EVJMCJddpqQaW
-         MGbVzLrptOM/5iE7JjNkD1ZcVION8fz+25NouQ0M=
+        b=n/yr8HNGFpKFnMKAMmqy6F4VZbaaYtQruYg0qLUObg4Ha1PVSTar05OxrykhWQMqe
+         4Abh1KqSpqjJ59qWx9E8f9tHngTU6hhX/IwRx3jftxPuzgRYy5va66vv2PQ9HcgeC4
+         n3GzpHVUANOXnb3Fc8shJqjDNaQiieWPwGUNfuTw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Artem Chernyshev <artem.chernyshev@red-soft.ru>,
-        Leon Romanovsky <leonro@nvidia.com>,
+        patches@lists.linux.dev, Abel Wu <wuyun.abel@bytedance.com>,
+        Shakeel Butt <shakeelb@google.com>,
         "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 079/737] broadcom: b44: Use b44_writephy() return value
+Subject: [PATCH 6.5 139/739] net-memcg: Fix scope of sockmem pressure indicators
 Date:   Mon, 11 Sep 2023 15:38:58 +0200
-Message-ID: <20230911134652.718190122@linuxfoundation.org>
+Message-ID: <20230911134654.986781376@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +51,88 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Artem Chernyshev <artem.chernyshev@red-soft.ru>
+From: Abel Wu <wuyun.abel@bytedance.com>
 
-[ Upstream commit 9944d203fa63721b87eee84a89f7275dc3d25c05 ]
+[ Upstream commit ac8a52962164a50e693fa021d3564d7745b83a7f ]
 
-Return result of b44_writephy() instead of zero to
-deal with possible error.
+Now there are two indicators of socket memory pressure sit inside
+struct mem_cgroup, socket_pressure and tcpmem_pressure, indicating
+memory reclaim pressure in memcg->memory and ->tcpmem respectively.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+When in legacy mode (cgroupv1), the socket memory is charged into
+->tcpmem which is independent of ->memory, so socket_pressure has
+nothing to do with socket's pressure at all. Things could be worse
+by taking socket_pressure into consideration in legacy mode, as a
+pressure in ->memory can lead to premature reclamation/throttling
+in socket.
 
-Signed-off-by: Artem Chernyshev <artem.chernyshev@red-soft.ru>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
+While for the default mode (cgroupv2), the socket memory is charged
+into ->memory, and ->tcpmem/->tcpmem_pressure are simply not used.
+
+So {socket,tcpmem}_pressure are only used in default/legacy mode
+respectively for indicating socket memory pressure. This patch fixes
+the pieces of code that make mixed use of both.
+
+Fixes: 8e8ae645249b ("mm: memcontrol: hook up vmpressure to socket pressure")
+Signed-off-by: Abel Wu <wuyun.abel@bytedance.com>
+Acked-by: Shakeel Butt <shakeelb@google.com>
 Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/broadcom/b44.c | 8 +++-----
- 1 file changed, 3 insertions(+), 5 deletions(-)
+ include/linux/memcontrol.h | 9 +++++++--
+ mm/vmpressure.c            | 8 ++++++++
+ 2 files changed, 15 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/broadcom/b44.c b/drivers/net/ethernet/broadcom/b44.c
-index 392ec09a1d8a6..3e4fb3c3e8342 100644
---- a/drivers/net/ethernet/broadcom/b44.c
-+++ b/drivers/net/ethernet/broadcom/b44.c
-@@ -1793,11 +1793,9 @@ static int b44_nway_reset(struct net_device *dev)
- 	b44_readphy(bp, MII_BMCR, &bmcr);
- 	b44_readphy(bp, MII_BMCR, &bmcr);
- 	r = -EINVAL;
--	if (bmcr & BMCR_ANENABLE) {
--		b44_writephy(bp, MII_BMCR,
--			     bmcr | BMCR_ANRESTART);
--		r = 0;
--	}
-+	if (bmcr & BMCR_ANENABLE)
-+		r = b44_writephy(bp, MII_BMCR,
-+				 bmcr | BMCR_ANRESTART);
- 	spin_unlock_irq(&bp->lock);
+diff --git a/include/linux/memcontrol.h b/include/linux/memcontrol.h
+index 5818af8eca5a5..dbf26bc89dd46 100644
+--- a/include/linux/memcontrol.h
++++ b/include/linux/memcontrol.h
+@@ -284,6 +284,11 @@ struct mem_cgroup {
+ 	atomic_long_t		memory_events[MEMCG_NR_MEMORY_EVENTS];
+ 	atomic_long_t		memory_events_local[MEMCG_NR_MEMORY_EVENTS];
  
- 	return r;
++	/*
++	 * Hint of reclaim pressure for socket memroy management. Note
++	 * that this indicator should NOT be used in legacy cgroup mode
++	 * where socket memory is accounted/charged separately.
++	 */
+ 	unsigned long		socket_pressure;
+ 
+ 	/* Legacy tcp memory accounting */
+@@ -1727,8 +1732,8 @@ void mem_cgroup_sk_alloc(struct sock *sk);
+ void mem_cgroup_sk_free(struct sock *sk);
+ static inline bool mem_cgroup_under_socket_pressure(struct mem_cgroup *memcg)
+ {
+-	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && memcg->tcpmem_pressure)
+-		return true;
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys))
++		return !!memcg->tcpmem_pressure;
+ 	do {
+ 		if (time_before(jiffies, READ_ONCE(memcg->socket_pressure)))
+ 			return true;
+diff --git a/mm/vmpressure.c b/mm/vmpressure.c
+index b52644771cc43..22c6689d93027 100644
+--- a/mm/vmpressure.c
++++ b/mm/vmpressure.c
+@@ -244,6 +244,14 @@ void vmpressure(gfp_t gfp, struct mem_cgroup *memcg, bool tree,
+ 	if (mem_cgroup_disabled())
+ 		return;
+ 
++	/*
++	 * The in-kernel users only care about the reclaim efficiency
++	 * for this @memcg rather than the whole subtree, and there
++	 * isn't and won't be any in-kernel user in a legacy cgroup.
++	 */
++	if (!cgroup_subsys_on_dfl(memory_cgrp_subsys) && !tree)
++		return;
++
+ 	vmpr = memcg_to_vmpressure(memcg);
+ 
+ 	/*
 -- 
 2.40.1
 
