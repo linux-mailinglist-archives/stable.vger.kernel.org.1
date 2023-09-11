@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 05A6879AE8D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A2FF479AD5F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359617AbjIKWSI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:18:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55764 "EHLO
+        id S1344819AbjIKVOu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33980 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240332AbjIKOlq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:46 -0400
+        with ESMTP id S241444AbjIKPIx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5F2EE12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CB46C433C8;
-        Mon, 11 Sep 2023 14:41:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B080FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854C0C433C7;
+        Mon, 11 Sep 2023 15:08:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443302;
-        bh=WouarAXRtmM/lWexHVRmjrlV73HPvoEgfs2URwRCAYw=;
+        s=korg; t=1694444928;
+        bh=1GIaz/IEcRpgLG3Pfi5JXFIDJEvfo5vczdcj/WRD6NY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0PfZ13E3nj6Yss0ovvKxo8D1Xfn0u6530NqFPICV3LH5GDX9O7m5f4HeRzw63+q59
-         xUI8dudcnE90n4hhaR0xFJWl5p5zsed8V3ARBLGosPr5J5PWRz/mgxNOSikwkuxEhB
-         yfzasYNEvGLGLUcH36dq/TCDR1CKHdYi4aT5H2/Y=
+        b=q5i/nzmTiNeZNJl4uXnlbPkqXw8WZeXrAQ0OKAtXv6VBDuwXO50XZMJIKxO9FZh/f
+         MlXSMsptE0lC5s3Z7j2xxk8gWNmUBoOP0M9TDNVy+TiWVUJ5nbd9N6eSQMmlhKsYJO
+         G4GZboNFnV0GuMnqUTtxxdVZR88tCOelOBsAE97M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Olivier Moysan <olivier.moysan@foss.st.com>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
+        Ingo Franzki <ifranzki@linux.ibm.com>,
+        Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 301/737] ARM: dts: stm32: adopt generic iio bindings for adc channels on emstamp-argon
+Subject: [PATCH 6.1 127/600] s390/paes: fix PKEY_TYPE_EP11_AES handling for secure keyblobs
 Date:   Mon, 11 Sep 2023 15:42:40 +0200
-Message-ID: <20230911134658.961445243@linuxfoundation.org>
+Message-ID: <20230911134637.366519692@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olivier Moysan <olivier.moysan@foss.st.com>
+From: Holger Dengler <dengler@linux.ibm.com>
 
-[ Upstream commit c46e9b6cc98245f7264a8d15394d1f95d433abec ]
+[ Upstream commit cba33db3fc4dbf2e54294b0e499d2335a3a00d78 ]
 
-Use STM32 ADC generic bindings instead of legacy bindings on
-emtrion GmbH Argon boards.
+Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
+private keys")' introduced PKEY_TYPE_EP11_AES securekey blobs as a
+supplement to the PKEY_TYPE_EP11 (which won't work in environments
+with session-bound keys). This new keyblobs has a different maximum
+size, so fix paes crypto module to accept also these larger keyblobs.
 
-The STM32 ADC specific binding to declare channels has been deprecated,
-hence adopt the generic IIO channels bindings, instead.
-The STM32MP151 device tree now exposes internal channels using the
-generic binding. This makes the change mandatory here to avoid a mixed
-use of legacy and generic binding, which is not supported by the driver.
-
-Signed-off-by: Olivier Moysan <olivier.moysan@foss.st.com>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
-Stable-dep-of: 0ee0ef38aa9f ("ARM: dts: stm32: Add missing detach mailbox for emtrion emSBC-Argon")
+Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
+Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
+Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
+Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/s390/crypto/paes_s390.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi b/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi
-index b01470a9a3d53..94e38141af672 100644
---- a/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi
-+++ b/arch/arm/boot/dts/stm32mp157c-emstamp-argon.dtsi
-@@ -97,9 +97,11 @@ &adc {
- 	adc1: adc@0 {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&adc1_in6_pins_a>;
--		st,min-sample-time-nsecs = <5000>;
--		st,adc-channels = <6>;
- 		status = "disabled";
-+		channel@6 {
-+			reg = <6>;
-+			st,min-sample-time-ns = <5000>;
-+		};
- 	};
+diff --git a/arch/s390/crypto/paes_s390.c b/arch/s390/crypto/paes_s390.c
+index a279b7d23a5e2..621322eb0e681 100644
+--- a/arch/s390/crypto/paes_s390.c
++++ b/arch/s390/crypto/paes_s390.c
+@@ -35,7 +35,7 @@
+  * and padding is also possible, the limits need to be generous.
+  */
+ #define PAES_MIN_KEYSIZE 16
+-#define PAES_MAX_KEYSIZE 320
++#define PAES_MAX_KEYSIZE MAXEP11AESKEYBLOBSIZE
  
- 	adc2: adc@100 {
+ static u8 *ctrblk;
+ static DEFINE_MUTEX(ctrblk_lock);
 -- 
 2.40.1
 
