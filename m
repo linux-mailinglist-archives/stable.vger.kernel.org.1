@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DCB379BC9A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:54 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 31DC679BBEA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358478AbjIKW0D (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:26:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44208 "EHLO
+        id S235713AbjIKUyI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:54:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43442 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239558AbjIKOXm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:42 -0400
+        with ESMTP id S240857AbjIKOzv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5CFB0DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A6FDDC433C8;
-        Mon, 11 Sep 2023 14:23:37 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE5A0118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C189C433C7;
+        Mon, 11 Sep 2023 14:55:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442218;
-        bh=9hz0CaZikkbbsW/0wu3mY8Em1ep1bvqKxNB/GE7CqgM=;
+        s=korg; t=1694444146;
+        bh=GwH/pKxsGl2EJnxf9TIc5vtWrNkaMOmAtcqQkagf7Xk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TvWW5R8tHCLHPPZTG4hS0zeRgB2AXh2V1ImMPH91OuhZbBuSaGw0WgcJRttk81p9I
-         KhpgKdt7VrQbc8DglkzCblxCzPnKaWHMQwX8SbXP3cGvPrbCPkLEwCAopvmAkNnjVp
-         R1eTjxkRgUGOwKWZsO4y3QXc3w1e5bk/Ak/lFbrE=
+        b=LJylyhHCtf/jaAqfDVmZB/GU4XIKV3YjHdOPVMni+ingIgYCO4waF0jddVM51aGne
+         478xjMaYvAOAtWw1ETx0oHRYSidzY/tajlz5eR2yiufLcYZYGLXSOZ+PKYG/2SEchJ
+         XEVhr5A1cpqcDbb+TcC2O2npuvNVHfl4HBIZmgaA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Conor Dooley <conor.dooley@microchip.com>
-Subject: [PATCH 6.5 687/739] dt-bindings: PCI: qcom: Fix SDX65 compatible
+        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 627/737] dmaengine: idxd: Allow ATS disable update only for configurable devices
 Date:   Mon, 11 Sep 2023 15:48:06 +0200
-Message-ID: <20230911134710.289014005@linuxfoundation.org>
+Message-ID: <20230911134708.045102000@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,66 +50,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Fenghua Yu <fenghua.yu@intel.com>
 
-commit 15d63a897f79f465d71fb55cc11c6b7e20c19391 upstream.
+[ Upstream commit 0056a7f07b0a63e6cee815a789eabba6f3a710f0 ]
 
-Commit c0aba9f32801 ("dt-bindings: PCI: qcom: Add SDX65 SoC") adding
-SDX65 was never tested and is clearly bogus.  The qcom,sdx65-pcie-ep
-compatible is followed by a fallback in DTS, and there is no driver
-matched by this compatible.  Driver matches by its fallback
-qcom,sdx55-pcie-ep.  This also fixes dtbs_check warnings like:
+ATS disable status in a WQ is read-only if the device is not configurable.
+This change ensures that the ATS disable attribute can be modified via
+sysfs only on configurable devices.
 
-  qcom-sdx65-mtp.dtb: pcie-ep@1c00000: compatible: ['qcom,sdx65-pcie-ep', 'qcom,sdx55-pcie-ep'] is too long
-
-[kwilczynski: commit log]
-Fixes: c0aba9f32801 ("dt-bindings: PCI: qcom: Add SDX65 SoC")
-Link: https://lore.kernel.org/linux-pci/20230827085351.21932-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Acked-by: Conor Dooley <conor.dooley@microchip.com>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 92de5fa2dc39 ("dmaengine: idxd: add ATS disable knob for work queues")
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20230811012635.535413-1-fenghua.yu@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../devicetree/bindings/pci/qcom,pcie-ep.yaml        | 12 +++++++-----
- 1 file changed, 7 insertions(+), 5 deletions(-)
+ drivers/dma/idxd/sysfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml b/Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-index 811112255d7d..c94b49498f69 100644
---- a/Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-+++ b/Documentation/devicetree/bindings/pci/qcom,pcie-ep.yaml
-@@ -11,10 +11,13 @@ maintainers:
+diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+index d16c16445c4f9..66c89b07b3f7b 100644
+--- a/drivers/dma/idxd/sysfs.c
++++ b/drivers/dma/idxd/sysfs.c
+@@ -1088,12 +1088,16 @@ static ssize_t wq_ats_disable_store(struct device *dev, struct device_attribute
+ 				    const char *buf, size_t count)
+ {
+ 	struct idxd_wq *wq = confdev_to_wq(dev);
++	struct idxd_device *idxd = wq->idxd;
+ 	bool ats_dis;
+ 	int rc;
  
- properties:
-   compatible:
--    enum:
--      - qcom,sdx55-pcie-ep
--      - qcom,sdx65-pcie-ep
--      - qcom,sm8450-pcie-ep
-+    oneOf:
-+      - enum:
-+          - qcom,sdx55-pcie-ep
-+          - qcom,sm8450-pcie-ep
-+      - items:
-+          - const: qcom,sdx65-pcie-ep
-+          - const: qcom,sdx55-pcie-ep
+ 	if (wq->state != IDXD_WQ_DISABLED)
+ 		return -EPERM;
  
-   reg:
-     items:
-@@ -110,7 +113,6 @@ allOf:
-           contains:
-             enum:
-               - qcom,sdx55-pcie-ep
--              - qcom,sdx65-pcie-ep
-     then:
-       properties:
-         clocks:
++	if (!test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags))
++		return -EPERM;
++
+ 	rc = kstrtobool(buf, &ats_dis);
+ 	if (rc < 0)
+ 		return rc;
 -- 
-2.42.0
+2.40.1
 
 
 
