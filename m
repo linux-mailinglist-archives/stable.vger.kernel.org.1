@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 25CDA79BFCA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A34F579B810
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233390AbjIKWr5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:47:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35598 "EHLO
+        id S1348707AbjIKVaI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34456 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240962AbjIKO6O (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:14 -0400
+        with ESMTP id S242181AbjIKPYX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AB9641B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EE0B2C433C8;
-        Mon, 11 Sep 2023 14:58:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A25D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F57C433C8;
+        Mon, 11 Sep 2023 15:24:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444290;
-        bh=CIcmkaFdxuQv6xw2d6/RRXMGlCviXpmOTcv6TrAe14U=;
+        s=korg; t=1694445858;
+        bh=IU1T9APhg2r6NTjBb0oTwp/SiUSBEKLE4UjMXZEoXGk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1xkF0dvYCxj2JS4g6Le4+cl6HNLBk9DpCDdbceOSbP9DC222hD3jzng2tuanItasY
-         2ZKj8Aa5t497HawalRiw6/rSf6bs0b2kX+PdVuE0aVfAtPPaYVlhnp93uXIDqNTBbl
-         YFvz7gIKZntTyVbzj9qRvl2IhWMq0BPJsKC+H40g=
+        b=U53pfyEkFuh+HGWWcAb+45VeUekaotWVL9TQ9OH4jNYjA69GaXVLczbSsVOUo7IB7
+         141yTeCAg1OACLTUPN/Dz2Qx/aGelCanLXyBsGzGgI8+lyXhpJXCr6HsouNWC1Ve+8
+         JQwu+FdPu+3V6ywJGWWHoFwpAo5UiQGMXY5MKY5Y=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.4 670/737] i3c: master: svc: fix probe failure when no i3c device exist
-Date:   Mon, 11 Sep 2023 15:48:49 +0200
-Message-ID: <20230911134709.256143616@linuxfoundation.org>
+        patches@lists.linux.dev, Michael Zhivich <mzhivich@akamai.com>,
+        Dave Hansen <dave.hansen@linux.intel.com>,
+        Ingo Molnar <mingo@kernel.org>,
+        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
+        Linus Torvalds <torvalds@linux-foundation.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 497/600] x86/speculation: Mark all Skylake CPUs as vulnerable to GDS
+Date:   Mon, 11 Sep 2023 15:48:50 +0200
+Message-ID: <20230911134648.300927272@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,70 +53,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Dave Hansen <dave.hansen@linux.intel.com>
 
-commit 6e13d6528be2f7e801af63c8153b87293f25d736 upstream.
+[ Upstream commit c9f4c45c8ec3f07f4f083f9750032a1ec3eab6b2 ]
 
-I3C masters are expected to support hot-join. This means at initialization
-time we might not yet discover any device and this should not be treated
-as a fatal error.
+The Gather Data Sampling (GDS) vulnerability is common to all Skylake
+processors.  However, the "client" Skylakes* are now in this list:
 
-During the DAA procedure which happens at probe time, if no device has
-joined, all CCC will be NACKed (from a bus perspective). This leads to an
-early return with an error code which fails the probe of the master.
+	https://www.intel.com/content/www/us/en/support/articles/000022396/processors.html
 
-Let's avoid this by just telling the core through an I3C_ERROR_M2
-return command code that no device was discovered, which is a valid
-situation. This way the master will no longer bail out and fail to probe
-for a wrong reason.
+which means they are no longer included for new vulnerabilities here:
 
-Cc: stable@vger.kernel.org
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230831141324.2841525-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+	https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/processors-affected-consolidated-product-cpu-model.html
+
+or in other GDS documentation.  Thus, they were not included in the
+original GDS mitigation patches.
+
+Mark SKYLAKE and SKYLAKE_L as vulnerable to GDS to match all the
+other Skylake CPUs (which include Kaby Lake).  Also group the CPUs
+so that the ones that share the exact same vulnerabilities are next
+to each other.
+
+Last, move SRBDS to the end of each line.  This makes it clear at a
+glance that SKYLAKE_X is unique.  Of the five Skylakes, it is the
+only "server" CPU and has a different implementation from the
+clients of the "special register" hardware, making it immune to SRBDS.
+
+This makes the diff much harder to read, but the resulting table is
+worth it.
+
+I very much appreciate the report from Michael Zhivich about this
+issue.  Despite what level of support a hardware vendor is providing,
+the kernel very much needs an accurate and up-to-date list of
+vulnerable CPUs.  More reports like this are very welcome.
+
+* Client Skylakes are CPUID 406E3/506E3 which is family 6, models
+  0x4E and 0x5E, aka INTEL_FAM6_SKYLAKE and INTEL_FAM6_SKYLAKE_L.
+
+Reported-by: Michael Zhivich <mzhivich@akamai.com>
+Fixes: 8974eb588283 ("x86/speculation: Add Gather Data Sampling mitigation")
+Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
+Signed-off-by: Ingo Molnar <mingo@kernel.org>
+Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
+Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ arch/x86/kernel/cpu/common.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -782,6 +782,10 @@ static int svc_i3c_master_do_daa_locked(
- 				 */
- 				break;
- 			} else if (SVC_I3C_MSTATUS_NACKED(reg)) {
-+				/* No I3C devices attached */
-+				if (dev_nb == 0)
-+					break;
-+
- 				/*
- 				 * A slave device nacked the address, this is
- 				 * allowed only once, DAA will be stopped and
-@@ -1251,11 +1255,17 @@ static int svc_i3c_master_send_ccc_cmd(s
- {
- 	struct svc_i3c_master *master = to_svc_i3c_master(m);
- 	bool broadcast = cmd->id < 0x80;
-+	int ret;
- 
- 	if (broadcast)
--		return svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
-+		ret = svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
- 	else
--		return svc_i3c_master_send_direct_ccc_cmd(master, cmd);
-+		ret = svc_i3c_master_send_direct_ccc_cmd(master, cmd);
-+
-+	if (ret)
-+		cmd->err = I3C_ERROR_M2;
-+
-+	return ret;
- }
- 
- static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
+index d38ae25e7c01f..b723368dbc644 100644
+--- a/arch/x86/kernel/cpu/common.c
++++ b/arch/x86/kernel/cpu/common.c
+@@ -1259,11 +1259,11 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
+ 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
+ 	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
+-	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
++	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
+ 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
+ 	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
+ 	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+-- 
+2.40.1
+
 
 
