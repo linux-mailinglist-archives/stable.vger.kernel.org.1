@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 96B9579AF65
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id F323379AD76
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:49 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241780AbjIKWX1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:23:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35998 "EHLO
+        id S240524AbjIKU4b (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241934AbjIKPSN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:13 -0400
+        with ESMTP id S239324AbjIKORr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B125120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CAAC7C433C8;
-        Mon, 11 Sep 2023 15:18:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6D76DDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:43 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 91854C433C7;
+        Mon, 11 Sep 2023 14:17:42 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445489;
-        bh=r63YQlw35F4v3ize8nwQIZbe7GfsPurfKYS5t3qX4HM=;
+        s=korg; t=1694441862;
+        bh=I4yCv0c86we53uiBjo7XrMn40w09rmWvsPY2UvFFg/0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iEjSYuW1QnwKu7lcZGd4Y/or0MvqJSqSkx69OTP/AxENzdXqMf8pvD6mP/PKn702e
-         ticQ3/4hQ34QXPXZVoFjVqaJzhRbGu1DyPJP0mkDK0A4DVeiudg6TcNGIOuWqMKhzS
-         PksEAr/H+J7RPvC9Jhd8Wxc5808cDiVpuUuVTnTo=
+        b=fT8VYHgjQuaL6V3jbsdEJqx7aXIT8tIEgTIrNPcyBDU2gVh68kCEa4QKh4bRJdruy
+         Cv6D+BGGsGWJI/b3l7X0AjpQ2YjRN0MJC2Kj4aTxHOz4vsn1cnfJf8PESHv8wQR8G3
+         7gVy1c9HdYeoDK624WeQXDs9VxbcmB0CMQmZFvfA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
+        Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 328/600] clk: qcom: gpucc-sm6350: Introduce index-based clk lookup
-Date:   Mon, 11 Sep 2023 15:46:01 +0200
-Message-ID: <20230911134643.368998944@linuxfoundation.org>
+Subject: [PATCH 6.5 563/739] Revert "f2fs: do not issue small discard commands during checkpoint"
+Date:   Mon, 11 Sep 2023 15:46:02 +0200
+Message-ID: <20230911134706.804052817@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,90 +50,81 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Chao Yu <chao@kernel.org>
 
-[ Upstream commit f6f89d194e4ddcfe197ac8a05ed4161f642a5c68 ]
+[ Upstream commit 005abf9e5e0d4dcfce318ae5dbcac32b7bf6b647 ]
 
-Add the nowadays-prefered and marginally faster way of looking up parent
-clocks in the device tree. It also allows for clock-names-independent
-operation, so long as the order (which is enforced by schema) is kept.
+Previously, we have two mechanisms to cache & submit small discards:
 
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230315-topic-lagoon_gpu-v2-1-afcdfb18bb13@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: 743913b343a3 ("clk: qcom: gpucc-sm6350: Fix clock source names")
+a) set max small discard number in /sys/fs/f2fs/vdb/max_small_discards,
+and checkpoint will cache small discard candidates w/ configured maximum
+number.
+
+b) call FITRIM ioctl, also, checkpoint in f2fs_trim_fs() will cache small
+discard candidates w/ configured discard granularity, but w/o limitation
+of number. FSTRIM interface is asynchronized, so it won't submit discard
+directly.
+
+Finally, discard thread will submit them in background periodically.
+
+However, after commit 9ac00e7cef10 ("f2fs: do not issue small discard
+commands during checkpoint"), the mechanism a) is broken, since no matter
+how we configure the sysfs entry /sys/fs/f2fs/vdb/max_small_discards,
+checkpoint will not cache small discard candidates any more.
+
+echo 0 > /sys/fs/f2fs/vdb/max_small_discards
+xfs_io -f /mnt/f2fs/file -c "pwrite 0 2m" -c "fsync"
+xfs_io /mnt/f2fs/file -c "fpunch 0 4k"
+sync
+cat /proc/fs/f2fs/vdb/discard_plist_info |head -2
+
+echo 100 > /sys/fs/f2fs/vdb/max_small_discards
+rm /mnt/f2fs/file
+xfs_io -f /mnt/f2fs/file -c "pwrite 0 2m" -c "fsync"
+xfs_io /mnt/f2fs/file -c "fpunch 0 4k"
+sync
+cat /proc/fs/f2fs/vdb/discard_plist_info |head -2
+
+Before the patch:
+Discard pend list(Show diacrd_cmd count on each entry, .:not exist):
+  0         .       .       .       .       .       .       .       .
+Discard pend list(Show diacrd_cmd count on each entry, .:not exist):
+  0         3       1       .       .       .       .       .       .
+
+After the patch:
+Discard pend list(Show diacrd_cmd count on each entry, .:not exist):
+  0         .       .       .       .       .       .       .       .
+Discard pend list(Show diacrd_cmd count on each entry, .:not exist):
+  0         .       .       .       .       .       .       .       .
+
+This patch reverts commit 9ac00e7cef10 ("f2fs: do not issue small discard
+commands during checkpoint") in order to fix this issue.
+
+Fixes: 9ac00e7cef10 ("f2fs: do not issue small discard commands during checkpoint")
+Signed-off-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gpucc-sm6350.c | 18 +++++++++++++-----
- 1 file changed, 13 insertions(+), 5 deletions(-)
+ fs/f2fs/segment.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gpucc-sm6350.c b/drivers/clk/qcom/gpucc-sm6350.c
-index ef15185a99c31..a9887d1f0ed71 100644
---- a/drivers/clk/qcom/gpucc-sm6350.c
-+++ b/drivers/clk/qcom/gpucc-sm6350.c
-@@ -24,6 +24,12 @@
- #define CX_GMU_CBCR_WAKE_MASK		0xF
- #define CX_GMU_CBCR_WAKE_SHIFT		8
+diff --git a/fs/f2fs/segment.c b/fs/f2fs/segment.c
+index a31a47b066d1d..be08be6f4bfd6 100644
+--- a/fs/f2fs/segment.c
++++ b/fs/f2fs/segment.c
+@@ -2211,7 +2211,7 @@ void f2fs_clear_prefree_segments(struct f2fs_sb_info *sbi,
+ 			len = next_pos - cur_pos;
  
-+enum {
-+	DT_BI_TCXO,
-+	DT_GPLL0_OUT_MAIN,
-+	DT_GPLL0_OUT_MAIN_DIV,
-+};
-+
- enum {
- 	P_BI_TCXO,
- 	P_GPLL0_OUT_MAIN,
-@@ -61,6 +67,7 @@ static struct clk_alpha_pll gpu_cc_pll0 = {
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gpu_cc_pll0",
- 			.parent_data =  &(const struct clk_parent_data){
-+				.index = DT_BI_TCXO,
- 				.fw_name = "bi_tcxo",
- 			},
- 			.num_parents = 1,
-@@ -104,6 +111,7 @@ static struct clk_alpha_pll gpu_cc_pll1 = {
- 		.hw.init = &(struct clk_init_data){
- 			.name = "gpu_cc_pll1",
- 			.parent_data =  &(const struct clk_parent_data){
-+				.index = DT_BI_TCXO,
- 				.fw_name = "bi_tcxo",
- 			},
- 			.num_parents = 1,
-@@ -121,11 +129,11 @@ static const struct parent_map gpu_cc_parent_map_0[] = {
- };
+ 			if (f2fs_sb_has_blkzoned(sbi) ||
+-					!force || len < cpc->trim_minlen)
++			    (force && len < cpc->trim_minlen))
+ 				goto skip;
  
- static const struct clk_parent_data gpu_cc_parent_data_0[] = {
--	{ .fw_name = "bi_tcxo" },
-+	{ .index = DT_BI_TCXO, .fw_name = "bi_tcxo" },
- 	{ .hw = &gpu_cc_pll0.clkr.hw },
- 	{ .hw = &gpu_cc_pll1.clkr.hw },
--	{ .fw_name = "gcc_gpu_gpll0_clk" },
--	{ .fw_name = "gcc_gpu_gpll0_div_clk" },
-+	{ .index = DT_GPLL0_OUT_MAIN, .fw_name = "gcc_gpu_gpll0_clk" },
-+	{ .index = DT_GPLL0_OUT_MAIN_DIV, .fw_name = "gcc_gpu_gpll0_div_clk" },
- };
- 
- static const struct parent_map gpu_cc_parent_map_1[] = {
-@@ -138,12 +146,12 @@ static const struct parent_map gpu_cc_parent_map_1[] = {
- };
- 
- static const struct clk_parent_data gpu_cc_parent_data_1[] = {
--	{ .fw_name = "bi_tcxo" },
-+	{ .index = DT_BI_TCXO, .fw_name = "bi_tcxo" },
- 	{ .hw = &crc_div.hw },
- 	{ .hw = &gpu_cc_pll0.clkr.hw },
- 	{ .hw = &gpu_cc_pll1.clkr.hw },
- 	{ .hw = &gpu_cc_pll1.clkr.hw },
--	{ .fw_name = "gcc_gpu_gpll0_clk" },
-+	{ .index = DT_GPLL0_OUT_MAIN, .fw_name = "gcc_gpu_gpll0_clk" },
- };
- 
- static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src[] = {
+ 			f2fs_issue_discard(sbi, entry->start_blkaddr + cur_pos,
 -- 
 2.40.1
 
