@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6FCFE79B111
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC2A179B0E1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239971AbjIKU4N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:56:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54900 "EHLO
+        id S1376470AbjIKWTm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240469AbjIKOpI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:08 -0400
+        with ESMTP id S239218AbjIKOOp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0A99012A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 502BBC433C9;
-        Mon, 11 Sep 2023 14:45:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C1B0DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56187C433C9;
+        Mon, 11 Sep 2023 14:14:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443503;
-        bh=hiYU0Z7FXUBWJesjr2MzeECtUXF5pM9IZg1N44OtYYE=;
+        s=korg; t=1694441680;
+        bh=35fX18uqjhHv3EwPPAcEA69MHSPWkjUCGwP2F4P6TSI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ohzY1uUaWTXQxZr+tjNpE0LNKMPmVylSTlY/S0BYW7UfZYixXevGwX68D0XHmv0LE
-         /MJLd6UKoJYm6zd3CE0M9Wd1ZSBC+ptUWKzq4iQdSIED/AeZS3GS57UwQLUwCdvaBf
-         pyyV0kesTfCBUjRzE/cukNKZTX1Ucy1F0ZOpPUMA=
+        b=mFvf6QJVb2ePzWacvhB3RFwtJGi3XZs2B5tAS1WP4PJ3nyrPkHmD5Fsk+zt94RGId
+         c+9+dRxv4gKKN9orrehUZCGbSanroI2WbHOXtC0THQebooSbD2EhzXqtR/ZngbxG0b
+         6xreebZLxqbM6OsM4ljh15Pn4rwc7kVZBd65CdDE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
-        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Tom Talpey <tom@talpey.com>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
+        Chuck Lever <chuck.lever@oracle.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 401/737] md/raid0: Fix performance regression for large sequential writes
-Date:   Mon, 11 Sep 2023 15:44:20 +0200
-Message-ID: <20230911134701.811417136@linuxfoundation.org>
+Subject: [PATCH 6.5 462/739] RDMA/siw: Fabricate a GID on tun and loopback devices
+Date:   Mon, 11 Sep 2023 15:44:21 +0200
+Message-ID: <20230911134704.057866202@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,93 +52,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jan Kara <jack@suse.cz>
+From: Chuck Lever <chuck.lever@oracle.com>
 
-[ Upstream commit 319ff40a542736d67e5bce18635de35d0e7a0bff ]
+[ Upstream commit bad5b6e34ffbaacc77ad28a0f482e33b3929e635 ]
 
-Commit f00d7c85be9e ("md/raid0: fix up bio splitting.") among other
-things changed how bio that needs to be split is submitted. Before this
-commit, we have split the bio, mapped and submitted each part. After
-this commit, we map only the first part of the split bio and submit the
-second part unmapped. Due to bio sorting in __submit_bio_noacct() this
-results in the following request ordering:
+LOOPBACK and NONE (tunnel) devices have all-zero MAC addresses.
+Currently, siw_device_create() falls back to copying the IB device's
+name in those cases, because an all-zero MAC address breaks the RDMA
+core address resolution mechanism.
 
-  9,0   18     1181     0.525037895 15995  Q  WS 1479315464 + 63392
+However, at the point when siw_device_create() constructs a GID, the
+ib_device::name field is uninitialized, leaving the MAC address to
+remain in an all-zero state.
 
-  Split off chunk-sized (1024 sectors) request:
+Fabricate a random artificial GID for such devices, and ensure this
+artificial GID is returned for all device query operations.
 
-  9,0   18     1182     0.629019647 15995  X  WS 1479315464 / 1479316488
-
-  Request is unaligned to the chunk so it's split in
-  raid0_make_request().  This is the first part mapped and punted to
-  bio_list:
-
-  8,0   18     7053     0.629020455 15995  A  WS 739921928 + 1016 <- (9,0) 1479315464
-
-  Now raid0_make_request() returns, second part is postponed on
-  bio_list. __submit_bio_noacct() resorts the bio_list, mapped request
-  is submitted to the underlying device:
-
-  8,0   18     7054     0.629022782 15995  G  WS 739921928 + 1016
-
-  Now we take another request from the bio_list which is the remainder
-  of the original huge request. Split off another chunk-sized bit from
-  it and the situation repeats:
-
-  9,0   18     1183     0.629024499 15995  X  WS 1479316488 / 1479317512
-  8,16  18     6998     0.629025110 15995  A  WS 739921928 + 1016 <- (9,0) 1479316488
-  8,16  18     6999     0.629026728 15995  G  WS 739921928 + 1016
-  ...
-  9,0   18     1184     0.629032940 15995  X  WS 1479317512 / 1479318536 [libnetacq-write]
-  8,0   18     7059     0.629033294 15995  A  WS 739922952 + 1016 <- (9,0) 1479317512
-  8,0   18     7060     0.629033902 15995  G  WS 739922952 + 1016
-  ...
-
-  This repeats until we consume the whole original huge request. Now we
-  finally get to processing the second parts of the split off requests
-  (in reverse order):
-
-  8,16  18     7181     0.629161384 15995  A  WS 739952640 + 8 <- (9,0) 1479377920
-  8,0   18     7239     0.629162140 15995  A  WS 739952640 + 8 <- (9,0) 1479376896
-  8,16  18     7186     0.629163881 15995  A  WS 739951616 + 8 <- (9,0) 1479375872
-  8,0   18     7242     0.629164421 15995  A  WS 739951616 + 8 <- (9,0) 1479374848
-  ...
-
-I guess it is obvious that this IO pattern is extremely inefficient way
-to perform sequential IO. It also makes bio_list to grow to rather long
-lengths.
-
-Change raid0_make_request() to map both parts of the split bio. Since we
-know we are provided with at most chunk-sized bios, we will always need
-to split the incoming bio at most once.
-
-Fixes: f00d7c85be9e ("md/raid0: fix up bio splitting.")
-Signed-off-by: Jan Kara <jack@suse.cz>
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20230814092720.3931-2-jack@suse.cz
-Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/168960673260.3007.12378736853793339110.stgit@manet.1015granger.net
+Reported-by: Tom Talpey <tom@talpey.com>
+Fixes: a2d36b02c15d ("RDMA/siw: Enable siw on tunnel devices")
+Reviewed-by: Bernard Metzler <bmt@zurich.ibm.com>
+Reviewed-by: Tom Talpey <tom@talpey.com>
+Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid0.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/infiniband/sw/siw/siw.h       |  1 +
+ drivers/infiniband/sw/siw/siw_main.c  | 22 ++++++++--------------
+ drivers/infiniband/sw/siw/siw_verbs.c |  4 ++--
+ 3 files changed, 11 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
-index d3c55f2e9b185..595856948dff8 100644
---- a/drivers/md/raid0.c
-+++ b/drivers/md/raid0.c
-@@ -626,7 +626,7 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
- 		struct bio *split = bio_split(bio, sectors, GFP_NOIO,
- 					      &mddev->bio_set);
- 		bio_chain(split, bio);
--		submit_bio_noacct(bio);
-+		raid0_map_submit_bio(mddev, bio);
- 		bio = split;
+diff --git a/drivers/infiniband/sw/siw/siw.h b/drivers/infiniband/sw/siw/siw.h
+index 2f3a9cda3850f..8b4a710b82bc1 100644
+--- a/drivers/infiniband/sw/siw/siw.h
++++ b/drivers/infiniband/sw/siw/siw.h
+@@ -74,6 +74,7 @@ struct siw_device {
+ 
+ 	u32 vendor_part_id;
+ 	int numa_node;
++	char raw_gid[ETH_ALEN];
+ 
+ 	/* physical port state (only one port per device) */
+ 	enum ib_port_state state;
+diff --git a/drivers/infiniband/sw/siw/siw_main.c b/drivers/infiniband/sw/siw/siw_main.c
+index 65b5cda5457ba..f45600d169ae7 100644
+--- a/drivers/infiniband/sw/siw/siw_main.c
++++ b/drivers/infiniband/sw/siw/siw_main.c
+@@ -75,8 +75,7 @@ static int siw_device_register(struct siw_device *sdev, const char *name)
+ 		return rv;
  	}
  
+-	siw_dbg(base_dev, "HWaddr=%pM\n", sdev->netdev->dev_addr);
+-
++	siw_dbg(base_dev, "HWaddr=%pM\n", sdev->raw_gid);
+ 	return 0;
+ }
+ 
+@@ -313,24 +312,19 @@ static struct siw_device *siw_device_create(struct net_device *netdev)
+ 		return NULL;
+ 
+ 	base_dev = &sdev->base_dev;
+-
+ 	sdev->netdev = netdev;
+ 
+-	if (netdev->type != ARPHRD_LOOPBACK && netdev->type != ARPHRD_NONE) {
+-		addrconf_addr_eui48((unsigned char *)&base_dev->node_guid,
+-				    netdev->dev_addr);
++	if (netdev->addr_len) {
++		memcpy(sdev->raw_gid, netdev->dev_addr,
++		       min_t(unsigned int, netdev->addr_len, ETH_ALEN));
+ 	} else {
+ 		/*
+-		 * This device does not have a HW address,
+-		 * but connection mangagement lib expects gid != 0
++		 * This device does not have a HW address, but
++		 * connection mangagement requires a unique gid.
+ 		 */
+-		size_t len = min_t(size_t, strlen(base_dev->name), 6);
+-		char addr[6] = { };
+-
+-		memcpy(addr, base_dev->name, len);
+-		addrconf_addr_eui48((unsigned char *)&base_dev->node_guid,
+-				    addr);
++		eth_random_addr(sdev->raw_gid);
+ 	}
++	addrconf_addr_eui48((u8 *)&base_dev->node_guid, sdev->raw_gid);
+ 
+ 	base_dev->uverbs_cmd_mask |= BIT_ULL(IB_USER_VERBS_CMD_POST_SEND);
+ 
+diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
+index 398ec13db6248..32b0befd25e27 100644
+--- a/drivers/infiniband/sw/siw/siw_verbs.c
++++ b/drivers/infiniband/sw/siw/siw_verbs.c
+@@ -157,7 +157,7 @@ int siw_query_device(struct ib_device *base_dev, struct ib_device_attr *attr,
+ 	attr->vendor_part_id = sdev->vendor_part_id;
+ 
+ 	addrconf_addr_eui48((u8 *)&attr->sys_image_guid,
+-			    sdev->netdev->dev_addr);
++			    sdev->raw_gid);
+ 
+ 	return 0;
+ }
+@@ -218,7 +218,7 @@ int siw_query_gid(struct ib_device *base_dev, u32 port, int idx,
+ 
+ 	/* subnet_prefix == interface_id == 0; */
+ 	memset(gid, 0, sizeof(*gid));
+-	memcpy(&gid->raw[0], sdev->netdev->dev_addr, 6);
++	memcpy(gid->raw, sdev->raw_gid, ETH_ALEN);
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
