@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C6DF179BBEC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A65EA79BE1C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345394AbjIKV2M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42788 "EHLO
+        id S236348AbjIKVFx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:05:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42808 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242188AbjIKPYc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:32 -0400
+        with ESMTP id S242192AbjIKPYh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 307F7F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 76A6EC433C9;
-        Mon, 11 Sep 2023 15:24:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B144BD8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 02ADFC433C7;
+        Mon, 11 Sep 2023 15:24:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445866;
-        bh=qDc9kZb1kcGGha3tfG54m4cWXTOkxCgDM9BZ5bTonYc=;
+        s=korg; t=1694445872;
+        bh=DSaSrz7oqaPk1s33MLvDUc1sucOSKSigCPEtdaH6Yrs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=rPoxUd80DVR59zuIUIgOtVAgBRYszVX3LFBxMKohuloo5lgBYgC8qsz5uURTQ6r3B
-         UdQm+p3xew4Xsgy3PBQAZadQWHOrjJjO5bblBCk//UWRgzQ7i9+npKqUBRw5fcXryb
-         TwMO2eYvLFtb2X+cmn10eMpY2ReXbDAZUpwiytok=
+        b=H3euHv/JXhgOG6Aq2ngeoAd6F10a6jxt+9QeteXjfMOhgatZllXCxguqW/eTfG88o
+         jx58wlPaqsyKbUefWCyQqQ4+OMRThW8VvzSqnLxCHUC9X2pJXM0CZ2k/lDBQgQ64QW
+         pMGm/u3G1M2dTe0MPBHrJpekMg+4HtQ5zMnMLDz4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        William Zhang <william.zhang@broadcom.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 500/600] mtd: rawnand: brcmnand: Fix mtd oobsize
-Date:   Mon, 11 Sep 2023 15:48:53 +0200
-Message-ID: <20230911134648.384926001@linuxfoundation.org>
+        patches@lists.linux.dev, Rex Zhang <rex.zhang@intel.com>,
+        Fenghua Yu <fenghua.yu@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 501/600] dmaengine: idxd: Modify the dependence of attribute pasid_enabled
+Date:   Mon, 11 Sep 2023 15:48:54 +0200
+Message-ID: <20230911134648.414674405@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -55,60 +55,42 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: William Zhang <william.zhang@broadcom.com>
+From: Rex Zhang <rex.zhang@intel.com>
 
-[ Upstream commit 60177390fa061c62d156f4a546e3efd90df3c183 ]
+[ Upstream commit 50c5e6f41d5ad7c731c31135a30d0e4f0e4fea26 ]
 
-brcmnand controller can only access the flash spare area up to certain
-bytes based on the ECC level. It can be less than the actual flash spare
-area size. For example, for many NAND chip supporting ECC BCH-8, it has
-226 bytes spare area. But controller can only uses 218 bytes. So brcmand
-driver overrides the mtd oobsize with the controller's accessible spare
-area size. When the nand base driver utilizes the nand_device object, it
-resets the oobsize back to the actual flash spare aprea size from
-nand_memory_organization structure and controller may not able to access
-all the oob area as mtd advises.
+Kernel PASID and user PASID are separately enabled. User needs to know the
+user PASID enabling status to decide how to use IDXD device in user space.
+This is done via the attribute /sys/bus/dsa/devices/dsa0/pasid_enabled.
+It's unnecessary for user to know the kernel PASID enabling status because
+user won't use the kernel PASID. But instead of showing the user PASID
+enabling status, the attribute shows the kernel PASID enabling status. Fix
+the issue by showing the user PASID enabling status in the attribute.
 
-This change fixes the issue by overriding the oobsize in the
-nand_memory_organization structure to the controller's accessible spare
-area size.
-
-Fixes: a7ab085d7c16 ("mtd: rawnand: Initialize the nand_device object")
-Signed-off-by: William Zhang <william.zhang@broadcom.com>
-Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/linux-mtd/20230706182909.79151-6-william.zhang@broadcom.com
+Fixes: 42a1b73852c4 ("dmaengine: idxd: Separate user and kernel pasid enabling")
+Signed-off-by: Rex Zhang <rex.zhang@intel.com>
+Acked-by: Fenghua Yu <fenghua.yu@intel.com>
+Acked-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20230614062706.1743078-1-rex.zhang@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/mtd/nand/raw/brcmnand/brcmnand.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/dma/idxd/sysfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/mtd/nand/raw/brcmnand/brcmnand.c b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-index 2e9c2e2d9c9f7..d8418d7fcc372 100644
---- a/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-+++ b/drivers/mtd/nand/raw/brcmnand/brcmnand.c
-@@ -2612,6 +2612,8 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
- 	struct nand_chip *chip = &host->chip;
- 	const struct nand_ecc_props *requirements =
- 		nanddev_get_ecc_requirements(&chip->base);
-+	struct nand_memory_organization *memorg =
-+		nanddev_get_memorg(&chip->base);
- 	struct brcmnand_controller *ctrl = host->ctrl;
- 	struct brcmnand_cfg *cfg = &host->hwcfg;
- 	char msg[128];
-@@ -2633,10 +2635,11 @@ static int brcmnand_setup_dev(struct brcmnand_host *host)
- 	if (cfg->spare_area_size > ctrl->max_oob)
- 		cfg->spare_area_size = ctrl->max_oob;
- 	/*
--	 * Set oobsize to be consistent with controller's spare_area_size, as
--	 * the rest is inaccessible.
-+	 * Set mtd and memorg oobsize to be consistent with controller's
-+	 * spare_area_size, as the rest is inaccessible.
- 	 */
- 	mtd->oobsize = cfg->spare_area_size * (mtd->writesize >> FC_SHIFT);
-+	memorg->oobsize = mtd->oobsize;
+diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+index 18cd8151dee02..6e1e14b376e65 100644
+--- a/drivers/dma/idxd/sysfs.c
++++ b/drivers/dma/idxd/sysfs.c
+@@ -1426,7 +1426,7 @@ static ssize_t pasid_enabled_show(struct device *dev,
+ {
+ 	struct idxd_device *idxd = confdev_to_idxd(dev);
  
- 	cfg->device_size = mtd->size;
- 	cfg->block_size = mtd->erasesize;
+-	return sysfs_emit(buf, "%u\n", device_pasid_enabled(idxd));
++	return sysfs_emit(buf, "%u\n", device_user_pasid_enabled(idxd));
+ }
+ static DEVICE_ATTR_RO(pasid_enabled);
+ 
 -- 
 2.40.1
 
