@@ -2,43 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C2F2C79B0FE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 72A2579B03E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244558AbjIKWZs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:25:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33310 "EHLO
+        id S242308AbjIKVHY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239421AbjIKOUH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:07 -0400
+        with ESMTP id S240738AbjIKOwZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67A88DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9042FC433C7;
-        Mon, 11 Sep 2023 14:20:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3BE9118;
+        Mon, 11 Sep 2023 07:52:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F289EC433C7;
+        Mon, 11 Sep 2023 14:52:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442002;
-        bh=Xtfz33bwtvBTXuNOxNDbg8xsGZeG0xAbBp4DIgEC3eY=;
+        s=korg; t=1694443940;
+        bh=8k7yvM6UqimuVPBlvfAyut5D2bVf7w+KZrhEhQXFOmw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=f2TK9Hw5t/m/KjCVTwZXqmbEhgLzFJ8eWThUks/I41vtBlYSmegiAW3Pctn5gAV1V
-         gO6gpN6otWAYuOw464Gvlw5rb5w2DSGQ9Uu2l+oN2yrD7C6URrzSAgCHY5llHs9sp9
-         WZP8uRX71wYx3jv8Rd83xLczZ7yVvxomn3Ytkzd4=
+        b=jBWV3+Dq6kild6S83sVTJjNoqFsFaeQfF27AHrxoCL6U8LCfzduzrqHj9tFnFo4bX
+         v92EbtZc4aPHOHtd6xkDdAtJxdjDOPWRW01tyy8F2Jt5UM0g8WbzglbfaumrPHS/bN
+         N1sS+c4zMfw6n/F8kN1CPCJwquL8b+WNlKD0n/C4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com,
-        Maxime Ripard <mripard@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-        Benjamin Tissoires <bentiss@kernel.org>,
+        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
+        Rob Evers <revers@redhat.com>,
+        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
+        David Laight <David.Laight@ACULAB.COM>,
+        Jozef Bacik <jobacik@redhat.com>,
+        Laurence Oberman <loberman@redhat.com>,
+        "James E.J. Bottomley" <jejb@linux.ibm.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
+        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
+        Oleksandr Natalenko <oleksandr@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 585/739] HID: uclogic: Correct devm device reference for hidinput input_dev name
+Subject: [PATCH 6.4 525/737] scsi: qedf: Do not touch __user pointer in qedf_dbg_debug_cmd_read() directly
 Date:   Mon, 11 Sep 2023 15:46:24 +0200
-Message-ID: <20230911134707.445214831@linuxfoundation.org>
+Message-ID: <20230911134705.241928535@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,72 +59,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: Oleksandr Natalenko <oleksandr@redhat.com>
 
-[ Upstream commit dd613a4e45f8d35f49a63a2064e5308fa5619e29 ]
+[ Upstream commit 31b5991a9a91ba97237ac9da509d78eec453ff72 ]
 
-Reference the HID device rather than the input device for the devm
-allocation of the input_dev name. Referencing the input_dev would lead to a
-use-after-free when the input_dev was unregistered and subsequently fires a
-uevent that depends on the name. At the point of firing the uevent, the
-name would be freed by devres management.
+The qedf_dbg_debug_cmd_read() function invokes sprintf() directly on a
+__user pointer, which may crash the kernel.
 
-Use devm_kasprintf to simplify the logic for allocating memory and
-formatting the input_dev name string.
+Avoid doing that by using a small on-stack buffer for scnprintf() and then
+calling simple_read_from_buffer() which does a proper copy_to_user() call.
 
-Reported-by: syzbot+3a0ebe8a52b89c63739d@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/
-Reported-by: Maxime Ripard <mripard@kernel.org>
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
-Fixes: cce2dbdf258e ("HID: uclogic: name the input nodes based on their tool")
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230824061308.222021-2-sergeantsagara@protonmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
+Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
+Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
+Cc: Saurav Kashyap <skashyap@marvell.com>
+Cc: Rob Evers <revers@redhat.com>
+Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
+Cc: David Laight <David.Laight@ACULAB.COM>
+Cc: Jozef Bacik <jobacik@redhat.com>
+Cc: Laurence Oberman <loberman@redhat.com>
+Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
+Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
+Cc: GR-QLogic-Storage-Upstream@marvell.com
+Cc: linux-scsi@vger.kernel.org
+Reviewed-by: Laurence Oberman <loberman@redhat.com>
+Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
+Tested-by: Laurence Oberman <loberman@redhat.com>
+Acked-by: Saurav Kashyap <skashyap@marvell.com>
+Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
+Link: https://lore.kernel.org/r/20230731084034.37021-3-oleksandr@redhat.com
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-uclogic-core.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ drivers/scsi/qedf/qedf_debugfs.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/hid/hid-uclogic-core.c b/drivers/hid/hid-uclogic-core.c
-index f67835f9ed4cc..ad74cbc9a0aa5 100644
---- a/drivers/hid/hid-uclogic-core.c
-+++ b/drivers/hid/hid-uclogic-core.c
-@@ -85,10 +85,8 @@ static int uclogic_input_configured(struct hid_device *hdev,
+diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
+index 3eb4334ac6a32..1c5716540e465 100644
+--- a/drivers/scsi/qedf/qedf_debugfs.c
++++ b/drivers/scsi/qedf/qedf_debugfs.c
+@@ -138,15 +138,14 @@ qedf_dbg_debug_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 			loff_t *ppos)
  {
- 	struct uclogic_drvdata *drvdata = hid_get_drvdata(hdev);
- 	struct uclogic_params *params = &drvdata->params;
--	char *name;
- 	const char *suffix = NULL;
- 	struct hid_field *field;
--	size_t len;
- 	size_t i;
- 	const struct uclogic_params_frame *frame;
+ 	int cnt;
++	char cbuf[32];
+ 	struct qedf_dbg_ctx *qedf_dbg =
+ 				(struct qedf_dbg_ctx *)filp->private_data;
  
-@@ -146,14 +144,9 @@ static int uclogic_input_configured(struct hid_device *hdev,
- 		}
- 	}
+ 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "debug mask=0x%x\n", qedf_debug);
+-	cnt = sprintf(buffer, "debug mask = 0x%x\n", qedf_debug);
++	cnt = scnprintf(cbuf, sizeof(cbuf), "debug mask = 0x%x\n", qedf_debug);
  
--	if (suffix) {
--		len = strlen(hdev->name) + 2 + strlen(suffix);
--		name = devm_kzalloc(&hi->input->dev, len, GFP_KERNEL);
--		if (name) {
--			snprintf(name, len, "%s %s", hdev->name, suffix);
--			hi->input->name = name;
--		}
--	}
-+	if (suffix)
-+		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
-+						 "%s %s", hdev->name, suffix);
- 
- 	return 0;
+-	cnt = min_t(int, count, cnt - *ppos);
+-	*ppos += cnt;
+-	return cnt;
++	return simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
  }
+ 
+ static ssize_t
 -- 
 2.40.1
 
