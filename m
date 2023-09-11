@@ -2,46 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D44D479B266
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3AB8079B2DB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345969AbjIKVWq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37602 "EHLO
+        id S1377684AbjIKW2B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239102AbjIKOLt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:49 -0400
+        with ESMTP id S241508AbjIKPKR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02401CD
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49F86C433C8;
-        Mon, 11 Sep 2023 14:11:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79A7CFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 683C8C433CA;
+        Mon, 11 Sep 2023 15:10:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441504;
-        bh=3sl2FYAHSl0N9NSpE078JRwWQJhIsHVrnbZDHo/j404=;
+        s=korg; t=1694445012;
+        bh=NAi9fxrwCybJn0+NZfHaedZ/SVDfODG2mYjoyU0ly1I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=W2AzSekJHIsRytmrzL+7z770py52hHZBogi+BUmAzpN4ois0C0yfJjP8zJ4YT6DRt
-         kRa32ShRf30Kd3iSNtuU9kBmHE9j2vOmkGVdYSsHi/FwHfQbg6lVx1O27RvZRkH9k0
-         j5aQmX/oMtqILH0lpuMrgGPvMKXlRzTbGJJEL8HQ=
+        b=oufBx0rVSfINNtnRFFXQ0BbDawXZv5XaVLFsMKUyOxJw6bEG40mKM+A7VzqxBBrZt
+         5GKpjLk6GAZ93lDUgGzXUrZzEjZNdczD3LhUA2G24ww8pgP+Hb/J63zI9cpBZi8y+N
+         KRy2w3/E6h1taYqIDZlMvId1bI0olfpzQM0ORMjo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        Simon Horman <simon.horman@corigine.com>,
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
         Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 429/739] wifi: ath10k: Use RMW accessors for changing LNKCTL
+Subject: [PATCH 6.1 195/600] wifi: mwifiex: avoid possible NULL skb pointer dereference
 Date:   Mon, 11 Sep 2023 15:43:48 +0200
-Message-ID: <20230911134703.159783354@linuxfoundation.org>
+Message-ID: <20230911134639.371326960@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,60 +50,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-[ Upstream commit f139492a09f15254fa261245cdbd65555cdf39e3 ]
+[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
 
-Don't assume that only the driver would be accessing LNKCTL. ASPM policy
-changes can trigger write to LNKCTL outside of driver's control.
+In 'mwifiex_handle_uap_rx_forward()', always check the value
+returned by 'skb_copy()' to avoid potential NULL pointer
+dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
+original skb in case of copying failure.
 
-Use RMW capability accessors which does proper locking to avoid losing
-concurrent updates to the register value. On restore, clear the ASPMC field
-properly.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Fixes: 76d870ed09ab ("ath10k: enable ASPM")
-Link: https://lore.kernel.org/r/20230717120503.15276-11-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: Simon Horman <simon.horman@corigine.com>
-Acked-by: Kalle Valo <kvalo@kernel.org>
+Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath10k/pci.c | 9 +++++----
- 1 file changed, 5 insertions(+), 4 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
+ 1 file changed, 9 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/ath/ath10k/pci.c b/drivers/net/wireless/ath/ath10k/pci.c
-index a7f44f6335fb8..9275a672f90cb 100644
---- a/drivers/net/wireless/ath/ath10k/pci.c
-+++ b/drivers/net/wireless/ath/ath10k/pci.c
-@@ -1963,8 +1963,9 @@ static int ath10k_pci_hif_start(struct ath10k *ar)
- 	ath10k_pci_irq_enable(ar);
- 	ath10k_pci_rx_post(ar);
+diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+index c1b8d41dd7536..b8b9a0fcb19cd 100644
+--- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
++++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
+@@ -253,7 +253,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
  
--	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				   ar_pci->link_ctl);
-+	pcie_capability_clear_and_set_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-+					   PCI_EXP_LNKCTL_ASPMC,
-+					   ar_pci->link_ctl & PCI_EXP_LNKCTL_ASPMC);
- 
- 	return 0;
- }
-@@ -2821,8 +2822,8 @@ static int ath10k_pci_hif_power_up(struct ath10k *ar,
- 
- 	pcie_capability_read_word(ar_pci->pdev, PCI_EXP_LNKCTL,
- 				  &ar_pci->link_ctl);
--	pcie_capability_write_word(ar_pci->pdev, PCI_EXP_LNKCTL,
--				   ar_pci->link_ctl & ~PCI_EXP_LNKCTL_ASPMC);
-+	pcie_capability_clear_word(ar_pci->pdev, PCI_EXP_LNKCTL,
-+				   PCI_EXP_LNKCTL_ASPMC);
- 
- 	/*
- 	 * Bring the target up cleanly.
+ 	if (is_multicast_ether_addr(ra)) {
+ 		skb_uap = skb_copy(skb, GFP_ATOMIC);
+-		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		if (likely(skb_uap)) {
++			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
++		} else {
++			mwifiex_dbg(adapter, ERROR,
++				    "failed to copy skb for uAP\n");
++			priv->stats.rx_dropped++;
++			dev_kfree_skb_any(skb);
++			return -1;
++		}
+ 	} else {
+ 		if (mwifiex_get_sta_entry(priv, ra)) {
+ 			/* Requeue Intra-BSS packet */
 -- 
 2.40.1
 
