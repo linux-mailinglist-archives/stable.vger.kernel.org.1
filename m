@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1E96A79AF7B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4F4DC79AEFC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:21 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231653AbjIKWtH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:49:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45128 "EHLO
+        id S1376677AbjIKWUN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241454AbjIKPJM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:12 -0400
+        with ESMTP id S239048AbjIKOKa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD45AFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C40C433C8;
-        Mon, 11 Sep 2023 15:09:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D9BDCCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2B430C433C8;
+        Mon, 11 Sep 2023 14:10:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444948;
-        bh=BVTObnbdlrZ+R2Gx+7m/EyPMjFEP4pXYBvA5VqKJndY=;
+        s=korg; t=1694441425;
+        bh=nDX0OgIJdtlZ3rK+oBvNKCSbBF6yvz/3VnHj7PPnZn4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HeSqAXJ4gXLaNulAkPG8Aie0HV41hAWTxLNsKVgspYaKwbLT0XP2ezwlEys3CDoMM
-         M0WW6bRV5qlu804ikektoWae6qCcBQPghM75sCV2/MnDQDxOTkGLMMKqjp5+jZPgQ8
-         BK5fxt5F5spewwxiHni9xBHFxcQqgkP8s6pN0o3o=
+        b=g2CUhgCMmTSNmZi21eWVrfRlzvDw+oOdatgeFkEtZhkOptnFEXA9M6RRcQ2DginNm
+         5kq+Q6HyA0/YwL2naqd5OrNprhIuGcxo4evBxJXcRzSJj6AJPnIjI0TOqaXXnvU0x3
+         1kuGAlop2bBW8naaZSe0tKW3qtt8wl6lv5Ai6mNU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yipeng Zou <zouyipeng@huawei.com>,
-        Daniel Borkmann <daniel@iogearbox.net>,
-        Li Zetao <lizetao1@huawei.com>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 174/600] selftests/bpf: Fix repeat option when kfunc_call verification fails
-Date:   Mon, 11 Sep 2023 15:43:27 +0200
-Message-ID: <20230911134638.740910141@linuxfoundation.org>
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 409/739] clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs
+Date:   Mon, 11 Sep 2023 15:43:28 +0200
+Message-ID: <20230911134702.605265926@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yipeng Zou <zouyipeng@huawei.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 811915db674f8daf19bb4fcb67da9017235ce26d ]
+[ Upstream commit a27ac3806b0a0e6954fb5967223b8635242e5b8f ]
 
-There is no way where topts.repeat can be set to 1 when tc_test fails.
-Fix the typo where the break statement slipped by one line.
+Use the floor ops to prevent warnings like this at suspend exit and boot:
 
-Fixes: fb66223a244f ("selftests/bpf: add test for accessing ctx from syscall program type")
-Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Reviewed-by: Li Zetao <lizetao1@huawei.com>
-Link: https://lore.kernel.org/bpf/20230814031434.3077944-1-zouyipeng@huawei.com
+mmc0: Card appears overclocked; req 800000 Hz, actual 25000000 Hz
+
+Fixes: db0c944ee92b ("clk: qcom: Add clock driver for SM8450")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20230811-topic-8450_clk-v1-1-88031478d548@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/bpf/prog_tests/kfunc_call.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-sm8450.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/bpf/prog_tests/kfunc_call.c b/tools/testing/selftests/bpf/prog_tests/kfunc_call.c
-index 5af1ee8f0e6ee..36071f3f15ba1 100644
---- a/tools/testing/selftests/bpf/prog_tests/kfunc_call.c
-+++ b/tools/testing/selftests/bpf/prog_tests/kfunc_call.c
-@@ -171,8 +171,8 @@ static void verify_fail(struct kfunc_test_params *param)
- 	case tc_test:
- 		topts.data_in = &pkt_v4;
- 		topts.data_size_in = sizeof(pkt_v4);
--		break;
- 		topts.repeat = 1;
-+		break;
- 	}
+diff --git a/drivers/clk/qcom/gcc-sm8450.c b/drivers/clk/qcom/gcc-sm8450.c
+index 75635d40a12d3..9f4f72553ecf2 100644
+--- a/drivers/clk/qcom/gcc-sm8450.c
++++ b/drivers/clk/qcom/gcc-sm8450.c
+@@ -935,7 +935,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_7,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_7),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
  
- 	skel = kfunc_call_fail__open_opts(&opts);
+@@ -958,7 +958,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
+ 
 -- 
 2.40.1
 
