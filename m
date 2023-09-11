@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 94ADF79B406
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3C43979B2EB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233142AbjIKUu0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32896 "EHLO
+        id S1354227AbjIKVwz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:52:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52086 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241218AbjIKPEY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:24 -0400
+        with ESMTP id S238814AbjIKOFe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA978125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F2D83C43391;
-        Mon, 11 Sep 2023 15:04:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3309E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05572C433C8;
+        Mon, 11 Sep 2023 14:05:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444660;
-        bh=fzvRgjl7FOijSrAl4nCeRtjdHxhW8bPt35Nca3/m4lw=;
+        s=korg; t=1694441129;
+        bh=bxuHdAHxFhfMiR9SonF0d8K506349I2EkFFODKL5xyY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MspWaD4UMz0QkbLz/BIAZB7MbVjL5VOJKkkLiD4+J1bva800W1Hq/GqRRLlUJ9T1B
-         2aXWp/5jc2Vuz2t7cGZ9rCtxTHsqSOLfEkx8B8LVHX276OaHz1YgmwPkfTMxW9lHWq
-         X10DP5rYkkUzKcm+lX0xyOUMacHjspSmce6CmuBE=
+        b=SPTjWMlQXQnXKb2JhuPGtYAJyMvSvfgmYEqqOOnYNldOHZJ1HdMkSwPx3UNpSq/k8
+         DWuzROYyjwJaHQzQeqod0P131nxXSoJTCZqC9rodui6lk+RiJaLP5osWDNzSmfS1os
+         do32maI6en9GF6amiNFy+zyCJEw+0oV7viRyOfCw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Kelley <mikelley@microsoft.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Abhinav Kumar <quic_abhinavk@quicinc.com>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Ryan McCann <quic_rmccann@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 070/600] scsi: storvsc: Always set no_report_opcodes
-Date:   Mon, 11 Sep 2023 15:41:43 +0200
-Message-ID: <20230911134635.686681269@linuxfoundation.org>
+Subject: [PATCH 6.5 305/739] drm/msm/dpu: Define names for unnamed sblks
+Date:   Mon, 11 Sep 2023 15:41:44 +0200
+Message-ID: <20230911134659.641568825@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,50 +51,91 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Michael Kelley <mikelley@microsoft.com>
+From: Ryan McCann <quic_rmccann@quicinc.com>
 
-[ Upstream commit 31d16e712bdcaee769de4780f72ff8d6cd3f0589 ]
+[ Upstream commit 46998bf8431c30879be29bbbf67eefb583136ccb ]
 
-Hyper-V synthetic SCSI devices do not support the MAINTENANCE_IN SCSI
-command, so scsi_report_opcode() always fails, resulting in messages like
-this:
+Some sub-blocks in the hw catalog have not been given a name, so when the
+registers from that block are dumped, there is no name to reference.
+Define names for relevant sub-blocks to fix this.
 
-hv_storvsc <guid>: tag#205 cmd 0xa3 status: scsi 0x2 srb 0x86 hv 0xc0000001
-
-The recently added support for command duration limits calls
-scsi_report_opcode() four times as each device comes online, which
-significantly increases the number of messages logged in a system with many
-disks.
-
-Fix the problem by always marking Hyper-V synthetic SCSI devices as not
-supporting scsi_report_opcode(). With this setting, the MAINTENANCE_IN SCSI
-command is not issued and no messages are logged.
-
-Signed-off-by: Michael Kelley <mikelley@microsoft.com>
-Link: https://lore.kernel.org/r/1686343101-18930-1-git-send-email-mikelley@microsoft.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Signed-off-by: Ryan McCann <quic_rmccann@quicinc.com>
+Patchwork: https://patchwork.freedesktop.org/patch/546199/
+Link: https://lore.kernel.org/r/20230622-devcoredump_patch-v5-3-67e8b66c4723@quicinc.com
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: 57a1ca6cf73b ("drm/msm/dpu: fix DSC 1.2 enc subblock length")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/storvsc_drv.c | 2 ++
- 1 file changed, 2 insertions(+)
+ .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 20 +++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/scsi/storvsc_drv.c b/drivers/scsi/storvsc_drv.c
-index 83d09c2009280..7a1dc5c7c49ee 100644
---- a/drivers/scsi/storvsc_drv.c
-+++ b/drivers/scsi/storvsc_drv.c
-@@ -1568,6 +1568,8 @@ static int storvsc_device_configure(struct scsi_device *sdevice)
- {
- 	blk_queue_rq_timeout(sdevice->request_queue, (storvsc_timeout * HZ));
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+index e96b3c2c2faf0..8b7143f2c760d 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+@@ -444,12 +444,12 @@ static const struct dpu_lm_sub_blks qcm2290_lm_sblk = {
+  * DSPP sub blocks config
+  *************************************************************/
+ static const struct dpu_dspp_sub_blks msm8998_dspp_sblk = {
+-	.pcc = {.id = DPU_DSPP_PCC, .base = 0x1700,
++	.pcc = {.name = "pcc", .id = DPU_DSPP_PCC, .base = 0x1700,
+ 		.len = 0x90, .version = 0x10007},
+ };
  
-+	/* storvsc devices don't support MAINTENANCE_IN SCSI cmd */
-+	sdevice->no_report_opcodes = 1;
- 	sdevice->no_write_same = 1;
+ static const struct dpu_dspp_sub_blks sdm845_dspp_sblk = {
+-	.pcc = {.id = DPU_DSPP_PCC, .base = 0x1700,
++	.pcc = {.name = "pcc", .id = DPU_DSPP_PCC, .base = 0x1700,
+ 		.len = 0x90, .version = 0x40000},
+ };
  
- 	/*
+@@ -465,19 +465,19 @@ static const struct dpu_dspp_sub_blks sdm845_dspp_sblk = {
+  * PINGPONG sub blocks config
+  *************************************************************/
+ static const struct dpu_pingpong_sub_blks sdm845_pp_sblk_te = {
+-	.te2 = {.id = DPU_PINGPONG_TE2, .base = 0x2000, .len = 0x0,
++	.te2 = {.name = "te2", .id = DPU_PINGPONG_TE2, .base = 0x2000, .len = 0x0,
+ 		.version = 0x1},
+-	.dither = {.id = DPU_PINGPONG_DITHER, .base = 0x30e0,
++	.dither = {.name = "dither", .id = DPU_PINGPONG_DITHER, .base = 0x30e0,
+ 		.len = 0x20, .version = 0x10000},
+ };
+ 
+ static const struct dpu_pingpong_sub_blks sdm845_pp_sblk = {
+-	.dither = {.id = DPU_PINGPONG_DITHER, .base = 0x30e0,
++	.dither = {.name = "dither", .id = DPU_PINGPONG_DITHER, .base = 0x30e0,
+ 		.len = 0x20, .version = 0x10000},
+ };
+ 
+ static const struct dpu_pingpong_sub_blks sc7280_pp_sblk = {
+-	.dither = {.id = DPU_PINGPONG_DITHER, .base = 0xe0,
++	.dither = {.name = "dither", .id = DPU_PINGPONG_DITHER, .base = 0xe0,
+ 	.len = 0x20, .version = 0x20000},
+ };
+ 
+@@ -517,13 +517,13 @@ static const struct dpu_pingpong_sub_blks sc7280_pp_sblk = {
+  * DSC sub blocks config
+  *************************************************************/
+ static const struct dpu_dsc_sub_blks dsc_sblk_0 = {
+-	.enc = {.base = 0x100, .len = 0x100},
+-	.ctl = {.base = 0xF00, .len = 0x10},
++	.enc = {.name = "enc", .base = 0x100, .len = 0x100},
++	.ctl = {.name = "ctl", .base = 0xF00, .len = 0x10},
+ };
+ 
+ static const struct dpu_dsc_sub_blks dsc_sblk_1 = {
+-	.enc = {.base = 0x200, .len = 0x100},
+-	.ctl = {.base = 0xF80, .len = 0x10},
++	.enc = {.name = "enc", .base = 0x200, .len = 0x100},
++	.ctl = {.name = "ctl", .base = 0xF80, .len = 0x10},
+ };
+ 
+ /*************************************************************
 -- 
 2.40.1
 
