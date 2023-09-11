@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0DFDF79AF1A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C016179B4CD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243022AbjIKU66 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38280 "EHLO
+        id S1351260AbjIKVm4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:42:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240127AbjIKOhN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:13 -0400
+        with ESMTP id S240128AbjIKOhQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F23A0F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:08 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 442CBC433C8;
-        Mon, 11 Sep 2023 14:37:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5967F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16474C433CA;
+        Mon, 11 Sep 2023 14:37:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443028;
-        bh=qX6ElHOxShOMBww12w07i8hXQ7ocn+/ua5kHcH+HVAI=;
+        s=korg; t=1694443031;
+        bh=JE0UpFEaCOzzT3lGJrMSbgQEtzK2Xg0h0yAdbHnTnrE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=StHRk/X9pOkg29CCizty5FA6GkcQ9L4hnsbEYI7CO7ve9M/aWDNCO8lG4I5qik2Q5
-         dzBezOizwJfZ8wCuAOTm21r5uZAKO5KHbV2x0iWgmIjJ2gZbG6jy6yzCfhUiHTnrGt
-         eXtHVfMwq2oOCo/EsdjSH9WcAKjHUyvXANis4awk=
+        b=eq+TyJofScZLU6Yi5fJ+6z1xiMJxN1laTOKFrChcZPjXcwvq03wfddg3HlEM4f+Cb
+         75hlrGQaeRkpmtBO54NlDkxWCXxQ0OYh/TFuIVCsrPutvrjwlqzfWKKalypoxspZmG
+         8VoSW2+ZTYcr/KD6/Lw2lOpcfJXVDzptjSaHEDdI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
         Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 232/737] wifi: ath9k: fix races between ath9k_wmi_cmd and ath9k_wmi_ctrl_rx
-Date:   Mon, 11 Sep 2023 15:41:31 +0200
-Message-ID: <20230911134657.078143245@linuxfoundation.org>
+Subject: [PATCH 6.4 233/737] wifi: ath9k: protect WMI command response buffer replacement with a lock
+Date:   Mon, 11 Sep 2023 15:41:32 +0200
+Message-ID: <20230911134657.115563600@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -58,73 +58,18 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit b674fb513e2e7a514fcde287c0f73915d393fdb6 ]
+[ Upstream commit 454994cfa9e4c18b6df9f78b60db8eadc20a6c25 ]
 
-Currently, the synchronization between ath9k_wmi_cmd() and
-ath9k_wmi_ctrl_rx() is exposed to a race condition which, although being
-rather unlikely, can lead to invalid behaviour of ath9k_wmi_cmd().
+If ath9k_wmi_cmd() has exited with a timeout, it is possible that during
+next ath9k_wmi_cmd() call the wmi_rsp callback for previous wmi command
+writes to new wmi->cmd_rsp_buf and makes a completion. This results in an
+invalid ath9k_wmi_cmd() return value.
 
-Consider the following scenario:
+Move the replacement of WMI command response buffer and length under
+wmi_lock. Note that last_seq_id value is updated there, too.
 
-CPU0					CPU1
-
-ath9k_wmi_cmd(...)
-  mutex_lock(&wmi->op_mutex)
-  ath9k_wmi_cmd_issue(...)
-  wait_for_completion_timeout(...)
-  ---
-  timeout
-  ---
-					/* the callback is being processed
-					 * before last_seq_id became zero
-					 */
-					ath9k_wmi_ctrl_rx(...)
-					  spin_lock_irqsave(...)
-					  /* wmi->last_seq_id check here
-					   * doesn't detect timeout yet
-					   */
-					  spin_unlock_irqrestore(...)
-  /* last_seq_id is zeroed to
-   * indicate there was a timeout
-   */
-  wmi->last_seq_id = 0
-  mutex_unlock(&wmi->op_mutex)
-  return -ETIMEDOUT
-
-ath9k_wmi_cmd(...)
-  mutex_lock(&wmi->op_mutex)
-  /* the buffer is replaced with
-   * another one
-   */
-  wmi->cmd_rsp_buf = rsp_buf
-  wmi->cmd_rsp_len = rsp_len
-  ath9k_wmi_cmd_issue(...)
-    spin_lock_irqsave(...)
-    spin_unlock_irqrestore(...)
-  wait_for_completion_timeout(...)
-					/* the continuation of the
-					 * callback left after the first
-					 * ath9k_wmi_cmd call
-					 */
-					  ath9k_wmi_rsp_callback(...)
-					    /* copying data designated
-					     * to already timeouted
-					     * WMI command into an
-					     * inappropriate wmi_cmd_buf
-					     */
-					    memcpy(...)
-					    complete(&wmi->cmd_wait)
-  /* awakened by the bogus callback
-   * => invalid return result
-   */
-  mutex_unlock(&wmi->op_mutex)
-  return 0
-
-To fix this, update last_seq_id on timeout path inside ath9k_wmi_cmd()
-under the wmi_lock. Move ath9k_wmi_rsp_callback() under wmi_lock inside
-ath9k_wmi_ctrl_rx() so that the wmi->cmd_wait can be completed only for
-initially designated wmi_cmd call, otherwise the path would be rejected
-with last_seq_id check.
+Thus, the buffer cannot be written to by a belated wmi_rsp callback
+because that path is properly rejected by the last_seq_id check.
 
 Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
 
@@ -132,48 +77,51 @@ Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
 Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
 Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
 Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230425192607.18015-1-pchelkin@ispras.ru
+Link: https://lore.kernel.org/r/20230425192607.18015-2-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/wmi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath9k/wmi.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
 diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
-index d652c647d56b5..04f363cb90fe5 100644
+index 04f363cb90fe5..1476b42b52a91 100644
 --- a/drivers/net/wireless/ath/ath9k/wmi.c
 +++ b/drivers/net/wireless/ath/ath9k/wmi.c
-@@ -242,10 +242,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
- 		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 		goto free_skb;
+@@ -283,7 +283,8 @@ int ath9k_wmi_connect(struct htc_target *htc, struct wmi *wmi,
+ 
+ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
+ 			       struct sk_buff *skb,
+-			       enum wmi_cmd_id cmd, u16 len)
++			       enum wmi_cmd_id cmd, u16 len,
++			       u8 *rsp_buf, u32 rsp_len)
+ {
+ 	struct wmi_cmd_hdr *hdr;
+ 	unsigned long flags;
+@@ -293,6 +294,11 @@ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
+ 	hdr->seq_no = cpu_to_be16(++wmi->tx_seq_id);
+ 
+ 	spin_lock_irqsave(&wmi->wmi_lock, flags);
++
++	/* record the rsp buffer and length */
++	wmi->cmd_rsp_buf = rsp_buf;
++	wmi->cmd_rsp_len = rsp_len;
++
+ 	wmi->last_seq_id = wmi->tx_seq_id;
+ 	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 
+@@ -333,11 +339,7 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 		goto out;
  	}
--	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
  
- 	/* WMI command response */
- 	ath9k_wmi_rsp_callback(wmi, skb);
-+	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+-	/* record the rsp buffer and length */
+-	wmi->cmd_rsp_buf = rsp_buf;
+-	wmi->cmd_rsp_len = rsp_len;
+-
+-	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len);
++	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len, rsp_buf, rsp_len);
+ 	if (ret)
+ 		goto out;
  
- free_skb:
- 	kfree_skb(skb);
-@@ -308,8 +308,8 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
- 	struct ath_common *common = ath9k_hw_common(ah);
- 	u16 headroom = sizeof(struct htc_frame_hdr) +
- 		       sizeof(struct wmi_cmd_hdr);
-+	unsigned long time_left, flags;
- 	struct sk_buff *skb;
--	unsigned long time_left;
- 	int ret = 0;
- 
- 	if (ah->ah_flags & AH_UNPLUGGED)
-@@ -345,7 +345,9 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
- 	if (!time_left) {
- 		ath_dbg(common, WMI, "Timeout waiting for WMI command: %s\n",
- 			wmi_cmd_to_name(cmd_id));
-+		spin_lock_irqsave(&wmi->wmi_lock, flags);
- 		wmi->last_seq_id = 0;
-+		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 		mutex_unlock(&wmi->op_mutex);
- 		return -ETIMEDOUT;
- 	}
 -- 
 2.40.1
 
