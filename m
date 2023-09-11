@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 74C8179B4ED
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A848B79B5C4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354140AbjIKVwg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40244 "EHLO
+        id S1359803AbjIKWSs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43192 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240777AbjIKOxf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:35 -0400
+        with ESMTP id S241948AbjIKPSu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAE98118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D6C1EC433C8;
-        Mon, 11 Sep 2023 14:53:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2DADFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 090D6C433C7;
+        Mon, 11 Sep 2023 15:18:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444010;
-        bh=+hlaxlLw7V5nxNRN6LOT6M+5l86aGJVdm5fN/f73DQ8=;
+        s=korg; t=1694445525;
+        bh=95vNOmkZ88PVpNBRMgrMDa/VPtiBFDnlQcfr+8rWhPM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=pg17dZaQDjnXR74YEIvKjrzgEgZQQtvfqc5gBAiL5XzE6RXAx1ccG6ZJaEyyANjq6
-         m+FIyX8r7hrVQBSk9KjbdolxeXj61ugK3cpKepaC4v8/s3xKJLDzVQbe/Sqy+NDtHX
-         vTbU/lFhdy3GMFwlRFr92ogN5jPGgbS4zpFkcEMk=
+        b=pVwsTtdQ/fh8wNOYL6iWZ4/zbdWetUeyyLLLldHqdeg+TWRSYkz5gjUGh4FIbRSIx
+         KHpAqcAp8pyAT21dhJIgG7yALJUs0K15p6Qq7tVSr2OrtNKcObVr+w7VnCBx5+Arlz
+         aPH3x40eLh4C18yriU4f8I3NbrlgFO2AIWbcI+1o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Colin Ian King <colin.i.king@gmail.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Christoph Hellwig <hch@lst.de>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 551/737] media: go7007: Remove redundant if statement
-Date:   Mon, 11 Sep 2023 15:46:50 +0200
-Message-ID: <20230911134705.948077088@linuxfoundation.org>
+Subject: [PATCH 6.1 378/600] nfs/blocklayout: Use the passed in gfp flags
+Date:   Mon, 11 Sep 2023 15:46:51 +0200
+Message-ID: <20230911134644.831507311@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,45 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Colin Ian King <colin.i.king@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit f33cb49081da0ec5af0888f8ecbd566bd326eed1 ]
+[ Upstream commit 08b45fcb2d4675f6182fe0edc0d8b1fe604051fa ]
 
-The if statement that compares msgs[i].len != 3 is always false because
-it is in a code block where msg[i].len is equal to 3. The check is
-redundant and can be removed.
+This allocation should use the passed in GFP_ flags instead of
+GFP_KERNEL.  One places where this matters is in filelayout_pg_init_write()
+which uses GFP_NOFS as the allocation flags.
 
-As detected by cppcheck static analysis:
-drivers/media/usb/go7007/go7007-i2c.c:168:20: warning: Opposite inner
-'if' condition leads to a dead code block. [oppositeInnerCondition]
-
-Link: https://lore.kernel.org/linux-media/20230727174007.635572-1-colin.i.king@gmail.com
-
-Fixes: 866b8695d67e ("Staging: add the go7007 video driver")
-Signed-off-by: Colin Ian King <colin.i.king@gmail.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 5c83746a0cf2 ("pnfs/blocklayout: in-kernel GETDEVICEINFO XDR parsing")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/usb/go7007/go7007-i2c.c | 2 --
- 1 file changed, 2 deletions(-)
+ fs/nfs/blocklayout/dev.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/usb/go7007/go7007-i2c.c b/drivers/media/usb/go7007/go7007-i2c.c
-index 38339dd2f83f7..2880370e45c8b 100644
---- a/drivers/media/usb/go7007/go7007-i2c.c
-+++ b/drivers/media/usb/go7007/go7007-i2c.c
-@@ -165,8 +165,6 @@ static int go7007_i2c_master_xfer(struct i2c_adapter *adapter,
- 		} else if (msgs[i].len == 3) {
- 			if (msgs[i].flags & I2C_M_RD)
- 				return -EIO;
--			if (msgs[i].len != 3)
--				return -EIO;
- 			if (go7007_i2c_xfer(go, msgs[i].addr, 0,
- 					(msgs[i].buf[0] << 8) | msgs[i].buf[1],
- 					0x01, &msgs[i].buf[2]) < 0)
+diff --git a/fs/nfs/blocklayout/dev.c b/fs/nfs/blocklayout/dev.c
+index fea5f8821da5e..ce2ea62397972 100644
+--- a/fs/nfs/blocklayout/dev.c
++++ b/fs/nfs/blocklayout/dev.c
+@@ -402,7 +402,7 @@ bl_parse_concat(struct nfs_server *server, struct pnfs_block_dev *d,
+ 	int ret, i;
+ 
+ 	d->children = kcalloc(v->concat.volumes_count,
+-			sizeof(struct pnfs_block_dev), GFP_KERNEL);
++			sizeof(struct pnfs_block_dev), gfp_mask);
+ 	if (!d->children)
+ 		return -ENOMEM;
+ 
+@@ -431,7 +431,7 @@ bl_parse_stripe(struct nfs_server *server, struct pnfs_block_dev *d,
+ 	int ret, i;
+ 
+ 	d->children = kcalloc(v->stripe.volumes_count,
+-			sizeof(struct pnfs_block_dev), GFP_KERNEL);
++			sizeof(struct pnfs_block_dev), gfp_mask);
+ 	if (!d->children)
+ 		return -ENOMEM;
+ 
 -- 
 2.40.1
 
