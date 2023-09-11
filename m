@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AADA879BFC5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CE3CE79B94C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239564AbjIKVRW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:17:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48084 "EHLO
+        id S241716AbjIKVHR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241825AbjIKPPe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:34 -0400
+        with ESMTP id S240623AbjIKOtL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:49:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB7F3FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0F7D8C433C8;
-        Mon, 11 Sep 2023 15:15:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 89615E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:49:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD457C433C8;
+        Mon, 11 Sep 2023 14:49:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445330;
-        bh=8As8puNIuxQFwgD+osdT3Zx3+kDGwJVoJxnhTlDdpYQ=;
+        s=korg; t=1694443747;
+        bh=suNk0lVzZt0fSPMhuawZe77TckFn+lkBv0b+GC2W4Xs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=j+mEVP598eX/jByRPt0PvPwqqL+NORz+5cYh1xvtXYEgCxM6jrH7dtxWvMfWBCz/A
-         W3AxcFYiIKF3rKq9g18VDFUmsQ4AAgUYKFSwkmF+rmVlk2qmm1SClDV/ggSDuckehB
-         oyolvWDAAXt2NPK7c5EzUISJExwvTsxCzMO/PY+c=
+        b=ybd4pMNaxjRSkLqFdnBdLmN96lRZIEVQFIBHPrEZqwNUtYM0BpPvGvwBBng56AzoQ
+         StTH4qXLKl66MGjBa26WvFIC4QeXhRU4Po65HpOO33DXsECFtLu8wl2VRraMVCEV20
+         RH96X5w3pGqTrVIAcyFYB2gZlnDoOAIwD3nw/j3M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Wronek <davidwronek@gmail.com>,
-        Yassine Oudjana <y.oudjana@protonmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 310/600] arm64: dts: qcom: msm8996: Fix dsi1 interrupts
-Date:   Mon, 11 Sep 2023 15:45:43 +0200
-Message-ID: <20230911134642.795587845@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Daniel Marcovitch <dmarcovitch@nvidia.com>,
+        Vasant Hegde <vasant.hegde@amd.com>,
+        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 485/737] iommu/amd/iommu_v2: Fix pasid_state refcount dec hit 0 warning on pasid unbind
+Date:   Mon, 11 Sep 2023 15:45:44 +0200
+Message-ID: <20230911134704.125116921@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,41 +51,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wronek <davidwronek@gmail.com>
+From: Daniel Marcovitch <dmarcovitch@nvidia.com>
 
-[ Upstream commit bd3b4ac11845b428996cfd2c7b8302ba6a07340d ]
+[ Upstream commit 534103bcd52ca9c1fecbc70e717b4a538dc4ded8 ]
 
-Fix IRQ flags mismatch which was keeping dsi1 from probing by changing
-interrupts = <4> to interrupts = <5>.
+When unbinding pasid - a race condition exists vs outstanding page faults.
 
-Fixes: 2752bb7d9b58 ("arm64: dts: qcom: msm8996: add second DSI interface")
-Signed-off-by: David Wronek <davidwronek@gmail.com>
-Acked-by: Yassine Oudjana <y.oudjana@protonmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230805130936.359860-2-davidwronek@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+To prevent this, the pasid_state object contains a refcount.
+    * set to 1 on pasid bind
+    * incremented on each ppr notification start
+    * decremented on each ppr notification done
+    * decremented on pasid unbind
+
+Since refcount_dec assumes that refcount will never reach 0:
+  the current implementation causes the following to be invoked on
+  pasid unbind:
+        REFCOUNT_WARN("decrement hit 0; leaking memory")
+
+Fix this issue by changing refcount_dec to refcount_dec_and_test
+to explicitly handle refcount=1.
+
+Fixes: 8bc54824da4e ("iommu/amd: Convert from atomic_t to refcount_t on pasid_state->count")
+Signed-off-by: Daniel Marcovitch <dmarcovitch@nvidia.com>
+Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
+Link: https://lore.kernel.org/r/20230609105146.7773-2-vasant.hegde@amd.com
+Signed-off-by: Joerg Roedel <jroedel@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8996.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/iommu/amd/iommu_v2.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8996.dtsi b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-index 7e381d8257ba1..9de2248a385a5 100644
---- a/arch/arm64/boot/dts/qcom/msm8996.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8996.dtsi
-@@ -1063,7 +1063,7 @@ dsi1: dsi@996000 {
- 				reg-names = "dsi_ctrl";
+diff --git a/drivers/iommu/amd/iommu_v2.c b/drivers/iommu/amd/iommu_v2.c
+index 261352a232716..65d78d7e04408 100644
+--- a/drivers/iommu/amd/iommu_v2.c
++++ b/drivers/iommu/amd/iommu_v2.c
+@@ -262,8 +262,8 @@ static void put_pasid_state(struct pasid_state *pasid_state)
  
- 				interrupt-parent = <&mdss>;
--				interrupts = <4>;
-+				interrupts = <5>;
+ static void put_pasid_state_wait(struct pasid_state *pasid_state)
+ {
+-	refcount_dec(&pasid_state->count);
+-	wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
++	if (!refcount_dec_and_test(&pasid_state->count))
++		wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
+ 	free_pasid_state(pasid_state);
+ }
  
- 				clocks = <&mmcc MDSS_MDP_CLK>,
- 					 <&mmcc MDSS_BYTE1_CLK>,
 -- 
 2.40.1
 
