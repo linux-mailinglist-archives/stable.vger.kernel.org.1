@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 79C3C79AE1F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:42:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A343379AE7C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377867AbjIKW3C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:29:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40036 "EHLO
+        id S1359652AbjIKWSR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37200 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241981AbjIKPTj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:39 -0400
+        with ESMTP id S240715AbjIKOvp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:45 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6C14FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 032FBC433C8;
-        Mon, 11 Sep 2023 15:19:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7F18D125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:41 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C7097C433C9;
+        Mon, 11 Sep 2023 14:51:40 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445575;
-        bh=hFFZn6UQpP5tWvwEnYmYFPdAB/llTlQGvfRXSiunN2w=;
+        s=korg; t=1694443901;
+        bh=ErWRF+2BmIO3ASZjvUcRke36yOyO99nTR6XyY4VUXaA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RtMXRMP8NF44pwmkjv4j5p1xMQFs1pKlEP75h+Ox4oEmP2xGfJxtYCnwIQMg252Mc
-         eOX4GpR4LDmlLW+8dSsfNa1bkbOKsJ5mh73lOAIIMxF/XxMpJOxlioP6hcOn7fxgOt
-         M2I0hfuGPW17AabIAjJneHpkMiltLdCKtLU09vr8=
+        b=uW+cXoX4Ekn3AEJp7nCsXHsyZwFC/9Xmz/mZ2hYlFRyu9htKe4BV8+FfVl97I6Xcg
+         jA7VZj0aYaeTUzKdYbfOMzQn8KZsYNcKDFl0Gh8YKSO8WCUxbQEJ9Jr7B14HwfK/Kv
+         +SlFhVOVB97UZWjnPanHLTfEBdC71Y+ov6YV62Bg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sourabh Jain <sourabhjain@linux.ibm.com>,
-        Mahesh Salgaonkar <mahesh@linux.ibm.com>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev,
+        Junxian Huang <huangjunxian6@hisilicon.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 365/600] powerpc/fadump: reset dump area size if fadump memory reserve fails
-Date:   Mon, 11 Sep 2023 15:46:38 +0200
-Message-ID: <20230911134644.456553646@linuxfoundation.org>
+Subject: [PATCH 6.4 540/737] RDMA/hns: Fix incorrect post-send with direct wqe of wr-list
+Date:   Mon, 11 Sep 2023 15:46:39 +0200
+Message-ID: <20230911134705.645785605@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +51,51 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sourabh Jain <sourabhjain@linux.ibm.com>
+From: Junxian Huang <huangjunxian6@hisilicon.com>
 
-[ Upstream commit d1eb75e0dfed80d2d85b664e28a39f65b290ab55 ]
+[ Upstream commit 706efac4477cdb8be857f6322457de524acc02ff ]
 
-In case fadump_reserve_mem() fails to reserve memory, the
-reserve_dump_area_size variable will retain the reserve area size. This
-will lead to /sys/kernel/fadump/mem_reserved node displaying an incorrect
-memory reserved by fadump.
+Currently, direct wqe is not supported for wr-list. RoCE driver excludes
+direct wqe for wr-list by judging whether the number of wr is 1.
 
-To fix this problem, reserve dump area size variable is set to 0 if fadump
-failed to reserve memory.
+For a wr-list where the second wr is a length-error atomic wr, the
+post-send driver handles the first wr and adds 1 to the wr number counter
+firstly. While handling the second wr, the driver finds out a length error
+and terminates the wr handle process, remaining the counter at 1. This
+causes the driver mistakenly judges there is only 1 wr and thus enters
+the direct wqe process, carrying the current length-error atomic wqe.
 
-Fixes: 8255da95e545 ("powerpc/fadump: release all the memory above boot memory size")
-Signed-off-by: Sourabh Jain <sourabhjain@linux.ibm.com>
-Acked-by: Mahesh Salgaonkar <mahesh@linux.ibm.com>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/20230704050715.203581-1-sourabhjain@linux.ibm.com
+This patch fixes the error by adding a judgement whether the current wr
+is a bad wr. If so, use the normal doorbell process but not direct wqe
+despite the wr number is 1.
+
+Fixes: 01584a5edcc4 ("RDMA/hns: Add support of direct wqe")
+Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
+Link: https://lore.kernel.org/r/20230804012711.808069-3-huangjunxian6@hisilicon.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/kernel/fadump.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/powerpc/kernel/fadump.c b/arch/powerpc/kernel/fadump.c
-index ea0a073abd969..3ff2da7b120b5 100644
---- a/arch/powerpc/kernel/fadump.c
-+++ b/arch/powerpc/kernel/fadump.c
-@@ -654,6 +654,7 @@ int __init fadump_reserve_mem(void)
- 	return ret;
- error_out:
- 	fw_dump.fadump_enabled = 0;
-+	fw_dump.reserve_dump_area_size = 0;
- 	return 0;
- }
+diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+index d4c6b9bc0a4ea..fe7908ed39022 100644
+--- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
++++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
+@@ -757,7 +757,8 @@ static int hns_roce_v2_post_send(struct ib_qp *ibqp,
+ 		qp->sq.head += nreq;
+ 		qp->next_sge = sge_idx;
  
+-		if (nreq == 1 && (qp->en_flags & HNS_ROCE_QP_CAP_DIRECT_WQE))
++		if (nreq == 1 && !ret &&
++		    (qp->en_flags & HNS_ROCE_QP_CAP_DIRECT_WQE))
+ 			write_dwqe(hr_dev, qp, wqe);
+ 		else
+ 			update_sq_db(hr_dev, qp);
 -- 
 2.40.1
 
