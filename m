@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DBF2479AE57
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B785D79B08E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359422AbjIKWQg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:16:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50130 "EHLO
+        id S1354143AbjIKVwg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:52:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35838 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238544AbjIKN6y (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:54 -0400
+        with ESMTP id S239832AbjIKO34 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:29:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 09E37CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 23CFAC433AB;
-        Mon, 11 Sep 2023 13:58:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7CBDBF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:29:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AD74BC433C7;
+        Mon, 11 Sep 2023 14:29:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440729;
-        bh=Ys5e4WGNcs6sZ1kUlqFv9ltHIvwKsPznypixXFsV6pc=;
+        s=korg; t=1694442591;
+        bh=jNwsntOPTASt6w+7Sik8WYy75YVzkby2yOw/No3gDso=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CJJbrwQ5cz5sJInFUqu3SqvLgQwJ/uCV/fFeIplLRObmxT4kizwWDbkCGHowQUgq4
-         9Ibamjf4Nv+nyOkAgwef5IYbuCtUlb2S0N4nES2Z3Rm7beMRutUvET91scA7FeB/Wa
-         Q2R/rDKKbkFOGImPZXXwkAR777bGhkpq8Iya9e/E=
+        b=hQVn6IJFidZEnRE9L39Cbu/SaETACvppYjhIIytwXeJj/eHVsrNWr4IMGTtMQZW1j
+         fQSBoNIPkHPLRoakO28tdd3mqhbZt+xPSJJ2iDYF8I1cX/bnx0otXIL7pWeyCtcRv/
+         r5O84Tm/SVH6c5QmC/4ZwqLUJ15WbT0BsiJNx/7E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jijie Shao <shaojijie@huawei.com>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 138/739] net: hns3: fix wrong rpu tln reg issue
+        patches@lists.linux.dev, Zhu Wang <wangzhu9@huawei.com>,
+        Helge Deller <deller@gmx.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 078/737] fbdev: goldfishfb: Do not check 0 for platform_get_irq()
 Date:   Mon, 11 Sep 2023 15:38:57 +0200
-Message-ID: <20230911134654.956526958@linuxfoundation.org>
+Message-ID: <20230911134652.691487067@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,203 +49,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jijie Shao <shaojijie@huawei.com>
+From: Zhu Wang <wangzhu9@huawei.com>
 
-[ Upstream commit 36122201eeaefd78547def9681aa5d83b5a00b6a ]
+[ Upstream commit 0650d5098f8b6b232cd5ea0e15437fc38f7d63ba ]
 
-In the original RPU query command, the status register values of
-multiple RPU tunnels are accumulated by default, which is unreasonable.
-This patch Fix it by querying the specified tunnel ID.
-The tunnel number of the device can be obtained from firmware
-during initialization.
+Since platform_get_irq() never returned zero, so it need not to check
+whether it returned zero, and we use the return error code of
+platform_get_irq() to replace the current return error code.
 
-Fixes: ddb54554fa51 ("net: hns3: add DFX registers information for ethtool -d")
-Signed-off-by: Jijie Shao <shaojijie@huawei.com>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Please refer to the commit a85a6c86c25b ("driver core: platform: Clarify
+that IRQ 0 is invalid") to get that platform_get_irq() never returned
+zero.
+
+Signed-off-by: Zhu Wang <wangzhu9@huawei.com>
+Signed-off-by: Helge Deller <deller@gmx.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/hisilicon/hns3/hnae3.h   |  1 +
- .../hisilicon/hns3/hns3pf/hclge_cmd.h         |  4 +-
- .../hisilicon/hns3/hns3pf/hclge_main.c        |  2 +
- .../hisilicon/hns3/hns3pf/hclge_regs.c        | 66 ++++++++++++++++++-
- 4 files changed, 71 insertions(+), 2 deletions(-)
+ drivers/video/fbdev/goldfishfb.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hnae3.h b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-index 514a20bce4f44..a4b43bcd2f0c9 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hnae3.h
-@@ -382,6 +382,7 @@ struct hnae3_dev_specs {
- 	u16 umv_size;
- 	u16 mc_mac_size;
- 	u32 mac_stats_num;
-+	u8 tnl_num;
- };
- 
- struct hnae3_client_ops {
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-index 91c173f40701a..d5cfdc4c082d8 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_cmd.h
-@@ -826,7 +826,9 @@ struct hclge_dev_specs_1_cmd {
- 	u8 rsv0[2];
- 	__le16 umv_size;
- 	__le16 mc_mac_size;
--	u8 rsv1[12];
-+	u8 rsv1[6];
-+	u8 tnl_num;
-+	u8 rsv2[5];
- };
- 
- /* mac speed type defined in firmware command */
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-index a5c7eeeb631ad..2d5a2e1ef664d 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_main.c
-@@ -1326,6 +1326,7 @@ static void hclge_set_default_dev_specs(struct hclge_dev *hdev)
- 	ae_dev->dev_specs.max_frm_size = HCLGE_MAC_MAX_FRAME;
- 	ae_dev->dev_specs.max_qset_num = HCLGE_MAX_QSET_NUM;
- 	ae_dev->dev_specs.umv_size = HCLGE_DEFAULT_UMV_SPACE_PER_PF;
-+	ae_dev->dev_specs.tnl_num = 0;
- }
- 
- static void hclge_parse_dev_specs(struct hclge_dev *hdev,
-@@ -1349,6 +1350,7 @@ static void hclge_parse_dev_specs(struct hclge_dev *hdev,
- 	ae_dev->dev_specs.max_frm_size = le16_to_cpu(req1->max_frm_size);
- 	ae_dev->dev_specs.umv_size = le16_to_cpu(req1->umv_size);
- 	ae_dev->dev_specs.mc_mac_size = le16_to_cpu(req1->mc_mac_size);
-+	ae_dev->dev_specs.tnl_num = req1->tnl_num;
- }
- 
- static void hclge_check_dev_specs(struct hclge_dev *hdev)
-diff --git a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c
-index 734e5f757b9c5..43c1c18fa81f8 100644
---- a/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c
-+++ b/drivers/net/ethernet/hisilicon/hns3/hns3pf/hclge_regs.c
-@@ -125,6 +125,7 @@ enum hclge_reg_tag {
- 	HCLGE_REG_TAG_DFX_RCB,
- 	HCLGE_REG_TAG_DFX_TQP,
- 	HCLGE_REG_TAG_DFX_SSU_2,
-+	HCLGE_REG_TAG_RPU_TNL,
- };
- 
- #pragma pack(4)
-@@ -147,6 +148,8 @@ struct hclge_reg_header {
- #define HCLGE_REG_HEADER_SPACE	(sizeof(struct hclge_reg_header) / sizeof(u32))
- #define HCLGE_REG_MAGIC_NUMBER	0x686e733372656773 /* meaning is hns3regs */
- 
-+#define HCLGE_REG_RPU_TNL_ID_0	1
-+
- static u32 hclge_reg_get_header(void *data)
- {
- 	struct hclge_reg_header *header = data;
-@@ -342,6 +345,28 @@ static int hclge_dfx_reg_cmd_send(struct hclge_dev *hdev,
- 	return ret;
- }
- 
-+/* tnl_id = 0 means get sum of all tnl reg's value */
-+static int hclge_dfx_reg_rpu_tnl_cmd_send(struct hclge_dev *hdev, u32 tnl_id,
-+					  struct hclge_desc *desc, int bd_num)
-+{
-+	int i, ret;
-+
-+	for (i = 0; i < bd_num; i++) {
-+		hclge_cmd_setup_basic_desc(&desc[i], HCLGE_OPC_DFX_RPU_REG_0,
-+					   true);
-+		if (i != bd_num - 1)
-+			desc[i].flag |= cpu_to_le16(HCLGE_COMM_CMD_FLAG_NEXT);
-+	}
-+
-+	desc[0].data[0] = cpu_to_le32(tnl_id);
-+	ret = hclge_cmd_send(&hdev->hw, desc, bd_num);
-+	if (ret)
-+		dev_err(&hdev->pdev->dev,
-+			"failed to query dfx rpu tnl reg, ret = %d\n",
-+			ret);
-+	return ret;
-+}
-+
- static int hclge_dfx_reg_fetch_data(struct hclge_desc *desc_src, int bd_num,
- 				    void *data)
- {
-@@ -363,6 +388,7 @@ static int hclge_dfx_reg_fetch_data(struct hclge_desc *desc_src, int bd_num,
- static int hclge_get_dfx_reg_len(struct hclge_dev *hdev, int *len)
- {
- 	u32 dfx_reg_type_num = ARRAY_SIZE(hclge_dfx_bd_offset_list);
-+	struct hnae3_ae_dev *ae_dev = pci_get_drvdata(hdev->pdev);
- 	int data_len_per_desc;
- 	int *bd_num_list;
- 	int ret;
-@@ -384,11 +410,41 @@ static int hclge_get_dfx_reg_len(struct hclge_dev *hdev, int *len)
- 	for (i = 0; i < dfx_reg_type_num; i++)
- 		*len += bd_num_list[i] * data_len_per_desc + HCLGE_REG_TLV_SIZE;
- 
-+	/**
-+	 * the num of dfx_rpu_0 is reused by each dfx_rpu_tnl
-+	 * HCLGE_DFX_BD_OFFSET is starting at 1, but the array subscript is
-+	 * starting at 0, so offset need '- 1'.
-+	 */
-+	*len += (bd_num_list[HCLGE_DFX_RPU_0_BD_OFFSET - 1] * data_len_per_desc +
-+		 HCLGE_REG_TLV_SIZE) * ae_dev->dev_specs.tnl_num;
-+
- out:
- 	kfree(bd_num_list);
- 	return ret;
- }
- 
-+static int hclge_get_dfx_rpu_tnl_reg(struct hclge_dev *hdev, u32 *reg,
-+				     struct hclge_desc *desc_src,
-+				     int bd_num)
-+{
-+	struct hnae3_ae_dev *ae_dev = pci_get_drvdata(hdev->pdev);
-+	int ret = 0;
-+	u8 i;
-+
-+	for (i = HCLGE_REG_RPU_TNL_ID_0; i <= ae_dev->dev_specs.tnl_num; i++) {
-+		ret = hclge_dfx_reg_rpu_tnl_cmd_send(hdev, i, desc_src, bd_num);
-+		if (ret)
-+			break;
-+
-+		reg += hclge_reg_get_tlv(HCLGE_REG_TAG_RPU_TNL,
-+					 ARRAY_SIZE(desc_src->data) * bd_num,
-+					 reg);
-+		reg += hclge_dfx_reg_fetch_data(desc_src, bd_num, reg);
-+	}
-+
-+	return ret;
-+}
-+
- static int hclge_get_dfx_reg(struct hclge_dev *hdev, void *data)
- {
- 	u32 dfx_reg_type_num = ARRAY_SIZE(hclge_dfx_bd_offset_list);
-@@ -428,7 +484,7 @@ static int hclge_get_dfx_reg(struct hclge_dev *hdev, void *data)
- 		if (ret) {
- 			dev_err(&hdev->pdev->dev,
- 				"Get dfx reg fail, status is %d.\n", ret);
--			break;
-+			goto free;
- 		}
- 
- 		reg += hclge_reg_get_tlv(HCLGE_REG_TAG_DFX_BIOS_COMMON + i,
-@@ -437,6 +493,14 @@ static int hclge_get_dfx_reg(struct hclge_dev *hdev, void *data)
- 		reg += hclge_dfx_reg_fetch_data(desc_src, bd_num, reg);
+diff --git a/drivers/video/fbdev/goldfishfb.c b/drivers/video/fbdev/goldfishfb.c
+index 6fa2108fd912d..e41c9fef4a3b6 100644
+--- a/drivers/video/fbdev/goldfishfb.c
++++ b/drivers/video/fbdev/goldfishfb.c
+@@ -203,8 +203,8 @@ static int goldfish_fb_probe(struct platform_device *pdev)
  	}
  
-+	/**
-+	 * HCLGE_DFX_BD_OFFSET is starting at 1, but the array subscript is
-+	 * starting at 0, so offset need '- 1'.
-+	 */
-+	bd_num = bd_num_list[HCLGE_DFX_RPU_0_BD_OFFSET - 1];
-+	ret = hclge_get_dfx_rpu_tnl_reg(hdev, reg, desc_src, bd_num);
-+
-+free:
- 	kfree(desc_src);
- out:
- 	kfree(bd_num_list);
+ 	fb->irq = platform_get_irq(pdev, 0);
+-	if (fb->irq <= 0) {
+-		ret = -ENODEV;
++	if (fb->irq < 0) {
++		ret = fb->irq;
+ 		goto err_no_irq;
+ 	}
+ 
 -- 
 2.40.1
 
