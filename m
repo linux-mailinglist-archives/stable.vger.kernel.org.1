@@ -2,41 +2,57 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 027AC79B9EF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B09779BA68
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344210AbjIKVNd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53350 "EHLO
+        id S1358117AbjIKWHu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32868 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240187AbjIKOiq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:46 -0400
+        with ESMTP id S241263AbjIKPFX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEDF4F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06EDDC433C8;
-        Mon, 11 Sep 2023 14:38:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F35E125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 49204C433C9;
+        Mon, 11 Sep 2023 15:05:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443122;
-        bh=YwdBhYb2m4OIwM/5baJP/b9ed35zEAAAGoUICQ4pog0=;
+        s=korg; t=1694444718;
+        bh=MwUaGA0zpRLLSvCRZnUUjtrtvlIIkG6Hc3bf8Nk7H+Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jzlDR49losuKoOM1P5TUtznW+vry+LOWDhAxEoyweWE2zAUnpwQTEjWrUYDmDbtoJ
-         5EA7QeIMdSQcVfn9RHb6A/bj9/c3JOHGJNF4xJ+FqRAIBnItAkypwMr/QoMGEkHPA0
-         GTN/wUdjllmYb+ygsTyRxpEcDR4FqUad5ukMSeEg=
+        b=Ent+3uZsKWULCMOm4es7nkng1KulM10irxc7bxn67LdLBTtwndI3qrqUv8Pc3wvwu
+         ZKnfrZpJz9PSIM15mXSLvxeKnE0oYtCB6XV6oRbwGJCV0RqoTp6J7UfTYSYqpJ+PAp
+         IG7w1GzZGK5E/Aim7LlMIa4QemNyOppLvJaTLb0U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Brett Creeley <brett.creeley@amd.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 265/737] pds_core: pass opcode to devcmd_wait
-Date:   Mon, 11 Sep 2023 15:42:04 +0200
-Message-ID: <20230911134657.987207765@linuxfoundation.org>
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Alexei Starovoitov <ast@kernel.org>,
+        Andrii Nakryiko <andrii@kernel.org>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Hao Luo <haoluo@google.com>, Ingo Molnar <mingo@redhat.com>,
+        Jiri Olsa <jolsa@kernel.org>,
+        John Fastabend <john.fastabend@gmail.com>,
+        KP Singh <kpsingh@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Martin KaFai Lau <martin.lau@linux.dev>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Song Liu <song@kernel.org>,
+        Stanislav Fomichev <sdf@google.com>,
+        Stephane Eranian <eranian@google.com>,
+        Yonghong Song <yhs@fb.com>, bpf@vger.kernel.org,
+        Arnaldo Carvalho de Melo <acme@redhat.com>,
+        Nathan Chancellor <nathan@kernel.org>
+Subject: [PATCH 6.1 092/600] tools lib subcmd: Make install_headers clearer
+Date:   Mon, 11 Sep 2023 15:42:05 +0200
+Message-ID: <20230911134636.324469928@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,63 +68,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 0ea064e74bc8f915aba3f2d0fb3418247a09b73d ]
+commit 77dce6890a2a715b186bdc149c843571a5bb47df upstream.
 
-Don't rely on the PCI memory for the devcmd opcode because we
-read a 0xff value if the PCI bus is broken, which can cause us
-to report a bogus dev_cmd opcode later.
+Add libsubcmd to the name so that this install_headers build appears
+different to similar targets in different libraries.
 
-Fixes: 523847df1b37 ("pds_core: add devcmd device interfaces")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230824161754.34264-6-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Alexei Starovoitov <ast@kernel.org>
+Cc: Andrii Nakryiko <andrii@kernel.org>
+Cc: Daniel Borkmann <daniel@iogearbox.net>
+Cc: Hao Luo <haoluo@google.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: John Fastabend <john.fastabend@gmail.com>
+Cc: KP Singh <kpsingh@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Martin KaFai Lau <martin.lau@linux.dev>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Song Liu <song@kernel.org>
+Cc: Stanislav Fomichev <sdf@google.com>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Yonghong Song <yhs@fb.com>
+Cc: bpf@vger.kernel.org
+Link: https://lore.kernel.org/r/20221117004356.279422-6-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/net/ethernet/amd/pds_core/dev.c | 7 ++-----
- 1 file changed, 2 insertions(+), 5 deletions(-)
+ tools/lib/subcmd/Makefile |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index 524f422ee7ace..f77cd9f5a2fda 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -121,7 +121,7 @@ static const char *pdsc_devcmd_str(int opcode)
- 	}
- }
+--- a/tools/lib/subcmd/Makefile
++++ b/tools/lib/subcmd/Makefile
+@@ -101,7 +101,7 @@ install_lib: $(LIBFILE)
+ 		cp -fpR $(LIBFILE) $(DESTDIR)$(libdir_SQ)
  
--static int pdsc_devcmd_wait(struct pdsc *pdsc, int max_seconds)
-+static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
- {
- 	struct device *dev = pdsc->dev;
- 	unsigned long start_time;
-@@ -131,9 +131,6 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, int max_seconds)
- 	int done = 0;
- 	int err = 0;
- 	int status;
--	int opcode;
--
--	opcode = ioread8(&pdsc->cmd_regs->cmd.opcode);
- 
- 	start_time = jiffies;
- 	max_wait = start_time + (max_seconds * HZ);
-@@ -180,7 +177,7 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 
- 	memcpy_toio(&pdsc->cmd_regs->cmd, cmd, sizeof(*cmd));
- 	pdsc_devcmd_dbell(pdsc);
--	err = pdsc_devcmd_wait(pdsc, max_seconds);
-+	err = pdsc_devcmd_wait(pdsc, cmd->opcode, max_seconds);
- 	memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
- 
- 	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
--- 
-2.40.1
-
+ install_headers:
+-	$(call QUIET_INSTALL, headers) \
++	$(call QUIET_INSTALL, libsubcmd_headers) \
+ 		$(call do_install,exec-cmd.h,$(prefix)/include/subcmd,644); \
+ 		$(call do_install,help.h,$(prefix)/include/subcmd,644); \
+ 		$(call do_install,pager.h,$(prefix)/include/subcmd,644); \
 
 
