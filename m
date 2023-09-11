@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DD58679B8FE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D744379B715
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1351412AbjIKVnI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:43:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34660 "EHLO
+        id S1378786AbjIKWhR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241687AbjIKPMB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:01 -0400
+        with ESMTP id S240484AbjIKOpd (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:33 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77A8312E
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF396C433C7;
-        Mon, 11 Sep 2023 15:11:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 268EB12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DA3CC433C8;
+        Mon, 11 Sep 2023 14:45:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445117;
-        bh=dsu75blZlbJcYcs6+UKUf3gWYvajR4yvASoY8/hZEHc=;
+        s=korg; t=1694443528;
+        bh=jDImVAU/nv1piEZKzyTD86ThHmMxpeCmYvX+aW+7/9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zh10ptaYZj6I2FM3ILoDFHHc4UjAz+XtJYSWKoJJmvJMw2VHciUV/nlc01OaeH/Qx
-         9tfmtKb3KIoExVJRgw+4jeE+PP9+TkRC8wj57w81gqzaGmeq2X4KGhMCwcNIQEKdw8
-         A/1WCgcWI+Hod2UQJkJq9pEA8ZOGxDWD7ujfvu9U=
+        b=CjQkfmcKHLc4ucX7yaPWn78D3x2084UQpw37mqw/zgHOo4KAXC+vPRyU2Xqv/GNiN
+         zQdKlqlqaxygnC9ySUrIWbxja+oXVzFtCzuw3nwBlfsfhMRzvCOasGsZncpsPu3SC6
+         qUrcggkE4jWZQLG857CbuqYgeYckcA475/UCGuwU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 233/600] arm64: dts: qcom: sm8350: Fix CPU idle state residency times
-Date:   Mon, 11 Sep 2023 15:44:26 +0200
-Message-ID: <20230911134640.481556082@linuxfoundation.org>
+Subject: [PATCH 6.4 409/737] clk: qcom: gpucc-sm6350: Introduce index-based clk lookup
+Date:   Mon, 11 Sep 2023 15:44:28 +0200
+Message-ID: <20230911134702.047697988@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +50,90 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
 From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 91ce3693e2fb685f31d39605a5ad1fbd940804da ]
+[ Upstream commit f6f89d194e4ddcfe197ac8a05ed4161f642a5c68 ]
 
-The present values look to have been copypasted from 8150 or 8180.
-Fix that.
+Add the nowadays-prefered and marginally faster way of looking up parent
+clocks in the device tree. It also allows for clock-names-independent
+operation, so long as the order (which is enforced by schema) is kept.
 
-Fixes: 07ddb302811e ("arm64: dts: qcom: sm8350: Add CPU topology and idle-states")
 Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230705-topic-sm8350_fixes-v1-2-0f69f70ccb6a@linaro.org
+Link: https://lore.kernel.org/r/20230315-topic-lagoon_gpu-v2-1-afcdfb18bb13@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Stable-dep-of: 743913b343a3 ("clk: qcom: gpucc-sm6350: Fix clock source names")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8350.dtsi | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/clk/qcom/gpucc-sm6350.c | 18 +++++++++++++-----
+ 1 file changed, 13 insertions(+), 5 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8350.dtsi b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-index 7fd1c3f71c0f8..b91247856f9dc 100644
---- a/arch/arm64/boot/dts/qcom/sm8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8350.dtsi
-@@ -236,8 +236,8 @@ LITTLE_CPU_SLEEP_0: cpu-sleep-0-0 {
- 				compatible = "arm,idle-state";
- 				idle-state-name = "silver-rail-power-collapse";
- 				arm,psci-suspend-param = <0x40000004>;
--				entry-latency-us = <355>;
--				exit-latency-us = <909>;
-+				entry-latency-us = <360>;
-+				exit-latency-us = <531>;
- 				min-residency-us = <3934>;
- 				local-timer-stop;
- 			};
-@@ -246,8 +246,8 @@ BIG_CPU_SLEEP_0: cpu-sleep-1-0 {
- 				compatible = "arm,idle-state";
- 				idle-state-name = "gold-rail-power-collapse";
- 				arm,psci-suspend-param = <0x40000004>;
--				entry-latency-us = <241>;
--				exit-latency-us = <1461>;
-+				entry-latency-us = <702>;
-+				exit-latency-us = <1061>;
- 				min-residency-us = <4488>;
- 				local-timer-stop;
- 			};
+diff --git a/drivers/clk/qcom/gpucc-sm6350.c b/drivers/clk/qcom/gpucc-sm6350.c
+index ef15185a99c31..a9887d1f0ed71 100644
+--- a/drivers/clk/qcom/gpucc-sm6350.c
++++ b/drivers/clk/qcom/gpucc-sm6350.c
+@@ -24,6 +24,12 @@
+ #define CX_GMU_CBCR_WAKE_MASK		0xF
+ #define CX_GMU_CBCR_WAKE_SHIFT		8
+ 
++enum {
++	DT_BI_TCXO,
++	DT_GPLL0_OUT_MAIN,
++	DT_GPLL0_OUT_MAIN_DIV,
++};
++
+ enum {
+ 	P_BI_TCXO,
+ 	P_GPLL0_OUT_MAIN,
+@@ -61,6 +67,7 @@ static struct clk_alpha_pll gpu_cc_pll0 = {
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpu_cc_pll0",
+ 			.parent_data =  &(const struct clk_parent_data){
++				.index = DT_BI_TCXO,
+ 				.fw_name = "bi_tcxo",
+ 			},
+ 			.num_parents = 1,
+@@ -104,6 +111,7 @@ static struct clk_alpha_pll gpu_cc_pll1 = {
+ 		.hw.init = &(struct clk_init_data){
+ 			.name = "gpu_cc_pll1",
+ 			.parent_data =  &(const struct clk_parent_data){
++				.index = DT_BI_TCXO,
+ 				.fw_name = "bi_tcxo",
+ 			},
+ 			.num_parents = 1,
+@@ -121,11 +129,11 @@ static const struct parent_map gpu_cc_parent_map_0[] = {
+ };
+ 
+ static const struct clk_parent_data gpu_cc_parent_data_0[] = {
+-	{ .fw_name = "bi_tcxo" },
++	{ .index = DT_BI_TCXO, .fw_name = "bi_tcxo" },
+ 	{ .hw = &gpu_cc_pll0.clkr.hw },
+ 	{ .hw = &gpu_cc_pll1.clkr.hw },
+-	{ .fw_name = "gcc_gpu_gpll0_clk" },
+-	{ .fw_name = "gcc_gpu_gpll0_div_clk" },
++	{ .index = DT_GPLL0_OUT_MAIN, .fw_name = "gcc_gpu_gpll0_clk" },
++	{ .index = DT_GPLL0_OUT_MAIN_DIV, .fw_name = "gcc_gpu_gpll0_div_clk" },
+ };
+ 
+ static const struct parent_map gpu_cc_parent_map_1[] = {
+@@ -138,12 +146,12 @@ static const struct parent_map gpu_cc_parent_map_1[] = {
+ };
+ 
+ static const struct clk_parent_data gpu_cc_parent_data_1[] = {
+-	{ .fw_name = "bi_tcxo" },
++	{ .index = DT_BI_TCXO, .fw_name = "bi_tcxo" },
+ 	{ .hw = &crc_div.hw },
+ 	{ .hw = &gpu_cc_pll0.clkr.hw },
+ 	{ .hw = &gpu_cc_pll1.clkr.hw },
+ 	{ .hw = &gpu_cc_pll1.clkr.hw },
+-	{ .fw_name = "gcc_gpu_gpll0_clk" },
++	{ .index = DT_GPLL0_OUT_MAIN, .fw_name = "gcc_gpu_gpll0_clk" },
+ };
+ 
+ static const struct freq_tbl ftbl_gpu_cc_gmu_clk_src[] = {
 -- 
 2.40.1
 
