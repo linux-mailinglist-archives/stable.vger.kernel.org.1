@@ -2,39 +2,49 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 889DD79AE3E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:42:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D3FF379AF03
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358449AbjIKWLD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:11:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59486 "EHLO
+        id S237306AbjIKUv0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238852AbjIKOGN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:13 -0400
+        with ESMTP id S240103AbjIKOgj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 460FA120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 876E7C433C8;
-        Mon, 11 Sep 2023 14:06:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA23ECF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C983CC433CB;
+        Mon, 11 Sep 2023 14:36:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441168;
-        bh=vw3qlOfWDHQNNCkg6JMZ67DssPZQzgUXd7GowLMJ19A=;
+        s=korg; t=1694442994;
+        bh=YuOxKlLGS5eD/wJel0mUY7vO6YlQ8GccahIwrHrhslY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=r20+T/SnjnaH6cjkSZgNia3JoLinr7q6byeuMMgvvzQwxbxjHBzQSyS/xTL+TSg9+
-         NS+5yCk8n6CWpFpcpQuitq4rhgtEfVpQpk4NxN0Rxp7BmHcJdT3BRYgzjGXqT3kgqI
-         8DCX8uNPAmHESv9iLf3NXdlQNMeXo2bUg3plSojQ=
+        b=S2632ThBG/uxjl35DiNg4rKB5ZsyIkU9+xjlygdFPFSdiruTalzWb44DPh1e42T/k
+         qb4rZorJDCJ0praG3BF+PNPkiZG4/adaxpuZszKw/TohUw8ccl6l5vSFLlXHKu6+69
+         /SWIhWC9VZG/hX6hPNCwJQSBaT9LX8BZfy+AwgOA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonas Karlman <jonas@kwiboo.se>,
-        Heiko Stuebner <heiko@sntech.de>,
+        patches@lists.linux.dev,
+        Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>,
+        Pankaj Raghav <p.raghav@samsung.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chinwen Chang <chinwen.chang@mediatek.com>,
+        Jan Kiszka <jan.kiszka@siemens.com>,
+        Kieran Bingham <kbingham@kernel.org>,
+        Luis Chamberlain <mcgrof@kernel.org>,
+        Matthias Brugger <matthias.bgg@gmail.com>,
+        Qun-Wei Lin <qun-wei.lin@mediatek.com>,
+        Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 281/739] arm64: dts: rockchip: Fix PCIe regulators on Radxa E25
+Subject: [PATCH 6.4 221/737] scripts/gdb: fix lx-lsmod show the wrong size
 Date:   Mon, 11 Sep 2023 15:41:20 +0200
-Message-ID: <20230911134658.971073004@linuxfoundation.org>
+Message-ID: <20230911134656.758863474@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,91 +60,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jonas Karlman <jonas@kwiboo.se>
+From: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
 
-[ Upstream commit a87852e37f782257ebc57cc44a0d3fbf806471f6 ]
+[ Upstream commit fb40b0537342e1acd5c2daf2ff6780c1d0d2883c ]
 
-Despite its name, the regulator vcc3v3_pcie30x1 has nothing to do with
-pcie30x1. Instead, it supply power to VBAT1-5 on the M.2 KEY B port as
-seen on page 8 of the schematic [1].
+'lsmod' shows total core layout size, so we need to sum up all the
+sections in core layout in gdb scripts.
 
-pcie30x1 is used for the mini PCIe slot, and as seen on page 9 the
-vcc3v3_minipcie regulator is instead related to pcie30x1.
+/ # lsmod
+kasan_test 200704 0 - Live 0xffff80007f640000
 
-The M.2 KEY B port can be used for WWAN USB2 modules or SATA drives.
+Before patch:
+(gdb) lx-lsmod
+Address            Module                  Size  Used by
+0xffff80007f640000 kasan_test             36864  0
 
-Use correct regulator vcc3v3_minipcie for pcie30x1.
+After patch:
+(gdb) lx-lsmod
+Address            Module                  Size  Used by
+0xffff80007f640000 kasan_test            200704  0
 
-[1] https://dl.radxa.com/cm3p/e25/radxa-e25-v1.4-sch.pdf
-
-Fixes: 2bf2f4d9f673 ("arm64: dts: rockchip: Add Radxa CM3I E25")
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230724145213.3833099-1-jonas@kwiboo.se
-Signed-off-by: Heiko Stuebner <heiko@sntech.de>
+Link: https://lkml.kernel.org/r/20230710092852.31049-1-Kuan-Ying.Lee@mediatek.com
+Fixes: b4aff7513df3 ("scripts/gdb: use mem instead of core_layout to get the module address")
+Signed-off-by: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
+Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
+Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Cc: Chinwen Chang <chinwen.chang@mediatek.com>
+Cc: Jan Kiszka <jan.kiszka@siemens.com>
+Cc: Kieran Bingham <kbingham@kernel.org>
+Cc: Luis Chamberlain <mcgrof@kernel.org>
+Cc: Matthias Brugger <matthias.bgg@gmail.com>
+Cc: Qun-Wei Lin <qun-wei.lin@mediatek.com>
+Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../arm64/boot/dts/rockchip/rk3568-radxa-e25.dts | 16 ++++++++--------
- 1 file changed, 8 insertions(+), 8 deletions(-)
+ scripts/gdb/linux/constants.py.in |  3 +++
+ scripts/gdb/linux/modules.py      | 12 +++++++++---
+ 2 files changed, 12 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts b/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
-index 63c4bd873188e..f0e4884438e39 100644
---- a/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
-+++ b/arch/arm64/boot/dts/rockchip/rk3568-radxa-e25.dts
-@@ -47,6 +47,9 @@ vbus_typec: vbus-typec-regulator {
- 		vin-supply = <&vcc5v0_sys>;
- 	};
+diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
+index 50a92c4e9984e..fab74ca9df6fc 100644
+--- a/scripts/gdb/linux/constants.py.in
++++ b/scripts/gdb/linux/constants.py.in
+@@ -64,6 +64,9 @@ LX_GDBPARSED(IRQ_HIDDEN)
  
-+	/* actually fed by vcc5v0_sys, dependent
-+	 * on pi6c clock generator
-+	 */
- 	vcc3v3_minipcie: vcc3v3-minipcie-regulator {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
-@@ -54,9 +57,9 @@ vcc3v3_minipcie: vcc3v3-minipcie-regulator {
- 		pinctrl-names = "default";
- 		pinctrl-0 = <&minipcie_enable_h>;
- 		regulator-name = "vcc3v3_minipcie";
--		regulator-min-microvolt = <5000000>;
--		regulator-max-microvolt = <5000000>;
--		vin-supply = <&vcc5v0_sys>;
-+		regulator-min-microvolt = <3300000>;
-+		regulator-max-microvolt = <3300000>;
-+		vin-supply = <&vcc3v3_pi6c_05>;
- 	};
+ /* linux/module.h */
+ LX_GDBPARSED(MOD_TEXT)
++LX_GDBPARSED(MOD_DATA)
++LX_GDBPARSED(MOD_RODATA)
++LX_GDBPARSED(MOD_RO_AFTER_INIT)
  
- 	vcc3v3_ngff: vcc3v3-ngff-regulator {
-@@ -71,9 +74,6 @@ vcc3v3_ngff: vcc3v3-ngff-regulator {
- 		vin-supply = <&vcc5v0_sys>;
- 	};
+ /* linux/mount.h */
+ LX_VALUE(MNT_NOSUID)
+diff --git a/scripts/gdb/linux/modules.py b/scripts/gdb/linux/modules.py
+index 261f28640f4cd..f76a43bfa15fc 100644
+--- a/scripts/gdb/linux/modules.py
++++ b/scripts/gdb/linux/modules.py
+@@ -73,11 +73,17 @@ class LxLsmod(gdb.Command):
+                 "        " if utils.get_long_type().sizeof == 8 else ""))
  
--	/* actually fed by vcc5v0_sys, dependent
--	 * on pi6c clock generator
--	 */
- 	vcc3v3_pcie30x1: vcc3v3-pcie30x1-regulator {
- 		compatible = "regulator-fixed";
- 		enable-active-high;
-@@ -83,7 +83,7 @@ vcc3v3_pcie30x1: vcc3v3-pcie30x1-regulator {
- 		regulator-name = "vcc3v3_pcie30x1";
- 		regulator-min-microvolt = <3300000>;
- 		regulator-max-microvolt = <3300000>;
--		vin-supply = <&vcc3v3_pi6c_05>;
-+		vin-supply = <&vcc5v0_sys>;
- 	};
+         for module in module_list():
+-            layout = module['mem'][constants.LX_MOD_TEXT]
++            text = module['mem'][constants.LX_MOD_TEXT]
++            text_addr = str(text['base']).split()[0]
++            total_size = 0
++
++            for i in range(constants.LX_MOD_TEXT, constants.LX_MOD_RO_AFTER_INIT + 1):
++                total_size += module['mem'][i]['size']
++
+             gdb.write("{address} {name:<19} {size:>8}  {ref}".format(
+-                address=str(layout['base']).split()[0],
++                address=text_addr,
+                 name=module['name'].string(),
+-                size=str(layout['size']),
++                size=str(total_size),
+                 ref=str(module['refcnt']['counter'] - 1)))
  
- 	vcc3v3_pi6c_05: vcc3v3-pi6c-05-regulator {
-@@ -117,7 +117,7 @@ &pcie3x1 {
- 	pinctrl-names = "default";
- 	pinctrl-0 = <&pcie30x1m0_pins>;
- 	reset-gpios = <&gpio0 RK_PC3 GPIO_ACTIVE_HIGH>;
--	vpcie3v3-supply = <&vcc3v3_pcie30x1>;
-+	vpcie3v3-supply = <&vcc3v3_minipcie>;
- 	status = "okay";
- };
- 
+             t = self._module_use_type.get_type().pointer()
 -- 
 2.40.1
 
