@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 263F279BCDF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 57C3F79B763
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239272AbjIKVsh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55880 "EHLO
+        id S239826AbjIKWXH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:23:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38250 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242173AbjIKPYO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:14 -0400
+        with ESMTP id S241010AbjIKO7m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 384E2D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753AEC433C8;
-        Mon, 11 Sep 2023 15:24:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 177611B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32F8FC433C7;
+        Mon, 11 Sep 2023 14:59:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445849;
-        bh=yFX4Eelge7UuFqGRhCqQTOsc911VlSyzpZjfJdcfjGI=;
+        s=korg; t=1694444377;
+        bh=tJNTCdtpib/KK2gyg3XfEe3ucrvGenG0VB7lO13AOG8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=k9709fVTN8VczZZdzATkMFkF703JSDy5hKp09bxVlz/3yFLzwANDoB/mmqPIIjowo
-         NtfRljFd6kUd3XzO7YIQAKKlivE+qfRnGKO492PO0Q1tp/RRqEMlf1jbqjzZ3pJr4e
-         NmUfWZcG3sXZLHSFPqlKEJc4yn7Zo1rJHaEwYhHE=
+        b=Iw/NTuJCy3gPK2w7LRh/qkUyzawe1QuK1HkWbRjovRAKl+Gr9WnYOiQ1TxVo8PM6M
+         lqo4CFVnrUGioi+uwMXU3gVfU9RIS4Tkblh0YTMsUs9regv1IzXy9uEpzCCd1QwKy/
+         u8zlkJIBxFqAxC2+BVWiL0plPotxGtzJpeVUp5AI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Maxime Ripard <mripard@kernel.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
-        Benjamin Tissoires <bentiss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 494/600] HID: multitouch: Correct devm device reference for hidinput input_dev name
-Date:   Mon, 11 Sep 2023 15:48:47 +0200
-Message-ID: <20230911134648.212170083@linuxfoundation.org>
+        patches@lists.linux.dev, Naveen N Rao <naveen@kernel.org>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>
+Subject: [PATCH 6.4 669/737] powerpc/ftrace: Fix dropping weak symbols with older toolchains
+Date:   Mon, 11 Sep 2023 15:48:48 +0200
+Message-ID: <20230911134709.229009217@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,70 +50,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+From: Naveen N Rao <naveen@kernel.org>
 
-[ Upstream commit 4794394635293a3e74591351fff469cea7ad15a2 ]
+commit f6834c8c59a8e977a6f6e4f96c5d28dfa5db8430 upstream.
 
-Reference the HID device rather than the input device for the devm
-allocation of the input_dev name. Referencing the input_dev would lead to a
-use-after-free when the input_dev was unregistered and subsequently fires a
-uevent that depends on the name. At the point of firing the uevent, the
-name would be freed by devres management.
+The minimum level of gcc supported for building the kernel is v5.1.
+v5.x releases of gcc emitted a three instruction sequence for
+-mprofile-kernel:
+	mflr	r0
+	std	r0, 16(r1)
+	bl	_mcount
 
-Use devm_kasprintf to simplify the logic for allocating memory and
-formatting the input_dev name string.
+It is only with the v6.x releases that gcc started emitting the two
+instruction sequence for -mprofile-kernel, omitting the second store
+instruction.
 
-Reported-by: Maxime Ripard <mripard@kernel.org>
-Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
-Fixes: c08d46aa805b ("HID: multitouch: devm conversion")
-Suggested-by: Maxime Ripard <mripard@kernel.org>
-Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
-Reviewed-by: Maxime Ripard <mripard@kernel.org>
-Link: https://lore.kernel.org/r/20230824061308.222021-3-sergeantsagara@protonmail.com
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+With the older three instruction sequence, the actual ftrace location
+can be the 5th instruction into a function. Update the allowed offset
+for ftrace location from 12 to 16 to accommodate the same.
+
+Cc: stable@vger.kernel.org
+Fixes: 7af82ff90a2b06 ("powerpc/ftrace: Ignore weak functions")
+Signed-off-by: Naveen N Rao <naveen@kernel.org>
+Reviewed-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/7b265908a9461e38fc756ef9b569703860a80621.1687166935.git.naveen@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-multitouch.c | 13 +++----------
- 1 file changed, 3 insertions(+), 10 deletions(-)
+ arch/powerpc/include/asm/ftrace.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
-index e31be0cb8b850..521b2ffb42449 100644
---- a/drivers/hid/hid-multitouch.c
-+++ b/drivers/hid/hid-multitouch.c
-@@ -1594,7 +1594,6 @@ static void mt_post_parse(struct mt_device *td, struct mt_application *app)
- static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- {
- 	struct mt_device *td = hid_get_drvdata(hdev);
--	char *name;
- 	const char *suffix = NULL;
- 	struct mt_report_data *rdata;
- 	struct mt_application *mt_application = NULL;
-@@ -1645,15 +1644,9 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
- 		break;
- 	}
+diff --git a/arch/powerpc/include/asm/ftrace.h b/arch/powerpc/include/asm/ftrace.h
+index 91c049d51d0e..2edc6269b1a3 100644
+--- a/arch/powerpc/include/asm/ftrace.h
++++ b/arch/powerpc/include/asm/ftrace.h
+@@ -12,7 +12,7 @@
  
--	if (suffix) {
--		name = devm_kzalloc(&hi->input->dev,
--				    strlen(hdev->name) + strlen(suffix) + 2,
--				    GFP_KERNEL);
--		if (name) {
--			sprintf(name, "%s %s", hdev->name, suffix);
--			hi->input->name = name;
--		}
--	}
-+	if (suffix)
-+		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
-+						 "%s %s", hdev->name, suffix);
- 
- 	return 0;
- }
+ /* Ignore unused weak functions which will have larger offsets */
+ #ifdef CONFIG_MPROFILE_KERNEL
+-#define FTRACE_MCOUNT_MAX_OFFSET	12
++#define FTRACE_MCOUNT_MAX_OFFSET	16
+ #elif defined(CONFIG_PPC32)
+ #define FTRACE_MCOUNT_MAX_OFFSET	8
+ #endif
 -- 
-2.40.1
+2.42.0
 
 
 
