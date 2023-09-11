@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41C6179BACD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 07EA879BAD7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242063AbjIKWPm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:15:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33104 "EHLO
+        id S244977AbjIKVIf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40886 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239059AbjIKOKx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:53 -0400
+        with ESMTP id S241479AbjIKPJl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A373ACF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E72BEC433C7;
-        Mon, 11 Sep 2023 14:10:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C68A5CCC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 17ADAC433C7;
+        Mon, 11 Sep 2023 15:09:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441448;
-        bh=dLl6gqRQ61t2plVdpB2IJLKkaBmSNi83qcL4ZH1Ue+U=;
+        s=korg; t=1694444976;
+        bh=i/VEtmflhIJNrvbR2YTslmERHXgW3zyicCo43Tlutyo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oq10aNOb5dOAqZSUzDbexJBsgMXPyhWWc57MkyP1AtesglOWUvbIFDtm971vB6y73
-         zr/RzzmJld0f/JtziaAEDZW1S3PB+UHgMFtlxPybrSDwp2StOmqcciCiNLV/IoPplc
-         SfuK1QAF88SM58KUjF3dC/txdz64tW+JWnXPFbfc=
+        b=bxaEU3O4XbHmLCN5BEaOSK5SIYs2Tiixim8TeWD741VAH3D6+xs3blvS1LUNBeDK0
+         TOCwNElHQP+lYDW9/Pl3RilPto/LvgqBdCUA7QfPR20G/2x8CEDO2ZmpSfVdfX64QL
+         n6EGpi7l4wGR7or6sO6OcsApcXsV8NKVrHrDSKTY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stefan Hajnoczi <stefanha@redhat.com>,
-        Kevin Tian <kevin.tian@intel.com>,
-        Alex Williamson <alex.williamson@redhat.com>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Yan Zhai <yan@cloudflare.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 417/739] vfio/type1: fix cap_migration information leak
+Subject: [PATCH 6.1 183/600] lwt: Check LWTUNNEL_XMIT_CONTINUE strictly
 Date:   Mon, 11 Sep 2023 15:43:36 +0200
-Message-ID: <20230911134702.827064604@linuxfoundation.org>
+Message-ID: <20230911134639.002095062@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,95 +51,80 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stefan Hajnoczi <stefanha@redhat.com>
+From: Yan Zhai <yan@cloudflare.com>
 
-[ Upstream commit cd24e2a60af633f157d7e59c0a6dba64f131c0b1 ]
+[ Upstream commit a171fbec88a2c730b108c7147ac5e7b2f5a02b47 ]
 
-Fix an information leak where an uninitialized hole in struct
-vfio_iommu_type1_info_cap_migration on the stack is exposed to userspace.
+LWTUNNEL_XMIT_CONTINUE is implicitly assumed in ip(6)_finish_output2,
+such that any positive return value from a xmit hook could cause
+unexpected continue behavior, despite that related skb may have been
+freed. This could be error-prone for future xmit hook ops. One of the
+possible errors is to return statuses of dst_output directly.
 
-The definition of struct vfio_iommu_type1_info_cap_migration contains a hole as
-shown in this pahole(1) output:
+To make the code safer, redefine LWTUNNEL_XMIT_CONTINUE value to
+distinguish from dst_output statuses and check the continue
+condition explicitly.
 
-  struct vfio_iommu_type1_info_cap_migration {
-          struct vfio_info_cap_header header;              /*     0     8 */
-          __u32                      flags;                /*     8     4 */
-
-          /* XXX 4 bytes hole, try to pack */
-
-          __u64                      pgsize_bitmap;        /*    16     8 */
-          __u64                      max_dirty_bitmap_size; /*    24     8 */
-
-          /* size: 32, cachelines: 1, members: 4 */
-          /* sum members: 28, holes: 1, sum holes: 4 */
-          /* last cacheline: 32 bytes */
-  };
-
-The cap_mig variable is filled in without initializing the hole:
-
-  static int vfio_iommu_migration_build_caps(struct vfio_iommu *iommu,
-                         struct vfio_info_cap *caps)
-  {
-      struct vfio_iommu_type1_info_cap_migration cap_mig;
-
-      cap_mig.header.id = VFIO_IOMMU_TYPE1_INFO_CAP_MIGRATION;
-      cap_mig.header.version = 1;
-
-      cap_mig.flags = 0;
-      /* support minimum pgsize */
-      cap_mig.pgsize_bitmap = (size_t)1 << __ffs(iommu->pgsize_bitmap);
-      cap_mig.max_dirty_bitmap_size = DIRTY_BITMAP_SIZE_MAX;
-
-      return vfio_info_add_capability(caps, &cap_mig.header, sizeof(cap_mig));
-  }
-
-The structure is then copied to a temporary location on the heap. At this point
-it's already too late and ioctl(VFIO_IOMMU_GET_INFO) copies it to userspace
-later:
-
-  int vfio_info_add_capability(struct vfio_info_cap *caps,
-                   struct vfio_info_cap_header *cap, size_t size)
-  {
-      struct vfio_info_cap_header *header;
-
-      header = vfio_info_cap_add(caps, size, cap->id, cap->version);
-      if (IS_ERR(header))
-          return PTR_ERR(header);
-
-      memcpy(header + 1, cap + 1, size - sizeof(*header));
-
-      return 0;
-  }
-
-This issue was found by code inspection.
-
-Signed-off-by: Stefan Hajnoczi <stefanha@redhat.com>
-Reviewed-by: Kevin Tian <kevin.tian@intel.com>
-Fixes: ad721705d09c ("vfio iommu: Add migration capability to report supported features")
-Link: https://lore.kernel.org/r/20230801155352.1391945-1-stefanha@redhat.com
-Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Fixes: 3a0af8fd61f9 ("bpf: BPF for lightweight tunnel infrastructure")
+Suggested-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Yan Zhai <yan@cloudflare.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Link: https://lore.kernel.org/bpf/96b939b85eda00e8df4f7c080f770970a4c5f698.1692326837.git.yan@cloudflare.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/vfio/vfio_iommu_type1.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ include/net/lwtunnel.h | 5 ++++-
+ net/ipv4/ip_output.c   | 2 +-
+ net/ipv6/ip6_output.c  | 2 +-
+ 3 files changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/vfio/vfio_iommu_type1.c b/drivers/vfio/vfio_iommu_type1.c
-index ebe0ad31d0b03..d662aa9d1b4b6 100644
---- a/drivers/vfio/vfio_iommu_type1.c
-+++ b/drivers/vfio/vfio_iommu_type1.c
-@@ -2732,7 +2732,7 @@ static int vfio_iommu_iova_build_caps(struct vfio_iommu *iommu,
- static int vfio_iommu_migration_build_caps(struct vfio_iommu *iommu,
- 					   struct vfio_info_cap *caps)
- {
--	struct vfio_iommu_type1_info_cap_migration cap_mig;
-+	struct vfio_iommu_type1_info_cap_migration cap_mig = {};
+diff --git a/include/net/lwtunnel.h b/include/net/lwtunnel.h
+index 6f15e6fa154e6..53bd2d02a4f0d 100644
+--- a/include/net/lwtunnel.h
++++ b/include/net/lwtunnel.h
+@@ -16,9 +16,12 @@
+ #define LWTUNNEL_STATE_INPUT_REDIRECT	BIT(1)
+ #define LWTUNNEL_STATE_XMIT_REDIRECT	BIT(2)
  
- 	cap_mig.header.id = VFIO_IOMMU_TYPE1_INFO_CAP_MIGRATION;
- 	cap_mig.header.version = 1;
++/* LWTUNNEL_XMIT_CONTINUE should be distinguishable from dst_output return
++ * values (NET_XMIT_xxx and NETDEV_TX_xxx in linux/netdevice.h) for safety.
++ */
+ enum {
+ 	LWTUNNEL_XMIT_DONE,
+-	LWTUNNEL_XMIT_CONTINUE,
++	LWTUNNEL_XMIT_CONTINUE = 0x100,
+ };
+ 
+ 
+diff --git a/net/ipv4/ip_output.c b/net/ipv4/ip_output.c
+index acfe58d2f1dd7..ebd2cea5b7d7a 100644
+--- a/net/ipv4/ip_output.c
++++ b/net/ipv4/ip_output.c
+@@ -214,7 +214,7 @@ static int ip_finish_output2(struct net *net, struct sock *sk, struct sk_buff *s
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
+diff --git a/net/ipv6/ip6_output.c b/net/ipv6/ip6_output.c
+index 95a55c6630add..34192f7a166fb 100644
+--- a/net/ipv6/ip6_output.c
++++ b/net/ipv6/ip6_output.c
+@@ -112,7 +112,7 @@ static int ip6_finish_output2(struct net *net, struct sock *sk, struct sk_buff *
+ 	if (lwtunnel_xmit_redirect(dst->lwtstate)) {
+ 		int res = lwtunnel_xmit(skb);
+ 
+-		if (res < 0 || res == LWTUNNEL_XMIT_DONE)
++		if (res != LWTUNNEL_XMIT_CONTINUE)
+ 			return res;
+ 	}
+ 
 -- 
 2.40.1
 
