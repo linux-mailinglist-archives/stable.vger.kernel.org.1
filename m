@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DED4179BF76
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DB0C179C0F3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379480AbjIKWoa (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48832 "EHLO
+        id S1349006AbjIKVcO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239199AbjIKOOR (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:14:17 -0400
+        with ESMTP id S241801AbjIKPOw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C7C4BCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:14:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 127BCC433C8;
-        Mon, 11 Sep 2023 14:14:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C77C9FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F3B6C433C8;
+        Mon, 11 Sep 2023 15:14:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441652;
-        bh=b8ZsBY2qz5mAth6CvN7OQ8AVkj3jQT+xNV2ygfygSko=;
+        s=korg; t=1694445288;
+        bh=bjNL/FppvAcc/H+XGzELytcvevrDSr9/OSqvzJFMzPo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vicp385tiS8y4jKrv9IMR5R1PmKAhWqU31M39h2m4aXNIUA35vPljW9A8VL3Rx3f5
-         4nJYSF0ev1am6AsR38grgghdM/vW6K0vK2hR/Y3UykpPakPQC86TXJxfqzZMRs0ANL
-         wJSR/g7z9kIOqKMJz8e8SDj79cyOSDdNPFpCtwmM=
+        b=gxHUDA9hZ9quKYQe70SrhVnUCYlw/njTsE2ku2KiNJiquQ0gr8UMcXVSy2LZEnxUV
+         rC+tpgSzsx+id8kPji9xE637Etm6k0NnLUXG5+MXyGhl+4AzUUM5Xf2I+7KHufKZx/
+         RIKnH90sgb5GLiU+IxS3EZSTo8nJVG5GA0Q2jLUI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunyan Zhang <chunyan.zhang@unisoc.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 488/739] serial: sprd: Assign sprd_port after initialized to avoid wrong access
-Date:   Mon, 11 Sep 2023 15:44:47 +0200
-Message-ID: <20230911134704.764398035@linuxfoundation.org>
+Subject: [PATCH 6.1 255/600] arm64: dts: qcom: sm8250-sony-xperia: correct GPIO keys wakeup again
+Date:   Mon, 11 Sep 2023 15:44:48 +0200
+Message-ID: <20230911134641.133280136@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,119 +52,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit f9608f1887568b728839d006024585ab02ef29e5 ]
+[ Upstream commit b8fbeea0253211d97c579eae787274633d3eaf0d ]
 
-The global pointer 'sprd_port' may not zero when sprd_probe returns
-failure, that is a risk for sprd_port to be accessed afterward, and
-may lead to unexpected errors.
+gpio-keys,wakeup is a deprecated property:
 
-For example:
+  m8250-sony-xperia-edo-pdx206.dtb: gpio-keys: key-camera-focus: Unevaluated properties are not allowed ('gpio-key,wakeup' was unexpected)
 
-There are two UART ports, UART1 is used for console and configured in
-kernel command line, i.e. "console=";
-
-The UART1 probe failed and the memory allocated to sprd_port[1] was
-released, but sprd_port[1] was not set to NULL;
-
-In UART2 probe, the same virtual address was allocated to sprd_port[2],
-and UART2 probe process finally will go into sprd_console_setup() to
-register UART1 as console since it is configured as preferred console
-(filled to console_cmdline[]), but the console parameters (sprd_port[1])
-belong to UART2.
-
-So move the sprd_port[] assignment to where the port already initialized
-can avoid the above issue.
-
-Fixes: b7396a38fb28 ("tty/serial: Add Spreadtrum sc9836-uart driver support")
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
-Link: https://lore.kernel.org/r/20230725064053.235448-1-chunyan.zhang@unisoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230711063011.16222-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sprd_serial.c | 25 +++++++++++++++++--------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/tty/serial/sprd_serial.c b/drivers/tty/serial/sprd_serial.c
-index b58f51296ace2..fc1377029021b 100644
---- a/drivers/tty/serial/sprd_serial.c
-+++ b/drivers/tty/serial/sprd_serial.c
-@@ -1106,7 +1106,7 @@ static bool sprd_uart_is_console(struct uart_port *uport)
- static int sprd_clk_init(struct uart_port *uport)
- {
- 	struct clk *clk_uart, *clk_parent;
--	struct sprd_uart_port *u = sprd_port[uport->line];
-+	struct sprd_uart_port *u = container_of(uport, struct sprd_uart_port, port);
+diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
+index 259798a959749..3b710c6a326a5 100644
+--- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
++++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo.dtsi
+@@ -60,7 +60,7 @@ key-camera-focus {
+ 			gpios = <&pm8150b_gpios 2 GPIO_ACTIVE_LOW>;
+ 			debounce-interval = <15>;
+ 			linux,can-disable;
+-			gpio-key,wakeup;
++			wakeup-source;
+ 		};
  
- 	clk_uart = devm_clk_get(uport->dev, "uart");
- 	if (IS_ERR(clk_uart)) {
-@@ -1149,22 +1149,22 @@ static int sprd_probe(struct platform_device *pdev)
- {
- 	struct resource *res;
- 	struct uart_port *up;
-+	struct sprd_uart_port *sport;
- 	int irq;
- 	int index;
- 	int ret;
+ 		key-camera-snapshot {
+@@ -69,7 +69,7 @@ key-camera-snapshot {
+ 			gpios = <&pm8150b_gpios 1 GPIO_ACTIVE_LOW>;
+ 			debounce-interval = <15>;
+ 			linux,can-disable;
+-			gpio-key,wakeup;
++			wakeup-source;
+ 		};
  
- 	index = of_alias_get_id(pdev->dev.of_node, "serial");
--	if (index < 0 || index >= ARRAY_SIZE(sprd_port)) {
-+	if (index < 0 || index >= UART_NR_MAX) {
- 		dev_err(&pdev->dev, "got a wrong serial alias id %d\n", index);
- 		return -EINVAL;
- 	}
- 
--	sprd_port[index] = devm_kzalloc(&pdev->dev, sizeof(*sprd_port[index]),
--					GFP_KERNEL);
--	if (!sprd_port[index])
-+	sport = devm_kzalloc(&pdev->dev, sizeof(*sport), GFP_KERNEL);
-+	if (!sport)
- 		return -ENOMEM;
- 
--	up = &sprd_port[index]->port;
-+	up = &sport->port;
- 	up->dev = &pdev->dev;
- 	up->line = index;
- 	up->type = PORT_SPRD;
-@@ -1195,7 +1195,7 @@ static int sprd_probe(struct platform_device *pdev)
- 	 * Allocate one dma buffer to prepare for receive transfer, in case
- 	 * memory allocation failure at runtime.
- 	 */
--	ret = sprd_rx_alloc_buf(sprd_port[index]);
-+	ret = sprd_rx_alloc_buf(sport);
- 	if (ret)
- 		return ret;
- 
-@@ -1206,14 +1206,23 @@ static int sprd_probe(struct platform_device *pdev)
- 			return ret;
- 		}
- 	}
-+
- 	sprd_ports_num++;
-+	sprd_port[index] = sport;
- 
- 	ret = uart_add_one_port(&sprd_uart_driver, up);
- 	if (ret)
--		sprd_remove(pdev);
-+		goto clean_port;
- 
- 	platform_set_drvdata(pdev, up);
- 
-+	return 0;
-+
-+clean_port:
-+	sprd_port[index] = NULL;
-+	if (--sprd_ports_num == 0)
-+		uart_unregister_driver(&sprd_uart_driver);
-+	sprd_rx_free_buf(sport);
- 	return ret;
- }
- 
+ 		key-vol-down {
 -- 
 2.40.1
 
