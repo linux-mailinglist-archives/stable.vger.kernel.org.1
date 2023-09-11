@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B2E3879B29F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0BB5B79B583
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378812AbjIKWha (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45526 "EHLO
+        id S1344804AbjIKVOt (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:49 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45902 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241504AbjIKPKF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:05 -0400
+        with ESMTP id S239088AbjIKOLV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D3449CCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 238A4C433C8;
-        Mon, 11 Sep 2023 15:10:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C1DE3CC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13258C433C7;
+        Mon, 11 Sep 2023 14:11:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445001;
-        bh=sE33rlPlO+JfRDbrVQ/XKDumMJengnRfz9RHYnxLl7M=;
+        s=korg; t=1694441476;
+        bh=WUuBIu7Y8/ACvTTFlFuH9A4+4lAuQXOb6s7b9wDdQDc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AbKAEQDetxqOwfbnpCLdvSqv6vp15Avy0eT6qobjwDXiC/awm51n6CoOrrFUdcQzw
-         iA+LgykxEYCnn9wHbHEaDVAXQ6y12j70Teo26TvuRtL3utN8ektfQD9bN6fpefbDLA
-         tuzfLfyKdP/Cn7yKAAxnLRt1/cv+1jktKFidGH6g=
+        b=Spk6nusPeTOgf2LJUEu4Wr+Db5W2SqhrILD1oH8+/+nxeoPJoOtLlGaaBMukS+o9r
+         hy6IH/RTK7EyOMFnpjcRXNV1FUoZ2gcKjcTMxaryEFMZPax1IrR4ZQ2STYdfteDvG9
+         Br+H9i3ym7rRpO1VmXnPDNEv/xMRMU/q65zDVB7E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        Moshe Shemesh <moshe@nvidia.com>,
+        Simon Horman <simon.horman@corigine.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 192/600] wifi: ath9k: protect WMI command response buffer replacement with a lock
+Subject: [PATCH 6.5 426/739] net/mlx5: Use RMW accessors for changing LNKCTL
 Date:   Mon, 11 Sep 2023 15:43:45 +0200
-Message-ID: <20230911134639.288893928@linuxfoundation.org>
+Message-ID: <20230911134703.077169522@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,75 +54,55 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 454994cfa9e4c18b6df9f78b60db8eadc20a6c25 ]
+[ Upstream commit 30de872537bda526664d7a20b646adfb3e7ce6e6 ]
 
-If ath9k_wmi_cmd() has exited with a timeout, it is possible that during
-next ath9k_wmi_cmd() call the wmi_rsp callback for previous wmi command
-writes to new wmi->cmd_rsp_buf and makes a completion. This results in an
-invalid ath9k_wmi_cmd() return value.
+Don't assume that only the driver would be accessing LNKCTL of the upstream
+bridge. ASPM policy changes can trigger write to LNKCTL outside of driver's
+control.
 
-Move the replacement of WMI command response buffer and length under
-wmi_lock. Note that last_seq_id value is updated there, too.
+Use RMW capability accessors which do proper locking to avoid losing
+concurrent updates to the register value.
 
-Thus, the buffer cannot be written to by a belated wmi_rsp callback
-because that path is properly rejected by the last_seq_id check.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230425192607.18015-2-pchelkin@ispras.ru
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: eabe8e5e88f5 ("net/mlx5: Handle sync reset now event")
+Link: https://lore.kernel.org/r/20230717120503.15276-8-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Reviewed-by: Moshe Shemesh <moshe@nvidia.com>
+Reviewed-by: Simon Horman <simon.horman@corigine.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/wmi.c | 14 ++++++++------
- 1 file changed, 8 insertions(+), 6 deletions(-)
+ drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c | 9 ++-------
+ 1 file changed, 2 insertions(+), 7 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
-index 04f363cb90fe5..1476b42b52a91 100644
---- a/drivers/net/wireless/ath/ath9k/wmi.c
-+++ b/drivers/net/wireless/ath/ath9k/wmi.c
-@@ -283,7 +283,8 @@ int ath9k_wmi_connect(struct htc_target *htc, struct wmi *wmi,
- 
- static int ath9k_wmi_cmd_issue(struct wmi *wmi,
- 			       struct sk_buff *skb,
--			       enum wmi_cmd_id cmd, u16 len)
-+			       enum wmi_cmd_id cmd, u16 len,
-+			       u8 *rsp_buf, u32 rsp_len)
- {
- 	struct wmi_cmd_hdr *hdr;
- 	unsigned long flags;
-@@ -293,6 +294,11 @@ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
- 	hdr->seq_no = cpu_to_be16(++wmi->tx_seq_id);
- 
- 	spin_lock_irqsave(&wmi->wmi_lock, flags);
-+
-+	/* record the rsp buffer and length */
-+	wmi->cmd_rsp_buf = rsp_buf;
-+	wmi->cmd_rsp_len = rsp_len;
-+
- 	wmi->last_seq_id = wmi->tx_seq_id;
- 	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 
-@@ -333,11 +339,7 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
- 		goto out;
+diff --git a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+index 4804990b7f226..99dcbd006357a 100644
+--- a/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
++++ b/drivers/net/ethernet/mellanox/mlx5/core/fw_reset.c
+@@ -384,16 +384,11 @@ static int mlx5_pci_link_toggle(struct mlx5_core_dev *dev)
+ 		pci_cfg_access_lock(sdev);
  	}
- 
--	/* record the rsp buffer and length */
--	wmi->cmd_rsp_buf = rsp_buf;
--	wmi->cmd_rsp_len = rsp_len;
--
--	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len);
-+	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len, rsp_buf, rsp_len);
- 	if (ret)
- 		goto out;
+ 	/* PCI link toggle */
+-	err = pci_read_config_word(bridge, cap + PCI_EXP_LNKCTL, &reg16);
+-	if (err)
+-		return err;
+-	reg16 |= PCI_EXP_LNKCTL_LD;
+-	err = pci_write_config_word(bridge, cap + PCI_EXP_LNKCTL, reg16);
++	err = pcie_capability_set_word(bridge, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_LD);
+ 	if (err)
+ 		return err;
+ 	msleep(500);
+-	reg16 &= ~PCI_EXP_LNKCTL_LD;
+-	err = pci_write_config_word(bridge, cap + PCI_EXP_LNKCTL, reg16);
++	err = pcie_capability_clear_word(bridge, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_LD);
+ 	if (err)
+ 		return err;
  
 -- 
 2.40.1
