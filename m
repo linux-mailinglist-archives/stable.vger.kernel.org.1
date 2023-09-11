@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 420FC79B858
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1D7D779B6BD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233844AbjIKUvE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51270 "EHLO
+        id S237597AbjIKVQi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:16:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241563AbjIKPKp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:45 -0400
+        with ESMTP id S239103AbjIKOLv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2C355FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 431ABC433C8;
-        Mon, 11 Sep 2023 15:10:40 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C39A0CD
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 14318C433C8;
+        Mon, 11 Sep 2023 14:11:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445040;
-        bh=P3oK46qYxjK8U1vNm2RPr3NLmbjORvkIExSpDKZQb+U=;
+        s=korg; t=1694441507;
+        bh=mTLrn/ZdcrPF+TgIMXbgwFdg3W/16BHdpXSDRT7jOZo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U39jwkPcoUaaA87Y0zvKEuRgwRdghRlKhNWuWHwSi+Xo5t3imm4tiKACSxK3HqoVS
-         nqBpUdH7m7PbfozJGYm4GQX7noRtM4Ju1ERxAG+uxX67KragzmxbqbbYQZKW7rLkk9
-         WJvSsSxPMiKYp96RZpqB85nGqFtZ5mIzk2S3zYgo=
+        b=0r7C73A9ieAgJpTyxWxUniQs0a2TOOMo/RNamFMMRYnzm9myXnZa8FJWFITs/M0f5
+         Zz6f1Br/onzl0sdWyxtLOb9R+Np4qDAT9N/V8pWRUu+V3HQRrQNyvLA4RgqokSdCIc
+         6tWeixpbTCtNBhrBk8Rk1/QZrBPwDMfR7AUUElvc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
+        patches@lists.linux.dev, Liang He <windhl@126.com>,
+        Michael Ellerman <mpe@ellerman.id.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 204/600] hwmon: (tmp513) Fix the channel number in tmp51x_is_visible()
+Subject: [PATCH 6.5 438/739] powerpc/mpc5xxx: Add missing fwnode_handle_put()
 Date:   Mon, 11 Sep 2023 15:43:57 +0200
-Message-ID: <20230911134639.641216947@linuxfoundation.org>
+Message-ID: <20230911134703.403470752@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Liang He <windhl@126.com>
 
-[ Upstream commit d103337e38e7e64c3d915029e947b1cb0b512737 ]
+[ Upstream commit b9bbbf4979073d5536b7650decd37fcb901e6556 ]
 
-The supported channels for this driver are {0..3}. Fix the incorrect
-channel in tmp51x_is_visible().
+In mpc5xxx_fwnode_get_bus_frequency(), we should add
+fwnode_handle_put() when break out of the iteration
+fwnode_for_each_parent_node() as it will automatically
+increase and decrease the refcounter.
 
-Reported-by: Guenter Roeck <linux@roeck-us.net>
-Closes: https://lore.kernel.org/all/ea0eccc0-a29f-41e4-9049-a1a13f8b16f1@roeck-us.net/
-Fixes: 59dfa75e5d82 ("hwmon: Add driver for Texas Instruments TMP512/513 sensor chips.")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Link: https://lore.kernel.org/r/20230824204456.401580-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
+Fixes: de06fba62af6 ("powerpc/mpc5xxx: Switch mpc5xxx_get_bus_frequency() to use fwnode")
+Signed-off-by: Liang He <windhl@126.com>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/20230322030423.1855440-1-windhl@126.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hwmon/tmp513.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/powerpc/sysdev/mpc5xxx_clocks.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/hwmon/tmp513.c b/drivers/hwmon/tmp513.c
-index 7d5f7441aceb1..b9a93ee9c2364 100644
---- a/drivers/hwmon/tmp513.c
-+++ b/drivers/hwmon/tmp513.c
-@@ -434,7 +434,7 @@ static umode_t tmp51x_is_visible(const void *_data,
+diff --git a/arch/powerpc/sysdev/mpc5xxx_clocks.c b/arch/powerpc/sysdev/mpc5xxx_clocks.c
+index c5bf7e1b37804..58cee28e23992 100644
+--- a/arch/powerpc/sysdev/mpc5xxx_clocks.c
++++ b/arch/powerpc/sysdev/mpc5xxx_clocks.c
+@@ -25,8 +25,10 @@ unsigned long mpc5xxx_fwnode_get_bus_frequency(struct fwnode_handle *fwnode)
  
- 	switch (type) {
- 	case hwmon_temp:
--		if (data->id == tmp512 && channel == 4)
-+		if (data->id == tmp512 && channel == 3)
- 			return 0;
- 		switch (attr) {
- 		case hwmon_temp_input:
+ 	fwnode_for_each_parent_node(fwnode, parent) {
+ 		ret = fwnode_property_read_u32(parent, "bus-frequency", &bus_freq);
+-		if (!ret)
++		if (!ret) {
++			fwnode_handle_put(parent);
+ 			return bus_freq;
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.40.1
 
