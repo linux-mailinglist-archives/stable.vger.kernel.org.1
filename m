@@ -2,46 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D99879BF26
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B5CA879B9E8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239701AbjIKUzW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55620 "EHLO
+        id S1376702AbjIKWUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50218 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241911AbjIKPRk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:40 -0400
+        with ESMTP id S239425AbjIKOUM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6B86EFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AED30C433C7;
-        Mon, 11 Sep 2023 15:17:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E326BDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FB34C433C8;
+        Mon, 11 Sep 2023 14:20:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445455;
-        bh=NNmZR7+PDVdTmjF3pqwN6lsk/YBCJangtWW3xRBPJb0=;
+        s=korg; t=1694442008;
+        bh=k0Jng5tNiI0AyuvKN5JOS3N9CJHn8+aoJrLMYxcHMBc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IhdtVm2v8BsoFiB1Kd3Fne7BS81EqDTchgLPABnLYoI0t24izxc+waUJRL3Cf5xNB
-         qFHtFii6e56Ro3Iy4DhQM5Sgjf6s/d9hH5WjKcSbAVu2imA5OmtTbLG8mXJIZdmYb9
-         A5Rd24sUdg6V9XmphwvC1P8+xFp6LOQRb3HTyDzA=
+        b=z0TIz7uRQhlmE9qBEOHhrgIZqqkNhHEHDchqRjuYTIWyw7XLa4K7nR0jeIrFGZQEb
+         FOSR8uls8kATU6EXzAJ6psHDsdcng+gf7tg31S5YWEZU2JrKnzBzXuOCCIw7tHEIMw
+         rrVOOiaxx1f/dnhzLppP69FLgYcO55ftS7VGNFFU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        patches@lists.linux.dev, Maxime Ripard <mripard@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rahul Rameshbabu <rrameshbabu@nvidia.com>,
+        Benjamin Tissoires <bentiss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 353/600] PCI: Add locking to RMW PCI Express Capability Register accessors
+Subject: [PATCH 6.5 587/739] HID: nvidia-shield: Reference hid_device devm allocation of input_dev name
 Date:   Mon, 11 Sep 2023 15:46:26 +0200
-Message-ID: <20230911134644.099954030@linuxfoundation.org>
+Message-ID: <20230911134707.500583506@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,170 +52,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Rahul Rameshbabu <rrameshbabu@nvidia.com>
 
-[ Upstream commit 5e70d0acf0825f439079736080350371f8d6699a ]
+[ Upstream commit 197d3143520fec9fde89aebabc9f0d7464f08e50 ]
 
-Many places in the kernel write the Link Control and Root Control PCI
-Express Capability Registers without proper concurrency control and this
-could result in losing the changes one of the writers intended to make.
+Use hid_device for devm allocation of the input_dev name to avoid a
+use-after-free. input_unregister_device would trigger devres cleanup of all
+resources associated with the input_dev, free-ing the name. The name would
+subsequently be used in a uevent fired at the end of unregistering the
+input_dev.
 
-Add pcie_cap_lock spinlock into the struct pci_dev and use it to protect
-bit changes made in the RMW capability accessors. Protect only a selected
-set of registers by differentiating the RMW accessor internally to
-locked/unlocked variants using a wrapper which has the same signature as
-pcie_capability_clear_and_set_word(). As the Capability Register (pos)
-given to the wrapper is always a constant, the compiler should be able to
-simplify all the dead-code away.
-
-So far only the Link Control Register (ASPM, hotplug, link retraining,
-various drivers) and the Root Control Register (AER & PME) seem to
-require RMW locking.
-
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Fixes: c7f486567c1d ("PCI PM: PCIe PME root port service driver")
-Fixes: f12eb72a268b ("PCI/ASPM: Use PCI Express Capability accessors")
-Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
-Fixes: affa48de8417 ("staging/rdma/hfi1: Add support for enabling/disabling PCIe ASPM")
-Fixes: 849a9366cba9 ("misc: rtsx: Add support new chip rts5228 mmc: rtsx: Add support MMC_CAP2_NO_MMC")
-Fixes: 3d1e7aa80d1c ("misc: rtsx: Use pcie_capability_clear_and_set_word() for PCI_EXP_LNKCTL")
-Fixes: c0e5f4e73a71 ("misc: rtsx: Add support for RTS5261")
-Fixes: 3df4fce739e2 ("misc: rtsx: separate aspm mode into MODE_REG and MODE_CFG")
-Fixes: 121e9c6b5c4c ("misc: rtsx: modify and fix init_hw function")
-Fixes: 19f3bd548f27 ("mfd: rtsx: Remove LCTLR defination")
-Fixes: 773ccdfd9cc6 ("mfd: rtsx: Read vendor setting from config space")
-Fixes: 8275b77a1513 ("mfd: rts5249: Add support for RTS5250S power saving")
-Fixes: 5da4e04ae480 ("misc: rtsx: Add support for RTS5260")
-Fixes: 0f49bfbd0f2e ("tg3: Use PCI Express Capability accessors")
-Fixes: 5e7dfd0fb94a ("tg3: Prevent corruption at 10 / 100Mbps w CLKREQ")
-Fixes: b726e493e8dc ("r8169: sync existing 8168 device hardware start sequences with vendor driver")
-Fixes: e6de30d63eb1 ("r8169: more 8168dp support.")
-Fixes: 8a06127602de ("Bluetooth: hci_bcm4377: Add new driver for BCM4377 PCIe boards")
-Fixes: 6f461f6c7c96 ("e1000e: enable/disable ASPM L0s and L1 and ERT according to hardware errata")
-Fixes: 1eae4eb2a1c7 ("e1000e: Disable L1 ASPM power savings for 82573 mobile variants")
-Fixes: 8060e169e02f ("ath9k: Enable extended synch for AR9485 to fix L0s recovery issue")
-Fixes: 69ce674bfa69 ("ath9k: do btcoex ASPM disabling at initialization time")
-Fixes: f37f05503575 ("mt76: mt76x2e: disable pcie_aspm by default")
-Link: https://lore.kernel.org/r/20230717120503.15276-2-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Reviewed-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Reported-by: Maxime Ripard <mripard@kernel.org>
+Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
+Fixes: 09308562d4af ("HID: nvidia-shield: Initial driver implementation with Thunderstrike support")
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Rahul Rameshbabu <rrameshbabu@nvidia.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20230824061308.222021-4-sergeantsagara@protonmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/access.c | 20 +++++++++++++++++---
- drivers/pci/probe.c  |  1 +
- include/linux/pci.h  | 34 ++++++++++++++++++++++++++++++++--
- 3 files changed, 50 insertions(+), 5 deletions(-)
+ drivers/hid/hid-nvidia-shield.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/pci/access.c b/drivers/pci/access.c
-index 708c7529647fd..3d20f9c51efe7 100644
---- a/drivers/pci/access.c
-+++ b/drivers/pci/access.c
-@@ -491,8 +491,8 @@ int pcie_capability_write_dword(struct pci_dev *dev, int pos, u32 val)
- }
- EXPORT_SYMBOL(pcie_capability_write_dword);
- 
--int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
--				       u16 clear, u16 set)
-+int pcie_capability_clear_and_set_word_unlocked(struct pci_dev *dev, int pos,
-+						u16 clear, u16 set)
- {
- 	int ret;
- 	u16 val;
-@@ -506,7 +506,21 @@ int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
- 
- 	return ret;
- }
--EXPORT_SYMBOL(pcie_capability_clear_and_set_word);
-+EXPORT_SYMBOL(pcie_capability_clear_and_set_word_unlocked);
-+
-+int pcie_capability_clear_and_set_word_locked(struct pci_dev *dev, int pos,
-+					      u16 clear, u16 set)
-+{
-+	unsigned long flags;
-+	int ret;
-+
-+	spin_lock_irqsave(&dev->pcie_cap_lock, flags);
-+	ret = pcie_capability_clear_and_set_word_unlocked(dev, pos, clear, set);
-+	spin_unlock_irqrestore(&dev->pcie_cap_lock, flags);
-+
-+	return ret;
-+}
-+EXPORT_SYMBOL(pcie_capability_clear_and_set_word_locked);
- 
- int pcie_capability_clear_and_set_dword(struct pci_dev *dev, int pos,
- 					u32 clear, u32 set)
-diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
-index e3a1dc6432bcd..843e4a58788e3 100644
---- a/drivers/pci/probe.c
-+++ b/drivers/pci/probe.c
-@@ -2312,6 +2312,7 @@ struct pci_dev *pci_alloc_dev(struct pci_bus *bus)
- 		.end = -1,
- 	};
- 
-+	spin_lock_init(&dev->pcie_cap_lock);
- #ifdef CONFIG_PCI_MSI
- 	raw_spin_lock_init(&dev->msi_lock);
- #endif
-diff --git a/include/linux/pci.h b/include/linux/pci.h
-index 4ea8de6890bea..eccaf1abea79d 100644
---- a/include/linux/pci.h
-+++ b/include/linux/pci.h
-@@ -466,6 +466,7 @@ struct pci_dev {
- 	pci_dev_flags_t dev_flags;
- 	atomic_t	enable_cnt;	/* pci_enable_device has been called */
- 
-+	spinlock_t	pcie_cap_lock;		/* Protects RMW ops in capability accessors */
- 	u32		saved_config_space[16]; /* Config space saved at suspend time */
- 	struct hlist_head saved_cap_space;
- 	int		rom_attr_enabled;	/* Display of ROM attribute enabled? */
-@@ -1209,11 +1210,40 @@ int pcie_capability_read_word(struct pci_dev *dev, int pos, u16 *val);
- int pcie_capability_read_dword(struct pci_dev *dev, int pos, u32 *val);
- int pcie_capability_write_word(struct pci_dev *dev, int pos, u16 val);
- int pcie_capability_write_dword(struct pci_dev *dev, int pos, u32 val);
--int pcie_capability_clear_and_set_word(struct pci_dev *dev, int pos,
--				       u16 clear, u16 set);
-+int pcie_capability_clear_and_set_word_unlocked(struct pci_dev *dev, int pos,
-+						u16 clear, u16 set);
-+int pcie_capability_clear_and_set_word_locked(struct pci_dev *dev, int pos,
-+					      u16 clear, u16 set);
- int pcie_capability_clear_and_set_dword(struct pci_dev *dev, int pos,
- 					u32 clear, u32 set);
- 
-+/**
-+ * pcie_capability_clear_and_set_word - RMW accessor for PCI Express Capability Registers
-+ * @dev:	PCI device structure of the PCI Express device
-+ * @pos:	PCI Express Capability Register
-+ * @clear:	Clear bitmask
-+ * @set:	Set bitmask
-+ *
-+ * Perform a Read-Modify-Write (RMW) operation using @clear and @set
-+ * bitmasks on PCI Express Capability Register at @pos. Certain PCI Express
-+ * Capability Registers are accessed concurrently in RMW fashion, hence
-+ * require locking which is handled transparently to the caller.
-+ */
-+static inline int pcie_capability_clear_and_set_word(struct pci_dev *dev,
-+						     int pos,
-+						     u16 clear, u16 set)
-+{
-+	switch (pos) {
-+	case PCI_EXP_LNKCTL:
-+	case PCI_EXP_RTCTL:
-+		return pcie_capability_clear_and_set_word_locked(dev, pos,
-+								 clear, set);
-+	default:
-+		return pcie_capability_clear_and_set_word_unlocked(dev, pos,
-+								   clear, set);
-+	}
-+}
-+
- static inline int pcie_capability_set_word(struct pci_dev *dev, int pos,
- 					   u16 set)
- {
+diff --git a/drivers/hid/hid-nvidia-shield.c b/drivers/hid/hid-nvidia-shield.c
+index 4e183650c4478..9c44974135079 100644
+--- a/drivers/hid/hid-nvidia-shield.c
++++ b/drivers/hid/hid-nvidia-shield.c
+@@ -164,7 +164,7 @@ static struct input_dev *shield_allocate_input_dev(struct hid_device *hdev,
+ 	idev->id.product = hdev->product;
+ 	idev->id.version = hdev->version;
+ 	idev->uniq = hdev->uniq;
+-	idev->name = devm_kasprintf(&idev->dev, GFP_KERNEL, "%s %s", hdev->name,
++	idev->name = devm_kasprintf(&hdev->dev, GFP_KERNEL, "%s %s", hdev->name,
+ 				    name_suffix);
+ 	if (!idev->name)
+ 		goto err_name;
 -- 
 2.40.1
 
