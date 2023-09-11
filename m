@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A88AE79BB4D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 86E3A79B68B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243383AbjIKVHx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59734 "EHLO
+        id S1359843AbjIKWSx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34472 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240996AbjIKO7S (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:18 -0400
+        with ESMTP id S242183AbjIKPYZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5A01B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E68DC433C8;
-        Mon, 11 Sep 2023 14:59:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6908ED8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACA09C433C7;
+        Mon, 11 Sep 2023 15:24:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444352;
-        bh=/BJnuyx4RNIchX27QoktikvhUrNDHtg97geTsCjvyk4=;
+        s=korg; t=1694445861;
+        bh=q7dOzc5UbKynKncd6HG6D3R2VMO/+KPsHU1yuUqanrU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=z2ZndF8vIyENJ4UX+/M2PBMV7uRYCff3aUjRfdRs3/5khWgv5uXqLGYpD09IE3mC6
-         lZ/PlbZcd2EgHeUjsYDGsNE5vsoCp9HGwUFo6+yyrXvFDyrr4FcJNi25AcdFsRgR7i
-         hGXtBwdhQLaEm2sM2eJnmxwYbvlpFHKnQkRKN4Qo=
+        b=AuJYMrwzZCd69gyZiuKptw9NtXS17eDkAQkrsFy7EK8XpMC0UTlE9gjihthKevAUp
+         o1S/kTxXUZa1u49N8vsrMSnltkhYGGZZ5n4J2B/FJ80XQrJT77RF50MvMvxF8bdlIY
+         Z3nMozkKgNM3w7JwZkliLV8Hu0XO4L4gL6xhb2f8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robin Murphy <robin.murphy@arm.com>,
-        syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com,
-        Will Deacon <will@kernel.org>
-Subject: [PATCH 6.4 672/737] arm64: csum: Fix OoB access in IP checksum code for negative lengths
+        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
+        Mikhail Kobuk <m.kobuk@ispras.ru>,
+        Alexey Khoroshilov <khoroshilov@ispras.ru>,
+        Daniel Bristot de Oliveira <bristot@kernel.org>,
+        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 498/600] tracing: Remove extra space at the end of hwlat_detector/mode
 Date:   Mon, 11 Sep 2023 15:48:51 +0200
-Message-ID: <20230911134709.309424441@linuxfoundation.org>
+Message-ID: <20230911134648.329047279@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,79 +53,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Will Deacon <will@kernel.org>
+From: Mikhail Kobuk <m.kobuk@ispras.ru>
 
-commit 8bd795fedb8450ecbef18eeadbd23ed8fc7630f5 upstream.
+[ Upstream commit 2cf0dee989a8b2501929eaab29473b6b1fa11057 ]
 
-Although commit c2c24edb1d9c ("arm64: csum: Fix pathological zero-length
-calls") added an early return for zero-length input, syzkaller has
-popped up with an example of a _negative_ length which causes an
-undefined shift and an out-of-bounds read:
+Space is printed after each mode value including the last one:
+$ echo \"$(sudo cat /sys/kernel/tracing/hwlat_detector/mode)\"
+"none [round-robin] per-cpu "
 
- | BUG: KASAN: slab-out-of-bounds in do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
- | Read of size 4294966928 at addr ffff0000d7ac0170 by task syz-executor412/5975
- |
- | CPU: 0 PID: 5975 Comm: syz-executor412 Not tainted 6.4.0-rc4-syzkaller-g908f31f2a05b #0
- | Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/25/2023
- | Call trace:
- |  dump_backtrace+0x1b8/0x1e4 arch/arm64/kernel/stacktrace.c:233
- |  show_stack+0x2c/0x44 arch/arm64/kernel/stacktrace.c:240
- |  __dump_stack lib/dump_stack.c:88 [inline]
- |  dump_stack_lvl+0xd0/0x124 lib/dump_stack.c:106
- |  print_address_description mm/kasan/report.c:351 [inline]
- |  print_report+0x174/0x514 mm/kasan/report.c:462
- |  kasan_report+0xd4/0x130 mm/kasan/report.c:572
- |  kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:187
- |  __kasan_check_read+0x20/0x30 mm/kasan/shadow.c:31
- |  do_csum+0x44/0x254 arch/arm64/lib/csum.c:39
- |  csum_partial+0x30/0x58 lib/checksum.c:128
- |  gso_make_checksum include/linux/skbuff.h:4928 [inline]
- |  __udp_gso_segment+0xaf4/0x1bc4 net/ipv4/udp_offload.c:332
- |  udp6_ufo_fragment+0x540/0xca0 net/ipv6/udp_offload.c:47
- |  ipv6_gso_segment+0x5cc/0x1760 net/ipv6/ip6_offload.c:119
- |  skb_mac_gso_segment+0x2b4/0x5b0 net/core/gro.c:141
- |  __skb_gso_segment+0x250/0x3d0 net/core/dev.c:3401
- |  skb_gso_segment include/linux/netdevice.h:4859 [inline]
- |  validate_xmit_skb+0x364/0xdbc net/core/dev.c:3659
- |  validate_xmit_skb_list+0x94/0x130 net/core/dev.c:3709
- |  sch_direct_xmit+0xe8/0x548 net/sched/sch_generic.c:327
- |  __dev_xmit_skb net/core/dev.c:3805 [inline]
- |  __dev_queue_xmit+0x147c/0x3318 net/core/dev.c:4210
- |  dev_queue_xmit include/linux/netdevice.h:3085 [inline]
- |  packet_xmit+0x6c/0x318 net/packet/af_packet.c:276
- |  packet_snd net/packet/af_packet.c:3081 [inline]
- |  packet_sendmsg+0x376c/0x4c98 net/packet/af_packet.c:3113
- |  sock_sendmsg_nosec net/socket.c:724 [inline]
- |  sock_sendmsg net/socket.c:747 [inline]
- |  __sys_sendto+0x3b4/0x538 net/socket.c:2144
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Extend the early return to reject negative lengths as well, aligning our
-implementation with the generic code in lib/checksum.c
+Link: https://lore.kernel.org/linux-trace-kernel/20230825103432.7750-1-m.kobuk@ispras.ru
 
-Cc: Robin Murphy <robin.murphy@arm.com>
-Fixes: 5777eaed566a ("arm64: Implement optimised checksum routine")
-Reported-by: syzbot+4a9f9820bd8d302e22f7@syzkaller.appspotmail.com
-Link: https://lore.kernel.org/r/000000000000e0e94c0603f8d213@google.com
-Signed-off-by: Will Deacon <will@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Masami Hiramatsu <mhiramat@kernel.org>
+Fixes: 8fa826b7344d ("trace/hwlat: Implement the mode config option")
+Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
+Reviewed-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
+Acked-by: Daniel Bristot de Oliveira <bristot@kernel.org>
+Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/lib/csum.c |    2 +-
+ kernel/trace/trace_hwlat.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/arm64/lib/csum.c
-+++ b/arch/arm64/lib/csum.c
-@@ -24,7 +24,7 @@ unsigned int __no_sanitize_address do_cs
- 	const u64 *ptr;
- 	u64 data, sum64 = 0;
+diff --git a/kernel/trace/trace_hwlat.c b/kernel/trace/trace_hwlat.c
+index 2f37a6e68aa9f..b791524a6536a 100644
+--- a/kernel/trace/trace_hwlat.c
++++ b/kernel/trace/trace_hwlat.c
+@@ -635,7 +635,7 @@ static int s_mode_show(struct seq_file *s, void *v)
+ 	else
+ 		seq_printf(s, "%s", thread_mode_str[mode]);
  
--	if (unlikely(len == 0))
-+	if (unlikely(len <= 0))
- 		return 0;
+-	if (mode != MODE_MAX)
++	if (mode < MODE_MAX - 1) /* if mode is any but last */
+ 		seq_puts(s, " ");
  
- 	offset = (unsigned long)buff & 7;
+ 	return 0;
+-- 
+2.40.1
+
 
 
