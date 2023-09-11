@@ -2,49 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D3FF379AF03
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0780C79AEBE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237306AbjIKUv0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34404 "EHLO
+        id S1349153AbjIKVcq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240103AbjIKOgj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:39 -0400
+        with ESMTP id S241260AbjIKPFP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AA23ECF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C983CC433CB;
-        Mon, 11 Sep 2023 14:36:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E6AD8125;
+        Mon, 11 Sep 2023 08:05:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3B3DAC433C7;
+        Mon, 11 Sep 2023 15:05:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442994;
-        bh=YuOxKlLGS5eD/wJel0mUY7vO6YlQ8GccahIwrHrhslY=;
+        s=korg; t=1694444710;
+        bh=tyMgdI+jcsjOlqKph/FM2gXZQ1CbtHGZQi1NohMGj04=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=S2632ThBG/uxjl35DiNg4rKB5ZsyIkU9+xjlygdFPFSdiruTalzWb44DPh1e42T/k
-         qb4rZorJDCJ0praG3BF+PNPkiZG4/adaxpuZszKw/TohUw8ccl6l5vSFLlXHKu6+69
-         /SWIhWC9VZG/hX6hPNCwJQSBaT9LX8BZfy+AwgOA=
+        b=X/S8GemvIAzQ6aQjqD+aLae8zkLEHf0RCTOwmQJU0Iq6Ydon5kkKbcztqCxLr8e26
+         S0O8/bn/npnLNTslfWgUKqnSNWpajf9r7hIamsQ7XxGJnuoBd+VfbcWe6HBNK8WWAC
+         3G30xn0e+sqqPX+avZQFgrvXBB1VNzvrXWzRABns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>,
-        Pankaj Raghav <p.raghav@samsung.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Chinwen Chang <chinwen.chang@mediatek.com>,
-        Jan Kiszka <jan.kiszka@siemens.com>,
-        Kieran Bingham <kbingham@kernel.org>,
-        Luis Chamberlain <mcgrof@kernel.org>,
-        Matthias Brugger <matthias.bgg@gmail.com>,
-        Qun-Wei Lin <qun-wei.lin@mediatek.com>,
-        Andrew Morton <akpm@linux-foundation.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Baoquan He <bhe@redhat.com>,
+        Michael Turquette <mturquette@baylibre.com>,
+        Stephen Boyd <sboyd@kernel.org>, linux-clk@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 221/737] scripts/gdb: fix lx-lsmod show the wrong size
-Date:   Mon, 11 Sep 2023 15:41:20 +0200
-Message-ID: <20230911134656.758863474@linuxfoundation.org>
+Subject: [PATCH 6.1 048/600] clk: fixed-mmio: make COMMON_CLK_FIXED_MMIO depend on HAS_IOMEM
+Date:   Mon, 11 Sep 2023 15:41:21 +0200
+Message-ID: <20230911134635.014049204@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -60,87 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
+From: Baoquan He <bhe@redhat.com>
 
-[ Upstream commit fb40b0537342e1acd5c2daf2ff6780c1d0d2883c ]
+[ Upstream commit e7dd44f4f3166db45248414f5df8f615392de47a ]
 
-'lsmod' shows total core layout size, so we need to sum up all the
-sections in core layout in gdb scripts.
+On s390 systems (aka mainframes), it has classic channel devices for
+networking and permanent storage that are currently even more common
+than PCI devices. Hence it could have a fully functional s390 kernel
+with CONFIG_PCI=n, then the relevant iomem mapping functions
+[including ioremap(), devm_ioremap(), etc.] are not available.
 
-/ # lsmod
-kasan_test 200704 0 - Live 0xffff80007f640000
+Here let COMMON_CLK_FIXED_MMIO depend on HAS_IOMEM so that it won't
+be built to cause below compiling error if PCI is unset:
 
-Before patch:
-(gdb) lx-lsmod
-Address            Module                  Size  Used by
-0xffff80007f640000 kasan_test             36864  0
+------
+ld: drivers/clk/clk-fixed-mmio.o: in function `fixed_mmio_clk_setup':
+clk-fixed-mmio.c:(.text+0x5e): undefined reference to `of_iomap'
+ld: clk-fixed-mmio.c:(.text+0xba): undefined reference to `iounmap'
+------
 
-After patch:
-(gdb) lx-lsmod
-Address            Module                  Size  Used by
-0xffff80007f640000 kasan_test            200704  0
-
-Link: https://lkml.kernel.org/r/20230710092852.31049-1-Kuan-Ying.Lee@mediatek.com
-Fixes: b4aff7513df3 ("scripts/gdb: use mem instead of core_layout to get the module address")
-Signed-off-by: Kuan-Ying Lee <Kuan-Ying.Lee@mediatek.com>
-Reviewed-by: Pankaj Raghav <p.raghav@samsung.com>
-Cc: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Cc: Chinwen Chang <chinwen.chang@mediatek.com>
-Cc: Jan Kiszka <jan.kiszka@siemens.com>
-Cc: Kieran Bingham <kbingham@kernel.org>
-Cc: Luis Chamberlain <mcgrof@kernel.org>
-Cc: Matthias Brugger <matthias.bgg@gmail.com>
-Cc: Qun-Wei Lin <qun-wei.lin@mediatek.com>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306211329.ticOJCSv-lkp@intel.com/
+Signed-off-by: Baoquan He <bhe@redhat.com>
+Cc: Michael Turquette <mturquette@baylibre.com>
+Cc: Stephen Boyd <sboyd@kernel.org>
+Cc: linux-clk@vger.kernel.org
+Link: https://lore.kernel.org/r/20230707135852.24292-8-bhe@redhat.com
+Signed-off-by: Stephen Boyd <sboyd@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/gdb/linux/constants.py.in |  3 +++
- scripts/gdb/linux/modules.py      | 12 +++++++++---
- 2 files changed, 12 insertions(+), 3 deletions(-)
+ drivers/clk/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/scripts/gdb/linux/constants.py.in b/scripts/gdb/linux/constants.py.in
-index 50a92c4e9984e..fab74ca9df6fc 100644
---- a/scripts/gdb/linux/constants.py.in
-+++ b/scripts/gdb/linux/constants.py.in
-@@ -64,6 +64,9 @@ LX_GDBPARSED(IRQ_HIDDEN)
+diff --git a/drivers/clk/Kconfig b/drivers/clk/Kconfig
+index 5da82f2bdd211..a5dcc7293a836 100644
+--- a/drivers/clk/Kconfig
++++ b/drivers/clk/Kconfig
+@@ -427,6 +427,7 @@ config COMMON_CLK_BD718XX
+ config COMMON_CLK_FIXED_MMIO
+ 	bool "Clock driver for Memory Mapped Fixed values"
+ 	depends on COMMON_CLK && OF
++	depends on HAS_IOMEM
+ 	help
+ 	  Support for Memory Mapped IO Fixed clocks
  
- /* linux/module.h */
- LX_GDBPARSED(MOD_TEXT)
-+LX_GDBPARSED(MOD_DATA)
-+LX_GDBPARSED(MOD_RODATA)
-+LX_GDBPARSED(MOD_RO_AFTER_INIT)
- 
- /* linux/mount.h */
- LX_VALUE(MNT_NOSUID)
-diff --git a/scripts/gdb/linux/modules.py b/scripts/gdb/linux/modules.py
-index 261f28640f4cd..f76a43bfa15fc 100644
---- a/scripts/gdb/linux/modules.py
-+++ b/scripts/gdb/linux/modules.py
-@@ -73,11 +73,17 @@ class LxLsmod(gdb.Command):
-                 "        " if utils.get_long_type().sizeof == 8 else ""))
- 
-         for module in module_list():
--            layout = module['mem'][constants.LX_MOD_TEXT]
-+            text = module['mem'][constants.LX_MOD_TEXT]
-+            text_addr = str(text['base']).split()[0]
-+            total_size = 0
-+
-+            for i in range(constants.LX_MOD_TEXT, constants.LX_MOD_RO_AFTER_INIT + 1):
-+                total_size += module['mem'][i]['size']
-+
-             gdb.write("{address} {name:<19} {size:>8}  {ref}".format(
--                address=str(layout['base']).split()[0],
-+                address=text_addr,
-                 name=module['name'].string(),
--                size=str(layout['size']),
-+                size=str(total_size),
-                 ref=str(module['refcnt']['counter'] - 1)))
- 
-             t = self._module_use_type.get_type().pointer()
 -- 
 2.40.1
 
