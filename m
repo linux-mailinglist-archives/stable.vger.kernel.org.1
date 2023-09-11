@@ -2,41 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 68D8879AF13
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 39BC679B1C5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377471AbjIKWfe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:35:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38828 "EHLO
+        id S1358190AbjIKWIG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39814 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239453AbjIKOVE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:04 -0400
+        with ESMTP id S240768AbjIKOxR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9E29EDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EAB6CC433C7;
-        Mon, 11 Sep 2023 14:20:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62C36118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7F110C433C8;
+        Mon, 11 Sep 2023 14:53:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442059;
-        bh=mNIPYQuB2TlbBvrr207reVqbRw5gj5vRbUvu1X7RCoE=;
+        s=korg; t=1694443993;
+        bh=AJQ+peReRXy1WW93+2lI6jPVbdNWWM/9b7J+wGECIi4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eCF2CyVV6iESi4NI50fnGdlISVbV3EDqhpSnXdB9hIOicAPC2Lu+OCnEqa0J/PUKm
-         +dfkSxkMSCxodyEw7+6Ij4Km/Yh/Ve4oaRSe+pbkDgTkXz9+/NOCKKOYhR2dEuTUx0
-         ghcUAo0zpZL/7NS4bUSya2LdRjs0U8SSbskDUpRI=
+        b=aIQpQZ8qxdGHDGcN9xsM6KROzmhbBBwTqgZchT8ZfdlQJu3crcyH9oABQ/gqc2VW2
+         ofFbMb8z0pNvL522HH4Jz4saKuJhEnd0W2NFKlR/FfeZYxE8WBsbMaPknFNsaUZCRL
+         bn2K/bAPgRkFNNSXneBqXiPHlbe0VPzjyRveSbAQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Kyle Zeng <zengyhkyle@gmail.com>,
-        Simon Horman <horms@kernel.org>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.5 631/739] igmp: limit igmpv3_newpack() packet size to IP_MAX_MTU
-Date:   Mon, 11 Sep 2023 15:47:10 +0200
-Message-ID: <20230911134708.718226515@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 572/737] media: ov2680: Fix regulators being left enabled on ov2680_power_on() errors
+Date:   Mon, 11 Sep 2023 15:47:11 +0200
+Message-ID: <20230911134706.517503947@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,46 +54,67 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eric Dumazet <edumazet@google.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-commit c3b704d4a4a265660e665df51b129e8425216ed1 upstream.
+[ Upstream commit 84b4bd7e0d98166aa32fd470e672721190492eae ]
 
-This is a follow up of commit 915d975b2ffa ("net: deal with integer
-overflows in kmalloc_reserve()") based on David Laight feedback.
+When the ov2680_power_on() "sensor soft reset failed" path is hit during
+probe() the WARN() about putting an enabled regulator at
+drivers/regulator/core.c:2398 triggers 3 times (once for each regulator),
+filling dmesg with backtraces.
 
-Back in 2010, I failed to realize malicious users could set dev->mtu
-to arbitrary values. This mtu has been since limited to 0x7fffffff but
-regardless of how big dev->mtu is, it makes no sense for igmpv3_newpack()
-to allocate more than IP_MAX_MTU and risk various skb fields overflows.
+Fix this by properly disabling the regulators on ov2680_power_on() errors.
 
-Fixes: 57e1ab6eaddc ("igmp: refine skb allocations")
-Link: https://lore.kernel.org/netdev/d273628df80f45428e739274ab9ecb72@AcuMS.aculab.com/
-Signed-off-by: Eric Dumazet <edumazet@google.com>
-Reported-by: David Laight <David.Laight@ACULAB.COM>
-Cc: Kyle Zeng <zengyhkyle@gmail.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Signed-off-by: David S. Miller <davem@davemloft.net>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/ipv4/igmp.c |    3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/media/i2c/ov2680.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
---- a/net/ipv4/igmp.c
-+++ b/net/ipv4/igmp.c
-@@ -353,8 +353,9 @@ static struct sk_buff *igmpv3_newpack(st
- 	struct flowi4 fl4;
- 	int hlen = LL_RESERVED_SPACE(dev);
- 	int tlen = dev->needed_tailroom;
--	unsigned int size = mtu;
-+	unsigned int size;
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index a24344ef9852c..8943e4e78a0df 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -475,7 +475,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 		ret = ov2680_write_reg(sensor, OV2680_REG_SOFT_RESET, 0x01);
+ 		if (ret != 0) {
+ 			dev_err(dev, "sensor soft reset failed\n");
+-			return ret;
++			goto err_disable_regulators;
+ 		}
+ 		usleep_range(1000, 2000);
+ 	} else {
+@@ -485,7 +485,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
  
-+	size = min(mtu, IP_MAX_MTU);
- 	while (1) {
- 		skb = alloc_skb(size + hlen + tlen,
- 				GFP_ATOMIC | __GFP_NOWARN);
+ 	ret = clk_prepare_enable(sensor->xvclk);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
+ 
+ 	sensor->is_enabled = true;
+ 
+@@ -495,6 +495,10 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 	ov2680_stream_disable(sensor);
+ 
+ 	return 0;
++
++err_disable_regulators:
++	regulator_bulk_disable(OV2680_NUM_SUPPLIES, sensor->supplies);
++	return ret;
+ }
+ 
+ static int ov2680_s_power(struct v4l2_subdev *sd, int on)
+-- 
+2.40.1
+
 
 
