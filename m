@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4B66779B4B9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D279A79B34B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359450AbjIKWQs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:16:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42448 "EHLO
+        id S232643AbjIKWrj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:47:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239639AbjIKOZK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:10 -0400
+        with ESMTP id S240924AbjIKO5Z (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E87A7DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3F2B4C433C7;
-        Mon, 11 Sep 2023 14:25:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D4CE4D
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 684F0C433C8;
+        Mon, 11 Sep 2023 14:57:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442305;
-        bh=klyNpquikv4oBI980pgvNMiPKW2DhbUTNz7DnA9i1dg=;
+        s=korg; t=1694444239;
+        bh=Ie6itZOweboI+AkFSZB6pDUy56/MyV9RVEJbuaBYTY4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LWkZKlgwHzMeyxHehDTxJwRehw8W4Vqh9d8Ne8crEq1uIig2+MruCQwFmPIp+mlxb
-         tkv0Ve63q/EvwfW519ja1wGe4ZIOTpOzGhyQYjhcOpyoG49hX+t5TohSPajpgE7Jd5
-         xJAKoz5XKNe0Krj1KLEXbhGo0KIMnX/4cMHSq8rA=
+        b=vQPqsMSb5taybjMYwcB4mCVXnRprz8sP3pDE5lEFMvUGr5u/GpXxA3zRPhRcQSuZ7
+         jd6HlEKGCaBT4P5DDE0AejnHL+w/NZNLldmFgLWp50bYnDWOvHN/dQsDC5z4vZ7DZ3
+         R2F4d8j+k/Gs94wnXOeIFlTkkLNBaKDePFnX+1Cs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bastien Nocera <hadess@hadess.net>,
-        Benjamin Tissoires <benjamin.tissoires@redhat.com>,
-        Benjamin Tissoires <bentiss@kernel.org>
-Subject: [PATCH 6.5 718/739] HID: logitech-hidpp: rework one more time the retries attempts
-Date:   Mon, 11 Sep 2023 15:48:37 +0200
-Message-ID: <20230911134711.142664015@linuxfoundation.org>
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 659/737] io_uring: fix false positive KASAN warnings
+Date:   Mon, 11 Sep 2023 15:48:38 +0200
+Message-ID: <20230911134708.936064666@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,183 +49,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Benjamin Tissoires <benjamin.tissoires@redhat.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-commit 60165ab774cb0c509680a73cf826d0e158454653 upstream.
+commit 569f5308e54352a12181cc0185f848024c5443e8 upstream.
 
-Extract the internal code inside a helper function, fix the
-initialization of the parameters used in the helper function
-(`hidpp->answer_available` was not reset and `*response` wasn't either),
-and use a `do {...} while();` loop.
+io_req_local_work_add() peeks into the work list, which can be executed
+in the meanwhile. It's completely fine without KASAN as we're in an RCU
+read section and it's SLAB_TYPESAFE_BY_RCU. With KASAN though it may
+trigger a false positive warning because internal io_uring caches are
+sanitised.
 
-Fixes: 586e8fede795 ("HID: logitech-hidpp: Retry commands when device is busy")
+Remove sanitisation from the io_uring request cache for now.
+
 Cc: stable@vger.kernel.org
-Reviewed-by: Bastien Nocera <hadess@hadess.net>
-Signed-off-by: Benjamin Tissoires <benjamin.tissoires@redhat.com>
-Link: https://lore.kernel.org/r/20230621-logitech-fixes-v2-1-3635f7f9c8af@kernel.org
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Fixes: 8751d15426a31 ("io_uring: reduce scheduling due to tw")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/c6fbf7a82a341e66a0007c76eefd9d57f2d3ba51.1691541473.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-logitech-hidpp.c |  115 +++++++++++++++++++++++++--------------
- 1 file changed, 75 insertions(+), 40 deletions(-)
+ io_uring/io_uring.c |    1 -
+ io_uring/io_uring.h |    1 -
+ 2 files changed, 2 deletions(-)
 
---- a/drivers/hid/hid-logitech-hidpp.c
-+++ b/drivers/hid/hid-logitech-hidpp.c
-@@ -275,21 +275,22 @@ static int __hidpp_send_report(struct hi
- }
- 
- /*
-- * hidpp_send_message_sync() returns 0 in case of success, and something else
-- * in case of a failure.
-- * - If ' something else' is positive, that means that an error has been raised
-- *   by the protocol itself.
-- * - If ' something else' is negative, that means that we had a classic error
-- *   (-ENOMEM, -EPIPE, etc...)
-+ * Effectively send the message to the device, waiting for its answer.
-+ *
-+ * Must be called with hidpp->send_mutex locked
-+ *
-+ * Same return protocol than hidpp_send_message_sync():
-+ * - success on 0
-+ * - negative error means transport error
-+ * - positive value means protocol error
-  */
--static int hidpp_send_message_sync(struct hidpp_device *hidpp,
-+static int __do_hidpp_send_message_sync(struct hidpp_device *hidpp,
- 	struct hidpp_report *message,
- 	struct hidpp_report *response)
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -231,7 +231,6 @@ static inline void req_fail_link_node(st
+ static inline void io_req_add_to_cache(struct io_kiocb *req, struct io_ring_ctx *ctx)
  {
--	int ret = -1;
--	int max_retries = 3;
-+	int ret;
- 
--	mutex_lock(&hidpp->send_mutex);
-+	__must_hold(&hidpp->send_mutex);
- 
- 	hidpp->send_receive_buf = response;
- 	hidpp->answer_available = false;
-@@ -300,47 +301,74 @@ static int hidpp_send_message_sync(struc
- 	 */
- 	*response = *message;
- 
--	for (; max_retries != 0 && ret; max_retries--) {
--		ret = __hidpp_send_report(hidpp->hid_dev, message);
-+	ret = __hidpp_send_report(hidpp->hid_dev, message);
-+	if (ret) {
-+		dbg_hid("__hidpp_send_report returned err: %d\n", ret);
-+		memset(response, 0, sizeof(struct hidpp_report));
-+		return ret;
-+	}
- 
--		if (ret) {
--			dbg_hid("__hidpp_send_report returned err: %d\n", ret);
--			memset(response, 0, sizeof(struct hidpp_report));
--			break;
--		}
-+	if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
-+				5*HZ)) {
-+		dbg_hid("%s:timeout waiting for response\n", __func__);
-+		memset(response, 0, sizeof(struct hidpp_report));
-+		return -ETIMEDOUT;
-+	}
- 
--		if (!wait_event_timeout(hidpp->wait, hidpp->answer_available,
--					5*HZ)) {
--			dbg_hid("%s:timeout waiting for response\n", __func__);
--			memset(response, 0, sizeof(struct hidpp_report));
--			ret = -ETIMEDOUT;
--			break;
--		}
-+	if (response->report_id == REPORT_ID_HIDPP_SHORT &&
-+	    response->rap.sub_id == HIDPP_ERROR) {
-+		ret = response->rap.params[1];
-+		dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
-+		return ret;
-+	}
- 
--		if (response->report_id == REPORT_ID_HIDPP_SHORT &&
--		    response->rap.sub_id == HIDPP_ERROR) {
--			ret = response->rap.params[1];
--			dbg_hid("%s:got hidpp error %02X\n", __func__, ret);
-+	if ((response->report_id == REPORT_ID_HIDPP_LONG ||
-+	     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
-+	    response->fap.feature_index == HIDPP20_ERROR) {
-+		ret = response->fap.params[1];
-+		dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
-+		return ret;
-+	}
-+
-+	return 0;
-+}
-+
-+/*
-+ * hidpp_send_message_sync() returns 0 in case of success, and something else
-+ * in case of a failure.
-+ *
-+ * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
-+ * value.
-+ */
-+static int hidpp_send_message_sync(struct hidpp_device *hidpp,
-+	struct hidpp_report *message,
-+	struct hidpp_report *response)
-+{
-+	int ret;
-+	int max_retries = 3;
-+
-+	mutex_lock(&hidpp->send_mutex);
-+
-+	do {
-+		ret = __do_hidpp_send_message_sync(hidpp, message, response);
-+		if (ret != HIDPP20_ERROR_BUSY)
- 			break;
--		}
- 
--		if ((response->report_id == REPORT_ID_HIDPP_LONG ||
--		     response->report_id == REPORT_ID_HIDPP_VERY_LONG) &&
--		    response->fap.feature_index == HIDPP20_ERROR) {
--			ret = response->fap.params[1];
--			if (ret != HIDPP20_ERROR_BUSY) {
--				dbg_hid("%s:got hidpp 2.0 error %02X\n", __func__, ret);
--				break;
--			}
--			dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
--		}
--	}
-+		dbg_hid("%s:got busy hidpp 2.0 error %02X, retrying\n", __func__, ret);
-+	} while (--max_retries);
- 
- 	mutex_unlock(&hidpp->send_mutex);
- 	return ret;
- 
+ 	wq_stack_add_head(&req->comp_list, &ctx->submit_state.free_list);
+-	kasan_poison_object_data(req_cachep, req);
  }
  
-+/*
-+ * hidpp_send_fap_command_sync() returns 0 in case of success, and something else
-+ * in case of a failure.
-+ *
-+ * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
-+ * value.
-+ */
- static int hidpp_send_fap_command_sync(struct hidpp_device *hidpp,
- 	u8 feat_index, u8 funcindex_clientid, u8 *params, int param_count,
- 	struct hidpp_report *response)
-@@ -373,6 +401,13 @@ static int hidpp_send_fap_command_sync(s
- 	return ret;
- }
+ static __cold void io_ring_ctx_ref_free(struct percpu_ref *ref)
+--- a/io_uring/io_uring.h
++++ b/io_uring/io_uring.h
+@@ -361,7 +361,6 @@ static inline struct io_kiocb *io_extrac
+ 	struct io_kiocb *req;
  
-+/*
-+ * hidpp_send_rap_command_sync() returns 0 in case of success, and something else
-+ * in case of a failure.
-+ *
-+ * See __do_hidpp_send_message_sync() for a detailed explanation of the returned
-+ * value.
-+ */
- static int hidpp_send_rap_command_sync(struct hidpp_device *hidpp_dev,
- 	u8 report_id, u8 sub_id, u8 reg_address, u8 *params, int param_count,
- 	struct hidpp_report *response)
+ 	req = container_of(ctx->submit_state.free_list.next, struct io_kiocb, comp_list);
+-	kasan_unpoison_object_data(req_cachep, req);
+ 	wq_stack_extract(&ctx->submit_state.free_list);
+ 	return req;
+ }
 
 
