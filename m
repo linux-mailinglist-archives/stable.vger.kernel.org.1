@@ -2,35 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C405C79B28B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 69E1C79ACE7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242709AbjIKU6Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49780 "EHLO
+        id S1377946AbjIKW3f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:29:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49790 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239660AbjIKOZr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:47 -0400
+        with ESMTP id S239661AbjIKOZu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 46B37DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC54C433C8;
-        Mon, 11 Sep 2023 14:25:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C2F22DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A984C433C8;
+        Mon, 11 Sep 2023 14:25:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442342;
-        bh=mcDpLLtwG58whjAFO//erY0704mmH810+FIpkmquJu4=;
+        s=korg; t=1694442345;
+        bh=++vdt+m33Gxc3ZyS9rc60BgjJauZUdOSOlVkeUGYvyU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=h+CZPMgloD1M4V/v0J+A2scM9o1tKBETV+rPqoHH/uE3Xs9w8KDF6yCMRNgUx45v7
-         2mvcdD/pCuijl6COnuimBgSBTfxdR7BWXA9B8hfNAFAHwzB93+JyzH1sjRb42qBlWK
-         4NR/I4jxwKqbkDbQ/fgo1Lr+m8qI8DTzoFKL62ck=
+        b=qs1juWDxpJZF2sz6kyslLAUCG6mZPyZHV0JHU2IeH3tpqo1a4nC3ObVrejO4V8lMj
+         BC6ARCZ3/lS+4M8fYDqfDoGRPPhVfFVC7RyO8Qm0IYV6NqFXE/KN2CJY1HQVPiKMAD
+         ED7dMgp4w3/kknQwauhgSYUieii/nJJ5Xw8QDg2c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.5 703/739] X.509: if signature is unsupported skip validation
-Date:   Mon, 11 Sep 2023 15:48:22 +0200
-Message-ID: <20230911134710.722136975@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
+        Siwar Zitouni <siwar.zitouni@6wind.com>,
+        Guillaume Nault <gnault@redhat.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 704/739] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
+Date:   Mon, 11 Sep 2023 15:48:23 +0200
+Message-ID: <20230911134710.750195024@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -53,45 +56,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Thore Sommer <public@thson.de>
+From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
 
-commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
+commit a4f39c9f14a634e4cd35fcd338c239d11fcc73fc upstream.
 
-When the hash algorithm for the signature is not available the digest size
-is 0 and the signature in the certificate is marked as unsupported.
+The goal is to support a bpf_redirect() from an ethernet device (ingress)
+to a ppp device (egress).
+The l2 header is added automatically by the ppp driver, thus the ethernet
+header should be removed.
 
-When validating a self-signed certificate, this needs to be checked,
-because otherwise trying to validate the signature will fail with an
-warning:
-
-Loading compiled-in X.509 certificates
-WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
-pkcs1pad_verify+0x46/0x12c
-...
-Problem loading in-kernel X.509 certificate (-22)
-
-Signed-off-by: Thore Sommer <public@thson.de>
-Cc: stable@vger.kernel.org # v4.7+
-Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+CC: stable@vger.kernel.org
+Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
+Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
+Reviewed-by: Guillaume Nault <gnault@redhat.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/asymmetric_keys/x509_public_key.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ include/linux/if_arp.h |    4 ++++
+ 1 file changed, 4 insertions(+)
 
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -130,6 +130,11 @@ int x509_check_for_self_signed(struct x5
- 			goto out;
- 	}
- 
-+	if (cert->unsupported_sig) {
-+		ret = 0;
-+		goto out;
-+	}
-+
- 	ret = public_key_verify_signature(cert->pub, cert->sig);
- 	if (ret < 0) {
- 		if (ret == -ENOPKG) {
+--- a/include/linux/if_arp.h
++++ b/include/linux/if_arp.h
+@@ -53,6 +53,10 @@ static inline bool dev_is_mac_header_xmi
+ 	case ARPHRD_NONE:
+ 	case ARPHRD_RAWIP:
+ 	case ARPHRD_PIMREG:
++	/* PPP adds its l2 header automatically in ppp_start_xmit().
++	 * This makes it look like an l3 device to __bpf_redirect() and tcf_mirred_init().
++	 */
++	case ARPHRD_PPP:
+ 		return false;
+ 	default:
+ 		return true;
 
 
