@@ -2,39 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0CE379B4BB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E543C79B587
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344624AbjIKVOh (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57078 "EHLO
+        id S1376528AbjIKWTx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44900 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242349AbjIKP2h (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:37 -0400
+        with ESMTP id S242352AbjIKP2m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:28:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 52999E4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 832C2C433C9;
-        Mon, 11 Sep 2023 15:28:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1928E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:28:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DAB4C433D9;
+        Mon, 11 Sep 2023 15:28:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446112;
-        bh=neAGBucmQwy9UuwpJd4J3vNjHr7gujEp9kSCvMwQX04=;
+        s=korg; t=1694446118;
+        bh=93Ri5HRmqU8kD/FGlTlNr+n0ru7w6OcScvvbPiu75+Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=cTnPNvxoQ4r4iHXnb0DtiSXmwh5uz8NsukgcBoP5ybHb4WUBg8uDmzVozw9qNOHxQ
-         nXkZp3jaOleZPmM+cz1OIADk1VXPcDzlSl/IzqHRTtLsbsEVu40jgkONEx1Iug+BsV
-         IhzKrE/pBS2xijg+DCXYDbF4aoMgGZ6+bdX/Y17A=
+        b=gnO44vJjvbFwFei3+x8rNQh4MXBRWzpK3RXDQ7IsTFskyLUDK17MB+IhTk7bZugBq
+         PkYfiryCgDhELG6xl0AMIIgt0g+o51u0gtVLE/znaFsKKoKvPyiaf0fkVwYB6ZEQv/
+         fqcQ7xqv4e03vayaYaBRRthLz6Y6fiwJdLWg3pU4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Zhang <yu.zhang@ionos.com>,
-        Jack Wang <jinpu.wang@ionos.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Kai Huang <kai.huang@intel.com>,
-        Haitao Huang <haitao.huang@linux.intel.com>
-Subject: [PATCH 6.1 587/600] x86/sgx: Break up long non-preemptible delays in sgx_vepc_release()
-Date:   Mon, 11 Sep 2023 15:50:20 +0200
-Message-ID: <20230911134650.953018728@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 589/600] serial: sc16is7xx: remove obsolete out_thread label
+Date:   Mon, 11 Sep 2023 15:50:22 +0200
+Message-ID: <20230911134651.016863042@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -57,70 +56,57 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jack Wang <jinpu.wang@ionos.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-commit 3d7d72a34e05b23e21bafc8bfb861e73c86b31f3 upstream.
+[ Upstream commit dabc54a45711fe77674a6c0348231e00e66bd567 ]
 
-On large enclaves we hit the softlockup warning with following call trace:
+Commit c8f71b49ee4d ("serial: sc16is7xx: setup GPIO controller later
+in probe") moved GPIO setup code later in probe function. Doing so
+also required to move ports cleanup code (out_ports label) after the
+GPIO cleanup code.
 
-	xa_erase()
-	sgx_vepc_release()
-	__fput()
-	task_work_run()
-	do_exit()
+After these moves, the out_thread label becomes misplaced and makes
+part of the cleanup code illogical.
 
-The latency issue is similar to the one fixed in:
+This patch remove the now obsolete out_thread label and make GPIO
+setup code jump to out_ports label if it fails.
 
-  8795359e35bc ("x86/sgx: Silence softlockup detection when releasing large enclaves")
-
-The test system has 64GB of enclave memory, and all is assigned to a single VM.
-Release of 'vepc' takes a longer time and causes long latencies, which triggers
-the softlockup warning.
-
-Add cond_resched() to give other tasks a chance to run and reduce
-latencies, which also avoids the softlockup detector.
-
-[ mingo: Rewrote the changelog. ]
-
-Fixes: 540745ddbc70 ("x86/sgx: Introduce virtual EPC for use by KVM guests")
-Reported-by: Yu Zhang <yu.zhang@ionos.com>
-Signed-off-by: Jack Wang <jinpu.wang@ionos.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Yu Zhang <yu.zhang@ionos.com>
-Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
-Reviewed-by: Kai Huang <kai.huang@intel.com>
-Acked-by: Haitao Huang <haitao.huang@linux.intel.com>
-Cc: stable@vger.kernel.org
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20230807214556.540627-3-hugo@hugovil.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 049994292834 ("serial: sc16is7xx: fix regression with GPIO configuration")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/sgx/virt.c |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/tty/serial/sc16is7xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
---- a/arch/x86/kernel/cpu/sgx/virt.c
-+++ b/arch/x86/kernel/cpu/sgx/virt.c
-@@ -204,6 +204,7 @@ static int sgx_vepc_release(struct inode
- 			continue;
- 
- 		xa_erase(&vepc->page_array, index);
-+		cond_resched();
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index 8411a0f312db0..c481c84019f4a 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1532,7 +1532,7 @@ static int sc16is7xx_probe(struct device *dev,
+ 		s->gpio.can_sleep	 = 1;
+ 		ret = gpiochip_add_data(&s->gpio, s);
+ 		if (ret)
+-			goto out_thread;
++			goto out_ports;
  	}
+ #endif
  
- 	/*
-@@ -222,6 +223,7 @@ static int sgx_vepc_release(struct inode
- 			list_add_tail(&epc_page->list, &secs_pages);
+@@ -1558,8 +1558,6 @@ static int sc16is7xx_probe(struct device *dev,
+ #ifdef CONFIG_GPIOLIB
+ 	if (devtype->nr_gpio)
+ 		gpiochip_remove(&s->gpio);
+-
+-out_thread:
+ #endif
  
- 		xa_erase(&vepc->page_array, index);
-+		cond_resched();
- 	}
- 
- 	/*
-@@ -243,6 +245,7 @@ static int sgx_vepc_release(struct inode
- 
- 		if (sgx_vepc_free_page(epc_page))
- 			list_add_tail(&epc_page->list, &secs_pages);
-+		cond_resched();
- 	}
- 
- 	if (!list_empty(&secs_pages))
+ out_ports:
+-- 
+2.40.1
+
 
 
