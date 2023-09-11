@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1C98C79B22F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0DC4F79AE12
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244318AbjIKVg7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:36:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49258 "EHLO
+        id S1353797AbjIKVuL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:50:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41744 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238766AbjIKOEh (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:37 -0400
+        with ESMTP id S240070AbjIKOfi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D96FDE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:32 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 06E60C433C7;
-        Mon, 11 Sep 2023 14:04:31 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5107AF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C7FEC433C9;
+        Mon, 11 Sep 2023 14:35:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441072;
-        bh=o0I+x04szwcNgxBfsP376GNwJzyEoEtxrloIgvUxKjE=;
+        s=korg; t=1694442934;
+        bh=ignECAaG82xgGnSqBo8W2FpPRkIhBn4OnYhPLxIEfgU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0YaBC+5iGLX2wZfYuCcqRG3PvUZ9T6goO0W+KgNls9/CqE+UeybG81d7ecMRkwc0P
-         eWdvIbWqGTuFOLtJHxu1pR2BNJhIcLudQhrs+5mLzof7/FAi+2qKbxmUFIS1e4xoAq
-         kim0YuRm5bcj8jzUOFAzhj+W0lFpFp8YwmQbDn78=
+        b=F+t5UpIYqHltJqpx+eleOwEPujD/qAmoNRG4qvN66hN8p4WtF/yGr6Ozevxmz2bh7
+         NCD+y7hRZLZmzpC6ktSgr2+U3QP7unNNylFbAvdbaPHuuQdOT0vG0Piq1DTPo3Wzve
+         d/wGTqFG5wD7B4iamNVZGrnWBbhQM66RSd3CQ94I=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lucas Stach <l.stach@pengutronix.de>,
-        Christian Gmeiner <christian.gmeiner@gmail.com>,
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 259/739] drm/etnaviv: fix dumping of active MMU context
+Subject: [PATCH 6.4 199/737] Bluetooth: hci_conn: Fix not allowing valid CIS ID
 Date:   Mon, 11 Sep 2023 15:40:58 +0200
-Message-ID: <20230911134658.381831667@linuxfoundation.org>
+Message-ID: <20230911134656.158492518@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,74 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lucas Stach <l.stach@pengutronix.de>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 20faf2005ec85fa1a6acc9a74ff27de667f90576 ]
+[ Upstream commit f2f84a70f9d0c9a3263194ca9d82e7bc6027d356 ]
 
-gpu->mmu_context is the MMU context of the last job in the HW queue, which
-isn't necessarily the same as the context from the bad job. Dump the MMU
-context from the scheduler determined bad submit to make it work as intended.
+Only the number of CIS shall be limited to 0x1f, the CIS ID in the
+other hand is up to 0xef.
 
-Fixes: 17e4660ae3d7 ("drm/etnaviv: implement per-process address spaces on MMUv2")
-Signed-off-by: Lucas Stach <l.stach@pengutronix.de>
-Reviewed-by: Christian Gmeiner <christian.gmeiner@gmail.com>
+Fixes: 26afbd826ee3 ("Bluetooth: Add initial implementation of CIS connections")
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/etnaviv/etnaviv_dump.c | 14 +++++++-------
- 1 file changed, 7 insertions(+), 7 deletions(-)
+ net/bluetooth/hci_conn.c | 9 ++++++---
+ 1 file changed, 6 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/gpu/drm/etnaviv/etnaviv_dump.c b/drivers/gpu/drm/etnaviv/etnaviv_dump.c
-index 44b5f3c35aabe..898f84a0fc30c 100644
---- a/drivers/gpu/drm/etnaviv/etnaviv_dump.c
-+++ b/drivers/gpu/drm/etnaviv/etnaviv_dump.c
-@@ -130,9 +130,9 @@ void etnaviv_core_dump(struct etnaviv_gem_submit *submit)
- 		return;
- 	etnaviv_dump_core = false;
- 
--	mutex_lock(&gpu->mmu_context->lock);
-+	mutex_lock(&submit->mmu_context->lock);
- 
--	mmu_size = etnaviv_iommu_dump_size(gpu->mmu_context);
-+	mmu_size = etnaviv_iommu_dump_size(submit->mmu_context);
- 
- 	/* We always dump registers, mmu, ring, hanging cmdbuf and end marker */
- 	n_obj = 5;
-@@ -162,7 +162,7 @@ void etnaviv_core_dump(struct etnaviv_gem_submit *submit)
- 	iter.start = __vmalloc(file_size, GFP_KERNEL | __GFP_NOWARN |
- 			__GFP_NORETRY);
- 	if (!iter.start) {
--		mutex_unlock(&gpu->mmu_context->lock);
-+		mutex_unlock(&submit->mmu_context->lock);
- 		dev_warn(gpu->dev, "failed to allocate devcoredump file\n");
- 		return;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index d481a1d2c0a28..ee9d6ff75246f 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -1862,9 +1862,12 @@ static bool hci_le_set_cig_params(struct hci_conn *conn, struct bt_iso_qos *qos)
+ 		cis_add(&data, qos);
  	}
-@@ -174,18 +174,18 @@ void etnaviv_core_dump(struct etnaviv_gem_submit *submit)
- 	memset(iter.hdr, 0, iter.data - iter.start);
  
- 	etnaviv_core_dump_registers(&iter, gpu);
--	etnaviv_core_dump_mmu(&iter, gpu->mmu_context, mmu_size);
-+	etnaviv_core_dump_mmu(&iter, submit->mmu_context, mmu_size);
- 	etnaviv_core_dump_mem(&iter, ETDUMP_BUF_RING, gpu->buffer.vaddr,
- 			      gpu->buffer.size,
- 			      etnaviv_cmdbuf_get_va(&gpu->buffer,
--					&gpu->mmu_context->cmdbuf_mapping));
-+					&submit->mmu_context->cmdbuf_mapping));
+-	/* Reprogram all CIS(s) with the same CIG */
+-	for (data.cig = qos->ucast.cig, data.cis = 0x00; data.cis < 0x11;
+-	     data.cis++) {
++	/* Reprogram all CIS(s) with the same CIG, valid range are:
++	 * num_cis: 0x00 to 0x1F
++	 * cis_id: 0x00 to 0xEF
++	 */
++	for (data.cig = qos->ucast.cig, data.cis = 0x00; data.cis < 0xf0 &&
++	     data.pdu.cp.num_cis < ARRAY_SIZE(data.pdu.cis); data.cis++) {
+ 		data.count = 0;
  
- 	etnaviv_core_dump_mem(&iter, ETDUMP_BUF_CMD,
- 			      submit->cmdbuf.vaddr, submit->cmdbuf.size,
- 			      etnaviv_cmdbuf_get_va(&submit->cmdbuf,
--					&gpu->mmu_context->cmdbuf_mapping));
-+					&submit->mmu_context->cmdbuf_mapping));
- 
--	mutex_unlock(&gpu->mmu_context->lock);
-+	mutex_unlock(&submit->mmu_context->lock);
- 
- 	/* Reserve space for the bomap */
- 	if (n_bomap_pages) {
+ 		hci_conn_hash_list_state(hdev, cis_list, ISO_LINK, BT_BOUND,
 -- 
 2.40.1
 
