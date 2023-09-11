@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9E00779C087
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9221479B72A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:30 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354216AbjIKVwx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44440 "EHLO
+        id S244183AbjIKVg4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:36:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45146 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240368AbjIKOmm (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:42 -0400
+        with ESMTP id S241456AbjIKPJS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E811E12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 349E4C433C8;
-        Mon, 11 Sep 2023 14:42:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 419AAFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 881DFC433C8;
+        Mon, 11 Sep 2023 15:09:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443358;
-        bh=b1qrkjgjanB/zRQrETd1Nx0iKkvVPdTXkRoS3/bEJP8=;
+        s=korg; t=1694444953;
+        bh=r283K8RdGffxmm19eCE+OI1AkspPXD3kyKh373HtvnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=LbzHxddZTg636pfgqMemBNAeS+nTtzCeHEQXXZ6VDADaKLMmbJNESZtwLb4LANESG
-         LgajBCELTI0m8YxsS3kkl+2YShQivYivjVOFl4jb8/yU0/rlNdHbfWVjjR6WV8ut6m
-         1L8VikezrWtV5bikPr45cKv/iCEcUIuHpM6ezKCw=
+        b=NN5VIk9VmkFYMzfpqCkOcNPrXDDkppJwpoch97tuusQsRwjAA5W6LfS0z6xdtUl3X
+         pk0YMJVcO3wlaTjyKbgjtLI+kWHqokdjfeBGkqKc6ENntmcYQJMwKM5ki3uN2hwcFK
+         ilEkcf+cG5+D2EVJixZZGRscdtVbLe6ZsO9nsQgM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        "Russell King (Oracle)" <rmk+kernel@armlinux.org.uk>,
-        Javier Martinez Canillas <javierm@redhat.com>,
+        Alexander Danilenko <al.b.danilenko@gmail.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 349/737] drm/armada: Fix off-by-one error in armada_overlay_get_property()
-Date:   Mon, 11 Sep 2023 15:43:28 +0200
-Message-ID: <20230911134700.271788003@linuxfoundation.org>
+Subject: [PATCH 6.1 176/600] spi: tegra114: Remove unnecessary NULL-pointer checks
+Date:   Mon, 11 Sep 2023 15:43:29 +0200
+Message-ID: <20230911134638.797306182@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +51,75 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Geert Uytterhoeven <geert+renesas@glider.be>
+From: Alexander Danilenko <al.b.danilenko@gmail.com>
 
-[ Upstream commit 5f0d984053f74983a287100a9519b2fabb785fb5 ]
+[ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
 
-As ffs() returns one more than the index of the first bit set (zero
-means no bits set), the color key mode value is shifted one position too
-much.
+cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
+so there is no sense in checking them for NULL.
 
-Fix this by using FIELD_GET() instead.
+Found by Linux Verification Center (linuxtesting.org) with SVACE.
 
-Fixes: c96103b6c49ff9a8 ("drm/armada: move colorkey properties into overlay plane state")
-Signed-off-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Reviewed-by: Russell King (Oracle) <rmk+kernel@armlinux.org.uk>
-Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
-Link: https://patchwork.freedesktop.org/patch/msgid/a4d779d954a7515ddbbf31cb0f0d8184c0e7c879.1689600265.git.geert+renesas@glider.be
+Fixes: 04e6bb0d6bb1 ("spi: modify set_cs_timing parameter")
+Signed-off-by: Alexander Danilenko <al.b.danilenko@gmail.com>
+Link: https://lore.kernel.org/r/20230815092058.4083-1-al.b.danilenko@gmail.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/armada/armada_overlay.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ drivers/spi/spi-tegra114.c | 18 +++++++-----------
+ 1 file changed, 7 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/gpu/drm/armada/armada_overlay.c b/drivers/gpu/drm/armada/armada_overlay.c
-index f21eb8fb76d87..3b9bd8ecda137 100644
---- a/drivers/gpu/drm/armada/armada_overlay.c
-+++ b/drivers/gpu/drm/armada/armada_overlay.c
-@@ -4,6 +4,8 @@
-  *  Rewritten from the dovefb driver, and Armada510 manuals.
-  */
+diff --git a/drivers/spi/spi-tegra114.c b/drivers/spi/spi-tegra114.c
+index d9be80e3e1bcb..6b56108308fc5 100644
+--- a/drivers/spi/spi-tegra114.c
++++ b/drivers/spi/spi-tegra114.c
+@@ -723,27 +723,23 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
+ 	struct spi_delay *setup = &spi->cs_setup;
+ 	struct spi_delay *hold = &spi->cs_hold;
+ 	struct spi_delay *inactive = &spi->cs_inactive;
+-	u8 setup_dly, hold_dly, inactive_dly;
++	u8 setup_dly, hold_dly;
+ 	u32 setup_hold;
+ 	u32 spi_cs_timing;
+ 	u32 inactive_cycles;
+ 	u8 cs_state;
  
-+#include <linux/bitfield.h>
-+
- #include <drm/armada_drm.h>
- #include <drm/drm_atomic.h>
- #include <drm/drm_atomic_helper.h>
-@@ -445,8 +447,8 @@ static int armada_overlay_get_property(struct drm_plane *plane,
- 			     drm_to_overlay_state(state)->colorkey_ug,
- 			     drm_to_overlay_state(state)->colorkey_vb, 0);
- 	} else if (property == priv->colorkey_mode_prop) {
--		*val = (drm_to_overlay_state(state)->colorkey_mode &
--			CFG_CKMODE_MASK) >> ffs(CFG_CKMODE_MASK);
-+		*val = FIELD_GET(CFG_CKMODE_MASK,
-+				 drm_to_overlay_state(state)->colorkey_mode);
- 	} else if (property == priv->brightness_prop) {
- 		*val = drm_to_overlay_state(state)->brightness + 256;
- 	} else if (property == priv->contrast_prop) {
+-	if ((setup && setup->unit != SPI_DELAY_UNIT_SCK) ||
+-	    (hold && hold->unit != SPI_DELAY_UNIT_SCK) ||
+-	    (inactive && inactive->unit != SPI_DELAY_UNIT_SCK)) {
++	if (setup->unit != SPI_DELAY_UNIT_SCK ||
++	    hold->unit != SPI_DELAY_UNIT_SCK ||
++	    inactive->unit != SPI_DELAY_UNIT_SCK) {
+ 		dev_err(&spi->dev,
+ 			"Invalid delay unit %d, should be SPI_DELAY_UNIT_SCK\n",
+ 			SPI_DELAY_UNIT_SCK);
+ 		return -EINVAL;
+ 	}
+ 
+-	setup_dly = setup ? setup->value : 0;
+-	hold_dly = hold ? hold->value : 0;
+-	inactive_dly = inactive ? inactive->value : 0;
+-
+-	setup_dly = min_t(u8, setup_dly, MAX_SETUP_HOLD_CYCLES);
+-	hold_dly = min_t(u8, hold_dly, MAX_SETUP_HOLD_CYCLES);
++	setup_dly = min_t(u8, setup->value, MAX_SETUP_HOLD_CYCLES);
++	hold_dly = min_t(u8, hold->value, MAX_SETUP_HOLD_CYCLES);
+ 	if (setup_dly && hold_dly) {
+ 		setup_hold = SPI_SETUP_HOLD(setup_dly - 1, hold_dly - 1);
+ 		spi_cs_timing = SPI_CS_SETUP_HOLD(tspi->spi_cs_timing1,
+@@ -755,7 +751,7 @@ static int tegra_spi_set_hw_cs_timing(struct spi_device *spi)
+ 		}
+ 	}
+ 
+-	inactive_cycles = min_t(u8, inactive_dly, MAX_INACTIVE_CYCLES);
++	inactive_cycles = min_t(u8, inactive->value, MAX_INACTIVE_CYCLES);
+ 	if (inactive_cycles)
+ 		inactive_cycles--;
+ 	cs_state = inactive_cycles ? 0 : 1;
 -- 
 2.40.1
 
