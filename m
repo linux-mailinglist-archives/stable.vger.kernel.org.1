@@ -2,47 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 01C3F79B62F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 51BD579C0BC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244571AbjIKVSt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:18:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57858 "EHLO
+        id S237305AbjIKVGK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:06:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39058 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242073AbjIKPVl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:41 -0400
+        with ESMTP id S240889AbjIKO4g (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058E2D3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42A4CC433C8;
-        Mon, 11 Sep 2023 15:21:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F4A9DC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 98317C433C8;
+        Mon, 11 Sep 2023 14:56:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445696;
-        bh=OWETa99FvWRO8Sqmt+/JQRDqKI4SoMeTPTcC8RaqZkM=;
+        s=korg; t=1694444192;
+        bh=jrdoy20h52hpT2CUWwUfOIkZthP0MB+dhCUPezQa8NM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=yEIkxn200pwpWOhDt5DH6rYL97uHphQPzXB+AANOuPQ6V1sit5CbOhjvCYmW3TE8w
-         M5FAbTZdQrmK82E9EXmEBdjqBLqQc15l+n0/npU6TaIScbSpB1ld5DmrGpVY5zpnMd
-         XVzhshw5eWHDxEZ5nDR4CE/kyyM9ALuzCz6kW3mk=
+        b=zLhtc4Om+QWABKGBxk8En7eUtvuHS7sxFwUKn5gPBTBuEPzDIQ8T05W4Dk82Y8O7b
+         8vRlpZGmqavgtZP7Fq5IoWMEI1etqv8yBjy1e74pbcPs2+2/gfvPIOOZh+X4zv6RSi
+         JoG2YYsNwUbQfpJ4Xp/nFp4k9Q1c5ciurhUrfgc0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>,
+        patches@lists.linux.dev,
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 440/600] extcon: cht_wc: add POWER_SUPPLY dependency
+Subject: [PATCH 6.4 614/737] thermal/drivers/mediatek/lvts_thermal: Disable undesired interrupts
 Date:   Mon, 11 Sep 2023 15:47:53 +0200
-Message-ID: <20230911134646.637890366@linuxfoundation.org>
+Message-ID: <20230911134707.682189036@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,49 +56,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-[ Upstream commit d20a3a8a32e3fa564ff25da860c5fc1a97642dfe ]
+[ Upstream commit 487bf099e85b724c824f5fafaf93c6749c4d2120 ]
 
-The driver fails to link when CONFIG_POWER_SUPPLY is disabled:
+Out of the many interrupts supported by the hardware, the only ones of
+interest to the driver currently are:
+* The temperature went over the high offset threshold, for any of the
+  sensors
+* The temperature went below the low offset threshold, for any of the
+  sensors
+* The temperature went over the stage3 threshold
 
-x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_psy_get_prop':
-extcon-intel-cht-wc.c:(.text+0x15ccda7): undefined reference to `power_supply_get_drvdata'
-x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_pwrsrc_event':
-extcon-intel-cht-wc.c:(.text+0x15cd3e9): undefined reference to `power_supply_changed'
-x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_probe':
-extcon-intel-cht-wc.c:(.text+0x15cd596): undefined reference to `devm_power_supply_register'
+These are the only thresholds configured by the driver through the
+OFFSETH, OFFSETL, and PROTTC registers, respectively.
 
-It should be possible to change the driver to not require this at
-compile time and still provide other functions, but adding a hard
-Kconfig dependency does not seem to have any practical downsides
-and is simpler since the option is normally enabled anyway.
+The current interrupt mask in LVTS_MONINT_CONF, enables many more
+interrupts, including data ready on sensors for both filtered and
+immediate mode. These are not only not handled by the driver, but they
+are also triggered too often, causing unneeded overhead. Disable these
+unnecessary interrupts.
 
-Fixes: 66e31186cd2aa ("extcon: intel-cht-wc: Add support for registering a power_supply class-device")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+The meaning of each bit can be seen in the comment describing
+LVTS_MONINTST in the IRQ handler.
+
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230706153823.201943-5-nfraprado@collabora.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/extcon/Kconfig | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/thermal/mediatek/lvts_thermal.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
-index 290186e44e6bd..4dd52a6a5b48d 100644
---- a/drivers/extcon/Kconfig
-+++ b/drivers/extcon/Kconfig
-@@ -62,6 +62,7 @@ config EXTCON_INTEL_CHT_WC
- 	tristate "Intel Cherrytrail Whiskey Cove PMIC extcon driver"
- 	depends on INTEL_SOC_PMIC_CHTWC
- 	depends on USB_SUPPORT
-+	depends on POWER_SUPPLY
- 	select USB_ROLE_SWITCH
- 	help
- 	  Say Y here to enable extcon support for charger detection / control
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 80abd10596d85..0fa90ac6ed41f 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -63,7 +63,7 @@
+ #define LVTS_HW_FILTER				0x2
+ #define LVTS_TSSEL_CONF				0x13121110
+ #define LVTS_CALSCALE_CONF			0x300
+-#define LVTS_MONINT_CONF			0x9FBF7BDE
++#define LVTS_MONINT_CONF			0x8300318C
+ 
+ #define LVTS_INT_SENSOR0			0x0009001F
+ #define LVTS_INT_SENSOR1			0x001203E0
 -- 
 2.40.1
 
