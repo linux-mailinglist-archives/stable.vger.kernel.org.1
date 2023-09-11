@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A1A279B78D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A03E79BD6A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378587AbjIKWfq (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:35:46 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57972 "EHLO
+        id S236337AbjIKUvs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40286 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239439AbjIKOUi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:38 -0400
+        with ESMTP id S241973AbjIKPTZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57BA1DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A1C1EC433C7;
-        Mon, 11 Sep 2023 14:20:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D0220FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EC22C433C7;
+        Mon, 11 Sep 2023 15:19:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442034;
-        bh=BQLeg2oWhFRDM6wy3TbXfPADIPdMlC3UURX75Gt4QGY=;
+        s=korg; t=1694445561;
+        bh=4z0zfPBijPXiWDCFo2cFUAjeJ/Q3HhybdAFasyUaTZc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NwEHYtGIO66dfY8TKxzNsiQAAfUpH3gD1PKPojm7M9U/GixFnLnxKFzuV77vW60zA
-         11yQWzP4OD+ZEFULGPFpPPKhrBXG6CQzFHrTF/rZJmszxUUEBne7AwPz2LsBXPpZsh
-         G6EG/AXnHsK911t3YLJIvdEEAvesrRAxuulTPa/E=
+        b=TpgxiRQYXdFN64lPyI0IxSZZvMaXGq3oylIp+wTSBF3H2o7YI5SKzXzzzA4WZCtty
+         LXwHG7RA0fK0NKdp+pZUl4Mhh6IELg6juOh7GJJfiF+9O2165sLjc1DwyyC2j1GnKr
+         fgZVZcjrSs4jQpE2eG8KzebeHQSvdFMiWXKhXAx8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
-        Dave Jiang <dave.jiang@intel.com>,
-        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 623/739] dmaengine: idxd: Fix issues with PRS disable sysfs knob
-Date:   Mon, 11 Sep 2023 15:47:02 +0200
-Message-ID: <20230911134708.499475281@linuxfoundation.org>
+        patches@lists.linux.dev, Minjie Du <duminjie@vivo.com>,
+        Alok Prasad <palok@marvell.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 390/600] RDMA/qedr: Remove a duplicate assignment in irdma_query_ah()
+Date:   Mon, 11 Sep 2023 15:47:03 +0200
+Message-ID: <20230911134645.191112833@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fenghua Yu <fenghua.yu@intel.com>
+From: Minjie Du <duminjie@vivo.com>
 
-[ Upstream commit 8cae66574398326134a41513b419e00ad4e380ca ]
+[ Upstream commit 65e02e840847158c7ee48ca8e6e91062b0f78662 ]
 
-There are two issues in the current PRS disable sysfs store function
-wq_prs_disable_store():
+Delete a duplicate statement from this function implementation.
 
-1. Since PRS disable knob is invisible if PRS disable is not supported
-   in WQ, it's redundant to check PRS support again in the store function
-   again. Remove the redundant PRS support check.
-2. Since PRS disable is read-only when the device is not configurable,
-   PRS disable cannot be changed on the device. Add device configurable
-   check in the store function.
-
-Fixes: f2dc327131b5 ("dmaengine: idxd: add per wq PRS disable")
-Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
-Reviewed-by: Dave Jiang <dave.jiang@intel.com>
-Link: https://lore.kernel.org/r/20230811012635.535413-2-fenghua.yu@intel.com
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: b48c24c2d710 ("RDMA/irdma: Implement device supported verb APIs")
+Signed-off-by: Minjie Du <duminjie@vivo.com>
+Acked-by: Alok Prasad <palok@marvell.com>
+Link: https://lore.kernel.org/r/20230706022704.1260-1-duminjie@vivo.com
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/dma/idxd/sysfs.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/infiniband/hw/irdma/verbs.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
-index 66c89b07b3f7b..a5c3eb4348325 100644
---- a/drivers/dma/idxd/sysfs.c
-+++ b/drivers/dma/idxd/sysfs.c
-@@ -1131,8 +1131,8 @@ static ssize_t wq_prs_disable_store(struct device *dev, struct device_attribute
- 	if (wq->state != IDXD_WQ_DISABLED)
- 		return -EPERM;
- 
--	if (!idxd->hw.wq_cap.wq_prs_support)
--		return -EOPNOTSUPP;
-+	if (!test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags))
-+		return -EPERM;
- 
- 	rc = kstrtobool(buf, &prs_dis);
- 	if (rc < 0)
+diff --git a/drivers/infiniband/hw/irdma/verbs.c b/drivers/infiniband/hw/irdma/verbs.c
+index 6a8bb6ed4bf43..5962261f1b156 100644
+--- a/drivers/infiniband/hw/irdma/verbs.c
++++ b/drivers/infiniband/hw/irdma/verbs.c
+@@ -4354,7 +4354,6 @@ static int irdma_query_ah(struct ib_ah *ibah, struct rdma_ah_attr *ah_attr)
+ 		ah_attr->grh.traffic_class = ah->sc_ah.ah_info.tc_tos;
+ 		ah_attr->grh.hop_limit = ah->sc_ah.ah_info.hop_ttl;
+ 		ah_attr->grh.sgid_index = ah->sgid_index;
+-		ah_attr->grh.sgid_index = ah->sgid_index;
+ 		memcpy(&ah_attr->grh.dgid, &ah->dgid,
+ 		       sizeof(ah_attr->grh.dgid));
+ 	}
 -- 
 2.40.1
 
