@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8A3C779B531
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD8F779B40C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350787AbjIKVlV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:41:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48068 "EHLO
+        id S1377509AbjIKW0r (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:26:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241824AbjIKPPc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:32 -0400
+        with ESMTP id S240622AbjIKOtI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:49:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB1EFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:28 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570BAC433C8;
-        Mon, 11 Sep 2023 15:15:27 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B812B125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:49:04 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B747C433C7;
+        Mon, 11 Sep 2023 14:49:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445327;
-        bh=AarfbOCC5VxLEqbNIW3EORUGdOJpPxhanSVCP5suymI=;
+        s=korg; t=1694443744;
+        bh=Z5u8/64Wbb5drSP+1wAa+njlKoM27pCk5sQvwGJU+As=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p2Bf1IAgztwLdCv4Niu9nUqmXGhsLjhFjZ8c4kQPmIRnGEKKr4Ow6x2lufZXIiqhz
-         n8kDitYLgq8vd5esT5VMkTNXb/+gIkN8zaWyrU3Tg4Vd5gIQsCFlb77UNeO6dTzsLE
-         h7LFcG23HjHFxOWD1OGVrLKumkLK5MehHBpHIKPI=
+        b=jgzQKDOMGM97ybgqpaPQoPpBkjGagnON2CGjo7u3Ov6FhUQT94hGRPSIVqu948F0z
+         goUZ9372ONpuM43zoxylb+HpnrFfW0imriy4c6bWKRbuxU9DdA9WOhyikY+6IvUpat
+         J8x0OrceDow801n01jQ4MHvc+KZ7t2sa/Qnc3Trs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 309/600] arm64: dts: qcom: msm8998: Add missing power domain to MMSS SMMU
-Date:   Mon, 11 Sep 2023 15:45:42 +0200
-Message-ID: <20230911134642.761671964@linuxfoundation.org>
+Subject: [PATCH 6.4 484/737] media: v4l2-core: Fix a potential resource leak in v4l2_fwnode_parse_link()
+Date:   Mon, 11 Sep 2023 15:45:43 +0200
+Message-ID: <20230911134704.097904852@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +52,72 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
 
-[ Upstream commit 7f828f3207142351750e9545527341425187de7b ]
+[ Upstream commit d7b13edd4cb4bfa335b6008ab867ac28582d3e5c ]
 
-The MMSS SMMU has its own power domain. Attach it so that we can drop
-the "keep it always-on" hack.
+If fwnode_graph_get_remote_endpoint() fails, 'fwnode' is known to be NULL,
+so fwnode_handle_put() is a no-op.
 
-Fixes: 05ce21b54423 ("arm64: dts: qcom: msm8998: Configure the multimedia subsystem iommu")
-Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-2-ba1b1fd9ee75@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Release the reference taken from a previous fwnode_graph_get_port_parent()
+call instead.
+
+Also handle fwnode_graph_get_port_parent() failures.
+
+In order to fix these issues, add an error handling path to the function
+and the needed gotos.
+
+Fixes: ca50c197bd96 ("[media] v4l: fwnode: Support generic fwnode for parsing standardised properties")
+Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/v4l2-core/v4l2-fwnode.c | 18 ++++++++++++++----
+ 1 file changed, 14 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-index 3d6c7940d2a04..b00b8164c4aa2 100644
---- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
-@@ -2445,6 +2445,8 @@ mmss_smmu: iommu@cd00000 {
- 				<GIC_SPI 261 IRQ_TYPE_LEVEL_HIGH>,
- 				<GIC_SPI 262 IRQ_TYPE_LEVEL_HIGH>,
- 				<GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
-+
-+			power-domains = <&mmcc BIMC_SMMU_GDSC>;
- 		};
+diff --git a/drivers/media/v4l2-core/v4l2-fwnode.c b/drivers/media/v4l2-core/v4l2-fwnode.c
+index 049c2f2001eaa..4fa9225aa3d93 100644
+--- a/drivers/media/v4l2-core/v4l2-fwnode.c
++++ b/drivers/media/v4l2-core/v4l2-fwnode.c
+@@ -568,19 +568,29 @@ int v4l2_fwnode_parse_link(struct fwnode_handle *fwnode,
+ 	link->local_id = fwep.id;
+ 	link->local_port = fwep.port;
+ 	link->local_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->local_node)
++		return -ENOLINK;
  
- 		remoteproc_adsp: remoteproc@17300000 {
+ 	fwnode = fwnode_graph_get_remote_endpoint(fwnode);
+-	if (!fwnode) {
+-		fwnode_handle_put(fwnode);
+-		return -ENOLINK;
+-	}
++	if (!fwnode)
++		goto err_put_local_node;
+ 
+ 	fwnode_graph_parse_endpoint(fwnode, &fwep);
+ 	link->remote_id = fwep.id;
+ 	link->remote_port = fwep.port;
+ 	link->remote_node = fwnode_graph_get_port_parent(fwnode);
++	if (!link->remote_node)
++		goto err_put_remote_endpoint;
+ 
+ 	return 0;
++
++err_put_remote_endpoint:
++	fwnode_handle_put(fwnode);
++
++err_put_local_node:
++	fwnode_handle_put(link->local_node);
++
++	return -ENOLINK;
+ }
+ EXPORT_SYMBOL_GPL(v4l2_fwnode_parse_link);
+ 
 -- 
 2.40.1
 
