@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 03BE179BD18
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 97DC379BA7D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379582AbjIKWo5 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:57 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36784 "EHLO
+        id S244289AbjIKWAg (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:00:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239297AbjIKORB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:01 -0400
+        with ESMTP id S241832AbjIKPPn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 20D57DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66361C433C8;
-        Mon, 11 Sep 2023 14:16:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5D9CCC
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67676C433C9;
+        Mon, 11 Sep 2023 15:15:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441816;
-        bh=FafIvUp9whxV9MFJCNEPOGWjyNYCL8nuIQ99sqzmBvk=;
+        s=korg; t=1694445338;
+        bh=ZFOc3T11SbssFWa/UB0c+WTaZ5uf035tfrPKBZot0dE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ihw5H7hjaSg5kDtym7Eyc7AwrX1u9l7HV9xabtqqRGb7YAoBF7gvS8ytiCy6QLcAT
-         8h0+NuGBWqR3Rrs75jyEW/bpmpsgpGgLQJKdK7NMeWZf+vAdPys5fEMdGq4IZvjlrT
-         Hb063o+0WcgQ6YgfMKfHL7hQBSJVyROJXKqOUd+w=
+        b=O8x/aIJxj5INRpbSAINlQY5BLzK2bhClxX/tyO4SD9iTWPtNmXD8Ktz8qU/HgyzTw
+         /lEJE/7VTxfl68iJIBMt4eBZx0al+gpA6RzWeDLkjoz18bh5av/crD2xe2GmN32Sz2
+         ORvgdVCduCDZn/4+ngu0CRkoUoMHNic7JUIJDGMg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
+        kernel test robot <lkp@intel.com>,
+        Tony Lindgren <tony@atomide.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 546/739] media: ov2680: Add ov2680_fill_format() helper function
+Subject: [PATCH 6.1 312/600] bus: ti-sysc: Fix cast to enum warning
 Date:   Mon, 11 Sep 2023 15:45:45 +0200
-Message-ID: <20230911134706.343980893@linuxfoundation.org>
+Message-ID: <20230911134642.861625517@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,148 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Tony Lindgren <tony@atomide.com>
 
-[ Upstream commit 6d6849b2203f3244b575ba01d3e41ee19aa2cadf ]
+[ Upstream commit de44bf2f7683347f75690ef6cf61a1d5ba8f0891 ]
 
-Add a ov2680_fill_format() helper function and use this everywhere were
-a v4l2_mbus_framefmt struct needs to be filled in so that the driver always
-fills it consistently.
+Fix warning for "cast to smaller integer type 'enum sysc_soc' from 'const
+void *'".
 
-This is a preparation patch for fixing ov2680_set_fmt()
-which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
-the passed in v4l2_mbus_framefmt struct.
-
-Note that for ov2680_init_cfg() this now simply always fills
-the try_fmt struct of the passed in sd_state. This is correct because
-ov2680_init_cfg() is never called with a NULL sd_state so the old
-sd_state check is not necessary.
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Cc: Nishanth Menon <nm@ti.com>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308150723.ziuGCdM3-lkp@intel.com/
+Fixes: e1e1e9bb9d94 ("bus: ti-sysc: Fix build warning for 64-bit build")
+Signed-off-by: Tony Lindgren <tony@atomide.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 49 +++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ drivers/bus/ti-sysc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 2b20990f4cf55..c4a46c734d82a 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -54,6 +54,9 @@
- #define OV2680_WIDTH_MAX		1600
- #define OV2680_HEIGHT_MAX		1200
+diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
+index 0c933788d8575..ac36b01cf6d5d 100644
+--- a/drivers/bus/ti-sysc.c
++++ b/drivers/bus/ti-sysc.c
+@@ -3125,7 +3125,7 @@ static int sysc_init_static_data(struct sysc *ddata)
  
-+#define OV2680_DEFAULT_WIDTH			800
-+#define OV2680_DEFAULT_HEIGHT			600
-+
- enum ov2680_mode_id {
- 	OV2680_MODE_QUXGA_800_600,
- 	OV2680_MODE_720P_1280_720,
-@@ -315,7 +318,8 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
- 	usleep_range(5000, 10000);
- }
+ 	match = soc_device_match(sysc_soc_match);
+ 	if (match && match->data)
+-		sysc_soc->soc = (enum sysc_soc)match->data;
++		sysc_soc->soc = (enum sysc_soc)(uintptr_t)match->data;
  
--static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
-+static void ov2680_set_bayer_order(struct ov2680_dev *sensor,
-+				   struct v4l2_mbus_framefmt *fmt)
- {
- 	int hv_flip = 0;
- 
-@@ -325,7 +329,19 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
- 	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
- 		hv_flip += 2;
- 
--	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
-+	fmt->code = ov2680_hv_flip_bayer_order[hv_flip];
-+}
-+
-+static void ov2680_fill_format(struct ov2680_dev *sensor,
-+			       struct v4l2_mbus_framefmt *fmt,
-+			       unsigned int width, unsigned int height)
-+{
-+	memset(fmt, 0, sizeof(*fmt));
-+	fmt->width = width;
-+	fmt->height = height;
-+	fmt->field = V4L2_FIELD_NONE;
-+	fmt->colorspace = V4L2_COLORSPACE_SRGB;
-+	ov2680_set_bayer_order(sensor, fmt);
- }
- 
- static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
-@@ -340,7 +356,7 @@ static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
- 	if (ret < 0)
- 		return ret;
- 
--	ov2680_set_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor, &sensor->fmt);
- 	return 0;
- }
- 
-@@ -356,7 +372,7 @@ static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
- 	if (ret < 0)
- 		return ret;
- 
--	ov2680_set_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor, &sensor->fmt);
- 	return 0;
- }
- 
-@@ -614,10 +630,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- 		goto unlock;
- 	}
- 
--	fmt->width = mode->width;
--	fmt->height = mode->height;
--	fmt->code = sensor->fmt.code;
--	fmt->colorspace = sensor->fmt.colorspace;
-+	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
- 
- 	sensor->current_mode = mode;
- 	sensor->fmt = format->format;
-@@ -632,16 +645,11 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- static int ov2680_init_cfg(struct v4l2_subdev *sd,
- 			   struct v4l2_subdev_state *sd_state)
- {
--	struct v4l2_subdev_format fmt = {
--		.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
--		: V4L2_SUBDEV_FORMAT_ACTIVE,
--		.format = {
--			.width = 800,
--			.height = 600,
--		}
--	};
-+	struct ov2680_dev *sensor = to_ov2680_dev(sd);
- 
--	return ov2680_set_fmt(sd, sd_state, &fmt);
-+	ov2680_fill_format(sensor, &sd_state->pads[0].try_fmt,
-+			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
-+	return 0;
- }
- 
- static int ov2680_enum_frame_size(struct v4l2_subdev *sd,
-@@ -740,11 +748,8 @@ static int ov2680_mode_init(struct ov2680_dev *sensor)
- 	const struct ov2680_mode_info *init_mode;
- 
- 	/* set initial mode */
--	sensor->fmt.code = MEDIA_BUS_FMT_SBGGR10_1X10;
--	sensor->fmt.width = 800;
--	sensor->fmt.height = 600;
--	sensor->fmt.field = V4L2_FIELD_NONE;
--	sensor->fmt.colorspace = V4L2_COLORSPACE_SRGB;
-+	ov2680_fill_format(sensor, &sensor->fmt,
-+			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
- 
- 	sensor->frame_interval.denominator = OV2680_FRAME_RATE;
- 	sensor->frame_interval.numerator = 1;
+ 	/*
+ 	 * Check and warn about possible old incomplete dtb. We now want to see
 -- 
 2.40.1
 
