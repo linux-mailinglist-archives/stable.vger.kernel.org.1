@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2722D79BE72
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:31 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7883A79BF71
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240001AbjIKWj3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:39:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42786 "EHLO
+        id S241924AbjIKU51 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:57:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50228 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240705AbjIKOvb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:31 -0400
+        with ESMTP id S239428AbjIKOUS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BBE8118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B5299C433C8;
-        Mon, 11 Sep 2023 14:51:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FBCADE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A1FC433C8;
+        Mon, 11 Sep 2023 14:20:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443887;
-        bh=OoMV89SS0EkmBPqsOVJetTz+MLmZ0CqLxQ092TtGPE4=;
+        s=korg; t=1694442014;
+        bh=VFhohYGUNxEcBKzJuQjcb5RMKbF/zFRYGlto6IFZM1M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=V6n+oVlBpBDnd4v9mgsTF3d2GhX8n57RJ285AgEM7S13KfAzpmyrilsGiUHPY8TUW
-         mRc6edOJC+WgeOXfsM+oaWwh7jgNoHzDMPy+OMSwxiCywgJVM9/ak6bK0YJUp6rfyJ
-         YS7/gfpCykh/jk9VTDvNg7BqOTD7HjkjCjnok9t4=
+        b=YUETK1cjWbMdccf9Oi5TFKFcpg2oj4D3cyXDNY/Nwkir523jZgIYbmAottk7dVD03
+         nGpzo3X1lNhrO1aSeDfCUUx7PCyJfJGRyMpXnkfPgo1Ikt6s/ClFPz6p78fXP8hyaY
+         CYzgapEotwZrwbT1AIuTOt4ObgHe29HtaqiK8MCM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chunyan Zhang <chunyan.zhang@unisoc.com>,
-        Baolin Wang <baolin.wang@linux.alibaba.com>,
+        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
+        Leon Romanovsky <leon@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 518/737] serial: sprd: Fix DMA buffer leak issue
-Date:   Mon, 11 Sep 2023 15:46:17 +0200
-Message-ID: <20230911134705.021528806@linuxfoundation.org>
+Subject: [PATCH 6.5 579/739] RDMA/siw: Correct wrong debug message
+Date:   Mon, 11 Sep 2023 15:46:18 +0200
+Message-ID: <20230911134707.279058937@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,56 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chunyan Zhang <chunyan.zhang@unisoc.com>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-[ Upstream commit cd119fdc3ee1450fbf7f78862b5de44c42b6e47f ]
+[ Upstream commit bee024d20451e4ce04ea30099cad09f7f75d288b ]
 
-Release DMA buffer when _probe() returns failure to avoid memory leak.
+We need to print num_sle first then pbl->max_buf per the condition.
+Also replace mem->pbl with pbl while at it.
 
-Fixes: f4487db58eb7 ("serial: sprd: Add DMA mode support")
-Signed-off-by: Chunyan Zhang <chunyan.zhang@unisoc.com>
-Reviewed-by: Baolin Wang <baolin.wang@linux.alibaba.com>
-Link: https://lore.kernel.org/r/20230725064053.235448-2-chunyan.zhang@unisoc.com
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Link: https://lore.kernel.org/r/20230821133255.31111-3-guoqing.jiang@linux.dev
+Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/sprd_serial.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/infiniband/sw/siw/siw_verbs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/tty/serial/sprd_serial.c b/drivers/tty/serial/sprd_serial.c
-index fc1377029021b..99da964e8bd44 100644
---- a/drivers/tty/serial/sprd_serial.c
-+++ b/drivers/tty/serial/sprd_serial.c
-@@ -364,7 +364,7 @@ static void sprd_rx_free_buf(struct sprd_uart_port *sp)
- 	if (sp->rx_dma.virt)
- 		dma_free_coherent(sp->port.dev, SPRD_UART_RX_SIZE,
- 				  sp->rx_dma.virt, sp->rx_dma.phys_addr);
--
-+	sp->rx_dma.virt = NULL;
- }
+diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
+index 32b0befd25e27..10cabc792c68e 100644
+--- a/drivers/infiniband/sw/siw/siw_verbs.c
++++ b/drivers/infiniband/sw/siw/siw_verbs.c
+@@ -1494,7 +1494,7 @@ int siw_map_mr_sg(struct ib_mr *base_mr, struct scatterlist *sl, int num_sle,
  
- static int sprd_rx_dma_config(struct uart_port *port, u32 burst)
-@@ -1203,7 +1203,7 @@ static int sprd_probe(struct platform_device *pdev)
- 		ret = uart_register_driver(&sprd_uart_driver);
- 		if (ret < 0) {
- 			pr_err("Failed to register SPRD-UART driver\n");
--			return ret;
-+			goto free_rx_buf;
- 		}
+ 	if (pbl->max_buf < num_sle) {
+ 		siw_dbg_mem(mem, "too many SGE's: %d > %d\n",
+-			    mem->pbl->max_buf, num_sle);
++			    num_sle, pbl->max_buf);
+ 		return -ENOMEM;
  	}
- 
-@@ -1222,6 +1222,7 @@ static int sprd_probe(struct platform_device *pdev)
- 	sprd_port[index] = NULL;
- 	if (--sprd_ports_num == 0)
- 		uart_unregister_driver(&sprd_uart_driver);
-+free_rx_buf:
- 	sprd_rx_free_buf(sport);
- 	return ret;
- }
+ 	for_each_sg(sl, slp, num_sle, i) {
 -- 
 2.40.1
 
