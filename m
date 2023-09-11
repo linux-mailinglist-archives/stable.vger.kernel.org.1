@@ -2,45 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4BEEF79B37B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 083FA79AF47
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242165AbjIKV5C (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33084 "EHLO
+        id S1355136AbjIKV5H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41574 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238542AbjIKN6v (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:51 -0400
+        with ESMTP id S239894AbjIKObD (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEDD8CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42052C433C7;
-        Mon, 11 Sep 2023 13:58:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CF5E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79624C433C9;
+        Mon, 11 Sep 2023 14:30:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440726;
-        bh=HKI7Zcc4ihRxX+FTzuedW9eWSXvUZYQMSy70gL+i9I0=;
+        s=korg; t=1694442658;
+        bh=hMicBlBqso5KABRHRv4YU72C2VWl2i3k2A7ayqBAVnM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Lvu4OtHKdW8TmhUP1mYT4efeHx9W+Q0d3h5BEciD7+XFPF7tCTxxk/psMxjI56ZJs
-         0EQZzTQ9tIFNagy9fuza+C6E6IlnOW+5/9DZVNezTEiSe3VYiTEDiZ8nDb+sEmmVIk
-         xoGIuwIY1YjShaYxbR+oKyMaXXNb7Rnqxm69u2kw=
+        b=zKYo2xbNZrbKOaYpVqDb1a0GKX9J663kH3t79pINoaKAo1dJhiNrgKiqK7w9Tm2YA
+         A5JxredsQBmIhopToDjYlMyyQ4Rq+uy93VC0v1tUQfVvdok+NVeWfaCQpoNILUE3UF
+         vlh3J8Nos6i9iD/E7f7Do6s7f8teV/30utaadUE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
-        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
-        Kalle Valo <quic_kvalo@quicinc.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 163/739] wifi: ath9k: fix races between ath9k_wmi_cmd and ath9k_wmi_ctrl_rx
+        patches@lists.linux.dev,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
+        "Darrick J. Wong" <djwong@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 103/737] iomap: Remove large folio handling in iomap_invalidate_folio()
 Date:   Mon, 11 Sep 2023 15:39:22 +0200
-Message-ID: <20230911134655.719463475@linuxfoundation.org>
+Message-ID: <20230911134653.390665656@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,128 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Fedor Pchelkin <pchelkin@ispras.ru>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-[ Upstream commit b674fb513e2e7a514fcde287c0f73915d393fdb6 ]
+[ Upstream commit a221ab717c43147f728d93513923ba3528f861bf ]
 
-Currently, the synchronization between ath9k_wmi_cmd() and
-ath9k_wmi_ctrl_rx() is exposed to a race condition which, although being
-rather unlikely, can lead to invalid behaviour of ath9k_wmi_cmd().
+We do not need to release the iomap_page in iomap_invalidate_folio()
+to allow the folio to be split.  The splitting code will call
+->release_folio() if there is still per-fs private data attached to
+the folio.  At that point, we will check if the folio is still dirty
+and decline to release the iomap_page.  It is possible to trigger the
+warning in perfectly legitimate circumstances (eg if a disk read fails,
+we do a partial write to the folio, then we truncate the folio), which
+will cause those writes to be lost.
 
-Consider the following scenario:
-
-CPU0					CPU1
-
-ath9k_wmi_cmd(...)
-  mutex_lock(&wmi->op_mutex)
-  ath9k_wmi_cmd_issue(...)
-  wait_for_completion_timeout(...)
-  ---
-  timeout
-  ---
-					/* the callback is being processed
-					 * before last_seq_id became zero
-					 */
-					ath9k_wmi_ctrl_rx(...)
-					  spin_lock_irqsave(...)
-					  /* wmi->last_seq_id check here
-					   * doesn't detect timeout yet
-					   */
-					  spin_unlock_irqrestore(...)
-  /* last_seq_id is zeroed to
-   * indicate there was a timeout
-   */
-  wmi->last_seq_id = 0
-  mutex_unlock(&wmi->op_mutex)
-  return -ETIMEDOUT
-
-ath9k_wmi_cmd(...)
-  mutex_lock(&wmi->op_mutex)
-  /* the buffer is replaced with
-   * another one
-   */
-  wmi->cmd_rsp_buf = rsp_buf
-  wmi->cmd_rsp_len = rsp_len
-  ath9k_wmi_cmd_issue(...)
-    spin_lock_irqsave(...)
-    spin_unlock_irqrestore(...)
-  wait_for_completion_timeout(...)
-					/* the continuation of the
-					 * callback left after the first
-					 * ath9k_wmi_cmd call
-					 */
-					  ath9k_wmi_rsp_callback(...)
-					    /* copying data designated
-					     * to already timeouted
-					     * WMI command into an
-					     * inappropriate wmi_cmd_buf
-					     */
-					    memcpy(...)
-					    complete(&wmi->cmd_wait)
-  /* awakened by the bogus callback
-   * => invalid return result
-   */
-  mutex_unlock(&wmi->op_mutex)
-  return 0
-
-To fix this, update last_seq_id on timeout path inside ath9k_wmi_cmd()
-under the wmi_lock. Move ath9k_wmi_rsp_callback() under wmi_lock inside
-ath9k_wmi_ctrl_rx() so that the wmi->cmd_wait can be completed only for
-initially designated wmi_cmd call, otherwise the path would be rejected
-with last_seq_id check.
-
-Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
-
-Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
-Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
-Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
-Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
-Link: https://lore.kernel.org/r/20230425192607.18015-1-pchelkin@ispras.ru
+Fixes: 60d8231089f0 ("iomap: Support large folios in invalidatepage")
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Reviewed-by: Darrick J. Wong <djwong@kernel.org>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/ath/ath9k/wmi.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ fs/iomap/buffered-io.c | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
-index d652c647d56b5..04f363cb90fe5 100644
---- a/drivers/net/wireless/ath/ath9k/wmi.c
-+++ b/drivers/net/wireless/ath/ath9k/wmi.c
-@@ -242,10 +242,10 @@ static void ath9k_wmi_ctrl_rx(void *priv, struct sk_buff *skb,
- 		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 		goto free_skb;
+diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
+index 063133ec77f49..08ee293c4117c 100644
+--- a/fs/iomap/buffered-io.c
++++ b/fs/iomap/buffered-io.c
+@@ -508,11 +508,6 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len)
+ 		WARN_ON_ONCE(folio_test_writeback(folio));
+ 		folio_cancel_dirty(folio);
+ 		iomap_page_release(folio);
+-	} else if (folio_test_large(folio)) {
+-		/* Must release the iop so the page can be split */
+-		WARN_ON_ONCE(!folio_test_uptodate(folio) &&
+-			     folio_test_dirty(folio));
+-		iomap_page_release(folio);
  	}
--	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 
- 	/* WMI command response */
- 	ath9k_wmi_rsp_callback(wmi, skb);
-+	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 
- free_skb:
- 	kfree_skb(skb);
-@@ -308,8 +308,8 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
- 	struct ath_common *common = ath9k_hw_common(ah);
- 	u16 headroom = sizeof(struct htc_frame_hdr) +
- 		       sizeof(struct wmi_cmd_hdr);
-+	unsigned long time_left, flags;
- 	struct sk_buff *skb;
--	unsigned long time_left;
- 	int ret = 0;
- 
- 	if (ah->ah_flags & AH_UNPLUGGED)
-@@ -345,7 +345,9 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
- 	if (!time_left) {
- 		ath_dbg(common, WMI, "Timeout waiting for WMI command: %s\n",
- 			wmi_cmd_to_name(cmd_id));
-+		spin_lock_irqsave(&wmi->wmi_lock, flags);
- 		wmi->last_seq_id = 0;
-+		spin_unlock_irqrestore(&wmi->wmi_lock, flags);
- 		mutex_unlock(&wmi->op_mutex);
- 		return -ETIMEDOUT;
- 	}
+ }
+ EXPORT_SYMBOL_GPL(iomap_invalidate_folio);
 -- 
 2.40.1
 
