@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4A9DD79B119
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:51:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABEBC79B4BC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242633AbjIKU6I (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43898 "EHLO
+        id S1344139AbjIKVNX (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:23 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45252 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242091AbjIKPWD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:03 -0400
+        with ESMTP id S240851AbjIKOzh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A4D8BD3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EA619C433CA;
-        Mon, 11 Sep 2023 15:21:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A2C4E118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E697DC433C8;
+        Mon, 11 Sep 2023 14:55:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445719;
-        bh=3sLO2b8IxK+5E/WJk0mielCn6x9MDHQo0jrqhLBGLWc=;
+        s=korg; t=1694444132;
+        bh=nz3pv/+HgjtRwg4VIOvjlCG7TSgkJilNVnGOfGbkdVU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=p5Cby6v4zgbWiRV+h4YURGmV/QHrf5cmYEUjMtGosX9RmSvRHz5/5RLLoYC3R4+Vr
-         tKSBKuOZTVoqCL+FzwEdKjI7+PpJLbYUdqhJFnO6bDrKNOC6nQfG8KQOXu9ceIHjOE
-         z5VgLVhX7tiJ3frykXPmCa2tMemqwJ2LrKtdZDuM=
+        b=UYfJr2FnAeHho9kDwDzYirmZDMqfgMLywiCTnzZbd5EI0xd0VbnLUsCATGk8nOltw
+         PjaTtr7V4dNxkyw+bwD21q8L455fF2M+5WqBPM0i1sZ5fkQh8XFXB8No+b6M5zgP4z
+         DJhnWsRptprv2p1OAEhk/BmGy4ft/X0/O4QFwgVo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Chengchang Tang <tangchengchang@huawei.com>,
-        Junxian Huang <huangjunxian6@hisilicon.com>,
-        Leon Romanovsky <leon@kernel.org>,
+        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
+        Miquel Raynal <miquel.raynal@bootlin.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 447/600] RDMA/hns: Fix CQ and QP cache affinity
-Date:   Mon, 11 Sep 2023 15:48:00 +0200
-Message-ID: <20230911134646.839941400@linuxfoundation.org>
+Subject: [PATCH 6.4 622/737] mtd: rawnand: fsmc: handle clk prepare error in fsmc_nand_resume()
+Date:   Mon, 11 Sep 2023 15:48:01 +0200
+Message-ID: <20230911134707.907377322@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,108 +50,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengchang Tang <tangchengchang@huawei.com>
+From: Yi Yang <yiyang13@huawei.com>
 
-[ Upstream commit 9e03dbea2b0634b21a45946b4f8097e0dc86ebe1 ]
+[ Upstream commit a5a88125d00612586e941ae13e7fcf36ba8f18a7 ]
 
-Currently, the affinity between QP cache and CQ cache is not
-considered when assigning QPN, it will affect the message rate of HW.
+In fsmc_nand_resume(), the return value of clk_prepare_enable() should be
+checked since it might fail.
 
-Allocate QPN from QP cache with better CQ affinity to get better
-performance.
-
-Fixes: 71586dd20010 ("RDMA/hns: Create QP with selected QPN for bank load balance")
-Signed-off-by: Chengchang Tang <tangchengchang@huawei.com>
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20230804012711.808069-5-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Fixes: e25da1c07dfb ("mtd: fsmc_nand: Add clk_{un}prepare() support")
+Signed-off-by: Yi Yang <yiyang13@huawei.com>
+Signed-off-by: Miquel Raynal <miquel.raynal@bootlin.com>
+Link: https://lore.kernel.org/linux-mtd/20230817115839.10192-1-yiyang13@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_device.h |  1 +
- drivers/infiniband/hw/hns/hns_roce_qp.c     | 28 ++++++++++++++++-----
- 2 files changed, 23 insertions(+), 6 deletions(-)
+ drivers/mtd/nand/raw/fsmc_nand.c | 7 ++++++-
+ 1 file changed, 6 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_device.h b/drivers/infiniband/hw/hns/hns_roce_device.h
-index f701cc86896b3..1112afa0af552 100644
---- a/drivers/infiniband/hw/hns/hns_roce_device.h
-+++ b/drivers/infiniband/hw/hns/hns_roce_device.h
-@@ -97,6 +97,7 @@
- #define HNS_ROCE_CQ_BANK_NUM 4
- 
- #define CQ_BANKID_SHIFT 2
-+#define CQ_BANKID_MASK GENMASK(1, 0)
- 
- enum {
- 	SERV_TYPE_RC,
-diff --git a/drivers/infiniband/hw/hns/hns_roce_qp.c b/drivers/infiniband/hw/hns/hns_roce_qp.c
-index 0ae335fb205ca..7a95f8677a02c 100644
---- a/drivers/infiniband/hw/hns/hns_roce_qp.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_qp.c
-@@ -170,14 +170,29 @@ static void hns_roce_ib_qp_event(struct hns_roce_qp *hr_qp,
- 	}
- }
- 
--static u8 get_least_load_bankid_for_qp(struct hns_roce_bank *bank)
-+static u8 get_affinity_cq_bank(u8 qp_bank)
+diff --git a/drivers/mtd/nand/raw/fsmc_nand.c b/drivers/mtd/nand/raw/fsmc_nand.c
+index 7b4742420dfcb..2e33ae77502a0 100644
+--- a/drivers/mtd/nand/raw/fsmc_nand.c
++++ b/drivers/mtd/nand/raw/fsmc_nand.c
+@@ -1200,9 +1200,14 @@ static int fsmc_nand_suspend(struct device *dev)
+ static int fsmc_nand_resume(struct device *dev)
  {
--	u32 least_load = bank[0].inuse;
-+	return (qp_bank >> 1) & CQ_BANKID_MASK;
-+}
-+
-+static u8 get_least_load_bankid_for_qp(struct ib_qp_init_attr *init_attr,
-+					struct hns_roce_bank *bank)
-+{
-+#define INVALID_LOAD_QPNUM 0xFFFFFFFF
-+	struct ib_cq *scq = init_attr->send_cq;
-+	u32 least_load = INVALID_LOAD_QPNUM;
-+	unsigned long cqn = 0;
- 	u8 bankid = 0;
- 	u32 bankcnt;
- 	u8 i;
+ 	struct fsmc_nand_data *host = dev_get_drvdata(dev);
++	int ret;
  
--	for (i = 1; i < HNS_ROCE_QP_BANK_NUM; i++) {
-+	if (scq)
-+		cqn = to_hr_cq(scq)->cqn;
-+
-+	for (i = 0; i < HNS_ROCE_QP_BANK_NUM; i++) {
-+		if (scq && (get_affinity_cq_bank(i) != (cqn & CQ_BANKID_MASK)))
-+			continue;
-+
- 		bankcnt = bank[i].inuse;
- 		if (bankcnt < least_load) {
- 			least_load = bankcnt;
-@@ -209,7 +224,8 @@ static int alloc_qpn_with_bankid(struct hns_roce_bank *bank, u8 bankid,
- 
- 	return 0;
- }
--static int alloc_qpn(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
-+static int alloc_qpn(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp,
-+		     struct ib_qp_init_attr *init_attr)
- {
- 	struct hns_roce_qp_table *qp_table = &hr_dev->qp_table;
- 	unsigned long num = 0;
-@@ -220,7 +236,7 @@ static int alloc_qpn(struct hns_roce_dev *hr_dev, struct hns_roce_qp *hr_qp)
- 		num = 1;
- 	} else {
- 		mutex_lock(&qp_table->bank_mutex);
--		bankid = get_least_load_bankid_for_qp(qp_table->bank);
-+		bankid = get_least_load_bankid_for_qp(init_attr, qp_table->bank);
- 
- 		ret = alloc_qpn_with_bankid(&qp_table->bank[bankid], bankid,
- 					    &num);
-@@ -1146,7 +1162,7 @@ static int hns_roce_create_qp_common(struct hns_roce_dev *hr_dev,
- 		goto err_buf;
- 	}
- 
--	ret = alloc_qpn(hr_dev, hr_qp);
-+	ret = alloc_qpn(hr_dev, hr_qp, init_attr);
- 	if (ret) {
- 		ibdev_err(ibdev, "failed to alloc QPN, ret = %d.\n", ret);
- 		goto err_qpn;
+ 	if (host) {
+-		clk_prepare_enable(host->clk);
++		ret = clk_prepare_enable(host->clk);
++		if (ret) {
++			dev_err(dev, "failed to enable clk\n");
++			return ret;
++		}
+ 		if (host->dev_timings)
+ 			fsmc_nand_setup(host, host->dev_timings);
+ 		nand_reset(&host->nand, 0);
 -- 
 2.40.1
 
