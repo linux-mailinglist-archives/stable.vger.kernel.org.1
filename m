@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7425A79AF3B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:57 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 21DAC79ADBC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236265AbjIKUvM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49774 "EHLO
+        id S1359523AbjIKWRd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:17:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47940 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240291AbjIKOkl (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:40:41 -0400
+        with ESMTP id S241368AbjIKPHV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98858F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:40:37 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1026C433CB;
-        Mon, 11 Sep 2023 14:40:36 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3B28FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1A37C433C8;
+        Mon, 11 Sep 2023 15:07:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443237;
-        bh=HGHPOmbdXF+YBO0OLEUG2irlZMlr0L8MIJC2gqjZooI=;
+        s=korg; t=1694444836;
+        bh=wHKKGI5NTfyYy5IU0wTM38FoIJ7qvzyLEil5MtD6noI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZouBgZF105zaGspL7BLB1kASq+Uv2DgNs9afIL9E93djQLt89C9XH0n7fv7euWux5
-         9qBT/KDs5SXyVcs7fCL2RLKf6HV9wJl3Vmz+gfwzz1KM31Z6FEQO1XeCkbFRMSyt3G
-         hjeP+NgfB002uC9oNtU8tOmNQXuXwa+kUZBQ7wkc=
+        b=2tUwe8/v8z3fwXj/g0L3NRbV7K8yRVHgJiLj/AMXPmXsCn/C2thcBijhpIOBOb1sZ
+         gDfsbZFH9Dn/h7XrxlWWginL33qLc9rKlL7agxKS9Y2bROG9bXwN9Js2q3wq8yShz7
+         LBVRL1KCVPLcuLBVfL6L6tpXirZyP1dd+Rr/NgNY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Francesco Dolcini <francesco@dolcini.it>,
-        Wadim Egorov <w.egorov@phytec.de>, Nishanth Menon <nm@ti.com>,
-        Sasha Levin <sashal@kernel.org>,
-        Francesco Dolcini <francesco.dolcini@toradex.com>
-Subject: [PATCH 6.4 307/737] firmware: ti_sci: Use system_state to determine polling
-Date:   Mon, 11 Sep 2023 15:42:46 +0200
-Message-ID: <20230911134659.147575742@linuxfoundation.org>
+        patches@lists.linux.dev, Mikel Rychliski <mikel@mikelr.com>,
+        Ard Biesheuvel <ardb@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 134/600] x86/efistub: Fix PCI ROM preservation in mixed mode
+Date:   Mon, 11 Sep 2023 15:42:47 +0200
+Message-ID: <20230911134637.569112756@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,117 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nishanth Menon <nm@ti.com>
+From: Mikel Rychliski <mikel@mikelr.com>
 
-[ Upstream commit 9225bcdedf16297a346082e7d23b0e8434aa98ed ]
+[ Upstream commit 8b94da92559f7e403dc7ab81937cc50f949ee2fd ]
 
-Commit b9e8a7d950ff ("firmware: ti_sci: Switch transport to polled
-mode during system suspend") aims to resolve issues with tisci
-operations during system suspend operation. However, the system may
-enter a no_irq stage in various other usage modes, including power-off
-and restart. To determine if polling mode is appropriate, use the
-system_state instead.
+preserve_pci_rom_image() was accessing the romsize field in
+efi_pci_io_protocol_t directly instead of using the efi_table_attr()
+helper. This prevents the ROM image from being saved correctly during a
+mixed mode boot.
 
-While at this, drop the unused is_suspending state variable and
-related helpers.
-
-Fixes: b9e8a7d950ff ("firmware: ti_sci: Switch transport to polled mode during system suspend")
-Reported-by: Francesco Dolcini <francesco@dolcini.it>
-Reported-by: Wadim Egorov <w.egorov@phytec.de>
-Tested-by: Francesco Dolcini <francesco.dolcini@toradex.com> # Toradex Verdin AM62
-Link: https://lore.kernel.org/r/20230620130329.4120443-1-nm@ti.com
-Closes: https://lore.kernel.org/all/ZGeHMjlnob2GFyHF@francesco-nb.int.toradex.com/
-Signed-off-by: Nishanth Menon <nm@ti.com>
+Fixes: 2c3625cb9fa2 ("efi/x86: Fold __setup_efi_pci32() and __setup_efi_pci64() into one function")
+Signed-off-by: Mikel Rychliski <mikel@mikelr.com>
+Signed-off-by: Ard Biesheuvel <ardb@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/firmware/ti_sci.c | 36 ++----------------------------------
- 1 file changed, 2 insertions(+), 34 deletions(-)
+ drivers/firmware/efi/libstub/x86-stub.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/firmware/ti_sci.c b/drivers/firmware/ti_sci.c
-index 039d92a595ec6..91aaa0ca9bde8 100644
---- a/drivers/firmware/ti_sci.c
-+++ b/drivers/firmware/ti_sci.c
-@@ -97,7 +97,6 @@ struct ti_sci_desc {
-  * @node:	list head
-  * @host_id:	Host ID
-  * @users:	Number of users of this instance
-- * @is_suspending: Flag set to indicate in suspend path.
-  */
- struct ti_sci_info {
- 	struct device *dev;
-@@ -116,7 +115,6 @@ struct ti_sci_info {
- 	u8 host_id;
- 	/* protected by ti_sci_list_mutex */
- 	int users;
--	bool is_suspending;
- };
+diff --git a/drivers/firmware/efi/libstub/x86-stub.c b/drivers/firmware/efi/libstub/x86-stub.c
+index 33a7811e12c65..4f0152b11a890 100644
+--- a/drivers/firmware/efi/libstub/x86-stub.c
++++ b/drivers/firmware/efi/libstub/x86-stub.c
+@@ -61,7 +61,7 @@ preserve_pci_rom_image(efi_pci_io_protocol_t *pci, struct pci_setup_rom **__rom)
+ 	rom->data.type	= SETUP_PCI;
+ 	rom->data.len	= size - sizeof(struct setup_data);
+ 	rom->data.next	= 0;
+-	rom->pcilen	= pci->romsize;
++	rom->pcilen	= romsize;
+ 	*__rom = rom;
  
- #define cl_to_ti_sci_info(c)	container_of(c, struct ti_sci_info, cl)
-@@ -418,14 +416,14 @@ static inline int ti_sci_do_xfer(struct ti_sci_info *info,
- 
- 	ret = 0;
- 
--	if (!info->is_suspending) {
-+	if (system_state <= SYSTEM_RUNNING) {
- 		/* And we wait for the response. */
- 		timeout = msecs_to_jiffies(info->desc->max_rx_timeout_ms);
- 		if (!wait_for_completion_timeout(&xfer->done, timeout))
- 			ret = -ETIMEDOUT;
- 	} else {
- 		/*
--		 * If we are suspending, we cannot use wait_for_completion_timeout
-+		 * If we are !running, we cannot use wait_for_completion_timeout
- 		 * during noirq phase, so we must manually poll the completion.
- 		 */
- 		ret = read_poll_timeout_atomic(try_wait_for_completion, done_state,
-@@ -3281,35 +3279,6 @@ static int tisci_reboot_handler(struct notifier_block *nb, unsigned long mode,
- 	return NOTIFY_BAD;
- }
- 
--static void ti_sci_set_is_suspending(struct ti_sci_info *info, bool is_suspending)
--{
--	info->is_suspending = is_suspending;
--}
--
--static int ti_sci_suspend(struct device *dev)
--{
--	struct ti_sci_info *info = dev_get_drvdata(dev);
--	/*
--	 * We must switch operation to polled mode now as drivers and the genpd
--	 * layer may make late TI SCI calls to change clock and device states
--	 * from the noirq phase of suspend.
--	 */
--	ti_sci_set_is_suspending(info, true);
--
--	return 0;
--}
--
--static int ti_sci_resume(struct device *dev)
--{
--	struct ti_sci_info *info = dev_get_drvdata(dev);
--
--	ti_sci_set_is_suspending(info, false);
--
--	return 0;
--}
--
--static DEFINE_SIMPLE_DEV_PM_OPS(ti_sci_pm_ops, ti_sci_suspend, ti_sci_resume);
--
- /* Description for K2G */
- static const struct ti_sci_desc ti_sci_pmmc_k2g_desc = {
- 	.default_host_id = 2,
-@@ -3516,7 +3485,6 @@ static struct platform_driver ti_sci_driver = {
- 	.driver = {
- 		   .name = "ti-sci",
- 		   .of_match_table = of_match_ptr(ti_sci_of_match),
--		   .pm = &ti_sci_pm_ops,
- 	},
- };
- module_platform_driver(ti_sci_driver);
+ 	status = efi_call_proto(pci, pci.read, EfiPciIoWidthUint16,
 -- 
 2.40.1
 
