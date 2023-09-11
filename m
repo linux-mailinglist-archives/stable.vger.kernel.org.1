@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 77EC579ADA5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9465279AD39
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1346022AbjIKVWt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45398 "EHLO
+        id S1376580AbjIKWUA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43224 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239098AbjIKOLk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:40 -0400
+        with ESMTP id S240367AbjIKOml (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96883CD
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DEAF5C433C8;
-        Mon, 11 Sep 2023 14:11:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24AAD12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6891FC433C8;
+        Mon, 11 Sep 2023 14:42:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441496;
-        bh=Nji1C/hhKWRs9P1TLr8QVGaZS/We7XM5weKvAhCLqGc=;
+        s=korg; t=1694443355;
+        bh=wvZT/8yGBABBRySrzf95aou3nQ5JIscheGcgc1jCWpY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=v56uM4EUaCtRCeFcj6hFFYFj1d8J7Izo0lL8uZyYoGJRUR7uZWQyYeJHjTYB9BiF7
-         oJMAo29o7YkzFoM9m3k9t/XjqS/3KFzzChwDFzVlpH37LsOSvzYfFrnpuvL0zCkLUO
-         AGKMKMvD3AH4H9XsaBhHRKSKGdACBQq9t6Y5fPew=
+        b=dKa8rIaLbvtxdT8x80KlorpQ/5+dmG0cxmUcEd3f6QaU4lw3EPnjQtsi6RqJy8fny
+         tGQevrIO8ArsBnkA4kH4F9C3Qu3+Jnk+A5Muhud5FwLdJwNT9UX3LAe8QjFfmkBgkI
+         +TG2wgmCyY9Bsewu9+pfIOzzZ85m5japz0Gi4u9s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
-        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
-        Bjorn Helgaas <bhelgaas@google.com>,
-        "Rafael J. Wysocki" <rafael@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 406/739] PCI: Make link retraining use RMW accessors for changing LNKCTL
-Date:   Mon, 11 Sep 2023 15:43:25 +0200
-Message-ID: <20230911134702.517493323@linuxfoundation.org>
+Subject: [PATCH 6.4 348/737] ARM: dts: BCM53573: Fix Tenda AC9 switch CPU port
+Date:   Mon, 11 Sep 2023 15:43:27 +0200
+Message-ID: <20230911134700.245078828@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,62 +52,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit fb0171a4c01b4825e36a5584eaa84291179c64ce ]
+[ Upstream commit 7141209db9c335ab261a17933809a3e660ebdc12 ]
 
-Don't assume that the device is fully under the control of PCI core.  Use
-RMW capability accessors in link retraining which do proper locking to
-avoid losing concurrent updates to the register values.
+Primary Ethernet interface is connected to the port 8 (not 5).
 
-Suggested-by: Lukas Wunner <lukas@wunner.de>
-Fixes: 4ec73791a64b ("PCI: Work around Pericom PCIe-to-PCI bridge Retrain Link erratum")
-Fixes: 7d715a6c1ae5 ("PCI: add PCI Express ASPM support")
-Link: https://lore.kernel.org/r/20230717120503.15276-3-ilpo.jarvinen@linux.intel.com
-Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
-Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
+Fixes: 64612828628c ("ARM: dts: BCM53573: Add Tenda AC9 switch ports")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230723195416.7831-1-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/pci.c | 8 ++------
- 1 file changed, 2 insertions(+), 6 deletions(-)
+ arch/arm/boot/dts/bcm47189-tenda-ac9.dts | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/pci/pci.c b/drivers/pci/pci.c
-index 60230da957e0c..f7315b13bb826 100644
---- a/drivers/pci/pci.c
-+++ b/drivers/pci/pci.c
-@@ -4927,7 +4927,6 @@ static int pcie_wait_for_link_status(struct pci_dev *pdev,
- int pcie_retrain_link(struct pci_dev *pdev, bool use_lt)
- {
- 	int rc;
--	u16 lnkctl;
+diff --git a/arch/arm/boot/dts/bcm47189-tenda-ac9.dts b/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
+index dab2e5f63a727..06b1a582809ca 100644
+--- a/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
++++ b/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
+@@ -135,8 +135,8 @@ port@4 {
+ 			label = "lan4";
+ 		};
  
- 	/*
- 	 * Ensure the updated LNKCTL parameters are used during link
-@@ -4939,17 +4938,14 @@ int pcie_retrain_link(struct pci_dev *pdev, bool use_lt)
- 	if (rc)
- 		return rc;
- 
--	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &lnkctl);
--	lnkctl |= PCI_EXP_LNKCTL_RL;
--	pcie_capability_write_word(pdev, PCI_EXP_LNKCTL, lnkctl);
-+	pcie_capability_set_word(pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
- 	if (pdev->clear_retrain_link) {
- 		/*
- 		 * Due to an erratum in some devices the Retrain Link bit
- 		 * needs to be cleared again manually to allow the link
- 		 * training to succeed.
- 		 */
--		lnkctl &= ~PCI_EXP_LNKCTL_RL;
--		pcie_capability_write_word(pdev, PCI_EXP_LNKCTL, lnkctl);
-+		pcie_capability_clear_word(pdev, PCI_EXP_LNKCTL, PCI_EXP_LNKCTL_RL);
- 	}
- 
- 	return pcie_wait_for_link_status(pdev, use_lt, !use_lt);
+-		port@5 {
+-			reg = <5>;
++		port@8 {
++			reg = <8>;
+ 			label = "cpu";
+ 			ethernet = <&gmac0>;
+ 		};
 -- 
 2.40.1
 
