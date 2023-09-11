@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B506179BAE6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 15C9879BF02
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242969AbjIKU6u (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44614 "EHLO
+        id S240131AbjIKWjf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:39:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240156AbjIKOiF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:05 -0400
+        with ESMTP id S238898AbjIKOHf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C6E0F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96D3EC433C8;
-        Mon, 11 Sep 2023 14:37:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BDC43CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:07:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 13AAAC433C7;
+        Mon, 11 Sep 2023 14:07:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443080;
-        bh=f9qaVZEs6RGA82Ir3CZxA2TCVXMfGN1k/gWlPTp1FhM=;
+        s=korg; t=1694441251;
+        bh=u0W47arON9wkGxWZTEu+RWK+bPW3uia03lX2+2yth6U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1AiWyv9vVcmKT2CaAmI9CPy50VVUvb6Nr7VwoZ74UFSbK2+CRBn7T0JffJNUdduEA
-         FvOncajc2fsySIMqnbti+p+xaPMHQv/SxOZLt0L7OsjvjXgNM1e6frmQLxVVglnpIJ
-         wReyxnd9uhcbBWhib4ETsWHgHTrbY7ibC+OseFOA=
+        b=cNLF5LD1vZOwdMGvn8kexPPi0ln8ACrrAUEdY5RcjixtX3t6e8ca4hIyUyqx0+QGU
+         C8LvQwVcxf1usNMEzO+/Jy7pjbyee6+uatT7NRHmPbbK+C1a79zgwPVy/Z98BqCl9d
+         deoM6yWNsYeQvyHCb+lqYZdwuei826ePUd2Y9kB0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
-        Ido Schimmel <idosch@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 251/737] mlxsw: i2c: Fix chunk size setting in output mailbox buffer
+Subject: [PATCH 6.5 311/739] drm/msm/dpu: fix the irq index in dpu_encoder_phys_wb_wait_for_commit_done
 Date:   Mon, 11 Sep 2023 15:41:50 +0200
-Message-ID: <20230911134657.607602371@linuxfoundation.org>
+Message-ID: <20230911134659.804144078@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +50,44 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 146c7c330507c0384bf29d567186632bfe975927 ]
+[ Upstream commit d93cf453f51da168f4410ba73656f1e862096973 ]
 
-The driver reads commands output from the output mailbox. If the size
-of the output mailbox is not a multiple of the transaction /
-block size, then the driver will not issue enough read transactions
-to read the entire output, which can result in driver initialization
-errors.
+Since commit 1e7ac595fa46 ("drm/msm/dpu: pass irq to
+dpu_encoder_helper_wait_for_irq()") the
+dpu_encoder_phys_wb_wait_for_commit_done expects the IRQ index rather
+than the IRQ index in phys_enc->intr table, however writeback got the
+older invocation in place. This was unnoticed for several releases, but
+now it's time to fix it.
 
-Fix by determining the number of transactions using DIV_ROUND_UP().
-
-Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Reviewed-by: Ido Schimmel <idosch@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: d7d0e73f7de3 ("drm/msm/dpu: introduce the dpu_encoder_phys_* for writeback")
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/550924/
+Link: https://lore.kernel.org/r/20230802100426.4184892-2-dmitry.baryshkov@linaro.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/i2c.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-index 2c586c2308aef..d23734ecb416a 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-@@ -444,7 +444,7 @@ mlxsw_i2c_cmd(struct device *dev, u16 opcode, u32 in_mod, size_t in_mbox_size,
- 	} else {
- 		/* No input mailbox is case of initialization query command. */
- 		reg_size = MLXSW_I2C_MAX_DATA_SIZE;
--		num = reg_size / mlxsw_i2c->block_size;
-+		num = DIV_ROUND_UP(reg_size, mlxsw_i2c->block_size);
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+index a466ff70a4d62..78037a697633b 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_encoder_phys_wb.c
+@@ -446,7 +446,8 @@ static int dpu_encoder_phys_wb_wait_for_commit_done(
+ 	wait_info.atomic_cnt = &phys_enc->pending_kickoff_cnt;
+ 	wait_info.timeout_ms = KICKOFF_TIMEOUT_MS;
  
- 		if (mutex_lock_interruptible(&mlxsw_i2c->cmd.lock) < 0) {
- 			dev_err(&client->dev, "Could not acquire lock");
+-	ret = dpu_encoder_helper_wait_for_irq(phys_enc, INTR_IDX_WB_DONE,
++	ret = dpu_encoder_helper_wait_for_irq(phys_enc,
++			phys_enc->irq[INTR_IDX_WB_DONE],
+ 			dpu_encoder_phys_wb_done_irq, &wait_info);
+ 	if (ret == -ETIMEDOUT)
+ 		_dpu_encoder_phys_wb_handle_wbdone_timeout(phys_enc);
 -- 
 2.40.1
 
