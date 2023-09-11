@@ -2,43 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2274F79AF3C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 605BF79B27A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350942AbjIKVmQ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:42:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33242 "EHLO
+        id S242552AbjIKWX7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:23:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43222 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239012AbjIKOJi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:38 -0400
+        with ESMTP id S240365AbjIKOmh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C801ECF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B52BC433C7;
-        Mon, 11 Sep 2023 14:09:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 554ED12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9F4F6C433C7;
+        Mon, 11 Sep 2023 14:42:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441374;
-        bh=R6pCJE4bCtCCjPbE/r6kR5V48apYQyCI0Cvi67ZzXsA=;
+        s=korg; t=1694443353;
+        bh=TujxWuDmrdhWmE0Vxh7oXifrPCMUV9L9ROip0f/IgH0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kkbkBruNL0dfQdcPk2YcNGF1dpbzIWszO8ZShUwU4k/rHATuq+stN+ep+WySTDonC
-         sZ2+FcJkgpgS6LObnGLElGjpo1nvi0mQtMVCoJkKFZp4Azt9+pFue/A4xzUorGZb5a
-         555cFYZCmi9JxBU7sAkPlUW+E9bx9CEj8b50rgu4=
+        b=yfd9zuCU9sQc3GhYXvBkL3gH+b7E8O8q/DSVRAT2KsU8F44DvHFE4qzIppfvqlnLl
+         XTyHFt5YVbbwCeco+8P8B0P4weE54HPYZ8HeMbNU6eRzmRzpyVpOOZH2cqD/FIjgPZ
+         2L8J89AvuAFu6/twiuOAmMy3auFZGQqEn3qji/Uk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
+        Florian Fainelli <florian.fainelli@broadcom.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 390/739] clk: qcom: dispcc-sc8280xp: Use ret registers on GDSCs
+Subject: [PATCH 6.4 330/737] ARM: dts: BCM53573: Fix Ethernet info for Luxul devices
 Date:   Mon, 11 Sep 2023 15:43:09 +0200
-Message-ID: <20230911134702.083855268@linuxfoundation.org>
+Message-ID: <20230911134659.762287288@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,66 +52,86 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 20e1d75bc043c5ec1fd8f5169fde17db89eb11c3 ]
+[ Upstream commit 44ad8207806973f4e4f7d870fff36cc01f494250 ]
 
-The DISP_CC GDSCs have not been instructed to use the ret registers.
-Fix that.
+Both Luxul's XAP devices (XAP-810 and XAP-1440) are access points that
+use a non-default design. They don't include switch but have a single
+Ethernet port and BCM54210E PHY connected to the Ethernet controller's
+MDIO bus.
 
-Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230725-topic-8280_dispcc_gdsc-v1-1-236590060531@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Support for those devices regressed due to two changes:
+
+1. Describing MDIO bus with switch
+After commit 9fb90ae6cae7 ("ARM: dts: BCM53573: Describe on-SoC BCM53125
+rev 4 switch") Linux stopped probing for MDIO devices.
+
+2. Dropping hardcoded BCM54210E delays
+In commit fea7fda7f50a ("net: phy: broadcom: Fix RGMII delays
+configuration for BCM54210E") support for other PHY modes was added but
+that requires a proper "phy-mode" value in DT.
+
+Both above changes are correct (they don't need to be reverted or
+anything) but they need this fix for DT data to be correct and for Linux
+to work properly.
+
+Fixes: 9fb90ae6cae7 ("ARM: dts: BCM53573: Describe on-SoC BCM53125 rev 4 switch")
+Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
+Link: https://lore.kernel.org/r/20230713111145.14864-1-zajec5@gmail.com
+Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/dispcc-sc8280xp.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts | 13 +++++++++++++
+ arch/arm/boot/dts/bcm47189-luxul-xap-810.dts  | 13 +++++++++++++
+ 2 files changed, 26 insertions(+)
 
-diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
-index 167470beb3691..30f636b9f0ec8 100644
---- a/drivers/clk/qcom/dispcc-sc8280xp.c
-+++ b/drivers/clk/qcom/dispcc-sc8280xp.c
-@@ -3057,7 +3057,7 @@ static struct gdsc disp0_mdss_gdsc = {
- 		.name = "disp0_mdss_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = HW_CTRL,
-+	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+diff --git a/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts b/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
+index b9dd508444198..0f6d7fe30068f 100644
+--- a/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
++++ b/arch/arm/boot/dts/bcm47189-luxul-xap-1440.dts
+@@ -45,3 +45,16 @@ button-restart {
+ 		};
+ 	};
  };
- 
- static struct gdsc disp1_mdss_gdsc = {
-@@ -3069,7 +3069,7 @@ static struct gdsc disp1_mdss_gdsc = {
- 		.name = "disp1_mdss_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = HW_CTRL,
-+	.flags = HW_CTRL | RETAIN_FF_ENABLE,
++
++&gmac0 {
++	phy-mode = "rgmii";
++	phy-handle = <&bcm54210e>;
++
++	mdio {
++		/delete-node/ switch@1e;
++
++		bcm54210e: ethernet-phy@0 {
++			reg = <0>;
++		};
++	};
++};
+diff --git a/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts b/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
+index cb22ae2a02e54..4e0ef0af726f5 100644
+--- a/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
++++ b/arch/arm/boot/dts/bcm47189-luxul-xap-810.dts
+@@ -81,3 +81,16 @@ pcie0_chipcommon: chipcommon@0 {
+ 		};
+ 	};
  };
- 
- static struct gdsc disp0_mdss_int2_gdsc = {
-@@ -3081,7 +3081,7 @@ static struct gdsc disp0_mdss_int2_gdsc = {
- 		.name = "disp0_mdss_int2_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = HW_CTRL,
-+	.flags = HW_CTRL | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc disp1_mdss_int2_gdsc = {
-@@ -3093,7 +3093,7 @@ static struct gdsc disp1_mdss_int2_gdsc = {
- 		.name = "disp1_mdss_int2_gdsc",
- 	},
- 	.pwrsts = PWRSTS_OFF_ON,
--	.flags = HW_CTRL,
-+	.flags = HW_CTRL | RETAIN_FF_ENABLE,
- };
- 
- static struct gdsc *disp0_cc_sc8280xp_gdscs[] = {
++
++&gmac0 {
++	phy-mode = "rgmii";
++	phy-handle = <&bcm54210e>;
++
++	mdio {
++		/delete-node/ switch@1e;
++
++		bcm54210e: ethernet-phy@0 {
++			reg = <0>;
++		};
++	};
++};
 -- 
 2.40.1
 
