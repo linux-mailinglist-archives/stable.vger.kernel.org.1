@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BF72F79B322
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3436A79B35B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242380AbjIKV7H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37134 "EHLO
+        id S239487AbjIKUy6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:54:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43088 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241752AbjIKPNk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:40 -0400
+        with ESMTP id S241773AbjIKPOL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8A158FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CD720C433C8;
-        Mon, 11 Sep 2023 15:13:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1DB26FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 56C0CC433C8;
+        Mon, 11 Sep 2023 15:14:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445215;
-        bh=BdQ+B2wcSQbbLJoklQBMdwEjSiiPicRz1wlBTCEOzYg=;
+        s=korg; t=1694445246;
+        bh=QS2UsylL1mk0Rw6e95Ga7VkCP1XdaxMvF6hbOHjRmI8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e8OAHs/1E1WQ9H7pSk6Mv6OWSNxcXc1hlXy7R9aoiLtb6f9UUggMIu7ZU7NNMWiKX
-         z+Xi4KFbxdWi43P3U8AFFV4kNc4/40iZmXCGTN0gtQ8xuXQ4rVOn4u3GANkAoq/vHm
-         wdw7CfB0nn47ljRxrMIcCLfZUfh+WH88K2X3VFZI=
+        b=hwYB0DtDEEXvv9mUX3AO9BAJCQaNn2rtYk6d/tbVQ+V0rYJigjMFqDdq/vxQdOAwW
+         XqgXHLzVJouC2SoUm8qIcJXQ3+p7shcdgvS6b1XUDjJVrUxmtC/bH/ZBZN3UdFxHdG
+         wm9Zb2KgDj9r98Znb9cwgOJDU5R3ETBTHenWm9Oo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
         Florian Fainelli <florian.fainelli@broadcom.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 251/600] ARM: dts: BCM53573: Drop nonexistent #usb-cells
-Date:   Mon, 11 Sep 2023 15:44:44 +0200
-Message-ID: <20230911134641.007964933@linuxfoundation.org>
+Subject: [PATCH 6.1 252/600] ARM: dts: BCM53573: Add cells sizes to PCIe node
+Date:   Mon, 11 Sep 2023 15:44:45 +0200
+Message-ID: <20230911134641.041443328@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -58,35 +58,40 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Rafał Miłecki <rafal@milecki.pl>
 
-[ Upstream commit 05d2c3d552b8c92fc397377d9d1112fc58e2cd59 ]
-
-Such property simply doesn't exist (is not documented or used anywhere).
+[ Upstream commit 3392ef368d9b04622fe758b1079b512664b6110a ]
 
 This fixes:
-arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: usb@d000: Unevaluated properties are not allowed ('#usb-cells' was unexpected)
-        From schema: Documentation/devicetree/bindings/usb/generic-ohci.yaml
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: pcie@2000: '#address-cells' is a required property
+        From schema: /lib/python3.10/site-packages/dtschema/schemas/pci/pci-bus.yaml
+arch/arm/boot/dts/broadcom/bcm47189-luxul-xap-1440.dtb: pcie@2000: '#size-cells' is a required property
+        From schema: /lib/python3.10/site-packages/dtschema/schemas/pci/pci-bus.yaml
+
+Two properties that need to be added later are "device_type" and
+"ranges". Adding "device_type" on its own causes a new warning and the
+value of "ranges" needs to be determined yet.
 
 Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230707114004.2740-2-zajec5@gmail.com
+Link: https://lore.kernel.org/r/20230707114004.2740-3-zajec5@gmail.com
 Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm53573.dtsi | 2 --
- 1 file changed, 2 deletions(-)
+ arch/arm/boot/dts/bcm53573.dtsi | 3 +++
+ 1 file changed, 3 insertions(+)
 
 diff --git a/arch/arm/boot/dts/bcm53573.dtsi b/arch/arm/boot/dts/bcm53573.dtsi
-index 3f03a381db0f2..3cb71829e8597 100644
+index 3cb71829e8597..eed1a6147f0bf 100644
 --- a/arch/arm/boot/dts/bcm53573.dtsi
 +++ b/arch/arm/boot/dts/bcm53573.dtsi
-@@ -156,8 +156,6 @@ ehci_port2: port@2 {
- 			};
+@@ -127,6 +127,9 @@ uart0: serial@300 {
  
- 			ohci: usb@d000 {
--				#usb-cells = <0>;
--
- 				compatible = "generic-ohci";
- 				reg = <0xd000 0x1000>;
- 				interrupt-parent = <&gic>;
+ 		pcie0: pcie@2000 {
+ 			reg = <0x00002000 0x1000>;
++
++			#address-cells = <3>;
++			#size-cells = <2>;
+ 		};
+ 
+ 		usb2: usb2@4000 {
 -- 
 2.40.1
 
