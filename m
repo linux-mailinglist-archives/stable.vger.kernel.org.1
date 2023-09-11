@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4399F79B333
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E648C79B33F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379363AbjIKWnk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51314 "EHLO
+        id S1378688AbjIKWgf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:36:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241244AbjIKPEu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:50 -0400
+        with ESMTP id S240158AbjIKOiH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8619125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C01AC433C7;
-        Mon, 11 Sep 2023 15:04:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57808F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C85CC433C7;
+        Mon, 11 Sep 2023 14:38:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444685;
-        bh=1m/PqfjixadJZ7stxRHVUJXRbO6KZj+sR/10bi/IMqk=;
+        s=korg; t=1694443082;
+        bh=DxrLSHT+lMqoj/T9fuAkbFT5mW+lPTFTJoSd3W04QBU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xXtYl7iMU5uM+B3B20ASh+uwAcw8Buy7IuEM2CVEy2jznyixtwDKjMRFqcbev164U
-         DTRKow3uBXkitdYN50/8meKJmqHS9yTaVmQrrra6A3XqpE5FDdqnlxbkvrbpOIjtUx
-         Fv94yH3YT+Up4myEw87BXuJUcqF1tIyoD9GjynJo=
+        b=ZBAJdnTV3RIpcX2S3JHUYU8+7JjgfF7bN/CJAUG+l02rt0QwGuF22svCd4oLu7MyG
+         4Sr+w6DjYnDxPIe01QeyAxwyc3uFFxWXkZC1kJAI/nGmu1G9zU17JcE4t7eTvXbZb8
+         e1b5EQOn3AU6tkVZcQVICUNbkOzVYgS39/wtLks8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saravana Kannan <saravanak@google.com>,
-        Colin Foster <colin.foster@in-advantage.com>,
-        Sudeep Holla <sudeep.holla@arm.com>,
-        Douglas Anderson <dianders@chromium.org>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Adam Ford <aford173@gmail.com>,
-        Luca Weiss <luca.weiss@fairphone.com>
-Subject: [PATCH 6.1 078/600] of: property: Simplify of_link_to_phandle()
+        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 252/737] mlxsw: i2c: Limit single transaction buffer size
 Date:   Mon, 11 Sep 2023 15:41:51 +0200
-Message-ID: <20230911134635.916151126@linuxfoundation.org>
+Message-ID: <20230911134657.634332155@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,148 +51,60 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Saravana Kannan <saravanak@google.com>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-commit 4a032827daa89350365166b19d14d82fe8219128 upstream.
+[ Upstream commit d7248f1cc835bd80e936dc5b2d94b149bdd0077d ]
 
-The driver core now:
-- Has the parent device of a supplier pick up the consumers if the
-  supplier never has a device created for it.
-- Ignores a supplier if the supplier has no parent device and will never
-  be probed by a driver
+Maximum size of buffer is obtained from underlying I2C adapter and in
+case adapter allows I2C transaction buffer size greater than 100 bytes,
+transaction will fail due to firmware limitation.
 
-And already prevents creating a device link with the consumer as a
-supplier of a parent.
+As a result driver will fail initialization.
 
-So, we no longer need to find the "compatible" node of the supplier or
-do any other checks in of_link_to_phandle(). We simply need to make sure
-that the supplier is available in DT.
+Limit the maximum size of transaction buffer by 100 bytes to fit to
+firmware.
 
-Signed-off-by: Saravana Kannan <saravanak@google.com>
-Tested-by: Colin Foster <colin.foster@in-advantage.com>
-Tested-by: Sudeep Holla <sudeep.holla@arm.com>
-Tested-by: Douglas Anderson <dianders@chromium.org>
-Tested-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Tested-by: Luca Weiss <luca.weiss@fairphone.com> # qcom/sm7225-fairphone-fp4
-Link: https://lore.kernel.org/r/20230207014207.1678715-10-saravanak@google.com
-Fixes: eaf9b5612a47 ("driver core: fw_devlink: Don't purge child fwnode's consumer links")
-Signed-off-by:  Adam Ford <aford173@gmail.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Remove unnecessary calculation:
+max_t(u16, MLXSW_I2C_BLK_DEF, quirk_size).
+This condition can not happened.
+
+Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/of/property.c |   84 +++++++-------------------------------------------
- 1 file changed, 13 insertions(+), 71 deletions(-)
+ drivers/net/ethernet/mellanox/mlxsw/i2c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
---- a/drivers/of/property.c
-+++ b/drivers/of/property.c
-@@ -1062,20 +1062,6 @@ of_fwnode_device_get_match_data(const st
- 	return of_device_get_match_data(dev);
- }
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+index d23734ecb416a..4fac27c36ad85 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+@@ -48,6 +48,7 @@
+ #define MLXSW_I2C_MBOX_SIZE_BITS	12
+ #define MLXSW_I2C_ADDR_BUF_SIZE		4
+ #define MLXSW_I2C_BLK_DEF		32
++#define MLXSW_I2C_BLK_MAX		100
+ #define MLXSW_I2C_RETRY			5
+ #define MLXSW_I2C_TIMEOUT_MSECS		5000
+ #define MLXSW_I2C_MAX_DATA_SIZE		256
+@@ -653,7 +654,7 @@ static int mlxsw_i2c_probe(struct i2c_client *client)
+ 			return -EOPNOTSUPP;
+ 		}
  
--static bool of_is_ancestor_of(struct device_node *test_ancestor,
--			      struct device_node *child)
--{
--	of_node_get(child);
--	while (child) {
--		if (child == test_ancestor) {
--			of_node_put(child);
--			return true;
--		}
--		child = of_get_next_parent(child);
--	}
--	return false;
--}
--
- static struct device_node *of_get_compat_node(struct device_node *np)
- {
- 	of_node_get(np);
-@@ -1106,71 +1092,27 @@ static struct device_node *of_get_compat
- 	return node;
- }
- 
--/**
-- * of_link_to_phandle - Add fwnode link to supplier from supplier phandle
-- * @con_np: consumer device tree node
-- * @sup_np: supplier device tree node
-- *
-- * Given a phandle to a supplier device tree node (@sup_np), this function
-- * finds the device that owns the supplier device tree node and creates a
-- * device link from @dev consumer device to the supplier device. This function
-- * doesn't create device links for invalid scenarios such as trying to create a
-- * link with a parent device as the consumer of its child device. In such
-- * cases, it returns an error.
-- *
-- * Returns:
-- * - 0 if fwnode link successfully created to supplier
-- * - -EINVAL if the supplier link is invalid and should not be created
-- * - -ENODEV if struct device will never be create for supplier
-- */
--static int of_link_to_phandle(struct device_node *con_np,
-+static void of_link_to_phandle(struct device_node *con_np,
- 			      struct device_node *sup_np)
- {
--	struct device *sup_dev;
--	struct device_node *tmp_np = sup_np;
-+	struct device_node *tmp_np = of_node_get(sup_np);
- 
--	/*
--	 * Find the device node that contains the supplier phandle.  It may be
--	 * @sup_np or it may be an ancestor of @sup_np.
--	 */
--	sup_np = of_get_compat_node(sup_np);
--	if (!sup_np) {
--		pr_debug("Not linking %pOFP to %pOFP - No device\n",
--			 con_np, tmp_np);
--		return -ENODEV;
--	}
-+	/* Check that sup_np and its ancestors are available. */
-+	while (tmp_np) {
-+		if (of_fwnode_handle(tmp_np)->dev) {
-+			of_node_put(tmp_np);
-+			break;
-+		}
- 
--	/*
--	 * Don't allow linking a device node as a consumer of one of its
--	 * descendant nodes. By definition, a child node can't be a functional
--	 * dependency for the parent node.
--	 */
--	if (of_is_ancestor_of(con_np, sup_np)) {
--		pr_debug("Not linking %pOFP to %pOFP - is descendant\n",
--			 con_np, sup_np);
--		of_node_put(sup_np);
--		return -EINVAL;
--	}
-+		if (!of_device_is_available(tmp_np)) {
-+			of_node_put(tmp_np);
-+			return;
-+		}
- 
--	/*
--	 * Don't create links to "early devices" that won't have struct devices
--	 * created for them.
--	 */
--	sup_dev = get_dev_from_fwnode(&sup_np->fwnode);
--	if (!sup_dev &&
--	    (of_node_check_flag(sup_np, OF_POPULATED) ||
--	     sup_np->fwnode.flags & FWNODE_FLAG_NOT_DEVICE)) {
--		pr_debug("Not linking %pOFP to %pOFP - No struct device\n",
--			 con_np, sup_np);
--		of_node_put(sup_np);
--		return -ENODEV;
-+		tmp_np = of_get_next_parent(tmp_np);
- 	}
--	put_device(sup_dev);
- 
- 	fwnode_link_add(of_fwnode_handle(con_np), of_fwnode_handle(sup_np));
--	of_node_put(sup_np);
--
--	return 0;
- }
- 
- /**
+-		mlxsw_i2c->block_size = max_t(u16, MLXSW_I2C_BLK_DEF,
++		mlxsw_i2c->block_size = min_t(u16, MLXSW_I2C_BLK_MAX,
+ 					      min_t(u16, quirks->max_read_len,
+ 						    quirks->max_write_len));
+ 	} else {
+-- 
+2.40.1
+
 
 
