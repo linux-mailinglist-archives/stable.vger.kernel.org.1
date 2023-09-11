@@ -2,38 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 41F5479B181
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D329279AD97
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240186AbjIKWAM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:00:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42946 "EHLO
+        id S1350344AbjIKVhF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53454 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238264AbjIKNwu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:50 -0400
+        with ESMTP id S238271AbjIKNw7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32CE0FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79E9EC433C7;
-        Mon, 11 Sep 2023 13:52:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 97243FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D98FEC433C8;
+        Mon, 11 Sep 2023 13:52:53 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440365;
-        bh=QNxt0HOGg1zZ2lHhl0bnyLODwzEJSS5ZT0AbZGtP8Zo=;
+        s=korg; t=1694440374;
+        bh=cALL11pxMCMbkkMlgSYOZevS+VGZLi48s8oi9YSpb6M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BmnDJgWp5p5+zv/ULb6aPtwBJbfKSwKo2xYt37zRBEKvHpsKePa5av3toCusTTRTx
-         DahRX1q9+ZwDFcL7KirlhUzYUwJndsk13/eReP803XoUI8URHvVdZHXXqcnomWQuTX
-         7ex2dH4jl3YYD74f2JZkogBklkmaDXKXAKr94K/0=
+        b=cWgba850dL5+DPVYtcrKnL2/RW693UlBNu2M/2Gw5h+rwxwepOmCZwih7a/y0CWJN
+         MLMGX/YY5tLVMoPquDqMFKRGGJcHtjCXmulTKWSKMBC3NX/pDt3OWQUkEZytTtTcWB
+         NzAuIA86I10I7HJ46exg1inftMpCYSTvd3VctEe4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Mark Brown <broonie@kernel.org>,
-        Anshuman Khandual <anshuman.khandual@arm.com>,
-        Will Deacon <will@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 036/739] arm64/ptrace: Clean up error handling path in sve_set_common()
-Date:   Mon, 11 Sep 2023 15:37:15 +0200
-Message-ID: <20230911134652.104340925@linuxfoundation.org>
+        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Kajetan Puchalski <kajetan.puchalski@arm.com>
+Subject: [PATCH 6.5 038/739] cpuidle: teo: Update idle duration estimate when choosing shallower state
+Date:   Mon, 11 Sep 2023 15:37:17 +0200
+Message-ID: <20230911134652.164667237@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -56,38 +55,92 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
+From: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
 
-[ Upstream commit 5f69ca4229c7d8e23f238174827ee7aa49b0bcb2 ]
+[ Upstream commit 3f0b0966b30982e843950b170b7a9ddfd8094428 ]
 
-All error handling paths go to 'out', except this one. Be consistent and
-also branch to 'out' here.
+The TEO governor takes CPU utilization into account by refining idle state
+selection when the utilization is above a certain threshold.  This is done by
+choosing an idle state shallower than the previously selected one.
 
-Fixes: e12310a0d30f ("arm64/sme: Implement ptrace support for streaming mode SVE registers")
-Signed-off-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Reviewed-by: Mark Brown <broonie@kernel.org>
-Reviewed-by: Anshuman Khandual <anshuman.khandual@arm.com>
-Link: https://lore.kernel.org/r/aa61301ed2dfd079b74b37f7fede5f179ac3087a.1689616473.git.christophe.jaillet@wanadoo.fr
-Signed-off-by: Will Deacon <will@kernel.org>
+However, when doing this, the idle duration estimate needs to be
+adjusted so as to prevent the scheduler tick from being stopped when the
+candidate idle state is shallow, which may lead to excessive energy
+usage if the CPU is not woken up quickly enough going forward.
+Moreover, if the scheduler tick has been stopped already and the new
+idle duration estimate is too small, the replacement candidate state
+cannot be used.
+
+Modify the relevant code to take the above observations into account.
+
+Fixes: 9ce0f7c4bc64 ("cpuidle: teo: Introduce util-awareness")
+Link: https://lore.kernel.org/linux-pm/CAJZ5v0jJxHj65r2HXBTd3wfbZtsg=_StzwO1kA5STDnaPe_dWA@mail.gmail.com
+Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Reviewed-and-tested-by: Kajetan Puchalski <kajetan.puchalski@arm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/kernel/ptrace.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/cpuidle/governors/teo.c | 40 ++++++++++++++++++++++++---------
+ 1 file changed, 30 insertions(+), 10 deletions(-)
 
-diff --git a/arch/arm64/kernel/ptrace.c b/arch/arm64/kernel/ptrace.c
-index 187aa2b175b4f..20d7ef82de90a 100644
---- a/arch/arm64/kernel/ptrace.c
-+++ b/arch/arm64/kernel/ptrace.c
-@@ -891,7 +891,8 @@ static int sve_set_common(struct task_struct *target,
- 			break;
- 		default:
- 			WARN_ON_ONCE(1);
--			return -EINVAL;
-+			ret = -EINVAL;
-+			goto out;
- 		}
+diff --git a/drivers/cpuidle/governors/teo.c b/drivers/cpuidle/governors/teo.c
+index 987fc5f3997dc..2cdc711679a5f 100644
+--- a/drivers/cpuidle/governors/teo.c
++++ b/drivers/cpuidle/governors/teo.c
+@@ -397,13 +397,23 @@ static int teo_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 	 * the shallowest non-polling state and exit.
+ 	 */
+ 	if (drv->state_count < 3 && cpu_data->utilized) {
+-		for (i = 0; i < drv->state_count; ++i) {
+-			if (!dev->states_usage[i].disable &&
+-			    !(drv->states[i].flags & CPUIDLE_FLAG_POLLING)) {
+-				idx = i;
+-				goto end;
+-			}
+-		}
++		/* The CPU is utilized, so assume a short idle duration. */
++		duration_ns = teo_middle_of_bin(0, drv);
++		/*
++		 * If state 0 is enabled and it is not a polling one, select it
++		 * right away unless the scheduler tick has been stopped, in
++		 * which case care needs to be taken to leave the CPU in a deep
++		 * enough state in case it is not woken up any time soon after
++		 * all.  If state 1 is disabled, though, state 0 must be used
++		 * anyway.
++		 */
++		if ((!idx && !(drv->states[0].flags & CPUIDLE_FLAG_POLLING) &&
++		    teo_time_ok(duration_ns)) || dev->states_usage[1].disable)
++			idx = 0;
++		else /* Assume that state 1 is not a polling one and use it. */
++			idx = 1;
++
++		goto end;
+ 	}
  
- 		/*
+ 	/*
+@@ -539,10 +549,20 @@ static int teo_select(struct cpuidle_driver *drv, struct cpuidle_device *dev,
+ 
+ 	/*
+ 	 * If the CPU is being utilized over the threshold, choose a shallower
+-	 * non-polling state to improve latency
++	 * non-polling state to improve latency, unless the scheduler tick has
++	 * been stopped already and the shallower state's target residency is
++	 * not sufficiently large.
+ 	 */
+-	if (cpu_data->utilized)
+-		idx = teo_find_shallower_state(drv, dev, idx, duration_ns, true);
++	if (cpu_data->utilized) {
++		s64 span_ns;
++
++		i = teo_find_shallower_state(drv, dev, idx, duration_ns, true);
++		span_ns = teo_middle_of_bin(i, drv);
++		if (teo_time_ok(span_ns)) {
++			idx = i;
++			duration_ns = span_ns;
++		}
++	}
+ 
+ end:
+ 	/*
 -- 
 2.40.1
 
