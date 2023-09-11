@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 415AC79B37E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B54B979B27B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241214AbjIKWKE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:10:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34152 "EHLO
+        id S242250AbjIKV20 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238661AbjIKOB6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:58 -0400
+        with ESMTP id S239975AbjIKOdA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62488CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82217C433C7;
-        Mon, 11 Sep 2023 14:01:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AFEBCCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:32:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0347EC433C9;
+        Mon, 11 Sep 2023 14:32:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440912;
-        bh=2vRmGu/s3L+fw4Yx478tv1RWKBg/SqhohRoq4MgM6r8=;
+        s=korg; t=1694442775;
+        bh=eTWDtdV045aeH4SEdzKlZQbZxabyqWLxbgxPx6ouJy8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1CMy542nOn76dT3DrG7kZxwNJNwqCrXKXfmUterYJy0mLhpBvL2lk1qU/dA5UpWRI
-         iHRsIC1b0UTrizQOdX5r0uvZo2iGQQ+FfjN5kgINTp5+gjOHoC7cM9LXFw/QJsU45d
-         YDzCWe6ltC9X8JHwV+cBhLzp4p6nw06WARk68e/c=
+        b=Rza3FLo5xWw3zfIF2fmzpKa9FRZJKqwMGA8qesNgy17gs0dZjZyhMl6JcQejbwgTu
+         IZehNpYyvtgiYwoxvwKz7VrfH0rG/O28R6obJSk0fzRLRfFsYhe0aT4XFIUoKZ1oiF
+         2gjvhpurTq74Bkggn1zwJyBCWaxXjIn6PjsK6tXM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ondrej Jirman <megi@xff.cz>,
-        Sam Ravnborg <sam@ravnborg.org>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 203/739] drm: bridge: dw-mipi-dsi: Fix enable/disable of DSI controller
+        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
+        Alexander Lobakin <alobakin@pm.me>,
+        Quentin Monnet <quentin@isovalent.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 143/737] bpftool: Define a local bpf_perf_link to fix accessing its fields
 Date:   Mon, 11 Sep 2023 15:40:02 +0200
-Message-ID: <20230911134656.853906119@linuxfoundation.org>
+Message-ID: <20230911134654.492544973@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,194 +51,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ondrej Jirman <megi@xff.cz>
+From: Alexander Lobakin <alobakin@pm.me>
 
-[ Upstream commit 05aa61334592adb230749ff465b103ee10e63936 ]
+[ Upstream commit 67a43462ee2405c94e985a747bdcb8e3a0d66203 ]
 
-Before this patch, booting to Linux VT and doing a simple:
+When building bpftool with !CONFIG_PERF_EVENTS:
 
-  echo 2 > /sys/class/graphics/fb0/blank
-  echo 0 > /sys/class/graphics/fb0/blank
+skeleton/pid_iter.bpf.c:47:14: error: incomplete definition of type 'struct bpf_perf_link'
+        perf_link = container_of(link, struct bpf_perf_link, link);
+                    ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:74:22: note: expanded from macro 'container_of'
+                ((type *)(__mptr - offsetof(type, member)));    \
+                                   ^~~~~~~~~~~~~~~~~~~~~~
+tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:68:60: note: expanded from macro 'offsetof'
+ #define offsetof(TYPE, MEMBER)  ((unsigned long)&((TYPE *)0)->MEMBER)
+                                                  ~~~~~~~~~~~^
+skeleton/pid_iter.bpf.c:44:9: note: forward declaration of 'struct bpf_perf_link'
+        struct bpf_perf_link *perf_link;
+               ^
 
-would result in failures to re-enable the panel. Mode set callback is
-called only once during boot in this scenario, while calls to
-enable/disable callbacks are balanced afterwards. The driver doesn't
-work unless userspace calls modeset before enabling the CRTC/connector.
+&bpf_perf_link is being defined and used only under the ifdef.
+Define struct bpf_perf_link___local with the `preserve_access_index`
+attribute inside the pid_iter BPF prog to allow compiling on any
+configs. CO-RE will substitute it with the real struct bpf_perf_link
+accesses later on.
+container_of() uses offsetof(), which does the necessary CO-RE
+relocation if the field is specified with `preserve_access_index` - as
+is the case for struct bpf_perf_link___local.
 
-This patch moves enabling of the DSI host from mode_set into pre_enable
-callback, and removes some old hacks where this bridge driver is
-directly calling into other bridge driver's callbacks.
-
-pre_enable_prev_first flag is set on the panel's bridge so that panel
-drivers will get their prepare function called between DSI host's
-pre_enable and enable callbacks, so that they get a chance to
-perform panel setup while DSI host is already enabled in command
-mode. Otherwise panel's prepare would be called before DSI host
-is enabled, and any DSI communication used in prepare callback
-would fail.
-
-With all these changes, the enable/disable sequence is now well
-balanced, and host's and panel's callbacks are called in proper order
-documented in the drm_panel API documentation without needing the old
-hacks. (Mainly that panel->prepare is called when DSI host is ready to
-allow the panel driver to send DSI commands and vice versa during
-disable.)
-
-Tested on Pinephone Pro. Trace of the callbacks follows.
-
-Before:
-
-[    1.253882] dw-mipi-dsi-rockchip ff960000.dsi: mode_set
-[    1.290732] panel-himax-hx8394 ff960000.dsi.0: prepare
-[    1.475576] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[    1.475593] panel-himax-hx8394 ff960000.dsi.0: enable
-
-echo 2 > /sys/class/graphics/fb0/blank
-
-[   13.722799] panel-himax-hx8394 ff960000.dsi.0: disable
-[   13.774502] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
-[   13.774526] panel-himax-hx8394 ff960000.dsi.0: unprepare
-
-echo 0 > /sys/class/graphics/fb0/blank
-
-[   17.735796] panel-himax-hx8394 ff960000.dsi.0: prepare
-[   17.923522] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[   17.923540] panel-himax-hx8394 ff960000.dsi.0: enable
-[   17.944330] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
-[   17.944335] panel-himax-hx8394 ff960000.dsi.0: sending command 0xb9 failed: -110
-[   17.944340] panel-himax-hx8394 ff960000.dsi.0: Panel init sequence failed: -110
-
-echo 2 > /sys/class/graphics/fb0/blank
-
-[  431.148583] panel-himax-hx8394 ff960000.dsi.0: disable
-[  431.169259] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
-[  431.169268] panel-himax-hx8394 ff960000.dsi.0: Failed to enter sleep mode: -110
-[  431.169282] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
-[  431.169316] panel-himax-hx8394 ff960000.dsi.0: unprepare
-[  431.169357] pclk_mipi_dsi0 already disabled
-
-echo 0 > /sys/class/graphics/fb0/blank
-
-[  432.796851] panel-himax-hx8394 ff960000.dsi.0: prepare
-[  432.981537] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[  432.981568] panel-himax-hx8394 ff960000.dsi.0: enable
-[  433.002290] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
-[  433.002299] panel-himax-hx8394 ff960000.dsi.0: sending command 0xb9 failed: -110
-[  433.002312] panel-himax-hx8394 ff960000.dsi.0: Panel init sequence failed: -110
-
------------------------------------------------------------------------
-
-After:
-
-[    1.248372] dw-mipi-dsi-rockchip ff960000.dsi: mode_set
-[    1.248704] dw-mipi-dsi-rockchip ff960000.dsi: pre_enable
-[    1.285377] panel-himax-hx8394 ff960000.dsi.0: prepare
-[    1.468392] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[    1.468421] panel-himax-hx8394 ff960000.dsi.0: enable
-
-echo 2 > /sys/class/graphics/fb0/blank
-
-[   16.210357] panel-himax-hx8394 ff960000.dsi.0: disable
-[   16.261315] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
-[   16.261339] panel-himax-hx8394 ff960000.dsi.0: unprepare
-
-echo 0 > /sys/class/graphics/fb0/blank
-
-[   19.161453] dw-mipi-dsi-rockchip ff960000.dsi: pre_enable
-[   19.197869] panel-himax-hx8394 ff960000.dsi.0: prepare
-[   19.382141] dw-mipi-dsi-rockchip ff960000.dsi: enable
-[   19.382158] panel-himax-hx8394 ff960000.dsi.0: enable
-
-       (But depends on functionality intorduced in Linux 6.3, so this patch will
-        not build on older kernels when applied to older stable branches.)
-
-Fixes: 46fc51546d44 ("drm/bridge/synopsys: Add MIPI DSI host controller bridge")
-Signed-off-by: Ondrej Jirman <megi@xff.cz>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230617224915.1923630-1-megi@xff.cz
+Fixes: cbdaf71f7e65 ("bpftool: Add bpf_cookie to link output")
+Suggested-by: Andrii Nakryiko <andrii@kernel.org>
+Signed-off-by: Alexander Lobakin <alobakin@pm.me>
+Signed-off-by: Quentin Monnet <quentin@isovalent.com>
+Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
+Link: https://lore.kernel.org/bpf/20230707095425.168126-3-quentin@isovalent.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c | 28 +++++++++++--------
- 1 file changed, 16 insertions(+), 12 deletions(-)
+ tools/bpf/bpftool/skeleton/pid_iter.bpf.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-index b2efecf7d1603..4291798bd70f5 100644
---- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-+++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
-@@ -265,6 +265,7 @@ struct dw_mipi_dsi {
- 	struct dw_mipi_dsi *master; /* dual-dsi master ptr */
- 	struct dw_mipi_dsi *slave; /* dual-dsi slave ptr */
- 
-+	struct drm_display_mode mode;
- 	const struct dw_mipi_dsi_plat_data *plat_data;
+diff --git a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
+index e2af8e5fb29ec..3a4c4f7d83d86 100644
+--- a/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
++++ b/tools/bpf/bpftool/skeleton/pid_iter.bpf.c
+@@ -15,6 +15,11 @@ enum bpf_obj_type {
+ 	BPF_OBJ_BTF,
  };
  
-@@ -332,6 +333,7 @@ static int dw_mipi_dsi_host_attach(struct mipi_dsi_host *host,
- 	if (IS_ERR(bridge))
- 		return PTR_ERR(bridge);
- 
-+	bridge->pre_enable_prev_first = true;
- 	dsi->panel_bridge = bridge;
- 
- 	drm_bridge_add(&dsi->bridge);
-@@ -859,15 +861,6 @@ static void dw_mipi_dsi_bridge_post_atomic_disable(struct drm_bridge *bridge,
- 	 */
- 	dw_mipi_dsi_set_mode(dsi, 0);
- 
--	/*
--	 * TODO Only way found to call panel-bridge post_disable &
--	 * panel unprepare before the dsi "final" disable...
--	 * This needs to be fixed in the drm_bridge framework and the API
--	 * needs to be updated to manage our own call chains...
--	 */
--	if (dsi->panel_bridge->funcs->post_disable)
--		dsi->panel_bridge->funcs->post_disable(dsi->panel_bridge);
--
- 	if (phy_ops->power_off)
- 		phy_ops->power_off(dsi->plat_data->priv_data);
- 
-@@ -942,15 +935,25 @@ static void dw_mipi_dsi_mode_set(struct dw_mipi_dsi *dsi,
- 		phy_ops->power_on(dsi->plat_data->priv_data);
- }
- 
-+static void dw_mipi_dsi_bridge_atomic_pre_enable(struct drm_bridge *bridge,
-+						 struct drm_bridge_state *old_bridge_state)
-+{
-+	struct dw_mipi_dsi *dsi = bridge_to_dsi(bridge);
++struct bpf_perf_link___local {
++	struct bpf_link link;
++	struct file *perf_file;
++} __attribute__((preserve_access_index));
 +
-+	/* Power up the dsi ctl into a command mode */
-+	dw_mipi_dsi_mode_set(dsi, &dsi->mode);
-+	if (dsi->slave)
-+		dw_mipi_dsi_mode_set(dsi->slave, &dsi->mode);
-+}
-+
- static void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
- 					const struct drm_display_mode *mode,
- 					const struct drm_display_mode *adjusted_mode)
+ struct perf_event___local {
+ 	u64 bpf_cookie;
+ } __attribute__((preserve_access_index));
+@@ -45,10 +50,10 @@ static __always_inline __u32 get_obj_id(void *ent, enum bpf_obj_type type)
+ /* could be used only with BPF_LINK_TYPE_PERF_EVENT links */
+ static __u64 get_bpf_cookie(struct bpf_link *link)
  {
- 	struct dw_mipi_dsi *dsi = bridge_to_dsi(bridge);
++	struct bpf_perf_link___local *perf_link;
+ 	struct perf_event___local *event;
+-	struct bpf_perf_link *perf_link;
  
--	dw_mipi_dsi_mode_set(dsi, adjusted_mode);
--	if (dsi->slave)
--		dw_mipi_dsi_mode_set(dsi->slave, adjusted_mode);
-+	/* Store the display mode for later use in pre_enable callback */
-+	drm_mode_copy(&dsi->mode, adjusted_mode);
+-	perf_link = container_of(link, struct bpf_perf_link, link);
++	perf_link = container_of(link, struct bpf_perf_link___local, link);
+ 	event = BPF_CORE_READ(perf_link, perf_file, private_data);
+ 	return BPF_CORE_READ(event, bpf_cookie);
  }
- 
- static void dw_mipi_dsi_bridge_atomic_enable(struct drm_bridge *bridge,
-@@ -1004,6 +1007,7 @@ static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
- 	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
- 	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
- 	.atomic_reset		= drm_atomic_helper_bridge_reset,
-+	.atomic_pre_enable	= dw_mipi_dsi_bridge_atomic_pre_enable,
- 	.atomic_enable		= dw_mipi_dsi_bridge_atomic_enable,
- 	.atomic_post_disable	= dw_mipi_dsi_bridge_post_atomic_disable,
- 	.mode_set		= dw_mipi_dsi_bridge_mode_set,
 -- 
 2.40.1
 
