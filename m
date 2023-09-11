@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1DA3979BC1B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 11C1279B968
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349089AbjIKVca (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52952 "EHLO
+        id S1353810AbjIKV7Z (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60304 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240609AbjIKOso (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:44 -0400
+        with ESMTP id S241812AbjIKPPM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3259F106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 753BAC433C8;
-        Mon, 11 Sep 2023 14:48:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 40BA4FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86744C433C8;
+        Mon, 11 Sep 2023 15:15:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443718;
-        bh=1B19DuM9AqzOLMNiIGZwvMcAz+YEcFB5PqjD5CSBEmQ=;
+        s=korg; t=1694445307;
+        bh=tWrv344rMd5hKSZ5byvwWtG9g/xzBss5S0GJcWfjevo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iAHmwJM1f8PvE3k1Ds4NWn13d3gRGsarCP1k3ZJeiyjgYlkRYE+JyHyNwblVbV7Jw
-         0yInItFwXGOb8xWDc1NHplYS1xcv+FV0NZ/gTDwdogSBZkwibh800Ik2q/nS2R99gM
-         Uee5h+AH6zsr6MA8O+9Zjazsfun7GjKisnOygcdI=
+        b=Jv7ARtV7Lyf31OE98mesD39oYx+jreVzk33otODGS5RPFEesJFK8gvyN/961Ud7B4
+         lmIsDvsAPRE4ObUWV7KA06faNtFT/2+nOkCEVYNbW4ib1VaJ5wvBd4tP62xF5I5ibN
+         Zxb/BG84VdWWbnMSV60qLeRx3tpYokqG6ZNu4bQ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Olga Kornievskaia <kolga@netapp.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Chen-Yu Tsai <wenst@chromium.org>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        CK Hu <ck.hu@mediatek.com>,
+        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 476/737] NFSv4.2: fix handling of COPY ERR_OFFLOAD_NO_REQ
+Subject: [PATCH 6.1 302/600] drm/mediatek: dp: Add missing error checks in mtk_dp_parse_capabilities
 Date:   Mon, 11 Sep 2023 15:45:35 +0200
-Message-ID: <20230911134703.876163708@linuxfoundation.org>
+Message-ID: <20230911134642.528786085@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +55,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Olga Kornievskaia <kolga@netapp.com>
+From: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
 
-[ Upstream commit 5690eed941ab7e33c3c3d6b850100cabf740f075 ]
+[ Upstream commit cfc146137a9f12e883ba64bc496b6da4d23f26d5 ]
 
-If the client sent a synchronous copy and the server replied with
-ERR_OFFLOAD_NO_REQ indicating that it wants an asynchronous
-copy instead, the client should retry with asynchronous copy.
+If reading the RX capabilities fails the training pattern will be set
+wrongly: add error checking for drm_dp_read_dpcd_caps() and return if
+anything went wrong with it.
 
-Fixes: 539f57b3e0fd ("NFS handle COPY ERR_OFFLOAD_NO_REQS")
-Signed-off-by: Olga Kornievskaia <kolga@netapp.com>
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+While at it, also add a less critical error check when writing to
+clear the ESI0 IRQ vector.
+
+Fixes: f70ac097a2cf ("drm/mediatek: Add MT8195 Embedded DisplayPort driver")
+Signed-off-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Tested-by: Chen-Yu Tsai <wenst@chromium.org>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: CK Hu <ck.hu@mediatek.com>
+Link: https://patchwork.kernel.org/project/dri-devel/patch/20230725073234.55892-2-angelogioacchino.delregno@collabora.com/
+Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42proc.c | 5 +++--
- 1 file changed, 3 insertions(+), 2 deletions(-)
+ drivers/gpu/drm/mediatek/mtk_dp.c | 15 ++++++++++-----
+ 1 file changed, 10 insertions(+), 5 deletions(-)
 
-diff --git a/fs/nfs/nfs42proc.c b/fs/nfs/nfs42proc.c
-index 5d7e0511f3513..d5ec3d5568da5 100644
---- a/fs/nfs/nfs42proc.c
-+++ b/fs/nfs/nfs42proc.c
-@@ -471,8 +471,9 @@ ssize_t nfs42_proc_copy(struct file *src, loff_t pos_src,
- 				continue;
- 			}
- 			break;
--		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS && !args.sync) {
--			args.sync = true;
-+		} else if (err == -NFS4ERR_OFFLOAD_NO_REQS &&
-+				args.sync != res.synchronous) {
-+			args.sync = res.synchronous;
- 			dst_exception.retry = 1;
- 			continue;
- 		} else if ((err == -ESTALE ||
+diff --git a/drivers/gpu/drm/mediatek/mtk_dp.c b/drivers/gpu/drm/mediatek/mtk_dp.c
+index 007af69e5026f..4c249939a6c3b 100644
+--- a/drivers/gpu/drm/mediatek/mtk_dp.c
++++ b/drivers/gpu/drm/mediatek/mtk_dp.c
+@@ -1588,7 +1588,9 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
+ 	u8 val;
+ 	ssize_t ret;
+ 
+-	drm_dp_read_dpcd_caps(&mtk_dp->aux, mtk_dp->rx_cap);
++	ret = drm_dp_read_dpcd_caps(&mtk_dp->aux, mtk_dp->rx_cap);
++	if (ret < 0)
++		return ret;
+ 
+ 	if (drm_dp_tps4_supported(mtk_dp->rx_cap))
+ 		mtk_dp->train_info.channel_eq_pattern = DP_TRAINING_PATTERN_4;
+@@ -1615,10 +1617,13 @@ static int mtk_dp_parse_capabilities(struct mtk_dp *mtk_dp)
+ 			return ret == 0 ? -EIO : ret;
+ 		}
+ 
+-		if (val)
+-			drm_dp_dpcd_writeb(&mtk_dp->aux,
+-					   DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
+-					   val);
++		if (val) {
++			ret = drm_dp_dpcd_writeb(&mtk_dp->aux,
++						 DP_DEVICE_SERVICE_IRQ_VECTOR_ESI0,
++						 val);
++			if (ret < 0)
++				return ret;
++		}
+ 	}
+ 
+ 	return 0;
 -- 
 2.40.1
 
