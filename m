@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2AE1F79B955
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id ABC2679B62D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358097AbjIKWHo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49378 "EHLO
+        id S241671AbjIKWKG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:10:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239960AbjIKOcb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:32:31 -0400
+        with ESMTP id S238649AbjIKOBn (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56A00F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:32:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 71414C433C7;
-        Mon, 11 Sep 2023 14:32:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E537CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 41169C433C8;
+        Mon, 11 Sep 2023 14:01:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442747;
-        bh=RDCfUwRAp51vTNk+cePv/sCPgTIV5CfZUttaiCEOP/Y=;
+        s=korg; t=1694440898;
+        bh=xaTYycfR837hPpPXOwAPfMj5SyLHIVQLr/Yfm2svnqU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TOPsBXsXZ3mq9lhFDirExccxxbhO72LD+JJck6HIt4r3hLqbBMlTFJRVVpxHae4DT
-         +/Hl4RvmH1cQA8VUibT4+BBywa4K1i1wrzYNB6wd3vUJwXM74EHSvAijPbl90F+ogD
-         bVMo5iTE6K7nzASgSdd1c2pl5pbewZpcfy8ETcMo=
+        b=n/lqqHMktrTpVNfFOXlzQFVQWQDVQrqmLy1cGqPRee+Q819C7zIpgxNMZEf50jYdw
+         hC4x3bJc/bXlZsz1wNTLf7Dp9c7SnaGAuisqk45fnUXugix+NNRkqWdujX1zW/vByh
+         tJZXzoYGHY5hysAbwbxp4HU0gxkIfPRcBHWk/sD8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        Meng Li <li.meng@amd.com>, Wyes Karny <wyes.karny@amd.com>,
-        Swapnil Sapkal <swapnil.sapkal@amd.com>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
+        Brett Creeley <brett.creeley@amd.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 134/737] cpufreq: amd-pstate-ut: Remove module parameter access
-Date:   Mon, 11 Sep 2023 15:39:53 +0200
-Message-ID: <20230911134654.243650425@linuxfoundation.org>
+Subject: [PATCH 6.5 198/739] pds_core: pass opcode to devcmd_wait
+Date:   Mon, 11 Sep 2023 15:39:57 +0200
+Message-ID: <20230911134656.718471035@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,70 +52,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Swapnil Sapkal <swapnil.sapkal@amd.com>
+From: Shannon Nelson <shannon.nelson@amd.com>
 
-[ Upstream commit 8d6e5e8268e89979d86501dbb8385ce2e6154de1 ]
+[ Upstream commit 0ea064e74bc8f915aba3f2d0fb3418247a09b73d ]
 
-In amd-pstate-ut, shared memory-based systems call
-get_shared_mem() as part of amd_pstate_ut_check_enabled()
-function. This function was written when CONFIG_X86_AMD_PSTATE
-was tristate config and amd_pstate can be built as a module.
+Don't rely on the PCI memory for the devcmd opcode because we
+read a 0xff value if the PCI bus is broken, which can cause us
+to report a bogus dev_cmd opcode later.
 
-Currently CONFIG_X86_AMD_PSTATE is a boolean config and module
-parameter shared_mem is removed. But amd-pstate-ut code still
-accesses this module parameter. Remove those accesses.
-
-Fixes: 456ca88d8a52 ("cpufreq: amd-pstate: change amd-pstate driver to be built-in type")
-Reviewed-by: Mario Limonciello <mario.limonciello@amd.com>
-Reviewed-by: Meng Li <li.meng@amd.com>
-Reviewed-by: Wyes Karny <wyes.karny@amd.com>
-Suggested-by: Wyes Karny <wyes.karny@amd.com>
-Signed-off-by: Swapnil Sapkal <swapnil.sapkal@amd.com>
-[ rjw: Subject edits ]
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 523847df1b37 ("pds_core: add devcmd device interfaces")
+Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
+Reviewed-by: Brett Creeley <brett.creeley@amd.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230824161754.34264-6-shannon.nelson@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/amd-pstate-ut.c | 22 ++--------------------
- 1 file changed, 2 insertions(+), 20 deletions(-)
+ drivers/net/ethernet/amd/pds_core/dev.c | 7 ++-----
+ 1 file changed, 2 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/cpufreq/amd-pstate-ut.c b/drivers/cpufreq/amd-pstate-ut.c
-index 7f3fe20489818..cf07ee77d3ccf 100644
---- a/drivers/cpufreq/amd-pstate-ut.c
-+++ b/drivers/cpufreq/amd-pstate-ut.c
-@@ -64,27 +64,9 @@ static struct amd_pstate_ut_struct amd_pstate_ut_cases[] = {
- static bool get_shared_mem(void)
- {
- 	bool result = false;
--	char path[] = "/sys/module/amd_pstate/parameters/shared_mem";
--	char buf[5] = {0};
--	struct file *filp = NULL;
--	loff_t pos = 0;
--	ssize_t ret;
--
--	if (!boot_cpu_has(X86_FEATURE_CPPC)) {
--		filp = filp_open(path, O_RDONLY, 0);
--		if (IS_ERR(filp))
--			pr_err("%s unable to open %s file!\n", __func__, path);
--		else {
--			ret = kernel_read(filp, &buf, sizeof(buf), &pos);
--			if (ret < 0)
--				pr_err("%s read %s file fail ret=%ld!\n",
--					__func__, path, (long)ret);
--			filp_close(filp, NULL);
--		}
- 
--		if ('Y' == *buf)
--			result = true;
--	}
-+	if (!boot_cpu_has(X86_FEATURE_CPPC))
-+		result = true;
- 
- 	return result;
+diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
+index 524f422ee7ace..f77cd9f5a2fda 100644
+--- a/drivers/net/ethernet/amd/pds_core/dev.c
++++ b/drivers/net/ethernet/amd/pds_core/dev.c
+@@ -121,7 +121,7 @@ static const char *pdsc_devcmd_str(int opcode)
+ 	}
  }
+ 
+-static int pdsc_devcmd_wait(struct pdsc *pdsc, int max_seconds)
++static int pdsc_devcmd_wait(struct pdsc *pdsc, u8 opcode, int max_seconds)
+ {
+ 	struct device *dev = pdsc->dev;
+ 	unsigned long start_time;
+@@ -131,9 +131,6 @@ static int pdsc_devcmd_wait(struct pdsc *pdsc, int max_seconds)
+ 	int done = 0;
+ 	int err = 0;
+ 	int status;
+-	int opcode;
+-
+-	opcode = ioread8(&pdsc->cmd_regs->cmd.opcode);
+ 
+ 	start_time = jiffies;
+ 	max_wait = start_time + (max_seconds * HZ);
+@@ -180,7 +177,7 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
+ 
+ 	memcpy_toio(&pdsc->cmd_regs->cmd, cmd, sizeof(*cmd));
+ 	pdsc_devcmd_dbell(pdsc);
+-	err = pdsc_devcmd_wait(pdsc, max_seconds);
++	err = pdsc_devcmd_wait(pdsc, cmd->opcode, max_seconds);
+ 	memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
+ 
+ 	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
 -- 
 2.40.1
 
