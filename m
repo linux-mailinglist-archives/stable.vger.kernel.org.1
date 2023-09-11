@@ -2,38 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B8E379B9F7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7529479C041
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345514AbjIKVVK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44278 "EHLO
+        id S242712AbjIKU6S (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:58:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50570 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240989AbjIKO7I (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:08 -0400
+        with ESMTP id S242237AbjIKPZg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 898941B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0692C433C8;
-        Mon, 11 Sep 2023 14:59:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3DCC4DB
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7777AC433C8;
+        Mon, 11 Sep 2023 15:25:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444344;
-        bh=CJ+DLyu7QFhIwDewmlOIhkkJJELt+Rm+ekDK09GWYeo=;
+        s=korg; t=1694445931;
+        bh=lFpsYQxV7A4rGBiqVhpTn5vEbDHj+bxSg/xaTXDJrJc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=e0LlUk0WQW7BeC+6lszT9bh2730ngeR2Z8nUCug+lVDEhR/lWsgdVdwfcnWk0ppW3
-         SGs7EZ/nvC4WHZoxsLT6bvD6Le/RZKRpaFEGg46Q6QiPh1MB/2m67Xg9F/ZSgOLwWa
-         wsyv7QMp9r+rHq5gvYjYktsDd83BLj7FIbeu/cUg=
+        b=1/l9l6dXZpFvGwsDh7CkX5xljchDnOyfjc0A9Eyhfxb5H4lFIt4G15aXvYsX6othC
+         EEN+hRtPUC+VHcEeD6K7mSUQQbnJWqQSyQHTNaj9vi+B2wWh0kczAVkW4UdtN1QkBf
+         TXaxpnm36WUuAtaDFjbfzbyKivnaQL0ZmEyB0oco=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thore Sommer <public@thson.de>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.4 696/737] X.509: if signature is unsupported skip validation
-Date:   Mon, 11 Sep 2023 15:49:15 +0200
-Message-ID: <20230911134709.968930370@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Manfred Rudigier <manfred.rudigier@omicronenergy.com>,
+        Radoslaw Tyl <radoslawx.tyl@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        "David S. Miller" <davem@davemloft.net>,
+        Arpana Arland <arpanax.arland@intel.com>
+Subject: [PATCH 6.1 523/600] igb: set max size RX buffer when store bad packet is enabled
+Date:   Mon, 11 Sep 2023 15:49:16 +0200
+Message-ID: <20230911134649.049911246@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,49 +53,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thore Sommer <public@thson.de>
+From: Radoslaw Tyl <radoslawx.tyl@intel.com>
 
-commit ef5b52a631f8c18353e80ccab8408b963305510c upstream.
+commit bb5ed01cd2428cd25b1c88a3a9cba87055eb289f upstream.
 
-When the hash algorithm for the signature is not available the digest size
-is 0 and the signature in the certificate is marked as unsupported.
+Increase the RX buffer size to 3K when the SBP bit is on. The size of
+the RX buffer determines the number of pages allocated which may not
+be sufficient for receive frames larger than the set MTU size.
 
-When validating a self-signed certificate, this needs to be checked,
-because otherwise trying to validate the signature will fail with an
-warning:
-
-Loading compiled-in X.509 certificates
-WARNING: CPU: 0 PID: 1 at crypto/rsa-pkcs1pad.c:537 \
-pkcs1pad_verify+0x46/0x12c
-...
-Problem loading in-kernel X.509 certificate (-22)
-
-Signed-off-by: Thore Sommer <public@thson.de>
-Cc: stable@vger.kernel.org # v4.7+
-Fixes: 6c2dc5ae4ab7 ("X.509: Extract signature digest and make self-signed cert checks earlier")
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Cc: stable@vger.kernel.org
+Fixes: 89eaefb61dc9 ("igb: Support RX-ALL feature flag.")
+Reported-by: Manfred Rudigier <manfred.rudigier@omicronenergy.com>
+Signed-off-by: Radoslaw Tyl <radoslawx.tyl@intel.com>
+Tested-by: Arpana Arland <arpanax.arland@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- crypto/asymmetric_keys/x509_public_key.c |    5 +++++
- 1 file changed, 5 insertions(+)
+ drivers/net/ethernet/intel/igb/igb_main.c |   11 +++++++----
+ 1 file changed, 7 insertions(+), 4 deletions(-)
 
---- a/crypto/asymmetric_keys/x509_public_key.c
-+++ b/crypto/asymmetric_keys/x509_public_key.c
-@@ -117,6 +117,11 @@ int x509_check_for_self_signed(struct x5
- 			goto out;
- 	}
- 
-+	if (cert->unsupported_sig) {
-+		ret = 0;
-+		goto out;
-+	}
+--- a/drivers/net/ethernet/intel/igb/igb_main.c
++++ b/drivers/net/ethernet/intel/igb/igb_main.c
+@@ -4758,6 +4758,10 @@ void igb_configure_rx_ring(struct igb_ad
+ static void igb_set_rx_buffer_len(struct igb_adapter *adapter,
+ 				  struct igb_ring *rx_ring)
+ {
++#if (PAGE_SIZE < 8192)
++	struct e1000_hw *hw = &adapter->hw;
++#endif
 +
- 	ret = public_key_verify_signature(cert->pub, cert->sig);
- 	if (ret < 0) {
- 		if (ret == -ENOPKG) {
+ 	/* set build_skb and buffer size flags */
+ 	clear_ring_build_skb_enabled(rx_ring);
+ 	clear_ring_uses_large_buffer(rx_ring);
+@@ -4768,10 +4772,9 @@ static void igb_set_rx_buffer_len(struct
+ 	set_ring_build_skb_enabled(rx_ring);
+ 
+ #if (PAGE_SIZE < 8192)
+-	if (adapter->max_frame_size <= IGB_MAX_FRAME_BUILD_SKB)
+-		return;
+-
+-	set_ring_uses_large_buffer(rx_ring);
++	if (adapter->max_frame_size > IGB_MAX_FRAME_BUILD_SKB ||
++	    rd32(E1000_RCTL) & E1000_RCTL_SBP)
++		set_ring_uses_large_buffer(rx_ring);
+ #endif
+ }
+ 
 
 
