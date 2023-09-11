@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0324279B2DE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6D53779B3D6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344150AbjIKVN0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40192 "EHLO
+        id S1376498AbjIKWTu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239007AbjIKOJ1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:27 -0400
+        with ESMTP id S241422AbjIKPIU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7624FCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1656C433C8;
-        Mon, 11 Sep 2023 14:09:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D4AF3FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 262F7C433C8;
+        Mon, 11 Sep 2023 15:08:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441363;
-        bh=nSIoG3DkiDr42CUvMRLriwZ0s+VDvEb53F1dFWHqsjU=;
+        s=korg; t=1694444895;
+        bh=ek9eKgjAwaC2+N0VLrf9fRpxXWtXIH0tmpX0FU9y0+A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1FYKWwsa8P5X/BQ0FvDNtPHncoNYuPvbZAWLo6zeRMOYIdZvQXij2wvrduNsjH8gj
-         gnEuxB7qcaUmNnE1bAKF3G3vV5kf2VbV5R0N+ZD10NStg4QVno9Rv6M6uIM69UivhG
-         A2tcTpo/9oWhZ32daAbVbl6bgAJjajUYfRoeKLpY=
+        b=UiouyJ15zxzEs3t6tVr33qUxYU6iRknCU6/V6U2QgMQsJ60y1oQu+FxOp4FxM+8Ox
+         HEZVY7mljJSlezPJ317F6frc94UmIVeGNA+0CSdZZLsgx+5LwUQPXVnE7tEl65i3zV
+         Og/CFjoQrSS+swd6gI+aTPULtI9YgVe31iSWpcFw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Koba Ko <koba.ko@canonical.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Lorenz Bauer <lmb@isovalent.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 387/739] EDAC/i10nm: Skip the absent memory controllers
+Subject: [PATCH 6.1 153/600] net: export inet_lookup_reuseport and inet6_lookup_reuseport
 Date:   Mon, 11 Sep 2023 15:43:06 +0200
-Message-ID: <20230911134702.002458482@linuxfoundation.org>
+Message-ID: <20230911134638.127172573@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,128 +51,165 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Lorenz Bauer <lmb@isovalent.com>
 
-[ Upstream commit c545f5e412250555bd4e717d062b117f20bab418 ]
+[ Upstream commit ce796e60b3b196b61fcc565df195443cbb846ef0 ]
 
-Some Sapphire Rapids workstations' absent memory controllers
-still appear as PCIe devices that fool the i10nm_edac driver
-and result in "shift exponent -66 is negative" call traces
-from skx_get_dimm_info().
+Rename the existing reuseport helpers for IPv4 and IPv6 so that they
+can be invoked in the follow up commit. Export them so that building
+DCCP and IPv6 as a module works.
 
-Skip the absent memory controllers to avoid the call traces.
+No change in functionality.
 
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Closes: https://lore.kernel.org/linux-edac/CAAd53p41Ku1m1rapeqb1xtD+kKuk+BaUW=dumuoF0ZO3GhFjFA@mail.gmail.com/T/#m5de16dce60a8c836ec235868c7c16e3fefad0cc2
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Reported-by: Koba Ko <koba.ko@canonical.com>
-Closes: https://lore.kernel.org/linux-edac/SA1PR11MB71305B71CCCC3D9305835202892AA@SA1PR11MB7130.namprd11.prod.outlook.com/T/#t
-Tested-by: Koba Ko <koba.ko@canonical.com>
-Fixes: d4dc89d069aa ("EDAC, i10nm: Add a driver for Intel 10nm server processors")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20230710013232.59712-1-qiuxu.zhuo@intel.com
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
+Link: https://lore.kernel.org/r/20230720-so-reuseport-v6-3-7021b683cdae@isovalent.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Stable-dep-of: 9c02bec95954 ("bpf, net: Support SO_REUSEPORT sockets with bpf_sk_assign")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/i10nm_base.c | 54 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 49 insertions(+), 5 deletions(-)
+ include/net/inet6_hashtables.h |  7 +++++++
+ include/net/inet_hashtables.h  |  5 +++++
+ net/ipv4/inet_hashtables.c     | 15 ++++++++-------
+ net/ipv6/inet6_hashtables.c    | 19 ++++++++++---------
+ 4 files changed, 30 insertions(+), 16 deletions(-)
 
-diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
-index a897b6aff3686..349ff6cfb3796 100644
---- a/drivers/edac/i10nm_base.c
-+++ b/drivers/edac/i10nm_base.c
-@@ -658,13 +658,49 @@ static struct pci_dev *get_ddr_munit(struct skx_dev *d, int i, u32 *offset, unsi
- 	return mdev;
+diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
+index 56f1286583d3c..032ddab48f8f8 100644
+--- a/include/net/inet6_hashtables.h
++++ b/include/net/inet6_hashtables.h
+@@ -48,6 +48,13 @@ struct sock *__inet6_lookup_established(struct net *net,
+ 					const u16 hnum, const int dif,
+ 					const int sdif);
+ 
++struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
++				    struct sk_buff *skb, int doff,
++				    const struct in6_addr *saddr,
++				    __be16 sport,
++				    const struct in6_addr *daddr,
++				    unsigned short hnum);
++
+ struct sock *inet6_lookup_listener(struct net *net,
+ 				   struct inet_hashinfo *hashinfo,
+ 				   struct sk_buff *skb, int doff,
+diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
+index 99bd823e97f62..8734f3488f5d0 100644
+--- a/include/net/inet_hashtables.h
++++ b/include/net/inet_hashtables.h
+@@ -379,6 +379,11 @@ struct sock *__inet_lookup_established(struct net *net,
+ 				       const __be32 daddr, const u16 hnum,
+ 				       const int dif, const int sdif);
+ 
++struct sock *inet_lookup_reuseport(struct net *net, struct sock *sk,
++				   struct sk_buff *skb, int doff,
++				   __be32 saddr, __be16 sport,
++				   __be32 daddr, unsigned short hnum);
++
+ static inline struct sock *
+ 	inet_lookup_established(struct net *net, struct inet_hashinfo *hashinfo,
+ 				const __be32 saddr, const __be16 sport,
+diff --git a/net/ipv4/inet_hashtables.c b/net/ipv4/inet_hashtables.c
+index c19b462662ad0..6ed92624c95c4 100644
+--- a/net/ipv4/inet_hashtables.c
++++ b/net/ipv4/inet_hashtables.c
+@@ -332,10 +332,10 @@ static inline int compute_score(struct sock *sk, struct net *net,
+ 	return score;
  }
  
-+/**
-+ * i10nm_imc_absent() - Check whether the memory controller @imc is absent
-+ *
-+ * @imc    : The pointer to the structure of memory controller EDAC device.
-+ *
-+ * RETURNS : true if the memory controller EDAC device is absent, false otherwise.
-+ */
-+static bool i10nm_imc_absent(struct skx_imc *imc)
-+{
-+	u32 mcmtr;
-+	int i;
-+
-+	switch (res_cfg->type) {
-+	case SPR:
-+		for (i = 0; i < res_cfg->ddr_chan_num; i++) {
-+			mcmtr = I10NM_GET_MCMTR(imc, i);
-+			edac_dbg(1, "ch%d mcmtr reg %x\n", i, mcmtr);
-+			if (mcmtr != ~0)
-+				return false;
-+		}
-+
-+		/*
-+		 * Some workstations' absent memory controllers still
-+		 * appear as PCIe devices, misleading the EDAC driver.
-+		 * By observing that the MMIO registers of these absent
-+		 * memory controllers consistently hold the value of ~0.
-+		 *
-+		 * We identify a memory controller as absent by checking
-+		 * if its MMIO register "mcmtr" == ~0 in all its channels.
-+		 */
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int i10nm_get_ddr_munits(void)
+-static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
+-					    struct sk_buff *skb, int doff,
+-					    __be32 saddr, __be16 sport,
+-					    __be32 daddr, unsigned short hnum)
++struct sock *inet_lookup_reuseport(struct net *net, struct sock *sk,
++				   struct sk_buff *skb, int doff,
++				   __be32 saddr, __be16 sport,
++				   __be32 daddr, unsigned short hnum)
  {
- 	struct pci_dev *mdev;
- 	void __iomem *mbase;
- 	unsigned long size;
- 	struct skx_dev *d;
--	int i, j = 0;
-+	int i, lmc, j = 0;
- 	u32 reg, off;
- 	u64 base;
- 
-@@ -690,7 +726,7 @@ static int i10nm_get_ddr_munits(void)
- 		edac_dbg(2, "socket%d mmio base 0x%llx (reg 0x%x)\n",
- 			 j++, base, reg);
- 
--		for (i = 0; i < res_cfg->ddr_imc_num; i++) {
-+		for (lmc = 0, i = 0; i < res_cfg->ddr_imc_num; i++) {
- 			mdev = get_ddr_munit(d, i, &off, &size);
- 
- 			if (i == 0 && !mdev) {
-@@ -700,8 +736,6 @@ static int i10nm_get_ddr_munits(void)
- 			if (!mdev)
- 				continue;
- 
--			d->imc[i].mdev = mdev;
--
- 			edac_dbg(2, "mc%d mmio base 0x%llx size 0x%lx (reg 0x%x)\n",
- 				 i, base + off, size, reg);
- 
-@@ -712,7 +746,17 @@ static int i10nm_get_ddr_munits(void)
- 				return -ENODEV;
- 			}
- 
--			d->imc[i].mbase = mbase;
-+			d->imc[lmc].mbase = mbase;
-+			if (i10nm_imc_absent(&d->imc[lmc])) {
-+				pci_dev_put(mdev);
-+				iounmap(mbase);
-+				d->imc[lmc].mbase = NULL;
-+				edac_dbg(2, "Skip absent mc%d\n", i);
-+				continue;
-+			} else {
-+				d->imc[lmc].mdev = mdev;
-+				lmc++;
-+			}
- 		}
+ 	struct sock *reuse_sk = NULL;
+ 	u32 phash;
+@@ -346,6 +346,7 @@ static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
  	}
+ 	return reuse_sk;
+ }
++EXPORT_SYMBOL_GPL(inet_lookup_reuseport);
  
+ /*
+  * Here are some nice properties to exploit here. The BSD API
+@@ -369,8 +370,8 @@ static struct sock *inet_lhash2_lookup(struct net *net,
+ 	sk_nulls_for_each_rcu(sk, node, &ilb2->nulls_head) {
+ 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
+ 		if (score > hiscore) {
+-			result = lookup_reuseport(net, sk, skb, doff,
+-						  saddr, sport, daddr, hnum);
++			result = inet_lookup_reuseport(net, sk, skb, doff,
++						       saddr, sport, daddr, hnum);
+ 			if (result)
+ 				return result;
+ 
+@@ -399,7 +400,7 @@ static inline struct sock *inet_lookup_run_bpf(struct net *net,
+ 	if (no_reuseport || IS_ERR_OR_NULL(sk))
+ 		return sk;
+ 
+-	reuse_sk = lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
++	reuse_sk = inet_lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
+ 	if (reuse_sk)
+ 		sk = reuse_sk;
+ 	return sk;
+diff --git a/net/ipv6/inet6_hashtables.c b/net/ipv6/inet6_hashtables.c
+index b64b49012655e..b7c56867314ed 100644
+--- a/net/ipv6/inet6_hashtables.c
++++ b/net/ipv6/inet6_hashtables.c
+@@ -111,12 +111,12 @@ static inline int compute_score(struct sock *sk, struct net *net,
+ 	return score;
+ }
+ 
+-static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
+-					    struct sk_buff *skb, int doff,
+-					    const struct in6_addr *saddr,
+-					    __be16 sport,
+-					    const struct in6_addr *daddr,
+-					    unsigned short hnum)
++struct sock *inet6_lookup_reuseport(struct net *net, struct sock *sk,
++				    struct sk_buff *skb, int doff,
++				    const struct in6_addr *saddr,
++				    __be16 sport,
++				    const struct in6_addr *daddr,
++				    unsigned short hnum)
+ {
+ 	struct sock *reuse_sk = NULL;
+ 	u32 phash;
+@@ -127,6 +127,7 @@ static inline struct sock *lookup_reuseport(struct net *net, struct sock *sk,
+ 	}
+ 	return reuse_sk;
+ }
++EXPORT_SYMBOL_GPL(inet6_lookup_reuseport);
+ 
+ /* called with rcu_read_lock() */
+ static struct sock *inet6_lhash2_lookup(struct net *net,
+@@ -143,8 +144,8 @@ static struct sock *inet6_lhash2_lookup(struct net *net,
+ 	sk_nulls_for_each_rcu(sk, node, &ilb2->nulls_head) {
+ 		score = compute_score(sk, net, hnum, daddr, dif, sdif);
+ 		if (score > hiscore) {
+-			result = lookup_reuseport(net, sk, skb, doff,
+-						  saddr, sport, daddr, hnum);
++			result = inet6_lookup_reuseport(net, sk, skb, doff,
++							saddr, sport, daddr, hnum);
+ 			if (result)
+ 				return result;
+ 
+@@ -175,7 +176,7 @@ static inline struct sock *inet6_lookup_run_bpf(struct net *net,
+ 	if (no_reuseport || IS_ERR_OR_NULL(sk))
+ 		return sk;
+ 
+-	reuse_sk = lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
++	reuse_sk = inet6_lookup_reuseport(net, sk, skb, doff, saddr, sport, daddr, hnum);
+ 	if (reuse_sk)
+ 		sk = reuse_sk;
+ 	return sk;
 -- 
 2.40.1
 
