@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1334879B79C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DFF8879B7EE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357983AbjIKWHI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33840 "EHLO
+        id S1378914AbjIKWh7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241040AbjIKPAY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:00:24 -0400
+        with ESMTP id S242281AbjIKP0t (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:26:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 061ED1B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:00:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5023BC433C8;
-        Mon, 11 Sep 2023 15:00:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32BA5F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:26:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BE4AC433C8;
+        Mon, 11 Sep 2023 15:26:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444419;
-        bh=t6nZifou342Frxs+8Tvd5HArOQ3VaMCgvm9LSgtn04A=;
+        s=korg; t=1694446004;
+        bh=kvooBjwJGhsV+k6f/GA9QE4/9h1HcKOQk/ZCFamfymU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y6jUlRmk0bEkc+mWCDn8IShnP9pCbNRv5wlS9mqqLnwL7GZkDkex/MkMm9c6OjV8q
-         9CpmT46O2IrkTNa1VCzjSw+E3IyuEbcFCC857Q1U0QXT4tNYPgWgqJ5ebni0Km/zOC
-         60nhlGp7r9LsfMwmfT22mQXQXyl9SLP3mXS/kTQg=
+        b=repEoMNjn9FiwqGzwR7r7Hs06FITowXqBC3xgQ+gMl8ifo6iJWGfk6HWbwLYiUO2w
+         3lrmC9naj/rYNoxJ5kr9krmvQSbw4I+pOsvFPkOJx5+fa/zO7F8fBwQ/gM7YxSeUhL
+         NaEHCrnrTxw+W41VMBW0EZYXO+ufKdRxvyG43G3o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephane Eranian <eranian@google.com>,
-        Yunying Sun <yunying.sun@intel.com>,
-        Kan Liang <kan.liang@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>
-Subject: [PATCH 6.4 723/737] perf/x86/uncore: Correct the number of CHAs on EMR
+        patches@lists.linux.dev, Nilesh Javali <njavali@marvell.com>,
+        Himanshu Madhani <himanshu.madhani@oracle.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 549/600] Revert "scsi: qla2xxx: Fix buffer overrun"
 Date:   Mon, 11 Sep 2023 15:49:42 +0200
-Message-ID: <20230911134710.707422701@linuxfoundation.org>
+Message-ID: <20230911134649.824811536@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,65 +50,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kan Liang <kan.liang@linux.intel.com>
+From: Nilesh Javali <njavali@marvell.com>
 
-commit 6f7f984fa85b305799076a1bcec941b9377587de upstream.
+commit 641671d97b9199f1ba35ccc2222d4b189a6a5de5 upstream.
 
-Starting from SPR, the basic uncore PMON information is retrieved from
-the discovery table (resides in an MMIO space populated by BIOS). It is
-called the discovery method. The existing value of the type->num_boxes
-is from the discovery table.
+Revert due to Get PLOGI Template failed.
+This reverts commit b68710a8094fdffe8dd4f7a82c82649f479bb453.
 
-On some SPR variants, there is a firmware bug that makes the value from the
-discovery table incorrect. We use the value from the
-SPR_MSR_UNC_CBO_CONFIG MSR to replace the one from the discovery table:
-
-   38776cc45eb7 ("perf/x86/uncore: Correct the number of CHAs on SPR")
-
-Unfortunately, the SPR_MSR_UNC_CBO_CONFIG isn't available for the EMR
-XCC (Always returns 0), but the above firmware bug doesn't impact the
-EMR XCC.
-
-Don't let the value from the MSR replace the existing value from the
-discovery table.
-
-Fixes: 38776cc45eb7 ("perf/x86/uncore: Correct the number of CHAs on SPR")
-Reported-by: Stephane Eranian <eranian@google.com>
-Reported-by: Yunying Sun <yunying.sun@intel.com>
-Signed-off-by: Kan Liang <kan.liang@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Tested-by: Yunying Sun <yunying.sun@intel.com>
-Link: https://lore.kernel.org/r/20230905134248.496114-1-kan.liang@linux.intel.com
+Cc: stable@vger.kernel.org
+Signed-off-by: Nilesh Javali <njavali@marvell.com>
+Link: https://lore.kernel.org/r/20230821130045.34850-9-njavali@marvell.com
+Reviewed-by: Himanshu Madhani <himanshu.madhani@oracle.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/x86/events/intel/uncore_snbep.c |   12 +++++++++++-
- 1 file changed, 11 insertions(+), 1 deletion(-)
+ drivers/scsi/qla2xxx/qla_init.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/arch/x86/events/intel/uncore_snbep.c
-+++ b/arch/x86/events/intel/uncore_snbep.c
-@@ -6474,8 +6474,18 @@ void spr_uncore_cpu_init(void)
+--- a/drivers/scsi/qla2xxx/qla_init.c
++++ b/drivers/scsi/qla2xxx/qla_init.c
+@@ -5571,7 +5571,7 @@ static void qla_get_login_template(scsi_
+ 	__be32 *q;
  
- 	type = uncore_find_type_by_id(uncore_msr_uncores, UNCORE_SPR_CHA);
- 	if (type) {
-+		/*
-+		 * The value from the discovery table (stored in the type->num_boxes
-+		 * of UNCORE_SPR_CHA) is incorrect on some SPR variants because of a
-+		 * firmware bug. Using the value from SPR_MSR_UNC_CBO_CONFIG to replace it.
-+		 */
- 		rdmsrl(SPR_MSR_UNC_CBO_CONFIG, num_cbo);
--		type->num_boxes = num_cbo;
-+		/*
-+		 * The MSR doesn't work on the EMR XCC, but the firmware bug doesn't impact
-+		 * the EMR XCC. Don't let the value from the MSR replace the existing value.
-+		 */
-+		if (num_cbo)
-+			type->num_boxes = num_cbo;
- 	}
- 	spr_uncore_iio_free_running.num_boxes = uncore_type_max_boxes(uncore_msr_uncores, UNCORE_SPR_IIO);
- }
+ 	memset(ha->init_cb, 0, ha->init_cb_size);
+-	sz = min_t(int, sizeof(struct fc_els_csp), ha->init_cb_size);
++	sz = min_t(int, sizeof(struct fc_els_flogi), ha->init_cb_size);
+ 	rval = qla24xx_get_port_login_templ(vha, ha->init_cb_dma,
+ 					    ha->init_cb, sz);
+ 	if (rval != QLA_SUCCESS) {
 
 
