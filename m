@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0A35A79B3F2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:06 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BC36D79AD7A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349125AbjIKVck (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49414 "EHLO
+        id S1378888AbjIKWhu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51578 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238606AbjIKOAg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:36 -0400
+        with ESMTP id S239920AbjIKObe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B961CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EBA6C433C8;
-        Mon, 11 Sep 2023 14:00:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82ABEF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA74BC433C8;
+        Mon, 11 Sep 2023 14:31:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440830;
-        bh=a2vIo9X9TbtGaDxFXwR+sg+3rb759DCpp10epmfgbkI=;
+        s=korg; t=1694442690;
+        bh=yUQicCfDfnEWFoThZwdncEdYqqm3pXLv3oDheTvw24c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UQhcKMzp3JxyVoEV5SEAvkDeD7YX2VK4ZINLEUdBa/G0KXm24tJe448O6VkzbRlhe
-         JPAtL7Kcz8gfxnPdDP6yiPBa3spDetyWTJHatK5Lh0T+zNjZ75HkiEHYKLRBTCHwPH
-         81iD2xZd+jSMBoXVZxOFym8S+6hsUCjtvk1LFZVY=
+        b=it6AXG+IT/DgZY4XY1vggcVpDWpx+YnqGtIhRDfhtHi3jDOM2l2Hx+5NtWMS0zBra
+         DfzL86hunAkctHv29Hy5nYkpPJmrpjShG7u8iv99vQKKkiwLXWvC38ZaLRPRkkHSbu
+         rc7AZqzfGnkmAx2hSBRE8ySCugKwpwfFcyRmPUFg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 173/739] Bluetooth: hci_sync: Fix UAF on hci_abort_conn_sync
+Subject: [PATCH 6.4 113/737] OPP: Fix passing 0 to PTR_ERR in _opp_attach_genpd()
 Date:   Mon, 11 Sep 2023 15:39:32 +0200
-Message-ID: <20230911134656.027151328@linuxfoundation.org>
+Message-ID: <20230911134653.661673512@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,116 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit 5af1f84ed13a416297ab9ced7537f4d5ae7f329a ]
+[ Upstream commit d920920f85a82c1c806a4143871a0e8f534732f2 ]
 
-Connections may be cleanup while waiting for the commands to complete so
-this attempts to check if the connection handle remains valid in case of
-errors that would lead to call hci_conn_failed:
+If dev_pm_domain_attach_by_name() returns NULL, then 0 will be passed to
+PTR_ERR() as reported by the smatch warning below:
 
-BUG: KASAN: slab-use-after-free in hci_conn_failed+0x1f/0x160
-Read of size 8 at addr ffff888001376958 by task kworker/u3:0/52
+drivers/opp/core.c:2456 _opp_attach_genpd() warn: passing zero to 'PTR_ERR'
 
-CPU: 0 PID: 52 Comm: kworker/u3:0 Not tainted
-6.5.0-rc1-00527-g2dfe76d58d3a #5615
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-1.16.2-1.fc38 04/01/2014
-Workqueue: hci0 hci_cmd_sync_work
-Call Trace:
- <TASK>
- dump_stack_lvl+0x1d/0x70
- print_report+0xce/0x620
- ? __virt_addr_valid+0xd4/0x150
- ? hci_conn_failed+0x1f/0x160
- kasan_report+0xd1/0x100
- ? hci_conn_failed+0x1f/0x160
- hci_conn_failed+0x1f/0x160
- hci_abort_conn_sync+0x237/0x360
+Fix it by checking for the non-NULL virt_dev pointer before passing it to
+PTR_ERR. Otherwise return -ENODEV.
 
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
-Stable-dep-of: 94d9ba9f9888 ("Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync")
+Fixes: 4ea9496cbc95 ("opp: Fix error check in dev_pm_opp_attach_genpd()")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 45 ++++++++++++++++++++++++++--------------
- 1 file changed, 29 insertions(+), 16 deletions(-)
+ drivers/opp/core.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index a9460e34d6883..fa675bacfb309 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5335,27 +5335,20 @@ static int hci_reject_conn_sync(struct hci_dev *hdev, struct hci_conn *conn,
+diff --git a/drivers/opp/core.c b/drivers/opp/core.c
+index b5973fefdfd83..75b43c6c7031c 100644
+--- a/drivers/opp/core.c
++++ b/drivers/opp/core.c
+@@ -2382,7 +2382,7 @@ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
  
- int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- {
--	int err;
-+	int err = 0;
-+	u16 handle = conn->handle;
- 
- 	switch (conn->state) {
- 	case BT_CONNECTED:
- 	case BT_CONFIG:
--		return hci_disconnect_sync(hdev, conn, reason);
-+		err = hci_disconnect_sync(hdev, conn, reason);
-+		break;
- 	case BT_CONNECT:
- 		err = hci_connect_cancel_sync(hdev, conn, reason);
--		/* Cleanup hci_conn object if it cannot be cancelled as it
--		 * likelly means the controller and host stack are out of sync
--		 * or in case of LE it was still scanning so it can be cleanup
--		 * safely.
--		 */
--		if (err) {
--			hci_dev_lock(hdev);
--			hci_conn_failed(conn, err);
--			hci_dev_unlock(hdev);
--		}
--		return err;
-+		break;
- 	case BT_CONNECT2:
--		return hci_reject_conn_sync(hdev, conn, reason);
-+		err = hci_reject_conn_sync(hdev, conn, reason);
-+		break;
- 	case BT_OPEN:
- 		/* Cleanup bises that failed to be established */
- 		if (test_and_clear_bit(HCI_CONN_BIG_SYNC_FAILED, &conn->flags)) {
-@@ -5366,10 +5359,30 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- 		break;
- 	default:
- 		conn->state = BT_CLOSED;
--		break;
-+		return 0;
- 	}
- 
--	return 0;
-+	/* Cleanup hci_conn object if it cannot be cancelled as it
-+	 * likelly means the controller and host stack are out of sync
-+	 * or in case of LE it was still scanning so it can be cleanup
-+	 * safely.
-+	 */
-+	if (err) {
-+		struct hci_conn *c;
-+
-+		/* Check if the connection hasn't been cleanup while waiting
-+		 * commands to complete.
-+		 */
-+		c = hci_conn_hash_lookup_handle(hdev, handle);
-+		if (!c || c != conn)
-+			return 0;
-+
-+		hci_dev_lock(hdev);
-+		hci_conn_failed(conn, err);
-+		hci_dev_unlock(hdev);
-+	}
-+
-+	return err;
- }
- 
- static int hci_disconnect_all_sync(struct hci_dev *hdev, u8 reason)
+ 		virt_dev = dev_pm_domain_attach_by_name(dev, *name);
+ 		if (IS_ERR_OR_NULL(virt_dev)) {
+-			ret = PTR_ERR(virt_dev) ? : -ENODEV;
++			ret = virt_dev ? PTR_ERR(virt_dev) : -ENODEV;
+ 			dev_err(dev, "Couldn't attach to pm_domain: %d\n", ret);
+ 			goto err;
+ 		}
 -- 
 2.40.1
 
