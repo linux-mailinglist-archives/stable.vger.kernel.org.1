@@ -2,41 +2,48 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CB1EB79BFD9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9BF1379BE88
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241746AbjIKU5R (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:17 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49556 "EHLO
+        id S239909AbjIKVGh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:06:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37594 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241452AbjIKPJI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:08 -0400
+        with ESMTP id S239100AbjIKOLq (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EEDAFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 74CF4C433C9;
-        Mon, 11 Sep 2023 15:09:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 263AACD
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 47EDFC433C7;
+        Mon, 11 Sep 2023 14:11:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444942;
-        bh=Pkyl9MeHgXWPPtXgFLblBY1Fnb4VCGIeGD0x6Ae8DWk=;
+        s=korg; t=1694441501;
+        bh=9bkKryaOYauVZx4JcMrs9CociYjovMpXefVpC6V8abY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ukpVcMnekNtV951zUtYbxP9WfVe1aZTkMJitTKw5zdnef5v7xPxB2riB8P+mR9fHb
-         Ek5/FhRThFh6liGacBw//Gk7ciRnnO7txq71c227rrmsT3X9k7bQ6Fu7vH/oO8UIJo
-         GSQN+w6n5+MWw1YzdaoSIPdfCgaEnMnca2c0BtvU=
+        b=KMJnMdZf83j0nUiXCcZ8cFq5ck7OaMIrg/tfHsZpEQRV5Tv06JdWKE7BgsJN/61Il
+         W2RpueZXNK9F+6bogAkQxLMKG6ktTqxQTfMt+9WPSrE3qGiiLmixESYVxmDmYGm+ew
+         R6tKyO7rd1n5aK/9fdtlzp9C2pM8eJVKsSBo9f4w=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Russell Currey <ruscur@russell.cc>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        patches@lists.linux.dev, Kevin Tian <kevin.tian@intel.com>,
+        Eric Auger <eric.auger@redhat.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Terrence Xu <terrence.xu@intel.com>,
+        Nicolin Chen <nicolinc@nvidia.com>,
+        Matthew Rosato <mjrosato@linux.ibm.com>,
+        Yanting Jiang <yanting.jiang@intel.com>,
+        Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>,
+        Zhenzhong Duan <zhenzhong.duan@intel.com>,
+        Yi Liu <yi.l.liu@intel.com>,
+        Alex Williamson <alex.williamson@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 164/600] kbuild: rust_is_available: fix version check when CC has multiple arguments
+Subject: [PATCH 6.5 398/739] kvm/vfio: Prepare for accepting vfio device fd
 Date:   Mon, 11 Sep 2023 15:43:17 +0200
-Message-ID: <20230911134638.449271156@linuxfoundation.org>
+Message-ID: <20230911134702.298821808@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,54 +59,311 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Russell Currey <ruscur@russell.cc>
+From: Yi Liu <yi.l.liu@intel.com>
 
-[ Upstream commit dee3a6b819c96fc8b1907577f585fd66f5c0fefe ]
+[ Upstream commit 2f99073a722beef5f74f3b0f32bda227ba3df1e0 ]
 
-rust_is_available.sh uses cc-version.sh to identify which C compiler is
-in use, as scripts/Kconfig.include does.  cc-version.sh isn't designed to
-be able to handle multiple arguments in one variable, i.e. "ccache clang".
-Its invocation in rust_is_available.sh quotes "$CC", which makes
-$1 == "ccache clang" instead of the intended $1 == ccache & $2 == clang.
+This renames kvm_vfio_group related helpers to prepare for accepting
+vfio device fd. No functional change is intended.
 
-cc-version.sh could also be changed to handle having "ccache clang" as one
-argument, but it only has the one consumer upstream, making it simpler to
-fix the caller here.
-
-Signed-off-by: Russell Currey <ruscur@russell.cc>
-Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
-Link: https://github.com/Rust-for-Linux/linux/pull/873
-[ Reworded title prefix and reflow line to 75 columns. ]
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20230616001631.463536-3-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Reviewed-by: Eric Auger <eric.auger@redhat.com>
+Reviewed-by: Jason Gunthorpe <jgg@nvidia.com>
+Tested-by: Terrence Xu <terrence.xu@intel.com>
+Tested-by: Nicolin Chen <nicolinc@nvidia.com>
+Tested-by: Matthew Rosato <mjrosato@linux.ibm.com>
+Tested-by: Yanting Jiang <yanting.jiang@intel.com>
+Tested-by: Shameer Kolothum <shameerali.kolothum.thodi@huawei.com>
+Tested-by: Zhenzhong Duan <zhenzhong.duan@intel.com>
+Signed-off-by: Yi Liu <yi.l.liu@intel.com>
+Link: https://lore.kernel.org/r/20230718135551.6592-5-yi.l.liu@intel.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
+Stable-dep-of: 9e0f4f2918c2 ("kvm/vfio: ensure kvg instance stays around in kvm_vfio_group_add()")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ virt/kvm/vfio.c | 115 ++++++++++++++++++++++++------------------------
+ 1 file changed, 58 insertions(+), 57 deletions(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index f43a010eaf305..0c9be438e4cd3 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -113,10 +113,10 @@ fi
- #
- # In the future, we might be able to perform a full version check, see
- # https://github.com/rust-lang/rust-bindgen/issues/2138.
--cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
-+cc_name=$($(dirname $0)/cc-version.sh $CC | cut -f1 -d' ')
- if [ "$cc_name" = Clang ]; then
- 	clang_version=$( \
--		LC_ALL=C "$CC" --version 2>/dev/null \
-+		LC_ALL=C $CC --version 2>/dev/null \
- 			| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
- 	)
- 	if [ "$clang_version" != "$bindgen_libclang_version" ]; then
+diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
+index 9584eb57e0eda..af3d0cf06e4c6 100644
+--- a/virt/kvm/vfio.c
++++ b/virt/kvm/vfio.c
+@@ -21,7 +21,7 @@
+ #include <asm/kvm_ppc.h>
+ #endif
+ 
+-struct kvm_vfio_group {
++struct kvm_vfio_file {
+ 	struct list_head node;
+ 	struct file *file;
+ #ifdef CONFIG_SPAPR_TCE_IOMMU
+@@ -30,7 +30,7 @@ struct kvm_vfio_group {
+ };
+ 
+ struct kvm_vfio {
+-	struct list_head group_list;
++	struct list_head file_list;
+ 	struct mutex lock;
+ 	bool noncoherent;
+ };
+@@ -98,34 +98,35 @@ static struct iommu_group *kvm_vfio_file_iommu_group(struct file *file)
+ }
+ 
+ static void kvm_spapr_tce_release_vfio_group(struct kvm *kvm,
+-					     struct kvm_vfio_group *kvg)
++					     struct kvm_vfio_file *kvf)
+ {
+-	if (WARN_ON_ONCE(!kvg->iommu_group))
++	if (WARN_ON_ONCE(!kvf->iommu_group))
+ 		return;
+ 
+-	kvm_spapr_tce_release_iommu_group(kvm, kvg->iommu_group);
+-	iommu_group_put(kvg->iommu_group);
+-	kvg->iommu_group = NULL;
++	kvm_spapr_tce_release_iommu_group(kvm, kvf->iommu_group);
++	iommu_group_put(kvf->iommu_group);
++	kvf->iommu_group = NULL;
+ }
+ #endif
+ 
+ /*
+- * Groups can use the same or different IOMMU domains.  If the same then
+- * adding a new group may change the coherency of groups we've previously
+- * been told about.  We don't want to care about any of that so we retest
+- * each group and bail as soon as we find one that's noncoherent.  This
+- * means we only ever [un]register_noncoherent_dma once for the whole device.
++ * Groups/devices can use the same or different IOMMU domains. If the same
++ * then adding a new group/device may change the coherency of groups/devices
++ * we've previously been told about. We don't want to care about any of
++ * that so we retest each group/device and bail as soon as we find one that's
++ * noncoherent.  This means we only ever [un]register_noncoherent_dma once
++ * for the whole device.
+  */
+ static void kvm_vfio_update_coherency(struct kvm_device *dev)
+ {
+ 	struct kvm_vfio *kv = dev->private;
+ 	bool noncoherent = false;
+-	struct kvm_vfio_group *kvg;
++	struct kvm_vfio_file *kvf;
+ 
+ 	mutex_lock(&kv->lock);
+ 
+-	list_for_each_entry(kvg, &kv->group_list, node) {
+-		if (!kvm_vfio_file_enforced_coherent(kvg->file)) {
++	list_for_each_entry(kvf, &kv->file_list, node) {
++		if (!kvm_vfio_file_enforced_coherent(kvf->file)) {
+ 			noncoherent = true;
+ 			break;
+ 		}
+@@ -143,10 +144,10 @@ static void kvm_vfio_update_coherency(struct kvm_device *dev)
+ 	mutex_unlock(&kv->lock);
+ }
+ 
+-static int kvm_vfio_group_add(struct kvm_device *dev, unsigned int fd)
++static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
+ {
+ 	struct kvm_vfio *kv = dev->private;
+-	struct kvm_vfio_group *kvg;
++	struct kvm_vfio_file *kvf;
+ 	struct file *filp;
+ 	int ret;
+ 
+@@ -162,27 +163,27 @@ static int kvm_vfio_group_add(struct kvm_device *dev, unsigned int fd)
+ 
+ 	mutex_lock(&kv->lock);
+ 
+-	list_for_each_entry(kvg, &kv->group_list, node) {
+-		if (kvg->file == filp) {
++	list_for_each_entry(kvf, &kv->file_list, node) {
++		if (kvf->file == filp) {
+ 			ret = -EEXIST;
+ 			goto err_unlock;
+ 		}
+ 	}
+ 
+-	kvg = kzalloc(sizeof(*kvg), GFP_KERNEL_ACCOUNT);
+-	if (!kvg) {
++	kvf = kzalloc(sizeof(*kvf), GFP_KERNEL_ACCOUNT);
++	if (!kvf) {
+ 		ret = -ENOMEM;
+ 		goto err_unlock;
+ 	}
+ 
+-	kvg->file = filp;
+-	list_add_tail(&kvg->node, &kv->group_list);
++	kvf->file = filp;
++	list_add_tail(&kvf->node, &kv->file_list);
+ 
+ 	kvm_arch_start_assignment(dev->kvm);
+ 
+ 	mutex_unlock(&kv->lock);
+ 
+-	kvm_vfio_file_set_kvm(kvg->file, dev->kvm);
++	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
+ 	kvm_vfio_update_coherency(dev);
+ 
+ 	return 0;
+@@ -193,10 +194,10 @@ static int kvm_vfio_group_add(struct kvm_device *dev, unsigned int fd)
+ 	return ret;
+ }
+ 
+-static int kvm_vfio_group_del(struct kvm_device *dev, unsigned int fd)
++static int kvm_vfio_file_del(struct kvm_device *dev, unsigned int fd)
+ {
+ 	struct kvm_vfio *kv = dev->private;
+-	struct kvm_vfio_group *kvg;
++	struct kvm_vfio_file *kvf;
+ 	struct fd f;
+ 	int ret;
+ 
+@@ -208,18 +209,18 @@ static int kvm_vfio_group_del(struct kvm_device *dev, unsigned int fd)
+ 
+ 	mutex_lock(&kv->lock);
+ 
+-	list_for_each_entry(kvg, &kv->group_list, node) {
+-		if (kvg->file != f.file)
++	list_for_each_entry(kvf, &kv->file_list, node) {
++		if (kvf->file != f.file)
+ 			continue;
+ 
+-		list_del(&kvg->node);
++		list_del(&kvf->node);
+ 		kvm_arch_end_assignment(dev->kvm);
+ #ifdef CONFIG_SPAPR_TCE_IOMMU
+-		kvm_spapr_tce_release_vfio_group(dev->kvm, kvg);
++		kvm_spapr_tce_release_vfio_group(dev->kvm, kvf);
+ #endif
+-		kvm_vfio_file_set_kvm(kvg->file, NULL);
+-		fput(kvg->file);
+-		kfree(kvg);
++		kvm_vfio_file_set_kvm(kvf->file, NULL);
++		fput(kvf->file);
++		kfree(kvf);
+ 		ret = 0;
+ 		break;
+ 	}
+@@ -234,12 +235,12 @@ static int kvm_vfio_group_del(struct kvm_device *dev, unsigned int fd)
+ }
+ 
+ #ifdef CONFIG_SPAPR_TCE_IOMMU
+-static int kvm_vfio_group_set_spapr_tce(struct kvm_device *dev,
+-					void __user *arg)
++static int kvm_vfio_file_set_spapr_tce(struct kvm_device *dev,
++				       void __user *arg)
+ {
+ 	struct kvm_vfio_spapr_tce param;
+ 	struct kvm_vfio *kv = dev->private;
+-	struct kvm_vfio_group *kvg;
++	struct kvm_vfio_file *kvf;
+ 	struct fd f;
+ 	int ret;
+ 
+@@ -254,20 +255,20 @@ static int kvm_vfio_group_set_spapr_tce(struct kvm_device *dev,
+ 
+ 	mutex_lock(&kv->lock);
+ 
+-	list_for_each_entry(kvg, &kv->group_list, node) {
+-		if (kvg->file != f.file)
++	list_for_each_entry(kvf, &kv->file_list, node) {
++		if (kvf->file != f.file)
+ 			continue;
+ 
+-		if (!kvg->iommu_group) {
+-			kvg->iommu_group = kvm_vfio_file_iommu_group(kvg->file);
+-			if (WARN_ON_ONCE(!kvg->iommu_group)) {
++		if (!kvf->iommu_group) {
++			kvf->iommu_group = kvm_vfio_file_iommu_group(kvf->file);
++			if (WARN_ON_ONCE(!kvf->iommu_group)) {
+ 				ret = -EIO;
+ 				goto err_fdput;
+ 			}
+ 		}
+ 
+ 		ret = kvm_spapr_tce_attach_iommu_group(dev->kvm, param.tablefd,
+-						       kvg->iommu_group);
++						       kvf->iommu_group);
+ 		break;
+ 	}
+ 
+@@ -278,8 +279,8 @@ static int kvm_vfio_group_set_spapr_tce(struct kvm_device *dev,
+ }
+ #endif
+ 
+-static int kvm_vfio_set_group(struct kvm_device *dev, long attr,
+-			      void __user *arg)
++static int kvm_vfio_set_file(struct kvm_device *dev, long attr,
++			     void __user *arg)
+ {
+ 	int32_t __user *argp = arg;
+ 	int32_t fd;
+@@ -288,16 +289,16 @@ static int kvm_vfio_set_group(struct kvm_device *dev, long attr,
+ 	case KVM_DEV_VFIO_GROUP_ADD:
+ 		if (get_user(fd, argp))
+ 			return -EFAULT;
+-		return kvm_vfio_group_add(dev, fd);
++		return kvm_vfio_file_add(dev, fd);
+ 
+ 	case KVM_DEV_VFIO_GROUP_DEL:
+ 		if (get_user(fd, argp))
+ 			return -EFAULT;
+-		return kvm_vfio_group_del(dev, fd);
++		return kvm_vfio_file_del(dev, fd);
+ 
+ #ifdef CONFIG_SPAPR_TCE_IOMMU
+ 	case KVM_DEV_VFIO_GROUP_SET_SPAPR_TCE:
+-		return kvm_vfio_group_set_spapr_tce(dev, arg);
++		return kvm_vfio_file_set_spapr_tce(dev, arg);
+ #endif
+ 	}
+ 
+@@ -309,8 +310,8 @@ static int kvm_vfio_set_attr(struct kvm_device *dev,
+ {
+ 	switch (attr->group) {
+ 	case KVM_DEV_VFIO_GROUP:
+-		return kvm_vfio_set_group(dev, attr->attr,
+-					  u64_to_user_ptr(attr->addr));
++		return kvm_vfio_set_file(dev, attr->attr,
++					 u64_to_user_ptr(attr->addr));
+ 	}
+ 
+ 	return -ENXIO;
+@@ -339,16 +340,16 @@ static int kvm_vfio_has_attr(struct kvm_device *dev,
+ static void kvm_vfio_release(struct kvm_device *dev)
+ {
+ 	struct kvm_vfio *kv = dev->private;
+-	struct kvm_vfio_group *kvg, *tmp;
++	struct kvm_vfio_file *kvf, *tmp;
+ 
+-	list_for_each_entry_safe(kvg, tmp, &kv->group_list, node) {
++	list_for_each_entry_safe(kvf, tmp, &kv->file_list, node) {
+ #ifdef CONFIG_SPAPR_TCE_IOMMU
+-		kvm_spapr_tce_release_vfio_group(dev->kvm, kvg);
++		kvm_spapr_tce_release_vfio_group(dev->kvm, kvf);
+ #endif
+-		kvm_vfio_file_set_kvm(kvg->file, NULL);
+-		fput(kvg->file);
+-		list_del(&kvg->node);
+-		kfree(kvg);
++		kvm_vfio_file_set_kvm(kvf->file, NULL);
++		fput(kvf->file);
++		list_del(&kvf->node);
++		kfree(kvf);
+ 		kvm_arch_end_assignment(dev->kvm);
+ 	}
+ 
+@@ -382,7 +383,7 @@ static int kvm_vfio_create(struct kvm_device *dev, u32 type)
+ 	if (!kv)
+ 		return -ENOMEM;
+ 
+-	INIT_LIST_HEAD(&kv->group_list);
++	INIT_LIST_HEAD(&kv->file_list);
+ 	mutex_init(&kv->lock);
+ 
+ 	dev->private = kv;
 -- 
 2.40.1
 
