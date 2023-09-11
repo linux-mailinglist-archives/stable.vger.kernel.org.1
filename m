@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C76C979BFAE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:23 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DA08079BC11
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:05 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232372AbjIKUwL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42568 "EHLO
+        id S243173AbjIKU7Q (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238528AbjIKN6d (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:33 -0400
+        with ESMTP id S239941AbjIKOcA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:32:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8CAC4CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D29DAC433C7;
-        Mon, 11 Sep 2023 13:58:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D244E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B1BC433CA;
+        Mon, 11 Sep 2023 14:31:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440707;
-        bh=FCORFtzPcMBE5PCZPpwyczDlFBbG5o9K7HUz5H1SaLc=;
+        s=korg; t=1694442715;
+        bh=3ShxS7cLbqyGZHxCe1yQM3PsyIHYVwhy42n2+3b8hFo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UkcNQbLfsRiaLChNoGE8cqCOovxB/oriV057AJ+5GO1NoAAsoWewXalSznYJ3yVWe
-         Nb4pp8uOWZ6/ZMbau4f99VifzbWAt8Z5i36TicwiuJG9R2BAj+fLUnZSSuh3mpMGoT
-         Y1psOwjUQHibnRpg1aUVwFdaOoC27vSS/9VYriW4=
+        b=KiOTo6Jtc7WU3QxPhPe5TR9hMeOx+LT3+dTIlB4MnvFR3o9A/6YbKdzB5NAkQ4YuP
+         fSlmTJPrgu2gGfqfIoGq4+KUwTx0x1augtyr7Uc9Rt/p8LpQuGfLXQ+5Wg6z4U6E8C
+         i40UkV9bqDTM6kCqrdeZA97VZJcFuJzARyAF6Qn4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Eugene Shalygin <eugene.shalygin@gmail.com>,
-        Guenter Roeck <linux@roeck-us.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 156/739] hwmon: (asus-ec-sensosrs) fix mutex path for X670E Hero
+        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
+        Paolo Abeni <pabeni@redhat.com>
+Subject: [PATCH 6.4 096/737] Revert "net: macsec: preserve ingress frame ordering"
 Date:   Mon, 11 Sep 2023 15:39:15 +0200
-Message-ID: <20230911134655.506458881@linuxfoundation.org>
+Message-ID: <20230911134653.194041075@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +49,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Eugene Shalygin <eugene.shalygin@gmail.com>
+From: Sabrina Dubroca <sd@queasysnail.net>
 
-[ Upstream commit 9c53fb0ad1acaf227718ccae16e8fb8e01c05918 ]
+commit d3287e4038ca4f81e02067ab72d087af7224c68b upstream.
 
-A user reported that they observe race condition warning [1] and after
-looking once again into the DSDT source it was found that wrong mutex
-was used.
+This reverts commit ab046a5d4be4c90a3952a0eae75617b49c0cb01b.
 
-[1] https://github.com/zeule/asus-ec-sensors/issues/43
+It was trying to work around an issue at the crypto layer by excluding
+ASYNC implementations of gcm(aes), because a bug in the AESNI version
+caused reordering when some requests bypassed the cryptd queue while
+older requests were still pending on the queue.
 
-Fixes: 790dec13c012 ("hwmon: (asus-ec-sensors) add ROG Crosshair X670E Hero.")
-Signed-off-by: Eugene Shalygin <eugene.shalygin@gmail.com>
-Link: https://lore.kernel.org/r/20230821115418.25733-2-eugene.shalygin@gmail.com
-Signed-off-by: Guenter Roeck <linux@roeck-us.net>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+This was fixed by commit 38b2f68b4264 ("crypto: aesni - Fix cryptd
+reordering problem on gcm"), which pre-dates ab046a5d4be4.
+
+Herbert Xu confirmed that all ASYNC implementations are expected to
+maintain the ordering of completions wrt requests, so we can use them
+in MACsec.
+
+On my test machine, this restores the performance of a single netperf
+instance, from 1.4Gbps to 4.4Gbps.
+
+Link: https://lore.kernel.org/netdev/9328d206c5d9f9239cae27e62e74de40b258471d.1692279161.git.sd@queasysnail.net/T/
+Link: https://lore.kernel.org/netdev/1b0cec71-d084-8153-2ba4-72ce71abeb65@byu.edu/
+Link: https://lore.kernel.org/netdev/d335ddaa-18dc-f9f0-17ee-9783d3b2ca29@mailbox.tu-dresden.de/
+Fixes: ab046a5d4be4 ("net: macsec: preserve ingress frame ordering")
+Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
+Link: https://lore.kernel.org/r/11c952469d114db6fb29242e1d9545e61f52f512.1693757159.git.sd@queasysnail.net
+Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hwmon/asus-ec-sensors.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/macsec.c |    3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/drivers/hwmon/asus-ec-sensors.c b/drivers/hwmon/asus-ec-sensors.c
-index f52a539eb33e9..51f9c2db403e7 100644
---- a/drivers/hwmon/asus-ec-sensors.c
-+++ b/drivers/hwmon/asus-ec-sensors.c
-@@ -340,7 +340,7 @@ static const struct ec_board_info board_info_crosshair_x670e_hero = {
- 	.sensors = SENSOR_TEMP_CPU | SENSOR_TEMP_CPU_PACKAGE |
- 		SENSOR_TEMP_MB | SENSOR_TEMP_VRM |
- 		SENSOR_SET_TEMP_WATER,
--	.mutex_path = ASUS_HW_ACCESS_MUTEX_RMTW_ASMX,
-+	.mutex_path = ACPI_GLOBAL_LOCK_PSEUDO_PATH,
- 	.family = family_amd_600_series,
- };
+--- a/drivers/net/macsec.c
++++ b/drivers/net/macsec.c
+@@ -1341,8 +1341,7 @@ static struct crypto_aead *macsec_alloc_
+ 	struct crypto_aead *tfm;
+ 	int ret;
  
--- 
-2.40.1
-
+-	/* Pick a sync gcm(aes) cipher to ensure order is preserved. */
+-	tfm = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
++	tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
+ 
+ 	if (IS_ERR(tfm))
+ 		return tfm;
 
 
