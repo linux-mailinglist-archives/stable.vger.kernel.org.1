@@ -2,46 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2997B79AEEA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1F62979B0C5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237487AbjIKUvc (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:32 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46130 "EHLO
+        id S1345790AbjIKVWS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47516 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239989AbjIKOdU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:20 -0400
+        with ESMTP id S240513AbjIKOqU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0497AE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0C047C433C9;
-        Mon, 11 Sep 2023 14:33:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA9991A2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C17C433C9;
+        Mon, 11 Sep 2023 14:46:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694442795;
-        bh=9pIep38oZQZsSeBWdzXla9OdjotRw0G9/ta7/enYxA8=;
+        s=k20201202; t=1694443575;
+        bh=Yjy7YKH01ftiFG/yiJlX3AH4v3ZdRvafhPr0P1WBvSg=;
         h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
-        b=Q0IPmpkTUSiHulpSzpsU/nPbP4qb3EBJNytqqP38YD5TOKDdD7peHYiVGogc3/+Ro
-         2hbM3ukPumfzPeLZCxqFz5vc6lwfIwWBGAGOHbn2pIRoGyAkjaC5Hu/uEdxY9HBx7H
-         evgYV5afGsJjeju6qJ/WJTdJwKDeIVO2o+FVESVB7aADju6mnxtlui9FW4Z9y4yvfd
-         NxUvCBnxuWc0A4b4w9LNQaljg6hnNeKfuLIDIraMDwnZUPlFb44h6BQ6PLhOOJvPwX
-         TlL9MAlKbbrUQ2MTuSUsaharw8BTbQBvhmGYf6ViSgxSlicalcW348jV+yZlbGFlD2
-         P5EWajx0ATNDg==
-Date:   Mon, 11 Sep 2023 15:33:01 +0100
+        b=MID2frJC39GI+1A4q24BA3/gwjo7O6Eomiz5WGAeBJJRuHYkpqc1J+/M9xrf8kIzk
+         JwGofPvfE13r7LIc8zjvY2nmSghts9r80HkJpNwEC0unxnK5Z8hhyHjoSEkVDb+2fX
+         H0GEJ/kSaar2Yu9xN2aGqjIy1V1JDnP/zXprhSKRImTqTzUnzx4iXCNP5jUCXfAifA
+         JvHqJGrpG3tyYUmb0uPXQEuay1oI+CabdN3MWAiu+Vn05yGpm1BXv+q4JUY73y2DNV
+         x1LWnLfGT3v9jZZO2mFjK296jYd0KyVPWb6GiD7/+0fEIDiHN0AzeCF/ZYLvxnamgg
+         i8GkyXw2sEt8Q==
+Date:   Mon, 11 Sep 2023 15:46:11 +0100
 From:   Mark Brown <broonie@kernel.org>
 To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
-        Alexander Danilenko <al.b.danilenko@gmail.com>,
+        Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: Re: [PATCH 6.5 134/739] spi: tegra114: Remove unnecessary
- NULL-pointer checks
-Message-ID: <ZP8lHSmZVOvbI3wN@finisterre.sirena.org.uk>
+Subject: Re: [PATCH 6.5 364/739] ASoC: soc-dai.h: merge DAI call back
+ functions into ops
+Message-ID: <ZP8oM04ucZJkxXCS@finisterre.sirena.org.uk>
 References: <20230911134650.921299741@linuxfoundation.org>
- <20230911134654.832694547@linuxfoundation.org>
+ <20230911134701.316565214@linuxfoundation.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha512;
-        protocol="application/pgp-signature"; boundary="afYEVH52ZC8muFvY"
+        protocol="application/pgp-signature"; boundary="uXgq1JfM9v+Ln2ex"
 Content-Disposition: inline
-In-Reply-To: <20230911134654.832694547@linuxfoundation.org>
+In-Reply-To: <20230911134701.316565214@linuxfoundation.org>
 X-Cookie: Save energy:  Drive a smaller shell.
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -54,42 +54,56 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---afYEVH52ZC8muFvY
+--uXgq1JfM9v+Ln2ex
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-On Mon, Sep 11, 2023 at 03:38:53PM +0200, Greg Kroah-Hartman wrote:
+On Mon, Sep 11, 2023 at 03:42:43PM +0200, Greg Kroah-Hartman wrote:
 > 6.5-stable review patch.  If anyone has any objections, please let me kno=
 w.
 >=20
 > ------------------
 >=20
-> From: Alexander Danilenko <al.b.danilenko@gmail.com>
+> From: Kuninori Morimoto <kuninori.morimoto.gx@renesas.com>
 >=20
-> [ Upstream commit 373c36bf7914e3198ac2654dede499f340c52950 ]
+> [ Upstream commit 3e8bcec0787d1a73703c915c31cb00a2fd18ccbf ]
 >=20
-> cs_setup, cs_hold and cs_inactive points to fields of spi_device struct,
-> so there is no sense in checking them for NULL.
->=20
-> Found by Linux Verification Center (linuxtesting.org) with SVACE.
+> snd_soc_dai_driver has .ops for call back functions (A), but it also
+> has other call back functions (B). It is duplicated and confusable.
 
-This is a code cleanup, why is it a stable candidate?  It's not a
-warning fix or anything.
 
---afYEVH52ZC8muFvY
+> Signed-off-by: Mark Brown <broonie@kernel.org>
+> Stable-dep-of: 5e5f68ca836e ("ASoC: fsl: merge DAI call back functions in=
+to ops")
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+
+This is a code refactoring.  It is obviously not suitable for stable,
+it's not even a warning fix or anything - just a refactoring.  You've
+marked it as a dependency of another patch which is doing the
+refactoring in a specific driver which obviously shouldn't be being
+backported either.
+
+To repeat what I said the other day in response to the other wildly
+inappropriate backports (one was an entirely new driver...) I thought
+that there was supposed to be some manual review of the patches being
+included in stable prior to them being sent out.  How on earth are
+things like this getting as far as being even proposed for stable?
+
+--uXgq1JfM9v+Ln2ex
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT/JRwACgkQJNaLcl1U
-h9ClyQgAhmMdoPmUDlad8cDgodBr+fXJLkEq6jaJfpkyEauibGQeRCjdDknl9V9c
-bV1K+LUYBdMajIDxro65oFoRrFJLbuN08t6Wmkp2wBQx2RAhVSAK1vxVEFK2Ipe6
-gqK8jZlCGoP927koOd3r/yiYZYA96eAU9dPjJBZaWxKy+NKJGsr1Z6Htn/QVPylr
-ykI1ujodM0GEW7Vm8hnyL4abCNvojzVH28D21UfVvGGd/gq4ej4RTQWv54CU5TAJ
-qPiHRJrXwiMWLPyl5fW2eF+dWIORlneFxAcW+YoJqPcELj9s4c1F028JRvui0fy2
-aglhK5NGIeyetTelWR1zS6FgxPXcgQ==
-=gmau
+iQEzBAABCgAdFiEEreZoqmdXGLWf4p/qJNaLcl1Uh9AFAmT/KDMACgkQJNaLcl1U
+h9DBegf/bXtt/AFhswkVETM96dsafrYZEURjfGHLg00kg5CrG9dkJqF+BeYPx0Js
+1MCwyRS4gXU2BSj4MSVkRHQfQGuTbwTqOr3n/rE0emeOqQv+CHhOYDFkOBaKj1ki
+rr2HqToTtdRd4V+5K0Yf6a7157ritUrG2XSfTLrmptRsCfLgGf/37K8w1/sRqXnJ
+6xsmUtMSbQwBDstSuEIjT32gFn4Z9Csx709pFv8uCS7cpxoLuPfMyRwlanvUhRke
+4iJNHt5ZImRZc1gMBupKlz9jcMOCUEFPVNPbref+PYNlRzbQtfYJ8bnduGkdXGTq
+7IDJa3ROD2Wx0gUfc27M4jrxPHE0hQ==
+=AIrR
 -----END PGP SIGNATURE-----
 
---afYEVH52ZC8muFvY--
+--uXgq1JfM9v+Ln2ex--
