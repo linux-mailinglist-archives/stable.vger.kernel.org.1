@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31DB379B013
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2E71D79B54A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352609AbjIKVtK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:49:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34014 "EHLO
+        id S236219AbjIKVQ1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:16:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241662AbjIKPLU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:20 -0400
+        with ESMTP id S241665AbjIKPLZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50283FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 96C4EC433C8;
-        Mon, 11 Sep 2023 15:11:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D868AFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A615C433C9;
+        Mon, 11 Sep 2023 15:11:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445075;
-        bh=aq3R/anmz1mo7cG/7mawEwk3Hf7qPT+6lB5P+KMSPUU=;
+        s=korg; t=1694445080;
+        bh=Aj6SPtUjZUGiuIMBadqp7xeeaAvDRtHbzDGAmzCw5uQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZMxpLgJs7WN0Y6CjGkwrOD8flrtdctpdjAyM4tnVh3kslndg7Qtq8WrIw7Dlpia3s
-         qEiydoR9dcGDQVKGKmZlPUdgXzbrcfybKVGEILHxOIu9jU1cNl7KJDofdepsEYCThr
-         ni6X82F9SHG2RjNt6kGX2stUyaEgYGydnlmQ8OkI=
+        b=uJ4qt8jOnbpzFP0DXLsWkiYDxpu5ZnC/DM9u2VwkRuL9C3zgg6ibN68d8MoM5HmMQ
+         WfqmQKkWLemTHoPIlhgeH535k4/Aso5GSfEgPQJwfNx0QGOYmAE2fAZ+D1dd/iYu9X
+         bQDTtGesbJZAup4go95KCR33sixgOyjGlb4Bv8yY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Sui Jingfeng <suijingfeng@loongson.cn>,
-        Thomas Zimmermann <tzimmermann@suse.de>,
+        patches@lists.linux.dev, Luca Weiss <luca@z3ntu.xyz>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 219/600] drm/hyperv: Fix a compilation issue because of not including screen_info.h
-Date:   Mon, 11 Sep 2023 15:44:12 +0200
-Message-ID: <20230911134640.080937556@linuxfoundation.org>
+Subject: [PATCH 6.1 221/600] soc: qcom: ocmem: Add OCMEM hardware version print
+Date:   Mon, 11 Sep 2023 15:44:14 +0200
+Message-ID: <20230911134640.142042730@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -55,48 +55,51 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Sui Jingfeng <suijingfeng@loongson.cn>
+From: Luca Weiss <luca@z3ntu.xyz>
 
-[ Upstream commit 8d1077cf2e43b15fefd76ebec2b71541eb27ef2c ]
+[ Upstream commit e81a16e77259294cd4ff0a9c1fbe5aa0e311a47d ]
 
-Fixes the following build errors on arm64:
+It might be useful to know what hardware version of the OCMEM block the
+SoC contains. Add a debug print for that.
 
-drivers/video/fbdev/hyperv_fb.c: In function 'hvfb_getmem':
->> drivers/video/fbdev/hyperv_fb.c:1033:24: error: 'screen_info' undeclared (first use in this function)
-    1033 |                 base = screen_info.lfb_base;
-         |                        ^~~~~~~~~~~
-drivers/video/fbdev/hyperv_fb.c:1033:24: note: each undeclared identifier is reported only once for each function it appears in
-
->> drivers/gpu/drm/hyperv/hyperv_drm_drv.c:75:54: error: 'screen_info' undeclared (first use in this function)
-      75 |         drm_aperture_remove_conflicting_framebuffers(screen_info.lfb_base,
-	 |                                                      ^~~~~~~~~~~
-drivers/gpu/drm/hyperv/hyperv_drm_drv.c:75:54: note: each undeclared identifier is reported only once for each function it appears in
-
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202307090823.nxnT8Kk5-lkp@intel.com/
-Fixes: 81d2393485f0 ("fbdev/hyperv-fb: Do not set struct fb_info.apertures")
-Fixes: 8b0d13545b09 ("efi: Do not include <linux/screen_info.h> from EFI header")
-Signed-off-by: Sui Jingfeng <suijingfeng@loongson.cn>
-Reviewed-by: Thomas Zimmermann <tzimmermann@suse.de>
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230709100514.703759-1-suijingfeng@loongson.cn
+Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Link: https://lore.kernel.org/r/20230509-ocmem-hwver-v3-1-e51f3488e0f4@z3ntu.xyz
+Stable-dep-of: a7b484b1c933 ("soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/hyperv/hyperv_drm_drv.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/soc/qcom/ocmem.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-index 29ee0814bccc8..68050409dd26c 100644
---- a/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-+++ b/drivers/gpu/drm/hyperv/hyperv_drm_drv.c
-@@ -7,6 +7,7 @@
- #include <linux/hyperv.h>
- #include <linux/module.h>
- #include <linux/pci.h>
-+#include <linux/screen_info.h>
+diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
+index c92d26b73e6fc..7197d9fe0946a 100644
+--- a/drivers/soc/qcom/ocmem.c
++++ b/drivers/soc/qcom/ocmem.c
+@@ -76,6 +76,10 @@ struct ocmem {
+ #define OCMEM_REG_GFX_MPU_START			0x00001004
+ #define OCMEM_REG_GFX_MPU_END			0x00001008
  
- #include <drm/drm_aperture.h>
- #include <drm/drm_atomic_helper.h>
++#define OCMEM_HW_VERSION_MAJOR(val)		FIELD_GET(GENMASK(31, 28), val)
++#define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
++#define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
++
+ #define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
+ #define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
+ 
+@@ -355,6 +359,12 @@ static int ocmem_dev_probe(struct platform_device *pdev)
+ 		}
+ 	}
+ 
++	reg = ocmem_read(ocmem, OCMEM_REG_HW_VERSION);
++	dev_dbg(dev, "OCMEM hardware version: %lu.%lu.%lu\n",
++		OCMEM_HW_VERSION_MAJOR(reg),
++		OCMEM_HW_VERSION_MINOR(reg),
++		OCMEM_HW_VERSION_STEP(reg));
++
+ 	reg = ocmem_read(ocmem, OCMEM_REG_HW_PROFILE);
+ 	ocmem->num_ports = OCMEM_HW_PROFILE_NUM_PORTS(reg);
+ 	ocmem->num_macros = OCMEM_HW_PROFILE_NUM_MACROS(reg);
 -- 
 2.40.1
 
