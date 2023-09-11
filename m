@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4092479B125
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:51:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D03EB79B51D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237118AbjIKWii (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:38:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57852 "EHLO
+        id S231791AbjIKWtb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:49:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48026 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242072AbjIKPVi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:38 -0400
+        with ESMTP id S239597AbjIKOYQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 34D52D3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7A60DC433C7;
-        Mon, 11 Sep 2023 15:21:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0981ACF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D31AC433C7;
+        Mon, 11 Sep 2023 14:24:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445693;
-        bh=lRGXfnRYhomqShq3n9dHOWPYwR7azhLiuCQGnXKaXZo=;
+        s=korg; t=1694442251;
+        bh=G/G+u6IsulNRZWBS0S4rD91Na2a41MiVEYd05AHSv2Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a81Bw4+48XF4J0k2lVsp10Y2K4IE7CAP4X9SB+/czmi0J+wdeTxbroYW5fFJNkGNh
-         KHEM24dRd+cQ+98CrFuS0J87vvBAZZgan9QrL/HzibbLu3eJYXH+7QK/vWD2ANSctg
-         0cMKmWFKGnGqQGMW2LxlD+1TI+R5Jhs5mQtAjO10=
+        b=a8GJugz3rxi2UcLHzypQ5NFVKGUXFosjvkXvm0UQmtwRmVttA6EeJW1kjDl6yBOnF
+         fuih9o4j1se31LakDgxh0di/zww/14J0u2S5P7PYyRzq0CUWLET3HY8qWMo3Unf6/S
+         yI1PlvhzlOMHS2JRaLa0e1hZdCwGZv8Pr7BSyRkk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Chengming Zhou <zhouchengming@bytedance.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 439/600] kernfs: add stub helper for kernfs_generic_poll()
+        patches@lists.linux.dev,
+        syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com,
+        Gabriel Krisman Bertazi <krisman@suse.de>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 673/739] io_uring: Dont set affinity on a dying sqpoll thread
 Date:   Mon, 11 Sep 2023 15:47:52 +0200
-Message-ID: <20230911134646.609489371@linuxfoundation.org>
+Message-ID: <20230911134709.902365697@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +51,109 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Gabriel Krisman Bertazi <krisman@suse.de>
 
-[ Upstream commit 79038a99445f69c5d28494dd4f8c6f0509f65b2e ]
+commit bd6fc5da4c51107e1e0cec4a3a07963d1dae2c84 upstream.
 
-In some randconfig builds, kernfs ends up being disabled, so there is no prototype
-for kernfs_generic_poll()
+Syzbot reported a null-ptr-deref of sqd->thread inside
+io_sqpoll_wq_cpu_affinity.  It turns out the sqd->thread can go away
+from under us during io_uring_register, in case the process gets a
+fatal signal during io_uring_register.
 
-In file included from kernel/sched/build_utility.c:97:
-kernel/sched/psi.c:1479:3: error: implicit declaration of function 'kernfs_generic_poll' is invalid in C99 [-Werror,-Wimplicit-function-declaration]
-                kernfs_generic_poll(t->of, wait);
-                ^
+It is not particularly hard to hit the race, and while I am not sure
+this is the exact case hit by syzbot, it solves it.  Finally, checking
+->thread is enough to close the race because we locked sqd while
+"parking" the thread, thus preventing it from going away.
 
-Add a stub helper for it, as we have it for other kernfs functions.
+I reproduced it fairly consistently with a program that does:
 
-Fixes: aff037078ecae ("sched/psi: use kernfs polling functions for PSI trigger polling")
-Fixes: 147e1a97c4a0b ("fs: kernfs: add poll file operation")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Chengming Zhou <zhouchengming@bytedance.com>
-Link: https://lore.kernel.org/r/20230724121823.1357562-1-arnd@kernel.org
+int main(void) {
+  ...
+  io_uring_queue_init(RING_LEN, &ring1, IORING_SETUP_SQPOLL);
+  while (1) {
+    io_uring_register_iowq_aff(ring, 1, &mask);
+  }
+}
+
+Executed in a loop with timeout to trigger SIGTERM:
+  while true; do timeout 1 /a.out ; done
+
+This will hit the following BUG() in very few attempts.
+
+BUG: kernel NULL pointer dereference, address: 00000000000007a8
+PGD 800000010e949067 P4D 800000010e949067 PUD 10e46e067 PMD 0
+Oops: 0000 [#1] PREEMPT SMP PTI
+CPU: 0 PID: 15715 Comm: dead-sqpoll Not tainted 6.5.0-rc7-next-20230825-g193296236fa0-dirty #23
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
+RIP: 0010:io_sqpoll_wq_cpu_affinity+0x27/0x70
+Code: 90 90 90 0f 1f 44 00 00 55 53 48 8b 9f 98 03 00 00 48 85 db 74 4f
+48 89 df 48 89 f5 e8 e2 f8 ff ff 48 8b 43 38 48 85 c0 74 22 <48> 8b b8
+a8 07 00 00 48 89 ee e8 ba b1 00 00 48 89 df 89 c5 e8 70
+RSP: 0018:ffffb04040ea7e70 EFLAGS: 00010282
+RAX: 0000000000000000 RBX: ffff93c010749e40 RCX: 0000000000000001
+RDX: 0000000000000000 RSI: ffffffffa7653331 RDI: 00000000ffffffff
+RBP: ffffb04040ea7eb8 R08: 0000000000000000 R09: c0000000ffffdfff
+R10: ffff93c01141b600 R11: ffffb04040ea7d18 R12: ffff93c00ea74840
+R13: 0000000000000011 R14: 0000000000000000 R15: ffff93c00ea74800
+FS:  00007fb7c276ab80(0000) GS:ffff93c36f200000(0000) knlGS:0000000000000000
+CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
+CR2: 00000000000007a8 CR3: 0000000111634003 CR4: 0000000000370ef0
+DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
+DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
+Call Trace:
+ <TASK>
+ ? __die_body+0x1a/0x60
+ ? page_fault_oops+0x154/0x440
+ ? do_user_addr_fault+0x174/0x7b0
+ ? exc_page_fault+0x63/0x140
+ ? asm_exc_page_fault+0x22/0x30
+ ? io_sqpoll_wq_cpu_affinity+0x27/0x70
+ __io_register_iowq_aff+0x2b/0x60
+ __io_uring_register+0x614/0xa70
+ __x64_sys_io_uring_register+0xaa/0x1a0
+ do_syscall_64+0x3a/0x90
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+RIP: 0033:0x7fb7c226fec9
+Code: 2e 00 b8 ca 00 00 00 0f 05 eb a5 66 0f 1f 44 00 00 48 89 f8 48 89
+f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
+f0 ff ff 73 01 c3 48 8b 0d 97 7f 2d 00 f7 d8 64 89 01 48
+RSP: 002b:00007ffe2c0674f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
+RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb7c226fec9
+RDX: 00007ffe2c067530 RSI: 0000000000000011 RDI: 0000000000000003
+RBP: 00007ffe2c0675d0 R08: 00007ffe2c067550 R09: 00007ffe2c067550
+R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
+R13: 00007ffe2c067750 R14: 0000000000000000 R15: 0000000000000000
+ </TASK>
+Modules linked in:
+CR2: 00000000000007a8
+---[ end trace 0000000000000000 ]---
+
+Reported-by: syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com
+Fixes: ebdfefc09c6d ("io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used")
+Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
+Link: https://lore.kernel.org/r/87v8cybuo6.fsf@suse.de
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/linux/kernfs.h | 4 ++++
- 1 file changed, 4 insertions(+)
+ io_uring/sqpoll.c |    4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/include/linux/kernfs.h b/include/linux/kernfs.h
-index 73f5c120def88..2a36f3218b510 100644
---- a/include/linux/kernfs.h
-+++ b/include/linux/kernfs.h
-@@ -550,6 +550,10 @@ static inline int kernfs_setattr(struct kernfs_node *kn,
- 				 const struct iattr *iattr)
- { return -ENOSYS; }
+--- a/io_uring/sqpoll.c
++++ b/io_uring/sqpoll.c
+@@ -430,7 +430,9 @@ __cold int io_sqpoll_wq_cpu_affinity(str
  
-+static inline __poll_t kernfs_generic_poll(struct kernfs_open_file *of,
-+					   struct poll_table_struct *pt)
-+{ return -ENOSYS; }
-+
- static inline void kernfs_notify(struct kernfs_node *kn) { }
+ 	if (sqd) {
+ 		io_sq_thread_park(sqd);
+-		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
++		/* Don't set affinity for a dying thread */
++		if (sqd->thread)
++			ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
+ 		io_sq_thread_unpark(sqd);
+ 	}
  
- static inline int kernfs_xattr_get(struct kernfs_node *kn, const char *name,
--- 
-2.40.1
-
 
 
