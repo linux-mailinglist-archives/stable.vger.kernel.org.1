@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C44B879B79E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 64E3479BAB3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377494AbjIKW0h (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:26:37 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51650 "EHLO
+        id S1358391AbjIKWIr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:08:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50692 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239165AbjIKON3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:29 -0400
+        with ESMTP id S241698AbjIKPMS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AE98ADE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3D0BC433C7;
-        Mon, 11 Sep 2023 14:13:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CCA2FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5336DC433C8;
+        Mon, 11 Sep 2023 15:12:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441604;
-        bh=DBw4hxpdAQwaDF7Vs6exqp4HTlT/LL7Z2lNIymlye9w=;
+        s=korg; t=1694445133;
+        bh=6kYQyLvlOn9AazoFmfmJflotJn3RXqJFleqyPAdU9gk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=fAyXCatERQZNFk7RZ91t+jDLacV/iTGX96LHmN5iMp3ozFFn4KdD8Jjq/NB2cUqBA
-         RDDxHqDFNuA8uasUqO+9WtgpTxaLyi5HEbGBsBCteAf8Rtp2Jd8q0MvHTjPSyYsIH9
-         CQZp0n1Y6rTI1RAaf9Q4A5cFnUoQgJplpBD0QI40=
+        b=1svxmceYdyeFa34vzsFbXfRMXUpHrF/47qLy1sQCRz1QPbrOk3XBKT7CmNiaE69gn
+         ef/KcoXfKJuRtVfAr/hP4oF48wrn5b92KlbekmkHrbM8CX3eGBGjLvrSOUsfFj7DfY
+         Ua5iI02t07eo1YQBf5YQT3IxIoDtVTiCc4gd6QJ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-        Ming Qian <ming.qian@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 472/739] media: amphion: fix REVERSE_INULL issues reported by coverity
+Subject: [PATCH 6.1 238/600] arm64: dts: qcom: pmr735b: fix thermal zone name
 Date:   Mon, 11 Sep 2023 15:44:31 +0200
-Message-ID: <20230911134704.328940244@linuxfoundation.org>
+Message-ID: <20230911134640.627969166@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,63 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 79d3bafaecc13bccab1ebbd28a15e669c5a4cdaf ]
+[ Upstream commit 99f8cf491d546cd668236f573c7d846d3e94f2d6 ]
 
-null-checking of a pointor is suggested before dereferencing it
+The name of the thermal zone in pmr735b.dtsi (pmr735a-thermal) conflicts
+with the thermal zone in pmr735a.dtsi. Rename the thermal zone according
+to the chip name.
 
-Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Fixes: 6f3426b3dea4 ("arm64: dts: qcom: pmr735b: add temp sensor and thermal zone config")
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Link: https://lore.kernel.org/r/20230707123027.1510723-5-dmitry.baryshkov@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/venc.c | 6 ++++--
- 1 file changed, 4 insertions(+), 2 deletions(-)
+ arch/arm64/boot/dts/qcom/pmr735b.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/venc.c b/drivers/media/platform/amphion/venc.c
-index 58480e2755ec4..4eb57d793a9c0 100644
---- a/drivers/media/platform/amphion/venc.c
-+++ b/drivers/media/platform/amphion/venc.c
-@@ -268,7 +268,7 @@ static int venc_g_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
- {
- 	struct vpu_inst *inst = to_inst(file);
- 	struct venc_t *venc = inst->priv;
--	struct v4l2_fract *timeperframe = &parm->parm.capture.timeperframe;
-+	struct v4l2_fract *timeperframe;
+diff --git a/arch/arm64/boot/dts/qcom/pmr735b.dtsi b/arch/arm64/boot/dts/qcom/pmr735b.dtsi
+index ec24c4478005a..f7473e2473224 100644
+--- a/arch/arm64/boot/dts/qcom/pmr735b.dtsi
++++ b/arch/arm64/boot/dts/qcom/pmr735b.dtsi
+@@ -8,7 +8,7 @@
  
- 	if (!parm)
- 		return -EINVAL;
-@@ -279,6 +279,7 @@ static int venc_g_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
- 	if (!vpu_helper_check_type(inst, parm->type))
- 		return -EINVAL;
- 
-+	timeperframe = &parm->parm.capture.timeperframe;
- 	parm->parm.capture.capability = V4L2_CAP_TIMEPERFRAME;
- 	parm->parm.capture.readbuffers = 0;
- 	timeperframe->numerator = venc->params.frame_rate.numerator;
-@@ -291,7 +292,7 @@ static int venc_s_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
- {
- 	struct vpu_inst *inst = to_inst(file);
- 	struct venc_t *venc = inst->priv;
--	struct v4l2_fract *timeperframe = &parm->parm.capture.timeperframe;
-+	struct v4l2_fract *timeperframe;
- 	unsigned long n, d;
- 
- 	if (!parm)
-@@ -303,6 +304,7 @@ static int venc_s_parm(struct file *file, void *fh, struct v4l2_streamparm *parm
- 	if (!vpu_helper_check_type(inst, parm->type))
- 		return -EINVAL;
- 
-+	timeperframe = &parm->parm.capture.timeperframe;
- 	if (!timeperframe->numerator)
- 		timeperframe->numerator = venc->params.frame_rate.numerator;
- 	if (!timeperframe->denominator)
+ / {
+ 	thermal-zones {
+-		pmr735a_thermal: pmr735a-thermal {
++		pmr735b_thermal: pmr735b-thermal {
+ 			polling-delay-passive = <100>;
+ 			polling-delay = <0>;
+ 			thermal-sensors = <&pmr735b_temp_alarm>;
 -- 
 2.40.1
 
