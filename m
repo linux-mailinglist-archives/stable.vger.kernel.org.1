@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A500F79B526
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8A3C779B531
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:09 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241951AbjIKU52 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:57:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36776 "EHLO
+        id S1350787AbjIKVlV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:41:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48068 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239294AbjIKOQx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:53 -0400
+        with ESMTP id S241824AbjIKPPc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 56316DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9DCC0C433C7;
-        Mon, 11 Sep 2023 14:16:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CB1EFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 570BAC433C8;
+        Mon, 11 Sep 2023 15:15:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441808;
-        bh=1zhRHRt17jGjr7rhKQkiRAHj9EaQU9HwC10wAYTK8Vo=;
+        s=korg; t=1694445327;
+        bh=AarfbOCC5VxLEqbNIW3EORUGdOJpPxhanSVCP5suymI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=te6UamnV0xyDPtD7oqL8yrC5qTixrbQQ+SxvuL2Zj13PplfGJ48b0pM0smF0Ozbp2
-         8jTFKlQwzCqNsalQ+2mibLW02K/lATNZcjeT/xNnbuBkgKRXTgTBJm7ljbbqEBvFtI
-         nvUkp3jfkU5xCcZKYY4PiBVThPmVF77eT8rDcLHA=
+        b=p2Bf1IAgztwLdCv4Niu9nUqmXGhsLjhFjZ8c4kQPmIRnGEKKr4Ow6x2lufZXIiqhz
+         n8kDitYLgq8vd5esT5VMkTNXb/+gIkN8zaWyrU3Tg4Vd5gIQsCFlb77UNeO6dTzsLE
+         h7LFcG23HjHFxOWD1OGVrLKumkLK5MehHBpHIKPI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Jeffrey Hugo <quic_jhugo@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 543/739] media: ov2680: Fix vflip / hflip set functions
+Subject: [PATCH 6.1 309/600] arm64: dts: qcom: msm8998: Add missing power domain to MMSS SMMU
 Date:   Mon, 11 Sep 2023 15:45:42 +0200
-Message-ID: <20230911134706.262732319@linuxfoundation.org>
+Message-ID: <20230911134642.761671964@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,120 +51,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit d5d08ad330c9ccebc5e066fda815423a290f48b0 ]
+[ Upstream commit 7f828f3207142351750e9545527341425187de7b ]
 
-ov2680_vflip_disable() / ov2680_hflip_disable() pass BIT(0) instead of
-0 as value to ov2680_mod_reg().
+The MMSS SMMU has its own power domain. Attach it so that we can drop
+the "keep it always-on" hack.
 
-While fixing this also:
-
-1. Stop having separate enable/disable functions for hflip / vflip
-2. Move the is_streaming check, which is unique to hflip / vflip
-   into the ov2680_set_?flip() functions.
-
-for a nice code cleanup.
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Fixes: 05ce21b54423 ("arm64: dts: qcom: msm8998: Configure the multimedia subsystem iommu")
+Reviewed-by: Jeffrey Hugo <quic_jhugo@quicinc.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230531-topic-8998_mmssclk-v3-2-ba1b1fd9ee75@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 50 +++++++++-----------------------------
- 1 file changed, 12 insertions(+), 38 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8998.dtsi | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 38c8b95f36523..c93810f84ed75 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -328,23 +328,15 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
- 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
- }
+diff --git a/arch/arm64/boot/dts/qcom/msm8998.dtsi b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+index 3d6c7940d2a04..b00b8164c4aa2 100644
+--- a/arch/arm64/boot/dts/qcom/msm8998.dtsi
++++ b/arch/arm64/boot/dts/qcom/msm8998.dtsi
+@@ -2445,6 +2445,8 @@ mmss_smmu: iommu@cd00000 {
+ 				<GIC_SPI 261 IRQ_TYPE_LEVEL_HIGH>,
+ 				<GIC_SPI 262 IRQ_TYPE_LEVEL_HIGH>,
+ 				<GIC_SPI 272 IRQ_TYPE_LEVEL_HIGH>;
++
++			power-domains = <&mmcc BIMC_SMMU_GDSC>;
+ 		};
  
--static int ov2680_vflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_vflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT1,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -352,23 +344,15 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
- 	return 0;
- }
- 
--static int ov2680_hflip_enable(struct ov2680_dev *sensor)
-+static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
- {
- 	int ret;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(2));
--	if (ret < 0)
--		return ret;
--
--	ov2680_set_bayer_order(sensor);
--	return 0;
--}
--
--static int ov2680_hflip_disable(struct ov2680_dev *sensor)
--{
--	int ret;
-+	if (sensor->is_streaming)
-+		return -EBUSY;
- 
--	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2, BIT(2), BIT(0));
-+	ret = ov2680_mod_reg(sensor, OV2680_REG_FORMAT2,
-+			     BIT(2), val ? BIT(2) : 0);
- 	if (ret < 0)
- 		return ret;
- 
-@@ -722,19 +706,9 @@ static int ov2680_s_ctrl(struct v4l2_ctrl *ctrl)
- 	case V4L2_CID_EXPOSURE:
- 		return ov2680_exposure_set(sensor, ctrl->val);
- 	case V4L2_CID_VFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_vflip_enable(sensor);
--		else
--			return ov2680_vflip_disable(sensor);
-+		return ov2680_set_vflip(sensor, ctrl->val);
- 	case V4L2_CID_HFLIP:
--		if (sensor->is_streaming)
--			return -EBUSY;
--		if (ctrl->val)
--			return ov2680_hflip_enable(sensor);
--		else
--			return ov2680_hflip_disable(sensor);
-+		return ov2680_set_hflip(sensor, ctrl->val);
- 	case V4L2_CID_TEST_PATTERN:
- 		return ov2680_test_pattern_set(sensor, ctrl->val);
- 	default:
+ 		remoteproc_adsp: remoteproc@17300000 {
 -- 
 2.40.1
 
