@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6C4AE79BB1E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 602F479B94D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235928AbjIKWmk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:42:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42006 "EHLO
+        id S1376707AbjIKWUS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239496AbjIKOWM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:12 -0400
+        with ESMTP id S239500AbjIKOWS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7BE2DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2E6DEC433C7;
-        Mon, 11 Sep 2023 14:22:07 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7861ACF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD117C433C8;
+        Mon, 11 Sep 2023 14:22:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442127;
-        bh=THzNyZ+F0jWaCTw6IKBKln/lrApay70AHVhi70vJiic=;
+        s=korg; t=1694442133;
+        bh=Xpnk0MworczfrsllZkl+7jZdRZmd1OD9ER5rPLnEQrY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dEOw+0XbtSNI37v+xKric6pFQezSnpLShkCj3f5bWI1HyeG+WQ+GPx+EFApDRRSnN
-         P0AWTUajB7cxYqDIYGWujvg3EygvQAXeHoZHgan/kmHcfR9JFfntM4BAACYJwHYPNw
-         mk3zXMzu6CzgOEta2jZPOVubmk6YIIhgOw8QbWq8=
+        b=1ylron4kCf/KLD81HNO5hEWDV4vuxNcVjgdv0Ojx1pXXy38syMT1BTkGglEmO+AZ+
+         o2+iTqF7hHdBCs6lW3Lmbav9bV+nOgq6ue4N71yd4Tw0P+suC/5LMebLHIIgW3QvMk
+         9KspyU6e/RDfHJpV4rOWf+nxPNje7uUAg+pFG0c8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Alexandre Ghiti <alexghiti@rivosinc.com>,
-        Palmer Dabbelt <palmer@rivosinc.com>
-Subject: [PATCH 6.5 656/739] riscv: Mark KASAN tmp* page tables variables as static
-Date:   Mon, 11 Sep 2023 15:47:35 +0200
-Message-ID: <20230911134709.432830664@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Matthew Wilcox (Oracle)" <willy@infradead.org>
+Subject: [PATCH 6.5 657/739] XArray: Do not return sibling entries from xa_load()
+Date:   Mon, 11 Sep 2023 15:47:36 +0200
+Message-ID: <20230911134709.462207338@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -54,39 +53,150 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Alexandre Ghiti <alexghiti@rivosinc.com>
+From: Matthew Wilcox (Oracle) <willy@infradead.org>
 
-commit dd7664d67b478afeb79a89e4586c2cd7707d17d6 upstream.
+commit cbc02854331edc6dc22d8b77b6e22e38ebc7dd51 upstream.
 
-tmp_pg_dir, tmp_p4d and tmp_pud are only used in kasan_init.c so they
-should be declared as static.
+It is possible for xa_load() to observe a sibling entry pointing to
+another sibling entry.  An example:
 
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202306282202.bODptiGE-lkp@intel.com/
-Fixes: 96f9d4daf745 ("riscv: Rework kasan population functions")
-Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
-Link: https://lore.kernel.org/r/20230704074357.233982-1-alexghiti@rivosinc.com
+Thread A:		Thread B:
+			xa_store_range(xa, entry, 188, 191, gfp);
+xa_load(xa, 191);
+entry = xa_entry(xa, node, 63);
+[entry is a sibling of 188]
+			xa_store_range(xa, entry, 184, 191, gfp);
+if (xa_is_sibling(entry))
+offset = xa_to_sibling(entry);
+entry = xa_entry(xas->xa, node, offset);
+[entry is now a sibling of 184]
+
+It is sufficient to go around this loop until we hit a non-sibling entry.
+Sibling entries always point earlier in the node, so we are guaranteed
+to terminate this search.
+
+Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
+Fixes: 6b24ca4a1a8d ("mm: Use multi-index entries in the page cache")
 Cc: stable@vger.kernel.org
-Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/riscv/mm/kasan_init.c |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ lib/xarray.c                          |    2 -
+ tools/testing/radix-tree/multiorder.c |   68 +++++++++++++++++++++++++++++++++-
+ 2 files changed, 67 insertions(+), 3 deletions(-)
 
---- a/arch/riscv/mm/kasan_init.c
-+++ b/arch/riscv/mm/kasan_init.c
-@@ -22,9 +22,9 @@
-  * region is not and then we have to go down to the PUD level.
-  */
+--- a/lib/xarray.c
++++ b/lib/xarray.c
+@@ -206,7 +206,7 @@ static void *xas_descend(struct xa_state
+ 	void *entry = xa_entry(xas->xa, node, offset);
  
--pgd_t tmp_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
--p4d_t tmp_p4d[PTRS_PER_P4D] __page_aligned_bss;
--pud_t tmp_pud[PTRS_PER_PUD] __page_aligned_bss;
-+static pgd_t tmp_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
-+static p4d_t tmp_p4d[PTRS_PER_P4D] __page_aligned_bss;
-+static pud_t tmp_pud[PTRS_PER_PUD] __page_aligned_bss;
+ 	xas->xa_node = node;
+-	if (xa_is_sibling(entry)) {
++	while (xa_is_sibling(entry)) {
+ 		offset = xa_to_sibling(entry);
+ 		entry = xa_entry(xas->xa, node, offset);
+ 		if (node->shift && xa_is_node(entry))
+--- a/tools/testing/radix-tree/multiorder.c
++++ b/tools/testing/radix-tree/multiorder.c
+@@ -159,7 +159,7 @@ void multiorder_tagged_iteration(struct
+ 	item_kill_tree(xa);
+ }
  
- static void __init kasan_populate_pte(pmd_t *pmd, unsigned long vaddr, unsigned long end)
+-bool stop_iteration = false;
++bool stop_iteration;
+ 
+ static void *creator_func(void *ptr)
  {
+@@ -201,6 +201,7 @@ static void multiorder_iteration_race(st
+ 	pthread_t worker_thread[num_threads];
+ 	int i;
+ 
++	stop_iteration = false;
+ 	pthread_create(&worker_thread[0], NULL, &creator_func, xa);
+ 	for (i = 1; i < num_threads; i++)
+ 		pthread_create(&worker_thread[i], NULL, &iterator_func, xa);
+@@ -211,6 +212,61 @@ static void multiorder_iteration_race(st
+ 	item_kill_tree(xa);
+ }
+ 
++static void *load_creator(void *ptr)
++{
++	/* 'order' is set up to ensure we have sibling entries */
++	unsigned int order;
++	struct radix_tree_root *tree = ptr;
++	int i;
++
++	rcu_register_thread();
++	item_insert_order(tree, 3 << RADIX_TREE_MAP_SHIFT, 0);
++	item_insert_order(tree, 2 << RADIX_TREE_MAP_SHIFT, 0);
++	for (i = 0; i < 10000; i++) {
++		for (order = 1; order < RADIX_TREE_MAP_SHIFT; order++) {
++			unsigned long index = (3 << RADIX_TREE_MAP_SHIFT) -
++						(1 << order);
++			item_insert_order(tree, index, order);
++			item_delete_rcu(tree, index);
++		}
++	}
++	rcu_unregister_thread();
++
++	stop_iteration = true;
++	return NULL;
++}
++
++static void *load_worker(void *ptr)
++{
++	unsigned long index = (3 << RADIX_TREE_MAP_SHIFT) - 1;
++
++	rcu_register_thread();
++	while (!stop_iteration) {
++		struct item *item = xa_load(ptr, index);
++		assert(!xa_is_internal(item));
++	}
++	rcu_unregister_thread();
++
++	return NULL;
++}
++
++static void load_race(struct xarray *xa)
++{
++	const int num_threads = sysconf(_SC_NPROCESSORS_ONLN) * 4;
++	pthread_t worker_thread[num_threads];
++	int i;
++
++	stop_iteration = false;
++	pthread_create(&worker_thread[0], NULL, &load_creator, xa);
++	for (i = 1; i < num_threads; i++)
++		pthread_create(&worker_thread[i], NULL, &load_worker, xa);
++
++	for (i = 0; i < num_threads; i++)
++		pthread_join(worker_thread[i], NULL);
++
++	item_kill_tree(xa);
++}
++
+ static DEFINE_XARRAY(array);
+ 
+ void multiorder_checks(void)
+@@ -218,12 +274,20 @@ void multiorder_checks(void)
+ 	multiorder_iteration(&array);
+ 	multiorder_tagged_iteration(&array);
+ 	multiorder_iteration_race(&array);
++	load_race(&array);
+ 
+ 	radix_tree_cpu_dead(0);
+ }
+ 
+-int __weak main(void)
++int __weak main(int argc, char **argv)
+ {
++	int opt;
++
++	while ((opt = getopt(argc, argv, "ls:v")) != -1) {
++		if (opt == 'v')
++			test_verbose++;
++	}
++
+ 	rcu_register_thread();
+ 	radix_tree_init();
+ 	multiorder_checks();
 
 
