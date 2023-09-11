@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4732479AF60
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4FD9A79AD82
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350395AbjIKVhz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:37:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40288 "EHLO
+        id S1377613AbjIKW1m (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:27:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55834 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239700AbjIKO0o (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:44 -0400
+        with ESMTP id S238364AbjIKNyh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:54:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B2268F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D1D59C433C8;
-        Mon, 11 Sep 2023 14:26:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4F299FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:54:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3A935C433C8;
+        Mon, 11 Sep 2023 13:54:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442399;
-        bh=iqEAit+rueMMh2I+vZ+GsKXf2Tt1IBM6EuwjDauVzuI=;
+        s=korg; t=1694440472;
+        bh=2vb7hXwqowa+4oVtQqEF1oRYOP7FuNmF/cHyg3I0WYg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=IH62q1r3aembX1W/Tz6TEMUP7CWplFR75HHPIeloJw9aFuVQCUxBnMQ1+O/JDHA9O
-         txJORr9Nt1qGEEpyqsn39AkXeIkUrz5tPsPu7Ty/k6aNDT4dHrDyzdHgzo8ODXv7oY
-         p5COD5WYgrJ4PZZZW1PGnedTAB3TU0TJ0zqTXhfE=
+        b=DRuI0SYqr8jaPiUjtp/c6qxfKMcO3YjoX02nZOlmu5qRnYu2GuJE5TLz+D+ZkYbjZ
+         lT2Qeq+MkAtZYWrVNv1Zg0f8SidOdChjlePJRywBMq+HP9A9V/nxECfbGmkV5/ARYc
+         R/S9UYFaNIZMqBNTsfaEwW8uXRiJHsyFLQo6MAnI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.4 012/737] ksmbd: validate session id and tree id in compound request
-Date:   Mon, 11 Sep 2023 15:37:51 +0200
-Message-ID: <20230911134650.668056847@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Giovanni Cabiddu <giovanni.cabiddu@intel.com>,
+        Damian Muszynski <damian.muszynski@intel.com>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 073/739] crypto: qat - change value of default idle filter
+Date:   Mon, 11 Sep 2023 15:37:52 +0200
+Message-ID: <20230911134653.158117127@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,74 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
 
-[ Upstream commit 3df0411e132ee74a87aa13142dfd2b190275332e ]
+[ Upstream commit 0f942bdfe9d463be3073301519492f8d53c6b2d5 ]
 
-`smb2_get_msg()` in smb2_get_ksmbd_tcon() and smb2_check_user_session()
-will always return the first request smb2 header in a compound request.
-if `SMB2_TREE_CONNECT_HE` is the first command in compound request, will
-return 0, i.e. The tree id check is skipped.
-This patch use ksmbd_req_buf_next() to get current command in compound.
+The power management configuration of 4xxx devices is too aggressive
+and in some conditions the device might be prematurely put to a low
+power state.
+Increase the idle filter value to prevent that.
+In future, this will be set by firmware.
 
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21506
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: e5745f34113b ("crypto: qat - enable power management for QAT GEN4")
+Signed-off-by: Giovanni Cabiddu <giovanni.cabiddu@intel.com>
+Reviewed-by: Damian Muszynski <damian.muszynski@intel.com>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/smb2pdu.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ drivers/crypto/intel/qat/qat_common/adf_gen4_pm.h | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
-index dab4c7d710914..ca5af2d9e28bb 100644
---- a/fs/smb/server/smb2pdu.c
-+++ b/fs/smb/server/smb2pdu.c
-@@ -87,9 +87,9 @@ struct channel *lookup_chann_list(struct ksmbd_session *sess, struct ksmbd_conn
-  */
- int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
- {
--	struct smb2_hdr *req_hdr = smb2_get_msg(work->request_buf);
-+	struct smb2_hdr *req_hdr = ksmbd_req_buf_next(work);
- 	unsigned int cmd = le16_to_cpu(req_hdr->Command);
--	int tree_id;
-+	unsigned int tree_id;
+diff --git a/drivers/crypto/intel/qat/qat_common/adf_gen4_pm.h b/drivers/crypto/intel/qat/qat_common/adf_gen4_pm.h
+index dd112923e006d..c2768762cca3b 100644
+--- a/drivers/crypto/intel/qat/qat_common/adf_gen4_pm.h
++++ b/drivers/crypto/intel/qat/qat_common/adf_gen4_pm.h
+@@ -35,7 +35,7 @@
+ #define ADF_GEN4_PM_MSG_PENDING			BIT(0)
+ #define ADF_GEN4_PM_MSG_PAYLOAD_BIT_MASK	GENMASK(28, 1)
  
- 	if (cmd == SMB2_TREE_CONNECT_HE ||
- 	    cmd ==  SMB2_CANCEL_HE ||
-@@ -114,7 +114,7 @@ int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
- 			pr_err("The first operation in the compound does not have tcon\n");
- 			return -EINVAL;
- 		}
--		if (work->tcon->id != tree_id) {
-+		if (tree_id != UINT_MAX && work->tcon->id != tree_id) {
- 			pr_err("tree id(%u) is different with id(%u) in first operation\n",
- 					tree_id, work->tcon->id);
- 			return -EINVAL;
-@@ -559,9 +559,9 @@ int smb2_allocate_rsp_buf(struct ksmbd_work *work)
-  */
- int smb2_check_user_session(struct ksmbd_work *work)
- {
--	struct smb2_hdr *req_hdr = smb2_get_msg(work->request_buf);
-+	struct smb2_hdr *req_hdr = ksmbd_req_buf_next(work);
- 	struct ksmbd_conn *conn = work->conn;
--	unsigned int cmd = conn->ops->get_cmd_val(work);
-+	unsigned int cmd = le16_to_cpu(req_hdr->Command);
- 	unsigned long long sess_id;
+-#define ADF_GEN4_PM_DEFAULT_IDLE_FILTER		(0x0)
++#define ADF_GEN4_PM_DEFAULT_IDLE_FILTER		(0x6)
+ #define ADF_GEN4_PM_MAX_IDLE_FILTER		(0x7)
+ #define ADF_GEN4_PM_DEFAULT_IDLE_SUPPORT	(0x1)
  
- 	/*
-@@ -587,7 +587,7 @@ int smb2_check_user_session(struct ksmbd_work *work)
- 			pr_err("The first operation in the compound does not have sess\n");
- 			return -EINVAL;
- 		}
--		if (work->sess->id != sess_id) {
-+		if (sess_id != ULLONG_MAX && work->sess->id != sess_id) {
- 			pr_err("session id(%llu) is different with the first operation(%lld)\n",
- 					sess_id, work->sess->id);
- 			return -EINVAL;
 -- 
 2.40.1
 
