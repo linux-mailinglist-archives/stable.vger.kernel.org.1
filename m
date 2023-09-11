@@ -2,44 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8992979BD27
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9AB4D79BBC6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379421AbjIKWoD (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:03 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43386 "EHLO
+        id S238571AbjIKWeU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:34:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52122 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240941AbjIKO5f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:35 -0400
+        with ESMTP id S242218AbjIKPZT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 557A31B9;
-        Mon, 11 Sep 2023 07:57:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 739E3C433C8;
-        Mon, 11 Sep 2023 14:57:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0709A120
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5029AC433C7;
+        Mon, 11 Sep 2023 15:25:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444251;
-        bh=/Zv7PQHeFYBy0u0DhZDccdoAzXvlQsqMa+UO/cYQ1gg=;
+        s=korg; t=1694445914;
+        bh=H7U2QFyGr7qNJOYaKALZ1kxjIB3MSJn06c7/HwQmU9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=hbN0bdxj/TBPWwXGOOGe2tAUUP7LRFXic0/WT77Q0SP9xqo9EIGc7mhlWb/FcwlsW
-         bXFxuxvQcKg6etGxJD/+8yqh9voWiRYBHEM3hgjfAQunWb3mNlj0GsMriGQ1kBz7SL
-         oEfB4eUvs44NbLAh9zc7DcGpm8Vi95UOIzmhXKYI=
+        b=AGWMbBoaHBKoWGZp+GzhTDljflhxJTMnOwFPRyzxgSkU0HZyXDySPmTZi5PCXxnkD
+         rPGATfqfnxjS14VoXtAHB18Tc0brMcrsNQR7BEZDB5XOvLyKjIummV+vMVE6PSjcdE
+         8sjrjPzL05TlIN9rIr/b/RfyY5tMHtaZcZoGgF1k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 6.4 663/737] backlight/gpio_backlight: Compare against struct fb_info.device
-Date:   Mon, 11 Sep 2023 15:48:42 +0200
-Message-ID: <20230911134709.055998294@linuxfoundation.org>
+        patches@lists.linux.dev, Guoqing Jiang <guoqing.jiang@linux.dev>,
+        Bernard Metzler <bmt@zurich.ibm.com>,
+        Leon Romanovsky <leon@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 490/600] RDMA/siw: Correct wrong debug message
+Date:   Mon, 11 Sep 2023 15:48:43 +0200
+Message-ID: <20230911134648.097692056@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,54 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Guoqing Jiang <guoqing.jiang@linux.dev>
 
-commit 7b91d017f77c1bda56f27c2f4bbb70de7c6eca08 upstream.
+[ Upstream commit bee024d20451e4ce04ea30099cad09f7f75d288b ]
 
-Struct gpio_backlight_platform_data refers to a platform device within
-the Linux device hierarchy. The test in gpio_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+We need to print num_sle first then pbl->max_buf per the condition.
+Also replace mem->pbl with pbl while at it.
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
-
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
-
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: linux-sh@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-4-tzimmermann@suse.de
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 303ae1cdfdf7 ("rdma/siw: application interface")
+Signed-off-by: Guoqing Jiang <guoqing.jiang@linux.dev>
+Link: https://lore.kernel.org/r/20230821133255.31111-3-guoqing.jiang@linux.dev
+Acked-by: Bernard Metzler <bmt@zurich.ibm.com>
+Signed-off-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/video/backlight/gpio_backlight.c |    2 +-
+ drivers/infiniband/sw/siw/siw_verbs.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/video/backlight/gpio_backlight.c
-+++ b/drivers/video/backlight/gpio_backlight.c
-@@ -35,7 +35,7 @@ static int gpio_backlight_check_fb(struc
- {
- 	struct gpio_backlight *gbl = bl_get_data(bl);
+diff --git a/drivers/infiniband/sw/siw/siw_verbs.c b/drivers/infiniband/sw/siw/siw_verbs.c
+index 2e4cdcd26fe01..193f7d58d3845 100644
+--- a/drivers/infiniband/sw/siw/siw_verbs.c
++++ b/drivers/infiniband/sw/siw/siw_verbs.c
+@@ -1494,7 +1494,7 @@ int siw_map_mr_sg(struct ib_mr *base_mr, struct scatterlist *sl, int num_sle,
  
--	return gbl->fbdev == NULL || gbl->fbdev == info->dev;
-+	return gbl->fbdev == NULL || gbl->fbdev == info->device;
- }
- 
- static const struct backlight_ops gpio_backlight_ops = {
+ 	if (pbl->max_buf < num_sle) {
+ 		siw_dbg_mem(mem, "too many SGE's: %d > %d\n",
+-			    mem->pbl->max_buf, num_sle);
++			    num_sle, pbl->max_buf);
+ 		return -ENOMEM;
+ 	}
+ 	for_each_sg(sl, slp, num_sle, i) {
+-- 
+2.40.1
+
 
 
