@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 62EF179B3DA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:56 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 19E0779AE51
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378629AbjIKWgH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:36:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41896 "EHLO
+        id S243072AbjIKU7C (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59552 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238645AbjIKOBc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:32 -0400
+        with ESMTP id S240009AbjIKOdy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4B88CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 12844C433C9;
-        Mon, 11 Sep 2023 14:01:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D1946F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:49 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1D548C433C7;
+        Mon, 11 Sep 2023 14:33:48 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440887;
-        bh=p3prK6mY6fnfhk30HVMrXa0O+ohPnEgjEIf/4Nx6vS8=;
+        s=korg; t=1694442829;
+        bh=cPzDNFjXOC4Dc/wwNpnMlENHjy3aOCPcm/6kJY9l3N8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zWG++6fb+ywEKiPt3eotg+0/MulTipHDBgzdpKc3VvYZb2dN0wgaNzNppARokeSQX
-         XPLP7aWefUVQSkQQSOggsbT59Y6gll29heFWk/SkMoqw7sBz0gfjAchlkWYYMi4Vvv
-         P/c+U1+BRM5xfGPhJ6yl21IDrxDiv9M0Eq2o/GsI=
+        b=1WBc4+f6RHSdWLuC5/2OqQ/zWah2wDonXBN2UrTkO99ylG8uF1W+qGAMCWIad3O4k
+         cLyUFjZpOKSlKix48/BNAt4sOmkhPJ20D2KuFIDZZmhM3qPWaVLVIUh9az4XISthLf
+         3ezjGv4muYqymVYExaLVuMmZ36J0QlDCALIpu3jA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 220/739] arm64: dts: qcom: sm8250-edo: Add GPIO line names for PMIC GPIOs
-Date:   Mon, 11 Sep 2023 15:40:19 +0200
-Message-ID: <20230911134657.331137428@linuxfoundation.org>
+        patches@lists.linux.dev, Shayne Chen <shayne.chen@mediatek.com>,
+        Peter Chiu <chui-hao.chiu@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 163/737] wifi: mt76: mt7996: fix bss wlan_idx when sending bss_info command
+Date:   Mon, 11 Sep 2023 15:40:22 +0200
+Message-ID: <20230911134655.058180914@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,166 +50,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Peter Chiu <chui-hao.chiu@mediatek.com>
 
-[ Upstream commit 6b8a63350752c6a5e4b54f2de6174084652cd3cd ]
+[ Upstream commit cc945b546227423488fe4be0ab92fd126b703246 ]
 
-Sony ever so graciously provides GPIO line names in their downstream
-kernel (though sometimes they are not 100% accurate and you can judge
-that by simply looking at them and with what drivers they are used).
+The bmc_tx_wlan_idx should be the wlan_idx of the current bss rather
+than peer AP's wlan_idx, otherwise there will appear some frame
+decryption problems on station mode.
 
-Add these to the PDX203&206 DTSIs to better document the hardware.
-
-Diff between 203 and 206:
-pm8009_gpios
-<                         "CAM_PWR_LD_EN",
->                         "NC",
-
-pm8150_gpios
-<                         "NC",
->                         "G_ASSIST_N",
-<                         "WLC_EN_N", /* GPIO_10 */
->                         "NC", /* GPIO_10 */
-Which is due to 5 II having an additional Google Assistant hardware
-button and 1 II having a wireless charger & different camera wiring
-to accommodate the additional 3D iToF sensor.
-
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230614-topic-edo_pinsgpiopmic-v2-2-6f90bba54c53@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Stable-dep-of: a422c6a91a66 ("arm64: dts: qcom: sm8250-edo: Rectify gpio-keys")
+Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
+Reviewed-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Peter Chiu <chui-hao.chiu@mediatek.com>
+Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../qcom/sm8250-sony-xperia-edo-pdx203.dts    | 50 +++++++++++++++++++
- .../qcom/sm8250-sony-xperia-edo-pdx206.dts    | 50 +++++++++++++++++++
- 2 files changed, 100 insertions(+)
+ drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
-index 84104d2b20101..62590c6bd3067 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx203.dts
-@@ -15,6 +15,56 @@ / {
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+index 88e2f9d0e5130..cd54e81d73044 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
+@@ -712,6 +712,7 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 	struct cfg80211_chan_def *chandef = &phy->chandef;
+ 	struct mt76_connac_bss_basic_tlv *bss;
+ 	u32 type = CONNECTION_INFRA_AP;
++	u16 sta_wlan_idx = wlan_idx;
+ 	struct tlv *tlv;
+ 	int idx;
  
- /delete-node/ &vreg_l7f_1p8;
+@@ -731,7 +732,7 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 				struct mt76_wcid *wcid;
  
-+&pm8009_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "CAM_PWR_LD_EN",
-+			  "WIDEC_PWR_EN",
-+			  "NC";
-+};
-+
-+&pm8150_gpios {
-+	gpio-line-names = "VOL_DOWN_N", /* GPIO_1 */
-+			  "OPTION_2",
-+			  "NC",
-+			  "PM_SLP_CLK_IN",
-+			  "OPTION_1",
-+			  "NC",
-+			  "NC",
-+			  "SP_ARI_PWR_ALARM",
-+			  "NC",
-+			  "NC"; /* GPIO_10 */
-+};
-+
-+&pm8150b_gpios {
-+	gpio-line-names = "SNAPSHOT_N", /* GPIO_1 */
-+			  "FOCUS_N",
-+			  "NC",
-+			  "NC",
-+			  "RF_LCD_ID_EN",
-+			  "NC",
-+			  "NC",
-+			  "LCD_ID",
-+			  "NC",
-+			  "WLC_EN_N", /* GPIO_10 */
-+			  "NC",
-+			  "RF_ID";
-+};
-+
-+&pm8150l_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "PM3003A_EN",
-+			  "NC",
-+			  "NC",
-+			  "NC",
-+			  "AUX2_THERM",
-+			  "BB_HP_EN",
-+			  "FP_LDO_EN",
-+			  "PMX_RESET_N",
-+			  "AUX3_THERM", /* GPIO_10 */
-+			  "DTV_PWR_EN",
-+			  "PM3003A_MODE";
-+};
-+
- &tlmm {
- 	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
- 			  "MDM2AP_ERR_FATAL",
-diff --git a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
-index fae6568cb79e4..ea4571bf4fbf0 100644
---- a/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
-+++ b/arch/arm64/boot/dts/qcom/sm8250-sony-xperia-edo-pdx206.dts
-@@ -30,6 +30,56 @@ g-assist-key {
- 	};
- };
- 
-+&pm8009_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "NC",
-+			  "WIDEC_PWR_EN",
-+			  "NC";
-+};
-+
-+&pm8150_gpios {
-+	gpio-line-names = "VOL_DOWN_N", /* GPIO_1 */
-+			  "OPTION_2",
-+			  "NC",
-+			  "PM_SLP_CLK_IN",
-+			  "OPTION_1",
-+			  "G_ASSIST_N",
-+			  "NC",
-+			  "SP_ARI_PWR_ALARM",
-+			  "NC",
-+			  "NC"; /* GPIO_10 */
-+};
-+
-+&pm8150b_gpios {
-+	gpio-line-names = "SNAPSHOT_N", /* GPIO_1 */
-+			  "FOCUS_N",
-+			  "NC",
-+			  "NC",
-+			  "RF_LCD_ID_EN",
-+			  "NC",
-+			  "NC",
-+			  "LCD_ID",
-+			  "NC",
-+			  "NC", /* GPIO_10 */
-+			  "NC",
-+			  "RF_ID";
-+};
-+
-+&pm8150l_gpios {
-+	gpio-line-names = "NC", /* GPIO_1 */
-+			  "PM3003A_EN",
-+			  "NC",
-+			  "NC",
-+			  "NC",
-+			  "AUX2_THERM",
-+			  "BB_HP_EN",
-+			  "FP_LDO_EN",
-+			  "PMX_RESET_N",
-+			  "NC", /* GPIO_10 */
-+			  "NC",
-+			  "PM3003A_MODE";
-+};
-+
- &tlmm {
- 	gpio-line-names = "AP_CTI_IN", /* GPIO_0 */
- 			  "MDM2AP_ERR_FATAL",
+ 				wcid = (struct mt76_wcid *)sta->drv_priv;
+-				wlan_idx = wcid->idx;
++				sta_wlan_idx = wcid->idx;
+ 			}
+ 			rcu_read_unlock();
+ 		}
+@@ -751,7 +752,7 @@ mt7996_mcu_bss_basic_tlv(struct sk_buff *skb,
+ 	bss->bcn_interval = cpu_to_le16(vif->bss_conf.beacon_int);
+ 	bss->dtim_period = vif->bss_conf.dtim_period;
+ 	bss->bmc_tx_wlan_idx = cpu_to_le16(wlan_idx);
+-	bss->sta_idx = cpu_to_le16(wlan_idx);
++	bss->sta_idx = cpu_to_le16(sta_wlan_idx);
+ 	bss->conn_type = cpu_to_le32(type);
+ 	bss->omac_idx = mvif->omac_idx;
+ 	bss->band_idx = mvif->band_idx;
 -- 
 2.40.1
 
