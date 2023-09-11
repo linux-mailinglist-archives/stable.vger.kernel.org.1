@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1788179B47C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C35ED79AE50
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235648AbjIKUwH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53154 "EHLO
+        id S240324AbjIKVsS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43002 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242112AbjIKPWk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:40 -0400
+        with ESMTP id S240864AbjIKO4A (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9316F9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:22:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40044C433C8;
-        Mon, 11 Sep 2023 15:22:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A218118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B35F3C433C7;
+        Mon, 11 Sep 2023 14:55:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445755;
-        bh=E1Z/qByRkVvZmYRNE8vw7mlZir2og/booa5Ao3LaBR4=;
+        s=korg; t=1694444155;
+        bh=HHc379pYOOyWGCQB8BwxBYIixpXflQJ7KmkpGevR3DU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GamSf7ASmio6f+FXwjIbGC+ZxW/GI1OZBovud1URVsQPV/CtNe12a1DIFg4nZ91/T
-         VqO3x/p7zCMF94wWloOfV+znPDDjiqUmM20yhTEspNTRiHMsuF6TUmDeDdiPqxdeuD
-         kiIJVxgjCw+3RYwVCqO4ah4oqakN0iILPEkzxDnI=
+        b=Qg294f3rFO9I5ZI1n7cnvonO93apaJoZrdeLPznO5ChSWvqxrnnEoSdahxvY2awmo
+         RQUlrCaBwD+4ReFbmMwmD84af0gevtsJMYC0IQxntiephx5S9nIMEc7i2iBdEFom0E
+         gptxi/wRpFtrwdsZVn7JX9/RUKxRfTZm1Ud7XiE0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Zhang <zheng.zhang@email.ucr.edu>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 453/600] media: cec: core: add adap_nb_transmit_canceled() callback
-Date:   Mon, 11 Sep 2023 15:48:06 +0200
-Message-ID: <20230911134647.021554396@linuxfoundation.org>
+        patches@lists.linux.dev,
+        "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 629/737] Drivers: hv: vmbus: Dont dereference ACPI root object handle
+Date:   Mon, 11 Sep 2023 15:48:08 +0200
+Message-ID: <20230911134708.099341543@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,83 +51,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-[ Upstream commit da53c36ddd3f118a525a04faa8c47ca471e6c467 ]
+[ Upstream commit 78e04bbff849b51b56f5925b1945db2c6e128b61 ]
 
-A potential deadlock was found by Zheng Zhang with a local syzkaller
-instance.
+Since the commit referenced in the Fixes: tag below the VMBus client driver
+is walking the ACPI namespace up from the VMBus ACPI device to the ACPI
+namespace root object trying to find Hyper-V MMIO ranges.
 
-The problem is that when a non-blocking CEC transmit is canceled by calling
-cec_data_cancel, that in turn can call the high-level received() driver
-callback, which can call cec_transmit_msg() to transmit a new message.
+However, if it is not able to find them it ends trying to walk resources of
+the ACPI namespace root object itself.
+This object has all-ones handle, which causes a NULL pointer dereference
+in the ACPI code (from dereferencing this pointer with an offset).
 
-The cec_data_cancel() function is called with the adap->lock mutex held,
-and cec_transmit_msg() tries to take that same lock.
+This in turn causes an oops on boot with VMBus host implementations that do
+not provide Hyper-V MMIO ranges in their VMBus ACPI device or its
+ancestors.
+The QEMU VMBus implementation is an example of such implementation.
 
-The root cause is that the received() callback can either be used to pass
-on a received message (and then adap->lock is not held), or to report a
-canceled transmit (and then adap->lock is held).
+I guess providing these ranges is optional, since all tested Windows
+versions seem to be able to use VMBus devices without them.
 
-This is confusing, so create a new low-level adap_nb_transmit_canceled
-callback that reports back that a non-blocking transmit was canceled.
+Fix this by explicitly terminating the lookup at the ACPI namespace root
+object.
 
-And the received() callback is only called when a message is received,
-as was the case before commit f9d0ecbf56f4 ("media: cec: correctly pass
-on reply results") complicated matters.
+Note that Linux guests under KVM/QEMU do not use the Hyper-V PV interface
+by default - they only do so if the KVM PV interface is missing or
+disabled.
 
-Reported-by: Zheng Zhang <zheng.zhang@email.ucr.edu>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Fixes: f9d0ecbf56f4 ("media: cec: correctly pass on reply results")
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Example stack trace of such oops:
+[ 3.710827] ? __die+0x1f/0x60
+[ 3.715030] ? page_fault_oops+0x159/0x460
+[ 3.716008] ? exc_page_fault+0x73/0x170
+[ 3.716959] ? asm_exc_page_fault+0x22/0x30
+[ 3.717957] ? acpi_ns_lookup+0x7a/0x4b0
+[ 3.718898] ? acpi_ns_internalize_name+0x79/0xc0
+[ 3.720018] acpi_ns_get_node_unlocked+0xb5/0xe0
+[ 3.721120] ? acpi_ns_check_object_type+0xfe/0x200
+[ 3.722285] ? acpi_rs_convert_aml_to_resource+0x37/0x6e0
+[ 3.723559] ? down_timeout+0x3a/0x60
+[ 3.724455] ? acpi_ns_get_node+0x3a/0x60
+[ 3.725412] acpi_ns_get_node+0x3a/0x60
+[ 3.726335] acpi_ns_evaluate+0x1c3/0x2c0
+[ 3.727295] acpi_ut_evaluate_object+0x64/0x1b0
+[ 3.728400] acpi_rs_get_method_data+0x2b/0x70
+[ 3.729476] ? vmbus_platform_driver_probe+0x1d0/0x1d0 [hv_vmbus]
+[ 3.730940] ? vmbus_platform_driver_probe+0x1d0/0x1d0 [hv_vmbus]
+[ 3.732411] acpi_walk_resources+0x78/0xd0
+[ 3.733398] vmbus_platform_driver_probe+0x9f/0x1d0 [hv_vmbus]
+[ 3.734802] platform_probe+0x3d/0x90
+[ 3.735684] really_probe+0x19b/0x400
+[ 3.736570] ? __device_attach_driver+0x100/0x100
+[ 3.737697] __driver_probe_device+0x78/0x160
+[ 3.738746] driver_probe_device+0x1f/0x90
+[ 3.739743] __driver_attach+0xc2/0x1b0
+[ 3.740671] bus_for_each_dev+0x70/0xc0
+[ 3.741601] bus_add_driver+0x10e/0x210
+[ 3.742527] driver_register+0x55/0xf0
+[ 3.744412] ? 0xffffffffc039a000
+[ 3.745207] hv_acpi_init+0x3c/0x1000 [hv_vmbus]
+
+Fixes: 7f163a6fd957 ("drivers:hv: Modify hv_vmbus to search for all MMIO ranges available.")
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Link: https://lore.kernel.org/r/fd8e64ceeecfd1d95ff49021080cf699e88dbbde.1691606267.git.maciej.szmigiero@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/core/cec-adap.c | 4 ++--
- include/media/cec.h               | 6 ++++--
- 2 files changed, 6 insertions(+), 4 deletions(-)
+ drivers/hv/vmbus_drv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/media/cec/core/cec-adap.c b/drivers/media/cec/core/cec-adap.c
-index b1512f9c5895c..aed3e51d6d354 100644
---- a/drivers/media/cec/core/cec-adap.c
-+++ b/drivers/media/cec/core/cec-adap.c
-@@ -385,8 +385,8 @@ static void cec_data_cancel(struct cec_data *data, u8 tx_status, u8 rx_status)
- 	cec_queue_msg_monitor(adap, &data->msg, 1);
- 
- 	if (!data->blocking && data->msg.sequence)
--		/* Allow drivers to process the message first */
--		call_op(adap, received, &data->msg);
-+		/* Allow drivers to react to a canceled transmit */
-+		call_void_op(adap, adap_nb_transmit_canceled, &data->msg);
- 
- 	cec_data_completed(data);
- }
-diff --git a/include/media/cec.h b/include/media/cec.h
-index abee41ae02d0e..6556cc161dc0a 100644
---- a/include/media/cec.h
-+++ b/include/media/cec.h
-@@ -121,14 +121,16 @@ struct cec_adap_ops {
- 	void (*adap_configured)(struct cec_adapter *adap, bool configured);
- 	int (*adap_transmit)(struct cec_adapter *adap, u8 attempts,
- 			     u32 signal_free_time, struct cec_msg *msg);
-+	void (*adap_nb_transmit_canceled)(struct cec_adapter *adap,
-+					  const struct cec_msg *msg);
- 	void (*adap_status)(struct cec_adapter *adap, struct seq_file *file);
- 	void (*adap_free)(struct cec_adapter *adap);
- 
--	/* Error injection callbacks */
-+	/* Error injection callbacks, called without adap->lock held */
- 	int (*error_inj_show)(struct cec_adapter *adap, struct seq_file *sf);
- 	bool (*error_inj_parse_line)(struct cec_adapter *adap, char *line);
- 
--	/* High-level CEC message callback */
-+	/* High-level CEC message callback, called without adap->lock held */
- 	int (*received)(struct cec_adapter *adap, struct cec_msg *msg);
- };
- 
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 67f95a29aeca5..edbb38f6956b9 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2287,7 +2287,8 @@ static int vmbus_acpi_add(struct platform_device *pdev)
+ 	 * Some ancestor of the vmbus acpi device (Gen1 or Gen2
+ 	 * firmware) is the VMOD that has the mmio ranges. Get that.
+ 	 */
+-	for (ancestor = acpi_dev_parent(device); ancestor;
++	for (ancestor = acpi_dev_parent(device);
++	     ancestor && ancestor->handle != ACPI_ROOT_OBJECT;
+ 	     ancestor = acpi_dev_parent(ancestor)) {
+ 		result = acpi_walk_resources(ancestor->handle, METHOD_NAME__CRS,
+ 					     vmbus_walk_resources, NULL);
 -- 
 2.40.1
 
