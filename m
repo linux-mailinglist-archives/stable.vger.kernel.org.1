@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3B42079ACED
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0B6F979B1A0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350370AbjIKVhN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:37:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46116 "EHLO
+        id S241155AbjIKVRe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:17:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51964 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239986AbjIKOdU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:20 -0400
+        with ESMTP id S238580AbjIKN7u (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A914CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DCDC9C433C8;
-        Mon, 11 Sep 2023 14:33:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2E61BCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75692C433C8;
+        Mon, 11 Sep 2023 13:59:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442795;
-        bh=JNldJyYDfYvXgOcvddxt6LB07NfE+1hVP2uj0o2nk+8=;
+        s=korg; t=1694440785;
+        bh=3t2BoGaPyniXSBiB40EU5084WlX1WgTgzE1ta99Kg0U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=mUG76dcECLsnPMRwEOUFXdr3PSWmrDIXjPK4qABFaCsvXC01YHW9q+8h1v0bbvx4J
-         l3dXMNDrJ1Idqp5dfo6eXcj9kjeLRK/5eePyDa+0hnfQebQj/N3VyBL0RYEX59fJBA
-         6cEnuTq3xP4Ba8JnBiTG9vW1fhbwhSniv8/dn4zg=
+        b=0JlEFFsbugGevA0ZbJcNjFDTuAlEPN2emSNkXfQ2GlNtGXuNWvhu3IMPZuKcu3r9t
+         L72c8whk2vBugcdfvNasAEsAdlbySqwhQJd8qOsQqkhvEEpycDob3d4YDwu4dhQA6J
+         WZGaS4KlNArkLty4dhkDLuR1oqNysE8MPhiX9Ug4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Cyril Hrubis <chrubis@suse.cz>,
-        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
-        Petr Vorel <pvorel@suse.cz>, Mel Gorman <mgorman@suse.de>,
+        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 123/737] sched/rt: Fix sysctl_sched_rr_timeslice intial value
-Date:   Mon, 11 Sep 2023 15:39:42 +0200
-Message-ID: <20230911134653.940715698@linuxfoundation.org>
+Subject: [PATCH 6.5 184/739] mlxsw: i2c: Fix chunk size setting in output mailbox buffer
+Date:   Mon, 11 Sep 2023 15:39:43 +0200
+Message-ID: <20230911134656.335653245@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,77 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Cyril Hrubis <chrubis@suse.cz>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-[ Upstream commit c7fcb99877f9f542c918509b2801065adcaf46fa ]
+[ Upstream commit 146c7c330507c0384bf29d567186632bfe975927 ]
 
-There is a 10% rounding error in the intial value of the
-sysctl_sched_rr_timeslice with CONFIG_HZ_300=y.
+The driver reads commands output from the output mailbox. If the size
+of the output mailbox is not a multiple of the transaction /
+block size, then the driver will not issue enough read transactions
+to read the entire output, which can result in driver initialization
+errors.
 
-This was found with LTP test sched_rr_get_interval01:
+Fix by determining the number of transactions using DIV_ROUND_UP().
 
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-sched_rr_get_interval01.c:57: TPASS: sched_rr_get_interval() passed
-sched_rr_get_interval01.c:64: TPASS: Time quantum 0s 99999990ns
-sched_rr_get_interval01.c:72: TFAIL: /proc/sys/kernel/sched_rr_timeslice_ms != 100 got 90
-
-What this test does is to compare the return value from the
-sched_rr_get_interval() and the sched_rr_timeslice_ms sysctl file and
-fails if they do not match.
-
-The problem it found is the intial sysctl file value which was computed as:
-
-static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-
-which works fine as long as MSEC_PER_SEC is multiple of HZ, however it
-introduces 10% rounding error for CONFIG_HZ_300:
-
-(MSEC_PER_SEC / HZ) * (100 * HZ / 1000)
-
-(1000 / 300) * (100 * 300 / 1000)
-
-3 * 30 = 90
-
-This can be easily fixed by reversing the order of the multiplication
-and division. After this fix we get:
-
-(MSEC_PER_SEC * (100 * HZ / 1000)) / HZ
-
-(1000 * (100 * 300 / 1000)) / 300
-
-(1000 * 30) / 300 = 100
-
-Fixes: 975e155ed873 ("sched/rt: Show the 'sched_rr_timeslice' SCHED_RR timeslice tuning knob in milliseconds")
-Signed-off-by: Cyril Hrubis <chrubis@suse.cz>
-Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
-Reviewed-by: Petr Vorel <pvorel@suse.cz>
-Acked-by: Mel Gorman <mgorman@suse.de>
-Tested-by: Petr Vorel <pvorel@suse.cz>
-Link: https://lore.kernel.org/r/20230802151906.25258-2-chrubis@suse.cz
+Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/sched/rt.c | 2 +-
+ drivers/net/ethernet/mellanox/mlxsw/i2c.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/sched/rt.c b/kernel/sched/rt.c
-index 00e0e50741153..185d3d749f6b6 100644
---- a/kernel/sched/rt.c
-+++ b/kernel/sched/rt.c
-@@ -25,7 +25,7 @@ unsigned int sysctl_sched_rt_period = 1000000;
- int sysctl_sched_rt_runtime = 950000;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+index 41298835a11e1..47af7ef7e4eee 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+@@ -444,7 +444,7 @@ mlxsw_i2c_cmd(struct device *dev, u16 opcode, u32 in_mod, size_t in_mbox_size,
+ 	} else {
+ 		/* No input mailbox is case of initialization query command. */
+ 		reg_size = MLXSW_I2C_MAX_DATA_SIZE;
+-		num = reg_size / mlxsw_i2c->block_size;
++		num = DIV_ROUND_UP(reg_size, mlxsw_i2c->block_size);
  
- #ifdef CONFIG_SYSCTL
--static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC / HZ) * RR_TIMESLICE;
-+static int sysctl_sched_rr_timeslice = (MSEC_PER_SEC * RR_TIMESLICE) / HZ;
- static int sched_rt_handler(struct ctl_table *table, int write, void *buffer,
- 		size_t *lenp, loff_t *ppos);
- static int sched_rr_handler(struct ctl_table *table, int write, void *buffer,
+ 		if (mutex_lock_interruptible(&mlxsw_i2c->cmd.lock) < 0) {
+ 			dev_err(&client->dev, "Could not acquire lock");
 -- 
 2.40.1
 
