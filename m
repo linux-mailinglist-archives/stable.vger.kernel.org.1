@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A41A279AD8D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B0C0479AE0E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354243AbjIKVxJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:53:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37246 "EHLO
+        id S1349070AbjIKVcZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37210 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238694AbjIKODA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:03:00 -0400
+        with ESMTP id S241181AbjIKPDm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1EC19CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62F36C433C8;
-        Mon, 11 Sep 2023 14:02:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70734125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9A1CC433C8;
+        Mon, 11 Sep 2023 15:03:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440975;
-        bh=8h8x9x0spwTkrVwfiiJGLQWYchtYi+VlFVGTExybF1s=;
+        s=korg; t=1694444617;
+        bh=lVrotdtn+3HpaV/SDkdMoIPCrvQ5/PNBGQ94r9UeMPU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uDavieyfKJqIru6pAZgYkOSr1F8crRiipKMGCnTM38C4aGwMTNhsfS2CkW/mzt6sN
-         5C6Lbysh5qMlaD/+T/fx40GSPXbUG8TG+bPWT0BHbNyh5gic8fd3GjYhmkDsUfStcW
-         Kg9r0d0xfaC5GpYSY7/ZekgRcN2bf9rusGEMvnac=
+        b=eXV6zSO8N7vL1O0kB8w8l3jAfjuF2n4LBthoU2ot88Vc5L6fYwjberYgB/xFcrEId
+         GaZvp5IdHH/DxTnyFQT6VlfVL5dFzs4TxTzbq28B8tfSHbxeOZkTAnz38rYzH0IbR2
+         J63A2IpudQyfkmJDNPtb/9uQo2Gs37QAepvDOOv8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jon Hunter <jonathanh@nvidia.com>,
-        Thierry Reding <treding@nvidia.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 251/739] arm64: tegra: Fix HSUART for Jetson AGX Orin
+        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
+        Steve French <stfrench@microsoft.com>,
+        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
+Subject: [PATCH 6.1 017/600] ksmbd: validate session id and tree id in compound request
 Date:   Mon, 11 Sep 2023 15:40:50 +0200
-Message-ID: <20230911134658.164753762@linuxfoundation.org>
+Message-ID: <20230911134634.124272698@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +50,74 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jon Hunter <jonathanh@nvidia.com>
+From: Namjae Jeon <linkinjeon@kernel.org>
 
-[ Upstream commit 861dbb2b15b1049113887fb95e856f7123eea0cc ]
+[ Upstream commit 3df0411e132ee74a87aa13142dfd2b190275332e ]
 
-After commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
-reset-names") was applied, the HSUART failed to probe and the following
-error is seen:
+`smb2_get_msg()` in smb2_get_ksmbd_tcon() and smb2_check_user_session()
+will always return the first request smb2 header in a compound request.
+if `SMB2_TREE_CONNECT_HE` is the first command in compound request, will
+return 0, i.e. The tree id check is skipped.
+This patch use ksmbd_req_buf_next() to get current command in compound.
 
- serial-tegra 3100000.serial: Couldn't get the reset
- serial-tegra: probe of 3100000.serial failed with error -2
-
-Commit 71de0a054d0e ("arm64: tegra: Drop serial clock-names and
-reset-names") is correct because the "reset-names" property is not
-needed for 8250 UARTs. However, the "reset-names" is required for the
-HSUART and should have been populated as part of commit ff578db7b693
-("arm64: tegra: Enable UART instance on 40-pin header") that
-enabled the HSUART for Jetson AGX Orin. Fix this by populating the
-"reset-names" property for the HSUART on Jetson AGX Orin.
-
-Fixes: ff578db7b693 ("arm64: tegra: Enable UART instance on 40-pin header")
-Signed-off-by: Jon Hunter <jonathanh@nvidia.com>
-Signed-off-by: Thierry Reding <treding@nvidia.com>
+Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21506
+Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
+Signed-off-by: Steve French <stfrench@microsoft.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts | 1 +
- 1 file changed, 1 insertion(+)
+ fs/smb/server/smb2pdu.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts b/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts
-index cd13cf2381dde..513cc2cd0b668 100644
---- a/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts
-+++ b/arch/arm64/boot/dts/nvidia/tegra234-p3737-0000+p3701-0000.dts
-@@ -2010,6 +2010,7 @@ interrupt-controller@2a40000 {
+diff --git a/fs/smb/server/smb2pdu.c b/fs/smb/server/smb2pdu.c
+index ee954c5ab9c2b..74c245809772e 100644
+--- a/fs/smb/server/smb2pdu.c
++++ b/fs/smb/server/smb2pdu.c
+@@ -86,9 +86,9 @@ struct channel *lookup_chann_list(struct ksmbd_session *sess, struct ksmbd_conn
+  */
+ int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
+ {
+-	struct smb2_hdr *req_hdr = smb2_get_msg(work->request_buf);
++	struct smb2_hdr *req_hdr = ksmbd_req_buf_next(work);
+ 	unsigned int cmd = le16_to_cpu(req_hdr->Command);
+-	int tree_id;
++	unsigned int tree_id;
  
- 		serial@3100000 {
- 			compatible = "nvidia,tegra194-hsuart";
-+			reset-names = "serial";
- 			status = "okay";
- 		};
+ 	if (cmd == SMB2_TREE_CONNECT_HE ||
+ 	    cmd ==  SMB2_CANCEL_HE ||
+@@ -113,7 +113,7 @@ int smb2_get_ksmbd_tcon(struct ksmbd_work *work)
+ 			pr_err("The first operation in the compound does not have tcon\n");
+ 			return -EINVAL;
+ 		}
+-		if (work->tcon->id != tree_id) {
++		if (tree_id != UINT_MAX && work->tcon->id != tree_id) {
+ 			pr_err("tree id(%u) is different with id(%u) in first operation\n",
+ 					tree_id, work->tcon->id);
+ 			return -EINVAL;
+@@ -565,9 +565,9 @@ int smb2_allocate_rsp_buf(struct ksmbd_work *work)
+  */
+ int smb2_check_user_session(struct ksmbd_work *work)
+ {
+-	struct smb2_hdr *req_hdr = smb2_get_msg(work->request_buf);
++	struct smb2_hdr *req_hdr = ksmbd_req_buf_next(work);
+ 	struct ksmbd_conn *conn = work->conn;
+-	unsigned int cmd = conn->ops->get_cmd_val(work);
++	unsigned int cmd = le16_to_cpu(req_hdr->Command);
+ 	unsigned long long sess_id;
  
+ 	/*
+@@ -593,7 +593,7 @@ int smb2_check_user_session(struct ksmbd_work *work)
+ 			pr_err("The first operation in the compound does not have sess\n");
+ 			return -EINVAL;
+ 		}
+-		if (work->sess->id != sess_id) {
++		if (sess_id != ULLONG_MAX && work->sess->id != sess_id) {
+ 			pr_err("session id(%llu) is different with the first operation(%lld)\n",
+ 					sess_id, work->sess->id);
+ 			return -EINVAL;
 -- 
 2.40.1
 
