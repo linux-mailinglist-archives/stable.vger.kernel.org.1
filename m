@@ -2,36 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D72479B002
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AA7F879AEBD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241283AbjIKW0N (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:26:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42558 "EHLO
+        id S243610AbjIKV5F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41874 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240405AbjIKOn0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:26 -0400
+        with ESMTP id S240352AbjIKOmM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FC3012A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA58CC433C8;
-        Mon, 11 Sep 2023 14:43:20 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28D612A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2695CC433CA;
+        Mon, 11 Sep 2023 14:42:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443401;
-        bh=XaFOEmqk6vFmPyUdLfiBCVpDLE6d7N/f16d8ZogNbLg=;
+        s=korg; t=1694443327;
+        bh=XPBo8QNI4ToO1XSzr7YPhYNGL74sJGP6MhGG5CbbhXE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Mp8f/psEcH42JW1AnqRCFNCTNjK6ix7gMHO9XMEEqam1331dzweewRHrdMKaeVsc+
-         Ie7Whp4r5PvvTycoo5UxO/Sh4O4UyOlK861bJvWoZdkyRKibsO4YGdKTsM55dpgpBO
-         1SxxVmRdsZc6+QjcDBldAi/TXpvBdqMeJgKjBrn4=
+        b=t+peE8Du74FtwVMiJvBBCl4xNYzFkP8G6pryuQ++JYOzG9xzLYMZR2dRLMFRyNF8f
+         Pvo5TN7DLNalSFzZNd2SnsqkJUv649wvU1zgjNyDOwZTh/540Y3iuwI4w9j2K0+OYk
+         m9O1FFPyXR0ZuWVtPOII8P/2Ytrd+fUFfHHsfdfw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Herve Codina <herve.codina@bootlin.com>,
-        Mark Brown <broonie@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 337/737] ASoC: fsl: fsl_qmc_audio: Fix snd_pcm_format_t values handling
-Date:   Mon, 11 Sep 2023 15:43:16 +0200
-Message-ID: <20230911134659.947395234@linuxfoundation.org>
+        patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 339/737] md/raid10: factor out dereference_rdev_and_rrdev()
+Date:   Mon, 11 Sep 2023 15:43:18 +0200
+Message-ID: <20230911134700.000643074@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,112 +53,72 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Herve Codina <herve.codina@bootlin.com>
+From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit 5befe22b3eebd07b334b2917f6d14ce7ee4c8404 ]
+[ Upstream commit b99f8fd2d91eb734f13098aa1cf337edaca454b7 ]
 
-Running sparse on fsl_qmc_audio (make C=1) raises the following warnings:
- fsl_qmc_audio.c:387:26: warning: restricted snd_pcm_format_t degrades to integer
- fsl_qmc_audio.c:389:59: warning: incorrect type in argument 1 (different base types)
- fsl_qmc_audio.c:389:59:    expected restricted snd_pcm_format_t [usertype] format
- fsl_qmc_audio.c:389:59:    got unsigned int [assigned] i
- fsl_qmc_audio.c:564:26: warning: restricted snd_pcm_format_t degrades to integer
- fsl_qmc_audio.c:569:50: warning: incorrect type in argument 1 (different base types)
- fsl_qmc_audio.c:569:50:    expected restricted snd_pcm_format_t [usertype] format
- fsl_qmc_audio.c:569:50:    got int [assigned] i
- fsl_qmc_audio.c:573:62: warning: incorrect type in argument 1 (different base types)
- fsl_qmc_audio.c:573:62:    expected restricted snd_pcm_format_t [usertype] format
- fsl_qmc_audio.c:573:62:    got int [assigned] i
+Factor out a helper to get 'rdev' and 'replacement' from config->mirrors.
+Just to make code cleaner and prepare to fix the bug of io loss while
+'replacement' replace 'rdev'.
 
-These warnings are due to snd_pcm_format_t values handling done in the
-driver. Some macros and functions exist to handle safely these values.
+There is no functional change.
 
-Use dedicated macros and functions to remove these warnings.
-
-Fixes: 075c7125b11c ("ASoC: fsl: Add support for QMC audio")
-Signed-off-by: Herve Codina <herve.codina@bootlin.com>
-Link: https://lore.kernel.org/r/20230726161620.495298-1-herve.codina@bootlin.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Signed-off-by: Li Nan <linan122@huawei.com>
+Link: https://lore.kernel.org/r/20230701080529.2684932-3-linan666@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
+Stable-dep-of: 673643490b9a ("md/raid10: use dereference_rdev_and_rrdev() to get devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/fsl/fsl_qmc_audio.c | 28 ++++++++++++++--------------
- 1 file changed, 14 insertions(+), 14 deletions(-)
+ drivers/md/raid10.c | 29 ++++++++++++++++++++---------
+ 1 file changed, 20 insertions(+), 9 deletions(-)
 
-diff --git a/sound/soc/fsl/fsl_qmc_audio.c b/sound/soc/fsl/fsl_qmc_audio.c
-index 7cbb8e4758ccc..56d6b0b039a2e 100644
---- a/sound/soc/fsl/fsl_qmc_audio.c
-+++ b/sound/soc/fsl/fsl_qmc_audio.c
-@@ -372,8 +372,8 @@ static int qmc_dai_hw_rule_format_by_channels(struct qmc_dai *qmc_dai,
- 	struct snd_mask *f_old = hw_param_mask(params, SNDRV_PCM_HW_PARAM_FORMAT);
- 	unsigned int channels = params_channels(params);
- 	unsigned int slot_width;
-+	snd_pcm_format_t format;
- 	struct snd_mask f_new;
--	unsigned int i;
- 
- 	if (!channels || channels > nb_ts) {
- 		dev_err(qmc_dai->dev, "channels %u not supported\n",
-@@ -384,10 +384,10 @@ static int qmc_dai_hw_rule_format_by_channels(struct qmc_dai *qmc_dai,
- 	slot_width = (nb_ts / channels) * 8;
- 
- 	snd_mask_none(&f_new);
--	for (i = 0; i <= SNDRV_PCM_FORMAT_LAST; i++) {
--		if (snd_mask_test(f_old, i)) {
--			if (snd_pcm_format_physical_width(i) <= slot_width)
--				snd_mask_set(&f_new, i);
-+	pcm_for_each_format(format) {
-+		if (snd_mask_test_format(f_old, format)) {
-+			if (snd_pcm_format_physical_width(format) <= slot_width)
-+				snd_mask_set_format(&f_new, format);
- 		}
+diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
+index ee75b058438f3..f47fd50651c45 100644
+--- a/drivers/md/raid10.c
++++ b/drivers/md/raid10.c
+@@ -1321,6 +1321,25 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
  	}
- 
-@@ -551,26 +551,26 @@ static const struct snd_soc_dai_ops qmc_dai_ops = {
- 
- static u64 qmc_audio_formats(u8 nb_ts)
- {
--	u64 formats;
--	unsigned int chan_width;
- 	unsigned int format_width;
--	int i;
-+	unsigned int chan_width;
-+	snd_pcm_format_t format;
-+	u64 formats_mask;
- 
- 	if (!nb_ts)
- 		return 0;
- 
--	formats = 0;
-+	formats_mask = 0;
- 	chan_width = nb_ts * 8;
--	for (i = 0; i <= SNDRV_PCM_FORMAT_LAST; i++) {
-+	pcm_for_each_format(format) {
- 		/*
- 		 * Support format other than little-endian (ie big-endian or
- 		 * without endianness such as 8bit formats)
- 		 */
--		if (snd_pcm_format_little_endian(i) == 1)
-+		if (snd_pcm_format_little_endian(format) == 1)
- 			continue;
- 
- 		/* Support physical width multiple of 8bit */
--		format_width = snd_pcm_format_physical_width(i);
-+		format_width = snd_pcm_format_physical_width(format);
- 		if (format_width == 0 || format_width % 8)
- 			continue;
- 
-@@ -581,9 +581,9 @@ static u64 qmc_audio_formats(u8 nb_ts)
- 		if (format_width > chan_width || chan_width % format_width)
- 			continue;
- 
--		formats |= (1ULL << i);
-+		formats_mask |= pcm_format_to_bits(format);
- 	}
--	return formats;
-+	return formats_mask;
  }
  
- static int qmc_audio_dai_parse(struct qmc_audio *qmc_audio, struct device_node *np,
++static struct md_rdev *dereference_rdev_and_rrdev(struct raid10_info *mirror,
++						  struct md_rdev **prrdev)
++{
++	struct md_rdev *rdev, *rrdev;
++
++	rrdev = rcu_dereference(mirror->replacement);
++	/*
++	 * Read replacement first to prevent reading both rdev and
++	 * replacement as NULL during replacement replace rdev.
++	 */
++	smp_mb();
++	rdev = rcu_dereference(mirror->rdev);
++	if (rdev == rrdev)
++		rrdev = NULL;
++
++	*prrdev = rrdev;
++	return rdev;
++}
++
+ static void wait_blocked_dev(struct mddev *mddev, struct r10bio *r10_bio)
+ {
+ 	int i;
+@@ -1464,15 +1483,7 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
+ 		int d = r10_bio->devs[i].devnum;
+ 		struct md_rdev *rdev, *rrdev;
+ 
+-		rrdev = rcu_dereference(conf->mirrors[d].replacement);
+-		/*
+-		 * Read replacement first to prevent reading both rdev and
+-		 * replacement as NULL during replacement replace rdev.
+-		 */
+-		smp_mb();
+-		rdev = rcu_dereference(conf->mirrors[d].rdev);
+-		if (rdev == rrdev)
+-			rrdev = NULL;
++		rdev = dereference_rdev_and_rrdev(&conf->mirrors[d], &rrdev);
+ 		if (rdev && (test_bit(Faulty, &rdev->flags)))
+ 			rdev = NULL;
+ 		if (rrdev && (test_bit(Faulty, &rrdev->flags)))
 -- 
 2.40.1
 
