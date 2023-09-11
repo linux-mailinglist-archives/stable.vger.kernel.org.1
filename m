@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 381A079BBAA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7160079B7D8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:36 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348230AbjIKV2r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37858 "EHLO
+        id S240995AbjIKVEm (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:42 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238396AbjIKNz3 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:29 -0400
+        with ESMTP id S239741AbjIKO1l (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 77B76FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE355C433C8;
-        Mon, 11 Sep 2023 13:55:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CFA33F0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:27:36 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 257F5C433C8;
+        Mon, 11 Sep 2023 14:27:35 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440523;
-        bh=oI+x22Ke9g5xe4/rHHClkOUfnjUMuQxveCdYR0WXIRo=;
+        s=korg; t=1694442456;
+        bh=zIPChE5Glg8R6EhGwl/Q3FaPyEmUAdzoNBZNMrHNQ5A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=uM12F9OmpCQtebhF961AebNswPfZXqifcvwL++NPW8VOYQoTytjeADnXHU0qftgm+
-         Zqs2iFivo6rym95+XSpYu76B1YmqmYzkxwF2KDX94ZBAB0qnkqfssmeedUnDHGDqYA
-         vVGrDVTHoLc38wYf40KDw1FO6etnQKK9y+Bz+Zdg=
+        b=0wgqkBxs4aA4eVPWyZlslcGwEHPWHFu4gFFzjULuBV0SFCc7kzPatjlPXPP9HgtPW
+         ApIOKw8IEnNYgSrPeBjyLXYbMJWLf4b8G1Af+ArqnIzPZFzdEjKHUwcgKIUK5uTO+C
+         xqPpzt5tI6g0ysiMXib9fQIQ/wQEsObzpQOvZGUo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Daniel Borkmann <daniel@iogearbox.net>,
-        Joe Stringer <joe@cilium.io>,
-        Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Lorenz Bauer <lmb@isovalent.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev, Takashi Iwai <tiwai@suse.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 092/739] bpf, net: Support SO_REUSEPORT sockets with bpf_sk_assign
+Subject: [PATCH 6.4 032/737] ALSA: usb-audio: Add quirk for Microsoft Modern Wireless Headset
 Date:   Mon, 11 Sep 2023 15:38:11 +0200
-Message-ID: <20230911134653.673625252@linuxfoundation.org>
+Message-ID: <20230911134651.299958414@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,334 +49,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenz Bauer <lmb@isovalent.com>
+From: Takashi Iwai <tiwai@suse.de>
 
-[ Upstream commit 9c02bec95954252c3c01bfbb3f7560e0b95ca955 ]
+[ Upstream commit 3da435063777f8d861ba5a165344e3f75f839357 ]
 
-Currently the bpf_sk_assign helper in tc BPF context refuses SO_REUSEPORT
-sockets. This means we can't use the helper to steer traffic to Envoy,
-which configures SO_REUSEPORT on its sockets. In turn, we're blocked
-from removing TPROXY from our setup.
+Microsoft Modern Wireless Headset (appearing on the host as "Microsoft
+USB Link") has a playback and a capture mixer volume/switch, but they
+are fairly broken.  The descriptor reports wrong dB ranges for
+playback, and the capture volume/switch don't influence on the actual
+recording at all.  Moreover, there seem instabilities in the
+connection, and at best, we should disable the runtime PM.
 
-The reason that bpf_sk_assign refuses such sockets is that the
-bpf_sk_lookup helpers don't execute SK_REUSEPORT programs. Instead,
-one of the reuseport sockets is selected by hash. This could cause
-dispatch to the "wrong" socket:
+So this ended up with a quirk entry for:
+- Correct the playback dB range;
+  I picked up some reasonable values but it's a guess work
+- Disable the capture mixer;
+  it's completely useless and confuses PA/PW
+- Suppress get-sample-rate, apply the delay for message handling,
+  and suppress the auto-suspend
 
-    sk = bpf_sk_lookup_tcp(...) // select SO_REUSEPORT by hash
-    bpf_sk_assign(skb, sk) // SK_REUSEPORT wasn't executed
+The behavior of the wheel control on the headset is somehow flaky,
+too, but it's an issue of HID.
 
-Fixing this isn't as simple as invoking SK_REUSEPORT from the lookup
-helpers unfortunately. In the tc context, L2 headers are at the start
-of the skb, while SK_REUSEPORT expects L3 headers instead.
-
-Instead, we execute the SK_REUSEPORT program when the assigned socket
-is pulled out of the skb, further up the stack. This creates some
-trickiness with regards to refcounting as bpf_sk_assign will put both
-refcounted and RCU freed sockets in skb->sk. reuseport sockets are RCU
-freed. We can infer that the sk_assigned socket is RCU freed if the
-reuseport lookup succeeds, but convincing yourself of this fact isn't
-straight forward. Therefore we defensively check refcounting on the
-sk_assign sock even though it's probably not required in practice.
-
-Fixes: 8e368dc72e86 ("bpf: Fix use of sk->sk_reuseport from sk_assign")
-Fixes: cf7fbe660f2d ("bpf: Add socket assign support")
-Co-developed-by: Daniel Borkmann <daniel@iogearbox.net>
-Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
-Cc: Joe Stringer <joe@cilium.io>
-Link: https://lore.kernel.org/bpf/CACAyw98+qycmpQzKupquhkxbvWK4OFyDuuLMBNROnfWMZxUWeA@mail.gmail.com/
-Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
-Link: https://lore.kernel.org/r/20230720-so-reuseport-v6-7-7021b683cdae@isovalent.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Link: https://bugzilla.suse.com/show_bug.cgi?id=1207129
+Link: https://lore.kernel.org/r/20230725092057.15115-1-tiwai@suse.de
+Signed-off-by: Takashi Iwai <tiwai@suse.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet6_hashtables.h | 56 +++++++++++++++++++++++++++++++---
- include/net/inet_hashtables.h  | 49 +++++++++++++++++++++++++++--
- include/net/sock.h             |  7 +++--
- include/uapi/linux/bpf.h       |  3 --
- net/core/filter.c              |  2 --
- net/ipv4/udp.c                 |  8 +++--
- net/ipv6/udp.c                 |  8 +++--
- tools/include/uapi/linux/bpf.h |  3 --
- 8 files changed, 115 insertions(+), 21 deletions(-)
+ sound/usb/mixer_maps.c | 14 ++++++++++++++
+ sound/usb/quirks.c     |  3 +++
+ 2 files changed, 17 insertions(+)
 
-diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
-index f89320b6fee31..475e672b4facc 100644
---- a/include/net/inet6_hashtables.h
-+++ b/include/net/inet6_hashtables.h
-@@ -94,6 +94,46 @@ static inline struct sock *__inet6_lookup(struct net *net,
- 				     daddr, hnum, dif, sdif);
- }
+diff --git a/sound/usb/mixer_maps.c b/sound/usb/mixer_maps.c
+index f4bd1e8ae4b6c..23260aa1919d3 100644
+--- a/sound/usb/mixer_maps.c
++++ b/sound/usb/mixer_maps.c
+@@ -374,6 +374,15 @@ static const struct usbmix_name_map corsair_virtuoso_map[] = {
+ 	{ 0 }
+ };
  
-+static inline
-+struct sock *inet6_steal_sock(struct net *net, struct sk_buff *skb, int doff,
-+			      const struct in6_addr *saddr, const __be16 sport,
-+			      const struct in6_addr *daddr, const __be16 dport,
-+			      bool *refcounted, inet6_ehashfn_t *ehashfn)
-+{
-+	struct sock *sk, *reuse_sk;
-+	bool prefetched;
++/* Microsoft USB Link headset */
++/* a guess work: raw playback volume values are from 2 to 129 */
++static const struct usbmix_dB_map ms_usb_link_dB = { -3225, 0, true };
++static const struct usbmix_name_map ms_usb_link_map[] = {
++	{ 9, NULL, .dB = &ms_usb_link_dB },
++	{ 10, NULL }, /* Headset Capture volume; seems non-working, disabled */
++	{ 0 }   /* terminator */
++};
 +
-+	sk = skb_steal_sock(skb, refcounted, &prefetched);
-+	if (!sk)
-+		return NULL;
-+
-+	if (!prefetched)
-+		return sk;
-+
-+	if (sk->sk_protocol == IPPROTO_TCP) {
-+		if (sk->sk_state != TCP_LISTEN)
-+			return sk;
-+	} else if (sk->sk_protocol == IPPROTO_UDP) {
-+		if (sk->sk_state != TCP_CLOSE)
-+			return sk;
-+	} else {
-+		return sk;
-+	}
-+
-+	reuse_sk = inet6_lookup_reuseport(net, sk, skb, doff,
-+					  saddr, sport, daddr, ntohs(dport),
-+					  ehashfn);
-+	if (!reuse_sk)
-+		return sk;
-+
-+	/* We've chosen a new reuseport sock which is never refcounted. This
-+	 * implies that sk also isn't refcounted.
-+	 */
-+	WARN_ON_ONCE(*refcounted);
-+
-+	return reuse_sk;
-+}
-+
- static inline struct sock *__inet6_lookup_skb(struct inet_hashinfo *hashinfo,
- 					      struct sk_buff *skb, int doff,
- 					      const __be16 sport,
-@@ -101,14 +141,20 @@ static inline struct sock *__inet6_lookup_skb(struct inet_hashinfo *hashinfo,
- 					      int iif, int sdif,
- 					      bool *refcounted)
- {
--	struct sock *sk = skb_steal_sock(skb, refcounted);
--
-+	struct net *net = dev_net(skb_dst(skb)->dev);
-+	const struct ipv6hdr *ip6h = ipv6_hdr(skb);
-+	struct sock *sk;
-+
-+	sk = inet6_steal_sock(net, skb, doff, &ip6h->saddr, sport, &ip6h->daddr, dport,
-+			      refcounted, inet6_ehashfn);
-+	if (IS_ERR(sk))
-+		return NULL;
- 	if (sk)
- 		return sk;
+ /* ASUS ROG Zenith II with Realtek ALC1220-VB */
+ static const struct usbmix_name_map asus_zenith_ii_map[] = {
+ 	{ 19, NULL, 12 }, /* FU, Input Gain Pad - broken response, disabled */
+@@ -668,6 +677,11 @@ static const struct usbmix_ctl_map usbmix_ctl_maps[] = {
+ 		.id = USB_ID(0x1395, 0x0025),
+ 		.map = sennheiser_pc8_map,
+ 	},
++	{
++		/* Microsoft USB Link headset */
++		.id = USB_ID(0x045e, 0x083c),
++		.map = ms_usb_link_map,
++	},
+ 	{ 0 } /* terminator */
+ };
  
--	return __inet6_lookup(dev_net(skb_dst(skb)->dev), hashinfo, skb,
--			      doff, &ipv6_hdr(skb)->saddr, sport,
--			      &ipv6_hdr(skb)->daddr, ntohs(dport),
-+	return __inet6_lookup(net, hashinfo, skb,
-+			      doff, &ip6h->saddr, sport,
-+			      &ip6h->daddr, ntohs(dport),
- 			      iif, sdif, refcounted);
- }
- 
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index ddfa2e67fdb51..a1b8eb147ce73 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -442,6 +442,46 @@ static inline struct sock *inet_lookup(struct net *net,
- 	return sk;
- }
- 
-+static inline
-+struct sock *inet_steal_sock(struct net *net, struct sk_buff *skb, int doff,
-+			     const __be32 saddr, const __be16 sport,
-+			     const __be32 daddr, const __be16 dport,
-+			     bool *refcounted, inet_ehashfn_t *ehashfn)
-+{
-+	struct sock *sk, *reuse_sk;
-+	bool prefetched;
-+
-+	sk = skb_steal_sock(skb, refcounted, &prefetched);
-+	if (!sk)
-+		return NULL;
-+
-+	if (!prefetched)
-+		return sk;
-+
-+	if (sk->sk_protocol == IPPROTO_TCP) {
-+		if (sk->sk_state != TCP_LISTEN)
-+			return sk;
-+	} else if (sk->sk_protocol == IPPROTO_UDP) {
-+		if (sk->sk_state != TCP_CLOSE)
-+			return sk;
-+	} else {
-+		return sk;
-+	}
-+
-+	reuse_sk = inet_lookup_reuseport(net, sk, skb, doff,
-+					 saddr, sport, daddr, ntohs(dport),
-+					 ehashfn);
-+	if (!reuse_sk)
-+		return sk;
-+
-+	/* We've chosen a new reuseport sock which is never refcounted. This
-+	 * implies that sk also isn't refcounted.
-+	 */
-+	WARN_ON_ONCE(*refcounted);
-+
-+	return reuse_sk;
-+}
-+
- static inline struct sock *__inet_lookup_skb(struct inet_hashinfo *hashinfo,
- 					     struct sk_buff *skb,
- 					     int doff,
-@@ -450,13 +490,18 @@ static inline struct sock *__inet_lookup_skb(struct inet_hashinfo *hashinfo,
- 					     const int sdif,
- 					     bool *refcounted)
- {
--	struct sock *sk = skb_steal_sock(skb, refcounted);
-+	struct net *net = dev_net(skb_dst(skb)->dev);
- 	const struct iphdr *iph = ip_hdr(skb);
-+	struct sock *sk;
- 
-+	sk = inet_steal_sock(net, skb, doff, iph->saddr, sport, iph->daddr, dport,
-+			     refcounted, inet_ehashfn);
-+	if (IS_ERR(sk))
-+		return NULL;
- 	if (sk)
- 		return sk;
- 
--	return __inet_lookup(dev_net(skb_dst(skb)->dev), hashinfo, skb,
-+	return __inet_lookup(net, hashinfo, skb,
- 			     doff, iph->saddr, sport,
- 			     iph->daddr, dport, inet_iif(skb), sdif,
- 			     refcounted);
-diff --git a/include/net/sock.h b/include/net/sock.h
-index e8927f2d47a3c..11d503417591e 100644
---- a/include/net/sock.h
-+++ b/include/net/sock.h
-@@ -2822,20 +2822,23 @@ sk_is_refcounted(struct sock *sk)
-  * skb_steal_sock - steal a socket from an sk_buff
-  * @skb: sk_buff to steal the socket from
-  * @refcounted: is set to true if the socket is reference-counted
-+ * @prefetched: is set to true if the socket was assigned from bpf
-  */
- static inline struct sock *
--skb_steal_sock(struct sk_buff *skb, bool *refcounted)
-+skb_steal_sock(struct sk_buff *skb, bool *refcounted, bool *prefetched)
- {
- 	if (skb->sk) {
- 		struct sock *sk = skb->sk;
- 
- 		*refcounted = true;
--		if (skb_sk_is_prefetched(skb))
-+		*prefetched = skb_sk_is_prefetched(skb);
-+		if (*prefetched)
- 			*refcounted = sk_is_refcounted(sk);
- 		skb->destructor = NULL;
- 		skb->sk = NULL;
- 		return sk;
- 	}
-+	*prefetched = false;
- 	*refcounted = false;
- 	return NULL;
- }
-diff --git a/include/uapi/linux/bpf.h b/include/uapi/linux/bpf.h
-index 60a9d59beeabb..d8cbae8220256 100644
---- a/include/uapi/linux/bpf.h
-+++ b/include/uapi/linux/bpf.h
-@@ -4159,9 +4159,6 @@ union bpf_attr {
-  *		**-EOPNOTSUPP** if the operation is not supported, for example
-  *		a call from outside of TC ingress.
-  *
-- *		**-ESOCKTNOSUPPORT** if the socket type is not supported
-- *		(reuseport).
-- *
-  * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u64 flags)
-  *	Description
-  *		Helper is overloaded depending on BPF program type. This
-diff --git a/net/core/filter.c b/net/core/filter.c
-index f1a5775400658..454da3538965a 100644
---- a/net/core/filter.c
-+++ b/net/core/filter.c
-@@ -7350,8 +7350,6 @@ BPF_CALL_3(bpf_sk_assign, struct sk_buff *, skb, struct sock *, sk, u64, flags)
- 		return -EOPNOTSUPP;
- 	if (unlikely(dev_net(skb->dev) != sock_net(sk)))
- 		return -ENETUNREACH;
--	if (unlikely(sk_fullsock(sk) && sk->sk_reuseport))
--		return -ESOCKTNOSUPPORT;
- 	if (sk_unhashed(sk))
- 		return -EOPNOTSUPP;
- 	if (sk_is_refcounted(sk) &&
-diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
-index fd06e0e34bda3..f8b0fecc10659 100644
---- a/net/ipv4/udp.c
-+++ b/net/ipv4/udp.c
-@@ -2414,7 +2414,11 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 	if (udp4_csum_init(skb, uh, proto))
- 		goto csum_error;
- 
--	sk = skb_steal_sock(skb, &refcounted);
-+	sk = inet_steal_sock(net, skb, sizeof(struct udphdr), saddr, uh->source, daddr, uh->dest,
-+			     &refcounted, udp_ehashfn);
-+	if (IS_ERR(sk))
-+		goto no_sk;
-+
- 	if (sk) {
- 		struct dst_entry *dst = skb_dst(skb);
- 		int ret;
-@@ -2435,7 +2439,7 @@ int __udp4_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 	sk = __udp4_lib_lookup_skb(skb, uh->source, uh->dest, udptable);
- 	if (sk)
- 		return udp_unicast_rcv_skb(sk, skb, uh);
--
-+no_sk:
- 	if (!xfrm4_policy_check(NULL, XFRM_POLICY_IN, skb))
- 		goto drop;
- 	nf_reset_ct(skb);
-diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
-index a4b124e4bd3b4..82fdc69ee0813 100644
---- a/net/ipv6/udp.c
-+++ b/net/ipv6/udp.c
-@@ -992,7 +992,11 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 		goto csum_error;
- 
- 	/* Check if the socket is already available, e.g. due to early demux */
--	sk = skb_steal_sock(skb, &refcounted);
-+	sk = inet6_steal_sock(net, skb, sizeof(struct udphdr), saddr, uh->source, daddr, uh->dest,
-+			      &refcounted, udp6_ehashfn);
-+	if (IS_ERR(sk))
-+		goto no_sk;
-+
- 	if (sk) {
- 		struct dst_entry *dst = skb_dst(skb);
- 		int ret;
-@@ -1026,7 +1030,7 @@ int __udp6_lib_rcv(struct sk_buff *skb, struct udp_table *udptable,
- 			goto report_csum_error;
- 		return udp6_unicast_rcv_skb(sk, skb, uh);
- 	}
--
-+no_sk:
- 	reason = SKB_DROP_REASON_NO_SOCKET;
- 
- 	if (!uh->check)
-diff --git a/tools/include/uapi/linux/bpf.h b/tools/include/uapi/linux/bpf.h
-index 60a9d59beeabb..d8cbae8220256 100644
---- a/tools/include/uapi/linux/bpf.h
-+++ b/tools/include/uapi/linux/bpf.h
-@@ -4159,9 +4159,6 @@ union bpf_attr {
-  *		**-EOPNOTSUPP** if the operation is not supported, for example
-  *		a call from outside of TC ingress.
-  *
-- *		**-ESOCKTNOSUPPORT** if the socket type is not supported
-- *		(reuseport).
-- *
-  * long bpf_sk_assign(struct bpf_sk_lookup *ctx, struct bpf_sock *sk, u64 flags)
-  *	Description
-  *		Helper is overloaded depending on BPF program type. This
+diff --git a/sound/usb/quirks.c b/sound/usb/quirks.c
+index 6cf55b7f7a041..d4a7ffef82194 100644
+--- a/sound/usb/quirks.c
++++ b/sound/usb/quirks.c
+@@ -2011,6 +2011,9 @@ static const struct usb_audio_quirk_flags_table quirk_flags_table[] = {
+ 		   QUIRK_FLAG_IGNORE_CTL_ERROR),
+ 	DEVICE_FLG(0x041e, 0x4080, /* Creative Live Cam VF0610 */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE),
++	DEVICE_FLG(0x045e, 0x083c, /* MS USB Link headset */
++		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_CTL_MSG_DELAY |
++		   QUIRK_FLAG_DISABLE_AUTOSUSPEND),
+ 	DEVICE_FLG(0x046d, 0x084c, /* Logitech ConferenceCam Connect */
+ 		   QUIRK_FLAG_GET_SAMPLE_RATE | QUIRK_FLAG_CTL_MSG_DELAY_1M),
+ 	DEVICE_FLG(0x046d, 0x0991, /* Logitech QuickCam Pro */
 -- 
 2.40.1
 
