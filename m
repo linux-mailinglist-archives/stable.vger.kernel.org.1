@@ -2,35 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 421E879BF95
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B065E79B940
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233794AbjIKUwm (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43080 "EHLO
+        id S234351AbjIKUwO (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:14 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241772AbjIKPOI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:08 -0400
+        with ESMTP id S241774AbjIKPON (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 43087FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 82CAEC433C9;
-        Mon, 11 Sep 2023 15:14:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B1644FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:09 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 08BCEC433C9;
+        Mon, 11 Sep 2023 15:14:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445243;
-        bh=3dyd74uCtZaQGmIJNWNIlG/mut3HJTJcpSlKZemfbUw=;
+        s=korg; t=1694445249;
+        bh=m7mZDwt2nfBrLZ+846EaNNi+ShfUfciqNrPA6VfZ40U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ug/i5hGk1a0DCKMiWYdsbMGplJBP7Yh/xiAGkxu7ZSAAMQG9ZWdXCYb+Ir89m1zEq
-         jzCdG+OIemdR/a/pfqLas2Jje3rZCsFzOCAo3cZVjDqq4mE6cT7m7NBABcRNve/ygW
-         uY5aIj/bWamJiUoQzAYv5NZJ8GVmOt2ja7F0xIAo=
+        b=PfI6BLTZuapWVmm2B/NvtbE54BJQMpTiz03TR7o89+JnTShUeZ1WffEhCjRQXzK1K
+         2WQ5OqNg5JfX4mouFVdxJVjfgEmywqaX4wY4iebHoCPTxHzgiAIEf/qQvXIn705zR4
+         S+9q1y4L4uxwN80ge9JNsdGJgxEHfmcWGeEJEeoU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Li Nan <linan122@huawei.com>,
         Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 278/600] md/raid10: factor out dereference_rdev_and_rrdev()
-Date:   Mon, 11 Sep 2023 15:45:11 +0200
-Message-ID: <20230911134641.814894199@linuxfoundation.org>
+Subject: [PATCH 6.1 279/600] md/raid10: use dereference_rdev_and_rrdev() to get devices
+Date:   Mon, 11 Sep 2023 15:45:12 +0200
+Message-ID: <20230911134641.843302250@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -55,70 +55,55 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Li Nan <linan122@huawei.com>
 
-[ Upstream commit b99f8fd2d91eb734f13098aa1cf337edaca454b7 ]
+[ Upstream commit 673643490b9a0eb3b25633abe604f62b8f63dba1 ]
 
-Factor out a helper to get 'rdev' and 'replacement' from config->mirrors.
-Just to make code cleaner and prepare to fix the bug of io loss while
-'replacement' replace 'rdev'.
+Commit 2ae6aaf76912 ("md/raid10: fix io loss while replacement replace
+rdev") reads replacement first to prevent io loss. However, there are same
+issue in wait_blocked_dev() and raid10_handle_discard(), too. Fix it by
+using dereference_rdev_and_rrdev() to get devices.
 
-There is no functional change.
-
+Fixes: d30588b2731f ("md/raid10: improve raid10 discard request")
+Fixes: f2e7e269a752 ("md/raid10: pull the code that wait for blocked dev into one function")
 Signed-off-by: Li Nan <linan122@huawei.com>
-Link: https://lore.kernel.org/r/20230701080529.2684932-3-linan666@huaweicloud.com
+Link: https://lore.kernel.org/r/20230701080529.2684932-4-linan666@huaweicloud.com
 Signed-off-by: Song Liu <song@kernel.org>
-Stable-dep-of: 673643490b9a ("md/raid10: use dereference_rdev_and_rrdev() to get devices")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid10.c | 29 ++++++++++++++++++++---------
- 1 file changed, 20 insertions(+), 9 deletions(-)
+ drivers/md/raid10.c | 13 +++++--------
+ 1 file changed, 5 insertions(+), 8 deletions(-)
 
 diff --git a/drivers/md/raid10.c b/drivers/md/raid10.c
-index d2098fcd6a270..49bb79f48f362 100644
+index 49bb79f48f362..7b318e7e8d459 100644
 --- a/drivers/md/raid10.c
 +++ b/drivers/md/raid10.c
-@@ -1317,6 +1317,25 @@ static void raid10_write_one_disk(struct mddev *mddev, struct r10bio *r10_bio,
- 	}
- }
- 
-+static struct md_rdev *dereference_rdev_and_rrdev(struct raid10_info *mirror,
-+						  struct md_rdev **prrdev)
-+{
-+	struct md_rdev *rdev, *rrdev;
-+
-+	rrdev = rcu_dereference(mirror->replacement);
-+	/*
-+	 * Read replacement first to prevent reading both rdev and
-+	 * replacement as NULL during replacement replace rdev.
-+	 */
-+	smp_mb();
-+	rdev = rcu_dereference(mirror->rdev);
-+	if (rdev == rrdev)
-+		rrdev = NULL;
-+
-+	*prrdev = rrdev;
-+	return rdev;
-+}
-+
- static void wait_blocked_dev(struct mddev *mddev, struct r10bio *r10_bio)
- {
- 	int i;
-@@ -1460,15 +1479,7 @@ static void raid10_write_request(struct mddev *mddev, struct bio *bio,
- 		int d = r10_bio->devs[i].devnum;
- 		struct md_rdev *rdev, *rrdev;
- 
--		rrdev = rcu_dereference(conf->mirrors[d].replacement);
--		/*
--		 * Read replacement first to prevent reading both rdev and
--		 * replacement as NULL during replacement replace rdev.
--		 */
--		smp_mb();
--		rdev = rcu_dereference(conf->mirrors[d].rdev);
+@@ -1346,11 +1346,9 @@ static void wait_blocked_dev(struct mddev *mddev, struct r10bio *r10_bio)
+ 	blocked_rdev = NULL;
+ 	rcu_read_lock();
+ 	for (i = 0; i < conf->copies; i++) {
+-		struct md_rdev *rdev = rcu_dereference(conf->mirrors[i].rdev);
+-		struct md_rdev *rrdev = rcu_dereference(
+-			conf->mirrors[i].replacement);
 -		if (rdev == rrdev)
 -			rrdev = NULL;
-+		rdev = dereference_rdev_and_rrdev(&conf->mirrors[d], &rrdev);
- 		if (rdev && (test_bit(Faulty, &rdev->flags)))
- 			rdev = NULL;
- 		if (rrdev && (test_bit(Faulty, &rrdev->flags)))
++		struct md_rdev *rdev, *rrdev;
++
++		rdev = dereference_rdev_and_rrdev(&conf->mirrors[i], &rrdev);
+ 		if (rdev && unlikely(test_bit(Blocked, &rdev->flags))) {
+ 			atomic_inc(&rdev->nr_pending);
+ 			blocked_rdev = rdev;
+@@ -1786,10 +1784,9 @@ static int raid10_handle_discard(struct mddev *mddev, struct bio *bio)
+ 	 */
+ 	rcu_read_lock();
+ 	for (disk = 0; disk < geo->raid_disks; disk++) {
+-		struct md_rdev *rdev = rcu_dereference(conf->mirrors[disk].rdev);
+-		struct md_rdev *rrdev = rcu_dereference(
+-			conf->mirrors[disk].replacement);
++		struct md_rdev *rdev, *rrdev;
+ 
++		rdev = dereference_rdev_and_rrdev(&conf->mirrors[disk], &rrdev);
+ 		r10_bio->devs[disk].bio = NULL;
+ 		r10_bio->devs[disk].repl_bio = NULL;
+ 
 -- 
 2.40.1
 
