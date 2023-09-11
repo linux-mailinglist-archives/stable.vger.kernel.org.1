@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 4D7C379B1BD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7AFF979B103
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244297AbjIKVIN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36088 "EHLO
+        id S1353921AbjIKVve (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52052 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239978AbjIKOdF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:05 -0400
+        with ESMTP id S239999AbjIKOdb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EF39E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97DB0C433C8;
-        Mon, 11 Sep 2023 14:33:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D74F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 94C13C433C8;
+        Mon, 11 Sep 2023 14:33:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442781;
-        bh=LzN4vyUnuMuUa3eb0ivn+A6Jf2lccXQesQbfr2ixnjo=;
+        s=korg; t=1694442807;
+        bh=A95/oHiPNQFEmEbmuTNK/Jj/OkAfuPmIyCIoNbdNFlw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MqCxjnI+waRIUH6O9lurhfSAQaTpESIppRUqwGuZjzhFuMijUs+Y2m9KMxjb9NeLb
-         ZDb1XZ8F/EKvF5ViQAJJw47EAD+byockqwYvCELbSqL3oZ0MjtXV/J0/ihZxaZ/NaD
-         0oCvJXsPIvUqCQ523qLV4OaYJDNMHuE7O2aRo0xA=
+        b=pULdEaFX0uC3hs8WCjF+vTZqpqrEN6bO3RJzAq5f1pJWNR02c0GfssFt3Bl5WEa6G
+         iBB1s6AsYLeGCbvOC+8Av5WidND1PYYgVTf+xxst8DtY9QUvJfV4SC4UJE6A4B+1qN
+         GgQvkFotvYUj9qHPQjruK4CgIlUsu98KXflzJTu8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Andrii Nakryiko <andrii@kernel.org>,
-        Alexander Lobakin <alobakin@pm.me>,
-        Quentin Monnet <quentin@isovalent.com>,
+        patches@lists.linux.dev, Yafang Shao <laoar.shao@gmail.com>,
+        Yonghong Song <yhs@fb.com>, Jiri Olsa <jolsa@kernel.org>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 145/737] bpftool: Use a local bpf_perf_event_value to fix accessing its fields
-Date:   Mon, 11 Sep 2023 15:40:04 +0200
-Message-ID: <20230911134654.545150471@linuxfoundation.org>
+Subject: [PATCH 6.4 147/737] bpf: Clear the probe_addr for uprobe
+Date:   Mon, 11 Sep 2023 15:40:06 +0200
+Message-ID: <20230911134654.597494992@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,135 +55,75 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Alexander Lobakin <alobakin@pm.me>
+From: Yafang Shao <laoar.shao@gmail.com>
 
-[ Upstream commit 658ac06801315b739774a15796ff06913ef5cad5 ]
+[ Upstream commit 5125e757e62f6c1d5478db4c2b61a744060ddf3f ]
 
-Fix the following error when building bpftool:
+To avoid returning uninitialized or random values when querying the file
+descriptor (fd) and accessing probe_addr, it is necessary to clear the
+variable prior to its use.
 
-  CLANG   profiler.bpf.o
-  CLANG   pid_iter.bpf.o
-skeleton/profiler.bpf.c:18:21: error: invalid application of 'sizeof' to an incomplete type 'struct bpf_perf_event_value'
-        __uint(value_size, sizeof(struct bpf_perf_event_value));
-                           ^     ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helpers.h:13:39: note: expanded from macro '__uint'
-tools/bpf/bpftool/bootstrap/libbpf/include/bpf/bpf_helper_defs.h:7:8: note: forward declaration of 'struct bpf_perf_event_value'
-struct bpf_perf_event_value;
-       ^
-
-struct bpf_perf_event_value is being used in the kernel only when
-CONFIG_BPF_EVENTS is enabled, so it misses a BTF entry then.
-Define struct bpf_perf_event_value___local with the
-`preserve_access_index` attribute inside the pid_iter BPF prog to
-allow compiling on any configs. It is a full mirror of a UAPI
-structure, so is compatible both with and w/o CO-RE.
-bpf_perf_event_read_value() requires a pointer of the original type,
-so a cast is needed.
-
-Fixes: 47c09d6a9f67 ("bpftool: Introduce "prog profile" command")
-Suggested-by: Andrii Nakryiko <andrii@kernel.org>
-Signed-off-by: Alexander Lobakin <alobakin@pm.me>
-Signed-off-by: Quentin Monnet <quentin@isovalent.com>
-Signed-off-by: Andrii Nakryiko <andrii@kernel.org>
-Link: https://lore.kernel.org/bpf/20230707095425.168126-5-quentin@isovalent.com
+Fixes: 41bdc4b40ed6 ("bpf: introduce bpf subcommand BPF_TASK_FD_QUERY")
+Signed-off-by: Yafang Shao <laoar.shao@gmail.com>
+Acked-by: Yonghong Song <yhs@fb.com>
+Acked-by: Jiri Olsa <jolsa@kernel.org>
+Link: https://lore.kernel.org/r/20230709025630.3735-6-laoar.shao@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/bpf/bpftool/skeleton/profiler.bpf.c | 27 ++++++++++++++---------
- 1 file changed, 17 insertions(+), 10 deletions(-)
+ include/linux/trace_events.h | 3 ++-
+ kernel/trace/bpf_trace.c     | 2 +-
+ kernel/trace/trace_uprobe.c  | 3 ++-
+ 3 files changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/tools/bpf/bpftool/skeleton/profiler.bpf.c b/tools/bpf/bpftool/skeleton/profiler.bpf.c
-index ce5b65e07ab10..2f80edc682f11 100644
---- a/tools/bpf/bpftool/skeleton/profiler.bpf.c
-+++ b/tools/bpf/bpftool/skeleton/profiler.bpf.c
-@@ -4,6 +4,12 @@
- #include <bpf/bpf_helpers.h>
- #include <bpf/bpf_tracing.h>
- 
-+struct bpf_perf_event_value___local {
-+	__u64 counter;
-+	__u64 enabled;
-+	__u64 running;
-+} __attribute__((preserve_access_index));
-+
- /* map of perf event fds, num_cpu * num_metric entries */
- struct {
- 	__uint(type, BPF_MAP_TYPE_PERF_EVENT_ARRAY);
-@@ -15,14 +21,14 @@ struct {
- struct {
- 	__uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
- 	__uint(key_size, sizeof(u32));
--	__uint(value_size, sizeof(struct bpf_perf_event_value));
-+	__uint(value_size, sizeof(struct bpf_perf_event_value___local));
- } fentry_readings SEC(".maps");
- 
- /* accumulated readings */
- struct {
- 	__uint(type, BPF_MAP_TYPE_PERCPU_ARRAY);
- 	__uint(key_size, sizeof(u32));
--	__uint(value_size, sizeof(struct bpf_perf_event_value));
-+	__uint(value_size, sizeof(struct bpf_perf_event_value___local));
- } accum_readings SEC(".maps");
- 
- /* sample counts, one per cpu */
-@@ -39,7 +45,7 @@ const volatile __u32 num_metric = 1;
- SEC("fentry/XXX")
- int BPF_PROG(fentry_XXX)
- {
--	struct bpf_perf_event_value *ptrs[MAX_NUM_MATRICS];
-+	struct bpf_perf_event_value___local *ptrs[MAX_NUM_MATRICS];
- 	u32 key = bpf_get_smp_processor_id();
- 	u32 i;
- 
-@@ -53,10 +59,10 @@ int BPF_PROG(fentry_XXX)
+diff --git a/include/linux/trace_events.h b/include/linux/trace_events.h
+index c55fc453e33b5..6a41ad2ca84cc 100644
+--- a/include/linux/trace_events.h
++++ b/include/linux/trace_events.h
+@@ -875,7 +875,8 @@ extern int  perf_uprobe_init(struct perf_event *event,
+ extern void perf_uprobe_destroy(struct perf_event *event);
+ extern int bpf_get_uprobe_info(const struct perf_event *event,
+ 			       u32 *fd_type, const char **filename,
+-			       u64 *probe_offset, bool perf_type_tracepoint);
++			       u64 *probe_offset, u64 *probe_addr,
++			       bool perf_type_tracepoint);
+ #endif
+ extern int  ftrace_profile_set_filter(struct perf_event *event, int event_id,
+ 				     char *filter_str);
+diff --git a/kernel/trace/bpf_trace.c b/kernel/trace/bpf_trace.c
+index a53524f3f7d82..3d8d5c383dfe5 100644
+--- a/kernel/trace/bpf_trace.c
++++ b/kernel/trace/bpf_trace.c
+@@ -2391,7 +2391,7 @@ int bpf_get_perf_event_info(const struct perf_event *event, u32 *prog_id,
+ #ifdef CONFIG_UPROBE_EVENTS
+ 		if (flags & TRACE_EVENT_FL_UPROBE)
+ 			err = bpf_get_uprobe_info(event, fd_type, buf,
+-						  probe_offset,
++						  probe_offset, probe_addr,
+ 						  event->attr.type == PERF_TYPE_TRACEPOINT);
+ #endif
  	}
+diff --git a/kernel/trace/trace_uprobe.c b/kernel/trace/trace_uprobe.c
+index 7b47e9a2c0102..9173fcfc03820 100644
+--- a/kernel/trace/trace_uprobe.c
++++ b/kernel/trace/trace_uprobe.c
+@@ -1416,7 +1416,7 @@ static void uretprobe_perf_func(struct trace_uprobe *tu, unsigned long func,
  
- 	for (i = 0; i < num_metric && i < MAX_NUM_MATRICS; i++) {
--		struct bpf_perf_event_value reading;
-+		struct bpf_perf_event_value___local reading;
- 		int err;
- 
--		err = bpf_perf_event_read_value(&events, key, &reading,
-+		err = bpf_perf_event_read_value(&events, key, (void *)&reading,
- 						sizeof(reading));
- 		if (err)
- 			return 0;
-@@ -68,14 +74,14 @@ int BPF_PROG(fentry_XXX)
+ int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
+ 			const char **filename, u64 *probe_offset,
+-			bool perf_type_tracepoint)
++			u64 *probe_addr, bool perf_type_tracepoint)
+ {
+ 	const char *pevent = trace_event_name(event->tp_event);
+ 	const char *group = event->tp_event->class->system;
+@@ -1433,6 +1433,7 @@ int bpf_get_uprobe_info(const struct perf_event *event, u32 *fd_type,
+ 				    : BPF_FD_TYPE_UPROBE;
+ 	*filename = tu->filename;
+ 	*probe_offset = tu->offset;
++	*probe_addr = 0;
+ 	return 0;
  }
- 
- static inline void
--fexit_update_maps(u32 id, struct bpf_perf_event_value *after)
-+fexit_update_maps(u32 id, struct bpf_perf_event_value___local *after)
- {
--	struct bpf_perf_event_value *before, diff;
-+	struct bpf_perf_event_value___local *before, diff;
- 
- 	before = bpf_map_lookup_elem(&fentry_readings, &id);
- 	/* only account samples with a valid fentry_reading */
- 	if (before && before->counter) {
--		struct bpf_perf_event_value *accum;
-+		struct bpf_perf_event_value___local *accum;
- 
- 		diff.counter = after->counter - before->counter;
- 		diff.enabled = after->enabled - before->enabled;
-@@ -93,7 +99,7 @@ fexit_update_maps(u32 id, struct bpf_perf_event_value *after)
- SEC("fexit/XXX")
- int BPF_PROG(fexit_XXX)
- {
--	struct bpf_perf_event_value readings[MAX_NUM_MATRICS];
-+	struct bpf_perf_event_value___local readings[MAX_NUM_MATRICS];
- 	u32 cpu = bpf_get_smp_processor_id();
- 	u32 i, zero = 0;
- 	int err;
-@@ -102,7 +108,8 @@ int BPF_PROG(fexit_XXX)
- 	/* read all events before updating the maps, to reduce error */
- 	for (i = 0; i < num_metric && i < MAX_NUM_MATRICS; i++) {
- 		err = bpf_perf_event_read_value(&events, cpu + i * num_cpu,
--						readings + i, sizeof(*readings));
-+						(void *)(readings + i),
-+						sizeof(*readings));
- 		if (err)
- 			return 0;
- 	}
+ #endif	/* CONFIG_PERF_EVENTS */
 -- 
 2.40.1
 
