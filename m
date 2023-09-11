@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A2FF479AD5F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 77C0779AC91
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344819AbjIKVOu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33980 "EHLO
+        id S237854AbjIKVa4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241444AbjIKPIx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:53 -0400
+        with ESMTP id S240337AbjIKOlx (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:53 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3B080FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 854C0C433C7;
-        Mon, 11 Sep 2023 15:08:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1B731CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5DB07C433C8;
+        Mon, 11 Sep 2023 14:41:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444928;
-        bh=1GIaz/IEcRpgLG3Pfi5JXFIDJEvfo5vczdcj/WRD6NY=;
+        s=korg; t=1694443307;
+        bh=JOMM9/PmNPNfWwuMo89FaO7n4vpxfj1vxWKNNWWOflw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q5i/nzmTiNeZNJl4uXnlbPkqXw8WZeXrAQ0OKAtXv6VBDuwXO50XZMJIKxO9FZh/f
-         MlXSMsptE0lC5s3Z7j2xxk8gWNmUBoOP0M9TDNVy+TiWVUJ5nbd9N6eSQMmlhKsYJO
-         G4GZboNFnV0GuMnqUTtxxdVZR88tCOelOBsAE97M=
+        b=Wkzc9cAUFTqXSQutGqcSIZwVCegIMYgGfZdhh+Jnt5BBEdbcEQ4gKeXX4ZlePA/wU
+         s/+JWcF+/8lbqd/erLqSYaCcopNuuOf57hBdC52gacw8tQs6S4DqFfCBFngcRVnu7u
+         TA1NPCvqKKOCRajQv0N8PJqHjgDVP4Oef5ap9Rz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 127/600] s390/paes: fix PKEY_TYPE_EP11_AES handling for secure keyblobs
-Date:   Mon, 11 Sep 2023 15:42:40 +0200
-Message-ID: <20230911134637.366519692@linuxfoundation.org>
+Subject: [PATCH 6.4 303/737] ARM: dts: stm32: Add missing detach mailbox for Odyssey SoM
+Date:   Mon, 11 Sep 2023 15:42:42 +0200
+Message-ID: <20230911134659.015092157@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit cba33db3fc4dbf2e54294b0e499d2335a3a00d78 ]
+[ Upstream commit 966f04a89d77548e673de2c400abe0b2cf5c15db ]
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES securekey blobs as a
-supplement to the PKEY_TYPE_EP11 (which won't work in environments
-with session-bound keys). This new keyblobs has a different maximum
-size, so fix paes crypto module to accept also these larger keyblobs.
+Add missing "detach" mailbox to this board to permit the CPU to inform
+the remote processor on a detach. This signal allows the remote processor
+firmware to stop IPC communication and to reinitialize the resources for
+a re-attach.
 
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Without this mailbox, detach is not possible and kernel log contains the
+following warning to, so make sure all the STM32MP15xx platform DTs are
+in sync regarding the mailboxes to fix the detach issue and the warning:
+"
+stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
+"
+
+Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/crypto/paes_s390.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/s390/crypto/paes_s390.c b/arch/s390/crypto/paes_s390.c
-index a279b7d23a5e2..621322eb0e681 100644
---- a/arch/s390/crypto/paes_s390.c
-+++ b/arch/s390/crypto/paes_s390.c
-@@ -35,7 +35,7 @@
-  * and padding is also possible, the limits need to be generous.
-  */
- #define PAES_MIN_KEYSIZE 16
--#define PAES_MAX_KEYSIZE 320
-+#define PAES_MAX_KEYSIZE MAXEP11AESKEYBLOBSIZE
- 
- static u8 *ctrblk;
- static DEFINE_MUTEX(ctrblk_lock);
+diff --git a/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi b/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
+index e22871dc580c8..cf74852514906 100644
+--- a/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
++++ b/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
+@@ -230,8 +230,8 @@ &iwdg2 {
+ &m4_rproc {
+ 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
+ 			<&vdev0vring1>, <&vdev0buffer>;
+-	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
+-	mbox-names = "vq0", "vq1", "shutdown";
++	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
++	mbox-names = "vq0", "vq1", "shutdown", "detach";
+ 	interrupt-parent = <&exti>;
+ 	interrupts = <68 1>;
+ 	status = "okay";
 -- 
 2.40.1
 
