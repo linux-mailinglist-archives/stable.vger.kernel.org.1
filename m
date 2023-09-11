@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6CFAD79C057
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3947279BD39
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S232724AbjIKWrn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:47:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52524 "EHLO
+        id S1344333AbjIKVNx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57844 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239591AbjIKOYN (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:13 -0400
+        with ESMTP id S242071AbjIKPVf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3068EDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:09 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 788A8C433C8;
-        Mon, 11 Sep 2023 14:24:08 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65AE2BE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A7B88C433C9;
+        Mon, 11 Sep 2023 15:21:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442248;
-        bh=vpRa5oAZ88UFx1KSM94pXMrh7Mx29kKq7yHjq2q12PQ=;
+        s=korg; t=1694445691;
+        bh=VdCOEZVsrUEH8b48GhUb+mKrAddOcLNQeYTcyJMUb18=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2mPESp63BSH0YBIUucmwVKYrrHOWqPmHnw7aa7e1UbcMmnDHfUnaKwJN+qWMpvbsX
-         e4KConRWPULooz01OMsI3HD5EdEZqcx0iTD/YUYPZYRGTNEr94xaWGw0de/nkcakxB
-         tO6wUXeTD41AeFJDd65p0zCU1O3ndF3146QDjEDA=
+        b=wMVW+FURmrtRDGTaRnErB8BiJ+JH9SM3kwiFcfKmfeqlAgXS0ehjWVe2IiSnQy4DS
+         yjcdSb+PtidUKlomnvAg4zG/LjFH3HAqX0/mEIsmUz2rSaSp25DriFkVXeE96uM/jn
+         N2rs2+EybYYu5YrSCO++o7dx3AjACtelT5nC8NV0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Frank Li <Frank.Li@nxp.com>,
-        Miquel Raynal <miquel.raynal@bootlin.com>,
-        Alexandre Belloni <alexandre.belloni@bootlin.com>
-Subject: [PATCH 6.5 672/739] i3c: master: svc: fix probe failure when no i3c device exist
+        patches@lists.linux.dev, Zenghui Yu <yuzenghui@huawei.com>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Kevin Tian <kevin.tian@intel.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 438/600] driver core: Call dma_cleanup() on the test_remove path
 Date:   Mon, 11 Sep 2023 15:47:51 +0200
-Message-ID: <20230911134709.874593468@linuxfoundation.org>
+Message-ID: <20230911134646.580663727@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,70 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Frank Li <Frank.Li@nxp.com>
+From: Jason Gunthorpe <jgg@nvidia.com>
 
-commit 6e13d6528be2f7e801af63c8153b87293f25d736 upstream.
+[ Upstream commit f429378a9bf84d79a7e2cae05d2e3384cf7d68ba ]
 
-I3C masters are expected to support hot-join. This means at initialization
-time we might not yet discover any device and this should not be treated
-as a fatal error.
+When test_remove is enabled really_probe() does not properly pair
+dma_configure() with dma_remove(), it will end up calling dma_configure()
+twice. This corrupts the owner_cnt and renders the group unusable with
+VFIO/etc.
 
-During the DAA procedure which happens at probe time, if no device has
-joined, all CCC will be NACKed (from a bus perspective). This leads to an
-early return with an error code which fails the probe of the master.
+Add the missing cleanup before going back to re_probe.
 
-Let's avoid this by just telling the core through an I3C_ERROR_M2
-return command code that no device was discovered, which is a valid
-situation. This way the master will no longer bail out and fail to probe
-for a wrong reason.
-
-Cc: stable@vger.kernel.org
-Fixes: dd3c52846d59 ("i3c: master: svc: Add Silvaco I3C master driver")
-Signed-off-by: Frank Li <Frank.Li@nxp.com>
-Acked-by: Miquel Raynal <miquel.raynal@bootlin.com>
-Link: https://lore.kernel.org/r/20230831141324.2841525-1-Frank.Li@nxp.com
-Signed-off-by: Alexandre Belloni <alexandre.belloni@bootlin.com>
+Fixes: 25f3bcfc54bc ("driver core: Add dma_cleanup callback in bus_type")
+Reported-by: Zenghui Yu <yuzenghui@huawei.com>
+Tested-by: Zenghui Yu <yuzenghui@huawei.com>
+Closes: https://lore.kernel.org/all/6472f254-c3c4-8610-4a37-8d9dfdd54ce8@huawei.com/
+Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/0-v2-4deed94e283e+40948-really_probe_dma_cleanup_jgg@nvidia.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/i3c/master/svc-i3c-master.c |   14 ++++++++++++--
- 1 file changed, 12 insertions(+), 2 deletions(-)
+ drivers/base/dd.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/i3c/master/svc-i3c-master.c
-+++ b/drivers/i3c/master/svc-i3c-master.c
-@@ -789,6 +789,10 @@ static int svc_i3c_master_do_daa_locked(
- 				 */
- 				break;
- 			} else if (SVC_I3C_MSTATUS_NACKED(reg)) {
-+				/* No I3C devices attached */
-+				if (dev_nb == 0)
-+					break;
-+
- 				/*
- 				 * A slave device nacked the address, this is
- 				 * allowed only once, DAA will be stopped and
-@@ -1263,11 +1267,17 @@ static int svc_i3c_master_send_ccc_cmd(s
- {
- 	struct svc_i3c_master *master = to_svc_i3c_master(m);
- 	bool broadcast = cmd->id < 0x80;
-+	int ret;
+diff --git a/drivers/base/dd.c b/drivers/base/dd.c
+index 97ab1468a8760..380a53b6aee81 100644
+--- a/drivers/base/dd.c
++++ b/drivers/base/dd.c
+@@ -674,6 +674,8 @@ static int really_probe(struct device *dev, struct device_driver *drv)
  
- 	if (broadcast)
--		return svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
-+		ret = svc_i3c_master_send_bdcast_ccc_cmd(master, cmd);
- 	else
--		return svc_i3c_master_send_direct_ccc_cmd(master, cmd);
-+		ret = svc_i3c_master_send_direct_ccc_cmd(master, cmd);
-+
-+	if (ret)
-+		cmd->err = I3C_ERROR_M2;
-+
-+	return ret;
- }
+ 		device_remove(dev);
+ 		driver_sysfs_remove(dev);
++		if (dev->bus && dev->bus->dma_cleanup)
++			dev->bus->dma_cleanup(dev);
+ 		device_unbind_cleanup(dev);
  
- static int svc_i3c_master_priv_xfers(struct i3c_dev_desc *dev,
+ 		goto re_probe;
+-- 
+2.40.1
+
 
 
