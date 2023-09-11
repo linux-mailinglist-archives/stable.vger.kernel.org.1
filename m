@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5380D79BC51
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 00FCC79B618
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S245711AbjIKVLb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:11:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45102 "EHLO
+        id S1355258AbjIKV5j (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57270 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242171AbjIKPYI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:08 -0400
+        with ESMTP id S240946AbjIKO5n (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:43 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9B395D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:04 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDCD0C433C7;
-        Mon, 11 Sep 2023 15:24:03 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CB5F4E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1F30EC433CA;
+        Mon, 11 Sep 2023 14:57:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445844;
-        bh=uPXCkUqXnEJvJ7Wi1I8WxBUJm+YcfL044ZeJwZdCVu0=;
+        s=korg; t=1694444259;
+        bh=/kpNMW48JpbR8w1YiJc+WFmEQOnM0KPTZTsAjJxjehA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TcvfUC10tD4mV0S3RDYWPCiJvUoS+I1AvCXC+0UOipaaj1fZ1DhHsd2PNJAgQn25v
-         ODBqhYMMHtWgJKfM6/j2vFWoUNgGdF3TUDa8jS+UTe7npqERDvu/Y4ZXZgqSlsF6Oj
-         6RSlkoFFwrxuT4zeBh6qXjEY45Fsh08eqVrEq1N0=
+        b=rkN1UkIakOXcAPybgQ71NUxIHb/lXutrfbAvOp2YCSIFb5bHp4JbOCynMwigczoLy
+         hU2JfZRcawP+mteYUcPo94Md9QPIcimI+3o5iXIhqePV9Bb6hcjUCHLtKpWUodXEKs
+         MBvsykXwMoN3HXw7Xgwsb7a9dyFDuhF/TYih8bA8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        Benjamin Tissoires <bentiss@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 492/600] HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()
+        patches@lists.linux.dev, Swapnil Patel <swapnil.patel@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.4 666/737] drm/amd/display: register edp_backlight_control() for DCN301
 Date:   Mon, 11 Sep 2023 15:48:45 +0200
-Message-ID: <20230911134648.154443006@linuxfoundation.org>
+Message-ID: <20230911134709.148260336@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +51,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-[ Upstream commit 6f20d3261265885f6a6be4cda49d7019728760e0 ]
+commit 1611917f39bee1abfc01501238db8ac19649042d upstream.
 
-Presently, if a call to logi_dj_recv_send_report() fails, we do
-not learn about the error until after sending short
-HID_OUTPUT_REPORT with hid_hw_raw_request().
-To handle this somewhat unlikely issue, return on error in
-logi_dj_recv_send_report() (minding ugly sleep workaround) and
-take into account the result of hid_hw_raw_request().
+As made mention of in commit 099303e9a9bd ("drm/amd/display: eDP
+intermittent black screen during PnP"), we need to turn off the
+display's backlight before powering off an eDP display. Not doing so
+will result in undefined behaviour according to the eDP spec. So, set
+DCN301's edp_backlight_control() function pointer to
+dce110_edp_backlight_control().
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
-
-Fixes: 6a9ddc897883 ("HID: logitech-dj: enable notifications on connect/disconnect")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20230613101635.77820-1-n.zhandarovich@fintech.ru
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
+Fixes: 9c75891feef0 ("drm/amd/display: rework recent update PHY state commit")
+Suggested-by: Swapnil Patel <swapnil.patel@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/hid/hid-logitech-dj.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c |    1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
-index c358778e070bc..08768e5accedc 100644
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1285,6 +1285,9 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
- 		 * 50 msec should gives enough time to the receiver to be ready.
- 		 */
- 		msleep(50);
-+
-+		if (retval)
-+			return retval;
- 	}
- 
- 	/*
-@@ -1306,7 +1309,7 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
- 	buf[5] = 0x09;
- 	buf[6] = 0x00;
- 
--	hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
-+	retval = hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
- 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
- 			HID_REQ_SET_REPORT);
- 
--- 
-2.40.1
-
+--- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
+@@ -75,6 +75,7 @@ static const struct hw_sequencer_funcs d
+ 	.get_hw_state = dcn10_get_hw_state,
+ 	.clear_status_bits = dcn10_clear_status_bits,
+ 	.wait_for_mpcc_disconnect = dcn10_wait_for_mpcc_disconnect,
++	.edp_backlight_control = dce110_edp_backlight_control,
+ 	.edp_power_control = dce110_edp_power_control,
+ 	.edp_wait_for_hpd_ready = dce110_edp_wait_for_hpd_ready,
+ 	.set_cursor_position = dcn10_set_cursor_position,
 
 
