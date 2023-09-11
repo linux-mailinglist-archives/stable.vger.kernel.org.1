@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A87D979BBA2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EFCAD79BC0B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:03 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1357853AbjIKWGd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:06:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45152 "EHLO
+        id S238519AbjIKVEH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241457AbjIKPJW (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:22 -0400
+        with ESMTP id S240381AbjIKOmv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37FA8FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EB0AC433C7;
-        Mon, 11 Sep 2023 15:09:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50F5312A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9AC37C433CB;
+        Mon, 11 Sep 2023 14:42:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444956;
-        bh=qkw8NEz5hFemAyJfDb3nvXjDtFVwepeiVhpa50mrUnU=;
+        s=korg; t=1694443367;
+        bh=hK8tKTD58vkXQYYnpK4pkvmXALuEu4tnWzQukoEWbNs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=eNIznjdfOeVUwYAWDHbQN520pJw0ewpCzQwQHGLJkGHPwlE85bsPPfBfRaThj9/Ey
-         62cZmcOpn+v3On1Jtd2s/+ZyoQE9B+hqWAlPf3JRQL6ZTeXCTNJxOzie/p042cvUjk
-         34K/LmGTt4tNj0lLub5WmlogwgNexC07fzbWJfuw=
+        b=T5Q4E1SNGS73J6nvyiP5T4R5toZq7Vv6GJ7khCQuQRuZYQuofFz0qh4Wwykq5qhpV
+         f67O46SMby/a2GdzCtDykv98RPLGbgs+rpAjNG4hawWpQZ/5s0CCMLCMltwrTBUq0s
+         3w+bhNngWWFo95h3MaUDpFJWGSlJmBubqT+cGoPY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Lorenz Bauer <lmb@isovalent.com>,
-        Martin KaFai Lau <martin.lau@kernel.org>,
+        patches@lists.linux.dev, Nayna Jain <nayna@linux.ibm.com>,
+        Mimi Zohar <zohar@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 177/600] net: Fix slab-out-of-bounds in inet[6]_steal_sock
-Date:   Mon, 11 Sep 2023 15:43:30 +0200
-Message-ID: <20230911134638.826926163@linuxfoundation.org>
+Subject: [PATCH 6.4 352/737] ima: Remove deprecated IMA_TRUSTED_KEYRING Kconfig
+Date:   Mon, 11 Sep 2023 15:43:31 +0200
+Message-ID: <20230911134700.351102001@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,65 +50,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lorenz Bauer <lmb@isovalent.com>
+From: Nayna Jain <nayna@linux.ibm.com>
 
-[ Upstream commit 8897562f67b3e61ad736cd5c9f307447d33280e4 ]
+[ Upstream commit 5087fd9e80e539d2163accd045b73da64de7de95 ]
 
-Kumar reported a KASAN splat in tcp_v6_rcv:
+Time to remove "IMA_TRUSTED_KEYRING".
 
-  bash-5.2# ./test_progs -t btf_skc_cls_ingress
-  ...
-  [   51.810085] BUG: KASAN: slab-out-of-bounds in tcp_v6_rcv+0x2d7d/0x3440
-  [   51.810458] Read of size 2 at addr ffff8881053f038c by task test_progs/226
-
-The problem is that inet[6]_steal_sock accesses sk->sk_protocol without
-accounting for request or timewait sockets. To fix this we can't just
-check sock_common->skc_reuseport since that flag is present on timewait
-sockets.
-
-Instead, add a fullsock check to avoid the out of bands access of sk_protocol.
-
-Fixes: 9c02bec95954 ("bpf, net: Support SO_REUSEPORT sockets with bpf_sk_assign")
-Reported-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
-Link: https://lore.kernel.org/r/20230815-bpf-next-v2-1-95126eaa4c1b@isovalent.com
-Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
+Fixes: f4dc37785e9b ("integrity: define '.evm' as a builtin 'trusted' keyring") # v4.5+
+Signed-off-by: Nayna Jain <nayna@linux.ibm.com>
+Signed-off-by: Mimi Zohar <zohar@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/inet6_hashtables.h | 2 +-
- include/net/inet_hashtables.h  | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ security/integrity/ima/Kconfig | 12 ------------
+ 1 file changed, 12 deletions(-)
 
-diff --git a/include/net/inet6_hashtables.h b/include/net/inet6_hashtables.h
-index 475e672b4facc..12780b8fb5630 100644
---- a/include/net/inet6_hashtables.h
-+++ b/include/net/inet6_hashtables.h
-@@ -107,7 +107,7 @@ struct sock *inet6_steal_sock(struct net *net, struct sk_buff *skb, int doff,
- 	if (!sk)
- 		return NULL;
+diff --git a/security/integrity/ima/Kconfig b/security/integrity/ima/Kconfig
+index 60a511c6b583e..c17660bf5f347 100644
+--- a/security/integrity/ima/Kconfig
++++ b/security/integrity/ima/Kconfig
+@@ -248,18 +248,6 @@ config IMA_APPRAISE_MODSIG
+ 	   The modsig keyword can be used in the IMA policy to allow a hook
+ 	   to accept such signatures.
  
--	if (!prefetched)
-+	if (!prefetched || !sk_fullsock(sk))
- 		return sk;
- 
- 	if (sk->sk_protocol == IPPROTO_TCP) {
-diff --git a/include/net/inet_hashtables.h b/include/net/inet_hashtables.h
-index a1b8eb147ce73..9414cb4e6e624 100644
---- a/include/net/inet_hashtables.h
-+++ b/include/net/inet_hashtables.h
-@@ -455,7 +455,7 @@ struct sock *inet_steal_sock(struct net *net, struct sk_buff *skb, int doff,
- 	if (!sk)
- 		return NULL;
- 
--	if (!prefetched)
-+	if (!prefetched || !sk_fullsock(sk))
- 		return sk;
- 
- 	if (sk->sk_protocol == IPPROTO_TCP) {
+-config IMA_TRUSTED_KEYRING
+-	bool "Require all keys on the .ima keyring be signed (deprecated)"
+-	depends on IMA_APPRAISE && SYSTEM_TRUSTED_KEYRING
+-	depends on INTEGRITY_ASYMMETRIC_KEYS
+-	select INTEGRITY_TRUSTED_KEYRING
+-	default y
+-	help
+-	   This option requires that all keys added to the .ima
+-	   keyring be signed by a key on the system trusted keyring.
+-
+-	   This option is deprecated in favor of INTEGRITY_TRUSTED_KEYRING
+-
+ config IMA_KEYRINGS_PERMIT_SIGNED_BY_BUILTIN_OR_SECONDARY
+ 	bool "Permit keys validly signed by a built-in or secondary CA cert (EXPERIMENTAL)"
+ 	depends on SYSTEM_TRUSTED_KEYRING
 -- 
 2.40.1
 
