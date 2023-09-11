@@ -2,239 +2,251 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BBCAD79BBEF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0754179B8F8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238170AbjIKUxo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:53:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41428 "EHLO
+        id S238510AbjIKVhc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43880 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242469AbjIKPiO (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:38:14 -0400
-Received: from mail-pl1-x630.google.com (mail-pl1-x630.google.com [IPv6:2607:f8b0:4864:20::630])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9A588F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:38:08 -0700 (PDT)
-Received: by mail-pl1-x630.google.com with SMTP id d9443c01a7336-1c328b53aeaso39694605ad.2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:38:08 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694446687; x=1695051487; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=2f6nAX4RUa5ZfMVmLvgbYf3wqbWElytff5Qnj5oG5/g=;
-        b=nhCAsfuS6vNg+4AmZ8S/NjaIUvuJ2Wn8A466sgKmZatktA+DAwxJV766q/OZrMOc8n
-         dXYUSZuZTXXiIQfoqXX2CsdHYnCcopxEGws0620GYsQ+4BZc6EnITUb0jH752K0DrsKy
-         fVMnGJjVhs1xA4uS6yZ9sO9Zcqq3z0jpecUTzp0VeIJdwvry8eqBlW4FOXBzpf8sppEL
-         XqI6OruzWs7YczvkzsEZrQiywpMSxxsO5O80joGFXNeW2RQflTHG0cL+KqTFSZ10qEZ9
-         SGCftDASZEjcs48rS7xmPK1LgdsbPgMhCvOd0oAR7u2HRK4FMHw0VZDNCrG4WCTqkTie
-         wb4w==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694446687; x=1695051487;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=2f6nAX4RUa5ZfMVmLvgbYf3wqbWElytff5Qnj5oG5/g=;
-        b=pSe/nKskZL0mca/6HoWcy5d80tOZ4YUiCTD+CmLHxndqQwtVown/QA1678sZn643Lm
-         UByd5WlqqlEufkWIhznEdJHVEVajvIvKPT+bZZ1Fp5hhnpFsYb649HI83pbD0nF74lh5
-         JyDBa3gFIB+kXrQ/ZZGVv2uEWoRx1hvlEnQ0N/p1nPKqOt9ud2nMXgyygPpZclQRP3zS
-         BXTgzIGGxFOIy6Jeo0w4cPB4zcRc7KlARtDKEp42q7ze4JWbX9dMzjv4VOsCogf/TChM
-         rXTh5xqHNg7oAbgRwM7h9iBCVQekDz0e0o4Q40H2Fcxx4Q9DYinLZxXYVeF5/Wbya1R4
-         9zvA==
-X-Gm-Message-State: AOJu0Yzz91caIElgE15NjCRj2yqYZBjRi43uYg7SYBpAMOuk2b+Yv7ye
-        weqmSD1tJS+et8KoOGMmxFAKeTVd3PbvmNc0/7c=
-X-Google-Smtp-Source: AGHT+IH6nZIhaBQozhH2KPeN+vGoNDiFdTUIoe4UZAVrTKnbgLKOSWodhKtaGZcAUygXpgPt8V3S3g==
-X-Received: by 2002:a17:903:1212:b0:1c3:5dcd:fba6 with SMTP id l18-20020a170903121200b001c35dcdfba6mr12032125plh.35.1694446687432;
-        Mon, 11 Sep 2023 08:38:07 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id x1-20020a1709029a4100b001befac3b3cbsm6619934plv.290.2023.09.11.08.38.06
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 08:38:06 -0700 (PDT)
-Message-ID: <64ff345e.170a0220.4cc0a.0a05@mx.google.com>
-Date:   Mon, 11 Sep 2023 08:38:06 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+        with ESMTP id S242618AbjIKP4p (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:56:45 -0400
+X-Greylist: delayed 425 seconds by postgrey-1.37 at lindbergh.monkeyblade.net; Mon, 11 Sep 2023 08:56:38 PDT
+Received: from vps.xff.cz (vps.xff.cz [195.181.215.36])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B7AD1AE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:56:38 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=xff.cz; s=mail;
+        t=1694447371; bh=LYI/5atAF0JSa1mHt9bwuHQXtG/R6iV+GdNNrijftlg=;
+        h=Date:From:To:Cc:Subject:X-My-GPG-KeyId:References:From;
+        b=yF78+/pYBghOE7Jaa3iosLX2Ef+0glDuGEpNcvCCM11ygv7U3eUiDjplx5BqUAQLr
+         c8AJcpyZsSszhTCNz5Rx6Y3u8dWUECO3lr1ZA/uPpe4jiP46kfSpBJBBdKTlmIDMTP
+         mb+uKPv7GYF03UIysYYijujtE+JRbXTtbjaOqiQY=
+Date:   Mon, 11 Sep 2023 17:49:30 +0200
+From:   =?utf-8?Q?Ond=C5=99ej?= Jirman <megi@xff.cz>
+To:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc:     stable@vger.kernel.org, patches@lists.linux.dev,
+        Sam Ravnborg <sam@ravnborg.org>,
+        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: Re: [PATCH 6.1 213/600] drm: bridge: dw-mipi-dsi: Fix enable/disable
+ of DSI controller
+Message-ID: <6xoqdk4sttjv5pskf67r5gc24ttsuspb6bnip5o35xcfmdtilp@72qguymwyt7y>
+X-My-GPG-KeyId: EBFBDDE11FB918D44D1F56C1F9F0A873BE9777ED
+ <https://xff.cz/key.txt>
+References: <20230911134633.619970489@linuxfoundation.org>
+ <20230911134639.905252752@linuxfoundation.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.10.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.10.194-314-geea281d7b56d
-Subject: stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed,
- 6 warnings (v5.10.194-314-geea281d7b56d)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230911134639.905252752@linuxfoundation.org>
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.10.y build: 19 builds: 0 failed, 19 passed, 6 warnings (v=
-5.10.194-314-geea281d7b56d)
+On Mon, Sep 11, 2023 at 03:44:06PM +0200, Greg Kroah-Hartman wrote:
+> 
+> 6.1-stable review patch.  If anyone has any objections, please let me know.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.10.=
-y/kernel/v5.10.194-314-geea281d7b56d/
+See patch message comment:
 
-Tree: stable-rc
-Branch: linux-5.10.y
-Git Describe: v5.10.194-314-geea281d7b56d
-Git Commit: eea281d7b56dfcf274de1e29b1371964a9a4497a
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
+       (But depends on functionality intorduced in Linux 6.3, so this patch will
+        not build on older kernels when applied to older stable branches.)
 
-Warnings Detected:
+kind regards,
+	o.
 
-arc:
-
-arm64:
-    defconfig+arm64-chromebook (gcc-10): 1 warning
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-    rv32_defconfig (gcc-10): 4 warnings
-
-x86_64:
-
-
-Warnings summary:
-
-    2    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [=
--Wcpp]
-    2    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemente=
-d [-Wcpp]
-    1    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =
-=E2=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=
-=80=99 makes pointer from integer without a cast [-Wint-conversion]
-    1    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved sy=
-mbol check will be entirely skipped.
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    WARNING: modpost: Symbol info of vmlinux is missing. Unresolved symbol =
-check will be entirely skipped.
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warn=
-ing, 0 section mismatches
-
-Warnings:
-    drivers/gpu/drm/mediatek/mtk_drm_gem.c:255:10: warning: returning =E2=
-=80=98int=E2=80=99 from a function with return type =E2=80=98void *=E2=80=
-=99 makes pointer from integer without a cast [-Wint-conversion]
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 4 warnings, 0 sect=
-ion mismatches
-
-Warnings:
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-    <stdin>:830:2: warning: #warning syscall fstat64 not implemented [-Wcpp]
-    <stdin>:1127:2: warning: #warning syscall fstatat64 not implemented [-W=
-cpp]
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-0 warnings, 0 section mismatches
-
----
-For more info write to <info@kernelci.org>
+> ------------------
+> 
+> From: Ondrej Jirman <megi@xff.cz>
+> 
+> [ Upstream commit 05aa61334592adb230749ff465b103ee10e63936 ]
+> 
+> Before this patch, booting to Linux VT and doing a simple:
+> 
+>   echo 2 > /sys/class/graphics/fb0/blank
+>   echo 0 > /sys/class/graphics/fb0/blank
+> 
+> would result in failures to re-enable the panel. Mode set callback is
+> called only once during boot in this scenario, while calls to
+> enable/disable callbacks are balanced afterwards. The driver doesn't
+> work unless userspace calls modeset before enabling the CRTC/connector.
+> 
+> This patch moves enabling of the DSI host from mode_set into pre_enable
+> callback, and removes some old hacks where this bridge driver is
+> directly calling into other bridge driver's callbacks.
+> 
+> pre_enable_prev_first flag is set on the panel's bridge so that panel
+> drivers will get their prepare function called between DSI host's
+> pre_enable and enable callbacks, so that they get a chance to
+> perform panel setup while DSI host is already enabled in command
+> mode. Otherwise panel's prepare would be called before DSI host
+> is enabled, and any DSI communication used in prepare callback
+> would fail.
+> 
+> With all these changes, the enable/disable sequence is now well
+> balanced, and host's and panel's callbacks are called in proper order
+> documented in the drm_panel API documentation without needing the old
+> hacks. (Mainly that panel->prepare is called when DSI host is ready to
+> allow the panel driver to send DSI commands and vice versa during
+> disable.)
+> 
+> Tested on Pinephone Pro. Trace of the callbacks follows.
+> 
+> Before:
+> 
+> [    1.253882] dw-mipi-dsi-rockchip ff960000.dsi: mode_set
+> [    1.290732] panel-himax-hx8394 ff960000.dsi.0: prepare
+> [    1.475576] dw-mipi-dsi-rockchip ff960000.dsi: enable
+> [    1.475593] panel-himax-hx8394 ff960000.dsi.0: enable
+> 
+> echo 2 > /sys/class/graphics/fb0/blank
+> 
+> [   13.722799] panel-himax-hx8394 ff960000.dsi.0: disable
+> [   13.774502] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
+> [   13.774526] panel-himax-hx8394 ff960000.dsi.0: unprepare
+> 
+> echo 0 > /sys/class/graphics/fb0/blank
+> 
+> [   17.735796] panel-himax-hx8394 ff960000.dsi.0: prepare
+> [   17.923522] dw-mipi-dsi-rockchip ff960000.dsi: enable
+> [   17.923540] panel-himax-hx8394 ff960000.dsi.0: enable
+> [   17.944330] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
+> [   17.944335] panel-himax-hx8394 ff960000.dsi.0: sending command 0xb9 failed: -110
+> [   17.944340] panel-himax-hx8394 ff960000.dsi.0: Panel init sequence failed: -110
+> 
+> echo 2 > /sys/class/graphics/fb0/blank
+> 
+> [  431.148583] panel-himax-hx8394 ff960000.dsi.0: disable
+> [  431.169259] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
+> [  431.169268] panel-himax-hx8394 ff960000.dsi.0: Failed to enter sleep mode: -110
+> [  431.169282] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
+> [  431.169316] panel-himax-hx8394 ff960000.dsi.0: unprepare
+> [  431.169357] pclk_mipi_dsi0 already disabled
+> 
+> echo 0 > /sys/class/graphics/fb0/blank
+> 
+> [  432.796851] panel-himax-hx8394 ff960000.dsi.0: prepare
+> [  432.981537] dw-mipi-dsi-rockchip ff960000.dsi: enable
+> [  432.981568] panel-himax-hx8394 ff960000.dsi.0: enable
+> [  433.002290] dw-mipi-dsi-rockchip ff960000.dsi: failed to write command FIFO
+> [  433.002299] panel-himax-hx8394 ff960000.dsi.0: sending command 0xb9 failed: -110
+> [  433.002312] panel-himax-hx8394 ff960000.dsi.0: Panel init sequence failed: -110
+> 
+> -----------------------------------------------------------------------
+> 
+> After:
+> 
+> [    1.248372] dw-mipi-dsi-rockchip ff960000.dsi: mode_set
+> [    1.248704] dw-mipi-dsi-rockchip ff960000.dsi: pre_enable
+> [    1.285377] panel-himax-hx8394 ff960000.dsi.0: prepare
+> [    1.468392] dw-mipi-dsi-rockchip ff960000.dsi: enable
+> [    1.468421] panel-himax-hx8394 ff960000.dsi.0: enable
+> 
+> echo 2 > /sys/class/graphics/fb0/blank
+> 
+> [   16.210357] panel-himax-hx8394 ff960000.dsi.0: disable
+> [   16.261315] dw-mipi-dsi-rockchip ff960000.dsi: post_disable
+> [   16.261339] panel-himax-hx8394 ff960000.dsi.0: unprepare
+> 
+> echo 0 > /sys/class/graphics/fb0/blank
+> 
+> [   19.161453] dw-mipi-dsi-rockchip ff960000.dsi: pre_enable
+> [   19.197869] panel-himax-hx8394 ff960000.dsi.0: prepare
+> [   19.382141] dw-mipi-dsi-rockchip ff960000.dsi: enable
+> [   19.382158] panel-himax-hx8394 ff960000.dsi.0: enable
+> 
+>        (But depends on functionality intorduced in Linux 6.3, so this patch will
+>         not build on older kernels when applied to older stable branches.)
+> 
+> Fixes: 46fc51546d44 ("drm/bridge/synopsys: Add MIPI DSI host controller bridge")
+> Signed-off-by: Ondrej Jirman <megi@xff.cz>
+> Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+> Signed-off-by: Robert Foss <rfoss@kernel.org>
+> Link: https://patchwork.freedesktop.org/patch/msgid/20230617224915.1923630-1-megi@xff.cz
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c | 28 +++++++++++--------
+>  1 file changed, 16 insertions(+), 12 deletions(-)
+> 
+> diff --git a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+> index b2efecf7d1603..4291798bd70f5 100644
+> --- a/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+> +++ b/drivers/gpu/drm/bridge/synopsys/dw-mipi-dsi.c
+> @@ -265,6 +265,7 @@ struct dw_mipi_dsi {
+>  	struct dw_mipi_dsi *master; /* dual-dsi master ptr */
+>  	struct dw_mipi_dsi *slave; /* dual-dsi slave ptr */
+>  
+> +	struct drm_display_mode mode;
+>  	const struct dw_mipi_dsi_plat_data *plat_data;
+>  };
+>  
+> @@ -332,6 +333,7 @@ static int dw_mipi_dsi_host_attach(struct mipi_dsi_host *host,
+>  	if (IS_ERR(bridge))
+>  		return PTR_ERR(bridge);
+>  
+> +	bridge->pre_enable_prev_first = true;
+>  	dsi->panel_bridge = bridge;
+>  
+>  	drm_bridge_add(&dsi->bridge);
+> @@ -859,15 +861,6 @@ static void dw_mipi_dsi_bridge_post_atomic_disable(struct drm_bridge *bridge,
+>  	 */
+>  	dw_mipi_dsi_set_mode(dsi, 0);
+>  
+> -	/*
+> -	 * TODO Only way found to call panel-bridge post_disable &
+> -	 * panel unprepare before the dsi "final" disable...
+> -	 * This needs to be fixed in the drm_bridge framework and the API
+> -	 * needs to be updated to manage our own call chains...
+> -	 */
+> -	if (dsi->panel_bridge->funcs->post_disable)
+> -		dsi->panel_bridge->funcs->post_disable(dsi->panel_bridge);
+> -
+>  	if (phy_ops->power_off)
+>  		phy_ops->power_off(dsi->plat_data->priv_data);
+>  
+> @@ -942,15 +935,25 @@ static void dw_mipi_dsi_mode_set(struct dw_mipi_dsi *dsi,
+>  		phy_ops->power_on(dsi->plat_data->priv_data);
+>  }
+>  
+> +static void dw_mipi_dsi_bridge_atomic_pre_enable(struct drm_bridge *bridge,
+> +						 struct drm_bridge_state *old_bridge_state)
+> +{
+> +	struct dw_mipi_dsi *dsi = bridge_to_dsi(bridge);
+> +
+> +	/* Power up the dsi ctl into a command mode */
+> +	dw_mipi_dsi_mode_set(dsi, &dsi->mode);
+> +	if (dsi->slave)
+> +		dw_mipi_dsi_mode_set(dsi->slave, &dsi->mode);
+> +}
+> +
+>  static void dw_mipi_dsi_bridge_mode_set(struct drm_bridge *bridge,
+>  					const struct drm_display_mode *mode,
+>  					const struct drm_display_mode *adjusted_mode)
+>  {
+>  	struct dw_mipi_dsi *dsi = bridge_to_dsi(bridge);
+>  
+> -	dw_mipi_dsi_mode_set(dsi, adjusted_mode);
+> -	if (dsi->slave)
+> -		dw_mipi_dsi_mode_set(dsi->slave, adjusted_mode);
+> +	/* Store the display mode for later use in pre_enable callback */
+> +	drm_mode_copy(&dsi->mode, adjusted_mode);
+>  }
+>  
+>  static void dw_mipi_dsi_bridge_atomic_enable(struct drm_bridge *bridge,
+> @@ -1004,6 +1007,7 @@ static const struct drm_bridge_funcs dw_mipi_dsi_bridge_funcs = {
+>  	.atomic_duplicate_state	= drm_atomic_helper_bridge_duplicate_state,
+>  	.atomic_destroy_state	= drm_atomic_helper_bridge_destroy_state,
+>  	.atomic_reset		= drm_atomic_helper_bridge_reset,
+> +	.atomic_pre_enable	= dw_mipi_dsi_bridge_atomic_pre_enable,
+>  	.atomic_enable		= dw_mipi_dsi_bridge_atomic_enable,
+>  	.atomic_post_disable	= dw_mipi_dsi_bridge_post_atomic_disable,
+>  	.mode_set		= dw_mipi_dsi_bridge_mode_set,
+> -- 
+> 2.40.1
+> 
+> 
+> 
