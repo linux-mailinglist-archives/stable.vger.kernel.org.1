@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 056D579B0D9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:32 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDC2E79AE15
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344346AbjIKVN4 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:56 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47534 "EHLO
+        id S236951AbjIKV0T (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:26:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34726 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239016AbjIKOJo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:44 -0400
+        with ESMTP id S240394AbjIKOnL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A298CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B2A5FC433C8;
-        Mon, 11 Sep 2023 14:09:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54FE512A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9C2F2C433C7;
+        Mon, 11 Sep 2023 14:43:06 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441380;
-        bh=+BuziKAFw8+ZkssrVen4rJqfeG5FMknJDXViY7uEk98=;
+        s=korg; t=1694443387;
+        bh=EorFYN7EH3R635jB2P7uylC1/TO3b6o8vZgQaQbKXW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=YugVDe55Y0Nt6Eqgwb4yPI58pJ0WgHXgnF5anfzXnkjo98b7s6k9s1WjqKKAcI1yI
-         f7XAByz6TIRNC7MiUEiD0G6AL5UIZzH18mHO9ZA7iV/pbd8BigJn5g6t1OLB6f6uwQ
-         9nNKBPnmovmTLNHX3kgVVcbUDtRqkk9QKaCqvKQg=
+        b=IrOsOU8i0EFCj2CqnVAv8Of5DHE+oL1Xt7pOXhygvuL/WWV9CyioEsxB2qkGTbB0x
+         IAk2TzHQ8Hc5zFR9jCqGkcrDkLAvF6XDOqrpmwjq5UDwEAVpcaxfi+Es3urN+DklDA
+         iOqkQgT8hwJeqf+/keXZFmUW0xRuhuD81UKqHzm4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Wronek <davidwronek@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 392/739] clk: qcom: gcc-sc7180: Fix up gcc_sdcc2_apps_clk_src
+Subject: [PATCH 6.4 332/737] arm64: dts: qcom: sdm845: Fix the min frequency of "ice_core_clk"
 Date:   Mon, 11 Sep 2023 15:43:11 +0200
-Message-ID: <20230911134702.139605705@linuxfoundation.org>
+Message-ID: <20230911134659.815859998@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +51,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wronek <davidwronek@gmail.com>
+From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
 
-[ Upstream commit fd0b5ba87ad5709f0fd3d2bc4b7870494a75f96a ]
+[ Upstream commit bbbef6e24bc4493602df68b052f6f48d48e3184a ]
 
-Set .flags = CLK_OPS_PARENT_ENABLE to fix "gcc_sdcc2_apps_clk_src: rcg
-didn't update its configuration" error.
+Minimum frequency of the "ice_core_clk" should be 75MHz as specified in the
+downstream vendor devicetree. So fix it!
 
-Fixes: 17269568f726 ("clk: qcom: Add Global Clock controller (GCC) driver for SC7180")
-Signed-off-by: David Wronek <davidwronek@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230723190725.1619193-2-davidwronek@gmail.com
+https://git.codelinaro.org/clo/la/kernel/msm-4.9/-/blob/LA.UM.7.3.r1-09300-sdm845.0/arch/arm64/boot/dts/qcom/sdm845.dtsi
+
+Fixes: 433f9a57298f ("arm64: dts: sdm845: add Inline Crypto Engine registers and clock")
+Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20230720054100.9940-5-manivannan.sadhasivam@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc7180.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm64/boot/dts/qcom/sdm845.dtsi | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc7180.c b/drivers/clk/qcom/gcc-sc7180.c
-index cef3c77564cfd..49f36e1df4fa8 100644
---- a/drivers/clk/qcom/gcc-sc7180.c
-+++ b/drivers/clk/qcom/gcc-sc7180.c
-@@ -651,6 +651,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_5,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_5),
-+		.flags = CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
+diff --git a/arch/arm64/boot/dts/qcom/sdm845.dtsi b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+index 43b1471f5826d..b73ce14ababd1 100644
+--- a/arch/arm64/boot/dts/qcom/sdm845.dtsi
++++ b/arch/arm64/boot/dts/qcom/sdm845.dtsi
+@@ -2614,7 +2614,7 @@ ufs_mem_hc: ufshc@1d84000 {
+ 				<0 0>,
+ 				<0 0>,
+ 				<0 0>,
+-				<0 300000000>;
++				<75000000 300000000>;
+ 
+ 			status = "disabled";
+ 		};
 -- 
 2.40.1
 
