@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 501A379C0D4
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A0DBA79BF31
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378571AbjIKWfi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:35:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42742 "EHLO
+        id S239626AbjIKWqe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:46:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36540 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239176AbjIKONq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:46 -0400
+        with ESMTP id S240505AbjIKOqE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDC2EDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:41 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F890C433C8;
-        Mon, 11 Sep 2023 14:13:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E5A12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0FCC433C9;
+        Mon, 11 Sep 2023 14:45:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441621;
-        bh=UfgcpOqVv9npvDzEkORKlMCgLllIuq4053v20k6oSqk=;
+        s=korg; t=1694443559;
+        bh=SjbM3qr6YesnNf+c38xeaSQbrq0vpqtnrA/N3tMCajM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tIpcukW/kI4UByXY8RN4HmCs9yMWc1i+BCsJwP0l0KZ0nBqU1f1BOnzPQTvhFXG7V
-         perf2oHXLZurUq5+yYicvuuEANOqqmA8e0RrCholl/QtTLUCzrgA34IoH1xgYyTsWE
-         QvwfNhODBbkzSjxZ/6UEfbnmNyz1WIaKo83dzH3U=
+        b=0bD4YyRbMqKdxprIMCFq7dw7LXcXdTWr9KPE2sCOPd4UlByfXdPBZRPJJXY181WoU
+         Ir9Qsz4Coe5m1T5gwZZrgqPPexE9H3yknS12zC5hZZz8uEJ9fJskjRsEV32leCOnJe
+         3rc9Cyedt0/rONHc1M8zBjPDunOzWSqv7caY8+dQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev,
+        Kai-Heng Feng <kai.heng.feng@canonical.com>,
+        Koba Ko <koba.ko@canonical.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Tony Luck <tony.luck@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 478/739] media: mediatek: vcodec: fix potential double free
-Date:   Mon, 11 Sep 2023 15:44:37 +0200
-Message-ID: <20230911134704.493778637@linuxfoundation.org>
+Subject: [PATCH 6.4 419/737] EDAC/i10nm: Skip the absent memory controllers
+Date:   Mon, 11 Sep 2023 15:44:38 +0200
+Message-ID: <20230911134702.312076250@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,49 +53,128 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dan Carpenter <dan.carpenter@linaro.org>
+From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
 
-[ Upstream commit be40f524b6edac4fb9a98ef79620fd9b9497a998 ]
+[ Upstream commit c545f5e412250555bd4e717d062b117f20bab418 ]
 
-The "lat_buf->private_data" needs to be set to NULL to prevent a
-double free.  How this would happen is if vdec_msg_queue_init() failed
-twice in a row and on the second time it failed earlier than on the
-first time.
+Some Sapphire Rapids workstations' absent memory controllers
+still appear as PCIe devices that fool the i10nm_edac driver
+and result in "shift exponent -66 is negative" call traces
+from skx_get_dimm_info().
 
-The vdec_msg_queue_init() function has a loop which does:
-	for (i = 0; i < NUM_BUFFER_COUNT; i++) {
+Skip the absent memory controllers to avoid the call traces.
 
-Each iteration initializes one element in the msg_queue->lat_buf[] array
-and then the clean up function vdec_msg_queue_deinit() frees each
-element of the msg_queue->lat_buf[] array.  This clean up code relies
-on the assumption that every element is either initialized or zeroed.
-Leaving a freed pointer which is non-zero breaks the assumption.
-
-Fixes: b199fe46f35c ("media: mtk-vcodec: Add msg queue feature for lat and core architecture")
-Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Closes: https://lore.kernel.org/linux-edac/CAAd53p41Ku1m1rapeqb1xtD+kKuk+BaUW=dumuoF0ZO3GhFjFA@mail.gmail.com/T/#m5de16dce60a8c836ec235868c7c16e3fefad0cc2
+Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
+Reported-by: Koba Ko <koba.ko@canonical.com>
+Closes: https://lore.kernel.org/linux-edac/SA1PR11MB71305B71CCCC3D9305835202892AA@SA1PR11MB7130.namprd11.prod.outlook.com/T/#t
+Tested-by: Koba Ko <koba.ko@canonical.com>
+Fixes: d4dc89d069aa ("EDAC, i10nm: Add a driver for Intel 10nm server processors")
+Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Signed-off-by: Tony Luck <tony.luck@intel.com>
+Link: https://lore.kernel.org/r/20230710013232.59712-1-qiuxu.zhuo@intel.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/edac/i10nm_base.c | 54 +++++++++++++++++++++++++++++++++++----
+ 1 file changed, 49 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-index 04e6dc6cfa1de..f2d21b5bc5c3a 100644
---- a/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-+++ b/drivers/media/platform/mediatek/vcodec/vdec_msg_queue.c
-@@ -231,6 +231,7 @@ void vdec_msg_queue_deinit(struct vdec_msg_queue *msg_queue,
- 			mtk_vcodec_mem_free(ctx, mem);
+diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
+index a897b6aff3686..349ff6cfb3796 100644
+--- a/drivers/edac/i10nm_base.c
++++ b/drivers/edac/i10nm_base.c
+@@ -658,13 +658,49 @@ static struct pci_dev *get_ddr_munit(struct skx_dev *d, int i, u32 *offset, unsi
+ 	return mdev;
+ }
  
- 		kfree(lat_buf->private_data);
-+		lat_buf->private_data = NULL;
++/**
++ * i10nm_imc_absent() - Check whether the memory controller @imc is absent
++ *
++ * @imc    : The pointer to the structure of memory controller EDAC device.
++ *
++ * RETURNS : true if the memory controller EDAC device is absent, false otherwise.
++ */
++static bool i10nm_imc_absent(struct skx_imc *imc)
++{
++	u32 mcmtr;
++	int i;
++
++	switch (res_cfg->type) {
++	case SPR:
++		for (i = 0; i < res_cfg->ddr_chan_num; i++) {
++			mcmtr = I10NM_GET_MCMTR(imc, i);
++			edac_dbg(1, "ch%d mcmtr reg %x\n", i, mcmtr);
++			if (mcmtr != ~0)
++				return false;
++		}
++
++		/*
++		 * Some workstations' absent memory controllers still
++		 * appear as PCIe devices, misleading the EDAC driver.
++		 * By observing that the MMIO registers of these absent
++		 * memory controllers consistently hold the value of ~0.
++		 *
++		 * We identify a memory controller as absent by checking
++		 * if its MMIO register "mcmtr" == ~0 in all its channels.
++		 */
++		return true;
++	default:
++		return false;
++	}
++}
++
+ static int i10nm_get_ddr_munits(void)
+ {
+ 	struct pci_dev *mdev;
+ 	void __iomem *mbase;
+ 	unsigned long size;
+ 	struct skx_dev *d;
+-	int i, j = 0;
++	int i, lmc, j = 0;
+ 	u32 reg, off;
+ 	u64 base;
+ 
+@@ -690,7 +726,7 @@ static int i10nm_get_ddr_munits(void)
+ 		edac_dbg(2, "socket%d mmio base 0x%llx (reg 0x%x)\n",
+ 			 j++, base, reg);
+ 
+-		for (i = 0; i < res_cfg->ddr_imc_num; i++) {
++		for (lmc = 0, i = 0; i < res_cfg->ddr_imc_num; i++) {
+ 			mdev = get_ddr_munit(d, i, &off, &size);
+ 
+ 			if (i == 0 && !mdev) {
+@@ -700,8 +736,6 @@ static int i10nm_get_ddr_munits(void)
+ 			if (!mdev)
+ 				continue;
+ 
+-			d->imc[i].mdev = mdev;
+-
+ 			edac_dbg(2, "mc%d mmio base 0x%llx size 0x%lx (reg 0x%x)\n",
+ 				 i, base + off, size, reg);
+ 
+@@ -712,7 +746,17 @@ static int i10nm_get_ddr_munits(void)
+ 				return -ENODEV;
+ 			}
+ 
+-			d->imc[i].mbase = mbase;
++			d->imc[lmc].mbase = mbase;
++			if (i10nm_imc_absent(&d->imc[lmc])) {
++				pci_dev_put(mdev);
++				iounmap(mbase);
++				d->imc[lmc].mbase = NULL;
++				edac_dbg(2, "Skip absent mc%d\n", i);
++				continue;
++			} else {
++				d->imc[lmc].mdev = mdev;
++				lmc++;
++			}
+ 		}
  	}
  
- 	if (msg_queue->wdma_addr.size)
 -- 
 2.40.1
 
