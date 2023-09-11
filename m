@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F28D179BC5B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2D40F79B71A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:24 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237752AbjIKUyF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:54:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33374 "EHLO
+        id S243119AbjIKU7F (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33382 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236749AbjIKLUD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 07:20:03 -0400
+        with ESMTP id S236751AbjIKLUG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 07:20:06 -0400
 Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 108CFCDD;
-        Mon, 11 Sep 2023 04:19:59 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BD869CDD;
+        Mon, 11 Sep 2023 04:20:02 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
   d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
-  t=1694431199; x=1725967199;
+  t=1694431202; x=1725967202;
   h=from:to:cc:subject:date:message-id:in-reply-to:
    references:mime-version:content-transfer-encoding;
-  bh=eIbMDqgI1VdHnVLRbKO7jTB1Ubvov6e0AspTTuCSqIU=;
-  b=YWpbo5ef7TbIDBzbOR6eZkQ8BYvDHzUyQ9qvRFX9ymqAk1u5+WgRNYtw
-   f6jY3mKj3JvRt3Gjp4bNBX1YApKO99nDkHCyvZx3HroM5noJvELR8x9Va
-   9N/19sxkBiFIzaDH21Pbee8TcgO2J8DSaqzJ/zFxKLSaiWi9XzuVa3n5Y
-   3EgX1JVmwgfqvi6J4YGuUpLzZ2+XYIPrGk6RfRYIPp9/DVABBTI6nfYQ5
-   3sHXU3L8Nwa1VP64O+1T7NsCcYuq8qpvtnTvY8opz3GTt+AkxAFAwvmJ/
-   oOBVaCqfWD4lB2b1dldoym1wQNLolQZNUmi2D13jrfkKECv0uRrvNRpbJ
-   Q==;
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="464428629"
+  bh=qVo58leRfHfx78TMUsQ9bFhX9krqsCC7gNZleGpHRMg=;
+  b=N33mWU54WRfvoBR9KZvg/lHODg6GHHsFyuhtjDHz7vZj7YkpJNBDE6CN
+   LcrREw3VpAtdx7iCzn22LxreZimvLdVicO9wJsI4HZti5fwJm5xPTe6Y+
+   FIHK9PexuFULjtHaHSmbxV2A+xKXVf6586bDST/YjGAYuVTBF3hFuZIJR
+   1bTaYOIJcWiZPAPCeq2bxj7Ig1XEX6W/y+BEOlDyuCTLVjibfzELFTBwY
+   a2KGwsERLrLbKE8ge9Ok3zakID7Fp/qTvCDr4RNGieIkNnW0/h7mZ+GHB
+   LEI0fa328bB3AALujlf1zCYoGHk/g44umiKyjFmmMZq8+ZLLjeeErVwJa
+   g==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="464428640"
 X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="464428629"
+   d="scan'208";a="464428640"
 Received: from orsmga005.jf.intel.com ([10.7.209.41])
-  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:19:58 -0700
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:20:02 -0700
 X-ExtLoop1: 1
-X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="916990571"
+X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="916990588"
 X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
-   d="scan'208";a="916990571"
+   d="scan'208";a="916990588"
 Received: from mzarkov-mobl3.ger.corp.intel.com (HELO ijarvine-mobl2.ger.corp.intel.com) ([10.252.36.200])
-  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:19:56 -0700
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:19:59 -0700
 From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
 To:     Reinette Chatre <reinette.chatre@intel.com>,
         Shuah Khan <shuah@kernel.org>,
@@ -49,9 +49,9 @@ Cc:     linux-kernel@vger.kernel.org,
         Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
         stable@vger.kernel.org,
         =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
-Subject: [PATCH 4/5] selftests/resctrl: Fix feature checks
-Date:   Mon, 11 Sep 2023 14:19:29 +0300
-Message-Id: <20230911111930.16088-5-ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 5/5] selftests/resctrl: Reduce failures due to outliers in MBA/MBM tests
+Date:   Mon, 11 Sep 2023 14:19:30 +0300
+Message-Id: <20230911111930.16088-6-ilpo.jarvinen@linux.intel.com>
 X-Mailer: git-send-email 2.30.2
 In-Reply-To: <20230911111930.16088-1-ilpo.jarvinen@linux.intel.com>
 References: <20230911111930.16088-1-ilpo.jarvinen@linux.intel.com>
@@ -67,50 +67,47 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-The MBA and CMT tests expect support of other features to be able to
-run.
+5% difference upper bound for success is a bit on the low side for the
+MBA and MBM tests. Some platforms produce outliers that are slightly
+above that, typically 6-7%.
 
-When platform only supports MBA but not MBM, MBA test will fail with:
-Failed to open total bw file: No such file or directory
+Relaxing the MBA/MBM success bound to 8% removes most of the failures
+due those frequent outliers.
 
-When platform only supports CMT but not CAT, CMT test will fail with:
-Failed to open bit mask file '/sys/fs/resctrl/info/L3/cbm_mask': No such file or directory
-
-Extend feature checks to cover these two conditions.
-
-Fixes: ee0415681eb6 ("selftests/resctrl: Use resctrl/info for feature detection")
-Cc: <stable@vger.kernel.org> # selftests/resctrl: Refactor feature check to use resource and feature name
-Cc: <stable@vger.kernel.org> # selftests/resctrl: Remove duplicate feature check from CMT test
+Fixes: 06bd03a57f8c ("selftests/resctrl: Fix MBA/MBM results reporting format")
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 ---
- tools/testing/selftests/resctrl/resctrl_tests.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ tools/testing/selftests/resctrl/mba_test.c | 2 +-
+ tools/testing/selftests/resctrl/mbm_test.c | 2 +-
+ 2 files changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/testing/selftests/resctrl/resctrl_tests.c b/tools/testing/selftests/resctrl/resctrl_tests.c
-index 3052394ca884..4e9b392d28dc 100644
---- a/tools/testing/selftests/resctrl/resctrl_tests.c
-+++ b/tools/testing/selftests/resctrl/resctrl_tests.c
-@@ -118,7 +118,9 @@ static void run_mba_test(const char * const *benchmark_cmd, int cpu_no)
- 		return;
- 	}
+diff --git a/tools/testing/selftests/resctrl/mba_test.c b/tools/testing/selftests/resctrl/mba_test.c
+index cf8284dadcb2..d3bf4368341e 100644
+--- a/tools/testing/selftests/resctrl/mba_test.c
++++ b/tools/testing/selftests/resctrl/mba_test.c
+@@ -12,7 +12,7 @@
  
--	if (!validate_resctrl_feature_request("MB", NULL) || (get_vendor() != ARCH_INTEL)) {
-+	if (!validate_resctrl_feature_request("MB", NULL) ||
-+	    !validate_resctrl_feature_request("L3_MON", "mbm_local_bytes") ||
-+	    (get_vendor() != ARCH_INTEL)) {
- 		ksft_test_result_skip("Hardware does not support MBA or MBA is disabled\n");
- 		goto umount;
- 	}
-@@ -148,7 +150,8 @@ static void run_cmt_test(const char * const *benchmark_cmd, int cpu_no)
- 		return;
- 	}
+ #define RESULT_FILE_NAME	"result_mba"
+ #define NUM_OF_RUNS		5
+-#define MAX_DIFF_PERCENT	5
++#define MAX_DIFF_PERCENT	8
+ #define ALLOCATION_MAX		100
+ #define ALLOCATION_MIN		10
+ #define ALLOCATION_STEP		10
+diff --git a/tools/testing/selftests/resctrl/mbm_test.c b/tools/testing/selftests/resctrl/mbm_test.c
+index 1ae131a2e246..d3c0d30c676a 100644
+--- a/tools/testing/selftests/resctrl/mbm_test.c
++++ b/tools/testing/selftests/resctrl/mbm_test.c
+@@ -11,7 +11,7 @@
+ #include "resctrl.h"
  
--	if (!validate_resctrl_feature_request("L3_MON", "llc_occupancy")) {
-+	if (!validate_resctrl_feature_request("L3_MON", "llc_occupancy") ||
-+	    !validate_resctrl_feature_request("L3", NULL)) {
- 		ksft_test_result_skip("Hardware does not support CMT or CMT is disabled\n");
- 		goto umount;
- 	}
+ #define RESULT_FILE_NAME	"result_mbm"
+-#define MAX_DIFF_PERCENT	5
++#define MAX_DIFF_PERCENT	8
+ #define NUM_OF_RUNS		5
+ 
+ static int
 -- 
 2.30.2
 
