@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0491D79B80E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E71779B88F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359455AbjIKWQv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:16:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45636 "EHLO
+        id S1344120AbjIKVNV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35008 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240804AbjIKOyU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:20 -0400
+        with ESMTP id S242034AbjIKPU4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60288E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8649C433C8;
-        Mon, 11 Sep 2023 14:54:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5BC5FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 33E50C433C8;
+        Mon, 11 Sep 2023 15:20:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444056;
-        bh=6kbvlNxTLCfIqxAdHRU4W+DSBc01jpWhwGKSSPi4IxI=;
+        s=korg; t=1694445651;
+        bh=3sO9tv3kAWuvWiO3hE209NvRmq/AYxVnY32yNGADHP4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QCCoz4PFTU/hyFTybEW/tHaQq0ASapSpA59cs+lXhlrP6zNybyBe2L5kPrJu/IO45
-         M2UeOaPwnogFDS46O5HEbSMDpX28qbZho412m/7oN2IaA7/d7wrNbfjPgW+NzXRVek
-         r0+mpiFbPrTlwXv0AQlwpmLw3pzSJm/HE8fBphDc=
+        b=DHqd4ipo2bsF82v4QYTBqVXyYPphPPUAARNmrlKwBcdqCLyUlEY/HMSSbPSSDdvY9
+         1Rvn7DCHOaZI6SGAEusvnK7DijcAqiVxGFBc2Z+hQdaZI1Tzn6AW8g4Tl/O38tDbcn
+         cfzv4S5b0XQX/B6/knewhEPSnibViJje/KyKwS3E=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
-        Benjamin Tissoires <bentiss@kernel.org>,
+        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
+        Chris Leech <cleech@redhat.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 595/737] HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()
-Date:   Mon, 11 Sep 2023 15:47:34 +0200
-Message-ID: <20230911134707.161317302@linuxfoundation.org>
+Subject: [PATCH 6.1 422/600] scsi: be2iscsi: Add length check when parsing nlattrs
+Date:   Mon, 11 Sep 2023 15:47:35 +0200
+Message-ID: <20230911134646.121720017@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,56 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+From: Lin Ma <linma@zju.edu.cn>
 
-[ Upstream commit 6f20d3261265885f6a6be4cda49d7019728760e0 ]
+[ Upstream commit ee0268f230f66cb472df3424f380ea668da2749a ]
 
-Presently, if a call to logi_dj_recv_send_report() fails, we do
-not learn about the error until after sending short
-HID_OUTPUT_REPORT with hid_hw_raw_request().
-To handle this somewhat unlikely issue, return on error in
-logi_dj_recv_send_report() (minding ugly sleep workaround) and
-take into account the result of hid_hw_raw_request().
+beiscsi_iface_set_param() parses nlattr with nla_for_each_attr and assumes
+every attributes can be viewed as struct iscsi_iface_param_info.
 
-Found by Linux Verification Center (linuxtesting.org) with static
-analysis tool SVACE.
+This is not true because there is no any nla_policy to validate the
+attributes passed from the upper function iscsi_set_iface_params().
 
-Fixes: 6a9ddc897883 ("HID: logitech-dj: enable notifications on connect/disconnect")
-Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
-Link: https://lore.kernel.org/r/20230613101635.77820-1-n.zhandarovich@fintech.ru
-Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
+Add the nla_len check before accessing the nlattr data and return EINVAL if
+the length check fails.
+
+Fixes: 0e43895ec1f4 ("[SCSI] be2iscsi: adding functionality to change network settings using iscsiadm")
+Signed-off-by: Lin Ma <linma@zju.edu.cn>
+Link: https://lore.kernel.org/r/20230723075938.3713864-1-linma@zju.edu.cn
+Reviewed-by: Chris Leech <cleech@redhat.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/hid/hid-logitech-dj.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/scsi/be2iscsi/be_iscsi.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
-index 62180414efccd..e6a8b6d8eab70 100644
---- a/drivers/hid/hid-logitech-dj.c
-+++ b/drivers/hid/hid-logitech-dj.c
-@@ -1285,6 +1285,9 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
- 		 * 50 msec should gives enough time to the receiver to be ready.
- 		 */
- 		msleep(50);
-+
-+		if (retval)
-+			return retval;
+diff --git a/drivers/scsi/be2iscsi/be_iscsi.c b/drivers/scsi/be2iscsi/be_iscsi.c
+index 8aeaddc93b167..8d374ae863ba2 100644
+--- a/drivers/scsi/be2iscsi/be_iscsi.c
++++ b/drivers/scsi/be2iscsi/be_iscsi.c
+@@ -450,6 +450,10 @@ int beiscsi_iface_set_param(struct Scsi_Host *shost,
  	}
  
- 	/*
-@@ -1306,7 +1309,7 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
- 	buf[5] = 0x09;
- 	buf[6] = 0x00;
+ 	nla_for_each_attr(attrib, data, dt_len, rm_len) {
++		/* ignore nla_type as it is never used */
++		if (nla_len(attrib) < sizeof(*iface_param))
++			return -EINVAL;
++
+ 		iface_param = nla_data(attrib);
  
--	hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
-+	retval = hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
- 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
- 			HID_REQ_SET_REPORT);
- 
+ 		if (iface_param->param_type != ISCSI_NET_PARAM)
 -- 
 2.40.1
 
