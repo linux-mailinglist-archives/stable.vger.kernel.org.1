@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7A20779BC7B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 32AFC79BDD4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379439AbjIKWoH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:44:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58642 "EHLO
+        id S1344318AbjIKVNv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55686 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240480AbjIKOp1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:27 -0400
+        with ESMTP id S239128AbjIKOMc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 854A612A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C4DDDC433C8;
-        Mon, 11 Sep 2023 14:45:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0FD96CE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 58890C433C9;
+        Mon, 11 Sep 2023 14:12:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443523;
-        bh=JGevzVCL8eHFbDVb4Xw2v7OEXz6dMglJ5Zpav3EFiBY=;
+        s=korg; t=1694441547;
+        bh=SduPr7mFjpHImEurGeSuKSuz1RzHiiW2oDutr+cChJU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bdCpVByU3zOnjny5tds4A+deLOM7A00mm0L1l2zeY3MEzbnMF7xdaTuLzocfQsrs2
-         ehBOeYslBnL4tDhf4v9bqMSdVQPRR38ou6+z/DRv0cpPqbyZC/IcGJDv0fkBbKBaGj
-         pQxiOjVrw8Jxusi8Ux5cLZRpYPhAeBVKDwrGYHnI=
+        b=2vPn/3r54xd6Q2PkqYvctb7ogBe4H/weIo5jid8QYcaN2JKS7XFIGxQQrCsqWSvW3
+         xHk3sYjYj/mh3udATU8n+q6JUVrSacyOsq/K3DcIgin9W+sO7JC6pw+TCuHtt7vW2A
+         E6APiDjKuIX+iAQ2eEal6cOM9+UZ2dGK9tXnlKm0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rohit Agarwal <quic_rohiagar@quicinc.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 390/737] ARM: dts: qcom: sdx65-mtp: Update the pmic used in sdx65
-Date:   Mon, 11 Sep 2023 15:44:09 +0200
-Message-ID: <20230911134701.486327768@linuxfoundation.org>
+Subject: [PATCH 6.5 451/739] media: ov5640: fix low resolution image abnormal issue
+Date:   Mon, 11 Sep 2023 15:44:10 +0200
+Message-ID: <20230911134703.758262895@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +52,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rohit Agarwal <quic_rohiagar@quicinc.com>
+From: Guoniu.zhou <guoniu.zhou@nxp.com>
 
-[ Upstream commit f636d6c356b339b0d29eed025f8bf9efcb6eb274 ]
+[ Upstream commit a828002f38c5ee49d3f0c0e64c0f0caa1aec8dc2 ]
 
-Update the pmic used in sdx65 platform to pm7250b.
+OV5640 will output abnormal image data when work at low resolution
+(320x240, 176x144 and 160x120) after switching from high resolution,
+such as 1080P, the time interval between high and low switching must
+be less than 1000ms in order to OV5640 don't enter suspend state during
+the time.
 
-Fixes: 26380f298b2b (ARM: dts: qcom: sdx65-mtp: Add pmk8350b and pm8150b pmic)
-Signed-off-by: Rohit Agarwal <quic_rohiagar@quicinc.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/1691415534-31820-7-git-send-email-quic_rohiagar@quicinc.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The reason is by 0x3824 value don't restore to initialize value when
+do resolution switching. In high resolution setting array, 0x3824 is
+set to 0x04, but low resolution setting array remove 0x3824 in commit
+db15c1957a2d ("media: ov5640: Remove duplicated mode settings"). So
+when do resolution switching from high to low, such as 1080P to 320x240,
+and the time interval is less than auto suspend delay time which means
+global initialize setting array will not be loaded, the output image
+data are abnormal. Hence move 0x3824 from ov5640_init_setting[] table
+to ov5640_setting_low_res[] table and also move 0x4407 0x460b, 0x460c
+to avoid same issue.
+
+Fixes: db15c1957a2d ("media: ov5640: Remove duplicated mode settings")
+Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-sdx65-mtp.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov5640.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-sdx65-mtp.dts b/arch/arm/boot/dts/qcom-sdx65-mtp.dts
-index 57bc3b03d3aac..4264ace66b295 100644
---- a/arch/arm/boot/dts/qcom-sdx65-mtp.dts
-+++ b/arch/arm/boot/dts/qcom-sdx65-mtp.dts
-@@ -7,7 +7,7 @@
- #include "qcom-sdx65.dtsi"
- #include <dt-bindings/regulator/qcom,rpmh-regulator.h>
- #include <arm64/qcom/pmk8350.dtsi>
--#include <arm64/qcom/pm8150b.dtsi>
-+#include <arm64/qcom/pm7250b.dtsi>
- #include "qcom-pmx65.dtsi"
+diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
+index 36b509714c8c7..f6c94e9094761 100644
+--- a/drivers/media/i2c/ov5640.c
++++ b/drivers/media/i2c/ov5640.c
+@@ -568,9 +568,7 @@ static const struct reg_value ov5640_init_setting[] = {
+ 	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0}, {0x3000, 0x00, 0, 0},
+ 	{0x3002, 0x1c, 0, 0}, {0x3004, 0xff, 0, 0}, {0x3006, 0xc3, 0, 0},
+ 	{0x302e, 0x08, 0, 0}, {0x4300, 0x3f, 0, 0},
+-	{0x501f, 0x00, 0, 0}, {0x4407, 0x04, 0, 0},
+-	{0x440e, 0x00, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
+-	{0x4837, 0x0a, 0, 0}, {0x3824, 0x02, 0, 0},
++	{0x501f, 0x00, 0, 0}, {0x440e, 0x00, 0, 0}, {0x4837, 0x0a, 0, 0},
+ 	{0x5000, 0xa7, 0, 0}, {0x5001, 0xa3, 0, 0}, {0x5180, 0xff, 0, 0},
+ 	{0x5181, 0xf2, 0, 0}, {0x5182, 0x00, 0, 0}, {0x5183, 0x14, 0, 0},
+ 	{0x5184, 0x25, 0, 0}, {0x5185, 0x24, 0, 0}, {0x5186, 0x09, 0, 0},
+@@ -634,7 +632,8 @@ static const struct reg_value ov5640_setting_low_res[] = {
+ 	{0x3a0a, 0x00, 0, 0}, {0x3a0b, 0xf6, 0, 0}, {0x3a0e, 0x03, 0, 0},
+ 	{0x3a0d, 0x04, 0, 0}, {0x3a14, 0x03, 0, 0}, {0x3a15, 0xd8, 0, 0},
+ 	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0},
+-	{0x4407, 0x04, 0, 0}, {0x5001, 0xa3, 0, 0},
++	{0x4407, 0x04, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
++	{0x3824, 0x02, 0, 0}, {0x5001, 0xa3, 0, 0},
+ };
  
- / {
+ static const struct reg_value ov5640_setting_720P_1280_720[] = {
 -- 
 2.40.1
 
