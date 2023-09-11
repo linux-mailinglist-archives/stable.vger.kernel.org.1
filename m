@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 51CB279AC9F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A6B8779AF0B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240029AbjIKUz7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:55:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42454 "EHLO
+        id S234337AbjIKVEs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48938 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239707AbjIKO0x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:53 -0400
+        with ESMTP id S238428AbjIKN41 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:56:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28934F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4BA99C433C8;
-        Mon, 11 Sep 2023 14:26:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C03910E
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:56:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5479FC433C9;
+        Mon, 11 Sep 2023 13:56:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442407;
-        bh=XVMh5wrKG9rPtHShWXzDNJx0JmRnO62Up2viUqMkxOE=;
+        s=korg; t=1694440581;
+        bh=b7wzlfxVBpfudyafhR238ZfXu7tRbJlXHXYYpap+hqs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RKyiouVQpy1ReWFlcbCuzVvBChC+Av7j0Aujsx+R4X5EJ6LjP1lvtXEuiLdJH7AjN
-         aOJnCSsIianIKWNjF9c1Ulu0fdNXZibvoDwO8aIe00EfbtrBo0eZewO1xDAanWVtJx
-         zcWfZx3tbZbpoq+NRrfqtNUqTJmlm5L5nYiNS3g8=
+        b=B09gK8FV24lmJTugeTloKwSyRxdMNcmU666P2Ivk+vESJRXegVDd75sn1AGauNFof
+         dUK7cG1qIKcB/ugjUI/UasRf691+vNb1QFw+/og4vN504FZXj5+to79f3S/a/Pz/e6
+         O1xDP5CPXTRAOEM6sOgnp1l4mruQ+WCcLnGLc0L4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmytro Maluka <dmy@semihalf.com>,
-        Mark Brown <broonie@kernel.org>,
+        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
+        Herbert Xu <herbert@gondor.apana.org.au>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 015/737] ASoC: da7219: Flush pending AAD IRQ when suspending
-Date:   Mon, 11 Sep 2023 15:37:54 +0200
-Message-ID: <20230911134650.759232585@linuxfoundation.org>
+Subject: [PATCH 6.5 076/739] hwrng: pic32 - use devm_clk_get_enabled
+Date:   Mon, 11 Sep 2023 15:37:55 +0200
+Message-ID: <20230911134653.238864477@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,79 +50,87 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmytro Maluka <dmy@semihalf.com>
+From: Martin Kaiser <martin@kaiser.cx>
 
-[ Upstream commit 91e292917dad64ab8d1d5ca2ab3069ad9dac6f72 ]
+[ Upstream commit 6755ad74aac0fb1c79b14724feb81b2f6ff25847 ]
 
-da7219_aad_suspend() disables jack detection, which should prevent
-generating new interrupts by DA7219 while suspended. However, there is a
-theoretical possibility that there is a pending interrupt generated just
-before suspending DA7219 and not handled yet, so the IRQ handler may
-still run after DA7219 is suspended. To prevent that, wait until the
-pending IRQ handling is done.
+Use devm_clk_get_enabled in the pic32 driver. Ensure that the clock is
+enabled as long as the driver is registered with the hwrng core.
 
-This patch arose as an attempt to fix the following I2C failure
-occurring sometimes during system suspend or resume:
-
-[  355.876211] i2c_designware i2c_designware.3: Transfer while suspended
-[  355.876245] WARNING: CPU: 2 PID: 3576 at drivers/i2c/busses/i2c-designware-master.c:570 i2c_dw_xfer+0x411/0x440
-...
-[  355.876462] Call Trace:
-[  355.876468]  <TASK>
-[  355.876475]  ? update_load_avg+0x1b3/0x615
-[  355.876484]  __i2c_transfer+0x101/0x1d8
-[  355.876494]  i2c_transfer+0x74/0x10d
-[  355.876504]  regmap_i2c_read+0x6a/0x9c
-[  355.876513]  _regmap_raw_read+0x179/0x223
-[  355.876521]  regmap_raw_read+0x1e1/0x28e
-[  355.876527]  regmap_bulk_read+0x17d/0x1ba
-[  355.876532]  ? __wake_up+0xed/0x1bb
-[  355.876542]  da7219_aad_irq_thread+0x54/0x2c9 [snd_soc_da7219 5fb8ebb2179cf2fea29af090f3145d68ed8e2184]
-[  355.876556]  irq_thread+0x13c/0x231
-[  355.876563]  ? irq_forced_thread_fn+0x5f/0x5f
-[  355.876570]  ? irq_thread_fn+0x4d/0x4d
-[  355.876576]  kthread+0x13a/0x152
-[  355.876581]  ? synchronize_irq+0xc3/0xc3
-[  355.876587]  ? kthread_blkcg+0x31/0x31
-[  355.876592]  ret_from_fork+0x1f/0x30
-[  355.876601]  </TASK>
-
-which indicates that the AAD IRQ handler is unexpectedly running when
-DA7219 is suspended, and as a result, is trying to read data from DA7219
-over I2C and is hitting the I2C driver "Transfer while suspended"
-failure.
-
-However, with this patch the above failure is still reproducible. So
-this patch does not fix any real observed issue so far, but at least is
-useful for confirming that the above issue is not caused by a pending
-IRQ but rather looks like a DA7219 hardware issue with an IRQ
-unexpectedly generated after jack detection is already disabled.
-
-Signed-off-by: Dmytro Maluka <dmy@semihalf.com>
-Link: https://lore.kernel.org/r/20230717193737.161784-2-dmy@semihalf.com
-Signed-off-by: Mark Brown <broonie@kernel.org>
+Fixes: 7ea39973d1e5 ("hwrng: pic32 - Use device-managed registration API")
+Signed-off-by: Martin Kaiser <martin@kaiser.cx>
+Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/soc/codecs/da7219-aad.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/char/hw_random/pic32-rng.c | 19 +++++--------------
+ 1 file changed, 5 insertions(+), 14 deletions(-)
 
-diff --git a/sound/soc/codecs/da7219-aad.c b/sound/soc/codecs/da7219-aad.c
-index 993a0d00bc48d..07c5d9d354b6d 100644
---- a/sound/soc/codecs/da7219-aad.c
-+++ b/sound/soc/codecs/da7219-aad.c
-@@ -910,6 +910,8 @@ void da7219_aad_suspend(struct snd_soc_component *component)
- 			}
- 		}
- 	}
-+
-+	synchronize_irq(da7219_aad->irq);
+diff --git a/drivers/char/hw_random/pic32-rng.c b/drivers/char/hw_random/pic32-rng.c
+index 99c8bd0859a14..e04a054e89307 100644
+--- a/drivers/char/hw_random/pic32-rng.c
++++ b/drivers/char/hw_random/pic32-rng.c
+@@ -36,7 +36,6 @@
+ struct pic32_rng {
+ 	void __iomem	*base;
+ 	struct hwrng	rng;
+-	struct clk	*clk;
+ };
+ 
+ /*
+@@ -70,6 +69,7 @@ static int pic32_rng_read(struct hwrng *rng, void *buf, size_t max,
+ static int pic32_rng_probe(struct platform_device *pdev)
+ {
+ 	struct pic32_rng *priv;
++	struct clk *clk;
+ 	u32 v;
+ 	int ret;
+ 
+@@ -81,13 +81,9 @@ static int pic32_rng_probe(struct platform_device *pdev)
+ 	if (IS_ERR(priv->base))
+ 		return PTR_ERR(priv->base);
+ 
+-	priv->clk = devm_clk_get(&pdev->dev, NULL);
+-	if (IS_ERR(priv->clk))
+-		return PTR_ERR(priv->clk);
+-
+-	ret = clk_prepare_enable(priv->clk);
+-	if (ret)
+-		return ret;
++	clk = devm_clk_get_enabled(&pdev->dev, NULL);
++	if (IS_ERR(clk))
++		return PTR_ERR(clk);
+ 
+ 	/* enable TRNG in enhanced mode */
+ 	v = TRNGEN | TRNGMOD;
+@@ -98,15 +94,11 @@ static int pic32_rng_probe(struct platform_device *pdev)
+ 
+ 	ret = devm_hwrng_register(&pdev->dev, &priv->rng);
+ 	if (ret)
+-		goto err_register;
++		return ret;
+ 
+ 	platform_set_drvdata(pdev, priv);
+ 
+ 	return 0;
+-
+-err_register:
+-	clk_disable_unprepare(priv->clk);
+-	return ret;
  }
  
- void da7219_aad_resume(struct snd_soc_component *component)
+ static int pic32_rng_remove(struct platform_device *pdev)
+@@ -114,7 +106,6 @@ static int pic32_rng_remove(struct platform_device *pdev)
+ 	struct pic32_rng *rng = platform_get_drvdata(pdev);
+ 
+ 	writel(0, rng->base + RNGCON);
+-	clk_disable_unprepare(rng->clk);
+ 	return 0;
+ }
+ 
 -- 
 2.40.1
 
