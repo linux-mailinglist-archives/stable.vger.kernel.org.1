@@ -2,37 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C7E2F79B92F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1B87E79C00E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358014AbjIKWHX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57294 "EHLO
+        id S1378834AbjIKWhf (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40466 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238666AbjIKOCL (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:02:11 -0400
+        with ESMTP id S238668AbjIKOCO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:02:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 455DCCD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79681C433C7;
-        Mon, 11 Sep 2023 14:02:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51E28CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 97808C433C8;
+        Mon, 11 Sep 2023 14:02:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440926;
-        bh=90WR+iCiokQR/JrZma8MPkMO4Ft2yjh2axrxwPdBH3w=;
+        s=korg; t=1694440930;
+        bh=Q42uD0c5YFpbBRY/carmxJ4gpxwu53vIsIg74wKjq+U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xff/hUqgCQrJHY4DTs+vYbJQWVp59M3Xa0NcZ/orAYE7K/vx8IksNA4sMQ3G8dg7W
-         k8GNe6hwFQNEteujj1mDgINiKGoII1Y5EYww17/L9apM7g5eePNwF3/vYT1PaomEF3
-         RFty6qe9Xz70hh5sNI0ttR+AIZGm/G/jKphe39K0=
+        b=yswXiODbvrL9pjuKUH6i2wDVB8XExkfxwq1sqBBc/F7YwUHBx+CfcmYGbk0p1VF2F
+         wnT8kCglyy/N8tzkBauDRHzJYwu1PNB+RyKQ4q0DZOa/bXd87xB7O8gnJi7UUkl2i+
+         jzawMb/dzfFRcGLcGdGEv5IFA57ZlHmH2+fPLdYc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        patches@lists.linux.dev,
+        Neil Armstrong <neil.armstrong@linaro.org>,
         Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 235/739] arm64: dts: qcom: pmk8350: fix ADC-TM compatible string
-Date:   Mon, 11 Sep 2023 15:40:34 +0200
-Message-ID: <20230911134657.729920365@linuxfoundation.org>
+Subject: [PATCH 6.5 236/739] arm64: dts: qcom: sm8450-hdk: remove pmr735b PMIC inclusion
+Date:   Mon, 11 Sep 2023 15:40:35 +0200
+Message-ID: <20230911134657.757097809@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -57,37 +58,33 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
 
-[ Upstream commit 435a73d7377ceb29c1a22d2711dd85c831b40c45 ]
+[ Upstream commit 701b59db773730a914f1778cf2dd05e3a05c2c69 ]
 
-The commit b2de43136058 ("arm64: dts: qcom: pmk8350: Add peripherals for
-pmk8350") for the ADC TM (thermal monitoring device) have used the
-compatible string from the vendor kernel ("qcom,adc-tm7"). Use the
-proper compatible string that is defined in the upstream kernel
-("qcom,spmi-adc-tm5-gen2").
+The 8450-HDK doesn't use PMR735B PMIC. Drop its inclusion to remove the
+warning during the HDK bootup.
 
-Fixes: b2de43136058 ("arm64: dts: qcom: pmk8350: Add peripherals for pmk8350")
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Fixes: 30464456a1ea ("arm64: dts: qcom: sm8450-hdk: add pmic files")
+Reviewed-by: Neil Armstrong <neil.armstrong@linaro.org>
 Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Link: https://lore.kernel.org/r/20230707123027.1510723-6-dmitry.baryshkov@linaro.org
+Link: https://lore.kernel.org/r/20230707123027.1510723-7-dmitry.baryshkov@linaro.org
 Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/pmk8350.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ arch/arm64/boot/dts/qcom/sm8450-hdk.dts | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/pmk8350.dtsi b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
-index bc6297e7253e2..1eb74017062d6 100644
---- a/arch/arm64/boot/dts/qcom/pmk8350.dtsi
-+++ b/arch/arm64/boot/dts/qcom/pmk8350.dtsi
-@@ -59,7 +59,7 @@ pmk8350_vadc: adc@3100 {
- 		};
+diff --git a/arch/arm64/boot/dts/qcom/sm8450-hdk.dts b/arch/arm64/boot/dts/qcom/sm8450-hdk.dts
+index bc4c125d1832e..dabb7e872f384 100644
+--- a/arch/arm64/boot/dts/qcom/sm8450-hdk.dts
++++ b/arch/arm64/boot/dts/qcom/sm8450-hdk.dts
+@@ -14,7 +14,6 @@
+ #include "pm8450.dtsi"
+ #include "pmk8350.dtsi"
+ #include "pmr735a.dtsi"
+-#include "pmr735b.dtsi"
  
- 		pmk8350_adc_tm: adc-tm@3400 {
--			compatible = "qcom,adc-tm7";
-+			compatible = "qcom,spmi-adc-tm5-gen2";
- 			reg = <0x3400>;
- 			interrupts = <PMK8350_SID 0x34 0x0 IRQ_TYPE_EDGE_RISING>;
- 			#address-cells = <1>;
+ / {
+ 	model = "Qualcomm Technologies, Inc. SM8450 HDK";
 -- 
 2.40.1
 
