@@ -2,45 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C415579BB7F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5E53B79B6DC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235452AbjIKWuy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:50:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34468 "EHLO
+        id S238843AbjIKV7N (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42378 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235780AbjIKJgc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:36:32 -0400
+        with ESMTP id S235840AbjIKJlY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:41:24 -0400
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A01DE3;
-        Mon, 11 Sep 2023 02:36:17 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AAF6102;
+        Mon, 11 Sep 2023 02:41:20 -0700 (PDT)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 193721C0004; Mon, 11 Sep 2023 11:36:16 +0200 (CEST)
-Date:   Mon, 11 Sep 2023 11:36:15 +0200
+        id D312D1C0006; Mon, 11 Sep 2023 11:41:18 +0200 (CEST)
+Date:   Mon, 11 Sep 2023 11:41:18 +0200
 From:   Pavel Machek <pavel@denx.de>
 To:     Sasha Levin <sashal@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        "GONG, Ruiqi" <gongruiqi1@huawei.com>, GONG@vger.kernel.org,
-        "Gustavo A . R . Silva" <gustavoars@kernel.org>,
+        Azeem Shaikh <azeemshaikh38@gmail.com>,
         Kees Cook <keescook@chromium.org>,
-        Florian Westphal <fw@strlen.de>, pablo@netfilter.org,
-        kadlec@netfilter.org, roopa@nvidia.com, razor@blackwall.org,
-        davem@davemloft.net, edumazet@google.com, kuba@kernel.org,
-        pabeni@redhat.com, netfilter-devel@vger.kernel.org,
-        coreteam@netfilter.org, bridge@lists.linux-foundation.org,
-        netdev@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 4.14 6/8] netfilter: ebtables: fix fortify
- warnings in size_entry_mwt()
-Message-ID: <ZP7fj1LW3YLu2LrM@duo.ucw.cz>
-References: <20230908182127.3461199-1-sashal@kernel.org>
- <20230908182127.3461199-6-sashal@kernel.org>
+        Herbert Xu <herbert@gondor.apana.org.au>, davem@davemloft.net,
+        linux-crypto@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 5.10 02/14] crypto: lrw,xts - Replace strlcpy
+ with strscpy
+Message-ID: <ZP7gvmd+D2fg9DD0@duo.ucw.cz>
+References: <20230908182003.3460721-1-sashal@kernel.org>
+ <20230908182003.3460721-2-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="EYwzxsuobC4JVE2D"
+        protocol="application/pgp-signature"; boundary="AB4e/J+jgIzUs3dd"
 Content-Disposition: inline
-In-Reply-To: <20230908182127.3461199-6-sashal@kernel.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,T_SPF_TEMPERROR autolearn=ham
+In-Reply-To: <20230908182003.3460721-2-sashal@kernel.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -49,47 +44,42 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---EYwzxsuobC4JVE2D
-Content-Type: text/plain; charset=utf-8
+--AB4e/J+jgIzUs3dd
+Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
-Hi!
-
-> [ Upstream commit a7ed3465daa240bdf01a5420f64336fee879c09d ]
+On Fri 2023-09-08 14:19:49, Sasha Levin wrote:
+> From: Azeem Shaikh <azeemshaikh38@gmail.com>
 >=20
-> When compiling with gcc 13 and CONFIG_FORTIFY_SOURCE=3Dy, the following
-> warning appears:
+> [ Upstream commit babb80b3ecc6f40c962e13c654ebcd27f25ee327 ]
 >=20
-> In function =E2=80=98fortify_memcpy_chk=E2=80=99,
->     inlined from =E2=80=98size_entry_mwt=E2=80=99 at net/bridge/netfilter=
-/ebtables.c:2118:2:
-> ./include/linux/fortify-string.h:592:25: error: call to =E2=80=98__read_o=
-verflow2_field=E2=80=99
-> declared with attribute warning: detected read beyond size of field (2nd =
-parameter);
-> maybe use struct_group()? [-Werror=3Dattribute-warning]
->   592 |                         __read_overflow2_field(q_size_field, size=
-);
->       |
-> ^~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+> strlcpy() reads the entire source buffer first.
+> This read may exceed the destination size limit.
+> This is both inefficient and can lead to linear read
+> overflows if a source string is not NUL-terminated [1].
+> In an effort to remove strlcpy() completely [2], replace
+> strlcpy() here with strscpy().
+>=20
+> Direct replacement is safe here since return value of -errno
+> is used to check for truncation instead of sizeof(dest).
 
-This is not queued for 4.19. Mistake?
+We don't need this in stable, do we?
 
-Best regards,
-								Pavel
+BR,
+							Pavel
 --=20
 DENX Software Engineering GmbH,        Managing Director: Erika Unter
 HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---EYwzxsuobC4JVE2D
+--AB4e/J+jgIzUs3dd
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7fjwAKCRAw5/Bqldv6
-8jOPAJ446x9CNCOtOGu8jnKHqakoizjVowCfRJpsAS8y5nIe7eQnbTc+73ASZFY=
-=5xRs
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7gvgAKCRAw5/Bqldv6
+8pcUAKCNTxr8jb/rTjHj23ytYJ1W5ly3hgCgrYvOHi1db9NDZa4cQDNIuHRJrrY=
+=QOYc
 -----END PGP SIGNATURE-----
 
---EYwzxsuobC4JVE2D--
+--AB4e/J+jgIzUs3dd--
