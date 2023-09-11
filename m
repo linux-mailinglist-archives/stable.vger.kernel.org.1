@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 72A3879B591
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 55A0579B087
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348729AbjIKVaY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59558 "EHLO
+        id S236879AbjIKVi1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:38:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46836 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240011AbjIKOd4 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:56 -0400
+        with ESMTP id S240015AbjIKOeF (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:05 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9C2ABF2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0CEFC433C8;
-        Mon, 11 Sep 2023 14:33:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0533E4D
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 447B8C433C8;
+        Mon, 11 Sep 2023 14:34:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442832;
-        bh=SgVmRbwOtN3s2XU7PVOoz2H/rET0nl43jpaL23MBBQQ=;
+        s=korg; t=1694442840;
+        bh=iX3obZny8ndnEUgHY+rkvm5ocbb6U+6D+I/eVel8ops=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=q05jIbjZN7zwEF8FemHGuftypOveUxS7wU3IM0cBV/XXqE2y+JU7RqOfyrmVHbAr7
-         67Is51hjujVDREqBdvJ4i6HUMqbHaLYbceU8PeKPBJOO8bO4ce2xNpoKFKlPdwooSd
-         bqp19R4AQX/in6ML9yejYQzgGVwlw64Ju62ComLc=
+        b=tuEKEpCEdB3MM9lNizV/g262Xs2Hs0CYKGF5bvmop0Ub9dGKVyFjyC/cjBETa8QGO
+         twJ/HKWhExd8xP2GnZbge5M9BiBx18I86zaLhQ/a1+27/6QM/mrpOW4ywbj/Etlqcr
+         OaScQRO6+GaJ21R0o+YJfDHrneceCSv6VCjoGdqg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        StanleyYP Wang <StanleyYP.Wang@mediatek.com>,
-        Shayne Chen <shayne.chen@mediatek.com>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 164/737] wifi: mt76: mt7996: use correct phy for background radar event
-Date:   Mon, 11 Sep 2023 15:40:23 +0200
-Message-ID: <20230911134655.093890666@linuxfoundation.org>
+        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
+        Lorenz Bauer <lmb@isovalent.com>,
+        Martin KaFai Lau <martin.lau@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 166/737] udp: re-score reuseport groups when connected sockets are present
+Date:   Mon, 11 Sep 2023 15:40:25 +0200
+Message-ID: <20230911134655.150792408@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,40 +55,112 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
+From: Lorenz Bauer <lmb@isovalent.com>
 
-[ Upstream commit 9ffe0d5690ed916e09baad2cc9ee7ec65b110038 ]
+[ Upstream commit f0ea27e7bfe1c34e1f451a63eb68faa1d4c3a86d ]
 
-If driver directly uses the band_idx reported from the radar event to
-access mt76_phy array, it will get the wrong phy for background radar.
-Fix this by adjusting the statement.
+Contrary to TCP, UDP reuseport groups can contain TCP_ESTABLISHED
+sockets. To support these properly we remember whether a group has
+a connected socket and skip the fast reuseport early-return. In
+effect we continue scoring all reuseport sockets and then choose the
+one with the highest score.
 
-Fixes: 98686cd21624 ("wifi: mt76: mt7996: add driver for MediaTek Wi-Fi 7 (802.11be) devices")
-Signed-off-by: StanleyYP Wang <StanleyYP.Wang@mediatek.com>
-Signed-off-by: Shayne Chen <shayne.chen@mediatek.com>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+The current code fails to re-calculate the score for the result of
+lookup_reuseport. According to Kuniyuki Iwashima:
+
+    1) SO_INCOMING_CPU is set
+       -> selected sk might have +1 score
+
+    2) BPF prog returns ESTABLISHED and/or SO_INCOMING_CPU sk
+       -> selected sk will have more than 8
+
+  Using the old score could trigger more lookups depending on the
+  order that sockets are created.
+
+    sk -> sk (SO_INCOMING_CPU) -> sk (ESTABLISHED)
+    |     |
+    `-> select the next SO_INCOMING_CPU sk
+          |
+          `-> select itself (We should save this lookup)
+
+Fixes: efc6b6f6c311 ("udp: Improve load balancing for SO_REUSEPORT.")
+Reviewed-by: Kuniyuki Iwashima <kuniyu@amazon.com>
+Signed-off-by: Lorenz Bauer <lmb@isovalent.com>
+Link: https://lore.kernel.org/r/20230720-so-reuseport-v6-1-7021b683cdae@isovalent.com
+Signed-off-by: Martin KaFai Lau <martin.lau@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/mt7996/mcu.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ net/ipv4/udp.c | 20 +++++++++++++++-----
+ net/ipv6/udp.c | 19 ++++++++++++++-----
+ 2 files changed, 29 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-index cd54e81d73044..62a02b03d83ba 100644
---- a/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-+++ b/drivers/net/wireless/mediatek/mt76/mt7996/mcu.c
-@@ -339,7 +339,11 @@ mt7996_mcu_rx_radar_detected(struct mt7996_dev *dev, struct sk_buff *skb)
- 	if (r->band_idx >= ARRAY_SIZE(dev->mt76.phys))
- 		return;
- 
--	mphy = dev->mt76.phys[r->band_idx];
-+	if (dev->rdd2_phy && r->band_idx == MT_RX_SEL2)
-+		mphy = dev->rdd2_phy->mt76;
-+	else
-+		mphy = dev->mt76.phys[r->band_idx];
+diff --git a/net/ipv4/udp.c b/net/ipv4/udp.c
+index 6d327d6d978c5..a3302136ce92e 100644
+--- a/net/ipv4/udp.c
++++ b/net/ipv4/udp.c
+@@ -452,14 +452,24 @@ static struct sock *udp4_lib_lookup2(struct net *net,
+ 		score = compute_score(sk, net, saddr, sport,
+ 				      daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+-			result = lookup_reuseport(net, sk, skb,
+-						  saddr, sport, daddr, hnum);
++			badness = score;
++			result = lookup_reuseport(net, sk, skb, saddr, sport, daddr, hnum);
++			if (!result) {
++				result = sk;
++				continue;
++			}
 +
- 	if (!mphy)
- 		return;
+ 			/* Fall back to scoring if group has connections */
+-			if (result && !reuseport_has_conns(sk))
++			if (!reuseport_has_conns(sk))
+ 				return result;
  
+-			result = result ? : sk;
+-			badness = score;
++			/* Reuseport logic returned an error, keep original score. */
++			if (IS_ERR(result))
++				continue;
++
++			badness = compute_score(result, net, saddr, sport,
++						daddr, hnum, dif, sdif);
++
+ 		}
+ 	}
+ 	return result;
+diff --git a/net/ipv6/udp.c b/net/ipv6/udp.c
+index 8521729fb2375..9c7457823eb97 100644
+--- a/net/ipv6/udp.c
++++ b/net/ipv6/udp.c
+@@ -195,14 +195,23 @@ static struct sock *udp6_lib_lookup2(struct net *net,
+ 		score = compute_score(sk, net, saddr, sport,
+ 				      daddr, hnum, dif, sdif);
+ 		if (score > badness) {
+-			result = lookup_reuseport(net, sk, skb,
+-						  saddr, sport, daddr, hnum);
++			badness = score;
++			result = lookup_reuseport(net, sk, skb, saddr, sport, daddr, hnum);
++			if (!result) {
++				result = sk;
++				continue;
++			}
++
+ 			/* Fall back to scoring if group has connections */
+-			if (result && !reuseport_has_conns(sk))
++			if (!reuseport_has_conns(sk))
+ 				return result;
+ 
+-			result = result ? : sk;
+-			badness = score;
++			/* Reuseport logic returned an error, keep original score. */
++			if (IS_ERR(result))
++				continue;
++
++			badness = compute_score(sk, net, saddr, sport,
++						daddr, hnum, dif, sdif);
+ 		}
+ 	}
+ 	return result;
 -- 
 2.40.1
 
