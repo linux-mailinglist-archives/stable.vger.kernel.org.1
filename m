@@ -2,38 +2,50 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AEC5079BDC0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 386A879BA94
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345595AbjIKVVb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:21:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58086 "EHLO
+        id S1376667AbjIKWUL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32884 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240191AbjIKOiw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:52 -0400
+        with ESMTP id S241264AbjIKPF0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3BB11F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83640C433C8;
-        Mon, 11 Sep 2023 14:38:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2DECA125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:05:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1EF5BC433C9;
+        Mon, 11 Sep 2023 15:05:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443127;
-        bh=PRp8MeG4ORFCr5xiw0p1Kwjv/nmgIqJ1yKUOwn++76w=;
+        s=korg; t=1694444721;
+        bh=ZW+Q1JOHZ/uDaaroiW9oP5TW2ELU1qx2psiVBuG2scQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vAoP12lgs5oFmp8OMxmn9ZfxCSR71CN9UDPa9D6lfvjjJAvOic73jmgXIqTJCeZkR
-         v735MvboHl/4bsmzdNAkmyOf+35/B44NXOOsNqAA+L1vYElP5n+yp0m1gESYk3q+54
-         fGIQl7kWD3+S1BpLkayIPezqNH61ljkzwjZpx/bk=
+        b=OFzQEkS/HF0zKqCIdwlTu/T50chShWZjHXyfSt98Ubj9+pA7qH3pSyZTkFsn3dGV5
+         fMtUR9T59JoSLujFOQa8PBxN3pPjBlgglscoA7eG+apOR4tABcbix4QKW01y3nwvlV
+         jSETHIRks23rdXqmTQCMcAjCCBDYHV4BTIVJohe8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 267/737] drm/bridge: tc358764: Fix debug print parameter order
+        patches@lists.linux.dev, Ian Rogers <irogers@google.com>,
+        Alexander Shishkin <alexander.shishkin@linux.intel.com>,
+        Ingo Molnar <mingo@redhat.com>, Jiri Olsa <jolsa@kernel.org>,
+        Josh Poimboeuf <jpoimboe@kernel.org>,
+        Mark Rutland <mark.rutland@arm.com>,
+        Masahiro Yamada <masahiroy@kernel.org>,
+        Namhyung Kim <namhyung@kernel.org>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Nick Desaulniers <ndesaulniers@google.com>,
+        Nicolas Schier <nicolas@fjasle.eu>,
+        Peter Zijlstra <peterz@infradead.org>,
+        Stephane Eranian <eranian@google.com>,
+        Tom Rix <trix@redhat.com>, bpf@vger.kernel.org,
+        llvm@lists.linux.dev, Arnaldo Carvalho de Melo <acme@redhat.com>
+Subject: [PATCH 6.1 093/600] tools lib subcmd: Add dependency test to install_headers
 Date:   Mon, 11 Sep 2023 15:42:06 +0200
-Message-ID: <20230911134658.041028539@linuxfoundation.org>
+Message-ID: <20230911134636.353908314@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,44 +61,82 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Ian Rogers <irogers@google.com>
 
-[ Upstream commit 7f947be02aab5b154427cb5b0fffe858fc387b02 ]
+commit 5d890591db6bed8ca69bd4bfe0cdaca372973033 upstream.
 
-The debug print parameters were swapped in the output and they were
-printed as decimal values, both the hardware address and the value.
-Update the debug print to print the parameters in correct order, and
-use hexadecimal print for both address and value.
+Compute the headers to be installed from their source headers and make
+each have its own build target to install it. Using dependencies
+avoids headers being reinstalled and getting a new timestamp which
+then causes files that depend on the header to be rebuilt.
 
-Fixes: f38b7cca6d0e ("drm/bridge: tc358764: Add DSI to LVDS bridge driver")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230615152817.359420-1-marex@denx.de
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Signed-off-by: Ian Rogers <irogers@google.com>
+Cc: Alexander Shishkin <alexander.shishkin@linux.intel.com>
+Cc: Ingo Molnar <mingo@redhat.com>
+Cc: Jiri Olsa <jolsa@kernel.org>
+Cc: Josh Poimboeuf <jpoimboe@kernel.org>
+Cc: Mark Rutland <mark.rutland@arm.com>
+Cc: Masahiro Yamada <masahiroy@kernel.org>
+Cc: Namhyung Kim <namhyung@kernel.org>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Cc: Nick Desaulniers <ndesaulniers@google.com>
+Cc: Nicolas Schier <nicolas@fjasle.eu>
+Cc: Peter Zijlstra <peterz@infradead.org>
+Cc: Stephane Eranian <eranian@google.com>
+Cc: Tom Rix <trix@redhat.com>
+Cc: bpf@vger.kernel.org
+Cc: llvm@lists.linux.dev
+Link: https://lore.kernel.org/r/20221202045743.2639466-4-irogers@google.com
+Signed-off-by: Arnaldo Carvalho de Melo <acme@redhat.com>
+Cc: Nathan Chancellor <nathan@kernel.org>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/gpu/drm/bridge/tc358764.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ tools/lib/subcmd/Makefile |   23 +++++++++++++----------
+ 1 file changed, 13 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/tc358764.c b/drivers/gpu/drm/bridge/tc358764.c
-index f85654f1b1045..8e938a7480f37 100644
---- a/drivers/gpu/drm/bridge/tc358764.c
-+++ b/drivers/gpu/drm/bridge/tc358764.c
-@@ -176,7 +176,7 @@ static void tc358764_read(struct tc358764 *ctx, u16 addr, u32 *val)
- 	if (ret >= 0)
- 		le32_to_cpus(val);
+--- a/tools/lib/subcmd/Makefile
++++ b/tools/lib/subcmd/Makefile
+@@ -89,10 +89,10 @@ define do_install_mkdir
+ endef
  
--	dev_dbg(ctx->dev, "read: %d, addr: %d\n", addr, *val);
-+	dev_dbg(ctx->dev, "read: addr=0x%04x data=0x%08x\n", addr, *val);
- }
+ define do_install
+-	if [ ! -d '$(DESTDIR_SQ)$2' ]; then             \
+-		$(INSTALL) -d -m 755 '$(DESTDIR_SQ)$2'; \
++	if [ ! -d '$2' ]; then             \
++		$(INSTALL) -d -m 755 '$2'; \
+ 	fi;                                             \
+-	$(INSTALL) $1 $(if $3,-m $3,) '$(DESTDIR_SQ)$2'
++	$(INSTALL) $1 $(if $3,-m $3,) '$2'
+ endef
  
- static void tc358764_write(struct tc358764 *ctx, u16 addr, u32 val)
--- 
-2.40.1
-
+ install_lib: $(LIBFILE)
+@@ -100,13 +100,16 @@ install_lib: $(LIBFILE)
+ 		$(call do_install_mkdir,$(libdir_SQ)); \
+ 		cp -fpR $(LIBFILE) $(DESTDIR)$(libdir_SQ)
+ 
+-install_headers:
+-	$(call QUIET_INSTALL, libsubcmd_headers) \
+-		$(call do_install,exec-cmd.h,$(prefix)/include/subcmd,644); \
+-		$(call do_install,help.h,$(prefix)/include/subcmd,644); \
+-		$(call do_install,pager.h,$(prefix)/include/subcmd,644); \
+-		$(call do_install,parse-options.h,$(prefix)/include/subcmd,644); \
+-		$(call do_install,run-command.h,$(prefix)/include/subcmd,644);
++HDRS := exec-cmd.h help.h pager.h parse-options.h run-command.h
++INSTALL_HDRS_PFX := $(DESTDIR)$(prefix)/include/subcmd
++INSTALL_HDRS := $(addprefix $(INSTALL_HDRS_PFX)/, $(HDRS))
++
++$(INSTALL_HDRS): $(INSTALL_HDRS_PFX)/%.h: %.h
++	$(call QUIET_INSTALL, $@) \
++		$(call do_install,$<,$(INSTALL_HDRS_PFX)/,644)
++
++install_headers: $(INSTALL_HDRS)
++	$(call QUIET_INSTALL, libsubcmd_headers)
+ 
+ install: install_lib install_headers
+ 
 
 
