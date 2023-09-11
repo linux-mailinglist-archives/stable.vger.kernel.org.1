@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CEB8279AF35
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id BCC1079B272
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234935AbjIKUws (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:48 -0400
+        id S1354250AbjIKVxM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:53:12 -0400
 Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44828 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239634AbjIKOY7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:59 -0400
+        with ESMTP id S242220AbjIKPZW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F3D4DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:54 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E9D6AC433C7;
-        Mon, 11 Sep 2023 14:24:53 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC176D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 380DEC433C8;
+        Mon, 11 Sep 2023 15:25:17 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442294;
-        bh=frl/p3tOpteIvwr/V9ZrKQ+8c1icHAdKwnFP5ijGTuI=;
+        s=korg; t=1694445917;
+        bh=W0562cy4P0MqZXse4WTuD5AFNDvg68EnDfVN5HTjQxc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=P2E/shmUWOzFUuUd/Bgt6Il+XFIoX7WEKxYAh5cSHWqdO0r+pVyP+46YwxlXZUcZd
-         QdWNr5+X2voZR5TmzPZw7C6sNuRAxeBqdtokSfvQ579uKWjCkMSQkFTq/UxGx59Z2e
-         PSE2HrG7chd4GNvG83bmu4wVR+Qg/8vRBsRG9f38=
+        b=KWxF8dcGujMElK+ygtmGgjvjkdvo9BPAIjcVBp75tGgOScEVai5X+6BMVZ+59xVvv
+         +z4DJDG8Z4b9kbIlURs3CaYvZjTK+h/5zlTpS3y+F1qSOiE1PVt5wUSovXYoCWzKh1
+         TXZoCoSbxUr/ZPV6R/fZxEEb2kOf34vZrZFiFHcc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Heiko Carstens <hca@linux.ibm.com>,
-        Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Subject: [PATCH 6.5 715/739] s390/dcssblk: fix kernel crash with list_add corruption
+        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 481/600] scsi: core: Use 32-bit hostnum in scsi_host_lookup()
 Date:   Mon, 11 Sep 2023 15:48:34 +0200
-Message-ID: <20230911134711.056986504@linuxfoundation.org>
+Message-ID: <20230911134647.837899906@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,74 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
+From: Tony Battersby <tonyb@cybernetics.com>
 
-commit c8f40a0bccefd613748d080147469a4652d6e74c upstream.
+[ Upstream commit 62ec2092095b678ff89ce4ba51c2938cd1e8e630 ]
 
-Commit fb08a1908cb1 ("dax: simplify the dax_device <-> gendisk
-association") introduced new logic for gendisk association, requiring
-drivers to explicitly call dax_add_host() and dax_remove_host().
+Change scsi_host_lookup() hostnum argument type from unsigned short to
+unsigned int to match the type used everywhere else.
 
-For dcssblk driver, some dax_remove_host() calls were missing, e.g. in
-device remove path. The commit also broke error handling for out_dax case
-in device add path, resulting in an extra put_device() w/o the previous
-get_device() in that case.
-
-This lead to stale xarray entries after device add / remove cycles. In the
-case when a previously used struct gendisk pointer (xarray index) would be
-used again, because blk_alloc_disk() happened to return such a pointer, the
-xa_insert() in dax_add_host() would fail and go to out_dax, doing the extra
-put_device() in the error path. In combination with an already flawed error
-handling in dcssblk (device_register() cleanup), which needs to be
-addressed in a separate patch, this resulted in a missing device_del() /
-klist_del(), and eventually in the kernel crash with list_add corruption on
-a subsequent device_add() / klist_add().
-
-Fix this by adding the missing dax_remove_host() calls, and also move the
-put_device() in the error path to restore the previous logic.
-
-Fixes: fb08a1908cb1 ("dax: simplify the dax_device <-> gendisk association")
-Cc: <stable@vger.kernel.org> # 5.17+
-Acked-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Gerald Schaefer <gerald.schaefer@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: 6d49f63b415c ("[SCSI] Make host_no an unsigned int")
+Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
+Link: https://lore.kernel.org/r/a02497e7-c12b-ef15-47fc-3f0a0b00ffce@cybernetics.com
+Reviewed-by: Bart Van Assche <bvanassche@acm.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/block/dcssblk.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/scsi/hosts.c     | 4 ++--
+ include/scsi/scsi_host.h | 2 +-
+ 2 files changed, 3 insertions(+), 3 deletions(-)
 
---- a/drivers/s390/block/dcssblk.c
-+++ b/drivers/s390/block/dcssblk.c
-@@ -412,6 +412,7 @@ removeseg:
- 	}
- 	list_del(&dev_info->lh);
+diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
+index 45a2fd6584d16..8b825364baade 100644
+--- a/drivers/scsi/hosts.c
++++ b/drivers/scsi/hosts.c
+@@ -535,7 +535,7 @@ EXPORT_SYMBOL(scsi_host_alloc);
+ static int __scsi_host_match(struct device *dev, const void *data)
+ {
+ 	struct Scsi_Host *p;
+-	const unsigned short *hostnum = data;
++	const unsigned int *hostnum = data;
  
-+	dax_remove_host(dev_info->gd);
- 	kill_dax(dev_info->dax_dev);
- 	put_dax(dev_info->dax_dev);
- 	del_gendisk(dev_info->gd);
-@@ -707,9 +708,9 @@ dcssblk_add_store(struct device *dev, st
- 	goto out;
- 
- out_dax_host:
-+	put_device(&dev_info->dev);
- 	dax_remove_host(dev_info->gd);
- out_dax:
--	put_device(&dev_info->dev);
- 	kill_dax(dev_info->dax_dev);
- 	put_dax(dev_info->dax_dev);
- put_dev:
-@@ -789,6 +790,7 @@ dcssblk_remove_store(struct device *dev,
- 	}
- 
- 	list_del(&dev_info->lh);
-+	dax_remove_host(dev_info->gd);
- 	kill_dax(dev_info->dax_dev);
- 	put_dax(dev_info->dax_dev);
- 	del_gendisk(dev_info->gd);
+ 	p = class_to_shost(dev);
+ 	return p->host_no == *hostnum;
+@@ -552,7 +552,7 @@ static int __scsi_host_match(struct device *dev, const void *data)
+  *	that scsi_host_get() took. The put_device() below dropped
+  *	the reference from class_find_device().
+  **/
+-struct Scsi_Host *scsi_host_lookup(unsigned short hostnum)
++struct Scsi_Host *scsi_host_lookup(unsigned int hostnum)
+ {
+ 	struct device *cdev;
+ 	struct Scsi_Host *shost = NULL;
+diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
+index fcf25f1642a3a..d27d9fb7174c8 100644
+--- a/include/scsi/scsi_host.h
++++ b/include/scsi/scsi_host.h
+@@ -757,7 +757,7 @@ extern void scsi_remove_host(struct Scsi_Host *);
+ extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
+ extern int scsi_host_busy(struct Scsi_Host *shost);
+ extern void scsi_host_put(struct Scsi_Host *t);
+-extern struct Scsi_Host *scsi_host_lookup(unsigned short);
++extern struct Scsi_Host *scsi_host_lookup(unsigned int hostnum);
+ extern const char *scsi_host_state_name(enum scsi_host_state);
+ extern void scsi_host_complete_all_commands(struct Scsi_Host *shost,
+ 					    enum scsi_host_status status);
+-- 
+2.40.1
+
 
 
