@@ -2,38 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B4AE979C091
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7E82A79BD90
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239643AbjIKWes (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:34:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44294 "EHLO
+        id S229447AbjIKWqj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:46:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59740 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240990AbjIKO7L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:11 -0400
+        with ESMTP id S240997AbjIKO7T (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5815AE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CCCCC433C8;
-        Mon, 11 Sep 2023 14:59:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E2B1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5C3AC433C8;
+        Mon, 11 Sep 2023 14:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444347;
-        bh=K1+TLNrxRZEnGVMpqkfQ1wvukiGWZ7ILGqUj2zvf/iI=;
+        s=korg; t=1694444355;
+        bh=2f0iGwfqDrpnkWov27uNhyXfEeJnff3zPJyZ6pWsRC4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vEAWwvOHjrcfE7WoT2P9sc9nqqOZXC1Aun1cCfnqXV4X4OlbIfQcTakaIo+tY8iU0
-         QOTTlY7IDCoL7BjtlR5433EmKIJ8UVx+45uON3lvnorN601UlZUX6EBuWRsigeG99m
-         J7LffLV8b0rU9jUTOOMOLbdcLdNxAvzmRLZr68LM=
+        b=gUBlALIShr/rrMWBFDHh1jo5Wp5R4Kfk1+Gc1VD1RH2HFYhxwyzeSqOfYC+eQwai9
+         MR8sTOyqEGjcs8roqy8hcFoe46d1EIewshR7Yj2TkiGqrmeVuRY1NxUbo9OcXuE4Z1
+         c+3ks+Uo7j2t6j9GZy6/3lBp7wc2t4WGQ0p628uU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dichtel <nicolas.dichtel@6wind.com>,
-        Siwar Zitouni <siwar.zitouni@6wind.com>,
-        Guillaume Nault <gnault@redhat.com>,
-        "David S. Miller" <davem@davemloft.net>
-Subject: [PATCH 6.4 697/737] net: handle ARPHRD_PPP in dev_is_mac_header_xmit()
-Date:   Mon, 11 Sep 2023 15:49:16 +0200
-Message-ID: <20230911134709.996435307@linuxfoundation.org>
+        patches@lists.linux.dev, Yazen Ghannam <yazen.ghannam@amd.com>,
+        "Borislav Petkov (AMD)" <bp@alien8.de>
+Subject: [PATCH 6.4 699/737] x86/MCE: Always save CS register on AMD Zen IF Poison errors
+Date:   Mon, 11 Sep 2023 15:49:18 +0200
+Message-ID: <20230911134710.051260810@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -56,38 +53,110 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Nicolas Dichtel <nicolas.dichtel@6wind.com>
+From: Yazen Ghannam <yazen.ghannam@amd.com>
 
-commit a4f39c9f14a634e4cd35fcd338c239d11fcc73fc upstream.
+commit 4240e2ebe67941ce2c4f5c866c3af4b5ac7a0c67 upstream.
 
-The goal is to support a bpf_redirect() from an ethernet device (ingress)
-to a ppp device (egress).
-The l2 header is added automatically by the ppp driver, thus the ethernet
-header should be removed.
+The Instruction Fetch (IF) units on current AMD Zen-based systems do not
+guarantee a synchronous #MC is delivered for poison consumption errors.
+Therefore, MCG_STATUS[EIPV|RIPV] will not be set. However, the
+microarchitecture does guarantee that the exception is delivered within
+the same context. In other words, the exact rIP is not known, but the
+context is known to not have changed.
 
-CC: stable@vger.kernel.org
-Fixes: 27b29f63058d ("bpf: add bpf_redirect() helper")
-Signed-off-by: Nicolas Dichtel <nicolas.dichtel@6wind.com>
-Tested-by: Siwar Zitouni <siwar.zitouni@6wind.com>
-Reviewed-by: Guillaume Nault <gnault@redhat.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+There is no architecturally-defined method to determine this behavior.
+
+The Code Segment (CS) register is always valid on such IF unit poison
+errors regardless of the value of MCG_STATUS[EIPV|RIPV].
+
+Add a quirk to save the CS register for poison consumption from the IF
+unit banks.
+
+This is needed to properly determine the context of the error.
+Otherwise, the severity grading function will assume the context is
+IN_KERNEL due to the m->cs value being 0 (the initialized value). This
+leads to unnecessary kernel panics on data poison errors due to the
+kernel believing the poison consumption occurred in kernel context.
+
+Signed-off-by: Yazen Ghannam <yazen.ghannam@amd.com>
+Signed-off-by: Borislav Petkov (AMD) <bp@alien8.de>
+Cc: stable@vger.kernel.org
+Link: https://lore.kernel.org/r/20230814200853.29258-1-yazen.ghannam@amd.com
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- include/linux/if_arp.h |    4 ++++
- 1 file changed, 4 insertions(+)
+ arch/x86/kernel/cpu/mce/core.c     |   26 ++++++++++++++++++++++++++
+ arch/x86/kernel/cpu/mce/internal.h |    5 ++++-
+ 2 files changed, 30 insertions(+), 1 deletion(-)
 
---- a/include/linux/if_arp.h
-+++ b/include/linux/if_arp.h
-@@ -53,6 +53,10 @@ static inline bool dev_is_mac_header_xmi
- 	case ARPHRD_NONE:
- 	case ARPHRD_RAWIP:
- 	case ARPHRD_PIMREG:
-+	/* PPP adds its l2 header automatically in ppp_start_xmit().
-+	 * This makes it look like an l3 device to __bpf_redirect() and tcf_mirred_init().
-+	 */
-+	case ARPHRD_PPP:
- 		return false;
- 	default:
- 		return true;
+--- a/arch/x86/kernel/cpu/mce/core.c
++++ b/arch/x86/kernel/cpu/mce/core.c
+@@ -843,6 +843,26 @@ static noinstr bool quirk_skylake_repmov
+ }
+ 
+ /*
++ * Some Zen-based Instruction Fetch Units set EIPV=RIPV=0 on poison consumption
++ * errors. This means mce_gather_info() will not save the "ip" and "cs" registers.
++ *
++ * However, the context is still valid, so save the "cs" register for later use.
++ *
++ * The "ip" register is truly unknown, so don't save it or fixup EIPV/RIPV.
++ *
++ * The Instruction Fetch Unit is at MCA bank 1 for all affected systems.
++ */
++static __always_inline void quirk_zen_ifu(int bank, struct mce *m, struct pt_regs *regs)
++{
++	if (bank != 1)
++		return;
++	if (!(m->status & MCI_STATUS_POISON))
++		return;
++
++	m->cs = regs->cs;
++}
++
++/*
+  * Do a quick check if any of the events requires a panic.
+  * This decides if we keep the events around or clear them.
+  */
+@@ -861,6 +881,9 @@ static __always_inline int mce_no_way_ou
+ 		if (mce_flags.snb_ifu_quirk)
+ 			quirk_sandybridge_ifu(i, m, regs);
+ 
++		if (mce_flags.zen_ifu_quirk)
++			quirk_zen_ifu(i, m, regs);
++
+ 		m->bank = i;
+ 		if (mce_severity(m, regs, &tmp, true) >= MCE_PANIC_SEVERITY) {
+ 			mce_read_aux(m, i);
+@@ -1842,6 +1865,9 @@ static int __mcheck_cpu_apply_quirks(str
+ 		if (c->x86 == 0x15 && c->x86_model <= 0xf)
+ 			mce_flags.overflow_recov = 1;
+ 
++		if (c->x86 >= 0x17 && c->x86 <= 0x1A)
++			mce_flags.zen_ifu_quirk = 1;
++
+ 	}
+ 
+ 	if (c->x86_vendor == X86_VENDOR_INTEL) {
+--- a/arch/x86/kernel/cpu/mce/internal.h
++++ b/arch/x86/kernel/cpu/mce/internal.h
+@@ -157,6 +157,9 @@ struct mce_vendor_flags {
+ 	 */
+ 	smca			: 1,
+ 
++	/* Zen IFU quirk */
++	zen_ifu_quirk		: 1,
++
+ 	/* AMD-style error thresholding banks present. */
+ 	amd_threshold		: 1,
+ 
+@@ -172,7 +175,7 @@ struct mce_vendor_flags {
+ 	/* Skylake, Cascade Lake, Cooper Lake REP;MOVS* quirk */
+ 	skx_repmov_quirk	: 1,
+ 
+-	__reserved_0		: 56;
++	__reserved_0		: 55;
+ };
+ 
+ extern struct mce_vendor_flags mce_flags;
 
 
