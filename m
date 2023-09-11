@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2F4D979B65F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 535DB79B822
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353625AbjIKVry (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:47:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54198 "EHLO
+        id S233308AbjIKUwW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56336 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242089AbjIKPWB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:22:01 -0400
+        with ESMTP id S239537AbjIKOXX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:23:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C27BFD3
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DD91FC433C8;
-        Mon, 11 Sep 2023 15:21:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EE1ADDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:18 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3EC86C433C7;
+        Mon, 11 Sep 2023 14:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445716;
-        bh=ojVLxq0Dbrl6OeP7yrXqqvzPiyYcHj3YYNQ24I3FCUU=;
+        s=korg; t=1694442198;
+        bh=Lv1NKOg82lki41tgK0SHqljC2HbKVyyCERc2RsVr6kw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=poKCY/OqzLa7IO9eo5PzqFQnSTrv40u/xVgummCwFAD5uBTY3d4JbL0Op6gK1h4Ro
-         hhZvulJ0lg1STsvJ7dnE9IkYshi6Ga5dlsnuIMg3YWC7SZj+kdflv9c3D/4oCrbnaZ
-         jF6SL1uCV5e+oJXhGZLzT0sDqc9bOTrWO8BGNLHM=
+        b=c3pU75jms3vy4wkA1QOr8NyK9Kka4RcmA3WRM9WRnGKgTo8NI1dPOuvmUi+As6QCC
+         hbdNVh2qaFo3W43zT1Mad7e+AIRQAguMnIrgmB0M8dl0V5pxyFLSuHeke877RkuZ00
+         I/UGfRDNHbxhnrGI0QQKni6ocB71ss1/PELmz3Ko=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Junxian Huang <huangjunxian6@hisilicon.com>,
-        Leon Romanovsky <leon@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 446/600] RDMA/hns: Fix inaccurate error label name in init instance
-Date:   Mon, 11 Sep 2023 15:47:59 +0200
-Message-ID: <20230911134646.810586332@linuxfoundation.org>
+        patches@lists.linux.dev, Yang Yingliang <yangyingliang@huawei.com>,
+        Fabio Estevam <festevam@gmail.com>,
+        Laurent Pinchart <laurent.pinchart@ideasonboard.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Subject: [PATCH 6.5 681/739] media: nxp: Fix wrong return pointer check in mxc_isi_crossbar_init()
+Date:   Mon, 11 Sep 2023 15:48:00 +0200
+Message-ID: <20230911134710.120144229@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,61 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Junxian Huang <huangjunxian6@hisilicon.com>
+From: Yang Yingliang <yangyingliang@huawei.com>
 
-[ Upstream commit c9c0bd3c177d93d80968f720304087ba83fe8f74 ]
+commit 4b60db99babad0254129ddc58e0927ffa9e93e35 upstream.
 
-This patch fixes inaccurate error label name in init instance.
+It should check 'xbar->inputs', when allocate memory for it.
 
-Fixes: 70f92521584f ("RDMA/hns: Use the reserved loopback QPs to free MR before destroying MPT")
-Signed-off-by: Junxian Huang <huangjunxian6@hisilicon.com>
-Link: https://lore.kernel.org/r/20230804012711.808069-4-huangjunxian6@hisilicon.com
-Signed-off-by: Leon Romanovsky <leon@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: cf21f328fcaf ("media: nxp: Add i.MX8 ISI driver")
+Signed-off-by: Yang Yingliang <yangyingliang@huawei.com>
+Reviewed-by: Fabio Estevam <festevam@gmail.com>
+Reviewed-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Laurent Pinchart <laurent.pinchart@ideasonboard.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/infiniband/hw/hns/hns_roce_hw_v2.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-index e9a1985f7f17c..33980485ef5ba 100644
---- a/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-+++ b/drivers/infiniband/hw/hns/hns_roce_hw_v2.c
-@@ -6865,14 +6865,14 @@ static int __hns_roce_hw_v2_init_instance(struct hnae3_handle *handle)
- 	ret = hns_roce_init(hr_dev);
- 	if (ret) {
- 		dev_err(hr_dev->dev, "RoCE Engine init failed!\n");
--		goto error_failed_cfg;
-+		goto error_failed_roce_init;
+--- a/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
++++ b/drivers/media/platform/nxp/imx8-isi/imx8-isi-crossbar.c
+@@ -483,7 +483,7 @@ int mxc_isi_crossbar_init(struct mxc_isi
+ 
+ 	xbar->inputs = kcalloc(xbar->num_sinks, sizeof(*xbar->inputs),
+ 			       GFP_KERNEL);
+-	if (!xbar->pads) {
++	if (!xbar->inputs) {
+ 		ret = -ENOMEM;
+ 		goto err_free;
  	}
- 
- 	if (hr_dev->pci_dev->revision == PCI_REVISION_ID_HIP08) {
- 		ret = free_mr_init(hr_dev);
- 		if (ret) {
- 			dev_err(hr_dev->dev, "failed to init free mr!\n");
--			goto error_failed_roce_init;
-+			goto error_failed_free_mr_init;
- 		}
- 	}
- 
-@@ -6880,10 +6880,10 @@ static int __hns_roce_hw_v2_init_instance(struct hnae3_handle *handle)
- 
- 	return 0;
- 
--error_failed_roce_init:
-+error_failed_free_mr_init:
- 	hns_roce_exit(hr_dev);
- 
--error_failed_cfg:
-+error_failed_roce_init:
- 	kfree(hr_dev->priv);
- 
- error_failed_kzalloc:
--- 
-2.40.1
-
 
 
