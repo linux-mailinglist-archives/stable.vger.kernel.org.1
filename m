@@ -2,42 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D39E379B281
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6792479B1A2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233483AbjIKWsH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42774 "EHLO
+        id S244972AbjIKVId (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50284 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240704AbjIKOv2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:28 -0400
+        with ESMTP id S241968AbjIKPTS (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:18 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 76A4E125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC836C433C9;
-        Mon, 11 Sep 2023 14:51:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 79939FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BE97AC433C8;
+        Mon, 11 Sep 2023 15:19:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443884;
-        bh=mzL2IYMeLbZ+OBh+qz84XrEEhBd0XLVgCimzSDu/2MM=;
+        s=korg; t=1694445553;
+        bh=/lgvZeS8b3otMks2WyLoG+5A+5dkxfhA2/SnKlkFpdA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=N+RIJiMY2c8MOk4ZCSSS8pM1OE702yyhwrtqzkBWjTHE9zRbqCJBNse0QNx9xEtQD
-         xHSJwJfHw62QdMAhx60u6M1wA3erkMRZPpe5VQUNnMvUg47dEj497S9g3qZComlaJJ
-         EbqwyOKWfipPODroizaxNSzwhbd1Pgvn/triNf7U=
+        b=GuwlA0SXn0/+oQSUV+PDnDAJE4+lKl6YCgulL+t+HLTnYfgn3z4qJWg4kVH1Ovght
+         CNr4q4PAEmGOtpyUZdiYQtNt0bg0P0Qsr2Sp0oozYVNwmR6Z/XwMFwn53PyE3oBn8T
+         k7460Umee+pOd0SIyu3zLT/tcEIiDxVlaafPSrO0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Chengci.Xu" <chengci.xu@mediatek.com>,
-        Yong Wu <yong.wu@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 535/737] iommu/mediatek: Fix two IOMMU share pagetable issue
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
+        Michael Ellerman <mpe@ellerman.id.au>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 361/600] powerpc/radix: Move some functions into #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 Date:   Mon, 11 Sep 2023 15:46:34 +0200
-Message-ID: <20230911134705.512962095@linuxfoundation.org>
+Message-ID: <20230911134644.335301215@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,102 +51,347 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chengci.Xu <chengci.xu@mediatek.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit cf69ef46dbd980a0b1c956d668e066a73e0acd0f ]
+[ Upstream commit 4a9dd8f292efd614f0a18452e6474fe19ae17b47 ]
 
-Prepare for mt8188 to fix a two IOMMU HWs share pagetable issue.
+With skiboot_defconfig, Clang reports:
 
-We have two MM IOMMU HWs in mt8188, one is VPP-IOMMU, the other is
-VDO-IOMMU. The 2 MM IOMMU HWs share pagetable don't work in this case:
- a) VPP-IOMMU probe firstly.
- b) VDO-IOMMU probe.
- c) The master for VDO-IOMMU probe (means frstdata is vpp-iommu).
- d) The master in another domain probe. No matter it is vdo or vpp.
-Then it still create a new pagetable in step d). The problem is
-"frstdata->bank[0]->m4u_dom" was not initialized. Then when d) enter, it
-still create a new one.
+  CC      arch/powerpc/mm/book3s64/radix_tlb.o
+arch/powerpc/mm/book3s64/radix_tlb.c:419:20: error: unused function '_tlbie_pid_lpid' [-Werror,-Wunused-function]
+static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+                   ^
+arch/powerpc/mm/book3s64/radix_tlb.c:663:20: error: unused function '_tlbie_va_range_lpid' [-Werror,-Wunused-function]
+static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
+                   ^
 
-In this patch, we create a new variable "share_dom" for this share
-pgtable case, it should be helpful for readable. and put all the share
-pgtable logic in the mtk_iommu_domain_finalise.
+This is because those functions are only called from functions
+enclosed in a #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
 
-In mt8195, the master of VPP-IOMMU probes before than VDO-IOMMU
-from its dtsi node sequence, we don't see this issue in it. Prepare for
-mt8188.
+Move below functions inside that #ifdef
+* __tlbie_pid_lpid(unsigned long pid,
+* __tlbie_va_lpid(unsigned long va, unsigned long pid,
+* fixup_tlbie_pid_lpid(unsigned long pid, unsigned long lpid)
+* _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+* fixup_tlbie_va_range_lpid(unsigned long va,
+* __tlbie_va_range_lpid(unsigned long start, unsigned long end,
+* _tlbie_va_range_lpid(unsigned long start, unsigned long end,
 
-Fixes: 645b87c190c9 ("iommu/mediatek: Fix 2 HW sharing pgtable issue")
-Signed-off-by: Chengci.Xu <chengci.xu@mediatek.com>
-Signed-off-by: Yong Wu <yong.wu@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://lore.kernel.org/r/20230602090227.7264-3-yong.wu@mediatek.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: f0c6fbbb9050 ("KVM: PPC: Book3S HV: Add support for H_RPT_INVALIDATE")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202307260802.Mjr99P5O-lkp@intel.com/
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
+Link: https://msgid.link/3d72efd39f986ee939d068af69fdce28bd600766.1691568093.git.christophe.leroy@csgroup.eu
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/mtk_iommu.c | 22 ++++++++++++++--------
- 1 file changed, 14 insertions(+), 8 deletions(-)
+ arch/powerpc/mm/book3s64/radix_tlb.c | 240 ++++++++++++++-------------
+ 1 file changed, 121 insertions(+), 119 deletions(-)
 
-diff --git a/drivers/iommu/mtk_iommu.c b/drivers/iommu/mtk_iommu.c
-index e93906d6e112e..c2764891a779c 100644
---- a/drivers/iommu/mtk_iommu.c
-+++ b/drivers/iommu/mtk_iommu.c
-@@ -258,6 +258,8 @@ struct mtk_iommu_data {
- 	struct device			*smicomm_dev;
+diff --git a/arch/powerpc/mm/book3s64/radix_tlb.c b/arch/powerpc/mm/book3s64/radix_tlb.c
+index 6d7a1ef723e69..a8ba04dcb20fa 100644
+--- a/arch/powerpc/mm/book3s64/radix_tlb.c
++++ b/arch/powerpc/mm/book3s64/radix_tlb.c
+@@ -127,21 +127,6 @@ static __always_inline void __tlbie_pid(unsigned long pid, unsigned long ric)
+ 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+ }
  
- 	struct mtk_iommu_bank_data	*bank;
-+	struct mtk_iommu_domain		*share_dom; /* For 2 HWs share pgtable */
-+
- 	struct regmap			*pericfg;
- 	struct mutex			mutex; /* Protect m4u_group/m4u_dom above */
- 
-@@ -620,15 +622,14 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom,
- 				     struct mtk_iommu_data *data,
- 				     unsigned int region_id)
- {
-+	struct mtk_iommu_domain	*share_dom = data->share_dom;
- 	const struct mtk_iommu_iova_region *region;
--	struct mtk_iommu_domain	*m4u_dom;
+-static __always_inline void __tlbie_pid_lpid(unsigned long pid,
+-					     unsigned long lpid,
+-					     unsigned long ric)
+-{
+-	unsigned long rb, rs, prs, r;
 -
--	/* Always use bank0 in sharing pgtable case */
--	m4u_dom = data->bank[0].m4u_dom;
--	if (m4u_dom) {
--		dom->iop = m4u_dom->iop;
--		dom->cfg = m4u_dom->cfg;
--		dom->domain.pgsize_bitmap = m4u_dom->cfg.pgsize_bitmap;
-+
-+	/* Always use share domain in sharing pgtable case */
-+	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE) && share_dom) {
-+		dom->iop = share_dom->iop;
-+		dom->cfg = share_dom->cfg;
-+		dom->domain.pgsize_bitmap = share_dom->cfg.pgsize_bitmap;
- 		goto update_iova_region;
+-	rb = PPC_BIT(53); /* IS = 1 */
+-	rs = (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
+-	prs = 1; /* process scoped */
+-	r = 1;   /* radix format */
+-
+-	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+-		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+-	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+-}
+ static __always_inline void __tlbie_lpid(unsigned long lpid, unsigned long ric)
+ {
+ 	unsigned long rb,rs,prs,r;
+@@ -202,23 +187,6 @@ static __always_inline void __tlbie_va(unsigned long va, unsigned long pid,
+ 	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+ }
+ 
+-static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned long pid,
+-					    unsigned long lpid,
+-					    unsigned long ap, unsigned long ric)
+-{
+-	unsigned long rb, rs, prs, r;
+-
+-	rb = va & ~(PPC_BITMASK(52, 63));
+-	rb |= ap << PPC_BITLSHIFT(58);
+-	rs = (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
+-	prs = 1; /* process scoped */
+-	r = 1;   /* radix format */
+-
+-	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
+-		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
+-	trace_tlbie(0, 0, rb, rs, ric, prs, r);
+-}
+-
+ static __always_inline void __tlbie_lpid_va(unsigned long va, unsigned long lpid,
+ 					    unsigned long ap, unsigned long ric)
+ {
+@@ -264,22 +232,6 @@ static inline void fixup_tlbie_va_range(unsigned long va, unsigned long pid,
  	}
+ }
  
-@@ -658,6 +659,9 @@ static int mtk_iommu_domain_finalise(struct mtk_iommu_domain *dom,
- 	/* Update our support page sizes bitmap */
- 	dom->domain.pgsize_bitmap = dom->cfg.pgsize_bitmap;
+-static inline void fixup_tlbie_va_range_lpid(unsigned long va,
+-					     unsigned long pid,
+-					     unsigned long lpid,
+-					     unsigned long ap)
+-{
+-	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+-		asm volatile("ptesync" : : : "memory");
+-		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
+-	}
+-
+-	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+-		asm volatile("ptesync" : : : "memory");
+-		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
+-	}
+-}
+-
+ static inline void fixup_tlbie_pid(unsigned long pid)
+ {
+ 	/*
+@@ -299,26 +251,6 @@ static inline void fixup_tlbie_pid(unsigned long pid)
+ 	}
+ }
  
-+	if (MTK_IOMMU_HAS_FLAG(data->plat_data, SHARE_PGTABLE))
-+		data->share_dom = dom;
+-static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long lpid)
+-{
+-	/*
+-	 * We can use any address for the invalidation, pick one which is
+-	 * probably unused as an optimisation.
+-	 */
+-	unsigned long va = ((1UL << 52) - 1);
+-
+-	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
+-		asm volatile("ptesync" : : : "memory");
+-		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
+-	}
+-
+-	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
+-		asm volatile("ptesync" : : : "memory");
+-		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
+-				RIC_FLUSH_TLB);
+-	}
+-}
+-
+ static inline void fixup_tlbie_lpid_va(unsigned long va, unsigned long lpid,
+ 				       unsigned long ap)
+ {
+@@ -416,31 +348,6 @@ static inline void _tlbie_pid(unsigned long pid, unsigned long ric)
+ 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ }
+ 
+-static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
+-				   unsigned long ric)
+-{
+-	asm volatile("ptesync" : : : "memory");
+-
+-	/*
+-	 * Workaround the fact that the "ric" argument to __tlbie_pid
+-	 * must be a compile-time contraint to match the "i" constraint
+-	 * in the asm statement.
+-	 */
+-	switch (ric) {
+-	case RIC_FLUSH_TLB:
+-		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
+-		fixup_tlbie_pid_lpid(pid, lpid);
+-		break;
+-	case RIC_FLUSH_PWC:
+-		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+-		break;
+-	case RIC_FLUSH_ALL:
+-	default:
+-		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_ALL);
+-		fixup_tlbie_pid_lpid(pid, lpid);
+-	}
+-	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+-}
+ struct tlbiel_pid {
+ 	unsigned long pid;
+ 	unsigned long ric;
+@@ -566,20 +473,6 @@ static inline void __tlbie_va_range(unsigned long start, unsigned long end,
+ 	fixup_tlbie_va_range(addr - page_size, pid, ap);
+ }
+ 
+-static inline void __tlbie_va_range_lpid(unsigned long start, unsigned long end,
+-					 unsigned long pid, unsigned long lpid,
+-					 unsigned long page_size,
+-					 unsigned long psize)
+-{
+-	unsigned long addr;
+-	unsigned long ap = mmu_get_ap(psize);
+-
+-	for (addr = start; addr < end; addr += page_size)
+-		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
+-
+-	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
+-}
+-
+ static __always_inline void _tlbie_va(unsigned long va, unsigned long pid,
+ 				      unsigned long psize, unsigned long ric)
+ {
+@@ -660,18 +553,6 @@ static inline void _tlbie_va_range(unsigned long start, unsigned long end,
+ 	asm volatile("eieio; tlbsync; ptesync": : :"memory");
+ }
+ 
+-static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
+-					unsigned long pid, unsigned long lpid,
+-					unsigned long page_size,
+-					unsigned long psize, bool also_pwc)
+-{
+-	asm volatile("ptesync" : : : "memory");
+-	if (also_pwc)
+-		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
+-	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
+-	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
+-}
+-
+ static inline void _tlbiel_va_range_multicast(struct mm_struct *mm,
+ 				unsigned long start, unsigned long end,
+ 				unsigned long pid, unsigned long page_size,
+@@ -1476,6 +1357,127 @@ void radix__flush_tlb_all(void)
+ }
+ 
+ #ifdef CONFIG_KVM_BOOK3S_HV_POSSIBLE
++static __always_inline void __tlbie_pid_lpid(unsigned long pid,
++					     unsigned long lpid,
++					     unsigned long ric)
++{
++	unsigned long rb, rs, prs, r;
 +
- update_iova_region:
- 	/* Update the iova region for this domain */
- 	region = data->plat_data->iova_region + region_id;
-@@ -708,7 +712,9 @@ static int mtk_iommu_attach_device(struct iommu_domain *domain,
- 		/* Data is in the frstdata in sharing pgtable case. */
- 		frstdata = mtk_iommu_get_frst_data(hw_list);
- 
-+		mutex_lock(&frstdata->mutex);
- 		ret = mtk_iommu_domain_finalise(dom, frstdata, region_id);
-+		mutex_unlock(&frstdata->mutex);
- 		if (ret) {
- 			mutex_unlock(&dom->mutex);
- 			return ret;
++	rb = PPC_BIT(53); /* IS = 1 */
++	rs = (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
++	prs = 1; /* process scoped */
++	r = 1;   /* radix format */
++
++	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
++		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
++	trace_tlbie(0, 0, rb, rs, ric, prs, r);
++}
++
++static __always_inline void __tlbie_va_lpid(unsigned long va, unsigned long pid,
++					    unsigned long lpid,
++					    unsigned long ap, unsigned long ric)
++{
++	unsigned long rb, rs, prs, r;
++
++	rb = va & ~(PPC_BITMASK(52, 63));
++	rb |= ap << PPC_BITLSHIFT(58);
++	rs = (pid << PPC_BITLSHIFT(31)) | (lpid & ~(PPC_BITMASK(0, 31)));
++	prs = 1; /* process scoped */
++	r = 1;   /* radix format */
++
++	asm volatile(PPC_TLBIE_5(%0, %4, %3, %2, %1)
++		     : : "r"(rb), "i"(r), "i"(prs), "i"(ric), "r"(rs) : "memory");
++	trace_tlbie(0, 0, rb, rs, ric, prs, r);
++}
++
++static inline void fixup_tlbie_pid_lpid(unsigned long pid, unsigned long lpid)
++{
++	/*
++	 * We can use any address for the invalidation, pick one which is
++	 * probably unused as an optimisation.
++	 */
++	unsigned long va = ((1UL << 52) - 1);
++
++	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
++		asm volatile("ptesync" : : : "memory");
++		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
++	}
++
++	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
++		asm volatile("ptesync" : : : "memory");
++		__tlbie_va_lpid(va, pid, lpid, mmu_get_ap(MMU_PAGE_64K),
++				RIC_FLUSH_TLB);
++	}
++}
++
++static inline void _tlbie_pid_lpid(unsigned long pid, unsigned long lpid,
++				   unsigned long ric)
++{
++	asm volatile("ptesync" : : : "memory");
++
++	/*
++	 * Workaround the fact that the "ric" argument to __tlbie_pid
++	 * must be a compile-time contraint to match the "i" constraint
++	 * in the asm statement.
++	 */
++	switch (ric) {
++	case RIC_FLUSH_TLB:
++		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_TLB);
++		fixup_tlbie_pid_lpid(pid, lpid);
++		break;
++	case RIC_FLUSH_PWC:
++		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
++		break;
++	case RIC_FLUSH_ALL:
++	default:
++		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_ALL);
++		fixup_tlbie_pid_lpid(pid, lpid);
++	}
++	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
++}
++
++static inline void fixup_tlbie_va_range_lpid(unsigned long va,
++					     unsigned long pid,
++					     unsigned long lpid,
++					     unsigned long ap)
++{
++	if (cpu_has_feature(CPU_FTR_P9_TLBIE_ERAT_BUG)) {
++		asm volatile("ptesync" : : : "memory");
++		__tlbie_pid_lpid(0, lpid, RIC_FLUSH_TLB);
++	}
++
++	if (cpu_has_feature(CPU_FTR_P9_TLBIE_STQ_BUG)) {
++		asm volatile("ptesync" : : : "memory");
++		__tlbie_va_lpid(va, pid, lpid, ap, RIC_FLUSH_TLB);
++	}
++}
++
++static inline void __tlbie_va_range_lpid(unsigned long start, unsigned long end,
++					 unsigned long pid, unsigned long lpid,
++					 unsigned long page_size,
++					 unsigned long psize)
++{
++	unsigned long addr;
++	unsigned long ap = mmu_get_ap(psize);
++
++	for (addr = start; addr < end; addr += page_size)
++		__tlbie_va_lpid(addr, pid, lpid, ap, RIC_FLUSH_TLB);
++
++	fixup_tlbie_va_range_lpid(addr - page_size, pid, lpid, ap);
++}
++
++static inline void _tlbie_va_range_lpid(unsigned long start, unsigned long end,
++					unsigned long pid, unsigned long lpid,
++					unsigned long page_size,
++					unsigned long psize, bool also_pwc)
++{
++	asm volatile("ptesync" : : : "memory");
++	if (also_pwc)
++		__tlbie_pid_lpid(pid, lpid, RIC_FLUSH_PWC);
++	__tlbie_va_range_lpid(start, end, pid, lpid, page_size, psize);
++	asm volatile("eieio; tlbsync; ptesync" : : : "memory");
++}
++
+ /*
+  * Performs process-scoped invalidations for a given LPID
+  * as part of H_RPT_INVALIDATE hcall.
 -- 
 2.40.1
 
