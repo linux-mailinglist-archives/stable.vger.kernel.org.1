@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8362779ADA8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:27 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D34FB79AD51
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241391AbjIKVEt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40242 "EHLO
+        id S238710AbjIKUyS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:54:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35272 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240776AbjIKOxc (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:32 -0400
+        with ESMTP id S241991AbjIKPT7 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:59 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6797118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 16FF3C433C9;
-        Mon, 11 Sep 2023 14:53:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DFF4120
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E523CC433C8;
+        Mon, 11 Sep 2023 15:19:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444007;
-        bh=2apWznmeqda62+KEgk7a6h1U5WOSh8IFtLJXUMmTdhU=;
+        s=korg; t=1694445595;
+        bh=fD4DAMznVj4ndB2KTFnyXCzmBZASk0WfNwcCR7qE9vE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FkJhbLnHBXiG1TJFAhZkO4JMZLA5Bg5M0gMRL3EnaE4nGZRh7mn3SYSCeqOwKCOQa
-         nS+Wyai3RxhzB86l44CddLKiYWfI8M5YWhHgItm5S+epqLjUUTvnBIfVZm+fcT3kMr
-         /TdmMT3oTOzXIUSBpw9UUQUe7T0hs31hfy3TQ++U=
+        b=fTKxpiFvRsU8ZUZXw+UELAheUTm4wvPD5Gh5P2j8LNpcZs5kY9C06S9BSYJVjpEDx
+         +oK7ClNsKtWSnboE9sCDfOyxH3Mhh4T2cRAJdI5mpieI9oGfwZg4DtOxOGVhbeEkZE
+         QgUTzrn1F50Mlcz3oM6mPZfubyxCAT74R6lbKdcE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+601018296973a481f302@syzkaller.appspotmail.com,
-        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 577/737] Revert "f2fs: fix to do sanity check on extent cache correctly"
-Date:   Mon, 11 Sep 2023 15:47:16 +0200
-Message-ID: <20230911134706.650724721@linuxfoundation.org>
+Subject: [PATCH 6.1 404/600] dt-bindings: extcon: maxim,max77843: restrict connector properties
+Date:   Mon, 11 Sep 2023 15:47:17 +0200
+Message-ID: <20230911134645.602236093@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,98 +51,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 958ccbbf1ce716d77c7cfa79ace50a421c1eed73 ]
+[ Upstream commit fb2c3f72e819254d8c76de95917e5f9ff232586c ]
 
-syzbot reports a f2fs bug as below:
+Do not allow any other properties in connector child, except what
+usb-connector.yaml evaluates.
 
-UBSAN: array-index-out-of-bounds in fs/f2fs/f2fs.h:3275:19
-index 1409 is out of range for type '__le32[923]' (aka 'unsigned int[923]')
-Call Trace:
- __dump_stack lib/dump_stack.c:88 [inline]
- dump_stack_lvl+0x1e7/0x2d0 lib/dump_stack.c:106
- ubsan_epilogue lib/ubsan.c:217 [inline]
- __ubsan_handle_out_of_bounds+0x11c/0x150 lib/ubsan.c:348
- inline_data_addr fs/f2fs/f2fs.h:3275 [inline]
- __recover_inline_status fs/f2fs/inode.c:113 [inline]
- do_read_inode fs/f2fs/inode.c:480 [inline]
- f2fs_iget+0x4730/0x48b0 fs/f2fs/inode.c:604
- f2fs_fill_super+0x640e/0x80c0 fs/f2fs/super.c:4601
- mount_bdev+0x276/0x3b0 fs/super.c:1391
- legacy_get_tree+0xef/0x190 fs/fs_context.c:611
- vfs_get_tree+0x8c/0x270 fs/super.c:1519
- do_new_mount+0x28f/0xae0 fs/namespace.c:3335
- do_mount fs/namespace.c:3675 [inline]
- __do_sys_mount fs/namespace.c:3884 [inline]
- __se_sys_mount+0x2d9/0x3c0 fs/namespace.c:3861
- do_syscall_x64 arch/x86/entry/common.c:50 [inline]
- do_syscall_64+0x41/0xc0 arch/x86/entry/common.c:80
- entry_SYSCALL_64_after_hwframe+0x63/0xcd
-
-The issue was bisected to:
-
-commit d48a7b3a72f121655d95b5157c32c7d555e44c05
-Author: Chao Yu <chao@kernel.org>
-Date:   Mon Jan 9 03:49:20 2023 +0000
-
-    f2fs: fix to do sanity check on extent cache correctly
-
-The root cause is we applied both v1 and v2 of the patch, v2 is the right
-fix, so it needs to revert v1 in order to fix reported issue.
-
-v1:
-commit d48a7b3a72f1 ("f2fs: fix to do sanity check on extent cache correctly")
-https://lore.kernel.org/lkml/20230109034920.492914-1-chao@kernel.org/
-
-v2:
-commit 269d11948100 ("f2fs: fix to do sanity check on extent cache correctly")
-https://lore.kernel.org/lkml/20230207134808.1827869-1-chao@kernel.org/
-
-Reported-by: syzbot+601018296973a481f302@syzkaller.appspotmail.com
-Closes: https://lore.kernel.org/linux-f2fs-devel/000000000000fcf0690600e4d04d@google.com/
-Fixes: d48a7b3a72f1 ("f2fs: fix to do sanity check on extent cache correctly")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Fixes: 9729cad0278b ("dt-bindings: extcon: maxim,max77843: Add MAX77843 bindings")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/inode.c | 12 ++++++------
- 1 file changed, 6 insertions(+), 6 deletions(-)
+ Documentation/devicetree/bindings/extcon/maxim,max77843.yaml | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/fs/f2fs/inode.c b/fs/f2fs/inode.c
-index cf4327ad106c0..a99c151e3bdcf 100644
---- a/fs/f2fs/inode.c
-+++ b/fs/f2fs/inode.c
-@@ -396,6 +396,12 @@ static int do_read_inode(struct inode *inode)
- 		fi->i_inline_xattr_size = 0;
- 	}
+diff --git a/Documentation/devicetree/bindings/extcon/maxim,max77843.yaml b/Documentation/devicetree/bindings/extcon/maxim,max77843.yaml
+index 1289605456408..55800fb0221d0 100644
+--- a/Documentation/devicetree/bindings/extcon/maxim,max77843.yaml
++++ b/Documentation/devicetree/bindings/extcon/maxim,max77843.yaml
+@@ -23,6 +23,7 @@ properties:
  
-+	if (!sanity_check_inode(inode, node_page)) {
-+		f2fs_put_page(node_page, 1);
-+		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
-+		return -EFSCORRUPTED;
-+	}
-+
- 	/* check data exist */
- 	if (f2fs_has_inline_data(inode) && !f2fs_exist_data(inode))
- 		__recover_inline_status(inode, node_page);
-@@ -465,12 +471,6 @@ static int do_read_inode(struct inode *inode)
- 	f2fs_init_read_extent_tree(inode, node_page);
- 	f2fs_init_age_extent_tree(inode);
+   connector:
+     $ref: /schemas/connector/usb-connector.yaml#
++    unevaluatedProperties: false
  
--	if (!sanity_check_inode(inode, node_page)) {
--		f2fs_put_page(node_page, 1);
--		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
--		return -EFSCORRUPTED;
--	}
--
- 	if (!sanity_check_extent_cache(inode)) {
- 		f2fs_put_page(node_page, 1);
- 		f2fs_handle_error(sbi, ERROR_CORRUPTED_INODE);
+   ports:
+     $ref: /schemas/graph.yaml#/properties/ports
 -- 
 2.40.1
 
