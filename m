@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 960FA79B5EF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2E8879C03C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240703AbjIKVsX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55616 "EHLO
+        id S240605AbjIKVEh (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:37 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37930 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240414AbjIKOnk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:40 -0400
+        with ESMTP id S239120AbjIKOMU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3966DCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BB7C433C8;
-        Mon, 11 Sep 2023 14:43:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C871ACE5
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15C8DC433C8;
+        Mon, 11 Sep 2023 14:12:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443415;
-        bh=sY2tCPx522qtUB3LByl0b9OQzI23estZhuzoKHMwj2M=;
+        s=korg; t=1694441536;
+        bh=mrjVKdU8NWwFTZWOW4SaoV9ZQPNRQHDVCuqKeAhPOXM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Xa1LtoaeL60y54UUyCKL7DIaWSTHjws7UQrc9s37UlAzuW7TS687sB8IRUiX/4FR5
-         DWWQ8PyV5PS6ZQRbkIrT33/dqQ9fYXzhycXuqoR94gkhaOIw7u4HEcL4tmmOA4nctD
-         AAMBXzUjr6nOpsXTBI6yGbjXo6emHVOeh+DAWOJY=
+        b=W63NjcVwSxWiylLG3ywzGk5jR/TGT9k/D2KHwHXtGyK8+JAySL7s6IIt+QhgLbAnH
+         AAfQDdXuZmp4d5w1MP2ZuOUgtGa4rjBQap6YfnFX4+V3OCtd0mELWiSTEkFvLgrRE4
+         vsE/bpsXkO5BnDw6gVMzNiT8PBpJICKp1RcB5fxk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 370/737] io_uring: fix drain stalls by invalid SQE
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Dan Carpenter <error27@gmail.com>,
+        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 430/739] NFSv4.2: Fix READ_PLUS smatch warnings
 Date:   Mon, 11 Sep 2023 15:43:49 +0200
-Message-ID: <20230911134700.882368429@linuxfoundation.org>
+Message-ID: <20230911134703.187202114@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +51,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Pavel Begunkov <asml.silence@gmail.com>
+From: Anna Schumaker <Anna.Schumaker@Netapp.com>
 
-[ Upstream commit cfdbaa3a291d6fd2cb4a1a70d74e63b4abc2f5ec ]
+[ Upstream commit bb05a617f06b7a882e19c4f475b8e37f14d9ceac ]
 
-cq_extra is protected by ->completion_lock, which io_get_sqe() misses.
-The bug is harmless as it doesn't happen in real life, requires invalid
-SQ index array and racing with submission, and only messes up the
-userspace, i.e. stall requests execution but will be cleaned up on
-ring destruction.
+Smatch reports:
+  fs/nfs/nfs42xdr.c:1131 decode_read_plus() warn: missing error code? 'status'
 
-Fixes: 15641e427070f ("io_uring: don't cache number of dropped SQEs")
-Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
-Link: https://lore.kernel.org/r/66096d54651b1a60534bb2023f2947f09f50ef73.1691538547.git.asml.silence@gmail.com
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Which Dan suggests to fix by doing a hardcoded "return 0" from the
+"if (segments == 0)" check.
+
+Additionally, smatch reports that the "status = -EIO" assignment is not
+used. This patch addresses both these issues.
+
+Reported-by: kernel test robot <lkp@intel.com>
+Reported-by: Dan Carpenter <error27@gmail.com>
+Closes: https://lore.kernel.org/r/202305222209.6l5VM2lL-lkp@intel.com/
+Fixes: d3b00a802c845 ("NFS: Replace the READ_PLUS decoding code")
+Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/io_uring.c | 2 ++
- 1 file changed, 2 insertions(+)
+ fs/nfs/nfs42xdr.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/io_uring/io_uring.c b/io_uring/io_uring.c
-index a57bdf336ca8a..d029e578bdfe1 100644
---- a/io_uring/io_uring.c
-+++ b/io_uring/io_uring.c
-@@ -2468,7 +2468,9 @@ static bool io_get_sqe(struct io_ring_ctx *ctx, const struct io_uring_sqe **sqe)
- 	}
+diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
+index 95234208dc9ee..d0919c5bf61c7 100644
+--- a/fs/nfs/nfs42xdr.c
++++ b/fs/nfs/nfs42xdr.c
+@@ -1056,13 +1056,12 @@ static int decode_read_plus(struct xdr_stream *xdr, struct nfs_pgio_res *res)
+ 	res->eof = be32_to_cpup(p++);
+ 	segments = be32_to_cpup(p++);
+ 	if (segments == 0)
+-		return status;
++		return 0;
  
- 	/* drop invalid entries */
-+	spin_lock(&ctx->completion_lock);
- 	ctx->cq_extra--;
-+	spin_unlock(&ctx->completion_lock);
- 	WRITE_ONCE(ctx->rings->sq_dropped,
- 		   READ_ONCE(ctx->rings->sq_dropped) + 1);
- 	return false;
+ 	segs = kmalloc_array(segments, sizeof(*segs), GFP_KERNEL);
+ 	if (!segs)
+ 		return -ENOMEM;
+ 
+-	status = -EIO;
+ 	for (i = 0; i < segments; i++) {
+ 		status = decode_read_plus_segment(xdr, &segs[i]);
+ 		if (status < 0)
 -- 
 2.40.1
 
