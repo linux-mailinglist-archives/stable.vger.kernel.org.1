@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3CCED79BF9B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 95A8E79BE78
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350421AbjIKViL (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:38:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51794 "EHLO
+        id S1358045AbjIKWHb (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:07:31 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238581AbjIKN7x (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:53 -0400
+        with ESMTP id S239994AbjIKOdZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:33:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E84C6CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D50EC433C8;
-        Mon, 11 Sep 2023 13:59:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 62342F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:33:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id AB451C433C8;
+        Mon, 11 Sep 2023 14:33:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440788;
-        bh=homkzxdMdrk8VOnJLAnbNMLLO6VDijDRXkzL58KGs1s=;
+        s=korg; t=1694442801;
+        bh=vfvCvHA7+BFf7bkTP5O73ZyMqE6Z8+fSQvIFzqiVDSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=tEdyjJZH4OKEbcd3xXi2QC9iZcmX4dYzHK2ioLf5qm6AKbt6ON2PcJME5umghqUxM
-         0LaoOvHZp8QzxL39UXrBO9mDMZiDfNOmyCYuIB0W5t3hyOdh/Vb5WNrWR5KvVavex+
-         yDgpgPs9zDuaZVR5e+WJJwdQtr/W1iFGwAMhVwsY=
+        b=XIl77r7t2/LWmOQxEQdI+obv9DGbcTsR1Gnv6TM1CiBMmlH2RiaPfFkVewSLqXt+C
+         yOjr9136n5sIMLZm9A8h6w2amMsFBtQQ8jgvBY1klvNlSBnH9UwIiwB6k/CoMxu9nH
+         REuvLxB4DftvGex3ewJwwxD8wpV+q36nNtLYcB9M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, "Nysal Jan K.A" <nysal@linux.ibm.com>,
+        Shuah Khan <skhan@linuxfoundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 185/739] mlxsw: i2c: Limit single transaction buffer size
+Subject: [PATCH 6.4 125/737] selftests/futex: Order calls to futex_lock_pi
 Date:   Mon, 11 Sep 2023 15:39:44 +0200
-Message-ID: <20230911134656.361920735@linuxfoundation.org>
+Message-ID: <20230911134653.995986374@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Nysal Jan K.A <nysal@linux.ibm.com>
 
-[ Upstream commit d7248f1cc835bd80e936dc5b2d94b149bdd0077d ]
+[ Upstream commit fbf4dec702774286db409815ffb077711a96b824 ]
 
-Maximum size of buffer is obtained from underlying I2C adapter and in
-case adapter allows I2C transaction buffer size greater than 100 bytes,
-transaction will fail due to firmware limitation.
+Observed occassional failures in the futex_wait_timeout test:
 
-As a result driver will fail initialization.
+ok 1 futex_wait relative succeeds
+ok 2 futex_wait_bitset realtime succeeds
+ok 3 futex_wait_bitset monotonic succeeds
+ok 4 futex_wait_requeue_pi realtime succeeds
+ok 5 futex_wait_requeue_pi monotonic succeeds
+not ok 6 futex_lock_pi realtime returned 0
+......
 
-Limit the maximum size of transaction buffer by 100 bytes to fit to
-firmware.
+The test expects the child thread to complete some steps before
+the parent thread gets to run. There is an implicit expectation
+of the order of invocation of futex_lock_pi between the child thread
+and the parent thread. Make this order explicit. If the order is
+not met, the futex_lock_pi call in the parent thread succeeds and
+will not timeout.
 
-Remove unnecessary calculation:
-max_t(u16, MLXSW_I2C_BLK_DEF, quirk_size).
-This condition can not happened.
-
-Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: f4addd54b161 ("selftests: futex: Expand timeout test")
+Signed-off-by: Nysal Jan K.A <nysal@linux.ibm.com>
+Signed-off-by: Shuah Khan <skhan@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ .../selftests/futex/functional/futex_wait_timeout.c        | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-index 47af7ef7e4eee..d23f293e285cb 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-@@ -48,6 +48,7 @@
- #define MLXSW_I2C_MBOX_SIZE_BITS	12
- #define MLXSW_I2C_ADDR_BUF_SIZE		4
- #define MLXSW_I2C_BLK_DEF		32
-+#define MLXSW_I2C_BLK_MAX		100
- #define MLXSW_I2C_RETRY			5
- #define MLXSW_I2C_TIMEOUT_MSECS		5000
- #define MLXSW_I2C_MAX_DATA_SIZE		256
-@@ -653,7 +654,7 @@ static int mlxsw_i2c_probe(struct i2c_client *client)
- 			return -EOPNOTSUPP;
- 		}
+diff --git a/tools/testing/selftests/futex/functional/futex_wait_timeout.c b/tools/testing/selftests/futex/functional/futex_wait_timeout.c
+index 3651ce17beeb9..d183f878360bc 100644
+--- a/tools/testing/selftests/futex/functional/futex_wait_timeout.c
++++ b/tools/testing/selftests/futex/functional/futex_wait_timeout.c
+@@ -24,6 +24,7 @@
  
--		mlxsw_i2c->block_size = max_t(u16, MLXSW_I2C_BLK_DEF,
-+		mlxsw_i2c->block_size = min_t(u16, MLXSW_I2C_BLK_MAX,
- 					      min_t(u16, quirks->max_read_len,
- 						    quirks->max_write_len));
- 	} else {
+ static long timeout_ns = 100000;	/* 100us default timeout */
+ static futex_t futex_pi;
++static pthread_barrier_t barrier;
+ 
+ void usage(char *prog)
+ {
+@@ -48,6 +49,8 @@ void *get_pi_lock(void *arg)
+ 	if (ret != 0)
+ 		error("futex_lock_pi failed\n", ret);
+ 
++	pthread_barrier_wait(&barrier);
++
+ 	/* Blocks forever */
+ 	ret = futex_wait(&lock, 0, NULL, 0);
+ 	error("futex_wait failed\n", ret);
+@@ -130,6 +133,7 @@ int main(int argc, char *argv[])
+ 	       basename(argv[0]));
+ 	ksft_print_msg("\tArguments: timeout=%ldns\n", timeout_ns);
+ 
++	pthread_barrier_init(&barrier, NULL, 2);
+ 	pthread_create(&thread, NULL, get_pi_lock, NULL);
+ 
+ 	/* initialize relative timeout */
+@@ -163,6 +167,9 @@ int main(int argc, char *argv[])
+ 	res = futex_wait_requeue_pi(&f1, f1, &futex_pi, &to, 0);
+ 	test_timeout(res, &ret, "futex_wait_requeue_pi monotonic", ETIMEDOUT);
+ 
++	/* Wait until the other thread calls futex_lock_pi() */
++	pthread_barrier_wait(&barrier);
++	pthread_barrier_destroy(&barrier);
+ 	/*
+ 	 * FUTEX_LOCK_PI with CLOCK_REALTIME
+ 	 * Due to historical reasons, FUTEX_LOCK_PI supports only realtime
 -- 
 2.40.1
 
