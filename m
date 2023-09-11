@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 90DD679B2BC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B76A679AE11
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229596AbjIKUuf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41580 "EHLO
+        id S1379388AbjIKWnw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:43:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60916 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239895AbjIKObG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:06 -0400
+        with ESMTP id S238558AbjIKN7R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 37B33E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57B25C433C7;
-        Mon, 11 Sep 2023 14:31:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FA01CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8E53C433C7;
+        Mon, 11 Sep 2023 13:59:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442661;
-        bh=cjcYQXvUF6qxiCd49fMDnv3JwUyngK+DEgfQOK/dFdY=;
+        s=korg; t=1694440752;
+        bh=mKcWR8IiEgZL/h9Y6LgXcatYCVbKDHh9nqrW5LZNfy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ARF/Ga9oe9S/Y1tHr4pGnaEHGxrwXHLfsja6mFTMbhnXRyu+5pJs+1ve0uW5q2q6u
-         lWvxXNqjlov/zT2xpIw6KvNqNXit+lnne58J9SotSArYtoT7GZEmEY2CnRvl8Ysmy2
-         FYqs+yZroq/lLyNtMl7Xcfwi+5fzoUTZHb5FapBM=
+        b=tR/wB3wAkHiA8vzGca1wAyL/laRZriL8u0RQ+WRy+NaGaSq+nlGwL7F1iYTmQi+iJ
+         LEHN4u+Ni5I4mFFGhtKw62hKUP7+iuFv0r6NdVUxauVzx08jLhKoi0Bujjn2MSDGve
+         2COP9Sn8d3f5SyWnOInOdA7AFd+qsCUSJi4xKMTw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>,
-        Seth Jenkins <sethjenkins@google.com>,
-        Christian Brauner <brauner@kernel.org>,
+        patches@lists.linux.dev, Alexei Starovoitov <ast@kernel.org>,
+        Yonghong Song <yonghong.song@linux.dev>,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 104/737] tmpfs: verify {g,u}id mount options correctly
-Date:   Mon, 11 Sep 2023 15:39:23 +0200
-Message-ID: <20230911134653.416593727@linuxfoundation.org>
+Subject: [PATCH 6.5 165/739] bpf: Fix a bpf_kptr_xchg() issue with local kptr
+Date:   Mon, 11 Sep 2023 15:39:24 +0200
+Message-ID: <20230911134655.781449680@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,100 +51,89 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christian Brauner <brauner@kernel.org>
+From: Yonghong Song <yonghong.song@linux.dev>
 
-[ Upstream commit 0200679fc7953177941e41c2a4241d0b6c2c5de8 ]
+[ Upstream commit ab6c637ad0276e42f8acabcbc64932a6d346dab3 ]
 
-A while ago we received the following report:
+When reviewing local percpu kptr support, Alexei discovered a bug
+wherea bpf_kptr_xchg() may succeed even if the map value kptr type and
+locally allocated obj type do not match ([1]). Missed struct btf_id
+comparison is the reason for the bug. This patch added such struct btf_id
+comparison and will flag verification failure if types do not match.
 
-"The other outstanding issue I noticed comes from the fact that
-fsconfig syscalls may occur in a different userns than that which
-called fsopen. That means that resolving the uid/gid via
-current_user_ns() can save a kuid that isn't mapped in the associated
-namespace when the filesystem is finally mounted. This means that it
-is possible for an unprivileged user to create files owned by any
-group in a tmpfs mount (since we can set the SUID bit on the tmpfs
-directory), or a tmpfs that is owned by any user, including the root
-group/user."
+  [1] https://lore.kernel.org/bpf/20230819002907.io3iphmnuk43xblu@macbook-pro-8.dhcp.thefacebook.com/#t
 
-The contract for {g,u}id mount options and {g,u}id values in general set
-from userspace has always been that they are translated according to the
-caller's idmapping. In so far, tmpfs has been doing the correct thing.
-But since tmpfs is mountable in unprivileged contexts it is also
-necessary to verify that the resulting {k,g}uid is representable in the
-namespace of the superblock to avoid such bugs as above.
-
-The new mount api's cross-namespace delegation abilities are already
-widely used. After having talked to a bunch of userspace this is the
-most faithful solution with minimal regression risks. I know of one
-users - systemd - that makes use of the new mount api in this way and
-they don't set unresolable {g,u}ids. So the regression risk is minimal.
-
-Link: https://lore.kernel.org/lkml/CALxfFW4BXhEwxR0Q5LSkg-8Vb4r2MONKCcUCVioehXQKr35eHg@mail.gmail.com
-Fixes: f32356261d44 ("vfs: Convert ramfs, shmem, tmpfs, devtmpfs, rootfs to use the new mount API")
-Reviewed-by: "Seth Forshee (DigitalOcean)" <sforshee@kernel.org>
-Reported-by: Seth Jenkins <sethjenkins@google.com>
-Message-Id: <20230801-vfs-fs_context-uidgid-v1-1-daf46a050bbf@kernel.org>
-Signed-off-by: Christian Brauner <brauner@kernel.org>
+Reported-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 738c96d5e2e3 ("bpf: Allow local kptrs to be exchanged via bpf_kptr_xchg")
+Signed-off-by: Yonghong Song <yonghong.song@linux.dev>
+Acked-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230822050053.2886960-1-yonghong.song@linux.dev
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- mm/shmem.c | 28 ++++++++++++++++++++++++----
- 1 file changed, 24 insertions(+), 4 deletions(-)
+ kernel/bpf/verifier.c | 25 +++++++++++++++----------
+ 1 file changed, 15 insertions(+), 10 deletions(-)
 
-diff --git a/mm/shmem.c b/mm/shmem.c
-index fe208a072e594..87cc98a9a014a 100644
---- a/mm/shmem.c
-+++ b/mm/shmem.c
-@@ -3506,6 +3506,8 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
- 	unsigned long long size;
- 	char *rest;
- 	int opt;
-+	kuid_t kuid;
-+	kgid_t kgid;
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index 600f57ad0ab58..903de82dec423 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -4982,20 +4982,22 @@ static int map_kptr_match_type(struct bpf_verifier_env *env,
+ 			       struct bpf_reg_state *reg, u32 regno)
+ {
+ 	const char *targ_name = btf_type_name(kptr_field->kptr.btf, kptr_field->kptr.btf_id);
+-	int perm_flags = PTR_MAYBE_NULL | PTR_TRUSTED | MEM_RCU;
++	int perm_flags;
+ 	const char *reg_name = "";
  
- 	opt = fs_parse(fc, shmem_fs_parameters, param, &result);
- 	if (opt < 0)
-@@ -3541,14 +3543,32 @@ static int shmem_parse_one(struct fs_context *fc, struct fs_parameter *param)
- 		ctx->mode = result.uint_32 & 07777;
+-	/* Only unreferenced case accepts untrusted pointers */
+-	if (kptr_field->type == BPF_KPTR_UNREF)
+-		perm_flags |= PTR_UNTRUSTED;
++	if (btf_is_kernel(reg->btf)) {
++		perm_flags = PTR_MAYBE_NULL | PTR_TRUSTED | MEM_RCU;
++
++		/* Only unreferenced case accepts untrusted pointers */
++		if (kptr_field->type == BPF_KPTR_UNREF)
++			perm_flags |= PTR_UNTRUSTED;
++	} else {
++		perm_flags = PTR_MAYBE_NULL | MEM_ALLOC;
++	}
+ 
+ 	if (base_type(reg->type) != PTR_TO_BTF_ID || (type_flag(reg->type) & ~perm_flags))
+ 		goto bad_type;
+ 
+-	if (!btf_is_kernel(reg->btf)) {
+-		verbose(env, "R%d must point to kernel BTF\n", regno);
+-		return -EINVAL;
+-	}
+ 	/* We need to verify reg->type and reg->btf, before accessing reg->btf */
+ 	reg_name = btf_type_name(reg->btf, reg->btf_id);
+ 
+@@ -5008,7 +5010,7 @@ static int map_kptr_match_type(struct bpf_verifier_env *env,
+ 	if (__check_ptr_off_reg(env, reg, regno, true))
+ 		return -EACCES;
+ 
+-	/* A full type match is needed, as BTF can be vmlinux or module BTF, and
++	/* A full type match is needed, as BTF can be vmlinux, module or prog BTF, and
+ 	 * we also need to take into account the reg->off.
+ 	 *
+ 	 * We want to support cases like:
+@@ -7750,7 +7752,10 @@ static int check_reg_type(struct bpf_verifier_env *env, u32 regno,
+ 			verbose(env, "verifier internal error: unimplemented handling of MEM_ALLOC\n");
+ 			return -EFAULT;
+ 		}
+-		/* Handled by helper specific checks */
++		if (meta->func_id == BPF_FUNC_kptr_xchg) {
++			if (map_kptr_match_type(env, meta->kptr_field, reg, regno))
++				return -EACCES;
++		}
  		break;
- 	case Opt_uid:
--		ctx->uid = make_kuid(current_user_ns(), result.uint_32);
--		if (!uid_valid(ctx->uid))
-+		kuid = make_kuid(current_user_ns(), result.uint_32);
-+		if (!uid_valid(kuid))
- 			goto bad_value;
-+
-+		/*
-+		 * The requested uid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kuid_has_mapping(fc->user_ns, kuid))
-+			goto bad_value;
-+
-+		ctx->uid = kuid;
- 		break;
- 	case Opt_gid:
--		ctx->gid = make_kgid(current_user_ns(), result.uint_32);
--		if (!gid_valid(ctx->gid))
-+		kgid = make_kgid(current_user_ns(), result.uint_32);
-+		if (!gid_valid(kgid))
- 			goto bad_value;
-+
-+		/*
-+		 * The requested gid must be representable in the
-+		 * filesystem's idmapping.
-+		 */
-+		if (!kgid_has_mapping(fc->user_ns, kgid))
-+			goto bad_value;
-+
-+		ctx->gid = kgid;
- 		break;
- 	case Opt_huge:
- 		ctx->huge = result.uint_32;
+ 	case PTR_TO_BTF_ID | MEM_PERCPU:
+ 	case PTR_TO_BTF_ID | MEM_PERCPU | PTR_TRUSTED:
 -- 
 2.40.1
 
