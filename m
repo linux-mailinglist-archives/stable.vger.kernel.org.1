@@ -2,39 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6317C79B67F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:18 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 904A279BDB6
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353726AbjIKVtp (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:49:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38274 "EHLO
+        id S232329AbjIKUv5 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:57 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241015AbjIKO7r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:47 -0400
+        with ESMTP id S242265AbjIKP0V (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:26:21 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C40E91B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 15D60C433C7;
-        Mon, 11 Sep 2023 14:59:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 54D24D8;
+        Mon, 11 Sep 2023 08:26:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70DBBC433C7;
+        Mon, 11 Sep 2023 15:26:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444383;
-        bh=Q2iiDv4pBmYHnY68pFdnb+lGC4oC45tZWZIYTMAbmcs=;
+        s=korg; t=1694445977;
+        bh=78Gvc+FV32NtYLsJitFpqXSj2QS+qAPVJEEmPu1B5bc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=o0xcbAdUeZLg4XvUoB9FVkxvEd8AvUI5foEEPaxdlQtJibY47tlx1PXvUbKR1/SWU
-         wyRTmf6BdZ9h2jq4za/5pw64VFKsdpNf7j8+M8Tb8yrOmXtYM5i8WKTJP8RG+e9XLh
-         tWgw0UmL3lmtOXPoCmVW1XhSho43w/obJ6niduak=
+        b=zhtME26sbZXiWSgSNMSShAos5K038D+gHat+WOtK6i6cR6FwtVyhqVlENmHqdoGZc
+         Cq2h9JlsQYTdnEU83LBe1rxQ0i7iRjlbGhkG96G0HvFXmM9jpB8yOM+NAqTAn7MUwd
+         28wrATAMrTWw/GtI1Hafc+t2YRpQslJCsiCkvI8k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Thomas Bourgoin <thomas.bourgoin@foss.st.com>,
-        Herbert Xu <herbert@gondor.apana.org.au>
-Subject: [PATCH 6.4 711/737] crypto: stm32 - fix loop iterating through scatterlist for DMA
-Date:   Mon, 11 Sep 2023 15:49:30 +0200
-Message-ID: <20230911134710.383439975@linuxfoundation.org>
+        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
+        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
+        Rich Felker <dalias@libc.org>,
+        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
+        Lee Jones <lee@kernel.org>,
+        Daniel Thompson <daniel.thompson@linaro.org>,
+        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
+        dri-devel@lists.freedesktop.org, Sam Ravnborg <sam@ravnborg.org>
+Subject: [PATCH 6.1 538/600] backlight/gpio_backlight: Compare against struct fb_info.device
+Date:   Mon, 11 Sep 2023 15:49:31 +0200
+Message-ID: <20230911134649.503409040@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,41 +55,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
+From: Thomas Zimmermann <tzimmermann@suse.de>
 
-commit d9c83f71eeceed2cb54bb78be84f2d4055fd9a1f upstream.
+commit 7b91d017f77c1bda56f27c2f4bbb70de7c6eca08 upstream.
 
-We were reading the length of the scatterlist sg after copying value of
-tsg inside.
-So we are using the size of the previous scatterlist and for the first
-one we are using an unitialised value.
-Fix this by copying tsg in sg[0] before reading the size.
+Struct gpio_backlight_platform_data refers to a platform device within
+the Linux device hierarchy. The test in gpio_backlight_check_fb()
+compares it against the fbdev device in struct fb_info.dev, which
+is different. Fix the test by comparing to struct fb_info.device.
 
-Fixes : 8a1012d3f2ab ("crypto: stm32 - Support for STM32 HASH module")
-Cc: stable@vger.kernel.org
-Signed-off-by: Thomas Bourgoin <thomas.bourgoin@foss.st.com>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes a bug in the backlight driver and prepares fbdev for making
+struct fb_info.dev optional.
+
+v2:
+	* move renames into separate patch (Javier, Sam, Michael)
+
+Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
+Fixes: 8b770e3c9824 ("backlight: Add GPIO-based backlight driver")
+Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
+Cc: Rich Felker <dalias@libc.org>
+Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
+Cc: Lee Jones <lee@kernel.org>
+Cc: Daniel Thompson <daniel.thompson@linaro.org>
+Cc: Jingoo Han <jingoohan1@gmail.com>
+Cc: linux-sh@vger.kernel.org
+Cc: dri-devel@lists.freedesktop.org
+Cc: <stable@vger.kernel.org> # v3.12+
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-4-tzimmermann@suse.de
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/crypto/stm32/stm32-hash.c |    2 +-
+ drivers/video/backlight/gpio_backlight.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/drivers/crypto/stm32/stm32-hash.c
-+++ b/drivers/crypto/stm32/stm32-hash.c
-@@ -627,9 +627,9 @@ static int stm32_hash_dma_send(struct st
- 	}
+--- a/drivers/video/backlight/gpio_backlight.c
++++ b/drivers/video/backlight/gpio_backlight.c
+@@ -35,7 +35,7 @@ static int gpio_backlight_check_fb(struc
+ {
+ 	struct gpio_backlight *gbl = bl_get_data(bl);
  
- 	for_each_sg(rctx->sg, tsg, rctx->nents, i) {
-+		sg[0] = *tsg;
- 		len = sg->length;
+-	return gbl->fbdev == NULL || gbl->fbdev == info->dev;
++	return gbl->fbdev == NULL || gbl->fbdev == info->device;
+ }
  
--		sg[0] = *tsg;
- 		if (sg_is_last(sg)) {
- 			if (hdev->dma_mode == 1) {
- 				len = (ALIGN(sg->length, 16) - 16);
+ static const struct backlight_ops gpio_backlight_ops = {
 
 
