@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AA52E79AC96
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0052779B01D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242762AbjIKU6Y (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53950 "EHLO
+        id S240987AbjIKV6y (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:58:54 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43882 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240080AbjIKOgH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:07 -0400
+        with ESMTP id S241113AbjIKPCI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:02:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A7117F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBA21C433C8;
-        Mon, 11 Sep 2023 14:36:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB09E1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:02:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40285C433C9;
+        Mon, 11 Sep 2023 15:02:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442963;
-        bh=xL/Ku9ITF/dmwYq9GjZXN9JiHsWxhy7sh07Vs0oSycg=;
+        s=korg; t=1694444523;
+        bh=Y8VnIeHJk7nfX7Oi5DUWceZHLg5jZDw4gKYuHrMqIZ8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iLdoPFkOr13Of5WRL324/yLJc0pM9s9nMjI0zlXe6wEHX11nohSybTFUVIJpVTgRA
-         egxb2ASyze0FwQtp+wfkxgxYGQlkiT3PyGn17n2Ja792nUMD0VBLE6hQlKd2G4OdDr
-         tNlEYvnPssmxw6llM1YblRbHDv/xD6dS+BL3pBV4=
+        b=GoESj9hQba+6Gvbcyoi+Px6LoonNxiWLTmbSCz/I27ZqlkfxVJEtTgZ1vHQHZD0ON
+         WF1XKCy0A+9CwJ5Y9+61w87KFzxvFnKmbsFO91+6RXEUPC9QtrndBixrajI+PZvI5t
+         7y4exx5y9hutaAo3FKtUukkqvHPHu2utJLuFmwCA=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 182/737] wifi: mwifiex: fix error recovery in PCIE buffer descriptor management
+        patches@lists.linux.dev,
+        Benjamin Gaignard <benjamin.gaignard@collabora.com>,
+        Yunfei Dong <yunfei.dong@mediatek.com>,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 008/600] media: uapi: HEVC: Add num_delta_pocs_of_ref_rps_idx field
 Date:   Mon, 11 Sep 2023 15:40:41 +0200
-Message-ID: <20230911134655.647435317@linuxfoundation.org>
+Message-ID: <20230911134633.865620166@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,122 +53,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Benjamin Gaignard <benjamin.gaignard@collabora.com>
 
-[ Upstream commit 288c63d5cb4667a51a04668b3e2bb0ea499bc5f4 ]
+[ Upstream commit ae440c5da33cdb90a109f2df2a0360c67b3fab7e ]
 
-Add missing 'kfree_skb()' in 'mwifiex_init_rxq_ring()' and never do
-'kfree(card->rxbd_ring_vbase)' because this area is DMAed and should
-be released with 'dma_free_coherent()'. The latter is performed in
-'mwifiex_pcie_delete_rxbd_ring()', which is now called to recover
-from possible errors in 'mwifiex_pcie_create_rxbd_ring()'. Likewise
-for 'mwifiex_pcie_init_evt_ring()', 'kfree(card->evtbd_ring_vbase)'
-'mwifiex_pcie_delete_evtbd_ring()' and 'mwifiex_pcie_create_rxbd_ring()'.
+Some drivers firmwares parse by themselves slice header and need
+num_delta_pocs_of_ref_rps_idx value to parse slice header
+short_term_ref_pic_set().
+Use one of the 4 reserved bytes to store this value without
+changing the v4l2_ctrl_hevc_decode_params structure size and padding.
 
-Fixes: d930faee141b ("mwifiex: add support for Marvell pcie8766 chipset")
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230731074334.56463-1-dmantipov@yandex.ru
+This value also exist in DXVA API.
+
+Signed-off-by: Benjamin Gaignard <benjamin.gaignard@collabora.com>
+Signed-off-by: Yunfei Dong <yunfei.dong@mediatek.com>
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+[hverkuil: fix typo in num_delta_pocs_of_ref_rps_idx doc]
+Stable-dep-of: 297160d411e3 ("media: mediatek: vcodec: move core context from device to each instance")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/pcie.c | 25 ++++++++++++++-------
- 1 file changed, 17 insertions(+), 8 deletions(-)
+ .../userspace-api/media/v4l/ext-ctrls-codec-stateless.rst  | 7 +++++++
+ include/uapi/linux/v4l2-controls.h                         | 6 +++++-
+ 2 files changed, 12 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/pcie.c b/drivers/net/wireless/marvell/mwifiex/pcie.c
-index 9a698a16a8f38..6697132ecc977 100644
---- a/drivers/net/wireless/marvell/mwifiex/pcie.c
-+++ b/drivers/net/wireless/marvell/mwifiex/pcie.c
-@@ -189,6 +189,8 @@ static int mwifiex_pcie_probe_of(struct device *dev)
- }
- 
- static void mwifiex_pcie_work(struct work_struct *work);
-+static int mwifiex_pcie_delete_rxbd_ring(struct mwifiex_adapter *adapter);
-+static int mwifiex_pcie_delete_evtbd_ring(struct mwifiex_adapter *adapter);
- 
- static int
- mwifiex_map_pci_memory(struct mwifiex_adapter *adapter, struct sk_buff *skb,
-@@ -792,14 +794,15 @@ static int mwifiex_init_rxq_ring(struct mwifiex_adapter *adapter)
- 		if (!skb) {
- 			mwifiex_dbg(adapter, ERROR,
- 				    "Unable to allocate skb for RX ring.\n");
--			kfree(card->rxbd_ring_vbase);
- 			return -ENOMEM;
- 		}
- 
- 		if (mwifiex_map_pci_memory(adapter, skb,
- 					   MWIFIEX_RX_DATA_BUF_SIZE,
--					   DMA_FROM_DEVICE))
--			return -1;
-+					   DMA_FROM_DEVICE)) {
-+			kfree_skb(skb);
-+			return -ENOMEM;
-+		}
- 
- 		buf_pa = MWIFIEX_SKB_DMA_ADDR(skb);
- 
-@@ -849,7 +852,6 @@ static int mwifiex_pcie_init_evt_ring(struct mwifiex_adapter *adapter)
- 		if (!skb) {
- 			mwifiex_dbg(adapter, ERROR,
- 				    "Unable to allocate skb for EVENT buf.\n");
--			kfree(card->evtbd_ring_vbase);
- 			return -ENOMEM;
- 		}
- 		skb_put(skb, MAX_EVENT_SIZE);
-@@ -857,8 +859,7 @@ static int mwifiex_pcie_init_evt_ring(struct mwifiex_adapter *adapter)
- 		if (mwifiex_map_pci_memory(adapter, skb, MAX_EVENT_SIZE,
- 					   DMA_FROM_DEVICE)) {
- 			kfree_skb(skb);
--			kfree(card->evtbd_ring_vbase);
--			return -1;
-+			return -ENOMEM;
- 		}
- 
- 		buf_pa = MWIFIEX_SKB_DMA_ADDR(skb);
-@@ -1058,6 +1059,7 @@ static int mwifiex_pcie_delete_txbd_ring(struct mwifiex_adapter *adapter)
-  */
- static int mwifiex_pcie_create_rxbd_ring(struct mwifiex_adapter *adapter)
- {
-+	int ret;
- 	struct pcie_service_card *card = adapter->card;
- 	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
- 
-@@ -1096,7 +1098,10 @@ static int mwifiex_pcie_create_rxbd_ring(struct mwifiex_adapter *adapter)
- 		    (u32)((u64)card->rxbd_ring_pbase >> 32),
- 		    card->rxbd_ring_size);
- 
--	return mwifiex_init_rxq_ring(adapter);
-+	ret = mwifiex_init_rxq_ring(adapter);
-+	if (ret)
-+		mwifiex_pcie_delete_rxbd_ring(adapter);
-+	return ret;
- }
- 
- /*
-@@ -1127,6 +1132,7 @@ static int mwifiex_pcie_delete_rxbd_ring(struct mwifiex_adapter *adapter)
-  */
- static int mwifiex_pcie_create_evtbd_ring(struct mwifiex_adapter *adapter)
- {
-+	int ret;
- 	struct pcie_service_card *card = adapter->card;
- 	const struct mwifiex_pcie_card_reg *reg = card->pcie.reg;
- 
-@@ -1161,7 +1167,10 @@ static int mwifiex_pcie_create_evtbd_ring(struct mwifiex_adapter *adapter)
- 		    (u32)((u64)card->evtbd_ring_pbase >> 32),
- 		    card->evtbd_ring_size);
- 
--	return mwifiex_pcie_init_evt_ring(adapter);
-+	ret = mwifiex_pcie_init_evt_ring(adapter);
-+	if (ret)
-+		mwifiex_pcie_delete_evtbd_ring(adapter);
-+	return ret;
- }
- 
- /*
+diff --git a/Documentation/userspace-api/media/v4l/ext-ctrls-codec-stateless.rst b/Documentation/userspace-api/media/v4l/ext-ctrls-codec-stateless.rst
+index cd33857d947d3..0ef49647c90bd 100644
+--- a/Documentation/userspace-api/media/v4l/ext-ctrls-codec-stateless.rst
++++ b/Documentation/userspace-api/media/v4l/ext-ctrls-codec-stateless.rst
+@@ -2923,6 +2923,13 @@ This structure contains all loop filter related parameters. See sections
+       - ``poc_lt_curr[V4L2_HEVC_DPB_ENTRIES_NUM_MAX]``
+       - PocLtCurr as described in section 8.3.2 "Decoding process for reference
+         picture set": provides the index of the long term references in DPB array.
++    * - __u8
++      - ``num_delta_pocs_of_ref_rps_idx``
++      - When the short_term_ref_pic_set_sps_flag in the slice header is equal to 0,
++        it is the same as the derived value NumDeltaPocs[RefRpsIdx]. It can be used to parse
++        the RPS data in slice headers instead of skipping it with @short_term_ref_pic_set_size.
++        When the value of short_term_ref_pic_set_sps_flag in the slice header is
++        equal to 1, num_delta_pocs_of_ref_rps_idx shall be set to 0.
+     * - struct :c:type:`v4l2_hevc_dpb_entry`
+       - ``dpb[V4L2_HEVC_DPB_ENTRIES_NUM_MAX]``
+       - The decoded picture buffer, for meta-data about reference frames.
+diff --git a/include/uapi/linux/v4l2-controls.h b/include/uapi/linux/v4l2-controls.h
+index b5e7d082b8adf..d4a4e3cab3c2a 100644
+--- a/include/uapi/linux/v4l2-controls.h
++++ b/include/uapi/linux/v4l2-controls.h
+@@ -2411,6 +2411,9 @@ struct v4l2_ctrl_hevc_slice_params {
+  * @poc_st_curr_after: provides the index of the short term after references
+  *		       in DPB array
+  * @poc_lt_curr: provides the index of the long term references in DPB array
++ * @num_delta_pocs_of_ref_rps_idx: same as the derived value NumDeltaPocs[RefRpsIdx],
++ *				   can be used to parse the RPS data in slice headers
++ *				   instead of skipping it with @short_term_ref_pic_set_size.
+  * @reserved: padding field. Should be zeroed by applications.
+  * @dpb: the decoded picture buffer, for meta-data about reference frames
+  * @flags: see V4L2_HEVC_DECODE_PARAM_FLAG_{}
+@@ -2426,7 +2429,8 @@ struct v4l2_ctrl_hevc_decode_params {
+ 	__u8	poc_st_curr_before[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
+ 	__u8	poc_st_curr_after[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
+ 	__u8	poc_lt_curr[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
+-	__u8	reserved[4];
++	__u8	num_delta_pocs_of_ref_rps_idx;
++	__u8	reserved[3];
+ 	struct	v4l2_hevc_dpb_entry dpb[V4L2_HEVC_DPB_ENTRIES_NUM_MAX];
+ 	__u64	flags;
+ };
 -- 
 2.40.1
 
