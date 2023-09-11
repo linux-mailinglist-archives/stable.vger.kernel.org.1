@@ -2,40 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E88D179B777
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8B52F79BFBE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233397AbjIKUuk (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:40 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36530 "EHLO
+        id S1348936AbjIKVbs (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42620 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241836AbjIKPPs (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:48 -0400
+        with ESMTP id S239301AbjIKORH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ACD59FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 04018C433C7;
-        Mon, 11 Sep 2023 15:15:43 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C452BDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:17:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 170B9C433C8;
+        Mon, 11 Sep 2023 14:17:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445344;
-        bh=98mCHClD++n33fU7vGwNcnTkw3HQfnCgf87MdFE2QQY=;
+        s=korg; t=1694441822;
+        bh=U7IFqnIx6NroFEzTnYVVd5axkV5U5AqWSUERyXBdQD8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zESjDlzh50Qx1H6MsYnN2A9S0zETcpVK0uK8wgZlj2oTp7H65Lx83MsbMbJaPuf2Z
-         dx4zoFv4oZGMareNNiJGBETpvK9XU3q1wGJZ6ZcpaF8lNpUaArTBwgQaQ3il+umnty
-         MyiDxnIyBZ6ypf0nnz/HyT5IWhLQ+ogfJmjTwwJY=
+        b=ca2z5ok7JvJtr/FJx3B55NxIJoWQU1K5XYDEykq1AJJo7OZTKUKMKQbAuuoykmrFn
+         zDNKCDPzM4DA/TjGul4KMyauQG7/gz/JCqprh0VK7FJ7IlnAy8OF0FCDyfXxyaEMrx
+         M3BHQ8UZkKUCtZaMrUKnJmXZBlrncKkBWp4whkBc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Christoph Hellwig <hch@lst.de>, Song Liu <song@kernel.org>,
-        Sasha Levin <sashal@kernel.org>,
-        Corey Hickey <bugfood-ml@fatooh.org>
-Subject: [PATCH 6.1 314/600] md/raid5-cache: fix null-ptr-deref for r5l_flush_stripe_to_raid()
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 548/739] media: ov2680: Fix regulators being left enabled on ov2680_power_on() errors
 Date:   Mon, 11 Sep 2023 15:45:47 +0200
-Message-ID: <20230911134642.935196371@linuxfoundation.org>
+Message-ID: <20230911134706.400381836@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,78 +54,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit 0d0bd28c500173bfca78aa840f8f36d261ef1765 ]
+[ Upstream commit 84b4bd7e0d98166aa32fd470e672721190492eae ]
 
-r5l_flush_stripe_to_raid() will check if the list 'flushing_ios' is
-empty, and then submit 'flush_bio', however, r5l_log_flush_endio()
-is clearing the list first and then clear the bio, which will cause
-null-ptr-deref:
+When the ov2680_power_on() "sensor soft reset failed" path is hit during
+probe() the WARN() about putting an enabled regulator at
+drivers/regulator/core.c:2398 triggers 3 times (once for each regulator),
+filling dmesg with backtraces.
 
-T1: submit flush io
-raid5d
- handle_active_stripes
-  r5l_flush_stripe_to_raid
-   // list is empty
-   // add 'io_end_ios' to the list
-   bio_init
-   submit_bio
-   // io1
+Fix this by properly disabling the regulators on ov2680_power_on() errors.
 
-T2: io1 is done
-r5l_log_flush_endio
- list_splice_tail_init
- // clear the list
-			T3: submit new flush io
-			...
-			r5l_flush_stripe_to_raid
-			 // list is empty
-			 // add 'io_end_ios' to the list
-			 bio_init
- bio_uninit
- // clear bio->bi_blkg
-			 submit_bio
-			 // null-ptr-deref
-
-Fix this problem by clearing bio before clearing the list in
-r5l_log_flush_endio().
-
-Fixes: 0dd00cba99c3 ("raid5-cache: fully initialize flush_bio when needed")
-Reported-and-tested-by: Corey Hickey <bugfood-ml@fatooh.org>
-Closes: https://lore.kernel.org/all/cddd7213-3dfd-4ab7-a3ac-edd54d74a626@fatooh.org/
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid5-cache.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/media/i2c/ov2680.c | 8 ++++++--
+ 1 file changed, 6 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/md/raid5-cache.c b/drivers/md/raid5-cache.c
-index 477e3ae17545a..eb66d0bfe39d2 100644
---- a/drivers/md/raid5-cache.c
-+++ b/drivers/md/raid5-cache.c
-@@ -1260,14 +1260,13 @@ static void r5l_log_flush_endio(struct bio *bio)
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index 7fc4b39ebb371..55fc56ffad31c 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -475,7 +475,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 		ret = ov2680_write_reg(sensor, OV2680_REG_SOFT_RESET, 0x01);
+ 		if (ret != 0) {
+ 			dev_err(dev, "sensor soft reset failed\n");
+-			return ret;
++			goto err_disable_regulators;
+ 		}
+ 		usleep_range(1000, 2000);
+ 	} else {
+@@ -485,7 +485,7 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
  
- 	if (bio->bi_status)
- 		md_error(log->rdev->mddev, log->rdev);
-+	bio_uninit(bio);
+ 	ret = clk_prepare_enable(sensor->xvclk);
+ 	if (ret < 0)
+-		return ret;
++		goto err_disable_regulators;
  
- 	spin_lock_irqsave(&log->io_list_lock, flags);
- 	list_for_each_entry(io, &log->flushing_ios, log_sibling)
- 		r5l_io_run_stripes(io);
- 	list_splice_tail_init(&log->flushing_ios, &log->finished_ios);
- 	spin_unlock_irqrestore(&log->io_list_lock, flags);
--
--	bio_uninit(bio);
+ 	sensor->is_enabled = true;
+ 
+@@ -495,6 +495,10 @@ static int ov2680_power_on(struct ov2680_dev *sensor)
+ 	ov2680_stream_disable(sensor);
+ 
+ 	return 0;
++
++err_disable_regulators:
++	regulator_bulk_disable(OV2680_NUM_SUPPLIES, sensor->supplies);
++	return ret;
  }
  
- /*
+ static int ov2680_s_power(struct v4l2_subdev *sd, int on)
 -- 
 2.40.1
 
