@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CBC3879B389
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:25 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5521E79B426
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353902AbjIKVv0 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:26 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36144 "EHLO
+        id S1345976AbjIKVWr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47630 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239444AbjIKOUt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:49 -0400
+        with ESMTP id S241985AbjIKPTv (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:51 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 979BBDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC272C433C9;
-        Mon, 11 Sep 2023 14:20:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 058A1FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:47 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4EC8BC433C8;
+        Mon, 11 Sep 2023 15:19:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442045;
-        bh=lJmwMQonsXHA3GnCQ1U6FiO521QAHveccFEneDj4X1s=;
+        s=korg; t=1694445586;
+        bh=UerXFj3+NfTYICh8/OJD6GXMOfVp6E4hmBKz3bVhmVI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=srr7+P7i8LWvWpkiIxGx1/Lwp8JvewYBVlSe+Vxovi1NihCb250RNYmZYP9OW6Elt
-         2wX0IZjnnzIhJECKdWL9wlUCMnnFMbnpdLG3NsVfri0FLQFbdz5D5knAQ/M+I5glOT
-         7HWtFlF/hdUGfnQXPC5X7/LEb4igkNIRt8BeeYn4=
+        b=f3b7aymVFu6coBvhfJqP7RcKm9wQ91J2CsOCGRNk/HEILCIyffzjxCRBKe8/6cKZZ
+         SGoQYZj6OKDHcrzG3x7e7t2YKEmKc/KbS2SryCaVvCoYw2VKvv+WeASft/A/c9wydI
+         pSE6OPx63UJ0g7/t4Q51JX2mPWjfyYB5R6tJw7Ss=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
-        "Rafael J. Wysocki" <rafael.j.wysocki@intel.com>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Marco Felsch <m.felsch@pengutronix.de>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 627/739] cpufreq: Fix the race condition while updating the transition_task of policy
+Subject: [PATCH 6.1 393/600] media: i2c: tvp5150: check return value of devm_kasprintf()
 Date:   Mon, 11 Sep 2023 15:47:06 +0200
-Message-ID: <20230911134708.610413765@linuxfoundation.org>
+Message-ID: <20230911134645.276946476@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,82 +53,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Liao Chang <liaochang1@huawei.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 61bfbf7951ba561dcbdd5357702d3cbc2d447812 ]
+[ Upstream commit 26ce7054d804be73935b9268d6e0ecf2fbbc8aef ]
 
-The field 'transition_task' of policy structure is used to track the
-task which is performing the frequency transition. Using this field to
-print a warning once detect a case where the same task is calling
-_begin() again before completing the preivous frequency transition via
-the _end().
+devm_kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-However, there is a potential race condition in _end() and _begin() APIs
-while updating the field 'transition_task' of policy, the scenario is
-depicted below:
-
-             Task A                            Task B
-
-        /* 1st freq transition */
-        Invoke _begin() {
-                ...
-                ...
-        }
-                                        /* 2nd freq transition */
-                                        Invoke _begin() {
-                                                ... //waiting for A to
-                                                ... //clear
-                                                ... //transition_ongoing
-                                                ... //in _end() for
-                                                ... //the 1st transition
-                                                        |
-        Change the frequency                            |
-                                                        |
-        Invoke _end() {                                 |
-                ...                                     |
-                ...                                     |
-                transition_ongoing = false;             V
-                                                transition_ongoing = true;
-                                                transition_task = current;
-                transition_task = NULL;
-                ... //A overwrites the task
-                ... //performing the transition
-                ... //result in error warning.
-        }
-
-To fix this race condition, the transition_lock of policy structure is
-now acquired before updating policy structure in _end() API. Which ensure
-that only one task can update the 'transition_task' field at a time.
-
-Link: https://lore.kernel.org/all/b3c61d8a-d52d-3136-fbf0-d1de9f1ba411@huawei.com/
-Fixes: ca654dc3a93d ("cpufreq: Catch double invocations of cpufreq_freq_transition_begin/end")
-Signed-off-by: Liao Chang <liaochang1@huawei.com>
-Acked-by: Viresh Kumar <viresh.kumar@linaro.org>
-Signed-off-by: Rafael J. Wysocki <rafael.j.wysocki@intel.com>
+Fixes: 0556f1d580d4 ("media: tvp5150: add input source selection of_graph support")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Reviewed-by: Marco Felsch <m.felsch@pengutronix.de>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/cpufreq/cpufreq.c | 2 ++
- 1 file changed, 2 insertions(+)
+ drivers/media/i2c/tvp5150.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/drivers/cpufreq/cpufreq.c b/drivers/cpufreq/cpufreq.c
-index 50bbc969ffe53..5c655d7b96d4f 100644
---- a/drivers/cpufreq/cpufreq.c
-+++ b/drivers/cpufreq/cpufreq.c
-@@ -455,8 +455,10 @@ void cpufreq_freq_transition_end(struct cpufreq_policy *policy,
- 			    policy->cur,
- 			    policy->cpuinfo.max_freq);
+diff --git a/drivers/media/i2c/tvp5150.c b/drivers/media/i2c/tvp5150.c
+index 859f1cb2fa744..84f87c016f9b5 100644
+--- a/drivers/media/i2c/tvp5150.c
++++ b/drivers/media/i2c/tvp5150.c
+@@ -2068,6 +2068,10 @@ static int tvp5150_parse_dt(struct tvp5150 *decoder, struct device_node *np)
+ 		tvpc->ent.name = devm_kasprintf(dev, GFP_KERNEL, "%s %s",
+ 						v4l2c->name, v4l2c->label ?
+ 						v4l2c->label : "");
++		if (!tvpc->ent.name) {
++			ret = -ENOMEM;
++			goto err_free;
++		}
+ 	}
  
-+	spin_lock(&policy->transition_lock);
- 	policy->transition_ongoing = false;
- 	policy->transition_task = NULL;
-+	spin_unlock(&policy->transition_lock);
- 
- 	wake_up(&policy->transition_wait);
- }
+ 	ep_np = of_graph_get_endpoint_by_regs(np, TVP5150_PAD_VID_OUT, 0);
 -- 
 2.40.1
 
