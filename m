@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6E02E79B82C
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AADB079B8B0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358193AbjIKWIH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:08:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32872 "EHLO
+        id S237701AbjIKWZI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58136 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241214AbjIKPEX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:23 -0400
+        with ESMTP id S240206AbjIKOjB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0AD87E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2C756C433C7;
-        Mon, 11 Sep 2023 15:04:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94DF6F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC552C433C7;
+        Mon, 11 Sep 2023 14:38:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444657;
-        bh=diVL1xdfMuE+AdqaLqNYD/8jHq/RmIr4mbo8yS0tK7c=;
+        s=korg; t=1694443136;
+        bh=UQMF08pTz9EI4Aqm+56z9rFJReUTUDlo2A5vg0DTy5Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WW+w/lEiqs/OWEvaTmugqqGrfOIV9cQ/ZLjfcJi28pruoFKNptyBcy98ti3u1RuGl
-         rwd8BM230Sq00p1v6sSsN/O1nRXW9af0ljTTFGMJbVu/uEdBLJP6YxmVsX6M6TzVMP
-         D1aN3giq1SJMbZ19AEQ2f/rwqBhoONMlrb8wgdQY=
+        b=JXAsJEZS7NvVEF/5VoJYQOJQH/7/n/L+zAMnC4ORqrsTC9Ih1eoKoW78/CCNlvfgR
+         sK5dT5H5irWWZlzsyn+BIa2olx055eLp7XYP3DdY0kDqN6uMbsQ1EJnoioN7RW4gtS
+         ZBaadRZivj4hgYs2whogrx2OBD/oPfZCA7KBydAo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Gilbert Wu <gilbert.wu@microchip.com>,
-        Sagar Biradar <Sagar.Biradar@microchip.com>,
-        John Garry <john.g.garry@oracle.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 069/600] scsi: aacraid: Reply queue mapping to CPUs based on IRQ affinity
+Subject: [PATCH 6.4 243/737] Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync
 Date:   Mon, 11 Sep 2023 15:41:42 +0200
-Message-ID: <20230911134635.658046716@linuxfoundation.org>
+Message-ID: <20230911134657.393444917@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,160 +50,186 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sagar Biradar <sagar.biradar@microchip.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit 9dc704dcc09eae7d21b5da0615eb2ed79278f63e ]
+[ Upstream commit 94d9ba9f9888b748d4abd2aa1547af56ae85f772 ]
 
-Fix the I/O hang that arises because of the MSIx vector not having a mapped
-online CPU upon receiving completion.
+Use-after-free can occur in hci_disconnect_all_sync if a connection is
+deleted by concurrent processing of a controller event.
 
-SCSI cmds take the blk_mq route, which is setup during init. Reserved cmds
-fetch the vector_no from mq_map after init is complete. Before init, they
-have to use 0 - as per the norm.
+To prevent this the code now tries to iterate over the list backwards
+to ensure the links are cleanup before its parents, also it no longer
+relies on a cursor, instead it always uses the last element since
+hci_abort_conn_sync is guaranteed to call hci_conn_del.
 
-Reviewed-by: Gilbert Wu <gilbert.wu@microchip.com>
-Signed-off-by: Sagar Biradar <Sagar.Biradar@microchip.com>
-Reviewed-by: John Garry <john.g.garry@oracle.com>
-Link: https://lore.kernel.org/r/20230519230834.27436-1-sagar.biradar@microchip.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+UAF crash log:
+==================================================================
+BUG: KASAN: slab-use-after-free in hci_set_powered_sync
+(net/bluetooth/hci_sync.c:5424) [bluetooth]
+Read of size 8 at addr ffff888009d9c000 by task kworker/u9:0/124
+
+CPU: 0 PID: 124 Comm: kworker/u9:0 Tainted: G        W
+6.5.0-rc1+ #10
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+1.16.2-1.fc38 04/01/2014
+Workqueue: hci0 hci_cmd_sync_work [bluetooth]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x5b/0x90
+ print_report+0xcf/0x670
+ ? __virt_addr_valid+0xdd/0x160
+ ? hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
+ kasan_report+0xa6/0xe0
+ ? hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
+ ? __pfx_set_powered_sync+0x10/0x10 [bluetooth]
+ hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
+ ? __pfx_hci_set_powered_sync+0x10/0x10 [bluetooth]
+ ? __pfx_lock_release+0x10/0x10
+ ? __pfx_set_powered_sync+0x10/0x10 [bluetooth]
+ hci_cmd_sync_work+0x137/0x220 [bluetooth]
+ process_one_work+0x526/0x9d0
+ ? __pfx_process_one_work+0x10/0x10
+ ? __pfx_do_raw_spin_lock+0x10/0x10
+ ? mark_held_locks+0x1a/0x90
+ worker_thread+0x92/0x630
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x196/0x1e0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2c/0x50
+ </TASK>
+
+Allocated by task 1782:
+ kasan_save_stack+0x33/0x60
+ kasan_set_track+0x25/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ hci_conn_add+0xa5/0xa80 [bluetooth]
+ hci_bind_cis+0x881/0x9b0 [bluetooth]
+ iso_connect_cis+0x121/0x520 [bluetooth]
+ iso_sock_connect+0x3f6/0x790 [bluetooth]
+ __sys_connect+0x109/0x130
+ __x64_sys_connect+0x40/0x50
+ do_syscall_64+0x60/0x90
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Freed by task 695:
+ kasan_save_stack+0x33/0x60
+ kasan_set_track+0x25/0x30
+ kasan_save_free_info+0x2b/0x50
+ __kasan_slab_free+0x10a/0x180
+ __kmem_cache_free+0x14d/0x2e0
+ device_release+0x5d/0xf0
+ kobject_put+0xdf/0x270
+ hci_disconn_complete_evt+0x274/0x3a0 [bluetooth]
+ hci_event_packet+0x579/0x7e0 [bluetooth]
+ hci_rx_work+0x287/0xaa0 [bluetooth]
+ process_one_work+0x526/0x9d0
+ worker_thread+0x92/0x630
+ kthread+0x196/0x1e0
+ ret_from_fork+0x2c/0x50
+==================================================================
+
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/aacraid/aacraid.h |  1 +
- drivers/scsi/aacraid/commsup.c |  6 +++++-
- drivers/scsi/aacraid/linit.c   | 14 ++++++++++++++
- drivers/scsi/aacraid/src.c     | 25 +++++++++++++++++++++++--
- 4 files changed, 43 insertions(+), 3 deletions(-)
+ net/bluetooth/hci_sync.c | 55 +++++++++++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/scsi/aacraid/aacraid.h b/drivers/scsi/aacraid/aacraid.h
-index 5e115e8b2ba46..7c6efde75da66 100644
---- a/drivers/scsi/aacraid/aacraid.h
-+++ b/drivers/scsi/aacraid/aacraid.h
-@@ -1678,6 +1678,7 @@ struct aac_dev
- 	u32			handle_pci_error;
- 	bool			init_reset;
- 	u8			soft_reset_support;
-+	u8			use_map_queue;
- };
- 
- #define aac_adapter_interrupt(dev) \
-diff --git a/drivers/scsi/aacraid/commsup.c b/drivers/scsi/aacraid/commsup.c
-index deb32c9f4b3e6..3f062e4013ab6 100644
---- a/drivers/scsi/aacraid/commsup.c
-+++ b/drivers/scsi/aacraid/commsup.c
-@@ -223,8 +223,12 @@ int aac_fib_setup(struct aac_dev * dev)
- struct fib *aac_fib_alloc_tag(struct aac_dev *dev, struct scsi_cmnd *scmd)
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index 60e213982635c..570909425618d 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5339,6 +5339,7 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
  {
- 	struct fib *fibptr;
-+	u32 blk_tag;
-+	int i;
+ 	int err = 0;
+ 	u16 handle = conn->handle;
++	struct hci_conn *c;
  
--	fibptr = &dev->fibs[scsi_cmd_to_rq(scmd)->tag];
-+	blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
-+	i = blk_mq_unique_tag_to_tag(blk_tag);
-+	fibptr = &dev->fibs[i];
- 	/*
- 	 *	Null out fields that depend on being zero at the start of
- 	 *	each I/O
-diff --git a/drivers/scsi/aacraid/linit.c b/drivers/scsi/aacraid/linit.c
-index 5ba5c18b77b46..bff49b8ab057d 100644
---- a/drivers/scsi/aacraid/linit.c
-+++ b/drivers/scsi/aacraid/linit.c
-@@ -19,6 +19,7 @@
+ 	switch (conn->state) {
+ 	case BT_CONNECTED:
+@@ -5360,43 +5361,57 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
+ 		}
+ 		break;
+ 	default:
++		hci_dev_lock(hdev);
+ 		conn->state = BT_CLOSED;
++		hci_disconn_cfm(conn, reason);
++		hci_conn_del(conn);
++		hci_dev_unlock(hdev);
+ 		return 0;
+ 	}
  
- #include <linux/compat.h>
- #include <linux/blkdev.h>
-+#include <linux/blk-mq-pci.h>
- #include <linux/completion.h>
- #include <linux/init.h>
- #include <linux/interrupt.h>
-@@ -505,6 +506,15 @@ static int aac_slave_configure(struct scsi_device *sdev)
- 	return 0;
++	hci_dev_lock(hdev);
++
++	/* Check if the connection hasn't been cleanup while waiting
++	 * commands to complete.
++	 */
++	c = hci_conn_hash_lookup_handle(hdev, handle);
++	if (!c || c != conn) {
++		err = 0;
++		goto unlock;
++	}
++
+ 	/* Cleanup hci_conn object if it cannot be cancelled as it
+ 	 * likelly means the controller and host stack are out of sync
+ 	 * or in case of LE it was still scanning so it can be cleanup
+ 	 * safely.
+ 	 */
+-	if (err) {
+-		struct hci_conn *c;
+-
+-		/* Check if the connection hasn't been cleanup while waiting
+-		 * commands to complete.
+-		 */
+-		c = hci_conn_hash_lookup_handle(hdev, handle);
+-		if (!c || c != conn)
+-			return 0;
+-
+-		hci_dev_lock(hdev);
+-		hci_conn_failed(conn, err);
+-		hci_dev_unlock(hdev);
+-	}
++	hci_conn_failed(conn, reason);
+ 
++unlock:
++	hci_dev_unlock(hdev);
+ 	return err;
  }
  
-+static void aac_map_queues(struct Scsi_Host *shost)
-+{
-+	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
-+
-+	blk_mq_pci_map_queues(&shost->tag_set.map[HCTX_TYPE_DEFAULT],
-+			      aac->pdev, 0);
-+	aac->use_map_queue = true;
-+}
-+
- /**
-  *	aac_change_queue_depth		-	alter queue depths
-  *	@sdev:	SCSI device we are considering
-@@ -1489,6 +1499,7 @@ static struct scsi_host_template aac_driver_template = {
- 	.bios_param			= aac_biosparm,
- 	.shost_groups			= aac_host_groups,
- 	.slave_configure		= aac_slave_configure,
-+	.map_queues			= aac_map_queues,
- 	.change_queue_depth		= aac_change_queue_depth,
- 	.sdev_groups			= aac_dev_groups,
- 	.eh_abort_handler		= aac_eh_abort,
-@@ -1776,6 +1787,8 @@ static int aac_probe_one(struct pci_dev *pdev, const struct pci_device_id *id)
- 	shost->max_lun = AAC_MAX_LUN;
+ static int hci_disconnect_all_sync(struct hci_dev *hdev, u8 reason)
+ {
+-	struct hci_conn *conn, *tmp;
+-	int err;
++	struct list_head *head = &hdev->conn_hash.list;
++	struct hci_conn *conn;
  
- 	pci_set_drvdata(pdev, shost);
-+	shost->nr_hw_queues = aac->max_msix;
-+	shost->host_tagset = 1;
+-	list_for_each_entry_safe(conn, tmp, &hdev->conn_hash.list, list) {
+-		err = hci_abort_conn_sync(hdev, conn, reason);
+-		if (err)
+-			return err;
++	rcu_read_lock();
++	while ((conn = list_first_or_null_rcu(head, struct hci_conn, list))) {
++		/* Make sure the connection is not freed while unlocking */
++		conn = hci_conn_get(conn);
++		rcu_read_unlock();
++		/* Disregard possible errors since hci_conn_del shall have been
++		 * called even in case of errors had occurred since it would
++		 * then cause hci_conn_failed to be called which calls
++		 * hci_conn_del internally.
++		 */
++		hci_abort_conn_sync(hdev, conn, reason);
++		hci_conn_put(conn);
++		rcu_read_lock();
+ 	}
++	rcu_read_unlock();
  
- 	error = scsi_add_host(shost, &pdev->dev);
- 	if (error)
-@@ -1908,6 +1921,7 @@ static void aac_remove_one(struct pci_dev *pdev)
- 	struct aac_dev *aac = (struct aac_dev *)shost->hostdata;
- 
- 	aac_cancel_rescan_worker(aac);
-+	aac->use_map_queue = false;
- 	scsi_remove_host(shost);
- 
- 	__aac_shutdown(aac);
-diff --git a/drivers/scsi/aacraid/src.c b/drivers/scsi/aacraid/src.c
-index 11ef58204e96f..61949f3741886 100644
---- a/drivers/scsi/aacraid/src.c
-+++ b/drivers/scsi/aacraid/src.c
-@@ -493,6 +493,10 @@ static int aac_src_deliver_message(struct fib *fib)
- #endif
- 
- 	u16 vector_no;
-+	struct scsi_cmnd *scmd;
-+	u32 blk_tag;
-+	struct Scsi_Host *shost = dev->scsi_host_ptr;
-+	struct blk_mq_queue_map *qmap;
- 
- 	atomic_inc(&q->numpending);
- 
-@@ -505,8 +509,25 @@ static int aac_src_deliver_message(struct fib *fib)
- 		if ((dev->comm_interface == AAC_COMM_MESSAGE_TYPE3)
- 			&& dev->sa_firmware)
- 			vector_no = aac_get_vector(dev);
--		else
--			vector_no = fib->vector_no;
-+		else {
-+			if (!fib->vector_no || !fib->callback_data) {
-+				if (shost && dev->use_map_queue) {
-+					qmap = &shost->tag_set.map[HCTX_TYPE_DEFAULT];
-+					vector_no = qmap->mq_map[raw_smp_processor_id()];
-+				}
-+				/*
-+				 *	We hardcode the vector_no for
-+				 *	reserved commands as a valid shost is
-+				 *	absent during the init
-+				 */
-+				else
-+					vector_no = 0;
-+			} else {
-+				scmd = (struct scsi_cmnd *)fib->callback_data;
-+				blk_tag = blk_mq_unique_tag(scsi_cmd_to_rq(scmd));
-+				vector_no = blk_mq_unique_tag_to_hwq(blk_tag);
-+			}
-+		}
- 
- 		if (native_hba) {
- 			if (fib->flags & FIB_CONTEXT_FLAG_NATIVE_HBA_TMF) {
+ 	return 0;
+ }
 -- 
 2.40.1
 
