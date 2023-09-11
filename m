@@ -2,46 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A8A3A79BECA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7D17879BFAD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237892AbjIKWmo (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:42:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53182 "EHLO
+        id S1355503AbjIKWAF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:00:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241079AbjIKPB1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:27 -0400
+        with ESMTP id S241067AbjIKPBM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 379CD125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 52E4AC433C7;
-        Mon, 11 Sep 2023 15:01:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDCEF1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:07 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30933C433C8;
+        Mon, 11 Sep 2023 15:01:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444481;
-        bh=qISE5J5VtM0PjcDwTlFRuQVozce80n3WS8mAe+4B//o=;
+        s=korg; t=1694444467;
+        bh=v/sBwy1mNa17gIt5A5LGiVy+dHI2zgDJfXb/Z+r8EiE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZcUq8my8lD2sD/Cektrrkxf/y91qW12ut7+tiHAaqFX4IFynfN0jo/MNMmlxhl8Ke
-         dHRZ33d0iiM+x/sZusLX887Q+2d4qpFlQnEHScaO58Knr5XiYRQof4nav3VHTfVFoF
-         EXwZEW3YJTBROzNT0q9Dw18G7XtW9uEhBu5LPCGU=
+        b=1476ZThvzjl87SObds7MFN18x0L0QIEgnJnhhNnK2AGYC8zRCmH9E3WoSs5Kuh8xJ
+         oVimyToXjlJlmSJhtgh7mkET1MKLtjotDGnJhiFwrIprbZM9o4d9pn6mnG3ALdOsvi
+         tSSchRUMNl0d8QBQTBqenGVZ+Metb8EvT3wSkBhg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Jeff Xu <jeffxu@google.com>,
+        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
+        Christian Brauner <brauner@kernel.org>,
         Daniel Verkamp <dverkamp@chromium.org>,
-        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
-        Hugh Dickins <hughd@google.com>, Jann Horn <jannh@google.com>,
-        Jorge Lucangeli Obes <jorgelo@chromium.org>,
+        Dominique Martinet <asmadeus@codewreck.org>,
         Kees Cook <keescook@chromium.org>,
-        kernel test robot <lkp@intel.com>,
-        Mike Kravetz <mike.kravetz@oracle.com>,
-        Shuah Khan <skhan@linuxfoundation.org>,
+        Shuah Khan <shuah@kernel.org>,
         Andrew Morton <akpm@linux-foundation.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 731/737] selftests/memfd: sysctl: fix MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED
-Date:   Mon, 11 Sep 2023 15:49:50 +0200
-Message-ID: <20230911134710.929904497@linuxfoundation.org>
+Subject: [PATCH 6.4 733/737] memfd: improve userspace warnings for missing exec-related flags
+Date:   Mon, 11 Sep 2023 15:49:52 +0200
+Message-ID: <20230911134710.986885489@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -64,51 +59,64 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jeff Xu <jeffxu@google.com>
+From: Aleksa Sarai <cyphar@cyphar.com>
 
-[ Upstream commit badbbcd76545c58eff64bb1548f7f834a30dc52a ]
+[ Upstream commit 434ed3350f57c03a9654fe0619755cc137a58935 ]
 
-Add selftest for sysctl vm.memfd_noexec is 2
-(MEMFD_NOEXEC_SCOPE_NOEXEC_ENFORCED)
+In order to incentivise userspace to switch to passing MFD_EXEC and
+MFD_NOEXEC_SEAL, we need to provide a warning on each attempt to call
+memfd_create() without the new flags.  pr_warn_once() is not useful
+because on most systems the one warning is burned up during the boot
+process (on my system, systemd does this within the first second of boot)
+and thus userspace will in practice never see the warnings to push them to
+switch to the new flags.
 
-memfd_create(.., MFD_EXEC) should fail in this case.
+The original patchset[1] used pr_warn_ratelimited(), however there were
+concerns about the degree of spam in the kernel log[2,3].  The resulting
+inability to detect every case was flagged as an issue at the time[4].
 
-Link: https://lkml.kernel.org/r/20230705063315.3680666-3-jeffxu@google.com
-Reported-by: Dominique Martinet <asmadeus@codewreck.org>
-Closes: https://lore.kernel.org/linux-mm/CABi2SkXUX_QqTQ10Yx9bBUGpN1wByOi_=gZU6WEy5a8MaQY3Jw@mail.gmail.com/T/
-Signed-off-by: Jeff Xu <jeffxu@google.com>
+While we could come up with an alternative rate-limiting scheme such as
+only outputting the message if vm.memfd_noexec has been modified, or only
+outputting the message once for a given task, these alternatives have
+downsides that don't make sense given how low-stakes a single kernel
+warning message is.  Switching to pr_info_ratelimited() instead should be
+fine -- it's possible some monitoring tool will be unhappy with a stream
+of warning-level messages but there's already plenty of info-level message
+spam in dmesg.
+
+[1]: https://lore.kernel.org/20221215001205.51969-4-jeffxu@google.com/
+[2]: https://lore.kernel.org/202212161233.85C9783FB@keescook/
+[3]: https://lore.kernel.org/Y5yS8wCnuYGLHMj4@x1n/
+[4]: https://lore.kernel.org/f185bb42-b29c-977e-312e-3349eea15383@linuxfoundation.org/
+
+Link: https://lkml.kernel.org/r/20230814-memfd-vm-noexec-uapi-fixes-v2-3-7ff9e3e10ba6@cyphar.com
+Fixes: 105ff5339f49 ("mm/memfd: add MFD_NOEXEC_SEAL and MFD_EXEC")
+Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
+Cc: Christian Brauner <brauner@kernel.org>
 Cc: Daniel Verkamp <dverkamp@chromium.org>
-Cc: Dmitry Torokhov <dmitry.torokhov@gmail.com>
-Cc: Hugh Dickins <hughd@google.com>
-Cc: Jann Horn <jannh@google.com>
-Cc: Jorge Lucangeli Obes <jorgelo@chromium.org>
+Cc: Dominique Martinet <asmadeus@codewreck.org>
 Cc: Kees Cook <keescook@chromium.org>
-Cc: kernel test robot <lkp@intel.com>
-Cc: Mike Kravetz <mike.kravetz@oracle.com>
-Cc: Shuah Khan <skhan@linuxfoundation.org>
+Cc: Shuah Khan <shuah@kernel.org>
+Cc: <stable@vger.kernel.org>
 Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
-Stable-dep-of: 202e14222fad ("memfd: do not -EACCES old memfd_create() users with vm.memfd_noexec=2")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/memfd/memfd_test.c | 5 +++++
- 1 file changed, 5 insertions(+)
+ mm/memfd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
-index 7fc5d7c3bd65b..8eb49204f9eac 100644
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -1147,6 +1147,11 @@ static void test_sysctl_child(void)
- 	sysctl_assert_write("2");
- 	mfd_fail_new("kern_memfd_sysctl_2",
- 		MFD_CLOEXEC | MFD_ALLOW_SEALING);
-+	mfd_fail_new("kern_memfd_sysctl_2_MFD_EXEC",
-+		MFD_CLOEXEC | MFD_EXEC);
-+	fd = mfd_assert_new("", 0, MFD_NOEXEC_SEAL);
-+	close(fd);
-+
- 	sysctl_fail_write("0");
- 	sysctl_fail_write("1");
- }
+diff --git a/mm/memfd.c b/mm/memfd.c
+index d65485c762def..aa46521057ab1 100644
+--- a/mm/memfd.c
++++ b/mm/memfd.c
+@@ -315,7 +315,7 @@ SYSCALL_DEFINE2(memfd_create,
+ 		return -EINVAL;
+ 
+ 	if (!(flags & (MFD_EXEC | MFD_NOEXEC_SEAL))) {
+-		pr_warn_once(
++		pr_info_ratelimited(
+ 			"%s[%d]: memfd_create() called without MFD_EXEC or MFD_NOEXEC_SEAL set\n",
+ 			current->comm, task_pid_nr(current));
+ 	}
 -- 
 2.40.1
 
