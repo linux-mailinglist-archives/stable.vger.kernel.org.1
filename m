@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 718D879B09B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9373779B366
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348944AbjIKVbv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50348 "EHLO
+        id S1352983AbjIKVtU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33530 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240105AbjIKOgp (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:45 -0400
+        with ESMTP id S241206AbjIKPEQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 74D56F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:40 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF3DDC433C7;
-        Mon, 11 Sep 2023 14:36:39 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65EE5125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86772C433C7;
+        Mon, 11 Sep 2023 15:04:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443000;
-        bh=nLT1A0XyCAeoi7a2btSTJXQ6H6ZiNA3JLPkvnRGWk/o=;
+        s=korg; t=1694444652;
+        bh=79KIJCex9NAsdMIKK9Cxcm8l+FRTCmEYIHqErbkhUP4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VQQzR+DwZGNkR1pgFFQBojHvMmWj6zFIkQeBUhaZURxIBGtFOZ13ykCMOB89VeVtl
-         uxDxPp+b2HeFVtWC0kh5bk7oYbQCFR1iXZ+C/f8ko+iznfZwvcHqrFPKcp+onf6zoX
-         zTRPgHjuXjl2Gwkq6EzHzkbHgzHuI7E96yaeEW6Q=
+        b=TblReKV4cM4NKgojvuRU+CkDLFSX03P+Zxi3xFax9LxwHfMDiwX/ZxurwsCtlTG7l
+         2vrTVByVHnykjJ31vgDtFb69bBVuNpnGWEYtfFbBJ7tNRriV3vhl5w1m4EmUErry7J
+         4l0YlgRW/e6papE/NoTfosjx2LON9nYwm0X+2j7s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ruan Jinjie <ruanjinjie@huawei.com>,
-        Simon Horman <horms@kernel.org>,
-        Leon Romanovsky <leonro@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
+        patches@lists.linux.dev, Kalle Valo <kvalo@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 223/737] net: lan966x: Fix return value check for vcap_get_rule()
-Date:   Mon, 11 Sep 2023 15:41:22 +0200
-Message-ID: <20230911134656.813134150@linuxfoundation.org>
+Subject: [PATCH 6.1 050/600] Revert "wifi: ath6k: silence false positive -Wno-dangling-pointer warning on GCC 12"
+Date:   Mon, 11 Sep 2023 15:41:23 +0200
+Message-ID: <20230911134635.088510831@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,50 +49,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ruan Jinjie <ruanjinjie@huawei.com>
+From: Kalle Valo <kvalo@kernel.org>
 
-[ Upstream commit ab104318f63997113b0ce7ac288e51359925ed79 ]
+[ Upstream commit a1ce186db7f0e449f35d12fb55ae0da2a1b400e2 ]
 
-As Simon Horman suggests, update vcap_get_rule() to always
-return an ERR_PTR() and update the error detection conditions to
-use IS_ERR(), so use IS_ERR() to fix the return value issue.
+This reverts commit bd1d129daa3ede265a880e2c6a7f91eab0f4dc62.
 
-Fixes: 72df3489fb10 ("net: lan966x: Add ptp trap rules")
-Signed-off-by: Ruan Jinjie <ruanjinjie@huawei.com>
-Suggested-by: Simon Horman <horms@kernel.org>
-Reviewed-by: Leon Romanovsky <leonro@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+The dangling-pointer warnings were disabled kernel-wide by commit 49beadbd47c2
+("gcc-12: disable '-Wdangling-pointer' warning for now") for v5.19. So this
+hack in ath6kl is not needed anymore.
+
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230724100823.2948804-1-kvalo@kernel.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/net/wireless/ath/ath6kl/Makefile | 5 -----
+ 1 file changed, 5 deletions(-)
 
-diff --git a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-index 266a21a2d1246..1da2b1f82ae93 100644
---- a/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-+++ b/drivers/net/ethernet/microchip/lan966x/lan966x_ptp.c
-@@ -59,7 +59,7 @@ static int lan966x_ptp_add_trap(struct lan966x_port *port,
- 	int err;
+diff --git a/drivers/net/wireless/ath/ath6kl/Makefile b/drivers/net/wireless/ath/ath6kl/Makefile
+index a75bfa9fd1cfd..dc2b3b46781e1 100644
+--- a/drivers/net/wireless/ath/ath6kl/Makefile
++++ b/drivers/net/wireless/ath/ath6kl/Makefile
+@@ -36,11 +36,6 @@ ath6kl_core-y += wmi.o
+ ath6kl_core-y += core.o
+ ath6kl_core-y += recovery.o
  
- 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
--	if (vrule) {
-+	if (!IS_ERR(vrule)) {
- 		u32 value, mask;
+-# FIXME: temporarily silence -Wdangling-pointer on non W=1+ builds
+-ifndef KBUILD_EXTRA_WARN
+-CFLAGS_htc_mbox.o += $(call cc-disable-warning, dangling-pointer)
+-endif
+-
+ ath6kl_core-$(CONFIG_NL80211_TESTMODE) += testmode.o
+ ath6kl_core-$(CONFIG_ATH6KL_TRACING) += trace.o
  
- 		/* Just modify the ingress port mask and exit */
-@@ -106,7 +106,7 @@ static int lan966x_ptp_del_trap(struct lan966x_port *port,
- 	int err;
- 
- 	vrule = vcap_get_rule(lan966x->vcap_ctrl, rule_id);
--	if (!vrule)
-+	if (IS_ERR(vrule))
- 		return -EEXIST;
- 
- 	vcap_rule_get_key_u32(vrule, VCAP_KF_IF_IGR_PORT_MASK, &value, &mask);
 -- 
 2.40.1
 
