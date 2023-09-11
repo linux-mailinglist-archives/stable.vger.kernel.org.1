@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id CA20D79B7B5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B685779B896
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354013AbjIKVwH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47004 "EHLO
+        id S237768AbjIKV1d (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:27:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52830 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241880AbjIKPQ7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:59 -0400
+        with ESMTP id S239341AbjIKOSW (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:22 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0C4D7FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:16:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 538B8C433C8;
-        Mon, 11 Sep 2023 15:16:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8340DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:17 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F0D7EC433C7;
+        Mon, 11 Sep 2023 14:18:16 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445415;
-        bh=TWWuVGd5X3SRhGlxQzU/OrnrLpUQqZyzkODEfF3bPAo=;
+        s=korg; t=1694441897;
+        bh=J0mk+6ba9dlKGCFSkmaCDTAssUKf+Dbzbj6dsAnTvig=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=X9BfwGBlmI51iQpots98uFNRXRCPlG8HRcFkaXEulVbWMoJUKF3N8rUxFPgbx7M2x
-         +CttUK6XHlFYZxRmx+F98m+HWZ9uKrjvmAeGTtvMTlkw73uBl+AiN3PXvKpKXNtt/A
-         3vBvPZkz7VVq9WF6GLqgePRqzaNWb+6UunPuoNmw=
+        b=nx3pL7exgYbIUTAJ+pY5OWhpVs6ssYqp/CERFnquxajFSE7/nPJoLzLKoiovRsv8x
+         eystlNHWvPyANL+bFqGJnMCbFfLc3+zS+HhKMznxww4+YDKsUuU7tR+QIX2PlDYYin
+         hByM9iOSJlmtEY/xb/WriEQwjbN0oFXDXW7UZgLY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Wronek <davidwronek@gmail.com>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Christophe Leroy <christophe.leroy@csgroup.eu>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 340/600] clk: qcom: gcc-sc7180: Fix up gcc_sdcc2_apps_clk_src
+Subject: [PATCH 6.5 574/739] Documentation: devices.txt: Remove ttySIOC*
 Date:   Mon, 11 Sep 2023 15:46:13 +0200
-Message-ID: <20230911134643.726232478@linuxfoundation.org>
+Message-ID: <20230911134707.138921559@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,39 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: David Wronek <davidwronek@gmail.com>
+From: Christophe Leroy <christophe.leroy@csgroup.eu>
 
-[ Upstream commit fd0b5ba87ad5709f0fd3d2bc4b7870494a75f96a ]
+[ Upstream commit 27681960f05515555441d7bf58d565cbc68137f3 ]
 
-Set .flags = CLK_OPS_PARENT_ENABLE to fix "gcc_sdcc2_apps_clk_src: rcg
-didn't update its configuration" error.
+IOC3 serial driver was removed, remove associated devices
+from documentation.
 
-Fixes: 17269568f726 ("clk: qcom: Add Global Clock controller (GCC) driver for SC7180")
-Signed-off-by: David Wronek <davidwronek@gmail.com>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230723190725.1619193-2-davidwronek@gmail.com
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 9c860e4cf708 ("tty/serial: remove the ioc3_serial driver")
+Cc: Christoph Hellwig <hch@lst.de>
+Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
+Link: https://lore.kernel.org/r/f13b5c64f8cb6d8f2357d7be14397676b27ac2a2.1691992627.git.christophe.leroy@csgroup.eu
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/gcc-sc7180.c | 1 +
- 1 file changed, 1 insertion(+)
+ Documentation/admin-guide/devices.txt | 3 ---
+ 1 file changed, 3 deletions(-)
 
-diff --git a/drivers/clk/qcom/gcc-sc7180.c b/drivers/clk/qcom/gcc-sc7180.c
-index 2d3980251e78e..5822db4f4f358 100644
---- a/drivers/clk/qcom/gcc-sc7180.c
-+++ b/drivers/clk/qcom/gcc-sc7180.c
-@@ -667,6 +667,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
- 		.name = "gcc_sdcc2_apps_clk_src",
- 		.parent_data = gcc_parent_data_5,
- 		.num_parents = ARRAY_SIZE(gcc_parent_data_5),
-+		.flags = CLK_OPS_PARENT_ENABLE,
- 		.ops = &clk_rcg2_floor_ops,
- 	},
- };
+diff --git a/Documentation/admin-guide/devices.txt b/Documentation/admin-guide/devices.txt
+index 75a408f72402c..1ba5b7c4973cd 100644
+--- a/Documentation/admin-guide/devices.txt
++++ b/Documentation/admin-guide/devices.txt
+@@ -2694,9 +2694,6 @@
+ 		 49 = /dev/ttyCPM5		PPC CPM (SCC or SMC) - port 3
+ 		 82 = /dev/ttyVR0		NEC VR4100 series SIU
+ 		 83 = /dev/ttyVR1		NEC VR4100 series DSIU
+-		 116 = /dev/ttySIOC0		Altix ioc3 serial card
+-		    ...
+-		 147 = /dev/ttySIOC31		Altix ioc3 serial card
+ 		 148 = /dev/ttyPSC0		PPC PSC - port 0
+ 		    ...
+ 		 153 = /dev/ttyPSC5		PPC PSC - port 5
 -- 
 2.40.1
 
