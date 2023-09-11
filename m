@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E648C79B33F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:59 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B430479AFC2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378688AbjIKWgf (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:36:35 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44620 "EHLO
+        id S1378822AbjIKWhd (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:33 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59490 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240158AbjIKOiH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:38:07 -0400
+        with ESMTP id S238853AbjIKOGQ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57808F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6C85CC433C7;
-        Mon, 11 Sep 2023 14:38:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B6F6120
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:12 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 706FFC433C8;
+        Mon, 11 Sep 2023 14:06:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443082;
-        bh=DxrLSHT+lMqoj/T9fuAkbFT5mW+lPTFTJoSd3W04QBU=;
+        s=korg; t=1694441171;
+        bh=PfCAi+izycsqbRrdLKCT7TimVbf4gmFkdJThAyJmt3U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ZBAJdnTV3RIpcX2S3JHUYU8+7JjgfF7bN/CJAUG+l02rt0QwGuF22svCd4oLu7MyG
-         4Sr+w6DjYnDxPIe01QeyAxwyc3uFFxWXkZC1kJAI/nGmu1G9zU17JcE4t7eTvXbZb8
-         e1b5EQOn3AU6tkVZcQVICUNbkOzVYgS39/wtLks8=
+        b=ofYNKhxZmBlX1RUV/jK5mSUUiaZZJ/4NPHpt6qfwLCl94ED8USecua0MY1MrVg+AL
+         wp3mpZUhOTSpt6+W7ULY0mhNgNLXzWy5ZoC5+MIUXo3LvJFdjBlSgxzUAwd/S+oCna
+         vnTbvUPV/VoF5aaiVEP+qholKwJ0X7u7hawWWo90=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
-        Petr Machata <petrm@nvidia.com>,
-        "David S. Miller" <davem@davemloft.net>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 252/737] mlxsw: i2c: Limit single transaction buffer size
+        patches@lists.linux.dev, Udit Kumar <u-kumar1@ti.com>,
+        Vaishnav Achath <vaishnav.a@ti.com>,
+        Nishanth Menon <nm@ti.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 312/739] arm64: dts: ti: k3-j784s4-evm: Correct Pin mux offset for ospi
 Date:   Mon, 11 Sep 2023 15:41:51 +0200
-Message-ID: <20230911134657.634332155@linuxfoundation.org>
+Message-ID: <20230911134659.830890132@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,58 +50,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Vadim Pasternak <vadimp@nvidia.com>
+From: Udit Kumar <u-kumar1@ti.com>
 
-[ Upstream commit d7248f1cc835bd80e936dc5b2d94b149bdd0077d ]
+[ Upstream commit f10f836ccfea21ae3ad3066eb9576625f1acdea2 ]
 
-Maximum size of buffer is obtained from underlying I2C adapter and in
-case adapter allows I2C transaction buffer size greater than 100 bytes,
-transaction will fail due to firmware limitation.
+After splitting wkup_pmx pin mux for J784S4 into four regions.
+Pin mux offset for OSPI nodes were not updated to align with new
+regions, due to this while setting ospi pin muxes out of range
+error was seen.
 
-As a result driver will fail initialization.
+Pin mux offsets for OSPI nodes are corrected in this patch.
 
-Limit the maximum size of transaction buffer by 100 bytes to fit to
-firmware.
-
-Remove unnecessary calculation:
-max_t(u16, MLXSW_I2C_BLK_DEF, quirk_size).
-This condition can not happened.
-
-Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
-Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
-Reviewed-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: Petr Machata <petrm@nvidia.com>
-Signed-off-by: David S. Miller <davem@davemloft.net>
+Fixes: 14462bd0b247 ("arm64: dts: ti: k3-j784s4: Fix wakeup pinmux range and pinctrl node offsets")
+Signed-off-by: Udit Kumar <u-kumar1@ti.com>
+Tested-by: Vaishnav Achath <vaishnav.a@ti.com>
+Link: https://lore.kernel.org/r/20230802114126.162445-1-u-kumar1@ti.com
+Signed-off-by: Nishanth Menon <nm@ti.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/mellanox/mlxsw/i2c.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ arch/arm64/boot/dts/ti/k3-j784s4-evm.dts | 29 +++++++++++++++---------
+ 1 file changed, 18 insertions(+), 11 deletions(-)
 
-diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-index d23734ecb416a..4fac27c36ad85 100644
---- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-+++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
-@@ -48,6 +48,7 @@
- #define MLXSW_I2C_MBOX_SIZE_BITS	12
- #define MLXSW_I2C_ADDR_BUF_SIZE		4
- #define MLXSW_I2C_BLK_DEF		32
-+#define MLXSW_I2C_BLK_MAX		100
- #define MLXSW_I2C_RETRY			5
- #define MLXSW_I2C_TIMEOUT_MSECS		5000
- #define MLXSW_I2C_MAX_DATA_SIZE		256
-@@ -653,7 +654,7 @@ static int mlxsw_i2c_probe(struct i2c_client *client)
- 			return -EOPNOTSUPP;
- 		}
+diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+index 430b8a2c5df57..cb852031c8027 100644
+--- a/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
++++ b/arch/arm64/boot/dts/ti/k3-j784s4-evm.dts
+@@ -379,21 +379,28 @@ J784S4_WKUP_IOPAD(0x020, PIN_INPUT, 0) /* (D34) MCU_OSPI0_D5 */
+ 			J784S4_WKUP_IOPAD(0x024, PIN_INPUT, 0) /* (E34) MCU_OSPI0_D6 */
+ 			J784S4_WKUP_IOPAD(0x028, PIN_INPUT, 0) /* (E33) MCU_OSPI0_D7 */
+ 			J784S4_WKUP_IOPAD(0x008, PIN_INPUT, 0) /* (C34) MCU_OSPI0_DQS */
+-			J784S4_WKUP_IOPAD(0x03c, PIN_OUTPUT, 6) /* (C32) MCU_OSPI0_CSn3.MCU_OSPI0_ECC_FAIL */
+-			J784S4_WKUP_IOPAD(0x038, PIN_OUTPUT, 6) /* (B34) MCU_OSPI0_CSn2.MCU_OSPI0_RESET_OUT0 */
++		>;
++	};
++};
++
++&wkup_pmx1 {
++	mcu_fss0_ospi0_1_pins_default: mcu-fss0-ospi0-1-default-pins {
++		pinctrl-single,pins = <
++			J784S4_WKUP_IOPAD(0x004, PIN_OUTPUT, 6) /* (C32) MCU_OSPI0_ECC_FAIL */
++			J784S4_WKUP_IOPAD(0x000, PIN_OUTPUT, 6) /* (B34) MCU_OSPI0_RESET_OUT0 */
+ 		>;
+ 	};
  
--		mlxsw_i2c->block_size = max_t(u16, MLXSW_I2C_BLK_DEF,
-+		mlxsw_i2c->block_size = min_t(u16, MLXSW_I2C_BLK_MAX,
- 					      min_t(u16, quirks->max_read_len,
- 						    quirks->max_write_len));
- 	} else {
+ 	mcu_fss0_ospi1_pins_default: mcu-fss0-ospi1-default-pins {
+ 		pinctrl-single,pins = <
+-			J784S4_WKUP_IOPAD(0x040, PIN_OUTPUT, 0) /* (F32) MCU_OSPI1_CLK */
+-			J784S4_WKUP_IOPAD(0x05c, PIN_OUTPUT, 0) /* (G32) MCU_OSPI1_CSn0 */
+-			J784S4_WKUP_IOPAD(0x04c, PIN_INPUT, 0) /* (E35) MCU_OSPI1_D0 */
+-			J784S4_WKUP_IOPAD(0x050, PIN_INPUT, 0) /* (D31) MCU_OSPI1_D1 */
+-			J784S4_WKUP_IOPAD(0x054, PIN_INPUT, 0) /* (G31) MCU_OSPI1_D2 */
+-			J784S4_WKUP_IOPAD(0x058, PIN_INPUT, 0) /* (F33) MCU_OSPI1_D3 */
+-			J784S4_WKUP_IOPAD(0x048, PIN_INPUT, 0) /* (F31) MCU_OSPI1_DQS */
+-			J784S4_WKUP_IOPAD(0x044, PIN_INPUT, 0) /* (C31) MCU_OSPI1_LBCLKO */
++			J784S4_WKUP_IOPAD(0x008, PIN_OUTPUT, 0) /* (F32) MCU_OSPI1_CLK */
++			J784S4_WKUP_IOPAD(0x024, PIN_OUTPUT, 0) /* (G32) MCU_OSPI1_CSn0 */
++			J784S4_WKUP_IOPAD(0x014, PIN_INPUT, 0) /* (E35) MCU_OSPI1_D0 */
++			J784S4_WKUP_IOPAD(0x018, PIN_INPUT, 0) /* (D31) MCU_OSPI1_D1 */
++			J784S4_WKUP_IOPAD(0x01C, PIN_INPUT, 0) /* (G31) MCU_OSPI1_D2 */
++			J784S4_WKUP_IOPAD(0x020, PIN_INPUT, 0) /* (F33) MCU_OSPI1_D3 */
++			J784S4_WKUP_IOPAD(0x010, PIN_INPUT, 0) /* (F31) MCU_OSPI1_DQS */
++			J784S4_WKUP_IOPAD(0x00C, PIN_INPUT, 0) /* (C31) MCU_OSPI1_LBCLKO */
+ 		>;
+ 	};
+ };
+@@ -437,7 +444,7 @@ &fss {
+ &ospi0 {
+ 	status = "okay";
+ 	pinctrl-names = "default";
+-	pinctrl-0 = <&mcu_fss0_ospi0_pins_default>;
++	pinctrl-0 = <&mcu_fss0_ospi0_pins_default>, <&mcu_fss0_ospi0_1_pins_default>;
+ 
+ 	flash@0 {
+ 		compatible = "jedec,spi-nor";
 -- 
 2.40.1
 
