@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E35479B81F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B888F79BA32
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236737AbjIKV7V (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45562 "EHLO
+        id S231270AbjIKUwp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36132 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240756AbjIKOw6 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:58 -0400
+        with ESMTP id S239443AbjIKOUr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:47 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 872F5118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C2E50C433C8;
-        Mon, 11 Sep 2023 14:52:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4680DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A819C433C8;
+        Mon, 11 Sep 2023 14:20:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443973;
-        bh=gB0kA3w3sqVFr9qyQHWlCZFF8QsL2a/y/GtTrxj5E0o=;
+        s=korg; t=1694442042;
+        bh=zoBDYUCnVSJ+lA4ymyEr/iITlW0wSBqtPAM/PY6su7Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nzhgfk2Ob52Ogor3JR6mlELHWPOaA1yA6p1mBzY+lvnPoTolDeoxCDIqno53rNFyc
-         9GBaMttWzgsBOWvVMvt8yXooRTHeydO+00fGk8qFtebsacdi2bg1enLnnGmCbR8l2G
-         04wzFQbcwklHg6zRH0WeYTlRbFD1oPBgcjXQRfDk=
+        b=vr/J/6fFpiu6+KNzythqR9afsXZkCrXvlt5g9nTqXEzpX+ySsOqie+Y1rvrnKypJR
+         o1Roix4ZNILduxEnj4Im2tzG8VDBh/Shi5zZ0lG4lStWXIr0+Gw+Ty6zzkYHFizSmP
+         FVwndwgObUcmL+3tC2UOG1Zho9bCqUkYuIejw6B4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Rui Miguel Silva <rmfrfs@gmail.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Vincent Whitchurch <vincent.whitchurch@axis.com>,
+        Richard Weinberger <richard@nod.at>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 566/737] media: ov2680: Fix ov2680_bayer_order()
+Subject: [PATCH 6.5 626/739] um: virt-pci: fix missing declaration warning
 Date:   Mon, 11 Sep 2023 15:47:05 +0200
-Message-ID: <20230911134706.358517264@linuxfoundation.org>
+Message-ID: <20230911134708.582321752@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,119 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Vincent Whitchurch <vincent.whitchurch@axis.com>
 
-[ Upstream commit 50a7bad4e0a37d7018ab6fe843dd84bc6b2ecf72 ]
+[ Upstream commit 974b808d85abbc03c3914af63d60d5816aabf2ca ]
 
-The index into ov2680_hv_flip_bayer_order[] should be 0-3, but
-ov2680_bayer_order() was using 0 + BIT(2) + (BIT(2) << 1) as
-max index, while the intention was to use: 0 + 1 + 2 as max index.
+Fix this warning which appears with W=1 and without CONFIG_OF:
 
-Fix the index calculation in ov2680_bayer_order(), while at it
-also just use the ctrl values rather then reading them back using
-a slow i2c-read transaction.
+ warning: no previous declaration for 'pcibios_get_phb_of_node'
 
-This also allows making the function void, since there now are
-no more i2c-reads to error check.
-
-Note the check for the ctrls being NULL is there to allow
-adding an ov2680_fill_format() helper later, which will call
-ov2680_set_bayer_order() during probe() before the ctrls are created.
-
-[Sakari Ailus: Change all users of ov2680_set_bayer_order() here]
-
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202308230949.PphIIlhq-lkp@intel.com/
+Fixes: 314a1408b79a ("um: virt-pci: implement pcibios_get_phb_of_node()")
+Signed-off-by: Vincent Whitchurch <vincent.whitchurch@axis.com>
+Signed-off-by: Richard Weinberger <richard@nod.at>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/i2c/ov2680.c | 33 ++++++++++++++-------------------
- 1 file changed, 14 insertions(+), 19 deletions(-)
+ arch/um/drivers/virt-pci.c | 2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 42efd60c6a96b..7d072448c8530 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -315,26 +315,17 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
- 	usleep_range(5000, 10000);
+diff --git a/arch/um/drivers/virt-pci.c b/arch/um/drivers/virt-pci.c
+index 7699ca5f35d48..ffe2ee8a02465 100644
+--- a/arch/um/drivers/virt-pci.c
++++ b/arch/um/drivers/virt-pci.c
+@@ -544,6 +544,7 @@ static void um_pci_irq_vq_cb(struct virtqueue *vq)
+ 	}
  }
  
--static int ov2680_bayer_order(struct ov2680_dev *sensor)
-+static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
++#ifdef CONFIG_OF
+ /* Copied from arch/x86/kernel/devicetree.c */
+ struct device_node *pcibios_get_phb_of_node(struct pci_bus *bus)
  {
--	u32 format1;
--	u32 format2;
--	u32 hv_flip;
--	int ret;
--
--	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT1, &format1);
--	if (ret < 0)
--		return ret;
-+	int hv_flip = 0;
- 
--	ret = ov2680_read_reg(sensor, OV2680_REG_FORMAT2, &format2);
--	if (ret < 0)
--		return ret;
-+	if (sensor->ctrls.vflip && sensor->ctrls.vflip->val)
-+		hv_flip += 1;
- 
--	hv_flip = (format2 & BIT(2)  << 1) | (format1 & BIT(2));
-+	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
-+		hv_flip += 2;
- 
- 	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
--
--	return 0;
+@@ -562,6 +563,7 @@ struct device_node *pcibios_get_phb_of_node(struct pci_bus *bus)
+ 	}
+ 	return NULL;
  }
++#endif
  
- static int ov2680_vflip_enable(struct ov2680_dev *sensor)
-@@ -345,7 +336,8 @@ static int ov2680_vflip_enable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
- }
- 
- static int ov2680_vflip_disable(struct ov2680_dev *sensor)
-@@ -356,7 +348,8 @@ static int ov2680_vflip_disable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
- }
- 
- static int ov2680_hflip_enable(struct ov2680_dev *sensor)
-@@ -367,7 +360,8 @@ static int ov2680_hflip_enable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
- }
- 
- static int ov2680_hflip_disable(struct ov2680_dev *sensor)
-@@ -378,7 +372,8 @@ static int ov2680_hflip_disable(struct ov2680_dev *sensor)
- 	if (ret < 0)
- 		return ret;
- 
--	return ov2680_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor);
-+	return 0;
- }
- 
- static int ov2680_test_pattern_set(struct ov2680_dev *sensor, int value)
+ static int um_pci_init_vqs(struct um_pci_device *dev)
+ {
 -- 
 2.40.1
 
