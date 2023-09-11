@@ -2,44 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D8F0479B7AF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:22 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A3C279B7CF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243343AbjIKV2O (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50584 "EHLO
+        id S243129AbjIKU7H (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242250AbjIKPZx (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:53 -0400
+        with ESMTP id S241031AbjIKPAP (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:00:15 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 12831D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 568ECC433C7;
-        Mon, 11 Sep 2023 15:25:48 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A82D81B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:00:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id F4053C433C8;
+        Mon, 11 Sep 2023 15:00:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445948;
-        bh=m/f6FDAI9WXsFSS/mM+m2TJ8miY+PuR1PVP25i98Vdo=;
+        s=korg; t=1694444411;
+        bh=A5R10nuCdMOKJJ30O9kEIBoUJlnRfor0y7GjoTMv4sM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OpcVXelr3lrwxgk6By/tXybDOcDWAJTaVedAj2yeEvoeO/DyD02Q3MLUGCNVsGCXO
-         XbG199F740CoCW/d4rRG0d9iy3aN9N+gNa29pKK7WTNl1y5tdxyG0Uhb6SMYsHgX8/
-         7l+xwpTtupJZFdcb3lPew+nAtrvKGjhZhUmkVes0=
+        b=ygRTLBG133GBgUuDQgCjHH9KS+nsRV+4Yizj1XvxUjxf5IWGF25sWp/3gC3XW1x3B
+         iWw+TjOl7tit8Tm8GwcTtN5l7fiNI87OVlIqSHoCiGuRwA845S0oACDfHJo+bFz+Gk
+         QLSkXB2J1m7bqdEBXk2stFY3nUVdxH3WSt354ZS8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Uladzislau Rezki (Sony)" <urezki@gmail.com>,
-        Zhen Lei <thunder.leizhen@huaweicloud.com>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
-        Zqiang <qiang.zhang1211@gmail.com>,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        Andrew Morton <akpm@linux-foundation.org>
-Subject: [PATCH 6.1 529/600] mm/vmalloc: add a safer version of find_vm_area() for debug
+        patches@lists.linux.dev, Yunlong Xing <yunlong.xing@unisoc.com>,
+        Enlin Mu <enlin.mu@unisoc.com>,
+        Kees Cook <keescook@chromium.org>
+Subject: [PATCH 6.4 703/737] pstore/ram: Check start of empty przs during init
 Date:   Mon, 11 Sep 2023 15:49:22 +0200
-Message-ID: <20230911134649.238794777@linuxfoundation.org>
+Message-ID: <20230911134710.159047777@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,73 +50,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Joel Fernandes (Google) <joel@joelfernandes.org>
+From: Enlin Mu <enlin.mu@unisoc.com>
 
-commit 0818e739b5c061b0251c30152380600fb9b84c0c upstream.
+commit fe8c3623ab06603eb760444a032d426542212021 upstream.
 
-It is unsafe to dump vmalloc area information when trying to do so from
-some contexts.  Add a safer trylock version of the same function to do a
-best-effort VMA finding and use it from vmalloc_dump_obj().
+After commit 30696378f68a ("pstore/ram: Do not treat empty buffers as
+valid"), initialization would assume a prz was valid after seeing that
+the buffer_size is zero (regardless of the buffer start position). This
+unchecked start value means it could be outside the bounds of the buffer,
+leading to future access panics when written to:
 
-[applied test robot feedback on unused function fix.]
-[applied Uladzislau feedback on locking.]
-Link: https://lkml.kernel.org/r/20230904180806.1002832-1-joel@joelfernandes.org
-Fixes: 98f180837a89 ("mm: Make mem_dump_obj() handle vmalloc() memory")
-Signed-off-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Reviewed-by: Uladzislau Rezki (Sony) <urezki@gmail.com>
-Reported-by: Zhen Lei <thunder.leizhen@huaweicloud.com>
-Cc: Paul E. McKenney <paulmck@kernel.org>
-Cc: Zqiang <qiang.zhang1211@gmail.com>
-Cc: <stable@vger.kernel.org>
-Cc: Matthew Wilcox (Oracle) <willy@infradead.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+ sysdump_panic_event+0x3b4/0x5b8
+ atomic_notifier_call_chain+0x54/0x90
+ panic+0x1c8/0x42c
+ die+0x29c/0x2a8
+ die_kernel_fault+0x68/0x78
+ __do_kernel_fault+0x1c4/0x1e0
+ do_bad_area+0x40/0x100
+ do_translation_fault+0x68/0x80
+ do_mem_abort+0x68/0xf8
+ el1_da+0x1c/0xc0
+ __raw_writeb+0x38/0x174
+ __memcpy_toio+0x40/0xac
+ persistent_ram_update+0x44/0x12c
+ persistent_ram_write+0x1a8/0x1b8
+ ramoops_pstore_write+0x198/0x1e8
+ pstore_console_write+0x94/0xe0
+ ...
+
+To avoid this, also check if the prz start is 0 during the initialization
+phase. If not, the next prz sanity check case will discover it (start >
+size) and zap the buffer back to a sane state.
+
+Fixes: 30696378f68a ("pstore/ram: Do not treat empty buffers as valid")
+Cc: Yunlong Xing <yunlong.xing@unisoc.com>
+Cc: stable@vger.kernel.org
+Signed-off-by: Enlin Mu <enlin.mu@unisoc.com>
+Link: https://lore.kernel.org/r/20230801060432.1307717-1-yunlong.xing@unisoc.com
+[kees: update commit log with backtrace and clarifications]
+Signed-off-by: Kees Cook <keescook@chromium.org>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- mm/vmalloc.c |   26 ++++++++++++++++++++++----
- 1 file changed, 22 insertions(+), 4 deletions(-)
+ fs/pstore/ram_core.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
---- a/mm/vmalloc.c
-+++ b/mm/vmalloc.c
-@@ -4041,14 +4041,32 @@ void pcpu_free_vm_areas(struct vm_struct
- #ifdef CONFIG_PRINTK
- bool vmalloc_dump_obj(void *object)
- {
--	struct vm_struct *vm;
- 	void *objp = (void *)PAGE_ALIGN((unsigned long)object);
-+	const void *caller;
-+	struct vm_struct *vm;
-+	struct vmap_area *va;
-+	unsigned long addr;
-+	unsigned int nr_pages;
-+
-+	if (!spin_trylock(&vmap_area_lock))
-+		return false;
-+	va = __find_vmap_area((unsigned long)objp, &vmap_area_root);
-+	if (!va) {
-+		spin_unlock(&vmap_area_lock);
-+		return false;
-+	}
+--- a/fs/pstore/ram_core.c
++++ b/fs/pstore/ram_core.c
+@@ -519,7 +519,7 @@ static int persistent_ram_post_init(stru
+ 	sig ^= PERSISTENT_RAM_SIG;
  
--	vm = find_vm_area(objp);
--	if (!vm)
-+	vm = va->vm;
-+	if (!vm) {
-+		spin_unlock(&vmap_area_lock);
- 		return false;
-+	}
-+	addr = (unsigned long)vm->addr;
-+	caller = vm->caller;
-+	nr_pages = vm->nr_pages;
-+	spin_unlock(&vmap_area_lock);
- 	pr_cont(" %u-page vmalloc region starting at %#lx allocated at %pS\n",
--		vm->nr_pages, (unsigned long)vm->addr, vm->caller);
-+		nr_pages, addr, caller);
- 	return true;
- }
- #endif
+ 	if (prz->buffer->sig == sig) {
+-		if (buffer_size(prz) == 0) {
++		if (buffer_size(prz) == 0 && buffer_start(prz) == 0) {
+ 			pr_debug("found existing empty buffer\n");
+ 			return 0;
+ 		}
 
 
