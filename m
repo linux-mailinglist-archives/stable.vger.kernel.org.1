@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AC7C479AEE3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:08 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2B10479B2D0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241452AbjIKVHI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47676 "EHLO
+        id S1344262AbjIKVNp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57798 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240357AbjIKOmV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:21 -0400
+        with ESMTP id S239092AbjIKOL3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 384D312A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7EDCBC433C7;
-        Mon, 11 Sep 2023 14:42:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5DBDECA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8A1EC433C7;
+        Mon, 11 Sep 2023 14:11:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443335;
-        bh=D8KFVGZcwSfXzYNdykWXK8QKfEC3VEpbaEQq8nyJCaE=;
+        s=korg; t=1694441485;
+        bh=62AUO7oK6rwmZnOgCBnAnqXOU8ugySOKp8uhrI80vl0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QeGAjaAICMCGy2XfKfs+veiGvyMmHSsjfpbOI3Em74vKEhkeFdZIDK1o2cxdxu6ZR
-         mS0jjeRId31kgEv7V5hgyrnwVYOalIaoYaIo8pgZoQmQmp/lTcsVbHCgvJrJ+JmxYz
-         2/hCsAUMkedHYqv+YFftc1if41u2tBSVr0YhVA9E=
+        b=x10JBIb1Av6RV+QwRMdbT8SZ6SgrXrpfL62yhnbWOkgQaPaFFwPRHcJJQcsnkDj+j
+         +cAxoYKS53D2z1F8DpMlTmbfxyzNPT3VwTZ4jtATXAbxC8gq94wfjorN8kRHTNN7q8
+         3Tfju+sPRDxOi26znA6gr6jJ0p7yaC7MyPVi+ZYQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 342/737] md/md-bitmap: hold reconfig_mutex in backlog_store()
+        patches@lists.linux.dev,
+        Daire McNamara <daire.mcnamara@microchip.com>,
+        Lorenzo Pieralisi <lpieralisi@kernel.org>,
+        Conor Dooley <conor.dooley@microchip.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 402/739] PCI: microchip: Correct the DED and SEC interrupt bit offsets
 Date:   Mon, 11 Sep 2023 15:43:21 +0200
-Message-ID: <20230911134700.081804227@linuxfoundation.org>
+Message-ID: <20230911134702.408141456@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,64 +52,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yu Kuai <yukuai3@huawei.com>
+From: Daire McNamara <daire.mcnamara@microchip.com>
 
-[ Upstream commit 44abfa6a95df425c0660d56043020b67e6d93ab8 ]
+[ Upstream commit 6d473a5a26136edf55c435a1c433e52910e03926 ]
 
-Several reasons why 'reconfig_mutex' should be held:
+The SEC and DED interrupt bits are laid out the wrong way round so the SEC
+interrupt handler attempts to mask, unmask, and clear the DED interrupt
+and vice versa. Correct the bit offsets so that each interrupt handler
+operates properly.
 
-1) rdev_for_each() is not safe to be called without the lock, because
-   rdev can be removed concurrently.
-2) mddev_destroy_serial_pool() and mddev_create_serial_pool() should not
-   be called concurrently.
-3) mddev_suspend() from mddev_destroy/create_serial_pool() should be
-   protected by the lock.
-
-Fixes: 10c92fca636e ("md-bitmap: create and destroy wb_info_pool with the change of backlog")
-Signed-off-by: Yu Kuai <yukuai3@huawei.com>
-Link: https://lore.kernel.org/r/20230706083727.608914-3-yukuai1@huaweicloud.com
-Signed-off-by: Song Liu <song@kernel.org>
+Link: https://lore.kernel.org/r/20230728131401.1615724-2-daire.mcnamara@microchip.com
+Fixes: 6f15a9c9f941 ("PCI: microchip: Add Microchip PolarFire PCIe controller driver")
+Signed-off-by: Daire McNamara <daire.mcnamara@microchip.com>
+Signed-off-by: Lorenzo Pieralisi <lpieralisi@kernel.org>
+Reviewed-by: Conor Dooley <conor.dooley@microchip.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/md-bitmap.c | 7 +++++++
- 1 file changed, 7 insertions(+)
+ drivers/pci/controller/pcie-microchip-host.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
-index 4934d8f0cf11a..ba6b4819d37e4 100644
---- a/drivers/md/md-bitmap.c
-+++ b/drivers/md/md-bitmap.c
-@@ -2504,6 +2504,10 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
- 	if (backlog > COUNTER_MAX)
- 		return -EINVAL;
- 
-+	rv = mddev_lock(mddev);
-+	if (rv)
-+		return rv;
-+
- 	/*
- 	 * Without write mostly device, it doesn't make sense to set
- 	 * backlog for max_write_behind.
-@@ -2517,6 +2521,7 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
- 	if (!has_write_mostly) {
- 		pr_warn_ratelimited("%s: can't set backlog, no write mostly device available\n",
- 				    mdname(mddev));
-+		mddev_unlock(mddev);
- 		return -EINVAL;
- 	}
- 
-@@ -2532,6 +2537,8 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
- 	}
- 	if (old_mwb != backlog)
- 		md_bitmap_update_sb(mddev->bitmap);
-+
-+	mddev_unlock(mddev);
- 	return len;
- }
- 
+diff --git a/drivers/pci/controller/pcie-microchip-host.c b/drivers/pci/controller/pcie-microchip-host.c
+index 5e710e4854646..dd5245904c874 100644
+--- a/drivers/pci/controller/pcie-microchip-host.c
++++ b/drivers/pci/controller/pcie-microchip-host.c
+@@ -167,12 +167,12 @@
+ #define EVENT_PCIE_DLUP_EXIT			2
+ #define EVENT_SEC_TX_RAM_SEC_ERR		3
+ #define EVENT_SEC_RX_RAM_SEC_ERR		4
+-#define EVENT_SEC_AXI2PCIE_RAM_SEC_ERR		5
+-#define EVENT_SEC_PCIE2AXI_RAM_SEC_ERR		6
++#define EVENT_SEC_PCIE2AXI_RAM_SEC_ERR		5
++#define EVENT_SEC_AXI2PCIE_RAM_SEC_ERR		6
+ #define EVENT_DED_TX_RAM_DED_ERR		7
+ #define EVENT_DED_RX_RAM_DED_ERR		8
+-#define EVENT_DED_AXI2PCIE_RAM_DED_ERR		9
+-#define EVENT_DED_PCIE2AXI_RAM_DED_ERR		10
++#define EVENT_DED_PCIE2AXI_RAM_DED_ERR		9
++#define EVENT_DED_AXI2PCIE_RAM_DED_ERR		10
+ #define EVENT_LOCAL_DMA_END_ENGINE_0		11
+ #define EVENT_LOCAL_DMA_END_ENGINE_1		12
+ #define EVENT_LOCAL_DMA_ERROR_ENGINE_0		13
 -- 
 2.40.1
 
