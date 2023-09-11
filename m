@@ -2,47 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D03EB79B51D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:03:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3DFCA79B4AC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S231791AbjIKWtb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:49:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48026 "EHLO
+        id S244228AbjIKVIM (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39070 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239597AbjIKOYQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:16 -0400
+        with ESMTP id S240891AbjIKO4j (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0981ACF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4D31AC433C7;
-        Mon, 11 Sep 2023 14:24:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6705CE4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69284C433C8;
+        Mon, 11 Sep 2023 14:56:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442251;
-        bh=G/G+u6IsulNRZWBS0S4rD91Na2a41MiVEYd05AHSv2Q=;
+        s=korg; t=1694444194;
+        bh=oDURCKqlTcUMyenF6chXdWdNO9hWEm0ZzKjEwOqp6Cc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a8GJugz3rxi2UcLHzypQ5NFVKGUXFosjvkXvm0UQmtwRmVttA6EeJW1kjDl6yBOnF
-         fuih9o4j1se31LakDgxh0di/zww/14J0u2S5P7PYyRzq0CUWLET3HY8qWMo3Unf6/S
-         yI1PlvhzlOMHS2JRaLa0e1hZdCwGZv8Pr7BSyRkk=
+        b=aVZEFbrJQe8sFKZXWggi0dFeIEAMeoL4R4NcVc7ECJAfYuBQePxEV9wryL5pxNnQb
+         huZCxfPJi8wXVOEY+/r5VwRUh0wO3jgKkhYdKDWS5TpjM/W6RQe/nlTqNaLyT/bTbq
+         zAQNUv36gnTcI1716er3QzSut//hrJUmkFFIpLns=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com,
-        Gabriel Krisman Bertazi <krisman@suse.de>,
-        Jens Axboe <axboe@kernel.dk>
-Subject: [PATCH 6.5 673/739] io_uring: Dont set affinity on a dying sqpoll thread
-Date:   Mon, 11 Sep 2023 15:47:52 +0200
-Message-ID: <20230911134709.902365697@linuxfoundation.org>
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 615/737] thermal/drivers/mediatek/lvts_thermal: Dont leave threshold zeroed
+Date:   Mon, 11 Sep 2023 15:47:54 +0200
+Message-ID: <20230911134707.712019297@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -51,109 +56,79 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Gabriel Krisman Bertazi <krisman@suse.de>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit bd6fc5da4c51107e1e0cec4a3a07963d1dae2c84 upstream.
+[ Upstream commit 77354eaef8218bc40d6b37e783b0b8dcca22a7d9 ]
 
-Syzbot reported a null-ptr-deref of sqd->thread inside
-io_sqpoll_wq_cpu_affinity.  It turns out the sqd->thread can go away
-from under us during io_uring_register, in case the process gets a
-fatal signal during io_uring_register.
+The thermal framework might leave the low threshold unset if there
+aren't any lower trip points. This leaves the register zeroed, which
+translates to a very high temperature for the low threshold. The
+interrupt for this threshold is then immediately triggered, and the
+state machine gets stuck, preventing any other temperature monitoring
+interrupts to ever trigger.
 
-It is not particularly hard to hit the race, and while I am not sure
-this is the exact case hit by syzbot, it solves it.  Finally, checking
-->thread is enough to close the race because we locked sqd while
-"parking" the thread, thus preventing it from going away.
+(The same happens by not setting the Cold or Hot to Normal thresholds
+when using those)
 
-I reproduced it fairly consistently with a program that does:
+Set the unused threshold to a valid low value. This value was chosen so
+that for any valid golden temperature read from the efuse, when the
+value is converted to raw and back again to milliCelsius, the result
+doesn't underflow.
 
-int main(void) {
-  ...
-  io_uring_queue_init(RING_LEN, &ring1, IORING_SETUP_SQPOLL);
-  while (1) {
-    io_uring_register_iowq_aff(ring, 1, &mask);
-  }
-}
-
-Executed in a loop with timeout to trigger SIGTERM:
-  while true; do timeout 1 /a.out ; done
-
-This will hit the following BUG() in very few attempts.
-
-BUG: kernel NULL pointer dereference, address: 00000000000007a8
-PGD 800000010e949067 P4D 800000010e949067 PUD 10e46e067 PMD 0
-Oops: 0000 [#1] PREEMPT SMP PTI
-CPU: 0 PID: 15715 Comm: dead-sqpoll Not tainted 6.5.0-rc7-next-20230825-g193296236fa0-dirty #23
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS 0.0.0 02/06/2015
-RIP: 0010:io_sqpoll_wq_cpu_affinity+0x27/0x70
-Code: 90 90 90 0f 1f 44 00 00 55 53 48 8b 9f 98 03 00 00 48 85 db 74 4f
-48 89 df 48 89 f5 e8 e2 f8 ff ff 48 8b 43 38 48 85 c0 74 22 <48> 8b b8
-a8 07 00 00 48 89 ee e8 ba b1 00 00 48 89 df 89 c5 e8 70
-RSP: 0018:ffffb04040ea7e70 EFLAGS: 00010282
-RAX: 0000000000000000 RBX: ffff93c010749e40 RCX: 0000000000000001
-RDX: 0000000000000000 RSI: ffffffffa7653331 RDI: 00000000ffffffff
-RBP: ffffb04040ea7eb8 R08: 0000000000000000 R09: c0000000ffffdfff
-R10: ffff93c01141b600 R11: ffffb04040ea7d18 R12: ffff93c00ea74840
-R13: 0000000000000011 R14: 0000000000000000 R15: ffff93c00ea74800
-FS:  00007fb7c276ab80(0000) GS:ffff93c36f200000(0000) knlGS:0000000000000000
-CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-CR2: 00000000000007a8 CR3: 0000000111634003 CR4: 0000000000370ef0
-DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-Call Trace:
- <TASK>
- ? __die_body+0x1a/0x60
- ? page_fault_oops+0x154/0x440
- ? do_user_addr_fault+0x174/0x7b0
- ? exc_page_fault+0x63/0x140
- ? asm_exc_page_fault+0x22/0x30
- ? io_sqpoll_wq_cpu_affinity+0x27/0x70
- __io_register_iowq_aff+0x2b/0x60
- __io_uring_register+0x614/0xa70
- __x64_sys_io_uring_register+0xaa/0x1a0
- do_syscall_64+0x3a/0x90
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-RIP: 0033:0x7fb7c226fec9
-Code: 2e 00 b8 ca 00 00 00 0f 05 eb a5 66 0f 1f 44 00 00 48 89 f8 48 89
-f7 48 89 d6 48 89 ca 4d 89 c2 4d 89 c8 4c 8b 4c 24 08 0f 05 <48> 3d 01
-f0 ff ff 73 01 c3 48 8b 0d 97 7f 2d 00 f7 d8 64 89 01 48
-RSP: 002b:00007ffe2c0674f8 EFLAGS: 00000246 ORIG_RAX: 00000000000001ab
-RAX: ffffffffffffffda RBX: 0000000000000000 RCX: 00007fb7c226fec9
-RDX: 00007ffe2c067530 RSI: 0000000000000011 RDI: 0000000000000003
-RBP: 00007ffe2c0675d0 R08: 00007ffe2c067550 R09: 00007ffe2c067550
-R10: 0000000000000001 R11: 0000000000000246 R12: 0000000000000000
-R13: 00007ffe2c067750 R14: 0000000000000000 R15: 0000000000000000
- </TASK>
-Modules linked in:
-CR2: 00000000000007a8
----[ end trace 0000000000000000 ]---
-
-Reported-by: syzbot+c74fea926a78b8a91042@syzkaller.appspotmail.com
-Fixes: ebdfefc09c6d ("io_uring/sqpoll: fix io-wq affinity when IORING_SETUP_SQPOLL is used")
-Signed-off-by: Gabriel Krisman Bertazi <krisman@suse.de>
-Link: https://lore.kernel.org/r/87v8cybuo6.fsf@suse.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230706153823.201943-6-nfraprado@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- io_uring/sqpoll.c |    4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
---- a/io_uring/sqpoll.c
-+++ b/io_uring/sqpoll.c
-@@ -430,7 +430,9 @@ __cold int io_sqpoll_wq_cpu_affinity(str
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index 0fa90ac6ed41f..a6bdcdfffa333 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -81,6 +81,8 @@
  
- 	if (sqd) {
- 		io_sq_thread_park(sqd);
--		ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
-+		/* Don't set affinity for a dying thread */
-+		if (sqd->thread)
-+			ret = io_wq_cpu_affinity(sqd->thread->io_uring, mask);
- 		io_sq_thread_unpark(sqd);
- 	}
+ #define LVTS_HW_SHUTDOWN_MT8195		105000
  
++#define LVTS_MINIMUM_THRESHOLD		20000
++
+ static int golden_temp = LVTS_GOLDEN_TEMP_DEFAULT;
+ static int coeff_b = LVTS_COEFF_B;
+ 
+@@ -292,7 +294,7 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
+ {
+ 	struct lvts_sensor *lvts_sensor = thermal_zone_device_priv(tz);
+ 	void __iomem *base = lvts_sensor->base;
+-	u32 raw_low = lvts_temp_to_raw(low);
++	u32 raw_low = lvts_temp_to_raw(low != -INT_MAX ? low : LVTS_MINIMUM_THRESHOLD);
+ 	u32 raw_high = lvts_temp_to_raw(high);
+ 
+ 	/*
+@@ -304,11 +306,9 @@ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
+ 	 *
+ 	 * 14-0 : Raw temperature for threshold
+ 	 */
+-	if (low != -INT_MAX) {
+-		pr_debug("%s: Setting low limit temperature interrupt: %d\n",
+-			 thermal_zone_device_type(tz), low);
+-		writel(raw_low, LVTS_OFFSETL(base));
+-	}
++	pr_debug("%s: Setting low limit temperature interrupt: %d\n",
++		 thermal_zone_device_type(tz), low);
++	writel(raw_low, LVTS_OFFSETL(base));
+ 
+ 	/*
+ 	 * High offset temperature threshold
+-- 
+2.40.1
+
 
 
