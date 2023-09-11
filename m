@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6439879B46D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4E43279AE4B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237766AbjIKVKr (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:10:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43896 "EHLO
+        id S239566AbjIKUzF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:55:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53954 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241116AbjIKPCK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:02:10 -0400
+        with ESMTP id S240082AbjIKOgK (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:10 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id ADDDE125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:02:06 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F3333C433C8;
-        Mon, 11 Sep 2023 15:02:05 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 70683F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B9F5FC433C8;
+        Mon, 11 Sep 2023 14:36:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444526;
-        bh=Lt1DKVdQWbJn/6aPuY3u5XWxJ3qu7InJMh4b+tQNUr4=;
+        s=korg; t=1694442966;
+        bh=g6J4utbLk7qFmNiHXaJHwwUZ8L+gtW7MuavgOOqZVHI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QuJol/dRDdn67F8Sk+Mu9X6nfh002ieyTdYqgmLLlYBSbXvuXky/mfop6y8t8ETH+
-         t9k77Es65Sq428jncE1x694hKG21PjC50Gk7fKKzDytM32viqOEY4Se6lQQlvnUIrp
-         O2z90PSEvgSzMmZ7QMmsm37dYFEQdtzXcINbplq8=
+        b=UjOrg6pi17k6tAVXYE0WhNertuuiJZ/YXdbXtlGB4GfkLyVaCBMKFjl79XkU3WS+W
+         x7wUk3FARJNhZh9bR0N2D/eGqvR6WonwlaYkLXy9W+X4nPF9uzLUdmMYzKo9krltOZ
+         FkQiNOdw0favMDqHf0Y2A3AZjMAEdH3yudD3IpyU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, "Maciej W. Rozycki" <macro@orcam.me.uk>,
-        Thomas Bogendoerfer <tsbogend@alpha.franken.de>,
+        patches@lists.linux.dev,
+        Aditya Kumar Singh <quic_adisi@quicinc.com>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 009/600] Revert "MIPS: unhide PATA_PLATFORM"
+Subject: [PATCH 6.4 183/737] wifi: ath11k: fix band selection for ppdu received in channel 177 of 5 GHz
 Date:   Mon, 11 Sep 2023 15:40:42 +0200
-Message-ID: <20230911134633.893259953@linuxfoundation.org>
+Message-ID: <20230911134655.677399841@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Maciej W. Rozycki <macro@orcam.me.uk>
+From: Aditya Kumar Singh <quic_adisi@quicinc.com>
 
-[ Upstream commit 1e13da548fbffb807633df85a244b70caa90bdf7 ]
+[ Upstream commit 72c8caf904aed2caed5d6e75233294b6159ddb5d ]
 
-Revert commit 75b18aac6fa3 ("MIPS: unhide PATA_PLATFORM") now that
-HAVE_PATA_PLATFORM is set selectively for all the relevant platforms.
+5 GHz band channel 177 support was added with the commit e5e94d10c856 ("wifi:
+ath11k: add channel 177 into 5 GHz channel list"). However, during processing
+for the received ppdu in ath11k_dp_rx_h_ppdu(), channel number is checked only
+till 173. This leads to driver code checking for channel and then fetching the
+band from it which is extra effort since firmware has already given the channel
+number in the metadata.
 
-Verified with `db1xxx_defconfig' and `sb1250_swarm_defconfig' by making
-sure PATA_PLATFORM is still there in `.config' with this change applied,
-and with `malta_defconfig' by making sure it's now gone.
+Fix this issue by checking the channel number till 177 since we support
+it now.
 
-Signed-off-by: Maciej W. Rozycki <macro@orcam.me.uk>
-Signed-off-by: Thomas Bogendoerfer <tsbogend@alpha.franken.de>
+Found via code review. Compile tested only.
+
+Fixes: e5e94d10c856 ("wifi: ath11k: add channel 177 into 5 GHz channel list")
+Signed-off-by: Aditya Kumar Singh <quic_adisi@quicinc.com>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230726044624.20507-1-quic_adisi@quicinc.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/mips/Kconfig | 1 -
- 1 file changed, 1 deletion(-)
+ drivers/net/wireless/ath/ath11k/dp_rx.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/mips/Kconfig b/arch/mips/Kconfig
-index cf1fbf4eaa8a0..0e62f5edaee2e 100644
---- a/arch/mips/Kconfig
-+++ b/arch/mips/Kconfig
-@@ -83,7 +83,6 @@ config MIPS
- 	select HAVE_LD_DEAD_CODE_DATA_ELIMINATION
- 	select HAVE_MOD_ARCH_SPECIFIC
- 	select HAVE_NMI
--	select HAVE_PATA_PLATFORM
- 	select HAVE_PERF_EVENTS
- 	select HAVE_PERF_REGS
- 	select HAVE_PERF_USER_STACK_DUMP
+diff --git a/drivers/net/wireless/ath/ath11k/dp_rx.c b/drivers/net/wireless/ath/ath11k/dp_rx.c
+index f67ce62b2b48d..c5ff1bc02999e 100644
+--- a/drivers/net/wireless/ath/ath11k/dp_rx.c
++++ b/drivers/net/wireless/ath/ath11k/dp_rx.c
+@@ -2408,7 +2408,7 @@ static void ath11k_dp_rx_h_ppdu(struct ath11k *ar, struct hal_rx_desc *rx_desc,
+ 		rx_status->freq = center_freq;
+ 	} else if (channel_num >= 1 && channel_num <= 14) {
+ 		rx_status->band = NL80211_BAND_2GHZ;
+-	} else if (channel_num >= 36 && channel_num <= 173) {
++	} else if (channel_num >= 36 && channel_num <= 177) {
+ 		rx_status->band = NL80211_BAND_5GHZ;
+ 	} else {
+ 		spin_lock_bh(&ar->data_lock);
 -- 
 2.40.1
 
