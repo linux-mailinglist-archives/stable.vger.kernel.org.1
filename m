@@ -2,45 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F383279BEEB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2ADD79BE0E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:58 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379625AbjIKWpK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60226 "EHLO
+        id S1352284AbjIKVsx (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51408 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239489AbjIKOWB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:01 -0400
+        with ESMTP id S242022AbjIKPUl (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:41 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 935DFDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:21:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5CAEC433C8;
-        Mon, 11 Sep 2023 14:21:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6E35FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:37 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E0081C433C8;
+        Mon, 11 Sep 2023 15:20:36 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442116;
-        bh=KoXozdz84BmOIdVfHPsALIJiG28Rcv/4jjzQrtxUj0Q=;
+        s=korg; t=1694445637;
+        bh=+lIYdYGBAO2LNIyFsHxePchzZ1+DMyhlg341sxT/wX8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=qcOZFh1IyNOWReHujKO6M4Dyf8rHurtcykFRIHyBP+JV8t8L1j85j3F6bzS5ocf7B
-         QplBq1aXBzgu1nuPJ6VXmK8grFnYQZi/UKnRcTc/1EgjrBJKf2P4BKaQ4Y+mBMDGjM
-         POqTGgIDG0NWQLpRDo+jPcn+viOX95817eoLqQdk=
+        b=jXHpl2otb8jjlCR9aadcniFyVOwtbXivxOvW3dli0fJihqQgBahw4kpqGCZdKuWM8
+         qNwM7MQY/Qvkoku2l95cwGam3kqyAziIfpaePJRvBoQUEIhlMUXrBbZD7LZFRrxRJG
+         ssIuw95LUaPwKXcv2hagAYvT1RddPC3zRM7YhTn4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
-        Rick Wertenbroek <rick.wertenbroek@gmail.com>,
-        =?UTF-8?q?Krzysztof=20Wilczy=C5=84ski?= <kwilczynski@kernel.org>,
-        Damien Le Moal <dlemoal@kernel.org>
-Subject: [PATCH 6.5 652/739] PCI: rockchip: Use 64-bit mask on MSI 64-bit PCI address
+        patches@lists.linux.dev, Leon Romanovsky <leon@kernel.org>,
+        Jason Gunthorpe <jgg@nvidia.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 418/600] scsi: RDMA/srp: Fix residual handling
 Date:   Mon, 11 Sep 2023 15:47:31 +0200
-Message-ID: <20230911134709.315818212@linuxfoundation.org>
+Message-ID: <20230911134646.005044719@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,56 +52,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rick Wertenbroek <rick.wertenbroek@gmail.com>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit cdb50033dd6dfcf02ae3d4ee56bc1a9555be6d36 upstream.
+[ Upstream commit 89e637c19b2441aabc8dbf22a8745b932fd6996e ]
 
-A 32-bit mask was used on the 64-bit PCI address used for mapping MSIs.
-This would result in the upper 32 bits being unintentionally zeroed and
-MSIs getting mapped to incorrect PCI addresses if the address had any
-of the upper bits set.
+Although the code for residual handling in the SRP initiator follows the
+SCSI documentation, that documentation has never been correct. Because
+scsi_finish_command() starts from the data buffer length and subtracts the
+residual, scsi_set_resid() must not be called if a residual overflow
+occurs. Hence remove the scsi_set_resid() calls from the SRP initiator if a
+residual overflow occurrs.
 
-Replace 32-bit mask by appropriate 64-bit mask.
-
-[kwilczynski: use GENMASK_ULL() over GENMASK() for 32-bit compatibility]
-Fixes: dc73ed0f1b8b ("PCI: rockchip: Fix window mapping and address translation for endpoint")
-Closes: https://lore.kernel.org/linux-pci/8d19e5b7-8fa0-44a4-90e2-9bb06f5eb694@moroto.mountain
-Link: https://lore.kernel.org/linux-pci/20230703085845.2052008-1-rick.wertenbroek@gmail.com
-Reported-by: Dan Carpenter <dan.carpenter@linaro.org>
-Signed-off-by: Rick Wertenbroek <rick.wertenbroek@gmail.com>
-Signed-off-by: Krzysztof Wilczyński <kwilczynski@kernel.org>
-Reviewed-by: Damien Le Moal <dlemoal@kernel.org>
-Cc: stable@vger.kernel.org
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Cc: Leon Romanovsky <leon@kernel.org>
+Cc: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 9237f04e12cc ("scsi: core: Fix scsi_get/set_resid() interface")
+Fixes: e714531a349f ("IB/srp: Fix residual handling")
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230724200843.3376570-3-bvanassche@acm.org
+Acked-by: Leon Romanovsky <leon@kernel.org>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/pci/controller/pcie-rockchip.h |    6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/infiniband/ulp/srp/ib_srp.c | 4 ----
+ 1 file changed, 4 deletions(-)
 
---- a/drivers/pci/controller/pcie-rockchip.h
-+++ b/drivers/pci/controller/pcie-rockchip.h
-@@ -158,7 +158,9 @@
- #define PCIE_RC_CONFIG_THP_CAP		(PCIE_RC_CONFIG_BASE + 0x274)
- #define   PCIE_RC_CONFIG_THP_CAP_NEXT_MASK	GENMASK(31, 20)
+diff --git a/drivers/infiniband/ulp/srp/ib_srp.c b/drivers/infiniband/ulp/srp/ib_srp.c
+index b4d6a4a5ae81e..a7580c4855fec 100644
+--- a/drivers/infiniband/ulp/srp/ib_srp.c
++++ b/drivers/infiniband/ulp/srp/ib_srp.c
+@@ -1984,12 +1984,8 @@ static void srp_process_rsp(struct srp_rdma_ch *ch, struct srp_rsp *rsp)
  
--#define PCIE_ADDR_MASK			0xffffff00
-+#define MAX_AXI_IB_ROOTPORT_REGION_NUM		3
-+#define MIN_AXI_ADDR_BITS_PASSED		8
-+#define PCIE_ADDR_MASK			GENMASK_ULL(63, MIN_AXI_ADDR_BITS_PASSED)
- #define PCIE_CORE_AXI_CONF_BASE		0xc00000
- #define PCIE_CORE_OB_REGION_ADDR0	(PCIE_CORE_AXI_CONF_BASE + 0x0)
- #define   PCIE_CORE_OB_REGION_ADDR0_NUM_BITS	0x3f
-@@ -185,8 +187,6 @@
- #define AXI_WRAPPER_TYPE1_CFG			0xb
- #define AXI_WRAPPER_NOR_MSG			0xc
+ 		if (unlikely(rsp->flags & SRP_RSP_FLAG_DIUNDER))
+ 			scsi_set_resid(scmnd, be32_to_cpu(rsp->data_in_res_cnt));
+-		else if (unlikely(rsp->flags & SRP_RSP_FLAG_DIOVER))
+-			scsi_set_resid(scmnd, -be32_to_cpu(rsp->data_in_res_cnt));
+ 		else if (unlikely(rsp->flags & SRP_RSP_FLAG_DOUNDER))
+ 			scsi_set_resid(scmnd, be32_to_cpu(rsp->data_out_res_cnt));
+-		else if (unlikely(rsp->flags & SRP_RSP_FLAG_DOOVER))
+-			scsi_set_resid(scmnd, -be32_to_cpu(rsp->data_out_res_cnt));
  
--#define MAX_AXI_IB_ROOTPORT_REGION_NUM		3
--#define MIN_AXI_ADDR_BITS_PASSED		8
- #define PCIE_RC_SEND_PME_OFF			0x11960
- #define ROCKCHIP_VENDOR_ID			0x1d87
- #define PCIE_LINK_IS_L2(x) \
+ 		srp_free_req(ch, req, scmnd,
+ 			     be32_to_cpu(rsp->req_lim_delta));
+-- 
+2.40.1
+
 
 
