@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BCAD479BEE5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD82C79BA99
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:48 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348063AbjIKV2l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:28:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38826 "EHLO
+        id S238986AbjIKVhe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44034 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242158AbjIKPXv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:51 -0400
+        with ESMTP id S239572AbjIKOYA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 897F5D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB089C433C8;
-        Mon, 11 Sep 2023 15:23:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4EC75DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:23:55 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A9AFC433C8;
+        Mon, 11 Sep 2023 14:23:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445827;
-        bh=w5IDxkMsFAsW09KtCDZZmyX6qv3rv8V6imBN2z2zJ5g=;
+        s=korg; t=1694442235;
+        bh=efUZNdNcl5ftBEpsgWVpuLeDT/cIrusn6YqUlRI2cyM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oYxs0MQnX93Qlulcs8bQa8QAgRtR+QYuoylvbxATtE5kqfJuTp2lbHQMOkAIUp4bQ
-         /v98vdZdAmu9Jg8YHeAEvkRKuBkqzUzWfZpqdRDjaFihNUNSczOGdZix7XwzDvdRHt
-         6HZmpV/zhnpxnlKhfucS4vJ7BRglPf/NnDc6Eytg=
+        b=XNXOwhxdigjRCS6J+TA0QFnc9xprNlsgCO+TKSwm4v2JgmONk1p1/TgpBdbBy1NUy
+         AMnNUxcRJAe2iu974IRMqwMXoSNDWO6c+IAIP9Prl8FJdVlNuOnQ66yVSiDpA4kviu
+         sxqgJvj3Ar6mCtEDvf8xu834UrakMnUnj2hRIP/M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 459/600] USB: gadget: f_mass_storage: Fix unused variable warning
+        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 693/739] block: dont add or resize partition on the disk with GENHD_FL_NO_PART
 Date:   Mon, 11 Sep 2023 15:48:12 +0200
-Message-ID: <20230911134647.203577061@linuxfoundation.org>
+Message-ID: <20230911134710.452943948@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +49,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Alan Stern <stern@rowland.harvard.edu>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-[ Upstream commit 55c3e571d2a0aabef4f1354604443f1c415d2e85 ]
+commit 1a721de8489fa559ff4471f73c58bb74ac5580d3 upstream.
 
-Fix a "variable set but not used" warning in f_mass_storage.c.  rc is
-used if	verbose debugging is enabled but not otherwise.
+Commit a33df75c6328 ("block: use an xarray for disk->part_tbl") remove
+disk_expand_part_tbl() in add_partition(), which means all kinds of
+devices will support extended dynamic `dev_t`.
+However, some devices with GENHD_FL_NO_PART are not expected to add or
+resize partition.
+Fix this by adding check of GENHD_FL_NO_PART before add or resize
+partition.
 
-Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
-Fixes: d5e2b67aae79 ("USB: g_mass_storage: template f_mass_storage.c file created")
-Link: https://lore.kernel.org/r/cfed16c7-aa46-494b-ba84-b0e0dc99be3a@rowland.harvard.edu
+Fixes: a33df75c6328 ("block: use an xarray for disk->part_tbl")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230831075900.1725842-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/usb/gadget/function/f_mass_storage.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/ioctl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
-diff --git a/drivers/usb/gadget/function/f_mass_storage.c b/drivers/usb/gadget/function/f_mass_storage.c
-index 3abf7f586e2af..7b9a4cf9b100c 100644
---- a/drivers/usb/gadget/function/f_mass_storage.c
-+++ b/drivers/usb/gadget/function/f_mass_storage.c
-@@ -926,7 +926,7 @@ static void invalidate_sub(struct fsg_lun *curlun)
- {
- 	struct file	*filp = curlun->filp;
- 	struct inode	*inode = file_inode(filp);
--	unsigned long	rc;
-+	unsigned long __maybe_unused	rc;
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_d
+ 	struct blkpg_partition p;
+ 	long long start, length;
  
- 	rc = invalidate_mapping_pages(inode->i_mapping, 0, -1);
- 	VLDBG(curlun, "invalidate_mapping_pages -> %ld\n", rc);
--- 
-2.40.1
-
++	if (disk->flags & GENHD_FL_NO_PART)
++		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
 
 
