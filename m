@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 08EC879B821
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 92E2879BA4D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343715AbjIKVMV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:12:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
+        id S244661AbjIKVIV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:08:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239917AbjIKOb0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:26 -0400
+        with ESMTP id S238604AbjIKOAa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D2BEF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F729C433C7;
-        Mon, 11 Sep 2023 14:31:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87918CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:25 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D289FC433C8;
+        Mon, 11 Sep 2023 14:00:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442681;
-        bh=DA+fuFp7JU7uQsb+P1ibSBoJq2ReyEaD2DShO3pKY8M=;
+        s=korg; t=1694440825;
+        bh=EqH/pao9dQSpXaDobEGtn20IDlYvyM00psYKxTANWxo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=GU9mKaNLrrAhiYKURzXM1N/meKOxBkFvzPF+8J/VtHRaMyA4XjtRrTZmtwkZt2qWr
-         ac030tHYINgYQVxt//Wl+p86igsgchlmbqC76cb+dtNvtzHCBIR9J0wHIejKRuVh1w
-         nKo8NGBvXhD7NC4obRFauNR4XXIUwuVeY51Cj+RI=
+        b=e7jwsjaXXRynBbusPlZjk77T+FFgIlgr6KuSXUrIP3z2Eq7BjWsa/3mCmkpAwJvW2
+         mYXB8M7Z2wCJWM/02W/UEQJWeRc2nCgevAARLgR1O1mpS6qPBwFHXAVj50exoYFXqV
+         LNiv03dm+QYa1ogBDnsLBBKvKZGKLprhiqWeuZlY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Davidlohr Bueso <dave@stgolabs.net>,
-        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
-        "Paul E. McKenney" <paulmck@kernel.org>,
+        patches@lists.linux.dev,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 110/737] refscale: Fix uninitalized use of wait_queue_head_t
-Date:   Mon, 11 Sep 2023 15:39:29 +0200
-Message-ID: <20230911134653.580231985@linuxfoundation.org>
+Subject: [PATCH 6.5 171/739] Bluetooth: hci_conn: Consolidate code for aborting connections
+Date:   Mon, 11 Sep 2023 15:39:30 +0200
+Message-ID: <20230911134655.968108725@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,85 +50,339 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit f5063e8948dad7f31adb007284a5d5038ae31bb8 ]
+[ Upstream commit a13f316e90fdb1fb6df6582e845aa9b3270f3581 ]
 
-Running the refscale test occasionally crashes the kernel with the
-following error:
+This consolidates code for aborting connections using
+hci_cmd_sync_queue so it is synchronized with other threads, but
+because of the fact that some commands may block the cmd_sync_queue
+while waiting specific events this attempt to cancel those requests by
+using hci_cmd_sync_cancel.
 
-[ 8569.952896] BUG: unable to handle page fault for address: ffffffffffffffe8
-[ 8569.952900] #PF: supervisor read access in kernel mode
-[ 8569.952902] #PF: error_code(0x0000) - not-present page
-[ 8569.952904] PGD c4b048067 P4D c4b049067 PUD c4b04b067 PMD 0
-[ 8569.952910] Oops: 0000 [#1] PREEMPT_RT SMP NOPTI
-[ 8569.952916] Hardware name: Dell Inc. PowerEdge R750/0WMWCR, BIOS 1.2.4 05/28/2021
-[ 8569.952917] RIP: 0010:prepare_to_wait_event+0x101/0x190
-  :
-[ 8569.952940] Call Trace:
-[ 8569.952941]  <TASK>
-[ 8569.952944]  ref_scale_reader+0x380/0x4a0 [refscale]
-[ 8569.952959]  kthread+0x10e/0x130
-[ 8569.952966]  ret_from_fork+0x1f/0x30
-[ 8569.952973]  </TASK>
-
-The likely cause is that init_waitqueue_head() is called after the call to
-the torture_create_kthread() function that creates the ref_scale_reader
-kthread.  Although this init_waitqueue_head() call will very likely
-complete before this kthread is created and starts running, it is
-possible that the calling kthread will be delayed between the calls to
-torture_create_kthread() and init_waitqueue_head().  In this case, the
-new kthread will use the waitqueue head before it is properly initialized,
-which is not good for the kernel's health and well-being.
-
-The above crash happened here:
-
-	static inline void __add_wait_queue(...)
-	{
-		:
-		if (!(wq->flags & WQ_FLAG_PRIORITY)) <=== Crash here
-
-The offset of flags from list_head entry in wait_queue_entry is
--0x18. If reader_tasks[i].wq.head.next is NULL as allocated reader_task
-structure is zero initialized, the instruction will try to access address
-0xffffffffffffffe8, which is exactly the fault address listed above.
-
-This commit therefore invokes init_waitqueue_head() before creating
-the kthread.
-
-Fixes: 653ed64b01dc ("refperf: Add a test to measure performance of read-side synchronization")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
-Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
-Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Stable-dep-of: 94d9ba9f9888 ("Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/rcu/refscale.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ include/net/bluetooth/hci_core.h |   2 +-
+ net/bluetooth/hci_conn.c         | 154 ++++++-------------------------
+ net/bluetooth/hci_sync.c         |  23 +++--
+ net/bluetooth/mgmt.c             |  15 +--
+ 4 files changed, 47 insertions(+), 147 deletions(-)
 
-diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
-index 1970ce5f22d40..71d138573856f 100644
---- a/kernel/rcu/refscale.c
-+++ b/kernel/rcu/refscale.c
-@@ -1107,12 +1107,11 @@ ref_scale_init(void)
- 	VERBOSE_SCALEOUT("Starting %d reader threads", nreaders);
+diff --git a/include/net/bluetooth/hci_core.h b/include/net/bluetooth/hci_core.h
+index 4b0fd2cf0855a..79183c9eed4d6 100644
+--- a/include/net/bluetooth/hci_core.h
++++ b/include/net/bluetooth/hci_core.h
+@@ -739,6 +739,7 @@ struct hci_conn {
+ 	unsigned long	flags;
  
- 	for (i = 0; i < nreaders; i++) {
-+		init_waitqueue_head(&reader_tasks[i].wq);
- 		firsterr = torture_create_kthread(ref_scale_reader, (void *)i,
- 						  reader_tasks[i].task);
- 		if (torture_init_error(firsterr))
- 			goto unwind;
+ 	enum conn_reasons conn_reason;
++	__u8		abort_reason;
+ 
+ 	__u32		clock;
+ 	__u16		clock_accuracy;
+@@ -758,7 +759,6 @@ struct hci_conn {
+ 	struct delayed_work auto_accept_work;
+ 	struct delayed_work idle_work;
+ 	struct delayed_work le_conn_timeout;
+-	struct work_struct  le_scan_cleanup;
+ 
+ 	struct device	dev;
+ 	struct dentry	*debugfs;
+diff --git a/net/bluetooth/hci_conn.c b/net/bluetooth/hci_conn.c
+index 96a1c6c9d9577..8b5a41229f55c 100644
+--- a/net/bluetooth/hci_conn.c
++++ b/net/bluetooth/hci_conn.c
+@@ -178,57 +178,6 @@ static void hci_conn_cleanup(struct hci_conn *conn)
+ 	hci_conn_put(conn);
+ }
+ 
+-static void le_scan_cleanup(struct work_struct *work)
+-{
+-	struct hci_conn *conn = container_of(work, struct hci_conn,
+-					     le_scan_cleanup);
+-	struct hci_dev *hdev = conn->hdev;
+-	struct hci_conn *c = NULL;
 -
--		init_waitqueue_head(&(reader_tasks[i].wq));
+-	BT_DBG("%s hcon %p", hdev->name, conn);
+-
+-	hci_dev_lock(hdev);
+-
+-	/* Check that the hci_conn is still around */
+-	rcu_read_lock();
+-	list_for_each_entry_rcu(c, &hdev->conn_hash.list, list) {
+-		if (c == conn)
+-			break;
+-	}
+-	rcu_read_unlock();
+-
+-	if (c == conn) {
+-		hci_connect_le_scan_cleanup(conn, 0x00);
+-		hci_conn_cleanup(conn);
+-	}
+-
+-	hci_dev_unlock(hdev);
+-	hci_dev_put(hdev);
+-	hci_conn_put(conn);
+-}
+-
+-static void hci_connect_le_scan_remove(struct hci_conn *conn)
+-{
+-	BT_DBG("%s hcon %p", conn->hdev->name, conn);
+-
+-	/* We can't call hci_conn_del/hci_conn_cleanup here since that
+-	 * could deadlock with another hci_conn_del() call that's holding
+-	 * hci_dev_lock and doing cancel_delayed_work_sync(&conn->disc_work).
+-	 * Instead, grab temporary extra references to the hci_dev and
+-	 * hci_conn and perform the necessary cleanup in a separate work
+-	 * callback.
+-	 */
+-
+-	hci_dev_hold(conn->hdev);
+-	hci_conn_get(conn);
+-
+-	/* Even though we hold a reference to the hdev, many other
+-	 * things might get cleaned up meanwhile, including the hdev's
+-	 * own workqueue, so we can't use that for scheduling.
+-	 */
+-	schedule_work(&conn->le_scan_cleanup);
+-}
+-
+ static void hci_acl_create_connection(struct hci_conn *conn)
+ {
+ 	struct hci_dev *hdev = conn->hdev;
+@@ -679,13 +628,6 @@ static void hci_conn_timeout(struct work_struct *work)
+ 	if (refcnt > 0)
+ 		return;
+ 
+-	/* LE connections in scanning state need special handling */
+-	if (conn->state == BT_CONNECT && conn->type == LE_LINK &&
+-	    test_bit(HCI_CONN_SCANNING, &conn->flags)) {
+-		hci_connect_le_scan_remove(conn);
+-		return;
+-	}
+-
+ 	hci_abort_conn(conn, hci_proto_disconn_ind(conn));
+ }
+ 
+@@ -1086,7 +1028,6 @@ struct hci_conn *hci_conn_add(struct hci_dev *hdev, int type, bdaddr_t *dst,
+ 	INIT_DELAYED_WORK(&conn->auto_accept_work, hci_conn_auto_accept);
+ 	INIT_DELAYED_WORK(&conn->idle_work, hci_conn_idle);
+ 	INIT_DELAYED_WORK(&conn->le_conn_timeout, le_conn_timeout);
+-	INIT_WORK(&conn->le_scan_cleanup, le_scan_cleanup);
+ 
+ 	atomic_set(&conn->refcnt, 0);
+ 
+@@ -2885,81 +2826,46 @@ u32 hci_conn_get_phy(struct hci_conn *conn)
+ 	return phys;
+ }
+ 
+-int hci_abort_conn(struct hci_conn *conn, u8 reason)
++static int abort_conn_sync(struct hci_dev *hdev, void *data)
+ {
+-	int r = 0;
++	struct hci_conn *conn;
++	u16 handle = PTR_ERR(data);
+ 
+-	if (test_and_set_bit(HCI_CONN_CANCEL, &conn->flags))
++	conn = hci_conn_hash_lookup_handle(hdev, handle);
++	if (!conn)
+ 		return 0;
+ 
+-	switch (conn->state) {
+-	case BT_CONNECTED:
+-	case BT_CONFIG:
+-		if (conn->type == AMP_LINK) {
+-			struct hci_cp_disconn_phy_link cp;
++	return hci_abort_conn_sync(hdev, conn, conn->abort_reason);
++}
+ 
+-			cp.phy_handle = HCI_PHY_HANDLE(conn->handle);
+-			cp.reason = reason;
+-			r = hci_send_cmd(conn->hdev, HCI_OP_DISCONN_PHY_LINK,
+-					 sizeof(cp), &cp);
+-		} else {
+-			struct hci_cp_disconnect dc;
++int hci_abort_conn(struct hci_conn *conn, u8 reason)
++{
++	struct hci_dev *hdev = conn->hdev;
+ 
+-			dc.handle = cpu_to_le16(conn->handle);
+-			dc.reason = reason;
+-			r = hci_send_cmd(conn->hdev, HCI_OP_DISCONNECT,
+-					 sizeof(dc), &dc);
+-		}
++	/* If abort_reason has already been set it means the connection is
++	 * already being aborted so don't attempt to overwrite it.
++	 */
++	if (conn->abort_reason)
++		return 0;
+ 
+-		conn->state = BT_DISCONN;
++	bt_dev_dbg(hdev, "handle 0x%2.2x reason 0x%2.2x", conn->handle, reason);
+ 
+-		break;
+-	case BT_CONNECT:
+-		if (conn->type == LE_LINK) {
+-			if (test_bit(HCI_CONN_SCANNING, &conn->flags))
+-				break;
+-			r = hci_send_cmd(conn->hdev,
+-					 HCI_OP_LE_CREATE_CONN_CANCEL, 0, NULL);
+-		} else if (conn->type == ACL_LINK) {
+-			if (conn->hdev->hci_ver < BLUETOOTH_VER_1_2)
+-				break;
+-			r = hci_send_cmd(conn->hdev,
+-					 HCI_OP_CREATE_CONN_CANCEL,
+-					 6, &conn->dst);
+-		}
+-		break;
+-	case BT_CONNECT2:
+-		if (conn->type == ACL_LINK) {
+-			struct hci_cp_reject_conn_req rej;
+-
+-			bacpy(&rej.bdaddr, &conn->dst);
+-			rej.reason = reason;
+-
+-			r = hci_send_cmd(conn->hdev,
+-					 HCI_OP_REJECT_CONN_REQ,
+-					 sizeof(rej), &rej);
+-		} else if (conn->type == SCO_LINK || conn->type == ESCO_LINK) {
+-			struct hci_cp_reject_sync_conn_req rej;
+-
+-			bacpy(&rej.bdaddr, &conn->dst);
+-
+-			/* SCO rejection has its own limited set of
+-			 * allowed error values (0x0D-0x0F) which isn't
+-			 * compatible with most values passed to this
+-			 * function. To be safe hard-code one of the
+-			 * values that's suitable for SCO.
+-			 */
+-			rej.reason = HCI_ERROR_REJ_LIMITED_RESOURCES;
++	conn->abort_reason = reason;
+ 
+-			r = hci_send_cmd(conn->hdev,
+-					 HCI_OP_REJECT_SYNC_CONN_REQ,
+-					 sizeof(rej), &rej);
++	/* If the connection is pending check the command opcode since that
++	 * might be blocking on hci_cmd_sync_work while waiting its respective
++	 * event so we need to hci_cmd_sync_cancel to cancel it.
++	 */
++	if (conn->state == BT_CONNECT && hdev->req_status == HCI_REQ_PEND) {
++		switch (hci_skb_event(hdev->sent_cmd)) {
++		case HCI_EV_LE_CONN_COMPLETE:
++		case HCI_EV_LE_ENHANCED_CONN_COMPLETE:
++		case HCI_EVT_LE_CIS_ESTABLISHED:
++			hci_cmd_sync_cancel(hdev, -ECANCELED);
++			break;
+ 		}
+-		break;
+-	default:
+-		conn->state = BT_CLOSED;
+-		break;
  	}
  
- 	// Main Task
+-	return r;
++	return hci_cmd_sync_queue(hdev, abort_conn_sync, ERR_PTR(conn->handle),
++				  NULL);
+ }
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index b617d1dd247a5..501550cb16b7e 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5269,22 +5269,27 @@ static int hci_disconnect_sync(struct hci_dev *hdev, struct hci_conn *conn,
+ }
+ 
+ static int hci_le_connect_cancel_sync(struct hci_dev *hdev,
+-				      struct hci_conn *conn)
++				      struct hci_conn *conn, u8 reason)
+ {
++	/* Return reason if scanning since the connection shall probably be
++	 * cleanup directly.
++	 */
+ 	if (test_bit(HCI_CONN_SCANNING, &conn->flags))
+-		return 0;
++		return reason;
+ 
+-	if (test_and_set_bit(HCI_CONN_CANCEL, &conn->flags))
++	if (conn->role == HCI_ROLE_SLAVE ||
++	    test_and_set_bit(HCI_CONN_CANCEL, &conn->flags))
+ 		return 0;
+ 
+ 	return __hci_cmd_sync_status(hdev, HCI_OP_LE_CREATE_CONN_CANCEL,
+ 				     0, NULL, HCI_CMD_TIMEOUT);
+ }
+ 
+-static int hci_connect_cancel_sync(struct hci_dev *hdev, struct hci_conn *conn)
++static int hci_connect_cancel_sync(struct hci_dev *hdev, struct hci_conn *conn,
++				   u8 reason)
+ {
+ 	if (conn->type == LE_LINK)
+-		return hci_le_connect_cancel_sync(hdev, conn);
++		return hci_le_connect_cancel_sync(hdev, conn, reason);
+ 
+ 	if (hdev->hci_ver < BLUETOOTH_VER_1_2)
+ 		return 0;
+@@ -5337,9 +5342,11 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
+ 	case BT_CONFIG:
+ 		return hci_disconnect_sync(hdev, conn, reason);
+ 	case BT_CONNECT:
+-		err = hci_connect_cancel_sync(hdev, conn);
++		err = hci_connect_cancel_sync(hdev, conn, reason);
+ 		/* Cleanup hci_conn object if it cannot be cancelled as it
+-		 * likelly means the controller and host stack are out of sync.
++		 * likelly means the controller and host stack are out of sync
++		 * or in case of LE it was still scanning so it can be cleanup
++		 * safely.
+ 		 */
+ 		if (err) {
+ 			hci_dev_lock(hdev);
+@@ -6253,7 +6260,7 @@ int hci_le_create_conn_sync(struct hci_dev *hdev, struct hci_conn *conn)
+ 
+ done:
+ 	if (err == -ETIMEDOUT)
+-		hci_le_connect_cancel_sync(hdev, conn);
++		hci_le_connect_cancel_sync(hdev, conn, 0x00);
+ 
+ 	/* Re-enable advertising after the connection attempt is finished. */
+ 	hci_resume_advertising_sync(hdev);
+diff --git a/net/bluetooth/mgmt.c b/net/bluetooth/mgmt.c
+index d4498037fadc6..6240b20f020a8 100644
+--- a/net/bluetooth/mgmt.c
++++ b/net/bluetooth/mgmt.c
+@@ -3580,18 +3580,6 @@ static int pair_device(struct sock *sk, struct hci_dev *hdev, void *data,
+ 	return err;
+ }
+ 
+-static int abort_conn_sync(struct hci_dev *hdev, void *data)
+-{
+-	struct hci_conn *conn;
+-	u16 handle = PTR_ERR(data);
+-
+-	conn = hci_conn_hash_lookup_handle(hdev, handle);
+-	if (!conn)
+-		return 0;
+-
+-	return hci_abort_conn_sync(hdev, conn, HCI_ERROR_REMOTE_USER_TERM);
+-}
+-
+ static int cancel_pair_device(struct sock *sk, struct hci_dev *hdev, void *data,
+ 			      u16 len)
+ {
+@@ -3642,8 +3630,7 @@ static int cancel_pair_device(struct sock *sk, struct hci_dev *hdev, void *data,
+ 					      le_addr_type(addr->type));
+ 
+ 	if (conn->conn_reason == CONN_REASON_PAIR_DEVICE)
+-		hci_cmd_sync_queue(hdev, abort_conn_sync, ERR_PTR(conn->handle),
+-				   NULL);
++		hci_abort_conn(conn, HCI_ERROR_REMOTE_USER_TERM);
+ 
+ unlock:
+ 	hci_dev_unlock(hdev);
 -- 
 2.40.1
 
