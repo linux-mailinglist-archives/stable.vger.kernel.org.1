@@ -2,45 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9465279AD39
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1E96A79AF7B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:32 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376580AbjIKWUA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43224 "EHLO
+        id S231653AbjIKWtH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:49:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45128 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240367AbjIKOml (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:41 -0400
+        with ESMTP id S241454AbjIKPJM (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:12 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 24AAD12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:42:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6891FC433C8;
-        Mon, 11 Sep 2023 14:42:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AD45AFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01C40C433C8;
+        Mon, 11 Sep 2023 15:09:07 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443355;
-        bh=wvZT/8yGBABBRySrzf95aou3nQ5JIscheGcgc1jCWpY=;
+        s=korg; t=1694444948;
+        bh=BVTObnbdlrZ+R2Gx+7m/EyPMjFEP4pXYBvA5VqKJndY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=dKa8rIaLbvtxdT8x80KlorpQ/5+dmG0cxmUcEd3f6QaU4lw3EPnjQtsi6RqJy8fny
-         tGQevrIO8ArsBnkA4kH4F9C3Qu3+Jnk+A5Muhud5FwLdJwNT9UX3LAe8QjFfmkBgkI
-         +TG2wgmCyY9Bsewu9+pfIOzzZ85m5japz0Gi4u9s=
+        b=HeSqAXJ4gXLaNulAkPG8Aie0HV41hAWTxLNsKVgspYaKwbLT0XP2ezwlEys3CDoMM
+         M0WW6bRV5qlu804ikektoWae6qCcBQPghM75sCV2/MnDQDxOTkGLMMKqjp5+jZPgQ8
+         BK5fxt5F5spewwxiHni9xBHFxcQqgkP8s6pN0o3o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        =?UTF-8?q?Rafa=C5=82=20Mi=C5=82ecki?= <rafal@milecki.pl>,
-        Florian Fainelli <florian.fainelli@broadcom.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 348/737] ARM: dts: BCM53573: Fix Tenda AC9 switch CPU port
+        patches@lists.linux.dev, Yipeng Zou <zouyipeng@huawei.com>,
+        Daniel Borkmann <daniel@iogearbox.net>,
+        Li Zetao <lizetao1@huawei.com>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 174/600] selftests/bpf: Fix repeat option when kfunc_call verification fails
 Date:   Mon, 11 Sep 2023 15:43:27 +0200
-Message-ID: <20230911134700.245078828@linuxfoundation.org>
+Message-ID: <20230911134638.740910141@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -52,40 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Rafał Miłecki <rafal@milecki.pl>
+From: Yipeng Zou <zouyipeng@huawei.com>
 
-[ Upstream commit 7141209db9c335ab261a17933809a3e660ebdc12 ]
+[ Upstream commit 811915db674f8daf19bb4fcb67da9017235ce26d ]
 
-Primary Ethernet interface is connected to the port 8 (not 5).
+There is no way where topts.repeat can be set to 1 when tc_test fails.
+Fix the typo where the break statement slipped by one line.
 
-Fixes: 64612828628c ("ARM: dts: BCM53573: Add Tenda AC9 switch ports")
-Signed-off-by: Rafał Miłecki <rafal@milecki.pl>
-Link: https://lore.kernel.org/r/20230723195416.7831-1-zajec5@gmail.com
-Signed-off-by: Florian Fainelli <florian.fainelli@broadcom.com>
+Fixes: fb66223a244f ("selftests/bpf: add test for accessing ctx from syscall program type")
+Signed-off-by: Yipeng Zou <zouyipeng@huawei.com>
+Signed-off-by: Daniel Borkmann <daniel@iogearbox.net>
+Reviewed-by: Li Zetao <lizetao1@huawei.com>
+Link: https://lore.kernel.org/bpf/20230814031434.3077944-1-zouyipeng@huawei.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/bcm47189-tenda-ac9.dts | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ tools/testing/selftests/bpf/prog_tests/kfunc_call.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm/boot/dts/bcm47189-tenda-ac9.dts b/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
-index dab2e5f63a727..06b1a582809ca 100644
---- a/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
-+++ b/arch/arm/boot/dts/bcm47189-tenda-ac9.dts
-@@ -135,8 +135,8 @@ port@4 {
- 			label = "lan4";
- 		};
+diff --git a/tools/testing/selftests/bpf/prog_tests/kfunc_call.c b/tools/testing/selftests/bpf/prog_tests/kfunc_call.c
+index 5af1ee8f0e6ee..36071f3f15ba1 100644
+--- a/tools/testing/selftests/bpf/prog_tests/kfunc_call.c
++++ b/tools/testing/selftests/bpf/prog_tests/kfunc_call.c
+@@ -171,8 +171,8 @@ static void verify_fail(struct kfunc_test_params *param)
+ 	case tc_test:
+ 		topts.data_in = &pkt_v4;
+ 		topts.data_size_in = sizeof(pkt_v4);
+-		break;
+ 		topts.repeat = 1;
++		break;
+ 	}
  
--		port@5 {
--			reg = <5>;
-+		port@8 {
-+			reg = <8>;
- 			label = "cpu";
- 			ethernet = <&gmac0>;
- 		};
+ 	skel = kfunc_call_fail__open_opts(&opts);
 -- 
 2.40.1
 
