@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D11B79B193
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:58 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A651979B2D1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:17 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1343560AbjIKVLs (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:11:48 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56036 "EHLO
+        id S1376733AbjIKWUW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38488 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239125AbjIKOM1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:27 -0400
+        with ESMTP id S241727AbjIKPND (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7C1B0CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BC411C433C8;
-        Mon, 11 Sep 2023 14:12:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 66BAAFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83235C433C7;
+        Mon, 11 Sep 2023 15:12:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441542;
-        bh=BaT+VqXaI7dGK4RjxgW65NZws4d3Y6cQiQXER9AF+0s=;
+        s=korg; t=1694445179;
+        bh=p7orKD5sbLctgquvti1rrs357czOAxNo2SG1XYjyJN8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BrCu+NtR4MYLce3FElaLiYJzen+XGe+Pmvv1SQi5kbaYPhG6jSRIUWvRZ7byiOPTj
-         ZyOaILe0SFoIsY3qejTCj6fdUixu7C0tN1Hbjgj0ZtK+FL4eI7vetUov/6a3xfucgZ
-         vg5S09Cav4pno2boumYr5UupgZ4tC2jhJ5Z3s4no=
+        b=bGcIK5EJke4PLG30cWHlcuMvt9bKV7X58bfiv8eSfUK3tb/ZGkPsq+GG7AG2Qju7E
+         1cGX7CEWhfQCytfn+HL9dEStrx1K2Jm7t/pngfKfkymop4PwqzegCqn0Ky9JVvDHXz
+         2lz9t/4T6ncDSwZcPsOiXTcg2wwYuhLtshd5tKyc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
-        Tejun Heo <tj@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 449/739] cgroup/cpuset: Inherit parents load balance state in v2
+        patches@lists.linux.dev, Baokun Li <libaokun1@huawei.com>,
+        Jan Kara <jack@suse.cz>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 215/600] quota: rename dquot_active() to inode_quota_active()
 Date:   Mon, 11 Sep 2023 15:44:08 +0200
-Message-ID: <20230911134703.704009497@linuxfoundation.org>
+Message-ID: <20230911134639.963853458@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,90 +49,123 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Waiman Long <longman@redhat.com>
+From: Baokun Li <libaokun1@huawei.com>
 
-[ Upstream commit c8c926200c55454101f072a4b16c9ff5b8c9e56f ]
+[ Upstream commit 4b9bdfa16535de8f49bf954aeed0f525ee2fc322 ]
 
-Since commit f28e22441f35 ("cgroup/cpuset: Add a new isolated
-cpus.partition type"), the CS_SCHED_LOAD_BALANCE bit of a v2 cpuset
-can be on or off. The child cpusets of a partition root must have the
-same setting as its parent or it may screw up the rebuilding of sched
-domains. Fix this problem by making sure the a child v2 cpuset will
-follows its parent cpuset load balance state unless the child cpuset
-is a new partition root itself.
+Now we have a helper function dquot_dirty() to determine if dquot has
+DQ_MOD_B bit. dquot_active() can easily be misunderstood as a helper
+function to determine if dquot has DQ_ACTIVE_B bit. So we avoid this by
+renaming it to inode_quota_active() and later on we will add the helper
+function dquot_active() to determine if dquot has DQ_ACTIVE_B bit.
 
-Fixes: f28e22441f35 ("cgroup/cpuset: Add a new isolated cpus.partition type")
-Signed-off-by: Waiman Long <longman@redhat.com>
-Signed-off-by: Tejun Heo <tj@kernel.org>
+Signed-off-by: Baokun Li <libaokun1@huawei.com>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Message-Id: <20230630110822.3881712-3-libaokun1@huawei.com>
+Stable-dep-of: dabc8b207566 ("quota: fix dqput() to follow the guarantees dquot_srcu should provide")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/cgroup/cpuset.c | 33 ++++++++++++++++++++++++++++++---
- 1 file changed, 30 insertions(+), 3 deletions(-)
+ fs/quota/dquot.c | 20 ++++++++++----------
+ 1 file changed, 10 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/cgroup/cpuset.c b/kernel/cgroup/cpuset.c
-index 58e6f18f01c1b..170e342b07e3d 100644
---- a/kernel/cgroup/cpuset.c
-+++ b/kernel/cgroup/cpuset.c
-@@ -1588,11 +1588,16 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
- 		}
+diff --git a/fs/quota/dquot.c b/fs/quota/dquot.c
+index 5541960ad0252..f9f0610b504df 100644
+--- a/fs/quota/dquot.c
++++ b/fs/quota/dquot.c
+@@ -1418,7 +1418,7 @@ static int info_bdq_free(struct dquot *dquot, qsize_t space)
+ 	return QUOTA_NL_NOWARN;
+ }
  
- 		/*
--		 * Skip the whole subtree if the cpumask remains the same
--		 * and has no partition root state and force flag not set.
-+		 * Skip the whole subtree if
-+		 * 1) the cpumask remains the same,
-+		 * 2) has no partition root state,
-+		 * 3) force flag not set, and
-+		 * 4) for v2 load balance state same as its parent.
- 		 */
- 		if (!cp->partition_root_state && !force &&
--		    cpumask_equal(tmp->new_cpus, cp->effective_cpus)) {
-+		    cpumask_equal(tmp->new_cpus, cp->effective_cpus) &&
-+		    (!cgroup_subsys_on_dfl(cpuset_cgrp_subsys) ||
-+		    (is_sched_load_balance(parent) == is_sched_load_balance(cp)))) {
- 			pos_css = css_rightmost_descendant(pos_css);
- 			continue;
- 		}
-@@ -1675,6 +1680,20 @@ static void update_cpumasks_hier(struct cpuset *cs, struct tmpmasks *tmp,
+-static int dquot_active(const struct inode *inode)
++static int inode_quota_active(const struct inode *inode)
+ {
+ 	struct super_block *sb = inode->i_sb;
  
- 		update_tasks_cpumask(cp, tmp->new_cpus);
+@@ -1441,7 +1441,7 @@ static int __dquot_initialize(struct inode *inode, int type)
+ 	qsize_t rsv;
+ 	int ret = 0;
  
-+		/*
-+		 * On default hierarchy, inherit the CS_SCHED_LOAD_BALANCE
-+		 * from parent if current cpuset isn't a valid partition root
-+		 * and their load balance states differ.
-+		 */
-+		if (cgroup_subsys_on_dfl(cpuset_cgrp_subsys) &&
-+		    !is_partition_valid(cp) &&
-+		    (is_sched_load_balance(parent) != is_sched_load_balance(cp))) {
-+			if (is_sched_load_balance(parent))
-+				set_bit(CS_SCHED_LOAD_BALANCE, &cp->flags);
-+			else
-+				clear_bit(CS_SCHED_LOAD_BALANCE, &cp->flags);
-+		}
-+
- 		/*
- 		 * On legacy hierarchy, if the effective cpumask of any non-
- 		 * empty cpuset is changed, we need to rebuild sched domains.
-@@ -3222,6 +3241,14 @@ static int cpuset_css_online(struct cgroup_subsys_state *css)
- 		cs->use_parent_ecpus = true;
- 		parent->child_ecpus_count++;
- 	}
-+
-+	/*
-+	 * For v2, clear CS_SCHED_LOAD_BALANCE if parent is isolated
-+	 */
-+	if (cgroup_subsys_on_dfl(cpuset_cgrp_subsys) &&
-+	    !is_sched_load_balance(parent))
-+		clear_bit(CS_SCHED_LOAD_BALANCE, &cs->flags);
-+
- 	spin_unlock_irq(&callback_lock);
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return 0;
  
- 	if (!test_bit(CGRP_CPUSET_CLONE_CHILDREN, &css->cgroup->flags))
+ 	dquots = i_dquot(inode);
+@@ -1549,7 +1549,7 @@ bool dquot_initialize_needed(struct inode *inode)
+ 	struct dquot **dquots;
+ 	int i;
+ 
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return false;
+ 
+ 	dquots = i_dquot(inode);
+@@ -1660,7 +1660,7 @@ int __dquot_alloc_space(struct inode *inode, qsize_t number, int flags)
+ 	int reserve = flags & DQUOT_SPACE_RESERVE;
+ 	struct dquot **dquots;
+ 
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		if (reserve) {
+ 			spin_lock(&inode->i_lock);
+ 			*inode_reserved_space(inode) += number;
+@@ -1730,7 +1730,7 @@ int dquot_alloc_inode(struct inode *inode)
+ 	struct dquot_warn warn[MAXQUOTAS];
+ 	struct dquot * const *dquots;
+ 
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return 0;
+ 	for (cnt = 0; cnt < MAXQUOTAS; cnt++)
+ 		warn[cnt].w_type = QUOTA_NL_NOWARN;
+@@ -1773,7 +1773,7 @@ int dquot_claim_space_nodirty(struct inode *inode, qsize_t number)
+ 	struct dquot **dquots;
+ 	int cnt, index;
+ 
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		spin_lock(&inode->i_lock);
+ 		*inode_reserved_space(inode) -= number;
+ 		__inode_add_bytes(inode, number);
+@@ -1815,7 +1815,7 @@ void dquot_reclaim_space_nodirty(struct inode *inode, qsize_t number)
+ 	struct dquot **dquots;
+ 	int cnt, index;
+ 
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		spin_lock(&inode->i_lock);
+ 		*inode_reserved_space(inode) += number;
+ 		__inode_sub_bytes(inode, number);
+@@ -1859,7 +1859,7 @@ void __dquot_free_space(struct inode *inode, qsize_t number, int flags)
+ 	struct dquot **dquots;
+ 	int reserve = flags & DQUOT_SPACE_RESERVE, index;
+ 
+-	if (!dquot_active(inode)) {
++	if (!inode_quota_active(inode)) {
+ 		if (reserve) {
+ 			spin_lock(&inode->i_lock);
+ 			*inode_reserved_space(inode) -= number;
+@@ -1914,7 +1914,7 @@ void dquot_free_inode(struct inode *inode)
+ 	struct dquot * const *dquots;
+ 	int index;
+ 
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return;
+ 
+ 	dquots = i_dquot(inode);
+@@ -2086,7 +2086,7 @@ int dquot_transfer(struct user_namespace *mnt_userns, struct inode *inode,
+ 	struct super_block *sb = inode->i_sb;
+ 	int ret;
+ 
+-	if (!dquot_active(inode))
++	if (!inode_quota_active(inode))
+ 		return 0;
+ 
+ 	if (i_uid_needs_update(mnt_userns, iattr, inode)) {
 -- 
 2.40.1
 
