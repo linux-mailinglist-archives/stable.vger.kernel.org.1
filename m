@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E6E6E79AFF5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E7C9779B2C8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S234933AbjIKUuu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:50:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47562 "EHLO
+        id S239789AbjIKVEZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:04:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52162 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239150AbjIKONG (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:06 -0400
+        with ESMTP id S241517AbjIKPK2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D28B5CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 00A5BC433C9;
-        Mon, 11 Sep 2023 14:13:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 454BAFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8D3A3C433C7;
+        Mon, 11 Sep 2023 15:10:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441581;
-        bh=dk0ohXQ38NLjX++5LfUY0r7tbeRWNmczMJ+gNXDofwI=;
+        s=korg; t=1694445023;
+        bh=6weEiBFK299dyJxFHnRPUpyzJSqD9zQnIuBYark7yKA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ML59z01o+IURhZEen+8x6sjXM2feb9as972uN154q3wIecPkdsdaYc7WG9u1FFbru
-         056NWx6hQ23CG8HP9izElIf2/R2EkquNbcPdhoAh12fZDWXNc1ZHVo9PqTUZ3UUd/Q
-         CmwS87ZWEcZgOEiL8y7dKXVu2deNgDHtG+T9BuPA=
+        b=MeWBwEpxiVcOnugtoKCn6X+EEEakKL/b4Mheg6UQWU8r4h16XtzbddwJ1HmN2GugO
+         WSoKOhaFkFLNdz4/hlCZfq0EDLPSs7ypo7OzgHXZ2jjnekkT/FRzo6zLs6sC7GFUQ8
+         QFMMeILiqleZFoEkoacxZzCT6EaNQGA2wGHuMIXU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 432/739] NFSv4.2: Rework scratch handling for READ_PLUS (again)
-Date:   Mon, 11 Sep 2023 15:43:51 +0200
-Message-ID: <20230911134703.241410639@linuxfoundation.org>
+        patches@lists.linux.dev, Siddaraju DH <siddaraju.dh@intel.com>,
+        Jacob Keller <jacob.e.keller@intel.com>,
+        Tony Nguyen <anthony.l.nguyen@intel.com>,
+        Simon Horman <horms@kernel.org>,
+        "David S. Miller" <davem@davemloft.net>,
+        Sasha Levin <sashal@kernel.org>,
+        Sunitha Mekala <sunithax.d.mekala@intel.com>
+Subject: [PATCH 6.1 199/600] ice: avoid executing commands on other ports when driving sync
+Date:   Mon, 11 Sep 2023 15:43:52 +0200
+Message-ID: <20230911134639.490384360@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,135 +54,205 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Schumaker <Anna.Schumaker@Netapp.com>
+From: Jacob Keller <jacob.e.keller@intel.com>
 
-[ Upstream commit 303a78052091c81e9003915c521fdca1c7e117af ]
+[ Upstream commit 0aacec49c29e7c5b1487e859b0c0a42388c34092 ]
 
-I found that the read code might send multiple requests using the same
-nfs_pgio_header, but nfs4_proc_read_setup() is only called once. This is
-how we ended up occasionally double-freeing the scratch buffer, but also
-means we set a NULL pointer but non-zero length to the xdr scratch
-buffer. This results in an oops the first time decoding needs to copy
-something to scratch, which frequently happens when decoding READ_PLUS
-hole segments.
+The ice hardware has a synchronization mechanism used to drive the
+simultaneous application of commands on both PHY ports and the source timer
+in the MAC.
 
-I fix this by moving scratch handling into the pageio read code. I
-provide a function to allocate scratch space for decoding read replies,
-and free the scratch buffer when the nfs_pgio_header is freed.
+When issuing a sync via ice_ptp_exec_tmr_cmd(), the hardware will
+simultaneously apply the commands programmed for the main timer and each
+PHY port. Neither the main timer command register, nor the PHY port command
+registers auto clear on command execution.
 
-Fixes: fbd2a05f29a9 (NFSv4.2: Rework scratch handling for READ_PLUS)
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+During the execution of a timer command intended for a single port on E822
+devices, such as those used to configure a PHY during link up, the driver
+is not correctly clearing the previous commands.
+
+This results in unintentionally executing the last programmed command on
+the main timer and other PHY ports whenever performing reconfiguration on
+E822 ports after link up. This results in unintended side effects on other
+timers, depending on what command was previously programmed.
+
+To fix this, the driver must ensure that the main timer and all other PHY
+ports are properly initialized to perform no action.
+
+The enumeration for timer commands does not include an enumeration value
+for doing nothing. Introduce ICE_PTP_NOP for this purpose. When writing a
+timer command to hardware, leave the command bits set to zero which
+indicates that no operation should be performed on that port.
+
+Modify ice_ptp_one_port_cmd() to always initialize all ports. For all ports
+other than the one being configured, write their timer command register to
+ICE_PTP_NOP. This ensures that no side effect happens on the timer command.
+
+To fix this for the PHY ports, modify ice_ptp_one_port_cmd() to always
+initialize all other ports to ICE_PTP_NOP. This ensures that no side
+effects happen on the other ports.
+
+Call ice_ptp_src_cmd() with a command value if ICE_PTP_NOP in
+ice_sync_phy_timer_e822() and ice_start_phy_timer_e822().
+
+With both of these changes, the driver should no longer execute a stale
+command on the main timer or another PHY port when reconfiguring one of the
+PHY ports after link up.
+
+Fixes: 3a7496234d17 ("ice: implement basic E822 PTP support")
+Signed-off-by: Siddaraju DH <siddaraju.dh@intel.com>
+Signed-off-by: Jacob Keller <jacob.e.keller@intel.com>
+Tested-by: Sunitha Mekala <sunithax.d.mekala@intel.com> (A Contingent worker at Intel)
+Signed-off-by: Tony Nguyen <anthony.l.nguyen@intel.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/internal.h |  1 +
- fs/nfs/nfs42.h    |  1 +
- fs/nfs/nfs42xdr.c |  2 +-
- fs/nfs/nfs4proc.c | 13 +------------
- fs/nfs/read.c     | 10 ++++++++++
- 5 files changed, 14 insertions(+), 13 deletions(-)
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.c | 55 +++++++++++++++++++--
+ drivers/net/ethernet/intel/ice/ice_ptp_hw.h |  3 +-
+ 2 files changed, 52 insertions(+), 6 deletions(-)
 
-diff --git a/fs/nfs/internal.h b/fs/nfs/internal.h
-index 913c09806c7f5..41abea340ad84 100644
---- a/fs/nfs/internal.h
-+++ b/fs/nfs/internal.h
-@@ -493,6 +493,7 @@ extern const struct nfs_pgio_completion_ops nfs_async_read_completion_ops;
- extern void nfs_pageio_init_read(struct nfs_pageio_descriptor *pgio,
- 			struct inode *inode, bool force_mds,
- 			const struct nfs_pgio_completion_ops *compl_ops);
-+extern bool nfs_read_alloc_scratch(struct nfs_pgio_header *hdr, size_t size);
- extern int nfs_read_add_folio(struct nfs_pageio_descriptor *pgio,
- 			       struct nfs_open_context *ctx,
- 			       struct folio *folio);
-diff --git a/fs/nfs/nfs42.h b/fs/nfs/nfs42.h
-index 0fe5aacbcfdf1..b59876b01a1e3 100644
---- a/fs/nfs/nfs42.h
-+++ b/fs/nfs/nfs42.h
-@@ -13,6 +13,7 @@
-  * more? Need to consider not to pre-alloc too much for a compound.
-  */
- #define PNFS_LAYOUTSTATS_MAXDEV (4)
-+#define READ_PLUS_SCRATCH_SIZE (16)
- 
- /* nfs4.2proc.c */
- #ifdef CONFIG_NFS_V4_2
-diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
-index 78193f04d8928..9e3ae53e22058 100644
---- a/fs/nfs/nfs42xdr.c
-+++ b/fs/nfs/nfs42xdr.c
-@@ -1433,7 +1433,7 @@ static int nfs4_xdr_dec_read_plus(struct rpc_rqst *rqstp,
- 	struct compound_hdr hdr;
- 	int status;
- 
--	xdr_set_scratch_buffer(xdr, res->scratch, sizeof(res->scratch));
-+	xdr_set_scratch_buffer(xdr, res->scratch, READ_PLUS_SCRATCH_SIZE);
- 
- 	status = decode_compound_hdr(xdr, &hdr);
- 	if (status)
-diff --git a/fs/nfs/nfs4proc.c b/fs/nfs/nfs4proc.c
-index 832fa226b8f26..3c24c3c99e8ac 100644
---- a/fs/nfs/nfs4proc.c
-+++ b/fs/nfs/nfs4proc.c
-@@ -5438,18 +5438,8 @@ static bool nfs4_read_plus_not_supported(struct rpc_task *task,
- 	return false;
- }
- 
--static inline void nfs4_read_plus_scratch_free(struct nfs_pgio_header *hdr)
--{
--	if (hdr->res.scratch) {
--		kfree(hdr->res.scratch);
--		hdr->res.scratch = NULL;
--	}
--}
--
- static int nfs4_read_done(struct rpc_task *task, struct nfs_pgio_header *hdr)
- {
--	nfs4_read_plus_scratch_free(hdr);
--
- 	if (!nfs4_sequence_done(task, &hdr->res.seq_res))
- 		return -EAGAIN;
- 	if (nfs4_read_stateid_changed(task, &hdr->args))
-@@ -5469,8 +5459,7 @@ static bool nfs42_read_plus_support(struct nfs_pgio_header *hdr,
- 	/* Note: We don't use READ_PLUS with pNFS yet */
- 	if (nfs_server_capable(hdr->inode, NFS_CAP_READ_PLUS) && !hdr->ds_clp) {
- 		msg->rpc_proc = &nfs4_procedures[NFSPROC4_CLNT_READ_PLUS];
--		hdr->res.scratch = kmalloc(32, GFP_KERNEL);
--		return hdr->res.scratch != NULL;
-+		return nfs_read_alloc_scratch(hdr, READ_PLUS_SCRATCH_SIZE);
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+index 772b1f566d6ed..813acd6a4b469 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.c
+@@ -131,6 +131,8 @@ static void ice_ptp_src_cmd(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
+ 	case READ_TIME:
+ 		cmd_val |= GLTSYN_CMD_READ_TIME;
+ 		break;
++	case ICE_PTP_NOP:
++		break;
  	}
- 	return false;
- }
-diff --git a/fs/nfs/read.c b/fs/nfs/read.c
-index f71eeee67e201..7dc21a48e3e7b 100644
---- a/fs/nfs/read.c
-+++ b/fs/nfs/read.c
-@@ -47,6 +47,8 @@ static struct nfs_pgio_header *nfs_readhdr_alloc(void)
  
- static void nfs_readhdr_free(struct nfs_pgio_header *rhdr)
+ 	wr32(hw, GLTSYN_CMD, cmd_val);
+@@ -1200,18 +1202,18 @@ ice_ptp_read_port_capture(struct ice_hw *hw, u8 port, u64 *tx_ts, u64 *rx_ts)
+ }
+ 
+ /**
+- * ice_ptp_one_port_cmd - Prepare a single PHY port for a timer command
++ * ice_ptp_write_port_cmd_e822 - Prepare a single PHY port for a timer command
+  * @hw: pointer to HW struct
+  * @port: Port to which cmd has to be sent
+  * @cmd: Command to be sent to the port
+  *
+  * Prepare the requested port for an upcoming timer sync command.
+  *
+- * Note there is no equivalent of this operation on E810, as that device
+- * always handles all external PHYs internally.
++ * Do not use this function directly. If you want to configure exactly one
++ * port, use ice_ptp_one_port_cmd() instead.
+  */
+ static int
+-ice_ptp_one_port_cmd(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
++ice_ptp_write_port_cmd_e822(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
  {
-+	if (rhdr->res.scratch != NULL)
-+		kfree(rhdr->res.scratch);
- 	kmem_cache_free(nfs_rdata_cachep, rhdr);
+ 	u32 cmd_val, val;
+ 	u8 tmr_idx;
+@@ -1235,6 +1237,8 @@ ice_ptp_one_port_cmd(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
+ 	case ADJ_TIME_AT_TIME:
+ 		cmd_val |= PHY_CMD_ADJ_TIME_AT_TIME;
+ 		break;
++	case ICE_PTP_NOP:
++		break;
+ 	}
+ 
+ 	/* Tx case */
+@@ -1280,6 +1284,39 @@ ice_ptp_one_port_cmd(struct ice_hw *hw, u8 port, enum ice_ptp_tmr_cmd cmd)
+ 	return 0;
  }
  
-@@ -108,6 +110,14 @@ void nfs_pageio_reset_read_mds(struct nfs_pageio_descriptor *pgio)
- }
- EXPORT_SYMBOL_GPL(nfs_pageio_reset_read_mds);
- 
-+bool nfs_read_alloc_scratch(struct nfs_pgio_header *hdr, size_t size)
++/**
++ * ice_ptp_one_port_cmd - Prepare one port for a timer command
++ * @hw: pointer to the HW struct
++ * @configured_port: the port to configure with configured_cmd
++ * @configured_cmd: timer command to prepare on the configured_port
++ *
++ * Prepare the configured_port for the configured_cmd, and prepare all other
++ * ports for ICE_PTP_NOP. This causes the configured_port to execute the
++ * desired command while all other ports perform no operation.
++ */
++static int
++ice_ptp_one_port_cmd(struct ice_hw *hw, u8 configured_port,
++		     enum ice_ptp_tmr_cmd configured_cmd)
 +{
-+	WARN_ON(hdr->res.scratch != NULL);
-+	hdr->res.scratch = kmalloc(size, GFP_KERNEL);
-+	return hdr->res.scratch != NULL;
-+}
-+EXPORT_SYMBOL_GPL(nfs_read_alloc_scratch);
++	u8 port;
 +
- static void nfs_readpage_release(struct nfs_page *req, int error)
- {
- 	struct folio *folio = nfs_page_to_folio(req);
++	for (port = 0; port < ICE_NUM_EXTERNAL_PORTS; port++) {
++		enum ice_ptp_tmr_cmd cmd;
++		int err;
++
++		if (port == configured_port)
++			cmd = configured_cmd;
++		else
++			cmd = ICE_PTP_NOP;
++
++		err = ice_ptp_write_port_cmd_e822(hw, port, cmd);
++		if (err)
++			return err;
++	}
++
++	return 0;
++}
++
+ /**
+  * ice_ptp_port_cmd_e822 - Prepare all ports for a timer command
+  * @hw: pointer to the HW struct
+@@ -1296,7 +1333,7 @@ ice_ptp_port_cmd_e822(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
+ 	for (port = 0; port < ICE_NUM_EXTERNAL_PORTS; port++) {
+ 		int err;
+ 
+-		err = ice_ptp_one_port_cmd(hw, port, cmd);
++		err = ice_ptp_write_port_cmd_e822(hw, port, cmd);
+ 		if (err)
+ 			return err;
+ 	}
+@@ -2245,6 +2282,9 @@ static int ice_sync_phy_timer_e822(struct ice_hw *hw, u8 port)
+ 	if (err)
+ 		goto err_unlock;
+ 
++	/* Do not perform any action on the main timer */
++	ice_ptp_src_cmd(hw, ICE_PTP_NOP);
++
+ 	/* Issue the sync to activate the time adjustment */
+ 	ice_ptp_exec_tmr_cmd(hw);
+ 
+@@ -2371,6 +2411,9 @@ ice_start_phy_timer_e822(struct ice_hw *hw, u8 port, bool bypass)
+ 	if (err)
+ 		return err;
+ 
++	/* Do not perform any action on the main timer */
++	ice_ptp_src_cmd(hw, ICE_PTP_NOP);
++
+ 	ice_ptp_exec_tmr_cmd(hw);
+ 
+ 	err = ice_read_phy_reg_e822(hw, port, P_REG_PS, &val);
+@@ -2914,6 +2957,8 @@ static int ice_ptp_port_cmd_e810(struct ice_hw *hw, enum ice_ptp_tmr_cmd cmd)
+ 	case ADJ_TIME_AT_TIME:
+ 		cmd_val = GLTSYN_CMD_ADJ_INIT_TIME;
+ 		break;
++	case ICE_PTP_NOP:
++		return 0;
+ 	}
+ 
+ 	/* Read, modify, write */
+diff --git a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+index 2bda64c76abc3..071f545aa85e8 100644
+--- a/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
++++ b/drivers/net/ethernet/intel/ice/ice_ptp_hw.h
+@@ -9,7 +9,8 @@ enum ice_ptp_tmr_cmd {
+ 	INIT_INCVAL,
+ 	ADJ_TIME,
+ 	ADJ_TIME_AT_TIME,
+-	READ_TIME
++	READ_TIME,
++	ICE_PTP_NOP,
+ };
+ 
+ enum ice_ptp_serdes {
 -- 
 2.40.1
 
