@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8244879B4A6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8450979B1A5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:11 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1352973AbjIKVtS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:49:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55714 "EHLO
+        id S243165AbjIKU7P (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:59:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52038 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241942AbjIKPSf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:35 -0400
+        with ESMTP id S239445AbjIKOUw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 22E95FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5F33CC433C8;
-        Mon, 11 Sep 2023 15:18:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BC11DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:48 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B17D9C433C8;
+        Mon, 11 Sep 2023 14:20:47 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445508;
-        bh=8GATYATvLpMvUYu0SEdcSAatczjlsKlsla0ALVceeIU=;
+        s=korg; t=1694442048;
+        bh=Xc9SSexNzep9L+H+EJveJBdndh2/+7x24j3XzEECMF8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l4scl8S9uf500OXofDtQmVOFpuWtxSc8dZGvniWVYUdNNhx19I5OdwlpVnZiIqCU3
-         2u8/0coyKBRVFKuNdXqGYdKCAzPgOiKk1JeB2OlxxNeAuqJf2pvL51E15vJBuX83/n
-         nEEeX6zsPWKM9g6E5DFeDesU4S318s2nK6COYRGw=
+        b=bIuLwo4yFCM2t4SdsSl0AtrSNEtkLmXSWgbqfkqKcH7v9+ak/mpgCjSPNbGH6uCSx
+         Mlm6Lsov8sxu0I+vcpTwKYgQvYFdaQKxwZcU1gDzALTgaVDeNdJz8bnwheVLYD4R9L
+         njYavMA+NzwI1AIEE0XlidwTJOG+Jw6NxGM/0JPQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
-        Dan Carpenter <error27@gmail.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev, Ahmad Fatoum <a.fatoum@pengutronix.de>,
+        Marek Vasut <marex@denx.de>, Peng Fan <peng.fan@nxp.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 373/600] NFSv4.2: Fix READ_PLUS smatch warnings
-Date:   Mon, 11 Sep 2023 15:46:46 +0200
-Message-ID: <20230911134644.689715314@linuxfoundation.org>
+Subject: [PATCH 6.5 610/739] thermal/drivers/imx8mm: Suppress log message on probe deferral
+Date:   Mon, 11 Sep 2023 15:46:49 +0200
+Message-ID: <20230911134708.138002070@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,52 +51,52 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Schumaker <Anna.Schumaker@Netapp.com>
+From: Ahmad Fatoum <a.fatoum@pengutronix.de>
 
-[ Upstream commit bb05a617f06b7a882e19c4f475b8e37f14d9ceac ]
+[ Upstream commit 4afcb58ea47e66c025d2b0a5f091dce5aaf95b0f ]
 
-Smatch reports:
-  fs/nfs/nfs42xdr.c:1131 decode_read_plus() warn: missing error code? 'status'
+nvmem_cell_read_u32() may return -EPROBE_DEFER if NVMEM supplier has not
+yet been probed. Future reprobe may succeed, so printing:
 
-Which Dan suggests to fix by doing a hardcoded "return 0" from the
-"if (segments == 0)" check.
+  i.mx8mm_thermal 30260000.tmu: Failed to read OCOTP nvmem cell (-517).
 
-Additionally, smatch reports that the "status = -EIO" assignment is not
-used. This patch addresses both these issues.
+to the log is confusing. Fix this by using dev_err_probe. This also
+elevates the message from warning to error, which is more correct: The
+log message is only ever printed in probe error path and probe aborts
+afterwards, so it really warrants an error-level message.
 
-Reported-by: kernel test robot <lkp@intel.com>
-Reported-by: Dan Carpenter <error27@gmail.com>
-Closes: https://lore.kernel.org/r/202305222209.6l5VM2lL-lkp@intel.com/
-Fixes: d3b00a802c845 ("NFS: Replace the READ_PLUS decoding code")
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: 403291648823 ("thermal/drivers/imx: Add support for loading calibration data from OCOTP")
+Signed-off-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
+Reviewed-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230708112647.2897294-1-a.fatoum@pengutronix.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42xdr.c | 3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/thermal/imx8mm_thermal.c | 6 ++----
+ 1 file changed, 2 insertions(+), 4 deletions(-)
 
-diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
-index 08c1dd094f010..ae034a1c53efd 100644
---- a/fs/nfs/nfs42xdr.c
-+++ b/fs/nfs/nfs42xdr.c
-@@ -1135,13 +1135,12 @@ static int decode_read_plus(struct xdr_stream *xdr, struct nfs_pgio_res *res)
- 	res->eof = be32_to_cpup(p++);
- 	segments = be32_to_cpup(p++);
- 	if (segments == 0)
--		return status;
-+		return 0;
+diff --git a/drivers/thermal/imx8mm_thermal.c b/drivers/thermal/imx8mm_thermal.c
+index d4b40869c7d7b..dd474166ca671 100644
+--- a/drivers/thermal/imx8mm_thermal.c
++++ b/drivers/thermal/imx8mm_thermal.c
+@@ -179,10 +179,8 @@ static int imx8mm_tmu_probe_set_calib_v1(struct platform_device *pdev,
+ 	int ret;
  
- 	segs = kmalloc_array(segments, sizeof(*segs), GFP_KERNEL);
- 	if (!segs)
- 		return -ENOMEM;
+ 	ret = nvmem_cell_read_u32(&pdev->dev, "calib", &ana0);
+-	if (ret) {
+-		dev_warn(dev, "Failed to read OCOTP nvmem cell (%d).\n", ret);
+-		return ret;
+-	}
++	if (ret)
++		return dev_err_probe(dev, ret, "Failed to read OCOTP nvmem cell\n");
  
--	status = -EIO;
- 	for (i = 0; i < segments; i++) {
- 		status = decode_read_plus_segment(xdr, &segs[i]);
- 		if (status < 0)
+ 	writel(FIELD_PREP(TASR_BUF_VREF_MASK,
+ 			  FIELD_GET(ANA0_BUF_VREF_MASK, ana0)) |
 -- 
 2.40.1
 
