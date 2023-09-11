@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A3C0B79BBC3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8F0BF79BB43
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:50 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376650AbjIKWUJ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:09 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40324 "EHLO
+        id S240620AbjIKVkR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:40:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55846 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239706AbjIKO0t (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:49 -0400
+        with ESMTP id S238365AbjIKNyj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:54:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5E4B7CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:45 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 92BBCC433C8;
-        Mon, 11 Sep 2023 14:26:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BCDDFFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:54:35 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0D46FC433C7;
+        Mon, 11 Sep 2023 13:54:34 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442404;
-        bh=MFYCr/fVXla8TEokWeL4XCmtR86ycjRXuOZmjN8WA8A=;
+        s=korg; t=1694440475;
+        bh=Jh+8DYglQOGlw/KREC4Ec1tWYIRQ2Mplh77Sb2Z2dus=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nog0F+DurZoBHW0Vf6kHvLhp1S0giaPK6JWfgQra4NWdNw7GQ3pC19hB5v+4khJyU
-         rm6WxQI+s+3IbKLKlblUqcKPnHouKJAZjQV5OduVqOP3F8tUZw2N6a4mvwZ272TbTg
-         fRHju9Nfsbe0D9AfLeOFrSHOhSFS4cBS+cBgDP7E=
+        b=WyXT1V29xarxAi0hnqpEpqbn2R/hrPRY6t9tvVdclolIC8n6FjdAQPJYq/FiPBI4i
+         QrX64bB15Gwk6wkK+39Z1hG6eXTWVPhWlkdGbJlSsrnUhWiUy0YkaxJWsVv9uwTjvW
+         IUOPLtT3DeeDqEPgHZmm48VBtlfIhN9y1UsRF4K4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Namjae Jeon <linkinjeon@kernel.org>,
-        Steve French <stfrench@microsoft.com>,
-        Sasha Levin <sashal@kernel.org>, zdi-disclosures@trendmicro.com
-Subject: [PATCH 6.4 014/737] ksmbd: fix out of bounds in init_smb2_rsp_hdr()
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 074/739] tcp: tcp_enter_quickack_mode() should be static
 Date:   Mon, 11 Sep 2023 15:37:53 +0200
-Message-ID: <20230911134650.728565077@linuxfoundation.org>
+Message-ID: <20230911134653.183879273@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,109 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Namjae Jeon <linkinjeon@kernel.org>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 536bb492d39bb6c080c92f31e8a55fe9934f452b ]
+[ Upstream commit 03b123debcbc8db987bda17ed8412cc011064c22 ]
 
-If client send smb2 negotiate request and then send smb1 negotiate
-request, init_smb2_rsp_hdr is called for smb1 negotiate request since
-need_neg is set to false. This patch ignore smb1 packets after ->need_neg
-is set to false.
+After commit d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP"),
+tcp_enter_quickack_mode() is only used from net/ipv4/tcp_input.c.
 
-Reported-by: zdi-disclosures@trendmicro.com # ZDI-CAN-21541
-Signed-off-by: Namjae Jeon <linkinjeon@kernel.org>
-Signed-off-by: Steve French <stfrench@microsoft.com>
+Fixes: d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yuchung Cheng <ycheng@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20230718162049.1444938-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/smb/server/server.c     |  7 ++++++-
- fs/smb/server/smb_common.c | 19 +++++++++++--------
- fs/smb/server/smb_common.h |  2 +-
- 3 files changed, 18 insertions(+), 10 deletions(-)
+ include/net/tcp.h    | 1 -
+ net/ipv4/tcp_input.c | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/fs/smb/server/server.c b/fs/smb/server/server.c
-index ced7a9e916f01..9df121bdf3492 100644
---- a/fs/smb/server/server.c
-+++ b/fs/smb/server/server.c
-@@ -286,6 +286,7 @@ static void handle_ksmbd_work(struct work_struct *wk)
- static int queue_ksmbd_work(struct ksmbd_conn *conn)
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 0ca972ebd3dd0..10fc5c5928f71 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -350,7 +350,6 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ struct sk_buff *tcp_stream_alloc_skb(struct sock *sk, gfp_t gfp,
+ 				     bool force_schedule);
+ 
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks);
+ static inline void tcp_dec_quickack_mode(struct sock *sk,
+ 					 const unsigned int pkts)
  {
- 	struct ksmbd_work *work;
-+	int err;
- 
- 	work = ksmbd_alloc_work_struct();
- 	if (!work) {
-@@ -297,7 +298,11 @@ static int queue_ksmbd_work(struct ksmbd_conn *conn)
- 	work->request_buf = conn->request_buf;
- 	conn->request_buf = NULL;
- 
--	ksmbd_init_smb_server(work);
-+	err = ksmbd_init_smb_server(work);
-+	if (err) {
-+		ksmbd_free_work_struct(work);
-+		return 0;
-+	}
- 
- 	ksmbd_conn_enqueue_request(work);
- 	atomic_inc(&conn->r_count);
-diff --git a/fs/smb/server/smb_common.c b/fs/smb/server/smb_common.c
-index 3e391a7d5a3ab..27b8bd039791e 100644
---- a/fs/smb/server/smb_common.c
-+++ b/fs/smb/server/smb_common.c
-@@ -388,26 +388,29 @@ static struct smb_version_cmds smb1_server_cmds[1] = {
- 	[SMB_COM_NEGOTIATE_EX]	= { .proc = smb1_negotiate, },
- };
- 
--static void init_smb1_server(struct ksmbd_conn *conn)
-+static int init_smb1_server(struct ksmbd_conn *conn)
- {
- 	conn->ops = &smb1_server_ops;
- 	conn->cmds = smb1_server_cmds;
- 	conn->max_cmds = ARRAY_SIZE(smb1_server_cmds);
-+	return 0;
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 57c8af1859c16..48c2b96b08435 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -287,7 +287,7 @@ static void tcp_incr_quickack(struct sock *sk, unsigned int max_quickacks)
+ 		icsk->icsk_ack.quick = quickacks;
  }
  
--void ksmbd_init_smb_server(struct ksmbd_work *work)
-+int ksmbd_init_smb_server(struct ksmbd_work *work)
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
++static void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
  {
- 	struct ksmbd_conn *conn = work->conn;
- 	__le32 proto;
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
  
--	if (conn->need_neg == false)
--		return;
--
- 	proto = *(__le32 *)((struct smb_hdr *)work->request_buf)->Protocol;
-+	if (conn->need_neg == false) {
-+		if (proto == SMB1_PROTO_NUMBER)
-+			return -EINVAL;
-+		return 0;
-+	}
-+
- 	if (proto == SMB1_PROTO_NUMBER)
--		init_smb1_server(conn);
--	else
--		init_smb3_11_server(conn);
-+		return init_smb1_server(conn);
-+	return init_smb3_11_server(conn);
+@@ -295,7 +295,6 @@ void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
+ 	inet_csk_exit_pingpong_mode(sk);
+ 	icsk->icsk_ack.ato = TCP_ATO_MIN;
  }
+-EXPORT_SYMBOL(tcp_enter_quickack_mode);
  
- int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work, int info_level,
-diff --git a/fs/smb/server/smb_common.h b/fs/smb/server/smb_common.h
-index 6b0d5f1fe85ca..f0134d16067fb 100644
---- a/fs/smb/server/smb_common.h
-+++ b/fs/smb/server/smb_common.h
-@@ -427,7 +427,7 @@ bool ksmbd_smb_request(struct ksmbd_conn *conn);
- 
- int ksmbd_lookup_dialect_by_id(__le16 *cli_dialects, __le16 dialects_count);
- 
--void ksmbd_init_smb_server(struct ksmbd_work *work);
-+int ksmbd_init_smb_server(struct ksmbd_work *work);
- 
- struct ksmbd_kstat;
- int ksmbd_populate_dot_dotdot_entries(struct ksmbd_work *work,
+ /* Send ACKs quickly, if "quick" count is not exhausted
+  * and the session is not interactive.
 -- 
 2.40.1
 
