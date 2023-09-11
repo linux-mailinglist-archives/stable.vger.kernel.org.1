@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id EB49B79BA13
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:01 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E10579BED1
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:04 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230363AbjIKVFY (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:05:24 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35042 "EHLO
+        id S238637AbjIKU4G (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36124 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240749AbjIKOww (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:52:52 -0400
+        with ESMTP id S239442AbjIKOUo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5F4D118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:52:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id ACE88C433C7;
-        Mon, 11 Sep 2023 14:52:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EEBFBDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 450A3C433C8;
+        Mon, 11 Sep 2023 14:20:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443967;
-        bh=tUSe/qh74gctDMxhr8HVgn7NrO75fTiX1YnC7uvmAi8=;
+        s=korg; t=1694442039;
+        bh=0naeuQQxX0Y2m5YfVdEaboOoZ/LTt3NSvR6ci7u6qaU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=G6i1Qgb8fWchLUqUi5GH2EYp6DiHUGElH9osX4fT0bAAYIOZkG4/LF2uLodrTqB+m
-         1tl161a0eNAYWX7d0T+qfL19i4ChzTabC7s+gSOe+FLGdN8y8PdwX4IrLNmE+FZWAe
-         9Mi6dg5yOGuayZhwhxfyELrn/oGRfpD1UptmHzVc=
+        b=Fy4zhJ7NzjbPTXlJG+NqwXIELxXzeEmOOcVdkG0NAez1b5EHYpdSvwDLvE6nU1IS/
+         6Yk8w6/Lp/mD3zoXCrXaefDq69NVLY1SrLyUyxVKqsyDMfWt2/gvlT/W/LWAJcRCL1
+         Fd0MC1U+gN2uzfG96TsBTwgDSei+WE804siuqtNo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 564/737] media: Documentation: Fix [GS]_ROUTING documentation
-Date:   Mon, 11 Sep 2023 15:47:03 +0200
-Message-ID: <20230911134706.304799794@linuxfoundation.org>
+        "Maciej S. Szmigiero" <maciej.szmigiero@oracle.com>,
+        Michael Kelley <mikelley@microsoft.com>,
+        Wei Liu <wei.liu@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 625/739] Drivers: hv: vmbus: Dont dereference ACPI root object handle
+Date:   Mon, 11 Sep 2023 15:47:04 +0200
+Message-ID: <20230911134708.555517703@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,52 +51,94 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
+From: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
 
-[ Upstream commit 997a6b01cd97b74684728d5af6511c333f25957d ]
+[ Upstream commit 78e04bbff849b51b56f5925b1945db2c6e128b61 ]
 
-Add mention that successful VIDIOC_SUBDEV_G_ROUTING call will update
-'num_routes' and remove mention about non-existing streams, which is
-incorrect.
+Since the commit referenced in the Fixes: tag below the VMBus client driver
+is walking the ACPI namespace up from the VMBus ACPI device to the ACPI
+namespace root object trying to find Hyper-V MMIO ranges.
 
-Fixes: ea73eda50813 ("media: Documentation: Add GS_ROUTING documentation")
-Signed-off-by: Tomi Valkeinen <tomi.valkeinen@ideasonboard.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+However, if it is not able to find them it ends trying to walk resources of
+the ACPI namespace root object itself.
+This object has all-ones handle, which causes a NULL pointer dereference
+in the ACPI code (from dereferencing this pointer with an offset).
+
+This in turn causes an oops on boot with VMBus host implementations that do
+not provide Hyper-V MMIO ranges in their VMBus ACPI device or its
+ancestors.
+The QEMU VMBus implementation is an example of such implementation.
+
+I guess providing these ranges is optional, since all tested Windows
+versions seem to be able to use VMBus devices without them.
+
+Fix this by explicitly terminating the lookup at the ACPI namespace root
+object.
+
+Note that Linux guests under KVM/QEMU do not use the Hyper-V PV interface
+by default - they only do so if the KVM PV interface is missing or
+disabled.
+
+Example stack trace of such oops:
+[ 3.710827] ? __die+0x1f/0x60
+[ 3.715030] ? page_fault_oops+0x159/0x460
+[ 3.716008] ? exc_page_fault+0x73/0x170
+[ 3.716959] ? asm_exc_page_fault+0x22/0x30
+[ 3.717957] ? acpi_ns_lookup+0x7a/0x4b0
+[ 3.718898] ? acpi_ns_internalize_name+0x79/0xc0
+[ 3.720018] acpi_ns_get_node_unlocked+0xb5/0xe0
+[ 3.721120] ? acpi_ns_check_object_type+0xfe/0x200
+[ 3.722285] ? acpi_rs_convert_aml_to_resource+0x37/0x6e0
+[ 3.723559] ? down_timeout+0x3a/0x60
+[ 3.724455] ? acpi_ns_get_node+0x3a/0x60
+[ 3.725412] acpi_ns_get_node+0x3a/0x60
+[ 3.726335] acpi_ns_evaluate+0x1c3/0x2c0
+[ 3.727295] acpi_ut_evaluate_object+0x64/0x1b0
+[ 3.728400] acpi_rs_get_method_data+0x2b/0x70
+[ 3.729476] ? vmbus_platform_driver_probe+0x1d0/0x1d0 [hv_vmbus]
+[ 3.730940] ? vmbus_platform_driver_probe+0x1d0/0x1d0 [hv_vmbus]
+[ 3.732411] acpi_walk_resources+0x78/0xd0
+[ 3.733398] vmbus_platform_driver_probe+0x9f/0x1d0 [hv_vmbus]
+[ 3.734802] platform_probe+0x3d/0x90
+[ 3.735684] really_probe+0x19b/0x400
+[ 3.736570] ? __device_attach_driver+0x100/0x100
+[ 3.737697] __driver_probe_device+0x78/0x160
+[ 3.738746] driver_probe_device+0x1f/0x90
+[ 3.739743] __driver_attach+0xc2/0x1b0
+[ 3.740671] bus_for_each_dev+0x70/0xc0
+[ 3.741601] bus_add_driver+0x10e/0x210
+[ 3.742527] driver_register+0x55/0xf0
+[ 3.744412] ? 0xffffffffc039a000
+[ 3.745207] hv_acpi_init+0x3c/0x1000 [hv_vmbus]
+
+Fixes: 7f163a6fd957 ("drivers:hv: Modify hv_vmbus to search for all MMIO ranges available.")
+Signed-off-by: Maciej S. Szmigiero <maciej.szmigiero@oracle.com>
+Reviewed-by: Michael Kelley <mikelley@microsoft.com>
+Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Link: https://lore.kernel.org/r/fd8e64ceeecfd1d95ff49021080cf699e88dbbde.1691606267.git.maciej.szmigiero@oracle.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../userspace-api/media/v4l/vidioc-subdev-g-routing.rst    | 7 ++++---
- 1 file changed, 4 insertions(+), 3 deletions(-)
+ drivers/hv/vmbus_drv.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-index 2d6e3bbdd0404..72677a280cd64 100644
---- a/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-+++ b/Documentation/userspace-api/media/v4l/vidioc-subdev-g-routing.rst
-@@ -58,6 +58,9 @@ the subdevice exposes, drivers return the ENOSPC error code and adjust the
- value of the ``num_routes`` field. Application should then reserve enough memory
- for all the route entries and call ``VIDIOC_SUBDEV_G_ROUTING`` again.
- 
-+On a successful ``VIDIOC_SUBDEV_G_ROUTING`` call the driver updates the
-+``num_routes`` field to reflect the actual number of routes returned.
-+
- .. tabularcolumns:: |p{4.4cm}|p{4.4cm}|p{8.7cm}|
- 
- .. c:type:: v4l2_subdev_routing
-@@ -138,9 +141,7 @@ ENOSPC
- 
- EINVAL
-    The sink or source pad identifiers reference a non-existing pad, or reference
--   pads of different types (ie. the sink_pad identifiers refers to a source pad)
--   or the sink or source stream identifiers reference a non-existing stream on
--   the sink or source pad.
-+   pads of different types (ie. the sink_pad identifiers refers to a source pad).
- 
- E2BIG
-    The application provided ``num_routes`` for ``VIDIOC_SUBDEV_S_ROUTING`` is
+diff --git a/drivers/hv/vmbus_drv.c b/drivers/hv/vmbus_drv.c
+index 67f95a29aeca5..edbb38f6956b9 100644
+--- a/drivers/hv/vmbus_drv.c
++++ b/drivers/hv/vmbus_drv.c
+@@ -2287,7 +2287,8 @@ static int vmbus_acpi_add(struct platform_device *pdev)
+ 	 * Some ancestor of the vmbus acpi device (Gen1 or Gen2
+ 	 * firmware) is the VMOD that has the mmio ranges. Get that.
+ 	 */
+-	for (ancestor = acpi_dev_parent(device); ancestor;
++	for (ancestor = acpi_dev_parent(device);
++	     ancestor && ancestor->handle != ACPI_ROOT_OBJECT;
+ 	     ancestor = acpi_dev_parent(ancestor)) {
+ 		result = acpi_walk_resources(ancestor->handle, METHOD_NAME__CRS,
+ 					     vmbus_walk_resources, NULL);
 -- 
 2.40.1
 
