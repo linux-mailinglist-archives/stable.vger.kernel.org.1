@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8ABC679B46E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA94979B348
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354101AbjIKVw3 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54238 "EHLO
+        id S1355462AbjIKV7x (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:53 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53040 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240135AbjIKOhb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:31 -0400
+        with ESMTP id S238790AbjIKOFI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 02AC1F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:26 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4E650C433C7;
-        Mon, 11 Sep 2023 14:37:25 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F0555CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 42239C433C8;
+        Mon, 11 Sep 2023 14:05:03 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443045;
-        bh=MnL/delfwatnVFYU4jy4iMBeSjyHPuKzTnHHFW483Mw=;
+        s=korg; t=1694441103;
+        bh=yB2kiHdc0SYAkpN8vYLLR1ZLLbOk3s3vCLD3ZkBPsy4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Dyo9EVEnA1J5XV3OoD3iSnAb+0zVewQjYitIk9OHO4jdEDuEqTi5c2jWreLXqn/NG
-         zxBIsmWhJs0Oqgimu7D3CLLuiiq36kRP6DBPebeitLw03D4llr0T4sbrtRgZiiQnEy
-         vAF8VYmuzTRi/v5+Hb4v6tOBD9erKfTaEAH1ATv4=
+        b=lLXs94JsNkFh+axNRVgVHxhNwk8YeFKzxSZVhqJNum+TeHjSon3IpwhwqsYL0H+wT
+         CTWl8ld5O8An4EN/jv50VHrGtwKR0BoVauXrqBFUNR4tS5meO6pYysSFuDJXY0BEG0
+         oThuvVV6fwEXUOHLpNNP2NDn+KzW3flTqbCSBHJo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev, Geert Uytterhoeven <geert@linux-m68k.org>,
+        Javier Martinez Canillas <javierm@redhat.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 237/737] mac80211: make ieee80211_tx_info padding explicit
+Subject: [PATCH 6.5 297/739] drm/repaper: Reduce temporary buffer size in repaper_fb_dirty()
 Date:   Mon, 11 Sep 2023 15:41:36 +0200
-Message-ID: <20230911134657.230430446@linuxfoundation.org>
+Message-ID: <20230911134659.426026692@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +50,41 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Geert Uytterhoeven <geert@linux-m68k.org>
 
-[ Upstream commit a7a2ef0c4b3efbd7d6f3fabd87dbbc0b3f2de5af ]
+[ Upstream commit fedf429e071f6dbbe7a69dfc342492e037692018 ]
 
-While looking at a bug, I got rather confused by the layout of the
-'status' field in ieee80211_tx_info. Apparently, the intention is that
-status_driver_data[] is used for driver specific data, and fills up the
-size of the union to 40 bytes, just like the other ones.
+As the temporary buffer is no longer used to store 8-bit grayscale data,
+its size can be reduced to the size needed to store the monochrome
+bitmap data.
 
-This is indeed what actually happens, but only because of the
-combination of two mistakes:
-
- - "void *status_driver_data[18 / sizeof(void *)];" is intended
-   to be 18 bytes long but is actually two bytes shorter because of
-   rounding-down in the division, to a multiple of the pointer
-   size (4 bytes or 8 bytes).
-
- - The other fields combined are intended to be 22 bytes long, but
-   are actually 24 bytes because of padding in front of the
-   unaligned tx_time member, and in front of the pointer array.
-
-The two mistakes cancel out. so the size ends up fine, but it seems
-more helpful to make this explicit, by having a multiple of 8 bytes
-in the size calculation and explicitly describing the padding.
-
-Fixes: ea5907db2a9cc ("mac80211: fix struct ieee80211_tx_info size")
-Fixes: 02219b3abca59 ("mac80211: add WMM admission control support")
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Reviewed-by: Kees Cook <keescook@chromium.org>
-Link: https://lore.kernel.org/r/20230623152443.2296825-2-arnd@kernel.org
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+Fixes: 24c6bedefbe71de9 ("drm/repaper: Use format helper for xrgb8888 to monochrome conversion")
+Signed-off-by: Geert Uytterhoeven <geert@linux-m68k.org>
+Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
+Signed-off-by: Javier Martinez Canillas <javierm@redhat.com>
+Link: https://patchwork.freedesktop.org/patch/msgid/20220317081830.1211400-6-geert@linux-m68k.org
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- include/net/mac80211.h | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ drivers/gpu/drm/tiny/repaper.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/include/net/mac80211.h b/include/net/mac80211.h
-index 67d81f7186660..52b336ada480c 100644
---- a/include/net/mac80211.h
-+++ b/include/net/mac80211.h
-@@ -1192,9 +1192,11 @@ struct ieee80211_tx_info {
- 			u8 ampdu_ack_len;
- 			u8 ampdu_len;
- 			u8 antenna;
-+			u8 pad;
- 			u16 tx_time;
- 			u8 flags;
--			void *status_driver_data[18 / sizeof(void *)];
-+			u8 pad2;
-+			void *status_driver_data[16 / sizeof(void *)];
- 		} status;
- 		struct {
- 			struct ieee80211_tx_rate driver_rates[
+diff --git a/drivers/gpu/drm/tiny/repaper.c b/drivers/gpu/drm/tiny/repaper.c
+index c2677d081a7b6..13ae148f59b9b 100644
+--- a/drivers/gpu/drm/tiny/repaper.c
++++ b/drivers/gpu/drm/tiny/repaper.c
+@@ -533,7 +533,7 @@ static int repaper_fb_dirty(struct drm_framebuffer *fb)
+ 	DRM_DEBUG("Flushing [FB:%d] st=%ums\n", fb->base.id,
+ 		  epd->factored_stage_time);
+ 
+-	buf = kmalloc_array(fb->width, fb->height, GFP_KERNEL);
++	buf = kmalloc(fb->width * fb->height / 8, GFP_KERNEL);
+ 	if (!buf) {
+ 		ret = -ENOMEM;
+ 		goto out_exit;
 -- 
 2.40.1
 
