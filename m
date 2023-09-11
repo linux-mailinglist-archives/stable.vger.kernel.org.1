@@ -2,46 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C34C279B758
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49B8A79BFA3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:19:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344399AbjIKVOA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58714 "EHLO
+        id S229990AbjIKWu1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:50:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35370 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238684AbjIKOCo (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:02:44 -0400
+        with ESMTP id S240084AbjIKOgR (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:36:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 36A2CCD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 53998C433C8;
-        Mon, 11 Sep 2023 14:02:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F2340F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 45AEFC433C7;
+        Mon, 11 Sep 2023 14:36:11 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440958;
-        bh=GSsQl+NvqYTOHPLYydFSCdTKEmR9ln1EUr0ikNmxkWY=;
+        s=korg; t=1694442971;
+        bh=p/xNuthaiJauC3e7kNrOyeoq9UlCVXrj8oX3evznlio=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a/8gpEYc1bgb5t4lY8ru2u5zSZe+rcD27D/FOsw8ejWgLwplGB2QUpTJMZETslCKs
-         mgQl+jg8OXNgxBVHMzw3nobhEpTNru/lXw7QJXmzOvOhYy13sfQdXyN6YBbsVPl6BU
-         e/Mrl7Rm8uejFNLLS0FLF0MB4v+SinijVeXusxmE=
+        b=g+2qsANLn0LGAQIGCLsJSl9bf7YxTJWrc8Yb6R8fT5QgvtHAEkLRofhEPxYT0q/0K
+         1JZD348kTcdFW9as6MQ9zHvOo34HibIhjoIoqmAIVk+5sUsQJD5Bf86DmIUBgrb7oX
+         bUvhqyuU2/fxMCtJcdJkx+obQTBJg3gtw2Tk9QBk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        =?UTF-8?q?Christian=20K=C3=B6nig?= <christian.koenig@amd.com>,
-        Arnd Bergmann <arnd@arndb.de>,
-        Alex Deucher <alexander.deucher@amd.com>,
+        Colm Harrington <colm.harrington@oracle.com>,
+        Alan Maguire <alan.maguire@oracle.com>,
+        Yipeng Zou <zouyipeng@huawei.com>,
+        Yonghong Song <yonghong.song@linux.dev>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 245/739] drm/amdgpu: avoid integer overflow warning in amdgpu_device_resize_fb_bar()
+Subject: [PATCH 6.4 185/737] selftests/bpf: fix static assert compilation issue for test_cls_*.c
 Date:   Mon, 11 Sep 2023 15:40:44 +0200
-Message-ID: <20230911134658.003404574@linuxfoundation.org>
+Message-ID: <20230911134655.739594868@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -53,50 +54,84 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Arnd Bergmann <arnd@arndb.de>
+From: Alan Maguire <alan.maguire@oracle.com>
 
-[ Upstream commit 822130b5e8834ab30ad410cf19a582e5014b9a85 ]
+[ Upstream commit 416c6d01244ecbf0abfdb898fd091b50ef951b48 ]
 
-On 32-bit architectures comparing a resource against a value larger than
-U32_MAX can cause a warning:
+commit bdeeed3498c7 ("libbpf: fix offsetof() and container_of() to work with CO-RE")
 
-drivers/gpu/drm/amd/amdgpu/amdgpu_device.c:1344:18: error: result of comparison of constant 4294967296 with expression of type 'resource_size_t' (aka 'unsigned int') is always false [-Werror,-Wtautological-constant-out-of-range-compare]
-                    res->start > 0x100000000ull)
-                    ~~~~~~~~~~ ^ ~~~~~~~~~~~~~~
+...was backported to stable trees such as 5.15. The problem is that with older
+LLVM/clang (14/15) - which is often used for older kernels - we see compilation
+failures in BPF selftests now:
 
-As gcc does not warn about this in dead code, add an IS_ENABLED() check at
-the start of the function. This will always return success but not actually resize
-the BAR on 32-bit architectures without high memory, which is exactly what
-we want here, as the driver can fall back to bank switching the VRAM
-access.
+In file included from progs/test_cls_redirect_subprogs.c:2:
+progs/test_cls_redirect.c:90:2: error: static assertion expression is not an integral constant expression
+        sizeof(flow_ports_t) !=
+        ^~~~~~~~~~~~~~~~~~~~~~~
+progs/test_cls_redirect.c:91:3: note: cast that performs the conversions of a reinterpret_cast is not allowed in a constant expression
+                offsetofend(struct bpf_sock_tuple, ipv4.dport) -
+                ^
+progs/test_cls_redirect.c:32:3: note: expanded from macro 'offsetofend'
+        (offsetof(TYPE, MEMBER) + sizeof((((TYPE *)0)->MEMBER)))
+         ^
+tools/testing/selftests/bpf/tools/include/bpf/bpf_helpers.h:86:33: note: expanded from macro 'offsetof'
+                                 ^
+In file included from progs/test_cls_redirect_subprogs.c:2:
+progs/test_cls_redirect.c:95:2: error: static assertion expression is not an integral constant expression
+        sizeof(flow_ports_t) !=
+        ^~~~~~~~~~~~~~~~~~~~~~~
+progs/test_cls_redirect.c:96:3: note: cast that performs the conversions of a reinterpret_cast is not allowed in a constant expression
+                offsetofend(struct bpf_sock_tuple, ipv6.dport) -
+                ^
+progs/test_cls_redirect.c:32:3: note: expanded from macro 'offsetofend'
+        (offsetof(TYPE, MEMBER) + sizeof((((TYPE *)0)->MEMBER)))
+         ^
+tools/testing/selftests/bpf/tools/include/bpf/bpf_helpers.h:86:33: note: expanded from macro 'offsetof'
+                                 ^
+2 errors generated.
+make: *** [Makefile:594: tools/testing/selftests/bpf/test_cls_redirect_subprogs.bpf.o] Error 1
 
-Fixes: 31b8adab3247 ("drm/amdgpu: require a root bus window above 4GB for BAR resize")
-Reviewed-by: Christian König <christian.koenig@amd.com>
-Signed-off-by: Arnd Bergmann <arnd@arndb.de>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+The problem is the new offsetof() does not play nice with static asserts.
+Given that the context is a static assert (and CO-RE relocation is not
+needed at compile time), offsetof() usage can be replaced by restoring
+the original offsetof() definition as __builtin_offsetof().
+
+Fixes: bdeeed3498c7 ("libbpf: fix offsetof() and container_of() to work with CO-RE")
+Reported-by: Colm Harrington <colm.harrington@oracle.com>
+Signed-off-by: Alan Maguire <alan.maguire@oracle.com>
+Tested-by: Yipeng Zou <zouyipeng@huawei.com>
+Acked-by: Yonghong Song <yonghong.song@linux.dev>
+Link: https://lore.kernel.org/r/20230802073906.3197480-1-alan.maguire@oracle.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/amdgpu/amdgpu_device.c | 3 +++
- 1 file changed, 3 insertions(+)
+ tools/testing/selftests/bpf/progs/test_cls_redirect.h | 9 +++++++++
+ 1 file changed, 9 insertions(+)
 
-diff --git a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-index 6238701cde237..6e5e4603a51a1 100644
---- a/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-+++ b/drivers/gpu/drm/amd/amdgpu/amdgpu_device.c
-@@ -1325,6 +1325,9 @@ int amdgpu_device_resize_fb_bar(struct amdgpu_device *adev)
- 	u16 cmd;
- 	int r;
+diff --git a/tools/testing/selftests/bpf/progs/test_cls_redirect.h b/tools/testing/selftests/bpf/progs/test_cls_redirect.h
+index 76eab0aacba0c..233b089d1fbac 100644
+--- a/tools/testing/selftests/bpf/progs/test_cls_redirect.h
++++ b/tools/testing/selftests/bpf/progs/test_cls_redirect.h
+@@ -12,6 +12,15 @@
+ #include <linux/ipv6.h>
+ #include <linux/udp.h>
  
-+	if (!IS_ENABLED(CONFIG_PHYS_ADDR_T_64BIT))
-+		return 0;
++/* offsetof() is used in static asserts, and the libbpf-redefined CO-RE
++ * friendly version breaks compilation for older clang versions <= 15
++ * when invoked in a static assert.  Restore original here.
++ */
++#ifdef offsetof
++#undef offsetof
++#define offsetof(type, member) __builtin_offsetof(type, member)
++#endif
 +
- 	/* Bypass for VF */
- 	if (amdgpu_sriov_vf(adev))
- 		return 0;
+ struct gre_base_hdr {
+ 	uint16_t flags;
+ 	uint16_t protocol;
 -- 
 2.40.1
 
