@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0040B79C083
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D33DE79BD91
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238301AbjIKVuS (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:50:18 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37692 "EHLO
+        id S240368AbjIKV5B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45100 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238785AbjIKOE5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:04:57 -0400
+        with ESMTP id S241189AbjIKPDu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:03:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8B3F8CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:04:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D0AD7C433C8;
-        Mon, 11 Sep 2023 14:04:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7CA01B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:03:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 208FDC433C8;
+        Mon, 11 Sep 2023 15:03:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441092;
-        bh=0cpH9vdEXczZB0m37GXbf7zumkmanosmA9GCYrd1Xpk=;
+        s=korg; t=1694444625;
+        bh=wdtEE65LNr821hfuRctCLLoVeoyD3I6F/a+0nq8NkwQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=RpRxwNDpy8XE0PJuTEel1W1FikPs4KMqyFdh519zBD7i+49sE93sI1Flectxq0m+W
-         +kfDqzb04snfghwsg31jSFYDU/6qydGiHfAvweWV4hUxErP/9UnxcVlaC4fQ8JFv3w
-         w/0uqtc6L4IW0rtc1FZMoDbRGjIBf2Q4lTU6ABAQ=
+        b=ufguN/2fgTa2IGvyV336uOsCniZqYp5FvinoSk4yQkiR+ERnxgwQ7RUaK+tp+rU+Y
+         mjgD1ZZu61JNoiCZwOVgHXf0O0awsDIKTG4xayJCQXajXO3gRqw4+Ws8yXU/CrJJUj
+         QGU32b9Y0FD+XhGhHaCXUp/EU9FutIfIRx1ZRTlU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zeyan Li <qaz6750@outlook.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Chengfeng Ye <dg573847474@gmail.com>,
+        Manish Rangankar <mrangankar@marvell.com>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 293/739] arm64: dts: qcom: sm8150: Fix the I2C7 interrupt
+Subject: [PATCH 6.1 059/600] scsi: qedi: Fix potential deadlock on &qedi_percpu->p_work_lock
 Date:   Mon, 11 Sep 2023 15:41:32 +0200
-Message-ID: <20230911134659.318122621@linuxfoundation.org>
+Message-ID: <20230911134635.368736915@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +51,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zeyan Li <qaz6750@outlook.com>
+From: Chengfeng Ye <dg573847474@gmail.com>
 
-[ Upstream commit f9568d22ce06192a7e14bda3a29dc216659554ff ]
+[ Upstream commit dd64f80587190265ca8a0f4be6c64c2fda6d3ac2 ]
 
-I2C6 and I2C7 use the same interrupts, which is incorrect.
-In the downstream kernel, I2C7 has interrupts of 608 instead of 607.
+As &qedi_percpu->p_work_lock is acquired by hard IRQ qedi_msix_handler(),
+other acquisitions of the same lock under process context should disable
+IRQ, otherwise deadlock could happen if the IRQ preempts the execution
+while the lock is held in process context on the same CPU.
 
-Fixes: 81bee6953b58 ("arm64: dts: qcom: sm8150: add i2c nodes")
-Signed-off-by: Zeyan Li <qaz6750@outlook.com>
-Reviewed-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
-Link: https://lore.kernel.org/r/SY7P282MB378712225CBCEA95FE71554DB201A@SY7P282MB3787.AUSP282.PROD.OUTLOOK.COM
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+qedi_cpu_offline() is one such function which acquires the lock in process
+context.
+
+[Deadlock Scenario]
+qedi_cpu_offline()
+    ->spin_lock(&p->p_work_lock)
+        <irq>
+        ->qedi_msix_handler()
+        ->edi_process_completions()
+        ->spin_lock_irqsave(&p->p_work_lock, flags); (deadlock here)
+
+This flaw was found by an experimental static analysis tool I am developing
+for IRQ-related deadlocks.
+
+The tentative patch fix the potential deadlock by spin_lock_irqsave()
+under process context.
+
+Signed-off-by: Chengfeng Ye <dg573847474@gmail.com>
+Link: https://lore.kernel.org/r/20230726125655.4197-1-dg573847474@gmail.com
+Acked-by: Manish Rangankar <mrangankar@marvell.com>
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/sm8150.dtsi | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/scsi/qedi/qedi_main.c | 5 +++--
+ 1 file changed, 3 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/sm8150.dtsi b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-index 0cd580920a92b..a7c3020a5de49 100644
---- a/arch/arm64/boot/dts/qcom/sm8150.dtsi
-+++ b/arch/arm64/boot/dts/qcom/sm8150.dtsi
-@@ -1231,7 +1231,7 @@ i2c7: i2c@89c000 {
- 				dma-names = "tx", "rx";
- 				pinctrl-names = "default";
- 				pinctrl-0 = <&qup_i2c7_default>;
--				interrupts = <GIC_SPI 607 IRQ_TYPE_LEVEL_HIGH>;
-+				interrupts = <GIC_SPI 608 IRQ_TYPE_LEVEL_HIGH>;
- 				#address-cells = <1>;
- 				#size-cells = <0>;
- 				status = "disabled";
+diff --git a/drivers/scsi/qedi/qedi_main.c b/drivers/scsi/qedi/qedi_main.c
+index 9fd68d362698f..2ee109fb65616 100644
+--- a/drivers/scsi/qedi/qedi_main.c
++++ b/drivers/scsi/qedi/qedi_main.c
+@@ -1977,8 +1977,9 @@ static int qedi_cpu_offline(unsigned int cpu)
+ 	struct qedi_percpu_s *p = this_cpu_ptr(&qedi_percpu);
+ 	struct qedi_work *work, *tmp;
+ 	struct task_struct *thread;
++	unsigned long flags;
+ 
+-	spin_lock_bh(&p->p_work_lock);
++	spin_lock_irqsave(&p->p_work_lock, flags);
+ 	thread = p->iothread;
+ 	p->iothread = NULL;
+ 
+@@ -1989,7 +1990,7 @@ static int qedi_cpu_offline(unsigned int cpu)
+ 			kfree(work);
+ 	}
+ 
+-	spin_unlock_bh(&p->p_work_lock);
++	spin_unlock_irqrestore(&p->p_work_lock, flags);
+ 	if (thread)
+ 		kthread_stop(thread);
+ 	return 0;
 -- 
 2.40.1
 
