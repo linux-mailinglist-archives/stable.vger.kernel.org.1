@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0E2CD79B451
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 674D079B10D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240737AbjIKWJy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:09:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35438 "EHLO
+        id S245649AbjIKVLT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:11:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57958 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241964AbjIKPTK (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:10 -0400
+        with ESMTP id S239438AbjIKOUf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 320CBFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:05 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CB9FC433C7;
-        Mon, 11 Sep 2023 15:19:04 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 838ABDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CDF4FC433C7;
+        Mon, 11 Sep 2023 14:20:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445544;
-        bh=yF89L4lwPpyIZH/usPwqNNjALLbUHCvk1iSyvAJ9yzg=;
+        s=korg; t=1694442031;
+        bh=hih7oWQEowbhj05IJcgrs4jky0w55+eSnGOLkqMd9vg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EWF9hORjjfnDjJCy0p1YasjdYTAMe8zP52hBWP3ZB+9tPyrJV8SxxK5rYlyco+izr
-         7PmD8WicQebs4PjkbT62DrsSxVZbFjXb9+GfpPlFnTeOWZXMsejbS8HnP2j38XG4Hu
-         +K6/4Y5Dw+xcM1ijL/EkENsloRuQkCH5loJUvUjY=
+        b=LhQX8MDpnRTCbOYPhdFMf4fJfclip0DOHd83spWjrmIoz+7xRQvdtl+SBDrNZggJs
+         wOCT+uLhtQ2Wn5ag96ZtDQkShTbOA+0W7enFLRJmTUPhE2aRfr2zR7PiysyoB8sNRr
+         s/kLF7yXBP91v1OyXdLEmaVZeijvrmKIJXRVyQcw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Tom Haynes <loghyr@gmail.com>,
-        Chuck Lever <chuck.lever@oracle.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 385/600] NFSD: da_addr_body field missing in some GETDEVICEINFO replies
-Date:   Mon, 11 Sep 2023 15:46:58 +0200
-Message-ID: <20230911134645.032211950@linuxfoundation.org>
+        patches@lists.linux.dev, Fenghua Yu <fenghua.yu@intel.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Vinod Koul <vkoul@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 622/739] dmaengine: idxd: Allow ATS disable update only for configurable devices
+Date:   Mon, 11 Sep 2023 15:47:01 +0200
+Message-ID: <20230911134708.472522791@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,141 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chuck Lever <chuck.lever@oracle.com>
+From: Fenghua Yu <fenghua.yu@intel.com>
 
-[ Upstream commit 6372e2ee629894433fe6107d7048536a3280a284 ]
+[ Upstream commit 0056a7f07b0a63e6cee815a789eabba6f3a710f0 ]
 
-The XDR specification in RFC 8881 looks like this:
+ATS disable status in a WQ is read-only if the device is not configurable.
+This change ensures that the ATS disable attribute can be modified via
+sysfs only on configurable devices.
 
-struct device_addr4 {
-	layouttype4	da_layout_type;
-	opaque		da_addr_body<>;
-};
-
-struct GETDEVICEINFO4resok {
-	device_addr4	gdir_device_addr;
-	bitmap4		gdir_notification;
-};
-
-union GETDEVICEINFO4res switch (nfsstat4 gdir_status) {
-case NFS4_OK:
-	GETDEVICEINFO4resok gdir_resok4;
-case NFS4ERR_TOOSMALL:
-	count4		gdir_mincount;
-default:
-	void;
-};
-
-Looking at nfsd4_encode_getdeviceinfo() ....
-
-When the client provides a zero gd_maxcount, then the Linux NFS
-server implementation encodes the da_layout_type field and then
-skips the da_addr_body field completely, proceeding directly to
-encode gdir_notification field.
-
-There does not appear to be an option in the specification to skip
-encoding da_addr_body. Moreover, Section 18.40.3 says:
-
-> If the client wants to just update or turn off notifications, it
-> MAY send a GETDEVICEINFO operation with gdia_maxcount set to zero.
-> In that event, if the device ID is valid, the reply's da_addr_body
-> field of the gdir_device_addr field will be of zero length.
-
-Since the layout drivers are responsible for encoding the
-da_addr_body field, put this fix inside the ->encode_getdeviceinfo
-methods.
-
-Fixes: 9cf514ccfacb ("nfsd: implement pNFS operations")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Cc: Tom Haynes <loghyr@gmail.com>
-Signed-off-by: Chuck Lever <chuck.lever@oracle.com>
+Fixes: 92de5fa2dc39 ("dmaengine: idxd: add ATS disable knob for work queues")
+Signed-off-by: Fenghua Yu <fenghua.yu@intel.com>
+Reviewed-by: Dave Jiang <dave.jiang@intel.com>
+Link: https://lore.kernel.org/r/20230811012635.535413-1-fenghua.yu@intel.com
+Signed-off-by: Vinod Koul <vkoul@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfsd/blocklayoutxdr.c    |  9 +++++++++
- fs/nfsd/flexfilelayoutxdr.c |  9 +++++++++
- fs/nfsd/nfs4xdr.c           | 25 +++++++++++--------------
- 3 files changed, 29 insertions(+), 14 deletions(-)
+ drivers/dma/idxd/sysfs.c | 4 ++++
+ 1 file changed, 4 insertions(+)
 
-diff --git a/fs/nfsd/blocklayoutxdr.c b/fs/nfsd/blocklayoutxdr.c
-index 442543304930b..2455dc8be18a8 100644
---- a/fs/nfsd/blocklayoutxdr.c
-+++ b/fs/nfsd/blocklayoutxdr.c
-@@ -82,6 +82,15 @@ nfsd4_block_encode_getdeviceinfo(struct xdr_stream *xdr,
- 	int len = sizeof(__be32), ret, i;
- 	__be32 *p;
+diff --git a/drivers/dma/idxd/sysfs.c b/drivers/dma/idxd/sysfs.c
+index d16c16445c4f9..66c89b07b3f7b 100644
+--- a/drivers/dma/idxd/sysfs.c
++++ b/drivers/dma/idxd/sysfs.c
+@@ -1088,12 +1088,16 @@ static ssize_t wq_ats_disable_store(struct device *dev, struct device_attribute
+ 				    const char *buf, size_t count)
+ {
+ 	struct idxd_wq *wq = confdev_to_wq(dev);
++	struct idxd_device *idxd = wq->idxd;
+ 	bool ats_dis;
+ 	int rc;
  
-+	/*
-+	 * See paragraph 5 of RFC 8881 S18.40.3.
-+	 */
-+	if (!gdp->gd_maxcount) {
-+		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
-+			return nfserr_resource;
-+		return nfs_ok;
-+	}
+ 	if (wq->state != IDXD_WQ_DISABLED)
+ 		return -EPERM;
+ 
++	if (!test_bit(IDXD_FLAG_CONFIGURABLE, &idxd->flags))
++		return -EPERM;
 +
- 	p = xdr_reserve_space(xdr, len + sizeof(__be32));
- 	if (!p)
- 		return nfserr_resource;
-diff --git a/fs/nfsd/flexfilelayoutxdr.c b/fs/nfsd/flexfilelayoutxdr.c
-index e81d2a5cf381e..bb205328e043d 100644
---- a/fs/nfsd/flexfilelayoutxdr.c
-+++ b/fs/nfsd/flexfilelayoutxdr.c
-@@ -85,6 +85,15 @@ nfsd4_ff_encode_getdeviceinfo(struct xdr_stream *xdr,
- 	int addr_len;
- 	__be32 *p;
- 
-+	/*
-+	 * See paragraph 5 of RFC 8881 S18.40.3.
-+	 */
-+	if (!gdp->gd_maxcount) {
-+		if (xdr_stream_encode_u32(xdr, 0) != XDR_UNIT)
-+			return nfserr_resource;
-+		return nfs_ok;
-+	}
-+
- 	/* len + padding for two strings */
- 	addr_len = 16 + da->netaddr.netid_len + da->netaddr.addr_len;
- 	ver_len = 20;
-diff --git a/fs/nfsd/nfs4xdr.c b/fs/nfsd/nfs4xdr.c
-index 8f90a87ee9ca0..89a579be042e5 100644
---- a/fs/nfsd/nfs4xdr.c
-+++ b/fs/nfsd/nfs4xdr.c
-@@ -4571,20 +4571,17 @@ nfsd4_encode_getdeviceinfo(struct nfsd4_compoundres *resp, __be32 nfserr,
- 
- 	*p++ = cpu_to_be32(gdev->gd_layout_type);
- 
--	/* If maxcount is 0 then just update notifications */
--	if (gdev->gd_maxcount != 0) {
--		ops = nfsd4_layout_ops[gdev->gd_layout_type];
--		nfserr = ops->encode_getdeviceinfo(xdr, gdev);
--		if (nfserr) {
--			/*
--			 * We don't bother to burden the layout drivers with
--			 * enforcing gd_maxcount, just tell the client to
--			 * come back with a bigger buffer if it's not enough.
--			 */
--			if (xdr->buf->len + 4 > gdev->gd_maxcount)
--				goto toosmall;
--			return nfserr;
--		}
-+	ops = nfsd4_layout_ops[gdev->gd_layout_type];
-+	nfserr = ops->encode_getdeviceinfo(xdr, gdev);
-+	if (nfserr) {
-+		/*
-+		 * We don't bother to burden the layout drivers with
-+		 * enforcing gd_maxcount, just tell the client to
-+		 * come back with a bigger buffer if it's not enough.
-+		 */
-+		if (xdr->buf->len + 4 > gdev->gd_maxcount)
-+			goto toosmall;
-+		return nfserr;
- 	}
- 
- 	if (gdev->gd_notify_types) {
+ 	rc = kstrtobool(buf, &ats_dis);
+ 	if (rc < 0)
+ 		return rc;
 -- 
 2.40.1
 
