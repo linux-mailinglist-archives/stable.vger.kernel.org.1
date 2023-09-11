@@ -2,42 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C1B1979AEB8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 56AB979B070
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237498AbjIKWXw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:23:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55562 "EHLO
+        id S237515AbjIKWXp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:23:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41290 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241737AbjIKPNU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:20 -0400
+        with ESMTP id S240537AbjIKOqt (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:49 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3FA92FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87AE0C433C8;
-        Mon, 11 Sep 2023 15:13:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6307F106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A77CCC433C8;
+        Mon, 11 Sep 2023 14:46:44 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445195;
-        bh=9255rCakmPrPcD5ed/2OAXzoFdhR6vIaM9xvNjlsNCw=;
+        s=korg; t=1694443605;
+        bh=2Lv/acijescpU+Rn55p2RkhlaS/JEOhvxFG6LxZqlHk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=t17SKh7VZW62Ux0u4hztQUeiUeieClyrFC5A9v6JeHuTWnvLG+RJiH4O3U6oaiUWR
-         7xS2nXf2EAUb0LxQynlTgQuCns4lumZPpuPwNZwZ4caSxcjzdaPhECADHFAFAeeajE
-         c8W2l7yqK9BVjgX78snPcMbqInQ4X1GciffjyVuQ=
+        b=AFvQwULKUXmRHcr7SUrtvaM6s/tK2tBoZ/tjV2T/DkCliVt4Z7ZNtnrCSAUTeDEFq
+         13KQcg2sd6EgeioqAVEfUOw3Qf6oZ9AuuLFVs7Gpdf0EDE3eqJ1iYW69tx0pGTCany
+         2qrBkt8OoAjrxpf2tQewNp69jxcPNNIBJpu+HosQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 262/600] block: dont allow enabling a cache on devices that dont support it
-Date:   Mon, 11 Sep 2023 15:44:55 +0200
-Message-ID: <20230911134641.343476601@linuxfoundation.org>
+        patches@lists.linux.dev, Lukas Wunner <lukas@wunner.de>,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>,
+        Bjorn Helgaas <bhelgaas@google.com>,
+        "Rafael J. Wysocki" <rafael@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 437/737] PCI: pciehp: Use RMW accessors for changing LNKCTL
+Date:   Mon, 11 Sep 2023 15:44:56 +0200
+Message-ID: <20230911134702.805267464@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -49,91 +53,53 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
 
-[ Upstream commit 43c9835b144c7ce29efe142d662529662a9eb376 ]
+[ Upstream commit 5f75f96c61039151c193775d776fde42477eace1 ]
 
-Currently the write_cache attribute allows enabling the QUEUE_FLAG_WC
-flag on devices that never claimed the capability.
+As hotplug is not the only driver touching LNKCTL, use the RMW capability
+accessor which handles concurrent changes correctly.
 
-Fix that by adding a QUEUE_FLAG_HW_WC flag that is set by
-blk_queue_write_cache and guards re-enabling the cache through sysfs.
-
-Note that any rescan that calls blk_queue_write_cache will still
-re-enable the write cache as in the current code.
-
-Fixes: 93e9d8e836cb ("block: add ability to flag write back caching on a device")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230707094239.107968-3-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Suggested-by: Lukas Wunner <lukas@wunner.de>
+Fixes: 7f822999e12a ("PCI: pciehp: Add Disable/enable link functions")
+Link: https://lore.kernel.org/r/20230717120503.15276-4-ilpo.jarvinen@linux.intel.com
+Signed-off-by: Ilpo Järvinen <ilpo.jarvinen@linux.intel.com>
+Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Acked-by: "Rafael J. Wysocki" <rafael@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c   |  7 +++++--
- block/blk-sysfs.c      | 11 +++++++----
- include/linux/blkdev.h |  1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/pci/hotplug/pciehp_hpc.c | 12 +++---------
+ 1 file changed, 3 insertions(+), 9 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 291cf9df7fc29..86ff375c00ce4 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -824,10 +824,13 @@ EXPORT_SYMBOL(blk_set_queue_depth);
-  */
- void blk_queue_write_cache(struct request_queue *q, bool wc, bool fua)
+diff --git a/drivers/pci/hotplug/pciehp_hpc.c b/drivers/pci/hotplug/pciehp_hpc.c
+index f8c70115b6917..5deb45d79f9de 100644
+--- a/drivers/pci/hotplug/pciehp_hpc.c
++++ b/drivers/pci/hotplug/pciehp_hpc.c
+@@ -332,17 +332,11 @@ int pciehp_check_link_status(struct controller *ctrl)
+ static int __pciehp_link_set(struct controller *ctrl, bool enable)
  {
--	if (wc)
-+	if (wc) {
-+		blk_queue_flag_set(QUEUE_FLAG_HW_WC, q);
- 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else
-+	} else {
-+		blk_queue_flag_clear(QUEUE_FLAG_HW_WC, q);
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
-+	}
- 	if (fua)
- 		blk_queue_flag_set(QUEUE_FLAG_FUA, q);
- 	else
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 4f34525bafac7..a582ea0da74f5 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -528,13 +528,16 @@ static ssize_t queue_wc_show(struct request_queue *q, char *page)
- static ssize_t queue_wc_store(struct request_queue *q, const char *page,
- 			      size_t count)
- {
--	if (!strncmp(page, "write back", 10))
-+	if (!strncmp(page, "write back", 10)) {
-+		if (!test_bit(QUEUE_FLAG_HW_WC, &q->queue_flags))
-+			return -EINVAL;
- 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else if (!strncmp(page, "write through", 13) ||
--		 !strncmp(page, "none", 4))
-+	} else if (!strncmp(page, "write through", 13) ||
-+		 !strncmp(page, "none", 4)) {
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
--	else
-+	} else {
- 		return -EINVAL;
-+	}
+ 	struct pci_dev *pdev = ctrl_dev(ctrl);
+-	u16 lnk_ctrl;
  
- 	return count;
+-	pcie_capability_read_word(pdev, PCI_EXP_LNKCTL, &lnk_ctrl);
++	pcie_capability_clear_and_set_word(pdev, PCI_EXP_LNKCTL,
++					   PCI_EXP_LNKCTL_LD,
++					   enable ? 0 : PCI_EXP_LNKCTL_LD);
+ 
+-	if (enable)
+-		lnk_ctrl &= ~PCI_EXP_LNKCTL_LD;
+-	else
+-		lnk_ctrl |= PCI_EXP_LNKCTL_LD;
+-
+-	pcie_capability_write_word(pdev, PCI_EXP_LNKCTL, lnk_ctrl);
+-	ctrl_dbg(ctrl, "%s: lnk_ctrl = %x\n", __func__, lnk_ctrl);
+ 	return 0;
  }
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 427e79ac72194..57674b3c58774 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -565,6 +565,7 @@ struct request_queue {
- #define QUEUE_FLAG_NOXMERGES	9	/* No extended merges */
- #define QUEUE_FLAG_ADD_RANDOM	10	/* Contributes to random pool */
- #define QUEUE_FLAG_SAME_FORCE	12	/* force complete on same CPU */
-+#define QUEUE_FLAG_HW_WC	18	/* Write back caching supported */
- #define QUEUE_FLAG_INIT_DONE	14	/* queue is initialized */
- #define QUEUE_FLAG_STABLE_WRITES 15	/* don't modify blks until WB is done */
- #define QUEUE_FLAG_POLL		16	/* IO polling enabled if set */
+ 
 -- 
 2.40.1
 
