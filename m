@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2498E79B431
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8363A79B084
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238722AbjIKV6X (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:58:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50616 "EHLO
+        id S236129AbjIKWA6 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:00:58 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43254 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240439AbjIKOoP (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:15 -0400
+        with ESMTP id S241673AbjIKPLj (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:11:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6E79512A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:10 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B377AC433C8;
-        Mon, 11 Sep 2023 14:44:09 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B225DFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:11:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0843AC433C7;
+        Mon, 11 Sep 2023 15:11:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443450;
-        bh=rRYKM6yTdyOQkS4v1BuMygkh7GfXx2JpJvbIthNK9cM=;
+        s=korg; t=1694445094;
+        bh=uXpGHgRfJVouFi7ds/iphviLOcmcoG+VIrlFw220cSw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=UcjB9jomI+4AiPbdeKV0U0SrnJx26IcqRWSCkQMbSxkbD5jyxh7oAgCfODn1Qm77N
-         rzz+HXBPd6ld8tw+BOJtI5lpj1CpvEkayQyjIxnK8VjX+9Kd1AqupelgTnEbM1vtW9
-         bv4QQB6aD3zWeC7DpLN1IHvZuz7QPiLZ2G4Q/4oY=
+        b=MxAbWCks5doF26+pxqR23rKGlFFrp+JCVoHGtNGtKtmM9gEcfguT4Urxa+4+mcAAc
+         loSE7VO9xhy0wjP5AowFn+zB/xXM+qt5qtD6jfwlNTenoUj2+UqF+ts8XgUirgornN
+         QchkQmhQYCQEp7f+OgYCifTmHvrNXPfN803mPhv4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Bryan ODonoghue <bryan.odonoghue@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Alex Austin <alex.austin@amd.com>,
+        Edward Cree <ecree.xilinx@gmail.com>,
+        Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 381/737] arm64: dts: qcom: apq8016-sbc: Fix ov5640 regulator supply names
-Date:   Mon, 11 Sep 2023 15:44:00 +0200
-Message-ID: <20230911134701.216893488@linuxfoundation.org>
+Subject: [PATCH 6.1 208/600] sfc: Check firmware supports Ethernet PTP filter
+Date:   Mon, 11 Sep 2023 15:44:01 +0200
+Message-ID: <20230911134639.757340086@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,51 +52,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
+From: Alex Austin <alex.austin@amd.com>
 
-[ Upstream commit 43a684580819e7f35b6cb38236be63c4cba26ef4 ]
+[ Upstream commit c4413a20fa6d7c4888009fb7dd391685f196cd36 ]
 
-The ov5640 driver expects DOVDD, AVDD and DVDD as regulator supply names.
+Not all firmware variants support RSS filters. Do not fail all PTP
+functionality when raw ethernet PTP filters fail to insert.
 
-The ov5640 has depended on these names since the driver was committed
-upstream in 2017. Similarly apq8016-sbc.dtsi has had completely different
-regulator names since its own initial commit in 2020.
-
-Perhaps the regulators were left on in previous 410c bootloaders. In any
-case today on 6.5 we won't switch on the ov5640 without correctly naming
-the regulators.
-
-Fixes: 39e0ce6cd1bf ("arm64: dts: qcom: apq8016-sbc: Add CCI/Sensor nodes")
-Signed-off-by: Bryan O'Donoghue <bryan.odonoghue@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811234738.2859417-3-bryan.odonoghue@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: e4616f64726b ("sfc: support PTP over Ethernet")
+Signed-off-by: Alex Austin <alex.austin@amd.com>
+Acked-by: Edward Cree <ecree.xilinx@gmail.com>
+Reviewed-by: Pieter Jansen van Vuuren <pieter.jansen-van-vuuren@amd.com>
+Link: https://lore.kernel.org/r/20230824164657.42379-1-alex.austin@amd.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/apq8016-sbc.dts | 6 +++---
- 1 file changed, 3 insertions(+), 3 deletions(-)
+ drivers/net/ethernet/sfc/ptp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-index 3ec449f5cab78..7261cfc99f9fa 100644
---- a/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-+++ b/arch/arm64/boot/dts/qcom/apq8016-sbc.dts
-@@ -285,9 +285,9 @@ camera_rear@3b {
- 		clock-names = "xclk";
- 		clock-frequency = <23880000>;
+diff --git a/drivers/net/ethernet/sfc/ptp.c b/drivers/net/ethernet/sfc/ptp.c
+index eaef4a15008a3..692c7f132e9f9 100644
+--- a/drivers/net/ethernet/sfc/ptp.c
++++ b/drivers/net/ethernet/sfc/ptp.c
+@@ -1387,7 +1387,8 @@ static int efx_ptp_insert_multicast_filters(struct efx_nic *efx)
+ 			goto fail;
  
--		vdddo-supply = <&camera_vdddo_1v8>;
--		vdda-supply = <&camera_vdda_2v8>;
--		vddd-supply = <&camera_vddd_1v5>;
-+		DOVDD-supply = <&camera_vdddo_1v8>;
-+		AVDD-supply = <&camera_vdda_2v8>;
-+		DVDD-supply = <&camera_vddd_1v5>;
+ 		rc = efx_ptp_insert_eth_filter(efx);
+-		if (rc < 0)
++		/* Not all firmware variants support this filter */
++		if (rc < 0 && rc != -EPROTONOSUPPORT)
+ 			goto fail;
+ 	}
  
- 		/* No camera mezzanine by default */
- 		status = "disabled";
 -- 
 2.40.1
 
