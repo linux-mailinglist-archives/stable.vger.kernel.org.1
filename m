@@ -2,46 +2,52 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2DBCC79BA97
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 681C479B917
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243143AbjIKU7L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48052 "EHLO
+        id S1376373AbjIKWTV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47888 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239600AbjIKOYV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:21 -0400
+        with ESMTP id S240893AbjIKO4m (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B761EDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:17 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0ACF7C433C8;
-        Mon, 11 Sep 2023 14:24:16 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 11422E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 57A64C433C8;
+        Mon, 11 Sep 2023 14:56:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442257;
-        bh=jkoQ726IpYcv50GTILbGDO3L70AmWus3FTa38P1t4JQ=;
+        s=korg; t=1694444197;
+        bh=r5mEYeUDjwXlCAUzn9jdewtq2sjvcQszpcDzN3mqDxs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QrELMHLNbDGrnEPeXXr7gV89IvFWuL9sl1SmClLlDwn3L0Gy/v0hcqe1fBFUCvxrK
-         YgQEDMeboTZtPAFbpBCMoWMMj9W3VWnjVIogM9N6RYg000s+YXe2tyRfdkhrpJ1/o7
-         VlxXIpib5ZV+z0mknzY3+mLp16xhYBGnXJqqmv9Y=
+        b=aE2oW1KcQZxV92GQHlLROYkxskmYk0D9XATgb+PXKHabDlSaJyg6A/me3ZVqt3eOD
+         ZEV3M4xCjHdU+qpJDOkjpXlQ/2JMlzn4d8FDZmK8nDzv/97mk0omyU8qSXKduCjiYe
+         7BS1ZRe6Id3vBqygbQVQue2cWaZqal13dBrkW9ok=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Christophe JAILLET <christophe.jaillet@wanadoo.fr>,
-        Takashi Iwai <tiwai@suse.de>
-Subject: [PATCH 6.5 675/739] ALSA: usb-audio: Fix potential memory leaks at error path for UMP open
-Date:   Mon, 11 Sep 2023 15:47:54 +0200
-Message-ID: <20230911134709.956635132@linuxfoundation.org>
+        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
+        <nfraprado@collabora.com>,
+        Alexandre Mergnat <amergnat@baylibre.com>,
+        AngeloGioacchino Del Regno 
+        <angelogioacchino.delregno@collabora.com>,
+        Daniel Lezcano <daniel.lezcano@linaro.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 616/737] thermal/drivers/mediatek/lvts_thermal: Manage threshold between sensors
+Date:   Mon, 11 Sep 2023 15:47:55 +0200
+Message-ID: <20230911134707.738907642@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
+        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -50,70 +56,165 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Takashi Iwai <tiwai@suse.de>
+From: Nícolas F. R. A. Prado <nfraprado@collabora.com>
 
-commit b1757fa30ef14f254f4719bf6f7d54a4c8207216 upstream.
+[ Upstream commit 2bba1acf7a4cbe62abbb4c686e0414209ec5943b ]
 
-The allocation and initialization errors at alloc_midi_urbs() that is
-called at MIDI 2.0 / UMP device are supposed to be handled at the
-caller side by invoking free_midi_urbs().  However, free_midi_urbs()
-loops only for ep->num_urbs entries, and since ep->num_entries wasn't
-updated yet at the allocation / init error in alloc_midi_urbs(), this
-entry won't be released.
+Each LVTS thermal controller can have up to four sensors, each capable
+of triggering its own interrupt when its measured temperature crosses
+the configured threshold. The threshold for each sensor is handled
+separately by the thermal framework, since each one is registered with
+its own thermal zone and trips. However, the temperature thresholds are
+configured on the controller, and therefore are shared between all
+sensors on that controller.
 
-The intention of free_midi_urbs() is to release the whole elements, so
-change the loop size to NUM_URBS to scan over all elements for fixing
-the missed releases.
+When the temperature measured by the sensors is different enough to
+cause the thermal framework to configure different thresholds for each
+one, interrupts start triggering on sensors outside the last threshold
+configured.
 
-Also, the call of free_midi_urbs() is missing at
-snd_usb_midi_v2_open().  Although it'll be released later at
-reopen/close or disconnection, it's better to release immediately at
-the error path.
+To address the issue, track the thresholds required by each sensor and
+only actually set the highest one in the hardware, and disable
+interrupts for all sensors outside the current configured range.
 
-Fixes: ff49d1df79ae ("ALSA: usb-audio: USB MIDI 2.0 UMP support")
-Reported-by: Christophe JAILLET <christophe.jaillet@wanadoo.fr>
-Closes: https://lore.kernel.org/r/fc275ed315b9157952dcf2744ee7bdb78defdb5f.1693746347.git.christophe.jaillet@wanadoo.fr
-Link: https://lore.kernel.org/r/20230905054511.20502-1-tiwai@suse.de
-Signed-off-by: Takashi Iwai <tiwai@suse.de>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Fixes: f5f633b18234 ("thermal/drivers/mediatek: Add the Low Voltage Thermal Sensor driver")
+Signed-off-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
+Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
+Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
+Signed-off-by: Daniel Lezcano <daniel.lezcano@linaro.org>
+Link: https://lore.kernel.org/r/20230706153823.201943-7-nfraprado@collabora.com
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- sound/usb/midi2.c |    7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/thermal/mediatek/lvts_thermal.c | 69 +++++++++++++++++++++++++
+ 1 file changed, 69 insertions(+)
 
---- a/sound/usb/midi2.c
-+++ b/sound/usb/midi2.c
-@@ -265,7 +265,7 @@ static void free_midi_urbs(struct snd_us
+diff --git a/drivers/thermal/mediatek/lvts_thermal.c b/drivers/thermal/mediatek/lvts_thermal.c
+index a6bdcdfffa333..d4f160e8c7dbc 100644
+--- a/drivers/thermal/mediatek/lvts_thermal.c
++++ b/drivers/thermal/mediatek/lvts_thermal.c
+@@ -65,6 +65,11 @@
+ #define LVTS_CALSCALE_CONF			0x300
+ #define LVTS_MONINT_CONF			0x8300318C
  
- 	if (!ep)
- 		return;
--	for (i = 0; i < ep->num_urbs; ++i) {
-+	for (i = 0; i < NUM_URBS; ++i) {
- 		ctx = &ep->urbs[i];
- 		if (!ctx->urb)
- 			break;
-@@ -279,6 +279,7 @@ static void free_midi_urbs(struct snd_us
- }
++#define LVTS_MONINT_OFFSET_SENSOR0		0xC
++#define LVTS_MONINT_OFFSET_SENSOR1		0x180
++#define LVTS_MONINT_OFFSET_SENSOR2		0x3000
++#define LVTS_MONINT_OFFSET_SENSOR3		0x3000000
++
+ #define LVTS_INT_SENSOR0			0x0009001F
+ #define LVTS_INT_SENSOR1			0x001203E0
+ #define LVTS_INT_SENSOR2			0x00247C00
+@@ -110,6 +115,8 @@ struct lvts_sensor {
+ 	void __iomem *base;
+ 	int id;
+ 	int dt_id;
++	int low_thresh;
++	int high_thresh;
+ };
  
- /* allocate URBs for an EP */
-+/* the callers should handle allocation errors via free_midi_urbs() */
- static int alloc_midi_urbs(struct snd_usb_midi2_endpoint *ep)
- {
- 	struct snd_usb_midi2_urb *ctx;
-@@ -351,8 +352,10 @@ static int snd_usb_midi_v2_open(struct s
- 		return -EIO;
- 	if (ep->direction == STR_OUT) {
- 		err = alloc_midi_urbs(ep);
--		if (err)
-+		if (err) {
-+			free_midi_urbs(ep);
- 			return err;
-+		}
- 	}
+ struct lvts_ctrl {
+@@ -119,6 +126,8 @@ struct lvts_ctrl {
+ 	int num_lvts_sensor;
+ 	int mode;
+ 	void __iomem *base;
++	int low_thresh;
++	int high_thresh;
+ };
+ 
+ struct lvts_domain {
+@@ -290,12 +299,66 @@ static int lvts_get_temp(struct thermal_zone_device *tz, int *temp)
  	return 0;
  }
+ 
++static void lvts_update_irq_mask(struct lvts_ctrl *lvts_ctrl)
++{
++	u32 masks[] = {
++		LVTS_MONINT_OFFSET_SENSOR0,
++		LVTS_MONINT_OFFSET_SENSOR1,
++		LVTS_MONINT_OFFSET_SENSOR2,
++		LVTS_MONINT_OFFSET_SENSOR3,
++	};
++	u32 value = 0;
++	int i;
++
++	value = readl(LVTS_MONINT(lvts_ctrl->base));
++
++	for (i = 0; i < ARRAY_SIZE(masks); i++) {
++		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
++		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
++			value |= masks[i];
++		else
++			value &= ~masks[i];
++	}
++
++	writel(value, LVTS_MONINT(lvts_ctrl->base));
++}
++
++static bool lvts_should_update_thresh(struct lvts_ctrl *lvts_ctrl, int high)
++{
++	int i;
++
++	if (high > lvts_ctrl->high_thresh)
++		return true;
++
++	for (i = 0; i < lvts_ctrl->num_lvts_sensor; i++)
++		if (lvts_ctrl->sensors[i].high_thresh == lvts_ctrl->high_thresh
++		    && lvts_ctrl->sensors[i].low_thresh == lvts_ctrl->low_thresh)
++			return false;
++
++	return true;
++}
++
+ static int lvts_set_trips(struct thermal_zone_device *tz, int low, int high)
+ {
+ 	struct lvts_sensor *lvts_sensor = thermal_zone_device_priv(tz);
++	struct lvts_ctrl *lvts_ctrl = container_of(lvts_sensor, struct lvts_ctrl, sensors[lvts_sensor->id]);
+ 	void __iomem *base = lvts_sensor->base;
+ 	u32 raw_low = lvts_temp_to_raw(low != -INT_MAX ? low : LVTS_MINIMUM_THRESHOLD);
+ 	u32 raw_high = lvts_temp_to_raw(high);
++	bool should_update_thresh;
++
++	lvts_sensor->low_thresh = low;
++	lvts_sensor->high_thresh = high;
++
++	should_update_thresh = lvts_should_update_thresh(lvts_ctrl, high);
++	if (should_update_thresh) {
++		lvts_ctrl->high_thresh = high;
++		lvts_ctrl->low_thresh = low;
++	}
++	lvts_update_irq_mask(lvts_ctrl);
++
++	if (!should_update_thresh)
++		return 0;
+ 
+ 	/*
+ 	 * Low offset temperature threshold
+@@ -519,6 +582,9 @@ static int lvts_sensor_init(struct device *dev, struct lvts_ctrl *lvts_ctrl,
+ 		 */
+ 		lvts_sensor[i].msr = lvts_ctrl_data->mode == LVTS_MSR_IMMEDIATE_MODE ?
+ 			imm_regs[i] : msr_regs[i];
++
++		lvts_sensor[i].low_thresh = INT_MIN;
++		lvts_sensor[i].high_thresh = INT_MIN;
+ 	};
+ 
+ 	lvts_ctrl->num_lvts_sensor = lvts_ctrl_data->num_lvts_sensor;
+@@ -686,6 +752,9 @@ static int lvts_ctrl_init(struct device *dev, struct lvts_domain *lvts_td,
+ 		 */
+ 		lvts_ctrl[i].hw_tshut_raw_temp =
+ 			lvts_temp_to_raw(lvts_data->lvts_ctrl[i].hw_tshut_temp);
++
++		lvts_ctrl[i].low_thresh = INT_MIN;
++		lvts_ctrl[i].high_thresh = INT_MIN;
+ 	}
+ 
+ 	/*
+-- 
+2.40.1
+
 
 
