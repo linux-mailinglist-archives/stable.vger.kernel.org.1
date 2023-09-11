@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id ADD0479B309
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:40 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 49C0579B203
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344288AbjIKVNt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55462 "EHLO
+        id S244145AbjIKWY4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:24:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53460 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239954AbjIKOcQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:32:16 -0400
+        with ESMTP id S238592AbjIKOAI (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:08 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DC409F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:32:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29718C433C8;
-        Mon, 11 Sep 2023 14:32:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4653FCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 46D4DC433C7;
+        Mon, 11 Sep 2023 14:00:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442732;
-        bh=UC4j4ZwZIrQCiyspLIVeoOb5I8gdEcb0mTQ5Y8MJhIs=;
+        s=korg; t=1694440802;
+        bh=E31aYrD/5A04Z8Z662/aPgpCjXNkqAYynxLlvflrBrw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=kdjaM8MP8WQM5RbB8mpQb0DEzDYnX6Oyala+jjzwOq3uuomUSlQ3Js0dYFOM0/V9i
-         4hgagVSwG2q1tPgrJrlwqVUkC2d7ER916G/Td3cSosWhjlnneJ5gx1tAT5vtJk0Ucx
-         SX0oAUD8pqyKeYcTiMRWmkne5wTl/qZoefQZVBMw=
+        b=sWhn75fXTDeDnoYBNPt9S4y32IhkmThRfS82gAhq85PVS8ScLV9hip/OgD0Q3pfx1
+         2YTJUzwxHKrz+VVsgf6Anz3URAxOwPTbWvCBPL7CnX+FmhKk6znGdBdm2XrN+vGTX4
+         47p6LzAN/b6t6rVXcDvwQQnO+ygeBFvox+rjQ0Qs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Holger Dengler <dengler@linux.ibm.com>,
-        Ingo Franzki <ifranzki@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>,
+        patches@lists.linux.dev, Hariprasad Kelam <hkelam@marvell.com>,
+        Simon Horman <horms@kernel.org>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 129/737] s390/paes: fix PKEY_TYPE_EP11_AES handling for secure keyblobs
-Date:   Mon, 11 Sep 2023 15:39:48 +0200
-Message-ID: <20230911134654.105886027@linuxfoundation.org>
+Subject: [PATCH 6.5 190/739] octeontx2-af: CN10KB: fix PFC configuration
+Date:   Mon, 11 Sep 2023 15:39:49 +0200
+Message-ID: <20230911134656.500824091@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,42 +51,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Holger Dengler <dengler@linux.ibm.com>
+From: Hariprasad Kelam <hkelam@marvell.com>
 
-[ Upstream commit cba33db3fc4dbf2e54294b0e499d2335a3a00d78 ]
+[ Upstream commit 47bcc9c1cf6aa60156c7532983090e86d9d171b6 ]
 
-Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES securekey blobs as a
-supplement to the PKEY_TYPE_EP11 (which won't work in environments
-with session-bound keys). This new keyblobs has a different maximum
-size, so fix paes crypto module to accept also these larger keyblobs.
+Suppose user has enabled pfc with prio 0,1 on a PF netdev(eth0)
+	dcb pfc set dev eth0 prio-pfc o:on 1:on
+later user enabled pfc priorities 2 and 3 on the VF interface(eth1)
+	dcb pfc set dev eth1 prio-pfc 2:on 3:on
 
-Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
-Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
-Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Instead of enabling pfc on all priorities (0..3), the driver only
+enables on priorities 2,3. This patch corrects the issue by using
+the proper CSR address.
+
+Fixes: b9d0fedc6234 ("octeontx2-af: cn10kb: Add RPM_USX MAC support")
+Signed-off-by: Hariprasad Kelam <hkelam@marvell.com>
+Reviewed-by: Simon Horman <horms@kernel.org>
+Link: https://lore.kernel.org/r/20230824081032.436432-3-sumang@marvell.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/s390/crypto/paes_s390.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/marvell/octeontx2/af/rpm.c | 17 +++++++++--------
+ 1 file changed, 9 insertions(+), 8 deletions(-)
 
-diff --git a/arch/s390/crypto/paes_s390.c b/arch/s390/crypto/paes_s390.c
-index 29dc827e0fe81..143ae4d4284db 100644
---- a/arch/s390/crypto/paes_s390.c
-+++ b/arch/s390/crypto/paes_s390.c
-@@ -35,7 +35,7 @@
-  * and padding is also possible, the limits need to be generous.
-  */
- #define PAES_MIN_KEYSIZE 16
--#define PAES_MAX_KEYSIZE 320
-+#define PAES_MAX_KEYSIZE MAXEP11AESKEYBLOBSIZE
+diff --git a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+index b4fcb20c3f4fd..af21e2030cff2 100644
+--- a/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
++++ b/drivers/net/ethernet/marvell/octeontx2/af/rpm.c
+@@ -355,8 +355,8 @@ int rpm_lmac_enadis_pause_frm(void *rpmd, int lmac_id, u8 tx_pause,
  
- static u8 *ctrblk;
- static DEFINE_MUTEX(ctrblk_lock);
+ void rpm_lmac_pause_frm_config(void *rpmd, int lmac_id, bool enable)
+ {
++	u64 cfg, pfc_class_mask_cfg;
+ 	rpm_t *rpm = rpmd;
+-	u64 cfg;
+ 
+ 	/* ALL pause frames received are completely ignored */
+ 	cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+@@ -380,9 +380,11 @@ void rpm_lmac_pause_frm_config(void *rpmd, int lmac_id, bool enable)
+ 		rpm_write(rpm, 0, RPMX_CMR_CHAN_MSK_OR, ~0ULL);
+ 
+ 	/* Disable all PFC classes */
+-	cfg = rpm_read(rpm, lmac_id, RPMX_CMRX_PRT_CBFC_CTL);
++	pfc_class_mask_cfg = is_dev_rpm2(rpm) ? RPM2_CMRX_PRT_CBFC_CTL :
++						RPMX_CMRX_PRT_CBFC_CTL;
++	cfg = rpm_read(rpm, lmac_id, pfc_class_mask_cfg);
+ 	cfg = FIELD_SET(RPM_PFC_CLASS_MASK, 0, cfg);
+-	rpm_write(rpm, lmac_id, RPMX_CMRX_PRT_CBFC_CTL, cfg);
++	rpm_write(rpm, lmac_id, pfc_class_mask_cfg, cfg);
+ }
+ 
+ int rpm_get_rx_stats(void *rpmd, int lmac_id, int idx, u64 *rx_stat)
+@@ -605,8 +607,11 @@ int rpm_lmac_pfc_config(void *rpmd, int lmac_id, u8 tx_pause, u8 rx_pause, u16 p
+ 	if (!is_lmac_valid(rpm, lmac_id))
+ 		return -ENODEV;
+ 
++	pfc_class_mask_cfg = is_dev_rpm2(rpm) ? RPM2_CMRX_PRT_CBFC_CTL :
++						RPMX_CMRX_PRT_CBFC_CTL;
++
+ 	cfg = rpm_read(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG);
+-	class_en = rpm_read(rpm, lmac_id, RPMX_CMRX_PRT_CBFC_CTL);
++	class_en = rpm_read(rpm, lmac_id, pfc_class_mask_cfg);
+ 	pfc_en |= FIELD_GET(RPM_PFC_CLASS_MASK, class_en);
+ 
+ 	if (rx_pause) {
+@@ -635,10 +640,6 @@ int rpm_lmac_pfc_config(void *rpmd, int lmac_id, u8 tx_pause, u8 rx_pause, u16 p
+ 		cfg |= RPMX_MTI_MAC100X_COMMAND_CONFIG_PFC_MODE;
+ 
+ 	rpm_write(rpm, lmac_id, RPMX_MTI_MAC100X_COMMAND_CONFIG, cfg);
+-
+-	pfc_class_mask_cfg = is_dev_rpm2(rpm) ? RPM2_CMRX_PRT_CBFC_CTL :
+-						RPMX_CMRX_PRT_CBFC_CTL;
+-
+ 	rpm_write(rpm, lmac_id, pfc_class_mask_cfg, class_en);
+ 
+ 	return 0;
 -- 
 2.40.1
 
