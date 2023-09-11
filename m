@@ -2,236 +2,163 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6F04779AD57
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 4CE7379B3EA
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:02 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237031AbjIKUxH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:53:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57794 "EHLO
+        id S1379627AbjIKWpK (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:10 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59288 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235567AbjIKJAU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:00:20 -0400
-Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342D91BE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 02:00:16 -0700 (PDT)
-Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c364fb8a4cso38172255ad.1
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 02:00:16 -0700 (PDT)
+        with ESMTP id S235615AbjIKJFE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:05:04 -0400
+Received: from smtp-fw-6001.amazon.com (smtp-fw-6001.amazon.com [52.95.48.154])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F087CCC;
+        Mon, 11 Sep 2023 02:04:59 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694422815; x=1695027615; darn=vger.kernel.org;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:from:to:cc:subject:date:message-id:reply-to;
-        bh=pQ7We+2wtCKTJ5VHPfkCIGjZi5044OwfR4cR8rIKrL0=;
-        b=FsxUzcQ+/UlRd2b1laxIo6G0sNrlYcQ4yY1LtS4n8FCpJcG3WlBNwDGckNNygQIYwb
-         Bly3KpTwG7zYG2kBtQnDok8ri7XyuxZDAM+KCbcdsYoqOw8/1MydUQEjJHZNWuVWKWFM
-         2rHxyJD2IszTz9gtK4eUG2VcjaTRtmbpV3NRrE/V3vrS7YIzBknbSYHpdT70zOqTTnaD
-         TLapRshxFXNw3B9nikeHuuYQEKb8uYcwg6u/d7+hrH25nRCmhXQSG38/asoIsNalfpn+
-         fcIKoDTSyVKEJmqYHBOtGGJksFON1eGQ6CUS/4/0qdvtFTyyhQmzfjg53fXCBNkDOT5z
-         BajA==
-X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694422815; x=1695027615;
-        h=from:to:subject:content-transfer-encoding:mime-version:date
-         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
-         :reply-to;
-        bh=pQ7We+2wtCKTJ5VHPfkCIGjZi5044OwfR4cR8rIKrL0=;
-        b=CbJgZkvFMBiM9owtinzwN1Puh5sPMo6aivC6Jp+V5Bu9x2xVQs4i4M/Ml+LDRLm/4o
-         la8reqWFQXrnpzqTuDueGe9YajtDokgW9fBH2l2KkW0msQCAQVGs4DrFMQSj4sjYiDue
-         N6SvV6UW1U9VXRVweeFDSeYWn27EBWOzZyxe4RpWZ2KABcboSxfxu08VLdiR0ZJvu7Q2
-         jcmNw26CB7ra57HiSfwYtVFw+8hHoJbZNNH3XUpl+44EwM0ToaPmG5+dEsGdf6JICgd/
-         Q8i2oEJyuHQJyLUFrGeYgZ5A1dZXokmDWbFowjsPXggil4yCzdkjx6PZyYd0lCenG0GM
-         DfBA==
-X-Gm-Message-State: AOJu0Yxz4VOZ6dnx7T+SJPo8NUXvq8dUKFyYXpyAEy12V5DlOUx9d9iS
-        5feky09QCqpmvWSqAMUmzinLymOaJK1lcI3jb9o=
-X-Google-Smtp-Source: AGHT+IHOH6ai5pqMbNb1/hs8QgD+n4iEo8HrlDHPHhc7UbqNsCjVkIcuqA5qxszIitBRxpJx2veazw==
-X-Received: by 2002:a17:903:41cf:b0:1b8:6a09:9cf9 with SMTP id u15-20020a17090341cf00b001b86a099cf9mr11956393ple.26.1694422814934;
-        Mon, 11 Sep 2023 02:00:14 -0700 (PDT)
-Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
-        by smtp.gmail.com with ESMTPSA id u1-20020a170902e80100b001bc445e2497sm5882809plg.79.2023.09.11.02.00.13
-        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
-        Mon, 11 Sep 2023 02:00:14 -0700 (PDT)
-Message-ID: <64fed71e.170a0220.df3f3.e009@mx.google.com>
-Date:   Mon, 11 Sep 2023 02:00:14 -0700 (PDT)
-Content-Type: text/plain; charset="utf-8"
+  d=amazon.de; i=@amazon.de; q=dns/txt; s=amazon201209;
+  t=1694423100; x=1725959100;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=6HZ3ImJ0ubDWZx9vArQn3ZwdK51K1SOGtrY5KEqqUJM=;
+  b=ODuC5x1Vu0vuj3tOhyODVfJVxxi84TZBu5sOjFtY7na4bGIYeXxXf1Zx
+   13DCP2tdkETu6hwnjItlz97EZb24nmIULdr9yLP9Civn9taCi81t9fqbk
+   xGerZWls8cOvVRB4+6kRwLo1HsJpZxHG8/qfgPz8cD5014lrU3mshDG7D
+   k=;
+X-IronPort-AV: E=Sophos;i="6.02,243,1688428800"; 
+   d="scan'208";a="357793259"
+Received: from iad12-co-svc-p1-lb1-vlan2.amazon.com (HELO email-inbound-relay-pdx-2c-m6i4x-94edd59b.us-west-2.amazon.com) ([10.43.8.2])
+  by smtp-border-fw-6001.iad6.amazon.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 09:04:56 +0000
+Received: from EX19D008EUA003.ant.amazon.com (pdx1-ws-svc-p6-lb9-vlan2.pdx.amazon.com [10.236.137.194])
+        by email-inbound-relay-pdx-2c-m6i4x-94edd59b.us-west-2.amazon.com (Postfix) with ESMTPS id AA6D440DEF;
+        Mon, 11 Sep 2023 09:04:54 +0000 (UTC)
+Received: from EX19MTAUWB001.ant.amazon.com (10.250.64.248) by
+ EX19D008EUA003.ant.amazon.com (10.252.50.155) with Microsoft SMTP Server
+ (version=TLS1_2, cipher=TLS_ECDHE_RSA_WITH_AES_256_GCM_SHA384) id
+ 15.2.1118.37; Mon, 11 Sep 2023 09:04:53 +0000
+Received: from dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (10.15.57.183)
+ by mail-relay.amazon.com (10.250.64.254) with Microsoft SMTP Server id
+ 15.2.1118.37 via Frontend Transport; Mon, 11 Sep 2023 09:04:52 +0000
+Received: by dev-dsk-mheyne-1b-c1362c4d.eu-west-1.amazon.com (Postfix, from userid 5466572)
+        id 47D4C368A; Mon, 11 Sep 2023 09:04:52 +0000 (UTC)
+From:   Maximilian Heyne <mheyne@amazon.de>
+To:     Catalin Marinas <catalin.marinas@arm.com>,
+        <virtualization@lists.linux-foundation.org>
+CC:     Maximilian Heyne <mheyne@amazon.de>, <stable@vger.kernel.org>,
+        Xuan Zhuo <xuanzhuo@linux.alibaba.com>,
+        "Michael S. Tsirkin" <mst@redhat.com>,
+        Jason Wang <jasowang@redhat.com>,
+        Wolfram Sang <wsa+renesas@sang-engineering.com>,
+        <linux-kernel@vger.kernel.org>
+Subject: [PATCH v3] virtio-mmio: fix memory leak of vm_dev
+Date:   Mon, 11 Sep 2023 09:03:29 +0000
+Message-ID: <20230911090328.40538-1-mheyne@amazon.de>
+X-Mailer: git-send-email 2.40.1
 MIME-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
-X-Kernelci-Branch: linux-5.15.y
-X-Kernelci-Tree: stable-rc
-X-Kernelci-Report-Type: build
-X-Kernelci-Kernel: v5.15.131-378-g0d005f1330c2
-Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
- 3 warnings (v5.15.131-378-g0d005f1330c2)
-To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
-        kernelci-results@groups.io
-From:   "kernelci.org bot" <bot@kernelci.org>
-X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset="us-ascii"
+Content-Transfer-Encoding: 7bit
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        RCVD_IN_MSPIKE_H5,RCVD_IN_MSPIKE_WL,SPF_HELO_NONE,T_SPF_PERMERROR
+        autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
-5.15.131-378-g0d005f1330c2)
+With the recent removal of vm_dev from devres its memory is only freed
+via the callback virtio_mmio_release_dev. However, this only takes
+effect after device_add is called by register_virtio_device. Until then
+it's an unmanaged resource and must be explicitly freed on error exit.
 
-Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
-y/kernel/v5.15.131-378-g0d005f1330c2/
+This bug was discovered and resolved using Coverity Static Analysis
+Security Testing (SAST) by Synopsys, Inc.
 
-Tree: stable-rc
-Branch: linux-5.15.y
-Git Describe: v5.15.131-378-g0d005f1330c2
-Git Commit: 0d005f1330c27847e09ba2bc8d7c76cb9962a56a
-Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
-e-rc.git
-Built: 7 unique architectures
-
-Warnings Detected:
-
-arc:
-
-arm64:
-
-arm:
-
-i386:
-
-mips:
-    32r2el_defconfig (gcc-10): 1 warning
-
-riscv:
-
-x86_64:
-    x86_64_defconfig (gcc-10): 1 warning
-    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
-
-
-Warnings summary:
-
-    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
-eachable instruction
-    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
-e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
-ted "0,0"
-
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
-=3D=3D=3D=3D=3D
-
-Detailed per-defconfig build reports:
-
----------------------------------------------------------------------------=
------
-32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
-ion mismatches
-
-Warnings:
-    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
-): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
-0,0"
-
----------------------------------------------------------------------------=
------
-allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
-mismatches
-
----------------------------------------------------------------------------=
------
-allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
-n mismatches
-
----------------------------------------------------------------------------=
------
-defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
-ings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
- section mismatches
-
----------------------------------------------------------------------------=
------
-i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
-on mismatches
-
----------------------------------------------------------------------------=
------
-imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
-0 section mismatches
-
----------------------------------------------------------------------------=
------
-nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
-nings, 0 section mismatches
-
----------------------------------------------------------------------------=
------
-omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
-ection mismatches
-
----------------------------------------------------------------------------=
------
-rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
-ion mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
- mismatches
-
----------------------------------------------------------------------------=
------
-tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
-ismatches
-
----------------------------------------------------------------------------=
------
-vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
-ction mismatches
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
-ction mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
-
----------------------------------------------------------------------------=
------
-x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
-1 warning, 0 section mismatches
-
-Warnings:
-    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
-ble instruction
+Cc: <stable@vger.kernel.org>
+Fixes: 55c91fedd03d ("virtio-mmio: don't break lifecycle of vm_dev")
+Signed-off-by: Maximilian Heyne <mheyne@amazon.de>
+Reviewed-by: Catalin Marinas <catalin.marinas@arm.com>
+Tested-by: Catalin Marinas <catalin.marinas@arm.com>
+Reviewed-by: Xuan Zhuo <xuanzhuo@linux.alibaba.com>
 
 ---
-For more info write to <info@kernelci.org>
+Resending this patch because the previous email wasn't delivered to lore.
+Copied the reviewed-bys from 
+https://lore.kernel.org/all/ZPn6KZpdPdG2LQqL@arm.com/ and
+https://lore.kernel.org/all/1694137778.7008362-1-xuanzhuo@linux.alibaba.com/
+
+ drivers/virtio/virtio_mmio.c | 19 ++++++++++++++-----
+ 1 file changed, 14 insertions(+), 5 deletions(-)
+
+diff --git a/drivers/virtio/virtio_mmio.c b/drivers/virtio/virtio_mmio.c
+index 97760f611295..59892a31cf76 100644
+--- a/drivers/virtio/virtio_mmio.c
++++ b/drivers/virtio/virtio_mmio.c
+@@ -631,14 +631,17 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 	spin_lock_init(&vm_dev->lock);
+ 
+ 	vm_dev->base = devm_platform_ioremap_resource(pdev, 0);
+-	if (IS_ERR(vm_dev->base))
+-		return PTR_ERR(vm_dev->base);
++	if (IS_ERR(vm_dev->base)) {
++		rc = PTR_ERR(vm_dev->base);
++		goto free_vm_dev;
++	}
+ 
+ 	/* Check magic value */
+ 	magic = readl(vm_dev->base + VIRTIO_MMIO_MAGIC_VALUE);
+ 	if (magic != ('v' | 'i' << 8 | 'r' << 16 | 't' << 24)) {
+ 		dev_warn(&pdev->dev, "Wrong magic value 0x%08lx!\n", magic);
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 
+ 	/* Check device version */
+@@ -646,7 +649,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 	if (vm_dev->version < 1 || vm_dev->version > 2) {
+ 		dev_err(&pdev->dev, "Version %ld not supported!\n",
+ 				vm_dev->version);
+-		return -ENXIO;
++		rc = -ENXIO;
++		goto free_vm_dev;
+ 	}
+ 
+ 	vm_dev->vdev.id.device = readl(vm_dev->base + VIRTIO_MMIO_DEVICE_ID);
+@@ -655,7 +659,8 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 		 * virtio-mmio device with an ID 0 is a (dummy) placeholder
+ 		 * with no function. End probing now with no error reported.
+ 		 */
+-		return -ENODEV;
++		rc = -ENODEV;
++		goto free_vm_dev;
+ 	}
+ 	vm_dev->vdev.id.vendor = readl(vm_dev->base + VIRTIO_MMIO_VENDOR_ID);
+ 
+@@ -685,6 +690,10 @@ static int virtio_mmio_probe(struct platform_device *pdev)
+ 		put_device(&vm_dev->vdev.dev);
+ 
+ 	return rc;
++
++free_vm_dev:
++	kfree(vm_dev);
++	return rc;
+ }
+ 
+ static int virtio_mmio_remove(struct platform_device *pdev)
+-- 
+2.40.1
+
+
+
+
+Amazon Development Center Germany GmbH
+Krausenstr. 38
+10117 Berlin
+Geschaeftsfuehrung: Christian Schlaeger, Jonathan Weiss
+Eingetragen am Amtsgericht Charlottenburg unter HRB 149173 B
+Sitz: Berlin
+Ust-ID: DE 289 237 879
+
+
+
