@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id DA08079BC11
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27D7179BC95
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243173AbjIKU7Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51162 "EHLO
+        id S236541AbjIKVaz (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:55 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43264 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239941AbjIKOcA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:32:00 -0400
+        with ESMTP id S238531AbjIKN6e (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:58:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D244E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66B1BC433CA;
-        Mon, 11 Sep 2023 14:31:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 57EEACD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:58:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9D2E8C433C7;
+        Mon, 11 Sep 2023 13:58:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442715;
-        bh=3ShxS7cLbqyGZHxCe1yQM3PsyIHYVwhy42n2+3b8hFo=;
+        s=korg; t=1694440710;
+        bh=uCkuAZ1VMNwBoQX/0f9u01s5A6VQ4IIvb47phhiZJPw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=KiOTo6Jtc7WU3QxPhPe5TR9hMeOx+LT3+dTIlB4MnvFR3o9A/6YbKdzB5NAkQ4YuP
-         fSlmTJPrgu2gGfqfIoGq4+KUwTx0x1augtyr7Uc9Rt/p8LpQuGfLXQ+5Wg6z4U6E8C
-         i40UkV9bqDTM6kCqrdeZA97VZJcFuJzARyAF6Qn4=
+        b=k9NVRZMZi+EFHfQCxCaJIdZGmV4WPB/dXzc/EOE30vRP8+N4MXfr7dqE9zH8cVmJl
+         rh8q01iLTf/92E3DIkelUU4rWGXLEFtBInbSd2qz0jAPgfA5kZFeII8X33imTly29k
+         TxjGNM52MDB5mYW3YTK5JM9D5qKqpfAgQrIyen4o=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sabrina Dubroca <sd@queasysnail.net>,
-        Paolo Abeni <pabeni@redhat.com>
-Subject: [PATCH 6.4 096/737] Revert "net: macsec: preserve ingress frame ordering"
-Date:   Mon, 11 Sep 2023 15:39:15 +0200
-Message-ID: <20230911134653.194041075@linuxfoundation.org>
+        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
+        Dmitry Antipov <dmantipov@yandex.ru>,
+        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 157/739] wifi: mwifiex: fix memory leak in mwifiex_histogram_read()
+Date:   Mon, 11 Sep 2023 15:39:16 +0200
+Message-ID: <20230911134655.536125511@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +50,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sabrina Dubroca <sd@queasysnail.net>
+From: Dmitry Antipov <dmantipov@yandex.ru>
 
-commit d3287e4038ca4f81e02067ab72d087af7224c68b upstream.
+[ Upstream commit 9c8fd72a5c2a031cbc680a2990107ecd958ffcdb ]
 
-This reverts commit ab046a5d4be4c90a3952a0eae75617b49c0cb01b.
+Always free the zeroed page on return from 'mwifiex_histogram_read()'.
 
-It was trying to work around an issue at the crypto layer by excluding
-ASYNC implementations of gcm(aes), because a bug in the AESNI version
-caused reordering when some requests bypassed the cryptd queue while
-older requests were still pending on the queue.
+Fixes: cbf6e05527a7 ("mwifiex: add rx histogram statistics support")
 
-This was fixed by commit 38b2f68b4264 ("crypto: aesni - Fix cryptd
-reordering problem on gcm"), which pre-dates ab046a5d4be4.
-
-Herbert Xu confirmed that all ASYNC implementations are expected to
-maintain the ordering of completions wrt requests, so we can use them
-in MACsec.
-
-On my test machine, this restores the performance of a single netperf
-instance, from 1.4Gbps to 4.4Gbps.
-
-Link: https://lore.kernel.org/netdev/9328d206c5d9f9239cae27e62e74de40b258471d.1692279161.git.sd@queasysnail.net/T/
-Link: https://lore.kernel.org/netdev/1b0cec71-d084-8153-2ba4-72ce71abeb65@byu.edu/
-Link: https://lore.kernel.org/netdev/d335ddaa-18dc-f9f0-17ee-9783d3b2ca29@mailbox.tu-dresden.de/
-Fixes: ab046a5d4be4 ("net: macsec: preserve ingress frame ordering")
-Signed-off-by: Sabrina Dubroca <sd@queasysnail.net>
-Link: https://lore.kernel.org/r/11c952469d114db6fb29242e1d9545e61f52f512.1693757159.git.sd@queasysnail.net
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Brian Norris <briannorris@chromium.org>
+Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
+Signed-off-by: Kalle Valo <kvalo@kernel.org>
+Link: https://lore.kernel.org/r/20230802160726.85545-1-dmantipov@yandex.ru
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/macsec.c |    3 +--
- 1 file changed, 1 insertion(+), 2 deletions(-)
+ drivers/net/wireless/marvell/mwifiex/debugfs.c | 9 +++++++--
+ 1 file changed, 7 insertions(+), 2 deletions(-)
 
---- a/drivers/net/macsec.c
-+++ b/drivers/net/macsec.c
-@@ -1341,8 +1341,7 @@ static struct crypto_aead *macsec_alloc_
- 	struct crypto_aead *tfm;
- 	int ret;
+diff --git a/drivers/net/wireless/marvell/mwifiex/debugfs.c b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+index 52b18f4a774b7..0cdd6c50c1c08 100644
+--- a/drivers/net/wireless/marvell/mwifiex/debugfs.c
++++ b/drivers/net/wireless/marvell/mwifiex/debugfs.c
+@@ -253,8 +253,11 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	if (!p)
+ 		return -ENOMEM;
  
--	/* Pick a sync gcm(aes) cipher to ensure order is preserved. */
--	tfm = crypto_alloc_aead("gcm(aes)", 0, CRYPTO_ALG_ASYNC);
-+	tfm = crypto_alloc_aead("gcm(aes)", 0, 0);
+-	if (!priv || !priv->hist_data)
+-		return -EFAULT;
++	if (!priv || !priv->hist_data) {
++		ret = -EFAULT;
++		goto free_and_exit;
++	}
++
+ 	phist_data = priv->hist_data;
  
- 	if (IS_ERR(tfm))
- 		return tfm;
+ 	p += sprintf(p, "\n"
+@@ -309,6 +312,8 @@ mwifiex_histogram_read(struct file *file, char __user *ubuf,
+ 	ret = simple_read_from_buffer(ubuf, count, ppos, (char *)page,
+ 				      (unsigned long)p - page);
+ 
++free_and_exit:
++	free_page(page);
+ 	return ret;
+ }
+ 
+-- 
+2.40.1
+
 
 
