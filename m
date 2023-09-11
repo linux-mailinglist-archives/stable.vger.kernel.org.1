@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 17F7D79AEB9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8369D79B0A2
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377594AbjIKW1a (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:27:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59144 "EHLO
+        id S239545AbjIKWps (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39474 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240580AbjIKOsD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:03 -0400
+        with ESMTP id S241796AbjIKPOo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:14:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2460E106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:47:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6794CC433C7;
-        Mon, 11 Sep 2023 14:47:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A223FFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:14:40 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1EC5C433C7;
+        Mon, 11 Sep 2023 15:14:39 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443678;
-        bh=ttOpg3BZjCy/TAxrDHuLt0WoryL+Dq6M1810t0O/JFo=;
+        s=korg; t=1694445280;
+        bh=wR+ejTXTcvGOkcI78mvlFxqT1wovclZXzrIIiWBcBrg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TgE4KGpjNBUajo1R8gC3waUN49a74WKeO9FN8aQadQ77DizxOuF3R76h7teal+t26
-         aWSccvQ40zqSm4T7YCS3rKABod8HKhD/7P4emchqV9KxRCB3/i+lLi7aADLQNV0WW8
-         8tv6SO8gF1cJP7qQhAfdf5m2hbduxi/HlY/9JpDs=
+        b=oI3Mt8ep+0HdIdg8272+UInP5T0DWPCvUhX73+XjqpiZA6awHuIKIKNdBKHEjR8vK
+         N/eXJB9h8mY4OGZ59mHYFsWfQhJMQwBxp7fnbZ9HkAqiTrQ9/DEihfcs1RmXGtTh3F
+         +jvXXMZGnBool9JKZsYy4lQkPjMSu2v2KYran9dE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chuck Lever <chuck.lever@oracle.com>,
-        Anna Schumaker <Anna.Schumaker@Netapp.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Sam Ravnborg <sam@ravnborg.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 463/737] NFSv4.2: Fix READ_PLUS size calculations
+Subject: [PATCH 6.1 289/600] drm/panel: simple: Add missing connector type and pixel format for AUO T215HVN01
 Date:   Mon, 11 Sep 2023 15:45:22 +0200
-Message-ID: <20230911134703.526970490@linuxfoundation.org>
+Message-ID: <20230911134642.139595598@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,61 +50,42 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Anna Schumaker <Anna.Schumaker@Netapp.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit 8d18f6c5bb864d97a730f471c56cdecf313efe64 ]
+[ Upstream commit 7a675a8fa598edb29a664a91adb80f0340649f6f ]
 
-I bump the decode_read_plus_maxsz to account for hole segments, but I
-need to subtract out this increase when calling
-rpc_prepare_reply_pages() so the common case of single data segment
-replies can be directly placed into the xdr pages without needing to be
-shifted around.
+The connector type and pixel format are missing for this panel,
+add them to prevent various drivers from failing to determine
+either of those parameters.
 
-Reported-by: Chuck Lever <chuck.lever@oracle.com>
-Fixes: d3b00a802c845 ("NFS: Replace the READ_PLUS decoding code")
-Signed-off-by: Anna Schumaker <Anna.Schumaker@Netapp.com>
+Fixes: 7ee933a1d5c4 ("drm/panel: simple: Add support for AUO T215HVN01")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
+Link: https://patchwork.freedesktop.org/patch/msgid/20230709134914.449328-1-marex@denx.de
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/nfs/nfs42xdr.c | 12 +++++++++---
- 1 file changed, 9 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/panel/panel-simple.c | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
 
-diff --git a/fs/nfs/nfs42xdr.c b/fs/nfs/nfs42xdr.c
-index ef3b150970ff6..75765382cc0e6 100644
---- a/fs/nfs/nfs42xdr.c
-+++ b/fs/nfs/nfs42xdr.c
-@@ -51,10 +51,16 @@
- 					(1 /* data_content4 */ + \
- 					 2 /* data_info4.di_offset */ + \
- 					 1 /* data_info4.di_length */)
-+#define NFS42_READ_PLUS_HOLE_SEGMENT_SIZE \
-+					(1 /* data_content4 */ + \
-+					 2 /* data_info4.di_offset */ + \
-+					 2 /* data_info4.di_length */)
-+#define READ_PLUS_SEGMENT_SIZE_DIFF	(NFS42_READ_PLUS_HOLE_SEGMENT_SIZE - \
-+					 NFS42_READ_PLUS_DATA_SEGMENT_SIZE)
- #define decode_read_plus_maxsz		(op_decode_hdr_maxsz + \
- 					 1 /* rpr_eof */ + \
- 					 1 /* rpr_contents count */ + \
--					 NFS42_READ_PLUS_DATA_SEGMENT_SIZE)
-+					 NFS42_READ_PLUS_HOLE_SEGMENT_SIZE)
- #define encode_seek_maxsz		(op_encode_hdr_maxsz + \
- 					 encode_stateid_maxsz + \
- 					 2 /* offset */ + \
-@@ -781,8 +787,8 @@ static void nfs4_xdr_enc_read_plus(struct rpc_rqst *req,
- 	encode_putfh(xdr, args->fh, &hdr);
- 	encode_read_plus(xdr, args, &hdr);
+diff --git a/drivers/gpu/drm/panel/panel-simple.c b/drivers/gpu/drm/panel/panel-simple.c
+index 5e067ba7e5fba..0e8622ccd3a0f 100644
+--- a/drivers/gpu/drm/panel/panel-simple.c
++++ b/drivers/gpu/drm/panel/panel-simple.c
+@@ -1159,7 +1159,9 @@ static const struct panel_desc auo_t215hvn01 = {
+ 	.delay = {
+ 		.disable = 5,
+ 		.unprepare = 1000,
+-	}
++	},
++	.bus_format = MEDIA_BUS_FMT_RGB888_1X7X4_SPWG,
++	.connector_type = DRM_MODE_CONNECTOR_LVDS,
+ };
  
--	rpc_prepare_reply_pages(req, args->pages, args->pgbase,
--				args->count, hdr.replen);
-+	rpc_prepare_reply_pages(req, args->pages, args->pgbase, args->count,
-+				hdr.replen - READ_PLUS_SEGMENT_SIZE_DIFF);
- 	encode_nops(&hdr);
- }
- 
+ static const struct drm_display_mode avic_tm070ddh03_mode = {
 -- 
 2.40.1
 
