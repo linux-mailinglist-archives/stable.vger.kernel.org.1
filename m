@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5DA1B79B274
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:42 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08D0679B2E4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:25 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S240228AbjIKV7M (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48062 "EHLO
+        id S1354088AbjIKVwY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:52:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44234 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240340AbjIKOmA (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:00 -0400
+        with ESMTP id S238968AbjIKOIa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:08:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BDDC12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD33C433C9;
-        Mon, 11 Sep 2023 14:41:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4CF24CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:08:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8F056C433C7;
+        Mon, 11 Sep 2023 14:08:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443316;
-        bh=WzzaH+HxH5Bz5KLp2cMgkGtBBiWkbnHQEuZ5zCDedMk=;
+        s=korg; t=1694441306;
+        bh=xcRlitanMzWT74Q3yEyDvO40NhJZAxE4GF5BcbFwBRw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=vyRupq3lGjJQLTzILPrGqpoOgjeqdlWxJdw5KvZRyBLdbbgWWvOms7zx43pk9Ibvh
-         WYJeeZfRdINfreFiRsaFZN7sJqpn+kJOopAbEO6GbRwJljTYRPcikGenZNK6zhtHuY
-         QgDOgp9Rc511/mB1IPabBCvhOOxqb684Ce8pHlCU=
+        b=CqnY/yarA/1HNTWDXXbE50YSUcRge0rYp8eDqEnl2p04EVVZK7f1n+mX2XxVUOoOj
+         xhLALildfwDn5fXRazFNplrACUH68rAuhlX5vRFiFtinQVGWf6BQ1WnStJCL4gcbgH
+         y2x0znQadMJdOyHF3pubDimqdVXVt9fw1nFWhoh8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
-        Alexandre Torgue <alexandre.torgue@foss.st.com>,
+        patches@lists.linux.dev,
+        Vijendar Mukunda <Vijendar.Mukunda@amd.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 306/737] ARM: dts: stm32: Add missing detach mailbox for DHCOR SoM
+Subject: [PATCH 6.5 366/739] ASoC: SOF: amd: clear dsp to host interrupt status
 Date:   Mon, 11 Sep 2023 15:42:45 +0200
-Message-ID: <20230911134659.117478397@linuxfoundation.org>
+Message-ID: <20230911134701.377482672@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,49 +51,48 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marek Vasut <marex@denx.de>
+From: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
 
-[ Upstream commit 2f38de940f072db369edd3e6e8d82bb8f42c5c9b ]
+[ Upstream commit 38592ae6dc9f84b7a994c43de2136b8115ca30f6 ]
 
-Add missing "detach" mailbox to this board to permit the CPU to inform
-the remote processor on a detach. This signal allows the remote processor
-firmware to stop IPC communication and to reinitialize the resources for
-a re-attach.
+DSP_SW_INTR_STAT_OFFSET is a common interrupt register which will be
+accessed by both ACP firmware and driver. This register contains register
+bits corresponds to host to dsp interrupts and vice versa.
 
-Without this mailbox, detach is not possible and kernel log contains the
-following warning to, so make sure all the STM32MP15xx platform DTs are
-in sync regarding the mailboxes to fix the detach issue and the warning:
-"
-stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
-"
+when dsp to host interrupt is reported, only clear dsp to host
+interrupt bit in DSP_SW_INTR_STAT_OFFSET.
 
-Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
-Signed-off-by: Marek Vasut <marex@denx.de>
-Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
+Fixes: 2e7c6652f9b8 ("ASoC: SOF: amd: Fix for handling spurious interrupts from DSP")
+
+Signed-off-by: Vijendar Mukunda <Vijendar.Mukunda@amd.com>
+Link: https://lore.kernel.org/r/20230823073340.2829821-7-Vijendar.Mukunda@amd.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ sound/soc/sof/amd/acp.c | 6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi
-index bba19f21e5277..89881a26c6141 100644
---- a/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi
-+++ b/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi
-@@ -227,8 +227,8 @@ &iwdg2 {
- &m4_rproc {
- 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
- 			<&vdev0vring1>, <&vdev0buffer>;
--	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
--	mbox-names = "vq0", "vq1", "shutdown";
-+	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
-+	mbox-names = "vq0", "vq1", "shutdown", "detach";
- 	interrupt-parent = <&exti>;
- 	interrupts = <68 1>;
- 	status = "okay";
+diff --git a/sound/soc/sof/amd/acp.c b/sound/soc/sof/amd/acp.c
+index afb505461ea17..83cf08c4cf5f6 100644
+--- a/sound/soc/sof/amd/acp.c
++++ b/sound/soc/sof/amd/acp.c
+@@ -355,9 +355,9 @@ static irqreturn_t acp_irq_handler(int irq, void *dev_id)
+ 	unsigned int val;
+ 
+ 	val = snd_sof_dsp_read(sdev, ACP_DSP_BAR, base + DSP_SW_INTR_STAT_OFFSET);
+-	if (val) {
+-		val |= ACP_DSP_TO_HOST_IRQ;
+-		snd_sof_dsp_write(sdev, ACP_DSP_BAR, base + DSP_SW_INTR_STAT_OFFSET, val);
++	if (val & ACP_DSP_TO_HOST_IRQ) {
++		snd_sof_dsp_write(sdev, ACP_DSP_BAR, base + DSP_SW_INTR_STAT_OFFSET,
++				  ACP_DSP_TO_HOST_IRQ);
+ 		return IRQ_WAKE_THREAD;
+ 	}
+ 
 -- 
 2.40.1
 
