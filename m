@@ -2,44 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 083FA79AF47
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 37D7579B381
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355136AbjIKV5H (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41574 "EHLO
+        id S1359186AbjIKWPp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:15:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49420 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239894AbjIKObD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:03 -0400
+        with ESMTP id S238607AbjIKOAi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31CF5E4B
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:30:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 79624C433C9;
-        Mon, 11 Sep 2023 14:30:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EB92ACD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4278FC433C8;
+        Mon, 11 Sep 2023 14:00:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442658;
-        bh=hMicBlBqso5KABRHRv4YU72C2VWl2i3k2A7ayqBAVnM=;
+        s=korg; t=1694440833;
+        bh=wGTJFxMAKGzIEhdEvGxumrflg96s+fCysP+3r8LKR2M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zKYo2xbNZrbKOaYpVqDb1a0GKX9J663kH3t79pINoaKAo1dJhiNrgKiqK7w9Tm2YA
-         A5JxredsQBmIhopToDjYlMyyQ4Rq+uy93VC0v1tUQfVvdok+NVeWfaCQpoNILUE3UF
-         vlh3J8Nos6i9iD/E7f7Do6s7f8teV/30utaadUE0=
+        b=xORMNa4ip7nfHhhfGDQroN6LA89kmJ88N8VHJCh6YPp7QgW0H/HQHnyhkr7Xj61ab
+         c/jwau2kMuOguzKlM8LupZDD8Nr6DfCYoejwSs9STTPeYXY1HG5hrr/xywRMO4t9Qg
+         apv3Xzo45hY5EqUeeGkbumS+WvfRWSumaim1zWPk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Matthew Wilcox (Oracle)" <willy@infradead.org>,
-        "Darrick J. Wong" <djwong@kernel.org>,
-        Christoph Hellwig <hch@lst.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 103/737] iomap: Remove large folio handling in iomap_invalidate_folio()
-Date:   Mon, 11 Sep 2023 15:39:22 +0200
-Message-ID: <20230911134653.390665656@linuxfoundation.org>
+        patches@lists.linux.dev, Fedor Pchelkin <pchelkin@ispras.ru>,
+        =?UTF-8?q?Toke=20H=C3=B8iland-J=C3=B8rgensen?= <toke@toke.dk>,
+        Kalle Valo <quic_kvalo@quicinc.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 164/739] wifi: ath9k: protect WMI command response buffer replacement with a lock
+Date:   Mon, 11 Sep 2023 15:39:23 +0200
+Message-ID: <20230911134655.750244320@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -51,48 +52,76 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Matthew Wilcox (Oracle) <willy@infradead.org>
+From: Fedor Pchelkin <pchelkin@ispras.ru>
 
-[ Upstream commit a221ab717c43147f728d93513923ba3528f861bf ]
+[ Upstream commit 454994cfa9e4c18b6df9f78b60db8eadc20a6c25 ]
 
-We do not need to release the iomap_page in iomap_invalidate_folio()
-to allow the folio to be split.  The splitting code will call
-->release_folio() if there is still per-fs private data attached to
-the folio.  At that point, we will check if the folio is still dirty
-and decline to release the iomap_page.  It is possible to trigger the
-warning in perfectly legitimate circumstances (eg if a disk read fails,
-we do a partial write to the folio, then we truncate the folio), which
-will cause those writes to be lost.
+If ath9k_wmi_cmd() has exited with a timeout, it is possible that during
+next ath9k_wmi_cmd() call the wmi_rsp callback for previous wmi command
+writes to new wmi->cmd_rsp_buf and makes a completion. This results in an
+invalid ath9k_wmi_cmd() return value.
 
-Fixes: 60d8231089f0 ("iomap: Support large folios in invalidatepage")
-Signed-off-by: Matthew Wilcox (Oracle) <willy@infradead.org>
-Reviewed-by: Darrick J. Wong <djwong@kernel.org>
-Reviewed-by: Christoph Hellwig <hch@lst.de>
+Move the replacement of WMI command response buffer and length under
+wmi_lock. Note that last_seq_id value is updated there, too.
+
+Thus, the buffer cannot be written to by a belated wmi_rsp callback
+because that path is properly rejected by the last_seq_id check.
+
+Found by Linux Verification Center (linuxtesting.org) with Syzkaller.
+
+Fixes: fb9987d0f748 ("ath9k_htc: Support for AR9271 chipset.")
+Signed-off-by: Fedor Pchelkin <pchelkin@ispras.ru>
+Acked-by: Toke Høiland-Jørgensen <toke@toke.dk>
+Signed-off-by: Kalle Valo <quic_kvalo@quicinc.com>
+Link: https://lore.kernel.org/r/20230425192607.18015-2-pchelkin@ispras.ru
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/iomap/buffered-io.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/net/wireless/ath/ath9k/wmi.c | 14 ++++++++------
+ 1 file changed, 8 insertions(+), 6 deletions(-)
 
-diff --git a/fs/iomap/buffered-io.c b/fs/iomap/buffered-io.c
-index 063133ec77f49..08ee293c4117c 100644
---- a/fs/iomap/buffered-io.c
-+++ b/fs/iomap/buffered-io.c
-@@ -508,11 +508,6 @@ void iomap_invalidate_folio(struct folio *folio, size_t offset, size_t len)
- 		WARN_ON_ONCE(folio_test_writeback(folio));
- 		folio_cancel_dirty(folio);
- 		iomap_page_release(folio);
--	} else if (folio_test_large(folio)) {
--		/* Must release the iop so the page can be split */
--		WARN_ON_ONCE(!folio_test_uptodate(folio) &&
--			     folio_test_dirty(folio));
--		iomap_page_release(folio);
+diff --git a/drivers/net/wireless/ath/ath9k/wmi.c b/drivers/net/wireless/ath/ath9k/wmi.c
+index 04f363cb90fe5..1476b42b52a91 100644
+--- a/drivers/net/wireless/ath/ath9k/wmi.c
++++ b/drivers/net/wireless/ath/ath9k/wmi.c
+@@ -283,7 +283,8 @@ int ath9k_wmi_connect(struct htc_target *htc, struct wmi *wmi,
+ 
+ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
+ 			       struct sk_buff *skb,
+-			       enum wmi_cmd_id cmd, u16 len)
++			       enum wmi_cmd_id cmd, u16 len,
++			       u8 *rsp_buf, u32 rsp_len)
+ {
+ 	struct wmi_cmd_hdr *hdr;
+ 	unsigned long flags;
+@@ -293,6 +294,11 @@ static int ath9k_wmi_cmd_issue(struct wmi *wmi,
+ 	hdr->seq_no = cpu_to_be16(++wmi->tx_seq_id);
+ 
+ 	spin_lock_irqsave(&wmi->wmi_lock, flags);
++
++	/* record the rsp buffer and length */
++	wmi->cmd_rsp_buf = rsp_buf;
++	wmi->cmd_rsp_len = rsp_len;
++
+ 	wmi->last_seq_id = wmi->tx_seq_id;
+ 	spin_unlock_irqrestore(&wmi->wmi_lock, flags);
+ 
+@@ -333,11 +339,7 @@ int ath9k_wmi_cmd(struct wmi *wmi, enum wmi_cmd_id cmd_id,
+ 		goto out;
  	}
- }
- EXPORT_SYMBOL_GPL(iomap_invalidate_folio);
+ 
+-	/* record the rsp buffer and length */
+-	wmi->cmd_rsp_buf = rsp_buf;
+-	wmi->cmd_rsp_len = rsp_len;
+-
+-	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len);
++	ret = ath9k_wmi_cmd_issue(wmi, skb, cmd_id, cmd_len, rsp_buf, rsp_len);
+ 	if (ret)
+ 		goto out;
+ 
 -- 
 2.40.1
 
