@@ -2,51 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9407979B61E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87DB579C05B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:20 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229949AbjIKWq7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:46:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40884 "EHLO
+        id S1379433AbjIKWoG (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:06 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37116 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241478AbjIKPJi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:38 -0400
+        with ESMTP id S239046AbjIKOKY (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:10:24 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E9E7DFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D6B8C433C7;
-        Mon, 11 Sep 2023 15:09:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4ED40E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:10:20 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 86B88C433C9;
+        Mon, 11 Sep 2023 14:10:19 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444973;
-        bh=CZDxD//SaIvTmrC0xp2qJTKM3qw5+LMoLp4MXL0ZSTw=;
+        s=korg; t=1694441419;
+        bh=S0iqzVFt9mWY8/4Hx8NMfT5iDw9NGELxRCxcBolGnQs=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HLRzoWYg60JqdH6jWKUS/tqWHCHT7YqHiUIzEB2wnrv/tO1gKSXjIaSV7oYVD9256
-         CXo54YoFwjGj0kg8slh3Hx85vT6EY/zOqC5jzNGmO+7BAKQ+nc/cyuK6NW4wPbeDt+
-         TGSP/Bz3QACz9eWKke20KuIt4NQzVKF2rVg23uZw=
+        b=yuImTUfEutZuHoN7a1kB+FPQKPoO5b2CVbUVfRukCX200q1t0jFh5S3em8eigMlmI
+         bElri1L7/vXVBJzyy41Mp0yV01pUuVbd2q3lH9lD/cb6Ro/Ko5HBTohrot66ol/hAB
+         WZ/tyxzfzpYqil51L+M8cIXFksAdXMQIm0OlE7Bk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Nick Desaulniers <ndesaulniers@google.com>,
-        =?UTF-8?q?Fran=C3=A7ois=20Valenduc?= <francoisvalenduc@gmail.com>,
-        Alexandru Radovici <msg4alex@gmail.com>,
-        Matthew Leach <dev@mattleach.net>,
-        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
-        Masahiro Yamada <masahiroy@kernel.org>,
-        Nathan Chancellor <nathan@kernel.org>,
-        Miguel Ojeda <ojeda@kernel.org>,
+        Alex Williamson <alex.williamson@redhat.com>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Kevin Tian <kevin.tian@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 165/600] kbuild: rust_is_available: add check for `bindgen` invocation
+Subject: [PATCH 6.5 399/739] kvm/vfio: ensure kvg instance stays around in kvm_vfio_group_add()
 Date:   Mon, 11 Sep 2023 15:43:18 +0200
-Message-ID: <20230911134638.477817303@linuxfoundation.org>
+Message-ID: <20230911134702.327419651@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -58,91 +52,57 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Miguel Ojeda <ojeda@kernel.org>
+From: Dmitry Torokhov <dmitry.torokhov@gmail.com>
 
-[ Upstream commit 52cae7f28ed6c3992489f16bb355f5b623f0912e ]
+[ Upstream commit 9e0f4f2918c2ff145d3dedee862d9919a6ed5812 ]
 
-`scripts/rust_is_available.sh` calls `bindgen` with a special
-header in order to check whether the `libclang` version in use
-is suitable.
+kvm_vfio_group_add() creates kvg instance, links it to kv->group_list,
+and calls kvm_vfio_file_set_kvm() with kvg->file as an argument after
+dropping kv->lock. If we race group addition and deletion calls, kvg
+instance may get freed by the time we get around to calling
+kvm_vfio_file_set_kvm().
 
-However, the invocation itself may fail if, for instance, `bindgen`
-cannot locate `libclang`. This is fine for Kconfig (since the
-script will still fail and therefore disable Rust as it should),
-but it is pretty confusing for users of the `rustavailable` target
-given the error will be unrelated:
+Previous iterations of the code did not reference kvg->file outside of
+the critical section, but used a temporary variable. Still, they had
+similar problem of the file reference being owned by kvg structure and
+potential for kvm_vfio_group_del() dropping it before
+kvm_vfio_group_add() had a chance to complete.
 
-    ./scripts/rust_is_available.sh: 21: arithmetic expression: expecting primary: "100000 *  + 100 *  + "
-    make: *** [Makefile:1816: rustavailable] Error 2
+Fix this by moving call to kvm_vfio_file_set_kvm() under the protection
+of kv->lock. We already call it while holding the same lock when vfio
+group is being deleted, so it should be safe here as well.
 
-Instead, run the `bindgen` invocation independently in a previous
-step, saving its output and return code. If it fails, then show
-the user a proper error message. Otherwise, continue as usual
-with the saved output.
-
-Since the previous patch we show a reference to the docs, and
-the docs now explain how `bindgen` looks for `libclang`,
-thus the error message can leverage the documentation, avoiding
-duplication here (and making users aware of the setup guide in
-the documentation).
-
-Reported-by: Nick Desaulniers <ndesaulniers@google.com>
-Link: https://lore.kernel.org/rust-for-linux/CAKwvOdm5JT4wbdQQYuW+RT07rCi6whGBM2iUAyg8A1CmLXG6Nw@mail.gmail.com/
-Reported-by: François Valenduc <francoisvalenduc@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/issues/934
-Reported-by: Alexandru Radovici <msg4alex@gmail.com>
-Closes: https://github.com/Rust-for-Linux/linux/pull/921
-Reported-by: Matthew Leach <dev@mattleach.net>
-Closes: https://lore.kernel.org/rust-for-linux/20230507084116.1099067-1-dev@mattleach.net/
-Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
-Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
-Reviewed-by: Masahiro Yamada <masahiroy@kernel.org>
-Reviewed-by: Nathan Chancellor <nathan@kernel.org>
-Link: https://lore.kernel.org/r/20230616001631.463536-6-ojeda@kernel.org
-Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
+Fixes: 2fc1bec15883 ("kvm: set/clear kvm to/from vfio_group when group add/delete")
+Reviewed-by: Alex Williamson <alex.williamson@redhat.com>
+Signed-off-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Reviewed-by: Kevin Tian <kevin.tian@intel.com>
+Link: https://lore.kernel.org/r/20230714224538.404793-1-dmitry.torokhov@gmail.com
+Signed-off-by: Alex Williamson <alex.williamson@redhat.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- scripts/rust_is_available.sh | 22 +++++++++++++++++++++-
- 1 file changed, 21 insertions(+), 1 deletion(-)
+ virt/kvm/vfio.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
-index 0c9be438e4cd3..c965895d80b97 100755
---- a/scripts/rust_is_available.sh
-+++ b/scripts/rust_is_available.sh
-@@ -90,8 +90,28 @@ if [ "$rust_bindings_generator_cversion" -gt "$rust_bindings_generator_min_cvers
- fi
+diff --git a/virt/kvm/vfio.c b/virt/kvm/vfio.c
+index af3d0cf06e4c6..365d30779768a 100644
+--- a/virt/kvm/vfio.c
++++ b/virt/kvm/vfio.c
+@@ -180,10 +180,10 @@ static int kvm_vfio_file_add(struct kvm_device *dev, unsigned int fd)
+ 	list_add_tail(&kvf->node, &kv->file_list);
  
- # Check that the `libclang` used by the Rust bindings generator is suitable.
-+#
-+# In order to do that, first invoke `bindgen` to get the `libclang` version
-+# found by `bindgen`. This step may already fail if, for instance, `libclang`
-+# is not found, thus inform the user in such a case.
-+bindgen_libclang_output=$( \
-+	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null
-+) || bindgen_libclang_code=$?
-+if [ -n "$bindgen_libclang_code" ]; then
-+	echo >&2 "***"
-+	echo >&2 "*** Running '$BINDGEN' to check the libclang version (used by the Rust"
-+	echo >&2 "*** bindings generator) failed with code $bindgen_libclang_code. This may be caused by"
-+	echo >&2 "*** a failure to locate libclang. See output and docs below for details:"
-+	echo >&2 "***"
-+	echo >&2 "$bindgen_libclang_output"
-+	echo >&2 "***"
-+	exit 1
-+fi
-+
-+# `bindgen` returned successfully, thus use the output to check that the version
-+# of the `libclang` found by the Rust bindings generator is suitable.
- bindgen_libclang_version=$( \
--	LC_ALL=C "$BINDGEN" $(dirname $0)/rust_is_available_bindgen_libclang.h 2>&1 >/dev/null \
-+	echo "$bindgen_libclang_output" \
- 		| grep -F 'clang version ' \
- 		| grep -oE '[0-9]+\.[0-9]+\.[0-9]+' \
- 		| head -n 1 \
+ 	kvm_arch_start_assignment(dev->kvm);
++	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
+ 
+ 	mutex_unlock(&kv->lock);
+ 
+-	kvm_vfio_file_set_kvm(kvf->file, dev->kvm);
+ 	kvm_vfio_update_coherency(dev);
+ 
+ 	return 0;
 -- 
 2.40.1
 
