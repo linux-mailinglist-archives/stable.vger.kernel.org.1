@@ -2,34 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9D75979B28A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CB0CA79B36E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:16 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359511AbjIKWRX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:17:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43722 "EHLO
+        id S1355563AbjIKWA4 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:00:56 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44144 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242301AbjIKP1L (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:11 -0400
+        with ESMTP id S242304AbjIKP1O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7FD50F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8A8EC433C9;
-        Mon, 11 Sep 2023 15:27:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3E972F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 85FC8C433C8;
+        Mon, 11 Sep 2023 15:27:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446027;
-        bh=wvPjOIglBieHp99YVZ7EbU3eErqtrHKq8YJv+i+d8hc=;
+        s=korg; t=1694446029;
+        bh=jUQGdMSgwneMngM46G+BuES1Q84cqxMcPgdVNhn9UvA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VSGpdL6KzQZ0oHqULVEp/fOwaO4FAW59RYkMH/RB10k00OhxikfrGU2jMVa64/Fa8
-         vTy9D7zn3GGkO1gkLCMZZvY1YGyeebYsbPtOyUGPTU/AHr1PQ2L/WZFttGYpAA7Vva
-         iRTNthqVY4WrZlJVUusi2AqCc9HfnXsglSUBxXjQ=
+        b=kkZnHz+2Tyjbo06EcfChs873spJY0N6swIgG1kKysnEyn3BSxmQHhoJ7EpQR2J84q
+         wfvvFLwvve47T/SolyADu1/XUBWAgzQNrctGCZ7ZzQBrdecupU5I0bu7FriFKoyqQb
+         UFp/sO8zymkrrsUPDKDP7GBpWN7v/deNV25VBPBI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>
-Subject: [PATCH 6.1 557/600] Revert "PCI: Mark NVIDIA T4 GPUs to avoid bus reset"
-Date:   Mon, 11 Sep 2023 15:49:50 +0200
-Message-ID: <20230911134650.056633003@linuxfoundation.org>
+        patches@lists.linux.dev, Li Lingfeng <lilingfeng3@huawei.com>,
+        Christoph Hellwig <hch@lst.de>, Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.1 558/600] block: dont add or resize partition on the disk with GENHD_FL_NO_PART
+Date:   Mon, 11 Sep 2023 15:49:51 +0200
+Message-ID: <20230911134650.084304908@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -52,42 +53,38 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Bjorn Helgaas <bhelgaas@google.com>
+From: Li Lingfeng <lilingfeng3@huawei.com>
 
-commit 5260bd6d36c83c5b269c33baaaf8c78e520908b0 upstream.
+commit 1a721de8489fa559ff4471f73c58bb74ac5580d3 upstream.
 
-This reverts commit d5af729dc2071273f14cbb94abbc60608142fd83.
+Commit a33df75c6328 ("block: use an xarray for disk->part_tbl") remove
+disk_expand_part_tbl() in add_partition(), which means all kinds of
+devices will support extended dynamic `dev_t`.
+However, some devices with GENHD_FL_NO_PART are not expected to add or
+resize partition.
+Fix this by adding check of GENHD_FL_NO_PART before add or resize
+partition.
 
-d5af729dc207 ("PCI: Mark NVIDIA T4 GPUs to avoid bus reset") avoided
-Secondary Bus Reset on the T4 because the reset seemed to not work when the
-T4 was directly attached to a Root Port.
-
-But NVIDIA thinks the issue is probably related to some issue with the Root
-Port, not with the T4.  The T4 provides neither PM nor FLR reset, so
-masking bus reset compromises this device for assignment scenarios.
-
-Revert d5af729dc207 as requested by Wu Zongyong.  This will leave SBR
-broken in the specific configuration Wu tested, as it was in v6.5, so Wu
-will debug that further.
-
-Link: https://lore.kernel.org/r/ZPqMCDWvITlOLHgJ@wuzongyong-alibaba
-Link: https://lore.kernel.org/r/20230908201104.GA305023@bhelgaas
-Signed-off-by: Bjorn Helgaas <bhelgaas@google.com>
+Fixes: a33df75c6328 ("block: use an xarray for disk->part_tbl")
+Signed-off-by: Li Lingfeng <lilingfeng3@huawei.com>
+Reviewed-by: Christoph Hellwig <hch@lst.de>
+Link: https://lore.kernel.org/r/20230831075900.1725842-1-lilingfeng@huaweicloud.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/pci/quirks.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ block/ioctl.c |    2 ++
+ 1 file changed, 2 insertions(+)
 
---- a/drivers/pci/quirks.c
-+++ b/drivers/pci/quirks.c
-@@ -3631,7 +3631,7 @@ static void quirk_no_bus_reset(struct pc
-  */
- static void quirk_nvidia_no_bus_reset(struct pci_dev *dev)
- {
--	if ((dev->device & 0xffc0) == 0x2340 || dev->device == 0x1eb8)
-+	if ((dev->device & 0xffc0) == 0x2340)
- 		quirk_no_bus_reset(dev);
- }
- DECLARE_PCI_FIXUP_HEADER(PCI_VENDOR_ID_NVIDIA, PCI_ANY_ID,
+--- a/block/ioctl.c
++++ b/block/ioctl.c
+@@ -20,6 +20,8 @@ static int blkpg_do_ioctl(struct block_d
+ 	struct blkpg_partition p;
+ 	long long start, length;
+ 
++	if (disk->flags & GENHD_FL_NO_PART)
++		return -EINVAL;
+ 	if (!capable(CAP_SYS_ADMIN))
+ 		return -EACCES;
+ 	if (copy_from_user(&p, upart, sizeof(struct blkpg_partition)))
 
 
