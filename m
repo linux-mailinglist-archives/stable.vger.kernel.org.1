@@ -2,43 +2,46 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 00ED479ACDE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:11 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 96B8479ACD4
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235446AbjIKUwu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56400 "EHLO
+        id S1344842AbjIKVOw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239255AbjIKOPr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:15:47 -0400
+        with ESMTP id S240535AbjIKOqo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8D87CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:15:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1BB1FC433C8;
-        Mon, 11 Sep 2023 14:15:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BC844106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0A8B6C433C8;
+        Mon, 11 Sep 2023 14:46:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441742;
-        bh=LYqbt7l3OX/gnYYY0a2UKv/CA9q0dxMieOnUhr1Mxyo=;
+        s=korg; t=1694443599;
+        bh=6FSQKLwo8w9KAx+w6B2O3z0fxooo0iExaSKp8MDiXnc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MuxI++1rfwfi1UNv9e8oPHcmWz3YsAj47L1CH04MYaiqDUFmSYXGyCwCJ7xtvaVs2
-         4iZqqsvkxs8jFMhGgtyHzxR8GHKYrOMIccdtGNnhqGiL021jBiKqApc/SqRnQFHa5v
-         gZQFkDzJafkMsoAL8rG+yOEpDMlh4FH28nISvZ/4=
+        b=FhshBwh91gb+7Nkirecc/MgC4gxGIgruO1TZwZQOGJ5qIBUXImMebfCM/AVtTN/Gs
+         iGmNNLWMga3V1eQVqWMB+sm7xmWZADiV8Uj+mcM7mC3HjHtILgotjGHnGxI1EB3ixU
+         TocAOG5cZ56SKiBmL8TFgtSG8c/NBJLrd1FDNCLg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bob Pearson <rpearsonhpe@gmail.com>,
-        Jason Gunthorpe <jgg@nvidia.com>,
+        patches@lists.linux.dev,
+        Claudiu Beznea <claudiu.beznea@microchip.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Linus Walleij <linus.walleij@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 494/739] RDMA/rxe: Fix incomplete state save in rxe_requester
-Date:   Mon, 11 Sep 2023 15:44:53 +0200
-Message-ID: <20230911134704.925243620@linuxfoundation.org>
+Subject: [PATCH 6.4 435/737] pinctrl: mcp23s08: check return value of devm_kasprintf()
+Date:   Mon, 11 Sep 2023 15:44:54 +0200
+Message-ID: <20230911134702.750216051@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,126 +53,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bob Pearson <rpearsonhpe@gmail.com>
+From: Claudiu Beznea <claudiu.beznea@microchip.com>
 
-[ Upstream commit 5d122db2ff80cd2aed4dcd630befb56b51ddf947 ]
+[ Upstream commit f941714a7c7698eadb59bc27d34d6d6f38982705 ]
 
-If a send packet is dropped by the IP layer in rxe_requester()
-the call to rxe_xmit_packet() can fail with err == -EAGAIN.
-To recover, the state of the wqe is restored to the state before
-the packet was sent so it can be resent. However, the routines
-that save and restore the state miss a significnt part of the
-variable state in the wqe, the dma struct which is used to process
-through the sge table. And, the state is not saved before the packet
-is built which modifies the dma struct.
+devm_kasprintf() returns a pointer to dynamically allocated memory.
+Pointer could be NULL in case allocation fails. Check pointer validity.
+Identified with coccinelle (kmerr.cocci script).
 
-Under heavy stress testing with many QPs on a fast node sending
-large messages to a slow node dropped packets are observed and
-the resent packets are corrupted because the dma struct was not
-restored. This patch fixes this behavior and allows the test cases
-to succeed.
-
-Fixes: 3050b9985024 ("IB/rxe: Fix race condition between requester and completer")
-Link: https://lore.kernel.org/r/20230721200748.4604-1-rpearsonhpe@gmail.com
-Signed-off-by: Bob Pearson <rpearsonhpe@gmail.com>
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
+Fixes: 0f04a81784fe ("pinctrl: mcp23s08: Split to three parts: core, I²C, SPI")
+Signed-off-by: Claudiu Beznea <claudiu.beznea@microchip.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Link: https://lore.kernel.org/r/20230621100409.1608395-1-claudiu.beznea@microchip.com
+Signed-off-by: Linus Walleij <linus.walleij@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/infiniband/sw/rxe/rxe_req.c | 45 ++++++++++++++++-------------
- 1 file changed, 25 insertions(+), 20 deletions(-)
+ drivers/pinctrl/pinctrl-mcp23s08_spi.c | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
 
-diff --git a/drivers/infiniband/sw/rxe/rxe_req.c b/drivers/infiniband/sw/rxe/rxe_req.c
-index 2171f19494bca..d8c41fd626a94 100644
---- a/drivers/infiniband/sw/rxe/rxe_req.c
-+++ b/drivers/infiniband/sw/rxe/rxe_req.c
-@@ -578,10 +578,11 @@ static void save_state(struct rxe_send_wqe *wqe,
- 		       struct rxe_send_wqe *rollback_wqe,
- 		       u32 *rollback_psn)
- {
--	rollback_wqe->state     = wqe->state;
-+	rollback_wqe->state = wqe->state;
- 	rollback_wqe->first_psn = wqe->first_psn;
--	rollback_wqe->last_psn  = wqe->last_psn;
--	*rollback_psn		= qp->req.psn;
-+	rollback_wqe->last_psn = wqe->last_psn;
-+	rollback_wqe->dma = wqe->dma;
-+	*rollback_psn = qp->req.psn;
- }
+diff --git a/drivers/pinctrl/pinctrl-mcp23s08_spi.c b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
+index 9ae10318f6f35..ea059b9c5542e 100644
+--- a/drivers/pinctrl/pinctrl-mcp23s08_spi.c
++++ b/drivers/pinctrl/pinctrl-mcp23s08_spi.c
+@@ -91,18 +91,28 @@ static int mcp23s08_spi_regmap_init(struct mcp23s08 *mcp, struct device *dev,
+ 		mcp->reg_shift = 0;
+ 		mcp->chip.ngpio = 8;
+ 		mcp->chip.label = devm_kasprintf(dev, GFP_KERNEL, "mcp23s08.%d", addr);
++		if (!mcp->chip.label)
++			return -ENOMEM;
  
- static void rollback_state(struct rxe_send_wqe *wqe,
-@@ -589,10 +590,11 @@ static void rollback_state(struct rxe_send_wqe *wqe,
- 			   struct rxe_send_wqe *rollback_wqe,
- 			   u32 rollback_psn)
- {
--	wqe->state     = rollback_wqe->state;
-+	wqe->state = rollback_wqe->state;
- 	wqe->first_psn = rollback_wqe->first_psn;
--	wqe->last_psn  = rollback_wqe->last_psn;
--	qp->req.psn    = rollback_psn;
-+	wqe->last_psn = rollback_wqe->last_psn;
-+	wqe->dma = rollback_wqe->dma;
-+	qp->req.psn = rollback_psn;
- }
- 
- static void update_state(struct rxe_qp *qp, struct rxe_pkt_info *pkt)
-@@ -797,6 +799,9 @@ int rxe_requester(struct rxe_qp *qp)
- 	pkt.mask = rxe_opcode[opcode].mask;
- 	pkt.wqe = wqe;
- 
-+	/* save wqe state before we build and send packet */
-+	save_state(wqe, qp, &rollback_wqe, &rollback_psn);
+ 		config = &mcp23x08_regmap;
+ 		name = devm_kasprintf(dev, GFP_KERNEL, "%d", addr);
++		if (!name)
++			return -ENOMEM;
 +
- 	av = rxe_get_av(&pkt, &ah);
- 	if (unlikely(!av)) {
- 		rxe_dbg_qp(qp, "Failed no address vector\n");
-@@ -829,29 +834,29 @@ int rxe_requester(struct rxe_qp *qp)
- 	if (ah)
- 		rxe_put(ah);
+ 		break;
  
--	/*
--	 * To prevent a race on wqe access between requester and completer,
--	 * wqe members state and psn need to be set before calling
--	 * rxe_xmit_packet().
--	 * Otherwise, completer might initiate an unjustified retry flow.
--	 */
--	save_state(wqe, qp, &rollback_wqe, &rollback_psn);
-+	/* update wqe state as though we had sent it */
- 	update_wqe_state(qp, wqe, &pkt);
- 	update_wqe_psn(qp, wqe, &pkt, payload);
+ 	case MCP_TYPE_S17:
+ 		mcp->reg_shift = 1;
+ 		mcp->chip.ngpio = 16;
+ 		mcp->chip.label = devm_kasprintf(dev, GFP_KERNEL, "mcp23s17.%d", addr);
++		if (!mcp->chip.label)
++			return -ENOMEM;
  
- 	err = rxe_xmit_packet(qp, &pkt, skb);
- 	if (err) {
--		qp->need_req_skb = 1;
-+		if (err != -EAGAIN) {
-+			wqe->status = IB_WC_LOC_QP_OP_ERR;
-+			goto err;
-+		}
+ 		config = &mcp23x17_regmap;
+ 		name = devm_kasprintf(dev, GFP_KERNEL, "%d", addr);
++		if (!name)
++			return -ENOMEM;
++
+ 		break;
  
-+		/* the packet was dropped so reset wqe to the state
-+		 * before we sent it so we can try to resend
-+		 */
- 		rollback_state(wqe, qp, &rollback_wqe, rollback_psn);
- 
--		if (err == -EAGAIN) {
--			rxe_sched_task(&qp->req.task);
--			goto exit;
--		}
-+		/* force a delay until the dropped packet is freed and
-+		 * the send queue is drained below the low water mark
-+		 */
-+		qp->need_req_skb = 1;
- 
--		wqe->status = IB_WC_LOC_QP_OP_ERR;
--		goto err;
-+		rxe_sched_task(&qp->req.task);
-+		goto exit;
- 	}
- 
- 	update_state(qp, &pkt);
+ 	case MCP_TYPE_S18:
 -- 
 2.40.1
 
