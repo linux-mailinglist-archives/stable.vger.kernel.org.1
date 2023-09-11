@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AADB079B8B0
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0565D79BE99
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237701AbjIKWZI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:25:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58136 "EHLO
+        id S1379459AbjIKWoS (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:18 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240206AbjIKOjB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:01 -0400
+        with ESMTP id S238812AbjIKOFc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 94DF6F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:38:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DC552C433C7;
-        Mon, 11 Sep 2023 14:38:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E0EE4E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 30538C433C7;
+        Mon, 11 Sep 2023 14:05:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443136;
-        bh=UQMF08pTz9EI4Aqm+56z9rFJReUTUDlo2A5vg0DTy5Q=;
+        s=korg; t=1694441126;
+        bh=68xm8GZyiyxUi4sYFmI51ectlfs5mH81X21O2S/Oysg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JXAsJEZS7NvVEF/5VoJYQOJQH/7/n/L+zAMnC4ORqrsTC9Ih1eoKoW78/CCNlvfgR
-         sK5dT5H5irWWZlzsyn+BIa2olx055eLp7XYP3DdY0kDqN6uMbsQ1EJnoioN7RW4gtS
-         ZBaadRZivj4hgYs2whogrx2OBD/oPfZCA7KBydAo=
+        b=Wm2YhQRoodsn/vRLZ1+ps3e2ohslNAUP7RQyJxP6j47wRF+qQPoecIqWK3zzT/KFf
+         p2a+jNkIexQ88e+wimC5uKL4r+WHGdgNPXwX/Zfv3IfLfG1oUA3hdy1hILbax+72yl
+         EbN+z4bhYq7u0lrwXwi3DRkkX8of6x/4O/kCTH+s=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
-        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 243/737] Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync
-Date:   Mon, 11 Sep 2023 15:41:42 +0200
-Message-ID: <20230911134657.393444917@linuxfoundation.org>
+Subject: [PATCH 6.5 304/739] drm/msm/dpu1: Rename sm8150_dspp_blk to sdm845_dspp_blk
+Date:   Mon, 11 Sep 2023 15:41:43 +0200
+Message-ID: <20230911134659.615188682@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,186 +50,313 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 94d9ba9f9888b748d4abd2aa1547af56ae85f772 ]
+[ Upstream commit 9891b3df2b4300d24735c1a1822985d2d173aade ]
 
-Use-after-free can occur in hci_disconnect_all_sync if a connection is
-deleted by concurrent processing of a controller event.
+SDM845 was the first SoC to include both PCC v4 and GC v1.8.
+We don't currently support any other blocks but the common config
+for these two can be reused for a large amount of SoCs.
 
-To prevent this the code now tries to iterate over the list backwards
-to ensure the links are cleanup before its parents, also it no longer
-relies on a cursor, instead it always uses the last element since
-hci_abort_conn_sync is guaranteed to call hci_conn_del.
+Rename it to indicate the origin of that combo.
 
-UAF crash log:
-==================================================================
-BUG: KASAN: slab-use-after-free in hci_set_powered_sync
-(net/bluetooth/hci_sync.c:5424) [bluetooth]
-Read of size 8 at addr ffff888009d9c000 by task kworker/u9:0/124
-
-CPU: 0 PID: 124 Comm: kworker/u9:0 Tainted: G        W
-6.5.0-rc1+ #10
-Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
-1.16.2-1.fc38 04/01/2014
-Workqueue: hci0 hci_cmd_sync_work [bluetooth]
-Call Trace:
- <TASK>
- dump_stack_lvl+0x5b/0x90
- print_report+0xcf/0x670
- ? __virt_addr_valid+0xdd/0x160
- ? hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
- kasan_report+0xa6/0xe0
- ? hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
- ? __pfx_set_powered_sync+0x10/0x10 [bluetooth]
- hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
- ? __pfx_hci_set_powered_sync+0x10/0x10 [bluetooth]
- ? __pfx_lock_release+0x10/0x10
- ? __pfx_set_powered_sync+0x10/0x10 [bluetooth]
- hci_cmd_sync_work+0x137/0x220 [bluetooth]
- process_one_work+0x526/0x9d0
- ? __pfx_process_one_work+0x10/0x10
- ? __pfx_do_raw_spin_lock+0x10/0x10
- ? mark_held_locks+0x1a/0x90
- worker_thread+0x92/0x630
- ? __pfx_worker_thread+0x10/0x10
- kthread+0x196/0x1e0
- ? __pfx_kthread+0x10/0x10
- ret_from_fork+0x2c/0x50
- </TASK>
-
-Allocated by task 1782:
- kasan_save_stack+0x33/0x60
- kasan_set_track+0x25/0x30
- __kasan_kmalloc+0x8f/0xa0
- hci_conn_add+0xa5/0xa80 [bluetooth]
- hci_bind_cis+0x881/0x9b0 [bluetooth]
- iso_connect_cis+0x121/0x520 [bluetooth]
- iso_sock_connect+0x3f6/0x790 [bluetooth]
- __sys_connect+0x109/0x130
- __x64_sys_connect+0x40/0x50
- do_syscall_64+0x60/0x90
- entry_SYSCALL_64_after_hwframe+0x6e/0xd8
-
-Freed by task 695:
- kasan_save_stack+0x33/0x60
- kasan_set_track+0x25/0x30
- kasan_save_free_info+0x2b/0x50
- __kasan_slab_free+0x10a/0x180
- __kmem_cache_free+0x14d/0x2e0
- device_release+0x5d/0xf0
- kobject_put+0xdf/0x270
- hci_disconn_complete_evt+0x274/0x3a0 [bluetooth]
- hci_event_packet+0x579/0x7e0 [bluetooth]
- hci_rx_work+0x287/0xaa0 [bluetooth]
- process_one_work+0x526/0x9d0
- worker_thread+0x92/0x630
- kthread+0x196/0x1e0
- ret_from_fork+0x2c/0x50
-==================================================================
-
-Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
-Signed-off-by: Pauli Virtanen <pav@iki.fi>
-Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Patchwork: https://patchwork.freedesktop.org/patch/533003/
+Link: https://lore.kernel.org/r/20230420-topic-dpu_gc-v1-1-d9d1a5e40917@linaro.org
+[DB: also applied to new catalog files]
+Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
+Stable-dep-of: 57a1ca6cf73b ("drm/msm/dpu: fix DSC 1.2 enc subblock length")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bluetooth/hci_sync.c | 55 +++++++++++++++++++++++++---------------
- 1 file changed, 35 insertions(+), 20 deletions(-)
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h   | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h   | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h  | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h   | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h   | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_3_sm6115.h   | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h   | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_5_qcm2290.h  | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h   | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h   | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h   | 2 +-
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h   | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h   | 8 ++++----
+ drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c           | 2 +-
+ 15 files changed, 39 insertions(+), 39 deletions(-)
 
-diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
-index 60e213982635c..570909425618d 100644
---- a/net/bluetooth/hci_sync.c
-+++ b/net/bluetooth/hci_sync.c
-@@ -5339,6 +5339,7 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- {
- 	int err = 0;
- 	u16 handle = conn->handle;
-+	struct hci_conn *c;
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
+index 5cdfeb3dcb395..bd450712e65cd 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_4_0_sdm845.h
+@@ -111,13 +111,13 @@ static const struct dpu_lm_cfg sdm845_lm[] = {
  
- 	switch (conn->state) {
- 	case BT_CONNECTED:
-@@ -5360,43 +5361,57 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
- 		}
- 		break;
- 	default:
-+		hci_dev_lock(hdev);
- 		conn->state = BT_CLOSED;
-+		hci_disconn_cfm(conn, reason);
-+		hci_conn_del(conn);
-+		hci_dev_unlock(hdev);
- 		return 0;
- 	}
+ static const struct dpu_dspp_cfg sdm845_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
  
-+	hci_dev_lock(hdev);
-+
-+	/* Check if the connection hasn't been cleanup while waiting
-+	 * commands to complete.
-+	 */
-+	c = hci_conn_hash_lookup_handle(hdev, handle);
-+	if (!c || c != conn) {
-+		err = 0;
-+		goto unlock;
-+	}
-+
- 	/* Cleanup hci_conn object if it cannot be cancelled as it
- 	 * likelly means the controller and host stack are out of sync
- 	 * or in case of LE it was still scanning so it can be cleanup
- 	 * safely.
- 	 */
--	if (err) {
--		struct hci_conn *c;
--
--		/* Check if the connection hasn't been cleanup while waiting
--		 * commands to complete.
--		 */
--		c = hci_conn_hash_lookup_handle(hdev, handle);
--		if (!c || c != conn)
--			return 0;
--
--		hci_dev_lock(hdev);
--		hci_conn_failed(conn, err);
--		hci_dev_unlock(hdev);
--	}
-+	hci_conn_failed(conn, reason);
+ static const struct dpu_pingpong_cfg sdm845_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
+index 53c7f89cf23e6..4589b7a043990 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_0_sm8150.h
+@@ -118,13 +118,13 @@ static const struct dpu_lm_cfg sm8150_lm[] = {
  
-+unlock:
-+	hci_dev_unlock(hdev);
- 	return err;
- }
+ static const struct dpu_dspp_cfg sm8150_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
  
- static int hci_disconnect_all_sync(struct hci_dev *hdev, u8 reason)
- {
--	struct hci_conn *conn, *tmp;
--	int err;
-+	struct list_head *head = &hdev->conn_hash.list;
-+	struct hci_conn *conn;
+ static const struct dpu_pingpong_cfg sm8150_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+index 27457060f53be..8f5d5d44ccb3d 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_5_1_sc8180x.h
+@@ -117,13 +117,13 @@ static const struct dpu_lm_cfg sc8180x_lm[] = {
  
--	list_for_each_entry_safe(conn, tmp, &hdev->conn_hash.list, list) {
--		err = hci_abort_conn_sync(hdev, conn, reason);
--		if (err)
--			return err;
-+	rcu_read_lock();
-+	while ((conn = list_first_or_null_rcu(head, struct hci_conn, list))) {
-+		/* Make sure the connection is not freed while unlocking */
-+		conn = hci_conn_get(conn);
-+		rcu_read_unlock();
-+		/* Disregard possible errors since hci_conn_del shall have been
-+		 * called even in case of errors had occurred since it would
-+		 * then cause hci_conn_failed to be called which calls
-+		 * hci_conn_del internally.
-+		 */
-+		hci_abort_conn_sync(hdev, conn, reason);
-+		hci_conn_put(conn);
-+		rcu_read_lock();
- 	}
-+	rcu_read_unlock();
+ static const struct dpu_dspp_cfg sc8180x_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
  
- 	return 0;
- }
+ static const struct dpu_pingpong_cfg sc8180x_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+index e2d068bde9b71..0e17be6ed94f2 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_0_sm8250.h
+@@ -119,13 +119,13 @@ static const struct dpu_lm_cfg sm8250_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sm8250_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sm8250_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+index 67566b07195a2..a3124661cb65f 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_2_sc7180.h
+@@ -76,7 +76,7 @@ static const struct dpu_lm_cfg sc7180_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sc7180_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sc7180_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_3_sm6115.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_3_sm6115.h
+index 031fc8dae3c69..04a0dbf96e179 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_3_sm6115.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_3_sm6115.h
+@@ -56,7 +56,7 @@ static const struct dpu_lm_cfg sm6115_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sm6115_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sm6115_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h
+index d6e84c2e3ea23..398ea3749f805 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_4_sm6350.h
+@@ -85,7 +85,7 @@ static const struct dpu_lm_cfg sm6350_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sm6350_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		&sm8150_dspp_sblk),
++		&sdm845_dspp_sblk),
+ };
+ 
+ static struct dpu_pingpong_cfg sm6350_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_5_qcm2290.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_5_qcm2290.h
+index f2808098af399..06cf48b55f989 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_5_qcm2290.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_5_qcm2290.h
+@@ -53,7 +53,7 @@ static const struct dpu_lm_cfg qcm2290_lm[] = {
+ 
+ static const struct dpu_dspp_cfg qcm2290_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg qcm2290_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h
+index 06944b3686d6a..ec12602896f31 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_6_9_sm6375.h
+@@ -57,7 +57,7 @@ static const struct dpu_lm_cfg sm6375_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sm6375_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		&sm8150_dspp_sblk),
++		&sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sm6375_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+index b2a90e9e849e5..66b3d299ffcf7 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_0_sm8350.h
+@@ -117,13 +117,13 @@ static const struct dpu_lm_cfg sm8350_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sm8350_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sm8350_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+index 76a2530238aab..f06ed9a73b071 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_7_2_sc7280.h
+@@ -84,7 +84,7 @@ static const struct dpu_lm_cfg sc7280_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sc7280_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sc7280_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
+index 7ed302ade28c8..ac71cc62f605a 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_0_sc8280xp.h
+@@ -112,13 +112,13 @@ static const struct dpu_lm_cfg sc8280xp_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sc8280xp_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sc8280xp_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
+index 7a27f26c69b62..d7407d471a31e 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_8_1_sm8450.h
+@@ -118,13 +118,13 @@ static const struct dpu_lm_cfg sm8450_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sm8450_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ 
+ static const struct dpu_pingpong_cfg sm8450_pp[] = {
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
+index 9b653a95e019c..d51c2f8acba0a 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
++++ b/drivers/gpu/drm/msm/disp/dpu1/catalog/dpu_9_0_sm8550.h
+@@ -123,13 +123,13 @@ static const struct dpu_lm_cfg sm8550_lm[] = {
+ 
+ static const struct dpu_dspp_cfg sm8550_dspp[] = {
+ 	DSPP_BLK("dspp_0", DSPP_0, 0x54000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_1", DSPP_1, 0x56000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_2", DSPP_2, 0x58000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ 	DSPP_BLK("dspp_3", DSPP_3, 0x5a000, DSPP_SC7180_MASK,
+-		 &sm8150_dspp_sblk),
++		 &sdm845_dspp_sblk),
+ };
+ static const struct dpu_pingpong_cfg sm8550_pp[] = {
+ 	PP_BLK_DITHER("pingpong_0", PINGPONG_0, 0x69000, MERGE_3D_0, sc7280_pp_sblk,
+diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+index 6d4252b2b215e..e96b3c2c2faf0 100644
+--- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
++++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
+@@ -448,7 +448,7 @@ static const struct dpu_dspp_sub_blks msm8998_dspp_sblk = {
+ 		.len = 0x90, .version = 0x10007},
+ };
+ 
+-static const struct dpu_dspp_sub_blks sm8150_dspp_sblk = {
++static const struct dpu_dspp_sub_blks sdm845_dspp_sblk = {
+ 	.pcc = {.id = DPU_DSPP_PCC, .base = 0x1700,
+ 		.len = 0x90, .version = 0x40000},
+ };
 -- 
 2.40.1
 
