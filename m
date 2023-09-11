@@ -2,40 +2,35 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 31CA779BE6F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 27B4079B775
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243145AbjIKU7L (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:11 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51708 "EHLO
+        id S1353983AbjIKVvw (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:52 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50448 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238235AbjIKNwC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:02 -0400
+        with ESMTP id S238244AbjIKNwN (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:52:13 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26923FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:51:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6BFB6C433C7;
-        Mon, 11 Sep 2023 13:51:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E380CFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:52:08 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36C50C433C7;
+        Mon, 11 Sep 2023 13:52:08 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440316;
-        bh=qA6p7SCgUmuzsOXpkMM6nmu/aGCPjOUNdgd0qHIUXYs=;
+        s=korg; t=1694440328;
+        bh=jJqhpc8EvOGHiuIEYdtVWNRTJw1+xl8FSl0zJ7igaQ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=xZfoCA5eiMXKQ0B9dQLQMlkeQeOHpI16v3r8zv61q7KVtq0n+wDFxLKyTZmj902lp
-         0PiXHQEwdoMn8MJ55szxgIxorCtPI+VcJH+qXkdTb+BFd7wwibDFyEAGD3pIICHVmk
-         7iud1us8f3AVBoLm143HWBwm3+Zj4dnuLW26aV9I=
+        b=c2ysDyeRFJ6E28bKh4hp8FLxgvTPi5aL14iUZqsIcCebIRYHqodmuOpGfqcusfvBY
+         n78VQ3uXgwxXjXOdSluOlJkCFADHl4VM0NUmCd4+xXaMsE7QpKFRYsfAA0+3w/ybJT
+         aNxoCdZQBKXbKrw7WyLC7TIUfzjWulIQYgnVr5EI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Todd Brandt <todd.e.brandt@intel.com>,
-        Patrick Steinhardt <ps@pks.im>,
-        Raymond Jay Golo <rjgolo@gmail.com>,
-        Ronan Pigott <ronan@rjp.ie>,
-        Jerry Snitselaar <jsnitsel@redhat.com>,
-        Jarkko Sakkinen <jarkko@kernel.org>,
-        Thorsten Leemhuis <regressions@leemhuis.info>
-Subject: [PATCH 6.5 003/739] tpm: Enable hwrng only for Pluton on AMD CPUs
-Date:   Mon, 11 Sep 2023 15:36:42 +0200
-Message-ID: <20230911134651.046403743@linuxfoundation.org>
+        patches@lists.linux.dev, Miklos Szeredi <mszeredi@redhat.com>,
+        =?UTF-8?q?J=C3=BCrg=20Billeter?= <j@bitron.ch>
+Subject: [PATCH 6.5 007/739] Revert "fuse: in fuse_flush only wait if someone wants the return code"
+Date:   Mon, 11 Sep 2023 15:36:46 +0200
+Message-ID: <20230911134651.186658519@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -43,6 +38,7 @@ User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -58,82 +54,165 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Jarkko Sakkinen <jarkko@kernel.org>
+From: Miklos Szeredi <mszeredi@redhat.com>
 
-commit 8f7f35e5aa6f2182eabcfa3abef4d898a48e9aa8 upstream.
+commit 91ec6c85599b60c00caf4e9a9d6c4d6e5dd5e93c upstream.
 
-The vendor check introduced by commit 554b841d4703 ("tpm: Disable RNG for
-all AMD fTPMs") doesn't work properly on a number of Intel fTPMs.  On the
-reported systems the TPM doesn't reply at bootup and returns back the
-command code. This makes the TPM fail probe on Lenovo Legion Y540 laptop.
+This reverts commit 5a8bee63b10f6f2f52f6d22e109a4a147409842a.
 
-Since only Microsoft Pluton is the only known combination of AMD CPU and
-fTPM from other vendor, disable hwrng otherwise. In order to make sysadmin
-aware of this, print also info message to the klog.
+Jürg Billeter reports the following regression:
 
-Cc: stable@vger.kernel.org
-Fixes: 554b841d4703 ("tpm: Disable RNG for all AMD fTPMs")
-Reported-by: Todd Brandt <todd.e.brandt@intel.com>
-Closes: https://bugzilla.kernel.org/show_bug.cgi?id=217804
-Reported-by: Patrick Steinhardt <ps@pks.im>
-Reported-by: Raymond Jay Golo <rjgolo@gmail.com>
-Reported-by: Ronan Pigott <ronan@rjp.ie>
-Reviewed-by: Jerry Snitselaar <jsnitsel@redhat.com>
-Signed-off-by: Jarkko Sakkinen <jarkko@kernel.org>
-Cc: Thorsten Leemhuis <regressions@leemhuis.info>
+  Since v6.3-rc1 commit 5a8bee63b1 ("fuse: in fuse_flush only wait if
+  someone wants the return code") `fput()` is called asynchronously if a
+  file is closed as part of a process exiting, i.e., if there was no
+  explicit `close()` before exit.
+
+  If the file was open for writing, also `put_write_access()` is called
+  asynchronously as part of the async `fput()`.
+
+  If that newly written file is an executable, attempting to `execve()` the
+  new file can fail with `ETXTBSY` if it's called after the writer process
+  exited but before the async `fput()` has run.
+
+Reported-and-tested-by: "Jürg Billeter" <j@bitron.ch>
+Cc: <stable@vger.kernel.org> # v6.3
+Link: https://lore.kernel.org/all/4f66cded234462964899f2a661750d6798a57ec0.camel@bitron.ch/
+Signed-off-by: Miklos Szeredi <mszeredi@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/char/tpm/tpm_crb.c |   33 ++++++++-------------------------
- 1 file changed, 8 insertions(+), 25 deletions(-)
+ fs/fuse/file.c |   89 ++++++++++++++++-----------------------------------------
+ 1 file changed, 26 insertions(+), 63 deletions(-)
 
---- a/drivers/char/tpm/tpm_crb.c
-+++ b/drivers/char/tpm/tpm_crb.c
-@@ -463,28 +463,6 @@ static bool crb_req_canceled(struct tpm_
- 	return (cancel & CRB_CANCEL_INVOKE) == CRB_CANCEL_INVOKE;
+--- a/fs/fuse/file.c
++++ b/fs/fuse/file.c
+@@ -19,7 +19,6 @@
+ #include <linux/uio.h>
+ #include <linux/fs.h>
+ #include <linux/filelock.h>
+-#include <linux/file.h>
+ 
+ static int fuse_send_open(struct fuse_mount *fm, u64 nodeid,
+ 			  unsigned int open_flags, int opcode,
+@@ -479,36 +478,48 @@ static void fuse_sync_writes(struct inod
+ 	fuse_release_nowrite(inode);
  }
  
--static int crb_check_flags(struct tpm_chip *chip)
+-struct fuse_flush_args {
+-	struct fuse_args args;
+-	struct fuse_flush_in inarg;
+-	struct work_struct work;
+-	struct file *file;
+-};
+-
+-static int fuse_do_flush(struct fuse_flush_args *fa)
++static int fuse_flush(struct file *file, fl_owner_t id)
+ {
+-	int err;
+-	struct inode *inode = file_inode(fa->file);
++	struct inode *inode = file_inode(file);
+ 	struct fuse_mount *fm = get_fuse_mount(inode);
++	struct fuse_file *ff = file->private_data;
++	struct fuse_flush_in inarg;
++	FUSE_ARGS(args);
++	int err;
++
++	if (fuse_is_bad(inode))
++		return -EIO;
++
++	if (ff->open_flags & FOPEN_NOFLUSH && !fm->fc->writeback_cache)
++		return 0;
+ 
+ 	err = write_inode_now(inode, 1);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	inode_lock(inode);
+ 	fuse_sync_writes(inode);
+ 	inode_unlock(inode);
+ 
+-	err = filemap_check_errors(fa->file->f_mapping);
++	err = filemap_check_errors(file->f_mapping);
+ 	if (err)
+-		goto out;
++		return err;
+ 
+ 	err = 0;
+ 	if (fm->fc->no_flush)
+ 		goto inval_attr_out;
+ 
+-	err = fuse_simple_request(fm, &fa->args);
++	memset(&inarg, 0, sizeof(inarg));
++	inarg.fh = ff->fh;
++	inarg.lock_owner = fuse_lock_owner_id(fm->fc, id);
++	args.opcode = FUSE_FLUSH;
++	args.nodeid = get_node_id(inode);
++	args.in_numargs = 1;
++	args.in_args[0].size = sizeof(inarg);
++	args.in_args[0].value = &inarg;
++	args.force = true;
++
++	err = fuse_simple_request(fm, &args);
+ 	if (err == -ENOSYS) {
+ 		fm->fc->no_flush = 1;
+ 		err = 0;
+@@ -521,57 +532,9 @@ inval_attr_out:
+ 	 */
+ 	if (!err && fm->fc->writeback_cache)
+ 		fuse_invalidate_attr_mask(inode, STATX_BLOCKS);
+-
+-out:
+-	fput(fa->file);
+-	kfree(fa);
+ 	return err;
+ }
+ 
+-static void fuse_flush_async(struct work_struct *work)
 -{
--	u32 val;
--	int ret;
+-	struct fuse_flush_args *fa = container_of(work, typeof(*fa), work);
 -
--	ret = crb_request_locality(chip, 0);
--	if (ret)
--		return ret;
--
--	ret = tpm2_get_tpm_pt(chip, TPM2_PT_MANUFACTURER, &val, NULL);
--	if (ret)
--		goto release;
--
--	if (val == 0x414D4400U /* AMD */)
--		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
--
--release:
--	crb_relinquish_locality(chip, 0);
--
--	return ret;
+-	fuse_do_flush(fa);
 -}
 -
- static const struct tpm_class_ops tpm_crb = {
- 	.flags = TPM_OPS_AUTO_STARTUP,
- 	.status = crb_status,
-@@ -826,9 +804,14 @@ static int crb_acpi_add(struct acpi_devi
- 	if (rc)
- 		goto out;
- 
--	rc = crb_check_flags(chip);
--	if (rc)
--		goto out;
-+#ifdef CONFIG_X86
-+	/* A quirk for https://www.amd.com/en/support/kb/faq/pa-410 */
-+	if (boot_cpu_data.x86_vendor == X86_VENDOR_AMD &&
-+	    priv->sm != ACPI_TPM2_COMMAND_BUFFER_WITH_PLUTON) {
-+		dev_info(dev, "Disabling hwrng\n");
-+		chip->flags |= TPM_CHIP_FLAG_HWRNG_DISABLED;
-+	}
-+#endif /* CONFIG_X86 */
- 
- 	rc = tpm_chip_register(chip);
- 
+-static int fuse_flush(struct file *file, fl_owner_t id)
+-{
+-	struct fuse_flush_args *fa;
+-	struct inode *inode = file_inode(file);
+-	struct fuse_mount *fm = get_fuse_mount(inode);
+-	struct fuse_file *ff = file->private_data;
+-
+-	if (fuse_is_bad(inode))
+-		return -EIO;
+-
+-	if (ff->open_flags & FOPEN_NOFLUSH && !fm->fc->writeback_cache)
+-		return 0;
+-
+-	fa = kzalloc(sizeof(*fa), GFP_KERNEL);
+-	if (!fa)
+-		return -ENOMEM;
+-
+-	fa->inarg.fh = ff->fh;
+-	fa->inarg.lock_owner = fuse_lock_owner_id(fm->fc, id);
+-	fa->args.opcode = FUSE_FLUSH;
+-	fa->args.nodeid = get_node_id(inode);
+-	fa->args.in_numargs = 1;
+-	fa->args.in_args[0].size = sizeof(fa->inarg);
+-	fa->args.in_args[0].value = &fa->inarg;
+-	fa->args.force = true;
+-	fa->file = get_file(file);
+-
+-	/* Don't wait if the task is exiting */
+-	if (current->flags & PF_EXITING) {
+-		INIT_WORK(&fa->work, fuse_flush_async);
+-		schedule_work(&fa->work);
+-		return 0;
+-	}
+-
+-	return fuse_do_flush(fa);
+-}
+-
+ int fuse_fsync_common(struct file *file, loff_t start, loff_t end,
+ 		      int datasync, int opcode)
+ {
 
 
