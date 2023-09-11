@@ -2,78 +2,100 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9A96079B47A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A4EE979AF81
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242208AbjIKVhn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:37:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48344 "EHLO
+        id S1379550AbjIKWoo (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33352 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S236482AbjIKKmr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 06:42:47 -0400
-Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C12E5;
-        Mon, 11 Sep 2023 03:42:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAC2C433C7;
-        Mon, 11 Sep 2023 10:42:39 +0000 (UTC)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
-        s=k20201202; t=1694428962;
-        bh=uWJY/w9fi0ck8832Ox7eif8IXgu2yYhH8rrmB2yxmvA=;
-        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
-        b=GaoJtjdRaiKbyK6BJ1KHNENgj4HjJLwDRzJQsF3rXDOUqB1WYyeJr0k4aKfiRGo9H
-         yFeoqB793oiRQ8Zvoq64r1hRJySOkl7ukYEs9skFQmPTDQKYcM2FEPD0Co5Soiix9a
-         cuJEpWlIddBAsdOHMiKw9EnPUXTL0qCvQ4hqhMPkbGrhSd9FnTMjaAt9Uqzbcm3bJQ
-         LHpI4mufHn2GoNE7LykXvO6N6fwijzPBkAFIid8bW+Tif8ErWBXMEngtBJkQWPdcaO
-         F4KjMi+ftTpDqX1EmSaEUVv0eK+OtIJ/+od/vb7wL8I/bfs1paS7imbdPwnyvPDd6r
-         dUtsmewgVG5kQ==
-Mime-Version: 1.0
-Content-Transfer-Encoding: quoted-printable
+        with ESMTP id S236739AbjIKLTp (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 07:19:45 -0400
+Received: from mgamail.intel.com (mgamail.intel.com [192.55.52.43])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EF646CDD;
+        Mon, 11 Sep 2023 04:19:41 -0700 (PDT)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple;
+  d=intel.com; i=@intel.com; q=dns/txt; s=Intel;
+  t=1694431181; x=1725967181;
+  h=from:to:cc:subject:date:message-id:mime-version:
+   content-transfer-encoding;
+  bh=yqt71S8DV4uklxfQ6XN+QALw6bb2cljgW00oOz7TuTU=;
+  b=ciYUWcejtKBTfUhYTwHCGH4i82PHXa/3HTo5BPWZ0Jok4G4tDn8H4Vf4
+   FYqKMTwYEmtBUBgKeo2i1DHI0STcL2+otooOi3+crM57FZZErdWxwpzb+
+   W33xOJqsz7YK+B6s3mKgKlxANAU2txwXASU+CEohJtHKJgqsN4/wPTn90
+   p7gpi8mrjXI+oJf+lDZVMQh7DFlEQB+XCGHM/r4H1EJtgnSGPtQ9MmmOd
+   PAoFUDHv7p4wNb8VyBxQalmDEAHeRK4vtm2q8d5pIkP79q+GDExO4xJhk
+   +YETy+pcyvegANSXMJHQkk8bSqkfsV7VeSZCMXW7LU1T6OQe9krTUx+nW
+   Q==;
+X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="464428583"
+X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
+   d="scan'208";a="464428583"
+Received: from orsmga005.jf.intel.com ([10.7.209.41])
+  by fmsmga105.fm.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:19:41 -0700
+X-ExtLoop1: 1
+X-IronPort-AV: E=McAfee;i="6600,9927,10829"; a="916990544"
+X-IronPort-AV: E=Sophos;i="6.02,243,1688454000"; 
+   d="scan'208";a="916990544"
+Received: from mzarkov-mobl3.ger.corp.intel.com (HELO ijarvine-mobl2.ger.corp.intel.com) ([10.252.36.200])
+  by orsmga005-auth.jf.intel.com with ESMTP/TLS/ECDHE-RSA-AES256-GCM-SHA384; 11 Sep 2023 04:19:38 -0700
+From:   =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+To:     Reinette Chatre <reinette.chatre@intel.com>,
+        Shuah Khan <shuah@kernel.org>,
+        Shuah Khan <skhan@linuxfoundation.org>,
+        linux-kselftest@vger.kernel.org,
+        =?UTF-8?q?Maciej=20Wiecz=C3=B3r-Retman?= 
+        <maciej.wieczor-retman@intel.com>
+Cc:     linux-kernel@vger.kernel.org,
+        Shaopeng Tan <tan.shaopeng@jp.fujitsu.com>,
+        stable@vger.kernel.org,
+        =?UTF-8?q?Ilpo=20J=C3=A4rvinen?= <ilpo.jarvinen@linux.intel.com>
+Subject: [PATCH 0/5] selftests/resctrl: Fixes to failing tests
+Date:   Mon, 11 Sep 2023 14:19:25 +0300
+Message-Id: <20230911111930.16088-1-ilpo.jarvinen@linux.intel.com>
+X-Mailer: git-send-email 2.30.2
+MIME-Version: 1.0
 Content-Type: text/plain; charset=UTF-8
-Date:   Mon, 11 Sep 2023 13:42:37 +0300
-Message-Id: <CVG0XP0M7KNM.2NA8DSD0TGK4V@suppilovahvero>
-Cc:     <linux-integrity@vger.kernel.org>,
-        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
-        "Todd Brandt" <todd.e.brandt@intel.com>,
-        "Peter Huewe" <peterhuewe@gmx.de>,
-        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
-        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
-        "Raymond Jay Golo" <rjgolo@gmail.com>,
-        "Linux kernel regressions list" <regressions@lists.linux.dev>,
-        "Dusty Mabe" <dusty@dustymabe.com>,
-        "Linus Torvalds" <torvalds@linux-foundation.org>,
-        "Paul Menzel" <pmenzel@molgen.mpg.de>
-Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
-From:   "Jarkko Sakkinen" <jarkko@kernel.org>
-To:     "Jarkko Sakkinen" <jarkko@kernel.org>,
-        "Thorsten Leemhuis" <regressions@leemhuis.info>,
-        "Mario Limonciello" <mario.limonciello@amd.com>
-X-Mailer: aerc 0.14.0
-References: <20230822231510.2263255-1-jarkko@kernel.org>
- <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
- <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
- <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
- <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
- <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
- <fcf2f600-d1f0-de14-956b-4d4f3f0cb3fa@leemhuis.info>
- <116dd56f-695f-4ecd-dace-805db83f5c3e@leemhuis.info>
- <CVAHNI7PWVDL.W8194GZA0SMK@suppilovahvero>
- <8dc067e5-d81f-4c5b-be76-bf0c1227b71e@leemhuis.info>
- <CVG0VPRMC759.2LT3BCT7Q6M9H@suppilovahvero>
-In-Reply-To: <CVG0VPRMC759.2LT3BCT7Q6M9H@suppilovahvero>
-X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
-        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
-        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+Content-Transfer-Encoding: 8bit
+X-Spam-Status: No, score=-2.0 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
+        SPF_HELO_NONE,SPF_NONE autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-On Mon Sep 11, 2023 at 1:40 PM EEST, Jarkko Sakkinen wrote:
-> Personally I think bugzilla, being user approachable system, should
-> be better defined but *theoretically*, at least by the process, it
-> can be fully ignored.
+Fix three issues with resctrl selftests.
 
-I.e. I don't think it should be ignored :-) </disclaimer>
+The signal handling fix became necessary after the mount/umount fixes.
 
-BR, Jarkko
+The other two came up when I ran resctrl selftests across the server
+fleet in our lab to validate the upcoming CAT test rewrite (the rewrite
+is not part of this series).
+
+These are developed and should apply cleanly at least on top the
+benchmark cleanup series (might apply cleanly also w/o the benchmark
+series, I didn't test).
+
+Ilpo Järvinen (5):
+  selftests/resctrl: Extend signal handler coverage to unmount on
+    receiving signal
+  selftests/resctrl: Remove duplicate feature check from CMT test
+  selftests/resctrl: Refactor feature check to use resource and feature
+    name
+  selftests/resctrl: Fix feature checks
+  selftests/resctrl: Reduce failures due to outliers in MBA/MBM tests
+
+ tools/testing/selftests/resctrl/cat_test.c    |  8 ---
+ tools/testing/selftests/resctrl/cmt_test.c    |  3 -
+ tools/testing/selftests/resctrl/mba_test.c    |  2 +-
+ tools/testing/selftests/resctrl/mbm_test.c    |  2 +-
+ tools/testing/selftests/resctrl/resctrl.h     |  6 +-
+ .../testing/selftests/resctrl/resctrl_tests.c | 37 ++++++++--
+ tools/testing/selftests/resctrl/resctrl_val.c | 22 +++---
+ tools/testing/selftests/resctrl/resctrlfs.c   | 69 ++++++++-----------
+ 8 files changed, 73 insertions(+), 76 deletions(-)
+
+-- 
+2.30.2
+
