@@ -2,60 +2,78 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D5D279B41E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9A96079B47A
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350670AbjIKVkg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:40:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55694 "EHLO
+        id S242208AbjIKVhn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:37:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48344 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242606AbjIKPzi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:55:38 -0400
-Received: from sanan-e.com (unknown [218.107.219.99])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTP id 94193193
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:55:32 -0700 (PDT)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=sanan-e.com; s=dkim; h=Received:Content-Type:MIME-Version:
-        Content-Transfer-Encoding:Content-Description:Subject:To:From:
-        Date:Reply-To:Message-Id; bh=qcS40TKk7lDEkm1RQbO1KTL2NSc/wnLNi62
-        pjzED0xE=; b=OUsGnwNEImiyt3tYntGvUCYfEZ4zqNxEG8/0orfVRs8PhgsjTZF
-        hEy1nsb9JTjFYccWUlUGREZATxXEGEMoMBADulxi7/KiB0NHfuYBy6rUnFh5LLEc
-        s7jhjs5EGSDwIliac25yvKnlKgbMb1VBk6PI33KhWKX5Yk150IUJ2Sqk=
-Received: from [156.96.56.92] (unknown [128.14.67.204])
-        by MailDR (Coremail) with SMTP id AQAAfwA33ABR5v5kA6KaAA--.445S244;
-        Mon, 11 Sep 2023 18:38:51 +0800 (CST)
-Content-Type: text/plain; charset="iso-8859-1"
-MIME-Version: 1.0
+        with ESMTP id S236482AbjIKKmr (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 06:42:47 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1C12E5;
+        Mon, 11 Sep 2023 03:42:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DAC2C433C7;
+        Mon, 11 Sep 2023 10:42:39 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694428962;
+        bh=uWJY/w9fi0ck8832Ox7eif8IXgu2yYhH8rrmB2yxmvA=;
+        h=Date:Cc:Subject:From:To:References:In-Reply-To:From;
+        b=GaoJtjdRaiKbyK6BJ1KHNENgj4HjJLwDRzJQsF3rXDOUqB1WYyeJr0k4aKfiRGo9H
+         yFeoqB793oiRQ8Zvoq64r1hRJySOkl7ukYEs9skFQmPTDQKYcM2FEPD0Co5Soiix9a
+         cuJEpWlIddBAsdOHMiKw9EnPUXTL0qCvQ4hqhMPkbGrhSd9FnTMjaAt9Uqzbcm3bJQ
+         LHpI4mufHn2GoNE7LykXvO6N6fwijzPBkAFIid8bW+Tif8ErWBXMEngtBJkQWPdcaO
+         F4KjMi+ftTpDqX1EmSaEUVv0eK+OtIJ/+od/vb7wL8I/bfs1paS7imbdPwnyvPDd6r
+         dUtsmewgVG5kQ==
+Mime-Version: 1.0
 Content-Transfer-Encoding: quoted-printable
-Content-Description: Mail message body
-Subject: Help
-To:     Recipients <olena@sanan-e.com>
-From:   olena@sanan-e.com
-Date:   Mon, 11 Sep 2023 03:38:36 -0700
-Reply-To: shevchenkoolena9@gmail.com
-X-CM-TRANSID: AQAAfwA33ABR5v5kA6KaAA--.445S244
-Message-Id: <64FF386F.491553.70031@sanan-e.com>
-Authentication-Results: MailDR; spf=neutral smtp.mail=olena@sanan-e.co
-        m;
-X-Coremail-Antispam: 1UD129KBjDUn29KB7ZKAUJUUUUU529EdanIXcx71UUUUU7v73
-        VFW2AGmfu7bjvjm3AaLaJ3UjIYCTnIWjDUYxBIdaVFxhVjvjDU0xZFpf9x0zRUUUUUUUUU
-        =
-X-Spam-Status: No, score=4.7 required=5.0 tests=BAYES_50,DKIM_INVALID,
-        DKIM_SIGNED,FREEMAIL_FORGED_REPLYTO,FREEMAIL_REPLYTO_END_DIGIT,
-        RCVD_IN_DNSWL_BLOCKED,RCVD_IN_MSPIKE_BL,RCVD_IN_MSPIKE_L4,
-        RCVD_IN_VALIDITY_RPBL,SPF_HELO_PASS,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
-X-Spam-Level: ****
+Content-Type: text/plain; charset=UTF-8
+Date:   Mon, 11 Sep 2023 13:42:37 +0300
+Message-Id: <CVG0XP0M7KNM.2NA8DSD0TGK4V@suppilovahvero>
+Cc:     <linux-integrity@vger.kernel.org>,
+        "Jerry Snitselaar" <jsnitsel@redhat.com>, <stable@vger.kernel.org>,
+        "Todd Brandt" <todd.e.brandt@intel.com>,
+        "Peter Huewe" <peterhuewe@gmx.de>,
+        "Jason Gunthorpe" <jgg@ziepe.ca>, <linux-kernel@vger.kernel.org>,
+        "Patrick Steinhardt" <ps@pks.im>, "Ronan Pigott" <ronan@rjp.ie>,
+        "Raymond Jay Golo" <rjgolo@gmail.com>,
+        "Linux kernel regressions list" <regressions@lists.linux.dev>,
+        "Dusty Mabe" <dusty@dustymabe.com>,
+        "Linus Torvalds" <torvalds@linux-foundation.org>,
+        "Paul Menzel" <pmenzel@molgen.mpg.de>
+Subject: Re: [PATCH v3] tpm: Enable hwrng only for Pluton on AMD CPUs
+From:   "Jarkko Sakkinen" <jarkko@kernel.org>
+To:     "Jarkko Sakkinen" <jarkko@kernel.org>,
+        "Thorsten Leemhuis" <regressions@leemhuis.info>,
+        "Mario Limonciello" <mario.limonciello@amd.com>
+X-Mailer: aerc 0.14.0
+References: <20230822231510.2263255-1-jarkko@kernel.org>
+ <705b9769-4132-450b-bd47-2423c419db2a@molgen.mpg.de>
+ <CV03X3OEI7RE.3NI1QJ6MBJSHA@suppilovahvero>
+ <1eeddbdc-c1f0-4499-b3d1-24c96f42a50b@amd.com>
+ <CV3J3TCMB74C.1WA96NQ9J593U@suppilovahvero>
+ <f6d75cac-2556-484e-8a2c-3531b24b1ca5@amd.com>
+ <fcf2f600-d1f0-de14-956b-4d4f3f0cb3fa@leemhuis.info>
+ <116dd56f-695f-4ecd-dace-805db83f5c3e@leemhuis.info>
+ <CVAHNI7PWVDL.W8194GZA0SMK@suppilovahvero>
+ <8dc067e5-d81f-4c5b-be76-bf0c1227b71e@leemhuis.info>
+ <CVG0VPRMC759.2LT3BCT7Q6M9H@suppilovahvero>
+In-Reply-To: <CVG0VPRMC759.2LT3BCT7Q6M9H@suppilovahvero>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Hi,
-I am a Ukrainian, I have funds for investment, can you please help me reloc=
-ate and invest in your country? Thank you as i possibly wait to hear from y=
-ou, =
+On Mon Sep 11, 2023 at 1:40 PM EEST, Jarkko Sakkinen wrote:
+> Personally I think bugzilla, being user approachable system, should
+> be better defined but *theoretically*, at least by the process, it
+> can be fully ignored.
 
-Olena.
+I.e. I don't think it should be ignored :-) </disclaimer>
 
+BR, Jarkko
