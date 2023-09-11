@@ -2,48 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DAAF79AFEC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DDD8A79B4AB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:22 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243943AbjIKVIC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:08:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52020 "EHLO
+        id S1348855AbjIKVb1 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:31:27 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55614 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240682AbjIKOvC (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:02 -0400
+        with ESMTP id S241909AbjIKPRh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 95F57106;
-        Mon, 11 Sep 2023 07:50:58 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id B3171C433CA;
-        Mon, 11 Sep 2023 14:50:57 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A8EAFFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBC44C433C8;
+        Mon, 11 Sep 2023 15:17:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443858;
-        bh=udKSbYP3wVvhUEdYIPakGzChRO+pxg48wNgSy+8DnZM=;
+        s=korg; t=1694445452;
+        bh=Krf4GLxGSDGEnyGADgfkBxHUKHBgtYqIact631v+bZ4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=1ym9tlPjbsLpmvrpr5y8JxcW5AIaOD0ooYyB/GCglF5IxA+w+EXRcC09nIQoaE04p
-         y92fVLjdeSzDMPT0jVgNdbfaCi0gY98CwlNLyOpIXRl5WBa3OrWHo0zoWJyk9LMZZq
-         V1/kWNte+hjjVy7P5S1EQCgiL3x1LT8mA7e9vFX0=
+        b=OSFTJ4l98xuTHVAq5fhbvQbhrF09VB7Xue9CnGFfAXlgIVyrHd1OfwGWgm7cVAfGM
+         KbuBeLO4fwhdrMpj6uqLKfkJgZWyIISABHlTRXGUmGQ3g7irelUO1Y3bNvVIWNFa0J
+         OW2lgfzXTSEK8knGC5MNZ+VcK7g/N1kttygp9Iuk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Saurav Kashyap <skashyap@marvell.com>,
-        Rob Evers <revers@redhat.com>,
-        Johannes Thumshirn <Johannes.Thumshirn@wdc.com>,
-        David Laight <David.Laight@ACULAB.COM>,
-        Jozef Bacik <jobacik@redhat.com>,
-        Laurence Oberman <loberman@redhat.com>,
-        "James E.J. Bottomley" <jejb@linux.ibm.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
-        GR-QLogic-Storage-Upstream@marvell.com, linux-scsi@vger.kernel.org,
-        Johannes Thumshirn <johannes.thumshirn@wdc.com>,
-        Oleksandr Natalenko <oleksandr@redhat.com>,
+        patches@lists.linux.dev, Bjorn Helgaas <bhelgaas@google.com>,
+        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        Dan Williams <dan.j.williams@intel.com>,
+        Ira Weiny <ira.weiny@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 526/737] scsi: qedf: Do not touch __user pointer in qedf_dbg_fp_int_cmd_read() directly
+Subject: [PATCH 6.1 352/600] PCI: Allow drivers to request exclusive config regions
 Date:   Mon, 11 Sep 2023 15:46:25 +0200
-Message-ID: <20230911134705.268954907@linuxfoundation.org>
+Message-ID: <20230911134644.069404709@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -59,113 +52,191 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Oleksandr Natalenko <oleksandr@redhat.com>
+From: Ira Weiny <ira.weiny@intel.com>
 
-[ Upstream commit 25dbc20deab5165f847b4eb42f376f725a986ee8 ]
+[ Upstream commit 278294798ac9118412c9624a801d3f20f2279363 ]
 
-The qedf_dbg_fp_int_cmd_read() function invokes sprintf() directly on a
-__user pointer, which may crash the kernel.
+PCI config space access from user space has traditionally been
+unrestricted with writes being an understood risk for device operation.
 
-Avoid doing that by vmalloc()'ating a buffer for scnprintf() and then
-calling simple_read_from_buffer() which does a proper copy_to_user() call.
+Unfortunately, device breakage or odd behavior from config writes lacks
+indicators that can leave driver writers confused when evaluating
+failures.  This is especially true with the new PCIe Data Object
+Exchange (DOE) mailbox protocol where backdoor shenanigans from user
+space through things such as vendor defined protocols may affect device
+operation without complete breakage.
 
-Fixes: 61d8658b4a43 ("scsi: qedf: Add QLogic FastLinQ offload FCoE driver framework.")
-Link: https://lore.kernel.org/lkml/20230724120241.40495-1-oleksandr@redhat.com/
-Link: https://lore.kernel.org/linux-scsi/20230726101236.11922-1-skashyap@marvell.com/
-Cc: Saurav Kashyap <skashyap@marvell.com>
-Cc: Rob Evers <revers@redhat.com>
-Cc: Johannes Thumshirn <Johannes.Thumshirn@wdc.com>
-Cc: David Laight <David.Laight@ACULAB.COM>
-Cc: Jozef Bacik <jobacik@redhat.com>
-Cc: Laurence Oberman <loberman@redhat.com>
-Cc: "James E.J. Bottomley" <jejb@linux.ibm.com>
-Cc: "Martin K. Petersen" <martin.petersen@oracle.com>
-Cc: GR-QLogic-Storage-Upstream@marvell.com
-Cc: linux-scsi@vger.kernel.org
-Reviewed-by: Laurence Oberman <loberman@redhat.com>
-Reviewed-by: Johannes Thumshirn <johannes.thumshirn@wdc.com>
-Tested-by: Laurence Oberman <loberman@redhat.com>
-Acked-by: Saurav Kashyap <skashyap@marvell.com>
-Signed-off-by: Oleksandr Natalenko <oleksandr@redhat.com>
-Link: https://lore.kernel.org/r/20230731084034.37021-4-oleksandr@redhat.com
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+A prior proposal restricted read and writes completely.[1]  Greg and
+Bjorn pointed out that proposal is flawed for a couple of reasons.
+First, lspci should always be allowed and should not interfere with any
+device operation.  Second, setpci is a valuable tool that is sometimes
+necessary and it should not be completely restricted.[2]  Finally
+methods exist for full lock of device access if required.
+
+Even though access should not be restricted it would be nice for driver
+writers to be able to flag critical parts of the config space such that
+interference from user space can be detected.
+
+Introduce pci_request_config_region_exclusive() to mark exclusive config
+regions.  Such regions trigger a warning and kernel taint if accessed
+via user space.
+
+Create pci_warn_once() to restrict the user from spamming the log.
+
+[1] https://lore.kernel.org/all/161663543465.1867664.5674061943008380442.stgit@dwillia2-desk3.amr.corp.intel.com/
+[2] https://lore.kernel.org/all/YF8NGeGv9vYcMfTV@kroah.com/
+
+Cc: Bjorn Helgaas <bhelgaas@google.com>
+Cc: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Reviewed-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Suggested-by: Dan Williams <dan.j.williams@intel.com>
+Signed-off-by: Ira Weiny <ira.weiny@intel.com>
+Acked-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Acked-by: Bjorn Helgaas <bhelgaas@google.com>
+Link: https://lore.kernel.org/r/20220926215711.2893286-2-ira.weiny@intel.com
+Signed-off-by: Dan Williams <dan.j.williams@intel.com>
+Stable-dep-of: 5e70d0acf082 ("PCI: Add locking to RMW PCI Express Capability Register accessors")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/qedf/qedf_dbg.h     |  2 ++
- drivers/scsi/qedf/qedf_debugfs.c | 21 +++++++++++++++------
- 2 files changed, 17 insertions(+), 6 deletions(-)
+ drivers/pci/pci-sysfs.c |  7 +++++++
+ drivers/pci/probe.c     |  6 ++++++
+ include/linux/ioport.h  |  2 ++
+ include/linux/pci.h     | 17 +++++++++++++++++
+ kernel/resource.c       | 13 ++++++++-----
+ 5 files changed, 40 insertions(+), 5 deletions(-)
 
-diff --git a/drivers/scsi/qedf/qedf_dbg.h b/drivers/scsi/qedf/qedf_dbg.h
-index f4d81127239eb..5ec2b817c694a 100644
---- a/drivers/scsi/qedf/qedf_dbg.h
-+++ b/drivers/scsi/qedf/qedf_dbg.h
-@@ -59,6 +59,8 @@ extern uint qedf_debug;
- #define QEDF_LOG_NOTICE	0x40000000	/* Notice logs */
- #define QEDF_LOG_WARN		0x80000000	/* Warning logs */
+diff --git a/drivers/pci/pci-sysfs.c b/drivers/pci/pci-sysfs.c
+index ba38fc47d35e9..dd0d9d9bc5097 100644
+--- a/drivers/pci/pci-sysfs.c
++++ b/drivers/pci/pci-sysfs.c
+@@ -756,6 +756,13 @@ static ssize_t pci_write_config(struct file *filp, struct kobject *kobj,
+ 	if (ret)
+ 		return ret;
  
-+#define QEDF_DEBUGFS_LOG_LEN (2 * PAGE_SIZE)
++	if (resource_is_exclusive(&dev->driver_exclusive_resource, off,
++				  count)) {
++		pci_warn_once(dev, "%s: Unexpected write to kernel-exclusive config offset %llx",
++			      current->comm, off);
++		add_taint(TAINT_USER, LOCKDEP_STILL_OK);
++	}
 +
- /* Debug context structure */
- struct qedf_dbg_ctx {
- 	unsigned int host_no;
-diff --git a/drivers/scsi/qedf/qedf_debugfs.c b/drivers/scsi/qedf/qedf_debugfs.c
-index 1c5716540e465..451fd236bfd05 100644
---- a/drivers/scsi/qedf/qedf_debugfs.c
-+++ b/drivers/scsi/qedf/qedf_debugfs.c
-@@ -8,6 +8,7 @@
- #include <linux/uaccess.h>
- #include <linux/debugfs.h>
- #include <linux/module.h>
-+#include <linux/vmalloc.h>
+ 	if (off > dev->cfg_size)
+ 		return 0;
+ 	if (off + count > dev->cfg_size) {
+diff --git a/drivers/pci/probe.c b/drivers/pci/probe.c
+index 7170516298b0b..e3a1dc6432bcd 100644
+--- a/drivers/pci/probe.c
++++ b/drivers/pci/probe.c
+@@ -2306,6 +2306,12 @@ struct pci_dev *pci_alloc_dev(struct pci_bus *bus)
+ 	INIT_LIST_HEAD(&dev->bus_list);
+ 	dev->dev.type = &pci_dev_type;
+ 	dev->bus = pci_bus_get(bus);
++	dev->driver_exclusive_resource = (struct resource) {
++		.name = "PCI Exclusive",
++		.start = 0,
++		.end = -1,
++	};
++
+ #ifdef CONFIG_PCI_MSI
+ 	raw_spin_lock_init(&dev->msi_lock);
+ #endif
+diff --git a/include/linux/ioport.h b/include/linux/ioport.h
+index 27642ca15d932..4ae3c541ea6f4 100644
+--- a/include/linux/ioport.h
++++ b/include/linux/ioport.h
+@@ -318,6 +318,8 @@ extern void __devm_release_region(struct device *dev, struct resource *parent,
+ 				  resource_size_t start, resource_size_t n);
+ extern int iomem_map_sanity_check(resource_size_t addr, unsigned long size);
+ extern bool iomem_is_exclusive(u64 addr);
++extern bool resource_is_exclusive(struct resource *resource, u64 addr,
++				  resource_size_t size);
  
- #include "qedf.h"
- #include "qedf_dbg.h"
-@@ -98,7 +99,9 @@ static ssize_t
- qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
- 			 loff_t *ppos)
+ extern int
+ walk_system_ram_range(unsigned long start_pfn, unsigned long nr_pages,
+diff --git a/include/linux/pci.h b/include/linux/pci.h
+index 9f617ffdb863f..4ea8de6890bea 100644
+--- a/include/linux/pci.h
++++ b/include/linux/pci.h
+@@ -409,6 +409,7 @@ struct pci_dev {
+ 	 */
+ 	unsigned int	irq;
+ 	struct resource resource[DEVICE_COUNT_RESOURCE]; /* I/O and memory regions + expansion ROMs */
++	struct resource driver_exclusive_resource;	 /* driver exclusive resource ranges */
+ 
+ 	bool		match_driver;		/* Skip attaching driver */
+ 
+@@ -1408,6 +1409,21 @@ int pci_request_selected_regions(struct pci_dev *, int, const char *);
+ int pci_request_selected_regions_exclusive(struct pci_dev *, int, const char *);
+ void pci_release_selected_regions(struct pci_dev *, int);
+ 
++static inline __must_check struct resource *
++pci_request_config_region_exclusive(struct pci_dev *pdev, unsigned int offset,
++				    unsigned int len, const char *name)
++{
++	return __request_region(&pdev->driver_exclusive_resource, offset, len,
++				name, IORESOURCE_EXCLUSIVE);
++}
++
++static inline void pci_release_config_region(struct pci_dev *pdev,
++					     unsigned int offset,
++					     unsigned int len)
++{
++	__release_region(&pdev->driver_exclusive_resource, offset, len);
++}
++
+ /* drivers/pci/bus.c */
+ void pci_add_resource(struct list_head *resources, struct resource *res);
+ void pci_add_resource_offset(struct list_head *resources, struct resource *res,
+@@ -2487,6 +2503,7 @@ void pci_uevent_ers(struct pci_dev *pdev, enum  pci_ers_result err_type);
+ #define pci_crit(pdev, fmt, arg...)	dev_crit(&(pdev)->dev, fmt, ##arg)
+ #define pci_err(pdev, fmt, arg...)	dev_err(&(pdev)->dev, fmt, ##arg)
+ #define pci_warn(pdev, fmt, arg...)	dev_warn(&(pdev)->dev, fmt, ##arg)
++#define pci_warn_once(pdev, fmt, arg...) dev_warn_once(&(pdev)->dev, fmt, ##arg)
+ #define pci_notice(pdev, fmt, arg...)	dev_notice(&(pdev)->dev, fmt, ##arg)
+ #define pci_info(pdev, fmt, arg...)	dev_info(&(pdev)->dev, fmt, ##arg)
+ #define pci_dbg(pdev, fmt, arg...)	dev_dbg(&(pdev)->dev, fmt, ##arg)
+diff --git a/kernel/resource.c b/kernel/resource.c
+index 1aeeededdd4c8..8f52f88009652 100644
+--- a/kernel/resource.c
++++ b/kernel/resource.c
+@@ -1693,18 +1693,15 @@ static int strict_iomem_checks;
+  *
+  * Returns true if exclusive to the kernel, otherwise returns false.
+  */
+-bool iomem_is_exclusive(u64 addr)
++bool resource_is_exclusive(struct resource *root, u64 addr, resource_size_t size)
  {
-+	ssize_t ret;
- 	size_t cnt = 0;
-+	char *cbuf;
- 	int id;
- 	struct qedf_fastpath *fp = NULL;
- 	struct qedf_dbg_ctx *qedf_dbg =
-@@ -108,19 +111,25 @@ qedf_dbg_fp_int_cmd_read(struct file *filp, char __user *buffer, size_t count,
+ 	const unsigned int exclusive_system_ram = IORESOURCE_SYSTEM_RAM |
+ 						  IORESOURCE_EXCLUSIVE;
+ 	bool skip_children = false, err = false;
+-	int size = PAGE_SIZE;
+ 	struct resource *p;
  
- 	QEDF_INFO(qedf_dbg, QEDF_LOG_DEBUGFS, "entered\n");
- 
--	cnt = sprintf(buffer, "\nFastpath I/O completions\n\n");
-+	cbuf = vmalloc(QEDF_DEBUGFS_LOG_LEN);
-+	if (!cbuf)
-+		return 0;
-+
-+	cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt, "\nFastpath I/O completions\n\n");
- 
- 	for (id = 0; id < qedf->num_queues; id++) {
- 		fp = &(qedf->fp_array[id]);
- 		if (fp->sb_id == QEDF_SB_ID_NULL)
- 			continue;
--		cnt += sprintf((buffer + cnt), "#%d: %lu\n", id,
--			       fp->completions);
-+		cnt += scnprintf(cbuf + cnt, QEDF_DEBUGFS_LOG_LEN - cnt,
-+				 "#%d: %lu\n", id, fp->completions);
- 	}
- 
--	cnt = min_t(int, count, cnt - *ppos);
--	*ppos += cnt;
--	return cnt;
-+	ret = simple_read_from_buffer(buffer, count, ppos, cbuf, cnt);
-+
-+	vfree(cbuf);
-+
-+	return ret;
+-	addr = addr & PAGE_MASK;
+-
+ 	read_lock(&resource_lock);
+-	for_each_resource(&iomem_resource, p, skip_children) {
++	for_each_resource(root, p, skip_children) {
+ 		if (p->start >= addr + size)
+ 			break;
+ 		if (p->end < addr) {
+@@ -1743,6 +1740,12 @@ bool iomem_is_exclusive(u64 addr)
+ 	return err;
  }
  
- static ssize_t
++bool iomem_is_exclusive(u64 addr)
++{
++	return resource_is_exclusive(&iomem_resource, addr & PAGE_MASK,
++				     PAGE_SIZE);
++}
++
+ struct resource_entry *resource_list_create_entry(struct resource *res,
+ 						  size_t extra_size)
+ {
 -- 
 2.40.1
 
