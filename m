@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id F093779B2AA
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7F0B479B0E9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349137AbjIKVco (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:44 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33310 "EHLO
+        id S230345AbjIKWto (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:49:44 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35728 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240817AbjIKOyn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:43 -0400
+        with ESMTP id S239508AbjIKOWc (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:22:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDF3AE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:38 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2FFE1C433C7;
-        Mon, 11 Sep 2023 14:54:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 063F3CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:22:28 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5081CC433C8;
+        Mon, 11 Sep 2023 14:22:27 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444078;
-        bh=6k+YPnSfRoqD3a3tB73kKxaDzI83Ua8mKnbg+cZLGJg=;
+        s=korg; t=1694442147;
+        bh=AvOpcfc29CajKSYRwpFUugaxM6+M8KtxXa76JIKIUDo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=g2psPgqd6aGu5ee5lE2aLSuSisP1bQZncsB1NotCYHU3r5V/4Lgd+vRyYW+O7jcQt
-         n/PAF0wZR0hKfGePpTcAp1Nv+qLKUJg3bJB9L/AzqFggOrF8DfifFXLnEAaAtmr4t+
-         mQplckqzUnpkf+j0wlBZtRoRZ9cF6CGhFIZqPl/I=
+        b=mfcjU2BqLr4D1wrekjt5nO17NpmOzkYO6g5ZnKt+3yefpwg/T7WaHPoEAvhoY0dy0
+         gdKPF6+YJAKJAtJn1dajxKkHrBfpuU4HVunhgmBZE0twidguAG5y8EYlH4gEnAxkKP
+         uumJaGjsq5VJJarJf2V6c/d3g+oEXEZR7TNppaRo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Masami Hiramatsu <mhiramat@kernel.org>,
-        Mikhail Kobuk <m.kobuk@ispras.ru>,
-        Alexey Khoroshilov <khoroshilov@ispras.ru>,
-        Daniel Bristot de Oliveira <bristot@kernel.org>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 602/737] tracing: Remove extra space at the end of hwlat_detector/mode
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.5 662/739] io_uring/net: dont overflow multishot accept
 Date:   Mon, 11 Sep 2023 15:47:41 +0200
-Message-ID: <20230911134707.352776322@linuxfoundation.org>
+Message-ID: <20230911134709.597636464@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,48 +49,37 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Mikhail Kobuk <m.kobuk@ispras.ru>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 2cf0dee989a8b2501929eaab29473b6b1fa11057 ]
+commit 1bfed23349716a7811645336a7ce42c4b8f250bc upstream.
 
-Space is printed after each mode value including the last one:
-$ echo \"$(sudo cat /sys/kernel/tracing/hwlat_detector/mode)\"
-"none [round-robin] per-cpu "
+Don't allow overflowing multishot accept CQEs, we want to limit
+the grows of the overflow list.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230825103432.7750-1-m.kobuk@ispras.ru
-
-Cc: Masami Hiramatsu <mhiramat@kernel.org>
-Fixes: 8fa826b7344d ("trace/hwlat: Implement the mode config option")
-Signed-off-by: Mikhail Kobuk <m.kobuk@ispras.ru>
-Reviewed-by: Alexey Khoroshilov <khoroshilov@ispras.ru>
-Acked-by: Daniel Bristot de Oliveira <bristot@kernel.org>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Cc: stable@vger.kernel.org
+Fixes: 4e86a2c980137 ("io_uring: implement multishot mode for accept")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/7d0d749649244873772623dd7747966f516fe6e2.1691757663.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace_hwlat.c | 2 +-
+ io_uring/net.c |    2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/kernel/trace/trace_hwlat.c b/kernel/trace/trace_hwlat.c
-index 2f37a6e68aa9f..b791524a6536a 100644
---- a/kernel/trace/trace_hwlat.c
-+++ b/kernel/trace/trace_hwlat.c
-@@ -635,7 +635,7 @@ static int s_mode_show(struct seq_file *s, void *v)
- 	else
- 		seq_printf(s, "%s", thread_mode_str[mode]);
+--- a/io_uring/net.c
++++ b/io_uring/net.c
+@@ -1367,7 +1367,7 @@ retry:
+ 	if (ret < 0)
+ 		return ret;
+ 	if (io_aux_cqe(req, issue_flags & IO_URING_F_COMPLETE_DEFER, ret,
+-		       IORING_CQE_F_MORE, true))
++		       IORING_CQE_F_MORE, false))
+ 		goto retry;
  
--	if (mode != MODE_MAX)
-+	if (mode < MODE_MAX - 1) /* if mode is any but last */
- 		seq_puts(s, " ");
- 
- 	return 0;
--- 
-2.40.1
-
+ 	return -ECANCELED;
 
 
