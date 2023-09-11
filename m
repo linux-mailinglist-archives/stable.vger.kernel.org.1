@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5E9C479AFF2
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3A6D079B258
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358160AbjIKWH7 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:59 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60326 "EHLO
+        id S244109AbjIKWKe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:10:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56842 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241817AbjIKPPU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:20 -0400
+        with ESMTP id S240615AbjIKOsy (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:54 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id AEBE9FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0624BC433C8;
-        Mon, 11 Sep 2023 15:15:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A0690E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E4E16C433C7;
+        Mon, 11 Sep 2023 14:48:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445316;
-        bh=B7eAnGKCly1DMnmAp/N+QMOlE8FO+wCHtfxRVOMT/KI=;
+        s=korg; t=1694443730;
+        bh=YtTajofersbpY9BADg9d9oItZG4IWfyextBE42xRzLA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=oqa2Z2GhLtmsYHHucr2u3UBdk1BGxGS+UL0hvzU0bp22S9UIa6IwnWxJbrhQ948u/
-         8U6E6srNnSJUgyS5ZbFwxXQoVW1JwVQkRqsZWkGXIeT27G2jgp5R2+eXAzH0SbOB9t
-         wIVU80LTrozHaRAFbjY9ud7pFOAEoTjRSRB/FFcE=
+        b=IRZNKsadWENXkebzV1QrcDcMO+xbISg5nS/mqVMFrnpF/NgCyF5NDCtN+ICgSIwxN
+         EFTijPqk8hinPB4NAOvDPzfwVvu6D3QHcwb/uxX6aNbkTC08EBq/2mZMumpjZCexEv
+         xFWQXu+cDxasIVDF2UhTxt6VpItzfkkTmXA3AydY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Robert Marko <robert.marko@sartura.hr>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, "Guoniu.zhou" <guoniu.zhou@nxp.com>,
+        Jacopo Mondi <jacopo.mondi@ideasonboard.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 305/600] ARM: dts: qcom: ipq4019: correct SDHCI XO clock
-Date:   Mon, 11 Sep 2023 15:45:38 +0200
-Message-ID: <20230911134642.627948394@linuxfoundation.org>
+Subject: [PATCH 6.4 480/737] media: ov5640: fix low resolution image abnormal issue
+Date:   Mon, 11 Sep 2023 15:45:39 +0200
+Message-ID: <20230911134703.986076618@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,48 +52,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Robert Marko <robert.marko@sartura.hr>
+From: Guoniu.zhou <guoniu.zhou@nxp.com>
 
-[ Upstream commit b5ed7a5c1fdb3981713f7b637b72aa390c3db036 ]
+[ Upstream commit a828002f38c5ee49d3f0c0e64c0f0caa1aec8dc2 ]
 
-Using GCC_DCD_XO_CLK as the XO clock for SDHCI controller is not correct,
-it seems that I somehow made a mistake of passing it instead of the fixed
-XO clock.
+OV5640 will output abnormal image data when work at low resolution
+(320x240, 176x144 and 160x120) after switching from high resolution,
+such as 1080P, the time interval between high and low switching must
+be less than 1000ms in order to OV5640 don't enter suspend state during
+the time.
 
-Fixes: 04b3b72b5b8f ("ARM: dts: qcom: ipq4019: Add SDHCI controller node")
-Signed-off-by: Robert Marko <robert.marko@sartura.hr>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230811110150.229966-1-robert.marko@sartura.hr
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+The reason is by 0x3824 value don't restore to initialize value when
+do resolution switching. In high resolution setting array, 0x3824 is
+set to 0x04, but low resolution setting array remove 0x3824 in commit
+db15c1957a2d ("media: ov5640: Remove duplicated mode settings"). So
+when do resolution switching from high to low, such as 1080P to 320x240,
+and the time interval is less than auto suspend delay time which means
+global initialize setting array will not be loaded, the output image
+data are abnormal. Hence move 0x3824 from ov5640_init_setting[] table
+to ov5640_setting_low_res[] table and also move 0x4407 0x460b, 0x460c
+to avoid same issue.
+
+Fixes: db15c1957a2d ("media: ov5640: Remove duplicated mode settings")
+Signed-off-by: Guoniu.zhou <guoniu.zhou@nxp.com>
+Reviewed-by: Jacopo Mondi <jacopo.mondi@ideasonboard.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/qcom-ipq4019.dtsi | 9 ++++++---
- 1 file changed, 6 insertions(+), 3 deletions(-)
+ drivers/media/i2c/ov5640.c | 7 +++----
+ 1 file changed, 3 insertions(+), 4 deletions(-)
 
-diff --git a/arch/arm/boot/dts/qcom-ipq4019.dtsi b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-index 02e13d8c222a0..b5e0ed4923b59 100644
---- a/arch/arm/boot/dts/qcom-ipq4019.dtsi
-+++ b/arch/arm/boot/dts/qcom-ipq4019.dtsi
-@@ -228,9 +228,12 @@ sdhci: mmc@7824900 {
- 			interrupts = <GIC_SPI 123 IRQ_TYPE_LEVEL_HIGH>, <GIC_SPI 138 IRQ_TYPE_LEVEL_HIGH>;
- 			interrupt-names = "hc_irq", "pwr_irq";
- 			bus-width = <8>;
--			clocks = <&gcc GCC_SDCC1_AHB_CLK>, <&gcc GCC_SDCC1_APPS_CLK>,
--				 <&gcc GCC_DCD_XO_CLK>;
--			clock-names = "iface", "core", "xo";
-+			clocks = <&gcc GCC_SDCC1_AHB_CLK>,
-+				 <&gcc GCC_SDCC1_APPS_CLK>,
-+				 <&xo>;
-+			clock-names = "iface",
-+				      "core",
-+				      "xo";
- 			status = "disabled";
- 		};
+diff --git a/drivers/media/i2c/ov5640.c b/drivers/media/i2c/ov5640.c
+index 1536649b9e90f..1bc4d72a906e5 100644
+--- a/drivers/media/i2c/ov5640.c
++++ b/drivers/media/i2c/ov5640.c
+@@ -568,9 +568,7 @@ static const struct reg_value ov5640_init_setting[] = {
+ 	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0}, {0x3000, 0x00, 0, 0},
+ 	{0x3002, 0x1c, 0, 0}, {0x3004, 0xff, 0, 0}, {0x3006, 0xc3, 0, 0},
+ 	{0x302e, 0x08, 0, 0}, {0x4300, 0x3f, 0, 0},
+-	{0x501f, 0x00, 0, 0}, {0x4407, 0x04, 0, 0},
+-	{0x440e, 0x00, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
+-	{0x4837, 0x0a, 0, 0}, {0x3824, 0x02, 0, 0},
++	{0x501f, 0x00, 0, 0}, {0x440e, 0x00, 0, 0}, {0x4837, 0x0a, 0, 0},
+ 	{0x5000, 0xa7, 0, 0}, {0x5001, 0xa3, 0, 0}, {0x5180, 0xff, 0, 0},
+ 	{0x5181, 0xf2, 0, 0}, {0x5182, 0x00, 0, 0}, {0x5183, 0x14, 0, 0},
+ 	{0x5184, 0x25, 0, 0}, {0x5185, 0x24, 0, 0}, {0x5186, 0x09, 0, 0},
+@@ -634,7 +632,8 @@ static const struct reg_value ov5640_setting_low_res[] = {
+ 	{0x3a0a, 0x00, 0, 0}, {0x3a0b, 0xf6, 0, 0}, {0x3a0e, 0x03, 0, 0},
+ 	{0x3a0d, 0x04, 0, 0}, {0x3a14, 0x03, 0, 0}, {0x3a15, 0xd8, 0, 0},
+ 	{0x4001, 0x02, 0, 0}, {0x4004, 0x02, 0, 0},
+-	{0x4407, 0x04, 0, 0}, {0x5001, 0xa3, 0, 0},
++	{0x4407, 0x04, 0, 0}, {0x460b, 0x35, 0, 0}, {0x460c, 0x22, 0, 0},
++	{0x3824, 0x02, 0, 0}, {0x5001, 0xa3, 0, 0},
+ };
  
+ static const struct reg_value ov5640_setting_720P_1280_720[] = {
 -- 
 2.40.1
 
