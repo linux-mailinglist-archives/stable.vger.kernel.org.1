@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A33E879B21B
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:05 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6034279B5CD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353704AbjIKVsH (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:07 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49746 "EHLO
+        id S235646AbjIKWvi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55906 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241898AbjIKPRU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:20 -0400
+        with ESMTP id S239390AbjIKOTa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BA9F1120
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0B521C433C7;
-        Mon, 11 Sep 2023 15:17:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 617E6DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A79EDC433C7;
+        Mon, 11 Sep 2023 14:19:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445435;
-        bh=blF+Gg+GE1JtxqLLpjjZJIJql7RAbJPX73RiiC1YMCc=;
+        s=korg; t=1694441966;
+        bh=jgFSp1TWNskn2XB4YREhWhsaiiVbJ6EPPGleXegxX4E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=M+oHJVJ4aYgNwvjDD4QLk0YV8RLG0u7y4B0J70BMsfQsXqIjrScuNzyaaNkVogwq7
-         HJb8o9qCfN/qYWH0mNIxIsRjHYtl+HvrcZozCOwN8ydjlS6+ORHI0u3Nqik52cu/3m
-         pr4fzF1kfht7KwC3xISfTGbacm06Kd5+uClWrMUw=
+        b=Tqhe3PzBcD3iEAY/T4HbkiC9NAo+gLd0g5RSW0vd7YUSeEi2Yk8UHmMrWPQ9gtkCx
+         6dMBDJ+ashwv5LJq585C+3aF+9Sqp3Q+ZQ2po+O/6FJuPkZKvh4wBYZvLEOcY87zoD
+         L+gfHzWx/aoEM++NmmkYL4m7swbBgGQjhHE8g5lg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Benjamin Tissoires <bentiss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 347/600] clk: qcom: reset: Use the correct type of sleep/delay based on length
+Subject: [PATCH 6.5 581/739] HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()
 Date:   Mon, 11 Sep 2023 15:46:20 +0200
-Message-ID: <20230911134643.928217574@linuxfoundation.org>
+Message-ID: <20230911134707.333817140@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit 181b66ee7cdd824797fc99b53bec29cf5630a04f ]
+[ Upstream commit 6f20d3261265885f6a6be4cda49d7019728760e0 ]
 
-Use the fsleep() helper that (based on the length of the delay, see: [1])
-chooses the correct sleep/delay functions.
+Presently, if a call to logi_dj_recv_send_report() fails, we do
+not learn about the error until after sending short
+HID_OUTPUT_REPORT with hid_hw_raw_request().
+To handle this somewhat unlikely issue, return on error in
+logi_dj_recv_send_report() (minding ugly sleep workaround) and
+take into account the result of hid_hw_raw_request().
 
-[1] https://www.kernel.org/doc/Documentation/timers/timers-howto.txt
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-Fixes: 2cb8a39b6781 ("clk: qcom: reset: Allow specifying custom reset delay")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230726-topic-qcom_reset-v3-1-5958facd5db2@linaro.org
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: 6a9ddc897883 ("HID: logitech-dj: enable notifications on connect/disconnect")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20230613101635.77820-1-n.zhandarovich@fintech.ru
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/qcom/reset.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ drivers/hid/hid-logitech-dj.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/clk/qcom/reset.c b/drivers/clk/qcom/reset.c
-index 0e914ec7aeae1..e45e32804d2c7 100644
---- a/drivers/clk/qcom/reset.c
-+++ b/drivers/clk/qcom/reset.c
-@@ -16,7 +16,8 @@ static int qcom_reset(struct reset_controller_dev *rcdev, unsigned long id)
- 	struct qcom_reset_controller *rst = to_qcom_reset_controller(rcdev);
- 
- 	rcdev->ops->assert(rcdev, id);
--	udelay(rst->reset_map[id].udelay ?: 1); /* use 1 us as default */
-+	fsleep(rst->reset_map[id].udelay ?: 1); /* use 1 us as default */
+diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
+index 62180414efccd..e6a8b6d8eab70 100644
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -1285,6 +1285,9 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
+ 		 * 50 msec should gives enough time to the receiver to be ready.
+ 		 */
+ 		msleep(50);
 +
- 	rcdev->ops->deassert(rcdev, id);
- 	return 0;
- }
++		if (retval)
++			return retval;
+ 	}
+ 
+ 	/*
+@@ -1306,7 +1309,7 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
+ 	buf[5] = 0x09;
+ 	buf[6] = 0x00;
+ 
+-	hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
++	retval = hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
+ 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
+ 			HID_REQ_SET_REPORT);
+ 
 -- 
 2.40.1
 
