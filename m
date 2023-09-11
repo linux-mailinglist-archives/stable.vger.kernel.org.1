@@ -2,44 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9FAD079B175
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:56:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E781879B3B5
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348848AbjIKVbV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:31:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55098 "EHLO
+        id S1349060AbjIKVcY (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:32:24 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44158 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242279AbjIKP0r (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:26:47 -0400
+        with ESMTP id S242306AbjIKP1R (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:17 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 67401E4;
-        Mon, 11 Sep 2023 08:26:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83757C433C9;
-        Mon, 11 Sep 2023 15:26:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1A28DE4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:13 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5169BC433C8;
+        Mon, 11 Sep 2023 15:27:12 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446002;
-        bh=EUGIBxSdmAjFmieVW7DJwK6CHb+ujANFOaFtxBP9u5g=;
+        s=korg; t=1694446032;
+        bh=RMKa0ERBMKDpCv2KWYeAQ4AHMmuDXB9bnfqm6RbbWiI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AQYXCXI6xTkv8+au38xLCcs/HFJM9f7YDsUedPM35WSq0UVVD3gep8sUUvE9tDznM
-         m47DDEbY72f79wrRjY87O8flym+3+qDRqJErFwBaU8XfqHvBNsJJNz3DU0E2OZRTnj
-         yQvxCd4rl8WaOop5YR+athE2m1Ku21dcFuHVbdHc=
+        b=eyt8AnNYQAw6m4pKyQ7QaS2QHEluy1Ea38Oi81S5EnQodu8e+s9DZWwV+iXOV9RdE
+         gB40NaLqq8lkHms5tbvT87GP/cB2D4NOHiREhTP9fVXkmYSmajiXcCVS9U/vbFNht/
+         hOxFCzv7r8H5aBd3BTcN+jZMpWmqHYlsE0O/k8KY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Thomas Zimmermann <tzimmermann@suse.de>,
-        Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>,
-        Yoshinori Sato <ysato@users.sourceforge.jp>,
-        Rich Felker <dalias@libc.org>,
-        John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>,
-        Lee Jones <lee@kernel.org>,
-        Daniel Thompson <daniel.thompson@linaro.org>,
-        Jingoo Han <jingoohan1@gmail.com>, linux-sh@vger.kernel.org,
-        dri-devel@lists.freedesktop.org,
-        Javier Martinez Canillas <javierm@redhat.com>,
-        Sam Ravnborg <sam@ravnborg.org>
-Subject: [PATCH 6.1 540/600] backlight/lv5207lp: Compare against struct fb_info.device
-Date:   Mon, 11 Sep 2023 15:49:33 +0200
-Message-ID: <20230911134649.561773969@linuxfoundation.org>
+        patches@lists.linux.dev, Swapnil Patel <swapnil.patel@amd.com>,
+        Harry Wentland <harry.wentland@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>
+Subject: [PATCH 6.1 541/600] drm/amd/display: register edp_backlight_control() for DCN301
+Date:   Mon, 11 Sep 2023 15:49:34 +0200
+Message-ID: <20230911134649.590577721@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -62,52 +55,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Thomas Zimmermann <tzimmermann@suse.de>
+From: Hamza Mahfooz <hamza.mahfooz@amd.com>
 
-commit 1ca8819320fd84e7d95b04e7668efc5f9fe9fa5c upstream.
+commit 1611917f39bee1abfc01501238db8ac19649042d upstream.
 
-Struct lv5207lp_platform_data refers to a platform device within
-the Linux device hierarchy. The test in lv5207lp_backlight_check_fb()
-compares it against the fbdev device in struct fb_info.dev, which
-is different. Fix the test by comparing to struct fb_info.device.
+As made mention of in commit 099303e9a9bd ("drm/amd/display: eDP
+intermittent black screen during PnP"), we need to turn off the
+display's backlight before powering off an eDP display. Not doing so
+will result in undefined behaviour according to the eDP spec. So, set
+DCN301's edp_backlight_control() function pointer to
+dce110_edp_backlight_control().
 
-Fixes a bug in the backlight driver and prepares fbdev for making
-struct fb_info.dev optional.
-
-v2:
-	* move renames into separate patch (Javier, Sam, Michael)
-
-Fixes: 82e5c40d88f9 ("backlight: Add Sanyo LV5207LP backlight driver")
-Signed-off-by: Thomas Zimmermann <tzimmermann@suse.de>
-Cc: Laurent Pinchart <laurent.pinchart+renesas@ideasonboard.com>
-Cc: Yoshinori Sato <ysato@users.sourceforge.jp>
-Cc: Rich Felker <dalias@libc.org>
-Cc: John Paul Adrian Glaubitz <glaubitz@physik.fu-berlin.de>
-Cc: Lee Jones <lee@kernel.org>
-Cc: Daniel Thompson <daniel.thompson@linaro.org>
-Cc: Jingoo Han <jingoohan1@gmail.com>
-Cc: linux-sh@vger.kernel.org
-Cc: dri-devel@lists.freedesktop.org
-Cc: <stable@vger.kernel.org> # v3.12+
-Reviewed-by: Javier Martinez Canillas <javierm@redhat.com>
-Reviewed-by: Sam Ravnborg <sam@ravnborg.org>
-Reviewed-by: Daniel Thompson <daniel.thompson@linaro.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230613110953.24176-6-tzimmermann@suse.de
+Cc: stable@vger.kernel.org
+Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2765
+Fixes: 9c75891feef0 ("drm/amd/display: rework recent update PHY state commit")
+Suggested-by: Swapnil Patel <swapnil.patel@amd.com>
+Reviewed-by: Harry Wentland <harry.wentland@amd.com>
+Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/video/backlight/lv5207lp.c |    2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c | 1 +
+ 1 file changed, 1 insertion(+)
 
---- a/drivers/video/backlight/lv5207lp.c
-+++ b/drivers/video/backlight/lv5207lp.c
-@@ -67,7 +67,7 @@ static int lv5207lp_backlight_check_fb(s
- {
- 	struct lv5207lp *lv = bl_get_data(backlight);
- 
--	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->dev;
-+	return lv->pdata->fbdev == NULL || lv->pdata->fbdev == info->device;
- }
- 
- static const struct backlight_ops lv5207lp_backlight_ops = {
+diff --git a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
+index 257df8660b4c..61205cdbe2d5 100644
+--- a/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
++++ b/drivers/gpu/drm/amd/display/dc/dcn301/dcn301_init.c
+@@ -75,6 +75,7 @@ static const struct hw_sequencer_funcs dcn301_funcs = {
+ 	.get_hw_state = dcn10_get_hw_state,
+ 	.clear_status_bits = dcn10_clear_status_bits,
+ 	.wait_for_mpcc_disconnect = dcn10_wait_for_mpcc_disconnect,
++	.edp_backlight_control = dce110_edp_backlight_control,
+ 	.edp_power_control = dce110_edp_power_control,
+ 	.edp_wait_for_hpd_ready = dce110_edp_wait_for_hpd_ready,
+ 	.set_cursor_position = dcn10_set_cursor_position,
+-- 
+2.42.0
+
 
 
