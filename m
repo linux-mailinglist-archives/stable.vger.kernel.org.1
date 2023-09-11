@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C5A4F79AC85
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:37:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D257E79B1FF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:54 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355785AbjIKWCE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:02:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52904 "EHLO
+        id S1376636AbjIKWUH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36258 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240830AbjIKOzF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:05 -0400
+        with ESMTP id S242007AbjIKPUU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 29A28E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:01 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 72C2CC433C7;
-        Mon, 11 Sep 2023 14:55:00 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 65D51FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A65BEC433C8;
+        Mon, 11 Sep 2023 15:20:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444100;
-        bh=RXwspTBJ79eOM338nUP1LK5j1xjd1OlK5bVgNa3twnA=;
+        s=korg; t=1694445615;
+        bh=OmZGBOVxOz0j+C4UABSXkQX0GhVEbs1VdflCQMkQ488=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=HBrWf72s81+M4+y4YJyqc8A2dsQ8XfAYY2cftJjbDZhYQ9F7qBXMXkveD6uHdRa41
-         fuiU25CGrRWIJPEc4ODBV0sFyZY/RX7ZKIyLE0AYho8LsT/TsO+NcBxzd8X34dxgIb
-         4NuGzSAJ+GsCXxPs1KnsP42D5cmlQoh4KBXaq5TQ=
+        b=BvCqZo2Ts4dVHgV1Q9VY4huySUjPk+cZXLfBav5rL2BPa2+jlHJaikfD3yB9G5hdF
+         O3gOvMnG4J11PGUI7F2efOf1qCuo8qh7mUbvtFrSlb9BIzBOJc+HC8KVonyrAriPFN
+         Z727ubWVb0dMOtw4hn5JMiKQO8MCpXgfzDnqkq/k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Tony Battersby <tonyb@cybernetics.com>,
-        Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
+        Ming Qian <ming.qian@nxp.com>,
+        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 584/737] scsi: core: Use 32-bit hostnum in scsi_host_lookup()
-Date:   Mon, 11 Sep 2023 15:47:23 +0200
-Message-ID: <20230911134706.841127291@linuxfoundation.org>
+Subject: [PATCH 6.1 411/600] media: amphion: fix UNINIT issues reported by coverity
+Date:   Mon, 11 Sep 2023 15:47:24 +0200
+Message-ID: <20230911134645.807835350@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,63 +52,83 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Battersby <tonyb@cybernetics.com>
+From: Ming Qian <ming.qian@nxp.com>
 
-[ Upstream commit 62ec2092095b678ff89ce4ba51c2938cd1e8e630 ]
+[ Upstream commit c224d0497a31ea2d173e1ea16af308945bff9037 ]
 
-Change scsi_host_lookup() hostnum argument type from unsigned short to
-unsigned int to match the type used everywhere else.
+using uninitialized value may introduce risk
 
-Fixes: 6d49f63b415c ("[SCSI] Make host_no an unsigned int")
-Signed-off-by: Tony Battersby <tonyb@cybernetics.com>
-Link: https://lore.kernel.org/r/a02497e7-c12b-ef15-47fc-3f0a0b00ffce@cybernetics.com
-Reviewed-by: Bart Van Assche <bvanassche@acm.org>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
+Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
+Signed-off-by: Ming Qian <ming.qian@nxp.com>
+Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/hosts.c     | 4 ++--
- include/scsi/scsi_host.h | 2 +-
- 2 files changed, 3 insertions(+), 3 deletions(-)
+ drivers/media/platform/amphion/vpu_msgs.c | 12 ++++++------
+ 1 file changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/scsi/hosts.c b/drivers/scsi/hosts.c
-index f0bc8bbb39381..13ee3453e56a1 100644
---- a/drivers/scsi/hosts.c
-+++ b/drivers/scsi/hosts.c
-@@ -536,7 +536,7 @@ EXPORT_SYMBOL(scsi_host_alloc);
- static int __scsi_host_match(struct device *dev, const void *data)
- {
- 	struct Scsi_Host *p;
--	const unsigned short *hostnum = data;
-+	const unsigned int *hostnum = data;
+diff --git a/drivers/media/platform/amphion/vpu_msgs.c b/drivers/media/platform/amphion/vpu_msgs.c
+index f9eb488d1b5e2..d0ead051f7d18 100644
+--- a/drivers/media/platform/amphion/vpu_msgs.c
++++ b/drivers/media/platform/amphion/vpu_msgs.c
+@@ -32,7 +32,7 @@ static void vpu_session_handle_start_done(struct vpu_inst *inst, struct vpu_rpc_
  
- 	p = class_to_shost(dev);
- 	return p->host_no == *hostnum;
-@@ -553,7 +553,7 @@ static int __scsi_host_match(struct device *dev, const void *data)
-  *	that scsi_host_get() took. The put_device() below dropped
-  *	the reference from class_find_device().
-  **/
--struct Scsi_Host *scsi_host_lookup(unsigned short hostnum)
-+struct Scsi_Host *scsi_host_lookup(unsigned int hostnum)
+ static void vpu_session_handle_mem_request(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
  {
- 	struct device *cdev;
- 	struct Scsi_Host *shost = NULL;
-diff --git a/include/scsi/scsi_host.h b/include/scsi/scsi_host.h
-index 0f29799efa021..6b90b476a03cb 100644
---- a/include/scsi/scsi_host.h
-+++ b/include/scsi/scsi_host.h
-@@ -763,7 +763,7 @@ extern void scsi_remove_host(struct Scsi_Host *);
- extern struct Scsi_Host *scsi_host_get(struct Scsi_Host *);
- extern int scsi_host_busy(struct Scsi_Host *shost);
- extern void scsi_host_put(struct Scsi_Host *t);
--extern struct Scsi_Host *scsi_host_lookup(unsigned short);
-+extern struct Scsi_Host *scsi_host_lookup(unsigned int hostnum);
- extern const char *scsi_host_state_name(enum scsi_host_state);
- extern void scsi_host_complete_all_commands(struct Scsi_Host *shost,
- 					    enum scsi_host_status status);
+-	struct vpu_pkt_mem_req_data req_data;
++	struct vpu_pkt_mem_req_data req_data = { 0 };
+ 
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&req_data);
+ 	vpu_trace(inst->dev, "[%d] %d:%d %d:%d %d:%d\n",
+@@ -80,7 +80,7 @@ static void vpu_session_handle_resolution_change(struct vpu_inst *inst, struct v
+ 
+ static void vpu_session_handle_enc_frame_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_enc_pic_info info;
++	struct vpu_enc_pic_info info = { 0 };
+ 
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&info);
+ 	dev_dbg(inst->dev, "[%d] frame id = %d, wptr = 0x%x, size = %d\n",
+@@ -90,7 +90,7 @@ static void vpu_session_handle_enc_frame_done(struct vpu_inst *inst, struct vpu_
+ 
+ static void vpu_session_handle_frame_request(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_fs_info fs;
++	struct vpu_fs_info fs = { 0 };
+ 
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, &fs);
+ 	call_void_vop(inst, event_notify, VPU_MSG_ID_FRAME_REQ, &fs);
+@@ -107,7 +107,7 @@ static void vpu_session_handle_frame_release(struct vpu_inst *inst, struct vpu_r
+ 		info.type = inst->out_format.type;
+ 		call_void_vop(inst, buf_done, &info);
+ 	} else if (inst->core->type == VPU_CORE_TYPE_DEC) {
+-		struct vpu_fs_info fs;
++		struct vpu_fs_info fs = { 0 };
+ 
+ 		vpu_iface_unpack_msg_data(inst->core, pkt, &fs);
+ 		call_void_vop(inst, event_notify, VPU_MSG_ID_FRAME_RELEASE, &fs);
+@@ -122,7 +122,7 @@ static void vpu_session_handle_input_done(struct vpu_inst *inst, struct vpu_rpc_
+ 
+ static void vpu_session_handle_pic_decoded(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_dec_pic_info info;
++	struct vpu_dec_pic_info info = { 0 };
+ 
+ 	vpu_iface_unpack_msg_data(inst->core, pkt, (void *)&info);
+ 	call_void_vop(inst, get_one_frame, &info);
+@@ -130,7 +130,7 @@ static void vpu_session_handle_pic_decoded(struct vpu_inst *inst, struct vpu_rpc
+ 
+ static void vpu_session_handle_pic_done(struct vpu_inst *inst, struct vpu_rpc_event *pkt)
+ {
+-	struct vpu_dec_pic_info info;
++	struct vpu_dec_pic_info info = { 0 };
+ 	struct vpu_frame_info frame;
+ 
+ 	memset(&frame, 0, sizeof(frame));
 -- 
 2.40.1
 
