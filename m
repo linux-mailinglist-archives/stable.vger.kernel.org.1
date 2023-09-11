@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5CC2579B471
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CFE5579AF57
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:13 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1359681AbjIKWSX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:18:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50642 "EHLO
+        id S1377779AbjIKW2g (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:28:36 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38230 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240443AbjIKOoV (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:21 -0400
+        with ESMTP id S241720AbjIKPMz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3EB1512A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7CEA3C433C8;
-        Mon, 11 Sep 2023 14:44:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E810CFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C7F2C433C7;
+        Mon, 11 Sep 2023 15:12:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443455;
-        bh=wb2tXysTlnamY2oXWRtntFlasykJgW690VFAxiNDUQo=;
+        s=korg; t=1694445170;
+        bh=jZaX3XXJd6w62Ci/uSS/aE2S/h+AW2GLHPBs57RubmI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QJKvqr28xenFcG44UFwPfuciXg0y+kNiXmxtKfGz8/k6GmOeZFf+rNJQl21Pdwchu
-         jQtTvUd50RjPpT/42sQuHWlxgE/KfGhfba8FX2P/LfAJjgSPOAhcBbTxXaBgl6V3zN
-         32zNMxWkWYhNSWt3ChHFkPq00x39TCX/eAosLq5A=
+        b=U51lFScmQ1vKrxFLh6q3l4sHT4O7QtgR9BX9ZqFhTM0yOYQdjc6EBtPjGFadI0YXA
+         8ljeee6tFGuf2bqd8zzaFcehuupYXAvppIA+AVoxDxQhVV/yleMaMFbiFIFdYkXL5U
+         xftKMiXvfh/+MF3f/SsPjgxR4a8Mo3Q/ZVXpS7HU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephan Gerhold <stephan@gerhold.net>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Phil Elwell <phil@raspberrypi.com>,
+        Andy Shevchenko <andriy.shevchenko@linux.intel.com>,
+        Charles Keepax <ckeepax@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 383/737] arm64: dts: qcom: msm8916: Fix regulator constraints
-Date:   Mon, 11 Sep 2023 15:44:02 +0200
-Message-ID: <20230911134701.277223323@linuxfoundation.org>
+Subject: [PATCH 6.1 212/600] ASoC: cs43130: Fix numerator/denominator mixup
+Date:   Mon, 11 Sep 2023 15:44:05 +0200
+Message-ID: <20230911134639.875522165@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,635 +52,195 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Stephan Gerhold <stephan@gerhold.net>
+From: Phil Elwell <phil@raspberrypi.com>
 
-[ Upstream commit 355750828c5519c88de6ac0d09202d2a7e5892c5 ]
+[ Upstream commit a9e7c964cea4fb1541cc81a11d1b2fd135f4cf38 ]
 
-The regulator constraints for most MSM8916 devices (except DB410c) were
-originally taken from Qualcomm's msm-3.10 vendor device tree (for lack
-of better documentation). Unfortunately it turns out that Qualcomm's
-voltages are slightly off as well and do not match the voltage
-constraints applied by the RPM firmware.
+In converting to using the standard u16_fract type, commit [1] made the
+obvious mistake and failed to take account of the difference in
+numerator and denominator ordering, breaking all uses of the cs43130
+codec.
 
-This means that we sometimes request a specific voltage but the RPM
-firmware actually applies a much lower or higher voltage. This is
-particularly critical for pm8916_l11 which is used as SD card VMMC
-regulator: The SD card can choose a voltage from the current range of
-1.8 - 2.95V. If it chooses to run at 1.8V we pretend that this is fine
-but the RPM firmware will still silently end up configuring 2.95V.
-This can be easily reproduced with a multimeter or by checking the
-SPMI hardware registers of the regulator.
+Fix it.
 
-Fix this by making the voltages match the actual "specified range" in
-the PM8916 Device Specification which is enforced by the RPM firmware.
+[1] commit e14bd35ef446 ("ASoC: cs43130: Re-use generic struct u16_fract")
 
-Signed-off-by: Stephan Gerhold <stephan@gerhold.net>
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
-Link: https://lore.kernel.org/r/20230510-msm8916-regulators-v1-3-54d4960a05fc@gerhold.net
-Stable-dep-of: 4facccb44a82 ("arm64: dts: qcom: apq8016-sbc: Rename ov5640 enable-gpios to powerdown-gpios")
+Fixes: e14bd35ef446 ("ASoC: cs43130: Re-use generic struct u16_fract")
+Signed-off-by: Phil Elwell <phil@raspberrypi.com>
+Reviewed-by: Andy Shevchenko <andriy.shevchenko@linux.intel.com>
+Acked-by: Charles Keepax <ckeepax@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230621153229.1944132-1-phil@raspberrypi.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts   | 14 +++++++-------
- .../boot/dts/qcom/msm8916-alcatel-idol347.dts      | 14 +++++++-------
- arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts     | 14 +++++++-------
- arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts | 14 +++++++-------
- arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts     | 12 ++++++------
- .../boot/dts/qcom/msm8916-longcheer-l8150.dts      | 14 +++++++-------
- .../boot/dts/qcom/msm8916-longcheer-l8910.dts      | 14 +++++++-------
- .../dts/qcom/msm8916-samsung-a2015-common.dtsi     | 14 +++++++-------
- .../boot/dts/qcom/msm8916-samsung-gt5-common.dtsi  | 14 +++++++-------
- .../boot/dts/qcom/msm8916-samsung-j5-common.dtsi   | 14 +++++++-------
- .../boot/dts/qcom/msm8916-samsung-serranove.dts    | 14 +++++++-------
- arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi          | 14 +++++++-------
- .../boot/dts/qcom/msm8916-wingtech-wt88047.dts     | 12 ++++++------
- 13 files changed, 89 insertions(+), 89 deletions(-)
+ sound/soc/codecs/cs43130.h | 138 ++++++++++++++++++-------------------
+ 1 file changed, 69 insertions(+), 69 deletions(-)
 
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
-index 13cd9ad167df7..0d517804e44ed 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-acer-a1-724.dts
-@@ -159,13 +159,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -199,7 +199,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -209,12 +209,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-system-load = <200000>;
- 		regulator-allow-set-load;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-index fecb69944cfa3..ddd64cc469983 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-alcatel-idol347.dts
-@@ -201,13 +201,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -241,7 +241,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -251,12 +251,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts b/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts
-index 91284a1d0966f..982457503a3cc 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-asus-z00l.dts
-@@ -169,13 +169,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -209,7 +209,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -219,12 +219,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts b/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts
-index 525ec76efeeb7..9584d271c5260 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-gplus-fl8005a.dts
-@@ -159,13 +159,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -199,7 +199,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -209,12 +209,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-system-load = <200000>;
- 		regulator-allow-set-load;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-index 5b1bac8f51220..baa7bb86cdd5b 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-huawei-g7.dts
-@@ -322,13 +322,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -372,12 +372,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
-index 1bcff702e7e57..66e7ba00633f7 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8150.dts
-@@ -273,13 +273,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -313,7 +313,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -323,12 +323,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-index 6046e2c1f1586..1e0c08770371a 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-longcheer-l8910.dts
-@@ -155,13 +155,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -195,7 +195,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -205,12 +205,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-index 16d67749960e0..b362a76eebc94 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-a2015-common.dtsi
-@@ -285,13 +285,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -325,7 +325,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -335,12 +335,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-index 74ffd04db8d84..4464beeeaab12 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-gt5-common.dtsi
-@@ -168,13 +168,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -208,7 +208,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -218,12 +218,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-system-load = <200000>;
- 		regulator-allow-set-load;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
-index adeee0830e768..6e231e92e6756 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-j5-common.dtsi
-@@ -134,13 +134,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -174,7 +174,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -184,12 +184,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-index 1a41a4db874da..fa5b330aaeaee 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-samsung-serranove.dts
-@@ -326,13 +326,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -366,7 +366,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -376,12 +376,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-allow-set-load;
- 		regulator-system-load = <200000>;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi b/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi
-index 50bae6f214f1f..b27896e83a0e2 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi
-+++ b/arch/arm64/boot/dts/qcom/msm8916-ufi.dtsi
-@@ -132,13 +132,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -172,7 +172,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -182,12 +182,12 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
- 
- 	l11 {
--		regulator-min-microvolt = <1800000>;
-+		regulator-min-microvolt = <2950000>;
- 		regulator-max-microvolt = <2950000>;
- 		regulator-system-load = <200000>;
- 		regulator-allow-set-load;
-diff --git a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-index ac56c7595f78a..78020a0db4e48 100644
---- a/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-+++ b/arch/arm64/boot/dts/qcom/msm8916-wingtech-wt88047.dts
-@@ -194,13 +194,13 @@ &smd_rpm_regulators {
- 	vdd_l7-supply = <&pm8916_s4>;
- 
- 	s3 {
--		regulator-min-microvolt = <1200000>;
--		regulator-max-microvolt = <1300000>;
-+		regulator-min-microvolt = <1250000>;
-+		regulator-max-microvolt = <1350000>;
- 	};
- 
- 	s4 {
--		regulator-min-microvolt = <1800000>;
--		regulator-max-microvolt = <2100000>;
-+		regulator-min-microvolt = <1850000>;
-+		regulator-max-microvolt = <2150000>;
- 	};
- 
- 	l1 {
-@@ -234,7 +234,7 @@ l7 {
- 	};
- 
- 	l8 {
--		regulator-min-microvolt = <2850000>;
-+		regulator-min-microvolt = <2900000>;
- 		regulator-max-microvolt = <2900000>;
- 	};
- 
-@@ -244,7 +244,7 @@ l9 {
- 	};
- 
- 	l10 {
--		regulator-min-microvolt = <2700000>;
-+		regulator-min-microvolt = <2800000>;
- 		regulator-max-microvolt = <2800000>;
- 	};
+diff --git a/sound/soc/codecs/cs43130.h b/sound/soc/codecs/cs43130.h
+index 1dd8936743132..90e8895275e77 100644
+--- a/sound/soc/codecs/cs43130.h
++++ b/sound/soc/codecs/cs43130.h
+@@ -381,88 +381,88 @@ struct cs43130_clk_gen {
+ 
+ /* frm_size = 16 */
+ static const struct cs43130_clk_gen cs43130_16_clk_gen[] = {
+-	{ 22579200,	32000,		.v = { 441,	10, }, },
+-	{ 22579200,	44100,		.v = { 32,	1, }, },
+-	{ 22579200,	48000,		.v = { 147,	5, }, },
+-	{ 22579200,	88200,		.v = { 16,	1, }, },
+-	{ 22579200,	96000,		.v = { 147,	10, }, },
+-	{ 22579200,	176400,		.v = { 8,	1, }, },
+-	{ 22579200,	192000,		.v = { 147,	20, }, },
+-	{ 22579200,	352800,		.v = { 4,	1, }, },
+-	{ 22579200,	384000,		.v = { 147,	40, }, },
+-	{ 24576000,	32000,		.v = { 48,	1, }, },
+-	{ 24576000,	44100,		.v = { 5120,	147, }, },
+-	{ 24576000,	48000,		.v = { 32,	1, }, },
+-	{ 24576000,	88200,		.v = { 2560,	147, }, },
+-	{ 24576000,	96000,		.v = { 16,	1, }, },
+-	{ 24576000,	176400,		.v = { 1280,	147, }, },
+-	{ 24576000,	192000,		.v = { 8,	1, }, },
+-	{ 24576000,	352800,		.v = { 640,	147, }, },
+-	{ 24576000,	384000,		.v = { 4,	1, }, },
++	{ 22579200,	32000,		.v = { 10,	441, }, },
++	{ 22579200,	44100,		.v = { 1,	32, }, },
++	{ 22579200,	48000,		.v = { 5,	147, }, },
++	{ 22579200,	88200,		.v = { 1,	16, }, },
++	{ 22579200,	96000,		.v = { 10,	147, }, },
++	{ 22579200,	176400,		.v = { 1,	8, }, },
++	{ 22579200,	192000,		.v = { 20,	147, }, },
++	{ 22579200,	352800,		.v = { 1,	4, }, },
++	{ 22579200,	384000,		.v = { 40,	147, }, },
++	{ 24576000,	32000,		.v = { 1,	48, }, },
++	{ 24576000,	44100,		.v = { 147,	5120, }, },
++	{ 24576000,	48000,		.v = { 1,	32, }, },
++	{ 24576000,	88200,		.v = { 147,	2560, }, },
++	{ 24576000,	96000,		.v = { 1,	16, }, },
++	{ 24576000,	176400,		.v = { 147,	1280, }, },
++	{ 24576000,	192000,		.v = { 1,	8, }, },
++	{ 24576000,	352800,		.v = { 147,	640, }, },
++	{ 24576000,	384000,		.v = { 1,	4, }, },
+ };
+ 
+ /* frm_size = 32 */
+ static const struct cs43130_clk_gen cs43130_32_clk_gen[] = {
+-	{ 22579200,	32000,		.v = { 441,	20, }, },
+-	{ 22579200,	44100,		.v = { 16,	1, }, },
+-	{ 22579200,	48000,		.v = { 147,	10, }, },
+-	{ 22579200,	88200,		.v = { 8,	1, }, },
+-	{ 22579200,	96000,		.v = { 147,	20, }, },
+-	{ 22579200,	176400,		.v = { 4,	1, }, },
+-	{ 22579200,	192000,		.v = { 147,	40, }, },
+-	{ 22579200,	352800,		.v = { 2,	1, }, },
+-	{ 22579200,	384000,		.v = { 147,	80, }, },
+-	{ 24576000,	32000,		.v = { 24,	1, }, },
+-	{ 24576000,	44100,		.v = { 2560,	147, }, },
+-	{ 24576000,	48000,		.v = { 16,	1, }, },
+-	{ 24576000,	88200,		.v = { 1280,	147, }, },
+-	{ 24576000,	96000,		.v = { 8,	1, }, },
+-	{ 24576000,	176400,		.v = { 640,	147, }, },
+-	{ 24576000,	192000,		.v = { 4,	1, }, },
+-	{ 24576000,	352800,		.v = { 320,	147, }, },
+-	{ 24576000,	384000,		.v = { 2,	1, }, },
++	{ 22579200,	32000,		.v = { 20,	441, }, },
++	{ 22579200,	44100,		.v = { 1,	16, }, },
++	{ 22579200,	48000,		.v = { 10,	147, }, },
++	{ 22579200,	88200,		.v = { 1,	8, }, },
++	{ 22579200,	96000,		.v = { 20,	147, }, },
++	{ 22579200,	176400,		.v = { 1,	4, }, },
++	{ 22579200,	192000,		.v = { 40,	147, }, },
++	{ 22579200,	352800,		.v = { 1,	2, }, },
++	{ 22579200,	384000,		.v = { 80,	147, }, },
++	{ 24576000,	32000,		.v = { 1,	24, }, },
++	{ 24576000,	44100,		.v = { 147,	2560, }, },
++	{ 24576000,	48000,		.v = { 1,	16, }, },
++	{ 24576000,	88200,		.v = { 147,	1280, }, },
++	{ 24576000,	96000,		.v = { 1,	8, }, },
++	{ 24576000,	176400,		.v = { 147,	640, }, },
++	{ 24576000,	192000,		.v = { 1,	4, }, },
++	{ 24576000,	352800,		.v = { 147,	320, }, },
++	{ 24576000,	384000,		.v = { 1,	2, }, },
+ };
+ 
+ /* frm_size = 48 */
+ static const struct cs43130_clk_gen cs43130_48_clk_gen[] = {
+-	{ 22579200,	32000,		.v = { 147,	100, }, },
+-	{ 22579200,	44100,		.v = { 32,	3, }, },
+-	{ 22579200,	48000,		.v = { 49,	5, }, },
+-	{ 22579200,	88200,		.v = { 16,	3, }, },
+-	{ 22579200,	96000,		.v = { 49,	10, }, },
+-	{ 22579200,	176400,		.v = { 8,	3, }, },
+-	{ 22579200,	192000,		.v = { 49,	20, }, },
+-	{ 22579200,	352800,		.v = { 4,	3, }, },
+-	{ 22579200,	384000,		.v = { 49,	40, }, },
+-	{ 24576000,	32000,		.v = { 16,	1, }, },
+-	{ 24576000,	44100,		.v = { 5120,	441, }, },
+-	{ 24576000,	48000,		.v = { 32,	3, }, },
+-	{ 24576000,	88200,		.v = { 2560,	441, }, },
+-	{ 24576000,	96000,		.v = { 16,	3, }, },
+-	{ 24576000,	176400,		.v = { 1280,	441, }, },
+-	{ 24576000,	192000,		.v = { 8,	3, }, },
+-	{ 24576000,	352800,		.v = { 640,	441, }, },
+-	{ 24576000,	384000,		.v = { 4,	3, }, },
++	{ 22579200,	32000,		.v = { 100,	147, }, },
++	{ 22579200,	44100,		.v = { 3,	32, }, },
++	{ 22579200,	48000,		.v = { 5,	49, }, },
++	{ 22579200,	88200,		.v = { 3,	16, }, },
++	{ 22579200,	96000,		.v = { 10,	49, }, },
++	{ 22579200,	176400,		.v = { 3,	8, }, },
++	{ 22579200,	192000,		.v = { 20,	49, }, },
++	{ 22579200,	352800,		.v = { 3,	4, }, },
++	{ 22579200,	384000,		.v = { 40,	49, }, },
++	{ 24576000,	32000,		.v = { 1,	16, }, },
++	{ 24576000,	44100,		.v = { 441,	5120, }, },
++	{ 24576000,	48000,		.v = { 3,	32, }, },
++	{ 24576000,	88200,		.v = { 441,	2560, }, },
++	{ 24576000,	96000,		.v = { 3,	16, }, },
++	{ 24576000,	176400,		.v = { 441,	1280, }, },
++	{ 24576000,	192000,		.v = { 3,	8, }, },
++	{ 24576000,	352800,		.v = { 441,	640, }, },
++	{ 24576000,	384000,		.v = { 3,	4, }, },
+ };
+ 
+ /* frm_size = 64 */
+ static const struct cs43130_clk_gen cs43130_64_clk_gen[] = {
+-	{ 22579200,	32000,		.v = { 441,	40, }, },
+-	{ 22579200,	44100,		.v = { 8,	1, }, },
+-	{ 22579200,	48000,		.v = { 147,	20, }, },
+-	{ 22579200,	88200,		.v = { 4,	1, }, },
+-	{ 22579200,	96000,		.v = { 147,	40, }, },
+-	{ 22579200,	176400,		.v = { 2,	1, }, },
+-	{ 22579200,	192000,		.v = { 147,	80, }, },
++	{ 22579200,	32000,		.v = { 40,	441, }, },
++	{ 22579200,	44100,		.v = { 1,	8, }, },
++	{ 22579200,	48000,		.v = { 20,	147, }, },
++	{ 22579200,	88200,		.v = { 1,	4, }, },
++	{ 22579200,	96000,		.v = { 40,	147, }, },
++	{ 22579200,	176400,		.v = { 1,	2, }, },
++	{ 22579200,	192000,		.v = { 80,	147, }, },
+ 	{ 22579200,	352800,		.v = { 1,	1, }, },
+-	{ 24576000,	32000,		.v = { 12,	1, }, },
+-	{ 24576000,	44100,		.v = { 1280,	147, }, },
+-	{ 24576000,	48000,		.v = { 8,	1, }, },
+-	{ 24576000,	88200,		.v = { 640,	147, }, },
+-	{ 24576000,	96000,		.v = { 4,	1, }, },
+-	{ 24576000,	176400,		.v = { 320,	147, }, },
+-	{ 24576000,	192000,		.v = { 2,	1, }, },
+-	{ 24576000,	352800,		.v = { 160,	147, }, },
++	{ 24576000,	32000,		.v = { 1,	12, }, },
++	{ 24576000,	44100,		.v = { 147,	1280, }, },
++	{ 24576000,	48000,		.v = { 1,	8, }, },
++	{ 24576000,	88200,		.v = { 147,	640, }, },
++	{ 24576000,	96000,		.v = { 1,	4, }, },
++	{ 24576000,	176400,		.v = { 147,	320, }, },
++	{ 24576000,	192000,		.v = { 1,	2, }, },
++	{ 24576000,	352800,		.v = { 147,	160, }, },
+ 	{ 24576000,	384000,		.v = { 1,	1, }, },
+ };
  
 -- 
 2.40.1
