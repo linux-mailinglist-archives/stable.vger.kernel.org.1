@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1614779B244
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:24 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7574579AF23
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239542AbjIKWJb (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:09:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55600 "EHLO
+        id S1376641AbjIKWUH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:46654 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241840AbjIKPP5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:57 -0400
+        with ESMTP id S239350AbjIKOSg (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:36 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A3F88FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BD4CFC433C8;
-        Mon, 11 Sep 2023 15:15:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6A472DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 83BBDC433C8;
+        Mon, 11 Sep 2023 14:18:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445353;
-        bh=m8R4VTar8VwjaIQ2QFTsjKtarTio9evRQx+0ZmTKu+c=;
+        s=korg; t=1694441912;
+        bh=7qYF1A3SsDhFgeicuZUm6hiTepdd2C8OjV6rReOAifo=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MQF96lvrd6AkVz7MMhwxaWpZXlbxMXvxF850ZCv7yI2Jr5vNk/sZ1N+nN5JGHgNYd
-         pD59y6e9jQovLOoAZ906e86QFcrTA/FcTdxBAH7hbHHfpPNDKtyiIB+pN2T1u++41w
-         kFuuXVCxzd0fDJ+yWM9RjRNPbWhKWdFggMAc8qZU=
+        b=eBp3o7SC9f8aeOxzbLHVRjnnApcbQm54XYjawN9pWnmtONXYk+sv4QRYvY5oDnaj6
+         IXhVLVEQuY3ia3/bA37W3Kbd8w0RXf8rWDyH5MXtSbEk1Y3F4cqkPqdk2AhJfE/kZb
+         drQDnrZ36IIIKo63g9/frfrX+VYo6Fudz2Ze+tCE=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
-        Xueshi Hu <xueshi.hu@smartx.com>, Song Liu <song@kernel.org>,
+        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 317/600] md/raid1: hold the barrier until handle_read_error() finishes
-Date:   Mon, 11 Sep 2023 15:45:50 +0200
-Message-ID: <20230911134643.038861632@linuxfoundation.org>
+Subject: [PATCH 6.5 552/739] f2fs: dont reopen the main block device in f2fs_scan_devices
+Date:   Mon, 11 Sep 2023 15:45:51 +0200
+Message-ID: <20230911134706.506432042@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,55 +50,77 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xueshi Hu <xueshi.hu@smartx.com>
+From: Christoph Hellwig <hch@lst.de>
 
-[ Upstream commit c069da449a13669ffa754fd971747e7e17e7d691 ]
+[ Upstream commit 51bf8d3c81992ae57beeaf22df78ed7c2782af9d ]
 
-handle_read_error() will call allow_barrier() to match the former barrier
-raising. However, it should put the allow_barrier() at the end to avoid a
-concurrent raid reshape.
+f2fs_scan_devices reopens the main device since the very beginning, which
+has always been useless, and also means that we don't pass the right
+holder for the reopen, which now leads to a warning as the core super.c
+holder ops aren't passed in for the reopen.
 
-Fixes: 689389a06ce7 ("md/raid1: simplify handle_read_error().")
-Reviewed-by: Yu Kuai <yukuai3@huawei.com>
-Signed-off-by: Xueshi Hu <xueshi.hu@smartx.com>
-Link: https://lore.kernel.org/r/20230814135356.1113639-4-xueshi.hu@smartx.com
-Signed-off-by: Song Liu <song@kernel.org>
+Fixes: 3c62be17d4f5 ("f2fs: support multiple devices")
+Fixes: 0718afd47f70 ("block: introduce holder ops")
+Signed-off-by: Christoph Hellwig <hch@lst.de>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/md/raid1.c | 4 +++-
- 1 file changed, 3 insertions(+), 1 deletion(-)
+ fs/f2fs/super.c | 20 ++++++++------------
+ 1 file changed, 8 insertions(+), 12 deletions(-)
 
-diff --git a/drivers/md/raid1.c b/drivers/md/raid1.c
-index 433db7007f88b..2d9372e6b5961 100644
---- a/drivers/md/raid1.c
-+++ b/drivers/md/raid1.c
-@@ -2495,6 +2495,7 @@ static void handle_read_error(struct r1conf *conf, struct r1bio *r1_bio)
- 	struct mddev *mddev = conf->mddev;
- 	struct bio *bio;
- 	struct md_rdev *rdev;
-+	sector_t sector;
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index ca31163da00a5..30883beb750a5 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1561,7 +1561,8 @@ static void destroy_device_list(struct f2fs_sb_info *sbi)
+ 	int i;
  
- 	clear_bit(R1BIO_ReadError, &r1_bio->state);
- 	/* we got a read error. Maybe the drive is bad.  Maybe just
-@@ -2524,12 +2525,13 @@ static void handle_read_error(struct r1conf *conf, struct r1bio *r1_bio)
- 	}
+ 	for (i = 0; i < sbi->s_ndevs; i++) {
+-		blkdev_put(FDEV(i).bdev, sbi->sb->s_type);
++		if (i > 0)
++			blkdev_put(FDEV(i).bdev, sbi->sb->s_type);
+ #ifdef CONFIG_BLK_DEV_ZONED
+ 		kvfree(FDEV(i).blkz_seq);
+ #endif
+@@ -4190,16 +4191,12 @@ static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
+ 	sbi->aligned_blksize = true;
  
- 	rdev_dec_pending(rdev, conf->mddev);
--	allow_barrier(conf, r1_bio->sector);
-+	sector = r1_bio->sector;
- 	bio = r1_bio->master_bio;
+ 	for (i = 0; i < max_devices; i++) {
+-
+-		if (i > 0 && !RDEV(i).path[0])
++		if (i == 0)
++			FDEV(0).bdev = sbi->sb->s_bdev;
++		else if (!RDEV(i).path[0])
+ 			break;
  
- 	/* Reuse the old r1_bio so that the IO_BLOCKED settings are preserved */
- 	r1_bio->state = 0;
- 	raid1_read_request(mddev, bio, r1_bio->sectors, r1_bio);
-+	allow_barrier(conf, sector);
- }
- 
- static void raid1d(struct md_thread *thread)
+-		if (max_devices == 1) {
+-			/* Single zoned block device mount */
+-			FDEV(0).bdev =
+-				blkdev_get_by_dev(sbi->sb->s_bdev->bd_dev, mode,
+-						  sbi->sb->s_type, NULL);
+-		} else {
++		if (max_devices > 1) {
+ 			/* Multi-device mount */
+ 			memcpy(FDEV(i).path, RDEV(i).path, MAX_PATH_LEN);
+ 			FDEV(i).total_segments =
+@@ -4215,10 +4212,9 @@ static int f2fs_scan_devices(struct f2fs_sb_info *sbi)
+ 				FDEV(i).end_blk = FDEV(i).start_blk +
+ 					(FDEV(i).total_segments <<
+ 					sbi->log_blocks_per_seg) - 1;
++				FDEV(i).bdev = blkdev_get_by_path(FDEV(i).path,
++					mode, sbi->sb->s_type, NULL);
+ 			}
+-			FDEV(i).bdev = blkdev_get_by_path(FDEV(i).path, mode,
+-							  sbi->sb->s_type,
+-							  NULL);
+ 		}
+ 		if (IS_ERR(FDEV(i).bdev))
+ 			return PTR_ERR(FDEV(i).bdev);
 -- 
 2.40.1
 
