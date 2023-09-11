@@ -2,40 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A53D579B4A3
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 63CD879AE48
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345942AbjIKVWn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50580 "EHLO
+        id S237616AbjIKUvi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59718 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242238AbjIKPZj (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:39 -0400
+        with ESMTP id S240994AbjIKO7O (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:59:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 04310DB
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:35 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4AB55C433C8;
-        Mon, 11 Sep 2023 15:25:34 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 125EF1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:59:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4CCC433C7;
+        Mon, 11 Sep 2023 14:59:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445934;
-        bh=UXYuG9uVpLA8FlGqeQ0Lr2w0fqhrQr9S2zs6wgq0JIk=;
+        s=korg; t=1694444349;
+        bh=rlUleYMfd9aV3PIn6rgD6pdwTPOYT/0k91K963bvVrM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Fll5WxEZTsDUhBHylYA0HridPEHiwgcXryvzP7ZQy3rrtEvT/2rGqKVyy+Hybzqsw
-         rr1Otd/E0jKE54VXwL2P6rVaAgM16hRKvEFidkkFnwA/xgo+4ycymAV7QyFucPgdzY
-         7N0ESt62g4da03azWyFVxQd2x3bJvITW4rDJ0ZIY=
+        b=YNMzZ/n3DtjFIa4UVX+9sVQRW4nSjycDBeMCMYAaafJc4mmgzED0xe8pLYCE0/bcm
+         7dgmQT5wkQHlpFyWxXQLuy7WgtC0Id6ojq8DynuHszuIWY9//3Oth93Di19SGTLl3O
+         ZX+21cZDSnve4+/FY4zZokWp++XdGfwfHMyBLSkU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Boris Brezillon <boris.brezillon@collabora.com>,
-        Dhruva Gole <d-gole@ti.com>,
-        Chanwoo Choi <cw00.choi@samsung.com>
-Subject: [PATCH 6.1 524/600] PM / devfreq: Fix leak in devfreq_dev_release()
+        patches@lists.linux.dev, Jarkko Sakkinen <jarkko@kernel.org>,
+        Eric Biggers <ebiggers@google.com>
+Subject: [PATCH 6.4 698/737] fsverity: skip PKCS#7 parser when keyring is empty
 Date:   Mon, 11 Sep 2023 15:49:17 +0200
-Message-ID: <20230911134649.089134278@linuxfoundation.org>
+Message-ID: <20230911134710.023936311@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,38 +49,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Boris Brezillon <boris.brezillon@collabora.com>
+From: Eric Biggers <ebiggers@google.com>
 
-commit 5693d077595de721f9ddbf9d37f40e5409707dfe upstream.
+commit 919dc320956ea353a7fb2d84265195ad5ef525ac upstream.
 
-srcu_init_notifier_head() allocates resources that need to be released
-with a srcu_cleanup_notifier_head() call.
+If an fsverity builtin signature is given for a file but the
+".fs-verity" keyring is empty, there's no real reason to run the PKCS#7
+parser.  Skip this to avoid the PKCS#7 attack surface when builtin
+signature support is configured into the kernel but is not being used.
 
-Reported by kmemleak.
+This is a hardening improvement, not a fix per se, but I've added
+Fixes and Cc stable to get it out to more users.
 
-Fixes: 0fe3a66410a3 ("PM / devfreq: Add new DEVFREQ_TRANSITION_NOTIFIER notifier")
-Cc: <stable@vger.kernel.org>
-Signed-off-by: Boris Brezillon <boris.brezillon@collabora.com>
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
+Fixes: 432434c9f8e1 ("fs-verity: support builtin file signatures")
+Cc: stable@vger.kernel.org
+Reviewed-by: Jarkko Sakkinen <jarkko@kernel.org>
+Link: https://lore.kernel.org/r/20230820173237.2579-1-ebiggers@kernel.org
+Signed-off-by: Eric Biggers <ebiggers@google.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/devfreq/devfreq.c |    1 +
- 1 file changed, 1 insertion(+)
+ fs/verity/signature.c |   16 ++++++++++++++++
+ 1 file changed, 16 insertions(+)
 
---- a/drivers/devfreq/devfreq.c
-+++ b/drivers/devfreq/devfreq.c
-@@ -763,6 +763,7 @@ static void devfreq_dev_release(struct d
- 		dev_pm_opp_put_opp_table(devfreq->opp_table);
+--- a/fs/verity/signature.c
++++ b/fs/verity/signature.c
+@@ -54,6 +54,22 @@ int fsverity_verify_signature(const stru
+ 		return 0;
+ 	}
  
- 	mutex_destroy(&devfreq->lock);
-+	srcu_cleanup_notifier_head(&devfreq->transition_notifier_list);
- 	kfree(devfreq);
- }
- 
++	if (fsverity_keyring->keys.nr_leaves_on_tree == 0) {
++		/*
++		 * The ".fs-verity" keyring is empty, due to builtin signatures
++		 * being supported by the kernel but not actually being used.
++		 * In this case, verify_pkcs7_signature() would always return an
++		 * error, usually ENOKEY.  It could also be EBADMSG if the
++		 * PKCS#7 is malformed, but that isn't very important to
++		 * distinguish.  So, just skip to ENOKEY to avoid the attack
++		 * surface of the PKCS#7 parser, which would otherwise be
++		 * reachable by any task able to execute FS_IOC_ENABLE_VERITY.
++		 */
++		fsverity_err(inode,
++			     "fs-verity keyring is empty, rejecting signed file!");
++		return -ENOKEY;
++	}
++
+ 	d = kzalloc(sizeof(*d) + hash_alg->digest_size, GFP_KERNEL);
+ 	if (!d)
+ 		return -ENOMEM;
 
 
