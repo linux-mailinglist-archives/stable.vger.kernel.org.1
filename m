@@ -2,38 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7197B79B495
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 04F6D79ADFF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:41:38 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344008AbjIKVNF (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:05 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58834 "EHLO
+        id S234901AbjIKUxT (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:53:19 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47986 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240325AbjIKOl1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:27 -0400
+        with ESMTP id S241414AbjIKPID (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 85259E6
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CC37EC433C7;
-        Mon, 11 Sep 2023 14:41:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DAC3BFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:58 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2EBD9C433C7;
+        Mon, 11 Sep 2023 15:07:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443282;
-        bh=dgQHAwIsE17afQZcqUWDFxeXdYajhjq/vVkbBUbEXKw=;
+        s=korg; t=1694444878;
+        bh=S88UxCf9dW+6T6NaDVytrP19ah5Io/bNs3mEtsuJ/2w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=a/HnYe/8eWfTjIV4dNkQrc2badcv+2BD+97l7zE8F6RtQL2l5E9syqdYeZ0V8K7W1
-         /QJ2qzqKjFibpXIssLC0T9secm1xy+YeEjzIf60anTBKhrCB0ZiuNCnwaVj6dGYPl0
-         NRbCRc/aRT1vwf8s/aL3VeK2zaNs58Oy9Zdc2l/s=
+        b=EkiGq6sA3IoontNVtxOZzZCokVp18vaHUKA0QxZDaTadgAY6B3aex0ApGIeyKU/HU
+         XS+1KZdqJnkKTrpBucTJVhWHczi527nbu4Yy66G/3yAlqpPu3CFGaPNuY33xFMvUy3
+         2ft2A0jLSWwv7mH+B83GHlfzi+gfMFsx/d0t9ip4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Jens Axboe <axboe@kernel.dk>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 322/737] block: dont allow enabling a cache on devices that dont support it
+        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
+        Dan Carpenter <dan.carpenter@linaro.org>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 148/600] regmap: rbtree: Use alloc_flags for memory allocations
 Date:   Mon, 11 Sep 2023 15:43:01 +0200
-Message-ID: <20230911134659.550490012@linuxfoundation.org>
+Message-ID: <20230911134637.981435231@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,91 +51,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christoph Hellwig <hch@lst.de>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 43c9835b144c7ce29efe142d662529662a9eb376 ]
+[ Upstream commit 0c8b0bf42c8cef56f7cd9cd876fbb7ece9217064 ]
 
-Currently the write_cache attribute allows enabling the QUEUE_FLAG_WC
-flag on devices that never claimed the capability.
+The kunit tests discovered a sleeping in atomic bug.  The allocations
+in the regcache-rbtree code should use the map->alloc_flags instead of
+GFP_KERNEL.
 
-Fix that by adding a QUEUE_FLAG_HW_WC flag that is set by
-blk_queue_write_cache and guards re-enabling the cache through sysfs.
+[    5.005510] BUG: sleeping function called from invalid context at include/linux/sched/mm.h:306
+[    5.005960] in_atomic(): 1, irqs_disabled(): 128, non_block: 0, pid: 117, name: kunit_try_catch
+[    5.006219] preempt_count: 1, expected: 0
+[    5.006414] 1 lock held by kunit_try_catch/117:
+[    5.006590]  #0: 833b9010 (regmap_kunit:86:(config)->lock){....}-{2:2}, at: regmap_lock_spinlock+0x14/0x1c
+[    5.007493] irq event stamp: 162
+[    5.007627] hardirqs last  enabled at (161): [<80786738>] crng_make_state+0x1a0/0x294
+[    5.007871] hardirqs last disabled at (162): [<80c531ec>] _raw_spin_lock_irqsave+0x7c/0x80
+[    5.008119] softirqs last  enabled at (0): [<801110ac>] copy_process+0x810/0x2138
+[    5.008356] softirqs last disabled at (0): [<00000000>] 0x0
+[    5.008688] CPU: 0 PID: 117 Comm: kunit_try_catch Tainted: G                 N 6.4.4-rc3-g0e8d2fdfb188 #1
+[    5.009011] Hardware name: Generic DT based system
+[    5.009277]  unwind_backtrace from show_stack+0x18/0x1c
+[    5.009497]  show_stack from dump_stack_lvl+0x38/0x5c
+[    5.009676]  dump_stack_lvl from __might_resched+0x188/0x2d0
+[    5.009860]  __might_resched from __kmem_cache_alloc_node+0x1dc/0x25c
+[    5.010061]  __kmem_cache_alloc_node from kmalloc_trace+0x30/0xc8
+[    5.010254]  kmalloc_trace from regcache_rbtree_write+0x26c/0x468
+[    5.010446]  regcache_rbtree_write from _regmap_write+0x88/0x140
+[    5.010634]  _regmap_write from regmap_write+0x44/0x68
+[    5.010803]  regmap_write from basic_read_write+0x8c/0x270
+[    5.010980]  basic_read_write from kunit_try_run_case+0x48/0xa0
 
-Note that any rescan that calls blk_queue_write_cache will still
-re-enable the write cache as in the current code.
-
-Fixes: 93e9d8e836cb ("block: add ability to flag write back caching on a device")
-Signed-off-by: Christoph Hellwig <hch@lst.de>
-Link: https://lore.kernel.org/r/20230707094239.107968-3-hch@lst.de
-Signed-off-by: Jens Axboe <axboe@kernel.dk>
+Fixes: 28644c809f44 ("regmap: Add the rbtree cache support")
+Reported-by: Guenter Roeck <linux@roeck-us.net>
+Closes: https://lore.kernel.org/all/ee59d128-413c-48ad-a3aa-d9d350c80042@roeck-us.net/
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Tested-by: Guenter Roeck <linux@roeck-us.net>
+Link: https://lore.kernel.org/r/58f12a07-5f4b-4a8f-ab84-0a42d1908cb9@moroto.mountain
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- block/blk-settings.c   |  7 +++++--
- block/blk-sysfs.c      | 11 +++++++----
- include/linux/blkdev.h |  1 +
- 3 files changed, 13 insertions(+), 6 deletions(-)
+ drivers/base/regmap/regcache-rbtree.c | 10 +++++-----
+ 1 file changed, 5 insertions(+), 5 deletions(-)
 
-diff --git a/block/blk-settings.c b/block/blk-settings.c
-index 4dd59059b788e..0046b447268f9 100644
---- a/block/blk-settings.c
-+++ b/block/blk-settings.c
-@@ -830,10 +830,13 @@ EXPORT_SYMBOL(blk_set_queue_depth);
-  */
- void blk_queue_write_cache(struct request_queue *q, bool wc, bool fua)
- {
--	if (wc)
-+	if (wc) {
-+		blk_queue_flag_set(QUEUE_FLAG_HW_WC, q);
- 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else
-+	} else {
-+		blk_queue_flag_clear(QUEUE_FLAG_HW_WC, q);
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
-+	}
- 	if (fua)
- 		blk_queue_flag_set(QUEUE_FLAG_FUA, q);
- 	else
-diff --git a/block/blk-sysfs.c b/block/blk-sysfs.c
-index 50a0094300f2d..b7fc4cf3f992c 100644
---- a/block/blk-sysfs.c
-+++ b/block/blk-sysfs.c
-@@ -517,13 +517,16 @@ static ssize_t queue_wc_show(struct request_queue *q, char *page)
- static ssize_t queue_wc_store(struct request_queue *q, const char *page,
- 			      size_t count)
- {
--	if (!strncmp(page, "write back", 10))
-+	if (!strncmp(page, "write back", 10)) {
-+		if (!test_bit(QUEUE_FLAG_HW_WC, &q->queue_flags))
-+			return -EINVAL;
- 		blk_queue_flag_set(QUEUE_FLAG_WC, q);
--	else if (!strncmp(page, "write through", 13) ||
--		 !strncmp(page, "none", 4))
-+	} else if (!strncmp(page, "write through", 13) ||
-+		 !strncmp(page, "none", 4)) {
- 		blk_queue_flag_clear(QUEUE_FLAG_WC, q);
--	else
-+	} else {
- 		return -EINVAL;
-+	}
+diff --git a/drivers/base/regmap/regcache-rbtree.c b/drivers/base/regmap/regcache-rbtree.c
+index fabf87058d80b..ae6b8788d5f3f 100644
+--- a/drivers/base/regmap/regcache-rbtree.c
++++ b/drivers/base/regmap/regcache-rbtree.c
+@@ -277,7 +277,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
  
- 	return count;
- }
-diff --git a/include/linux/blkdev.h b/include/linux/blkdev.h
-index 67e942d776bd8..2e2cd4b824e7f 100644
---- a/include/linux/blkdev.h
-+++ b/include/linux/blkdev.h
-@@ -546,6 +546,7 @@ struct request_queue {
- #define QUEUE_FLAG_ADD_RANDOM	10	/* Contributes to random pool */
- #define QUEUE_FLAG_SYNCHRONOUS	11	/* always completes in submit context */
- #define QUEUE_FLAG_SAME_FORCE	12	/* force complete on same CPU */
-+#define QUEUE_FLAG_HW_WC	18	/* Write back caching supported */
- #define QUEUE_FLAG_INIT_DONE	14	/* queue is initialized */
- #define QUEUE_FLAG_STABLE_WRITES 15	/* don't modify blks until WB is done */
- #define QUEUE_FLAG_POLL		16	/* IO polling enabled if set */
+ 	blk = krealloc(rbnode->block,
+ 		       blklen * map->cache_word_size,
+-		       GFP_KERNEL);
++		       map->alloc_flags);
+ 	if (!blk)
+ 		return -ENOMEM;
+ 
+@@ -286,7 +286,7 @@ static int regcache_rbtree_insert_to_block(struct regmap *map,
+ 	if (BITS_TO_LONGS(blklen) > BITS_TO_LONGS(rbnode->blklen)) {
+ 		present = krealloc(rbnode->cache_present,
+ 				   BITS_TO_LONGS(blklen) * sizeof(*present),
+-				   GFP_KERNEL);
++				   map->alloc_flags);
+ 		if (!present)
+ 			return -ENOMEM;
+ 
+@@ -320,7 +320,7 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
+ 	const struct regmap_range *range;
+ 	int i;
+ 
+-	rbnode = kzalloc(sizeof(*rbnode), GFP_KERNEL);
++	rbnode = kzalloc(sizeof(*rbnode), map->alloc_flags);
+ 	if (!rbnode)
+ 		return NULL;
+ 
+@@ -346,13 +346,13 @@ regcache_rbtree_node_alloc(struct regmap *map, unsigned int reg)
+ 	}
+ 
+ 	rbnode->block = kmalloc_array(rbnode->blklen, map->cache_word_size,
+-				      GFP_KERNEL);
++				      map->alloc_flags);
+ 	if (!rbnode->block)
+ 		goto err_free;
+ 
+ 	rbnode->cache_present = kcalloc(BITS_TO_LONGS(rbnode->blklen),
+ 					sizeof(*rbnode->cache_present),
+-					GFP_KERNEL);
++					map->alloc_flags);
+ 	if (!rbnode->cache_present)
+ 		goto err_free_block;
+ 
 -- 
 2.40.1
 
