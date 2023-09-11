@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC36D79AD7A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:51 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2C37E79AD3F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1378888AbjIKWhu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:37:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51578 "EHLO
+        id S1350843AbjIKVlp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:41:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60922 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239920AbjIKObe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:34 -0400
+        with ESMTP id S238560AbjIKN7U (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:59:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82ABEF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CA74BC433C8;
-        Mon, 11 Sep 2023 14:31:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 427FCCD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:59:15 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 8CA6DC433C8;
+        Mon, 11 Sep 2023 13:59:14 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442690;
-        bh=yUQicCfDfnEWFoThZwdncEdYqqm3pXLv3oDheTvw24c=;
+        s=korg; t=1694440754;
+        bh=FxwHFyyPsRrhU+wcj5T6wknjdbfIn6Wlymeu4iw3cHM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=it6AXG+IT/DgZY4XY1vggcVpDWpx+YnqGtIhRDfhtHi3jDOM2l2Hx+5NtWMS0zBra
-         DfzL86hunAkctHv29Hy5nYkpPJmrpjShG7u8iv99vQKKkiwLXWvC38ZaLRPRkkHSbu
-         rc7AZqzfGnkmAx2hSBRE8ySCugKwpwfFcyRmPUFg=
+        b=pSlOqZ1m1CzOcu7jBNtjU5moCJbODYE+5rxAsaFumYMYh5pVYGCn4TfoteW6hc144
+         C+dwBdFKwAIrQJzfyAzR9F8Mtx5TZ2DtTx9W/Tfj4pGPshDkZowH4A537wNU428c+F
+         HxqpaRnXldBsgtQDWibAGGdHjJff8BT5/MrUrLGY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
-        Viresh Kumar <viresh.kumar@linaro.org>,
+        patches@lists.linux.dev, Pauli Virtanen <pav@iki.fi>,
+        Luiz Augusto von Dentz <luiz.von.dentz@intel.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 113/737] OPP: Fix passing 0 to PTR_ERR in _opp_attach_genpd()
-Date:   Mon, 11 Sep 2023 15:39:32 +0200
-Message-ID: <20230911134653.661673512@linuxfoundation.org>
+Subject: [PATCH 6.5 174/739] Bluetooth: hci_sync: Fix UAF in hci_disconnect_all_sync
+Date:   Mon, 11 Sep 2023 15:39:33 +0200
+Message-ID: <20230911134656.056171418@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,43 +50,186 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+From: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 
-[ Upstream commit d920920f85a82c1c806a4143871a0e8f534732f2 ]
+[ Upstream commit 94d9ba9f9888b748d4abd2aa1547af56ae85f772 ]
 
-If dev_pm_domain_attach_by_name() returns NULL, then 0 will be passed to
-PTR_ERR() as reported by the smatch warning below:
+Use-after-free can occur in hci_disconnect_all_sync if a connection is
+deleted by concurrent processing of a controller event.
 
-drivers/opp/core.c:2456 _opp_attach_genpd() warn: passing zero to 'PTR_ERR'
+To prevent this the code now tries to iterate over the list backwards
+to ensure the links are cleanup before its parents, also it no longer
+relies on a cursor, instead it always uses the last element since
+hci_abort_conn_sync is guaranteed to call hci_conn_del.
 
-Fix it by checking for the non-NULL virt_dev pointer before passing it to
-PTR_ERR. Otherwise return -ENODEV.
+UAF crash log:
+==================================================================
+BUG: KASAN: slab-use-after-free in hci_set_powered_sync
+(net/bluetooth/hci_sync.c:5424) [bluetooth]
+Read of size 8 at addr ffff888009d9c000 by task kworker/u9:0/124
 
-Fixes: 4ea9496cbc95 ("opp: Fix error check in dev_pm_opp_attach_genpd()")
-Signed-off-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
-Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
+CPU: 0 PID: 124 Comm: kworker/u9:0 Tainted: G        W
+6.5.0-rc1+ #10
+Hardware name: QEMU Standard PC (Q35 + ICH9, 2009), BIOS
+1.16.2-1.fc38 04/01/2014
+Workqueue: hci0 hci_cmd_sync_work [bluetooth]
+Call Trace:
+ <TASK>
+ dump_stack_lvl+0x5b/0x90
+ print_report+0xcf/0x670
+ ? __virt_addr_valid+0xdd/0x160
+ ? hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
+ kasan_report+0xa6/0xe0
+ ? hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
+ ? __pfx_set_powered_sync+0x10/0x10 [bluetooth]
+ hci_set_powered_sync+0x2c9/0x4a0 [bluetooth]
+ ? __pfx_hci_set_powered_sync+0x10/0x10 [bluetooth]
+ ? __pfx_lock_release+0x10/0x10
+ ? __pfx_set_powered_sync+0x10/0x10 [bluetooth]
+ hci_cmd_sync_work+0x137/0x220 [bluetooth]
+ process_one_work+0x526/0x9d0
+ ? __pfx_process_one_work+0x10/0x10
+ ? __pfx_do_raw_spin_lock+0x10/0x10
+ ? mark_held_locks+0x1a/0x90
+ worker_thread+0x92/0x630
+ ? __pfx_worker_thread+0x10/0x10
+ kthread+0x196/0x1e0
+ ? __pfx_kthread+0x10/0x10
+ ret_from_fork+0x2c/0x50
+ </TASK>
+
+Allocated by task 1782:
+ kasan_save_stack+0x33/0x60
+ kasan_set_track+0x25/0x30
+ __kasan_kmalloc+0x8f/0xa0
+ hci_conn_add+0xa5/0xa80 [bluetooth]
+ hci_bind_cis+0x881/0x9b0 [bluetooth]
+ iso_connect_cis+0x121/0x520 [bluetooth]
+ iso_sock_connect+0x3f6/0x790 [bluetooth]
+ __sys_connect+0x109/0x130
+ __x64_sys_connect+0x40/0x50
+ do_syscall_64+0x60/0x90
+ entry_SYSCALL_64_after_hwframe+0x6e/0xd8
+
+Freed by task 695:
+ kasan_save_stack+0x33/0x60
+ kasan_set_track+0x25/0x30
+ kasan_save_free_info+0x2b/0x50
+ __kasan_slab_free+0x10a/0x180
+ __kmem_cache_free+0x14d/0x2e0
+ device_release+0x5d/0xf0
+ kobject_put+0xdf/0x270
+ hci_disconn_complete_evt+0x274/0x3a0 [bluetooth]
+ hci_event_packet+0x579/0x7e0 [bluetooth]
+ hci_rx_work+0x287/0xaa0 [bluetooth]
+ process_one_work+0x526/0x9d0
+ worker_thread+0x92/0x630
+ kthread+0x196/0x1e0
+ ret_from_fork+0x2c/0x50
+==================================================================
+
+Fixes: 182ee45da083 ("Bluetooth: hci_sync: Rework hci_suspend_notifier")
+Signed-off-by: Pauli Virtanen <pav@iki.fi>
+Signed-off-by: Luiz Augusto von Dentz <luiz.von.dentz@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/opp/core.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ net/bluetooth/hci_sync.c | 55 +++++++++++++++++++++++++---------------
+ 1 file changed, 35 insertions(+), 20 deletions(-)
 
-diff --git a/drivers/opp/core.c b/drivers/opp/core.c
-index b5973fefdfd83..75b43c6c7031c 100644
---- a/drivers/opp/core.c
-+++ b/drivers/opp/core.c
-@@ -2382,7 +2382,7 @@ static int _opp_attach_genpd(struct opp_table *opp_table, struct device *dev,
+diff --git a/net/bluetooth/hci_sync.c b/net/bluetooth/hci_sync.c
+index fa675bacfb309..bc84b4617e824 100644
+--- a/net/bluetooth/hci_sync.c
++++ b/net/bluetooth/hci_sync.c
+@@ -5337,6 +5337,7 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
+ {
+ 	int err = 0;
+ 	u16 handle = conn->handle;
++	struct hci_conn *c;
  
- 		virt_dev = dev_pm_domain_attach_by_name(dev, *name);
- 		if (IS_ERR_OR_NULL(virt_dev)) {
--			ret = PTR_ERR(virt_dev) ? : -ENODEV;
-+			ret = virt_dev ? PTR_ERR(virt_dev) : -ENODEV;
- 			dev_err(dev, "Couldn't attach to pm_domain: %d\n", ret);
- 			goto err;
+ 	switch (conn->state) {
+ 	case BT_CONNECTED:
+@@ -5358,43 +5359,57 @@ int hci_abort_conn_sync(struct hci_dev *hdev, struct hci_conn *conn, u8 reason)
  		}
+ 		break;
+ 	default:
++		hci_dev_lock(hdev);
+ 		conn->state = BT_CLOSED;
++		hci_disconn_cfm(conn, reason);
++		hci_conn_del(conn);
++		hci_dev_unlock(hdev);
+ 		return 0;
+ 	}
+ 
++	hci_dev_lock(hdev);
++
++	/* Check if the connection hasn't been cleanup while waiting
++	 * commands to complete.
++	 */
++	c = hci_conn_hash_lookup_handle(hdev, handle);
++	if (!c || c != conn) {
++		err = 0;
++		goto unlock;
++	}
++
+ 	/* Cleanup hci_conn object if it cannot be cancelled as it
+ 	 * likelly means the controller and host stack are out of sync
+ 	 * or in case of LE it was still scanning so it can be cleanup
+ 	 * safely.
+ 	 */
+-	if (err) {
+-		struct hci_conn *c;
+-
+-		/* Check if the connection hasn't been cleanup while waiting
+-		 * commands to complete.
+-		 */
+-		c = hci_conn_hash_lookup_handle(hdev, handle);
+-		if (!c || c != conn)
+-			return 0;
+-
+-		hci_dev_lock(hdev);
+-		hci_conn_failed(conn, err);
+-		hci_dev_unlock(hdev);
+-	}
++	hci_conn_failed(conn, reason);
+ 
++unlock:
++	hci_dev_unlock(hdev);
+ 	return err;
+ }
+ 
+ static int hci_disconnect_all_sync(struct hci_dev *hdev, u8 reason)
+ {
+-	struct hci_conn *conn, *tmp;
+-	int err;
++	struct list_head *head = &hdev->conn_hash.list;
++	struct hci_conn *conn;
+ 
+-	list_for_each_entry_safe(conn, tmp, &hdev->conn_hash.list, list) {
+-		err = hci_abort_conn_sync(hdev, conn, reason);
+-		if (err)
+-			return err;
++	rcu_read_lock();
++	while ((conn = list_first_or_null_rcu(head, struct hci_conn, list))) {
++		/* Make sure the connection is not freed while unlocking */
++		conn = hci_conn_get(conn);
++		rcu_read_unlock();
++		/* Disregard possible errors since hci_conn_del shall have been
++		 * called even in case of errors had occurred since it would
++		 * then cause hci_conn_failed to be called which calls
++		 * hci_conn_del internally.
++		 */
++		hci_abort_conn_sync(hdev, conn, reason);
++		hci_conn_put(conn);
++		rcu_read_lock();
+ 	}
++	rcu_read_unlock();
+ 
+ 	return 0;
+ }
 -- 
 2.40.1
 
