@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40C0A79AF15
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:37 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2274F79AF3C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:46:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242915AbjIKU6p (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:45 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39008 "EHLO
+        id S1350942AbjIKVmQ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:42:16 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33242 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241427AbjIKPI2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:08:28 -0400
+        with ESMTP id S239012AbjIKOJi (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:38 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 243A8FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:08:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6ECC1C433CD;
-        Mon, 11 Sep 2023 15:08:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C801ECF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1B52BC433C7;
+        Mon, 11 Sep 2023 14:09:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444903;
-        bh=HnzCwk8zmP35daZztYxiZo5c//NRi067XQvL7WcH1A4=;
+        s=korg; t=1694441374;
+        bh=R6pCJE4bCtCCjPbE/r6kR5V48apYQyCI0Cvi67ZzXsA=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0yYmTh8b+XJREPPE+bYP8hGX4cG4g1yhiZ27OVjqfEB5euIJNxWYaR1jSrJHWWeum
-         CTIue4JAa9UmcglqORtjhWTB0w9xMf7j5clXZcK2g6PooJ0gGb8QPKjluPmZ3gXc8I
-         n0ZiES9qYUsNR6rj3DMLy9A9swVw+Gf94Y5/0x28=
+        b=kkbkBruNL0dfQdcPk2YcNGF1dpbzIWszO8ZShUwU4k/rHATuq+stN+ep+WySTDonC
+         sZ2+FcJkgpgS6LObnGLElGjpo1nvi0mQtMVCoJkKFZp4Azt9+pFue/A4xzUorGZb5a
+         555cFYZCmi9JxBU7sAkPlUW+E9bx9CEj8b50rgu4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 156/600] wifi: mt76: testmode: add nla_policy for MT76_TM_ATTR_TX_LENGTH
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 390/739] clk: qcom: dispcc-sc8280xp: Use ret registers on GDSCs
 Date:   Mon, 11 Sep 2023 15:43:09 +0200
-Message-ID: <20230911134638.215901120@linuxfoundation.org>
+Message-ID: <20230911134702.083855268@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,43 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 74f12d511625e603fac8c0c2b6872e687e56dd61 ]
+[ Upstream commit 20e1d75bc043c5ec1fd8f5169fde17db89eb11c3 ]
 
-It seems that the nla_policy in mt76_tm_policy is missed for attribute
-MT76_TM_ATTR_TX_LENGTH. This patch adds the correct description to make
-sure the
+The DISP_CC GDSCs have not been instructed to use the ret registers.
+Fix that.
 
-  u32 val = nla_get_u32(tb[MT76_TM_ATTR_TX_LENGTH]);
-
-in function mt76_testmode_cmd() is safe and will not result in
-out-of-attribute read.
-
-Fixes: f0efa8621550 ("mt76: add API for testmode support")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Signed-off-by: Felix Fietkau <nbd@nbd.name>
+Fixes: 4a66e76fdb6d ("clk: qcom: Add SC8280XP display clock controller")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230725-topic-8280_dispcc_gdsc-v1-1-236590060531@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/mediatek/mt76/testmode.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/clk/qcom/dispcc-sc8280xp.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/mediatek/mt76/testmode.c b/drivers/net/wireless/mediatek/mt76/testmode.c
-index 0accc71a91c9a..4644dace9bb34 100644
---- a/drivers/net/wireless/mediatek/mt76/testmode.c
-+++ b/drivers/net/wireless/mediatek/mt76/testmode.c
-@@ -8,6 +8,7 @@ const struct nla_policy mt76_tm_policy[NUM_MT76_TM_ATTRS] = {
- 	[MT76_TM_ATTR_RESET] = { .type = NLA_FLAG },
- 	[MT76_TM_ATTR_STATE] = { .type = NLA_U8 },
- 	[MT76_TM_ATTR_TX_COUNT] = { .type = NLA_U32 },
-+	[MT76_TM_ATTR_TX_LENGTH] = { .type = NLA_U32 },
- 	[MT76_TM_ATTR_TX_RATE_MODE] = { .type = NLA_U8 },
- 	[MT76_TM_ATTR_TX_RATE_NSS] = { .type = NLA_U8 },
- 	[MT76_TM_ATTR_TX_RATE_IDX] = { .type = NLA_U8 },
+diff --git a/drivers/clk/qcom/dispcc-sc8280xp.c b/drivers/clk/qcom/dispcc-sc8280xp.c
+index 167470beb3691..30f636b9f0ec8 100644
+--- a/drivers/clk/qcom/dispcc-sc8280xp.c
++++ b/drivers/clk/qcom/dispcc-sc8280xp.c
+@@ -3057,7 +3057,7 @@ static struct gdsc disp0_mdss_gdsc = {
+ 		.name = "disp0_mdss_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc disp1_mdss_gdsc = {
+@@ -3069,7 +3069,7 @@ static struct gdsc disp1_mdss_gdsc = {
+ 		.name = "disp1_mdss_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc disp0_mdss_int2_gdsc = {
+@@ -3081,7 +3081,7 @@ static struct gdsc disp0_mdss_int2_gdsc = {
+ 		.name = "disp0_mdss_int2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc disp1_mdss_int2_gdsc = {
+@@ -3093,7 +3093,7 @@ static struct gdsc disp1_mdss_int2_gdsc = {
+ 		.name = "disp1_mdss_int2_gdsc",
+ 	},
+ 	.pwrsts = PWRSTS_OFF_ON,
+-	.flags = HW_CTRL,
++	.flags = HW_CTRL | RETAIN_FF_ENABLE,
+ };
+ 
+ static struct gdsc *disp0_cc_sc8280xp_gdscs[] = {
 -- 
 2.40.1
 
