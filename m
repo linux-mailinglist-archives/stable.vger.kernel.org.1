@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E0A9679B604
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:34 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D2AE279B625
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:47 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242799AbjIKU6e (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:58:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56184 "EHLO
+        id S243110AbjIKVHu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:07:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:53092 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239331AbjIKOSE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:18:04 -0400
+        with ESMTP id S241842AbjIKPQE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:16:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78861DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:18:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C462CC433C8;
-        Mon, 11 Sep 2023 14:17:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6029FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0BE10C433C7;
+        Mon, 11 Sep 2023 15:15:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441880;
-        bh=udAOpIMbBqyBv7kg1qssYjbpDgJnxBgsbkcO5ERcvM0=;
+        s=korg; t=1694445359;
+        bh=NfUWzCglneB1sg8y8h6bl1mfBNWZC2U4mdYPcpxsQak=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AwPWDhUkbSK9zmNo+omcix+d7cf2cxstjLQiSoILzmuIeb3Dj5XA4T0D/B5u506PS
-         0/IUX9S0Pwo7SJqVLme3DEph3X8Ex1Zudi1vuYOYlMAG49lmzvvgalzeU9SWoXV/jK
-         +yD/B4z8JF+mdCEKAUGmDzKjVXqNoiX2PCa4m21U=
+        b=xqkR7JdhGYsonONKAk65ZZwEPSHwwIQzEoodib+faGd1rpvGgmshW4t4BIcspiQV9
+         /LU5le5Z4IQLZgdN2XsoSb6/k3VdjFXS2gPC8DglWSu4d8B+9cSo5s1+Pe/64ktVBh
+         VJkG/vGSHanUa71OvyXc444495MHt4UOgwFLbCVw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Chao Yu <chao@kernel.org>,
-        Jaegeuk Kim <jaegeuk@kernel.org>,
+        patches@lists.linux.dev, Jan Kara <jack@suse.cz>,
+        Yu Kuai <yukuai3@huawei.com>, Song Liu <song@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 551/739] f2fs: fix to avoid mmap vs set_compress_option case
-Date:   Mon, 11 Sep 2023 15:45:50 +0200
-Message-ID: <20230911134706.480188958@linuxfoundation.org>
+Subject: [PATCH 6.1 319/600] md/raid0: Factor out helper for mapping and submitting a bio
+Date:   Mon, 11 Sep 2023 15:45:52 +0200
+Message-ID: <20230911134643.105111479@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,116 +50,147 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chao Yu <chao@kernel.org>
+From: Jan Kara <jack@suse.cz>
 
-[ Upstream commit b5ab3276eb69cacf44ecfb11b2bfab73096ff4e4 ]
+[ Upstream commit af50e20afb401cc203bd2a9ff62ece0ae4976103 ]
 
-Compression option in inode should not be changed after they have
-been used, however, it may happen in below race case:
+Factor out helper function for mapping and submitting a bio out of
+raid0_make_request(). We will use it later for submitting both parts of
+a split bio.
 
-Thread A				Thread B
-- f2fs_ioc_set_compress_option
- - check f2fs_is_mmap_file()
- - check get_dirty_pages()
- - check F2FS_HAS_BLOCKS()
-					- f2fs_file_mmap
-					 - set_inode_flag(FI_MMAP_FILE)
-					- fault
-					 - do_page_mkwrite
-					  - f2fs_vm_page_mkwrite
-					  - f2fs_get_block_locked
-					 - fault_dirty_shared_page
-					  - set_page_dirty
- - update i_compress_algorithm
- - update i_log_cluster_size
- - update i_cluster_size
-
-Avoid such race condition by covering f2fs_file_mmap() w/ i_sem lock,
-meanwhile add mmap file check condition in f2fs_may_compress() as well.
-
-Fixes: e1e8debec656 ("f2fs: add F2FS_IOC_SET_COMPRESS_OPTION ioctl")
-Signed-off-by: Chao Yu <chao@kernel.org>
-Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Signed-off-by: Jan Kara <jack@suse.cz>
+Reviewed-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230814092720.3931-1-jack@suse.cz
+Signed-off-by: Song Liu <song@kernel.org>
+Stable-dep-of: 319ff40a5427 ("md/raid0: Fix performance regression for large sequential writes")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/f2fs/f2fs.h |  3 ++-
- fs/f2fs/file.c | 23 ++++++++++++++++++-----
- 2 files changed, 20 insertions(+), 6 deletions(-)
+ drivers/md/raid0.c | 79 +++++++++++++++++++++++-----------------------
+ 1 file changed, 40 insertions(+), 39 deletions(-)
 
-diff --git a/fs/f2fs/f2fs.h b/fs/f2fs/f2fs.h
-index c7cb2177b2527..d372bedb0fe4e 100644
---- a/fs/f2fs/f2fs.h
-+++ b/fs/f2fs/f2fs.h
-@@ -4483,7 +4483,8 @@ static inline bool f2fs_low_mem_mode(struct f2fs_sb_info *sbi)
- static inline bool f2fs_may_compress(struct inode *inode)
+diff --git a/drivers/md/raid0.c b/drivers/md/raid0.c
+index d1ac73fcd8529..d3c55f2e9b185 100644
+--- a/drivers/md/raid0.c
++++ b/drivers/md/raid0.c
+@@ -557,54 +557,21 @@ static void raid0_handle_discard(struct mddev *mddev, struct bio *bio)
+ 	bio_endio(bio);
+ }
+ 
+-static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
++static void raid0_map_submit_bio(struct mddev *mddev, struct bio *bio)
  {
- 	if (IS_SWAPFILE(inode) || f2fs_is_pinned_file(inode) ||
--		f2fs_is_atomic_file(inode) || f2fs_has_inline_data(inode))
-+		f2fs_is_atomic_file(inode) || f2fs_has_inline_data(inode) ||
-+		f2fs_is_mmap_file(inode))
- 		return false;
- 	return S_ISREG(inode->i_mode) || S_ISDIR(inode->i_mode);
- }
-diff --git a/fs/f2fs/file.c b/fs/f2fs/file.c
-index 093039dee9920..d9073afe021fd 100644
---- a/fs/f2fs/file.c
-+++ b/fs/f2fs/file.c
-@@ -526,7 +526,11 @@ static int f2fs_file_mmap(struct file *file, struct vm_area_struct *vma)
+ 	struct r0conf *conf = mddev->private;
+ 	struct strip_zone *zone;
+ 	struct md_rdev *tmp_dev;
+-	sector_t bio_sector;
+-	sector_t sector;
+-	sector_t orig_sector;
+-	unsigned chunk_sects;
+-	unsigned sectors;
+-
+-	if (unlikely(bio->bi_opf & REQ_PREFLUSH)
+-	    && md_flush_request(mddev, bio))
+-		return true;
+-
+-	if (unlikely((bio_op(bio) == REQ_OP_DISCARD))) {
+-		raid0_handle_discard(mddev, bio);
+-		return true;
+-	}
+-
+-	bio_sector = bio->bi_iter.bi_sector;
+-	sector = bio_sector;
+-	chunk_sects = mddev->chunk_sectors;
+-
+-	sectors = chunk_sects -
+-		(likely(is_power_of_2(chunk_sects))
+-		 ? (sector & (chunk_sects-1))
+-		 : sector_div(sector, chunk_sects));
+-
+-	/* Restore due to sector_div */
+-	sector = bio_sector;
+-
+-	if (sectors < bio_sectors(bio)) {
+-		struct bio *split = bio_split(bio, sectors, GFP_NOIO,
+-					      &mddev->bio_set);
+-		bio_chain(split, bio);
+-		submit_bio_noacct(bio);
+-		bio = split;
+-	}
++	sector_t bio_sector = bio->bi_iter.bi_sector;
++	sector_t sector = bio_sector;
  
- 	file_accessed(file);
- 	vma->vm_ops = &f2fs_file_vm_ops;
-+
-+	f2fs_down_read(&F2FS_I(inode)->i_sem);
- 	set_inode_flag(inode, FI_MMAP_FILE);
-+	f2fs_up_read(&F2FS_I(inode)->i_sem);
-+
- 	return 0;
- }
+ 	if (bio->bi_pool != &mddev->bio_set)
+ 		md_account_bio(mddev, &bio);
  
-@@ -1919,12 +1923,19 @@ static int f2fs_setflags_common(struct inode *inode, u32 iflags, u32 mask)
- 			int err = f2fs_convert_inline_inode(inode);
- 			if (err)
- 				return err;
--			if (!f2fs_may_compress(inode))
--				return -EINVAL;
--			if (S_ISREG(inode->i_mode) && F2FS_HAS_BLOCKS(inode))
-+
-+			f2fs_down_write(&F2FS_I(inode)->i_sem);
-+			if (!f2fs_may_compress(inode) ||
-+					(S_ISREG(inode->i_mode) &&
-+					F2FS_HAS_BLOCKS(inode))) {
-+				f2fs_up_write(&F2FS_I(inode)->i_sem);
- 				return -EINVAL;
--			if (set_compress_context(inode))
--				return -EOPNOTSUPP;
-+			}
-+			err = set_compress_context(inode);
-+			f2fs_up_write(&F2FS_I(inode)->i_sem);
-+
-+			if (err)
-+				return err;
- 		}
+-	orig_sector = sector;
+ 	zone = find_zone(mddev->private, &sector);
+ 	switch (conf->layout) {
+ 	case RAID0_ORIG_LAYOUT:
+-		tmp_dev = map_sector(mddev, zone, orig_sector, &sector);
++		tmp_dev = map_sector(mddev, zone, bio_sector, &sector);
+ 		break;
+ 	case RAID0_ALT_MULTIZONE_LAYOUT:
+ 		tmp_dev = map_sector(mddev, zone, sector, &sector);
+@@ -612,13 +579,13 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
+ 	default:
+ 		WARN(1, "md/raid0:%s: Invalid layout\n", mdname(mddev));
+ 		bio_io_error(bio);
+-		return true;
++		return;
  	}
  
-@@ -3976,6 +3987,7 @@ static int f2fs_ioc_set_compress_option(struct file *filp, unsigned long arg)
- 	file_start_write(filp);
- 	inode_lock(inode);
+ 	if (unlikely(is_rdev_broken(tmp_dev))) {
+ 		bio_io_error(bio);
+ 		md_error(mddev, tmp_dev);
+-		return true;
++		return;
+ 	}
  
-+	f2fs_down_write(&F2FS_I(inode)->i_sem);
- 	if (f2fs_is_mmap_file(inode) || get_dirty_pages(inode)) {
- 		ret = -EBUSY;
- 		goto out;
-@@ -3995,6 +4007,7 @@ static int f2fs_ioc_set_compress_option(struct file *filp, unsigned long arg)
- 		f2fs_warn(sbi, "compression algorithm is successfully set, "
- 			"but current kernel doesn't support this algorithm.");
- out:
-+	f2fs_up_write(&F2FS_I(inode)->i_sem);
- 	inode_unlock(inode);
- 	file_end_write(filp);
+ 	bio_set_dev(bio, tmp_dev->bdev);
+@@ -630,6 +597,40 @@ static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
+ 				      bio_sector);
+ 	mddev_check_write_zeroes(mddev, bio);
+ 	submit_bio_noacct(bio);
++}
++
++static bool raid0_make_request(struct mddev *mddev, struct bio *bio)
++{
++	sector_t sector;
++	unsigned chunk_sects;
++	unsigned sectors;
++
++	if (unlikely(bio->bi_opf & REQ_PREFLUSH)
++	    && md_flush_request(mddev, bio))
++		return true;
++
++	if (unlikely((bio_op(bio) == REQ_OP_DISCARD))) {
++		raid0_handle_discard(mddev, bio);
++		return true;
++	}
++
++	sector = bio->bi_iter.bi_sector;
++	chunk_sects = mddev->chunk_sectors;
++
++	sectors = chunk_sects -
++		(likely(is_power_of_2(chunk_sects))
++		 ? (sector & (chunk_sects-1))
++		 : sector_div(sector, chunk_sects));
++
++	if (sectors < bio_sectors(bio)) {
++		struct bio *split = bio_split(bio, sectors, GFP_NOIO,
++					      &mddev->bio_set);
++		bio_chain(split, bio);
++		submit_bio_noacct(bio);
++		bio = split;
++	}
++
++	raid0_map_submit_bio(mddev, bio);
+ 	return true;
+ }
  
 -- 
 2.40.1
