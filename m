@@ -2,49 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AE8279AE25
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:42:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A245B79B444
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244205AbjIKWfZ (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:35:25 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35838 "EHLO
+        id S1359435AbjIKWQl (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:16:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56854 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235773AbjIKJeg (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:34:36 -0400
+        with ESMTP id S235787AbjIKJig (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:38:36 -0400
 Received: from jabberwock.ucw.cz (jabberwock.ucw.cz [46.255.230.98])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEC9F102;
-        Mon, 11 Sep 2023 02:34:31 -0700 (PDT)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0B8BDEE;
+        Mon, 11 Sep 2023 02:38:32 -0700 (PDT)
 Received: by jabberwock.ucw.cz (Postfix, from userid 1017)
-        id 8E7011C0004; Mon, 11 Sep 2023 11:34:29 +0200 (CEST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed; d=ucw.cz; s=gen1;
-        t=1694424869;
-        h=from:from:reply-to:subject:subject:date:date:message-id:message-id:
-         to:to:cc:cc:mime-version:mime-version:content-type:content-type:
-         in-reply-to:in-reply-to:references:references;
-        bh=s2CmE2JFSM8pAEVIOYEIsnqeIcBwCEYRUHv7PaOGlB4=;
-        b=edJ1zp76U5wD6Q4OyM/G9pSdkKyfTo2iXuI0x6Uq3iU0mKY8o7jiHUY4LoJpMIfw0ydTIY
-        RkrTrHA4MLe16oiFyzcUohGn/K7zhlY7h/xI3bgu0y/wHpKr3yuS8nrP5adzHwrGLU78g2
-        X4BtTRciLKaK4j2WIxE9NfBuHIJhxJg=
-Date:   Mon, 11 Sep 2023 11:34:29 +0200
-From:   Pavel Machek <pavel@ucw.cz>
+        id B75581C0006; Mon, 11 Sep 2023 11:38:30 +0200 (CEST)
+Date:   Mon, 11 Sep 2023 11:38:30 +0200
+From:   Pavel Machek <pavel@denx.de>
 To:     Sasha Levin <sashal@kernel.org>
 Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
-        Hans de Goede <hdegoede@redhat.com>,
-        "Rafael J . Wysocki" <rafael.j.wysocki@intel.com>,
-        rafael@kernel.org, linux-acpi@vger.kernel.org
-Subject: Re: [PATCH AUTOSEL 5.10 7/8] ACPI: video: Add backlight=native DMI
- quirk for Apple iMac12,1 and iMac12,2
-Message-ID: <ZP7fJSHUNzyIg9e1@duo.ucw.cz>
-References: <20230908180320.3458596-1-sashal@kernel.org>
- <20230908180320.3458596-7-sashal@kernel.org>
+        Johannes Berg <johannes.berg@intel.com>,
+        syzbot+09d1cd2f71e6dd3bfd2c@syzkaller.appspotmail.com,
+        johannes@sipsolutions.net, davem@davemloft.net,
+        edumazet@google.com, kuba@kernel.org, pabeni@redhat.com,
+        linux-wireless@vger.kernel.org, netdev@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 4.14 7/8] wifi: cfg80211: ocb: don't leave if not
+ joined
+Message-ID: <ZP7gFtW+U07CpC/K@duo.ucw.cz>
+References: <20230908182127.3461199-1-sashal@kernel.org>
+ <20230908182127.3461199-7-sashal@kernel.org>
 MIME-Version: 1.0
 Content-Type: multipart/signed; micalg=pgp-sha1;
-        protocol="application/pgp-signature"; boundary="oq9hWx+adZyAT5mA"
+        protocol="application/pgp-signature"; boundary="4zZsMGIhynDkbXF0"
 Content-Disposition: inline
-In-Reply-To: <20230908180320.3458596-7-sashal@kernel.org>
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_BLOCKED,
-        SPF_HELO_PASS,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
+In-Reply-To: <20230908182127.3461199-7-sashal@kernel.org>
+X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,
+        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_PASS,SPF_NEUTRAL autolearn=no
+        autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
@@ -52,37 +45,33 @@ List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
 
---oq9hWx+adZyAT5mA
+--4zZsMGIhynDkbXF0
 Content-Type: text/plain; charset=us-ascii
 Content-Disposition: inline
 Content-Transfer-Encoding: quoted-printable
 
 Hi!
 
-> From: Hans de Goede <hdegoede@redhat.com>
->=20
-> [ Upstream commit 8cf04bb321f036dd2e523e993897e0789bd5265c ]
->=20
-> Linux defaults to picking the non-working ACPI video backlight interface
-> on the Apple iMac12,1 and iMac12,2.
->=20
-> Add a DMI quirk to pick the working native radeon_bl0 interface instead.
+> If there's no OCB state, don't ask the driver/mac80211 to
+> leave, since that's just confusing. Since set/clear the
+> chandef state, that's a simple check.
 
-This is queued for 5.10 and 6.4, but not 6.1. Mistake?
+This is not queued for 5.10. Mistake?
 
 Best regards,
 								Pavel
 --=20
-People of Russia, stop Putin before his war on Ukraine escalates.
+DENX Software Engineering GmbH,        Managing Director: Erika Unter
+HRB 165235 Munich, Office: Kirchenstr.5, D-82194 Groebenzell, Germany
 
---oq9hWx+adZyAT5mA
+--4zZsMGIhynDkbXF0
 Content-Type: application/pgp-signature; name="signature.asc"
 
 -----BEGIN PGP SIGNATURE-----
 
-iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7fJQAKCRAw5/Bqldv6
-8hiHAJ4gwyyP6F8iIJbrMxsv5MbR89B5QgCeOyUen33R1CoLCbgzrb42fJyaaWQ=
-=B/vn
+iF0EABECAB0WIQRPfPO7r0eAhk010v0w5/Bqldv68gUCZP7gFgAKCRAw5/Bqldv6
+8tPKAJ0ZLwIUgSYRZlbf8Uohwr5HVJ6hQACgwgVm1eyNnOoNGQRa72F8vHVKJWc=
+=p2UP
 -----END PGP SIGNATURE-----
 
---oq9hWx+adZyAT5mA--
+--4zZsMGIhynDkbXF0--
