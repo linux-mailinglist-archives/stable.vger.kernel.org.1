@@ -2,40 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8B7B979BB49
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:52 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6690B79B682
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:05:19 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239658AbjIKV1l (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:27:41 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38064 "EHLO
+        id S1354120AbjIKVwc (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:52:32 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42508 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239070AbjIKOLH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:11:07 -0400
+        with ESMTP id S240453AbjIKOoh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5963CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:11:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 21475C433C8;
-        Mon, 11 Sep 2023 14:11:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7B3BC12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8BBDC433C7;
+        Mon, 11 Sep 2023 14:44:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441462;
-        bh=iZhlbBgPWoFM8oMSXmectafHF1OQtskAtMYZVLmWaWs=;
+        s=korg; t=1694443473;
+        bh=/TR8tW2uQLAPbcrQrOX8BeSB7XAhyPkRSh60Bq2y0mE=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NCkugtUE9Ad6vX24+pJdjGDQdxMKaK5b9Rqo8KbjGx4y7z4WfISLR6R0AOD8UWwQj
-         whpopTh85t4/m6H3f2MxEcbfPxFOiP70tnu4BjiN25VRP24wb9bAXvEEicTw/U4ORh
-         OYgPdR/+yM3viy81YI8LJinQIAsOWizCHR0HBEGE=
+        b=IcKcR/BpedArwDmXdsLBQYLHa0WsoHJZXWG/lTzjcciHNivQjY55H/cXkbVjaH4m+
+         PG6kLPSY68APlD4+U++3vZWfxGb5SwvBHjPpJxGkG6brZSo9UgB3LWWped2EDd2ZaB
+         g6J5vFp8WfX7qFt8/6Pduepmf/8wjGcwNyOySzjw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Christophe Leroy <christophe.leroy@csgroup.eu>,
-        Michael Ellerman <mpe@ellerman.id.au>,
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Yang Wang <kevinyang.wang@amd.com>,
+        Kenneth Feng <kenneth.feng@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 421/739] powerpc/perf: Convert fsl_emb notifier to state machine callbacks
-Date:   Mon, 11 Sep 2023 15:43:40 +0200
-Message-ID: <20230911134702.935475004@linuxfoundation.org>
+Subject: [PATCH 6.4 362/737] drm/amd/pm: fix variable dereferenced issue in amdgpu_device_attr_create()
+Date:   Mon, 11 Sep 2023 15:43:41 +0200
+Message-ID: <20230911134700.644769632@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,86 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Christophe Leroy <christophe.leroy@csgroup.eu>
+From: Yang Wang <kevinyang.wang@amd.com>
 
-[ Upstream commit 34daf445f82bd3a4df852bb5f1dffd792ac830a0 ]
+[ Upstream commit 25e6373a5b8efc623443f2699d2b929bf3067d76 ]
 
-  CC      arch/powerpc/perf/core-fsl-emb.o
-arch/powerpc/perf/core-fsl-emb.c:675:6: error: no previous prototype for 'hw_perf_event_setup' [-Werror=missing-prototypes]
-  675 | void hw_perf_event_setup(int cpu)
-      |      ^~~~~~~~~~~~~~~~~~~
+- fix variable ('attr') dereferenced issue.
+- using condition check instead of BUG_ON().
 
-Looks like fsl_emb was completely missed by commit 3f6da3905398 ("perf:
-Rework and fix the arch CPU-hotplug hooks")
-
-So, apply same changes as commit 3f6da3905398 ("perf: Rework and fix
-the arch CPU-hotplug hooks") then commit 57ecde42cc74 ("powerpc/perf:
-Convert book3s notifier to state machine callbacks")
-
-While at it, also fix following error:
-
-arch/powerpc/perf/core-fsl-emb.c: In function 'perf_event_interrupt':
-arch/powerpc/perf/core-fsl-emb.c:648:13: error: variable 'found' set but not used [-Werror=unused-but-set-variable]
-  648 |         int found = 0;
-      |             ^~~~~
-
-Fixes: 3f6da3905398 ("perf: Rework and fix the arch CPU-hotplug hooks")
-Signed-off-by: Christophe Leroy <christophe.leroy@csgroup.eu>
-Signed-off-by: Michael Ellerman <mpe@ellerman.id.au>
-Link: https://msgid.link/603e1facb32608f88f40b7d7b9094adc50e7b2dc.1692349125.git.christophe.leroy@csgroup.eu
+Fixes: 4e01847c38f7 ("drm/amdgpu: optimize amdgpu device attribute code")
+Cc: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Yang Wang <kevinyang.wang@amd.com>
+Reviewed-by: Kenneth Feng <kenneth.feng@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/powerpc/perf/core-fsl-emb.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/gpu/drm/amd/pm/amdgpu_pm.c | 10 +++++++---
+ 1 file changed, 7 insertions(+), 3 deletions(-)
 
-diff --git a/arch/powerpc/perf/core-fsl-emb.c b/arch/powerpc/perf/core-fsl-emb.c
-index ee721f420a7ba..1a53ab08447cb 100644
---- a/arch/powerpc/perf/core-fsl-emb.c
-+++ b/arch/powerpc/perf/core-fsl-emb.c
-@@ -645,7 +645,6 @@ static void perf_event_interrupt(struct pt_regs *regs)
- 	struct cpu_hw_events *cpuhw = this_cpu_ptr(&cpu_hw_events);
- 	struct perf_event *event;
- 	unsigned long val;
--	int found = 0;
- 
- 	for (i = 0; i < ppmu->n_counter; ++i) {
- 		event = cpuhw->event[i];
-@@ -654,7 +653,6 @@ static void perf_event_interrupt(struct pt_regs *regs)
- 		if ((int)val < 0) {
- 			if (event) {
- 				/* event has overflowed */
--				found = 1;
- 				record_and_restart(event, val, regs);
- 			} else {
- 				/*
-@@ -672,11 +670,13 @@ static void perf_event_interrupt(struct pt_regs *regs)
- 	isync();
- }
- 
--void hw_perf_event_setup(int cpu)
-+static int fsl_emb_pmu_prepare_cpu(unsigned int cpu)
+diff --git a/drivers/gpu/drm/amd/pm/amdgpu_pm.c b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+index f4f40459f22b9..a5b2a7d943f71 100644
+--- a/drivers/gpu/drm/amd/pm/amdgpu_pm.c
++++ b/drivers/gpu/drm/amd/pm/amdgpu_pm.c
+@@ -2195,15 +2195,19 @@ static int amdgpu_device_attr_create(struct amdgpu_device *adev,
+ 				     uint32_t mask, struct list_head *attr_list)
  {
- 	struct cpu_hw_events *cpuhw = &per_cpu(cpu_hw_events, cpu);
+ 	int ret = 0;
+-	struct device_attribute *dev_attr = &attr->dev_attr;
+-	const char *name = dev_attr->attr.name;
+ 	enum amdgpu_device_attr_states attr_states = ATTR_STATE_SUPPORTED;
+ 	struct amdgpu_device_attr_entry *attr_entry;
++	struct device_attribute *dev_attr;
++	const char *name;
  
- 	memset(cpuhw, 0, sizeof(*cpuhw));
+ 	int (*attr_update)(struct amdgpu_device *adev, struct amdgpu_device_attr *attr,
+ 			   uint32_t mask, enum amdgpu_device_attr_states *states) = default_attr_update;
+ 
+-	BUG_ON(!attr);
++	if (!attr)
++		return -EINVAL;
 +
-+	return 0;
- }
++	dev_attr = &attr->dev_attr;
++	name = dev_attr->attr.name;
  
- int register_fsl_emb_pmu(struct fsl_emb_pmu *pmu)
-@@ -689,6 +689,8 @@ int register_fsl_emb_pmu(struct fsl_emb_pmu *pmu)
- 		pmu->name);
+ 	attr_update = attr->attr_update ? attr->attr_update : default_attr_update;
  
- 	perf_pmu_register(&fsl_emb_pmu, "cpu", PERF_TYPE_RAW);
-+	cpuhp_setup_state(CPUHP_PERF_POWER, "perf/powerpc:prepare",
-+			  fsl_emb_pmu_prepare_cpu, NULL);
- 
- 	return 0;
- }
 -- 
 2.40.1
 
