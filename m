@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3C43979B2EB
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A86C279B275
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354227AbjIKVwz (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:55 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52086 "EHLO
+        id S240747AbjIKU4f (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:35 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:32910 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238814AbjIKOFe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:05:34 -0400
+        with ESMTP id S241222AbjIKPEa (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:04:30 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B3309E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:05:29 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 05572C433C8;
-        Mon, 11 Sep 2023 14:05:28 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 339581B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:04:26 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77E7BC433C8;
+        Mon, 11 Sep 2023 15:04:25 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441129;
-        bh=bxuHdAHxFhfMiR9SonF0d8K506349I2EkFFODKL5xyY=;
+        s=korg; t=1694444665;
+        bh=Ez+PKhfdx74WqHFrROQUw8tIi5psgBIVpB7XBIHPwUQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SPTjWMlQXQnXKb2JhuPGtYAJyMvSvfgmYEqqOOnYNldOHZJ1HdMkSwPx3UNpSq/k8
-         DWuzROYyjwJaHQzQeqod0P131nxXSoJTCZqC9rodui6lk+RiJaLP5osWDNzSmfS1os
-         do32maI6en9GF6amiNFy+zyCJEw+0oV7viRyOfCw=
+        b=sb3eMhBSRSeqybIDdNZcbodaYjJyjDFN6DuwEVkME3hY/WjZm98/sVF57SeBSG8d+
+         c+vLftW02wi/HPKARNOIAObBpoQEiNW4X8oixfQzklQVl3FQEnlOs5VC3cE4pL5iOm
+         4GIQDmHmtxKwyHZazfQBEtwiFrsNdsvDmc0oWAmY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Abhinav Kumar <quic_abhinavk@quicinc.com>,
-        Dmitry Baryshkov <dmitry.baryshkov@linaro.org>,
-        Ryan McCann <quic_rmccann@quicinc.com>,
+        patches@lists.linux.dev,
+        Hongchen Zhang <zhanghongchen@loongson.cn>,
+        Huacai Chen <chenhuacai@loongson.cn>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 305/739] drm/msm/dpu: Define names for unnamed sblks
-Date:   Mon, 11 Sep 2023 15:41:44 +0200
-Message-ID: <20230911134659.641568825@linuxfoundation.org>
+Subject: [PATCH 6.1 072/600] LoongArch: Let pmd_present() return true when splitting pmd
+Date:   Mon, 11 Sep 2023 15:41:45 +0200
+Message-ID: <20230911134635.744920951@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,91 +51,69 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ryan McCann <quic_rmccann@quicinc.com>
+From: Hongchen Zhang <zhanghongchen@loongson.cn>
 
-[ Upstream commit 46998bf8431c30879be29bbbf67eefb583136ccb ]
+[ Upstream commit ddc1729b07cc84bb29f577698b8d2e74a4004a6e ]
 
-Some sub-blocks in the hw catalog have not been given a name, so when the
-registers from that block are dumped, there is no name to reference.
-Define names for relevant sub-blocks to fix this.
+When we split a pmd into ptes, pmd_present() and pmd_trans_huge() should
+return true, otherwise it would be treated as a swap pmd.
 
-Reviewed-by: Abhinav Kumar <quic_abhinavk@quicinc.com>
-Reviewed-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Signed-off-by: Ryan McCann <quic_rmccann@quicinc.com>
-Patchwork: https://patchwork.freedesktop.org/patch/546199/
-Link: https://lore.kernel.org/r/20230622-devcoredump_patch-v5-3-67e8b66c4723@quicinc.com
-Signed-off-by: Dmitry Baryshkov <dmitry.baryshkov@linaro.org>
-Stable-dep-of: 57a1ca6cf73b ("drm/msm/dpu: fix DSC 1.2 enc subblock length")
+This is the same as arm64 does in commit b65399f6111b ("arm64/mm: Change
+THP helpers to comply with generic MM semantics"), we also add a new bit
+named _PAGE_PRESENT_INVALID for LoongArch.
+
+Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
+Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- .../gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c    | 20 +++++++++----------
- 1 file changed, 10 insertions(+), 10 deletions(-)
+ arch/loongarch/include/asm/pgtable-bits.h | 2 ++
+ arch/loongarch/include/asm/pgtable.h      | 3 ++-
+ 2 files changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-index e96b3c2c2faf0..8b7143f2c760d 100644
---- a/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-+++ b/drivers/gpu/drm/msm/disp/dpu1/dpu_hw_catalog.c
-@@ -444,12 +444,12 @@ static const struct dpu_lm_sub_blks qcm2290_lm_sblk = {
-  * DSPP sub blocks config
-  *************************************************************/
- static const struct dpu_dspp_sub_blks msm8998_dspp_sblk = {
--	.pcc = {.id = DPU_DSPP_PCC, .base = 0x1700,
-+	.pcc = {.name = "pcc", .id = DPU_DSPP_PCC, .base = 0x1700,
- 		.len = 0x90, .version = 0x10007},
- };
+diff --git a/arch/loongarch/include/asm/pgtable-bits.h b/arch/loongarch/include/asm/pgtable-bits.h
+index 3d1e0a69975a5..5f2ebcea509cd 100644
+--- a/arch/loongarch/include/asm/pgtable-bits.h
++++ b/arch/loongarch/include/asm/pgtable-bits.h
+@@ -21,12 +21,14 @@
+ #define	_PAGE_HGLOBAL_SHIFT	12 /* HGlobal is a PMD bit */
+ #define	_PAGE_PFN_SHIFT		12
+ #define	_PAGE_PFN_END_SHIFT	48
++#define	_PAGE_PRESENT_INVALID_SHIFT 60
+ #define	_PAGE_NO_READ_SHIFT	61
+ #define	_PAGE_NO_EXEC_SHIFT	62
+ #define	_PAGE_RPLV_SHIFT	63
  
- static const struct dpu_dspp_sub_blks sdm845_dspp_sblk = {
--	.pcc = {.id = DPU_DSPP_PCC, .base = 0x1700,
-+	.pcc = {.name = "pcc", .id = DPU_DSPP_PCC, .base = 0x1700,
- 		.len = 0x90, .version = 0x40000},
- };
+ /* Used by software */
+ #define _PAGE_PRESENT		(_ULCAST_(1) << _PAGE_PRESENT_SHIFT)
++#define _PAGE_PRESENT_INVALID	(_ULCAST_(1) << _PAGE_PRESENT_INVALID_SHIFT)
+ #define _PAGE_WRITE		(_ULCAST_(1) << _PAGE_WRITE_SHIFT)
+ #define _PAGE_ACCESSED		(_ULCAST_(1) << _PAGE_ACCESSED_SHIFT)
+ #define _PAGE_MODIFIED		(_ULCAST_(1) << _PAGE_MODIFIED_SHIFT)
+diff --git a/arch/loongarch/include/asm/pgtable.h b/arch/loongarch/include/asm/pgtable.h
+index 79d5bfd913e0f..e748fad82f13e 100644
+--- a/arch/loongarch/include/asm/pgtable.h
++++ b/arch/loongarch/include/asm/pgtable.h
+@@ -208,7 +208,7 @@ static inline int pmd_bad(pmd_t pmd)
+ static inline int pmd_present(pmd_t pmd)
+ {
+ 	if (unlikely(pmd_val(pmd) & _PAGE_HUGE))
+-		return !!(pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROTNONE));
++		return !!(pmd_val(pmd) & (_PAGE_PRESENT | _PAGE_PROTNONE | _PAGE_PRESENT_INVALID));
  
-@@ -465,19 +465,19 @@ static const struct dpu_dspp_sub_blks sdm845_dspp_sblk = {
-  * PINGPONG sub blocks config
-  *************************************************************/
- static const struct dpu_pingpong_sub_blks sdm845_pp_sblk_te = {
--	.te2 = {.id = DPU_PINGPONG_TE2, .base = 0x2000, .len = 0x0,
-+	.te2 = {.name = "te2", .id = DPU_PINGPONG_TE2, .base = 0x2000, .len = 0x0,
- 		.version = 0x1},
--	.dither = {.id = DPU_PINGPONG_DITHER, .base = 0x30e0,
-+	.dither = {.name = "dither", .id = DPU_PINGPONG_DITHER, .base = 0x30e0,
- 		.len = 0x20, .version = 0x10000},
- };
+ 	return pmd_val(pmd) != (unsigned long)invalid_pte_table;
+ }
+@@ -525,6 +525,7 @@ static inline pmd_t pmd_modify(pmd_t pmd, pgprot_t newprot)
  
- static const struct dpu_pingpong_sub_blks sdm845_pp_sblk = {
--	.dither = {.id = DPU_PINGPONG_DITHER, .base = 0x30e0,
-+	.dither = {.name = "dither", .id = DPU_PINGPONG_DITHER, .base = 0x30e0,
- 		.len = 0x20, .version = 0x10000},
- };
+ static inline pmd_t pmd_mkinvalid(pmd_t pmd)
+ {
++	pmd_val(pmd) |= _PAGE_PRESENT_INVALID;
+ 	pmd_val(pmd) &= ~(_PAGE_PRESENT | _PAGE_VALID | _PAGE_DIRTY | _PAGE_PROTNONE);
  
- static const struct dpu_pingpong_sub_blks sc7280_pp_sblk = {
--	.dither = {.id = DPU_PINGPONG_DITHER, .base = 0xe0,
-+	.dither = {.name = "dither", .id = DPU_PINGPONG_DITHER, .base = 0xe0,
- 	.len = 0x20, .version = 0x20000},
- };
- 
-@@ -517,13 +517,13 @@ static const struct dpu_pingpong_sub_blks sc7280_pp_sblk = {
-  * DSC sub blocks config
-  *************************************************************/
- static const struct dpu_dsc_sub_blks dsc_sblk_0 = {
--	.enc = {.base = 0x100, .len = 0x100},
--	.ctl = {.base = 0xF00, .len = 0x10},
-+	.enc = {.name = "enc", .base = 0x100, .len = 0x100},
-+	.ctl = {.name = "ctl", .base = 0xF00, .len = 0x10},
- };
- 
- static const struct dpu_dsc_sub_blks dsc_sblk_1 = {
--	.enc = {.base = 0x200, .len = 0x100},
--	.ctl = {.base = 0xF80, .len = 0x10},
-+	.enc = {.name = "enc", .base = 0x200, .len = 0x100},
-+	.ctl = {.name = "ctl", .base = 0xF80, .len = 0x10},
- };
- 
- /*************************************************************
+ 	return pmd;
 -- 
 2.40.1
 
