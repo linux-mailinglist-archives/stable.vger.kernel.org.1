@@ -2,44 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 20DA379B70A
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:19 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B970C79B8F0
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:12 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345436AbjIKVU1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:20:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39822 "EHLO
+        id S1355163AbjIKV5U (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:57:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51440 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240427AbjIKOnz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:55 -0400
+        with ESMTP id S241523AbjIKPKe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9DA6612A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:50 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E307DC433C8;
-        Mon, 11 Sep 2023 14:43:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C6AC8FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1E7D0C433C8;
+        Mon, 11 Sep 2023 15:10:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443430;
-        bh=D0dOpjEPb4p3JAXLuURGnU+tlW2NwvOx6M+tzb4D+u8=;
+        s=korg; t=1694445029;
+        bh=EPdx2iOmTSG9gpyFRoJnSRng+2IBF9j32t6gtFKaLsQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=B3vCTpFWHEQZoAGGjeFjF3BtHbdXLM7L0+F/hcjNxa885lAHg1Px3B9Fb7d8gCka3
-         WBwpCsHgV+2d0gP4uu9o6yhJL0ll92fJ4EB4gzpBFvifWgX1DCOPwhWnuwsQ0aCq8I
-         WyMuiaZRKPpyw+1tN8cD3nnrmAAlBs4yVeke8KIk=
+        b=KOoF97r1RCyrW7dvOhWJy0AbLomf1bm5nDcajsCt/h8U3falUfFjUbZMvZSTDoRTu
+         ZdM/Ne7h5fUo1MD6PS0ZHQ2M5dQwY6bs0Fyh/fXqFqa66nze79NXTh3x0WidRslyQv
+         p+b2hk7GFAxeG6d4JlT5ZWOPTq4sgLGqnK1HWVWk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "Jason-JH.Lin" <jason-jh.lin@mediatek.com>,
-        AngeloGioacchino Del Regno 
-        <angelogioacchino.delregno@collabora.com>,
-        CK Hu <ck.hu@mediatek.com>,
-        Alexandre Mergnat <amergnat@baylibre.com>,
-        Chun-Kuang Hu <chunkuang.hu@kernel.org>,
+        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
+        Ido Schimmel <idosch@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 375/737] drm/mediatek: Add cnt checking for coverity issue
+Subject: [PATCH 6.1 201/600] mlxsw: i2c: Fix chunk size setting in output mailbox buffer
 Date:   Mon, 11 Sep 2023 15:43:54 +0200
-Message-ID: <20230911134701.036609523@linuxfoundation.org>
+Message-ID: <20230911134639.550865297@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -55,59 +52,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason-JH.Lin <jason-jh.lin@mediatek.com>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-[ Upstream commit d761b9450e31e5abd212f0085d424ed32760de5a ]
+[ Upstream commit 146c7c330507c0384bf29d567186632bfe975927 ]
 
-CERT-C Characters and Strings (CERT STR31-C)
-all_drm_priv[cnt] evaluates to an address that could be at negative
-offset of an array.
+The driver reads commands output from the output mailbox. If the size
+of the output mailbox is not a multiple of the transaction /
+block size, then the driver will not issue enough read transactions
+to read the entire output, which can result in driver initialization
+errors.
 
-In mtk_drm_get_all_drm_priv():
-Guarantee that storage for strings has sufficient space for character
-data and the null terminator.
+Fix by determining the number of transactions using DIV_ROUND_UP().
 
-So change cnt to unsigned int and check its max value.
-
-Fixes: 1ef7ed48356c ("drm/mediatek: Modify mediatek-drm for mt8195 multi mmsys support")
-Signed-off-by: Jason-JH.Lin <jason-jh.lin@mediatek.com>
-Reviewed-by: AngeloGioacchino Del Regno <angelogioacchino.delregno@collabora.com>
-Reviewed-by: CK Hu <ck.hu@mediatek.com>
-Reviewed-by: Alexandre Mergnat <amergnat@baylibre.com>
-Link: https://patchwork.kernel.org/project/dri-devel/patch/20230714094908.13087-3-jason-jh.lin@mediatek.com/
-Signed-off-by: Chun-Kuang Hu <chunkuang.hu@kernel.org>
+Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Reviewed-by: Ido Schimmel <idosch@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/mediatek/mtk_drm_drv.c | 5 ++++-
- 1 file changed, 4 insertions(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/i2c.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/mediatek/mtk_drm_drv.c b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-index 6dcb4ba2466c0..fc217e0acd45d 100644
---- a/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-+++ b/drivers/gpu/drm/mediatek/mtk_drm_drv.c
-@@ -354,7 +354,7 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
- 	const struct of_device_id *of_id;
- 	struct device_node *node;
- 	struct device *drm_dev;
--	int cnt = 0;
-+	unsigned int cnt = 0;
- 	int i, j;
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+index f5f5f8dc3d190..26e05f129e35a 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+@@ -444,7 +444,7 @@ mlxsw_i2c_cmd(struct device *dev, u16 opcode, u32 in_mod, size_t in_mbox_size,
+ 	} else {
+ 		/* No input mailbox is case of initialization query command. */
+ 		reg_size = MLXSW_I2C_MAX_DATA_SIZE;
+-		num = reg_size / mlxsw_i2c->block_size;
++		num = DIV_ROUND_UP(reg_size, mlxsw_i2c->block_size);
  
- 	for_each_child_of_node(phandle->parent, node) {
-@@ -375,6 +375,9 @@ static bool mtk_drm_get_all_drm_priv(struct device *dev)
- 		all_drm_priv[cnt] = dev_get_drvdata(drm_dev);
- 		if (all_drm_priv[cnt] && all_drm_priv[cnt]->mtk_drm_bound)
- 			cnt++;
-+
-+		if (cnt == MAX_CRTC)
-+			break;
- 	}
- 
- 	if (drm_priv->data->mmsys_dev_num == cnt) {
+ 		if (mutex_lock_interruptible(&mlxsw_i2c->cmd.lock) < 0) {
+ 			dev_err(&client->dev, "Could not acquire lock");
 -- 
 2.40.1
 
