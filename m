@@ -2,41 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 8EA3F79BA78
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:36 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id AD2D179B7C3
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S242196AbjIKVja (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:39:30 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43848 "EHLO
+        id S1350912AbjIKVmL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:42:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56626 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242060AbjIKPVT (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:19 -0400
+        with ESMTP id S240809AbjIKOy2 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:28 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 78BCFBE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:14 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF520C433C8;
-        Mon, 11 Sep 2023 15:21:13 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B6D37E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 082DBC433C8;
+        Mon, 11 Sep 2023 14:54:23 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445674;
-        bh=PNNCmRNsS5rM1fKdAOOEuTpCfTahaBZ55MTjGKE1jT0=;
+        s=korg; t=1694444064;
+        bh=2tpaTC2rrkLms70UZjWhDwtPf/CyhVa5SjdPH41FBBk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=OVXmC7rfNCT9RFMhqSpMgX6Toq7Ss0dZtRWZmV8HL9Tku3A+R7HJSxmXjs6NAvKOl
-         k5R6hNRvRybyRt4ei2NiVMt/oBfr/aIcRiddTuF0Ot1wh5pmPQaR+0et2CmjkpFSL6
-         QmIbWCbNAB0v76Nbox+8/8gL7EKoJDDn7LI1W2Nc=
+        b=UR9D3MziH5nZ/+Mb2Fpd1sqa/wu8pKYjNM8aQ1XtITit3maBhOH8r/tE4QES7Aeje
+         KSCh02l9pv/Lb7tgxVOpjZgICA/+uelP4u/H6a2cGLd4ntfLdgkSbk+YchdkiiC60E
+         KFOR1jSSXVKb46YHMa8bXfC7syJfCJP+3jNVPwDI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jonathan Cameron <jic23@kernel.org>,
-        Biju Das <biju.das.jz@bp.renesas.com>,
-        Geert Uytterhoeven <geert+renesas@glider.be>,
-        Jonathan Cameron <Jonathan.Cameron@huawei.com>,
+        patches@lists.linux.dev, Maxime Ripard <mripard@kernel.org>,
+        Dmitry Torokhov <dmitry.torokhov@gmail.com>,
+        Rahul Rameshbabu <sergeantsagara@protonmail.com>,
+        Benjamin Tissoires <bentiss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 424/600] iio: accel: adxl313: Fix adxl313_i2c_id[] table
+Subject: [PATCH 6.4 598/737] HID: multitouch: Correct devm device reference for hidinput input_dev name
 Date:   Mon, 11 Sep 2023 15:47:37 +0200
-Message-ID: <20230911134646.178328149@linuxfoundation.org>
+Message-ID: <20230911134707.242692884@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,45 +52,68 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Biju Das <biju.das.jz@bp.renesas.com>
+From: Rahul Rameshbabu <sergeantsagara@protonmail.com>
 
-[ Upstream commit f636554c4cd1c644109cc525900a056495b86cc9 ]
+[ Upstream commit 4794394635293a3e74591351fff469cea7ad15a2 ]
 
-The .driver_data in adxl313_i2c_id[] for adxl312 and adxl314 is
-wrong. Fix this issue by adding corresponding adxl31x_chip_info
-data.
+Reference the HID device rather than the input device for the devm
+allocation of the input_dev name. Referencing the input_dev would lead to a
+use-after-free when the input_dev was unregistered and subsequently fires a
+uevent that depends on the name. At the point of firing the uevent, the
+name would be freed by devres management.
 
-Reported-by: Jonathan Cameron <jic23@kernel.org>
-Closes: https://lore.kernel.org/all/20230722172832.04ad7738@jic23-huawei
-Fixes: a7a1c60bc4c9 ("drivers: iio: accel: adxl312 and adxl314 support")
-Signed-off-by: Biju Das <biju.das.jz@bp.renesas.com>
-Reviewed-by: Geert Uytterhoeven <geert+renesas@glider.be>
-Link: https://lore.kernel.org/r/20230725171624.331283-2-biju.das.jz@bp.renesas.com
-Signed-off-by: Jonathan Cameron <Jonathan.Cameron@huawei.com>
+Use devm_kasprintf to simplify the logic for allocating memory and
+formatting the input_dev name string.
+
+Reported-by: Maxime Ripard <mripard@kernel.org>
+Closes: https://lore.kernel.org/linux-input/ZOZIZCND+L0P1wJc@penguin/T/#m443f3dce92520f74b6cf6ffa8653f9c92643d4ae
+Fixes: c08d46aa805b ("HID: multitouch: devm conversion")
+Suggested-by: Maxime Ripard <mripard@kernel.org>
+Suggested-by: Dmitry Torokhov <dmitry.torokhov@gmail.com>
+Signed-off-by: Rahul Rameshbabu <sergeantsagara@protonmail.com>
+Reviewed-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20230824061308.222021-3-sergeantsagara@protonmail.com
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iio/accel/adxl313_i2c.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/hid/hid-multitouch.c | 13 +++----------
+ 1 file changed, 3 insertions(+), 10 deletions(-)
 
-diff --git a/drivers/iio/accel/adxl313_i2c.c b/drivers/iio/accel/adxl313_i2c.c
-index 99cc7fc294882..68785bd3ef2f0 100644
---- a/drivers/iio/accel/adxl313_i2c.c
-+++ b/drivers/iio/accel/adxl313_i2c.c
-@@ -40,8 +40,8 @@ static const struct regmap_config adxl31x_i2c_regmap_config[] = {
+diff --git a/drivers/hid/hid-multitouch.c b/drivers/hid/hid-multitouch.c
+index e31be0cb8b850..521b2ffb42449 100644
+--- a/drivers/hid/hid-multitouch.c
++++ b/drivers/hid/hid-multitouch.c
+@@ -1594,7 +1594,6 @@ static void mt_post_parse(struct mt_device *td, struct mt_application *app)
+ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ {
+ 	struct mt_device *td = hid_get_drvdata(hdev);
+-	char *name;
+ 	const char *suffix = NULL;
+ 	struct mt_report_data *rdata;
+ 	struct mt_application *mt_application = NULL;
+@@ -1645,15 +1644,9 @@ static int mt_input_configured(struct hid_device *hdev, struct hid_input *hi)
+ 		break;
+ 	}
  
- static const struct i2c_device_id adxl313_i2c_id[] = {
- 	{ .name = "adxl312", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
--	{ .name = "adxl313", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
--	{ .name = "adxl314", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL312] },
-+	{ .name = "adxl313", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL313] },
-+	{ .name = "adxl314", .driver_data = (kernel_ulong_t)&adxl31x_chip_info[ADXL314] },
- 	{ }
- };
+-	if (suffix) {
+-		name = devm_kzalloc(&hi->input->dev,
+-				    strlen(hdev->name) + strlen(suffix) + 2,
+-				    GFP_KERNEL);
+-		if (name) {
+-			sprintf(name, "%s %s", hdev->name, suffix);
+-			hi->input->name = name;
+-		}
+-	}
++	if (suffix)
++		hi->input->name = devm_kasprintf(&hdev->dev, GFP_KERNEL,
++						 "%s %s", hdev->name, suffix);
  
+ 	return 0;
+ }
 -- 
 2.40.1
 
