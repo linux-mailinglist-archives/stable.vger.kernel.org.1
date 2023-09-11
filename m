@@ -2,41 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BDB5779B00D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D9B2579AE67
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:44:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344078AbjIKVNP (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:13:15 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38328 "EHLO
+        id S1345078AbjIKVTW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34870 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238289AbjIKNxY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:24 -0400
+        with ESMTP id S238299AbjIKNxf (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2B474CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5BAFFC433C7;
-        Mon, 11 Sep 2023 13:53:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 51884CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:31 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9412FC433C7;
+        Mon, 11 Sep 2023 13:53:30 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440399;
-        bh=TRkChM4GBJS8MNRVFJx9+wk9vQV6ADJLp9ngS6KSwoQ=;
+        s=korg; t=1694440411;
+        bh=89CA5l0AobDrkj6Qnrt75EtKU0Nhf8QAgXtGPcbaD9U=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=BorzZCn9U872pb3yBqDnkwIVRNIrPUZbQifLkLmxgd8A75nTKd9WBEl/Pxp1eZs4o
-         Ecv/6hDDCpUC/HHFgyUxVgrGKo01ZRw4RYJ1Gc6JIcyFZxTquGHgcLNiVtVbeMaQpx
-         ebs1bs/sJUXl4cOcp/lRUcQfFCoO2kAx4/AIHns4=
+        b=IEKDYsl1zzRDJfzwQyoesqqkMg1cmTql6CeQFchLwKjc411RK2sQqYwOafGsuqJMq
+         BhVNLVBJ8EaH1hflekZXl0/CxszKGCQKLVroXWWom3muvRx0qGfMy1QD9Yaj+SSgkg
+         7TQMq2ibTrD0RABXaCIM8h6Wvw9MOYDo8EiFVyf8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Russell King <linux@armlinux.org.uk>,
-        Arnd Bergmann <arnd@kernel.org>,
-        Lecopzer Chen <lecopzer.chen@mediatek.com>,
-        Oleg Nesterov <oleg@redhat.com>,
-        linux-arm-kernel@lists.infradead.org,
-        Arnd Bergmann <arnd@arndb.de>,
-        Kees Cook <keescook@chromium.org>,
+        patches@lists.linux.dev,
+        Charlemagne Lasse <charlemagnelasse@gmail.com>,
+        Uros Bizjak <ubizjak@gmail.com>,
+        "Peter Zijlstra (Intel)" <peterz@infradead.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 021/739] ARM: ptrace: Restore syscall restart tracing
-Date:   Mon, 11 Sep 2023 15:37:00 +0200
-Message-ID: <20230911134651.636583372@linuxfoundation.org>
+Subject: [PATCH 6.5 025/739] locking/arch: Avoid variable shadowing in local_try_cmpxchg()
+Date:   Mon, 11 Sep 2023 15:37:04 +0200
+Message-ID: <20230911134651.762159183@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -59,43 +56,74 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kees Cook <keescook@chromium.org>
+From: Uros Bizjak <ubizjak@gmail.com>
 
-[ Upstream commit cf007647475b5090819c5fe8da771073145c7334 ]
+[ Upstream commit d6b45484c130f4095313ae3edeb4aae662c12fb1 ]
 
-Since commit 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store
-thread_info->abi_syscall"), the seccomp selftests "syscall_restart" has
-been broken. This was caused by the restart syscall not being stored to
-"abi_syscall" during restart setup before branching to the "local_restart"
-label. Tracers would see the wrong syscall, and scno would get overwritten
-while returning from the TIF_WORK path. Add the missing store.
+Several architectures define arch_try_local_cmpxchg macro using
+internal temporary variables named ___old, __old or _old. Remove
+temporary varible in local_try_cmpxchg to avoid variable shadowing.
 
-Cc: Russell King <linux@armlinux.org.uk>
-Cc: Arnd Bergmann <arnd@kernel.org>
-Cc: Lecopzer Chen <lecopzer.chen@mediatek.com>
-Cc: Oleg Nesterov <oleg@redhat.com>
-Cc: linux-arm-kernel@lists.infradead.org
-Fixes: 4e57a4ddf6b0 ("ARM: 9107/1: syscall: always store thread_info->abi_syscall")
-Reviewed-by: Arnd Bergmann <arnd@arndb.de>
-Link: https://lore.kernel.org/r/20230810195422.2304827-1-keescook@chromium.org
-Signed-off-by: Kees Cook <keescook@chromium.org>
+No functional change intended.
+
+Fixes: d994f2c8e241 ("locking/arch: Wire up local_try_cmpxchg()")
+Closes: https://lore.kernel.org/lkml/CAFGhKbyxtuk=LoW-E3yLXgcmR93m+Dfo5-u9oQA_YC5Fcy_t9g@mail.gmail.com/
+Reported-by: Charlemagne Lasse <charlemagnelasse@gmail.com>
+Signed-off-by: Uros Bizjak <ubizjak@gmail.com>
+Signed-off-by: Peter Zijlstra (Intel) <peterz@infradead.org>
+Link: https://lkml.kernel.org/r/20230708090048.63046-1-ubizjak@gmail.com
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/kernel/entry-common.S | 1 +
- 1 file changed, 1 insertion(+)
+ arch/loongarch/include/asm/local.h | 4 ++--
+ arch/mips/include/asm/local.h      | 4 ++--
+ arch/x86/include/asm/local.h       | 4 ++--
+ 3 files changed, 6 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/kernel/entry-common.S b/arch/arm/kernel/entry-common.S
-index bcc4c9ec3aa4e..5c31e9de7a602 100644
---- a/arch/arm/kernel/entry-common.S
-+++ b/arch/arm/kernel/entry-common.S
-@@ -90,6 +90,7 @@ slow_work_pending:
- 	cmp	r0, #0
- 	beq	no_work_pending
- 	movlt	scno, #(__NR_restart_syscall - __NR_SYSCALL_BASE)
-+	str	scno, [tsk, #TI_ABI_SYSCALL]	@ make sure tracers see update
- 	ldmia	sp, {r0 - r6}			@ have to reload r0 - r6
- 	b	local_restart			@ ... and off we go
- ENDPROC(ret_fast_syscall)
+diff --git a/arch/loongarch/include/asm/local.h b/arch/loongarch/include/asm/local.h
+index 83e995b30e472..c49675852bdcd 100644
+--- a/arch/loongarch/include/asm/local.h
++++ b/arch/loongarch/include/asm/local.h
+@@ -63,8 +63,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
+ 
+ static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
+ {
+-	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
+-	return try_cmpxchg_local(&l->a.counter, __old, new);
++	return try_cmpxchg_local(&l->a.counter,
++				 (typeof(l->a.counter) *) old, new);
+ }
+ 
+ #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
+diff --git a/arch/mips/include/asm/local.h b/arch/mips/include/asm/local.h
+index 5daf6fe8e3e9a..e6ae3df0349d2 100644
+--- a/arch/mips/include/asm/local.h
++++ b/arch/mips/include/asm/local.h
+@@ -101,8 +101,8 @@ static __inline__ long local_cmpxchg(local_t *l, long old, long new)
+ 
+ static __inline__ bool local_try_cmpxchg(local_t *l, long *old, long new)
+ {
+-	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
+-	return try_cmpxchg_local(&l->a.counter, __old, new);
++	return try_cmpxchg_local(&l->a.counter,
++				 (typeof(l->a.counter) *) old, new);
+ }
+ 
+ #define local_xchg(l, n) (atomic_long_xchg((&(l)->a), (n)))
+diff --git a/arch/x86/include/asm/local.h b/arch/x86/include/asm/local.h
+index 56d4ef604b919..635132a127782 100644
+--- a/arch/x86/include/asm/local.h
++++ b/arch/x86/include/asm/local.h
+@@ -127,8 +127,8 @@ static inline long local_cmpxchg(local_t *l, long old, long new)
+ 
+ static inline bool local_try_cmpxchg(local_t *l, long *old, long new)
+ {
+-	typeof(l->a.counter) *__old = (typeof(l->a.counter) *) old;
+-	return try_cmpxchg_local(&l->a.counter, __old, new);
++	return try_cmpxchg_local(&l->a.counter,
++				 (typeof(l->a.counter) *) old, new);
+ }
+ 
+ /* Always has a lock prefix */
 -- 
 2.40.1
 
