@@ -2,39 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B0A5479B5D8
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CF4EE79B32B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348992AbjIKVcG (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:06 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55896 "EHLO
+        id S1345571AbjIKVVU (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:21:20 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:40020 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239388AbjIKOT1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:27 -0400
+        with ESMTP id S241980AbjIKPTh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:19:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 84187DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CCFACC433C8;
-        Mon, 11 Sep 2023 14:19:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2812CFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:19:33 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D461C433C8;
+        Mon, 11 Sep 2023 15:19:32 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441963;
-        bh=QIMgZ+du78rq4w2a6h8JBEbmxdMsNUhOk/Eje0vsHaA=;
+        s=korg; t=1694445572;
+        bh=2/2zZFU0tyS1C57lVMxdUsA4MtRGELUdOQwhMIVJwhU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=2lq20Q8hkDXqk5IQ5D0nzGolefOgWw2FqvR+T04PlFsEsVOkNxky9L1oVtovEcmmG
-         6J/8k3jIJRtESMSOxnqsXs9o2ABtihqepUZb2qwT+AlFhZU2miuTMWLDXpaZWzLpJP
-         yqEOwdtXxv8k9NqdkUFKjXndHsnhOORLkjeb4MSM=
+        b=2uulBWAUtdgNXtFhZsd/RnZ0r/IcPPWtoDyVIaL1KOp9jsws6aXf2bIr0Z/ipyD5i
+         AVb26a2rWgtTakDcgs+85GAnPuKQlWnhX0fVuCBJuEDM4KNb6WlTa10ppn98KGgyeK
+         Xxn6mctK+ghcHR7FrzOjarBDewm9/OwJljdamEeI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yang <zhengyang@rock-chips.com>,
-        Jonas Karlman <jonas@kwiboo.se>, Vinod Koul <vkoul@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 598/739] phy/rockchip: inno-hdmi: round fractal pixclock in rk3328 recalc_rate
+        patches@lists.linux.dev,
+        Konstantin Meskhidze <konstantin.meskhidze@huawei.com>,
+        Jeff Moyer <jmoyer@redhat.com>,
+        Dave Jiang <dave.jiang@intel.com>,
+        Sasha Levin <sashal@kernel.org>,
+        Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Subject: [PATCH 6.1 364/600] nvdimm: Fix dereference after free in register_nvdimm_pmu()
 Date:   Mon, 11 Sep 2023 15:46:37 +0200
-Message-ID: <20230911134707.804671603@linuxfoundation.org>
+Message-ID: <20230911134644.427076209@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +53,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zheng Yang <zhengyang@rock-chips.com>
+From: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
 
-[ Upstream commit d5ef343c1d62bc4c4c2c393af654a41cb34b449f ]
+[ Upstream commit 08ca6906a4b7e48f8e93b7c1f49a742a415be6d5 ]
 
-inno_hdmi_phy_rk3328_clk_recalc_rate() is returning a rate not found
-in the pre pll config table when the fractal divider is used.
-This can prevent proper power_on because a tmdsclock for the new rate
-is not found in the pre pll config table.
+'nd_pmu->pmu.attr_groups' is dereferenced in function
+'nvdimm_pmu_free_hotplug_memory' call after it has been freed. Because in
+function 'nvdimm_pmu_free_hotplug_memory' memory pointed by the fields of
+'nd_pmu->pmu.attr_groups' is deallocated it is necessary to call 'kfree'
+after 'nvdimm_pmu_free_hotplug_memory'.
 
-Fix this by saving and returning a rounded pixel rate that exist
-in the pre pll config table.
-
-Fixes: 53706a116863 ("phy: add Rockchip Innosilicon hdmi phy")
-Signed-off-by: Zheng Yang <zhengyang@rock-chips.com>
-Signed-off-by: Jonas Karlman <jonas@kwiboo.se>
-Link: https://lore.kernel.org/r/20230615171005.2251032-3-jonas@kwiboo.se
-Signed-off-by: Vinod Koul <vkoul@kernel.org>
+Fixes: 0fab1ba6ad6b ("drivers/nvdimm: Add perf interface to expose nvdimm performance stats")
+Co-developed-by: Ivanov Mikhail <ivanov.mikhail1@huawei-partners.com>
+Signed-off-by: Konstantin Meskhidze <konstantin.meskhidze@huawei.com>
+Reviewed-by: Jeff Moyer <jmoyer@redhat.com>
+Link: https://lore.kernel.org/r/20230817114103.754977-1-konstantin.meskhidze@huawei.com
+Signed-off-by: Dave Jiang <dave.jiang@intel.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/phy/rockchip/phy-rockchip-inno-hdmi.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/nvdimm/nd_perf.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-index f348e5347d817..7d412f771f6c3 100644
---- a/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-+++ b/drivers/phy/rockchip/phy-rockchip-inno-hdmi.c
-@@ -745,10 +745,12 @@ unsigned long inno_hdmi_phy_rk3328_clk_recalc_rate(struct clk_hw *hw,
- 		do_div(vco, (nd * (no_a == 1 ? no_b : no_a) * no_d * 2));
+diff --git a/drivers/nvdimm/nd_perf.c b/drivers/nvdimm/nd_perf.c
+index 14881c4e03e6b..2b6dc80d8fb5b 100644
+--- a/drivers/nvdimm/nd_perf.c
++++ b/drivers/nvdimm/nd_perf.c
+@@ -308,8 +308,8 @@ int register_nvdimm_pmu(struct nvdimm_pmu *nd_pmu, struct platform_device *pdev)
+ 
+ 	rc = perf_pmu_register(&nd_pmu->pmu, nd_pmu->pmu.name, -1);
+ 	if (rc) {
+-		kfree(nd_pmu->pmu.attr_groups);
+ 		nvdimm_pmu_free_hotplug_memory(nd_pmu);
++		kfree(nd_pmu->pmu.attr_groups);
+ 		return rc;
  	}
  
--	inno->pixclock = vco;
--	dev_dbg(inno->dev, "%s rate %lu\n", __func__, inno->pixclock);
-+	inno->pixclock = DIV_ROUND_CLOSEST((unsigned long)vco, 1000) * 1000;
- 
--	return vco;
-+	dev_dbg(inno->dev, "%s rate %lu vco %llu\n",
-+		__func__, inno->pixclock, vco);
-+
-+	return inno->pixclock;
- }
- 
- static long inno_hdmi_phy_rk3328_clk_round_rate(struct clk_hw *hw,
 -- 
 2.40.1
 
