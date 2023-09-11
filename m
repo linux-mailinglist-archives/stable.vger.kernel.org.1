@@ -2,48 +2,47 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6DC3F79B8E6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:09 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9359079C0CB
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:59 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379608AbjIKWpE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37696 "EHLO
+        id S1377981AbjIKW3n (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:29:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34660 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241744AbjIKPN2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:28 -0400
+        with ESMTP id S240541AbjIKOq4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 80444FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:24 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id CB0B9C433C7;
-        Mon, 11 Sep 2023 15:13:23 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1C9E0106
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6492CC433C8;
+        Mon, 11 Sep 2023 14:46:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445204;
-        bh=eFKKE67VGLkVvTWJUzb0woVI9Qis7y2DecCdja1Nm88=;
+        s=korg; t=1694443610;
+        bh=kGqDqgKJG/FhWzbCv5A5uMEuZ1W+FVIZs6xJBdvyRBg=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Rw59T4R6xfLY+CHjKkqav7RSYh3JAa2IEnt/82YeLQ8jb9AaCd9DldcqOuXhK+wEw
-         OtgqAq66EYSrzyh0q+ZD/vWztON/JaPyjyfICso2HSRb73kczgRuPmwQ7mgKRMqysK
-         0Qzi3vJQbYtU/CMyendeGyeokuEaH0ekRnFuSUbc=
+        b=A0aXYLorVNChkAeJNFvw59ZEjA2ZTQiCsEMJdkzpHBj1FqBUL+uMT0xAIt2BwlGka
+         9oVG7gMXG/9Ca0JmY9+pntKsJD+W+UUQLvdBm/lF5KnEkA8KZ4p2nXzaoo4kXcNO31
+         jfxegcJlVypzgIwQh42kIzJ29F93BrjBluxV9naw=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        "=?UTF-8?q?N=C3=ADcolas=20F . =20R . =20A . =20Prado?=" 
-        <nfraprado@collabora.com>, Chen-Yu Tsai <wenst@chromium.org>,
-        Robert Foss <rfoss@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 265/600] drm/bridge: anx7625: Use common macros for HDCP capabilities
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Vinod Koul <vkoul@kernel.org>,
+        Bjorn Andersson <andersson@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 439/737] clk: qcom: gcc-sm8450: Use floor ops for SDCC RCGs
 Date:   Mon, 11 Sep 2023 15:44:58 +0200
-Message-ID: <20230911134641.431302180@linuxfoundation.org>
+Message-ID: <20230911134702.860331374@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
-Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-2.1 required=5.0 tests=BAD_ENC_HEADER,BAYES_00,
-        DKIMWL_WL_HIGH,DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
+X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
         RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
@@ -52,46 +51,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Chen-Yu Tsai <wenst@chromium.org>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 41639b3a8b0f1f194dfe0577d99db70613f78626 ]
+[ Upstream commit a27ac3806b0a0e6954fb5967223b8635242e5b8f ]
 
-The DRM DP code has macros for the DP HDCP capabilities. Use them in the
-anx7625 driver instead of raw numbers.
+Use the floor ops to prevent warnings like this at suspend exit and boot:
 
-Fixes: cd1637c7e480 ("drm/bridge: anx7625: add HDCP support")
-Suggested-by: Nícolas F. R. A. Prado <nfraprado@collabora.com>
-Signed-off-by: Chen-Yu Tsai <wenst@chromium.org>
-Reviewed-by: Robert Foss <rfoss@kernel.org>
-Signed-off-by: Robert Foss <rfoss@kernel.org>
-Link: https://patchwork.freedesktop.org/patch/msgid/20230710091203.1874317-1-wenst@chromium.org
+mmc0: Card appears overclocked; req 800000 Hz, actual 25000000 Hz
+
+Fixes: db0c944ee92b ("clk: qcom: Add clock driver for SM8450")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Reviewed-by: Vinod Koul <vkoul@kernel.org>
+Link: https://lore.kernel.org/r/20230811-topic-8450_clk-v1-1-88031478d548@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/bridge/analogix/anx7625.c | 4 ++--
+ drivers/clk/qcom/gcc-sm8450.c | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/gpu/drm/bridge/analogix/anx7625.c b/drivers/gpu/drm/bridge/analogix/anx7625.c
-index 36ec9dedadfe1..cf86cc05b7fca 100644
---- a/drivers/gpu/drm/bridge/analogix/anx7625.c
-+++ b/drivers/gpu/drm/bridge/analogix/anx7625.c
-@@ -874,11 +874,11 @@ static int anx7625_hdcp_enable(struct anx7625_data *ctx)
- 	}
+diff --git a/drivers/clk/qcom/gcc-sm8450.c b/drivers/clk/qcom/gcc-sm8450.c
+index 84764cc3db4ff..1d912f8a7243c 100644
+--- a/drivers/clk/qcom/gcc-sm8450.c
++++ b/drivers/clk/qcom/gcc-sm8450.c
+@@ -904,7 +904,7 @@ static struct clk_rcg2 gcc_sdcc2_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_7,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_7),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
  
- 	/* Read downstream capability */
--	ret = anx7625_aux_trans(ctx, DP_AUX_NATIVE_READ, 0x68028, 1, &bcap);
-+	ret = anx7625_aux_trans(ctx, DP_AUX_NATIVE_READ, DP_AUX_HDCP_BCAPS, 1, &bcap);
- 	if (ret < 0)
- 		return ret;
+@@ -926,7 +926,7 @@ static struct clk_rcg2 gcc_sdcc4_apps_clk_src = {
+ 		.parent_data = gcc_parent_data_0,
+ 		.num_parents = ARRAY_SIZE(gcc_parent_data_0),
+ 		.flags = CLK_SET_RATE_PARENT,
+-		.ops = &clk_rcg2_ops,
++		.ops = &clk_rcg2_floor_ops,
+ 	},
+ };
  
--	if (!(bcap & 0x01)) {
-+	if (!(bcap & DP_BCAPS_HDCP_CAPABLE)) {
- 		pr_warn("downstream not support HDCP 1.4, cap(%x).\n", bcap);
- 		return 0;
- 	}
 -- 
 2.40.1
 
