@@ -2,106 +2,102 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 40C5C79B703
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:16 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 06C5579BF50
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:51 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244489AbjIKWZW (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:25:22 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:55692 "EHLO
+        id S1344424AbjIKVOF (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:05 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44602 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235638AbjIKJOf (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:14:35 -0400
-Received: from madras.collabora.co.uk (madras.collabora.co.uk [IPv6:2a00:1098:0:82:1000:25:2eeb:e5ab])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2224FCCD;
-        Mon, 11 Sep 2023 02:14:31 -0700 (PDT)
-Received: from localhost.localdomain (unknown [59.103.218.185])
-        (using TLSv1.3 with cipher TLS_AES_256_GCM_SHA384 (256/256 bits)
-         key-exchange X25519 server-signature RSA-PSS (4096 bits) server-digest SHA256)
-        (No client certificate requested)
-        (Authenticated sender: usama.anjum)
-        by madras.collabora.co.uk (Postfix) with ESMTPSA id D6FB06607186;
-        Mon, 11 Sep 2023 10:14:25 +0100 (BST)
-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=collabora.com;
-        s=mail; t=1694423669;
-        bh=9wEA6kj/8qL09liKb87plaPguZEAHq2kFG8kWKL8ugk=;
-        h=From:To:Cc:Subject:Date:From;
-        b=onT3hW2nuSZ+Llw31Ags4TTIrqfFFb7HPREmgpc985AZJ93ChdJGtJX38PPv9X4Qt
-         On1ZuDtOGbUmb9NUIRiSm2GSzUHC/M6hndGMERADezsogGx9Hi+tyD0/KR8//7yZkO
-         SR7YxRL4a+VT3UnkXRNfL94VGhkuslODCcep473JNopjjSN0jocx96CjhEWe3ToSmv
-         2ikbpjxHZK5rnEyHLqmNolnh1JKWgbqGxoPPCqTEZ0cinpUt5rJuSXQOmr6Yr0Omhm
-         6WhsvVEffoTRMR6xrC7/2fOH9IhCDxEqVp9MsJos7mfpBcIBiadJisGCQ0Fl0MORBF
-         a67rTdugS8dlA==
-From:   Muhammad Usama Anjum <usama.anjum@collabora.com>
-To:     "Theodore Ts'o" <tytso@mit.edu>,
-        Andreas Dilger <adilger.kernel@dilger.ca>,
-        Allison Henderson <achender@linux.vnet.ibm.com>
-Cc:     Muhammad Usama Anjum <usama.anjum@collabora.com>,
-        kernel@collabora.com, stable@vger.kernel.org,
-        syzbot+6e5f2db05775244c73b7@syzkaller.appspotmail.com,
-        linux-ext4@vger.kernel.org, linux-kernel@vger.kernel.org
-Subject: [RFC] ext4: don't' remove already removed extent
-Date:   Mon, 11 Sep 2023 14:13:58 +0500
-Message-Id: <20230911091358.3528530-1-usama.anjum@collabora.com>
-X-Mailer: git-send-email 2.40.1
+        with ESMTP id S235675AbjIKJTV (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:19:21 -0400
+Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 91764CD3;
+        Mon, 11 Sep 2023 02:19:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2A538C433C7;
+        Mon, 11 Sep 2023 09:19:16 +0000 (UTC)
+DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=kernel.org;
+        s=k20201202; t=1694423956;
+        bh=CMfUhNrtWuDI24j8Rms6Yate8XX09AcwZIWD3r2Z/zQ=;
+        h=Date:From:To:Cc:Subject:References:In-Reply-To:From;
+        b=QmoFmUhxt/yiEd8G4jeOoUDXygJumzb975APomu67gdlwxo5cS2WCXKyVSTrBqa/M
+         NR4IkGbrcCIzRa5UWolX8IyFd5w/w+wzMiEFpXCRf/nP6lLHaHpfmnD4josve/7vFm
+         MYUzhzVJaHdlkUeAiGNmJNunEe9UeIf/Fxt3k/MWPuMSmB8Mi/9FvNpBezFQhKKjf/
+         QotFPklwBoxQ2wGiLd/AhmauC3KX10AJ6ZJRYfYUIugPeITN9qdKwd5ZCj2u1d3W9y
+         6ciI1UHwEy6LiLKoT/bNyVPb/lpwXHo77YK1VVQUV9kZ65C5/QCx7d1+U1L2BkTJGJ
+         8nC3vpdKXpiBw==
+Received: from johan by xi.lan with local (Exim 4.96)
+        (envelope-from <johan@kernel.org>)
+        id 1qfd4b-00005f-0p;
+        Mon, 11 Sep 2023 11:19:13 +0200
+Date:   Mon, 11 Sep 2023 11:19:13 +0200
+From:   Johan Hovold <johan@kernel.org>
+To:     Sasha Levin <sashal@kernel.org>
+Cc:     linux-kernel@vger.kernel.org, stable@vger.kernel.org,
+        Dan Drown <dan-netdev@drown.org>,
+        Oliver Neukum <oneukum@suse.com>,
+        Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
+        linux-usb@vger.kernel.org
+Subject: Re: [PATCH AUTOSEL 6.4 24/25] usb: cdc-acm: move ldisc dcd
+ notification outside of acm's read lock
+Message-ID: <ZP7bkRc-1U8-M6X1@hovoldconsulting.com>
+References: <20230909003715.3579761-1-sashal@kernel.org>
+ <20230909003715.3579761-24-sashal@kernel.org>
 MIME-Version: 1.0
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-1.1 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,HEXHASH_WORD,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=no
-        autolearn_force=no version=3.4.6
+Content-Type: text/plain; charset=us-ascii
+Content-Disposition: inline
+In-Reply-To: <20230909003715.3579761-24-sashal@kernel.org>
+X-Spam-Status: No, score=-4.4 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
+        DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,RCVD_IN_DNSWL_MED,
+        SPF_HELO_NONE,SPF_PASS autolearn=ham autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
 Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Syzbot has hit the following bug on current and all older kernels:
-BUG: KASAN: out-of-bounds in ext4_ext_rm_leaf fs/ext4/extents.c:2736 [inline]
-BUG: KASAN: out-of-bounds in ext4_ext_remove_space+0x2482/0x4d90 fs/ext4/extents.c:2958
-Read of size 18446744073709551508 at addr ffff888073aea078 by task syz-executor420/6443
+On Fri, Sep 08, 2023 at 08:37:12PM -0400, Sasha Levin wrote:
+> From: Dan Drown <dan-netdev@drown.org>
+> 
+> [ Upstream commit f72ae60881ff685004d7de7152517607fcd9968f ]
+> 
+> dcd_change notification call moved outside of the acm->read_lock
+> to protect any future tty ldisc that calls wait_serial_change()
+> 
+> Signed-off-by: Dan Drown <dan-netdev@drown.org>
+> Acked-by: Oliver Neukum <oneukum@suse.com>
+> Link: https://lore.kernel.org/r/ZN1zV/zjPgpGlHXo@vps3.drown.org
+> Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+> Signed-off-by: Sasha Levin <sashal@kernel.org>
+> ---
+>  drivers/usb/class/cdc-acm.c | 10 ++++++++++
+>  1 file changed, 10 insertions(+)
+> 
+> diff --git a/drivers/usb/class/cdc-acm.c b/drivers/usb/class/cdc-acm.c
+> index 11da5fb284d0a..ca51230f44409 100644
+> --- a/drivers/usb/class/cdc-acm.c
+> +++ b/drivers/usb/class/cdc-acm.c
+> @@ -318,6 +318,16 @@ static void acm_process_notification(struct acm *acm, unsigned char *buf)
+>  		}
+>  
+>  		difference = acm->ctrlin ^ newctrl;
+> +
+> +		if ((difference & USB_CDC_SERIAL_STATE_DCD) && acm->port.tty) {
+> +			struct tty_ldisc *ld = tty_ldisc_ref(acm->port.tty);
+> +			if (ld) {
+> +				if (ld->ops->dcd_change)
+> +					ld->ops->dcd_change(acm->port.tty, newctrl & USB_CDC_SERIAL_STATE_DCD);
+> +				tty_ldisc_deref(ld);
+> +			}
+> +		}
+> +
+>  		spin_lock_irqsave(&acm->read_lock, flags);
+>  		acm->ctrlin = newctrl;
+>  		acm->oldcount = acm->iocount;
 
-On investigation, I've found that eh->eh_entries is zero, ex is
-referring to last entry and EXT_LAST_EXTENT(eh) is referring to first.
-Hence EXT_LAST_EXTENT(eh) - ex becomes negative and causes the wrong
-buffer read.
+This is a fix for a commit in 6.6-rc1 (3b563b901eef ("usb: cdc-acm: add
+PPS support")) so a backport of it makes no sense.
 
-element: FFFF8882F8F0D06C       <----- ex
-element: FFFF8882F8F0D060
-element: FFFF8882F8F0D054
-element: FFFF8882F8F0D048
-element: FFFF8882F8F0D03C
-element: FFFF8882F8F0D030
-element: FFFF8882F8F0D024
-element: FFFF8882F8F0D018
-element: FFFF8882F8F0D00C	<------  EXT_FIRST_EXTENT(eh)
-header:  FFFF8882F8F0D000	<------  EXT_LAST_EXTENT(eh) and eh
+Please drop.
 
-Cc: stable@vger.kernel.org
-Reported-by: syzbot+6e5f2db05775244c73b7@syzkaller.appspotmail.com
-Closes: https://groups.google.com/g/syzkaller-bugs/c/G6zS-LKgDW0/m/63MgF6V7BAAJ
-Fixes: d583fb87a3ff ("ext4: punch out extents")
-Signed-off-by: Muhammad Usama Anjum <usama.anjum@collabora.com>
----
-This patch is only fixing the local issue. There may be bigger bug. Why
-is ex set to last entry if the eh->eh_entries is 0. If any ext4
-developer want to look at the bug, please don't hesitate.
----
- fs/ext4/extents.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
-
-diff --git a/fs/ext4/extents.c b/fs/ext4/extents.c
-index e4115d338f101..7b7779b4cb87f 100644
---- a/fs/ext4/extents.c
-+++ b/fs/ext4/extents.c
-@@ -2726,7 +2726,7 @@ ext4_ext_rm_leaf(handle_t *handle, struct inode *inode,
- 		 * If the extent was completely released,
- 		 * we need to remove it from the leaf
- 		 */
--		if (num == 0) {
-+		if (num == 0 && eh->eh_entries) {
- 			if (end != EXT_MAX_BLOCKS - 1) {
- 				/*
- 				 * For hole punching, we need to scoot all the
--- 
-2.40.1
-
+Johan
