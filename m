@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2E26079AE35
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:42:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B731279B0FC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:46 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237937AbjIKUyN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:54:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36004 "EHLO
+        id S240567AbjIKWZI (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:25:08 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42758 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241935AbjIKPSQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:18:16 -0400
+        with ESMTP id S240700AbjIKOvZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:51:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 560DFFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:18:12 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9CEFAC433C7;
-        Mon, 11 Sep 2023 15:18:11 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 90426118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:51:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D7124C433C8;
+        Mon, 11 Sep 2023 14:51:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445492;
-        bh=LF5WJOwWVQjvGKAJxW4cL9Ty+GWVB4T4zLBXZ8lgwWo=;
+        s=korg; t=1694443881;
+        bh=gKo/ltqocFOaLEWC0v62KhytptoGW2xNrGOP924SM90=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Cz0MvlaJoTtZjgAYsWvUCjn98OvRrvxlR1VC6GC8ds9bZfUlozDpWiTfmKh+HMiet
-         EyaCQqz6ROF839bb7w3I/hA700g0A5Xq0ypuBIvqz1J4pwa6bX/uQDLRfH+sPlor6I
-         LUlOkUtOmce2bpFaTqboo3LeOJH62EzG8KbVnuA0=
+        b=V1xEqnrSzGDx8DWd82PW3G504ZxCZTYHHJrtgFV/2ryBYudMu4WYrq+KEmMbrJjQD
+         FoFIrac2MAvXGCJbpF0HxooMWlCbSHPmviB+qQmqNn96MWzPaoju+FSrhwoAKpfm3A
+         cWV9/VByDi7Mvbf37wdMqwgdOF/WePFjFN5Ok3Ro=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stephen Boyd <sboyd@kernel.org>,
-        Marco Felsch <m.felsch@pengutronix.de>,
-        Abel Vesa <abel.vesa@linaro.org>,
+        patches@lists.linux.dev, Arnd Bergmann <arnd@arndb.de>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Chanwoo Choi <cw00.choi@samsung.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 359/600] clk: imx8mp: fix sai4 clock
-Date:   Mon, 11 Sep 2023 15:46:32 +0200
-Message-ID: <20230911134644.277282302@linuxfoundation.org>
+Subject: [PATCH 6.4 534/737] extcon: cht_wc: add POWER_SUPPLY dependency
+Date:   Mon, 11 Sep 2023 15:46:33 +0200
+Message-ID: <20230911134705.486479393@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,51 +51,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Marco Felsch <m.felsch@pengutronix.de>
+From: Arnd Bergmann <arnd@arndb.de>
 
-[ Upstream commit c30f600f1f41dcf5ef0fb02e9a201f9b2e8f31bd ]
+[ Upstream commit d20a3a8a32e3fa564ff25da860c5fc1a97642dfe ]
 
-The reference manual don't mention a SAI4 hardware block. This would be
-clock slice 78 which is skipped (TRM, page 237). Remove any reference to
-this clock to align the driver with the reality.
+The driver fails to link when CONFIG_POWER_SUPPLY is disabled:
 
-Fixes: 9c140d992676 ("clk: imx: Add support for i.MX8MP clock driver")
-Acked-by: Stephen Boyd <sboyd@kernel.org>
-Signed-off-by: Marco Felsch <m.felsch@pengutronix.de>
-Link: https://lore.kernel.org/r/20230731142150.3186650-1-m.felsch@pengutronix.de
-Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_psy_get_prop':
+extcon-intel-cht-wc.c:(.text+0x15ccda7): undefined reference to `power_supply_get_drvdata'
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_pwrsrc_event':
+extcon-intel-cht-wc.c:(.text+0x15cd3e9): undefined reference to `power_supply_changed'
+x86_64-linux-ld: vmlinux.o: in function `cht_wc_extcon_probe':
+extcon-intel-cht-wc.c:(.text+0x15cd596): undefined reference to `devm_power_supply_register'
+
+It should be possible to change the driver to not require this at
+compile time and still provide other functions, but adding a hard
+Kconfig dependency does not seem to have any practical downsides
+and is simpler since the option is normally enabled anyway.
+
+Fixes: 66e31186cd2aa ("extcon: intel-cht-wc: Add support for registering a power_supply class-device")
+Signed-off-by: Arnd Bergmann <arnd@arndb.de>
+Reviewed-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Chanwoo Choi <cw00.choi@samsung.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/clk/imx/clk-imx8mp.c | 5 -----
- 1 file changed, 5 deletions(-)
+ drivers/extcon/Kconfig | 1 +
+ 1 file changed, 1 insertion(+)
 
-diff --git a/drivers/clk/imx/clk-imx8mp.c b/drivers/clk/imx/clk-imx8mp.c
-index 05c02f4e2a143..3d0d8f2c02dc1 100644
---- a/drivers/clk/imx/clk-imx8mp.c
-+++ b/drivers/clk/imx/clk-imx8mp.c
-@@ -177,10 +177,6 @@ static const char * const imx8mp_sai3_sels[] = {"osc_24m", "audio_pll1_out", "au
- 						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
- 						"clk_ext3", "clk_ext4", };
- 
--static const char * const imx8mp_sai4_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
--						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
--						"clk_ext1", "clk_ext2", };
--
- static const char * const imx8mp_sai5_sels[] = {"osc_24m", "audio_pll1_out", "audio_pll2_out",
- 						"video_pll1_out", "sys_pll1_133m", "osc_hdmi",
- 						"clk_ext2", "clk_ext3", };
-@@ -566,7 +562,6 @@ static int imx8mp_clocks_probe(struct platform_device *pdev)
- 	hws[IMX8MP_CLK_SAI1] = imx8m_clk_hw_composite("sai1", imx8mp_sai1_sels, ccm_base + 0xa580);
- 	hws[IMX8MP_CLK_SAI2] = imx8m_clk_hw_composite("sai2", imx8mp_sai2_sels, ccm_base + 0xa600);
- 	hws[IMX8MP_CLK_SAI3] = imx8m_clk_hw_composite("sai3", imx8mp_sai3_sels, ccm_base + 0xa680);
--	hws[IMX8MP_CLK_SAI4] = imx8m_clk_hw_composite("sai4", imx8mp_sai4_sels, ccm_base + 0xa700);
- 	hws[IMX8MP_CLK_SAI5] = imx8m_clk_hw_composite("sai5", imx8mp_sai5_sels, ccm_base + 0xa780);
- 	hws[IMX8MP_CLK_SAI6] = imx8m_clk_hw_composite("sai6", imx8mp_sai6_sels, ccm_base + 0xa800);
- 	hws[IMX8MP_CLK_ENET_QOS] = imx8m_clk_hw_composite("enet_qos", imx8mp_enet_qos_sels, ccm_base + 0xa880);
+diff --git a/drivers/extcon/Kconfig b/drivers/extcon/Kconfig
+index 290186e44e6bd..4dd52a6a5b48d 100644
+--- a/drivers/extcon/Kconfig
++++ b/drivers/extcon/Kconfig
+@@ -62,6 +62,7 @@ config EXTCON_INTEL_CHT_WC
+ 	tristate "Intel Cherrytrail Whiskey Cove PMIC extcon driver"
+ 	depends on INTEL_SOC_PMIC_CHTWC
+ 	depends on USB_SUPPORT
++	depends on POWER_SUPPLY
+ 	select USB_ROLE_SWITCH
+ 	help
+ 	  Say Y here to enable extcon support for charger detection / control
 -- 
 2.40.1
 
