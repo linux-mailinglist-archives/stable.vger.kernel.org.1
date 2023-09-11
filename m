@@ -2,42 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7F10479BC8F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:50 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 99AC179B89F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239312AbjIKV63 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:58:29 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39078 "EHLO
+        id S232417AbjIKWtN (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:49:13 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52048 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240764AbjIKOxM (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:12 -0400
+        with ESMTP id S239450AbjIKOVB (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:21:01 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B5BD7118
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:07 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id F12B4C433C8;
-        Mon, 11 Sep 2023 14:53:06 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CEFDADE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1DAD2C433C8;
+        Mon, 11 Sep 2023 14:20:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443987;
-        bh=KDsqnSVSEQv2cQ+A3EGutjoZoxDEPhE+KvKGvbJtQ6s=;
+        s=korg; t=1694442056;
+        bh=hm0zgMzLeMOXRJmsxmb7wtkWiTPG8vzY+txwRzADx9Q=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=TxifparzyKRnifxn4l0Qv8PjGhhd93jNy25WgkE9RUd3h3n7Ex6leVNkvmSov5UqS
-         tAXS9NH2zYrjZPkrOFy5TpVAAld5UhDBeHRACaof42XiPzFzVQvJs/RHxS21TgtQcF
-         9uAUI4cjRlqmMMJCKQCDvABSayX0ZFLV0PYEGTx8=
+        b=C6KGDgeMf5jnXsKQwSXTcCZvLRDZR+VbDLNBGwHJZXOBh+EbTU09G60v9djZ6yEz4
+         SIm39bnrzTvD3ps8RblS2Wh9vnFbVrCSNA3yX4nKo7T/swqQnCEsEC96fvk6V7hlop
+         amyc/n1niPgfXruxACDFNyIhv5NlOEWSNDVrK0T8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
-        Daniel Scally <dan.scally@ideasonboard.com>,
-        Hans de Goede <hdegoede@redhat.com>,
-        Sakari Ailus <sakari.ailus@linux.intel.com>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 570/737] media: ov2680: Add ov2680_fill_format() helper function
+        patches@lists.linux.dev, syzbot <syzkaller@googlegroups.com>,
+        Kyle Zeng <zengyhkyle@gmail.com>,
+        Eric Dumazet <edumazet@google.com>,
+        Kees Cook <keescook@chromium.org>,
+        Vlastimil Babka <vbabka@suse.cz>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.5 630/739] net: deal with integer overflows in kmalloc_reserve()
 Date:   Mon, 11 Sep 2023 15:47:09 +0200
-Message-ID: <20230911134706.464211985@linuxfoundation.org>
+Message-ID: <20230911134708.691319449@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,150 +53,120 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hans de Goede <hdegoede@redhat.com>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit 6d6849b2203f3244b575ba01d3e41ee19aa2cadf ]
+commit 915d975b2ffa58a14bfcf16fafe00c41315949ff upstream.
 
-Add a ov2680_fill_format() helper function and use this everywhere were
-a v4l2_mbus_framefmt struct needs to be filled in so that the driver always
-fills it consistently.
+Blamed commit changed:
+    ptr = kmalloc(size);
+    if (ptr)
+      size = ksize(ptr);
 
-This is a preparation patch for fixing ov2680_set_fmt()
-which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
-the passed in v4l2_mbus_framefmt struct.
+to:
+    size = kmalloc_size_roundup(size);
+    ptr = kmalloc(size);
 
-Note that for ov2680_init_cfg() this now simply always fills
-the try_fmt struct of the passed in sd_state. This is correct because
-ov2680_init_cfg() is never called with a NULL sd_state so the old
-sd_state check is not necessary.
+This allowed various crash as reported by syzbot [1]
+and Kyle Zeng.
 
-Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
-Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
-Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
-Signed-off-by: Hans de Goede <hdegoede@redhat.com>
-Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
+Problem is that if @size is bigger than 0x80000001,
+kmalloc_size_roundup(size) returns 2^32.
+
+kmalloc_reserve() uses a 32bit variable (obj_size),
+so 2^32 is truncated to 0.
+
+kmalloc(0) returns ZERO_SIZE_PTR which is not handled by
+skb allocations.
+
+Following trace can be triggered if a netdev->mtu is set
+close to 0x7fffffff
+
+We might in the future limit netdev->mtu to more sensible
+limit (like KMALLOC_MAX_SIZE).
+
+This patch is based on a syzbot report, and also a report
+and tentative fix from Kyle Zeng.
+
+[1]
+BUG: KASAN: user-memory-access in __build_skb_around net/core/skbuff.c:294 [inline]
+BUG: KASAN: user-memory-access in __alloc_skb+0x3c4/0x6e8 net/core/skbuff.c:527
+Write of size 32 at addr 00000000fffffd10 by task syz-executor.4/22554
+
+CPU: 1 PID: 22554 Comm: syz-executor.4 Not tainted 6.1.39-syzkaller #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 07/03/2023
+Call trace:
+dump_backtrace+0x1c8/0x1f4 arch/arm64/kernel/stacktrace.c:279
+show_stack+0x2c/0x3c arch/arm64/kernel/stacktrace.c:286
+__dump_stack lib/dump_stack.c:88 [inline]
+dump_stack_lvl+0x120/0x1a0 lib/dump_stack.c:106
+print_report+0xe4/0x4b4 mm/kasan/report.c:398
+kasan_report+0x150/0x1ac mm/kasan/report.c:495
+kasan_check_range+0x264/0x2a4 mm/kasan/generic.c:189
+memset+0x40/0x70 mm/kasan/shadow.c:44
+__build_skb_around net/core/skbuff.c:294 [inline]
+__alloc_skb+0x3c4/0x6e8 net/core/skbuff.c:527
+alloc_skb include/linux/skbuff.h:1316 [inline]
+igmpv3_newpack+0x104/0x1088 net/ipv4/igmp.c:359
+add_grec+0x81c/0x1124 net/ipv4/igmp.c:534
+igmpv3_send_cr net/ipv4/igmp.c:667 [inline]
+igmp_ifc_timer_expire+0x1b0/0x1008 net/ipv4/igmp.c:810
+call_timer_fn+0x1c0/0x9f0 kernel/time/timer.c:1474
+expire_timers kernel/time/timer.c:1519 [inline]
+__run_timers+0x54c/0x710 kernel/time/timer.c:1790
+run_timer_softirq+0x28/0x4c kernel/time/timer.c:1803
+_stext+0x380/0xfbc
+____do_softirq+0x14/0x20 arch/arm64/kernel/irq.c:79
+call_on_irq_stack+0x24/0x4c arch/arm64/kernel/entry.S:891
+do_softirq_own_stack+0x20/0x2c arch/arm64/kernel/irq.c:84
+invoke_softirq kernel/softirq.c:437 [inline]
+__irq_exit_rcu+0x1c0/0x4cc kernel/softirq.c:683
+irq_exit_rcu+0x14/0x78 kernel/softirq.c:695
+el0_interrupt+0x7c/0x2e0 arch/arm64/kernel/entry-common.c:717
+__el0_irq_handler_common+0x18/0x24 arch/arm64/kernel/entry-common.c:724
+el0t_64_irq_handler+0x10/0x1c arch/arm64/kernel/entry-common.c:729
+el0t_64_irq+0x1a0/0x1a4 arch/arm64/kernel/entry.S:584
+
+Fixes: 12d6c1d3a2ad ("skbuff: Proactively round up to kmalloc bucket size")
+Reported-by: syzbot <syzkaller@googlegroups.com>
+Reported-by: Kyle Zeng <zengyhkyle@gmail.com>
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Kees Cook <keescook@chromium.org>
+Cc: Vlastimil Babka <vbabka@suse.cz>
+Signed-off-by: David S. Miller <davem@davemloft.net>
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/media/i2c/ov2680.c | 49 +++++++++++++++++++++-----------------
- 1 file changed, 27 insertions(+), 22 deletions(-)
+ net/core/skbuff.c |   10 ++++++++--
+ 1 file changed, 8 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
-index 4f7ff23ef8973..6e0e8d21d189f 100644
---- a/drivers/media/i2c/ov2680.c
-+++ b/drivers/media/i2c/ov2680.c
-@@ -54,6 +54,9 @@
- #define OV2680_WIDTH_MAX		1600
- #define OV2680_HEIGHT_MAX		1200
- 
-+#define OV2680_DEFAULT_WIDTH			800
-+#define OV2680_DEFAULT_HEIGHT			600
-+
- enum ov2680_mode_id {
- 	OV2680_MODE_QUXGA_800_600,
- 	OV2680_MODE_720P_1280_720,
-@@ -315,7 +318,8 @@ static void ov2680_power_down(struct ov2680_dev *sensor)
- 	usleep_range(5000, 10000);
- }
- 
--static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
-+static void ov2680_set_bayer_order(struct ov2680_dev *sensor,
-+				   struct v4l2_mbus_framefmt *fmt)
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -550,7 +550,7 @@ static void *kmalloc_reserve(unsigned in
+ 			     bool *pfmemalloc)
  {
- 	int hv_flip = 0;
+ 	bool ret_pfmemalloc = false;
+-	unsigned int obj_size;
++	size_t obj_size;
+ 	void *obj;
  
-@@ -325,7 +329,19 @@ static void ov2680_set_bayer_order(struct ov2680_dev *sensor)
- 	if (sensor->ctrls.hflip && sensor->ctrls.hflip->val)
- 		hv_flip += 2;
- 
--	sensor->fmt.code = ov2680_hv_flip_bayer_order[hv_flip];
-+	fmt->code = ov2680_hv_flip_bayer_order[hv_flip];
-+}
-+
-+static void ov2680_fill_format(struct ov2680_dev *sensor,
-+			       struct v4l2_mbus_framefmt *fmt,
-+			       unsigned int width, unsigned int height)
-+{
-+	memset(fmt, 0, sizeof(*fmt));
-+	fmt->width = width;
-+	fmt->height = height;
-+	fmt->field = V4L2_FIELD_NONE;
-+	fmt->colorspace = V4L2_COLORSPACE_SRGB;
-+	ov2680_set_bayer_order(sensor, fmt);
- }
- 
- static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
-@@ -340,7 +356,7 @@ static int ov2680_set_vflip(struct ov2680_dev *sensor, s32 val)
- 	if (ret < 0)
- 		return ret;
- 
--	ov2680_set_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor, &sensor->fmt);
- 	return 0;
- }
- 
-@@ -356,7 +372,7 @@ static int ov2680_set_hflip(struct ov2680_dev *sensor, s32 val)
- 	if (ret < 0)
- 		return ret;
- 
--	ov2680_set_bayer_order(sensor);
-+	ov2680_set_bayer_order(sensor, &sensor->fmt);
- 	return 0;
- }
- 
-@@ -614,10 +630,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- 		goto unlock;
+ 	obj_size = SKB_HEAD_ALIGN(*size);
+@@ -567,7 +567,13 @@ static void *kmalloc_reserve(unsigned in
+ 		obj = kmem_cache_alloc_node(skb_small_head_cache, flags, node);
+ 		goto out;
  	}
- 
--	fmt->width = mode->width;
--	fmt->height = mode->height;
--	fmt->code = sensor->fmt.code;
--	fmt->colorspace = sensor->fmt.colorspace;
-+	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
- 
- 	sensor->current_mode = mode;
- 	sensor->fmt = format->format;
-@@ -632,16 +645,11 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
- static int ov2680_init_cfg(struct v4l2_subdev *sd,
- 			   struct v4l2_subdev_state *sd_state)
- {
--	struct v4l2_subdev_format fmt = {
--		.which = sd_state ? V4L2_SUBDEV_FORMAT_TRY
--		: V4L2_SUBDEV_FORMAT_ACTIVE,
--		.format = {
--			.width = 800,
--			.height = 600,
--		}
--	};
-+	struct ov2680_dev *sensor = to_ov2680_dev(sd);
- 
--	return ov2680_set_fmt(sd, sd_state, &fmt);
-+	ov2680_fill_format(sensor, &sd_state->pads[0].try_fmt,
-+			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
-+	return 0;
- }
- 
- static int ov2680_enum_frame_size(struct v4l2_subdev *sd,
-@@ -740,11 +748,8 @@ static int ov2680_mode_init(struct ov2680_dev *sensor)
- 	const struct ov2680_mode_info *init_mode;
- 
- 	/* set initial mode */
--	sensor->fmt.code = MEDIA_BUS_FMT_SBGGR10_1X10;
--	sensor->fmt.width = 800;
--	sensor->fmt.height = 600;
--	sensor->fmt.field = V4L2_FIELD_NONE;
--	sensor->fmt.colorspace = V4L2_COLORSPACE_SRGB;
-+	ov2680_fill_format(sensor, &sensor->fmt,
-+			   OV2680_DEFAULT_WIDTH, OV2680_DEFAULT_HEIGHT);
- 
- 	sensor->frame_interval.denominator = OV2680_FRAME_RATE;
- 	sensor->frame_interval.numerator = 1;
--- 
-2.40.1
-
+-	*size = obj_size = kmalloc_size_roundup(obj_size);
++
++	obj_size = kmalloc_size_roundup(obj_size);
++	/* The following cast might truncate high-order bits of obj_size, this
++	 * is harmless because kmalloc(obj_size >= 2^32) will fail anyway.
++	 */
++	*size = (unsigned int)obj_size;
++
+ 	/*
+ 	 * Try a regular allocation, when that fails and we're not entitled
+ 	 * to the reserves, fail.
 
 
