@@ -2,37 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 689CA79BBDD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:13:45 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 421B479BA8C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1377544AbjIKW06 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:26:58 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47298 "EHLO
+        id S244427AbjIKVaZ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:30:25 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38528 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240954AbjIKO6A (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:00 -0400
+        with ESMTP id S240959AbjIKO6H (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:58:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F7D21B9
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:56 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E60E9C433C9;
-        Mon, 11 Sep 2023 14:57:55 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 603181B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:58:02 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A9948C433C8;
+        Mon, 11 Sep 2023 14:58:01 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444276;
-        bh=wl+gMjPD3zQrC/q4pQoLBrfiuMgJQ5qijoqFMXrS3Os=;
+        s=korg; t=1694444282;
+        bh=uohJ3tfH8lsov/yFZgluXqtv6DYsxIuzfuh3K1tvfoU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SshwLrOTOIffmN9Kr9cBb/zOoK4YZd4M/JG9oU2yZvOGiinA9w6CxxpzJI5RJGSi9
-         JFIc1f3rnDULoXPptC5rrbn5O4x1bvcM5xLOh1+2ByEP9xayKLfr3LnC4+oJ00ocPM
-         NpsMhMcFfLsEhtCLHTkACvQzMGGXcTFOcfWP9o04=
+        b=gpT4J7KMilsun3ZH4somiaHF2NSeo2SytyWoIgV7fxlpHqBPK04rneF/9I/yV3Ia/
+         6UdfAM0SS9DsVxrQ6Dh9w+DoZZNFzd7lrTqYbJegzfEbjgF1JANlLSmghxdeX5945s
+         oweejuuRoScwofCyB5dhnpO9YpN+nHzOOPGrhFHc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Christoph Hellwig <hch@lst.de>,
-        Chaitanya Kulkarni <kch@nvidia.com>,
-        Pankaj Gupta <pankaj.gupta@amd.com>,
-        Hou Tao <houtao1@huawei.com>, Dave Jiang <dave.jiang@intel.com>
-Subject: [PATCH 6.4 645/737] virtio_pmem: add the missing REQ_OP_WRITE for flush bio
-Date:   Mon, 11 Sep 2023 15:48:24 +0200
-Message-ID: <20230911134708.550166726@linuxfoundation.org>
+        patches@lists.linux.dev, Petr Mladek <pmladek@suse.com>,
+        Sergey Senozhatsky <senozhatsky@chromium.org>,
+        Steven Rostedt <rostedt@goodmis.org>,
+        John Ogness <john.ogness@linutronix.de>,
+        Vijay Balakrishna <vijayb@linux.microsoft.com>,
+        Kees Cook <keescook@chromium.org>,
+        "Tyler Hicks (Microsoft)" <code@tyhicks.com>,
+        "Guilherme G . Piccoli" <gpiccoli@igalia.com>
+Subject: [PATCH 6.4 647/737] printk: ringbuffer: Fix truncating buffer size min_t cast
+Date:   Mon, 11 Sep 2023 15:48:26 +0200
+Message-ID: <20230911134708.605080613@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,71 +59,49 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Hou Tao <houtao1@huawei.com>
+From: Kees Cook <keescook@chromium.org>
 
-commit c1dbd8a849183b9c12d257ad3043ecec50db50b3 upstream.
+commit 53e9e33ede37a247d926db5e4a9e56b55204e66c upstream.
 
-When doing mkfs.xfs on a pmem device, the following warning was
-reported:
+If an output buffer size exceeded U16_MAX, the min_t(u16, ...) cast in
+copy_data() was causing writes to truncate. This manifested as output
+bytes being skipped, seen as %NUL bytes in pstore dumps when the available
+record size was larger than 65536. Fix the cast to no longer truncate
+the calculation.
 
- ------------[ cut here ]------------
- WARNING: CPU: 2 PID: 384 at block/blk-core.c:751 submit_bio_noacct
- Modules linked in:
- CPU: 2 PID: 384 Comm: mkfs.xfs Not tainted 6.4.0-rc7+ #154
- Hardware name: QEMU Standard PC (i440FX + PIIX, 1996)
- RIP: 0010:submit_bio_noacct+0x340/0x520
- ......
- Call Trace:
-  <TASK>
-  ? submit_bio_noacct+0xd5/0x520
-  submit_bio+0x37/0x60
-  async_pmem_flush+0x79/0xa0
-  nvdimm_flush+0x17/0x40
-  pmem_submit_bio+0x370/0x390
-  __submit_bio+0xbc/0x190
-  submit_bio_noacct_nocheck+0x14d/0x370
-  submit_bio_noacct+0x1ef/0x520
-  submit_bio+0x55/0x60
-  submit_bio_wait+0x5a/0xc0
-  blkdev_issue_flush+0x44/0x60
-
-The root cause is that submit_bio_noacct() needs bio_op() is either
-WRITE or ZONE_APPEND for flush bio and async_pmem_flush() doesn't assign
-REQ_OP_WRITE when allocating flush bio, so submit_bio_noacct just fail
-the flush bio.
-
-Simply fix it by adding the missing REQ_OP_WRITE for flush bio. And we
-could fix the flush order issue and do flush optimization later.
-
-Cc: stable@vger.kernel.org # 6.3+
-Fixes: b4a6bb3a67aa ("block: add a sanity check for non-write flush/fua bios")
-Reviewed-by: Christoph Hellwig <hch@lst.de>
-Reviewed-by: Chaitanya Kulkarni <kch@nvidia.com>
-Reviewed-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Tested-by: Pankaj Gupta <pankaj.gupta@amd.com>
-Signed-off-by: Hou Tao <houtao1@huawei.com>
-Signed-off-by: Dave Jiang <dave.jiang@intel.com>
+Cc: Petr Mladek <pmladek@suse.com>
+Cc: Sergey Senozhatsky <senozhatsky@chromium.org>
+Cc: Steven Rostedt <rostedt@goodmis.org>
+Cc: John Ogness <john.ogness@linutronix.de>
+Reported-by: Vijay Balakrishna <vijayb@linux.microsoft.com>
+Link: https://lore.kernel.org/lkml/d8bb1ec7-a4c5-43a2-9de0-9643a70b899f@linux.microsoft.com/
+Fixes: b6cf8b3f3312 ("printk: add lockless ringbuffer")
+Cc: stable@vger.kernel.org
+Signed-off-by: Kees Cook <keescook@chromium.org>
+Tested-by: Vijay Balakrishna <vijayb@linux.microsoft.com>
+Tested-by: Guilherme G. Piccoli <gpiccoli@igalia.com> # Steam Deck
+Reviewed-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
+Tested-by: Tyler Hicks (Microsoft) <code@tyhicks.com>
+Reviewed-by: John Ogness <john.ogness@linutronix.de>
+Reviewed-by: Sergey Senozhatsky <senozhatsky@chromium.org>
+Reviewed-by: Petr Mladek <pmladek@suse.com>
+Signed-off-by: Petr Mladek <pmladek@suse.com>
+Link: https://lore.kernel.org/r/20230811054528.never.165-kees@kernel.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- drivers/nvdimm/nd_virtio.c | 3 ++-
- 1 file changed, 2 insertions(+), 1 deletion(-)
+ kernel/printk/printk_ringbuffer.c |    2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/nvdimm/nd_virtio.c b/drivers/nvdimm/nd_virtio.c
-index c6a648fd8744..1f8c667c6f1e 100644
---- a/drivers/nvdimm/nd_virtio.c
-+++ b/drivers/nvdimm/nd_virtio.c
-@@ -105,7 +105,8 @@ int async_pmem_flush(struct nd_region *nd_region, struct bio *bio)
- 	 * parent bio. Otherwise directly call nd_region flush.
- 	 */
- 	if (bio && bio->bi_iter.bi_sector != -1) {
--		struct bio *child = bio_alloc(bio->bi_bdev, 0, REQ_PREFLUSH,
-+		struct bio *child = bio_alloc(bio->bi_bdev, 0,
-+					      REQ_OP_WRITE | REQ_PREFLUSH,
- 					      GFP_ATOMIC);
+--- a/kernel/printk/printk_ringbuffer.c
++++ b/kernel/printk/printk_ringbuffer.c
+@@ -1735,7 +1735,7 @@ static bool copy_data(struct prb_data_ri
+ 	if (!buf || !buf_size)
+ 		return true;
  
- 		if (!child)
--- 
-2.42.0
-
+-	data_size = min_t(u16, buf_size, len);
++	data_size = min_t(unsigned int, buf_size, len);
+ 
+ 	memcpy(&buf[0], data, data_size); /* LMM(copy_data:A) */
+ 	return true;
 
 
