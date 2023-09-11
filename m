@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 2BABC79BA86
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6DE9279B8E9
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:10 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348728AbjIKVaX (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:23 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58180 "EHLO
+        id S237634AbjIKUvj (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:51:39 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41712 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239614AbjIKOYi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:24:38 -0400
+        with ESMTP id S242145AbjIKPXX (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:23:23 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 98E87DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:24:34 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E1358C433C8;
-        Mon, 11 Sep 2023 14:24:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E0B0D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:23:19 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF0EFC433C7;
+        Mon, 11 Sep 2023 15:23:18 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442274;
-        bh=F+vBbWqLHDrJCk0A/54f2N8GV/Mk9Pp5xgCMdNjg6qc=;
+        s=korg; t=1694445799;
+        bh=ZWH2zTdKQq7V0tat9QXhFCoJLDU7NxPsqZYVTLwdtrY=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=sby3yVyFXsSsOoJMzzEomQMzV+aCjDPMkw6qn3N4vdo35lWwwi0UOZZSuAV0pbDbE
-         FI5V0SuJBRDFsH51V0JqXFmf+JX0uWEMULQhT6Z1HfnmChHGq4moxaaD41i96Zn9Lo
-         VBxlbD4eKZkzztrrPm+Kt5CEpYsMPfOtmHRlsMl0=
+        b=zI3vcZW9ZGQNg2TaFPAu6TRFIeMX5uid31gpO2kKX5++Bv6QVEpv5i/AJK+YOFgmE
+         aG8wdoJRQZz/wZ59D0PqPu8s3RKIakI2EMYJK0T1/z7VkKNTjN1iV5pMPtJLibtT7M
+         tH9SCFvECmA4l83i26X8E3ejjHojRTVxOSNyN31A=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.5 708/739] platform/chrome: chromeos_acpi: print hex string for ACPI_TYPE_BUFFER
-Date:   Mon, 11 Sep 2023 15:48:27 +0200
-Message-ID: <20230911134710.859816736@linuxfoundation.org>
+        patches@lists.linux.dev, Yangtao Li <frank.li@vivo.com>,
+        Chao Yu <chao@kernel.org>, Jaegeuk Kim <jaegeuk@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.1 475/600] f2fs: judge whether discard_unit is section only when have CONFIG_BLK_DEV_ZONED
+Date:   Mon, 11 Sep 2023 15:48:28 +0200
+Message-ID: <20230911134647.665642114@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,78 +50,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Yangtao Li <frank.li@vivo.com>
 
-commit 0820debb7d489e9eb1f68b7bb69e6ae210699b3f upstream.
+[ Upstream commit b5a711acab305e04278c136c841ba37c589c16a1 ]
 
-`element->buffer.pointer` should be binary blob.  `%s` doesn't work
-perfect for them.
+The current logic, regardless of whether CONFIG_BLK_DEV_ZONED
+is enabled or not, will judge whether discard_unit is SECTION,
+when f2fs_sb_has_blkzoned.
 
-Print hex string for ACPI_TYPE_BUFFER.  Also update the documentation
-to reflect this.
+In fact, when CONFIG_BLK_DEV_ZONED is not enabled, this judgment
+is a path that will never be accessed. At this time, -EINVAL will
+be returned in the parse_options function, accompanied by the
+message "Zoned block device support is not enabled".
 
-Fixes: 0a4cad9c11ad ("platform/chrome: Add ChromeOS ACPI device driver")
-Cc: stable@vger.kernel.org
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230803011245.3773756-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
-Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Let's wrap this discard_unit judgment with CONFIG_BLK_DEV_ZONED.
+
+Signed-off-by: Yangtao Li <frank.li@vivo.com>
+Reviewed-by: Chao Yu <chao@kernel.org>
+Signed-off-by: Jaegeuk Kim <jaegeuk@kernel.org>
+Stable-dep-of: 2bd4df8fcbc7 ("f2fs: Only lfs mode is allowed with zoned block device feature")
+Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- Documentation/ABI/testing/sysfs-driver-chromeos-acpi |    2 -
- drivers/platform/chrome/chromeos_acpi.c              |   31 ++++++++++++++++++-
- 2 files changed, 31 insertions(+), 2 deletions(-)
+ fs/f2fs/super.c | 11 +++++------
+ 1 file changed, 5 insertions(+), 6 deletions(-)
 
---- a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-+++ b/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-@@ -134,4 +134,4 @@ KernelVersion:	5.19
- Description:
- 		Returns the verified boot data block shared between the
- 		firmware verification step and the kernel verification step
--		(binary).
-+		(hex dump).
---- a/drivers/platform/chrome/chromeos_acpi.c
-+++ b/drivers/platform/chrome/chromeos_acpi.c
-@@ -90,7 +90,36 @@ static int chromeos_acpi_handle_package(
- 	case ACPI_TYPE_STRING:
- 		return sysfs_emit(buf, "%s\n", element->string.pointer);
- 	case ACPI_TYPE_BUFFER:
--		return sysfs_emit(buf, "%s\n", element->buffer.pointer);
-+		{
-+			int i, r, at, room_left;
-+			const int byte_per_line = 16;
-+
-+			at = 0;
-+			room_left = PAGE_SIZE - 1;
-+			for (i = 0; i < element->buffer.length && room_left; i += byte_per_line) {
-+				r = hex_dump_to_buffer(element->buffer.pointer + i,
-+						       element->buffer.length - i,
-+						       byte_per_line, 1, buf + at, room_left,
-+						       false);
-+				if (r > room_left)
-+					goto truncating;
-+				at += r;
-+				room_left -= r;
-+
-+				r = sysfs_emit_at(buf, at, "\n");
-+				if (!r)
-+					goto truncating;
-+				at += r;
-+				room_left -= r;
-+			}
-+
-+			buf[at] = 0;
-+			return at;
-+truncating:
-+			dev_info_once(dev, "truncating sysfs content for %s\n", name);
-+			sysfs_emit_at(buf, PAGE_SIZE - 4, "..\n");
-+			return PAGE_SIZE - 1;
-+		}
- 	default:
- 		dev_err(dev, "element type %d not supported\n", element->type);
- 		return -EINVAL;
+diff --git a/fs/f2fs/super.c b/fs/f2fs/super.c
+index b6dad389fa144..d616ce3826e7a 100644
+--- a/fs/f2fs/super.c
++++ b/fs/f2fs/super.c
+@@ -1285,19 +1285,18 @@ static int parse_options(struct super_block *sb, char *options, bool is_remount)
+ 	 * zone alignment optimization. This is optional for host-aware
+ 	 * devices, but mandatory for host-managed zoned block devices.
+ 	 */
+-#ifndef CONFIG_BLK_DEV_ZONED
+-	if (f2fs_sb_has_blkzoned(sbi)) {
+-		f2fs_err(sbi, "Zoned block device support is not enabled");
+-		return -EINVAL;
+-	}
+-#endif
+ 	if (f2fs_sb_has_blkzoned(sbi)) {
++#ifdef CONFIG_BLK_DEV_ZONED
+ 		if (F2FS_OPTION(sbi).discard_unit !=
+ 						DISCARD_UNIT_SECTION) {
+ 			f2fs_info(sbi, "Zoned block device doesn't need small discard, set discard_unit=section by default");
+ 			F2FS_OPTION(sbi).discard_unit =
+ 					DISCARD_UNIT_SECTION;
+ 		}
++#else
++		f2fs_err(sbi, "Zoned block device support is not enabled");
++		return -EINVAL;
++#endif
+ 	}
+ 
+ #ifdef CONFIG_F2FS_FS_COMPRESSION
+-- 
+2.40.1
+
 
 
