@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C723779AF62
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:17 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6B9AA79AEC7
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:53 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237961AbjIKUxV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:53:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48822 "EHLO
+        id S1344793AbjIKVOr (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:14:47 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42492 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241489AbjIKPJv (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:09:51 -0400
+        with ESMTP id S240450AbjIKOof (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:44:35 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CD827FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:09:47 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 256B9C433C7;
-        Mon, 11 Sep 2023 15:09:46 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C4CC112A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:44:30 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 138F0C433C8;
+        Mon, 11 Sep 2023 14:44:29 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444987;
-        bh=8wne8GVl+O/8uUP6UDjL3Rk/U6MgBhoN+EzznF6ZMB4=;
+        s=korg; t=1694443470;
+        bh=kuN/VM9N/3+XyiciTfQO12oHAN+oeUm1hXyVN/Emmls=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VZ4Axh4tQgIORj920e8JvsPnUloedaAN6OVCC4RsDD9wNyhixqrOEIdzfqhmIX5Gj
-         pOYS0jvMfOt2MOqB53sGvCYZUDj+z1x+DtpzCyuKc2sQorwDl0Cq95rYgEd/z25jxJ
-         cL5J165homUmX3bRq6kSOrHNMMr3iv1mEvgq34qw=
+        b=Bbh9qBlS4THe/kLIKzo5UhOWaK/gIX6Yh7A4BNijHSzeVA9Opb+K1UzenfXyNPgXZ
+         aXP2aUhFXrpmS8tk4zdqoUKi6iNTrXMBTae2heb/RhbZN4X162/PqduxjfEHVKtdQz
+         YTqMX7xwQBXYBv/AgSwPyzHA9xAKby8uLdMBxv+0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Polaris Pi <pinkperfect2021@gmail.com>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Brian Norris <briannorris@chromium.org>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 187/600] wifi: mwifiex: Fix missed return in oob checks failed path
+        patches@lists.linux.dev, Dan Carpenter <dan.carpenter@linaro.org>,
+        Casey Schaufler <casey@schaufler-ca.com>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 361/737] smackfs: Prevent underflow in smk_set_cipso()
 Date:   Mon, 11 Sep 2023 15:43:40 +0200
-Message-ID: <20230911134639.144924814@linuxfoundation.org>
+Message-ID: <20230911134700.615059686@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,53 +50,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Polaris Pi <pinkperfect2021@gmail.com>
+From: Dan Carpenter <dan.carpenter@linaro.org>
 
-[ Upstream commit 2785851c627f2db05f9271f7f63661b5dbd95c4c ]
+[ Upstream commit 3ad49d37cf5759c3b8b68d02e3563f633d9c1aee ]
 
-Add missed return in mwifiex_uap_queue_bridged_pkt() and
-mwifiex_process_rx_packet().
+There is a upper bound to "catlen" but no lower bound to prevent
+negatives.  I don't see that this necessarily causes a problem but we
+may as well be safe.
 
-Fixes: 119585281617 ("wifi: mwifiex: Fix OOB and integer underflow when rx packets")
-Signed-off-by: Polaris Pi <pinkperfect2021@gmail.com>
-Reported-by: Dmitry Antipov <dmantipov@yandex.ru>
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230810083911.3725248-1-pinkperfect2021@gmail.com
+Fixes: e114e473771c ("Smack: Simplified Mandatory Access Control Kernel")
+Signed-off-by: Dan Carpenter <dan.carpenter@linaro.org>
+Signed-off-by: Casey Schaufler <casey@schaufler-ca.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/sta_rx.c   | 1 +
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 1 +
- 2 files changed, 2 insertions(+)
+ security/smack/smackfs.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/sta_rx.c b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-index f2899d53a43f9..65420ad674167 100644
---- a/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/sta_rx.c
-@@ -92,6 +92,7 @@ int mwifiex_process_rx_packet(struct mwifiex_private *priv,
- 			    skb->len, rx_pkt_off);
- 		priv->stats.rx_dropped++;
- 		dev_kfree_skb_any(skb);
-+		return -1;
+diff --git a/security/smack/smackfs.c b/security/smack/smackfs.c
+index 5590eaad241bb..25f67d1b5c73e 100644
+--- a/security/smack/smackfs.c
++++ b/security/smack/smackfs.c
+@@ -896,7 +896,7 @@ static ssize_t smk_set_cipso(struct file *file, const char __user *buf,
  	}
  
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index 04ff051f5d186..c1b8d41dd7536 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -110,6 +110,7 @@ static void mwifiex_uap_queue_bridged_pkt(struct mwifiex_private *priv,
- 			    skb->len, le16_to_cpu(uap_rx_pd->rx_pkt_offset));
- 		priv->stats.rx_dropped++;
- 		dev_kfree_skb_any(skb);
-+		return;
- 	}
+ 	ret = sscanf(rule, "%d", &catlen);
+-	if (ret != 1 || catlen > SMACK_CIPSO_MAXCATNUM)
++	if (ret != 1 || catlen < 0 || catlen > SMACK_CIPSO_MAXCATNUM)
+ 		goto out;
  
- 	if ((!memcmp(&rx_pkt_hdr->rfc1042_hdr, bridge_tunnel_header,
+ 	if (format == SMK_FIXED24_FMT &&
 -- 
 2.40.1
 
