@@ -2,45 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 7DFB379B624
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:47 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 68A6379BA24
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:08 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353951AbjIKVvn (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:51:43 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45974 "EHLO
+        id S239204AbjIKWpi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:56918 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240118AbjIKOhB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:01 -0400
+        with ESMTP id S238849AbjIKOGH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:06:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A207F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:36:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C1382C433C7;
-        Mon, 11 Sep 2023 14:36:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 9F78C120
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E876DC433C8;
+        Mon, 11 Sep 2023 14:06:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443017;
-        bh=Ln4XpiijyuqaMfYJOnIZxahHtDXWeLc+Z6oRZCBqvnE=;
+        s=korg; t=1694441163;
+        bh=Ma0qEr9KXjtn5TBETQKv7bFF+XrVpwQuiehz/hDQ+1w=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=zs80rOhWzYYpPuhyn6ZrPxsX1Y4rWVmI949ClatVXj8PeBE15UfoGAE5Z0BWrjjsH
-         9xkiYDnCHw0ji2iKCMXykpF+uSiupjQjKSR0p/4H0RE1h8IOVO1jiyAfGlPs7V290R
-         GjY4np4oTgumtIUesTTypk8tryW5i2G/8wr0WPf4=
+        b=fZhcNynlsoKRJAx+VshDiP+pTBbGevCrItJZGKv5L1iMUqbIpw0AbMLXN5BPavW9Q
+         ahJxApe9JVD+NwnVApXyVeoFDKnyfJisflZ+DKUnH0VIkOavZnB62x4mVXnCK7BuQl
+         H0efWvt/MfXdXMH3IODu9KXIKOyuAmDCiCTyQ6UQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Aleksa Sarai <cyphar@cyphar.com>,
-        Jeff Xu <jeffxu@google.com>,
-        "Christian Brauner (Microsoft)" <brauner@kernel.org>,
-        Daniel Verkamp <dverkamp@chromium.org>,
-        Dominique Martinet <asmadeus@codewreck.org>,
-        Kees Cook <keescook@chromium.org>,
-        Shuah Khan <shuah@kernel.org>,
-        Andrew Morton <akpm@linux-foundation.org>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 228/737] selftests: memfd: error out test process when child test fails
-Date:   Mon, 11 Sep 2023 15:41:27 +0200
-Message-ID: <20230911134656.946690063@linuxfoundation.org>
+        patches@lists.linux.dev, Yu Kuai <yukuai3@huawei.com>,
+        Song Liu <song@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 289/739] md/md-bitmap: hold reconfig_mutex in backlog_store()
+Date:   Mon, 11 Sep 2023 15:41:28 +0200
+Message-ID: <20230911134659.208456607@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -56,133 +49,64 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aleksa Sarai <cyphar@cyphar.com>
+From: Yu Kuai <yukuai3@huawei.com>
 
-[ Upstream commit 99f34659e78b9b781a3248e0b080b4dfca4957e2 ]
+[ Upstream commit 44abfa6a95df425c0660d56043020b67e6d93ab8 ]
 
-Patch series "memfd: cleanups for vm.memfd_noexec", v2.
+Several reasons why 'reconfig_mutex' should be held:
 
-The most critical issue with vm.memfd_noexec=2 (the fact that passing
-MFD_EXEC would bypass it entirely[1]) has been fixed in Andrew's
-tree[2], but there are still some outstanding issues that need to be
-addressed:
+1) rdev_for_each() is not safe to be called without the lock, because
+   rdev can be removed concurrently.
+2) mddev_destroy_serial_pool() and mddev_create_serial_pool() should not
+   be called concurrently.
+3) mddev_suspend() from mddev_destroy/create_serial_pool() should be
+   protected by the lock.
 
- * vm.memfd_noexec=2 shouldn't reject old-style memfd_create(2) syscalls
-   because it will make it far to difficult to ever migrate. Instead it
-   should imply MFD_EXEC.
-
- * The dmesg warnings are pr_warn_once(), which on most systems means
-   that they will be used up by systemd or some other boot process and
-   userspace developers will never see it.
-
-   - For the !(flags & (MFD_EXEC | MFD_NOEXEC_SEAL)) case, outputting a
-     rate-limited message to the kernel log is necessary to tell
-     userspace that they should add the new flags.
-
-     Arguably the most ideal way to deal with the spam concern[3,4]
-     while still prompting userspace to switch to the new flags would be
-     to only log the warning once per task or something similar.
-     However, adding something to task_struct for tracking this would be
-     needless bloat for a single pr_warn_ratelimited().
-
-     So just switch to pr_info_ratelimited() to avoid spamming the log
-     with something that isn't a real warning. There's lots of
-     info-level stuff in dmesg, it seems really unlikely that this
-     should be an actual problem. Most programs are already switching to
-     the new flags anyway.
-
-   - For the vm.memfd_noexec=2 case, we need to log a warning for every
-     failure because otherwise userspace will have no idea why their
-     previously working program started returning -EACCES (previously
-     -EINVAL) from memfd_create(2). pr_warn_once() is simply wrong here.
-
- * The racheting mechanism for vm.memfd_noexec makes it incredibly
-   unappealing for most users to enable the sysctl because enabling it
-   on &init_pid_ns means you need a system reboot to unset it. Given the
-   actual security threat being protected against, CAP_SYS_ADMIN users
-   being restricted in this way makes little sense.
-
-   The argument for this ratcheting by the original author was that it
-   allows you to have a hierarchical setting that cannot be unset by
-   child pidnses, but this is not accurate -- changing the parent
-   pidns's vm.memfd_noexec setting to be more restrictive didn't affect
-   children.
-
-   Instead, switch the vm.memfd_noexec sysctl to be properly
-   hierarchical and allow CAP_SYS_ADMIN users (in the pidns's owning
-   userns) to lower the setting as long as it is not lower than the
-   parent's effective setting. This change also makes it so that
-   changing a parent pidns's vm.memfd_noexec will affect all
-   descendants, providing a properly hierarchical setting. The
-   performance impact of this is incredibly minimal since the maximum
-   depth of pidns is 32 and it is only checked during memfd_create(2)
-   and unshare(CLONE_NEWPID).
-
- * The memfd selftests would not exit with a non-zero error code when
-   certain tests that ran in a forked process (specifically the ones
-   related to MFD_EXEC and MFD_NOEXEC_SEAL) failed.
-
-[1]: https://lore.kernel.org/all/ZJwcsU0vI-nzgOB_@codewreck.org/
-[2]: https://lore.kernel.org/all/20230705063315.3680666-1-jeffxu@google.com/
-[3]: https://lore.kernel.org/Y5yS8wCnuYGLHMj4@x1n/
-[4]: https://lore.kernel.org/f185bb42-b29c-977e-312e-3349eea15383@linuxfoundation.org/
-
-This patch (of 5):
-
-Before this change, a test runner using this self test would see a return
-code of 0 when the tests using a child process (namely the MFD_NOEXEC_SEAL
-and MFD_EXEC tests) failed, masking test failures.
-
-Link: https://lkml.kernel.org/r/20230814-memfd-vm-noexec-uapi-fixes-v2-0-7ff9e3e10ba6@cyphar.com
-Link: https://lkml.kernel.org/r/20230814-memfd-vm-noexec-uapi-fixes-v2-1-7ff9e3e10ba6@cyphar.com
-Fixes: 11f75a01448f ("selftests/memfd: add tests for MFD_NOEXEC_SEAL MFD_EXEC")
-Signed-off-by: Aleksa Sarai <cyphar@cyphar.com>
-Reviewed-by: Jeff Xu <jeffxu@google.com>
-Cc: "Christian Brauner (Microsoft)" <brauner@kernel.org>
-Cc: Daniel Verkamp <dverkamp@chromium.org>
-Cc: Dominique Martinet <asmadeus@codewreck.org>
-Cc: Kees Cook <keescook@chromium.org>
-Cc: Shuah Khan <shuah@kernel.org>
-Signed-off-by: Andrew Morton <akpm@linux-foundation.org>
+Fixes: 10c92fca636e ("md-bitmap: create and destroy wb_info_pool with the change of backlog")
+Signed-off-by: Yu Kuai <yukuai3@huawei.com>
+Link: https://lore.kernel.org/r/20230706083727.608914-3-yukuai1@huaweicloud.com
+Signed-off-by: Song Liu <song@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/testing/selftests/memfd/memfd_test.c | 19 ++++++++++++++++++-
- 1 file changed, 18 insertions(+), 1 deletion(-)
+ drivers/md/md-bitmap.c | 7 +++++++
+ 1 file changed, 7 insertions(+)
 
-diff --git a/tools/testing/selftests/memfd/memfd_test.c b/tools/testing/selftests/memfd/memfd_test.c
-index dba0e8ba002f8..7fc5d7c3bd65b 100644
---- a/tools/testing/selftests/memfd/memfd_test.c
-+++ b/tools/testing/selftests/memfd/memfd_test.c
-@@ -1202,7 +1202,24 @@ static pid_t spawn_newpid_thread(unsigned int flags, int (*fn)(void *))
+diff --git a/drivers/md/md-bitmap.c b/drivers/md/md-bitmap.c
+index 697ca41c186c6..a08bf6b9accb4 100644
+--- a/drivers/md/md-bitmap.c
++++ b/drivers/md/md-bitmap.c
+@@ -2542,6 +2542,10 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 	if (backlog > COUNTER_MAX)
+ 		return -EINVAL;
  
- static void join_newpid_thread(pid_t pid)
- {
--	waitpid(pid, NULL, 0);
-+	int wstatus;
++	rv = mddev_lock(mddev);
++	if (rv)
++		return rv;
 +
-+	if (waitpid(pid, &wstatus, 0) < 0) {
-+		printf("newpid thread: waitpid() failed: %m\n");
-+		abort();
-+	}
+ 	/*
+ 	 * Without write mostly device, it doesn't make sense to set
+ 	 * backlog for max_write_behind.
+@@ -2555,6 +2559,7 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 	if (!has_write_mostly) {
+ 		pr_warn_ratelimited("%s: can't set backlog, no write mostly device available\n",
+ 				    mdname(mddev));
++		mddev_unlock(mddev);
+ 		return -EINVAL;
+ 	}
+ 
+@@ -2570,6 +2575,8 @@ backlog_store(struct mddev *mddev, const char *buf, size_t len)
+ 	}
+ 	if (old_mwb != backlog)
+ 		md_bitmap_update_sb(mddev->bitmap);
 +
-+	if (WIFEXITED(wstatus) && WEXITSTATUS(wstatus) != 0) {
-+		printf("newpid thread: exited with non-zero error code %d\n",
-+		       WEXITSTATUS(wstatus));
-+		abort();
-+	}
-+
-+	if (WIFSIGNALED(wstatus)) {
-+		printf("newpid thread: killed by signal %d\n",
-+		       WTERMSIG(wstatus));
-+		abort();
-+	}
++	mddev_unlock(mddev);
+ 	return len;
  }
  
- /*
 -- 
 2.40.1
 
