@@ -2,43 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A56F979B2B6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:07 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5206479ADAD
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:31 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355385AbjIKV6A (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:58:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35544 "EHLO
+        id S1344312AbjIKVNu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49154 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239369AbjIKOTF (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:19:05 -0400
+        with ESMTP id S241918AbjIKPRw (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:17:52 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C5689DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:19:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 18175C433C7;
-        Mon, 11 Sep 2023 14:18:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E3028FA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:17:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 36202C433C9;
+        Mon, 11 Sep 2023 15:17:46 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441940;
-        bh=mghLdZhVXHiWOKJrjjWPBLyVbnl5BjhVdqA438YxjsE=;
+        s=korg; t=1694445466;
+        bh=Ifd/4eX0PlwtkJ7g4k4auG790O4zD4kS6ITEQ7+J73k=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=msiYY/JbIVxFWw+rwG6tnB2NS1+esCCB797ZeQbqX9x2tu6Bb77Mc+YDT5Fvedn+J
-         J4ToooboeUjIWyVCUTF+p+6hs8JKsi14Tgb+X8rl4U4Ecug+gxXltGcer/sbU3sk19
-         BF+osGA/chsLSbfMTr9Hcpu0cyP976MgHmlyVqSU=
+        b=DaLdHQyA4rRilv676c331isWqdkR6/cvzYu4ClQ0F0ekqw+h3aTa960fBK1wrMTsx
+         c0R4JvCFsLRNQSqbKUAnlE1QRLm1RlK7ITLN+rbQPMNtrXzy1RZoGAMm5lFFM2k4h/
+         iSv/MM9Yc+RCnIJvny+lDrdqk5+C0ai/cuYSTYGQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Paul Gortmaker <paul.gortmaker@windriver.com>,
-        Thomas Gleixner <tglx@linutronix.de>,
-        Ahmad Fatoum <a.fatoum@pengutronix.de>,
-        Wen Yang <wenyang.linux@foxmail.com>,
-        Frederic Weisbecker <frederic@kernel.org>,
+        patches@lists.linux.dev, Peng Fan <peng.fan@nxp.com>,
+        Jacky Bai <ping.bai@nxp.com>, Ye Li <ye.li@nxp.com>,
+        Abel Vesa <abel.vesa@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 590/739] tick/rcu: Fix false positive "softirq work is pending" messages
-Date:   Mon, 11 Sep 2023 15:46:29 +0200
-Message-ID: <20230911134707.581318743@linuxfoundation.org>
+Subject: [PATCH 6.1 357/600] clk: imx: pllv4: Fix SPLL2 MULT range
+Date:   Mon, 11 Sep 2023 15:46:30 +0200
+Message-ID: <20230911134644.218466902@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -54,81 +51,152 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Paul Gortmaker <paul.gortmaker@windriver.com>
+From: Ye Li <ye.li@nxp.com>
 
-[ Upstream commit 96c1fa04f089a7e977a44e4e8fdc92e81be20bef ]
+[ Upstream commit 3f0cdb945471f1abd1cf4d172190e9c489c5052a ]
 
-In commit 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle") the
-new function report_idle_softirq() was created by breaking code out of the
-existing can_stop_idle_tick() for kernels v5.18 and newer.
+The SPLL2 on iMX8ULP is different with other frac PLLs, it can
+support VCO from 650Mhz to 1Ghz. According to RM, the MULT is
+using a range from 27 to 54, not some fixed values. If using
+current PLL implementation, some clock rate can't be supported.
 
-In doing so, the code essentially went from a one conditional:
+Fix the issue by adding new type for the SPLL2 and use MULT range
+to replace MULT table
 
-	if (a && b && c)
-		warn();
-
-to a three conditional:
-
-	if (!a)
-		return;
-	if (!b)
-		return;
-	if (!c)
-		return;
-	warn();
-
-But that conversion got the condition for the RT specific
-local_bh_blocked() wrong. The original condition was:
-
-   	!local_bh_blocked()
-
-but the conversion failed to negate it so it ended up as:
-
-        if (!local_bh_blocked())
-		return false;
-
-This issue lay dormant until another fixup for the same commit was added
-in commit a7e282c77785 ("tick/rcu: Fix bogus ratelimit condition").
-This commit realized the ratelimit was essentially set to zero instead
-of ten, and hence *no* softirq pending messages would ever be issued.
-
-Once this commit was backported via linux-stable, both the v6.1 and v6.4
-preempt-rt kernels started printing out 10 instances of this at boot:
-
-  NOHZ tick-stop error: local softirq work is pending, handler #80!!!
-
-Remove the negation and return when local_bh_blocked() evaluates to true to
-bring the correct behaviour back.
-
-Fixes: 0345691b24c0 ("tick/rcu: Stop allowing RCU_SOFTIRQ in idle")
-Signed-off-by: Paul Gortmaker <paul.gortmaker@windriver.com>
-Signed-off-by: Thomas Gleixner <tglx@linutronix.de>
-Tested-by: Ahmad Fatoum <a.fatoum@pengutronix.de>
-Reviewed-by: Wen Yang <wenyang.linux@foxmail.com>
-Acked-by: Frederic Weisbecker <frederic@kernel.org>
-Link: https://lore.kernel.org/r/20230818200757.1808398-1-paul.gortmaker@windriver.com
+Fixes: 5f0601c47c33 ("clk: imx: Update the pllv4 to support imx8ulp")
+Reviewed-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Jacky Bai <ping.bai@nxp.com>
+Signed-off-by: Ye Li <ye.li@nxp.com>
+Signed-off-by: Peng Fan <peng.fan@nxp.com>
+Reviewed-by: Abel Vesa <abel.vesa@linaro.org>
+Link: https://lore.kernel.org/r/20230625123340.4067536-1-peng.fan@oss.nxp.com
+Signed-off-by: Abel Vesa <abel.vesa@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/time/tick-sched.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/imx/clk-pllv4.c | 46 +++++++++++++++++++++++++++++--------
+ drivers/clk/imx/clk.h       |  1 +
+ 2 files changed, 37 insertions(+), 10 deletions(-)
 
-diff --git a/kernel/time/tick-sched.c b/kernel/time/tick-sched.c
-index 4df14db4da490..87015e9deacc9 100644
---- a/kernel/time/tick-sched.c
-+++ b/kernel/time/tick-sched.c
-@@ -1045,7 +1045,7 @@ static bool report_idle_softirq(void)
- 		return false;
+diff --git a/drivers/clk/imx/clk-pllv4.c b/drivers/clk/imx/clk-pllv4.c
+index 6e7e34571fc8d..9b136c951762c 100644
+--- a/drivers/clk/imx/clk-pllv4.c
++++ b/drivers/clk/imx/clk-pllv4.c
+@@ -44,11 +44,15 @@ struct clk_pllv4 {
+ 	u32		cfg_offset;
+ 	u32		num_offset;
+ 	u32		denom_offset;
++	bool		use_mult_range;
+ };
  
- 	/* On RT, softirqs handling may be waiting on some lock */
--	if (!local_bh_blocked())
-+	if (local_bh_blocked())
- 		return false;
+ /* Valid PLL MULT Table */
+ static const int pllv4_mult_table[] = {33, 27, 22, 20, 17, 16};
  
- 	pr_warn("NOHZ tick-stop error: local softirq work is pending, handler #%02x!!!\n",
++/* Valid PLL MULT range, (max, min) */
++static const int pllv4_mult_range[] = {54, 27};
++
+ #define to_clk_pllv4(__hw) container_of(__hw, struct clk_pllv4, hw)
+ 
+ #define LOCK_TIMEOUT_US		USEC_PER_MSEC
+@@ -94,17 +98,30 @@ static unsigned long clk_pllv4_recalc_rate(struct clk_hw *hw,
+ static long clk_pllv4_round_rate(struct clk_hw *hw, unsigned long rate,
+ 				 unsigned long *prate)
+ {
++	struct clk_pllv4 *pll = to_clk_pllv4(hw);
+ 	unsigned long parent_rate = *prate;
+ 	unsigned long round_rate, i;
+ 	u32 mfn, mfd = DEFAULT_MFD;
+ 	bool found = false;
+ 	u64 temp64;
+-
+-	for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
+-		round_rate = parent_rate * pllv4_mult_table[i];
+-		if (rate >= round_rate) {
++	u32 mult;
++
++	if (pll->use_mult_range) {
++		temp64 = (u64)rate;
++		do_div(temp64, parent_rate);
++		mult = temp64;
++		if (mult >= pllv4_mult_range[1] &&
++		    mult <= pllv4_mult_range[0]) {
++			round_rate = parent_rate * mult;
+ 			found = true;
+-			break;
++		}
++	} else {
++		for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
++			round_rate = parent_rate * pllv4_mult_table[i];
++			if (rate >= round_rate) {
++				found = true;
++				break;
++			}
+ 		}
+ 	}
+ 
+@@ -138,14 +155,20 @@ static long clk_pllv4_round_rate(struct clk_hw *hw, unsigned long rate,
+ 	return round_rate + (u32)temp64;
+ }
+ 
+-static bool clk_pllv4_is_valid_mult(unsigned int mult)
++static bool clk_pllv4_is_valid_mult(struct clk_pllv4 *pll, unsigned int mult)
+ {
+ 	int i;
+ 
+ 	/* check if mult is in valid MULT table */
+-	for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
+-		if (pllv4_mult_table[i] == mult)
++	if (pll->use_mult_range) {
++		if (mult >= pllv4_mult_range[1] &&
++		    mult <= pllv4_mult_range[0])
+ 			return true;
++	} else {
++		for (i = 0; i < ARRAY_SIZE(pllv4_mult_table); i++) {
++			if (pllv4_mult_table[i] == mult)
++				return true;
++		}
+ 	}
+ 
+ 	return false;
+@@ -160,7 +183,7 @@ static int clk_pllv4_set_rate(struct clk_hw *hw, unsigned long rate,
+ 
+ 	mult = rate / parent_rate;
+ 
+-	if (!clk_pllv4_is_valid_mult(mult))
++	if (!clk_pllv4_is_valid_mult(pll, mult))
+ 		return -EINVAL;
+ 
+ 	if (parent_rate <= MAX_MFD)
+@@ -227,10 +250,13 @@ struct clk_hw *imx_clk_hw_pllv4(enum imx_pllv4_type type, const char *name,
+ 
+ 	pll->base = base;
+ 
+-	if (type == IMX_PLLV4_IMX8ULP) {
++	if (type == IMX_PLLV4_IMX8ULP ||
++	    type == IMX_PLLV4_IMX8ULP_1GHZ) {
+ 		pll->cfg_offset = IMX8ULP_PLL_CFG_OFFSET;
+ 		pll->num_offset = IMX8ULP_PLL_NUM_OFFSET;
+ 		pll->denom_offset = IMX8ULP_PLL_DENOM_OFFSET;
++		if (type == IMX_PLLV4_IMX8ULP_1GHZ)
++			pll->use_mult_range = true;
+ 	} else {
+ 		pll->cfg_offset = PLL_CFG_OFFSET;
+ 		pll->num_offset = PLL_NUM_OFFSET;
+diff --git a/drivers/clk/imx/clk.h b/drivers/clk/imx/clk.h
+index dd49f90110e8b..fb59131395f03 100644
+--- a/drivers/clk/imx/clk.h
++++ b/drivers/clk/imx/clk.h
+@@ -46,6 +46,7 @@ enum imx_pll14xx_type {
+ enum imx_pllv4_type {
+ 	IMX_PLLV4_IMX7ULP,
+ 	IMX_PLLV4_IMX8ULP,
++	IMX_PLLV4_IMX8ULP_1GHZ,
+ };
+ 
+ enum imx_pfdv2_type {
 -- 
 2.40.1
 
