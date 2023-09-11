@@ -2,27 +2,27 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id D008379AE96
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:21 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8971279AD7C
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:52 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355158AbjIKV5Q (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:16 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38326 "EHLO
+        id S1355520AbjIKWAV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:00:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45044 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238285AbjIKNxQ (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:53:16 -0400
+        with ESMTP id S238381AbjIKNzH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:55:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93B39CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:53:11 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D81B6C433C9;
-        Mon, 11 Sep 2023 13:53:10 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EBE6DFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:55:00 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0C2C433C7;
+        Mon, 11 Sep 2023 13:55:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440391;
-        bh=jEts0mPqEXbAXuDYlR3zoLhxeUw9Yf176uTiNfiSX0w=;
+        s=korg; t=1694440500;
+        bh=hdtwdbRmcqygL+SH95YZLjwd1R+zyFt8MFJ8Kfy9QUk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=drCIwrf5GtcpVi93rkPf5URrQch3cy7mynO2K7kanWDDCiOMLP5jxJKvgYW6zSbk7
-         5ccF4TW8nAjyo52Ndz/e83aZwN3VQfpBdFzN0xgDLq2rM2+NxT9n7zRpmGvaazsjag
-         jkJIE3n9VRFvXq3avT5aCkqqmY7YDq6aBPMCcVqE=
+        b=Fu3AFnV/zsb/meADu32cTl7s/y92w732ACJaQF7uZdrdGX7pnoQfCvzik7rBfh0lc
+         jSH7/8CuLqA1SjyiDhJm6lVT6OwUL32c5WRG+kTxOj6k/7T7mjs3QOk4CApAPus9hV
+         XSAinABfuPVwkXpZbgrdW9HrOcuD0/UdqSLu39C4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
@@ -30,9 +30,9 @@ Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         Ingo Franzki <ifranzki@linux.ibm.com>,
         Heiko Carstens <hca@linux.ibm.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 044/739] s390/pkey: fix/harmonize internal keyblob headers
-Date:   Mon, 11 Sep 2023 15:37:23 +0200
-Message-ID: <20230911134652.349810478@linuxfoundation.org>
+Subject: [PATCH 6.5 047/739] s390/pkey: fix PKEY_TYPE_EP11_AES handling in PKEY_KBLOB2PROTK[23]
+Date:   Mon, 11 Sep 2023 15:37:26 +0200
+Message-ID: <20230911134652.435140561@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
 References: <20230911134650.921299741@linuxfoundation.org>
@@ -57,18 +57,26 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Holger Dengler <dengler@linux.ibm.com>
 
-[ Upstream commit 37a08f010b7c423b5e4c9ed3b187d21166553007 ]
+[ Upstream commit d1fdfb0b2f339cf882c0b5431084a1950b8b73b9 ]
 
 Commit 'fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC
-private keys")' introduced PKEY_TYPE_EP11_AES as a supplement to
-PKEY_TYPE_EP11. All pkeys have an internal header/payload structure,
-which is opaque to the userspace. The header structures for
-PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES are nearly identical and there
-is no reason, why different structures are used. In preparation to fix
-the keyversion handling in the broken PKEY IOCTLs, the same header
-structure is used for PKEY_TYPE_EP11 and PKEY_TYPE_EP11_AES. This
-reduces the number of different code paths and increases the
-readability.
+private keys")' introduced a new PKEY_TYPE_EP11_AES type for the
+PKEY_KBLOB2PROTK2 and a new IOCTL, PKEY_KBLOB2PROTK3, which both
+allows userspace to convert opaque securekey blobs of this type into
+protectedkey blobs. Unfortunately, all PKEY_KBLOB2PROTK2 and
+PKEY_KBLOB2PROTK3 IOCTL requests with this keyblobs of this type
+return with an error (-EINVAL). Fix PKEY_TYPE_EP11_AES handling in
+PKEY_KBLOB2PROTK2 and PKEY_KBLOB2PROTK3 IOCTLs, so that userspace can
+convert PKEY_TYPE_EP11_AES keyblobs into protectedkey blobs.
+
+Add a helper function to decode the start and size of the internal
+header as well as start and size of the keyblob payload of an existing
+keyblob. Also validate the length of header and keyblob, as well as
+the keyblob magic.
+
+Introduce another helper function, which handles a raw key wrapping
+request and do the keyblob decoding in the calling function. Remove
+all other header-related calculations.
 
 Fixes: fa6999e326fe ("s390/pkey: support CCA and EP11 secure ECC private keys")
 Signed-off-by: Holger Dengler <dengler@linux.ibm.com>
@@ -76,66 +84,320 @@ Reviewed-by: Ingo Franzki <ifranzki@linux.ibm.com>
 Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/s390/crypto/pkey_api.c        | 2 +-
- drivers/s390/crypto/zcrypt_ep11misc.c | 4 ++--
- drivers/s390/crypto/zcrypt_ep11misc.h | 9 +--------
- 3 files changed, 4 insertions(+), 11 deletions(-)
+ drivers/s390/crypto/pkey_api.c        |  33 +++----
+ drivers/s390/crypto/zcrypt_ep11misc.c | 123 ++++++++++++++++----------
+ drivers/s390/crypto/zcrypt_ep11misc.h |   6 ++
+ 3 files changed, 100 insertions(+), 62 deletions(-)
 
 diff --git a/drivers/s390/crypto/pkey_api.c b/drivers/s390/crypto/pkey_api.c
-index e58bfd2253231..ba8581e0809cd 100644
+index 7543757c82e2e..75d7f0d5f14ef 100644
 --- a/drivers/s390/crypto/pkey_api.c
 +++ b/drivers/s390/crypto/pkey_api.c
-@@ -895,7 +895,7 @@ static int pkey_verifykey2(const u8 *key, size_t keylen,
- 		if (ktype)
- 			*ktype = PKEY_TYPE_EP11;
- 		if (ksize)
--			*ksize = kb->head.keybitlen;
-+			*ksize = kb->head.bitlen;
+@@ -288,10 +288,9 @@ static int pkey_clr2ep11key(const u8 *clrkey, size_t clrkeylen,
+ /*
+  * Find card and transform EP11 secure key into protected key.
+  */
+-static int pkey_ep11key2pkey(const u8 *key, u8 *protkey,
+-			     u32 *protkeylen, u32 *protkeytype)
++static int pkey_ep11key2pkey(const u8 *key, size_t keylen,
++			     u8 *protkey, u32 *protkeylen, u32 *protkeytype)
+ {
+-	struct ep11keyblob *kb = (struct ep11keyblob *)key;
+ 	u32 nr_apqns, *apqns = NULL;
+ 	u16 card, dom;
+ 	int i, rc;
+@@ -300,7 +299,8 @@ static int pkey_ep11key2pkey(const u8 *key, u8 *protkey,
  
- 		rc = ep11_findcard2(&_apqns, &_nr_apqns, *cardnr, *domain,
- 				    ZCRYPT_CEX7, EP11_API_V, kb->wkvp);
+ 	/* build a list of apqns suitable for this key */
+ 	rc = ep11_findcard2(&apqns, &nr_apqns, 0xFFFF, 0xFFFF,
+-			    ZCRYPT_CEX7, EP11_API_V, kb->wkvp);
++			    ZCRYPT_CEX7, EP11_API_V,
++			    ep11_kb_wkvp(key, keylen));
+ 	if (rc)
+ 		goto out;
+ 
+@@ -308,7 +308,7 @@ static int pkey_ep11key2pkey(const u8 *key, u8 *protkey,
+ 	for (rc = -ENODEV, i = 0; i < nr_apqns; i++) {
+ 		card = apqns[i] >> 16;
+ 		dom = apqns[i] & 0xFFFF;
+-		rc = ep11_kblob2protkey(card, dom, key, kb->head.len,
++		rc = ep11_kblob2protkey(card, dom, key, keylen,
+ 					protkey, protkeylen, protkeytype);
+ 		if (rc == 0)
+ 			break;
+@@ -496,7 +496,7 @@ static int nonccatokaes2pkey(const struct clearkeytoken *t,
+ 			      tmpbuf, &tmpbuflen);
+ 	if (rc)
+ 		goto failure;
+-	rc = pkey_ep11key2pkey(tmpbuf,
++	rc = pkey_ep11key2pkey(tmpbuf, tmpbuflen,
+ 			       protkey, protkeylen, protkeytype);
+ 	if (!rc)
+ 		goto out;
+@@ -612,7 +612,7 @@ static int pkey_nonccatok2pkey(const u8 *key, u32 keylen,
+ 		rc = ep11_check_aes_key(debug_info, 3, key, keylen, 1);
+ 		if (rc)
+ 			goto out;
+-		rc = pkey_ep11key2pkey(key,
++		rc = pkey_ep11key2pkey(key, keylen,
+ 				       protkey, protkeylen, protkeytype);
+ 		break;
+ 	}
+@@ -621,7 +621,7 @@ static int pkey_nonccatok2pkey(const u8 *key, u32 keylen,
+ 		rc = ep11_check_aes_key_with_hdr(debug_info, 3, key, keylen, 1);
+ 		if (rc)
+ 			goto out;
+-		rc = pkey_ep11key2pkey(key + sizeof(struct ep11kblob_header),
++		rc = pkey_ep11key2pkey(key, keylen,
+ 				       protkey, protkeylen, protkeytype);
+ 		break;
+ 	default:
+@@ -963,10 +963,12 @@ static int pkey_keyblob2pkey2(const struct pkey_apqn *apqns, size_t nr_apqns,
+ 		}
+ 	} else if (hdr->type == TOKTYPE_NON_CCA) {
+ 		if (hdr->version == TOKVER_EP11_AES) {
+-			if (keylen < sizeof(struct ep11keyblob))
+-				return -EINVAL;
+ 			if (ep11_check_aes_key(debug_info, 3, key, keylen, 1))
+ 				return -EINVAL;
++		} else if (hdr->version == TOKVER_EP11_AES_WITH_HEADER) {
++			if (ep11_check_aes_key_with_hdr(debug_info, 3,
++							key, keylen, 1))
++				return -EINVAL;
+ 		} else {
+ 			return pkey_nonccatok2pkey(key, keylen,
+ 						   protkey, protkeylen,
+@@ -994,10 +996,7 @@ static int pkey_keyblob2pkey2(const struct pkey_apqn *apqns, size_t nr_apqns,
+ 						protkey, protkeylen,
+ 						protkeytype);
+ 		} else {
+-			/* EP11 AES secure key blob */
+-			struct ep11keyblob *kb = (struct ep11keyblob *)key;
+-
+-			rc = ep11_kblob2protkey(card, dom, key, kb->head.len,
++			rc = ep11_kblob2protkey(card, dom, key, keylen,
+ 						protkey, protkeylen,
+ 						protkeytype);
+ 		}
+@@ -1257,12 +1256,14 @@ static int pkey_keyblob2pkey3(const struct pkey_apqn *apqns, size_t nr_apqns,
+ 		     hdr->version == TOKVER_EP11_ECC_WITH_HEADER) &&
+ 		    is_ep11_keyblob(key + sizeof(struct ep11kblob_header)))
+ 			rc = ep11_kblob2protkey(card, dom, key, hdr->len,
+-						protkey, protkeylen, protkeytype);
++						protkey, protkeylen,
++						protkeytype);
+ 		else if (hdr->type == TOKTYPE_NON_CCA &&
+ 			 hdr->version == TOKVER_EP11_AES &&
+ 			 is_ep11_keyblob(key))
+ 			rc = ep11_kblob2protkey(card, dom, key, hdr->len,
+-						protkey, protkeylen, protkeytype);
++						protkey, protkeylen,
++						protkeytype);
+ 		else if (hdr->type == TOKTYPE_CCA_INTERNAL &&
+ 			 hdr->version == TOKVER_CCA_AES)
+ 			rc = cca_sec2protkey(card, dom, key, protkey,
 diff --git a/drivers/s390/crypto/zcrypt_ep11misc.c b/drivers/s390/crypto/zcrypt_ep11misc.c
-index 958f5ee47f1b0..d7ecd6ce5b7a7 100644
+index 355d30bc0aac8..669ad6f5d5b07 100644
 --- a/drivers/s390/crypto/zcrypt_ep11misc.c
 +++ b/drivers/s390/crypto/zcrypt_ep11misc.c
-@@ -787,7 +787,7 @@ int ep11_genaeskey(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
- 	kb->head.type = TOKTYPE_NON_CCA;
- 	kb->head.len = rep_pl->data_len;
- 	kb->head.version = TOKVER_EP11_AES;
--	kb->head.keybitlen = keybitsize;
-+	kb->head.bitlen = keybitsize;
+@@ -157,6 +157,65 @@ static int ep11_kb_split(const u8 *kb, size_t kblen, u32 kbver,
+ 	return rc;
+ }
  
- out:
- 	kfree(req);
-@@ -1055,7 +1055,7 @@ static int ep11_unwrapkey(u16 card, u16 domain,
- 	kb->head.type = TOKTYPE_NON_CCA;
- 	kb->head.len = rep_pl->data_len;
- 	kb->head.version = TOKVER_EP11_AES;
--	kb->head.keybitlen = keybitsize;
-+	kb->head.bitlen = keybitsize;
++static int ep11_kb_decode(const u8 *kb, size_t kblen,
++			  struct ep11kblob_header **kbhdr, size_t *kbhdrsize,
++			  struct ep11keyblob **kbpl, size_t *kbplsize)
++{
++	struct ep11kblob_header *tmph, *hdr = NULL;
++	size_t hdrsize = 0, plsize = 0;
++	struct ep11keyblob *pl = NULL;
++	int rc = -EINVAL;
++	u8 *tmpp;
++
++	if (kblen < sizeof(struct ep11kblob_header))
++		goto out;
++	tmph = (struct ep11kblob_header *)kb;
++
++	if (tmph->type != TOKTYPE_NON_CCA &&
++	    tmph->len > kblen)
++		goto out;
++
++	if (ep11_kb_split(kb, kblen, tmph->version,
++			  &hdr, &hdrsize, &tmpp, &plsize))
++		goto out;
++
++	if (plsize < sizeof(struct ep11keyblob))
++		goto out;
++
++	if (!is_ep11_keyblob(tmpp))
++		goto out;
++
++	pl = (struct ep11keyblob *)tmpp;
++	plsize = hdr->len - hdrsize;
++
++	if (kbhdr)
++		*kbhdr = hdr;
++	if (kbhdrsize)
++		*kbhdrsize = hdrsize;
++	if (kbpl)
++		*kbpl = pl;
++	if (kbplsize)
++		*kbplsize = plsize;
++
++	rc = 0;
++out:
++	return rc;
++}
++
++/*
++ * For valid ep11 keyblobs, returns a reference to the wrappingkey verification
++ * pattern. Otherwise NULL.
++ */
++const u8 *ep11_kb_wkvp(const u8 *keyblob, size_t keybloblen)
++{
++	struct ep11keyblob *kb;
++
++	if (ep11_kb_decode(keyblob, keybloblen, NULL, NULL, &kb, NULL))
++		return NULL;
++	return kb->wkvp;
++}
++EXPORT_SYMBOL(ep11_kb_wkvp);
++
+ /*
+  * Simple check if the key blob is a valid EP11 AES key blob with header.
+  */
+@@ -1170,10 +1229,10 @@ static int ep11_unwrapkey(u16 card, u16 domain,
+ 	return 0;
+ }
  
- out:
- 	kfree(req);
+-static int ep11_wrapkey(u16 card, u16 domain,
+-			const u8 *key, size_t keysize,
+-			u32 mech, const u8 *iv,
+-			u8 *databuf, size_t *datasize)
++static int _ep11_wrapkey(u16 card, u16 domain,
++			 const u8 *key, size_t keysize,
++			 u32 mech, const u8 *iv,
++			 u8 *databuf, size_t *datasize)
+ {
+ 	struct wk_req_pl {
+ 		struct pl_head head;
+@@ -1203,20 +1262,10 @@ static int ep11_wrapkey(u16 card, u16 domain,
+ 	struct ep11_cprb *req = NULL, *rep = NULL;
+ 	struct ep11_target_dev target;
+ 	struct ep11_urb *urb = NULL;
+-	struct ep11keyblob *kb;
+ 	size_t req_pl_size;
+ 	int api, rc = -ENOMEM;
+-	bool has_header = false;
+ 	u8 *p;
+ 
+-	/* maybe the session field holds a header with key info */
+-	kb = (struct ep11keyblob *)key;
+-	if (kb->head.type == TOKTYPE_NON_CCA &&
+-	    kb->head.version == TOKVER_EP11_AES) {
+-		has_header = true;
+-		keysize = min_t(size_t, kb->head.len, keysize);
+-	}
+-
+ 	/* request cprb and payload */
+ 	req_pl_size = sizeof(struct wk_req_pl) + (iv ? 16 : 0)
+ 		+ ASN1TAGLEN(keysize) + 4;
+@@ -1241,11 +1290,6 @@ static int ep11_wrapkey(u16 card, u16 domain,
+ 	}
+ 	/* key blob */
+ 	p += asn1tag_write(p, 0x04, key, keysize);
+-	/* maybe the key argument needs the head data cleaned out */
+-	if (has_header) {
+-		kb = (struct ep11keyblob *)(p - keysize);
+-		memset(&kb->head, 0, sizeof(kb->head));
+-	}
+ 	/* empty kek tag */
+ 	*p++ = 0x04;
+ 	*p++ = 0;
+@@ -1366,11 +1410,12 @@ int ep11_clr2keyblob(u16 card, u16 domain, u32 keybitsize, u32 keygenflags,
+ }
+ EXPORT_SYMBOL(ep11_clr2keyblob);
+ 
+-int ep11_kblob2protkey(u16 card, u16 dom, const u8 *keyblob, size_t keybloblen,
++int ep11_kblob2protkey(u16 card, u16 dom,
++		       const u8 *keyblob, size_t keybloblen,
+ 		       u8 *protkey, u32 *protkeylen, u32 *protkeytype)
+ {
+-	int rc = -EIO;
+-	u8 *wkbuf = NULL;
++	struct ep11kblob_header *hdr;
++	struct ep11keyblob *key;
+ 	size_t wkbuflen, keylen;
+ 	struct wk_info {
+ 		u16 version;
+@@ -1381,31 +1426,17 @@ int ep11_kblob2protkey(u16 card, u16 dom, const u8 *keyblob, size_t keybloblen,
+ 		u8  res2[8];
+ 		u8  pkey[];
+ 	} __packed * wki;
+-	const u8 *key;
+-	struct ep11kblob_header *hdr;
++	u8 *wkbuf = NULL;
++	int rc = -EIO;
+ 
+-	/* key with or without header ? */
+-	hdr = (struct ep11kblob_header *)keyblob;
+-	if (hdr->type == TOKTYPE_NON_CCA &&
+-	    (hdr->version == TOKVER_EP11_AES_WITH_HEADER ||
+-	     hdr->version == TOKVER_EP11_ECC_WITH_HEADER) &&
+-	    is_ep11_keyblob(keyblob + sizeof(struct ep11kblob_header))) {
+-		/* EP11 AES or ECC key with header */
+-		key = keyblob + sizeof(struct ep11kblob_header);
+-		keylen = hdr->len - sizeof(struct ep11kblob_header);
+-	} else if (hdr->type == TOKTYPE_NON_CCA &&
+-		   hdr->version == TOKVER_EP11_AES &&
+-		   is_ep11_keyblob(keyblob)) {
+-		/* EP11 AES key (old style) */
+-		key = keyblob;
+-		keylen = hdr->len;
+-	} else if (is_ep11_keyblob(keyblob)) {
+-		/* raw EP11 key blob */
+-		key = keyblob;
+-		keylen = keybloblen;
+-	} else {
++	if (ep11_kb_decode((u8 *)keyblob, keybloblen, &hdr, NULL, &key, &keylen))
+ 		return -EINVAL;
++
++	if (hdr->version == TOKVER_EP11_AES) {
++		/* wipe overlayed header */
++		memset(hdr, 0, sizeof(*hdr));
+ 	}
++	/* !!! hdr is no longer a valid header !!! */
+ 
+ 	/* alloc temp working buffer */
+ 	wkbuflen = (keylen + AES_BLOCK_SIZE) & (~(AES_BLOCK_SIZE - 1));
+@@ -1414,8 +1445,8 @@ int ep11_kblob2protkey(u16 card, u16 dom, const u8 *keyblob, size_t keybloblen,
+ 		return -ENOMEM;
+ 
+ 	/* ep11 secure key -> protected key + info */
+-	rc = ep11_wrapkey(card, dom, key, keylen,
+-			  0, def_iv, wkbuf, &wkbuflen);
++	rc = _ep11_wrapkey(card, dom, (u8 *)key, keylen,
++			   0, def_iv, wkbuf, &wkbuflen);
+ 	if (rc) {
+ 		DEBUG_ERR(
+ 			"%s rewrapping ep11 key to pkey failed, rc=%d\n",
 diff --git a/drivers/s390/crypto/zcrypt_ep11misc.h b/drivers/s390/crypto/zcrypt_ep11misc.h
-index a3eddf51242da..67cc80d71ba3b 100644
+index b611cf64231d5..a0de1cccebbe0 100644
 --- a/drivers/s390/crypto/zcrypt_ep11misc.h
 +++ b/drivers/s390/crypto/zcrypt_ep11misc.h
-@@ -29,14 +29,7 @@ struct ep11keyblob {
- 	union {
- 		u8 session[32];
- 		/* only used for PKEY_TYPE_EP11: */
--		struct {
--			u8  type;      /* 0x00 (TOKTYPE_NON_CCA) */
--			u8  res0;      /* unused */
--			u16 len;       /* total length in bytes of this blob */
--			u8  version;   /* 0x03 (TOKVER_EP11_AES) */
--			u8  res1;      /* unused */
--			u16 keybitlen; /* clear key bit len, 0 for unknown */
--		} head;
-+		struct ep11kblob_header head;
- 	};
- 	u8  wkvp[16];  /* wrapping key verification pattern */
- 	u64 attr;      /* boolean key attributes */
+@@ -48,6 +48,12 @@ static inline bool is_ep11_keyblob(const u8 *key)
+ 	return (kb->version == EP11_STRUCT_MAGIC);
+ }
+ 
++/*
++ * For valid ep11 keyblobs, returns a reference to the wrappingkey verification
++ * pattern. Otherwise NULL.
++ */
++const u8 *ep11_kb_wkvp(const u8 *kblob, size_t kbloblen);
++
+ /*
+  * Simple check if the key blob is a valid EP11 AES key blob with header.
+  * If checkcpacfexport is enabled, the key is also checked for the
 -- 
 2.40.1
 
