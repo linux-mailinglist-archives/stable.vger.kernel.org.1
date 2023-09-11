@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BC1A779B7FD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:49 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D367579B899
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:43 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239518AbjIKWjU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:39:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33790 "EHLO
+        id S1345616AbjIKVVi (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:21:38 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:60518 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240880AbjIKO4T (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:56:19 -0400
+        with ESMTP id S239668AbjIKOZz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8ED54DC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:56:15 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D32C2C433C7;
-        Mon, 11 Sep 2023 14:56:14 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 604ABDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:51 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A914AC433C8;
+        Mon, 11 Sep 2023 14:25:50 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444175;
-        bh=2mJeSsA24BRslvpdi2mToUVRmDy3E7jBf6HqIrLRRW4=;
+        s=korg; t=1694442351;
+        bh=1KTjkPdT9unbvvmN7zAnG3a8e16zqtCtDyrlHCmNzlk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=be42FQT0gNvN2I8sJtGsOivJ8F0fLt9SL2p17eZ999PEjHDPyNbS3zMs18ewHHMwC
-         RJjvvRIESF+gViwpduZfnzbMSv2Ye1CWFkv0iR2XQkFGsI9snntjmgOJUcMgAuHLTY
-         IjSGe4SD4wAcdor2CzTp/vGyngBRpEeKvmI5RTmU=
+        b=rdw7ZJ3Ks2hlZrZGe9EEcai0ULENNF2TVkcBkmOVTsvnNvziuMcPFJd0IN07XBG+K
+         lvaO6L//lvlq9F6qeYh2dBplpZM2+ObhOByv19NF9uidrBMhhKfib6gTds4hI22Z2U
+         rXNMRNV+RF68LJ8raEh2fCM21cjytUCmHMnhTW6c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jozsef Kadlecsik <kadlec@netfilter.org>,
-        Kyle Zeng <zengyhkyle@gmail.com>,
-        Florian Westphal <fw@strlen.de>
-Subject: [PATCH 6.4 636/737] netfilter: ipset: add the missing IP_SET_HASH_WITH_NET0 macro for ip_set_hash_netportnet.c
+        patches@lists.linux.dev, stable <stable@kernel.org>,
+        Ekansh Gupta <quic_ekangupt@quicinc.com>,
+        Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Subject: [PATCH 6.5 696/739] misc: fastrpc: Pass proper scm arguments for static process init
 Date:   Mon, 11 Sep 2023 15:48:15 +0200
-Message-ID: <20230911134708.297167920@linuxfoundation.org>
+Message-ID: <20230911134710.534219907@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,40 +50,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kyle Zeng <zengyhkyle@gmail.com>
+From: Ekansh Gupta <quic_ekangupt@quicinc.com>
 
-commit 050d91c03b28ca479df13dfb02bcd2c60dd6a878 upstream.
+commit fe6518d547fc52ba74201018dc9aeb364072ac78 upstream.
 
-The missing IP_SET_HASH_WITH_NET0 macro in ip_set_hash_netportnet can
-lead to the use of wrong `CIDR_POS(c)` for calculating array offsets,
-which can lead to integer underflow. As a result, it leads to slab
-out-of-bound access.
-This patch adds back the IP_SET_HASH_WITH_NET0 macro to
-ip_set_hash_netportnet to address the issue.
+Memory is allocated for dynamic loading when audio daemon is trying
+to attach to audioPD on DSP side. This memory is allocated from
+reserved CMA memory region and needs ownership assignment to
+new VMID in order to use it from audioPD.
 
-Fixes: 886503f34d63 ("netfilter: ipset: actually allow allowable CIDR 0 in hash:net,port,net")
-Suggested-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Kyle Zeng <zengyhkyle@gmail.com>
-Acked-by: Jozsef Kadlecsik <kadlec@netfilter.org>
-Signed-off-by: Florian Westphal <fw@strlen.de>
+In the current implementation, arguments are not correctly passed
+to the scm call which might result in failure of dynamic loading
+on audioPD. Added changes to pass correct arguments during daemon
+attach request.
+
+Fixes: 0871561055e6 ("misc: fastrpc: Add support for audiopd")
+Cc: stable <stable@kernel.org>
+Tested-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Ekansh Gupta <quic_ekangupt@quicinc.com>
+Signed-off-by: Srinivas Kandagatla <srinivas.kandagatla@linaro.org>
+Link: https://lore.kernel.org/r/20230811115643.38578-4-srinivas.kandagatla@linaro.org
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/ipset/ip_set_hash_netportnet.c |    1 +
- 1 file changed, 1 insertion(+)
+ drivers/misc/fastrpc.c |   13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
 
---- a/net/netfilter/ipset/ip_set_hash_netportnet.c
-+++ b/net/netfilter/ipset/ip_set_hash_netportnet.c
-@@ -36,6 +36,7 @@ MODULE_ALIAS("ip_set_hash:net,port,net")
- #define IP_SET_HASH_WITH_PROTO
- #define IP_SET_HASH_WITH_NETS
- #define IPSET_NET_COUNT 2
-+#define IP_SET_HASH_WITH_NET0
+--- a/drivers/misc/fastrpc.c
++++ b/drivers/misc/fastrpc.c
+@@ -1322,13 +1322,18 @@ static int fastrpc_init_create_static_pr
+ 	return 0;
+ err_invoke:
+ 	if (fl->cctx->vmcount) {
+-		struct qcom_scm_vmperm perm;
++		u64 src_perms = 0;
++		struct qcom_scm_vmperm dst_perms;
++		u32 i;
  
- /* IPv4 variant */
- 
+-		perm.vmid = QCOM_SCM_VMID_HLOS;
+-		perm.perm = QCOM_SCM_PERM_RWX;
++		for (i = 0; i < fl->cctx->vmcount; i++)
++			src_perms |= BIT(fl->cctx->vmperms[i].vmid);
++
++		dst_perms.vmid = QCOM_SCM_VMID_HLOS;
++		dst_perms.perm = QCOM_SCM_PERM_RWX;
+ 		err = qcom_scm_assign_mem(fl->cctx->remote_heap->phys,
+ 						(u64)fl->cctx->remote_heap->size,
+-						&fl->cctx->perms, &perm, 1);
++						&src_perms, &dst_perms, 1);
+ 		if (err)
+ 			dev_err(fl->sctx->dev, "Failed to assign memory phys 0x%llx size 0x%llx err %d",
+ 				fl->cctx->remote_heap->phys, fl->cctx->remote_heap->size, err);
 
 
