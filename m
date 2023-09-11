@@ -2,95 +2,68 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E462479B19F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 6F04779AD57
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238501AbjIKV4r (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:56:47 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43296 "EHLO
+        id S237031AbjIKUxH (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:53:07 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S235439AbjIKIii (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 04:38:38 -0400
-Received: from mail-wm1-x331.google.com (mail-wm1-x331.google.com [IPv6:2a00:1450:4864:20::331])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E113FB;
-        Mon, 11 Sep 2023 01:38:34 -0700 (PDT)
-Received: by mail-wm1-x331.google.com with SMTP id 5b1f17b1804b1-403012f27e3so20586915e9.3;
-        Mon, 11 Sep 2023 01:38:34 -0700 (PDT)
+        with ESMTP id S235567AbjIKJAU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 05:00:20 -0400
+Received: from mail-pl1-x632.google.com (mail-pl1-x632.google.com [IPv6:2607:f8b0:4864:20::632])
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 342D91BE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 02:00:16 -0700 (PDT)
+Received: by mail-pl1-x632.google.com with SMTP id d9443c01a7336-1c364fb8a4cso38172255ad.1
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 02:00:16 -0700 (PDT)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=gmail.com; s=20221208; t=1694421512; x=1695026312; darn=vger.kernel.org;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :from:to:cc:subject:date:message-id:reply-to;
-        bh=IzAAzxJ2/qwV8UAbsiMaPaxKMg9rNmfMbdZJFqC9hfc=;
-        b=LkGMuu/zSlDBIt+rA29tCfPdQ1nLg+vDlGmJO3APL2Y3WBb3tfuekQvlnw6gNI1zti
-         QLQDGg6E7RS30DnB/5Sd9t1vownDvLcvbNThXRZEkH1dmRlPyvoYAXLOxoiqBv24+nAz
-         4O1I9mPBfJPr6szYDlGpG134p9AZhuYs6b7PUoJUU9xYyXmnOlYErkBLca27VUo37Ku/
-         xd/pa80iS317gFdMy5fFdN66QTKPgTNBnlLq9TmLkjOOCVhviC8g9k8EYnEuQXcUXW0F
-         MguOquE+gK78A579ABqH2ZuEbJno5lv1JeS515k2XsnAAa1poN+RQEO+2FwpxdXlN/iP
-         nYOg==
+        d=kernelci-org.20230601.gappssmtp.com; s=20230601; t=1694422815; x=1695027615; darn=vger.kernel.org;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:from:to:cc:subject:date:message-id:reply-to;
+        bh=pQ7We+2wtCKTJ5VHPfkCIGjZi5044OwfR4cR8rIKrL0=;
+        b=FsxUzcQ+/UlRd2b1laxIo6G0sNrlYcQ4yY1LtS4n8FCpJcG3WlBNwDGckNNygQIYwb
+         Bly3KpTwG7zYG2kBtQnDok8ri7XyuxZDAM+KCbcdsYoqOw8/1MydUQEjJHZNWuVWKWFM
+         2rHxyJD2IszTz9gtK4eUG2VcjaTRtmbpV3NRrE/V3vrS7YIzBknbSYHpdT70zOqTTnaD
+         TLapRshxFXNw3B9nikeHuuYQEKb8uYcwg6u/d7+hrH25nRCmhXQSG38/asoIsNalfpn+
+         fcIKoDTSyVKEJmqYHBOtGGJksFON1eGQ6CUS/4/0qdvtFTyyhQmzfjg53fXCBNkDOT5z
+         BajA==
 X-Google-DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/relaxed;
-        d=1e100.net; s=20230601; t=1694421512; x=1695026312;
-        h=content-transfer-encoding:in-reply-to:from:references:cc:to
-         :content-language:subject:user-agent:mime-version:date:message-id
-         :x-gm-message-state:from:to:cc:subject:date:message-id:reply-to;
-        bh=IzAAzxJ2/qwV8UAbsiMaPaxKMg9rNmfMbdZJFqC9hfc=;
-        b=tpHLS2OAWVCS9AMajMQ2dEtOF8sycrDsq+QTl9E66rvvzde1GpFnA+oVgMCu4hr950
-         EeKuYhYN5zmgYsWmTgqP++BTCKt9BEpEQTCrBkBq8UeYRx2ksK6E7nKlC8R6nHiJUCFV
-         Uwo9buT+utEkT86TRbCHYIL5ZEPEeXQiR8WGHxccAHwuK0IGrNB3Ko5fpyoHspt7nHu4
-         60A4gYtVIViX4n68DjD34Vlbc6TYUo++EcU2pp/TP8Aje6bxuB43BCzMRM1ATbft8B6P
-         Qf6fOH4Vooospn8LAPUY4wY45Tsu8++PwoHTnJxj6OmztwuCcTXv6GZt/Pm2C9rC9PVb
-         sy8Q==
-X-Gm-Message-State: AOJu0YwFqwQ/DA1YU5JzyjYp7AlLKbH0HdF2Mh5z6rvfbjiHz2+Fw6Jc
-        e6noQZBOPehYxoSstmz62e4zeL8YDnU=
-X-Google-Smtp-Source: AGHT+IHFH7KA+JlC4Lt7zEKfI4KHK/qBztjiFLfdMwJ7X3YiIAf096t+NBCxHj5pLdAgpIpI7wO/gQ==
-X-Received: by 2002:a7b:cc95:0:b0:3f8:fc2a:c7eb with SMTP id p21-20020a7bcc95000000b003f8fc2ac7ebmr7501080wma.5.1694421512045;
-        Mon, 11 Sep 2023 01:38:32 -0700 (PDT)
-Received: from [10.254.108.106] (munvpn.amd.com. [165.204.72.6])
-        by smtp.gmail.com with ESMTPSA id p13-20020adff20d000000b003176eab8868sm9459783wro.82.2023.09.11.01.38.29
-        (version=TLS1_3 cipher=TLS_AES_128_GCM_SHA256 bits=128/128);
-        Mon, 11 Sep 2023 01:38:31 -0700 (PDT)
-Message-ID: <2c097494-0854-3769-fb46-0f3fa59e06cb@gmail.com>
-Date:   Mon, 11 Sep 2023 10:38:28 +0200
+        d=1e100.net; s=20230601; t=1694422815; x=1695027615;
+        h=from:to:subject:content-transfer-encoding:mime-version:date
+         :message-id:x-gm-message-state:from:to:cc:subject:date:message-id
+         :reply-to;
+        bh=pQ7We+2wtCKTJ5VHPfkCIGjZi5044OwfR4cR8rIKrL0=;
+        b=CbJgZkvFMBiM9owtinzwN1Puh5sPMo6aivC6Jp+V5Bu9x2xVQs4i4M/Ml+LDRLm/4o
+         la8reqWFQXrnpzqTuDueGe9YajtDokgW9fBH2l2KkW0msQCAQVGs4DrFMQSj4sjYiDue
+         N6SvV6UW1U9VXRVweeFDSeYWn27EBWOzZyxe4RpWZ2KABcboSxfxu08VLdiR0ZJvu7Q2
+         jcmNw26CB7ra57HiSfwYtVFw+8hHoJbZNNH3XUpl+44EwM0ToaPmG5+dEsGdf6JICgd/
+         Q8i2oEJyuHQJyLUFrGeYgZ5A1dZXokmDWbFowjsPXggil4yCzdkjx6PZyYd0lCenG0GM
+         DfBA==
+X-Gm-Message-State: AOJu0Yxz4VOZ6dnx7T+SJPo8NUXvq8dUKFyYXpyAEy12V5DlOUx9d9iS
+        5feky09QCqpmvWSqAMUmzinLymOaJK1lcI3jb9o=
+X-Google-Smtp-Source: AGHT+IHOH6ai5pqMbNb1/hs8QgD+n4iEo8HrlDHPHhc7UbqNsCjVkIcuqA5qxszIitBRxpJx2veazw==
+X-Received: by 2002:a17:903:41cf:b0:1b8:6a09:9cf9 with SMTP id u15-20020a17090341cf00b001b86a099cf9mr11956393ple.26.1694422814934;
+        Mon, 11 Sep 2023 02:00:14 -0700 (PDT)
+Received: from kernelci-production.internal.cloudapp.net ([20.171.243.82])
+        by smtp.gmail.com with ESMTPSA id u1-20020a170902e80100b001bc445e2497sm5882809plg.79.2023.09.11.02.00.13
+        (version=TLS1_3 cipher=TLS_AES_256_GCM_SHA384 bits=256/256);
+        Mon, 11 Sep 2023 02:00:14 -0700 (PDT)
+Message-ID: <64fed71e.170a0220.df3f3.e009@mx.google.com>
+Date:   Mon, 11 Sep 2023 02:00:14 -0700 (PDT)
+Content-Type: text/plain; charset="utf-8"
 MIME-Version: 1.0
-User-Agent: Mozilla/5.0 (X11; Linux x86_64; rv:102.0) Gecko/20100101
- Thunderbird/102.15.0
-Subject: Re: [PATCH v2 1/2] drm/amd/display: fix the white screen issue when
- >= 64GB DRAM
-Content-Language: en-US
-To:     Hamza Mahfooz <hamza.mahfooz@amd.com>,
-        amd-gfx@lists.freedesktop.org
-Cc:     Alan Liu <haoping.liu@amd.com>, Lijo Lazar <lijo.lazar@amd.com>,
-        dri-devel@lists.freedesktop.org,
-        Mario Limonciello <mario.limonciello@amd.com>,
-        David Airlie <airlied@gmail.com>,
-        Shashank Sharma <shashank.sharma@amd.com>,
-        Rodrigo Siqueira <Rodrigo.Siqueira@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Qingqing Zhuo <Qingqing.Zhuo@amd.com>,
-        Harry Wentland <harry.wentland@amd.com>,
-        Stylon Wang <stylon.wang@amd.com>,
-        Victor Zhao <Victor.Zhao@amd.com>,
-        Srinivasan Shanmugam <srinivasan.shanmugam@amd.com>,
-        Leo Li <sunpeng.li@amd.com>,
-        Maarten Lankhorst <maarten.lankhorst@linux.intel.com>,
-        Le Ma <le.ma@amd.com>, Hersen Wu <hersenxs.wu@amd.com>,
-        Yifan Zhang <yifan1.zhang@amd.com>,
-        Felix Kuehling <felix.kuehling@amd.com>,
-        "Pan, Xinhui" <Xinhui.Pan@amd.com>, linux-kernel@vger.kernel.org,
-        stable@vger.kernel.org, Hawking Zhang <Hawking.Zhang@amd.com>,
-        Daniel Vetter <daniel@ffwll.ch>, Wayne Lin <wayne.lin@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Candice Li <candice.li@amd.com>, Lang Yu <Lang.Yu@amd.com>,
-        =?UTF-8?Q?Christian_K=c3=b6nig?= <christian.koenig@amd.com>,
-        Luben Tuikov <luben.tuikov@amd.com>
-References: <20230908145521.39044-1-hamza.mahfooz@amd.com>
-From:   =?UTF-8?Q?Christian_K=c3=b6nig?= <ckoenig.leichtzumerken@gmail.com>
-In-Reply-To: <20230908145521.39044-1-hamza.mahfooz@amd.com>
-Content-Type: text/plain; charset=UTF-8; format=flowed
-Content-Transfer-Encoding: 8bit
-X-Spam-Status: No, score=-3.6 required=5.0 tests=BAYES_00,DKIM_SIGNED,
-        DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,FREEMAIL_FROM,NICE_REPLY_A,
-        RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_PASS autolearn=ham
+Content-Transfer-Encoding: quoted-printable
+X-Kernelci-Branch: linux-5.15.y
+X-Kernelci-Tree: stable-rc
+X-Kernelci-Report-Type: build
+X-Kernelci-Kernel: v5.15.131-378-g0d005f1330c2
+Subject: stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed,
+ 3 warnings (v5.15.131-378-g0d005f1330c2)
+To:     stable@vger.kernel.org, kernel-build-reports@lists.linaro.org,
+        kernelci-results@groups.io
+From:   "kernelci.org bot" <bot@kernelci.org>
+X-Spam-Status: No, score=-1.9 required=5.0 tests=BAYES_00,DKIM_SIGNED,
+        DKIM_VALID,RCVD_IN_DNSWL_BLOCKED,SPF_HELO_NONE,SPF_NONE autolearn=ham
         autolearn_force=no version=3.4.6
 X-Spam-Checker-Version: SpamAssassin 3.4.6 (2021-04-09) on
         lindbergh.monkeyblade.net
@@ -98,53 +71,167 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-Am 08.09.23 um 16:55 schrieb Hamza Mahfooz:
-> From: Yifan Zhang <yifan1.zhang@amd.com>
->
-> Dropping bit 31:4 of page table base is wrong, it makes page table
-> base points to wrong address if phys addr is beyond 64GB; dropping
-> page_table_start/end bit 31:4 is unnecessary since dcn20_vmid_setup
-> will do that. Also, while we are at it, cleanup the assignments using
-> upper_32_bits()/lower_32_bits() and AMDGPU_GPU_PAGE_SHIFT.
->
-> Cc: stable@vger.kernel.org
-> Link: https://gitlab.freedesktop.org/drm/amd/-/issues/2354
-> Fixes: 81d0bcf99009 ("drm/amdgpu: make display pinning more flexible (v2)")
-> Signed-off-by: Yifan Zhang <yifan1.zhang@amd.com>
-> Signed-off-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+stable-rc/linux-5.15.y build: 20 builds: 0 failed, 20 passed, 3 warnings (v=
+5.15.131-378-g0d005f1330c2)
 
-Reviewed-by: Christian König <christian.koenig@amd.com> for the series 
-as well.
+Full Build Summary: https://kernelci.org/build/stable-rc/branch/linux-5.15.=
+y/kernel/v5.15.131-378-g0d005f1330c2/
 
-> ---
-> v2: use upper_32_bits()/lower_32_bits() and AMDGPU_GPU_PAGE_SHIFT
-> ---
->   drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 14 +++++++++-----
->   1 file changed, 9 insertions(+), 5 deletions(-)
->
-> diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> index 1bb1a394f55f..5f14cd9391ca 100644
-> --- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> +++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-> @@ -1283,11 +1283,15 @@ static void mmhub_read_system_context(struct amdgpu_device *adev, struct dc_phy_
->   
->   	pt_base = amdgpu_gmc_pd_addr(adev->gart.bo);
->   
-> -	page_table_start.high_part = (u32)(adev->gmc.gart_start >> 44) & 0xF;
-> -	page_table_start.low_part = (u32)(adev->gmc.gart_start >> 12);
-> -	page_table_end.high_part = (u32)(adev->gmc.gart_end >> 44) & 0xF;
-> -	page_table_end.low_part = (u32)(adev->gmc.gart_end >> 12);
-> -	page_table_base.high_part = upper_32_bits(pt_base) & 0xF;
-> +	page_table_start.high_part = upper_32_bits(adev->gmc.gart_start >>
-> +						   AMDGPU_GPU_PAGE_SHIFT);
-> +	page_table_start.low_part = lower_32_bits(adev->gmc.gart_start >>
-> +						  AMDGPU_GPU_PAGE_SHIFT);
-> +	page_table_end.high_part = upper_32_bits(adev->gmc.gart_end >>
-> +						 AMDGPU_GPU_PAGE_SHIFT);
-> +	page_table_end.low_part = lower_32_bits(adev->gmc.gart_end >>
-> +						AMDGPU_GPU_PAGE_SHIFT);
-> +	page_table_base.high_part = upper_32_bits(pt_base);
->   	page_table_base.low_part = lower_32_bits(pt_base);
->   
->   	pa_config->system_aperture.start_addr = (uint64_t)logical_addr_low << 18;
+Tree: stable-rc
+Branch: linux-5.15.y
+Git Describe: v5.15.131-378-g0d005f1330c2
+Git Commit: 0d005f1330c27847e09ba2bc8d7c76cb9962a56a
+Git URL: https://git.kernel.org/pub/scm/linux/kernel/git/stable/linux-stabl=
+e-rc.git
+Built: 7 unique architectures
 
+Warnings Detected:
+
+arc:
+
+arm64:
+
+arm:
+
+i386:
+
+mips:
+    32r2el_defconfig (gcc-10): 1 warning
+
+riscv:
+
+x86_64:
+    x86_64_defconfig (gcc-10): 1 warning
+    x86_64_defconfig+x86-chromebook (gcc-10): 1 warning
+
+
+Warnings summary:
+
+    2    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unr=
+eachable instruction
+    1    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_devic=
+e_reg): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expec=
+ted "0,0"
+
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=3D=
+=3D=3D=3D=3D=3D
+
+Detailed per-defconfig build reports:
+
+---------------------------------------------------------------------------=
+-----
+32r2el_defconfig (mips, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 sect=
+ion mismatches
+
+Warnings:
+    arch/mips/boot/dts/img/boston.dts:128.19-178.5: Warning (pci_device_reg=
+): /pci@14000000/pci2_root@0,0,0: PCI unit address format error, expected "=
+0,0"
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section =
+mismatches
+
+---------------------------------------------------------------------------=
+-----
+allnoconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sectio=
+n mismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+defconfig+arm64-chromebook (arm64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warn=
+ings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+haps_hs_smp_defconfig (arc, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0=
+ section mismatches
+
+---------------------------------------------------------------------------=
+-----
+i386_defconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 secti=
+on mismatches
+
+---------------------------------------------------------------------------=
+-----
+imx_v6_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v5_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+multi_v7_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, =
+0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+nommu_k210_sdcard_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 war=
+nings, 0 section mismatches
+
+---------------------------------------------------------------------------=
+-----
+omap2plus_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 s=
+ection mismatches
+
+---------------------------------------------------------------------------=
+-----
+rv32_defconfig (riscv, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 sect=
+ion mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section=
+ mismatches
+
+---------------------------------------------------------------------------=
+-----
+tinyconfig (i386, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 section m=
+ismatches
+
+---------------------------------------------------------------------------=
+-----
+vexpress_defconfig (arm, gcc-10) =E2=80=94 PASS, 0 errors, 0 warnings, 0 se=
+ction mismatches
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, 1 warning, 0 se=
+ction mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---------------------------------------------------------------------------=
+-----
+x86_64_defconfig+x86-chromebook (x86_64, gcc-10) =E2=80=94 PASS, 0 errors, =
+1 warning, 0 section mismatches
+
+Warnings:
+    arch/x86/kernel/smp.o: warning: objtool: sysvec_reboot()+0x45: unreacha=
+ble instruction
+
+---
+For more info write to <info@kernelci.org>
