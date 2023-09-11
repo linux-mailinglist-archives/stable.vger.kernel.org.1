@@ -2,36 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B820379B1E5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 35F4779AD53
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236024AbjIKV7E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58188 "EHLO
+        id S244202AbjIKV7l (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:41 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59794 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239695AbjIKO0f (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:35 -0400
+        with ESMTP id S239715AbjIKO1D (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:27:03 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 223A0DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:31 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6B589C433CA;
-        Mon, 11 Sep 2023 14:26:30 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8096FF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id C78A5C433C9;
+        Mon, 11 Sep 2023 14:26:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442390;
-        bh=6EhDP97OldCtiUtbovKwlr+VpE+umM+WisJzZpstFRI=;
+        s=korg; t=1694442419;
+        bh=HqJej2VhvL56kTYtMY2/13/oZlQnzCXVjs2DnoDulW4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=DJNFUNRw6tRKkGkrVQNqpK4eIjr6GMW4ev9pFo7XCNqKn+Te0KJoBpn0icHpnnYii
-         1CVIQP5+FOj39QdV6A4QQ2X+jBS95FjCIH80r6lRw1nhyGZRmtZOh2a8XaYzdomadu
-         fkxMOJOa+OPBwVspVd+3GzH0NR3Y/ADmu/ilNHT0=
+        b=MHOvM6SErZN3FrrgVyEXTDfe0cqdD+oIZSsxd0iwszR2ws4PcbP9TKoQ1QOoy1FH1
+         eFrgHAceGsB0Zt4wqVbptvEMeSmWAEdwwkQt4BHGI7nix5pSrVVVgAOO5b+LPNUq0k
+         bCYYfPq0k9VaTK6tgsb5XCxpz9kceU1TvlhrPS8c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Kuniyuki Iwashima <kuniyu@amazon.com>,
-        Paolo Abeni <pabeni@redhat.com>,
+        patches@lists.linux.dev,
+        Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>,
+        Jun Lei <jun.lei@amd.com>,
+        Hamza Mahfooz <hamza.mahfooz@amd.com>,
+        Daniel Miess <daniel.miess@amd.com>,
+        Alex Deucher <alexander.deucher@amd.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 001/737] Revert "bridge: Add extack warning when enabling STP in netns."
-Date:   Mon, 11 Sep 2023 15:37:40 +0200
-Message-ID: <20230911134650.337689634@linuxfoundation.org>
+Subject: [PATCH 6.4 002/737] Partially revert "drm/amd/display: Fix possible underflow for displays with large vblank"
+Date:   Mon, 11 Sep 2023 15:37:41 +0200
+Message-ID: <20230911134650.366330839@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -54,65 +58,43 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Kuniyuki Iwashima <kuniyu@amazon.com>
+From: Daniel Miess <daniel.miess@amd.com>
 
-[ Upstream commit 7ebd00a5a20c48e6020d49a3b2afb3cdfd2da8b7 ]
+[ Upstream commit a99a4ff6ef205d125002fc7e0857074e4e6597b6 ]
 
-This reverts commit 56a16035bb6effb37177867cea94c13a8382f745.
+This partially reverts commit de231189e7bf ("drm/amd/display: Fix
+possible underflow for displays with large vblank").
 
-Since the previous commit, STP works on bridge in netns.
+[Why]
+The increased value of VBlankNomDefaultUS causes underflow at the
+desktop of an IP KVM setup
 
-  # unshare -n
-  # ip link add br0 type bridge
-  # ip link add veth0 type veth peer name veth1
+[How]
+Change the value from 800 back to 668
 
-  # ip link set veth0 master br0 up
-  [   50.558135] br0: port 1(veth0) entered blocking state
-  [   50.558366] br0: port 1(veth0) entered disabled state
-  [   50.558798] veth0: entered allmulticast mode
-  [   50.564401] veth0: entered promiscuous mode
-
-  # ip link set veth1 master br0 up
-  [   54.215487] br0: port 2(veth1) entered blocking state
-  [   54.215657] br0: port 2(veth1) entered disabled state
-  [   54.215848] veth1: entered allmulticast mode
-  [   54.219577] veth1: entered promiscuous mode
-
-  # ip link set br0 type bridge stp_state 1
-  # ip link set br0 up
-  [   61.960726] br0: port 2(veth1) entered blocking state
-  [   61.961097] br0: port 2(veth1) entered listening state
-  [   61.961495] br0: port 1(veth0) entered blocking state
-  [   61.961653] br0: port 1(veth0) entered listening state
-  [   63.998835] br0: port 2(veth1) entered blocking state
-  [   77.437113] br0: port 1(veth0) entered learning state
-  [   86.653501] br0: received packet on veth0 with own address as source address (addr:6e:0f:e7:6f:5f:5f, vlan:0)
-  [   92.797095] br0: port 1(veth0) entered forwarding state
-  [   92.797398] br0: topology change detected, propagating
-
-Let's remove the warning.
-
-Signed-off-by: Kuniyuki Iwashima <kuniyu@amazon.com>
-Signed-off-by: Paolo Abeni <pabeni@redhat.com>
+Reviewed-by: Nicholas Kazlauskas <nicholas.kazlauskas@amd.com>
+Reviewed-by: Jun Lei <jun.lei@amd.com>
+Acked-by: Hamza Mahfooz <hamza.mahfooz@amd.com>
+Signed-off-by: Daniel Miess <daniel.miess@amd.com>
+Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/bridge/br_stp_if.c | 3 ---
- 1 file changed, 3 deletions(-)
+ drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/net/bridge/br_stp_if.c b/net/bridge/br_stp_if.c
-index b65962682771f..75204d36d7f90 100644
---- a/net/bridge/br_stp_if.c
-+++ b/net/bridge/br_stp_if.c
-@@ -201,9 +201,6 @@ int br_stp_set_enabled(struct net_bridge *br, unsigned long val,
- {
- 	ASSERT_RTNL();
+diff --git a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+index b878effa2129b..b428a343add9c 100644
+--- a/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
++++ b/drivers/gpu/drm/amd/display/dc/dml/dcn314/dcn314_fpu.c
+@@ -33,7 +33,7 @@
+ #include "dml/display_mode_vba.h"
  
--	if (!net_eq(dev_net(br->dev), &init_net))
--		NL_SET_ERR_MSG_MOD(extack, "STP does not work in non-root netns");
--
- 	if (br_mrp_enabled(br)) {
- 		NL_SET_ERR_MSG_MOD(extack,
- 				   "STP can't be enabled if MRP is already enabled");
+ struct _vcs_dpi_ip_params_st dcn3_14_ip = {
+-	.VBlankNomDefaultUS = 800,
++	.VBlankNomDefaultUS = 668,
+ 	.gpuvm_enable = 1,
+ 	.gpuvm_max_page_table_levels = 1,
+ 	.hostvm_enable = 1,
 -- 
 2.40.1
 
