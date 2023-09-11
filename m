@@ -2,35 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0AAAB79B5A7
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 2F4E279B006
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:45 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S233978AbjIKUwi (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:38 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44848 "EHLO
+        id S229929AbjIKUxL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:53:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50554 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242227AbjIKPZ2 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:28 -0400
+        with ESMTP id S242236AbjIKPZe (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:34 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 93E6EDB
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id E07B7C433C9;
-        Mon, 11 Sep 2023 15:25:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 50D39D8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:29 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 90BD8C433C8;
+        Mon, 11 Sep 2023 15:25:28 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445923;
-        bh=eBHw5kdM/WHSJk2Yu1FRPJ3qIYZm5bbBLz6ZB2RF6JI=;
+        s=korg; t=1694445929;
+        bh=+vrzFQ7NUKufVzNc8sLFCk+smvaCdAjgU1vsPVKVbh4=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=FW47I3o9Zj6xTeMsplFPNHfoWj67j/vkoxCVBO6ELPIzNMb8me0XPGq0Yj0WAUcfK
-         /2wMTNvUCDu+kIJqzbSibn48z/4pe0isj7hOKXvRlYi1yIdVtDJR0b7UqdTya7GHHQ
-         CLzGR/LjX1KbWvxmcmF1pxMz0dF7uRStCG4XCZSs=
+        b=ZBiIQxm58FiCg5634aLa5qM32WANv6gjM8GTYwOu4ksCt+F2Tmmex/o7JKPlV9I+T
+         ijLJyJvzFH59xxTq2iwMo714Vc8vcRBjt59XioG2qX6v/h3bWjRNiiyuufBFbJOhhd
+         +bB7lxOwfdmsb8kQKuOdxgVoHO1wKSXNKx6sCGz8=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Wander Lairson Costa <wander@redhat.com>,
-        Pablo Neira Ayuso <pablo@netfilter.org>
-Subject: [PATCH 6.1 520/600] netfilter: xt_u32: validate user space input
-Date:   Mon, 11 Sep 2023 15:49:13 +0200
-Message-ID: <20230911134648.955635800@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Mohamed Khalfella <mkhalfella@purestorage.com>,
+        Amit Goyal <agoyal@purestorage.com>,
+        Eric Dumazet <edumazet@google.com>,
+        "David S. Miller" <davem@davemloft.net>
+Subject: [PATCH 6.1 522/600] skbuff: skb_segment, Call zero copy functions before using skbuff frags
+Date:   Mon, 11 Sep 2023 15:49:15 +0200
+Message-ID: <20230911134649.013966046@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
 References: <20230911134633.619970489@linuxfoundation.org>
@@ -53,61 +56,156 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Wander Lairson Costa <wander@redhat.com>
+From: Mohamed Khalfella <mkhalfella@purestorage.com>
 
-commit 69c5d284f67089b4750d28ff6ac6f52ec224b330 upstream.
+commit 2ea35288c83b3d501a88bc17f2df8f176b5cc96f upstream.
 
-The xt_u32 module doesn't validate the fields in the xt_u32 structure.
-An attacker may take advantage of this to trigger an OOB read by setting
-the size fields with a value beyond the arrays boundaries.
+Commit bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions
+once per nskb") added the call to zero copy functions in skb_segment().
+The change introduced a bug in skb_segment() because skb_orphan_frags()
+may possibly change the number of fragments or allocate new fragments
+altogether leaving nrfrags and frag to point to the old values. This can
+cause a panic with stacktrace like the one below.
 
-Add a checkentry function to validate the structure.
+[  193.894380] BUG: kernel NULL pointer dereference, address: 00000000000000bc
+[  193.895273] CPU: 13 PID: 18164 Comm: vh-net-17428 Kdump: loaded Tainted: G           O      5.15.123+ #26
+[  193.903919] RIP: 0010:skb_segment+0xb0e/0x12f0
+[  194.021892] Call Trace:
+[  194.027422]  <TASK>
+[  194.072861]  tcp_gso_segment+0x107/0x540
+[  194.082031]  inet_gso_segment+0x15c/0x3d0
+[  194.090783]  skb_mac_gso_segment+0x9f/0x110
+[  194.095016]  __skb_gso_segment+0xc1/0x190
+[  194.103131]  netem_enqueue+0x290/0xb10 [sch_netem]
+[  194.107071]  dev_qdisc_enqueue+0x16/0x70
+[  194.110884]  __dev_queue_xmit+0x63b/0xb30
+[  194.121670]  bond_start_xmit+0x159/0x380 [bonding]
+[  194.128506]  dev_hard_start_xmit+0xc3/0x1e0
+[  194.131787]  __dev_queue_xmit+0x8a0/0xb30
+[  194.138225]  macvlan_start_xmit+0x4f/0x100 [macvlan]
+[  194.141477]  dev_hard_start_xmit+0xc3/0x1e0
+[  194.144622]  sch_direct_xmit+0xe3/0x280
+[  194.147748]  __dev_queue_xmit+0x54a/0xb30
+[  194.154131]  tap_get_user+0x2a8/0x9c0 [tap]
+[  194.157358]  tap_sendmsg+0x52/0x8e0 [tap]
+[  194.167049]  handle_tx_zerocopy+0x14e/0x4c0 [vhost_net]
+[  194.173631]  handle_tx+0xcd/0xe0 [vhost_net]
+[  194.176959]  vhost_worker+0x76/0xb0 [vhost]
+[  194.183667]  kthread+0x118/0x140
+[  194.190358]  ret_from_fork+0x1f/0x30
+[  194.193670]  </TASK>
 
-This was originally reported by the ZDI project (ZDI-CAN-18408).
+In this case calling skb_orphan_frags() updated nr_frags leaving nrfrags
+local variable in skb_segment() stale. This resulted in the code hitting
+i >= nrfrags prematurely and trying to move to next frag_skb using
+list_skb pointer, which was NULL, and caused kernel panic. Move the call
+to zero copy functions before using frags and nr_frags.
 
-Fixes: 1b50b8a371e9 ("[NETFILTER]: Add u32 match")
+Fixes: bf5c25d60861 ("skbuff: in skb_segment, call zerocopy functions once per nskb")
+Signed-off-by: Mohamed Khalfella <mkhalfella@purestorage.com>
+Reported-by: Amit Goyal <agoyal@purestorage.com>
 Cc: stable@vger.kernel.org
-Signed-off-by: Wander Lairson Costa <wander@redhat.com>
-Signed-off-by: Pablo Neira Ayuso <pablo@netfilter.org>
+Reviewed-by: Eric Dumazet <edumazet@google.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- net/netfilter/xt_u32.c |   21 +++++++++++++++++++++
- 1 file changed, 21 insertions(+)
+ net/core/skbuff.c |   34 ++++++++++++++++++++--------------
+ 1 file changed, 20 insertions(+), 14 deletions(-)
 
---- a/net/netfilter/xt_u32.c
-+++ b/net/netfilter/xt_u32.c
-@@ -96,11 +96,32 @@ static bool u32_mt(const struct sk_buff
- 	return ret ^ data->invert;
- }
+--- a/net/core/skbuff.c
++++ b/net/core/skbuff.c
+@@ -4135,21 +4135,20 @@ struct sk_buff *skb_segment(struct sk_bu
+ 	struct sk_buff *segs = NULL;
+ 	struct sk_buff *tail = NULL;
+ 	struct sk_buff *list_skb = skb_shinfo(head_skb)->frag_list;
+-	skb_frag_t *frag = skb_shinfo(head_skb)->frags;
+ 	unsigned int mss = skb_shinfo(head_skb)->gso_size;
+ 	unsigned int doffset = head_skb->data - skb_mac_header(head_skb);
+-	struct sk_buff *frag_skb = head_skb;
+ 	unsigned int offset = doffset;
+ 	unsigned int tnl_hlen = skb_tnl_header_len(head_skb);
+ 	unsigned int partial_segs = 0;
+ 	unsigned int headroom;
+ 	unsigned int len = head_skb->len;
++	struct sk_buff *frag_skb;
++	skb_frag_t *frag;
+ 	__be16 proto;
+ 	bool csum, sg;
+-	int nfrags = skb_shinfo(head_skb)->nr_frags;
+ 	int err = -ENOMEM;
+ 	int i = 0;
+-	int pos;
++	int nfrags, pos;
  
-+static int u32_mt_checkentry(const struct xt_mtchk_param *par)
-+{
-+	const struct xt_u32 *data = par->matchinfo;
-+	const struct xt_u32_test *ct;
-+	unsigned int i;
+ 	if ((skb_shinfo(head_skb)->gso_type & SKB_GSO_DODGY) &&
+ 	    mss != GSO_BY_FRAGS && mss != skb_headlen(head_skb)) {
+@@ -4226,6 +4225,13 @@ normal:
+ 	headroom = skb_headroom(head_skb);
+ 	pos = skb_headlen(head_skb);
+ 
++	if (skb_orphan_frags(head_skb, GFP_ATOMIC))
++		return ERR_PTR(-ENOMEM);
 +
-+	if (data->ntests > ARRAY_SIZE(data->tests))
-+		return -EINVAL;
++	nfrags = skb_shinfo(head_skb)->nr_frags;
++	frag = skb_shinfo(head_skb)->frags;
++	frag_skb = head_skb;
 +
-+	for (i = 0; i < data->ntests; ++i) {
-+		ct = &data->tests[i];
+ 	do {
+ 		struct sk_buff *nskb;
+ 		skb_frag_t *nskb_frag;
+@@ -4246,6 +4252,10 @@ normal:
+ 		    (skb_headlen(list_skb) == len || sg)) {
+ 			BUG_ON(skb_headlen(list_skb) > len);
+ 
++			nskb = skb_clone(list_skb, GFP_ATOMIC);
++			if (unlikely(!nskb))
++				goto err;
 +
-+		if (ct->nnums > ARRAY_SIZE(ct->location) ||
-+		    ct->nvalues > ARRAY_SIZE(ct->value))
-+			return -EINVAL;
-+	}
+ 			i = 0;
+ 			nfrags = skb_shinfo(list_skb)->nr_frags;
+ 			frag = skb_shinfo(list_skb)->frags;
+@@ -4264,12 +4274,8 @@ normal:
+ 				frag++;
+ 			}
+ 
+-			nskb = skb_clone(list_skb, GFP_ATOMIC);
+ 			list_skb = list_skb->next;
+ 
+-			if (unlikely(!nskb))
+-				goto err;
+-
+ 			if (unlikely(pskb_trim(nskb, len))) {
+ 				kfree_skb(nskb);
+ 				goto err;
+@@ -4345,12 +4351,16 @@ normal:
+ 		skb_shinfo(nskb)->flags |= skb_shinfo(head_skb)->flags &
+ 					   SKBFL_SHARED_FRAG;
+ 
+-		if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
+-		    skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
++		if (skb_zerocopy_clone(nskb, frag_skb, GFP_ATOMIC))
+ 			goto err;
+ 
+ 		while (pos < offset + len) {
+ 			if (i >= nfrags) {
++				if (skb_orphan_frags(list_skb, GFP_ATOMIC) ||
++				    skb_zerocopy_clone(nskb, list_skb,
++						       GFP_ATOMIC))
++					goto err;
 +
-+	return 0;
-+}
-+
- static struct xt_match xt_u32_mt_reg __read_mostly = {
- 	.name       = "u32",
- 	.revision   = 0,
- 	.family     = NFPROTO_UNSPEC,
- 	.match      = u32_mt,
-+	.checkentry = u32_mt_checkentry,
- 	.matchsize  = sizeof(struct xt_u32),
- 	.me         = THIS_MODULE,
- };
+ 				i = 0;
+ 				nfrags = skb_shinfo(list_skb)->nr_frags;
+ 				frag = skb_shinfo(list_skb)->frags;
+@@ -4364,10 +4374,6 @@ normal:
+ 					i--;
+ 					frag--;
+ 				}
+-				if (skb_orphan_frags(frag_skb, GFP_ATOMIC) ||
+-				    skb_zerocopy_clone(nskb, frag_skb,
+-						       GFP_ATOMIC))
+-					goto err;
+ 
+ 				list_skb = list_skb->next;
+ 			}
 
 
