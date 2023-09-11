@@ -2,41 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id E26E879B8BD
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DD8EA79BE95
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355274AbjIKV5m (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:57:42 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43654 "EHLO
+        id S238350AbjIKWmq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:42:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:38914 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239167AbjIKONe (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:13:34 -0400
+        with ESMTP id S240499AbjIKOpu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:45:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 72574CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:13:30 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id BBC8DC433CA;
-        Mon, 11 Sep 2023 14:13:29 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DB4BBCF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:45 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 2F36AC433C8;
+        Mon, 11 Sep 2023 14:45:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441610;
-        bh=hG54PWPrjvg9tHU0uP1vlYyQEC4A0MBT7shp7DuxfF0=;
+        s=korg; t=1694443545;
+        bh=CRVQlkBuc+PzznrLnPBmU5vntMsuqilIQ5XYOqpoh4g=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CmsAb9W30RS6YxYQ3ntjHNqPDrFtpd8Kg2Ttm5F2TlOKf7SeFSGZHOScmpisn0PIC
-         AjW9Wic6N7jH/jr0TcHe5t1HPkKQwmuZTnPA6ojb/v8taMdc1tMbzkW7cLJZsH1axk
-         L8tscQR7WDCWouFnyhnjbxjMmE8jSbUxDiVVl7W8=
+        b=N5qoq0nbUGrVDasBHe/Y7bgunz5A4IxteImIndBBRtrbXskbhaRI4m+H2DvfbllVU
+         XD7DU48OxI2t0MJG4KZnYXKBerEWVQxIh5CBFyKt4I2uGZ7m3o5NELIgyUKR+43wQr
+         tT3qPdf5Jf5RVmQhctrnwqBeO3jbiG1+zQwFtN1M=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Nicolas Dufresne <nicolas.dufresne@collabora.com>,
-        Ming Qian <ming.qian@nxp.com>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
+        patches@lists.linux.dev, Alibek Omarov <a1ba.omarov@gmail.com>,
+        Sascha Hauer <s.hauer@pengutronix.de>,
+        Heiko Stuebner <heiko@sntech.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 474/739] media: amphion: fix UNUSED_VALUE issue reported by coverity
-Date:   Mon, 11 Sep 2023 15:44:33 +0200
-Message-ID: <20230911134704.383869408@linuxfoundation.org>
+Subject: [PATCH 6.4 415/737] clk: rockchip: rk3568: Fix PLL rate setting for 78.75MHz
+Date:   Mon, 11 Sep 2023 15:44:34 +0200
+Message-ID: <20230911134702.206290166@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,39 +51,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ming Qian <ming.qian@nxp.com>
+From: Alibek Omarov <a1ba.omarov@gmail.com>
 
-[ Upstream commit cf6a06354989c41b536be8e094561ee16223cf1f ]
+[ Upstream commit dafebd0f9a4f56b10d7fbda0bff1f540d16a2ea4 ]
 
-assign value '-EINVAL' to ret, but the stored value is overwritten
-before it can be used
+PLL rate on RK356x is calculated through the simple formula:
+((24000000 / _refdiv) * _fbdiv) / (_postdiv1 * _postdiv2)
 
-Fixes: 9f599f351e86 ("media: amphion: add vpu core driver")
-Reviewed-by: Nicolas Dufresne <nicolas.dufresne@collabora.com>
-Signed-off-by: Ming Qian <ming.qian@nxp.com>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
+The PLL rate setting for 78.75MHz seems to be copied from 96MHz
+so this patch fixes it and configures it properly.
+
+Signed-off-by: Alibek Omarov <a1ba.omarov@gmail.com>
+Fixes: 842f4cb72639 ("clk: rockchip: Add more PLL rates for rk3568")
+Reviewed-by: Sascha Hauer <s.hauer@pengutronix.de>
+Link: https://lore.kernel.org/r/20230614134750.1056293-1-a1ba.omarov@gmail.com
+Signed-off-by: Heiko Stuebner <heiko@sntech.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/platform/amphion/vpu_cmds.c | 2 +-
+ drivers/clk/rockchip/clk-rk3568.c | 2 +-
  1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/platform/amphion/vpu_cmds.c b/drivers/media/platform/amphion/vpu_cmds.c
-index 7e137f276c3b1..235b71398d403 100644
---- a/drivers/media/platform/amphion/vpu_cmds.c
-+++ b/drivers/media/platform/amphion/vpu_cmds.c
-@@ -315,7 +315,7 @@ static int vpu_session_send_cmd(struct vpu_inst *inst, u32 id, void *data)
- {
- 	unsigned long key;
- 	int sync = false;
--	int ret = -EINVAL;
-+	int ret;
- 
- 	if (inst->id < 0)
- 		return -EINVAL;
+diff --git a/drivers/clk/rockchip/clk-rk3568.c b/drivers/clk/rockchip/clk-rk3568.c
+index f85902e2590c7..2f54f630c8b65 100644
+--- a/drivers/clk/rockchip/clk-rk3568.c
++++ b/drivers/clk/rockchip/clk-rk3568.c
+@@ -81,7 +81,7 @@ static struct rockchip_pll_rate_table rk3568_pll_rates[] = {
+ 	RK3036_PLL_RATE(108000000, 2, 45, 5, 1, 1, 0),
+ 	RK3036_PLL_RATE(100000000, 1, 150, 6, 6, 1, 0),
+ 	RK3036_PLL_RATE(96000000, 1, 96, 6, 4, 1, 0),
+-	RK3036_PLL_RATE(78750000, 1, 96, 6, 4, 1, 0),
++	RK3036_PLL_RATE(78750000, 4, 315, 6, 4, 1, 0),
+ 	RK3036_PLL_RATE(74250000, 2, 99, 4, 4, 1, 0),
+ 	{ /* sentinel */ },
+ };
 -- 
 2.40.1
 
