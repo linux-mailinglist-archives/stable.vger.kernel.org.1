@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 55B3F79B4F6
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:02:48 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5B1C879AD2F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:39:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1349105AbjIKVcg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:32:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49820 "EHLO
+        id S241727AbjIKWX0 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:23:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41856 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240600AbjIKOs0 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:48:26 -0400
+        with ESMTP id S239277AbjIKOQ1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id DDFCF106
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:48:21 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 32B43C433C7;
-        Mon, 11 Sep 2023 14:48:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 26D2CDE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 40331C433C9;
+        Mon, 11 Sep 2023 14:16:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443701;
-        bh=iI652H1WuiBaJC/lHrxSgqs4nS3eZ+iIxnWIPUwl9EI=;
+        s=korg; t=1694441782;
+        bh=whMa8IEI7ZWaSznBbt6VacBY6aC3vX2HKpHw8nj8kP0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=XhCCn4HvZ+AvW2NYDMloHWL5gXGArlWEXHDwSed02lxe+ZqvzmwMvNSM2TKv5ugz3
-         8ocouBbbabf2tRDexlI75IwftHWSpkcSe9bITuL2U9L6bc5IphorGl6XuGfKynaxRG
-         Y+sDX31Ah0RKLQ+gjd+6gsk4qIbL6jojPsSq+gpE=
+        b=TsJY3RDrnT49Vy9aseHYCwVnJrZmJG1HZTdXLPwEqVSdfPg85Yj5HmkfhHFUCgcdg
+         +dkQVoLCrECt3SQzA3d3cnuOn/Lxz75iN9MnSMjH9eN4IPC6Vwm8B4Dg87m01+eX5s
+         x706LBsju3ZLqpLzwDSRGcewujvYn/v3ny/qvt9c=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zhihao Cheng <chengzhihao1@huawei.com>,
-        Jan Kara <jack@suse.cz>, Theodore Tso <tytso@mit.edu>,
+        patches@lists.linux.dev, David Gow <davidgow@google.com>,
+        Maxime Ripard <mripard@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 471/737] ext4: fix unttached inode after power cut with orphan file feature enabled
-Date:   Mon, 11 Sep 2023 15:45:30 +0200
-Message-ID: <20230911134703.744530278@linuxfoundation.org>
+Subject: [PATCH 6.5 535/739] drivers: base: Free devm resources when unregistering a device
+Date:   Mon, 11 Sep 2023 15:45:34 +0200
+Message-ID: <20230911134706.047604727@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,92 +50,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Zhihao Cheng <chengzhihao1@huawei.com>
+From: David Gow <davidgow@google.com>
 
-[ Upstream commit 1524773425ae8113b0b782886366e68656b34e53 ]
+[ Upstream commit 699fb50d99039a50e7494de644f96c889279aca3 ]
 
-Running generic/475(filesystem consistent tests after power cut) could
-easily trigger unattached inode error while doing fsck:
-  Unattached zero-length inode 39405.  Clear? no
+In the current code, devres_release_all() only gets called if the device
+has a bus and has been probed.
 
-  Unattached inode 39405
-  Connect to /lost+found? no
+This leads to issues when using bus-less or driver-less devices where
+the device might never get freed if a managed resource holds a reference
+to the device. This is happening in the DRM framework for example.
 
-Above inconsistence is caused by following process:
-       P1                       P2
-ext4_create
- inode = ext4_new_inode_start_handle  // itable records nlink=1
- ext4_add_nondir
-   err = ext4_add_entry  // ENOSPC
-    ext4_append
-     ext4_bread
-      ext4_getblk
-       ext4_map_blocks // returns ENOSPC
-   drop_nlink(inode) // won't be updated into disk inode
-   ext4_orphan_add(handle, inode)
-    ext4_orphan_file_add
- ext4_journal_stop(handle)
-		      jbd2_journal_commit_transaction // commit success
-              >> power cut <<
-ext4_fill_super
- ext4_load_and_init_journal   // itable records nlink=1
- ext4_orphan_cleanup
-  ext4_process_orphan
-   if (inode->i_nlink)        // true, inode won't be deleted
+We should thus call devres_release_all() in the device_del() function to
+make sure that the device-managed actions are properly executed when the
+device is unregistered, even if it has neither a bus nor a driver.
 
-Then, allocated inode will be reserved on disk and corresponds to no
-dentries, so e2fsck reports 'unattached inode' problem.
+This is effectively the same change than commit 2f8d16a996da ("devres:
+release resources on device_del()") that got reverted by commit
+a525a3ddeaca ("driver core: free devres in device_release") over
+memory leaks concerns.
 
-The problem won't happen if orphan file feature is disabled, because
-ext4_orphan_add() will update disk inode in orphan list mode. There
-are several places not updating disk inode while putting inode into
-orphan area, such as ext4_add_nondir(), ext4_symlink() and whiteout
-in ext4_rename(). Fix it by updating inode into disk in all error
-branches of these places.
+This patch effectively combines the two commits mentioned above to
+release the resources both on device_del() and device_release() and get
+the best of both worlds.
 
-Link: https://bugzilla.kernel.org/show_bug.cgi?id=217605
-Fixes: 02f310fcf47f ("ext4: Speedup ext4 orphan inode handling")
-Signed-off-by: Zhihao Cheng <chengzhihao1@huawei.com>
-Reviewed-by: Jan Kara <jack@suse.cz>
-Link: https://lore.kernel.org/r/20230628132011.650383-1-chengzhihao1@huawei.com
-Signed-off-by: Theodore Ts'o <tytso@mit.edu>
+Fixes: a525a3ddeaca ("driver core: free devres in device_release")
+Signed-off-by: David Gow <davidgow@google.com>
+Signed-off-by: Maxime Ripard <mripard@kernel.org>
+Link: https://lore.kernel.org/r/20230720-kunit-devm-inconsistencies-test-v3-3-6aa7e074f373@kernel.org
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- fs/ext4/namei.c | 3 +++
- 1 file changed, 3 insertions(+)
+ drivers/base/core.c | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
-diff --git a/fs/ext4/namei.c b/fs/ext4/namei.c
-index 0caf6c730ce34..6bcc3770ee19f 100644
---- a/fs/ext4/namei.c
-+++ b/fs/ext4/namei.c
-@@ -2799,6 +2799,7 @@ static int ext4_add_nondir(handle_t *handle,
- 		return err;
- 	}
- 	drop_nlink(inode);
-+	ext4_mark_inode_dirty(handle, inode);
- 	ext4_orphan_add(handle, inode);
- 	unlock_new_inode(inode);
- 	return err;
-@@ -3436,6 +3437,7 @@ static int ext4_symlink(struct mnt_idmap *idmap, struct inode *dir,
+diff --git a/drivers/base/core.c b/drivers/base/core.c
+index 3dff5037943e0..6ceaf50f5a671 100644
+--- a/drivers/base/core.c
++++ b/drivers/base/core.c
+@@ -3817,6 +3817,17 @@ void device_del(struct device *dev)
+ 	device_platform_notify_remove(dev);
+ 	device_links_purge(dev);
  
- err_drop_inode:
- 	clear_nlink(inode);
-+	ext4_mark_inode_dirty(handle, inode);
- 	ext4_orphan_add(handle, inode);
- 	unlock_new_inode(inode);
- 	if (handle)
-@@ -4021,6 +4023,7 @@ static int ext4_rename(struct mnt_idmap *idmap, struct inode *old_dir,
- 			ext4_resetent(handle, &old,
- 				      old.inode->i_ino, old_file_type);
- 			drop_nlink(whiteout);
-+			ext4_mark_inode_dirty(handle, whiteout);
- 			ext4_orphan_add(handle, whiteout);
- 		}
- 		unlock_new_inode(whiteout);
++	/*
++	 * If a device does not have a driver attached, we need to clean
++	 * up any managed resources. We do this in device_release(), but
++	 * it's never called (and we leak the device) if a managed
++	 * resource holds a reference to the device. So release all
++	 * managed resources here, like we do in driver_detach(). We
++	 * still need to do so again in device_release() in case someone
++	 * adds a new resource after this point, though.
++	 */
++	devres_release_all(dev);
++
+ 	bus_notify(dev, BUS_NOTIFY_REMOVED_DEVICE);
+ 	kobject_uevent(&dev->kobj, KOBJ_REMOVE);
+ 	glue_dir = get_glue_dir(dev);
 -- 
 2.40.1
 
