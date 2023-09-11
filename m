@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0993A79AF42
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:02 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id E6BDB79AE8F
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:45:18 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1358055AbjIKWHd (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:07:33 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:35932 "EHLO
+        id S1376699AbjIKWUR (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:17 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241410AbjIKPH5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:07:57 -0400
+        with ESMTP id S238990AbjIKOJH (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:07 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B43FA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:07:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6428AC433C8;
-        Mon, 11 Sep 2023 15:07:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6F652CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:03 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B4D0BC433C7;
+        Mon, 11 Sep 2023 14:09:02 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444872;
-        bh=Lwuiwk3u2FBaONPIVbHTNKFQM8ynC/GN5Jf8ElsuEgg=;
+        s=korg; t=1694441343;
+        bh=nvUEg4ZmPNvL3LaD0GnnAMQ3vl07PrKgZMS+I8GmAew=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=WEZFcmMbQByLt0ww8/ylgQq4G0BbrYcKekGPqMrGXtPPSj0Uh4OQOpQZUT7At32QG
-         x0ybaMzknGtSESHCm78wulCB5av3PBLqT0dZlIxlzA0jV7n7MdVbQRlw4FjnpDMY9L
-         y0cGzC7fWAU/NVbsiVuEJ2qumg5cJOCVy2M0ykCI=
+        b=WLFb8k1aHVFkaLSZUJrLOskGN2hQ5dh7XhY+5X4RdYcoR4ojwmFjPR3CXgKPLL1un
+         mrR7/KsdYghwOmqkXjAQ7jQ4j8u9yPEuVfJi0w8fdxCf3KSrqhS/k5SMeMY0rserWF
+         2Gu50D73HXWek4X1eTcSk5az/+oA8K407RAlHhtM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Martin Kaiser <martin@kaiser.cx>,
-        Herbert Xu <herbert@gondor.apana.org.au>,
+        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 146/600] hwrng: nomadik - keep clock enabled while hwrng is registered
+Subject: [PATCH 6.5 380/739] clk: qcom: gcc-sc8280xp: Add missing GDSCs
 Date:   Mon, 11 Sep 2023 15:42:59 +0200
-Message-ID: <20230911134637.916633418@linuxfoundation.org>
+Message-ID: <20230911134701.791298308@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,88 +51,145 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Martin Kaiser <martin@kaiser.cx>
+From: Konrad Dybcio <konrad.dybcio@linaro.org>
 
-[ Upstream commit 039980de89dc9dd757418d6f296e4126cc3f86c3 ]
+[ Upstream commit 4712eb7ff85bd3dd09c6668b8de4080e02b3eea9 ]
 
-The nomadik driver uses devres to register itself with the hwrng core,
-the driver will be unregistered from hwrng when its device goes out of
-scope. This happens after the driver's remove function is called.
+There are 10 more GDSCs that we've not been caring about, and by extension
+(and perhaps even more importantly), not putting to sleep. Add them.
 
-However, nomadik's clock is disabled in the remove function. There's a
-short timeframe where nomadik is still registered with the hwrng core
-although its clock is disabled. I suppose the clock must be active to
-access the hardware and serve requests from the hwrng core.
-
-Switch to devm_clk_get_enabled and let devres disable the clock and
-unregister the hwrng. This avoids the race condition.
-
-Fixes: 3e75241be808 ("hwrng: drivers - Use device-managed registration API")
-Signed-off-by: Martin Kaiser <martin@kaiser.cx>
-Signed-off-by: Herbert Xu <herbert@gondor.apana.org.au>
+Fixes: d65d005f9a6c ("clk: qcom: add sc8280xp GCC driver")
+Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Acked-by: Manivannan Sadhasivam <manivannan.sadhasivam@linaro.org>
+Link: https://lore.kernel.org/r/20230620-topic-sc8280_gccgdsc-v2-3-562c1428c10d@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/char/hw_random/nomadik-rng.c | 12 +++---------
- 1 file changed, 3 insertions(+), 9 deletions(-)
+ drivers/clk/qcom/gcc-sc8280xp.c | 100 ++++++++++++++++++++++++++++++++
+ 1 file changed, 100 insertions(+)
 
-diff --git a/drivers/char/hw_random/nomadik-rng.c b/drivers/char/hw_random/nomadik-rng.c
-index e8f9621e79541..3774adf903a83 100644
---- a/drivers/char/hw_random/nomadik-rng.c
-+++ b/drivers/char/hw_random/nomadik-rng.c
-@@ -13,8 +13,6 @@
- #include <linux/clk.h>
- #include <linux/err.h>
+diff --git a/drivers/clk/qcom/gcc-sc8280xp.c b/drivers/clk/qcom/gcc-sc8280xp.c
+index 64bea886322d4..3e1a62fa3a074 100644
+--- a/drivers/clk/qcom/gcc-sc8280xp.c
++++ b/drivers/clk/qcom/gcc-sc8280xp.c
+@@ -6897,6 +6897,96 @@ static struct gdsc emac_1_gdsc = {
+ 	.flags = RETAIN_FF_ENABLE,
+ };
  
--static struct clk *rng_clk;
--
- static int nmk_rng_read(struct hwrng *rng, void *data, size_t max, bool wait)
- {
- 	void __iomem *base = (void __iomem *)rng->priv;
-@@ -36,21 +34,20 @@ static struct hwrng nmk_rng = {
++static struct gdsc usb4_1_gdsc = {
++	.gdscr = 0xb8004,
++	.pd = {
++		.name = "usb4_1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE,
++};
++
++static struct gdsc usb4_gdsc = {
++	.gdscr = 0x2a004,
++	.pd = {
++		.name = "usb4_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = RETAIN_FF_ENABLE,
++};
++
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc = {
++	.gdscr = 0x7d050,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc = {
++	.gdscr = 0x7d058,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc = {
++	.gdscr = 0x7d054,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc = {
++	.gdscr = 0x7d06c,
++	.pd = {
++		.name = "hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu0_gdsc = {
++	.gdscr = 0x7d05c,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu0_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu1_gdsc = {
++	.gdscr = 0x7d060,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu1_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu2_gdsc = {
++	.gdscr = 0x7d0a0,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu2_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
++static struct gdsc hlos1_vote_turing_mmu_tbu3_gdsc = {
++	.gdscr = 0x7d0a4,
++	.pd = {
++		.name = "hlos1_vote_turing_mmu_tbu3_gdsc",
++	},
++	.pwrsts = PWRSTS_OFF_ON,
++	.flags = VOTABLE,
++};
++
+ static struct clk_regmap *gcc_sc8280xp_clocks[] = {
+ 	[GCC_AGGRE_NOC_PCIE0_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie0_tunnel_axi_clk.clkr,
+ 	[GCC_AGGRE_NOC_PCIE1_TUNNEL_AXI_CLK] = &gcc_aggre_noc_pcie1_tunnel_axi_clk.clkr,
+@@ -7377,6 +7467,16 @@ static struct gdsc *gcc_sc8280xp_gdscs[] = {
+ 	[USB30_SEC_GDSC] = &usb30_sec_gdsc,
+ 	[EMAC_0_GDSC] = &emac_0_gdsc,
+ 	[EMAC_1_GDSC] = &emac_1_gdsc,
++	[USB4_1_GDSC] = &usb4_1_gdsc,
++	[USB4_GDSC] = &usb4_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf0_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_HF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_hf1_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_SF0_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf0_gdsc,
++	[HLOS1_VOTE_MMNOC_MMU_TBU_SF1_GDSC] = &hlos1_vote_mmnoc_mmu_tbu_sf1_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU0_GDSC] = &hlos1_vote_turing_mmu_tbu0_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU1_GDSC] = &hlos1_vote_turing_mmu_tbu1_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU2_GDSC] = &hlos1_vote_turing_mmu_tbu2_gdsc,
++	[HLOS1_VOTE_TURING_MMU_TBU3_GDSC] = &hlos1_vote_turing_mmu_tbu3_gdsc,
+ };
  
- static int nmk_rng_probe(struct amba_device *dev, const struct amba_id *id)
- {
-+	struct clk *rng_clk;
- 	void __iomem *base;
- 	int ret;
- 
--	rng_clk = devm_clk_get(&dev->dev, NULL);
-+	rng_clk = devm_clk_get_enabled(&dev->dev, NULL);
- 	if (IS_ERR(rng_clk)) {
- 		dev_err(&dev->dev, "could not get rng clock\n");
- 		ret = PTR_ERR(rng_clk);
- 		return ret;
- 	}
- 
--	clk_prepare_enable(rng_clk);
--
- 	ret = amba_request_regions(dev, dev->dev.init_name);
- 	if (ret)
--		goto out_clk;
-+		return ret;
- 	ret = -ENOMEM;
- 	base = devm_ioremap(&dev->dev, dev->res.start,
- 			    resource_size(&dev->res));
-@@ -64,15 +61,12 @@ static int nmk_rng_probe(struct amba_device *dev, const struct amba_id *id)
- 
- out_release:
- 	amba_release_regions(dev);
--out_clk:
--	clk_disable_unprepare(rng_clk);
- 	return ret;
- }
- 
- static void nmk_rng_remove(struct amba_device *dev)
- {
- 	amba_release_regions(dev);
--	clk_disable_unprepare(rng_clk);
- }
- 
- static const struct amba_id nmk_rng_ids[] = {
+ static const struct clk_rcg_dfs_data gcc_dfs_clocks[] = {
 -- 
 2.40.1
 
