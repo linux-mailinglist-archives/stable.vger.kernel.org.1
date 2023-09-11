@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3E88279ACFE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:28 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id C39A179B1DC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:34 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1345825AbjIKVW2 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:22:28 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37704 "EHLO
+        id S1376315AbjIKWTL (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:19:11 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45220 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241745AbjIKPNb (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:31 -0400
+        with ESMTP id S240551AbjIKOrE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:47:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479FFFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:27 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930A3C433C8;
-        Mon, 11 Sep 2023 15:13:26 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id CA412125
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1A99BC433C8;
+        Mon, 11 Sep 2023 14:46:58 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445206;
-        bh=5Wmi72pcrj8+kxYhgMd3N24pVj/SCKuN5ZHAWvKOekM=;
+        s=korg; t=1694443619;
+        bh=EPI6Atk0Yps1otKiLElj0acRiJh4u3+DqOwUPtwUV2E=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=y4I327aIxNR1oIBKtQfzzHwKbxeEfzjJxX0E5K43779mWpCc3qKpxOMdRCwNdulhy
-         ZXRSQZUSho9SWgd3aT3MG8R1Avc5NcukOOX4F9qQGE7YK09fVs76mL6D8J0O+v/ktX
-         kJH5MH6mFqLCP2RHdXnto1T9fxeLpVhopLgcr5jI=
+        b=BoBuZrWgp1e9infGhxB2xE/+Zrtw/5P3qS8dLewcBF+x1L6XLkerCEjw399h2csdi
+         jxuPlyFOFFzR5W6LOAuW6KzeeYysMVbsB+HeN/EjCNYofj5b3DFcZhmrrMMXyvZX2o
+         vAkjJ6HvuotwbDCOfsXME/BYtC4Xp+s4Ia+lQV7Q=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Alim Akhtar <alim.akhtar@samsung.com>,
-        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        patches@lists.linux.dev, Imran Shaik <quic_imrashai@quicinc.com>,
+        Konrad Dybcio <konrad.dybcio@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 266/600] ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)
-Date:   Mon, 11 Sep 2023 15:44:59 +0200
-Message-ID: <20230911134641.460471863@linuxfoundation.org>
+Subject: [PATCH 6.4 441/737] clk: qcom: gcc-qdu1000: Fix clkref clocks handling
+Date:   Mon, 11 Sep 2023 15:45:00 +0200
+Message-ID: <20230911134702.918107208@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,38 +51,66 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+From: Imran Shaik <quic_imrashai@quicinc.com>
 
-[ Upstream commit cf0cb2af6a18f28b84f9f1416bff50ca60d6e98a ]
+[ Upstream commit 2524dae5cd453ca39e8ba1b95c2755a8a2d94059 ]
 
-The davicom,dm9000 Ethernet Controller accepts two reg addresses.
+Update the GCC clkref clock's halt_check to BRANCH_HALT, as it's
+status bit is not inverted in the latest hardware version of QDU1000
+and QRU1000 SoCs. While at it, fix the gcc clkref clock ops as well.
 
-Fixes: a43736deb47d ("ARM: dts: Add dts file for S3C6410-based Mini6410 board")
-Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
-Link: https://lore.kernel.org/r/20230713152926.82884-1-krzysztof.kozlowski@linaro.org
-Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Fixes: 1c9efb0bc040 ("clk: qcom: Add QDU1000 and QRU1000 GCC support")
+Signed-off-by: Imran Shaik <quic_imrashai@quicinc.com>
+Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
+Link: https://lore.kernel.org/r/20230803105741.2292309-4-quic_imrashai@quicinc.com
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/s3c6410-mini6410.dts | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/clk/qcom/gcc-qdu1000.c | 10 ++++------
+ 1 file changed, 4 insertions(+), 6 deletions(-)
 
-diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
-index 17097da36f5ed..0b07b3c319604 100644
---- a/arch/arm/boot/dts/s3c6410-mini6410.dts
-+++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
-@@ -51,7 +51,7 @@ srom-cs1-bus@18000000 {
+diff --git a/drivers/clk/qcom/gcc-qdu1000.c b/drivers/clk/qcom/gcc-qdu1000.c
+index c00d26a3e6df5..8df7b79839680 100644
+--- a/drivers/clk/qcom/gcc-qdu1000.c
++++ b/drivers/clk/qcom/gcc-qdu1000.c
+@@ -1447,14 +1447,13 @@ static struct clk_branch gcc_pcie_0_cfg_ahb_clk = {
  
- 		ethernet@18000000 {
- 			compatible = "davicom,dm9000";
--			reg = <0x18000000 0x2 0x18000004 0x2>;
-+			reg = <0x18000000 0x2>, <0x18000004 0x2>;
- 			interrupt-parent = <&gpn>;
- 			interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
- 			davicom,no-eeprom;
+ static struct clk_branch gcc_pcie_0_clkref_en = {
+ 	.halt_reg = 0x9c004,
+-	.halt_bit = 31,
+-	.halt_check = BRANCH_HALT_ENABLE,
++	.halt_check = BRANCH_HALT,
+ 	.clkr = {
+ 		.enable_reg = 0x9c004,
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data) {
+ 			.name = "gcc_pcie_0_clkref_en",
+-			.ops = &clk_branch_ops,
++			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+ };
+@@ -2274,14 +2273,13 @@ static struct clk_branch gcc_tsc_etu_clk = {
+ 
+ static struct clk_branch gcc_usb2_clkref_en = {
+ 	.halt_reg = 0x9c008,
+-	.halt_bit = 31,
+-	.halt_check = BRANCH_HALT_ENABLE,
++	.halt_check = BRANCH_HALT,
+ 	.clkr = {
+ 		.enable_reg = 0x9c008,
+ 		.enable_mask = BIT(0),
+ 		.hw.init = &(const struct clk_init_data) {
+ 			.name = "gcc_usb2_clkref_en",
+-			.ops = &clk_branch_ops,
++			.ops = &clk_branch2_ops,
+ 		},
+ 	},
+ };
 -- 
 2.40.1
 
