@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3D6FD79B920
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:29 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 321C879B726
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:29 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376728AbjIKWUV (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:21 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47896 "EHLO
+        id S1353734AbjIKVts (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:49:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45510 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241077AbjIKPBU (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:20 -0400
+        with ESMTP id S242312AbjIKP1c (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:32 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id A5E8E125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:16 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id EBE8FC433C8;
-        Mon, 11 Sep 2023 15:01:15 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0CA72E4
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 580F9C433C7;
+        Mon, 11 Sep 2023 15:27:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444476;
-        bh=+KexGC+tLL+ZC/2i4y6EM2xAX1YSutjawc5Tkv2dTkA=;
+        s=korg; t=1694446046;
+        bh=8dPwhGagPqsMetn4PMn7Z/jpd9swBuWgZgRzCpoOz9A=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=MWklLxJcrnoWajUw/zxTxJHneS5ukiolfSfqQN1aWtzfN0eEJvVqkrYT+8DgpNkFJ
-         JBXcjy0In3fXMMXg2WwsVYJK344O5RIHttipkgx+JhZRRcQJGMeojYtJLfY6PWztcr
-         vnRHHalbZadwe4bM6LF7ZaetKjZnmSJidePJSzhY=
+        b=S63+MOTKB8HQxIjlkBLEAJKeyky6WTOpqn7XuVgDcox+sZqK8BpBp6vaMetWFGvQ8
+         9eGnniTNbAoz2Rn5gWpIrIwop7OrvpBe6PADJQjnkWV+g11jQjNOs1n7jNKWA7I5wS
+         L0T2vEknQWB1mjT9b40JbptMAJF4L7182HD4haDM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Zheng Yejian <zhengyejian1@huawei.com>,
-        "Masami Hiramatsu (Google)" <mhiramat@kernel.org>,
-        Brian Foster <bfoster@redhat.com>,
-        "Steven Rostedt (Google)" <rostedt@goodmis.org>
-Subject: [PATCH 6.4 736/737] tracing: Zero the pipe cpumask on alloc to avoid spurious -EBUSY
-Date:   Mon, 11 Sep 2023 15:49:55 +0200
-Message-ID: <20230911134711.080313281@linuxfoundation.org>
+        patches@lists.linux.dev, Barry Marson <bmarson@redhat.com>,
+        Alexander Aring <aahringo@redhat.com>,
+        David Teigland <teigland@redhat.com>
+Subject: [PATCH 6.1 563/600] dlm: fix plock lookup when using multiple lockspaces
+Date:   Mon, 11 Sep 2023 15:49:56 +0200
+Message-ID: <20230911134650.229093211@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,57 +50,61 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Brian Foster <bfoster@redhat.com>
+From: Alexander Aring <aahringo@redhat.com>
 
-commit 3d07fa1dd19035eb0b13ae6697efd5caa9033e74 upstream.
+commit 7c53e847ff5e97f033fdd31f71949807633d506b upstream.
 
-The pipe cpumask used to serialize opens between the main and percpu
-trace pipes is not zeroed or initialized. This can result in
-spurious -EBUSY returns if underlying memory is not fully zeroed.
-This has been observed by immediate failure to read the main
-trace_pipe file on an otherwise newly booted and idle system:
-
- # cat /sys/kernel/debug/tracing/trace_pipe
- cat: /sys/kernel/debug/tracing/trace_pipe: Device or resource busy
-
-Zero the allocation of pipe_cpumask to avoid the problem.
-
-Link: https://lore.kernel.org/linux-trace-kernel/20230831125500.986862-1-bfoster@redhat.com
+All posix lock ops, for all lockspaces (gfs2 file systems) are
+sent to userspace (dlm_controld) through a single misc device.
+The dlm_controld daemon reads the ops from the misc device
+and sends them to other cluster nodes using separate, per-lockspace
+cluster api communication channels.  The ops for a single lockspace
+are ordered at this level, so that the results are received in
+the same sequence that the requests were sent.  When the results
+are sent back to the kernel via the misc device, they are again
+funneled through the single misc device for all lockspaces.  When
+the dlm code in the kernel processes the results from the misc
+device, these results will be returned in the same sequence that
+the requests were sent, on a per-lockspace basis.  A recent change
+in this request/reply matching code missed the "per-lockspace"
+check (fsid comparison) when matching request and reply, so replies
+could be incorrectly matched to requests from other lockspaces.
 
 Cc: stable@vger.kernel.org
-Fixes: c2489bb7e6be ("tracing: Introduce pipe_cpumask to avoid race on trace_pipes")
-Reviewed-by: Zheng Yejian <zhengyejian1@huawei.com>
-Reviewed-by: Masami Hiramatsu (Google) <mhiramat@kernel.org>
-Signed-off-by: Brian Foster <bfoster@redhat.com>
-Signed-off-by: Steven Rostedt (Google) <rostedt@goodmis.org>
+Reported-by: Barry Marson <bmarson@redhat.com>
+Fixes: 57e2c2f2d94c ("fs: dlm: fix mismatch of plock results from userspace")
+Signed-off-by: Alexander Aring <aahringo@redhat.com>
+Signed-off-by: David Teigland <teigland@redhat.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- kernel/trace/trace.c |    4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ fs/dlm/plock.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/kernel/trace/trace.c
-+++ b/kernel/trace/trace.c
-@@ -9465,7 +9465,7 @@ static struct trace_array *trace_array_c
- 	if (!alloc_cpumask_var(&tr->tracing_cpumask, GFP_KERNEL))
- 		goto out_free_tr;
+--- a/fs/dlm/plock.c
++++ b/fs/dlm/plock.c
+@@ -455,7 +455,8 @@ static ssize_t dev_write(struct file *fi
+ 		}
+ 	} else {
+ 		list_for_each_entry(iter, &recv_list, list) {
+-			if (!iter->info.wait) {
++			if (!iter->info.wait &&
++			    iter->info.fsid == info.fsid) {
+ 				op = iter;
+ 				break;
+ 			}
+@@ -467,8 +468,7 @@ static ssize_t dev_write(struct file *fi
+ 		if (info.wait)
+ 			WARN_ON(op->info.optype != DLM_PLOCK_OP_LOCK);
+ 		else
+-			WARN_ON(op->info.fsid != info.fsid ||
+-				op->info.number != info.number ||
++			WARN_ON(op->info.number != info.number ||
+ 				op->info.owner != info.owner ||
+ 				op->info.optype != info.optype);
  
--	if (!alloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&tr->pipe_cpumask, GFP_KERNEL))
- 		goto out_free_tr;
- 
- 	tr->trace_flags = global_trace.trace_flags & ~ZEROED_TRACE_FLAGS;
-@@ -10410,7 +10410,7 @@ __init static int tracer_alloc_buffers(v
- 	if (trace_create_savedcmd() < 0)
- 		goto out_free_temp_buffer;
- 
--	if (!alloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
-+	if (!zalloc_cpumask_var(&global_trace.pipe_cpumask, GFP_KERNEL))
- 		goto out_free_savedcmd;
- 
- 	/* TODO: make the number of buffers hot pluggable with CPUS */
 
 
