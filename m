@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A34F579B810
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:55 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id DBB9779BC68
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:35 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1348707AbjIKVaI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:30:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:34456 "EHLO
+        id S1378832AbjIKWhe (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:37:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42562 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242181AbjIKPYX (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:24:23 -0400
+        with ESMTP id S239680AbjIKO0Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:26:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 96A25D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:24:18 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id D9F57C433C8;
-        Mon, 11 Sep 2023 15:24:17 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6BD06CF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:26:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id B484AC433C8;
+        Mon, 11 Sep 2023 14:26:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445858;
-        bh=IU1T9APhg2r6NTjBb0oTwp/SiUSBEKLE4UjMXZEoXGk=;
+        s=korg; t=1694442371;
+        bh=6sMB2t9NDbKSNEbk87OLjdcaBUHGHCgrVwvg25+5bw8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=U53pfyEkFuh+HGWWcAb+45VeUekaotWVL9TQ9OH4jNYjA69GaXVLczbSsVOUo7IB7
-         141yTeCAg1OACLTUPN/Dz2Qx/aGelCanLXyBsGzGgI8+lyXhpJXCr6HsouNWC1Ve+8
-         JQwu+FdPu+3V6ywJGWWHoFwpAo5UiQGMXY5MKY5Y=
+        b=LEehNLNLASwsjsBzEl+O2D7MtdJYxiLhxVQba6YUQrehFZwMISQbWq6xkEcTBSwko
+         0gkb/NIbbUqTCB2mla0o1QWZSrFBFrMdqtLBckgKAnWGkRqR3z9hFSazaR70vRQbWo
+         wTlm7UDkgv2t2KIZeJmHbR3G7cvE41Zwr0T/jgmk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Michael Zhivich <mzhivich@akamai.com>,
-        Dave Hansen <dave.hansen@linux.intel.com>,
-        Ingo Molnar <mingo@kernel.org>,
-        Daniel Sneddon <daniel.sneddon@linux.intel.com>,
-        Linus Torvalds <torvalds@linux-foundation.org>,
+        patches@lists.linux.dev,
+        Hugo Villeneuve <hvilleneuve@dimonoff.com>,
+        Lech Perczak <lech.perczak@camlingroup.com>,
+        Andy Shevchenko <andy.shevchenko@gmail.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 497/600] x86/speculation: Mark all Skylake CPUs as vulnerable to GDS
+Subject: [PATCH 6.5 731/739] serial: sc16is7xx: remove obsolete out_thread label
 Date:   Mon, 11 Sep 2023 15:48:50 +0200
-Message-ID: <20230911134648.300927272@linuxfoundation.org>
+Message-ID: <20230911134711.482147596@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,78 +52,59 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dave Hansen <dave.hansen@linux.intel.com>
+From: Hugo Villeneuve <hvilleneuve@dimonoff.com>
 
-[ Upstream commit c9f4c45c8ec3f07f4f083f9750032a1ec3eab6b2 ]
+[ Upstream commit dabc54a45711fe77674a6c0348231e00e66bd567 ]
 
-The Gather Data Sampling (GDS) vulnerability is common to all Skylake
-processors.  However, the "client" Skylakes* are now in this list:
+Commit c8f71b49ee4d ("serial: sc16is7xx: setup GPIO controller later
+in probe") moved GPIO setup code later in probe function. Doing so
+also required to move ports cleanup code (out_ports label) after the
+GPIO cleanup code.
 
-	https://www.intel.com/content/www/us/en/support/articles/000022396/processors.html
+After these moves, the out_thread label becomes misplaced and makes
+part of the cleanup code illogical.
 
-which means they are no longer included for new vulnerabilities here:
+This patch remove the now obsolete out_thread label and make GPIO
+setup code jump to out_ports label if it fails.
 
-	https://www.intel.com/content/www/us/en/developer/topic-technology/software-security-guidance/processors-affected-consolidated-product-cpu-model.html
-
-or in other GDS documentation.  Thus, they were not included in the
-original GDS mitigation patches.
-
-Mark SKYLAKE and SKYLAKE_L as vulnerable to GDS to match all the
-other Skylake CPUs (which include Kaby Lake).  Also group the CPUs
-so that the ones that share the exact same vulnerabilities are next
-to each other.
-
-Last, move SRBDS to the end of each line.  This makes it clear at a
-glance that SKYLAKE_X is unique.  Of the five Skylakes, it is the
-only "server" CPU and has a different implementation from the
-clients of the "special register" hardware, making it immune to SRBDS.
-
-This makes the diff much harder to read, but the resulting table is
-worth it.
-
-I very much appreciate the report from Michael Zhivich about this
-issue.  Despite what level of support a hardware vendor is providing,
-the kernel very much needs an accurate and up-to-date list of
-vulnerable CPUs.  More reports like this are very welcome.
-
-* Client Skylakes are CPUID 406E3/506E3 which is family 6, models
-  0x4E and 0x5E, aka INTEL_FAM6_SKYLAKE and INTEL_FAM6_SKYLAKE_L.
-
-Reported-by: Michael Zhivich <mzhivich@akamai.com>
-Fixes: 8974eb588283 ("x86/speculation: Add Gather Data Sampling mitigation")
-Signed-off-by: Dave Hansen <dave.hansen@linux.intel.com>
-Signed-off-by: Ingo Molnar <mingo@kernel.org>
-Reviewed-by: Daniel Sneddon <daniel.sneddon@linux.intel.com>
-Cc: Linus Torvalds <torvalds@linux-foundation.org>
+Signed-off-by: Hugo Villeneuve <hvilleneuve@dimonoff.com>
+Reviewed-by: Lech Perczak <lech.perczak@camlingroup.com>
+Tested-by: Lech Perczak <lech.perczak@camlingroup.com>
+Reviewed-by: Andy Shevchenko <andy.shevchenko@gmail.com>
+Link: https://lore.kernel.org/r/20230807214556.540627-3-hugo@hugovil.com
+Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
+Stable-dep-of: 049994292834 ("serial: sc16is7xx: fix regression with GPIO configuration")
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/x86/kernel/cpu/common.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ drivers/tty/serial/sc16is7xx.c | 4 +---
+ 1 file changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/arch/x86/kernel/cpu/common.c b/arch/x86/kernel/cpu/common.c
-index d38ae25e7c01f..b723368dbc644 100644
---- a/arch/x86/kernel/cpu/common.c
-+++ b/arch/x86/kernel/cpu/common.c
-@@ -1259,11 +1259,11 @@ static const struct x86_cpu_id cpu_vuln_blacklist[] __initconst = {
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_G,	X86_STEPPING_ANY,		SRBDS),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL_X,	X86_STEPPING_ANY,		MMIO),
- 	VULNBL_INTEL_STEPPINGS(BROADWELL,	X86_STEPPING_ANY,		SRBDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
- 	VULNBL_INTEL_STEPPINGS(SKYLAKE_X,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
--	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		SRBDS | MMIO | RETBLEED | GDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(SKYLAKE,		X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE_L,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
-+	VULNBL_INTEL_STEPPINGS(KABYLAKE,	X86_STEPPING_ANY,		MMIO | RETBLEED | GDS | SRBDS),
- 	VULNBL_INTEL_STEPPINGS(CANNONLAKE_L,	X86_STEPPING_ANY,		RETBLEED),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_L,	X86_STEPPING_ANY,		MMIO | MMIO_SBDS | RETBLEED | GDS),
- 	VULNBL_INTEL_STEPPINGS(ICELAKE_D,	X86_STEPPING_ANY,		MMIO | GDS),
+diff --git a/drivers/tty/serial/sc16is7xx.c b/drivers/tty/serial/sc16is7xx.c
+index faeb3dc371c05..f714ba3abc980 100644
+--- a/drivers/tty/serial/sc16is7xx.c
++++ b/drivers/tty/serial/sc16is7xx.c
+@@ -1529,7 +1529,7 @@ static int sc16is7xx_probe(struct device *dev,
+ 		s->gpio.can_sleep	 = 1;
+ 		ret = gpiochip_add_data(&s->gpio, s);
+ 		if (ret)
+-			goto out_thread;
++			goto out_ports;
+ 	}
+ #endif
+ 
+@@ -1555,8 +1555,6 @@ static int sc16is7xx_probe(struct device *dev,
+ #ifdef CONFIG_GPIOLIB
+ 	if (devtype->nr_gpio)
+ 		gpiochip_remove(&s->gpio);
+-
+-out_thread:
+ #endif
+ 
+ out_ports:
 -- 
 2.40.1
 
