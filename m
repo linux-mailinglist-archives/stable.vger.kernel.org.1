@@ -2,40 +2,45 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3078D79BCB9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id EA07D79BD7E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:07 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238122AbjIKVEA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41022 "EHLO
+        id S1379416AbjIKWoC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:44:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:59500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238875AbjIKOHB (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:07:01 -0400
+        with ESMTP id S241289AbjIKPFz (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:05:55 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 82BE7CF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:06:57 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C39C9C433C8;
-        Mon, 11 Sep 2023 14:06:56 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 502F2125;
+        Mon, 11 Sep 2023 08:05:50 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 70962C433C8;
+        Mon, 11 Sep 2023 15:05:49 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441217;
-        bh=hDcrtlQayZWfhmGGckXrMRdiguSDkVN229akvTcOzZo=;
+        s=korg; t=1694444750;
+        bh=u7MkkHj2jXsj867e4hujRxIDesuvCKsimNKlIdaX/N8=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=c6E0qDDjCKXdac3+2qlXminp0lZbYciksFRwjq8di86yKeLa1LepnmCgc5JknhsCg
-         956r6Jr1OubEtiHwsLO5OSc/Cvds1FxhIp+TArBN8ZF/uTfzyZ4GL4ZAwCoJAPVz7+
-         zochsk39gQlET5KWhmeyZWtpMhFzWjALsP5T9KNE=
+        b=YSRnd1/kXrCRvIdvCJd/nxDIpFX1j8YgtInf8jTKpDXChBba6uOLva1Vez1yvNGAs
+         ro4SneVk4RHA3g8b8Gf9/cj21+ibFwmedVc5Nt1caARwgmwvnm5npsEgq1xmKIQM7m
+         +B7/XbD+cbi7/blm8rilKA1p/EXw4jyM5tYbx0AI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Apelete Seketeli <aseketeli@baylibre.com>,
-        Esteban Blanc <eblanc@baylibre.com>,
-        Jai Luthra <j-luthra@ti.com>, Nishanth Menon <nm@ti.com>,
+        patches@lists.linux.dev, Wen Yang <wenyang.linux@foxmail.com>,
+        Alexander Viro <viro@zeniv.linux.org.uk>,
+        Jens Axboe <axboe@kernel.dk>,
+        Christian Brauner <brauner@kernel.org>,
+        Christoph Hellwig <hch@lst.de>, Dylan Yudaken <dylany@fb.com>,
+        David Woodhouse <dwmw@amazon.co.uk>,
+        Matthew Wilcox <willy@infradead.org>,
+        linux-fsdevel@vger.kernel.org, linux-kernel@vger.kernel.org,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 335/739] arm64: dts: ti: k3-j784s4: Fix interrupt ranges for wkup & main gpio
-Date:   Mon, 11 Sep 2023 15:42:14 +0200
-Message-ID: <20230911134700.453660788@linuxfoundation.org>
+Subject: [PATCH 6.1 102/600] eventfd: prevent underflow for eventfd semaphores
+Date:   Mon, 11 Sep 2023 15:42:15 +0200
+Message-ID: <20230911134636.612656955@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,57 +56,78 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Apelete Seketeli <aseketeli@baylibre.com>
+From: Wen Yang <wenyang.linux@foxmail.com>
 
-[ Upstream commit 05a1f130101e7a49ff1e8734939facd43596ea26 ]
+[ Upstream commit 758b492047816a3158d027e9fca660bc5bcf20bf ]
 
-This patch fixes the interrupt range for wakeup and main domain gpio
-interrupt routers. They were wrongly subtracted by 32 instead of
-following what is defined in the interrupt map in the TRM (Table 9-35).
+For eventfd with flag EFD_SEMAPHORE, when its ctx->count is 0, calling
+eventfd_ctx_do_read will cause ctx->count to overflow to ULLONG_MAX.
 
-Link:  http://www.ti.com/lit/pdf/spruj52
-Fixes: 4664ebd8346a ("arm64: dts: ti: Add initial support for J784S4 SoC")
-Signed-off-by: Apelete Seketeli <aseketeli@baylibre.com>
-Signed-off-by: Esteban Blanc <eblanc@baylibre.com>
-Signed-off-by: Jai Luthra <j-luthra@ti.com>
-Link: https://lore.kernel.org/r/20230810-tps6594-v6-4-2b2e2399e2ef@ti.com
-Signed-off-by: Nishanth Menon <nm@ti.com>
+An underflow can happen with EFD_SEMAPHORE eventfds in at least the
+following three subsystems:
+
+(1) virt/kvm/eventfd.c
+(2) drivers/vfio/virqfd.c
+(3) drivers/virt/acrn/irqfd.c
+
+where (2) and (3) are just modeled after (1). An eventfd must be
+specified for use with the KVM_IRQFD ioctl(). This can also be an
+EFD_SEMAPHORE eventfd. When the eventfd count is zero or has been
+decremented to zero an underflow can be triggered when the irqfd is shut
+down by raising the KVM_IRQFD_FLAG_DEASSIGN flag in the KVM_IRQFD
+ioctl():
+
+        // ctx->count == 0
+        kvm_vm_ioctl()
+        -> kvm_irqfd()
+           -> kvm_irqfd_deassign()
+              -> irqfd_deactivate()
+                 -> irqfd_shutdown()
+                    -> eventfd_ctx_remove_wait_queue(&cnt)
+                       -> eventfd_ctx_do_read(&cnt)
+
+Userspace polling on the eventfd wouldn't notice the underflow because 1
+is always returned as the value from eventfd_read() while ctx->count
+would've underflowed. It's not a huge deal because this should only be
+happening when the irqfd is shutdown but we should still fix it and
+avoid the spurious wakeup.
+
+Fixes: cb289d6244a3 ("eventfd - allow atomic read and waitqueue remove")
+Signed-off-by: Wen Yang <wenyang.linux@foxmail.com>
+Cc: Alexander Viro <viro@zeniv.linux.org.uk>
+Cc: Jens Axboe <axboe@kernel.dk>
+Cc: Christian Brauner <brauner@kernel.org>
+Cc: Christoph Hellwig <hch@lst.de>
+Cc: Dylan Yudaken <dylany@fb.com>
+Cc: David Woodhouse <dwmw@amazon.co.uk>
+Cc: Matthew Wilcox <willy@infradead.org>
+Cc: linux-fsdevel@vger.kernel.org
+Cc: linux-kernel@vger.kernel.org
+Message-Id: <tencent_7588DFD1F365950A757310D764517A14B306@qq.com>
+[brauner: rewrite commit message and add explanation how this underflow can happen]
+Signed-off-by: Christian Brauner <brauner@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi       | 2 +-
- arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi | 2 +-
- 2 files changed, 2 insertions(+), 2 deletions(-)
+ fs/eventfd.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
-index 2ea0adae6832f..76e610d8782b5 100644
---- a/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-main.dtsi
-@@ -60,7 +60,7 @@ main_gpio_intr: interrupt-controller@a00000 {
- 		#interrupt-cells = <1>;
- 		ti,sci = <&sms>;
- 		ti,sci-dev-id = <10>;
--		ti,interrupt-ranges = <8 360 56>;
-+		ti,interrupt-ranges = <8 392 56>;
- 	};
+diff --git a/fs/eventfd.c b/fs/eventfd.c
+index 249ca6c0b7843..4a60ea932e3d9 100644
+--- a/fs/eventfd.c
++++ b/fs/eventfd.c
+@@ -189,7 +189,7 @@ void eventfd_ctx_do_read(struct eventfd_ctx *ctx, __u64 *cnt)
+ {
+ 	lockdep_assert_held(&ctx->wqh.lock);
  
- 	main_pmx0: pinctrl@11c000 {
-diff --git a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
-index 657fb1d72512c..62a0f172fb2d4 100644
---- a/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
-+++ b/arch/arm64/boot/dts/ti/k3-j784s4-mcu-wakeup.dtsi
-@@ -107,7 +107,7 @@ wkup_gpio_intr: interrupt-controller@42200000 {
- 		#interrupt-cells = <1>;
- 		ti,sci = <&sms>;
- 		ti,sci-dev-id = <177>;
--		ti,interrupt-ranges = <16 928 16>;
-+		ti,interrupt-ranges = <16 960 16>;
- 	};
- 
- 	/* MCU_TIMERIO pad input CTRLMMR_MCU_TIMER*_CTRL registers */
+-	*cnt = (ctx->flags & EFD_SEMAPHORE) ? 1 : ctx->count;
++	*cnt = ((ctx->flags & EFD_SEMAPHORE) && ctx->count) ? 1 : ctx->count;
+ 	ctx->count -= *cnt;
+ }
+ EXPORT_SYMBOL_GPL(eventfd_ctx_do_read);
 -- 
 2.40.1
 
