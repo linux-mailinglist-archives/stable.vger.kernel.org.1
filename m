@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 57AFD79BF61
+	by mail.lfdr.de (Postfix) with ESMTP id 0D50079BF60
 	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:56 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239352AbjIKV7b (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:59:31 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41188 "EHLO
+        id S240345AbjIKVsq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:48:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36564 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241064AbjIKPBH (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:07 -0400
+        with ESMTP id S242249AbjIKPZu (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:50 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3721DE40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:02 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 741B1C433C7;
-        Mon, 11 Sep 2023 15:01:01 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3A29DD8
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:46 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81983C433C8;
+        Mon, 11 Sep 2023 15:25:45 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444461;
-        bh=n53DhF8hzTyTI/j2CCH7cyYQXJwTPgi3/odqs8WAdis=;
+        s=korg; t=1694445945;
+        bh=qRmGEv+/9knJjrHXCGjnxgMEr3UdxhGUWP0bT64rk4Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=CGCajlQ1an9C3sj5jEgjkZNg7gISOocggDf41OZxHYDff28DyGtd7e46fM1SZMLTe
-         dzyIzU10swibfX/OdVTBtrivVvHDd9UNpW+WPZfcqUIGA7NJi2am3JUHzaoSnwzwKV
-         cu06VOudzHDSKTd0VckStTLpSXM9nnIT6zZA/0Cs=
+        b=hMcKXS4lOrqcG6ScLGKHRffpE0q0/ZPnLw9zs3KXbc+ZWvQRkJmspcNZCs3I3vIRp
+         9wDQQ5VDfFo+jhG5Cl2+6MroMeRfizOkT/RGiOMOWhb3/qXXYaot6o8+IwOazFFzta
+         JXtyyf1lswmA6/hrUZgSEEVGivGkK2sIgLP3bu/0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Guenter Roeck <linux@roeck-us.net>,
-        Tzung-Bi Shih <tzungbi@kernel.org>
-Subject: [PATCH 6.4 701/737] platform/chrome: chromeos_acpi: print hex string for ACPI_TYPE_BUFFER
-Date:   Mon, 11 Sep 2023 15:49:20 +0200
-Message-ID: <20230911134710.104558507@linuxfoundation.org>
+        patches@lists.linux.dev, Damien Le Moal <dlemoal@kernel.org>,
+        Hannes Reinecke <hare@suse.de>,
+        Douglas Gilbert <dgilbert@interlog.com>,
+        Bart Van Assche <bvanassche@acm.org>,
+        "Martin K. Petersen" <martin.petersen@oracle.com>
+Subject: [PATCH 6.1 528/600] scsi: core: Fix the scsi_set_resid() documentation
+Date:   Mon, 11 Sep 2023 15:49:21 +0200
+Message-ID: <20230911134649.209444610@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,78 +52,46 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tzung-Bi Shih <tzungbi@kernel.org>
+From: Bart Van Assche <bvanassche@acm.org>
 
-commit 0820debb7d489e9eb1f68b7bb69e6ae210699b3f upstream.
+commit f669b8a683e4ee26fa5cafe19d71cec1786b556a upstream.
 
-`element->buffer.pointer` should be binary blob.  `%s` doesn't work
-perfect for them.
+Because scsi_finish_command() subtracts the residual from the buffer
+length, residual overflows must not be reported. Reflect this in the SCSI
+documentation. See also commit 9237f04e12cc ("scsi: core: Fix
+scsi_get/set_resid() interface")
 
-Print hex string for ACPI_TYPE_BUFFER.  Also update the documentation
-to reflect this.
-
-Fixes: 0a4cad9c11ad ("platform/chrome: Add ChromeOS ACPI device driver")
+Cc: Damien Le Moal <dlemoal@kernel.org>
+Cc: Hannes Reinecke <hare@suse.de>
+Cc: Douglas Gilbert <dgilbert@interlog.com>
 Cc: stable@vger.kernel.org
-Reviewed-by: Guenter Roeck <linux@roeck-us.net>
-Link: https://lore.kernel.org/r/20230803011245.3773756-1-tzungbi@kernel.org
-Signed-off-by: Tzung-Bi Shih <tzungbi@kernel.org>
+Signed-off-by: Bart Van Assche <bvanassche@acm.org>
+Link: https://lore.kernel.org/r/20230721160154.874010-2-bvanassche@acm.org
+Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- Documentation/ABI/testing/sysfs-driver-chromeos-acpi |    2 -
- drivers/platform/chrome/chromeos_acpi.c              |   31 ++++++++++++++++++-
- 2 files changed, 31 insertions(+), 2 deletions(-)
+ Documentation/scsi/scsi_mid_low_api.rst |    4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
---- a/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-+++ b/Documentation/ABI/testing/sysfs-driver-chromeos-acpi
-@@ -134,4 +134,4 @@ KernelVersion:	5.19
- Description:
- 		Returns the verified boot data block shared between the
- 		firmware verification step and the kernel verification step
--		(binary).
-+		(hex dump).
---- a/drivers/platform/chrome/chromeos_acpi.c
-+++ b/drivers/platform/chrome/chromeos_acpi.c
-@@ -90,7 +90,36 @@ static int chromeos_acpi_handle_package(
- 	case ACPI_TYPE_STRING:
- 		return sysfs_emit(buf, "%s\n", element->string.pointer);
- 	case ACPI_TYPE_BUFFER:
--		return sysfs_emit(buf, "%s\n", element->buffer.pointer);
-+		{
-+			int i, r, at, room_left;
-+			const int byte_per_line = 16;
-+
-+			at = 0;
-+			room_left = PAGE_SIZE - 1;
-+			for (i = 0; i < element->buffer.length && room_left; i += byte_per_line) {
-+				r = hex_dump_to_buffer(element->buffer.pointer + i,
-+						       element->buffer.length - i,
-+						       byte_per_line, 1, buf + at, room_left,
-+						       false);
-+				if (r > room_left)
-+					goto truncating;
-+				at += r;
-+				room_left -= r;
-+
-+				r = sysfs_emit_at(buf, at, "\n");
-+				if (!r)
-+					goto truncating;
-+				at += r;
-+				room_left -= r;
-+			}
-+
-+			buf[at] = 0;
-+			return at;
-+truncating:
-+			dev_info_once(dev, "truncating sysfs content for %s\n", name);
-+			sysfs_emit_at(buf, PAGE_SIZE - 4, "..\n");
-+			return PAGE_SIZE - 1;
-+		}
- 	default:
- 		dev_err(dev, "element type %d not supported\n", element->type);
- 		return -EINVAL;
+--- a/Documentation/scsi/scsi_mid_low_api.rst
++++ b/Documentation/scsi/scsi_mid_low_api.rst
+@@ -1190,11 +1190,11 @@ Members of interest:
+ 		 - pointer to scsi_device object that this command is
+                    associated with.
+     resid
+-		 - an LLD should set this signed integer to the requested
++		 - an LLD should set this unsigned integer to the requested
+                    transfer length (i.e. 'request_bufflen') less the number
+                    of bytes that are actually transferred. 'resid' is
+                    preset to 0 so an LLD can ignore it if it cannot detect
+-                   underruns (overruns should be rare). If possible an LLD
++                   underruns (overruns should not be reported). An LLD
+                    should set 'resid' prior to invoking 'done'. The most
+                    interesting case is data transfers from a SCSI target
+                    device (e.g. READs) that underrun.
 
 
