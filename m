@@ -2,42 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 9116879BEA1
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:17:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 87A1579C04B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S230466AbjIKUvy (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:51:54 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57654 "EHLO
+        id S1350887AbjIKVmC (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:42:02 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33992 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238623AbjIKOBD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:03 -0400
+        with ESMTP id S240032AbjIKOej (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:39 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 6971FCF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id AF9B1C433C9;
-        Mon, 11 Sep 2023 14:00:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C3BF4E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:34 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 199D2C433C8;
+        Mon, 11 Sep 2023 14:34:33 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440859;
-        bh=sM3B8Nb3JnG9/KHaM1jDticpvBUhm+Zc4twnrgrARa4=;
+        s=korg; t=1694442874;
+        bh=NkTO03MKoHEjJWRjskXOxqq55bCmsA0Pw9083pDjW74=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=ayE6W+4O1bOzAeM25c+f5VPFyUQoBkSwBOTfKtnp+EfDakBwMRI/+mVOXiWuWYOzk
-         03oEB9n9RPP6bhzZPZFgMbjRWT4BlC3Wnl1apsu4T0oaFVbdPOBexW80Mx4taT+YVC
-         YKennt/l1yTgr8mq4ayhka5i4ReI1ulSenclF7ok=
+        b=UCAb7dKm/hMZROXNZrcXNaYbbQdTRLdcgm8URJVEsS5GHV4IbGdyAGAFogyOoDoDy
+         F8DjevqK7b/vHSlWvyxLdtWR71b/mi6Bbw3Z87dQHNHbNGRgWG8SnE+knrDfhMRIZ7
+         BFbwMxxjs+7leizPptibMJE/d3npXLqJc7yjQzWI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Caleb Connolly <caleb.connolly@linaro.org>,
-        Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Luca Weiss <luca@z3ntu.xyz>,
-        Bjorn Andersson <andersson@kernel.org>,
+        patches@lists.linux.dev, Eric Dumazet <edumazet@google.com>,
+        Yuchung Cheng <ycheng@google.com>,
+        Neal Cardwell <ncardwell@google.com>,
+        Jakub Kicinski <kuba@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 211/739] soc: qcom: ocmem: Fix NUM_PORTS & NUM_MACROS macros
+Subject: [PATCH 6.4 151/737] tcp: tcp_enter_quickack_mode() should be static
 Date:   Mon, 11 Sep 2023 15:40:10 +0200
-Message-ID: <20230911134657.081446718@linuxfoundation.org>
+Message-ID: <20230911134654.704421525@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,52 +52,62 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Luca Weiss <luca@z3ntu.xyz>
+From: Eric Dumazet <edumazet@google.com>
 
-[ Upstream commit a7b484b1c9332a1ee12e8799d62a11ee3f8e0801 ]
+[ Upstream commit 03b123debcbc8db987bda17ed8412cc011064c22 ]
 
-Since we're using these two macros to read a value from a register, we
-need to use the FIELD_GET instead of the FIELD_PREP macro, otherwise
-we're getting wrong values.
+After commit d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP"),
+tcp_enter_quickack_mode() is only used from net/ipv4/tcp_input.c.
 
-So instead of:
-
-  [    3.111779] ocmem fdd00000.sram: 2 ports, 1 regions, 512 macros, not interleaved
-
-we now get the correct value of:
-
-  [    3.129672] ocmem fdd00000.sram: 2 ports, 1 regions, 2 macros, not interleaved
-
-Fixes: 88c1e9404f1d ("soc: qcom: add OCMEM driver")
-Reviewed-by: Caleb Connolly <caleb.connolly@linaro.org>
-Reviewed-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Signed-off-by: Luca Weiss <luca@z3ntu.xyz>
-Link: https://lore.kernel.org/r/20230506-msm8226-ocmem-v3-1-79da95a2581f@z3ntu.xyz
-Signed-off-by: Bjorn Andersson <andersson@kernel.org>
+Fixes: d2ccd7bc8acd ("tcp: avoid resetting ACK timer in DCTCP")
+Signed-off-by: Eric Dumazet <edumazet@google.com>
+Cc: Yuchung Cheng <ycheng@google.com>
+Cc: Neal Cardwell <ncardwell@google.com>
+Link: https://lore.kernel.org/r/20230718162049.1444938-1-edumazet@google.com
+Signed-off-by: Jakub Kicinski <kuba@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/soc/qcom/ocmem.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ include/net/tcp.h    | 1 -
+ net/ipv4/tcp_input.c | 3 +--
+ 2 files changed, 1 insertion(+), 3 deletions(-)
 
-diff --git a/drivers/soc/qcom/ocmem.c b/drivers/soc/qcom/ocmem.c
-index aaddc3cc53b7f..ef7c1748242ac 100644
---- a/drivers/soc/qcom/ocmem.c
-+++ b/drivers/soc/qcom/ocmem.c
-@@ -80,8 +80,8 @@ struct ocmem {
- #define OCMEM_HW_VERSION_MINOR(val)		FIELD_GET(GENMASK(27, 16), val)
- #define OCMEM_HW_VERSION_STEP(val)		FIELD_GET(GENMASK(15, 0), val)
+diff --git a/include/net/tcp.h b/include/net/tcp.h
+index 182337a8cf94a..ca6435f5d821e 100644
+--- a/include/net/tcp.h
++++ b/include/net/tcp.h
+@@ -355,7 +355,6 @@ ssize_t tcp_splice_read(struct socket *sk, loff_t *ppos,
+ struct sk_buff *tcp_stream_alloc_skb(struct sock *sk, int size, gfp_t gfp,
+ 				     bool force_schedule);
  
--#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_PREP(0x0000000f, (val))
--#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_PREP(0x00003f00, (val))
-+#define OCMEM_HW_PROFILE_NUM_PORTS(val)		FIELD_GET(0x0000000f, (val))
-+#define OCMEM_HW_PROFILE_NUM_MACROS(val)	FIELD_GET(0x00003f00, (val))
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks);
+ static inline void tcp_dec_quickack_mode(struct sock *sk,
+ 					 const unsigned int pkts)
+ {
+diff --git a/net/ipv4/tcp_input.c b/net/ipv4/tcp_input.c
+index 57f1e4883b761..094b3e266bbea 100644
+--- a/net/ipv4/tcp_input.c
++++ b/net/ipv4/tcp_input.c
+@@ -287,7 +287,7 @@ static void tcp_incr_quickack(struct sock *sk, unsigned int max_quickacks)
+ 		icsk->icsk_ack.quick = quickacks;
+ }
  
- #define OCMEM_HW_PROFILE_LAST_REGN_HALFSIZE	0x00010000
- #define OCMEM_HW_PROFILE_INTERLEAVING		0x00020000
+-void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
++static void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
+ {
+ 	struct inet_connection_sock *icsk = inet_csk(sk);
+ 
+@@ -295,7 +295,6 @@ void tcp_enter_quickack_mode(struct sock *sk, unsigned int max_quickacks)
+ 	inet_csk_exit_pingpong_mode(sk);
+ 	icsk->icsk_ack.ato = TCP_ATO_MIN;
+ }
+-EXPORT_SYMBOL(tcp_enter_quickack_mode);
+ 
+ /* Send ACKs quickly, if "quick" count is not exhausted
+  * and the session is not interactive.
 -- 
 2.40.1
 
