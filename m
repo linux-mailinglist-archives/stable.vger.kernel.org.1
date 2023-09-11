@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 3A4AC79B035
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:04 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 54F9479B5A8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1379643AbjIKWpN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:45:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58902 "EHLO
+        id S1345354AbjIKVTn (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:19:43 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39266 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238603AbjIKOA1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:27 -0400
+        with ESMTP id S239918AbjIKOb3 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:29 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C83BACD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:22 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1CD0DC433C7;
-        Mon, 11 Sep 2023 14:00:21 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EA94EF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:24 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3ED20C433CB;
+        Mon, 11 Sep 2023 14:31:24 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440822;
-        bh=arihZi5u6mS+jVsNIPnNTBGduYR5Cu9pgudOxzwyU30=;
+        s=korg; t=1694442684;
+        bh=hlmszkVvPffITMF+gjbhDbfLFWLOCHtGWE76mD08iSQ=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=nWQY1BJL7FKrnyjONd4//dTXgm6elzOxUufwoN8kcymEQZMZdItjxxQVMDOYzTKeo
-         F/zoh5nINOV6+dsajBCNJGXUtPacsk/hEc4dNLAmXODEBKRo2o5n6aB9c3N+5LhYc6
-         0HY1FKHLndpKY+8HC5QYS55N35JluW1HCofO1Y0I=
+        b=tSv3HyyQQX99W88Ar6pAA6mFilNzeNNib2oC4uf/3uUzmYOuz0e92T/jX4gCK2X2O
+         kxo23P1F5dHCTxpd9/bNrr00H2O8xKv4mwbRPXNCpR0Y3lFMZtCnP6MgPrpaY+b70g
+         ImmVjRnevJ5VwR7f+sFu0vPMnlDssK6641chyt1U=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Brian Norris <briannorris@chromium.org>,
-        Dmitry Antipov <dmantipov@yandex.ru>,
-        Kalle Valo <kvalo@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 170/739] wifi: mwifiex: avoid possible NULL skb pointer dereference
-Date:   Mon, 11 Sep 2023 15:39:29 +0200
-Message-ID: <20230911134655.934788209@linuxfoundation.org>
+        patches@lists.linux.dev,
+        Chris Bainbridge <chris.bainbridge@gmail.com>,
+        Feng Tang <feng.tang@intel.com>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 111/737] clocksource: Handle negative skews in "skew is too large" messages
+Date:   Mon, 11 Sep 2023 15:39:30 +0200
+Message-ID: <20230911134653.606695156@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,52 +52,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Paul E. McKenney <paulmck@kernel.org>
 
-[ Upstream commit 35a7a1ce7c7d61664ee54f5239a1f120ab95a87e ]
+[ Upstream commit e40806e9bcf8aaa86dbf0d484e7cf3cfa09cb86c ]
 
-In 'mwifiex_handle_uap_rx_forward()', always check the value
-returned by 'skb_copy()' to avoid potential NULL pointer
-dereference in 'mwifiex_uap_queue_bridged_pkt()', and drop
-original skb in case of copying failure.
+The nanosecond-to-millisecond skew computation uses unsigned arithmetic,
+which produces user-unfriendly large positive numbers for negative skews.
+Therefore, use signed arithmetic for this computation in order to preserve
+the negativity.
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
-
-Fixes: 838e4f449297 ("mwifiex: improve uAP RX handling")
-Acked-by: Brian Norris <briannorris@chromium.org>
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Kalle Valo <kvalo@kernel.org>
-Link: https://lore.kernel.org/r/20230814095041.16416-1-dmantipov@yandex.ru
+Reported-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Reported-by: Feng Tang <feng.tang@intel.com>
+Fixes: dd029269947a ("clocksource: Improve "skew is too large" messages")
+Reviewed-by: Feng Tang <feng.tang@intel.com>
+Tested-by: Chris Bainbridge <chris.bainbridge@gmail.com>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/wireless/marvell/mwifiex/uap_txrx.c | 10 +++++++++-
- 1 file changed, 9 insertions(+), 1 deletion(-)
+ kernel/time/clocksource.c | 8 ++++----
+ 1 file changed, 4 insertions(+), 4 deletions(-)
 
-diff --git a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-index c1b8d41dd7536..b8b9a0fcb19cd 100644
---- a/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-+++ b/drivers/net/wireless/marvell/mwifiex/uap_txrx.c
-@@ -253,7 +253,15 @@ int mwifiex_handle_uap_rx_forward(struct mwifiex_private *priv,
+diff --git a/kernel/time/clocksource.c b/kernel/time/clocksource.c
+index 91836b727cef5..0600e16dbafef 100644
+--- a/kernel/time/clocksource.c
++++ b/kernel/time/clocksource.c
+@@ -473,8 +473,8 @@ static void clocksource_watchdog(struct timer_list *unused)
+ 		/* Check the deviation from the watchdog clocksource. */
+ 		md = cs->uncertainty_margin + watchdog->uncertainty_margin;
+ 		if (abs(cs_nsec - wd_nsec) > md) {
+-			u64 cs_wd_msec;
+-			u64 wd_msec;
++			s64 cs_wd_msec;
++			s64 wd_msec;
+ 			u32 wd_rem;
  
- 	if (is_multicast_ether_addr(ra)) {
- 		skb_uap = skb_copy(skb, GFP_ATOMIC);
--		mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		if (likely(skb_uap)) {
-+			mwifiex_uap_queue_bridged_pkt(priv, skb_uap);
-+		} else {
-+			mwifiex_dbg(adapter, ERROR,
-+				    "failed to copy skb for uAP\n");
-+			priv->stats.rx_dropped++;
-+			dev_kfree_skb_any(skb);
-+			return -1;
-+		}
- 	} else {
- 		if (mwifiex_get_sta_entry(priv, ra)) {
- 			/* Requeue Intra-BSS packet */
+ 			pr_warn("timekeeping watchdog on CPU%d: Marking clocksource '%s' as unstable because the skew is too large:\n",
+@@ -483,8 +483,8 @@ static void clocksource_watchdog(struct timer_list *unused)
+ 				watchdog->name, wd_nsec, wdnow, wdlast, watchdog->mask);
+ 			pr_warn("                      '%s' cs_nsec: %lld cs_now: %llx cs_last: %llx mask: %llx\n",
+ 				cs->name, cs_nsec, csnow, cslast, cs->mask);
+-			cs_wd_msec = div_u64_rem(cs_nsec - wd_nsec, 1000U * 1000U, &wd_rem);
+-			wd_msec = div_u64_rem(wd_nsec, 1000U * 1000U, &wd_rem);
++			cs_wd_msec = div_s64_rem(cs_nsec - wd_nsec, 1000 * 1000, &wd_rem);
++			wd_msec = div_s64_rem(wd_nsec, 1000 * 1000, &wd_rem);
+ 			pr_warn("                      Clocksource '%s' skewed %lld ns (%lld ms) over watchdog '%s' interval of %lld ns (%lld ms)\n",
+ 				cs->name, cs_nsec - wd_nsec, cs_wd_msec, watchdog->name, wd_nsec, wd_msec);
+ 			if (curr_clocksource == cs)
 -- 
 2.40.1
 
