@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 14CBE79C07D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:20:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8FA4D79BD24
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S229675AbjIKWqx (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:46:53 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41338 "EHLO
+        id S234605AbjIKUws (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:48 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58018 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241085AbjIKPBi (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:38 -0400
+        with ESMTP id S240049AbjIKOfA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 5C8CF125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 80CCBC433CD;
-        Mon, 11 Sep 2023 15:01:32 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id EC78DF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:54 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 327A2C433C8;
+        Mon, 11 Sep 2023 14:34:54 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444492;
-        bh=T7uMimOF/c7HVJx7qOoWtUrL/02aTX2Ovzk+ceR44w8=;
+        s=korg; t=1694442894;
+        bh=vgNHfCi9G8wvVDVFTvM2DpsIHv8GNOMb/R9Pz0obdyw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=EeMkk0aYnQHxdoXz5PgAyQOZLlsJmAxEw2pUl8PJ/RaHmDHETVO4uKUVErOz25yOo
-         p1ZNQWLS+objGr48pQ/18BunCx+vvCFrGizX/Ny8NdYJcHuchOkMh77DWY3e9cJzXe
-         S4D8p4vmsoWR/MQT734/g7eJDz/iznZYN/D4CigE=
+        b=PrOQM50ZSFS6LPO9qVtLoSVSEmGPcNyLd2BA/JcHCxVXIl5H9nk6O66UswBLwuzUW
+         kBtb6L9SlmdMhog/Fse7LTELkO8IW4Nj2Bz4aaonaE9HnREAMKIL3D8G6CSn8J/BNl
+         1gQ36ug+hLsdV3ocHMtn8dzXTlX+tqZfFDEpIkZs=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dmitry Antipov <dmantipov@yandex.ru>,
-        Hans Verkuil <hverkuil-cisco@xs4all.nl>,
-        Mauro Carvalho Chehab <mchehab@kernel.org>,
+        patches@lists.linux.dev, Li Zetao <lizetao1@huawei.com>,
+        Mark Brown <broonie@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 012/600] media: pulse8-cec: handle possible ping error
+Subject: [PATCH 6.4 186/737] spi: mpc5xxx-psc: Fix unsigned expression compared with zero
 Date:   Mon, 11 Sep 2023 15:40:45 +0200
-Message-ID: <20230911134633.979622351@linuxfoundation.org>
+Message-ID: <20230911134655.770564259@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,44 +50,50 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Dmitry Antipov <dmantipov@yandex.ru>
+From: Li Zetao <lizetao1@huawei.com>
 
-[ Upstream commit 92cbf865ea2e0f2997ff97815c6db182eb23df1b ]
+[ Upstream commit de5e92cb5cefd2968b96075995a36e28298edf71 ]
 
-Handle (and warn about) possible error waiting for MSGCODE_PING result.
+There is two warnings reported by coccinelle:
 
-Found by Linux Verification Center (linuxtesting.org) with SVACE.
+./drivers/spi/spi-mpc512x-psc.c:493:5-13: WARNING:
+	Unsigned expression compared with zero: mps -> irq     <     0
+./drivers/spi/spi-mpc52xx-psc.c:332:5-13: WARNING:
+	Unsigned expression compared with zero: mps -> irq     <     0
 
-Signed-off-by: Dmitry Antipov <dmantipov@yandex.ru>
-Signed-off-by: Hans Verkuil <hverkuil-cisco@xs4all.nl>
-Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
+The commit "208ee586f862"
+("spi: mpc5xxx-psc: Return immediately if IRQ resource is unavailable")
+was to check whether the IRQ resource is unavailable. When the IRQ
+resource is unavailable, an error code is returned, however, the type
+of "mps->irq" is "unsigned int", causing the error code to flip. Modify
+the type of "mps->irq" to solve this problem.
+
+Fixes: 208ee586f862 ("spi: mpc5xxx-psc: Return immediately if IRQ resource is unavailable")
+Signed-off-by: Li Zetao <lizetao1@huawei.com>
+Link: https://lore.kernel.org/r/20230803134805.1037251-1-lizetao1@huawei.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/media/cec/usb/pulse8/pulse8-cec.c | 7 +++++--
- 1 file changed, 5 insertions(+), 2 deletions(-)
+ drivers/spi/spi-mpc512x-psc.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/media/cec/usb/pulse8/pulse8-cec.c b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-index 04b13cdc38d2c..ba67587bd43ec 100644
---- a/drivers/media/cec/usb/pulse8/pulse8-cec.c
-+++ b/drivers/media/cec/usb/pulse8/pulse8-cec.c
-@@ -809,8 +809,11 @@ static void pulse8_ping_eeprom_work_handler(struct work_struct *work)
+diff --git a/drivers/spi/spi-mpc512x-psc.c b/drivers/spi/spi-mpc512x-psc.c
+index 99aeef28a4774..5cecca1bef026 100644
+--- a/drivers/spi/spi-mpc512x-psc.c
++++ b/drivers/spi/spi-mpc512x-psc.c
+@@ -53,7 +53,7 @@ struct mpc512x_psc_spi {
+ 	int type;
+ 	void __iomem *psc;
+ 	struct mpc512x_psc_fifo __iomem *fifo;
+-	unsigned int irq;
++	int irq;
+ 	u8 bits_per_word;
+ 	u32 mclk_rate;
  
- 	mutex_lock(&pulse8->lock);
- 	cmd = MSGCODE_PING;
--	pulse8_send_and_wait(pulse8, &cmd, 1,
--			     MSGCODE_COMMAND_ACCEPTED, 0);
-+	if (pulse8_send_and_wait(pulse8, &cmd, 1,
-+				 MSGCODE_COMMAND_ACCEPTED, 0)) {
-+		dev_warn(pulse8->dev, "failed to ping EEPROM\n");
-+		goto unlock;
-+	}
- 
- 	if (pulse8->vers < 2)
- 		goto unlock;
 -- 
 2.40.1
 
