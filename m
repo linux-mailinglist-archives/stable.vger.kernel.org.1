@@ -2,39 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id BFE1379B9E5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:44 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 7109179BA11
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353716AbjIKVsI (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:08 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33842 "EHLO
+        id S1378664AbjIKWgW (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:36:22 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58016 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241097AbjIKPBy (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:54 -0400
+        with ESMTP id S240045AbjIKOe4 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:34:56 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id F1643E40
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:49 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 452D7C433C8;
-        Mon, 11 Sep 2023 15:01:49 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28B57F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:34:52 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6CB42C433C8;
+        Mon, 11 Sep 2023 14:34:51 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444509;
-        bh=YPqmbEIYTFvLj3mW8HCOa37jnQRf5cjRssdqFc3OEH4=;
+        s=korg; t=1694442891;
+        bh=t1Xzu9Iai1Q9NsQzX5oZVJ9+fxiDHituIb8goMj7nzM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q9rURQd7MGdZr4wcSogmSR1gRVF6kQjMJGuJTRv86v21ITQmf93B5+ZOQ1AuSxtWd
-         HzEWXQPD+2mMV4AX71ODtjYirKRZtHLW+bnLMQvp3/E2N/KU7XfPN8/aMgb9khoFFs
-         vJWqzs8Zb99/XHhWS0uk/yybrP6XnVNxTR4A8mTk=
+        b=hw9oeP4ZfPCDHBnHqdBddm3xnOCy+yRmvcN4Q2zHQwbkq25JoasKfmGsjUXuA0n0g
+         hF5qMDrwZksi/fsFsEJUgDe2S/+rkV7QSIj+l/K+A3qIVAHDPT9nwFz6LvIu1dtwjb
+         jGGRPMi5OSFLiZiMuRpyXYDXeBB6DybiqfCIgsZ0=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Bart Van Assche <bvanassche@acm.org>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Markus Schneider-Pargmann <msp@baylibre.com>,
+        Michal Kubiak <michal.kubiak@intel.com>,
+        Marc Kleine-Budde <mkl@pengutronix.de>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 003/600] scsi: ufs: Try harder to change the power mode
+Subject: [PATCH 6.4 177/737] can: tcan4x5x: Remove reserved register 0x814 from writable table
 Date:   Mon, 11 Sep 2023 15:40:36 +0200
-Message-ID: <20230911134633.727473100@linuxfoundation.org>
+Message-ID: <20230911134655.485443065@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,46 +52,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Bart Van Assche <bvanassche@acm.org>
+From: Markus Schneider-Pargmann <msp@baylibre.com>
 
-[ Upstream commit 579a4e9dbd53978cad8df88dc612837cdd210ce0 ]
+[ Upstream commit fbe534f7bf213d485b0ed5362b24a41bf3e18803 ]
 
-Instead of only retrying the START STOP UNIT command if a unit attention is
-reported, repeat it if any SCSI error is reported by the device or if the
-command timed out.
+The mentioned register is not writable. It is reserved and should not be
+written.
 
-Signed-off-by: Bart Van Assche <bvanassche@acm.org>
-Link: https://lore.kernel.org/r/20221018202958.1902564-8-bvanassche@acm.org
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
-Stable-dep-of: fe8637f7708c ("scsi: ufs: core: Increase the START STOP UNIT timeout from one to ten seconds")
+Fixes: 39dbb21b6a29 ("can: tcan4x5x: Specify separate read/write ranges")
+Signed-off-by: Markus Schneider-Pargmann <msp@baylibre.com>
+Reviewed-by: Michal Kubiak <michal.kubiak@intel.com>
+Link: https://lore.kernel.org/all/20230728141923.162477-3-msp@baylibre.com
+Signed-off-by: Marc Kleine-Budde <mkl@pengutronix.de>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/ufs/core/ufshcd.c | 8 +++++---
- 1 file changed, 5 insertions(+), 3 deletions(-)
+ drivers/net/can/m_can/tcan4x5x-regmap.c | 1 -
+ 1 file changed, 1 deletion(-)
 
-diff --git a/drivers/ufs/core/ufshcd.c b/drivers/ufs/core/ufshcd.c
-index 977bd4b9dd0b4..36437d39b93c8 100644
---- a/drivers/ufs/core/ufshcd.c
-+++ b/drivers/ufs/core/ufshcd.c
-@@ -8830,9 +8830,11 @@ static int ufshcd_set_dev_pwr_mode(struct ufs_hba *hba,
- 	for (retries = 3; retries > 0; --retries) {
- 		ret = scsi_execute(sdp, cmd, DMA_NONE, NULL, 0, NULL, &sshdr,
- 				   HZ, 0, 0, RQF_PM, NULL);
--		if (!scsi_status_is_check_condition(ret) ||
--				!scsi_sense_valid(&sshdr) ||
--				sshdr.sense_key != UNIT_ATTENTION)
-+		/*
-+		 * scsi_execute() only returns a negative value if the request
-+		 * queue is dying.
-+		 */
-+		if (ret <= 0)
- 			break;
- 	}
- 	if (ret) {
+diff --git a/drivers/net/can/m_can/tcan4x5x-regmap.c b/drivers/net/can/m_can/tcan4x5x-regmap.c
+index 2b218ce04e9f2..fafa6daa67e69 100644
+--- a/drivers/net/can/m_can/tcan4x5x-regmap.c
++++ b/drivers/net/can/m_can/tcan4x5x-regmap.c
+@@ -95,7 +95,6 @@ static const struct regmap_range tcan4x5x_reg_table_wr_range[] = {
+ 	regmap_reg_range(0x000c, 0x0010),
+ 	/* Device configuration registers and Interrupt Flags*/
+ 	regmap_reg_range(0x0800, 0x080c),
+-	regmap_reg_range(0x0814, 0x0814),
+ 	regmap_reg_range(0x0820, 0x0820),
+ 	regmap_reg_range(0x0830, 0x0830),
+ 	/* M_CAN */
 -- 
 2.40.1
 
