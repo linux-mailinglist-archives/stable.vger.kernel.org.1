@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1254679B9B9
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:30 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0491D79B80E
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:07:55 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239460AbjIKWWK (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:22:10 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:50148 "EHLO
+        id S1359455AbjIKWQv (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:16:51 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45636 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242031AbjIKPUu (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:20:50 -0400
+        with ESMTP id S240804AbjIKOyU (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:54:20 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 4670AFA
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:20:46 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 62806C433C7;
-        Mon, 11 Sep 2023 15:20:45 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 60288E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:54:16 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id A8649C433C8;
+        Mon, 11 Sep 2023 14:54:15 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445645;
-        bh=FHWn7M+DMfyiO2ZL2+W0VOYrXlWV2nFkOaVoWNj6WPI=;
+        s=korg; t=1694444056;
+        bh=6kbvlNxTLCfIqxAdHRU4W+DSBc01jpWhwGKSSPi4IxI=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=SjsUyhDqfbI0OoMrUwLnDoxCjsT02UU8TVR74dEgENK6zcLAzeIXoIPEnGIkkPWRq
-         klCJP0+qrngeU1qKju2i7CUS6ob7wfYWCmvpKfzEkwTua4uYjV93dcIyG2DvlCSQcC
-         TJVU0/2pBn7a51OGiuG2oqipsSXnBsBmtVQnmAG4=
+        b=QCCoz4PFTU/hyFTybEW/tHaQq0ASapSpA59cs+lXhlrP6zNybyBe2L5kPrJu/IO45
+         M2UeOaPwnogFDS46O5HEbSMDpX28qbZho412m/7oN2IaA7/d7wrNbfjPgW+NzXRVek
+         r0+mpiFbPrTlwXv0AQlwpmLw3pzSJm/HE8fBphDc=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Chris Leech <cleech@redhat.com>,
-        "Martin K. Petersen" <martin.petersen@oracle.com>,
+        patches@lists.linux.dev,
+        Nikita Zhandarovich <n.zhandarovich@fintech.ru>,
+        Benjamin Tissoires <bentiss@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 421/600] scsi: iscsi: Add strlen() check in iscsi_if_set{_host}_param()
+Subject: [PATCH 6.4 595/737] HID: logitech-dj: Fix error handling in logi_dj_recv_switch_to_dj_mode()
 Date:   Mon, 11 Sep 2023 15:47:34 +0200
-Message-ID: <20230911134646.091459097@linuxfoundation.org>
+Message-ID: <20230911134707.161317302@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,81 +51,56 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
 
-[ Upstream commit ce51c817008450ef4188471db31639d42d37a5e1 ]
+[ Upstream commit 6f20d3261265885f6a6be4cda49d7019728760e0 ]
 
-The functions iscsi_if_set_param() and iscsi_if_set_host_param() convert an
-nlattr payload to type char* and then call C string handling functions like
-sscanf and kstrdup:
+Presently, if a call to logi_dj_recv_send_report() fails, we do
+not learn about the error until after sending short
+HID_OUTPUT_REPORT with hid_hw_raw_request().
+To handle this somewhat unlikely issue, return on error in
+logi_dj_recv_send_report() (minding ugly sleep workaround) and
+take into account the result of hid_hw_raw_request().
 
-  char *data = (char*)ev + sizeof(*ev);
-  ...
-  sscanf(data, "%d", &value);
+Found by Linux Verification Center (linuxtesting.org) with static
+analysis tool SVACE.
 
-However, since the nlattr is provided by the user-space program and the
-nlmsg skb is allocated with GFP_KERNEL instead of GFP_ZERO flag (see
-netlink_alloc_large_skb() in netlink_sendmsg()), dirty data on the heap can
-lead to an OOB access for those string handling functions.
-
-By investigating how the bug is introduced, we find it is really
-interesting as the old version parsing code starting from commit
-fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up") treated
-the nlattr as integer bytes instead of string and had length check in
-iscsi_copy_param():
-
-  if (ev->u.set_param.len != sizeof(uint32_t))
-    BUG();
-
-But, since the commit a54a52caad4b ("[SCSI] iscsi: fixup set/get param
-functions"), the code treated the nlattr as C string while forgetting to
-add any strlen checks(), opening the possibility of an OOB access.
-
-Fix the potential OOB by adding the strlen() check before accessing the
-buf. If the data passes this check, all low-level set_param handlers can
-safely treat this buf as legal C string.
-
-Fixes: fd7255f51a13 ("[SCSI] iscsi: add sysfs attrs for uspace sync up")
-Fixes: 1d9bf13a9cf9 ("[SCSI] iscsi class: add iscsi host set param event")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Link: https://lore.kernel.org/r/20230723075820.3713119-1-linma@zju.edu.cn
-Reviewed-by: Chris Leech <cleech@redhat.com>
-Signed-off-by: Martin K. Petersen <martin.petersen@oracle.com>
+Fixes: 6a9ddc897883 ("HID: logitech-dj: enable notifications on connect/disconnect")
+Signed-off-by: Nikita Zhandarovich <n.zhandarovich@fintech.ru>
+Link: https://lore.kernel.org/r/20230613101635.77820-1-n.zhandarovich@fintech.ru
+Signed-off-by: Benjamin Tissoires <bentiss@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/scsi/scsi_transport_iscsi.c | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ drivers/hid/hid-logitech-dj.c | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/scsi/scsi_transport_iscsi.c b/drivers/scsi/scsi_transport_iscsi.c
-index 2680de88f5bbc..49dbcd67579aa 100644
---- a/drivers/scsi/scsi_transport_iscsi.c
-+++ b/drivers/scsi/scsi_transport_iscsi.c
-@@ -3029,6 +3029,10 @@ iscsi_if_set_param(struct iscsi_transport *transport, struct iscsi_uevent *ev, u
- 	if (!conn || !session)
- 		return -EINVAL;
- 
-+	/* data will be regarded as NULL-ended string, do length check */
-+	if (strlen(data) > ev->u.set_param.len)
-+		return -EINVAL;
+diff --git a/drivers/hid/hid-logitech-dj.c b/drivers/hid/hid-logitech-dj.c
+index 62180414efccd..e6a8b6d8eab70 100644
+--- a/drivers/hid/hid-logitech-dj.c
++++ b/drivers/hid/hid-logitech-dj.c
+@@ -1285,6 +1285,9 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
+ 		 * 50 msec should gives enough time to the receiver to be ready.
+ 		 */
+ 		msleep(50);
 +
- 	switch (ev->u.set_param.param) {
- 	case ISCSI_PARAM_SESS_RECOVERY_TMO:
- 		sscanf(data, "%d", &value);
-@@ -3202,6 +3206,10 @@ iscsi_set_host_param(struct iscsi_transport *transport,
- 		return -ENODEV;
++		if (retval)
++			return retval;
  	}
  
-+	/* see similar check in iscsi_if_set_param() */
-+	if (strlen(data) > ev->u.set_host_param.len)
-+		return -EINVAL;
-+
- 	err = transport->set_host_param(shost, ev->u.set_host_param.param,
- 					data, ev->u.set_host_param.len);
- 	scsi_host_put(shost);
+ 	/*
+@@ -1306,7 +1309,7 @@ static int logi_dj_recv_switch_to_dj_mode(struct dj_receiver_dev *djrcv_dev,
+ 	buf[5] = 0x09;
+ 	buf[6] = 0x00;
+ 
+-	hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
++	retval = hid_hw_raw_request(hdev, REPORT_ID_HIDPP_SHORT, buf,
+ 			HIDPP_REPORT_SHORT_LENGTH, HID_OUTPUT_REPORT,
+ 			HID_REQ_SET_REPORT);
+ 
 -- 
 2.40.1
 
