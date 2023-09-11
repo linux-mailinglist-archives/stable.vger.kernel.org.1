@@ -2,39 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5A7C579B369
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 9B1D879B3BE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:00:44 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1353675AbjIKVsC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:48:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37660 "EHLO
+        id S237312AbjIKV2B (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:28:01 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51494 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240418AbjIKOnt (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:49 -0400
+        with ESMTP id S241533AbjIKPKh (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:10:37 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E81EACF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:44 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3C2C1C433C8;
-        Mon, 11 Sep 2023 14:43:44 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 88820E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:10:32 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id D5DF3C433C7;
+        Mon, 11 Sep 2023 15:10:31 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443424;
-        bh=z2XbQlF/z9YqeDR/0MsNi0kmmrJO4pYMvR4V5NOVfeM=;
+        s=korg; t=1694445032;
+        bh=q0aJlNgAcq7xHP872McqgivXmJgEwpzWXwBrUv6ZfRk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=l/j/ojj2q4uoFvX3MWs+O+6QC9U05uKC00pS1WcbWtd7TAvaOXs0JF+QDYlMINMqN
-         h1c6XJ+COnE20JEp7iDyik0t44csCE6A8XD4mcby1geIdWYpjrFHI/WyfoN5Ru3cH9
-         mPN5AXbSHW5mm4T/4VnPI9XB+P4LbEZbmW9HoXMk=
+        b=Y/AwG+Lp/UbeyGNb9lKu3C2Vg3qjwByCCrPjyBS18SIma+ziCr8kOfwM8fGeDpjIU
+         7ZQRUg+xEAER9ZZJmdiqurewirJKBp/Bg7UiHybtin/40ZLAsZWFYl84gUCmT+7Qna
+         gwVuFH40bFGzI3Dya123tyouVIKHVzaiga+AkvIg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Dhruva Gole <d-gole@ti.com>,
-        Nishanth Menon <nm@ti.com>, Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Vadim Pasternak <vadimp@nvidia.com>,
+        Petr Machata <petrm@nvidia.com>,
+        "David S. Miller" <davem@davemloft.net>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 373/737] bus: ti-sysc: Fix build warning for 64-bit build
-Date:   Mon, 11 Sep 2023 15:43:52 +0200
-Message-ID: <20230911134700.971280081@linuxfoundation.org>
+Subject: [PATCH 6.1 202/600] mlxsw: i2c: Limit single transaction buffer size
+Date:   Mon, 11 Sep 2023 15:43:55 +0200
+Message-ID: <20230911134639.581203717@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +51,58 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Vadim Pasternak <vadimp@nvidia.com>
 
-[ Upstream commit e1e1e9bb9d943ec690670a609a5f660ca10eaf85 ]
+[ Upstream commit d7248f1cc835bd80e936dc5b2d94b149bdd0077d ]
 
-Fix "warning: cast from pointer to integer of different size" on 64-bit
-builds.
+Maximum size of buffer is obtained from underlying I2C adapter and in
+case adapter allows I2C transaction buffer size greater than 100 bytes,
+transaction will fail due to firmware limitation.
 
-Note that this is a cosmetic fix at this point as the driver is not yet
-used for 64-bit systems.
+As a result driver will fail initialization.
 
-Fixes: feaa8baee82a ("bus: ti-sysc: Implement SoC revision handling")
-Reviewed-by: Dhruva Gole <d-gole@ti.com>
-Reviewed-by: Nishanth Menon <nm@ti.com>
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+Limit the maximum size of transaction buffer by 100 bytes to fit to
+firmware.
+
+Remove unnecessary calculation:
+max_t(u16, MLXSW_I2C_BLK_DEF, quirk_size).
+This condition can not happened.
+
+Fixes: 3029a693beda ("mlxsw: i2c: Allow flexible setting of I2C transactions size")
+Signed-off-by: Vadim Pasternak <vadimp@nvidia.com>
+Reviewed-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: Petr Machata <petrm@nvidia.com>
+Signed-off-by: David S. Miller <davem@davemloft.net>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/net/ethernet/mellanox/mlxsw/i2c.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 4cb23b9e06ea4..dbc37b3b84a8d 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3106,7 +3106,7 @@ static int sysc_init_static_data(struct sysc *ddata)
+diff --git a/drivers/net/ethernet/mellanox/mlxsw/i2c.c b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+index 26e05f129e35a..3beefc167da91 100644
+--- a/drivers/net/ethernet/mellanox/mlxsw/i2c.c
++++ b/drivers/net/ethernet/mellanox/mlxsw/i2c.c
+@@ -48,6 +48,7 @@
+ #define MLXSW_I2C_MBOX_SIZE_BITS	12
+ #define MLXSW_I2C_ADDR_BUF_SIZE		4
+ #define MLXSW_I2C_BLK_DEF		32
++#define MLXSW_I2C_BLK_MAX		100
+ #define MLXSW_I2C_RETRY			5
+ #define MLXSW_I2C_TIMEOUT_MSECS		5000
+ #define MLXSW_I2C_MAX_DATA_SIZE		256
+@@ -653,7 +654,7 @@ static int mlxsw_i2c_probe(struct i2c_client *client,
+ 			return -EOPNOTSUPP;
+ 		}
  
- 	match = soc_device_match(sysc_soc_match);
- 	if (match && match->data)
--		sysc_soc->soc = (int)match->data;
-+		sysc_soc->soc = (enum sysc_soc)match->data;
- 
- 	/*
- 	 * Check and warn about possible old incomplete dtb. We now want to see
+-		mlxsw_i2c->block_size = max_t(u16, MLXSW_I2C_BLK_DEF,
++		mlxsw_i2c->block_size = min_t(u16, MLXSW_I2C_BLK_MAX,
+ 					      min_t(u16, quirks->max_read_len,
+ 						    quirks->max_write_len));
+ 	} else {
 -- 
 2.40.1
 
