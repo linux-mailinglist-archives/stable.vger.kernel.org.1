@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C014479B2C5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:59:12 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 8C45E79AF5B
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:15 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S236672AbjIKUwU (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:52:20 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47036 "EHLO
+        id S239055AbjIKWBP (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:01:15 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47500 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239134AbjIKOMq (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:12:46 -0400
+        with ESMTP id S240510AbjIKOqT (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:19 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 15E04CE5
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:12:42 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5E302C433C8;
-        Mon, 11 Sep 2023 14:12:41 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F88612A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:46:14 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 5D4FEC433C8;
+        Mon, 11 Sep 2023 14:46:13 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441561;
-        bh=bVy3aAcTl+uxFUSFzNYbkUpl9M0H7TW1TgcmyOBJMW4=;
+        s=korg; t=1694443573;
+        bh=g22OAn+ql8mxmnpiIOGO5Ob8QCgJ0sBLD87gxH8vq48=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=jM5c8W3RU1tdsXUZEg0v8kTpe7RFzGRfT4DqiZUo7mBoY0UT+T5vk0AdMZFhXbRHs
-         7vj5Z34HcdOUlPE5ZMetnCXSjGYN8gigwg3b+XKQ+csXIgF1MV26YTvT6XgIU+GI9W
-         4AO9i1pI6wynZc9NwiRMF59M2uGX9QQkgQiR+O+E=
+        b=TVsCFT82tm06I6FK6wUSqFt5qO9VupeEt+p3iJanaaaITmKLL1MIPbXOCRqPgpsag
+         XIbgJHBe8O2DvD/KonVu3ETNnUVG2Gy4o2105t5//aGpAWmfAnoB5xEg0fklZvUuF1
+         Xo81x9RU5kBgrMf2baG5B7yudN9dGVMmTgV1uvLo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev,
-        Daniel Marcovitch <dmarcovitch@nvidia.com>,
-        Vasant Hegde <vasant.hegde@amd.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 456/739] iommu/amd/iommu_v2: Fix pasid_state refcount dec hit 0 warning on pasid unbind
+        Vlad Karpovich <vkarpovi@opensource.cirrus.com>,
+        Mark Brown <broonie@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 396/737] firmware: cs_dsp: Fix new control name check
 Date:   Mon, 11 Sep 2023 15:44:15 +0200
-Message-ID: <20230911134703.891774122@linuxfoundation.org>
+Message-ID: <20230911134701.660045953@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,55 +51,45 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Daniel Marcovitch <dmarcovitch@nvidia.com>
+From: Vlad Karpovich <vkarpovi@opensource.cirrus.com>
 
-[ Upstream commit 534103bcd52ca9c1fecbc70e717b4a538dc4ded8 ]
+[ Upstream commit 7ac1102b227b36550452b663fd39ab1c09378a95 ]
 
-When unbinding pasid - a race condition exists vs outstanding page faults.
+Before adding a new FW control, its name is checked against
+existing controls list. But the string length in strncmp used
+to compare controls names is taken from the list, so if beginnings
+of the controls are matching,  then the new control is not created.
+For example, if CAL_R control already exists, CAL_R_SELECTED
+is not created.
+The fix is to compare string lengths as well.
 
-To prevent this, the pasid_state object contains a refcount.
-    * set to 1 on pasid bind
-    * incremented on each ppr notification start
-    * decremented on each ppr notification done
-    * decremented on pasid unbind
-
-Since refcount_dec assumes that refcount will never reach 0:
-  the current implementation causes the following to be invoked on
-  pasid unbind:
-        REFCOUNT_WARN("decrement hit 0; leaking memory")
-
-Fix this issue by changing refcount_dec to refcount_dec_and_test
-to explicitly handle refcount=1.
-
-Fixes: 8bc54824da4e ("iommu/amd: Convert from atomic_t to refcount_t on pasid_state->count")
-Signed-off-by: Daniel Marcovitch <dmarcovitch@nvidia.com>
-Signed-off-by: Vasant Hegde <vasant.hegde@amd.com>
-Link: https://lore.kernel.org/r/20230609105146.7773-2-vasant.hegde@amd.com
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+Fixes: 6477960755fb ("ASoC: wm_adsp: Move check for control existence")
+Signed-off-by: Vlad Karpovich <vkarpovi@opensource.cirrus.com>
+Link: https://lore.kernel.org/r/20230815172908.3454056-1-vkarpovi@opensource.cirrus.com
+Signed-off-by: Mark Brown <broonie@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/amd/iommu_v2.c | 4 ++--
- 1 file changed, 2 insertions(+), 2 deletions(-)
+ drivers/firmware/cirrus/cs_dsp.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/iommu/amd/iommu_v2.c b/drivers/iommu/amd/iommu_v2.c
-index 261352a232716..65d78d7e04408 100644
---- a/drivers/iommu/amd/iommu_v2.c
-+++ b/drivers/iommu/amd/iommu_v2.c
-@@ -262,8 +262,8 @@ static void put_pasid_state(struct pasid_state *pasid_state)
- 
- static void put_pasid_state_wait(struct pasid_state *pasid_state)
- {
--	refcount_dec(&pasid_state->count);
--	wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
-+	if (!refcount_dec_and_test(&pasid_state->count))
-+		wait_event(pasid_state->wq, !refcount_read(&pasid_state->count));
- 	free_pasid_state(pasid_state);
- }
- 
+diff --git a/drivers/firmware/cirrus/cs_dsp.c b/drivers/firmware/cirrus/cs_dsp.c
+index ec056f6f40ce8..cc3a28f386a77 100644
+--- a/drivers/firmware/cirrus/cs_dsp.c
++++ b/drivers/firmware/cirrus/cs_dsp.c
+@@ -978,7 +978,8 @@ static int cs_dsp_create_control(struct cs_dsp *dsp,
+ 		    ctl->alg_region.alg == alg_region->alg &&
+ 		    ctl->alg_region.type == alg_region->type) {
+ 			if ((!subname && !ctl->subname) ||
+-			    (subname && !strncmp(ctl->subname, subname, ctl->subname_len))) {
++			    (subname && (ctl->subname_len == subname_len) &&
++			     !strncmp(ctl->subname, subname, ctl->subname_len))) {
+ 				if (!ctl->enabled)
+ 					ctl->enabled = 1;
+ 				return 0;
 -- 
 2.40.1
 
