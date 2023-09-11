@@ -2,38 +2,41 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 260D879B046
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:49:15 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id CDD0879B1D8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:33 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S237718AbjIKWeN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:34:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44346 "EHLO
+        id S237244AbjIKVGA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:06:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45708 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239785AbjIKO2j (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:28:39 -0400
+        with ESMTP id S238491AbjIKN5q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 09:57:46 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E5D12F0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:28:33 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3770AC433C8;
-        Mon, 11 Sep 2023 14:28:33 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0ADC6CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 06:57:42 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 550CFC433C8;
+        Mon, 11 Sep 2023 13:57:41 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442513;
-        bh=m9zuHgsqy+hBnFgqQPRkN/YeTRTaHqO7aSoFVks+rkw=;
+        s=korg; t=1694440661;
+        bh=E+gl8mPgEWP8RwxwF5j3ntU12EIV2qhM9pMey3h5DUc=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q605e0PbxRC1oT4znV10I1LCZs7i35yNoOcY3wvoQv23VmwV9o+jiSZmxT6J5E6XP
-         Z0zC/k4LttoPhelilClL5NUApgkwAoKqBXcyJVjinHRDibpHjVYAzYWNjZgteU9w6N
-         jiLM6kqt1whEqmJvrPQDU8ef9C6++MFyg5e3eKXo=
+        b=oaJzS3wQ4h9uDYM6N2T7+QvJ1MdvDnVxDALwgyaQXlSBCNjwBbmeZGotiEipkmxi4
+         7AtOteGiQOSyC3iLpljaGLsLmib6JkyQLbyUuXU/Sn3/fMd60Tko5VzblosUYmCxlz
+         q64eWgTJ6sAugKsNGpScOJT+b4bX+oApvyW3azpQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ani Sinha <anisinha@redhat.com>,
-        Wei Liu <wei.liu@kernel.org>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 050/737] vmbus_testing: fix wrong python syntax for integer value comparison
-Date:   Mon, 11 Sep 2023 15:38:29 +0200
-Message-ID: <20230911134651.860299040@linuxfoundation.org>
+        patches@lists.linux.dev, Russell Currey <ruscur@russell.cc>,
+        Martin Rodriguez Reboredo <yakoyoku@gmail.com>,
+        Nathan Chancellor <nathan@kernel.org>,
+        Miguel Ojeda <ojeda@kernel.org>,
+        Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.5 113/739] kbuild: rust_is_available: fix version check when CC has multiple arguments
+Date:   Mon, 11 Sep 2023 15:38:32 +0200
+Message-ID: <20230911134654.254611970@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,54 +52,54 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Ani Sinha <anisinha@redhat.com>
+From: Russell Currey <ruscur@russell.cc>
 
-[ Upstream commit ed0cf84e9cc42e6310961c87709621f1825c2bb8 ]
+[ Upstream commit dee3a6b819c96fc8b1907577f585fd66f5c0fefe ]
 
-It is incorrect in python to compare integer values using the "is" keyword.
-The "is" keyword in python is used to compare references to two objects,
-not their values. Newer version of python3 (version 3.8) throws a warning
-when such incorrect comparison is made. For value comparison, "==" should
-be used.
+rust_is_available.sh uses cc-version.sh to identify which C compiler is
+in use, as scripts/Kconfig.include does.  cc-version.sh isn't designed to
+be able to handle multiple arguments in one variable, i.e. "ccache clang".
+Its invocation in rust_is_available.sh quotes "$CC", which makes
+$1 == "ccache clang" instead of the intended $1 == ccache & $2 == clang.
 
-Fix this in the code and suppress the following warning:
+cc-version.sh could also be changed to handle having "ccache clang" as one
+argument, but it only has the one consumer upstream, making it simpler to
+fix the caller here.
 
-/usr/sbin/vmbus_testing:167: SyntaxWarning: "is" with a literal. Did you mean "=="?
-
-Signed-off-by: Ani Sinha <anisinha@redhat.com>
-Link: https://lore.kernel.org/r/20230705134408.6302-1-anisinha@redhat.com
-Signed-off-by: Wei Liu <wei.liu@kernel.org>
+Signed-off-by: Russell Currey <ruscur@russell.cc>
+Fixes: 78521f3399ab ("scripts: add `rust_is_available.sh`")
+Link: https://github.com/Rust-for-Linux/linux/pull/873
+[ Reworded title prefix and reflow line to 75 columns. ]
+Reviewed-by: Martin Rodriguez Reboredo <yakoyoku@gmail.com>
+Reviewed-by: Nathan Chancellor <nathan@kernel.org>
+Link: https://lore.kernel.org/r/20230616001631.463536-3-ojeda@kernel.org
+Signed-off-by: Miguel Ojeda <ojeda@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- tools/hv/vmbus_testing | 4 ++--
+ scripts/rust_is_available.sh | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/tools/hv/vmbus_testing b/tools/hv/vmbus_testing
-index e7212903dd1d9..4467979d8f699 100755
---- a/tools/hv/vmbus_testing
-+++ b/tools/hv/vmbus_testing
-@@ -164,7 +164,7 @@ def recursive_file_lookup(path, file_map):
- def get_all_devices_test_status(file_map):
- 
-         for device in file_map:
--                if (get_test_state(locate_state(device, file_map)) is 1):
-+                if (get_test_state(locate_state(device, file_map)) == 1):
-                         print("Testing = ON for: {}"
-                               .format(device.split("/")[5]))
-                 else:
-@@ -203,7 +203,7 @@ def write_test_files(path, value):
- def set_test_state(state_path, state_value, quiet):
- 
-         write_test_files(state_path, state_value)
--        if (get_test_state(state_path) is 1):
-+        if (get_test_state(state_path) == 1):
-                 if (not quiet):
-                         print("Testing = ON for device: {}"
-                               .format(state_path.split("/")[5]))
+diff --git a/scripts/rust_is_available.sh b/scripts/rust_is_available.sh
+index f43a010eaf305..0c9be438e4cd3 100755
+--- a/scripts/rust_is_available.sh
++++ b/scripts/rust_is_available.sh
+@@ -113,10 +113,10 @@ fi
+ #
+ # In the future, we might be able to perform a full version check, see
+ # https://github.com/rust-lang/rust-bindgen/issues/2138.
+-cc_name=$($(dirname $0)/cc-version.sh "$CC" | cut -f1 -d' ')
++cc_name=$($(dirname $0)/cc-version.sh $CC | cut -f1 -d' ')
+ if [ "$cc_name" = Clang ]; then
+ 	clang_version=$( \
+-		LC_ALL=C "$CC" --version 2>/dev/null \
++		LC_ALL=C $CC --version 2>/dev/null \
+ 			| sed -nE '1s:.*version ([0-9]+\.[0-9]+\.[0-9]+).*:\1:p'
+ 	)
+ 	if [ "$clang_version" != "$bindgen_libclang_version" ]; then
 -- 
 2.40.1
 
