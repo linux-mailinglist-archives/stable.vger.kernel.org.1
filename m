@@ -2,40 +2,40 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 659D079BDEC
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:46 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5238379BAD8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:12:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1355404AbjIKV6E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:58:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47544 "EHLO
+        id S239475AbjIKWpq (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:45:46 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:45196 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239019AbjIKOJr (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:09:47 -0400
+        with ESMTP id S240395AbjIKOnO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:43:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F8AECF0
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:09:43 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 81825C433C7;
-        Mon, 11 Sep 2023 14:09:42 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1E5A812A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:43:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 66C61C433C7;
+        Mon, 11 Sep 2023 14:43:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441382;
-        bh=ZeGwBHdINfrKZHWZCrEtXQWAT5JC/8560UrF3/AyPNM=;
+        s=korg; t=1694443389;
+        bh=9yLJXgUhcgjhUkw+b7xErdj73YU+/UrZick2iQSn32Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QhFVhWL4E/rtXR+gxNPsIJ96Xvwj86oWJLA5LRsU6C2VaZkbd8rPiPPtI8Nnz5PtQ
-         Gm+GIrjI83fZy092vXkC3IOlrPUOANkpQK9HecqHUY4tGSUIFGysTAIZsuLecNC8or
-         cwd8Eka/Qjg4NfvgidVBWQOJrXHfr8a4mtdwaLBA=
+        b=CEE8s12PBh8q/X6q6u/LGJA0tL3P1wkBUsaVLwmWkv9MGlUlreTry3tfBHvNBgOl4
+         xgAA6btEYkMWenIJ9nGJ+/W+/7EiXGxxPXnqRrCx8UAnnRdk47aS6f/jcQWpyh7A35
+         2LbK2sRrdZHRQQO3IEKMfegnU1p7i/Oqb0pYk+VY=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Ee Wey Lim <ee.wey.lim@intel.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
+        patches@lists.linux.dev,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
+        Bjorn Andersson <andersson@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 393/739] EDAC/igen6: Fix the issue of no error events
+Subject: [PATCH 6.4 333/737] arm64: dts: qcom: msm8996-gemini: fix touchscreen VIO supply
 Date:   Mon, 11 Sep 2023 15:43:12 +0200
-Message-ID: <20230911134702.165998226@linuxfoundation.org>
+Message-ID: <20230911134659.841534483@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,67 +51,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit ce53ad81ed36c24aff075f94474adecfabfcf239 ]
+[ Upstream commit 21fc24ee9c5943732c9ae538766c9be93d70d936 ]
 
-Current igen6_edac checks for pending errors before the registration
-of the error handler. However, there is a possibility that the error
-occurs during the registration process, leading to unhandled pending
-errors and no future error events. This issue can be reproduced by
-repeatedly injecting errors during the loading of the igen6_edac.
+According to bindings and Linux driver, there is no VDDA but VIO supply.
 
-Fix this issue by moving the pending error handler after the registration
-of the error handler, ensuring that no pending errors are left unhandled.
-
-Fixes: 10590a9d4f23 ("EDAC/igen6: Add EDAC driver for Intel client SoCs using IBECC")
-Reported-by: Ee Wey Lim <ee.wey.lim@intel.com>
-Tested-by: Ee Wey Lim <ee.wey.lim@intel.com>
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20230725080427.23883-1-qiuxu.zhuo@intel.com
+Fixes: 4ac46b3682c5 ("arm64: dts: qcom: msm8996: xiaomi-gemini: Add support for Xiaomi Mi 5")
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
+Link: https://lore.kernel.org/r/20230720115335.137354-2-krzysztof.kozlowski@linaro.org
+Signed-off-by: Bjorn Andersson <andersson@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/igen6_edac.c | 8 ++++----
- 1 file changed, 4 insertions(+), 4 deletions(-)
+ arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/edac/igen6_edac.c b/drivers/edac/igen6_edac.c
-index 544dd19072eab..1a18693294db4 100644
---- a/drivers/edac/igen6_edac.c
-+++ b/drivers/edac/igen6_edac.c
-@@ -27,7 +27,7 @@
- #include "edac_mc.h"
- #include "edac_module.h"
+diff --git a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+index 100123d514944..f1d990dd7f7c9 100644
+--- a/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
++++ b/arch/arm64/boot/dts/qcom/msm8996-xiaomi-gemini.dts
+@@ -82,7 +82,7 @@ synaptics@20 {
+ 		#size-cells = <0>;
+ 		interrupt-parent = <&tlmm>;
+ 		interrupts = <125 IRQ_TYPE_LEVEL_LOW>;
+-		vdda-supply = <&vreg_l6a_1p8>;
++		vio-supply = <&vreg_l6a_1p8>;
+ 		vdd-supply = <&vdd_3v2_tp>;
+ 		reset-gpios = <&tlmm 89 GPIO_ACTIVE_LOW>;
  
--#define IGEN6_REVISION	"v2.5"
-+#define IGEN6_REVISION	"v2.5.1"
- 
- #define EDAC_MOD_STR	"igen6_edac"
- #define IGEN6_NMI_NAME	"igen6_ibecc"
-@@ -1216,9 +1216,6 @@ static int igen6_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 	INIT_WORK(&ecclog_work, ecclog_work_cb);
- 	init_irq_work(&ecclog_irq_work, ecclog_irq_work_cb);
- 
--	/* Check if any pending errors before registering the NMI handler */
--	ecclog_handler();
--
- 	rc = register_err_handler();
- 	if (rc)
- 		goto fail3;
-@@ -1230,6 +1227,9 @@ static int igen6_probe(struct pci_dev *pdev, const struct pci_device_id *ent)
- 		goto fail4;
- 	}
- 
-+	/* Check if any pending errors before/during the registration of the error handler */
-+	ecclog_handler();
-+
- 	igen6_debug_setup();
- 	return 0;
- fail4:
 -- 
 2.40.1
 
