@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 5437779AFAF
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:48:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 3E88279ACFE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:38:28 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S235625AbjIKVFE (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:05:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:57292 "EHLO
+        id S1345825AbjIKVW2 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:28 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:37704 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239264AbjIKOQD (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:16:03 -0400
+        with ESMTP id S241745AbjIKPNb (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:13:31 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 92F91DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:15:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id DDD16C433C7;
-        Mon, 11 Sep 2023 14:15:58 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 479FFFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:13:27 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 930A3C433C8;
+        Mon, 11 Sep 2023 15:13:26 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694441759;
-        bh=sGJNBpTyDZhrLvXesxY0jvGyqKAYHqji9Aktd7vLuys=;
+        s=korg; t=1694445206;
+        bh=5Wmi72pcrj8+kxYhgMd3N24pVj/SCKuN5ZHAWvKOekM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=VzwqnCugV013DJTkOMrD6ylcRIHF1CfGjeaeHPtsTi7zGr0fszWYZnAEQ26jP8iil
-         U1QfoFiHrk2DrInmXR8HGgA7GsUtIj7MIDEJ7Z0Nc4wiufoeCFEJnPge6PWZKB5V7H
-         hbl7bN8R9P3X3JjffNyQhA89AQe4GpSIZIfRSsfA=
+        b=y4I327aIxNR1oIBKtQfzzHwKbxeEfzjJxX0E5K43779mWpCc3qKpxOMdRCwNdulhy
+         ZXRSQZUSho9SWgd3aT3MG8R1Avc5NcukOOX4F9qQGE7YK09fVs76mL6D8J0O+v/ktX
+         kJH5MH6mFqLCP2RHdXnto1T9fxeLpVhopLgcr5jI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Konrad Dybcio <konrad.dybcio@linaro.org>,
-        Georgi Djakov <djakov@kernel.org>,
+        patches@lists.linux.dev, Alim Akhtar <alim.akhtar@samsung.com>,
+        Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 500/739] interconnect: qcom: qcm2290: Enable sync state
+Subject: [PATCH 6.1 266/600] ARM: dts: samsung: s3c6410-mini6410: correct ethernet reg addresses (split)
 Date:   Mon, 11 Sep 2023 15:44:59 +0200
-Message-ID: <20230911134705.100596079@linuxfoundation.org>
+Message-ID: <20230911134641.460471863@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,42 +50,38 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Konrad Dybcio <konrad.dybcio@linaro.org>
+From: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 
-[ Upstream commit 4e048e9b7a160f7112069c0ec2947be15f3e8154 ]
+[ Upstream commit cf0cb2af6a18f28b84f9f1416bff50ca60d6e98a ]
 
-Enable the generic .sync_state callback to ensure there are no
-outstanding votes that would waste power.
+The davicom,dm9000 Ethernet Controller accepts two reg addresses.
 
-Generally one would need a bunch of interface clocks to access the QoS
-registers when trying to go over all possible nodes during sync_state,
-but QCM2290 surprisingly does not seem to require any such handling.
-
-Fixes: 1a14b1ac3935 ("interconnect: qcom: Add QCM2290 driver support")
-Signed-off-by: Konrad Dybcio <konrad.dybcio@linaro.org>
-Link: https://lore.kernel.org/r/20230720-topic-qcm2290_icc-v2-2-a2ceb9d3e713@linaro.org
-Signed-off-by: Georgi Djakov <djakov@kernel.org>
+Fixes: a43736deb47d ("ARM: dts: Add dts file for S3C6410-based Mini6410 board")
+Reviewed-by: Alim Akhtar <alim.akhtar@samsung.com>
+Link: https://lore.kernel.org/r/20230713152926.82884-1-krzysztof.kozlowski@linaro.org
+Signed-off-by: Krzysztof Kozlowski <krzysztof.kozlowski@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/interconnect/qcom/qcm2290.c | 1 +
- 1 file changed, 1 insertion(+)
+ arch/arm/boot/dts/s3c6410-mini6410.dts | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/interconnect/qcom/qcm2290.c b/drivers/interconnect/qcom/qcm2290.c
-index a29cdb4fac03f..82a2698ad66b1 100644
---- a/drivers/interconnect/qcom/qcm2290.c
-+++ b/drivers/interconnect/qcom/qcm2290.c
-@@ -1355,6 +1355,7 @@ static struct platform_driver qcm2290_noc_driver = {
- 	.driver = {
- 		.name = "qnoc-qcm2290",
- 		.of_match_table = qcm2290_noc_of_match,
-+		.sync_state = icc_sync_state,
- 	},
- };
- module_platform_driver(qcm2290_noc_driver);
+diff --git a/arch/arm/boot/dts/s3c6410-mini6410.dts b/arch/arm/boot/dts/s3c6410-mini6410.dts
+index 17097da36f5ed..0b07b3c319604 100644
+--- a/arch/arm/boot/dts/s3c6410-mini6410.dts
++++ b/arch/arm/boot/dts/s3c6410-mini6410.dts
+@@ -51,7 +51,7 @@ srom-cs1-bus@18000000 {
+ 
+ 		ethernet@18000000 {
+ 			compatible = "davicom,dm9000";
+-			reg = <0x18000000 0x2 0x18000004 0x2>;
++			reg = <0x18000000 0x2>, <0x18000004 0x2>;
+ 			interrupt-parent = <&gpn>;
+ 			interrupts = <7 IRQ_TYPE_LEVEL_HIGH>;
+ 			davicom,no-eeprom;
 -- 
 2.40.1
 
