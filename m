@@ -2,39 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 012D779BF08
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id B295A79B820
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:00 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S241584AbjIKVK1 (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:10:27 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:49498 "EHLO
+        id S1377725AbjIKW20 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:28:26 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51640 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242329AbjIKP14 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:27:56 -0400
+        with ESMTP id S241028AbjIKPAL (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:00:11 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id C8153E4
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:27:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 1C508C433C9;
-        Mon, 11 Sep 2023 15:27:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3F1EB1B9
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:00:06 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 87FC1C433C7;
+        Mon, 11 Sep 2023 15:00:05 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694446072;
-        bh=3qHW9Z7P//enYTqQoEu+Jx8ZwR2CYis/p6tLa9p+6VU=;
+        s=korg; t=1694444405;
+        bh=uwY/QyZwhVa1cQWtee2oyWUvRpnME1a6yhwjYamdhVM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=NkpLeXvasBK76mLgVSo+jzQpQNBJOJMiLvWtCfpC3R9IcaHwGmOz++0dUvtJj5igH
-         U19vJS2N60apuYKdtg1Yr6s1Zq8PRdqMJjCm5LcKLrjp02OMhbpeIw7Y4Hnqa0/cUJ
-         TmNNeb7KsKQ/PNGXnDIv1wfeqr3zsQI0Ge2jjc7Y=
+        b=kb3oZwce9FWPXJHC5VzJfZsncJ4iZV5RuoR9N985/czQG17dSlqJQ1JCDyus1jrm9
+         RrOpxGD5L3NNVTbROjPEVmZsrJknhppUze7xv0boGSGBJFVS3SUZI7Pl/g6gR0zJgZ
+         7c63H7nejioNQKWKCna0uRbgAgmdHrH9bVW+0leQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, David Hildenbrand <david@redhat.com>,
-        Hongchen Zhang <zhanghongchen@loongson.cn>,
-        Huacai Chen <chenhuacai@loongson.cn>
-Subject: [PATCH 6.1 543/600] LoongArch: mm: Add p?d_leaf() definitions
-Date:   Mon, 11 Sep 2023 15:49:36 +0200
-Message-ID: <20230911134649.648747560@linuxfoundation.org>
+        patches@lists.linux.dev, Alan Stern <stern@rowland.harvard.edu>,
+        Khazhy Kumykov <khazhy@google.com>,
+        syzbot+18996170f8096c6174d0@syzkaller.appspotmail.com
+Subject: [PATCH 6.4 719/737] USB: core: Fix race by not overwriting udev->descriptor in hub_port_init()
+Date:   Mon, 11 Sep 2023 15:49:38 +0200
+Message-ID: <20230911134710.597292989@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,44 +50,281 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Hongchen Zhang <zhanghongchen@loongson.cn>
+From: Alan Stern <stern@rowland.harvard.edu>
 
-commit 303be4b33562a5b689261ced1616bf16ad49efa7 upstream.
+commit ff33299ec8bb80cdcc073ad9c506bd79bb2ed20b upstream.
 
-When I do LTP test, LTP test case ksm06 caused panic at
-	break_ksm_pmd_entry
-	  -> pmd_leaf (Huge page table but False)
-	  -> pte_present (panic)
+Syzbot reported an out-of-bounds read in sysfs.c:read_descriptors():
 
-The reason is pmd_leaf() is not defined, So like commit 501b81046701
-("mips: mm: add p?d_leaf() definitions") add p?d_leaf() definition for
-LoongArch.
+BUG: KASAN: slab-out-of-bounds in read_descriptors+0x263/0x280 drivers/usb/core/sysfs.c:883
+Read of size 8 at addr ffff88801e78b8c8 by task udevd/5011
 
-Fixes: 09cfefb7fa70 ("LoongArch: Add memory management")
+CPU: 0 PID: 5011 Comm: udevd Not tainted 6.4.0-rc6-syzkaller-00195-g40f71e7cd3c6 #0
+Hardware name: Google Google Compute Engine/Google Compute Engine, BIOS Google 05/27/2023
+Call Trace:
+ <TASK>
+ __dump_stack lib/dump_stack.c:88 [inline]
+ dump_stack_lvl+0xd9/0x150 lib/dump_stack.c:106
+ print_address_description.constprop.0+0x2c/0x3c0 mm/kasan/report.c:351
+ print_report mm/kasan/report.c:462 [inline]
+ kasan_report+0x11c/0x130 mm/kasan/report.c:572
+ read_descriptors+0x263/0x280 drivers/usb/core/sysfs.c:883
+...
+Allocated by task 758:
+...
+ __do_kmalloc_node mm/slab_common.c:966 [inline]
+ __kmalloc+0x5e/0x190 mm/slab_common.c:979
+ kmalloc include/linux/slab.h:563 [inline]
+ kzalloc include/linux/slab.h:680 [inline]
+ usb_get_configuration+0x1f7/0x5170 drivers/usb/core/config.c:887
+ usb_enumerate_device drivers/usb/core/hub.c:2407 [inline]
+ usb_new_device+0x12b0/0x19d0 drivers/usb/core/hub.c:2545
+
+As analyzed by Khazhy Kumykov, the cause of this bug is a race between
+read_descriptors() and hub_port_init(): The first routine uses a field
+in udev->descriptor, not expecting it to change, while the second
+overwrites it.
+
+Prior to commit 45bf39f8df7f ("USB: core: Don't hold device lock while
+reading the "descriptors" sysfs file") this race couldn't occur,
+because the routines were mutually exclusive thanks to the device
+locking.  Removing that locking from read_descriptors() exposed it to
+the race.
+
+The best way to fix the bug is to keep hub_port_init() from changing
+udev->descriptor once udev has been initialized and registered.
+Drivers expect the descriptors stored in the kernel to be immutable;
+we should not undermine this expectation.  In fact, this change should
+have been made long ago.
+
+So now hub_port_init() will take an additional argument, specifying a
+buffer in which to store the device descriptor it reads.  (If udev has
+not yet been initialized, the buffer pointer will be NULL and then
+hub_port_init() will store the device descriptor in udev as before.)
+This eliminates the data race responsible for the out-of-bounds read.
+
+The changes to hub_port_init() appear more extensive than they really
+are, because of indentation changes resulting from an attempt to avoid
+writing to other parts of the usb_device structure after it has been
+initialized.  Similar changes should be made to the code that reads
+the BOS descriptor, but that can be handled in a separate patch later
+on.  This patch is sufficient to fix the bug found by syzbot.
+
+Reported-and-tested-by: syzbot+18996170f8096c6174d0@syzkaller.appspotmail.com
+Closes: https://lore.kernel.org/linux-usb/000000000000c0ffe505fe86c9ca@google.com/#r
+Signed-off-by: Alan Stern <stern@rowland.harvard.edu>
+Cc: Khazhy Kumykov <khazhy@google.com>
+Fixes: 45bf39f8df7f ("USB: core: Don't hold device lock while reading the "descriptors" sysfs file")
 Cc: stable@vger.kernel.org
-Acked-by: David Hildenbrand <david@redhat.com>
-Signed-off-by: Hongchen Zhang <zhanghongchen@loongson.cn>
-Signed-off-by: Huacai Chen <chenhuacai@loongson.cn>
+Link: https://lore.kernel.org/r/b958b47a-9a46-4c22-a9f9-e42e42c31251@rowland.harvard.edu
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/loongarch/include/asm/pgtable.h |    3 +++
- 1 file changed, 3 insertions(+)
+ drivers/usb/core/hub.c |  114 ++++++++++++++++++++++++++++++-------------------
+ 1 file changed, 70 insertions(+), 44 deletions(-)
 
---- a/arch/loongarch/include/asm/pgtable.h
-+++ b/arch/loongarch/include/asm/pgtable.h
-@@ -560,6 +560,9 @@ static inline long pmd_protnone(pmd_t pm
- }
- #endif /* CONFIG_NUMA_BALANCING */
+--- a/drivers/usb/core/hub.c
++++ b/drivers/usb/core/hub.c
+@@ -4778,10 +4778,17 @@ static int get_bMaxPacketSize0(struct us
+  * the port lock.  For a newly detected device that is not accessible
+  * through any global pointers, it's not necessary to lock the device,
+  * but it is still necessary to lock the port.
++ *
++ * For a newly detected device, @dev_descr must be NULL.  The device
++ * descriptor retrieved from the device will then be stored in
++ * @udev->descriptor.  For an already existing device, @dev_descr
++ * must be non-NULL.  The device descriptor will be stored there,
++ * not in @udev->descriptor, because descriptors for registered
++ * devices are meant to be immutable.
+  */
+ static int
+ hub_port_init(struct usb_hub *hub, struct usb_device *udev, int port1,
+-		int retry_counter)
++		int retry_counter, struct usb_device_descriptor *dev_descr)
+ {
+ 	struct usb_device	*hdev = hub->hdev;
+ 	struct usb_hcd		*hcd = bus_to_hcd(hdev->bus);
+@@ -4793,6 +4800,7 @@ hub_port_init(struct usb_hub *hub, struc
+ 	int			devnum = udev->devnum;
+ 	const char		*driver_name;
+ 	bool			do_new_scheme;
++	const bool		initial = !dev_descr;
+ 	int			maxp0;
+ 	struct usb_device_descriptor	*buf, *descr;
  
-+#define pmd_leaf(pmd)		((pmd_val(pmd) & _PAGE_HUGE) != 0)
-+#define pud_leaf(pud)		((pud_val(pud) & _PAGE_HUGE) != 0)
+@@ -4831,32 +4839,34 @@ hub_port_init(struct usb_hub *hub, struc
+ 	}
+ 	oldspeed = udev->speed;
+ 
+-	/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...
+-	 * it's fixed size except for full speed devices.
+-	 * For Wireless USB devices, ep0 max packet is always 512 (tho
+-	 * reported as 0xff in the device descriptor). WUSB1.0[4.8.1].
+-	 */
+-	switch (udev->speed) {
+-	case USB_SPEED_SUPER_PLUS:
+-	case USB_SPEED_SUPER:
+-	case USB_SPEED_WIRELESS:	/* fixed at 512 */
+-		udev->ep0.desc.wMaxPacketSize = cpu_to_le16(512);
+-		break;
+-	case USB_SPEED_HIGH:		/* fixed at 64 */
+-		udev->ep0.desc.wMaxPacketSize = cpu_to_le16(64);
+-		break;
+-	case USB_SPEED_FULL:		/* 8, 16, 32, or 64 */
+-		/* to determine the ep0 maxpacket size, try to read
+-		 * the device descriptor to get bMaxPacketSize0 and
+-		 * then correct our initial guess.
++	if (initial) {
++		/* USB 2.0 section 5.5.3 talks about ep0 maxpacket ...
++		 * it's fixed size except for full speed devices.
++		 * For Wireless USB devices, ep0 max packet is always 512 (tho
++		 * reported as 0xff in the device descriptor). WUSB1.0[4.8.1].
+ 		 */
+-		udev->ep0.desc.wMaxPacketSize = cpu_to_le16(64);
+-		break;
+-	case USB_SPEED_LOW:		/* fixed at 8 */
+-		udev->ep0.desc.wMaxPacketSize = cpu_to_le16(8);
+-		break;
+-	default:
+-		goto fail;
++		switch (udev->speed) {
++		case USB_SPEED_SUPER_PLUS:
++		case USB_SPEED_SUPER:
++		case USB_SPEED_WIRELESS:	/* fixed at 512 */
++			udev->ep0.desc.wMaxPacketSize = cpu_to_le16(512);
++			break;
++		case USB_SPEED_HIGH:		/* fixed at 64 */
++			udev->ep0.desc.wMaxPacketSize = cpu_to_le16(64);
++			break;
++		case USB_SPEED_FULL:		/* 8, 16, 32, or 64 */
++			/* to determine the ep0 maxpacket size, try to read
++			 * the device descriptor to get bMaxPacketSize0 and
++			 * then correct our initial guess.
++			 */
++			udev->ep0.desc.wMaxPacketSize = cpu_to_le16(64);
++			break;
++		case USB_SPEED_LOW:		/* fixed at 8 */
++			udev->ep0.desc.wMaxPacketSize = cpu_to_le16(8);
++			break;
++		default:
++			goto fail;
++		}
+ 	}
+ 
+ 	if (udev->speed == USB_SPEED_WIRELESS)
+@@ -4879,22 +4889,24 @@ hub_port_init(struct usb_hub *hub, struc
+ 	if (udev->speed < USB_SPEED_SUPER)
+ 		dev_info(&udev->dev,
+ 				"%s %s USB device number %d using %s\n",
+-				(udev->config) ? "reset" : "new", speed,
++				(initial ? "new" : "reset"), speed,
+ 				devnum, driver_name);
+ 
+-	/* Set up TT records, if needed  */
+-	if (hdev->tt) {
+-		udev->tt = hdev->tt;
+-		udev->ttport = hdev->ttport;
+-	} else if (udev->speed != USB_SPEED_HIGH
+-			&& hdev->speed == USB_SPEED_HIGH) {
+-		if (!hub->tt.hub) {
+-			dev_err(&udev->dev, "parent hub has no TT\n");
+-			retval = -EINVAL;
+-			goto fail;
++	if (initial) {
++		/* Set up TT records, if needed  */
++		if (hdev->tt) {
++			udev->tt = hdev->tt;
++			udev->ttport = hdev->ttport;
++		} else if (udev->speed != USB_SPEED_HIGH
++				&& hdev->speed == USB_SPEED_HIGH) {
++			if (!hub->tt.hub) {
++				dev_err(&udev->dev, "parent hub has no TT\n");
++				retval = -EINVAL;
++				goto fail;
++			}
++			udev->tt = &hub->tt;
++			udev->ttport = port1;
+ 		}
+-		udev->tt = &hub->tt;
+-		udev->ttport = port1;
+ 	}
+ 
+ 	/* Why interleave GET_DESCRIPTOR and SET_ADDRESS this way?
+@@ -4928,6 +4940,12 @@ hub_port_init(struct usb_hub *hub, struc
+ 
+ 			maxp0 = get_bMaxPacketSize0(udev, buf,
+ 					GET_DESCRIPTOR_BUFSIZE, retries == 0);
++			if (maxp0 > 0 && !initial &&
++					maxp0 != udev->descriptor.bMaxPacketSize0) {
++				dev_err(&udev->dev, "device reset changed ep0 maxpacket size!\n");
++				retval = -ENODEV;
++				goto fail;
++			}
+ 
+ 			retval = hub_port_reset(hub, port1, udev, delay, false);
+ 			if (retval < 0)		/* error or disconnect */
+@@ -5001,6 +5019,12 @@ hub_port_init(struct usb_hub *hub, struc
+ 		} else {
+ 			u32 delay;
+ 
++			if (!initial && maxp0 != udev->descriptor.bMaxPacketSize0) {
++				dev_err(&udev->dev, "device reset changed ep0 maxpacket size!\n");
++				retval = -ENODEV;
++				goto fail;
++			}
 +
- /*
-  * We provide our own get_unmapped area to cope with the virtual aliasing
-  * constraints placed on us by the cache architecture.
+ 			delay = udev->parent->hub_delay;
+ 			udev->hub_delay = min_t(u32, delay,
+ 						USB_TP_TRANSMISSION_DELAY_MAX);
+@@ -5044,7 +5068,10 @@ hub_port_init(struct usb_hub *hub, struc
+ 					retval);
+ 		goto fail;
+ 	}
+-	udev->descriptor = *descr;
++	if (initial)
++		udev->descriptor = *descr;
++	else
++		*dev_descr = *descr;
+ 	kfree(descr);
+ 
+ 	/*
+@@ -5354,7 +5381,7 @@ static void hub_port_connect(struct usb_
+ 		}
+ 
+ 		/* reset (non-USB 3.0 devices) and get descriptor */
+-		status = hub_port_init(hub, udev, port1, i);
++		status = hub_port_init(hub, udev, port1, i, NULL);
+ 		if (status < 0)
+ 			goto loop;
+ 
+@@ -5984,7 +6011,7 @@ static int usb_reset_and_verify_device(s
+ 	struct usb_device		*parent_hdev = udev->parent;
+ 	struct usb_hub			*parent_hub;
+ 	struct usb_hcd			*hcd = bus_to_hcd(udev->bus);
+-	struct usb_device_descriptor	descriptor = udev->descriptor;
++	struct usb_device_descriptor	descriptor;
+ 	struct usb_host_bos		*bos;
+ 	int				i, j, ret = 0;
+ 	int				port1 = udev->portnum;
+@@ -6020,7 +6047,7 @@ static int usb_reset_and_verify_device(s
+ 		/* ep0 maxpacket size may change; let the HCD know about it.
+ 		 * Other endpoints will be handled by re-enumeration. */
+ 		usb_ep0_reinit(udev);
+-		ret = hub_port_init(parent_hub, udev, port1, i);
++		ret = hub_port_init(parent_hub, udev, port1, i, &descriptor);
+ 		if (ret >= 0 || ret == -ENOTCONN || ret == -ENODEV)
+ 			break;
+ 	}
+@@ -6032,7 +6059,6 @@ static int usb_reset_and_verify_device(s
+ 	/* Device might have changed firmware (DFU or similar) */
+ 	if (descriptors_changed(udev, &descriptor, bos)) {
+ 		dev_info(&udev->dev, "device firmware changed\n");
+-		udev->descriptor = descriptor;	/* for disconnect() calls */
+ 		goto re_enumerate;
+ 	}
+ 
 
 
