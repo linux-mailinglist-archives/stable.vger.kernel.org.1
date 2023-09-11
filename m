@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 87CCC79B636
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 08EC879B821
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1344808AbjIKVOt (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:14:49 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58894 "EHLO
+        id S1343715AbjIKVMV (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:12:21 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39256 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238600AbjIKOAY (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:00:24 -0400
+        with ESMTP id S239917AbjIKOb0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:31:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 0782ECD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:00:20 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 4C476C433C7;
-        Mon, 11 Sep 2023 14:00:19 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 2D2BEF0
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:31:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6F729C433C7;
+        Mon, 11 Sep 2023 14:31:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440819;
-        bh=nI+/mFhPW7+MpvqvY6aiPUN3MWGBSiKxgFCA6dqyc78=;
+        s=korg; t=1694442681;
+        bh=DA+fuFp7JU7uQsb+P1ibSBoJq2ReyEaD2DShO3pKY8M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=m8jY+XQfrZfnMHvpY3MWnAP9zB3suPWxDfh14ubvh887y9ZRKKNtLsEmBMOrL+U1J
-         5TiIbUwpdhzQl5iJRHKRQXRnhbBQVENvjZ4ipSDAe4OdjwToBMf7EOORLOvTfErt9I
-         Wh8YOd4YcY7c6EndMIuhBR/pE400aGQqz4DUl898=
+        b=GU9mKaNLrrAhiYKURzXM1N/meKOxBkFvzPF+8J/VtHRaMyA4XjtRrTZmtwkZt2qWr
+         ac030tHYINgYQVxt//Wl+p86igsgchlmbqC76cb+dtNvtzHCBIR9J0wHIejKRuVh1w
+         nKo8NGBvXhD7NC4obRFauNR4XXIUwuVeY51Cj+RI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
-        Alexei Starovoitov <ast@kernel.org>,
+        patches@lists.linux.dev, Waiman Long <longman@redhat.com>,
+        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
+        Davidlohr Bueso <dave@stgolabs.net>,
+        "Joel Fernandes (Google)" <joel@joelfernandes.org>,
+        "Paul E. McKenney" <paulmck@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 169/739] bpf: Fix check_func_arg_reg_off bug for graph root/node
-Date:   Mon, 11 Sep 2023 15:39:28 +0200
-Message-ID: <20230911134655.905699940@linuxfoundation.org>
+Subject: [PATCH 6.4 110/737] refscale: Fix uninitalized use of wait_queue_head_t
+Date:   Mon, 11 Sep 2023 15:39:29 +0200
+Message-ID: <20230911134653.580231985@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,75 +53,85 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+From: Waiman Long <longman@redhat.com>
 
-[ Upstream commit 6785b2edf48c6b1c3ea61fe3b0d2e02b8fbf90c0 ]
+[ Upstream commit f5063e8948dad7f31adb007284a5d5038ae31bb8 ]
 
-The commit being fixed introduced a hunk into check_func_arg_reg_off
-that bypasses reg->off == 0 enforcement when offset points to a graph
-node or root. This might possibly be done for treating bpf_rbtree_remove
-and others as KF_RELEASE and then later check correct reg->off in helper
-argument checks.
+Running the refscale test occasionally crashes the kernel with the
+following error:
 
-But this is not the case, those helpers are already not KF_RELEASE and
-permit non-zero reg->off and verify it later to match the subobject in
-BTF type.
+[ 8569.952896] BUG: unable to handle page fault for address: ffffffffffffffe8
+[ 8569.952900] #PF: supervisor read access in kernel mode
+[ 8569.952902] #PF: error_code(0x0000) - not-present page
+[ 8569.952904] PGD c4b048067 P4D c4b049067 PUD c4b04b067 PMD 0
+[ 8569.952910] Oops: 0000 [#1] PREEMPT_RT SMP NOPTI
+[ 8569.952916] Hardware name: Dell Inc. PowerEdge R750/0WMWCR, BIOS 1.2.4 05/28/2021
+[ 8569.952917] RIP: 0010:prepare_to_wait_event+0x101/0x190
+  :
+[ 8569.952940] Call Trace:
+[ 8569.952941]  <TASK>
+[ 8569.952944]  ref_scale_reader+0x380/0x4a0 [refscale]
+[ 8569.952959]  kthread+0x10e/0x130
+[ 8569.952966]  ret_from_fork+0x1f/0x30
+[ 8569.952973]  </TASK>
 
-However, this logic leads to bpf_obj_drop permitting free of register
-arguments with non-zero offset when they point to a graph root or node
-within them, which is not ok.
+The likely cause is that init_waitqueue_head() is called after the call to
+the torture_create_kthread() function that creates the ref_scale_reader
+kthread.  Although this init_waitqueue_head() call will very likely
+complete before this kthread is created and starts running, it is
+possible that the calling kthread will be delayed between the calls to
+torture_create_kthread() and init_waitqueue_head().  In this case, the
+new kthread will use the waitqueue head before it is properly initialized,
+which is not good for the kernel's health and well-being.
 
-For instance:
+The above crash happened here:
 
-struct foo {
-	int i;
-	int j;
-	struct bpf_rb_node node;
-};
+	static inline void __add_wait_queue(...)
+	{
+		:
+		if (!(wq->flags & WQ_FLAG_PRIORITY)) <=== Crash here
 
-struct foo *f = bpf_obj_new(typeof(*f));
-if (!f) ...
-bpf_obj_drop(f); // OK
-bpf_obj_drop(&f->i); // still ok from verifier PoV
-bpf_obj_drop(&f->node); // Not OK, but permitted right now
+The offset of flags from list_head entry in wait_queue_entry is
+-0x18. If reader_tasks[i].wq.head.next is NULL as allocated reader_task
+structure is zero initialized, the instruction will try to access address
+0xffffffffffffffe8, which is exactly the fault address listed above.
 
-Fix this by dropping the whole part of code altogether.
+This commit therefore invokes init_waitqueue_head() before creating
+the kthread.
 
-Fixes: 6a3cd3318ff6 ("bpf: Migrate release_on_unlock logic to non-owning ref semantics")
-Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
-Link: https://lore.kernel.org/r/20230822175140.1317749-2-memxor@gmail.com
-Signed-off-by: Alexei Starovoitov <ast@kernel.org>
+Fixes: 653ed64b01dc ("refperf: Add a test to measure performance of read-side synchronization")
+Signed-off-by: Waiman Long <longman@redhat.com>
+Reviewed-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+Reviewed-by: Davidlohr Bueso <dave@stgolabs.net>
+Acked-by: Joel Fernandes (Google) <joel@joelfernandes.org>
+Signed-off-by: Paul E. McKenney <paulmck@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- kernel/bpf/verifier.c | 11 -----------
- 1 file changed, 11 deletions(-)
+ kernel/rcu/refscale.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
 
-diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
-index 903de82dec423..ed49ec0675625 100644
---- a/kernel/bpf/verifier.c
-+++ b/kernel/bpf/verifier.c
-@@ -7807,17 +7807,6 @@ int check_func_arg_reg_off(struct bpf_verifier_env *env,
- 		if (arg_type_is_dynptr(arg_type) && type == PTR_TO_STACK)
- 			return 0;
+diff --git a/kernel/rcu/refscale.c b/kernel/rcu/refscale.c
+index 1970ce5f22d40..71d138573856f 100644
+--- a/kernel/rcu/refscale.c
++++ b/kernel/rcu/refscale.c
+@@ -1107,12 +1107,11 @@ ref_scale_init(void)
+ 	VERBOSE_SCALEOUT("Starting %d reader threads", nreaders);
  
--		if ((type_is_ptr_alloc_obj(type) || type_is_non_owning_ref(type)) && reg->off) {
--			if (reg_find_field_offset(reg, reg->off, BPF_GRAPH_NODE_OR_ROOT))
--				return __check_ptr_off_reg(env, reg, regno, true);
+ 	for (i = 0; i < nreaders; i++) {
++		init_waitqueue_head(&reader_tasks[i].wq);
+ 		firsterr = torture_create_kthread(ref_scale_reader, (void *)i,
+ 						  reader_tasks[i].task);
+ 		if (torture_init_error(firsterr))
+ 			goto unwind;
 -
--			verbose(env, "R%d must have zero offset when passed to release func\n",
--				regno);
--			verbose(env, "No graph node or root found at R%d type:%s off:%d\n", regno,
--				btf_type_name(reg->btf, reg->btf_id), reg->off);
--			return -EINVAL;
--		}
--
- 		/* Doing check_ptr_off_reg check for the offset will catch this
- 		 * because fixed_off_ok is false, but checking here allows us
- 		 * to give the user a better error message.
+-		init_waitqueue_head(&(reader_tasks[i].wq));
+ 	}
+ 
+ 	// Main Task
 -- 
 2.40.1
 
