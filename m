@@ -2,40 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 6874779B931
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:35 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5588E79B616
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:04:40 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376584AbjIKWUA (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:20:00 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33872 "EHLO
+        id S236910AbjIKVF7 (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:05:59 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:43734 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241101AbjIKPB7 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:59 -0400
+        with ESMTP id S238675AbjIKOC0 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:02:26 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7E00CE4D
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:55 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id C8C4FC433C7;
-        Mon, 11 Sep 2023 15:01:54 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 32EE7CD7
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:02:22 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 77C22C433C8;
+        Mon, 11 Sep 2023 14:02:21 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444515;
-        bh=nwmdVDhKsk3oU09doMeHFyvmc7Lype4R9m7xFSxsTA4=;
+        s=korg; t=1694440941;
+        bh=pbjR07d1Z7S3ng1SSYJ0mPRCsN+YrSAiL1VjbdqFKvM=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=JpoXwTb2oKx5DfbGReV8hyYkp0obDgf7tOyhrwsRSF1c+igAMQoSSvepJJ1l1XTwP
-         GV/QYgywi0N90tZAF9LqfpkoJdPWLVKnLrWos2SdEA/HWR6uE7849I3qL4Z4YyYP2T
-         ozwBv5awokXkLHDkLLg9cSHZ7Fz2m0Ojhki7fWWg=
+        b=xQAShPCL5smHsmF0Amgy3mtilfA/lhEEJ7fonyqxkt0hEqzFPKL0MWDpuFujSBwgN
+         XPUJrW+mw6eW3t23uhcRvVg8JBdOQKch/yH3Sj2+4inOhk6e2WbpZVIV23p4ChYyD8
+         jY9uPKWlcJ/v29lVOaebNMUZb0mURx85AVEq/vWM=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Xiaolei Wang <xiaolei.wang@windriver.com>,
-        Fabio Estevam <festevam@gmail.com>,
-        Shawn Guo <shawnguo@kernel.org>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 005/600] ARM: dts: imx: Set default tuning step for imx7d usdhc
-Date:   Mon, 11 Sep 2023 15:40:38 +0200
-Message-ID: <20230911134633.781405058@linuxfoundation.org>
+Subject: [PATCH 6.5 240/739] ARM: dts: stm32: Add missing detach mailbox for emtrion emSBC-Argon
+Date:   Mon, 11 Sep 2023 15:40:39 +0200
+Message-ID: <20230911134657.868033971@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,66 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Xiaolei Wang <xiaolei.wang@windriver.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit be18293e47cbca7c6acee9231fc851601d69563a ]
+[ Upstream commit 0ee0ef38aa9f75f21b51f729dd42b2e932515188 ]
 
-If the tuning step is not set, the tuning step is set to 1.
-For some sd cards, the following Tuning timeout will occur.
+Add missing "detach" mailbox to this board to permit the CPU to inform
+the remote processor on a detach. This signal allows the remote processor
+firmware to stop IPC communication and to reinitialize the resources for
+a re-attach.
 
-Tuning failed, falling back to fixed sampling clock
-mmc0: Tuning failed, falling back to fixed sampling clock
+Without this mailbox, detach is not possible and kernel log contains the
+following warning to, so make sure all the STM32MP15xx platform DTs are
+in sync regarding the mailboxes to fix the detach issue and the warning:
+"
+stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
+"
 
-So set the default tuning step. This refers to the NXP vendor's
-commit below:
-
-https://github.com/nxp-imx/linux-imx/blob/lf-6.1.y/
-arch/arm/boot/dts/imx7s.dtsi#L1216-L1217
-
-Fixes: 1e336aa0c025 ("mmc: sdhci-esdhc-imx: correct the tuning start tap and step setting")
-Signed-off-by: Xiaolei Wang <xiaolei.wang@windriver.com>
-Reviewed-by: Fabio Estevam <festevam@gmail.com>
-Signed-off-by: Shawn Guo <shawnguo@kernel.org>
+Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/imx7s.dtsi | 6 ++++++
- 1 file changed, 6 insertions(+)
+ arch/arm/boot/dts/st/stm32mp157c-emstamp-argon.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/imx7s.dtsi b/arch/arm/boot/dts/imx7s.dtsi
-index 11b9321badc51..667568aa4326a 100644
---- a/arch/arm/boot/dts/imx7s.dtsi
-+++ b/arch/arm/boot/dts/imx7s.dtsi
-@@ -1184,6 +1184,8 @@
- 					<&clks IMX7D_USDHC1_ROOT_CLK>;
- 				clock-names = "ipg", "ahb", "per";
- 				bus-width = <4>;
-+				fsl,tuning-step = <2>;
-+				fsl,tuning-start-tap = <20>;
- 				status = "disabled";
- 			};
- 
-@@ -1196,6 +1198,8 @@
- 					<&clks IMX7D_USDHC2_ROOT_CLK>;
- 				clock-names = "ipg", "ahb", "per";
- 				bus-width = <4>;
-+				fsl,tuning-step = <2>;
-+				fsl,tuning-start-tap = <20>;
- 				status = "disabled";
- 			};
- 
-@@ -1208,6 +1212,8 @@
- 					<&clks IMX7D_USDHC3_ROOT_CLK>;
- 				clock-names = "ipg", "ahb", "per";
- 				bus-width = <4>;
-+				fsl,tuning-step = <2>;
-+				fsl,tuning-start-tap = <20>;
- 				status = "disabled";
- 			};
- 
+diff --git a/arch/arm/boot/dts/st/stm32mp157c-emstamp-argon.dtsi b/arch/arm/boot/dts/st/stm32mp157c-emstamp-argon.dtsi
+index 94e38141af672..fd89542c69c93 100644
+--- a/arch/arm/boot/dts/st/stm32mp157c-emstamp-argon.dtsi
++++ b/arch/arm/boot/dts/st/stm32mp157c-emstamp-argon.dtsi
+@@ -368,8 +368,8 @@ &iwdg2 {
+ &m4_rproc {
+ 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
+ 			<&vdev0vring1>, <&vdev0buffer>;
+-	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
+-	mbox-names = "vq0", "vq1", "shutdown";
++	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
++	mbox-names = "vq0", "vq1", "shutdown", "detach";
+ 	interrupt-parent = <&exti>;
+ 	interrupts = <68 1>;
+ 	interrupt-names = "wdg";
 -- 
 2.40.1
 
