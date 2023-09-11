@@ -2,38 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1A52E79BD6F
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:16:03 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id D68AD79BCFF
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:15:26 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243091AbjIKU7E (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 16:59:04 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41976 "EHLO
+        id S1345958AbjIKVWp (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:22:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51656 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242210AbjIKPZI (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:25:08 -0400
+        with ESMTP id S240931AbjIKO51 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9891D8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:25:03 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 01DFEC433C8;
-        Mon, 11 Sep 2023 15:25:02 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 337F7E58
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 595AAC433CA;
+        Mon, 11 Sep 2023 14:57:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445903;
-        bh=D8hCW6mPzspbVYhBu9rDYiOTILa5EX+hWxjYJk3fU1g=;
+        s=korg; t=1694444242;
+        bh=rgZtY447ewqeyEfWbr7m4lhlqCsv3i/mmUDA5RFnn4c=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=wpgUBf6g2R3QFA0bmsAxOA2Xvc/UFMzCeWI8zB1xWZO3Wr7k+cd+X5eHctAFxWh6b
-         Stf4TNO4nNuAM8JFjwKJweAqTwVG3GFf2LH9Enu9SirD8hIMJh6X1iDBHsgFR4TCZY
-         j8zfWCc5lXMw/J3V3BCm7J4Z80nkjMDa5Q6PlxW0=
+        b=XQeTlz2YCJxgapgCLXm6rH2pSFclNEEb22BmbPXNBWkSvFelBYmTd3Z55woOLcZd2
+         nr8z9gH8Ao+T6J75X1jWY1Z2uDzrjHFI9jjE5oMtuWHxxThyXdqREXXD3UdiPGS63S
+         NILF3krj6ir7J71Ul/FtF8cWM3hTgk2FUtfi96Rk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Yi Yang <yiyang13@huawei.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 486/600] serial: tegra: handle clk prepare error in tegra_uart_hw_init()
+        patches@lists.linux.dev, Pavel Begunkov <asml.silence@gmail.com>,
+        Jens Axboe <axboe@kernel.dk>
+Subject: [PATCH 6.4 660/737] io_uring: break iopolling on signal
 Date:   Mon, 11 Sep 2023 15:48:39 +0200
-Message-ID: <20230911134647.984805693@linuxfoundation.org>
+Message-ID: <20230911134708.962220468@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,45 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Yi Yang <yiyang13@huawei.com>
+From: Pavel Begunkov <asml.silence@gmail.com>
 
-[ Upstream commit 5abd01145d0cc6cd1b7c2fe6ee0b9ea0fa13671e ]
+commit dc314886cb3d0e4ab2858003e8de2917f8a3ccbd upstream.
 
-In tegra_uart_hw_init(), the return value of clk_prepare_enable() should
-be checked since it might fail.
+Don't keep spinning iopoll with a signal set. It'll eventually return
+back, e.g. by virtue of need_resched(), but it's not a nice user
+experience.
 
-Fixes: e9ea096dd225 ("serial: tegra: add serial driver")
-Signed-off-by: Yi Yang <yiyang13@huawei.com>
-Link: https://lore.kernel.org/r/20230817105406.228674-1-yiyang13@huawei.com
+Cc: stable@vger.kernel.org
+Fixes: def596e9557c9 ("io_uring: support for IO polling")
+Signed-off-by: Pavel Begunkov <asml.silence@gmail.com>
+Link: https://lore.kernel.org/r/eeba551e82cad12af30c3220125eb6cb244cc94c.1691594339.git.asml.silence@gmail.com
+Signed-off-by: Jens Axboe <axboe@kernel.dk>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
-Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/tty/serial/serial-tegra.c | 6 +++++-
- 1 file changed, 5 insertions(+), 1 deletion(-)
+ io_uring/io_uring.c |    3 +++
+ 1 file changed, 3 insertions(+)
 
-diff --git a/drivers/tty/serial/serial-tegra.c b/drivers/tty/serial/serial-tegra.c
-index c08360212aa20..7aa2b5b67001d 100644
---- a/drivers/tty/serial/serial-tegra.c
-+++ b/drivers/tty/serial/serial-tegra.c
-@@ -999,7 +999,11 @@ static int tegra_uart_hw_init(struct tegra_uart_port *tup)
- 	tup->ier_shadow = 0;
- 	tup->current_baud = 0;
+--- a/io_uring/io_uring.c
++++ b/io_uring/io_uring.c
+@@ -1689,6 +1689,9 @@ static int io_iopoll_check(struct io_rin
+ 			break;
+ 		nr_events += ret;
+ 		ret = 0;
++
++		if (task_sigpending(current))
++			return -EINTR;
+ 	} while (nr_events < min && !need_resched());
  
--	clk_prepare_enable(tup->uart_clk);
-+	ret = clk_prepare_enable(tup->uart_clk);
-+	if (ret) {
-+		dev_err(tup->uport.dev, "could not enable clk\n");
-+		return ret;
-+	}
- 
- 	/* Reset the UART controller to clear all previous status.*/
- 	reset_control_assert(tup->rst);
--- 
-2.40.1
-
+ 	return ret;
 
 
