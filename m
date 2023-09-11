@@ -2,37 +2,37 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 0D37C79B843
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:14 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0861E79B8DE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:09:06 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239678AbjIKWnC (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:43:02 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54226 "EHLO
+        id S233639AbjIKUwk (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:52:40 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48206 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240133AbjIKOh1 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:37:27 -0400
+        with ESMTP id S240214AbjIKOjO (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:39:14 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 28EF2F2
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:37:23 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 652F0C433C8;
-        Mon, 11 Sep 2023 14:37:22 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 87E8BF2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:39:10 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CF93EC433C7;
+        Mon, 11 Sep 2023 14:39:09 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443042;
-        bh=IDMPUwszd1u/C8VodDerEqKEOnlmh5dRjMm/0++6Z7k=;
+        s=korg; t=1694443150;
+        bh=nglbuDNTGDCwOQpQV0knPtfwCQBvI5oPQeR8wx/SGVU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Ad/PDuVHL7qfW2kUcZVizJaz7i9yWM8W7iVSGCnJQbR37McIdn8VegUXwc5aKMr6H
-         0RPLKKq4ZXUCSm0VFLzBlBkUW7AUK1zQnc80nXrMCH3pl1q4eyyU3nI6BRQpTjg5Ci
-         gEzntwAZXKs0D82tOnepIeB55vNSBwR1E0ulTFWk=
+        b=z8+PzdhdPKSbfuC/Ji/4BWi9Ak5gIz4vmdPxnALifBGUZOFcAxPahZdCAlyi8VXUT
+         A7L3CQMLkuP2oALbf6NcaHe9c0vCRJwq7hOQkTPQK8WvfER6K/Dhx6iRbtjhXQh4qo
+         PySDWt0VXCWDSK/65QG2UAg76ybb+LL+5r+n5msI=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Lin Ma <linma@zju.edu.cn>,
-        Simon Horman <horms@kernel.org>,
-        Johannes Berg <johannes.berg@intel.com>,
+        patches@lists.linux.dev,
+        Kumar Kartikeya Dwivedi <memxor@gmail.com>,
+        Alexei Starovoitov <ast@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 236/737] wifi: nl80211/cfg80211: add forgotten nla_policy for BSS color attribute
-Date:   Mon, 11 Sep 2023 15:41:35 +0200
-Message-ID: <20230911134657.200769085@linuxfoundation.org>
+Subject: [PATCH 6.4 238/737] bpf: Fix check_func_arg_reg_off bug for graph root/node
+Date:   Mon, 11 Sep 2023 15:41:37 +0200
+Message-ID: <20230911134657.257159129@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -55,41 +55,71 @@ X-Mailing-List: stable@vger.kernel.org
 
 ------------------
 
-From: Lin Ma <linma@zju.edu.cn>
+From: Kumar Kartikeya Dwivedi <memxor@gmail.com>
 
-[ Upstream commit 218d690c49b7e9c94ad0d317adbdd4af846ea0dc ]
+[ Upstream commit 6785b2edf48c6b1c3ea61fe3b0d2e02b8fbf90c0 ]
 
-The previous commit dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to
-NDP ranging parameters") adds a parameter for NDP ranging by introducing
-a new attribute type named NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR.
+The commit being fixed introduced a hunk into check_func_arg_reg_off
+that bypasses reg->off == 0 enforcement when offset points to a graph
+node or root. This might possibly be done for treating bpf_rbtree_remove
+and others as KF_RELEASE and then later check correct reg->off in helper
+argument checks.
 
-However, the author forgot to also describe the nla_policy at
-nl80211_pmsr_ftm_req_attr_policy (net/wireless/nl80211.c). Just
-complement it to avoid malformed attribute that causes out-of-attribute
-access.
+But this is not the case, those helpers are already not KF_RELEASE and
+permit non-zero reg->off and verify it later to match the subobject in
+BTF type.
 
-Fixes: dd3e4fc75b4a ("nl80211/cfg80211: add BSS color to NDP ranging parameters")
-Signed-off-by: Lin Ma <linma@zju.edu.cn>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230809033151.768910-1-linma@zju.edu.cn
-Signed-off-by: Johannes Berg <johannes.berg@intel.com>
+However, this logic leads to bpf_obj_drop permitting free of register
+arguments with non-zero offset when they point to a graph root or node
+within them, which is not ok.
+
+For instance:
+
+struct foo {
+	int i;
+	int j;
+	struct bpf_rb_node node;
+};
+
+struct foo *f = bpf_obj_new(typeof(*f));
+if (!f) ...
+bpf_obj_drop(f); // OK
+bpf_obj_drop(&f->i); // still ok from verifier PoV
+bpf_obj_drop(&f->node); // Not OK, but permitted right now
+
+Fix this by dropping the whole part of code altogether.
+
+Fixes: 6a3cd3318ff6 ("bpf: Migrate release_on_unlock logic to non-owning ref semantics")
+Signed-off-by: Kumar Kartikeya Dwivedi <memxor@gmail.com>
+Link: https://lore.kernel.org/r/20230822175140.1317749-2-memxor@gmail.com
+Signed-off-by: Alexei Starovoitov <ast@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- net/wireless/nl80211.c | 1 +
- 1 file changed, 1 insertion(+)
+ kernel/bpf/verifier.c | 11 -----------
+ 1 file changed, 11 deletions(-)
 
-diff --git a/net/wireless/nl80211.c b/net/wireless/nl80211.c
-index 1b688745ce0a1..be798ce8a20ff 100644
---- a/net/wireless/nl80211.c
-+++ b/net/wireless/nl80211.c
-@@ -323,6 +323,7 @@ nl80211_pmsr_ftm_req_attr_policy[NL80211_PMSR_FTM_REQ_ATTR_MAX + 1] = {
- 	[NL80211_PMSR_FTM_REQ_ATTR_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_NON_TRIGGER_BASED] = { .type = NLA_FLAG },
- 	[NL80211_PMSR_FTM_REQ_ATTR_LMR_FEEDBACK] = { .type = NLA_FLAG },
-+	[NL80211_PMSR_FTM_REQ_ATTR_BSS_COLOR] = { .type = NLA_U8 },
- };
+diff --git a/kernel/bpf/verifier.c b/kernel/bpf/verifier.c
+index b9e4dbdfa296a..d4a6120edbb86 100644
+--- a/kernel/bpf/verifier.c
++++ b/kernel/bpf/verifier.c
+@@ -7611,17 +7611,6 @@ int check_func_arg_reg_off(struct bpf_verifier_env *env,
+ 		if (arg_type_is_dynptr(arg_type) && type == PTR_TO_STACK)
+ 			return 0;
  
- static const struct nla_policy
+-		if ((type_is_ptr_alloc_obj(type) || type_is_non_owning_ref(type)) && reg->off) {
+-			if (reg_find_field_offset(reg, reg->off, BPF_GRAPH_NODE_OR_ROOT))
+-				return __check_ptr_off_reg(env, reg, regno, true);
+-
+-			verbose(env, "R%d must have zero offset when passed to release func\n",
+-				regno);
+-			verbose(env, "No graph node or root found at R%d type:%s off:%d\n", regno,
+-				btf_type_name(reg->btf, reg->btf_id), reg->off);
+-			return -EINVAL;
+-		}
+-
+ 		/* Doing check_ptr_off_reg check for the offset will catch this
+ 		 * because fixed_off_ok is false, but checking here allows us
+ 		 * to give the user a better error message.
 -- 
 2.40.1
 
