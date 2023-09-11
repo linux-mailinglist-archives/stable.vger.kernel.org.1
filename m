@@ -2,41 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id C708079B455
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:01:41 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A013D79B1DE
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:37 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1376340AbjIKWTO (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:19:14 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41928 "EHLO
+        id S242588AbjIKVvA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:51:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:44306 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S238648AbjIKOBk (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:01:40 -0400
+        with ESMTP id S239965AbjIKOcm (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:32:42 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 38EC0CD7
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:01:36 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7BBB3C433C8;
-        Mon, 11 Sep 2023 14:01:35 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 7A776F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:32:38 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id BF901C433C7;
+        Mon, 11 Sep 2023 14:32:37 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694440895;
-        bh=kZCCUj0234dbRK+rb/7CaFeEGC/vqIh12ot/LQpI2KA=;
+        s=korg; t=1694442758;
+        bh=gpyfLITSOQCcTkSkT2iV2JMNHwdV8cwwUqRhLXCMwxw=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=QHA0tp/xoGFPVdQ/1bbEysQXtUpfmSN+8zZH7xQHlAlZ/gD7S9BRS1uPlAwpVKuc0
-         m/GZFWYpBvg/jz/19t+FDM/8OIU3IV3RxuNF4kCsexXJBACKZJyVBdvnqGHHltyWkq
-         qDW1Htz01XQGbYM8kWyqffVK49IHOhyFvflWViTM=
+        b=wFROpsvzO22/7o6CMtHP2pUT6poVzGyftGJxVId/btm+BI7bwW8qpV43NS82dIwBX
+         pGwdFo6dx8vMvFB0IaTaaDg0kApoZQ8gjekhqge1yZOo1sAzvcqcUNofVxZtBh/clU
+         10Ys6evEqnR8/h24l3Q9Xx0UgW/M4LOd0GtL1Iwk=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Shannon Nelson <shannon.nelson@amd.com>,
-        Brett Creeley <brett.creeley@amd.com>,
-        Simon Horman <horms@kernel.org>,
-        Jakub Kicinski <kuba@kernel.org>,
+        patches@lists.linux.dev, Liao Chang <liaochang1@huawei.com>,
+        Viresh Kumar <viresh.kumar@linaro.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 197/739] pds_core: check for work queue before use
+Subject: [PATCH 6.4 137/737] cpufreq: powernow-k8: Use related_cpus instead of cpus in driver.exit()
 Date:   Mon, 11 Sep 2023 15:39:56 +0200
-Message-ID: <20230911134656.691289980@linuxfoundation.org>
+Message-ID: <20230911134654.328259024@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -52,42 +50,40 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Shannon Nelson <shannon.nelson@amd.com>
+From: Liao Chang <liaochang1@huawei.com>
 
-[ Upstream commit 969cfd4c8ca50c32901342cdd3d677c3ffe61371 ]
+[ Upstream commit 03997da042dac73c69e60d91942c727c76828b65 ]
 
-Add a check that the wq exists before queuing up work for a
-failed devcmd, as the PF is responsible for health and the VF
-doesn't have a wq.
+Since the 'cpus' field of policy structure will become empty in the
+cpufreq core API, it is better to use 'related_cpus' in the exit()
+callback of driver.
 
-Fixes: c2dbb0904310 ("pds_core: health timer and workqueue")
-Signed-off-by: Shannon Nelson <shannon.nelson@amd.com>
-Reviewed-by: Brett Creeley <brett.creeley@amd.com>
-Reviewed-by: Simon Horman <horms@kernel.org>
-Link: https://lore.kernel.org/r/20230824161754.34264-5-shannon.nelson@amd.com
-Signed-off-by: Jakub Kicinski <kuba@kernel.org>
+Fixes: c3274763bfc3 ("cpufreq: powernow-k8: Initialize per-cpu data-structures properly")
+Signed-off-by: Liao Chang <liaochang1@huawei.com>
+Signed-off-by: Viresh Kumar <viresh.kumar@linaro.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/net/ethernet/amd/pds_core/dev.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/cpufreq/powernow-k8.c | 3 ++-
+ 1 file changed, 2 insertions(+), 1 deletion(-)
 
-diff --git a/drivers/net/ethernet/amd/pds_core/dev.c b/drivers/net/ethernet/amd/pds_core/dev.c
-index debe5216fe29e..524f422ee7ace 100644
---- a/drivers/net/ethernet/amd/pds_core/dev.c
-+++ b/drivers/net/ethernet/amd/pds_core/dev.c
-@@ -183,7 +183,7 @@ int pdsc_devcmd_locked(struct pdsc *pdsc, union pds_core_dev_cmd *cmd,
- 	err = pdsc_devcmd_wait(pdsc, max_seconds);
- 	memcpy_fromio(comp, &pdsc->cmd_regs->comp, sizeof(*comp));
+diff --git a/drivers/cpufreq/powernow-k8.c b/drivers/cpufreq/powernow-k8.c
+index d289036beff23..b10f7a1b77f11 100644
+--- a/drivers/cpufreq/powernow-k8.c
++++ b/drivers/cpufreq/powernow-k8.c
+@@ -1101,7 +1101,8 @@ static int powernowk8_cpu_exit(struct cpufreq_policy *pol)
  
--	if (err == -ENXIO || err == -ETIMEDOUT)
-+	if ((err == -ENXIO || err == -ETIMEDOUT) && pdsc->wq)
- 		queue_work(pdsc->wq, &pdsc->health_work);
+ 	kfree(data->powernow_table);
+ 	kfree(data);
+-	for_each_cpu(cpu, pol->cpus)
++	/* pol->cpus will be empty here, use related_cpus instead. */
++	for_each_cpu(cpu, pol->related_cpus)
+ 		per_cpu(powernow_data, cpu) = NULL;
  
- 	return err;
+ 	return 0;
 -- 
 2.40.1
 
