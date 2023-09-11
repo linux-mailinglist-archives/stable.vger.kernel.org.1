@@ -2,42 +2,38 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1389779B81E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:08:00 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0E98C79BC46
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:14:23 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1350623AbjIKVjv (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:39:51 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:33862 "EHLO
+        id S239523AbjIKVip (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:38:45 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:51848 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241100AbjIKPB5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:01:57 -0400
+        with ESMTP id S240066AbjIKOf1 (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:35:27 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB648125
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:01:52 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0EE11C433C8;
-        Mon, 11 Sep 2023 15:01:51 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 31517F2
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:35:23 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 6DDDBC433C7;
+        Mon, 11 Sep 2023 14:35:22 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694444512;
-        bh=UoQd5jayEi8d5kM4O0PQ609q0Zfdv1zYwxmMiI/VoiQ=;
+        s=korg; t=1694442922;
+        bh=yeUeUIwAK325c2mcjAbW+zZ7zeVM2tLPBq+3emH6H7I=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=iF3jeonTG4a6yrz17D4ueAtxWP7T52DV4BqrdH98It+2zwyUgn2bBFEhXuavlIIyi
-         XcjWo89tyXEv0+dI1ykAnR7vlv/BZ0ijERcsNcCVfvBQZfFe9vEynfH96gPED+a5az
-         ApfJIxzbCPJTTKChIRWslCIh1KBv86wQkMmVuKhw=
+        b=VG4YagdSH2rAts1M1YHbJoC7A87wXmgF/K0hlmxzoxffHLVKB+4ZMRo0mNh+vcI99
+         r8p+bfdybL9j8qwWvwX0K022Q1vWxalEVqUz69845XywdBIkEqpcdC+LzrcdHuD2Pi
+         R36HX8JklPojctrtCwR/H9KkW4O5j4xzRp6K47hQ=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Stylon Wang <stylon.wang@amd.com>,
-        Aurabindo Pillai <aurabindo.pillai@amd.com>,
-        Rodrigo Siqueira <rjordrigo@amd.com>,
-        Daniel Wheeler <daniel.wheeler@amd.com>,
-        Alex Deucher <alexander.deucher@amd.com>,
-        Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 004/600] Revert "Revert drm/amd/display: Enable Freesync Video Mode by default"
+        patches@lists.linux.dev, Ryder Lee <ryder.lee@mediatek.com>,
+        Felix Fietkau <nbd@nbd.name>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 178/737] wifi: mt76: mt7915: fix tlv length of mt7915_mcu_get_chan_mib_info
 Date:   Mon, 11 Sep 2023 15:40:37 +0200
-Message-ID: <20230911134633.754524708@linuxfoundation.org>
+Message-ID: <20230911134655.520654635@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,80 +49,39 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Aurabindo Pillai <aurabindo.pillai@amd.com>
+From: Ryder Lee <ryder.lee@mediatek.com>
 
-[ Upstream commit 11b92df8a2f7f4605ccc764ce6ae4a72760674df ]
+[ Upstream commit 4f1875c288dfc1ccea81fc17fef1d30c9d8498b2 ]
 
-This reverts commit 4243c84aa082d8fba70c45f48eb2bb5c19799060.
+Correct per-device TLV lengths to avoid invalid operation in firmware.
+(  64.040375:28:STATS-E)statsGetSingleHWCounter: MIB counter index = 65472 not supported.
+This happens on mt7916/mt7986.
 
-Enables freesync video by default, since the hang and corruption issue
-on eDP panels are now fixed.
-
-Acked-by: Stylon Wang <stylon.wang@amd.com>
-Signed-off-by: Aurabindo Pillai <aurabindo.pillai@amd.com>
-Reviewed-by: Rodrigo Siqueira <rjordrigo@amd.com>
-Tested-by: Daniel Wheeler <daniel.wheeler@amd.com>
-Signed-off-by: Alex Deucher <alexander.deucher@amd.com>
+Fixes: b0bfa00595be ("wifi: mt76: mt7915: improve accuracy of time_busy calculation")
+Signed-off-by: Ryder Lee <ryder.lee@mediatek.com>
+Signed-off-by: Felix Fietkau <nbd@nbd.name>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c | 12 +++++-------
- 1 file changed, 5 insertions(+), 7 deletions(-)
+ drivers/net/wireless/mediatek/mt76/mt7915/mcu.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
 
-diff --git a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-index 249b269e2cc53..9beb326a9528e 100644
---- a/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-+++ b/drivers/gpu/drm/amd/display/amdgpu_dm/amdgpu_dm.c
-@@ -5921,8 +5921,7 @@ create_stream_for_sink(struct amdgpu_dm_connector *aconnector,
- 		 */
- 		DRM_DEBUG_DRIVER("No preferred mode found\n");
- 	} else {
--		recalculate_timing = amdgpu_freesync_vid_mode &&
--				 is_freesync_video_mode(&mode, aconnector);
-+		recalculate_timing = is_freesync_video_mode(&mode, aconnector);
- 		if (recalculate_timing) {
- 			freesync_mode = get_highest_refresh_rate_mode(aconnector, false);
- 			drm_mode_copy(&saved_mode, &mode);
-@@ -7016,7 +7015,7 @@ static void amdgpu_dm_connector_add_freesync_modes(struct drm_connector *connect
- 	struct amdgpu_dm_connector *amdgpu_dm_connector =
- 		to_amdgpu_dm_connector(connector);
+diff --git a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+index a325066bf57e9..1a8611c6b684d 100644
+--- a/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
++++ b/drivers/net/wireless/mediatek/mt76/mt7915/mcu.c
+@@ -3000,7 +3000,7 @@ int mt7915_mcu_get_chan_mib_info(struct mt7915_phy *phy, bool chan_switch)
+ 	}
  
--	if (!(amdgpu_freesync_vid_mode && edid))
-+	if (!edid)
- 		return;
+ 	ret = mt76_mcu_send_and_get_msg(&dev->mt76, MCU_EXT_CMD(GET_MIB_INFO),
+-					req, sizeof(req), true, &skb);
++					req, len * sizeof(req[0]), true, &skb);
+ 	if (ret)
+ 		return ret;
  
- 	if (amdgpu_dm_connector->max_vfreq - amdgpu_dm_connector->min_vfreq > 10)
-@@ -9022,8 +9021,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 		 * TODO: Refactor this function to allow this check to work
- 		 * in all conditions.
- 		 */
--		if (amdgpu_freesync_vid_mode &&
--		    dm_new_crtc_state->stream &&
-+		if (dm_new_crtc_state->stream &&
- 		    is_timing_unchanged_for_freesync(new_crtc_state, old_crtc_state))
- 			goto skip_modeset;
- 
-@@ -9063,7 +9061,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 		}
- 
- 		/* Now check if we should set freesync video mode */
--		if (amdgpu_freesync_vid_mode && dm_new_crtc_state->stream &&
-+		if (dm_new_crtc_state->stream &&
- 		    dc_is_stream_unchanged(new_stream, dm_old_crtc_state->stream) &&
- 		    dc_is_stream_scaling_unchanged(new_stream, dm_old_crtc_state->stream) &&
- 		    is_timing_unchanged_for_freesync(new_crtc_state,
-@@ -9076,7 +9074,7 @@ static int dm_update_crtc_state(struct amdgpu_display_manager *dm,
- 			set_freesync_fixed_config(dm_new_crtc_state);
- 
- 			goto skip_modeset;
--		} else if (amdgpu_freesync_vid_mode && aconnector &&
-+		} else if (aconnector &&
- 			   is_freesync_video_mode(&new_crtc_state->mode,
- 						  aconnector)) {
- 			struct drm_display_mode *high_mode;
 -- 
 2.40.1
 
