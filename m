@@ -2,42 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id A0DBA79BF31
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:18:39 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0206379B9DC
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S239626AbjIKWqe (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:46:34 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36540 "EHLO
+        id S240702AbjIKU4e (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 16:56:34 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:41174 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240505AbjIKOqE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:46:04 -0400
+        with ESMTP id S241716AbjIKPMo (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:12:44 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E7E5A12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:45:59 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 3D0FCC433C9;
-        Mon, 11 Sep 2023 14:45:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B4EDAFA
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:12:39 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id E7413C433C7;
+        Mon, 11 Sep 2023 15:12:38 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443559;
-        bh=SjbM3qr6YesnNf+c38xeaSQbrq0vpqtnrA/N3tMCajM=;
+        s=korg; t=1694445159;
+        bh=QYjlBRFc6JSWQLhbn0bgApjJywsWXhngGRlp4jRZH7M=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=0bD4YyRbMqKdxprIMCFq7dw7LXcXdTWr9KPE2sCOPd4UlByfXdPBZRPJJXY181WoU
-         Ir9Qsz4Coe5m1T5gwZZrgqPPexE9H3yknS12zC5hZZz8uEJ9fJskjRsEV32leCOnJe
-         3rc9Cyedt0/rONHc1M8zBjPDunOzWSqv7caY8+dQ=
+        b=hkiPFl0719r8PgPafWcTcsTNFld5gCOP1sCrE9qvuZeU/BC3simio4gH9u9Ta4nuS
+         Es3Y4mXJt/cg8n6dLX5PpiXCJef1A37Mg9tKHjz+1tzifHaRIDDU06uLisOa8b6NUK
+         KB1OfA1D1wcUZ/L2EatconaY/8H8hBVm5M9+obyo=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev,
-        Kai-Heng Feng <kai.heng.feng@canonical.com>,
-        Koba Ko <koba.ko@canonical.com>,
-        Qiuxu Zhuo <qiuxu.zhuo@intel.com>,
-        Tony Luck <tony.luck@intel.com>,
+        patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
+        Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 419/737] EDAC/i10nm: Skip the absent memory controllers
-Date:   Mon, 11 Sep 2023 15:44:38 +0200
-Message-ID: <20230911134702.312076250@linuxfoundation.org>
+Subject: [PATCH 6.1 246/600] ARM: dts: stm32: Add missing detach mailbox for Odyssey SoM
+Date:   Mon, 11 Sep 2023 15:44:39 +0200
+Message-ID: <20230911134640.857747662@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
-References: <20230911134650.286315610@linuxfoundation.org>
+In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
+References: <20230911134633.619970489@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -53,128 +50,49 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.4-stable review patch.  If anyone has any objections, please let me know.
+6.1-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
+From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit c545f5e412250555bd4e717d062b117f20bab418 ]
+[ Upstream commit 966f04a89d77548e673de2c400abe0b2cf5c15db ]
 
-Some Sapphire Rapids workstations' absent memory controllers
-still appear as PCIe devices that fool the i10nm_edac driver
-and result in "shift exponent -66 is negative" call traces
-from skx_get_dimm_info().
+Add missing "detach" mailbox to this board to permit the CPU to inform
+the remote processor on a detach. This signal allows the remote processor
+firmware to stop IPC communication and to reinitialize the resources for
+a re-attach.
 
-Skip the absent memory controllers to avoid the call traces.
+Without this mailbox, detach is not possible and kernel log contains the
+following warning to, so make sure all the STM32MP15xx platform DTs are
+in sync regarding the mailboxes to fix the detach issue and the warning:
+"
+stm32-rproc 10000000.m4: mbox_request_channel_byname() could not locate channel named "detach"
+"
 
-Reported-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Closes: https://lore.kernel.org/linux-edac/CAAd53p41Ku1m1rapeqb1xtD+kKuk+BaUW=dumuoF0ZO3GhFjFA@mail.gmail.com/T/#m5de16dce60a8c836ec235868c7c16e3fefad0cc2
-Tested-by: Kai-Heng Feng <kai.heng.feng@canonical.com>
-Reported-by: Koba Ko <koba.ko@canonical.com>
-Closes: https://lore.kernel.org/linux-edac/SA1PR11MB71305B71CCCC3D9305835202892AA@SA1PR11MB7130.namprd11.prod.outlook.com/T/#t
-Tested-by: Koba Ko <koba.ko@canonical.com>
-Fixes: d4dc89d069aa ("EDAC, i10nm: Add a driver for Intel 10nm server processors")
-Signed-off-by: Qiuxu Zhuo <qiuxu.zhuo@intel.com>
-Signed-off-by: Tony Luck <tony.luck@intel.com>
-Link: https://lore.kernel.org/r/20230710013232.59712-1-qiuxu.zhuo@intel.com
+Fixes: 6257dfc1c412 ("ARM: dts: stm32: Add coprocessor detach mbox on stm32mp15x-dkx boards")
+Signed-off-by: Marek Vasut <marex@denx.de>
+Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/edac/i10nm_base.c | 54 +++++++++++++++++++++++++++++++++++----
- 1 file changed, 49 insertions(+), 5 deletions(-)
+ arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/drivers/edac/i10nm_base.c b/drivers/edac/i10nm_base.c
-index a897b6aff3686..349ff6cfb3796 100644
---- a/drivers/edac/i10nm_base.c
-+++ b/drivers/edac/i10nm_base.c
-@@ -658,13 +658,49 @@ static struct pci_dev *get_ddr_munit(struct skx_dev *d, int i, u32 *offset, unsi
- 	return mdev;
- }
- 
-+/**
-+ * i10nm_imc_absent() - Check whether the memory controller @imc is absent
-+ *
-+ * @imc    : The pointer to the structure of memory controller EDAC device.
-+ *
-+ * RETURNS : true if the memory controller EDAC device is absent, false otherwise.
-+ */
-+static bool i10nm_imc_absent(struct skx_imc *imc)
-+{
-+	u32 mcmtr;
-+	int i;
-+
-+	switch (res_cfg->type) {
-+	case SPR:
-+		for (i = 0; i < res_cfg->ddr_chan_num; i++) {
-+			mcmtr = I10NM_GET_MCMTR(imc, i);
-+			edac_dbg(1, "ch%d mcmtr reg %x\n", i, mcmtr);
-+			if (mcmtr != ~0)
-+				return false;
-+		}
-+
-+		/*
-+		 * Some workstations' absent memory controllers still
-+		 * appear as PCIe devices, misleading the EDAC driver.
-+		 * By observing that the MMIO registers of these absent
-+		 * memory controllers consistently hold the value of ~0.
-+		 *
-+		 * We identify a memory controller as absent by checking
-+		 * if its MMIO register "mcmtr" == ~0 in all its channels.
-+		 */
-+		return true;
-+	default:
-+		return false;
-+	}
-+}
-+
- static int i10nm_get_ddr_munits(void)
- {
- 	struct pci_dev *mdev;
- 	void __iomem *mbase;
- 	unsigned long size;
- 	struct skx_dev *d;
--	int i, j = 0;
-+	int i, lmc, j = 0;
- 	u32 reg, off;
- 	u64 base;
- 
-@@ -690,7 +726,7 @@ static int i10nm_get_ddr_munits(void)
- 		edac_dbg(2, "socket%d mmio base 0x%llx (reg 0x%x)\n",
- 			 j++, base, reg);
- 
--		for (i = 0; i < res_cfg->ddr_imc_num; i++) {
-+		for (lmc = 0, i = 0; i < res_cfg->ddr_imc_num; i++) {
- 			mdev = get_ddr_munit(d, i, &off, &size);
- 
- 			if (i == 0 && !mdev) {
-@@ -700,8 +736,6 @@ static int i10nm_get_ddr_munits(void)
- 			if (!mdev)
- 				continue;
- 
--			d->imc[i].mdev = mdev;
--
- 			edac_dbg(2, "mc%d mmio base 0x%llx size 0x%lx (reg 0x%x)\n",
- 				 i, base + off, size, reg);
- 
-@@ -712,7 +746,17 @@ static int i10nm_get_ddr_munits(void)
- 				return -ENODEV;
- 			}
- 
--			d->imc[i].mbase = mbase;
-+			d->imc[lmc].mbase = mbase;
-+			if (i10nm_imc_absent(&d->imc[lmc])) {
-+				pci_dev_put(mdev);
-+				iounmap(mbase);
-+				d->imc[lmc].mbase = NULL;
-+				edac_dbg(2, "Skip absent mc%d\n", i);
-+				continue;
-+			} else {
-+				d->imc[lmc].mdev = mdev;
-+				lmc++;
-+			}
- 		}
- 	}
- 
+diff --git a/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi b/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
+index e22871dc580c8..cf74852514906 100644
+--- a/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
++++ b/arch/arm/boot/dts/stm32mp157c-odyssey-som.dtsi
+@@ -230,8 +230,8 @@ &iwdg2 {
+ &m4_rproc {
+ 	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
+ 			<&vdev0vring1>, <&vdev0buffer>;
+-	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>;
+-	mbox-names = "vq0", "vq1", "shutdown";
++	mboxes = <&ipcc 0>, <&ipcc 1>, <&ipcc 2>, <&ipcc 3>;
++	mbox-names = "vq0", "vq1", "shutdown", "detach";
+ 	interrupt-parent = <&exti>;
+ 	interrupts = <68 1>;
+ 	status = "okay";
 -- 
 2.40.1
 
