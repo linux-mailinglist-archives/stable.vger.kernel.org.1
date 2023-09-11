@@ -2,36 +2,36 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 219F979AF6E
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:47:26 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 5DA1B79B274
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:42 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S243282AbjIKVHw (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:07:52 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48058 "EHLO
+        id S240228AbjIKV7M (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:59:12 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:48062 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S240339AbjIKOl5 (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:41:57 -0400
+        with ESMTP id S240340AbjIKOmA (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:42:00 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id BB77D12A
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:53 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0DD61C433C7;
-        Mon, 11 Sep 2023 14:41:52 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 8BDDC12A
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:41:56 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id CFD33C433C9;
+        Mon, 11 Sep 2023 14:41:55 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694443313;
-        bh=y62njVEuWdaAu1zB77H9u89JYr/5jDK2CysGUdZuIRw=;
+        s=korg; t=1694443316;
+        bh=WzzaH+HxH5Bz5KLp2cMgkGtBBiWkbnHQEuZ5zCDedMk=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Q09U7CPXcOwKeU4vLMsiRrVmr5e38cjttilQF58XVz6gjiGm2mTkUtqprcdYeCKCq
-         W336O2bwFYKlzXDJDWGWizHe/21d17gi62cvt2biRuZot4USdqg8CMNAo8yClMXnBd
-         qfuOJofP1ZxT+Yp6Ls7fKumybdLbRueAYj53UPa0=
+        b=vyRupq3lGjJQLTzILPrGqpoOgjeqdlWxJdw5KvZRyBLdbbgWWvOms7zx43pk9Ibvh
+         WYJeeZfRdINfreFiRsaFZN7sJqpn+kJOopAbEO6GbRwJljTYRPcikGenZNK6zhtHuY
+         QgDOgp9Rc511/mB1IPabBCvhOOxqb684Ce8pHlCU=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
         patches@lists.linux.dev, Marek Vasut <marex@denx.de>,
         Alexandre Torgue <alexandre.torgue@foss.st.com>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.4 305/737] ARM: dts: stm32: Add missing detach mailbox for DHCOM SoM
-Date:   Mon, 11 Sep 2023 15:42:44 +0200
-Message-ID: <20230911134659.091224465@linuxfoundation.org>
+Subject: [PATCH 6.4 306/737] ARM: dts: stm32: Add missing detach mailbox for DHCOR SoM
+Date:   Mon, 11 Sep 2023 15:42:45 +0200
+Message-ID: <20230911134659.117478397@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
 In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
 References: <20230911134650.286315610@linuxfoundation.org>
@@ -56,7 +56,7 @@ X-Mailing-List: stable@vger.kernel.org
 
 From: Marek Vasut <marex@denx.de>
 
-[ Upstream commit deb7edbc27a6ec4d8f5edfd8519b7ed13cbd2a52 ]
+[ Upstream commit 2f38de940f072db369edd3e6e8d82bb8f42c5c9b ]
 
 Add missing "detach" mailbox to this board to permit the CPU to inform
 the remote processor on a detach. This signal allows the remote processor
@@ -75,14 +75,14 @@ Signed-off-by: Marek Vasut <marex@denx.de>
 Signed-off-by: Alexandre Torgue <alexandre.torgue@foss.st.com>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi | 4 ++--
+ arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi | 4 ++--
  1 file changed, 2 insertions(+), 2 deletions(-)
 
-diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-index e61df23d361a7..74a11ccc5333f 100644
---- a/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-+++ b/arch/arm/boot/dts/stm32mp15xx-dhcom-som.dtsi
-@@ -416,8 +416,8 @@ &iwdg2 {
+diff --git a/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi b/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi
+index bba19f21e5277..89881a26c6141 100644
+--- a/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi
++++ b/arch/arm/boot/dts/stm32mp15xx-dhcor-som.dtsi
+@@ -227,8 +227,8 @@ &iwdg2 {
  &m4_rproc {
  	memory-region = <&retram>, <&mcuram>, <&mcuram2>, <&vdev0vring0>,
  			<&vdev0vring1>, <&vdev0buffer>;
