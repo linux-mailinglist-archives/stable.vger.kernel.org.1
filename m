@@ -2,39 +2,43 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id B695B79B9C5
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:10:33 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 1564179B73D
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:06:39 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238699AbjIKVEM (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:04:12 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:52042 "EHLO
+        id S237934AbjIKWGJ (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:06:09 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:39054 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239446AbjIKOUz (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:20:55 -0400
+        with ESMTP id S240761AbjIKOxG (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:53:06 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 30B72DE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:20:51 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 75690C433C8;
-        Mon, 11 Sep 2023 14:20:50 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id D7C51118
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:53:01 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 29DE0C433C9;
+        Mon, 11 Sep 2023 14:53:00 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442050;
-        bh=4YCuFZU/uZ9gRhS2hq5PeoG11abTu1DR0U6YnpcAABg=;
+        s=korg; t=1694443981;
+        bh=qEQH+UPNVa98BrLnjNqrVhoXNY+tcmdM8lEHEzlxous=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=Gb23+8m5mtJVKqVginCEmfMe2FpZthhW7hIpngD3LE5Nxz3zJybq8cPJhHnCt6r+O
-         33wZKXEcFmab7JUJS4MPEurTV7YZYEA8MAj3M9Al+fMBiTBz84DEcxDgQHQDiaaDTN
-         QpWQClUivpeCLI7sF+V9hjifZ/U6S5ol/+23C5ZA=
+        b=rAwXCd3IVYhtdpZO1Iw6sXtMF328uAURuncFO1868j8rOT+SywiMKJoiQNwfadNL9
+         o0lVSfufaJ9TXanHsqPt/rd8+37mB9AjSpIGM+fZGWma0wcYdeG9r3GrbUmRJxoRJ5
+         yjyo0twiryM7KE0ZnlrNY8aPklasg3TRMfSS9180=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Wang <jasowang@redhat.com>,
-        "Michael S. Tsirkin" <mst@redhat.com>,
+        patches@lists.linux.dev,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Rui Miguel Silva <rmfrfs@gmail.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.5 628/739] virtio_vdpa: build affinity masks conditionally
+Subject: [PATCH 6.4 568/737] media: ov2680: Remove VIDEO_V4L2_SUBDEV_API ifdef-s
 Date:   Mon, 11 Sep 2023 15:47:07 +0200
-Message-ID: <20230911134708.637678316@linuxfoundation.org>
+Message-ID: <20230911134706.411323922@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -50,131 +54,100 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Wang <jasowang@redhat.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit ae15aceaa98ad9499763923f7890e345d9f46b60 ]
+[ Upstream commit 49c282d5a8c5f4d1d9088622bec792294c716010 ]
 
-We try to build affinity mask via create_affinity_masks()
-unconditionally which may lead several issues:
+VIDEO_V4L2_SUBDEV_API is now automatically selected in Kconfig
+for all sensor drivers. Remove the ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+checks.
 
-- the affinity mask is not used for parent without affinity support
-  (only VDUSE support the affinity now)
-- the logic of create_affinity_masks() might not work for devices
-  other than block. For example it's not rare in the networking device
-  where the number of queues could exceed the number of CPUs. Such
-  case breaks the current affinity logic which is based on
-  group_cpus_evenly() who assumes the number of CPUs are not less than
-  the number of groups. This can trigger a warning[1]:
+This is a preparation patch for fixing ov2680_set_fmt()
+which == V4L2_SUBDEV_FORMAT_TRY calls not properly filling in
+the passed in v4l2_mbus_framefmt struct.
 
-	if (ret >= 0)
-		WARN_ON(nr_present + nr_others < numgrps);
-
-Fixing this by only build the affinity masks only when
-
-- Driver passes affinity descriptor, driver like virtio-blk can make
-  sure to limit the number of queues when it exceeds the number of CPUs
-- Parent support affinity setting config ops
-
-This help to avoid the warning. More optimizations could be done on
-top.
-
-[1]
-[  682.146655] WARNING: CPU: 6 PID: 1550 at lib/group_cpus.c:400 group_cpus_evenly+0x1aa/0x1c0
-[  682.146668] CPU: 6 PID: 1550 Comm: vdpa Not tainted 6.5.0-rc5jason+ #79
-[  682.146671] Hardware name: QEMU Standard PC (i440FX + PIIX, 1996), BIOS rel-1.16.2-0-gea1b7a073390-prebuilt.qemu.org 04/01/2014
-[  682.146673] RIP: 0010:group_cpus_evenly+0x1aa/0x1c0
-[  682.146676] Code: 4c 89 e0 5b 5d 41 5c 41 5d 41 5e c3 cc cc cc cc e8 1b c4 74 ff 48 89 ef e8 13 ac 98 ff 4c 89 e7 45 31 e4 e8 08 ac 98 ff eb c2 <0f> 0b eb b6 e8 fd 05 c3 00 45 31 e4 eb e5 cc cc cc cc cc cc cc cc
-[  682.146679] RSP: 0018:ffffc9000215f498 EFLAGS: 00010293
-[  682.146682] RAX: 000000000001f1e0 RBX: 0000000000000041 RCX: 0000000000000000
-[  682.146684] RDX: ffff888109922058 RSI: 0000000000000041 RDI: 0000000000000030
-[  682.146686] RBP: ffff888109922058 R08: ffffc9000215f498 R09: ffffc9000215f4a0
-[  682.146687] R10: 00000000000198d0 R11: 0000000000000030 R12: ffff888107e02800
-[  682.146689] R13: 0000000000000030 R14: 0000000000000030 R15: 0000000000000041
-[  682.146692] FS:  00007fef52315740(0000) GS:ffff888237380000(0000) knlGS:0000000000000000
-[  682.146695] CS:  0010 DS: 0000 ES: 0000 CR0: 0000000080050033
-[  682.146696] CR2: 00007fef52509000 CR3: 0000000110dbc004 CR4: 0000000000370ee0
-[  682.146698] DR0: 0000000000000000 DR1: 0000000000000000 DR2: 0000000000000000
-[  682.146700] DR3: 0000000000000000 DR6: 00000000fffe0ff0 DR7: 0000000000000400
-[  682.146701] Call Trace:
-[  682.146703]  <TASK>
-[  682.146705]  ? __warn+0x7b/0x130
-[  682.146709]  ? group_cpus_evenly+0x1aa/0x1c0
-[  682.146712]  ? report_bug+0x1c8/0x1e0
-[  682.146717]  ? handle_bug+0x3c/0x70
-[  682.146721]  ? exc_invalid_op+0x14/0x70
-[  682.146723]  ? asm_exc_invalid_op+0x16/0x20
-[  682.146727]  ? group_cpus_evenly+0x1aa/0x1c0
-[  682.146729]  ? group_cpus_evenly+0x15c/0x1c0
-[  682.146731]  create_affinity_masks+0xaf/0x1a0
-[  682.146735]  virtio_vdpa_find_vqs+0x83/0x1d0
-[  682.146738]  ? __pfx_default_calc_sets+0x10/0x10
-[  682.146742]  virtnet_find_vqs+0x1f0/0x370
-[  682.146747]  virtnet_probe+0x501/0xcd0
-[  682.146749]  ? vp_modern_get_status+0x12/0x20
-[  682.146751]  ? get_cap_addr.isra.0+0x10/0xc0
-[  682.146754]  virtio_dev_probe+0x1af/0x260
-[  682.146759]  really_probe+0x1a5/0x410
-
-Fixes: 3dad56823b53 ("virtio-vdpa: Support interrupt affinity spreading mechanism")
-Signed-off-by: Jason Wang <jasowang@redhat.com>
-Message-Id: <20230811091539.1359865-1-jasowang@redhat.com>
-Signed-off-by: Michael S. Tsirkin <mst@redhat.com>
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/virtio/virtio_vdpa.c | 17 +++++++++++------
- 1 file changed, 11 insertions(+), 6 deletions(-)
+ drivers/media/i2c/ov2680.c | 16 ++--------------
+ 1 file changed, 2 insertions(+), 14 deletions(-)
 
-diff --git a/drivers/virtio/virtio_vdpa.c b/drivers/virtio/virtio_vdpa.c
-index 961161da59000..06ce6d8c2e004 100644
---- a/drivers/virtio/virtio_vdpa.c
-+++ b/drivers/virtio/virtio_vdpa.c
-@@ -366,11 +366,14 @@ static int virtio_vdpa_find_vqs(struct virtio_device *vdev, unsigned int nvqs,
- 	struct irq_affinity default_affd = { 0 };
- 	struct cpumask *masks;
- 	struct vdpa_callback cb;
-+	bool has_affinity = desc && ops->set_vq_affinity;
- 	int i, err, queue_idx = 0;
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index c999a898dfe77..de11a5fb03659 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -562,7 +562,6 @@ static int ov2680_get_fmt(struct v4l2_subdev *sd,
+ {
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+ 	struct v4l2_mbus_framefmt *fmt = NULL;
+-	int ret = 0;
  
--	masks = create_affinity_masks(nvqs, desc ? desc : &default_affd);
--	if (!masks)
--		return -ENOMEM;
-+	if (has_affinity) {
-+		masks = create_affinity_masks(nvqs, desc ? desc : &default_affd);
-+		if (!masks)
-+			return -ENOMEM;
-+	}
+ 	if (format->pad != 0)
+ 		return -EINVAL;
+@@ -570,22 +569,17 @@ static int ov2680_get_fmt(struct v4l2_subdev *sd,
+ 	mutex_lock(&sensor->lock);
  
- 	for (i = 0; i < nvqs; ++i) {
- 		if (!names[i]) {
-@@ -386,20 +389,22 @@ static int virtio_vdpa_find_vqs(struct virtio_device *vdev, unsigned int nvqs,
- 			goto err_setup_vq;
- 		}
- 
--		if (ops->set_vq_affinity)
-+		if (has_affinity)
- 			ops->set_vq_affinity(vdpa, i, &masks[i]);
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 		fmt = v4l2_subdev_get_try_format(&sensor->sd, sd_state,
+ 						 format->pad);
+-#else
+-		ret = -EINVAL;
+-#endif
+ 	} else {
+ 		fmt = &sensor->fmt;
  	}
  
- 	cb.callback = virtio_vdpa_config_cb;
- 	cb.private = vd_dev;
- 	ops->set_config_cb(vdpa, &cb);
--	kfree(masks);
-+	if (has_affinity)
-+		kfree(masks);
+-	if (fmt)
+-		format->format = *fmt;
++	format->format = *fmt;
  
- 	return 0;
+ 	mutex_unlock(&sensor->lock);
  
- err_setup_vq:
- 	virtio_vdpa_del_vqs(vdev);
--	kfree(masks);
-+	if (has_affinity)
-+		kfree(masks);
- 	return err;
+-	return ret;
++	return 0;
  }
+ 
+ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+@@ -594,9 +588,7 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ {
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+ 	struct v4l2_mbus_framefmt *fmt = &format->format;
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 	struct v4l2_mbus_framefmt *try_fmt;
+-#endif
+ 	const struct ov2680_mode_info *mode;
+ 	int ret = 0;
+ 
+@@ -619,10 +611,8 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 	}
+ 
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
+ 		format->format = *try_fmt;
+-#endif
+ 		goto unlock;
+ 	}
+ 
+@@ -780,9 +770,7 @@ static int ov2680_v4l2_register(struct ov2680_dev *sensor)
+ 	v4l2_i2c_subdev_init(&sensor->sd, sensor->i2c_client,
+ 			     &ov2680_subdev_ops);
+ 
+-#ifdef CONFIG_VIDEO_V4L2_SUBDEV_API
+ 	sensor->sd.flags = V4L2_SUBDEV_FL_HAS_DEVNODE;
+-#endif
+ 	sensor->pad.flags = MEDIA_PAD_FL_SOURCE;
+ 	sensor->sd.entity.function = MEDIA_ENT_F_CAM_SENSOR;
  
 -- 
 2.40.1
