@@ -2,38 +2,39 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 1BDBD79B0BE
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:50:20 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 641F779B197
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:57:01 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S238581AbjIKViN (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:38:13 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42430 "EHLO
+        id S1359596AbjIKWSE (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:18:04 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:47898 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S239637AbjIKOZE (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:25:04 -0400
+        with ESMTP id S240914AbjIKO5Q (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:57:16 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 220FEDE
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:25:00 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 69F3AC433C8;
-        Mon, 11 Sep 2023 14:24:59 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id B9452E4B
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:57:11 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 0954BC433C9;
+        Mon, 11 Sep 2023 14:57:10 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694442299;
-        bh=qwhAqAE/5ARGmNqUMFCsiM/sJGf7+NsmsTPPhviAU2c=;
+        s=korg; t=1694444231;
+        bh=RyXmWkddrdte3E88ovyQSwKKJHTlYNYlWLzYO+tZzA0=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=bm0OjNksaJzSPDI7y0aG0XonS7TA1GXDFP/c+RhvxcBTMmmZXpLtm10N+tyQuEWQH
-         XJ4/3SxoMgzxbqwJPpfClqsgzW5UrqXGWLoqkEudiEKOa7j7CdEjxUxRZvugKaV1UA
-         rCErXwpIYqoDynFRrudBETmhiH7ccot44qQvMDIM=
+        b=XnFCl+DcfIQVyh0IQoip8Mfa2m53YU5zTl0IOBqqZ9nN9bPC2TpIgT1Uug0n4vHJH
+         9NnMSBn5hbYIS+0lSB8FpQ0er0uPGaE8OLvD3m8KKu/+F9/ccUlYXfwBmGVXqUoHuN
+         RON/TMSB2b0M3aj1HuCJ9T4w5T/tWJNrQRoPkU+4=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Sven Schnelle <svens@linux.ibm.com>,
-        Heiko Carstens <hca@linux.ibm.com>
-Subject: [PATCH 6.5 716/739] s390/ipl: add missing secure/has_secure file to ipl type unknown
-Date:   Mon, 11 Sep 2023 15:48:35 +0200
-Message-ID: <20230911134711.085388143@linuxfoundation.org>
+        patches@lists.linux.dev, kernel test robot <lkp@intel.com>,
+        Alexandre Ghiti <alexghiti@rivosinc.com>,
+        Palmer Dabbelt <palmer@rivosinc.com>
+Subject: [PATCH 6.4 657/737] riscv: Mark KASAN tmp* page tables variables as static
+Date:   Mon, 11 Sep 2023 15:48:36 +0200
+Message-ID: <20230911134708.880747407@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
-References: <20230911134650.921299741@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -49,41 +50,43 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.5-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Sven Schnelle <svens@linux.ibm.com>
+From: Alexandre Ghiti <alexghiti@rivosinc.com>
 
-commit ea5717cb13468323a7c3dd394748301802991f39 upstream.
+commit dd7664d67b478afeb79a89e4586c2cd7707d17d6 upstream.
 
-OS installers are relying on /sys/firmware/ipl/has_secure to be
-present on machines supporting secure boot. This file is present
-for all IPL types, but not the unknown type, which prevents a secure
-installation when an LPAR is booted in HMC via FTP(s), because
-this is an unknown IPL type in linux. While at it, also add the secure
-file.
+tmp_pg_dir, tmp_p4d and tmp_pud are only used in kasan_init.c so they
+should be declared as static.
 
-Fixes: c9896acc7851 ("s390/ipl: Provide has_secure sysfs attribute")
+Reported-by: kernel test robot <lkp@intel.com>
+Closes: https://lore.kernel.org/oe-kbuild-all/202306282202.bODptiGE-lkp@intel.com/
+Fixes: 96f9d4daf745 ("riscv: Rework kasan population functions")
+Signed-off-by: Alexandre Ghiti <alexghiti@rivosinc.com>
+Link: https://lore.kernel.org/r/20230704074357.233982-1-alexghiti@rivosinc.com
 Cc: stable@vger.kernel.org
-Signed-off-by: Sven Schnelle <svens@linux.ibm.com>
-Reviewed-by: Heiko Carstens <hca@linux.ibm.com>
-Signed-off-by: Heiko Carstens <hca@linux.ibm.com>
+Signed-off-by: Palmer Dabbelt <palmer@rivosinc.com>
 Signed-off-by: Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 ---
- arch/s390/kernel/ipl.c |    2 ++
- 1 file changed, 2 insertions(+)
+ arch/riscv/mm/kasan_init.c |    6 +++---
+ 1 file changed, 3 insertions(+), 3 deletions(-)
 
---- a/arch/s390/kernel/ipl.c
-+++ b/arch/s390/kernel/ipl.c
-@@ -640,6 +640,8 @@ static struct attribute_group ipl_ccw_at
+--- a/arch/riscv/mm/kasan_init.c
++++ b/arch/riscv/mm/kasan_init.c
+@@ -22,9 +22,9 @@
+  * region is not and then we have to go down to the PUD level.
+  */
  
- static struct attribute *ipl_unknown_attrs[] = {
- 	&sys_ipl_type_attr.attr,
-+	&sys_ipl_secure_attr.attr,
-+	&sys_ipl_has_secure_attr.attr,
- 	NULL,
- };
+-pgd_t tmp_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
+-p4d_t tmp_p4d[PTRS_PER_P4D] __page_aligned_bss;
+-pud_t tmp_pud[PTRS_PER_PUD] __page_aligned_bss;
++static pgd_t tmp_pg_dir[PTRS_PER_PGD] __page_aligned_bss;
++static p4d_t tmp_p4d[PTRS_PER_P4D] __page_aligned_bss;
++static pud_t tmp_pud[PTRS_PER_PUD] __page_aligned_bss;
  
+ static void __init kasan_populate_pte(pmd_t *pmd, unsigned long vaddr, unsigned long end)
+ {
 
 
