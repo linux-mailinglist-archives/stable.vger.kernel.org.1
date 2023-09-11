@@ -2,40 +2,42 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id 97DC379BA7D
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:11:38 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id A7F6679C0F8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 02:21:14 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S244289AbjIKWAg (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 18:00:36 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:36494 "EHLO
+        id S1344301AbjIKVNu (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 17:13:50 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:42606 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S241832AbjIKPPn (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:15:43 -0400
+        with ESMTP id S239299AbjIKORE (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:17:04 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 1D5D9CCC
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:15:39 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 67676C433C9;
-        Mon, 11 Sep 2023 15:15:38 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id E1FE7DE
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:16:59 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 311A3C433C8;
+        Mon, 11 Sep 2023 14:16:59 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445338;
-        bh=ZFOc3T11SbssFWa/UB0c+WTaZ5uf035tfrPKBZot0dE=;
+        s=korg; t=1694441819;
+        bh=522s6+6qwAqY/5Hv0FQ1nwpLhkJ1s0dCC7VE7YY2gdU=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=O8x/aIJxj5INRpbSAINlQY5BLzK2bhClxX/tyO4SD9iTWPtNmXD8Ktz8qU/HgyzTw
-         /lEJE/7VTxfl68iJIBMt4eBZx0al+gpA6RzWeDLkjoz18bh5av/crD2xe2GmN32Sz2
-         ORvgdVCduCDZn/4+ngu0CRkoUoMHNic7JUIJDGMg=
+        b=a9B7pJvO7Xiszg5CToC++Gc1lwjAe5+q9MmU2Nvf8gf4rT/KA/QxeHghxDUQC+gec
+         B7UhJ2fSR+FyqUMbzHMCNbdUKGZtTkgQ9h88aXeUVe4brkBijUItwEbcx26/ubJh2K
+         lBIE2xAR+TXjTPe3n53TK3acloOw94nzF8XglIrg=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Nishanth Menon <nm@ti.com>,
-        kernel test robot <lkp@intel.com>,
-        Tony Lindgren <tony@atomide.com>,
+        patches@lists.linux.dev, Rui Miguel Silva <rmfrfs@gmail.com>,
+        Daniel Scally <dan.scally@ideasonboard.com>,
+        Hans de Goede <hdegoede@redhat.com>,
+        Sakari Ailus <sakari.ailus@linux.intel.com>,
+        Mauro Carvalho Chehab <mchehab@kernel.org>,
         Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 312/600] bus: ti-sysc: Fix cast to enum warning
-Date:   Mon, 11 Sep 2023 15:45:45 +0200
-Message-ID: <20230911134642.861625517@linuxfoundation.org>
+Subject: [PATCH 6.5 547/739] media: ov2680: Fix ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY not working
+Date:   Mon, 11 Sep 2023 15:45:46 +0200
+Message-ID: <20230911134706.370547648@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.921299741@linuxfoundation.org>
+References: <20230911134650.921299741@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
@@ -51,40 +53,96 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.5-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Tony Lindgren <tony@atomide.com>
+From: Hans de Goede <hdegoede@redhat.com>
 
-[ Upstream commit de44bf2f7683347f75690ef6cf61a1d5ba8f0891 ]
+[ Upstream commit c0e97a4b4f20639f74cd5809b42ba6cbf9736a7d ]
 
-Fix warning for "cast to smaller integer type 'enum sysc_soc' from 'const
-void *'".
+ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY was getting
+the try_fmt v4l2_mbus_framefmt struct from the passed in sd_state
+and then storing the contents of that into the return by reference
+format->format struct.
 
-Cc: Nishanth Menon <nm@ti.com>
-Reported-by: kernel test robot <lkp@intel.com>
-Closes: https://lore.kernel.org/oe-kbuild-all/202308150723.ziuGCdM3-lkp@intel.com/
-Fixes: e1e1e9bb9d94 ("bus: ti-sysc: Fix build warning for 64-bit build")
-Signed-off-by: Tony Lindgren <tony@atomide.com>
+While the right thing to do would be filling format->format based on
+the just looked up mode and then store the results of that in
+sd_state->pads[0].try_fmt .
+
+Before the previous change introducing ov2680_fill_format() this
+resulted in ov2680_set_fmt() which == V4L2_SUBDEV_FORMAT_TRY always
+returning the zero-ed out sd_state->pads[0].try_fmt in format->format
+breaking callers using this.
+
+After the introduction of ov2680_fill_format() which at least
+initializes sd_state->pads[0].try_fmt properly, format->format
+is now always being filled with the default 800x600 mode set by
+ov2680_init_cfg() independent of the actual requested mode.
+
+Move the filling of format->format with ov2680_fill_format() to
+before the if (which == V4L2_SUBDEV_FORMAT_TRY) and then store
+the filled in format->format in sd_state->pads[0].try_fmt to
+fix this.
+
+Note this removes the fmt local variable because IMHO having a local
+variable which points to a sub-struct of one of the function arguments
+just leads to confusion when reading the code.
+
+Fixes: 3ee47cad3e69 ("media: ov2680: Add Omnivision OV2680 sensor driver")
+Acked-by: Rui Miguel Silva <rmfrfs@gmail.com>
+Reviewed-by: Daniel Scally <dan.scally@ideasonboard.com>
+Signed-off-by: Hans de Goede <hdegoede@redhat.com>
+Signed-off-by: Sakari Ailus <sakari.ailus@linux.intel.com>
+Signed-off-by: Mauro Carvalho Chehab <mchehab@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/bus/ti-sysc.c | 2 +-
- 1 file changed, 1 insertion(+), 1 deletion(-)
+ drivers/media/i2c/ov2680.c | 13 +++++++------
+ 1 file changed, 7 insertions(+), 6 deletions(-)
 
-diff --git a/drivers/bus/ti-sysc.c b/drivers/bus/ti-sysc.c
-index 0c933788d8575..ac36b01cf6d5d 100644
---- a/drivers/bus/ti-sysc.c
-+++ b/drivers/bus/ti-sysc.c
-@@ -3125,7 +3125,7 @@ static int sysc_init_static_data(struct sysc *ddata)
+diff --git a/drivers/media/i2c/ov2680.c b/drivers/media/i2c/ov2680.c
+index c4a46c734d82a..7fc4b39ebb371 100644
+--- a/drivers/media/i2c/ov2680.c
++++ b/drivers/media/i2c/ov2680.c
+@@ -603,7 +603,6 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 			  struct v4l2_subdev_format *format)
+ {
+ 	struct ov2680_dev *sensor = to_ov2680_dev(sd);
+-	struct v4l2_mbus_framefmt *fmt = &format->format;
+ 	struct v4l2_mbus_framefmt *try_fmt;
+ 	const struct ov2680_mode_info *mode;
+ 	int ret = 0;
+@@ -612,14 +611,18 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		return -EINVAL;
  
- 	match = soc_device_match(sysc_soc_match);
- 	if (match && match->data)
--		sysc_soc->soc = (enum sysc_soc)match->data;
-+		sysc_soc->soc = (enum sysc_soc)(uintptr_t)match->data;
+ 	mode = v4l2_find_nearest_size(ov2680_mode_data,
+-				      ARRAY_SIZE(ov2680_mode_data), width,
+-				      height, fmt->width, fmt->height);
++				      ARRAY_SIZE(ov2680_mode_data),
++				      width, height,
++				      format->format.width,
++				      format->format.height);
+ 	if (!mode)
+ 		return -EINVAL;
  
- 	/*
- 	 * Check and warn about possible old incomplete dtb. We now want to see
++	ov2680_fill_format(sensor, &format->format, mode->width, mode->height);
++
+ 	if (format->which == V4L2_SUBDEV_FORMAT_TRY) {
+ 		try_fmt = v4l2_subdev_get_try_format(sd, sd_state, 0);
+-		format->format = *try_fmt;
++		*try_fmt = format->format;
+ 		return 0;
+ 	}
+ 
+@@ -630,8 +633,6 @@ static int ov2680_set_fmt(struct v4l2_subdev *sd,
+ 		goto unlock;
+ 	}
+ 
+-	ov2680_fill_format(sensor, fmt, mode->width, mode->height);
+-
+ 	sensor->current_mode = mode;
+ 	sensor->fmt = format->format;
+ 	sensor->mode_pending_changes = true;
 -- 
 2.40.1
 
