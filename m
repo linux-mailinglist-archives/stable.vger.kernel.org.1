@@ -2,43 +2,44 @@ Return-Path: <stable-owner@vger.kernel.org>
 X-Original-To: lists+stable@lfdr.de
 Delivered-To: lists+stable@lfdr.de
 Received: from out1.vger.email (out1.vger.email [IPv6:2620:137:e000::1:20])
-	by mail.lfdr.de (Postfix) with ESMTP id AE8A179B290
-	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:58:53 +0200 (CEST)
+	by mail.lfdr.de (Postfix) with ESMTP id 0406E79ADB8
+	for <lists+stable@lfdr.de>; Tue, 12 Sep 2023 01:40:41 +0200 (CEST)
 Received: (majordomo@vger.kernel.org) by vger.kernel.org via listexpand
-        id S1354200AbjIKVwu (ORCPT <rfc822;lists+stable@lfdr.de>);
-        Mon, 11 Sep 2023 17:52:50 -0400
-Received: from lindbergh.monkeyblade.net ([23.128.96.19]:54158 "EHLO
+        id S1376581AbjIKWUA (ORCPT <rfc822;lists+stable@lfdr.de>);
+        Mon, 11 Sep 2023 18:20:00 -0400
+Received: from lindbergh.monkeyblade.net ([23.128.96.19]:58618 "EHLO
         lindbergh.monkeyblade.net" rhost-flags-OK-OK-OK-OK) by vger.kernel.org
-        with ESMTP id S242084AbjIKPVw (ORCPT
-        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 11:21:52 -0400
+        with ESMTP id S240840AbjIKOzZ (ORCPT
+        <rfc822;stable@vger.kernel.org>); Mon, 11 Sep 2023 10:55:25 -0400
 Received: from smtp.kernel.org (relay.kernel.org [52.25.139.140])
-        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 3148DD8
-        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 08:21:48 -0700 (PDT)
-Received: by smtp.kernel.org (Postfix) with ESMTPSA id 7288FC433C7;
-        Mon, 11 Sep 2023 15:21:47 +0000 (UTC)
+        by lindbergh.monkeyblade.net (Postfix) with ESMTPS id 523C4E40
+        for <stable@vger.kernel.org>; Mon, 11 Sep 2023 07:55:21 -0700 (PDT)
+Received: by smtp.kernel.org (Postfix) with ESMTPSA id 9A534C433C7;
+        Mon, 11 Sep 2023 14:55:20 +0000 (UTC)
 DKIM-Signature: v=1; a=rsa-sha256; c=relaxed/simple; d=linuxfoundation.org;
-        s=korg; t=1694445707;
-        bh=F2xYqyts/k5qoxtqlAnHEAmuM8+0gdvA34FSnJ+RMpQ=;
+        s=korg; t=1694444121;
+        bh=Bi6cjiyGJP2vcSA9UYUDmgma/NREIJ/W+gbiM+kMI5Y=;
         h=From:To:Cc:Subject:Date:In-Reply-To:References:From;
-        b=AFyssmaJSRWSggbuodftxslqzRjE7/R87asRU4E2w4iUZOwK8wjqDusGlYLa+fWIV
-         m6eEKVqmfJqNs4pr6lob6nyqYeLDoLYjHQmnf/1RxKH5ppIJZQoSlmQnz7AL3bx/6o
-         BgmV2hMupTnHz9GZ3Uji6B4teONMtS3WzVTaZjxM=
+        b=FI2Lvjv5ch2kz7oDTgYJ9uVBLxWwSb4QdvfAwAOrp7zxnoVermZoRhlL6NQzD0ybE
+         3N/91TM2WPZd2itMpg8KBXpfKP9XU4pAPf/Zqig0j+zrKFLs870J/unvYGPO3En8/a
+         hgC3lL5LOCfzkDGK80rusghCUtbkF6gQFDGuAw4k=
 From:   Greg Kroah-Hartman <gregkh@linuxfoundation.org>
 To:     stable@vger.kernel.org
 Cc:     Greg Kroah-Hartman <gregkh@linuxfoundation.org>,
-        patches@lists.linux.dev, Jason Gunthorpe <jgg@nvidia.com>,
-        Chunyan Zhang <zhang.lyra@gmail.com>,
-        Joerg Roedel <jroedel@suse.de>, Sasha Levin <sashal@kernel.org>
-Subject: [PATCH 6.1 443/600] iommu/sprd: Add missing force_aperture
-Date:   Mon, 11 Sep 2023 15:47:56 +0200
-Message-ID: <20230911134646.723417381@linuxfoundation.org>
+        patches@lists.linux.dev,
+        =?UTF-8?q?Marek=20Beh=C3=BAn?= <kabel@kernel.org>,
+        Lee Jones <lee@kernel.org>, Sasha Levin <sashal@kernel.org>
+Subject: [PATCH 6.4 618/737] leds: multicolor: Use rounded division when calculating color components
+Date:   Mon, 11 Sep 2023 15:47:57 +0200
+Message-ID: <20230911134707.793302323@linuxfoundation.org>
 X-Mailer: git-send-email 2.42.0
-In-Reply-To: <20230911134633.619970489@linuxfoundation.org>
-References: <20230911134633.619970489@linuxfoundation.org>
+In-Reply-To: <20230911134650.286315610@linuxfoundation.org>
+References: <20230911134650.286315610@linuxfoundation.org>
 User-Agent: quilt/0.67
 X-stable: review
 X-Patchwork-Hint: ignore
 MIME-Version: 1.0
+Content-Type: text/plain; charset=UTF-8
 Content-Transfer-Encoding: 8bit
 X-Spam-Status: No, score=-2.1 required=5.0 tests=BAYES_00,DKIMWL_WL_HIGH,
         DKIM_SIGNED,DKIM_VALID,DKIM_VALID_AU,DKIM_VALID_EF,
@@ -50,38 +51,65 @@ Precedence: bulk
 List-ID: <stable.vger.kernel.org>
 X-Mailing-List: stable@vger.kernel.org
 
-6.1-stable review patch.  If anyone has any objections, please let me know.
+6.4-stable review patch.  If anyone has any objections, please let me know.
 
 ------------------
 
-From: Jason Gunthorpe <jgg@nvidia.com>
+From: Marek Behún <kabel@kernel.org>
 
-[ Upstream commit d48a51286c698f7fe8efc688f23a532f4fe9a904 ]
+[ Upstream commit 065d099f1be58187e6629273c50b948a02b7e1bf ]
 
-force_aperture was intended to false only by GART drivers that have an
-identity translation outside the aperture. This does not describe sprd, so
-add the missing 'force_aperture = true'.
+Given channel intensity, LED brightness and max LED brightness, the
+multicolor LED framework helper led_mc_calc_color_components() computes
+the color channel brightness as
 
-Fixes: b23e4fc4e3fa ("iommu: add Unisoc IOMMU basic driver")
-Signed-off-by: Jason Gunthorpe <jgg@nvidia.com>
-Acked-by: Chunyan Zhang <zhang.lyra@gmail.com>
-Signed-off-by: Joerg Roedel <jroedel@suse.de>
+    chan_brightness = brightness * chan_intensity / max_brightness
+
+Consider the situation when (brightness, intensity, max_brightness) is
+for example (16, 15, 255), then chan_brightness is computed to 0
+although the fractional divison would give 0.94, which should be rounded
+to 1.
+
+Use DIV_ROUND_CLOSEST here for the division to give more realistic
+component computation:
+
+    chan_brightness = DIV_ROUND_CLOSEST(brightness * chan_intensity,
+                                        max_brightness)
+
+Fixes: 55d5d3b46b08 ("leds: multicolor: Introduce a multicolor class definition")
+Signed-off-by: Marek Behún <kabel@kernel.org>
+Link: https://lore.kernel.org/r/20230801124931.8661-1-kabel@kernel.org
+Signed-off-by: Lee Jones <lee@kernel.org>
 Signed-off-by: Sasha Levin <sashal@kernel.org>
 ---
- drivers/iommu/sprd-iommu.c | 1 +
- 1 file changed, 1 insertion(+)
+ drivers/leds/led-class-multicolor.c | 8 +++++---
+ 1 file changed, 5 insertions(+), 3 deletions(-)
 
-diff --git a/drivers/iommu/sprd-iommu.c b/drivers/iommu/sprd-iommu.c
-index fadd2c907222b..8261066de07d7 100644
---- a/drivers/iommu/sprd-iommu.c
-+++ b/drivers/iommu/sprd-iommu.c
-@@ -147,6 +147,7 @@ static struct iommu_domain *sprd_iommu_domain_alloc(unsigned int domain_type)
+diff --git a/drivers/leds/led-class-multicolor.c b/drivers/leds/led-class-multicolor.c
+index e317408583df9..ec62a48116135 100644
+--- a/drivers/leds/led-class-multicolor.c
++++ b/drivers/leds/led-class-multicolor.c
+@@ -6,6 +6,7 @@
+ #include <linux/device.h>
+ #include <linux/init.h>
+ #include <linux/led-class-multicolor.h>
++#include <linux/math.h>
+ #include <linux/module.h>
+ #include <linux/slab.h>
+ #include <linux/uaccess.h>
+@@ -19,9 +20,10 @@ int led_mc_calc_color_components(struct led_classdev_mc *mcled_cdev,
+ 	int i;
  
- 	dom->domain.geometry.aperture_start = 0;
- 	dom->domain.geometry.aperture_end = SZ_256M - 1;
-+	dom->domain.geometry.force_aperture = true;
+ 	for (i = 0; i < mcled_cdev->num_colors; i++)
+-		mcled_cdev->subled_info[i].brightness = brightness *
+-					mcled_cdev->subled_info[i].intensity /
+-					led_cdev->max_brightness;
++		mcled_cdev->subled_info[i].brightness =
++			DIV_ROUND_CLOSEST(brightness *
++					  mcled_cdev->subled_info[i].intensity,
++					  led_cdev->max_brightness);
  
- 	return &dom->domain;
+ 	return 0;
  }
 -- 
 2.40.1
